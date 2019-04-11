@@ -252,11 +252,7 @@ ShallowWrapper {
                   onVisibleChange={[Function]}
                   overlay={
                     <Menu
-                      className=""
-                      focusable={false}
                       onClick={[Function]}
-                      prefixCls="ant-menu"
-                      theme="light"
                     >
                       <MenuItem>
                         <button
@@ -336,7 +332,6 @@ ShallowWrapper {
                             okType="primary"
                             onConfirm={[Function]}
                             placement="left"
-                            prefixCls="ant-popover"
                             title="Are you sure?"
                             transitionName="zoom-big"
                             trigger="click"
@@ -378,7 +373,6 @@ ShallowWrapper {
                             okType="primary"
                             onConfirm={[Function]}
                             placement="left"
-                            prefixCls="ant-popover"
                             title="Are you sure?"
                             transitionName="zoom-big"
                             trigger="click"
@@ -405,14 +399,13 @@ ShallowWrapper {
                     </Menu>
                   }
                   placement="bottomLeft"
-                  prefixCls="ant-dropdown"
                   visible={false}
                 >
                   <Button
                     block={false}
                     ghost={false}
+                    htmlType="button"
                     loading={false}
-                    prefixCls="ant-btn"
                     type="primary"
                   >
                     <div
@@ -668,11 +661,7 @@ ShallowWrapper {
                     onVisibleChange={[Function]}
                     overlay={
                       <Menu
-                        className=""
-                        focusable={false}
                         onClick={[Function]}
-                        prefixCls="ant-menu"
-                        theme="light"
                       >
                         <MenuItem>
                           <button
@@ -752,7 +741,6 @@ ShallowWrapper {
                               okType="primary"
                               onConfirm={[Function]}
                               placement="left"
-                              prefixCls="ant-popover"
                               title="Are you sure?"
                               transitionName="zoom-big"
                               trigger="click"
@@ -794,7 +782,6 @@ ShallowWrapper {
                               okType="primary"
                               onConfirm={[Function]}
                               placement="left"
-                              prefixCls="ant-popover"
                               title="Are you sure?"
                               transitionName="zoom-big"
                               trigger="click"
@@ -821,14 +808,13 @@ ShallowWrapper {
                       </Menu>
                     }
                     placement="bottomLeft"
-                    prefixCls="ant-dropdown"
                     visible={false}
                   >
                     <Button
                       block={false}
                       ghost={false}
+                      htmlType="button"
                       loading={false}
-                      prefixCls="ant-btn"
                       type="primary"
                     >
                       <div
@@ -986,11 +972,7 @@ ShallowWrapper {
                       onVisibleChange={[Function]}
                       overlay={
                         <Menu
-                          className=""
-                          focusable={false}
                           onClick={[Function]}
-                          prefixCls="ant-menu"
-                          theme="light"
                         >
                           <MenuItem>
                             <button
@@ -1070,7 +1052,6 @@ ShallowWrapper {
                                 okType="primary"
                                 onConfirm={[Function]}
                                 placement="left"
-                                prefixCls="ant-popover"
                                 title="Are you sure?"
                                 transitionName="zoom-big"
                                 trigger="click"
@@ -1112,7 +1093,6 @@ ShallowWrapper {
                                 okType="primary"
                                 onConfirm={[Function]}
                                 placement="left"
-                                prefixCls="ant-popover"
                                 title="Are you sure?"
                                 transitionName="zoom-big"
                                 trigger="click"
@@ -1139,14 +1119,13 @@ ShallowWrapper {
                         </Menu>
                       }
                       placement="bottomLeft"
-                      prefixCls="ant-dropdown"
                       visible={false}
                     >
                       <Button
                         block={false}
                         ghost={false}
+                        htmlType="button"
                         loading={false}
-                        prefixCls="ant-btn"
                         type="primary"
                       >
                         <div
@@ -1207,11 +1186,7 @@ ShallowWrapper {
                         onVisibleChange={[Function]}
                         overlay={
                           <Menu
-                            className=""
-                            focusable={false}
                             onClick={[Function]}
-                            prefixCls="ant-menu"
-                            theme="light"
                           >
                             <MenuItem>
                               <button
@@ -1291,7 +1266,6 @@ ShallowWrapper {
                                   okType="primary"
                                   onConfirm={[Function]}
                                   placement="left"
-                                  prefixCls="ant-popover"
                                   title="Are you sure?"
                                   transitionName="zoom-big"
                                   trigger="click"
@@ -1333,7 +1307,6 @@ ShallowWrapper {
                                   okType="primary"
                                   onConfirm={[Function]}
                                   placement="left"
-                                  prefixCls="ant-popover"
                                   title="Are you sure?"
                                   transitionName="zoom-big"
                                   trigger="click"
@@ -1360,14 +1333,13 @@ ShallowWrapper {
                           </Menu>
                         }
                         placement="bottomLeft"
-                        prefixCls="ant-dropdown"
                         visible={false}
                       >
                         <Button
                           block={false}
                           ghost={false}
+                          htmlType="button"
                           loading={false}
-                          prefixCls="ant-btn"
                           type="primary"
                         >
                           <div
@@ -1404,11 +1376,7 @@ ShallowWrapper {
                         onVisibleChange={[Function]}
                         overlay={
                           <Menu
-                            className=""
-                            focusable={false}
                             onClick={[Function]}
-                            prefixCls="ant-menu"
-                            theme="light"
                           >
                             <MenuItem>
                               <button
@@ -1488,7 +1456,6 @@ ShallowWrapper {
                                   okType="primary"
                                   onConfirm={[Function]}
                                   placement="left"
-                                  prefixCls="ant-popover"
                                   title="Are you sure?"
                                   transitionName="zoom-big"
                                   trigger="click"
@@ -1530,7 +1497,6 @@ ShallowWrapper {
                                   okType="primary"
                                   onConfirm={[Function]}
                                   placement="left"
-                                  prefixCls="ant-popover"
                                   title="Are you sure?"
                                   transitionName="zoom-big"
                                   trigger="click"
@@ -1557,14 +1523,13 @@ ShallowWrapper {
                           </Menu>
                         }
                         placement="bottomLeft"
-                        prefixCls="ant-dropdown"
                         visible={false}
                       >
                         <Button
                           block={false}
                           ghost={false}
+                          htmlType="button"
                           loading={false}
-                          prefixCls="ant-btn"
                           type="primary"
                         >
                           <div
@@ -1595,8 +1560,8 @@ ShallowWrapper {
                         "children": <Button
                           block={false}
                           ghost={false}
+                          htmlType="button"
                           loading={false}
-                          prefixCls="ant-btn"
                           type="primary"
                         >
                           <div
@@ -1619,11 +1584,7 @@ ShallowWrapper {
                         "mouseLeaveDelay": 0.1,
                         "onVisibleChange": [Function],
                         "overlay": <Menu
-                          className=""
-                          focusable={false}
                           onClick={[Function]}
-                          prefixCls="ant-menu"
-                          theme="light"
                         >
                           <MenuItem>
                             <button
@@ -1703,7 +1664,6 @@ ShallowWrapper {
                                 okType="primary"
                                 onConfirm={[Function]}
                                 placement="left"
-                                prefixCls="ant-popover"
                                 title="Are you sure?"
                                 transitionName="zoom-big"
                                 trigger="click"
@@ -1745,7 +1705,6 @@ ShallowWrapper {
                                 okType="primary"
                                 onConfirm={[Function]}
                                 placement="left"
-                                prefixCls="ant-popover"
                                 title="Are you sure?"
                                 transitionName="zoom-big"
                                 trigger="click"
@@ -1771,7 +1730,6 @@ ShallowWrapper {
                           </Connect(AuthorizationWrapper)>
                         </Menu>,
                         "placement": "bottomLeft",
-                        "prefixCls": "ant-dropdown",
                         "visible": false,
                       },
                       "ref": null,
@@ -1796,8 +1754,8 @@ ShallowWrapper {
                             Add/Edit
                           </div>,
                           "ghost": false,
+                          "htmlType": "button",
                           "loading": false,
-                          "prefixCls": "ant-btn",
                           "type": "primary",
                         },
                         "ref": null,
@@ -2647,11 +2605,7 @@ ShallowWrapper {
                     onVisibleChange={[Function]}
                     overlay={
                       <Menu
-                        className=""
-                        focusable={false}
                         onClick={[Function]}
-                        prefixCls="ant-menu"
-                        theme="light"
                       >
                         <MenuItem>
                           <button
@@ -2731,7 +2685,6 @@ ShallowWrapper {
                               okType="primary"
                               onConfirm={[Function]}
                               placement="left"
-                              prefixCls="ant-popover"
                               title="Are you sure?"
                               transitionName="zoom-big"
                               trigger="click"
@@ -2773,7 +2726,6 @@ ShallowWrapper {
                               okType="primary"
                               onConfirm={[Function]}
                               placement="left"
-                              prefixCls="ant-popover"
                               title="Are you sure?"
                               transitionName="zoom-big"
                               trigger="click"
@@ -2800,14 +2752,13 @@ ShallowWrapper {
                       </Menu>
                     }
                     placement="bottomLeft"
-                    prefixCls="ant-dropdown"
                     visible={false}
                   >
                     <Button
                       block={false}
                       ghost={false}
+                      htmlType="button"
                       loading={false}
-                      prefixCls="ant-btn"
                       type="primary"
                     >
                       <div
@@ -3063,11 +3014,7 @@ ShallowWrapper {
                       onVisibleChange={[Function]}
                       overlay={
                         <Menu
-                          className=""
-                          focusable={false}
                           onClick={[Function]}
-                          prefixCls="ant-menu"
-                          theme="light"
                         >
                           <MenuItem>
                             <button
@@ -3147,7 +3094,6 @@ ShallowWrapper {
                                 okType="primary"
                                 onConfirm={[Function]}
                                 placement="left"
-                                prefixCls="ant-popover"
                                 title="Are you sure?"
                                 transitionName="zoom-big"
                                 trigger="click"
@@ -3189,7 +3135,6 @@ ShallowWrapper {
                                 okType="primary"
                                 onConfirm={[Function]}
                                 placement="left"
-                                prefixCls="ant-popover"
                                 title="Are you sure?"
                                 transitionName="zoom-big"
                                 trigger="click"
@@ -3216,14 +3161,13 @@ ShallowWrapper {
                         </Menu>
                       }
                       placement="bottomLeft"
-                      prefixCls="ant-dropdown"
                       visible={false}
                     >
                       <Button
                         block={false}
                         ghost={false}
+                        htmlType="button"
                         loading={false}
-                        prefixCls="ant-btn"
                         type="primary"
                       >
                         <div
@@ -3381,11 +3325,7 @@ ShallowWrapper {
                         onVisibleChange={[Function]}
                         overlay={
                           <Menu
-                            className=""
-                            focusable={false}
                             onClick={[Function]}
-                            prefixCls="ant-menu"
-                            theme="light"
                           >
                             <MenuItem>
                               <button
@@ -3465,7 +3405,6 @@ ShallowWrapper {
                                   okType="primary"
                                   onConfirm={[Function]}
                                   placement="left"
-                                  prefixCls="ant-popover"
                                   title="Are you sure?"
                                   transitionName="zoom-big"
                                   trigger="click"
@@ -3507,7 +3446,6 @@ ShallowWrapper {
                                   okType="primary"
                                   onConfirm={[Function]}
                                   placement="left"
-                                  prefixCls="ant-popover"
                                   title="Are you sure?"
                                   transitionName="zoom-big"
                                   trigger="click"
@@ -3534,14 +3472,13 @@ ShallowWrapper {
                           </Menu>
                         }
                         placement="bottomLeft"
-                        prefixCls="ant-dropdown"
                         visible={false}
                       >
                         <Button
                           block={false}
                           ghost={false}
+                          htmlType="button"
                           loading={false}
-                          prefixCls="ant-btn"
                           type="primary"
                         >
                           <div
@@ -3602,11 +3539,7 @@ ShallowWrapper {
                           onVisibleChange={[Function]}
                           overlay={
                             <Menu
-                              className=""
-                              focusable={false}
                               onClick={[Function]}
-                              prefixCls="ant-menu"
-                              theme="light"
                             >
                               <MenuItem>
                                 <button
@@ -3686,7 +3619,6 @@ ShallowWrapper {
                                     okType="primary"
                                     onConfirm={[Function]}
                                     placement="left"
-                                    prefixCls="ant-popover"
                                     title="Are you sure?"
                                     transitionName="zoom-big"
                                     trigger="click"
@@ -3728,7 +3660,6 @@ ShallowWrapper {
                                     okType="primary"
                                     onConfirm={[Function]}
                                     placement="left"
-                                    prefixCls="ant-popover"
                                     title="Are you sure?"
                                     transitionName="zoom-big"
                                     trigger="click"
@@ -3755,14 +3686,13 @@ ShallowWrapper {
                             </Menu>
                           }
                           placement="bottomLeft"
-                          prefixCls="ant-dropdown"
                           visible={false}
                         >
                           <Button
                             block={false}
                             ghost={false}
+                            htmlType="button"
                             loading={false}
-                            prefixCls="ant-btn"
                             type="primary"
                           >
                             <div
@@ -3799,11 +3729,7 @@ ShallowWrapper {
                           onVisibleChange={[Function]}
                           overlay={
                             <Menu
-                              className=""
-                              focusable={false}
                               onClick={[Function]}
-                              prefixCls="ant-menu"
-                              theme="light"
                             >
                               <MenuItem>
                                 <button
@@ -3883,7 +3809,6 @@ ShallowWrapper {
                                     okType="primary"
                                     onConfirm={[Function]}
                                     placement="left"
-                                    prefixCls="ant-popover"
                                     title="Are you sure?"
                                     transitionName="zoom-big"
                                     trigger="click"
@@ -3925,7 +3850,6 @@ ShallowWrapper {
                                     okType="primary"
                                     onConfirm={[Function]}
                                     placement="left"
-                                    prefixCls="ant-popover"
                                     title="Are you sure?"
                                     transitionName="zoom-big"
                                     trigger="click"
@@ -3952,14 +3876,13 @@ ShallowWrapper {
                             </Menu>
                           }
                           placement="bottomLeft"
-                          prefixCls="ant-dropdown"
                           visible={false}
                         >
                           <Button
                             block={false}
                             ghost={false}
+                            htmlType="button"
                             loading={false}
-                            prefixCls="ant-btn"
                             type="primary"
                           >
                             <div
@@ -3990,8 +3913,8 @@ ShallowWrapper {
                           "children": <Button
                             block={false}
                             ghost={false}
+                            htmlType="button"
                             loading={false}
-                            prefixCls="ant-btn"
                             type="primary"
                           >
                             <div
@@ -4014,11 +3937,7 @@ ShallowWrapper {
                           "mouseLeaveDelay": 0.1,
                           "onVisibleChange": [Function],
                           "overlay": <Menu
-                            className=""
-                            focusable={false}
                             onClick={[Function]}
-                            prefixCls="ant-menu"
-                            theme="light"
                           >
                             <MenuItem>
                               <button
@@ -4098,7 +4017,6 @@ ShallowWrapper {
                                   okType="primary"
                                   onConfirm={[Function]}
                                   placement="left"
-                                  prefixCls="ant-popover"
                                   title="Are you sure?"
                                   transitionName="zoom-big"
                                   trigger="click"
@@ -4140,7 +4058,6 @@ ShallowWrapper {
                                   okType="primary"
                                   onConfirm={[Function]}
                                   placement="left"
-                                  prefixCls="ant-popover"
                                   title="Are you sure?"
                                   transitionName="zoom-big"
                                   trigger="click"
@@ -4166,7 +4083,6 @@ ShallowWrapper {
                             </Connect(AuthorizationWrapper)>
                           </Menu>,
                           "placement": "bottomLeft",
-                          "prefixCls": "ant-dropdown",
                           "visible": false,
                         },
                         "ref": null,
@@ -4191,8 +4107,8 @@ ShallowWrapper {
                               Add/Edit
                             </div>,
                             "ghost": false,
+                            "htmlType": "button",
                             "loading": false,
-                            "prefixCls": "ant-btn",
                             "type": "primary",
                           },
                           "ref": null,
