@@ -28,6 +28,22 @@ class BaseFactory(factory.alchemy.SQLAlchemyModelFactory):
     class Meta:
         abstract = True
         sqlalchemy_session = db.session
+        # sqlalchemy_session_persistence = 'commit'
+
+    @classmethod
+    def _create(cls, model_class, *args, **kwargs):
+        session = cls._meta.sqlalchemy_session if 1 == 1 else None
+        session_persistence = cls._meta.sqlalchemy_session_persistence
+
+        obj = model_class(*args, **kwargs)
+        if session is None:
+            raise RuntimeError("No session provided.")
+        session.add(obj)
+        if session_persistence == 'flush':
+            session.flush()
+        elif session_persistence == 'commit':
+            session.commit()
+        return obj
 
 
 class DocumentManagerFactory(BaseFactory):
