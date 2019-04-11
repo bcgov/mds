@@ -84,53 +84,6 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
 
     PARTY_LIST_RESULT_LIMIT = 25
 
-    @api.doc(
-        params={
-            'party_guid': 'Party guid. If not provided a list of 100 parties will be returned.',
-            '?search':
-            'Term searched in first name and party name, and 100 parties will be returned.',
-            '?type': 'Search will filter for the type indicated.',
-            '?relationships': 'Related record types to return as nested objects'
-        })
-    @requires_role_mine_view
-    def get(self, party_guid=None):
-        if party_guid:
-            try:
-                party = Party.find_by_party_guid(party_guid)
-            except DBAPIError:
-                return self.create_error_payload(422, 'Invalid Party guid'), 422
-            if party:
-                return party.json()
-            else:
-                return self.create_error_payload(404, 'Party not found'), 404
-        else:
-            search_term = request.args.get('search')
-            search_type = request.args.get('type').upper() if request.args.get('type') else None
-            items_per_page = request.args.get('per_page', 25, type=int)
-            page = request.args.get('page', 1, type=int)
-            parties = Party.query
-            if search_term:
-                if search_type in ['PER', 'ORG']:
-                    parties = Party.search_by_name(search_term, search_type,
-                                                   self.PARTY_LIST_RESULT_LIMIT)
-                else:
-                    parties = Party.search_by_name(
-                        search_term, query_limit=self.PARTY_LIST_RESULT_LIMIT)
-
-            paginated_parties, pagination_details = apply_pagination(parties, page, items_per_page)
-            if not paginated_parties:
-                self.raise_error(404, 'No parties found'), 404
-            parties = paginated_parties.all()
-            relationships = request.args.get('relationships')
-            relationships = relationships.split(',') if relationships else []
-            return {
-                'parties': list(map(lambda x: x.json(relationships=relationships), parties)),
-                'current_page': pagination_details.page_number,
-                'total_pages': pagination_details.num_pages,
-                'items_per_page': pagination_details.page_size,
-                'total': pagination_details.total_results,
-            }
-
     @api.expect(parser)
     @requires_role_mine_create
     def post(self, party_guid=None):

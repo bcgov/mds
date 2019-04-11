@@ -9,7 +9,7 @@ from ..party.resources.party_advance_search_resource import PartyAdvancedSearchR
 
 api = Namespace('parties', description='Party related operations')
 
-api.add_resource(PartyResource, '', '/<string:party_guid>')
+api.add_resource(PartyResource, '/<string:party_guid>')
 
 api.add_resource(SubDivisionCodeResource, '/sub-division-codes')
 
@@ -22,4 +22,4 @@ api.add_resource(
 api.add_resource(
         MinePartyApptAdminResource, '/mines/manager-history/csv')
 
-api.add_resource(PartyAdvancedSearchResource, '/search')
+api.add_resource(PartyAdvancedSearchResource, '')

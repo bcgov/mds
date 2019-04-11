@@ -29,16 +29,18 @@ const columns = [
   {
     title: "Contact Name",
     dataIndex: "name",
-    sortField: "name",
-    render: (text, record) => (
-      <Link to={router.PARTY_PROFILE.dynamicRoute(record.key)}>{text}</Link>
+    sortField: "party_name",
+    render: ([firstName = "", lastName = ""], record) => (
+      <Link to={router.PARTY_PROFILE.dynamicRoute(record.key)}>{` ${lastName}${
+        firstName ? `, ${firstName}` : ""
+      }`}</Link>
     ),
     sorter: true,
   },
   {
     title: "Role",
     dataIndex: "role",
-    sortField: "mine_party_appt_type",
+    sortField: "mine_party_appt_type_code",
     render: (text) => <div title="role">{text}</div>,
     sorter: true,
   },
@@ -66,7 +68,9 @@ const transformRowData = (parties, relationshipTypeHash) =>
   toArray(parties).map((party) => ({
     key: party.party_guid,
     emptyField: Strings.EMPTY_FIELD,
-    name: party.name || Strings.EMPTY_FIELD,
+    name: party.first_name
+      ? [party.first_name, party.party_name]
+      : ["", party.name || Strings.EMPTY_FIELD],
     email: party.email === "Unknown" ? Strings.EMPTY_FIELD : party.email,
     phone: party.phone_no && party.phone_no !== "Unknown" ? party.phone_no : Strings.EMPTY_FIELD,
     role:

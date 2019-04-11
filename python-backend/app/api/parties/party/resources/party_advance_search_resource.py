@@ -41,11 +41,15 @@ class PartyAdvancedSearchResource(Resource, UserMixin, ErrorMixin):
             'phone_no': 'phone number',
             'email': 'email of person or organisation',
             'type': 'A person (PER) or organisation (ORG)',
-            'role': 'A comma separated list of roles to be filtered by'
+            'role': 'A comma separated list of roles to be filtered by',
+            'sort_field':
+            'enum[party_name, mine_party_appt_type_code',
+            'sort_dir':
+            'enum[asc, desc] Default: asc'
         })
     @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
     def get(self):
-        paginated_parties, pagination_details = self.apply_filter_and_search(self.parser.parse_args())
+        paginated_parties, pagination_details = self.apply_filter_and_search(request.args)
         if not paginated_parties:
             self.raise_error(
                 404,
@@ -61,17 +65,25 @@ class PartyAdvancedSearchResource(Resource, UserMixin, ErrorMixin):
         }
 
     def apply_filter_and_search(self, args):
+        sort_models = {
+            'party_name': 'Party',
+            'mine_party_appt_type_code': 'MinePartyAppointment',
+        }
+
         # Handle ListView request
-        items_per_page = args['per_page']
-        page = args['page']
+        items_per_page = args.get('per_page', 25, type=int)
+        page = args.get('page', 1, type=int)
         # parse the filter terms
-        first_name_filter_term = args['first_name']
-        last_name_filter_term = args['last_name']
-        party_name_filter_term = args['party_name']
-        type_filter_term = args['type']
-        role_filter_term = args['role']
-        email_filter_term = args['email']
-        phone_filter_term = args['phone_no']
+        first_name_filter_term = args.get('first_name', None, type=str)
+        last_name_filter_term = args.get('last_name', None, type=str)
+        party_name_filter_term = args.get('party_name', None, type=str)
+        type_filter_term = args.get('type', None, type=str)
+        role_filter_term = args.get('role', None, type=str)
+        email_filter_term = args.get('email', None, type=str)
+        phone_filter_term = args.get('phone_no', None, type=str)
+        sort_field = args.get('sort_field', 'party_name', type=str)
+        sort_dir = args.get('sort_dir', 'asc', type=str)
+        sort_model = sort_models.get(sort_field)
 
         conditions = [Party.deleted_ind == False]
         if first_name_filter_term:
@@ -94,6 +106,9 @@ class PartyAdvancedSearchResource(Resource, UserMixin, ErrorMixin):
             role_query = Party.query.join(MinePartyAppointment).filter(role_filter)
             contact_query = contact_query.intersect(role_query) if contact_query else role_query
 
-        sort_criteria = [{'model': 'Party', 'field': 'party_name', 'direction': 'asc'}]
-        contact_query = apply_sort(contact_query, sort_criteria)
+        # Apply sorting
+        if sort_model and sort_field and sort_dir:
+            contact_query = contact_query.outerjoin(MinePartyAppointment)
+            sort_criteria = [{'model': sort_model, 'field': sort_field, 'direction': sort_dir}]
+            contact_query = apply_sort(contact_query, sort_criteria)
         return apply_pagination(contact_query, page, items_per_page)
