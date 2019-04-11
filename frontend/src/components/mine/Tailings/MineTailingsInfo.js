@@ -73,7 +73,7 @@ export class MineTailingsInfo extends Component {
     updatedDocument.exp_document_name = value.tsf_report_name;
     updatedDocument.due_date = value.tsf_report_due_date;
     updatedDocument.received_date = value.tsf_report_received_date;
-    updatedDocument.expected_document_status = value.tsf_report_status;
+    updatedDocument.exp_document_status_code = value.tsf_report_status;
 
     return this.props
       .updateExpectedDocument(updatedDocument.exp_document_guid, updatedDocument)
