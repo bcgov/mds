@@ -1,4 +1,4 @@
-CREATE TABLE notification
+CREATE TABLE subscription
 (
     user_id serial PRIMARY KEY,
     idir character varying(30) NOT NULL,
@@ -7,4 +7,4 @@ CREATE TABLE notification
     FOREIGN KEY (mine_guid) REFERENCES mine(mine_guid)
 );
 
-COMMENT ON TABLE notification IS 'A list of mds mines a given core user has subscribed to';
+COMMENT ON TABLE subscription IS 'A list of mds mines a given core user has subscribed to';

@@ -1,36 +1,25 @@
 from flask_restplus import Resource, fields
 from sqlalchemy_filters import apply_sort
+from sqlalchemy.orm import validates
 
 from app.extensions import api
 from app.api.utils.include.user_info import User
-from ....utils.access_decorators import requires_role_mine_view
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from ....utils.access_decorators import (requires_any_of,
-                                         MINE_VIEW,
-                                         MINE_CREATE,
-                                         MINESPACE_PROPONENT)
-from ..models.notification import Notification
+                                         MINE_VIEW)
+from ..models.subscription import Subscription
 from ...mine.models.mine import Mine
 # todo wait for justins change to get pulled in
 # from ...mine_api_models.py import MINES
 
-class MineNotificationResource(Resource, UserMixin, ErrorMixin):
-    # @api.doc(
-    #     description=
-    #     'Get a list of all variances for a given mine.',
-    #     params={
-    #         'mine_guid': 'guid of the mine for which to fetch variances'
-    #     }
-    # )
-    # @requires_any_of([MINE_VIEW])
-    # @api.marshal_with(variance_model, code=200, envelope='records')
 
-
-    # subscriptions_model = api.model('Notification', {
-    #     'mines': list(map(lambda x: x.json_for_list(), mines)),
-    # })
+class MineSubscriptionGetAllResource(Resource, UserMixin, ErrorMixin):
 
     # todo delete bellow when done
+    MINE_GUID = api.model(
+        'mine_guid', {
+            'mine_guid': fields.String,
+        })
     MINE_TSF = api.model(
         'MineTailingsStorageFacility', {
             'mine_tailings_storage_facility_guid': fields.String,
@@ -91,57 +80,64 @@ class MineNotificationResource(Resource, UserMixin, ErrorMixin):
         })
     # todo delete above when done
 
-    MINE_GUID = api.model(
-        'mine_guid', {
-            'mine_guid': fields.String,
-        })
+
 
     @api.doc(
         description=
         'Get a list of all mines subscribed to by a user.'
     )
     @requires_any_of([MINE_VIEW])
-    @api.marshal_with(MINE_GUID, code=200, envelope='records')
+    @api.marshal_with(MINES, code=200, envelope='mines')
     def get(self):
         user_name = User().get_user_username()
-        mine_query = Mine.query.filter_by( deleted_ind=False ).join(Notification).filter_by(idir=user_name)
+        mine_query = Mine.query.filter_by( deleted_ind=False ).join(Subscription).filter_by(idir=user_name)
         sort_criteria = [{'model': 'Mine', 'field': 'mine_name', 'direction': 'asc'}]
         mine_query = apply_sort(mine_query, sort_criteria)
         mines = mine_query.all()
-        return {
-            'mines': list(map(lambda x: x.json_for_list(), mines)),
-        }
-#
-#
-# # TODO: must bring in line with new standards
+        return mines
+
+
+class MineSubscriptionResource(Resource, UserMixin, ErrorMixin):
+    MINE_GUID = api.model(
+        'mine_guid', {
+            'mine_guid': fields.String,
+        })
+
     @api.doc(
-        description='Adds a mine to the subcriptions of the user that sends the request',
+        description='Adds a mine to the subscriptions of the user that sends the request',
         params={'mine_guid': 'Mine guid.'})
     @requires_any_of([MINE_VIEW])
-    # @api.marshal_with(MINES, code=200, envelope='records')
+    @api.marshal_with(MINE_GUID, code=200)
     def post(self, mine_guid=None):
         if not mine_guid:
             return self.create_error_payload(400, 'Mine guid expected'), 400
 
+        mine_subscription = Subscription.create_subscription(mine_guid)
+        return {
+            'mine_guid': str(mine_subscription.mine_guid),
+        }
+
+
+    @api.doc(
+        description='Removes a mine from the subscriptions of the user that sends the request',
+        params={'mine_guid': 'Mine guid.'})
+    @requires_any_of([MINE_VIEW])
+    @api.marshal_with(MINE_GUID, code=200)
+    def delete(self, mine_guid=None):
+        if not mine_guid:
+            return self.create_error_payload(400, 'Mine guid expected'), 400
+
+        deleted_mine_subscription = Subscription.delete_subscription(mine_guid)
+        return {
+            'mine_guid': str(deleted_mine_subscription.mine_guid),
+        }
+
+    @validates('mine_guid')
+    def validate_mine_guid(self, key,mine_guid):
+        if not mine_guid:
+            raise AssertionError('Missing mine_guid')
         try:
-            mine_subscription = Notification.create_subscription(mine_guid)
-            return {
-                'mine_guid': str(mine_subscription.mine_guid),
-            }
-        except Exception:
-            return self.create_error_payload(422, 'Invalid Mine guid'), 422
-
-#     @api.doc(params={'mine_guid': 'Mine guid.'})
-#     @requires_role_mine_view
-#     def delete(self, mine_guid=None):
-#         if not mine_guid:
-#             return self.create_error_payload(400, 'Mine guid expected'), 400
-#
-#         try:
-#             deleted_mine_subscription = Notification.delete_subscription(mine_guid)
-#             return {
-#                 'mine_guid': str(deleted_mine_subscription.mine_guid),
-#             }
-#         except Exception:
-#             return self.create_error_payload(422, 'Invalid Mine guid'), 422
-
+            uuid.UUID(mine_guid, version=4)
+        except ValueError:
+            raise AssertionError('Invalid mine_guid')
+        return mine_guid
