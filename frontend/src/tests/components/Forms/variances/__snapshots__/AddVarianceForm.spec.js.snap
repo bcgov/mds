@@ -62,9 +62,7 @@ ShallowWrapper {
             sm={24}
           >
             <FormItem
-              colon={true}
               hasFeedback={false}
-              prefixCls="ant-form"
             >
               <Field
                 component={[Function]}
@@ -92,9 +90,7 @@ ShallowWrapper {
               />
             </FormItem>
             <FormItem
-              colon={true}
               hasFeedback={false}
-              prefixCls="ant-form"
             >
               <Field
                 component={[Function]}
@@ -110,9 +106,7 @@ ShallowWrapper {
               />
             </FormItem>
             <FormItem
-              colon={true}
               hasFeedback={false}
-              prefixCls="ant-form"
             >
               <Field
                 component={[Function]}
@@ -128,9 +122,7 @@ ShallowWrapper {
               />
             </FormItem>
             <FormItem
-              colon={true}
               hasFeedback={false}
-              prefixCls="ant-form"
             >
               <Field
                 component={[Function]}
@@ -145,9 +137,7 @@ ShallowWrapper {
               />
             </FormItem>
             <FormItem
-              colon={true}
               hasFeedback={false}
-              prefixCls="ant-form"
             >
               <Field
                 component={[Function]}
@@ -167,10 +157,8 @@ ShallowWrapper {
             sm={24}
           >
             <FormItem
-              colon={true}
               hasFeedback={false}
               label="Upload files*"
-              prefixCls="ant-form"
             >
               <Field
                 component={[Function]}
@@ -198,7 +186,6 @@ ShallowWrapper {
             okType="primary"
             onConfirm={[MockFunction]}
             placement="topRight"
-            prefixCls="ant-popover"
             title="Are you sure you want to cancel?"
             transitionName="zoom-big"
             trigger="click"
@@ -207,8 +194,8 @@ ShallowWrapper {
               block={false}
               className="full-mobile"
               ghost={false}
+              htmlType="button"
               loading={false}
-              prefixCls="ant-btn"
               type="secondary"
             >
               Cancel
@@ -221,17 +208,16 @@ ShallowWrapper {
             ghost={false}
             htmlType="submit"
             loading={false}
-            prefixCls="ant-btn"
             type="primary"
           >
             Add Approved Variance
           </Button>
         </div>,
       ],
+      "colon": true,
       "hideRequiredMark": false,
       "layout": "vertical",
       "onSubmit": [Function],
-      "prefixCls": "ant-form",
     },
     "ref": null,
     "rendered": Array [
@@ -247,9 +233,7 @@ ShallowWrapper {
               sm={24}
             >
               <FormItem
-                colon={true}
                 hasFeedback={false}
-                prefixCls="ant-form"
               >
                 <Field
                   component={[Function]}
@@ -277,9 +261,7 @@ ShallowWrapper {
                 />
               </FormItem>
               <FormItem
-                colon={true}
                 hasFeedback={false}
-                prefixCls="ant-form"
               >
                 <Field
                   component={[Function]}
@@ -295,9 +277,7 @@ ShallowWrapper {
                 />
               </FormItem>
               <FormItem
-                colon={true}
                 hasFeedback={false}
-                prefixCls="ant-form"
               >
                 <Field
                   component={[Function]}
@@ -313,9 +293,7 @@ ShallowWrapper {
                 />
               </FormItem>
               <FormItem
-                colon={true}
                 hasFeedback={false}
-                prefixCls="ant-form"
               >
                 <Field
                   component={[Function]}
@@ -330,9 +308,7 @@ ShallowWrapper {
                 />
               </FormItem>
               <FormItem
-                colon={true}
                 hasFeedback={false}
-                prefixCls="ant-form"
               >
                 <Field
                   component={[Function]}
@@ -352,10 +328,8 @@ ShallowWrapper {
               sm={24}
             >
               <FormItem
-                colon={true}
                 hasFeedback={false}
                 label="Upload files*"
-                prefixCls="ant-form"
               >
                 <Field
                   component={[Function]}
@@ -379,9 +353,7 @@ ShallowWrapper {
             "props": Object {
               "children": Array [
                 <FormItem
-                  colon={true}
                   hasFeedback={false}
-                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
@@ -409,9 +381,7 @@ ShallowWrapper {
                   />
                 </FormItem>,
                 <FormItem
-                  colon={true}
                   hasFeedback={false}
-                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
@@ -427,9 +397,7 @@ ShallowWrapper {
                   />
                 </FormItem>,
                 <FormItem
-                  colon={true}
                   hasFeedback={false}
-                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
@@ -445,9 +413,7 @@ ShallowWrapper {
                   />
                 </FormItem>,
                 <FormItem
-                  colon={true}
                   hasFeedback={false}
-                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
@@ -462,9 +428,7 @@ ShallowWrapper {
                   />
                 </FormItem>,
                 <FormItem
-                  colon={true}
                   hasFeedback={false}
-                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
@@ -514,9 +478,7 @@ ShallowWrapper {
                       ]
                     }
                   />,
-                  "colon": true,
                   "hasFeedback": false,
-                  "prefixCls": "ant-form",
                 },
                 "ref": null,
                 "rendered": Object {
@@ -566,9 +528,7 @@ ShallowWrapper {
                       ]
                     }
                   />,
-                  "colon": true,
                   "hasFeedback": false,
-                  "prefixCls": "ant-form",
                 },
                 "ref": null,
                 "rendered": Object {
@@ -608,9 +568,7 @@ ShallowWrapper {
                       ]
                     }
                   />,
-                  "colon": true,
                   "hasFeedback": false,
-                  "prefixCls": "ant-form",
                 },
                 "ref": null,
                 "rendered": Object {
@@ -649,9 +607,7 @@ ShallowWrapper {
                       ]
                     }
                   />,
-                  "colon": true,
                   "hasFeedback": false,
-                  "prefixCls": "ant-form",
                 },
                 "ref": null,
                 "rendered": Object {
@@ -689,9 +645,7 @@ ShallowWrapper {
                       ]
                     }
                   />,
-                  "colon": true,
                   "hasFeedback": false,
-                  "prefixCls": "ant-form",
                 },
                 "ref": null,
                 "rendered": Object {
@@ -722,10 +676,8 @@ ShallowWrapper {
             "nodeType": "class",
             "props": Object {
               "children": <FormItem
-                colon={true}
                 hasFeedback={false}
                 label="Upload files*"
-                prefixCls="ant-form"
               >
                 <Field
                   component={[Function]}
@@ -753,10 +705,8 @@ ShallowWrapper {
                   onFileLoad={[Function]}
                   onRemoveFile={[Function]}
                 />,
-                "colon": true,
                 "hasFeedback": false,
                 "label": "Upload files*",
-                "prefixCls": "ant-form",
               },
               "ref": null,
               "rendered": Object {
@@ -800,7 +750,6 @@ ShallowWrapper {
               okType="primary"
               onConfirm={[MockFunction]}
               placement="topRight"
-              prefixCls="ant-popover"
               title="Are you sure you want to cancel?"
               transitionName="zoom-big"
               trigger="click"
@@ -809,8 +758,8 @@ ShallowWrapper {
                 block={false}
                 className="full-mobile"
                 ghost={false}
+                htmlType="button"
                 loading={false}
-                prefixCls="ant-btn"
                 type="secondary"
               >
                 Cancel
@@ -823,7 +772,6 @@ ShallowWrapper {
               ghost={false}
               htmlType="submit"
               loading={false}
-              prefixCls="ant-btn"
               type="primary"
             >
               Add Approved Variance
@@ -843,8 +791,8 @@ ShallowWrapper {
                 block={false}
                 className="full-mobile"
                 ghost={false}
+                htmlType="button"
                 loading={false}
-                prefixCls="ant-btn"
                 type="secondary"
               >
                 Cancel
@@ -857,7 +805,6 @@ ShallowWrapper {
               "okType": "primary",
               "onConfirm": [MockFunction],
               "placement": "topRight",
-              "prefixCls": "ant-popover",
               "title": "Are you sure you want to cancel?",
               "transitionName": "zoom-big",
               "trigger": "click",
@@ -872,8 +819,8 @@ ShallowWrapper {
                 "children": "Cancel",
                 "className": "full-mobile",
                 "ghost": false,
+                "htmlType": "button",
                 "loading": false,
-                "prefixCls": "ant-btn",
                 "type": "secondary",
               },
               "ref": null,
@@ -894,7 +841,6 @@ ShallowWrapper {
               "ghost": false,
               "htmlType": "submit",
               "loading": false,
-              "prefixCls": "ant-btn",
               "type": "primary",
             },
             "ref": null,
@@ -923,9 +869,7 @@ ShallowWrapper {
               sm={24}
             >
               <FormItem
-                colon={true}
                 hasFeedback={false}
-                prefixCls="ant-form"
               >
                 <Field
                   component={[Function]}
@@ -953,9 +897,7 @@ ShallowWrapper {
                 />
               </FormItem>
               <FormItem
-                colon={true}
                 hasFeedback={false}
-                prefixCls="ant-form"
               >
                 <Field
                   component={[Function]}
@@ -971,9 +913,7 @@ ShallowWrapper {
                 />
               </FormItem>
               <FormItem
-                colon={true}
                 hasFeedback={false}
-                prefixCls="ant-form"
               >
                 <Field
                   component={[Function]}
@@ -989,9 +929,7 @@ ShallowWrapper {
                 />
               </FormItem>
               <FormItem
-                colon={true}
                 hasFeedback={false}
-                prefixCls="ant-form"
               >
                 <Field
                   component={[Function]}
@@ -1006,9 +944,7 @@ ShallowWrapper {
                 />
               </FormItem>
               <FormItem
-                colon={true}
                 hasFeedback={false}
-                prefixCls="ant-form"
               >
                 <Field
                   component={[Function]}
@@ -1028,10 +964,8 @@ ShallowWrapper {
               sm={24}
             >
               <FormItem
-                colon={true}
                 hasFeedback={false}
                 label="Upload files*"
-                prefixCls="ant-form"
               >
                 <Field
                   component={[Function]}
@@ -1059,7 +993,6 @@ ShallowWrapper {
               okType="primary"
               onConfirm={[MockFunction]}
               placement="topRight"
-              prefixCls="ant-popover"
               title="Are you sure you want to cancel?"
               transitionName="zoom-big"
               trigger="click"
@@ -1068,8 +1001,8 @@ ShallowWrapper {
                 block={false}
                 className="full-mobile"
                 ghost={false}
+                htmlType="button"
                 loading={false}
-                prefixCls="ant-btn"
                 type="secondary"
               >
                 Cancel
@@ -1082,17 +1015,16 @@ ShallowWrapper {
               ghost={false}
               htmlType="submit"
               loading={false}
-              prefixCls="ant-btn"
               type="primary"
             >
               Add Approved Variance
             </Button>
           </div>,
         ],
+        "colon": true,
         "hideRequiredMark": false,
         "layout": "vertical",
         "onSubmit": [Function],
-        "prefixCls": "ant-form",
       },
       "ref": null,
       "rendered": Array [
@@ -1108,9 +1040,7 @@ ShallowWrapper {
                 sm={24}
               >
                 <FormItem
-                  colon={true}
                   hasFeedback={false}
-                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
@@ -1138,9 +1068,7 @@ ShallowWrapper {
                   />
                 </FormItem>
                 <FormItem
-                  colon={true}
                   hasFeedback={false}
-                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
@@ -1156,9 +1084,7 @@ ShallowWrapper {
                   />
                 </FormItem>
                 <FormItem
-                  colon={true}
                   hasFeedback={false}
-                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
@@ -1174,9 +1100,7 @@ ShallowWrapper {
                   />
                 </FormItem>
                 <FormItem
-                  colon={true}
                   hasFeedback={false}
-                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
@@ -1191,9 +1115,7 @@ ShallowWrapper {
                   />
                 </FormItem>
                 <FormItem
-                  colon={true}
                   hasFeedback={false}
-                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
@@ -1213,10 +1135,8 @@ ShallowWrapper {
                 sm={24}
               >
                 <FormItem
-                  colon={true}
                   hasFeedback={false}
                   label="Upload files*"
-                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
@@ -1240,9 +1160,7 @@ ShallowWrapper {
               "props": Object {
                 "children": Array [
                   <FormItem
-                    colon={true}
                     hasFeedback={false}
-                    prefixCls="ant-form"
                   >
                     <Field
                       component={[Function]}
@@ -1270,9 +1188,7 @@ ShallowWrapper {
                     />
                   </FormItem>,
                   <FormItem
-                    colon={true}
                     hasFeedback={false}
-                    prefixCls="ant-form"
                   >
                     <Field
                       component={[Function]}
@@ -1288,9 +1204,7 @@ ShallowWrapper {
                     />
                   </FormItem>,
                   <FormItem
-                    colon={true}
                     hasFeedback={false}
-                    prefixCls="ant-form"
                   >
                     <Field
                       component={[Function]}
@@ -1306,9 +1220,7 @@ ShallowWrapper {
                     />
                   </FormItem>,
                   <FormItem
-                    colon={true}
                     hasFeedback={false}
-                    prefixCls="ant-form"
                   >
                     <Field
                       component={[Function]}
@@ -1323,9 +1235,7 @@ ShallowWrapper {
                     />
                   </FormItem>,
                   <FormItem
-                    colon={true}
                     hasFeedback={false}
-                    prefixCls="ant-form"
                   >
                     <Field
                       component={[Function]}
@@ -1375,9 +1285,7 @@ ShallowWrapper {
                         ]
                       }
                     />,
-                    "colon": true,
                     "hasFeedback": false,
-                    "prefixCls": "ant-form",
                   },
                   "ref": null,
                   "rendered": Object {
@@ -1427,9 +1335,7 @@ ShallowWrapper {
                         ]
                       }
                     />,
-                    "colon": true,
                     "hasFeedback": false,
-                    "prefixCls": "ant-form",
                   },
                   "ref": null,
                   "rendered": Object {
@@ -1469,9 +1375,7 @@ ShallowWrapper {
                         ]
                       }
                     />,
-                    "colon": true,
                     "hasFeedback": false,
-                    "prefixCls": "ant-form",
                   },
                   "ref": null,
                   "rendered": Object {
@@ -1510,9 +1414,7 @@ ShallowWrapper {
                         ]
                       }
                     />,
-                    "colon": true,
                     "hasFeedback": false,
-                    "prefixCls": "ant-form",
                   },
                   "ref": null,
                   "rendered": Object {
@@ -1550,9 +1452,7 @@ ShallowWrapper {
                         ]
                       }
                     />,
-                    "colon": true,
                     "hasFeedback": false,
-                    "prefixCls": "ant-form",
                   },
                   "ref": null,
                   "rendered": Object {
@@ -1583,10 +1483,8 @@ ShallowWrapper {
               "nodeType": "class",
               "props": Object {
                 "children": <FormItem
-                  colon={true}
                   hasFeedback={false}
                   label="Upload files*"
-                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
@@ -1614,10 +1512,8 @@ ShallowWrapper {
                     onFileLoad={[Function]}
                     onRemoveFile={[Function]}
                   />,
-                  "colon": true,
                   "hasFeedback": false,
                   "label": "Upload files*",
-                  "prefixCls": "ant-form",
                 },
                 "ref": null,
                 "rendered": Object {
@@ -1661,7 +1557,6 @@ ShallowWrapper {
                 okType="primary"
                 onConfirm={[MockFunction]}
                 placement="topRight"
-                prefixCls="ant-popover"
                 title="Are you sure you want to cancel?"
                 transitionName="zoom-big"
                 trigger="click"
@@ -1670,8 +1565,8 @@ ShallowWrapper {
                   block={false}
                   className="full-mobile"
                   ghost={false}
+                  htmlType="button"
                   loading={false}
-                  prefixCls="ant-btn"
                   type="secondary"
                 >
                   Cancel
@@ -1684,7 +1579,6 @@ ShallowWrapper {
                 ghost={false}
                 htmlType="submit"
                 loading={false}
-                prefixCls="ant-btn"
                 type="primary"
               >
                 Add Approved Variance
@@ -1704,8 +1598,8 @@ ShallowWrapper {
                   block={false}
                   className="full-mobile"
                   ghost={false}
+                  htmlType="button"
                   loading={false}
-                  prefixCls="ant-btn"
                   type="secondary"
                 >
                   Cancel
@@ -1718,7 +1612,6 @@ ShallowWrapper {
                 "okType": "primary",
                 "onConfirm": [MockFunction],
                 "placement": "topRight",
-                "prefixCls": "ant-popover",
                 "title": "Are you sure you want to cancel?",
                 "transitionName": "zoom-big",
                 "trigger": "click",
@@ -1733,8 +1626,8 @@ ShallowWrapper {
                   "children": "Cancel",
                   "className": "full-mobile",
                   "ghost": false,
+                  "htmlType": "button",
                   "loading": false,
-                  "prefixCls": "ant-btn",
                   "type": "secondary",
                 },
                 "ref": null,
@@ -1755,7 +1648,6 @@ ShallowWrapper {
                 "ghost": false,
                 "htmlType": "submit",
                 "loading": false,
-                "prefixCls": "ant-btn",
                 "type": "primary",
               },
               "ref": null,
