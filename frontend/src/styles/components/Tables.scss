@@ -74,3 +74,10 @@
   word-break: break-word;
   white-space: normal;
 }
+
+// Sorting Tables
+span.ant-table-column-sorter {
+  position: absolute;
+  right: 4px;
+  top: 35%;
+}

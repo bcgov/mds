@@ -26,7 +26,7 @@ const defaultProps = {
 export class AdvancedMineSearchForm extends Component {
   handleReset = () => {
     this.props.reset();
-    this.props.handleSearch();
+    this.props.handleSearch({}, true);
   };
 
   render() {

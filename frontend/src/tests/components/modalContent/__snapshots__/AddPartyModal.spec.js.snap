@@ -36,8 +36,6 @@ ShallowWrapper {
       "children": <div>
         <Steps
           current={0}
-          iconPrefix="ant"
-          prefixCls="ant-steps"
         >
           <Step
             title="Basic Information"
@@ -68,7 +66,6 @@ ShallowWrapper {
             okType="primary"
             onConfirm={[Function]}
             placement="top"
-            prefixCls="ant-popover"
             title="Are you sure you want to cancel?"
             transitionName="zoom-big"
             trigger="click"
@@ -77,8 +74,8 @@ ShallowWrapper {
               block={false}
               className="full-mobile"
               ghost={false}
+              htmlType="button"
               loading={false}
-              prefixCls="ant-btn"
               type="secondary"
             >
               Cancel
@@ -89,9 +86,9 @@ ShallowWrapper {
             className="full-mobile"
             disabled={true}
             ghost={false}
+            htmlType="button"
             loading={false}
             onClick={[Function]}
-            prefixCls="ant-btn"
             type="primary"
           >
             Next
@@ -108,8 +105,6 @@ ShallowWrapper {
         "children": Array [
           <Steps
             current={0}
-            iconPrefix="ant"
-            prefixCls="ant-steps"
           >
             <Step
               title="Basic Information"
@@ -140,7 +135,6 @@ ShallowWrapper {
               okType="primary"
               onConfirm={[Function]}
               placement="top"
-              prefixCls="ant-popover"
               title="Are you sure you want to cancel?"
               transitionName="zoom-big"
               trigger="click"
@@ -149,8 +143,8 @@ ShallowWrapper {
                 block={false}
                 className="full-mobile"
                 ghost={false}
+                htmlType="button"
                 loading={false}
-                prefixCls="ant-btn"
                 type="secondary"
               >
                 Cancel
@@ -161,9 +155,9 @@ ShallowWrapper {
               className="full-mobile"
               disabled={true}
               ghost={false}
+              htmlType="button"
               loading={false}
               onClick={[Function]}
-              prefixCls="ant-btn"
               type="primary"
             >
               Next
@@ -187,8 +181,6 @@ ShallowWrapper {
               />,
             ],
             "current": 0,
-            "iconPrefix": "ant",
-            "prefixCls": "ant-steps",
           },
           "ref": null,
           "rendered": Array [
@@ -262,7 +254,6 @@ ShallowWrapper {
                 okType="primary"
                 onConfirm={[Function]}
                 placement="top"
-                prefixCls="ant-popover"
                 title="Are you sure you want to cancel?"
                 transitionName="zoom-big"
                 trigger="click"
@@ -271,8 +262,8 @@ ShallowWrapper {
                   block={false}
                   className="full-mobile"
                   ghost={false}
+                  htmlType="button"
                   loading={false}
-                  prefixCls="ant-btn"
                   type="secondary"
                 >
                   Cancel
@@ -284,9 +275,9 @@ ShallowWrapper {
                 className="full-mobile"
                 disabled={true}
                 ghost={false}
+                htmlType="button"
                 loading={false}
                 onClick={[Function]}
-                prefixCls="ant-btn"
                 type="primary"
               >
                 Next
@@ -307,8 +298,8 @@ ShallowWrapper {
                   block={false}
                   className="full-mobile"
                   ghost={false}
+                  htmlType="button"
                   loading={false}
-                  prefixCls="ant-btn"
                   type="secondary"
                 >
                   Cancel
@@ -321,7 +312,6 @@ ShallowWrapper {
                 "okType": "primary",
                 "onConfirm": [Function],
                 "placement": "top",
-                "prefixCls": "ant-popover",
                 "title": "Are you sure you want to cancel?",
                 "transitionName": "zoom-big",
                 "trigger": "click",
@@ -336,8 +326,8 @@ ShallowWrapper {
                   "children": "Cancel",
                   "className": "full-mobile",
                   "ghost": false,
+                  "htmlType": "button",
                   "loading": false,
-                  "prefixCls": "ant-btn",
                   "type": "secondary",
                 },
                 "ref": null,
@@ -357,9 +347,9 @@ ShallowWrapper {
                 "className": "full-mobile",
                 "disabled": true,
                 "ghost": false,
+                "htmlType": "button",
                 "loading": false,
                 "onClick": [Function],
-                "prefixCls": "ant-btn",
                 "type": "primary",
               },
               "ref": null,
@@ -384,8 +374,6 @@ ShallowWrapper {
         "children": <div>
           <Steps
             current={0}
-            iconPrefix="ant"
-            prefixCls="ant-steps"
           >
             <Step
               title="Basic Information"
@@ -416,7 +404,6 @@ ShallowWrapper {
               okType="primary"
               onConfirm={[Function]}
               placement="top"
-              prefixCls="ant-popover"
               title="Are you sure you want to cancel?"
               transitionName="zoom-big"
               trigger="click"
@@ -425,8 +412,8 @@ ShallowWrapper {
                 block={false}
                 className="full-mobile"
                 ghost={false}
+                htmlType="button"
                 loading={false}
-                prefixCls="ant-btn"
                 type="secondary"
               >
                 Cancel
@@ -437,9 +424,9 @@ ShallowWrapper {
               className="full-mobile"
               disabled={true}
               ghost={false}
+              htmlType="button"
               loading={false}
               onClick={[Function]}
-              prefixCls="ant-btn"
               type="primary"
             >
               Next
@@ -456,8 +443,6 @@ ShallowWrapper {
           "children": Array [
             <Steps
               current={0}
-              iconPrefix="ant"
-              prefixCls="ant-steps"
             >
               <Step
                 title="Basic Information"
@@ -488,7 +473,6 @@ ShallowWrapper {
                 okType="primary"
                 onConfirm={[Function]}
                 placement="top"
-                prefixCls="ant-popover"
                 title="Are you sure you want to cancel?"
                 transitionName="zoom-big"
                 trigger="click"
@@ -497,8 +481,8 @@ ShallowWrapper {
                   block={false}
                   className="full-mobile"
                   ghost={false}
+                  htmlType="button"
                   loading={false}
-                  prefixCls="ant-btn"
                   type="secondary"
                 >
                   Cancel
@@ -509,9 +493,9 @@ ShallowWrapper {
                 className="full-mobile"
                 disabled={true}
                 ghost={false}
+                htmlType="button"
                 loading={false}
                 onClick={[Function]}
-                prefixCls="ant-btn"
                 type="primary"
               >
                 Next
@@ -535,8 +519,6 @@ ShallowWrapper {
                 />,
               ],
               "current": 0,
-              "iconPrefix": "ant",
-              "prefixCls": "ant-steps",
             },
             "ref": null,
             "rendered": Array [
@@ -610,7 +592,6 @@ ShallowWrapper {
                   okType="primary"
                   onConfirm={[Function]}
                   placement="top"
-                  prefixCls="ant-popover"
                   title="Are you sure you want to cancel?"
                   transitionName="zoom-big"
                   trigger="click"
@@ -619,8 +600,8 @@ ShallowWrapper {
                     block={false}
                     className="full-mobile"
                     ghost={false}
+                    htmlType="button"
                     loading={false}
-                    prefixCls="ant-btn"
                     type="secondary"
                   >
                     Cancel
@@ -632,9 +613,9 @@ ShallowWrapper {
                   className="full-mobile"
                   disabled={true}
                   ghost={false}
+                  htmlType="button"
                   loading={false}
                   onClick={[Function]}
-                  prefixCls="ant-btn"
                   type="primary"
                 >
                   Next
@@ -655,8 +636,8 @@ ShallowWrapper {
                     block={false}
                     className="full-mobile"
                     ghost={false}
+                    htmlType="button"
                     loading={false}
-                    prefixCls="ant-btn"
                     type="secondary"
                   >
                     Cancel
@@ -669,7 +650,6 @@ ShallowWrapper {
                   "okType": "primary",
                   "onConfirm": [Function],
                   "placement": "top",
-                  "prefixCls": "ant-popover",
                   "title": "Are you sure you want to cancel?",
                   "transitionName": "zoom-big",
                   "trigger": "click",
@@ -684,8 +664,8 @@ ShallowWrapper {
                     "children": "Cancel",
                     "className": "full-mobile",
                     "ghost": false,
+                    "htmlType": "button",
                     "loading": false,
-                    "prefixCls": "ant-btn",
                     "type": "secondary",
                   },
                   "ref": null,
@@ -705,9 +685,9 @@ ShallowWrapper {
                   "className": "full-mobile",
                   "disabled": true,
                   "ghost": false,
+                  "htmlType": "button",
                   "loading": false,
                   "onClick": [Function],
-                  "prefixCls": "ant-btn",
                   "type": "primary",
                 },
                 "ref": null,
