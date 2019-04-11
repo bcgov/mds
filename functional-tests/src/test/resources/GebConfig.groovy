@@ -139,7 +139,7 @@ environments {
 // This is particularly handy for development and the pipeline
 def env = System.getenv()
 baseUrl = env['BASEURL']
-if (!baseUrl) { 
+if (!baseUrl) {
 	baseUrl = "http://localhost:3000/"
 }
 
