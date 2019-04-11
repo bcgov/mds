@@ -48,6 +48,7 @@ import MineTenureInfo from "@/components/mine/Tenure/MineTenureInfo";
 import MineTailingsInfo from "@/components/mine/Tailings/MineTailingsInfo";
 import MineSummary from "@/components/mine/Summary/MineSummary";
 import MineVariance from "@/components/mine/Variances/MineVariance";
+import MineIncidents from "@/components/mine/Incidents/MineIncidents";
 import MineHeader from "@/components/mine/MineHeader";
 import * as router from "@/constants/routes";
 import MineContactInfo from "@/components/mine/ContactInfo/MineContactInfo";
@@ -237,6 +238,11 @@ export class MineDashboard extends Component {
                     </div>
                   </TabPane>
                 )}
+                <TabPane tab="Incidents" key="incidents">
+                  <div className="tab__content">
+                    <MineIncidents mineGuid={mine.mine_guid} />
+                  </div>
+                </TabPane>
               </Tabs>
             </div>
           </div>

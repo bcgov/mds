@@ -321,3 +321,18 @@ export const setMineVerifiedStatus = (mine_guid, payload) => (dispatch) => {
     })
     .catch(() => dispatch(error(reducerTypes.SET_MINE_VERIFIED_STATUS)));
 };
+
+// MineIncidents
+export const fetchMineIncidents = (mine_guid) => (dispatch) => {
+  dispatch(request(reducerTypes.GET_MINE_INCIDENTS));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(`${ENVIRONMENT.apiUrl}${API.MINE_INCIDENTS(mine_guid)}`, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_MINE_INCIDENTS));
+      dispatch(mineActions.storeMineIncidents(response.data));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_MINE_INCIDENTS)))
+    .finally(() => dispatch(hideLoading()));
+};
