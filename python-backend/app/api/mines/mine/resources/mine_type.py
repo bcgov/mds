@@ -1,12 +1,13 @@
 import uuid
-
 from sqlalchemy import exc
 from flask_restplus import Resource, reqparse
+from werkzeug.exceptions import BadRequest, NotFound
+
 from app.extensions import api
 from ....utils.access_decorators import requires_role_mine_create
-from ....utils.resources_mixins import UserMixin, ErrorMixin
+from ....utils.resources_mixins import UserMixin
 from ..models.mine_type import MineType
-from app.api.mines.mine_api_models import MINE_TYPE
+from app.api.mines.mine_api_models import MINE_TYPE_MODEL
 
 
 class MineTypeListResource(Resource, UserMixin):
@@ -25,11 +26,8 @@ class MineTypeListResource(Resource, UserMixin):
         required=True)
 
     @api.expect(parser)
-    @api.marshal_with(MINE_TYPE, code=200)
-    @api.doc(
-        description=
-        'This endpoint takes in a mine tenure type code and a mine guid and associated them together.'
-    )
+    @api.marshal_with(MINE_TYPE_MODEL, code=201)
+    @api.doc(description='Creates a mine type and associates it with a Mine.')
     @requires_role_mine_create
     def post(self):
         data = self.parser.parse_args()
@@ -43,26 +41,18 @@ class MineTypeListResource(Resource, UserMixin):
         return mine_type
 
 
-class MineTypeResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser()
-    parser.add_argument(
-        'mine_guid',
-        type=str,
-        help='Unique identifier for the mine with which to associate this mine type.')
-    parser.add_argument('mine_tenure_type_code', type=str, help='Mine tenure type identifier.')
-
-    @api.expect(parser)
+class MineTypeResource(Resource, UserMixin):
+    @api.doc(description='Deletes the mine type provided.')
     @requires_role_mine_create
     def delete(self, mine_type_guid):
-        data = self.parser.parse_args()
 
         mine_type = MineType.find_by_guid(mine_type_guid)
         if not mine_type:
-            self.raise_error(400, 'Error: Invalid mine_type_guid.')
+            raise NotFound('Error: Invalid mine_type_guid.')
 
         try:
             MineType.expire_record(mine_type)
-        except exc.IntegrityError as e:
-            self.raise_error(400, 'Error: Unable to update mine_type.')
+        except exc.IntegrityError:
+            raise BadRequest('Error: Unable to update mine_type.')
 
-        return mine_type.json()
+        return None, 204

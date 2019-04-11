@@ -12,10 +12,7 @@ from app.api.mines.mine.models.mine_verified_status import MineVerifiedStatus
 from app.api.mines.mine_api_models import MINE_VERIFIED_MODEL
 
 
-class MineVerifiedStatusResource(Resource, UserMixin):
-    parser = reqparse.RequestParser()
-    parser.add_argument('healthy', type=inputs.boolean)
-
+class MineVerifiedStatusListResource(Resource, UserMixin):
     @requires_role_mine_view
     @api.marshal_with(MINE_VERIFIED_MODEL, code=200)
     @api.doc(
@@ -29,16 +26,21 @@ class MineVerifiedStatusResource(Resource, UserMixin):
         else:
             statuses = MineVerifiedStatus.query.all()
 
-        return {
-            'healthy': [x.json() for x in statuses if x.healthy_ind],
-            'unhealthy': [x.json() for x in statuses if not x.healthy_ind]
-        }
+        return statuses
+
+
+class MineVerifiedStatusResource(Resource, UserMixin):
+
+    parser = reqparse.RequestParser()
+    parser.add_argument('healthy', type=inputs.boolean)
 
     @api.expect(parser)
+    @api.marshal_with(MINE_VERIFIED_MODEL, code=200)
+    @api.doc(
+        params={'healthy': 'The verified status of the mine.'},
+        description='Updates a mines verified status')
     @requires_role_mine_create
-    def put(self, mine_guid=None):
-        if not mine_guid:
-            raise BadRequest('Mine_guid not provided')
+    def put(self, mine_guid):
 
         data = self.parser.parse_args()
 
@@ -59,9 +61,4 @@ class MineVerifiedStatusResource(Resource, UserMixin):
 
         mine_verified_status.healthy_ind = healthy
         mine_verified_status.save()
-        return mine_verified_status.json()
-
-    @requires_role_mine_admin
-    def delete(self, mine_guid=None):
-        #TODO: Actually delete
-        return ('', 501)
+        return mine_verified_status

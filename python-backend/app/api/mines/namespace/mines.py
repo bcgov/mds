@@ -14,7 +14,7 @@ from ..tailings.resources.tailings import MineTailingsStorageFacilityResource
 from ..compliance.resources.compliance import MineComplianceResource
 from ..compliance.resources.compliance_article import ComplianceArticleResource
 from ..mine.resources.mine_basicinfo import MineBasicInfoResource
-from app.api.mines.mine.resources.mine_verified_status import MineVerifiedStatusResource
+from app.api.mines.mine.resources.mine_verified_status import MineVerifiedStatusResource, MineVerifiedStatusListResource
 from ..variances.resources.variance import (VarianceListResource, VarianceResource,
                                             VarianceDocumentUploadResource,
                                             VarianceUploadedDocumentsResource)
@@ -42,8 +42,8 @@ api.add_resource(MineTypeListResource, '/mine-types')
 api.add_resource(MineTypeDetailResource, '/mine-types/details',
                  '/mine-types/details/<string:mine_type_detail_xref_guid>')
 api.add_resource(MineBasicInfoResource, '/basicinfo')
-api.add_resource(MineVerifiedStatusResource, '/verified-status',
-                 '/<string:mine_guid>/verified-status')
+api.add_resource(MineVerifiedStatusResource, '/<string:mine_guid>/verified-status')
+api.add_resource(MineVerifiedStatusListResource, '/verified-status')
 
 api.add_resource(VarianceListResource, '/<string:mine_guid>/variances')
 api.add_resource(VarianceResource, '/<string:mine_guid>/variances/<string:variance_id>')
