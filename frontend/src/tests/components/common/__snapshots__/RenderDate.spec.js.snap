@@ -31,19 +31,24 @@ ShallowWrapper {
     "nodeType": "class",
     "props": Object {
       "children": <PickerWrapper
+        format="YYYY-MM-DD"
         id={1}
+        inputPrefixCls="ant-input"
         locale={Object {}}
         onChange={[Function]}
         onOk={[Function]}
         onOpenChange={[Function]}
         placeholder="yyyy-mm-dd"
         popupStyle={Object {}}
+        prefixCls="ant-calendar"
         transitionName="slide-up"
         value={null}
       />,
+      "colon": true,
       "hasFeedback": false,
       "help": false,
       "label": "",
+      "prefixCls": "ant-form",
       "validateStatus": "",
     },
     "ref": null,
@@ -52,13 +57,16 @@ ShallowWrapper {
       "key": undefined,
       "nodeType": "class",
       "props": Object {
+        "format": "YYYY-MM-DD",
         "id": 1,
+        "inputPrefixCls": "ant-input",
         "locale": Object {},
         "onChange": [Function],
         "onOk": [Function],
         "onOpenChange": [Function],
         "placeholder": "yyyy-mm-dd",
         "popupStyle": Object {},
+        "prefixCls": "ant-calendar",
         "transitionName": "slide-up",
         "value": null,
       },
@@ -75,19 +83,24 @@ ShallowWrapper {
       "nodeType": "class",
       "props": Object {
         "children": <PickerWrapper
+          format="YYYY-MM-DD"
           id={1}
+          inputPrefixCls="ant-input"
           locale={Object {}}
           onChange={[Function]}
           onOk={[Function]}
           onOpenChange={[Function]}
           placeholder="yyyy-mm-dd"
           popupStyle={Object {}}
+          prefixCls="ant-calendar"
           transitionName="slide-up"
           value={null}
         />,
+        "colon": true,
         "hasFeedback": false,
         "help": false,
         "label": "",
+        "prefixCls": "ant-form",
         "validateStatus": "",
       },
       "ref": null,
@@ -96,13 +109,16 @@ ShallowWrapper {
         "key": undefined,
         "nodeType": "class",
         "props": Object {
+          "format": "YYYY-MM-DD",
           "id": 1,
+          "inputPrefixCls": "ant-input",
           "locale": Object {},
           "onChange": [Function],
           "onOk": [Function],
           "onOpenChange": [Function],
           "placeholder": "yyyy-mm-dd",
           "popupStyle": Object {},
+          "prefixCls": "ant-calendar",
           "transitionName": "slide-up",
           "value": null,
         },

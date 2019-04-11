@@ -134,15 +134,10 @@ ShallowWrapper {
           }
         }
         pagination={false}
+        prefixCls="ant-table"
         rowKey="key"
         showHeader={true}
         size="default"
-        sortDirections={
-          Array [
-            "ascend",
-            "descend",
-          ]
-        }
         useFixedHeader={false}
       />,
     },
@@ -225,13 +220,10 @@ ShallowWrapper {
           />,
         },
         "pagination": false,
+        "prefixCls": "ant-table",
         "rowKey": "key",
         "showHeader": true,
         "size": "default",
-        "sortDirections": Array [
-          "ascend",
-          "descend",
-        ],
         "useFixedHeader": false,
       },
       "ref": null,
@@ -326,15 +318,10 @@ ShallowWrapper {
             }
           }
           pagination={false}
+          prefixCls="ant-table"
           rowKey="key"
           showHeader={true}
           size="default"
-          sortDirections={
-            Array [
-              "ascend",
-              "descend",
-            ]
-          }
           useFixedHeader={false}
         />,
       },
@@ -417,13 +404,10 @@ ShallowWrapper {
             />,
           },
           "pagination": false,
+          "prefixCls": "ant-table",
           "rowKey": "key",
           "showHeader": true,
           "size": "default",
-          "sortDirections": Array [
-            "ascend",
-            "descend",
-          ],
           "useFixedHeader": false,
         },
         "ref": null,

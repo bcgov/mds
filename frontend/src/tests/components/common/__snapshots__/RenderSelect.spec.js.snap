@@ -59,6 +59,7 @@ ShallowWrapper {
         onSelect={[Function]}
         optionFilterProp="children"
         placeholder=""
+        prefixCls="ant-select"
         showSearch={true}
         transitionName="slide-up"
       >
@@ -71,9 +72,11 @@ ShallowWrapper {
           value={undefined}
         />
       </Select>,
+      "colon": true,
       "hasFeedback": false,
       "help": false,
       "label": "",
+      "prefixCls": "ant-form",
       "validateStatus": "",
     },
     "ref": null,
@@ -100,6 +103,7 @@ ShallowWrapper {
         "onSelect": [Function],
         "optionFilterProp": "children",
         "placeholder": "",
+        "prefixCls": "ant-select",
         "showSearch": true,
         "transitionName": "slide-up",
       },
@@ -151,6 +155,7 @@ ShallowWrapper {
           onSelect={[Function]}
           optionFilterProp="children"
           placeholder=""
+          prefixCls="ant-select"
           showSearch={true}
           transitionName="slide-up"
         >
@@ -163,9 +168,11 @@ ShallowWrapper {
             value={undefined}
           />
         </Select>,
+        "colon": true,
         "hasFeedback": false,
         "help": false,
         "label": "",
+        "prefixCls": "ant-form",
         "validateStatus": "",
       },
       "ref": null,
@@ -192,6 +199,7 @@ ShallowWrapper {
           "onSelect": [Function],
           "optionFilterProp": "children",
           "placeholder": "",
+          "prefixCls": "ant-select",
           "showSearch": true,
           "transitionName": "slide-up",
         },

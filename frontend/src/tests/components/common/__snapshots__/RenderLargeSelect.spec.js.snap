@@ -49,6 +49,7 @@ ShallowWrapper {
         onSearch={[MockFunction]}
         optionLabelProp="children"
         placeholder=""
+        prefixCls="ant-select"
         showSearch={false}
         style={
           Object {
@@ -60,6 +61,7 @@ ShallowWrapper {
       >
         <Input
           disabled={false}
+          prefixCls="ant-input"
           suffix={
             <Icon
               className="certain-category-icon"
@@ -69,9 +71,11 @@ ShallowWrapper {
           type="text"
         />
       </AutoComplete>,
+      "colon": true,
       "hasFeedback": false,
       "help": false,
       "label": "",
+      "prefixCls": "ant-form",
       "validateStatus": "",
     },
     "ref": null,
@@ -83,6 +87,7 @@ ShallowWrapper {
         "backfill": true,
         "children": <Input
           disabled={false}
+          prefixCls="ant-input"
           suffix={
             <Icon
               className="certain-category-icon"
@@ -102,6 +107,7 @@ ShallowWrapper {
         "onSearch": [MockFunction],
         "optionLabelProp": "children",
         "placeholder": "",
+        "prefixCls": "ant-select",
         "showSearch": false,
         "style": Object {
           "width": "100%",
@@ -116,6 +122,7 @@ ShallowWrapper {
         "nodeType": "class",
         "props": Object {
           "disabled": false,
+          "prefixCls": "ant-input",
           "suffix": <Icon
             className="certain-category-icon"
             type="search"
@@ -149,6 +156,7 @@ ShallowWrapper {
           onSearch={[MockFunction]}
           optionLabelProp="children"
           placeholder=""
+          prefixCls="ant-select"
           showSearch={false}
           style={
             Object {
@@ -160,6 +168,7 @@ ShallowWrapper {
         >
           <Input
             disabled={false}
+            prefixCls="ant-input"
             suffix={
               <Icon
                 className="certain-category-icon"
@@ -169,9 +178,11 @@ ShallowWrapper {
             type="text"
           />
         </AutoComplete>,
+        "colon": true,
         "hasFeedback": false,
         "help": false,
         "label": "",
+        "prefixCls": "ant-form",
         "validateStatus": "",
       },
       "ref": null,
@@ -183,6 +194,7 @@ ShallowWrapper {
           "backfill": true,
           "children": <Input
             disabled={false}
+            prefixCls="ant-input"
             suffix={
               <Icon
                 className="certain-category-icon"
@@ -202,6 +214,7 @@ ShallowWrapper {
           "onSearch": [MockFunction],
           "optionLabelProp": "children",
           "placeholder": "",
+          "prefixCls": "ant-select",
           "showSearch": false,
           "style": Object {
             "width": "100%",
@@ -216,6 +229,7 @@ ShallowWrapper {
           "nodeType": "class",
           "props": Object {
             "disabled": false,
+            "prefixCls": "ant-input",
             "suffix": <Icon
               className="certain-category-icon"
               type="search"
