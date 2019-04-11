@@ -57,8 +57,8 @@ ShallowWrapper {
             defaultActiveKey="summary"
             hideAdd={false}
             onChange={[Function]}
-            prefixCls="ant-tabs"
             size="large"
+            tabPosition="top"
           >
             <TabPane
               placeholder={null}
@@ -106,7 +106,6 @@ ShallowWrapper {
                   disabled={false}
                   onChange={[Function]}
                   placeholder="Enter a Mine Number"
-                  prefixCls="ant-input"
                   style={
                     Object {
                       "max-width": "300px",
@@ -119,9 +118,9 @@ ShallowWrapper {
                 <Button
                   block={false}
                   ghost={false}
+                  htmlType="button"
                   loading={false}
                   onClick={[Function]}
-                  prefixCls="ant-btn"
                 >
                   Download History
                 </Button>
@@ -228,8 +227,8 @@ ShallowWrapper {
             defaultActiveKey="summary"
             hideAdd={false}
             onChange={[Function]}
-            prefixCls="ant-tabs"
             size="large"
+            tabPosition="top"
           >
             <TabPane
               placeholder={null}
@@ -277,7 +276,6 @@ ShallowWrapper {
                   disabled={false}
                   onChange={[Function]}
                   placeholder="Enter a Mine Number"
-                  prefixCls="ant-input"
                   style={
                     Object {
                       "max-width": "300px",
@@ -290,9 +288,9 @@ ShallowWrapper {
                 <Button
                   block={false}
                   ghost={false}
+                  htmlType="button"
                   loading={false}
                   onClick={[Function]}
-                  prefixCls="ant-btn"
                 >
                   Download History
                 </Button>
@@ -369,7 +367,6 @@ ShallowWrapper {
                     disabled={false}
                     onChange={[Function]}
                     placeholder="Enter a Mine Number"
-                    prefixCls="ant-input"
                     style={
                       Object {
                         "max-width": "300px",
@@ -382,9 +379,9 @@ ShallowWrapper {
                   <Button
                     block={false}
                     ghost={false}
+                    htmlType="button"
                     loading={false}
                     onClick={[Function]}
-                    prefixCls="ant-btn"
                   >
                     Download History
                   </Button>
@@ -404,8 +401,8 @@ ShallowWrapper {
             "defaultActiveKey": "summary",
             "hideAdd": false,
             "onChange": [Function],
-            "prefixCls": "ant-tabs",
             "size": "large",
+            "tabPosition": "top",
           },
           "ref": null,
           "rendered": Array [
@@ -594,7 +591,6 @@ ShallowWrapper {
                     disabled={false}
                     onChange={[Function]}
                     placeholder="Enter a Mine Number"
-                    prefixCls="ant-input"
                     style={
                       Object {
                         "max-width": "300px",
@@ -607,9 +603,9 @@ ShallowWrapper {
                   <Button
                     block={false}
                     ghost={false}
+                    htmlType="button"
                     loading={false}
                     onClick={[Function]}
-                    prefixCls="ant-btn"
                   >
                     Download History
                   </Button>
@@ -631,7 +627,6 @@ ShallowWrapper {
                       disabled={false}
                       onChange={[Function]}
                       placeholder="Enter a Mine Number"
-                      prefixCls="ant-input"
                       style={
                         Object {
                           "max-width": "300px",
@@ -644,9 +639,9 @@ ShallowWrapper {
                     <Button
                       block={false}
                       ghost={false}
+                      htmlType="button"
                       loading={false}
                       onClick={[Function]}
-                      prefixCls="ant-btn"
                     >
                       Download History
                     </Button>,
@@ -674,7 +669,6 @@ ShallowWrapper {
                       "disabled": false,
                       "onChange": [Function],
                       "placeholder": "Enter a Mine Number",
-                      "prefixCls": "ant-input",
                       "style": Object {
                         "max-width": "300px",
                         "width": "50%",
@@ -694,9 +688,9 @@ ShallowWrapper {
                       "block": false,
                       "children": "Download History",
                       "ghost": false,
+                      "htmlType": "button",
                       "loading": false,
                       "onClick": [Function],
-                      "prefixCls": "ant-btn",
                     },
                     "ref": null,
                     "rendered": "Download History",
@@ -789,8 +783,8 @@ ShallowWrapper {
               defaultActiveKey="summary"
               hideAdd={false}
               onChange={[Function]}
-              prefixCls="ant-tabs"
               size="large"
+              tabPosition="top"
             >
               <TabPane
                 placeholder={null}
@@ -838,7 +832,6 @@ ShallowWrapper {
                     disabled={false}
                     onChange={[Function]}
                     placeholder="Enter a Mine Number"
-                    prefixCls="ant-input"
                     style={
                       Object {
                         "max-width": "300px",
@@ -851,9 +844,9 @@ ShallowWrapper {
                   <Button
                     block={false}
                     ghost={false}
+                    htmlType="button"
                     loading={false}
                     onClick={[Function]}
-                    prefixCls="ant-btn"
                   >
                     Download History
                   </Button>
@@ -960,8 +953,8 @@ ShallowWrapper {
               defaultActiveKey="summary"
               hideAdd={false}
               onChange={[Function]}
-              prefixCls="ant-tabs"
               size="large"
+              tabPosition="top"
             >
               <TabPane
                 placeholder={null}
@@ -1009,7 +1002,6 @@ ShallowWrapper {
                     disabled={false}
                     onChange={[Function]}
                     placeholder="Enter a Mine Number"
-                    prefixCls="ant-input"
                     style={
                       Object {
                         "max-width": "300px",
@@ -1022,9 +1014,9 @@ ShallowWrapper {
                   <Button
                     block={false}
                     ghost={false}
+                    htmlType="button"
                     loading={false}
                     onClick={[Function]}
-                    prefixCls="ant-btn"
                   >
                     Download History
                   </Button>
@@ -1101,7 +1093,6 @@ ShallowWrapper {
                       disabled={false}
                       onChange={[Function]}
                       placeholder="Enter a Mine Number"
-                      prefixCls="ant-input"
                       style={
                         Object {
                           "max-width": "300px",
@@ -1114,9 +1105,9 @@ ShallowWrapper {
                     <Button
                       block={false}
                       ghost={false}
+                      htmlType="button"
                       loading={false}
                       onClick={[Function]}
-                      prefixCls="ant-btn"
                     >
                       Download History
                     </Button>
@@ -1136,8 +1127,8 @@ ShallowWrapper {
               "defaultActiveKey": "summary",
               "hideAdd": false,
               "onChange": [Function],
-              "prefixCls": "ant-tabs",
               "size": "large",
+              "tabPosition": "top",
             },
             "ref": null,
             "rendered": Array [
@@ -1326,7 +1317,6 @@ ShallowWrapper {
                       disabled={false}
                       onChange={[Function]}
                       placeholder="Enter a Mine Number"
-                      prefixCls="ant-input"
                       style={
                         Object {
                           "max-width": "300px",
@@ -1339,9 +1329,9 @@ ShallowWrapper {
                     <Button
                       block={false}
                       ghost={false}
+                      htmlType="button"
                       loading={false}
                       onClick={[Function]}
-                      prefixCls="ant-btn"
                     >
                       Download History
                     </Button>
@@ -1363,7 +1353,6 @@ ShallowWrapper {
                         disabled={false}
                         onChange={[Function]}
                         placeholder="Enter a Mine Number"
-                        prefixCls="ant-input"
                         style={
                           Object {
                             "max-width": "300px",
@@ -1376,9 +1365,9 @@ ShallowWrapper {
                       <Button
                         block={false}
                         ghost={false}
+                        htmlType="button"
                         loading={false}
                         onClick={[Function]}
-                        prefixCls="ant-btn"
                       >
                         Download History
                       </Button>,
@@ -1406,7 +1395,6 @@ ShallowWrapper {
                         "disabled": false,
                         "onChange": [Function],
                         "placeholder": "Enter a Mine Number",
-                        "prefixCls": "ant-input",
                         "style": Object {
                           "max-width": "300px",
                           "width": "50%",
@@ -1426,9 +1414,9 @@ ShallowWrapper {
                         "block": false,
                         "children": "Download History",
                         "ghost": false,
+                        "htmlType": "button",
                         "loading": false,
                         "onClick": [Function],
-                        "prefixCls": "ant-btn",
                       },
                       "ref": null,
                       "rendered": "Download History",
