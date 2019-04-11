@@ -108,6 +108,13 @@ ShallowWrapper {
         ],
       }
     }
+    fetchSubscribedMinesByUser={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
     fetchVariancesByMine={[MockFunction]}
     match={
       Object {
