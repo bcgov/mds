@@ -47,9 +47,7 @@ ShallowWrapper {
         onRemoveFile={[MockFunction]}
         uploadUrl="/mines/48593/variances/undefined/documents"
       />,
-      "colon": true,
       "hasFeedback": false,
-      "prefixCls": "ant-form",
     },
     "ref": null,
     "rendered": Object {
@@ -116,9 +114,7 @@ ShallowWrapper {
           onRemoveFile={[MockFunction]}
           uploadUrl="/mines/48593/variances/undefined/documents"
         />,
-        "colon": true,
         "hasFeedback": false,
-        "prefixCls": "ant-form",
       },
       "ref": null,
       "rendered": Object {
