@@ -96,9 +96,9 @@ ShallowWrapper {
             <Button
               block={false}
               ghost={false}
+              htmlType="button"
               loading={false}
               onClick={[Function]}
-              prefixCls="ant-btn"
               type="primary"
             >
               <Icon
@@ -134,9 +134,9 @@ ShallowWrapper {
               <Button
                 block={false}
                 ghost={false}
+                htmlType="button"
                 loading={false}
                 onClick={[Function]}
-                prefixCls="ant-btn"
                 type="primary"
               >
                 <Icon
@@ -178,9 +178,9 @@ ShallowWrapper {
               <Button
                 block={false}
                 ghost={false}
+                htmlType="button"
                 loading={false}
                 onClick={[Function]}
-                prefixCls="ant-btn"
                 type="primary"
               >
                 <Icon
@@ -206,9 +206,9 @@ ShallowWrapper {
               "children": <Button
                 block={false}
                 ghost={false}
+                htmlType="button"
                 loading={false}
                 onClick={[Function]}
-                prefixCls="ant-btn"
                 type="primary"
               >
                 <Icon
@@ -245,9 +245,9 @@ ShallowWrapper {
                   "Add a New Application",
                 ],
                 "ghost": false,
+                "htmlType": "button",
                 "loading": false,
                 "onClick": [Function],
-                "prefixCls": "ant-btn",
                 "type": "primary",
               },
               "ref": null,
@@ -300,9 +300,9 @@ ShallowWrapper {
               <Button
                 block={false}
                 ghost={false}
+                htmlType="button"
                 loading={false}
                 onClick={[Function]}
-                prefixCls="ant-btn"
                 type="primary"
               >
                 <Icon
@@ -338,9 +338,9 @@ ShallowWrapper {
                 <Button
                   block={false}
                   ghost={false}
+                  htmlType="button"
                   loading={false}
                   onClick={[Function]}
-                  prefixCls="ant-btn"
                   type="primary"
                 >
                   <Icon
@@ -382,9 +382,9 @@ ShallowWrapper {
                 <Button
                   block={false}
                   ghost={false}
+                  htmlType="button"
                   loading={false}
                   onClick={[Function]}
-                  prefixCls="ant-btn"
                   type="primary"
                 >
                   <Icon
@@ -410,9 +410,9 @@ ShallowWrapper {
                 "children": <Button
                   block={false}
                   ghost={false}
+                  htmlType="button"
                   loading={false}
                   onClick={[Function]}
-                  prefixCls="ant-btn"
                   type="primary"
                 >
                   <Icon
@@ -449,9 +449,9 @@ ShallowWrapper {
                     "Add a New Application",
                   ],
                   "ghost": false,
+                  "htmlType": "button",
                   "loading": false,
                   "onClick": [Function],
-                  "prefixCls": "ant-btn",
                   "type": "primary",
                 },
                 "ref": null,
