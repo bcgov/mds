@@ -1,5 +1,6 @@
 import uuid
 from datetime import datetime
+from sqlalchemy.orm.scoping import scoped_session
 
 import factory
 import factory.fuzzy
@@ -23,27 +24,19 @@ from app.api.permits.permit_amendment.models.permit_amendment_document import Pe
 GUID = factory.LazyFunction(uuid.uuid4)
 TODAY = factory.LazyFunction(datetime.now)
 
+factory_list = []
 
-class BaseFactory(factory.alchemy.SQLAlchemyModelFactory):
+
+class ParentClass:
+    def __init_subclass__(cls, **kwargs):
+        super().__init_subclass__(**kwargs)
+        factory_list.append(cls)
+
+
+class BaseFactory(factory.alchemy.SQLAlchemyModelFactory, ParentClass):
     class Meta:
         abstract = True
         sqlalchemy_session = db.session
-        # sqlalchemy_session_persistence = 'commit'
-
-    @classmethod
-    def _create(cls, model_class, *args, **kwargs):
-        session = cls._meta.sqlalchemy_session if 1 == 1 else None
-        session_persistence = cls._meta.sqlalchemy_session_persistence
-
-        obj = model_class(*args, **kwargs)
-        if session is None:
-            raise RuntimeError("No session provided.")
-        session.add(obj)
-        if session_persistence == 'flush':
-            session.flush()
-        elif session_persistence == 'commit':
-            session.commit()
-        return obj
 
 
 class DocumentManagerFactory(BaseFactory):

@@ -36,11 +36,11 @@ from app.api.documents.mines.models.mine_document import MineDocument
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
 from app.api.applications.models.application_status_code import ApplicationStatusCode
-
 from app.api.constants import PARTY_STATUS_CODE, MINE_OPERATION_STATUS, MINE_OPERATION_STATUS_REASON, MINE_OPERATION_STATUS_SUB_REASON
 from .constants import *
 from app import auth
 from app.api.utils.include.user_info import User
+from tests.factories import factory_list
 
 auth.apply_security = False
 
@@ -92,22 +92,41 @@ def cli_runner(app):
     return runner
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def test_client():
     # Test Setup with data
     app = create_app(TestConfig)
     client = app.test_client()
     ctx = app.app_context()
     ctx.push()
-    setup_data(db.session)
+    # setup_data(db.session)
 
     User._test_mode = True
 
     yield client
 
     # Teardown
-    clear_data(db.session)
+    # clear_data(db.session)
     ctx.pop()
+
+
+@pytest.fixture(scope="function")  #, autouse=True)
+def db_session(test_client):
+    conn = db.engine.connect()
+    txn = conn.begin()
+
+    options = dict(bind=conn, binds={})
+    sess = db.create_scoped_session(options=options)
+    db.session = sess
+
+    for factory in factory_list:
+        factory._meta.sqlalchemy_session = sess
+
+    yield db.session
+
+    sess.remove()
+    txn.rollback()
+    conn.close()
 
 
 def setup_data(session):
