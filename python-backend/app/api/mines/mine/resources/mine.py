@@ -72,8 +72,13 @@ class MineResource(Resource, UserMixin, ErrorMixin):
     @api.doc(
         params={
             'mine_no_or_guid':
-            'Mine number or guid. If not provided a paginated list of mines will be returned.'
+            'Mine number or guid. If not provided a paginated list of mines will be returned.',
+            'sort_field':
+            'enum[mine_name, mine_no, mine_operation_status_code, mine_region] Default: mine_name',
+            'sort_dir':
+            'enum[asc, desc] Default: asc'
         })
+
     @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
     def get(self, mine_no_or_guid=None):
         if mine_no_or_guid:
@@ -133,9 +138,18 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             }
 
     def apply_filter_and_search(self, args):
+        sort_models = {
+            'mine_name': 'Mine',
+            'mine_no': 'Mine',
+            'mine_region': 'Mine',
+            'mine_operation_status_code': 'MineStatusXref'
+        }
         # Handle ListView request
         items_per_page = args.get('per_page', 25, type=int)
         page = args.get('page', 1, type=int)
+        sort_field = args.get('sort_field', 'mine_name', type=str)
+        sort_dir = args.get('sort_dir', 'asc', type=str)
+        sort_model = sort_models.get(sort_field)
         search_term = args.get('search', None, type=str)
         # Filters to be applied
         commodity_filter_terms = args.get('commodity', None, type=str)
@@ -207,8 +221,13 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             mines_query = mines_query.intersect(status_query)
         deleted_filter = [{'field': 'deleted_ind', 'op': '==', 'value': 'False'}]
         mines_query = apply_filters(mines_query, deleted_filter)
-        sort_criteria = [{'model': 'Mine', 'field': 'mine_name', 'direction': 'asc'}]
-        mines_query = apply_sort(mines_query, sort_criteria)
+
+        # Apply sorting
+        if sort_model and sort_field and sort_dir:
+            mines_query = mines_query.outerjoin(MineStatus).outerjoin(MineStatusXref)
+            sort_criteria = [{'model': sort_model, 'field': sort_field, 'direction': sort_dir}]
+            mines_query = apply_sort(mines_query, sort_criteria)
+
         return apply_pagination(mines_query, page, items_per_page)
 
     def mine_operation_code_processor(self, mine_status, index):

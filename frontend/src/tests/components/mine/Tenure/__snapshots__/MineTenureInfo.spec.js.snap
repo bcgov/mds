@@ -127,9 +127,9 @@ ShallowWrapper {
             <Button
               block={false}
               ghost={false}
+              htmlType="button"
               loading={false}
               onClick={[Function]}
-              prefixCls="ant-btn"
               type="primary"
             >
               Add Tenure Number
@@ -179,9 +179,9 @@ ShallowWrapper {
               <Button
                 block={false}
                 ghost={false}
+                htmlType="button"
                 loading={false}
                 onClick={[Function]}
-                prefixCls="ant-btn"
                 type="primary"
               >
                 Add Tenure Number
@@ -357,9 +357,9 @@ ShallowWrapper {
               <Button
                 block={false}
                 ghost={false}
+                htmlType="button"
                 loading={false}
                 onClick={[Function]}
-                prefixCls="ant-btn"
                 type="primary"
               >
                 Add Tenure Number
@@ -376,9 +376,9 @@ ShallowWrapper {
               "children": <Button
                 block={false}
                 ghost={false}
+                htmlType="button"
                 loading={false}
                 onClick={[Function]}
-                prefixCls="ant-btn"
                 type="primary"
               >
                 Add Tenure Number
@@ -395,9 +395,9 @@ ShallowWrapper {
                 "block": false,
                 "children": "Add Tenure Number",
                 "ghost": false,
+                "htmlType": "button",
                 "loading": false,
                 "onClick": [Function],
-                "prefixCls": "ant-btn",
                 "type": "primary",
               },
               "ref": null,
@@ -454,9 +454,9 @@ ShallowWrapper {
               <Button
                 block={false}
                 ghost={false}
+                htmlType="button"
                 loading={false}
                 onClick={[Function]}
-                prefixCls="ant-btn"
                 type="primary"
               >
                 Add Tenure Number
@@ -506,9 +506,9 @@ ShallowWrapper {
                 <Button
                   block={false}
                   ghost={false}
+                  htmlType="button"
                   loading={false}
                   onClick={[Function]}
-                  prefixCls="ant-btn"
                   type="primary"
                 >
                   Add Tenure Number
@@ -684,9 +684,9 @@ ShallowWrapper {
                 <Button
                   block={false}
                   ghost={false}
+                  htmlType="button"
                   loading={false}
                   onClick={[Function]}
-                  prefixCls="ant-btn"
                   type="primary"
                 >
                   Add Tenure Number
@@ -703,9 +703,9 @@ ShallowWrapper {
                 "children": <Button
                   block={false}
                   ghost={false}
+                  htmlType="button"
                   loading={false}
                   onClick={[Function]}
-                  prefixCls="ant-btn"
                   type="primary"
                 >
                   Add Tenure Number
@@ -722,9 +722,9 @@ ShallowWrapper {
                   "block": false,
                   "children": "Add Tenure Number",
                   "ghost": false,
+                  "htmlType": "button",
                   "loading": false,
                   "onClick": [Function],
-                  "prefixCls": "ant-btn",
                   "type": "primary",
                 },
                 "ref": null,
