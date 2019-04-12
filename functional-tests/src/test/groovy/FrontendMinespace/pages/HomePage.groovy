@@ -1,4 +1,4 @@
-package publicFrontend.pages
+package FrontendMinespace.pages
 
 import geb.Page
 

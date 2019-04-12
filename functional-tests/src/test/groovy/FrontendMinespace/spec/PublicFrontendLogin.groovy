@@ -3,19 +3,19 @@ package spec
 import geb.spock.GebReportingSpec
 import spock.lang.*
 
-import publicFrontend.pages.PublicFrontendLoginPage
-import publicFrontend.pages.KeycloakLoginPage
-import publicFrontend.pages.HomePage
+import FrontendMinespace.pages.MinespaceFrontendLoginPage
+import FrontendMinespace.pages.KeycloakLoginPage
+import FrontendMinespace.pages.HomePage
 
 import utils.Const
 
-@Title("Public-Frontend-LoginPage")
-@Narrative("I can log into public frontend using my IDIR")
+@Title("Minespace-Frontend-LoginPage")
+@Narrative("I can log into Minespace frontend using my IDIR")
 @Stepwise
 class  LoginPublicFrontEndPageSpec extends GebReportingSpec {
-    def "I can log into the public frontend given valid credentials"(){
+    def "I can log into the Minespace frontend given valid credentials"(){
         given:"I go to the homepage"
-        to PublicFrontendLoginPage
+        to MinespaceFrontendLoginPage
         LoginButton.click()
 
         when: "Page loaded"

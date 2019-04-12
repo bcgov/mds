@@ -1,8 +1,8 @@
-package publicFrontend.pages
+package FrontendMinespace.pages
 import geb.Page
 import utils.Const
 
-class PublicFrontendLoginPage extends Page {
+class MinespaceFrontendLoginPage extends Page {
    
     static url = Const.MINESPACE_URL
     static content = {
