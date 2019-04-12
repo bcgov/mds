@@ -18,3 +18,7 @@ class MineTenureTypeCode(AuditMixin, Base):
             lambda x: { 'value': x[0], 'label': x[1] },
             cls.query.with_entities(cls.mine_tenure_type_code, cls.description).all()
         ))
+
+    @classmethod
+    def find_all(cls):
+        return cls.query.all()

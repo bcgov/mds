@@ -14,6 +14,11 @@ BASIC_MINE_LIST = api.model(
         'mine_location': fields.Nested(BASIC_MINE_LOCATION_MODEL)
     })
 
+MINE_TENURE_TYPE_CODE_MODEL = api.model('MineTenureTypeCode', {
+    'mine_tenure_type_code': fields.String,
+    'description': fields.String,
+})
+
 MINE_LOCATION_MODEL = api.model(
     'MineLocation', {
         'mine_location_guid': fields.String,
