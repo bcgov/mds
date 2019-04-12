@@ -21,19 +21,20 @@ from app.api.permits.permit.models.permit import Permit
 from app.api.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 
+
 GUID = factory.LazyFunction(uuid.uuid4)
 TODAY = factory.LazyFunction(datetime.now)
 
-factory_list = []
+FACTORY_LIST = []
 
 
-class ParentClass:
+class FactoryRegistry:
     def __init_subclass__(cls, **kwargs):
         super().__init_subclass__(**kwargs)
-        factory_list.append(cls)
+        FACTORY_LIST.append(cls)
 
 
-class BaseFactory(factory.alchemy.SQLAlchemyModelFactory, ParentClass):
+class BaseFactory(factory.alchemy.SQLAlchemyModelFactory, FactoryRegistry):
     class Meta:
         abstract = True
         sqlalchemy_session = db.session

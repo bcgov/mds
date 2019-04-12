@@ -40,7 +40,7 @@ from app.api.constants import PARTY_STATUS_CODE, MINE_OPERATION_STATUS, MINE_OPE
 from .constants import *
 from app import auth
 from app.api.utils.include.user_info import User
-from tests.factories import factory_list
+from tests.factories import FACTORY_LIST
 
 auth.apply_security = False
 
@@ -119,7 +119,7 @@ def db_session(test_client):
     sess = db.create_scoped_session(options=options)
     db.session = sess
 
-    for factory in factory_list:
+    for factory in FACTORY_LIST:
         factory._meta.sqlalchemy_session = sess
 
     yield db.session
