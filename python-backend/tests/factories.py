@@ -38,6 +38,7 @@ class BaseFactory(factory.alchemy.SQLAlchemyModelFactory, FactoryRegistry):
     class Meta:
         abstract = True
         sqlalchemy_session = db.session
+        sqlalchemy_session_persistence = 'flush'
 
 
 class DocumentManagerFactory(BaseFactory):
@@ -58,8 +59,9 @@ class MineDocumentFactory(BaseFactory):
         model = MineDocument
 
     class Params:
-        document_manager_obj = factory.SubFactory(DocumentManagerFactory, file_display_name=factory.SelfAttribute('..document_name'))
-        mine = factory.SubFactory('tests.factories.MineFactory', minimal=True) 
+        document_manager_obj = factory.SubFactory(
+            DocumentManagerFactory, file_display_name=factory.SelfAttribute('..document_name'))
+        mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
 
     mine_document_guid = GUID
     mine_guid = factory.SelfAttribute('mine.mine_guid')
@@ -81,6 +83,18 @@ class MineExpectedDocumentFactory(BaseFactory):
     received_date = TODAY
     hsrc_code = factory.LazyAttribute(lambda o: o.required_document.hsrc_code)
     mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
+    mine_documents = []
+
+    @factory.post_generation
+    def mine_documents(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        MineDocumentFactory.create_batch(
+            size=extracted, mine_expected_document=[obj], mine=obj.mine, **kwargs)
 
 
 class MineLocationFactory(BaseFactory):
