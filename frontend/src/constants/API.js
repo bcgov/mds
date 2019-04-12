@@ -67,3 +67,4 @@ export const VARIANCE_DOCUMENT = (mineGuid, varianceId, documentManagerGuid) =>
 
 // incidents
 export const MINE_INCIDENTS = (mine_guid) => `/mines/${mine_guid}/incidents`;
+export const MINE_INCIDENT_FOLLOWUP_ACTIONS = `/mines/incidents/followup-types`;

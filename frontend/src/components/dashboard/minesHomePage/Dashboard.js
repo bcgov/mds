@@ -18,6 +18,7 @@ import {
   fetchMineCommodityOptions,
   fetchPermitStatusOptions,
   fetchApplicationStatusOptions,
+  fetchMineIncidentFollowActionOptions,
   setOptionsLoaded,
 } from "@/actionCreators/staticContentActionCreator";
 import { fetchPartyRelationshipTypes } from "@/actionCreators/partiesActionCreator";
@@ -67,6 +68,8 @@ const propTypes = {
   pageData: CustomPropTypes.minePageData.isRequired,
   optionsLoaded: PropTypes.bool.isRequired,
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
+  fetchApplicationStatusOptions: PropTypes.func.isRequired,
+  fetchMineIncidentFollowActionOptions: PropTypes.func.isRequired,
 };
 
 export class Dashboard extends Component {
@@ -114,6 +117,7 @@ export class Dashboard extends Component {
       this.props.fetchPartyRelationshipTypes();
       this.props.fetchPermitStatusOptions();
       this.props.fetchApplicationStatusOptions();
+      this.props.fetchMineIncidentFollowActionOptions();
       this.props.setOptionsLoaded();
     }
   }
@@ -419,6 +423,7 @@ const mapDispatchToProps = (dispatch) =>
       closeModal,
       setOptionsLoaded,
       fetchPartyRelationshipTypes,
+      fetchMineIncidentFollowActionOptions,
     },
     dispatch
   );

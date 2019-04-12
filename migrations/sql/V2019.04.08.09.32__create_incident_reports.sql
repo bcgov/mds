@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS mine_incident_followup_type
     mine_incident_followup_type_code                character varying(3) PRIMARY KEY,
     description                                     character varying(100),
     display_order                                   integer NOT NULL,
-    active_ind                                      boolean,
+    active_ind                                      boolean NOT NULL DEFAULT 'true',
 
     create_user                                     character varying(60)                    NOT NULL,
     create_timestamp                                timestamp with time zone DEFAULT now()   NOT NULL,

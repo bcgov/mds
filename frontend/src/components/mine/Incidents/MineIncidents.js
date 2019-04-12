@@ -12,6 +12,7 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 
 import { fetchMineIncidents, createMineIncident } from "@/actionCreators/mineActionCreator";
 import { getMineIncidents } from "@/selectors/mineSelectors";
+import { getDropdownIncidentFollowupActionOptions } from "@/selectors/staticContentSelectors";
 
 /**
  * @class  MineTailingsInfo - all tenure information related to the mine.
@@ -20,6 +21,7 @@ import { getMineIncidents } from "@/selectors/mineSelectors";
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   mineIncidents: PropTypes.arrayOf(CustomPropTypes.incident),
+  followupActionOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   fetchMineIncidents: PropTypes.func.isRequired,
@@ -48,8 +50,9 @@ export class MineIncidents extends Component {
         onSubmit: this.handleAddMineIncident,
         title: ModalContent.ADD_INCIDENT(this.props.mine.mine_name),
         mineGuid: this.props.mine.guid,
+        followupActionOptions: this.props.followupActionOptions,
       },
-      widthSize: "25vw",
+      widthSize: "50vw",
       content: modalConfig.MINE_INCIDENT,
     });
   }
@@ -72,6 +75,7 @@ export class MineIncidents extends Component {
 
 const mapStateToProps = (state) => ({
   mineIncidents: getMineIncidents(state),
+  followupActionOptions: getDropdownIncidentFollowupActionOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
