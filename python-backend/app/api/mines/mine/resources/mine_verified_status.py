@@ -12,7 +12,7 @@ from app.api.mines.mine.models.mine_verified_status import MineVerifiedStatus
 
 
 class MineVerifiedStatusResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser(trim=True,bundle_errors=True)
+    parser = reqparse.RequestParser(trim=True)
     parser.add_argument('healthy', type=inputs.boolean)
 
     @requires_role_mine_view

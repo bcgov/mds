@@ -16,7 +16,7 @@ from app.api.constants import FILE_UPLOAD_SIZE, FILE_UPLOAD_OFFSET, FILE_UPLOAD_
 
 
 class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser(trim=True,bundle_errors=True)
+    parser = reqparse.RequestParser(trim=True)
     parser.add_argument(
         'folder', type=str, required=True, help='The sub folder path to store the document in.')
     parser.add_argument(

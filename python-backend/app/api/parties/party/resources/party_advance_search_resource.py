@@ -16,7 +16,7 @@ from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class PartyAdvancedSearchResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser(trim=True, bundle_errors=True)
+    parser = reqparse.RequestParser(trim=True)
     parser.add_argument(
         'first_name', type=str, help='First name of the party, if the party is a person.')
     parser.add_argument(

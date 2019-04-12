@@ -8,7 +8,7 @@ from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class MinePartyApptAdminResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser(trim=True,bundle_errors=True)
+    parser = reqparse.RequestParser(trim=True)
     parser.add_argument('mine_no', type=str, help='number of the mine.')
 
     @api.doc(params={})

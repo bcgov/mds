@@ -11,7 +11,7 @@ from app.extensions import db
 
 
 class MinespaceUserResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser(trim=True,bundle_errors=True)
+    parser = reqparse.RequestParser(trim=True)
     parser.add_argument('email', type=str, location='json', required=True)
     parser.add_argument('mine_guids', type=list, location='json', required=True)
 

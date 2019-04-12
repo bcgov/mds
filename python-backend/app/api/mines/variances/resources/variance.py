@@ -35,7 +35,7 @@ variance_model = api.model(
 
 
 class VarianceListResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser(trim=True, bundle_errors=True)
+    parser = reqparse.RequestParser(trim=True)
     parser.add_argument(
         'compliance_article_id',
         type=int,
@@ -115,7 +115,7 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
 
 
 class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser(trim=True, bundle_errors=True)
+    parser = reqparse.RequestParser(trim=True)
     parser.add_argument('mine_document_guid', type=str)
     parser.add_argument('document_manager_guid', type=str)
     parser.add_argument('document_name', type=str)

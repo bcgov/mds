@@ -11,7 +11,7 @@ from app.extensions import db
 
 
 class MinespaceUserMineResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser(trim=True,bundle_errors=True)
+    parser = reqparse.RequestParser(trim=True)
     parser.add_argument('mine_guid', type=str, required=True)
 
     @api.doc(params={'user_id': 'User id.', 'mine_guid': 'MDS Mine Guid'})

@@ -14,7 +14,7 @@ from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class ExpectedDocumentResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser(trim=True, bundle_errors=True)
+    parser = reqparse.RequestParser(trim=True)
 
     parser.add_argument('exp_document_name', type=str, store_missing=False)
     parser.add_argument('exp_document_description', type=str, store_missing=False)

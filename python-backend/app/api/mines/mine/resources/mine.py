@@ -30,7 +30,7 @@ from ....permits.permit.models.permit import Permit
 
 
 class MineResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser(trim=True, bundle_errors=True)
+    parser = reqparse.RequestParser(trim=True)
     parser.add_argument('mine_name', type=str, help='Name of the mine.', store_missing=False)
     parser.add_argument(
         'mine_note',
