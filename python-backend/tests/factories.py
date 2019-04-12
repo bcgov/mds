@@ -21,7 +21,6 @@ from app.api.permits.permit.models.permit import Permit
 from app.api.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 
-
 GUID = factory.LazyFunction(uuid.uuid4)
 TODAY = factory.LazyFunction(datetime.now)
 
@@ -65,6 +64,7 @@ class MineExpectedDocumentFactory(BaseFactory):
     due_date = TODAY
     received_date = TODAY
     hsrc_code = factory.LazyAttribute(lambda o: o.required_document.hsrc_code)
+    mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
 
 
 class MineLocationFactory(BaseFactory):
@@ -245,6 +245,20 @@ class MineFactory(BaseFactory):
     class Meta:
         model = Mine
 
+    class Params:
+        minimal = factory.Trait(
+            mine_no=None,
+            mine_note=None,
+            mine_region='NE',
+            mine_location=None,
+            mine_type=None,
+            verified_status=None,
+            mine_status=None,
+            mine_tailings_storage_facilities=0,
+            mine_permit=0,
+            mine_expected_documents=0,
+        )
+
     mine_guid = GUID
     mine_no = factory.Sequence(lambda n: f'MINENO{n}')
     mine_name = factory.Sequence(lambda n: f'mine name {n}')
@@ -288,4 +302,4 @@ class MineFactory(BaseFactory):
         if not isinstance(extracted, int):
             extracted = 1
 
-        MineExpectedDocumentFactory.create_batch(size=extracted, mine_guid=obj.mine_guid, **kwargs)
+        MineExpectedDocumentFactory.create_batch(size=extracted, mine=obj, **kwargs)
