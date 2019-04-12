@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import { loadModules } from "react-arcgis";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { renderToString } from "react-dom/server";
 import MapPopup from "@/components/maps/MapPopup";
-import { getMines, getMineIds } from "@/selectors/mineSelectors";
+import { getMines, getMineIds, getMineBasicInfoList } from "@/selectors/mineSelectors";
+import { fetchMineBasicInfoList } from "@/actionCreators/mineActionCreator";
+import { getCommodityOptionHash } from "@/selectors/staticContentSelectors";
 /**
  * @class MinePin.js must be the child of arcGIS <Map /> or <Screen />,
  * MinePin is connected to redux to access/display all mines information - reusable on any view will display the correct state.
@@ -13,15 +16,20 @@ import { getMines, getMineIds } from "@/selectors/mineSelectors";
  */
 
 const propTypes = {
+  fetchMineBasicInfoList: PropTypes.func.isRequired,
   mines: PropTypes.objectOf(PropTypes.any).isRequired,
   mineIds: PropTypes.arrayOf(PropTypes.string),
+  mineBasicInfoList: PropTypes.arrayOf(PropTypes.any),
   view: PropTypes.objectOf(PropTypes.any).isRequired,
   map: PropTypes.objectOf(PropTypes.any).isRequired,
   match: PropTypes.objectOf(PropTypes.any).isRequired,
+  mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.any),
 };
 
 const defaultProps = {
   mineIds: [],
+  mineBasicInfoList: [],
+  mineCommodityOptionsHash: {},
 };
 
 export class MinePin extends Component {
@@ -75,7 +83,6 @@ export class MinePin extends Component {
           defaultSymbol: defaultSym,
         });
         renderer.field = "clusterCount";
-
         const smSymbol = new SimpleMarkerSymbol({
           size: 22,
           outline: new SimpleLineSymbol({ color: [0, 0, 0] }),
@@ -102,13 +109,25 @@ export class MinePin extends Component {
         renderer.addClassBreakInfo(121, 1000, lgSymbol);
         renderer.addClassBreakInfo(1001, Infinity, xlSymbol);
 
-        // set up a popup template
+        const queryMineDetails = (content) => {
+          const guids = [content.graphic.attributes.templateContent.guid];
+          return this.props
+            .fetchMineBasicInfoList(guids)
+            .then(() =>
+              renderToString(
+                <MapPopup
+                  basicMineInfo={this.props.mineBasicInfoList[0]}
+                  mineCommodityHash={this.props.mineCommodityOptionsHash}
+                />
+              )
+            );
+        };
+
+        // set up a popup template, queryMineDetails is a promise that is resolved after a pin is clicked
         const popupTemplate = new PopupTemplate({
           title: "{templateTitle}",
-          content: "{templateContent}",
+          content: queryMineDetails,
         });
-
-        const mapPopupString = renderToString(<MapPopup id="{mineId}" />);
 
         // The previous code processing point data was nicely seperated into functions, but slow with
         // large datasets taking 5-10 seconds for 50000 points. The code below is ~50ms for 50000 points
@@ -120,7 +139,7 @@ export class MinePin extends Component {
               y: Number(this.props.mines[mineId].mine_location.latitude),
               x: Number(this.props.mines[mineId].mine_location.longitude),
               templateTitle: this.props.mines[mineId].mine_name,
-              templateContent: mapPopupString.replace("{mineId}", mineId),
+              templateContent: this.props.mines[mineId],
             });
           }
         });
@@ -157,11 +176,21 @@ MinePin.defaultProps = defaultProps;
 const mapStateToProps = (state) => ({
   mines: getMines(state),
   mineIds: getMineIds(state),
+  mineBasicInfoList: getMineBasicInfoList(state),
+  mineCommodityOptionsHash: getCommodityOptionHash(state),
 });
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      fetchMineBasicInfoList,
+    },
+    dispatch
+  );
 
 export default withRouter(
   connect(
     mapStateToProps,
-    null
+    mapDispatchToProps
   )(MinePin)
 );

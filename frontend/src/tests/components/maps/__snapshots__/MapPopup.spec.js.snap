@@ -4,7 +4,8 @@ exports[`MapPopup renders properly 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <MapPopup
-    id=""
+    basicMineInfo={Object {}}
+    mineCommodityHash={Object {}}
     mineIds={
       Array [
         "18133c75-49ad-4101-85f3-a43e35ae989a",
@@ -204,106 +205,313 @@ ShallowWrapper {
   Symbol(enzyme.__node__): Object {
     "instance": null,
     "key": undefined,
-    "nodeType": "class",
+    "nodeType": "host",
     "props": Object {
-      "basename": "",
-      "children": <Link
-        replace={false}
-        to="/dashboard//summary"
-      >
-        <Button
-          block={false}
-          ghost={false}
-          loading={false}
-          prefixCls="ant-btn"
-          type="primary"
+      "children": Array [
+        <table
+          className="minePopUpText"
+          style={
+            Object {
+              "width": "100%",
+            }
+          }
         >
-          View Mine
-        </Button>
-      </Link>,
-      "context": Object {},
-      "location": "/",
+          <tr>
+            <td
+              className="leftMapPopUpCol field-title"
+            >
+              Mine No.
+            </td>
+            <td />
+          </tr>
+          <tr>
+            <td
+              className="leftMapPopUpCol field-title"
+            >
+              Permit No.
+            </td>
+            <td>
+              N/A
+              <br />
+            </td>
+          </tr>
+          <tr>
+            <td
+              className="leftMapPopUpCol field-title"
+            >
+              Commodities
+            </td>
+            <td>
+              N/A
+              <br />
+            </td>
+          </tr>
+        </table>,
+        <StaticRouter
+          basename=""
+          context={Object {}}
+          location="/"
+        >
+          <Link
+            replace={false}
+            to="/dashboard/undefined/summary"
+          >
+            <div
+              className="mineMapPopUpButton"
+            >
+              <Button
+                block={false}
+                ghost={false}
+                htmlType="button"
+                loading={false}
+                type="primary"
+              >
+                View Mine
+              </Button>
+            </div>
+          </Link>
+        </StaticRouter>,
+      ],
     },
     "ref": null,
-    "rendered": Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "class",
-      "props": Object {
-        "children": <Button
-          block={false}
-          ghost={false}
-          loading={false}
-          prefixCls="ant-btn"
-          type="primary"
-        >
-          View Mine
-        </Button>,
-        "replace": false,
-        "to": "/dashboard//summary",
-      },
-      "ref": null,
-      "rendered": Object {
+    "rendered": Array [
+      Object {
         "instance": null,
         "key": undefined,
-        "nodeType": "class",
+        "nodeType": "host",
         "props": Object {
-          "block": false,
-          "children": "View Mine",
-          "ghost": false,
-          "loading": false,
-          "prefixCls": "ant-btn",
-          "type": "primary",
+          "children": Array [
+            <tr>
+              <td
+                className="leftMapPopUpCol field-title"
+              >
+                Mine No.
+              </td>
+              <td />
+            </tr>,
+            <tr>
+              <td
+                className="leftMapPopUpCol field-title"
+              >
+                Permit No.
+              </td>
+              <td>
+                N/A
+                <br />
+              </td>
+            </tr>,
+            <tr>
+              <td
+                className="leftMapPopUpCol field-title"
+              >
+                Commodities
+              </td>
+              <td>
+                N/A
+                <br />
+              </td>
+            </tr>,
+          ],
+          "className": "minePopUpText",
+          "style": Object {
+            "width": "100%",
+          },
         },
         "ref": null,
-        "rendered": "View Mine",
-        "type": [Function],
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": Array [
+                <td
+                  className="leftMapPopUpCol field-title"
+                >
+                  Mine No.
+                </td>,
+                <td />,
+              ],
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": "Mine No.",
+                  "className": "leftMapPopUpCol field-title",
+                },
+                "ref": null,
+                "rendered": "Mine No.",
+                "type": "td",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": undefined,
+                },
+                "ref": null,
+                "rendered": null,
+                "type": "td",
+              },
+            ],
+            "type": "tr",
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": Array [
+                <td
+                  className="leftMapPopUpCol field-title"
+                >
+                  Permit No.
+                </td>,
+                <td>
+                  N/A
+                  <br />
+                </td>,
+              ],
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": "Permit No.",
+                  "className": "leftMapPopUpCol field-title",
+                },
+                "ref": null,
+                "rendered": "Permit No.",
+                "type": "td",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": Array [
+                    "N/A",
+                    <br />,
+                    null,
+                  ],
+                },
+                "ref": null,
+                "rendered": Array [
+                  "N/A",
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {},
+                    "ref": null,
+                    "rendered": null,
+                    "type": "br",
+                  },
+                  null,
+                ],
+                "type": "td",
+              },
+            ],
+            "type": "tr",
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": Array [
+                <td
+                  className="leftMapPopUpCol field-title"
+                >
+                  Commodities
+                </td>,
+                <td>
+                  N/A
+                  <br />
+                </td>,
+              ],
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": "Commodities",
+                  "className": "leftMapPopUpCol field-title",
+                },
+                "ref": null,
+                "rendered": "Commodities",
+                "type": "td",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": Array [
+                    "N/A",
+                    <br />,
+                    null,
+                  ],
+                },
+                "ref": null,
+                "rendered": Array [
+                  "N/A",
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {},
+                    "ref": null,
+                    "rendered": null,
+                    "type": "br",
+                  },
+                  null,
+                ],
+                "type": "td",
+              },
+            ],
+            "type": "tr",
+          },
+        ],
+        "type": "table",
       },
-      "type": [Function],
-    },
-    "type": [Function],
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "class",
-      "props": Object {
-        "basename": "",
-        "children": <Link
-          replace={false}
-          to="/dashboard//summary"
-        >
-          <Button
-            block={false}
-            ghost={false}
-            loading={false}
-            prefixCls="ant-btn"
-            type="primary"
-          >
-            View Mine
-          </Button>
-        </Link>,
-        "context": Object {},
-        "location": "/",
-      },
-      "ref": null,
-      "rendered": Object {
+      Object {
         "instance": null,
         "key": undefined,
         "nodeType": "class",
         "props": Object {
-          "children": <Button
-            block={false}
-            ghost={false}
-            loading={false}
-            prefixCls="ant-btn"
-            type="primary"
+          "basename": "",
+          "children": <Link
+            replace={false}
+            to="/dashboard/undefined/summary"
           >
-            View Mine
-          </Button>,
-          "replace": false,
-          "to": "/dashboard//summary",
+            <div
+              className="mineMapPopUpButton"
+            >
+              <Button
+                block={false}
+                ghost={false}
+                htmlType="button"
+                loading={false}
+                type="primary"
+              >
+                View Mine
+              </Button>
+            </div>
+          </Link>,
+          "context": Object {},
+          "location": "/",
         },
         "ref": null,
         "rendered": Object {
@@ -311,20 +519,441 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "class",
           "props": Object {
-            "block": false,
-            "children": "View Mine",
-            "ghost": false,
-            "loading": false,
-            "prefixCls": "ant-btn",
-            "type": "primary",
+            "children": <div
+              className="mineMapPopUpButton"
+            >
+              <Button
+                block={false}
+                ghost={false}
+                htmlType="button"
+                loading={false}
+                type="primary"
+              >
+                View Mine
+              </Button>
+            </div>,
+            "replace": false,
+            "to": "/dashboard/undefined/summary",
           },
           "ref": null,
-          "rendered": "View Mine",
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": <Button
+                block={false}
+                ghost={false}
+                htmlType="button"
+                loading={false}
+                type="primary"
+              >
+                View Mine
+              </Button>,
+              "className": "mineMapPopUpButton",
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "block": false,
+                "children": "View Mine",
+                "ghost": false,
+                "htmlType": "button",
+                "loading": false,
+                "type": "primary",
+              },
+              "ref": null,
+              "rendered": "View Mine",
+              "type": [Function],
+            },
+            "type": "div",
+          },
           "type": [Function],
         },
         "type": [Function],
       },
-      "type": [Function],
+    ],
+    "type": "div",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": Array [
+          <table
+            className="minePopUpText"
+            style={
+              Object {
+                "width": "100%",
+              }
+            }
+          >
+            <tr>
+              <td
+                className="leftMapPopUpCol field-title"
+              >
+                Mine No.
+              </td>
+              <td />
+            </tr>
+            <tr>
+              <td
+                className="leftMapPopUpCol field-title"
+              >
+                Permit No.
+              </td>
+              <td>
+                N/A
+                <br />
+              </td>
+            </tr>
+            <tr>
+              <td
+                className="leftMapPopUpCol field-title"
+              >
+                Commodities
+              </td>
+              <td>
+                N/A
+                <br />
+              </td>
+            </tr>
+          </table>,
+          <StaticRouter
+            basename=""
+            context={Object {}}
+            location="/"
+          >
+            <Link
+              replace={false}
+              to="/dashboard/undefined/summary"
+            >
+              <div
+                className="mineMapPopUpButton"
+              >
+                <Button
+                  block={false}
+                  ghost={false}
+                  htmlType="button"
+                  loading={false}
+                  type="primary"
+                >
+                  View Mine
+                </Button>
+              </div>
+            </Link>
+          </StaticRouter>,
+        ],
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": Array [
+              <tr>
+                <td
+                  className="leftMapPopUpCol field-title"
+                >
+                  Mine No.
+                </td>
+                <td />
+              </tr>,
+              <tr>
+                <td
+                  className="leftMapPopUpCol field-title"
+                >
+                  Permit No.
+                </td>
+                <td>
+                  N/A
+                  <br />
+                </td>
+              </tr>,
+              <tr>
+                <td
+                  className="leftMapPopUpCol field-title"
+                >
+                  Commodities
+                </td>
+                <td>
+                  N/A
+                  <br />
+                </td>
+              </tr>,
+            ],
+            "className": "minePopUpText",
+            "style": Object {
+              "width": "100%",
+            },
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": Array [
+                  <td
+                    className="leftMapPopUpCol field-title"
+                  >
+                    Mine No.
+                  </td>,
+                  <td />,
+                ],
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "Mine No.",
+                    "className": "leftMapPopUpCol field-title",
+                  },
+                  "ref": null,
+                  "rendered": "Mine No.",
+                  "type": "td",
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": undefined,
+                  },
+                  "ref": null,
+                  "rendered": null,
+                  "type": "td",
+                },
+              ],
+              "type": "tr",
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": Array [
+                  <td
+                    className="leftMapPopUpCol field-title"
+                  >
+                    Permit No.
+                  </td>,
+                  <td>
+                    N/A
+                    <br />
+                  </td>,
+                ],
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "Permit No.",
+                    "className": "leftMapPopUpCol field-title",
+                  },
+                  "ref": null,
+                  "rendered": "Permit No.",
+                  "type": "td",
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": Array [
+                      "N/A",
+                      <br />,
+                      null,
+                    ],
+                  },
+                  "ref": null,
+                  "rendered": Array [
+                    "N/A",
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {},
+                      "ref": null,
+                      "rendered": null,
+                      "type": "br",
+                    },
+                    null,
+                  ],
+                  "type": "td",
+                },
+              ],
+              "type": "tr",
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": Array [
+                  <td
+                    className="leftMapPopUpCol field-title"
+                  >
+                    Commodities
+                  </td>,
+                  <td>
+                    N/A
+                    <br />
+                  </td>,
+                ],
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "Commodities",
+                    "className": "leftMapPopUpCol field-title",
+                  },
+                  "ref": null,
+                  "rendered": "Commodities",
+                  "type": "td",
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": Array [
+                      "N/A",
+                      <br />,
+                      null,
+                    ],
+                  },
+                  "ref": null,
+                  "rendered": Array [
+                    "N/A",
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {},
+                      "ref": null,
+                      "rendered": null,
+                      "type": "br",
+                    },
+                    null,
+                  ],
+                  "type": "td",
+                },
+              ],
+              "type": "tr",
+            },
+          ],
+          "type": "table",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "basename": "",
+            "children": <Link
+              replace={false}
+              to="/dashboard/undefined/summary"
+            >
+              <div
+                className="mineMapPopUpButton"
+              >
+                <Button
+                  block={false}
+                  ghost={false}
+                  htmlType="button"
+                  loading={false}
+                  type="primary"
+                >
+                  View Mine
+                </Button>
+              </div>
+            </Link>,
+            "context": Object {},
+            "location": "/",
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": <div
+                className="mineMapPopUpButton"
+              >
+                <Button
+                  block={false}
+                  ghost={false}
+                  htmlType="button"
+                  loading={false}
+                  type="primary"
+                >
+                  View Mine
+                </Button>
+              </div>,
+              "replace": false,
+              "to": "/dashboard/undefined/summary",
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": <Button
+                  block={false}
+                  ghost={false}
+                  htmlType="button"
+                  loading={false}
+                  type="primary"
+                >
+                  View Mine
+                </Button>,
+                "className": "mineMapPopUpButton",
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "block": false,
+                  "children": "View Mine",
+                  "ghost": false,
+                  "htmlType": "button",
+                  "loading": false,
+                  "type": "primary",
+                },
+                "ref": null,
+                "rendered": "View Mine",
+                "type": [Function],
+              },
+              "type": "div",
+            },
+            "type": [Function],
+          },
+          "type": [Function],
+        },
+      ],
+      "type": "div",
     },
   ],
   Symbol(enzyme.__options__): Object {

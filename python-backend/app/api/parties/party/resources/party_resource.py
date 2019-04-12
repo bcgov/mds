@@ -3,7 +3,7 @@ from flask import request, current_app
 from flask_restplus import Resource, reqparse
 from sqlalchemy_filters import apply_pagination
 from sqlalchemy.exc import DBAPIError
-from werkzeug.exceptions import BadRequest, InternalServerError
+from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
 from ..models.party import Party
 from ...party_appt.models.mine_party_appt import MinePartyAppointment
@@ -135,26 +135,23 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
     @requires_role_mine_create
     def post(self, party_guid=None):
         if party_guid:
-            self.raise_error(400, 'Error: Unexpected party id in Url.')
+            raise BadRequest('Unexpected party id in Url.')
         data = PartyResource.parser.parse_args()
 
-        try:
-            party = Party.create(
-                data.get('party_name'),
-                data.get('phone_no'),
-                data.get('party_type_code'),
-                # Nullable fields
-                email=data.get('email'),
-                first_name=data.get('first_name'),
-                phone_ext=data.get('phone_ext'),
-                suite_no=data.get('suite_no'),
-                address_line_1=data.get('address_line_1'),
-                address_line_2=data.get('address_line_2'),
-                city=data.get('city'),
-                sub_division_code=data.get('sub_division_code'),
-                post_code=data.get('post_code'))
-        except AssertionError as e:
-            raise BadRequest(e)
+        party = Party.create(
+            data.get('party_name'),
+            data.get('phone_no'),
+            data.get('party_type_code'),
+            # Nullable fields
+            email=data.get('email'),
+            first_name=data.get('first_name'),
+            phone_ext=data.get('phone_ext'),
+            suite_no=data.get('suite_no'),
+            address_line_1=data.get('address_line_1'),
+            address_line_2=data.get('address_line_2'),
+            city=data.get('city'),
+            sub_division_code=data.get('sub_division_code'),
+            post_code=data.get('post_code'))
 
         if not party:
             raise InternalServerError('Error: Failed to create party')
@@ -168,16 +165,13 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
         data = PartyResource.parser.parse_args()
         existing_party = Party.find_by_party_guid(party_guid)
         if not existing_party:
-            return self.create_error_payload(404, 'Party not found'), 404
+            raise NotFound('Party not found')
 
-        try:
-            current_app.logger.info(f'Updating {existing_party} with {data}')
-            for key, value in data.items():
-                setattr(existing_party, key, value)
+        current_app.logger.info(f'Updating {existing_party} with {data}')
+        for key, value in data.items():
+            setattr(existing_party, key, value)
 
-            existing_party.save()
-        except AssertionError as e:
-            raise BadRequest(e)
+        existing_party.save()
 
         return existing_party.json()
 

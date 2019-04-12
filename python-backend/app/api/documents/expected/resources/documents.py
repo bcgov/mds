@@ -5,8 +5,9 @@ from datetime import datetime
 from flask import request
 from flask_restplus import Resource, reqparse
 
-from ..models.mine_expected_document import MineExpectedDocument
+from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
+from ..models.mine_expected_document import MineExpectedDocument
 from app.extensions import api
 from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create, requires_any_of, MINE_VIEW, MINE_CREATE, MINESPACE_PROPONENT
 from ....utils.resources_mixins import UserMixin, ErrorMixin
@@ -14,8 +15,13 @@ from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 class ExpectedDocumentResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
-    parser.add_argument(
-        'document', type=dict, required=True, help='document to change', location="json")
+
+    parser.add_argument('exp_document_name', type=str, trim=True, store_missing=False)
+    parser.add_argument('exp_document_description', type=str, trim=True, store_missing=False)
+    parser.add_argument('due_date', type=str, trim=True, store_missing=False)
+    parser.add_argument('received_date', type=str, trim=True, store_missing=False)
+    parser.add_argument('exp_document_status_code', type=str, trim=True, store_missing=False)
+    parser.add_argument('hsrc_code', type=str, trim=True, store_missing=False)
 
     @api.doc(
         params={
@@ -35,31 +41,16 @@ class ExpectedDocumentResource(Resource, UserMixin, ErrorMixin):
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
     def put(self, exp_doc_guid=None):
         if exp_doc_guid is None:
-            return self.create_error_payload(404, 'Must provide a expected document guid.'), 404
+            raise BadRequest('Must provide a expected document guid.')
 
         exp_doc = MineExpectedDocument.find_by_exp_document_guid(exp_doc_guid)
         if exp_doc is None:
-            return self.create_error_payload(
-                404, f'expected_document with guid "{exp_doc_guid}" not found'), 404
+            raise NotFound(f'expected_document with guid "{exp_doc_guid}" not found')
 
         data = self.parser.parse_args()
-        updated_doc = data['document']
-        if str(exp_doc.exp_document_guid) != updated_doc['exp_document_guid']:
-            return self.create_error_payload(500, 'exp_document does not match guid provided'), 500
 
-        exp_doc.exp_document_name = updated_doc.get('exp_document_name')
-        exp_doc.exp_document_description = updated_doc.get('exp_document_description')
-        if updated_doc.get('due_date') is not None:
-            exp_doc.due_date = updated_doc.get('due_date')
-
-        exp_doc.received_date = updated_doc.get('received_date')
-        exp_doc.exp_document_description = updated_doc.get('exp_document_description')
-
-        updated_doc_status = updated_doc.get('exp_document_status')
-        if updated_doc_status is not None:
-            updated_doc_status_code = updated_doc_status.get('exp_document_status_code')
-            if updated_doc_status_code is not None:
-                exp_doc.exp_document_status_code = updated_doc_status_code
+        for key, value in data.items():
+            setattr(exp_doc, key, value)
 
         exp_doc.save()
         return {'expected_document': exp_doc.json()}

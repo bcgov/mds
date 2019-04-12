@@ -982,23 +982,95 @@ export const APPLICATION_STATUS_CODE_OPTIONS = [
   { application_status_code: "APR", description: "Approved" },
 ];
 
-export const APPLICATION_LIST = [
+export const VARIANCES = {
+  records: [
+    {
+      variance_id: 1249,
+      compliance_article_id: 1,
+      expiry_date: "2019-03-30",
+      issue_date: "2019-03-01",
+      note: "notesss",
+      received_date: "2019-03-01",
+      documents: [
+        {
+          records: [
+            {
+              variance_document_xref_guid: "eda300b7-2155-4bf4-9b3d-06b1f4d8a0fe",
+              variance_id: 1249,
+              mine_document_guid: "d463b9df-7650-4d18-8c73-c8bfb7ae48f0",
+              details: {
+                mine_document_guid: "d463b9df-7650-4d18-8c73-c8bfb7ae48f0",
+                mine_guid: "79edee65-038e-4b26-9048-e41e4c0b7d1a",
+                document_manager_guid: "7426b928-caf7-4e1e-aa59-392895929f97",
+                document_name: "just_a_pdf.PDF",
+                active_ind: "True",
+              },
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
+export const COMPLIANCE_CODES = {
+  records: [
+    {
+      article_act_code: "HSRCM",
+      compliance_article_id: 305,
+      description: "Spills",
+      effective_date: "1970-01-01",
+      expiry_date: "9999-12-31",
+      paragraph: "7",
+      section: "2",
+      sub_paragraph: null,
+      sub_section: "3",
+    },
+    {
+      article_act_code: "HSRCM",
+      compliance_article_id: 306,
+      description: "Flammable Waste Storage",
+      effective_date: "1970-01-01",
+      expiry_date: "9999-12-31",
+      paragraph: "8",
+      section: "2",
+      sub_paragraph: null,
+      sub_section: "3",
+    },
+  ],
+};
+
+export const DROPDOWN_HSRCM_CODES = [
   {
-    application_id: 1,
-    mine_guid: "abae7c6e-4c90-4969-a136-c0fea841ce86",
-    application_guid: "ad3eaab6-6248-414c-9c15-8fe4880f0a61",
-    application_no: "TA-09876",
-    application_status_code: "RIP",
-    description: "Test.",
-    received_date: "2019-03-06",
+    value: 305,
+    label: "2.3.7 - Spills",
   },
   {
-    application_id: 3,
-    mine_guid: "abae7c6e-4c90-4969-a136-c0fea841ce86",
-    application_guid: "a54c5c76-53a4-4967-8686-4ca15cc1863a",
-    application_no: "TA-93475",
-    application_status_code: "RIP",
-    description: null,
-    received_date: "2019-02-25",
+    value: 306,
+    label: "2.3.8 - Flammable Waste Storage",
   },
 ];
+
+export const HSRCM_HASH = {
+  305: "2.3.7 - Spills",
+  306: "2.3.8 - Flammable Waste Storage",
+};
+
+export const APPLICATION_LIST = {
+  applications: [
+    {
+      application_guid: "85e05fe9-2b5a-4e6d-a7d0-cc1a2395dd14",
+      application_no: "TA-09876",
+      application_status_code: "RIP",
+      description: "Test.",
+      received_date: "2019-03-06",
+    },
+    {
+      application_guid: "85e05fe9-2b5a-4e6d-a7d0-cc1a2395dd11",
+      application_no: "TA-93475",
+      application_status_code: "RIP",
+      description: null,
+      received_date: "2019-02-25",
+    },
+  ],
+};

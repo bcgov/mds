@@ -1,4 +1,4 @@
-from flask_restplus import Resource, reqparse
+from flask_restplus import Resource, reqparse, fields
 from flask import request
 from datetime import datetime
 
@@ -9,11 +9,22 @@ from app.api.utils.access_decorators import requires_role_mine_view
 
 
 class ApplicationStatusCodeResource(Resource, UserMixin, ErrorMixin):
+
+    application_status_code_model = api.model('ApplicationStatusCode', {
+        'application_status_code': fields.String,
+        'description': fields.String,
+    })
+
+    @api.marshal_with(application_status_code_model, code=200)
+    @api.doc(
+        description=
+        'This endpoint returns a list of all possible document status codes and thier descriptions.'
+    )
     @requires_role_mine_view
     def get(self):
         application_status_codes = ApplicationStatusCode.find_all_active_application_status_code()
         if application_status_codes:
-            result = [x.json() for x in application_status_codes]
+            result = application_status_codes
         else:
             result = []
         return result

@@ -66,8 +66,8 @@ ShallowWrapper {
             <Button
               block={false}
               ghost={false}
+              htmlType="button"
               loading={false}
-              prefixCls="ant-btn"
               type="primary"
             >
               <Icon
@@ -189,8 +189,8 @@ ShallowWrapper {
               <Button
                 block={false}
                 ghost={false}
+                htmlType="button"
                 loading={false}
-                prefixCls="ant-btn"
                 type="primary"
               >
                 <Icon
@@ -221,8 +221,8 @@ ShallowWrapper {
               "children": <Button
                 block={false}
                 ghost={false}
+                htmlType="button"
                 loading={false}
-                prefixCls="ant-btn"
                 type="primary"
               >
                 <Icon
@@ -244,8 +244,8 @@ ShallowWrapper {
                   type="arrow-up"
                 />,
                 "ghost": false,
+                "htmlType": "button",
                 "loading": false,
-                "prefixCls": "ant-btn",
                 "type": "primary",
               },
               "ref": null,
@@ -331,8 +331,8 @@ ShallowWrapper {
               <Button
                 block={false}
                 ghost={false}
+                htmlType="button"
                 loading={false}
-                prefixCls="ant-btn"
                 type="primary"
               >
                 <Icon
@@ -454,8 +454,8 @@ ShallowWrapper {
                 <Button
                   block={false}
                   ghost={false}
+                  htmlType="button"
                   loading={false}
-                  prefixCls="ant-btn"
                   type="primary"
                 >
                   <Icon
@@ -486,8 +486,8 @@ ShallowWrapper {
                 "children": <Button
                   block={false}
                   ghost={false}
+                  htmlType="button"
                   loading={false}
-                  prefixCls="ant-btn"
                   type="primary"
                 >
                   <Icon
@@ -509,8 +509,8 @@ ShallowWrapper {
                     type="arrow-up"
                   />,
                   "ghost": false,
+                  "htmlType": "button",
                   "loading": false,
-                  "prefixCls": "ant-btn",
                   "type": "primary",
                 },
                 "ref": null,
