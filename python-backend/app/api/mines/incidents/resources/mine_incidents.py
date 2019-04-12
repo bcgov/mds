@@ -33,7 +33,7 @@ class MineIncidentListResource(Resource, UserMixin):
     parser.add_argument(
         'incident_timestamp',
         help='Datetime of when the incident occured ',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None,
         location='json',
         required=True)
     parser.add_argument(
@@ -57,7 +57,7 @@ class MineIncidentListResource(Resource, UserMixin):
     parser.add_argument(
         'reported_timestamp',
         help='Datetime of when the incident was reported',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d %H-%M') if x else None,
         location='json')
     parser.add_argument(
         'reported_by', help='Name of party who reported the incident', type=str, location='json')
