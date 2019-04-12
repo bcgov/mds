@@ -32,7 +32,7 @@ class MineVerifiedStatusListResource(Resource, UserMixin):
 class MineVerifiedStatusResource(Resource, UserMixin):
 
     parser = reqparse.RequestParser()
-    parser.add_argument('healthy', type=inputs.boolean)
+    parser.add_argument('healthy', type=inputs.boolean, location='json')
 
     @api.expect(parser)
     @api.marshal_with(MINE_VERIFIED_MODEL, code=200)
