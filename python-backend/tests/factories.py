@@ -9,6 +9,7 @@ from app.extensions import db
 from tests.status_code_gen import *
 from app.api.document_manager.models.document_manager import DocumentManager
 from app.api.documents.expected.models.mine_expected_document import MineExpectedDocument
+from app.api.documents.mines.models.mine_document import MineDocument
 from app.api.mines.location.models.mine_location import MineLocation
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.mine.models.mine_type import MineType
@@ -50,6 +51,21 @@ class DocumentManagerFactory(BaseFactory):
     upload_completed_date = TODAY
     file_display_name = factory.Faker('file_name')
     path_display_name = factory.LazyAttribute(lambda o: f'mine_name/category/{o.file_display_name}')
+
+
+class MineDocumentFactory(BaseFactory):
+    class Meta:
+        model = MineDocument
+
+    class Params:
+        document_manager_obj = factory.SubFactory(DocumentManagerFactory, file_display_name=factory.SelfAttribute('..document_name'))
+        mine = factory.SubFactory('tests.factories.MineFactory', minimal=True) 
+
+    mine_document_guid = GUID
+    mine_guid = factory.SelfAttribute('mine.mine_guid')
+    document_manager_guid = factory.SelfAttribute('document_manager_obj.document_guid')
+    document_name = factory.Faker('file_name')
+    mine_expected_document = []
 
 
 class MineExpectedDocumentFactory(BaseFactory):
