@@ -200,7 +200,7 @@ class MineIncidentFactory(BaseFactory):
         model = MineIncident
 
     mine_incident_id = factory.Sequence(lambda n: n)
-    mine_incident_id_year = lambda: TODAY().year
+    mine_incident_id_year = 2019
     mine_incident_guid = GUID
     incident_timestamp = factory.Faker('past_datetime')
     incident_description = factory.Faker('sentence', nb_words=20, variable_nb_words=True)
@@ -266,6 +266,7 @@ class MineFactory(BaseFactory):
     mine_tailings_storage_facilities = []
     mine_permit = []
     mine_expected_documents = []
+    mine_incidents = []
 
     @factory.post_generation
     def mine_tailings_storage_facilities(obj, create, extracted, **kwargs):
