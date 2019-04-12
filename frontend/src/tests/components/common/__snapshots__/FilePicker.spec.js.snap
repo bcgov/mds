@@ -35,21 +35,26 @@ ShallowWrapper {
           className="center"
         >
           <FormItem
+            colon={true}
             hasFeedback={false}
+            prefixCls="ant-form"
           >
             <RadioGroup
               buttonStyle="outline"
               defaultValue={true}
               disabled={false}
               onChange={[Function]}
+              prefixCls="ant-radio"
               size="large"
             >
               <RadioButton
+                prefixCls="ant-radio-button"
                 value={true}
               >
                 Upload new file(s)
               </RadioButton>
               <RadioButton
+                prefixCls="ant-radio-button"
                 value={false}
               >
                 Attach existing file(s)
@@ -58,7 +63,9 @@ ShallowWrapper {
           </FormItem>
         </div>,
         <FormItem
+          colon={true}
           hasFeedback={false}
+          prefixCls="ant-form"
         >
           <Field
             acceptedFileTypesMap={undefined}
@@ -88,21 +95,26 @@ ShallowWrapper {
         "nodeType": "host",
         "props": Object {
           "children": <FormItem
+            colon={true}
             hasFeedback={false}
+            prefixCls="ant-form"
           >
             <RadioGroup
               buttonStyle="outline"
               defaultValue={true}
               disabled={false}
               onChange={[Function]}
+              prefixCls="ant-radio"
               size="large"
             >
               <RadioButton
+                prefixCls="ant-radio-button"
                 value={true}
               >
                 Upload new file(s)
               </RadioButton>
               <RadioButton
+                prefixCls="ant-radio-button"
                 value={false}
               >
                 Attach existing file(s)
@@ -122,20 +134,25 @@ ShallowWrapper {
               defaultValue={true}
               disabled={false}
               onChange={[Function]}
+              prefixCls="ant-radio"
               size="large"
             >
               <RadioButton
+                prefixCls="ant-radio-button"
                 value={true}
               >
                 Upload new file(s)
               </RadioButton>
               <RadioButton
+                prefixCls="ant-radio-button"
                 value={false}
               >
                 Attach existing file(s)
               </RadioButton>
             </RadioGroup>,
+            "colon": true,
             "hasFeedback": false,
+            "prefixCls": "ant-form",
           },
           "ref": null,
           "rendered": Object {
@@ -146,11 +163,13 @@ ShallowWrapper {
               "buttonStyle": "outline",
               "children": Array [
                 <RadioButton
+                  prefixCls="ant-radio-button"
                   value={true}
                 >
                   Upload new file(s)
                 </RadioButton>,
                 <RadioButton
+                  prefixCls="ant-radio-button"
                   value={false}
                 >
                   Attach existing file(s)
@@ -159,6 +178,7 @@ ShallowWrapper {
               "defaultValue": true,
               "disabled": false,
               "onChange": [Function],
+              "prefixCls": "ant-radio",
               "size": "large",
             },
             "ref": null,
@@ -169,6 +189,7 @@ ShallowWrapper {
                 "nodeType": "class",
                 "props": Object {
                   "children": "Upload new file(s)",
+                  "prefixCls": "ant-radio-button",
                   "value": true,
                 },
                 "ref": null,
@@ -181,6 +202,7 @@ ShallowWrapper {
                 "nodeType": "class",
                 "props": Object {
                   "children": "Attach existing file(s)",
+                  "prefixCls": "ant-radio-button",
                   "value": false,
                 },
                 "ref": null,
@@ -216,7 +238,9 @@ ShallowWrapper {
             onSelectExisting={[MockFunction]}
             uploadUrl="localhost:9999"
           />,
+          "colon": true,
           "hasFeedback": false,
+          "prefixCls": "ant-form",
         },
         "ref": null,
         "rendered": Object {
@@ -258,21 +282,26 @@ ShallowWrapper {
             className="center"
           >
             <FormItem
+              colon={true}
               hasFeedback={false}
+              prefixCls="ant-form"
             >
               <RadioGroup
                 buttonStyle="outline"
                 defaultValue={true}
                 disabled={false}
                 onChange={[Function]}
+                prefixCls="ant-radio"
                 size="large"
               >
                 <RadioButton
+                  prefixCls="ant-radio-button"
                   value={true}
                 >
                   Upload new file(s)
                 </RadioButton>
                 <RadioButton
+                  prefixCls="ant-radio-button"
                   value={false}
                 >
                   Attach existing file(s)
@@ -281,7 +310,9 @@ ShallowWrapper {
             </FormItem>
           </div>,
           <FormItem
+            colon={true}
             hasFeedback={false}
+            prefixCls="ant-form"
           >
             <Field
               acceptedFileTypesMap={undefined}
@@ -311,21 +342,26 @@ ShallowWrapper {
           "nodeType": "host",
           "props": Object {
             "children": <FormItem
+              colon={true}
               hasFeedback={false}
+              prefixCls="ant-form"
             >
               <RadioGroup
                 buttonStyle="outline"
                 defaultValue={true}
                 disabled={false}
                 onChange={[Function]}
+                prefixCls="ant-radio"
                 size="large"
               >
                 <RadioButton
+                  prefixCls="ant-radio-button"
                   value={true}
                 >
                   Upload new file(s)
                 </RadioButton>
                 <RadioButton
+                  prefixCls="ant-radio-button"
                   value={false}
                 >
                   Attach existing file(s)
@@ -345,20 +381,25 @@ ShallowWrapper {
                 defaultValue={true}
                 disabled={false}
                 onChange={[Function]}
+                prefixCls="ant-radio"
                 size="large"
               >
                 <RadioButton
+                  prefixCls="ant-radio-button"
                   value={true}
                 >
                   Upload new file(s)
                 </RadioButton>
                 <RadioButton
+                  prefixCls="ant-radio-button"
                   value={false}
                 >
                   Attach existing file(s)
                 </RadioButton>
               </RadioGroup>,
+              "colon": true,
               "hasFeedback": false,
+              "prefixCls": "ant-form",
             },
             "ref": null,
             "rendered": Object {
@@ -369,11 +410,13 @@ ShallowWrapper {
                 "buttonStyle": "outline",
                 "children": Array [
                   <RadioButton
+                    prefixCls="ant-radio-button"
                     value={true}
                   >
                     Upload new file(s)
                   </RadioButton>,
                   <RadioButton
+                    prefixCls="ant-radio-button"
                     value={false}
                   >
                     Attach existing file(s)
@@ -382,6 +425,7 @@ ShallowWrapper {
                 "defaultValue": true,
                 "disabled": false,
                 "onChange": [Function],
+                "prefixCls": "ant-radio",
                 "size": "large",
               },
               "ref": null,
@@ -392,6 +436,7 @@ ShallowWrapper {
                   "nodeType": "class",
                   "props": Object {
                     "children": "Upload new file(s)",
+                    "prefixCls": "ant-radio-button",
                     "value": true,
                   },
                   "ref": null,
@@ -404,6 +449,7 @@ ShallowWrapper {
                   "nodeType": "class",
                   "props": Object {
                     "children": "Attach existing file(s)",
+                    "prefixCls": "ant-radio-button",
                     "value": false,
                   },
                   "ref": null,
@@ -439,7 +485,9 @@ ShallowWrapper {
               onSelectExisting={[MockFunction]}
               uploadUrl="localhost:9999"
             />,
+            "colon": true,
             "hasFeedback": false,
+            "prefixCls": "ant-form",
           },
           "ref": null,
           "rendered": Object {

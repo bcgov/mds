@@ -262,8 +262,8 @@ ShallowWrapper {
               <Button
                 block={false}
                 ghost={false}
-                htmlType="button"
                 loading={false}
+                prefixCls="ant-btn"
                 type="primary"
               >
                 View Mine
@@ -502,8 +502,8 @@ ShallowWrapper {
               <Button
                 block={false}
                 ghost={false}
-                htmlType="button"
                 loading={false}
+                prefixCls="ant-btn"
                 type="primary"
               >
                 View Mine
@@ -525,8 +525,8 @@ ShallowWrapper {
               <Button
                 block={false}
                 ghost={false}
-                htmlType="button"
                 loading={false}
+                prefixCls="ant-btn"
                 type="primary"
               >
                 View Mine
@@ -544,8 +544,8 @@ ShallowWrapper {
               "children": <Button
                 block={false}
                 ghost={false}
-                htmlType="button"
                 loading={false}
+                prefixCls="ant-btn"
                 type="primary"
               >
                 View Mine
@@ -561,8 +561,8 @@ ShallowWrapper {
                 "block": false,
                 "children": "View Mine",
                 "ghost": false,
-                "htmlType": "button",
                 "loading": false,
+                "prefixCls": "ant-btn",
                 "type": "primary",
               },
               "ref": null,
@@ -639,8 +639,8 @@ ShallowWrapper {
                 <Button
                   block={false}
                   ghost={false}
-                  htmlType="button"
                   loading={false}
+                  prefixCls="ant-btn"
                   type="primary"
                 >
                   View Mine
@@ -879,8 +879,8 @@ ShallowWrapper {
                 <Button
                   block={false}
                   ghost={false}
-                  htmlType="button"
                   loading={false}
+                  prefixCls="ant-btn"
                   type="primary"
                 >
                   View Mine
@@ -902,8 +902,8 @@ ShallowWrapper {
                 <Button
                   block={false}
                   ghost={false}
-                  htmlType="button"
                   loading={false}
+                  prefixCls="ant-btn"
                   type="primary"
                 >
                   View Mine
@@ -921,8 +921,8 @@ ShallowWrapper {
                 "children": <Button
                   block={false}
                   ghost={false}
-                  htmlType="button"
                   loading={false}
+                  prefixCls="ant-btn"
                   type="primary"
                 >
                   View Mine
@@ -938,8 +938,8 @@ ShallowWrapper {
                   "block": false,
                   "children": "View Mine",
                   "ghost": false,
-                  "htmlType": "button",
                   "loading": false,
+                  "prefixCls": "ant-btn",
                   "type": "primary",
                 },
                 "ref": null,

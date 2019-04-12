@@ -250,7 +250,12 @@ ShallowWrapper {
                 mouseEnterDelay={0.15}
                 mouseLeaveDelay={0.1}
                 overlay={
-                  <Menu>
+                  <Menu
+                    className=""
+                    focusable={false}
+                    prefixCls="ant-menu"
+                    theme="light"
+                  >
                     <MenuItem>
                       <button
                         className="full"
@@ -303,6 +308,7 @@ ShallowWrapper {
                           okType="primary"
                           onConfirm={[Function]}
                           placement="left"
+                          prefixCls="ant-popover"
                           title="Are you sure?"
                           transitionName="zoom-big"
                           trigger="click"
@@ -342,6 +348,7 @@ ShallowWrapper {
                           okType="primary"
                           onConfirm={[Function]}
                           placement="left"
+                          prefixCls="ant-popover"
                           title="Are you sure?"
                           transitionName="zoom-big"
                           trigger="click"
@@ -368,12 +375,13 @@ ShallowWrapper {
                   </Menu>
                 }
                 placement="bottomLeft"
+                prefixCls="ant-dropdown"
               >
                 <Button
                   block={false}
                   ghost={false}
-                  htmlType="button"
                   loading={false}
+                  prefixCls="ant-btn"
                   type="primary"
                 >
                   <div
@@ -626,7 +634,12 @@ ShallowWrapper {
                   mouseEnterDelay={0.15}
                   mouseLeaveDelay={0.1}
                   overlay={
-                    <Menu>
+                    <Menu
+                      className=""
+                      focusable={false}
+                      prefixCls="ant-menu"
+                      theme="light"
+                    >
                       <MenuItem>
                         <button
                           className="full"
@@ -679,6 +692,7 @@ ShallowWrapper {
                             okType="primary"
                             onConfirm={[Function]}
                             placement="left"
+                            prefixCls="ant-popover"
                             title="Are you sure?"
                             transitionName="zoom-big"
                             trigger="click"
@@ -718,6 +732,7 @@ ShallowWrapper {
                             okType="primary"
                             onConfirm={[Function]}
                             placement="left"
+                            prefixCls="ant-popover"
                             title="Are you sure?"
                             transitionName="zoom-big"
                             trigger="click"
@@ -744,12 +759,13 @@ ShallowWrapper {
                     </Menu>
                   }
                   placement="bottomLeft"
+                  prefixCls="ant-dropdown"
                 >
                   <Button
                     block={false}
                     ghost={false}
-                    htmlType="button"
                     loading={false}
+                    prefixCls="ant-btn"
                     type="primary"
                   >
                     <div
@@ -904,7 +920,12 @@ ShallowWrapper {
                     mouseEnterDelay={0.15}
                     mouseLeaveDelay={0.1}
                     overlay={
-                      <Menu>
+                      <Menu
+                        className=""
+                        focusable={false}
+                        prefixCls="ant-menu"
+                        theme="light"
+                      >
                         <MenuItem>
                           <button
                             className="full"
@@ -957,6 +978,7 @@ ShallowWrapper {
                               okType="primary"
                               onConfirm={[Function]}
                               placement="left"
+                              prefixCls="ant-popover"
                               title="Are you sure?"
                               transitionName="zoom-big"
                               trigger="click"
@@ -996,6 +1018,7 @@ ShallowWrapper {
                               okType="primary"
                               onConfirm={[Function]}
                               placement="left"
+                              prefixCls="ant-popover"
                               title="Are you sure?"
                               transitionName="zoom-big"
                               trigger="click"
@@ -1022,12 +1045,13 @@ ShallowWrapper {
                       </Menu>
                     }
                     placement="bottomLeft"
+                    prefixCls="ant-dropdown"
                   >
                     <Button
                       block={false}
                       ghost={false}
-                      htmlType="button"
                       loading={false}
+                      prefixCls="ant-btn"
                       type="primary"
                     >
                       <div
@@ -1081,7 +1105,12 @@ ShallowWrapper {
                     mouseEnterDelay={0.15}
                     mouseLeaveDelay={0.1}
                     overlay={
-                      <Menu>
+                      <Menu
+                        className=""
+                        focusable={false}
+                        prefixCls="ant-menu"
+                        theme="light"
+                      >
                         <MenuItem>
                           <button
                             className="full"
@@ -1134,6 +1163,7 @@ ShallowWrapper {
                               okType="primary"
                               onConfirm={[Function]}
                               placement="left"
+                              prefixCls="ant-popover"
                               title="Are you sure?"
                               transitionName="zoom-big"
                               trigger="click"
@@ -1173,6 +1203,7 @@ ShallowWrapper {
                               okType="primary"
                               onConfirm={[Function]}
                               placement="left"
+                              prefixCls="ant-popover"
                               title="Are you sure?"
                               transitionName="zoom-big"
                               trigger="click"
@@ -1199,12 +1230,13 @@ ShallowWrapper {
                       </Menu>
                     }
                     placement="bottomLeft"
+                    prefixCls="ant-dropdown"
                   >
                     <Button
                       block={false}
                       ghost={false}
-                      htmlType="button"
                       loading={false}
+                      prefixCls="ant-btn"
                       type="primary"
                     >
                       <div
@@ -1235,8 +1267,8 @@ ShallowWrapper {
                     "children": <Button
                       block={false}
                       ghost={false}
-                      htmlType="button"
                       loading={false}
+                      prefixCls="ant-btn"
                       type="primary"
                     >
                       <div
@@ -1257,7 +1289,12 @@ ShallowWrapper {
                     "className": "full-height full-mobile",
                     "mouseEnterDelay": 0.15,
                     "mouseLeaveDelay": 0.1,
-                    "overlay": <Menu>
+                    "overlay": <Menu
+                      className=""
+                      focusable={false}
+                      prefixCls="ant-menu"
+                      theme="light"
+                    >
                       <MenuItem>
                         <button
                           className="full"
@@ -1310,6 +1347,7 @@ ShallowWrapper {
                             okType="primary"
                             onConfirm={[Function]}
                             placement="left"
+                            prefixCls="ant-popover"
                             title="Are you sure?"
                             transitionName="zoom-big"
                             trigger="click"
@@ -1349,6 +1387,7 @@ ShallowWrapper {
                             okType="primary"
                             onConfirm={[Function]}
                             placement="left"
+                            prefixCls="ant-popover"
                             title="Are you sure?"
                             transitionName="zoom-big"
                             trigger="click"
@@ -1374,6 +1413,7 @@ ShallowWrapper {
                       </Connect(AuthorizationWrapper)>
                     </Menu>,
                     "placement": "bottomLeft",
+                    "prefixCls": "ant-dropdown",
                   },
                   "ref": null,
                   "rendered": Object {
@@ -1397,8 +1437,8 @@ ShallowWrapper {
                         Add/Edit
                       </div>,
                       "ghost": false,
-                      "htmlType": "button",
                       "loading": false,
+                      "prefixCls": "ant-btn",
                       "type": "primary",
                     },
                     "ref": null,
@@ -2243,7 +2283,12 @@ ShallowWrapper {
                   mouseEnterDelay={0.15}
                   mouseLeaveDelay={0.1}
                   overlay={
-                    <Menu>
+                    <Menu
+                      className=""
+                      focusable={false}
+                      prefixCls="ant-menu"
+                      theme="light"
+                    >
                       <MenuItem>
                         <button
                           className="full"
@@ -2296,6 +2341,7 @@ ShallowWrapper {
                             okType="primary"
                             onConfirm={[Function]}
                             placement="left"
+                            prefixCls="ant-popover"
                             title="Are you sure?"
                             transitionName="zoom-big"
                             trigger="click"
@@ -2335,6 +2381,7 @@ ShallowWrapper {
                             okType="primary"
                             onConfirm={[Function]}
                             placement="left"
+                            prefixCls="ant-popover"
                             title="Are you sure?"
                             transitionName="zoom-big"
                             trigger="click"
@@ -2361,12 +2408,13 @@ ShallowWrapper {
                     </Menu>
                   }
                   placement="bottomLeft"
+                  prefixCls="ant-dropdown"
                 >
                   <Button
                     block={false}
                     ghost={false}
-                    htmlType="button"
                     loading={false}
+                    prefixCls="ant-btn"
                     type="primary"
                   >
                     <div
@@ -2619,7 +2667,12 @@ ShallowWrapper {
                     mouseEnterDelay={0.15}
                     mouseLeaveDelay={0.1}
                     overlay={
-                      <Menu>
+                      <Menu
+                        className=""
+                        focusable={false}
+                        prefixCls="ant-menu"
+                        theme="light"
+                      >
                         <MenuItem>
                           <button
                             className="full"
@@ -2672,6 +2725,7 @@ ShallowWrapper {
                               okType="primary"
                               onConfirm={[Function]}
                               placement="left"
+                              prefixCls="ant-popover"
                               title="Are you sure?"
                               transitionName="zoom-big"
                               trigger="click"
@@ -2711,6 +2765,7 @@ ShallowWrapper {
                               okType="primary"
                               onConfirm={[Function]}
                               placement="left"
+                              prefixCls="ant-popover"
                               title="Are you sure?"
                               transitionName="zoom-big"
                               trigger="click"
@@ -2737,12 +2792,13 @@ ShallowWrapper {
                       </Menu>
                     }
                     placement="bottomLeft"
+                    prefixCls="ant-dropdown"
                   >
                     <Button
                       block={false}
                       ghost={false}
-                      htmlType="button"
                       loading={false}
+                      prefixCls="ant-btn"
                       type="primary"
                     >
                       <div
@@ -2897,7 +2953,12 @@ ShallowWrapper {
                       mouseEnterDelay={0.15}
                       mouseLeaveDelay={0.1}
                       overlay={
-                        <Menu>
+                        <Menu
+                          className=""
+                          focusable={false}
+                          prefixCls="ant-menu"
+                          theme="light"
+                        >
                           <MenuItem>
                             <button
                               className="full"
@@ -2950,6 +3011,7 @@ ShallowWrapper {
                                 okType="primary"
                                 onConfirm={[Function]}
                                 placement="left"
+                                prefixCls="ant-popover"
                                 title="Are you sure?"
                                 transitionName="zoom-big"
                                 trigger="click"
@@ -2989,6 +3051,7 @@ ShallowWrapper {
                                 okType="primary"
                                 onConfirm={[Function]}
                                 placement="left"
+                                prefixCls="ant-popover"
                                 title="Are you sure?"
                                 transitionName="zoom-big"
                                 trigger="click"
@@ -3015,12 +3078,13 @@ ShallowWrapper {
                         </Menu>
                       }
                       placement="bottomLeft"
+                      prefixCls="ant-dropdown"
                     >
                       <Button
                         block={false}
                         ghost={false}
-                        htmlType="button"
                         loading={false}
+                        prefixCls="ant-btn"
                         type="primary"
                       >
                         <div
@@ -3074,7 +3138,12 @@ ShallowWrapper {
                       mouseEnterDelay={0.15}
                       mouseLeaveDelay={0.1}
                       overlay={
-                        <Menu>
+                        <Menu
+                          className=""
+                          focusable={false}
+                          prefixCls="ant-menu"
+                          theme="light"
+                        >
                           <MenuItem>
                             <button
                               className="full"
@@ -3127,6 +3196,7 @@ ShallowWrapper {
                                 okType="primary"
                                 onConfirm={[Function]}
                                 placement="left"
+                                prefixCls="ant-popover"
                                 title="Are you sure?"
                                 transitionName="zoom-big"
                                 trigger="click"
@@ -3166,6 +3236,7 @@ ShallowWrapper {
                                 okType="primary"
                                 onConfirm={[Function]}
                                 placement="left"
+                                prefixCls="ant-popover"
                                 title="Are you sure?"
                                 transitionName="zoom-big"
                                 trigger="click"
@@ -3192,12 +3263,13 @@ ShallowWrapper {
                         </Menu>
                       }
                       placement="bottomLeft"
+                      prefixCls="ant-dropdown"
                     >
                       <Button
                         block={false}
                         ghost={false}
-                        htmlType="button"
                         loading={false}
+                        prefixCls="ant-btn"
                         type="primary"
                       >
                         <div
@@ -3228,8 +3300,8 @@ ShallowWrapper {
                       "children": <Button
                         block={false}
                         ghost={false}
-                        htmlType="button"
                         loading={false}
+                        prefixCls="ant-btn"
                         type="primary"
                       >
                         <div
@@ -3250,7 +3322,12 @@ ShallowWrapper {
                       "className": "full-height full-mobile",
                       "mouseEnterDelay": 0.15,
                       "mouseLeaveDelay": 0.1,
-                      "overlay": <Menu>
+                      "overlay": <Menu
+                        className=""
+                        focusable={false}
+                        prefixCls="ant-menu"
+                        theme="light"
+                      >
                         <MenuItem>
                           <button
                             className="full"
@@ -3303,6 +3380,7 @@ ShallowWrapper {
                               okType="primary"
                               onConfirm={[Function]}
                               placement="left"
+                              prefixCls="ant-popover"
                               title="Are you sure?"
                               transitionName="zoom-big"
                               trigger="click"
@@ -3342,6 +3420,7 @@ ShallowWrapper {
                               okType="primary"
                               onConfirm={[Function]}
                               placement="left"
+                              prefixCls="ant-popover"
                               title="Are you sure?"
                               transitionName="zoom-big"
                               trigger="click"
@@ -3367,6 +3446,7 @@ ShallowWrapper {
                         </Connect(AuthorizationWrapper)>
                       </Menu>,
                       "placement": "bottomLeft",
+                      "prefixCls": "ant-dropdown",
                     },
                     "ref": null,
                     "rendered": Object {
@@ -3390,8 +3470,8 @@ ShallowWrapper {
                           Add/Edit
                         </div>,
                         "ghost": false,
-                        "htmlType": "button",
                         "loading": false,
+                        "prefixCls": "ant-btn",
                         "type": "primary",
                       },
                       "ref": null,

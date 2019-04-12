@@ -35,10 +35,10 @@ ShallowWrapper {
     "nodeType": "host",
     "props": Object {
       "children": <Form
-        colon={true}
         hideRequiredMark={false}
         layout="horizontal"
         onSubmit={[MockFunction]}
+        prefixCls="ant-form"
       >
         <Row
           gutter={48}
@@ -62,7 +62,9 @@ ShallowWrapper {
                 span={24}
               >
                 <FormItem
+                  colon={true}
                   hasFeedback={false}
+                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
@@ -85,7 +87,9 @@ ShallowWrapper {
                 span={24}
               >
                 <FormItem
+                  colon={true}
                   hasFeedback={false}
+                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
@@ -108,7 +112,9 @@ ShallowWrapper {
                 span={18}
               >
                 <FormItem
+                  colon={true}
                   hasFeedback={false}
+                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
@@ -131,7 +137,9 @@ ShallowWrapper {
                 span={6}
               >
                 <FormItem
+                  colon={true}
                   hasFeedback={false}
+                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
@@ -167,7 +175,9 @@ ShallowWrapper {
                 span={6}
               >
                 <FormItem
+                  colon={true}
                   hasFeedback={false}
+                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
@@ -186,7 +196,9 @@ ShallowWrapper {
                 span={18}
               >
                 <FormItem
+                  colon={true}
                   hasFeedback={false}
+                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
@@ -204,7 +216,9 @@ ShallowWrapper {
                 span={18}
               >
                 <FormItem
+                  colon={true}
                   hasFeedback={false}
+                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
@@ -218,7 +232,9 @@ ShallowWrapper {
                 span={6}
               >
                 <FormItem
+                  colon={true}
                   hasFeedback={false}
+                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
@@ -255,7 +271,9 @@ ShallowWrapper {
                 xs={24}
               >
                 <FormItem
+                  colon={true}
                   hasFeedback={false}
+                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
@@ -276,7 +294,9 @@ ShallowWrapper {
                 xs={24}
               >
                 <FormItem
+                  colon={true}
                   hasFeedback={false}
+                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
@@ -312,6 +332,7 @@ ShallowWrapper {
             okType="primary"
             onConfirm={[MockFunction]}
             placement="topRight"
+            prefixCls="ant-popover"
             title="Are you sure you want to cancel?"
             transitionName="zoom-big"
             trigger="click"
@@ -320,8 +341,8 @@ ShallowWrapper {
               block={false}
               className="full-mobile"
               ghost={false}
-              htmlType="button"
               loading={false}
+              prefixCls="ant-btn"
             >
               Cancel
             </Button>
@@ -332,6 +353,7 @@ ShallowWrapper {
             ghost={false}
             htmlType="submit"
             loading={false}
+            prefixCls="ant-btn"
             type="primary"
           >
             Update Company
@@ -368,7 +390,9 @@ ShallowWrapper {
                   span={24}
                 >
                   <FormItem
+                    colon={true}
                     hasFeedback={false}
+                    prefixCls="ant-form"
                   >
                     <Field
                       component={[Function]}
@@ -391,7 +415,9 @@ ShallowWrapper {
                   span={24}
                 >
                   <FormItem
+                    colon={true}
                     hasFeedback={false}
+                    prefixCls="ant-form"
                   >
                     <Field
                       component={[Function]}
@@ -414,7 +440,9 @@ ShallowWrapper {
                   span={18}
                 >
                   <FormItem
+                    colon={true}
                     hasFeedback={false}
+                    prefixCls="ant-form"
                   >
                     <Field
                       component={[Function]}
@@ -437,7 +465,9 @@ ShallowWrapper {
                   span={6}
                 >
                   <FormItem
+                    colon={true}
                     hasFeedback={false}
+                    prefixCls="ant-form"
                   >
                     <Field
                       component={[Function]}
@@ -473,7 +503,9 @@ ShallowWrapper {
                   span={6}
                 >
                   <FormItem
+                    colon={true}
                     hasFeedback={false}
+                    prefixCls="ant-form"
                   >
                     <Field
                       component={[Function]}
@@ -492,7 +524,9 @@ ShallowWrapper {
                   span={18}
                 >
                   <FormItem
+                    colon={true}
                     hasFeedback={false}
+                    prefixCls="ant-form"
                   >
                     <Field
                       component={[Function]}
@@ -510,7 +544,9 @@ ShallowWrapper {
                   span={18}
                 >
                   <FormItem
+                    colon={true}
                     hasFeedback={false}
+                    prefixCls="ant-form"
                   >
                     <Field
                       component={[Function]}
@@ -524,7 +560,9 @@ ShallowWrapper {
                   span={6}
                 >
                   <FormItem
+                    colon={true}
                     hasFeedback={false}
+                    prefixCls="ant-form"
                   >
                     <Field
                       component={[Function]}
@@ -561,7 +599,9 @@ ShallowWrapper {
                   xs={24}
                 >
                   <FormItem
+                    colon={true}
                     hasFeedback={false}
+                    prefixCls="ant-form"
                   >
                     <Field
                       component={[Function]}
@@ -582,7 +622,9 @@ ShallowWrapper {
                   xs={24}
                 >
                   <FormItem
+                    colon={true}
                     hasFeedback={false}
+                    prefixCls="ant-form"
                   >
                     <Field
                       component={[Function]}
@@ -618,6 +660,7 @@ ShallowWrapper {
               okType="primary"
               onConfirm={[MockFunction]}
               placement="topRight"
+              prefixCls="ant-popover"
               title="Are you sure you want to cancel?"
               transitionName="zoom-big"
               trigger="click"
@@ -626,8 +669,8 @@ ShallowWrapper {
                 block={false}
                 className="full-mobile"
                 ghost={false}
-                htmlType="button"
                 loading={false}
+                prefixCls="ant-btn"
               >
                 Cancel
               </Button>
@@ -638,16 +681,17 @@ ShallowWrapper {
               ghost={false}
               htmlType="submit"
               loading={false}
+              prefixCls="ant-btn"
               type="primary"
             >
               Update Company
             </Button>
           </div>,
         ],
-        "colon": true,
         "hideRequiredMark": false,
         "layout": "horizontal",
         "onSubmit": [MockFunction],
+        "prefixCls": "ant-form",
       },
       "ref": null,
       "rendered": Array [
@@ -676,7 +720,9 @@ ShallowWrapper {
                     span={24}
                   >
                     <FormItem
+                      colon={true}
                       hasFeedback={false}
+                      prefixCls="ant-form"
                     >
                       <Field
                         component={[Function]}
@@ -699,7 +745,9 @@ ShallowWrapper {
                     span={24}
                   >
                     <FormItem
+                      colon={true}
                       hasFeedback={false}
+                      prefixCls="ant-form"
                     >
                       <Field
                         component={[Function]}
@@ -722,7 +770,9 @@ ShallowWrapper {
                     span={18}
                   >
                     <FormItem
+                      colon={true}
                       hasFeedback={false}
+                      prefixCls="ant-form"
                     >
                       <Field
                         component={[Function]}
@@ -745,7 +795,9 @@ ShallowWrapper {
                     span={6}
                   >
                     <FormItem
+                      colon={true}
                       hasFeedback={false}
+                      prefixCls="ant-form"
                     >
                       <Field
                         component={[Function]}
@@ -781,7 +833,9 @@ ShallowWrapper {
                     span={6}
                   >
                     <FormItem
+                      colon={true}
                       hasFeedback={false}
+                      prefixCls="ant-form"
                     >
                       <Field
                         component={[Function]}
@@ -800,7 +854,9 @@ ShallowWrapper {
                     span={18}
                   >
                     <FormItem
+                      colon={true}
                       hasFeedback={false}
+                      prefixCls="ant-form"
                     >
                       <Field
                         component={[Function]}
@@ -818,7 +874,9 @@ ShallowWrapper {
                     span={18}
                   >
                     <FormItem
+                      colon={true}
                       hasFeedback={false}
+                      prefixCls="ant-form"
                     >
                       <Field
                         component={[Function]}
@@ -832,7 +890,9 @@ ShallowWrapper {
                     span={6}
                   >
                     <FormItem
+                      colon={true}
                       hasFeedback={false}
+                      prefixCls="ant-form"
                     >
                       <Field
                         component={[Function]}
@@ -869,7 +929,9 @@ ShallowWrapper {
                     xs={24}
                   >
                     <FormItem
+                      colon={true}
                       hasFeedback={false}
+                      prefixCls="ant-form"
                     >
                       <Field
                         component={[Function]}
@@ -890,7 +952,9 @@ ShallowWrapper {
                     xs={24}
                   >
                     <FormItem
+                      colon={true}
                       hasFeedback={false}
+                      prefixCls="ant-form"
                     >
                       <Field
                         component={[Function]}
@@ -936,7 +1000,9 @@ ShallowWrapper {
                       span={24}
                     >
                       <FormItem
+                        colon={true}
                         hasFeedback={false}
+                        prefixCls="ant-form"
                       >
                         <Field
                           component={[Function]}
@@ -959,7 +1025,9 @@ ShallowWrapper {
                       span={24}
                     >
                       <FormItem
+                        colon={true}
                         hasFeedback={false}
+                        prefixCls="ant-form"
                       >
                         <Field
                           component={[Function]}
@@ -982,7 +1050,9 @@ ShallowWrapper {
                       span={18}
                     >
                       <FormItem
+                        colon={true}
                         hasFeedback={false}
+                        prefixCls="ant-form"
                       >
                         <Field
                           component={[Function]}
@@ -1005,7 +1075,9 @@ ShallowWrapper {
                       span={6}
                     >
                       <FormItem
+                        colon={true}
                         hasFeedback={false}
+                        prefixCls="ant-form"
                       >
                         <Field
                           component={[Function]}
@@ -1063,7 +1135,9 @@ ShallowWrapper {
                       span={24}
                     >
                       <FormItem
+                        colon={true}
                         hasFeedback={false}
+                        prefixCls="ant-form"
                       >
                         <Field
                           component={[Function]}
@@ -1087,7 +1161,9 @@ ShallowWrapper {
                     "nodeType": "class",
                     "props": Object {
                       "children": <FormItem
+                        colon={true}
                         hasFeedback={false}
+                        prefixCls="ant-form"
                       >
                         <Field
                           component={[Function]}
@@ -1120,7 +1196,9 @@ ShallowWrapper {
                             ]
                           }
                         />,
+                        "colon": true,
                         "hasFeedback": false,
+                        "prefixCls": "ant-form",
                       },
                       "ref": null,
                       "rendered": Object {
@@ -1155,7 +1233,9 @@ ShallowWrapper {
                       span={24}
                     >
                       <FormItem
+                        colon={true}
                         hasFeedback={false}
+                        prefixCls="ant-form"
                       >
                         <Field
                           component={[Function]}
@@ -1179,7 +1259,9 @@ ShallowWrapper {
                     "nodeType": "class",
                     "props": Object {
                       "children": <FormItem
+                        colon={true}
                         hasFeedback={false}
+                        prefixCls="ant-form"
                       >
                         <Field
                           component={[Function]}
@@ -1212,7 +1294,9 @@ ShallowWrapper {
                             ]
                           }
                         />,
+                        "colon": true,
                         "hasFeedback": false,
+                        "prefixCls": "ant-form",
                       },
                       "ref": null,
                       "rendered": Object {
@@ -1248,7 +1332,9 @@ ShallowWrapper {
                         span={18}
                       >
                         <FormItem
+                          colon={true}
                           hasFeedback={false}
+                          prefixCls="ant-form"
                         >
                           <Field
                             component={[Function]}
@@ -1271,7 +1357,9 @@ ShallowWrapper {
                         span={6}
                       >
                         <FormItem
+                          colon={true}
                           hasFeedback={false}
+                          prefixCls="ant-form"
                         >
                           <Field
                             component={[Function]}
@@ -1298,7 +1386,9 @@ ShallowWrapper {
                       "nodeType": "class",
                       "props": Object {
                         "children": <FormItem
+                          colon={true}
                           hasFeedback={false}
+                          prefixCls="ant-form"
                         >
                           <Field
                             component={[Function]}
@@ -1339,7 +1429,9 @@ ShallowWrapper {
                               ]
                             }
                           />,
+                          "colon": true,
                           "hasFeedback": false,
+                          "prefixCls": "ant-form",
                         },
                         "ref": null,
                         "rendered": Object {
@@ -1373,7 +1465,9 @@ ShallowWrapper {
                       "nodeType": "class",
                       "props": Object {
                         "children": <FormItem
+                          colon={true}
                           hasFeedback={false}
+                          prefixCls="ant-form"
                         >
                           <Field
                             component={[Function]}
@@ -1408,7 +1502,9 @@ ShallowWrapper {
                               ]
                             }
                           />,
+                          "colon": true,
                           "hasFeedback": false,
+                          "prefixCls": "ant-form",
                         },
                         "ref": null,
                         "rendered": Object {
@@ -1459,7 +1555,9 @@ ShallowWrapper {
                       span={6}
                     >
                       <FormItem
+                        colon={true}
                         hasFeedback={false}
+                        prefixCls="ant-form"
                       >
                         <Field
                           component={[Function]}
@@ -1478,7 +1576,9 @@ ShallowWrapper {
                       span={18}
                     >
                       <FormItem
+                        colon={true}
                         hasFeedback={false}
+                        prefixCls="ant-form"
                       >
                         <Field
                           component={[Function]}
@@ -1496,7 +1596,9 @@ ShallowWrapper {
                       span={18}
                     >
                       <FormItem
+                        colon={true}
                         hasFeedback={false}
+                        prefixCls="ant-form"
                       >
                         <Field
                           component={[Function]}
@@ -1510,7 +1612,9 @@ ShallowWrapper {
                       span={6}
                     >
                       <FormItem
+                        colon={true}
                         hasFeedback={false}
+                        prefixCls="ant-form"
                       >
                         <Field
                           component={[Function]}
@@ -1547,7 +1651,9 @@ ShallowWrapper {
                       xs={24}
                     >
                       <FormItem
+                        colon={true}
                         hasFeedback={false}
+                        prefixCls="ant-form"
                       >
                         <Field
                           component={[Function]}
@@ -1568,7 +1674,9 @@ ShallowWrapper {
                       xs={24}
                     >
                       <FormItem
+                        colon={true}
                         hasFeedback={false}
+                        prefixCls="ant-form"
                       >
                         <Field
                           component={[Function]}
@@ -1627,7 +1735,9 @@ ShallowWrapper {
                         span={6}
                       >
                         <FormItem
+                          colon={true}
                           hasFeedback={false}
+                          prefixCls="ant-form"
                         >
                           <Field
                             component={[Function]}
@@ -1646,7 +1756,9 @@ ShallowWrapper {
                         span={18}
                       >
                         <FormItem
+                          colon={true}
                           hasFeedback={false}
+                          prefixCls="ant-form"
                         >
                           <Field
                             component={[Function]}
@@ -1667,7 +1779,9 @@ ShallowWrapper {
                       "nodeType": "class",
                       "props": Object {
                         "children": <FormItem
+                          colon={true}
                           hasFeedback={false}
+                          prefixCls="ant-form"
                         >
                           <Field
                             component={[Function]}
@@ -1700,7 +1814,9 @@ ShallowWrapper {
                               ]
                             }
                           />,
+                          "colon": true,
                           "hasFeedback": false,
+                          "prefixCls": "ant-form",
                         },
                         "ref": null,
                         "rendered": Object {
@@ -1730,7 +1846,9 @@ ShallowWrapper {
                       "nodeType": "class",
                       "props": Object {
                         "children": <FormItem
+                          colon={true}
                           hasFeedback={false}
+                          prefixCls="ant-form"
                         >
                           <Field
                             component={[Function]}
@@ -1753,7 +1871,9 @@ ShallowWrapper {
                             label="Street Address 1"
                             name="address_line_1"
                           />,
+                          "colon": true,
                           "hasFeedback": false,
+                          "prefixCls": "ant-form",
                         },
                         "ref": null,
                         "rendered": Object {
@@ -1787,7 +1907,9 @@ ShallowWrapper {
                         span={18}
                       >
                         <FormItem
+                          colon={true}
                           hasFeedback={false}
+                          prefixCls="ant-form"
                         >
                           <Field
                             component={[Function]}
@@ -1801,7 +1923,9 @@ ShallowWrapper {
                         span={6}
                       >
                         <FormItem
+                          colon={true}
                           hasFeedback={false}
+                          prefixCls="ant-form"
                         >
                           <Field
                             component={[Function]}
@@ -1839,7 +1963,9 @@ ShallowWrapper {
                       "nodeType": "class",
                       "props": Object {
                         "children": <FormItem
+                          colon={true}
                           hasFeedback={false}
+                          prefixCls="ant-form"
                         >
                           <Field
                             component={[Function]}
@@ -1862,7 +1988,9 @@ ShallowWrapper {
                             label="Street Address 2"
                             name="address_line_2"
                           />,
+                          "colon": true,
                           "hasFeedback": false,
+                          "prefixCls": "ant-form",
                         },
                         "ref": null,
                         "rendered": Object {
@@ -1889,7 +2017,9 @@ ShallowWrapper {
                       "nodeType": "class",
                       "props": Object {
                         "children": <FormItem
+                          colon={true}
                           hasFeedback={false}
+                          prefixCls="ant-form"
                         >
                           <Field
                             component={[Function]}
@@ -1946,7 +2076,9 @@ ShallowWrapper {
                             label="Province"
                             name="sub_division_code"
                           />,
+                          "colon": true,
                           "hasFeedback": false,
+                          "prefixCls": "ant-form",
                         },
                         "ref": null,
                         "rendered": Object {
@@ -1997,7 +2129,9 @@ ShallowWrapper {
                         xs={24}
                       >
                         <FormItem
+                          colon={true}
                           hasFeedback={false}
+                          prefixCls="ant-form"
                         >
                           <Field
                             component={[Function]}
@@ -2018,7 +2152,9 @@ ShallowWrapper {
                         xs={24}
                       >
                         <FormItem
+                          colon={true}
                           hasFeedback={false}
+                          prefixCls="ant-form"
                         >
                           <Field
                             component={[Function]}
@@ -2047,7 +2183,9 @@ ShallowWrapper {
                       "nodeType": "class",
                       "props": Object {
                         "children": <FormItem
+                          colon={true}
                           hasFeedback={false}
+                          prefixCls="ant-form"
                         >
                           <Field
                             component={[Function]}
@@ -2082,7 +2220,9 @@ ShallowWrapper {
                               ]
                             }
                           />,
+                          "colon": true,
                           "hasFeedback": false,
+                          "prefixCls": "ant-form",
                         },
                         "ref": null,
                         "rendered": Object {
@@ -2112,7 +2252,9 @@ ShallowWrapper {
                       "nodeType": "class",
                       "props": Object {
                         "children": <FormItem
+                          colon={true}
                           hasFeedback={false}
+                          prefixCls="ant-form"
                         >
                           <Field
                             component={[Function]}
@@ -2153,7 +2295,9 @@ ShallowWrapper {
                               ]
                             }
                           />,
+                          "colon": true,
                           "hasFeedback": false,
+                          "prefixCls": "ant-form",
                         },
                         "ref": null,
                         "rendered": Object {
@@ -2207,6 +2351,7 @@ ShallowWrapper {
                 okType="primary"
                 onConfirm={[MockFunction]}
                 placement="topRight"
+                prefixCls="ant-popover"
                 title="Are you sure you want to cancel?"
                 transitionName="zoom-big"
                 trigger="click"
@@ -2215,8 +2360,8 @@ ShallowWrapper {
                   block={false}
                   className="full-mobile"
                   ghost={false}
-                  htmlType="button"
                   loading={false}
+                  prefixCls="ant-btn"
                 >
                   Cancel
                 </Button>
@@ -2227,6 +2372,7 @@ ShallowWrapper {
                 ghost={false}
                 htmlType="submit"
                 loading={false}
+                prefixCls="ant-btn"
                 type="primary"
               >
                 Update Company
@@ -2246,8 +2392,8 @@ ShallowWrapper {
                   block={false}
                   className="full-mobile"
                   ghost={false}
-                  htmlType="button"
                   loading={false}
+                  prefixCls="ant-btn"
                 >
                   Cancel
                 </Button>,
@@ -2259,6 +2405,7 @@ ShallowWrapper {
                 "okType": "primary",
                 "onConfirm": [MockFunction],
                 "placement": "topRight",
+                "prefixCls": "ant-popover",
                 "title": "Are you sure you want to cancel?",
                 "transitionName": "zoom-big",
                 "trigger": "click",
@@ -2273,8 +2420,8 @@ ShallowWrapper {
                   "children": "Cancel",
                   "className": "full-mobile",
                   "ghost": false,
-                  "htmlType": "button",
                   "loading": false,
+                  "prefixCls": "ant-btn",
                 },
                 "ref": null,
                 "rendered": "Cancel",
@@ -2293,6 +2440,7 @@ ShallowWrapper {
                 "ghost": false,
                 "htmlType": "submit",
                 "loading": false,
+                "prefixCls": "ant-btn",
                 "type": "primary",
               },
               "ref": null,
@@ -2314,10 +2462,10 @@ ShallowWrapper {
       "nodeType": "host",
       "props": Object {
         "children": <Form
-          colon={true}
           hideRequiredMark={false}
           layout="horizontal"
           onSubmit={[MockFunction]}
+          prefixCls="ant-form"
         >
           <Row
             gutter={48}
@@ -2341,7 +2489,9 @@ ShallowWrapper {
                   span={24}
                 >
                   <FormItem
+                    colon={true}
                     hasFeedback={false}
+                    prefixCls="ant-form"
                   >
                     <Field
                       component={[Function]}
@@ -2364,7 +2514,9 @@ ShallowWrapper {
                   span={24}
                 >
                   <FormItem
+                    colon={true}
                     hasFeedback={false}
+                    prefixCls="ant-form"
                   >
                     <Field
                       component={[Function]}
@@ -2387,7 +2539,9 @@ ShallowWrapper {
                   span={18}
                 >
                   <FormItem
+                    colon={true}
                     hasFeedback={false}
+                    prefixCls="ant-form"
                   >
                     <Field
                       component={[Function]}
@@ -2410,7 +2564,9 @@ ShallowWrapper {
                   span={6}
                 >
                   <FormItem
+                    colon={true}
                     hasFeedback={false}
+                    prefixCls="ant-form"
                   >
                     <Field
                       component={[Function]}
@@ -2446,7 +2602,9 @@ ShallowWrapper {
                   span={6}
                 >
                   <FormItem
+                    colon={true}
                     hasFeedback={false}
+                    prefixCls="ant-form"
                   >
                     <Field
                       component={[Function]}
@@ -2465,7 +2623,9 @@ ShallowWrapper {
                   span={18}
                 >
                   <FormItem
+                    colon={true}
                     hasFeedback={false}
+                    prefixCls="ant-form"
                   >
                     <Field
                       component={[Function]}
@@ -2483,7 +2643,9 @@ ShallowWrapper {
                   span={18}
                 >
                   <FormItem
+                    colon={true}
                     hasFeedback={false}
+                    prefixCls="ant-form"
                   >
                     <Field
                       component={[Function]}
@@ -2497,7 +2659,9 @@ ShallowWrapper {
                   span={6}
                 >
                   <FormItem
+                    colon={true}
                     hasFeedback={false}
+                    prefixCls="ant-form"
                   >
                     <Field
                       component={[Function]}
@@ -2534,7 +2698,9 @@ ShallowWrapper {
                   xs={24}
                 >
                   <FormItem
+                    colon={true}
                     hasFeedback={false}
+                    prefixCls="ant-form"
                   >
                     <Field
                       component={[Function]}
@@ -2555,7 +2721,9 @@ ShallowWrapper {
                   xs={24}
                 >
                   <FormItem
+                    colon={true}
                     hasFeedback={false}
+                    prefixCls="ant-form"
                   >
                     <Field
                       component={[Function]}
@@ -2591,6 +2759,7 @@ ShallowWrapper {
               okType="primary"
               onConfirm={[MockFunction]}
               placement="topRight"
+              prefixCls="ant-popover"
               title="Are you sure you want to cancel?"
               transitionName="zoom-big"
               trigger="click"
@@ -2599,8 +2768,8 @@ ShallowWrapper {
                 block={false}
                 className="full-mobile"
                 ghost={false}
-                htmlType="button"
                 loading={false}
+                prefixCls="ant-btn"
               >
                 Cancel
               </Button>
@@ -2611,6 +2780,7 @@ ShallowWrapper {
               ghost={false}
               htmlType="submit"
               loading={false}
+              prefixCls="ant-btn"
               type="primary"
             >
               Update Company
@@ -2647,7 +2817,9 @@ ShallowWrapper {
                     span={24}
                   >
                     <FormItem
+                      colon={true}
                       hasFeedback={false}
+                      prefixCls="ant-form"
                     >
                       <Field
                         component={[Function]}
@@ -2670,7 +2842,9 @@ ShallowWrapper {
                     span={24}
                   >
                     <FormItem
+                      colon={true}
                       hasFeedback={false}
+                      prefixCls="ant-form"
                     >
                       <Field
                         component={[Function]}
@@ -2693,7 +2867,9 @@ ShallowWrapper {
                     span={18}
                   >
                     <FormItem
+                      colon={true}
                       hasFeedback={false}
+                      prefixCls="ant-form"
                     >
                       <Field
                         component={[Function]}
@@ -2716,7 +2892,9 @@ ShallowWrapper {
                     span={6}
                   >
                     <FormItem
+                      colon={true}
                       hasFeedback={false}
+                      prefixCls="ant-form"
                     >
                       <Field
                         component={[Function]}
@@ -2752,7 +2930,9 @@ ShallowWrapper {
                     span={6}
                   >
                     <FormItem
+                      colon={true}
                       hasFeedback={false}
+                      prefixCls="ant-form"
                     >
                       <Field
                         component={[Function]}
@@ -2771,7 +2951,9 @@ ShallowWrapper {
                     span={18}
                   >
                     <FormItem
+                      colon={true}
                       hasFeedback={false}
+                      prefixCls="ant-form"
                     >
                       <Field
                         component={[Function]}
@@ -2789,7 +2971,9 @@ ShallowWrapper {
                     span={18}
                   >
                     <FormItem
+                      colon={true}
                       hasFeedback={false}
+                      prefixCls="ant-form"
                     >
                       <Field
                         component={[Function]}
@@ -2803,7 +2987,9 @@ ShallowWrapper {
                     span={6}
                   >
                     <FormItem
+                      colon={true}
                       hasFeedback={false}
+                      prefixCls="ant-form"
                     >
                       <Field
                         component={[Function]}
@@ -2840,7 +3026,9 @@ ShallowWrapper {
                     xs={24}
                   >
                     <FormItem
+                      colon={true}
                       hasFeedback={false}
+                      prefixCls="ant-form"
                     >
                       <Field
                         component={[Function]}
@@ -2861,7 +3049,9 @@ ShallowWrapper {
                     xs={24}
                   >
                     <FormItem
+                      colon={true}
                       hasFeedback={false}
+                      prefixCls="ant-form"
                     >
                       <Field
                         component={[Function]}
@@ -2897,6 +3087,7 @@ ShallowWrapper {
                 okType="primary"
                 onConfirm={[MockFunction]}
                 placement="topRight"
+                prefixCls="ant-popover"
                 title="Are you sure you want to cancel?"
                 transitionName="zoom-big"
                 trigger="click"
@@ -2905,8 +3096,8 @@ ShallowWrapper {
                   block={false}
                   className="full-mobile"
                   ghost={false}
-                  htmlType="button"
                   loading={false}
+                  prefixCls="ant-btn"
                 >
                   Cancel
                 </Button>
@@ -2917,16 +3108,17 @@ ShallowWrapper {
                 ghost={false}
                 htmlType="submit"
                 loading={false}
+                prefixCls="ant-btn"
                 type="primary"
               >
                 Update Company
               </Button>
             </div>,
           ],
-          "colon": true,
           "hideRequiredMark": false,
           "layout": "horizontal",
           "onSubmit": [MockFunction],
+          "prefixCls": "ant-form",
         },
         "ref": null,
         "rendered": Array [
@@ -2955,7 +3147,9 @@ ShallowWrapper {
                       span={24}
                     >
                       <FormItem
+                        colon={true}
                         hasFeedback={false}
+                        prefixCls="ant-form"
                       >
                         <Field
                           component={[Function]}
@@ -2978,7 +3172,9 @@ ShallowWrapper {
                       span={24}
                     >
                       <FormItem
+                        colon={true}
                         hasFeedback={false}
+                        prefixCls="ant-form"
                       >
                         <Field
                           component={[Function]}
@@ -3001,7 +3197,9 @@ ShallowWrapper {
                       span={18}
                     >
                       <FormItem
+                        colon={true}
                         hasFeedback={false}
+                        prefixCls="ant-form"
                       >
                         <Field
                           component={[Function]}
@@ -3024,7 +3222,9 @@ ShallowWrapper {
                       span={6}
                     >
                       <FormItem
+                        colon={true}
                         hasFeedback={false}
+                        prefixCls="ant-form"
                       >
                         <Field
                           component={[Function]}
@@ -3060,7 +3260,9 @@ ShallowWrapper {
                       span={6}
                     >
                       <FormItem
+                        colon={true}
                         hasFeedback={false}
+                        prefixCls="ant-form"
                       >
                         <Field
                           component={[Function]}
@@ -3079,7 +3281,9 @@ ShallowWrapper {
                       span={18}
                     >
                       <FormItem
+                        colon={true}
                         hasFeedback={false}
+                        prefixCls="ant-form"
                       >
                         <Field
                           component={[Function]}
@@ -3097,7 +3301,9 @@ ShallowWrapper {
                       span={18}
                     >
                       <FormItem
+                        colon={true}
                         hasFeedback={false}
+                        prefixCls="ant-form"
                       >
                         <Field
                           component={[Function]}
@@ -3111,7 +3317,9 @@ ShallowWrapper {
                       span={6}
                     >
                       <FormItem
+                        colon={true}
                         hasFeedback={false}
+                        prefixCls="ant-form"
                       >
                         <Field
                           component={[Function]}
@@ -3148,7 +3356,9 @@ ShallowWrapper {
                       xs={24}
                     >
                       <FormItem
+                        colon={true}
                         hasFeedback={false}
+                        prefixCls="ant-form"
                       >
                         <Field
                           component={[Function]}
@@ -3169,7 +3379,9 @@ ShallowWrapper {
                       xs={24}
                     >
                       <FormItem
+                        colon={true}
                         hasFeedback={false}
+                        prefixCls="ant-form"
                       >
                         <Field
                           component={[Function]}
@@ -3215,7 +3427,9 @@ ShallowWrapper {
                         span={24}
                       >
                         <FormItem
+                          colon={true}
                           hasFeedback={false}
+                          prefixCls="ant-form"
                         >
                           <Field
                             component={[Function]}
@@ -3238,7 +3452,9 @@ ShallowWrapper {
                         span={24}
                       >
                         <FormItem
+                          colon={true}
                           hasFeedback={false}
+                          prefixCls="ant-form"
                         >
                           <Field
                             component={[Function]}
@@ -3261,7 +3477,9 @@ ShallowWrapper {
                         span={18}
                       >
                         <FormItem
+                          colon={true}
                           hasFeedback={false}
+                          prefixCls="ant-form"
                         >
                           <Field
                             component={[Function]}
@@ -3284,7 +3502,9 @@ ShallowWrapper {
                         span={6}
                       >
                         <FormItem
+                          colon={true}
                           hasFeedback={false}
+                          prefixCls="ant-form"
                         >
                           <Field
                             component={[Function]}
@@ -3342,7 +3562,9 @@ ShallowWrapper {
                         span={24}
                       >
                         <FormItem
+                          colon={true}
                           hasFeedback={false}
+                          prefixCls="ant-form"
                         >
                           <Field
                             component={[Function]}
@@ -3366,7 +3588,9 @@ ShallowWrapper {
                       "nodeType": "class",
                       "props": Object {
                         "children": <FormItem
+                          colon={true}
                           hasFeedback={false}
+                          prefixCls="ant-form"
                         >
                           <Field
                             component={[Function]}
@@ -3399,7 +3623,9 @@ ShallowWrapper {
                               ]
                             }
                           />,
+                          "colon": true,
                           "hasFeedback": false,
+                          "prefixCls": "ant-form",
                         },
                         "ref": null,
                         "rendered": Object {
@@ -3434,7 +3660,9 @@ ShallowWrapper {
                         span={24}
                       >
                         <FormItem
+                          colon={true}
                           hasFeedback={false}
+                          prefixCls="ant-form"
                         >
                           <Field
                             component={[Function]}
@@ -3458,7 +3686,9 @@ ShallowWrapper {
                       "nodeType": "class",
                       "props": Object {
                         "children": <FormItem
+                          colon={true}
                           hasFeedback={false}
+                          prefixCls="ant-form"
                         >
                           <Field
                             component={[Function]}
@@ -3491,7 +3721,9 @@ ShallowWrapper {
                               ]
                             }
                           />,
+                          "colon": true,
                           "hasFeedback": false,
+                          "prefixCls": "ant-form",
                         },
                         "ref": null,
                         "rendered": Object {
@@ -3527,7 +3759,9 @@ ShallowWrapper {
                           span={18}
                         >
                           <FormItem
+                            colon={true}
                             hasFeedback={false}
+                            prefixCls="ant-form"
                           >
                             <Field
                               component={[Function]}
@@ -3550,7 +3784,9 @@ ShallowWrapper {
                           span={6}
                         >
                           <FormItem
+                            colon={true}
                             hasFeedback={false}
+                            prefixCls="ant-form"
                           >
                             <Field
                               component={[Function]}
@@ -3577,7 +3813,9 @@ ShallowWrapper {
                         "nodeType": "class",
                         "props": Object {
                           "children": <FormItem
+                            colon={true}
                             hasFeedback={false}
+                            prefixCls="ant-form"
                           >
                             <Field
                               component={[Function]}
@@ -3618,7 +3856,9 @@ ShallowWrapper {
                                 ]
                               }
                             />,
+                            "colon": true,
                             "hasFeedback": false,
+                            "prefixCls": "ant-form",
                           },
                           "ref": null,
                           "rendered": Object {
@@ -3652,7 +3892,9 @@ ShallowWrapper {
                         "nodeType": "class",
                         "props": Object {
                           "children": <FormItem
+                            colon={true}
                             hasFeedback={false}
+                            prefixCls="ant-form"
                           >
                             <Field
                               component={[Function]}
@@ -3687,7 +3929,9 @@ ShallowWrapper {
                                 ]
                               }
                             />,
+                            "colon": true,
                             "hasFeedback": false,
+                            "prefixCls": "ant-form",
                           },
                           "ref": null,
                           "rendered": Object {
@@ -3738,7 +3982,9 @@ ShallowWrapper {
                         span={6}
                       >
                         <FormItem
+                          colon={true}
                           hasFeedback={false}
+                          prefixCls="ant-form"
                         >
                           <Field
                             component={[Function]}
@@ -3757,7 +4003,9 @@ ShallowWrapper {
                         span={18}
                       >
                         <FormItem
+                          colon={true}
                           hasFeedback={false}
+                          prefixCls="ant-form"
                         >
                           <Field
                             component={[Function]}
@@ -3775,7 +4023,9 @@ ShallowWrapper {
                         span={18}
                       >
                         <FormItem
+                          colon={true}
                           hasFeedback={false}
+                          prefixCls="ant-form"
                         >
                           <Field
                             component={[Function]}
@@ -3789,7 +4039,9 @@ ShallowWrapper {
                         span={6}
                       >
                         <FormItem
+                          colon={true}
                           hasFeedback={false}
+                          prefixCls="ant-form"
                         >
                           <Field
                             component={[Function]}
@@ -3826,7 +4078,9 @@ ShallowWrapper {
                         xs={24}
                       >
                         <FormItem
+                          colon={true}
                           hasFeedback={false}
+                          prefixCls="ant-form"
                         >
                           <Field
                             component={[Function]}
@@ -3847,7 +4101,9 @@ ShallowWrapper {
                         xs={24}
                       >
                         <FormItem
+                          colon={true}
                           hasFeedback={false}
+                          prefixCls="ant-form"
                         >
                           <Field
                             component={[Function]}
@@ -3906,7 +4162,9 @@ ShallowWrapper {
                           span={6}
                         >
                           <FormItem
+                            colon={true}
                             hasFeedback={false}
+                            prefixCls="ant-form"
                           >
                             <Field
                               component={[Function]}
@@ -3925,7 +4183,9 @@ ShallowWrapper {
                           span={18}
                         >
                           <FormItem
+                            colon={true}
                             hasFeedback={false}
+                            prefixCls="ant-form"
                           >
                             <Field
                               component={[Function]}
@@ -3946,7 +4206,9 @@ ShallowWrapper {
                         "nodeType": "class",
                         "props": Object {
                           "children": <FormItem
+                            colon={true}
                             hasFeedback={false}
+                            prefixCls="ant-form"
                           >
                             <Field
                               component={[Function]}
@@ -3979,7 +4241,9 @@ ShallowWrapper {
                                 ]
                               }
                             />,
+                            "colon": true,
                             "hasFeedback": false,
+                            "prefixCls": "ant-form",
                           },
                           "ref": null,
                           "rendered": Object {
@@ -4009,7 +4273,9 @@ ShallowWrapper {
                         "nodeType": "class",
                         "props": Object {
                           "children": <FormItem
+                            colon={true}
                             hasFeedback={false}
+                            prefixCls="ant-form"
                           >
                             <Field
                               component={[Function]}
@@ -4032,7 +4298,9 @@ ShallowWrapper {
                               label="Street Address 1"
                               name="address_line_1"
                             />,
+                            "colon": true,
                             "hasFeedback": false,
+                            "prefixCls": "ant-form",
                           },
                           "ref": null,
                           "rendered": Object {
@@ -4066,7 +4334,9 @@ ShallowWrapper {
                           span={18}
                         >
                           <FormItem
+                            colon={true}
                             hasFeedback={false}
+                            prefixCls="ant-form"
                           >
                             <Field
                               component={[Function]}
@@ -4080,7 +4350,9 @@ ShallowWrapper {
                           span={6}
                         >
                           <FormItem
+                            colon={true}
                             hasFeedback={false}
+                            prefixCls="ant-form"
                           >
                             <Field
                               component={[Function]}
@@ -4118,7 +4390,9 @@ ShallowWrapper {
                         "nodeType": "class",
                         "props": Object {
                           "children": <FormItem
+                            colon={true}
                             hasFeedback={false}
+                            prefixCls="ant-form"
                           >
                             <Field
                               component={[Function]}
@@ -4141,7 +4415,9 @@ ShallowWrapper {
                               label="Street Address 2"
                               name="address_line_2"
                             />,
+                            "colon": true,
                             "hasFeedback": false,
+                            "prefixCls": "ant-form",
                           },
                           "ref": null,
                           "rendered": Object {
@@ -4168,7 +4444,9 @@ ShallowWrapper {
                         "nodeType": "class",
                         "props": Object {
                           "children": <FormItem
+                            colon={true}
                             hasFeedback={false}
+                            prefixCls="ant-form"
                           >
                             <Field
                               component={[Function]}
@@ -4225,7 +4503,9 @@ ShallowWrapper {
                               label="Province"
                               name="sub_division_code"
                             />,
+                            "colon": true,
                             "hasFeedback": false,
+                            "prefixCls": "ant-form",
                           },
                           "ref": null,
                           "rendered": Object {
@@ -4276,7 +4556,9 @@ ShallowWrapper {
                           xs={24}
                         >
                           <FormItem
+                            colon={true}
                             hasFeedback={false}
+                            prefixCls="ant-form"
                           >
                             <Field
                               component={[Function]}
@@ -4297,7 +4579,9 @@ ShallowWrapper {
                           xs={24}
                         >
                           <FormItem
+                            colon={true}
                             hasFeedback={false}
+                            prefixCls="ant-form"
                           >
                             <Field
                               component={[Function]}
@@ -4326,7 +4610,9 @@ ShallowWrapper {
                         "nodeType": "class",
                         "props": Object {
                           "children": <FormItem
+                            colon={true}
                             hasFeedback={false}
+                            prefixCls="ant-form"
                           >
                             <Field
                               component={[Function]}
@@ -4361,7 +4647,9 @@ ShallowWrapper {
                                 ]
                               }
                             />,
+                            "colon": true,
                             "hasFeedback": false,
+                            "prefixCls": "ant-form",
                           },
                           "ref": null,
                           "rendered": Object {
@@ -4391,7 +4679,9 @@ ShallowWrapper {
                         "nodeType": "class",
                         "props": Object {
                           "children": <FormItem
+                            colon={true}
                             hasFeedback={false}
+                            prefixCls="ant-form"
                           >
                             <Field
                               component={[Function]}
@@ -4432,7 +4722,9 @@ ShallowWrapper {
                                 ]
                               }
                             />,
+                            "colon": true,
                             "hasFeedback": false,
+                            "prefixCls": "ant-form",
                           },
                           "ref": null,
                           "rendered": Object {
@@ -4486,6 +4778,7 @@ ShallowWrapper {
                   okType="primary"
                   onConfirm={[MockFunction]}
                   placement="topRight"
+                  prefixCls="ant-popover"
                   title="Are you sure you want to cancel?"
                   transitionName="zoom-big"
                   trigger="click"
@@ -4494,8 +4787,8 @@ ShallowWrapper {
                     block={false}
                     className="full-mobile"
                     ghost={false}
-                    htmlType="button"
                     loading={false}
+                    prefixCls="ant-btn"
                   >
                     Cancel
                   </Button>
@@ -4506,6 +4799,7 @@ ShallowWrapper {
                   ghost={false}
                   htmlType="submit"
                   loading={false}
+                  prefixCls="ant-btn"
                   type="primary"
                 >
                   Update Company
@@ -4525,8 +4819,8 @@ ShallowWrapper {
                     block={false}
                     className="full-mobile"
                     ghost={false}
-                    htmlType="button"
                     loading={false}
+                    prefixCls="ant-btn"
                   >
                     Cancel
                   </Button>,
@@ -4538,6 +4832,7 @@ ShallowWrapper {
                   "okType": "primary",
                   "onConfirm": [MockFunction],
                   "placement": "topRight",
+                  "prefixCls": "ant-popover",
                   "title": "Are you sure you want to cancel?",
                   "transitionName": "zoom-big",
                   "trigger": "click",
@@ -4552,8 +4847,8 @@ ShallowWrapper {
                     "children": "Cancel",
                     "className": "full-mobile",
                     "ghost": false,
-                    "htmlType": "button",
                     "loading": false,
+                    "prefixCls": "ant-btn",
                   },
                   "ref": null,
                   "rendered": "Cancel",
@@ -4572,6 +4867,7 @@ ShallowWrapper {
                   "ghost": false,
                   "htmlType": "submit",
                   "loading": false,
+                  "prefixCls": "ant-btn",
                   "type": "primary",
                 },
                 "ref": null,

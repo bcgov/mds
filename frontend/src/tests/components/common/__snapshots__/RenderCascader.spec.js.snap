@@ -34,14 +34,19 @@ ShallowWrapper {
         disabled={false}
         expandTrigger="hover"
         id={1}
+        inputPrefixCls="ant-input"
+        notFoundContent="Not Found"
         options={Array []}
         placeholder=""
         popupPlacement="bottomLeft"
+        prefixCls="ant-cascader"
         transitionName="slide-up"
       />,
+      "colon": true,
       "hasFeedback": false,
       "help": false,
       "label": undefined,
+      "prefixCls": "ant-form",
       "validateStatus": "",
     },
     "ref": null,
@@ -54,9 +59,12 @@ ShallowWrapper {
         "disabled": false,
         "expandTrigger": "hover",
         "id": 1,
+        "inputPrefixCls": "ant-input",
+        "notFoundContent": "Not Found",
         "options": Array [],
         "placeholder": "",
         "popupPlacement": "bottomLeft",
+        "prefixCls": "ant-cascader",
         "transitionName": "slide-up",
       },
       "ref": null,
@@ -76,14 +84,19 @@ ShallowWrapper {
           disabled={false}
           expandTrigger="hover"
           id={1}
+          inputPrefixCls="ant-input"
+          notFoundContent="Not Found"
           options={Array []}
           placeholder=""
           popupPlacement="bottomLeft"
+          prefixCls="ant-cascader"
           transitionName="slide-up"
         />,
+        "colon": true,
         "hasFeedback": false,
         "help": false,
         "label": undefined,
+        "prefixCls": "ant-form",
         "validateStatus": "",
       },
       "ref": null,
@@ -96,9 +109,12 @@ ShallowWrapper {
           "disabled": false,
           "expandTrigger": "hover",
           "id": 1,
+          "inputPrefixCls": "ant-input",
+          "notFoundContent": "Not Found",
           "options": Array [],
           "placeholder": "",
           "popupPlacement": "bottomLeft",
+          "prefixCls": "ant-cascader",
           "transitionName": "slide-up",
         },
         "ref": null,

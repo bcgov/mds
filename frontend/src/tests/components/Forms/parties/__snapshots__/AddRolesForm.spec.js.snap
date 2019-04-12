@@ -27,10 +27,10 @@ ShallowWrapper {
     "nodeType": "host",
     "props": Object {
       "children": <Form
-        colon={true}
         hideRequiredMark={false}
         layout="horizontal"
         onSubmit={[Function]}
+        prefixCls="ant-form"
       >
         <Collapse
           accordion={true}
@@ -48,14 +48,15 @@ ShallowWrapper {
               "leave": [Function],
             }
           }
+          prefixCls="ant-collapse"
         />
         <Button
           block={false}
           className="btn--dropdown"
           ghost={false}
-          htmlType="button"
           loading={false}
           onClick={[Function]}
+          prefixCls="ant-btn"
         >
           <Icon
             style={
@@ -92,14 +93,15 @@ ShallowWrapper {
                 "leave": [Function],
               }
             }
+            prefixCls="ant-collapse"
           />,
           <Button
             block={false}
             className="btn--dropdown"
             ghost={false}
-            htmlType="button"
             loading={false}
             onClick={[Function]}
+            prefixCls="ant-btn"
           >
             <Icon
               style={
@@ -112,10 +114,10 @@ ShallowWrapper {
             Add Role
           </Button>,
         ],
-        "colon": true,
         "hideRequiredMark": false,
         "layout": "horizontal",
         "onSubmit": [Function],
+        "prefixCls": "ant-form",
       },
       "ref": null,
       "rendered": Array [
@@ -136,6 +138,7 @@ ShallowWrapper {
               "enter": [Function],
               "leave": [Function],
             },
+            "prefixCls": "ant-collapse",
           },
           "ref": null,
           "rendered": Array [],
@@ -160,9 +163,9 @@ ShallowWrapper {
             ],
             "className": "btn--dropdown",
             "ghost": false,
-            "htmlType": "button",
             "loading": false,
             "onClick": [Function],
+            "prefixCls": "ant-btn",
           },
           "ref": null,
           "rendered": Array [
@@ -196,10 +199,10 @@ ShallowWrapper {
       "nodeType": "host",
       "props": Object {
         "children": <Form
-          colon={true}
           hideRequiredMark={false}
           layout="horizontal"
           onSubmit={[Function]}
+          prefixCls="ant-form"
         >
           <Collapse
             accordion={true}
@@ -217,14 +220,15 @@ ShallowWrapper {
                 "leave": [Function],
               }
             }
+            prefixCls="ant-collapse"
           />
           <Button
             block={false}
             className="btn--dropdown"
             ghost={false}
-            htmlType="button"
             loading={false}
             onClick={[Function]}
+            prefixCls="ant-btn"
           >
             <Icon
               style={
@@ -261,14 +265,15 @@ ShallowWrapper {
                   "leave": [Function],
                 }
               }
+              prefixCls="ant-collapse"
             />,
             <Button
               block={false}
               className="btn--dropdown"
               ghost={false}
-              htmlType="button"
               loading={false}
               onClick={[Function]}
+              prefixCls="ant-btn"
             >
               <Icon
                 style={
@@ -281,10 +286,10 @@ ShallowWrapper {
               Add Role
             </Button>,
           ],
-          "colon": true,
           "hideRequiredMark": false,
           "layout": "horizontal",
           "onSubmit": [Function],
+          "prefixCls": "ant-form",
         },
         "ref": null,
         "rendered": Array [
@@ -305,6 +310,7 @@ ShallowWrapper {
                 "enter": [Function],
                 "leave": [Function],
               },
+              "prefixCls": "ant-collapse",
             },
             "ref": null,
             "rendered": Array [],
@@ -329,9 +335,9 @@ ShallowWrapper {
               ],
               "className": "btn--dropdown",
               "ghost": false,
-              "htmlType": "button",
               "loading": false,
               "onClick": [Function],
+              "prefixCls": "ant-btn",
             },
             "ref": null,
             "rendered": Array [

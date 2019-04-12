@@ -31,10 +31,13 @@ ShallowWrapper {
         checked={undefined}
         id={1}
         indeterminate={false}
+        prefixCls="ant-checkbox"
       >
         
       </Checkbox>,
+      "colon": true,
       "hasFeedback": false,
+      "prefixCls": "ant-form",
       "validateStatus": "",
     },
     "ref": null,
@@ -47,6 +50,7 @@ ShallowWrapper {
         "children": "",
         "id": 1,
         "indeterminate": false,
+        "prefixCls": "ant-checkbox",
       },
       "ref": null,
       "rendered": "",
@@ -64,10 +68,13 @@ ShallowWrapper {
           checked={undefined}
           id={1}
           indeterminate={false}
+          prefixCls="ant-checkbox"
         >
           
         </Checkbox>,
+        "colon": true,
         "hasFeedback": false,
+        "prefixCls": "ant-form",
         "validateStatus": "",
       },
       "ref": null,
@@ -80,6 +87,7 @@ ShallowWrapper {
           "children": "",
           "id": 1,
           "indeterminate": false,
+          "prefixCls": "ant-checkbox",
         },
         "ref": null,
         "rendered": "",

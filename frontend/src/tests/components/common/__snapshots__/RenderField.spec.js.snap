@@ -5,6 +5,7 @@ ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <RenderField
     id={1}
+    inlineLabel=""
     input=""
     label=""
     meta={
@@ -31,17 +32,21 @@ ShallowWrapper {
       "children": <div
         className="inline-flex"
       >
+        
         <Input
           defaultValue={undefined}
           disabled={false}
           id={1}
           placeholder={undefined}
+          prefixCls="ant-input"
           type="text"
         />
       </div>,
+      "colon": true,
       "hasFeedback": false,
       "help": false,
       "label": "",
+      "prefixCls": "ant-form",
       "validateStatus": "",
     },
     "ref": null,
@@ -51,12 +56,13 @@ ShallowWrapper {
       "nodeType": "host",
       "props": Object {
         "children": Array [
-          undefined,
+          "",
           <Input
             defaultValue={undefined}
             disabled={false}
             id={1}
             placeholder={undefined}
+            prefixCls="ant-input"
             type="text"
           />,
         ],
@@ -64,7 +70,7 @@ ShallowWrapper {
       },
       "ref": null,
       "rendered": Array [
-        undefined,
+        "",
         Object {
           "instance": null,
           "key": undefined,
@@ -74,6 +80,7 @@ ShallowWrapper {
             "disabled": false,
             "id": 1,
             "placeholder": undefined,
+            "prefixCls": "ant-input",
             "type": "text",
           },
           "ref": null,
@@ -94,17 +101,21 @@ ShallowWrapper {
         "children": <div
           className="inline-flex"
         >
+          
           <Input
             defaultValue={undefined}
             disabled={false}
             id={1}
             placeholder={undefined}
+            prefixCls="ant-input"
             type="text"
           />
         </div>,
+        "colon": true,
         "hasFeedback": false,
         "help": false,
         "label": "",
+        "prefixCls": "ant-form",
         "validateStatus": "",
       },
       "ref": null,
@@ -114,12 +125,13 @@ ShallowWrapper {
         "nodeType": "host",
         "props": Object {
           "children": Array [
-            undefined,
+            "",
             <Input
               defaultValue={undefined}
               disabled={false}
               id={1}
               placeholder={undefined}
+              prefixCls="ant-input"
               type="text"
             />,
           ],
@@ -127,7 +139,7 @@ ShallowWrapper {
         },
         "ref": null,
         "rendered": Array [
-          undefined,
+          "",
           Object {
             "instance": null,
             "key": undefined,
@@ -137,6 +149,7 @@ ShallowWrapper {
               "disabled": false,
               "id": 1,
               "placeholder": undefined,
+              "prefixCls": "ant-input",
               "type": "text",
             },
             "ref": null,

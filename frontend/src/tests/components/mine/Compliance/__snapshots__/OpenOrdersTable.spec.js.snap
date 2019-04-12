@@ -123,15 +123,10 @@ ShallowWrapper {
           loading={false}
           locale={Object {}}
           pagination={false}
+          prefixCls="ant-table"
           rowKey="key"
           showHeader={true}
           size="default"
-          sortDirections={
-            Array [
-              "ascend",
-              "descend",
-            ]
-          }
           useFixedHeader={false}
         />,
         <Pagination
@@ -139,6 +134,8 @@ ShallowWrapper {
           defaultCurrent={1}
           defaultPageSize={10}
           onChange={[Function]}
+          prefixCls="ant-pagination"
+          selectPrefixCls="ant-select"
           total={3}
         />,
       ],
@@ -218,13 +215,10 @@ ShallowWrapper {
           "loading": false,
           "locale": Object {},
           "pagination": false,
+          "prefixCls": "ant-table",
           "rowKey": "key",
           "showHeader": true,
           "size": "default",
-          "sortDirections": Array [
-            "ascend",
-            "descend",
-          ],
           "useFixedHeader": false,
         },
         "ref": null,
@@ -240,6 +234,8 @@ ShallowWrapper {
           "defaultCurrent": 1,
           "defaultPageSize": 10,
           "onChange": [Function],
+          "prefixCls": "ant-pagination",
+          "selectPrefixCls": "ant-select",
           "total": 3,
         },
         "ref": null,
@@ -329,15 +325,10 @@ ShallowWrapper {
             loading={false}
             locale={Object {}}
             pagination={false}
+            prefixCls="ant-table"
             rowKey="key"
             showHeader={true}
             size="default"
-            sortDirections={
-              Array [
-                "ascend",
-                "descend",
-              ]
-            }
             useFixedHeader={false}
           />,
           <Pagination
@@ -345,6 +336,8 @@ ShallowWrapper {
             defaultCurrent={1}
             defaultPageSize={10}
             onChange={[Function]}
+            prefixCls="ant-pagination"
+            selectPrefixCls="ant-select"
             total={3}
           />,
         ],
@@ -424,13 +417,10 @@ ShallowWrapper {
             "loading": false,
             "locale": Object {},
             "pagination": false,
+            "prefixCls": "ant-table",
             "rowKey": "key",
             "showHeader": true,
             "size": "default",
-            "sortDirections": Array [
-              "ascend",
-              "descend",
-            ],
             "useFixedHeader": false,
           },
           "ref": null,
@@ -446,6 +436,8 @@ ShallowWrapper {
             "defaultCurrent": 1,
             "defaultPageSize": 10,
             "onChange": [Function],
+            "prefixCls": "ant-pagination",
+            "selectPrefixCls": "ant-select",
             "total": 3,
           },
           "ref": null,

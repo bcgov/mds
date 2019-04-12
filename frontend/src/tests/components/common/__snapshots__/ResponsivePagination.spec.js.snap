@@ -41,6 +41,8 @@ ShallowWrapper {
                 "100",
               ]
             }
+            prefixCls="ant-pagination"
+            selectPrefixCls="ant-select"
             showSizeChanger={true}
             size="small"
             total={1000}
@@ -64,6 +66,8 @@ ShallowWrapper {
                 "100",
               ]
             }
+            prefixCls="ant-pagination"
+            selectPrefixCls="ant-select"
             showSizeChanger={true}
             showTotal={[Function]}
             total={1000}
@@ -92,6 +96,8 @@ ShallowWrapper {
                 "100",
               ]
             }
+            prefixCls="ant-pagination"
+            selectPrefixCls="ant-select"
             showSizeChanger={true}
             size="small"
             total={1000}
@@ -116,6 +122,8 @@ ShallowWrapper {
               "75",
               "100",
             ],
+            "prefixCls": "ant-pagination",
+            "selectPrefixCls": "ant-select",
             "showSizeChanger": true,
             "size": "small",
             "total": 1000,
@@ -145,6 +153,8 @@ ShallowWrapper {
                 "100",
               ]
             }
+            prefixCls="ant-pagination"
+            selectPrefixCls="ant-select"
             showSizeChanger={true}
             showTotal={[Function]}
             total={1000}
@@ -169,6 +179,8 @@ ShallowWrapper {
               "75",
               "100",
             ],
+            "prefixCls": "ant-pagination",
+            "selectPrefixCls": "ant-select",
             "showSizeChanger": true,
             "showTotal": [Function],
             "total": 1000,
@@ -207,6 +219,8 @@ ShallowWrapper {
                   "100",
                 ]
               }
+              prefixCls="ant-pagination"
+              selectPrefixCls="ant-select"
               showSizeChanger={true}
               size="small"
               total={1000}
@@ -230,6 +244,8 @@ ShallowWrapper {
                   "100",
                 ]
               }
+              prefixCls="ant-pagination"
+              selectPrefixCls="ant-select"
               showSizeChanger={true}
               showTotal={[Function]}
               total={1000}
@@ -258,6 +274,8 @@ ShallowWrapper {
                   "100",
                 ]
               }
+              prefixCls="ant-pagination"
+              selectPrefixCls="ant-select"
               showSizeChanger={true}
               size="small"
               total={1000}
@@ -282,6 +300,8 @@ ShallowWrapper {
                 "75",
                 "100",
               ],
+              "prefixCls": "ant-pagination",
+              "selectPrefixCls": "ant-select",
               "showSizeChanger": true,
               "size": "small",
               "total": 1000,
@@ -311,6 +331,8 @@ ShallowWrapper {
                   "100",
                 ]
               }
+              prefixCls="ant-pagination"
+              selectPrefixCls="ant-select"
               showSizeChanger={true}
               showTotal={[Function]}
               total={1000}
@@ -335,6 +357,8 @@ ShallowWrapper {
                 "75",
                 "100",
               ],
+              "prefixCls": "ant-pagination",
+              "selectPrefixCls": "ant-select",
               "showSizeChanger": true,
               "showTotal": [Function],
               "total": 1000,
