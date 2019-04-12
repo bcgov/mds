@@ -107,6 +107,7 @@ class MineLocationFactory(BaseFactory):
     geom = factory.LazyAttribute(lambda o: 'SRID=3005;POINT(%f %f)' % (o.longitude, o.latitude))
     effective_date = TODAY
     expiry_date = TODAY
+    mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
 
 
 class MineStatusFactory(BaseFactory):
