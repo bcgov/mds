@@ -6,6 +6,7 @@ from sqlalchemy.exc import DBAPIError
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
 from ..models.party import Party
+from ...response_models import PARTY
 from ...party_appt.models.mine_party_appt import MinePartyAppointment
 from app.extensions import api
 from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create, requires_role_mine_admin
@@ -84,8 +85,37 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
 
     PARTY_LIST_RESULT_LIMIT = 25
 
+    @api.doc(
+        params={
+            'party_guid': 'guid of the party to fetch',
+        })
+    @requires_role_mine_view
+    @api.marshal_with(PARTY, code=200)
+    def get(self, party_guid):
+        try:
+            uuid.UUID(party_guid)
+        except ValueError:
+            raise BadRequest('Invalid Party guid')
+
+        party = Party.find_by_party_guid(party_guid)
+        if not party:
+            raise NotFound('Party not found')
+
+        party.address = {
+            'suite_no': party.suite_no,
+            'address_line_1': party.address_line_1,
+            'address_line_2': party.address_line_2,
+            'city': party.city,
+            'sub_division_code': party.sub_division_code,
+            'post_code': party.post_code,
+            'address_type_code': party.address_type_code,
+        }
+
+        return party
+
     @api.expect(parser)
     @requires_role_mine_create
+    @api.marshal_with(PARTY, code=200)
     def post(self, party_guid=None):
         if party_guid:
             raise BadRequest('Unexpected party id in Url.')
@@ -110,10 +140,11 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
             raise InternalServerError('Error: Failed to create party')
 
         party.save()
-        return party.json()
+        return party
 
     @api.expect(parser)
     @requires_role_mine_create
+    @api.marshal_with(PARTY, code=200)
     def put(self, party_guid):
         data = PartyResource.parser.parse_args()
         existing_party = Party.find_by_party_guid(party_guid)
@@ -126,7 +157,7 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
 
         existing_party.save()
 
-        return existing_party.json()
+        return existing_party
 
     @api.doc(params={'party_guid': 'Required: Party guid. Deletes expected document.'})
     @requires_role_mine_admin

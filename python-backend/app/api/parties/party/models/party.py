@@ -49,6 +49,7 @@ class Party(AuditMixin, Base):
     def __repr__(self):
         return '<Party %r>' % self.party_guid
 
+    # TODO: Remove this once mine_party_appt has been refactored
     def json(self, show_mgr=True, relationships=[]):
         context = {
             'party_guid':

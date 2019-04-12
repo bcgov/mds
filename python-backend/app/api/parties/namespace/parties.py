@@ -5,10 +5,11 @@ from ..party.resources.sub_division_code_resource import SubDivisionCodeResource
 from ..party_appt.resources.mine_party_appt_resource import MinePartyApptResource
 from ..party_appt.resources.mine_party_appt_admin_resource import MinePartyApptAdminResource
 from ..party_appt.resources.mine_party_appt_type_resource import MinePartyApptTypeResource
-from ..party.resources.party_advance_search_resource import PartyAdvancedSearchResource
+from ..party.resources.party_list_resource import PartyListResource
 
 api = Namespace('parties', description='Party related operations')
 
+api.add_resource(PartyListResource, '')
 api.add_resource(PartyResource, '/<string:party_guid>')
 
 api.add_resource(SubDivisionCodeResource, '/sub-division-codes')
@@ -21,5 +22,3 @@ api.add_resource(
 
 api.add_resource(
         MinePartyApptAdminResource, '/mines/manager-history/csv')
-
-api.add_resource(PartyAdvancedSearchResource, '')

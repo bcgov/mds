@@ -2,11 +2,13 @@ import uuid
 from flask import request
 from flask_restplus import Resource, reqparse
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
+from werkzeug.exceptions import BadRequest
 from sqlalchemy import and_
 
 from ..models.party import Party
 from ..models.party_type_code import PartyTypeCode
 from ...party_appt.models.mine_party_appt import MinePartyAppointment
+from ...response_models import PAGINATED_PARTY_LIST
 
 from ....constants import PARTY_STATUS_CODE
 from app.extensions import api
@@ -15,7 +17,7 @@ from ....utils.access_decorators import requires_role_mine_view, requires_role_m
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
-class PartyAdvancedSearchResource(Resource, UserMixin, ErrorMixin):
+class PartyListResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
     parser.add_argument('first_name', type=str,
         help='First name of the party, if the party is a person.', trim=True)
@@ -43,21 +45,19 @@ class PartyAdvancedSearchResource(Resource, UserMixin, ErrorMixin):
             'type': 'A person (PER) or organisation (ORG)',
             'role': 'A comma separated list of roles to be filtered by',
             'sort_field':
-            'enum[party_name, mine_party_appt_type_code',
-            'sort_dir':
-            'enum[asc, desc] Default: asc'
+            'enum[party_name, mine_party_appt_type_code] Default: party_name',
+            'sort_dir': 'enum[asc, desc] Default: asc'
         })
     @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
+    @api.marshal_with(PAGINATED_PARTY_LIST, code=200)
     def get(self):
         paginated_parties, pagination_details = self.apply_filter_and_search(request.args)
         if not paginated_parties:
-            self.raise_error(
-                404,
-                'No parties found'
-            ), 404
-        parties = paginated_parties.all()
+            raise BadRequest('Unable to fetch parties')
+
         return {
-            'parties': list(map(lambda x: x.json(relationships=['mine_party_appt']), parties)),
+            # TODO: Create an address table & relationship to make address marshalling work
+            'records': paginated_parties.all(),
             'current_page': pagination_details.page_number,
             'total_pages': pagination_details.num_pages,
             'items_per_page': pagination_details.page_size,
