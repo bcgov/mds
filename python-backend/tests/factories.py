@@ -178,6 +178,7 @@ class MineTailingsStorageFacilityFactory(BaseFactory):
 
     mine_tailings_storage_facility_guid = GUID
     mine_tailings_storage_facility_name = factory.Faker('last_name')
+    mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
 
 
 class PermitFactory(BaseFactory):
@@ -312,8 +313,7 @@ class MineFactory(BaseFactory):
         if not isinstance(extracted, int):
             extracted = 1
 
-        MineTailingsStorageFacilityFactory.create_batch(
-            size=extracted, mine_guid=obj.mine_guid, **kwargs)
+        MineTailingsStorageFacilityFactory.create_batch(size=extracted, mine=obj, **kwargs)
 
     @factory.post_generation
     def mine_permit(obj, create, extracted, **kwargs):
