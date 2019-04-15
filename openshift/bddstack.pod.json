@@ -28,6 +28,11 @@
       "required": true
     },
     {
+      "name": "MINESPACE_URL",
+      "description": "URL of the public frontend (minespace) to run tests against",
+      "required": true
+    },
+    {
       "name": "IDIR_CONFIG_NAME",
       "description": "Configuration name for the IDIR credentials",
       "required": true
@@ -63,6 +68,10 @@
               {
                 "name": "BASEURL",
                 "value": "${URL}"
+              },
+              {
+                "name": "MINESPACE_URL",
+                "value": "${MINESPACE_URL}"
               },
               {
                 "name": "IDIR_USERNAME",
