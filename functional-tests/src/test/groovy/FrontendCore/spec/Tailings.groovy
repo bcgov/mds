@@ -56,7 +56,6 @@ class Tailings extends GebReportingSpec {
         when: "User navigates to the TSF tab and clicks the upload icon"
         tailingsTab.tabSelect.click()
 
-
         and: "User opens modal and uploads a valid file type"
         def uploadedFile = dir.newFile(Const.TEST_FILE_NAME) << Const.TEST_FILE_CONTENT
         tailingsTab.addTailingsDocButtons[0].click()
