@@ -47,7 +47,7 @@ ShallowWrapper {
         Object {
           "dataIndex": "name",
           "render": [Function],
-          "sortField": "name",
+          "sortField": "party_name",
           "sortOrder": false,
           "sorter": true,
           "title": "Contact Name",
@@ -55,7 +55,7 @@ ShallowWrapper {
         Object {
           "dataIndex": "role",
           "render": [Function],
-          "sortField": "mine_party_appt_type",
+          "sortField": "mine_party_appt_type_code",
           "sortOrder": false,
           "sorter": true,
           "title": "Role",
@@ -78,7 +78,10 @@ ShallowWrapper {
           "email": undefined,
           "emptyField": "N/A",
           "key": undefined,
-          "name": "mock name",
+          "name": Array [
+            "",
+            "mock name",
+          ],
           "phone": "N/A",
           "role": "N/A",
         },
@@ -86,7 +89,10 @@ ShallowWrapper {
           "email": undefined,
           "emptyField": "N/A",
           "key": undefined,
-          "name": "mock Two",
+          "name": Array [
+            "",
+            "mock Two",
+          ],
           "phone": "N/A",
           "role": "N/A",
         },
@@ -126,7 +132,7 @@ ShallowWrapper {
           Object {
             "dataIndex": "name",
             "render": [Function],
-            "sortField": "name",
+            "sortField": "party_name",
             "sortOrder": false,
             "sorter": true,
             "title": "Contact Name",
@@ -134,7 +140,7 @@ ShallowWrapper {
           Object {
             "dataIndex": "role",
             "render": [Function],
-            "sortField": "mine_party_appt_type",
+            "sortField": "mine_party_appt_type_code",
             "sortOrder": false,
             "sorter": true,
             "title": "Role",
@@ -157,7 +163,10 @@ ShallowWrapper {
             "email": undefined,
             "emptyField": "N/A",
             "key": undefined,
-            "name": "mock name",
+            "name": Array [
+              "",
+              "mock name",
+            ],
             "phone": "N/A",
             "role": "N/A",
           },
@@ -165,7 +174,10 @@ ShallowWrapper {
             "email": undefined,
             "emptyField": "N/A",
             "key": undefined,
-            "name": "mock Two",
+            "name": Array [
+              "",
+              "mock Two",
+            ],
             "phone": "N/A",
             "role": "N/A",
           },
