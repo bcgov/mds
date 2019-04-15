@@ -24,6 +24,7 @@ from app.api.permits.permit.models.permit import Permit
 from app.api.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from app.api.users.core.models.core_user import CoreUser
+from app.api.users.minespace.models.minespace_user import MinespaceUser
 
 GUID = factory.LazyFunction(uuid.uuid4)
 TODAY = factory.LazyFunction(datetime.now)
@@ -341,9 +342,16 @@ class CoreUserFactory(BaseFactory):
     core_user_guid = GUID
     email = factory.Faker('email')
     phone_no = factory.Faker('numerify', text='###-###-####')
-    idir_user_detail = []
-    idir_membership = []
     last_logon = TODAY
+
+
+class MinespaceUserFactory(BaseFactory):
+    class Meta:
+        model = MinespaceUser
+
+    user_id = factory.Sequence(lambda n: n)
+    keycloak_guid = GUID
+    email = factory.Faker('email')
 
 
 class MineFactory(BaseFactory):
