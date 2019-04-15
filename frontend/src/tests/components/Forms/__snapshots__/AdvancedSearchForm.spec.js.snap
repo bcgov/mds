@@ -45,9 +45,9 @@ ShallowWrapper {
             block={false}
             className="btn--dropdown"
             ghost={false}
+            htmlType="button"
             loading={false}
             onClick={undefined}
-            prefixCls="ant-btn"
           >
             Expand Filters
             <Icon
@@ -64,7 +64,6 @@ ShallowWrapper {
             ghost={false}
             htmlType="reset"
             loading={false}
-            prefixCls="ant-btn"
             type="secondary"
           >
             Clear Filters
@@ -75,18 +74,17 @@ ShallowWrapper {
             ghost={false}
             htmlType="submit"
             loading={false}
-            prefixCls="ant-btn"
             type="primary"
           >
             Apply Filters
           </Button>
         </div>,
       ],
+      "colon": true,
       "hideRequiredMark": false,
       "layout": "vertical",
       "onReset": [Function],
       "onSubmit": [MockFunction],
-      "prefixCls": "ant-form",
     },
     "ref": null,
     "rendered": Array [
@@ -155,9 +153,9 @@ ShallowWrapper {
             block={false}
             className="btn--dropdown"
             ghost={false}
+            htmlType="button"
             loading={false}
             onClick={undefined}
-            prefixCls="ant-btn"
           >
             Expand Filters
             <Icon
@@ -181,9 +179,9 @@ ShallowWrapper {
             ],
             "className": "btn--dropdown",
             "ghost": false,
+            "htmlType": "button",
             "loading": false,
             "onClick": undefined,
-            "prefixCls": "ant-btn",
           },
           "ref": null,
           "rendered": Array [
@@ -216,7 +214,6 @@ ShallowWrapper {
               ghost={false}
               htmlType="reset"
               loading={false}
-              prefixCls="ant-btn"
               type="secondary"
             >
               Clear Filters
@@ -227,7 +224,6 @@ ShallowWrapper {
               ghost={false}
               htmlType="submit"
               loading={false}
-              prefixCls="ant-btn"
               type="primary"
             >
               Apply Filters
@@ -248,7 +244,6 @@ ShallowWrapper {
               "ghost": false,
               "htmlType": "reset",
               "loading": false,
-              "prefixCls": "ant-btn",
               "type": "secondary",
             },
             "ref": null,
@@ -266,7 +261,6 @@ ShallowWrapper {
               "ghost": false,
               "htmlType": "submit",
               "loading": false,
-              "prefixCls": "ant-btn",
               "type": "primary",
             },
             "ref": null,
@@ -310,9 +304,9 @@ ShallowWrapper {
               block={false}
               className="btn--dropdown"
               ghost={false}
+              htmlType="button"
               loading={false}
               onClick={undefined}
-              prefixCls="ant-btn"
             >
               Expand Filters
               <Icon
@@ -329,7 +323,6 @@ ShallowWrapper {
               ghost={false}
               htmlType="reset"
               loading={false}
-              prefixCls="ant-btn"
               type="secondary"
             >
               Clear Filters
@@ -340,18 +333,17 @@ ShallowWrapper {
               ghost={false}
               htmlType="submit"
               loading={false}
-              prefixCls="ant-btn"
               type="primary"
             >
               Apply Filters
             </Button>
           </div>,
         ],
+        "colon": true,
         "hideRequiredMark": false,
         "layout": "vertical",
         "onReset": [Function],
         "onSubmit": [MockFunction],
-        "prefixCls": "ant-form",
       },
       "ref": null,
       "rendered": Array [
@@ -420,9 +412,9 @@ ShallowWrapper {
               block={false}
               className="btn--dropdown"
               ghost={false}
+              htmlType="button"
               loading={false}
               onClick={undefined}
-              prefixCls="ant-btn"
             >
               Expand Filters
               <Icon
@@ -446,9 +438,9 @@ ShallowWrapper {
               ],
               "className": "btn--dropdown",
               "ghost": false,
+              "htmlType": "button",
               "loading": false,
               "onClick": undefined,
-              "prefixCls": "ant-btn",
             },
             "ref": null,
             "rendered": Array [
@@ -481,7 +473,6 @@ ShallowWrapper {
                 ghost={false}
                 htmlType="reset"
                 loading={false}
-                prefixCls="ant-btn"
                 type="secondary"
               >
                 Clear Filters
@@ -492,7 +483,6 @@ ShallowWrapper {
                 ghost={false}
                 htmlType="submit"
                 loading={false}
-                prefixCls="ant-btn"
                 type="primary"
               >
                 Apply Filters
@@ -513,7 +503,6 @@ ShallowWrapper {
                 "ghost": false,
                 "htmlType": "reset",
                 "loading": false,
-                "prefixCls": "ant-btn",
                 "type": "secondary",
               },
               "ref": null,
@@ -531,7 +520,6 @@ ShallowWrapper {
                 "ghost": false,
                 "htmlType": "submit",
                 "loading": false,
-                "prefixCls": "ant-btn",
                 "type": "primary",
               },
               "ref": null,

@@ -63,8 +63,8 @@ class Config(object):
 
     # Flask-uploads configs
     UPLOADED_DOCUMENT_DEST = os.environ.get('UPLOADED_DOCUMENT_DEST', '/app/document_uploads')
-    # 100MB file limit
-    MAX_CONTENT_LENGTH = 100 * 1024 * 1024
+    # 100MB file limit, temporarily increased to 400MB
+    MAX_CONTENT_LENGTH = 400 * 1024 * 1024
 
     # Elastic config
     ELASTIC_ENABLED = os.environ.get('ELASTIC_ENABLED', '0')
