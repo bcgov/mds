@@ -10,7 +10,15 @@ from app.api.mines.mine.models.mine_tenure_type_code import MineTenureTypeCode
 from app.api.mines.mine.models.mine_commodity_code import MineCommodityCode
 from app.api.mines.mine.models.mine_disturbance_code import MineDisturbanceCode
 from app.api.mines.status.models.mine_status_xref import MineStatusXref
+from app.api.applications.models.application_status_code import ApplicationStatusCode
 from app.api.parties.party.models.sub_division_code import SubDivisionCode
+
+
+def RandomApplicationStatusCode():
+    return random.choice([
+        x.application_status_code
+        for x in ApplicationStatusCode.find_all_active_application_status_code()
+    ])
 
 
 def RandomExpectedDocumentStatusCode():
