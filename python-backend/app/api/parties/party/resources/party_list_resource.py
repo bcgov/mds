@@ -88,7 +88,7 @@ class PartyListResource(Resource, UserMixin, ErrorMixin):
             'type': 'A person (PER) or organisation (ORG)',
             'role': 'A comma separated list of roles to be filtered by',
             'sort_field':
-            'enum[party_name, mine_party_appt_type_code] Default: party_name',
+            'enum[party_name] Default: party_name',
             'sort_dir': 'enum[asc, desc] Default: asc'
         })
     @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
