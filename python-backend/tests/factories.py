@@ -190,6 +190,7 @@ class PermitFactory(BaseFactory):
     permit_no = factory.Sequence(lambda n: f'QQ{n}')
     permit_status_code = factory.LazyFunction(RandomPermitStatusCode)
     permit_amendments = []
+    mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
 
     @factory.post_generation
     def permit_amendments(obj, create, extracted, **kwargs):
@@ -200,7 +201,7 @@ class PermitFactory(BaseFactory):
             extracted = 1
 
         for n in range(extracted):
-            PermitAmendmentFactory(permit_id=obj.permit_id, initial_permit=(n == 0), **kwargs)
+            PermitAmendmentFactory(permit=obj, initial_permit=(n == 0), **kwargs)
 
 
 class PermitAmendmentFactory(BaseFactory):
@@ -212,9 +213,11 @@ class PermitAmendmentFactory(BaseFactory):
             description='Initial permit issued.',
             permit_amendment_type_code='OGP',
         )
+        permit = factory.SubFactory(PermitFactory, permit_amendments=0)
 
     permit_amendment_id = factory.Sequence(lambda n: n)
     permit_amendment_guid = GUID
+    permit_id = factory.SelfAttribute('permit.permit_id')
     received_date = TODAY
     issue_date = TODAY
     authorization_end_date = factory.Faker('future_datetime', end_date='+30d')
@@ -222,6 +225,22 @@ class PermitAmendmentFactory(BaseFactory):
     permit_amendment_type_code = 'AMD'
     description = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
     documents = []
+
+
+class PermitAmendmentDocumentFactory(BaseFactory):
+    class Meta:
+        model = PermitAmendmentDocument
+
+    class Params:
+        document_manager_obj = factory.SubFactory(
+            DocumentManagerFactory, file_display_name=factory.SelfAttribute('..document_name'))
+
+    permit_amendment_document_guid = GUID
+    permit_amendment_id = factory.SelfAttribute('permit_amendment.permit_amendment_id')
+    document_name = factory.Faker('file_name')
+    mine_guid = factory.SelfAttribute('permit_amendment.permit.mine.mine_guid')
+    document_manager_guid = factory.SelfAttribute('document_manager_obj.document_guid')
+    permit_amendment = factory.SubFactory(PermitAmendmentFactory)
 
 
 class MineVerifiedStatusFactory(BaseFactory):
@@ -323,7 +342,7 @@ class MineFactory(BaseFactory):
         if not isinstance(extracted, int):
             extracted = 1
 
-        PermitFactory.create_batch(size=extracted, mine_guid=obj.mine_guid, **kwargs)
+        PermitFactory.create_batch(size=extracted, mine=obj, **kwargs)
 
     @factory.post_generation
     def mine_expected_documents(obj, create, extracted, **kwargs):
