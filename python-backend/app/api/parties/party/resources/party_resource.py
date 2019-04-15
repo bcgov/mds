@@ -87,6 +87,7 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
     PARTY_LIST_RESULT_LIMIT = 25
 
     @api.doc(
+        description='Fetch a party by guid',
         params={
             'party_guid': 'guid of the party to fetch',
         })
@@ -106,6 +107,11 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
 
 
     @api.expect(parser)
+    @api.doc(
+        description='Update a party by guid',
+        params={
+            'party_guid': 'guid of the party to update.'
+        })
     @requires_role_mine_create
     @api.marshal_with(PARTY, code=200)
     def put(self, party_guid):
@@ -133,7 +139,11 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
 
         return existing_party
 
-    @api.doc(params={'party_guid': 'Required: Party guid. Deletes expected document.'})
+    @api.doc(
+        description='Delete a party by guid',
+        params={
+            'party_guid': 'guid of the party to delete.'
+        })
     @requires_role_mine_admin
     def delete(self, party_guid):
         if party_guid is None:

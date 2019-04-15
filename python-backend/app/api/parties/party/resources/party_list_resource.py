@@ -79,7 +79,7 @@ class PartyListResource(Resource, UserMixin, ErrorMixin):
 
 
     @api.doc(
-        # TODO: Add descriptions to all endpoints I've touched
+        description='Fetch a paginated list of parties.',
         params={
             'first_name': 'First name of party or contact',
             'party_name': 'Last name or party name of person or organisation',
@@ -99,7 +99,6 @@ class PartyListResource(Resource, UserMixin, ErrorMixin):
             raise BadRequest('Unable to fetch parties')
 
         return {
-            # TODO: Create an address table & relationship to make address marshalling work
             'records': paginated_parties.all(),
             'current_page': pagination_details.page_number,
             'total_pages': pagination_details.num_pages,
@@ -109,6 +108,7 @@ class PartyListResource(Resource, UserMixin, ErrorMixin):
 
 
     @api.expect(parser)
+    @api.doc(description='Create a party.')
     @requires_role_mine_create
     @api.marshal_with(PARTY, code=200)
     def post(self, party_guid=None):
