@@ -55,9 +55,7 @@ ShallowWrapper {
         Object {
           "dataIndex": "role",
           "render": [Function],
-          "sortField": "mine_party_appt_type_code",
           "sortOrder": false,
-          "sorter": true,
           "title": "Role",
         },
         Object {
@@ -140,9 +138,7 @@ ShallowWrapper {
           Object {
             "dataIndex": "role",
             "render": [Function],
-            "sortField": "mine_party_appt_type_code",
             "sortOrder": false,
-            "sorter": true,
             "title": "Role",
           },
           Object {
