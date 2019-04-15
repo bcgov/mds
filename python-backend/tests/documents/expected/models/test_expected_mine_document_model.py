@@ -1,12 +1,12 @@
 import uuid
-from tests.constants import TEST_MINE_GUID, TEST_EXPECTED_DOCUMENT_GUID1, TEST_EXPECTED_DOCUMENT_GUID2, TEST_EXPECTED_DOCUMENT_NAME2, TEST_EXPECTED_DOCUMENT_STATUS_CODE1, DUMMY_USER_KWARGS
-from app.api.documents.expected.models.mine_expected_document import MineExpectedDocument
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
+from app.api.documents.expected.models.mine_expected_document import MineExpectedDocument
 from tests.factories import MineFactory, MineExpectedDocumentFactory
 
 BATCH_SIZE = 5
+
 
 # MineExpectedDocument Class Methods
 def test_expected_documents_find_by_mine_guid(db_session):
@@ -32,10 +32,11 @@ def test_expected_documents_find_by_mine_guid_after_insert(db_session):
 
 def test_expected_documents_find_by_exp_document_guid(db_session):
     exp_doc = MineExpectedDocumentFactory.create_batch(size=BATCH_SIZE)[0]
-    
-    expected_document = MineExpectedDocument.find_by_exp_document_guid(str(exp_doc.exp_document_guid))
+
+    expected_document = MineExpectedDocument.find_by_exp_document_guid(
+        str(exp_doc.exp_document_guid))
     assert expected_document.exp_document_guid == exp_doc.exp_document_guid
-    
+
 
 #add_due_date tests
 def test_add_fiscal_due_date_with_one_year_period():
@@ -49,6 +50,7 @@ def test_add_fiscal_due_date_with_one_year_period():
 
     assert due_date == expected_due_date
 
+
 def test_add_fiscal_due_date_with_five_year_period():
     current_date = datetime(datetime.now().year, 7, 1, 00, 00, 00)
     expected_due_date = datetime(current_date.year + 5, 3, 31, 00, 00, 00)
@@ -59,6 +61,7 @@ def test_add_fiscal_due_date_with_five_year_period():
         None, current_date, due_date_type, period)
 
     assert due_date == expected_due_date
+
 
 def test_add_fiscal_due_date_with_five_year_period_this_year():
     current_date = datetime(datetime.now().year, 2, 1, 00, 00, 00)
@@ -71,6 +74,7 @@ def test_add_fiscal_due_date_with_five_year_period_this_year():
 
     assert due_date == expected_due_date
 
+
 def test_add_aniversary_due_date():
     current_date = datetime.now()
     expected_due_date = current_date
@@ -81,6 +85,7 @@ def test_add_aniversary_due_date():
         None, current_date, due_date_type, period)
 
     assert expected_due_date == due_date
+
 
 def test_add_fiscal_due_date_when_current_date_is_fiscal():
     fiscal = datetime(datetime.now().year, 3, 31, 00, 00, 00)
@@ -93,6 +98,7 @@ def test_add_fiscal_due_date_when_current_date_is_fiscal():
 
     assert due_date == expected_due_date
 
+
 def test_add_fiscal_due_date_on_year_end():
     end_of_year = datetime(datetime.now().year - 1, 12, 31, 23, 59, 59)
     due_date_type = 'FIS'
@@ -103,6 +109,7 @@ def test_add_fiscal_due_date_on_year_end():
         None, end_of_year, due_date_type, period)
 
     assert due_date == expected_due_date
+
 
 def test_add_fiscal_due_date_on_new_year():
     new_year = datetime(datetime.now().year, 1, 1, 00, 00, 00)
