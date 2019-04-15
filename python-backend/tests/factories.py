@@ -144,6 +144,7 @@ class MineTypeFactory(BaseFactory):
     mine_type_guid = GUID
     mine_tenure_type_code = factory.LazyFunction(RandomTenureTypeCode)
     mine_type_detail = []
+    mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
 
     @factory.post_generation
     def mine_type_detail(obj, create, extracted, **kwargs):
