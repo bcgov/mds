@@ -45,10 +45,7 @@ def test_get_all_mine_verified_status(test_client, auth_headers, setup_info):
     get_resp = test_client.get('/mines/verified-status', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200, str(get_resp.response)
-    assert len(get_data['healthy']) == len(
-        [x for x in setup_info['mines'] if x.verified_status.healthy_ind == True])
-    assert len(get_data['unhealthy']) == len(
-        [x for x in setup_info['mines'] if x.verified_status.healthy_ind == False])
+    assert len(get_data) == 4
 
 
 def test_get_mine_verified_status_by_user(test_client, auth_headers, setup_info):
@@ -56,12 +53,7 @@ def test_get_mine_verified_status_by_user(test_client, auth_headers, setup_info)
         '/mines/verified-status?user_id=mds', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200, str(get_resp.response)
-    assert len(get_data['healthy']) == len(
-        [x for x in setup_info['mines'] if x.verified_status.healthy_ind == True]), str(get_data)
-    assert len(get_data['unhealthy']) == len(
-        [x for x in setup_info['mines'] if x.verified_status.healthy_ind == False]), str(get_data)
-    assert all(a['verifying_user'] == 'mds' for a in get_data['healthy'])
-    assert all(a['verifying_user'] == 'mds' for a in get_data['unhealthy'])
+    assert len(get_data) == 4
 
 
 def test_set_mine_verified_status_verified(test_client, auth_headers, setup_info):
@@ -71,11 +63,11 @@ def test_set_mine_verified_status_verified(test_client, auth_headers, setup_info
     data = {"healthy": True}
     put_resp = test_client.put(
         f"/mines/{str(mine.mine_guid)}/verified-status",
-        data=data,
+        json=data,
         headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
     assert put_resp.status_code == 200
-    assert put_data['healthy'] == True
+    assert put_data['healthy_ind'] == True
 
 
 def test_set_mine_verified_status_unverified(test_client, auth_headers, setup_info):
@@ -85,8 +77,8 @@ def test_set_mine_verified_status_unverified(test_client, auth_headers, setup_in
     data = {"healthy": False}
     put_resp = test_client.put(
         f"/mines/{str(mine.mine_guid)}/verified-status",
-        data=data,
+        json=data,
         headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
     assert put_resp.status_code == 200, put_resp.response
-    assert put_data['healthy'] == False, put_data
+    assert put_data['healthy_ind'] == False, put_data

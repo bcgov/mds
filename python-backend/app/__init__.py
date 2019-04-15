@@ -6,6 +6,7 @@ from flask import Flask, current_app
 from flask_cors import CORS
 from flask_restplus import Resource, apidoc
 from flask_compress import Compress
+from sqlalchemy.exc import IntegrityError
 
 from flask_jwt_oidc.exceptions import AuthError
 
@@ -100,7 +101,7 @@ def register_routes(app):
             #FE is mixed on expecing error in obj, or wrapped 'error' key.
             # this is temporary until we remove create_error_payload and raise_error.
             'error': {
-                'status': getattr(error, 'code', 500),
+                'status': getattr(error, 'code', 401),
                 'message': str(error)
             }
         }, getattr(error, 'status_code', 401)
@@ -113,7 +114,20 @@ def register_routes(app):
             #FE is mixed on expecing error in obj, or wrapped 'error' key.
             # this is temporary until we remove create_error_payload and raise_error.
             'error': {
-                'status': getattr(error, 'code', 500),
+                'status': getattr(error, 'code', 400),
+                'message': str(error)
+            }
+        }, getattr(error, 'code', 400)
+
+    @api.errorhandler(IntegrityError)
+    def integrity_error_handler(error):
+        return {
+            'status': getattr(error, 'code', 400),
+            'message': str(error),
+            #FE is mixed on expecing error in obj, or wrapped 'error' key.
+            # this is temporary until we remove create_error_payload and raise_error.
+            'error': {
+                'status': getattr(error, 'code', 400),
                 'message': str(error)
             }
         }, getattr(error, 'code', 400)
