@@ -11,14 +11,15 @@ from app.api.documents.required.resources.required_documents import RequiredDocu
 from app.api.mines.compliance.resources.compliance import MineComplianceResource
 from app.api.mines.compliance.resources.compliance_article import ComplianceArticleResource
 from app.api.mines.location.resources.location import MineLocationResource
+from app.api.mines.incidents.resources.mine_incidents import MineIncidentResource, MineIncidentListResource
+from app.api.mines.incidents.resources.mine_incident_followup_types import MineIncidentFollowupTypeResource
 from app.api.mines.mine.resources.mine_commodity_code import MineCommodityCodeResource
 from app.api.mines.mine.resources.mine_disturbance_code import MineDisturbanceCodeResource
 from app.api.mines.mine.resources.mine_tenure_type_code import MineTenureTypeCodeResource
 from app.api.mines.mine.resources.mine_type_detail import MineTypeDetailResource
 from app.api.mines.mine.resources.mine_type import MineTypeResource
 from app.api.mines.mine.resources.mine import MineResource, MineListSearch
-from app.api.mines.variances.resources.variance import (VarianceListResource,
-                                                        VarianceResource,
+from app.api.mines.variances.resources.variance import (VarianceListResource, VarianceResource,
                                                         VarianceDocumentUploadResource,
                                                         VarianceUploadedDocumentsResource)
 from app.api.mines.region.resources.region import MineRegionResource
@@ -54,10 +55,14 @@ from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserM
      (MineDisturbanceCodeResource, "get", [MINE_VIEW]),
      (MineDocumentResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]),
      (MineListSearch, "get", [MINE_VIEW, MINESPACE_PROPONENT]),
-     (MineLocationResource, "get", [MINE_VIEW]), (MinePartyApptResource, "get", [MINE_VIEW]),
-     (MinePartyApptResource, "post", [MINE_CREATE]), (MinePartyApptResource, "put", [MINE_CREATE]),
+     (MineLocationResource, "get", [MINE_VIEW]), (MineIncidentResource, 'get', [MINE_VIEW]),
+     (MineIncidentResource, 'put', [MINE_CREATE]), (MineIncidentListResource, 'get', [MINE_VIEW]),
+     (MineIncidentListResource, 'post', [MINE_CREATE]),
+     (MineIncidentFollowupTypeResource, 'get', [MINE_VIEW]),
+     (MinePartyApptResource, "get", [MINE_VIEW]), (MinePartyApptResource, "post", [MINE_CREATE]),
+     (MinePartyApptResource, "put", [MINE_CREATE]),
      (MinePartyApptResource, "delete", [MINE_CREATE]),
-     (MinePartyApptTypeResource, "get", [MINE_VIEW]),(MineRegionResource, "get", [MINE_VIEW]),
+     (MinePartyApptTypeResource, "get", [MINE_VIEW]), (MineRegionResource, "get", [MINE_VIEW]),
      (MineResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]), (MineResource, "post", [MINE_CREATE]),
      (MineResource, "put", [MINE_CREATE]), (MineStatusResource, "get", [MINE_VIEW]),
      (MineTailingsStorageFacilityResource, "get", [MINE_VIEW]),
@@ -83,11 +88,8 @@ from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserM
      (VarianceDocumentUploadResource, "post", [MINE_CREATE, MINESPACE_PROPONENT]),
      (VarianceDocumentUploadResource, "put", [MINE_CREATE, MINESPACE_PROPONENT]),
      (VarianceUploadedDocumentsResource, "delete", [MINE_CREATE, MINESPACE_PROPONENT]),
-     (VarianceListResource, "get", [MINE_VIEW]),
-     (VarianceListResource, "post", [MINE_CREATE]),
-     (VarianceResource, "get", [MINE_VIEW])
-    ]
-)
+     (VarianceListResource, "get", [MINE_VIEW]), (VarianceListResource, "post", [MINE_CREATE]),
+     (VarianceResource, "get", [MINE_VIEW])])
 def test_endpoint_auth(resource, method, expected_roles):
     endpoint = getattr(resource, method, None)
     assert endpoint != None, '{0} does not have a {1} method.'.format(resource, method.upper())

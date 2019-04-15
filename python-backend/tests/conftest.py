@@ -36,6 +36,7 @@ from app.api.documents.mines.models.mine_document import MineDocument
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
 from app.api.applications.models.application_status_code import ApplicationStatusCode
+from app.api.mines.incidents.models.mine_incident_followup_type import MineIncidentFollowupType
 
 from app.api.constants import PARTY_STATUS_CODE, MINE_OPERATION_STATUS, MINE_OPERATION_STATUS_REASON, MINE_OPERATION_STATUS_SUB_REASON
 from .constants import *
@@ -94,14 +95,15 @@ def cli_runner(app):
 
 @pytest.fixture(scope='module')
 def test_client():
+
+    User._test_mode = True
+
     # Test Setup with data
     app = create_app(TestConfig)
     client = app.test_client()
     ctx = app.app_context()
     ctx.push()
     setup_data(db.session)
-
-    User._test_mode = True
 
     yield client
 
@@ -447,6 +449,10 @@ def setup_data(session):
         display_order=20,
         **DUMMY_USER_KWARGS)
     application_status_code_2.save()
+
+    incident_followup_type = MineIncidentFollowupType(
+        mine_incident_followup_type_code="UND", description="Undecided", display_order=10)
+    incident_followup_type.save()
 
 
 def clear_data(session):

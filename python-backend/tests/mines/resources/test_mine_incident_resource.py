@@ -1,4 +1,5 @@
 import pytest, json
+from datetime import datetime
 from app.extensions import db
 from tests.constants import TEST_MINE_GUID
 from app.api.mines.incidents.models.mine_incident import MineIncident
@@ -29,3 +30,26 @@ def test_get_mine_incidents_by_guid(test_client, auth_headers, setup_info):
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200
     assert get_data['mine_incident_guid'] == str(test_guid)
+
+
+# POST
+def test_post_mine_incidents_happy(test_client, auth_headers, setup_info):
+    #test_mine_guid = setup_info["mine"].mine_guid
+    now = datetime.now()
+    data = {
+        'incident_timestamp': now.strftime("%Y-%m-%d %H:%M"),
+        'incident_description': "Someone got a paper cut",
+    }
+
+    post_resp = test_client.post(
+        f'/mines/{TEST_MINE_GUID}/incidents', json=data, headers=auth_headers['full_auth_header'])
+    assert post_resp.status_code == 201, post_resp.response
+
+    post_data = json.loads(post_resp.data.decode())
+    assert post_data['mine_guid'] == str(TEST_MINE_GUID)
+    assert post_data['incident_timestamp'] == now.isoformat(timespec='minutes') + ':00+00:00'
+
+    #datetime.fromisoformat is in python 3.7
+    #assert datetime.fromisoformat(post_data['incident_timestamp']) == datetime.strptime(
+    #    data['incident_timestamp'], '%Y-%m-%d %H:%M')
+    assert post_data['incident_description'] == data['incident_description']
