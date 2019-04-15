@@ -339,7 +339,7 @@ class CoreUserFactory(BaseFactory):
 
     core_user_id = factory.Sequence(lambda n: n)
     core_user_guid = GUID
-    email = factory.Faker('email'),
+    email = factory.Faker('email')
     phone_no = factory.Faker('numerify', text='###-###-####')
     idir_user_detail = []
     idir_membership = []
