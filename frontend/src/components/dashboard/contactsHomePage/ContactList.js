@@ -40,9 +40,7 @@ const columns = [
   {
     title: "Role",
     dataIndex: "role",
-    sortField: "mine_party_appt_type_code",
     render: (text) => <div title="role">{text}</div>,
-    sorter: true,
   },
   {
     title: "Email",

@@ -143,7 +143,6 @@ class PartyListResource(Resource, UserMixin, ErrorMixin):
     def apply_filter_and_search(self, args):
         sort_models = {
             'party_name': 'Party',
-            'mine_party_appt_type_code': 'MinePartyAppointment',
         }
 
         # Handle ListView request
@@ -184,7 +183,6 @@ class PartyListResource(Resource, UserMixin, ErrorMixin):
 
         # Apply sorting
         if sort_model and sort_field and sort_dir:
-            contact_query = contact_query.outerjoin(MinePartyAppointment)
             sort_criteria = [{'model': sort_model, 'field': sort_field, 'direction': sort_dir}]
             contact_query = apply_sort(contact_query, sort_criteria)
         return apply_pagination(contact_query, page, items_per_page)
