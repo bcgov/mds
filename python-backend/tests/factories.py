@@ -19,6 +19,7 @@ from app.api.mines.mine.models.mine_verified_status import MineVerifiedStatus
 from app.api.mines.status.models.mine_status import MineStatus
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
 from app.api.parties.party.models.party import Party
+from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.permits.permit.models.permit import Permit
 from app.api.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
@@ -308,6 +309,28 @@ class PartyFactory(BaseFactory):
     post_code = factory.Faker('bothify', text='?#?#?#', letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ')
 
     mine_party_appt = []
+
+
+class MinePartyAppointmentFactory(BaseFactory):
+    class Meta:
+        model = MinePartyAppointment
+
+    mine_party_appt_id = factory.Sequence(lambda n: n)
+    mine_party_appt_guid = GUID
+    mine = factory.SubFactory(
+        'tests.factories.MineFactory')
+    party = factory.SubFactory(PartyFactory, person=True)
+    mine_party_appt_type_code = factory.LazyFunction(RandomMinePartyAppointmentTypeCode)
+    start_date = TODAY
+    end_date = None
+    processed_by = factory.Faker('first_name')
+    processed_on = TODAY
+
+    mine_tailings_storage_facility_guid = factory.LazyAttribute(
+        lambda o: o.mine.mine_tailings_storage_facilities[0].mine_tailings_storage_facility_guid
+        if o.mine_party_appt_type_code == 'EOR' else None)
+    permit_guid = factory.LazyAttribute(lambda o: o.mine.mine_permit[0].permit_guid
+                                        if o.mine_party_appt_type_code == 'PMT' else None)
 
 
 class MineFactory(BaseFactory):
