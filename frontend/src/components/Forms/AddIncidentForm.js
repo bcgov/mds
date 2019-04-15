@@ -27,7 +27,7 @@ export const AddIncidentForm = (props) => (
           <Field
             id="incident_timestamp"
             name="incident_timestamp"
-            label="Incident Date and Time"
+            label="Incident Date and Time*"
             component={RenderDateTime}
             validate={[required, dateNotInFuture]}
           />
@@ -36,7 +36,7 @@ export const AddIncidentForm = (props) => (
           <Field
             id="incident_description"
             name="incident_description"
-            label="Incident Description"
+            label="Incident Description*"
             component={RenderAutoSizeField}
             validate={[required]}
           />
@@ -47,7 +47,6 @@ export const AddIncidentForm = (props) => (
             name="reported_timestamp"
             label="Reported Date and Time"
             component={RenderDateTime}
-            validate={[required, dateNotInFuture]}
           />
         </Form.Item>
         <Form.Item>
@@ -56,7 +55,6 @@ export const AddIncidentForm = (props) => (
             name="reported_by"
             label="Reporter's Name"
             component={RenderField}
-            validate={[required]}
           />
         </Form.Item>
         <Form.Item>
@@ -65,14 +63,13 @@ export const AddIncidentForm = (props) => (
             name="reported_by_role"
             label="Job Title of Reporter"
             component={RenderField}
-            validate={[required]}
           />
         </Form.Item>
         <Form.Item>
           <Field
             id="followup_type_code"
             name="followup_type_code"
-            label="EMPR Action"
+            label="EMPR Action*"
             component={renderConfig.SELECT}
             data={props.followupActionOptions}
             validate={[required]}
@@ -84,7 +81,6 @@ export const AddIncidentForm = (props) => (
             name="followup_inspection_no"
             label="NRIS Inspection Number"
             component={RenderField}
-            validate={[required]}
           />
         </Form.Item>
         <Form.Item>

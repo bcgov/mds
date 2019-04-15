@@ -199,7 +199,6 @@ class MineIncidentFactory(BaseFactory):
     class Meta:
         model = MineIncident
 
-    mine_incident_id = factory.Sequence(lambda n: n)
     mine_incident_id_year = 2019
     mine_incident_guid = GUID
     incident_timestamp = factory.Faker('past_datetime')
