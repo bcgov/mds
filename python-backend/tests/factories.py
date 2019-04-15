@@ -97,11 +97,11 @@ class MineExpectedDocumentFactory(BaseFactory):
     exp_document_guid = GUID
     required_document = factory.LazyFunction(RandomRequiredDocument)
     exp_document_status_code = factory.LazyFunction(RandomExpectedDocumentStatusCode)
-    exp_document_name = factory.LazyAttribute(lambda o: o.required_document.req_document_name)
-    exp_document_description = factory.LazyAttribute(lambda o: o.required_document.description)
+    exp_document_name = factory.SelfAttribute('required_document.req_document_name')
+    exp_document_description = factory.SelfAttribute('required_document.description')
     due_date = TODAY
     received_date = TODAY
-    hsrc_code = factory.LazyAttribute(lambda o: o.required_document.hsrc_code)
+    hsrc_code = factory.SelfAttribute('required_document.hsrc_code')
     mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
     mine_documents = []
 
