@@ -22,15 +22,6 @@ def test_get_person(test_client, auth_headers):
 
 
 # POST
-def test_post_person_invalid_url(test_client, auth_headers):
-    test_person_data = {"first_name": "First", "party_name": "Last"}
-    post_resp = test_client.post(
-        '/parties/some_id', data=test_person_data, headers=auth_headers['full_auth_header'])
-    post_data = json.loads(post_resp.data.decode())
-    assert 'Unexpected party id' in post_data['message']
-    assert post_resp.status_code == 400
-
-
 def test_post_person_no_first_name(test_client, auth_headers):
     test_person_data = {
         "party_name": "Last",
@@ -41,7 +32,6 @@ def test_post_person_no_first_name(test_client, auth_headers):
     post_resp = test_client.post(
         '/parties', data=test_person_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
-    assert 'first name' in post_data['message']
     assert post_resp.status_code == 400
 
 
@@ -55,7 +45,6 @@ def test_post_person_no_surname(test_client, auth_headers):
     post_resp = test_client.post(
         '/parties', data=test_person_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
-    assert 'Party name' in post_data['message']
     assert post_resp.status_code == 400
 
 
@@ -69,7 +58,6 @@ def test_post_person_no_phone_no(test_client, auth_headers):
     post_resp = test_client.post(
         '/parties', data=test_person_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
-    assert 'phone number' in post_data['message']
     assert post_resp.status_code == 400
 
 
@@ -119,7 +107,7 @@ def test_post_company_success(test_client, auth_headers):
         "address_line_2": "1234 Bar Blvd",
         "city": "Baz Town",
         "sub_division_code": "BC",
-        "post_code": "000000",
+        "post_code": "X0X0X0",
         "address_type_code": "CAN"
     }
     post_resp = test_client.post(
@@ -168,7 +156,7 @@ def test_put_person_success(test_client, auth_headers):
         "address_line_2": "1234 Bar Blvd",
         "city": "Baz Town",
         "sub_division_code": "BC",
-        "post_code": "000000",
+        "post_code": "X0X0X0",
         "address_type_code": "CAN"
     }
     put_resp = test_client.put(

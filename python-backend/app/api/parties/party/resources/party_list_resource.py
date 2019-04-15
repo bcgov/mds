@@ -20,9 +20,9 @@ from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 class PartyListResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
-    parser.add_argument('first_name',
+    parser.add_argument('party_name',
                         type=str,
-                        help='First name of the party, if the party is a person.',
+                        help='Last name of the party (Person), or the Organization name (Organization).',
                         trim=True,
                         required=True)
     parser.add_argument('party_type_code',
@@ -39,9 +39,9 @@ class PartyListResource(Resource, UserMixin, ErrorMixin):
                         type=str,
                         help='Last name of the party, if the party is a person.',
                         trim=True)
-    parser.add_argument('party_name',
+    parser.add_argument('first_name',
                         type=str,
-                        help='Last name of the party (Person), or the Organization name (Organization).',
+                        help='First name of the party, if the party is a person.',
                         trim=True)
     parser.add_argument('phone_ext', type=str, help='The extension of the phone number. Ex: 1234', trim=True)
     parser.add_argument('email', type=str, help='The email of the party.', trim=True)

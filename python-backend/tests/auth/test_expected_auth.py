@@ -27,6 +27,7 @@ from app.api.mines.tailings.resources.tailings import MineTailingsStorageFacilit
 from app.api.parties.party_appt.resources.mine_party_appt_resource import MinePartyApptResource
 from app.api.parties.party_appt.resources.mine_party_appt_type_resource import MinePartyApptTypeResource
 from app.api.parties.party.resources.party_resource import PartyResource
+from app.api.parties.party.resources.party_list_resource import PartyListResource
 from app.api.permits.permit.resources.permit import PermitResource
 from app.api.permits.permit_amendment.resources.permit_amendment import PermitAmendmentResource
 from app.api.permits.permit_amendment.resources.permit_amendment_document import PermitAmendmentDocumentResource
@@ -65,9 +66,12 @@ from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserM
      (MineTenureTypeCodeResource, "get", [MINE_VIEW]),
      (MineTypeDetailResource, "post", [MINE_CREATE]),
      (MineTypeDetailResource, "delete", [MINE_CREATE]), (MineTypeResource, "post", [MINE_CREATE]),
-     (MineTypeResource, "delete", [MINE_CREATE]), (PartyResource, "get", [MINE_VIEW]),
-     (PartyResource, "post", [MINE_CREATE]), (PartyResource, "put", [MINE_CREATE]),
-     (PartyResource, "delete", [MINE_ADMIN]), (PartyResource, "delete", [MINE_ADMIN]),
+     (MineTypeResource, "delete", [MINE_CREATE]),
+     (PartyListResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]),
+     (PartyListResource, "post", [MINE_CREATE]),
+     (PartyResource, "get", [MINE_VIEW]),
+     (PartyResource, "put", [MINE_CREATE]),
+     (PartyResource, "delete", [MINE_ADMIN]),
      (PermitResource, "get", [MINE_VIEW]), (PermitResource, "post", [MINE_CREATE]),
      (PermitResource, "put", [MINE_CREATE]), (RequiredDocumentResource, "get", [MINE_VIEW]),
      (PermitAmendmentResource, "post", [MINE_CREATE]),
