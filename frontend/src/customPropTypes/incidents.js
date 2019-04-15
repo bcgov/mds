@@ -15,4 +15,11 @@ export const incident = shape({
   closing_report_summary: PropTypes.string,
 });
 
+export const incidentFollowupType = shape({
+  mine_incident_followup_type_code: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  display_order: PropTypes.number.isRequired,
+  active_ind: PropTypes.bool.isRequired,
+});
+
 export default incident;
