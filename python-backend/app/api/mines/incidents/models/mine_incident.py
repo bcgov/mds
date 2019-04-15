@@ -38,7 +38,7 @@ class MineIncident(AuditMixin, Base):
 
     @hybrid_property
     def mine_incident_report_no(self):
-        return str(self.mine_incident_id) + '-' + str(self.mine_incident_id_year)
+        return str(self.mine_incident_id_year) + '-' + str(self.mine_incident_id)
 
     @classmethod
     def find_by_mine_incident_guid(cls, _id):
