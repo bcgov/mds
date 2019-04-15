@@ -19,59 +19,49 @@ from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class PartyListResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser()
+    parser = reqparse.RequestParser(trim=True)
     parser.add_argument('party_name',
                         type=str,
                         help='Last name of the party (Person), or the Organization name (Organization).',
-                        trim=True,
                         required=True)
     parser.add_argument('party_type_code',
                         type=str,
                         help='Party type. Person (PER) or Organization (ORG).',
-                        trim=True,
                         required=True)
     parser.add_argument('phone_no',
                         type=str,
                         help='The phone number of the party. Ex: 123-123-1234',
-                        trim=True,
                         required=True)
     parser.add_argument('last_name',
                         type=str,
-                        help='Last name of the party, if the party is a person.',
-                        trim=True)
+                        help='Last name of the party, if the party is a person.')
     parser.add_argument('first_name',
                         type=str,
-                        help='First name of the party, if the party is a person.',
-                        trim=True)
-    parser.add_argument('phone_ext', type=str, help='The extension of the phone number. Ex: 1234', trim=True)
-    parser.add_argument('email', type=str, help='The email of the party.', trim=True)
+                        help='First name of the party, if the party is a person.')
+    parser.add_argument('phone_ext', type=str, help='The extension of the phone number. Ex: 1234')
+    parser.add_argument('email', type=str, help='The email of the party.')
     parser.add_argument('suite_no',
                         type=str,
                         store_missing=False,
                         help='The suite number of the party address. Ex: 123')
     parser.add_argument('address_line_1',
                         type=str,
-                        trim=True,
                         store_missing=False,
                         help='The first address line of the party address. Ex: 1234 Foo Road')
     parser.add_argument('address_line_2',
                         type=str,
-                        trim=True,
                         store_missing=False,
                         help='The second address line of the party address. Ex: 1234 Foo Road')
     parser.add_argument('city',
                         type=str,
-                        trim=True,
                         store_missing=False,
                         help='The city where the party is located. Ex: FooTown')
     parser.add_argument('sub_division_code',
                         type=str,
-                        trim=True,
                         store_missing=False,
                         help='The region code where the party is located. Ex: BC')
     parser.add_argument('post_code',
                         type=str,
-                        trim=True,
                         store_missing=False,
                         help='The postal code of the party address. Ex: A0B1C2')
 
