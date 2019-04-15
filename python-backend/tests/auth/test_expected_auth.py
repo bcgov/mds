@@ -14,12 +14,11 @@ from app.api.mines.location.resources.location import MineLocationResource
 from app.api.mines.mine.resources.mine_commodity_code import MineCommodityCodeResource
 from app.api.mines.mine.resources.mine_disturbance_code import MineDisturbanceCodeResource
 from app.api.mines.mine.resources.mine_tenure_type_code import MineTenureTypeCodeResource
-from app.api.mines.mine.resources.mine_type_detail import MineTypeDetailResource
-from app.api.mines.mine.resources.mine_type import MineTypeResource
+from app.api.mines.mine.resources.mine_type_detail import MineTypeDetailResource, MineTypeDetailListResource
+from app.api.mines.mine.resources.mine_type import MineTypeResource, MineTypeListResource
 from app.api.mines.mine.resources.mine import MineResource, MineListSearch, MineListResource
 from app.api.mines.mine.resources.mine_map import MineMapResource
-from app.api.mines.variances.resources.variance import (VarianceListResource,
-                                                        VarianceResource,
+from app.api.mines.variances.resources.variance import (VarianceListResource, VarianceResource,
                                                         VarianceDocumentUploadResource,
                                                         VarianceUploadedDocumentsResource)
 from app.api.mines.region.resources.region import MineRegionResource
@@ -51,20 +50,18 @@ from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserM
      (ExpectedDocumentUploadResource, "delete", [MINE_CREATE, MINESPACE_PROPONENT]),
      (ExpectedMineDocumentResource, "get", [MINE_VIEW]),
      (ExpectedMineDocumentResource, "post", [MINE_CREATE]),
-     (MineCommodityCodeResource, "get", [MINE_VIEW]), 
-     (MineComplianceResource, "get", [MINE_VIEW]),
+     (MineCommodityCodeResource, "get", [MINE_VIEW]), (MineComplianceResource, "get", [MINE_VIEW]),
      (MineDisturbanceCodeResource, "get", [MINE_VIEW]),
      (MineDocumentResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]),
-     (MineListResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]), 
+     (MineListResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]),
      (MineListResource, "post", [MINE_CREATE]),
      (MineListSearch, "get", [MINE_VIEW, MINESPACE_PROPONENT]),
      (MineLocationResource, "get", [MINE_VIEW]),
-     (MineMapResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]), 
-     (MinePartyApptResource, "get", [MINE_VIEW]),
-     (MinePartyApptResource, "post", [MINE_CREATE]), 
+     (MineMapResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]),
+     (MinePartyApptResource, "get", [MINE_VIEW]), (MinePartyApptResource, "post", [MINE_CREATE]),
      (MinePartyApptResource, "put", [MINE_CREATE]),
      (MinePartyApptResource, "delete", [MINE_CREATE]),
-     (MinePartyApptTypeResource, "get", [MINE_VIEW]),
+     (MinePartyApptTypeResource, "get", [MINE_VIEW]), 
      (MineRegionResource, "get", [MINE_VIEW]),
      (MineResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]), 
      (MineResource, "put", [MINE_CREATE]),
@@ -72,39 +69,29 @@ from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserM
      (MineTailingsStorageFacilityResource, "get", [MINE_VIEW]),
      (MineTailingsStorageFacilityResource, "post", [MINE_CREATE]),
      (MineTenureTypeCodeResource, "get", [MINE_VIEW]),
-     (MineTypeDetailResource, "post", [MINE_CREATE]),
+     (MineTypeDetailListResource, "post", [MINE_CREATE]),
      (MineTypeDetailResource, "delete", [MINE_CREATE]), 
-     (MineTypeResource, "post", [MINE_CREATE]),
-     (MineTypeResource, "delete", [MINE_CREATE]), 
-     (PartyResource, "get", [MINE_VIEW]),
-     (PartyResource, "post", [MINE_CREATE]), 
-     (PartyResource, "put", [MINE_CREATE]),
-     (PartyResource, "delete", [MINE_ADMIN]), 
-     (PartyResource, "delete", [MINE_ADMIN]),
-     (PermitResource, "get", [MINE_VIEW]), 
-     (PermitResource, "post", [MINE_CREATE]),
-     (PermitResource, "put", [MINE_CREATE]), 
-     (PermitAmendmentResource, "post", [MINE_CREATE]),
+     (MineTypeListResource, "post", [MINE_CREATE]),
+     (MineTypeResource, "delete", [MINE_CREATE]), (PartyResource, "get", [MINE_VIEW]),
+     (PartyResource, "post", [MINE_CREATE]), (PartyResource, "put", [MINE_CREATE]),
+     (PartyResource, "delete", [MINE_ADMIN]), (PartyResource, "delete", [MINE_ADMIN]),
+     (PermitResource, "get", [MINE_VIEW]), (PermitResource, "post", [MINE_CREATE]),
+     (PermitResource, "put", [MINE_CREATE]), (PermitAmendmentResource, "post", [MINE_CREATE]),
      (PermitAmendmentResource, "put", [MINE_CREATE]),
      (PermitAmendmentResource, "delete", [MINE_ADMIN]),
      (PermitAmendmentDocumentResource, "post", [MINE_CREATE]),
      (PermitAmendmentDocumentResource, "put", [MINE_CREATE]),
      (PermitAmendmentDocumentResource, "delete", [MINE_CREATE]),
-     (RequiredDocumentResource, "get", [MINE_VIEW]),
-     (RequiredDocumentResource, "get", [MINE_VIEW]), 
-     (MinespaceUserResource, 'get', [MINE_ADMIN]),
-     (MinespaceUserResource, 'post', [MINE_ADMIN]), 
+     (RequiredDocumentResource, "get", [MINE_VIEW]), (RequiredDocumentResource, "get", [MINE_VIEW]),
+     (MinespaceUserResource, 'get', [MINE_ADMIN]), (MinespaceUserResource, 'post', [MINE_ADMIN]),
      (MinespaceUserResource, 'delete', [MINE_ADMIN]),
      (MinespaceUserMineResource, 'post', [MINE_ADMIN]),
      (MinespaceUserMineResource, 'delete', [MINE_ADMIN]),
      (VarianceDocumentUploadResource, "post", [MINE_CREATE, MINESPACE_PROPONENT]),
      (VarianceDocumentUploadResource, "put", [MINE_CREATE, MINESPACE_PROPONENT]),
      (VarianceUploadedDocumentsResource, "delete", [MINE_CREATE, MINESPACE_PROPONENT]),
-     (VarianceListResource, "get", [MINE_VIEW]),
-     (VarianceListResource, "post", [MINE_CREATE]),
-     (VarianceResource, "get", [MINE_VIEW])
-    ]
-)
+     (VarianceListResource, "get", [MINE_VIEW]), (VarianceListResource, "post", [MINE_CREATE]),
+     (VarianceResource, "get", [MINE_VIEW])])
 def test_endpoint_auth(resource, method, expected_roles):
     endpoint = getattr(resource, method, None)
     assert endpoint != None, '{0} does not have a {1} method.'.format(resource, method.upper())
