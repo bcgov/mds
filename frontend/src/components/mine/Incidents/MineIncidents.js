@@ -37,13 +37,14 @@ export class MineIncidents extends Component {
     this.props.fetchMineIncidents(this.props.mine.guid);
   }
 
-  handleAddMineIncident = (values) =>
+  handleAddMineIncident = (values) => {
     this.props.createMineIncident(this.props.mine.guid, values).then(() => {
       this.props.closeModal();
       this.props.fetchMineIncidents(this.props.mine.guid);
     });
+  };
 
-  openMineIncidentModal(event) {
+  openMineIncidentModal = (event) => {
     event.preventDefault();
     this.props.openModal({
       props: {
@@ -55,7 +56,7 @@ export class MineIncidents extends Component {
       widthSize: "50vw",
       content: modalConfig.MINE_INCIDENT,
     });
-  }
+  };
 
   render() {
     return (

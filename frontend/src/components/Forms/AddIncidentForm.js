@@ -3,16 +3,16 @@ import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
-import RenderDate from "@/components/common/RenderDate";
+import RenderDateTime from "@/components/common/RenderDateTime";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
-import { required } from "@/utils/Validate";
+import { required, dateNotInFuture } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
-  onSubmit: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
@@ -20,7 +20,7 @@ const propTypes = {
 };
 
 export const AddIncidentForm = (props) => (
-  <Form layout="vertical" onSubmit={props.onSubmit}>
+  <Form layout="vertical" onSubmit={props.handleSubmit}>
     <Row gutter={16}>
       <Col>
         <Form.Item>
@@ -28,9 +28,8 @@ export const AddIncidentForm = (props) => (
             id="incident_timestamp"
             name="incident_timestamp"
             label="Incident Date and Time"
-            component={RenderDate}
-            placeholder="Please select a date and time"
-            validate={[required]}
+            component={RenderDateTime}
+            validate={[required, dateNotInFuture]}
           />
         </Form.Item>
         <Form.Item>
@@ -40,7 +39,6 @@ export const AddIncidentForm = (props) => (
             label="Incident Description"
             component={RenderAutoSizeField}
             validate={[required]}
-            input={{ rows: 4 }}
           />
         </Form.Item>
         <Form.Item>
@@ -48,10 +46,8 @@ export const AddIncidentForm = (props) => (
             id="reported_timestamp"
             name="reported_timestamp"
             label="Reported Date and Time"
-            component={RenderDate}
-            placeholder="Please select a date and time"
-            input={{ showTime: true }}
-            validate={[required]}
+            component={RenderDateTime}
+            validate={[required, dateNotInFuture]}
           />
         </Form.Item>
         <Form.Item>
@@ -97,7 +93,6 @@ export const AddIncidentForm = (props) => (
             name="closing_report_summary"
             label="Closing Report Summary"
             component={RenderAutoSizeField}
-            input={{ rows: 4 }}
           />
         </Form.Item>
       </Col>
