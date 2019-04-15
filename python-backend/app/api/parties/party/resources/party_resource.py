@@ -6,6 +6,7 @@ from sqlalchemy.exc import DBAPIError
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
 from ..models.party import Party
+from ..models.address import Address
 from ...response_models import PARTY
 from ...party_appt.models.mine_party_appt import MinePartyAppointment
 from app.extensions import api
@@ -101,46 +102,8 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
         if not party:
             raise NotFound('Party not found')
 
-        party.address = {
-            'suite_no': party.suite_no,
-            'address_line_1': party.address_line_1,
-            'address_line_2': party.address_line_2,
-            'city': party.city,
-            'sub_division_code': party.sub_division_code,
-            'post_code': party.post_code,
-            'address_type_code': party.address_type_code,
-        }
-
         return party
 
-    @api.expect(parser)
-    @requires_role_mine_create
-    @api.marshal_with(PARTY, code=200)
-    def post(self, party_guid=None):
-        if party_guid:
-            raise BadRequest('Unexpected party id in Url.')
-        data = PartyResource.parser.parse_args()
-
-        party = Party.create(
-            data.get('party_name'),
-            data.get('phone_no'),
-            data.get('party_type_code'),
-            # Nullable fields
-            email=data.get('email'),
-            first_name=data.get('first_name'),
-            phone_ext=data.get('phone_ext'),
-            suite_no=data.get('suite_no'),
-            address_line_1=data.get('address_line_1'),
-            address_line_2=data.get('address_line_2'),
-            city=data.get('city'),
-            sub_division_code=data.get('sub_division_code'),
-            post_code=data.get('post_code'))
-
-        if not party:
-            raise InternalServerError('Error: Failed to create party')
-
-        party.save()
-        return party
 
     @api.expect(parser)
     @requires_role_mine_create
@@ -154,6 +117,17 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
         current_app.logger.info(f'Updating {existing_party} with {data}')
         for key, value in data.items():
             setattr(existing_party, key, value)
+
+        # This condition should never pass, as every party should be
+        # associated with an address, but it's been added for runtime safety,
+        # in case the API is circumvented and a party is created without an
+        # address
+        if len(existing_party.address) == 0:
+            address = Address.create()
+            existing_party.address.append(address)
+
+        for key, value in data.items():
+            setattr(existing_party.address[0], key, value)
 
         existing_party.save()
 

@@ -6,9 +6,10 @@ from werkzeug.exceptions import BadRequest
 from sqlalchemy import and_
 
 from ..models.party import Party
+from ..models.address import Address
 from ..models.party_type_code import PartyTypeCode
 from ...party_appt.models.mine_party_appt import MinePartyAppointment
-from ...response_models import PAGINATED_PARTY_LIST
+from ...response_models import PARTY, PAGINATED_PARTY_LIST
 
 from ....constants import PARTY_STATUS_CODE
 from app.extensions import api
@@ -19,24 +20,66 @@ from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 class PartyListResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser()
-    parser.add_argument('first_name', type=str,
-        help='First name of the party, if the party is a person.', trim=True)
-    parser.add_argument('last_name', type=str,
-                        help='Last name of the party, if the party is a person.', trim=True)
-    parser.add_argument('party_name', type=str,
-        help='Last name of the party (Person), or the Organization name (Organization).', trim=True)
-    parser.add_argument('phone_no', type=str,
-        help='The phone number of the party. Ex: 123-123-1234', trim=True)
+    parser.add_argument('first_name',
+                        type=str,
+                        help='First name of the party, if the party is a person.',
+                        trim=True,
+                        required=True)
+    parser.add_argument('party_type_code',
+                        type=str,
+                        help='Party type. Person (PER) or Organization (ORG).',
+                        trim=True,
+                        required=True)
+    parser.add_argument('phone_no',
+                        type=str,
+                        help='The phone number of the party. Ex: 123-123-1234',
+                        trim=True,
+                        required=True)
+    parser.add_argument('last_name',
+                        type=str,
+                        help='Last name of the party, if the party is a person.',
+                        trim=True)
+    parser.add_argument('party_name',
+                        type=str,
+                        help='Last name of the party (Person), or the Organization name (Organization).',
+                        trim=True)
     parser.add_argument('phone_ext', type=str, help='The extension of the phone number. Ex: 1234', trim=True)
     parser.add_argument('email', type=str, help='The email of the party.', trim=True)
-    parser.add_argument('type', type=str, help='The type of the party. Ex: PER')
-    parser.add_argument('page', 1, type=int, help='The page of the results.')
-    parser.add_argument('per_page', 25, type=int, help='The number of parties per page.')
-    parser.add_argument('role', type=str, help='The role of a user. Ex: MMG for Mine Manager')
+    parser.add_argument('suite_no',
+                        type=str,
+                        store_missing=False,
+                        help='The suite number of the party address. Ex: 123')
+    parser.add_argument('address_line_1',
+                        type=str,
+                        trim=True,
+                        store_missing=False,
+                        help='The first address line of the party address. Ex: 1234 Foo Road')
+    parser.add_argument('address_line_2',
+                        type=str,
+                        trim=True,
+                        store_missing=False,
+                        help='The second address line of the party address. Ex: 1234 Foo Road')
+    parser.add_argument('city',
+                        type=str,
+                        trim=True,
+                        store_missing=False,
+                        help='The city where the party is located. Ex: FooTown')
+    parser.add_argument('sub_division_code',
+                        type=str,
+                        trim=True,
+                        store_missing=False,
+                        help='The region code where the party is located. Ex: BC')
+    parser.add_argument('post_code',
+                        type=str,
+                        trim=True,
+                        store_missing=False,
+                        help='The postal code of the party address. Ex: A0B1C2')
+
     PARTY_LIST_RESULT_LIMIT = 25
 
 
     @api.doc(
+        # TODO: Add descriptions to all endpoints I've touched
         params={
             'first_name': 'First name of party or contact',
             'party_name': 'Last name or party name of person or organisation',
@@ -63,6 +106,39 @@ class PartyListResource(Resource, UserMixin, ErrorMixin):
             'items_per_page': pagination_details.page_size,
             'total': pagination_details.total_results,
         }
+
+
+    @api.expect(parser)
+    @requires_role_mine_create
+    @api.marshal_with(PARTY, code=200)
+    def post(self, party_guid=None):
+        if party_guid:
+            raise BadRequest('Unexpected party id in Url.')
+        data = PartyListResource.parser.parse_args()
+
+        party = Party.create(
+            data.get('party_name'),
+            data.get('phone_no'),
+            data.get('party_type_code'),
+            # Nullable fields
+            email=data.get('email'),
+            first_name=data.get('first_name'),
+            phone_ext=data.get('phone_ext'))
+
+        address = Address.create(
+            suite_no=data.get('suite_no'),
+            address_line_1=data.get('address_line_1'),
+            address_line_2=data.get('address_line_2'),
+            city=data.get('city'),
+            sub_division_code=data.get('sub_division_code'),
+            post_code=data.get('post_code'))
+
+        if not party:
+            raise InternalServerError('Error: Failed to create party')
+
+        party.address.append(address)
+        party.save()
+        return party
 
     def apply_filter_and_search(self, args):
         sort_models = {

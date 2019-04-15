@@ -33,8 +33,6 @@ DROP INDEX IF EXISTS mine_type_update_timestamp_idx;
 CREATE INDEX IF NOT EXISTS active_mine_type_mine_tenure_type_code_fkey_idx ON mine_type(mine_tenure_type_code, active_ind) WHERE (active_ind = true);
 
 /* Party */
-CREATE INDEX IF NOT EXISTS active_party_sub_division_code_fkey_idx ON party(sub_division_code, deleted_ind) WHERE (deleted_ind = false);
-CREATE INDEX IF NOT EXISTS active_party_address_type_code_fkey_idx ON party(address_type_code, deleted_ind) WHERE (deleted_ind = false);
 CREATE INDEX IF NOT EXISTS active_party_party_type_code_fkey_idx ON party(party_type_code, deleted_ind) WHERE (deleted_ind = false);
 
 /* Permit */
