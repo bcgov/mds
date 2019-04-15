@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS mine_incident
 (
     mine_incident_id                serial                      PRIMARY KEY,
     mine_incident_id_year           integer                     NOT NULL,
-    mine_incident_guid              uuid                        NOT NULL,
+    mine_incident_guid              uuid DEFAULT gen_random_uuid()   NOT NULL,
 
     mine_guid                       uuid                        NOT NULL,
 

@@ -57,7 +57,7 @@ class MineIncidentListResource(Resource, UserMixin):
     parser.add_argument(
         'reported_timestamp',
         help='Datetime of when the incident was reported',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d %H-%M') if x else None,
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None,
         location='json')
     parser.add_argument(
         'reported_by', help='Name of party who reported the incident', type=str, location='json')
@@ -88,7 +88,7 @@ class MineIncidentListResource(Resource, UserMixin):
             data['incident_timestamp'],
             data['incident_description'],
             followup_type_code=data['followup_type_code'] or 'UND',
-            followup_inspection_no=date['followup_inspection_no'],
+            followup_inspection_no=data['followup_inspection_no'],
             reported_timestamp=data['reported_timestamp'],
             reported_by=data['reported_by'],
             reported_by_role=data['reported_by_role'],

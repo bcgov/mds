@@ -65,8 +65,8 @@ class MineIncident(AuditMixin, Base):
             reported_timestamp=reported_timestamp,
             reported_by=reported_by,
             reported_by_role=reported_by_role,
-            dangerous_occurance_ind=dangerous_occurance_ind,
-            followup_inspection_ind=followup_inspection_ind,
+            followup_type_code=followup_type_code,
+            followup_inspection_no=followup_inspection_no,
         )
         mine.mine_incidents.append(mine_incident)
         if save:
