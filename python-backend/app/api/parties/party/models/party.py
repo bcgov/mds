@@ -8,6 +8,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
 from app.extensions import db
+from werkzeug.exceptions import BadRequest
 
 from .party_address import PartyAddress
 from .address import Address
@@ -81,6 +82,10 @@ class Party(AuditMixin, Base):
 
     @classmethod
     def find_by_party_guid(cls, _id):
+        try:
+            uuid.UUID(_id)
+        except ValueError:
+            raise BadRequest('Invalid Party guid')
         return cls.query.filter_by(party_guid=_id, deleted_ind=False).first()
 
     @classmethod

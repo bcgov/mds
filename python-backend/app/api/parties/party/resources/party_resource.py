@@ -1,9 +1,8 @@
-import uuid
 from flask import request, current_app
 from flask_restplus import Resource, reqparse
 from sqlalchemy_filters import apply_pagination
 from sqlalchemy.exc import DBAPIError
-from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
+from werkzeug.exceptions import NotFound
 
 from ..models.party import Party
 from ..models.address import Address
@@ -84,11 +83,6 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
     @requires_role_mine_view
     @api.marshal_with(PARTY, code=200)
     def get(self, party_guid):
-        try:
-            uuid.UUID(party_guid)
-        except ValueError:
-            raise BadRequest('Invalid Party guid')
-
         party = Party.find_by_party_guid(party_guid)
         if not party:
             raise NotFound('Party not found')
@@ -112,6 +106,8 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
 
         current_app.logger.info(f'Updating {existing_party} with {data}')
         for key, value in data.items():
+            if key in ['party_type_code']:
+                continue  # non-editable fields from put
             setattr(existing_party, key, value)
 
         # This condition should never pass, as every party should be

@@ -38,10 +38,6 @@ class Address(Base):
     @classmethod
     def create(
             cls,
-            address_type_code=None,
-            email=None,
-            first_name=None,
-            phone_ext=None,
             suite_no=None,
             address_line_1=None,
             address_line_2=None,
