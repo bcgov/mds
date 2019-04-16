@@ -90,7 +90,7 @@ export class MapPopup extends Component {
           </tr>
         </table>
         <StaticRouter context={this.context} basename={process.env.BASE_PATH}>
-          <Link to={router.MINE_SUMMARY.dynamicRoute(this.props.basicMineInfo.guid)}>
+          <Link to={router.MINE_SUMMARY.dynamicRoute(this.props.basicMineInfo.mine_guid)}>
             <div className="mineMapPopUpButton">
               <Button type="primary">View Mine</Button>
             </div>

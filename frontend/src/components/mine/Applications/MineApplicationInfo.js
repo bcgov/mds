@@ -39,7 +39,7 @@ export class MineApplicationInfo extends Component {
 
   closeApplicationModal = () => {
     this.props.closeModal();
-    this.props.fetchApplications({ mine_guid: this.props.mine.guid });
+    this.props.fetchApplications({ mine_guid: this.props.mine.mine_guid });
   };
 
   openAddApplicationModal = (event, title) => {
@@ -70,7 +70,7 @@ export class MineApplicationInfo extends Component {
   };
 
   handleAddApplication = (values) => {
-    const payload = { mine_guid: this.props.mine.guid, ...values };
+    const payload = { mine_guid: this.props.mine.mine_guid, ...values };
     return this.props.createApplication(payload).then(this.closeApplicationModal);
   };
 

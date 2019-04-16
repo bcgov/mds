@@ -6,6 +6,7 @@ export const MINE_LIST = "/mines";
 export const SUBSCRIPTION = (mineGuid) => `/mines/${mineGuid}/subscribe`;
 export const MINE_SUBSCRIPTION = "/mines/subscribe";
 export const MINE_LIST_QUERY = (params) => `/mines${params}`;
+export const MINE_MAP_LIST = "/mines/map-list";
 export const PARTIES_LIST_QUERY = (params = {}) =>
   "type" in params
     ? `/parties/search?${queryString.stringify(params)}`

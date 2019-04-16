@@ -57,6 +57,7 @@ class MineTailingsFilePicker extends Component {
         existingFilesDropdown={fileDropdown}
         onSelectExisting={this.handleFileSelect}
         onFileLoad={this.handleFileLoad}
+        maxFileSize="400MB"
       />
     );
   }

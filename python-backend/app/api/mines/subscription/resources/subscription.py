@@ -9,85 +9,22 @@ from ....utils.access_decorators import (requires_any_of,
                                          MINE_VIEW)
 from ..models.subscription import Subscription
 from ...mine.models.mine import Mine
-# todo wait for justins change to get pulled in
-# from ...mine_api_models.py import MINES
+from ...mine_api_models import MINES_MODEL
 
 
 class MineSubscriptionGetAllResource(Resource, UserMixin, ErrorMixin):
 
-    # todo delete bellow when done
     MINE_GUID = api.model(
         'mine_guid', {
             'mine_guid': fields.String,
         })
-    MINE_TSF = api.model(
-        'MineTailingsStorageFacility', {
-            'mine_tailings_storage_facility_guid': fields.String,
-            'mine_guid': fields.String,
-            'mine_tailings_storage_facility_name': fields.String,
-        })
-    MINE_TYPE_DETAIL = api.model(
-        'MineTypeDetail', {
-            'mine_type_detail_xref_guid': fields.String,
-            'mine_type_guid': fields.String,
-            'mine_disturbance_code': fields.String,
-            'mine_commodity_code': fields.String,
-        })
-
-    MINE_TYPE = api.model(
-        'MineType', {
-            'mine_type_guid': fields.String,
-            'mine_guid': fields.String,
-            'mine_tenure_type_code': fields.String,
-            'mine_type_detail': fields.List(fields.Nested(MINE_TYPE_DETAIL)),
-        })
-
-    MINE_VERIFIED = api.model(
-        'MineVerifiedStatus', {
-            'mine_guid': fields.String,
-            'mine_name': fields.String,
-            'healthy_ind': fields.Boolean,
-            'verifying_user': fields.String,
-            'verifying_timestamp': fields.Date,
-        })
-    PERMIT = api.model('MinePermit', {
-        'permit_guid': fields.String,
-        'permit_no': fields.String,
-    })
-    STATUS = api.model(
-        'MineStatus', {
-            'mine_status_guid': fields.String,
-            'mine_guid': fields.String,
-            'mine_status_xref_guid': fields.String,
-            'status_values': fields.List(fields.String()),
-            'status_labels': fields.List(fields.String),
-            'effective_date': fields.Date,
-            'expiry_date': fields.Date,
-        })
-    MINES = api.model(
-        'Mines', {
-            'mine_guid': fields.String,
-            'mine_name': fields.String,
-            'mine_no': fields.String,
-            'mine_note': fields.String,
-            'major_mine_ind': fields.Boolean,
-            'mine_region': fields.String,
-            'mine_permit': fields.List(fields.Nested(PERMIT)),
-            'mine_status': fields.List(fields.Nested(STATUS)),
-            'mine_tailings_storage_facilities': fields.List(fields.Nested(MINE_TSF)),
-            'mine_type': fields.List(fields.Nested(MINE_TYPE)),
-            'verified_status': fields.Nested(MINE_VERIFIED)
-        })
-    # todo delete above when done
-
-
 
     @api.doc(
         description=
         'Get a list of all mines subscribed to by a user.'
     )
     @requires_any_of([MINE_VIEW])
-    @api.marshal_with(MINES, code=200, envelope='mines')
+    @api.marshal_with(MINES_MODEL, code=200, envelope='mines')
     def get(self):
         user_name = User().get_user_username()
         mine_query = Mine.query.filter_by( deleted_ind=False ).join(Subscription).filter_by(idir=user_name)

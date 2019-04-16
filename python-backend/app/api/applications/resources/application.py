@@ -22,24 +22,35 @@ application_model = api.model(
 class ApplicationListResource(Resource, UserMixin):
     parser = reqparse.RequestParser()
     parser.add_argument(
-        'application_no', type=str, required=True, help='Number of the application being added.')
+        'application_no',
+        type=str,
+        required=True,
+        help='Number of the application being added.',
+        location='json')
     parser.add_argument(
         'mine_guid',
         type=str,
         required=True,
-        help='guid of the mine the application is being added to.')
+        help='guid of the mine the application is being added to.',
+        location='json')
     parser.add_argument(
         'application_status_code',
         required=True,
         type=str,
-        help='Status of the application being added.')
+        help='Status of the application being added.',
+        location='json')
     parser.add_argument(
         'received_date',
         required=True,
         help='The date the application was received.',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        location='json')
     parser.add_argument(
-        'description', type=str, help='Application description', store_missing=False)
+        'description',
+        type=str,
+        help='Application description',
+        store_missing=False,
+        location='json')
 
     @api.marshal_with(application_model, envelope='applications', code=200, as_list=True)
     @api.doc(
@@ -63,8 +74,7 @@ class ApplicationListResource(Resource, UserMixin):
         responses={
             400: 'Resource not found.',
             404: 'Bad request.',
-        },
-        params={'mine_guid': 'A mine guid to associate the application to.'})
+        })
     @api.marshal_with(application_model, code=201)
     @requires_role_mine_create
     def post(self):
@@ -97,20 +107,20 @@ class ApplicationResource(Resource, UserMixin):
         'application_status_code',
         type=str,
         help='Status of the application being added.',
-        store_missing=False)
+        store_missing=False,
+        location='json')
     parser.add_argument(
-        'description', type=str, help='Application description', store_missing=False)
+        'description',
+        type=str,
+        help='Application description',
+        store_missing=False,
+        location='json')
 
     @api.marshal_with(application_model, envelope='applications', code=200)
     @api.doc(
-        description='This endpoint returns a single application based on its application guid.',
-        params={
-            'application_guid': 'Application guid to find a specific application.',
-        })
+        description='This endpoint returns a single application based on its application guid.')
     @requires_role_mine_view
-    def get(self, application_guid=None):
-        if not application_guid:
-            raise BadRequest('An application guid or a mine guid must be provided.')
+    def get(self, application_guid):
 
         application = Application.find_by_application_guid(application_guid)
 
@@ -126,13 +136,10 @@ class ApplicationResource(Resource, UserMixin):
         responses={
             400: 'Resource not found.',
             404: 'Bad request.',
-        },
-        params={'application_guid': 'An application guid.'})
+        })
     @api.marshal_with(application_model, code=200)
     @requires_role_mine_create
-    def put(self, application_guid=None):
-        if not application_guid:
-            raise BadRequest('An application guid or a mine guid must be provided.')
+    def put(self, application_guid):
 
         application = Application.find_by_application_guid(application_guid)
 
