@@ -29,5 +29,5 @@ class Const{
                         TEST_FILE_NAME = "test.odt",
                         DOWNLOAD_PATH=scriptLocation.getParent().getParent().getParent().toString()+"/tempStorage",
                         MINESPACE_URL = dotenv['MINESPACE_URL'] ? dotenv['MINESPACE_URL'] : systemEnv['MINESPACE_URL'],
-                        MINESPACE_EMAIL = "test@test.com"
+                        MINESPACE_EMAIL = "test@test.com",
 }
