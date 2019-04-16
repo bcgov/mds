@@ -10,7 +10,7 @@ from sqlalchemy.orm import validates
 from app.extensions import db
 from werkzeug.exceptions import BadRequest
 
-from .party_address import PartyAddress
+from .party_address import PartyAddressXref
 from .address import Address
 from ....utils.models_mixins import AuditMixin, Base
 from ....constants import PARTY_STATUS_CODE

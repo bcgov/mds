@@ -4,7 +4,7 @@ from sqlalchemy.schema import FetchedValue
 from ....utils.models_mixins import Base
 from app.extensions import db
 
-class PartyAddress(Base):
+class PartyAddressXref(Base):
     __tablename__ = "party_address_xref"
     party_guid = db.Column(UUID(as_uuid=True),
                            db.ForeignKey('party.party_guid'),
@@ -14,4 +14,4 @@ class PartyAddress(Base):
                            primary_key=True)
 
     def __repr__(self):
-        return '<PartyAddress %r>' % self.party_guid
+        return '<PartyAddressXref %r>' % self.party_guid
