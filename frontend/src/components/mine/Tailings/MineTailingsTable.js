@@ -84,7 +84,7 @@ const columns = [
     width: 120,
     render: (text, record) => (
       <div title="Status" style={errorStyle(record.isOverdue)}>
-        {record.doc ? record.doc.exp_document_status.description : String.LOADING}
+        {record.doc ? record.doc.expected_document_status.description : String.LOADING}
       </div>
     ),
   },
@@ -176,7 +176,7 @@ const transformRowData = (mine, actions) =>
     mine,
     isOverdue:
       Date.parse(doc.due_date) < new Date() &&
-      doc.exp_document_status.exp_document_status_code === "MIA",
+      doc.expected_document_status.exp_document_status_code === "MIA",
     ...actions,
   }));
 
