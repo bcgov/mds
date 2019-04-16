@@ -1,4 +1,4 @@
-import json, uuid
+import json, uuid, pytest
 
 from app.api.mines.mine.models.mineral_tenure_xref import MineralTenureXref
 from tests.factories import MineFactory
