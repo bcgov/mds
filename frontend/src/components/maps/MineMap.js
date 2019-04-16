@@ -222,14 +222,6 @@ class MineMap extends Component {
             : String.DEFAULT_LAT,
         ];
       }
-      // const centerOfMap = [
-      //   this.props.mine.mine_location
-      //     ? parseFloat(this.props.mine.mine_location.longitude) + 0.0000001
-      //     : String.DEFAULT_LONG,
-      //   this.props.mine.mine_location
-      //     ? parseFloat(this.props.mine.mine_location.latitude) + 0.0000001
-      //     : String.DEFAULT_LAT,
-      // ];
       return (
         // Map located on MineSummary page, - this.props.mine is available, contains 1 mine pin.
         <Map
