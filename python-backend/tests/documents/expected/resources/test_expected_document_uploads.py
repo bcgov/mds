@@ -13,7 +13,7 @@ def test_file_upload_with_no_file_or_guid(test_client, db_session, auth_headers)
     post_resp = test_client.post(
         f'/documents/expected/{str(uuid.uuid4())}/document',
         headers=auth_headers['full_auth_header'],
-        data={})
+        json={})
 
     post_data = json.loads(post_resp.data.decode())
 
@@ -30,10 +30,10 @@ def test_put_existing_file(test_client, db_session, auth_headers):
     post_resp = test_client.put(
         f'/documents/expected/{str(expected_doc.exp_document_guid)}/document',
         headers=auth_headers['full_auth_header'],
-        data=data)
+        json=data)
 
     assert post_resp.status_code == 200
-    assert len(expected_doc.mine_documents) == document_count + 1
+    assert len(expected_doc.related_documents) == document_count + 1
 
 
 def test_put_new_file(test_client, db_session, auth_headers):
@@ -48,10 +48,10 @@ def test_put_new_file(test_client, db_session, auth_headers):
     post_resp = test_client.put(
         f'/documents/expected/{str(expected_doc.exp_document_guid)}/document',
         headers=auth_headers['full_auth_header'],
-        data=data)
+        json=data)
 
     assert post_resp.status_code == 200
-    assert len(expected_doc.mine_documents) == document_count + 1
+    assert len(expected_doc.related_documents) == document_count + 1
 
 
 def test_happy_path_file_removal(test_client, db_session, auth_headers):
@@ -67,7 +67,7 @@ def test_happy_path_file_removal(test_client, db_session, auth_headers):
 
     assert post_resp.status_code == 200
     assert post_data['message'] is not None
-    assert mine_document not in expected_document.mine_documents
+    assert mine_document not in expected_document.related_documents
 
 
 def test_remove_file_no_doc_guid(test_client, db_session, auth_headers):

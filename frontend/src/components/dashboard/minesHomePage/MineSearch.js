@@ -62,8 +62,11 @@ export class MineSearch extends Component {
   };
 
   transformData = (data) =>
-    data.map(({ longitude = "", latitude = "", mine_name = "", mine_no = "", guid }) => (
-      <AutoComplete.Option key={guid} value={`${longitude},${latitude},${mine_name},${guid}`}>
+    data.map(({ longitude = "", latitude = "", mine_name = "", mine_no = "", mine_guid }) => (
+      <AutoComplete.Option
+        key={mine_guid}
+        value={`${longitude},${latitude},${mine_name},${mine_guid}`}
+      >
         {`${mine_name} - ${mine_no}`}
       </AutoComplete.Option>
     ));

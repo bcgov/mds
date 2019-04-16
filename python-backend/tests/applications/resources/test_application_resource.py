@@ -47,7 +47,7 @@ def test_post_application(test_client, db_session, auth_headers):
         'received_date': '1999-12-12',
     }
     post_resp = test_client.post(
-        '/applications', headers=auth_headers['full_auth_header'], data=data)
+        '/applications', headers=auth_headers['full_auth_header'], json=data)
     post_data = json.loads(post_resp.data.decode())
 
     assert post_resp.status_code == 201
@@ -58,7 +58,7 @@ def test_post_application(test_client, db_session, auth_headers):
 def test_post_application_bad_mine_guid(test_client, db_session, auth_headers):
     data = {'mine_guid': str(uuid.uuid4())}
     post_resp = test_client.post(
-        '/applications', headers=auth_headers['full_auth_header'], data=data)
+        '/applications', headers=auth_headers['full_auth_header'], json=data)
 
     assert post_resp.status_code == 400
 
@@ -69,7 +69,7 @@ def test_put_application(test_client, db_session, auth_headers):
 
     data = {'application_status_code': 'APR'}
     put_resp = test_client.put(
-        f'/applications/{application_guid}', headers=auth_headers['full_auth_header'], data=data)
+        f'/applications/{application_guid}', headers=auth_headers['full_auth_header'], json=data)
     put_data = json.loads(put_resp.data.decode())
 
     assert put_resp.status_code == 200
@@ -79,5 +79,5 @@ def test_put_application(test_client, db_session, auth_headers):
 def test_put_permit_bad_application_guid(test_client, db_session, auth_headers):
     data = {'application_status_code': 'APR'}
     put_resp = test_client.put(
-        f'/applications/{uuid.uuid4()}', headers=auth_headers['full_auth_header'], data=data)
+        f'/applications/{uuid.uuid4()}', headers=auth_headers['full_auth_header'], json=data)
     assert put_resp.status_code == 404
