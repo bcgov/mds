@@ -55,7 +55,7 @@ def setup_info(test_client):
         exp_document_status_code=TEST_EXPECTED_DOCUMENT_STATUS_CODE1,
         **DUMMY_USER_KWARGS)
 
-    expected_document.mine_documents.append(mine_document)
+    expected_document.related_documents.append(mine_document)
     expected_document.save()
 
     yield dict(
@@ -89,7 +89,7 @@ def test_file_upload_with_no_file_or_guid(test_client, auth_headers, setup_info)
 def test_put_existing_file(test_client, auth_headers, setup_info):
     expected_doc = setup_info.get('expected_document')
     existing_mine_doc = setup_info.get('orphaned_mine_document')
-    document_count= len(expected_doc.mine_documents)
+    document_count = len(expected_doc.related_documents)
 
     data = {'mine_document_guid': existing_mine_doc.mine_document_guid}
     post_resp = test_client.put(
@@ -98,21 +98,21 @@ def test_put_existing_file(test_client, auth_headers, setup_info):
         data=data)
 
     assert post_resp.status_code == 200
-    assert len(expected_doc.mine_documents) == document_count + 1
+    assert len(expected_doc.related_documents) == document_count + 1
 
 
 def test_put_new_file(test_client, auth_headers, setup_info):
     expected_doc = setup_info.get('expected_document')
-    document_count= len(expected_doc.mine_documents)
-    
-    data = {'document_manager_guid': str(uuid.uuid4()), 'filename':'a_file.pdf'}
+    document_count = len(expected_doc.related_documents)
+
+    data = {'document_manager_guid': str(uuid.uuid4()), 'filename': 'a_file.pdf'}
     post_resp = test_client.put(
         f'/documents/expected/{str(expected_doc.exp_document_guid)}/document',
         headers=auth_headers['full_auth_header'],
         data=data)
 
     assert post_resp.status_code == 200
-    assert len(expected_doc.mine_documents) == document_count + 1
+    assert len(expected_doc.related_documents) == document_count + 1
 
 
 def test_happy_path_file_removal(test_client, auth_headers, setup_info):
@@ -127,7 +127,7 @@ def test_happy_path_file_removal(test_client, auth_headers, setup_info):
 
     assert post_resp.status_code == 200
     assert post_data['message'] is not None
-    assert mine_document not in expected_document.mine_documents
+    assert mine_document not in expected_document.related_documents
 
 
 def test_remove_file_no_doc_guid(test_client, auth_headers, setup_info):
