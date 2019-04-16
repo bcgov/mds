@@ -16,7 +16,7 @@ const defaultProps = {
 
 export const EngineerOfRecordOptions = (props) => {
   const tsfDropdown = createDropDownList(
-    props.mine.mine_tailings_storage_facility,
+    props.mine.mine_tailings_storage_facilities,
     "mine_tailings_storage_facility_name",
     "mine_tailings_storage_facility_guid"
   );

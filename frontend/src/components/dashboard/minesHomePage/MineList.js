@@ -151,15 +151,15 @@ const transformRowData = (mines, mineIds, mineRegionHash, mineTenureHash, mineCo
       ? mines[id].mine_status[0].status_labels[0]
       : Strings.EMPTY_FIELD,
     permit: mines[id].mine_permit[0] ? mines[id].mine_permit : null,
-    region: mines[id].region_code ? mineRegionHash[mines[id].region_code] : Strings.EMPTY_FIELD,
+    region: mines[id].mine_region ? mineRegionHash[mines[id].mine_region] : Strings.EMPTY_FIELD,
     commodity: mines[id].mine_type[0] ? mines[id].mine_type : null,
     commodityHash: mineCommodityHash,
     tenure: mines[id].mine_type[0] ? mines[id].mine_type : null,
     tenureHash: mineTenureHash,
-    tsf: mines[id].mine_tailings_storage_facility
-      ? mines[id].mine_tailings_storage_facility.length
+    tsf: mines[id].mine_tailings_storage_facilities
+      ? mines[id].mine_tailings_storage_facilities.length
       : Strings.EMPTY_FIELD,
-    verified: mines[id].verified_status ? mines[id].verified_status.healthy : null,
+    verified: mines[id].verified_status ? mines[id].verified_status.healthy_ind : null,
   }));
 
 const handleTableChange = (updateMineList) => (pagination, filters, sorter) => {

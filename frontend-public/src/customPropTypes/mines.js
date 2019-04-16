@@ -2,7 +2,7 @@ import { PropTypes, shape, arrayOf } from "prop-types";
 import { mineExpectedDocument } from "@/customPropTypes/documents";
 
 export const mine = shape({
-  guid: PropTypes.string.isRequired,
+  mine_guid: PropTypes.string.isRequired,
   mine_no: PropTypes.string,
   mine_name: PropTypes.string,
   mine_expected_documents: arrayOf(mineExpectedDocument),
