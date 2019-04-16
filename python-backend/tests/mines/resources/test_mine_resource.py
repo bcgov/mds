@@ -1,8 +1,6 @@
 import json, uuid
-from tests.constants import (TEST_MINE_NO, TEST_MINE_GUID, TEST_TENURE_ID, TEST_REGION_CODE)
 
 from app.api.mines.mine.models.mineral_tenure_xref import MineralTenureXref
-
 from tests.factories import MineFactory
 
 
