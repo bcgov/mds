@@ -39,7 +39,7 @@ def test_get_permit_amendment_by_permit(test_client, db_session, auth_headers):
 
 
 # #POST
-@pytest.mark.skip(reason='not sure why failing')
+@pytest.mark.skip(reason='Failing due to null derefrence, line 133 in permit_amendment => "issue_date.date()"')
 def test_post_permit_amendment_no_params(test_client, db_session, auth_headers):
     permit_guid = PermitFactory().permit_guid
 
@@ -78,7 +78,7 @@ def test_post_permit_amendment_with_date_params(test_client, db_session, auth_he
     assert PermitAmendment.find_by_permit_amendment_guid(post_data['permit_amendment_guid'])
 
 
-@pytest.mark.skip(reason='not sure why failing')
+@pytest.mark.skip(reason='Failing due to null derefrence, line 133 in permit_amendment => "issue_date.date()"')
 def test_post_permit_amendment_with_type_params(test_client, db_session, auth_headers):
     permit_guid = PermitFactory().permit_guid
 

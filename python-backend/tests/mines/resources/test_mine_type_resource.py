@@ -41,7 +41,7 @@ def test_post_mine_type_missing_mine_tenure_type_code(test_client, db_session, a
         }
     }
 
-@pytest.mark.skip(reason='not sure why failing')
+@pytest.mark.skip(reason='Failing until refactor to remove self.raise_error from MineType resource')
 def test_post_mine_type_invalid_mine_tenure_type_code(test_client, db_session, auth_headers):
     mine_guid = MineFactory().mine_guid
 
