@@ -5,6 +5,7 @@ export const MINE = "/mines";
 export const MINE_LIST = "/mines";
 export const MINE_LIST_QUERY = (params) => `/mines${params}`;
 export const PARTIES_LIST_QUERY = (params = {}) => `/parties?${queryString.stringify(params)}`;
+export const MINE_MAP_LIST = "/mines/map-list";
 export const MINE_BASIC_INFO_LIST = `/mines/basicinfo`;
 export const PARTY = "/parties";
 export const MANAGER = "/parties/managers";

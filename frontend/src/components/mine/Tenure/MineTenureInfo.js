@@ -23,7 +23,7 @@ class MineTenureInfo extends Component {
   handleSubmit = (value) => {
     const { id } = this.props.match.params;
     return this.props
-      .updateMineRecord(this.props.mine.guid, value, this.props.mine.mine_name)
+      .updateMineRecord(this.props.mine.mine_guid, value, this.props.mine.mine_name)
       .then(() => {
         this.props.fetchMineRecordById(id);
         this.props.closeModal();

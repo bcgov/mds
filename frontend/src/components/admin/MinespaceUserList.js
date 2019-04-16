@@ -28,7 +28,9 @@ const columns = [
     width: 300,
     dataIndex: "mineNames",
     render: (text) => (
-      <div>{text && text.map(({ guid, mine_name }) => <div key={guid}>{mine_name}</div>)}</div>
+      <div>
+        {text && text.map(({ mine_guid, mine_name }) => <div key={mine_guid}>{mine_name}</div>)}
+      </div>
     ),
   },
   {
@@ -52,10 +54,10 @@ const columns = [
 ];
 
 const lookupMineName = (mine_guids, mines) =>
-  mine_guids.map((guid) => {
-    const mine_record = mines.find((mine) => mine.guid === guid);
+  mine_guids.map((mine_guid) => {
+    const mine_record = mines.find((mine) => mine.mine_guid === mine_guid);
     return {
-      guid,
+      mine_guid,
       mine_name: mine_record ? `${mine_record.mine_name}-${mine_record.mine_no}` : "",
     };
   });

@@ -69,7 +69,7 @@ const columns = [
     dataIndex: "status",
     render: (test, record) => (
       <div title="Status" style={record.isOverdue ? { color: errorRed } : {}}>
-        {record.doc ? record.doc.exp_document_status.description : String.LOADING}
+        {record.doc ? record.doc.expected_document_status.description : String.LOADING}
       </div>
     ),
   },
@@ -151,7 +151,7 @@ const transformRowData = (expectedDocuments, actions) =>
     doc,
     isOverdue:
       Date.parse(doc.due_date) < new Date() &&
-      doc.exp_document_status.exp_document_status_code === "MIA",
+      doc.expected_document_status.exp_document_status_code === "MIA",
     ...actions,
   }));
 
