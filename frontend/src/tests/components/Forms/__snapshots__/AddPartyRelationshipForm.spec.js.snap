@@ -42,9 +42,7 @@ ShallowWrapper {
             xs={24}
           >
             <FormItem
-              colon={true}
               hasFeedback={false}
-              prefixCls="ant-form"
             >
               <Field
                 component={[Function]}
@@ -72,9 +70,7 @@ ShallowWrapper {
             xs={24}
           >
             <FormItem
-              colon={true}
               hasFeedback={false}
-              prefixCls="ant-form"
             >
               <Field
                 component={[Function]}
@@ -90,9 +86,7 @@ ShallowWrapper {
             xs={24}
           >
             <FormItem
-              colon={true}
               hasFeedback={false}
-              prefixCls="ant-form"
             >
               <Field
                 component={[Function]}
@@ -120,7 +114,6 @@ ShallowWrapper {
             okType="primary"
             onConfirm={undefined}
             placement="topRight"
-            prefixCls="ant-popover"
             title="Are you sure you want to cancel?"
             transitionName="zoom-big"
             trigger="click"
@@ -129,8 +122,8 @@ ShallowWrapper {
               block={false}
               className="full-mobile"
               ghost={false}
+              htmlType="button"
               loading={false}
-              prefixCls="ant-btn"
               type="secondary"
             >
               Cancel
@@ -143,15 +136,14 @@ ShallowWrapper {
             ghost={false}
             htmlType="submit"
             loading={false}
-            prefixCls="ant-btn"
             type="primary"
           />
         </div>,
       ],
+      "colon": true,
       "hideRequiredMark": false,
       "layout": "vertical",
       "onSubmit": [MockFunction],
-      "prefixCls": "ant-form",
     },
     "ref": null,
     "rendered": Array [
@@ -165,9 +157,7 @@ ShallowWrapper {
             xs={24}
           >
             <FormItem
-              colon={true}
               hasFeedback={false}
-              prefixCls="ant-form"
             >
               <Field
                 component={[Function]}
@@ -195,9 +185,7 @@ ShallowWrapper {
           "nodeType": "class",
           "props": Object {
             "children": <FormItem
-              colon={true}
               hasFeedback={false}
-              prefixCls="ant-form"
             >
               <Field
                 component={[Function]}
@@ -239,9 +227,7 @@ ShallowWrapper {
                   ]
                 }
               />,
-              "colon": true,
               "hasFeedback": false,
-              "prefixCls": "ant-form",
             },
             "ref": null,
             "rendered": Object {
@@ -282,9 +268,7 @@ ShallowWrapper {
               xs={24}
             >
               <FormItem
-                colon={true}
                 hasFeedback={false}
-                prefixCls="ant-form"
               >
                 <Field
                   component={[Function]}
@@ -300,9 +284,7 @@ ShallowWrapper {
               xs={24}
             >
               <FormItem
-                colon={true}
                 hasFeedback={false}
-                prefixCls="ant-form"
               >
                 <Field
                   component={[Function]}
@@ -324,9 +306,7 @@ ShallowWrapper {
             "nodeType": "class",
             "props": Object {
               "children": <FormItem
-                colon={true}
                 hasFeedback={false}
-                prefixCls="ant-form"
               >
                 <Field
                   component={[Function]}
@@ -352,9 +332,7 @@ ShallowWrapper {
                   name="start_date"
                   placeholder="yyyy-mm-dd"
                 />,
-                "colon": true,
                 "hasFeedback": false,
-                "prefixCls": "ant-form",
               },
               "ref": null,
               "rendered": Object {
@@ -382,9 +360,7 @@ ShallowWrapper {
             "nodeType": "class",
             "props": Object {
               "children": <FormItem
-                colon={true}
                 hasFeedback={false}
-                prefixCls="ant-form"
               >
                 <Field
                   component={[Function]}
@@ -410,9 +386,7 @@ ShallowWrapper {
                   name="end_date"
                   placeholder="yyyy-mm-dd"
                 />,
-                "colon": true,
                 "hasFeedback": false,
-                "prefixCls": "ant-form",
               },
               "ref": null,
               "rendered": Object {
@@ -464,7 +438,6 @@ ShallowWrapper {
               okType="primary"
               onConfirm={undefined}
               placement="topRight"
-              prefixCls="ant-popover"
               title="Are you sure you want to cancel?"
               transitionName="zoom-big"
               trigger="click"
@@ -473,8 +446,8 @@ ShallowWrapper {
                 block={false}
                 className="full-mobile"
                 ghost={false}
+                htmlType="button"
                 loading={false}
-                prefixCls="ant-btn"
                 type="secondary"
               >
                 Cancel
@@ -487,7 +460,6 @@ ShallowWrapper {
               ghost={false}
               htmlType="submit"
               loading={false}
-              prefixCls="ant-btn"
               type="primary"
             />,
           ],
@@ -505,8 +477,8 @@ ShallowWrapper {
                 block={false}
                 className="full-mobile"
                 ghost={false}
+                htmlType="button"
                 loading={false}
-                prefixCls="ant-btn"
                 type="secondary"
               >
                 Cancel
@@ -519,7 +491,6 @@ ShallowWrapper {
               "okType": "primary",
               "onConfirm": undefined,
               "placement": "topRight",
-              "prefixCls": "ant-popover",
               "title": "Are you sure you want to cancel?",
               "transitionName": "zoom-big",
               "trigger": "click",
@@ -534,8 +505,8 @@ ShallowWrapper {
                 "children": "Cancel",
                 "className": "full-mobile",
                 "ghost": false,
+                "htmlType": "button",
                 "loading": false,
-                "prefixCls": "ant-btn",
                 "type": "secondary",
               },
               "ref": null,
@@ -556,7 +527,6 @@ ShallowWrapper {
               "ghost": false,
               "htmlType": "submit",
               "loading": false,
-              "prefixCls": "ant-btn",
               "type": "primary",
             },
             "ref": null,
@@ -584,9 +554,7 @@ ShallowWrapper {
               xs={24}
             >
               <FormItem
-                colon={true}
                 hasFeedback={false}
-                prefixCls="ant-form"
               >
                 <Field
                   component={[Function]}
@@ -614,9 +582,7 @@ ShallowWrapper {
               xs={24}
             >
               <FormItem
-                colon={true}
                 hasFeedback={false}
-                prefixCls="ant-form"
               >
                 <Field
                   component={[Function]}
@@ -632,9 +598,7 @@ ShallowWrapper {
               xs={24}
             >
               <FormItem
-                colon={true}
                 hasFeedback={false}
-                prefixCls="ant-form"
               >
                 <Field
                   component={[Function]}
@@ -662,7 +626,6 @@ ShallowWrapper {
               okType="primary"
               onConfirm={undefined}
               placement="topRight"
-              prefixCls="ant-popover"
               title="Are you sure you want to cancel?"
               transitionName="zoom-big"
               trigger="click"
@@ -671,8 +634,8 @@ ShallowWrapper {
                 block={false}
                 className="full-mobile"
                 ghost={false}
+                htmlType="button"
                 loading={false}
-                prefixCls="ant-btn"
                 type="secondary"
               >
                 Cancel
@@ -685,15 +648,14 @@ ShallowWrapper {
               ghost={false}
               htmlType="submit"
               loading={false}
-              prefixCls="ant-btn"
               type="primary"
             />
           </div>,
         ],
+        "colon": true,
         "hideRequiredMark": false,
         "layout": "vertical",
         "onSubmit": [MockFunction],
-        "prefixCls": "ant-form",
       },
       "ref": null,
       "rendered": Array [
@@ -707,9 +669,7 @@ ShallowWrapper {
               xs={24}
             >
               <FormItem
-                colon={true}
                 hasFeedback={false}
-                prefixCls="ant-form"
               >
                 <Field
                   component={[Function]}
@@ -737,9 +697,7 @@ ShallowWrapper {
             "nodeType": "class",
             "props": Object {
               "children": <FormItem
-                colon={true}
                 hasFeedback={false}
-                prefixCls="ant-form"
               >
                 <Field
                   component={[Function]}
@@ -781,9 +739,7 @@ ShallowWrapper {
                     ]
                   }
                 />,
-                "colon": true,
                 "hasFeedback": false,
-                "prefixCls": "ant-form",
               },
               "ref": null,
               "rendered": Object {
@@ -824,9 +780,7 @@ ShallowWrapper {
                 xs={24}
               >
                 <FormItem
-                  colon={true}
                   hasFeedback={false}
-                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
@@ -842,9 +796,7 @@ ShallowWrapper {
                 xs={24}
               >
                 <FormItem
-                  colon={true}
                   hasFeedback={false}
-                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
@@ -866,9 +818,7 @@ ShallowWrapper {
               "nodeType": "class",
               "props": Object {
                 "children": <FormItem
-                  colon={true}
                   hasFeedback={false}
-                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
@@ -894,9 +844,7 @@ ShallowWrapper {
                     name="start_date"
                     placeholder="yyyy-mm-dd"
                   />,
-                  "colon": true,
                   "hasFeedback": false,
-                  "prefixCls": "ant-form",
                 },
                 "ref": null,
                 "rendered": Object {
@@ -924,9 +872,7 @@ ShallowWrapper {
               "nodeType": "class",
               "props": Object {
                 "children": <FormItem
-                  colon={true}
                   hasFeedback={false}
-                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
@@ -952,9 +898,7 @@ ShallowWrapper {
                     name="end_date"
                     placeholder="yyyy-mm-dd"
                   />,
-                  "colon": true,
                   "hasFeedback": false,
-                  "prefixCls": "ant-form",
                 },
                 "ref": null,
                 "rendered": Object {
@@ -1006,7 +950,6 @@ ShallowWrapper {
                 okType="primary"
                 onConfirm={undefined}
                 placement="topRight"
-                prefixCls="ant-popover"
                 title="Are you sure you want to cancel?"
                 transitionName="zoom-big"
                 trigger="click"
@@ -1015,8 +958,8 @@ ShallowWrapper {
                   block={false}
                   className="full-mobile"
                   ghost={false}
+                  htmlType="button"
                   loading={false}
-                  prefixCls="ant-btn"
                   type="secondary"
                 >
                   Cancel
@@ -1029,7 +972,6 @@ ShallowWrapper {
                 ghost={false}
                 htmlType="submit"
                 loading={false}
-                prefixCls="ant-btn"
                 type="primary"
               />,
             ],
@@ -1047,8 +989,8 @@ ShallowWrapper {
                   block={false}
                   className="full-mobile"
                   ghost={false}
+                  htmlType="button"
                   loading={false}
-                  prefixCls="ant-btn"
                   type="secondary"
                 >
                   Cancel
@@ -1061,7 +1003,6 @@ ShallowWrapper {
                 "okType": "primary",
                 "onConfirm": undefined,
                 "placement": "topRight",
-                "prefixCls": "ant-popover",
                 "title": "Are you sure you want to cancel?",
                 "transitionName": "zoom-big",
                 "trigger": "click",
@@ -1076,8 +1017,8 @@ ShallowWrapper {
                   "children": "Cancel",
                   "className": "full-mobile",
                   "ghost": false,
+                  "htmlType": "button",
                   "loading": false,
-                  "prefixCls": "ant-btn",
                   "type": "secondary",
                 },
                 "ref": null,
@@ -1098,7 +1039,6 @@ ShallowWrapper {
                 "ghost": false,
                 "htmlType": "submit",
                 "loading": false,
-                "prefixCls": "ant-btn",
                 "type": "primary",
               },
               "ref": null,
