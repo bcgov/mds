@@ -57,7 +57,6 @@ from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserM
      (MineListResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]), 
      (MineListResource, "post", [MINE_CREATE]),
      (MineListSearch, "get", [MINE_VIEW, MINESPACE_PROPONENT]),
-     (MineLocationResource, "get", [MINE_VIEW]),
      (MineMapResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]), 
      (MinePartyApptResource, "get", [MINE_VIEW]),
      (MinePartyApptResource, "post", [MINE_CREATE]), 
