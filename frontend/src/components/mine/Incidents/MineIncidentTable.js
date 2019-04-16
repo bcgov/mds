@@ -16,12 +16,8 @@ const columns = [
     dataIndex: "mine_incident_report_no",
   },
   {
-    title: "Issue Date",
+    title: "Incident Time",
     dataIndex: "incident_timestamp",
-  },
-  {
-    title: "Expiry Date",
-    dataIndex: "expiry_date",
   },
   {
     title: "Reported By",

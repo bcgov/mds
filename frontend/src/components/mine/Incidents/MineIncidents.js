@@ -75,7 +75,6 @@ export class MineIncidents extends Component {
             </AddButton>
           </AuthorizationWrapper>
         </div>
-        <div>Num of incidents: {this.props.mineIncidents.length}</div>
         <MineIncidentTable
           incidents={this.props.mineIncidents}
           followupActions={this.props.followupActions}
