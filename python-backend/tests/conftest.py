@@ -21,11 +21,6 @@ def app(request):
 
 
 @pytest.fixture(scope="session")
-def jwt(app):
-    return _jwt
-
-
-@pytest.fixture(scope="session")
 def auth_headers(app):
     base_auth_token = _jwt.create_jwt(BASE_AUTH_CLAIMS, TOKEN_HEADER)
     full_auth_token = _jwt.create_jwt(FULL_AUTH_CLAIMS, TOKEN_HEADER)
@@ -63,7 +58,6 @@ def cli_runner(app):
 
 @pytest.fixture(scope='session')
 def test_client():
-    # Test Setup with data
     app = create_app(TestConfig)
     client = app.test_client()
     ctx = app.app_context()
@@ -76,7 +70,7 @@ def test_client():
     ctx.pop()
 
 
-@pytest.fixture(scope="function")  #, autouse=True)
+@pytest.fixture(scope="function")
 def db_session(test_client):
     conn = db.engine.connect()
     txn = conn.begin()
@@ -93,12 +87,3 @@ def db_session(test_client):
     sess.remove()
     txn.rollback()
     conn.close()
-
-
-def clear_data(session):
-    meta = db.metadata
-    for table in reversed(meta.sorted_tables):
-        if 'view' in table.name:
-            continue
-        session.execute(table.delete())
-    session.commit()
