@@ -72,7 +72,7 @@ ShallowWrapper {
               fetchMineNameList={[MockFunction]}
               handleCoordinateSearch={[MockFunction]}
               handleMineSearch={[MockFunction]}
-              handleSearch={[Function]}
+              handleSearch={[MockFunction]}
               initialValues={Object {}}
               isAdvanceSearch={false}
               isMapView={false}
@@ -101,7 +101,7 @@ ShallowWrapper {
                   },
                 ]
               }
-              onSubmit={[Function]}
+              onSubmit={[MockFunction]}
               toggleAdvancedSearch={[Function]}
             />
           </span>
@@ -135,7 +135,7 @@ ShallowWrapper {
               fetchMineNameList={[MockFunction]}
               handleCoordinateSearch={[MockFunction]}
               handleMineSearch={[MockFunction]}
-              handleSearch={[Function]}
+              handleSearch={[MockFunction]}
               initialValues={Object {}}
               isAdvanceSearch={false}
               isMapView={false}
@@ -164,7 +164,7 @@ ShallowWrapper {
                   },
                 ]
               }
-              onSubmit={[Function]}
+              onSubmit={[MockFunction]}
               toggleAdvancedSearch={[Function]}
             />
           </span>
@@ -184,7 +184,7 @@ ShallowWrapper {
               fetchMineNameList={[MockFunction]}
               handleCoordinateSearch={[MockFunction]}
               handleMineSearch={[MockFunction]}
-              handleSearch={[Function]}
+              handleSearch={[MockFunction]}
               initialValues={Object {}}
               isAdvanceSearch={false}
               isMapView={false}
@@ -213,7 +213,7 @@ ShallowWrapper {
                   },
                 ]
               }
-              onSubmit={[Function]}
+              onSubmit={[MockFunction]}
               toggleAdvancedSearch={[Function]}
             />
           </span>,
@@ -236,7 +236,7 @@ ShallowWrapper {
               fetchMineNameList={[MockFunction]}
               handleCoordinateSearch={[MockFunction]}
               handleMineSearch={[MockFunction]}
-              handleSearch={[Function]}
+              handleSearch={[MockFunction]}
               initialValues={Object {}}
               isAdvanceSearch={false}
               isMapView={false}
@@ -265,7 +265,7 @@ ShallowWrapper {
                   },
                 ]
               }
-              onSubmit={[Function]}
+              onSubmit={[MockFunction]}
               toggleAdvancedSearch={[Function]}
             />,
             "className": "advanced-search__container",
@@ -279,7 +279,7 @@ ShallowWrapper {
               "fetchMineNameList": [MockFunction],
               "handleCoordinateSearch": [MockFunction],
               "handleMineSearch": [MockFunction],
-              "handleSearch": [Function],
+              "handleSearch": [MockFunction],
               "initialValues": Object {},
               "isAdvanceSearch": false,
               "isMapView": false,
@@ -306,7 +306,7 @@ ShallowWrapper {
                   "mine_no": "BLAH6734",
                 },
               ],
-              "onSubmit": [Function],
+              "onSubmit": [MockFunction],
               "toggleAdvancedSearch": [Function],
             },
             "ref": null,
@@ -351,7 +351,7 @@ ShallowWrapper {
                 fetchMineNameList={[MockFunction]}
                 handleCoordinateSearch={[MockFunction]}
                 handleMineSearch={[MockFunction]}
-                handleSearch={[Function]}
+                handleSearch={[MockFunction]}
                 initialValues={Object {}}
                 isAdvanceSearch={false}
                 isMapView={false}
@@ -380,7 +380,7 @@ ShallowWrapper {
                     },
                   ]
                 }
-                onSubmit={[Function]}
+                onSubmit={[MockFunction]}
                 toggleAdvancedSearch={[Function]}
               />
             </span>
@@ -414,7 +414,7 @@ ShallowWrapper {
                 fetchMineNameList={[MockFunction]}
                 handleCoordinateSearch={[MockFunction]}
                 handleMineSearch={[MockFunction]}
-                handleSearch={[Function]}
+                handleSearch={[MockFunction]}
                 initialValues={Object {}}
                 isAdvanceSearch={false}
                 isMapView={false}
@@ -443,7 +443,7 @@ ShallowWrapper {
                     },
                   ]
                 }
-                onSubmit={[Function]}
+                onSubmit={[MockFunction]}
                 toggleAdvancedSearch={[Function]}
               />
             </span>
@@ -463,7 +463,7 @@ ShallowWrapper {
                 fetchMineNameList={[MockFunction]}
                 handleCoordinateSearch={[MockFunction]}
                 handleMineSearch={[MockFunction]}
-                handleSearch={[Function]}
+                handleSearch={[MockFunction]}
                 initialValues={Object {}}
                 isAdvanceSearch={false}
                 isMapView={false}
@@ -492,7 +492,7 @@ ShallowWrapper {
                     },
                   ]
                 }
-                onSubmit={[Function]}
+                onSubmit={[MockFunction]}
                 toggleAdvancedSearch={[Function]}
               />
             </span>,
@@ -515,7 +515,7 @@ ShallowWrapper {
                 fetchMineNameList={[MockFunction]}
                 handleCoordinateSearch={[MockFunction]}
                 handleMineSearch={[MockFunction]}
-                handleSearch={[Function]}
+                handleSearch={[MockFunction]}
                 initialValues={Object {}}
                 isAdvanceSearch={false}
                 isMapView={false}
@@ -544,7 +544,7 @@ ShallowWrapper {
                     },
                   ]
                 }
-                onSubmit={[Function]}
+                onSubmit={[MockFunction]}
                 toggleAdvancedSearch={[Function]}
               />,
               "className": "advanced-search__container",
@@ -558,7 +558,7 @@ ShallowWrapper {
                 "fetchMineNameList": [MockFunction],
                 "handleCoordinateSearch": [MockFunction],
                 "handleMineSearch": [MockFunction],
-                "handleSearch": [Function],
+                "handleSearch": [MockFunction],
                 "initialValues": Object {},
                 "isAdvanceSearch": false,
                 "isMapView": false,
@@ -585,7 +585,7 @@ ShallowWrapper {
                     "mine_no": "BLAH6734",
                   },
                 ],
-                "onSubmit": [Function],
+                "onSubmit": [MockFunction],
                 "toggleAdvancedSearch": [Function],
               },
               "ref": null,

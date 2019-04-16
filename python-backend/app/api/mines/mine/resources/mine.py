@@ -72,15 +72,28 @@ class MineListResource(Resource, UserMixin):
 
     @api.doc(
         params={
-            'per_page': 'The number of results to be returned per page.',
-            'page': 'The current page number to be displayed.',
-            'search': 'The search term.',
-            'commodity': 'A specific commodity to filter the mine list on.',
-            'status': 'A specific mine status to filter the mine list on.',
-            'tenure': 'A specific mine tenure type to filter the mine list on.',
-            'region': 'A specific mine region to filter the mine list on.',
-            'major': 'Filters the mine list by major mines or regional mines.',
-            'tsf': 'Filters the mine list by mines with or without a TSF.',
+            'per_page':
+            'The number of results to be returned per page.',
+            'page':
+            'The current page number to be displayed.',
+            'search':
+            'The search term.',
+            'commodity':
+            'A specific commodity to filter the mine list on.',
+            'status':
+            'A specific mine status to filter the mine list on.',
+            'tenure':
+            'A specific mine tenure type to filter the mine list on.',
+            'region':
+            'A specific mine region to filter the mine list on.',
+            'major':
+            'Filters the mine list by major mines or regional mines.',
+            'tsf':
+            'Filters the mine list by mines with or without a TSF.',
+            'sort_field':
+            'enum[mine_name, mine_no, mine_operation_status_code, mine_region] Default: mine_name',
+            'sort_dir':
+            'enum[asc, desc] Default: asc'
         },
         description='Returns a list of filtered mines.')
     @api.marshal_with(MINE_LIST_MODEL, code=200)
@@ -130,9 +143,18 @@ class MineListResource(Resource, UserMixin):
         return mine
 
     def apply_filter_and_search(self, args):
+        sort_models = {
+            'mine_name': 'Mine',
+            'mine_no': 'Mine',
+            'mine_region': 'Mine',
+            'mine_operation_status_code': 'MineStatusXref'
+        }
         # Handle ListView request
         items_per_page = args.get('per_page', 25, type=int)
         page = args.get('page', 1, type=int)
+        sort_field = args.get('sort_field', 'mine_name', type=str)
+        sort_dir = args.get('sort_dir', 'asc', type=str)
+        sort_model = sort_models.get(sort_field)
         search_term = args.get('search', None, type=str)
         # Filters to be applied
         commodity_filter_terms = args.get('commodity', None, type=str)
@@ -204,8 +226,13 @@ class MineListResource(Resource, UserMixin):
             mines_query = mines_query.intersect(status_query)
         deleted_filter = [{'field': 'deleted_ind', 'op': '==', 'value': 'False'}]
         mines_query = apply_filters(mines_query, deleted_filter)
-        sort_criteria = [{'model': 'Mine', 'field': 'mine_name', 'direction': 'asc'}]
-        mines_query = apply_sort(mines_query, sort_criteria)
+
+        # Apply sorting
+        if sort_model and sort_field and sort_dir:
+            mines_query = mines_query.outerjoin(MineStatus).outerjoin(MineStatusXref)
+            sort_criteria = [{'model': sort_model, 'field': sort_field, 'direction': sort_dir}]
+            mines_query = apply_sort(mines_query, sort_criteria)
+
         return apply_pagination(mines_query, page, items_per_page)
 
 

@@ -58,6 +58,23 @@ class MineStatus(AuditMixin, Base):
         except KeyError:
             return None
 
+    def json(self, show_mgr=True):
+        return {
+            'mine_status_guid': str(self.mine_status_guid),
+            'mine_guid': str(self.mine_guid),
+            'mine_status_xref_guid': str(self.mine_status_xref.mine_status_xref_guid),
+            'status_values': self.status_values,
+            'status_labels': self.status_labels,
+            'effective_date': self.effective_date.isoformat(),
+            'expiry_date': self.expiry_date.isoformat()
+        }
+
+    def validate_status_code_exists(self, mine_status_xref, mine_status_code, code_or_description):
+        try:
+            return mine_status_xref[mine_status_code][code_or_description]
+        except KeyError:
+            return None
+
     # def json(self, show_mgr=True):
     #     status_values_list = self.create_mine_status_values_list()
     #     status_labels_list = self.create_mine_status_labels_list()

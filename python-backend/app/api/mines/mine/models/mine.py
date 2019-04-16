@@ -41,7 +41,9 @@ class Mine(AuditMixin, Base):
     mine_permit = db.relationship(
         'Permit', backref='mine', order_by='desc(Permit.create_timestamp)', lazy='selectin')
     mine_type = db.relationship(
-        'MineType', backref='mine', order_by='desc(MineType.update_timestamp)', lazy='selectin')
+        'MineType', backref='mine', order_by='desc(MineType.update_timestamp)', 
+        primaryjoin="and_(MineType.mine_guid == Mine.mine_guid, MineType.active_ind==True)",
+        lazy='selectin')
 
     #Not always desired, set to lazy load using select
     mineral_tenure_xref = db.relationship('MineralTenureXref', backref='mine', lazy='select')
@@ -86,7 +88,7 @@ class Mine(AuditMixin, Base):
 
     def json_for_list(self):
         return {
-            'guid':
+            'mine_guid':
             str(self.mine_guid),
             'mine_name':
             self.mine_name,
@@ -108,7 +110,7 @@ class Mine(AuditMixin, Base):
 
     def json_for_map(self):
         return {
-            'guid': str(self.mine_guid),
+            'mine_guid': str(self.mine_guid),
             'mine_name': self.mine_name,
             'mine_no': self.mine_no,
             'mine_note': self.mine_note,
@@ -118,11 +120,11 @@ class Mine(AuditMixin, Base):
         }
 
     def json_by_name(self):
-        return {'guid': str(self.mine_guid), 'mine_name': self.mine_name, 'mine_no': self.mine_no}
+        return {'mine_guid': str(self.mine_guid), 'mine_name': self.mine_name, 'mine_no': self.mine_no}
 
     def json_by_location(self):
         #this will get cleaned up when mine_location and mine are merged
-        result = {'guid': str(self.mine_guid)}
+        result = {'mine_guid': str(self.mine_guid)}
         if self.mine_location:
             result['latitude'] = str(
                 self.mine_location.latitude) if self.mine_location.latitude else ''
@@ -135,7 +137,7 @@ class Mine(AuditMixin, Base):
 
     def json_by_permit(self):
         return {
-            'guid': str(self.mine_guid),
+            'mine_guid': str(self.mine_guid),
             'mine_permit': [item.json() for item in self.mine_permit]
         }
 
