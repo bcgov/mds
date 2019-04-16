@@ -38,15 +38,12 @@ ShallowWrapper {
           disabled={false}
           id={1}
           placeholder={undefined}
-          prefixCls="ant-input"
           type="text"
         />
       </div>,
-      "colon": true,
       "hasFeedback": false,
       "help": false,
       "label": "",
-      "prefixCls": "ant-form",
       "validateStatus": "",
     },
     "ref": null,
@@ -62,7 +59,6 @@ ShallowWrapper {
             disabled={false}
             id={1}
             placeholder={undefined}
-            prefixCls="ant-input"
             type="text"
           />,
         ],
@@ -80,7 +76,6 @@ ShallowWrapper {
             "disabled": false,
             "id": 1,
             "placeholder": undefined,
-            "prefixCls": "ant-input",
             "type": "text",
           },
           "ref": null,
@@ -107,15 +102,12 @@ ShallowWrapper {
             disabled={false}
             id={1}
             placeholder={undefined}
-            prefixCls="ant-input"
             type="text"
           />
         </div>,
-        "colon": true,
         "hasFeedback": false,
         "help": false,
         "label": "",
-        "prefixCls": "ant-form",
         "validateStatus": "",
       },
       "ref": null,
@@ -131,7 +123,6 @@ ShallowWrapper {
               disabled={false}
               id={1}
               placeholder={undefined}
-              prefixCls="ant-input"
               type="text"
             />,
           ],
@@ -149,7 +140,6 @@ ShallowWrapper {
               "disabled": false,
               "id": 1,
               "placeholder": undefined,
-              "prefixCls": "ant-input",
               "type": "text",
             },
             "ref": null,

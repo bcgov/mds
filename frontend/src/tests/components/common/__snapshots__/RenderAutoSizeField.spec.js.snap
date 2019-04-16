@@ -32,14 +32,11 @@ ShallowWrapper {
       "children": <TextArea
         autosize={true}
         id={1}
-        prefixCls="ant-input"
       />,
-      "colon": true,
       "hasFeedback": false,
       "help": false,
       "label": "",
       "placeholder": undefined,
-      "prefixCls": "ant-form",
       "validateStatus": "",
     },
     "ref": null,
@@ -50,7 +47,6 @@ ShallowWrapper {
       "props": Object {
         "autosize": true,
         "id": 1,
-        "prefixCls": "ant-input",
       },
       "ref": null,
       "rendered": null,
@@ -67,14 +63,11 @@ ShallowWrapper {
         "children": <TextArea
           autosize={true}
           id={1}
-          prefixCls="ant-input"
         />,
-        "colon": true,
         "hasFeedback": false,
         "help": false,
         "label": "",
         "placeholder": undefined,
-        "prefixCls": "ant-form",
         "validateStatus": "",
       },
       "ref": null,
@@ -85,7 +78,6 @@ ShallowWrapper {
         "props": Object {
           "autosize": true,
           "id": 1,
-          "prefixCls": "ant-input",
         },
         "ref": null,
         "rendered": null,

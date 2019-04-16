@@ -53,7 +53,6 @@ ShallowWrapper {
         autoComplete="off"
         disabled={false}
         id="search"
-        prefixCls="ant-input"
         suffix={
           <Icon
             className="icon-sm"
@@ -99,7 +98,6 @@ ShallowWrapper {
       "onSelect": [MockFunction],
       "optionLabelProp": "children",
       "placeholder": "",
-      "prefixCls": "ant-select",
       "showSearch": false,
       "style": Object {
         "width": "100%",
@@ -115,7 +113,6 @@ ShallowWrapper {
         "autoComplete": "off",
         "disabled": false,
         "id": "search",
-        "prefixCls": "ant-input",
         "suffix": <Icon
           className="icon-sm"
           style={
@@ -145,7 +142,6 @@ ShallowWrapper {
           autoComplete="off"
           disabled={false}
           id="search"
-          prefixCls="ant-input"
           suffix={
             <Icon
               className="icon-sm"
@@ -191,7 +187,6 @@ ShallowWrapper {
         "onSelect": [MockFunction],
         "optionLabelProp": "children",
         "placeholder": "",
-        "prefixCls": "ant-select",
         "showSearch": false,
         "style": Object {
           "width": "100%",
@@ -207,7 +202,6 @@ ShallowWrapper {
           "autoComplete": "off",
           "disabled": false,
           "id": "search",
-          "prefixCls": "ant-input",
           "suffix": <Icon
             className="icon-sm"
             style={
