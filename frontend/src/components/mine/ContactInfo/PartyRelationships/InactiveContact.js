@@ -21,7 +21,7 @@ export class InactiveContact extends Component {
       return (
         <Redirect
           to={router.RELATIONSHIP_PROFILE.dynamicRoute(
-            this.props.mine.guid,
+            this.props.mine.mine_guid,
             this.props.partyRelationshipTypeCode
           )}
           push

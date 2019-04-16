@@ -9,7 +9,11 @@ import queryString from "query-string";
 import { openModal, closeModal } from "@/actions/modalActions";
 import CustomPropTypes from "@/customPropTypes";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
-import { fetchMineRecords, createMineRecord } from "@/actionCreators/mineActionCreator";
+import {
+  fetchMineRecords,
+  createMineRecord,
+  fetchMineRecordsForMap,
+} from "@/actionCreators/mineActionCreator";
 import {
   fetchStatusOptions,
   fetchRegionOptions,
@@ -54,6 +58,7 @@ const { TabPane } = Tabs;
 
 const propTypes = {
   fetchMineRecords: PropTypes.func.isRequired,
+  fetchMineRecordsForMap: PropTypes.func.isRequired,
   createMineRecord: PropTypes.func.isRequired,
   fetchStatusOptions: PropTypes.func.isRequired,
   setOptionsLoaded: PropTypes.func.isRequired,
@@ -175,9 +180,15 @@ export class Dashboard extends Component {
         ...remainingParams,
       },
     });
-    this.props.fetchMineRecords(params).then(() => {
-      this.setState({ mineList: true });
-    });
+    if (remainingParams.map) {
+      this.props.fetchMineRecordsForMap().then(() => {
+        this.setState({ mineList: true });
+      });
+    } else {
+      this.props.fetchMineRecords(params).then(() => {
+        this.setState({ mineList: true });
+      });
+    }
   };
 
   onPageChange = (page, per_page) => {
@@ -437,6 +448,7 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchMineRecords,
+      fetchMineRecordsForMap,
       fetchStatusOptions,
       fetchRegionOptions,
       createMineRecord,

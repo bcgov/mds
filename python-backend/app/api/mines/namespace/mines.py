@@ -1,6 +1,7 @@
 from flask_restplus import Namespace
 
-from ..mine.resources.mine import MineResource, MineListSearch
+from app.api.mines.mine.resources.mine_map import MineMapResource
+from ..mine.resources.mine import MineResource, MineListSearch, MineListResource
 from ..mine.resources.mine_type import MineTypeResource
 from ..mine.resources.mine_type_detail import MineTypeDetailResource
 from ..mine.resources.mine_tenure_type_code import MineTenureTypeCodeResource
@@ -22,7 +23,10 @@ from ..incidents.resources.mine_incident_followup_types import MineIncidentFollo
 
 api = Namespace('mines', description='Mine related operations')
 
-api.add_resource(MineResource, '', '/<string:mine_no_or_guid>')
+api.add_resource(MineResource, '/<string:mine_no_or_guid>')
+api.add_resource(MineListResource, '')
+api.add_resource(MineMapResource, '/map-list')
+
 api.add_resource(MineListSearch, '/search')
 api.add_resource(MineTenureTypeCodeResource, '/mine-tenure-type-codes')
 api.add_resource(MineDisturbanceCodeResource, '/disturbance-codes')
