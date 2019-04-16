@@ -52,7 +52,7 @@ class MineExpectedDocument(AuditMixin, Base):
         lazy='joined',
         load_on_pending=True)
 
-    mine_documents = db.relationship("MineDocument", secondary='mine_expected_document_xref')
+    related_documents = db.relationship("MineDocument", secondary='mine_expected_document_xref')
 
     def json(self):
         return {
@@ -66,7 +66,7 @@ class MineExpectedDocument(AuditMixin, Base):
             'exp_document_status_code': self.exp_document_status_code,
             'exp_document_status': self.expected_document_status.json(),
             'hsrc_code': self.hsrc_code,
-            'related_documents': [x.json() for x in self.mine_documents]
+            'related_documents': [x.json() for x in self.related_documents]
         }
 
     @classmethod

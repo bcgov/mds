@@ -38,7 +38,7 @@ export const DefaultContact = (props) => (
           <div className="right">
             <Link
               to={router.RELATIONSHIP_PROFILE.dynamicRoute(
-                props.mine.guid,
+                props.mine.mine_guid,
                 props.partyRelationship.mine_party_appt_type_code
               )}
             >

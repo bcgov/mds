@@ -14,7 +14,6 @@ import NullScreen from "@/components/common/NullScreen";
 import Loading from "@/components/common/Loading";
 import { uniq, uniqBy } from "lodash";
 import AddButton from "@/components/common/AddButton";
-
 import {
   addPartyRelationship,
   removePartyRelationship,
@@ -63,7 +62,7 @@ export class ViewPartyRelationships extends Component {
 
   onSubmitAddPartyRelationship = (values) => {
     const payload = {
-      mine_guid: this.props.mine.guid,
+      mine_guid: this.props.mine.mine_guid,
       party_guid: values.party_guid,
       mine_party_appt_type_code: this.state.selectedPartyRelationshipType,
       related_guid: values.related_guid,
@@ -73,7 +72,7 @@ export class ViewPartyRelationships extends Component {
 
     return this.props.addPartyRelationship(payload).then(() => {
       this.props.fetchPartyRelationships({
-        mine_guid: this.props.mine.guid,
+        mine_guid: this.props.mine.mine_guid,
         relationships: "party",
       });
       this.props.closeModal();
@@ -84,7 +83,7 @@ export class ViewPartyRelationships extends Component {
     if (!this.props.partyRelationshipTypesList) return;
 
     if (value.mine_party_appt_type_code === "EOR") {
-      if (mine.mine_tailings_storage_facility.length === 0) {
+      if (mine.mine_tailings_storage_facilities.length === 0) {
         this.TSFConfirmation.current.click();
         return;
       }
@@ -109,11 +108,11 @@ export class ViewPartyRelationships extends Component {
     this.props
       .createTailingsStorageFacility({
         ...value,
-        mine_guid: this.props.mine.guid,
+        mine_guid: this.props.mine.mine_guid,
       })
       .then(() => {
         this.props.closeModal();
-        this.props.fetchMineRecordById(this.props.mine.guid);
+        this.props.fetchMineRecordById(this.props.mine.mine_guid);
       });
 
   openEditPartyRelationshipModal = (partyRelationship, onSubmit, handleChange, mine) => {
@@ -146,7 +145,7 @@ export class ViewPartyRelationships extends Component {
 
     return this.props.updatePartyRelationship(payload).then(() => {
       this.props.fetchPartyRelationships({
-        mine_guid: this.props.mine.guid,
+        mine_guid: this.props.mine.mine_guid,
         relationships: "party",
       });
       this.props.closeModal();
@@ -157,7 +156,7 @@ export class ViewPartyRelationships extends Component {
     event.preventDefault();
     this.props.removePartyRelationship(mine_party_appt_guid).then(() => {
       this.props.fetchPartyRelationships({
-        mine_guid: this.props.mine.guid,
+        mine_guid: this.props.mine.mine_guid,
         relationships: "party",
       });
     });

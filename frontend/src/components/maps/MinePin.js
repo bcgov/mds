@@ -110,7 +110,7 @@ export class MinePin extends Component {
         renderer.addClassBreakInfo(1001, Infinity, xlSymbol);
 
         const queryMineDetails = (content) => {
-          const guids = [content.graphic.attributes.templateContent.guid];
+          const guids = [content.graphic.attributes.templateContent.mine_guid];
           return this.props
             .fetchMineBasicInfoList(guids)
             .then(() =>
