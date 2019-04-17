@@ -147,11 +147,11 @@ class MineTypeDetailFactory(BaseFactory):
     class Params:
         tenure = 'MIN'
         commodity = factory.Trait(
-            mine_commodity_code=factory.LazyAttribute(lambda o: SampleMineCommodityCodes(
-                o.tenure, 1)[0]))
+            mine_commodity_code=factory.LazyAttribute(
+                lambda o: SampleMineCommodityCodes(o.tenure, 1)[0]))
         disturbance = factory.Trait(
-            mine_disturbance_code=factory.LazyAttribute(lambda o: SampleMineDisturbanceCodes(
-                o.tenure, 1)[0]))
+            mine_disturbance_code=factory.LazyAttribute(
+                lambda o: SampleMineDisturbanceCodes(o.tenure, 1)[0]))
 
     mine_type_detail_xref_guid = GUID
     mine_commodity_code = None

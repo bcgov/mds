@@ -102,7 +102,7 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
         data = PartyResource.parser.parse_args()
         existing_party = Party.find_by_party_guid(party_guid)
         if not existing_party:
-            raise NotFound('Party not found')
+            raise NotFound('Party not found.')
 
         current_app.logger.info(f'Updating {existing_party} with {data}')
         for key, value in data.items():

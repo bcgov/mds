@@ -12,56 +12,46 @@ from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.utils.url import get_documents_svc_url
 
 from ..models.tailings import MineTailingsStorageFacility
-from ....documents.namespace.documents import api as doc_api
+from app.api.mines.mine.models.mine import Mine
+
+from app.api.mines.mine_api_models import MINE_TSF_MODEL
 
 
-class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
+class MineTailingsStorageFacilityListResource(Resource, UserMixin):
     parser = reqparse.RequestParser()
-    parser.add_argument('mine_guid', type=str, help='mine to create a new tsf on')
     parser.add_argument(
-        'tsf_name',
+        'mine_tailings_storage_facility_name',
         type=str,
         trim=True,
         help='Name of the tailings storage facility.',
-        store_missing=False)
+        required=True)
 
-    @api.doc(
-        params={
-            'mine_tailings_storage_facility_guid':
-            'mine_tailings_storage_facility_guid to be retrieved, or return error if not provided'
-        })
+    @api.doc(description='Gets the tailing storage facilites for the given mine')
+    @api.marshal_with(
+        MINE_TSF_MODEL, envelope='mine_tailings_storage_facilities', as_list=True, code=200)
     @requires_role_mine_view
-    def get(self, mine_tailings_storage_facility_guid=None):
-        if mine_tailings_storage_facility_guid:
-            tsf = MineTailingsStorageFacility.find_by_tsf_guid(mine_tailings_storage_facility_guid)
-            if not tsf:
-                return self.create_error_payload(404, 'mine_tailings_storage_facility not found')
-            return tsf.json()
-        else:
-            mine_guid = request.args.get('mine_guid', type=str)
-            mine_tsf_list = MineTailingsStorageFacility.find_by_mine_guid(mine_guid)
-            if mine_tsf_list is None:
-                return self.raise_error(404, 'Mine_guid or tsf_guid must be provided')
-            return {
-                'mine_storage_tailings_facilities': list(map(lambda x: x.json(), mine_tsf_list))
-            }
+    def get(self, mine_guid):
+        mine = Mine.find_by_mine_guid(mine_guid)
+        if not mine:
+            raise NotFound('Mine not found.')
+        return mine.mine_tailings_storage_facilities
 
-    @api.doc(params={'mine_guid': 'mine_guid that is to get a new TSF'})
+    @api.doc(description='Creates a new tailing storage facility for the given mine')
+    @api.marshal_with(MINE_TSF_MODEL, code=200)
     @requires_role_mine_create
-    def post(self, mine_tailings_storage_facility_guid=None):
-        if mine_tailings_storage_facility_guid:
-            raise BadRequest('unexpected tsf_guid')
-
-        data = self.parser.parse_args()
-        mine_guid = data.get('mine_guid')
+    def post(self, mine_guid):
+        mine = Mine.find_by_mine_guid(mine_guid)
+        if not mine:
+            raise NotFound('Mine not found.')
 
         # see if this would be the first TSF
-        mine_tsf_list = MineTailingsStorageFacility.find_by_mine_guid(mine_guid)
+        mine_tsf_list = mine.mine_tailings_storage_facilities
         is_mine_first_tsf = len(mine_tsf_list) == 0
 
+        data = self.parser.parse_args()
         mine_tsf = MineTailingsStorageFacility.create(
-            mine_guid=mine_guid, tailings_facility_name=data.get('tsf_name'))
-        db.session.add(mine_tsf)
+            mine, mine_tailings_storage_facility_name=data['mine_tailings_storage_facility_name'])
+        mine.mine_tailings_storage_facilities.append(mine_tsf)
 
         if is_mine_first_tsf:
             try:
@@ -103,8 +93,5 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
                 db.session.rollback()
                 current_app.logger.error(str(e))
                 raise InternalServerError(str(e) + ", tsf not created")
-        db.session.commit()
-        return {
-            'mine_tailings_storage_facilities':
-            [x.json() for x in MineTailingsStorageFacility.find_by_mine_guid(mine_guid)]
-        }
+        mine.save()
+        return mine_tsf
