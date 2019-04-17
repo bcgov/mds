@@ -19,6 +19,7 @@ from app.api.mines.mine.models.mine_verified_status import MineVerifiedStatus
 from app.api.mines.status.models.mine_status import MineStatus
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
 from app.api.parties.party.models.party import Party
+from app.api.parties.party.models.address import Address
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.permits.permit.models.permit import Permit
 from app.api.permits.permit_amendment.models.permit_amendment import PermitAmendment
@@ -276,6 +277,18 @@ class MineVerifiedStatusFactory(BaseFactory):
     update_timestamp = TODAY
 
 
+class AddressFactory(BaseFactory):
+    class Meta:
+        model = Address
+
+    address_line_1 = factory.Faker('street_address')
+    suite_no = factory.Iterator([None, None, '123', '123'])
+    address_line_2 = factory.Iterator([None, 'Apt. 123', None, 'Apt. 123'])
+    city = factory.Faker('city')
+    sub_division_code = factory.LazyFunction(RandomSubDivisionCode)
+    post_code = factory.Faker('bothify', text='?#?#?#', letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+
+
 class PartyFactory(BaseFactory):
     class Meta:
         model = Party
@@ -303,14 +316,9 @@ class PartyFactory(BaseFactory):
     effective_date = TODAY
     expiry_date = datetime.strptime('9999-12-31', '%Y-%m-%d')  # holdover till datetime refactor
     party_type_code = None
-    address_line_1 = factory.Faker('street_address')
-    suite_no = factory.Iterator([None, None, '123', '123'])
-    address_line_2 = factory.Iterator([None, 'Apt. 123', None, 'Apt. 123'])
-    city = factory.Faker('city')
-    sub_division_code = factory.LazyFunction(RandomSubDivisionCode)
-    post_code = factory.Faker('bothify', text='?#?#?#', letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ')
 
     mine_party_appt = []
+    address = factory.List([factory.SubFactory(AddressFactory) for _ in range(1)])
 
 
 class MinePartyAppointmentFactory(BaseFactory):
