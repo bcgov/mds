@@ -1,7 +1,6 @@
 import pytest, json
 from datetime import datetime
 from app.extensions import db
-from tests.constants import TEST_MINE_GUID
 from app.api.mines.incidents.models.mine_incident import MineIncident
 from tests.factories import MineFactory
 
@@ -13,7 +12,7 @@ def setup_info(test_client):
 
 
 # GET
-def test_get_mine_incidents_by_mine_guid(test_client, auth_headers, setup_info):
+def test_get_mine_incidents_by_mine_guid(test_client, db_session, auth_headers, setup_info):
     test_mine_guid = setup_info["mine"].mine_guid
     get_resp = test_client.get(
         f'/mines/{test_mine_guid}/incidents', headers=auth_headers['full_auth_header'])
@@ -23,7 +22,7 @@ def test_get_mine_incidents_by_mine_guid(test_client, auth_headers, setup_info):
     assert all(i['mine_guid'] == str(test_mine_guid) for i in get_data['mine_incidents'])
 
 
-def test_get_mine_incidents_by_guid(test_client, auth_headers, setup_info):
+def test_get_mine_incidents_by_guid(test_client, db_session, auth_headers, setup_info):
     test_guid = setup_info["mine"].mine_incidents[0].mine_incident_guid
     get_resp = test_client.get(
         f'/mines/incidents/{test_guid}', headers=auth_headers['full_auth_header'])
@@ -33,8 +32,9 @@ def test_get_mine_incidents_by_guid(test_client, auth_headers, setup_info):
 
 
 # POST
-def test_post_mine_incidents_happy(test_client, auth_headers, setup_info):
-    #test_mine_guid = setup_info["mine"].mine_guid
+def test_post_mine_incidents_happy(test_client, db_session, auth_headers, setup_info):
+    test_mine_guid = setup_info["mine"].mine_guid
+
     now = datetime.now()
     data = {
         'incident_timestamp': now.strftime("%Y-%m-%d %H:%M"),
@@ -42,11 +42,11 @@ def test_post_mine_incidents_happy(test_client, auth_headers, setup_info):
     }
 
     post_resp = test_client.post(
-        f'/mines/{TEST_MINE_GUID}/incidents', json=data, headers=auth_headers['full_auth_header'])
+        f'/mines/{test_mine_guid}/incidents', json=data, headers=auth_headers['full_auth_header'])
     assert post_resp.status_code == 201, post_resp.response
 
     post_data = json.loads(post_resp.data.decode())
-    assert post_data['mine_guid'] == str(TEST_MINE_GUID)
+    assert post_data['mine_guid'] == str(test_mine_guid)
     assert post_data['incident_timestamp'] == now.isoformat(timespec='minutes') + ':00+00:00'
 
     #datetime.fromisoformat is in python 3.7

@@ -58,10 +58,13 @@ def cli_runner(app):
 
 @pytest.fixture(scope='session')
 def test_client():
+
     app = create_app(TestConfig)
     client = app.test_client()
     ctx = app.app_context()
     ctx.push()
+
+    User._test_mode = True
 
     yield client
 
