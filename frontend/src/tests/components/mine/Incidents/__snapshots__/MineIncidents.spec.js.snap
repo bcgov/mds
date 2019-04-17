@@ -143,6 +143,7 @@ ShallowWrapper {
               },
             ]
           }
+          handleEditMineIncident={[Function]}
           incidents={
             Array [
               Object {
@@ -161,6 +162,7 @@ ShallowWrapper {
               },
             ]
           }
+          openMineIncidentModal={[Function]}
         />,
       ],
     },
@@ -225,6 +227,7 @@ ShallowWrapper {
               "mine_incident_followup_type_code": "NOA",
             },
           ],
+          "handleEditMineIncident": [Function],
           "incidents": Array [
             Object {
               "closing_report_summary": "Parent south person form evidence receive tree wide memory but medical car himself benefit key really series sea enter money prove if lawyer seven ready religious shake.",
@@ -241,6 +244,7 @@ ShallowWrapper {
               "reported_timestamp": "2019-03-17T17:42:37+00:00",
             },
           ],
+          "openMineIncidentModal": [Function],
         },
         "ref": null,
         "rendered": null,
@@ -280,6 +284,7 @@ ShallowWrapper {
                 },
               ]
             }
+            handleEditMineIncident={[Function]}
             incidents={
               Array [
                 Object {
@@ -298,6 +303,7 @@ ShallowWrapper {
                 },
               ]
             }
+            openMineIncidentModal={[Function]}
           />,
         ],
       },
@@ -362,6 +368,7 @@ ShallowWrapper {
                 "mine_incident_followup_type_code": "NOA",
               },
             ],
+            "handleEditMineIncident": [Function],
             "incidents": Array [
               Object {
                 "closing_report_summary": "Parent south person form evidence receive tree wide memory but medical car himself benefit key really series sea enter money prove if lawyer seven ready religious shake.",
@@ -378,6 +385,7 @@ ShallowWrapper {
                 "reported_timestamp": "2019-03-17T17:42:37+00:00",
               },
             ],
+            "openMineIncidentModal": [Function],
           },
           "ref": null,
           "rendered": null,
