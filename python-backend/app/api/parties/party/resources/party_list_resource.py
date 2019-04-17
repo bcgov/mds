@@ -22,16 +22,13 @@ class PartyListResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument('party_name',
                         type=str,
-                        help='Last name of the party (Person), or the Organization name (Organization).',
-                        required=True)
+                        help='Last name of the party (Person), or the Organization name (Organization).')
     parser.add_argument('party_type_code',
                         type=str,
-                        help='Party type. Person (PER) or Organization (ORG).',
-                        required=True)
+                        help='Party type. Person (PER) or Organization (ORG).')
     parser.add_argument('phone_no',
                         type=str,
-                        help='The phone number of the party. Ex: 123-123-1234',
-                        required=True)
+                        help='The phone number of the party. Ex: 123-123-1234')
     parser.add_argument('last_name',
                         type=str,
                         help='Last name of the party, if the party is a person.')
