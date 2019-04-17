@@ -104,16 +104,11 @@ export class ViewPartyRelationships extends Component {
     });
   };
 
-  handleAddTailings = (value) =>
-    this.props
-      .createTailingsStorageFacility({
-        ...value,
-        mine_guid: this.props.mine.mine_guid,
-      })
-      .then(() => {
-        this.props.closeModal();
-        this.props.fetchMineRecordById(this.props.mine.mine_guid);
-      });
+  handleAddTailings = (values) =>
+    this.props.createTailingsStorageFacility(this.props.mine.mine_guid, values).then(() => {
+      this.props.closeModal();
+      this.props.fetchMineRecordById(this.props.mine.mine_guid);
+    });
 
   openEditPartyRelationshipModal = (partyRelationship, onSubmit, handleChange, mine) => {
     if (!this.props.partyRelationshipTypesList) return;
