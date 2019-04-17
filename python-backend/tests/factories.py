@@ -103,10 +103,10 @@ class MineExpectedDocumentFactory(BaseFactory):
     received_date = TODAY
     hsrc_code = factory.SelfAttribute('required_document.hsrc_code')
     mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
-    mine_documents = []
+    related_documents = []
 
     @factory.post_generation
-    def mine_documents(obj, create, extracted, **kwargs):
+    def related_documents(obj, create, extracted, **kwargs):
         if not create:
             return
 

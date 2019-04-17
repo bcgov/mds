@@ -61,7 +61,7 @@ def test_post_mine_name_exceed_chars(test_client, db_session, auth_headers):
 def test_post_mine_name_only_success(test_client, db_session, auth_headers):
     test_mine_data = {"mine_name": "test_create_mine2", "mine_status": "CLD,REC,LWT", "mine_region": "SW"}
     post_resp = test_client.post(
-        '/mines', data=test_mine_data, headers=auth_headers['full_auth_header'])
+        '/mines', json=test_mine_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
     assert post_resp.status_code == 200
     assert post_data['mine_name'] == test_mine_data['mine_name']
