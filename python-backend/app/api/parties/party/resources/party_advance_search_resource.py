@@ -16,23 +16,24 @@ from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class PartyAdvancedSearchResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser()
-    parser.add_argument('first_name', type=str,
-        help='First name of the party, if the party is a person.', trim=True)
-    parser.add_argument('last_name', type=str,
-                        help='Last name of the party, if the party is a person.', trim=True)
-    parser.add_argument('party_name', type=str,
-        help='Last name of the party (Person), or the Organization name (Organization).', trim=True)
-    parser.add_argument('phone_no', type=str,
-        help='The phone number of the party. Ex: 123-123-1234', trim=True)
-    parser.add_argument('phone_ext', type=str, help='The extension of the phone number. Ex: 1234', trim=True)
-    parser.add_argument('email', type=str, help='The email of the party.', trim=True)
+    parser = reqparse.RequestParser(trim=True)
+    parser.add_argument(
+        'first_name', type=str, help='First name of the party, if the party is a person.')
+    parser.add_argument(
+        'last_name', type=str, help='Last name of the party, if the party is a person.')
+    parser.add_argument(
+        'party_name',
+        type=str,
+        help='Last name of the party (Person), or the Organization name (Organization).')
+    parser.add_argument(
+        'phone_no', type=str, help='The phone number of the party. Ex: 123-123-1234')
+    parser.add_argument('phone_ext', type=str, help='The extension of the phone number. Ex: 1234')
+    parser.add_argument('email', type=str, help='The email of the party.')
     parser.add_argument('type', type=str, help='The type of the party. Ex: PER')
     parser.add_argument('page', 1, type=int, help='The page of the results.')
     parser.add_argument('per_page', 25, type=int, help='The number of parties per page.')
     parser.add_argument('role', type=str, help='The role of a user. Ex: MMG for Mine Manager')
     PARTY_LIST_RESULT_LIMIT = 25
-
 
     @api.doc(
         params={
@@ -45,12 +46,10 @@ class PartyAdvancedSearchResource(Resource, UserMixin, ErrorMixin):
         })
     @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
     def get(self):
-        paginated_parties, pagination_details = self.apply_filter_and_search(self.parser.parse_args())
+        paginated_parties, pagination_details = self.apply_filter_and_search(
+            self.parser.parse_args())
         if not paginated_parties:
-            self.raise_error(
-                404,
-                'No parties found'
-            ), 404
+            self.raise_error(404, 'No parties found'), 404
         parties = paginated_parties.all()
         return {
             'parties': list(map(lambda x: x.json(relationships=['mine_party_appt']), parties)),

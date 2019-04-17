@@ -11,6 +11,8 @@ from app.api.documents.required.resources.required_documents import RequiredDocu
 from app.api.mines.compliance.resources.compliance import MineComplianceResource
 from app.api.mines.compliance.resources.compliance_article import ComplianceArticleResource
 from app.api.mines.location.resources.location import MineLocationResource
+from app.api.mines.incidents.resources.mine_incidents import MineIncidentResource, MineIncidentListResource
+from app.api.mines.incidents.resources.mine_incident_followup_types import MineIncidentFollowupTypeResource
 from app.api.mines.mine.resources.mine_commodity_code import MineCommodityCodeResource
 from app.api.mines.mine.resources.mine_disturbance_code import MineDisturbanceCodeResource
 from app.api.mines.mine.resources.mine_tenure_type_code import MineTenureTypeCodeResource
@@ -100,11 +102,8 @@ from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserM
      (VarianceDocumentUploadResource, "post", [MINE_CREATE, MINESPACE_PROPONENT]),
      (VarianceDocumentUploadResource, "put", [MINE_CREATE, MINESPACE_PROPONENT]),
      (VarianceUploadedDocumentsResource, "delete", [MINE_CREATE, MINESPACE_PROPONENT]),
-     (VarianceListResource, "get", [MINE_VIEW]),
-     (VarianceListResource, "post", [MINE_CREATE]),
-     (VarianceResource, "get", [MINE_VIEW])
-    ]
-)
+     (VarianceListResource, "get", [MINE_VIEW]), (VarianceListResource, "post", [MINE_CREATE]),
+     (VarianceResource, "get", [MINE_VIEW])])
 def test_endpoint_auth(resource, method, expected_roles):
     endpoint = getattr(resource, method, None)
     assert endpoint != None, '{0} does not have a {1} method.'.format(resource, method.upper())

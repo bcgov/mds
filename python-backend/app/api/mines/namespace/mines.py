@@ -15,10 +15,11 @@ from ..compliance.resources.compliance import MineComplianceResource
 from ..compliance.resources.compliance_article import ComplianceArticleResource
 from ..mine.resources.mine_basicinfo import MineBasicInfoResource
 from app.api.mines.mine.resources.mine_verified_status import MineVerifiedStatusResource
-from ..variances.resources.variance import (VarianceListResource,
-                                            VarianceResource,
+from ..variances.resources.variance import (VarianceListResource, VarianceResource,
                                             VarianceDocumentUploadResource,
                                             VarianceUploadedDocumentsResource)
+from ..incidents.resources.mine_incidents import MineIncidentListResource, MineIncidentResource
+from ..incidents.resources.mine_incident_followup_types import MineIncidentFollowupTypeResource
 
 api = Namespace('mines', description='Mine related operations')
 
@@ -45,12 +46,18 @@ api.add_resource(MineVerifiedStatusResource, '/verified-status',
                  '/<string:mine_guid>/verified-status')
 
 api.add_resource(VarianceListResource, '/<string:mine_guid>/variances')
-api.add_resource(
-    VarianceResource,
-    '/<string:mine_guid>/variances/<string:variance_id>')
-api.add_resource(
-    VarianceDocumentUploadResource,
-    '/<string:mine_guid>/variances/<string:variance_id>/documents')
+api.add_resource(VarianceResource, '/<string:mine_guid>/variances/<string:variance_id>')
+api.add_resource(VarianceDocumentUploadResource,
+                 '/<string:mine_guid>/variances/<string:variance_id>/documents')
 api.add_resource(
     VarianceUploadedDocumentsResource,
     '/<string:mine_guid>/variances/<string:variance_id>/documents/<string:mine_document_guid>')
+
+api.add_resource(MineIncidentListResource, '/<string:mine_guid>/incidents')
+
+api.add_resource(MineIncidentResource, '/<string:mine_guid>/incidents/<string:mine_incident_guid>',
+                 '/incidents/<string:mine_incident_guid>')
+
+api.add_resource(MineIncidentResource, '/incidents/<string:mine_incident_guid>')
+
+api.add_resource(MineIncidentFollowupTypeResource, '/incidents/followup-types')

@@ -8,6 +8,7 @@ export const getMinesPageData = (state) => mineReducer.getMinesPageData(state);
 export const getMineGuid = (state) => mineReducer.getMineGuid(state);
 export const getMineBasicInfoList = (state) => mineReducer.getMineBasicInfoList(state);
 export const getMineDocuments = (state) => mineReducer.getMineDocuments(state);
+export const getMineIncidents = (state) => mineReducer.getMineIncidents(state);
 
 export const getCurrentMineTypes = createSelector(
   [getMines, getMineGuid],

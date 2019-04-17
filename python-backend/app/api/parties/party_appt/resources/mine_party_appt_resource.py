@@ -15,7 +15,7 @@ from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser()
+    parser = reqparse.RequestParser(trim=True)
     parser.add_argument('mine_guid', type=str, help='guid of the mine.')
     parser.add_argument('party_guid', type=str, help='guid of the party.')
     parser.add_argument(
