@@ -31,26 +31,31 @@ const columns = [
 ];
 
 const transformRowData = (incidents, actions) =>
-  incidents.sort(this.sortByDateOrID).map((incident) => ({
-    key: incident.incident_id,
-    mine_incident_report_no: incident.mine_incident_report_no,
-    incident_timestamp: formatDate(incident.incident_timestamp),
-    reported_timestamp: formatDate(incident.reported_timestamp),
-    reported_by: incident.reported_by,
-    followup_action: actions.find(
-      (x) => x.mine_incident_followup_type_code === incident.followup_type_code
-    ).description,
-  }));
+  incidents
+    .sort((i) => i.mine_incident_report_no)
+    .map((incident) => ({
+      key: incident.incident_id,
+      mine_incident_report_no: incident.mine_incident_report_no,
+      incident_timestamp: formatDate(incident.incident_timestamp),
+      reported_timestamp: formatDate(incident.reported_timestamp),
+      reported_by: incident.reported_by,
+      followup_action: actions.find(
+        (x) => x.mine_incident_followup_type_code === incident.followup_type_code
+      ).description,
+    }));
 
 const MineIncidentTable = (props) => (
   <div>
-    <Table
-      align="left"
-      pagination={false}
-      columns={columns}
-      locale={{ emptyText: <NullScreen type="incidents" /> }}
-      dataSource={transformRowData(props.incidents, props.followupActions)}
-    />
+    {props.incidents.length < 1 ? (
+      <NullScreen type="incidents" />
+    ) : (
+      <Table
+        align="left"
+        pagination={false}
+        columns={columns}
+        dataSource={transformRowData(props.incidents, props.followupActions)}
+      />
+    )}
   </div>
 );
 
