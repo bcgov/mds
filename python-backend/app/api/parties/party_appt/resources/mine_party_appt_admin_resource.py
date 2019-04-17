@@ -1,5 +1,5 @@
 from flask import request, Response
-from flask_restplus import Resource, reqparse
+from flask_restplus import Resource
 
 from app.extensions import api
 from ..models.mine_party_appt import MinePartyAppointment

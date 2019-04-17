@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 import uuid
 
 from flask import request
-from flask_restplus import Resource, reqparse
+from flask_restplus import Resource
 from sqlalchemy import or_, exc as alch_exceptions
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
