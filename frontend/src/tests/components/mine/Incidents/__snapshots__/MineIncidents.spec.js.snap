@@ -10,7 +10,7 @@ ShallowWrapper {
       [MockFunction] {
         "calls": Array [
           Array [
-            undefined,
+            "18133c75-49ad-4101-85f3-a43e35ae989a",
           ],
         ],
       }
