@@ -51,6 +51,13 @@ export const MINE_RESPONSE = {
         },
       ],
       mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
+      verified_status: {
+        mine_guid: null,
+        mine_name: null,
+        healthy_ind: null,
+        verifying_user: null,
+        verifying_timestamp: null,
+      },
     },
     {
       mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
@@ -105,6 +112,13 @@ export const MINE_RESPONSE = {
         },
       ],
       mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
+      verified_status: {
+        mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
+        mine_name: "mine2",
+        healthy_ind: true,
+        verifying_user: null,
+        verifying_timestamp: null,
+      },
     },
   ],
 };
