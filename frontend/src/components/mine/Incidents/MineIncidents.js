@@ -14,7 +14,7 @@ import { fetchMineIncidents, createMineIncident } from "@/actionCreators/mineAct
 import { getMineIncidents } from "@/selectors/mineSelectors";
 import { getIncidentFollowupActionOptions } from "@/selectors/staticContentSelectors";
 
-import { MineIncidentTable } from "./MineIncidentTable";
+import MineIncidentTable from "./MineIncidentTable";
 
 /**
  * @class  MineTailingsInfo - all tenure information related to the mine.
