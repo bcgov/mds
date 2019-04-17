@@ -5,7 +5,8 @@ DEFAULT_MISSING_REQUIRED = 'Missing required argument'
 
 class CustomReqparser():
 
-    def __init__(self, parser_instance):
+    def __init__(self):
+        parser_instance = reqparse.RequestParser(trim=True)
         self.parser = parser_instance
         self.add_argument = parser_instance.add_argument
 

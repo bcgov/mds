@@ -1,6 +1,6 @@
 import uuid
 from flask import request
-from flask_restplus import Resource, reqparse
+from flask_restplus import Resource
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
 from werkzeug.exceptions import BadRequest
 from sqlalchemy import and_
@@ -20,7 +20,7 @@ from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class PartyListResource(Resource, UserMixin, ErrorMixin):
-    parser = CustomReqparser(reqparse.RequestParser(trim=True))
+    parser = CustomReqparser()
     parser.add_argument('party_name',
                         type=str,
                         help='Last name of the party (Person), or the Organization name (Organization).',
