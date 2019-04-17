@@ -1,7 +1,7 @@
 from flask_restplus import reqparse
 from werkzeug.exceptions import BadRequest
 
-DEFAULT_MISSING_REQUIRED = 'Missing required argument'
+DEFAULT_MISSING_REQUIRED = 'Missing required argument.'
 
 class CustomReqparser():
 
