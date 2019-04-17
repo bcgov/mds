@@ -9,7 +9,7 @@ describe("partiesSelectors", () => {
     items_per_page: 25,
     total: 11326,
     total_pages: 454,
-    parties: [{ party_guid: "test123" }, { party_guid: "test456" }],
+    records: [{ party_guid: "test123" }, { party_guid: "test456" }],
   };
   const listProcessed = { test123: { party_guid: "test123" }, test456: { party_guid: "test456" } };
 
@@ -45,7 +45,7 @@ describe("partiesSelectors", () => {
       items_per_page: 25,
       total: 11326,
       total_pages: 454,
-      parties: [{ party_guid: "test123" }, { party_guid: "test456" }],
+      records: [{ party_guid: "test123" }, { party_guid: "test456" }],
     });
   });
 });
