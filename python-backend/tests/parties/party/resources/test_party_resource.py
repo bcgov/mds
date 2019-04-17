@@ -75,7 +75,7 @@ def test_post_person_success(test_client, db_session, auth_headers):
         "address_line_2": "1234 Bar Blvd",
         "city": "Baz Town",
         "sub_division_code": "BC",
-        "post_code": "000000",
+        "post_code": "X0X0X0",
         "address_type_code": "CAN"
     }
     post_resp = test_client.post(

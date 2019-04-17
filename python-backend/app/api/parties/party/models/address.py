@@ -1,3 +1,4 @@
+import re
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.orm import validates
@@ -12,10 +13,7 @@ class Address(Base):
     address_line_1 = db.Column(db.String, nullable=True)
     address_line_2 = db.Column(db.String, nullable=True)
     city = db.Column(db.String, nullable=True)
-    sub_division_code = db.Column(db.String,
-                                  # FIXME: Workaround for code-first tests
-                                  db.ForeignKey('sub_division_code.sub_division_code', ondelete="cascade"),
-                                  nullable=True)
+    sub_division_code = db.Column(db.String, nullable=True)
     post_code = db.Column(db.String, nullable=True)
     address_type_code = db.Column(db.String, nullable=False, server_default=FetchedValue())
 
@@ -61,4 +59,7 @@ class Address(Base):
     def validate_post_code(self, key, post_code):
         if post_code and len(post_code) > 6:
             raise AssertionError('post_code must not exceed 6 characters.')
+        validPostalCode = re.compile(r"\s*([a-zA-Z]\s*\d\s*){3}$")
+        if post_code and not validPostalCode.match(post_code):
+            raise AssertionError('Invalid post_code format.')
         return post_code
