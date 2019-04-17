@@ -1,41 +1,17 @@
 import json
 
-from tests.constants import (
-    TEST_MINE_TYPE_GUID,
-    TEST_MINE_DISTURBANCE_CODES,
-    TEST_MINE_DISTURBANCE_DESCRIPTIONS
-)
+from app.api.mines.mine.models.mine_disturbance_code import MineDisturbanceCode
 
 
-def test_get_all_mine_disturbance_types(test_client, auth_headers):
+def test_get_all_mine_disturbance_types(test_client, db_session, auth_headers):
+    disturbances = MineDisturbanceCode.query.filter_by(active_ind=True).all()
+    disturbance_codes = map(lambda c: c.mine_disturbance_code, disturbances)
+    discriptions = map(lambda c: c.description, disturbances)
+
     get_resp = test_client.get('/mines/disturbance-codes', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
-    all_options = [
-        {
-            'mine_disturbance_code': 'SUR',
-            'description': 'Surface',
-            'mine_tenure_type_codes': ['COL', 'MIN', 'PLR', 'BCL'],
-            'exclusive_ind': False
-        },
-        {
-            'mine_disturbance_code': 'UND',
-            'description': 'Underground',
-            'mine_tenure_type_codes': ['COL', 'MIN', 'PLR'],
-            'exclusive_ind': False
-        },
-        {
-            'mine_disturbance_code': 'CWA',
-            'description': 'Coal Wash',
-            'mine_tenure_type_codes': ['COL'],
-            'exclusive_ind': True
-        },
-        {
-            'mine_disturbance_code': 'MIL',
-            'description': 'Mill',
-            'mine_tenure_type_codes': ['PLR'],
-            'exclusive_ind': True
-        }
-    ]
-
+    options = get_data['options']
     assert get_resp.status_code == 200
-    assert get_data == { 'options': all_options }
+    assert len(options) == len(disturbances)
+    assert all(option['mine_disturbance_code'] in disturbance_codes for option in options)
+    assert all(option['description'] in discriptions for option in options)
