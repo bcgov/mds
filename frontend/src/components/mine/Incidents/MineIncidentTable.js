@@ -1,7 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Table } from "antd";
+import { Table, Button } from "antd";
 
+import { BRAND_PENCIL } from "@/constants/assets";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import NullScreen from "@/components/common/NullScreen";
 import { formatDate } from "@/utils/helpers";
@@ -9,6 +12,8 @@ import { formatDate } from "@/utils/helpers";
 const propTypes = {
   incidents: PropTypes.arrayOf(CustomPropTypes.incident).isRequired,
   followupActions: PropTypes.arrayOf(CustomPropTypes.incidentFollowupType).isRequired,
+  handleEditMineIncident: PropTypes.func.isRequired,
+  openMineIncidentModal: PropTypes.func.isRequired,
 };
 
 const columns = [
@@ -28,9 +33,27 @@ const columns = [
     title: "EMPR Action",
     dataIndex: "followup_action",
   },
+  {
+    title: "",
+    dataIndex: "handleEditModal",
+    render: (text, record) => (
+      <div title="" align="right">
+        <AuthorizationWrapper permission={Permission.CREATE}>
+          <Button
+            type="primary"
+            size="small"
+            ghost
+            onClick={(event) => record.openMineIncidentModal(event, text, record.incident)}
+          >
+            <img src={BRAND_PENCIL} alt="Edit TSF Report" />
+          </Button>
+        </AuthorizationWrapper>
+      </div>
+    ),
+  },
 ];
 
-const transformRowData = (incidents, actions) =>
+const transformRowData = (incidents, actions, funcs) =>
   incidents
     .sort((i) => i.mine_incident_report_no)
     .map((incident) => ({
@@ -42,6 +65,8 @@ const transformRowData = (incidents, actions) =>
       followup_action: actions.find(
         (x) => x.mine_incident_followup_type_code === incident.followup_type_code
       ).description,
+      ...funcs,
+      incident,
     }));
 
 const MineIncidentTable = (props) => (
@@ -53,7 +78,10 @@ const MineIncidentTable = (props) => (
         align="left"
         pagination={false}
         columns={columns}
-        dataSource={transformRowData(props.incidents, props.followupActions)}
+        dataSource={transformRowData(props.incidents, props.followupActions, {
+          handleEditModal: props.handleEditMineIncident,
+          openMineIncidentModal: props.openMineIncidentModal,
+        })}
       />
     )}
   </div>
