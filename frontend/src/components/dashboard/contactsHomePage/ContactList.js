@@ -30,11 +30,14 @@ const columns = [
     title: "Contact Name",
     dataIndex: "name",
     sortField: "party_name",
-    render: ([firstName = "", lastName = ""], record) => (
-      <Link to={router.PARTY_PROFILE.dynamicRoute(record.key)}>{` ${lastName}${
-        firstName ? `, ${firstName}` : ""
-      }`}</Link>
-    ),
+    render: ([firstName = "", lastName = ""], record) => {
+      const comma = firstName ? ", " : "";
+      return (
+        <Link
+          to={router.PARTY_PROFILE.dynamicRoute(record.key)}
+        >{` ${lastName}${comma}${firstName}`}</Link>
+      );
+    },
     sorter: true,
   },
   {
