@@ -1,6 +1,7 @@
 import random
 
 from app.extensions import db
+from app.api.applications.models.application_status_code import ApplicationStatusCode
 from app.api.constants import COMMODITY_CODES_CONFIG, DISTURBANCE_CODES_CONFIG, MINE_STATUS_OPTIONS
 from app.api.documents.expected.models.document_status import ExpectedDocumentStatus
 from app.api.documents.required.models.required_documents import RequiredDocument
@@ -11,6 +12,14 @@ from app.api.mines.mine.models.mine_commodity_code import MineCommodityCode
 from app.api.mines.mine.models.mine_disturbance_code import MineDisturbanceCode
 from app.api.mines.status.models.mine_status_xref import MineStatusXref
 from app.api.parties.party.models.sub_division_code import SubDivisionCode
+from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
+
+
+def RandomApplicationStatusCode():
+    return random.choice([
+        x.application_status_code
+        for x in ApplicationStatusCode.find_all_active_application_status_code()
+    ])
 
 
 def RandomExpectedDocumentStatusCode():
@@ -55,3 +64,8 @@ def RandomMineStatusXref():
 
 def RandomSubDivisionCode():
     return random.choice([x.sub_division_code for x in db.session.query(SubDivisionCode).all()])
+
+
+def RandomMinePartyAppointmentTypeCode():
+    return random.choice(
+        [x.mine_party_appt_type_code for x in db.session.query(MinePartyAppointmentType).all()])

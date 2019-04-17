@@ -1,16 +1,16 @@
-from tests.constants import TEST_REQUIRED_REPORT_GUID1, TEST_REQUIRED_REPORT_CATEGORY_TAILINGS
+from tests.status_code_gen import RandomRequiredDocument
 from app.api.documents.required.models.required_documents import RequiredDocument
 
 
 # RequiredDocument Class Methods
-def test_required_documents_find_by_req_doc_guid(test_client, auth_headers):
-    required_document = RequiredDocument.find_by_req_doc_guid(TEST_REQUIRED_REPORT_GUID1)
-    assert str(required_document.req_document_guid) == TEST_REQUIRED_REPORT_GUID1
+def test_required_documents_find_by_req_doc_guid(db_session, auth_headers):
+    req = RandomRequiredDocument()
+
+    required_document = RequiredDocument.find_by_req_doc_guid(str(req.req_document_guid))
+    assert required_document == req
 
 
-def test_required_documents_find_by_req_doc_category(test_client, auth_headers):
-    required_documents = RequiredDocument.find_by_req_doc_category(
-        TEST_REQUIRED_REPORT_CATEGORY_TAILINGS)
-    assert len(required_documents) == 2
-    assert all(rd.req_document_category == TEST_REQUIRED_REPORT_CATEGORY_TAILINGS
-               for rd in required_documents)
+def test_required_documents_find_by_req_doc_category(db_session, auth_headers):
+    required_documents = RequiredDocument.find_by_req_doc_category('TSF')
+    assert len(required_documents) > 0
+    assert all(rd.req_document_category == 'TSF' for rd in required_documents)

@@ -1,11 +1,12 @@
 import json
-from tests.constants import TEST_MINE_GUID, TEST_PARTY_PER_GUID_1, TEST_PARTY_PER_FIRST_NAME_1, TEST_PARTY_PER_PARTY_NAME_1
+
+from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
 
 
 # GET
-def test_get_mine_party_appt_type(test_client, auth_headers):
+def test_get_mine_party_appt_type(test_client, db_session, auth_headers):
     get_resp = test_client.get(
         '/parties/mines/relationship-types', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200
-    assert len(get_data) == 5  #number from seed data
+    assert len(get_data) == len(MinePartyAppointmentType.find_all_active())
