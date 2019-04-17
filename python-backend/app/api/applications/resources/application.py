@@ -125,7 +125,7 @@ class ApplicationResource(Resource, UserMixin):
         application = Application.find_by_application_guid(application_guid)
 
         if not application:
-            raise NotFound('Application not found')
+            raise NotFound('Application not found.')
 
         return application
 
@@ -144,7 +144,7 @@ class ApplicationResource(Resource, UserMixin):
         application = Application.find_by_application_guid(application_guid)
 
         if not application:
-            raise NotFound('Application not found')
+            raise NotFound('Application not found.')
 
         data = self.parser.parse_args()
 
