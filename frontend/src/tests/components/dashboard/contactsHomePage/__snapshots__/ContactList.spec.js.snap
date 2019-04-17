@@ -24,6 +24,8 @@ ShallowWrapper {
         "18145c75-49ad-0101-85f3-a43e45ae989a",
       ]
     }
+    sortDir={null}
+    sortField={null}
   />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
@@ -45,21 +47,27 @@ ShallowWrapper {
         Object {
           "dataIndex": "name",
           "render": [Function],
+          "sortField": "party_name",
+          "sortOrder": false,
+          "sorter": true,
           "title": "Contact Name",
         },
         Object {
           "dataIndex": "role",
           "render": [Function],
+          "sortOrder": false,
           "title": "Role",
         },
         Object {
           "dataIndex": "email",
           "render": [Function],
+          "sortOrder": false,
           "title": "Email",
         },
         Object {
           "dataIndex": "phone",
           "render": [Function],
+          "sortOrder": false,
           "title": "Phone",
         },
       ],
@@ -68,7 +76,10 @@ ShallowWrapper {
           "email": undefined,
           "emptyField": "N/A",
           "key": undefined,
-          "name": "mock name",
+          "name": Array [
+            "",
+            "mock name",
+          ],
           "phone": "N/A",
           "role": "N/A",
         },
@@ -76,7 +87,10 @@ ShallowWrapper {
           "email": undefined,
           "emptyField": "N/A",
           "key": undefined,
-          "name": "mock Two",
+          "name": Array [
+            "",
+            "mock Two",
+          ],
           "phone": "N/A",
           "role": "N/A",
         },
@@ -88,6 +102,7 @@ ShallowWrapper {
           type="no-results"
         />,
       },
+      "onChange": [Function],
       "pagination": false,
       "rowKey": "key",
       "showHeader": true,
@@ -115,21 +130,27 @@ ShallowWrapper {
           Object {
             "dataIndex": "name",
             "render": [Function],
+            "sortField": "party_name",
+            "sortOrder": false,
+            "sorter": true,
             "title": "Contact Name",
           },
           Object {
             "dataIndex": "role",
             "render": [Function],
+            "sortOrder": false,
             "title": "Role",
           },
           Object {
             "dataIndex": "email",
             "render": [Function],
+            "sortOrder": false,
             "title": "Email",
           },
           Object {
             "dataIndex": "phone",
             "render": [Function],
+            "sortOrder": false,
             "title": "Phone",
           },
         ],
@@ -138,7 +159,10 @@ ShallowWrapper {
             "email": undefined,
             "emptyField": "N/A",
             "key": undefined,
-            "name": "mock name",
+            "name": Array [
+              "",
+              "mock name",
+            ],
             "phone": "N/A",
             "role": "N/A",
           },
@@ -146,7 +170,10 @@ ShallowWrapper {
             "email": undefined,
             "emptyField": "N/A",
             "key": undefined,
-            "name": "mock Two",
+            "name": Array [
+              "",
+              "mock Two",
+            ],
             "phone": "N/A",
             "role": "N/A",
           },
@@ -158,6 +185,7 @@ ShallowWrapper {
             type="no-results"
           />,
         },
+        "onChange": [Function],
         "pagination": false,
         "rowKey": "key",
         "showHeader": true,
