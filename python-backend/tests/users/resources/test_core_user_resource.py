@@ -1,50 +1,37 @@
 import pytest
 import json, uuid, requests
-from tests.constants import TEST_MINE_GUID, DUMMY_USER_KWARGS
-from tests.constants import TEST_PARTY_PER_EMAIL_1, TEST_PARTY_PER_PHONE_EXT_1, TEST_PARTY_PER_PHONE_EXT_1
+
 from app.api.users.core.models.core_user import CoreUser
-from app.extensions import db
+from tests.factories import CoreUserFactory
 
 
-@pytest.fixture(scope="function")
-def setup_info(test_client):
-    cu = CoreUser.create(TEST_PARTY_PER_EMAIL_1, TEST_PARTY_PER_PHONE_EXT_1,
-                         TEST_PARTY_PER_PHONE_EXT_1)
-    cu.save()
+def test_get_core_users_all(test_client, db_session, auth_headers):
+    batch_size = 3
+    users = CoreUserFactory.create_batch(size=batch_size)
+    emails = map(lambda u: u.email, users)
 
-    yield dict(
-        test_core_user=cu,
-        test_core_user_email=TEST_PARTY_PER_EMAIL_1,
-        test_core_user_guid=cu.core_user_guid)
-
-    db.session.delete(cu)
-    db.session.commit()
-
-
-def test_get_core_users_all(test_client, auth_headers, setup_info):
     get_resp = test_client.get('/users/core', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200, get_resp.response
-    assert get_data['results'][0]["email"] == setup_info["test_core_user_email"]
+    assert len(get_data['results']) == batch_size
+    assert all(data['email'] in emails for data in get_data['results'])
 
 
-def test_get_core_user_by_guid(test_client, auth_headers, setup_info):
+def test_get_core_user_by_guid(test_client, db_session, auth_headers):
+    user = CoreUserFactory()
+
     get_resp = test_client.get(
-        '/users/core/' + str(setup_info['test_core_user_guid']),
-        headers=auth_headers['full_auth_header'])
+        f'/users/core/{user.core_user_guid}', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200, get_resp.response
-    assert get_data["email"] == setup_info["test_core_user_email"]
+    assert get_data["email"] == user.email
 
 
-def test_put_core_user_update_email(test_client, auth_headers, setup_info):
+def test_put_core_user_update_email(test_client, db_session, auth_headers):
+    user = CoreUserFactory()
+
     data = {"email": "new_email@server.com"}
-
     put_resp = test_client.put(
-        '/users/core/' + str(setup_info['test_core_user_guid']),
-        headers=auth_headers['full_auth_header'],
-        data=data)
-
+        f'/users/core/{user.core_user_guid}', headers=auth_headers['full_auth_header'], data=data)
     assert put_resp.status_code == 200, put_resp.response
-
     assert json.loads(put_resp.data.decode())["email"] == data["email"]
