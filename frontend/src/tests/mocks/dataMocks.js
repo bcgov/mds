@@ -51,6 +51,108 @@ export const MINE_RESPONSE = {
         },
       ],
       mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
+    },
+    {
+      mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
+      mine_name: "mine2",
+      mine_no: "BLAH9091",
+      mine_region: "NE",
+      mine_permit: [
+        {
+          permit_guid: "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
+          permit_no: "KNaaWwVdiJ40",
+        },
+        {
+          permit_guid: "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
+          permit_no: "xfM0c0ZKEw7B",
+        },
+      ],
+      mineral_tenure_xref: [
+        {
+          tenure_number_id: "1234567",
+        },
+      ],
+      mine_status: {
+        statusvalue: ["CLD", "CM"],
+        status_labels: ["Closed", "Care & Maintenance"],
+        effective_date: "2018-10-16",
+        expiry_date: "9999-12-31",
+      },
+      mine_location: {
+        longitude: null,
+        latitude: null,
+      },
+      mine_tailings_storage_facilities: [
+        {
+          mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
+          mine_tailings_storage_facility_guid: "e2629897-053e-4218-9299-479375e47f34",
+          mine_tailings_storage_facility_name: "MockTSF1",
+        },
+      ],
+      mine_expected_documents: [
+        {
+          date_created: "2018-11-19",
+          due_date: "",
+          exp_document_guid: "806608ed-d2b4-4f83-8b22-739d5223c56f",
+          exp_document_name: "OMS Manual",
+          mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
+          req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
+          expected_document_status: {
+            exp_document_status_code: "MIA",
+            description: "Not Received",
+          },
+          related_documents: [],
+        },
+      ],
+      mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
+    },
+  ],
+};
+
+export const MINES = {
+  mineIds: ["18133c75-49ad-4101-85f3-a43e35ae989a", "18145c75-49ad-0101-85f3-a43e45ae989a"],
+  mines: {
+    "18133c75-49ad-4101-85f3-a43e35ae989a": {
+      mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+      mine_name: "mine3",
+      mine_no: "BLAH9091",
+      mine_region: "NE",
+      mine_permit: [],
+      mineral_tenure_xref: [
+        {
+          tenure_number_id: "1234567",
+        },
+      ],
+      mine_location: { longitude: null, latitude: null },
+      mine_tailings_storage_facilities: [
+        {
+          mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+          mine_tailings_storage_facility_guid: "e2629897-053e-4218-9299-479375e47f78",
+          mine_tailings_storage_facility_name: "MockTSF",
+        },
+      ],
+      mine_expected_documents: [
+        {
+          date_created: "2018-11-19",
+          due_date: "",
+          exp_document_guid: "806608ed-d2b4-4f83-8b22-739d5223c56f",
+          exp_document_name: "OMS Manual",
+          mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+          req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
+          expected_document_status: {
+            exp_document_status_code: "MIA",
+            description: "Not Received",
+          },
+          related_documents: [],
+        },
+      ],
+      mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
+      mine_status: {
+        statusvalue: ["CLD", "CM"],
+        status_labels: ["Closed", "Care & Maintenance"],
+        effective_date: "2018-10-16",
+        expiry_date: "9999-12-31",
+      },
       verified_status: {
         mine_guid: null,
         mine_name: null,
@@ -59,7 +161,7 @@ export const MINE_RESPONSE = {
         verifying_timestamp: null,
       },
     },
-    {
+    "18145c75-49ad-0101-85f3-a43e45ae989a": {
       mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
       mine_name: "mine2",
       mine_no: "BLAH9091",
@@ -119,108 +221,6 @@ export const MINE_RESPONSE = {
         verifying_user: null,
         verifying_timestamp: null,
       },
-    },
-  ],
-};
-
-export const MINES = {
-  mineIds: ["18133c75-49ad-4101-85f3-a43e35ae989a", "18145c75-49ad-0101-85f3-a43e45ae989a"],
-  mines: {
-    "18133c75-49ad-4101-85f3-a43e35ae989a": {
-      mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
-      mine_name: "mine3",
-      mine_no: "BLAH9091",
-      mine_region: "NE",
-      mine_permit: [],
-      mineral_tenure_xref: [
-        {
-          tenure_number_id: "1234567",
-        },
-      ],
-      mine_location: { longitude: null, latitude: null },
-      mine_tailings_storage_facilities: [
-        {
-          mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
-          mine_tailings_storage_facility_guid: "e2629897-053e-4218-9299-479375e47f78",
-          mine_tailings_storage_facility_name: "MockTSF",
-        },
-      ],
-      mine_expected_documents: [
-        {
-          date_created: "2018-11-19",
-          due_date: "",
-          exp_document_guid: "806608ed-d2b4-4f83-8b22-739d5223c56f",
-          exp_document_name: "OMS Manual",
-          mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
-          req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-          expected_document_status: {
-            exp_document_status_code: "MIA",
-            description: "Not Received",
-          },
-          related_documents: [],
-        },
-      ],
-      mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
-      mine_status: {
-        statusvalue: ["CLD", "CM"],
-        status_labels: ["Closed", "Care & Maintenance"],
-        effective_date: "2018-10-16",
-        expiry_date: "9999-12-31",
-      },
-    },
-    "18145c75-49ad-0101-85f3-a43e45ae989a": {
-      mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
-      mine_name: "mine2",
-      mine_no: "BLAH9091",
-      mine_region: "NE",
-      mine_permit: [
-        {
-          permit_guid: "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
-          permit_no: "KNaaWwVdiJ40",
-        },
-        {
-          permit_guid: "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
-          permit_no: "xfM0c0ZKEw7B",
-        },
-      ],
-      mineral_tenure_xref: [
-        {
-          tenure_number_id: "1234567",
-        },
-      ],
-      mine_status: {
-        statusvalue: ["CLD", "CM"],
-        status_labels: ["Closed", "Care & Maintenance"],
-        effective_date: "2018-10-16",
-        expiry_date: "9999-12-31",
-      },
-      mine_location: {
-        longitude: null,
-        latitude: null,
-      },
-      mine_tailings_storage_facilities: [
-        {
-          mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
-          mine_tailings_storage_facility_guid: "e2629897-053e-4218-9299-479375e47f34",
-          mine_tailings_storage_facility_name: "MockTSF1",
-        },
-      ],
-      mine_expected_documents: [
-        {
-          date_created: "2018-11-19",
-          due_date: "",
-          exp_document_guid: "806608ed-d2b4-4f83-8b22-739d5223c56f",
-          exp_document_name: "OMS Manual",
-          mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
-          req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-          expected_document_status: {
-            exp_document_status_code: "MIA",
-            description: "Not Received",
-          },
-          related_documents: [],
-        },
-      ],
-      mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
     },
   },
 };
