@@ -37,13 +37,13 @@ const defaultProps = {
 
 export class MineIncidents extends Component {
   componentDidMount() {
-    this.props.fetchMineIncidents(this.props.mine.guid);
+    this.props.fetchMineIncidents(this.props.mine.mine_guid);
   }
 
   handleAddMineIncident = (values) => {
-    this.props.createMineIncident(this.props.mine.guid, values).then(() => {
+    this.props.createMineIncident(this.props.mine.mine_guid, values).then(() => {
       this.props.closeModal();
-      this.props.fetchMineIncidents(this.props.mine.guid);
+      this.props.fetchMineIncidents(this.props.mine.mine_guid);
     });
   };
 
@@ -53,7 +53,7 @@ export class MineIncidents extends Component {
       props: {
         onSubmit: this.handleAddMineIncident,
         title: ModalContent.ADD_INCIDENT(this.props.mine.mine_name),
-        mineGuid: this.props.mine.guid,
+        mineGuid: this.props.mine.mine_guid,
         followupActionOptions: createDropDownList(
           this.props.followupActions,
           "description",

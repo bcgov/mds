@@ -49,7 +49,7 @@ export class MineIncidentTable extends Component {
           align="left"
           pagination={false}
           columns={columns}
-          locale={{ emptyText: <NullScreen type="variance" /> }}
+          locale={{ emptyText: <NullScreen type="incidents" /> }}
           dataSource={this.transformRowData(this.props.incidents, this.props.followupActions)}
         />
       </div>
