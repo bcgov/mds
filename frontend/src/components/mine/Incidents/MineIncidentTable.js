@@ -1,6 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { Table } from "antd";
+
 import CustomPropTypes from "@/customPropTypes";
 import NullScreen from "@/components/common/NullScreen";
 import { formatDate } from "@/utils/helpers";
@@ -29,33 +30,29 @@ const columns = [
   },
 ];
 
-export class MineIncidentTable extends Component {
-  transformRowData = (incidents, actions) =>
-    incidents.sort(this.sortByDateOrID).map((incident) => ({
-      key: incident.incident_id,
-      mine_incident_report_no: incident.mine_incident_report_no,
-      incident_timestamp: formatDate(incident.incident_timestamp),
-      reported_timestamp: formatDate(incident.reported_timestamp),
-      reported_by: incident.reported_by,
-      followup_action: actions.find(
-        (x) => x.mine_incident_followup_type_code === incident.followup_type_code
-      ).description,
-    }));
+const transformRowData = (incidents, actions) =>
+  incidents.sort(this.sortByDateOrID).map((incident) => ({
+    key: incident.incident_id,
+    mine_incident_report_no: incident.mine_incident_report_no,
+    incident_timestamp: formatDate(incident.incident_timestamp),
+    reported_timestamp: formatDate(incident.reported_timestamp),
+    reported_by: incident.reported_by,
+    followup_action: actions.find(
+      (x) => x.mine_incident_followup_type_code === incident.followup_type_code
+    ).description,
+  }));
 
-  render() {
-    return (
-      <div>
-        <Table
-          align="left"
-          pagination={false}
-          columns={columns}
-          locale={{ emptyText: <NullScreen type="incidents" /> }}
-          dataSource={this.transformRowData(this.props.incidents, this.props.followupActions)}
-        />
-      </div>
-    );
-  }
-}
+const MineIncidentTable = (props) => (
+  <div>
+    <Table
+      align="left"
+      pagination={false}
+      columns={columns}
+      locale={{ emptyText: <NullScreen type="incidents" /> }}
+      dataSource={transformRowData(props.incidents, props.followupActions)}
+    />
+  </div>
+);
 
 MineIncidentTable.propTypes = propTypes;
 
