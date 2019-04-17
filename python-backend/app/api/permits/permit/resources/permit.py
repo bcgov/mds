@@ -52,7 +52,7 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
         if permit_guid:
             permit = Permit.find_by_permit_guid(permit_guid)
             if not permit:
-                raise NotFound('Permit not found')
+                raise NotFound('Permit not found.')
             result = permit.json()
 
         elif request.args.get('permit_no'):
@@ -120,7 +120,7 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
         permit = Permit.find_by_permit_guid(permit_guid)
 
         if not permit:
-            raise NotFound('Permit not found')
+            raise NotFound('Permit not found.')
 
         data = self.parser.parse_args()
         for key, value in data.items():

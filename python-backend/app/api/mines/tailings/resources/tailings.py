@@ -33,7 +33,7 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
     def get(self, mine_guid):
         mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:
-            raise NotFound('mine not found')
+            raise NotFound('Mine not found.')
         return mine.mine_tailings_storage_facilities
 
     @api.doc(description='Creates a new tailing storage facility for the given mine')
@@ -42,7 +42,7 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
     def post(self, mine_guid):
         mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:
-            raise NotFound('mine not found')
+            raise NotFound('Mine not found.')
 
         # see if this would be the first TSF
         mine_tsf_list = mine.mine_tailings_storage_facilities
