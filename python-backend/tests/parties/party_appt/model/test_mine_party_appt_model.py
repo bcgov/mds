@@ -1,46 +1,38 @@
 import pytest
 import uuid
 
-from tests.constants import TEST_PARTY_PER_GUID_1, TEST_MINE_GUID, TEST_MINE_NO, TEST_PERMIT_GUID_1
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
-from app.extensions import db
-
-
-@pytest.fixture(scope="function")
-def setup_info(test_client):
-
-    permittee = MinePartyAppointment(
-        mine_party_appt_guid=uuid.uuid4(),
-        mine_party_appt_type_code='PMT',
-        party_guid=uuid.UUID(TEST_PARTY_PER_GUID_1),
-        mine_guid=uuid.UUID(TEST_MINE_GUID),
-        permit_guid=uuid.UUID(TEST_PERMIT_GUID_1))
-    permittee.save()
-
-    yield dict(permittee_guid=permittee.mine_party_appt_guid)
-
-    db.session.delete(permittee)
-    db.session.commit()
+from tests.factories import MinePartyAppointmentFactory
 
 
 # Party Model Class Methods
-def test_party_appt_model_find_by_party_guid(test_client, setup_info, auth_headers):
-    mpas = MinePartyAppointment.find_by_party_guid(TEST_PARTY_PER_GUID_1)
-    assert all(str(mpa.party_guid) == TEST_PARTY_PER_GUID_1 for mpa in mpas)
+def test_party_appt_model_find_by_party_guid(db_session):
+    party_guid = MinePartyAppointmentFactory().party.party_guid
+
+    mpas = MinePartyAppointment.find_by_party_guid(str(party_guid))
+    assert len(mpas) == 1
+    assert mpas[0].party_guid == party_guid
 
 
-def test_party_appt_model_find_by_mine_guid(test_client, setup_info, auth_headers):
-    mpas = MinePartyAppointment.find_by_mine_guid(TEST_MINE_GUID)
-    assert all(str(mpa.mine_guid) == TEST_MINE_GUID for mpa in mpas)
+def test_party_appt_model_find_by_mine_guid(db_session):
+    mine_guid = MinePartyAppointmentFactory().mine.mine_guid
+
+    mpas = MinePartyAppointment.find_by_mine_guid(str(mine_guid))
+    assert len(mpas) == 1
+    assert mpas[0].mine_guid == mine_guid
 
 
-def test_party_appt_model_find_by(test_client, setup_info, auth_headers):
+def test_party_appt_model_find_by(db_session):
+    batch_size = 3
+    MinePartyAppointmentFactory.create_batch(size=batch_size)
+
     mine_party_appts = MinePartyAppointment.find_by()
-    assert len(mine_party_appts) == MinePartyAppointment.query.count()
+    assert len(mine_party_appts) == batch_size
 
 
-def test_mine_party_appt_to_csv(test_client, setup_info, auth_headers):
-    record = MinePartyAppointment.query.first()
-    csv = MinePartyAppointment.to_csv([record], ['processed_by', 'processed_on'])
-    second_row = str(record.processed_by) + ',' + str(record.processed_on)
+def test_mine_party_appt_to_csv(db_session):
+    mpa = MinePartyAppointmentFactory()
+
+    csv = MinePartyAppointment.to_csv([mpa], ['processed_by', 'processed_on'])
+    second_row = str(mpa.processed_by) + ',' + str(mpa.processed_on)
     assert csv == "processed_by,processed_on\n" + second_row

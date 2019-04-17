@@ -7,7 +7,7 @@ def test_utils_random_key_gen():
     assert len(random_key) == 8
 
 
-def test_generate_mine_no(test_client):
+def test_generate_mine_no(db_session):
     random_mine_no = generate_mine_no()
     assert 'B' in random_mine_no
     assert len(random_mine_no) == 7

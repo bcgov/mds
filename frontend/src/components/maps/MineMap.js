@@ -222,7 +222,6 @@ class MineMap extends Component {
             : String.DEFAULT_LAT,
         ];
       }
-
       return (
         // Map located on MineSummary page, - this.props.mine is available, contains 1 mine pin.
         <Map

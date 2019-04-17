@@ -63,6 +63,15 @@ def _import_empr_idir_users():
                     if not membership_group:
                         raise Exception(f"FK Error: membership group={group} doesn't exist in db")
                     iud.core_user.idir_membership.append(membership_group)
+                iud.save()
                 existing_count += 1
                 #update existing user
-                pass
+
+        if current_app:
+            current_app.logger.info(
+                f"_import_empr_idir_users: Users Created={new_count}, Users Updated={existing_count}"
+            )
+        else:
+            sched.app.logger.info(
+                f"_import_empr_idir_users: Users Created={new_count}, Users Updated={existing_count}"
+            )

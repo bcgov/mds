@@ -1,9 +1,12 @@
 import json, uuid
-from tests.constants import TEST_MINE_GUID, DUMMY_USER_KWARGS
+
 from app.api.mines.mine.models.mine import Mine
+from tests.factories import MineFactory
 
 
-def test_get_mines_basic_info_empty(test_client, auth_headers):
+def test_get_mines_basic_info_empty(test_client, db_session, auth_headers):
+    MineFactory()
+
     form_data = {'mine_guids': []}
     post_resp = test_client.post(
         '/mines/basicinfo', json=form_data, headers=auth_headers['full_auth_header'])
@@ -12,8 +15,11 @@ def test_get_mines_basic_info_empty(test_client, auth_headers):
     assert len(post_data) == 0
 
 
-def test_get_mines_basic_info_single(test_client, auth_headers):
-    form_data = {'mine_guids': [TEST_MINE_GUID]}
+def test_get_mines_basic_info_single(test_client, db_session, auth_headers):
+    mine_guid = MineFactory().mine_guid
+    MineFactory()
+
+    form_data = {'mine_guids': [str(mine_guid)]}
     post_resp = test_client.post(
         '/mines/basicinfo', json=form_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
@@ -21,16 +27,12 @@ def test_get_mines_basic_info_single(test_client, auth_headers):
     assert len(post_data) == 1
 
 
-def test_get_mines_basic_info_multiple(test_client, auth_headers):
-    new_mine_guid = 'b6e1c212-aa7d-4f30-8c37-f7e3837be561'
-    mine_identity2 = Mine(
-        mine_guid=uuid.UUID(new_mine_guid),
-        mine_no="Bzzz1234",
-        mine_name="test_mine_name",
-        **DUMMY_USER_KWARGS)
-    mine_identity2.save()
+def test_get_mines_basic_info_multiple(test_client, db_session, auth_headers):
+    mine1_guid = MineFactory().mine_guid
+    mine2_guid = MineFactory().mine_guid
+    MineFactory()
 
-    form_data = {'mine_guids': [TEST_MINE_GUID, new_mine_guid]}
+    form_data = {'mine_guids': [str(mine1_guid), str(mine2_guid)]}
     post_resp = test_client.post(
         '/mines/basicinfo', json=form_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
