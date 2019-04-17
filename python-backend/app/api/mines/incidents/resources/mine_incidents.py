@@ -9,22 +9,7 @@ from app.api.utils.access_decorators import requires_role_mine_view, requires_ro
 
 from app.api.mines.mine.models.mine import Mine
 from ..models.mine_incident import MineIncident
-
-mine_incident_model = api.model(
-    'Mine Incident', {
-        'mine_incident_guid': fields.String,
-        'mine_incident_report_no': fields.String,
-        'mine_incident_id_year': fields.Integer,
-        'mine_guid': fields.String,
-        'incident_timestamp': fields.DateTime,
-        'incident_description': fields.String,
-        'reported_timestamp': fields.DateTime,
-        'reported_by': fields.String,
-        'reported_by_role': fields.String,
-        'followup_type_code': fields.String,
-        'followup_inspection_no': fields.String,
-        'closing_report_summary': fields.String
-    })
+from ...mine_api_models import MINE_INCIDENT_MODEL
 
 
 class MineIncidentListResource(Resource, UserMixin):
@@ -64,7 +49,7 @@ class MineIncidentListResource(Resource, UserMixin):
     parser.add_argument(
         'reported_by_role', help='Job title of incident reporter', type=str, location='json')
 
-    @api.marshal_with(mine_incident_model, envelope='mine_incidents', code=200, as_list=True)
+    @api.marshal_with(MINE_INCIDENT_MODEL, envelope='mine_incidents', code=200, as_list=True)
     @api.doc(description='returns the incidents for a given mine.')
     @requires_role_mine_view
     def get(self, mine_guid):
@@ -75,7 +60,7 @@ class MineIncidentListResource(Resource, UserMixin):
 
     @api.expect(parser)
     @api.doc(description='creates a new incident for the mine')
-    @api.marshal_with(mine_incident_model, code=201)
+    @api.marshal_with(MINE_INCIDENT_MODEL, code=201)
     @requires_role_mine_create
     def post(self, mine_guid):
         mine = Mine.find_by_mine_guid(mine_guid)
@@ -149,7 +134,7 @@ class MineIncidentResource(Resource, UserMixin):
         type=str,
         store_missing=False)
 
-    @api.marshal_with(mine_incident_model, code=200)
+    @api.marshal_with(MINE_INCIDENT_MODEL, code=200)
     @requires_role_mine_view
     def get(self, mine_incident_guid, mine_guid=None):
         incident = MineIncident.find_by_mine_incident_guid(mine_incident_guid)
@@ -158,7 +143,7 @@ class MineIncidentResource(Resource, UserMixin):
         return incident
 
     @api.expect(parser)
-    @api.marshal_with(mine_incident_model, code=200)
+    @api.marshal_with(MINE_INCIDENT_MODEL, code=200)
     @requires_role_mine_create
     def put(self, mine_incident_guid, mine_guid=None):
         incident = MineIncident.find_by_mine_incident_guid(mine_incident_guid)
