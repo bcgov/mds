@@ -370,7 +370,7 @@ class SubscriptionFactory(BaseFactory):
     class Params:
         mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
 
-    user_id = factory.Sequence(lambda n: n)
+    subscription_id = factory.Sequence(lambda n: n)
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     idir = factory.Faker('last_name')
 

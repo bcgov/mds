@@ -42,9 +42,10 @@ def test_delete_a_favorite(test_client,db_session , auth_headers):
     SubscriptionFactory(idir=user_name, mine=mine)
     # Assert that delete method sends correct response
     get_resp = test_client.delete('/mines/' + mine_guid + '/subscribe', headers=auth_headers['full_auth_header'])
-    get_data = json.loads(get_resp.data.decode())
-    assert get_data == {"mine_guid": mine_guid}
-    assert get_resp.status_code == 200
+    print("The response data is")
+    print(get_resp.data.decode())
+    assert get_resp.data.decode() == ''
+    assert get_resp.status_code == 204
     # Assert that delete was done correctly
     get_resp = test_client.get('/mines/subscribe', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
