@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from "react";
 import PropTypes from "prop-types";
 import { Table, Pagination } from "antd";
@@ -6,23 +5,14 @@ import { Table, Pagination } from "antd";
 import { RED_CLOCK } from "@/constants/assets";
 import { formatDate } from "@/utils/helpers";
 import { COLOR } from "@/constants/styles";
+import CustomPropTypes from "@/customPropTypes";
 import NullScreen from "@/components/common/NullScreen";
-import MineComplianceFilterForm from "@/components/Forms/MineComplianceFilterForm";
 
 const propTypes = {
   handlePageChange: PropTypes.func.isRequired,
   minOrderList: PropTypes.number.isRequired,
   maxOrderList: PropTypes.number.isRequired,
-  openOrders: PropTypes.arrayOf(
-    PropTypes.shape({
-      overdue: PropTypes.bool.isRequired,
-      due_date: PropTypes.string.isRequired,
-      order_no: PropTypes.string.isRequired,
-      violation: PropTypes.string.isRequired,
-      report_no: PropTypes.string.isRequired,
-      inspector: PropTypes.string.isRequired,
-    })
-  ),
+  filteredOrders: CustomPropTypes.complianceOrders,
 };
 
 const { errorRed } = COLOR;
@@ -30,17 +20,13 @@ const { errorRed } = COLOR;
 const errorStyle = (isOverdue) => (isOverdue ? { color: errorRed } : {});
 
 const defaultProps = {
-  openOrders: [],
+  filteredOrders: [],
 };
 
 const byDateOrOrderNo = (order1, order2) => {
   const date1 = Date.parse(order1.due_date) || 0;
   const date2 = Date.parse(order2.due_date) || 0;
   return date1 === date2 ? order1.order_no - order2.order_no : date1 - date2;
-};
-
-const filterOrders = (values) => {
-  console.log(values);
 };
 
 const columns = [
@@ -113,30 +99,26 @@ const transformRowData = (orders, minOrderList, maxOrderList) =>
       ...order,
     }));
 
-const OpenOrdersTable = (props) => (
+const ComplianceOrdersTable = (props) => (
   <div>
-    <div className="compliance-filter--content">
-      <h4>Filter By</h4>
-      <MineComplianceFilterForm onSubmit={filterOrders} />
-    </div>
     <Table
       align="left"
       pagination={false}
       columns={columns}
-      dataSource={transformRowData(props.openOrders, props.minOrderList, props.maxOrderList)}
+      dataSource={transformRowData(props.filteredOrders, props.minOrderList, props.maxOrderList)}
       locale={{ emptyText: <NullScreen type="no-results" /> }}
     />
     <Pagination
       defaultCurrent={1}
       defaultPageSize={10}
       onChange={props.handlePageChange}
-      total={props.openOrders.length}
+      total={props.filteredOrders.length}
       className="center"
     />
   </div>
 );
 
-OpenOrdersTable.propTypes = propTypes;
-OpenOrdersTable.defaultProps = defaultProps;
+ComplianceOrdersTable.propTypes = propTypes;
+ComplianceOrdersTable.defaultProps = defaultProps;
 
-export default OpenOrdersTable;
+export default ComplianceOrdersTable;

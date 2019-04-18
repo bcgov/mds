@@ -12,8 +12,12 @@ const propTypes = {
   input: PropTypes.objectOf(PropTypes.any).isRequired,
   label: PropTypes.string.isRequired,
   placeholder: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func,
   meta: PropTypes.objectOf(PropTypes.any).isRequired,
+};
+
+const defaultProps = {
+  onChange: () => {},
 };
 
 const RenderDate = (props) => (
@@ -39,5 +43,6 @@ const RenderDate = (props) => (
 );
 
 RenderDate.propTypes = propTypes;
+RenderDate.defaultProps = defaultProps;
 
 export default RenderDate;

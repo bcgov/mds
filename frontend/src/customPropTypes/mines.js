@@ -37,17 +37,6 @@ export const mineName = shape({
   longitude: PropTypes.string,
 });
 
-export const mineComplianceInfo = shape({
-  advisories: PropTypes.number.isRequired,
-  last_inspector: PropTypes.string,
-  last_inspection: PropTypes.string,
-  num_open_orders: PropTypes.number.isRequired,
-  num_overdue_orders: PropTypes.number.isRequired,
-  open_orders: PropTypes.array,
-  section_35_orders: PropTypes.number.isRequired,
-  warnings: PropTypes.number.isRequired,
-});
-
 export const mineVerificationStatus = shape({
   mine_guid: PropTypes.string.isRequired,
   mine_name: PropTypes.string.isRequired,

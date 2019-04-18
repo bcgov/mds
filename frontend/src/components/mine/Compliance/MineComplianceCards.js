@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
  */
 
 const propTypes = {
-  content: PropTypes.string.isRequired,
+  content: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   icon: PropTypes.string,
   title: PropTypes.string.isRequired,
 };
@@ -18,7 +18,7 @@ const defaultProps = {
 export const MineComplianceCards = (props) => (
   <div className="compliace--card">
     <div className="compliace--card--head">
-      <div lassName="compliace--card--head--content">
+      <div className="compliace--card--head--content">
         <span className="info-display">
           {props.icon && <img src={props.icon} alt="icon" className="padding-small--right" />}
           {props.content}
@@ -26,7 +26,7 @@ export const MineComplianceCards = (props) => (
       </div>
     </div>
     <div className="compliace--card--body">
-      <h4 className="uppercase">{props.title}</h4>
+      <h4>{props.title}</h4>
     </div>
   </div>
 );

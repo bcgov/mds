@@ -32,6 +32,7 @@ module.exports = {
     "import/no-named-as-default": 0,
     "jsx-a11y/anchor-is-valid": 0,
     "react/destructuring-assignment": ["error", "never"],
+    "consistent-return": ["error", { treatUndefinedAsUnspecified: true }],
     camelcase: 0,
     "jsx-a11y/label-has-for": 0, // deprecated rule
   },

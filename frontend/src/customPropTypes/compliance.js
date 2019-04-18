@@ -1,12 +1,34 @@
-import { PropTypes, shape } from "prop-types";
+import { PropTypes } from "prop-types";
 
 // This file is anticipated to have multiple exports
 // eslint-disable-next-line import/prefer-default-export
-export const complianceOrder = shape({
-  due_date: PropTypes.date,
-  inspector: PropTypes.string,
+export const complianceOrder = PropTypes.shape({
+  overdue: PropTypes.bool,
+  due_date: PropTypes.string,
   order_no: PropTypes.string,
-  order_status: PropTypes.bool,
-  report_no: PropTypes.string,
   violation: PropTypes.string,
+  report_no: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  inspector: PropTypes.string,
+});
+
+export const complianceFilterOptions = PropTypes.shape({
+  overdue: PropTypes.bool,
+  due_date: PropTypes.string,
+  order_no: PropTypes.string,
+  violation: PropTypes.arrayOf(PropTypes.string),
+  report_no: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  inspector: PropTypes.string,
+});
+
+export const complianceOrders = PropTypes.arrayOf(complianceOrder);
+
+export const mineComplianceInfo = PropTypes.shape({
+  advisories: PropTypes.number,
+  last_inspector: PropTypes.string,
+  last_inspection: PropTypes.string,
+  num_open_orders: PropTypes.number,
+  num_overdue_orders: PropTypes.number,
+  open_orders: complianceOrders,
+  section_35_orders: PropTypes.number,
+  warnings: PropTypes.number,
 });

@@ -57,6 +57,10 @@
   justify-content: space-evenly;
   margin: 0 auto;
   max-width: 1450px;
+
+  &::after {
+    justify-content: start;
+  }
 }
 
 .compliance-filter--content {

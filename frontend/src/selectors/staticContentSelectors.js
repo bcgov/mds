@@ -17,6 +17,12 @@ export const {
   getComplianceCodes,
 } = staticContentReducer;
 
+// removes all expired compliance codes from the array
+export const getCurrentComplianceCodes = createSelector(
+  [getComplianceCodes],
+  (codes) => codes.filter((code) => new Date(code.expiry_date) > new Date())
+);
+
 export const getMineTenureTypesHash = createSelector(
   [getMineTenureTypes],
   createLabelHash
@@ -97,27 +103,49 @@ export const getDropdownApplicationStatusOptions = createSelector(
 );
 
 export const getDropdownHSRCMComplianceCodes = createSelector(
-  [getComplianceCodes],
+  [getCurrentComplianceCodes],
   (codes) =>
     codes
       .filter(({ article_act_code }) => article_act_code === "HSRCM")
       .map((code) => {
-        const composedLabel = `${code.section}.${code.sub_section}.${code.paragraph} - ${
-          code.description
-        }`;
+        const composedLabel = code.sub_paragraph
+          ? `${code.section}.${code.sub_section}.${code.paragraph}.${code.sub_paragraph} - ${
+              code.description
+            }`
+          : `${code.section}.${code.sub_section}.${code.paragraph} - ${code.description}`;
         return { value: code.compliance_article_id, label: composedLabel };
       })
 );
 
+export const getMultiSelectComplianceCodes = createSelector(
+  [getCurrentComplianceCodes],
+  (codes) =>
+    codes
+      .filter(({ article_act_code }) => article_act_code === "HSRCM")
+      .map((code) => {
+        const composedValue = code.sub_paragraph
+          ? `${code.section}.${code.sub_section}.${code.paragraph}.${code.sub_paragraph}`
+          : `${code.section}.${code.sub_section}.${code.paragraph}`;
+        const composedLabel = code.sub_paragraph
+          ? `${code.section}.${code.sub_section}.${code.paragraph}.${code.sub_paragraph} - ${
+              code.description
+            }`
+          : `${code.section}.${code.sub_section}.${code.paragraph} - ${code.description}`;
+        return { value: composedValue, label: composedLabel };
+      })
+);
+
 export const getHSRCMComplianceCodesHash = createSelector(
-  [getComplianceCodes],
+  [getCurrentComplianceCodes],
   (codes) =>
     codes
       .filter(({ article_act_code }) => article_act_code === "HSRCM")
       .reduce((map, code) => {
-        const composedValue = `${code.section}.${code.sub_section}.${code.paragraph} - ${
-          code.description
-        }`;
+        const composedValue = code.sub_paragraph
+          ? `${code.section}.${code.sub_section}.${code.paragraph}.${code.sub_paragraph} - ${
+              code.description
+            }`
+          : `${code.section}.${code.sub_section}.${code.paragraph} - ${code.description}`;
         return {
           [code.compliance_article_id]: composedValue,
           ...map,

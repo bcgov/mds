@@ -8,20 +8,26 @@ import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
 import { getMineComplianceInfo } from "@/selectors/complianceSelectors";
 import { formatDate } from "@/utils/helpers";
-import OpenOrdersTable from "@/components/mine/Compliance/OpenOrdersTable";
+import ComplianceOrdersTable from "@/components/mine/Compliance/ComplianceOrdersTable";
 import MineComplianceCards from "@/components/mine/Compliance/MineComplianceCards";
+import MineComplianceFilterForm from "@/components/Forms/MineComplianceFilterForm";
 
 /**
  * @class  MineComplianceInfo - all compliance information related to the mine.
  */
 
 const propTypes = {
+  handleComplianceFilter: PropTypes.func.isRequired,
   mineComplianceInfo: CustomPropTypes.mineComplianceInfo,
+  complianceCodes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
+  filteredOrders: CustomPropTypes.complianceOrders.isRequired,
+  complianceFilterParams: CustomPropTypes.complianceFilterOptions,
   isLoading: PropTypes.bool,
 };
 
 const defaultProps = {
   mineComplianceInfo: {},
+  complianceFilterParams: {},
   isLoading: true,
 };
 
@@ -42,8 +48,7 @@ export class MineComplianceInfo extends Component {
           <Loading />
         ) : (
           <div>
-            {/* if this is falsy, than NRIS has no data, checking against mineComplianceInfo will always return true */}
-            {this.props.mineComplianceInfo.last_inspection && (
+            {this.props.mineComplianceInfo && (
               <div>
                 <h4>COMPLIANCE OVERVIEW</h4>
                 <Divider />
@@ -58,20 +63,20 @@ export class MineComplianceInfo extends Component {
                       content="0"
                     />
                     <MineComplianceCards
-                      title="Last Inspection Date"
+                      title="Last inspection date"
                       content={formatDate(this.props.mineComplianceInfo.last_inspection)}
                     />
                     <MineComplianceCards
-                      title="idir of last inspector to inspect site"
+                      title="IDIR of last inspector to inspect site"
                       content={this.props.mineComplianceInfo.last_inspector}
                     />
                     <MineComplianceCards
-                      title="open orders"
+                      title="Open orders"
                       icon={DOC}
                       content={this.props.mineComplianceInfo.num_open_orders}
                     />
                     <MineComplianceCards
-                      title="overdue orders"
+                      title="Overdue orders"
                       icon={OVERDUEDOC}
                       content={this.props.mineComplianceInfo.num_overdue_orders}
                     />
@@ -80,7 +85,7 @@ export class MineComplianceInfo extends Component {
                       content={this.props.mineComplianceInfo.warnings}
                     />
                     <MineComplianceCards
-                      title="advisories issued in the past 12 months"
+                      title="Advisories issued in the past 12 months"
                       content={this.props.mineComplianceInfo.advisories}
                     />
                   </div>
@@ -90,12 +95,16 @@ export class MineComplianceInfo extends Component {
                     <br />
                     <h4>INSPECTION ORDERS</h4>
                     <Divider />
-                    {/* <div className="compliance-filter--content">
+                    <div className="compliance-filter--content">
                       <h4>Filter By</h4>
-                      <MineComplianceFilterForm />
-                    </div> */}
-                    <OpenOrdersTable
-                      openOrders={this.props.mineComplianceInfo.open_orders}
+                      <MineComplianceFilterForm
+                        complianceCodes={this.props.complianceCodes}
+                        onSubmit={this.props.handleComplianceFilter}
+                        initialValues={this.props.complianceFilterParams}
+                      />
+                    </div>
+                    <ComplianceOrdersTable
+                      filteredOrders={this.props.filteredOrders}
                       handlePageChange={this.handlePageChange}
                       minOrderList={this.state.minOrderList}
                       maxOrderList={this.state.maxOrderList}
@@ -104,7 +113,7 @@ export class MineComplianceInfo extends Component {
                 )}
               </div>
             )}
-            {!this.props.mineComplianceInfo.last_inspection && <NullScreen type="compliance" />}
+            {!this.props.mineComplianceInfo && <NullScreen type="compliance" />}
           </div>
         )}
       </div>
