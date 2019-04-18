@@ -49,11 +49,13 @@ export class MineComplianceInfo extends Component {
           <Divider />
           <div className="compliance--container">
             <div className="compliance--content">
-              {/* backend will be updated in this PR to include these values */}
-              <MineComplianceCard title="Count of inspections (Past 12 months)" content="N/A" />
+              <MineComplianceCard
+                title="Count of inspections (Past 12 months)"
+                content={this.props.mineComplianceInfo.num_inspections}
+              />
               <MineComplianceCard
                 title="Count of inspections (Since april 1, 2018)"
-                content="N/A"
+                content={this.props.mineComplianceInfo.num_inspections_since_april}
               />
               <MineComplianceCard
                 title="Last inspection date"

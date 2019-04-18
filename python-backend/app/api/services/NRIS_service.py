@@ -3,7 +3,6 @@ import uuid
 import requests
 import json
 import functools
-import logging
 
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
@@ -93,7 +92,6 @@ def _get_EMPR_data_from_NRIS(mine_no):
 
 
 def _process_NRIS_data(data, mine_no):
-    logging.warning(data)
     data = sorted(
         data,
         key=lambda k: datetime.strptime(k.get('assessmentDate'), '%Y-%m-%d %H:%M'),
@@ -102,8 +100,11 @@ def _process_NRIS_data(data, mine_no):
     warnings = 0
     num_open_orders = 0
     num_overdue_orders = 0
+    num_inspections = 0
+    num_inspections_since_april = 0
     section_35_orders = 0
     open_orders_list = []
+
 
     for report in data:
         report_date = _get_datetime_from_NRIS_data(report.get('assessmentDate'))
@@ -111,8 +112,18 @@ def _process_NRIS_data(data, mine_no):
         inspection = report.get('inspection')
         stops = inspection.get('stops')
         order_count = 1
-
         one_year_ago = datetime.utcnow() - relativedelta(years=1)
+        current_year = datetime.utcnow().year
+        april_1_date_string = f'{current_year - 1}-04-01 00:00'
+        april_1 = _get_datetime_from_NRIS_data(april_1_date_string)
+        assessment_type = report.get('assessmentSubType')  
+
+        if assessment_type == 'Inspection' and one_year_ago < report_date:
+            num_inspections +=1
+        
+        if assessment_type == 'Inspection' and april_1 < report_date:
+            num_inspections_since_april +=1
+
         for stop in stops:
 
             stop_orders = stop.get('stopOrders')
@@ -127,9 +138,9 @@ def _process_NRIS_data(data, mine_no):
                     section = None
 
                     if legislation:
-                        section = legislation[0].get('section')
+                        section = legislation[0].get('section') if len(legislation) > 0 else ""
                     elif permit:
-                        section = permit[0].get('permitSectionNumber')
+                        section = permit[0].get('permitSectionNumber') if len(permit) > 0 else ""
 
                     order_to_add = {
                         'order_no': f'{report.get("assessmentId")}-{order_count}',
@@ -158,10 +169,16 @@ def _process_NRIS_data(data, mine_no):
                 advisories += len(stop_advisories)
                 warnings += len(stop_warnings)
 
-    latest_report = data[0] if data else None
+
+    if data:
+        data = data[0] if len(data) > 0 else []
+ 
+    latest_report = data
     overview = {
         'last_inspection': latest_report.get('assessmentDate') if latest_report else None,
         'last_inspector': _get_inspector_from_report(latest_report) if latest_report else None,
+        'num_inspections': num_inspections,
+        'num_inspections_since_april': num_inspections_since_april,
         'num_open_orders': num_open_orders,
         'num_overdue_orders': num_overdue_orders,
         'advisories': advisories,
@@ -169,5 +186,5 @@ def _process_NRIS_data(data, mine_no):
         'section_35_orders': section_35_orders,
         'open_orders': open_orders_list,
     }
-    cache.set(NRIS_COMPLIANCE_DATA(mine_no), overview, timeout=TIMEOUT_24_HOURS)
+    cache.set(NRIS_COMPLIANCE_DATA(mine_no), overview, timeout=TIMEOUT_12_HOURS)
     return overview
