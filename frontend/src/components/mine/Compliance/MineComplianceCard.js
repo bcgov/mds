@@ -15,7 +15,7 @@ const defaultProps = {
   icon: null,
 };
 
-export const MineComplianceCards = (props) => (
+export const MineComplianceCard = (props) => (
   <div className="compliace--card">
     <div className="compliace--card--head">
       <div className="compliace--card--head--content">
@@ -31,7 +31,7 @@ export const MineComplianceCards = (props) => (
   </div>
 );
 
-MineComplianceCards.propTypes = propTypes;
-MineComplianceCards.defaultProps = defaultProps;
+MineComplianceCard.propTypes = propTypes;
+MineComplianceCard.defaultProps = defaultProps;
 
-export default MineComplianceCards;
+export default MineComplianceCard;

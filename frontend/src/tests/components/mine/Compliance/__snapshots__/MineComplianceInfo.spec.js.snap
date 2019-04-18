@@ -11,13 +11,45 @@ ShallowWrapper {
         "last_inspector": "test",
         "num_open_orders": 5,
         "num_overdue_orders": 5,
-        "open_orders": Array [],
+        "open_orders": Array [
+          Object {
+            "due_date": "",
+            "inspector": "",
+            "order_no": "",
+            "overdue": false,
+            "report_no": "",
+            "violation": "",
+          },
+        ],
         "section_35_orders": 5,
         "warnings": 5,
       }
     }
+    complianceFilterParams={
+      Object {
+        "due_date": "",
+        "inspector": "",
+        "order_no": "",
+        "overdue": null,
+        "report_no": "",
+        "violation": Array [],
+      }
+    }
     fetchMineComplianceInfo={[MockFunction]}
-    isLoading={true}
+    filteredOrders={
+      Array [
+        Object {
+          "due_date": "",
+          "inspector": "",
+          "order_no": "",
+          "overdue": false,
+          "report_no": "",
+          "violation": "",
+        },
+      ]
+    }
+    handleComplianceFilter={[MockFunction]}
+    isLoading={false}
     mine={
       Object {
         "mine_expected_documents": Array [
@@ -93,34 +125,140 @@ ShallowWrapper {
     "key": undefined,
     "nodeType": "host",
     "props": Object {
-      "children": Array [
-        <Loading />,
-        false,
-      ],
+      "children": <div>
+        <div>
+          <h4>
+            COMPLIANCE OVERVIEW
+          </h4>
+          <Divider />
+          <div
+            className="compliance--container"
+          >
+            <div
+              className="compliance--content"
+            >
+              <MineComplianceCard
+                content="200"
+                icon={null}
+                title="Count of inspections (Past 12 months)"
+              />
+              <MineComplianceCard
+                content="0"
+                icon={null}
+                title="Count of inspections (Since april 1, 2018)"
+              />
+              <MineComplianceCard
+                content={undefined}
+                icon={null}
+                title="Last inspection date"
+              />
+              <MineComplianceCard
+                content={undefined}
+                icon={null}
+                title="IDIR of last inspector to inspect site"
+              />
+              <MineComplianceCard
+                content={undefined}
+                icon={
+                  Object {
+                    "process": [Function],
+                  }
+                }
+                title="Open orders"
+              />
+              <MineComplianceCard
+                content={undefined}
+                icon={
+                  Object {
+                    "process": [Function],
+                  }
+                }
+                title="Overdue orders"
+              />
+              <MineComplianceCard
+                content={undefined}
+                icon={null}
+                title="Warnings issued in the past 12 months"
+              />
+              <MineComplianceCard
+                content={undefined}
+                icon={null}
+                title="Advisories issued in the past 12 months"
+              />
+            </div>
+          </div>
+        </div>
+      </div>,
     },
     "ref": null,
-    "rendered": Array [
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "function",
-        "props": Object {},
-        "ref": null,
-        "rendered": null,
-        "type": [Function],
-      },
-      false,
-    ],
-    "type": "div",
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
+    "rendered": Object {
       "instance": null,
       "key": undefined,
       "nodeType": "host",
       "props": Object {
         "children": Array [
-          <Loading />,
+          <div>
+            <h4>
+              COMPLIANCE OVERVIEW
+            </h4>
+            <Divider />
+            <div
+              className="compliance--container"
+            >
+              <div
+                className="compliance--content"
+              >
+                <MineComplianceCard
+                  content="200"
+                  icon={null}
+                  title="Count of inspections (Past 12 months)"
+                />
+                <MineComplianceCard
+                  content="0"
+                  icon={null}
+                  title="Count of inspections (Since april 1, 2018)"
+                />
+                <MineComplianceCard
+                  content={undefined}
+                  icon={null}
+                  title="Last inspection date"
+                />
+                <MineComplianceCard
+                  content={undefined}
+                  icon={null}
+                  title="IDIR of last inspector to inspect site"
+                />
+                <MineComplianceCard
+                  content={undefined}
+                  icon={
+                    Object {
+                      "process": [Function],
+                    }
+                  }
+                  title="Open orders"
+                />
+                <MineComplianceCard
+                  content={undefined}
+                  icon={
+                    Object {
+                      "process": [Function],
+                    }
+                  }
+                  title="Overdue orders"
+                />
+                <MineComplianceCard
+                  content={undefined}
+                  icon={null}
+                  title="Warnings issued in the past 12 months"
+                />
+                <MineComplianceCard
+                  content={undefined}
+                  icon={null}
+                  title="Advisories issued in the past 12 months"
+                />
+              </div>
+            </div>
+          </div>,
           false,
         ],
       },
@@ -129,14 +267,812 @@ ShallowWrapper {
         Object {
           "instance": null,
           "key": undefined,
-          "nodeType": "function",
-          "props": Object {},
+          "nodeType": "host",
+          "props": Object {
+            "children": Array [
+              <h4>
+                COMPLIANCE OVERVIEW
+              </h4>,
+              <Divider />,
+              <div
+                className="compliance--container"
+              >
+                <div
+                  className="compliance--content"
+                >
+                  <MineComplianceCard
+                    content="200"
+                    icon={null}
+                    title="Count of inspections (Past 12 months)"
+                  />
+                  <MineComplianceCard
+                    content="0"
+                    icon={null}
+                    title="Count of inspections (Since april 1, 2018)"
+                  />
+                  <MineComplianceCard
+                    content={undefined}
+                    icon={null}
+                    title="Last inspection date"
+                  />
+                  <MineComplianceCard
+                    content={undefined}
+                    icon={null}
+                    title="IDIR of last inspector to inspect site"
+                  />
+                  <MineComplianceCard
+                    content={undefined}
+                    icon={
+                      Object {
+                        "process": [Function],
+                      }
+                    }
+                    title="Open orders"
+                  />
+                  <MineComplianceCard
+                    content={undefined}
+                    icon={
+                      Object {
+                        "process": [Function],
+                      }
+                    }
+                    title="Overdue orders"
+                  />
+                  <MineComplianceCard
+                    content={undefined}
+                    icon={null}
+                    title="Warnings issued in the past 12 months"
+                  />
+                  <MineComplianceCard
+                    content={undefined}
+                    icon={null}
+                    title="Advisories issued in the past 12 months"
+                  />
+                </div>
+              </div>,
+              undefined,
+            ],
+          },
           "ref": null,
-          "rendered": null,
-          "type": [Function],
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": "COMPLIANCE OVERVIEW",
+              },
+              "ref": null,
+              "rendered": "COMPLIANCE OVERVIEW",
+              "type": "h4",
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "function",
+              "props": Object {},
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": <div
+                  className="compliance--content"
+                >
+                  <MineComplianceCard
+                    content="200"
+                    icon={null}
+                    title="Count of inspections (Past 12 months)"
+                  />
+                  <MineComplianceCard
+                    content="0"
+                    icon={null}
+                    title="Count of inspections (Since april 1, 2018)"
+                  />
+                  <MineComplianceCard
+                    content={undefined}
+                    icon={null}
+                    title="Last inspection date"
+                  />
+                  <MineComplianceCard
+                    content={undefined}
+                    icon={null}
+                    title="IDIR of last inspector to inspect site"
+                  />
+                  <MineComplianceCard
+                    content={undefined}
+                    icon={
+                      Object {
+                        "process": [Function],
+                      }
+                    }
+                    title="Open orders"
+                  />
+                  <MineComplianceCard
+                    content={undefined}
+                    icon={
+                      Object {
+                        "process": [Function],
+                      }
+                    }
+                    title="Overdue orders"
+                  />
+                  <MineComplianceCard
+                    content={undefined}
+                    icon={null}
+                    title="Warnings issued in the past 12 months"
+                  />
+                  <MineComplianceCard
+                    content={undefined}
+                    icon={null}
+                    title="Advisories issued in the past 12 months"
+                  />
+                </div>,
+                "className": "compliance--container",
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": Array [
+                    <MineComplianceCard
+                      content="200"
+                      icon={null}
+                      title="Count of inspections (Past 12 months)"
+                    />,
+                    <MineComplianceCard
+                      content="0"
+                      icon={null}
+                      title="Count of inspections (Since april 1, 2018)"
+                    />,
+                    <MineComplianceCard
+                      content={undefined}
+                      icon={null}
+                      title="Last inspection date"
+                    />,
+                    <MineComplianceCard
+                      content={undefined}
+                      icon={null}
+                      title="IDIR of last inspector to inspect site"
+                    />,
+                    <MineComplianceCard
+                      content={undefined}
+                      icon={
+                        Object {
+                          "process": [Function],
+                        }
+                      }
+                      title="Open orders"
+                    />,
+                    <MineComplianceCard
+                      content={undefined}
+                      icon={
+                        Object {
+                          "process": [Function],
+                        }
+                      }
+                      title="Overdue orders"
+                    />,
+                    <MineComplianceCard
+                      content={undefined}
+                      icon={null}
+                      title="Warnings issued in the past 12 months"
+                    />,
+                    <MineComplianceCard
+                      content={undefined}
+                      icon={null}
+                      title="Advisories issued in the past 12 months"
+                    />,
+                  ],
+                  "className": "compliance--content",
+                },
+                "ref": null,
+                "rendered": Array [
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "function",
+                    "props": Object {
+                      "content": "200",
+                      "icon": null,
+                      "title": "Count of inspections (Past 12 months)",
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "function",
+                    "props": Object {
+                      "content": "0",
+                      "icon": null,
+                      "title": "Count of inspections (Since april 1, 2018)",
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "function",
+                    "props": Object {
+                      "content": undefined,
+                      "icon": null,
+                      "title": "Last inspection date",
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "function",
+                    "props": Object {
+                      "content": undefined,
+                      "icon": null,
+                      "title": "IDIR of last inspector to inspect site",
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "function",
+                    "props": Object {
+                      "content": undefined,
+                      "icon": Object {
+                        "process": [Function],
+                      },
+                      "title": "Open orders",
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "function",
+                    "props": Object {
+                      "content": undefined,
+                      "icon": Object {
+                        "process": [Function],
+                      },
+                      "title": "Overdue orders",
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "function",
+                    "props": Object {
+                      "content": undefined,
+                      "icon": null,
+                      "title": "Warnings issued in the past 12 months",
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "function",
+                    "props": Object {
+                      "content": undefined,
+                      "icon": null,
+                      "title": "Advisories issued in the past 12 months",
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                ],
+                "type": "div",
+              },
+              "type": "div",
+            },
+            undefined,
+          ],
+          "type": "div",
         },
         false,
       ],
+      "type": "div",
+    },
+    "type": "div",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": <div>
+          <div>
+            <h4>
+              COMPLIANCE OVERVIEW
+            </h4>
+            <Divider />
+            <div
+              className="compliance--container"
+            >
+              <div
+                className="compliance--content"
+              >
+                <MineComplianceCard
+                  content="200"
+                  icon={null}
+                  title="Count of inspections (Past 12 months)"
+                />
+                <MineComplianceCard
+                  content="0"
+                  icon={null}
+                  title="Count of inspections (Since april 1, 2018)"
+                />
+                <MineComplianceCard
+                  content={undefined}
+                  icon={null}
+                  title="Last inspection date"
+                />
+                <MineComplianceCard
+                  content={undefined}
+                  icon={null}
+                  title="IDIR of last inspector to inspect site"
+                />
+                <MineComplianceCard
+                  content={undefined}
+                  icon={
+                    Object {
+                      "process": [Function],
+                    }
+                  }
+                  title="Open orders"
+                />
+                <MineComplianceCard
+                  content={undefined}
+                  icon={
+                    Object {
+                      "process": [Function],
+                    }
+                  }
+                  title="Overdue orders"
+                />
+                <MineComplianceCard
+                  content={undefined}
+                  icon={null}
+                  title="Warnings issued in the past 12 months"
+                />
+                <MineComplianceCard
+                  content={undefined}
+                  icon={null}
+                  title="Advisories issued in the past 12 months"
+                />
+              </div>
+            </div>
+          </div>
+        </div>,
+      },
+      "ref": null,
+      "rendered": Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": Array [
+            <div>
+              <h4>
+                COMPLIANCE OVERVIEW
+              </h4>
+              <Divider />
+              <div
+                className="compliance--container"
+              >
+                <div
+                  className="compliance--content"
+                >
+                  <MineComplianceCard
+                    content="200"
+                    icon={null}
+                    title="Count of inspections (Past 12 months)"
+                  />
+                  <MineComplianceCard
+                    content="0"
+                    icon={null}
+                    title="Count of inspections (Since april 1, 2018)"
+                  />
+                  <MineComplianceCard
+                    content={undefined}
+                    icon={null}
+                    title="Last inspection date"
+                  />
+                  <MineComplianceCard
+                    content={undefined}
+                    icon={null}
+                    title="IDIR of last inspector to inspect site"
+                  />
+                  <MineComplianceCard
+                    content={undefined}
+                    icon={
+                      Object {
+                        "process": [Function],
+                      }
+                    }
+                    title="Open orders"
+                  />
+                  <MineComplianceCard
+                    content={undefined}
+                    icon={
+                      Object {
+                        "process": [Function],
+                      }
+                    }
+                    title="Overdue orders"
+                  />
+                  <MineComplianceCard
+                    content={undefined}
+                    icon={null}
+                    title="Warnings issued in the past 12 months"
+                  />
+                  <MineComplianceCard
+                    content={undefined}
+                    icon={null}
+                    title="Advisories issued in the past 12 months"
+                  />
+                </div>
+              </div>
+            </div>,
+            false,
+          ],
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": Array [
+                <h4>
+                  COMPLIANCE OVERVIEW
+                </h4>,
+                <Divider />,
+                <div
+                  className="compliance--container"
+                >
+                  <div
+                    className="compliance--content"
+                  >
+                    <MineComplianceCard
+                      content="200"
+                      icon={null}
+                      title="Count of inspections (Past 12 months)"
+                    />
+                    <MineComplianceCard
+                      content="0"
+                      icon={null}
+                      title="Count of inspections (Since april 1, 2018)"
+                    />
+                    <MineComplianceCard
+                      content={undefined}
+                      icon={null}
+                      title="Last inspection date"
+                    />
+                    <MineComplianceCard
+                      content={undefined}
+                      icon={null}
+                      title="IDIR of last inspector to inspect site"
+                    />
+                    <MineComplianceCard
+                      content={undefined}
+                      icon={
+                        Object {
+                          "process": [Function],
+                        }
+                      }
+                      title="Open orders"
+                    />
+                    <MineComplianceCard
+                      content={undefined}
+                      icon={
+                        Object {
+                          "process": [Function],
+                        }
+                      }
+                      title="Overdue orders"
+                    />
+                    <MineComplianceCard
+                      content={undefined}
+                      icon={null}
+                      title="Warnings issued in the past 12 months"
+                    />
+                    <MineComplianceCard
+                      content={undefined}
+                      icon={null}
+                      title="Advisories issued in the past 12 months"
+                    />
+                  </div>
+                </div>,
+                undefined,
+              ],
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": "COMPLIANCE OVERVIEW",
+                },
+                "ref": null,
+                "rendered": "COMPLIANCE OVERVIEW",
+                "type": "h4",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "function",
+                "props": Object {},
+                "ref": null,
+                "rendered": null,
+                "type": [Function],
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": <div
+                    className="compliance--content"
+                  >
+                    <MineComplianceCard
+                      content="200"
+                      icon={null}
+                      title="Count of inspections (Past 12 months)"
+                    />
+                    <MineComplianceCard
+                      content="0"
+                      icon={null}
+                      title="Count of inspections (Since april 1, 2018)"
+                    />
+                    <MineComplianceCard
+                      content={undefined}
+                      icon={null}
+                      title="Last inspection date"
+                    />
+                    <MineComplianceCard
+                      content={undefined}
+                      icon={null}
+                      title="IDIR of last inspector to inspect site"
+                    />
+                    <MineComplianceCard
+                      content={undefined}
+                      icon={
+                        Object {
+                          "process": [Function],
+                        }
+                      }
+                      title="Open orders"
+                    />
+                    <MineComplianceCard
+                      content={undefined}
+                      icon={
+                        Object {
+                          "process": [Function],
+                        }
+                      }
+                      title="Overdue orders"
+                    />
+                    <MineComplianceCard
+                      content={undefined}
+                      icon={null}
+                      title="Warnings issued in the past 12 months"
+                    />
+                    <MineComplianceCard
+                      content={undefined}
+                      icon={null}
+                      title="Advisories issued in the past 12 months"
+                    />
+                  </div>,
+                  "className": "compliance--container",
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": Array [
+                      <MineComplianceCard
+                        content="200"
+                        icon={null}
+                        title="Count of inspections (Past 12 months)"
+                      />,
+                      <MineComplianceCard
+                        content="0"
+                        icon={null}
+                        title="Count of inspections (Since april 1, 2018)"
+                      />,
+                      <MineComplianceCard
+                        content={undefined}
+                        icon={null}
+                        title="Last inspection date"
+                      />,
+                      <MineComplianceCard
+                        content={undefined}
+                        icon={null}
+                        title="IDIR of last inspector to inspect site"
+                      />,
+                      <MineComplianceCard
+                        content={undefined}
+                        icon={
+                          Object {
+                            "process": [Function],
+                          }
+                        }
+                        title="Open orders"
+                      />,
+                      <MineComplianceCard
+                        content={undefined}
+                        icon={
+                          Object {
+                            "process": [Function],
+                          }
+                        }
+                        title="Overdue orders"
+                      />,
+                      <MineComplianceCard
+                        content={undefined}
+                        icon={null}
+                        title="Warnings issued in the past 12 months"
+                      />,
+                      <MineComplianceCard
+                        content={undefined}
+                        icon={null}
+                        title="Advisories issued in the past 12 months"
+                      />,
+                    ],
+                    "className": "compliance--content",
+                  },
+                  "ref": null,
+                  "rendered": Array [
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "function",
+                      "props": Object {
+                        "content": "200",
+                        "icon": null,
+                        "title": "Count of inspections (Past 12 months)",
+                      },
+                      "ref": null,
+                      "rendered": null,
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "function",
+                      "props": Object {
+                        "content": "0",
+                        "icon": null,
+                        "title": "Count of inspections (Since april 1, 2018)",
+                      },
+                      "ref": null,
+                      "rendered": null,
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "function",
+                      "props": Object {
+                        "content": undefined,
+                        "icon": null,
+                        "title": "Last inspection date",
+                      },
+                      "ref": null,
+                      "rendered": null,
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "function",
+                      "props": Object {
+                        "content": undefined,
+                        "icon": null,
+                        "title": "IDIR of last inspector to inspect site",
+                      },
+                      "ref": null,
+                      "rendered": null,
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "function",
+                      "props": Object {
+                        "content": undefined,
+                        "icon": Object {
+                          "process": [Function],
+                        },
+                        "title": "Open orders",
+                      },
+                      "ref": null,
+                      "rendered": null,
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "function",
+                      "props": Object {
+                        "content": undefined,
+                        "icon": Object {
+                          "process": [Function],
+                        },
+                        "title": "Overdue orders",
+                      },
+                      "ref": null,
+                      "rendered": null,
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "function",
+                      "props": Object {
+                        "content": undefined,
+                        "icon": null,
+                        "title": "Warnings issued in the past 12 months",
+                      },
+                      "ref": null,
+                      "rendered": null,
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "function",
+                      "props": Object {
+                        "content": undefined,
+                        "icon": null,
+                        "title": "Advisories issued in the past 12 months",
+                      },
+                      "ref": null,
+                      "rendered": null,
+                      "type": [Function],
+                    },
+                  ],
+                  "type": "div",
+                },
+                "type": "div",
+              },
+              undefined,
+            ],
+            "type": "div",
+          },
+          false,
+        ],
+        "type": "div",
+      },
       "type": "div",
     },
   ],

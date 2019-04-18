@@ -74,18 +74,7 @@ ShallowWrapper {
         ],
       }
     }
-    fetchPartyRelationships={
-      [MockFunction] {
-        "calls": Array [
-          Array [
-            Object {
-              "mine_guid": 1,
-              "relationships": "party",
-            },
-          ],
-        ],
-      }
-    }
+    fetchPartyRelationships={[MockFunction]}
     fetchPermitStatusOptions={
       [MockFunction] {
         "calls": Array [

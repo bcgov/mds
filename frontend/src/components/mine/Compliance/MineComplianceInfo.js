@@ -9,8 +9,8 @@ import CustomPropTypes from "@/customPropTypes";
 import { getMineComplianceInfo } from "@/selectors/complianceSelectors";
 import { formatDate } from "@/utils/helpers";
 import ComplianceOrdersTable from "@/components/mine/Compliance/ComplianceOrdersTable";
-import MineComplianceCards from "@/components/mine/Compliance/MineComplianceCards";
-import MineComplianceFilterForm from "@/components/Forms/MineComplianceFilterForm";
+import MineComplianceCard from "@/components/mine/Compliance/MineComplianceCard";
+import MineComplianceFilterForm from "@/components/mine/Compliance/MineComplianceFilterForm";
 
 /**
  * @class  MineComplianceInfo - all compliance information related to the mine.
@@ -54,63 +54,64 @@ export class MineComplianceInfo extends Component {
                 <Divider />
                 <div className="compliance--container">
                   <div className="compliance--content">
-                    <MineComplianceCards
+                    <MineComplianceCard
                       title="Count of inspections (Past 12 months)"
                       content="200"
                     />
-                    <MineComplianceCards
+                    <MineComplianceCard
                       title="Count of inspections (Since april 1, 2018)"
                       content="0"
                     />
-                    <MineComplianceCards
+                    <MineComplianceCard
                       title="Last inspection date"
                       content={formatDate(this.props.mineComplianceInfo.last_inspection)}
                     />
-                    <MineComplianceCards
+                    <MineComplianceCard
                       title="IDIR of last inspector to inspect site"
                       content={this.props.mineComplianceInfo.last_inspector}
                     />
-                    <MineComplianceCards
+                    <MineComplianceCard
                       title="Open orders"
                       icon={DOC}
                       content={this.props.mineComplianceInfo.num_open_orders}
                     />
-                    <MineComplianceCards
+                    <MineComplianceCard
                       title="Overdue orders"
                       icon={OVERDUEDOC}
                       content={this.props.mineComplianceInfo.num_overdue_orders}
                     />
-                    <MineComplianceCards
+                    <MineComplianceCard
                       title="Warnings issued in the past 12 months"
                       content={this.props.mineComplianceInfo.warnings}
                     />
-                    <MineComplianceCards
+                    <MineComplianceCard
                       title="Advisories issued in the past 12 months"
                       content={this.props.mineComplianceInfo.advisories}
                     />
                   </div>
                 </div>
-                {this.props.mineComplianceInfo.open_orders.length > 0 && (
-                  <div>
-                    <br />
-                    <h4>INSPECTION ORDERS</h4>
-                    <Divider />
-                    <div className="compliance-filter--content">
-                      <h4>Filter By</h4>
-                      <MineComplianceFilterForm
-                        complianceCodes={this.props.complianceCodes}
-                        onSubmit={this.props.handleComplianceFilter}
-                        initialValues={this.props.complianceFilterParams}
+                {this.props.mineComplianceInfo.open_orders &&
+                  this.props.mineComplianceInfo.open_orders.length > 0 && (
+                    <div>
+                      <br />
+                      <h4>INSPECTION ORDERS</h4>
+                      <Divider />
+                      <div className="compliance-filter--content">
+                        <h4>Filter By</h4>
+                        <MineComplianceFilterForm
+                          complianceCodes={this.props.complianceCodes}
+                          onSubmit={this.props.handleComplianceFilter}
+                          initialValues={this.props.complianceFilterParams}
+                        />
+                      </div>
+                      <ComplianceOrdersTable
+                        filteredOrders={this.props.filteredOrders}
+                        handlePageChange={this.handlePageChange}
+                        minOrderList={this.state.minOrderList}
+                        maxOrderList={this.state.maxOrderList}
                       />
                     </div>
-                    <ComplianceOrdersTable
-                      filteredOrders={this.props.filteredOrders}
-                      handlePageChange={this.handlePageChange}
-                      minOrderList={this.state.minOrderList}
-                      maxOrderList={this.state.maxOrderList}
-                    />
-                  </div>
-                )}
+                  )}
               </div>
             )}
             {!this.props.mineComplianceInfo && <NullScreen type="compliance" />}
