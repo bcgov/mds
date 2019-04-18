@@ -1,6 +1,7 @@
 import json, uuid
 
 from tests.factories import PartyFactory
+from app.api.parties.custom_reqparser import DEFAULT_MISSING_REQUIRED
 
 
 # GET
@@ -35,7 +36,7 @@ def test_post_person_no_first_name(test_client, db_session, auth_headers):
     assert 'first name' in post_data['message'].lower()
 
 
-def test_post_person_no_surname(test_client, db_session, auth_headers):
+def test_post_person_no_required_party_name(test_client, db_session, auth_headers):
     test_person_data = {
         "first_name": "First",
         "party_type_codetype": "PER",
@@ -46,10 +47,10 @@ def test_post_person_no_surname(test_client, db_session, auth_headers):
         '/parties', data=test_person_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
     assert post_resp.status_code == 400
-    assert 'party name' in post_data['message'].lower()
+    assert DEFAULT_MISSING_REQUIRED in post_data['message']
 
 
-def test_post_person_no_phone_no(test_client, db_session, auth_headers):
+def test_post_person_no_required_phone_no(test_client, db_session, auth_headers):
     test_person_data = {
         "first_name": "First",
         "party_name": "Last",
@@ -60,7 +61,7 @@ def test_post_person_no_phone_no(test_client, db_session, auth_headers):
         '/parties', data=test_person_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
     assert post_resp.status_code == 400
-    assert 'phone number' in post_data['message'].lower()
+    assert DEFAULT_MISSING_REQUIRED in post_data['message']
 
 
 def test_post_person_success(test_client, db_session, auth_headers):
