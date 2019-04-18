@@ -2,20 +2,21 @@ from datetime import datetime, timedelta
 import uuid
 
 from flask import request
-from flask_restplus import Resource, reqparse
+from flask_restplus import Resource
 from sqlalchemy import or_, exc as alch_exceptions
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
+from app.extensions import api
 from ..models.mine_party_appt import MinePartyAppointment
 from ..models.mine_party_appt_type import MinePartyAppointmentType
+from ...custom_reqparser import CustomReqparser
 from ....constants import PARTY_STATUS_CODE
-from app.extensions import api
 from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser()
+    parser = CustomReqparser()
     parser.add_argument('mine_guid', type=str, help='guid of the mine.')
     parser.add_argument('party_guid', type=str, help='guid of the party.')
     parser.add_argument(
