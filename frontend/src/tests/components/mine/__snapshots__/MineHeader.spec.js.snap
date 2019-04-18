@@ -317,9 +317,7 @@ ShallowWrapper {
                       <Connect(AuthorizationWrapper)
                         inTesting={true}
                       >
-                        <div
-                          className="custom-menu-item"
-                        >
+                        <MenuItem>
                           <Popconfirm
                             cancelText="No"
                             icon={
@@ -353,14 +351,12 @@ ShallowWrapper {
                               Verify Mine Data
                             </button>
                           </Popconfirm>
-                        </div>
+                        </MenuItem>
                       </Connect(AuthorizationWrapper)>
                       <Connect(AuthorizationWrapper)
                         inTesting={true}
                       >
-                        <div
-                          className="custom-menu-item"
-                        >
+                        <MenuItem>
                           <Popconfirm
                             cancelText="No"
                             icon={
@@ -394,7 +390,7 @@ ShallowWrapper {
                               Mark Data for Verification
                             </button>
                           </Popconfirm>
-                        </div>
+                        </MenuItem>
                       </Connect(AuthorizationWrapper)>
                     </Menu>
                   }
@@ -726,9 +722,7 @@ ShallowWrapper {
                         <Connect(AuthorizationWrapper)
                           inTesting={true}
                         >
-                          <div
-                            className="custom-menu-item"
-                          >
+                          <MenuItem>
                             <Popconfirm
                               cancelText="No"
                               icon={
@@ -762,14 +756,12 @@ ShallowWrapper {
                                 Verify Mine Data
                               </button>
                             </Popconfirm>
-                          </div>
+                          </MenuItem>
                         </Connect(AuthorizationWrapper)>
                         <Connect(AuthorizationWrapper)
                           inTesting={true}
                         >
-                          <div
-                            className="custom-menu-item"
-                          >
+                          <MenuItem>
                             <Popconfirm
                               cancelText="No"
                               icon={
@@ -803,7 +795,7 @@ ShallowWrapper {
                                 Mark Data for Verification
                               </button>
                             </Popconfirm>
-                          </div>
+                          </MenuItem>
                         </Connect(AuthorizationWrapper)>
                       </Menu>
                     }
@@ -1037,9 +1029,7 @@ ShallowWrapper {
                           <Connect(AuthorizationWrapper)
                             inTesting={true}
                           >
-                            <div
-                              className="custom-menu-item"
-                            >
+                            <MenuItem>
                               <Popconfirm
                                 cancelText="No"
                                 icon={
@@ -1073,14 +1063,12 @@ ShallowWrapper {
                                   Verify Mine Data
                                 </button>
                               </Popconfirm>
-                            </div>
+                            </MenuItem>
                           </Connect(AuthorizationWrapper)>
                           <Connect(AuthorizationWrapper)
                             inTesting={true}
                           >
-                            <div
-                              className="custom-menu-item"
-                            >
+                            <MenuItem>
                               <Popconfirm
                                 cancelText="No"
                                 icon={
@@ -1114,7 +1102,7 @@ ShallowWrapper {
                                   Mark Data for Verification
                                 </button>
                               </Popconfirm>
-                            </div>
+                            </MenuItem>
                           </Connect(AuthorizationWrapper)>
                         </Menu>
                       }
@@ -1251,9 +1239,7 @@ ShallowWrapper {
                             <Connect(AuthorizationWrapper)
                               inTesting={true}
                             >
-                              <div
-                                className="custom-menu-item"
-                              >
+                              <MenuItem>
                                 <Popconfirm
                                   cancelText="No"
                                   icon={
@@ -1287,14 +1273,12 @@ ShallowWrapper {
                                     Verify Mine Data
                                   </button>
                                 </Popconfirm>
-                              </div>
+                              </MenuItem>
                             </Connect(AuthorizationWrapper)>
                             <Connect(AuthorizationWrapper)
                               inTesting={true}
                             >
-                              <div
-                                className="custom-menu-item"
-                              >
+                              <MenuItem>
                                 <Popconfirm
                                   cancelText="No"
                                   icon={
@@ -1328,7 +1312,7 @@ ShallowWrapper {
                                     Mark Data for Verification
                                   </button>
                                 </Popconfirm>
-                              </div>
+                              </MenuItem>
                             </Connect(AuthorizationWrapper)>
                           </Menu>
                         }
@@ -1441,9 +1425,7 @@ ShallowWrapper {
                             <Connect(AuthorizationWrapper)
                               inTesting={true}
                             >
-                              <div
-                                className="custom-menu-item"
-                              >
+                              <MenuItem>
                                 <Popconfirm
                                   cancelText="No"
                                   icon={
@@ -1477,14 +1459,12 @@ ShallowWrapper {
                                     Verify Mine Data
                                   </button>
                                 </Popconfirm>
-                              </div>
+                              </MenuItem>
                             </Connect(AuthorizationWrapper)>
                             <Connect(AuthorizationWrapper)
                               inTesting={true}
                             >
-                              <div
-                                className="custom-menu-item"
-                              >
+                              <MenuItem>
                                 <Popconfirm
                                   cancelText="No"
                                   icon={
@@ -1518,7 +1498,7 @@ ShallowWrapper {
                                     Mark Data for Verification
                                   </button>
                                 </Popconfirm>
-                              </div>
+                              </MenuItem>
                             </Connect(AuthorizationWrapper)>
                           </Menu>
                         }
@@ -1649,9 +1629,7 @@ ShallowWrapper {
                           <Connect(AuthorizationWrapper)
                             inTesting={true}
                           >
-                            <div
-                              className="custom-menu-item"
-                            >
+                            <MenuItem>
                               <Popconfirm
                                 cancelText="No"
                                 icon={
@@ -1685,14 +1663,12 @@ ShallowWrapper {
                                   Verify Mine Data
                                 </button>
                               </Popconfirm>
-                            </div>
+                            </MenuItem>
                           </Connect(AuthorizationWrapper)>
                           <Connect(AuthorizationWrapper)
                             inTesting={true}
                           >
-                            <div
-                              className="custom-menu-item"
-                            >
+                            <MenuItem>
                               <Popconfirm
                                 cancelText="No"
                                 icon={
@@ -1726,7 +1702,7 @@ ShallowWrapper {
                                   Mark Data for Verification
                                 </button>
                               </Popconfirm>
-                            </div>
+                            </MenuItem>
                           </Connect(AuthorizationWrapper)>
                         </Menu>,
                         "placement": "bottomLeft",
@@ -2670,9 +2646,7 @@ ShallowWrapper {
                         <Connect(AuthorizationWrapper)
                           inTesting={true}
                         >
-                          <div
-                            className="custom-menu-item"
-                          >
+                          <MenuItem>
                             <Popconfirm
                               cancelText="No"
                               icon={
@@ -2706,14 +2680,12 @@ ShallowWrapper {
                                 Verify Mine Data
                               </button>
                             </Popconfirm>
-                          </div>
+                          </MenuItem>
                         </Connect(AuthorizationWrapper)>
                         <Connect(AuthorizationWrapper)
                           inTesting={true}
                         >
-                          <div
-                            className="custom-menu-item"
-                          >
+                          <MenuItem>
                             <Popconfirm
                               cancelText="No"
                               icon={
@@ -2747,7 +2719,7 @@ ShallowWrapper {
                                 Mark Data for Verification
                               </button>
                             </Popconfirm>
-                          </div>
+                          </MenuItem>
                         </Connect(AuthorizationWrapper)>
                       </Menu>
                     }
@@ -3079,9 +3051,7 @@ ShallowWrapper {
                           <Connect(AuthorizationWrapper)
                             inTesting={true}
                           >
-                            <div
-                              className="custom-menu-item"
-                            >
+                            <MenuItem>
                               <Popconfirm
                                 cancelText="No"
                                 icon={
@@ -3115,14 +3085,12 @@ ShallowWrapper {
                                   Verify Mine Data
                                 </button>
                               </Popconfirm>
-                            </div>
+                            </MenuItem>
                           </Connect(AuthorizationWrapper)>
                           <Connect(AuthorizationWrapper)
                             inTesting={true}
                           >
-                            <div
-                              className="custom-menu-item"
-                            >
+                            <MenuItem>
                               <Popconfirm
                                 cancelText="No"
                                 icon={
@@ -3156,7 +3124,7 @@ ShallowWrapper {
                                   Mark Data for Verification
                                 </button>
                               </Popconfirm>
-                            </div>
+                            </MenuItem>
                           </Connect(AuthorizationWrapper)>
                         </Menu>
                       }
@@ -3390,9 +3358,7 @@ ShallowWrapper {
                             <Connect(AuthorizationWrapper)
                               inTesting={true}
                             >
-                              <div
-                                className="custom-menu-item"
-                              >
+                              <MenuItem>
                                 <Popconfirm
                                   cancelText="No"
                                   icon={
@@ -3426,14 +3392,12 @@ ShallowWrapper {
                                     Verify Mine Data
                                   </button>
                                 </Popconfirm>
-                              </div>
+                              </MenuItem>
                             </Connect(AuthorizationWrapper)>
                             <Connect(AuthorizationWrapper)
                               inTesting={true}
                             >
-                              <div
-                                className="custom-menu-item"
-                              >
+                              <MenuItem>
                                 <Popconfirm
                                   cancelText="No"
                                   icon={
@@ -3467,7 +3431,7 @@ ShallowWrapper {
                                     Mark Data for Verification
                                   </button>
                                 </Popconfirm>
-                              </div>
+                              </MenuItem>
                             </Connect(AuthorizationWrapper)>
                           </Menu>
                         }
@@ -3604,9 +3568,7 @@ ShallowWrapper {
                               <Connect(AuthorizationWrapper)
                                 inTesting={true}
                               >
-                                <div
-                                  className="custom-menu-item"
-                                >
+                                <MenuItem>
                                   <Popconfirm
                                     cancelText="No"
                                     icon={
@@ -3640,14 +3602,12 @@ ShallowWrapper {
                                       Verify Mine Data
                                     </button>
                                   </Popconfirm>
-                                </div>
+                                </MenuItem>
                               </Connect(AuthorizationWrapper)>
                               <Connect(AuthorizationWrapper)
                                 inTesting={true}
                               >
-                                <div
-                                  className="custom-menu-item"
-                                >
+                                <MenuItem>
                                   <Popconfirm
                                     cancelText="No"
                                     icon={
@@ -3681,7 +3641,7 @@ ShallowWrapper {
                                       Mark Data for Verification
                                     </button>
                                   </Popconfirm>
-                                </div>
+                                </MenuItem>
                               </Connect(AuthorizationWrapper)>
                             </Menu>
                           }
@@ -3794,9 +3754,7 @@ ShallowWrapper {
                               <Connect(AuthorizationWrapper)
                                 inTesting={true}
                               >
-                                <div
-                                  className="custom-menu-item"
-                                >
+                                <MenuItem>
                                   <Popconfirm
                                     cancelText="No"
                                     icon={
@@ -3830,14 +3788,12 @@ ShallowWrapper {
                                       Verify Mine Data
                                     </button>
                                   </Popconfirm>
-                                </div>
+                                </MenuItem>
                               </Connect(AuthorizationWrapper)>
                               <Connect(AuthorizationWrapper)
                                 inTesting={true}
                               >
-                                <div
-                                  className="custom-menu-item"
-                                >
+                                <MenuItem>
                                   <Popconfirm
                                     cancelText="No"
                                     icon={
@@ -3871,7 +3827,7 @@ ShallowWrapper {
                                       Mark Data for Verification
                                     </button>
                                   </Popconfirm>
-                                </div>
+                                </MenuItem>
                               </Connect(AuthorizationWrapper)>
                             </Menu>
                           }
@@ -4002,9 +3958,7 @@ ShallowWrapper {
                             <Connect(AuthorizationWrapper)
                               inTesting={true}
                             >
-                              <div
-                                className="custom-menu-item"
-                              >
+                              <MenuItem>
                                 <Popconfirm
                                   cancelText="No"
                                   icon={
@@ -4038,14 +3992,12 @@ ShallowWrapper {
                                     Verify Mine Data
                                   </button>
                                 </Popconfirm>
-                              </div>
+                              </MenuItem>
                             </Connect(AuthorizationWrapper)>
                             <Connect(AuthorizationWrapper)
                               inTesting={true}
                             >
-                              <div
-                                className="custom-menu-item"
-                              >
+                              <MenuItem>
                                 <Popconfirm
                                   cancelText="No"
                                   icon={
@@ -4079,7 +4031,7 @@ ShallowWrapper {
                                     Mark Data for Verification
                                   </button>
                                 </Popconfirm>
-                              </div>
+                              </MenuItem>
                             </Connect(AuthorizationWrapper)>
                           </Menu>,
                           "placement": "bottomLeft",
