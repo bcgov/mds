@@ -1,20 +1,21 @@
 from flask import request, current_app
-from flask_restplus import Resource, reqparse
+from flask_restplus import Resource
 from sqlalchemy_filters import apply_pagination
 from sqlalchemy.exc import DBAPIError
 from werkzeug.exceptions import NotFound
 
+from app.extensions import api
 from ..models.party import Party
 from ..models.address import Address
 from ...response_models import PARTY
 from ...party_appt.models.mine_party_appt import MinePartyAppointment
-from app.extensions import api
+from ...custom_reqparser import CustomReqparser
 from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create, requires_role_mine_admin
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class PartyResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser(trim=True)
+    parser = CustomReqparser()
     parser.add_argument(
         'first_name',
         type=str,

@@ -1,6 +1,6 @@
 import uuid
 from flask import request
-from flask_restplus import Resource, reqparse
+from flask_restplus import Resource
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
 from werkzeug.exceptions import BadRequest
 from sqlalchemy import and_
@@ -10,6 +10,7 @@ from ..models.address import Address
 from ..models.party_type_code import PartyTypeCode
 from ...party_appt.models.mine_party_appt import MinePartyAppointment
 from ...response_models import PARTY, PAGINATED_PARTY_LIST
+from ...custom_reqparser import CustomReqparser
 
 from ....constants import PARTY_STATUS_CODE
 from app.extensions import api
@@ -19,16 +20,19 @@ from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class PartyListResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser(trim=True)
+    parser = CustomReqparser()
     parser.add_argument('party_name',
                         type=str,
-                        help='Last name of the party (Person), or the Organization name (Organization).')
+                        help='Last name of the party (Person), or the Organization name (Organization).',
+                        required=True)
     parser.add_argument('party_type_code',
                         type=str,
-                        help='Party type. Person (PER) or Organization (ORG).')
+                        help='Party type. Person (PER) or Organization (ORG).',
+                        required=True)
     parser.add_argument('phone_no',
                         type=str,
-                        help='The phone number of the party. Ex: 123-123-1234')
+                        help='The phone number of the party. Ex: 123-123-1234',
+                        required=True)
     parser.add_argument('last_name',
                         type=str,
                         help='Last name of the party, if the party is a person.')
