@@ -51,7 +51,7 @@ export class MineIncidents extends Component {
     event.preventDefault();
     this.props.openModal({
       props: {
-        onSubmit: this.handleAddMineIncident,
+        handleSubmit: this.handleAddMineIncident,
         title: ModalContent.ADD_INCIDENT(this.props.mine.mine_name),
         mineGuid: this.props.mine.mine_guid,
         followupActionOptions: createDropDownList(
