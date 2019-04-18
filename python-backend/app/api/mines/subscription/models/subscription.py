@@ -2,6 +2,7 @@ import uuid
 from app.api.utils.include.user_info import User
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import validates
 
 from app.extensions import db
 from app.api.utils.models_mixins import  Base
@@ -28,3 +29,9 @@ class Subscription( Base):
         subscription = cls(mine_guid=uuid.UUID(mine_guid), idir=user_name)
         subscription.save()
         return subscription
+
+    @validates('mine_guid')
+    def validate_mine_guid(self, key, mine_guid):
+        if not mine_guid:
+            raise AssertionError('Missing mine_guid')
+        return mine_guid

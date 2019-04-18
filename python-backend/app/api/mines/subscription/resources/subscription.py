@@ -1,8 +1,5 @@
-import uuid
-
 from flask_restplus import Resource, fields
 from sqlalchemy_filters import apply_sort
-from sqlalchemy.orm import validates
 from werkzeug.exceptions import BadRequest, NotFound
 
 from app.extensions import api
@@ -14,6 +11,7 @@ from ..models.subscription import Subscription
 from ...mine.models.mine import Mine
 from ...mine_api_models import MINES_MODEL
 from app.extensions import db
+
 
 class MineSubscriptionGetAllResource(Resource, UserMixin, ErrorMixin):
 
@@ -68,12 +66,3 @@ class MineSubscriptionResource(Resource, UserMixin, ErrorMixin):
         db.session.commit()
         return '', 204
 
-    @validates('mine_guid')
-    def validate_mine_guid(self, key,mine_guid):
-        if not mine_guid:
-            raise AssertionError('Missing mine_guid')
-        try:
-            uuid.UUID(mine_guid, version=4)
-        except ValueError:
-            raise AssertionError('Invalid mine_guid')
-        return mine_guid
