@@ -23,6 +23,18 @@ def _get_inspector_from_report(report):
     prefix, inspector = report.get('assessor').split('\\')
     return inspector
 
+def _get_fiscal_year():
+    correct_date = None
+    current_date = datetime.utcnow()
+    current_year = datetime.utcnow().year
+    march = 3
+    day = 31
+    hour = 00
+    minute = 00
+    second = 00
+
+    fiscal_year_end = datetime(current_year, march, day, hour, minute, second)
+    return current_year if current_date > fiscal_year_end else current_year - 1
 
 def _get_NRIS_token():
     result = cache.get(NRIS_TOKEN)
@@ -47,7 +59,8 @@ def _get_NRIS_token():
                 raise
 
             result = resp.json().get('access_token')
-            cache.set(NRIS_TOKEN, result, timeout=TIMEOUT_12_HOURS)
+            cache.set(NRIS_TOKEN, result, timeout=60)
+            # cache.set(NRIS_TOKEN, result, timeout=TIMEOUT_12_HOURS)
 
     return result
 
@@ -113,8 +126,8 @@ def _process_NRIS_data(data, mine_no):
         stops = inspection.get('stops')
         order_count = 1
         one_year_ago = datetime.utcnow() - relativedelta(years=1)
-        current_year = datetime.utcnow().year
-        april_1_date_string = f'{current_year - 1}-04-01 00:00'
+        fiscal_year = _get_fiscal_year()
+        april_1_date_string = f'{fiscal_year}-04-01 00:00'
         april_1 = _get_datetime_from_NRIS_data(april_1_date_string)
         assessment_type = report.get('assessmentSubType')  
 
@@ -186,5 +199,5 @@ def _process_NRIS_data(data, mine_no):
         'section_35_orders': section_35_orders,
         'open_orders': open_orders_list,
     }
-    cache.set(NRIS_COMPLIANCE_DATA(mine_no), overview, timeout=TIMEOUT_12_HOURS)
+    cache.set(NRIS_COMPLIANCE_DATA(mine_no), overview, timeout=60)
     return overview
