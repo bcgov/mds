@@ -145,7 +145,7 @@ export class MineDashboard extends Component {
       this.loadMineData(id);
     }
     const locationChanged = nextProps.location !== this.props.location;
-    if (locationChanged) {
+    if (locationChanged && !this.state.complianceInfoLoading) {
       const correctParams = nextProps.location.search
         ? nextProps.location.search
         : queryString.stringify(initialSearchValues);
@@ -170,7 +170,7 @@ export class MineDashboard extends Component {
       ...remainingParams,
     };
     const filteredOrders =
-      open_orders.length >= 1 &&
+      open_orders.length > 0 &&
       open_orders.filter((order) => this.handleFiltering(order, formattedParams));
 
     this.setState({

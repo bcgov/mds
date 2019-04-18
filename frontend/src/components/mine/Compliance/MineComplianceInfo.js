@@ -41,83 +41,80 @@ export class MineComplianceInfo extends Component {
     });
   };
 
-  render() {
-    return (
-      <div>
-        {this.props.isLoading ? (
-          <Loading />
-        ) : (
-          <div>
-            {this.props.mineComplianceInfo && (
+  renderComplianceContent = () => (
+    <div>
+      {this.props.mineComplianceInfo && this.props.mineComplianceInfo.last_inspection ? (
+        <div>
+          <h4>COMPLIANCE OVERVIEW</h4>
+          <Divider />
+          <div className="compliance--container">
+            <div className="compliance--content">
+              {/* backend will be updated in this PR to include these values */}
+              <MineComplianceCard title="Count of inspections (Past 12 months)" content="N/A" />
+              <MineComplianceCard
+                title="Count of inspections (Since april 1, 2018)"
+                content="N/A"
+              />
+              <MineComplianceCard
+                title="Last inspection date"
+                content={formatDate(this.props.mineComplianceInfo.last_inspection)}
+              />
+              <MineComplianceCard
+                title="IDIR of last inspector to inspect site"
+                content={this.props.mineComplianceInfo.last_inspector}
+              />
+              <MineComplianceCard
+                title="Open orders"
+                icon={DOC}
+                content={this.props.mineComplianceInfo.num_open_orders}
+              />
+              <MineComplianceCard
+                title="Overdue orders"
+                icon={OVERDUEDOC}
+                content={this.props.mineComplianceInfo.num_overdue_orders}
+              />
+              <MineComplianceCard
+                title="Warnings issued in the past 12 months"
+                content={this.props.mineComplianceInfo.warnings}
+              />
+              <MineComplianceCard
+                title="Advisories issued in the past 12 months"
+                content={this.props.mineComplianceInfo.advisories}
+              />
+            </div>
+          </div>
+          {this.props.mineComplianceInfo.open_orders &&
+            this.props.mineComplianceInfo.open_orders.length > 0 && (
               <div>
-                <h4>COMPLIANCE OVERVIEW</h4>
+                <br />
+                <h4>INSPECTION ORDERS</h4>
                 <Divider />
-                <div className="compliance--container">
-                  <div className="compliance--content">
-                    <MineComplianceCard
-                      title="Count of inspections (Past 12 months)"
-                      content="200"
-                    />
-                    <MineComplianceCard
-                      title="Count of inspections (Since april 1, 2018)"
-                      content="0"
-                    />
-                    <MineComplianceCard
-                      title="Last inspection date"
-                      content={formatDate(this.props.mineComplianceInfo.last_inspection)}
-                    />
-                    <MineComplianceCard
-                      title="IDIR of last inspector to inspect site"
-                      content={this.props.mineComplianceInfo.last_inspector}
-                    />
-                    <MineComplianceCard
-                      title="Open orders"
-                      icon={DOC}
-                      content={this.props.mineComplianceInfo.num_open_orders}
-                    />
-                    <MineComplianceCard
-                      title="Overdue orders"
-                      icon={OVERDUEDOC}
-                      content={this.props.mineComplianceInfo.num_overdue_orders}
-                    />
-                    <MineComplianceCard
-                      title="Warnings issued in the past 12 months"
-                      content={this.props.mineComplianceInfo.warnings}
-                    />
-                    <MineComplianceCard
-                      title="Advisories issued in the past 12 months"
-                      content={this.props.mineComplianceInfo.advisories}
-                    />
-                  </div>
+                <div className="compliance-filter--content">
+                  <h4>Filter By</h4>
+                  <MineComplianceFilterForm
+                    complianceCodes={this.props.complianceCodes}
+                    onSubmit={this.props.handleComplianceFilter}
+                    initialValues={this.props.complianceFilterParams}
+                  />
                 </div>
-                {this.props.mineComplianceInfo.open_orders &&
-                  this.props.mineComplianceInfo.open_orders.length > 0 && (
-                    <div>
-                      <br />
-                      <h4>INSPECTION ORDERS</h4>
-                      <Divider />
-                      <div className="compliance-filter--content">
-                        <h4>Filter By</h4>
-                        <MineComplianceFilterForm
-                          complianceCodes={this.props.complianceCodes}
-                          onSubmit={this.props.handleComplianceFilter}
-                          initialValues={this.props.complianceFilterParams}
-                        />
-                      </div>
-                      <ComplianceOrdersTable
-                        filteredOrders={this.props.filteredOrders}
-                        handlePageChange={this.handlePageChange}
-                        minOrderList={this.state.minOrderList}
-                        maxOrderList={this.state.maxOrderList}
-                      />
-                    </div>
-                  )}
+                <ComplianceOrdersTable
+                  filteredOrders={this.props.filteredOrders}
+                  handlePageChange={this.handlePageChange}
+                  minOrderList={this.state.minOrderList}
+                  maxOrderList={this.state.maxOrderList}
+                />
               </div>
             )}
-            {!this.props.mineComplianceInfo && <NullScreen type="compliance" />}
-          </div>
-        )}
-      </div>
+        </div>
+      ) : (
+        <NullScreen type="compliance" />
+      )}
+    </div>
+  );
+
+  render() {
+    return (
+      <div>{this.props.isLoading ? <Loading /> : <div>{this.renderComplianceContent()}</div>}</div>
     );
   }
 }
