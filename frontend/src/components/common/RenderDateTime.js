@@ -14,6 +14,11 @@ const propTypes = {
   placeholder: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   meta: PropTypes.objectOf(PropTypes.any).isRequired,
+  time: PropTypes.boolean,
+};
+
+const defaultProps = {
+  time: false,
 };
 
 const RenderDateTime = (props) => (
@@ -42,5 +47,6 @@ const RenderDateTime = (props) => (
 );
 
 RenderDateTime.propTypes = propTypes;
+RenderDateTime.defaultProps = defaultProps;
 
 export default RenderDateTime;
