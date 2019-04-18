@@ -11,6 +11,8 @@ import {
   BRAND_DOCUMENT,
   EDIT,
   INFO_CIRCLE,
+  BELL,
+  UNSUBSCRIBE,
   YELLOW_HAZARD,
   SUCCESS_CHECKMARK,
 } from "@/constants/assets";
@@ -35,6 +37,9 @@ const propTypes = {
   openModal: PropTypes.func.isRequired,
   updateMineRecord: PropTypes.func.isRequired,
   removeMineType: PropTypes.func.isRequired,
+  handleUnSubscribe: PropTypes.func.isRequired,
+  subscribed: PropTypes.bool.isRequired,
+  handleSubscription: PropTypes.func.isRequired,
   createTailingsStorageFacility: PropTypes.func.isRequired,
   setMineVerifiedStatus: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
@@ -49,6 +54,8 @@ const propTypes = {
 };
 
 export class MineHeader extends Component {
+  state = { menuVisible: false };
+
   handleUpdateMineRecord = (value) => {
     const mineStatus = value.mine_status.join(",");
     return this.props
@@ -97,6 +104,16 @@ export class MineHeader extends Component {
     });
   };
 
+  // added some extra logic to the dropdown, to handle closing the menu after popconfirm is clicked.
+  // The combination of popconfirm, and the AuthWrapper interferes with the dropdowns default behaviour.
+  handleVisibleChange = (flag) => {
+    this.setState({ menuVisible: flag });
+  };
+
+  handleMenuClick = () => {
+    this.setState({ menuVisible: false });
+  };
+
   openTailingsModal(event, onSubmit, title) {
     event.preventDefault();
     this.props.openModal({
@@ -131,7 +148,7 @@ export class MineHeader extends Component {
 
   render() {
     const menu = (
-      <Menu>
+      <Menu onClick={this.handleMenuClick}>
         <Menu.Item key="0">
           <button
             type="button"
@@ -162,6 +179,31 @@ export class MineHeader extends Component {
             {ModalContent.ADD_TAILINGS}
           </button>
         </Menu.Item>
+        <AuthorizationWrapper inDevelopment>
+          {this.props.subscribed ? (
+            <div className="custom-menu-item">
+              <Popconfirm
+                placement="left"
+                title="Are you sure you want to unsubscribe?"
+                onConfirm={this.props.handleUnSubscribe}
+                okText="Yes"
+                cancelText="No"
+              >
+                <button type="button" className="full">
+                  <img alt="document" className="padding-small" src={UNSUBSCRIBE} />
+                  Unsubscribe
+                </button>
+              </Popconfirm>
+            </div>
+          ) : (
+            <div className="custom-menu-item">
+              <button type="button" className="full" onClick={this.props.handleSubscription}>
+                <img alt="document" className="padding-small" src={BELL} />
+                Subscribe
+              </button>
+            </div>
+          )}
+        </AuthorizationWrapper>
 
         <AuthorizationWrapper inTesting>
           {(!this.props.mine.verified_status || !this.props.mine.verified_status.healthy_ind) && (
@@ -216,7 +258,7 @@ export class MineHeader extends Component {
         <div className="dashboard__header--card__content">
           <div className="inline-flex between center-mobile">
             <h1>
-              {this.props.mine.mine_name}{" "}
+              {this.props.mine.mine_name}
               {this.props.mine.verified_status && (
                 <img
                   alt=""
@@ -233,19 +275,28 @@ export class MineHeader extends Component {
                 />
               )}
             </h1>
-            <AuthorizationWrapper
-              permission={Permission.CREATE}
-              isMajorMine={this.props.mine.major_mine_ind}
-            >
-              <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
-                <Button type="primary">
-                  <div className="padding-small">
-                    <img className="padding-small--right" src={EDIT} alt="Add/Edit" />
-                    Add/Edit
-                  </div>
-                </Button>
-              </Dropdown>
-            </AuthorizationWrapper>
+            <div>
+              {this.props.subscribed && <img src={BELL} alt="bell" />}
+              <AuthorizationWrapper
+                permission={Permission.CREATE}
+                isMajorMine={this.props.mine.major_mine_ind}
+              >
+                <Dropdown
+                  className="full-height full-mobile"
+                  overlay={menu}
+                  placement="bottomLeft"
+                  onVisibleChange={this.handleVisibleChange}
+                  visible={this.state.menuVisible}
+                >
+                  <Button type="primary">
+                    <div className="padding-small">
+                      <img className="padding-small--right" src={EDIT} alt="Add/Edit" />
+                      Add/Edit
+                    </div>
+                  </Button>
+                </Dropdown>
+              </AuthorizationWrapper>
+            </div>
           </div>
           <Divider className="custom-large-divider" />
           <div className="inline-flex between block-mobile">
