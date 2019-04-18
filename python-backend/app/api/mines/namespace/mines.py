@@ -13,7 +13,7 @@ from ..tailings.resources.tailings import MineTailingsStorageFacilityListResourc
 from ..compliance.resources.compliance import MineComplianceResource
 from ..compliance.resources.compliance_article import ComplianceArticleResource
 from ..mine.resources.mine_basicinfo import MineBasicInfoResource
-from ..subscription.resources.subscription import MineSubscriptionResource, MineSubscriptionGetAllResource
+from ..subscription.resources.subscription import MineSubscriptionResource, MineSubscriptionListResource
 from app.api.mines.mine.resources.mine_verified_status import MineVerifiedStatusResource
 from ..variances.resources.variance import (VarianceListResource, VarianceResource,
                                             VarianceDocumentUploadResource,
@@ -41,7 +41,7 @@ api.add_resource(MineTypeDetailResource, '/mine-types/details',
                  '/mine-types/details/<string:mine_type_detail_xref_guid>')
 api.add_resource(MineBasicInfoResource, '/basicinfo')
 api.add_resource(MineSubscriptionResource, '/<string:mine_guid>/subscribe')
-api.add_resource(MineSubscriptionGetAllResource, '/subscribe')
+api.add_resource(MineSubscriptionListResource, '/subscribe')
 api.add_resource(MineVerifiedStatusResource, '/verified-status',
                  '/<string:mine_guid>/verified-status')
 
