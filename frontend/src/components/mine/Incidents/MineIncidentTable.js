@@ -26,6 +26,9 @@ const columns = [
   {
     title: "EMPR Action",
     dataIndex: "followup_action",
+    render: (action) => (
+      <div title="followup_action">{action ? action.description : "error..."}</div>
+    ),
   },
 ];
 
@@ -39,7 +42,7 @@ export class MineIncidentTable extends Component {
       reported_by: incident.reported_by,
       followup_action: actions.find(
         (x) => x.mine_incident_followup_type_code === incident.followup_type_code
-      ).description,
+      ),
     }));
 
   render() {
