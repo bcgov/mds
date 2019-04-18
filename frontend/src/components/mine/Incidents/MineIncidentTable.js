@@ -32,18 +32,23 @@ const columns = [
   {
     title: "EMPR Action",
     dataIndex: "followup_action",
+    render: (action) => (
+      <div title="followup_action">{action ? action.description : "error..."}</div>
+    ),
   },
   {
     title: "",
     dataIndex: "handleEditModal",
-    render: (text, record) => (
+    render: (handleEditModal, record) => (
       <div title="" align="right">
         <AuthorizationWrapper permission={Permission.CREATE}>
           <Button
             type="primary"
             size="small"
             ghost
-            onClick={(event) => record.openMineIncidentModal(event, text, record.incident)}
+            onClick={(event) =>
+              record.openMineIncidentModal(event, handleEditModal, record.incident)
+            }
           >
             <img src={BRAND_PENCIL} alt="Edit TSF Report" />
           </Button>
@@ -64,7 +69,7 @@ const transformRowData = (incidents, actions, funcs) =>
       reported_by: incident.reported_by,
       followup_action: actions.find(
         (x) => x.mine_incident_followup_type_code === incident.followup_type_code
-      ).description,
+      ),
       ...funcs,
       incident,
     }));

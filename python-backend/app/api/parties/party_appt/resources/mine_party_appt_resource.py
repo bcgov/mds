@@ -2,20 +2,21 @@ from datetime import datetime, timedelta
 import uuid
 
 from flask import request
-from flask_restplus import Resource, reqparse
+from flask_restplus import Resource
 from sqlalchemy import or_, exc as alch_exceptions
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
+from app.extensions import api
 from ..models.mine_party_appt import MinePartyAppointment
 from ..models.mine_party_appt_type import MinePartyAppointmentType
+from ...custom_reqparser import CustomReqparser
 from ....constants import PARTY_STATUS_CODE
-from app.extensions import api
 from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser(trim=True)
+    parser = CustomReqparser()
     parser.add_argument('mine_guid', type=str, help='guid of the mine.')
     parser.add_argument('party_guid', type=str, help='guid of the party.')
     parser.add_argument(
@@ -117,7 +118,7 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
         except alch_exceptions.IntegrityError as e:
             if "daterange_excl" in str(e):
                 mpa_type_name = mpa.mine_party_appt_type.description
-                raise BadRequest(f'Error: Date ranges for {mpa_type_name} must not overlap')
+                raise BadRequest(f'Error: Date ranges for {mpa_type_name} must not overlap.')
 
         return mpa.json()
 
@@ -125,12 +126,12 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
     @requires_role_mine_create
     def delete(self, mine_party_appt_guid=None):
         if not mine_party_appt_guid:
-            raise BadRequest('expected mine party appointment guid')
+            raise BadRequest('Expected mine party appointment guid.')
 
         data = self.parser.parse_args()
         mpa = MinePartyAppointment.find_by_mine_party_appt_guid(mine_party_appt_guid)
         if not mpa:
-            raise NotFound('mine party appointment not found')
+            raise NotFound('Mine party appointment not found.')
 
         mpa.deleted_ind = True
         mpa.save()

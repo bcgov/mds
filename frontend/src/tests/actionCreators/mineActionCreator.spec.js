@@ -117,14 +117,14 @@ describe("`removeMineType` action creator", () => {
 });
 
 describe("`createTailingsStorageFacility` action creator", () => {
-  const tsf_name = "MockTSF";
+  const mine_tailings_storage_facility_name = "MockTSF";
   const mine_guid = "12345-6789";
-  const url = ENVIRONMENT.apiUrl + API.MINE_TSF;
-  const mockPayload = { tsf_name, mine_guid };
+  const url = ENVIRONMENT.apiUrl + API.MINE_TSF(mine_guid);
+  const mockPayload = { mine_tailings_storage_facility_name };
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPost(url, mockPayload).reply(200, mockResponse);
-    return createTailingsStorageFacility(mockPayload)(dispatch).then(() => {
+    return createTailingsStorageFacility(mine_guid, mockPayload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -132,8 +132,8 @@ describe("`createTailingsStorageFacility` action creator", () => {
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onPost(url).reply(400, MOCK.ERROR);
-    return createTailingsStorageFacility(mine_guid)(dispatch).then(() => {
+    mockAxios.onPost(url, mockPayload).reply(400, MOCK.ERROR);
+    return createTailingsStorageFacility(mine_guid, mockPayload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

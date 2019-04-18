@@ -97,11 +97,6 @@ export const getDropdownApplicationStatusOptions = createSelector(
   (options) => createDropDownList(options, "description", "application_status_code")
 );
 
-export const getDropdownIncidentFollowupActionOptions = createSelector(
-  [getIncidentFollowupActionOptions],
-  (options) => createDropDownList(options, "description", "mine_incident_followup_type_code")
-);
-
 export const getDropdownHSRCMComplianceCodes = createSelector(
   [getComplianceCodes],
   (codes) =>

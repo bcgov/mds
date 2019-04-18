@@ -85,7 +85,7 @@ export class PartyProfile extends Component {
   openEditPartyModal = (event, party, onSubmit, title, isPerson, provinceOptions) => {
     const initialValues = {
       ...party,
-      ...party.address[0],
+      ...(party.address[0] ? party.address[0] : {}),
       email: party.email && party.email !== "Unknown" ? party.email : null,
     };
 
@@ -221,7 +221,7 @@ export class PartyProfile extends Component {
                 {parties.phone_no} {parties.phone_ext ? `x${parties.phone_ext}` : ""}
               </p>
             </div>
-            <Address address={parties.address[0]} />
+            <Address address={parties.address[0] || {}} />
           </div>
           <div className="profile__content">
             <Tabs activeKey="history" size="large" animated={{ inkBar: true, tabPane: false }}>

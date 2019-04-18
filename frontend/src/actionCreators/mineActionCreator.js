@@ -112,11 +112,11 @@ export const removeMineType = (mineTypeGuid, tenure) => (dispatch) => {
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const createTailingsStorageFacility = (payload) => (dispatch) => {
+export const createTailingsStorageFacility = (mine_guid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_TSF));
   dispatch(showLoading("modal"));
   return CustomAxios()
-    .post(ENVIRONMENT.apiUrl + API.MINE_TSF, payload, createRequestHeader())
+    .post(ENVIRONMENT.apiUrl + API.MINE_TSF(mine_guid), payload, createRequestHeader())
     .then((response) => {
       notification.success({
         message: "Successfully added the TSF.",

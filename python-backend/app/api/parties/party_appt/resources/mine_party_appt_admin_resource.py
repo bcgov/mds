@@ -1,14 +1,15 @@
 from flask import request, Response
-from flask_restplus import Resource, reqparse
+from flask_restplus import Resource
 
-from ..models.mine_party_appt import MinePartyAppointment
 from app.extensions import api
+from ..models.mine_party_appt import MinePartyAppointment
+from ...custom_reqparser import CustomReqparser
 from ....utils.access_decorators import requires_role_mine_admin
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class MinePartyApptAdminResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser(trim=True)
+    parser = CustomReqparser()
     parser.add_argument('mine_no', type=str, help='number of the mine.')
 
     @api.doc(params={})

@@ -4,7 +4,8 @@ import AddIncidentForm from "@/components/Forms/AddIncidentForm";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
-  onSubmit: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
   title: PropTypes.string,
   followupActionOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
@@ -15,7 +16,12 @@ const defaultProps = {
 
 export const AddIncidentModal = (props) => (
   <div>
-    <AddIncidentForm {...props} />
+    <AddIncidentForm
+      handleSubmit={props.handleSubmit}
+      closeModal={props.closeModal}
+      title={props.title}
+      followupActionOptions={props.followupActionOptions}
+    />
   </div>
 );
 

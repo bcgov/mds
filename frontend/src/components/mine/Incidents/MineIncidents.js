@@ -63,7 +63,7 @@ export class MineIncidents extends Component {
     this.props.openModal({
       props: {
         initialValues: existingIncident,
-        onSubmit,
+        handleSubmit: this.handleAddMineIncident,
         title: ModalContent.ADD_INCIDENT(this.props.mine.mine_name),
         mineGuid: this.props.mine.mine_guid,
         followupActionOptions: createDropDownList(

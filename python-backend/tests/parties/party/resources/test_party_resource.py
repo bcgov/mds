@@ -1,6 +1,7 @@
 import json, uuid
 
 from tests.factories import PartyFactory
+from app.api.parties.custom_reqparser import DEFAULT_MISSING_REQUIRED
 
 
 # GET
@@ -21,15 +22,6 @@ def test_get_person(test_client, db_session, auth_headers):
 
 
 # POST
-def test_post_person_invalid_url(test_client, db_session, auth_headers):
-    test_person_data = {"first_name": "First", "party_name": "Last"}
-    post_resp = test_client.post(
-        '/parties/some_id', data=test_person_data, headers=auth_headers['full_auth_header'])
-    post_data = json.loads(post_resp.data.decode())
-    assert post_resp.status_code == 400
-    assert 'Unexpected party id' in post_data['message']
-
-
 def test_post_person_no_first_name(test_client, db_session, auth_headers):
     test_person_data = {
         "party_name": "Last",
@@ -41,13 +33,13 @@ def test_post_person_no_first_name(test_client, db_session, auth_headers):
         '/parties', data=test_person_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
     assert post_resp.status_code == 400
-    assert 'first name' in post_data['message']
+    assert 'first name' in post_data['message'].lower()
 
 
-def test_post_person_no_surname(test_client, db_session, auth_headers):
+def test_post_person_no_required_party_name(test_client, db_session, auth_headers):
     test_person_data = {
         "first_name": "First",
-        "type": "PER",
+        "party_type_codetype": "PER",
         "phone_no": "123-456-7890",
         "email": "this@test.com"
     }
@@ -55,21 +47,21 @@ def test_post_person_no_surname(test_client, db_session, auth_headers):
         '/parties', data=test_person_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
     assert post_resp.status_code == 400
-    assert 'Party name' in post_data['message']
+    assert DEFAULT_MISSING_REQUIRED in post_data['message']
 
 
-def test_post_person_no_phone_no(test_client, db_session, auth_headers):
+def test_post_person_no_required_phone_no(test_client, db_session, auth_headers):
     test_person_data = {
         "first_name": "First",
         "party_name": "Last",
-        "type": "PER",
+        "party_type_codetype": "PER",
         "email": "this@test.com"
     }
     post_resp = test_client.post(
         '/parties', data=test_person_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
     assert post_resp.status_code == 400
-    assert 'phone number' in post_data['message']
+    assert DEFAULT_MISSING_REQUIRED in post_data['message']
 
 
 def test_post_person_success(test_client, db_session, auth_headers):
@@ -84,7 +76,7 @@ def test_post_person_success(test_client, db_session, auth_headers):
         "address_line_2": "1234 Bar Blvd",
         "city": "Baz Town",
         "sub_division_code": "BC",
-        "post_code": "000000",
+        "post_code": "X0X0X0",
         "address_type_code": "CAN"
     }
     post_resp = test_client.post(
@@ -118,7 +110,7 @@ def test_post_company_success(test_client, db_session, auth_headers):
         "address_line_2": "1234 Bar Blvd",
         "city": "Baz Town",
         "sub_division_code": "BC",
-        "post_code": "000000",
+        "post_code": "X0X0X0",
         "address_type_code": "CAN"
     }
     post_resp = test_client.post(
@@ -164,7 +156,7 @@ def test_put_person_success(test_client, db_session, auth_headers):
         "address_line_2": "1234 Bar Blvd",
         "city": "Baz Town",
         "sub_division_code": "BC",
-        "post_code": "000000",
+        "post_code": "X0X0X0",
         "address_type_code": "CAN"
     }
     put_resp = test_client.put(
