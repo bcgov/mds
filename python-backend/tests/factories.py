@@ -372,7 +372,7 @@ class SubscriptionFactory(BaseFactory):
 
     subscription_id = factory.Sequence(lambda n: n)
     mine_guid = factory.SelfAttribute('mine.mine_guid')
-    idir = factory.Faker('last_name')
+    user_name = factory.Faker('last_name')
 
 class MineFactory(BaseFactory):
     class Meta:

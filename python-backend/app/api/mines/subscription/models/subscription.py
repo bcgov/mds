@@ -12,7 +12,7 @@ class Subscription(Base):
     __tablename__ = 'subscription'
     subscription_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
-    idir = db.Column(db.String, nullable=False)
+    user_name = db.Column(db.String, nullable=False)
 
     mine = db.relationship("Mine", order_by='desc(Mine.mine_name)', lazy='joined')
 
@@ -22,12 +22,12 @@ class Subscription(Base):
     @classmethod
     def find_subscription_for_current_user_by_id(cls, mine_guid):
         user_name = User().get_user_username()
-        return Subscription.query.filter_by(mine_guid=mine_guid).filter_by(idir=user_name).first()
+        return Subscription.query.filter_by(mine_guid=mine_guid).filter_by(user_name=user_name).first()
 
     @classmethod
     def create_for_current_user(cls, mine_guid, save=True):
         user_name = User().get_user_username()
-        subscription = cls(mine_guid=mine_guid, idir=user_name)
+        subscription = cls(mine_guid=mine_guid, user_name=user_name)
         if save:
             subscription.save(commit=False)
         return subscription

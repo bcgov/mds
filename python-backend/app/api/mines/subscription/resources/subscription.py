@@ -23,7 +23,7 @@ class MineSubscriptionListResource(Resource, UserMixin, ErrorMixin):
     def get(self):
         user_name = User().get_user_username()
         mine_query = Mine.query.filter_by(deleted_ind=False).join(Subscription).filter_by(
-            idir=user_name)
+            user_name=user_name)
         sort_criteria = [{'model': 'Mine', 'field': 'mine_name', 'direction': 'asc'}]
         mine_query = apply_sort(mine_query, sort_criteria)
         mines = mine_query.all()
