@@ -341,7 +341,7 @@ export const setMineVerifiedStatus = (mine_guid, payload) => (dispatch) => {
 export const subscribe = (mineGuid) => (dispatch) => {
   dispatch(request(reducerTypes.SUBSCRIBE));
   dispatch(showLoading());
-  return axios
+  return CustomAxios()
     .post(ENVIRONMENT.apiUrl + API.SUBSCRIPTION(mineGuid), {}, createRequestHeader())
     .then(() => {
       notification.success({
@@ -351,20 +351,14 @@ export const subscribe = (mineGuid) => (dispatch) => {
       dispatch(success(reducerTypes.SUBSCRIBE));
       dispatch(hideLoading());
     })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.SUBSCRIBE));
-      dispatch(hideLoading());
-    });
+    .catch(() => dispatch(error(reducerTypes.SUBSCRIBE)))
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const unSubscribe = (mineGuid) => (dispatch) => {
   dispatch(request(reducerTypes.UNSUBSCRIBE));
   dispatch(showLoading());
-  return axios
+  return CustomAxios()
     .delete(ENVIRONMENT.apiUrl + API.SUBSCRIPTION(mineGuid), createRequestHeader())
     .then(() => {
       notification.success({
@@ -374,14 +368,8 @@ export const unSubscribe = (mineGuid) => (dispatch) => {
       dispatch(success(reducerTypes.UNSUBSCRIBE));
       dispatch(hideLoading());
     })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.UNSUBSCRIBE));
-      dispatch(hideLoading());
-    });
+    .catch(() => dispatch(error(reducerTypes.SUBSCRIBE)))
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const fetchSubscribedMinesByUser = () => (dispatch) => {
