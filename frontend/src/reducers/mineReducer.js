@@ -15,6 +15,7 @@ const initialState = {
   mineGuid: false,
   mineBasicInfoList: [],
   mineDocuments: [],
+  mineIncidents: [],
 };
 
 const mineReducer = (state = initialState, action) => {
