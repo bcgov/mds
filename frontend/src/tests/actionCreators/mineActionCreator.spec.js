@@ -13,6 +13,9 @@ import {
   removeMineType,
   addDocumentToExpectedDocument,
   fetchMineDocuments,
+  fetchSubscribedMinesByUser,
+  subscribe,
+  unSubscribe,
 } from "@/actionCreators/mineActionCreator";
 import * as genericActions from "@/actions/genericActions";
 import * as API from "@/constants/API";
@@ -114,14 +117,14 @@ describe("`removeMineType` action creator", () => {
 });
 
 describe("`createTailingsStorageFacility` action creator", () => {
-  const tsf_name = "MockTSF";
+  const mine_tailings_storage_facility_name = "MockTSF";
   const mine_guid = "12345-6789";
-  const url = ENVIRONMENT.apiUrl + API.MINE_TSF;
-  const mockPayload = { tsf_name, mine_guid };
+  const url = ENVIRONMENT.apiUrl + API.MINE_TSF(mine_guid);
+  const mockPayload = { mine_tailings_storage_facility_name };
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPost(url, mockPayload).reply(200, mockResponse);
-    return createTailingsStorageFacility(mockPayload)(dispatch).then(() => {
+    return createTailingsStorageFacility(mine_guid, mockPayload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -129,8 +132,8 @@ describe("`createTailingsStorageFacility` action creator", () => {
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onPost(url).reply(400, MOCK.ERROR);
-    return createTailingsStorageFacility(mine_guid)(dispatch).then(() => {
+    mockAxios.onPost(url, mockPayload).reply(400, MOCK.ERROR);
+    return createTailingsStorageFacility(mine_guid, mockPayload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -336,6 +339,74 @@ describe("`fetchMineDocuments` action creator", () => {
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
     return fetchMineDocuments(mineGuid)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`fetchSubscribedMinesByUser` action creator", () => {
+  const url = ENVIRONMENT.apiUrl + API.MINE_SUBSCRIPTION;
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onGet(url).reply(200, mockResponse);
+    return fetchSubscribedMinesByUser()(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(5);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
+    return fetchSubscribedMinesByUser()(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`unSubscribe` action creator", () => {
+  const mineGuid = "12345";
+  const url = ENVIRONMENT.apiUrl + API.SUBSCRIPTION(mineGuid);
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onDelete(url).reply(200, mockResponse);
+    return unSubscribe(mineGuid)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(5);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onDelete(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
+    return unSubscribe(mineGuid)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`subscribe` action creator", () => {
+  const mineGuid = "12345";
+  const url = ENVIRONMENT.apiUrl + API.SUBSCRIPTION(mineGuid);
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onPost(url).reply(200, mockResponse);
+    return subscribe(mineGuid)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(5);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPost(url).reply(400, MOCK.ERROR);
+    return subscribe(mineGuid)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

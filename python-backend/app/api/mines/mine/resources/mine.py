@@ -299,7 +299,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
 
         mine = Mine.find_by_mine_no_or_guid(mine_no_or_guid)
         if not mine:
-            raise NotFound('Mine not found')
+            raise NotFound('Mine not found.')
 
         return mine
 
@@ -311,7 +311,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
 
         mine = Mine.find_by_mine_no_or_guid(mine_no_or_guid)
         if not mine:
-            raise NotFound("Mine not found")
+            raise NotFound("Mine not found.")
 
         data = self.parser.parse_args()
 

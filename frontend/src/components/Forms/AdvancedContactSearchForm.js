@@ -6,7 +6,6 @@ import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import { phoneNumber, maxLength } from "@/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
-import * as Strings from "@/constants/strings";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -34,7 +33,7 @@ export class AdvancedContactSearchForm extends Component {
 
   handleReset = () => {
     this.props.reset();
-    this.props.handleSearch({ page: Strings.DEFAULT_PAGE, per_page: Strings.DEFAULT_PER_PAGE });
+    this.props.handleSearch({}, true);
     this.setState({ contactType: "PER" });
   };
 
