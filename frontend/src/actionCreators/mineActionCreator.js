@@ -38,7 +38,7 @@ const handleError = (dispatch, reducer) => (err) => {
 };
 
 const createMineTypeRequests = (payload, dispatch, reducer) => (response) => {
-  const mineId = response.data.mine_guid ? response.data.mine_guid : response.data.guid;
+  const mineId = response.data.mine_guid;
   if (payload.mine_types) {
     const allMineTypes = payload.mine_types.map((type) =>
       type.mine_tenure_type_code.length >= 1
@@ -112,11 +112,11 @@ export const removeMineType = (mineTypeGuid, tenure) => (dispatch) => {
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const createTailingsStorageFacility = (payload) => (dispatch) => {
+export const createTailingsStorageFacility = (mine_guid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_TSF));
   dispatch(showLoading("modal"));
   return CustomAxios()
-    .post(ENVIRONMENT.apiUrl + API.MINE_TSF, payload, createRequestHeader())
+    .post(ENVIRONMENT.apiUrl + API.MINE_TSF(mine_guid), payload, createRequestHeader())
     .then((response) => {
       notification.success({
         message: "Successfully added the TSF.",
@@ -173,6 +173,21 @@ export const fetchMineRecords = (params) => (dispatch) => {
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_RECORDS));
       dispatch(mineActions.storeMineList(response.data));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_MINE_RECORD)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const fetchMineRecordsForMap = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_MINE_RECORDS));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(ENVIRONMENT.apiUrl + API.MINE_MAP_LIST, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_MINE_RECORDS));
+      dispatch(mineActions.storeMineList(response.data));
+      dispatch(hideLoading());
       return response;
     })
     .catch(() => dispatch(error(reducerTypes.GET_MINE_RECORD)))

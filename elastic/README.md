@@ -16,6 +16,12 @@ Elastic Images
 | JDBC_USER | Name of the user |
 | JDBC_PASSWORD | Jdbc password |
 
+## Configure Watcher to send email
+
+Update your [user-settings](https://www.elastic.co/guide/en/cloud-enterprise/current/ece-add-user-settings.html) with your [smtp configuration details](https://www.elastic.co/guide/en/watcher/current/email-services.html).
+
+Once the email is configured, elasticsearch will be ready to send notifications.
+
 ## Openshift Configuration
 
 Build the docker image

@@ -46,12 +46,12 @@ const defaultProps = {
 
 export class MinePermitInfo extends Component {
   componentWillMount() {
-    this.props.fetchPermits({ mine_guid: this.props.mine.guid });
+    this.props.fetchPermits({ mine_guid: this.props.mine.mine_guid });
   }
 
   closePermitModal = () => {
     this.props.closeModal();
-    this.props.fetchPermits({ mine_guid: this.props.mine.guid });
+    this.props.fetchPermits({ mine_guid: this.props.mine.mine_guid });
   };
 
   // Permit Modals
@@ -62,11 +62,11 @@ export class MinePermitInfo extends Component {
     this.props.openModal({
       props: {
         initialValues: {
-          mine_guid: this.props.mine.guid,
+          mine_guid: this.props.mine.mine_guid,
         },
         onSubmit,
         title,
-        mine_guid: this.props.mine.guid,
+        mine_guid: this.props.mine.mine_guid,
       },
       widthSize: "50vw",
       content: modalConfig.ADD_PERMIT,
@@ -89,7 +89,7 @@ export class MinePermitInfo extends Component {
   // Permit Handlers
 
   handleAddPermit = (values) => {
-    const payload = { mine_guid: this.props.mine.guid, ...values };
+    const payload = { mine_guid: this.props.mine.mine_guid, ...values };
 
     payload.permit_no = `${values.permit_type}${values.permit_activity_type || ""}-${
       values.permit_no
@@ -181,7 +181,7 @@ export class MinePermitInfo extends Component {
 
   handleRemovePermitAmendmentDocument = (permitAmdendmentGuid, documentGuid) =>
     this.props.removePermitAmendmentDocument(permitAmdendmentGuid, documentGuid).then(() => {
-      this.props.fetchPermits({ mine_guid: this.props.mine.guid });
+      this.props.fetchPermits({ mine_guid: this.props.mine.mine_guid });
     });
 
   render() {

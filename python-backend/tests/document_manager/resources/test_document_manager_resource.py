@@ -6,7 +6,7 @@ import pytest
 import shutil
 
 
-def test_download_file_no_guid(test_client, auth_headers):
+def test_download_file_no_guid(test_client, db_session, auth_headers):
     get_resp = test_client.get(
         f'/document-manager', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
@@ -16,7 +16,7 @@ def test_download_file_no_guid(test_client, auth_headers):
     assert get_data['error']['message'] is not ''
 
 
-def test_download_file_no_doc_with_guid(test_client, auth_headers):
+def test_download_file_no_doc_with_guid(test_client, db_session, auth_headers):
     get_resp = test_client.get(
         f'/document-manager/1234', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())

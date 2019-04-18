@@ -1,41 +1,45 @@
 import uuid
-from tests.constants import TEST_MINE_GUID, TEST_EXPECTED_DOCUMENT_GUID1, TEST_EXPECTED_DOCUMENT_GUID2, TEST_EXPECTED_DOCUMENT_NAME2, TEST_EXPECTED_DOCUMENT_STATUS_CODE1, DUMMY_USER_KWARGS
-from app.api.documents.expected.models.mine_expected_document import MineExpectedDocument
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
+from app.api.documents.expected.models.mine_expected_document import MineExpectedDocument
+from tests.factories import MineFactory, MineExpectedDocumentFactory
+
+BATCH_SIZE = 5
+
 
 # MineExpectedDocument Class Methods
-def test_expected_documents_find_by_mine_guid(test_client):
-    expected_documents = MineExpectedDocument.find_by_mine_guid(TEST_MINE_GUID)
-    assert all(str(ed.mine_guid) == TEST_MINE_GUID for ed in expected_documents)
+def test_expected_documents_find_by_mine_guid(db_session):
+    mine_guid = MineFactory(mine_expected_documents=BATCH_SIZE).mine_guid
+
+    expected_documents = MineExpectedDocument.find_by_mine_guid(str(mine_guid))
+    assert len(expected_documents) == BATCH_SIZE
+    assert all(mine_guid == ed.mine_guid for ed in expected_documents)
 
 
-def test_expected_documents_find_by_mine_guid_after_insert(test_client):
-    org_expected_documents = MineExpectedDocument.find_by_mine_guid(TEST_MINE_GUID)
+def test_expected_documents_find_by_mine_guid_after_insert(db_session):
+    mine = MineFactory(mine_expected_documents=BATCH_SIZE)
+    mine_guid = mine.mine_guid
+    org_expected_documents = MineExpectedDocument.find_by_mine_guid(str(mine_guid))
 
-    expected_document2 = MineExpectedDocument(
-        exp_document_guid=uuid.UUID(TEST_EXPECTED_DOCUMENT_GUID2),
-        mine_guid=uuid.UUID(TEST_MINE_GUID),
-        exp_document_name=TEST_EXPECTED_DOCUMENT_NAME2,
-        exp_document_status_code=TEST_EXPECTED_DOCUMENT_STATUS_CODE1,
-        **DUMMY_USER_KWARGS)
-    expected_document2.save()
+    MineExpectedDocumentFactory(mine=mine)
+    new_expected_documents = MineExpectedDocument.find_by_mine_guid(str(mine_guid))
 
-    new_expected_documents = MineExpectedDocument.find_by_mine_guid(TEST_MINE_GUID)
-
-    assert len(new_expected_documents) == (len(org_expected_documents) + 1)
-    assert all(str(ned.mine_guid) == TEST_MINE_GUID for ned in new_expected_documents)
-    assert all(str(oed.mine_guid) == TEST_MINE_GUID for oed in org_expected_documents)
+    assert len(new_expected_documents) == BATCH_SIZE + 1
+    assert all(mine_guid == ned.mine_guid for ned in new_expected_documents)
+    assert all(mine_guid == oed.mine_guid for oed in org_expected_documents)
 
 
-def test_expected_documents_find_by_exp_document_guid(test_client):
-    expected_document = MineExpectedDocument.find_by_exp_document_guid(TEST_EXPECTED_DOCUMENT_GUID1)
-    assert str(expected_document.exp_document_guid) == TEST_EXPECTED_DOCUMENT_GUID1
+def test_expected_documents_find_by_exp_document_guid(db_session):
+    exp_doc = MineExpectedDocumentFactory.create_batch(size=BATCH_SIZE)[0]
+
+    expected_document = MineExpectedDocument.find_by_exp_document_guid(
+        str(exp_doc.exp_document_guid))
+    assert expected_document.exp_document_guid == exp_doc.exp_document_guid
 
 
 #add_due_date tests
-def test_add_fiscal_due_date_with_one_year_period(test_client):
+def test_add_fiscal_due_date_with_one_year_period():
     current_date = datetime(datetime.now().year, 7, 1, 00, 00, 00)
     expected_due_date = datetime(current_date.year + 1, 3, 31, 00, 00, 00)
     due_date_type = 'FIS'
@@ -47,7 +51,7 @@ def test_add_fiscal_due_date_with_one_year_period(test_client):
     assert due_date == expected_due_date
 
 
-def test_add_fiscal_due_date_with_five_year_period(test_client):
+def test_add_fiscal_due_date_with_five_year_period():
     current_date = datetime(datetime.now().year, 7, 1, 00, 00, 00)
     expected_due_date = datetime(current_date.year + 5, 3, 31, 00, 00, 00)
     due_date_type = 'FIS'
@@ -59,7 +63,7 @@ def test_add_fiscal_due_date_with_five_year_period(test_client):
     assert due_date == expected_due_date
 
 
-def test_add_fiscal_due_date_with_five_year_period_this_year(test_client):
+def test_add_fiscal_due_date_with_five_year_period_this_year():
     current_date = datetime(datetime.now().year, 2, 1, 00, 00, 00)
     expected_due_date = datetime(current_date.year + 4, 3, 31, 00, 00, 00)
     due_date_type = 'FIS'
@@ -71,7 +75,7 @@ def test_add_fiscal_due_date_with_five_year_period_this_year(test_client):
     assert due_date == expected_due_date
 
 
-def test_add_aniversary_due_date(test_client):
+def test_add_aniversary_due_date():
     current_date = datetime.now()
     expected_due_date = current_date
     due_date_type = 'ANV'
@@ -83,7 +87,7 @@ def test_add_aniversary_due_date(test_client):
     assert expected_due_date == due_date
 
 
-def test_add_fiscal_due_date_when_current_date_is_fiscal(test_client):
+def test_add_fiscal_due_date_when_current_date_is_fiscal():
     fiscal = datetime(datetime.now().year, 3, 31, 00, 00, 00)
     due_date_type = 'FIS'
     period = '12'
@@ -95,7 +99,7 @@ def test_add_fiscal_due_date_when_current_date_is_fiscal(test_client):
     assert due_date == expected_due_date
 
 
-def test_add_fiscal_due_date_on_year_end(test_client):
+def test_add_fiscal_due_date_on_year_end():
     end_of_year = datetime(datetime.now().year - 1, 12, 31, 23, 59, 59)
     due_date_type = 'FIS'
     period = '12'
@@ -107,7 +111,7 @@ def test_add_fiscal_due_date_on_year_end(test_client):
     assert due_date == expected_due_date
 
 
-def test_add_fiscal_due_date_on_new_year(test_client):
+def test_add_fiscal_due_date_on_new_year():
     new_year = datetime(datetime.now().year, 1, 1, 00, 00, 00)
     due_date_type = 'FIS'
     period = '12'

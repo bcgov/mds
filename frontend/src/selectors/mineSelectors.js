@@ -64,8 +64,8 @@ export const getMineBasicInfoListHash = createSelector(
   [getMineBasicInfoList],
   (info) =>
     info.reduce(
-      (map, { guid, mine_name }) => ({
-        [guid]: mine_name,
+      (map, { mine_guid, mine_name }) => ({
+        [mine_guid]: mine_name,
         ...map,
       }),
       {}

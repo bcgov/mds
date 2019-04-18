@@ -42,14 +42,14 @@ export class MineInfo extends Component {
   }
 
   handleEditReportSubmit = () => {
-    this.props.fetchMineRecordById(this.props.mine.guid).then(() => {
+    this.props.fetchMineRecordById(this.props.mine.mine_guid).then(() => {
       const expDoc = find(
         this.props.mine.mine_expected_documents,
         ({ exp_document_guid }) =>
           exp_document_guid === this.state.selectedDocument.exp_document_guid
       );
 
-      expDoc.exp_document_status.exp_document_status_code = "PRE";
+      expDoc.expected_document_status.exp_document_status_code = "PRE";
 
       // Set received_date for first set of documents
       if (!expDoc.received_date && expDoc.related_documents.length > 0) {
@@ -58,13 +58,13 @@ export class MineInfo extends Component {
 
       // Reset received state when all documents deleted
       if (expDoc.related_documents.length === 0) {
-        expDoc.exp_document_status.exp_document_status_code = "MIA";
+        expDoc.expected_document_status.exp_document_status_code = "MIA";
         expDoc.received_date = null;
       }
 
       this.props.updateExpectedDocument(expDoc.exp_document_guid, expDoc).then(() => {
         this.props.closeModal();
-        this.props.fetchMineRecordById(this.props.mine.guid);
+        this.props.fetchMineRecordById(this.props.mine.mine_guid);
       });
     });
   };

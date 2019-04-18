@@ -50,7 +50,7 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
         if permit_amendment_guid:
             permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
             if not permit_amendment:
-                raise NotFound("Permit Amendment not found")
+                raise NotFound("Permit Amendment not found.")
             result = permit_amendment.json()
 
         elif permit_guid:

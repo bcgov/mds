@@ -57,30 +57,16 @@ export class MineSearch extends Component {
     }
   };
 
-  /**
-   * filter mineList with new search input;
-   */
-  handleSearch = (value = {}) => {
-    const { commodity, region, status, tenure, tsf, major, search } = value;
-
-    this.props.handleMineSearch({
-      search,
-      tsf,
-      major,
-      commodity: commodity && commodity.join(","),
-      region: region && region.join(","),
-      status: status && status.join(","),
-      tenure: tenure && tenure.join(","),
-    });
-  };
-
   toggleAdvancedSearch = () => {
     this.setState((prevState) => ({ isAdvanceSearch: !prevState.isAdvanceSearch }));
   };
 
   transformData = (data) =>
-    data.map(({ longitude = "", latitude = "", mine_name = "", mine_no = "", guid }) => (
-      <AutoComplete.Option key={guid} value={`${longitude},${latitude},${mine_name},${guid}`}>
+    data.map(({ longitude = "", latitude = "", mine_name = "", mine_no = "", mine_guid }) => (
+      <AutoComplete.Option
+        key={mine_guid}
+        value={`${longitude},${latitude},${mine_name},${mine_guid}`}
+      >
         {`${mine_name} - ${mine_no}`}
       </AutoComplete.Option>
     ));
@@ -103,10 +89,10 @@ export class MineSearch extends Component {
             <span className="advanced-search__container">
               <AdvancedMineSearchForm
                 {...this.props}
-                onSubmit={this.handleSearch}
+                onSubmit={this.props.handleMineSearch}
                 toggleAdvancedSearch={this.toggleAdvancedSearch}
                 isAdvanceSearch={this.state.isAdvanceSearch}
-                handleSearch={this.handleSearch}
+                handleSearch={this.props.handleMineSearch}
               />
             </span>
           </Col>

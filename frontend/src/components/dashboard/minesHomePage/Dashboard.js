@@ -2,14 +2,18 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Element, scroller } from "react-scroll";
-import { debounce } from "lodash";
+import { debounce, isEmpty } from "lodash";
 import PropTypes from "prop-types";
 import { Tabs, Col, Divider, notification } from "antd";
 import queryString from "query-string";
 import { openModal, closeModal } from "@/actions/modalActions";
 import CustomPropTypes from "@/customPropTypes";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
-import { fetchMineRecords, createMineRecord } from "@/actionCreators/mineActionCreator";
+import {
+  fetchMineRecords,
+  createMineRecord,
+  fetchMineRecordsForMap,
+} from "@/actionCreators/mineActionCreator";
 import {
   fetchStatusOptions,
   fetchRegionOptions,
@@ -53,6 +57,7 @@ const { TabPane } = Tabs;
 
 const propTypes = {
   fetchMineRecords: PropTypes.func.isRequired,
+  fetchMineRecordsForMap: PropTypes.func.isRequired,
   createMineRecord: PropTypes.func.isRequired,
   fetchStatusOptions: PropTypes.func.isRequired,
   setOptionsLoaded: PropTypes.func.isRequired,
@@ -68,6 +73,21 @@ const propTypes = {
   optionsLoaded: PropTypes.bool.isRequired,
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
 };
+
+const joinOrRemove = (param, key) => (isEmpty(param) ? {} : { [key]: param.join(",") });
+const formatParams = ({
+  commodity = [],
+  region = [],
+  status = [],
+  tenure = [],
+  ...remainingParams
+}) => ({
+  ...joinOrRemove(commodity, "commodity"),
+  ...joinOrRemove(region, "region"),
+  ...joinOrRemove(status, "status"),
+  ...joinOrRemove(tenure, "tenure"),
+  ...remainingParams,
+});
 
 export class Dashboard extends Component {
   constructor(props) {
@@ -156,24 +176,24 @@ export class Dashboard extends Component {
         ...remainingParams,
       },
     });
-    this.props.fetchMineRecords(params).then(() => {
-      this.setState({ mineList: true });
-    });
+    if (remainingParams.map) {
+      this.props.fetchMineRecordsForMap().then(() => {
+        this.setState({ mineList: true });
+      });
+    } else {
+      this.props.fetchMineRecords(params).then(() => {
+        this.setState({ mineList: true });
+      });
+    }
   };
 
   onPageChange = (page, per_page) => {
-    const { major, tsf, search, status, region, tenure, commodity } = this.state.params;
     this.props.history.push(
       router.MINE_HOME_PAGE.dynamicRoute({
+        ...formatParams(this.state.params),
+        // Overwrite current page/per_page with values provided
         page,
         per_page,
-        major,
-        tsf,
-        search,
-        status: status && status.join(","),
-        region: region && region.join(","),
-        tenure: tenure && tenure.join(","),
-        commodity: commodity && commodity.join(","),
       })
     );
   };
@@ -234,13 +254,21 @@ export class Dashboard extends Component {
     }
   };
 
-  handleMineSearch = (searchParams) => {
-    const per_page = this.state.params.per_page
-      ? this.state.params.per_page
-      : String.DEFAULT_PER_PAGE;
-    // reset page when a search is initiated
+  handleMineSearch = (searchParams, clear = false) => {
+    const formattedSearchParams = formatParams(searchParams);
+    const persistedParams = clear ? {} : formatParams(this.state.params);
+
     this.props.history.push(
-      router.MINE_HOME_PAGE.dynamicRoute({ page: String.DEFAULT_PAGE, per_page, ...searchParams })
+      router.MINE_HOME_PAGE.dynamicRoute({
+        // Start from existing state
+        ...persistedParams,
+        // Overwrite prev params with any newly provided search params
+        ...formattedSearchParams,
+        // Reset page number
+        page: String.DEFAULT_PAGE,
+        // Retain per_page if present
+        per_page: this.state.params.per_page ? this.state.params.per_page : String.DEFAULT_PER_PAGE,
+      })
     );
   };
 
@@ -290,7 +318,16 @@ export class Dashboard extends Component {
                 searchValue={search}
               />
               <div className="tab__content ">
-                <MineList {...this.props} />
+                <MineList
+                  mines={this.props.mines}
+                  mineIds={this.props.mineIds}
+                  mineRegionHash={this.props.mineRegionHash}
+                  mineTenureHash={this.props.mineTenureHash}
+                  mineCommodityOptionsHash={this.props.mineCommodityOptionsHash}
+                  handleMineSearch={this.handleMineSearch}
+                  sortField={this.state.params.sort_field}
+                  sortDir={this.state.params.sort_dir}
+                />
               </div>
               <div className="center">
                 <ResponsivePagination
@@ -407,6 +444,7 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchMineRecords,
+      fetchMineRecordsForMap,
       fetchStatusOptions,
       fetchRegionOptions,
       createMineRecord,

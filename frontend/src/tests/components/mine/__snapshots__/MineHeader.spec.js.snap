@@ -8,14 +8,13 @@ ShallowWrapper {
     fetchMineRecordById={[MockFunction]}
     mine={
       Object {
-        "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
         "mine_expected_documents": Array [
           Object {
             "date_created": "2018-11-19",
             "due_date": "",
             "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
             "exp_document_name": "OMS Manual",
-            "exp_document_status": Object {
+            "expected_document_status": Object {
               "description": "Not Received",
               "exp_document_status_code": "MIA",
             },
@@ -24,6 +23,7 @@ ShallowWrapper {
             "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
           },
         ],
+        "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
         "mine_location": Object {
           "latitude": null,
           "longitude": null,
@@ -31,6 +31,7 @@ ShallowWrapper {
         "mine_name": "mine3",
         "mine_no": "BLAH9091",
         "mine_permit": Array [],
+        "mine_region": "NE",
         "mine_status": Object {
           "effective_date": "2018-10-16",
           "expiry_date": "9999-12-31",
@@ -43,7 +44,7 @@ ShallowWrapper {
             "CM",
           ],
         },
-        "mine_tailings_storage_facility": Array [
+        "mine_tailings_storage_facilities": Array [
           Object {
             "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
             "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
@@ -63,7 +64,6 @@ ShallowWrapper {
             "tenure_number_id": "1234567",
           },
         ],
-        "region_code": "NE",
       }
     }
     mineRegionHash={
@@ -250,12 +250,7 @@ ShallowWrapper {
                 mouseEnterDelay={0.15}
                 mouseLeaveDelay={0.1}
                 overlay={
-                  <Menu
-                    className=""
-                    focusable={false}
-                    prefixCls="ant-menu"
-                    theme="light"
-                  >
+                  <Menu>
                     <MenuItem>
                       <button
                         className="full"
@@ -308,7 +303,6 @@ ShallowWrapper {
                           okType="primary"
                           onConfirm={[Function]}
                           placement="left"
-                          prefixCls="ant-popover"
                           title="Are you sure?"
                           transitionName="zoom-big"
                           trigger="click"
@@ -348,7 +342,6 @@ ShallowWrapper {
                           okType="primary"
                           onConfirm={[Function]}
                           placement="left"
-                          prefixCls="ant-popover"
                           title="Are you sure?"
                           transitionName="zoom-big"
                           trigger="click"
@@ -375,13 +368,12 @@ ShallowWrapper {
                   </Menu>
                 }
                 placement="bottomLeft"
-                prefixCls="ant-dropdown"
               >
                 <Button
                   block={false}
                   ghost={false}
+                  htmlType="button"
                   loading={false}
-                  prefixCls="ant-btn"
                   type="primary"
                 >
                   <div
@@ -520,14 +512,13 @@ ShallowWrapper {
             long={null}
             mine={
               Object {
-                "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                 "mine_expected_documents": Array [
                   Object {
                     "date_created": "2018-11-19",
                     "due_date": "",
                     "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
                     "exp_document_name": "OMS Manual",
-                    "exp_document_status": Object {
+                    "expected_document_status": Object {
                       "description": "Not Received",
                       "exp_document_status_code": "MIA",
                     },
@@ -536,6 +527,7 @@ ShallowWrapper {
                     "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
                   },
                 ],
+                "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                 "mine_location": Object {
                   "latitude": null,
                   "longitude": null,
@@ -543,6 +535,7 @@ ShallowWrapper {
                 "mine_name": "mine3",
                 "mine_no": "BLAH9091",
                 "mine_permit": Array [],
+                "mine_region": "NE",
                 "mine_status": Object {
                   "effective_date": "2018-10-16",
                   "expiry_date": "9999-12-31",
@@ -555,7 +548,7 @@ ShallowWrapper {
                     "CM",
                   ],
                 },
-                "mine_tailings_storage_facility": Array [
+                "mine_tailings_storage_facilities": Array [
                   Object {
                     "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                     "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
@@ -575,7 +568,6 @@ ShallowWrapper {
                     "tenure_number_id": "1234567",
                   },
                 ],
-                "region_code": "NE",
               }
             }
           />
@@ -634,12 +626,7 @@ ShallowWrapper {
                   mouseEnterDelay={0.15}
                   mouseLeaveDelay={0.1}
                   overlay={
-                    <Menu
-                      className=""
-                      focusable={false}
-                      prefixCls="ant-menu"
-                      theme="light"
-                    >
+                    <Menu>
                       <MenuItem>
                         <button
                           className="full"
@@ -692,7 +679,6 @@ ShallowWrapper {
                             okType="primary"
                             onConfirm={[Function]}
                             placement="left"
-                            prefixCls="ant-popover"
                             title="Are you sure?"
                             transitionName="zoom-big"
                             trigger="click"
@@ -732,7 +718,6 @@ ShallowWrapper {
                             okType="primary"
                             onConfirm={[Function]}
                             placement="left"
-                            prefixCls="ant-popover"
                             title="Are you sure?"
                             transitionName="zoom-big"
                             trigger="click"
@@ -759,13 +744,12 @@ ShallowWrapper {
                     </Menu>
                   }
                   placement="bottomLeft"
-                  prefixCls="ant-dropdown"
                 >
                   <Button
                     block={false}
                     ghost={false}
+                    htmlType="button"
                     loading={false}
-                    prefixCls="ant-btn"
                     type="primary"
                   >
                     <div
@@ -920,12 +904,7 @@ ShallowWrapper {
                     mouseEnterDelay={0.15}
                     mouseLeaveDelay={0.1}
                     overlay={
-                      <Menu
-                        className=""
-                        focusable={false}
-                        prefixCls="ant-menu"
-                        theme="light"
-                      >
+                      <Menu>
                         <MenuItem>
                           <button
                             className="full"
@@ -978,7 +957,6 @@ ShallowWrapper {
                               okType="primary"
                               onConfirm={[Function]}
                               placement="left"
-                              prefixCls="ant-popover"
                               title="Are you sure?"
                               transitionName="zoom-big"
                               trigger="click"
@@ -1018,7 +996,6 @@ ShallowWrapper {
                               okType="primary"
                               onConfirm={[Function]}
                               placement="left"
-                              prefixCls="ant-popover"
                               title="Are you sure?"
                               transitionName="zoom-big"
                               trigger="click"
@@ -1045,13 +1022,12 @@ ShallowWrapper {
                       </Menu>
                     }
                     placement="bottomLeft"
-                    prefixCls="ant-dropdown"
                   >
                     <Button
                       block={false}
                       ghost={false}
+                      htmlType="button"
                       loading={false}
-                      prefixCls="ant-btn"
                       type="primary"
                     >
                       <div
@@ -1105,12 +1081,7 @@ ShallowWrapper {
                     mouseEnterDelay={0.15}
                     mouseLeaveDelay={0.1}
                     overlay={
-                      <Menu
-                        className=""
-                        focusable={false}
-                        prefixCls="ant-menu"
-                        theme="light"
-                      >
+                      <Menu>
                         <MenuItem>
                           <button
                             className="full"
@@ -1163,7 +1134,6 @@ ShallowWrapper {
                               okType="primary"
                               onConfirm={[Function]}
                               placement="left"
-                              prefixCls="ant-popover"
                               title="Are you sure?"
                               transitionName="zoom-big"
                               trigger="click"
@@ -1203,7 +1173,6 @@ ShallowWrapper {
                               okType="primary"
                               onConfirm={[Function]}
                               placement="left"
-                              prefixCls="ant-popover"
                               title="Are you sure?"
                               transitionName="zoom-big"
                               trigger="click"
@@ -1230,13 +1199,12 @@ ShallowWrapper {
                       </Menu>
                     }
                     placement="bottomLeft"
-                    prefixCls="ant-dropdown"
                   >
                     <Button
                       block={false}
                       ghost={false}
+                      htmlType="button"
                       loading={false}
-                      prefixCls="ant-btn"
                       type="primary"
                     >
                       <div
@@ -1267,8 +1235,8 @@ ShallowWrapper {
                     "children": <Button
                       block={false}
                       ghost={false}
+                      htmlType="button"
                       loading={false}
-                      prefixCls="ant-btn"
                       type="primary"
                     >
                       <div
@@ -1289,12 +1257,7 @@ ShallowWrapper {
                     "className": "full-height full-mobile",
                     "mouseEnterDelay": 0.15,
                     "mouseLeaveDelay": 0.1,
-                    "overlay": <Menu
-                      className=""
-                      focusable={false}
-                      prefixCls="ant-menu"
-                      theme="light"
-                    >
+                    "overlay": <Menu>
                       <MenuItem>
                         <button
                           className="full"
@@ -1347,7 +1310,6 @@ ShallowWrapper {
                             okType="primary"
                             onConfirm={[Function]}
                             placement="left"
-                            prefixCls="ant-popover"
                             title="Are you sure?"
                             transitionName="zoom-big"
                             trigger="click"
@@ -1387,7 +1349,6 @@ ShallowWrapper {
                             okType="primary"
                             onConfirm={[Function]}
                             placement="left"
-                            prefixCls="ant-popover"
                             title="Are you sure?"
                             transitionName="zoom-big"
                             trigger="click"
@@ -1413,7 +1374,6 @@ ShallowWrapper {
                       </Connect(AuthorizationWrapper)>
                     </Menu>,
                     "placement": "bottomLeft",
-                    "prefixCls": "ant-dropdown",
                   },
                   "ref": null,
                   "rendered": Object {
@@ -1437,8 +1397,8 @@ ShallowWrapper {
                         Add/Edit
                       </div>,
                       "ghost": false,
+                      "htmlType": "button",
                       "loading": false,
-                      "prefixCls": "ant-btn",
                       "type": "primary",
                     },
                     "ref": null,
@@ -1967,14 +1927,13 @@ ShallowWrapper {
               long={null}
               mine={
                 Object {
-                  "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                   "mine_expected_documents": Array [
                     Object {
                       "date_created": "2018-11-19",
                       "due_date": "",
                       "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
                       "exp_document_name": "OMS Manual",
-                      "exp_document_status": Object {
+                      "expected_document_status": Object {
                         "description": "Not Received",
                         "exp_document_status_code": "MIA",
                       },
@@ -1983,6 +1942,7 @@ ShallowWrapper {
                       "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
                     },
                   ],
+                  "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                   "mine_location": Object {
                     "latitude": null,
                     "longitude": null,
@@ -1990,6 +1950,7 @@ ShallowWrapper {
                   "mine_name": "mine3",
                   "mine_no": "BLAH9091",
                   "mine_permit": Array [],
+                  "mine_region": "NE",
                   "mine_status": Object {
                     "effective_date": "2018-10-16",
                     "expiry_date": "9999-12-31",
@@ -2002,7 +1963,7 @@ ShallowWrapper {
                       "CM",
                     ],
                   },
-                  "mine_tailings_storage_facility": Array [
+                  "mine_tailings_storage_facilities": Array [
                     Object {
                       "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                       "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
@@ -2022,7 +1983,6 @@ ShallowWrapper {
                       "tenure_number_id": "1234567",
                     },
                   ],
-                  "region_code": "NE",
                 }
               }
             />,
@@ -2066,14 +2026,13 @@ ShallowWrapper {
               "lat": null,
               "long": null,
               "mine": Object {
-                "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                 "mine_expected_documents": Array [
                   Object {
                     "date_created": "2018-11-19",
                     "due_date": "",
                     "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
                     "exp_document_name": "OMS Manual",
-                    "exp_document_status": Object {
+                    "expected_document_status": Object {
                       "description": "Not Received",
                       "exp_document_status_code": "MIA",
                     },
@@ -2082,6 +2041,7 @@ ShallowWrapper {
                     "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
                   },
                 ],
+                "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                 "mine_location": Object {
                   "latitude": null,
                   "longitude": null,
@@ -2089,6 +2049,7 @@ ShallowWrapper {
                 "mine_name": "mine3",
                 "mine_no": "BLAH9091",
                 "mine_permit": Array [],
+                "mine_region": "NE",
                 "mine_status": Object {
                   "effective_date": "2018-10-16",
                   "expiry_date": "9999-12-31",
@@ -2101,7 +2062,7 @@ ShallowWrapper {
                     "CM",
                   ],
                 },
-                "mine_tailings_storage_facility": Array [
+                "mine_tailings_storage_facilities": Array [
                   Object {
                     "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                     "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
@@ -2121,7 +2082,6 @@ ShallowWrapper {
                     "tenure_number_id": "1234567",
                   },
                 ],
-                "region_code": "NE",
               },
             },
             "ref": null,
@@ -2283,12 +2243,7 @@ ShallowWrapper {
                   mouseEnterDelay={0.15}
                   mouseLeaveDelay={0.1}
                   overlay={
-                    <Menu
-                      className=""
-                      focusable={false}
-                      prefixCls="ant-menu"
-                      theme="light"
-                    >
+                    <Menu>
                       <MenuItem>
                         <button
                           className="full"
@@ -2341,7 +2296,6 @@ ShallowWrapper {
                             okType="primary"
                             onConfirm={[Function]}
                             placement="left"
-                            prefixCls="ant-popover"
                             title="Are you sure?"
                             transitionName="zoom-big"
                             trigger="click"
@@ -2381,7 +2335,6 @@ ShallowWrapper {
                             okType="primary"
                             onConfirm={[Function]}
                             placement="left"
-                            prefixCls="ant-popover"
                             title="Are you sure?"
                             transitionName="zoom-big"
                             trigger="click"
@@ -2408,13 +2361,12 @@ ShallowWrapper {
                     </Menu>
                   }
                   placement="bottomLeft"
-                  prefixCls="ant-dropdown"
                 >
                   <Button
                     block={false}
                     ghost={false}
+                    htmlType="button"
                     loading={false}
-                    prefixCls="ant-btn"
                     type="primary"
                   >
                     <div
@@ -2553,14 +2505,13 @@ ShallowWrapper {
               long={null}
               mine={
                 Object {
-                  "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                   "mine_expected_documents": Array [
                     Object {
                       "date_created": "2018-11-19",
                       "due_date": "",
                       "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
                       "exp_document_name": "OMS Manual",
-                      "exp_document_status": Object {
+                      "expected_document_status": Object {
                         "description": "Not Received",
                         "exp_document_status_code": "MIA",
                       },
@@ -2569,6 +2520,7 @@ ShallowWrapper {
                       "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
                     },
                   ],
+                  "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                   "mine_location": Object {
                     "latitude": null,
                     "longitude": null,
@@ -2576,6 +2528,7 @@ ShallowWrapper {
                   "mine_name": "mine3",
                   "mine_no": "BLAH9091",
                   "mine_permit": Array [],
+                  "mine_region": "NE",
                   "mine_status": Object {
                     "effective_date": "2018-10-16",
                     "expiry_date": "9999-12-31",
@@ -2588,7 +2541,7 @@ ShallowWrapper {
                       "CM",
                     ],
                   },
-                  "mine_tailings_storage_facility": Array [
+                  "mine_tailings_storage_facilities": Array [
                     Object {
                       "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                       "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
@@ -2608,7 +2561,6 @@ ShallowWrapper {
                       "tenure_number_id": "1234567",
                     },
                   ],
-                  "region_code": "NE",
                 }
               }
             />
@@ -2667,12 +2619,7 @@ ShallowWrapper {
                     mouseEnterDelay={0.15}
                     mouseLeaveDelay={0.1}
                     overlay={
-                      <Menu
-                        className=""
-                        focusable={false}
-                        prefixCls="ant-menu"
-                        theme="light"
-                      >
+                      <Menu>
                         <MenuItem>
                           <button
                             className="full"
@@ -2725,7 +2672,6 @@ ShallowWrapper {
                               okType="primary"
                               onConfirm={[Function]}
                               placement="left"
-                              prefixCls="ant-popover"
                               title="Are you sure?"
                               transitionName="zoom-big"
                               trigger="click"
@@ -2765,7 +2711,6 @@ ShallowWrapper {
                               okType="primary"
                               onConfirm={[Function]}
                               placement="left"
-                              prefixCls="ant-popover"
                               title="Are you sure?"
                               transitionName="zoom-big"
                               trigger="click"
@@ -2792,13 +2737,12 @@ ShallowWrapper {
                       </Menu>
                     }
                     placement="bottomLeft"
-                    prefixCls="ant-dropdown"
                   >
                     <Button
                       block={false}
                       ghost={false}
+                      htmlType="button"
                       loading={false}
-                      prefixCls="ant-btn"
                       type="primary"
                     >
                       <div
@@ -2953,12 +2897,7 @@ ShallowWrapper {
                       mouseEnterDelay={0.15}
                       mouseLeaveDelay={0.1}
                       overlay={
-                        <Menu
-                          className=""
-                          focusable={false}
-                          prefixCls="ant-menu"
-                          theme="light"
-                        >
+                        <Menu>
                           <MenuItem>
                             <button
                               className="full"
@@ -3011,7 +2950,6 @@ ShallowWrapper {
                                 okType="primary"
                                 onConfirm={[Function]}
                                 placement="left"
-                                prefixCls="ant-popover"
                                 title="Are you sure?"
                                 transitionName="zoom-big"
                                 trigger="click"
@@ -3051,7 +2989,6 @@ ShallowWrapper {
                                 okType="primary"
                                 onConfirm={[Function]}
                                 placement="left"
-                                prefixCls="ant-popover"
                                 title="Are you sure?"
                                 transitionName="zoom-big"
                                 trigger="click"
@@ -3078,13 +3015,12 @@ ShallowWrapper {
                         </Menu>
                       }
                       placement="bottomLeft"
-                      prefixCls="ant-dropdown"
                     >
                       <Button
                         block={false}
                         ghost={false}
+                        htmlType="button"
                         loading={false}
-                        prefixCls="ant-btn"
                         type="primary"
                       >
                         <div
@@ -3138,12 +3074,7 @@ ShallowWrapper {
                       mouseEnterDelay={0.15}
                       mouseLeaveDelay={0.1}
                       overlay={
-                        <Menu
-                          className=""
-                          focusable={false}
-                          prefixCls="ant-menu"
-                          theme="light"
-                        >
+                        <Menu>
                           <MenuItem>
                             <button
                               className="full"
@@ -3196,7 +3127,6 @@ ShallowWrapper {
                                 okType="primary"
                                 onConfirm={[Function]}
                                 placement="left"
-                                prefixCls="ant-popover"
                                 title="Are you sure?"
                                 transitionName="zoom-big"
                                 trigger="click"
@@ -3236,7 +3166,6 @@ ShallowWrapper {
                                 okType="primary"
                                 onConfirm={[Function]}
                                 placement="left"
-                                prefixCls="ant-popover"
                                 title="Are you sure?"
                                 transitionName="zoom-big"
                                 trigger="click"
@@ -3263,13 +3192,12 @@ ShallowWrapper {
                         </Menu>
                       }
                       placement="bottomLeft"
-                      prefixCls="ant-dropdown"
                     >
                       <Button
                         block={false}
                         ghost={false}
+                        htmlType="button"
                         loading={false}
-                        prefixCls="ant-btn"
                         type="primary"
                       >
                         <div
@@ -3300,8 +3228,8 @@ ShallowWrapper {
                       "children": <Button
                         block={false}
                         ghost={false}
+                        htmlType="button"
                         loading={false}
-                        prefixCls="ant-btn"
                         type="primary"
                       >
                         <div
@@ -3322,12 +3250,7 @@ ShallowWrapper {
                       "className": "full-height full-mobile",
                       "mouseEnterDelay": 0.15,
                       "mouseLeaveDelay": 0.1,
-                      "overlay": <Menu
-                        className=""
-                        focusable={false}
-                        prefixCls="ant-menu"
-                        theme="light"
-                      >
+                      "overlay": <Menu>
                         <MenuItem>
                           <button
                             className="full"
@@ -3380,7 +3303,6 @@ ShallowWrapper {
                               okType="primary"
                               onConfirm={[Function]}
                               placement="left"
-                              prefixCls="ant-popover"
                               title="Are you sure?"
                               transitionName="zoom-big"
                               trigger="click"
@@ -3420,7 +3342,6 @@ ShallowWrapper {
                               okType="primary"
                               onConfirm={[Function]}
                               placement="left"
-                              prefixCls="ant-popover"
                               title="Are you sure?"
                               transitionName="zoom-big"
                               trigger="click"
@@ -3446,7 +3367,6 @@ ShallowWrapper {
                         </Connect(AuthorizationWrapper)>
                       </Menu>,
                       "placement": "bottomLeft",
-                      "prefixCls": "ant-dropdown",
                     },
                     "ref": null,
                     "rendered": Object {
@@ -3470,8 +3390,8 @@ ShallowWrapper {
                           Add/Edit
                         </div>,
                         "ghost": false,
+                        "htmlType": "button",
                         "loading": false,
-                        "prefixCls": "ant-btn",
                         "type": "primary",
                       },
                       "ref": null,
@@ -4000,14 +3920,13 @@ ShallowWrapper {
                 long={null}
                 mine={
                   Object {
-                    "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                     "mine_expected_documents": Array [
                       Object {
                         "date_created": "2018-11-19",
                         "due_date": "",
                         "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
                         "exp_document_name": "OMS Manual",
-                        "exp_document_status": Object {
+                        "expected_document_status": Object {
                           "description": "Not Received",
                           "exp_document_status_code": "MIA",
                         },
@@ -4016,6 +3935,7 @@ ShallowWrapper {
                         "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
                       },
                     ],
+                    "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                     "mine_location": Object {
                       "latitude": null,
                       "longitude": null,
@@ -4023,6 +3943,7 @@ ShallowWrapper {
                     "mine_name": "mine3",
                     "mine_no": "BLAH9091",
                     "mine_permit": Array [],
+                    "mine_region": "NE",
                     "mine_status": Object {
                       "effective_date": "2018-10-16",
                       "expiry_date": "9999-12-31",
@@ -4035,7 +3956,7 @@ ShallowWrapper {
                         "CM",
                       ],
                     },
-                    "mine_tailings_storage_facility": Array [
+                    "mine_tailings_storage_facilities": Array [
                       Object {
                         "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                         "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
@@ -4055,7 +3976,6 @@ ShallowWrapper {
                         "tenure_number_id": "1234567",
                       },
                     ],
-                    "region_code": "NE",
                   }
                 }
               />,
@@ -4099,14 +4019,13 @@ ShallowWrapper {
                 "lat": null,
                 "long": null,
                 "mine": Object {
-                  "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                   "mine_expected_documents": Array [
                     Object {
                       "date_created": "2018-11-19",
                       "due_date": "",
                       "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
                       "exp_document_name": "OMS Manual",
-                      "exp_document_status": Object {
+                      "expected_document_status": Object {
                         "description": "Not Received",
                         "exp_document_status_code": "MIA",
                       },
@@ -4115,6 +4034,7 @@ ShallowWrapper {
                       "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
                     },
                   ],
+                  "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                   "mine_location": Object {
                     "latitude": null,
                     "longitude": null,
@@ -4122,6 +4042,7 @@ ShallowWrapper {
                   "mine_name": "mine3",
                   "mine_no": "BLAH9091",
                   "mine_permit": Array [],
+                  "mine_region": "NE",
                   "mine_status": Object {
                     "effective_date": "2018-10-16",
                     "expiry_date": "9999-12-31",
@@ -4134,7 +4055,7 @@ ShallowWrapper {
                       "CM",
                     ],
                   },
-                  "mine_tailings_storage_facility": Array [
+                  "mine_tailings_storage_facilities": Array [
                     Object {
                       "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                       "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
@@ -4154,7 +4075,6 @@ ShallowWrapper {
                       "tenure_number_id": "1234567",
                     },
                   ],
-                  "region_code": "NE",
                 },
               },
               "ref": null,
