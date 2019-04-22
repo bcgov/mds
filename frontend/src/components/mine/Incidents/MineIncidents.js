@@ -9,11 +9,7 @@ import { modalConfig } from "@/components/modalContent/config";
 import AddButton from "@/components/common/AddButton";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
-import {
-  fetchMineIncidents,
-  createMineIncident,
-  updateMineIncident,
-} from "@/actionCreators/mineActionCreator";
+import { fetchMineIncidents, createMineIncident } from "@/actionCreators/mineActionCreator";
 import { getMineIncidents } from "@/selectors/mineSelectors";
 import {
   getIncidentFollowupActionOptions,
@@ -25,6 +21,7 @@ import MineIncidentTable from "./MineIncidentTable";
 /**
  * @class  MineTailingsInfo - all tenure information related to the mine.
  */
+
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   mineIncidents: PropTypes.arrayOf(CustomPropTypes.incident),
@@ -34,7 +31,6 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   fetchMineIncidents: PropTypes.func.isRequired,
   createMineIncident: PropTypes.func.isRequired,
-  updateMineIncident: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -55,18 +51,10 @@ export class MineIncidents extends Component {
     });
   };
 
-  handleEditMineIncident = (values) => {
-    this.props.updateMineIncident(values.mine_incident_guid, values).then(() => {
-      this.props.closeModal();
-      this.props.fetchMineIncidents(this.props.mine.mine_guid);
-    });
-  };
-
-  openMineIncidentModal = (event, handleSubmit, existingIncident = {}) => {
+  openMineIncidentModal = (event) => {
     event.preventDefault();
     this.props.openModal({
       props: {
-        initialValues: existingIncident,
         onSubmit: this.handleAddMineIncident,
         title: ModalContent.ADD_INCIDENT(this.props.mine.mine_name),
         mineGuid: this.props.mine.mine_guid,
@@ -82,9 +70,7 @@ export class MineIncidents extends Component {
       <div>
         <div className="inline-flex flex-end">
           <AuthorizationWrapper permission={Permission.CREATE}>
-            <AddButton
-              onClick={(event) => this.openMineIncidentModal(event, this.handleAddMineIncident)}
-            >
+            <AddButton onClick={(event) => this.openMineIncidentModal(event)}>
               Record a Mine Incident
             </AddButton>
           </AuthorizationWrapper>
@@ -92,8 +78,6 @@ export class MineIncidents extends Component {
         <MineIncidentTable
           incidents={this.props.mineIncidents}
           followupActions={this.props.followupActions}
-          openMineIncidentModal={this.openMineIncidentModal}
-          handleEditMineIncident={this.handleEditMineIncident}
         />
       </div>
     );
@@ -111,7 +95,6 @@ const mapDispatchToProps = (dispatch) =>
     {
       fetchMineIncidents,
       createMineIncident,
-      updateMineIncident,
     },
     dispatch
   );
