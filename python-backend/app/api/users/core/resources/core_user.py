@@ -48,7 +48,7 @@ class CoreUserListResource(Resource, UserMixin):
 
 
 class CoreUserResource(Resource, UserMixin):
-    parser = reqparse.RequestParser()
+    parser = reqparse.RequestParser(trim=True)
     parser.add_argument(
         'email', type=str, help='Users email address.', store_missing=False, location="form")
     parser.add_argument(

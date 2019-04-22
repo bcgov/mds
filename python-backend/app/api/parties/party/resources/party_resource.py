@@ -36,6 +36,7 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
         type=str,
         help='The extension of the phone number. Ex: 1234',
         store_missing=False)
+    parser.add_argument('email', type=str, help='The email of the party.', store_missing=False)
     parser.add_argument(
         'email', type=str, help='The email of the party.', store_missing=False)
     parser.add_argument(

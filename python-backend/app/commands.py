@@ -25,6 +25,8 @@ from .scheduled_jobs import NRIS_jobs
 from .scheduled_jobs import ETL_jobs
 from app import auth
 
+from tests.factories import MineIncidentFactory
+
 from app.api.utils.include.user_info import User
 
 
@@ -127,6 +129,7 @@ def register_commands(app):
                 create_multiple_mine_tenure(random.randint(0, 4), mine)
                 create_multiple_permit_permittees(
                     random.randint(0, 6), mine, party, prev_party_guid)
+                MineIncidentFactory(mine_guid=mine.mine_guid)
 
             try:
                 db.session.commit()
