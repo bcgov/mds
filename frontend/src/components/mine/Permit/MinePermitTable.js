@@ -359,6 +359,7 @@ export const MinePermitTable = (props) => {
       pagination={false}
       columns={columns}
       dataSource={rowData}
+      expandRowByClick
       expandedRowRender={amendmentHistory}
       locale={{ emptyText: <NullScreen type="permit" /> }}
     />

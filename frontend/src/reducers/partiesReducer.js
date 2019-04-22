@@ -9,11 +9,13 @@ import { createItemMap, createItemIdsArray, createDropDownList } from "@/utils/h
 
 const initialState = {
   parties: {},
-  rawParties: {},
+  rawParties: [],
   partyIds: [],
   partyRelationshipTypes: [],
   partyRelationships: [],
   partyPageData: {},
+  addPartyFormState: {},
+  lastCreatedParty: {},
 };
 
 const partiesReducer = (state = initialState, action) => {
@@ -43,6 +45,17 @@ const partiesReducer = (state = initialState, action) => {
         ...state,
         partyRelationships: action.payload,
       };
+    case actionTypes.STORE_ADD_PARTY_FORM_STATE:
+      return {
+        ...state,
+        addPartyFormState: action.payload,
+      };
+    case actionTypes.STORE_LAST_CREATED_PARTY:
+      return {
+        ...state,
+        lastCreatedParty: action.payload,
+        rawParties: [action.payload],
+      };
     default:
       return state;
   }
@@ -60,5 +73,7 @@ export const getPartyRelationshipTypesList = (state) =>
   );
 export const getPartyRelationships = (state) => state[PARTIES].partyRelationships;
 export const getPartyPageData = (state) => state[PARTIES].partyPageData;
+export const getAddPartyFormState = (state) => state[PARTIES].addPartyFormState;
+export const getLastCreatedParty = (state) => state[PARTIES].lastCreatedParty;
 
 export default partiesReducer;

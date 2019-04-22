@@ -4,9 +4,8 @@ import { compose } from "redux";
 import { remove } from "lodash";
 import PropTypes from "prop-types";
 import { Field, reduxForm, change, formValueSelector } from "redux-form";
-import RenderField from "@/components/common/RenderField";
-import RenderSelect from "@/components/common/RenderSelect";
-import RenderDate from "@/components/common/RenderDate";
+import { renderConfig } from "@/components/common/config";
+import PartySelectField from "@/components/common/PartySelectField";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import { required, dateNotInFuture, maxLength } from "@/utils/Validate";
@@ -21,9 +20,9 @@ const propTypes = {
   permitStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
+  mine_guid: PropTypes.string.isRequired,
   permitTypeCode: PropTypes.string,
   permitActivityTypeCode: PropTypes.string,
-  mine_guid: PropTypes.string.isRequired,
   change: PropTypes.func,
 };
 
@@ -102,12 +101,22 @@ export class AddPermitForm extends Component {
         <Row gutter={48}>
           <Col md={12} sm={24} className="border--right--layout">
             <Form.Item>
+              <PartySelectField
+                id="party_guid"
+                name="party_guid"
+                label="Permittee*"
+                partyLabel="permittee"
+                validate={[required]}
+                allowAddingParties
+              />
+            </Form.Item>
+            <Form.Item>
               <Field
                 id="permit_type"
                 name="permit_type"
                 label="Permit type*"
                 placeholder="Select a permit type"
-                component={RenderSelect}
+                component={renderConfig.SELECT}
                 validate={[required]}
                 data={permitTypes}
               />
@@ -117,11 +126,11 @@ export class AddPermitForm extends Component {
               this.props.permitActivityTypeCode === "X") && (
               <Form.Item>
                 <Field
-                  id="permit activity type*"
+                  id="permit_activity_type"
                   name="permit_activity_type"
                   label="Permit activity type*"
                   placeholder="Select a permit activity type"
-                  component={RenderSelect}
+                  component={renderConfig.SELECT}
                   data={permitActivityTypes}
                 />
               </Form.Item>
@@ -131,7 +140,7 @@ export class AddPermitForm extends Component {
                 id="permit_no"
                 name="permit_no"
                 label="Permit number*"
-                component={RenderField}
+                component={renderConfig.FIELD}
                 validate={[required, maxLength(9)]}
                 inlineLabel={
                   this.props.permitTypeCode &&
@@ -145,7 +154,7 @@ export class AddPermitForm extends Component {
                 name="permit_status_code"
                 label="Permit status*"
                 placeholder="Select a permit status"
-                component={RenderSelect}
+                component={renderConfig.SELECT}
                 data={this.props.permitStatusOptions}
                 validate={[required]}
               />
@@ -155,7 +164,7 @@ export class AddPermitForm extends Component {
                 id="issue_date"
                 name="issue_date"
                 label="Issue date*"
-                component={RenderDate}
+                component={renderConfig.DATE}
                 validate={[required, dateNotInFuture]}
               />
             </Form.Item>

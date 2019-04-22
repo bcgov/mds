@@ -7,25 +7,28 @@ import { Form, AutoComplete, Input, Icon } from "antd";
  */
 
 const propTypes = {
-  input: PropTypes.shape({ value: PropTypes.string }).isRequired,
-  options: PropTypes.objectOf(PropTypes.any).isRequired,
-  data: PropTypes.arrayOf(PropTypes.string).isRequired,
+  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   label: PropTypes.string,
-  handleChange: PropTypes.func.isRequired,
   placeholder: PropTypes.string,
+  dataSource: PropTypes.arrayOf(PropTypes.any).isRequired,
+  selectedOption: PropTypes.shape({ key: PropTypes.string, label: PropTypes.label }).isRequired,
+  input: PropTypes.shape({ value: PropTypes.string, onChange: PropTypes.func }).isRequired,
+  meta: PropTypes.shape({
+    touched: PropTypes.bool,
+    error: PropTypes.string,
+    warning: PropTypes.string,
+  }).isRequired,
+  handleSearch: PropTypes.func,
+  handleSelect: PropTypes.func,
 };
 
+const doNothing = () => {};
 const defaultProps = {
   label: "",
   placeholder: "",
+  handleSelect: doNothing,
+  handleSearch: doNothing,
 };
-
-const transformData = (data, option) =>
-  data.map((opt) => (
-    <AutoComplete.Option key={opt} value={opt}>
-      {option[opt].name}
-    </AutoComplete.Option>
-  ));
 
 const RenderLargeSelect = (props) => (
   <Form.Item
@@ -40,22 +43,28 @@ const RenderLargeSelect = (props) => (
     }
   >
     <AutoComplete
-      getPopupContainer={() => document.getElementById(props.id)}
       id={props.id}
       defaultActiveFirstOption
       notFoundContent="Not Found"
       dropdownMatchSelectWidth
       backfill
       style={{ width: "100%" }}
-      dataSource={props.input.value.length > 0 ? transformData(props.data, props.options) : []}
+      dataSource={props.input.value.length > 0 ? props.dataSource : []}
       placeholder={props.placeholder}
       filterOption={(input, option) =>
+        option.key === "footer" ||
         option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
       }
-      onSearch={props.handleChange}
-      {...props.input}
+      onSearch={props.handleSearch}
+      onSelect={props.handleSelect}
+      onChange={props.input.onChange}
+      onBlur={props.input.onChange(props.selectedOption.key)}
+      value={props.selectedOption.key}
     >
-      <Input suffix={<Icon type="search" className="certain-category-icon" />} />
+      <Input
+        suffix={<Icon type="search" className="certain-category-icon" />}
+        value={props.selectedOption.label}
+      />
     </AutoComplete>
   </Form.Item>
 );

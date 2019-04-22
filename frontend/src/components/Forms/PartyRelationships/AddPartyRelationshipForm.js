@@ -2,20 +2,18 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { renderConfig } from "@/components/common/config";
+import PartySelectField from "@/components/common/PartySelectField";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
-import { required, validSearchSelection } from "@/utils/Validate";
+import { required } from "@/utils/Validate";
 import { EngineerOfRecordOptions } from "@/components/Forms/PartyRelationships/EngineerOfRecordOptions";
 import { PermitteeOptions } from "@/components/Forms/PartyRelationships/PermitteeOptions";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
-  handleChange: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  parties: PropTypes.arrayOf(CustomPropTypes.party).isRequired,
-  partyIds: PropTypes.arrayOf(PropTypes.string).isRequired,
   partyRelationshipType: CustomPropTypes.partyRelationshipType.isRequired,
   mine: CustomPropTypes.mine,
   submitting: PropTypes.bool.isRequired,
@@ -34,8 +32,6 @@ const validate = (values) => {
   }
   return errors;
 };
-
-const validParty = validSearchSelection({ key: "parties", err: "Invalid Party" });
 
 export const AddPartyRelationshipForm = (props) => {
   let options;
@@ -57,15 +53,11 @@ export const AddPartyRelationshipForm = (props) => {
       <Row gutter={16}>
         <Col md={24} xs={24}>
           <Form.Item>
-            <Field
+            <PartySelectField
               id="party_guid"
               name="party_guid"
-              label="Name *"
-              component={renderConfig.LARGE_SELECT}
-              data={props.partyIds}
-              options={props.parties}
-              validate={[required, validParty]}
-              handleChange={props.handleChange}
+              validate={[required]}
+              allowAddingParties
             />
           </Form.Item>
         </Col>
