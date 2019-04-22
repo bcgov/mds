@@ -26,6 +26,7 @@ const setupDispatchProps = () => {
   dispatchProps.fetchPermitStatusOptions = jest.fn(() => Promise.resolve());
   dispatchProps.fetchApplicationStatusOptions = jest.fn();
   dispatchProps.setOptionsLoaded = jest.fn();
+  dispatchProps.fetchCoreUsers = jest.fn();
   dispatchProps.match = {};
 };
 
@@ -41,6 +42,7 @@ const setupReducerProps = () => {
   reducerProps.mineDisturbanceOptions = MOCK.DISTURBANCE_OPTIONS;
   reducerProps.mineTenureTypes = MOCK.TENURE_TYPES.options;
   reducerProps.mineTenureHash = MOCK.TENURE_HASH;
+  reducerProps.coreUsers = MOCK.CORE_USERS.results;
 };
 
 beforeEach(() => {
