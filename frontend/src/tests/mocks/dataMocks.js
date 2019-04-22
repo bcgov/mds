@@ -1048,3 +1048,33 @@ export const APPLICATION_LIST = {
     },
   ],
 };
+
+export const INCIDENTS = {
+  mine_incidents: [
+    {
+      mine_incident_guid: "dc101155-de3e-4f37-8303-eb6a6d2d5866",
+      mine_incident_report_no: "2019-70",
+      mine_incident_id_year: 2019,
+      mine_guid: "3cfba01f-f8f3-4948-b488-d9e7a915f5ec",
+      incident_timestamp: "2019-04-06T00:34:44+00:00",
+      incident_description:
+        "Paper others interview development military short design often town participant church road daughter.",
+      reported_timestamp: "2019-03-17T17:42:37+00:00",
+      reported_by: "Robert Bell",
+      reported_by_role: "Investment banker, operational",
+      followup_type_code: "NOA",
+      followup_inspection_no: "721814",
+      closing_report_summary:
+        "Parent south person form evidence receive tree wide memory but medical car himself benefit key really series sea enter money prove if lawyer seven ready religious shake.",
+    },
+  ],
+};
+
+export const FOLLOWUP_ACTIONS = [
+  {
+    mine_incident_followup_type_code: "NOA",
+    description: "No Action",
+    display_order: 20,
+    active_ind: true,
+  },
+];

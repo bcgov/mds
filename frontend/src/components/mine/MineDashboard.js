@@ -25,6 +25,7 @@ import {
   fetchPermitStatusOptions,
   fetchApplicationStatusOptions,
   fetchMineComplianceCodes,
+  fetchMineIncidentFollowActionOptions,
   setOptionsLoaded,
 } from "@/actionCreators/staticContentActionCreator";
 import {
@@ -61,6 +62,7 @@ import MineTenureInfo from "@/components/mine/Tenure/MineTenureInfo";
 import MineTailingsInfo from "@/components/mine/Tailings/MineTailingsInfo";
 import MineSummary from "@/components/mine/Summary/MineSummary";
 import MineVariance from "@/components/mine/Variances/MineVariance";
+import MineIncidents from "@/components/mine/Incidents/MineIncidents";
 import MineHeader from "@/components/mine/MineHeader";
 import * as router from "@/constants/routes";
 import MineContactInfo from "@/components/mine/ContactInfo/MineContactInfo";
@@ -100,6 +102,7 @@ const propTypes = {
   mineComplianceInfo: CustomPropTypes.mineComplianceInfo,
   fetchMineComplianceInfo: PropTypes.func.isRequired,
   fetchApplications: PropTypes.func.isRequired,
+  fetchMineIncidentFollowActionOptions: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
 };
@@ -139,6 +142,7 @@ export class MineDashboard extends Component {
       this.props.fetchPartyRelationshipTypes();
       this.props.fetchPermitStatusOptions();
       this.props.fetchApplicationStatusOptions();
+      this.props.fetchMineIncidentFollowActionOptions();
       this.props.setOptionsLoaded();
     }
     this.props.fetchMineComplianceCodes();
@@ -367,6 +371,18 @@ export class MineDashboard extends Component {
                     </div>
                   </TabPane>
                 )}
+                {/* can't wrap a TabPane in the authWrapper without interfering with the Tabs behaviour */}
+                {isDevOrTest && (
+                  <TabPane tab="Incidents" key="incidents">
+                    <div className="tab__content">
+                      <MineIncidents
+                        mine={mine}
+                        openModal={this.props.openModal}
+                        closeModal={this.props.closeModal}
+                      />
+                    </div>
+                  </TabPane>
+                )}
               </Tabs>
             </div>
           </div>
@@ -422,6 +438,7 @@ const mapDispatchToProps = (dispatch) =>
       addDocumentToVariance,
       fetchVariancesByMine,
       fetchMineComplianceCodes,
+      fetchMineIncidentFollowActionOptions,
     },
     dispatch
   );

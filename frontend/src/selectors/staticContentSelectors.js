@@ -15,6 +15,7 @@ export const {
   getPermitStatusOptions,
   getApplicationStatusOptions,
   getComplianceCodes,
+  getIncidentFollowupActionOptions,
 } = staticContentReducer;
 
 // removes all expired compliance codes from the array
@@ -100,6 +101,11 @@ export const getDropdownPermitStatusOptions = createSelector(
 export const getDropdownApplicationStatusOptions = createSelector(
   [getApplicationStatusOptions],
   (options) => createDropDownList(options, "description", "application_status_code")
+);
+
+export const getDropdownIncidentFollowupActionOptions = createSelector(
+  [getIncidentFollowupActionOptions],
+  (options) => createDropDownList(options, "description", "mine_incident_followup_type_code")
 );
 
 export const getDropdownHSRCMComplianceCodes = createSelector(
