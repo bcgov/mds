@@ -11,7 +11,7 @@ def test_post_mine_disturbance_success(test_client, db_session, auth_headers):
 
     test_data = {'mine_type_guid': str(mine_type.mine_type_guid), 'mine_disturbance_code': disturb}
     post_resp = test_client.post(
-        '/mines/mine-types/details', json=test_data, headers=auth_headers['full_auth_header'])
+        '/mines/mine-types/details', data=test_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
     assert post_resp.status_code == 200
     assert post_data['mine_type_guid'] == str(mine_type.mine_type_guid)
@@ -25,7 +25,7 @@ def test_post_mine_commodity_success(test_client, db_session, auth_headers):
 
     test_data = {'mine_type_guid': str(mine_type.mine_type_guid), 'mine_commodity_code': commodity}
     post_resp = test_client.post(
-        '/mines/mine-types/details', json=test_data, headers=auth_headers['full_auth_header'])
+        '/mines/mine-types/details', data=test_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
     assert post_resp.status_code == 200
     assert post_data['mine_type_guid'] == str(mine_type.mine_type_guid)
@@ -37,22 +37,22 @@ def test_post_mine_disturbance_missing_mine_type_guid(test_client, db_session, a
     test_mine_type_data = {'mine_disturbance_code': 'UND'}
     post_resp = test_client.post(
         '/mines/mine-types/details',
-        json=test_mine_type_data,
+        data=test_mine_type_data,
         headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
     assert post_resp.status_code == 400
-    assert 'mine_type_guid' in post_data['errors']
+    assert post_data == {'error': {'status': 400, 'message': 'Error: Missing mine_type_guid.'}}
 
 
 def test_post_mine_commodity_missing_mine_type_guid(test_client, db_session, auth_headers):
     test_mine_type_data = {'mine_commodity_code': 'AM'}
     post_resp = test_client.post(
         '/mines/mine-types/details',
-        json=test_mine_type_data,
+        data=test_mine_type_data,
         headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
     assert post_resp.status_code == 400
-    assert 'mine_type_guid' in post_data['errors']
+    assert post_data == {'error': {'status': 400, 'message': 'Error: Missing mine_type_guid.'}}
 
 
 def test_post_mine_type_detail_missing_mine_disturbance_code(test_client, db_session, auth_headers):
@@ -63,11 +63,16 @@ def test_post_mine_type_detail_missing_mine_disturbance_code(test_client, db_ses
     }
     post_resp = test_client.post(
         '/mines/mine-types/details',
-        json=test_mine_type_data,
+        data=test_mine_type_data,
         headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
     assert post_resp.status_code == 400
-    assert 'Bad Request' in post_data['error']['message']
+    assert post_data == {
+        'error': {
+            'status': 400,
+            'message': 'Error: Missing mine_disturbance_code or mine_commodity_code.'
+        }
+    }
 
 
 def test_post_mine_type_detail_invalid_mine_disturbance_code(test_client, db_session, auth_headers):
@@ -79,10 +84,16 @@ def test_post_mine_type_detail_invalid_mine_disturbance_code(test_client, db_ses
     }
     post_resp = test_client.post(
         '/mines/mine-types/details',
-        json=test_mine_type_data,
+        data=test_mine_type_data,
         headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
-    assert post_resp.status_code == 500
+    assert post_resp.status_code == 400
+    assert post_data == {
+        'error': {
+            'status': 400,
+            'message': 'Error: Invalid mine_disturbance_code.'
+        }
+    }
 
 
 def test_post_mine_type_detail_invalid_mine_commdity_code(test_client, db_session, auth_headers):
@@ -94,22 +105,24 @@ def test_post_mine_type_detail_invalid_mine_commdity_code(test_client, db_sessio
     }
     post_resp = test_client.post(
         '/mines/mine-types/details',
-        json=test_mine_type_data,
+        data=test_mine_type_data,
         headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
-    assert post_resp.status_code == 500
+    assert post_resp.status_code == 400
+    assert post_data == {'error': {'status': 400, 'message': 'Error: Invalid mine_commodity_code.'}}
 
 
 def test_post_mine_disturbance_duplicate(test_client, db_session, auth_headers):
     mine_type = MineTypeFactory(mine_type_detail={'commodities': 0, 'disturbances': 0})
     disturb = SampleMineDisturbanceCodes(mine_type.mine_tenure_type_code, 1)[0]
+
     test_mine_type_data = {
         'mine_type_guid': str(mine_type.mine_type_guid),
         'mine_disturbance_code': disturb
     }
     post_resp1 = test_client.post(
         '/mines/mine-types/details',
-        json=test_mine_type_data,
+        data=test_mine_type_data,
         headers=auth_headers['full_auth_header'])
     post_data1 = json.loads(post_resp1.data.decode())
     assert post_resp1.status_code == 200
@@ -118,11 +131,10 @@ def test_post_mine_disturbance_duplicate(test_client, db_session, auth_headers):
 
     post_resp2 = test_client.post(
         '/mines/mine-types/details',
-        json=test_mine_type_data,
+        data=test_mine_type_data,
         headers=auth_headers['full_auth_header'])
     post_data2 = json.loads(post_resp2.data.decode())
     assert post_resp2.status_code == 500
-    assert 'not save MineTypeDetail' in post_data2['error']['message']
 
 
 def test_post_mine_commodity_duplicate(test_client, db_session, auth_headers):
@@ -135,7 +147,7 @@ def test_post_mine_commodity_duplicate(test_client, db_session, auth_headers):
     }
     post_resp1 = test_client.post(
         '/mines/mine-types/details',
-        json=test_mine_type_data,
+        data=test_mine_type_data,
         headers=auth_headers['full_auth_header'])
     post_data1 = json.loads(post_resp1.data.decode())
     assert post_resp1.status_code == 200
@@ -144,11 +156,10 @@ def test_post_mine_commodity_duplicate(test_client, db_session, auth_headers):
 
     post_resp2 = test_client.post(
         '/mines/mine-types/details',
-        json=test_mine_type_data,
+        data=test_mine_type_data,
         headers=auth_headers['full_auth_header'])
     post_data2 = json.loads(post_resp2.data.decode())
     assert post_resp2.status_code == 500
-    assert 'not save MineTypeDetail' in post_data2['error']['message']
 
 
 def test_post_mine_type_detail_invalid_mine_disturbance_code_for_tenure_type(
@@ -164,10 +175,15 @@ def test_post_mine_type_detail_invalid_mine_disturbance_code_for_tenure_type(
         'mine_disturbance_code': 'CWA'  # CWA is not a valid PLR disturbance
     }
     post_resp = test_client.post(
-        '/mines/mine-types/details', json=test_data, headers=auth_headers['full_auth_header'])
+        '/mines/mine-types/details', data=test_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
     assert post_resp.status_code == 400
-    assert 'Bad Request' in post_data['error']
+    assert post_data == {
+        'error': {
+            'status': 400,
+            'message': 'Error: Invalid mine_disturbance_code.'
+        }
+    }
 
 
 def test_post_mine_type_detail_invalid_mine_commodity_code_for_tenure_type(
@@ -183,10 +199,10 @@ def test_post_mine_type_detail_invalid_mine_commodity_code_for_tenure_type(
         'mine_commodity_code': 'AE'  # AE is not a valid COL commodity
     }
     post_resp = test_client.post(
-        '/mines/mine-types/details', json=test_data, headers=auth_headers['full_auth_header'])
+        '/mines/mine-types/details', data=test_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
     assert post_resp.status_code == 400
-    assert 'Bad Request' in post_data['error']['message']
+    assert post_data == {'error': {'status': 400, 'message': 'Error: Invalid mine_commodity_code.'}}
 
 
 def test_post_mine_type_detail_commodity_and_disturbance(test_client, db_session, auth_headers):
@@ -198,7 +214,7 @@ def test_post_mine_type_detail_commodity_and_disturbance(test_client, db_session
         'mine_commodity_code': SampleMineCommodityCodes(mine_type.mine_tenure_type_code, 1)[0]
     }
     post_resp = test_client.post(
-        '/mines/mine-types/details', json=test_data, headers=auth_headers['full_auth_header'])
+        '/mines/mine-types/details', data=test_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
     assert post_resp.status_code == 400
     assert post_data == {

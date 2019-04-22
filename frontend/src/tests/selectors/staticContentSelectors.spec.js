@@ -79,13 +79,13 @@ describe("staticContentSelectors", () => {
   });
 
   it("`getMineTenureTypesHash` converts `staticContentReducer.getMineTenureTypes`", () => {
-    mineTenureTypes = Mock.TENURE_TYPES;
+    mineTenureTypes = Mock.TENURE_TYPES.options;
     const selected = getMineTenureTypesHash.resultFunc(mineTenureTypes);
     expect(selected).toEqual(Mock.TENURE_HASH);
   });
 
   it("`getMineTenureTypes` calls `staticContentReducer.getMineTenureTypes`", () => {
-    const storeAction = storeTenureTypes(Mock.TENURE_TYPES_RESPONSE);
+    const storeAction = storeTenureTypes(Mock.TENURE_TYPES);
     const storeState = staticContentReducer({}, storeAction);
     const localMockState = {
       [STATIC_CONTENT]: storeState,
