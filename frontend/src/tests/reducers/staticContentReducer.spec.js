@@ -26,6 +26,7 @@ const baseExpectedValue = {
   applicationStatusCodes: [],
   complianceCodes: [],
   optionsLoaded: false,
+  incidentFollowupActionOptions: [],
 };
 
 // Creates deep copy of javascript object instead of setting a reference

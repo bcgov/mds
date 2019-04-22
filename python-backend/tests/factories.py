@@ -16,6 +16,7 @@ from app.api.mines.mine.models.mine import Mine
 from app.api.mines.mine.models.mine_type import MineType
 from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
 from app.api.mines.mine.models.mine_verified_status import MineVerifiedStatus
+from app.api.mines.incidents.models.mine_incident import MineIncident
 from app.api.mines.status.models.mine_status import MineStatus
 from app.api.mines.subscription.models.subscription import Subscription
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
@@ -278,6 +279,22 @@ class MineVerifiedStatusFactory(BaseFactory):
     update_timestamp = TODAY
 
 
+class MineIncidentFactory(BaseFactory):
+    class Meta:
+        model = MineIncident
+
+    mine_incident_id_year = 2019
+    mine_incident_guid = GUID
+    incident_timestamp = factory.Faker('past_datetime')
+    incident_description = factory.Faker('sentence', nb_words=20, variable_nb_words=True)
+    reported_timestamp = factory.Faker('past_datetime')
+    reported_by = factory.Faker('name')
+    reported_by_role = factory.Faker('job')
+    followup_type_code = "NOA"
+    followup_inspection_no = factory.Faker('numerify', text='######')  #nullable???
+    closing_report_summary = factory.Faker('sentence', nb_words=20, variable_nb_words=True)
+
+
 class AddressFactory(BaseFactory):
     class Meta:
         model = Address
@@ -405,6 +422,7 @@ class MineFactory(BaseFactory):
     mine_tailings_storage_facilities = []
     mine_permit = []
     mine_expected_documents = []
+    mine_incidents = []
 
     @factory.post_generation
     def mine_tailings_storage_facilities(obj, create, extracted, **kwargs):
@@ -435,3 +453,13 @@ class MineFactory(BaseFactory):
             extracted = 1
 
         MineExpectedDocumentFactory.create_batch(size=extracted, mine=obj, **kwargs)
+
+    @factory.post_generation
+    def mine_incidents(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        MineIncidentFactory.create_batch(size=extracted, mine_guid=obj.mine_guid, **kwargs)
