@@ -64,6 +64,13 @@ ShallowWrapper {
             "tenure_number_id": "1234567",
           },
         ],
+        "verified_status": Object {
+          "healthy_ind": null,
+          "mine_guid": null,
+          "mine_name": null,
+          "verifying_timestamp": null,
+          "verifying_user": null,
+        },
       }
     }
     mineRegionHash={
@@ -357,45 +364,7 @@ ShallowWrapper {
                       </Connect(AuthorizationWrapper)>
                       <Connect(AuthorizationWrapper)
                         inTesting={true}
-                      >
-                        <div
-                          className="custom-menu-item"
-                        >
-                          <Popconfirm
-                            cancelText="No"
-                            icon={
-                              <Icon
-                                theme="filled"
-                                type="exclamation-circle"
-                              />
-                            }
-                            okText="Yes"
-                            okType="primary"
-                            onConfirm={[Function]}
-                            placement="left"
-                            title="Are you sure?"
-                            transitionName="zoom-big"
-                            trigger="click"
-                          >
-                            <button
-                              className="full"
-                              type="button"
-                            >
-                              <img
-                                alt="hazard"
-                                className="padding-small"
-                                src={
-                                  Object {
-                                    "process": [Function],
-                                  }
-                                }
-                                width="30"
-                              />
-                              Mark Data for Verification
-                            </button>
-                          </Popconfirm>
-                        </div>
-                      </Connect(AuthorizationWrapper)>
+                      />
                     </Menu>
                   }
                   placement="bottomLeft"
@@ -601,6 +570,13 @@ ShallowWrapper {
                     "tenure_number_id": "1234567",
                   },
                 ],
+                "verified_status": Object {
+                  "healthy_ind": null,
+                  "mine_guid": null,
+                  "mine_name": null,
+                  "verifying_timestamp": null,
+                  "verifying_user": null,
+                },
               }
             }
           />
@@ -766,45 +742,7 @@ ShallowWrapper {
                         </Connect(AuthorizationWrapper)>
                         <Connect(AuthorizationWrapper)
                           inTesting={true}
-                        >
-                          <div
-                            className="custom-menu-item"
-                          >
-                            <Popconfirm
-                              cancelText="No"
-                              icon={
-                                <Icon
-                                  theme="filled"
-                                  type="exclamation-circle"
-                                />
-                              }
-                              okText="Yes"
-                              okType="primary"
-                              onConfirm={[Function]}
-                              placement="left"
-                              title="Are you sure?"
-                              transitionName="zoom-big"
-                              trigger="click"
-                            >
-                              <button
-                                className="full"
-                                type="button"
-                              >
-                                <img
-                                  alt="hazard"
-                                  className="padding-small"
-                                  src={
-                                    Object {
-                                      "process": [Function],
-                                    }
-                                  }
-                                  width="30"
-                                />
-                                Mark Data for Verification
-                              </button>
-                            </Popconfirm>
-                          </div>
-                        </Connect(AuthorizationWrapper)>
+                        />
                       </Menu>
                     }
                     placement="bottomLeft"
@@ -1077,45 +1015,7 @@ ShallowWrapper {
                           </Connect(AuthorizationWrapper)>
                           <Connect(AuthorizationWrapper)
                             inTesting={true}
-                          >
-                            <div
-                              className="custom-menu-item"
-                            >
-                              <Popconfirm
-                                cancelText="No"
-                                icon={
-                                  <Icon
-                                    theme="filled"
-                                    type="exclamation-circle"
-                                  />
-                                }
-                                okText="Yes"
-                                okType="primary"
-                                onConfirm={[Function]}
-                                placement="left"
-                                title="Are you sure?"
-                                transitionName="zoom-big"
-                                trigger="click"
-                              >
-                                <button
-                                  className="full"
-                                  type="button"
-                                >
-                                  <img
-                                    alt="hazard"
-                                    className="padding-small"
-                                    src={
-                                      Object {
-                                        "process": [Function],
-                                      }
-                                    }
-                                    width="30"
-                                  />
-                                  Mark Data for Verification
-                                </button>
-                              </Popconfirm>
-                            </div>
-                          </Connect(AuthorizationWrapper)>
+                          />
                         </Menu>
                       }
                       placement="bottomLeft"
@@ -1158,13 +1058,13 @@ ShallowWrapper {
                 "props": Object {
                   "children": Array [
                     "mine3",
-                    undefined,
+                    null,
                   ],
                 },
                 "ref": null,
                 "rendered": Array [
                   "mine3",
-                  undefined,
+                  null,
                 ],
                 "type": "h1",
               },
@@ -1291,45 +1191,7 @@ ShallowWrapper {
                             </Connect(AuthorizationWrapper)>
                             <Connect(AuthorizationWrapper)
                               inTesting={true}
-                            >
-                              <div
-                                className="custom-menu-item"
-                              >
-                                <Popconfirm
-                                  cancelText="No"
-                                  icon={
-                                    <Icon
-                                      theme="filled"
-                                      type="exclamation-circle"
-                                    />
-                                  }
-                                  okText="Yes"
-                                  okType="primary"
-                                  onConfirm={[Function]}
-                                  placement="left"
-                                  title="Are you sure?"
-                                  transitionName="zoom-big"
-                                  trigger="click"
-                                >
-                                  <button
-                                    className="full"
-                                    type="button"
-                                  >
-                                    <img
-                                      alt="hazard"
-                                      className="padding-small"
-                                      src={
-                                        Object {
-                                          "process": [Function],
-                                        }
-                                      }
-                                      width="30"
-                                    />
-                                    Mark Data for Verification
-                                  </button>
-                                </Popconfirm>
-                              </div>
-                            </Connect(AuthorizationWrapper)>
+                            />
                           </Menu>
                         }
                         placement="bottomLeft"
@@ -1481,45 +1343,7 @@ ShallowWrapper {
                             </Connect(AuthorizationWrapper)>
                             <Connect(AuthorizationWrapper)
                               inTesting={true}
-                            >
-                              <div
-                                className="custom-menu-item"
-                              >
-                                <Popconfirm
-                                  cancelText="No"
-                                  icon={
-                                    <Icon
-                                      theme="filled"
-                                      type="exclamation-circle"
-                                    />
-                                  }
-                                  okText="Yes"
-                                  okType="primary"
-                                  onConfirm={[Function]}
-                                  placement="left"
-                                  title="Are you sure?"
-                                  transitionName="zoom-big"
-                                  trigger="click"
-                                >
-                                  <button
-                                    className="full"
-                                    type="button"
-                                  >
-                                    <img
-                                      alt="hazard"
-                                      className="padding-small"
-                                      src={
-                                        Object {
-                                          "process": [Function],
-                                        }
-                                      }
-                                      width="30"
-                                    />
-                                    Mark Data for Verification
-                                  </button>
-                                </Popconfirm>
-                              </div>
-                            </Connect(AuthorizationWrapper)>
+                            />
                           </Menu>
                         }
                         placement="bottomLeft"
@@ -1689,45 +1513,7 @@ ShallowWrapper {
                           </Connect(AuthorizationWrapper)>
                           <Connect(AuthorizationWrapper)
                             inTesting={true}
-                          >
-                            <div
-                              className="custom-menu-item"
-                            >
-                              <Popconfirm
-                                cancelText="No"
-                                icon={
-                                  <Icon
-                                    theme="filled"
-                                    type="exclamation-circle"
-                                  />
-                                }
-                                okText="Yes"
-                                okType="primary"
-                                onConfirm={[Function]}
-                                placement="left"
-                                title="Are you sure?"
-                                transitionName="zoom-big"
-                                trigger="click"
-                              >
-                                <button
-                                  className="full"
-                                  type="button"
-                                >
-                                  <img
-                                    alt="hazard"
-                                    className="padding-small"
-                                    src={
-                                      Object {
-                                        "process": [Function],
-                                      }
-                                    }
-                                    width="30"
-                                  />
-                                  Mark Data for Verification
-                                </button>
-                              </Popconfirm>
-                            </div>
-                          </Connect(AuthorizationWrapper)>
+                          />
                         </Menu>,
                         "placement": "bottomLeft",
                         "visible": false,
@@ -2343,6 +2129,13 @@ ShallowWrapper {
                       "tenure_number_id": "1234567",
                     },
                   ],
+                  "verified_status": Object {
+                    "healthy_ind": null,
+                    "mine_guid": null,
+                    "mine_name": null,
+                    "verifying_timestamp": null,
+                    "verifying_user": null,
+                  },
                 }
               }
             />,
@@ -2442,6 +2235,13 @@ ShallowWrapper {
                     "tenure_number_id": "1234567",
                   },
                 ],
+                "verified_status": Object {
+                  "healthy_ind": null,
+                  "mine_guid": null,
+                  "mine_name": null,
+                  "verifying_timestamp": null,
+                  "verifying_user": null,
+                },
               },
             },
             "ref": null,
@@ -2710,45 +2510,7 @@ ShallowWrapper {
                         </Connect(AuthorizationWrapper)>
                         <Connect(AuthorizationWrapper)
                           inTesting={true}
-                        >
-                          <div
-                            className="custom-menu-item"
-                          >
-                            <Popconfirm
-                              cancelText="No"
-                              icon={
-                                <Icon
-                                  theme="filled"
-                                  type="exclamation-circle"
-                                />
-                              }
-                              okText="Yes"
-                              okType="primary"
-                              onConfirm={[Function]}
-                              placement="left"
-                              title="Are you sure?"
-                              transitionName="zoom-big"
-                              trigger="click"
-                            >
-                              <button
-                                className="full"
-                                type="button"
-                              >
-                                <img
-                                  alt="hazard"
-                                  className="padding-small"
-                                  src={
-                                    Object {
-                                      "process": [Function],
-                                    }
-                                  }
-                                  width="30"
-                                />
-                                Mark Data for Verification
-                              </button>
-                            </Popconfirm>
-                          </div>
-                        </Connect(AuthorizationWrapper)>
+                        />
                       </Menu>
                     }
                     placement="bottomLeft"
@@ -2954,6 +2716,13 @@ ShallowWrapper {
                       "tenure_number_id": "1234567",
                     },
                   ],
+                  "verified_status": Object {
+                    "healthy_ind": null,
+                    "mine_guid": null,
+                    "mine_name": null,
+                    "verifying_timestamp": null,
+                    "verifying_user": null,
+                  },
                 }
               }
             />
@@ -3119,45 +2888,7 @@ ShallowWrapper {
                           </Connect(AuthorizationWrapper)>
                           <Connect(AuthorizationWrapper)
                             inTesting={true}
-                          >
-                            <div
-                              className="custom-menu-item"
-                            >
-                              <Popconfirm
-                                cancelText="No"
-                                icon={
-                                  <Icon
-                                    theme="filled"
-                                    type="exclamation-circle"
-                                  />
-                                }
-                                okText="Yes"
-                                okType="primary"
-                                onConfirm={[Function]}
-                                placement="left"
-                                title="Are you sure?"
-                                transitionName="zoom-big"
-                                trigger="click"
-                              >
-                                <button
-                                  className="full"
-                                  type="button"
-                                >
-                                  <img
-                                    alt="hazard"
-                                    className="padding-small"
-                                    src={
-                                      Object {
-                                        "process": [Function],
-                                      }
-                                    }
-                                    width="30"
-                                  />
-                                  Mark Data for Verification
-                                </button>
-                              </Popconfirm>
-                            </div>
-                          </Connect(AuthorizationWrapper)>
+                          />
                         </Menu>
                       }
                       placement="bottomLeft"
@@ -3430,45 +3161,7 @@ ShallowWrapper {
                             </Connect(AuthorizationWrapper)>
                             <Connect(AuthorizationWrapper)
                               inTesting={true}
-                            >
-                              <div
-                                className="custom-menu-item"
-                              >
-                                <Popconfirm
-                                  cancelText="No"
-                                  icon={
-                                    <Icon
-                                      theme="filled"
-                                      type="exclamation-circle"
-                                    />
-                                  }
-                                  okText="Yes"
-                                  okType="primary"
-                                  onConfirm={[Function]}
-                                  placement="left"
-                                  title="Are you sure?"
-                                  transitionName="zoom-big"
-                                  trigger="click"
-                                >
-                                  <button
-                                    className="full"
-                                    type="button"
-                                  >
-                                    <img
-                                      alt="hazard"
-                                      className="padding-small"
-                                      src={
-                                        Object {
-                                          "process": [Function],
-                                        }
-                                      }
-                                      width="30"
-                                    />
-                                    Mark Data for Verification
-                                  </button>
-                                </Popconfirm>
-                              </div>
-                            </Connect(AuthorizationWrapper)>
+                            />
                           </Menu>
                         }
                         placement="bottomLeft"
@@ -3511,13 +3204,13 @@ ShallowWrapper {
                   "props": Object {
                     "children": Array [
                       "mine3",
-                      undefined,
+                      null,
                     ],
                   },
                   "ref": null,
                   "rendered": Array [
                     "mine3",
-                    undefined,
+                    null,
                   ],
                   "type": "h1",
                 },
@@ -3644,45 +3337,7 @@ ShallowWrapper {
                               </Connect(AuthorizationWrapper)>
                               <Connect(AuthorizationWrapper)
                                 inTesting={true}
-                              >
-                                <div
-                                  className="custom-menu-item"
-                                >
-                                  <Popconfirm
-                                    cancelText="No"
-                                    icon={
-                                      <Icon
-                                        theme="filled"
-                                        type="exclamation-circle"
-                                      />
-                                    }
-                                    okText="Yes"
-                                    okType="primary"
-                                    onConfirm={[Function]}
-                                    placement="left"
-                                    title="Are you sure?"
-                                    transitionName="zoom-big"
-                                    trigger="click"
-                                  >
-                                    <button
-                                      className="full"
-                                      type="button"
-                                    >
-                                      <img
-                                        alt="hazard"
-                                        className="padding-small"
-                                        src={
-                                          Object {
-                                            "process": [Function],
-                                          }
-                                        }
-                                        width="30"
-                                      />
-                                      Mark Data for Verification
-                                    </button>
-                                  </Popconfirm>
-                                </div>
-                              </Connect(AuthorizationWrapper)>
+                              />
                             </Menu>
                           }
                           placement="bottomLeft"
@@ -3834,45 +3489,7 @@ ShallowWrapper {
                               </Connect(AuthorizationWrapper)>
                               <Connect(AuthorizationWrapper)
                                 inTesting={true}
-                              >
-                                <div
-                                  className="custom-menu-item"
-                                >
-                                  <Popconfirm
-                                    cancelText="No"
-                                    icon={
-                                      <Icon
-                                        theme="filled"
-                                        type="exclamation-circle"
-                                      />
-                                    }
-                                    okText="Yes"
-                                    okType="primary"
-                                    onConfirm={[Function]}
-                                    placement="left"
-                                    title="Are you sure?"
-                                    transitionName="zoom-big"
-                                    trigger="click"
-                                  >
-                                    <button
-                                      className="full"
-                                      type="button"
-                                    >
-                                      <img
-                                        alt="hazard"
-                                        className="padding-small"
-                                        src={
-                                          Object {
-                                            "process": [Function],
-                                          }
-                                        }
-                                        width="30"
-                                      />
-                                      Mark Data for Verification
-                                    </button>
-                                  </Popconfirm>
-                                </div>
-                              </Connect(AuthorizationWrapper)>
+                              />
                             </Menu>
                           }
                           placement="bottomLeft"
@@ -4042,45 +3659,7 @@ ShallowWrapper {
                             </Connect(AuthorizationWrapper)>
                             <Connect(AuthorizationWrapper)
                               inTesting={true}
-                            >
-                              <div
-                                className="custom-menu-item"
-                              >
-                                <Popconfirm
-                                  cancelText="No"
-                                  icon={
-                                    <Icon
-                                      theme="filled"
-                                      type="exclamation-circle"
-                                    />
-                                  }
-                                  okText="Yes"
-                                  okType="primary"
-                                  onConfirm={[Function]}
-                                  placement="left"
-                                  title="Are you sure?"
-                                  transitionName="zoom-big"
-                                  trigger="click"
-                                >
-                                  <button
-                                    className="full"
-                                    type="button"
-                                  >
-                                    <img
-                                      alt="hazard"
-                                      className="padding-small"
-                                      src={
-                                        Object {
-                                          "process": [Function],
-                                        }
-                                      }
-                                      width="30"
-                                    />
-                                    Mark Data for Verification
-                                  </button>
-                                </Popconfirm>
-                              </div>
-                            </Connect(AuthorizationWrapper)>
+                            />
                           </Menu>,
                           "placement": "bottomLeft",
                           "visible": false,
@@ -4696,6 +4275,13 @@ ShallowWrapper {
                         "tenure_number_id": "1234567",
                       },
                     ],
+                    "verified_status": Object {
+                      "healthy_ind": null,
+                      "mine_guid": null,
+                      "mine_name": null,
+                      "verifying_timestamp": null,
+                      "verifying_user": null,
+                    },
                   }
                 }
               />,
@@ -4795,6 +4381,13 @@ ShallowWrapper {
                       "tenure_number_id": "1234567",
                     },
                   ],
+                  "verified_status": Object {
+                    "healthy_ind": null,
+                    "mine_guid": null,
+                    "mine_name": null,
+                    "verifying_timestamp": null,
+                    "verifying_user": null,
+                  },
                 },
               },
               "ref": null,
