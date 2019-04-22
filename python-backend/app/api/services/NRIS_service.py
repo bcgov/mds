@@ -24,7 +24,6 @@ def _get_inspector_from_report(report):
     return inspector
 
 def _get_fiscal_year():
-    correct_date = None
     current_date = datetime.utcnow()
     current_year = datetime.utcnow().year
     march = 3
