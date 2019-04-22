@@ -12,7 +12,11 @@ const propTypes = {
   label: PropTypes.string.isRequired,
   placeholder: PropTypes.string.isRequired,
   meta: PropTypes.objectOf(PropTypes.any).isRequired,
-  inlineLabel: PropTypes.string.isRequired,
+  inlineLabel: PropTypes.string,
+};
+
+const defaultProps = {
+  inlineLabel: "",
 };
 
 const RenderField = (props) => (
@@ -48,5 +52,6 @@ const RenderField = (props) => (
 );
 
 RenderField.propTypes = propTypes;
+RenderField.defaultProps = defaultProps;
 
 export default RenderField;
