@@ -38,7 +38,7 @@ class MineRegionCode(AuditMixin, Base):
                effective_date,
                expiry_date,
                user_kwargs,
-               save=True):
+               add_to_session=True):
         mine_region_code = cls(
             mine_region_code=code,
             description=description,
@@ -46,6 +46,6 @@ class MineRegionCode(AuditMixin, Base):
             effective_date=effective_date,
             expiry_date=expiry_date,
         )
-        if save:
+        if add_to_session:
             mine_region_code.save(commit=False)
         return mine_region_code

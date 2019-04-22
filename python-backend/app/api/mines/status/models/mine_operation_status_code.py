@@ -35,13 +35,13 @@ class MineOperationStatusCode(AuditMixin, Base):
                                           description,
                                           display_order,
                                           user_kwargs,
-                                          save=True):
+                                          add_to_session=True):
         mine_operation_status_code = cls(
             mine_operation_status_code=code,
             description=description,
             display_order=display_order,
             **user_kwargs)
-        if save:
+        if add_to_session:
             mine_operation_status_code.save(commit=False)
         return mine_operation_status_code
 

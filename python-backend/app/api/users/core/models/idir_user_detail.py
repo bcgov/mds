@@ -32,11 +32,11 @@ class IdirUserDetail(AuditMixin, Base):
             return None
 
     @classmethod
-    def create(cls, core_user, bcgov_guid, username, title, city, department, save=True):
+    def create(cls, core_user, bcgov_guid, username, title, city, department, add_to_session=True):
         idir_user_detail = cls(
             bcgov_guid=bcgov_guid, username=username, title=title, city=city, department=department)
         core_user.idir_user_detail = idir_user_detail
-        if save:
+        if add_to_session:
             idir_user_detail.save(commit=False)
         return idir_user_detail
 
