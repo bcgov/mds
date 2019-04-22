@@ -20,7 +20,7 @@ application_model = api.model(
 
 
 class ApplicationListResource(Resource, UserMixin):
-    parser = reqparse.RequestParser()
+    parser = reqparse.RequestParser(trim=True)
     parser.add_argument(
         'application_no',
         type=str,
@@ -102,7 +102,7 @@ class ApplicationListResource(Resource, UserMixin):
 
 
 class ApplicationResource(Resource, UserMixin):
-    parser = reqparse.RequestParser()
+    parser = reqparse.RequestParser(trim=True)
     parser.add_argument(
         'application_status_code',
         type=str,
@@ -125,7 +125,7 @@ class ApplicationResource(Resource, UserMixin):
         application = Application.find_by_application_guid(application_guid)
 
         if not application:
-            raise NotFound('Application not found')
+            raise NotFound('Application not found.')
 
         return application
 
@@ -144,7 +144,7 @@ class ApplicationResource(Resource, UserMixin):
         application = Application.find_by_application_guid(application_guid)
 
         if not application:
-            raise NotFound('Application not found')
+            raise NotFound('Application not found.')
 
         data = self.parser.parse_args()
 

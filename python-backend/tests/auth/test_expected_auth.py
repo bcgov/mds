@@ -89,8 +89,7 @@ from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserM
      (PermitAmendmentDocumentResource, "post", [MINE_CREATE]),
      (PermitAmendmentDocumentResource, "put", [MINE_CREATE]),
      (PermitAmendmentDocumentResource, "delete", [MINE_CREATE]),
-     (RequiredDocumentResource, "get", [MINE_VIEW]),
-     
+     (RequiredDocumentResource, "get", [MINE_VIEW]),  
      (RequiredDocumentResource, "get", [MINE_VIEW]),
      (MinespaceUserResource, 'get', [MINE_ADMIN]),
      (MinespaceUserResource, 'post', [MINE_ADMIN]),

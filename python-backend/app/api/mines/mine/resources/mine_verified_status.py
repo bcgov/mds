@@ -13,6 +13,9 @@ from app.api.mines.mine_api_models import MINE_VERIFIED_MODEL
 
 
 class MineVerifiedStatusListResource(Resource, UserMixin):
+    parser = reqparse.RequestParser(trim=True)
+    parser.add_argument('healthy', type=inputs.boolean)
+
     @requires_role_mine_view
     @api.marshal_with(MINE_VERIFIED_MODEL, code=200)
     @api.doc(

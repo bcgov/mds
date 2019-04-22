@@ -21,6 +21,7 @@ const propTypes = {
     "view-mine-manager",
     "contacts",
     "unauthorized-page",
+    "subscription",
   ]),
 };
 
@@ -85,6 +86,12 @@ const NullScreen = (props) => (
       <div>
         <img alt="mine_img" src={NO_MINE} />
         <h3>{String.NO_RESULTS}</h3>
+      </div>
+    )}
+    {props.type === "subscription" && (
+      <div>
+        <img alt="mine_img" src={NO_MINE} />
+        <h3>You are not subscribed to any mines</h3>
       </div>
     )}
     {props.type === "unauthorized" && (

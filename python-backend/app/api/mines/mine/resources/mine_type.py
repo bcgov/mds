@@ -11,7 +11,7 @@ from app.api.mines.mine_api_models import MINE_TYPE_MODEL
 
 
 class MineTypeListResource(Resource, UserMixin):
-    parser = reqparse.RequestParser()
+    parser = reqparse.RequestParser(trim=True)
     parser.add_argument(
         'mine_guid',
         type=str,

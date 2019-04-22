@@ -133,3 +133,28 @@ MINE_LIST_MODEL = api.model(
         'items_per_page': fields.Integer,
         'total': fields.Integer,
     })
+
+MINE_INCIDENT_MODEL = api.model(
+    'Mine Incident', {
+        'mine_incident_guid': fields.String,
+        'mine_incident_report_no': fields.String,
+        'mine_incident_id_year': fields.Integer,
+        'mine_guid': fields.String,
+        'incident_timestamp': fields.DateTime,
+        'incident_description': fields.String,
+        'reported_timestamp': fields.DateTime,
+        'reported_by': fields.String,
+        'reported_by_role': fields.String,
+        'followup_type_code': fields.String,
+        'followup_inspection_no': fields.String,
+        'closing_report_summary': fields.String
+    })
+    
+MINE_INCIDENT_FOLLOWUP_TYPE_MODEL = api.model(
+'Mine Incident Followup Type', {
+    'mine_incident_followup_type_code': fields.String,
+    'description': fields.String,
+    'display_order': fields.Integer,
+    'active_ind': fields.Boolean
+})
+

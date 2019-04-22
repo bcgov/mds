@@ -14,7 +14,7 @@ from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 
 class PermitResource(Resource, UserMixin, ErrorMixin):
 
-    parser = reqparse.RequestParser()
+    parser = reqparse.RequestParser(trim=True)
     parser.add_argument(
         'permit_no', type=str, help='Number of the permit being added.', location='json')
     parser.add_argument('mine_guid', type=str, help='guid of the mine.', location='json')
@@ -52,7 +52,7 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
         if permit_guid:
             permit = Permit.find_by_permit_guid(permit_guid)
             if not permit:
-                raise NotFound('Permit not found')
+                raise NotFound('Permit not found.')
             result = permit.json()
 
         elif request.args.get('permit_no'):
@@ -120,7 +120,7 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
         permit = Permit.find_by_permit_guid(permit_guid)
 
         if not permit:
-            raise NotFound('Permit not found')
+            raise NotFound('Permit not found.')
 
         data = self.parser.parse_args()
         for key, value in data.items():

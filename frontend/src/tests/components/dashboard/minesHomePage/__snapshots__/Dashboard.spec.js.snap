@@ -27,6 +27,13 @@ ShallowWrapper {
         ],
       }
     }
+    fetchMineIncidentFollowActionOptions={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
     fetchMineRecords={
       [MockFunction] {
         "calls": Array [
