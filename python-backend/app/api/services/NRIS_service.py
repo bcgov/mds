@@ -58,8 +58,7 @@ def _get_NRIS_token():
                 raise
 
             result = resp.json().get('access_token')
-            cache.set(NRIS_TOKEN, result, timeout=60)
-            # cache.set(NRIS_TOKEN, result, timeout=TIMEOUT_12_HOURS)
+            cache.set(NRIS_TOKEN, result, timeout=TIMEOUT_12_HOURS)
 
     return result
 
@@ -198,5 +197,5 @@ def _process_NRIS_data(data, mine_no):
         'section_35_orders': section_35_orders,
         'open_orders': open_orders_list,
     }
-    cache.set(NRIS_COMPLIANCE_DATA(mine_no), overview, timeout=60)
+    cache.set(NRIS_COMPLIANCE_DATA(mine_no), overview, timeout=TIMEOUT_12_HOURS)
     return overview

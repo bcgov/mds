@@ -336,3 +336,59 @@ export const setMineVerifiedStatus = (mine_guid, payload) => (dispatch) => {
     })
     .catch(() => dispatch(error(reducerTypes.SET_MINE_VERIFIED_STATUS)));
 };
+
+// mine subscription
+export const subscribe = (mineGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.SUBSCRIBE));
+  dispatch(showLoading());
+  return CustomAxios()
+    .post(ENVIRONMENT.apiUrl + API.SUBSCRIPTION(mineGuid), {}, createRequestHeader())
+    .then(() => {
+      notification.success({
+        message: "Successfully subscribed",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.SUBSCRIBE));
+      dispatch(hideLoading());
+    })
+    .catch(() => dispatch(error(reducerTypes.SUBSCRIBE)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const unSubscribe = (mineGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.UNSUBSCRIBE));
+  dispatch(showLoading());
+  return CustomAxios()
+    .delete(ENVIRONMENT.apiUrl + API.SUBSCRIPTION(mineGuid), createRequestHeader())
+    .then(() => {
+      notification.success({
+        message: "Successfully unsubscribed",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.UNSUBSCRIBE));
+      dispatch(hideLoading());
+    })
+    .catch(() => dispatch(error(reducerTypes.SUBSCRIBE)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const fetchSubscribedMinesByUser = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_SUBSCRIBED_MINES));
+  dispatch(showLoading());
+  return axios
+    .get(ENVIRONMENT.apiUrl + API.MINE_SUBSCRIPTION, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_SUBSCRIBED_MINES));
+      dispatch(mineActions.storeSubscribedMines(response.data));
+      dispatch(hideLoading());
+      return response;
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.GET_SUBSCRIBED_MINES));
+      dispatch(hideLoading());
+    });
+};

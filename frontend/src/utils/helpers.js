@@ -95,10 +95,13 @@ export const upperCase = (value) => value && value.toUpperCase();
 export const getFiscalYear = () => {
   const today = new Date();
   const currentYear = today.getFullYear();
-  const fiscalYear = new Date(currentYear, 3, 1); // April 1, currentYear, new Date is index 0
+  // new Date is index 0, Jan = 0
+  const fiscalYear = new Date(currentYear, 3, 1); // April 1, currentYear
   if (today > fiscalYear) {
     return currentYear;
   }
   // return the previous year if between the months of Jan-March
   return currentYear - 1;
 };
+
+export const returnBoolean = (param) => param && param === "true";

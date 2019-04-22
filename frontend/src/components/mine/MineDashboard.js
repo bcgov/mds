@@ -12,6 +12,9 @@ import {
   updateMineRecord,
   createTailingsStorageFacility,
   removeMineType,
+  fetchSubscribedMinesByUser,
+  unSubscribe,
+  subscribe,
 } from "@/actionCreators/mineActionCreator";
 import {
   fetchStatusOptions,
@@ -25,11 +28,16 @@ import {
   setOptionsLoaded,
 } from "@/actionCreators/staticContentActionCreator";
 import {
+  getMines,
+  getCurrentMineTypes,
+  getTransformedMineTypes,
+  getIsUserSubscribed,
+} from "@/selectors/mineSelectors";
+import {
   createVariance,
   fetchVariancesByMine,
   addDocumentToVariance,
 } from "@/actionCreators/varianceActionCreator";
-import { getMines, getCurrentMineTypes, getTransformedMineTypes } from "@/selectors/mineSelectors";
 import {
   getMineRegionHash,
   getMineTenureTypesHash,
@@ -60,6 +68,7 @@ import MineComplianceInfo from "@/components/mine/Compliance/MineComplianceInfo"
 import MinePermitInfo from "@/components/mine/Permit/MinePermitInfo";
 import MineApplicationInfo from "@/components/mine/Applications/MineApplicationInfo";
 import Loading from "@/components/common/Loading";
+import { returnBoolean } from "@/utils/helpers";
 import { detectProdEnvironment } from "@/utils/environmentUtils";
 
 /**
@@ -71,6 +80,9 @@ const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchPermits: PropTypes.func.isRequired,
   updateMineRecord: PropTypes.func.isRequired,
+  fetchSubscribedMinesByUser: PropTypes.func.isRequired,
+  subscribe: PropTypes.func.isRequired,
+  unSubscribe: PropTypes.func.isRequired,
   createVariance: PropTypes.func.isRequired,
   createTailingsStorageFacility: PropTypes.func.isRequired,
   fetchStatusOptions: PropTypes.func.isRequired,
@@ -130,7 +142,8 @@ export class MineDashboard extends Component {
       this.props.setOptionsLoaded();
     }
     this.props.fetchMineComplianceCodes();
-
+    this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
+    this.props.fetchSubscribedMinesByUser();
     if (activeTab) {
       this.setState({ activeTab });
     }
@@ -159,14 +172,12 @@ export class MineDashboard extends Component {
 
   format = (param) => (param ? param.split(",").filter((x) => x) : []);
 
-  formatBoolean = (param) => param && param === "true";
-
   renderDataFromURL = (params) => {
     const { open_orders } = this.props.mineComplianceInfo;
     const { violation, overdue, ...remainingParams } = queryString.parse(params);
     const formattedParams = {
       violation: this.format(violation),
-      overdue: this.formatBoolean(overdue),
+      overdue: returnBoolean(overdue),
       ...remainingParams,
     };
     const filteredOrders =
@@ -214,6 +225,20 @@ export class MineDashboard extends Component {
     }
   };
 
+  handleSubscription = () => {
+    const { id } = this.props.match.params;
+    this.props.subscribe(id).then(() => {
+      this.props.fetchSubscribedMinesByUser();
+    });
+  };
+
+  handleUnSubscribe = () => {
+    const { id } = this.props.match.params;
+    this.props.unSubscribe(id).then(() => {
+      this.props.fetchSubscribedMinesByUser();
+    });
+  };
+
   handleChange = (activeTab) => {
     this.setState({ activeTab });
     this.props.history.push(
@@ -251,7 +276,13 @@ export class MineDashboard extends Component {
         {this.state.isLoaded && (
           <div className="dashboard">
             <div>
-              <MineHeader mine={mine} {...this.props} />
+              <MineHeader
+                mine={mine}
+                {...this.props}
+                handleUnSubscribe={this.handleUnSubscribe}
+                handleSubscription={this.handleSubscription}
+                subscribed={this.props.subscribed}
+              />
             </div>
             <div className="dashboard__content">
               <Tabs
@@ -354,6 +385,7 @@ const mapStateToProps = (state) => ({
   currentMineTypes: getCurrentMineTypes(state),
   transformedMineTypes: getTransformedMineTypes(state),
   optionsLoaded: getOptionsLoaded(state),
+  subscribed: getIsUserSubscribed(state),
   variances: getMineVariances(state),
   complianceCodes: getDropdownHSRCMComplianceCodes(state),
   multiSelectComplianceCodes: getMultiSelectComplianceCodes(state),
@@ -382,6 +414,9 @@ const mapDispatchToProps = (dispatch) =>
       setOptionsLoaded,
       fetchMineComplianceInfo,
       fetchApplications,
+      fetchSubscribedMinesByUser,
+      unSubscribe,
+      subscribe,
       fetchPermits,
       createVariance,
       addDocumentToVariance,

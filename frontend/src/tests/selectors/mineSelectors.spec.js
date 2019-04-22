@@ -4,9 +4,16 @@ import {
   getMineNames,
   getMineGuid,
   getMinesPageData,
+  getSubscribedMines,
+  getIsUserSubscribed,
 } from "@/selectors/mineSelectors";
 import mineReducer from "@/reducers/mineReducer";
-import { storeMineList, storeMineNameList, storeMine } from "@/actions/mineActions";
+import {
+  storeMineList,
+  storeMineNameList,
+  storeMine,
+  storeSubscribedMines,
+} from "@/actions/mineActions";
 import { MINES } from "@/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
 
@@ -18,11 +25,12 @@ const mockState = {
   mineNameList: Mock.MINE_NAME_LIST,
   minesPageData: Mock.PAGE_DATA,
   mineGuid: false,
+  subscribedMines: Mock.SUBSCRIBED_MINES.mines,
 };
 
 describe("mineSelectors", () => {
-  const { mineIds, mineNameList, minesPageData } = mockState;
-  const { mines, mineGuid } = mockState;
+  const { mineGuid } = mockState;
+  const { mineIds, mineNameList, minesPageData, subscribedMines, mines } = mockState;
 
   it("`getMines` calls `mineReducer.getMines`", () => {
     const storeAction = storeMineList(mockResponse);
@@ -76,5 +84,23 @@ describe("mineSelectors", () => {
       [MINES]: storeState,
     };
     expect(getMinesPageData(localMockState)).toEqual(minesPageData);
+  });
+
+  it("`getSubscribedMines` calls `mineReducer.getSubscribedMines`", () => {
+    const storeAction = storeSubscribedMines(Mock.SUBSCRIBED_MINES);
+    const storeState = mineReducer({}, storeAction);
+    const localMockState = {
+      [MINES]: storeState,
+    };
+    expect(getSubscribedMines(localMockState)).toEqual(subscribedMines);
+  });
+
+  it("`getIsUserSubscribed` calls `mineReducer.getSubscribedMines`", () => {
+    const storeAction = storeSubscribedMines(Mock.SUBSCRIBED_MINES);
+    const storeState = mineReducer({}, storeAction);
+    const localMockState = {
+      [MINES]: storeState,
+    };
+    expect(getIsUserSubscribed(localMockState)).toEqual(false);
   });
 });
