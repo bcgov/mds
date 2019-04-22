@@ -5,7 +5,8 @@ import click
 import names
 from sqlalchemy.exc import DBAPIError
 
-from .api.mines.location.models.mine_location import MineLocation
+from tests.factories import MineLocationFactory
+
 from .api.mines.region.models.region import MineRegionCode
 from .api.mines.mine.models.mine_type import MineType
 from .api.constants import (PERMIT_STATUS_CODE, MINE_OPERATION_STATUS, MINE_OPERATION_STATUS_REASON,
@@ -111,8 +112,9 @@ def register_commands(app):
                 prev_party_guid = party.party_guid if party else None
                 mine = Mine.create_mine(generate_mine_no(), generate_mine_name(),
                                         random_mine_category(), random_region(), DUMMY_USER_KWARGS)
+
                 MineType.create_mine_type(mine.mine_guid, random.choice(mine_tenure_type_codes))
-                MineLocation.create_mine_location(mine, random_geo(), DUMMY_USER_KWARGS)
+                MineLocationFactory(mine_guid=mine.mine_guid)
                 if random.choice([True, False]):
                     mine.verified_status = MineVerifiedStatus(
                         healthy_ind=random.choice([True, False]))
@@ -145,12 +147,9 @@ def register_commands(app):
                 NRIS_jobs._cache_all_NRIS_major_mines_data()
                 print('Done!')
 
-        #This is here to prevent this from running in production until we are confident in the permit data.
-        if app.config.get('ENVIRONMENT_NAME') == 'test':
-
-            @sched.app.cli.command()
-            def _run_etl():
-                with sched.app.app_context():
-                    print('starting the ETL.')
-                    ETL_jobs._run_ETL()
-                    print('Completed running the ETL.')
+        @sched.app.cli.command()
+        def _run_etl():
+            with sched.app.app_context():
+                print('starting the ETL.')
+                ETL_jobs._run_ETL()
+                print('Completed running the ETL.')

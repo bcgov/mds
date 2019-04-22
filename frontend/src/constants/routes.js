@@ -6,10 +6,16 @@ import MineDashboard from "@/components/mine/MineDashboard";
 import PartyProfile from "@/components/parties/PartyProfile";
 import RelationshipProfile from "@/components/parties/RelationshipProfile";
 import AdminDashboard from "@/components/admin/AdminDashboard";
+import CustomHomePage from "@/components/dashboard/customHomePage/CustomHomePage";
 
 export const DASHBOARD = {
   route: "/",
   component: Home,
+};
+
+export const CUSTOM_HOME_PAGE = {
+  route: "/home/",
+  component: CustomHomePage,
 };
 
 export const MINE_HOME_PAGE = {

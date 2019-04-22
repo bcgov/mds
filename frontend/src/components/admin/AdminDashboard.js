@@ -34,8 +34,8 @@ export class AdminDashboard extends Component {
   componentWillMount() {
     this.props.fetchMineVerifiedStatuses().then((response) => {
       this.setState({
-        verifiedMines: response.data.healthy.sort(this.compareMineName),
-        unverifiedMines: response.data.unhealthy.sort(this.compareMineName),
+        verifiedMines: response.data.healthy_ind.sort(this.compareMineName),
+        unverifiedMines: response.data.unhealthy_ind.sort(this.compareMineName),
       });
     });
   }

@@ -69,9 +69,7 @@ def register_scheduled_jobs(app):
             sched.start()
             _schedule_IDIR_jobs(app)
             _schedule_NRIS_jobs(app)
-            # This is here to prevent this from running in production until we are confident in the permit data.
-            if app.config.get('ENVIRONMENT_NAME') == 'test':
-                _schedule_ETL_jobs(app)
+            _schedule_ETL_jobs(app)
 
 
 def register_routes(app):
@@ -100,7 +98,7 @@ def register_routes(app):
             #FE is mixed on expecing error in obj, or wrapped 'error' key.
             # this is temporary until we remove create_error_payload and raise_error.
             'error': {
-                'status': getattr(error, 'code', 500),
+                'status': getattr(error, 'code', 401),
                 'message': str(error)
             }
         }, getattr(error, 'status_code', 401)
@@ -113,7 +111,7 @@ def register_routes(app):
             #FE is mixed on expecing error in obj, or wrapped 'error' key.
             # this is temporary until we remove create_error_payload and raise_error.
             'error': {
-                'status': getattr(error, 'code', 500),
+                'status': getattr(error, 'code', 400),
                 'message': str(error)
             }
         }, getattr(error, 'code', 400)

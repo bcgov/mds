@@ -8,7 +8,10 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
 from app.extensions import db
+from werkzeug.exceptions import BadRequest
 
+from .party_address import PartyAddressXref
+from .address import Address
 from ....utils.models_mixins import AuditMixin, Base
 from ....constants import PARTY_STATUS_CODE
 
@@ -28,15 +31,8 @@ class Party(AuditMixin, Base):
     party_type_code = db.Column(db.String, db.ForeignKey('party_type_code.party_type_code'))
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
-    suite_no = db.Column(db.String, nullable=True)
-    address_line_1 = db.Column(db.String, nullable=True)
-    address_line_2 = db.Column(db.String, nullable=True)
-    city = db.Column(db.String, nullable=True)
-    sub_division_code = db.Column(db.String, nullable=True)
-    post_code = db.Column(db.String, nullable=True)
-    address_type_code = db.Column(db.String, nullable=False, server_default=FetchedValue())
-
     mine_party_appt = db.relationship('MinePartyAppointment', lazy='joined')
+    address = db.relationship('Address', lazy='joined', secondary='party_address_xref')
 
     @hybrid_property
     def name(self):
@@ -49,6 +45,7 @@ class Party(AuditMixin, Base):
     def __repr__(self):
         return '<Party %r>' % self.party_guid
 
+    # TODO: Remove this once mine_party_appt has been refactored
     def json(self, show_mgr=True, relationships=[]):
         context = {
             'party_guid':
@@ -69,15 +66,7 @@ class Party(AuditMixin, Base):
             self.party_name,
             'name':
             self.name,
-            'address': [{
-                'suite_no': self.suite_no,
-                'address_line_1': self.address_line_1,
-                'address_line_2': self.address_line_2,
-                'city': self.city,
-                'sub_division_code': self.sub_division_code,
-                'post_code': self.post_code,
-                'address_type_code': self.address_type_code
-            }]
+            'address': self.address[0].json() if len(self.address) > 0 else [{}]
         }
         if self.party_type_code == PARTY_STATUS_CODE['per']:
             context.update({
@@ -93,6 +82,10 @@ class Party(AuditMixin, Base):
 
     @classmethod
     def find_by_party_guid(cls, _id):
+        try:
+            uuid.UUID(_id)
+        except ValueError:
+            raise BadRequest('Invalid Party guid')
         return cls.query.filter_by(party_guid=_id, deleted_ind=False).first()
 
     @classmethod
@@ -145,15 +138,8 @@ class Party(AuditMixin, Base):
             party_type_code=party_type_code,
             # Optional fields
             email=email,
-            address_type_code=address_type_code,
             first_name=first_name,
-            phone_ext=phone_ext,
-            suite_no=suite_no,
-            address_line_1=address_line_1,
-            address_line_2=address_line_2,
-            city=city,
-            sub_division_code=sub_division_code,
-            post_code=post_code)
+            phone_ext=phone_ext)
         if save:
             party.save(commit=False)
         return party
@@ -195,9 +181,3 @@ class Party(AuditMixin, Base):
         if email and not re.match(r'[^@]+@[^@]+\.[^@]+', email):
             raise AssertionError('Invalid email format.')
         return email
-
-    @validates('post_code')
-    def validate_post_code(self, key, post_code):
-        if post_code and len(post_code) > 6:
-            raise AssertionError('post_code must not exceed 6 characters.')
-        return post_code

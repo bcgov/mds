@@ -32,9 +32,9 @@ ShallowWrapper {
             >
               <Field
                 component={[Function]}
-                id="tsf_name"
-                label="TSF Name*"
-                name="tsf_name"
+                id="mine_tailings_storage_facility_name"
+                label="Tailings Storage Facility Name*"
+                name="mine_tailings_storage_facility_name"
                 validate={
                   Array [
                     [Function],
@@ -105,9 +105,9 @@ ShallowWrapper {
             >
               <Field
                 component={[Function]}
-                id="tsf_name"
-                label="TSF Name*"
-                name="tsf_name"
+                id="mine_tailings_storage_facility_name"
+                label="Tailings Storage Facility Name*"
+                name="mine_tailings_storage_facility_name"
                 validate={
                   Array [
                     [Function],
@@ -129,9 +129,9 @@ ShallowWrapper {
             >
               <Field
                 component={[Function]}
-                id="tsf_name"
-                label="TSF Name*"
-                name="tsf_name"
+                id="mine_tailings_storage_facility_name"
+                label="Tailings Storage Facility Name*"
+                name="mine_tailings_storage_facility_name"
                 validate={
                   Array [
                     [Function],
@@ -148,9 +148,9 @@ ShallowWrapper {
             "props": Object {
               "children": <Field
                 component={[Function]}
-                id="tsf_name"
-                label="TSF Name*"
-                name="tsf_name"
+                id="mine_tailings_storage_facility_name"
+                label="Tailings Storage Facility Name*"
+                name="mine_tailings_storage_facility_name"
                 validate={
                   Array [
                     [Function],
@@ -166,9 +166,9 @@ ShallowWrapper {
               "nodeType": "class",
               "props": Object {
                 "component": [Function],
-                "id": "tsf_name",
-                "label": "TSF Name*",
-                "name": "tsf_name",
+                "id": "mine_tailings_storage_facility_name",
+                "label": "Tailings Storage Facility Name*",
+                "name": "mine_tailings_storage_facility_name",
                 "validate": Array [
                   [Function],
                 ],
@@ -320,9 +320,9 @@ ShallowWrapper {
               >
                 <Field
                   component={[Function]}
-                  id="tsf_name"
-                  label="TSF Name*"
-                  name="tsf_name"
+                  id="mine_tailings_storage_facility_name"
+                  label="Tailings Storage Facility Name*"
+                  name="mine_tailings_storage_facility_name"
                   validate={
                     Array [
                       [Function],
@@ -393,9 +393,9 @@ ShallowWrapper {
               >
                 <Field
                   component={[Function]}
-                  id="tsf_name"
-                  label="TSF Name*"
-                  name="tsf_name"
+                  id="mine_tailings_storage_facility_name"
+                  label="Tailings Storage Facility Name*"
+                  name="mine_tailings_storage_facility_name"
                   validate={
                     Array [
                       [Function],
@@ -417,9 +417,9 @@ ShallowWrapper {
               >
                 <Field
                   component={[Function]}
-                  id="tsf_name"
-                  label="TSF Name*"
-                  name="tsf_name"
+                  id="mine_tailings_storage_facility_name"
+                  label="Tailings Storage Facility Name*"
+                  name="mine_tailings_storage_facility_name"
                   validate={
                     Array [
                       [Function],
@@ -436,9 +436,9 @@ ShallowWrapper {
               "props": Object {
                 "children": <Field
                   component={[Function]}
-                  id="tsf_name"
-                  label="TSF Name*"
-                  name="tsf_name"
+                  id="mine_tailings_storage_facility_name"
+                  label="Tailings Storage Facility Name*"
+                  name="mine_tailings_storage_facility_name"
                   validate={
                     Array [
                       [Function],
@@ -454,9 +454,9 @@ ShallowWrapper {
                 "nodeType": "class",
                 "props": Object {
                   "component": [Function],
-                  "id": "tsf_name",
-                  "label": "TSF Name*",
-                  "name": "tsf_name",
+                  "id": "mine_tailings_storage_facility_name",
+                  "label": "Tailings Storage Facility Name*",
+                  "name": "mine_tailings_storage_facility_name",
                   "validate": Array [
                     [Function],
                   ],
