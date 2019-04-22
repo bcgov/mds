@@ -374,3 +374,19 @@ VALUES
     ('ACT', 'Active', 10, 'system-mds', 'system-mds'),
     ('RMT', 'Remitted', 20, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
+
+
+INSERT INTO mine_incident_followup_type
+(
+    mine_incident_followup_type_code ,
+    description             ,
+    display_order           ,
+    create_user             ,
+    update_user
+)
+VALUES 
+    ('UND', 'Undecided', 10, 'system-mds', 'system-mds'),
+    ('NOA', 'No Action', 20, 'system-mds', 'system-mds'),
+    ('ISP', 'Inspection', 30, 'system-mds', 'system-mds'),
+    ('INV', 'Investigation', 40, 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
