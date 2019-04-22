@@ -26,7 +26,17 @@ export const storeMineDocuments = (payload) => ({
   payload,
 });
 
+export const storeSubscribedMines = (payload) => ({
+  type: ActionTypes.STORE_SUBSCRIBED_MINES,
+  payload,
+});
+
 export const storeCurrentUserMineVerifiedStatuses = (payload) => ({
   type: ActionTypes.STORE_CURRENT_USER_MINE_VERIFIED_STATUS,
+  payload,
+});
+
+export const storeMineIncidents = (payload) => ({
+  type: ActionTypes.STORE_MINE_INCIDENTS,
   payload,
 });

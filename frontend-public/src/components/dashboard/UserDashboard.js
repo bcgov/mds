@@ -47,8 +47,8 @@ export class UserDashboard extends Component {
               </div>
               <ul className="user-mine-list">
                 {mines.map((mine) => (
-                  <li key={mine.guid}>
-                    <Link to={routes.MINE_INFO.dynamicRoute(mine.guid)}>{mine.mine_name}</Link>
+                  <li key={mine.mine_guid}>
+                    <Link to={routes.MINE_INFO.dynamicRoute(mine.mine_guid)}>{mine.mine_name}</Link>
                   </li>
                 ))}
               </ul>

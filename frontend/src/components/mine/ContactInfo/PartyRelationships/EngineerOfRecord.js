@@ -17,7 +17,7 @@ const propTypes = {
 };
 
 export const EngineerOfRecord = (props) => {
-  const tsf = props.mine.mine_tailings_storage_facility.find(
+  const tsf = props.mine.mine_tailings_storage_facilities.find(
     ({ mine_tailings_storage_facility_guid }) =>
       mine_tailings_storage_facility_guid === props.partyRelationship.related_guid
   );

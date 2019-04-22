@@ -45,7 +45,7 @@ describe("partiesReducer", () => {
       items_per_page: 25,
       total: 11326,
       total_pages: 454,
-      parties: [{ party_guid: "test123" }, { party_guid: "test456" }],
+      records: [{ party_guid: "test123" }, { party_guid: "test456" }],
     };
 
     const result = partiesReducer(
@@ -55,7 +55,7 @@ describe("partiesReducer", () => {
         items_per_page: 25,
         total: 11326,
         total_pages: 454,
-        parties: [{ party_guid: "test123" }, { party_guid: "test456" }],
+        records: [{ party_guid: "test123" }, { party_guid: "test456" }],
       })
     );
     expect(result).toEqual(expectedValue);

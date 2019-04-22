@@ -11,6 +11,8 @@ import {
   BRAND_DOCUMENT,
   EDIT,
   INFO_CIRCLE,
+  BELL,
+  UNSUBSCRIBE,
   YELLOW_HAZARD,
   SUCCESS_CHECKMARK,
 } from "@/constants/assets";
@@ -35,6 +37,9 @@ const propTypes = {
   openModal: PropTypes.func.isRequired,
   updateMineRecord: PropTypes.func.isRequired,
   removeMineType: PropTypes.func.isRequired,
+  handleUnSubscribe: PropTypes.func.isRequired,
+  subscribed: PropTypes.bool.isRequired,
+  handleSubscription: PropTypes.func.isRequired,
   createTailingsStorageFacility: PropTypes.func.isRequired,
   setMineVerifiedStatus: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
@@ -49,17 +54,19 @@ const propTypes = {
 };
 
 export class MineHeader extends Component {
+  state = { menuVisible: false };
+
   handleUpdateMineRecord = (value) => {
     const mineStatus = value.mine_status.join(",");
     return this.props
       .updateMineRecord(
-        this.props.mine.guid,
+        this.props.mine.mine_guid,
         { ...value, mine_status: mineStatus, mineType: this.props.mine.mine_type },
         value.mine_name
       )
       .then(() => {
         this.props.closeModal();
-        this.props.fetchMineRecordById(this.props.mine.guid);
+        this.props.fetchMineRecordById(this.props.mine.mine_guid);
       });
   };
 
@@ -69,37 +76,42 @@ export class MineHeader extends Component {
       if (type.mine_tenure_type_code === mineTypeCode) {
         const tenure = this.props.mineTenureHash[mineTypeCode];
         this.props.removeMineType(type.mine_type_guid, tenure).then(() => {
-          this.props.fetchMineRecordById(this.props.mine.guid);
+          this.props.fetchMineRecordById(this.props.mine.mine_guid);
         });
       }
     });
   };
 
-  handleAddTailings = (value) =>
-    this.props
-      .createTailingsStorageFacility({
-        ...value,
-        mine_guid: this.props.mine.guid,
-      })
-      .then(() => {
-        this.props.closeModal();
-        this.props.fetchMineRecordById(this.props.mine.guid);
-      });
+  handleAddTailings = (values) =>
+    this.props.createTailingsStorageFacility(this.props.mine.mine_guid, values).then(() => {
+      this.props.closeModal();
+      this.props.fetchMineRecordById(this.props.mine.mine_guid);
+    });
 
   handleVerifyMineData = (e) => {
     e.stopPropagation();
-    this.props.setMineVerifiedStatus(this.props.mine.guid, { healthy: true }).then(() => {
-      this.props.fetchMineRecordById(this.props.mine.guid);
+    this.props.setMineVerifiedStatus(this.props.mine.mine_guid, { healthy: true }).then(() => {
+      this.props.fetchMineRecordById(this.props.mine.mine_guid);
       this.props.fetchMineVerifiedStatuses(`idir\\${this.props.userInfo.preferred_username}`);
     });
   };
 
   handleUnverifyMineData = (e) => {
     e.stopPropagation();
-    this.props.setMineVerifiedStatus(this.props.mine.guid, { healthy: false }).then(() => {
-      this.props.fetchMineRecordById(this.props.mine.guid);
+    this.props.setMineVerifiedStatus(this.props.mine.mine_guid, { healthy: false }).then(() => {
+      this.props.fetchMineRecordById(this.props.mine.mine_guid);
       this.props.fetchMineVerifiedStatuses(`idir\\${this.props.userInfo.preferred_username}`);
     });
+  };
+
+  // added some extra logic to the dropdown, to handle closing the menu after popconfirm is clicked.
+  // The combination of popconfirm, and the AuthWrapper interferes with the dropdowns default behaviour.
+  handleVisibleChange = (flag) => {
+    this.setState({ menuVisible: flag });
+  };
+
+  handleMenuClick = () => {
+    this.setState({ menuVisible: false });
   };
 
   openTailingsModal(event, onSubmit, title) {
@@ -118,7 +130,7 @@ export class MineHeader extends Component {
       longitude: mine.mine_location ? mine.mine_location.longitude : null,
       mine_status: mine.mine_status[0] ? mine.mine_status[0].status_values : null,
       major_mine_ind: mine.major_mine_ind ? mine.major_mine_ind : false,
-      mine_region: mine.region_code,
+      mine_region: mine.mine_region,
       mine_note: mine.mine_note,
     };
 
@@ -136,7 +148,7 @@ export class MineHeader extends Component {
 
   render() {
     const menu = (
-      <Menu>
+      <Menu onClick={this.handleMenuClick}>
         <Menu.Item key="0">
           <button
             type="button"
@@ -167,10 +179,35 @@ export class MineHeader extends Component {
             {ModalContent.ADD_TAILINGS}
           </button>
         </Menu.Item>
+        <AuthorizationWrapper inDevelopment>
+          {this.props.subscribed ? (
+            <div className="custom-menu-item">
+              <Popconfirm
+                placement="left"
+                title="Are you sure you want to unsubscribe?"
+                onConfirm={this.props.handleUnSubscribe}
+                okText="Yes"
+                cancelText="No"
+              >
+                <button type="button" className="full">
+                  <img alt="document" className="padding-small" src={UNSUBSCRIBE} />
+                  Unsubscribe
+                </button>
+              </Popconfirm>
+            </div>
+          ) : (
+            <div className="custom-menu-item">
+              <button type="button" className="full" onClick={this.props.handleSubscription}>
+                <img alt="document" className="padding-small" src={BELL} />
+                Subscribe
+              </button>
+            </div>
+          )}
+        </AuthorizationWrapper>
 
         <AuthorizationWrapper inTesting>
-          {(!this.props.mine.verified_status || !this.props.mine.verified_status.healthy) && (
-            <Menu.Item key="2">
+          {(!this.props.mine.verified_status || !this.props.mine.verified_status.healthy_ind) && (
+            <div className="custom-menu-item">
               <Popconfirm
                 placement="left"
                 title="Are you sure?"
@@ -188,12 +225,12 @@ export class MineHeader extends Component {
                   Verify Mine Data
                 </button>
               </Popconfirm>
-            </Menu.Item>
+            </div>
           )}
         </AuthorizationWrapper>
         <AuthorizationWrapper inTesting>
-          {(!this.props.mine.verified_status || this.props.mine.verified_status.healthy) && (
-            <Menu.Item key="3">
+          {(!this.props.mine.verified_status || this.props.mine.verified_status.healthy_ind) && (
+            <div className="custom-menu-item">
               <Popconfirm
                 placement="left"
                 title="Are you sure?"
@@ -206,14 +243,14 @@ export class MineHeader extends Component {
                   Mark Data for Verification
                 </button>
               </Popconfirm>
-            </Menu.Item>
+            </div>
           )}
         </AuthorizationWrapper>
       </Menu>
     );
 
     if (this.props.mine.verified_status) {
-      this.healthy = this.props.mine.verified_status.healthy;
+      this.healthy = this.props.mine.verified_status.healthy_ind;
     }
 
     return (
@@ -221,7 +258,7 @@ export class MineHeader extends Component {
         <div className="dashboard__header--card__content">
           <div className="inline-flex between center-mobile">
             <h1>
-              {this.props.mine.mine_name}{" "}
+              {this.props.mine.mine_name}
               {this.props.mine.verified_status && (
                 <img
                   alt=""
@@ -238,19 +275,28 @@ export class MineHeader extends Component {
                 />
               )}
             </h1>
-            <AuthorizationWrapper
-              permission={Permission.CREATE}
-              isMajorMine={this.props.mine.major_mine_ind}
-            >
-              <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
-                <Button type="primary">
-                  <div className="padding-small">
-                    <img className="padding-small--right" src={EDIT} alt="Add/Edit" />
-                    Add/Edit
-                  </div>
-                </Button>
-              </Dropdown>
-            </AuthorizationWrapper>
+            <div>
+              {this.props.subscribed && <img src={BELL} alt="bell" />}
+              <AuthorizationWrapper
+                permission={Permission.CREATE}
+                isMajorMine={this.props.mine.major_mine_ind}
+              >
+                <Dropdown
+                  className="full-height full-mobile"
+                  overlay={menu}
+                  placement="bottomLeft"
+                  onVisibleChange={this.handleVisibleChange}
+                  visible={this.state.menuVisible}
+                >
+                  <Button type="primary">
+                    <div className="padding-small">
+                      <img className="padding-small--right" src={EDIT} alt="Add/Edit" />
+                      Add/Edit
+                    </div>
+                  </Button>
+                </Dropdown>
+              </AuthorizationWrapper>
+            </div>
           </div>
           <Divider className="custom-large-divider" />
           <div className="inline-flex between block-mobile">
@@ -265,8 +311,8 @@ export class MineHeader extends Component {
             <div className="inline-flex padding-small">
               <p className="field-title">TSF</p>
               <p>
-                {this.props.mine.mine_tailings_storage_facility.length > 0
-                  ? this.props.mine.mine_tailings_storage_facility.length
+                {this.props.mine.mine_tailings_storage_facilities.length > 0
+                  ? this.props.mine.mine_tailings_storage_facilities.length
                   : String.EMPTY_FIELD}
               </p>
             </div>
@@ -377,8 +423,8 @@ export class MineHeader extends Component {
             </div>
             <p className="p-white">
               Region:{" "}
-              {this.props.mine.region_code
-                ? this.props.mineRegionHash[this.props.mine.region_code]
+              {this.props.mine.mine_region
+                ? this.props.mineRegionHash[this.props.mine.mine_region]
                 : String.EMPTY_FIELD}
             </p>
           </div>

@@ -2,6 +2,7 @@ import uuid, datetime
 
 from sqlalchemy.orm import validates, backref
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
@@ -30,6 +31,10 @@ class MineVerifiedStatus(Base):
         backref=backref("verified_status", uselist=False, lazy='joined'),
         lazy='select',
         uselist=False)
+
+    @hybrid_property
+    def mine_name(self):
+        return self.mine.mine_name
 
     def json(self):
         return {

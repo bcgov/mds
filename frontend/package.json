@@ -5,7 +5,7 @@
   "private": true,
   "homepage": "${BASE_PATH}/",
   "dependencies": {
-    "antd": "^3.7.0",
+    "antd": "^3.16.2",
     "axios": "^0.18.0",
     "axios-mock-adapter": "^1.15.0",
     "babel-polyfill": "^6.26.0",

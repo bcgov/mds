@@ -21,9 +21,7 @@ ShallowWrapper {
     "props": Object {
       "children": Array [
         <FormItem
-          colon={true}
           hasFeedback={false}
-          prefixCls="ant-form"
         >
           <Field
             component={[Function]}
@@ -41,9 +39,7 @@ ShallowWrapper {
           />
         </FormItem>,
         <FormItem
-          colon={true}
           hasFeedback={false}
-          prefixCls="ant-form"
         >
           <Field
             component={[Function]}
@@ -69,7 +65,6 @@ ShallowWrapper {
             ghost={false}
             htmlType="submit"
             loading={false}
-            prefixCls="ant-btn"
             type="primary"
           >
             <Icon
@@ -78,10 +73,10 @@ ShallowWrapper {
           </Button>
         </div>,
       ],
+      "colon": true,
       "hideRequiredMark": false,
       "layout": "vertical",
       "onSubmit": [MockFunction],
-      "prefixCls": "ant-form",
     },
     "ref": null,
     "rendered": Array [
@@ -104,9 +99,7 @@ ShallowWrapper {
               ]
             }
           />,
-          "colon": true,
           "hasFeedback": false,
-          "prefixCls": "ant-form",
         },
         "ref": null,
         "rendered": Object {
@@ -150,9 +143,7 @@ ShallowWrapper {
               ]
             }
           />,
-          "colon": true,
           "hasFeedback": false,
-          "prefixCls": "ant-form",
         },
         "ref": null,
         "rendered": Object {
@@ -188,7 +179,6 @@ ShallowWrapper {
             ghost={false}
             htmlType="submit"
             loading={false}
-            prefixCls="ant-btn"
             type="primary"
           >
             <Icon
@@ -211,7 +201,6 @@ ShallowWrapper {
             "ghost": false,
             "htmlType": "submit",
             "loading": false,
-            "prefixCls": "ant-btn",
             "type": "primary",
           },
           "ref": null,
@@ -241,9 +230,7 @@ ShallowWrapper {
       "props": Object {
         "children": Array [
           <FormItem
-            colon={true}
             hasFeedback={false}
-            prefixCls="ant-form"
           >
             <Field
               component={[Function]}
@@ -261,9 +248,7 @@ ShallowWrapper {
             />
           </FormItem>,
           <FormItem
-            colon={true}
             hasFeedback={false}
-            prefixCls="ant-form"
           >
             <Field
               component={[Function]}
@@ -289,7 +274,6 @@ ShallowWrapper {
               ghost={false}
               htmlType="submit"
               loading={false}
-              prefixCls="ant-btn"
               type="primary"
             >
               <Icon
@@ -298,10 +282,10 @@ ShallowWrapper {
             </Button>
           </div>,
         ],
+        "colon": true,
         "hideRequiredMark": false,
         "layout": "vertical",
         "onSubmit": [MockFunction],
-        "prefixCls": "ant-form",
       },
       "ref": null,
       "rendered": Array [
@@ -324,9 +308,7 @@ ShallowWrapper {
                 ]
               }
             />,
-            "colon": true,
             "hasFeedback": false,
-            "prefixCls": "ant-form",
           },
           "ref": null,
           "rendered": Object {
@@ -370,9 +352,7 @@ ShallowWrapper {
                 ]
               }
             />,
-            "colon": true,
             "hasFeedback": false,
-            "prefixCls": "ant-form",
           },
           "ref": null,
           "rendered": Object {
@@ -408,7 +388,6 @@ ShallowWrapper {
               ghost={false}
               htmlType="submit"
               loading={false}
-              prefixCls="ant-btn"
               type="primary"
             >
               <Icon
@@ -431,7 +410,6 @@ ShallowWrapper {
               "ghost": false,
               "htmlType": "submit",
               "loading": false,
-              "prefixCls": "ant-btn",
               "type": "primary",
             },
             "ref": null,

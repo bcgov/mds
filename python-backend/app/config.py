@@ -30,6 +30,8 @@ class Config(object):
     LDAP_IDIR_USERNAME = os.environ.get('LDAP_IDIR_USERNAME', "idir_username")
     LDAP_IDIR_PASSWORD = os.environ.get('LDAP_IDIR_PASSWORD', "idir_password")
 
+    BUNDLE_ERRORS = True  #RequestParser global config
+
     def JWT_ROLE_CALLBACK(jwt_dict):
         return (jwt_dict['realm_access']['roles'])
 
@@ -63,8 +65,8 @@ class Config(object):
 
     # Flask-uploads configs
     UPLOADED_DOCUMENT_DEST = os.environ.get('UPLOADED_DOCUMENT_DEST', '/app/document_uploads')
-    # 100MB file limit
-    MAX_CONTENT_LENGTH = 100 * 1024 * 1024
+    # 100MB file limit, temporarily increased to 400MB
+    MAX_CONTENT_LENGTH = 400 * 1024 * 1024
 
     # Elastic config
     ELASTIC_ENABLED = os.environ.get('ELASTIC_ENABLED', '0')

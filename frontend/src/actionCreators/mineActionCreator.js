@@ -38,7 +38,7 @@ const handleError = (dispatch, reducer) => (err) => {
 };
 
 const createMineTypeRequests = (payload, dispatch, reducer) => (response) => {
-  const mineId = response.data.mine_guid ? response.data.mine_guid : response.data.guid;
+  const mineId = response.data.mine_guid;
   if (payload.mine_types) {
     const allMineTypes = payload.mine_types.map((type) =>
       type.mine_tenure_type_code.length >= 1
@@ -112,11 +112,11 @@ export const removeMineType = (mineTypeGuid, tenure) => (dispatch) => {
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const createTailingsStorageFacility = (payload) => (dispatch) => {
+export const createTailingsStorageFacility = (mine_guid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_TSF));
   dispatch(showLoading("modal"));
   return CustomAxios()
-    .post(ENVIRONMENT.apiUrl + API.MINE_TSF, payload, createRequestHeader())
+    .post(ENVIRONMENT.apiUrl + API.MINE_TSF(mine_guid), payload, createRequestHeader())
     .then((response) => {
       notification.success({
         message: "Successfully added the TSF.",
@@ -173,6 +173,21 @@ export const fetchMineRecords = (params) => (dispatch) => {
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_RECORDS));
       dispatch(mineActions.storeMineList(response.data));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_MINE_RECORD)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const fetchMineRecordsForMap = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_MINE_RECORDS));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(ENVIRONMENT.apiUrl + API.MINE_MAP_LIST, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_MINE_RECORDS));
+      dispatch(mineActions.storeMineList(response.data));
+      dispatch(hideLoading());
       return response;
     })
     .catch(() => dispatch(error(reducerTypes.GET_MINE_RECORD)))
@@ -320,4 +335,86 @@ export const setMineVerifiedStatus = (mine_guid, payload) => (dispatch) => {
       return response;
     })
     .catch(() => dispatch(error(reducerTypes.SET_MINE_VERIFIED_STATUS)));
+};
+
+// mine subscription
+export const subscribe = (mineGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.SUBSCRIBE));
+  dispatch(showLoading());
+  return CustomAxios()
+    .post(ENVIRONMENT.apiUrl + API.SUBSCRIPTION(mineGuid), {}, createRequestHeader())
+    .then(() => {
+      notification.success({
+        message: "Successfully subscribed",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.SUBSCRIBE));
+      dispatch(hideLoading());
+    })
+    .catch(() => dispatch(error(reducerTypes.SUBSCRIBE)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const unSubscribe = (mineGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.UNSUBSCRIBE));
+  dispatch(showLoading());
+  return CustomAxios()
+    .delete(ENVIRONMENT.apiUrl + API.SUBSCRIPTION(mineGuid), createRequestHeader())
+    .then(() => {
+      notification.success({
+        message: "Successfully unsubscribed",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.UNSUBSCRIBE));
+      dispatch(hideLoading());
+    })
+    .catch(() => dispatch(error(reducerTypes.SUBSCRIBE)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const fetchSubscribedMinesByUser = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_SUBSCRIBED_MINES));
+  dispatch(showLoading());
+  return axios
+    .get(ENVIRONMENT.apiUrl + API.MINE_SUBSCRIPTION, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_SUBSCRIBED_MINES));
+      dispatch(mineActions.storeSubscribedMines(response.data));
+      dispatch(hideLoading());
+      return response;
+    })
+    .catch((err) => {
+      notification.error({
+        message: err.response ? err.response.data.error.message : String.ERROR,
+        duration: 10,
+      });
+      dispatch(error(reducerTypes.GET_SUBSCRIBED_MINES));
+      dispatch(hideLoading());
+    });
+};
+
+// MineIncidents
+export const createMineIncident = (mine_guid, payload) => (dispatch) => {
+  dispatch(request(reducerTypes.CREATE_MINE_INCIDENT));
+  return CustomAxios()
+    .post(`${ENVIRONMENT.apiUrl}${API.MINE_INCIDENTS(mine_guid)}`, payload, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.CREATE_MINE_INCIDENT));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.CREATE_MINE_INCIDENT)));
+};
+
+export const fetchMineIncidents = (mine_guid) => (dispatch) => {
+  dispatch(request(reducerTypes.GET_MINE_INCIDENTS));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(`${ENVIRONMENT.apiUrl}${API.MINE_INCIDENTS(mine_guid)}`, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_MINE_INCIDENTS));
+      dispatch(mineActions.storeMineIncidents(response.data));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_MINE_INCIDENTS)))
+    .finally(() => dispatch(hideLoading()));
 };

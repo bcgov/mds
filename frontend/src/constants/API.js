@@ -3,11 +3,11 @@ import queryString from "query-string";
 // Network URL's
 export const MINE = "/mines";
 export const MINE_LIST = "/mines";
+export const SUBSCRIPTION = (mineGuid) => `/mines/${mineGuid}/subscribe`;
+export const MINE_SUBSCRIPTION = "/mines/subscribe";
 export const MINE_LIST_QUERY = (params) => `/mines${params}`;
-export const PARTIES_LIST_QUERY = (params = {}) =>
-  "type" in params
-    ? `/parties/search?${queryString.stringify(params)}`
-    : `/parties?${queryString.stringify(params)}`;
+export const PARTIES_LIST_QUERY = (params = {}) => `/parties?${queryString.stringify(params)}`;
+export const MINE_MAP_LIST = "/mines/map-list";
 export const MINE_BASIC_INFO_LIST = `/mines/basicinfo`;
 export const PARTY = "/parties";
 export const MANAGER = "/parties/managers";
@@ -17,7 +17,7 @@ export const MINE_NAME_LIST = (params = {}) => `/mines/search?${queryString.stri
 export const MINE_STATUS = "/mines/status";
 export const MINE_REGION = "/mines/region";
 export const MINE_COMPLIANCE_INFO = "/mines/compliance";
-export const MINE_TSF = "/mines/tailings";
+export const MINE_TSF = (mine_guid) => `/mines/${mine_guid}/tailings`;
 export const DISTURBANCE_CODES = "/mines/disturbance-codes";
 export const COMMODITY_CODES = "/mines/commodity-codes";
 export const EDIT_TSF_REPORT = "";
@@ -64,3 +64,7 @@ export const VARIANCE_DOCUMENTS = (mineGuid, varianceId) =>
   `/mines/${mineGuid}/variances/${varianceId}/documents`;
 export const VARIANCE_DOCUMENT = (mineGuid, varianceId, documentManagerGuid) =>
   `/mines/${mineGuid}/variances/${varianceId}/documents/${documentManagerGuid}`;
+
+// incidents
+export const MINE_INCIDENTS = (mine_guid) => `/mines/${mine_guid}/incidents`;
+export const MINE_INCIDENT_FOLLOWUP_ACTIONS = `/mines/incidents/followup-types`;

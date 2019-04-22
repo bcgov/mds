@@ -1,7 +1,6 @@
 import uuid
 
 from flask_restplus import Resource, reqparse
-from flask import request
 from app.extensions import api
 from ....utils.access_decorators import requires_role_mine_admin
 from ....utils.resources_mixins import UserMixin, ErrorMixin
@@ -11,7 +10,7 @@ from app.extensions import db
 
 
 class MinespaceUserMineResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser()
+    parser = reqparse.RequestParser(trim=True)
     parser.add_argument('mine_guid', type=str, required=True)
 
     @api.doc(params={'user_id': 'User id.', 'mine_guid': 'MDS Mine Guid'})

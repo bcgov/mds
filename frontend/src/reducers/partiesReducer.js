@@ -23,9 +23,9 @@ const partiesReducer = (state = initialState, action) => {
     case actionTypes.STORE_PARTIES:
       return {
         ...state,
-        rawParties: action.payload.parties,
-        parties: createItemMap(action.payload.parties, "party_guid"),
-        partyIds: createItemIdsArray(action.payload.parties, "party_guid"),
+        rawParties: action.payload.records,
+        parties: createItemMap(action.payload.records, "party_guid"),
+        partyIds: createItemIdsArray(action.payload.records, "party_guid"),
         partyPageData: action.payload,
       };
     case actionTypes.STORE_PARTY:
