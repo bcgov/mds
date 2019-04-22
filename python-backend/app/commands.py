@@ -25,6 +25,8 @@ from .scheduled_jobs import NRIS_jobs
 from .scheduled_jobs import ETL_jobs
 from app import auth
 
+from tests.factories import MineIncidentFactory
+
 from app.api.utils.include.user_info import User
 
 
@@ -127,6 +129,7 @@ def register_commands(app):
                 create_multiple_mine_tenure(random.randint(0, 4), mine)
                 create_multiple_permit_permittees(
                     random.randint(0, 6), mine, party, prev_party_guid)
+                MineIncidentFactory(mine_guid=mine.mine_guid)
 
             try:
                 db.session.commit()
@@ -147,12 +150,9 @@ def register_commands(app):
                 NRIS_jobs._cache_all_NRIS_major_mines_data()
                 print('Done!')
 
-        #This is here to prevent this from running in production until we are confident in the permit data.
-        if app.config.get('ENVIRONMENT_NAME') == 'test':
-
-            @sched.app.cli.command()
-            def _run_etl():
-                with sched.app.app_context():
-                    print('starting the ETL.')
-                    ETL_jobs._run_ETL()
-                    print('Completed running the ETL.')
+        @sched.app.cli.command()
+        def _run_etl():
+            with sched.app.app_context():
+                print('starting the ETL.')
+                ETL_jobs._run_ETL()
+                print('Completed running the ETL.')
