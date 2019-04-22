@@ -18,6 +18,7 @@ from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
 from app.api.mines.mine.models.mine_verified_status import MineVerifiedStatus
 from app.api.mines.incidents.models.mine_incident import MineIncident
 from app.api.mines.status.models.mine_status import MineStatus
+from app.api.mines.subscription.models.subscription import Subscription
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
 from app.api.parties.party.models.party import Party
 from app.api.parties.party.models.address import Address
@@ -378,6 +379,17 @@ class MinespaceUserFactory(BaseFactory):
     keycloak_guid = GUID
     email = factory.Faker('email')
 
+
+class SubscriptionFactory(BaseFactory):
+    class Meta:
+        model = Subscription
+
+    class Params:
+        mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
+
+    subscription_id = factory.Sequence(lambda n: n)
+    mine_guid = factory.SelfAttribute('mine.mine_guid')
+    user_name = factory.Faker('last_name')
 
 class MineFactory(BaseFactory):
     class Meta:

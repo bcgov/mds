@@ -1,0 +1,18 @@
+.custom-dashboard {
+  position: relative;
+  top: -25px;
+  background-color: $secondary-background-colour;
+  height: 100vh;
+  &__container {
+    &--white {
+      h5 {
+        padding-bottom: 20px;
+      }
+      position: relative;
+      top: 40px;
+      background-color: $pure-white;
+      padding: 20px;
+      margin: 30px;
+    }
+  }
+}

@@ -9,6 +9,9 @@ const reducerProps = {};
 const setupDispatchProps = () => {
   dispatchProps.fetchMineRecordById = jest.fn(() => Promise.resolve({}));
   dispatchProps.updateMineRecord = jest.fn();
+  dispatchProps.fetchSubscribedMinesByUser = jest.fn();
+  dispatchProps.subscribe = jest.fn();
+  dispatchProps.unSubscribe = jest.fn();
   dispatchProps.createVariance = jest.fn();
   dispatchProps.fetchMineComplianceCodes = jest.fn();
   dispatchProps.fetchVariancesByMine = jest.fn();

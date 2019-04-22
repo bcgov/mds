@@ -5,7 +5,7 @@ import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   closeModal: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   title: PropTypes.string,
   followupActionOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
@@ -14,17 +14,19 @@ const defaultProps = {
   title: "",
 };
 
-export const AddIncidentModal = (props) => (
-  <div>
-    <AddIncidentForm
-      handleSubmit={props.handleSubmit}
-      closeModal={props.closeModal}
-      title={props.title}
-      followupActionOptions={props.followupActionOptions}
-    />
-  </div>
-);
-
+export const AddIncidentModal = (props) => {
+  console.log(props);
+  return (
+    <div>
+      <AddIncidentForm
+        closeModal={props.closeModal}
+        onSubmit={props.onSubmit}
+        title={props.title}
+        followupActionOptions={props.followupActionOptions}
+      />
+    </div>
+  );
+};
 AddIncidentModal.propTypes = propTypes;
 AddIncidentModal.defaultProps = defaultProps;
 

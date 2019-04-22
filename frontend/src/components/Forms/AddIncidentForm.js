@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
-import RenderDateTime from "@/components/common/RenderDateTime";
+import RenderDate from "@/components/common/RenderDate";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
@@ -13,6 +13,7 @@ import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
@@ -20,7 +21,7 @@ const propTypes = {
 };
 
 export const AddIncidentForm = (props) => (
-  <Form layout="vertical" onSubmit={props.handleSubmit}>
+  <Form layout="vertical" onSubmit={props.handleSubmit(props.onSubmit)}>
     <Row gutter={16}>
       <Col>
         <Form.Item>
@@ -28,7 +29,9 @@ export const AddIncidentForm = (props) => (
             id="incident_timestamp"
             name="incident_timestamp"
             label="Incident Date and Time*"
-            component={RenderDateTime}
+            placeholder="Please select date and time"
+            component={RenderDate}
+            showTime
             validate={[required, dateNotInFuture]}
           />
         </Form.Item>
@@ -37,6 +40,7 @@ export const AddIncidentForm = (props) => (
             id="incident_description"
             name="incident_description"
             label="Incident Description*"
+            placeholder=""
             component={RenderAutoSizeField}
             validate={[required]}
           />
@@ -46,7 +50,9 @@ export const AddIncidentForm = (props) => (
             id="reported_timestamp"
             name="reported_timestamp"
             label="Reported Date and Time"
-            component={RenderDateTime}
+            placeholder="Please select date and time"
+            component={RenderDate}
+            showTime
           />
         </Form.Item>
         <Form.Item>
@@ -54,6 +60,7 @@ export const AddIncidentForm = (props) => (
             id="reported_by"
             name="reported_by"
             label="Reporter's Name"
+            placeholder=""
             component={RenderField}
           />
         </Form.Item>
@@ -62,6 +69,7 @@ export const AddIncidentForm = (props) => (
             id="reported_by_role"
             name="reported_by_role"
             label="Job Title of Reporter"
+            placeholder=""
             component={RenderField}
           />
         </Form.Item>
@@ -80,6 +88,7 @@ export const AddIncidentForm = (props) => (
             id="followup_inspection_no"
             name="followup_inspection_no"
             label="NRIS Inspection Number"
+            placeholder=""
             component={RenderField}
           />
         </Form.Item>
@@ -88,6 +97,7 @@ export const AddIncidentForm = (props) => (
             id="closing_report_summary"
             name="closing_report_summary"
             label="Closing Report Summary"
+            placeholder=""
             component={RenderAutoSizeField}
           />
         </Form.Item>

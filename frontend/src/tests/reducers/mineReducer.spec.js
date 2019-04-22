@@ -1,5 +1,10 @@
 import mineReducer from "@/reducers/mineReducer";
-import { storeMine, storeMineList, storeMineNameList } from "@/actions/mineActions";
+import {
+  storeMine,
+  storeMineList,
+  storeMineNameList,
+  storeSubscribedMines,
+} from "@/actions/mineActions";
 
 const baseExpectedValue = {
   mines: {},
@@ -9,6 +14,7 @@ const baseExpectedValue = {
   mineGuid: false,
   mineBasicInfoList: [],
   mineDocuments: [],
+  subscribedMines: [],
   mineIncidents: [],
 };
 
@@ -63,6 +69,16 @@ describe("mineReducer", () => {
       storeMineNameList({
         mines: [{ mine_guid: "test123", mine_name: "mineName", mine_no: "2039" }],
       })
+    );
+    expect(result).toEqual(expectedValue);
+  });
+
+  it("receives STORE_SUBSCRIBED_MINES", () => {
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.subscribedMines = [{ guid: "test123", mine_name: "mineName", mine_no: "2039" }];
+    const result = mineReducer(
+      undefined,
+      storeSubscribedMines({ mines: [{ guid: "test123", mine_name: "mineName", mine_no: "2039" }] })
     );
     expect(result).toEqual(expectedValue);
   });
