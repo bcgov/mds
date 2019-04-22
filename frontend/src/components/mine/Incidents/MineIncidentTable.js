@@ -78,19 +78,17 @@ const transformRowData = (incidents, actions, funcs) =>
 
 const MineIncidentTable = (props) => (
   <div>
-    {props.incidents.length < 1 ? (
-      <NullScreen type="incidents" />
-    ) : (
-      <Table
-        align="left"
-        pagination={false}
-        columns={columns}
-        dataSource={transformRowData(props.incidents, props.followupActions, {
-          handleEditModal: props.handleEditMineIncident,
-          openMineIncidentModal: props.openMineIncidentModal,
-        })}
-      />
-    )}
+    <Table
+      align="left"
+      pagination={false}
+      columns={columns}
+      locale={{ emptyText: <NullScreen type="incidents" /> }}
+      dataSource={transformRowData(props.incidents, props.followupActions, {
+        handleEditModal: props.handleEditMineIncident,
+        openMineIncidentModal: props.openMineIncidentModal,
+      })}
+    />
+    )
   </div>
 );
 
