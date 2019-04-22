@@ -30,12 +30,11 @@ class PermitStatusCode(AuditMixin, Base):
         return cls.query.filter_by(permit_status_code=_id).first()
 
     @classmethod
-    def create_mine_permit_status_code(cls, code, description, display_order, user_kwargs, save=True):
+    def create_mine_permit_status_code(cls, code, description, display_order, save=True):
         permit_status_code = cls(
             permit_status_code=code,
             description=description,
             display_order=display_order,
-            **user_kwargs
         )
         if save:
             permit_status_code.save(commit=False)

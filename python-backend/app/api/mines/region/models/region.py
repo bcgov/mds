@@ -31,14 +31,7 @@ class MineRegionCode(AuditMixin, Base):
         return cls.query.filter_by(mine_region_code=_code).first()
 
     @classmethod
-    def create(cls,
-               code,
-               description,
-               display_order,
-               effective_date,
-               expiry_date,
-               user_kwargs,
-               save=True):
+    def create(cls, code, description, display_order, effective_date, expiry_date, save=True):
         mine_region_code = cls(
             mine_region_code=code,
             description=description,

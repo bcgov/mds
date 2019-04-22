@@ -31,12 +31,9 @@ from app.api.utils.include.user_info import User
 
 
 def register_commands(app):
-    DUMMY_USER_KWARGS = {'create_user': 'DummyUser', 'update_user': 'DummyUser'}
-
     def create_multiple_mine_tenure(num, mine):
         for _ in range(num):
-            MineralTenureXref.create_mine_tenure(mine, random_key_gen(key_length=7, letters=False),
-                                                 DUMMY_USER_KWARGS)
+            MineralTenureXref.create_mine_tenure(mine, random_key_gen(key_length=7, letters=False))
 
     def create_multiple_permit_permittees(num, mine, party, prev_party_guid):
         for _ in range(num):
@@ -55,7 +52,7 @@ def register_commands(app):
                 mine_party_appt_type_code='PMT',
                 start_date=None,
                 end_date=None,
-                processed_by=DUMMY_USER_KWARGS.get('update_user'),
+                processed_by='DummyUser',
                 save=True)
 
     # in terminal you can run $flask <cmd> <arg>
@@ -113,7 +110,7 @@ def register_commands(app):
                 # Ability to add previous party to have multiple permittee
                 prev_party_guid = party.party_guid if party else None
                 mine = Mine.create_mine(generate_mine_no(), generate_mine_name(),
-                                        random_mine_category(), random_region(), DUMMY_USER_KWARGS)
+                                        random_mine_category(), random_region())
 
                 MineType.create_mine_type(mine.mine_guid, random.choice(mine_tenure_type_codes))
                 MineLocationFactory(mine_guid=mine.mine_guid)

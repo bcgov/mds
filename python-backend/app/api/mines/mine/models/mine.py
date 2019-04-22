@@ -197,14 +197,13 @@ class Mine(AuditMixin, Base):
         return result
 
     @classmethod
-    def create_mine(cls, mine_no, mine_name, mine_category, mine_region, user_kwargs, save=True):
+    def create_mine(cls, mine_no, mine_name, mine_category, mine_region, save=True):
         mine = cls(
             mine_guid=uuid.uuid4(),
             mine_no=mine_no,
             mine_name=mine_name,
             major_mine_ind=mine_category,
-            mine_region=mine_region,
-            **user_kwargs)
+            mine_region=mine_region)
         if save:
             mine.save(commit=False)
         return mine
