@@ -5,6 +5,7 @@ ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <RenderField
     id={1}
+    inlineLabel=""
     input=""
     label=""
     meta={
@@ -31,6 +32,7 @@ ShallowWrapper {
       "children": <div
         className="inline-flex"
       >
+        
         <Input
           defaultValue={undefined}
           disabled={false}
@@ -51,7 +53,7 @@ ShallowWrapper {
       "nodeType": "host",
       "props": Object {
         "children": Array [
-          undefined,
+          "",
           <Input
             defaultValue={undefined}
             disabled={false}
@@ -64,7 +66,7 @@ ShallowWrapper {
       },
       "ref": null,
       "rendered": Array [
-        undefined,
+        "",
         Object {
           "instance": null,
           "key": undefined,
@@ -94,6 +96,7 @@ ShallowWrapper {
         "children": <div
           className="inline-flex"
         >
+          
           <Input
             defaultValue={undefined}
             disabled={false}
@@ -114,7 +117,7 @@ ShallowWrapper {
         "nodeType": "host",
         "props": Object {
           "children": Array [
-            undefined,
+            "",
             <Input
               defaultValue={undefined}
               disabled={false}
@@ -127,7 +130,7 @@ ShallowWrapper {
         },
         "ref": null,
         "rendered": Array [
-          undefined,
+          "",
           Object {
             "instance": null,
             "key": undefined,

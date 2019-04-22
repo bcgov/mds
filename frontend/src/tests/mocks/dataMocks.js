@@ -109,6 +109,52 @@ export const MINE_RESPONSE = {
   ],
 };
 
+export const SUBSCRIBED_MINES = {
+  mines: [
+    {
+      guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+      mine_name: "mine3",
+      mine_no: "BLAH9091",
+      region_code: "NE",
+      mine_permit: [],
+      mineral_tenure_xref: [
+        {
+          tenure_number_id: "1234567",
+        },
+      ],
+      mine_location: { longitude: null, latitude: null },
+      mine_tailings_storage_facility: [
+        {
+          mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+          mine_tailings_storage_facility_guid: "e2629897-053e-4218-9299-479375e47f78",
+          mine_tailings_storage_facility_name: "MockTSF",
+        },
+      ],
+      mine_expected_documents: [
+        {
+          date_created: "2018-11-19",
+          due_date: "",
+          exp_document_guid: "806608ed-d2b4-4f83-8b22-739d5223c56f",
+          exp_document_name: "OMS Manual",
+          mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+          req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
+          exp_document_status: {
+            exp_document_status_code: "MIA",
+            description: "Not Received",
+          },
+          related_documents: [],
+        },
+      ],
+      mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
+      mine_status: {
+        statusvalue: ["CLD", "CM"],
+        status_labels: ["Closed", "Care & Maintenance"],
+        effective_date: "2018-10-16",
+        expiry_date: "9999-12-31",
+      },
+    },
+  ],
+};
 export const MINES = {
   mineIds: ["18133c75-49ad-4101-85f3-a43e35ae989a", "18145c75-49ad-0101-85f3-a43e45ae989a"],
   mines: {
@@ -1000,3 +1046,33 @@ export const APPLICATION_LIST = {
     },
   ],
 };
+
+export const INCIDENTS = {
+  mine_incidents: [
+    {
+      mine_incident_guid: "dc101155-de3e-4f37-8303-eb6a6d2d5866",
+      mine_incident_report_no: "2019-70",
+      mine_incident_id_year: 2019,
+      mine_guid: "3cfba01f-f8f3-4948-b488-d9e7a915f5ec",
+      incident_timestamp: "2019-04-06T00:34:44+00:00",
+      incident_description:
+        "Paper others interview development military short design often town participant church road daughter.",
+      reported_timestamp: "2019-03-17T17:42:37+00:00",
+      reported_by: "Robert Bell",
+      reported_by_role: "Investment banker, operational",
+      followup_type_code: "NOA",
+      followup_inspection_no: "721814",
+      closing_report_summary:
+        "Parent south person form evidence receive tree wide memory but medical car himself benefit key really series sea enter money prove if lawyer seven ready religious shake.",
+    },
+  ],
+};
+
+export const FOLLOWUP_ACTIONS = [
+  {
+    mine_incident_followup_type_code: "NOA",
+    description: "No Action",
+    display_order: 20,
+    active_ind: true,
+  },
+];

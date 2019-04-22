@@ -11,7 +11,7 @@ from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class MineBasicInfoResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser()
+    parser = reqparse.RequestParser(trim=True)
     parser.add_argument(
         'mine_guids',
         type=list,

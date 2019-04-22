@@ -51,6 +51,13 @@ ShallowWrapper {
         ],
       }
     }
+    fetchMineIncidentFollowActionOptions={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
     fetchMineRecordById={
       [MockFunction] {
         "calls": Array [
@@ -102,6 +109,13 @@ ShallowWrapper {
     }
     fetchRelationshipTypes={[MockFunction]}
     fetchStatusOptions={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
+    fetchSubscribedMinesByUser={
       [MockFunction] {
         "calls": Array [
           Array [],
@@ -497,6 +511,8 @@ ShallowWrapper {
         ],
       }
     }
+    subscribe={[MockFunction]}
+    unSubscribe={[MockFunction]}
     updateMineRecord={[MockFunction]}
     variances={
       Array [

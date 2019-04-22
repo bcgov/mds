@@ -3,6 +3,8 @@ import queryString from "query-string";
 // Network URL's
 export const MINE = "/mines";
 export const MINE_LIST = "/mines";
+export const SUBSCRIPTION = (mineGuid) => `/mines/${mineGuid}/subscribe`;
+export const MINE_SUBSCRIPTION = "/mines/subscribe";
 export const MINE_LIST_QUERY = (params) => `/mines${params}`;
 export const PARTIES_LIST_QUERY = (params = {}) => `/parties?${queryString.stringify(params)}`;
 export const MINE_MAP_LIST = "/mines/map-list";
@@ -62,3 +64,7 @@ export const VARIANCE_DOCUMENTS = (mineGuid, varianceId) =>
   `/mines/${mineGuid}/variances/${varianceId}/documents`;
 export const VARIANCE_DOCUMENT = (mineGuid, varianceId, documentManagerGuid) =>
   `/mines/${mineGuid}/variances/${varianceId}/documents/${documentManagerGuid}`;
+
+// incidents
+export const MINE_INCIDENTS = (mine_guid) => `/mines/${mine_guid}/incidents`;
+export const MINE_INCIDENT_FOLLOWUP_ACTIONS = `/mines/incidents/followup-types`;
