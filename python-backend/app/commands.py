@@ -150,12 +150,9 @@ def register_commands(app):
                 NRIS_jobs._cache_all_NRIS_major_mines_data()
                 print('Done!')
 
-        #This is here to prevent this from running in production until we are confident in the permit data.
-        if app.config.get('ENVIRONMENT_NAME') == 'test':
-
-            @sched.app.cli.command()
-            def _run_etl():
-                with sched.app.app_context():
-                    print('starting the ETL.')
-                    ETL_jobs._run_ETL()
-                    print('Completed running the ETL.')
+        @sched.app.cli.command()
+        def _run_etl():
+            with sched.app.app_context():
+                print('starting the ETL.')
+                ETL_jobs._run_ETL()
+                print('Completed running the ETL.')
