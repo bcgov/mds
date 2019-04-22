@@ -1,91 +1,65 @@
 import json, pytest, datetime, uuid
 from app.api.mines.mine.models.mine_verified_status import MineVerifiedStatus
 from app.api.mines.mine.models.mine import Mine
-from tests.constants import TEST_MINE_NO, TEST_MINE_GUID, TEST_TENURE_ID, TEST_REGION_CODE, DUMMY_USER_KWARGS
-from app.extensions import db
 
 from app.api.utils.include.user_info import User
 
-
-@pytest.fixture(scope="function")
-def setup_info(test_client):
-    mines = []
-    for x in range(1, 5):
-        mines.append(
-            Mine(
-                mine_guid=uuid.uuid4(),
-                mine_no=str(x * 6),
-                mine_name=f"mine name {x}",
-                mine_region=TEST_REGION_CODE,
-                **DUMMY_USER_KWARGS))
-
-    for i, mine in enumerate(mines):
-        mine.verified_status = MineVerifiedStatus(
-            healthy_ind=(i % 2 == 1),
-            verifying_user='mds',
-            verifying_timestamp=datetime.datetime.now(),
-            update_user='mds',
-            update_timestamp=datetime.datetime.now())
-
-    [m.save() for m in mines]
-
-    yield dict(mines=mines)
-
-    for mine in mines:
-        db.session.refresh(mine)
-        db.session.refresh(mine.verified_status)
-        db.session.delete(mine.verified_status)
-        db.session.delete(mine)
-
-    db.session.commit()
+from tests.factories import MineFactory
 
 
 # GET
-def test_get_all_mine_verified_status(test_client, auth_headers, setup_info):
+def test_get_all_mine_verified_status(test_client, db_session, auth_headers):
+    healthy_count = 2
+    MineFactory.create_batch(size=healthy_count, verified_status__healthy_ind=True)
+    unhealthy_count = 2
+    MineFactory.create_batch(size=unhealthy_count, verified_status__healthy_ind=False)
+
     get_resp = test_client.get('/mines/verified-status', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200, str(get_resp.response)
-    assert len(get_data) == 4
+    assert len(get_data['healthy']) == healthy_count, str(get_data)
+    assert len(get_data['unhealthy']) == unhealthy_count, str(get_data)
 
 
-def test_get_mine_verified_status_by_user(test_client, auth_headers, setup_info):
+def test_get_mine_verified_status_by_user(test_client, db_session, auth_headers):
+    healthy_count = 2
+    MineFactory.create_batch(
+        size=healthy_count,
+        verified_status__verifying_user='mds',
+        verified_status__healthy_ind=True)
+    unhealthy_count = 2
+    MineFactory.create_batch(
+        size=unhealthy_count,
+        verified_status__verifying_user='mds',
+        verified_status__healthy_ind=False)
+
     get_resp = test_client.get(
         '/mines/verified-status?user_id=mds', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200, str(get_resp.response)
-    assert len(get_data) == 4
+    assert len(get_data['healthy']) == healthy_count, str(get_data)
+    assert len(get_data['unhealthy']) == unhealthy_count, str(get_data)
+    assert all(a['verifying_user'] == 'mds' for a in get_data['healthy'])
+    assert all(a['verifying_user'] == 'mds' for a in get_data['unhealthy'])
 
 
-#TODO: these are set to skip because they require the changes that james is making to work.
-# The objects are being modified and beause of that the fixture cannot delete them since the sessions
-# are different.
-@pytest.mark.skip(
-    reason='The object being modified cannot be deleted in the current implementation.')
-def test_set_mine_verified_status_verified(test_client, auth_headers, setup_info):
-    mine = setup_info['mines'][0]
-    assert mine.verified_status.healthy_ind == False
+def test_set_mine_verified_status_verified(test_client, db_session, auth_headers):
+    mine_guid = MineFactory(verified_status__healthy_ind=False).mine_guid
 
     data = {"healthy": True}
     put_resp = test_client.put(
-        f"/mines/{str(mine.mine_guid)}/verified-status",
-        json=data,
-        headers=auth_headers['full_auth_header'])
+        f"/mines/{mine_guid}/verified-status", data=data, headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
     assert put_resp.status_code == 200
     assert put_data['healthy_ind'] == True
 
 
-@pytest.mark.skip(
-    reason='The object being modified cannot be deleted in the current implementation.')
-def test_set_mine_verified_status_unverified(test_client, auth_headers, setup_info):
-    mine = setup_info['mines'][1]
-    assert mine.verified_status.healthy_ind == True
+def test_set_mine_verified_status_unverified(test_client, db_session, auth_headers):
+    mine_guid = MineFactory(verified_status__healthy_ind=True).mine_guid
 
     data = {"healthy": False}
     put_resp = test_client.put(
-        f"/mines/{str(mine.mine_guid)}/verified-status",
-        json=data,
-        headers=auth_headers['full_auth_header'])
+        f"/mines/{mine_guid}/verified-status", data=data, headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
     assert put_resp.status_code == 200, put_resp.response
     assert put_data['healthy_ind'] == False, put_data
