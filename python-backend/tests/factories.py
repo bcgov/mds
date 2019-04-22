@@ -18,6 +18,7 @@ from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
 from app.api.mines.mine.models.mine_verified_status import MineVerifiedStatus
 from app.api.mines.status.models.mine_status import MineStatus
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
+from app.api.mines.variances.models.variance import Variance
 from app.api.parties.party.models.party import Party
 from app.api.parties.party.models.address import Address
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
@@ -201,6 +202,23 @@ class MineTailingsStorageFacilityFactory(BaseFactory):
     mine_tailings_storage_facility_guid = GUID
     mine_tailings_storage_facility_name = factory.Faker('last_name')
     mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
+
+
+class VarianceFactory(BaseFactory):
+    class Meta:
+        model = Variance
+
+    class Params:
+        mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
+
+    variance_id = random.randint(1, 50)
+    compliance_article_id = factory.LazyFunction(RandomComplianceArticleId)
+    mine_guid = factory.SelfAttribute('mine.mine_guid')
+    note = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
+    issue_date = TODAY
+    received_date = TODAY
+    expiry_date = TODAY
+    documents = []
 
 
 class PermitFactory(BaseFactory):
