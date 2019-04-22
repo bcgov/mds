@@ -69,9 +69,7 @@ def register_scheduled_jobs(app):
             sched.start()
             _schedule_IDIR_jobs(app)
             _schedule_NRIS_jobs(app)
-            # This is here to prevent this from running in production until we are confident in the permit data.
-            if app.config.get('ENVIRONMENT_NAME') == 'test':
-                _schedule_ETL_jobs(app)
+            _schedule_ETL_jobs(app)
 
 
 def register_routes(app):
