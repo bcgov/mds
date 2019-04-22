@@ -227,9 +227,9 @@ class VarianceUploadedDocumentsResource(Resource, UserMixin, ErrorMixin):
         mine_document = MineDocument.find_by_mine_document_guid(mine_document_guid)
 
         if variance is None:
-            raise NotFound('Variance not found')
+            raise NotFound('Variance not found.')
         if mine_document is None:
-            raise NotFound('Mine document not found')
+            raise NotFound('Mine document not found.')
 
         variance.documents.remove(mine_document)
         variance.save()

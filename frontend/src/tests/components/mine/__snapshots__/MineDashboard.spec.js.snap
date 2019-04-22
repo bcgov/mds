@@ -108,6 +108,13 @@ ShallowWrapper {
         ],
       }
     }
+    fetchSubscribedMinesByUser={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
     fetchVariancesByMine={[MockFunction]}
     match={
       Object {
@@ -121,14 +128,13 @@ ShallowWrapper {
     }
     mine={
       Object {
-        "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
         "mine_expected_documents": Array [
           Object {
             "date_created": "2018-11-19",
             "due_date": "",
             "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
             "exp_document_name": "OMS Manual",
-            "exp_document_status": Object {
+            "expected_document_status": Object {
               "description": "Not Received",
               "exp_document_status_code": "MIA",
             },
@@ -137,6 +143,7 @@ ShallowWrapper {
             "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
           },
         ],
+        "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
         "mine_location": Object {
           "latitude": null,
           "longitude": null,
@@ -144,6 +151,7 @@ ShallowWrapper {
         "mine_name": "mine3",
         "mine_no": "BLAH9091",
         "mine_permit": Array [],
+        "mine_region": "NE",
         "mine_status": Object {
           "effective_date": "2018-10-16",
           "expiry_date": "9999-12-31",
@@ -156,7 +164,7 @@ ShallowWrapper {
             "CM",
           ],
         },
-        "mine_tailings_storage_facility": Array [
+        "mine_tailings_storage_facilities": Array [
           Object {
             "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
             "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
@@ -176,7 +184,6 @@ ShallowWrapper {
             "tenure_number_id": "1234567",
           },
         ],
-        "region_code": "NE",
       }
     }
     mineComplianceInfo={Object {}}
@@ -364,14 +371,13 @@ ShallowWrapper {
     mines={
       Object {
         "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
-          "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
           "mine_expected_documents": Array [
             Object {
               "date_created": "2018-11-19",
               "due_date": "",
               "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
               "exp_document_name": "OMS Manual",
-              "exp_document_status": Object {
+              "expected_document_status": Object {
                 "description": "Not Received",
                 "exp_document_status_code": "MIA",
               },
@@ -380,6 +386,7 @@ ShallowWrapper {
               "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
             },
           ],
+          "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
           "mine_location": Object {
             "latitude": null,
             "longitude": null,
@@ -387,6 +394,7 @@ ShallowWrapper {
           "mine_name": "mine3",
           "mine_no": "BLAH9091",
           "mine_permit": Array [],
+          "mine_region": "NE",
           "mine_status": Object {
             "effective_date": "2018-10-16",
             "expiry_date": "9999-12-31",
@@ -399,7 +407,7 @@ ShallowWrapper {
               "CM",
             ],
           },
-          "mine_tailings_storage_facility": Array [
+          "mine_tailings_storage_facilities": Array [
             Object {
               "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
               "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
@@ -419,17 +427,15 @@ ShallowWrapper {
               "tenure_number_id": "1234567",
             },
           ],
-          "region_code": "NE",
         },
         "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
-          "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
           "mine_expected_documents": Array [
             Object {
               "date_created": "2018-11-19",
               "due_date": "",
               "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
               "exp_document_name": "OMS Manual",
-              "exp_document_status": Object {
+              "expected_document_status": Object {
                 "description": "Not Received",
                 "exp_document_status_code": "MIA",
               },
@@ -438,6 +444,7 @@ ShallowWrapper {
               "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
             },
           ],
+          "mine_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
           "mine_location": Object {
             "latitude": null,
             "longitude": null,
@@ -446,66 +453,15 @@ ShallowWrapper {
           "mine_no": "BLAH9091",
           "mine_permit": Array [
             Object {
-              "authorization_end_date": "9999-12-31",
-              "issue_date": "9999-12-31",
-              "mine_guid": "1628847c-060b-45f2-990f-815877174801",
               "permit_guid": "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
               "permit_no": "KNaaWwVdiJ40",
-              "permit_status_code": "Z",
-              "permittee": Array [
-                Object {
-                  "effective_date": "2018-10-02",
-                  "expiry_date": "9999-12-31",
-                  "party": Object {
-                    "effective_date": "2018-10-03",
-                    "email": "JgHxeyjv@aezZIwee.com",
-                    "expiry_date": "9999-12-31",
-                    "first_name": "Tiyudoveh",
-                    "name": "Tiyudoveh Higesewawa",
-                    "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
-                    "party_name": "Higesewawa",
-                    "party_type_code": "PER",
-                    "phone_ext": null,
-                    "phone_no": "123-123-1234",
-                  },
-                  "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
-                  "party_name": "Yivihoke",
-                  "permit_guid": "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
-                  "permittee_guid": "abd4c8bb-48ac-4ec2-b296-5f38d4118176",
-                },
-              ],
             },
             Object {
-              "authorization_end_date": "9999-12-31",
-              "issue_date": "9999-12-31",
-              "mine_guid": "1628847c-060b-45f2-990f-815877174801",
               "permit_guid": "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
               "permit_no": "xfM0c0ZKEw7B",
-              "permit_status_code": "Z",
-              "permittee": Array [
-                Object {
-                  "effective_date": "2018-10-02",
-                  "expiry_date": "9999-12-31",
-                  "party": Object {
-                    "effective_date": "2018-10-03",
-                    "email": "JgHxeyjv@aezZIwee.com",
-                    "expiry_date": "9999-12-31",
-                    "first_name": "Tiyudoveh",
-                    "name": "Tiyudoveh Higesewawa",
-                    "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
-                    "party_name": "Higesewawa",
-                    "party_type_code": "PER",
-                    "phone_ext": null,
-                    "phone_no": "123-123-1234",
-                  },
-                  "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
-                  "party_name": "Yivihoke",
-                  "permit_guid": "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
-                  "permittee_guid": "3491c9a5-8f09-471f-bb1b-3ea246eb9796",
-                },
-              ],
             },
           ],
+          "mine_region": "NE",
           "mine_status": Object {
             "effective_date": "2018-10-16",
             "expiry_date": "9999-12-31",
@@ -518,7 +474,7 @@ ShallowWrapper {
               "CM",
             ],
           },
-          "mine_tailings_storage_facility": Array [
+          "mine_tailings_storage_facilities": Array [
             Object {
               "mine_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
               "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f34",
@@ -538,7 +494,6 @@ ShallowWrapper {
               "tenure_number_id": "1234567",
             },
           ],
-          "region_code": "NE",
         },
       }
     }
@@ -549,6 +504,8 @@ ShallowWrapper {
         ],
       }
     }
+    subscribe={[MockFunction]}
+    unSubscribe={[MockFunction]}
     updateMineRecord={[MockFunction]}
     variances={
       Array [

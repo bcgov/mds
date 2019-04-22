@@ -11,10 +11,10 @@ export const ERROR = { error: { message: "Errors", status: 400 } };
 export const MINE_RESPONSE = {
   mines: [
     {
-      guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+      mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
       mine_name: "mine3",
       mine_no: "BLAH9091",
-      region_code: "NE",
+      mine_region: "NE",
       mine_permit: [],
       mineral_tenure_xref: [
         {
@@ -28,7 +28,7 @@ export const MINE_RESPONSE = {
         effective_date: "2018-10-16",
         expiry_date: "9999-12-31",
       },
-      mine_tailings_storage_facility: [
+      mine_tailings_storage_facilities: [
         {
           mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
           mine_tailings_storage_facility_guid: "e2629897-053e-4218-9299-479375e47f78",
@@ -43,7 +43,7 @@ export const MINE_RESPONSE = {
           exp_document_name: "OMS Manual",
           mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
           req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-          exp_document_status: {
+          expected_document_status: {
             exp_document_status_code: "MIA",
             description: "Not Received",
           },
@@ -53,70 +53,18 @@ export const MINE_RESPONSE = {
       mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
     },
     {
-      guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
+      mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
       mine_name: "mine2",
       mine_no: "BLAH9091",
-      region_code: "NE",
+      mine_region: "NE",
       mine_permit: [
         {
-          authorization_end_date: "9999-12-31",
-          issue_date: "9999-12-31",
-          mine_guid: "1628847c-060b-45f2-990f-815877174801",
           permit_guid: "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
           permit_no: "KNaaWwVdiJ40",
-          permit_status_code: "Z",
-          permittee: [
-            {
-              effective_date: "2018-10-02",
-              expiry_date: "9999-12-31",
-              party_guid: "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
-              party_name: "Yivihoke",
-              permit_guid: "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
-              permittee_guid: "abd4c8bb-48ac-4ec2-b296-5f38d4118176",
-              party: {
-                effective_date: "2018-10-03",
-                email: "JgHxeyjv@aezZIwee.com",
-                expiry_date: "9999-12-31",
-                first_name: "Tiyudoveh",
-                name: "Tiyudoveh Higesewawa",
-                party_guid: "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
-                party_name: "Higesewawa",
-                party_type_code: "PER",
-                phone_ext: null,
-                phone_no: "123-123-1234",
-              },
-            },
-          ],
         },
         {
-          authorization_end_date: "9999-12-31",
-          issue_date: "9999-12-31",
-          mine_guid: "1628847c-060b-45f2-990f-815877174801",
           permit_guid: "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
           permit_no: "xfM0c0ZKEw7B",
-          permit_status_code: "Z",
-          permittee: [
-            {
-              effective_date: "2018-10-02",
-              expiry_date: "9999-12-31",
-              party_guid: "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
-              party_name: "Yivihoke",
-              permit_guid: "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
-              permittee_guid: "3491c9a5-8f09-471f-bb1b-3ea246eb9796",
-              party: {
-                effective_date: "2018-10-03",
-                email: "JgHxeyjv@aezZIwee.com",
-                expiry_date: "9999-12-31",
-                first_name: "Tiyudoveh",
-                name: "Tiyudoveh Higesewawa",
-                party_guid: "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
-                party_name: "Higesewawa",
-                party_type_code: "PER",
-                phone_ext: null,
-                phone_no: "123-123-1234",
-              },
-            },
-          ],
         },
       ],
       mineral_tenure_xref: [
@@ -134,7 +82,7 @@ export const MINE_RESPONSE = {
         longitude: null,
         latitude: null,
       },
-      mine_tailings_storage_facility: [
+      mine_tailings_storage_facilities: [
         {
           mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
           mine_tailings_storage_facility_guid: "e2629897-053e-4218-9299-479375e47f34",
@@ -149,7 +97,7 @@ export const MINE_RESPONSE = {
           exp_document_name: "OMS Manual",
           mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
           req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-          exp_document_status: {
+          expected_document_status: {
             exp_document_status_code: "MIA",
             description: "Not Received",
           },
@@ -161,10 +109,9 @@ export const MINE_RESPONSE = {
   ],
 };
 
-export const MINES = {
-  mineIds: ["18133c75-49ad-4101-85f3-a43e35ae989a", "18145c75-49ad-0101-85f3-a43e45ae989a"],
-  mines: {
-    "18133c75-49ad-4101-85f3-a43e35ae989a": {
+export const SUBSCRIBED_MINES = {
+  mines: [
+    {
       guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
       mine_name: "mine3",
       mine_no: "BLAH9091",
@@ -192,6 +139,53 @@ export const MINES = {
           mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
           req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
           exp_document_status: {
+            exp_document_status_code: "MIA",
+            description: "Not Received",
+          },
+          related_documents: [],
+        },
+      ],
+      mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
+      mine_status: {
+        statusvalue: ["CLD", "CM"],
+        status_labels: ["Closed", "Care & Maintenance"],
+        effective_date: "2018-10-16",
+        expiry_date: "9999-12-31",
+      },
+    },
+  ],
+};
+export const MINES = {
+  mineIds: ["18133c75-49ad-4101-85f3-a43e35ae989a", "18145c75-49ad-0101-85f3-a43e45ae989a"],
+  mines: {
+    "18133c75-49ad-4101-85f3-a43e35ae989a": {
+      mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+      mine_name: "mine3",
+      mine_no: "BLAH9091",
+      mine_region: "NE",
+      mine_permit: [],
+      mineral_tenure_xref: [
+        {
+          tenure_number_id: "1234567",
+        },
+      ],
+      mine_location: { longitude: null, latitude: null },
+      mine_tailings_storage_facilities: [
+        {
+          mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+          mine_tailings_storage_facility_guid: "e2629897-053e-4218-9299-479375e47f78",
+          mine_tailings_storage_facility_name: "MockTSF",
+        },
+      ],
+      mine_expected_documents: [
+        {
+          date_created: "2018-11-19",
+          due_date: "",
+          exp_document_guid: "806608ed-d2b4-4f83-8b22-739d5223c56f",
+          exp_document_name: "OMS Manual",
+          mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
+          req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
+          expected_document_status: {
             exp_document_status_code: "MIA",
             description: "Not Received",
           },
@@ -207,70 +201,18 @@ export const MINES = {
       },
     },
     "18145c75-49ad-0101-85f3-a43e45ae989a": {
-      guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
+      mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
       mine_name: "mine2",
       mine_no: "BLAH9091",
-      region_code: "NE",
+      mine_region: "NE",
       mine_permit: [
         {
-          authorization_end_date: "9999-12-31",
-          issue_date: "9999-12-31",
-          mine_guid: "1628847c-060b-45f2-990f-815877174801",
           permit_guid: "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
           permit_no: "KNaaWwVdiJ40",
-          permit_status_code: "Z",
-          permittee: [
-            {
-              effective_date: "2018-10-02",
-              expiry_date: "9999-12-31",
-              party_guid: "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
-              party_name: "Yivihoke",
-              permit_guid: "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
-              permittee_guid: "abd4c8bb-48ac-4ec2-b296-5f38d4118176",
-              party: {
-                effective_date: "2018-10-03",
-                email: "JgHxeyjv@aezZIwee.com",
-                expiry_date: "9999-12-31",
-                first_name: "Tiyudoveh",
-                name: "Tiyudoveh Higesewawa",
-                party_guid: "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
-                party_name: "Higesewawa",
-                party_type_code: "PER",
-                phone_ext: null,
-                phone_no: "123-123-1234",
-              },
-            },
-          ],
         },
         {
-          authorization_end_date: "9999-12-31",
-          issue_date: "9999-12-31",
-          mine_guid: "1628847c-060b-45f2-990f-815877174801",
           permit_guid: "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
           permit_no: "xfM0c0ZKEw7B",
-          permit_status_code: "Z",
-          permittee: [
-            {
-              effective_date: "2018-10-02",
-              expiry_date: "9999-12-31",
-              party_guid: "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
-              party_name: "Yivihoke",
-              permit_guid: "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
-              permittee_guid: "3491c9a5-8f09-471f-bb1b-3ea246eb9796",
-              party: {
-                effective_date: "2018-10-03",
-                email: "JgHxeyjv@aezZIwee.com",
-                expiry_date: "9999-12-31",
-                first_name: "Tiyudoveh",
-                name: "Tiyudoveh Higesewawa",
-                party_guid: "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
-                party_name: "Higesewawa",
-                party_type_code: "PER",
-                phone_ext: null,
-                phone_no: "123-123-1234",
-              },
-            },
-          ],
         },
       ],
       mineral_tenure_xref: [
@@ -288,7 +230,7 @@ export const MINES = {
         longitude: null,
         latitude: null,
       },
-      mine_tailings_storage_facility: [
+      mine_tailings_storage_facilities: [
         {
           mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
           mine_tailings_storage_facility_guid: "e2629897-053e-4218-9299-479375e47f34",
@@ -303,7 +245,7 @@ export const MINES = {
           exp_document_name: "OMS Manual",
           mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
           req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-          exp_document_status: {
+          expected_document_status: {
             exp_document_status_code: "MIA",
             description: "Not Received",
           },
@@ -343,21 +285,21 @@ export const PARTY = {
 
 export const MINE_NAME_LIST = [
   {
-    guid: "fc72863d-83e8-46ba-90f9-87b0ed78823f",
+    mine_guid: "fc72863d-83e8-46ba-90f9-87b0ed78823f",
     mine_name: "New Mine",
     mine_no: "BLAH6194",
     longitude: "-119.6963833",
     latitude: "51.4961750",
   },
   {
-    guid: "89a65274-581d-4862-8630-99f5f7687089",
+    mine_guid: "89a65274-581d-4862-8630-99f5f7687089",
     mine_name: "Mine Two",
     mine_no: "BLAH0502",
     longitude: "-119.6963833",
     latitude: "51.4961750",
   },
   {
-    guid: "75692b61-7ab9-406b-b1f5-8c9b857404ac",
+    mine_guid: "75692b61-7ab9-406b-b1f5-8c9b857404ac",
     mine_name: "Legit Mine",
     mine_no: "BLAH6734",
     longitude: "-119.6963833",
@@ -601,6 +543,36 @@ export const MINE_TSF_REQUIRED_REPORTS_HASH = {
   "ca3f5a58-d7ea-4620-a064-507450f082de": "Annual DSI",
   "faa99067-3639-4d9c-a3e5-5401df15ad4b": "5 year DSR",
 };
+
+export const PERMITS = [
+  {
+    permit_id: "283",
+    permit_guid: "1628847c-060b-45f2-990f-815877174801",
+    mine_guid: "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+    permit_no: "C-12345",
+    permit_status_code: "O",
+    amendments: [
+      {
+        permit_amendment_guid: "822310fd-3a2c-44a9-a9ce-dee81acc9585",
+        permit_guid: "71d00d45-9fda-45d3-a4b0-59a7ceb6518e",
+        permit_amendment_status_code: "ACT",
+        permit_amendment_type_code: "OGP",
+        received_date: null,
+        issue_date: "2019-04-01",
+        authorization_end_date: null,
+        description: "Initial permit issued.",
+        related_documents: [
+          {
+            mine_guid: "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+            document_guid: "31204ba5-5207-4fb5-b6c3-d47e55a0971c",
+            document_name: "Adams_amendment_1.pdf",
+            document_manager_guid: "64caef0e-060d-4875-a470-6c225b242723",
+          },
+        ],
+      },
+    ],
+  },
+];
 
 export const USER_ACCESS_DATA = [
   "mds-mine-view",

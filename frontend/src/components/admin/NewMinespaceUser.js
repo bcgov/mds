@@ -53,7 +53,7 @@ export class NewMinespaceUser extends Component {
         {this.props.mines && (
           <AddMinespaceUser
             mines={this.props.mines.map((mine) => ({
-              value: `${mine.mine_name}~${mine.guid}`,
+              value: `${mine.mine_name}~${mine.mine_guid}`,
               label: `${mine.mine_name}-${mine.mine_no}`,
             }))}
             onSubmit={this.createNewBCEIDUser}

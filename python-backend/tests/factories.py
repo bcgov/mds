@@ -1,33 +1,66 @@
 import uuid
 from datetime import datetime
+from sqlalchemy.orm.scoping import scoped_session
 
 import factory
 import factory.fuzzy
 
 from app.extensions import db
 from tests.status_code_gen import *
+from app.api.applications.models.application import Application
 from app.api.document_manager.models.document_manager import DocumentManager
 from app.api.documents.expected.models.mine_expected_document import MineExpectedDocument
+from app.api.documents.mines.models.mine_document import MineDocument
 from app.api.mines.location.models.mine_location import MineLocation
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.mine.models.mine_type import MineType
 from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
 from app.api.mines.mine.models.mine_verified_status import MineVerifiedStatus
 from app.api.mines.status.models.mine_status import MineStatus
+from app.api.mines.subscription.models.subscription import Subscription
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
 from app.api.parties.party.models.party import Party
+from app.api.parties.party.models.address import Address
+from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.permits.permit.models.permit import Permit
 from app.api.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
+from app.api.users.core.models.core_user import CoreUser
+from app.api.users.minespace.models.minespace_user import MinespaceUser
 
 GUID = factory.LazyFunction(uuid.uuid4)
 TODAY = factory.LazyFunction(datetime.now)
 
+FACTORY_LIST = []
 
-class BaseFactory(factory.alchemy.SQLAlchemyModelFactory):
+
+class FactoryRegistry:
+    def __init_subclass__(cls, **kwargs):
+        super().__init_subclass__(**kwargs)
+        FACTORY_LIST.append(cls)
+
+
+class BaseFactory(factory.alchemy.SQLAlchemyModelFactory, FactoryRegistry):
     class Meta:
         abstract = True
         sqlalchemy_session = db.session
+        sqlalchemy_session_persistence = 'flush'
+
+
+class ApplicationFactory(BaseFactory):
+    class Meta:
+        model = Application
+
+    class Params:
+        mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
+
+    application_id = factory.Sequence(lambda n: n)
+    application_guid = GUID
+    mine_guid = factory.SelfAttribute('mine.mine_guid')
+    application_no = factory.Sequence(lambda n: f'TX-{n}-TEST')
+    application_status_code = factory.LazyFunction(RandomApplicationStatusCode)
+    description = factory.Faker('sentence', nb_words=8, variable_nb_words=True)
+    received_date = TODAY
 
 
 class DocumentManagerFactory(BaseFactory):
@@ -43,6 +76,22 @@ class DocumentManagerFactory(BaseFactory):
     path_display_name = factory.LazyAttribute(lambda o: f'mine_name/category/{o.file_display_name}')
 
 
+class MineDocumentFactory(BaseFactory):
+    class Meta:
+        model = MineDocument
+
+    class Params:
+        document_manager_obj = factory.SubFactory(
+            DocumentManagerFactory, file_display_name=factory.SelfAttribute('..document_name'))
+        mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
+
+    mine_document_guid = GUID
+    mine_guid = factory.SelfAttribute('mine.mine_guid')
+    document_manager_guid = factory.SelfAttribute('document_manager_obj.document_guid')
+    document_name = factory.Faker('file_name')
+    mine_expected_document = []
+
+
 class MineExpectedDocumentFactory(BaseFactory):
     class Meta:
         model = MineExpectedDocument
@@ -50,11 +99,24 @@ class MineExpectedDocumentFactory(BaseFactory):
     exp_document_guid = GUID
     required_document = factory.LazyFunction(RandomRequiredDocument)
     exp_document_status_code = factory.LazyFunction(RandomExpectedDocumentStatusCode)
-    exp_document_name = factory.LazyAttribute(lambda o: o.required_document.req_document_name)
-    exp_document_description = factory.LazyAttribute(lambda o: o.required_document.description)
+    exp_document_name = factory.SelfAttribute('required_document.req_document_name')
+    exp_document_description = factory.SelfAttribute('required_document.description')
     due_date = TODAY
     received_date = TODAY
-    hsrc_code = factory.LazyAttribute(lambda o: o.required_document.hsrc_code)
+    hsrc_code = factory.SelfAttribute('required_document.hsrc_code')
+    mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
+    related_documents = []
+
+    @factory.post_generation
+    def related_documents(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        MineDocumentFactory.create_batch(
+            size=extracted, mine_expected_document=[obj], mine=obj.mine, **kwargs)
 
 
 class MineLocationFactory(BaseFactory):
@@ -67,6 +129,7 @@ class MineLocationFactory(BaseFactory):
     geom = factory.LazyAttribute(lambda o: 'SRID=3005;POINT(%f %f)' % (o.longitude, o.latitude))
     effective_date = TODAY
     expiry_date = TODAY
+    mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
 
 
 class MineStatusFactory(BaseFactory):
@@ -85,11 +148,11 @@ class MineTypeDetailFactory(BaseFactory):
     class Params:
         tenure = 'MIN'
         commodity = factory.Trait(
-            mine_commodity_code=factory.LazyAttribute(lambda o: SampleMineCommodityCodes(
-                o.tenure, 1)[0]))
+            mine_commodity_code=factory.LazyAttribute(
+                lambda o: SampleMineCommodityCodes(o.tenure, 1)[0]))
         disturbance = factory.Trait(
-            mine_disturbance_code=factory.LazyAttribute(lambda o: SampleMineDisturbanceCodes(
-                o.tenure, 1)[0]))
+            mine_disturbance_code=factory.LazyAttribute(
+                lambda o: SampleMineDisturbanceCodes(o.tenure, 1)[0]))
 
     mine_type_detail_xref_guid = GUID
     mine_commodity_code = None
@@ -103,6 +166,7 @@ class MineTypeFactory(BaseFactory):
     mine_type_guid = GUID
     mine_tenure_type_code = factory.LazyFunction(RandomTenureTypeCode)
     mine_type_detail = []
+    mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
 
     @factory.post_generation
     def mine_type_detail(obj, create, extracted, **kwargs):
@@ -137,6 +201,7 @@ class MineTailingsStorageFacilityFactory(BaseFactory):
 
     mine_tailings_storage_facility_guid = GUID
     mine_tailings_storage_facility_name = factory.Faker('last_name')
+    mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
 
 
 class PermitFactory(BaseFactory):
@@ -148,6 +213,7 @@ class PermitFactory(BaseFactory):
     permit_no = factory.Sequence(lambda n: f'QQ{n}')
     permit_status_code = factory.LazyFunction(RandomPermitStatusCode)
     permit_amendments = []
+    mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
 
     @factory.post_generation
     def permit_amendments(obj, create, extracted, **kwargs):
@@ -158,7 +224,7 @@ class PermitFactory(BaseFactory):
             extracted = 1
 
         for n in range(extracted):
-            PermitAmendmentFactory(permit_id=obj.permit_id, initial_permit=(n == 0), **kwargs)
+            PermitAmendmentFactory(permit=obj, initial_permit=(n == 0), **kwargs)
 
 
 class PermitAmendmentFactory(BaseFactory):
@@ -170,9 +236,11 @@ class PermitAmendmentFactory(BaseFactory):
             description='Initial permit issued.',
             permit_amendment_type_code='OGP',
         )
+        permit = factory.SubFactory(PermitFactory, permit_amendments=0)
 
     permit_amendment_id = factory.Sequence(lambda n: n)
     permit_amendment_guid = GUID
+    permit_id = factory.SelfAttribute('permit.permit_id')
     received_date = TODAY
     issue_date = TODAY
     authorization_end_date = factory.Faker('future_datetime', end_date='+30d')
@@ -180,6 +248,22 @@ class PermitAmendmentFactory(BaseFactory):
     permit_amendment_type_code = 'AMD'
     description = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
     documents = []
+
+
+class PermitAmendmentDocumentFactory(BaseFactory):
+    class Meta:
+        model = PermitAmendmentDocument
+
+    class Params:
+        document_manager_obj = factory.SubFactory(
+            DocumentManagerFactory, file_display_name=factory.SelfAttribute('..document_name'))
+
+    permit_amendment_document_guid = GUID
+    permit_amendment_id = factory.SelfAttribute('permit_amendment.permit_amendment_id')
+    document_name = factory.Faker('file_name')
+    mine_guid = factory.SelfAttribute('permit_amendment.permit.mine.mine_guid')
+    document_manager_guid = factory.SelfAttribute('document_manager_obj.document_guid')
+    permit_amendment = factory.SubFactory(PermitAmendmentFactory)
 
 
 class MineVerifiedStatusFactory(BaseFactory):
@@ -192,6 +276,18 @@ class MineVerifiedStatusFactory(BaseFactory):
     verifying_timestamp = TODAY
     update_user = factory.Faker('name')
     update_timestamp = TODAY
+
+
+class AddressFactory(BaseFactory):
+    class Meta:
+        model = Address
+
+    address_line_1 = factory.Faker('street_address')
+    suite_no = factory.Iterator([None, None, '123', '123'])
+    address_line_2 = factory.Iterator([None, 'Apt. 123', None, 'Apt. 123'])
+    city = factory.Faker('city')
+    sub_division_code = factory.LazyFunction(RandomSubDivisionCode)
+    post_code = factory.Faker('bothify', text='?#?#?#', letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ')
 
 
 class PartyFactory(BaseFactory):
@@ -221,19 +317,80 @@ class PartyFactory(BaseFactory):
     effective_date = TODAY
     expiry_date = datetime.strptime('9999-12-31', '%Y-%m-%d')  # holdover till datetime refactor
     party_type_code = None
-    address_line_1 = factory.Faker('street_address')
-    suite_no = factory.Iterator([None, None, '123', '123'])
-    address_line_2 = factory.Iterator([None, 'Apt. 123', None, 'Apt. 123'])
-    city = factory.Faker('city')
-    sub_division_code = factory.LazyFunction(RandomSubDivisionCode)
-    post_code = factory.Faker('bothify', text='?#?#?#', letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ')
 
     mine_party_appt = []
+    address = factory.List([factory.SubFactory(AddressFactory) for _ in range(1)])
 
+
+class MinePartyAppointmentFactory(BaseFactory):
+    class Meta:
+        model = MinePartyAppointment
+
+    mine_party_appt_id = factory.Sequence(lambda n: n)
+    mine_party_appt_guid = GUID
+    mine = factory.SubFactory('tests.factories.MineFactory')
+    party = factory.SubFactory(PartyFactory, person=True)
+    mine_party_appt_type_code = factory.LazyFunction(RandomMinePartyAppointmentTypeCode)
+    start_date = TODAY
+    end_date = None
+    processed_by = factory.Faker('first_name')
+    processed_on = TODAY
+
+    mine_tailings_storage_facility_guid = factory.LazyAttribute(
+        lambda o: o.mine.mine_tailings_storage_facilities[0].mine_tailings_storage_facility_guid
+        if o.mine_party_appt_type_code == 'EOR' else None)
+    permit_guid = factory.LazyAttribute(lambda o: o.mine.mine_permit[0].permit_guid
+                                        if o.mine_party_appt_type_code == 'PMT' else None)
+
+
+class CoreUserFactory(BaseFactory):
+    class Meta:
+        model = CoreUser
+
+    core_user_id = factory.Sequence(lambda n: n)
+    core_user_guid = GUID
+    email = factory.Faker('email')
+    phone_no = factory.Faker('numerify', text='###-###-####')
+    last_logon = TODAY
+
+
+class MinespaceUserFactory(BaseFactory):
+    class Meta:
+        model = MinespaceUser
+
+    user_id = factory.Sequence(lambda n: n)
+    keycloak_guid = GUID
+    email = factory.Faker('email')
+
+
+class SubscriptionFactory(BaseFactory):
+    class Meta:
+        model = Subscription
+
+    class Params:
+        mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
+
+    subscription_id = factory.Sequence(lambda n: n)
+    mine_guid = factory.SelfAttribute('mine.mine_guid')
+    user_name = factory.Faker('last_name')
 
 class MineFactory(BaseFactory):
     class Meta:
         model = Mine
+
+    class Params:
+        minimal = factory.Trait(
+            mine_no=None,
+            mine_note=None,
+            mine_region='NE',
+            mine_location=None,
+            mine_type=None,
+            verified_status=None,
+            mine_status=None,
+            mine_tailings_storage_facilities=0,
+            mine_permit=0,
+            mine_expected_documents=0,
+        )
 
     mine_guid = GUID
     mine_no = factory.Sequence(lambda n: f'MINENO{n}')
@@ -257,8 +414,7 @@ class MineFactory(BaseFactory):
         if not isinstance(extracted, int):
             extracted = 1
 
-        MineTailingsStorageFacilityFactory.create_batch(
-            size=extracted, mine_guid=obj.mine_guid, **kwargs)
+        MineTailingsStorageFacilityFactory.create_batch(size=extracted, mine=obj, **kwargs)
 
     @factory.post_generation
     def mine_permit(obj, create, extracted, **kwargs):
@@ -268,7 +424,7 @@ class MineFactory(BaseFactory):
         if not isinstance(extracted, int):
             extracted = 1
 
-        PermitFactory.create_batch(size=extracted, mine_guid=obj.mine_guid, **kwargs)
+        PermitFactory.create_batch(size=extracted, mine=obj, **kwargs)
 
     @factory.post_generation
     def mine_expected_documents(obj, create, extracted, **kwargs):
@@ -278,4 +434,4 @@ class MineFactory(BaseFactory):
         if not isinstance(extracted, int):
             extracted = 1
 
-        MineExpectedDocumentFactory.create_batch(size=extracted, mine_guid=obj.mine_guid, **kwargs)
+        MineExpectedDocumentFactory.create_batch(size=extracted, mine=obj, **kwargs)

@@ -15,8 +15,8 @@ ShallowWrapper {
           ],
           Array [
             Object {
-              "page": undefined,
-              "per_page": undefined,
+              "page": "1",
+              "per_page": "25",
               "relationships": "mine_party_appt",
             },
           ],
@@ -269,8 +269,8 @@ ShallowWrapper {
                   ],
                   Array [
                     Object {
-                      "page": undefined,
-                      "per_page": undefined,
+                      "page": "1",
+                      "per_page": "25",
                       "relationships": "mine_party_appt",
                     },
                   ],
@@ -547,8 +547,8 @@ ShallowWrapper {
                     ],
                     Array [
                       Object {
-                        "page": undefined,
-                        "per_page": undefined,
+                        "page": "1",
+                        "per_page": "25",
                         "relationships": "mine_party_appt",
                       },
                     ],
@@ -692,8 +692,8 @@ ShallowWrapper {
                   ],
                   Array [
                     Object {
-                      "page": undefined,
-                      "per_page": undefined,
+                      "page": "1",
+                      "per_page": "25",
                       "relationships": "mine_party_appt",
                     },
                   ],
@@ -879,8 +879,8 @@ ShallowWrapper {
                     ],
                     Array [
                       Object {
-                        "page": undefined,
-                        "per_page": undefined,
+                        "page": "1",
+                        "per_page": "25",
                         "relationships": "mine_party_appt",
                       },
                     ],
@@ -1157,8 +1157,8 @@ ShallowWrapper {
                       ],
                       Array [
                         Object {
-                          "page": undefined,
-                          "per_page": undefined,
+                          "page": "1",
+                          "per_page": "25",
                           "relationships": "mine_party_appt",
                         },
                       ],
@@ -1302,8 +1302,8 @@ ShallowWrapper {
                     ],
                     Array [
                       Object {
-                        "page": undefined,
-                        "per_page": undefined,
+                        "page": "1",
+                        "per_page": "25",
                         "relationships": "mine_party_appt",
                       },
                     ],

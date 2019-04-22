@@ -1,37 +1,28 @@
-import json
-from tests.constants import (TEST_MINE_GUID, TEST_PARTY_PER_GUID_1, TEST_PARTY_PER_FIRST_NAME_1,
-                             TEST_PARTY_PER_PARTY_NAME_1, TEST_PARTY_PER_FIRST_NAME_2,
-                             TEST_PARTY_PER_PARTY_NAME_2, TEST_PARTY_PER_GUID_3)
+import json, uuid
+
+from tests.factories import PartyFactory
+from app.api.parties.custom_reqparser import DEFAULT_MISSING_REQUIRED
 
 
 # GET
-def test_get_person_not_found(test_client, auth_headers):
-    get_resp = test_client.get(
-        '/parties/' + TEST_MINE_GUID, headers=auth_headers['full_auth_header'])
+def test_get_person_not_found(test_client, db_session, auth_headers):
+    get_resp = test_client.get(f'/parties/{uuid.uuid4()}', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
-    assert 'not found' in get_data['error']['message']
     assert get_resp.status_code == 404
+    assert 'not found' in get_data['error']['message']
 
 
-def test_get_person(test_client, auth_headers):
-    get_resp = test_client.get(
-        '/parties/' + TEST_PARTY_PER_GUID_1, headers=auth_headers['full_auth_header'])
+def test_get_person(test_client, db_session, auth_headers):
+    party_guid = PartyFactory(person=True).party_guid
+
+    get_resp = test_client.get(f'/parties/{party_guid}', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
-    assert get_data['party_guid'] == TEST_PARTY_PER_GUID_1
     assert get_resp.status_code == 200
+    assert get_data['party_guid'] == str(party_guid)
 
 
 # POST
-def test_post_person_invalid_url(test_client, auth_headers):
-    test_person_data = {"first_name": "First", "party_name": "Last"}
-    post_resp = test_client.post(
-        '/parties/some_id', data=test_person_data, headers=auth_headers['full_auth_header'])
-    post_data = json.loads(post_resp.data.decode())
-    assert 'Unexpected party id' in post_data['message']
-    assert post_resp.status_code == 400
-
-
-def test_post_person_no_first_name(test_client, auth_headers):
+def test_post_person_no_first_name(test_client, db_session, auth_headers):
     test_person_data = {
         "party_name": "Last",
         "party_type_code": "PER",
@@ -41,39 +32,39 @@ def test_post_person_no_first_name(test_client, auth_headers):
     post_resp = test_client.post(
         '/parties', data=test_person_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
-    assert 'first name' in post_data['message']
     assert post_resp.status_code == 400
+    assert 'first name' in post_data['message'].lower()
 
 
-def test_post_person_no_surname(test_client, auth_headers):
+def test_post_person_no_required_party_name(test_client, db_session, auth_headers):
     test_person_data = {
         "first_name": "First",
-        "type": "PER",
+        "party_type_codetype": "PER",
         "phone_no": "123-456-7890",
         "email": "this@test.com"
     }
     post_resp = test_client.post(
         '/parties', data=test_person_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
-    assert 'Party name' in post_data['message']
     assert post_resp.status_code == 400
+    assert DEFAULT_MISSING_REQUIRED in post_data['message']
 
 
-def test_post_person_no_phone_no(test_client, auth_headers):
+def test_post_person_no_required_phone_no(test_client, db_session, auth_headers):
     test_person_data = {
         "first_name": "First",
         "party_name": "Last",
-        "type": "PER",
+        "party_type_codetype": "PER",
         "email": "this@test.com"
     }
     post_resp = test_client.post(
         '/parties', data=test_person_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
-    assert 'phone number' in post_data['message']
     assert post_resp.status_code == 400
+    assert DEFAULT_MISSING_REQUIRED in post_data['message']
 
 
-def test_post_person_success(test_client, auth_headers):
+def test_post_person_success(test_client, db_session, auth_headers):
     test_person_data = {
         "party_name": "Last",
         "email": "this@test.com",
@@ -85,7 +76,7 @@ def test_post_person_success(test_client, auth_headers):
         "address_line_2": "1234 Bar Blvd",
         "city": "Baz Town",
         "sub_division_code": "BC",
-        "post_code": "000000",
+        "post_code": "X0X0X0",
         "address_type_code": "CAN"
     }
     post_resp = test_client.post(
@@ -108,7 +99,7 @@ def test_post_person_success(test_client, auth_headers):
     assert address['address_type_code'] == test_person_data['address_type_code']
 
 
-def test_post_company_success(test_client, auth_headers):
+def test_post_company_success(test_client, db_session, auth_headers):
     test_person_data = {
         "party_name": "Last",
         "email": "this@test.com",
@@ -119,7 +110,7 @@ def test_post_company_success(test_client, auth_headers):
         "address_line_2": "1234 Bar Blvd",
         "city": "Baz Town",
         "sub_division_code": "BC",
-        "post_code": "000000",
+        "post_code": "X0X0X0",
         "address_type_code": "CAN"
     }
     post_resp = test_client.post(
@@ -142,21 +133,18 @@ def test_post_company_success(test_client, auth_headers):
 
 
 # PUT
-def test_put_person_not_found(test_client, auth_headers):
-    test_person_data = {
-        "first_name": TEST_PARTY_PER_FIRST_NAME_1,
-        "party_name": TEST_PARTY_PER_PARTY_NAME_1
-    }
+def test_put_person_not_found(test_client, db_session, auth_headers):
+    test_person_data = {"first_name": 'First', "party_name": 'Last'}
     put_resp = test_client.put(
-        '/parties/' + TEST_MINE_GUID,
-        data=test_person_data,
-        headers=auth_headers['full_auth_header'])
+        f'/parties/{uuid.uuid4()}', data=test_person_data, headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
-    assert 'not found' in put_data['message']
     assert put_resp.status_code == 404
+    assert 'not found' in put_data['message']
 
 
-def test_put_person_success(test_client, auth_headers):
+def test_put_person_success(test_client, db_session, auth_headers):
+    party_guid = PartyFactory(person=True).party_guid
+
     test_person_data = {
         "party_name": "Changedlast",
         "email": "new_email_12345@testuser.com",
@@ -168,13 +156,11 @@ def test_put_person_success(test_client, auth_headers):
         "address_line_2": "1234 Bar Blvd",
         "city": "Baz Town",
         "sub_division_code": "BC",
-        "post_code": "000000",
+        "post_code": "X0X0X0",
         "address_type_code": "CAN"
     }
     put_resp = test_client.put(
-        '/parties/' + TEST_PARTY_PER_GUID_1,
-        data=test_person_data,
-        headers=auth_headers['full_auth_header'])
+        f'/parties/{party_guid}', data=test_person_data, headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
     assert put_resp.status_code == 200
     assert put_data['party_name'] == test_person_data['party_name']
@@ -194,10 +180,11 @@ def test_put_person_success(test_client, auth_headers):
 
 
 # DELETE
-def test_delete_person_as_admin(test_client, auth_headers):
+def test_delete_person_as_admin(test_client, db_session, auth_headers):
+    party_guid = PartyFactory(person=True).party_guid
+
     delete_resp = test_client.delete(
-        '/parties/' + TEST_PARTY_PER_GUID_3, headers=auth_headers['full_auth_header'])
+        f'/parties/{party_guid}', headers=auth_headers['full_auth_header'])
     assert delete_resp.status_code == 204
-    get_resp = test_client.get(
-        '/parties/' + TEST_PARTY_PER_GUID_3, headers=auth_headers['full_auth_header'])
+    get_resp = test_client.get(f'/parties/{party_guid}', headers=auth_headers['full_auth_header'])
     assert get_resp.status_code == 404

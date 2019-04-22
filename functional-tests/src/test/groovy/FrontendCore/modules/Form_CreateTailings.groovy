@@ -9,7 +9,7 @@ class Form_CreateTailings extends Module {
         warning (wait: true) {$("div", 0, class:"ant-form-explain").find("span").text()}
 
         //mine profile input
-        tsfName (wait:true) {$("input", id:"tsf_name")}
+        tsfName (wait:true) {$("input", id:"mine_tailings_storage_facility_name")}
 
         //button
         createTSFButton (wait: true) {$("button.ant-btn-primary").has("span", text:"+ Add TSF")}
