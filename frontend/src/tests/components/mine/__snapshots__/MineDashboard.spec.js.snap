@@ -115,6 +115,13 @@ ShallowWrapper {
         ],
       }
     }
+    fetchSubscribedMinesByUser={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
     fetchVariancesByMine={[MockFunction]}
     match={
       Object {
@@ -504,6 +511,8 @@ ShallowWrapper {
         ],
       }
     }
+    subscribe={[MockFunction]}
+    unSubscribe={[MockFunction]}
     updateMineRecord={[MockFunction]}
     variances={
       Array [

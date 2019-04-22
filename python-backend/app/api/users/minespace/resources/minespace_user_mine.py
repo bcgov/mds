@@ -1,7 +1,6 @@
 import uuid
 
 from flask_restplus import Resource, reqparse
-from flask import request
 from app.extensions import api
 from ....utils.access_decorators import requires_role_mine_admin
 from ....utils.resources_mixins import UserMixin, ErrorMixin

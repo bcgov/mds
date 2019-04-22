@@ -3,6 +3,8 @@ import queryString from "query-string";
 // Network URL's
 export const MINE = "/mines";
 export const MINE_LIST = "/mines";
+export const SUBSCRIPTION = (mineGuid) => `/mines/${mineGuid}/subscribe`;
+export const MINE_SUBSCRIPTION = "/mines/subscribe";
 export const MINE_LIST_QUERY = (params) => `/mines${params}`;
 export const PARTIES_LIST_QUERY = (params = {}) => `/parties?${queryString.stringify(params)}`;
 export const MINE_MAP_LIST = "/mines/map-list";
