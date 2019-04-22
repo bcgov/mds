@@ -41,16 +41,14 @@ const columns = [
   {
     title: "",
     dataIndex: "handleEditModal",
-    render: (handleEditModal, record) => (
+    render: (handleEdit, record) => (
       <div title="" align="right">
         <AuthorizationWrapper permission={Permission.CREATE}>
           <Button
             type="primary"
             size="small"
             ghost
-            onClick={(event) =>
-              record.openMineIncidentModal(event, handleEditModal, record.incident)
-            }
+            onClick={(event) => record.openMineIncidentModal(event, handleEdit, record.incident)}
           >
             <img src={BRAND_PENCIL} alt="Edit TSF Report" />
           </Button>
@@ -60,7 +58,7 @@ const columns = [
   },
 ];
 
-const transformRowData = (incidents, actions, funcs) =>
+const transformRowData = (incidents, actions, handleEditModal, openMineIncidentModal) =>
   incidents
     .sort((i) => i.mine_incident_report_no)
     .map((incident) => ({
@@ -72,7 +70,8 @@ const transformRowData = (incidents, actions, funcs) =>
       followup_action: actions.find(
         (x) => x.mine_incident_followup_type_code === incident.followup_type_code
       ),
-      ...funcs,
+      handleEditModal,
+      openMineIncidentModal,
       incident,
     }));
 
@@ -83,10 +82,12 @@ const MineIncidentTable = (props) => (
       pagination={false}
       columns={columns}
       locale={{ emptyText: <NullScreen type="incidents" /> }}
-      dataSource={transformRowData(props.incidents, props.followupActions, {
-        handleEditModal: props.handleEditMineIncident,
-        openMineIncidentModal: props.openMineIncidentModal,
-      })}
+      dataSource={transformRowData(
+        props.incidents,
+        props.followupActions,
+        props.handleEditMineIncident,
+        props.openMineIncidentModal
+      )}
     />
     )
   </div>
