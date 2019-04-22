@@ -201,7 +201,7 @@
       },
       "spec": {
         "strategy": {
-          "type": "Recreate",
+          "type": "Rolling",
           "recreateParams": {
             "pre": {
               "failurePolicy": "Retry",
@@ -210,7 +210,7 @@
                 "command": [
                   "bash",
                   "-c",
-                  "for i in {1..90}; do timeout 1 bash -c '</dev/tcp/$FLYWAY_DB_HOST/5432' && s=0 && break || s=$? && sleep 5; done; (cd $FLYWAY_HOME && ./flyway migrate && ./flyway -url=jdbc:postgresql://$FLYWAY_DB_HOST/mds_test migrate)"
+                  "cd $FLYWAY_HOME && ./flyway migrate && ./flyway -url=jdbc:postgresql://$FLYWAY_DB_HOST/mds_test migrate"
                 ]
               }
             },
@@ -542,6 +542,10 @@
                   {
                     "name": "FLYWAY_OUT_OF_ORDER",
                     "value": "true"
+                  },
+                  {
+                    "name": "FLYWAY_CONNECT_RETRIES",
+                    "value": "300"
                   }
                 ],
                 "resources": {
