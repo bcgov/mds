@@ -6,6 +6,9 @@ import {
   getMinesPageData,
   getSubscribedMines,
   getIsUserSubscribed,
+  getMineBasicInfoList,
+  getMineDocuments,
+  getMineIncidents,
 } from "@/selectors/mineSelectors";
 import mineReducer from "@/reducers/mineReducer";
 import {
@@ -13,6 +16,9 @@ import {
   storeMineNameList,
   storeMine,
   storeSubscribedMines,
+  storeMineBasicInfoList,
+  storeMineDocuments,
+  storeMineIncidents,
 } from "@/actions/mineActions";
 import { MINES } from "@/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
@@ -26,11 +32,22 @@ const mockState = {
   minesPageData: Mock.PAGE_DATA,
   mineGuid: false,
   subscribedMines: Mock.SUBSCRIBED_MINES.mines,
+  mineBasicInfoList: Mock.MINE_BASIC_INFO,
+  mineDocuments: Mock.MINEDOCUMENTS.mine_documents,
+  mineIncidents: Mock.INCIDENTS.mine_incidents,
 };
 
 describe("mineSelectors", () => {
-  const { mineGuid } = mockState;
-  const { mineIds, mineNameList, minesPageData, subscribedMines, mines } = mockState;
+  const {
+    mineIds,
+    mineNameList,
+    minesPageData,
+    mineBasicInfoList,
+    mineDocuments,
+    mineIncidents,
+    subscribedMines,
+  } = mockState;
+  const { mines, mineGuid } = mockState;
 
   it("`getMines` calls `mineReducer.getMines`", () => {
     const storeAction = storeMineList(mockResponse);
@@ -102,5 +119,32 @@ describe("mineSelectors", () => {
       [MINES]: storeState,
     };
     expect(getIsUserSubscribed(localMockState)).toEqual(false);
+  });
+
+  it("`getMineBasicInfoList` calls `mineReducer.getMineBasicInfoList`", () => {
+    const storeAction = storeMineBasicInfoList(Mock.MINE_BASIC_INFO);
+    const storeState = mineReducer({}, storeAction);
+    const localMockState = {
+      [MINES]: storeState,
+    };
+    expect(getMineBasicInfoList(localMockState)).toEqual(mineBasicInfoList);
+  });
+
+  it("`getMineDocuments` calls `mineReducer.getMineDocuments`", () => {
+    const storeAction = storeMineDocuments(Mock.MINEDOCUMENTS);
+    const storeState = mineReducer({}, storeAction);
+    const localMockState = {
+      [MINES]: storeState,
+    };
+    expect(getMineDocuments(localMockState)).toEqual(mineDocuments);
+  });
+
+  it("`getMineIncidents` calls `mineReducer.getMineIncidents`", () => {
+    const storeAction = storeMineIncidents(Mock.INCIDENTS);
+    const storeState = mineReducer({}, storeAction);
+    const localMockState = {
+      [MINES]: storeState,
+    };
+    expect(getMineIncidents(localMockState)).toEqual(mineIncidents);
   });
 });
