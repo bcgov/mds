@@ -104,7 +104,7 @@ export class MineIncidents extends Component {
 const mapStateToProps = (state) => ({
   mineIncidents: getMineIncidents(state),
   followupActions: getIncidentFollowupActionOptions(state),
-  followupActionsDropDown: getDropdownIncidentFollowupActionOptions(state),
+  followupActionsDropdown: getDropdownIncidentFollowupActionOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
