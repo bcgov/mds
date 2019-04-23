@@ -10,14 +10,12 @@ class ContactsPage extends Page {
         //general
         loadingScreen (required:false) {$("div.loading-screen")}
 
-        // //create contact form
-        // createMineForm { module Form_CreateMine }
-        // createMineButton_Dashboard (wait: true) {$("button").has("span", text:"Create Mine Record")}
+        //The create contact form has 3 actions.  
+        createContactFormOne { module Form_CreateContactOne }
+        createContactFormAddRole {module Form_CreateContactAddRole}
+        createContactFormTwo { module Form_CreateContactTwo}
 
-        // //Dashboard
-        // viewLink (wait:true) {$("a", text: contains("MINETEST"))}
-        // firstMineName (wait:true) {$("a", text: contains("MINETEST")).text()}
-        createContactForm { module Form_CreateContact_1 }
+
         createContactButton (wait: true) {$("button").has("span", text:"Add New Contact")}
         //search first name
         searchBoxFirstName (wait:true){$("input", id:"first_name")}
