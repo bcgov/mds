@@ -22,13 +22,14 @@ class Subscription(Base):
     @classmethod
     def find_subscription_for_current_user_by_id(cls, mine_guid):
         user_name = User().get_user_username()
-        return Subscription.query.filter_by(mine_guid=mine_guid).filter_by(user_name=user_name).first()
+        return Subscription.query.filter_by(mine_guid=mine_guid).filter_by(
+            user_name=user_name).first()
 
     @classmethod
-    def create_for_current_user(cls, mine_guid, save=True):
+    def create_for_current_user(cls, mine_guid, add_to_session=True):
         user_name = User().get_user_username()
         subscription = cls(mine_guid=mine_guid, user_name=user_name)
-        if save:
+        if add_to_session:
             subscription.save(commit=False)
         return subscription
 

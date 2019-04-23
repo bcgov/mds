@@ -78,6 +78,13 @@ ShallowWrapper {
               "tenure_number_id": "1234567",
             },
           ],
+          "verified_status": Object {
+            "healthy_ind": null,
+            "mine_guid": null,
+            "mine_name": null,
+            "verifying_timestamp": null,
+            "verifying_user": null,
+          },
         },
         "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
           "mine_expected_documents": Array [
@@ -145,6 +152,13 @@ ShallowWrapper {
               "tenure_number_id": "1234567",
             },
           ],
+          "verified_status": Object {
+            "healthy_ind": true,
+            "mine_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+            "mine_name": "mine2",
+            "verifying_timestamp": null,
+            "verifying_user": null,
+          },
         },
       }
     }
@@ -299,7 +313,7 @@ ShallowWrapper {
           ],
           "tenureHash": undefined,
           "tsf": 1,
-          "verified": null,
+          "verified": true,
         },
       ],
       "indentSize": 20,
@@ -465,7 +479,7 @@ ShallowWrapper {
             ],
             "tenureHash": undefined,
             "tsf": 1,
-            "verified": null,
+            "verified": true,
           },
         ],
         "indentSize": 20,
