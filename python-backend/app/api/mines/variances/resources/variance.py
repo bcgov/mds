@@ -9,11 +9,13 @@ from app.extensions import api, db
 
 from ..models.variance import Variance
 from ...mine.models.mine import Mine
+from ...custom_reqparser import CustomReqparser
 from ....documents.mines.models.mine_document import MineDocument
 from ....utils.access_decorators import (requires_any_of, MINE_VIEW, MINE_CREATE,
                                          MINESPACE_PROPONENT)
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
+# TODO: Import these instead
 mine_document_model = api.model(
     'MineDocument', {
         'mine_document_guid': fields.String,
@@ -35,12 +37,13 @@ variance_model = api.model(
 
 
 class VarianceListResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser(trim=True)
+    parser = CustomReqparser()
     parser.add_argument(
         'compliance_article_id',
         type=int,
         store_missing=False,
-        help='ID representing the MA or HSRCM code to which this variance relates.')
+        help='ID representing the MA or HSRCM code to which this variance relates.',
+        required=True)
     parser.add_argument(
         'note',
         type=str,
@@ -77,9 +80,6 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
         data = VarianceListResource.parser.parse_args()
         compliance_article_id = data['compliance_article_id']
 
-        if not compliance_article_id:
-            raise BadRequest('Must provide compliance_article_id')
-
         variance = Variance.create(
             compliance_article_id,
             mine_guid,
@@ -109,7 +109,7 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
         variance = Variance.find_by_variance_id(variance_id)
 
         if variance is None:
-            raise BadRequest('Unable to fetch variance')
+            raise NotFound('Unable to fetch variance')
 
         return variance
 

@@ -213,7 +213,7 @@ class VarianceFactory(BaseFactory):
     class Params:
         mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
 
-    variance_id = random.randint(1, 50)
+    variance_id = factory.Sequence(lambda n: n)
     compliance_article_id = factory.LazyFunction(RandomComplianceArticleId)
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     note = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
