@@ -28,6 +28,7 @@ const setupDispatchProps = () => {
   dispatchProps.fetchMineIncidentFollowActionOptions = jest.fn();
   dispatchProps.setOptionsLoaded = jest.fn();
   dispatchProps.match = {};
+  dispatchProps.fetchCoreUsers = jest.fn();
 };
 
 const setupReducerProps = () => {
@@ -42,6 +43,7 @@ const setupReducerProps = () => {
   reducerProps.mineDisturbanceOptions = MOCK.DISTURBANCE_OPTIONS;
   reducerProps.mineTenureTypes = MOCK.TENURE_TYPES.options;
   reducerProps.mineTenureHash = MOCK.TENURE_HASH;
+  reducerProps.coreUsers = MOCK.CORE_USERS.results;
 };
 
 beforeEach(() => {

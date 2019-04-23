@@ -23,10 +23,10 @@ ShallowWrapper {
     "props": Object {
       "children": Array [
         <div
-          className="compliace--card--head"
+          className="compliance--card--head"
         >
           <div
-            className="compliace--card--head--content"
+            className="compliance--card--head--content"
           >
             <span
               className="info-display"
@@ -36,14 +36,14 @@ ShallowWrapper {
           </div>
         </div>,
         <div
-          className="compliace--card--body"
+          className="compliance--card--body"
         >
           <h4>
             mock title
           </h4>
         </div>,
       ],
-      "className": "compliace--card",
+      "className": "compliance--card",
     },
     "ref": null,
     "rendered": Array [
@@ -53,7 +53,7 @@ ShallowWrapper {
         "nodeType": "host",
         "props": Object {
           "children": <div
-            className="compliace--card--head--content"
+            className="compliance--card--head--content"
           >
             <span
               className="info-display"
@@ -61,7 +61,7 @@ ShallowWrapper {
               mock content
             </span>
           </div>,
-          "className": "compliace--card--head",
+          "className": "compliance--card--head",
         },
         "ref": null,
         "rendered": Object {
@@ -74,7 +74,7 @@ ShallowWrapper {
             >
               mock content
             </span>,
-            "className": "compliace--card--head--content",
+            "className": "compliance--card--head--content",
           },
           "ref": null,
           "rendered": Object {
@@ -107,7 +107,7 @@ ShallowWrapper {
           "children": <h4>
             mock title
           </h4>,
-          "className": "compliace--card--body",
+          "className": "compliance--card--body",
         },
         "ref": null,
         "rendered": Object {
@@ -134,10 +134,10 @@ ShallowWrapper {
       "props": Object {
         "children": Array [
           <div
-            className="compliace--card--head"
+            className="compliance--card--head"
           >
             <div
-              className="compliace--card--head--content"
+              className="compliance--card--head--content"
             >
               <span
                 className="info-display"
@@ -147,14 +147,14 @@ ShallowWrapper {
             </div>
           </div>,
           <div
-            className="compliace--card--body"
+            className="compliance--card--body"
           >
             <h4>
               mock title
             </h4>
           </div>,
         ],
-        "className": "compliace--card",
+        "className": "compliance--card",
       },
       "ref": null,
       "rendered": Array [
@@ -164,7 +164,7 @@ ShallowWrapper {
           "nodeType": "host",
           "props": Object {
             "children": <div
-              className="compliace--card--head--content"
+              className="compliance--card--head--content"
             >
               <span
                 className="info-display"
@@ -172,7 +172,7 @@ ShallowWrapper {
                 mock content
               </span>
             </div>,
-            "className": "compliace--card--head",
+            "className": "compliance--card--head",
           },
           "ref": null,
           "rendered": Object {
@@ -185,7 +185,7 @@ ShallowWrapper {
               >
                 mock content
               </span>,
-              "className": "compliace--card--head--content",
+              "className": "compliance--card--head--content",
             },
             "ref": null,
             "rendered": Object {
@@ -218,7 +218,7 @@ ShallowWrapper {
             "children": <h4>
               mock title
             </h4>,
-            "className": "compliace--card--body",
+            "className": "compliance--card--body",
           },
           "ref": null,
           "rendered": Object {

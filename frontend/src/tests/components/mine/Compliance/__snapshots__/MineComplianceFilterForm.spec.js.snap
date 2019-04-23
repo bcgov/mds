@@ -112,6 +112,10 @@ ShallowWrapper {
                 data={
                   Array [
                     Object {
+                      "label": "Overdue and Open",
+                      "value": "",
+                    },
+                    Object {
                       "label": "Overdue",
                       "value": "true",
                     },
@@ -257,6 +261,10 @@ ShallowWrapper {
                 data={
                   Array [
                     Object {
+                      "label": "Overdue and Open",
+                      "value": "",
+                    },
+                    Object {
                       "label": "Overdue",
                       "value": "true",
                     },
@@ -367,6 +375,10 @@ ShallowWrapper {
                   component={[Function]}
                   data={
                     Array [
+                      Object {
+                        "label": "Overdue and Open",
+                        "value": "",
+                      },
                       Object {
                         "label": "Overdue",
                         "value": "true",
@@ -569,6 +581,10 @@ ShallowWrapper {
                   data={
                     Array [
                       Object {
+                        "label": "Overdue and Open",
+                        "value": "",
+                      },
+                      Object {
                         "label": "Overdue",
                         "value": "true",
                       },
@@ -595,6 +611,10 @@ ShallowWrapper {
                 "props": Object {
                   "component": [Function],
                   "data": Array [
+                    Object {
+                      "label": "Overdue and Open",
+                      "value": "",
+                    },
                     Object {
                       "label": "Overdue",
                       "value": "true",
@@ -810,6 +830,10 @@ ShallowWrapper {
                   data={
                     Array [
                       Object {
+                        "label": "Overdue and Open",
+                        "value": "",
+                      },
+                      Object {
                         "label": "Overdue",
                         "value": "true",
                       },
@@ -955,6 +979,10 @@ ShallowWrapper {
                   data={
                     Array [
                       Object {
+                        "label": "Overdue and Open",
+                        "value": "",
+                      },
+                      Object {
                         "label": "Overdue",
                         "value": "true",
                       },
@@ -1065,6 +1093,10 @@ ShallowWrapper {
                     component={[Function]}
                     data={
                       Array [
+                        Object {
+                          "label": "Overdue and Open",
+                          "value": "",
+                        },
                         Object {
                           "label": "Overdue",
                           "value": "true",
@@ -1267,6 +1299,10 @@ ShallowWrapper {
                     data={
                       Array [
                         Object {
+                          "label": "Overdue and Open",
+                          "value": "",
+                        },
+                        Object {
                           "label": "Overdue",
                           "value": "true",
                         },
@@ -1293,6 +1329,10 @@ ShallowWrapper {
                   "props": Object {
                     "component": [Function],
                     "data": Array [
+                      Object {
+                        "label": "Overdue and Open",
+                        "value": "",
+                      },
                       Object {
                         "label": "Overdue",
                         "value": "true",
