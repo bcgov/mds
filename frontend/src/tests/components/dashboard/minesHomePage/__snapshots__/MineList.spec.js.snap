@@ -275,7 +275,13 @@ ShallowWrapper {
           ],
           "tenureHash": undefined,
           "tsf": 1,
-          "verified": null,
+          "verified_status": Object {
+            "healthy_ind": null,
+            "mine_guid": null,
+            "mine_name": null,
+            "verifying_timestamp": null,
+            "verifying_user": null,
+          },
         },
         Object {
           "commodity": Array [
@@ -313,7 +319,13 @@ ShallowWrapper {
           ],
           "tenureHash": undefined,
           "tsf": 1,
-          "verified": true,
+          "verified_status": Object {
+            "healthy_ind": true,
+            "mine_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+            "mine_name": "mine2",
+            "verifying_timestamp": null,
+            "verifying_user": null,
+          },
         },
       ],
       "indentSize": 20,
@@ -441,7 +453,13 @@ ShallowWrapper {
             ],
             "tenureHash": undefined,
             "tsf": 1,
-            "verified": null,
+            "verified_status": Object {
+              "healthy_ind": null,
+              "mine_guid": null,
+              "mine_name": null,
+              "verifying_timestamp": null,
+              "verifying_user": null,
+            },
           },
           Object {
             "commodity": Array [
@@ -479,7 +497,13 @@ ShallowWrapper {
             ],
             "tenureHash": undefined,
             "tsf": 1,
-            "verified": true,
+            "verified_status": Object {
+              "healthy_ind": true,
+              "mine_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+              "mine_name": "mine2",
+              "verifying_timestamp": null,
+              "verifying_user": null,
+            },
           },
         ],
         "indentSize": 20,
