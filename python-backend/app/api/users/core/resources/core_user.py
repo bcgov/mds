@@ -41,9 +41,6 @@ class CoreUserListResource(Resource, UserMixin):
         else:
             core_users = CoreUser.query.filter_by(active_ind=True).all()
 
-        if not core_users:
-            raise NotFound('No users found.')
-
         return core_users
 
 
