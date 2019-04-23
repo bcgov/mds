@@ -599,14 +599,19 @@ export const REGION_HASH = {
   SE: "South East",
 };
 
-export const TENURE_TYPES = {
-  options: [
-    { value: "COL", label: "Coal" },
-    { value: "MIN", label: "Mineral" },
-    { value: "PLR", label: "Placer" },
-    { value: "BCL", label: "BC Land" },
-  ],
-};
+export const TENURE_TYPES = [
+  { value: "COL", label: "Coal" },
+  { value: "MIN", label: "Mineral" },
+  { value: "PLR", label: "Placer" },
+  { value: "BCL", label: "BC Land" },
+];
+
+export const TENURE_TYPES_RESPONSE = [
+  { mine_tenure_type_code: "COL", description: "Coal" },
+  { mine_tenure_type_code: "MIN", description: "Mineral" },
+  { mine_tenure_type_code: "PLR", description: "Placer" },
+  { mine_tenure_type_code: "BCL", description: "BC Land" },
+];
 
 export const TENURE_HASH = {
   COL: "Coal",

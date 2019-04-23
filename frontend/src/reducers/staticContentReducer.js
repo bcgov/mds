@@ -1,5 +1,6 @@
 import * as actionTypes from "@/constants/actionTypes";
 import { STATIC_CONTENT } from "@/constants/reducerTypes";
+import { createDropDownList } from "@/utils/helpers";
 
 /**
  * @file staticContentReducer.js
@@ -37,7 +38,7 @@ const staticContentReducer = (state = initialState, action) => {
     case actionTypes.STORE_TENURE_TYPES:
       return {
         ...state,
-        mineTenureTypes: action.payload,
+        mineTenureTypes: createDropDownList(action.payload, "description", "mine_tenure_type_code"),
       };
     case actionTypes.STORE_DISTURBANCE_OPTIONS:
       return {

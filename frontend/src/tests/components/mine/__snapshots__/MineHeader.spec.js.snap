@@ -194,26 +194,7 @@ ShallowWrapper {
         "PLR": "Placer",
       }
     }
-    mineTenureTypes={
-      Array [
-        Object {
-          "label": "Coal",
-          "value": "COL",
-        },
-        Object {
-          "label": "Mineral",
-          "value": "MIN",
-        },
-        Object {
-          "label": "Placer",
-          "value": "PLR",
-        },
-        Object {
-          "label": "BC Land",
-          "value": "BCL",
-        },
-      ]
-    }
+    mineTenureTypes={undefined}
     openModal={[MockFunction]}
     transformedMineTypes={
       Object {
