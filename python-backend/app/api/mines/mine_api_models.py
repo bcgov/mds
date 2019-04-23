@@ -6,10 +6,11 @@ class DateTime(fields.Raw):
     def format(self, value):
         return value.strftime("%Y-%m-%d %H:%M") if value else None
 
-        
+
 class Date(fields.Raw):
     def format(self, value):
         return value.strftime("%Y-%m-%d") if value else None
+
 
 BASIC_MINE_LOCATION_MODEL = api.model('BasicMineLocation', {
     'latitude': fields.String,
@@ -49,6 +50,7 @@ MINE_DOCUMENT_MODEL = api.model(
 PERMIT_MODEL = api.model('MinePermit', {
     'permit_guid': fields.String,
     'permit_no': fields.String,
+    'permit_status_code': fields.String,
 })
 
 EXPECTED_DOCUMENT_STATUS_MODEL = api.model('ExpectedDocumentStatus', {
@@ -160,8 +162,8 @@ MINE_INCIDENT_MODEL = api.model(
 
 MINE_INCIDENT_FOLLOWUP_TYPE_MODEL = api.model(
     'Mine Incident Followup Type', {
-        'mine_incident_followup_type_code' :fields.String, 
+        'mine_incident_followup_type_code': fields.String,
         'description': fields.String,
-        'display_order': fields.Integer, 
+        'display_order': fields.Integer,
         'active_ind': fields.Boolean
     })

@@ -36,7 +36,6 @@ class MineMapResource(Resource, UserMixin):
             last_modified = datetime.utcnow()
 
             # jsonify then store in cache
-            current_app.logger.error(str(records))
             map_result = json.dumps({
                 'mines': list((map(lambda x: x.json_for_map(), records)))
             },
