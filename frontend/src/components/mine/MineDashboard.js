@@ -7,6 +7,7 @@ import queryString from "query-string";
 import { isEmpty } from "lodash";
 import { openModal, closeModal } from "@/actions/modalActions";
 import { fetchPermits } from "@/actionCreators/permitActionCreator";
+import { fetchCoreUsers } from "@/actionCreators/userActionCreator";
 import {
   fetchMineRecordById,
   updateMineRecord,
@@ -51,6 +52,7 @@ import {
 } from "@/selectors/staticContentSelectors";
 import { getMineComplianceInfo } from "@/selectors/complianceSelectors";
 import { getMineVariances } from "@/selectors/varianceSelectors";
+import { getCoreUsers } from "@/selectors/userSelectors";
 import {
   fetchPartyRelationshipTypes,
   fetchPartyRelationships,
@@ -148,6 +150,7 @@ export class MineDashboard extends Component {
     this.props.fetchMineComplianceCodes();
     this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
     this.props.fetchSubscribedMinesByUser();
+    this.props.fetchCoreUsers();
     if (activeTab) {
       this.setState({ activeTab });
     }
@@ -406,6 +409,7 @@ const mapStateToProps = (state) => ({
   multiSelectComplianceCodes: getMultiSelectComplianceCodes(state),
   complianceCodesHash: getHSRCMComplianceCodesHash(state),
   mineComplianceInfo: getMineComplianceInfo(state),
+  coreUsers: getCoreUsers(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -437,6 +441,7 @@ const mapDispatchToProps = (dispatch) =>
       addDocumentToVariance,
       fetchVariancesByMine,
       fetchMineComplianceCodes,
+      fetchCoreUsers,
       fetchMineIncidentFollowActionOptions,
     },
     dispatch

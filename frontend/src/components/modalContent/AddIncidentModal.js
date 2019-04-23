@@ -8,6 +8,7 @@ const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   title: PropTypes.string,
   followupActionOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
+  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const defaultProps = {
@@ -15,15 +16,16 @@ const defaultProps = {
 };
 
 export const AddIncidentModal = (props) => (
-    <div>
-      <AddIncidentForm
-        closeModal={props.closeModal}
-        onSubmit={props.onSubmit}
-        title={props.title}
-        followupActionOptions={props.followupActionOptions}
-      />
-    </div>
-  );
+  <div>
+    <AddIncidentForm
+      closeModal={props.closeModal}
+      onSubmit={props.onSubmit}
+      title={props.title}
+      followupActionOptions={props.followupActionOptions}
+      initialValues={props.initialValues}
+    />
+  </div>
+);
 AddIncidentModal.propTypes = propTypes;
 AddIncidentModal.defaultProps = defaultProps;
 

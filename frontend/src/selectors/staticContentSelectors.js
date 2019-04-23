@@ -123,6 +123,24 @@ export const getDropdownHSRCMComplianceCodes = createSelector(
       })
 );
 
+export const getHSRCMComplianceCodesHash = createSelector(
+  [getCurrentComplianceCodes],
+  (codes) =>
+    codes
+      .filter(({ article_act_code }) => article_act_code === "HSRCM")
+      .reduce((map, code) => {
+        const composedValue = code.sub_paragraph
+          ? `${code.section}.${code.sub_section}.${code.paragraph}.${code.sub_paragraph} - ${
+              code.description
+            }`
+          : `${code.section}.${code.sub_section}.${code.paragraph} - ${code.description}`;
+        return {
+          [code.compliance_article_id]: composedValue,
+          ...map,
+        };
+      }, {})
+);
+
 export const getMultiSelectComplianceCodes = createSelector(
   [getCurrentComplianceCodes],
   (codes) =>
@@ -137,20 +155,4 @@ export const getMultiSelectComplianceCodes = createSelector(
         : `${code.section}.${code.sub_section}.${code.paragraph} - ${code.description}`;
       return { value: composedValue, label: composedLabel };
     })
-);
-
-export const getHSRCMComplianceCodesHash = createSelector(
-  [getCurrentComplianceCodes],
-  (codes) =>
-    codes.reduce((map, code) => {
-      const composedValue = code.sub_paragraph
-        ? `${code.section}.${code.sub_section}.${code.paragraph}.${code.sub_paragraph} - ${
-            code.description
-          }`
-        : `${code.section}.${code.sub_section}.${code.paragraph} - ${code.description}`;
-      return {
-        [code.compliance_article_id]: composedValue,
-        ...map,
-      };
-    }, {})
 );

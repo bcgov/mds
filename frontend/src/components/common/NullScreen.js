@@ -23,6 +23,7 @@ const propTypes = {
     "contacts",
     "unauthorized-page",
     "subscription",
+    "incidents",
   ]),
 };
 
@@ -125,6 +126,12 @@ const NullScreen = (props) => (
         <img alt="mine_img" src={MINER_TWO} />
         <h3>No contacts found</h3>
         <p>Create a contact using the menu above</p>
+      </div>
+    )}
+    {props.type === "incidents" && (
+      <div>
+        <img alt="mine_img" src={PERMIT} />
+        <h3>No incidents found</h3>
       </div>
     )}
   </div>

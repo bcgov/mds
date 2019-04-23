@@ -8,6 +8,7 @@ import * as MinespaceTypes from "@/customPropTypes/minespace";
 import * as VariancesTypes from "@/customPropTypes/variances";
 import * as ApplicationTypes from "@/customPropTypes/applications";
 import * as ComplianceTypes from "@/customPropTypes/compliance";
+import * as IncidentTypes from "@/customPropTypes/incidents";
 
 export default {
   ...CommonTypes,
@@ -19,4 +20,5 @@ export default {
   ...ApplicationTypes,
   ...ComplianceTypes,
   ...VariancesTypes,
+  ...IncidentTypes,
 };
