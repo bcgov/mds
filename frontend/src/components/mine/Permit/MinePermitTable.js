@@ -335,11 +335,11 @@ export const RenderPermitTableExpandIcon = (rowProps) => (
     tabIndex="0"
   >
     {rowProps.expanded ? (
-      <Tooltip title="Click to hide amendment history." mouseEnterDelay={1}>
+      <Tooltip title="Click to hide amendment history." placement="right" mouseEnterDelay={1}>
         <Icon type="minus-square" theme="filled" className="icon-lg--grey" />
       </Tooltip>
     ) : (
-      <Tooltip title="Click to view amendment history." mouseEnterDelay={1}>
+      <Tooltip title="Click to view amendment history." placement="right" mouseEnterDelay={1}>
         <Icon type="plus-square" theme="filled" className="icon-lg--grey" />
       </Tooltip>
     )}
@@ -377,15 +377,15 @@ export const MinePermitTable = (props) => {
   return (
     <Table
       className="nested-table"
-      rowClassName={() => "table-row-align-middle"}
+      rowClassName={() => "table-row-align-middle pointer"}
       align="left"
       pagination={false}
       columns={columns}
       dataSource={rowData}
+      locale={{ emptyText: <NullScreen type="permit" /> }}
       expandIcon={RenderPermitTableExpandIcon}
       expandRowByClick
       expandedRowRender={amendmentHistory}
-      locale={{ emptyText: <NullScreen type="permit" /> }}
       expandedRowKeys={props.expandedRowKeys}
       onExpand={props.onExpand}
     />

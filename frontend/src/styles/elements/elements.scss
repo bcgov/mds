@@ -154,6 +154,10 @@ hr {
   color: $ant-label-color;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 // use these classes when you require a desired style but a header tag is not needed!
 .h1 {
   @extend h1;

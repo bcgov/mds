@@ -22,13 +22,13 @@ const propTypes = {
   submitting: PropTypes.bool.isRequired,
   mine_guid: PropTypes.string.isRequired,
   permitTypeCode: PropTypes.string,
-  permitActivityTypeCode: PropTypes.string,
+  permitIsExploration: PropTypes.bool,
   change: PropTypes.func,
 };
 
 const defaultProps = {
   permitTypeCode: "",
-  permitActivityTypeCode: "",
+  permitIsExploration: false,
   change,
 };
 
@@ -55,26 +55,12 @@ const permitTypes = [
   },
 ];
 
-const permitActivityTypes = [
-  {
-    label: "Operation",
-    value: "",
-  },
-  {
-    label: "Exploration",
-    value: "X",
-  },
-];
-
 const selector = formValueSelector(FORM.ADD_PERMIT);
 
 const validateBusinessRules = (values) => {
   const errors = {};
-  if (
-    values.permit_activity_type === "X" &&
-    !(values.permit_type === "C" || values.permit_type === "M")
-  ) {
-    errors.permit_activity_type = "Exploration activity is only valid for Coal and Placer permits";
+  if (values.permit_is_exploration && !(values.permit_type === "C" || values.permit_type === "M")) {
+    errors.permit_type = "Exploration is only valid for Coal and Placer permits";
   }
   return errors;
 };
@@ -123,15 +109,15 @@ export class AddPermitForm extends Component {
             </Form.Item>
             {(this.props.permitTypeCode === "C" ||
               this.props.permitTypeCode === "M" ||
-              this.props.permitActivityTypeCode === "X") && (
+              this.props.permitIsExploration) && (
               <Form.Item>
                 <Field
-                  id="permit_activity_type"
-                  name="permit_activity_type"
-                  label="Permit activity type*"
-                  placeholder="Select a permit activity type"
-                  component={renderConfig.SELECT}
-                  data={permitActivityTypes}
+                  id="permit_is_exploration"
+                  name="permit_is_exploration"
+                  label="Exploration permit"
+                  type="checkbox"
+                  component={renderConfig.CHECKBOX}
+                  validate={[maxLength(300)]}
                 />
               </Form.Item>
             )}
@@ -144,7 +130,7 @@ export class AddPermitForm extends Component {
                 validate={[required, maxLength(9)]}
                 inlineLabel={
                   this.props.permitTypeCode &&
-                  `${this.props.permitTypeCode}${this.props.permitActivityTypeCode} -`
+                  `${this.props.permitTypeCode}${this.props.permitIsExploration ? "X" : ""} -`
                 }
               />
             </Form.Item>
@@ -215,7 +201,7 @@ export default compose(
   connect((state) => ({
     permitStatusOptions: getDropdownPermitStatusOptions(state),
     permitTypeCode: selector(state, "permit_type"),
-    permitActivityTypeCode: selector(state, "permit_activity_type"),
+    permitIsExploration: selector(state, "permit_is_exploration"),
   })),
   reduxForm({
     form: FORM.ADD_PERMIT,
