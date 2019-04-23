@@ -30,13 +30,14 @@ class MineOperationStatusCode(AuditMixin, Base):
         return cls.query.filter_by(mine_operation_status_code=_id).first()
 
     @classmethod
-    def create_mine_operation_status_code(cls, code, description, display_order, save=True):
+    def create_mine_operation_status_code(cls,
+                                          code,
+                                          description,
+                                          display_order,
+                                          add_to_session=True):
         mine_operation_status_code = cls(
-            mine_operation_status_code=code,
-            description=description,
-            display_order=display_order,
-        )
-        if save:
+            mine_operation_status_code=code, description=description, display_order=display_order)
+        if add_to_session:
             mine_operation_status_code.save(commit=False)
         return mine_operation_status_code
 

@@ -52,8 +52,7 @@ def register_commands(app):
                 mine_party_appt_type_code='PMT',
                 start_date=None,
                 end_date=None,
-                processed_by='DummyUser',
-                save=True)
+                processed_by='DummyUser')
 
     # in terminal you can run $flask <cmd> <arg>
 

@@ -31,7 +31,13 @@ class MineRegionCode(AuditMixin, Base):
         return cls.query.filter_by(mine_region_code=_code).first()
 
     @classmethod
-    def create(cls, code, description, display_order, effective_date, expiry_date, save=True):
+    def create(cls,
+               code,
+               description,
+               display_order,
+               effective_date,
+               expiry_date,
+               add_to_session=True):
         mine_region_code = cls(
             mine_region_code=code,
             description=description,
@@ -39,6 +45,6 @@ class MineRegionCode(AuditMixin, Base):
             effective_date=effective_date,
             expiry_date=expiry_date,
         )
-        if save:
+        if add_to_session:
             mine_region_code.save(commit=False)
         return mine_region_code

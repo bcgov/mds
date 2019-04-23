@@ -28,12 +28,12 @@ class MineralTenureXref(AuditMixin, Base):
         return cls.query.filter_by(tenure_number_id=_id).first()
 
     @classmethod
-    def create_mine_tenure(cls, mine, tenure_number_id, save=True):
+    def create_mine_tenure(cls, mine, tenure_number_id, add_to_session=True):
         mine_tenure = cls(
             mineral_tenure_xref_guid=uuid.uuid4(),
             mine_guid=mine.mine_guid,
             tenure_number_id=tenure_number_id)
-        if save:
+        if add_to_session:
             mine_tenure.save(commit=False)
         return mine_tenure
 

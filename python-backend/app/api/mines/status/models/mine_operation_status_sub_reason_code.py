@@ -35,13 +35,12 @@ class MineOperationStatusSubReasonCode(AuditMixin, Base):
                                                      code,
                                                      description,
                                                      display_order,
-                                                     save=True):
+                                                     add_to_session=True):
         mine_operation_status_sub_reason_code = cls(
             mine_operation_status_sub_reason_code=code,
             description=description,
-            display_order=display_order,
-        )
-        if save:
+            display_order=display_order)
+        if add_to_session:
             mine_operation_status_sub_reason_code.save(commit=False)
         return mine_operation_status_sub_reason_code
 
