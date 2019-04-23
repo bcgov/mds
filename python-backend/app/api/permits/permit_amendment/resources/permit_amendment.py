@@ -92,8 +92,7 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
                 issue_date,
                 authorization_end_date,
                 permit_amendment_type_code,
-                description=description,
-                save=True)
+                description=description)
 
             for newFile in uploadedFiles:
                 new_pa_doc = PermitAmendmentDocument(

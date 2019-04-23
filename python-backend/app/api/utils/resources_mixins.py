@@ -7,9 +7,6 @@ class UserMixin(object):
         user = User()
         return user.get_user_username()
 
-    def get_update_user(self):
-        return self.get_user_info()
-
 
 class ErrorMixin(object):
     def create_error_payload(self, error_code, message):

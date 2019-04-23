@@ -53,9 +53,9 @@ class CoreUser(AuditMixin, Base):
             return None
 
     @classmethod
-    def create(cls, email, phone_no, save=True):
+    def create(cls, email, phone_no, add_to_session=True):
         core_user = cls(email=email, phone_no=phone_no)
-        if save:
+        if add_to_session:
             core_user.save(commit=False)
         return core_user
 

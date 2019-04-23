@@ -40,7 +40,7 @@ class MineTypeDetailResource(Resource, UserMixin, ErrorMixin):
 
         try:
             mine_type_detail = MineTypeDetail.create_mine_type_detail(
-                mine_type_guid, mine_disturbance_code, mine_commodity_code, save=False)
+                mine_type_guid, mine_disturbance_code, mine_commodity_code, add_to_session=False)
 
             if mine_disturbance_code:
                 (code, name, config) = (mine_disturbance_code, 'mine_disturbance_code',

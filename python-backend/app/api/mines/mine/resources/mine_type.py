@@ -35,7 +35,8 @@ class MineTypeListResource(Resource, UserMixin):
         mine_guid = data.get('mine_guid')
         mine_tenure_type_code = data.get('mine_tenure_type_code')
 
-        mine_type = MineType.create_mine_type(mine_guid, mine_tenure_type_code, save=False)
+        mine_type = MineType.create_mine_type(
+            mine_guid, mine_tenure_type_code, add_to_session=False)
         mine_type.save()
 
         return mine_type
