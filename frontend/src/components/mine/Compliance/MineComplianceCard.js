@@ -16,16 +16,16 @@ const defaultProps = {
 };
 
 export const MineComplianceCard = (props) => (
-  <div className="compliace--card">
-    <div className="compliace--card--head">
-      <div className="compliace--card--head--content">
+  <div className="compliance--card">
+    <div className="compliance--card--head">
+      <div className="compliance--card--head--content">
         <span className="info-display">
           {props.icon && <img src={props.icon} alt="icon" className="padding-small--right" />}
           {props.content}
         </span>
       </div>
     </div>
-    <div className="compliace--card--body">
+    <div className="compliance--card--body">
       <h4>{props.title}</h4>
     </div>
   </div>

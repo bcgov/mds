@@ -39,9 +39,7 @@ export const CONTACT_HOME_PAGE = {
 export const MINE_SUMMARY = {
   route: "/dashboard/:id/:activeTab",
   dynamicRoute: (id, activeTab = "summary", filterParams) =>
-    filterParams && activeTab === "compliance"
-      ? `/dashboard/${id}/${activeTab}?${queryString.stringify(filterParams)}`
-      : `/dashboard/${id}/${activeTab}`,
+    `/dashboard/${id}/${activeTab}?${queryString.stringify(filterParams)}`,
   component: MineDashboard,
 };
 

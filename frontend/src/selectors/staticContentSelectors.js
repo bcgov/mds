@@ -126,35 +126,31 @@ export const getDropdownHSRCMComplianceCodes = createSelector(
 export const getMultiSelectComplianceCodes = createSelector(
   [getCurrentComplianceCodes],
   (codes) =>
-    codes
-      .filter(({ article_act_code }) => article_act_code === "HSRCM")
-      .map((code) => {
-        const composedValue = code.sub_paragraph
-          ? `${code.section}.${code.sub_section}.${code.paragraph}.${code.sub_paragraph}`
-          : `${code.section}.${code.sub_section}.${code.paragraph}`;
-        const composedLabel = code.sub_paragraph
-          ? `${code.section}.${code.sub_section}.${code.paragraph}.${code.sub_paragraph} - ${
-              code.description
-            }`
-          : `${code.section}.${code.sub_section}.${code.paragraph} - ${code.description}`;
-        return { value: composedValue, label: composedLabel };
-      })
+    codes.map((code) => {
+      const composedValue = code.sub_paragraph
+        ? `${code.section}.${code.sub_section}.${code.paragraph}.${code.sub_paragraph}`
+        : `${code.section}.${code.sub_section}.${code.paragraph}`;
+      const composedLabel = code.sub_paragraph
+        ? `${code.section}.${code.sub_section}.${code.paragraph}.${code.sub_paragraph} - ${
+            code.description
+          }`
+        : `${code.section}.${code.sub_section}.${code.paragraph} - ${code.description}`;
+      return { value: composedValue, label: composedLabel };
+    })
 );
 
 export const getHSRCMComplianceCodesHash = createSelector(
   [getCurrentComplianceCodes],
   (codes) =>
-    codes
-      .filter(({ article_act_code }) => article_act_code === "HSRCM")
-      .reduce((map, code) => {
-        const composedValue = code.sub_paragraph
-          ? `${code.section}.${code.sub_section}.${code.paragraph}.${code.sub_paragraph} - ${
-              code.description
-            }`
-          : `${code.section}.${code.sub_section}.${code.paragraph} - ${code.description}`;
-        return {
-          [code.compliance_article_id]: composedValue,
-          ...map,
-        };
-      }, {})
+    codes.reduce((map, code) => {
+      const composedValue = code.sub_paragraph
+        ? `${code.section}.${code.sub_section}.${code.paragraph}.${code.sub_paragraph} - ${
+            code.description
+          }`
+        : `${code.section}.${code.sub_section}.${code.paragraph} - ${code.description}`;
+      return {
+        [code.compliance_article_id]: composedValue,
+        ...map,
+      };
+    }, {})
 );

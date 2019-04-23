@@ -174,13 +174,13 @@ export class MineDashboard extends Component {
     this.setState({ complianceFilterParams: initialSearchValues });
   }
 
-  format = (param) => (param ? param.split(",").filter((x) => x) : []);
-
   renderDataFromURL = (params) => {
+    const format = (param) => (param ? param.split(",").filter((x) => x) : []);
     const { open_orders } = this.props.mineComplianceInfo;
     const { violation, overdue, ...remainingParams } = queryString.parse(params);
     const formattedParams = {
-      violation: this.format(violation),
+      // violation: queryString.parse(violation, {arrayFormat: 'comma'}),
+      violation: format(violation),
       overdue: returnBoolean(overdue),
       ...remainingParams,
     };
@@ -195,14 +195,13 @@ export class MineDashboard extends Component {
   };
 
   handleFiltering = (order, params) => {
-    const overdue = params.overdue === null ? true : order.overdue === params.overdue;
-    const inspector = params.inspector ? order.inspector.includes(params.inspector) : true;
-    const date = params.due_date ? order.due_date.includes(params.due_date) : true;
-    const orderNo = params.order_no ? order.order_no.includes(params.order_no) : true;
+    const overdue = params.overdue === null || order.overdue === params.overdue;
+    const inspector = params.inspector === "" || order.inspector.includes(params.inspector);
+    const date = params.due_date === "" || order.due_date.includes(params.due_date);
+    const orderNo = params.order_no === "" || order.order_no.includes(params.order_no);
     const reportNoString = order.report_no.toString();
-    const reportNo = params.report_no ? reportNoString.includes(params.report_no) : true;
-    const violation =
-      params.violation.length !== 0 ? params.violation.includes(order.violation) : true;
+    const reportNo = params.report_no === "" || reportNoString.includes(params.report_no);
+    const violation = params.violation.length === 0 || params.violation.includes(order.violation);
     return overdue && inspector && date && orderNo && reportNo && violation;
   };
 

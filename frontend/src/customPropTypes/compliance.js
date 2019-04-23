@@ -1,7 +1,5 @@
 import { PropTypes } from "prop-types";
 
-// This file is anticipated to have multiple exports
-// eslint-disable-next-line import/prefer-default-export
 export const complianceOrder = PropTypes.shape({
   overdue: PropTypes.bool,
   due_date: PropTypes.string,
