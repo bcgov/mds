@@ -4,7 +4,7 @@ import requests
 from werkzeug.exceptions import BadRequest, NotFound
 
 from flask import request, current_app, Response
-from flask_restplus import Resource, reqparse, fields
+from flask_restplus import Resource, fields
 from app.extensions import api, db
 
 from ..models.variance import Variance
@@ -115,10 +115,9 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
 
 
 class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser(trim=True)
-    parser.add_argument('mine_document_guid', type=str)
-    parser.add_argument('document_manager_guid', type=str)
-    parser.add_argument('document_name', type=str)
+    parser = CustomReqparser()
+    parser.add_argument('document_manager_guid', type=str, required=True)
+    parser.add_argument('document_name', type=str, required=True)
 
     @api.doc(description='Request a document_manager_guid for uploading a document')
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
@@ -164,9 +163,6 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         document_name = data.get('document_name')
         document_manager_guid = data.get('document_manager_guid')
 
-        if not document_name:
-            raise BadRequest('Missing document_name')
-
         # Register new file upload
         mine_doc = MineDocument(
             mine_guid=mine_guid,
@@ -194,6 +190,9 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
 
 
 class VarianceUploadedDocumentsResource(Resource, UserMixin, ErrorMixin):
+    parser = CustomReqparser()
+    parser.add_argument('mine_document_guid', type=str, required=True)
+
     @api.doc(description='Delete a document from a variance.')
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
     def delete(self, mine_guid, variance_id, mine_document_guid):

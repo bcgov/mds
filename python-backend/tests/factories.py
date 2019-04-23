@@ -11,6 +11,7 @@ from app.api.applications.models.application import Application
 from app.api.document_manager.models.document_manager import DocumentManager
 from app.api.documents.expected.models.mine_expected_document import MineExpectedDocument
 from app.api.documents.mines.models.mine_document import MineDocument
+from app.api.documents.variances.models.variance import VarianceDocument
 from app.api.mines.location.models.mine_location import MineLocation
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.mine.models.mine_type import MineType
@@ -221,6 +222,29 @@ class VarianceFactory(BaseFactory):
     received_date = TODAY
     expiry_date = TODAY
     documents = []
+
+    @factory.post_generation
+    def documents(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        VarianceDocumentFactory.create_batch(size=extracted, variance=obj, **kwargs)
+
+
+class VarianceDocumentFactory(BaseFactory):
+    class Meta:
+        model = VarianceDocument
+
+    class Params:
+        mine_document = factory.SubFactory('tests.factories.MineDocumentFactory')
+        variance = factory.SubFactory('tests.factories.VarianceFactory')
+
+    variance_document_xref_guid = GUID
+    mine_document_guid = factory.SelfAttribute('mine_document.mine_document_guid')
+    variance_id = factory.SelfAttribute('variance.variance_id')
 
 
 class PermitFactory(BaseFactory):
