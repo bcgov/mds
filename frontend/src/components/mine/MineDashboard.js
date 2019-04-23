@@ -188,11 +188,7 @@ export class MineDashboard extends Component {
       this.props.mineComplianceInfo && this.props.mineComplianceInfo.open_orders
         ? this.props.mineComplianceInfo.open_orders
         : [];
-    // this.state.filteredOrders expects an array not a boolean and only filter the orders if they exist.
-    const filteredOrders =
-      orders.length === 0
-        ? []
-        : orders.filter((order) => this.handleFiltering(order, formattedParams));
+    const filteredOrders = orders.filter((order) => this.handleFiltering(order, formattedParams));
 
     this.setState({
       filteredOrders,
