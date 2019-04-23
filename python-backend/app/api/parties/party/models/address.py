@@ -6,6 +6,7 @@ from sqlalchemy.orm import validates
 from ....utils.models_mixins import Base
 from app.extensions import db
 
+
 class Address(Base):
     __tablename__ = "address"
     address_id = db.Column(db.Integer, primary_key=True)
@@ -34,15 +35,14 @@ class Address(Base):
         }
 
     @classmethod
-    def create(
-            cls,
-            suite_no=None,
-            address_line_1=None,
-            address_line_2=None,
-            city=None,
-            sub_division_code=None,
-            post_code=None,
-            save=True):
+    def create(cls,
+               suite_no=None,
+               address_line_1=None,
+               address_line_2=None,
+               city=None,
+               sub_division_code=None,
+               post_code=None,
+               add_to_session=True):
         address = cls(
             suite_no=suite_no,
             address_line_1=address_line_1,
@@ -50,10 +50,9 @@ class Address(Base):
             city=city,
             sub_division_code=sub_division_code,
             post_code=post_code)
-        if save:
+        if add_to_session:
             address.save(commit=False)
         return address
-
 
     @validates('post_code')
     def validate_post_code(self, key, post_code):
