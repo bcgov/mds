@@ -86,8 +86,7 @@ class MinePartyAppointment(AuditMixin, Base):
     @classmethod
     def find_all_by_mine_party_appt_guid(cls, _id):
         try:
-            return cls.query.filter_by(mine_party_appt_guid=_id).filter_by(
-                deleted_ind=False)
+            return cls.query.filter_by(mine_party_appt_guid=_id).filter_by(deleted_ind=False)
         except ValueError:
             return None
 
@@ -176,7 +175,7 @@ class MinePartyAppointment(AuditMixin, Base):
                end_date=None,
                processed_by=processed_by,
                permit_guid=None,
-               save=True):
+               add_to_session=True):
         mpa = cls(
             mine_guid=mine_guid,
             party_guid=party_guid,
@@ -185,7 +184,7 @@ class MinePartyAppointment(AuditMixin, Base):
             start_date=start_date,
             end_date=end_date,
             processed_by=processed_by)
-        if save:
+        if add_to_session:
             mpa.save(commit=False)
         return mpa
 

@@ -24,10 +24,10 @@ class IdirMembership(AuditMixin, Base):
         return cls.query.filter_by(idir_membership_name=membership_name).first()
 
     @classmethod
-    def create(cls, idir_membership_name, import_users_ind, save=True):
+    def create(cls, idir_membership_name, import_users_ind, add_to_session=True):
         idir_membership = cls(
             idir_membership_name=idir_membership_name, import_users_ind=import_users_ind)
-        if save:
+        if add_to_session:
             idir_membership.save(commit=False)
         return idir_membership
 

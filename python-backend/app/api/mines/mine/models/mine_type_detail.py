@@ -33,14 +33,14 @@ class MineTypeDetail(AuditMixin, Base):
                                 mine_type_guid,
                                 mine_disturbance_code,
                                 mine_commodity_code,
-                                save=True):
+                                add_to_session=True):
         mine_type_detail = cls(
             mine_type_detail_xref_guid=uuid.uuid4(),
             mine_disturbance_code=mine_disturbance_code,
             mine_commodity_code=mine_commodity_code,
             mine_type_guid=mine_type_guid,
         )
-        if save:
+        if add_to_session:
             mine_type_detail.save(commit=False)
         return mine_type_detail
 

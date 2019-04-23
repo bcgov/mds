@@ -56,7 +56,7 @@ class PermitAmendment(AuditMixin, Base):
                permit_amendment_type_code,
                description=None,
                permit_amendment_status_code='ACT',
-               save=True):
+               add_to_session=True):
         new_pa = cls(
             permit_id=permit.permit_id,
             received_date=received_date,
@@ -66,7 +66,7 @@ class PermitAmendment(AuditMixin, Base):
             permit_amendment_status_code=permit_amendment_status_code,
             description=description)
         permit.permit_amendments.append(new_pa)
-        if save:
+        if add_to_session:
             new_pa.save(commit=False)
         return new_pa
 

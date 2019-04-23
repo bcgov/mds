@@ -33,13 +33,18 @@ class PartyTypeCode(AuditMixin, Base):
         return cls.query.filter_by(party_type_code=_id).first()
 
     @classmethod
-    def create_party_type_code(cls, code, description, display_order, user_kwargs, save=True):
+    def create_party_type_code(cls,
+                               code,
+                               description,
+                               display_order,
+                               user_kwargs,
+                               add_to_session=True):
         party_type_code = cls(
             party_type_code=code,
             description=description,
             display_order=display_order,
             **user_kwargs)
-        if save:
+        if add_to_session:
             party_type_code.save(commit=False)
         return party_type_code
 
