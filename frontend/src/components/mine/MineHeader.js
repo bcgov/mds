@@ -206,7 +206,7 @@ export class MineHeader extends Component {
         </AuthorizationWrapper>
 
         <AuthorizationWrapper inTesting>
-          {!this.props.mine.verified_status.healthy_ind && (
+          {this.props.mine.verified_status.healthy_ind !== true && (
             <div className="custom-menu-item">
               <Popconfirm
                 placement="left"
@@ -229,7 +229,7 @@ export class MineHeader extends Component {
           )}
         </AuthorizationWrapper>
         <AuthorizationWrapper inTesting>
-          {this.props.mine.verified_status.healthy_ind && (
+          {this.props.mine.verified_status.healthy_ind !== false && (
             <div className="custom-menu-item">
               <Popconfirm
                 placement="left"
