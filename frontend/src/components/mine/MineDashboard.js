@@ -72,7 +72,7 @@ import MineComplianceInfo from "@/components/mine/Compliance/MineComplianceInfo"
 import MinePermitInfo from "@/components/mine/Permit/MinePermitInfo";
 import MineApplicationInfo from "@/components/mine/Applications/MineApplicationInfo";
 import Loading from "@/components/common/Loading";
-import { returnBoolean } from "@/utils/helpers";
+import { formatParamStringToArray } from "@/utils/helpers";
 import { detectProdEnvironment } from "@/utils/environmentUtils";
 
 /**
@@ -120,7 +120,7 @@ const initialSearchValues = {
   due_date: "",
   inspector: "",
   violation: [],
-  overdue: null,
+  overdue: "",
 };
 
 export class MineDashboard extends Component {
@@ -178,13 +178,10 @@ export class MineDashboard extends Component {
   }
 
   renderDataFromURL = (params) => {
-    const format = (param) => (param ? param.split(",").filter((x) => x) : []);
     const { open_orders } = this.props.mineComplianceInfo;
-    const { violation, overdue, ...remainingParams } = queryString.parse(params);
+    const { violation, ...remainingParams } = queryString.parse(params);
     const formattedParams = {
-      // violation: queryString.parse(violation, {arrayFormat: 'comma'}),
-      violation: format(violation),
-      overdue: returnBoolean(overdue),
+      violation: formatParamStringToArray(violation),
       ...remainingParams,
     };
     const filteredOrders =
@@ -198,7 +195,9 @@ export class MineDashboard extends Component {
   };
 
   handleFiltering = (order, params) => {
-    const overdue = params.overdue === null || order.overdue === params.overdue;
+    // convert string to boolean before passing it into a filter check
+    const parsedOverdue = params.overdue === "" ? "" : JSON.parse(params.overdue);
+    const overdue = params.overdue === "" || order.overdue === parsedOverdue;
     const inspector = params.inspector === "" || order.inspector.includes(params.inspector);
     const date = params.due_date === "" || order.due_date.includes(params.due_date);
     const orderNo = params.order_no === "" || order.order_no.includes(params.order_no);

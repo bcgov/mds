@@ -104,4 +104,4 @@ export const getFiscalYear = () => {
   return currentYear - 1;
 };
 
-export const returnBoolean = (param) => param && param === "true";
+export const formatParamStringToArray = (param) => (param ? param.split(",").filter((x) => x) : []);
