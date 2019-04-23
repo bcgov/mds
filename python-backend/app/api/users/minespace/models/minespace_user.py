@@ -44,9 +44,9 @@ class MinespaceUser(Base):
         return cls.query.filter_by(email=email).filter_by(deleted_ind=False).first()
 
     @classmethod
-    def create_minespace_user(cls, email, save=True):
+    def create_minespace_user(cls, email, add_to_session=True):
         minespace_user = cls(email=email)
-        if save:
+        if add_to_session:
             minespace_user.save(commit=False)
         return minespace_user
 

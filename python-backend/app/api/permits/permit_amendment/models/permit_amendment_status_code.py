@@ -36,14 +36,14 @@ class PermitAmendmentStatusCode(AuditMixin, Base):
                                                  display_order,
                                                  user_kwargs,
                                                  active_ind,
-                                                 save=True):
+                                                 add_to_session=True):
         permit_amendment_status_code = cls(
             permit_amendment_status_code=code,
             description=description,
             display_order=display_order,
             active_ind=active_ind,
             **user_kwargs)
-        if save:
+        if add_to_session:
             permit_amendment_status_code.save(commit=False)
         return permit_amendment_status_code
 
