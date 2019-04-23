@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Menu, Dropdown, Button, Icon } from "antd";
+import { Table, Menu, Dropdown, Button, Icon, Tooltip } from "antd";
 import NullScreen from "@/components/common/NullScreen";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Strings from "@/constants/strings";
@@ -29,6 +29,8 @@ const propTypes = {
   openAddAmalgamatedPermitModal: PropTypes.func.isRequired,
   // This prop is used. Linting issue is unclear
   openEditAmendmentModal: PropTypes.func.isRequired, // eslint-disable-line react/no-unused-prop-types
+  expandedRowKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onExpand: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -323,6 +325,27 @@ const transformChildRowData = (
   documents: amendment.related_documents,
 });
 
+export const RenderPermitTableExpandIcon = (rowProps) => (
+  <a
+    role="link"
+    className="expand-row-icon"
+    onClick={(e) => rowProps.onExpand(rowProps.record, e)}
+    onKeyPress={(e) => rowProps.onExpand(rowProps.record, e)}
+    style={{ cursor: "pointer" }}
+    tabIndex="0"
+  >
+    {rowProps.expanded ? (
+      <Tooltip title="Click to hide amendment history." mouseEnterDelay={1}>
+        <Icon type="minus-square" theme="filled" className="icon-lg--grey" />
+      </Tooltip>
+    ) : (
+      <Tooltip title="Click to view amendment history." mouseEnterDelay={1}>
+        <Icon type="plus-square" theme="filled" className="icon-lg--grey" />
+      </Tooltip>
+    )}
+  </a>
+);
+
 export const MinePermitTable = (props) => {
   const amendmentHistory = (permit) => {
     const childRowData = permit.amendments.map((amendment, index) =>
@@ -359,9 +382,12 @@ export const MinePermitTable = (props) => {
       pagination={false}
       columns={columns}
       dataSource={rowData}
+      expandIcon={RenderPermitTableExpandIcon}
       expandRowByClick
       expandedRowRender={amendmentHistory}
       locale={{ emptyText: <NullScreen type="permit" /> }}
+      expandedRowKeys={props.expandedRowKeys}
+      onExpand={props.onExpand}
     />
   );
 };

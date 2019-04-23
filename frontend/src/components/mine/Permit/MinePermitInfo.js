@@ -45,9 +45,21 @@ const defaultProps = {
 };
 
 export class MinePermitInfo extends Component {
-  componentWillMount() {
+  state = { expandedRowKeys: [] };
+
+  componentWillMount = () => {
     this.props.fetchPermits({ mine_guid: this.props.mine.mine_guid });
-  }
+  };
+
+  componentWillReceiveProps = (nextProps) => {
+    if (this.props.permits.length > 0) {
+      const currentPermits = this.props.permits.map((x) => x.permit_guid);
+      const nextPermits = nextProps.permits.map((x) => x.permit_guid);
+      this.setState({
+        expandedRowKeys: nextPermits.filter((key) => currentPermits.indexOf(key) === -1),
+      });
+    }
+  };
 
   closePermitModal = () => {
     this.props.closeModal();
@@ -184,6 +196,14 @@ export class MinePermitInfo extends Component {
       this.props.fetchPermits({ mine_guid: this.props.mine.mine_guid });
     });
 
+  onExpand = (expanded, record) =>
+    this.setState((prevState) => {
+      const expandedRowKeys = expanded
+        ? prevState.expandedRowKeys.concat(record.key)
+        : prevState.expandedRowKeys.filter((key) => key !== record.key);
+      return { expandedRowKeys };
+    });
+
   render() {
     return [
       <div>
@@ -219,6 +239,8 @@ export class MinePermitInfo extends Component {
           openEditAmendmentModal={this.openEditAmendmentModal}
           openAddPermitAmendmentModal={this.openAddPermitAmendmentModal}
           openAddAmalgamatedPermitModal={this.openAddAmalgamatedPermitModal}
+          expandedRowKeys={this.state.expandedRowKeys}
+          onExpand={this.onExpand}
         />
       ),
     ];
