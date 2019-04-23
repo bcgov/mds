@@ -178,15 +178,21 @@ export class MineDashboard extends Component {
   }
 
   renderDataFromURL = (params) => {
-    const { open_orders } = this.props.mineComplianceInfo;
     const { violation, ...remainingParams } = queryString.parse(params);
     const formattedParams = {
       violation: formatParamStringToArray(violation),
       ...remainingParams,
     };
+    // check that mineComplianceInfo contains open_orders
+    const orders =
+      this.props.mineComplianceInfo && this.props.mineComplianceInfo.open_orders
+        ? this.props.mineComplianceInfo.open_orders
+        : [];
+    // this.state.filteredOrders expects an array not a boolean and only filter the orders if they exist.
     const filteredOrders =
-      open_orders.length > 0 &&
-      open_orders.filter((order) => this.handleFiltering(order, formattedParams));
+      orders.length === 0
+        ? []
+        : orders.filter((order) => this.handleFiltering(order, formattedParams));
 
     this.setState({
       filteredOrders,

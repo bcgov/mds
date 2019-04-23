@@ -10,7 +10,7 @@ export const complianceOrder = PropTypes.shape({
 });
 
 export const complianceFilterOptions = PropTypes.shape({
-  overdue: PropTypes.bool,
+  overdue: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
   due_date: PropTypes.string,
   order_no: PropTypes.string,
   violation: PropTypes.arrayOf(PropTypes.string),
