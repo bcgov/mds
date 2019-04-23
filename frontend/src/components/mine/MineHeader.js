@@ -249,21 +249,19 @@ export class MineHeader extends Component {
       </Menu>
     );
 
-    if (this.props.mine.verified_status) {
-      this.healthy = this.props.mine.verified_status.healthy_ind;
-    }
-
     return (
       <div className="dashboard__header--card">
         <div className="dashboard__header--card__content">
           <div className="inline-flex between center-mobile">
             <h1>
               {this.props.mine.mine_name}
-              {this.props.mine.verified_status && (
+              {this.props.mine.verified_status.healthy_ind && (
                 <img
                   alt=""
                   className="padding-small"
-                  src={this.healthy ? SUCCESS_CHECKMARK : YELLOW_HAZARD}
+                  src={
+                    this.props.mine.verified_status.healthy_ind ? SUCCESS_CHECKMARK : YELLOW_HAZARD
+                  }
                   title={
                     this.healthy
                       ? `Mine data verified by ${

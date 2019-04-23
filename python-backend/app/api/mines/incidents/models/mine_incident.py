@@ -58,7 +58,7 @@ class MineIncident(AuditMixin, Base):
                reported_timestamp=None,
                reported_by=None,
                reported_by_role=None,
-               save=True):
+               add_to_session=True):
         mine_incident = cls(
             incident_timestamp=incident_timestamp,
             incident_description=incident_description,
@@ -69,7 +69,7 @@ class MineIncident(AuditMixin, Base):
             followup_inspection_no=followup_inspection_no,
         )
         mine.mine_incidents.append(mine_incident)
-        if save:
+        if add_to_session:
             mine_incident.save(commit=False)
         return mine_incident
 

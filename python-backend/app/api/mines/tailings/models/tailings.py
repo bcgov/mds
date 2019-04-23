@@ -27,10 +27,10 @@ class MineTailingsStorageFacility(AuditMixin, Base):
         }
 
     @classmethod
-    def create(cls, mine, mine_tailings_storage_facility_name, save=False):
+    def create(cls, mine, mine_tailings_storage_facility_name, add_to_session=True):
         new_tsf = cls(mine_tailings_storage_facility_name=mine_tailings_storage_facility_name)
         mine.mine_tailings_storage_facilities.append(new_tsf)
-        if save:
+        if add_to_session:
             new_tsf.save(commit=False)
         return new_tsf
 
