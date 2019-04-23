@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { openModal, closeModal } from "@/actions/modalActions";
 import { fetchPermits } from "@/actionCreators/permitActionCreator";
+import { fetchCoreUsers } from "@/actionCreators/userActionCreator";
 import {
   fetchMineRecordById,
   updateMineRecord,
@@ -47,6 +48,7 @@ import {
   getOptionsLoaded,
 } from "@/selectors/staticContentSelectors";
 import { getMineVariances } from "@/selectors/varianceSelectors";
+import { getCoreUsers } from "@/selectors/userSelectors";
 import {
   fetchPartyRelationshipTypes,
   fetchPartyRelationships,
@@ -128,6 +130,7 @@ export class MineDashboard extends Component {
     this.props.fetchMineComplianceCodes();
     this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
     this.props.fetchSubscribedMinesByUser();
+    this.props.fetchCoreUsers();
     if (activeTab) {
       this.setState({ activeTab: `${activeTab}` });
     }
@@ -309,6 +312,7 @@ const mapStateToProps = (state) => ({
   variances: getMineVariances(state),
   complianceCodes: getDropdownHSRCMComplianceCodes(state),
   complianceCodesHash: getHSRCMComplianceCodesHash(state),
+  coreUsers: getCoreUsers(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -340,6 +344,7 @@ const mapDispatchToProps = (dispatch) =>
       addDocumentToVariance,
       fetchVariancesByMine,
       fetchMineComplianceCodes,
+      fetchCoreUsers,
       fetchMineIncidentFollowActionOptions,
     },
     dispatch
