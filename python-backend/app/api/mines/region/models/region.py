@@ -37,7 +37,6 @@ class MineRegionCode(AuditMixin, Base):
                display_order,
                effective_date,
                expiry_date,
-               user_kwargs,
                add_to_session=True):
         mine_region_code = cls(
             mine_region_code=code,
