@@ -169,9 +169,18 @@ export class PartyProfile extends Component {
                 <AuthorizationWrapper inTesting>
                   <AuthorizationWrapper permission={Permission.ADMIN}>
                     <Popconfirm
+                      className="delete_contact_warning"
                       placement="bottom"
-                      title={`Are you sure you want to delete the party '${formatedName}'?  Doing so will permanently
-                     remove the party and all associated roles.`}
+                      title={
+                        <div>
+                          <p>
+                            Are you sure you want to delete the party &apos;{formatedName}&apos;?
+                          </p>
+                          <p>
+                            Doing so will permanently remove the party and all associated roles.
+                          </p>
+                        </div>
+                      }
                       onConfirm={this.deleteParty}
                       okText="Yes"
                       cancelText="No"
