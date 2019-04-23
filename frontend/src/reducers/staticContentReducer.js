@@ -37,7 +37,7 @@ const staticContentReducer = (state = initialState, action) => {
     case actionTypes.STORE_TENURE_TYPES:
       return {
         ...state,
-        mineTenureTypes: action.payload.options,
+        mineTenureTypes: action.payload,
       };
     case actionTypes.STORE_DISTURBANCE_OPTIONS:
       return {
