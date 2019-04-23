@@ -106,6 +106,17 @@ export const fetchApplicationStatusOptions = () => (dispatch) => {
     .catch(() => dispatch(error(reducerTypes.GET_APPLICATION_STATUS_OPTIONS)));
 };
 
+export const fetchMineIncidentFollowActionOptions = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_MINE_INCIDENT_FOLLOWUP_ACTION_OPTIONS));
+  return CustomAxios()
+    .get(ENVIRONMENT.apiUrl + API.MINE_INCIDENT_FOLLOWUP_ACTIONS, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_MINE_INCIDENT_FOLLOWUP_ACTION_OPTIONS));
+      dispatch(staticContentActions.storeMineIncidentFollowActionOptions(response.data));
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_MINE_INCIDENT_FOLLOW_ACTION_OPTIONS)));
+};
+
 export const setOptionsLoaded = () => (dispatch) => {
   dispatch(staticContentActions.loadedOptions(true));
 };

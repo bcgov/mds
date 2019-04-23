@@ -51,6 +51,13 @@ export const MINE_RESPONSE = {
         },
       ],
       mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
+      verified_status: {
+        mine_guid: null,
+        mine_name: null,
+        healthy_ind: null,
+        verifying_user: null,
+        verifying_timestamp: null,
+      },
     },
     {
       mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
@@ -105,6 +112,13 @@ export const MINE_RESPONSE = {
         },
       ],
       mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
+      verified_status: {
+        mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
+        mine_name: "mine2",
+        healthy_ind: true,
+        verifying_user: null,
+        verifying_timestamp: null,
+      },
     },
   ],
 };
@@ -199,6 +213,13 @@ export const MINES = {
         effective_date: "2018-10-16",
         expiry_date: "9999-12-31",
       },
+      verified_status: {
+        mine_guid: null,
+        mine_name: null,
+        healthy_ind: null,
+        verifying_user: null,
+        verifying_timestamp: null,
+      },
     },
     "18145c75-49ad-0101-85f3-a43e45ae989a": {
       mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
@@ -253,9 +274,130 @@ export const MINES = {
         },
       ],
       mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
+      verified_status: {
+        mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
+        mine_name: "mine2",
+        healthy_ind: true,
+        verifying_user: null,
+        verifying_timestamp: null,
+      },
     },
   },
 };
+
+export const MINE_BASIC_INFO = [
+  {
+    mine_guid: "4a20dc10-fb8b-47e8-96bc-fbe287356ab5",
+    mine_name: "Grant Smith",
+    mine_no: "B572444",
+    mine_note: "",
+    major_mine_ind: true,
+    region_code: "SW",
+    mine_permit: [
+      {
+        permit_id: "25",
+        permit_guid: "6515d1bf-23a9-4f36-8f12-bacbca8b138d",
+        mine_guid: "4a20dc10-fb8b-47e8-96bc-fbe287356ab5",
+        permit_no: "SdT1PbJX0R8c",
+        permit_status_code: "C",
+      },
+      {
+        permit_id: "24",
+        permit_guid: "44a7f4c6-313d-4040-97d5-7944665d9556",
+        mine_guid: "4a20dc10-fb8b-47e8-96bc-fbe287356ab5",
+        permit_no: "TSRWCIB7Czc9",
+        permit_status_code: "C",
+      },
+      {
+        permit_id: "23",
+        permit_guid: "b2dfa766-3de5-40d0-92f9-f31d7f98a65f",
+        mine_guid: "4a20dc10-fb8b-47e8-96bc-fbe287356ab5",
+        permit_no: "6oB0VXBqtzC1",
+        permit_status_code: "O",
+      },
+    ],
+    mine_status: [],
+    mine_tailings_storage_facility: [],
+    mine_type: [
+      {
+        mine_type_guid: "45388b3f-5449-4177-9962-3f78300d14af",
+        mine_guid: "4a20dc10-fb8b-47e8-96bc-fbe287356ab5",
+        mine_tenure_type_code: "MIN",
+        mine_type_detail: [],
+      },
+    ],
+    verified_status: null,
+  },
+  {
+    mine_guid: "a2036de0-ce47-4f2c-a245-bbabb17cadc5",
+    mine_name: "Austin Myers",
+    mine_no: "B905932",
+    mine_note: "",
+    major_mine_ind: false,
+    region_code: "NW",
+    mine_permit: [
+      {
+        permit_id: "22",
+        permit_guid: "49604b29-c310-4b9f-99c9-77f3a348f8f5",
+        mine_guid: "a2036de0-ce47-4f2c-a245-bbabb17cadc5",
+        permit_no: "3Lgy4iTpuFWR",
+        permit_status_code: "C",
+      },
+      {
+        permit_id: "21",
+        permit_guid: "db8f0744-1624-452c-9b20-8fa78c816bd3",
+        mine_guid: "a2036de0-ce47-4f2c-a245-bbabb17cadc5",
+        permit_no: "7HLtfIEMDvR9",
+        permit_status_code: "C",
+      },
+      {
+        permit_id: "20",
+        permit_guid: "6f1b0d51-6e82-495c-a026-5d4494f7976e",
+        mine_guid: "a2036de0-ce47-4f2c-a245-bbabb17cadc5",
+        permit_no: "hr1AWpnli0gq",
+        permit_status_code: "O",
+      },
+      {
+        permit_id: "19",
+        permit_guid: "fa9d4d65-5444-43af-89ea-879c2441b1a0",
+        mine_guid: "a2036de0-ce47-4f2c-a245-bbabb17cadc5",
+        permit_no: "lU1ncraKyx3n",
+        permit_status_code: "O",
+      },
+      {
+        permit_id: "18",
+        permit_guid: "2c43083f-947f-4a79-b3ac-931341b7bf8d",
+        mine_guid: "a2036de0-ce47-4f2c-a245-bbabb17cadc5",
+        permit_no: "zgxEmu4SarAx",
+        permit_status_code: "O",
+      },
+      {
+        permit_id: "17",
+        permit_guid: "a86b48d8-b978-4373-a629-c19ba8bbf80c",
+        mine_guid: "a2036de0-ce47-4f2c-a245-bbabb17cadc5",
+        permit_no: "A9b7qZudc13Y",
+        permit_status_code: "O",
+      },
+    ],
+    mine_status: [],
+    mine_tailings_storage_facility: [
+      {
+        mine_tailings_storage_facility_guid: "7984deca-0f26-4a01-9cae-029af48e218b",
+        mine_guid: "a2036de0-ce47-4f2c-a245-bbabb17cadc5",
+        mine_tailings_storage_facility_name: "First TSF",
+      },
+    ],
+    mine_type: [
+      {
+        mine_type_guid: "864dcedf-bcd8-4a25-9576-b87c1c9e2fa0",
+        mine_guid: "a2036de0-ce47-4f2c-a245-bbabb17cadc5",
+        mine_tenure_type_code: "PLR",
+        mine_type_detail: [],
+      },
+    ],
+    verified_status: null,
+  },
+];
 
 export const PARTY = {
   partyIds: ["18133c75-49ad-4101-85f3-a43e35ae989a", "18145c75-49ad-0101-85f3-a43e45ae989a"],
@@ -922,6 +1064,18 @@ export const PARTY_RELATIONSHIP_TYPE_HASH = {
   TQP: "TSF Qualified Person",
 };
 
+export const MINEDOCUMENTS = {
+  mine_documents: [
+    {
+      active_ind: "True",
+      document_manager_guid: "4c7d88d6-e78d-48cf-a860-89b6a1e8903b",
+      document_name: "05.4_Parent_Conduct.pdf",
+      mine_document_guid: "11d15c31-5f0a-4a18-94de-e04e3ca7936f",
+      mine_guid: "a2036de0-ce47-4f2c-a245-bbabb17cadc5",
+    },
+  ],
+};
+
 export const OPEN_ORDERS = [
   {
     overdue: true,
@@ -1046,3 +1200,33 @@ export const APPLICATION_LIST = {
     },
   ],
 };
+
+export const INCIDENTS = {
+  mine_incidents: [
+    {
+      mine_incident_guid: "dc101155-de3e-4f37-8303-eb6a6d2d5866",
+      mine_incident_report_no: "2019-70",
+      mine_incident_id_year: 2019,
+      mine_guid: "3cfba01f-f8f3-4948-b488-d9e7a915f5ec",
+      incident_timestamp: "2019-04-06T00:34:44+00:00",
+      incident_description:
+        "Paper others interview development military short design often town participant church road daughter.",
+      reported_timestamp: "2019-03-17T17:42:37+00:00",
+      reported_by: "Robert Bell",
+      reported_by_role: "Investment banker, operational",
+      followup_type_code: "NOA",
+      followup_inspection_no: "721814",
+      closing_report_summary:
+        "Parent south person form evidence receive tree wide memory but medical car himself benefit key really series sea enter money prove if lawyer seven ready religious shake.",
+    },
+  ],
+};
+
+export const FOLLOWUP_ACTIONS = [
+  {
+    mine_incident_followup_type_code: "NOA",
+    description: "No Action",
+    display_order: 20,
+    active_ind: true,
+  },
+];

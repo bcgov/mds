@@ -11,7 +11,7 @@ from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class ExpectedMineDocumentResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser()
+    parser = reqparse.RequestParser(trim=True)
     parser.add_argument(
         'documents',
         type=list,

@@ -74,6 +74,13 @@ ShallowWrapper {
             "tenure_number_id": "1234567",
           },
         ],
+        "verified_status": Object {
+          "healthy_ind": null,
+          "mine_guid": null,
+          "mine_name": null,
+          "verifying_timestamp": null,
+          "verifying_user": null,
+        },
       }
     }
     partyRelationships={Array []}
