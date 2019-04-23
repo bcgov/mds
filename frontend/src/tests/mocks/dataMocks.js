@@ -1201,6 +1201,24 @@ export const APPLICATION_LIST = {
   ],
 };
 
+export const CORE_USERS = {
+  results: [
+    {
+      core_user_guid: "51b3a499-a474-4d52-be99-5c5123d7501c",
+      email: "user@gov.bc.ca",
+      idir_user_detail: {
+        bcgov_guid: "13b7821b-04d9-4a1d-a0f4-8f6bba2c6094",
+        city: "Victoria",
+        department: "Mines Health, Safety & Enforcement Division",
+        title: "Geomatics Specialist",
+        username: "IDIRBLAH",
+      },
+      last_logon: null,
+      phone_no: "555-555-5556",
+    },
+  ],
+};
+
 export const INCIDENTS = {
   mine_incidents: [
     {
