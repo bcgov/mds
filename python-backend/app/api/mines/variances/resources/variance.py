@@ -14,26 +14,7 @@ from ....documents.mines.models.mine_document import MineDocument
 from ....utils.access_decorators import (requires_any_of, MINE_VIEW, MINE_CREATE,
                                          MINESPACE_PROPONENT)
 from ....utils.resources_mixins import UserMixin, ErrorMixin
-
-# TODO: Import these instead
-mine_document_model = api.model(
-    'MineDocument', {
-        'mine_document_guid': fields.String,
-        'mine_guid': fields.String,
-        'document_manager_guid': fields.String,
-        'document_name': fields.String
-    })
-
-variance_model = api.model(
-    'Variance', {
-        'variance_id': fields.Integer,
-        'compliance_article_id': fields.Integer,
-        'note': fields.String,
-        'issue_date': fields.Date,
-        'received_date': fields.Date,
-        'expiry_date': fields.Date,
-        'documents': fields.Nested(mine_document_model)
-    })
+from app.api.mines.mine_api_models import VARIANCE_MODEL
 
 
 class VarianceListResource(Resource, UserMixin, ErrorMixin):
@@ -60,7 +41,7 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
         description='Get a list of all variances for a given mine.',
         params={'mine_guid': 'guid of the mine for which to fetch variances'})
     @requires_any_of([MINE_VIEW])
-    @api.marshal_with(variance_model, code=200, envelope='records')
+    @api.marshal_with(VARIANCE_MODEL, code=200, envelope='records')
     def get(self, mine_guid):
         variances = Variance.find_by_mine_guid(mine_guid)
 
@@ -75,7 +56,7 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
         params={'mine_guid': 'guid of the mine with which to associate the variances'})
     @api.expect(parser)
     @requires_any_of([MINE_CREATE])
-    @api.marshal_with(variance_model, code=200)
+    @api.marshal_with(VARIANCE_MODEL, code=200)
     def post(self, mine_guid):
         data = VarianceListResource.parser.parse_args()
         compliance_article_id = data['compliance_article_id']
@@ -104,7 +85,7 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             'variance_id': 'ID of the variance to fetch'
         })
     @requires_any_of([MINE_VIEW])
-    @api.marshal_with(variance_model, code=200)
+    @api.marshal_with(VARIANCE_MODEL, code=200)
     def get(self, mine_guid, variance_id):
         variance = Variance.find_by_variance_id(variance_id)
 
@@ -116,8 +97,6 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
 
 class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
     parser = CustomReqparser()
-    parser.add_argument('document_manager_guid', type=str, required=True)
-    parser.add_argument('document_name', type=str, required=True)
 
     @api.doc(description='Request a document_manager_guid for uploading a document')
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
@@ -148,15 +127,19 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         response = Response(str(resp.content), resp.status_code, resp.raw.headers.items())
         return response
 
+
     @api.doc(
         description='Associate an uploaded file with a variance.',
         params={
             'mine_guid': 'guid for the mine with which the variance is associated',
             'variance_id': 'ID for the variance to which the document should be associated'
         })
-    @api.marshal_with(variance_model, code=200)
+    @api.marshal_with(VARIANCE_MODEL, code=200)
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
     def put(self, mine_guid, variance_id):
+        self.parser.add_argument('document_name', type=str, required=True)
+        self.parser.add_argument('document_manager_guid', type=str, required=True)
+
         variance = Variance.find_by_variance_id(variance_id)
 
         data = self.parser.parse_args()
