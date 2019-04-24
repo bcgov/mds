@@ -32,15 +32,6 @@ const defaultProps = {
 };
 
 export class MineComplianceInfo extends Component {
-  state = { minOrderList: 0, maxOrderList: 10 };
-
-  handlePageChange = (value) => {
-    this.setState({
-      minOrderList: value <= 1 ? 0 : (value - 1) * 10,
-      maxOrderList: value <= 1 ? 10 : value * 10,
-    });
-  };
-
   renderComplianceContent = () => {
     const fiscalYear = getFiscalYear();
     return (
@@ -101,12 +92,7 @@ export class MineComplianceInfo extends Component {
                       initialValues={this.props.complianceFilterParams}
                     />
                   </div>
-                  <ComplianceOrdersTable
-                    filteredOrders={this.props.filteredOrders}
-                    handlePageChange={this.handlePageChange}
-                    minOrderList={this.state.minOrderList}
-                    maxOrderList={this.state.maxOrderList}
-                  />
+                  <ComplianceOrdersTable filteredOrders={this.props.filteredOrders} />
                 </div>
               )}
           </div>
