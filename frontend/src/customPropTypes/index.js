@@ -7,6 +7,7 @@ import * as DocumentTypes from "@/customPropTypes/documents";
 import * as MinespaceTypes from "@/customPropTypes/minespace";
 import * as VariancesTypes from "@/customPropTypes/variances";
 import * as ApplicationTypes from "@/customPropTypes/applications";
+import * as ComplianceTypes from "@/customPropTypes/compliance";
 import * as IncidentTypes from "@/customPropTypes/incidents";
 
 export default {
@@ -17,6 +18,7 @@ export default {
   ...DocumentTypes,
   ...MinespaceTypes,
   ...ApplicationTypes,
+  ...ComplianceTypes,
   ...VariancesTypes,
   ...IncidentTypes,
 };

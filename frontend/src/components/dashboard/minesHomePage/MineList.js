@@ -38,13 +38,13 @@ const columns = [
     render: (text, record) => (
       <Link to={router.MINE_SUMMARY.dynamicRoute(record.key)}>
         {text}
-        {record.verified && (
+        {record.verified_status.healthy_ind && (
           <img
             alt="checkmark"
             className="padding-small"
             src={SUCCESS_CHECKMARK}
             width="25"
-            title="Mine data verified"
+            title={`Mine data verified by ${record.verified_status.verifying_user}`}
           />
         )}
       </Link>
@@ -159,7 +159,7 @@ const transformRowData = (mines, mineIds, mineRegionHash, mineTenureHash, mineCo
     tsf: mines[id].mine_tailings_storage_facilities
       ? mines[id].mine_tailings_storage_facilities.length
       : Strings.EMPTY_FIELD,
-    verified: mines[id].verified_status ? mines[id].verified_status.healthy_ind : null,
+    verified_status: mines[id].verified_status,
   }));
 
 const handleTableChange = (updateMineList) => (pagination, filters, sorter) => {
