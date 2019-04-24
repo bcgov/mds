@@ -1,5 +1,6 @@
 import uuid
 from datetime import datetime
+from os import path
 from sqlalchemy.orm.scoping import scoped_session
 
 import factory
@@ -68,13 +69,16 @@ class DocumentManagerFactory(BaseFactory):
     class Meta:
         model = DocumentManager
 
+    class Params:
+        path_root = ''
+
     document_manager_id = factory.Sequence(lambda n: n)
     document_guid = GUID
-    full_storage_path = factory.LazyAttribute(lambda o: f'mine_no/category/{o.file_display_name}')
+    full_storage_path = factory.LazyAttribute(lambda o: path.join(o.path_root, 'mine_no/category', o.file_display_name))
     upload_started_date = TODAY
     upload_completed_date = TODAY
     file_display_name = factory.Faker('file_name')
-    path_display_name = factory.LazyAttribute(lambda o: f'mine_name/category/{o.file_display_name}')
+    path_display_name = factory.LazyAttribute(lambda o: path.join(o.path_root, 'mine_name/category', o.file_display_name))
 
 
 class MineDocumentFactory(BaseFactory):
@@ -390,6 +394,7 @@ class SubscriptionFactory(BaseFactory):
     subscription_id = factory.Sequence(lambda n: n)
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     user_name = factory.Faker('last_name')
+
 
 class MineFactory(BaseFactory):
     class Meta:
