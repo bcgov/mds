@@ -31,7 +31,7 @@ import * as Mock from "@/tests/mocks/dataMocks";
 const mockState = {
   mineStatusOptions: Mock.STATUS_OPTIONS.options,
   mineRegionOptions: Mock.REGION_OPTIONS.options,
-  mineTenureTypes: Mock.TENURE_TYPES.options,
+  mineTenureTypes: Mock.TENURE_TYPES,
   expectedDocumentStatusOptions: Mock.EXPECTED_DOCUMENT_STATUS_OPTIONS.options,
   mineTSFRequiredReports: Mock.MINE_TSF_REQUIRED_REPORTS_RESPONSE.required_documents,
   mineDisturbanceOptions: Mock.DISTURBANCE_OPTIONS.options,
