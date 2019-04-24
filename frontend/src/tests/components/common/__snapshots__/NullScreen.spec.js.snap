@@ -49,6 +49,7 @@ ShallowWrapper {
         false,
         false,
         false,
+        false,
       ],
       "className": "null-screen",
     },
@@ -130,6 +131,7 @@ ShallowWrapper {
       false,
       false,
       false,
+      false,
     ],
     "type": "div",
   },
@@ -156,6 +158,7 @@ ShallowWrapper {
               Please try again later
             </p>
           </div>,
+          false,
           false,
           false,
           false,
@@ -237,6 +240,7 @@ ShallowWrapper {
           ],
           "type": "div",
         },
+        false,
         false,
         false,
         false,

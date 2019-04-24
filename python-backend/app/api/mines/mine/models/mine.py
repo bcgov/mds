@@ -56,6 +56,8 @@ class Mine(AuditMixin, Base):
         lazy='select')
     mine_party_appt = db.relationship('MinePartyAppointment', backref="mine", lazy='select')
 
+    mine_incidents = db.relationship('MineIncident', backref="mine", lazy='select')
+
     def __repr__(self):
         return '<Mine %r>' % self.mine_guid
 
@@ -195,15 +197,14 @@ class Mine(AuditMixin, Base):
         return result
 
     @classmethod
-    def create_mine(cls, mine_no, mine_name, mine_category, mine_region, user_kwargs, save=True):
+    def create_mine(cls, mine_no, mine_name, mine_category, mine_region, add_to_session=True):
         mine = cls(
             mine_guid=uuid.uuid4(),
             mine_no=mine_no,
             mine_name=mine_name,
             major_mine_ind=mine_category,
-            mine_region=mine_region,
-            **user_kwargs)
-        if save:
+            mine_region=mine_region)
+        if add_to_session:
             mine.save(commit=False)
         return mine
 

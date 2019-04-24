@@ -1,6 +1,16 @@
 from app.extensions import api
 from flask_restplus import fields
 
+
+class DateTime(fields.Raw):
+    def format(self, value):
+        return value.strftime("%Y-%m-%d %H:%M") if value else None
+
+        
+class Date(fields.Raw):
+    def format(self, value):
+        return value.strftime("%Y-%m-%d") if value else None
+
 BASIC_MINE_LOCATION_MODEL = api.model('BasicMineLocation', {
     'latitude': fields.String,
     'longitude': fields.String,
@@ -48,8 +58,8 @@ STATUS_MODEL = api.model(
         'mine_status_xref_guid': fields.String,
         'status_values': fields.List(fields.String()),
         'status_labels': fields.List(fields.String),
-        'effective_date': fields.Date,
-        'expiry_date': fields.Date,
+        'effective_date': Date,
+        'expiry_date': Date,
     })
 
 MINE_TSF_MODEL = api.model(
@@ -81,7 +91,7 @@ MINE_VERIFIED_MODEL = api.model(
         'mine_name': fields.String,
         'healthy_ind': fields.Boolean,
         'verifying_user': fields.String,
-        'verifying_timestamp': fields.Date,
+        'verifying_timestamp': Date,
     })
 
 MINE_EXPECTED_DOCUMENT_MODEL = api.model(
@@ -91,8 +101,8 @@ MINE_EXPECTED_DOCUMENT_MODEL = api.model(
         'mine_guid': fields.String,
         'exp_document_name': fields.String,
         'exp_document_description': fields.String,
-        'due_date': fields.Date,
-        'received_date': fields.Date,
+        'due_date': Date,
+        'received_date': Date,
         'exp_document_status_code': fields.String,
         'expected_document_status': fields.Nested(EXPECTED_DOCUMENT_STATUS_MODEL),
         'hsrc_code': fields.String,
@@ -127,4 +137,26 @@ MINE_LIST_MODEL = api.model(
         'total_pages': fields.Integer,
         'items_per_page': fields.Integer,
         'total': fields.Integer,
+    })
+
+MINE_INCIDENT_MODEL = api.model(
+    'Mine Incident', {
+        'mine_incident_guid': fields.String,
+        'mine_incident_report_no': fields.String,
+        'mine_incident_id_year': fields.Integer,
+        'mine_guid': fields.String,
+        'incident_timestamp': DateTime,
+        'incident_description': fields.String,
+        'reported_timestamp': DateTime,
+        'reported_by': fields.String,
+        'reported_by_role': fields.String,
+        'followup_type_code': fields.String,
+    })
+
+MINE_INCIDENT_FOLLOWUP_TYPE_MODEL = api.model(
+    'Mine Incident Followup Type', {
+        'mine_incident_followup_type_code' :fields.String, 
+        'description': fields.String,
+        'display_order': fields.Integer, 
+        'active_ind': fields.Boolean
     })

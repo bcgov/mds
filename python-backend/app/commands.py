@@ -25,16 +25,15 @@ from .scheduled_jobs import NRIS_jobs
 from .scheduled_jobs import ETL_jobs
 from app import auth
 
+from tests.factories import MineIncidentFactory
+
 from app.api.utils.include.user_info import User
 
 
 def register_commands(app):
-    DUMMY_USER_KWARGS = {'create_user': 'DummyUser', 'update_user': 'DummyUser'}
-
     def create_multiple_mine_tenure(num, mine):
         for _ in range(num):
-            MineralTenureXref.create_mine_tenure(mine, random_key_gen(key_length=7, letters=False),
-                                                 DUMMY_USER_KWARGS)
+            MineralTenureXref.create_mine_tenure(mine, random_key_gen(key_length=7, letters=False))
 
     def create_multiple_permit_permittees(num, mine, party, prev_party_guid):
         for _ in range(num):
@@ -53,8 +52,7 @@ def register_commands(app):
                 mine_party_appt_type_code='PMT',
                 start_date=None,
                 end_date=None,
-                processed_by=DUMMY_USER_KWARGS.get('update_user'),
-                save=True)
+                processed_by='DummyUser')
 
     # in terminal you can run $flask <cmd> <arg>
 
@@ -111,7 +109,7 @@ def register_commands(app):
                 # Ability to add previous party to have multiple permittee
                 prev_party_guid = party.party_guid if party else None
                 mine = Mine.create_mine(generate_mine_no(), generate_mine_name(),
-                                        random_mine_category(), random_region(), DUMMY_USER_KWARGS)
+                                        random_mine_category(), random_region())
 
                 MineType.create_mine_type(mine.mine_guid, random.choice(mine_tenure_type_codes))
                 MineLocationFactory(mine_guid=mine.mine_guid)
@@ -127,6 +125,7 @@ def register_commands(app):
                 create_multiple_mine_tenure(random.randint(0, 4), mine)
                 create_multiple_permit_permittees(
                     random.randint(0, 6), mine, party, prev_party_guid)
+                MineIncidentFactory(mine_guid=mine.mine_guid)
 
             try:
                 db.session.commit()
@@ -147,12 +146,9 @@ def register_commands(app):
                 NRIS_jobs._cache_all_NRIS_major_mines_data()
                 print('Done!')
 
-        #This is here to prevent this from running in production until we are confident in the permit data.
-        if app.config.get('ENVIRONMENT_NAME') == 'test':
-
-            @sched.app.cli.command()
-            def _run_etl():
-                with sched.app.app_context():
-                    print('starting the ETL.')
-                    ETL_jobs._run_ETL()
-                    print('Completed running the ETL.')
+        @sched.app.cli.command()
+        def _run_etl():
+            with sched.app.app_context():
+                print('starting the ETL.')
+                ETL_jobs._run_ETL()
+                print('Completed running the ETL.')

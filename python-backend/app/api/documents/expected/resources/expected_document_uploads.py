@@ -23,7 +23,7 @@ from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser()
+    parser = reqparse.RequestParser(trim=True)
     parser.add_argument('mine_document_guid', type=str, store_missing=False)
     parser.add_argument('document_manager_guid', type=str, store_missing=False)
     parser.add_argument('filename', type=str, store_missing=False)

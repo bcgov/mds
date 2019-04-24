@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { openModal, closeModal } from "@/actions/modalActions";
 import { fetchPermits } from "@/actionCreators/permitActionCreator";
+import { fetchCoreUsers } from "@/actionCreators/userActionCreator";
 import {
   fetchMineRecordById,
   updateMineRecord,
@@ -23,6 +24,7 @@ import {
   fetchPermitStatusOptions,
   fetchApplicationStatusOptions,
   fetchMineComplianceCodes,
+  fetchMineIncidentFollowActionOptions,
   setOptionsLoaded,
 } from "@/actionCreators/staticContentActionCreator";
 import {
@@ -46,6 +48,7 @@ import {
   getOptionsLoaded,
 } from "@/selectors/staticContentSelectors";
 import { getMineVariances } from "@/selectors/varianceSelectors";
+import { getCoreUsers } from "@/selectors/userSelectors";
 import {
   fetchPartyRelationshipTypes,
   fetchPartyRelationships,
@@ -57,6 +60,7 @@ import MineTenureInfo from "@/components/mine/Tenure/MineTenureInfo";
 import MineTailingsInfo from "@/components/mine/Tailings/MineTailingsInfo";
 import MineSummary from "@/components/mine/Summary/MineSummary";
 import MineVariance from "@/components/mine/Variances/MineVariance";
+import MineIncidents from "@/components/mine/Incidents/MineIncidents";
 import MineHeader from "@/components/mine/MineHeader";
 import * as router from "@/constants/routes";
 import MineContactInfo from "@/components/mine/ContactInfo/MineContactInfo";
@@ -95,6 +99,7 @@ const propTypes = {
   mineComplianceInfo: CustomPropTypes.mineComplianceInfo,
   fetchMineComplianceInfo: PropTypes.func.isRequired,
   fetchApplications: PropTypes.func.isRequired,
+  fetchMineIncidentFollowActionOptions: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
 };
@@ -119,11 +124,13 @@ export class MineDashboard extends Component {
       this.props.fetchPartyRelationshipTypes();
       this.props.fetchPermitStatusOptions();
       this.props.fetchApplicationStatusOptions();
+      this.props.fetchMineIncidentFollowActionOptions();
       this.props.setOptionsLoaded();
     }
     this.props.fetchMineComplianceCodes();
     this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
     this.props.fetchSubscribedMinesByUser();
+    this.props.fetchCoreUsers();
     if (activeTab) {
       this.setState({ activeTab: `${activeTab}` });
     }
@@ -271,6 +278,18 @@ export class MineDashboard extends Component {
                     </div>
                   </TabPane>
                 )}
+                {/* can't wrap a TabPane in the authWrapper without interfering with the Tabs behaviour */}
+                {isDevOrTest && (
+                  <TabPane tab="Incidents" key="incidents">
+                    <div className="tab__content">
+                      <MineIncidents
+                        mine={mine}
+                        openModal={this.props.openModal}
+                        closeModal={this.props.closeModal}
+                      />
+                    </div>
+                  </TabPane>
+                )}
               </Tabs>
             </div>
           </div>
@@ -293,6 +312,7 @@ const mapStateToProps = (state) => ({
   variances: getMineVariances(state),
   complianceCodes: getDropdownHSRCMComplianceCodes(state),
   complianceCodesHash: getHSRCMComplianceCodesHash(state),
+  coreUsers: getCoreUsers(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -324,6 +344,8 @@ const mapDispatchToProps = (dispatch) =>
       addDocumentToVariance,
       fetchVariancesByMine,
       fetchMineComplianceCodes,
+      fetchCoreUsers,
+      fetchMineIncidentFollowActionOptions,
     },
     dispatch
   );
