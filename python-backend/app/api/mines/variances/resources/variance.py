@@ -96,11 +96,13 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
 
 
 class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
+    # Methods don't share any common parser args, so none are defined here
     parser = CustomReqparser()
 
     @api.doc(description='Request a document_manager_guid for uploading a document')
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
     def post(self, mine_guid, variance_id):
+        # DocumentManager requires parser data, but no arguments are required
         data = self.parser.parse_args()
         metadata = self._parse_request_metadata()
         if not metadata or not metadata.get('filename'):
@@ -137,6 +139,7 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
     @api.marshal_with(VARIANCE_MODEL, code=200)
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
     def put(self, mine_guid, variance_id):
+        # Arguments required by MineDocument
         self.parser.add_argument('document_name', type=str, required=True)
         self.parser.add_argument('document_manager_guid', type=str, required=True)
 
