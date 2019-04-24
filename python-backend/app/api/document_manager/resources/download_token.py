@@ -1,5 +1,4 @@
 import uuid
-from werkzeug import exceptions
 from flask_restplus import Resource, fields
 
 from app.extensions import api, cache

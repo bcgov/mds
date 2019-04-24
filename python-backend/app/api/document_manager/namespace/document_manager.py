@@ -6,4 +6,4 @@ from app.api.document_manager.resources.download_token import DownloadTokenResou
 api = Namespace('document-manager', description='Document Manager for uploading and keeping track of files and then serving them to users.')
 
 api.add_resource(DocumentManagerResource, '', '/<string:document_guid>')
-api.add_resource(DownloadTokenResource, '/token/<string:document_guid>')
+api.add_resource(DownloadTokenResource, '/<string:document_guid>/token')

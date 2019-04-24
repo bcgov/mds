@@ -1,10 +1,7 @@
-import decimal
 import uuid
-import os
-import re
 from datetime import datetime
-from werkzeug.datastructures import FileStorage
-from werkzeug.exceptions import BadRequest
+
+from werkzeug.exceptions import BadRequest, NotFound
 from flask import request, current_app, send_file, make_response, jsonify
 from flask_restplus import Resource, reqparse
 
@@ -170,7 +167,7 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
         token_guid = request.args.get('token', '')
         doc_guid = cache.get(DOWNLOAD_TOKEN(token_guid))
         cache.delete(DOWNLOAD_TOKEN(token_guid))
-        
+
         if not doc_guid:
             raise BadRequest('Valid token requred for download')
 
