@@ -9,11 +9,11 @@ from app.extensions import api, db
 
 from ..models.variance import Variance
 from ...mine.models.mine import Mine
-from ...custom_reqparser import CustomReqparser
 from ....documents.mines.models.mine_document import MineDocument
 from ....utils.access_decorators import (requires_any_of, MINE_VIEW, MINE_CREATE,
                                          MINESPACE_PROPONENT)
 from ....utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.mines.mine_api_models import VARIANCE_MODEL
 
 

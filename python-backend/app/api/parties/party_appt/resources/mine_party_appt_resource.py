@@ -9,10 +9,10 @@ from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 from app.extensions import api
 from ..models.mine_party_appt import MinePartyAppointment
 from ..models.mine_party_appt_type import MinePartyAppointmentType
-from ...custom_reqparser import CustomReqparser
 from ....constants import PARTY_STATUS_CODE
 from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create
 from ....utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.utils.custom_reqparser import CustomReqparser
 
 
 class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
