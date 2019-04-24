@@ -1,7 +1,7 @@
 import json, uuid
 
 from tests.factories import PartyFactory
-from app.api.parties.custom_reqparser import DEFAULT_MISSING_REQUIRED
+from app.api.utils.custom_reqparser import DEFAULT_MISSING_REQUIRED
 
 
 # GET
