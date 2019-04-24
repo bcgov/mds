@@ -12,13 +12,14 @@ const propTypes = {
   input: PropTypes.objectOf(PropTypes.any).isRequired,
   label: PropTypes.string.isRequired,
   placeholder: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func,
   meta: PropTypes.objectOf(PropTypes.any).isRequired,
   showTime: PropTypes.boolean,
 };
 
 const defaultProps = {
   showTime: false,
+  onChange: () => {},
 };
 
 const RenderDate = (props) => (

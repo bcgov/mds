@@ -858,7 +858,9 @@ export const COMPLIANCE = {
   advisories: 5,
   warnings: 5,
   section_35_orders: 5,
-  open_orders: [],
+  open_orders: [
+    { order_no: "", report_no: "", due_date: "", inspector: "", violation: "", overdue: false },
+  ],
 };
 
 export const MINE_TYPES = [
