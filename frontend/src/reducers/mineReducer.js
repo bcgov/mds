@@ -16,6 +16,7 @@ const initialState = {
   mineBasicInfoList: [],
   mineDocuments: [],
   subscribedMines: [],
+  mineIncidents: [],
 };
 
 const mineReducer = (state = initialState, action) => {

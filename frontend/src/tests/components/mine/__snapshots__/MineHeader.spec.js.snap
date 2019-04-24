@@ -64,6 +64,13 @@ ShallowWrapper {
             "tenure_number_id": "1234567",
           },
         ],
+        "verified_status": Object {
+          "healthy_ind": null,
+          "mine_guid": null,
+          "mine_name": null,
+          "verifying_timestamp": null,
+          "verifying_user": null,
+        },
       }
     }
     mineRegionHash={
@@ -601,6 +608,13 @@ ShallowWrapper {
                     "tenure_number_id": "1234567",
                   },
                 ],
+                "verified_status": Object {
+                  "healthy_ind": null,
+                  "mine_guid": null,
+                  "mine_name": null,
+                  "verifying_timestamp": null,
+                  "verifying_user": null,
+                },
               }
             }
           />
@@ -1158,13 +1172,13 @@ ShallowWrapper {
                 "props": Object {
                   "children": Array [
                     "mine3",
-                    undefined,
+                    false,
                   ],
                 },
                 "ref": null,
                 "rendered": Array [
                   "mine3",
-                  undefined,
+                  false,
                 ],
                 "type": "h1",
               },
@@ -2343,6 +2357,13 @@ ShallowWrapper {
                       "tenure_number_id": "1234567",
                     },
                   ],
+                  "verified_status": Object {
+                    "healthy_ind": null,
+                    "mine_guid": null,
+                    "mine_name": null,
+                    "verifying_timestamp": null,
+                    "verifying_user": null,
+                  },
                 }
               }
             />,
@@ -2442,6 +2463,13 @@ ShallowWrapper {
                     "tenure_number_id": "1234567",
                   },
                 ],
+                "verified_status": Object {
+                  "healthy_ind": null,
+                  "mine_guid": null,
+                  "mine_name": null,
+                  "verifying_timestamp": null,
+                  "verifying_user": null,
+                },
               },
             },
             "ref": null,
@@ -2954,6 +2982,13 @@ ShallowWrapper {
                       "tenure_number_id": "1234567",
                     },
                   ],
+                  "verified_status": Object {
+                    "healthy_ind": null,
+                    "mine_guid": null,
+                    "mine_name": null,
+                    "verifying_timestamp": null,
+                    "verifying_user": null,
+                  },
                 }
               }
             />
@@ -3511,13 +3546,13 @@ ShallowWrapper {
                   "props": Object {
                     "children": Array [
                       "mine3",
-                      undefined,
+                      false,
                     ],
                   },
                   "ref": null,
                   "rendered": Array [
                     "mine3",
-                    undefined,
+                    false,
                   ],
                   "type": "h1",
                 },
@@ -4696,6 +4731,13 @@ ShallowWrapper {
                         "tenure_number_id": "1234567",
                       },
                     ],
+                    "verified_status": Object {
+                      "healthy_ind": null,
+                      "mine_guid": null,
+                      "mine_name": null,
+                      "verifying_timestamp": null,
+                      "verifying_user": null,
+                    },
                   }
                 }
               />,
@@ -4795,6 +4837,13 @@ ShallowWrapper {
                       "tenure_number_id": "1234567",
                     },
                   ],
+                  "verified_status": Object {
+                    "healthy_ind": null,
+                    "mine_guid": null,
+                    "mine_name": null,
+                    "verifying_timestamp": null,
+                    "verifying_user": null,
+                  },
                 },
               },
               "ref": null,

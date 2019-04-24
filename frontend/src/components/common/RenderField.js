@@ -9,13 +9,14 @@ import { Form, Input } from "antd";
 const propTypes = {
   id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   input: PropTypes.objectOf(PropTypes.any).isRequired,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
   placeholder: PropTypes.string.isRequired,
   meta: PropTypes.objectOf(PropTypes.any).isRequired,
   inlineLabel: PropTypes.string,
 };
 
 const defaultProps = {
+  label: "",
   inlineLabel: "",
 };
 
