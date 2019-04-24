@@ -1,13 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`OpenOrdersTable renders properly 1`] = `
+exports[`ComplianceOrdersTable renders properly 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <OpenOrdersTable
-    handlePageChange={[Function]}
-    maxOrderList={10}
-    minOrderList={0}
-    openOrders={
+  Symbol(enzyme.__unrendered__): <ComplianceOrdersTable
+    filteredOrders={
       Array [
         Object {
           "due_date": "2019-01-31",
@@ -35,6 +32,9 @@ ShallowWrapper {
         },
       ]
     }
+    handlePageChange={[Function]}
+    maxOrderList={10}
+    minOrderList={0}
   />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
@@ -121,7 +121,13 @@ ShallowWrapper {
           }
           indentSize={20}
           loading={false}
-          locale={Object {}}
+          locale={
+            Object {
+              "emptyText": <NullScreen
+                type="no-results"
+              />,
+            }
+          }
           pagination={false}
           rowKey="key"
           showHeader={true}
@@ -216,7 +222,11 @@ ShallowWrapper {
           ],
           "indentSize": 20,
           "loading": false,
-          "locale": Object {},
+          "locale": Object {
+            "emptyText": <NullScreen
+              type="no-results"
+            />,
+          },
           "pagination": false,
           "rowKey": "key",
           "showHeader": true,
@@ -327,7 +337,13 @@ ShallowWrapper {
             }
             indentSize={20}
             loading={false}
-            locale={Object {}}
+            locale={
+              Object {
+                "emptyText": <NullScreen
+                  type="no-results"
+                />,
+              }
+            }
             pagination={false}
             rowKey="key"
             showHeader={true}
@@ -422,7 +438,11 @@ ShallowWrapper {
             ],
             "indentSize": 20,
             "loading": false,
-            "locale": Object {},
+            "locale": Object {
+              "emptyText": <NullScreen
+                type="no-results"
+              />,
+            },
             "pagination": false,
             "rowKey": "key",
             "showHeader": true,

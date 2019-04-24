@@ -199,7 +199,7 @@ ShallowWrapper {
                 >
                   <Link
                     replace={false}
-                    to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permit"
+                    to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permit?"
                   >
                     See All Permits
                   </Link>
@@ -370,7 +370,7 @@ ShallowWrapper {
                 >
                   <Link
                     replace={false}
-                    to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/compliance"
+                    to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/compliance?"
                   >
                     See All Compliance
                   </Link>
@@ -433,7 +433,7 @@ ShallowWrapper {
                 >
                   <Link
                     replace={false}
-                    to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/tailings"
+                    to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/tailings?"
                   >
                     See Tailings Storage Facilities
                   </Link>
@@ -524,7 +524,7 @@ ShallowWrapper {
                 >
                   <Link
                     replace={false}
-                    to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permit"
+                    to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permit?"
                   >
                     See All Permits
                   </Link>
@@ -612,7 +612,7 @@ ShallowWrapper {
                   >
                     <Link
                       replace={false}
-                      to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permit"
+                      to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permit?"
                     >
                       See All Permits
                     </Link>
@@ -839,7 +839,7 @@ ShallowWrapper {
                   >
                     <Link
                       replace={false}
-                      to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permit"
+                      to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permit?"
                     >
                       See All Permits
                     </Link>
@@ -858,7 +858,7 @@ ShallowWrapper {
                   >
                     <Link
                       replace={false}
-                      to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permit"
+                      to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permit?"
                     >
                       See All Permits
                     </Link>
@@ -873,7 +873,7 @@ ShallowWrapper {
                   "props": Object {
                     "children": <Link
                       replace={false}
-                      to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permit"
+                      to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permit?"
                     >
                       See All Permits
                     </Link>,
@@ -887,7 +887,7 @@ ShallowWrapper {
                     "props": Object {
                       "children": "See All Permits",
                       "replace": false,
-                      "to": "/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permit",
+                      "to": "/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permit?",
                     },
                     "ref": null,
                     "rendered": "See All Permits",
@@ -1066,7 +1066,7 @@ ShallowWrapper {
                 >
                   <Link
                     replace={false}
-                    to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/compliance"
+                    to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/compliance?"
                   >
                     See All Compliance
                   </Link>
@@ -1239,7 +1239,7 @@ ShallowWrapper {
                   >
                     <Link
                       replace={false}
-                      to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/compliance"
+                      to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/compliance?"
                     >
                       See All Compliance
                     </Link>
@@ -1802,7 +1802,7 @@ ShallowWrapper {
                   >
                     <Link
                       replace={false}
-                      to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/compliance"
+                      to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/compliance?"
                     >
                       See All Compliance
                     </Link>
@@ -1821,7 +1821,7 @@ ShallowWrapper {
                   >
                     <Link
                       replace={false}
-                      to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/compliance"
+                      to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/compliance?"
                     >
                       See All Compliance
                     </Link>
@@ -1836,7 +1836,7 @@ ShallowWrapper {
                   "props": Object {
                     "children": <Link
                       replace={false}
-                      to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/compliance"
+                      to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/compliance?"
                     >
                       See All Compliance
                     </Link>,
@@ -1850,7 +1850,7 @@ ShallowWrapper {
                     "props": Object {
                       "children": "See All Compliance",
                       "replace": false,
-                      "to": "/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/compliance",
+                      "to": "/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/compliance?",
                     },
                     "ref": null,
                     "rendered": "See All Compliance",
@@ -1921,7 +1921,7 @@ ShallowWrapper {
                 >
                   <Link
                     replace={false}
-                    to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/tailings"
+                    to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/tailings?"
                   >
                     See Tailings Storage Facilities
                   </Link>
@@ -1986,7 +1986,7 @@ ShallowWrapper {
                   >
                     <Link
                       replace={false}
-                      to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/tailings"
+                      to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/tailings?"
                     >
                       See Tailings Storage Facilities
                     </Link>
@@ -2146,7 +2146,7 @@ ShallowWrapper {
                   >
                     <Link
                       replace={false}
-                      to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/tailings"
+                      to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/tailings?"
                     >
                       See Tailings Storage Facilities
                     </Link>
@@ -2165,7 +2165,7 @@ ShallowWrapper {
                   >
                     <Link
                       replace={false}
-                      to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/tailings"
+                      to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/tailings?"
                     >
                       See Tailings Storage Facilities
                     </Link>
@@ -2180,7 +2180,7 @@ ShallowWrapper {
                   "props": Object {
                     "children": <Link
                       replace={false}
-                      to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/tailings"
+                      to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/tailings?"
                     >
                       See Tailings Storage Facilities
                     </Link>,
@@ -2194,7 +2194,7 @@ ShallowWrapper {
                     "props": Object {
                       "children": "See Tailings Storage Facilities",
                       "replace": false,
-                      "to": "/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/tailings",
+                      "to": "/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/tailings?",
                     },
                     "ref": null,
                     "rendered": "See Tailings Storage Facilities",
@@ -2299,7 +2299,7 @@ ShallowWrapper {
                   >
                     <Link
                       replace={false}
-                      to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permit"
+                      to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permit?"
                     >
                       See All Permits
                     </Link>
@@ -2470,7 +2470,7 @@ ShallowWrapper {
                   >
                     <Link
                       replace={false}
-                      to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/compliance"
+                      to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/compliance?"
                     >
                       See All Compliance
                     </Link>
@@ -2533,7 +2533,7 @@ ShallowWrapper {
                   >
                     <Link
                       replace={false}
-                      to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/tailings"
+                      to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/tailings?"
                     >
                       See Tailings Storage Facilities
                     </Link>
@@ -2624,7 +2624,7 @@ ShallowWrapper {
                   >
                     <Link
                       replace={false}
-                      to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permit"
+                      to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permit?"
                     >
                       See All Permits
                     </Link>
@@ -2712,7 +2712,7 @@ ShallowWrapper {
                     >
                       <Link
                         replace={false}
-                        to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permit"
+                        to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permit?"
                       >
                         See All Permits
                       </Link>
@@ -2939,7 +2939,7 @@ ShallowWrapper {
                     >
                       <Link
                         replace={false}
-                        to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permit"
+                        to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permit?"
                       >
                         See All Permits
                       </Link>
@@ -2958,7 +2958,7 @@ ShallowWrapper {
                     >
                       <Link
                         replace={false}
-                        to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permit"
+                        to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permit?"
                       >
                         See All Permits
                       </Link>
@@ -2973,7 +2973,7 @@ ShallowWrapper {
                     "props": Object {
                       "children": <Link
                         replace={false}
-                        to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permit"
+                        to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permit?"
                       >
                         See All Permits
                       </Link>,
@@ -2987,7 +2987,7 @@ ShallowWrapper {
                       "props": Object {
                         "children": "See All Permits",
                         "replace": false,
-                        "to": "/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permit",
+                        "to": "/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permit?",
                       },
                       "ref": null,
                       "rendered": "See All Permits",
@@ -3166,7 +3166,7 @@ ShallowWrapper {
                   >
                     <Link
                       replace={false}
-                      to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/compliance"
+                      to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/compliance?"
                     >
                       See All Compliance
                     </Link>
@@ -3339,7 +3339,7 @@ ShallowWrapper {
                     >
                       <Link
                         replace={false}
-                        to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/compliance"
+                        to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/compliance?"
                       >
                         See All Compliance
                       </Link>
@@ -3902,7 +3902,7 @@ ShallowWrapper {
                     >
                       <Link
                         replace={false}
-                        to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/compliance"
+                        to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/compliance?"
                       >
                         See All Compliance
                       </Link>
@@ -3921,7 +3921,7 @@ ShallowWrapper {
                     >
                       <Link
                         replace={false}
-                        to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/compliance"
+                        to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/compliance?"
                       >
                         See All Compliance
                       </Link>
@@ -3936,7 +3936,7 @@ ShallowWrapper {
                     "props": Object {
                       "children": <Link
                         replace={false}
-                        to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/compliance"
+                        to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/compliance?"
                       >
                         See All Compliance
                       </Link>,
@@ -3950,7 +3950,7 @@ ShallowWrapper {
                       "props": Object {
                         "children": "See All Compliance",
                         "replace": false,
-                        "to": "/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/compliance",
+                        "to": "/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/compliance?",
                       },
                       "ref": null,
                       "rendered": "See All Compliance",
@@ -4021,7 +4021,7 @@ ShallowWrapper {
                   >
                     <Link
                       replace={false}
-                      to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/tailings"
+                      to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/tailings?"
                     >
                       See Tailings Storage Facilities
                     </Link>
@@ -4086,7 +4086,7 @@ ShallowWrapper {
                     >
                       <Link
                         replace={false}
-                        to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/tailings"
+                        to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/tailings?"
                       >
                         See Tailings Storage Facilities
                       </Link>
@@ -4246,7 +4246,7 @@ ShallowWrapper {
                     >
                       <Link
                         replace={false}
-                        to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/tailings"
+                        to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/tailings?"
                       >
                         See Tailings Storage Facilities
                       </Link>
@@ -4265,7 +4265,7 @@ ShallowWrapper {
                     >
                       <Link
                         replace={false}
-                        to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/tailings"
+                        to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/tailings?"
                       >
                         See Tailings Storage Facilities
                       </Link>
@@ -4280,7 +4280,7 @@ ShallowWrapper {
                     "props": Object {
                       "children": <Link
                         replace={false}
-                        to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/tailings"
+                        to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/tailings?"
                       >
                         See Tailings Storage Facilities
                       </Link>,
@@ -4294,7 +4294,7 @@ ShallowWrapper {
                       "props": Object {
                         "children": "See Tailings Storage Facilities",
                         "replace": false,
-                        "to": "/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/tailings",
+                        "to": "/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/tailings?",
                       },
                       "ref": null,
                       "rendered": "See Tailings Storage Facilities",

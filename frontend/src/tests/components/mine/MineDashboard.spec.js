@@ -27,8 +27,8 @@ const setupDispatchProps = () => {
   dispatchProps.fetchApplicationStatusOptions = jest.fn();
   dispatchProps.fetchMineIncidentFollowActionOptions = jest.fn();
   dispatchProps.setOptionsLoaded = jest.fn();
-  dispatchProps.fetchCoreUsers = jest.fn();
   dispatchProps.match = {};
+  dispatchProps.fetchCoreUsers = jest.fn();
 };
 
 const setupReducerProps = () => {
