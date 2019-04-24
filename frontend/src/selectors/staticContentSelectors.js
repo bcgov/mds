@@ -18,6 +18,12 @@ export const {
   getIncidentFollowupActionOptions,
 } = staticContentReducer;
 
+// removes all expired compliance codes from the array
+export const getCurrentComplianceCodes = createSelector(
+  [getComplianceCodes],
+  (codes) => codes.filter((code) => new Date(code.expiry_date) > new Date())
+);
+
 export const getMineTenureTypesHash = createSelector(
   [getMineTenureTypes],
   createLabelHash
@@ -102,31 +108,47 @@ export const getDropdownIncidentFollowupActionOptions = createSelector(
   (options) => createDropDownList(options, "description", "mine_incident_followup_type_code")
 );
 
+const formatComplianceCodeValueOrLabel = (code, showDescription) => {
+  const { section, sub_section, paragraph, sub_paragraph, description } = code;
+  const formattedSubSection = sub_section ? `.${sub_section}` : "";
+  const formattedParagraph = paragraph ? `.${paragraph}` : "";
+  const formattedSubParagraph = sub_paragraph !== null ? `.${sub_paragraph}` : "";
+  const formattedDescription = showDescription ? ` - ${description}` : "";
+
+  return `${section}${formattedSubSection}${formattedParagraph}${formattedSubParagraph}${formattedDescription}`;
+};
+
 export const getDropdownHSRCMComplianceCodes = createSelector(
-  [getComplianceCodes],
+  [getCurrentComplianceCodes],
   (codes) =>
     codes
       .filter(({ article_act_code }) => article_act_code === "HSRCM")
       .map((code) => {
-        const composedLabel = `${code.section}.${code.sub_section}.${code.paragraph} - ${
-          code.description
-        }`;
+        const composedLabel = formatComplianceCodeValueOrLabel(code, true);
         return { value: code.compliance_article_id, label: composedLabel };
       })
 );
 
 export const getHSRCMComplianceCodesHash = createSelector(
-  [getComplianceCodes],
+  [getCurrentComplianceCodes],
   (codes) =>
     codes
       .filter(({ article_act_code }) => article_act_code === "HSRCM")
       .reduce((map, code) => {
-        const composedValue = `${code.section}.${code.sub_section}.${code.paragraph} - ${
-          code.description
-        }`;
+        const composedValue = formatComplianceCodeValueOrLabel(code, true);
         return {
           [code.compliance_article_id]: composedValue,
           ...map,
         };
       }, {})
+);
+
+export const getMultiSelectComplianceCodes = createSelector(
+  [getCurrentComplianceCodes],
+  (codes) =>
+    codes.map((code) => {
+      const composedValue = formatComplianceCodeValueOrLabel(code);
+      const composedLabel = formatComplianceCodeValueOrLabel(code, true);
+      return { value: composedValue, label: composedLabel };
+    })
 );

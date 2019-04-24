@@ -216,7 +216,7 @@ ShallowWrapper {
         >
           <Link
             replace={false}
-            to="/dashboard/undefined/summary"
+            to="/dashboard/undefined/summary?"
           >
             <div
               className="mineMapPopUpButton"
@@ -456,7 +456,7 @@ ShallowWrapper {
           "basename": "",
           "children": <Link
             replace={false}
-            to="/dashboard/undefined/summary"
+            to="/dashboard/undefined/summary?"
           >
             <div
               className="mineMapPopUpButton"
@@ -495,7 +495,7 @@ ShallowWrapper {
               </Button>
             </div>,
             "replace": false,
-            "to": "/dashboard/undefined/summary",
+            "to": "/dashboard/undefined/summary?",
           },
           "ref": null,
           "rendered": Object {
@@ -593,7 +593,7 @@ ShallowWrapper {
           >
             <Link
               replace={false}
-              to="/dashboard/undefined/summary"
+              to="/dashboard/undefined/summary?"
             >
               <div
                 className="mineMapPopUpButton"
@@ -833,7 +833,7 @@ ShallowWrapper {
             "basename": "",
             "children": <Link
               replace={false}
-              to="/dashboard/undefined/summary"
+              to="/dashboard/undefined/summary?"
             >
               <div
                 className="mineMapPopUpButton"
@@ -872,7 +872,7 @@ ShallowWrapper {
                 </Button>
               </div>,
               "replace": false,
-              "to": "/dashboard/undefined/summary",
+              "to": "/dashboard/undefined/summary?",
             },
             "ref": null,
             "rendered": Object {

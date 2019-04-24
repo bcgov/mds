@@ -5,21 +5,14 @@ import { Table, Pagination } from "antd";
 import { RED_CLOCK } from "@/constants/assets";
 import { formatDate } from "@/utils/helpers";
 import { COLOR } from "@/constants/styles";
+import CustomPropTypes from "@/customPropTypes";
+import NullScreen from "@/components/common/NullScreen";
 
 const propTypes = {
   handlePageChange: PropTypes.func.isRequired,
   minOrderList: PropTypes.number.isRequired,
   maxOrderList: PropTypes.number.isRequired,
-  openOrders: PropTypes.arrayOf(
-    PropTypes.shape({
-      overdue: PropTypes.bool.isRequired,
-      due_date: PropTypes.string.isRequired,
-      order_no: PropTypes.string.isRequired,
-      violation: PropTypes.string.isRequired,
-      report_no: PropTypes.string.isRequired,
-      inspector: PropTypes.string.isRequired,
-    })
-  ),
+  filteredOrders: CustomPropTypes.complianceOrders,
 };
 
 const { errorRed } = COLOR;
@@ -27,7 +20,7 @@ const { errorRed } = COLOR;
 const errorStyle = (isOverdue) => (isOverdue ? { color: errorRed } : {});
 
 const defaultProps = {
-  openOrders: [],
+  filteredOrders: [],
 };
 
 const byDateOrOrderNo = (order1, order2) => {
@@ -106,26 +99,26 @@ const transformRowData = (orders, minOrderList, maxOrderList) =>
       ...order,
     }));
 
-const OpenOrdersTable = (props) => (
+const ComplianceOrdersTable = (props) => (
   <div>
     <Table
       align="left"
       pagination={false}
       columns={columns}
-      dataSource={transformRowData(props.openOrders, props.minOrderList, props.maxOrderList)}
+      dataSource={transformRowData(props.filteredOrders, props.minOrderList, props.maxOrderList)}
+      locale={{ emptyText: <NullScreen type="no-results" /> }}
     />
-
     <Pagination
       defaultCurrent={1}
       defaultPageSize={10}
       onChange={props.handlePageChange}
-      total={props.openOrders.length}
+      total={props.filteredOrders.length}
       className="center"
     />
   </div>
 );
 
-OpenOrdersTable.propTypes = propTypes;
-OpenOrdersTable.defaultProps = defaultProps;
+ComplianceOrdersTable.propTypes = propTypes;
+ComplianceOrdersTable.defaultProps = defaultProps;
 
-export default OpenOrdersTable;
+export default ComplianceOrdersTable;
