@@ -17,6 +17,7 @@ const propTypes = {
     "permit",
     "variance",
     "no-results",
+    "compliance",
     "unauthorized",
     "view-mine-manager",
     "contacts",
@@ -69,6 +70,12 @@ const NullScreen = (props) => (
       <div>
         <img alt="mine_img" src={PERMIT} />
         <h3>{String.NO_PERMIT}</h3>
+      </div>
+    )}
+    {props.type === "compliance" && (
+      <div>
+        <img alt="mine_img" src={PERMIT} />
+        <h3>{String.NO_NRIS_INSPECTIONS}</h3>
       </div>
     )}
     {props.type === "variance" && (
