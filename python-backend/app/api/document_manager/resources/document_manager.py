@@ -4,7 +4,7 @@ import os
 import re
 from datetime import datetime
 from werkzeug.datastructures import FileStorage
-from werkzeug import exceptions
+from werkzeug.exceptions import BadRequest
 from flask import request, current_app, send_file, make_response, jsonify
 from flask_restplus import Resource, reqparse
 
@@ -12,7 +12,7 @@ from ..models.document_manager import DocumentManager
 from app.extensions import api, cache
 from ...utils.resources_mixins import UserMixin, ErrorMixin
 from ...utils.access_decorators import requires_any_of, MINE_CREATE, MINE_VIEW, MINESPACE_PROPONENT
-from app.api.constants import FILE_UPLOAD_SIZE, FILE_UPLOAD_OFFSET, FILE_UPLOAD_PATH, TIMEOUT_24_HOURS, TUS_API_VERSION, TUS_API_SUPPORTED_VERSIONS, FORBIDDEN_FILETYPES
+from app.api.constants import FILE_UPLOAD_SIZE, FILE_UPLOAD_OFFSET, FILE_UPLOAD_PATH, DOWNLOAD_TOKEN, TIMEOUT_24_HOURS, TUS_API_VERSION, TUS_API_SUPPORTED_VERSIONS, FORBIDDEN_FILETYPES
 
 
 class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
@@ -166,24 +166,22 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
             'Access-Control-Expose-Headers'] = "Tus-Resumable,Tus-Version,Upload-Offset,Upload-Length,Cache-Control"
         return response
 
-    @api.doc(params={
-        'document_guid': 'Required: Document guid. Returns the file associated to this guid.'
-    })
-    @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
-    def get(self, document_guid=None):
-        if not document_guid:
-            return self.create_error_payload(400, 'Must provide a document guid.'), 400
+    def get(self):
+        token_guid = request.args.get('token', '')
+        doc_guid = cache.get(DOWNLOAD_TOKEN(token_guid))
+        cache.delete(DOWNLOAD_TOKEN(token_guid))
+        
+        if not doc_guid:
+            raise BadRequest('Valid token requred for download')
 
-        document_manager_doc = DocumentManager.find_by_document_manager_guid(document_guid)
+        doc = DocumentManager.query.unbound_unsafe().filter_by(document_guid=doc_guid).first()
+        if not doc:
+            raise NotFound('Could not find the document corresponding to the token')
 
-        if not document_manager_doc:
-            return self.create_error_payload(
-                404, f'Could not find a document with the document guid: {document_guid}'), 404
-        else:
-            return send_file(
-                filename_or_fp=document_manager_doc.full_storage_path,
-                attachment_filename=document_manager_doc.file_display_name,
-                as_attachment=True)
+        return send_file(
+            filename_or_fp=doc.full_storage_path,
+            attachment_filename=doc.file_display_name,
+            as_attachment=True)
 
     def options(self, document_guid):
         response = make_response('', 200)
@@ -194,7 +192,7 @@ class DocumentManagerResource(Resource, UserMixin, ErrorMixin):
 
         response.headers['Tus-Resumable'] = self.tus_api_version
         response.headers['Tus-Version'] = self.tus_api_supported_versions
-        response.headers['Tus-Extension'] = "creation,termination"
+        response.headers['Tus-Extension'] = "creation"
         response.headers['Tus-Max-Size'] = self.max_file_size
         response.headers[
             'Access-Control-Expose-Headers'] = "Tus-Resumable,Tus-Version,Tus-Extension,Tus-Max-Size"

@@ -1,29 +1,33 @@
-import axios from "axios";
-import { notification } from "antd";
+import queryString from "query-string";
+import CustomAxios from "@/customAxios";
 import { createRequestHeader } from "@/utils/RequestHeaders";
 import { ENVIRONMENT } from "@/constants/environment";
 import { DOCUMENT_MANAGER_FILE_GET_URL } from "@/constants/API";
 
-const fileDownload = require("js-file-download");
+// const fileDownload = require("js-file-download");
 
-const downloadFileFromDocumentManager = (docManagerGuid, filename) => {
-  if (!docManagerGuid || !filename) {
-    throw new Error("Must provide both docManagerGuid and filename");
+const downloadFileFromDocumentManager = (docManagerGuid) => {
+  if (!docManagerGuid) {
+    throw new Error("Must provide docManagerGuid");
   }
 
-  // TODO: Update url when Document Manager moves to its own microservice.
-  const url = `${ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_FILE_GET_URL}/${docManagerGuid}`;
-  axios
-    .get(url, { responseType: "arraybuffer", ...createRequestHeader() })
+  //   TODO: Update url when Document Manager moves to its own microservice.
+  CustomAxios()
+    .get(`${ENVIRONMENT.apiUrl}/document-manager/token/${docManagerGuid}`, createRequestHeader())
     .then((response) => {
-      fileDownload(response.data, filename);
+      const url = `${ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_FILE_GET_URL}?${queryString.stringify({
+        token: response.data.token_guid,
+      })}`;
+      
+      window.location = url
+
+    //   const link = document.createElement("a");
+    //   link.href = url;
+    //   link.setAttribute("download", "");
+    //   document.body.appendChild(link);
+    //   link.click();
+    //   document.body.removeChild(link);
     })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
-        duration: 10,
-      });
-    });
 };
 
 export default downloadFileFromDocumentManager;

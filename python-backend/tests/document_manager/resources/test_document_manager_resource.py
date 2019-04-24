@@ -1,14 +1,21 @@
-import json
-import io
-import filecmp
-import os
-import pytest
-import shutil
+import json, uuid
+
+from app.extensions import cache
+from tests.factories import DocumentManagerFactory
 
 
-def test_download_file_no_guid(test_client, db_session, auth_headers):
+def test_download_file_no_token(test_client, db_session):
     get_resp = test_client.get(
-        f'/document-manager', headers=auth_headers['full_auth_header'])
+        f'/document-manager')
+    get_data = json.loads(get_resp.data.decode())
+
+    assert get_resp.status_code == 400
+    assert get_data['error']['status'] == 400
+    assert get_data['error']['message'] is not ''
+
+def test_download_file_invalid_token(test_client, db_session):
+    get_resp = test_client.get(
+        f'/document-manager?token={uuid.uuid4()}')
     get_data = json.loads(get_resp.data.decode())
 
     assert get_resp.status_code == 400
@@ -16,11 +23,11 @@ def test_download_file_no_guid(test_client, db_session, auth_headers):
     assert get_data['error']['message'] is not ''
 
 
-def test_download_file_no_doc_with_guid(test_client, db_session, auth_headers):
+def test_get_file_with_guid(test_client, db_session):
     get_resp = test_client.get(
-        f'/document-manager/1234', headers=auth_headers['full_auth_header'])
+        f'/document-manager/1234')
     get_data = json.loads(get_resp.data.decode())
 
-    assert get_resp.status_code == 404
-    assert get_data['error']['status'] == 404
+    assert get_resp.status_code == 500
+    assert get_data['error']['status'] == 500
     assert get_data['error']['message'] is not ''
