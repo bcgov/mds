@@ -117,7 +117,6 @@ export class AddPermitForm extends Component {
                   label="Exploration permit"
                   type="checkbox"
                   component={renderConfig.CHECKBOX}
-                  validate={[maxLength(300)]}
                 />
               </Form.Item>
             )}
