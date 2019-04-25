@@ -9,9 +9,9 @@ from ..models.party import Party
 from ..models.address import Address
 from ...response_models import PARTY
 from ...party_appt.models.mine_party_appt import MinePartyAppointment
-from ...custom_reqparser import CustomReqparser
 from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create, requires_role_mine_admin
 from ....utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.utils.custom_reqparser import CustomReqparser
 
 
 class PartyResource(Resource, UserMixin, ErrorMixin):
