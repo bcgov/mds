@@ -19,7 +19,7 @@ import {
   getCommodityOptionHash,
   getMineStatusOptions,
   getMineRegionOptions,
-  getMineTenureTypes,
+  getMineTenureTypeOptions,
   getMineTenureTypesHash,
 } from "@/selectors/staticContentSelectors";
 
@@ -420,7 +420,7 @@ export default compose(
     mineTenureHash: getMineTenureTypesHash(state),
     mineCommodityOptionsHash: getCommodityOptionHash(state),
     mineDisturbanceOptionsHash: getDisturbanceOptionHash(state),
-    mineTenureTypes: getMineTenureTypes(state),
+    mineTenureTypes: getMineTenureTypeOptions(state),
     conditionalCommodityOptions: getConditionalCommodityOptions(state),
     conditionalDisturbanceOptions: getConditionalDisturbanceOptionsHash(state),
   })),

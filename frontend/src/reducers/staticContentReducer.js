@@ -97,7 +97,8 @@ const staticContentReducer = (state = initialState, action) => {
 
 export const getMineStatusOptions = (state) => state[STATIC_CONTENT].mineStatusOptions;
 export const getMineRegionOptions = (state) => state[STATIC_CONTENT].mineRegionOptions;
-export const getMineTenureTypes = (state) =>
+export const getMineTenureTypes = (state) => state[STATIC_CONTENT].mineTenureTypes;
+export const getMineTenureTypeOptions = (state) =>
   createDropDownList(state[STATIC_CONTENT].mineTenureTypes, "description", "mine_tenure_type_code");
 export const getMineDisturbanceOptions = (state) => state[STATIC_CONTENT].mineDisturbanceOptions;
 export const getMineCommodityOptions = (state) => state[STATIC_CONTENT].mineCommodityOptions;
