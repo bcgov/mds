@@ -76,7 +76,7 @@ describe("staticContentReducer", () => {
 
   it("receives STORE_TENURE_TYPES", () => {
     const expectedValue = getBaseExpectedValue();
-    expectedValue.mineTenureTypes = MOCK.TENURE_TYPES;
+    expectedValue.mineTenureTypes = MOCK.TENURE_TYPES_RESPONSE.records;
     const result = staticContentReducer(undefined, storeTenureTypes(MOCK.TENURE_TYPES_RESPONSE));
     expect(result).toEqual(expectedValue);
   });

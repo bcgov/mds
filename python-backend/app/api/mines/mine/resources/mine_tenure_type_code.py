@@ -9,8 +9,8 @@ from ..models.mine_tenure_type_code import MineTenureTypeCode
 class MineTenureTypeCodeResource(Resource, UserMixin, ErrorMixin):
     @api.doc(description='Returns all the mineral tenure type codes.')
     @requires_role_mine_view
-    @api.marshal_with(MINE_TENURE_TYPE_CODE_MODEL, code=200)
+    @api.marshal_with(MINE_TENURE_TYPE_CODE_MODEL, code=200, envelope='records')
     def get(self):
-        mineral_tenure_type_codes = MineTenureTypeCode.find_all()
+        mineral_tenure_type_codes = MineTenureTypeCode.find_all_active()
 
         return mineral_tenure_type_codes

@@ -38,7 +38,7 @@ const staticContentReducer = (state = initialState, action) => {
     case actionTypes.STORE_TENURE_TYPES:
       return {
         ...state,
-        mineTenureTypes: createDropDownList(action.payload, "description", "mine_tenure_type_code"),
+        mineTenureTypes: action.payload.records,
       };
     case actionTypes.STORE_DISTURBANCE_OPTIONS:
       return {
@@ -97,7 +97,8 @@ const staticContentReducer = (state = initialState, action) => {
 
 export const getMineStatusOptions = (state) => state[STATIC_CONTENT].mineStatusOptions;
 export const getMineRegionOptions = (state) => state[STATIC_CONTENT].mineRegionOptions;
-export const getMineTenureTypes = (state) => state[STATIC_CONTENT].mineTenureTypes;
+export const getMineTenureTypes = (state) =>
+  createDropDownList(state[STATIC_CONTENT].mineTenureTypes, "description", "mine_tenure_type_code");
 export const getMineDisturbanceOptions = (state) => state[STATIC_CONTENT].mineDisturbanceOptions;
 export const getMineCommodityOptions = (state) => state[STATIC_CONTENT].mineCommodityOptions;
 export const getExpectedDocumentStatusOptions = (state) =>

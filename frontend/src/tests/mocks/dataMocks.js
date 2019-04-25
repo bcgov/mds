@@ -606,12 +606,14 @@ export const TENURE_TYPES = [
   { value: "BCL", label: "BC Land" },
 ];
 
-export const TENURE_TYPES_RESPONSE = [
-  { mine_tenure_type_code: "COL", description: "Coal" },
-  { mine_tenure_type_code: "MIN", description: "Mineral" },
-  { mine_tenure_type_code: "PLR", description: "Placer" },
-  { mine_tenure_type_code: "BCL", description: "BC Land" },
-];
+export const TENURE_TYPES_RESPONSE = {
+  records: [
+    { mine_tenure_type_code: "COL", description: "Coal" },
+    { mine_tenure_type_code: "MIN", description: "Mineral" },
+    { mine_tenure_type_code: "PLR", description: "Placer" },
+    { mine_tenure_type_code: "BCL", description: "BC Land" },
+  ],
+};
 
 export const TENURE_HASH = {
   COL: "Coal",
