@@ -1,4 +1,4 @@
-import uuid
+import uuid, os
 from datetime import datetime
 
 from werkzeug.exceptions import BadRequest, NotFound, Conflict, RequestEntityTooLarge, InternalServerError
