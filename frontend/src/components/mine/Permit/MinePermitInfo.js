@@ -13,6 +13,7 @@ import {
   createPermitAmendment,
   removePermitAmendmentDocument,
 } from "@/actionCreators/permitActionCreator";
+import { fetchPartyRelationships } from "@/actionCreators/partiesActionCreator";
 import AddButton from "@/components/common/AddButton";
 import MinePermitTable from "@/components/mine/Permit/MinePermitTable";
 import * as ModalContent from "@/constants/modalContent";
@@ -29,6 +30,7 @@ const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit),
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
+  fetchPartyRelationships: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   createPermit: PropTypes.func.isRequired,
@@ -64,6 +66,10 @@ export class MinePermitInfo extends Component {
   closePermitModal = () => {
     this.props.closeModal();
     this.props.fetchPermits({ mine_guid: this.props.mine.mine_guid });
+    this.props.fetchPartyRelationships({
+      mine_guid: this.props.mine.mine_guid,
+      relationships: "party",
+    });
   };
 
   // Permit Modals
@@ -260,6 +266,7 @@ const mapDispatchToProps = (dispatch) =>
       updatePermitAmendment,
       createPermitAmendment,
       removePermitAmendmentDocument,
+      fetchPartyRelationships,
     },
     dispatch
   );

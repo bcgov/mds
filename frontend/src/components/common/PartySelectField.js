@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { debounce } from "lodash";
+import { compareTwoStrings } from "string-similarity";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 
@@ -68,12 +69,18 @@ const renderAddPartyFooter = (showAddParty, partyLabel) => (
   </div>
 );
 
-const transformData = (data, options, footer) => {
-  let transformedData = data.map((opt) => (
-    <AutoComplete.Option key={opt} value={opt}>
-      {options[opt].name}
-    </AutoComplete.Option>
-  ));
+const transformData = (data, options, footer, searchTerm) => {
+  let transformedData = data
+    .map((opt) => (
+      <AutoComplete.Option key={opt} value={opt}>
+        {options[opt].name}
+      </AutoComplete.Option>
+    ))
+    .sort(
+      (a, b) =>
+        compareTwoStrings(searchTerm, b.props.children) -
+        compareTwoStrings(searchTerm, a.props.children)
+    );
   if (footer) {
     transformedData = transformedData.concat(
       footer && [
@@ -120,14 +127,16 @@ export class PartySelectField extends Component {
         );
       }
 
-      const newPartyDataSource = transformData(
-        createItemIdsArray(filteredParties, "party_guid"),
-        createItemMap(filteredParties, "party_guid"),
-        this.props.allowAddingParties &&
-          renderAddPartyFooter(this.showAddPartyForm, this.props.partyLabel)
-      );
-
-      this.setState({ partyDataSource: newPartyDataSource });
+      this.setState((prevState) => {
+        const newPartyDataSource = transformData(
+          createItemIdsArray(filteredParties, "party_guid"),
+          createItemMap(filteredParties, "party_guid"),
+          this.props.allowAddingParties &&
+            renderAddPartyFooter(this.showAddPartyForm, this.props.partyLabel),
+          prevState.selectedOption.label
+        );
+        return { partyDataSource: newPartyDataSource };
+      });
 
       if (lastCreatedPartyUpdated) {
         this.setState({
@@ -141,7 +150,7 @@ export class PartySelectField extends Component {
   };
 
   handleSearch = (value) => {
-    this.fetchPartiesDebounced({ search: value });
+    this.fetchPartiesDebounced({ name_search: value });
     this.setState({ selectedOption: { key: value, label: value } });
   };
 

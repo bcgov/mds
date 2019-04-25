@@ -44,17 +44,14 @@ const RenderLargeSelect = (props) => (
   >
     <AutoComplete
       id={props.id}
-      defaultActiveFirstOption
+      defaultActiveFirstOption={false}
       notFoundContent="Not Found"
       dropdownMatchSelectWidth
       backfill
       style={{ width: "100%" }}
       dataSource={props.input.value.length > 0 ? props.dataSource : []}
       placeholder={props.placeholder}
-      filterOption={(input, option) =>
-        option.key === "footer" ||
-        option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-      }
+      filterOption={() => true}
       onSearch={props.handleSearch}
       onSelect={props.handleSelect}
       onChange={props.input.onChange}

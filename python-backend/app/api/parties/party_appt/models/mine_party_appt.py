@@ -86,8 +86,7 @@ class MinePartyAppointment(AuditMixin, Base):
     @classmethod
     def find_all_by_mine_party_appt_guid(cls, _id):
         try:
-            return cls.query.filter_by(mine_party_appt_guid=_id).filter_by(
-                deleted_ind=False)
+            return cls.query.filter_by(mine_party_appt_guid=_id).filter_by(deleted_ind=False)
         except ValueError:
             return None
 
@@ -102,6 +101,13 @@ class MinePartyAppointment(AuditMixin, Base):
     def find_by_party_guid(cls, _id):
         try:
             return cls.find_by(party_guid=_id)
+        except ValueError:
+            return None
+
+    @classmethod
+    def find_by_permit_guid(cls, _id):
+        try:
+            return cls.find_by(permit_guid=_id)
         except ValueError:
             return None
 
@@ -143,13 +149,19 @@ class MinePartyAppointment(AuditMixin, Base):
         return records, 200, 'OK'
 
     @classmethod
-    def find_by(cls, mine_guid=None, party_guid=None, mine_party_appt_type_codes=None):
+    def find_by(cls,
+                mine_guid=None,
+                party_guid=None,
+                mine_party_appt_type_codes=None,
+                permit_guid=None):
         try:
             built_query = cls.query.filter_by(deleted_ind=False)
             if mine_guid:
                 built_query = built_query.filter_by(mine_guid=mine_guid)
             if party_guid:
                 built_query = built_query.filter_by(party_guid=party_guid)
+            if permit_guid:
+                built_query = built_query.filter_by(permit_guid=permit_guid)
             if mine_party_appt_type_codes:
                 built_query = built_query.filter(
                     cls.mine_party_appt_type_code.in_(mine_party_appt_type_codes))

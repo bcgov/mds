@@ -88,8 +88,8 @@ export class AddPermitForm extends Component {
           <Col md={12} sm={24} className="border--right--layout">
             <Form.Item>
               <PartySelectField
-                id="party_guid"
-                name="party_guid"
+                id="permittee_party_guid"
+                name="permittee_party_guid"
                 label="Permittee*"
                 partyLabel="permittee"
                 validate={[required]}

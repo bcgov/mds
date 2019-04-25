@@ -6,6 +6,8 @@ from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 from ...permit.models.permit import Permit
 from ..models.permit_amendment import PermitAmendment
 from ..models.permit_amendment_document import PermitAmendmentDocument
+from app.api.parties.party.models.party import Party
+from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.extensions import api
 from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create, requires_role_mine_admin
 from ....utils.resources_mixins import UserMixin, ErrorMixin
@@ -14,6 +16,11 @@ from ....utils.resources_mixins import UserMixin, ErrorMixin
 class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser(trim=True)
 
+    parser.add_argument(
+        'permittee_party_guid',
+        type=str,
+        help='GUID of the party that is the permittee for this permit.',
+        location='json')
     parser.add_argument(
         'received_date',
         location='json',
@@ -85,6 +92,30 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
         permit_amendment_type_code = data.get('permit_amendment_type_code', 'AMD')
         description = data.get('description')
         uploadedFiles = data.get('uploadedFiles', [])
+
+        party = Party.find_by_party_guid(data.get('permittee_party_guid'))
+        if not party:
+            raise NotFound('Party not found')
+
+        party_is_active_permittee = False
+
+        permittees = MinePartyAppointment.find_by_permit_guid(permit_guid)
+
+        for permittee in permittees:
+            if permittee.end_date is None:
+                if permittee.party_guid == party.party_guid:
+                    party_is_active_permittee = True
+                else:  # inactive old permittees
+                    permittee.end_date = datetime.utcnow()
+                    permittee.save()
+
+        if not party_is_active_permittee:
+            new_permittee = MinePartyAppointment.create(permit.mine_guid,
+                                                        data.get('permittee_party_guid'), 'PMT',
+                                                        datetime.utcnow(), None, self.get_user_info(),
+                                                        permit_guid, True)
+            new_permittee.save()
+
         try:
             new_pa = PermitAmendment.create(
                 permit,

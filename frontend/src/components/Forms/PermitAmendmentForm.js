@@ -92,11 +92,11 @@ export class PermitAmendmentForm extends Component {
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
         <Row gutter={48}>
           <Col md={12} sm={24}>
-            {this.props.initialValues.party_guid || (
+            {this.props.initialValues.perittee_party_guid || (
               <Form.Item>
                 <PartySelectField
-                  id="party_guid"
-                  name="party_guid"
+                  id="permittee_party_guid"
+                  name="permittee_party_guid"
                   label="Permittee*"
                   partyLabel="permittee"
                   validate={[required]}
