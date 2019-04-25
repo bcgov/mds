@@ -45,16 +45,7 @@ const defaultProps = {
 const renderAddPartyFooter = (showAddParty, partyLabel) => (
   <div className="wrapped-text">
     <Divider style={{ margin: "0" }} />
-    <p
-      style={{
-        fontStyle: "italic",
-        fontWeight: "500",
-        paddingTop: "5px",
-        paddingBottom: "5px",
-      }}
-    >
-      {`Can't find the ${partyLabel} you are looking for?`}
-    </p>
+    <p className="footer-text">{`Can't find the ${partyLabel} you are looking for?`}</p>
     <a
       role="link"
       onClick={showAddParty}
@@ -70,7 +61,7 @@ const renderAddPartyFooter = (showAddParty, partyLabel) => (
 );
 
 const transformData = (data, options, footer, searchTerm) => {
-  let transformedData = data
+  const transformedData = data
     .map((opt) => (
       <AutoComplete.Option key={opt} value={opt}>
         {options[opt].name}
@@ -81,16 +72,13 @@ const transformData = (data, options, footer, searchTerm) => {
         compareTwoStrings(searchTerm, b.props.children) -
         compareTwoStrings(searchTerm, a.props.children)
     );
-  if (footer) {
-    transformedData = transformedData.concat(
-      footer && [
+  return footer
+    ? transformedData.concat(
         <AutoComplete.Option disabled key="footer" value="footer">
           {footer}
-        </AutoComplete.Option>,
-      ]
-    );
-  }
-  return transformedData;
+        </AutoComplete.Option>
+      )
+    : transformedData;
 };
 
 export class PartySelectField extends Component {
@@ -159,7 +147,9 @@ export class PartySelectField extends Component {
   };
 
   validOption = (value) =>
-    this.state.partyDataSource.find((opt) => opt.key === value) ? undefined : "Invalid Contact";
+    this.state.partyDataSource.find((opt) => opt.key === value)
+      ? undefined
+      : `"Invalid ${this.props.partyLabel}`;
 
   render = () => (
     <Field

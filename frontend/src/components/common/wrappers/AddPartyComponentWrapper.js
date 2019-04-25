@@ -110,13 +110,12 @@ export class AddPartyComponentWrapper extends Component {
             size="large"
             value={this.props.isPerson}
             onChange={this.togglePartyChange}
+            style={{ paddingBottom: "20px" }}
           >
             <Radio.Button value>Person</Radio.Button>
             <Radio.Button value={false}>Company</Radio.Button>
           </Radio.Group>
         )}
-        <br />
-        <br />
         <AddQuickPartyForm onSubmit={this.handlePartySubmit} isPerson={this.state.isPerson} />
       </div>
     </div>
