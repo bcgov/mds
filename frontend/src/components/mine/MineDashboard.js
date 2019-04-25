@@ -200,7 +200,9 @@ export class MineDashboard extends Component {
     // convert string to boolean before passing it into a filter check
     const parsedOverdue = params.overdue === "" ? "" : JSON.parse(params.overdue);
     const overdue = params.overdue === "" || order.overdue === parsedOverdue;
-    const inspector = params.inspector === "" || order.inspector.includes(params.inspector);
+    const inspector =
+      params.inspector === "" ||
+      order.inspector.toLowerCase().includes(params.inspector.toLowerCase());
     const date = params.due_date === "" || order.due_date.includes(params.due_date);
     const orderNo = params.order_no === "" || order.order_no.includes(params.order_no);
     const reportNoString = order.report_no.toString();
