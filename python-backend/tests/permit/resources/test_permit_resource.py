@@ -5,8 +5,9 @@ import pytest
 from app.api.mines.mine.models.mine import Mine
 from app.api.permits.permit.models.permit import Permit
 from app.api.permits.permit_amendment.models.permit_amendment import PermitAmendment
+from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 
-from tests.factories import MineFactory, PermitFactory, PermitAmendmentFactory
+from tests.factories import MineFactory, PermitFactory, PermitAmendmentFactory, PartyFactory
 
 
 # GET
@@ -38,11 +39,15 @@ def test_get_with_permit_no(test_client, db_session, auth_headers):
 
 #Create
 def test_post_permit(test_client, db_session, auth_headers):
-    mine_guid = MineFactory().mine_guid
+    mine = MineFactory()
+    party_guid = PartyFactory(company=True).party_guid
+
+    no_of_permits = len(mine.mine_permit)
 
     PERMIT_NO = 'mx-test-999'
     data = {
-        'mine_guid': str(mine_guid),
+        'mine_guid': str(mine.mine_guid),
+        'permittee_party_guid': str(party_guid),
         'permit_no': PERMIT_NO,
         'permit_status_code': 'O',
         'received_date': '1999-12-12',
@@ -52,10 +57,13 @@ def test_post_permit(test_client, db_session, auth_headers):
     post_resp = test_client.post('/permits', headers=auth_headers['full_auth_header'], json=data)
     post_data = json.loads(post_resp.data.decode())
 
+    updated_mine = Mine.find_by_mine_guid(str(mine.mine_guid))
+    permittees = MinePartyAppointment.find_by_permit_guid(updated_mine.mine_permit[0].permit_guid)
+
     assert post_resp.status_code == 200
-    assert post_data.get('mine_guid') == str(mine_guid)
-    assert post_data.get('permit_no') == PERMIT_NO
-    assert len(post_data.get('amendments')) == 1
+    assert updated_mine.mine_permit[0].permit_no == PERMIT_NO
+    assert permittees[0].party_guid == party_guid
+    assert len(updated_mine.mine_permit) == no_of_permits + 1
 
 
 def test_post_permit_bad_mine_guid(test_client, db_session, auth_headers):
@@ -67,8 +75,13 @@ def test_post_permit_bad_mine_guid(test_client, db_session, auth_headers):
 def test_post_permit_with_duplicate_permit_no(test_client, db_session, auth_headers):
     mine_guid = MineFactory().mine_guid
     permit_no = PermitFactory().permit_no
+    party_guid = PartyFactory(company=True).party_guid
 
-    data = {'mine_guid': str(mine_guid), 'permit_no': permit_no}
+    data = {
+        'mine_guid': str(mine_guid),
+        'permittee_party_guid': str(party_guid),
+        'permit_no': permit_no
+    }
     post_resp = test_client.post('/permits', headers=auth_headers['full_auth_header'], json=data)
     assert post_resp.status_code == 400
 
