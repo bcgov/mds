@@ -12,7 +12,9 @@ class Const{
     static Path scriptLocation = Paths.get(sourceUri)
     static Dotenv dotenv = Dotenv.configure().directory("./").ignoreIfMalformed().ignoreIfMissing().load()
     static systemEnv = System.getenv()
-    static final String MINE_NAME   = "MINETEST",
+    static final String MINE_NAME_2 = "MINETEST2",
+                        MINE_ROLE_2 = "Mine Manager",
+                        MINE_NAME   = "MINETEST",
                         MINE_NUMBER = "BLAH0000",
                         MINE_LAT    = "48"      ,
                         MINE_LONG   = "-125"    ,

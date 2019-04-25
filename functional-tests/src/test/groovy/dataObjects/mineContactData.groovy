@@ -23,15 +23,11 @@ class MineContactDataOne {
 
 class MineContactDataTwo {
     String  role,
-            mine,
-            startDate,         
-            endDate
+            mine
 
-    MineContactDataTwo(String role,String mine,String startDate,String endDate ){
+    MineContactDataTwo(String role,String mine){
       this.role=role
       this.mine=mine
-      this.startDate=startDate
-      this.endDate=endDate
     }
 }
 

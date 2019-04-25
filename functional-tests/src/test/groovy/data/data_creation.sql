@@ -14,6 +14,13 @@ DECLARE
     MINE_LAT numeric = '48'     ;
     MINE_LONG numeric = '-125'  ;
     MINE_NOTE varchar = 'This is a test record';
+    
+    MINE_GUID_2 uuid = '38b7573b-a5fa-441b-ae98-6b663357f8bc';
+    MINE_NO_2 varchar = 'BLAH0002';
+    MINE_NAME_2 varchar = 'MINETEST2';
+    MINE_LAT_2 numeric = '55'     ;
+    MINE_LONG_2 numeric = '-130'  ;
+    MINE_NOTE_2 varchar = 'This is a test record for contacts test';
 
     FIRST_NAME varchar ='Amine';
     MIDDLE_NAME varchar = 'M.D';
@@ -38,10 +45,19 @@ BEGIN
     VALUES
         (MINE_GUID, MINE_NO, MINE_NAME, MINE_NOTE, MAJOR_IND, REGION, IDIR_USER, DEFAULT, IDIR_USER, DEFAULT);
 
+    INSERT INTO mine
+        (mine_guid, mine_no, mine_name, mine_note, major_mine_ind, mine_region, create_user, create_timestamp, update_user, update_timestamp)
+    VALUES
+        (MINE_GUID_2, MINE_NO_2, MINE_NAME_2, MINE_NOTE_2, MAJOR_IND, REGION, IDIR_USER, DEFAULT, IDIR_USER, DEFAULT);
+
     -- add location
     INSERT INTO mine_location
     VALUES
         (DEFAULT, MINE_GUID, MINE_LAT, MINE_LONG, DEFAULT, DEFAULT, IDIR_USER, DEFAULT, IDIR_USER, DEFAULT);
+
+    INSERT INTO mine_location
+    VALUES
+        (DEFAULT, MINE_GUID_2, MINE_LAT_2, MINE_LONG_2, DEFAULT, DEFAULT, IDIR_USER, DEFAULT, IDIR_USER, DEFAULT);
 
     -- add permit permittee
     INSERT INTO party
@@ -49,10 +65,10 @@ BEGIN
         (PARTY_GUID1, FIRST_NAME, SUR_NAME, PHONE, EXT, EMAIL, EFFECTIVE_DATE, DEFAULT, IDIR_USER, DEFAULT, IDIR_USER, DEFAULT, MIDDLE_NAME, 'PER'),
         (PARTY_GUID2, NULL      , SUR_NAME, PHONE, EXT, EMAIL, EFFECTIVE_DATE, DEFAULT, IDIR_USER, DEFAULT, IDIR_USER, DEFAULT, MIDDLE_NAME, 'ORG');
 
-INSERT INTO permit
-VALUES
-    (PERMIT_GUID1,MINE_GUID,PERMIT_NO1,'C',IDIR_USER,DEFAULT,IDIR_USER,DEFAULT,DEFAULT),
-    (PERMIT_GUID2,MINE_GUID,PERMIT_NO2,'O',IDIR_USER,DEFAULT,IDIR_USER,DEFAULT,DEFAULT);
+    INSERT INTO permit
+    VALUES
+        (PERMIT_GUID1, MINE_GUID, PERMIT_NO1, 'C', IDIR_USER, DEFAULT, IDIR_USER, DEFAULT, DEFAULT),
+        (PERMIT_GUID2, MINE_GUID, PERMIT_NO2, 'O', IDIR_USER, DEFAULT, IDIR_USER, DEFAULT, DEFAULT);
 
     INSERT INTO mine_party_appt
         (mine_guid, party_guid, mine_party_appt_type_code, permit_guid, create_user, update_user)
