@@ -181,10 +181,11 @@ export class MinePermitInfo extends Component {
 
   // Amendment Handlers
 
-  handleEditPermitAmendment = (values) =>
+  handleEditPermitAmendment = (values) => {
     this.props
       .updatePermitAmendment(values.permit_amendment_guid, values)
       .then(this.closePermitModal);
+  };
 
   handleAddPermitAmendment = (values) =>
     this.props.createPermitAmendment(values.permit_guid, values).then(this.closePermitModal);

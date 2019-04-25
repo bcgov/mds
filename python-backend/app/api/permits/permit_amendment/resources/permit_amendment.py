@@ -112,8 +112,8 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
         if not party_is_active_permittee:
             new_permittee = MinePartyAppointment.create(permit.mine_guid,
                                                         data.get('permittee_party_guid'), 'PMT',
-                                                        datetime.utcnow(), None, self.get_user_info(),
-                                                        permit_guid, True)
+                                                        datetime.utcnow(), None,
+                                                        self.get_user_info(), permit_guid, True)
             new_permittee.save()
 
         try:
@@ -143,6 +143,7 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
     })
     @requires_role_mine_create
     def put(self, permit_guid=None, permit_amendment_guid=None):
+
         if not permit_amendment_guid:
             return self.create_error_payload(400, 'permit_amendment_id must be provided'), 400
         pa = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
@@ -164,6 +165,8 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
                 pa.save()
             else:
                 setattr(pa, key, value)
+
+        pa.save()
 
         return pa.json()
 
