@@ -7,7 +7,7 @@ from app.nris.models.test_model import FactorialRecord
 def register_commands(app):
     @app.cli.command()
     @click.argument('n')
-    def factorial(n):
+    def f(n):
         n = int(n)
         tmp = FactorialRecord.query.filter_by(input_val=n).first()
         if tmp:
