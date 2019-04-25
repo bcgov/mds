@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm, change } from "redux-form";
 import { remove } from "lodash";
-import { Form, Button, Col, Row, Popconfirm } from "antd";
+import { Form, Button, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import { required, dateNotInFuture, maxLength } from "@/utils/Validate";
@@ -47,69 +47,75 @@ export class AddVarianceForm extends Component {
         layout="vertical"
         onSubmit={this.props.handleSubmit(this.props.onSubmit(this.state.documentNameGuidMap))}
       >
-        <Row gutter={48}>
-          <Col md={12} sm={24} className="border--right--layout">
-            <Form.Item>
-              <Field
-                id="compliance_article_id"
-                name="compliance_article_id"
-                label="Part of Code*"
-                placeholder="Select a part of the code"
-                component={renderConfig.SELECT}
-                validate={[required]}
-                data={this.props.complianceCodes}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Field
-                id="received_date"
-                name="received_date"
-                label="Received date*"
-                component={renderConfig.DATE}
-                validate={[required, dateNotInFuture]}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Field
-                id="issue_date"
-                name="issue_date"
-                label="Issue date*"
-                component={renderConfig.DATE}
-                validate={[required, dateNotInFuture]}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Field
-                id="expiry_date"
-                name="expiry_date"
-                label="Expiry date*"
-                component={renderConfig.DATE}
-                validate={[required]}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Field
-                id="note"
-                name="note"
-                label="Description"
-                component={renderConfig.AUTO_SIZE_FIELD}
-                validate={[maxLength(300)]}
-              />
-            </Form.Item>
-          </Col>
-          <Col md={12} sm={24}>
-            <Form.Item label="Upload files*">
-              <Field
-                id="VarianceDocumentFileUpload"
-                name="VarianceDocumentFileUpload"
-                onFileLoad={this.onFileLoad}
-                onRemoveFile={this.onRemoveFile}
-                mineGuid={this.props.mineGuid}
-                component={VarianceFileUpload}
-              />
-            </Form.Item>
-          </Col>
-        </Row>
+        <Form.Item>
+          <Field
+            id="title"
+            name="title"
+            label="Requested For*"
+            component={renderConfig.FIELD}
+            // validate={[required]}
+          />
+        </Form.Item>
+        <Form.Item>
+          <Field
+            id="compliance_article_id"
+            name="compliance_article_id"
+            label="Part of Code*"
+            placeholder="Select a part of the code"
+            component={renderConfig.SELECT}
+            validate={[required]}
+            data={this.props.complianceCodes}
+          />
+        </Form.Item>
+        <Form.Item>
+          <Field
+            id="received_date"
+            name="received_date"
+            label="Received date*"
+            component={renderConfig.DATE}
+            validate={[required, dateNotInFuture]}
+          />
+        </Form.Item>
+        <Form.Item>
+          <Field
+            id="issue_date"
+            name="issue_date"
+            label="Issue date*"
+            component={renderConfig.DATE}
+            validate={[required, dateNotInFuture]}
+          />
+        </Form.Item>
+        <Form.Item>
+          <Field
+            id="expiry_date"
+            name="expiry_date"
+            label="Expiry date*"
+            component={renderConfig.DATE}
+            validate={[required]}
+          />
+        </Form.Item>
+        <Form.Item>
+          <Field
+            id="note"
+            name="note"
+            label="Description"
+            component={renderConfig.AUTO_SIZE_FIELD}
+            validate={[maxLength(300)]}
+          />
+        </Form.Item>
+        <h5>upload files*</h5>
+        <p> Please upload all the required documents here for the variance application</p>
+        <br />
+        <Form.Item>
+          <Field
+            id="VarianceDocumentFileUpload"
+            name="VarianceDocumentFileUpload"
+            onFileLoad={this.onFileLoad}
+            onRemoveFile={this.onRemoveFile}
+            mineGuid={this.props.mineGuid}
+            component={VarianceFileUpload}
+          />
+        </Form.Item>
         <div className="right center-mobile">
           <Popconfirm
             placement="topRight"
@@ -128,7 +134,7 @@ export class AddVarianceForm extends Component {
             htmlType="submit"
             disabled={this.props.submitting}
           >
-            Add Approved Variance
+            Add Variance
           </Button>
         </div>
       </Form>

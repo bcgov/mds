@@ -1,8 +1,11 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Table } from "antd";
+import { Table, Button } from "antd";
 import CustomPropTypes from "@/customPropTypes";
-import { RED_CLOCK } from "@/constants/assets";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import * as Permission from "@/constants/permissions";
+import { RED_CLOCK, BRAND_PENCIL } from "@/constants/assets";
 import NullScreen from "@/components/common/NullScreen";
 import { formatDate } from "@/utils/helpers";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
@@ -14,6 +17,7 @@ const { errorRed } = COLOR;
 const propTypes = {
   variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  openViewVarianceModal: PropTypes.func.isRequired,
 };
 
 export class MineVarianceTable extends Component {
@@ -121,6 +125,24 @@ export class MineVarianceTable extends Component {
                   </div>
                 ))
               : "-"}
+          </div>
+        ),
+      },
+      {
+        title: "",
+        dataIndex: "handleEditModal",
+        render: (text, record) => (
+          <div title="" align="right">
+            <AuthorizationWrapper permission={Permission.CREATE}>
+              <Button
+                type="primary"
+                size="small"
+                ghost
+                onClick={(event, record) => this.props.openViewVarianceModal(event, record)}
+              >
+                <img src={BRAND_PENCIL} alt="Edit/View" />
+              </Button>
+            </AuthorizationWrapper>
           </div>
         ),
       },

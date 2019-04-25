@@ -40,16 +40,29 @@ export class MineVariance extends Component {
         this.props.fetchVariancesByMine({ mineGuid: this.props.mine.mine_guid });
       });
 
-  openVarianceModal(event) {
+  openViewVarianceModal = (event) => {
     event.preventDefault();
+    this.props.openModal({
+      props: {
+        onSubmit: this.handleAddVariances,
+        title: this.props.mine.mine_name,
+        mineGuid: this.props.mine.mine_guid,
+        complianceCodes: this.props.complianceCodes,
+      },
+      content: modalConfig.VIEW_VARIANCE,
+    });
+  };
+
+  openVarianceModal(event, variance) {
+    event.preventDefault();
+    console.log(variance);
+    console.log("THIS IS THE VARIANCE");
     this.props.openModal({
       props: {
         onSubmit: this.handleAddVariances,
         title: ModalContent.ADD_VARIANCE(this.props.mine.mine_name),
         mineGuid: this.props.mine.mine_guid,
-        complianceCodes: this.props.complianceCodes,
       },
-      widthSize: "75vw",
       content: modalConfig.ADD_VARIANCE,
     });
   }
@@ -60,12 +73,13 @@ export class MineVariance extends Component {
         <div className="inline-flex flex-end">
           <AuthorizationWrapper permission={Permission.CREATE}>
             <AddButton onClick={(event) => this.openVarianceModal(event)}>
-              Add a New Variance
+              Add variance application
             </AddButton>
           </AuthorizationWrapper>
         </div>
         <br />
         <MineVarianceTable
+          openViewVarianceModal={this.openViewVarianceModal}
           variances={this.props.variances}
           complianceCodesHash={this.props.complianceCodesHash}
         />

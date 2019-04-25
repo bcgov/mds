@@ -9,9 +9,14 @@ import { Form, Input } from "antd";
 const propTypes = {
   id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   input: PropTypes.objectOf(PropTypes.any).isRequired,
-  label: PropTypes.string.isRequired,
-  placeholder: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  placeholder: PropTypes.string,
   meta: PropTypes.objectOf(PropTypes.any).isRequired,
+};
+
+const defaultProps = {
+  placeholder: "",
+  label: "",
 };
 
 const { TextArea } = Input;
@@ -33,5 +38,6 @@ const RenderAutoSizeField = (props) => (
 );
 
 RenderAutoSizeField.propTypes = propTypes;
+RenderAutoSizeField.defaultProps = defaultProps;
 
 export default RenderAutoSizeField;

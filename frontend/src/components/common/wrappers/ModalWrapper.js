@@ -26,6 +26,7 @@ const propTypes = {
 const defaultProps = {
   props: {
     title: "",
+    onSubmit: () => {},
   },
   content: () => {},
 };
