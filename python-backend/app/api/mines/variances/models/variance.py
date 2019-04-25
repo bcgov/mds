@@ -55,7 +55,7 @@ class Variance(AuditMixin, Base):
     @classmethod
     def find_by_mine_guid(cls, mine_guid):
         try:
-            uuid.UUID(mine_guid, version=4)
+            uuid.UUID(str(mine_guid), version=4)
             return cls.query.filter_by(mine_guid=mine_guid).all()
         except ValueError:
             return None
@@ -69,7 +69,7 @@ class Variance(AuditMixin, Base):
         if not mine_guid:
             raise AssertionError('Missing mine_guid')
         try:
-            uuid.UUID(mine_guid, version=4)
+            uuid.UUID(str(mine_guid), version=4)
         except ValueError:
             raise AssertionError('Invalid mine_guid')
         return mine_guid

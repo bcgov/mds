@@ -44,7 +44,6 @@ MINE_DOCUMENT_MODEL = api.model(
         'mine_guid': fields.String,
         'document_manager_guid': fields.String,
         'document_name': fields.String,
-        'active_ind': fields.Boolean,
     })
 
 PERMIT_MODEL = api.model('MinePermit', {
@@ -166,4 +165,15 @@ MINE_INCIDENT_FOLLOWUP_TYPE_MODEL = api.model(
         'description': fields.String,
         'display_order': fields.Integer,
         'active_ind': fields.Boolean
+    })
+
+VARIANCE_MODEL = api.model(
+    'Variance', {
+        'variance_id': fields.Integer,
+        'compliance_article_id': fields.Integer,
+        'note': fields.String,
+        'issue_date': fields.Date,
+        'received_date': fields.Date,
+        'expiry_date': fields.Date,
+        'documents': fields.Nested(MINE_DOCUMENT_MODEL)
     })
