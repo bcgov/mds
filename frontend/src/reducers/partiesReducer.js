@@ -8,7 +8,7 @@ import { createItemMap, createItemIdsArray, createDropDownList } from "@/utils/h
  */
 
 const initialState = {
-  parties: {},
+  parties: [],
   rawParties: [],
   partyIds: [],
   partyRelationshipTypes: [],

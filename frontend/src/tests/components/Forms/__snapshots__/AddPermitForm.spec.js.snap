@@ -9,7 +9,7 @@ ShallowWrapper {
     getDropdownPermitStatusOptions={[MockFunction]}
     handleSubmit={[MockFunction]}
     mine_guid=""
-    permitActivityTypeCode=""
+    permitIsExploration={false}
     permitStatusOptions={Array []}
     permitTypeCode=""
     submitting={false}
@@ -37,6 +37,22 @@ ShallowWrapper {
             md={12}
             sm={24}
           >
+            <FormItem
+              hasFeedback={false}
+            >
+              <Connect(PartySelectField)
+                allowAddingParties={true}
+                id="permittee_party_guid"
+                label="Permittee*"
+                name="permittee_party_guid"
+                partyLabel="permittee"
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
+              />
+            </FormItem>
             <FormItem
               hasFeedback={false}
             >
@@ -211,6 +227,22 @@ ShallowWrapper {
               <FormItem
                 hasFeedback={false}
               >
+                <Connect(PartySelectField)
+                  allowAddingParties={true}
+                  id="permittee_party_guid"
+                  label="Permittee*"
+                  name="permittee_party_guid"
+                  partyLabel="permittee"
+                  validate={
+                    Array [
+                      [Function],
+                    ]
+                  }
+                />
+              </FormItem>
+              <FormItem
+                hasFeedback={false}
+              >
                 <Field
                   component={[Function]}
                   data={
@@ -331,6 +363,22 @@ ShallowWrapper {
                 <FormItem
                   hasFeedback={false}
                 >
+                  <Connect(PartySelectField)
+                    allowAddingParties={true}
+                    id="permittee_party_guid"
+                    label="Permittee*"
+                    name="permittee_party_guid"
+                    partyLabel="permittee"
+                    validate={
+                      Array [
+                        [Function],
+                      ]
+                    }
+                  />
+                </FormItem>,
+                <FormItem
+                  hasFeedback={false}
+                >
                   <Field
                     component={[Function]}
                     data={
@@ -426,6 +474,46 @@ ShallowWrapper {
             },
             "ref": null,
             "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": <Connect(PartySelectField)
+                    allowAddingParties={true}
+                    id="permittee_party_guid"
+                    label="Permittee*"
+                    name="permittee_party_guid"
+                    partyLabel="permittee"
+                    validate={
+                      Array [
+                        [Function],
+                      ]
+                    }
+                  />,
+                  "hasFeedback": false,
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "allowAddingParties": true,
+                    "id": "permittee_party_guid",
+                    "label": "Permittee*",
+                    "name": "permittee_party_guid",
+                    "partyLabel": "permittee",
+                    "validate": Array [
+                      [Function],
+                    ],
+                  },
+                  "ref": null,
+                  "rendered": null,
+                  "type": [Function],
+                },
+                "type": [Function],
+              },
               Object {
                 "instance": null,
                 "key": undefined,
@@ -841,6 +929,22 @@ ShallowWrapper {
               <FormItem
                 hasFeedback={false}
               >
+                <Connect(PartySelectField)
+                  allowAddingParties={true}
+                  id="permittee_party_guid"
+                  label="Permittee*"
+                  name="permittee_party_guid"
+                  partyLabel="permittee"
+                  validate={
+                    Array [
+                      [Function],
+                    ]
+                  }
+                />
+              </FormItem>
+              <FormItem
+                hasFeedback={false}
+              >
                 <Field
                   component={[Function]}
                   data={
@@ -1012,6 +1116,22 @@ ShallowWrapper {
                 <FormItem
                   hasFeedback={false}
                 >
+                  <Connect(PartySelectField)
+                    allowAddingParties={true}
+                    id="permittee_party_guid"
+                    label="Permittee*"
+                    name="permittee_party_guid"
+                    partyLabel="permittee"
+                    validate={
+                      Array [
+                        [Function],
+                      ]
+                    }
+                  />
+                </FormItem>
+                <FormItem
+                  hasFeedback={false}
+                >
                   <Field
                     component={[Function]}
                     data={
@@ -1132,6 +1252,22 @@ ShallowWrapper {
                   <FormItem
                     hasFeedback={false}
                   >
+                    <Connect(PartySelectField)
+                      allowAddingParties={true}
+                      id="permittee_party_guid"
+                      label="Permittee*"
+                      name="permittee_party_guid"
+                      partyLabel="permittee"
+                      validate={
+                        Array [
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>,
+                  <FormItem
+                    hasFeedback={false}
+                  >
                     <Field
                       component={[Function]}
                       data={
@@ -1227,6 +1363,46 @@ ShallowWrapper {
               },
               "ref": null,
               "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <Connect(PartySelectField)
+                      allowAddingParties={true}
+                      id="permittee_party_guid"
+                      label="Permittee*"
+                      name="permittee_party_guid"
+                      partyLabel="permittee"
+                      validate={
+                        Array [
+                          [Function],
+                        ]
+                      }
+                    />,
+                    "hasFeedback": false,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "allowAddingParties": true,
+                      "id": "permittee_party_guid",
+                      "label": "Permittee*",
+                      "name": "permittee_party_guid",
+                      "partyLabel": "permittee",
+                      "validate": Array [
+                        [Function],
+                      ],
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
                 Object {
                   "instance": null,
                   "key": undefined,

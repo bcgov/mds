@@ -42,7 +42,7 @@ const defaultAddPartyFormState = {
   partyLabel: "contact",
 };
 
-class AddPartyComponentWrapper extends Component {
+export class AddPartyComponentWrapper extends Component {
   state = { isPerson: true, addingParty: false };
 
   componentWillMount = () => {
