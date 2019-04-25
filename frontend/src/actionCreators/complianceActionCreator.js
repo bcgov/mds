@@ -19,6 +19,7 @@ export const fetchMineComplianceInfo = (mineNo, silent = false) => (dispatch) =>
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_COMPLIANCE_INFO));
       dispatch(complianceActions.storeMineComplianceInfo(response.data));
+      return response.data;
     })
     .catch(() => {
       dispatch(error(reducerTypes.GET_MINE_COMPLIANCE_INFO));

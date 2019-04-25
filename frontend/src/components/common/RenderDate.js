@@ -12,8 +12,14 @@ const propTypes = {
   input: PropTypes.objectOf(PropTypes.any).isRequired,
   label: PropTypes.string.isRequired,
   placeholder: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func,
   meta: PropTypes.objectOf(PropTypes.any).isRequired,
+  showTime: PropTypes.boolean,
+};
+
+const defaultProps = {
+  showTime: false,
+  onChange: () => {},
 };
 
 const RenderDate = (props) => (
@@ -34,10 +40,14 @@ const RenderDate = (props) => (
       placeholder={props.placeholder}
       onChange={(date, dateString) => props.input.onChange(dateString)}
       value={props.input.value ? moment(props.input.value) : null}
+      showTime={props.showTime && { format: "HH:mm" }}
+      format={props.showTime && "YYYY-MM-DD HH:mm"}
+      style={props.showTime && { width: "100%" }}
     />
   </Form.Item>
 );
 
 RenderDate.propTypes = propTypes;
+RenderDate.defaultProps = defaultProps;
 
 export default RenderDate;

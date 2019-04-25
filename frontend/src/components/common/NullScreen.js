@@ -17,11 +17,13 @@ const propTypes = {
     "permit",
     "variance",
     "no-results",
+    "compliance",
     "unauthorized",
     "view-mine-manager",
     "contacts",
     "unauthorized-page",
     "subscription",
+    "incidents",
   ]),
 };
 
@@ -68,6 +70,12 @@ const NullScreen = (props) => (
       <div>
         <img alt="mine_img" src={PERMIT} />
         <h3>{String.NO_PERMIT}</h3>
+      </div>
+    )}
+    {props.type === "compliance" && (
+      <div>
+        <img alt="mine_img" src={PERMIT} />
+        <h3>{String.NO_NRIS_INSPECTIONS}</h3>
       </div>
     )}
     {props.type === "variance" && (
@@ -118,6 +126,12 @@ const NullScreen = (props) => (
         <img alt="mine_img" src={MINER_TWO} />
         <h3>No contacts found</h3>
         <p>Create a contact using the menu above</p>
+      </div>
+    )}
+    {props.type === "incidents" && (
+      <div>
+        <img alt="mine_img" src={PERMIT} />
+        <h3>No incidents found</h3>
       </div>
     )}
   </div>

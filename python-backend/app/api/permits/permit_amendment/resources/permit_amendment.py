@@ -12,31 +12,28 @@ from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser()
+    parser = reqparse.RequestParser(trim=True)
 
     parser.add_argument(
         'received_date',
         location='json',
-        trim=True,
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
         store_missing=False)
     parser.add_argument(
         'issue_date',
         location='json',
-        trim=True,
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
         store_missing=False)
     parser.add_argument(
         'authorization_end_date',
         location='json',
-        trim=True,
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
         store_missing=False)
     parser.add_argument(
-        'permit_amendment_type_code', type=str, trim=True, location='json', store_missing=False)
+        'permit_amendment_type_code', type=str, location='json', store_missing=False)
     parser.add_argument(
-        'permit_amendment_status_code', type=str, trim=True, location='json', store_missing=False)
-    parser.add_argument('description', type=str, trim=True, location='json', store_missing=False)
+        'permit_amendment_status_code', type=str, location='json', store_missing=False)
+    parser.add_argument('description', type=str, location='json', store_missing=False)
     parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
 
     @api.doc(params={
@@ -95,8 +92,7 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
                 issue_date,
                 authorization_end_date,
                 permit_amendment_type_code,
-                description=description,
-                save=True)
+                description=description)
 
             for newFile in uploadedFiles:
                 new_pa_doc = PermitAmendmentDocument(

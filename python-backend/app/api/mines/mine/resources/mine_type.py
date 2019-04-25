@@ -9,7 +9,7 @@ from ..models.mine_type import MineType
 
 
 class MineTypeResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser()
+    parser = reqparse.RequestParser(trim=True)
     parser.add_argument(
         'mine_guid',
         type=str,
@@ -31,7 +31,8 @@ class MineTypeResource(Resource, UserMixin, ErrorMixin):
             self.raise_error(400, 'Error: Missing mine_tenure_type_code.')
 
         try:
-            mine_type = MineType.create_mine_type(mine_guid, mine_tenure_type_code, save=False)
+            mine_type = MineType.create_mine_type(
+                mine_guid, mine_tenure_type_code, add_to_session=False)
             mine_type.save()
         except exc.IntegrityError as e:
             self.raise_error(400, 'Error: Unable to create mine_type.')

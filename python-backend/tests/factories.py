@@ -11,14 +11,17 @@ from app.api.applications.models.application import Application
 from app.api.document_manager.models.document_manager import DocumentManager
 from app.api.documents.expected.models.mine_expected_document import MineExpectedDocument
 from app.api.documents.mines.models.mine_document import MineDocument
+from app.api.documents.variances.models.variance import VarianceDocument
 from app.api.mines.location.models.mine_location import MineLocation
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.mine.models.mine_type import MineType
 from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
 from app.api.mines.mine.models.mine_verified_status import MineVerifiedStatus
+from app.api.mines.incidents.models.mine_incident import MineIncident
 from app.api.mines.status.models.mine_status import MineStatus
 from app.api.mines.subscription.models.subscription import Subscription
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
+from app.api.mines.variances.models.variance import Variance
 from app.api.parties.party.models.party import Party
 from app.api.parties.party.models.address import Address
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
@@ -204,6 +207,46 @@ class MineTailingsStorageFacilityFactory(BaseFactory):
     mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
 
 
+class VarianceFactory(BaseFactory):
+    class Meta:
+        model = Variance
+
+    class Params:
+        mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
+
+    variance_id = factory.Sequence(lambda n: n)
+    compliance_article_id = factory.LazyFunction(RandomComplianceArticleId)
+    mine_guid = factory.SelfAttribute('mine.mine_guid')
+    note = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
+    issue_date = TODAY
+    received_date = TODAY
+    expiry_date = TODAY
+    documents = []
+
+    @factory.post_generation
+    def documents(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        VarianceDocumentFactory.create_batch(size=extracted, variance=obj, **kwargs)
+
+
+class VarianceDocumentFactory(BaseFactory):
+    class Meta:
+        model = VarianceDocument
+
+    class Params:
+        mine_document = factory.SubFactory('tests.factories.MineDocumentFactory')
+        variance = factory.SubFactory('tests.factories.VarianceFactory')
+
+    variance_document_xref_guid = GUID
+    mine_document_guid = factory.SelfAttribute('mine_document.mine_document_guid')
+    variance_id = factory.SelfAttribute('variance.variance_id')
+
+
 class PermitFactory(BaseFactory):
     class Meta:
         model = Permit
@@ -276,6 +319,22 @@ class MineVerifiedStatusFactory(BaseFactory):
     verifying_timestamp = TODAY
     update_user = factory.Faker('name')
     update_timestamp = TODAY
+
+
+class MineIncidentFactory(BaseFactory):
+    class Meta:
+        model = MineIncident
+
+    mine_incident_id_year = 2019
+    mine_incident_guid = GUID
+    incident_timestamp = factory.Faker('past_datetime')
+    incident_description = factory.Faker('sentence', nb_words=20, variable_nb_words=True)
+    reported_timestamp = factory.Faker('past_datetime')
+    reported_by = factory.Faker('name')
+    reported_by_role = factory.Faker('job')
+    followup_type_code = "NOA"
+    followup_inspection_no = factory.Faker('numerify', text='######')  #nullable???
+    closing_report_summary = factory.Faker('sentence', nb_words=20, variable_nb_words=True)
 
 
 class AddressFactory(BaseFactory):
@@ -405,6 +464,7 @@ class MineFactory(BaseFactory):
     mine_tailings_storage_facilities = []
     mine_permit = []
     mine_expected_documents = []
+    mine_incidents = []
 
     @factory.post_generation
     def mine_tailings_storage_facilities(obj, create, extracted, **kwargs):
@@ -435,3 +495,13 @@ class MineFactory(BaseFactory):
             extracted = 1
 
         MineExpectedDocumentFactory.create_batch(size=extracted, mine=obj, **kwargs)
+
+    @factory.post_generation
+    def mine_incidents(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        MineIncidentFactory.create_batch(size=extracted, mine_guid=obj.mine_guid, **kwargs)

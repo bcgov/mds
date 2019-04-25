@@ -81,3 +81,30 @@ span.ant-table-column-sorter {
   right: 4px;
   top: 35%;
 }
+
+// Centered Pagination
+$pagination-width-1: 112px;
+$pagination-width-2: 152px;
+$pagination-width-3: 192px;
+$pagination-width-4: 232px;
+$pagination-width-5: 272px;
+$pagination-width-6: 312px;
+$pagination-width-7: 352px;
+$pagination-width-8: 392px;
+$pagination-width-9: 432px;
+$pagination-width-full: 352px;
+
+$pagination-widths: $pagination-width-1, $pagination-width-2, $pagination-width-3,
+  $pagination-width-4, $pagination-width-5, $pagination-width-6, $pagination-width-7,
+  $pagination-width-8, $pagination-width-9, $pagination-width-full;
+
+.center-pagination {
+  @for $i from 1 through length($pagination-widths) {
+    &.page-count-#{$i} {
+      .ant-table-pagination.ant-pagination {
+        $pagination-width: nth($pagination-widths, $i);
+        margin-right: unquote("calc( 50% - #{$pagination-width} / 2 )");
+      }
+    }
+  }
+}
