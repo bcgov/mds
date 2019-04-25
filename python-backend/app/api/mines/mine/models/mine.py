@@ -41,7 +41,7 @@ class Mine(AuditMixin, Base):
     mine_permit = db.relationship(
         'Permit', backref='mine', order_by='desc(Permit.create_timestamp)', lazy='selectin')
     mine_type = db.relationship(
-        'MineType', backref='mine', order_by='desc(MineType.update_timestamp)', 
+        'MineType', backref='mine', order_by='desc(MineType.update_timestamp)',
         primaryjoin="and_(MineType.mine_guid == Mine.mine_guid, MineType.active_ind==True)",
         lazy='selectin')
 
@@ -85,7 +85,7 @@ class Mine(AuditMixin, Base):
             [item.json() for item in self.mine_tailings_storage_facilities],
             'mine_expected_documents': [item.json() for item in self.mine_expected_documents],
             'mine_type': [item.json() for item in self.active(self.mine_type)],
-            'verified_status': self.verified_status.json() if self.verified_status else None, 
+            'verified_status': self.verified_status.json() if self.verified_status else None,
         }
 
     def json_for_list(self):
@@ -107,7 +107,7 @@ class Mine(AuditMixin, Base):
             'mine_tailings_storage_facility':
             [item.json() for item in self.mine_tailings_storage_facilities],
             'mine_type': [item.json() for item in self.active(self.mine_type)],
-            'verified_status': self.verified_status.json() if self.verified_status else None, 
+            'verified_status': self.verified_status.json() if self.verified_status else None,
         }
 
     def json_for_map(self):
@@ -197,15 +197,14 @@ class Mine(AuditMixin, Base):
         return result
 
     @classmethod
-    def create_mine(cls, mine_no, mine_name, mine_category, mine_region, user_kwargs, save=True):
+    def create_mine(cls, mine_no, mine_name, mine_category, mine_region, add_to_session=True):
         mine = cls(
             mine_guid=uuid.uuid4(),
             mine_no=mine_no,
             mine_name=mine_name,
             major_mine_ind=mine_category,
-            mine_region=mine_region,
-            **user_kwargs)
-        if save:
+            mine_region=mine_region)
+        if add_to_session:
             mine.save(commit=False)
         return mine
 

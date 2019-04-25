@@ -10,13 +10,13 @@ from ..models.address import Address
 from ..models.party_type_code import PartyTypeCode
 from ...party_appt.models.mine_party_appt import MinePartyAppointment
 from ...response_models import PARTY, PAGINATED_PARTY_LIST
-from ...custom_reqparser import CustomReqparser
 
 from ....constants import PARTY_STATUS_CODE
 from app.extensions import api
 from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create, requires_any_of, MINE_VIEW, MINESPACE_PROPONENT
 
 from ....utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.utils.custom_reqparser import CustomReqparser
 
 
 class PartyListResource(Resource, UserMixin, ErrorMixin):

@@ -69,110 +69,110 @@ $x-large-width: 90em;
 
 @keyframes fadein {
   from {
-      opacity:0;
+    opacity: 0;
   }
   to {
-      opacity:1;
+    opacity: 1;
   }
 }
 @-moz-keyframes fadein {
   /* Firefox */
   from {
-      opacity:0;
+    opacity: 0;
   }
   to {
-      opacity:1;
+    opacity: 1;
   }
 }
 @-webkit-keyframes fadein {
   /* Safari and Chrome */
   from {
-      opacity:0;
+    opacity: 0;
   }
   to {
-      opacity:1;
+    opacity: 1;
   }
 }
 @-o-keyframes fadein {
   /* Opera */
   from {
-      opacity:0;
+    opacity: 0;
   }
   to {
-      opacity: 1;
+    opacity: 1;
   }
 }
 
 @keyframes pulsate {
-    0% {
-      opacity: 0;
-    }
-    25% {
-      opacity: 0.3;
-    }
-    50% {
-      opacity: 0.5;
-    }
-    75% {
-      opacity: 0.3;
-    }
-    100% {
-      opacity: 0;
-    }
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  75% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 @-o-keyframes pulsate {
-    /* Opera */
-    0% {
-      opacity: 0;
-    }
-    25% {
-      opacity: 0.3;
-    }
-    50% {
-      opacity: 0.5;
-    }
-    75% {
-      opacity: 0.3;
-    }
-    100% {
-      opacity: 0;
-    }
+  /* Opera */
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  75% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 @-webkit-keyframes pulsate {
-    /* Safari and Chrome */
-    0% {
-      opacity: 0;
-    }
-    25% {
-      opacity: 0.3;
-    }
-    50% {
-      opacity: 0.5;
-    }
-    75% {
-      opacity: 0.3;
-    }
-    100% {
-      opacity: 0;
-    }
+  /* Safari and Chrome */
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  75% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 @-moz-keyframes pulsate {
-    /* Firefox */
-    0% {
-      opacity: 0;
-    }
-    25% {
-      opacity: 0.3;
-    }
-    50% {
-      opacity: 0.5;
-    }
-    75% {
-      opacity: 0.3;
-    }
-    100% {
-      opacity: 0;
-    }
+  /* Firefox */
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  75% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 @mixin animation($type, $duration) {
@@ -183,8 +183,8 @@ $x-large-width: 90em;
 }
 
 @mixin pulsateAnimation {
-  animation: pulsate 2400ms ease-out infinite;;
-  -moz-animation: pulsate 2400ms ease-out infinite;;
-  -webkit-animation: pulsate 2400ms ease-out infinite;;
-  -o-animation: pulsate 2400ms ease-out infinite;;
+  animation: pulsate 2400ms ease-out infinite;
+  -moz-animation: pulsate 2400ms ease-out infinite;
+  -webkit-animation: pulsate 2400ms ease-out infinite;
+  -o-animation: pulsate 2400ms ease-out infinite;
 }

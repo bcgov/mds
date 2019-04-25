@@ -33,12 +33,12 @@ class MineType(AuditMixin, Base):
         return list(filter(lambda x: x.active_ind, records))
 
     @classmethod
-    def create_mine_type(cls, mine_guid, mine_tenure_type_code, save=True):
+    def create_mine_type(cls, mine_guid, mine_tenure_type_code, add_to_session=True):
         mine_type = cls(
             mine_type_guid=uuid.uuid4(),
             mine_guid=mine_guid,
             mine_tenure_type_code=mine_tenure_type_code)
-        if save:
+        if add_to_session:
             mine_type.save(commit=False)
         return mine_type
 

@@ -188,7 +188,7 @@ class MinePartyAppointment(AuditMixin, Base):
                end_date=None,
                processed_by=processed_by,
                permit_guid=None,
-               save=True):
+               add_to_session=True):
         mpa = cls(
             mine_guid=mine_guid,
             party_guid=party_guid,
@@ -197,7 +197,7 @@ class MinePartyAppointment(AuditMixin, Base):
             start_date=start_date,
             end_date=end_date,
             processed_by=processed_by)
-        if save:
+        if add_to_session:
             mpa.save(commit=False)
         return mpa
 
