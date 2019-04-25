@@ -124,10 +124,12 @@ services:
       - mds
   ####################### NRIS_Postgres Definition #######################
   nris_postgres:
+    image: postgres
     restart: always
     container_name: nris_postgres
     build:
       context: migrations
+      dockerfile: Dockerfile.dev
     environment:
       - POSTGRES_USER=nris
       - POSTGRES_PASSWORD=test

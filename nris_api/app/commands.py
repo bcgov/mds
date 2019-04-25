@@ -15,7 +15,7 @@ def register_commands(app):
             print("BEEN THERE DONE THAT")
         else:
             ret_val = _factorial(n)
-            new_fr = FactorialRecord(n, ret_val)
+            new_fr = FactorialRecord(input_val=n, output_val=ret_val)
             print('THIS IS NEW')
             db.session.add(new_fr)
             db.session.commit()
