@@ -106,38 +106,7 @@ services:
       - backend
     networks:
       - mds
-  ####################### NRIS_BACKEND Definition #######################
-  nris_backend:
-    restart: always
-    container_name: nris_python
-    build:
-      context: nris_api
-    ports:
-      - 5500:5500
-    volumes:
-      - ./nris_api/:/app/
-    depends_on:
-      - nris_postgres
-    # Export environment variables from .env into the container environment
-    entrypoint: ["bash", "-c", "grep -v '^#' .env | xargs ; flask run"]
-    networks:
-      - mds
-  ####################### NRIS_Postgres Definition #######################
-  nris_postgres:
-    image: postgres
-    restart: always
-    container_name: nris_postgres
-    build:
-      context: migrations
-      dockerfile: Dockerfile.dev
-    environment:
-      - POSTGRES_USER=nris
-      - POSTGRES_PASSWORD=test
-      - POSTGRES_DB=nris
-    ports:
-      - "5432:5432"
-    networks:
-      - mds
+
 ####################### Networks Definition #######################
 networks:
   mds:
