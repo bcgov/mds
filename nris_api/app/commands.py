@@ -25,3 +25,12 @@ def register_commands(app):
         if n < 2:
             return 1
         return _factorial(n - 1) + n
+
+    @app.cli.command()
+    def _test_oracle_db():
+        cursor = oracle_db.cursor()
+
+        cursor.execute('select * from CORS.CORS_CV_ASSESSMENTS')
+        col = cursor.fetchone()
+        cursor.close()
+        app.logger.error(col)

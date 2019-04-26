@@ -16,3 +16,10 @@ class Config(object):
 
     SQLALCHEMY_DATABASE_URI = DB_URL
     SQLALCHEMY_TRACK_MODIFICATIONS = True
+
+    NRIS_DB_USER = os.environ.get('NRIS_DB_USER', 'localhost')
+    NRIS_DB_PASSWORD = os.environ.get('NRIS_DB_PASSWORD', 'localhost')
+    NRIS_DB_CONNECT = os.environ.get('NRIS_DB_CONNECT', 'localhost')
+    NRIS_DB_PORT = os.environ.get('NRIS_DB_PORT', 'localhost')
+    NRIS_DB_SERVICENAME = os.environ.get('NRIS_DB_SERVICENAME', 'localhost')
+    NRIS_DB_HOSTNAME = os.environ.get('NRIS_DB_HOSTNAME', 'localhost')
