@@ -4,6 +4,7 @@ atomicwrites==1.1.5
 attrs==18.1.0
 cached_property==1.5.1
 click==6.7
+cx_Oracle==7.1.1 
 elastic-apm[flask]==4.0.3
 factory-boy==2.11.1
 Flask==1.0.2
