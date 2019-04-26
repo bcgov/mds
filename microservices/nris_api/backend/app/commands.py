@@ -33,4 +33,4 @@ def register_commands(app):
         cursor.execute('select * from CORS.CORS_CV_ASSESSMENTS')
         col = cursor.fetchone()
         cursor.close()
-        app.logger.error(col)
+        app.logger.info(col)
