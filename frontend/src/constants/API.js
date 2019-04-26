@@ -32,7 +32,10 @@ export const EXPECTED_DOCUMENT = "/documents/expected";
 export const MINE_TENURE_TYPES = "/mines/mine-tenure-type-codes";
 export const MINE_TYPES = "/mines/mine-types";
 export const MINE_TYPES_DETAILS = "/mines/mine-types/details";
-export const DOCUMENT_MANAGER_FILE_GET_URL = "/document-manager";
+export const DOCUMENT_MANAGER_FILE_GET_URL = (token = {}) =>
+  `/document-manager?${queryString.stringify(token)}`;
+export const DOCUMENT_MANAGER_TOKEN_GET_URL = (documentManagerGuid) =>
+  `/document-manager/${documentManagerGuid}/token`;
 export const REMOVE_MINE_EXPECTED_DOCUMENT = (expectedDocumentGuid, mineDocumentGuid) =>
   `/documents/expected/${expectedDocumentGuid}/document/${mineDocumentGuid}`;
 export const MINESPACE_USER = "/users/minespace";

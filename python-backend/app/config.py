@@ -60,8 +60,7 @@ class Config(object):
     RESTPLUS_JSON = {'indent': None, 'separators': (',', ':')}
     COMPRESS_LEVEL = 9
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_MAX_OVERFLOW = 20
-    SQLALCHEMY_POOL_TIMEOUT = 300
+    SQLALCHEMY_ENGINE_OPTIONS = {'pool_timeout': 300, 'max_overflow': 20}
 
     # Flask-uploads configs
     UPLOADED_DOCUMENT_DEST = os.environ.get('UPLOADED_DOCUMENT_DEST', '/app/document_uploads')
