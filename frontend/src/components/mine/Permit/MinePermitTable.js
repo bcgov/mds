@@ -42,11 +42,9 @@ const renderDocumentLink = (file, text) => (
   <a
     role="link"
     key={file.mine_document_guid}
-    onClick={() => downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)}
+    onClick={() => downloadFileFromDocumentManager(file.document_manager_guid)}
     // Accessibility: Event listener
-    onKeyPress={() =>
-      downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)
-    }
+    onKeyPress={() => downloadFileFromDocumentManager(file.document_manager_guid)}
     // Accessibility: Focusable element
     tabIndex="0"
   >
