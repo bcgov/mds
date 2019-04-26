@@ -3,8 +3,11 @@ import { connect } from "react-redux";
 import { Tabs } from "antd";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
+import queryString from "query-string";
+import { isEmpty } from "lodash";
 import { openModal, closeModal } from "@/actions/modalActions";
 import { fetchPermits } from "@/actionCreators/permitActionCreator";
+import { fetchCoreUsers } from "@/actionCreators/userActionCreator";
 import {
   fetchMineRecordById,
   updateMineRecord,
@@ -44,9 +47,12 @@ import {
   getCommodityOptionHash,
   getDropdownHSRCMComplianceCodes,
   getHSRCMComplianceCodesHash,
+  getMultiSelectComplianceCodes,
   getOptionsLoaded,
 } from "@/selectors/staticContentSelectors";
+import { getMineComplianceInfo } from "@/selectors/complianceSelectors";
 import { getMineVariances } from "@/selectors/varianceSelectors";
+import { getCoreUsers } from "@/selectors/userSelectors";
 import {
   fetchPartyRelationshipTypes,
   fetchPartyRelationships,
@@ -66,6 +72,7 @@ import MineComplianceInfo from "@/components/mine/Compliance/MineComplianceInfo"
 import MinePermitInfo from "@/components/mine/Permit/MinePermitInfo";
 import MineApplicationInfo from "@/components/mine/Applications/MineApplicationInfo";
 import Loading from "@/components/common/Loading";
+import { formatParamStringToArray } from "@/utils/helpers";
 import { detectProdEnvironment } from "@/utils/environmentUtils";
 
 /**
@@ -107,8 +114,23 @@ const defaultProps = {
   mineComplianceInfo: {},
 };
 
+const initialSearchValues = {
+  order_no: "",
+  report_no: "",
+  due_date: "",
+  inspector: "",
+  violation: [],
+  overdue: "",
+};
+
 export class MineDashboard extends Component {
-  state = { activeTab: "summary", isLoaded: false, complianceInfoLoading: true };
+  state = {
+    activeTab: "summary",
+    isLoaded: false,
+    complianceInfoLoading: true,
+    complianceFilterParams: initialSearchValues,
+    filteredOrders: [],
+  };
 
   componentWillMount() {
     const { id, activeTab } = this.props.match.params;
@@ -128,8 +150,9 @@ export class MineDashboard extends Component {
     this.props.fetchMineComplianceCodes();
     this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
     this.props.fetchSubscribedMinesByUser();
+    this.props.fetchCoreUsers();
     if (activeTab) {
-      this.setState({ activeTab: `${activeTab}` });
+      this.setState({ activeTab });
     }
   }
 
@@ -141,7 +164,75 @@ export class MineDashboard extends Component {
     if (this.props.match.params.id !== nextProps.match.params.id) {
       this.loadMineData(id);
     }
+    const locationChanged = nextProps.location !== this.props.location;
+    if (locationChanged && !this.state.complianceInfoLoading) {
+      const correctParams = nextProps.location.search
+        ? nextProps.location.search
+        : queryString.stringify(initialSearchValues);
+      this.renderDataFromURL(correctParams);
+    }
   }
+
+  componentWillUnmount() {
+    this.setState({ complianceFilterParams: initialSearchValues });
+  }
+
+  renderDataFromURL = (params) => {
+    const { violation, ...remainingParams } = queryString.parse(params);
+    const formattedParams = {
+      violation: formatParamStringToArray(violation),
+      ...remainingParams,
+    };
+    // check that mineComplianceInfo contains open_orders
+    const orders =
+      this.props.mineComplianceInfo && this.props.mineComplianceInfo.open_orders
+        ? this.props.mineComplianceInfo.open_orders
+        : [];
+    const filteredOrders = orders.filter((order) => this.handleFiltering(order, formattedParams));
+
+    this.setState({
+      filteredOrders,
+      complianceFilterParams: formattedParams,
+    });
+  };
+
+  handleFiltering = (order, params) => {
+    // convert string to boolean before passing it into a filter check
+    const parsedOverdue = params.overdue === "" ? "" : JSON.parse(params.overdue);
+    const overdue = params.overdue === "" || order.overdue === parsedOverdue;
+    const inspector =
+      params.inspector === "" ||
+      order.inspector.toLowerCase().includes(params.inspector.toLowerCase());
+    const date = params.due_date === "" || order.due_date.includes(params.due_date);
+    const orderNo = params.order_no === "" || order.order_no.includes(params.order_no);
+    const reportNoString = order.report_no.toString();
+    const reportNo = params.report_no === "" || reportNoString.includes(params.report_no);
+    const violation = params.violation.length === 0 || params.violation.includes(order.violation);
+    return overdue && inspector && date && orderNo && reportNo && violation;
+  };
+
+  handleComplianceFilter = (values) => {
+    if (isEmpty(values)) {
+      this.props.history.push(
+        router.MINE_SUMMARY.dynamicRoute(
+          this.props.match.params.id,
+          this.props.match.params.activeTab
+        )
+      );
+    } else {
+      const { violation, ...rest } = values;
+      this.props.history.push(
+        router.MINE_SUMMARY.dynamicRoute(
+          this.props.match.params.id,
+          this.props.match.params.activeTab,
+          {
+            violation: violation && violation.join(","),
+            ...rest,
+          }
+        )
+      );
+    }
+  };
 
   handleSubscription = () => {
     const { id } = this.props.match.params;
@@ -170,8 +261,14 @@ export class MineDashboard extends Component {
       this.props.fetchPermits({ mine_guid: this.props.mines[id].mine_guid });
       this.props.fetchVariancesByMine({ mineGuid: id });
       this.setState({ isLoaded: true });
-      this.props.fetchMineComplianceInfo(this.props.mines[id].mine_no, true).then(() => {
-        this.setState({ complianceInfoLoading: false });
+      this.props.fetchVariancesByMine({ mineGuid: id });
+      this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
+      this.props.fetchApplications({ mine_guid: id });
+      this.props.fetchMineComplianceInfo(this.props.mines[id].mine_no, true).then((data) => {
+        this.setState({
+          complianceInfoLoading: false,
+          filteredOrders: data && data.open_orders ? data.open_orders : [],
+        });
       });
     });
   }
@@ -237,6 +334,10 @@ export class MineDashboard extends Component {
                 <TabPane tab="Compliance" key="compliance">
                   <div className="tab__content">
                     <MineComplianceInfo
+                      complianceCodes={this.props.multiSelectComplianceCodes}
+                      handleComplianceFilter={this.handleComplianceFilter}
+                      complianceFilterParams={this.state.complianceFilterParams}
+                      filteredOrders={this.state.filteredOrders}
                       mineComplianceInfo={this.props.mineComplianceInfo}
                       isLoading={this.state.complianceInfoLoading}
                     />
@@ -308,7 +409,10 @@ const mapStateToProps = (state) => ({
   subscribed: getIsUserSubscribed(state),
   variances: getMineVariances(state),
   complianceCodes: getDropdownHSRCMComplianceCodes(state),
+  multiSelectComplianceCodes: getMultiSelectComplianceCodes(state),
   complianceCodesHash: getHSRCMComplianceCodesHash(state),
+  mineComplianceInfo: getMineComplianceInfo(state),
+  coreUsers: getCoreUsers(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -340,6 +444,7 @@ const mapDispatchToProps = (dispatch) =>
       addDocumentToVariance,
       fetchVariancesByMine,
       fetchMineComplianceCodes,
+      fetchCoreUsers,
       fetchMineIncidentFollowActionOptions,
     },
     dispatch

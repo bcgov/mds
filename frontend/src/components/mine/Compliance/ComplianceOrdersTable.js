@@ -1,25 +1,14 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { Table, Pagination } from "antd";
+import { Table } from "antd";
 
 import { RED_CLOCK } from "@/constants/assets";
 import { formatDate } from "@/utils/helpers";
 import { COLOR } from "@/constants/styles";
+import CustomPropTypes from "@/customPropTypes";
+import NullScreen from "@/components/common/NullScreen";
 
 const propTypes = {
-  handlePageChange: PropTypes.func.isRequired,
-  minOrderList: PropTypes.number.isRequired,
-  maxOrderList: PropTypes.number.isRequired,
-  openOrders: PropTypes.arrayOf(
-    PropTypes.shape({
-      overdue: PropTypes.bool.isRequired,
-      due_date: PropTypes.string.isRequired,
-      order_no: PropTypes.string.isRequired,
-      violation: PropTypes.string.isRequired,
-      report_no: PropTypes.string.isRequired,
-      inspector: PropTypes.string.isRequired,
-    })
-  ),
+  filteredOrders: CustomPropTypes.complianceOrders,
 };
 
 const { errorRed } = COLOR;
@@ -27,13 +16,7 @@ const { errorRed } = COLOR;
 const errorStyle = (isOverdue) => (isOverdue ? { color: errorRed } : {});
 
 const defaultProps = {
-  openOrders: [],
-};
-
-const byDateOrOrderNo = (order1, order2) => {
-  const date1 = Date.parse(order1.due_date) || 0;
-  const date2 = Date.parse(order2.due_date) || 0;
-  return date1 === date2 ? order1.order_no - order2.order_no : date1 - date2;
+  filteredOrders: [],
 };
 
 const columns = [
@@ -58,6 +41,7 @@ const columns = [
         {record.order_no === null ? "-" : record.order_no}
       </div>
     ),
+    sorter: (a, b) => (a.order_no > b.order_no ? -1 : 1),
   },
   {
     title: "Violation",
@@ -67,6 +51,7 @@ const columns = [
         {record.violation === null ? "-" : record.violation}
       </div>
     ),
+    sorter: (a, b) => (a.violation > b.violation ? -1 : 1),
   },
   {
     title: "Report #",
@@ -76,6 +61,7 @@ const columns = [
         {record.report_no === null ? "-" : record.report_no}
       </div>
     ),
+    sorter: (a, b) => (a.report_no > b.report_no ? -1 : 1),
   },
   {
     title: "Inspector Name",
@@ -85,6 +71,7 @@ const columns = [
         {record.inspector === null ? "-" : record.inspector}
       </div>
     ),
+    sorter: (a, b) => (a.inspector > b.inspector ? -1 : 1),
   },
   {
     title: "Due Date",
@@ -94,38 +81,41 @@ const columns = [
         {formatDate(record.due_date) || "-"}
       </div>
     ),
+    sorter: (a, b) => (a.due_date > b.due_date ? -1 : 1),
+    defaultSortOrder: "descend",
   },
 ];
 
-const transformRowData = (orders, minOrderList, maxOrderList) =>
-  orders
-    .sort(byDateOrOrderNo)
-    .slice(minOrderList, maxOrderList)
-    .map((order) => ({
-      key: order.order_no,
-      ...order,
-    }));
+const transformRowData = (orders) =>
+  orders.map((order) => ({
+    key: order.order_no,
+    ...order,
+  }));
 
-const OpenOrdersTable = (props) => (
+const defaultPageSize = 10;
+
+const pageCount = (orders) => {
+  // Number of pages required to collapse the pagination
+  const maxPages = 10;
+
+  const pages = Math.ceil(orders.length / defaultPageSize);
+  return pages < maxPages ? pages : maxPages;
+};
+
+const ComplianceOrdersTable = (props) => (
   <div>
     <Table
       align="left"
-      pagination={false}
+      pagination
       columns={columns}
-      dataSource={transformRowData(props.openOrders, props.minOrderList, props.maxOrderList)}
-    />
-
-    <Pagination
-      defaultCurrent={1}
-      defaultPageSize={10}
-      onChange={props.handlePageChange}
-      total={props.openOrders.length}
-      className="center"
+      dataSource={transformRowData(props.filteredOrders)}
+      locale={{ emptyText: <NullScreen type="no-results" /> }}
+      className={`center-pagination page-count-${pageCount(props.filteredOrders)}`}
     />
   </div>
 );
 
-OpenOrdersTable.propTypes = propTypes;
-OpenOrdersTable.defaultProps = defaultProps;
+ComplianceOrdersTable.propTypes = propTypes;
+ComplianceOrdersTable.defaultProps = defaultProps;
 
-export default OpenOrdersTable;
+export default ComplianceOrdersTable;

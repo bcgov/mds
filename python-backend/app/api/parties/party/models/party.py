@@ -48,24 +48,15 @@ class Party(AuditMixin, Base):
     # TODO: Remove this once mine_party_appt has been refactored
     def json(self, show_mgr=True, relationships=[]):
         context = {
-            'party_guid':
-            str(self.party_guid),
-            'party_type_code':
-            self.party_type_code,
-            'phone_no':
-            self.phone_no,
-            'phone_ext':
-            self.phone_ext,
-            'email':
-            self.email,
-            'effective_date':
-            self.effective_date.isoformat(),
-            'expiry_date':
-            self.expiry_date.isoformat(),
-            'party_name':
-            self.party_name,
-            'name':
-            self.name,
+            'party_guid': str(self.party_guid),
+            'party_type_code': self.party_type_code,
+            'phone_no': self.phone_no,
+            'phone_ext': self.phone_ext,
+            'email': self.email,
+            'effective_date': self.effective_date.isoformat(),
+            'expiry_date': self.expiry_date.isoformat(),
+            'party_name': self.party_name,
+            'name': self.name,
             'address': self.address[0].json() if len(self.address) > 0 else [{}]
         }
         if self.party_type_code == PARTY_STATUS_CODE['per']:
@@ -129,7 +120,7 @@ class Party(AuditMixin, Base):
             city=None,
             sub_division_code=None,
             post_code=None,
-            save=True):
+            add_to_session=True):
         party = cls(
             # Required fields
             party_guid=uuid.uuid4(),
@@ -140,7 +131,7 @@ class Party(AuditMixin, Base):
             email=email,
             first_name=first_name,
             phone_ext=phone_ext)
-        if save:
+        if add_to_session:
             party.save(commit=False)
         return party
 
