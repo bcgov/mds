@@ -68,21 +68,6 @@ app {
                     ]
                 ],
                 [
-                    'file':'openshift/dbbackup.dc.json',
-                    'params':[
-                            'NAME':"mds-database-backup",
-                            'SUFFIX': "${vars.deployment.suffix}",
-                            'VERSION':"${app.deployment.version}",
-                            'ENVIRONMENT_NAME':"${app.deployment.env.name}",
-                            'DATABASE_SERVICE_NAME':"mds-postgresql${vars.deployment.suffix}",
-                            'CPU_REQUEST':"${vars.resources.backup.cpu_request}",
-                            'CPU_LIMIT':"${vars.resources.backup.cpu_limit}",
-                            'MEMORY_REQUEST':"${vars.resources.backup.memory_request}",
-                            'MEMORY_LIMIT':"${vars.resources.backup.memory_limit}",
-                            'PERSISTENT_VOLUME_SIZE':"${vars.BACKUP_PVC_SIZE}"
-                    ]
-                ],
-                [
                     'file':'openshift/redis.dc.json',
                     'params':[
                             'NAME':"mds-redis",
@@ -245,7 +230,6 @@ environments {
         vars {
             DB_PVC_SIZE = '10Gi'
             DOCUMENT_PVC_SIZE = '5Gi'
-            BACKUP_PVC_SIZE = '1Gi'
             LOG_PVC_SIZE = '1Gi'
             METABASE_PVC_SIZE = '5Gi'
             git {
@@ -296,12 +280,6 @@ environments {
                     cpu_limit = "200m"
                     memory_request = "1Gi"
                     memory_limit = "2Gi"
-                }
-                backup {
-                    cpu_request = "1m"
-                    cpu_limit = "5m"
-                    memory_request = "64Mi"
-                    memory_limit = "128Mi"
                 }
                 metabase {
                     cpu_request = "200m"
