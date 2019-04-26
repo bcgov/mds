@@ -34,7 +34,7 @@ ADD COLUMN union_ind                        boolean              DEFAULT FALSE N
 ADD COLUMN inspector_id                     integer                                    ,
 ADD COLUMN variance_no                      integer                            NOT NULL;
 
-COMMENT ON COLUMN variance.variance_no IS 'A public, unique identifier for a variance.';
+COMMENT ON COLUMN variance.variance_no IS 'A public, unique identifier for a mine variance.';
 
 ALTER TABLE variance
 ALTER COLUMN issue_date  DROP NOT NULL,
