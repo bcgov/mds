@@ -47,7 +47,7 @@ export class MineComplianceInfo extends Component {
                   content={this.props.mineComplianceInfo.num_inspections}
                 />
                 <MineComplianceCard
-                  title={`Count of inspections (Since april 1, ${fiscalYear})`}
+                  title={`Count of inspections (Since April 1, ${fiscalYear})`}
                   content={this.props.mineComplianceInfo.num_inspections_since_april}
                 />
                 <MineComplianceCard
