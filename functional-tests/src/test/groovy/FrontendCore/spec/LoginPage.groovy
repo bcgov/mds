@@ -18,7 +18,7 @@ class  LoginPageSpec extends GebReportingSpec {
 
         when: "Page loaded"
         at LoginPage
-
+        sleep(3000)
         and: "I input username and password"
         IDIRusername = Const.IDIR_USERNAME
         IDIRpassword = Const.IDIR_PASSWORD
