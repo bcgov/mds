@@ -57,14 +57,28 @@ ADD CONSTRAINT variance_inspector_core_user_fkey
     FOREIGN KEY (inspector_id) REFERENCES core_user(core_user_id) DEFERRABLE INITIALLY DEFERRED,
 
 -- Business Rule Constraints
+
+  -- inspector_id
 ADD CONSTRAINT inspector_required_on_reviewed_application
     CHECK (NOT (inspector_id IS NULL AND (
               variance_application_status_code = 'APP' OR variance_application_status_code = 'DEN'
           ) ) ),
-ADD CONSTRAINT issue_date_required_on_approved_variance
-    CHECK (NOT (issue_date IS NULL AND variance_application_status_code = 'APP') ),
-ADD CONSTRAINT expiry_date_required_on_approved_variance
-    CHECK (NOT (expiry_date IS NULL AND variance_application_status_code = 'APP') );
+
+  -- issue_date
+ADD CONSTRAINT issue_date_required_on_approved_variance_else_forbidden
+    CHECK (
+        (NOT (issue_date IS NULL AND variance_application_status_code = 'APP') )
+        AND
+        (NOT (issue_date IS NOT NULL AND variance_application_status_code != 'APP') )
+    ),
+
+  -- expiry_date
+ADD CONSTRAINT expiry_date_required_on_approved_variance_else_forbidden
+    CHECK (
+        (NOT (expiry_date IS NULL AND variance_application_status_code = 'APP') )
+        AND
+        (NOT (expiry_date IS NOT NULL AND variance_application_status_code != 'APP') )
+    );
 
 CREATE OR REPLACE FUNCTION add_incremented_variance_no() RETURNS trigger AS $$
     DECLARE
