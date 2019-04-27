@@ -1,4 +1,6 @@
 // Network URL's
+import queryString from "query-string";
+
 export const MINE = "/mines";
 export const USER_MINE_INFO = "/mines/search";
 
@@ -10,4 +12,7 @@ export const EXPECTED_DOCUMENT = "/documents/expected";
 export const REMOVE_MINE_EXPECTED_DOCUMENT = (expectedDocumentGuid, mineDocumentGuid) =>
   `/documents/expected/${expectedDocumentGuid}/document/${mineDocumentGuid}`;
 
-export const DOCUMENT_MANAGER_FILE_GET_URL = "/document-manager";
+export const DOCUMENT_MANAGER_FILE_GET_URL = (token = {}) =>
+  `/document-manager?${queryString.stringify(token)}`;
+export const DOCUMENT_MANAGER_TOKEN_GET_URL = (documentManagerGuid) =>
+  `/document-manager/${documentManagerGuid}/token`;
