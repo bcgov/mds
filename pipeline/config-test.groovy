@@ -1,21 +1,13 @@
 app {
     name = 'mds'
     version = 'snapshot'
-    namespaces { //can't call environments :(
+        namespaces {
         'build'{
             namespace = 'empr-mds-tools'
             disposable = true
         }
-        'dev' {
-            namespace = 'empr-mds-dev'
-            disposable = true
-        }
         'test' {
             namespace = 'empr-mds-test'
-            disposable = false
-        }
-        'prod' {
-            namespace = 'empr-mds-prod'
             disposable = false
         }
     }
@@ -24,7 +16,6 @@ app {
         workDir = ['git', 'rev-parse', '--show-toplevel'].execute().text.trim()
         uri = ['git', 'config', '--get', 'remote.origin.url'].execute().text.trim()
         commit = ['git', 'rev-parse', 'HEAD'].execute().text.trim()
-        //ref = opt.'branch'?:['bash','-c', 'git config branch.`git name-rev --name-only HEAD`.merge'].execute().text.trim()
         changeId = "${opt.'pr'}"
         ref = opt.'branch'?:"refs/pull/${git.changeId}/head"
         github {
@@ -44,123 +35,7 @@ app {
 
         suffix = "-${app.git.changeId}"
         namespace = 'empr-mds-tools'
-        timeoutInSeconds = 60*40 // 40 minutes
-        templates = [
-                [
-                    'file':'openshift/_python36.bc.json',
-                    'params':[
-                            'NAME':"mds-python-backend",
-                            'SUFFIX': "${app.build.suffix}",
-                            'VERSION':"${app.build.version}",
-                            'SOURCE_CONTEXT_DIR': "python-backend",
-                            'SOURCE_REPOSITORY_URL': "${app.git.uri}"
-                    ]
-                ],
-                [
-                    'file':'openshift/_nginx.bc.json',
-                    'params':[
-                            'NAME':"mds-nginx",
-                            'SUFFIX': "${app.build.suffix}",
-                            'VERSION':"${app.build.version}",
-                            'SOURCE_CONTEXT_DIR': "nginx",
-                            'SOURCE_REPOSITORY_URL': "${app.git.uri}"
-                    ]
-                ],
-                [
-                    'file':'openshift/bddstack.bc.json',
-                    'params':[
-                            'NAME':"bdd-stack",
-                            'SUFFIX': "${app.build.suffix}",
-                            'VERSION':"${app.build.version}",
-                            'SOURCE_CONTEXT_DIR': "functional-tests",
-                            'SOURCE_REPOSITORY_URL': "${app.git.uri}"
-                    ]
-                ],
-                [
-                        'file':'openshift/_nodejs.bc.json',
-                        'params':[
-                            'NAME':"mds-frontend",
-                            'SUFFIX': "${app.build.suffix}",
-                            'APPLICATION_SUFFIX': "-${app.build.env.id}",
-                            'BASE_PATH': "/${app.git.changeId}",
-                            'VERSION':"${app.build.version}",
-                            'SOURCE_CONTEXT_DIR': "frontend",
-                            'DOCKER_IMAGE_DIRECTORY': "docker-images/nodejs-8",
-                            'SOURCE_REPOSITORY_URL': "${app.git.uri}",
-                            'NODE_ENV': "production"
-                        ]
-                ],
-                [
-                        'file':'openshift/_nodejs.bc.json',
-                        'params':[
-                            'NAME':"mds-frontend-public",
-                            'SUFFIX': "${app.build.suffix}",
-                            'APPLICATION_SUFFIX': "-${app.build.env.id}",
-                            'BASE_PATH': "/${app.git.changeId}",
-                            'VERSION':"${app.build.version}",
-                            'SOURCE_CONTEXT_DIR': "frontend-public",
-                            'DOCKER_IMAGE_DIRECTORY': "docker-images/nodejs-8-public",
-                            'SOURCE_REPOSITORY_URL': "${app.git.uri}",
-                            'NODE_ENV': "production"
-                        ]
-                ],
-                [
-                    'file':'openshift/postgresql.bc.json',
-                    'params':[
-                        'NAME':"mds-postgresql",
-                        'SUFFIX': "${app.build.suffix}",
-                        'TAG_NAME':"${app.build.version}"
-                    ]
-                ],
-                [
-                    'file':'openshift/dbbackup.bc.json',
-                    'params':[
-                        'NAME':"mds-database-backup",
-                        'SUFFIX': "${app.build.suffix}",
-                        'VERSION':"${app.build.version}"
-                    ]
-                ],
-                [
-                    'file':'openshift/flyway.bc.json',
-                    'params':[
-                            'NAME':"mds-flyway-migration",
-                            'SUFFIX': "${app.build.suffix}",
-                            'VERSION':"${app.build.version}",
-                            'SOURCE_CONTEXT_DIR': "migrations",
-                            'SOURCE_REPOSITORY_URL': "${app.git.uri}"
-                    ]
-                ],
-                [
-                    'file':'openshift/tools/schemaspy.bc.json',
-                    'params':[
-                            'NAME':"schemaspy",
-                            'SUFFIX': "${app.build.suffix}",
-                            'VERSION':"${app.build.version}",
-                            'SOURCE_CONTEXT_DIR': "docker-images/schemaspy",
-                            'SOURCE_REPOSITORY_URL': "${app.git.uri}"
-                    ]
-                ],
-                [
-                    'file':'openshift/tools/metabase.bc.json',
-                    'params':[
-                            'NAME':"metabase",
-                            'SUFFIX': "${app.build.suffix}",
-                            'VERSION':"${app.build.version}",
-                            'SOURCE_CONTEXT_DIR': "docker-images/metabase",
-                            'SOURCE_REPOSITORY_URL': "${app.git.uri}"
-                    ]
-                ],
-                [
-                    'file':'openshift/tools/logstash.bc.json',
-                    'params':[
-                            'NAME':"mds-logstash",
-                            'SUFFIX': "${app.build.suffix}",
-                            'VERSION':"${app.build.version}",
-                            'SOURCE_CONTEXT_DIR': "elastic/logstash",
-                            'SOURCE_REPOSITORY_URL': "${app.git.uri}"
-                    ]
-                ]
-        ]
+        timeoutInSeconds = 60*40
     }
 
     deployment {
@@ -190,21 +65,6 @@ app {
                             'IMAGE_STREAM_VERSION':"${app.deployment.version}",
                             'POSTGRESQL_DATABASE':'mds',
                             'VOLUME_CAPACITY':"${vars.DB_PVC_SIZE}"
-                    ]
-                ],
-                [
-                    'file':'openshift/dbbackup.dc.json',
-                    'params':[
-                            'NAME':"mds-database-backup",
-                            'SUFFIX': "${vars.deployment.suffix}",
-                            'VERSION':"${app.deployment.version}",
-                            'ENVIRONMENT_NAME':"${app.deployment.env.name}",
-                            'DATABASE_SERVICE_NAME':"mds-postgresql${vars.deployment.suffix}",
-                            'CPU_REQUEST':"${vars.resources.backup.cpu_request}",
-                            'CPU_LIMIT':"${vars.resources.backup.cpu_limit}",
-                            'MEMORY_REQUEST':"${vars.resources.backup.memory_request}",
-                            'MEMORY_LIMIT':"${vars.resources.backup.memory_limit}",
-                            'PERSISTENT_VOLUME_SIZE':"${vars.BACKUP_PVC_SIZE}"
                     ]
                 ],
                 [
@@ -366,130 +226,10 @@ app {
 }
 
 environments {
-    'dev' {
-        vars {
-            DB_PVC_SIZE = '1Gi'
-            DOCUMENT_PVC_SIZE = '1Gi'
-            BACKUP_PVC_SIZE = '1Gi'
-            LOG_PVC_SIZE = '1Gi'
-            METABASE_PVC_SIZE = '256Mi'
-            git {
-                changeId = "${opt.'pr'}"
-            }
-            keycloak {
-                clientId = "mines-application-dev"
-                resource = "mines-application-dev"
-                idpHint_core = "dev"
-                idpHint_minespace = "dev"
-                url = "https://sso-test.pathfinder.gov.bc.ca/auth"
-                known_config_url = "https://sso-test.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
-                siteminder_url = "https://logontest.gov.bc.ca"
-            }
-            resources {
-                node {
-                    cpu_request = "50m"
-                    cpu_limit = "100m"
-                    memory_request = "256Mi"
-                    memory_limit = "384Mi"
-                    replica_min = 1
-                    replica_max = 1
-                }
-                nginx {
-                    cpu_request = "50m"
-                    cpu_limit = "100m"
-                    memory_request = "128Mi"
-                    memory_limit = "256Mi"
-                    replica_min = 1
-                    replica_max = 1
-                }
-                python {
-                    cpu_request = "50m"
-                    cpu_limit = "150m"
-                    memory_request = "256Mi"
-                    memory_limit = "512Mi"
-                    replica_min = 1
-                    replica_max = 1
-                }
-                postgres {
-                    cpu_request = "50m"
-                    cpu_limit = "100m"
-                    memory_request = "384Mi"
-                    memory_limit = "768Mi"
-                }
-                redis {
-                    cpu_request = "20m"
-                    cpu_limit = "50m"
-                    memory_request = "128Mi"
-                    memory_limit = "256Mi"
-                }
-                backup {
-                    cpu_request = "1m"
-                    cpu_limit = "5m"
-                    memory_request = "32Mi"
-                    memory_limit = "64Mi"
-                }
-                metabase {
-                    cpu_request = "1m"
-                    cpu_limit = "5m"
-                    memory_request = "32Mi"
-                    memory_limit = "64Mi"
-                }
-                logstash {
-                    cpu_request = "1m"
-                    cpu_limit = "5m"
-                    memory_request = "32Mi"
-                    memory_limit = "64Mi"
-                }
-            }
-            deployment {
-                env {
-                    name = "dev"
-                }
-                key = 'dev'
-                namespace = 'empr-mds-dev'
-                suffix = "-pr-${vars.git.changeId}"
-                application_suffix = "-pr-${vars.git.changeId}"
-                node_env = "development"
-                map_portal_id = "e926583cd0114cd19ebc591f344e30dc"
-                elastic_enabled = 1
-                elastic_service_name = "MDS Dev"
-            }
-            modules {
-                'mds-frontend' {
-                    HOST = "http://mds-frontend${vars.deployment.suffix}:3000"
-                    PATH = "/${vars.git.changeId}"
-                }
-                'mds-frontend-public' {
-                    HOST = "http://mds-frontend-public${vars.deployment.suffix}:3020"
-                    PATH = "/${vars.git.changeId}"
-                }
-                'mds-nginx' {
-                    HOST_CORE = "minesdigitalservices-${vars.deployment.key}.pathfinder.gov.bc.ca"
-                    HOST_MINESPACE = "minespace-${vars.deployment.key}.pathfinder.gov.bc.ca"
-                    PATH = "/${vars.git.changeId}"
-                    ROUTE = "/${vars.git.changeId}"
-                }
-                'mds-python-backend' {
-                    HOST = "http://mds-python-backend${vars.deployment.suffix}:5000"
-                    PATH = "/${vars.git.changeId}/api"
-                }
-                'mds-redis' {
-                    HOST = "http://mds-redis${vars.deployment.suffix}"
-                }
-                'schemaspy' {
-                    HOST = "mds-schemaspy-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
-                }
-                'metabase' {
-                    HOST = "mds-metabase-${vars.git.changeId}-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
-                }
-            }
-        }
-    }
     'test' {
         vars {
             DB_PVC_SIZE = '10Gi'
             DOCUMENT_PVC_SIZE = '5Gi'
-            BACKUP_PVC_SIZE = '1Gi'
             LOG_PVC_SIZE = '1Gi'
             METABASE_PVC_SIZE = '5Gi'
             git {
@@ -541,12 +281,6 @@ environments {
                     memory_request = "1Gi"
                     memory_limit = "2Gi"
                 }
-                backup {
-                    cpu_request = "1m"
-                    cpu_limit = "5m"
-                    memory_request = "64Mi"
-                    memory_limit = "128Mi"
-                }
                 metabase {
                     cpu_request = "200m"
                     cpu_limit = "500m"
@@ -585,125 +319,6 @@ environments {
                 'mds-nginx' {
                     HOST_CORE = "minesdigitalservices-${vars.deployment.key}.pathfinder.gov.bc.ca"
                     HOST_MINESPACE = "minespace-${vars.deployment.key}.pathfinder.gov.bc.ca"
-                    PATH = ""
-                    ROUTE = "/"
-                }
-                'mds-python-backend' {
-                    HOST = "http://mds-python-backend${vars.deployment.suffix}:5000"
-                    PATH = "/api"
-                }
-                'mds-redis' {
-                    HOST = "http://mds-redis${vars.deployment.suffix}"
-                }
-                'schemaspy' {
-                    HOST = "mds-schemaspy-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
-                }
-                'metabase' {
-                    HOST = "mds-metabase-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
-                }
-            }
-        }
-    }
-    'prod' {
-        vars {
-            DB_PVC_SIZE = '50Gi'
-            DOCUMENT_PVC_SIZE = '50Gi'
-            BACKUP_PVC_SIZE = '50Gi'
-            LOG_PVC_SIZE = '5Gi'
-            METABASE_PVC_SIZE = '10Gi'
-            git {
-                changeId = "${opt.'pr'}"
-            }
-            resources {
-                node {
-                    cpu_request = "100m"
-                    cpu_limit = "150m"
-                    memory_request = "512Mi"
-                    memory_limit = "1Gi"
-                    replica_min = 2
-                    replica_max = 4
-                }
-                nginx {
-                    cpu_request = "100m"
-                    cpu_limit = "150m"
-                    memory_request = "256Mi"
-                    memory_limit = "512Mi"
-                    replica_min = 2
-                    replica_max = 4
-                }
-                python {
-                    cpu_request = "200m"
-                    cpu_limit = "400m"
-                    memory_request = "1.5Gi"
-                    memory_limit = "3Gi"
-                    replica_min = 2
-                    replica_max = 4
-                }
-                postgres {
-                    cpu_request = "200m"
-                    cpu_limit = "500m"
-                    memory_request = "2.5Gi"
-                    memory_limit = "4Gi"
-                }
-                redis {
-                    cpu_request = "100m"
-                    cpu_limit = "200m"
-                    memory_request = "1Gi"
-                    memory_limit = "2Gi"
-                }
-                backup {
-                    cpu_request = "100m"
-                    cpu_limit = "450m"
-                    memory_request = "1Gi"
-                    memory_limit = "2Gi"
-                }
-                metabase {
-                    cpu_request = "500m"
-                    cpu_limit = "1"
-                    memory_request = "2Gi"
-                    memory_limit = "4Gi"
-                }
-                logstash {
-                    cpu_request = "50m"
-                    cpu_limit = "400m"
-                    memory_request = "1Gi"
-                    memory_limit = "2Gi"
-                }
-            }
-            keycloak {
-                clientId = "mines-application-prod"
-                resource = "mines-application-prod"
-                idpHint_core = "idir"
-                idpHint_minespace = "bceid"
-                url = "https://sso.pathfinder.gov.bc.ca/auth"
-                known_config_url = "https://sso.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
-                siteminder_url = "https://logon.gov.bc.ca"
-            }
-            deployment {
-                env {
-                    name = "prod"
-                }
-                suffix = "-prod"
-                application_suffix = "-pr-${vars.git.changeId}"
-                key = 'prod'
-                namespace = 'empr-mds-prod'
-                node_env = "production"
-                map_portal_id = "803130a9bebb4035b3ac671aafab12d7"
-                elastic_enabled = 1
-                elastic_service_name = "MDS Prod"
-            }
-            modules {
-                'mds-frontend' {
-                    HOST = "http://mds-frontend${vars.deployment.suffix}:3000"
-                    PATH = ""
-                }
-                'mds-frontend-public' {
-                    HOST = "http://mds-frontend-public${vars.deployment.suffix}:3020"
-                    PATH = ""
-                }
-                'mds-nginx' {
-                    HOST_CORE = "minesdigitalservices.gov.bc.ca"
-                    HOST_MINESPACE = "minespace.gov.bc.ca"
                     PATH = ""
                     ROUTE = "/"
                 }
