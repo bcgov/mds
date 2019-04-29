@@ -13,8 +13,5 @@ class MineTenureTypeCode(AuditMixin, Base):
         return '<MineTenureTypeCode %r>' % self.mine_tenure_type_code
 
     @classmethod
-    def all_options(cls):
-        return list(map(
-            lambda x: { 'value': x[0], 'label': x[1] },
-            cls.query.with_entities(cls.mine_tenure_type_code, cls.description).all()
-        ))
+    def find_all_active(cls):
+        return cls.query.all()

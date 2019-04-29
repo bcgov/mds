@@ -7,15 +7,21 @@ from flask import request
 from app.api.utils.include.user_info import User
 
 from app.api.utils.access_decorators import requires_role_mine_view, requires_role_mine_create, requires_role_mine_admin
-from app.api.utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.utils.resources_mixins import UserMixin
 from app.api.mines.mine.models.mine_verified_status import MineVerifiedStatus
+from app.api.mines.mine_api_models import MINE_VERIFIED_MODEL
 
 
-class MineVerifiedStatusResource(Resource, UserMixin, ErrorMixin):
+class MineVerifiedStatusListResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument('healthy', type=inputs.boolean)
 
     @requires_role_mine_view
+    @api.marshal_with(MINE_VERIFIED_MODEL, code=200)
+    @api.doc(
+        params={'user_id': 'A user_id to search'},
+        description=
+        'Returns all verified statuses for mines or for a specific user if a user_id was provided.')
     def get(self):
         user_id = request.args.get('user_id')
         if user_id:
@@ -23,16 +29,21 @@ class MineVerifiedStatusResource(Resource, UserMixin, ErrorMixin):
         else:
             statuses = MineVerifiedStatus.query.all()
 
-        return {
-            'healthy': [x.json() for x in statuses if x.healthy_ind],
-            'unhealthy': [x.json() for x in statuses if not x.healthy_ind]
-        }
+        return statuses
+
+
+class MineVerifiedStatusResource(Resource, UserMixin):
+
+    parser = reqparse.RequestParser()
+    parser.add_argument('healthy', type=inputs.boolean, location='json')
 
     @api.expect(parser)
+    @api.marshal_with(MINE_VERIFIED_MODEL, code=200)
+    @api.doc(
+        params={'healthy': 'The verified status of the mine.'},
+        description='Updates a mines verified status')
     @requires_role_mine_create
-    def put(self, mine_guid=None):
-        if not mine_guid:
-            raise BadRequest('Mine_guid not provided')
+    def put(self, mine_guid):
 
         data = self.parser.parse_args()
 
@@ -53,9 +64,4 @@ class MineVerifiedStatusResource(Resource, UserMixin, ErrorMixin):
 
         mine_verified_status.healthy_ind = healthy
         mine_verified_status.save()
-        return mine_verified_status.json()
-
-    @requires_role_mine_admin
-    def delete(self, mine_guid=None):
-        #TODO: Actually delete
-        return ('', 501)
+        return mine_verified_status
