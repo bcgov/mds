@@ -19,6 +19,7 @@ export const createParty = (payload) => (dispatch) => {
       dispatch(hideLoading("modal"));
       notification.success({ message: "Successfully created a new party", duration: 10 });
       dispatch(success(reducerTypes.CREATE_PARTY));
+      dispatch(partyActions.storeLastCreatedParty(response.data));
       return response;
     })
     .catch((err) => {
@@ -200,3 +201,8 @@ export const downloadMineManagerHistory = (mineNo, { window, document }) =>
       }
       notification.error({ message, duration: 10 });
     });
+
+export const setAddPartyFormState = (addPartyFormState) => (dispatch) => {
+  dispatch(partyActions.storeAddPartyFormState(addPartyFormState));
+  return addPartyFormState;
+};
