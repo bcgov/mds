@@ -60,7 +60,7 @@ from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserM
      (MineListResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]),
      (MineListResource, "post", [MINE_CREATE]),
      (MineListSearch, "get", [MINE_VIEW, MINESPACE_PROPONENT]),
-     (MineMapResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]), 
+     (MineMapResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]),
      (MinePartyApptResource, "get", [MINE_VIEW]),
      (MinePartyApptResource, "post", [MINE_CREATE]),
      (MinePartyApptResource, "put", [MINE_CREATE]),
@@ -102,7 +102,8 @@ from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserM
      (VarianceDocumentUploadResource, "put", [MINE_CREATE, MINESPACE_PROPONENT]),
      (VarianceUploadedDocumentsResource, "delete", [MINE_CREATE, MINESPACE_PROPONENT]),
      (VarianceListResource, "get", [MINE_VIEW]), (VarianceListResource, "post", [MINE_CREATE]),
-     (VarianceResource, "get", [MINE_VIEW])])
+     (VarianceResource, "get", [MINE_VIEW]),
+     (VarianceResource, "put", [MINE_CREATE])])
 def test_endpoint_auth(resource, method, expected_roles):
     endpoint = getattr(resource, method, None)
     assert endpoint != None, '{0} does not have a {1} method.'.format(resource, method.upper())

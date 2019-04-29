@@ -28,7 +28,7 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument(
         'received_date',
         store_missing=False,
-        help='The date on which the variance was received.',
+        help='The date on which the variance application was received.',
         required=True)
     parser.add_argument(
         'variance_application_status_code',
@@ -107,6 +107,47 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
 
 
 class VarianceResource(Resource, UserMixin, ErrorMixin):
+    parser = CustomReqparser()
+    parser.add_argument(
+        'compliance_article_id',
+        type=int,
+        store_missing=False,
+        help='ID representing the MA or HSRCM code to which this variance relates.')
+    parser.add_argument(
+        'received_date',
+        store_missing=False,
+        help='The date on which the variance application was received.')
+    parser.add_argument(
+        'variance_application_status_code',
+        type=str,
+        store_missing=False,
+        help='A 3-character code indicating the status type of the variance. Default: REV')
+    parser.add_argument(
+        'ohsc_ind',
+        type=bool,
+        store_missing=False,
+        help='Indicates if variance application has been reviewed by the OHSC.')
+    parser.add_argument(
+        'union_ind',
+        type=bool,
+        store_missing=False,
+        help='Indicates if variance application has been reviewed by the union.')
+    parser.add_argument(
+        'inspector_id',
+        type=int,
+        store_missing=False,
+        help='ID of the person who inspected the mine during the variance application process.')
+    parser.add_argument(
+        'note',
+        type=str,
+        store_missing=False,
+        help='A note to include on the variance. Limited to 300 characters.')
+    parser.add_argument(
+        'issue_date', store_missing=False, help='The date on which the variance was issued.')
+    parser.add_argument(
+        'expiry_date', store_missing=False, help='The date on which the variance expires.')
+
+
     @api.doc(
         description='Get a single variance.',
         params={
@@ -122,6 +163,46 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             raise NotFound('Unable to fetch variance')
 
         return variance
+
+
+    @api.doc(
+        description='Update a variance.',
+        params={
+            'mine_guid': 'guid of the mine to which the variance is associated',
+            'variance_id': 'ID of the variance to update'
+        })
+    @requires_any_of([MINE_CREATE])
+    @api.marshal_with(VARIANCE_MODEL, code=200)
+    def put(self, mine_guid, variance_id):
+        variance = Variance.find_by_variance_id(variance_id)
+        if variance is None:
+            raise NotFound('Unable to fetch variance')
+
+        data = VarianceResource.parser.parse_args()
+        for key, value in data.items():
+            setattr(variance, key, value)
+
+        if variance.variance_application_status_code == 'APP':
+            if variance.expiry_date is None:
+                raise AssertionError('Expiry date required for approved variance.')
+            if variance.issue_date is None:
+                raise AssertionError('Issue date required for approved variance.')
+            if variance.inspector_id is None:
+                raise AssertionError('Inspector required for approved variance.')
+
+        if variance.variance_application_status_code == 'DEN':
+            if variance.inspector_id is None:
+                raise AssertionError('Inspector required for reviewed variance.')
+
+        if variance.variance_application_status_code in ['REV', 'NAP']:
+            if variance.expiry_date is not None:
+                raise AssertionError('Expiry date forbidden for variance application.')
+            if variance.issue_date is not None:
+                raise AssertionError('Issue date forbidden for variance application.')
+
+        variance.save()
+        return variance
+
 
 
 class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):

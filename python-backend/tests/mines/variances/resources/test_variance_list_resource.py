@@ -28,7 +28,7 @@ def test_get_variances_invalid_mine_guid(test_client, db_session, auth_headers):
 
 
 # POST
-def test_post_variance(test_client, db_session, auth_headers):
+def test_post_variance_application(test_client, db_session, auth_headers):
     mine = MineFactory()
     test_variance_data = {
         'compliance_article_id': RandomComplianceArticleId(),
@@ -48,7 +48,7 @@ def test_post_approved_variance(test_client, db_session, auth_headers):
     # Use factory to get valid values
     approved_variance = VarianceFactory(approved=True)
     test_variance_data = {
-        'compliance_article_id': RandomComplianceArticleId(),
+        'compliance_article_id': approved_variance.compliance_article_id,
         'received_date': approved_variance.received_date,
         'variance_application_status_code': approved_variance.variance_application_status_code,
         'ohsc_ind': True,
