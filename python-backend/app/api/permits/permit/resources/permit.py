@@ -7,6 +7,8 @@ from ..models.permit import Permit
 from ...permit_amendment.models.permit_amendment import PermitAmendment
 from ...permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from ....mines.mine.models.mine import Mine
+from app.api.parties.party.models.party import Party
+from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.extensions import api, db
 from app.api.utils.access_decorators import requires_role_mine_view, requires_role_mine_create
 from app.api.utils.resources_mixins import UserMixin, ErrorMixin
@@ -17,7 +19,12 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument(
         'permit_no', type=str, help='Number of the permit being added.', location='json')
-    parser.add_argument('mine_guid', type=str, help='guid of the mine.', location='json')
+    parser.add_argument('mine_guid', type=str, help='GUID of the mine.', location='json')
+    parser.add_argument(
+        'permittee_party_guid',
+        type=str,
+        help='GUID of the party that is the permittee for this permit.',
+        location='json')
     parser.add_argument(
         'permit_status_code',
         type=str,
@@ -81,6 +88,10 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
         if not mine:
             raise NotFound('There was no mine found with the provided mine_guid.')
 
+        party = Party.find_by_party_guid(data.get('permittee_party_guid'))
+        if not party:
+            raise NotFound('Party not found')
+
         permit = Permit.find_by_permit_no(data.get('permit_no'))
         if permit:
             raise BadRequest("That permit number is already in use.")
@@ -97,6 +108,7 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
             data.get('authorization_end_date'),
             'OGP',
             description='Initial permit issued.')
+
         db.session.add(permit)
         db.session.add(amendment)
 
@@ -107,6 +119,11 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
                 mine_guid=permit.mine_guid,
             )
             amendment.documents.append(new_pa_doc)
+        db.session.commit()
+
+        permittee = MinePartyAppointment.create(
+            mine.mine_guid, data.get('permittee_party_guid'), 'PMT', datetime.utcnow(), None,
+            self.get_user_info(), permit.permit_guid, True)
         db.session.commit()
 
         return permit.json()

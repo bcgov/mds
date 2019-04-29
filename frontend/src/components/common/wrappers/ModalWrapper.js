@@ -13,6 +13,7 @@ import {
   getClearOnSubmit,
   getWidthSize,
 } from "@/selectors/modalSelectors";
+import AddPartyComponentWrapper from "./AddPartyComponentWrapper";
 
 const propTypes = {
   closeModal: PropTypes.func.isRequired,
@@ -54,7 +55,6 @@ export class ModalWrapper extends Component {
   };
 
   render() {
-    const ChildComponent = this.props.content;
     return (
       <Modal
         width={this.props.widthSize}
@@ -86,11 +86,12 @@ export class ModalWrapper extends Component {
             zIndex: 100,
           }}
         />
-        {ChildComponent && (
-          <ChildComponent
+        {this.props.content && (
+          <AddPartyComponentWrapper
             closeModal={this.props.closeModal}
             clearOnSubmit={this.props.clearOnSubmit}
-            {...this.props.props}
+            content={this.props.content}
+            childProps={this.props.props}
           />
         )}
       </Modal>
