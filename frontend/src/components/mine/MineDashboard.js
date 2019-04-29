@@ -199,7 +199,7 @@ export class MineDashboard extends Component {
   handleFiltering = (order, params) => {
     // convert string to boolean before passing it into a filter check
     const order_status =
-      params.order_status === "" || order.order_status.toString().includes(params.order_status);
+      params.order_status === "" || order.order_status.includes(params.order_status);
     const inspector =
       params.inspector === "" ||
       order.inspector.toLowerCase().includes(params.inspector.toLowerCase());
