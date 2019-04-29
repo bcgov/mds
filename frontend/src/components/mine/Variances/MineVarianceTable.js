@@ -30,16 +30,20 @@ export class MineVarianceTable extends Component {
   };
 
   transformRowData = (variances, codeHash) =>
-    variances.sort(this.sortByDateOrID).map((variance) => ({
-      key: variance.variance_id,
-      compliance_article_id: codeHash[variance.compliance_article_id] || String.EMPTY_FIELD,
-      expiry_date: formatDate(variance.expiry_date) || String.EMPTY_FIELD,
-      issue_date: formatDate(variance.issue_date) || String.EMPTY_FIELD,
-      note: variance.note,
-      received_date: formatDate(variance.received_date) || String.EMPTY_FIELD,
-      isOverdue: Date.parse(variance.expiry_date) < new Date(),
-      documents: variance.documents,
-    }));
+    variances.sort(this.sortByDateOrID).map((variance) => {
+      console.log(variance);
+      return {
+        key: variance.variance_id,
+        editVariance: variances[variance.variance_id],
+        compliance_article_id: codeHash[variance.compliance_article_id] || String.EMPTY_FIELD,
+        expiry_date: formatDate(variance.expiry_date) || String.EMPTY_FIELD,
+        issue_date: formatDate(variance.issue_date) || String.EMPTY_FIELD,
+        note: variance.note,
+        received_date: formatDate(variance.received_date) || String.EMPTY_FIELD,
+        isOverdue: Date.parse(variance.expiry_date) < new Date(),
+        documents: variance.documents,
+      };
+    });
 
   render() {
     const columns = [
@@ -130,7 +134,7 @@ export class MineVarianceTable extends Component {
       },
       {
         title: "",
-        dataIndex: "handleEditModal",
+        dataIndex: "editVariance",
         render: (text, record) => (
           <div title="" align="right">
             <AuthorizationWrapper permission={Permission.CREATE}>
@@ -138,7 +142,7 @@ export class MineVarianceTable extends Component {
                 type="primary"
                 size="small"
                 ghost
-                onClick={(event, record) => this.props.openViewVarianceModal(event, record)}
+                onClick={(event, text) => this.props.openViewVarianceModal(event, record.variance)}
               >
                 <img src={BRAND_PENCIL} alt="Edit/View" />
               </Button>

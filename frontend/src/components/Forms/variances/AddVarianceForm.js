@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm, change } from "redux-form";
 import { remove } from "lodash";
-import { Form, Button, Popconfirm } from "antd";
+import { Form, Button, Popconfirm, Radio } from "antd";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import { required, dateNotInFuture, maxLength } from "@/utils/Validate";
@@ -23,6 +23,7 @@ export class AddVarianceForm extends Component {
   state = {
     uploadedFiles: [],
     documentNameGuidMap: {},
+    isApproved: false,
   };
 
   onFileLoad = (documentName, document_manager_guid) => {
@@ -41,21 +42,24 @@ export class AddVarianceForm extends Component {
     change("uploadedFiles", this.state.uploadedFiles);
   };
 
+  onChange = (e) => {
+    this.setState({
+      isApproved: e.target.value,
+    });
+  };
+
   render() {
+    const formOptions = [
+      { label: "Application", value: false },
+      { label: "Approved Variance", value: true },
+    ];
     return (
       <Form
         layout="vertical"
         onSubmit={this.props.handleSubmit(this.props.onSubmit(this.state.documentNameGuidMap))}
       >
-        <Form.Item>
-          <Field
-            id="title"
-            name="title"
-            label="Requested For*"
-            component={renderConfig.FIELD}
-            // validate={[required]}
-          />
-        </Form.Item>
+        <p>Are you creating an application or an approved variance?</p>
+        <Radio.Group onChange={this.onChange} value={this.state.isApproved} options={formOptions} />
         <Form.Item>
           <Field
             id="compliance_article_id"
@@ -71,29 +75,36 @@ export class AddVarianceForm extends Component {
           <Field
             id="received_date"
             name="received_date"
-            label="Received date*"
+            label={this.state.isApproved ? "Received date*" : "Received date"}
             component={renderConfig.DATE}
-            validate={[required, dateNotInFuture]}
+            validate={this.state.isApproved ? [required, dateNotInFuture] : [dateNotInFuture]}
           />
+          {!this.state.isApproved && (
+            <p>Date received will default to today unless specified above</p>
+          )}
         </Form.Item>
-        <Form.Item>
-          <Field
-            id="issue_date"
-            name="issue_date"
-            label="Issue date*"
-            component={renderConfig.DATE}
-            validate={[required, dateNotInFuture]}
-          />
-        </Form.Item>
-        <Form.Item>
-          <Field
-            id="expiry_date"
-            name="expiry_date"
-            label="Expiry date*"
-            component={renderConfig.DATE}
-            validate={[required]}
-          />
-        </Form.Item>
+        {this.state.isApproved && (
+          <div>
+            <Form.Item>
+              <Field
+                id="issue_date"
+                name="issue_date"
+                label="Issue date*"
+                component={renderConfig.DATE}
+                validate={[required, dateNotInFuture]}
+              />
+            </Form.Item>
+            <Form.Item>
+              <Field
+                id="expiry_date"
+                name="expiry_date"
+                label="Expiry date*"
+                component={renderConfig.DATE}
+                validate={[required]}
+              />
+            </Form.Item>
+          </div>
+        )}
         <Form.Item>
           <Field
             id="note"
@@ -103,6 +114,23 @@ export class AddVarianceForm extends Component {
             validate={[maxLength(300)]}
           />
         </Form.Item>
+        <Form.Item>
+          <Field
+            id="OHSC"
+            name="OHSC"
+            label="Has this been reviewed by the OHSC?"
+            component={renderConfig.RADIO}
+          />
+        </Form.Item>
+        <Form.Item>
+          <Field
+            id="union"
+            name="union"
+            label="Has this been reviewed by the union?"
+            component={renderConfig.RADIO}
+          />
+        </Form.Item>
+        <br />
         <h5>upload files*</h5>
         <p> Please upload all the required documents here for the variance application</p>
         <br />

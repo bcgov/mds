@@ -21,8 +21,9 @@ const propTypes = {
 };
 
 export class MineVariance extends Component {
-  handleAddVariances = (files) => (values) =>
-    this.props
+  handleAddVariances = (files) => (values) => {
+    console.log(values);
+    return this.props
       .createVariance({ mineGuid: this.props.mine.mine_guid }, values)
       .then(async ({ data: { variance_id } }) => {
         await Promise.all(
@@ -39,30 +40,32 @@ export class MineVariance extends Component {
         this.props.closeModal();
         this.props.fetchVariancesByMine({ mineGuid: this.props.mine.mine_guid });
       });
+  };
 
-  openViewVarianceModal = (event) => {
+  openViewVarianceModal = (event, variance) => {
     event.preventDefault();
     this.props.openModal({
       props: {
         onSubmit: this.handleAddVariances,
         title: this.props.mine.mine_name,
         mineGuid: this.props.mine.mine_guid,
-        complianceCodes: this.props.complianceCodes,
+        variance,
       },
+      widthSize: "50vw",
       content: modalConfig.VIEW_VARIANCE,
     });
   };
 
-  openVarianceModal(event, variance) {
+  openVarianceModal(event) {
     event.preventDefault();
-    console.log(variance);
-    console.log("THIS IS THE VARIANCE");
     this.props.openModal({
       props: {
         onSubmit: this.handleAddVariances,
         title: ModalContent.ADD_VARIANCE(this.props.mine.mine_name),
         mineGuid: this.props.mine.mine_guid,
+        complianceCodes: this.props.complianceCodes,
       },
+      widthSize: "50vw",
       content: modalConfig.ADD_VARIANCE,
     });
   }

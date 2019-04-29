@@ -4,10 +4,12 @@ import { Field, reduxForm, change } from "redux-form";
 import { remove } from "lodash";
 import { Form, Button, Popconfirm, Row, Col } from "antd";
 import * as FORM from "@/constants/forms";
+import * as String from "@/constants/strings";
 import { renderConfig } from "@/components/common/config";
-import { required, dateNotInFuture } from "@/utils/Validate";
+import { required } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
 import VarianceFileUpload from "./VarianceFileUpload";
+import DocumentTable from "@/components/common/DocumentTable";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -83,46 +85,51 @@ export class EditVarianceForm extends Component {
             </Form.Item>
           </Col>
         </Row>
-        <p className="center">
-          Is this an existing approved variance? Please specify the dates below, if not, please
-          submit to complete
-        </p>
-        <br />
+
         <Row gutter={16}>
-          <Col md={8} xs={24}>
-            <Form.Item>
-              <Field
-                id="received_date"
-                name="received_date"
-                label="Received date*"
-                component={renderConfig.DATE}
-                validate={[required, dateNotInFuture]}
-              />
-            </Form.Item>
-          </Col>
-          <Col md={8} xs={24}>
-            <Form.Item>
-              <Field
-                id="issue_date"
-                name="issue_date"
-                label="Issue date*"
-                component={renderConfig.DATE}
-                validate={[required, dateNotInFuture]}
-              />
-            </Form.Item>
-          </Col>
-          <Col md={8} xs={24}>
+          <Col md={8} lg={24}>
             <Form.Item>
               <Field
                 id="expiry_date"
                 name="expiry_date"
-                label="Expiry date*"
+                label="Expiry date (Expiry date will default to 5 years from issue date unless specified below)"
                 component={renderConfig.DATE}
                 validate={[required]}
               />
             </Form.Item>
           </Col>
         </Row>
+        <h5>application details</h5>
+        <div className="content--light-grey padding-small">
+          <div className="inline-flex padding-small">
+            <p className="field-title">Mine</p>
+            <p> {String.EMPTY_FIELD}</p>
+          </div>
+          <div className="inline-flex padding-small">
+            <p className="field-title">Part of Code</p>
+            <p>{String.EMPTY_FIELD}</p>
+          </div>
+          <div className="inline-flex padding-small">
+            <p className="field-title">Submission date</p>
+            <p>{String.EMPTY_FIELD}</p>
+          </div>
+          <div className="inline-flex padding-small">
+            <p className="field-title">OHSC Union</p>
+            <p>{String.EMPTY_FIELD}</p>
+          </div>
+          <div className="inline-flex padding-small">
+            <p className="field-title">Union</p>
+            <p>{String.EMPTY_FIELD}</p>
+          </div>
+          <div className="inline-flex padding-small">
+            <p className="field-title">Description</p>
+            <p>{String.EMPTY_FIELD}</p>
+          </div>
+        </div>
+        <br />
+        <h5>documents</h5>
+        <DocumentTable />
+        <br />
         <h5>upload files</h5>
         <p> Please upload all the required documents here for the variance application</p>
         <br />
