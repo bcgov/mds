@@ -14,4 +14,4 @@ class VarianceApplicationStatusCodeResource(Resource, UserMixin, ErrorMixin):
     @requires_any_of([MINE_VIEW])
     @api.marshal_with(VARIANCE_APPLICATION_STATUS_CODE_MODEL, code=200, envelope='records')
     def get(self):
-        return VarianceApplicationStatusCode.active_codes()
+        return VarianceApplicationStatusCode.active()

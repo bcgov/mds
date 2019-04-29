@@ -15,5 +15,5 @@ class VarianceApplicationStatusCode(AuditMixin, Base):
 
 
     @classmethod
-    def active_codes(cls):
+    def active(cls):
         return cls.query.filter_by(active_ind=True).all()

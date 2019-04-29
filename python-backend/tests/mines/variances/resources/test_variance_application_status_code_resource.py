@@ -11,4 +11,4 @@ def test_get_variance_codes(test_client, db_session, auth_headers):
     get_resp = test_client.get(f'/variances/status-codes', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200
-    assert len(get_data['records']) == len(VarianceApplicationStatusCode.active_codes())
+    assert len(get_data['records']) == len(VarianceApplicationStatusCode.active())
