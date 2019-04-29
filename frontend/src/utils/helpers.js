@@ -91,3 +91,15 @@ export const normalizePhone = (value, previousValue) => {
 };
 
 export const upperCase = (value) => value && value.toUpperCase();
+
+export const getFiscalYear = () => {
+  const today = new Date();
+  const currentYear = today.getFullYear();
+  const fiscalYear = new Date(currentYear, 3, 1);
+  if (today > fiscalYear) {
+    return currentYear;
+  }
+  return currentYear - 1;
+};
+
+export const formatParamStringToArray = (param) => (param ? param.split(",").filter((x) => x) : []);

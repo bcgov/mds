@@ -206,8 +206,8 @@ export class MineHeader extends Component {
         </AuthorizationWrapper>
 
         <AuthorizationWrapper inTesting>
-          {(!this.props.mine.verified_status || !this.props.mine.verified_status.healthy_ind) && (
-            <Menu.Item key="2">
+          {this.props.mine.verified_status.healthy_ind !== true && (
+            <div className="custom-menu-item">
               <Popconfirm
                 placement="left"
                 title="Are you sure?"
@@ -225,12 +225,12 @@ export class MineHeader extends Component {
                   Verify Mine Data
                 </button>
               </Popconfirm>
-            </Menu.Item>
+            </div>
           )}
         </AuthorizationWrapper>
         <AuthorizationWrapper inTesting>
-          {(!this.props.mine.verified_status || this.props.mine.verified_status.healthy_ind) && (
-            <Menu.Item key="3">
+          {this.props.mine.verified_status.healthy_ind !== false && (
+            <div className="custom-menu-item">
               <Popconfirm
                 placement="left"
                 title="Are you sure?"
@@ -243,15 +243,11 @@ export class MineHeader extends Component {
                   Mark Data for Verification
                 </button>
               </Popconfirm>
-            </Menu.Item>
+            </div>
           )}
         </AuthorizationWrapper>
       </Menu>
     );
-
-    if (this.props.mine.verified_status) {
-      this.healthy = this.props.mine.verified_status.healthy_ind;
-    }
 
     return (
       <div className="dashboard__header--card">
@@ -259,13 +255,15 @@ export class MineHeader extends Component {
           <div className="inline-flex between center-mobile">
             <h1>
               {this.props.mine.mine_name}
-              {this.props.mine.verified_status && (
+              {this.props.mine.verified_status.healthy_ind !== null && (
                 <img
                   alt=""
                   className="padding-small"
-                  src={this.healthy ? SUCCESS_CHECKMARK : YELLOW_HAZARD}
+                  src={
+                    this.props.mine.verified_status.healthy_ind ? SUCCESS_CHECKMARK : YELLOW_HAZARD
+                  }
                   title={
-                    this.healthy
+                    this.props.mine.verified_status.healthy_ind
                       ? `Mine data verified by ${
                           this.props.mine.verified_status.verifying_user
                         } on ${formatDate(this.props.mine.verified_status.verifying_timestamp)}`

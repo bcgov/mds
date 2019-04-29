@@ -30,6 +30,8 @@ class Config(object):
     LDAP_IDIR_USERNAME = os.environ.get('LDAP_IDIR_USERNAME', "idir_username")
     LDAP_IDIR_PASSWORD = os.environ.get('LDAP_IDIR_PASSWORD', "idir_password")
 
+    BUNDLE_ERRORS = True  #RequestParser global config
+
     def JWT_ROLE_CALLBACK(jwt_dict):
         return (jwt_dict['realm_access']['roles'])
 
@@ -58,8 +60,7 @@ class Config(object):
     RESTPLUS_JSON = {'indent': None, 'separators': (',', ':')}
     COMPRESS_LEVEL = 9
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_MAX_OVERFLOW = 20
-    SQLALCHEMY_POOL_TIMEOUT = 300
+    SQLALCHEMY_ENGINE_OPTIONS = {'pool_timeout': 300, 'max_overflow': 20}
 
     # Flask-uploads configs
     UPLOADED_DOCUMENT_DEST = os.environ.get('UPLOADED_DOCUMENT_DEST', '/app/document_uploads')

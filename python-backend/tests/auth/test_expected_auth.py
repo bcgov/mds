@@ -2,6 +2,7 @@ import pytest
 from app.api.utils.access_decorators import MINE_VIEW, MINE_CREATE, MINE_ADMIN, MINESPACE_PROPONENT
 
 from app.api.document_manager.resources.document_manager import DocumentManagerResource
+from app.api.document_manager.resources.download_token import DownloadTokenResource
 from app.api.documents.expected.resources.document_status import ExpectedDocumentStatusResource
 from app.api.documents.expected.resources.documents import ExpectedDocumentResource
 from app.api.documents.expected.resources.expected_document_uploads import ExpectedDocumentUploadResource
@@ -38,10 +39,11 @@ from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserM
 @pytest.mark.parametrize(
     "resource,method,expected_roles",
     [(ComplianceArticleResource, "get", [MINE_VIEW]),
-     (DocumentManagerResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]),
+     (DocumentManagerResource, "get", []),
      (DocumentManagerResource, "post", [MINE_CREATE, MINESPACE_PROPONENT]),
      (DocumentManagerResource, "patch", [MINE_CREATE, MINESPACE_PROPONENT]),
      (DocumentManagerResource, "head", [MINE_CREATE, MINESPACE_PROPONENT]),
+     (DownloadTokenResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]),
      (ExpectedDocumentStatusResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]),
      (ExpectedDocumentResource, "get", [MINE_VIEW]),
      (ExpectedDocumentResource, "put", [MINE_CREATE, MINESPACE_PROPONENT]),
@@ -99,11 +101,8 @@ from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserM
      (VarianceDocumentUploadResource, "post", [MINE_CREATE, MINESPACE_PROPONENT]),
      (VarianceDocumentUploadResource, "put", [MINE_CREATE, MINESPACE_PROPONENT]),
      (VarianceUploadedDocumentsResource, "delete", [MINE_CREATE, MINESPACE_PROPONENT]),
-     (VarianceListResource, "get", [MINE_VIEW]),
-     (VarianceListResource, "post", [MINE_CREATE]),
-     (VarianceResource, "get", [MINE_VIEW])
-    ]
-)
+     (VarianceListResource, "get", [MINE_VIEW]), (VarianceListResource, "post", [MINE_CREATE]),
+     (VarianceResource, "get", [MINE_VIEW])])
 def test_endpoint_auth(resource, method, expected_roles):
     endpoint = getattr(resource, method, None)
     assert endpoint != None, '{0} does not have a {1} method.'.format(resource, method.upper())

@@ -30,7 +30,8 @@ def _import_empr_idir_users():
         for user in users:
             iud = IdirUserDetail.find_by_bcgov_guid(user["bcgov_guid"])
             if not iud:
-                new_cu = CoreUser.create(email=user["email"], phone_no=user["phone_no"], save=False)
+                new_cu = CoreUser.create(
+                    email=user["email"], phone_no=user["phone_no"], add_to_session=False)
                 new_iud = IdirUserDetail.create(
                     new_cu,
                     bcgov_guid=user["bcgov_guid"],
@@ -38,7 +39,7 @@ def _import_empr_idir_users():
                     title=user["title"],
                     city=user["city"],
                     department=user["department"],
-                    save=False)
+                    add_to_session=False)
                 for group in user["memberOf"]:
                     membership_group = IdirMembership.find_by_membership_name(group)
                     if not membership_group:

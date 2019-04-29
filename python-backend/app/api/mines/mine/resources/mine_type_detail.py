@@ -11,7 +11,7 @@ from app.api.constants import DISTURBANCE_CODES_CONFIG, COMMODITY_CODES_CONFIG
 
 
 class MineTypeDetailResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser()
+    parser = reqparse.RequestParser(trim=True)
     parser.add_argument(
         'mine_type_guid',
         type=str,
@@ -40,7 +40,7 @@ class MineTypeDetailResource(Resource, UserMixin, ErrorMixin):
 
         try:
             mine_type_detail = MineTypeDetail.create_mine_type_detail(
-                mine_type_guid, mine_disturbance_code, mine_commodity_code, save=False)
+                mine_type_guid, mine_disturbance_code, mine_commodity_code, add_to_session=False)
 
             if mine_disturbance_code:
                 (code, name, config) = (mine_disturbance_code, 'mine_disturbance_code',

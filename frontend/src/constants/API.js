@@ -32,7 +32,10 @@ export const EXPECTED_DOCUMENT = "/documents/expected";
 export const MINE_TENURE_TYPES = "/mines/mine-tenure-type-codes";
 export const MINE_TYPES = "/mines/mine-types";
 export const MINE_TYPES_DETAILS = "/mines/mine-types/details";
-export const DOCUMENT_MANAGER_FILE_GET_URL = "/document-manager";
+export const DOCUMENT_MANAGER_FILE_GET_URL = (token = {}) =>
+  `/document-manager?${queryString.stringify(token)}`;
+export const DOCUMENT_MANAGER_TOKEN_GET_URL = (documentManagerGuid) =>
+  `/document-manager/${documentManagerGuid}/token`;
 export const REMOVE_MINE_EXPECTED_DOCUMENT = (expectedDocumentGuid, mineDocumentGuid) =>
   `/documents/expected/${expectedDocumentGuid}/document/${mineDocumentGuid}`;
 export const MINE_MANAGER_HISTORY = (mineNo) =>
@@ -64,3 +67,10 @@ export const VARIANCE_DOCUMENTS = (mineGuid, varianceId) =>
   `/mines/${mineGuid}/variances/${varianceId}/documents`;
 export const VARIANCE_DOCUMENT = (mineGuid, varianceId, documentManagerGuid) =>
   `/mines/${mineGuid}/variances/${varianceId}/documents/${documentManagerGuid}`;
+
+// users
+export const CORE_USER = "/users/core";
+// incidents
+export const MINE_INCIDENTS = (mine_guid) => `/mines/${mine_guid}/incidents`;
+export const MINE_INCIDENT = (mine_incident_guid) => `/mines/incidents/${mine_incident_guid}`;
+export const MINE_INCIDENT_FOLLOWUP_ACTIONS = `/mines/incidents/followup-types`;

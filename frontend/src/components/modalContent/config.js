@@ -13,7 +13,7 @@ import EditPartyModal from "./EditPartyModal";
 import AddApplicationModal from "./AddApplicationModal";
 import EditApplicationModal from "./EditApplicationModal";
 import AddVarianceModal from "./AddVarianceModal";
-
+import AddIncidentModal from "./AddIncidentModal";
 // This file is anticipated to have multiple exports
 // eslint-disable-next-line import/prefer-default-export
 export const modalConfig = {
@@ -32,4 +32,5 @@ export const modalConfig = {
   ADD_APPLICATION: AddApplicationModal,
   EDIT_APPLICATION: EditApplicationModal,
   ADD_VARIANCE: AddVarianceModal,
+  MINE_INCIDENT: AddIncidentModal,
 };

@@ -14,6 +14,7 @@ import minespaceReducer from "@/reducers/minespaceReducer";
 import permitReducer from "@/reducers/permitReducer";
 import applicationReducer from "@/reducers/applicationReducer";
 import varianceReducer from "@/reducers/varianceReducer";
+import userReducer from "@/reducers/userReducer";
 
 export const reducerObject = {
   form: formReducer,
@@ -28,6 +29,7 @@ export const reducerObject = {
   [reducerTypes.STATIC_CONTENT]: staticContentReducer,
   [reducerTypes.MINESPACE]: minespaceReducer,
   [reducerTypes.VARIANCES]: varianceReducer,
+  [reducerTypes.USERS]: userReducer,
   [reducerTypes.CREATE_PARTY]: createReducer(networkReducer, reducerTypes.CREATE_PARTY),
   [reducerTypes.UPDATE_PARTY]: createReducer(networkReducer, reducerTypes.UPDATE_PARTY),
   [reducerTypes.GET_PARTIES]: createReducer(networkReducer, reducerTypes.GET_PARTIES),
@@ -76,6 +78,7 @@ export const reducerObject = {
     networkReducer,
     reducerTypes.REMOVE_DOCUMENT_FROM_VARIANCE
   ),
+  [reducerTypes.GET_CORE_USERS]: createReducer(networkReducer, reducerTypes.GET_CORE_USERS),
 };
 
 export const rootReducer = combineReducers(reducerObject);
