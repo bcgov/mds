@@ -110,7 +110,6 @@ def _process_NRIS_data(data, mine_no):
     advisories = 0
     warnings = 0
     num_open_orders = 0
-    num_closed_orders = 0
     num_overdue_orders = 0
     num_inspections = 0
     num_inspections_since_april = 0
@@ -168,8 +167,8 @@ def _process_NRIS_data(data, mine_no):
                             'orderCompletionDate') is not None and _get_datetime_from_NRIS_data(
                                 order.get('orderCompletionDate')) < datetime.now():
                         num_overdue_orders += 1
-                        order_to_add['overdue'] = True
-                        order_to_add['order_status'] = "Overdue"
+                        order_to_add['overdue'] = True if order_to_add['order_status'] == "Open" else False
+                        order_to_add['order_status'] = "Overdue" if order_to_add['order_status'] == "Open" else "Closed"
 
                     if order.get('orderStatus') == "Open":
                         num_open_orders += 1

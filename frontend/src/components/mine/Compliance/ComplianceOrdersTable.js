@@ -96,12 +96,11 @@ const columns = [
   },
 ];
 
-const transformRowData = (orders) => {
+const transformRowData = (orders) =>
   orders.map((order) => ({
     key: order.order_no,
     ...order,
   }));
-};
 
 const defaultPageSize = 10;
 
