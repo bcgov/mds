@@ -19,9 +19,9 @@ const propTypes = {
   name: PropTypes.string,
   label: PropTypes.string,
   partyLabel: PropTypes.string,
-  // Set person to only see people. Displays both people and organizations by default.
+  // Defaults to false, set to true to only see people. Displays both people and organizations by default.
   person: PropTypes.bool,
-  // Set organization to only see organizations. Displays both people and organizations by default.
+  // Defaults to false, set to true to only see organizations. Displays both people and organizations by default.
   organization: PropTypes.bool,
   allowAddingParties: PropTypes.bool,
   validate: PropTypes.arrayOf(PropTypes.func),
@@ -62,6 +62,14 @@ const renderAddPartyFooter = (showAddParty, partyLabel) => (
 );
 
 const transformData = (data, options, footer, searchTerm) => {
+  // Party data is converted to AutoComplete Options, then sorted by similarity to the search text based on.
+  // This handles multi-word names, middle names, and alternatives orders (depending on what the back end
+  // returns). For example, a search for John Smith could show the results in the order below, without
+  // completely filtering any out:
+  // John Smith
+  // Smith John
+  // John James Smith
+  // John Williams
   const transformedData = data
     .map((opt) => (
       <AutoComplete.Option key={opt} value={opt}>
@@ -73,6 +81,7 @@ const transformData = (data, options, footer, searchTerm) => {
         compareTwoStrings(searchTerm, b.props.children) -
         compareTwoStrings(searchTerm, a.props.children)
     );
+  // Display footer only if desired (Add new party behavior is enabled.)
   return footer
     ? transformedData.concat(
         <AutoComplete.Option disabled key="footer" value="footer">
@@ -100,10 +109,8 @@ export class PartySelectField extends Component {
   };
 
   componentWillReceiveProps = (nextProps) => {
-    const partiesUpdated = this.props.parties !== nextProps.parties;
-    const lastCreatedPartyUpdated = this.props.lastCreatedParty !== nextProps.lastCreatedParty;
-
-    if (partiesUpdated) {
+    // If new search results have been returned, transform the results and store them in component state.
+    if (this.props.parties !== nextProps.parties) {
       let filteredParties = nextProps.parties;
 
       if (this.props.organization && !this.props.person) {
@@ -127,7 +134,8 @@ export class PartySelectField extends Component {
         return { partyDataSource: newPartyDataSource };
       });
 
-      if (lastCreatedPartyUpdated) {
+      // If a new party was just added, detect this and set the selected party to the newly created party.
+      if (this.props.lastCreatedParty !== nextProps.lastCreatedParty) {
         this.setState({
           selectedOption: {
             key: nextProps.lastCreatedParty.party_guid,
@@ -147,6 +155,8 @@ export class PartySelectField extends Component {
     this.setState({ selectedOption: option });
   };
 
+  // Validator to ensure the selected option is in the collection of available options.
+  // This validator is appened to any validators passed in from the form in the render function below.
   validOption = (value) =>
     this.state.partyDataSource.find((opt) => opt.key === value)
       ? undefined

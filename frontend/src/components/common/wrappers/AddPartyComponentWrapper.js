@@ -18,10 +18,13 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   createParty: PropTypes.func.isRequired,
   setAddPartyFormState: PropTypes.func.isRequired,
+  // addPartyFormState is selected from the partiesReducer
   addPartyFormState: PropTypes.objectOf(
     PropTypes.shape({
       showingAddPartyForm: PropTypes.bool,
+      // Does the form allow adding new persons
       person: PropTypes.bool,
+      // Does the form allow adding new organizations
       organization: PropTypes.bool,
       partyLabel: PropTypes.string,
     })
@@ -46,6 +49,7 @@ export class AddPartyComponentWrapper extends Component {
   state = { isPerson: true, addingParty: false };
 
   componentWillMount = () => {
+    // Form values are reset to default when mounted as the modal may have been closed with the form showing.
     this.resetAddPartyForm();
   };
 
@@ -137,6 +141,7 @@ export class AddPartyComponentWrapper extends Component {
           showThumbs={false}
           swipeable={false}
         >
+          {/* Set original form to display:none to preserve its state, while not allowing any interaction such as tabbing to the hidden form. */}
           <div style={this.state.addingParty ? { display: "none" } : {}}>
             {ChildComponent && (
               <ChildComponent
