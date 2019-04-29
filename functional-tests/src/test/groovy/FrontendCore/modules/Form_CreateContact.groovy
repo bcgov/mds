@@ -9,7 +9,8 @@ class Form_CreateContact extends Module {
         header {$("div", id:"rcDialogTitle0").text()}
 
         //Part one of contact form
-        roleToggle       (wait:true) {$("input", type:"radio")}
+        // roleToggle       (wait:true) {$('span',class:'ant-radio-button').has("input", type:"radio",value:'true')}
+        roleToggle       (wait:true) {$("input", type:"radio",value:'false')}
         firstName        (wait:true) {$("input", id:"first_name")}
         lastName         (wait:true) {$("input", id:"party_name")}
         email            (wait:true) {$("input", id:"email")}
@@ -37,43 +38,43 @@ class Form_CreateContact extends Module {
 
     def createContactFormOne(mineContactData){
 
-        if(mineContactData.roleToggle!=null){
-            //select toggle
+        if(mineContactData.roleToggle!=""){
+            roleToggle.click()
         }
-        if(mineContactData.firstName!=null){
+        if(mineContactData.firstName!=""){
             firstName=mineContactData.firstName
         }
-        if(mineContactData.lastName!=null){
+        if(mineContactData.lastName!=""){
             lastName=mineContactData.lastName
         }
-        if(mineContactData.email!=null){
+        if(mineContactData.email!=""){
             email=mineContactData.email
         }
-        if(mineContactData.phoneNo!=null){
+        if(mineContactData.phoneNo!=""){
             phoneNo=mineContactData.phoneNo
         }
-        if(mineContactData.ext!=null){
+        if(mineContactData.ext!=""){
             ext=mineContactData.ext
         }
-        if(mineContactData.suiteNo!=null){
+        if(mineContactData.suiteNo!=""){
             suiteNo=mineContactData.suiteNo
         }
-        if(mineContactData.streetAddress1!=null){
+        if(mineContactData.streetAddress1!=""){
             streetAddress1=mineContactData.streetAddress1
         }
-        if(mineContactData.streetAddress2!=null){
+        if(mineContactData.streetAddress2!=""){
             streetAddress2=mineContactData.streetAddress2
         }
-        if(mineContactData.provinceDropDown!=null){
-            //not sure what needs doing
+        if(mineContactData.provinceDropDown!=""){
+            //Implement if needed
         }
-        if(mineContactData.city!=null){
+        if(mineContactData.city!=""){
             city=mineContactData.city
         }
-        if(mineContactData.postalCode!=null){
+        if(mineContactData.postalCode!=""){
             postalCode=mineContactData.postalCode
         }                
-      
+        waitFor() {!nextButton.@disabled}
         nextButton.click()
 
     }
@@ -81,12 +82,14 @@ class Form_CreateContact extends Module {
 
     def createContactFormTwo(mineContactDataTwo){
         waitFor() {header=="Add New Contact"}
-        addRoleButton.click()
-        roleClick.click()
-        role = mineContactDataTwo.role
-        mine = mineContactDataTwo.mine
-        
-        minePopulated.click()
+        if(mineContactDataTwo.role!=""){
+            addRoleButton.click()
+            roleClick.click()
+            role = mineContactDataTwo.role
+            mine = mineContactDataTwo.mine
+            minePopulated.click()
+        }
+        waitFor() {!submitButton.@disabled}
         submitButton.click()
     }
       

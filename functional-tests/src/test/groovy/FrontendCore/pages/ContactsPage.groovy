@@ -9,6 +9,7 @@ class ContactsPage extends Page {
     static content = {
         //general
         toastMessage (wait: true) {$("div", class:"ant-notification-notice-message")}
+        successfulToastMessage (wait: true) {$("div", class:"ant-notification-notice-content").has("svg", "data-icon":"check-circle")}
         loadingScreen (required:false) {$("div.loading-screen")}
 
         //Form to be completed to create a contact
@@ -19,8 +20,12 @@ class ContactsPage extends Page {
         searchBoxFirstName  (wait:true){$("input", id:"first_name")}
         searchBoxLastName   (wait:true){$("input", id:"last_name")}
         applyFilterButton   (wait:true){$("button", type:"submit")}
+        
+        //Table content
         contactTableContent (wait:true){$("tr", class:"ant-table-row ant-table-row-level-0")}
+        contactTableNameOne (wait:true){$("tr", class:"ant-table-row ant-table-row-level-0").has("a", text:"Sharman, Jon")}
 
     }
+
 
 }
