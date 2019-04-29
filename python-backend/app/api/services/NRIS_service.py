@@ -163,8 +163,8 @@ def _process_NRIS_data(data, mine_no):
                         'overdue': False,
                     }
 
-                    if order.get('orderCompletionDate') is not None and
-                    _get_datetime_from_NRIS_data(order.get('orderCompletionDate')) < datetime.now() and
+                    if order.get('orderCompletionDate') is not None and \
+                    _get_datetime_from_NRIS_data(order.get('orderCompletionDate')) < datetime.now() and \
                     order.get('orderStatus') == "Open":
                         num_overdue_orders += 1
                         order_to_add['overdue'] = True

@@ -37,7 +37,7 @@ def setup_info(test_client):
         'advisories': 3,
         'warnings': 2,
         'section_35_orders': 2,
-        'open_orders': [{
+        'orders': [{
             'order_no': '162409-1',
             'code_violation': '1.1.2',
             'report_no': 162409,
@@ -182,7 +182,7 @@ def test_happy_get_from_NRIS(test_client, auth_headers, setup_info):
     with mock.patch('requests.get') as nris_data_mock:
 
         nris_data_mock.side_effect = [MockResponse({'access_token':'1234-121241-241241-241'}, 200), MockResponse(setup_info.get('NRIS_Mock_data'), 200)]
-        
+
         get_resp = test_client.get(
             '/mines/compliance/1234567',
             headers=auth_headers['full_auth_header'])
@@ -198,7 +198,7 @@ def test_happy_get_from_NRIS(test_client, auth_headers, setup_info):
         assert get_data['advisories'] == expected['advisories']
         assert get_data['warnings'] == expected['warnings']
         assert get_data['section_35_orders'] == expected['section_35_orders']
-        pairs = zip(get_data['open_orders'], expected['open_orders'])
+        pairs = zip(get_data['orders'], expected['orders'])
         assert any(x != y for x, y in pairs)
 
 def test_no_NRIS_Token(test_client, auth_headers, setup_info):
@@ -211,10 +211,10 @@ def test_no_NRIS_Token(test_client, auth_headers, setup_info):
             headers=auth_headers['full_auth_header'])
 
         get_data = json.loads(get_resp.data.decode())
-        
+
         assert get_resp.status_code == 403
         assert get_data['error']['message'] is not None
-        
+
 def test_no_NRIS_Data(test_client, auth_headers, setup_info):
 
     with mock.patch('requests.get') as nris_mock_return:
@@ -225,6 +225,6 @@ def test_no_NRIS_Data(test_client, auth_headers, setup_info):
             headers=auth_headers['full_auth_header'])
 
         get_data = json.loads(get_resp.data.decode())
-        
+
         assert get_resp.status_code == 404
         assert get_data['error']['message'] is not None
