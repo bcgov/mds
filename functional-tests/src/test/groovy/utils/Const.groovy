@@ -12,9 +12,9 @@ class Const{
     static Path scriptLocation = Paths.get(sourceUri)
     static Dotenv dotenv = Dotenv.configure().directory("./").ignoreIfMalformed().ignoreIfMissing().load()
     static systemEnv = System.getenv()
-    static final String CONTACT_FIRST_NAME = "Jon",
-                        CONTACT_LAST_NAME = "Sharman",
-                        CONTACT_FULL_NAME = "Sharman, Jon",
+    static final String CONTACT_FIRST_NAME = "Wreckit",
+                        CONTACT_LAST_NAME = "Ralph",
+                        CONTACT_FULL_NAME = "Ralph, Wreckit",
                         MINE_NAME_2 = "MINE2TEST",
                         MINE_ROLE_2 = "Mine Manager",
                         MINE_NAME   = "MINETEST",

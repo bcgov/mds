@@ -14,11 +14,11 @@ import utils.Const
 class  Contacts extends GebReportingSpec {
     //Constants for tests
     static NULL = "" 
-    static CONTACT_EMAIL = 'jon@email.ca'
+    static CONTACT_EMAIL = 'edward@email.ca'
     static CONTACT_PHONE_NUMBER = "1234567980"
-    static CONTACT_FIRST_NAME_2 = "Zydrunas"
+    static CONTACT_FIRST_NAME_2 = "Halfthor"
     static CONTACT_LAST_NAME_2 = "Zavicus"
-    static CONTACT_FULL_NAME_2 = "Zavicus, Zydrunas"
+    static CONTACT_FULL_NAME_2 = "Zavicus, Halfthor"
     static input1 = new MineContactDataOne(NULL, Const.CONTACT_FIRST_NAME,Const.CONTACT_LAST_NAME,
                 CONTACT_EMAIL, CONTACT_PHONE_NUMBER,NULL,NULL,NULL,NULL,NULL,NULL,NULL)        
     static input2 = new MineContactDataTwo(Const.MINE_ROLE_2,Const.MINE_NAME_2)
@@ -28,7 +28,7 @@ class  Contacts extends GebReportingSpec {
         given: "I am on the homepage"
         to Dashboard
 
-        when: "I clicke on the contact page link."
+        when: "I click on the contact page link."
         contactPageButton.click()
 
         then: "I am on the contact tab"

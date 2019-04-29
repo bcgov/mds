@@ -34,7 +34,7 @@ DECLARE
 
 
     PARTY_GUID3 uuid = '9fa4739f-b400-4ab0-af2c-7a1280f5d043';
-    FIRST_NAME3 varchar ='Zydrunas';
+    FIRST_NAME3 varchar ='Halfthor';
     SUR_NAME3 varchar ='Zavicus';
     PHONE3 varchar =  '111-222-3333';
     EXT3 varchar =  '007';
