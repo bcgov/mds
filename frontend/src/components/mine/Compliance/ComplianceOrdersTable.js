@@ -38,7 +38,7 @@ const columns = [
     dataIndex: "order_no",
     render: (text, record) => (
       <div title="Order #" style={errorStyle(record.overdue)}>
-        {record.order_no === null ? "-" : record.order_no}
+        {record.order_no || "-"}
       </div>
     ),
     sorter: (a, b) => (a.order_no > b.order_no ? -1 : 1),
@@ -48,7 +48,7 @@ const columns = [
     dataIndex: "violation",
     render: (text, record) => (
       <div title="Violation" style={errorStyle(record.overdue)}>
-        {record.violation === null ? "-" : record.violation}
+        {record.violation || "-"}
       </div>
     ),
     sorter: (a, b) => (a.violation > b.violation ? -1 : 1),
@@ -58,7 +58,7 @@ const columns = [
     dataIndex: "report_no",
     render: (text, record) => (
       <div title="Report #" style={errorStyle(record.overdue)}>
-        {record.report_no === null ? "-" : record.report_no}
+        {record.report_no || "-"}
       </div>
     ),
     sorter: (a, b) => (a.report_no > b.report_no ? -1 : 1),
@@ -68,10 +68,20 @@ const columns = [
     dataIndex: "inspector",
     render: (text, record) => (
       <div title="Inspector Name" style={errorStyle(record.overdue)}>
-        {record.inspector === null ? "-" : record.inspector}
+        {record.inspector || "-"}
       </div>
     ),
     sorter: (a, b) => (a.inspector > b.inspector ? -1 : 1),
+  },
+  {
+    title: "Order Status",
+    dataIndex: "status",
+    render: (text, record) => (
+      <div title="Order Status" style={errorStyle(record.overdue)}>
+        {record.order_status || "-"}
+      </div>
+    ),
+    sorter: (a, b) => (a.order_status > b.order_status ? -1 : 1),
   },
   {
     title: "Due Date",
@@ -86,11 +96,12 @@ const columns = [
   },
 ];
 
-const transformRowData = (orders) =>
+const transformRowData = (orders) => {
   orders.map((order) => ({
     key: order.order_no,
     ...order,
   }));
+};
 
 const defaultPageSize = 10;
 

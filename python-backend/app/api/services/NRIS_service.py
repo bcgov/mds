@@ -115,8 +115,7 @@ def _process_NRIS_data(data, mine_no):
     num_inspections = 0
     num_inspections_since_april = 0
     section_35_orders = 0
-    open_orders_list = []
-    closed_orders_list = []
+    orders_list = []
 
 
     for report in data:
@@ -144,7 +143,7 @@ def _process_NRIS_data(data, mine_no):
             stop_warnings = stop.get('stopWarnings')
 
             for order in stop_orders:
-                if order.get('orderStatus') == 'Open':
+                if order.get('orderStatus') in ['Open', 'Closed']:
 
                     legislation = order.get('orderLegislations')
                     permit = order.get('orderPermits')
@@ -161,49 +160,21 @@ def _process_NRIS_data(data, mine_no):
                         'report_no': report.get('assessmentId'),
                         'inspector': inspector,
                         'due_date': order.get('orderCompletionDate'),
+                        'order_status': order.get('orderStatus'),
                         'overdue': False,
                     }
-
-                    num_open_orders += 1
 
                     if order.get(
                             'orderCompletionDate') is not None and _get_datetime_from_NRIS_data(
                                 order.get('orderCompletionDate')) < datetime.now():
                         num_overdue_orders += 1
                         order_to_add['overdue'] = True
+                        order_to_add['order_status'] = "Overdue"
 
-                    open_orders_list.append(order_to_add)
-                    order_count += 1
+                    if order.get('orderStatus') == "Open":
+                        num_open_orders += 1
 
-                if order.get('orderStatus') == 'Closed':
-
-                    legislation = order.get('orderLegislations')
-                    permit = order.get('orderPermits')
-                    section = None
-
-                    if legislation:
-                        section = legislation[0].get('section') if len(legislation) > 0 else ""
-                    elif permit:
-                        section = permit[0].get('permitSectionNumber') if len(permit) > 0 else ""
-
-                    order_to_add = {
-                        'order_no': f'{report.get("assessmentId")}-{order_count}',
-                        'violation': section,
-                        'report_no': report.get('assessmentId'),
-                        'inspector': inspector,
-                        'due_date': order.get('orderCompletionDate'),
-                        'overdue': False,
-                    }
-
-                    num_closed_orders += 1
-
-                    if order.get(
-                            'orderCompletionDate') is not None and _get_datetime_from_NRIS_data(
-                                order.get('orderCompletionDate')) < datetime.now():
-                        num_overdue_orders += 1
-                        order_to_add['overdue'] = True
-
-                    closed_orders_list.append(order_to_add)
+                    orders_list.append(order_to_add)
                     order_count += 1
 
                 if order.get('orderAuthoritySection') == 'Section 35':
@@ -224,13 +195,11 @@ def _process_NRIS_data(data, mine_no):
         'num_inspections': num_inspections,
         'num_inspections_since_april': num_inspections_since_april,
         'num_open_orders': num_open_orders,
-        'num_closed_orders': num_closed_orders,
         'num_overdue_orders': num_overdue_orders,
         'advisories': advisories,
         'warnings': warnings,
         'section_35_orders': section_35_orders,
-        'open_orders': open_orders_list,
-        'closed_orders': closed_orders_list,
+        'orders': orders_list,
     }
     cache.set(NRIS_COMPLIANCE_DATA(mine_no), overview, timeout=TIMEOUT_24_HOURS)
     return overview
