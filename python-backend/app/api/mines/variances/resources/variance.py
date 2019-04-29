@@ -26,14 +26,22 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
         help='ID representing the MA or HSRCM code to which this variance relates.',
         required=True)
     parser.add_argument(
+        'received_date',
+        store_missing=False,
+        help='The date on which the variance was received.',
+        required=True)
+    parser.add_argument(
+        'variance_application_status_code',
+        type=str,
+        store_missing=False,
+        help='A 3-character code indicating the status type of the variance. Default: REV')
+    parser.add_argument(
         'note',
         type=str,
         store_missing=False,
         help='A note to include on the variance. Limited to 300 characters.')
     parser.add_argument(
         'issue_date', store_missing=False, help='The date on which the variance was issued.')
-    parser.add_argument(
-        'received_date', store_missing=False, help='The date on which the variance was received.')
     parser.add_argument(
         'expiry_date', store_missing=False, help='The date on which the variance expires.')
 
@@ -60,14 +68,18 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
     def post(self, mine_guid):
         data = VarianceListResource.parser.parse_args()
         compliance_article_id = data['compliance_article_id']
+        received_date = data['received_date']
 
         variance = Variance.create(
-            compliance_article_id,
-            mine_guid,
+            compliance_article_id=compliance_article_id,
+            mine_guid=mine_guid,
+            received_date=received_date,
             # Optional fields
+            variance_application_status_code=data.get('variance_application_status_code'),
+            ohsc_ind=data.get('ohsc_ind'),
+            union_ind=data.get('union_ind'),
             note=data.get('note'),
             issue_date=data.get('issue_date'),
-            received_date=data.get('received_date'),
             expiry_date=data.get('expiry_date'))
 
         if not variance:
