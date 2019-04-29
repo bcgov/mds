@@ -156,7 +156,19 @@ ON CONFLICT DO NOTHING;
 
 
 --mine_party_appt_type_code seed data is in base schema and updated by V2019.01.24.08.51__add_tsf_qualified_person_mpa_type
-
+INSERT INTO mine_party_appt_type_code (
+    mine_party_appt_type_code,
+    description,
+    display_order,
+    create_user,
+    update_user,
+    person,
+    organization,
+    grouping_level
+    )
+VALUES
+    ('HSM', 'Health and Safety Manager', 111, 'system-mds', 'system-mds', 'true', 'false', 2);
+ON CONFLICT DO NOTHING;
 
 INSERT INTO mine_disturbance_code
     (
