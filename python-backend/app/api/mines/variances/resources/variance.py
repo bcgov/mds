@@ -36,6 +36,21 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
         store_missing=False,
         help='A 3-character code indicating the status type of the variance. Default: REV')
     parser.add_argument(
+        'ohsc_ind',
+        type=bool,
+        store_missing=False,
+        help='Indicates if variance application has been reviewed by the OHSC.')
+    parser.add_argument(
+        'union_ind',
+        type=bool,
+        store_missing=False,
+        help='Indicates if variance application has been reviewed by the union.')
+    parser.add_argument(
+        'inspector_id',
+        type=int,
+        store_missing=False,
+        help='ID of the person who inspected the mine during the variance application process.')
+    parser.add_argument(
         'note',
         type=str,
         store_missing=False,
@@ -59,6 +74,7 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
 
         return variances
 
+
     @api.doc(
         description='Create a new variance for a given mine.',
         params={'mine_guid': 'guid of the mine with which to associate the variances'})
@@ -78,6 +94,7 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
             variance_application_status_code=data.get('variance_application_status_code'),
             ohsc_ind=data.get('ohsc_ind'),
             union_ind=data.get('union_ind'),
+            inspector_id=data.get('inspector_id'),
             note=data.get('note'),
             issue_date=data.get('issue_date'),
             expiry_date=data.get('expiry_date'))

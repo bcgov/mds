@@ -164,6 +164,10 @@ VARIANCE_MODEL = api.model(
     'Variance', {
         'variance_id': fields.Integer,
         'compliance_article_id': fields.Integer,
+        'variance_application_status_code': fields.String,
+        'ohsc_ind': fields.Boolean,
+        'union_ind': fields.Boolean,
+        'inspector_id': fields.Integer,
         'note': fields.String,
         'issue_date': fields.Date,
         'received_date': fields.Date,
