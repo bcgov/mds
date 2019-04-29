@@ -1,5 +1,6 @@
 import uuid
 from datetime import datetime
+from os import path
 from sqlalchemy.orm.scoping import scoped_session
 
 import factory
@@ -70,13 +71,16 @@ class DocumentManagerFactory(BaseFactory):
     class Meta:
         model = DocumentManager
 
+    class Params:
+        path_root = ''
+
     document_manager_id = factory.Sequence(lambda n: n)
     document_guid = GUID
-    full_storage_path = factory.LazyAttribute(lambda o: f'mine_no/category/{o.file_display_name}')
+    full_storage_path = factory.LazyAttribute(lambda o: path.join(o.path_root, 'mine_no/category', o.file_display_name))
     upload_started_date = TODAY
     upload_completed_date = TODAY
     file_display_name = factory.Faker('file_name')
-    path_display_name = factory.LazyAttribute(lambda o: f'mine_name/category/{o.file_display_name}')
+    path_display_name = factory.LazyAttribute(lambda o: path.join(o.path_root, 'mine_name/category', o.file_display_name))
 
 
 class MineDocumentFactory(BaseFactory):
@@ -213,10 +217,15 @@ class VarianceFactory(BaseFactory):
 
     class Params:
         mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
+        core_user = factory.SubFactory('tests.factories.CoreUserFactory')
 
     variance_id = factory.Sequence(lambda n: n)
     compliance_article_id = factory.LazyFunction(RandomComplianceArticleId)
     mine_guid = factory.SelfAttribute('mine.mine_guid')
+    variance_application_status_code = 'APP' # TODO: Make this dynamic w/ dates
+    ohsc_ind = factory.Faker('boolean', chance_of_getting_true=50)
+    union_ind = factory.Faker('boolean', chance_of_getting_true=50)
+    inspector_id = factory.SelfAttribute('core_user.core_user_id')
     note = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
     issue_date = TODAY
     received_date = TODAY
@@ -432,6 +441,7 @@ class SubscriptionFactory(BaseFactory):
     subscription_id = factory.Sequence(lambda n: n)
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     user_name = factory.Faker('last_name')
+
 
 class MineFactory(BaseFactory):
     class Meta:
