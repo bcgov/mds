@@ -162,7 +162,6 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
                         mine_guid=pa.permit.mine_guid,
                     )
                     pa.documents.append(new_pa_doc)
-                pa.save()
             else:
                 setattr(pa, key, value)
 
