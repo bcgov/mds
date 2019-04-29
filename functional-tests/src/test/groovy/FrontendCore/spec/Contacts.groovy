@@ -14,16 +14,16 @@ import utils.Const
 class  Contacts extends GebReportingSpec {
     //Constants for tests
     static NULL = "" 
-    static input2 = new MineContactDataTwo(Const.MINE_ROLE_2,Const.MINE_NAME_2)
-    static input3 = new MineContactDataTwo(NULL,NULL)
-    static CONTACT_FIRST_NAME = "Jon"
-    static CONTACT_LAST_NAME = "Sharman"
-    static CONTACT_FULL_NAME = "Sharman, Jon"
     static CONTACT_EMAIL = 'jon@email.ca'
     static CONTACT_PHONE_NUMBER = "1234567980"
     static CONTACT_FIRST_NAME_2 = "Zydrunas"
     static CONTACT_LAST_NAME_2 = "Zavicus"
     static CONTACT_FULL_NAME_2 = "Zavicus, Zydrunas"
+    static input1 = new MineContactDataOne(NULL, Const.CONTACT_FIRST_NAME,Const.CONTACT_LAST_NAME,
+                CONTACT_EMAIL, CONTACT_PHONE_NUMBER,NULL,NULL,NULL,NULL,NULL,NULL,NULL)        
+    static input2 = new MineContactDataTwo(Const.MINE_ROLE_2,Const.MINE_NAME_2)
+    
+    
     def "Scenario: User can navigate to the contacts page."(){
         given: "I am on the homepage"
         to Dashboard
@@ -57,44 +57,13 @@ class  Contacts extends GebReportingSpec {
         createContactButton.click()
 
         and: "I fill out the first form."
-        createContactForm.createContactFormOne(input)
+        createContactForm.createContactFormOne(input1)
         createContactForm.createContactFormTwo(input2)
         waitFor {toastMessage != null}
 
         then: "I should get a successful message"
         successfulToastMessage != null
         contactTableNameOne != null
-
-        where:
-        scenario                            | input
-        "Given minimal info for person"     |new MineContactDataOne(NULL,
-                CONTACT_FIRST_NAME,CONTACT_LAST_NAME,CONTACT_EMAIL,
-                CONTACT_PHONE_NUMBER,NULL,NULL,NULL,NULL,NULL,NULL,NULL)                  
     }
-
-    // def "Scenario: User can create a company contact."(){
-    //     given: "I am on the contact page."
-    //     to ContactsPage
-
-    //     when: "I click on the contact page link."
-    //     createContactButton.click()
-
-    //     and: "I fill out the first form."
-    //     createContactForm.createContactFormOne(input)
-    //     // createContactForm.createContactFormOne(input3)
-    //     createContactForm.createContactFormTwo(input3)
-    //     waitFor {toastMessage != null}
-
-    //     then: "I should get a successful message"
-    //     toastMessage.text() == "Successfully created a new party"
-    
-
-    //     where:
-    //     scenario                            | input
-    //     "Given minimal info for person"     |new MineContactDataOne("Company",
-    //             NULL,CONTACT_LAST_NAME,CONTACT_EMAIL,
-    //             CONTACT_PHONE_NUMBER,NULL,NULL,NULL,NULL,NULL,NULL,NULL)                  
-    // }
-
    
 }

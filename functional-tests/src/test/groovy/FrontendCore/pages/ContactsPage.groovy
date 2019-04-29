@@ -2,6 +2,7 @@ package pages
 
 import geb.Page
 import modules.*
+import utils.Const
 
 class ContactsPage extends Page {
     static at = { waitFor() {!loadingScreen.displayed}}
@@ -23,7 +24,7 @@ class ContactsPage extends Page {
         
         //Table content
         contactTableContent (wait:true){$("tr", class:"ant-table-row ant-table-row-level-0")}
-        contactTableNameOne (wait:true){$("tr", class:"ant-table-row ant-table-row-level-0").has("a", text:"Sharman, Jon")}
+        contactTableNameOne (wait:true){$("tr", class:"ant-table-row ant-table-row-level-0").has("a", text: Const.CONTACT_FULL_NAME)}
 
     }
 

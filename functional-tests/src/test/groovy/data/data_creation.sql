@@ -17,7 +17,7 @@ DECLARE
     
     MINE_GUID_2 uuid = '38b7573b-a5fa-441b-ae98-6b663357f8bc';
     MINE_NO_2 varchar = 'BLAH0002';
-    MINE_NAME_2 varchar = 'MINETEST2';
+    MINE_NAME_2 varchar = 'MINE2TEST';
     MINE_LAT_2 numeric = '55'     ;
     MINE_LONG_2 numeric = '-130'  ;
     MINE_NOTE_2 varchar = 'This is a test record for contacts test';

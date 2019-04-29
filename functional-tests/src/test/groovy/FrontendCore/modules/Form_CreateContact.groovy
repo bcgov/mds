@@ -9,8 +9,7 @@ class Form_CreateContact extends Module {
         header {$("div", id:"rcDialogTitle0").text()}
 
         //Part one of contact form
-        // roleToggle       (wait:true) {$('span',class:'ant-radio-button').has("input", type:"radio",value:'true')}
-        roleToggle       (wait:true) {$("input", type:"radio",value:'false')}
+        // roleToggle       (wait:true) {$("input", type:"radio",value:'false')}
         firstName        (wait:true) {$("input", id:"first_name")}
         lastName         (wait:true) {$("input", id:"party_name")}
         email            (wait:true) {$("input", id:"email")}
@@ -39,7 +38,7 @@ class Form_CreateContact extends Module {
     def createContactFormOne(mineContactData){
 
         if(mineContactData.roleToggle!=""){
-            roleToggle.click()
+            //Implement if needed
         }
         if(mineContactData.firstName!=""){
             firstName=mineContactData.firstName
