@@ -18,10 +18,10 @@ from app.api.mines.mine.resources.mine_type_detail import MineTypeDetailResource
 from app.api.mines.mine.resources.mine_type import MineTypeResource
 from app.api.mines.mine.resources.mine import MineResource, MineListSearch, MineListResource
 from app.api.mines.mine.resources.mine_map import MineMapResource
-from app.api.mines.variances.resources.variance import (VarianceListResource,
-                                                        VarianceResource,
-                                                        VarianceDocumentUploadResource,
-                                                        VarianceUploadedDocumentsResource)
+from app.api.mines.variances.resources.variance import VarianceResource
+from app.api.mines.variances.resources.variance_list import VarianceListResource
+from app.api.mines.variances.resources.variance_document_upload import VarianceDocumentUploadResource
+from app.api.mines.variances.resources.variance_uploaded_documents import VarianceUploadedDocumentsResource
 from app.api.mines.region.resources.region import MineRegionResource
 from app.api.mines.status.resources.status import MineStatusResource
 from app.api.mines.tailings.resources.tailings import MineTailingsStorageFacilityListResource
