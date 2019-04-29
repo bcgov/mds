@@ -13,6 +13,8 @@ import {
   createPermitAmendment,
   removePermitAmendmentDocument,
 } from "@/actionCreators/permitActionCreator";
+import { fetchPartyRelationships } from "@/actionCreators/partiesActionCreator";
+import { fetchMineRecordById } from "@/actionCreators/mineActionCreator";
 import AddButton from "@/components/common/AddButton";
 import MinePermitTable from "@/components/mine/Permit/MinePermitTable";
 import * as ModalContent from "@/constants/modalContent";
@@ -29,6 +31,7 @@ const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit),
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
+  fetchPartyRelationships: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   createPermit: PropTypes.func.isRequired,
@@ -37,6 +40,7 @@ const propTypes = {
   updatePermitAmendment: PropTypes.func.isRequired,
   createPermitAmendment: PropTypes.func.isRequired,
   removePermitAmendmentDocument: PropTypes.func.isRequired,
+  fetchMineRecordById: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -45,13 +49,30 @@ const defaultProps = {
 };
 
 export class MinePermitInfo extends Component {
-  componentWillMount() {
+  state = { expandedRowKeys: [] };
+
+  componentWillMount = () => {
     this.props.fetchPermits({ mine_guid: this.props.mine.mine_guid });
-  }
+  };
+
+  componentWillReceiveProps = (nextProps) => {
+    if (this.props.permits.length > 0) {
+      const currentPermits = this.props.permits.map((x) => x.permit_guid);
+      const nextPermits = nextProps.permits.map((x) => x.permit_guid);
+      this.setState({
+        expandedRowKeys: nextPermits.filter((key) => currentPermits.indexOf(key) === -1),
+      });
+    }
+  };
 
   closePermitModal = () => {
     this.props.closeModal();
+    this.props.fetchMineRecordById(this.props.mine.mine_guid);
     this.props.fetchPermits({ mine_guid: this.props.mine.mine_guid });
+    this.props.fetchPartyRelationships({
+      mine_guid: this.props.mine.mine_guid,
+      relationships: "party",
+    });
   };
 
   // Permit Modals
@@ -184,6 +205,14 @@ export class MinePermitInfo extends Component {
       this.props.fetchPermits({ mine_guid: this.props.mine.mine_guid });
     });
 
+  onExpand = (expanded, record) =>
+    this.setState((prevState) => {
+      const expandedRowKeys = expanded
+        ? prevState.expandedRowKeys.concat(record.key)
+        : prevState.expandedRowKeys.filter((key) => key !== record.key);
+      return { expandedRowKeys };
+    });
+
   render() {
     return [
       <div>
@@ -219,6 +248,8 @@ export class MinePermitInfo extends Component {
           openEditAmendmentModal={this.openEditAmendmentModal}
           openAddPermitAmendmentModal={this.openAddPermitAmendmentModal}
           openAddAmalgamatedPermitModal={this.openAddAmalgamatedPermitModal}
+          expandedRowKeys={this.state.expandedRowKeys}
+          onExpand={this.onExpand}
         />
       ),
     ];
@@ -238,6 +269,8 @@ const mapDispatchToProps = (dispatch) =>
       updatePermitAmendment,
       createPermitAmendment,
       removePermitAmendmentDocument,
+      fetchPartyRelationships,
+      fetchMineRecordById,
     },
     dispatch
   );
