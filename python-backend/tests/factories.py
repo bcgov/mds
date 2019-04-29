@@ -217,10 +217,15 @@ class VarianceFactory(BaseFactory):
 
     class Params:
         mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
+        core_user = factory.SubFactory('tests.factories.CoreUserFactory')
 
     variance_id = factory.Sequence(lambda n: n)
     compliance_article_id = factory.LazyFunction(RandomComplianceArticleId)
     mine_guid = factory.SelfAttribute('mine.mine_guid')
+    variance_application_status_code = 'APP' # TODO: Make this dynamic w/ dates
+    ohsc_ind = factory.Faker('boolean', chance_of_getting_true=50)
+    union_ind = factory.Faker('boolean', chance_of_getting_true=50)
+    inspector_id = factory.SelfAttribute('core_user.core_user_id')
     note = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
     issue_date = TODAY
     received_date = TODAY
