@@ -14,13 +14,14 @@ import { fetchParties, setAddPartyFormState } from "@/actionCreators/partiesActi
 import { getRawParties, getLastCreatedParty } from "@/selectors/partiesSelectors";
 import { createItemMap, createItemIdsArray } from "@/utils/helpers";
 
-// Set organization to only see organizations or set people to only see people. Displays both people and organizations by default.
 const propTypes = {
   id: PropTypes.string,
   name: PropTypes.string,
   label: PropTypes.string,
   partyLabel: PropTypes.string,
+  // Set person to only see people. Displays both people and organizations by default.
   person: PropTypes.bool,
+  // Set organization to only see organizations. Displays both people and organizations by default.
   organization: PropTypes.bool,
   allowAddingParties: PropTypes.bool,
   validate: PropTypes.arrayOf(PropTypes.func),
