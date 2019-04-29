@@ -38,8 +38,6 @@ export const DOCUMENT_MANAGER_TOKEN_GET_URL = (documentManagerGuid) =>
   `/document-manager/${documentManagerGuid}/token`;
 export const REMOVE_MINE_EXPECTED_DOCUMENT = (expectedDocumentGuid, mineDocumentGuid) =>
   `/documents/expected/${expectedDocumentGuid}/document/${mineDocumentGuid}`;
-export const MINE_MANAGER_HISTORY = (mineNo) =>
-  `/parties/mines/manager-history/csv?mine_no=${mineNo}`;
 export const MINESPACE_USER = "/users/minespace";
 export const PROVINCE_CODES = "/parties/sub-division-codes";
 
