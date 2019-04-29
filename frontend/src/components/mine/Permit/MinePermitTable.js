@@ -1,11 +1,12 @@
 import React from "react";
-import { Table, Menu, Dropdown, Button, Icon } from "antd";
+import { Table, Menu, Dropdown, Button, Icon, Tooltip } from "antd";
 import NullScreen from "@/components/common/NullScreen";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Strings from "@/constants/strings";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import { formatDate } from "@/utils/helpers";
+import { orderBy } from "lodash";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getPartyRelationships } from "@/selectors/partiesSelectors";
@@ -29,6 +30,8 @@ const propTypes = {
   openAddAmalgamatedPermitModal: PropTypes.func.isRequired,
   // This prop is used. Linting issue is unclear
   openEditAmendmentModal: PropTypes.func.isRequired, // eslint-disable-line react/no-unused-prop-types
+  expandedRowKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onExpand: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -247,16 +250,14 @@ const childColumns = [
 ];
 
 const getPermittees = (partyRelationships, permit) =>
-  partyRelationships
-    .filter(({ related_guid }) => permit.permit_guid === related_guid)
-    .sort((order1, order2) => {
-      const date1 = Date.parse(order1.due_date) || 0;
-      const date2 = Date.parse(order2.due_date) || 0;
-      return date1 === date2 ? order1.order_no - order2.order_no : date1 - date2;
-    });
+  orderBy(
+    partyRelationships.filter(({ related_guid }) => permit.permit_guid === related_guid),
+    (o) => (o.end_date && new Date(o.end_date).getTime()) || Infinity,
+    ["desc"]
+  );
 
 const getPermitteeName = (permittees) =>
-  permittees[0] ? permittees[0].party.party_name : Strings.EMPTY_FIELD;
+  permittees[0] ? permittees[0].party.name : Strings.EMPTY_FIELD;
 
 const transformRowData = (
   permit,
@@ -321,6 +322,27 @@ const transformChildRowData = (
   documents: amendment.related_documents,
 });
 
+export const RenderPermitTableExpandIcon = (rowProps) => (
+  <a
+    role="link"
+    className="expand-row-icon"
+    onClick={(e) => rowProps.onExpand(rowProps.record, e)}
+    onKeyPress={(e) => rowProps.onExpand(rowProps.record, e)}
+    style={{ cursor: "pointer" }}
+    tabIndex="0"
+  >
+    {rowProps.expanded ? (
+      <Tooltip title="Click to hide amendment history." placement="right" mouseEnterDelay={1}>
+        <Icon type="minus-square" theme="filled" className="icon-lg--grey" />
+      </Tooltip>
+    ) : (
+      <Tooltip title="Click to view amendment history." placement="right" mouseEnterDelay={1}>
+        <Icon type="plus-square" theme="filled" className="icon-lg--grey" />
+      </Tooltip>
+    )}
+  </a>
+);
+
 export const MinePermitTable = (props) => {
   const amendmentHistory = (permit) => {
     const childRowData = permit.amendments.map((amendment, index) =>
@@ -352,13 +374,17 @@ export const MinePermitTable = (props) => {
   return (
     <Table
       className="nested-table"
-      rowClassName={() => "table-row-align-middle"}
+      rowClassName={() => "table-row-align-middle pointer"}
       align="left"
       pagination={false}
       columns={columns}
       dataSource={rowData}
-      expandedRowRender={amendmentHistory}
       locale={{ emptyText: <NullScreen type="permit" /> }}
+      expandIcon={RenderPermitTableExpandIcon}
+      expandRowByClick
+      expandedRowRender={amendmentHistory}
+      expandedRowKeys={props.expandedRowKeys}
+      onExpand={props.onExpand}
     />
   );
 };

@@ -2,12 +2,14 @@ import partiesReducer from "@/reducers/partiesReducer";
 import { storeParty, storeParties } from "@/actions/partyActions";
 
 const baseExpectedValue = {
-  parties: {},
-  rawParties: {},
+  parties: [],
+  rawParties: [],
   partyIds: [],
   partyRelationships: [],
   partyRelationshipTypes: [],
   partyPageData: {},
+  addPartyFormState: {},
+  lastCreatedParty: {},
 };
 
 // Creates deep copy of javascript object instead of setting a reference

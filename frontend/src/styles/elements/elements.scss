@@ -154,6 +154,10 @@ hr {
   color: $ant-label-color;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 // use these classes when you require a desired style but a header tag is not needed!
 .h1 {
   @extend h1;
@@ -173,4 +177,12 @@ hr {
 
 .h5 {
   @extend h5;
+}
+
+// Used for the footer of the PartySelectField. Not yet sure if this is reusuable or justifies its own component file.
+.footer-text {
+  font-style: italic;
+  font-weight: 500;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
