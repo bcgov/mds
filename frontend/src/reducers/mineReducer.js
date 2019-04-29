@@ -59,8 +59,10 @@ const mineReducer = (state = initialState, action) => {
     case actionTypes.STORE_CURRENT_USER_MINE_VERIFIED_STATUS:
       return {
         ...state,
-        currentUserVerifiedMines: action.payload.healthy,
-        currentUserUnverifiedMinesMines: action.payload.unhealthy,
+        currentUserVerifiedMines: action.payload.filter((status) => status.healthy_ind === true),
+        currentUserUnverifiedMinesMines: action.payload.filter(
+          (status) => status.healthy_ind !== true
+        ),
       };
     case actionTypes.STORE_MINE_INCIDENTS:
       return {

@@ -394,7 +394,6 @@ class MinePartyAppointmentFactory(BaseFactory):
     class Meta:
         model = MinePartyAppointment
 
-    mine_party_appt_id = factory.Sequence(lambda n: n)
     mine_party_appt_guid = GUID
     mine = factory.SubFactory('tests.factories.MineFactory')
     party = factory.SubFactory(PartyFactory, person=True)
@@ -405,10 +404,11 @@ class MinePartyAppointmentFactory(BaseFactory):
     processed_on = TODAY
 
     mine_tailings_storage_facility_guid = factory.LazyAttribute(
-        lambda o: o.mine.mine_tailings_storage_facilities[0].mine_tailings_storage_facility_guid
-        if o.mine_party_appt_type_code == 'EOR' else None)
-    permit_guid = factory.LazyAttribute(lambda o: o.mine.mine_permit[0].permit_guid
-                                        if o.mine_party_appt_type_code == 'PMT' else None)
+        lambda o: o.mine.mine_tailings_storage_facilities[0].mine_tailings_storage_facility_guid if o.mine_party_appt_type_code == 'EOR' else None
+    )
+    permit_guid = factory.LazyAttribute(
+        lambda o: o.mine.mine_permit[0].permit_guid if o.mine_party_appt_type_code == 'PMT' else None
+    )
 
 
 class CoreUserFactory(BaseFactory):

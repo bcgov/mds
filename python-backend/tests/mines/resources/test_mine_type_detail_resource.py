@@ -134,13 +134,7 @@ def test_post_mine_disturbance_duplicate(test_client, db_session, auth_headers):
         data=test_mine_type_data,
         headers=auth_headers['full_auth_header'])
     post_data2 = json.loads(post_resp2.data.decode())
-    assert post_resp2.status_code == 400
-    assert post_data2 == {
-        'error': {
-            'status': 400,
-            'message': 'Error: Unable to create mine_type_detail.'
-        }
-    }
+    assert post_resp2.status_code == 500
 
 
 def test_post_mine_commodity_duplicate(test_client, db_session, auth_headers):
@@ -165,13 +159,7 @@ def test_post_mine_commodity_duplicate(test_client, db_session, auth_headers):
         data=test_mine_type_data,
         headers=auth_headers['full_auth_header'])
     post_data2 = json.loads(post_resp2.data.decode())
-    assert post_resp2.status_code == 400
-    assert post_data2 == {
-        'error': {
-            'status': 400,
-            'message': 'Error: Unable to create mine_type_detail.'
-        }
-    }
+    assert post_resp2.status_code == 500
 
 
 def test_post_mine_type_detail_invalid_mine_disturbance_code_for_tenure_type(
