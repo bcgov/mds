@@ -337,7 +337,9 @@ ShallowWrapper {
       "key": undefined,
       "nodeType": "class",
       "props": Object {
+        "expandedRowKeys": Array [],
         "major_mine_ind": undefined,
+        "onExpand": [Function],
         "openAddAmalgamatedPermitModal": [Function],
         "openAddPermitAmendmentModal": [Function],
         "openEditAmendmentModal": [Function],

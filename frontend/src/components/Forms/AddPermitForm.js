@@ -4,9 +4,8 @@ import { compose } from "redux";
 import { remove } from "lodash";
 import PropTypes from "prop-types";
 import { Field, reduxForm, change, formValueSelector } from "redux-form";
-import RenderField from "@/components/common/RenderField";
-import RenderSelect from "@/components/common/RenderSelect";
-import RenderDate from "@/components/common/RenderDate";
+import { renderConfig } from "@/components/common/config";
+import PartySelectField from "@/components/common/PartySelectField";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import { required, dateNotInFuture, maxLength } from "@/utils/Validate";
@@ -21,15 +20,15 @@ const propTypes = {
   permitStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
-  permitTypeCode: PropTypes.string,
-  permitActivityTypeCode: PropTypes.string,
   mine_guid: PropTypes.string.isRequired,
+  permitTypeCode: PropTypes.string,
+  permitIsExploration: PropTypes.bool,
   change: PropTypes.func,
 };
 
 const defaultProps = {
   permitTypeCode: "",
-  permitActivityTypeCode: "",
+  permitIsExploration: false,
   change,
 };
 
@@ -56,26 +55,12 @@ const permitTypes = [
   },
 ];
 
-const permitActivityTypes = [
-  {
-    label: "Operation",
-    value: "",
-  },
-  {
-    label: "Exploration",
-    value: "X",
-  },
-];
-
 const selector = formValueSelector(FORM.ADD_PERMIT);
 
 const validateBusinessRules = (values) => {
   const errors = {};
-  if (
-    values.permit_activity_type === "X" &&
-    !(values.permit_type === "C" || values.permit_type === "M")
-  ) {
-    errors.permit_activity_type = "Exploration activity is only valid for Coal and Placer permits";
+  if (values.permit_is_exploration && !(values.permit_type === "C" || values.permit_type === "M")) {
+    errors.permit_type = "Exploration is only valid for Coal and Placer permits";
   }
   return errors;
 };
@@ -102,27 +87,36 @@ export class AddPermitForm extends Component {
         <Row gutter={48}>
           <Col md={12} sm={24} className="border--right--layout">
             <Form.Item>
+              <PartySelectField
+                id="permittee_party_guid"
+                name="permittee_party_guid"
+                label="Permittee*"
+                partyLabel="permittee"
+                validate={[required]}
+                allowAddingParties
+              />
+            </Form.Item>
+            <Form.Item>
               <Field
                 id="permit_type"
                 name="permit_type"
                 label="Permit type*"
                 placeholder="Select a permit type"
-                component={RenderSelect}
+                component={renderConfig.SELECT}
                 validate={[required]}
                 data={permitTypes}
               />
             </Form.Item>
             {(this.props.permitTypeCode === "C" ||
               this.props.permitTypeCode === "M" ||
-              this.props.permitActivityTypeCode === "X") && (
+              this.props.permitIsExploration) && (
               <Form.Item>
                 <Field
-                  id="permit activity type*"
-                  name="permit_activity_type"
-                  label="Permit activity type*"
-                  placeholder="Select a permit activity type"
-                  component={RenderSelect}
-                  data={permitActivityTypes}
+                  id="permit_is_exploration"
+                  name="permit_is_exploration"
+                  label="Exploration permit"
+                  type="checkbox"
+                  component={renderConfig.CHECKBOX}
                 />
               </Form.Item>
             )}
@@ -131,11 +125,11 @@ export class AddPermitForm extends Component {
                 id="permit_no"
                 name="permit_no"
                 label="Permit number*"
-                component={RenderField}
+                component={renderConfig.FIELD}
                 validate={[required, maxLength(9)]}
                 inlineLabel={
                   this.props.permitTypeCode &&
-                  `${this.props.permitTypeCode}${this.props.permitActivityTypeCode} -`
+                  `${this.props.permitTypeCode}${this.props.permitIsExploration ? "X" : ""} -`
                 }
               />
             </Form.Item>
@@ -145,7 +139,7 @@ export class AddPermitForm extends Component {
                 name="permit_status_code"
                 label="Permit status*"
                 placeholder="Select a permit status"
-                component={RenderSelect}
+                component={renderConfig.SELECT}
                 data={this.props.permitStatusOptions}
                 validate={[required]}
               />
@@ -155,7 +149,7 @@ export class AddPermitForm extends Component {
                 id="issue_date"
                 name="issue_date"
                 label="Issue date*"
-                component={RenderDate}
+                component={renderConfig.DATE}
                 validate={[required, dateNotInFuture]}
               />
             </Form.Item>
@@ -206,7 +200,7 @@ export default compose(
   connect((state) => ({
     permitStatusOptions: getDropdownPermitStatusOptions(state),
     permitTypeCode: selector(state, "permit_type"),
-    permitActivityTypeCode: selector(state, "permit_activity_type"),
+    permitIsExploration: selector(state, "permit_is_exploration"),
   })),
   reduxForm({
     form: FORM.ADD_PERMIT,
