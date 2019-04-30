@@ -120,7 +120,7 @@ const initialSearchValues = {
   due_date: "",
   inspector: "",
   violation: [],
-  overdue: "",
+  order_status: "",
 };
 
 export class MineDashboard extends Component {
@@ -183,10 +183,10 @@ export class MineDashboard extends Component {
       violation: formatParamStringToArray(violation),
       ...remainingParams,
     };
-    // check that mineComplianceInfo contains open_orders
+
     const orders =
-      this.props.mineComplianceInfo && this.props.mineComplianceInfo.open_orders
-        ? this.props.mineComplianceInfo.open_orders
+      this.props.mineComplianceInfo && this.props.mineComplianceInfo.orders
+        ? this.props.mineComplianceInfo.orders
         : [];
     const filteredOrders = orders.filter((order) => this.handleFiltering(order, formattedParams));
 
@@ -198,8 +198,8 @@ export class MineDashboard extends Component {
 
   handleFiltering = (order, params) => {
     // convert string to boolean before passing it into a filter check
-    const parsedOverdue = params.overdue === "" ? "" : JSON.parse(params.overdue);
-    const overdue = params.overdue === "" || order.overdue === parsedOverdue;
+    const order_status =
+      params.order_status === "" || order.order_status.includes(params.order_status);
     const inspector =
       params.inspector === "" ||
       order.inspector.toLowerCase().includes(params.inspector.toLowerCase());
@@ -208,7 +208,7 @@ export class MineDashboard extends Component {
     const reportNoString = order.report_no.toString();
     const reportNo = params.report_no === "" || reportNoString.includes(params.report_no);
     const violation = params.violation.length === 0 || params.violation.includes(order.violation);
-    return overdue && inspector && date && orderNo && reportNo && violation;
+    return order_status && inspector && date && orderNo && reportNo && violation;
   };
 
   handleComplianceFilter = (values) => {
@@ -267,7 +267,7 @@ export class MineDashboard extends Component {
       this.props.fetchMineComplianceInfo(this.props.mines[id].mine_no, true).then((data) => {
         this.setState({
           complianceInfoLoading: false,
-          filteredOrders: data && data.open_orders ? data.open_orders : [],
+          filteredOrders: data && data.orders ? data.orders : [],
         });
       });
     });
