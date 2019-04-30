@@ -425,6 +425,7 @@ export class MineHeader extends Component {
                 ? this.props.mineRegionHash[this.props.mine.mine_region]
                 : String.EMPTY_FIELD}
             </p>
+            <a href="www.google.ca">Map URL</a>
           </div>
         </div>
       </div>
