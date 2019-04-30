@@ -78,8 +78,8 @@ export class MineComplianceInfo extends Component {
                 />
               </div>
             </div>
-            {this.props.mineComplianceInfo.open_orders &&
-              this.props.mineComplianceInfo.open_orders.length > 0 && (
+            {this.props.mineComplianceInfo.orders &&
+              this.props.mineComplianceInfo.orders.length > 0 && (
                 <div>
                   <br />
                   <h4>INSPECTION ORDERS</h4>
