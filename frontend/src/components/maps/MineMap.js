@@ -51,8 +51,10 @@ class MineMap extends Component {
   handleLoadMap = (map, view) => {
     if (!this.props.mine) {
       this.renderWidgets(view);
+    } else {
+      this.renderBasemapToggle(view);
     }
-    this.renderBasemapToggle(view);
+
     this.setState({ view });
   };
 
