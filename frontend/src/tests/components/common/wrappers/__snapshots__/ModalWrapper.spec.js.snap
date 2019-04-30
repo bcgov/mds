@@ -72,10 +72,15 @@ ShallowWrapper {
             }
           }
         />,
-        <mockConstructor
+        <Connect(AddPartyComponentWrapper)
+          childProps={
+            Object {
+              "title": "mockTitle",
+            }
+          }
           clearOnSubmit={false}
           closeModal={[MockFunction]}
-          title="mockTitle"
+          content={[MockFunction]}
         />,
       ],
       "closable": false,
@@ -174,15 +179,18 @@ ShallowWrapper {
       Object {
         "instance": null,
         "key": undefined,
-        "nodeType": "function",
+        "nodeType": "class",
         "props": Object {
+          "childProps": Object {
+            "title": "mockTitle",
+          },
           "clearOnSubmit": false,
           "closeModal": [MockFunction],
-          "title": "mockTitle",
+          "content": [MockFunction],
         },
         "ref": null,
         "rendered": null,
-        "type": [MockFunction],
+        "type": [Function],
       },
     ],
     "type": [Function],
@@ -237,10 +245,15 @@ ShallowWrapper {
               }
             }
           />,
-          <mockConstructor
+          <Connect(AddPartyComponentWrapper)
+            childProps={
+              Object {
+                "title": "mockTitle",
+              }
+            }
             clearOnSubmit={false}
             closeModal={[MockFunction]}
-            title="mockTitle"
+            content={[MockFunction]}
           />,
         ],
         "closable": false,
@@ -339,15 +352,18 @@ ShallowWrapper {
         Object {
           "instance": null,
           "key": undefined,
-          "nodeType": "function",
+          "nodeType": "class",
           "props": Object {
+            "childProps": Object {
+              "title": "mockTitle",
+            },
             "clearOnSubmit": false,
             "closeModal": [MockFunction],
-            "title": "mockTitle",
+            "content": [MockFunction],
           },
           "ref": null,
           "rendered": null,
-          "type": [MockFunction],
+          "type": [Function],
         },
       ],
       "type": [Function],

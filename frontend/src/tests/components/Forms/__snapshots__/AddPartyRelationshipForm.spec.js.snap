@@ -44,17 +44,12 @@ ShallowWrapper {
             <FormItem
               hasFeedback={false}
             >
-              <Field
-                component={[Function]}
-                data={undefined}
-                handleChange={undefined}
+              <Connect(PartySelectField)
+                allowAddingParties={true}
                 id="party_guid"
-                label="Name *"
                 name="party_guid"
-                options={undefined}
                 validate={
                   Array [
-                    [Function],
                     [Function],
                   ]
                 }
@@ -159,17 +154,12 @@ ShallowWrapper {
             <FormItem
               hasFeedback={false}
             >
-              <Field
-                component={[Function]}
-                data={undefined}
-                handleChange={undefined}
+              <Connect(PartySelectField)
+                allowAddingParties={true}
                 id="party_guid"
-                label="Name *"
                 name="party_guid"
-                options={undefined}
                 validate={
                   Array [
-                    [Function],
                     [Function],
                   ]
                 }
@@ -187,17 +177,12 @@ ShallowWrapper {
             "children": <FormItem
               hasFeedback={false}
             >
-              <Field
-                component={[Function]}
-                data={undefined}
-                handleChange={undefined}
+              <Connect(PartySelectField)
+                allowAddingParties={true}
                 id="party_guid"
-                label="Name *"
                 name="party_guid"
-                options={undefined}
                 validate={
                   Array [
-                    [Function],
                     [Function],
                   ]
                 }
@@ -212,17 +197,12 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "class",
             "props": Object {
-              "children": <Field
-                component={[Function]}
-                data={undefined}
-                handleChange={undefined}
+              "children": <Connect(PartySelectField)
+                allowAddingParties={true}
                 id="party_guid"
-                label="Name *"
                 name="party_guid"
-                options={undefined}
                 validate={
                   Array [
-                    [Function],
                     [Function],
                   ]
                 }
@@ -235,15 +215,10 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "component": [Function],
-                "data": undefined,
-                "handleChange": undefined,
+                "allowAddingParties": true,
                 "id": "party_guid",
-                "label": "Name *",
                 "name": "party_guid",
-                "options": undefined,
                 "validate": Array [
-                  [Function],
                   [Function],
                 ],
               },
@@ -556,17 +531,12 @@ ShallowWrapper {
               <FormItem
                 hasFeedback={false}
               >
-                <Field
-                  component={[Function]}
-                  data={undefined}
-                  handleChange={undefined}
+                <Connect(PartySelectField)
+                  allowAddingParties={true}
                   id="party_guid"
-                  label="Name *"
                   name="party_guid"
-                  options={undefined}
                   validate={
                     Array [
-                      [Function],
                       [Function],
                     ]
                   }
@@ -671,17 +641,12 @@ ShallowWrapper {
               <FormItem
                 hasFeedback={false}
               >
-                <Field
-                  component={[Function]}
-                  data={undefined}
-                  handleChange={undefined}
+                <Connect(PartySelectField)
+                  allowAddingParties={true}
                   id="party_guid"
-                  label="Name *"
                   name="party_guid"
-                  options={undefined}
                   validate={
                     Array [
-                      [Function],
                       [Function],
                     ]
                   }
@@ -699,17 +664,12 @@ ShallowWrapper {
               "children": <FormItem
                 hasFeedback={false}
               >
-                <Field
-                  component={[Function]}
-                  data={undefined}
-                  handleChange={undefined}
+                <Connect(PartySelectField)
+                  allowAddingParties={true}
                   id="party_guid"
-                  label="Name *"
                   name="party_guid"
-                  options={undefined}
                   validate={
                     Array [
-                      [Function],
                       [Function],
                     ]
                   }
@@ -724,17 +684,12 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "children": <Field
-                  component={[Function]}
-                  data={undefined}
-                  handleChange={undefined}
+                "children": <Connect(PartySelectField)
+                  allowAddingParties={true}
                   id="party_guid"
-                  label="Name *"
                   name="party_guid"
-                  options={undefined}
                   validate={
                     Array [
-                      [Function],
                       [Function],
                     ]
                   }
@@ -747,15 +702,10 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "component": [Function],
-                  "data": undefined,
-                  "handleChange": undefined,
+                  "allowAddingParties": true,
                   "id": "party_guid",
-                  "label": "Name *",
                   "name": "party_guid",
-                  "options": undefined,
                   "validate": Array [
-                    [Function],
                     [Function],
                   ],
                 },
