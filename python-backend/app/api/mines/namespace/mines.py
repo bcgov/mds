@@ -15,7 +15,6 @@ from ..compliance.resources.compliance_article import ComplianceArticleResource
 from ..mine.resources.mine_basicinfo import MineBasicInfoResource
 from app.api.mines.mine.resources.mine_verified_status import MineVerifiedStatusResource, MineVerifiedStatusListResource
 from ..subscription.resources.subscription import MineSubscriptionResource, MineSubscriptionListResource
-from app.api.mines.mine.resources.mine_verified_status import MineVerifiedStatusResource
 from ..variances.resources.variance import VarianceResource
 from ..variances.resources.variance_list import VarianceListResource
 from ..variances.resources.variance_document_upload import VarianceDocumentUploadResource

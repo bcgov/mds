@@ -62,7 +62,7 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
     @api.doc(
         description='Get a single variance.',
         params={
-            'mine_guid': 'guid of the mine to which the variance is associated',
+            'mine_guid': 'GUID of the mine to which the variance is associated',
             'variance_id': 'ID of the variance to fetch'
         })
     @requires_any_of([MINE_VIEW])
@@ -79,7 +79,7 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
     @api.doc(
         description='Update a variance.',
         params={
-            'mine_guid': 'guid of the mine to which the variance is associated',
+            'mine_guid': 'GUID of the mine to which the variance is associated',
             'variance_id': 'ID of the variance to update'
         })
     @requires_any_of([MINE_CREATE])
