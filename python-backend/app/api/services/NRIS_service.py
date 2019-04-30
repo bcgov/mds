@@ -114,7 +114,7 @@ def _process_NRIS_data(data, mine_no):
     num_inspections = 0
     num_inspections_since_april = 0
     section_35_orders = 0
-    open_orders_list = []
+    orders_list = []
 
 
     for report in data:
@@ -127,11 +127,11 @@ def _process_NRIS_data(data, mine_no):
         fiscal_year = _get_fiscal_year()
         april_1_date_string = f'{fiscal_year}-04-01 00:00'
         april_1 = _get_datetime_from_NRIS_data(april_1_date_string)
-        assessment_type = report.get('assessmentSubType')  
+        assessment_type = report.get('assessmentSubType')
 
         if assessment_type == 'Inspection' and one_year_ago < report_date:
             num_inspections +=1
-        
+
         if assessment_type == 'Inspection' and april_1 < report_date:
             num_inspections_since_april +=1
 
@@ -142,7 +142,7 @@ def _process_NRIS_data(data, mine_no):
             stop_warnings = stop.get('stopWarnings')
 
             for order in stop_orders:
-                if order.get('orderStatus') == 'Open':
+                if order.get('orderStatus') in ['Open', 'Closed']:
 
                     legislation = order.get('orderLegislations')
                     permit = order.get('orderPermits')
@@ -159,18 +159,21 @@ def _process_NRIS_data(data, mine_no):
                         'report_no': report.get('assessmentId'),
                         'inspector': inspector,
                         'due_date': order.get('orderCompletionDate'),
+                        'order_status': order.get('orderStatus'),
                         'overdue': False,
                     }
 
-                    num_open_orders += 1
-
-                    if order.get(
-                            'orderCompletionDate') is not None and _get_datetime_from_NRIS_data(
-                                order.get('orderCompletionDate')) < datetime.now():
+                    if order.get('orderCompletionDate') is not None and \
+                    _get_datetime_from_NRIS_data(order.get('orderCompletionDate')) < datetime.now() and \
+                    order.get('orderStatus') == "Open":
                         num_overdue_orders += 1
                         order_to_add['overdue'] = True
+                        order_to_add['order_status'] = "Overdue"
 
-                    open_orders_list.append(order_to_add)
+                    if order.get('orderStatus') == "Open":
+                        num_open_orders += 1
+
+                    orders_list.append(order_to_add)
                     order_count += 1
 
                 if order.get('orderAuthoritySection') == 'Section 35':
@@ -183,7 +186,7 @@ def _process_NRIS_data(data, mine_no):
 
     if data:
         data = data[0] if len(data) > 0 else []
- 
+
     latest_report = data
     overview = {
         'last_inspection': latest_report.get('assessmentDate') if latest_report else None,
@@ -195,7 +198,7 @@ def _process_NRIS_data(data, mine_no):
         'advisories': advisories,
         'warnings': warnings,
         'section_35_orders': section_35_orders,
-        'open_orders': open_orders_list,
+        'orders': orders_list,
     }
     cache.set(NRIS_COMPLIANCE_DATA(mine_no), overview, timeout=TIMEOUT_24_HOURS)
     return overview
