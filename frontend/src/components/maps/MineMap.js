@@ -52,6 +52,7 @@ class MineMap extends Component {
     if (!this.props.mine) {
       this.renderWidgets(view);
     }
+    this.renderBasemapToggle(view);
     this.setState({ view });
   };
 
@@ -72,6 +73,20 @@ class MineMap extends Component {
     }
     return <div />;
   }
+
+  /**
+   * Add the basemap toggle to the mine map on the mine dashboard
+   * @param {MapView} view
+   */
+  renderBasemapToggle = async (view) => {
+    await loadModules(["esri/widgets/BasemapToggle"]).then(([BasemapToggle]) => {
+      const toggle = new BasemapToggle({
+        view,
+        nextBasemap: "satellite",
+      });
+      view.ui.add(toggle, "top-right");
+    });
+  };
 
   /**
    * Adds widgets to a given MapView instance
