@@ -23,7 +23,6 @@ const propTypes = {
 
 export class MineVariance extends Component {
   handleAddVariances = (files) => (values) => {
-    console.log(values);
     const receivedDate = values.received_date ? values.received_date : new Date();
     return this.props
       .createVariance({ mineGuid: this.props.mine.mine_guid }, { receivedDate, ...values })
