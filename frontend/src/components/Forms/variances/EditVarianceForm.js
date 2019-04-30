@@ -10,6 +10,7 @@ import { required } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
 import VarianceFileUpload from "./VarianceFileUpload";
 import DocumentTable from "@/components/common/DocumentTable";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -17,6 +18,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
   mineGuid: PropTypes.string.isRequired,
+  coreUsers: CustomPropTypes.dropdownListItem.isRequired,
 };
 
 export class EditVarianceForm extends Component {
@@ -51,18 +53,12 @@ export class EditVarianceForm extends Component {
           <Col md={12} xs={24}>
             <Form.Item>
               <Field
-                id="title"
-                name="title"
+                id="inspector_id"
+                name="inspector_id"
                 label="Assign a lead inspector"
                 component={renderConfig.SELECT}
                 validate={[required]}
-                data={[
-                  { value: 1, label: "Meredith" },
-                  { value: 2, label: "Jon" },
-                  { value: 3, label: "Nathan" },
-                  { value: 4, label: "Tatianna" },
-                  { value: 5, label: "Gyan" },
-                ]}
+                data={this.props.coreUsers}
               />
             </Form.Item>
           </Col>
@@ -88,11 +84,13 @@ export class EditVarianceForm extends Component {
 
         <Row gutter={16}>
           <Col md={8} lg={24}>
-            <Form.Item>
+            <Form.Item label="Expiry date">
+              <p className="p-light">
+                If expiry date is not specified, it will default to 5 years from issue date.
+              </p>
               <Field
                 id="expiry_date"
                 name="expiry_date"
-                label="Expiry date (Expiry date will default to 5 years from issue date unless specified below)"
                 component={renderConfig.DATE}
                 validate={[required]}
               />

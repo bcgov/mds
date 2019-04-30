@@ -52,7 +52,7 @@ import {
 } from "@/selectors/staticContentSelectors";
 import { getMineComplianceInfo } from "@/selectors/complianceSelectors";
 import { getMineVariances } from "@/selectors/varianceSelectors";
-import { getCoreUsers } from "@/selectors/userSelectors";
+import { getDropdownCoreUsers } from "@/selectors/userSelectors";
 import {
   fetchPartyRelationshipTypes,
   fetchPartyRelationships,
@@ -349,6 +349,7 @@ export class MineDashboard extends Component {
                     <div className="tab__content">
                       <MineVariance
                         mine={mine}
+                        coreUsers={this.props.coreUsers}
                         createVariance={this.props.createVariance}
                         addDocumentToVariance={this.props.addDocumentToVariance}
                         openModal={this.props.openModal}
@@ -412,7 +413,7 @@ const mapStateToProps = (state) => ({
   multiSelectComplianceCodes: getMultiSelectComplianceCodes(state),
   complianceCodesHash: getHSRCMComplianceCodesHash(state),
   mineComplianceInfo: getMineComplianceInfo(state),
-  coreUsers: getCoreUsers(state),
+  coreUsers: getDropdownCoreUsers(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

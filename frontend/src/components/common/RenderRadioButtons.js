@@ -25,12 +25,10 @@ class RenderRadioButtons extends Component {
         validateStatus={this.props.meta.touched ? this.props.meta.error && "error" : ""}
         label={this.props.label}
       >
-        <div className="inline-flex between">
-          <Radio.Group id={this.props.id} value={this.state.value}>
-            <Radio value>Yes</Radio>
-            <Radio value={false}>No</Radio>
-          </Radio.Group>
-        </div>
+        <Radio.Group id={this.props.id} value={this.state.value}>
+          <Radio value>Yes</Radio>
+          <Radio value={false}>No</Radio>
+        </Radio.Group>
       </Form.Item>
     );
   }

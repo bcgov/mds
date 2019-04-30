@@ -16,6 +16,7 @@ const propTypes = {
   complianceCodes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   fetchVariancesByMine: PropTypes.func.isRequired,
+  coreUsers: CustomPropTypes.dropdownListItem.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
 };
@@ -23,8 +24,9 @@ const propTypes = {
 export class MineVariance extends Component {
   handleAddVariances = (files) => (values) => {
     console.log(values);
+    const receivedDate = values.received_date ? values.received_date : new Date();
     return this.props
-      .createVariance({ mineGuid: this.props.mine.mine_guid }, values)
+      .createVariance({ mineGuid: this.props.mine.mine_guid }, { receivedDate, ...values })
       .then(async ({ data: { variance_id } }) => {
         await Promise.all(
           Object.entries(files).map(([document_manager_guid, document_name]) =>
@@ -50,8 +52,9 @@ export class MineVariance extends Component {
         title: this.props.mine.mine_name,
         mineGuid: this.props.mine.mine_guid,
         variance,
+        coreUsers: this.props.coreUsers,
       },
-      widthSize: "50vw",
+      // widthSize: "50vw",
       content: modalConfig.VIEW_VARIANCE,
     });
   };
@@ -65,7 +68,7 @@ export class MineVariance extends Component {
         mineGuid: this.props.mine.mine_guid,
         complianceCodes: this.props.complianceCodes,
       },
-      widthSize: "50vw",
+      // widthSize: "50vw",
       content: modalConfig.ADD_VARIANCE,
     });
   }

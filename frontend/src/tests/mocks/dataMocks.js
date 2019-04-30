@@ -1213,12 +1213,20 @@ export const CORE_USERS = {
         city: "Victoria",
         department: "Mines Health, Safety & Enforcement Division",
         title: "Geomatics Specialist",
-        username: "IDIRBLAH",
+        username: "IDIR\\BLAH",
       },
       last_logon: null,
       phone_no: "555-555-5556",
     },
   ],
+};
+
+export const CORE_USERS_DROPDOWN = [
+  { value: "51b3a499-a474-4d52-be99-5c5123d7501c", label: "BLAH" },
+];
+
+export const CORE_USERS_HASH = {
+  "51b3a499-a474-4d52-be99-5c5123d7501c": "BLAH",
 };
 
 export const INCIDENTS = {

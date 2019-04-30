@@ -23,7 +23,7 @@ export class AddVarianceForm extends Component {
   state = {
     uploadedFiles: [],
     documentNameGuidMap: {},
-    isApproved: false,
+    isApplication: true,
   };
 
   onFileLoad = (documentName, document_manager_guid) => {
@@ -44,22 +44,22 @@ export class AddVarianceForm extends Component {
 
   onChange = (e) => {
     this.setState({
-      isApproved: e.target.value,
+      isApplication: e.target.value,
     });
   };
 
   render() {
-    const formOptions = [
-      { label: "Application", value: false },
-      { label: "Approved Variance", value: true },
-    ];
     return (
       <Form
         layout="vertical"
         onSubmit={this.props.handleSubmit(this.props.onSubmit(this.state.documentNameGuidMap))}
       >
-        <p>Are you creating an application or an approved variance?</p>
-        <Radio.Group onChange={this.onChange} value={this.state.isApproved} options={formOptions} />
+        <Form.Item label="Are you creating an application or an approved variance?">
+          <Radio.Group onChange={this.onChange} value={this.state.isApplication}>
+            <Radio value> Application </Radio>
+            <Radio value={false}> Approved Variance </Radio>
+          </Radio.Group>
+        </Form.Item>
         <Form.Item>
           <Field
             id="compliance_article_id"
@@ -71,19 +71,20 @@ export class AddVarianceForm extends Component {
             data={this.props.complianceCodes}
           />
         </Form.Item>
-        <Form.Item>
+        <Form.Item label={this.state.isApplication ? "Received date" : "Received date*"}>
+          {this.state.isApplication && (
+            <p className="p-light">
+              If the received date is not specified it will be set to todays date
+            </p>
+          )}
           <Field
             id="received_date"
             name="received_date"
-            label={this.state.isApproved ? "Received date*" : "Received date"}
             component={renderConfig.DATE}
-            validate={this.state.isApproved ? [required, dateNotInFuture] : [dateNotInFuture]}
+            validate={this.state.isApplication ? [dateNotInFuture] : [required, dateNotInFuture]}
           />
-          {!this.state.isApproved && (
-            <p>Date received will default to today unless specified above</p>
-          )}
         </Form.Item>
-        {this.state.isApproved && (
+        {!this.state.isApplication && (
           <div>
             <Form.Item>
               <Field
@@ -116,16 +117,16 @@ export class AddVarianceForm extends Component {
         </Form.Item>
         <Form.Item>
           <Field
-            id="OHSC"
-            name="OHSC"
+            id="ohsc_ind"
+            name="ohsc_ind"
             label="Has this been reviewed by the OHSC?"
             component={renderConfig.RADIO}
           />
         </Form.Item>
         <Form.Item>
           <Field
-            id="union"
-            name="union"
+            id="union_ind"
+            name="union_ind"
             label="Has this been reviewed by the union?"
             component={renderConfig.RADIO}
           />
