@@ -11,6 +11,9 @@ class Dashboard extends Page {
         toastMessage (wait: true) {$("div", class:"ant-notification-notice-message").text()}
         loadingScreen (required:false) {$("div.loading-screen")}
 
+        //navigation links
+        contactPageButton (wait: true) {$("button").has("span", text:"Contacts")}
+
         //create mine form
         createMineForm { module Form_CreateMine }
         createMineButton_Dashboard (wait: true) {$("button").has("span", text:"Create Mine Record")}
