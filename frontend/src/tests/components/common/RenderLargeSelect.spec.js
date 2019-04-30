@@ -6,7 +6,7 @@ let props = {};
 
 const setupProps = () => {
   props = {
-    input: { value: "" },
+    input: { value: "", onChange: jest.fn() },
     label: "",
     meta: {
       touched: false,
@@ -16,6 +16,7 @@ const setupProps = () => {
     id: "parties",
     data: [],
     option: {},
+    selectedOption: { key: "1" },
     handleChange: jest.fn(),
   };
 };

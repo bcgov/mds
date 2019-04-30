@@ -4,7 +4,7 @@ import {
   getMineRegionHash,
   getMineTSFRequiredReports,
   getMineTenureTypesHash,
-  getMineTenureTypes,
+  getMineTenureTypeOptions,
   getMineDisturbanceOptions,
   getMineCommodityOptions,
   getDropdownCommodityOptions,
@@ -31,7 +31,7 @@ import * as Mock from "@/tests/mocks/dataMocks";
 const mockState = {
   mineStatusOptions: Mock.STATUS_OPTIONS.options,
   mineRegionOptions: Mock.REGION_OPTIONS.options,
-  mineTenureTypes: Mock.TENURE_TYPES.options,
+  mineTenureTypes: Mock.TENURE_TYPES,
   expectedDocumentStatusOptions: Mock.EXPECTED_DOCUMENT_STATUS_OPTIONS.options,
   mineTSFRequiredReports: Mock.MINE_TSF_REQUIRED_REPORTS_RESPONSE.required_documents,
   mineDisturbanceOptions: Mock.DISTURBANCE_OPTIONS.options,
@@ -79,18 +79,18 @@ describe("staticContentSelectors", () => {
   });
 
   it("`getMineTenureTypesHash` converts `staticContentReducer.getMineTenureTypes`", () => {
-    mineTenureTypes = Mock.TENURE_TYPES.options;
+    mineTenureTypes = Mock.TENURE_TYPES;
     const selected = getMineTenureTypesHash.resultFunc(mineTenureTypes);
     expect(selected).toEqual(Mock.TENURE_HASH);
   });
 
-  it("`getMineTenureTypes` calls `staticContentReducer.getMineTenureTypes`", () => {
-    const storeAction = storeTenureTypes(Mock.TENURE_TYPES);
+  it("`getMineTenureTypeOptions` calls `staticContentReducer.getMineTenureTypeOptions`", () => {
+    const storeAction = storeTenureTypes(Mock.TENURE_TYPES_RESPONSE);
     const storeState = staticContentReducer({}, storeAction);
     const localMockState = {
       [STATIC_CONTENT]: storeState,
     };
-    expect(getMineTenureTypes(localMockState)).toEqual(mineTenureTypes);
+    expect(getMineTenureTypeOptions(localMockState)).toEqual(mineTenureTypes);
   });
 
   it("`getMineDisturbanceOptions` calls `staticContentReducer.getMineDisturbanceOptions`", () => {

@@ -33,7 +33,7 @@ import {
   getCommodityOptionHash,
   getMineStatusOptions,
   getMineRegionOptions,
-  getMineTenureTypes,
+  getMineTenureTypeOptions,
   getDropdownCommodityOptions,
   getOptionsLoaded,
 } from "@/selectors/staticContentSelectors";
@@ -439,7 +439,7 @@ const mapStateToProps = (state) => ({
   mineCommodityOptionsHash: getCommodityOptionHash(state),
   mineStatusOptions: getMineStatusOptions(state),
   mineRegionOptions: getMineRegionOptions(state),
-  mineTenureTypes: getMineTenureTypes(state),
+  mineTenureTypes: getMineTenureTypeOptions(state),
   mineCommodityOptions: getDropdownCommodityOptions(state),
   optionsLoaded: getOptionsLoaded(state),
 });
