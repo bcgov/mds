@@ -4,7 +4,9 @@ import AddPermitForm from "@/components/Forms/AddPermitForm";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
   title: PropTypes.string,
+  mine_guid: PropTypes.string.isRequired,
 };
 
 const defaultProps = {
@@ -13,7 +15,12 @@ const defaultProps = {
 
 export const AddPermitModal = (props) => (
   <div>
-    <AddPermitForm {...props} />
+    <AddPermitForm
+      onSubmit={props.onSubmit}
+      closeModal={props.closeModal}
+      title={props.title}
+      mine_guid={props.mine_guid}
+    />
   </div>
 );
 

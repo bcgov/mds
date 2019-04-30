@@ -5,7 +5,7 @@ import { createLabelHash, createDropDownList } from "@/utils/helpers";
 export const {
   getMineStatusOptions,
   getMineRegionOptions,
-  getMineTenureTypes,
+  getMineTenureTypeOptions,
   getMineCommodityOptions,
   getMineDisturbanceOptions,
   getExpectedDocumentStatusOptions,
@@ -25,7 +25,7 @@ export const getCurrentComplianceCodes = createSelector(
 );
 
 export const getMineTenureTypesHash = createSelector(
-  [getMineTenureTypes],
+  [getMineTenureTypeOptions],
   createLabelHash
 );
 export const getMineRegionHash = createSelector(
@@ -50,12 +50,12 @@ const createConditionalMineDetails = (key) => (options, tenureTypes) => {
   return newArr;
 };
 export const getConditionalDisturbanceOptionsHash = createSelector(
-  [getMineDisturbanceOptions, getMineTenureTypes],
+  [getMineDisturbanceOptions, getMineTenureTypeOptions],
   createConditionalMineDetails("mine_disturbance_code")
 );
 
 export const getConditionalCommodityOptions = createSelector(
-  [getMineCommodityOptions, getMineTenureTypes],
+  [getMineCommodityOptions, getMineTenureTypeOptions],
   createConditionalMineDetails("mine_commodity_code")
 );
 
