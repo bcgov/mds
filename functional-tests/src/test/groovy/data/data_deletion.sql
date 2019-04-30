@@ -5,6 +5,9 @@ DECLARE
 BEGIN
     DELETE FROM mine_party_appt WHERE create_user LIKE IDIR_USER;
     DELETE FROM permit WHERE create_user LIKE IDIR_USER;
+    DELETE FROM party_address_xref
+    WHERE party_guid = ANY (
+    SELECT party_guid FROM party WHERE create_user LIKE IDIR_USER);
     DELETE FROM party WHERE create_user LIKE IDIR_USER;
     DELETE FROM mine_location WHERE create_user LIKE IDIR_USER;
     DELETE FROM mine_status_xref WHERE create_user LIKE IDIR_USER;
@@ -15,7 +18,6 @@ BEGIN
     DELETE FROM mine_expected_document_xref
     WHERE exp_document_guid = ANY(
     SELECT exp_document_guid FROM mine_expected_document WHERE create_user LIKE IDIR_USER);
-
     DELETE FROM mine_expected_document WHERE create_user LIKE IDIR_USER;
     DELETE FROM mine WHERE create_user LIKE IDIR_USER;
 
