@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import MineMap from "@/components/maps/MineMap";
+import MineHeaderMap from "@/components/maps/MineHeaderMap";
+
 import { Menu, Divider, Button, Dropdown, Tag, Popover, Popconfirm } from "antd";
 import {
   ELLIPSE,
@@ -16,6 +18,7 @@ import {
   YELLOW_HAZARD,
   SUCCESS_CHECKMARK,
 } from "@/constants/assets";
+import * as route from "@/constants/routes";
 import { getUserInfo } from "@/selectors/authenticationSelectors";
 import * as String from "@/constants/strings";
 import * as ModalContent from "@/constants/modalContent";
@@ -403,7 +406,7 @@ export class MineHeader extends Component {
           </div>
         </div>
         <div className="dashboard__header--card__map">
-          <MineMap mine={this.props.mine} />
+          <MineHeaderMap mine={this.props.mine} />
           <div className="dashboard__header--card__map--footer">
             <div className="inline-flex between">
               <p className="p-white">
@@ -425,7 +428,18 @@ export class MineHeader extends Component {
                 ? this.props.mineRegionHash[this.props.mine.mine_region]
                 : String.EMPTY_FIELD}
             </p>
-            <a href="www.google.ca">Map URL</a>
+            {/* <Link to={route.MINE_HOME_PAGE.mapRoute(0, 0)}>Map URL</Link> */}
+            <Link
+              to={route.MINE_HOME_PAGE.mapRoute(0, 0)}
+              target="_blank"
+              // onClick={(event) => {
+              //   event.preventDefault();
+              //   window.open(this.makeHref("route"));
+              // }}
+            >
+              Map URL
+            </Link>
+            {/* <a href="dashboard/mines?page=1&per_page=25&map=true">Map URL</a> */}
           </div>
         </div>
       </div>

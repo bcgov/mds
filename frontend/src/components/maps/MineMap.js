@@ -206,38 +206,6 @@ class MineMap extends Component {
   };
 
   render() {
-    if (this.props.mine) {
-      // default to the center of BC and change zoom level if mine location does not exist.
-      // The 0.0000001 that is added to lat and long prevents the pin from dissapearing on the
-      // mine page map under certain zooms.  it string concatinates added precision to the string eg (-113.0830000
-      // becomes -113.08300001). This seems to be a bug with react-argis or some other library
-      let centerOfMap = [String.DEFAULT_LONG, String.DEFAULT_LAT];
-      if (this.props.mine.mine_location) {
-        centerOfMap = [
-          this.props.mine.mine_location.longitude
-            ? parseFloat(this.props.mine.mine_location.longitude) + 0.0000001
-            : String.DEFAULT_LONG,
-          this.props.mine.mine_location.latitude
-            ? parseFloat(this.props.mine.mine_location.latitude) + 0.0000001
-            : String.DEFAULT_LAT,
-        ];
-      }
-      return (
-        // Map located on MineSummary page, - this.props.mine is available, contains 1 mine pin.
-        <Map
-          style={{ width: "100%", height: "100%" }}
-          mapProperties={{ basemap: "topo" }}
-          viewProperties={{
-            center: centerOfMap,
-            zoom: this.props.mine.mine_location ? 8 : 5,
-            constraints: { minZoom: 5 },
-          }}
-          onLoad={this.handleLoadMap}
-        >
-          <MinePin />
-        </Map>
-      );
-    }
     if (this.state.mapFailedToLoad) {
       return (
         // Fallback to default map if any of the layers fail to load

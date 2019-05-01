@@ -24,7 +24,7 @@ export const MINE_HOME_PAGE = {
     `/dashboard/mines/?${queryString.stringify({ page, per_page, ...params }, { sort: false })}`,
   mapRoute: (page, perPage, search = null) => {
     const searchParam = search ? `&search=${search}` : "";
-    return `/dashboard/mines?page=${page}&per_page=${perPage}${searchParam}&map=true`;
+    return `/dashboard/mines?${searchParam}&map=true`;
   },
   component: Dashboard,
 };
