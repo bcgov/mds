@@ -13,9 +13,6 @@ from app.api.utils.custom_reqparser import CustomReqparser
 
 
 class VarianceUploadedDocumentsResource(Resource, UserMixin, ErrorMixin):
-    parser = CustomReqparser()
-    parser.add_argument('mine_document_guid', type=str, required=True)
-
     @api.doc(description='Delete a document from a variance.')
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
     def delete(self, mine_guid, variance_id, mine_document_guid):
