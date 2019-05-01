@@ -17,7 +17,9 @@ services:
     entrypoint: ["bash", "-c", "grep -v '^#' .env | xargs ; flask run"]
     networks:
       - nris
+
   ####################### NRIS_Postgres Definition #######################
+  # Only for Local, openshift will share one db pod for all MDS services
   nris_database:
     restart: always
     container_name: nris_postgres

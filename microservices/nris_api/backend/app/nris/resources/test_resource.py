@@ -29,7 +29,7 @@ class FactorialResource(Resource):
         if not fact:
             fact = Factorial(input_val=input_val, output_val=_factorial(input_val))
             if fact.output_val < 1:
-                raise NotFound("Calculation Error")
+                raise InternalServerError("Calculation Error")
             db.session.add(fact)
             db.session.commit()
         get_logger().debug(fact)
