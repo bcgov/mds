@@ -22,10 +22,10 @@ ShallowWrapper {
     "nodeType": "host",
     "props": Object {
       "children": <Form
+        colon={true}
         hideRequiredMark={false}
         layout="vertical"
         onSubmit={[MockFunction]}
-        prefixCls="ant-form"
       >
         <Row
           gutter={16}
@@ -36,14 +36,12 @@ ShallowWrapper {
             xs={24}
           >
             <FormItem
-              colon={true}
               hasFeedback={false}
-              prefixCls="ant-form"
             >
               <Field
                 component={[Function]}
                 id="first_name"
-                label="First Name *"
+                label="First Name*"
                 name="first_name"
                 validate={
                   Array [
@@ -59,14 +57,12 @@ ShallowWrapper {
             xs={24}
           >
             <FormItem
-              colon={true}
               hasFeedback={false}
-              prefixCls="ant-form"
             >
               <Field
                 component={[Function]}
                 id="party_name"
-                label="Surname *"
+                label="Surname*"
                 name="party_name"
                 validate={
                   Array [
@@ -84,9 +80,7 @@ ShallowWrapper {
             span={24}
           >
             <FormItem
-              colon={true}
               hasFeedback={false}
-              prefixCls="ant-form"
             >
               <Field
                 component={[Function]}
@@ -109,14 +103,12 @@ ShallowWrapper {
             span={18}
           >
             <FormItem
-              colon={true}
               hasFeedback={false}
-              prefixCls="ant-form"
             >
               <Field
                 component={[Function]}
                 id="phone_no"
-                label="Phone Number *"
+                label="Phone Number*"
                 name="phone_no"
                 normalize={[Function]}
                 placeholder="e.g. xxx-xxx-xxxx"
@@ -134,9 +126,7 @@ ShallowWrapper {
             span={6}
           >
             <FormItem
-              colon={true}
               hasFeedback={false}
-              prefixCls="ant-form"
             >
               <Field
                 component={[Function]}
@@ -163,7 +153,6 @@ ShallowWrapper {
             ghost={false}
             htmlType="submit"
             loading={false}
-            prefixCls="ant-btn"
             type="primary"
           >
             Create Personnel
@@ -187,14 +176,12 @@ ShallowWrapper {
               xs={24}
             >
               <FormItem
-                colon={true}
                 hasFeedback={false}
-                prefixCls="ant-form"
               >
                 <Field
                   component={[Function]}
                   id="first_name"
-                  label="First Name *"
+                  label="First Name*"
                   name="first_name"
                   validate={
                     Array [
@@ -210,14 +197,12 @@ ShallowWrapper {
               xs={24}
             >
               <FormItem
-                colon={true}
                 hasFeedback={false}
-                prefixCls="ant-form"
               >
                 <Field
                   component={[Function]}
                   id="party_name"
-                  label="Surname *"
+                  label="Surname*"
                   name="party_name"
                   validate={
                     Array [
@@ -236,9 +221,7 @@ ShallowWrapper {
               span={24}
             >
               <FormItem
-                colon={true}
                 hasFeedback={false}
-                prefixCls="ant-form"
               >
                 <Field
                   component={[Function]}
@@ -261,14 +244,12 @@ ShallowWrapper {
               span={18}
             >
               <FormItem
-                colon={true}
                 hasFeedback={false}
-                prefixCls="ant-form"
               >
                 <Field
                   component={[Function]}
                   id="phone_no"
-                  label="Phone Number *"
+                  label="Phone Number*"
                   name="phone_no"
                   normalize={[Function]}
                   placeholder="e.g. xxx-xxx-xxxx"
@@ -286,9 +267,7 @@ ShallowWrapper {
               span={6}
             >
               <FormItem
-                colon={true}
                 hasFeedback={false}
-                prefixCls="ant-form"
               >
                 <Field
                   component={[Function]}
@@ -315,17 +294,16 @@ ShallowWrapper {
               ghost={false}
               htmlType="submit"
               loading={false}
-              prefixCls="ant-btn"
               type="primary"
             >
               Create Personnel
             </Button>
           </div>,
         ],
+        "colon": true,
         "hideRequiredMark": false,
         "layout": "vertical",
         "onSubmit": [MockFunction],
-        "prefixCls": "ant-form",
       },
       "ref": null,
       "rendered": Array [
@@ -341,14 +319,12 @@ ShallowWrapper {
                 xs={24}
               >
                 <FormItem
-                  colon={true}
                   hasFeedback={false}
-                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
                     id="first_name"
-                    label="First Name *"
+                    label="First Name*"
                     name="first_name"
                     validate={
                       Array [
@@ -364,14 +340,12 @@ ShallowWrapper {
                 xs={24}
               >
                 <FormItem
-                  colon={true}
                   hasFeedback={false}
-                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
                     id="party_name"
-                    label="Surname *"
+                    label="Surname*"
                     name="party_name"
                     validate={
                       Array [
@@ -392,14 +366,12 @@ ShallowWrapper {
               "nodeType": "class",
               "props": Object {
                 "children": <FormItem
-                  colon={true}
                   hasFeedback={false}
-                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
                     id="first_name"
-                    label="First Name *"
+                    label="First Name*"
                     name="first_name"
                     validate={
                       Array [
@@ -421,7 +393,7 @@ ShallowWrapper {
                   "children": <Field
                     component={[Function]}
                     id="first_name"
-                    label="First Name *"
+                    label="First Name*"
                     name="first_name"
                     validate={
                       Array [
@@ -429,9 +401,7 @@ ShallowWrapper {
                       ]
                     }
                   />,
-                  "colon": true,
                   "hasFeedback": false,
-                  "prefixCls": "ant-form",
                 },
                 "ref": null,
                 "rendered": Object {
@@ -441,7 +411,7 @@ ShallowWrapper {
                   "props": Object {
                     "component": [Function],
                     "id": "first_name",
-                    "label": "First Name *",
+                    "label": "First Name*",
                     "name": "first_name",
                     "validate": Array [
                       [Function],
@@ -461,14 +431,12 @@ ShallowWrapper {
               "nodeType": "class",
               "props": Object {
                 "children": <FormItem
-                  colon={true}
                   hasFeedback={false}
-                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
                     id="party_name"
-                    label="Surname *"
+                    label="Surname*"
                     name="party_name"
                     validate={
                       Array [
@@ -490,7 +458,7 @@ ShallowWrapper {
                   "children": <Field
                     component={[Function]}
                     id="party_name"
-                    label="Surname *"
+                    label="Surname*"
                     name="party_name"
                     validate={
                       Array [
@@ -498,9 +466,7 @@ ShallowWrapper {
                       ]
                     }
                   />,
-                  "colon": true,
                   "hasFeedback": false,
-                  "prefixCls": "ant-form",
                 },
                 "ref": null,
                 "rendered": Object {
@@ -510,7 +476,7 @@ ShallowWrapper {
                   "props": Object {
                     "component": [Function],
                     "id": "party_name",
-                    "label": "Surname *",
+                    "label": "Surname*",
                     "name": "party_name",
                     "validate": Array [
                       [Function],
@@ -537,9 +503,7 @@ ShallowWrapper {
               span={24}
             >
               <FormItem
-                colon={true}
                 hasFeedback={false}
-                prefixCls="ant-form"
               >
                 <Field
                   component={[Function]}
@@ -563,9 +527,7 @@ ShallowWrapper {
             "nodeType": "class",
             "props": Object {
               "children": <FormItem
-                colon={true}
                 hasFeedback={false}
-                prefixCls="ant-form"
               >
                 <Field
                   component={[Function]}
@@ -598,9 +560,7 @@ ShallowWrapper {
                     ]
                   }
                 />,
-                "colon": true,
                 "hasFeedback": false,
-                "prefixCls": "ant-form",
               },
               "ref": null,
               "rendered": Object {
@@ -636,14 +596,12 @@ ShallowWrapper {
                 span={18}
               >
                 <FormItem
-                  colon={true}
                   hasFeedback={false}
-                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
                     id="phone_no"
-                    label="Phone Number *"
+                    label="Phone Number*"
                     name="phone_no"
                     normalize={[Function]}
                     placeholder="e.g. xxx-xxx-xxxx"
@@ -661,9 +619,7 @@ ShallowWrapper {
                 span={6}
               >
                 <FormItem
-                  colon={true}
                   hasFeedback={false}
-                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
@@ -690,14 +646,12 @@ ShallowWrapper {
               "nodeType": "class",
               "props": Object {
                 "children": <FormItem
-                  colon={true}
                   hasFeedback={false}
-                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
                     id="phone_no"
-                    label="Phone Number *"
+                    label="Phone Number*"
                     name="phone_no"
                     normalize={[Function]}
                     placeholder="e.g. xxx-xxx-xxxx"
@@ -721,7 +675,7 @@ ShallowWrapper {
                   "children": <Field
                     component={[Function]}
                     id="phone_no"
-                    label="Phone Number *"
+                    label="Phone Number*"
                     name="phone_no"
                     normalize={[Function]}
                     placeholder="e.g. xxx-xxx-xxxx"
@@ -733,9 +687,7 @@ ShallowWrapper {
                       ]
                     }
                   />,
-                  "colon": true,
                   "hasFeedback": false,
-                  "prefixCls": "ant-form",
                 },
                 "ref": null,
                 "rendered": Object {
@@ -745,7 +697,7 @@ ShallowWrapper {
                   "props": Object {
                     "component": [Function],
                     "id": "phone_no",
-                    "label": "Phone Number *",
+                    "label": "Phone Number*",
                     "name": "phone_no",
                     "normalize": [Function],
                     "placeholder": "e.g. xxx-xxx-xxxx",
@@ -769,9 +721,7 @@ ShallowWrapper {
               "nodeType": "class",
               "props": Object {
                 "children": <FormItem
-                  colon={true}
                   hasFeedback={false}
-                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
@@ -806,9 +756,7 @@ ShallowWrapper {
                       ]
                     }
                   />,
-                  "colon": true,
                   "hasFeedback": false,
-                  "prefixCls": "ant-form",
                 },
                 "ref": null,
                 "rendered": Object {
@@ -848,7 +796,6 @@ ShallowWrapper {
               ghost={false}
               htmlType="submit"
               loading={false}
-              prefixCls="ant-btn"
               type="primary"
             >
               Create Personnel
@@ -868,7 +815,6 @@ ShallowWrapper {
               "ghost": false,
               "htmlType": "submit",
               "loading": false,
-              "prefixCls": "ant-btn",
               "type": "primary",
             },
             "ref": null,
@@ -889,10 +835,10 @@ ShallowWrapper {
       "nodeType": "host",
       "props": Object {
         "children": <Form
+          colon={true}
           hideRequiredMark={false}
           layout="vertical"
           onSubmit={[MockFunction]}
-          prefixCls="ant-form"
         >
           <Row
             gutter={16}
@@ -903,14 +849,12 @@ ShallowWrapper {
               xs={24}
             >
               <FormItem
-                colon={true}
                 hasFeedback={false}
-                prefixCls="ant-form"
               >
                 <Field
                   component={[Function]}
                   id="first_name"
-                  label="First Name *"
+                  label="First Name*"
                   name="first_name"
                   validate={
                     Array [
@@ -926,14 +870,12 @@ ShallowWrapper {
               xs={24}
             >
               <FormItem
-                colon={true}
                 hasFeedback={false}
-                prefixCls="ant-form"
               >
                 <Field
                   component={[Function]}
                   id="party_name"
-                  label="Surname *"
+                  label="Surname*"
                   name="party_name"
                   validate={
                     Array [
@@ -951,9 +893,7 @@ ShallowWrapper {
               span={24}
             >
               <FormItem
-                colon={true}
                 hasFeedback={false}
-                prefixCls="ant-form"
               >
                 <Field
                   component={[Function]}
@@ -976,14 +916,12 @@ ShallowWrapper {
               span={18}
             >
               <FormItem
-                colon={true}
                 hasFeedback={false}
-                prefixCls="ant-form"
               >
                 <Field
                   component={[Function]}
                   id="phone_no"
-                  label="Phone Number *"
+                  label="Phone Number*"
                   name="phone_no"
                   normalize={[Function]}
                   placeholder="e.g. xxx-xxx-xxxx"
@@ -1001,9 +939,7 @@ ShallowWrapper {
               span={6}
             >
               <FormItem
-                colon={true}
                 hasFeedback={false}
-                prefixCls="ant-form"
               >
                 <Field
                   component={[Function]}
@@ -1030,7 +966,6 @@ ShallowWrapper {
               ghost={false}
               htmlType="submit"
               loading={false}
-              prefixCls="ant-btn"
               type="primary"
             >
               Create Personnel
@@ -1054,14 +989,12 @@ ShallowWrapper {
                 xs={24}
               >
                 <FormItem
-                  colon={true}
                   hasFeedback={false}
-                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
                     id="first_name"
-                    label="First Name *"
+                    label="First Name*"
                     name="first_name"
                     validate={
                       Array [
@@ -1077,14 +1010,12 @@ ShallowWrapper {
                 xs={24}
               >
                 <FormItem
-                  colon={true}
                   hasFeedback={false}
-                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
                     id="party_name"
-                    label="Surname *"
+                    label="Surname*"
                     name="party_name"
                     validate={
                       Array [
@@ -1103,9 +1034,7 @@ ShallowWrapper {
                 span={24}
               >
                 <FormItem
-                  colon={true}
                   hasFeedback={false}
-                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
@@ -1128,14 +1057,12 @@ ShallowWrapper {
                 span={18}
               >
                 <FormItem
-                  colon={true}
                   hasFeedback={false}
-                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
                     id="phone_no"
-                    label="Phone Number *"
+                    label="Phone Number*"
                     name="phone_no"
                     normalize={[Function]}
                     placeholder="e.g. xxx-xxx-xxxx"
@@ -1153,9 +1080,7 @@ ShallowWrapper {
                 span={6}
               >
                 <FormItem
-                  colon={true}
                   hasFeedback={false}
-                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
@@ -1182,17 +1107,16 @@ ShallowWrapper {
                 ghost={false}
                 htmlType="submit"
                 loading={false}
-                prefixCls="ant-btn"
                 type="primary"
               >
                 Create Personnel
               </Button>
             </div>,
           ],
+          "colon": true,
           "hideRequiredMark": false,
           "layout": "vertical",
           "onSubmit": [MockFunction],
-          "prefixCls": "ant-form",
         },
         "ref": null,
         "rendered": Array [
@@ -1208,14 +1132,12 @@ ShallowWrapper {
                   xs={24}
                 >
                   <FormItem
-                    colon={true}
                     hasFeedback={false}
-                    prefixCls="ant-form"
                   >
                     <Field
                       component={[Function]}
                       id="first_name"
-                      label="First Name *"
+                      label="First Name*"
                       name="first_name"
                       validate={
                         Array [
@@ -1231,14 +1153,12 @@ ShallowWrapper {
                   xs={24}
                 >
                   <FormItem
-                    colon={true}
                     hasFeedback={false}
-                    prefixCls="ant-form"
                   >
                     <Field
                       component={[Function]}
                       id="party_name"
-                      label="Surname *"
+                      label="Surname*"
                       name="party_name"
                       validate={
                         Array [
@@ -1259,14 +1179,12 @@ ShallowWrapper {
                 "nodeType": "class",
                 "props": Object {
                   "children": <FormItem
-                    colon={true}
                     hasFeedback={false}
-                    prefixCls="ant-form"
                   >
                     <Field
                       component={[Function]}
                       id="first_name"
-                      label="First Name *"
+                      label="First Name*"
                       name="first_name"
                       validate={
                         Array [
@@ -1288,7 +1206,7 @@ ShallowWrapper {
                     "children": <Field
                       component={[Function]}
                       id="first_name"
-                      label="First Name *"
+                      label="First Name*"
                       name="first_name"
                       validate={
                         Array [
@@ -1296,9 +1214,7 @@ ShallowWrapper {
                         ]
                       }
                     />,
-                    "colon": true,
                     "hasFeedback": false,
-                    "prefixCls": "ant-form",
                   },
                   "ref": null,
                   "rendered": Object {
@@ -1308,7 +1224,7 @@ ShallowWrapper {
                     "props": Object {
                       "component": [Function],
                       "id": "first_name",
-                      "label": "First Name *",
+                      "label": "First Name*",
                       "name": "first_name",
                       "validate": Array [
                         [Function],
@@ -1328,14 +1244,12 @@ ShallowWrapper {
                 "nodeType": "class",
                 "props": Object {
                   "children": <FormItem
-                    colon={true}
                     hasFeedback={false}
-                    prefixCls="ant-form"
                   >
                     <Field
                       component={[Function]}
                       id="party_name"
-                      label="Surname *"
+                      label="Surname*"
                       name="party_name"
                       validate={
                         Array [
@@ -1357,7 +1271,7 @@ ShallowWrapper {
                     "children": <Field
                       component={[Function]}
                       id="party_name"
-                      label="Surname *"
+                      label="Surname*"
                       name="party_name"
                       validate={
                         Array [
@@ -1365,9 +1279,7 @@ ShallowWrapper {
                         ]
                       }
                     />,
-                    "colon": true,
                     "hasFeedback": false,
-                    "prefixCls": "ant-form",
                   },
                   "ref": null,
                   "rendered": Object {
@@ -1377,7 +1289,7 @@ ShallowWrapper {
                     "props": Object {
                       "component": [Function],
                       "id": "party_name",
-                      "label": "Surname *",
+                      "label": "Surname*",
                       "name": "party_name",
                       "validate": Array [
                         [Function],
@@ -1404,9 +1316,7 @@ ShallowWrapper {
                 span={24}
               >
                 <FormItem
-                  colon={true}
                   hasFeedback={false}
-                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
@@ -1430,9 +1340,7 @@ ShallowWrapper {
               "nodeType": "class",
               "props": Object {
                 "children": <FormItem
-                  colon={true}
                   hasFeedback={false}
-                  prefixCls="ant-form"
                 >
                   <Field
                     component={[Function]}
@@ -1465,9 +1373,7 @@ ShallowWrapper {
                       ]
                     }
                   />,
-                  "colon": true,
                   "hasFeedback": false,
-                  "prefixCls": "ant-form",
                 },
                 "ref": null,
                 "rendered": Object {
@@ -1503,14 +1409,12 @@ ShallowWrapper {
                   span={18}
                 >
                   <FormItem
-                    colon={true}
                     hasFeedback={false}
-                    prefixCls="ant-form"
                   >
                     <Field
                       component={[Function]}
                       id="phone_no"
-                      label="Phone Number *"
+                      label="Phone Number*"
                       name="phone_no"
                       normalize={[Function]}
                       placeholder="e.g. xxx-xxx-xxxx"
@@ -1528,9 +1432,7 @@ ShallowWrapper {
                   span={6}
                 >
                   <FormItem
-                    colon={true}
                     hasFeedback={false}
-                    prefixCls="ant-form"
                   >
                     <Field
                       component={[Function]}
@@ -1557,14 +1459,12 @@ ShallowWrapper {
                 "nodeType": "class",
                 "props": Object {
                   "children": <FormItem
-                    colon={true}
                     hasFeedback={false}
-                    prefixCls="ant-form"
                   >
                     <Field
                       component={[Function]}
                       id="phone_no"
-                      label="Phone Number *"
+                      label="Phone Number*"
                       name="phone_no"
                       normalize={[Function]}
                       placeholder="e.g. xxx-xxx-xxxx"
@@ -1588,7 +1488,7 @@ ShallowWrapper {
                     "children": <Field
                       component={[Function]}
                       id="phone_no"
-                      label="Phone Number *"
+                      label="Phone Number*"
                       name="phone_no"
                       normalize={[Function]}
                       placeholder="e.g. xxx-xxx-xxxx"
@@ -1600,9 +1500,7 @@ ShallowWrapper {
                         ]
                       }
                     />,
-                    "colon": true,
                     "hasFeedback": false,
-                    "prefixCls": "ant-form",
                   },
                   "ref": null,
                   "rendered": Object {
@@ -1612,7 +1510,7 @@ ShallowWrapper {
                     "props": Object {
                       "component": [Function],
                       "id": "phone_no",
-                      "label": "Phone Number *",
+                      "label": "Phone Number*",
                       "name": "phone_no",
                       "normalize": [Function],
                       "placeholder": "e.g. xxx-xxx-xxxx",
@@ -1636,9 +1534,7 @@ ShallowWrapper {
                 "nodeType": "class",
                 "props": Object {
                   "children": <FormItem
-                    colon={true}
                     hasFeedback={false}
-                    prefixCls="ant-form"
                   >
                     <Field
                       component={[Function]}
@@ -1673,9 +1569,7 @@ ShallowWrapper {
                         ]
                       }
                     />,
-                    "colon": true,
                     "hasFeedback": false,
-                    "prefixCls": "ant-form",
                   },
                   "ref": null,
                   "rendered": Object {
@@ -1715,7 +1609,6 @@ ShallowWrapper {
                 ghost={false}
                 htmlType="submit"
                 loading={false}
-                prefixCls="ant-btn"
                 type="primary"
               >
                 Create Personnel
@@ -1735,7 +1628,6 @@ ShallowWrapper {
                 "ghost": false,
                 "htmlType": "submit",
                 "loading": false,
-                "prefixCls": "ant-btn",
                 "type": "primary",
               },
               "ref": null,

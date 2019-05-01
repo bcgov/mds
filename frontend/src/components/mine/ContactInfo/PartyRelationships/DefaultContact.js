@@ -17,7 +17,7 @@ const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   openEditPartyRelationshipModal: PropTypes.func.isRequired,
   onSubmitEditPartyRelationship: PropTypes.func.isRequired,
-  otherDetails: PropTypes.object,
+  otherDetails: PropTypes.objectOf(PropTypes.any).isRequired,
   isEditable: PropTypes.bool.isRequired,
   compact: PropTypes.bool.isRequired,
 };
@@ -38,7 +38,7 @@ export const DefaultContact = (props) => (
           <div className="right">
             <Link
               to={router.RELATIONSHIP_PROFILE.dynamicRoute(
-                props.mine.guid,
+                props.mine.mine_guid,
                 props.partyRelationship.mine_party_appt_type_code
               )}
             >

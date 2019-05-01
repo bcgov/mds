@@ -19,7 +19,7 @@ import {
   getCommodityOptionHash,
   getMineStatusOptions,
   getMineRegionOptions,
-  getMineTenureTypes,
+  getMineTenureTypeOptions,
   getMineTenureTypesHash,
 } from "@/selectors/staticContentSelectors";
 
@@ -219,7 +219,7 @@ export class MineRecordForm extends Component {
               </Collapse.Panel>
             ))}
           {fields.map((type, index) => (
-            <Collapse.Panel header={this.createPanelHeader(index, fields)} key={index}>
+            <Collapse.Panel header={this.createPanelHeader(index, fields)} key={type}>
               <Row gutter={16}>
                 <Col span={24}>
                   <Field
@@ -292,8 +292,8 @@ export class MineRecordForm extends Component {
           <Col>
             <Form.Item>
               <Field
-                id="name"
-                name="name"
+                id="mine_name"
+                name="mine_name"
                 label="Mine Name *"
                 component={renderConfig.FIELD}
                 validate={[required, maxLength(60), minLength(3)]}
@@ -361,8 +361,8 @@ export class MineRecordForm extends Component {
           <Col>
             <Form.Item>
               <Field
-                id="note"
-                name="note"
+                id="mine_note"
+                name="mine_note"
                 label="Notes"
                 component={renderConfig.AUTO_SIZE_FIELD}
                 validate={[maxLength(300)]}
@@ -420,7 +420,7 @@ export default compose(
     mineTenureHash: getMineTenureTypesHash(state),
     mineCommodityOptionsHash: getCommodityOptionHash(state),
     mineDisturbanceOptionsHash: getDisturbanceOptionHash(state),
-    mineTenureTypes: getMineTenureTypes(state),
+    mineTenureTypes: getMineTenureTypeOptions(state),
     conditionalCommodityOptions: getConditionalCommodityOptions(state),
     conditionalDisturbanceOptions: getConditionalDisturbanceOptionsHash(state),
   })),

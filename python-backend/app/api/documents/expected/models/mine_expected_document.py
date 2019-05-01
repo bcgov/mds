@@ -52,7 +52,7 @@ class MineExpectedDocument(AuditMixin, Base):
         lazy='joined',
         load_on_pending=True)
 
-    mine_documents = db.relationship("MineDocument", secondary='mine_expected_document_xref')
+    related_documents = db.relationship("MineDocument", secondary='mine_expected_document_xref')
 
     def json(self):
         return {
@@ -63,9 +63,10 @@ class MineExpectedDocument(AuditMixin, Base):
             'exp_document_description': str(self.exp_document_description),
             'due_date': str(self.due_date),
             'received_date': str(self.received_date) if self.received_date else None,
+            'exp_document_status_code': self.exp_document_status_code,
             'exp_document_status': self.expected_document_status.json(),
             'hsrc_code': self.hsrc_code,
-            'related_documents': [x.json() for x in self.mine_documents]
+            'related_documents': [x.json() for x in self.related_documents]
         }
 
     @classmethod
@@ -87,7 +88,7 @@ class MineExpectedDocument(AuditMixin, Base):
 
     def set_due_date(self):
         self.due_date = self._get_due_date_for_expected_document(
-            datetime.now(), self.required_document.req_document_due_date_type,
+            datetime.utcnow(), self.required_document.req_document_due_date_type,
             self.required_document.req_document_due_date_period_months)
 
     def _get_due_date_for_expected_document(self, current_date, due_date_type, period_in_months):

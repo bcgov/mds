@@ -14,6 +14,8 @@ import minespaceReducer from "@/reducers/minespaceReducer";
 import permitReducer from "@/reducers/permitReducer";
 import applicationReducer from "@/reducers/applicationReducer";
 import searchReducer from "@/reducers/searchReducer";
+import varianceReducer from "@/reducers/varianceReducer";
+import userReducer from "@/reducers/userReducer";
 
 export const reducerObject = {
   form: formReducer,
@@ -28,6 +30,8 @@ export const reducerObject = {
   [reducerTypes.STATIC_CONTENT]: staticContentReducer,
   [reducerTypes.MINESPACE]: minespaceReducer,
   [reducerTypes.SEARCH]: searchReducer,
+  [reducerTypes.VARIANCES]: varianceReducer,
+  [reducerTypes.USERS]: userReducer,
   [reducerTypes.CREATE_PARTY]: createReducer(networkReducer, reducerTypes.CREATE_PARTY),
   [reducerTypes.UPDATE_PARTY]: createReducer(networkReducer, reducerTypes.UPDATE_PARTY),
   [reducerTypes.GET_PARTIES]: createReducer(networkReducer, reducerTypes.GET_PARTIES),
@@ -57,6 +61,26 @@ export const reducerObject = {
   ),
   [reducerTypes.REMOVE_MINE_TYPE]: createReducer(networkReducer, reducerTypes.REMOVE_MINE_TYPE),
   [reducerTypes.GET_PROVINCE_CODES]: createReducer(networkReducer, reducerTypes.GET_PROVINCE_CODES),
+  [reducerTypes.SUBSCRIBE]: createReducer(networkReducer, reducerTypes.SUBSCRIBE),
+  [reducerTypes.UNSUBSCRIBE]: createReducer(networkReducer, reducerTypes.UNSUBSCRIBE),
+  [reducerTypes.GET_COMPLIANCE_CODES]: createReducer(
+    networkReducer,
+    reducerTypes.GET_COMPLIANCE_CODES
+  ),
+  [reducerTypes.ADD_DOCUMENT_TO_VARIANCE]: createReducer(
+    networkReducer,
+    reducerTypes.ADD_DOCUMENT_TO_VARIANCE
+  ),
+  [reducerTypes.CREATE_MINE_VARIANCE]: createReducer(
+    networkReducer,
+    reducerTypes.CREATE_MINE_VARIANCE
+  ),
+  [reducerTypes.GET_MINE_VARIANCES]: createReducer(networkReducer, reducerTypes.GET_MINE_VARIANCES),
+  [reducerTypes.REMOVE_DOCUMENT_FROM_VARIANCE]: createReducer(
+    networkReducer,
+    reducerTypes.REMOVE_DOCUMENT_FROM_VARIANCE
+  ),
+  [reducerTypes.GET_CORE_USERS]: createReducer(networkReducer, reducerTypes.GET_CORE_USERS),
 };
 
 export const rootReducer = combineReducers(reducerObject);

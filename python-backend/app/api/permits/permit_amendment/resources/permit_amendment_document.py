@@ -21,10 +21,10 @@ from ....utils.url import get_document_manager_svc_url
 
 
 class PermitAmendmentDocumentResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser()
-    parser.add_argument('document_manager_guid', type=str)
-    parser.add_argument('filename', type=str)
-    parser.add_argument('mine_guid', type=str)
+    parser = reqparse.RequestParser(trim=True)
+    parser.add_argument('document_manager_guid', type=str, store_missing=False)
+    parser.add_argument('filename', type=str, store_missing=False)
+    parser.add_argument('mine_guid', type=str, store_missing=False)
     #permit_guid, it could be in the request and we don't want to disallow it, but it is not used.
 
     @api.doc(
@@ -88,8 +88,7 @@ class PermitAmendmentDocumentResource(Resource, UserMixin, ErrorMixin):
             new_pa_doc = PermitAmendmentDocument(
                 mine_guid=permit_amendment.permit.mine_guid,
                 document_manager_guid=data.get('document_manager_guid'),
-                document_name=filename,
-                **self.get_create_update_dict())
+                document_name=filename)
 
             permit_amendment.documents.append(new_pa_doc)
             permit_amendment.save()

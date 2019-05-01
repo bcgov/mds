@@ -4,8 +4,8 @@ import {
   createParty,
   fetchParties,
   fetchPartyById,
-  downloadMineManagerHistory,
   updateParty,
+  deleteParty,
 } from "@/actionCreators/partiesActionCreator";
 import * as genericActions from "@/actions/genericActions";
 import * as API from "@/constants/API";
@@ -38,7 +38,7 @@ describe("`createParty` action creator", () => {
     return createParty(mockPayload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(4);
+      expect(dispatch).toHaveBeenCalledTimes(5);
     });
   });
 
@@ -72,6 +72,29 @@ describe("`updateParty` action creator", () => {
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPut(url).reply(400, MOCK.ERROR);
     return updateParty(mockPayload, partyGuid)(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("'deleteParties' action creator", () => {
+  const partyGuid = "475837594";
+  const url = `${ENVIRONMENT.apiUrl + API.PARTY}/${partyGuid}`;
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onDelete(url).reply(200, mockResponse);
+    return deleteParty(partyGuid)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onDelete(url).reply(400, MOCK.ERROR);
+    return deleteParty(partyGuid)(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -133,34 +156,6 @@ describe("`fetchPartyById` action creator", () => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
-    });
-  });
-});
-
-describe("`downloadMineManagerHistory` action creator", () => {
-  const mockMineNo = MOCK.MINES.mineIds[0];
-  const url = `${ENVIRONMENT.apiUrl + API.MINE_MANAGER_HISTORY(mockMineNo)}`;
-  const mockWindow = { URL: { createObjectURL: () => {} } };
-  const mockDocument = {
-    createElement: () => ({ setAttribute: () => {}, click: () => {} }),
-    body: { appendChild: () => {} },
-  };
-  const externalMocks = {
-    window: mockWindow,
-    document: mockDocument,
-  };
-  it("Request successful, returns response", () => {
-    const mockResponse = { success: true, response: { status: 200 } };
-    mockAxios.onGet(url).reply(200, mockResponse);
-    return downloadMineManagerHistory(mockMineNo, externalMocks).then((response) => {
-      expect(response.data).toEqual(mockResponse);
-    });
-  });
-
-  it("Request failure, returns undefined", () => {
-    mockAxios.onGet(url).reply(400, { response: { status: 400 } });
-    return downloadMineManagerHistory(mockMineNo, externalMocks).then((response) => {
-      expect(response).toBeUndefined();
     });
   });
 });

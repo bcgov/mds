@@ -8,6 +8,14 @@ export const getMinesPageData = (state) => mineReducer.getMinesPageData(state);
 export const getMineGuid = (state) => mineReducer.getMineGuid(state);
 export const getMineBasicInfoList = (state) => mineReducer.getMineBasicInfoList(state);
 export const getMineDocuments = (state) => mineReducer.getMineDocuments(state);
+export const getSubscribedMines = (state) => mineReducer.getSubscribedMines(state);
+export const getMineIncidents = (state) => mineReducer.getMineIncidents(state);
+
+export const getIsUserSubscribed = createSelector(
+  [getSubscribedMines, getMineGuid],
+  (subscribedMines, mineGuid) =>
+    mineGuid ? subscribedMines.map(({ mine_guid }) => mine_guid).includes(mineGuid) : false
+);
 
 export const getCurrentMineTypes = createSelector(
   [getMines, getMineGuid],
@@ -20,7 +28,7 @@ export const getCurrentMineTypes = createSelector(
           mine_disturbance_code: [],
         };
         mine_types.mine_tenure_type_code = type.mine_tenure_type_code;
-        type.mine_type_detail.map((detail) => {
+        type.mine_type_detail.forEach((detail) => {
           if (detail.mine_commodity_code) {
             mine_types.mine_commodity_code.push(detail.mine_commodity_code);
           } else if (detail.mine_disturbance_code) {
@@ -31,6 +39,7 @@ export const getCurrentMineTypes = createSelector(
       });
       return mineTypesArr;
     }
+    return undefined;
   }
 );
 
@@ -55,6 +64,7 @@ export const getTransformedMineTypes = createSelector(
       });
       return mine_types;
     }
+    return undefined;
   }
 );
 
@@ -62,8 +72,8 @@ export const getMineBasicInfoListHash = createSelector(
   [getMineBasicInfoList],
   (info) =>
     info.reduce(
-      (map, { guid, mine_name }) => ({
-        [guid]: mine_name,
+      (map, { mine_guid, mine_name }) => ({
+        [mine_guid]: mine_name,
         ...map,
       }),
       {}

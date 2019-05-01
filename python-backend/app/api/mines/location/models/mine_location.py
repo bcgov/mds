@@ -2,6 +2,8 @@ from datetime import datetime
 import uuid
 
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.schema import FetchedValue
+
 from geoalchemy2 import Geometry
 from ....utils.models_mixins import AuditMixin, Base
 from app.extensions import db, cache
@@ -9,7 +11,8 @@ from app.extensions import db, cache
 
 class MineLocation(AuditMixin, Base):
     __tablename__ = "mine_location"
-    mine_location_guid = db.Column(UUID(as_uuid=True), primary_key=True)
+    mine_location_guid = db.Column(
+        UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     latitude = db.Column(db.Numeric(9, 7))
     longitude = db.Column(db.Numeric(11, 7))
@@ -20,39 +23,3 @@ class MineLocation(AuditMixin, Base):
 
     def __repr__(self):
         return '<MineLocation %r>' % self.mine_guid
-
-    def json(self):
-        if not self.latitude:
-            return None
-        lat = self.latitude
-        lon = self.longitude
-        return {
-            'mine_location_guid': str(self.mine_location_guid),
-            'mine_guid': str(self.mine_guid),
-            'latitude': str(lat),
-            'longitude': str(lon),
-        }
-
-    @classmethod
-    def find_by_mine_guid(cls, _id):
-        return cls.query.filter_by(mine_guid=_id).first()
-
-    @classmethod
-    def find_by_mine_location_guid(cls, _id):
-        return cls.query.filter_by(mine_location_guid=_id).first()
-
-    @classmethod
-    def create_mine_location(cls, mine, random_location, user_kwargs, save=True):
-        mine_location = cls(
-            mine_location_guid=uuid.uuid4(),
-            mine_guid=mine.mine_guid,
-            latitude=random_location.get('latitude', 0),
-            longitude=random_location.get('longitude', 0),
-            geom='SRID=3005;POINT(%f %f)' % (float(random_location.get('longitude', 0)),
-                                             float(random_location.get('latitude', 0))),
-            effective_date=datetime.today(),
-            expiry_date=datetime.today(),
-            **user_kwargs)
-        if save:
-            mine_location.save(commit=False)
-        return mine_location

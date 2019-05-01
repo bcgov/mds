@@ -46,6 +46,10 @@ body {
   height: inherit !important;
 }
 
+.uppercase {
+  text-transform: uppercase;
+}
+
 .nowrap {
   white-space: nowrap;
 }
@@ -65,6 +69,10 @@ body {
 
 .flex-center {
   justify-content: center;
+}
+
+.flex-end {
+  justify-content: flex-end;
 }
 
 .block-mobile {
@@ -128,6 +136,12 @@ body {
   }
 }
 
+.btn--middle {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+}
+
 .card-buttons {
   flex-direction: column;
 }
@@ -170,6 +184,14 @@ body {
 // using important to override any existing styling from ant design.
 .icon-sm {
   font-size: 20px !important;
+}
+
+.icon-lg {
+  font-size: 24px !important;
+  &--grey {
+    @extend .icon-lg;
+    color: $medium-grey;
+  }
 }
 
 .img-lg {

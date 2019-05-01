@@ -6,14 +6,9 @@ import * as MOCK from "@/tests/mocks/dataMocks";
 const dispatchProps = {};
 const props = {};
 
-const setupDispatchProps = () => {
-  dispatchProps.partyRelationshipTypes = jest.fn();
-  dispatchProps.partyRelationships = jest.fn();
-  dispatchProps.summaryPartyRelationships = jest.fn();
-};
-
 const setupProps = () => {
   props.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
+  props.minePermits = MOCK.PERMITS;
 };
 
 beforeEach(() => {

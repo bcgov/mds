@@ -1,5 +1,10 @@
 import mineReducer from "@/reducers/mineReducer";
-import { storeMine, storeMineList, storeMineNameList } from "@/actions/mineActions";
+import {
+  storeMine,
+  storeMineList,
+  storeMineNameList,
+  storeSubscribedMines,
+} from "@/actions/mineActions";
 
 const baseExpectedValue = {
   mines: {},
@@ -9,6 +14,8 @@ const baseExpectedValue = {
   mineGuid: false,
   mineBasicInfoList: [],
   mineDocuments: [],
+  subscribedMines: [],
+  mineIncidents: [],
 };
 
 // Creates deep copy of javascript object instead of setting a reference
@@ -45,21 +52,33 @@ describe("mineReducer", () => {
 
   it("receives STORE_MINE", () => {
     const expectedValue = getBaseExpectedValue();
-    expectedValue.mines = { test123: { guid: "test123" } };
+    expectedValue.mines = { test123: { mine_guid: "test123" } };
     expectedValue.mineIds = ["test123"];
     expectedValue.mineGuid = "test123";
-    const result = mineReducer(undefined, storeMine({ guid: "test123" }, "test123"));
+    const result = mineReducer(undefined, storeMine({ mine_guid: "test123" }, "test123"));
     expect(result).toEqual(expectedValue);
   });
 
   it("receives STORE_MINE_NAME_LIST", () => {
     const expectedValue = getBaseExpectedValue();
     expectedValue.mineNameList = {
-      mines: [{ guid: "test123", mine_name: "mineName", mine_no: "2039" }],
+      mines: [{ mine_guid: "test123", mine_name: "mineName", mine_no: "2039" }],
     };
     const result = mineReducer(
       undefined,
-      storeMineNameList({ mines: [{ guid: "test123", mine_name: "mineName", mine_no: "2039" }] })
+      storeMineNameList({
+        mines: [{ mine_guid: "test123", mine_name: "mineName", mine_no: "2039" }],
+      })
+    );
+    expect(result).toEqual(expectedValue);
+  });
+
+  it("receives STORE_SUBSCRIBED_MINES", () => {
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.subscribedMines = [{ guid: "test123", mine_name: "mineName", mine_no: "2039" }];
+    const result = mineReducer(
+      undefined,
+      storeSubscribedMines({ mines: [{ guid: "test123", mine_name: "mineName", mine_no: "2039" }] })
     );
     expect(result).toEqual(expectedValue);
   });

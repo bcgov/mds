@@ -18,7 +18,7 @@ class DocumentManager(AuditMixin, Base):
     path_display_name = db.Column(db.String(150), nullable=False)
 
     def __repr__(self):
-        return '<DocumentManager %r>' % self.party_guid
+        return '<DocumentManager %r>' % self.document_manager_id
 
     def json(self):
         return {

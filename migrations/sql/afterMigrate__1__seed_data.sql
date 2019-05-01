@@ -156,7 +156,19 @@ ON CONFLICT DO NOTHING;
 
 
 --mine_party_appt_type_code seed data is in base schema and updated by V2019.01.24.08.51__add_tsf_qualified_person_mpa_type
-
+INSERT INTO mine_party_appt_type_code (
+    mine_party_appt_type_code,
+    description,
+    display_order,
+    create_user,
+    update_user,
+    person,
+    organization,
+    grouping_level
+    )
+VALUES
+    ('HSM', 'Health and Safety Manager', 111, 'system-mds', 'system-mds', 'true', 'false', 2)
+ON CONFLICT DO NOTHING;
 
 INSERT INTO mine_disturbance_code
     (
@@ -373,4 +385,33 @@ INSERT INTO permit_amendment_status_code
 VALUES
     ('ACT', 'Active', 10, 'system-mds', 'system-mds'),
     ('RMT', 'Remitted', 20, 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
+
+INSERT INTO mine_incident_followup_type
+(
+    mine_incident_followup_type_code ,
+    description             ,
+    display_order           ,
+    create_user             ,
+    update_user
+)
+VALUES
+    ('UND', 'Undecided', 10, 'system-mds', 'system-mds'),
+    ('NOA', 'No Action', 20, 'system-mds', 'system-mds'),
+    ('ISP', 'Inspection', 30, 'system-mds', 'system-mds'),
+    ('INV', 'Investigation', 40, 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO variance_application_status_code (
+    variance_application_status_code,
+    description,
+    create_user,
+    update_user
+)
+VALUES
+    ('REV', 'In Review', 'system-mds', 'system-mds'),
+    ('NAP', 'Not Applicable', 'system-mds', 'system-mds'),
+    ('APP', 'Approved', 'system-mds', 'system-mds'),
+    ('DEN', 'Denied', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;

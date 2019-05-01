@@ -9,13 +9,13 @@ from ..models.mine_type_detail import MineTypeDetail
 from ..models.mine_type import MineType
 from app.api.constants import DISTURBANCE_CODES_CONFIG, COMMODITY_CODES_CONFIG
 
+
 class MineTypeDetailResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser()
+    parser = reqparse.RequestParser(trim=True)
     parser.add_argument(
         'mine_type_guid',
         type=str,
-        help='Unique identifier for the mine type with which to associate this details record.'
-    )
+        help='Unique identifier for the mine type with which to associate this details record.')
     parser.add_argument('mine_disturbance_code', type=str, help='Mine disturbance type identifier.')
     parser.add_argument('mine_commodity_code', type=str, help='Mine commodity type identifier.')
 
@@ -35,40 +35,31 @@ class MineTypeDetailResource(Resource, UserMixin, ErrorMixin):
             self.raise_error(400, 'Error: Missing mine_disturbance_code or mine_commodity_code.')
 
         if mine_disturbance_code and mine_commodity_code:
-            self.raise_error(400, 'Error: Unable to create mine_type_detail with disturbance and commodity.')
+            self.raise_error(
+                400, 'Error: Unable to create mine_type_detail with disturbance and commodity.')
 
         try:
             mine_type_detail = MineTypeDetail.create_mine_type_detail(
-                mine_type_guid,
-                mine_disturbance_code,
-                mine_commodity_code,
-                self.get_create_update_dict(),
-                save=False
-            )
+                mine_type_guid, mine_disturbance_code, mine_commodity_code, add_to_session=False)
 
             if mine_disturbance_code:
-                (code, name, config) = (mine_disturbance_code, 'mine_disturbance_code', DISTURBANCE_CODES_CONFIG)
+                (code, name, config) = (mine_disturbance_code, 'mine_disturbance_code',
+                                        DISTURBANCE_CODES_CONFIG)
             if mine_commodity_code:
-                (code, name, config) = (mine_commodity_code, 'mine_commodity_code', COMMODITY_CODES_CONFIG)
+                (code, name, config) = (mine_commodity_code, 'mine_commodity_code',
+                                        COMMODITY_CODES_CONFIG)
 
             try:
                 mine_type = MineType.find_by_guid(mine_type_guid)
                 assert mine_type.mine_tenure_type_code in config[code]['mine_tenure_type_codes']
             except (AssertionError, KeyError) as e:
-                self.raise_error(
-                    400,
-                    'Error: Invalid '+name+'.'
-                )
+                self.raise_error(400, 'Error: Invalid ' + name + '.')
 
             mine_type_detail.save()
         except exc.IntegrityError as e:
-            self.raise_error(
-                400,
-                'Error: Unable to create mine_type_detail.'
-            )
+            self.raise_error(400, 'Error: Unable to create mine_type_detail.')
 
         return mine_type_detail.json()
-
 
     @api.expect(parser)
     @requires_role_mine_create
@@ -85,9 +76,6 @@ class MineTypeDetailResource(Resource, UserMixin, ErrorMixin):
         try:
             MineTypeDetail.expire_record(mine_type_detail)
         except exc.IntegrityError as e:
-            self.raise_error(
-                400,
-                'Error: Unable to update mine_type_detail.'
-            )
+            self.raise_error(400, 'Error: Unable to update mine_type_detail.')
 
         return mine_type_detail.json()

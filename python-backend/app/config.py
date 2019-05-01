@@ -26,7 +26,15 @@ class Config(object):
         'https://URL/auth/realms/mds/.well-known/openid-configuration')
     JWT_OIDC_AUDIENCE = os.environ.get('JWT_OIDC_AUDIENCE', 'mds')
     JWT_OIDC_ALGORITHMS = os.environ.get('JWT_OIDC_ALGORITHMS', 'RS256')
-    def JWT_ROLE_CALLBACK(jwt_dict): return (jwt_dict['realm_access']['roles'])
+
+    LDAP_IDIR_USERNAME = os.environ.get('LDAP_IDIR_USERNAME', "idir_username")
+    LDAP_IDIR_PASSWORD = os.environ.get('LDAP_IDIR_PASSWORD', "idir_password")
+
+    BUNDLE_ERRORS = True  #RequestParser global config
+
+    def JWT_ROLE_CALLBACK(jwt_dict):
+        return (jwt_dict['realm_access']['roles'])
+
     # Below enables functionalty we PR'd into the JWT_OIDC library to add caching
     JWT_OIDC_CACHING_ENABLED = True
 
@@ -45,18 +53,19 @@ class Config(object):
     CACHE_REDIS_PASS = os.environ.get('CACHE_REDIS_PASS', 'keycloak-password')
     CACHE_REDIS_URL = 'redis://:{0}@{1}:{2}'.format(CACHE_REDIS_PASS, CACHE_REDIS_HOST,
                                                     CACHE_REDIS_PORT)
+    #removing flask restplus default header mask for swagger.
+    RESTPLUS_MASK_SWAGGER = False
 
     # Constant config
     RESTPLUS_JSON = {'indent': None, 'separators': (',', ':')}
     COMPRESS_LEVEL = 9
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_MAX_OVERFLOW = 20
-    SQLALCHEMY_POOL_TIMEOUT = 300
+    SQLALCHEMY_ENGINE_OPTIONS = {'pool_timeout': 300, 'max_overflow': 20}
 
     # Flask-uploads configs
     UPLOADED_DOCUMENT_DEST = os.environ.get('UPLOADED_DOCUMENT_DEST', '/app/document_uploads')
-    # 100MB file limit
-    MAX_CONTENT_LENGTH = 100 * 1024 * 1024
+    # 100MB file limit, temporarily increased to 400MB
+    MAX_CONTENT_LENGTH = 400 * 1024 * 1024
 
     # Elastic config
     ELASTIC_ENABLED = os.environ.get('ELASTIC_ENABLED', '0')

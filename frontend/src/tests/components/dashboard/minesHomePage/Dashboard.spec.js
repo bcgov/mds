@@ -21,6 +21,7 @@ const setupDispatchProps = () => {
   dispatchProps.fetchPartyRelationshipTypes = jest.fn();
   dispatchProps.fetchPermitStatusOptions = jest.fn();
   dispatchProps.fetchApplicationStatusOptions = jest.fn();
+  dispatchProps.fetchMineIncidentFollowActionOptions = jest.fn();
   dispatchProps.setOptionsLoaded = jest.fn();
 };
 
@@ -37,7 +38,7 @@ const setupReducerProps = () => {
   reducerProps.mineRegionOptions = MOCK.REGION_OPTIONS.options;
   reducerProps.mineDisturbanceOptions = MOCK.DISTURBANCE_OPTIONS;
   reducerProps.mineRegionHash = MOCK.REGION_HASH;
-  reducerProps.mineTenureTypes = MOCK.TENURE_TYPES.options;
+  reducerProps.mineTenureTypes = MOCK.TENURE_TYPES;
   reducerProps.mineTenureHash = MOCK.TENURE_HASH;
 };
 

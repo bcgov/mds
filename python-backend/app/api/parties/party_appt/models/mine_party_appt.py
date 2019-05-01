@@ -65,9 +65,7 @@ class MinePartyAppointment(AuditMixin, Base):
             'end_date': str(self.end_date) if self.end_date else None,
         }
         if 'party' in relationships:
-            result.update({
-                'party': self.party.json(show_mgr=False) if self.party else str({})
-            })
+            result.update({'party': self.party.json(show_mgr=False) if self.party else str({})})
         related_guid = ""
         if self.mine_party_appt_type_code == "EOR":
             related_guid = str(self.mine_tailings_storage_facility_guid)
@@ -86,6 +84,13 @@ class MinePartyAppointment(AuditMixin, Base):
             return None
 
     @classmethod
+    def find_all_by_mine_party_appt_guid(cls, _id):
+        try:
+            return cls.query.filter_by(mine_party_appt_guid=_id).filter_by(deleted_ind=False)
+        except ValueError:
+            return None
+
+    @classmethod
     def find_by_mine_guid(cls, _id):
         try:
             return cls.find_by(mine_guid=_id)
@@ -98,6 +103,10 @@ class MinePartyAppointment(AuditMixin, Base):
             return cls.find_by(party_guid=_id)
         except ValueError:
             return None
+
+    @classmethod
+    def find_by_permit_guid(cls, _id):
+            return cls.find_by(permit_guid=_id)
 
     @classmethod
     def find_parties_by_mine_party_appt_type_code(cls, code):
@@ -137,19 +146,22 @@ class MinePartyAppointment(AuditMixin, Base):
         return records, 200, 'OK'
 
     @classmethod
-    def find_by(cls, mine_guid=None, party_guid=None, mine_party_appt_type_codes=None):
-        try:
+    def find_by(cls,
+                mine_guid=None,
+                party_guid=None,
+                mine_party_appt_type_codes=None,
+                permit_guid=None):
             built_query = cls.query.filter_by(deleted_ind=False)
             if mine_guid:
                 built_query = built_query.filter_by(mine_guid=mine_guid)
             if party_guid:
                 built_query = built_query.filter_by(party_guid=party_guid)
+            if permit_guid:
+                built_query = built_query.filter_by(permit_guid=permit_guid)
             if mine_party_appt_type_codes:
                 built_query = built_query.filter(
                     cls.mine_party_appt_type_code.in_(mine_party_appt_type_codes))
             return built_query.all()
-        except ValueError:
-            return None
 
     @classmethod
     def to_csv(cls, records, columns):
@@ -162,16 +174,15 @@ class MinePartyAppointment(AuditMixin, Base):
         return '\n'.join(rows)
 
     @classmethod
-    def create_mine_party_appt(cls,
-                               mine_guid,
-                               party_guid,
-                               mine_party_appt_type_code,
-                               user_kwargs,
-                               start_date=None,
-                               end_date=None,
-                               processed_by=processed_by,
-                               permit_guid=None,
-                               save=True):
+    def create(cls,
+               mine_guid,
+               party_guid,
+               mine_party_appt_type_code,
+               start_date=None,
+               end_date=None,
+               processed_by=processed_by,
+               permit_guid=None,
+               add_to_session=True):
         mpa = cls(
             mine_guid=mine_guid,
             party_guid=party_guid,
@@ -179,9 +190,8 @@ class MinePartyAppointment(AuditMixin, Base):
             mine_party_appt_type_code="PMT",
             start_date=start_date,
             end_date=end_date,
-            processed_by=processed_by,
-            **user_kwargs)
-        if save:
+            processed_by=processed_by)
+        if add_to_session:
             mpa.save(commit=False)
         return mpa
 

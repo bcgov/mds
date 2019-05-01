@@ -15,11 +15,15 @@ const propTypes = {
     "manager-small",
     "tenure",
     "permit",
+    "variance",
     "no-results",
+    "compliance",
     "unauthorized",
     "view-mine-manager",
     "contacts",
     "unauthorized-page",
+    "subscription",
+    "incidents",
   ]),
 };
 
@@ -68,10 +72,34 @@ const NullScreen = (props) => (
         <h3>{String.NO_PERMIT}</h3>
       </div>
     )}
+    {props.type === "compliance" && (
+      <div>
+        <img alt="mine_img" src={PERMIT} />
+        <h3>{String.NO_NRIS_INSPECTIONS}</h3>
+      </div>
+    )}
+    {props.type === "variance" && (
+      <div>
+        <img alt="mine_img" src={PERMIT} />
+        <h3>{String.NO_VARIANCE}</h3>
+      </div>
+    )}
+    {props.type === "applications" && (
+      <div>
+        <img alt="mine_img" src={PERMIT} />
+        <h3>{String.NO_APPLICATION}</h3>
+      </div>
+    )}
     {props.type === "no-results" && (
       <div>
         <img alt="mine_img" src={NO_MINE} />
         <h3>{String.NO_RESULTS}</h3>
+      </div>
+    )}
+    {props.type === "subscription" && (
+      <div>
+        <img alt="mine_img" src={NO_MINE} />
+        <h3>You are not subscribed to any mines</h3>
       </div>
     )}
     {props.type === "unauthorized" && (
@@ -98,6 +126,12 @@ const NullScreen = (props) => (
         <img alt="mine_img" src={MINER_TWO} />
         <h3>No contacts found</h3>
         <p>Create a contact using the menu above</p>
+      </div>
+    )}
+    {props.type === "incidents" && (
+      <div>
+        <img alt="mine_img" src={PERMIT} />
+        <h3>No incidents found</h3>
       </div>
     )}
   </div>

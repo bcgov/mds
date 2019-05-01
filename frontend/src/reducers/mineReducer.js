@@ -15,6 +15,8 @@ const initialState = {
   mineGuid: false,
   mineBasicInfoList: [],
   mineDocuments: [],
+  subscribedMines: [],
+  mineIncidents: [],
 };
 
 const mineReducer = (state = initialState, action) => {
@@ -22,16 +24,16 @@ const mineReducer = (state = initialState, action) => {
     case actionTypes.STORE_MINE_LIST:
       return {
         ...state,
-        mines: createItemMap(action.payload.mines, "guid"),
-        mineIds: createItemIdsArray(action.payload.mines, "guid"),
+        mines: createItemMap(action.payload.mines, "mine_guid"),
+        mineIds: createItemIdsArray(action.payload.mines, "mine_guid"),
         minesPageData: action.payload,
         mineGuid: false,
       };
     case actionTypes.STORE_MINE:
       return {
         ...state,
-        mines: createItemMap([action.payload], "guid"),
-        mineIds: createItemIdsArray([action.payload], "guid"),
+        mines: createItemMap([action.payload], "mine_guid"),
+        mineIds: createItemIdsArray([action.payload], "mine_guid"),
         mineGuid: action.id,
       };
     case actionTypes.STORE_MINE_NAME_LIST:
@@ -49,6 +51,24 @@ const mineReducer = (state = initialState, action) => {
         ...state,
         mineDocuments: action.payload.mine_documents,
       };
+    case actionTypes.STORE_SUBSCRIBED_MINES:
+      return {
+        ...state,
+        subscribedMines: action.payload.mines,
+      };
+    case actionTypes.STORE_CURRENT_USER_MINE_VERIFIED_STATUS:
+      return {
+        ...state,
+        currentUserVerifiedMines: action.payload.filter((status) => status.healthy_ind === true),
+        currentUserUnverifiedMinesMines: action.payload.filter(
+          (status) => status.healthy_ind !== true
+        ),
+      };
+    case actionTypes.STORE_MINE_INCIDENTS:
+      return {
+        ...state,
+        mineIncidents: action.payload.mine_incidents,
+      };
     default:
       return state;
   }
@@ -61,5 +81,10 @@ export const getMinesPageData = (state) => state[MINES].minesPageData;
 export const getMineGuid = (state) => state[MINES].mineGuid;
 export const getMineBasicInfoList = (state) => state[MINES].mineBasicInfoList;
 export const getMineDocuments = (state) => state[MINES].mineDocuments;
+export const getSubscribedMines = (state) => state[MINES].subscribedMines;
+export const getCurrentUserVerifiedMines = (state) => state[MINES].currentUserVerifiedMines;
+export const getCurrentUserUnverifiedMines = (state) =>
+  state[MINES].currentUserUnverifiedMinesMines;
+export const getMineIncidents = (state) => state[MINES].mineIncidents;
 
 export default mineReducer;

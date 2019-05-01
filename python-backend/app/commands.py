@@ -5,9 +5,9 @@ import click
 import names
 from sqlalchemy.exc import DBAPIError
 
-from .api.mines.location.models.mine_location import MineLocation
+from tests.factories import MineLocationFactory, MineTypeFactory
+
 from .api.mines.region.models.region import MineRegionCode
-from .api.mines.mine.models.mine_type import MineType
 from .api.constants import (PERMIT_STATUS_CODE, MINE_OPERATION_STATUS, MINE_OPERATION_STATUS_REASON,
                             MINE_OPERATION_STATUS_SUB_REASON, MINE_REGION_OPTIONS)
 from .api.mines.mine.models.mine import Mine
@@ -16,10 +16,7 @@ from .api.mines.mine.models.mine_tenure_type_code import MineTenureTypeCode
 from .api.parties.party.models.party import Party
 from .api.parties.party.models.party_type_code import PartyTypeCode
 from .api.permits.permit.models.permit import Permit
-from .api.permits.permit.models.permit_status_code import PermitStatusCode
-from .api.mines.status.models.mine_operation_status_code import MineOperationStatusCode
-from .api.mines.status.models.mine_operation_status_reason_code import MineOperationStatusReasonCode
-from .api.mines.status.models.mine_operation_status_sub_reason_code import MineOperationStatusSubReasonCode
+from .api.mines.mine.models.mine_verified_status import MineVerifiedStatus
 from .api.utils.random import generate_mine_no, generate_mine_name, random_geo, random_key_gen, random_date, random_region, random_mine_category
 from .api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from .extensions import db, sched
@@ -27,44 +24,47 @@ from .scheduled_jobs import NRIS_jobs
 from .scheduled_jobs import ETL_jobs
 from app import auth
 
+from tests.factories import MineIncidentFactory
+
+from app.api.utils.include.user_info import User
+
 
 def register_commands(app):
-    DUMMY_USER_KWARGS = {'create_user': 'DummyUser', 'update_user': 'DummyUser'}
-
     def create_multiple_mine_tenure(num, mine):
         for _ in range(num):
-            MineralTenureXref.create_mine_tenure(mine, random_key_gen(key_length=7, letters=False),
-                                                 DUMMY_USER_KWARGS)
+            MineralTenureXref.create_mine_tenure(mine, random_key_gen(key_length=7, letters=False))
 
     def create_multiple_permit_permittees(num, mine, party, prev_party_guid):
         for _ in range(num):
             mine_permit = Permit.create(mine.mine_guid, random_key_gen(key_length=12),
-                                        random.choice(PERMIT_STATUS_CODE['choices']),
-                                        DUMMY_USER_KWARGS)
+                                        random.choice(PERMIT_STATUS_CODE['choices']))
 
             permittee_party = random.choice([party.party_guid, prev_party_guid
                                              ]) if prev_party_guid else party.party_guid
 
             db.session.commit()
             # raise Exception(str(mine_permit.permit_guid) + str(mine_permit.mine_guid))
-            mpa = MinePartyAppointment.create_mine_party_appt(
+            mpa = MinePartyAppointment.create(
                 mine_guid=mine_permit.mine_guid,
                 party_guid=permittee_party,
                 permit_guid=mine_permit.permit_guid,
                 mine_party_appt_type_code='PMT',
                 start_date=None,
                 end_date=None,
-                processed_by=DUMMY_USER_KWARGS.get('update_user'),
-                user_kwargs=DUMMY_USER_KWARGS,
-                save=True)
+                processed_by='DummyUser')
 
     # in terminal you can run $flask <cmd> <arg>
+
+    @app.cli.command()
+    def import_idir():
+        from app.scheduled_jobs.IDIR_jobs import _import_empr_idir_users
+        _import_empr_idir_users()
+
     @app.cli.command()
     @click.argument('num')
     @click.argument('threading', default=True)
     def create_data(num, threading):
         from . import auth
-        auth.apply_security = False
         """
         Creates dummy data in the database. If threading=True
         Use Threading and multiprocessing to create records in chunks of 100.
@@ -73,6 +73,8 @@ def register_commands(app):
         :param threading: use threading or not
         :return: None
         """
+        User._test_mode = True
+
         if threading:
             with ThreadPoolExecutor() as executor:
                 batch_size = 100
@@ -82,7 +84,8 @@ def register_commands(app):
                 # E.g. 520 -> [100, 100, 100, 100, 100, 20]
                 full_batches = int(num / batch_size)
                 batches = [batch_size] * full_batches
-                batches.append(num % batch_size)
+                if 0 < num % batch_size:
+                    batches.append(num % batch_size)
 
                 task_list = []
                 for batch in batches:
@@ -96,33 +99,30 @@ def register_commands(app):
             _create_data(num)
 
     def _create_data(num):
+        User._test_mode = True
         with app.app_context():
             party = None
-            mine_tenure_type_codes = list(
-                map(lambda x: x['value'], MineTenureTypeCode.all_options()))
             for _ in range(int(num)):
                 # Ability to add previous party to have multiple permittee
                 prev_party_guid = party.party_guid if party else None
                 mine = Mine.create_mine(generate_mine_no(), generate_mine_name(),
-                                        random_mine_category(), random_region(), DUMMY_USER_KWARGS)
-                MineType.create_mine_type(mine.mine_guid, random.choice(mine_tenure_type_codes),
-                                          DUMMY_USER_KWARGS)
-                MineLocation.create_mine_location(mine, random_geo(), DUMMY_USER_KWARGS)
+                                        random_mine_category(), random_region())
 
+                MineTypeFactory(mine=mine)
+                MineLocationFactory(mine_guid=mine.mine_guid)
+                if random.choice([True, False]):
+                    mine.verified_status = MineVerifiedStatus(
+                        healthy_ind=random.choice([True, False]))
                 first_name = names.get_first_name()
                 last_name = names.get_last_name()
                 email = f'{first_name.lower()}.{last_name.lower()}@{last_name.lower()}.com'
                 party = Party.create(
-                    last_name,
-                    '123-123-1234',
-                    'PER',
-                    DUMMY_USER_KWARGS,
-                    first_name=first_name,
-                    email=email)
+                    last_name, '123-123-1234', 'PER', first_name=first_name, email=email)
                 db.session.commit()
                 create_multiple_mine_tenure(random.randint(0, 4), mine)
                 create_multiple_permit_permittees(
                     random.randint(0, 6), mine, party, prev_party_guid)
+                MineIncidentFactory(mine_guid=mine.mine_guid)
 
             try:
                 db.session.commit()
@@ -130,48 +130,6 @@ def register_commands(app):
             except DBAPIError:
                 db.session.rollback()
                 raise
-
-    @app.cli.command()
-    def delete_data():
-        from . import auth
-        auth.apply_security = False
-
-        meta = db.metadata
-        for table in reversed(meta.sorted_tables):
-            if 'view' in table.name:
-                continue
-            db.session.execute(table.delete())
-        # Reseed Mandatory Data
-        PermitStatusCode.create_mine_permit_status_code('O', 'Open permit', 10, DUMMY_USER_KWARGS)
-        PermitStatusCode.create_mine_permit_status_code('C', 'Closed permit', 20, DUMMY_USER_KWARGS)
-        PartyTypeCode.create_party_type_code('PER', 'Person', 10, DUMMY_USER_KWARGS)
-        PartyTypeCode.create_party_type_code('ORG', 'Organzation', 20, DUMMY_USER_KWARGS)
-
-        for k, v in MINE_OPERATION_STATUS.items():
-            MineOperationStatusCode.create_mine_operation_status_code(v['value'], v['label'], 1,
-                                                                      DUMMY_USER_KWARGS)
-
-        for k, v in MINE_OPERATION_STATUS_REASON.items():
-            MineOperationStatusReasonCode.create_mine_operation_status_reason_code(
-                v['value'], v['label'], 1, DUMMY_USER_KWARGS)
-
-        for k, v in MINE_OPERATION_STATUS_SUB_REASON.items():
-            MineOperationStatusSubReasonCode.create_mine_operation_status_sub_reason_code(
-                v['value'], v['label'], 1, DUMMY_USER_KWARGS)
-
-        display_order = 10
-        for item in MINE_REGION_OPTIONS:
-            MineRegionCode.create_mine_region_code(item['value'], item['label'], display_order,
-                                                   random_date(), random_date(), DUMMY_USER_KWARGS)
-            display_order += 10
-
-        try:
-            db.session.commit()
-            click.echo(f'Database has been cleared.')
-        except DBAPIError:
-            db.session.rollback()
-            click.echo(f'Error, failed on commit.')
-            raise
 
     if app.config.get('ENVIRONMENT_NAME') in ['test', 'prod']:
 
@@ -185,12 +143,9 @@ def register_commands(app):
                 NRIS_jobs._cache_all_NRIS_major_mines_data()
                 print('Done!')
 
-        #This is here to prevent this from running in production until we are confident in the permit data.
-        if app.config.get('ENVIRONMENT_NAME') == 'test':
-
-            @sched.app.cli.command()
-            def _run_etl():
-                with sched.app.app_context():
-                    print('starting the ETL.')
-                    ETL_jobs._run_ETL()
-                    print('Completed running the ETL.')
+        @sched.app.cli.command()
+        def _run_etl():
+            with sched.app.app_context():
+                print('starting the ETL.')
+                ETL_jobs._run_ETL()
+                print('Completed running the ETL.')

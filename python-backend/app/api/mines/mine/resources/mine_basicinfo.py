@@ -5,13 +5,14 @@ from flask import request
 from flask_restplus import Resource, reqparse, inputs
 from sqlalchemy_filters import apply_sort, apply_pagination
 
+from app.api.mines.mine_api_models import MINES_MODEL
 from ..models.mine import Mine
 from app.extensions import jwt, api
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class MineBasicInfoResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser()
+    parser = reqparse.RequestParser(trim=True)
     parser.add_argument(
         'mine_guids',
         type=list,
@@ -19,15 +20,13 @@ class MineBasicInfoResource(Resource, UserMixin, ErrorMixin):
         help='List of guids for mines to get basic info for.')
 
     @api.expect(parser)
+    @api.marshal_with(MINES_MODEL, code=200)
+    @api.doc(description='Returns a list of basic mine info.')
     @jwt.requires_roles(["mds-mine-view"])
-    def post(self, mine_no_or_guid=None):
+    def post(self):
 
         data = self.parser.parse_args()
-        result = []
-        if not data.get('mine_guids'):
-            return []
+        mines = data.get('mine_guids', [])
 
-        for mine_guid in data.get('mine_guids'):
-            mine = Mine.find_by_mine_guid(mine_guid)
-            result.append(mine.json_for_list())
-        return result
+        mine_list = Mine.query.filter(Mine.mine_guid.in_((mines))).all()
+        return mine_list

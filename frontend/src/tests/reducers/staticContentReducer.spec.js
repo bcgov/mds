@@ -9,6 +9,7 @@ import {
   storeCommodityOptions,
   storeProvinceCodes,
   storeApplicationStatusOptions,
+  storeComplianceCodes,
 } from "@/actions/staticContentActions";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
@@ -23,7 +24,9 @@ const baseExpectedValue = {
   provinceOptions: [],
   permitStatusCodes: [],
   applicationStatusCodes: [],
+  complianceCodes: [],
   optionsLoaded: false,
+  incidentFollowupActionOptions: [],
 };
 
 // Creates deep copy of javascript object instead of setting a reference
@@ -73,8 +76,8 @@ describe("staticContentReducer", () => {
 
   it("receives STORE_TENURE_TYPES", () => {
     const expectedValue = getBaseExpectedValue();
-    expectedValue.mineTenureTypes = MOCK.TENURE_TYPES.options;
-    const result = staticContentReducer(undefined, storeTenureTypes(MOCK.TENURE_TYPES));
+    expectedValue.mineTenureTypes = MOCK.TENURE_TYPES_RESPONSE.records;
+    const result = staticContentReducer(undefined, storeTenureTypes(MOCK.TENURE_TYPES_RESPONSE));
     expect(result).toEqual(expectedValue);
   });
 
@@ -109,6 +112,13 @@ describe("staticContentReducer", () => {
       undefined,
       storeApplicationStatusOptions(MOCK.APPLICATION_STATUS_CODE_OPTIONS)
     );
+    expect(result).toEqual(expectedValue);
+  });
+
+  it("receives STORE_COMPLIANCE_CODES", () => {
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.complianceCodes = MOCK.COMPLIANCE_CODES.records;
+    const result = staticContentReducer(undefined, storeComplianceCodes(MOCK.COMPLIANCE_CODES));
     expect(result).toEqual(expectedValue);
   });
 });

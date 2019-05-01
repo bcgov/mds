@@ -42,36 +42,31 @@ export class MineInfo extends Component {
   }
 
   handleEditReportSubmit = () => {
-    // Get state of document before latest upload/edits
-    const updatedDocument = this.state.selectedDocument;
-    // Get document latest version
-    const updatedMineDocument = find(
-      this.props.mine.mine_expected_documents,
-      ({ exp_document_guid }) => exp_document_guid === updatedDocument.exp_document_guid
-    );
+    this.props.fetchMineRecordById(this.props.mine.mine_guid).then(() => {
+      const expDoc = find(
+        this.props.mine.mine_expected_documents,
+        ({ exp_document_guid }) =>
+          exp_document_guid === this.state.selectedDocument.exp_document_guid
+      );
 
-    // Set status to received/pending review
-    updatedDocument.exp_document_status.exp_document_status_code = "PRE";
+      expDoc.expected_document_status.exp_document_status_code = "PRE";
 
-    // Only set received_date when going from 0 to some uploaded documents
-    if (
-      updatedDocument.related_documents.length === 0 &&
-      updatedMineDocument.related_documents.length > 0
-    ) {
-      updatedDocument.received_date = moment();
-    }
+      // Set received_date for first set of documents
+      if (!expDoc.received_date && expDoc.related_documents.length > 0) {
+        expDoc.received_date = moment();
+      }
 
-    // Reset received state when all documents deleted
-    if (updatedMineDocument.related_documents.length === 0) {
-      updatedDocument.exp_document_status.exp_document_status_code = "MIA";
-      updatedDocument.received_date = null;
-    }
-    this.props
-      .updateExpectedDocument(updatedDocument.exp_document_guid, { document: updatedDocument })
-      .then(() => {
+      // Reset received state when all documents deleted
+      if (expDoc.related_documents.length === 0) {
+        expDoc.expected_document_status.exp_document_status_code = "MIA";
+        expDoc.received_date = null;
+      }
+
+      this.props.updateExpectedDocument(expDoc.exp_document_guid, expDoc).then(() => {
         this.props.closeModal();
-        this.props.fetchMineRecordById(this.props.mine.guid);
+        this.props.fetchMineRecordById(this.props.mine.mine_guid);
       });
+    });
   };
 
   openEditReportModal = (event, onSubmit, title, doc) => {

@@ -18,7 +18,7 @@ from ....permits.permit.models.permit import Permit
 
 class Mine(AuditMixin, Base):
     __tablename__ = 'mine'
-    mine_guid = db.Column(UUID(as_uuid=True), primary_key=True)
+    mine_guid = db.Column(UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     mine_no = db.Column(db.String(10))
     mine_name = db.Column(db.String(60), nullable=False)
     mine_note = db.Column(db.String(300), default='')
@@ -41,7 +41,9 @@ class Mine(AuditMixin, Base):
     mine_permit = db.relationship(
         'Permit', backref='mine', order_by='desc(Permit.create_timestamp)', lazy='selectin')
     mine_type = db.relationship(
-        'MineType', backref='mine', order_by='desc(MineType.update_timestamp)', lazy='selectin')
+        'MineType', backref='mine', order_by='desc(MineType.update_timestamp)',
+        primaryjoin="and_(MineType.mine_guid == Mine.mine_guid, MineType.active_ind==True)",
+        lazy='selectin')
 
     #Not always desired, set to lazy load using select
     mineral_tenure_xref = db.relationship('MineralTenureXref', backref='mine', lazy='select')
@@ -54,12 +56,14 @@ class Mine(AuditMixin, Base):
         lazy='select')
     mine_party_appt = db.relationship('MinePartyAppointment', backref="mine", lazy='select')
 
+    mine_incidents = db.relationship('MineIncident', backref="mine", lazy='select')
+
     def __repr__(self):
         return '<Mine %r>' % self.mine_guid
 
     def json(self):
         return {
-            'guid':
+            'mine_guid':
             str(self.mine_guid),
             'mine_name':
             self.mine_name,
@@ -80,12 +84,13 @@ class Mine(AuditMixin, Base):
             'mine_tailings_storage_facility':
             [item.json() for item in self.mine_tailings_storage_facilities],
             'mine_expected_documents': [item.json() for item in self.mine_expected_documents],
-            'mine_type': [item.json() for item in self.active(self.mine_type)]
+            'mine_type': [item.json() for item in self.active(self.mine_type)],
+            'verified_status': self.verified_status.json() if self.verified_status else None,
         }
 
     def json_for_list(self):
         return {
-            'guid':
+            'mine_guid':
             str(self.mine_guid),
             'mine_name':
             self.mine_name,
@@ -101,12 +106,13 @@ class Mine(AuditMixin, Base):
             'mine_status': [item.json() for item in self.mine_status],
             'mine_tailings_storage_facility':
             [item.json() for item in self.mine_tailings_storage_facilities],
-            'mine_type': [item.json() for item in self.active(self.mine_type)]
+            'mine_type': [item.json() for item in self.active(self.mine_type)],
+            'verified_status': self.verified_status.json() if self.verified_status else None,
         }
 
     def json_for_map(self):
         return {
-            'guid': str(self.mine_guid),
+            'mine_guid': str(self.mine_guid),
             'mine_name': self.mine_name,
             'mine_no': self.mine_no,
             'mine_note': self.mine_note,
@@ -116,11 +122,11 @@ class Mine(AuditMixin, Base):
         }
 
     def json_by_name(self):
-        return {'guid': str(self.mine_guid), 'mine_name': self.mine_name, 'mine_no': self.mine_no}
+        return {'mine_guid': str(self.mine_guid), 'mine_name': self.mine_name, 'mine_no': self.mine_no}
 
     def json_by_location(self):
         #this will get cleaned up when mine_location and mine are merged
-        result = {'guid': str(self.mine_guid)}
+        result = {'mine_guid': str(self.mine_guid)}
         if self.mine_location:
             result['latitude'] = str(
                 self.mine_location.latitude) if self.mine_location.latitude else ''
@@ -133,7 +139,7 @@ class Mine(AuditMixin, Base):
 
     def json_by_permit(self):
         return {
-            'guid': str(self.mine_guid),
+            'mine_guid': str(self.mine_guid),
             'mine_permit': [item.json() for item in self.mine_permit]
         }
 
@@ -191,15 +197,14 @@ class Mine(AuditMixin, Base):
         return result
 
     @classmethod
-    def create_mine(cls, mine_no, mine_name, mine_category, mine_region, user_kwargs, save=True):
+    def create_mine(cls, mine_no, mine_name, mine_category, mine_region, add_to_session=True):
         mine = cls(
             mine_guid=uuid.uuid4(),
             mine_no=mine_no,
             mine_name=mine_name,
             major_mine_ind=mine_category,
-            mine_region=mine_region,
-            **user_kwargs)
-        if save:
+            mine_region=mine_region)
+        if add_to_session:
             mine.save(commit=False)
         return mine
 
@@ -224,3 +229,11 @@ class Mine(AuditMixin, Base):
         if mine_no and len(mine_no) > 10:
             raise AssertionError('Mine number must not exceed 10 characters.')
         return mine_no
+
+    @validates('mine_region')
+    def validate_mine_region(self, key, mine_region):
+        if not mine_region:
+            raise AssertionError('No mine region code provided.')
+        if len(mine_region) > 2:
+            raise AssertionError('Invalid region code')
+        return mine_region

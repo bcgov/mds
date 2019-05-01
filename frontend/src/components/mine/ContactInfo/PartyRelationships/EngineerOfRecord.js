@@ -11,13 +11,13 @@ const propTypes = {
   openEditPartyRelationshipModal: PropTypes.func.isRequired,
   onSubmitEditPartyRelationship: PropTypes.func.isRequired,
   removePartyRelationship: PropTypes.func.isRequired,
-  otherDetails: PropTypes.object,
+  otherDetails: PropTypes.objectOf(PropTypes.any).isRequired,
   isEditable: PropTypes.bool.isRequired,
   compact: PropTypes.bool.isRequired,
 };
 
 export const EngineerOfRecord = (props) => {
-  const tsf = props.mine.mine_tailings_storage_facility.find(
+  const tsf = props.mine.mine_tailings_storage_facilities.find(
     ({ mine_tailings_storage_facility_guid }) =>
       mine_tailings_storage_facility_guid === props.partyRelationship.related_guid
   );

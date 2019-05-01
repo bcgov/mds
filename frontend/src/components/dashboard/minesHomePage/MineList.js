@@ -1,12 +1,13 @@
 import React from "react";
-import { objectOf, arrayOf, string } from "prop-types";
+import { func, objectOf, arrayOf, string } from "prop-types";
 import { Link } from "react-router-dom";
 import { Table } from "antd";
-import { uniqBy } from "lodash";
+import { uniqBy, isEmpty } from "lodash";
 import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
 import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
+import { SUCCESS_CHECKMARK } from "@/constants/assets";
 
 /**
  * @class MineList - paginated list of mines
@@ -18,6 +19,14 @@ const propTypes = {
   mineRegionHash: objectOf(string).isRequired,
   mineTenureHash: objectOf(string).isRequired,
   mineCommodityOptionsHash: objectOf(string).isRequired,
+  handleMineSearch: func.isRequired,
+  sortField: string,
+  sortDir: string,
+};
+
+const defaultProps = {
+  sortField: null,
+  sortDir: null,
 };
 
 const columns = [
@@ -25,24 +34,43 @@ const columns = [
     title: "Mine Name",
     width: 200,
     dataIndex: "mineName",
-    render: (text, record) => <Link to={router.MINE_SUMMARY.dynamicRoute(record.key)}>{text}</Link>,
+    sortField: "mine_name",
+    render: (text, record) => (
+      <Link to={router.MINE_SUMMARY.dynamicRoute(record.key)}>
+        {text}
+        {record.verified_status.healthy_ind && (
+          <img
+            alt="checkmark"
+            className="padding-small"
+            src={SUCCESS_CHECKMARK}
+            width="25"
+            title={`Mine data verified by ${record.verified_status.verifying_user}`}
+          />
+        )}
+      </Link>
+    ),
+    sorter: true,
   },
   {
     title: "Mine No.",
-    width: 100,
+    width: 120,
     dataIndex: "mineNo",
+    sortField: "mine_no",
     render: (text) => <div title="Mine Number">{text}</div>,
+    sorter: true,
   },
   {
     title: "Operational Status",
-    width: 150,
+    width: 160,
     dataIndex: "operationalStatus",
+    sortField: "mine_operation_status_code",
     render: (text) => <div title="Operational Status">{text}</div>,
+    sorter: true,
   },
   {
     title: "Permit No.",
-    dataIndex: "permit",
     width: 150,
+    dataIndex: "permit",
     render: (text, record) => (
       <div title="Permit Number">
         <ul className="mine-list__permits">
@@ -57,19 +85,21 @@ const columns = [
   },
   {
     title: "Region",
-    dataIndex: "region",
     width: 150,
+    dataIndex: "region",
+    sortField: "mine_region",
     render: (text, record) => (
       <div title="Region">
         {text}
         {!text && <div>{record.emptyField}</div>}
       </div>
     ),
+    sorter: true,
   },
   {
     title: "Tenure",
-    dataIndex: "tenure",
     width: 150,
+    dataIndex: "tenure",
     render: (text, record) => (
       <div title="Tenure">
         {text &&
@@ -89,15 +119,17 @@ const columns = [
     render: (text, record) => (
       <div title="Commodity">
         {text &&
-          text.map(({ mine_type_detail, mine_type_guid }) => (
-            <div key={mine_type_guid}>
-              {mine_type_detail.map(({ mine_commodity_code, mine_type_detail_guid }) => (
-                <span key={mine_type_detail_guid}>
-                  {mine_commodity_code && `${record.commodityHash[mine_commodity_code]},`}
-                </span>
-              ))}
-            </div>
-          ))}
+          text
+            .map(({ mine_type_detail }) =>
+              mine_type_detail
+                .map(
+                  ({ mine_commodity_code }) =>
+                    mine_commodity_code && record.commodityHash[mine_commodity_code]
+                )
+                .filter(Boolean)
+                .join(", ")
+            )
+            .join(", ")}
       </div>
     ),
   },
@@ -119,21 +151,41 @@ const transformRowData = (mines, mineIds, mineRegionHash, mineTenureHash, mineCo
       ? mines[id].mine_status[0].status_labels[0]
       : Strings.EMPTY_FIELD,
     permit: mines[id].mine_permit[0] ? mines[id].mine_permit : null,
-    region: mines[id].region_code ? mineRegionHash[mines[id].region_code] : Strings.EMPTY_FIELD,
+    region: mines[id].mine_region ? mineRegionHash[mines[id].mine_region] : Strings.EMPTY_FIELD,
     commodity: mines[id].mine_type[0] ? mines[id].mine_type : null,
     commodityHash: mineCommodityHash,
     tenure: mines[id].mine_type[0] ? mines[id].mine_type : null,
     tenureHash: mineTenureHash,
-    tsf: mines[id].mine_tailings_storage_facility
-      ? mines[id].mine_tailings_storage_facility.length
+    tsf: mines[id].mine_tailings_storage_facilities
+      ? mines[id].mine_tailings_storage_facilities.length
       : Strings.EMPTY_FIELD,
+    verified_status: mines[id].verified_status,
+  }));
+
+const handleTableChange = (updateMineList) => (pagination, filters, sorter) => {
+  const params = isEmpty(sorter)
+    ? {
+        sort_field: undefined,
+        sort_dir: undefined,
+      }
+    : {
+        sort_field: sorter.column.sortField,
+        sort_dir: sorter.order.replace("end", ""),
+      };
+  updateMineList(params);
+};
+
+const applySortIndicator = (_columns, field, dir) =>
+  _columns.map((column) => ({
+    ...column,
+    sortOrder: column.sortField === field ? dir.concat("end") : false,
   }));
 
 export const MineList = (props) => (
   <Table
     align="left"
     pagination={false}
-    columns={columns}
+    columns={applySortIndicator(columns, props.sortField, props.sortDir)}
     dataSource={transformRowData(
       props.mines,
       props.mineIds,
@@ -142,9 +194,11 @@ export const MineList = (props) => (
       props.mineCommodityOptionsHash
     )}
     locale={{ emptyText: <NullScreen type="no-results" /> }}
+    onChange={handleTableChange(props.handleMineSearch)}
   />
 );
 
 MineList.propTypes = propTypes;
+MineList.defaultProps = defaultProps;
 
 export default MineList;

@@ -7,10 +7,16 @@ import PartyProfile from "@/components/parties/PartyProfile";
 import RelationshipProfile from "@/components/parties/RelationshipProfile";
 import AdminDashboard from "@/components/admin/AdminDashboard";
 import SearchResults from "@/components/search/SearchResults";
+import CustomHomePage from "@/components/dashboard/customHomePage/CustomHomePage";
 
 export const DASHBOARD = {
   route: "/",
   component: Home,
+};
+
+export const CUSTOM_HOME_PAGE = {
+  route: "/home/",
+  component: CustomHomePage,
 };
 
 export const MINE_HOME_PAGE = {
@@ -33,7 +39,8 @@ export const CONTACT_HOME_PAGE = {
 
 export const MINE_SUMMARY = {
   route: "/dashboard/:id/:activeTab",
-  dynamicRoute: (id, activeTab = "summary") => `/dashboard/${id}/${activeTab}`,
+  dynamicRoute: (id, activeTab = "summary", filterParams) =>
+    `/dashboard/${id}/${activeTab}?${queryString.stringify(filterParams)}`,
   component: MineDashboard,
 };
 

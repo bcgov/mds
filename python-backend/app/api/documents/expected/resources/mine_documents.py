@@ -11,7 +11,7 @@ from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class ExpectedMineDocumentResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser()
+    parser = reqparse.RequestParser(trim=True)
     parser.add_argument(
         'documents',
         type=list,
@@ -54,8 +54,7 @@ class ExpectedMineDocumentResource(Resource, UserMixin, ErrorMixin):
                 exp_document_description=new_doc.get('document_description'),
                 mine_guid=mine_guid,
                 hsrc_code=req_doc.hsrc_code,
-                exp_document_status_code='MIA',
-                **self.get_create_update_dict())
+                exp_document_status_code='MIA')
 
             db.session.add(mine_exp_doc)
             mine_new_docs.append(mine_exp_doc)

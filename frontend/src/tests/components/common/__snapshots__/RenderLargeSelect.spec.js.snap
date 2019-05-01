@@ -6,9 +6,18 @@ ShallowWrapper {
   Symbol(enzyme.__unrendered__): <RenderLargeSelect
     data={Array []}
     handleChange={[MockFunction]}
+    handleSearch={[Function]}
+    handleSelect={[Function]}
     id="parties"
     input={
       Object {
+        "onChange": [MockFunction] {
+          "calls": Array [
+            Array [
+              "1",
+            ],
+          ],
+        },
         "value": "",
       }
     }
@@ -22,6 +31,11 @@ ShallowWrapper {
     }
     option={Object {}}
     placeholder=""
+    selectedOption={
+      Object {
+        "key": "1",
+      }
+    }
   />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
@@ -40,16 +54,25 @@ ShallowWrapper {
         backfill={true}
         choiceTransitionName="zoom"
         dataSource={Array []}
-        defaultActiveFirstOption={true}
+        defaultActiveFirstOption={false}
         dropdownMatchSelectWidth={true}
         filterOption={[Function]}
-        getPopupContainer={[Function]}
         id="parties"
         notFoundContent="Not Found"
-        onSearch={[MockFunction]}
+        onBlur={undefined}
+        onChange={
+          [MockFunction] {
+            "calls": Array [
+              Array [
+                "1",
+              ],
+            ],
+          }
+        }
+        onSearch={[Function]}
+        onSelect={[Function]}
         optionLabelProp="children"
         placeholder=""
-        prefixCls="ant-select"
         showSearch={false}
         style={
           Object {
@@ -57,11 +80,10 @@ ShallowWrapper {
           }
         }
         transitionName="slide-up"
-        value=""
+        value="1"
       >
         <Input
           disabled={false}
-          prefixCls="ant-input"
           suffix={
             <Icon
               className="certain-category-icon"
@@ -69,13 +91,12 @@ ShallowWrapper {
             />
           }
           type="text"
+          value={undefined}
         />
       </AutoComplete>,
-      "colon": true,
       "hasFeedback": false,
       "help": false,
       "label": "",
-      "prefixCls": "ant-form",
       "validateStatus": "",
     },
     "ref": null,
@@ -87,7 +108,6 @@ ShallowWrapper {
         "backfill": true,
         "children": <Input
           disabled={false}
-          prefixCls="ant-input"
           suffix={
             <Icon
               className="certain-category-icon"
@@ -95,25 +115,33 @@ ShallowWrapper {
             />
           }
           type="text"
+          value={undefined}
         />,
         "choiceTransitionName": "zoom",
         "dataSource": Array [],
-        "defaultActiveFirstOption": true,
+        "defaultActiveFirstOption": false,
         "dropdownMatchSelectWidth": true,
         "filterOption": [Function],
-        "getPopupContainer": [Function],
         "id": "parties",
         "notFoundContent": "Not Found",
-        "onSearch": [MockFunction],
+        "onBlur": undefined,
+        "onChange": [MockFunction] {
+          "calls": Array [
+            Array [
+              "1",
+            ],
+          ],
+        },
+        "onSearch": [Function],
+        "onSelect": [Function],
         "optionLabelProp": "children",
         "placeholder": "",
-        "prefixCls": "ant-select",
         "showSearch": false,
         "style": Object {
           "width": "100%",
         },
         "transitionName": "slide-up",
-        "value": "",
+        "value": "1",
       },
       "ref": null,
       "rendered": Object {
@@ -122,12 +150,12 @@ ShallowWrapper {
         "nodeType": "class",
         "props": Object {
           "disabled": false,
-          "prefixCls": "ant-input",
           "suffix": <Icon
             className="certain-category-icon"
             type="search"
           />,
           "type": "text",
+          "value": undefined,
         },
         "ref": null,
         "rendered": null,
@@ -147,16 +175,25 @@ ShallowWrapper {
           backfill={true}
           choiceTransitionName="zoom"
           dataSource={Array []}
-          defaultActiveFirstOption={true}
+          defaultActiveFirstOption={false}
           dropdownMatchSelectWidth={true}
           filterOption={[Function]}
-          getPopupContainer={[Function]}
           id="parties"
           notFoundContent="Not Found"
-          onSearch={[MockFunction]}
+          onBlur={undefined}
+          onChange={
+            [MockFunction] {
+              "calls": Array [
+                Array [
+                  "1",
+                ],
+              ],
+            }
+          }
+          onSearch={[Function]}
+          onSelect={[Function]}
           optionLabelProp="children"
           placeholder=""
-          prefixCls="ant-select"
           showSearch={false}
           style={
             Object {
@@ -164,11 +201,10 @@ ShallowWrapper {
             }
           }
           transitionName="slide-up"
-          value=""
+          value="1"
         >
           <Input
             disabled={false}
-            prefixCls="ant-input"
             suffix={
               <Icon
                 className="certain-category-icon"
@@ -176,13 +212,12 @@ ShallowWrapper {
               />
             }
             type="text"
+            value={undefined}
           />
         </AutoComplete>,
-        "colon": true,
         "hasFeedback": false,
         "help": false,
         "label": "",
-        "prefixCls": "ant-form",
         "validateStatus": "",
       },
       "ref": null,
@@ -194,7 +229,6 @@ ShallowWrapper {
           "backfill": true,
           "children": <Input
             disabled={false}
-            prefixCls="ant-input"
             suffix={
               <Icon
                 className="certain-category-icon"
@@ -202,25 +236,33 @@ ShallowWrapper {
               />
             }
             type="text"
+            value={undefined}
           />,
           "choiceTransitionName": "zoom",
           "dataSource": Array [],
-          "defaultActiveFirstOption": true,
+          "defaultActiveFirstOption": false,
           "dropdownMatchSelectWidth": true,
           "filterOption": [Function],
-          "getPopupContainer": [Function],
           "id": "parties",
           "notFoundContent": "Not Found",
-          "onSearch": [MockFunction],
+          "onBlur": undefined,
+          "onChange": [MockFunction] {
+            "calls": Array [
+              Array [
+                "1",
+              ],
+            ],
+          },
+          "onSearch": [Function],
+          "onSelect": [Function],
           "optionLabelProp": "children",
           "placeholder": "",
-          "prefixCls": "ant-select",
           "showSearch": false,
           "style": Object {
             "width": "100%",
           },
           "transitionName": "slide-up",
-          "value": "",
+          "value": "1",
         },
         "ref": null,
         "rendered": Object {
@@ -229,12 +271,12 @@ ShallowWrapper {
           "nodeType": "class",
           "props": Object {
             "disabled": false,
-            "prefixCls": "ant-input",
             "suffix": <Icon
               className="certain-category-icon"
               type="search"
             />,
             "type": "text",
+            "value": undefined,
           },
           "ref": null,
           "rendered": null,

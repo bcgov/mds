@@ -46,8 +46,8 @@ const panelHeader = (removeField, roleNumber) => (
 );
 
 const transformMineNames = (names) =>
-  names.map(({ mine_name, guid }) => (
-    <AutoComplete.Option key={guid} value={guid}>
+  names.map(({ mine_name, mine_guid }) => (
+    <AutoComplete.Option key={mine_guid} value={mine_guid}>
       {mine_name}
     </AutoComplete.Option>
   ));
@@ -90,7 +90,7 @@ export const AddRolesForm = (props) => (
             <Row gutter={16}>
               <Col span={12}>
                 <Field
-                  label="Start Date *"
+                  label="Start Date"
                   id={`start_date-${roleNumber}`}
                   name={`start_date-${roleNumber}`}
                   placeholder="yyyy-mm-dd"
@@ -99,7 +99,7 @@ export const AddRolesForm = (props) => (
               </Col>
               <Col span={12}>
                 <Field
-                  label="End Date *"
+                  label="End Date"
                   id={`end_date-${roleNumber}`}
                   name={`end_date-${roleNumber}`}
                   placeholder="yyyy-mm-dd"

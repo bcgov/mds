@@ -5,7 +5,7 @@ import { createLabelHash, createDropDownList } from "@/utils/helpers";
 export const {
   getMineStatusOptions,
   getMineRegionOptions,
-  getMineTenureTypes,
+  getMineTenureTypeOptions,
   getMineCommodityOptions,
   getMineDisturbanceOptions,
   getExpectedDocumentStatusOptions,
@@ -14,10 +14,18 @@ export const {
   getProvinceOptions,
   getPermitStatusOptions,
   getApplicationStatusOptions,
+  getComplianceCodes,
+  getIncidentFollowupActionOptions,
 } = staticContentReducer;
 
+// removes all expired compliance codes from the array
+export const getCurrentComplianceCodes = createSelector(
+  [getComplianceCodes],
+  (codes) => codes.filter((code) => new Date(code.expiry_date) > new Date())
+);
+
 export const getMineTenureTypesHash = createSelector(
-  [getMineTenureTypes],
+  [getMineTenureTypeOptions],
   createLabelHash
 );
 export const getMineRegionHash = createSelector(
@@ -42,12 +50,12 @@ const createConditionalMineDetails = (key) => (options, tenureTypes) => {
   return newArr;
 };
 export const getConditionalDisturbanceOptionsHash = createSelector(
-  [getMineDisturbanceOptions, getMineTenureTypes],
+  [getMineDisturbanceOptions, getMineTenureTypeOptions],
   createConditionalMineDetails("mine_disturbance_code")
 );
 
 export const getConditionalCommodityOptions = createSelector(
-  [getMineCommodityOptions, getMineTenureTypes],
+  [getMineCommodityOptions, getMineTenureTypeOptions],
   createConditionalMineDetails("mine_commodity_code")
 );
 
@@ -93,4 +101,54 @@ export const getDropdownPermitStatusOptions = createSelector(
 export const getDropdownApplicationStatusOptions = createSelector(
   [getApplicationStatusOptions],
   (options) => createDropDownList(options, "description", "application_status_code")
+);
+
+export const getDropdownIncidentFollowupActionOptions = createSelector(
+  [getIncidentFollowupActionOptions],
+  (options) => createDropDownList(options, "description", "mine_incident_followup_type_code")
+);
+
+const formatComplianceCodeValueOrLabel = (code, showDescription) => {
+  const { section, sub_section, paragraph, sub_paragraph, description } = code;
+  const formattedSubSection = sub_section ? `.${sub_section}` : "";
+  const formattedParagraph = paragraph ? `.${paragraph}` : "";
+  const formattedSubParagraph = sub_paragraph !== null ? `.${sub_paragraph}` : "";
+  const formattedDescription = showDescription ? ` - ${description}` : "";
+
+  return `${section}${formattedSubSection}${formattedParagraph}${formattedSubParagraph}${formattedDescription}`;
+};
+
+export const getDropdownHSRCMComplianceCodes = createSelector(
+  [getCurrentComplianceCodes],
+  (codes) =>
+    codes
+      .filter(({ article_act_code }) => article_act_code === "HSRCM")
+      .map((code) => {
+        const composedLabel = formatComplianceCodeValueOrLabel(code, true);
+        return { value: code.compliance_article_id, label: composedLabel };
+      })
+);
+
+export const getHSRCMComplianceCodesHash = createSelector(
+  [getCurrentComplianceCodes],
+  (codes) =>
+    codes
+      .filter(({ article_act_code }) => article_act_code === "HSRCM")
+      .reduce((map, code) => {
+        const composedValue = formatComplianceCodeValueOrLabel(code, true);
+        return {
+          [code.compliance_article_id]: composedValue,
+          ...map,
+        };
+      }, {})
+);
+
+export const getMultiSelectComplianceCodes = createSelector(
+  [getCurrentComplianceCodes],
+  (codes) =>
+    codes.map((code) => {
+      const composedValue = formatComplianceCodeValueOrLabel(code);
+      const composedLabel = formatComplianceCodeValueOrLabel(code, true);
+      return { value: composedValue, label: composedLabel };
+    })
 );

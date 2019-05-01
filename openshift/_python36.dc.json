@@ -64,6 +64,11 @@
       "value": "template.mds-nris-secret"
     },
     {
+      "name": "MDS_IDIR_SECRET",
+      "required": false,
+      "value": "template.mds-idir-secret"
+    },
+    {
       "name": "REDIS_CONFIG_NAME",
       "required": false,
       "value": "template.mds-redis-secret"
@@ -196,8 +201,8 @@
       },
       "spec": {
         "strategy": {
-          "type": "Recreate",
-          "recreateParams": {
+          "type": "Rolling",
+          "rollingParams": {
             "pre": {
               "failurePolicy": "Retry",
               "execNewPod": {
@@ -205,7 +210,7 @@
                 "command": [
                   "bash",
                   "-c",
-                  "for i in {1..90}; do timeout 1 bash -c '</dev/tcp/$FLYWAY_DB_HOST/5432' && s=0 && break || s=$? && sleep 5; done; (cd $FLYWAY_HOME && ./flyway migrate && ./flyway -url=jdbc:postgresql://$FLYWAY_DB_HOST/mds_test migrate)"
+                  "cd $FLYWAY_HOME && ./flyway migrate && ./flyway -url=jdbc:postgresql://$FLYWAY_DB_HOST/mds_test migrate"
                 ]
               }
             },
@@ -349,6 +354,24 @@
                     }
                   },
                   {
+                    "name": "LDAP_IDIR_USERNAME",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${MDS_IDIR_SECRET}",
+                        "key": "username"
+                      }
+                    }
+                  },
+                  {
+                    "name": "LDAP_IDIR_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${MDS_IDIR_SECRET}",
+                        "key": "password"
+                      }
+                    }
+                  },
+                  {
                     "name": "ELASTIC_ENABLED",
                     "value": "${ELASTIC_ENABLED}"
                   },
@@ -432,6 +455,23 @@
                   "requests": {
                     "cpu": "${CPU_REQUEST}",
                     "memory": "${MEMORY_REQUEST}"
+                  }
+                },
+                "livenessProbe": {
+                  "httpGet": {
+                    "path": "${BASE_PATH}/health",
+                    "port": 5000,
+                    "scheme": "HTTP"
+                  },
+                  "initialDelaySeconds": 15,
+                  "timeoutSeconds": 3,
+                  "periodSeconds": 10
+                },
+                "readinessProbe": {
+                  "httpGet": {
+                    "path": "${BASE_PATH}/health",
+                    "port": 5000,
+                    "scheme": "HTTP"
                   }
                 },
                 "terminationMessagePath": "/dev/termination-log",
@@ -519,6 +559,10 @@
                   {
                     "name": "FLYWAY_OUT_OF_ORDER",
                     "value": "true"
+                  },
+                  {
+                    "name": "FLYWAY_CONNECT_RETRIES",
+                    "value": "300"
                   }
                 ],
                 "resources": {

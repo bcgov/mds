@@ -54,3 +54,13 @@ export const storeApplicationStatusOptions = (payload) => ({
   type: ActionTypes.STORE_APPLICATION_STATUS_OPTIONS,
   payload,
 });
+
+export const storeComplianceCodes = (payload) => ({
+  type: ActionTypes.STORE_COMPLIANCE_CODES,
+  payload,
+});
+
+export const storeMineIncidentFollowActionOptions = (payload) => ({
+  type: ActionTypes.STORE_MINE_INCIDENT_FOLLOWUP_ACTION_OPTIONS,
+  payload,
+});

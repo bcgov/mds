@@ -8,7 +8,10 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
 from app.extensions import db
+from werkzeug.exceptions import BadRequest
 
+from .party_address import PartyAddressXref
+from .address import Address
 from ....utils.models_mixins import AuditMixin, Base
 from ....constants import PARTY_STATUS_CODE
 
@@ -23,18 +26,13 @@ class Party(AuditMixin, Base):
     phone_ext = db.Column(db.String, nullable=True)
     email = db.Column(db.String, nullable=True)
     effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
+    expiry_date = db.Column(
+        db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
     party_type_code = db.Column(db.String, db.ForeignKey('party_type_code.party_type_code'))
-
-    suite_no = db.Column(db.String, nullable=True)
-    address_line_1 = db.Column(db.String, nullable=True)
-    address_line_2 = db.Column(db.String, nullable=True)
-    city = db.Column(db.String, nullable=True)
-    sub_division_code = db.Column(db.String, nullable=True)
-    post_code = db.Column(db.String, nullable=True)
-    address_type_code = db.Column(db.String, nullable=False, server_default=FetchedValue())
+    deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     mine_party_appt = db.relationship('MinePartyAppointment', lazy='joined')
+    address = db.relationship('Address', lazy='joined', secondary='party_address_xref')
 
     @hybrid_property
     def name(self):
@@ -47,6 +45,7 @@ class Party(AuditMixin, Base):
     def __repr__(self):
         return '<Party %r>' % self.party_guid
 
+    # TODO: Remove this once mine_party_appt has been refactored
     def json(self, show_mgr=True, relationships=[]):
         context = {
             'party_guid': str(self.party_guid),
@@ -58,17 +57,7 @@ class Party(AuditMixin, Base):
             'expiry_date': self.expiry_date.isoformat(),
             'party_name': self.party_name,
             'name': self.name,
-            'address': [
-                {
-                    'suite_no': self.suite_no,
-                    'address_line_1': self.address_line_1,
-                    'address_line_2': self.address_line_2,
-                    'city': self.city,
-                    'sub_division_code': self.sub_division_code,
-                    'post_code': self.post_code,
-                    'address_type_code': self.address_type_code
-                }
-            ]
+            'address': self.address[0].json() if len(self.address) > 0 else [{}]
         }
         if self.party_type_code == PARTY_STATUS_CODE['per']:
             context.update({
@@ -84,14 +73,18 @@ class Party(AuditMixin, Base):
 
     @classmethod
     def find_by_party_guid(cls, _id):
-        return cls.query.filter_by(party_guid=_id).first()
+        try:
+            uuid.UUID(_id)
+        except ValueError:
+            raise BadRequest('Invalid Party guid')
+        return cls.query.filter_by(party_guid=_id, deleted_ind=False).first()
 
     @classmethod
     def find_by_name(cls, party_name, first_name=None):
         party_type_code = 'PER' if first_name else 'ORG'
         filters = [
             func.lower(cls.party_name) == func.lower(party_name),
-            cls.party_type_code == party_type_code
+            cls.party_type_code == party_type_code, cls.deleted_ind == False
         ]
         if first_name:
             filters.append(func.lower(cls.first_name) == func.lower(first_name))
@@ -102,52 +95,45 @@ class Party(AuditMixin, Base):
         _filter_by_name = func.upper(cls.name).contains(func.upper(search_term))
         if party_type:
             return cls.query.filter(
-                cls.party_type_code == party_type).filter(_filter_by_name).limit(query_limit)
+                cls.party_type_code == party_type).filter(_filter_by_name).filter(
+                    cls.deleted_ind == False).limit(query_limit)
         else:
-            return cls.query.filter(_filter_by_name).limit(query_limit)
+            return cls.query.filter(_filter_by_name).filter(
+                cls.deleted_ind == False).limit(query_limit)
 
     @classmethod
-    def create(cls,
-               # Required fields
-               party_name,
-               phone_no,
-               party_type_code,
-               user_kwargs,
-               # Optional fields
-               address_type_code=None,
-               # Nullable fields
-               email=None,
-               first_name=None,
-               phone_ext=None,
-               suite_no=None,
-               address_line_1=None,
-               address_line_2=None,
-               city=None,
-               sub_division_code=None,
-               post_code=None,
-               save=True):
+    def create(
+            cls,
+            # Required fields
+            party_name,
+            phone_no,
+            party_type_code,
+            # Optional fields
+            address_type_code=None,
+            # Nullable fields
+            email=None,
+            first_name=None,
+            phone_ext=None,
+            suite_no=None,
+            address_line_1=None,
+            address_line_2=None,
+            city=None,
+            sub_division_code=None,
+            post_code=None,
+            add_to_session=True):
         party = cls(
             # Required fields
             party_guid=uuid.uuid4(),
             party_name=party_name,
             phone_no=phone_no,
             party_type_code=party_type_code,
-            **user_kwargs,
             # Optional fields
             email=email,
-            address_type_code=address_type_code,
             first_name=first_name,
-            phone_ext=phone_ext,
-            suite_no=suite_no,
-            address_line_1=address_line_1,
-            address_line_2=address_line_2,
-            city=city,
-            sub_division_code=sub_division_code,
-            post_code=post_code)
-        if save:
+            phone_ext=phone_ext)
+        if add_to_session:
             party.save(commit=False)
         return party
-
 
     @validates('party_type_code')
     def validate_party_type_code(self, key, party_type_code):
@@ -186,9 +172,3 @@ class Party(AuditMixin, Base):
         if email and not re.match(r'[^@]+@[^@]+\.[^@]+', email):
             raise AssertionError('Invalid email format.')
         return email
-
-    @validates('post_code')
-    def validate_post_code(self, key, post_code):
-         if post_code and len(post_code) > 6:
-            raise AssertionError('post_code must not exceed 6 characters.')
-         return post_code

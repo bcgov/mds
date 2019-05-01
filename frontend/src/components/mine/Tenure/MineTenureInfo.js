@@ -11,23 +11,19 @@ import { modalConfig } from "@/components/modalContent/config";
  */
 
 const propTypes = {
-  mine: PropTypes.object.isRequired,
+  mine: PropTypes.objectOf(PropTypes.any).isRequired,
   updateMineRecord: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  match: PropTypes.object.isRequired,
-};
-
-const defaultProps = {
-  mine: {},
+  match: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 class MineTenureInfo extends Component {
   handleSubmit = (value) => {
     const { id } = this.props.match.params;
     return this.props
-      .updateMineRecord(this.props.mine.guid, value, this.props.mine.mine_name)
+      .updateMineRecord(this.props.mine.mine_guid, value, this.props.mine.mine_name)
       .then(() => {
         this.props.fetchMineRecordById(id);
         this.props.closeModal();
@@ -108,5 +104,4 @@ class MineTenureInfo extends Component {
 }
 
 MineTenureInfo.propTypes = propTypes;
-MineTenureInfo.defaultProps = defaultProps;
 export default MineTenureInfo;

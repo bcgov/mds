@@ -42,7 +42,6 @@ ShallowWrapper {
           okType="primary"
           onConfirm={[Function]}
           placement="bottomRight"
-          prefixCls="ant-popover"
           title="Are you sure you want to cancel?"
           transitionName="zoom-big"
           trigger="click"
@@ -51,8 +50,8 @@ ShallowWrapper {
             block={false}
             className="modal__close"
             ghost={true}
+            htmlType="button"
             loading={false}
-            prefixCls="ant-btn"
           >
             <Icon
               type="close"
@@ -73,10 +72,15 @@ ShallowWrapper {
             }
           }
         />,
-        <mockConstructor
+        <Connect(AddPartyComponentWrapper)
+          childProps={
+            Object {
+              "title": "mockTitle",
+            }
+          }
           clearOnSubmit={false}
           closeModal={[MockFunction]}
-          title="mockTitle"
+          content={[MockFunction]}
         />,
       ],
       "closable": false,
@@ -85,7 +89,6 @@ ShallowWrapper {
       "maskTransitionName": "fade",
       "okButtonDisabled": false,
       "okType": "primary",
-      "prefixCls": "ant-modal",
       "title": "mockTitle",
       "transitionName": "zoom",
       "visible": false,
@@ -103,8 +106,8 @@ ShallowWrapper {
             block={false}
             className="modal__close"
             ghost={true}
+            htmlType="button"
             loading={false}
-            prefixCls="ant-btn"
           >
             <Icon
               type="close"
@@ -118,7 +121,6 @@ ShallowWrapper {
           "okType": "primary",
           "onConfirm": [Function],
           "placement": "bottomRight",
-          "prefixCls": "ant-popover",
           "title": "Are you sure you want to cancel?",
           "transitionName": "zoom-big",
           "trigger": "click",
@@ -135,8 +137,8 @@ ShallowWrapper {
             />,
             "className": "modal__close",
             "ghost": true,
+            "htmlType": "button",
             "loading": false,
-            "prefixCls": "ant-btn",
           },
           "ref": null,
           "rendered": Object {
@@ -177,15 +179,18 @@ ShallowWrapper {
       Object {
         "instance": null,
         "key": undefined,
-        "nodeType": "function",
+        "nodeType": "class",
         "props": Object {
+          "childProps": Object {
+            "title": "mockTitle",
+          },
           "clearOnSubmit": false,
           "closeModal": [MockFunction],
-          "title": "mockTitle",
+          "content": [MockFunction],
         },
         "ref": null,
         "rendered": null,
-        "type": [MockFunction],
+        "type": [Function],
       },
     ],
     "type": [Function],
@@ -210,7 +215,6 @@ ShallowWrapper {
             okType="primary"
             onConfirm={[Function]}
             placement="bottomRight"
-            prefixCls="ant-popover"
             title="Are you sure you want to cancel?"
             transitionName="zoom-big"
             trigger="click"
@@ -219,8 +223,8 @@ ShallowWrapper {
               block={false}
               className="modal__close"
               ghost={true}
+              htmlType="button"
               loading={false}
-              prefixCls="ant-btn"
             >
               <Icon
                 type="close"
@@ -241,10 +245,15 @@ ShallowWrapper {
               }
             }
           />,
-          <mockConstructor
+          <Connect(AddPartyComponentWrapper)
+            childProps={
+              Object {
+                "title": "mockTitle",
+              }
+            }
             clearOnSubmit={false}
             closeModal={[MockFunction]}
-            title="mockTitle"
+            content={[MockFunction]}
           />,
         ],
         "closable": false,
@@ -253,7 +262,6 @@ ShallowWrapper {
         "maskTransitionName": "fade",
         "okButtonDisabled": false,
         "okType": "primary",
-        "prefixCls": "ant-modal",
         "title": "mockTitle",
         "transitionName": "zoom",
         "visible": false,
@@ -271,8 +279,8 @@ ShallowWrapper {
               block={false}
               className="modal__close"
               ghost={true}
+              htmlType="button"
               loading={false}
-              prefixCls="ant-btn"
             >
               <Icon
                 type="close"
@@ -286,7 +294,6 @@ ShallowWrapper {
             "okType": "primary",
             "onConfirm": [Function],
             "placement": "bottomRight",
-            "prefixCls": "ant-popover",
             "title": "Are you sure you want to cancel?",
             "transitionName": "zoom-big",
             "trigger": "click",
@@ -303,8 +310,8 @@ ShallowWrapper {
               />,
               "className": "modal__close",
               "ghost": true,
+              "htmlType": "button",
               "loading": false,
-              "prefixCls": "ant-btn",
             },
             "ref": null,
             "rendered": Object {
@@ -345,15 +352,18 @@ ShallowWrapper {
         Object {
           "instance": null,
           "key": undefined,
-          "nodeType": "function",
+          "nodeType": "class",
           "props": Object {
+            "childProps": Object {
+              "title": "mockTitle",
+            },
             "clearOnSubmit": false,
             "closeModal": [MockFunction],
-            "title": "mockTitle",
+            "content": [MockFunction],
           },
           "ref": null,
           "rendered": null,
-          "type": [MockFunction],
+          "type": [Function],
         },
       ],
       "type": [Function],

@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
+import { change } from "redux-form";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import queryString from "query-string";
-import { Button } from "antd";
+import * as Strings from "@/constants/strings";
 import { openModal, closeModal } from "@/actions/modalActions";
 import CustomPropTypes from "@/customPropTypes";
 import {
@@ -11,6 +12,7 @@ import {
   createParty,
   fetchPartyRelationshipTypes,
 } from "@/actionCreators/partiesActionCreator";
+import * as FORM from "@/constants/forms";
 import { fetchProvinceCodes } from "@/actionCreators/staticContentActionCreator";
 import * as Permission from "@/constants/permissions";
 import { getDropdownProvinceOptions } from "@/selectors/staticContentSelectors";
@@ -28,6 +30,7 @@ import Loading from "@/components/common/Loading";
 import * as router from "@/constants/routes";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
+import AddButton from "@/components/common/AddButton";
 
 /**
  * @class ContactHomePage is the main landing page of the application, currently contains a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
@@ -39,6 +42,7 @@ const propTypes = {
   fetchProvinceCodes: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
+  change: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   pageData: PropTypes.objectOf(CustomPropTypes.partyPageData).isRequired,
@@ -53,7 +57,12 @@ export class ContactHomePage extends Component {
 
   state = {
     isLoaded: false,
-    params: { type: "PER", ...this.params },
+    params: {
+      page: Strings.DEFAULT_PAGE,
+      per_page: Strings.DEFAULT_PER_PAGE,
+      type: "PER",
+      ...this.params,
+    },
   };
 
   componentWillMount() {
@@ -121,11 +130,23 @@ export class ContactHomePage extends Component {
       });
   };
 
-  handleSearch = (searchParams = {}) => {
-    this.props.history.push(router.CONTACT_HOME_PAGE.dynamicRoute(searchParams));
+  handleSearch = (searchParams = {}, clear = false) => {
+    const persistedParams = clear ? {} : this.state.params;
+    const updatedParams = {
+      // Default per_page -- overwrite if provided
+      per_page: Strings.DEFAULT_PER_PAGE,
+      // Start from existing state
+      ...persistedParams,
+      // Overwrite prev params with any newly provided search params
+      ...searchParams,
+      // Reset page number
+      page: Strings.DEFAULT_PAGE,
+    };
+
+    this.props.history.push(router.CONTACT_HOME_PAGE.dynamicRoute(updatedParams));
     this.setState(
       {
-        params: searchParams,
+        params: updatedParams,
       },
       // Fetch parties once state has been updated
       () => this.renderDataFromURL()
@@ -140,6 +161,12 @@ export class ContactHomePage extends Component {
         per_page,
       })
     );
+  };
+
+  handleNameFieldReset = () => {
+    this.props.change(FORM.CONTACT_ADVANCED_SEARCH, "party_name", null);
+    this.props.change(FORM.CONTACT_ADVANCED_SEARCH, "first_name", null);
+    this.props.change(FORM.CONTACT_ADVANCED_SEARCH, "last_name", null);
   };
 
   openAddContactModal(event, fetchData, title, provinceOptions) {
@@ -167,9 +194,7 @@ export class ContactHomePage extends Component {
               <p>To find a contact profile, search in the list section below.</p>
             </div>
             <AuthorizationWrapper permission={Permission.CREATE}>
-              <Button
-                className="full-mobile"
-                type="primary"
+              <AddButton
                 onClick={(event) =>
                   this.openAddContactModal(
                     event,
@@ -180,12 +205,13 @@ export class ContactHomePage extends Component {
                 }
               >
                 {ModalContent.ADD_CONTACT}
-              </Button>
+              </AddButton>
             </AuthorizationWrapper>
           </div>
         </div>
         <div className="landing-page__content">
           <ContactSearch
+            handleNameFieldReset={this.handleNameFieldReset}
             initialValues={this.state.params}
             partyRelationshipTypesList={this.props.partyRelationshipTypesList}
             fetchParties={this.props.fetchParties}
@@ -197,6 +223,9 @@ export class ContactHomePage extends Component {
                 <ContactList
                   parties={this.props.parties}
                   relationshipTypeHash={this.props.relationshipTypeHash}
+                  handleSearch={this.handleSearch}
+                  sortField={this.state.params.sort_field}
+                  sortDir={this.state.params.sort_dir}
                 />
               </div>
               <div className="center">
@@ -233,6 +262,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchPartyRelationshipTypes,
       openModal,
       closeModal,
+      change,
     },
     dispatch
   );

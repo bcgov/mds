@@ -27,11 +27,12 @@ class MineTailingsStorageFacility(AuditMixin, Base):
         }
 
     @classmethod
-    def create_tailings_facility(cls, mine_guid, tailings_facility_name, user_kwargs):
-        new_mine = cls(
-            mine_guid=mine_guid,
-            mine_tailings_storage_facility_name=tailings_facility_name,
-            **user_kwargs)
+    def create(cls, mine, mine_tailings_storage_facility_name, add_to_session=True):
+        new_tsf = cls(mine_tailings_storage_facility_name=mine_tailings_storage_facility_name)
+        mine.mine_tailings_storage_facilities.append(new_tsf)
+        if add_to_session:
+            new_tsf.save(commit=False)
+        return new_tsf
 
     @classmethod
     def find_by_mine_guid(cls, mine_guid):
@@ -42,7 +43,7 @@ class MineTailingsStorageFacility(AuditMixin, Base):
         return cls.query.filter_by(mine_tailings_storage_facility_guid=tsf_guid).first()
 
     @validates('mine_tailings_storage_facility_name')
-    def validate_mine_name(self, key, mine_tailings_storage_facility_name):
+    def validate_tsf_name(self, key, mine_tailings_storage_facility_name):
         if not mine_tailings_storage_facility_name:
             raise AssertionError('No tailings storage facility name provided.')
         if len(mine_tailings_storage_facility_name) > 60:

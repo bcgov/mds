@@ -62,16 +62,14 @@ const columns = [
   {
     title: "Received Date",
     dataIndex: "receivedDate",
-    render: (text, record) => (
-      <div title="Received Date">{record.doc.received_date || "-"}</div>
-    ),
+    render: (text, record) => <div title="Received Date">{record.doc.received_date || "-"}</div>,
   },
   {
     title: "Status",
     dataIndex: "status",
     render: (test, record) => (
       <div title="Status" style={record.isOverdue ? { color: errorRed } : {}}>
-        {record.doc ? record.doc.exp_document_status.description : String.LOADING}
+        {record.doc ? record.doc.expected_document_status.description : String.LOADING}
       </div>
     ),
   },
@@ -80,26 +78,25 @@ const columns = [
     dataIndex: "documents",
     render: (text, record) => (
       <div title="Documents">
-        {!record.doc.related_documents || record.doc.related_documents.length === 0
-          ? "-"
-          : record.doc.related_documents.map((file) => (
-              <span key={file.mine_document_guid}>
-                <a
-                  role="link"
-                  onClick={() =>
-                    downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)
-                  }
-                  // Accessibility: Event listener
-                  onKeyPress={() =>
-                    downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)
-                  }
-                  // Accessibility: Focusable element
-                  tabIndex="0"
-                >
-                  {file.document_name}
-                </a>{" "}
-              </span>
-            ))}
+        <ul>
+          {!record.doc.related_documents || record.doc.related_documents.length === 0
+            ? "-"
+            : record.doc.related_documents.map((file) => (
+                <li className="wrapped-text">
+                  <a
+                    role="link"
+                    key={file.mine_document_guid}
+                    onClick={() => downloadFileFromDocumentManager(file.document_manager_guid)}
+                    // Accessibility: Event listener
+                    onKeyPress={() => downloadFileFromDocumentManager(file.document_manager_guid)}
+                    // Accessibility: Focusable element
+                    tabIndex="0"
+                  >
+                    {file.document_name}
+                  </a>
+                </li>
+              ))}
+        </ul>
       </div>
     ),
   },
@@ -144,7 +141,7 @@ const transformRowData = (expectedDocuments, actions) =>
     doc,
     isOverdue:
       Date.parse(doc.due_date) < new Date() &&
-      doc.exp_document_status.exp_document_status_code === "MIA",
+      doc.expected_document_status.exp_document_status_code === "MIA",
     ...actions,
   }));
 

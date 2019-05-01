@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Icon, Card, Row, Col, Button } from "antd";
+import { Icon, Card, Button } from "antd";
 import * as router from "@/constants/routes";
-import { Redirect } from "react-router";
+import { Redirect } from "react-router-dom";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
@@ -21,7 +21,7 @@ export class InactiveContact extends Component {
       return (
         <Redirect
           to={router.RELATIONSHIP_PROFILE.dynamicRoute(
-            this.props.mine.guid,
+            this.props.mine.mine_guid,
             this.props.partyRelationshipTypeCode
           )}
           push

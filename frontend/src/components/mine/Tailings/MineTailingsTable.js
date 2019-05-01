@@ -84,7 +84,7 @@ const columns = [
     width: 120,
     render: (text, record) => (
       <div title="Status" style={errorStyle(record.isOverdue)}>
-        {record.doc ? record.doc.exp_document_status.description : String.LOADING}
+        {record.doc ? record.doc.expected_document_status.description : String.LOADING}
       </div>
     ),
   },
@@ -102,13 +102,9 @@ const columns = [
               <a
                 role="link"
                 key={file.mine_document_guid}
-                onClick={() =>
-                  downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)
-                }
+                onClick={() => downloadFileFromDocumentManager(file.document_manager_guid)}
                 // Accessibility: Event listener
-                onKeyPress={() =>
-                  downloadFileFromDocumentManager(file.document_manager_guid, file.document_name)
-                }
+                onKeyPress={() => downloadFileFromDocumentManager(file.document_manager_guid)}
                 // Accessibility: Focusable element
                 tabIndex="0"
               >
@@ -176,7 +172,7 @@ const transformRowData = (mine, actions) =>
     mine,
     isOverdue:
       Date.parse(doc.due_date) < new Date() &&
-      doc.exp_document_status.exp_document_status_code === "MIA",
+      doc.expected_document_status.exp_document_status_code === "MIA",
     ...actions,
   }));
 

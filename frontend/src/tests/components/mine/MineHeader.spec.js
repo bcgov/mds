@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import MineHeader from "@/components/mine/MineHeader";
+import { MineHeader } from "@/components/mine/MineHeader";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const props = {};
@@ -18,7 +18,7 @@ const setupProps = () => {
   props.mineStatusOptions = MOCK.STATUS_OPTIONS.options;
   props.mineRegionOptions = MOCK.REGION_OPTIONS.options;
   props.mineRegionHash = MOCK.REGION_HASH;
-  props.mineTenureTypes = MOCK.TENURE_TYPES.options;
+  props.mineTenureTypes = MOCK.TENURE_TYPES;
   props.mineTenureHash = MOCK.TENURE_HASH;
   [props.transformedMineTypes] = MOCK.MINE_TYPES;
 };

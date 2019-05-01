@@ -4,15 +4,15 @@ import { mineExpectedDocument } from "@/customPropTypes/documents";
 import { tailingsStorageFacility } from "@/customPropTypes/tailings";
 
 export const mine = shape({
-  guid: PropTypes.string.isRequired,
+  mine_guid: PropTypes.string.isRequired,
   mine_no: PropTypes.string,
   mine_name: PropTypes.string,
   mine_note: PropTypes.string,
-  region_code: PropTypes.string,
+  mine_region: PropTypes.string,
   major_mine_ind: PropTypes.bool,
   mine_permit: arrayOf(permit),
   mine_expected_documents: arrayOf(mineExpectedDocument),
-  mine_tailings_storage_facility: arrayOf(tailingsStorageFacility),
+  mine_tailings_storage_facilities: arrayOf(tailingsStorageFacility),
 });
 
 export const mineTypes = shape({
@@ -30,20 +30,17 @@ export const minePageData = shape({
 });
 
 export const mineName = shape({
-  guid: PropTypes.string.isRequired,
+  mine_guid: PropTypes.string.isRequired,
   mine_name: PropTypes.string.isRequired,
   mine_no: PropTypes.string.isRequired,
   latitude: PropTypes.string,
   longitude: PropTypes.string,
 });
 
-export const mineComplianceInfo = shape({
-  advisories: PropTypes.number.isRequired,
-  last_inspector: PropTypes.string,
-  last_inspection: PropTypes.string,
-  num_open_orders: PropTypes.number.isRequired,
-  num_overdue_orders: PropTypes.number.isRequired,
-  open_orders: PropTypes.array,
-  section_35_orders: PropTypes.number.isRequired,
-  warnings: PropTypes.number.isRequired,
+export const mineVerificationStatus = shape({
+  mine_guid: PropTypes.string.isRequired,
+  mine_name: PropTypes.string.isRequired,
+  healthy_ind: PropTypes.bool.isRequired,
+  verifying_user: PropTypes.string.isRequired,
+  verifying_timestamp: PropTypes.string.isRequired,
 });

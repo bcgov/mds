@@ -49,6 +49,22 @@
   }
 }
 
+.ant-btn-danger {
+  color: $danger-btn-color;
+  background-color: white;
+  border: 1px solid $danger-btn-color;
+  &:hover {
+    background-color: white;
+    border: 1px solid $danger-btn-color-hover;
+    color: $danger-btn-color-hover;
+  }
+}
+.btn-danger--icon {
+  &:hover {
+    color: $danger-btn-color-hover;
+  }
+}
+
 .ant-btn-tertiary {
   font-weight: $light;
   color: $pure-white;
@@ -122,12 +138,11 @@
 .ant-card {
   margin-bottom: 20px;
   text-align: left;
-  border: 1px solid $card-body-border-color;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 .ant-card-body {
   padding: 20px;
-  border-bottom: 4px solid $card-body-border-color;
 }
 
 .ant-card-head {
@@ -207,4 +222,11 @@
   background: transparent;
   font-weight: 600;
   color: inherit;
+}
+.carousel .slide {
+  background: white;
+  text-align: left;
+}
+.carousel-slider {
+  padding: 2px;
 }

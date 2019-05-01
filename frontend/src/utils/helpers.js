@@ -49,6 +49,13 @@ export const formatDate = (dateString) =>
   dateString !== "None" &&
   moment(dateString, "YYYY-MM-DD").format("MMM DD YYYY");
 
+// Function to format an API date string to human readable
+export const formatFullDateTime = (dateString) =>
+  dateString &&
+  dateString !== "9999-12-31" &&
+  dateString !== "None" &&
+  moment(dateString).format("MMM DD YYYY");
+
 export const formatPostalCode = (code) => code && code.replace(/.{3}$/, " $&");
 
 export const formatTitleString = (input) =>
@@ -84,3 +91,15 @@ export const normalizePhone = (value, previousValue) => {
 };
 
 export const upperCase = (value) => value && value.toUpperCase();
+
+export const getFiscalYear = () => {
+  const today = new Date();
+  const currentYear = today.getFullYear();
+  const fiscalYear = new Date(currentYear, 3, 1);
+  if (today > fiscalYear) {
+    return currentYear;
+  }
+  return currentYear - 1;
+};
+
+export const formatParamStringToArray = (param) => (param ? param.split(",").filter((x) => x) : []);

@@ -4,103 +4,94 @@ import json
 
 from flask import request, current_app, url_for
 from flask_restplus import Resource, reqparse
-from ..models.tailings import MineTailingsStorageFacility
-
 from app.extensions import api, db
-from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create
-from ....utils.resources_mixins import UserMixin, ErrorMixin
-from ....utils.url import get_documents_svc_url
-from ....documents.namespace.documents import api as doc_api
+from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
+
+from app.api.utils.access_decorators import requires_role_mine_view, requires_role_mine_create
+from app.api.utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.utils.url import get_documents_svc_url
+
+from ..models.tailings import MineTailingsStorageFacility
+from app.api.mines.mine.models.mine import Mine
+
+from app.api.mines.mine_api_models import MINE_TSF_MODEL
 
 
-class MineTailingsStorageFacilityResource(Resource, UserMixin, ErrorMixin):
+class MineTailingsStorageFacilityListResource(Resource, UserMixin):
     parser = reqparse.RequestParser()
-    parser.add_argument('mine_guid', type=str, help='mine to create a new tsf on')
     parser.add_argument(
-        'tsf_name', type=str, trim=True, help='Name of the tailings storage facility.')
+        'mine_tailings_storage_facility_name',
+        type=str,
+        trim=True,
+        help='Name of the tailings storage facility.',
+        required=True)
 
-    @api.doc(
-        params={
-            'mine_tailings_storage_facility_guid':
-            'mine_tailings_storage_facility_guid to be retrieved, or return error if not provided'
-        })
+    @api.doc(description='Gets the tailing storage facilites for the given mine')
+    @api.marshal_with(
+        MINE_TSF_MODEL, envelope='mine_tailings_storage_facilities', as_list=True, code=200)
     @requires_role_mine_view
-    def get(self, mine_tailings_storage_facility_guid=None):
-        if mine_tailings_storage_facility_guid:
-            tsf = MineTailingsStorageFacility.find_by_tsf_guid(mine_tailings_storage_facility_guid)
-            if not tsf:
-                return self.create_error_payload(404, 'mine_tailings_storage_facility not found')
-            return tsf.json()
-        else:
-            mine_guid = request.args.get('mine_guid', type=str)
-            mine_tsf_list = MineTailingsStorageFacility.find_by_mine_guid(mine_guid)
-            if mine_tsf_list is None:
-                return self.raise_error(404, 'Mine_guid or tsf_guid must be provided')
-            return {
-                'mine_storage_tailings_facilities': list(map(lambda x: x.json(), mine_tsf_list))
-            }
+    def get(self, mine_guid):
+        mine = Mine.find_by_mine_guid(mine_guid)
+        if not mine:
+            raise NotFound('Mine not found.')
+        return mine.mine_tailings_storage_facilities
 
-    @api.doc(params={'mine_guid': 'mine_guid that is to get a new TSF'})
+    @api.doc(description='Creates a new tailing storage facility for the given mine')
+    @api.marshal_with(MINE_TSF_MODEL, code=200)
     @requires_role_mine_create
-    def post(self, mine_tailings_storage_facility_guid=None):
-        if not mine_tailings_storage_facility_guid:
-            data = self.parser.parse_args()
-            mine_guid = data['mine_guid']
-            # see if this would be the first TSF
-            mine_tsf_list = MineTailingsStorageFacility.find_by_mine_guid(mine_guid)
-            is_mine_first_tsf = len(mine_tsf_list) == 0
-            mine_tsf = MineTailingsStorageFacility(
-                mine_guid=mine_guid,
-                mine_tailings_storage_facility_name=data['tsf_name'],
-                **self.get_create_update_dict())
-            db.session.add(mine_tsf)
-            if is_mine_first_tsf:
-                try:
-                    req_documents_url = get_documents_svc_url(
-                        '/required?category=TSF&sub_category=INI')
-                    get_tsf_docs_resp = requests.get(
-                        req_documents_url,
-                        headers={'Authorization': request.headers.get('Authorization')})
+    def post(self, mine_guid):
+        mine = Mine.find_by_mine_guid(mine_guid)
+        if not mine:
+            raise NotFound('Mine not found.')
 
-                    if get_tsf_docs_resp.status_code != 200:
-                        self.raise_error(
-                            500,
-                            'get_tsf_req_docs returned error' + str(get_tsf_docs_resp.status_code))
+        # see if this would be the first TSF
+        mine_tsf_list = mine.mine_tailings_storage_facilities
+        is_mine_first_tsf = len(mine_tsf_list) == 0
 
-                    tsf_required_documents = get_tsf_docs_resp.json()['required_documents']
-                    new_expected_documents = []
-                    for tsf_req_doc in tsf_required_documents:
-                        new_expected_documents.append({
-                            'req_document_guid':
-                            tsf_req_doc['req_document_guid'],
-                            'document_name':
-                            tsf_req_doc['req_document_name'],
-                            'document_description':
-                            tsf_req_doc['description'],
-                            'document_due_date_type':
-                            tsf_req_doc['req_document_due_date_type'],
-                            'document_due_date_period_months':
-                            tsf_req_doc['req_document_due_date_period_months'],
-                            'hsrc_code':
-                            tsf_req_doc['hsrc_code']
-                        })
-                    #raise Exception(str(new_expected_documents) + str(request.headers))
-                    doc_assignment_response = requests.post(
-                        get_documents_svc_url('/expected/mines/' + str(mine_guid)),
-                        headers={'Authorization': request.headers.get('Authorization')},
-                        json={'documents': new_expected_documents})
-                    if doc_assignment_response.status_code != 200:
-                        self.raise_error(500, "Error creating tsf expected documents")
-                except BaseException as e:
-                    db.session.rollback()
-                    current_app.logger.error(str(e))
-                    return self.create_error_payload(500, str(e) + ", tsf not created"), 500
-            db.session.commit()
-            return {
-                'mine_tailings_storage_facilities':
-                list(
-                    map(lambda x: x.json(),
-                        MineTailingsStorageFacility.find_by_mine_guid(mine_guid)))
-            }
-        else:
-            return self.create_error_payload(404, 'unexpected tsf_guid')
+        data = self.parser.parse_args()
+        mine_tsf = MineTailingsStorageFacility.create(
+            mine, mine_tailings_storage_facility_name=data['mine_tailings_storage_facility_name'])
+        mine.mine_tailings_storage_facilities.append(mine_tsf)
+
+        if is_mine_first_tsf:
+            try:
+                req_documents_url = get_documents_svc_url('/required?category=TSF&sub_category=INI')
+                get_tsf_docs_resp = requests.get(
+                    req_documents_url,
+                    headers={'Authorization': request.headers.get('Authorization')})
+
+                if get_tsf_docs_resp.status_code != 200:
+                    raise Exception(f'get_tsf_req_docs returned >> {get_tsf_docs_resp.status_code}')
+
+                tsf_required_documents = get_tsf_docs_resp.json()['required_documents']
+                new_expected_documents = []
+
+                for tsf_req_doc in tsf_required_documents:
+                    new_expected_documents.append({
+                        'req_document_guid':
+                        tsf_req_doc['req_document_guid'],
+                        'document_name':
+                        tsf_req_doc['req_document_name'],
+                        'document_description':
+                        tsf_req_doc['description'],
+                        'document_due_date_type':
+                        tsf_req_doc['req_document_due_date_type'],
+                        'document_due_date_period_months':
+                        tsf_req_doc['req_document_due_date_period_months'],
+                        'hsrc_code':
+                        tsf_req_doc['hsrc_code']
+                    })
+
+                doc_assignment_response = requests.post(
+                    get_documents_svc_url('/expected/mines/' + str(mine_guid)),
+                    headers={'Authorization': request.headers.get('Authorization')},
+                    json={'documents': new_expected_documents})
+                if doc_assignment_response.status_code != 200:
+                    raise Exception(
+                        f"Error creating tsf expected documents >> {doc_assignment_response}")
+            except Exception as e:
+                db.session.rollback()
+                current_app.logger.error(str(e))
+                raise InternalServerError(str(e) + ", tsf not created")
+        mine.save()
+        return mine_tsf

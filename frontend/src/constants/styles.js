@@ -6,4 +6,5 @@ export const COLOR = {
   mediumGrey: "#6b6363",
   layoutGrey: "#e8e8e8",
   antIconGrey: "#00000040",
+  dangerButtonRed: "#BC2929",
 };

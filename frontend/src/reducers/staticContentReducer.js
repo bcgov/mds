@@ -1,5 +1,6 @@
 import * as actionTypes from "@/constants/actionTypes";
 import { STATIC_CONTENT } from "@/constants/reducerTypes";
+import { createDropDownList } from "@/utils/helpers";
 
 /**
  * @file staticContentReducer.js
@@ -18,6 +19,8 @@ const initialState = {
   optionsLoaded: false,
   permitStatusCodes: [],
   applicationStatusCodes: [],
+  complianceCodes: [],
+  incidentFollowupActionOptions: [],
 };
 
 const staticContentReducer = (state = initialState, action) => {
@@ -35,7 +38,7 @@ const staticContentReducer = (state = initialState, action) => {
     case actionTypes.STORE_TENURE_TYPES:
       return {
         ...state,
-        mineTenureTypes: action.payload.options,
+        mineTenureTypes: action.payload.records,
       };
     case actionTypes.STORE_DISTURBANCE_OPTIONS:
       return {
@@ -77,6 +80,16 @@ const staticContentReducer = (state = initialState, action) => {
         ...state,
         applicationStatusCodes: action.payload,
       };
+    case actionTypes.STORE_COMPLIANCE_CODES:
+      return {
+        ...state,
+        complianceCodes: action.payload.records,
+      };
+    case actionTypes.STORE_MINE_INCIDENT_FOLLOWUP_ACTION_OPTIONS:
+      return {
+        ...state,
+        incidentFollowupActionOptions: action.payload.options,
+      };
     default:
       return state;
   }
@@ -85,6 +98,8 @@ const staticContentReducer = (state = initialState, action) => {
 export const getMineStatusOptions = (state) => state[STATIC_CONTENT].mineStatusOptions;
 export const getMineRegionOptions = (state) => state[STATIC_CONTENT].mineRegionOptions;
 export const getMineTenureTypes = (state) => state[STATIC_CONTENT].mineTenureTypes;
+export const getMineTenureTypeOptions = (state) =>
+  createDropDownList(state[STATIC_CONTENT].mineTenureTypes, "description", "mine_tenure_type_code");
 export const getMineDisturbanceOptions = (state) => state[STATIC_CONTENT].mineDisturbanceOptions;
 export const getMineCommodityOptions = (state) => state[STATIC_CONTENT].mineCommodityOptions;
 export const getExpectedDocumentStatusOptions = (state) =>
@@ -94,5 +109,8 @@ export const getProvinceOptions = (state) => state[STATIC_CONTENT].provinceOptio
 export const getOptionsLoaded = (state) => state[STATIC_CONTENT].optionsLoaded;
 export const getPermitStatusOptions = (state) => state[STATIC_CONTENT].permitStatusCodes;
 export const getApplicationStatusOptions = (state) => state[STATIC_CONTENT].applicationStatusCodes;
+export const getComplianceCodes = (state) => state[STATIC_CONTENT].complianceCodes;
+export const getIncidentFollowupActionOptions = (state) =>
+  state[STATIC_CONTENT].incidentFollowupActionOptions;
 
 export default staticContentReducer;

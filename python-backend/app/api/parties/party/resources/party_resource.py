@@ -1,163 +1,153 @@
-import uuid
-from flask import request
-from flask_restplus import Resource, reqparse
+from flask import request, current_app
+from flask_restplus import Resource
 from sqlalchemy_filters import apply_pagination
 from sqlalchemy.exc import DBAPIError
+from werkzeug.exceptions import NotFound
 
-from ..models.party import Party
 from app.extensions import api
-from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create
+from ..models.party import Party
+from ..models.address import Address
+from ...response_models import PARTY
+from ...party_appt.models.mine_party_appt import MinePartyAppointment
+from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create, requires_role_mine_admin
 from ....utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.utils.custom_reqparser import CustomReqparser
 
 
 class PartyResource(Resource, UserMixin, ErrorMixin):
-    parser = reqparse.RequestParser()
+    parser = CustomReqparser()
     parser.add_argument(
-        'first_name', type=str, help='First name of the party, if the party is a person.')
+        'first_name',
+        type=str,
+        help='First name of the party, if the party is a person.',
+        store_missing=False)
     parser.add_argument(
         'party_name',
         type=str,
-        help='Last name of the party (Person), or the Organization name (Organization).')
+        help='Last name of the party (Person), or the Organization name (Organization).',
+        store_missing=False)
     parser.add_argument(
-        'phone_no', type=str, help='The phone number of the party. Ex: 123-123-1234')
-    parser.add_argument('phone_ext', type=str, help='The extension of the phone number. Ex: 1234')
-    parser.add_argument('email', type=str, help='The email of the party.')
-    parser.add_argument('type', type=str, help='The type of the party. Ex: PER')
-    parser.add_argument('suite_no',
-                        type=str,
-                        store_missing=False,
-                        help='The suite number of the party address. Ex: 123')
-    parser.add_argument('address_line_1',
-                        type=str,
-                        store_missing=False,
-                        help='The first address line of the party address. Ex: 1234 Foo Road')
-    parser.add_argument('address_line_2',
-                        type=str,
-                        store_missing=False,
-                        help='The second address line of the party address. Ex: 1234 Foo Road')
-    parser.add_argument('city',
-                        type=str,
-                        store_missing=False,
-                        help='The city where the party is located. Ex: FooTown')
-    parser.add_argument('sub_division_code',
-                        type=str,
-                        store_missing=False,
-                        help='The region code where the party is located. Ex: BC')
-    parser.add_argument('post_code',
-                        type=str,
-                        store_missing=False,
-                        help='The postal code of the party address. Ex: A0B1C2')
+        'phone_no',
+        type=str,
+        help='The phone number of the party. Ex: 123-123-1234',
+        store_missing=False)
+    parser.add_argument(
+        'phone_ext',
+        type=str,
+        help='The extension of the phone number. Ex: 1234',
+        store_missing=False)
+    parser.add_argument('email', type=str, help='The email of the party.', store_missing=False)
+    parser.add_argument(
+        'email', type=str, help='The email of the party.', store_missing=False)
+    parser.add_argument(
+        'party_type_code',
+        type=str,
+        help='The type of the party. Ex: PER',
+        store_missing=False)
+    parser.add_argument(
+        'suite_no',
+        type=str,
+        store_missing=False,
+        help='The suite number of the party address. Ex: 123')
+    parser.add_argument(
+        'address_line_1',
+        type=str,
+        store_missing=False,
+        help='The first address line of the party address. Ex: 1234 Foo Road')
+    parser.add_argument(
+        'address_line_2',
+        type=str,
+        store_missing=False,
+        help='The second address line of the party address. Ex: 1234 Foo Road')
+    parser.add_argument(
+        'city',
+        type=str,
+        store_missing=False,
+        help='The city where the party is located. Ex: FooTown')
+    parser.add_argument(
+        'sub_division_code',
+        type=str,
+        store_missing=False,
+        help='The region code where the party is located. Ex: BC')
+    parser.add_argument(
+        'post_code',
+        type=str,
+        store_missing=False,
+        help='The postal code of the party address. Ex: A0B1C2')
 
     PARTY_LIST_RESULT_LIMIT = 25
 
     @api.doc(
+        description='Fetch a party by guid',
         params={
-            'party_guid': 'Party guid. If not provided a list of 100 parties will be returned.',
-            '?search':
-            'Term searched in first name and party name, and 100 parties will be returned.',
-            '?type': 'Search will filter for the type indicated.',
-            '?relationships': 'Related record types to return as nested objects'
+            'party_guid': 'guid of the party to fetch',
         })
     @requires_role_mine_view
-    def get(self, party_guid=None):
-        if party_guid:
-            try:
-                party = Party.find_by_party_guid(party_guid)
-            except DBAPIError:
-                return self.create_error_payload(422, 'Invalid Party guid'), 422
-
-            if party:
-                return party.json()
-            else:
-                return self.create_error_payload(404, 'Party not found'), 404
-        else:
-            search_term = request.args.get('search')
-            search_type = request.args.get('type').upper() if request.args.get('type') else None
-            items_per_page = request.args.get('per_page', 25, type=int)
-            page = request.args.get('page', 1, type=int)
-            parties = Party.query
-            if search_term:
-                if search_type in ['PER', 'ORG']:
-                    parties = Party.search_by_name(search_term, search_type,
-                                                   self.PARTY_LIST_RESULT_LIMIT)
-                else:
-                    parties = Party.search_by_name(
-                        search_term, query_limit=self.PARTY_LIST_RESULT_LIMIT)
-
-            paginated_parties, pagination_details = apply_pagination(parties, page, items_per_page)
-            if not paginated_parties:
-                self.raise_error(
-                    404,
-                    'No parties found'
-                ), 404
-            parties = paginated_parties.all()
-            relationships = request.args.get('relationships')
-            relationships = relationships.split(',') if relationships else []
-            return {
-                'parties': list(map(lambda x: x.json(relationships=relationships), parties)),
-                'current_page': pagination_details.page_number,
-                'total_pages': pagination_details.num_pages,
-                'items_per_page': pagination_details.page_size,
-                'total': pagination_details.total_results,
-            }
-
-    @api.expect(parser)
-    @requires_role_mine_create
-    def post(self, party_guid=None):
-        if party_guid:
-            self.raise_error(400, 'Error: Unexpected party id in Url.')
-        data = PartyResource.parser.parse_args()
-
-        try:
-            party = Party.create(data['party_name'],
-                                 data['phone_no'],
-                                 data['type'],
-                                 self.get_create_update_dict(),
-                                 # Nullable fields
-                                 email=data.get('email'),
-                                 first_name=data.get('first_name'),
-                                 phone_ext=data.get('phone_ext'),
-                                 suite_no=data.get('suite_no'),
-                                 address_line_1=data.get('address_line_1'),
-                                 address_line_2=data.get('address_line_2'),
-                                 city=data.get('city'),
-                                 sub_division_code=data.get('sub_division_code'),
-                                 post_code=data.get('post_code'))
-        except KeyError as e:
-            self.raise_error(400, 'Error: Missing value for required field(s)')
-        except AssertionError as e:
-            self.raise_error(400, 'Error: {}'.format(e))
-
+    @api.marshal_with(PARTY, code=200)
+    def get(self, party_guid):
+        party = Party.find_by_party_guid(party_guid)
         if not party:
-            self.raise_error(400, 'Error: Failed to create party')
+            raise NotFound('Party not found')
 
-        party.save()
-        return party.json()
+        return party
+
 
     @api.expect(parser)
+    @api.doc(
+        description='Update a party by guid',
+        params={
+            'party_guid': 'guid of the party to update.'
+        })
     @requires_role_mine_create
+    @api.marshal_with(PARTY, code=200)
     def put(self, party_guid):
         data = PartyResource.parser.parse_args()
         existing_party = Party.find_by_party_guid(party_guid)
         if not existing_party:
-            return self.create_error_payload(404, 'Party not found'), 404
+            raise NotFound('Party not found.')
 
+        current_app.logger.info(f'Updating {existing_party} with {data}')
+        for key, value in data.items():
+            if key in ['party_type_code']:
+                continue  # non-editable fields from put
+            setattr(existing_party, key, value)
+
+        # This condition should never pass, as every party should be
+        # associated with an address, but it's been added for runtime safety,
+        # in case the API is circumvented and a party is created without an
+        # address
+        if len(existing_party.address) == 0:
+            address = Address.create()
+            existing_party.address.append(address)
+
+        for key, value in data.items():
+            setattr(existing_party.address[0], key, value)
+
+        existing_party.save()
+
+        return existing_party
+
+    @api.doc(
+        description='Delete a party by guid',
+        params={
+            'party_guid': 'guid of the party to delete.'
+        })
+    @requires_role_mine_admin
+    def delete(self, party_guid):
+        if party_guid is None:
+            return self.create_error_payload(404, 'Must provide a party guid.'), 404
         try:
-            existing_party.party_name        = data.get('party_name') or existing_party.party_name
-            existing_party.phone_no          = data.get('phone_no') or existing_party.phone_no
-            existing_party.party_type_code   = data.get('type') or existing_party.party_type_code
-            existing_party.first_name        = data.get('first_name') or existing_party.first_name
-            # Nullable fields
-            existing_party.email             = data.get('email') if 'email' in data else existing_party.email
-            existing_party.suite_no          = data.get('suite_no') if 'suite_no' in data else existing_party.suite_no
-            existing_party.address_line_1    = data.get('address_line_1') if 'address_line_1' in data else existing_party.address_line_1
-            existing_party.address_line_2    = data.get('address_line_2') if 'address_line_2' in data else existing_party.address_line_2
-            existing_party.city              = data.get('city') if 'city' in data else existing_party.city
-            existing_party.sub_division_code = data.get('sub_division_code') if 'sub_division_code' in data else existing_party.sub_division_code
-            existing_party.post_code         = data.get('post_code') if 'post_code' in data else existing_party.post_code
+            party = Party.find_by_party_guid(party_guid)
+        except DBAPIError:
+            return self.create_error_payload(422, 'Invalid Party guid'), 422
+        if party is None:
+            return self.create_error_payload(404, 'Party guid with "{party_guid}" not found.'), 404
 
-            existing_party.save()
-        except AssertionError as e:
-            self.raise_error(400, 'Error: {}'.format(e))
+        mine_party_appts = MinePartyAppointment.find_all_by_mine_party_appt_guid(party_guid)
+        for mine_party_appt in mine_party_appts:
+            mine_party_appt.deleted_ind = True
+            mine_party_appt.save()
 
-        return existing_party.json()
+        party.deleted_ind = True
+        party.save()
+        return ('', 204)

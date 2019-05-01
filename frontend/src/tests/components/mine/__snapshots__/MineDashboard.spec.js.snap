@@ -4,7 +4,50 @@ exports[`MineDashboard renders properly 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <MineDashboard
+    complianceCodes={
+      Array [
+        Object {
+          "label": "2.3.7 - Spills",
+          "value": 305,
+        },
+        Object {
+          "label": "2.3.8 - Flammable Waste Storage",
+          "value": 306,
+        },
+      ]
+    }
+    complianceCodesHash={
+      Object {
+        "305": "2.3.7 - Spills",
+        "306": "2.3.8 - Flammable Waste Storage",
+      }
+    }
+    coreUsers={
+      Array [
+        Object {
+          "core_user_guid": "51b3a499-a474-4d52-be99-5c5123d7501c",
+          "email": "user@gov.bc.ca",
+          "idir_user_detail": Object {
+            "bcgov_guid": "13b7821b-04d9-4a1d-a0f4-8f6bba2c6094",
+            "city": "Victoria",
+            "department": "Mines Health, Safety & Enforcement Division",
+            "title": "Geomatics Specialist",
+            "username": "IDIRBLAH",
+          },
+          "last_logon": null,
+          "phone_no": "555-555-5556",
+        },
+      ]
+    }
+    createVariance={[MockFunction]}
     fetchApplicationStatusOptions={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
+    fetchCoreUsers={
       [MockFunction] {
         "calls": Array [
           Array [],
@@ -18,7 +61,21 @@ ShallowWrapper {
         ],
       }
     }
+    fetchMineComplianceCodes={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
     fetchMineDisturbanceOptions={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
+    fetchMineIncidentFollowActionOptions={
       [MockFunction] {
         "calls": Array [
           Array [],
@@ -82,6 +139,14 @@ ShallowWrapper {
         ],
       }
     }
+    fetchSubscribedMinesByUser={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
+    fetchVariancesByMine={[MockFunction]}
     match={
       Object {
         "isExact": true,
@@ -94,14 +159,13 @@ ShallowWrapper {
     }
     mine={
       Object {
-        "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
         "mine_expected_documents": Array [
           Object {
             "date_created": "2018-11-19",
             "due_date": "",
             "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
             "exp_document_name": "OMS Manual",
-            "exp_document_status": Object {
+            "expected_document_status": Object {
               "description": "Not Received",
               "exp_document_status_code": "MIA",
             },
@@ -110,6 +174,7 @@ ShallowWrapper {
             "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
           },
         ],
+        "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
         "mine_location": Object {
           "latitude": null,
           "longitude": null,
@@ -117,6 +182,7 @@ ShallowWrapper {
         "mine_name": "mine3",
         "mine_no": "BLAH9091",
         "mine_permit": Array [],
+        "mine_region": "NE",
         "mine_status": Object {
           "effective_date": "2018-10-16",
           "expiry_date": "9999-12-31",
@@ -129,7 +195,7 @@ ShallowWrapper {
             "CM",
           ],
         },
-        "mine_tailings_storage_facility": Array [
+        "mine_tailings_storage_facilities": Array [
           Object {
             "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
             "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
@@ -149,7 +215,13 @@ ShallowWrapper {
             "tenure_number_id": "1234567",
           },
         ],
-        "region_code": "NE",
+        "verified_status": Object {
+          "healthy_ind": null,
+          "mine_guid": null,
+          "mine_name": null,
+          "verifying_timestamp": null,
+          "verifying_user": null,
+        },
       }
     }
     mineComplianceInfo={Object {}}
@@ -337,14 +409,13 @@ ShallowWrapper {
     mines={
       Object {
         "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
-          "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
           "mine_expected_documents": Array [
             Object {
               "date_created": "2018-11-19",
               "due_date": "",
               "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
               "exp_document_name": "OMS Manual",
-              "exp_document_status": Object {
+              "expected_document_status": Object {
                 "description": "Not Received",
                 "exp_document_status_code": "MIA",
               },
@@ -353,6 +424,7 @@ ShallowWrapper {
               "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
             },
           ],
+          "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
           "mine_location": Object {
             "latitude": null,
             "longitude": null,
@@ -360,6 +432,7 @@ ShallowWrapper {
           "mine_name": "mine3",
           "mine_no": "BLAH9091",
           "mine_permit": Array [],
+          "mine_region": "NE",
           "mine_status": Object {
             "effective_date": "2018-10-16",
             "expiry_date": "9999-12-31",
@@ -372,7 +445,7 @@ ShallowWrapper {
               "CM",
             ],
           },
-          "mine_tailings_storage_facility": Array [
+          "mine_tailings_storage_facilities": Array [
             Object {
               "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
               "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
@@ -392,17 +465,22 @@ ShallowWrapper {
               "tenure_number_id": "1234567",
             },
           ],
-          "region_code": "NE",
+          "verified_status": Object {
+            "healthy_ind": null,
+            "mine_guid": null,
+            "mine_name": null,
+            "verifying_timestamp": null,
+            "verifying_user": null,
+          },
         },
         "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
-          "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
           "mine_expected_documents": Array [
             Object {
               "date_created": "2018-11-19",
               "due_date": "",
               "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
               "exp_document_name": "OMS Manual",
-              "exp_document_status": Object {
+              "expected_document_status": Object {
                 "description": "Not Received",
                 "exp_document_status_code": "MIA",
               },
@@ -411,6 +489,7 @@ ShallowWrapper {
               "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
             },
           ],
+          "mine_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
           "mine_location": Object {
             "latitude": null,
             "longitude": null,
@@ -419,66 +498,15 @@ ShallowWrapper {
           "mine_no": "BLAH9091",
           "mine_permit": Array [
             Object {
-              "authorization_end_date": "9999-12-31",
-              "issue_date": "9999-12-31",
-              "mine_guid": "1628847c-060b-45f2-990f-815877174801",
               "permit_guid": "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
               "permit_no": "KNaaWwVdiJ40",
-              "permit_status_code": "Z",
-              "permittee": Array [
-                Object {
-                  "effective_date": "2018-10-02",
-                  "expiry_date": "9999-12-31",
-                  "party": Object {
-                    "effective_date": "2018-10-03",
-                    "email": "JgHxeyjv@aezZIwee.com",
-                    "expiry_date": "9999-12-31",
-                    "first_name": "Tiyudoveh",
-                    "name": "Tiyudoveh Higesewawa",
-                    "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
-                    "party_name": "Higesewawa",
-                    "party_type_code": "PER",
-                    "phone_ext": null,
-                    "phone_no": "123-123-1234",
-                  },
-                  "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
-                  "party_name": "Yivihoke",
-                  "permit_guid": "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
-                  "permittee_guid": "abd4c8bb-48ac-4ec2-b296-5f38d4118176",
-                },
-              ],
             },
             Object {
-              "authorization_end_date": "9999-12-31",
-              "issue_date": "9999-12-31",
-              "mine_guid": "1628847c-060b-45f2-990f-815877174801",
               "permit_guid": "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
               "permit_no": "xfM0c0ZKEw7B",
-              "permit_status_code": "Z",
-              "permittee": Array [
-                Object {
-                  "effective_date": "2018-10-02",
-                  "expiry_date": "9999-12-31",
-                  "party": Object {
-                    "effective_date": "2018-10-03",
-                    "email": "JgHxeyjv@aezZIwee.com",
-                    "expiry_date": "9999-12-31",
-                    "first_name": "Tiyudoveh",
-                    "name": "Tiyudoveh Higesewawa",
-                    "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
-                    "party_name": "Higesewawa",
-                    "party_type_code": "PER",
-                    "phone_ext": null,
-                    "phone_no": "123-123-1234",
-                  },
-                  "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
-                  "party_name": "Yivihoke",
-                  "permit_guid": "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
-                  "permittee_guid": "3491c9a5-8f09-471f-bb1b-3ea246eb9796",
-                },
-              ],
             },
           ],
+          "mine_region": "NE",
           "mine_status": Object {
             "effective_date": "2018-10-16",
             "expiry_date": "9999-12-31",
@@ -491,7 +519,7 @@ ShallowWrapper {
               "CM",
             ],
           },
-          "mine_tailings_storage_facility": Array [
+          "mine_tailings_storage_facilities": Array [
             Object {
               "mine_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
               "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f34",
@@ -511,13 +539,16 @@ ShallowWrapper {
               "tenure_number_id": "1234567",
             },
           ],
-          "region_code": "NE",
+          "verified_status": Object {
+            "healthy_ind": true,
+            "mine_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+            "mine_name": "mine2",
+            "verifying_timestamp": null,
+            "verifying_user": null,
+          },
         },
       }
     }
-    permitteeIds={Array []}
-    permittees={Object {}}
-    permitteesIds={Array []}
     setOptionsLoaded={
       [MockFunction] {
         "calls": Array [
@@ -525,7 +556,39 @@ ShallowWrapper {
         ],
       }
     }
+    subscribe={[MockFunction]}
+    unSubscribe={[MockFunction]}
     updateMineRecord={[MockFunction]}
+    variances={
+      Array [
+        Object {
+          "compliance_article_id": 1,
+          "documents": Array [
+            Object {
+              "records": Array [
+                Object {
+                  "details": Object {
+                    "active_ind": "True",
+                    "document_manager_guid": "7426b928-caf7-4e1e-aa59-392895929f97",
+                    "document_name": "just_a_pdf.PDF",
+                    "mine_document_guid": "d463b9df-7650-4d18-8c73-c8bfb7ae48f0",
+                    "mine_guid": "79edee65-038e-4b26-9048-e41e4c0b7d1a",
+                  },
+                  "mine_document_guid": "d463b9df-7650-4d18-8c73-c8bfb7ae48f0",
+                  "variance_document_xref_guid": "eda300b7-2155-4bf4-9b3d-06b1f4d8a0fe",
+                  "variance_id": 1249,
+                },
+              ],
+            },
+          ],
+          "expiry_date": "2019-03-30",
+          "issue_date": "2019-03-01",
+          "note": "notesss",
+          "received_date": "2019-03-01",
+          "variance_id": 1249,
+        },
+      ]
+    }
   />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],

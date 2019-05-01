@@ -12,7 +12,12 @@ class Const{
     static Path scriptLocation = Paths.get(sourceUri)
     static Dotenv dotenv = Dotenv.configure().directory("./").ignoreIfMalformed().ignoreIfMissing().load()
     static systemEnv = System.getenv()
-    static final String MINE_NAME   = "MINETEST",
+    static final String CONTACT_FIRST_NAME = "Wreckit",
+                        CONTACT_LAST_NAME = "Ralph",
+                        CONTACT_FULL_NAME = "Ralph, Wreckit",
+                        MINE_NAME_2 = "MINE2TEST",
+                        MINE_ROLE_2 = "Mine Manager",
+                        MINE_NAME   = "MINETEST",
                         MINE_NUMBER = "BLAH0000",
                         MINE_LAT    = "48"      ,
                         MINE_LONG   = "-125"    ,
@@ -27,5 +32,7 @@ class Const{
                         DB_PASS = dotenv['DB_PASS'] ? dotenv['DB_PASS'] : systemEnv['DB_PASS'],
                         TEST_FILE_CONTENT =  "The quality of mercy is not strained.",
                         TEST_FILE_NAME = "test.odt",
-                        DOWNLOAD_PATH=scriptLocation.getParent().getParent().getParent().toString()+"/tempStorage"
+                        DOWNLOAD_PATH=scriptLocation.getParent().getParent().getParent().toString()+"/tempStorage",
+                        MINESPACE_URL = dotenv['MINESPACE_URL'] ? dotenv['MINESPACE_URL'] : systemEnv['MINESPACE_URL'],
+                        MINESPACE_EMAIL = "test@test.com"
 }

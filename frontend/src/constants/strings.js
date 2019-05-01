@@ -9,11 +9,13 @@ export const NO_MINE_MANAGER = "No assigned mine manager";
 export const NO_PREV_MINE_MANAGER = "No previous mine managers found";
 export const NO_PERMITTEE = "No assigned permittee";
 export const NO_PERMIT = "No permit information available";
+export const NO_VARIANCE = "No variance information available";
+export const NO_APPLICATION = "No application information available";
 export const ADD_MINE_MANAGER = "Please add mine manager below";
 export const ADD_TENURE = "Please add tenure number below";
 export const ADD_PARTY = "Please create party below";
 export const NO_RESULTS = "No results found";
-export const NO_NRIS_INSPECTIONS = "No inspections in NRIS"
+export const NO_NRIS_INSPECTIONS = "No inspections in NRIS";
 export const MAP_UNAVAILABLE = [
   "The BC Geographic Warehouse (BCGW) map layers used in this application are unavailable at this time.",
   "Please notify ",

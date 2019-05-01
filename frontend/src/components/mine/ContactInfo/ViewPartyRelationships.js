@@ -3,7 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
-import { Row, Col, Menu, Icon, Popconfirm, Divider, Dropdown, Button } from "antd";
+import { Row, Col, Menu, Popconfirm, Divider, Dropdown } from "antd";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
 import * as Permission from "@/constants/permissions";
@@ -13,7 +13,7 @@ import { InactiveContact } from "@/components/mine/ContactInfo/PartyRelationship
 import NullScreen from "@/components/common/NullScreen";
 import Loading from "@/components/common/Loading";
 import { uniq, uniqBy } from "lodash";
-
+import AddButton from "@/components/common/AddButton";
 import {
   addPartyRelationship,
   removePartyRelationship,
@@ -31,8 +31,6 @@ const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  createParty: PropTypes.func.isRequired,
-  fetchParties: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   partyRelationshipTypes: PropTypes.arrayOf(CustomPropTypes.partyRelationshipType),
   partyRelationshipTypesList: PropTypes.arrayOf(CustomPropTypes.dropdownListItem),
@@ -64,7 +62,7 @@ export class ViewPartyRelationships extends Component {
 
   onSubmitAddPartyRelationship = (values) => {
     const payload = {
-      mine_guid: this.props.mine.guid,
+      mine_guid: this.props.mine.mine_guid,
       party_guid: values.party_guid,
       mine_party_appt_type_code: this.state.selectedPartyRelationshipType,
       related_guid: values.related_guid,
@@ -74,7 +72,7 @@ export class ViewPartyRelationships extends Component {
 
     return this.props.addPartyRelationship(payload).then(() => {
       this.props.fetchPartyRelationships({
-        mine_guid: this.props.mine.guid,
+        mine_guid: this.props.mine.mine_guid,
         relationships: "party",
       });
       this.props.closeModal();
@@ -85,7 +83,7 @@ export class ViewPartyRelationships extends Component {
     if (!this.props.partyRelationshipTypesList) return;
 
     if (value.mine_party_appt_type_code === "EOR") {
-      if (mine.mine_tailings_storage_facility.length === 0) {
+      if (mine.mine_tailings_storage_facilities.length === 0) {
         this.TSFConfirmation.current.click();
         return;
       }
@@ -100,22 +98,16 @@ export class ViewPartyRelationships extends Component {
         partyRelationshipType: value,
         mine,
       },
-      widthSize: "75vw",
       content: modalConfig.ADD_PARTY_RELATIONSHIP,
       clearOnSubmit: true,
     });
   };
 
-  handleAddTailings = (value) =>
-    this.props
-      .createTailingsStorageFacility({
-        ...value,
-        mine_guid: this.props.mine.guid,
-      })
-      .then(() => {
-        this.props.closeModal();
-        this.props.fetchMineRecordById(this.props.mine.guid);
-      });
+  handleAddTailings = (values) =>
+    this.props.createTailingsStorageFacility(this.props.mine.mine_guid, values).then(() => {
+      this.props.closeModal();
+      this.props.fetchMineRecordById(this.props.mine.mine_guid);
+    });
 
   openEditPartyRelationshipModal = (partyRelationship, onSubmit, handleChange, mine) => {
     if (!this.props.partyRelationshipTypesList) return;
@@ -147,7 +139,7 @@ export class ViewPartyRelationships extends Component {
 
     return this.props.updatePartyRelationship(payload).then(() => {
       this.props.fetchPartyRelationships({
-        mine_guid: this.props.mine.guid,
+        mine_guid: this.props.mine.mine_guid,
         relationships: "party",
       });
       this.props.closeModal();
@@ -158,7 +150,7 @@ export class ViewPartyRelationships extends Component {
     event.preventDefault();
     this.props.removePartyRelationship(mine_party_appt_guid).then(() => {
       this.props.fetchPartyRelationships({
-        mine_guid: this.props.mine.guid,
+        mine_guid: this.props.mine.mine_guid,
         relationships: "party",
       });
     });
@@ -385,12 +377,9 @@ export class ViewPartyRelationships extends Component {
                 overlay={this.renderMenu(partyRelationshipGroupingLevels)}
                 placement="bottomLeft"
               >
-                <Button type="primary">
-                  <div style={{ paddingTop: "5px", paddingBottom: "5px" }}>
-                    <Icon type="plus-circle" theme="outlined" style={{ fontSize: "16px" }} />
-                    &nbsp; Add New Contact
-                  </div>
-                </Button>
+                <div>
+                  <AddButton>Add New Contact</AddButton>
+                </div>
               </Dropdown>
             </AuthorizationWrapper>
           </div>

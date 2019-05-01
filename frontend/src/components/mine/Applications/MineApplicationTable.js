@@ -1,13 +1,15 @@
 import React from "react";
 import { Table, Button } from "antd";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+
 import NullScreen from "@/components/common/NullScreen";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Strings from "@/constants/strings";
 import * as Permission from "@/constants/permissions";
 import { getDropdownApplicationStatusOptions } from "@/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import { formatFullDateTime } from "@/utils/helpers";
 import { EDIT_OUTLINE } from "@/constants/assets";
 
 /**
@@ -86,18 +88,18 @@ const transformRowData = (
   applicationStatusOptions,
   openEditApplicationModal
 ) => ({
-    key: application.permit_guid,
-    applicationNo: application.application_no || Strings.EMPTY_FIELD,
-    status: application.application_status_code || Strings.EMPTY_FIELD,
-    receivedDate: application.received_date || Strings.EMPTY_FIELD,
-    description: application.description || Strings.EMPTY_FIELD,
-    applicationEdit: {
-      application,
-      major_mine_ind,
-    },
-    applicationStatusOptions,
-    openEditApplicationModal,
-  });
+  key: application.permit_guid,
+  applicationNo: application.application_no || Strings.EMPTY_FIELD,
+  status: application.application_status_code || Strings.EMPTY_FIELD,
+  receivedDate: formatFullDateTime(application.received_date) || Strings.EMPTY_FIELD,
+  description: application.description || Strings.EMPTY_FIELD,
+  applicationEdit: {
+    application,
+    major_mine_ind,
+  },
+  applicationStatusOptions,
+  openEditApplicationModal,
+});
 
 export const MineApplicationTable = (props) => {
   const rowData = props.applications.map((application) =>
@@ -116,7 +118,7 @@ export const MineApplicationTable = (props) => {
       pagination={false}
       columns={columns}
       dataSource={rowData}
-      locale={{ emptyText: <NullScreen type="permit" /> }}
+      locale={{ emptyText: <NullScreen type="applications" /> }}
     />
   );
 };

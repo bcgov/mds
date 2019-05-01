@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import CustomPropTypes from "@/customPropTypes";
 import { remove } from "lodash";
 import { Field, reduxForm, change } from "redux-form";
-import RenderDate from "@/components/common/RenderDate";
-import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
+import { renderConfig } from "@/components/common/config";
+import PartySelectField from "@/components/common/PartySelectField";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import { required, maxLength, dateNotInFuture } from "@/utils/Validate";
@@ -22,13 +21,26 @@ const propTypes = {
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
   mine_guid: PropTypes.string.isRequired,
-  relatedDocuments: PropTypes.arrayOf(CustomPropTypes.mineDocument),
+  initialValues: PropTypes.objectOf(PropTypes.any),
   change: PropTypes.func,
 };
 
 const defaultProps = {
-  relatedDocuments: [],
+  initialValues: {},
   change,
+};
+
+const validateBusinessRules = (values) => {
+  const errors = {};
+  if (values.permit_amendment_type_code !== originalPermit) {
+    const originalPermitAmendment = values.amendments.filter(
+      (x) => x.permit_amendment_type_code === originalPermit
+    )[0];
+    if (originalPermitAmendment && values.issue_date < originalPermitAmendment.issue_date)
+      errors.issue_date = "Issue Date cannot be before the permits First Issued date.";
+  }
+
+  return errors;
 };
 
 export class PermitAmendmentForm extends Component {
@@ -80,12 +92,24 @@ export class PermitAmendmentForm extends Component {
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
         <Row gutter={48}>
           <Col md={12} sm={24}>
+            {!this.props.initialValues.permit_amendment_guid && (
+              <Form.Item>
+                <PartySelectField
+                  id="permittee_party_guid"
+                  name="permittee_party_guid"
+                  label="Permittee*"
+                  partyLabel="permittee"
+                  validate={[required]}
+                  allowAddingParties
+                />
+              </Form.Item>
+            )}
             <Form.Item>
               <Field
                 id="issue_date"
                 name="issue_date"
                 label="Issue date*"
-                component={RenderDate}
+                component={renderConfig.DATE}
                 validate={[required, dateNotInFuture]}
               />
             </Form.Item>
@@ -95,7 +119,7 @@ export class PermitAmendmentForm extends Component {
                   id="description"
                   name="description"
                   label="Description"
-                  component={RenderAutoSizeField}
+                  component={renderConfig.AUTO_SIZE_FIELD}
                   validate={[maxLength(280)]}
                 />
               </Form.Item>
@@ -162,6 +186,7 @@ PermitAmendmentForm.defaultProps = defaultProps;
 
 export default reduxForm({
   form: FORM.PERMIT_AMENDMENT,
+  validate: validateBusinessRules,
   touchOnBlur: true,
   onSubmitSuccess: resetForm(FORM.PERMIT_AMENDMENT),
 })(PermitAmendmentForm);

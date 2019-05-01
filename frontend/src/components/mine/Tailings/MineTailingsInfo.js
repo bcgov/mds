@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Row, Col, Button } from "antd";
+import { Row, Col } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -23,6 +23,7 @@ import {
 } from "@/selectors/staticContentSelectors";
 import { createDropDownList } from "@/utils/helpers";
 import MineTailingsTable from "@/components/mine/Tailings/MineTailingsTable";
+import AddButton from "@/components/common/AddButton";
 
 /**
  * @class  MineTailingsInfo - all tenure information related to the mine.
@@ -60,10 +61,10 @@ export class MineTailingsInfo extends Component {
       req_document_guid: requiredReport.req_document_guid,
     };
     return this.props
-      .createMineExpectedDocument(this.props.mine.guid, newRequiredReport)
+      .createMineExpectedDocument(this.props.mine.mine_guid, newRequiredReport)
       .then(() => {
         this.props.closeModal();
-        this.props.fetchMineRecordById(this.props.mine.guid);
+        this.props.fetchMineRecordById(this.props.mine.mine_guid);
       });
   };
 
@@ -72,21 +73,20 @@ export class MineTailingsInfo extends Component {
     updatedDocument.exp_document_name = value.tsf_report_name;
     updatedDocument.due_date = value.tsf_report_due_date;
     updatedDocument.received_date = value.tsf_report_received_date;
-    updatedDocument.exp_document_status = this.props.expectedDocumentStatusOptions.find(
-      ({ exp_document_status_code }) => exp_document_status_code === value.tsf_report_status
-    );
+    updatedDocument.exp_document_status_code = value.tsf_report_status;
+
     return this.props
-      .updateExpectedDocument(updatedDocument.exp_document_guid, { document: updatedDocument })
+      .updateExpectedDocument(updatedDocument.exp_document_guid, updatedDocument)
       .then(() => {
         this.props.closeModal();
-        this.props.fetchMineRecordById(this.props.mine.guid);
+        this.props.fetchMineRecordById(this.props.mine.mine_guid);
       });
   };
 
   removeReport = (event, exp_doc_guid) => {
     event.preventDefault();
     this.props.removeExpectedDocument(exp_doc_guid).then(() => {
-      this.props.fetchMineRecordById(this.props.mine.guid);
+      this.props.fetchMineRecordById(this.props.mine.mine_guid);
     });
   };
 
@@ -114,7 +114,7 @@ export class MineTailingsInfo extends Component {
         tsf_report_name: doc.exp_document_name === "None" ? null : doc.exp_document_name,
         tsf_report_due_date: doc.due_date === "None" ? null : doc.due_date,
         tsf_report_received_date: doc.received_date,
-        tsf_report_status: doc.exp_document_status.exp_document_status_code,
+        tsf_report_status: doc.expected_document_status.exp_document_status_code,
       };
       const statusOptions = createDropDownList(
         this.props.expectedDocumentStatusOptions,
@@ -131,7 +131,7 @@ export class MineTailingsInfo extends Component {
   render() {
     return (
       <div>
-        {this.props.mine.mine_tailings_storage_facility.map((facility) => (
+        {this.props.mine.mine_tailings_storage_facilities.map((facility) => (
           <Row
             key={facility.mine_tailings_storage_facility_guid}
             gutter={16}
@@ -146,7 +146,32 @@ export class MineTailingsInfo extends Component {
         <br />
         <br />
         <div>
-          <h3>Reports</h3>
+          <div>
+            <div className="inline-flex between">
+              <div>
+                <h3>Reports</h3>
+              </div>
+              <div className="inline-flex between">
+                <AuthorizationWrapper
+                  permission={Permission.CREATE}
+                  isMajorMine={this.props.mine.major_mine_ind}
+                >
+                  <AddButton
+                    onClick={(event) =>
+                      this.openAddReportModal(
+                        event,
+                        this.handleAddReportSubmit,
+                        ModalContent.ADD_TAILINGS_REPORT,
+                        this.props.mineTSFRequiredReports
+                      )
+                    }
+                  >
+                    {ModalContent.ADD_TAILINGS_REPORT}
+                  </AddButton>
+                </AuthorizationWrapper>
+              </div>
+            </div>
+          </div>
           <br />
           <MineTailingsTable
             mine={this.props.mine}
@@ -157,33 +182,6 @@ export class MineTailingsInfo extends Component {
             removeReport={this.removeReport}
             handleEditReportSubmit={this.handleEditReportSubmit}
           />
-          <div key="0">
-            <Row gutter={16} justify="center" align="top">
-              <Col span={8} align="left">
-                <AuthorizationWrapper
-                  permission={Permission.CREATE}
-                  isMajorMine={this.props.mine.major_mine_ind}
-                >
-                  <Button
-                    type="secondary"
-                    ghost
-                    onClick={(event) =>
-                      this.openAddReportModal(
-                        event,
-                        this.handleAddReportSubmit,
-                        ModalContent.ADD_TAILINGS_REPORT,
-                        this.props.mineTSFRequiredReports
-                      )
-                    }
-                  >
-                    {`+ ${ModalContent.ADD_TAILINGS_REPORT}`}
-                  </Button>
-                </AuthorizationWrapper>
-              </Col>
-              <Col span={12} />
-              <Col span={4} align="right" />
-            </Row>
-          </div>
         </div>
       </div>
     );
