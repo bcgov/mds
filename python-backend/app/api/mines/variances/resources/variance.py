@@ -89,7 +89,7 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
         if variance is None:
             raise NotFound('Unable to fetch variance')
 
-        data = VarianceResource.parser.parse_args()
+        data = self.parser.parse_args()
         for key, value in data.items():
             setattr(variance, key, value)
 

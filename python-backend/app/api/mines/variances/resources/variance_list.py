@@ -75,7 +75,7 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
     @requires_any_of([MINE_CREATE])
     @api.marshal_with(VARIANCE_MODEL, code=200)
     def post(self, mine_guid):
-        data = VarianceListResource.parser.parse_args()
+        data = self.parser.parse_args()
         compliance_article_id = data['compliance_article_id']
         received_date = data['received_date']
 
