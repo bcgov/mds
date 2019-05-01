@@ -49,19 +49,28 @@ const defaultProps = {
 };
 
 export class MinePermitInfo extends Component {
-  state = { expandedRowKeys: [] };
+  state = { expandedRowKeys: [], modifiedPermits: false, modifiedPermitGuid: null };
 
   componentWillMount = () => {
     this.props.fetchPermits({ mine_guid: this.props.mine.mine_guid });
   };
 
   componentWillReceiveProps = (nextProps) => {
-    if (this.props.permits.length > 0) {
-      const currentPermits = this.props.permits.map((x) => x.permit_guid);
-      const nextPermits = nextProps.permits.map((x) => x.permit_guid);
-      this.setState({
-        expandedRowKeys: nextPermits.filter((key) => currentPermits.indexOf(key) === -1),
-      });
+    if (this.state.modifiedPermits && nextProps.permits !== this.props.permits) {
+      const currentPermits = this.props.permits
+        .filter((p) => p.mine_guid === this.props.mine.mine_guid)
+        .map((x) => x.permit_guid);
+      const nextPermits = nextProps.permits
+        .filter((p) => p.mine_guid === this.props.mine.mine_guid)
+        .map((x) => x.permit_guid);
+
+      this.setState((prevState) => ({
+        expandedRowKeys: prevState.modifiedPermitGuid
+          ? [prevState.modifiedPermitGuid]
+          : nextPermits.filter((key) => currentPermits.indexOf(key) === -1),
+        modifiedPermitGuid: null,
+        addedPermit: false,
+      }));
     }
   };
 
@@ -116,7 +125,12 @@ export class MinePermitInfo extends Component {
       values.permit_no
     }`;
 
-    return this.props.createPermit(payload).then(this.closePermitModal);
+    this.setState({ modifiedPermits: true });
+
+    return this.props
+      .createPermit(payload)
+      .then()
+      .then(this.closePermitModal);
   };
 
   handleEditPermit = (values) =>
@@ -189,16 +203,20 @@ export class MinePermitInfo extends Component {
       .updatePermitAmendment(values.permit_amendment_guid, values)
       .then(this.closePermitModal);
 
-  handleAddPermitAmendment = (values) =>
-    this.props.createPermitAmendment(values.permit_guid, values).then(this.closePermitModal);
+  handleAddPermitAmendment = (values) => {
+    this.setState({ modifiedPermits: true, modifiedPermitGuid: values.permit_guid });
+    return this.props.createPermitAmendment(values.permit_guid, values).then(this.closePermitModal);
+  };
 
-  handleAddAmalgamatedPermit = (values) =>
-    this.props
+  handleAddAmalgamatedPermit = (values) => {
+    this.setState({ modifiedPermits: true, modifiedPermitGuid: values.permit_guid });
+    return this.props
       .createPermitAmendment(values.permit_guid, {
         ...values,
         permit_amendment_type_code: amalgamtedPermit,
       })
       .then(this.closePermitModal);
+  };
 
   handleRemovePermitAmendmentDocument = (permitAmdendmentGuid, documentGuid) =>
     this.props.removePermitAmendmentDocument(permitAmdendmentGuid, documentGuid).then(() => {
