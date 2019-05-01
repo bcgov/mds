@@ -16,7 +16,7 @@ class VarianceUploadedDocumentsResource(Resource, UserMixin, ErrorMixin):
     @api.doc(description='Delete a document from a variance.')
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
     def delete(self, mine_guid, variance_id, mine_document_guid):
-        variance = Variance.find_by_variance_id(variance_id)
+        variance = Variance.find_by_mine_guid_and_variance_id(mine_guid, variance_id)
         mine_document = MineDocument.find_by_mine_document_guid(mine_document_guid)
 
         if variance is None:
