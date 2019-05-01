@@ -9,38 +9,44 @@
 // import * as router from "@/constants/routes";
 // import * as Strings from "@/constants/strings";
 
+// import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
+
 // /**
-//  * @class  PermitResultsTable - displays a table of mine search results
+//  * @class  DocumentResultsTable - displays a table of mine search results
 //  */
 
 // const propTypes = {
 //   header: PropTypes.string.isRequired,
-//   highlightRegex: PropTypes.string.isRequired,
+//   highlightRegex: PropTypes.object.isRequired,
 //   searchResults: PropTypes.arrayOf(PropTypes.object).isRequired,
 // };
 
 // const defaultProps = {};
 
-// export const PermitResultsTable = (props) => {
+// export const DocumentResultsTable = (props) => {
 //   const columns = [
 //     {
-//       title: "Permit Guid",
-//       dataIndex: "permit_guid",
-//       key: "permit_guid",
+//       title: "Document Guid",
+//       dataIndex: "document_guid",
+//       key: "document_guid",
 //       render: (text, record) => [
 //         <Row style={{ paddingBottom: "15px" }}>
-//           <Col span={12}>
-//             <Link to={router.MINE_SUMMARY.dynamicRoute(record.mine_guid, "permit")}>
+//           <Col span={24}>
+//             <a
+//               key={record.mine_document_guid}
+//               onClick={() =>
+//                 downloadFileFromDocumentManager(record.document_manager_guid, record.document_name)
+//               }
+//             >
 //               <p style={{ fontSize: "22px", color: "inherit" }}>
-//                 <Highlight search={props.highlightRegex}>{record.permit_no}</Highlight>
+//                 <Highlight search={props.highlightRegex}>{record.document_name}</Highlight>
 //               </p>
-//             </Link>
+//             </a>
 //           </Col>
 //         </Row>,
 //       ],
 //     },
 //   ];
-
 //   return (
 //     <Col md={12} sm={24} style={{ padding: "30px", paddingBottom: "60px" }}>
 //       <h2>{props.header}</h2>
@@ -59,7 +65,7 @@
 
 // const mapStateToProps = (state) => ({});
 
-// PermitResultsTable.propTypes = propTypes;
-// PermitResultsTable.defaultProps = defaultProps;
+// DocumentResultsTable.propTypes = propTypes;
+// DocumentResultsTable.defaultProps = defaultProps;
 
-// export default connect(mapStateToProps)(PermitResultsTable);
+// export default connect(mapStateToProps)(DocumentResultsTable);

@@ -19,12 +19,12 @@ from app.api.permits.permit_amendment.models.permit_amendment_document import Pe
 # 'Description': (Id, Model, [Model.attribute, Model.attribute], has_deleted_ind, json_function, json_function_arguements)
 search_targets = {
     'Mines': ('mine_guid', Mine, [Mine.mine_name, Mine.mine_no], True, 'json_for_list', []),
-    'Contacts': ('party_guid', Party, [Party.first_name, Party.party_name, Party.email], False,
+    'Contacts': ('party_guid', Party, [Party.first_name, Party.party_name, Party.email, Party.phone_no], False,
                  'json', [True, ['mine_party_appt']]),
     'Permits': ('permit_guid', Permit, [Permit.permit_no], False, 'json_for_list', []),
-    'Mine_Documents': ('mine_document_guid', MineDocument, [MineDocument.document_name], False,
+    'Mine Documents': ('mine_document_guid', MineDocument, [MineDocument.document_name], False,
                        'json', []),
-    'Permit_Documents': ('permit_amendment_document_guid', PermitAmendmentDocument,
+    'Permit Documents': ('document_guid', PermitAmendmentDocument,
                          [PermitAmendmentDocument.document_name], False, 'json', [])
 }
 
