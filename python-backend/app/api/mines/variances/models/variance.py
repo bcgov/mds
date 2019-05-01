@@ -10,6 +10,9 @@ from .variance_application_status_code import VarianceApplicationStatusCode
 from ....utils.models_mixins import AuditMixin, Base
 from ....documents.variances.models.variance import VarianceDocument
 
+INVALID_GUID = 'Invalid guid.'
+INVALID_MINE_GUID = 'Invalid mine_guid.'
+MISSING_MINE_GUID = 'Missing mine_guid.'
 
 class Variance(AuditMixin, Base):
     __tablename__ = "variance"
@@ -70,22 +73,28 @@ class Variance(AuditMixin, Base):
 
     @classmethod
     def find_by_mine_guid(cls, mine_guid):
-        try:
-            uuid.UUID(str(mine_guid), version=4)
-            return cls.query.filter_by(mine_guid=mine_guid).all()
-        except ValueError:
-            return None
+        cls.validate_guid(mine_guid, INVALID_MINE_GUID)
+        return cls.query.filter_by(mine_guid=mine_guid).all()
 
     @classmethod
     def find_by_variance_id(cls, variance_id):
         return cls.query.filter_by(variance_id=variance_id).first()
 
+    @classmethod
+    def find_by_mine_guid_and_variance_id(cls, mine_guid, variance_id):
+        cls.validate_guid(mine_guid, INVALID_MINE_GUID)
+        return cls.query.filter_by(mine_guid=mine_guid, variance_id=variance_id).first()
+
+    @classmethod
+    def validate_guid(cls, guid, msg=INVALID_GUID):
+        try:
+            uuid.UUID(str(guid), version=4)
+        except ValueError:
+            raise AssertionError(msg)
+
     @validates('mine_guid')
     def validate_mine_guid(self, key, mine_guid):
         if not mine_guid:
-            raise AssertionError('Missing mine_guid')
-        try:
-            uuid.UUID(str(mine_guid), version=4)
-        except ValueError:
-            raise AssertionError('Invalid mine_guid')
+            raise AssertionError(MISSING_MINE_GUID)
+        self.validate_guid(mine_guid, INVALID_MINE_GUID)
         return mine_guid
