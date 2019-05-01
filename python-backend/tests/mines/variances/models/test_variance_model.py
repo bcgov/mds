@@ -47,3 +47,13 @@ def test_validate_mine_guid_invalid(db_session):
             compliance_article_id=RandomComplianceArticleId,
             mine_guid='abc123')
     assert 'Invalid mine_guid' in str(e.value)
+
+
+def test_validate_applicant_guid_invalid(db_session):
+    variance = VarianceFactory()
+    with pytest.raises(AssertionError) as e:
+        Variance(
+            compliance_article_id=variance.compliance_article_id,
+            mine_guid=variance.mine_guid,
+            applicant_guid='abc123')
+    assert 'Invalid applicant_guid' in str(e.value)
