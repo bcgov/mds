@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
-import * as Strings from "@/constants/strings";
-import { Tabs, Icon, Table, Button, Row, Col } from "antd";
+// import { Link } from "react-router-dom";
+// import * as Strings from "@/constants/strings";
+import { Row } from "antd";
 import { getSearchResults, getSearchTerms } from "@/selectors/searchSelectors";
-import { uniq, uniqBy, map, toArray } from "lodash";
+// import { uniq, uniqBy, map, toArray } from "lodash";
 
 import { MineResultsTable } from "@/components/search/MineResultsTable";
 import { PermitResultsTable } from "@/components/search/PermitResultsTable";
@@ -24,7 +24,7 @@ import { ContactResultsTable } from "@/components/search/ContactResultsTable";
  */
 
 const propTypes = {
-  searchResults: PropTypes.arrayOf(PropTypes.object),
+  // searchResults: PropTypes.arrayOf(PropTypes.object),
   searchTerms: PropTypes.arrayOf(PropTypes.string),
 };
 
@@ -62,6 +62,7 @@ const renderSearchResultGroup = (group, searchTerms) => {
       />
     );
   }
+  return <div />;
 };
 
 export class SearchResults extends Component {
@@ -69,16 +70,16 @@ export class SearchResults extends Component {
 
   render() {
     // const resultTypes = uniq(this.props.searchResults.map(({ type }) => type));
-
-    const groupedSearchResults = _(this.props.searchResults)
-      .groupBy("type")
-      .map((items, key) => ({
-        type: key,
-        score: _.sumBy(items, "score"),
-        results: _.map(items, "result"),
-      }))
-      .orderBy("score", "desc")
-      .value();
+    const groupedSearchResults = null;
+    // const groupedSearchResults = _(this.props.searchResults)
+    //   .groupBy("type")
+    //   .map((items, key) => ({
+    //     type: key,
+    //     score: _.sumBy(items, "score"),
+    //     results: _.map(items, "result"),
+    //   }))
+    //   .orderBy("score", "desc")
+    //   .value();
 
     return (
       <div className="landing-page">

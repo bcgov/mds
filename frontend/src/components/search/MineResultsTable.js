@@ -1,13 +1,13 @@
 import React from "react";
-import { Table, Menu, Dropdown, Button, Icon, Row, Col, Divider } from "antd";
-import CustomPropTypes from "@/customPropTypes";
+import { Table, Row, Col, Divider } from "antd";
+// import CustomPropTypes from "@/customPropTypes";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Highlight from "react-highlighter";
 
 import { Link } from "react-router-dom";
 import * as router from "@/constants/routes";
-import * as Strings from "@/constants/strings";
+// import * as Strings from "@/constants/strings";
 
 /**
  * @class  MineResultsTable - displays a table of mine search results
@@ -15,7 +15,7 @@ import * as Strings from "@/constants/strings";
 
 const propTypes = {
   header: PropTypes.string.isRequired,
-  highlightRegex: PropTypes.object.isRequired,
+  // highlightRegex: PropTypes.object.isRequired,
   searchResults: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
@@ -25,14 +25,14 @@ export const MineResultsTable = (props) => {
   const columns = [
     {
       title: "Mine Guid",
-      dataIndex: "guid",
-      key: "guid",
+      dataIndex: "mine_guid",
+      key: "mine_guid",
       render: (text, record) => [
         <Row>
           <Col span={24}>
-            <Link to={router.MINE_SUMMARY.dynamicRoute(record.guid)}>
+            <Link to={router.MINE_SUMMARY.dynamicRoute(record.mine_guid)}>
               <p style={{ fontSize: "22px", color: "inherit" }}>
-                <Highlight search={props.highlightRegex}>{record.mine_name}</Highlight>
+                {/* <Highlight search={props.highlightRegex}>{record.mine_name}</Highlight> */}
               </p>
             </Link>
           </Col>
@@ -40,7 +40,7 @@ export const MineResultsTable = (props) => {
         <Row style={{ paddingTop: "5px" }}>
           <Col span={4}>Mine No.</Col>
           <Col span={6}>
-            <Highlight search={props.highlightRegex}>{record.mine_no}</Highlight>
+            {/* <Highlight search={props.highlightRegex}>{record.mine_no}</Highlight> */}
           </Col>
           <Col span={4}>Permit No.</Col>
           <Col span={10}>
@@ -76,9 +76,10 @@ export const MineResultsTable = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({});
+// const mapStateToProps = (state) => ({});
 
 MineResultsTable.propTypes = propTypes;
 MineResultsTable.defaultProps = defaultProps;
 
-export default connect(mapStateToProps)(MineResultsTable);
+// export default connect(mapStateToProps)(MineResultsTable);
+export default connect(MineResultsTable);
