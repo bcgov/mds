@@ -31,10 +31,9 @@ export class MineVarianceTable extends Component {
 
   transformRowData = (variances, codeHash) =>
     variances.sort(this.sortByDateOrID).map((variance) => {
-      console.log(variance);
       return {
         key: variance.variance_id,
-        editVariance: variances[variance.variance_id],
+        variance,
         compliance_article_id: codeHash[variance.compliance_article_id] || String.EMPTY_FIELD,
         expiry_date: formatDate(variance.expiry_date) || String.EMPTY_FIELD,
         issue_date: formatDate(variance.issue_date) || String.EMPTY_FIELD,
@@ -124,7 +123,7 @@ export class MineVarianceTable extends Component {
       },
       {
         title: "",
-        dataIndex: "editVariance",
+        dataIndex: "variance",
         render: (text, record) => (
           <div title="" align="right">
             <AuthorizationWrapper permission={Permission.CREATE}>
@@ -132,7 +131,7 @@ export class MineVarianceTable extends Component {
                 type="primary"
                 size="small"
                 ghost
-                onClick={(event, text) => this.props.openViewVarianceModal(event, record.variance)}
+                onClick={(event, text) => this.props.openViewVarianceModal(event, text)}
               >
                 <img src={BRAND_PENCIL} alt="Edit/View" />
               </Button>

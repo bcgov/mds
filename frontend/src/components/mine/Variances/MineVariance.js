@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import moment from "moment";
 import MineVarianceTable from "./MineVarianceTable";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
@@ -23,9 +24,12 @@ const propTypes = {
 
 export class MineVariance extends Component {
   handleAddVariances = (files) => (values) => {
-    const receivedDate = values.received_date ? values.received_date : new Date();
+    const received_date = values.received_date
+      ? values.received_date
+      : moment().format("YYYY-MM-DD");
+    const newValues = { received_date, ...values };
     return this.props
-      .createVariance({ mineGuid: this.props.mine.mine_guid }, { receivedDate, ...values })
+      .createVariance({ mineGuid: this.props.mine.mine_guid }, newValues)
       .then(async ({ data: { variance_id } }) => {
         await Promise.all(
           Object.entries(files).map(([document_manager_guid, document_name]) =>
@@ -53,7 +57,6 @@ export class MineVariance extends Component {
         variance,
         coreUsers: this.props.coreUsers,
       },
-      // widthSize: "50vw",
       content: modalConfig.VIEW_VARIANCE,
     });
   };
@@ -67,7 +70,6 @@ export class MineVariance extends Component {
         mineGuid: this.props.mine.mine_guid,
         complianceCodes: this.props.complianceCodes,
       },
-      // widthSize: "50vw",
       content: modalConfig.ADD_VARIANCE,
     });
   }

@@ -13,6 +13,9 @@ import {
   getComplianceCodes,
   getDropdownHSRCMComplianceCodes,
   getHSRCMComplianceCodesHash,
+  getVarianceStatusOptions,
+  getVarianceStatusOptionsHash,
+  getDropdownVarianceStatusOptions,
 } from "@/selectors/staticContentSelectors";
 import staticContentReducer from "@/reducers/staticContentReducer";
 import {
@@ -24,6 +27,7 @@ import {
   storeCommodityOptions,
   storeProvinceCodes,
   storeComplianceCodes,
+  storeVarianceStatusOptions,
 } from "@/actions/staticContentActions";
 import { STATIC_CONTENT } from "@/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
@@ -38,6 +42,7 @@ const mockState = {
   mineCommodityOptions: Mock.COMMODITY_OPTIONS.options,
   provinceOptions: Mock.PROVINCE_OPTIONS.options,
   complianceCodes: Mock.COMPLIANCE_CODES.records,
+  varianceStatusOptions: Mock.VARIANCE_STATUS_OPTIONS.records,
 };
 
 describe("staticContentSelectors", () => {
@@ -178,5 +183,35 @@ describe("staticContentSelectors", () => {
     };
     const mockComplianceCodesHash = Mock.HSRCM_HASH;
     expect(getHSRCMComplianceCodesHash(localMockState)).toEqual(mockComplianceCodesHash);
+  });
+
+  it("`getVarianceStatusOptions` calls `staticContentReducer.getComplianceCodes`", () => {
+    const storeAction = storeVarianceStatusOptions(Mock.VARIANCE_STATUS_OPTIONS);
+    const storeState = staticContentReducer({}, storeAction);
+    const localMockState = {
+      [STATIC_CONTENT]: storeState,
+    };
+    const mockVarianceStatusOptions = Mock.VARIANCE_STATUS_OPTIONS.records;
+    expect(getVarianceStatusOptions(localMockState)).toEqual(mockVarianceStatusOptions);
+  });
+
+  it("`getDropdownVarianceStatusOptions` calls `staticContentReducer.getComplianceCodes`", () => {
+    const storeAction = storeVarianceStatusOptions(Mock.VARIANCE_STATUS_OPTIONS);
+    const storeState = staticContentReducer({}, storeAction);
+    const localMockState = {
+      [STATIC_CONTENT]: storeState,
+    };
+    const mockVarianceStatusOptions = Mock.VARIANCE_DROPDOWN_STATUS_OPTIONS;
+    expect(getDropdownVarianceStatusOptions(localMockState)).toEqual(mockVarianceStatusOptions);
+  });
+
+  it("`getVarianceStatusOptionsHash` calls `staticContentReducer.getComplianceCodes`", () => {
+    const storeAction = storeVarianceStatusOptions(Mock.VARIANCE_STATUS_OPTIONS.records);
+    const storeState = staticContentReducer({}, storeAction);
+    const localMockState = {
+      [STATIC_CONTENT]: storeState,
+    };
+    const mockVarianceStatusOptionsHash = Mock.VARIANCE_STATUS_OPTIONS_HASH;
+    expect(getVarianceStatusOptionsHash(localMockState)).toEqual(mockVarianceStatusOptionsHash);
   });
 });

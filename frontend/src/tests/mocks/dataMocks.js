@@ -1265,3 +1265,50 @@ export const FOLLOWUP_ACTIONS = [
     active_ind: true,
   },
 ];
+
+export const VARIANCE_STATUS_OPTIONS = {
+  records: [
+    {
+      variance_application_status_code: "REV",
+      description: "In Review",
+    },
+    {
+      variance_application_status_code: "NAP",
+      description: "Not Applicable",
+    },
+    {
+      variance_application_status_code: "APP",
+      description: "Approved",
+    },
+    {
+      variance_application_status_code: "DEN",
+      description: "Denied",
+    },
+  ],
+};
+
+export const VARIANCE_DROPDOWN_STATUS_OPTIONS = [
+  {
+    label: "In Review",
+    value: "REV",
+  },
+  {
+    label: "Not Applicable",
+    value: "NAP",
+  },
+  {
+    label: "Approved",
+    value: "APP",
+  },
+  {
+    label: "Denied",
+    value: "DEN",
+  },
+];
+
+export const VARIANCE_STATUS_OPTIONS_HASH = {
+  REV: "In Review",
+  NAP: "Not Applicable",
+  APP: "Approved",
+  DEN: "Denied",
+};

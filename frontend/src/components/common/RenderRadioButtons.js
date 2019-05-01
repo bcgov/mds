@@ -15,20 +15,22 @@ const propTypes = {
 class RenderRadioButtons extends Component {
   state = { value: false };
 
-  onChange = (e) => {
-    this.setState({ value: e.target.value });
-  };
-
   render() {
+    const options = [{ label: "Yes", value: true }, { label: "No", value: false }];
     return (
       <Form.Item
         validateStatus={this.props.meta.touched ? this.props.meta.error && "error" : ""}
         label={this.props.label}
       >
-        <Radio.Group id={this.props.id} value={this.state.value}>
-          <Radio value>Yes</Radio>
-          <Radio value={false}>No</Radio>
-        </Radio.Group>
+        <Radio.Group
+          checked={() => {
+            this.setState((prevState) => ({ value: !prevState.value }));
+          }}
+          defaultValue={this.state.value}
+          {...this.props.input}
+          id={this.props.id}
+          options={options}
+        />
       </Form.Item>
     );
   }

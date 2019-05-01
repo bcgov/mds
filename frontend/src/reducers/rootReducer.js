@@ -79,6 +79,10 @@ export const reducerObject = {
     reducerTypes.REMOVE_DOCUMENT_FROM_VARIANCE
   ),
   [reducerTypes.GET_CORE_USERS]: createReducer(networkReducer, reducerTypes.GET_CORE_USERS),
+  [reducerTypes.GET_VARIANCE_STATUS_OPTIONS]: createReducer(
+    networkReducer,
+    reducerTypes.GET_VARIANCE_STATUS_OPTIONS
+  ),
 };
 
 export const rootReducer = combineReducers(reducerObject);
