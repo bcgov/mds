@@ -127,10 +127,7 @@ export class MinePermitInfo extends Component {
 
     this.setState({ modifiedPermits: true });
 
-    return this.props
-      .createPermit(payload)
-      .then()
-      .then(this.closePermitModal);
+    return this.props.createPermit(payload).then(this.closePermitModal);
   };
 
   handleEditPermit = (values) =>
