@@ -7,10 +7,11 @@ export const complianceOrder = PropTypes.shape({
   violation: PropTypes.string,
   report_no: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   inspector: PropTypes.string,
+  order_status: PropTypes.string,
 });
 
 export const complianceFilterOptions = PropTypes.shape({
-  overdue: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
+  order_status: PropTypes.string,
   due_date: PropTypes.string,
   order_no: PropTypes.string,
   violation: PropTypes.arrayOf(PropTypes.string),
@@ -26,7 +27,7 @@ export const mineComplianceInfo = PropTypes.shape({
   last_inspection: PropTypes.string,
   num_open_orders: PropTypes.number,
   num_overdue_orders: PropTypes.number,
-  open_orders: complianceOrders,
+  orders: complianceOrders,
   section_35_orders: PropTypes.number,
   warnings: PropTypes.number,
 });

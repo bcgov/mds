@@ -18,7 +18,8 @@ import utils.DataCleanup
         ContactInfoSpec.class,
         // Tenure.class, TODO: Enable when re-enabling Tenure tab
         Tailings.class,
-        DataCleanup.class
+        Contacts.class,
+        DataCleanup.class,
 ])
 
 class CustomJUnitSpecRunner {
