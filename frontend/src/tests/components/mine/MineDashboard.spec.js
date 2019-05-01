@@ -41,7 +41,7 @@ const setupReducerProps = () => {
   reducerProps.mineStatusOptions = MOCK.STATUS_OPTIONS.options;
   reducerProps.mineRegionOptions = MOCK.REGION_OPTIONS.options;
   reducerProps.mineDisturbanceOptions = MOCK.DISTURBANCE_OPTIONS;
-  reducerProps.mineTenureTypes = MOCK.TENURE_TYPES.options;
+  reducerProps.mineTenureTypes = MOCK.TENURE_TYPES;
   reducerProps.mineTenureHash = MOCK.TENURE_HASH;
   reducerProps.coreUsers = MOCK.CORE_USERS.results;
 };

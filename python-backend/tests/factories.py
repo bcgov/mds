@@ -217,10 +217,15 @@ class VarianceFactory(BaseFactory):
 
     class Params:
         mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
+        core_user = factory.SubFactory('tests.factories.CoreUserFactory')
 
     variance_id = factory.Sequence(lambda n: n)
     compliance_article_id = factory.LazyFunction(RandomComplianceArticleId)
     mine_guid = factory.SelfAttribute('mine.mine_guid')
+    variance_application_status_code = 'APP' # TODO: Make this dynamic w/ dates
+    ohsc_ind = factory.Faker('boolean', chance_of_getting_true=50)
+    union_ind = factory.Faker('boolean', chance_of_getting_true=50)
+    inspector_id = factory.SelfAttribute('core_user.core_user_id')
     note = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
     issue_date = TODAY
     received_date = TODAY
@@ -389,7 +394,6 @@ class MinePartyAppointmentFactory(BaseFactory):
     class Meta:
         model = MinePartyAppointment
 
-    mine_party_appt_id = factory.Sequence(lambda n: n)
     mine_party_appt_guid = GUID
     mine = factory.SubFactory('tests.factories.MineFactory')
     party = factory.SubFactory(PartyFactory, person=True)
@@ -400,10 +404,11 @@ class MinePartyAppointmentFactory(BaseFactory):
     processed_on = TODAY
 
     mine_tailings_storage_facility_guid = factory.LazyAttribute(
-        lambda o: o.mine.mine_tailings_storage_facilities[0].mine_tailings_storage_facility_guid
-        if o.mine_party_appt_type_code == 'EOR' else None)
-    permit_guid = factory.LazyAttribute(lambda o: o.mine.mine_permit[0].permit_guid
-                                        if o.mine_party_appt_type_code == 'PMT' else None)
+        lambda o: o.mine.mine_tailings_storage_facilities[0].mine_tailings_storage_facility_guid if o.mine_party_appt_type_code == 'EOR' else None
+    )
+    permit_guid = factory.LazyAttribute(
+        lambda o: o.mine.mine_permit[0].permit_guid if o.mine_party_appt_type_code == 'PMT' else None
+    )
 
 
 class CoreUserFactory(BaseFactory):

@@ -63,15 +63,16 @@ export class MineComplianceFilterForm extends Component {
             </Col>
             <Col md={8} xs={24} sm={12}>
               <Field
-                id="overdue"
-                name="overdue"
+                id="order_status"
+                name="order_status"
                 label="Order status"
                 placeholder="Select a order status"
                 component={renderConfig.SELECT}
                 data={[
-                  { value: "", label: "Overdue and Open" },
-                  { value: "true", label: "Overdue" },
-                  { value: "false", label: "Open" },
+                  { value: "", label: "Overdue, Open, and Closed" },
+                  { value: "Overdue", label: "Overdue" },
+                  { value: "Open", label: "Open" },
+                  { value: "Closed", label: "Closed" },
                 ]}
               />
             </Col>
