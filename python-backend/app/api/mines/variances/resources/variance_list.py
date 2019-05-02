@@ -29,6 +29,10 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
         store_missing=False,
         help='A 3-character code indicating the status type of the variance. Default: REV')
     parser.add_argument(
+        'applicant_guid',
+        store_missing=False,
+        help='GUID of the party on behalf of which the application was made.')
+    parser.add_argument(
         'ohsc_ind',
         type=bool,
         store_missing=False,
@@ -85,6 +89,7 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
             received_date=received_date,
             # Optional fields
             variance_application_status_code=data.get('variance_application_status_code'),
+            applicant_guid=data.get('applicant_guid'),
             ohsc_ind=data.get('ohsc_ind'),
             union_ind=data.get('union_ind'),
             inspector_id=data.get('inspector_id'),
