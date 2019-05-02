@@ -1,12 +1,11 @@
 import React, { Component } from "react";
-import { Input, Button, Row, Col, Tabs } from "antd";
+import { Row, Col, Tabs } from "antd";
 import { compose, bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
 import MinespaceUserManagement from "@/components/admin/MinespaceUserManagement";
-import { downloadMineManagerHistory } from "@/actionCreators/partiesActionCreator";
 import { AdminVerifiedMinesList } from "@/components/admin/AdminVerifiedMinesList";
 import { fetchMineVerifiedStatuses } from "@/actionCreators/mineActionCreator";
 
@@ -25,7 +24,6 @@ export class AdminDashboard extends Component {
     super(props);
     this.state = {
       activeTab: "verifiedMines",
-      mineNo: "",
       verifiedMines: [],
       unverifiedMines: [],
     };
@@ -34,8 +32,12 @@ export class AdminDashboard extends Component {
   componentWillMount() {
     this.props.fetchMineVerifiedStatuses().then((response) => {
       this.setState({
-        verifiedMines: response.data.healthy.sort(this.compareMineName),
-        unverifiedMines: response.data.unhealthy.sort(this.compareMineName),
+        verifiedMines: response.data
+          .filter((vm) => vm.healthy_ind === true)
+          .sort(this.compareMineName),
+        unverifiedMines: response.data
+          .filter((vm) => vm.healthy_ind === false)
+          .sort(this.compareMineName),
       });
     });
   }
@@ -44,16 +46,6 @@ export class AdminDashboard extends Component {
     this.setState({
       activeTab,
     });
-  };
-
-  handleMineManagerChange = (e) => {
-    this.setState({
-      mineNo: e.target.value,
-    });
-  };
-
-  handleDownload = () => {
-    downloadMineManagerHistory(this.state.mineNo, { window, document });
   };
 
   compareMineName = (a, b) => a.mine_name.localeCompare(b.mine_name);
@@ -100,18 +92,6 @@ export class AdminDashboard extends Component {
                     )}
                   </div>
                 </div>
-              </div>
-            </TabPane>
-            <TabPane tab="Pull Mine Manager History" key="mineManagerHistory">
-              <div className="tab__content">
-                <h2>Pull Mine Manager History</h2>
-                <Input
-                  placeholder="Enter a Mine Number"
-                  value={this.state.mineNo}
-                  onChange={this.handleMineManagerChange}
-                  style={{ width: "50%", "max-width": "300px" }}
-                />
-                <Button onClick={this.handleDownload}>Download History</Button>
               </div>
             </TabPane>
             <TabPane tab="Manage Minespace Users" key="managerMinespaceUsers">

@@ -1,6 +1,11 @@
-import { getParties, getPartyIds, getPartyPageData } from "@/selectors/partiesSelectors";
+import {
+  getParties,
+  getPartyIds,
+  getPartyPageData,
+  getLastCreatedParty,
+} from "@/selectors/partiesSelectors";
 import partiesReducer from "@/reducers/partiesReducer";
-import { storeParties } from "@/actions/partyActions";
+import { storeParties, storeLastCreatedParty } from "@/actions/partyActions";
 import { PARTIES } from "@/constants/reducerTypes";
 
 describe("partiesSelectors", () => {
@@ -47,5 +52,16 @@ describe("partiesSelectors", () => {
       total_pages: 454,
       records: [{ party_guid: "test123" }, { party_guid: "test456" }],
     });
+  });
+
+  it("`getLastCreatedParty` calls `partiesReducer.getLastCreatedParty`", () => {
+    const party = { party_guid: "test123" };
+    const storeAction = storeLastCreatedParty(party);
+    const storeState = partiesReducer({}, storeAction);
+    const mockState = {
+      [PARTIES]: storeState,
+    };
+
+    expect(getLastCreatedParty(mockState)).toEqual(party);
   });
 });
