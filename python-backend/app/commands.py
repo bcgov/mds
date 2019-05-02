@@ -24,7 +24,7 @@ from .scheduled_jobs import NRIS_jobs
 from .scheduled_jobs import ETL_jobs
 from app import auth
 
-from tests.factories import MineIncidentFactory
+from tests.factories import MineFactory, MinePartyAppointmentFactory
 
 from app.api.utils.include.user_info import User
 
@@ -103,27 +103,18 @@ def register_commands(app):
         with app.app_context():
             party = None
             for _ in range(int(num)):
-                # Ability to add previous party to have multiple permittee
-                prev_party_guid = party.party_guid if party else None
-                mine = Mine.create_mine(generate_mine_no(), generate_mine_name(),
-                                        random_mine_category(), random_region())
-
-                MineTypeFactory(mine=mine)
-                MineLocationFactory(mine_guid=mine.mine_guid)
-                if random.choice([True, False]):
-                    mine.verified_status = MineVerifiedStatus(
-                        healthy_ind=random.choice([True, False]))
-                first_name = names.get_first_name()
-                last_name = names.get_last_name()
-                email = f'{first_name.lower()}.{last_name.lower()}@{last_name.lower()}.com'
-                party = Party.create(
-                    last_name, '123-123-1234', 'PER', first_name=first_name, email=email)
-                db.session.commit()
-                create_multiple_mine_tenure(random.randint(0, 4), mine)
-                create_multiple_permit_permittees(
-                    random.randint(0, 6), mine, party, prev_party_guid)
-                MineIncidentFactory(mine_guid=mine.mine_guid)
-
+                mine = MineFactory(
+                    mine_tailings_storage_facilities=3,
+                    mine_permit=3,
+                    mine_permit__permit_amendments=10,
+                    mine_expected_documents=100,
+                    mine_incidents=50,
+                    mine_variance=25)
+                eor = MinePartyAppointmentFactory(mine=mine, mine_party_appt_type_code='EOR')
+                mine_manager = MinePartyAppointmentFactory(
+                    mine=mine, mine_party_appt_type_code='MMG')
+                permitee = MinePartyAppointmentFactory(
+                    mine=mine, mine_party_appt_type_code='PMT', party__company=True)
             try:
                 db.session.commit()
                 print(f'Created {num} random mines with tenure, permits, and permittee.')

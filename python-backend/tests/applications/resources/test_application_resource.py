@@ -2,7 +2,7 @@ import json
 import uuid
 import pytest
 
-from tests.factories import ApplicationFactory, MineFactory
+from tests.factories import ApplicationFactory, MineFactory, CoreUserFactory
 
 
 # GET
