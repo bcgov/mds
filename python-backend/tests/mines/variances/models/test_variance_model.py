@@ -41,7 +41,7 @@ def test_variance_model_find_by_mine_guid_and_variance_id(db_session):
     assert fetched_variance.variance_id == variance.variance_id
 
 
-def test_variance_model_find_by_variance_id_fail(db_session):
+def test_variance_model_find_by_mine_guid_and_variance_id_fail(db_session):
     mine = MineFactory()
     variance = Variance.find_by_mine_guid_and_variance_id(mine.mine_guid, 42)
     assert variance is None
