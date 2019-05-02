@@ -20,7 +20,7 @@ const propTypes = {
   openViewVarianceModal: PropTypes.func.isRequired,
 };
 
-export class MineVarianceTable extends Component {
+export class MineVarianceApplicationTable extends Component {
   errorStyle = (isOverdue) => (isOverdue ? { color: errorRed } : {});
 
   sortByDateOrID = (variance1, variance2) => {
@@ -29,7 +29,7 @@ export class MineVarianceTable extends Component {
     return date1 === date2 ? variance1.variance_id - variance2.variance_id : date1 - date2;
   };
 
-  transformRowData = (variances, codeHash) =>
+  transformRowData = (variances, codeHash, mine) =>
     variances.sort(this.sortByDateOrID).map((variance) => {
       return {
         key: variance.variance_id,
@@ -155,6 +155,6 @@ export class MineVarianceTable extends Component {
   }
 }
 
-MineVarianceTable.propTypes = propTypes;
+MineVarianceApplicationTable.propTypes = propTypes;
 
-export default MineVarianceTable;
+export default MineVarianceApplicationTable;

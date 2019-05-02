@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
+import { Divider } from "antd";
 import MineVarianceTable from "./MineVarianceTable";
+import MineVarianceApplicationTable from "./MineVarianceApplicationTable";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
 import * as Permission from "@/constants/permissions";
@@ -20,6 +22,7 @@ const propTypes = {
   coreUsers: CustomPropTypes.dropdownListItem.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+  varianceStatusOptions: CustomPropTypes.dropdownListItem.isRequired,
 };
 
 export class MineVariance extends Component {
@@ -54,8 +57,10 @@ export class MineVariance extends Component {
         onSubmit: this.handleAddVariances,
         title: this.props.mine.mine_name,
         mineGuid: this.props.mine.mine_guid,
+        mineName: this.props.mine.mine_name,
         variance,
         coreUsers: this.props.coreUsers,
+        varianceStatusOptions: this.props.varianceStatusOptions,
       },
       content: modalConfig.VIEW_VARIANCE,
     });
@@ -85,10 +90,21 @@ export class MineVariance extends Component {
           </AuthorizationWrapper>
         </div>
         <br />
+        <h4 className="uppercase">Variance Applications</h4>
+        <Divider />
+        <MineVarianceApplicationTable
+          openViewVarianceModal={this.openViewVarianceModal}
+          variances={this.props.variances}
+          complianceCodesHash={this.props.complianceCodesHash}
+          mine={this.props.mine}
+        />
+        <h4 className="uppercase">Approved Variances</h4>
+        <Divider />
         <MineVarianceTable
           openViewVarianceModal={this.openViewVarianceModal}
           variances={this.props.variances}
           complianceCodesHash={this.props.complianceCodesHash}
+          mine={this.props.mine}
         />
       </div>
     );

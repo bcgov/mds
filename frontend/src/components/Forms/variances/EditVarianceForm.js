@@ -18,7 +18,9 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
   mineGuid: PropTypes.string.isRequired,
+  mineName: PropTypes.string.isRequired,
   coreUsers: CustomPropTypes.dropdownListItem.isRequired,
+  variance: CustomPropTypes.variance.isRequired,
 };
 
 export class EditVarianceForm extends Component {
@@ -44,6 +46,7 @@ export class EditVarianceForm extends Component {
   };
 
   render() {
+    console.log(this.props.variance);
     return (
       <Form
         layout="vertical"
@@ -101,7 +104,7 @@ export class EditVarianceForm extends Component {
         <div className="content--light-grey padding-small">
           <div className="inline-flex padding-small">
             <p className="field-title">Mine</p>
-            <p> {String.EMPTY_FIELD}</p>
+            <p> {this.props.mineName || String.EMPTY_FIELD}</p>
           </div>
           <div className="inline-flex padding-small">
             <p className="field-title">Part of Code</p>

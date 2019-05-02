@@ -28,6 +28,7 @@ import {
   fetchMineComplianceCodes,
   fetchMineIncidentFollowActionOptions,
   setOptionsLoaded,
+  fetchVarianceStatusOptions,
 } from "@/actionCreators/staticContentActionCreator";
 import {
   getMines,
@@ -48,6 +49,7 @@ import {
   getDropdownHSRCMComplianceCodes,
   getHSRCMComplianceCodesHash,
   getMultiSelectComplianceCodes,
+  getDropdownVarianceStatusOptions,
   getOptionsLoaded,
 } from "@/selectors/staticContentSelectors";
 import { getMineComplianceInfo } from "@/selectors/complianceSelectors";
@@ -107,6 +109,7 @@ const propTypes = {
   fetchMineIncidentFollowActionOptions: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+  varianceStatusOptions: CustomPropTypes.dropdownListItem.isRequired,
 };
 
 const defaultProps = {
@@ -150,6 +153,7 @@ export class MineDashboard extends Component {
     this.props.fetchMineComplianceCodes();
     this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
     this.props.fetchSubscribedMinesByUser();
+    this.props.fetchVarianceStatusOptions();
     this.props.fetchCoreUsers();
     if (activeTab) {
       this.setState({ activeTab });
@@ -358,6 +362,7 @@ export class MineDashboard extends Component {
                         variances={this.props.variances}
                         complianceCodes={this.props.complianceCodes}
                         complianceCodesHash={this.props.complianceCodesHash}
+                        varianceStatusOptions={this.props.varianceStatusOptions}
                       />
                     </div>
                   </TabPane>
@@ -414,6 +419,7 @@ const mapStateToProps = (state) => ({
   complianceCodesHash: getHSRCMComplianceCodesHash(state),
   mineComplianceInfo: getMineComplianceInfo(state),
   coreUsers: getDropdownCoreUsers(state),
+  varianceStatusOptions: getDropdownVarianceStatusOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -447,6 +453,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineComplianceCodes,
       fetchCoreUsers,
       fetchMineIncidentFollowActionOptions,
+      fetchVarianceStatusOptions,
     },
     dispatch
   );
