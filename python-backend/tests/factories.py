@@ -1,5 +1,6 @@
 import uuid
 from datetime import datetime
+from os import path
 from sqlalchemy.orm.scoping import scoped_session
 
 import factory
@@ -11,6 +12,7 @@ from app.api.applications.models.application import Application
 from app.api.document_manager.models.document_manager import DocumentManager
 from app.api.documents.expected.models.mine_expected_document import MineExpectedDocument
 from app.api.documents.mines.models.mine_document import MineDocument
+from app.api.documents.variances.models.variance import VarianceDocument
 from app.api.mines.location.models.mine_location import MineLocation
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.mine.models.mine_type import MineType
@@ -20,6 +22,7 @@ from app.api.mines.incidents.models.mine_incident import MineIncident
 from app.api.mines.status.models.mine_status import MineStatus
 from app.api.mines.subscription.models.subscription import Subscription
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
+from app.api.mines.variances.models.variance import Variance
 from app.api.parties.party.models.party import Party
 from app.api.parties.party.models.address import Address
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
@@ -68,13 +71,16 @@ class DocumentManagerFactory(BaseFactory):
     class Meta:
         model = DocumentManager
 
+    class Params:
+        path_root = ''
+
     document_manager_id = factory.Sequence(lambda n: n)
     document_guid = GUID
-    full_storage_path = factory.LazyAttribute(lambda o: f'mine_no/category/{o.file_display_name}')
+    full_storage_path = factory.LazyAttribute(lambda o: path.join(o.path_root, 'mine_no/category', o.file_display_name))
     upload_started_date = TODAY
     upload_completed_date = TODAY
     file_display_name = factory.Faker('file_name')
-    path_display_name = factory.LazyAttribute(lambda o: f'mine_name/category/{o.file_display_name}')
+    path_display_name = factory.LazyAttribute(lambda o: path.join(o.path_root, 'mine_name/category', o.file_display_name))
 
 
 class MineDocumentFactory(BaseFactory):
@@ -203,6 +209,46 @@ class MineTailingsStorageFacilityFactory(BaseFactory):
     mine_tailings_storage_facility_guid = GUID
     mine_tailings_storage_facility_name = factory.Faker('last_name')
     mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
+
+
+class VarianceFactory(BaseFactory):
+    class Meta:
+        model = Variance
+
+    class Params:
+        mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
+
+    variance_id = factory.Sequence(lambda n: n)
+    compliance_article_id = factory.LazyFunction(RandomComplianceArticleId)
+    mine_guid = factory.SelfAttribute('mine.mine_guid')
+    note = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
+    issue_date = TODAY
+    received_date = TODAY
+    expiry_date = TODAY
+    documents = []
+
+    @factory.post_generation
+    def documents(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        VarianceDocumentFactory.create_batch(size=extracted, variance=obj, **kwargs)
+
+
+class VarianceDocumentFactory(BaseFactory):
+    class Meta:
+        model = VarianceDocument
+
+    class Params:
+        mine_document = factory.SubFactory('tests.factories.MineDocumentFactory')
+        variance = factory.SubFactory('tests.factories.VarianceFactory')
+
+    variance_document_xref_guid = GUID
+    mine_document_guid = factory.SelfAttribute('mine_document.mine_document_guid')
+    variance_id = factory.SelfAttribute('variance.variance_id')
 
 
 class PermitFactory(BaseFactory):
@@ -390,6 +436,7 @@ class SubscriptionFactory(BaseFactory):
     subscription_id = factory.Sequence(lambda n: n)
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     user_name = factory.Faker('last_name')
+
 
 class MineFactory(BaseFactory):
     class Meta:

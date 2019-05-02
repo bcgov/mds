@@ -66,18 +66,17 @@ environments {
 			FirefoxProfile profile = new FirefoxProfile();
 			FirefoxOptions options = new FirefoxOptions();
 			profile.setPreference("browser.download.folderList", 2);
-			profile.setPreference("browser.download.manager.showWhenStarting", false);
-			profile.setPreference("browser.helperApps.neverAsk.openFile",
-					"text/csv,application/x-msexcel,application/excel,application/x-excel,application/vnd.ms-excel,image/png,image/jpeg,text/html,text/plain,application/msword,application/xml,text/plain,application/octet-stream,application/pdf");
-			profile.setPreference("browser.helperApps.neverAsk.saveToDisk",
-					"text/csv,application/x-msexcel,application/excel,application/x-excel,application/vnd.ms-excel,image/png,image/jpeg,text/html,text/plain,application/msword,application/xml,text/plain,application/octet-stream,application/pdf");
 			profile.setPreference("browser.helperApps.alwaysAsk.force", false);
-			profile.setPreference("browser.download.manager.alertOnEXEOpen", false);
-			profile.setPreference("browser.download.manager.focusWhenStarting", false);
-			profile.setPreference("browser.download.manager.useWindow", false);
 			profile.setPreference("browser.download.manager.showAlertOnComplete", false);
 			profile.setPreference("browser.download.manager.closeWhenDone", false);
+			profile.setPreference("browser.download.panel.shown", false);
+			
+			//This forbid open with was found by visiting about:config
+			options.addPreference("browser.download.forbid_open_with", true);
+			options.addPreference("browser.helperApps.neverAsk.saveToDisk", "application/vnd.oasis.opendocument.text")
 			options.setProfile(profile);
+			options.addPreference("browser.download.dir", Const.DOWNLOAD_PATH);
+			options.addPreference("browser.download.useDownloadDir", true);
 			new FirefoxDriver(options);
 		}
 	}
@@ -86,22 +85,22 @@ environments {
 		driver = {
 			FirefoxProfile profile = new FirefoxProfile();
 			FirefoxOptions options = new FirefoxOptions();
-			options.addArguments("-headless")
-			options.addPreference("browser.download.dir", Const.DOWNLOAD_PATH);
-			options.addPreference("browser.download.useDownloadDir", true);
 			profile.setPreference("browser.download.folderList", 2);
-			profile.setPreference("browser.download.manager.showWhenStarting", false);
-			profile.setPreference("browser.helperApps.neverAsk.openFile",
-					"text/csv,application/x-msexcel,application/excel,application/x-excel,application/vnd.ms-excel,image/png,image/jpeg,text/html,text/plain,application/msword,application/xml,text/plain,application/octet-stream,application/pdf");
-			profile.setPreference("browser.helperApps.neverAsk.saveToDisk",
-					"text/csv,application/x-msexcel,application/excel,application/x-excel,application/vnd.ms-excel,image/png,image/jpeg,text/html,text/plain,application/msword,application/xml,text/plain,application/octet-stream,application/pdf");
 			profile.setPreference("browser.helperApps.alwaysAsk.force", false);
-			profile.setPreference("browser.download.manager.alertOnEXEOpen", false);
-			profile.setPreference("browser.download.manager.focusWhenStarting", false);
-			profile.setPreference("browser.download.manager.useWindow", false);
 			profile.setPreference("browser.download.manager.showAlertOnComplete", false);
 			profile.setPreference("browser.download.manager.closeWhenDone", false);
+			profile.setPreference("browser.download.panel.shown", false);
+			
+			//To find the settings that need to be modified, visit the about:config firefox url
+			options.addPreference("browser.download.forbid_open_with", true);
+			//In order to allow auto saving of files the user must specify the specific MIME types in a comma separated 
+			//string. (Cannot set all to true)
+			options.addPreference("browser.helperApps.neverAsk.saveToDisk", "application/vnd.oasis.opendocument.text")
 			options.setProfile(profile);
+			options.addPreference("browser.download.dir", Const.DOWNLOAD_PATH);
+			options.addPreference("browser.download.useDownloadDir", true);
+
+			options.addArguments("-headless")
 			new FirefoxDriver(options);
 
 		}
