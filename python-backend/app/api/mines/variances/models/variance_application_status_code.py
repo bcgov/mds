@@ -1,13 +1,7 @@
-import uuid
-from datetime import datetime
-
-from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
-from sqlalchemy.orm import validates
 from app.extensions import db
 
 from ....utils.models_mixins import AuditMixin, Base
-from ....documents.variances.models.variance import VarianceDocument
 
 
 class VarianceApplicationStatusCode(AuditMixin, Base):
@@ -18,3 +12,8 @@ class VarianceApplicationStatusCode(AuditMixin, Base):
 
     def __repr__(self):
         return '<VarianceApplicationStatusCode %r>' % self.variance_application_status_code
+
+
+    @classmethod
+    def active(cls):
+        return cls.query.filter_by(active_ind=True).all()
