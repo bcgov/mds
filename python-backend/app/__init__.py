@@ -12,6 +12,7 @@ from flask_jwt_oidc.exceptions import AuthError
 from app.api.parties.namespace.parties import api as parties_api
 from app.api.applications.namespace.applications import api as applications_api
 from app.api.mines.namespace.mines import api as mines_api
+from app.api.mines.namespace.variances import api as variances_api
 from app.api.permits.namespace.permits import api as permits_api
 from app.api.documents.namespace.documents import api as document_api
 from app.api.document_manager.namespace.document_manager import api as document_manager_api
@@ -83,6 +84,7 @@ def register_routes(app):
     api.add_namespace(document_manager_api)
     api.add_namespace(users_api)
     api.add_namespace(applications_api)
+    api.add_namespace(variances_api)
 
     # Healthcheck endpoint
     @api.route('/health')
