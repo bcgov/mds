@@ -22,8 +22,11 @@ export const MINE_HOME_PAGE = {
   route: "/dashboard/mines",
   dynamicRoute: ({ page, per_page, ...params }) =>
     `/dashboard/mines/?${queryString.stringify({ page, per_page, ...params }, { sort: false })}`,
-  mapRoute: (page, perPage, search = null) => {
-    const searchParam = search ? `&search=${search}` : "";
+  mapRoute: (page, perPage, search = null, lat = null, long = null, zoom = null) => {
+    let searchParam = search ? `&search=${search}` : "";
+    searchParam += lat ? `&lat=${lat}` : "";
+    searchParam += long ? `&long=${long}` : "";
+    searchParam += zoom ? `&zoom=${zoom}` : "";
     return `/dashboard/mines?${searchParam}&map=true`;
   },
   component: Dashboard,

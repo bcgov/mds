@@ -17,12 +17,14 @@ const propTypes = {
   mine: CustomPropTypes.mine,
   lat: PropTypes.number,
   long: PropTypes.number,
+  zoom: PropTypes.number,
 };
 
 const defaultProps = {
   mine: null,
   lat: null,
   long: null,
+  zoom: null,
 };
 
 class MineMap extends Component {
@@ -32,6 +34,21 @@ class MineMap extends Component {
     mapFailedToLoad: false,
   };
 
+  componentDidMount() {
+    if (this.props.long !== String.DEFAULT_LONG && this.props.lat !== String.DEFAULT_LAT) {
+      const center = [this.props.long, this.props.lat];
+      this.setState((prevState) => {
+        const newView = prevState.view;
+        newView.center = center;
+        return { view: newView, center };
+      });
+    }
+  }
+
+  /**
+   * This will render the flashing red dot in the mine location on search
+   * @param {*} nextProps
+   */
   componentWillReceiveProps(nextProps) {
     if (nextProps.lat !== this.props.lat || nextProps.long !== this.props.long) {
       const center = [nextProps.long, nextProps.lat];
@@ -214,7 +231,7 @@ class MineMap extends Component {
           mapProperties={{ basemap: "topo" }}
           viewProperties={{
             center: [this.props.long, this.props.lat],
-            zoom: 6,
+            zoom: this.props.zoom ? this.props.zoom : 6,
             constraints: { minZoom: 5 },
           }}
           onLoad={this.handleLoadMap}
@@ -233,7 +250,7 @@ class MineMap extends Component {
         mapProperties={{ basemap: "topo" }}
         viewProperties={{
           center: [this.props.long, this.props.lat],
-          zoom: 6,
+          zoom: this.props.zoom ? this.props.zoom : 6,
           constraints: { minZoom: 5 },
           popup: {
             dockOptions: {

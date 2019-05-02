@@ -252,6 +252,17 @@ export class MineHeader extends Component {
       </Menu>
     );
 
+    const mapRoute = this.props.mine.mine_location
+      ? route.MINE_HOME_PAGE.mapRoute(
+          null,
+          null,
+          null,
+          this.props.mine.mine_location.latitude,
+          this.props.mine.mine_location.longitude,
+          12
+        )
+      : route.MINE_HOME_PAGE.mapRoute(null, null, null, null, null, null);
+
     return (
       <div className="dashboard__header--card">
         <div className="dashboard__header--card__content">
@@ -422,24 +433,17 @@ export class MineHeader extends Component {
                   : String.EMPTY_FIELD}
               </p>
             </div>
-            <p className="p-white">
-              Region:{" "}
-              {this.props.mine.mine_region
-                ? this.props.mineRegionHash[this.props.mine.mine_region]
-                : String.EMPTY_FIELD}
-            </p>
-            {/* <Link to={route.MINE_HOME_PAGE.mapRoute(0, 0)}>Map URL</Link> */}
-            <Link
-              to={route.MINE_HOME_PAGE.mapRoute(0, 0)}
-              target="_blank"
-              // onClick={(event) => {
-              //   event.preventDefault();
-              //   window.open(this.makeHref("route"));
-              // }}
-            >
-              Map URL
-            </Link>
-            {/* <a href="dashboard/mines?page=1&per_page=25&map=true">Map URL</a> */}
+            <div className="inline-flex between">
+              <p className="p-white">
+                Region:{" "}
+                {this.props.mine.mine_region
+                  ? this.props.mineRegionHash[this.props.mine.mine_region]
+                  : String.EMPTY_FIELD}
+              </p>
+              <Link to={mapRoute} target="_blank">
+                Open In New Tab
+              </Link>
+            </div>
           </div>
         </div>
       </div>

@@ -149,6 +149,8 @@ export class Dashboard extends Component {
       this.setState({ mineList: false });
       this.renderDataFromURL(params);
     }
+    console.log("************THE STATE IS 2:***************");
+    console.log(this.state);
   }
 
   componentWillUnmount() {
@@ -165,6 +167,9 @@ export class Dashboard extends Component {
       major,
       tsf,
       search,
+      lat,
+      long,
+      zoom,
       ...remainingParams
     } = queryString.parse(params);
     const format = (param) => (param ? param.split(",").filter((x) => x) : []);
@@ -189,6 +194,21 @@ export class Dashboard extends Component {
         this.setState({ mineList: true });
       });
     }
+    // set the lat, long, zoom, and blinking to true
+    if (format(lat)[0] && format(long)[0]) {
+      console.log("The lat is, ", format(lat));
+      this.handleNavitationFromMine();
+      // if (this.state.params.lat && this.state.params.long) {
+      // const latFromMine = this.state.params.lat;
+      this.setState({
+        lat: format(lat)[0] ? format(lat) : String.DEFAULT_LAT,
+        long: format(long)[0] ? format(long) : String.DEFAULT_LONG,
+        zoom: format(zoom)[0] ? format(zoom)[0] : 6,
+      });
+    }
+
+    console.log("************THE STATE IS:***************");
+    console.log(this.state);
   };
 
   onPageChange = (page, per_page) => {
@@ -246,6 +266,16 @@ export class Dashboard extends Component {
         offset: -60,
       });
     }
+  };
+
+  handleNavitationFromMine = () => {
+    // TODO: spent 4 hours looking for a solution to not hardcoding this scroll value. Need to find a dynamic way of scroling the screen to this location.
+    scroller.scrollTo("mapElement", {
+      duration: 1000,
+      smooth: true,
+      isDynamic: true,
+      offset: -60,
+    });
   };
 
   handleTabChange = (key) => {
