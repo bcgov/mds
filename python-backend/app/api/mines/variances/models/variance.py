@@ -2,6 +2,7 @@ import uuid
 from datetime import datetime
 
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.orm import validates
 from app.extensions import db
@@ -36,10 +37,13 @@ class Variance(AuditMixin, Base):
     received_date = db.Column(db.DateTime, nullable=False)
     expiry_date = db.Column(db.DateTime)
 
-    documents = db.relationship('MineDocument', lazy='joined', secondary='variance_document_xref')
+    documents = db.relationship('VarianceDocument', lazy='joined')
+    mine_documents = db.relationship('MineDocument', lazy='joined', secondary='variance_document_xref')
+
 
     def __repr__(self):
         return '<Variance %r>' % self.variance_id
+
 
     @classmethod
     def create(
