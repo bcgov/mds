@@ -222,7 +222,6 @@ class VarianceFactory(BaseFactory):
             variance_application_status_code = 'APP',
             issue_date = TODAY,
             expiry_date = TODAY,
-            inspector_id = factory.SelfAttribute('core_user.core_user_id')
         )
 
     variance_id = factory.Sequence(lambda n: n)

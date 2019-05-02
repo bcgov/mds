@@ -175,7 +175,7 @@ VARIANCE_MODEL = api.model(
         'applicant_guid': fields.String,
         'ohsc_ind': fields.Boolean,
         'union_ind': fields.Boolean,
-        'inspector_id': fields.Integer,
+        'inspector_guid': fields.String,
         'note': fields.String,
         'issue_date': fields.Date,
         'received_date': fields.Date,
