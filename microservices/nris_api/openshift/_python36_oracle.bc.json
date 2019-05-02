@@ -74,7 +74,7 @@
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${NAME}-cxOracle-base",
+        "name": "${NAME}-cxoracle-base",
         "creationTimestamp": null,
         "annotations": {
           "description": "Python Runtime Image"
@@ -113,7 +113,7 @@
       "kind": "BuildConfig",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${NAME}-cxOracle-base-${SUFFIX}",
+        "name": "${NAME}-cxoracle-base${SUFFIX}",
         "creationTimestamp": null,
         "labels": {},
         "annotations": {}
@@ -149,7 +149,7 @@
         "output": {
           "to": {
             "kind": "ImageStreamTag",
-            "name": "${NAME}-cxOracle-base:${VERSION}"
+            "name": "${NAME}-cxoracle-base:${VERSION}"
           }
         },
         "resources": {
@@ -200,7 +200,7 @@
           "sourceStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "name": "${NAME}-cxOracle-base:${VERSION}"
+              "name": "${NAME}-cxoracle-base:${VERSION}"
             },
             "env": [
               {
