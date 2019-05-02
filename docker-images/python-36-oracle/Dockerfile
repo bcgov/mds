@@ -18,9 +18,9 @@ FROM "__FROM_IMAGE_STREAM_DEFINED_IN_TEMPLATE__"
 #     rm -rf instantclient-basic-linux.x64-19.3.0.0.0.zip instantclient-sdk-linux.x64-19.3.0.0.0.zip && \
 #     rm -rf /var/lib/apt/lists/*
 
-# Create working directory
-RUN mkdir /app
-WORKDIR /app
+# # Create working directory
+# RUN mkdir /app
+# WORKDIR /app
 
 # Install the requirements
 COPY requirements.txt .
