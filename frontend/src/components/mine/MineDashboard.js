@@ -40,6 +40,7 @@ import {
   createVariance,
   fetchVariancesByMine,
   addDocumentToVariance,
+  updateVariance,
 } from "@/actionCreators/varianceActionCreator";
 import {
   getMineRegionHash,
@@ -50,10 +51,11 @@ import {
   getHSRCMComplianceCodesHash,
   getMultiSelectComplianceCodes,
   getDropdownVarianceStatusOptions,
+  getVarianceStatusOptionsHash,
   getOptionsLoaded,
 } from "@/selectors/staticContentSelectors";
 import { getMineComplianceInfo } from "@/selectors/complianceSelectors";
-import { getMineVariances } from "@/selectors/varianceSelectors";
+import { getVarianceApplications, getApprovedVariances } from "@/selectors/varianceSelectors";
 import { getDropdownCoreUsers } from "@/selectors/userSelectors";
 import {
   fetchPartyRelationshipTypes,
@@ -110,6 +112,8 @@ const propTypes = {
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   varianceStatusOptions: CustomPropTypes.dropdownListItem.isRequired,
+  updateVariance: PropTypes.func.isRequired,
+  varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {
@@ -359,10 +363,13 @@ export class MineDashboard extends Component {
                         openModal={this.props.openModal}
                         closeModal={this.props.closeModal}
                         fetchVariancesByMine={this.props.fetchVariancesByMine}
-                        variances={this.props.variances}
+                        varianceApplications={this.props.varianceApplications}
+                        approvedVariances={this.props.approvedVariances}
                         complianceCodes={this.props.complianceCodes}
                         complianceCodesHash={this.props.complianceCodesHash}
                         varianceStatusOptions={this.props.varianceStatusOptions}
+                        updateVariance={this.props.updateVariance}
+                        varianceStatusOptionsHash={this.props.varianceStatusOptionsHash}
                       />
                     </div>
                   </TabPane>
@@ -413,13 +420,15 @@ const mapStateToProps = (state) => ({
   transformedMineTypes: getTransformedMineTypes(state),
   optionsLoaded: getOptionsLoaded(state),
   subscribed: getIsUserSubscribed(state),
-  variances: getMineVariances(state),
+  approvedVariances: getApprovedVariances(state),
+  varianceApplications: getVarianceApplications(state),
   complianceCodes: getDropdownHSRCMComplianceCodes(state),
   multiSelectComplianceCodes: getMultiSelectComplianceCodes(state),
   complianceCodesHash: getHSRCMComplianceCodesHash(state),
   mineComplianceInfo: getMineComplianceInfo(state),
   coreUsers: getDropdownCoreUsers(state),
   varianceStatusOptions: getDropdownVarianceStatusOptions(state),
+  varianceStatusOptionsHash: getVarianceStatusOptionsHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -454,6 +463,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchCoreUsers,
       fetchMineIncidentFollowActionOptions,
       fetchVarianceStatusOptions,
+      updateVariance,
     },
     dispatch
   );

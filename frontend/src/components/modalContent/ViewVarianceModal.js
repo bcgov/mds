@@ -8,8 +8,10 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   mineGuid: PropTypes.string.isRequired,
   mineName: PropTypes.string.isRequired,
-  coreUsers: CustomPropTypes.dropdownListItem.isRequired,
+  coreUsers: CustomPropTypes.options.isRequired,
   variance: CustomPropTypes.variance.isRequired,
+  varianceStatusOptions: CustomPropTypes.options.isRequired,
+  initialValues: CustomPropTypes.variance.isRequired,
 };
 
 export const ViewVarianceModal = (props) => (
@@ -21,6 +23,8 @@ export const ViewVarianceModal = (props) => (
       mineName={props.mineName}
       coreUsers={props.coreUsers}
       variance={props.variance}
+      varianceStatusOptions={props.varianceStatusOptions}
+      initialValues={props.initialValues}
     />
   </div>
 );

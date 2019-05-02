@@ -19,7 +19,6 @@ export class DocumentTable extends Component {
     documents.map((document) => ({
       key: document.mine_document_guid,
       name: document.document_name,
-      uploadedBy: document.document_name,
       upload_date: formatDate(document.received_date) || String.EMPTY_FIELD,
     }));
 
@@ -44,11 +43,6 @@ export class DocumentTable extends Component {
             </div>
           </div>
         ),
-      },
-      {
-        title: "Uploaded by",
-        dataIndex: "uploadedBy",
-        render: (text) => <div title="Uploaded by">{text}</div>,
       },
       {
         title: "Upload date",

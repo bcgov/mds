@@ -10,17 +10,39 @@ import { createRequestHeader } from "@/utils/RequestHeaders";
 import CustomAxios from "@/customAxios";
 
 export const createVariance = ({ mineGuid }, payload) => (dispatch) => {
+  const message =
+    payload.variance_application_status_code === String.VARIANCE_APPLICATION_CODE
+      ? "Successfully applied for a new variance"
+      : "Successfully added an approved variance";
   dispatch(request(reducerTypes.CREATE_MINE_VARIANCE));
   dispatch(showLoading());
   return CustomAxios()
     .post(ENVIRONMENT.apiUrl + API.VARIANCES(mineGuid), payload, createRequestHeader())
     .then((response) => {
       dispatch(hideLoading());
-      notification.success({ message: "Successfully created a new variance", duration: 10 });
+      notification.success({ message, duration: 10 });
       dispatch(success(reducerTypes.CREATE_MINE_VARIANCE));
       return response;
     })
     .catch(() => dispatch(error(reducerTypes.CREATE_MINE_VARIANCE)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const updateVariance = ({ mineGuid, varianceId, codeLabel }, payload) => (dispatch) => {
+  dispatch(request(reducerTypes.UPDATE_MINE_VARIANCE));
+  dispatch(showLoading());
+  return CustomAxios()
+    .put(ENVIRONMENT.apiUrl + API.VARIANCE(mineGuid, varianceId), payload, createRequestHeader())
+    .then((response) => {
+      dispatch(hideLoading());
+      notification.success({
+        message: `Successfully updated the variance application for: ${codeLabel}`,
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.UPDATE_MINE_VARIANCE));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.UPDATE_MINE_VARIANCE)))
     .finally(() => dispatch(hideLoading()));
 };
 

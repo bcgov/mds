@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm, change } from "redux-form";
+import { Field, reduxForm, change, getFormValues } from "redux-form";
 import { remove } from "lodash";
+import { connect } from "react-redux";
+import { compose } from "redux";
 import { Form, Button, Popconfirm, Row, Col } from "antd";
 import * as FORM from "@/constants/forms";
 import * as String from "@/constants/strings";
 import { renderConfig } from "@/components/common/config";
 import { required } from "@/utils/Validate";
-import { resetForm } from "@/utils/helpers";
+import { resetForm, formatDate } from "@/utils/helpers";
 import VarianceFileUpload from "./VarianceFileUpload";
 import DocumentTable from "@/components/common/DocumentTable";
 import CustomPropTypes from "@/customPropTypes";
@@ -19,15 +21,28 @@ const propTypes = {
   submitting: PropTypes.bool.isRequired,
   mineGuid: PropTypes.string.isRequired,
   mineName: PropTypes.string.isRequired,
-  coreUsers: CustomPropTypes.dropdownListItem.isRequired,
+  coreUsers: CustomPropTypes.options.isRequired,
   variance: CustomPropTypes.variance.isRequired,
+  varianceStatusOptions: CustomPropTypes.options.isRequired,
+  statusCode: PropTypes.string.isRequired,
 };
 
 export class EditVarianceForm extends Component {
   state = {
     uploadedFiles: [],
     documentNameGuidMap: {},
+    statusChangedToApproved: false,
   };
+
+  componentWillReceiveProps(nextProps) {
+    const statusChanged = this.props.statusCode !== nextProps.statusCode;
+    const isApproved = nextProps.statusCode === String.VARIANCE_APPROVED_CODE;
+    if (statusChanged) {
+      this.setState({
+        statusChangedToApproved: isApproved,
+      });
+    }
+  }
 
   onFileLoad = (documentName, document_manager_guid) => {
     this.state.uploadedFiles.push({ documentName, document_manager_guid });
@@ -46,11 +61,16 @@ export class EditVarianceForm extends Component {
   };
 
   render() {
-    console.log(this.props.variance);
     return (
       <Form
         layout="vertical"
-        onSubmit={this.props.handleSubmit(this.props.onSubmit(this.state.documentNameGuidMap))}
+        onSubmit={this.props.handleSubmit(
+          this.props.onSubmit(
+            this.state.documentNameGuidMap,
+            this.props.variance,
+            this.state.statusChangedToApproved
+          )
+        )}
       >
         <Row gutter={16}>
           <Col md={12} xs={24}>
@@ -58,9 +78,13 @@ export class EditVarianceForm extends Component {
               <Field
                 id="inspector_id"
                 name="inspector_id"
-                label="Assign a lead inspector"
+                label={
+                  this.state.statusChangedToApproved
+                    ? "Assign a Lead inspector*"
+                    : "Assign a Lead inspector"
+                }
                 component={renderConfig.SELECT}
-                validate={[required]}
+                validate={this.state.statusChangedToApproved ? [required] : []}
                 data={this.props.coreUsers}
               />
             </Form.Item>
@@ -68,38 +92,29 @@ export class EditVarianceForm extends Component {
           <Col md={12} xs={24}>
             <Form.Item>
               <Field
-                id="application_status"
-                name="application_status"
+                id="variance_application_status_code"
+                name="variance_application_status_code"
                 label="Application Status"
                 placeholder="Select a status"
                 component={renderConfig.SELECT}
                 validate={[required]}
-                data={[
-                  { value: 1, label: "In-Review" },
-                  { value: 2, label: "Approved" },
-                  { value: 3, label: "Denied" },
-                  { value: 4, label: "Not-Applicable" },
-                ]}
+                data={this.props.varianceStatusOptions}
               />
             </Form.Item>
           </Col>
         </Row>
-
-        <Row gutter={16}>
-          <Col md={8} lg={24}>
-            <Form.Item label="Expiry date">
-              <p className="p-light">
-                If expiry date is not specified, it will default to 5 years from issue date.
-              </p>
-              <Field
-                id="expiry_date"
-                name="expiry_date"
-                component={renderConfig.DATE}
-                validate={[required]}
-              />
-            </Form.Item>
-          </Col>
-        </Row>
+        {this.state.statusChangedToApproved && (
+          <Row gutter={16}>
+            <Col md={8} lg={24}>
+              <Form.Item label="Expiry date">
+                <p className="p-light">
+                  If expiry date is not specified, it will default to 5 years from issue date.
+                </p>
+                <Field id="expiry_date" name="expiry_date" component={renderConfig.DATE} />
+              </Form.Item>
+            </Col>
+          </Row>
+        )}
         <h5>application details</h5>
         <div className="content--light-grey padding-small">
           <div className="inline-flex padding-small">
@@ -108,28 +123,28 @@ export class EditVarianceForm extends Component {
           </div>
           <div className="inline-flex padding-small">
             <p className="field-title">Part of Code</p>
-            <p>{String.EMPTY_FIELD}</p>
+            <p>{this.props.variance.compliance_article_id || String.EMPTY_FIELD}</p>
           </div>
           <div className="inline-flex padding-small">
             <p className="field-title">Submission date</p>
-            <p>{String.EMPTY_FIELD}</p>
+            <p>{formatDate(this.props.variance.received_date) || String.EMPTY_FIELD}</p>
           </div>
           <div className="inline-flex padding-small">
             <p className="field-title">OHSC Union</p>
-            <p>{String.EMPTY_FIELD}</p>
+            <p>{this.props.variance.ohsc_ind ? "Yes" : "No"} </p>
           </div>
           <div className="inline-flex padding-small">
             <p className="field-title">Union</p>
-            <p>{String.EMPTY_FIELD}</p>
+            <p>{this.props.variance.union_ind ? "Yes" : "No"} </p>
           </div>
           <div className="inline-flex padding-small">
             <p className="field-title">Description</p>
-            <p>{String.EMPTY_FIELD}</p>
+            <p>{this.props.variance.note || String.EMPTY_FIELD}</p>
           </div>
         </div>
         <br />
         <h5>documents</h5>
-        <DocumentTable />
+        <DocumentTable documents={this.props.variance.documents} />
         <br />
         <h5>upload files</h5>
         <p> Please upload all the required documents here for the variance application</p>
@@ -162,7 +177,7 @@ export class EditVarianceForm extends Component {
             htmlType="submit"
             disabled={this.props.submitting}
           >
-            Add Variance
+            Update
           </Button>
         </div>
       </Form>
@@ -172,8 +187,13 @@ export class EditVarianceForm extends Component {
 
 EditVarianceForm.propTypes = propTypes;
 
-export default reduxForm({
-  form: FORM.EDIT_VARIANCE,
-  touchOnBlur: false,
-  onSubmitSuccess: resetForm(FORM.EDIT_VARIANCE),
-})(EditVarianceForm);
+export default compose(
+  connect((state) => ({
+    statusCode: (getFormValues(FORM.EDIT_VARIANCE)(state) || {}).variance_application_status_code,
+  })),
+  reduxForm({
+    form: FORM.EDIT_VARIANCE,
+    touchOnBlur: false,
+    onSubmitSuccess: resetForm(FORM.EDIT_VARIANCE),
+  })
+)(EditVarianceForm);

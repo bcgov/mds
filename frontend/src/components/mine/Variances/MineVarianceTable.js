@@ -88,10 +88,10 @@ export class MineVarianceTable extends Component {
         ),
       },
       {
-        title: "Status",
+        title: "Approval Status",
         dataIndex: "status",
         render: (text, record) => (
-          <div title="Status" style={this.errorStyle(record.isOverdue)}>
+          <div title="Approval Status" style={this.errorStyle(record.isOverdue)}>
             {record.isOverdue ? "Expired" : "Active"}
           </div>
         ),
@@ -147,7 +147,7 @@ export class MineVarianceTable extends Component {
           align="left"
           pagination={false}
           columns={columns}
-          locale={{ emptyText: <NullScreen type="variance" /> }}
+          locale={{ emptyText: <NullScreen type="approved-variances" /> }}
           dataSource={this.transformRowData(this.props.variances, this.props.complianceCodesHash)}
         />
       </div>

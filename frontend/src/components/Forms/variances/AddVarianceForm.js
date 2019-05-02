@@ -16,6 +16,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
   mineGuid: PropTypes.string.isRequired,
+  coreUsers: CustomPropTypes.dropdownListItem.isRequired,
   complianceCodes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
 
@@ -52,7 +53,9 @@ export class AddVarianceForm extends Component {
     return (
       <Form
         layout="vertical"
-        onSubmit={this.props.handleSubmit(this.props.onSubmit(this.state.documentNameGuidMap))}
+        onSubmit={this.props.handleSubmit(
+          this.props.onSubmit(this.state.documentNameGuidMap, this.state.isApplication)
+        )}
       >
         <Form.Item label="Are you creating an application or an approved variance?">
           <Radio.Group onChange={this.onChange} value={this.state.isApplication}>
@@ -102,6 +105,16 @@ export class AddVarianceForm extends Component {
                 label="Expiry date*"
                 component={renderConfig.DATE}
                 validate={[required]}
+              />
+            </Form.Item>
+            <Form.Item>
+              <Field
+                id="inspector_id"
+                name="inspector_id"
+                label="Assign a lead inspector"
+                component={renderConfig.SELECT}
+                validate={[required]}
+                data={this.props.coreUsers}
               />
             </Form.Item>
           </div>

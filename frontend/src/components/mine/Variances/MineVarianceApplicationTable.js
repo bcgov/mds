@@ -18,28 +18,25 @@ const propTypes = {
   variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   openViewVarianceModal: PropTypes.func.isRequired,
+  varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export class MineVarianceApplicationTable extends Component {
-  errorStyle = (isOverdue) => (isOverdue ? { color: errorRed } : {});
-
   sortByDateOrID = (variance1, variance2) => {
     const date1 = Date.parse(variance1.expiry_date) || 0;
     const date2 = Date.parse(variance2.expiry_date) || 0;
     return date1 === date2 ? variance1.variance_id - variance2.variance_id : date1 - date2;
   };
 
-  transformRowData = (variances, codeHash, mine) =>
+  transformRowData = (variances, codeHash, statusHash) =>
     variances.sort(this.sortByDateOrID).map((variance) => {
       return {
         key: variance.variance_id,
         variance,
+        status: statusHash[variance.variance_application_status_code],
         compliance_article_id: codeHash[variance.compliance_article_id] || String.EMPTY_FIELD,
-        expiry_date: formatDate(variance.expiry_date) || String.EMPTY_FIELD,
-        issue_date: formatDate(variance.issue_date) || String.EMPTY_FIELD,
         note: variance.note,
         received_date: formatDate(variance.received_date) || String.EMPTY_FIELD,
-        isOverdue: Date.parse(variance.expiry_date) < new Date(),
         documents: variance.documents,
       };
     });
@@ -47,54 +44,19 @@ export class MineVarianceApplicationTable extends Component {
   render() {
     const columns = [
       {
-        title: "",
-        dataIndex: "expired",
-        width: 10,
-        render: (text, record) => (
-          <div title="">
-            {record.isOverdue ? (
-              <img className="padding-small" src={RED_CLOCK} alt="expired" />
-            ) : (
-              ""
-            )}
-          </div>
-        ),
-      },
-      {
         title: "Code Section",
         dataIndex: "compliance_article_id",
-        render: (text, record) => (
-          <div title="Code Section" style={this.errorStyle(record.isOverdue)}>
-            {text}
-          </div>
-        ),
+        render: (text, record) => <div title="Code Section">{text}</div>,
       },
       {
-        title: "Issue Date",
-        dataIndex: "issue_date",
-        render: (text, record) => (
-          <div title="Issue Date" style={this.errorStyle(record.isOverdue)}>
-            {text}
-          </div>
-        ),
+        title: "Submission Date",
+        dataIndex: "received_date",
+        render: (text, record) => <div title="Submission Date">{text}</div>,
       },
       {
-        title: "Expiry Date",
-        dataIndex: "expiry_date",
-        render: (text, record) => (
-          <div title="Expiry Date" style={this.errorStyle(record.isOverdue)}>
-            {text}
-          </div>
-        ),
-      },
-      {
-        title: "Status",
+        title: "Application  Status",
         dataIndex: "status",
-        render: (text, record) => (
-          <div title="Status" style={this.errorStyle(record.isOverdue)}>
-            {record.isOverdue ? "Expired" : "Active"}
-          </div>
-        ),
+        render: (text, record) => <div title="Application Status">{text}</div>,
       },
       {
         title: "Documents",
@@ -147,8 +109,12 @@ export class MineVarianceApplicationTable extends Component {
           align="left"
           pagination={false}
           columns={columns}
-          locale={{ emptyText: <NullScreen type="variance" /> }}
-          dataSource={this.transformRowData(this.props.variances, this.props.complianceCodesHash)}
+          locale={{ emptyText: <NullScreen type="variance-applications" /> }}
+          dataSource={this.transformRowData(
+            this.props.variances,
+            this.props.complianceCodesHash,
+            this.props.varianceStatusOptionsHash
+          )}
         />
       </div>
     );
