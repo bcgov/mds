@@ -1,8 +1,5 @@
 FROM "__FROM_IMAGE_STREAM_DEFINED_IN_TEMPLATE__"
 
-# Update installation utility
-RUN apt-get update
-
 # ENV LD_LIBRARY_PATH="/opt/oracle/instantclient" \
 #     OCI_HOME="/opt/oracle/instantclient" \
 #     OCI_LIB_DIR="/opt/oracle/instantclient" \
