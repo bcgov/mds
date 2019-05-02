@@ -171,9 +171,20 @@ VARIANCE_MODEL = api.model(
     'Variance', {
         'variance_id': fields.Integer,
         'compliance_article_id': fields.Integer,
+        'variance_application_status_code': fields.String,
+        'applicant_guid': fields.String,
+        'ohsc_ind': fields.Boolean,
+        'union_ind': fields.Boolean,
+        'inspector_id': fields.Integer,
         'note': fields.String,
         'issue_date': fields.Date,
         'received_date': fields.Date,
         'expiry_date': fields.Date,
         'documents': fields.Nested(MINE_DOCUMENT_MODEL)
+    })
+
+VARIANCE_APPLICATION_STATUS_CODE_MODEL = api.model(
+    'VarianceApplicationStatusCode', {
+        'variance_application_status_code': fields.String,
+        'description': fields.String
     })

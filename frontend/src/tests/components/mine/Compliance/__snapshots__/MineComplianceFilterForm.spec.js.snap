@@ -112,22 +112,26 @@ ShallowWrapper {
                 data={
                   Array [
                     Object {
-                      "label": "Overdue and Open",
+                      "label": "Overdue, Open, and Closed",
                       "value": "",
                     },
                     Object {
                       "label": "Overdue",
-                      "value": "true",
+                      "value": "Overdue",
                     },
                     Object {
                       "label": "Open",
-                      "value": "false",
+                      "value": "Open",
+                    },
+                    Object {
+                      "label": "Closed",
+                      "value": "Closed",
                     },
                   ]
                 }
-                id="overdue"
+                id="order_status"
                 label="Order status"
-                name="overdue"
+                name="order_status"
                 placeholder="Select a order status"
               />
             </Col>
@@ -261,22 +265,26 @@ ShallowWrapper {
                 data={
                   Array [
                     Object {
-                      "label": "Overdue and Open",
+                      "label": "Overdue, Open, and Closed",
                       "value": "",
                     },
                     Object {
                       "label": "Overdue",
-                      "value": "true",
+                      "value": "Overdue",
                     },
                     Object {
                       "label": "Open",
-                      "value": "false",
+                      "value": "Open",
+                    },
+                    Object {
+                      "label": "Closed",
+                      "value": "Closed",
                     },
                   ]
                 }
-                id="overdue"
+                id="order_status"
                 label="Order status"
-                name="overdue"
+                name="order_status"
                 placeholder="Select a order status"
               />
             </Col>
@@ -376,22 +384,26 @@ ShallowWrapper {
                   data={
                     Array [
                       Object {
-                        "label": "Overdue and Open",
+                        "label": "Overdue, Open, and Closed",
                         "value": "",
                       },
                       Object {
                         "label": "Overdue",
-                        "value": "true",
+                        "value": "Overdue",
                       },
                       Object {
                         "label": "Open",
-                        "value": "false",
+                        "value": "Open",
+                      },
+                      Object {
+                        "label": "Closed",
+                        "value": "Closed",
                       },
                     ]
                   }
-                  id="overdue"
+                  id="order_status"
                   label="Order status"
-                  name="overdue"
+                  name="order_status"
                   placeholder="Select a order status"
                 />
               </Col>,
@@ -581,22 +593,26 @@ ShallowWrapper {
                   data={
                     Array [
                       Object {
-                        "label": "Overdue and Open",
+                        "label": "Overdue, Open, and Closed",
                         "value": "",
                       },
                       Object {
                         "label": "Overdue",
-                        "value": "true",
+                        "value": "Overdue",
                       },
                       Object {
                         "label": "Open",
-                        "value": "false",
+                        "value": "Open",
+                      },
+                      Object {
+                        "label": "Closed",
+                        "value": "Closed",
                       },
                     ]
                   }
-                  id="overdue"
+                  id="order_status"
                   label="Order status"
-                  name="overdue"
+                  name="order_status"
                   placeholder="Select a order status"
                 />,
                 "md": 8,
@@ -612,21 +628,25 @@ ShallowWrapper {
                   "component": [Function],
                   "data": Array [
                     Object {
-                      "label": "Overdue and Open",
+                      "label": "Overdue, Open, and Closed",
                       "value": "",
                     },
                     Object {
                       "label": "Overdue",
-                      "value": "true",
+                      "value": "Overdue",
                     },
                     Object {
                       "label": "Open",
-                      "value": "false",
+                      "value": "Open",
+                    },
+                    Object {
+                      "label": "Closed",
+                      "value": "Closed",
                     },
                   ],
-                  "id": "overdue",
+                  "id": "order_status",
                   "label": "Order status",
-                  "name": "overdue",
+                  "name": "order_status",
                   "placeholder": "Select a order status",
                 },
                 "ref": null,
@@ -830,22 +850,26 @@ ShallowWrapper {
                   data={
                     Array [
                       Object {
-                        "label": "Overdue and Open",
+                        "label": "Overdue, Open, and Closed",
                         "value": "",
                       },
                       Object {
                         "label": "Overdue",
-                        "value": "true",
+                        "value": "Overdue",
                       },
                       Object {
                         "label": "Open",
-                        "value": "false",
+                        "value": "Open",
+                      },
+                      Object {
+                        "label": "Closed",
+                        "value": "Closed",
                       },
                     ]
                   }
-                  id="overdue"
+                  id="order_status"
                   label="Order status"
-                  name="overdue"
+                  name="order_status"
                   placeholder="Select a order status"
                 />
               </Col>
@@ -979,22 +1003,26 @@ ShallowWrapper {
                   data={
                     Array [
                       Object {
-                        "label": "Overdue and Open",
+                        "label": "Overdue, Open, and Closed",
                         "value": "",
                       },
                       Object {
                         "label": "Overdue",
-                        "value": "true",
+                        "value": "Overdue",
                       },
                       Object {
                         "label": "Open",
-                        "value": "false",
+                        "value": "Open",
+                      },
+                      Object {
+                        "label": "Closed",
+                        "value": "Closed",
                       },
                     ]
                   }
-                  id="overdue"
+                  id="order_status"
                   label="Order status"
-                  name="overdue"
+                  name="order_status"
                   placeholder="Select a order status"
                 />
               </Col>
@@ -1094,22 +1122,26 @@ ShallowWrapper {
                     data={
                       Array [
                         Object {
-                          "label": "Overdue and Open",
+                          "label": "Overdue, Open, and Closed",
                           "value": "",
                         },
                         Object {
                           "label": "Overdue",
-                          "value": "true",
+                          "value": "Overdue",
                         },
                         Object {
                           "label": "Open",
-                          "value": "false",
+                          "value": "Open",
+                        },
+                        Object {
+                          "label": "Closed",
+                          "value": "Closed",
                         },
                       ]
                     }
-                    id="overdue"
+                    id="order_status"
                     label="Order status"
-                    name="overdue"
+                    name="order_status"
                     placeholder="Select a order status"
                   />
                 </Col>,
@@ -1299,22 +1331,26 @@ ShallowWrapper {
                     data={
                       Array [
                         Object {
-                          "label": "Overdue and Open",
+                          "label": "Overdue, Open, and Closed",
                           "value": "",
                         },
                         Object {
                           "label": "Overdue",
-                          "value": "true",
+                          "value": "Overdue",
                         },
                         Object {
                           "label": "Open",
-                          "value": "false",
+                          "value": "Open",
+                        },
+                        Object {
+                          "label": "Closed",
+                          "value": "Closed",
                         },
                       ]
                     }
-                    id="overdue"
+                    id="order_status"
                     label="Order status"
-                    name="overdue"
+                    name="order_status"
                     placeholder="Select a order status"
                   />,
                   "md": 8,
@@ -1330,21 +1366,25 @@ ShallowWrapper {
                     "component": [Function],
                     "data": Array [
                       Object {
-                        "label": "Overdue and Open",
+                        "label": "Overdue, Open, and Closed",
                         "value": "",
                       },
                       Object {
                         "label": "Overdue",
-                        "value": "true",
+                        "value": "Overdue",
                       },
                       Object {
                         "label": "Open",
-                        "value": "false",
+                        "value": "Open",
+                      },
+                      Object {
+                        "label": "Closed",
+                        "value": "Closed",
                       },
                     ],
-                    "id": "overdue",
+                    "id": "order_status",
                     "label": "Order status",
-                    "name": "overdue",
+                    "name": "order_status",
                     "placeholder": "Select a order status",
                   },
                   "ref": null,
