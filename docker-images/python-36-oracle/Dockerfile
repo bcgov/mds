@@ -23,5 +23,5 @@ FROM "__FROM_IMAGE_STREAM_DEFINED_IN_TEMPLATE__"
 # WORKDIR /app
 
 # Install the requirements
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements.txt ${APP_ROOT}/src
+RUN cd ${APP_ROOT}/src && pip install --no-cache-dir -r requirements.txt
