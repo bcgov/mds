@@ -68,7 +68,7 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
     @requires_any_of([MINE_VIEW])
     @api.marshal_with(VARIANCE_MODEL, code=200)
     def get(self, mine_guid, variance_id):
-        variance = Variance.find_by_variance_id(variance_id)
+        variance = Variance.find_by_mine_guid_and_variance_id(mine_guid, variance_id)
 
         if variance is None:
             raise NotFound('Unable to fetch variance')
@@ -85,11 +85,11 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
     @requires_any_of([MINE_CREATE])
     @api.marshal_with(VARIANCE_MODEL, code=200)
     def put(self, mine_guid, variance_id):
-        variance = Variance.find_by_variance_id(variance_id)
+        variance = Variance.find_by_mine_guid_and_variance_id(mine_guid, variance_id)
         if variance is None:
             raise NotFound('Unable to fetch variance')
 
-        data = VarianceResource.parser.parse_args()
+        data = self.parser.parse_args()
         for key, value in data.items():
             setattr(variance, key, value)
 
