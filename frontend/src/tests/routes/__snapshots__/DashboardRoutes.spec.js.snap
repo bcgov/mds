@@ -54,7 +54,7 @@ ShallowWrapper {
           path="/admin/dashboard"
         />,
         <Route
-          component={Object {}}
+          component={[Function]}
           exact={true}
           path="/search"
         />,
@@ -161,7 +161,7 @@ ShallowWrapper {
         "key": undefined,
         "nodeType": "class",
         "props": Object {
-          "component": Object {},
+          "component": [Function],
           "exact": true,
           "path": "/search",
         },
@@ -226,7 +226,7 @@ ShallowWrapper {
             path="/admin/dashboard"
           />,
           <Route
-            component={Object {}}
+            component={[Function]}
             exact={true}
             path="/search"
           />,
@@ -333,7 +333,7 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "class",
           "props": Object {
-            "component": Object {},
+            "component": [Function],
             "exact": true,
             "path": "/search",
           },
