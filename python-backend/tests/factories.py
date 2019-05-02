@@ -12,7 +12,7 @@ from app.api.applications.models.application import Application
 from app.api.document_manager.models.document_manager import DocumentManager
 from app.api.documents.expected.models.mine_expected_document import MineExpectedDocument
 from app.api.documents.mines.models.mine_document import MineDocument
-from app.api.documents.variances.models.variance import VarianceDocument
+from app.api.documents.variances.models.variance import VarianceDocumentXref
 from app.api.mines.location.models.mine_location import MineLocation
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.mine.models.mine_type import MineType
@@ -248,7 +248,7 @@ class VarianceFactory(BaseFactory):
 
 class VarianceDocumentFactory(BaseFactory):
     class Meta:
-        model = VarianceDocument
+        model = VarianceDocumentXref
 
     class Params:
         mine_document = factory.SubFactory('tests.factories.MineDocumentFactory')
