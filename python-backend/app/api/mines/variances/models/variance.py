@@ -24,6 +24,7 @@ class Variance(AuditMixin, Base):
         nullable=False,
         server_default=FetchedValue())
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
+    applicant_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
     variance_application_status_code = db.Column(
         db.String,
         db.ForeignKey('variance_application_status_code.variance_application_status_code'),
@@ -52,6 +53,7 @@ class Variance(AuditMixin, Base):
             mine_guid,
             received_date,
             # Optional Params
+            applicant_guid=None,
             variance_application_status_code=None,
             ohsc_ind=None,
             union_ind=None,
@@ -64,6 +66,7 @@ class Variance(AuditMixin, Base):
             compliance_article_id=compliance_article_id,
             mine_guid=mine_guid,
             variance_application_status_code=variance_application_status_code,
+            applicant_guid=applicant_guid,
             ohsc_ind=ohsc_ind,
             union_ind=union_ind,
             inspector_id=inspector_id,
@@ -102,3 +105,12 @@ class Variance(AuditMixin, Base):
             raise AssertionError(MISSING_MINE_GUID)
         self.validate_guid(mine_guid, INVALID_MINE_GUID)
         return mine_guid
+
+    @validates('applicant_guid')
+    def validate_applicant_guid(self, key, applicant_guid):
+        if applicant_guid:
+            try:
+                uuid.UUID(str(applicant_guid), version=4)
+            except ValueError:
+                raise AssertionError('Invalid applicant_guid')
+        return applicant_guid
