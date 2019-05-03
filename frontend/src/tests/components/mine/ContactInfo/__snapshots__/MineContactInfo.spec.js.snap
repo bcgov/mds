@@ -125,7 +125,7 @@ ShallowWrapper {
     "key": undefined,
     "nodeType": "host",
     "props": Object {
-      "children": <Connect(ViewPartyRelationships)
+      "children": <withRouter(Connect(ViewPartyRelationships))
         closeModal={[MockFunction]}
         createParty={[MockFunction]}
         fetchMineRecordById={[MockFunction]}
@@ -240,7 +240,7 @@ ShallowWrapper {
     "rendered": Object {
       "instance": null,
       "key": undefined,
-      "nodeType": "class",
+      "nodeType": "function",
       "props": Object {
         "closeModal": [MockFunction],
         "createParty": [MockFunction],
@@ -355,7 +355,7 @@ ShallowWrapper {
       "key": undefined,
       "nodeType": "host",
       "props": Object {
-        "children": <Connect(ViewPartyRelationships)
+        "children": <withRouter(Connect(ViewPartyRelationships))
           closeModal={[MockFunction]}
           createParty={[MockFunction]}
           fetchMineRecordById={[MockFunction]}
@@ -470,7 +470,7 @@ ShallowWrapper {
       "rendered": Object {
         "instance": null,
         "key": undefined,
-        "nodeType": "class",
+        "nodeType": "function",
         "props": Object {
           "closeModal": [MockFunction],
           "createParty": [MockFunction],

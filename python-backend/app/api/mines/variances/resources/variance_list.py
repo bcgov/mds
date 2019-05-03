@@ -1,13 +1,16 @@
-from werkzeug.exceptions import BadRequest
-
-from flask_restplus import Resource, fields
 from app.extensions import api
+from flask_restplus import Resource, fields
+from werkzeug.exceptions import BadRequest
 
 from ..models.variance import Variance
 from ....utils.access_decorators import requires_any_of, MINE_VIEW, MINE_CREATE
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.mines.mine_api_models import VARIANCE_MODEL
+# The need to access the guid -> id lookup forces an import as the id primary
+# key is not available via the API. The interal-only primary key +
+# cross-namespace foreign key constraints are interally inconsistent
+from app.api.users.core.models.core_user import CoreUser
 
 
 class VarianceListResource(Resource, UserMixin, ErrorMixin):
@@ -29,6 +32,11 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
         store_missing=False,
         help='A 3-character code indicating the status type of the variance. Default: REV')
     parser.add_argument(
+        'applicant_guid',
+        type=str,
+        store_missing=False,
+        help='GUID of the party on behalf of which the application was made.')
+    parser.add_argument(
         'ohsc_ind',
         type=bool,
         store_missing=False,
@@ -39,10 +47,10 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
         store_missing=False,
         help='Indicates if variance application has been reviewed by the union.')
     parser.add_argument(
-        'inspector_id',
-        type=int,
+        'inspector_guid',
+        type=str,
         store_missing=False,
-        help='ID of the person who inspected the mine during the variance application process.')
+        help='GUID of the user who inspected the mine during the variance application process.')
     parser.add_argument(
         'note',
         type=str,
@@ -78,6 +86,15 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
         data = self.parser.parse_args()
         compliance_article_id = data['compliance_article_id']
         received_date = data['received_date']
+        core_user_guid = data.get('inspector_guid')
+        inspector_id = None
+
+        if core_user_guid:
+            core_user = CoreUser.find_by_core_user_guid(core_user_guid)
+            if not core_user:
+                raise BadRequest('Unable to find inspector.')
+
+            inspector_id = core_user.core_user_id
 
         variance = Variance.create(
             compliance_article_id=compliance_article_id,
@@ -85,9 +102,10 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
             received_date=received_date,
             # Optional fields
             variance_application_status_code=data.get('variance_application_status_code'),
+            applicant_guid=data.get('applicant_guid'),
             ohsc_ind=data.get('ohsc_ind'),
             union_ind=data.get('union_ind'),
-            inspector_id=data.get('inspector_id'),
+            inspector_id=inspector_id,
             note=data.get('note'),
             issue_date=data.get('issue_date'),
             expiry_date=data.get('expiry_date'))
