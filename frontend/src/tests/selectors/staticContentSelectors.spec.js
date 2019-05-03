@@ -195,7 +195,7 @@ describe("staticContentSelectors", () => {
     expect(getVarianceStatusOptions(localMockState)).toEqual(mockVarianceStatusOptions);
   });
 
-  it("`getDropdownVarianceStatusOptions` calls `staticContentReducer.getComplianceCodes`", () => {
+  it("`getDropdownVarianceStatusOptions` calls `staticContentReducer.getVarianceStatusOptions`", () => {
     const storeAction = storeVarianceStatusOptions(Mock.VARIANCE_STATUS_OPTIONS);
     const storeState = staticContentReducer({}, storeAction);
     const localMockState = {
@@ -205,8 +205,8 @@ describe("staticContentSelectors", () => {
     expect(getDropdownVarianceStatusOptions(localMockState)).toEqual(mockVarianceStatusOptions);
   });
 
-  it("`getVarianceStatusOptionsHash` calls `staticContentReducer.getComplianceCodes`", () => {
-    const storeAction = storeVarianceStatusOptions(Mock.VARIANCE_STATUS_OPTIONS.records);
+  it("`getVarianceStatusOptionsHash` calls `staticContentReducer.getVarianceStatusOptions`", () => {
+    const storeAction = storeVarianceStatusOptions(Mock.VARIANCE_STATUS_OPTIONS);
     const storeState = staticContentReducer({}, storeAction);
     const localMockState = {
       [STATIC_CONTENT]: storeState,

@@ -1128,20 +1128,10 @@ export const VARIANCES = {
       received_date: "2019-03-01",
       documents: [
         {
-          records: [
-            {
-              variance_document_xref_guid: "eda300b7-2155-4bf4-9b3d-06b1f4d8a0fe",
-              variance_id: 1249,
-              mine_document_guid: "d463b9df-7650-4d18-8c73-c8bfb7ae48f0",
-              details: {
-                mine_document_guid: "d463b9df-7650-4d18-8c73-c8bfb7ae48f0",
-                mine_guid: "79edee65-038e-4b26-9048-e41e4c0b7d1a",
-                document_manager_guid: "7426b928-caf7-4e1e-aa59-392895929f97",
-                document_name: "just_a_pdf.PDF",
-                active_ind: "True",
-              },
-            },
-          ],
+          document_manager_guid: "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
+          document_name: "test.pdf",
+          mine_document_guid: "33e6b965-2402-4229-a213-23bbe7fd3e99",
+          mine_guid: "59e73109-48f7-4ad2-977c-3005b5bff010",
         },
       ],
     },

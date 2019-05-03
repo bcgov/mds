@@ -114,6 +114,7 @@ const propTypes = {
   varianceStatusOptions: CustomPropTypes.dropdownListItem.isRequired,
   updateVariance: PropTypes.func.isRequired,
   varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  fetchVarianceStatusOptions: PropTypes.func.isRequired,
 };
 
 const defaultProps = {

@@ -11,13 +11,19 @@ const setupDispatchProps = () => {
   dispatchProps.closeModal = jest.fn();
   dispatchProps.createVariance = jest.fn();
   dispatchProps.fetchVariancesByMine = jest.fn();
+  dispatchProps.addDocumentToVariance = jest.fn();
+  dispatchProps.updateVariance = jest.fn();
 };
 
 const setupReducerProps = () => {
   reducerProps.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
-  reducerProps.variances = MOCK.VARIANCES.records;
+  reducerProps.varianceApplications = MOCK.VARIANCES.records;
+  reducerProps.approvedVariances = MOCK.VARIANCES.records;
   reducerProps.complianceCodesHash = MOCK.HSRCM_HASH;
   reducerProps.complianceCodes = MOCK.DROPDOWN_HSRCM_CODES;
+  reducerProps.coreUsers = MOCK.CORE_USERS.results;
+  reducerProps.varianceStatusOptions = MOCK.VARIANCE_DROPDOWN_STATUS_OPTIONS;
+  reducerProps.varianceStatusOptionsHash = MOCK.VARIANCE_STATUS_OPTIONS_HASH;
 };
 
 beforeEach(() => {
