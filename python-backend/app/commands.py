@@ -4,6 +4,7 @@ import names
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from sqlalchemy.exc import DBAPIError
+from multiprocessing.dummy import Pool as ThreadPool
 
 from app import auth
 from app.api.utils.include.user_info import User
@@ -49,25 +50,19 @@ def register_commands(app):
         User._test_mode = True
 
         if threading:
-            with ThreadPoolExecutor() as executor:
-                batch_size = 100
-                num = int(num)
+            batch_size = 25
+            num = int(num)
 
-                # Break num into a list of ints of size batch_size, then append remainder.
-                # E.g. 520 -> [100, 100, 100, 100, 100, 20]
-                full_batches = int(num / batch_size)
-                batches = [batch_size] * full_batches
-                if 0 < num % batch_size:
-                    batches.append(num % batch_size)
+            # Break num into a list of ints of size batch_size, then append remainder.
+            # E.g. 520 -> [100, 100, 100, 100, 100, 20]
+            full_batches = int(num / batch_size)
+            batches = [batch_size] * full_batches
+            if 0 < num % batch_size:
+                batches.append(num % batch_size)
 
-                task_list = []
-                for batch in batches:
-                    task_list.append(executor.submit(_create_data, batch))
-                for task in as_completed(task_list):
-                    try:
-                        data = task.result()
-                    except Exception as exc:
-                        print(f'generated an exception: {exc}')
+            pool = ThreadPool(processes=16)
+            results = pool.map(_create_data, batches)
+            pool.close()
         else:
             _create_data(num)
 
@@ -75,13 +70,7 @@ def register_commands(app):
         User._test_mode = True
         with app.app_context():
             for _ in range(int(num)):
-                mine = MineFactory(
-                    mine_tailings_storage_facilities=3,
-                    mine_permit=3,
-                    mine_permit__permit_amendments=10,
-                    mine_expected_documents=100,
-                    mine_incidents=50,
-                    mine_variance=25)
+                mine = MineFactory()
                 eor = MinePartyAppointmentFactory(mine=mine, mine_party_appt_type_code='EOR')
                 mine_manager = MinePartyAppointmentFactory(
                     mine=mine, mine_party_appt_type_code='MMG')
@@ -89,7 +78,7 @@ def register_commands(app):
                     mine=mine, mine_party_appt_type_code='PMT', party__company=True)
             try:
                 db.session.commit()
-                print(f'Created {num} random mines with tenure, permits, and permittee.')
+                print(f'Created {num} random mines with related data.')
             except DBAPIError:
                 db.session.rollback()
                 raise
