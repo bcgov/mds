@@ -46,6 +46,12 @@ def test_variance_model_find_by_variance_guid_fail(db_session):
     assert variance is None
 
 
+def test_variance_model_find_by_variance_guid_invalid(db_session):
+    with pytest.raises(AssertionError) as e:
+        Variance.find_by_variance_guid('abc123')
+    assert str(e.value) == INVALID_VARIANCE_GUID
+
+
 def test_variance_model_find_by_mine_guid_and_variance_guid(db_session):
     variance = VarianceFactory()
 

@@ -92,8 +92,9 @@ class Variance(AuditMixin, Base):
         return cls.query.filter_by(variance_id=variance_id).first()
 
     @classmethod
-    def find_by_variance_guid(cls, guid):
-        return cls.query.filter_by(variance_guid=guid).first()
+    def find_by_variance_guid(cls, variance_guid):
+        cls.validate_guid(variance_guid, INVALID_VARIANCE_GUID)
+        return cls.query.filter_by(variance_guid=variance_guid).first()
 
     @classmethod
     def find_by_mine_guid_and_variance_guid(cls, mine_guid, variance_guid):
