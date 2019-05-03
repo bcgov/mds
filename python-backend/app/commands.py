@@ -8,19 +8,7 @@ from multiprocessing.dummy import Pool as ThreadPool
 
 from app import auth
 from app.api.utils.include.user_info import User
-from app.api.mines.region.models.region import MineRegionCode
-from app.api.constants import (PERMIT_STATUS_CODE, MINE_OPERATION_STATUS,
-                               MINE_OPERATION_STATUS_REASON, MINE_OPERATION_STATUS_SUB_REASON,
-                               MINE_REGION_OPTIONS)
-from app.api.mines.mine.models.mine import Mine
-from app.api.mines.mine.models.mineral_tenure_xref import MineralTenureXref
-from app.api.mines.mine.models.mine_tenure_type_code import MineTenureTypeCode
-from app.api.parties.party.models.party import Party
-from app.api.parties.party.models.party_type_code import PartyTypeCode
-from app.api.permits.permit.models.permit import Permit
-from app.api.mines.mine.models.mine_verified_status import MineVerifiedStatus
 from app.api.utils.random import generate_mine_no, generate_mine_name, random_geo, random_key_gen, random_date, random_region, random_mine_category
-from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.extensions import db, sched
 from app.scheduled_jobs import NRIS_jobs
 from app.scheduled_jobs import ETL_jobs
