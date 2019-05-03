@@ -8,7 +8,7 @@ ENV LD_LIBRARY_PATH="/opt/oracle/instantclient" \
 COPY /oracle/ .
 
 RUN BUILD_PACKAGES="build-essential unzip curl libaio1 python-minimal git" && \
-    apt-get install -y $BUILD_PACKAGES
+    yum install -y $BUILD_PACKAGES
 
 RUN mkdir -p opt/oracle && \
     unzip instantclient-basic-linux.x64-19.3.0.0.0.zip -d /opt/oracle && \
