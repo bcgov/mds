@@ -440,8 +440,8 @@ export class MineHeader extends Component {
                   ? this.props.mineRegionHash[this.props.mine.mine_region]
                   : String.EMPTY_FIELD}
               </p>
-              <Link to={mapRoute} target="_blank">
-                Open In New Tab
+              <Link className="link-on-dark" to={mapRoute} target="_blank">
+                View In Full Map
               </Link>
             </div>
           </div>

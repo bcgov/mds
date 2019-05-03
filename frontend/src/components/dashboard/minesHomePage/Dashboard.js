@@ -100,6 +100,7 @@ export class Dashboard extends Component {
       mineList: false,
       lat: String.DEFAULT_LAT,
       long: String.DEFAULT_LONG,
+      zoom: 6,
       showCoordinates: false,
       mineName: null,
       params: {
@@ -149,13 +150,11 @@ export class Dashboard extends Component {
       this.setState({ mineList: false });
       this.renderDataFromURL(params);
     }
-    console.log("************THE STATE IS 2:***************");
-    console.log(this.state);
   }
 
   componentWillUnmount() {
     this.handleMineSearchDebounced.cancel();
-    this.setState({ params: {} });
+    this.setState({ params: {}, lat: String.DEFAULT_LAT, long: String.DEFAULT_LONG, zoom: 6 });
   }
 
   renderDataFromURL = (params) => {
@@ -196,19 +195,18 @@ export class Dashboard extends Component {
     }
     // set the lat, long, zoom, and blinking to true
     if (format(lat)[0] && format(long)[0]) {
-      console.log("The lat is, ", format(lat));
-      this.handleNavitationFromMine();
+      console.log("***********The lat is, ", format(lat));
+
       // if (this.state.params.lat && this.state.params.long) {
       // const latFromMine = this.state.params.lat;
       this.setState({
-        lat: format(lat)[0] ? format(lat) : String.DEFAULT_LAT,
-        long: format(long)[0] ? format(long) : String.DEFAULT_LONG,
+        lat: format(lat)[0] ? format(lat)[0] : String.DEFAULT_LAT,
+        long: format(long)[0] ? format(long)[0] : String.DEFAULT_LONG,
         zoom: format(zoom)[0] ? format(zoom)[0] : 6,
+        // showCoordinates: true,
       });
+      this.handleNavitationFromMine();
     }
-
-    console.log("************THE STATE IS:***************");
-    console.log(this.state);
   };
 
   onPageChange = (page, per_page) => {
@@ -232,6 +230,7 @@ export class Dashboard extends Component {
         this.setState({
           lat: Number(newVal[1]),
           long: Number(newVal[0]),
+          zoom: 14,
           showCoordinates: true,
           mineName: newVal[2],
         });
@@ -247,6 +246,7 @@ export class Dashboard extends Component {
         this.setState({
           lat: String.DEFAULT_LAT,
           long: String.DEFAULT_LONG,
+          zoom: 6,
           showCoordinates: false,
         });
         notification.error({ message: String.NO_COORDINATES, duration: 10 });
@@ -255,6 +255,7 @@ export class Dashboard extends Component {
       this.setState({
         lat: Number(value.latitude),
         long: Number(value.longitude),
+        zoom: 14,
         showCoordinates: true,
         mineName: null,
       });
@@ -269,18 +270,32 @@ export class Dashboard extends Component {
   };
 
   handleNavitationFromMine = () => {
+    console.log("%%%%%%%%The scroll was called%%%%%%%%%");
+    // this.setState({
+    //   lat: Number(newVal[1]),
+    //   long: Number(newVal[0]),
+    //   showCoordinates: true,
+    //   mineName: newVal[2],
+    // });
     // TODO: spent 4 hours looking for a solution to not hardcoding this scroll value. Need to find a dynamic way of scroling the screen to this location.
-    scroller.scrollTo("mapElement", {
+    scroller.scrollTo("landing-page__content", {
       duration: 1000,
       smooth: true,
       isDynamic: true,
-      offset: -60,
+      offset: 200,
     });
   };
 
   handleTabChange = (key) => {
     const { page, per_page, search } = this.state.params;
-    this.setState({ mineList: false, showCoordinates: false, mineName: "" });
+    this.setState({
+      mineList: false,
+      showCoordinates: false,
+      mineName: "",
+      lat: String.DEFAULT_LAT,
+      long: String.DEFAULT_LONG,
+      zoom: 6,
+    });
     if (key === "map") {
       this.props.history.push(router.MINE_HOME_PAGE.mapRoute(page, per_page, search));
     } else {

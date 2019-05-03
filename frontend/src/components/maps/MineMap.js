@@ -15,9 +15,9 @@ import CustomPropTypes from "@/customPropTypes";
  */
 const propTypes = {
   mine: CustomPropTypes.mine,
-  lat: PropTypes.number,
-  long: PropTypes.number,
-  zoom: PropTypes.number,
+  lat: PropTypes.string,
+  long: PropTypes.string,
+  zoom: PropTypes.string,
 };
 
 const defaultProps = {
@@ -59,6 +59,10 @@ class MineMap extends Component {
         return { view: newView, center };
       });
     }
+  }
+
+  componentWillUnmount() {
+    this.setState({ center: null });
   }
 
   /**
