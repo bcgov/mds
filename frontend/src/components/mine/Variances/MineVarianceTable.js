@@ -131,7 +131,7 @@ export class MineVarianceTable extends Component {
                 type="primary"
                 size="small"
                 ghost
-                onClick={(event) => this.props.openViewVarianceModal(event, record.variance)}
+                onClick={(event) => this.props.openModal(event, record.variance)}
               >
                 <img src={BRAND_PENCIL} alt="Edit/View" />
               </Button>

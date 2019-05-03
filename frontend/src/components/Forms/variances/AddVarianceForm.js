@@ -111,7 +111,7 @@ export class AddVarianceForm extends Component {
               <Field
                 id="inspector_id"
                 name="inspector_id"
-                label="Assign a lead inspector"
+                label="Lead inspectors IDIR*"
                 component={renderConfig.SELECT}
                 validate={[required]}
                 data={this.props.coreUsers}
@@ -188,10 +188,6 @@ AddVarianceForm.propTypes = propTypes;
 
 export default reduxForm({
   form: FORM.ADD_VARIANCE,
-  // initialValues: {
-  //   union_ind: false,
-  //   ohsc_ind: false,
-  // },
   touchOnBlur: false,
   onSubmitSuccess: resetForm(FORM.ADD_VARIANCE),
 })(AddVarianceForm);

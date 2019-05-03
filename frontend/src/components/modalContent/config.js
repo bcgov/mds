@@ -14,6 +14,7 @@ import AddApplicationModal from "./AddApplicationModal";
 import EditApplicationModal from "./EditApplicationModal";
 import AddVarianceModal from "./AddVarianceModal";
 import ViewVarianceModal from "./ViewVarianceModal";
+import EditVarianceModal from "./EditVarianceModal";
 import AddIncidentModal from "./AddIncidentModal";
 
 // This file is anticipated to have multiple exports
@@ -35,5 +36,6 @@ export const modalConfig = {
   EDIT_APPLICATION: EditApplicationModal,
   ADD_VARIANCE: AddVarianceModal,
   VIEW_VARIANCE: ViewVarianceModal,
+  EDIT_VARIANCE: EditVarianceModal,
   MINE_INCIDENT: AddIncidentModal,
 };
