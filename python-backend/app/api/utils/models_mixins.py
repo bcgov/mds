@@ -58,7 +58,7 @@ class Base(db.Model):
                 current_app.logger.error(
                     f'When trying to save {self} an exception was thrown by the database {e}')
                 db.session.rollback()
-                raise InternalServerError(f'Could not save {self.__class__.__name__}: {e}')
+                raise InternalServerError(f'Could not save {self.__class__.__name__}')
 
 
 class AuditMixin(object):

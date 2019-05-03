@@ -15,6 +15,10 @@ from ....utils.access_decorators import (requires_any_of, MINE_VIEW, MINE_CREATE
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.mines.mine_api_models import VARIANCE_MODEL
+# The need to access the guid -> id lookup forces an import as the id primary
+# key is not available via the API. The interal-only primary key +
+# cross-namespace foreign key constraints are interally inconsistent
+from app.api.users.core.models.core_user import CoreUser
 
 
 class VarianceResource(Resource, UserMixin, ErrorMixin):
@@ -44,10 +48,10 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
         store_missing=False,
         help='Indicates if variance application has been reviewed by the union.')
     parser.add_argument(
-        'inspector_id',
-        type=int,
+        'inspector_guid',
+        type=str,
         store_missing=False,
-        help='ID of the person who inspected the mine during the variance application process.')
+        help='GUID of the user who inspected the mine during the variance application process.')
     parser.add_argument(
         'note',
         type=str,
@@ -90,7 +94,18 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             raise NotFound('Unable to fetch variance')
 
         data = self.parser.parse_args()
+
+        core_user_guid = data.get('inspector_guid')
+        if core_user_guid:
+            core_user = CoreUser.find_by_core_user_guid(core_user_guid)
+            if not core_user:
+                raise BadRequest('Unable to find new inspector.')
+
+            variance.inspector_id = core_user.core_user_id
+
         for key, value in data.items():
+            if key in ['inspector_guid']:
+                continue
             setattr(variance, key, value)
 
         if variance.variance_application_status_code == 'APP':
@@ -113,24 +128,3 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
 
         variance.save()
         return variance
-
-
-class VarianceUploadedDocumentsResource(Resource, UserMixin, ErrorMixin):
-    parser = CustomReqparser()
-    parser.add_argument('mine_document_guid', type=str, required=True)
-
-    @api.doc(description='Delete a document from a variance.')
-    @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
-    def delete(self, mine_guid, variance_id, mine_document_guid):
-        variance = Variance.find_by_variance_id(variance_id)
-        mine_document = MineDocument.find_by_mine_document_guid(mine_document_guid)
-
-        if variance is None:
-            raise NotFound('Variance not found.')
-        if mine_document is None:
-            raise NotFound('Mine document not found.')
-
-        variance.documents.remove(mine_document)
-        variance.save()
-
-        return ('', 204)

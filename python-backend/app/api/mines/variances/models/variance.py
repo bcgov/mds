@@ -2,6 +2,7 @@ import uuid
 from datetime import datetime
 
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.orm import validates
 from app.extensions import db
@@ -12,6 +13,7 @@ from ....documents.variances.models.variance import VarianceDocument
 
 INVALID_GUID = 'Invalid guid.'
 INVALID_MINE_GUID = 'Invalid mine_guid.'
+INVALID_APPLICANT_GUID = 'Invalid applicant_guid.'
 MISSING_MINE_GUID = 'Missing mine_guid.'
 
 class Variance(AuditMixin, Base):
@@ -23,6 +25,7 @@ class Variance(AuditMixin, Base):
         nullable=False,
         server_default=FetchedValue())
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
+    applicant_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
     variance_application_status_code = db.Column(
         db.String,
         db.ForeignKey('variance_application_status_code.variance_application_status_code'),
@@ -37,6 +40,10 @@ class Variance(AuditMixin, Base):
     expiry_date = db.Column(db.DateTime)
 
     documents = db.relationship('MineDocument', lazy='joined', secondary='variance_document_xref')
+    inspector = db.relationship('CoreUser', lazy='joined')
+
+    inspector_guid = association_proxy('inspector', 'core_user_guid')
+
 
     def __repr__(self):
         return '<Variance %r>' % self.variance_id
@@ -48,6 +55,7 @@ class Variance(AuditMixin, Base):
             mine_guid,
             received_date,
             # Optional Params
+            applicant_guid=None,
             variance_application_status_code=None,
             ohsc_ind=None,
             union_ind=None,
@@ -60,6 +68,7 @@ class Variance(AuditMixin, Base):
             compliance_article_id=compliance_article_id,
             mine_guid=mine_guid,
             variance_application_status_code=variance_application_status_code,
+            applicant_guid=applicant_guid,
             ohsc_ind=ohsc_ind,
             union_ind=union_ind,
             inspector_id=inspector_id,
@@ -98,3 +107,9 @@ class Variance(AuditMixin, Base):
             raise AssertionError(MISSING_MINE_GUID)
         self.validate_guid(mine_guid, INVALID_MINE_GUID)
         return mine_guid
+
+    @validates('applicant_guid')
+    def validate_applicant_guid(self, key, applicant_guid):
+        if applicant_guid:
+            self.validate_guid(applicant_guid, INVALID_APPLICANT_GUID)
+        return applicant_guid

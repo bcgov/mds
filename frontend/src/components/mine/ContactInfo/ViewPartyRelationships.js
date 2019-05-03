@@ -3,6 +3,8 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
+import * as router from "@/constants/routes";
+import { withRouter } from "react-router-dom";
 import { Row, Col, Menu, Popconfirm, Divider, Dropdown } from "antd";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
@@ -41,6 +43,7 @@ const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
   updatePartyRelationship: PropTypes.func.isRequired,
   removePartyRelationship: PropTypes.func.isRequired,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
 };
 
 const defaultProps = {
@@ -52,7 +55,7 @@ const defaultProps = {
 export class ViewPartyRelationships extends Component {
   constructor(props) {
     super(props);
-    this.TSFConfirmation = React.createRef();
+    this.RoleConfirmation = React.createRef();
   }
 
   state = {
@@ -82,9 +85,14 @@ export class ViewPartyRelationships extends Component {
   openAddPartyRelationshipModal = (value, onSubmit, handleChange, onPartySubmit, title, mine) => {
     if (!this.props.partyRelationshipTypesList) return;
 
+    if (value.mine_party_appt_type_code === "PMT") {
+      this.RoleConfirmation.current.click();
+      return;
+    }
+
     if (value.mine_party_appt_type_code === "EOR") {
       if (mine.mine_tailings_storage_facilities.length === 0) {
-        this.TSFConfirmation.current.click();
+        this.RoleConfirmation.current.click();
         return;
       }
     }
@@ -201,14 +209,6 @@ export class ViewPartyRelationships extends Component {
         return "OTHER CONTACTS";
     }
   };
-
-  openTailingsModal(event, onSubmit, title) {
-    event.preventDefault();
-    this.props.openModal({
-      props: { onSubmit, title },
-      content: modalConfig.ADD_TAILINGS,
-    });
-  }
 
   renderMenu = (partyRelationshipGroupingLevels) => (
     <Menu>
@@ -337,6 +337,36 @@ export class ViewPartyRelationships extends Component {
     );
   };
 
+  confirmationProps = (selectedPartyRelationshipType) =>
+    ({
+      EOR: {
+        title:
+          "There are currently no tailings storage facilities for this mine. Would you like to create one?",
+        okText: "Yes",
+        cancelText: "No",
+        onConfirm: (event) =>
+          this.openTailingsModal(event, this.handleAddTailings, ModalContent.ADD_TAILINGS),
+      },
+      PMT: {
+        title:
+          'Please add the permit or permit amendment under the "Permit" tab to change the permittee. Would you like to go there now?',
+        okText: "Ok",
+        cancelText: "Cancel",
+        onConfirm: () =>
+          this.props.history.push(
+            router.MINE_SUMMARY.dynamicRoute(this.props.mine.mine_guid, "permit")
+          ),
+      },
+    }[selectedPartyRelationshipType]);
+
+  openTailingsModal(event, onSubmit, title) {
+    event.preventDefault();
+    this.props.openModal({
+      props: { onSubmit, title },
+      content: modalConfig.ADD_TAILINGS,
+    });
+  }
+
   render() {
     if (
       !this.props.partyRelationshipTypesList.length > 0 ||
@@ -355,16 +385,11 @@ export class ViewPartyRelationships extends Component {
           <div className="inline-flex between">
             <Popconfirm
               placement="topRight"
-              title="There are currently no tailings storage facilities for this mine. Would you like to create one?"
-              onConfirm={(event) =>
-                this.openTailingsModal(event, this.handleAddTailings, ModalContent.ADD_TAILINGS)
-              }
-              okText="Yes"
-              cancelText="No"
+              {...this.confirmationProps(this.state.selectedPartyRelationshipType)}
             >
               <input
                 type="button"
-                ref={this.TSFConfirmation}
+                ref={this.RoleConfirmation}
                 style={{ width: "1px", height: "1px" }}
               />
             </Popconfirm>
@@ -425,7 +450,9 @@ const mapDispatchToProps = (dispatch) =>
 ViewPartyRelationships.propTypes = propTypes;
 ViewPartyRelationships.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ViewPartyRelationships);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(ViewPartyRelationships)
+);
