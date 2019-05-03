@@ -1,7 +1,7 @@
 import json
 
 from tests.factories import VarianceFactory, MineFactory
-from app.api.mines.variances.models.variance import INVALID_MINE_GUID
+from app.api.mines.variances.models.variance import INVALID_MINE_GUID, INVALID_VARIANCE_GUID
 
 
 # GET
@@ -9,27 +9,29 @@ def test_get_variance(test_client, db_session, auth_headers):
     variance = VarianceFactory()
 
     get_resp = test_client.get(
-        f'/mines/{variance.mine_guid}/variances/{variance.variance_id}',
+        f'/mines/{variance.mine_guid}/variances/{variance.variance_guid}',
         headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200
-    assert get_data['variance_id'] == variance.variance_id
+    assert get_data['variance_guid'] == str(variance.variance_guid)
 
 
-def test_get_variance_invalid_variance_id(test_client, db_session, auth_headers):
+def test_get_variance_invalid_variance_guid(test_client, db_session, auth_headers):
     variance = VarianceFactory()
 
     get_resp = test_client.get(
         f'/mines/{variance.mine_guid}/variances/1234',
         headers=auth_headers['full_auth_header'])
-    assert get_resp.status_code == 404
+    get_data = json.loads(get_resp.data.decode())
+    assert get_resp.status_code == 400
+    assert get_data['message'] == INVALID_VARIANCE_GUID
 
 
 def test_get_variances_invalid_mine_guid(test_client, db_session, auth_headers):
     variance = VarianceFactory()
 
     get_resp = test_client.get(
-        f'/mines/abc123/variances/{variance.variance_id}',
+        f'/mines/abc123/variances/{variance.variance_guid}',
         headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 400
@@ -41,7 +43,7 @@ def test_get_variances_wrong_mine_guid(test_client, db_session, auth_headers):
     mine = MineFactory()
 
     get_resp = test_client.get(
-        f'/mines/{mine.mine_guid}/variances/{variance.variance_id}',
+        f'/mines/{mine.mine_guid}/variances/{variance.variance_guid}',
         headers=auth_headers['full_auth_header'])
     assert get_resp.status_code == 404
 
@@ -64,7 +66,7 @@ def test_put_variance(test_client, db_session, auth_headers):
     }
 
     put_resp = test_client.put(
-        f'/mines/{variance.mine_guid}/variances/{variance.variance_id}',
+        f'/mines/{variance.mine_guid}/variances/{variance.variance_guid}',
         headers=auth_headers['full_auth_header'],
         data=data)
     put_data = json.loads(put_resp.data.decode())
@@ -98,14 +100,14 @@ def test_put_variance_invalid(test_client, db_session, auth_headers):
     }
 
     put_resp = test_client.put(
-        f'/mines/{variance.mine_guid}/variances/{variance.variance_id}',
+        f'/mines/{variance.mine_guid}/variances/{variance.variance_guid}',
         headers=auth_headers['full_auth_header'],
         data=data)
     put_data = json.loads(put_resp.data.decode())
     assert put_resp.status_code == 400, put_resp.response
 
 
-def test_put_variance_invalid_variance_id(test_client, db_session, auth_headers):
+def test_put_variance_invalid_variance_guid(test_client, db_session, auth_headers):
     variance = VarianceFactory()
     # Use factory to get valid valuse
     approved_variance = VarianceFactory(approved=True)
@@ -127,4 +129,5 @@ def test_put_variance_invalid_variance_id(test_client, db_session, auth_headers)
         headers=auth_headers['full_auth_header'],
         data=data)
     put_data = json.loads(put_resp.data.decode())
-    assert put_resp.status_code == 404
+    assert put_resp.status_code == 400
+    assert put_data['message'] == INVALID_VARIANCE_GUID

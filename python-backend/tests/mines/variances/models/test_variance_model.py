@@ -1,6 +1,10 @@
 import pytest
+import uuid
 
-from app.api.mines.variances.models.variance import Variance, INVALID_MINE_GUID, MISSING_MINE_GUID
+from app.api.mines.variances.models.variance import (Variance,
+                                                     INVALID_MINE_GUID,
+                                                     MISSING_MINE_GUID,
+                                                     INVALID_VARIANCE_GUID)
 from tests.factories import VarianceFactory, MineFactory
 from tests.status_code_gen import RandomComplianceArticleId
 
@@ -18,7 +22,6 @@ def test_variance_model_find_by_mine_guid_invalid(db_session):
         variances = Variance.find_by_mine_guid('jflkjfsdl')
     assert str(e.value) == INVALID_MINE_GUID
 
-
 def test_variance_model_find_by_variance_id(db_session):
     init_variance_id = VarianceFactory().variance_id
 
@@ -31,20 +34,33 @@ def test_variance_model_find_by_variance_id_fail(db_session):
     assert variance is None
 
 
-def test_variance_model_find_by_mine_guid_and_variance_id(db_session):
+def test_variance_model_find_by_variance_guid(db_session):
+    init_variance_guid = VarianceFactory().variance_guid
+
+    variance = Variance.find_by_variance_guid(init_variance_guid)
+    assert variance.variance_guid == init_variance_guid
+
+
+def test_variance_model_find_by_variance_guid_fail(db_session):
+    variance = Variance.find_by_variance_guid(uuid.uuid4())
+    assert variance is None
+
+
+def test_variance_model_find_by_mine_guid_and_variance_guid(db_session):
     variance = VarianceFactory()
 
-    fetched_variance = Variance.find_by_mine_guid_and_variance_id(
+    fetched_variance = Variance.find_by_mine_guid_and_variance_guid(
         variance.mine_guid,
-        variance.variance_id)
+        variance.variance_guid)
     assert fetched_variance.mine_guid == variance.mine_guid
-    assert fetched_variance.variance_id == variance.variance_id
+    assert fetched_variance.variance_guid == variance.variance_guid
 
 
-def test_variance_model_find_by_mine_guid_and_variance_id_fail(db_session):
+def test_variance_model_find_by_mine_guid_and_variance_guid_fail(db_session):
     mine = MineFactory()
-    variance = Variance.find_by_mine_guid_and_variance_id(mine.mine_guid, 42)
-    assert variance is None
+    with pytest.raises(AssertionError) as e:
+        Variance.find_by_mine_guid_and_variance_guid(mine.mine_guid, 42)
+    assert str(e.value) == INVALID_VARIANCE_GUID
 
 
 # Validation methods

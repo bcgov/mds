@@ -169,7 +169,7 @@ MINE_INCIDENT_FOLLOWUP_TYPE_MODEL = api.model(
 
 VARIANCE_MODEL = api.model(
     'Variance', {
-        'variance_id': fields.Integer,
+        'variance_guid': fields.String,
         'compliance_article_id': fields.Integer,
         'variance_application_status_code': fields.String,
         'applicant_guid': fields.String,

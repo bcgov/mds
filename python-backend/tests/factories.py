@@ -225,6 +225,7 @@ class VarianceFactory(BaseFactory):
         )
 
     variance_id = factory.Sequence(lambda n: n)
+    variance_guid = GUID
     compliance_article_id = factory.LazyFunction(RandomComplianceArticleId)
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     ohsc_ind = factory.Faker('boolean', chance_of_getting_true=50)
