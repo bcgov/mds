@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import { Button, Popconfirm } from "antd";
+import { ELLIPSE } from "@/constants/assets";
 import { formatDate } from "@/utils/helpers";
 import DocumentTable from "@/components/common/DocumentTable";
 
@@ -16,12 +17,21 @@ export const ViewVarianceModal = (props) => (
     <div className="inline-flex between">
       <div>
         <h5>Lead Inspector</h5>
+        <p>{props.variance.variance_application_status_code}</p>
       </div>
       <div>
         <h5>Application Status</h5>
+        <div style={{ display: "inline-flex" }}>
+          <img className="padding-right icon-sm--img" src={ELLIPSE} alt="status" />
+          <p>{props.variance.variance_application_status_code}</p>
+        </div>
       </div>
       <div>
         <h5>Approval Status</h5>
+        <div style={{ display: "inline-flex" }}>
+          <img className="padding-right icon-sm--img" src={ELLIPSE} alt="status" />
+          <p>{props.variance.variance_application_status_code}</p>
+        </div>
       </div>
     </div>
     <h5>application details</h5>

@@ -76,8 +76,8 @@ export class EditVarianceForm extends Component {
           <Col md={12} xs={24}>
             <Form.Item>
               <Field
-                id="inspector_id"
-                name="inspector_id"
+                id="inspector_guid"
+                name="inspector_guid"
                 label={
                   this.state.statusChangedToApproved
                     ? "Assign a Lead inspector*"

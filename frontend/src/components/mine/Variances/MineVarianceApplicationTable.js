@@ -19,6 +19,7 @@ const propTypes = {
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   openViewVarianceModal: PropTypes.func.isRequired,
   varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  openModal: PropTypes.func.isRequired,
 };
 
 export class MineVarianceApplicationTable extends Component {

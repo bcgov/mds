@@ -109,8 +109,8 @@ export class AddVarianceForm extends Component {
             </Form.Item>
             <Form.Item>
               <Field
-                id="inspector_id"
-                name="inspector_id"
+                id="inspector_guid"
+                name="inspector_guid"
                 label="Lead inspectors IDIR*"
                 component={renderConfig.SELECT}
                 validate={[required]}

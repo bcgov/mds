@@ -80,6 +80,10 @@ body {
   justify-content: flex-end;
 }
 
+.flex-start {
+  justify-content: flex-start;
+}
+
 .block-mobile {
   @include mobile {
     display: block;
@@ -189,6 +193,11 @@ body {
 // using important to override any existing styling from ant design.
 .icon-sm {
   font-size: 20px !important;
+
+  &--img {
+    width: 15px;
+    height: 26px;
+  }
 }
 
 .icon-lg {

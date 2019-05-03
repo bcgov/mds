@@ -1,11 +1,10 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Table, Button } from "antd";
+import { Table, Button, Icon } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
-import { RED_CLOCK, BRAND_PENCIL } from "@/constants/assets";
+import { RED_CLOCK } from "@/constants/assets";
 import NullScreen from "@/components/common/NullScreen";
 import { formatDate } from "@/utils/helpers";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
@@ -17,7 +16,7 @@ const { errorRed } = COLOR;
 const propTypes = {
   variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  openViewVarianceModal: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
 };
 
 export class MineVarianceTable extends Component {
@@ -30,19 +29,17 @@ export class MineVarianceTable extends Component {
   };
 
   transformRowData = (variances, codeHash) =>
-    variances.sort(this.sortByDateOrID).map((variance) => {
-      return {
-        key: variance.variance_id,
-        variance,
-        compliance_article_id: codeHash[variance.compliance_article_id] || String.EMPTY_FIELD,
-        expiry_date: formatDate(variance.expiry_date) || String.EMPTY_FIELD,
-        issue_date: formatDate(variance.issue_date) || String.EMPTY_FIELD,
-        note: variance.note,
-        received_date: formatDate(variance.received_date) || String.EMPTY_FIELD,
-        isOverdue: Date.parse(variance.expiry_date) < new Date(),
-        documents: variance.documents,
-      };
-    });
+    variances.sort(this.sortByDateOrID).map((variance) => ({
+      key: variance.variance_id,
+      variance,
+      compliance_article_id: codeHash[variance.compliance_article_id] || String.EMPTY_FIELD,
+      expiry_date: formatDate(variance.expiry_date) || String.EMPTY_FIELD,
+      issue_date: formatDate(variance.issue_date) || String.EMPTY_FIELD,
+      note: variance.note,
+      received_date: formatDate(variance.received_date) || String.EMPTY_FIELD,
+      isOverdue: Date.parse(variance.expiry_date) < new Date(),
+      documents: variance.documents,
+    }));
 
   render() {
     const columns = [
@@ -133,7 +130,8 @@ export class MineVarianceTable extends Component {
                 ghost
                 onClick={(event) => this.props.openModal(event, record.variance)}
               >
-                <img src={BRAND_PENCIL} alt="Edit/View" />
+                <Icon type="eye" className="icon-sm" />
+                {/* <img src={BRAND_PENCIL} alt="Edit/View" /> */}
               </Button>
             </AuthorizationWrapper>
           </div>

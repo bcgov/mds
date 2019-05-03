@@ -67,7 +67,7 @@ export class MineVariance extends Component {
         ? values.expiry_date
         : moment(issue_date, "YYYY-MM-DD").add(5, "years");
     }
-    const newValues = { issue_date, expiry_date, ...values };
+    const newValues = { ...values, issue_date, expiry_date };
     const mineGuid = this.props.mine.mine_guid;
     const varianceId = variance.variance_id;
     const codeLabel = this.props.complianceCodesHash[variance.compliance_article_id];
@@ -138,7 +138,7 @@ export class MineVariance extends Component {
         <h4 className="uppercase">Variance Applications</h4>
         <br />
         <MineVarianceApplicationTable
-          openModal={this.openViewVarianceModal}
+          openModal={this.openEditVarianceModal}
           variances={this.props.varianceApplications}
           complianceCodesHash={this.props.complianceCodesHash}
           mine={this.props.mine}
