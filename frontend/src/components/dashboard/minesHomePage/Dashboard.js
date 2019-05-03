@@ -195,15 +195,10 @@ export class Dashboard extends Component {
     }
     // set the lat, long, zoom, and blinking to true
     if (format(lat)[0] && format(long)[0]) {
-      console.log("***********The lat is, ", format(lat));
-
-      // if (this.state.params.lat && this.state.params.long) {
-      // const latFromMine = this.state.params.lat;
       this.setState({
-        lat: format(lat)[0] ? format(lat)[0] : String.DEFAULT_LAT,
-        long: format(long)[0] ? format(long)[0] : String.DEFAULT_LONG,
+        lat: format(lat)[0],
+        long: format(long)[0],
         zoom: format(zoom)[0] ? format(zoom)[0] : 6,
-        // showCoordinates: true,
       });
       this.handleNavitationFromMine();
     }
@@ -241,7 +236,6 @@ export class Dashboard extends Component {
           isDynamic: true,
           offset: -60,
         });
-        // window.scrollTo(0, this.mapRef.current.offsetTop);
       } else {
         this.setState({
           lat: String.DEFAULT_LAT,
@@ -270,13 +264,6 @@ export class Dashboard extends Component {
   };
 
   handleNavitationFromMine = () => {
-    console.log("%%%%%%%%The scroll was called%%%%%%%%%");
-    // this.setState({
-    //   lat: Number(newVal[1]),
-    //   long: Number(newVal[0]),
-    //   showCoordinates: true,
-    //   mineName: newVal[2],
-    // });
     // TODO: spent 4 hours looking for a solution to not hardcoding this scroll value. Need to find a dynamic way of scroling the screen to this location.
     scroller.scrollTo("landing-page__content", {
       duration: 1000,
