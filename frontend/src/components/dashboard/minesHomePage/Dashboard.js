@@ -98,8 +98,8 @@ export class Dashboard extends Component {
     this.handleMineSearchDebounced = debounce(this.handleMineSearch, 1000);
     this.state = {
       mineList: false,
-      lat: String.DEFAULT_LAT,
-      long: String.DEFAULT_LONG,
+      lat: Number(String.DEFAULT_LAT),
+      long: Number(String.DEFAULT_LONG),
       zoom: 6,
       showCoordinates: false,
       mineName: null,
@@ -154,7 +154,12 @@ export class Dashboard extends Component {
 
   componentWillUnmount() {
     this.handleMineSearchDebounced.cancel();
-    this.setState({ params: {}, lat: String.DEFAULT_LAT, long: String.DEFAULT_LONG, zoom: 6 });
+    this.setState({
+      params: {},
+      lat: Number(String.DEFAULT_LAT),
+      long: Number(String.DEFAULT_LONG),
+      zoom: 6,
+    });
   }
 
   renderDataFromURL = (params) => {
@@ -196,9 +201,9 @@ export class Dashboard extends Component {
     // set the lat, long, zoom, and blinking to true
     if (format(lat)[0] && format(long)[0]) {
       this.setState({
-        lat: format(lat)[0],
-        long: format(long)[0],
-        zoom: format(zoom)[0] ? format(zoom)[0] : 6,
+        lat: Number(format(lat)[0]),
+        long: Number(format(long)[0]),
+        zoom: format(zoom)[0] ? Number(format(zoom)[0]) : 6,
       });
       this.handleNavitationFromMine();
     }
@@ -238,8 +243,8 @@ export class Dashboard extends Component {
         });
       } else {
         this.setState({
-          lat: String.DEFAULT_LAT,
-          long: String.DEFAULT_LONG,
+          lat: Number(String.DEFAULT_LAT),
+          long: Number(String.DEFAULT_LONG),
           zoom: 6,
           showCoordinates: false,
         });
@@ -279,8 +284,8 @@ export class Dashboard extends Component {
       mineList: false,
       showCoordinates: false,
       mineName: "",
-      lat: String.DEFAULT_LAT,
-      long: String.DEFAULT_LONG,
+      lat: Number(String.DEFAULT_LAT),
+      long: Number(String.DEFAULT_LONG),
       zoom: 6,
     });
     if (key === "map") {

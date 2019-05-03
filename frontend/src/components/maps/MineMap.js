@@ -15,9 +15,9 @@ import CustomPropTypes from "@/customPropTypes";
  */
 const propTypes = {
   mine: CustomPropTypes.mine,
-  lat: PropTypes.string,
-  long: PropTypes.string,
-  zoom: PropTypes.string,
+  lat: PropTypes.number,
+  long: PropTypes.number,
+  zoom: PropTypes.number,
 };
 
 const defaultProps = {
