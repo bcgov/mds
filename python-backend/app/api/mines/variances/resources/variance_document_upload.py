@@ -66,6 +66,9 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
 
         variance = Variance.find_by_variance_guid(variance_guid)
 
+        if not variance:
+            raise NotFound('Unable to fetch variance.')
+
         data = self.parser.parse_args()
         document_name = data.get('document_name')
         document_manager_guid = data.get('document_manager_guid')
