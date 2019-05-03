@@ -51,7 +51,7 @@ app {
                             'SUFFIX': "${app.build.suffix}",
                             'VERSION':"${app.build.version}",
                             'SOURCE_CONTEXT_DIR': "microservices/nris_api/backend",
-                            'SOURCE_REPOSITORY_URL': "${app.git.uri}"
+                            'SOURCE_REPOSITORY_URL': "${app.git.uri}",
                     ]
                 ],
                 [

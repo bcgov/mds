@@ -1,1 +1,1 @@
-../../microservices/nris_api/backend/requirements.txt
+c:/Sierra/EMPR/mds/mds/microservices/nris_api/backend/requirements.txt
