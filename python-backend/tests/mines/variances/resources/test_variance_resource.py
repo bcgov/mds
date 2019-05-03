@@ -57,7 +57,7 @@ def test_put_variance(test_client, db_session, auth_headers):
         'variance_application_status_code': approved_variance.variance_application_status_code,
         'ohsc_ind': True,
         'union_ind': True,
-        'inspector_id': approved_variance.inspector_id,
+        'inspector_guid': approved_variance.inspector_guid,
         'note': approved_variance.note,
         'issue_date': approved_variance.issue_date,
         'expiry_date': approved_variance.expiry_date
@@ -74,7 +74,7 @@ def test_put_variance(test_client, db_session, auth_headers):
     assert put_data['variance_application_status_code'] == data['variance_application_status_code']
     assert put_data['ohsc_ind'] == data['ohsc_ind']
     assert put_data['union_ind'] == data['union_ind']
-    assert put_data['inspector_id'] == data['inspector_id']
+    assert put_data['inspector_guid'] == str(data['inspector_guid'])
     assert put_data['note'] == data['note']
     assert put_data['issue_date'] == data['issue_date'].strftime('%Y-%m-%d')
     assert put_data['expiry_date'] == data['expiry_date'].strftime('%Y-%m-%d')
@@ -91,7 +91,7 @@ def test_put_variance_invalid(test_client, db_session, auth_headers):
         'variance_application_status_code': 'REV',
         'ohsc_ind': True,
         'union_ind': True,
-        'inspector_id': approved_variance.inspector_id,
+        'inspector_guid': approved_variance.inspector_guid,
         'note': approved_variance.note,
         'issue_date': approved_variance.issue_date,
         'expiry_date': approved_variance.expiry_date
@@ -116,7 +116,7 @@ def test_put_variance_invalid_variance_id(test_client, db_session, auth_headers)
         'variance_application_status_code': 'REV',
         'ohsc_ind': True,
         'union_ind': True,
-        'inspector_id': approved_variance.inspector_id,
+        'inspector_guid': approved_variance.inspector_guid,
         'note': approved_variance.note,
         'issue_date': approved_variance.issue_date,
         'expiry_date': approved_variance.expiry_date

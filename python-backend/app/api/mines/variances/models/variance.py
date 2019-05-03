@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime
 
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.orm import validates
 from app.extensions import db
@@ -13,6 +13,7 @@ from ....documents.variances.models.variance import VarianceDocumentXref
 
 INVALID_GUID = 'Invalid guid.'
 INVALID_MINE_GUID = 'Invalid mine_guid.'
+INVALID_APPLICANT_GUID = 'Invalid applicant_guid.'
 MISSING_MINE_GUID = 'Missing mine_guid.'
 
 class Variance(AuditMixin, Base):
@@ -40,6 +41,9 @@ class Variance(AuditMixin, Base):
 
     documents = db.relationship('VarianceDocumentXref', lazy='joined')
     mine_documents = db.relationship('MineDocument', lazy='joined', secondary='variance_document_xref')
+    inspector = db.relationship('CoreUser', lazy='joined')
+
+    inspector_guid = association_proxy('inspector', 'core_user_guid')
 
 
     def __repr__(self):
@@ -109,8 +113,5 @@ class Variance(AuditMixin, Base):
     @validates('applicant_guid')
     def validate_applicant_guid(self, key, applicant_guid):
         if applicant_guid:
-            try:
-                uuid.UUID(str(applicant_guid), version=4)
-            except ValueError:
-                raise AssertionError('Invalid applicant_guid')
+            self.validate_guid(applicant_guid, INVALID_APPLICANT_GUID)
         return applicant_guid
