@@ -223,7 +223,7 @@ class VarianceFactory(BaseFactory):
             issue_date=TODAY,
             expiry_date=TODAY,
             inspector_id=factory.SelfAttribute('core_user.core_user_id'))
-
+     
     compliance_article_id = factory.LazyFunction(RandomComplianceArticleId)
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     ohsc_ind = factory.Faker('boolean', chance_of_getting_true=50)
