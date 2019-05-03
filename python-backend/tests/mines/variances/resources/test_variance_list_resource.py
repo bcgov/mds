@@ -56,7 +56,7 @@ def test_post_approved_variance(test_client, db_session, auth_headers):
         'variance_application_status_code': approved_variance.variance_application_status_code,
         'ohsc_ind': True,
         'union_ind': True,
-        'inspector_id': approved_variance.inspector_id,
+        'inspector_guid': approved_variance.inspector_guid,
         'note': 'Biggest mine yet',
         'issue_date': approved_variance.issue_date,
         'expiry_date': approved_variance.expiry_date
@@ -70,7 +70,7 @@ def test_post_approved_variance(test_client, db_session, auth_headers):
     assert post_data['variance_application_status_code'] == test_variance_data['variance_application_status_code']
     assert post_data['ohsc_ind'] == test_variance_data['ohsc_ind']
     assert post_data['union_ind'] == test_variance_data['union_ind']
-    assert post_data['inspector_id'] == test_variance_data['inspector_id']
+    assert post_data['inspector_guid'] == str(test_variance_data['inspector_guid'])
     assert post_data['note'] == test_variance_data['note']
     assert post_data['issue_date'] == test_variance_data['issue_date'].strftime('%Y-%m-%d')
     assert post_data['expiry_date'] == test_variance_data['expiry_date'].strftime('%Y-%m-%d')
@@ -85,7 +85,7 @@ def test_post_approved_variance(test_client, db_session, auth_headers):
         'variance_application_status_code': approved_variance.variance_application_status_code,
         'ohsc_ind': True,
         'union_ind': True,
-        'inspector_id': approved_variance.inspector_id,
+        'inspector_guid': approved_variance.inspector_guid,
         'note': 'Biggest mine yet',
         'issue_date': approved_variance.issue_date,
         'expiry_date': approved_variance.expiry_date
@@ -99,7 +99,7 @@ def test_post_approved_variance(test_client, db_session, auth_headers):
     assert post_data['variance_application_status_code'] == test_variance_data['variance_application_status_code']
     assert post_data['ohsc_ind'] == test_variance_data['ohsc_ind']
     assert post_data['union_ind'] == test_variance_data['union_ind']
-    assert post_data['inspector_id'] == test_variance_data['inspector_id']
+    assert post_data['inspector_guid'] == str(test_variance_data['inspector_guid'])
     assert post_data['note'] == test_variance_data['note']
     assert post_data['issue_date'] == test_variance_data['issue_date'].strftime('%Y-%m-%d')
     assert post_data['expiry_date'] == test_variance_data['expiry_date'].strftime('%Y-%m-%d')
