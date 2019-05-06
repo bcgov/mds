@@ -226,7 +226,7 @@
                     "valueFrom": {
                       "secretKeyRef": {
                         "name": "${MDS_NRIS_ODB_CREDENTIALS}",
-                        "key": "host"
+                        "key": "db-host"
                       }
                     }
                   },
@@ -235,7 +235,7 @@
                     "valueFrom": {
                       "secretKeyRef": {
                         "name": "${MDS_NRIS_ODB_CREDENTIALS}",
-                        "key": "service-name"
+                        "key": "db-service"
                       }
                     }
                   },
@@ -244,7 +244,7 @@
                     "valueFrom": {
                       "secretKeyRef": {
                         "name": "${MDS_NRIS_ODB_CREDENTIALS}",
-                        "key": "username"
+                        "key": "db-user"
                       }
                     }
                   },
@@ -253,7 +253,7 @@
                     "valueFrom": {
                       "secretKeyRef": {
                         "name": "${MDS_NRIS_ODB_CREDENTIALS}",
-                        "key": "password"
+                        "key": "db-password"
                       }
                     }
                   },
