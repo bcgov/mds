@@ -29,6 +29,8 @@ search_targets = {
     'permit_documents': ('Permit Documents', 'document_guid', PermitAmendmentDocument,
                          [PermitAmendmentDocument.document_name], False, 'json', [])
 }
+
+
 class SearchResult:
     def __init__(self, score, type, result):
         self.score = score
@@ -38,14 +40,17 @@ class SearchResult:
     def json(self):
         return {'score': self.score, 'type': self.type, 'result': self.result}
 
-@requires_role_mine_view
+
 class SearchOptionsResource(Resource, UserMixin):
+    
+    @requires_role_mine_view
     def get(self):
         options = []
         for key, value in search_targets.items():
             options.append({'model_id': key, 'description': value[0]})
-        
+
         return options
+
 
 class SearchResource(Resource, UserMixin):
     parser = reqparse.RequestParser()

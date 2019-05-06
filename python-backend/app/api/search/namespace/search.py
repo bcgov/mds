@@ -1,7 +1,6 @@
 from flask_restplus import Namespace
 
-from ..search.resources.search import SearchResource
-from ..search.resources.search import SearchOptionsResource
+from ..search.resources.search import SearchResource, SearchOptionsResource
 
 api = Namespace('search', description='Search related operations')
 
