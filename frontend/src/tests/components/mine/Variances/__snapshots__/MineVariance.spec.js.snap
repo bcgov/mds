@@ -204,7 +204,7 @@ ShallowWrapper {
             <AddButton
               onClick={[Function]}
             >
-              Add variance application
+              Add variance
             </AddButton>
           </Connect(AuthorizationWrapper)>
         </div>,
@@ -439,7 +439,7 @@ ShallowWrapper {
             <AddButton
               onClick={[Function]}
             >
-              Add variance application
+              Add variance
             </AddButton>
           </Connect(AuthorizationWrapper)>,
           "className": "inline-flex flex-end",
@@ -453,7 +453,7 @@ ShallowWrapper {
             "children": <AddButton
               onClick={[Function]}
             >
-              Add variance application
+              Add variance
             </AddButton>,
             "permission": "role_create",
           },
@@ -463,11 +463,11 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "function",
             "props": Object {
-              "children": "Add variance application",
+              "children": "Add variance",
               "onClick": [Function],
             },
             "ref": null,
-            "rendered": "Add variance application",
+            "rendered": "Add variance",
             "type": [Function],
           },
           "type": [Function],
@@ -982,7 +982,7 @@ ShallowWrapper {
               <AddButton
                 onClick={[Function]}
               >
-                Add variance application
+                Add variance
               </AddButton>
             </Connect(AuthorizationWrapper)>
           </div>,
@@ -1217,7 +1217,7 @@ ShallowWrapper {
               <AddButton
                 onClick={[Function]}
               >
-                Add variance application
+                Add variance
               </AddButton>
             </Connect(AuthorizationWrapper)>,
             "className": "inline-flex flex-end",
@@ -1231,7 +1231,7 @@ ShallowWrapper {
               "children": <AddButton
                 onClick={[Function]}
               >
-                Add variance application
+                Add variance
               </AddButton>,
               "permission": "role_create",
             },
@@ -1241,11 +1241,11 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "function",
               "props": Object {
-                "children": "Add variance application",
+                "children": "Add variance",
                 "onClick": [Function],
               },
               "ref": null,
-              "rendered": "Add variance application",
+              "rendered": "Add variance",
               "type": [Function],
             },
             "type": [Function],
