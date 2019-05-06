@@ -19,7 +19,7 @@ import utils.DataCleanup
         // // Tenure.class, TODO: Enable when re-enabling Tenure tab
         // Tailings.class,
         // Contacts.class,
-        MapNavigation.class,
+        MapNavigationSpec.class,
         DataCleanup.class,
 ])
 

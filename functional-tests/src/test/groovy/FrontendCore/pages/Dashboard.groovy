@@ -13,6 +13,7 @@ class Dashboard extends Page {
 
         //navigation links
         contactPageButton (wait: true) {$("button").has("span", text:"Contacts")}
+        mapTabButton (wait: true)  {$("div", role: 'tab').text("Map")}
 
         //create mine form
         createMineForm { module Form_CreateMine }
