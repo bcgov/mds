@@ -1120,7 +1120,7 @@ export const APPLICATION_STATUS_CODE_OPTIONS = [
 export const VARIANCES = {
   records: [
     {
-      variance_id: 1249,
+      variance_guid: "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
       compliance_article_id: 1,
       expiry_date: "2019-03-30",
       issue_date: "2019-03-01",
@@ -1131,7 +1131,7 @@ export const VARIANCES = {
           records: [
             {
               variance_document_xref_guid: "eda300b7-2155-4bf4-9b3d-06b1f4d8a0fe",
-              variance_id: 1249,
+              variance_guid: "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
               mine_document_guid: "d463b9df-7650-4d18-8c73-c8bfb7ae48f0",
               details: {
                 mine_document_guid: "d463b9df-7650-4d18-8c73-c8bfb7ae48f0",

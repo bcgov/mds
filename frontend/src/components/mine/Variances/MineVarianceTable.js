@@ -19,15 +19,15 @@ const propTypes = {
 export class MineVarianceTable extends Component {
   errorStyle = (isOverdue) => (isOverdue ? { color: errorRed } : {});
 
-  sortByDateOrID = (variance1, variance2) => {
+  sortByDate = (variance1, variance2) => {
     const date1 = Date.parse(variance1.expiry_date) || 0;
     const date2 = Date.parse(variance2.expiry_date) || 0;
-    return date1 === date2 ? variance1.variance_id - variance2.variance_id : date1 - date2;
+    return date1 === date2 ? -1 : date1 - date2;
   };
 
   transformRowData = (variances, codeHash) =>
-    variances.sort(this.sortByDateOrID).map((variance) => ({
-      key: variance.variance_id,
+    variances.sort(this.sortByDate).map((variance) => ({
+      key: variance.variance_guid,
       compliance_article_id: codeHash[variance.compliance_article_id] || String.EMPTY_FIELD,
       expiry_date: formatDate(variance.expiry_date) || String.EMPTY_FIELD,
       issue_date: formatDate(variance.issue_date) || String.EMPTY_FIELD,

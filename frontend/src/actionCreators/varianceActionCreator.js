@@ -38,12 +38,12 @@ export const fetchVariancesByMine = ({ mineGuid }) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const addDocumentToVariance = ({ mineGuid, varianceId }, payload) => (dispatch) => {
+export const addDocumentToVariance = ({ mineGuid, varianceGuid }, payload) => (dispatch) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.ADD_DOCUMENT_TO_VARIANCE));
   return CustomAxios()
     .put(
-      ENVIRONMENT.apiUrl + API.VARIANCE_DOCUMENTS(mineGuid, varianceId),
+      ENVIRONMENT.apiUrl + API.VARIANCE_DOCUMENTS(mineGuid, varianceGuid),
       payload,
       createRequestHeader()
     )
@@ -56,14 +56,14 @@ export const addDocumentToVariance = ({ mineGuid, varianceId }, payload) => (dis
     .finally(() => dispatch(hideLoading()));
 };
 
-export const removeDocumentFromVariance = ({ mineGuid, varianceId, mineDocumentGuid }) => (
+export const removeDocumentFromVariance = ({ mineGuid, varianceGuid, mineDocumentGuid }) => (
   dispatch
 ) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.REMOVE_DOCUMENT_FROM_VARIANCE));
   return CustomAxios()
     .delete(
-      ENVIRONMENT.apiUrl + API.VARIANCE_DOCUMENT(mineGuid, varianceId, mineDocumentGuid),
+      ENVIRONMENT.apiUrl + API.VARIANCE_DOCUMENT(mineGuid, varianceGuid, mineDocumentGuid),
       createRequestHeader()
     )
     .then((response) => {

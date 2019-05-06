@@ -24,11 +24,11 @@ export class MineVariance extends Component {
   handleAddVariances = (files) => (values) =>
     this.props
       .createVariance({ mineGuid: this.props.mine.mine_guid }, values)
-      .then(async ({ data: { variance_id } }) => {
+      .then(async ({ data: { variance_guid } }) => {
         await Promise.all(
           Object.entries(files).map(([document_manager_guid, document_name]) =>
             this.props.addDocumentToVariance(
-              { mineGuid: this.props.mine.mine_guid, varianceId: variance_id },
+              { mineGuid: this.props.mine.mine_guid, varianceGuid: variance_guid },
               {
                 document_manager_guid,
                 document_name,
