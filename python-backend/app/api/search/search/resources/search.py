@@ -4,7 +4,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from flask_restplus import Resource, reqparse
 from datetime import datetime
 from flask import request, current_app
-from sqlalchemy import desc
+from sqlalchemy import desc, or_
 
 from app.extensions import db
 from app.api.utils.access_decorators import requires_role_mine_view, requires_role_mine_create
@@ -19,8 +19,9 @@ from app.api.permits.permit_amendment.models.permit_amendment_document import Pe
 # 'Description': (Id, Model, [Model.attribute, Model.attribute], has_deleted_ind, json_function, json_function_arguements)
 search_targets = {
     'Mines': ('mine_guid', Mine, [Mine.mine_name, Mine.mine_no], True, 'json_for_list', []),
-    'Contacts': ('party_guid', Party, [Party.first_name, Party.party_name, Party.email, Party.phone_no], False,
-                 'json', [True, ['mine_party_appt']]),
+    'Contacts':
+    ('party_guid', Party, [Party.first_name, Party.party_name, Party.email, Party.phone_no], False,
+     'json', [True, ['mine_party_appt']]),
     'Permits': ('permit_guid', Permit, [Permit.permit_no], False, 'json_for_list', []),
     'Mine Documents': ('mine_document_guid', MineDocument, [MineDocument.document_name], False,
                        'json', []),
@@ -80,46 +81,47 @@ class SearchResource(Resource, UserMixin, ErrorMixin):
 def execute_search(app, search_results, term, type, comparator, model, columns, has_deleted_ind,
                    json_function_name, *json_function_args):
     with app.app_context():
-        for column in columns:
-            exact = db.session.query(model).filter(column.ilike(term))
-            starts_with = db.session.query(model).filter(column.ilike(f'{term}%'))
-            contains = db.session.query(model).filter(column.ilike(f'%{term}%'))
-            #fuzzy? Soundex?
+        columns_for_exact = [column.ilike(term) for column in columns]
+        columns_for_starts = [column.ilike(f'{term}%') for column in columns]
+        columns_for_contains = [column.ilike(f'%{term}%') for column in columns]
 
-            if has_deleted_ind:
-                exact = exact.filter_by(deleted_ind=False)
-                starts_with = starts_with.filter_by(deleted_ind=False)
-                contains = contains.filter_by(deleted_ind=False)
+        exact = db.session.query(model).filter(or_(*columns_for_exact))
+        starts_with = db.session.query(model).filter(or_(*columns_for_starts))
+        contains = db.session.query(model).filter(or_(*columns_for_contains))
+        #fuzzy? Soundex?
 
-            contains = contains.order_by(desc(column)).limit(25)
-            starts_with = starts_with.order_by(desc(column)).limit(25)
-            exact = exact.order_by(desc(column)).limit(50)
+        if has_deleted_ind:
+            exact = exact.filter_by(deleted_ind=False)
+            starts_with = starts_with.filter_by(deleted_ind=False)
+            contains = contains.filter_by(deleted_ind=False)
 
-            for item in exact:
+        contains = contains.order_by(desc(model.create_timestamp)).limit(25).all()
+        starts_with = starts_with.order_by(desc(model.create_timestamp)).limit(25).all()
+        exact = exact.order_by(desc(model.create_timestamp)).limit(50).all()
+        app.logger.info(str(exact))
+        for item in exact:
+            search_results.append(
+                SearchResult(500, type,
+                             getattr(item, json_function_name)(*json_function_args)))
+
+        for item in starts_with:
+            in_list = False
+            for item2 in search_results:
+                if getattr(item, json_function_name)(*json_function_args).get(comparator) == str(
+                        item2.result.get(comparator)):
+                    in_list = True
+            if not in_list:
                 search_results.append(
-                    SearchResult(500, type,
+                    SearchResult(75, type,
                                  getattr(item, json_function_name)(*json_function_args)))
 
-            for item in starts_with:
-                in_list = False
-                for item2 in search_results:
-                    if getattr(item,
-                               json_function_name)(*json_function_args).get(comparator) == str(
-                                   item2.result.get(comparator)):
-                        in_list = True
-                if not in_list:
-                    search_results.append(
-                        SearchResult(75, type,
-                                     getattr(item, json_function_name)(*json_function_args)))
-
-            for item in contains:
-                in_list = False
-                for item2 in search_results:
-                    if getattr(item,
-                               json_function_name)(*json_function_args).get(comparator) == str(
-                                   item2.result.get(comparator)):
-                        in_list = True
-                if not in_list:
-                    search_results.append(
-                        SearchResult(25, type,
-                                     getattr(item, json_function_name)(*json_function_args)))
+        for item in contains:
+            in_list = False
+            for item2 in search_results:
+                if getattr(item, json_function_name)(*json_function_args).get(comparator) == str(
+                        item2.result.get(comparator)):
+                    in_list = True
+            if not in_list:
+                search_results.append(
+                    SearchResult(25, type,
+                                 getattr(item, json_function_name)(*json_function_args)))
