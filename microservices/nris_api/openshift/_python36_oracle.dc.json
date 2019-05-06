@@ -46,7 +46,7 @@
     {
       "name": "MDS_NRIS_ODB_CREDENTIALS",
       "required": false,
-      "value": "template.mds-nris-credentials"
+      "value": "template.mds-nris-odb-credentials"
     },
     {
       "name": "CPU_LIMIT",
