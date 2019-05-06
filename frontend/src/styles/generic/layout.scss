@@ -13,6 +13,11 @@ body {
 .content {
   overflow: initial;
   background-color: $pure-white;
+
+  &--light-grey {
+    background-color: $lightest-grey;
+    border-radius: 2px;
+  }
 }
 
 .footer {
@@ -73,6 +78,10 @@ body {
 
 .flex-end {
   justify-content: flex-end;
+}
+
+.flex-start {
+  justify-content: flex-start;
 }
 
 .block-mobile {
@@ -184,6 +193,11 @@ body {
 // using important to override any existing styling from ant design.
 .icon-sm {
   font-size: 20px !important;
+
+  &--img {
+    width: 15px;
+    height: 26px;
+  }
 }
 
 .icon-lg {
@@ -207,12 +221,6 @@ body {
 // used on larger modals as a divider.
 .border {
   &--right {
-    &--violet {
-      border-right: 1px solid $violet;
-      @include tablet {
-        border-right: 0;
-      }
-    }
     &--layout {
       border-right: 1px solid $layout-grey;
       @include tablet {
@@ -221,12 +229,6 @@ body {
     }
   }
   &--left {
-    &--violet {
-      border-left: 1px solid $violet;
-      @include tablet {
-        border-left: 0;
-      }
-    }
     &--layout {
       border-left: 1px solid $layout-grey;
       @include tablet {

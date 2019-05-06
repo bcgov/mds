@@ -65,6 +65,7 @@ export const VARIANCE_DOCUMENTS = (mineGuid, varianceGuid) =>
   `/mines/${mineGuid}/variances/${varianceGuid}/documents`;
 export const VARIANCE_DOCUMENT = (mineGuid, varianceGuid, documentManagerGuid) =>
   `/mines/${mineGuid}/variances/${varianceGuid}/documents/${documentManagerGuid}`;
+export const VARIANCE_STATUS_CODES = "/variances/status-codes";
 
 // users
 export const CORE_USER = "/users/core";

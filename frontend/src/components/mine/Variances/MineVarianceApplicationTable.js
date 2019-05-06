@@ -1,10 +1,11 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Table, Button, Icon } from "antd";
+import { Table, Button } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
-import { RED_CLOCK } from "@/constants/assets";
+import { RED_CLOCK, BRAND_PENCIL } from "@/constants/assets";
 import NullScreen from "@/components/common/NullScreen";
 import { formatDate } from "@/utils/helpers";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
@@ -16,81 +17,47 @@ const { errorRed } = COLOR;
 const propTypes = {
   variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  openViewVarianceModal: PropTypes.func.isRequired,
+  varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   openModal: PropTypes.func.isRequired,
 };
 
-export class MineVarianceTable extends Component {
-  errorStyle = (isOverdue) => (isOverdue ? { color: errorRed } : {});
-
+export class MineVarianceApplicationTable extends Component {
   sortByDate = (variance1, variance2) => {
     const date1 = Date.parse(variance1.expiry_date) || 0;
     const date2 = Date.parse(variance2.expiry_date) || 0;
     return date1 === date2 ? -1 : date1 - date2;
   };
 
-  transformRowData = (variances, codeHash) =>
-    variances.sort(this.sortByDate).map((variance) => ({
-      key: variance.variance_guid,
-      compliance_article_id: codeHash[variance.compliance_article_id] || String.EMPTY_FIELD,
-      expiry_date: formatDate(variance.expiry_date) || String.EMPTY_FIELD,
-      issue_date: formatDate(variance.issue_date) || String.EMPTY_FIELD,
-      note: variance.note,
-      received_date: formatDate(variance.received_date) || String.EMPTY_FIELD,
-      isOverdue: Date.parse(variance.expiry_date) < new Date(),
-      documents: variance.documents,
-    }));
+  transformRowData = (variances, codeHash, statusHash) =>
+    variances.sort(this.sortByDate).map((variance) => {
+      return {
+        key: variance.variance_guid,
+        variance,
+        status: statusHash[variance.variance_application_status_code],
+        compliance_article_id: codeHash[variance.compliance_article_id] || String.EMPTY_FIELD,
+        note: variance.note,
+        received_date: formatDate(variance.received_date) || String.EMPTY_FIELD,
+        documents: variance.documents,
+      };
+    });
 
   render() {
     const columns = [
       {
-        title: "",
-        dataIndex: "expired",
-        width: 10,
-        render: (text, record) => (
-          <div title="">
-            {record.isOverdue ? (
-              <img className="padding-small" src={RED_CLOCK} alt="expired" />
-            ) : (
-              ""
-            )}
-          </div>
-        ),
-      },
-      {
         title: "Code Section",
         dataIndex: "compliance_article_id",
-        render: (text, record) => (
-          <div title="Code Section" style={this.errorStyle(record.isOverdue)}>
-            {text}
-          </div>
-        ),
+        render: (text, record) => <div title="Code Section">{text}</div>,
       },
       {
-        title: "Issue Date",
-        dataIndex: "issue_date",
-        render: (text, record) => (
-          <div title="Issue Date" style={this.errorStyle(record.isOverdue)}>
-            {text}
-          </div>
-        ),
+        title: "Submission Date",
+        dataIndex: "received_date",
+        render: (text, record) => <div title="Submission Date">{text}</div>,
       },
       {
-        title: "Expiry Date",
-        dataIndex: "expiry_date",
-        render: (text, record) => (
-          <div title="Expiry Date" style={this.errorStyle(record.isOverdue)}>
-            {text}
-          </div>
-        ),
-      },
-      {
-        title: "Approval Status",
+        title: "Application  Status",
         dataIndex: "status",
-        render: (text, record) => (
-          <div title="Approval Status" style={this.errorStyle(record.isOverdue)}>
-            {record.isOverdue ? "Expired" : "Active"}
-          </div>
-        ),
+        render: (text, record) => <div title="Application Status">{text}</div>,
       },
       {
         title: "Documents",
@@ -129,8 +96,7 @@ export class MineVarianceTable extends Component {
                 ghost
                 onClick={(event) => this.props.openModal(event, record.variance)}
               >
-                <Icon type="eye" className="icon-sm" />
-                {/* <img src={BRAND_PENCIL} alt="Edit/View" /> */}
+                <img src={BRAND_PENCIL} alt="Edit/View" />
               </Button>
             </AuthorizationWrapper>
           </div>
@@ -144,14 +110,18 @@ export class MineVarianceTable extends Component {
           align="left"
           pagination={false}
           columns={columns}
-          locale={{ emptyText: <NullScreen type="approved-variances" /> }}
-          dataSource={this.transformRowData(this.props.variances, this.props.complianceCodesHash)}
+          locale={{ emptyText: <NullScreen type="variance-applications" /> }}
+          dataSource={this.transformRowData(
+            this.props.variances,
+            this.props.complianceCodesHash,
+            this.props.varianceStatusOptionsHash
+          )}
         />
       </div>
     );
   }
 }
 
-MineVarianceTable.propTypes = propTypes;
+MineVarianceApplicationTable.propTypes = propTypes;
 
-export default MineVarianceTable;
+export default MineVarianceApplicationTable;

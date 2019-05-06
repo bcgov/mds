@@ -344,7 +344,7 @@ export class MineHeader extends Component {
           )}
           <div className="inline-flex padding-small">
             <p className="field-title">Tenure</p>
-            <p>
+            <div>
               {this.props.transformedMineTypes.mine_tenure_type_code.length > 0 ? (
                 this.props.transformedMineTypes.mine_tenure_type_code.map((tenure) => (
                   <span className="mine_tenure" key={tenure}>
@@ -354,7 +354,7 @@ export class MineHeader extends Component {
               ) : (
                 <p>{String.EMPTY_FIELD}</p>
               )}
-            </p>
+            </div>
           </div>
           <div className="inline-flex padding-small wrap">
             <p className="field-title">Commodity</p>
