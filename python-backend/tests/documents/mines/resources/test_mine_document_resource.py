@@ -1,11 +1,14 @@
 import json
-from tests.factories import MineFactory
+from tests.factories import MineFactory, MineExpectedDocumentFactory
 
 
 # GET
 def test_get_mine_documents_by_mine_guid(test_client, db_session, auth_headers):
     mine_documents_count = 5
-    mine = MineFactory(mine_expected_documents=1, mine_expected_documents__related_documents=mine_documents_count)
+    mine = MineFactory(minimal=True)
+
+    exp_doc = MineExpectedDocumentFactory.create_batch(
+        size=1, mine=mine, related_documents=mine_documents_count)
 
     get_resp = test_client.get(
         '/documents/mines/' + str(mine.mine_guid), headers=auth_headers['full_auth_header'])

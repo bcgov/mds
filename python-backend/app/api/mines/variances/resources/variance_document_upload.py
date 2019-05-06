@@ -82,7 +82,7 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         if not mine_doc:
             raise BadRequest('Unable to register uploaded file as document')
 
-        variance.documents.append(mine_doc)
+        variance.mine_documents.append(mine_doc)
         variance.save()
         return variance
 
