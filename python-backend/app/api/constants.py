@@ -3,7 +3,6 @@
 # codes under the same tenure
 METALS_AND_MINERALS = [
     'AE',
-    'AT',
     'AL',
     'AI',
     'AM',
