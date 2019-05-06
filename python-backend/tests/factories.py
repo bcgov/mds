@@ -219,11 +219,13 @@ class VarianceFactory(BaseFactory):
         mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
         core_user = factory.SubFactory('tests.factories.CoreUserFactory')
         approved = factory.Trait(
-            variance_application_status_code='APP',
-            issue_date=TODAY,
-            expiry_date=TODAY,
-            inspector_id=factory.SelfAttribute('core_user.core_user_id'))
-     
+            variance_application_status_code = 'APP',
+            issue_date = TODAY,
+            expiry_date = TODAY,
+            inspector_id = factory.SelfAttribute('core_user.core_user_id'))
+
+    variance_id = factory.Sequence(lambda n: n)
+    variance_guid = GUID
     compliance_article_id = factory.LazyFunction(RandomComplianceArticleId)
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     ohsc_ind = factory.Faker('boolean', chance_of_getting_true=50)

@@ -22,7 +22,7 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
 
     @api.doc(description='Request a document_manager_guid for uploading a document')
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
-    def post(self, mine_guid, variance_id):
+    def post(self, mine_guid, variance_guid):
         # DocumentManager requires parser data, but no arguments are required
         data = self.parser.parse_args()
         metadata = self._parse_request_metadata()
@@ -55,16 +55,19 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         description='Associate an uploaded file with a variance.',
         params={
             'mine_guid': 'guid for the mine with which the variance is associated',
-            'variance_id': 'ID for the variance to which the document should be associated'
+            'variance_guid': 'ID for the variance to which the document should be associated'
         })
     @api.marshal_with(VARIANCE_MODEL, code=200)
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
-    def put(self, mine_guid, variance_id):
+    def put(self, mine_guid, variance_guid):
         # Arguments required by MineDocument
         self.parser.add_argument('document_name', type=str, required=True)
         self.parser.add_argument('document_manager_guid', type=str, required=True)
 
-        variance = Variance.find_by_variance_id(variance_id)
+        variance = Variance.find_by_variance_guid(variance_guid)
+
+        if not variance:
+            raise NotFound('Unable to fetch variance.')
 
         data = self.parser.parse_args()
         document_name = data.get('document_name')

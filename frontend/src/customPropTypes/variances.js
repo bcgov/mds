@@ -2,7 +2,7 @@ import { PropTypes, shape } from "prop-types";
 import { mineDocument } from "@/customPropTypes/documents";
 
 export const variance = shape({
-  variance_id: PropTypes.number,
+  variance_guid: PropTypes.string,
   compliance_article_id: PropTypes.number,
   variance_application_status_code: PropTypes.string,
   applicant_guid: PropTypes.string,

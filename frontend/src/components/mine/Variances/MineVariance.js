@@ -40,11 +40,11 @@ export class MineVariance extends Component {
     const newValues = { received_date, variance_application_status_code, ...values };
     return this.props
       .createVariance({ mineGuid: this.props.mine.mine_guid }, newValues)
-      .then(async ({ data: { variance_id } }) => {
+      .then(async ({ data: { variance_guid } }) => {
         await Promise.all(
           Object.entries(files).map(([document_manager_guid, document_name]) =>
             this.props.addDocumentToVariance(
-              { mineGuid: this.props.mine.mine_guid, varianceId: variance_id },
+              { mineGuid: this.props.mine.mine_guid, varianceGuid: variance_guid },
               {
                 document_manager_guid,
                 document_name,
@@ -69,13 +69,13 @@ export class MineVariance extends Component {
     }
     const newValues = { ...values, issue_date, expiry_date };
     const mineGuid = this.props.mine.mine_guid;
-    const varianceId = variance.variance_id;
+    const varianceGuid = variance.variance_guid;
     const codeLabel = this.props.complianceCodesHash[variance.compliance_article_id];
-    this.props.updateVariance({ mineGuid, varianceId, codeLabel }, newValues).then(async () => {
+    this.props.updateVariance({ mineGuid, varianceGuid, codeLabel }, newValues).then(async () => {
       await Promise.all(
         Object.entries(files).map(([document_manager_guid, document_name]) =>
           this.props.addDocumentToVariance(
-            { mineGuid: this.props.mine.mine_guid, varianceId },
+            { mineGuid: this.props.mine.mine_guid, varianceGuid },
             {
               document_manager_guid,
               document_name,

@@ -23,16 +23,16 @@ const propTypes = {
 };
 
 export class MineVarianceApplicationTable extends Component {
-  sortByDateOrID = (variance1, variance2) => {
+  sortByDate = (variance1, variance2) => {
     const date1 = Date.parse(variance1.expiry_date) || 0;
     const date2 = Date.parse(variance2.expiry_date) || 0;
-    return date1 === date2 ? variance1.variance_id - variance2.variance_id : date1 - date2;
+    return date1 === date2 ? -1 : date1 - date2;
   };
 
   transformRowData = (variances, codeHash, statusHash) =>
-    variances.sort(this.sortByDateOrID).map((variance) => {
+    variances.sort(this.sortByDate).map((variance) => {
       return {
-        key: variance.variance_id,
+        key: variance.variance_guid,
         variance,
         status: statusHash[variance.variance_application_status_code],
         compliance_article_id: codeHash[variance.compliance_article_id] || String.EMPTY_FIELD,
