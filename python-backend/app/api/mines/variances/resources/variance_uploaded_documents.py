@@ -24,7 +24,7 @@ class VarianceUploadedDocumentsResource(Resource, UserMixin, ErrorMixin):
         if mine_document is None:
             raise NotFound('Mine document not found.')
 
-        variance.documents.remove(mine_document)
+        variance.mine_documents.remove(mine_document)
         variance.save()
 
         return ('', 204)
