@@ -19,12 +19,6 @@
       "required": true
     },
     {
-      "name": "FLYWAY_NAME",
-      "displayName": "Name",
-      "description": "A name for flyway objects",
-      "required": true
-    },
-    {
       "name": "DB_CONFIG_NAME",
       "displayName": "Database Config Name",
       "description": "Configuration name for the database",
@@ -50,18 +44,9 @@
       "value": "/"
     },
     {
-      "name": "MDS_NRIS_API_SECRET",
-      "required": false,
-      "value": "template.mds-nris-secret"
-    },
-    {
-      "name": "MDS_NRIS_API_ODB_CREDENTIALS",
+      "name": "MDS_NRIS_ODB_CREDENTIALS",
       "required": false,
       "value": "template.mds-nris-credentials"
-    },
-    {
-      "name": "DOCUMENT_CAPACITY",
-      "required": true
     },
     {
       "name": "CPU_LIMIT",
@@ -239,7 +224,7 @@
                     "name": "NRIS_DB_HOSTNAME",
                     "valueFrom": {
                       "secretKeyRef": {
-                        "name": "${MDS_NRIS_API_ODB_CREDENTIALS}",
+                        "name": "${MDS_NRIS_ODB_CREDENTIALS}",
                         "key": "host"
                       }
                     }
@@ -248,7 +233,7 @@
                     "name": "NRIS_DB_SERVICENAME",
                     "valueFrom": {
                       "secretKeyRef": {
-                        "name": "${MDS_NRIS_API_ODB_CREDENTIALS}",
+                        "name": "${MDS_NRIS_ODB_CREDENTIALS}",
                         "key": "service-name"
                       }
                     }
@@ -257,7 +242,7 @@
                     "name": "NRIS_DB_USER",
                     "valueFrom": {
                       "secretKeyRef": {
-                        "name": "${MDS_NRIS_API_ODB_CREDENTIALS}",
+                        "name": "${MDS_NRIS_ODB_CREDENTIALS}",
                         "key": "username"
                       }
                     }
@@ -266,7 +251,7 @@
                     "name": "NRIS_DB_PASSWORD",
                     "valueFrom": {
                       "secretKeyRef": {
-                        "name": "${MDS_NRIS_API_ODB_CREDENTIALS}",
+                        "name": "${MDS_NRIS_ODB_CREDENTIALS}",
                         "key": "password"
                       }
                     }
