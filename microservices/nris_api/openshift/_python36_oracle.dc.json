@@ -2,7 +2,7 @@
   "kind": "Template",
   "apiVersion": "v1",
   "metadata": {
-    "name": "mds-python-dc",
+    "name": "mds-python-oracle-dc",
     "creationTimestamp": null
   },
   "parameters": [
@@ -45,18 +45,9 @@
       "required": true
     },
     {
-      "name": "APPLICATION_DOMAIN",
-      "required": true
-    },
-    {
       "name": "BASE_PATH",
       "required": false,
       "value": "/"
-    },
-    {
-      "name": "UPLOADED_DOCUMENT_DEST",
-      "required": false,
-      "value": "/opt/app-root/src/document_uploads"
     },
     {
       "name": "MDS_NRIS_API_SECRET",
@@ -64,18 +55,9 @@
       "value": "template.mds-nris-secret"
     },
     {
-      "name": "MDS_IDIR_SECRET",
+      "name": "MDS_NRIS_API_ODB_CREDENTIALS",
       "required": false,
-      "value": "template.mds-idir-secret"
-    },
-    {
-      "name": "REDIS_CONFIG_NAME",
-      "required": false,
-      "value": "template.mds-redis-secret"
-    },
-    {
-      "name": "CACHE_REDIS_HOST",
-      "required": true
+      "value": "template.mds-nris-credentials"
     },
     {
       "name": "DOCUMENT_CAPACITY",
@@ -126,7 +108,7 @@
       "value": "dev"
     },
     {
-      "name": "API_URL",
+      "name": "NRIS_API_URL",
       "required": true
     }
   ],
@@ -152,43 +134,6 @@
       }
     },
     {
-      "kind": "ImageStream",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "${FLYWAY_NAME}",
-        "generation": 1,
-        "creationTimestamp": null,
-        "labels": {
-          "shared": "true"
-        },
-        "annotations": {}
-      },
-      "spec": {
-        "lookupPolicy": {
-          "local": false
-        }
-      }
-    },
-    {
-      "apiVersion": "v1",
-      "kind": "PersistentVolumeClaim",
-      "metadata": {
-        "name": "mds-document-storage${SUFFIX}",
-        "annotations": {
-          "volume.beta.kubernetes.io/storage-class": "gluster-file",
-          "volume.beta.kubernetes.io/storage-provisioner": "kubernetes.io/glusterfs"
-        }
-      },
-      "spec": {
-        "accessModes": ["ReadWriteMany"],
-        "resources": {
-          "requests": {
-            "storage": "${DOCUMENT_CAPACITY}"
-          }
-        }
-      }
-    },
-    {
       "kind": "DeploymentConfig",
       "apiVersion": "v1",
       "metadata": {
@@ -202,22 +147,6 @@
       "spec": {
         "strategy": {
           "type": "Rolling",
-          "rollingParams": {
-            "pre": {
-              "failurePolicy": "Retry",
-              "execNewPod": {
-                "containerName": "flyway-migration",
-                "command": [
-                  "bash",
-                  "-c",
-                  "cd $FLYWAY_HOME && ./flyway migrate && ./flyway -url=jdbc:postgresql://$FLYWAY_DB_HOST/mds_test migrate"
-                ]
-              }
-            },
-            "maxSurge": "50%",
-            "maxUnavailable": 0,
-            "timeoutSeconds": 1200
-          },
           "resources": {
             "limits": {
               "cpu": "250m",
@@ -239,17 +168,6 @@
               "from": {
                 "kind": "ImageStreamTag",
                 "name": "${NAME}:${VERSION}"
-              }
-            }
-          },
-          {
-            "type": "ImageChange",
-            "imageChangeParams": {
-              "automatic": true,
-              "containerNames": ["flyway-migration"],
-              "from": {
-                "kind": "ImageStreamTag",
-                "name": "${FLYWAY_NAME}:${VERSION}"
               }
             }
           },
@@ -277,7 +195,7 @@
                 "image": " ",
                 "ports": [
                   {
-                    "containerPort": 5000,
+                    "containerPort": 5500,
                     "protocol": "TCP"
                   }
                 ],
@@ -318,58 +236,44 @@
                     }
                   },
                   {
-                    "name": "NRIS_USER_NAME",
+                    "name": "NRIS_DB_HOSTNAME",
                     "valueFrom": {
                       "secretKeyRef": {
-                        "name": "${MDS_NRIS_API_SECRET}",
-                        "key": "user-name"
+                        "name": "${MDS_NRIS_API_ODB_CREDENTIALS}",
+                        "key": "host"
                       }
                     }
                   },
                   {
-                    "name": "NRIS_PASS",
+                    "name": "NRIS_DB_SERVICENAME",
                     "valueFrom": {
                       "secretKeyRef": {
-                        "name": "${MDS_NRIS_API_SECRET}",
-                        "key": "password"
+                        "name": "${MDS_NRIS_API_ODB_CREDENTIALS}",
+                        "key": "service-name"
                       }
                     }
                   },
                   {
-                    "name": "NRIS_TOKEN_URL",
+                    "name": "NRIS_DB_USER",
                     "valueFrom": {
                       "secretKeyRef": {
-                        "name": "${MDS_NRIS_API_SECRET}",
-                        "key": "token-url"
-                      }
-                    }
-                  },
-                  {
-                    "name": "NRIS_INSPECTION_URL",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${MDS_NRIS_API_SECRET}",
-                        "key": "inspection-url"
-                      }
-                    }
-                  },
-                  {
-                    "name": "LDAP_IDIR_USERNAME",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${MDS_IDIR_SECRET}",
+                        "name": "${MDS_NRIS_API_ODB_CREDENTIALS}",
                         "key": "username"
                       }
                     }
                   },
                   {
-                    "name": "LDAP_IDIR_PASSWORD",
+                    "name": "NRIS_DB_PASSWORD",
                     "valueFrom": {
                       "secretKeyRef": {
-                        "name": "${MDS_IDIR_SECRET}",
+                        "name": "${MDS_NRIS_API_ODB_CREDENTIALS}",
                         "key": "password"
                       }
                     }
+                  },
+                  {
+                    "name": "NRIS_DB_PORT",
+                    "value": "1621"
                   },
                   {
                     "name": "ELASTIC_ENABLED",
