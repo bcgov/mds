@@ -15,21 +15,20 @@ from app.api.parties.party.models.party import Party
 from app.api.permits.permit.models.permit import Permit
 from app.api.documents.mines.models.mine_document import MineDocument
 from app.api.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
+from app.api.utils.access_decorators import requires_role_mine_view
 
-# 'Description': (Id, Model, [Model.attribute, Model.attribute], has_deleted_ind, json_function, json_function_arguements)
+# 'Description': (description, Id, Model, [Model.attribute, Model.attribute], has_deleted_ind, json_function, json_function_arguements)
 search_targets = {
-    'Mines': ('mine_guid', Mine, [Mine.mine_name, Mine.mine_no], True, 'json_for_list', []),
-    'Contacts':
-    ('party_guid', Party, [Party.first_name, Party.party_name, Party.email, Party.phone_no], False,
-     'json', [True, ['mine_party_appt']]),
-    'Permits': ('permit_guid', Permit, [Permit.permit_no], False, 'json_for_list', []),
-    'Mine Documents': ('mine_document_guid', MineDocument, [MineDocument.document_name], False,
-                       'json', []),
-    'Permit Documents': ('document_guid', PermitAmendmentDocument,
+    'mine': ('Mines', 'mine_guid', Mine, [Mine.mine_name, Mine.mine_no], True, 'json_for_list', []),
+    'party': ('Contacts', 'party_guid', Party,
+              [Party.first_name, Party.party_name, Party.email,
+               Party.phone_no], False, 'json', [True, ['mine_party_appt']]),
+    'permit': ('Permits', 'permit_guid', Permit, [Permit.permit_no], False, 'json_for_list', []),
+    'mine_documents': ('Mine Documents', 'mine_document_guid', MineDocument,
+                       [MineDocument.document_name], False, 'json', []),
+    'permit_documents': ('Permit Documents', 'document_guid', PermitAmendmentDocument,
                          [PermitAmendmentDocument.document_name], False, 'json', [])
 }
-
-
 class SearchResult:
     def __init__(self, score, type, result):
         self.score = score
@@ -39,8 +38,16 @@ class SearchResult:
     def json(self):
         return {'score': self.score, 'type': self.type, 'result': self.result}
 
+@requires_role_mine_view
+class SearchOptionsResource(Resource, UserMixin):
+    def get(self):
+        options = []
+        for key, value in search_targets.items():
+            options.append({'model_id': key, 'description': value[0]})
+        
+        return options
 
-class SearchResource(Resource, UserMixin, ErrorMixin):
+class SearchResource(Resource, UserMixin):
     parser = reqparse.RequestParser()
     parser.add_argument('search_term', type=str, help='Search term.')
     parser.add_argument('search_types', type=str, help='Search types.')
@@ -63,9 +70,9 @@ class SearchResource(Resource, UserMixin, ErrorMixin):
             for term in search_terms:
                 for type, type_config in search_targets.items():
                     task_list.append(
-                        executor.submit(execute_search, app, search_results, term, type,
-                                        type_config[0], type_config[1], type_config[2],
-                                        type_config[3], type_config[4], *type_config[5]))
+                        executor.submit(execute_search, app, search_results, term, type_config[0],
+                                        type_config[1], type_config[2], type_config[3],
+                                        type_config[4], type_config[5], *type_config[6]))
                     for task in as_completed(task_list):
                         try:
                             data = task.result()

@@ -1,11 +1,12 @@
 from flask_restplus import Namespace
 
 from ..search.resources.search import SearchResource
+from ..search.resources.search import SearchOptionsResource
 
 api = Namespace('search', description='Search related operations')
 
 api.add_resource(SearchResource, '')
-
+api.add_resource(SearchOptionsResource, '/options')
 
 #api.add_resource(PermitStatusCodeResource, '/status-codes')
 #api.add_resource(PermitAmendmentResource, '/<string:permit_guid>/amendments',
