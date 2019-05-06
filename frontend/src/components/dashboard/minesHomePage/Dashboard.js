@@ -199,6 +199,7 @@ export class Dashboard extends Component {
       });
     }
     // set the lat, long, zoom, and blinking to true
+    // Only do this if
     if (format(lat)[0] && format(long)[0]) {
       this.setState({
         lat: Number(format(lat)[0]),
