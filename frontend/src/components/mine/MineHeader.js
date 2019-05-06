@@ -254,14 +254,12 @@ export class MineHeader extends Component {
 
     const mapRoute = this.props.mine.mine_location
       ? route.MINE_HOME_PAGE.mapRoute(
-          null,
-          null,
-          null,
           this.props.mine.mine_location.latitude,
           this.props.mine.mine_location.longitude,
-          12
+          12,
+          this.props.mine.mine_name
         )
-      : route.MINE_HOME_PAGE.mapRoute(null, null, null, null, null, null);
+      : route.MINE_HOME_PAGE.mapRoute();
 
     return (
       <div className="dashboard__header--card">

@@ -174,6 +174,7 @@ export class Dashboard extends Component {
       lat,
       long,
       zoom,
+      mineName,
       ...remainingParams
     } = queryString.parse(params);
     const format = (param) => (param ? param.split(",").filter((x) => x) : []);
@@ -205,6 +206,8 @@ export class Dashboard extends Component {
         lat: Number(format(lat)[0]),
         long: Number(format(long)[0]),
         zoom: format(zoom)[0] ? Number(format(zoom)[0]) : 6,
+        showCoordinates: true,
+        mineName: format(mineName)[0],
       });
       this.handleNavitationFromMine();
     }
@@ -226,15 +229,12 @@ export class Dashboard extends Component {
    */
   handleCoordinateSearch = (value) => {
     if (typeof value === "string") {
+      // Case: searching my mine name
       const newVal = value.split(",");
       if (newVal[0] && newVal[1]) {
-        this.setState({
-          lat: Number(newVal[1]),
-          long: Number(newVal[0]),
-          zoom: 14,
-          showCoordinates: true,
-          mineName: newVal[2],
-        });
+        this.props.history.push(
+          router.MINE_HOME_PAGE.mapRoute(newVal[1], newVal[0], 12, newVal[2])
+        );
         // TODO: spent 4 hours looking for a solution to not hardcoding this scroll value. Need to find a dynamic way of scroling the screen to this location.
         scroller.scrollTo("mapElement", {
           duration: 1000,
@@ -252,14 +252,9 @@ export class Dashboard extends Component {
         notification.error({ message: String.NO_COORDINATES, duration: 10 });
       }
     } else {
-      this.setState({
-        lat: Number(value.latitude),
-        long: Number(value.longitude),
-        zoom: 14,
-        showCoordinates: true,
-        mineName: null,
-      });
-      // window.scrollTo(0, this.mapRef.current.offsetTop);
+      this.props.history.push(
+        router.MINE_HOME_PAGE.mapRoute(value.latitude, value.longitude, 12, null)
+      );
       scroller.scrollTo("mapElement", {
         duration: 1000,
         smooth: true,
@@ -290,7 +285,7 @@ export class Dashboard extends Component {
       zoom: 6,
     });
     if (key === "map") {
-      this.props.history.push(router.MINE_HOME_PAGE.mapRoute(page, per_page, search));
+      this.props.history.push(router.MINE_HOME_PAGE.mapRoute());
     } else {
       this.props.history.push(router.MINE_HOME_PAGE.dynamicRoute({ page, per_page, search }));
     }
@@ -409,10 +404,12 @@ export class Dashboard extends Component {
               </div>
               <div>
                 <div className="center center-mobile">
-                  {this.state.mineName && (
+                  {this.state.mineName ? (
                     <h2>
                       Results for: <span className="p">{this.state.mineName}</span>
                     </h2>
+                  ) : (
+                    <h2> Result for coordinate search:</h2>
                   )}
                 </div>
                 <div className="center">
@@ -428,10 +425,11 @@ export class Dashboard extends Component {
                   </div>
                 </div>
               </div>
-              <Element name="mapElement" />
-              <div>
-                <MineMap {...this.state} />
-              </div>
+              <Element name="mapElement">
+                <div>
+                  <MineMap {...this.state} />
+                </div>
+              </Element>
             </TabPane>
           </Tabs>
         </div>
