@@ -15,7 +15,7 @@ class VarianceDocumentXref(Base):
     variance_id = db.Column(db.Integer,
                             db.ForeignKey('variance.variance_id'),
                             server_default=FetchedValue())
-    uploaded_at = db.Column(db.DateTime, server_default=FetchedValue())
+    created_at = db.Column(db.DateTime, server_default=FetchedValue())
 
     mine_document = db.relationship('MineDocument', lazy='joined')
 

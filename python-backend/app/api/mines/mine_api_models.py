@@ -169,7 +169,7 @@ MINE_INCIDENT_FOLLOWUP_TYPE_MODEL = api.model(
 
 VARIANCE_DOCUMENT_MODEL = api.inherit(
     'VarianceDocumentModel', MINE_DOCUMENT_MODEL, {
-        'uploaded_at': fields.Date
+        'created_at': fields.Date
     })
 
 VARIANCE_MODEL = api.model(
