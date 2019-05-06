@@ -86,8 +86,9 @@
       "value": "MDS Dev"
     },
     {
-      "name": "CACHE_REDIS_HOST",
-      "required": true
+      "name": "REDIS_CONFIG_NAME",
+      "required": false,
+      "value": "template.mds-redis-secret"
     },
     {
       "name": "ENVIRONMENT_NAME",
