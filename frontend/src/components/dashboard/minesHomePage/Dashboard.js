@@ -402,29 +402,29 @@ export class Dashboard extends Component {
                   <SearchCoordinatesForm onSubmit={this.handleCoordinateSearch} />
                 </Col>
               </div>
-              <div>
-                <div className="center center-mobile">
-                  {this.state.mineName ? (
-                    <h2>
-                      Results for: <span className="p">{this.state.mineName}</span>
-                    </h2>
-                  ) : (
-                    <h2> Result for coordinate search:</h2>
-                  )}
-                </div>
-                <div className="center">
-                  <div className="inline-flex evenly center-mobile">
-                    {this.state.showCoordinates && [
+              {this.state.showCoordinates && (
+                <div>
+                  <div className="center center-mobile">
+                    {this.state.mineName ? (
+                      <h2>
+                        Results for: <span className="p">{this.state.mineName}</span>
+                      </h2>
+                    ) : (
+                      <h2> Result for coordinate search:</h2>
+                    )}
+                  </div>
+                  <div className="center">
+                    <div className="inline-flex evenly center-mobile">
                       <h2>
                         Latitude: <span className="p">{this.state.lat}</span>
-                      </h2>,
+                      </h2>
                       <h2>
                         Longitude: <span className="p">{this.state.long}</span>
-                      </h2>,
-                    ]}
+                      </h2>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
               <Element name="mapElement">
                 <div>
                   <MineMap {...this.state} />
