@@ -58,7 +58,6 @@ class ApplicationFactory(BaseFactory):
     class Params:
         mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
 
-    application_id = factory.Sequence(lambda n: n)
     application_guid = GUID
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     application_no = factory.Sequence(lambda n: f'TX-{n}-TEST')
@@ -74,13 +73,14 @@ class DocumentManagerFactory(BaseFactory):
     class Params:
         path_root = ''
 
-    document_manager_id = factory.Sequence(lambda n: n)
     document_guid = GUID
-    full_storage_path = factory.LazyAttribute(lambda o: path.join(o.path_root, 'mine_no/category', o.file_display_name))
+    full_storage_path = factory.LazyAttribute(
+        lambda o: path.join(o.path_root, 'mine_no/category', o.file_display_name))
     upload_started_date = TODAY
     upload_completed_date = TODAY
     file_display_name = factory.Faker('file_name')
-    path_display_name = factory.LazyAttribute(lambda o: path.join(o.path_root, 'mine_name/category', o.file_display_name))
+    path_display_name = factory.LazyAttribute(
+        lambda o: path.join(o.path_root, 'mine_name/category', o.file_display_name))
 
 
 class MineDocumentFactory(BaseFactory):
@@ -219,12 +219,11 @@ class VarianceFactory(BaseFactory):
         mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
         core_user = factory.SubFactory('tests.factories.CoreUserFactory')
         approved = factory.Trait(
-            variance_application_status_code = 'APP',
-            issue_date = TODAY,
-            expiry_date = TODAY,
-        )
-
-    variance_id = factory.Sequence(lambda n: n)
+            variance_application_status_code='APP',
+            issue_date=TODAY,
+            expiry_date=TODAY,
+            inspector_id=factory.SelfAttribute('core_user.core_user_id'))
+     
     compliance_article_id = factory.LazyFunction(RandomComplianceArticleId)
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     ohsc_ind = factory.Faker('boolean', chance_of_getting_true=50)
@@ -242,7 +241,8 @@ class VarianceFactory(BaseFactory):
         if not isinstance(extracted, int):
             extracted = 1
 
-        VarianceDocumentFactory.create_batch(size=extracted, variance=obj, **kwargs)
+        VarianceDocumentFactory.create_batch(
+            size=extracted, variance=obj, mine_document__mine=None, **kwargs)
 
 
 class VarianceDocumentFactory(BaseFactory):
@@ -250,7 +250,9 @@ class VarianceDocumentFactory(BaseFactory):
         model = VarianceDocumentXref
 
     class Params:
-        mine_document = factory.SubFactory('tests.factories.MineDocumentFactory')
+        mine_document = factory.SubFactory(
+            'tests.factories.MineDocumentFactory',
+            mine_guid=factory.SelfAttribute('..variance.mine_guid'))
         variance = factory.SubFactory('tests.factories.VarianceFactory')
 
     variance_document_xref_guid = GUID
@@ -258,13 +260,17 @@ class VarianceDocumentFactory(BaseFactory):
     variance_id = factory.SelfAttribute('variance.variance_id')
 
 
+def RandomPermitNumber():
+    return random.choice(['C-', 'CX-', 'M-', 'M-', 'P-', 'PX-', 'G-', 'Q-']) + str(
+        random.randint(1, 9999999))
+
+
 class PermitFactory(BaseFactory):
     class Meta:
         model = Permit
 
-    permit_id = factory.Sequence(lambda n: n)
     permit_guid = GUID
-    permit_no = factory.Sequence(lambda n: f'QQ{n}')
+    permit_no = factory.LazyFunction(RandomPermitNumber)
     permit_status_code = factory.LazyFunction(RandomPermitStatusCode)
     permit_amendments = []
     mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
@@ -292,7 +298,6 @@ class PermitAmendmentFactory(BaseFactory):
         )
         permit = factory.SubFactory(PermitFactory, permit_amendments=0)
 
-    permit_amendment_id = factory.Sequence(lambda n: n)
     permit_amendment_guid = GUID
     permit_id = factory.SelfAttribute('permit.permit_id')
     received_date = TODAY
@@ -324,7 +329,6 @@ class MineVerifiedStatusFactory(BaseFactory):
     class Meta:
         model = MineVerifiedStatus
 
-    mine_verified_status_id = factory.Sequence(lambda n: n)
     healthy_ind = factory.Faker('boolean', chance_of_getting_true=50)
     verifying_user = factory.Faker('name')
     verifying_timestamp = TODAY
@@ -417,7 +421,6 @@ class CoreUserFactory(BaseFactory):
     class Meta:
         model = CoreUser
 
-    core_user_id = factory.Sequence(lambda n: n)
     core_user_guid = GUID
     email = factory.Faker('email')
     phone_no = factory.Faker('numerify', text='###-###-####')
@@ -428,7 +431,6 @@ class MinespaceUserFactory(BaseFactory):
     class Meta:
         model = MinespaceUser
 
-    user_id = factory.Sequence(lambda n: n)
     keycloak_guid = GUID
     email = factory.Faker('email')
 
@@ -440,7 +442,6 @@ class SubscriptionFactory(BaseFactory):
     class Params:
         mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
 
-    subscription_id = factory.Sequence(lambda n: n)
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     user_name = factory.Faker('last_name')
 
@@ -461,11 +462,13 @@ class MineFactory(BaseFactory):
             mine_tailings_storage_facilities=0,
             mine_permit=0,
             mine_expected_documents=0,
+            mine_incidents=0,
+            mine_variance=0,
         )
 
     mine_guid = GUID
-    mine_no = factory.Sequence(lambda n: f'MINENO{n}')
-    mine_name = factory.Sequence(lambda n: f'mine name {n}')
+    mine_no = factory.Faker('ean', length=8)
+    mine_name = factory.Faker('company')
     mine_note = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
     major_mine_ind = factory.Faker('boolean', chance_of_getting_true=50)
     mine_region = factory.LazyFunction(RandomMineRegionCode)
@@ -477,6 +480,7 @@ class MineFactory(BaseFactory):
     mine_permit = []
     mine_expected_documents = []
     mine_incidents = []
+    mine_variance = []
 
     @factory.post_generation
     def mine_tailings_storage_facilities(obj, create, extracted, **kwargs):
@@ -517,3 +521,13 @@ class MineFactory(BaseFactory):
             extracted = 1
 
         MineIncidentFactory.create_batch(size=extracted, mine_guid=obj.mine_guid, **kwargs)
+
+    @factory.post_generation
+    def mine_variance(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        VarianceFactory.create_batch(size=extracted, mine=obj, **kwargs)
