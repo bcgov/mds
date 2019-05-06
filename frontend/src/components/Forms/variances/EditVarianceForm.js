@@ -27,19 +27,26 @@ const propTypes = {
   statusCode: PropTypes.string.isRequired,
 };
 
+const inspectorRequired = (value) =>
+  value ? undefined : "This is a required field if the application has been reviewed";
+
 export class EditVarianceForm extends Component {
   state = {
     uploadedFiles: [],
     documentNameGuidMap: {},
     statusChangedToApproved: false,
+    isApprovedOrDenied: false,
   };
 
   componentWillReceiveProps(nextProps) {
     const statusChanged = this.props.statusCode !== nextProps.statusCode;
-    const isApproved = nextProps.statusCode === String.VARIANCE_APPROVED_CODE;
+    const statusChangedToApproved = nextProps.statusCode === String.VARIANCE_APPROVED_CODE;
+    const isApprovedOrDenied =
+      nextProps.statusCode === String.VARIANCE_APPROVED_CODE || String.VARIANCE_DENIED_CODE;
     if (statusChanged) {
       this.setState({
-        statusChangedToApproved: isApproved,
+        statusChangedToApproved,
+        isApprovedOrDenied,
       });
     }
   }
@@ -79,12 +86,12 @@ export class EditVarianceForm extends Component {
                 id="inspector_guid"
                 name="inspector_guid"
                 label={
-                  this.state.statusChangedToApproved
-                    ? "Assign a Lead inspector*"
-                    : "Assign a Lead inspector"
+                  this.state.isApprovedOrDenied
+                    ? "Assign a lead inspector*"
+                    : "Assign a lead inspector"
                 }
                 component={renderConfig.SELECT}
-                validate={this.state.statusChangedToApproved ? [required] : []}
+                validate={this.state.isApprovedOrDenied ? [inspectorRequired] : []}
                 data={this.props.coreUsers}
               />
             </Form.Item>

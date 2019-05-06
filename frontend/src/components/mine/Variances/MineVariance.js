@@ -163,9 +163,7 @@ export class MineVariance extends Component {
       <div>
         <div className="inline-flex flex-end">
           <AuthorizationWrapper permission={Permission.CREATE}>
-            <AddButton onClick={(event) => this.openVarianceModal(event)}>
-              Add variance application
-            </AddButton>
+            <AddButton onClick={(event) => this.openVarianceModal(event)}>Add variance</AddButton>
           </AuthorizationWrapper>
         </div>
         {this.renderVarianceTables()}
