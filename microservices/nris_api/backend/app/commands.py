@@ -4,6 +4,8 @@ import cx_Oracle
 from app.extensions import db  #, oracle_db
 from app.nris.models.test_model import Factorial
 
+from .config import Config
+
 
 def register_commands(app):
     @app.cli.command()
