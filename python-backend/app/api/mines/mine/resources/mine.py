@@ -102,6 +102,8 @@ class MineListResource(Resource, UserMixin):
 
         paginated_mine_query, pagination_details = self.apply_filter_and_search(request.args)
         mines = paginated_mine_query.all()
+        print(pagination_details)
+        print(len(mines))
         return {
             'mines': mines,
             'current_page': pagination_details.page_number,
@@ -228,10 +230,10 @@ class MineListResource(Resource, UserMixin):
         mines_query = apply_filters(mines_query, deleted_filter)
 
         # Apply sorting
-        if sort_model and sort_field and sort_dir:
-            mines_query = mines_query.outerjoin(MineStatus).outerjoin(MineStatusXref)
-            sort_criteria = [{'model': sort_model, 'field': sort_field, 'direction': sort_dir}]
-            mines_query = apply_sort(mines_query, sort_criteria)
+        # if sort_model and sort_field and sort_dir:
+        #     mines_query = mines_query.outerjoin(MineStatus).outerjoin(MineStatusXref)
+        #     sort_criteria = [{'model': sort_model, 'field': sort_field, 'direction': sort_dir}]
+        #     mines_query = apply_sort(mines_query, sort_criteria)
 
         return apply_pagination(mines_query, page, items_per_page)
 
