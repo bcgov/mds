@@ -104,6 +104,16 @@ link {
   }
 }
 
+.link-on-dark {
+  @extend p;
+  color: #ffffff;
+  text-decoration: underline;
+  &:hover {
+    color: #e0e0e0;
+    text-decoration: underline;
+  }
+}
+
 hr {
   border-top: 1px solid #c4cdd5;
   margin-top: 10px;
