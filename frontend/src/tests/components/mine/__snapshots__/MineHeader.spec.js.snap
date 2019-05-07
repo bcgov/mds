@@ -651,7 +651,7 @@ ShallowWrapper {
                 className="link-on-dark"
                 replace={false}
                 target="_blank"
-                to="/dashboard/mines?map=true&&zoom=12&mineName=mine3"
+                to="/dashboard/mines?map=true&lat&long&zoom=14&mineName=mine3"
               >
                 View In Full Map
               </Link>
@@ -2412,7 +2412,7 @@ ShallowWrapper {
                   className="link-on-dark"
                   replace={false}
                   target="_blank"
-                  to="/dashboard/mines?map=true&&zoom=12&mineName=mine3"
+                  to="/dashboard/mines?map=true&lat&long&zoom=14&mineName=mine3"
                 >
                   View In Full Map
                 </Link>
@@ -2536,7 +2536,7 @@ ShallowWrapper {
                     className="link-on-dark"
                     replace={false}
                     target="_blank"
-                    to="/dashboard/mines?map=true&&zoom=12&mineName=mine3"
+                    to="/dashboard/mines?map=true&lat&long&zoom=14&mineName=mine3"
                   >
                     View In Full Map
                   </Link>
@@ -2629,7 +2629,7 @@ ShallowWrapper {
                       className="link-on-dark"
                       replace={false}
                       target="_blank"
-                      to="/dashboard/mines?map=true&&zoom=12&mineName=mine3"
+                      to="/dashboard/mines?map=true&lat&long&zoom=14&mineName=mine3"
                     >
                       View In Full Map
                     </Link>,
@@ -2667,7 +2667,7 @@ ShallowWrapper {
                       "className": "link-on-dark",
                       "replace": false,
                       "target": "_blank",
-                      "to": "/dashboard/mines?map=true&&zoom=12&mineName=mine3",
+                      "to": "/dashboard/mines?map=true&lat&long&zoom=14&mineName=mine3",
                     },
                     "ref": null,
                     "rendered": "View In Full Map",
@@ -3105,7 +3105,7 @@ ShallowWrapper {
                   className="link-on-dark"
                   replace={false}
                   target="_blank"
-                  to="/dashboard/mines?map=true&&zoom=12&mineName=mine3"
+                  to="/dashboard/mines?map=true&lat&long&zoom=14&mineName=mine3"
                 >
                   View In Full Map
                 </Link>
@@ -4866,7 +4866,7 @@ ShallowWrapper {
                     className="link-on-dark"
                     replace={false}
                     target="_blank"
-                    to="/dashboard/mines?map=true&&zoom=12&mineName=mine3"
+                    to="/dashboard/mines?map=true&lat&long&zoom=14&mineName=mine3"
                   >
                     View In Full Map
                   </Link>
@@ -4990,7 +4990,7 @@ ShallowWrapper {
                       className="link-on-dark"
                       replace={false}
                       target="_blank"
-                      to="/dashboard/mines?map=true&&zoom=12&mineName=mine3"
+                      to="/dashboard/mines?map=true&lat&long&zoom=14&mineName=mine3"
                     >
                       View In Full Map
                     </Link>
@@ -5083,7 +5083,7 @@ ShallowWrapper {
                         className="link-on-dark"
                         replace={false}
                         target="_blank"
-                        to="/dashboard/mines?map=true&&zoom=12&mineName=mine3"
+                        to="/dashboard/mines?map=true&lat&long&zoom=14&mineName=mine3"
                       >
                         View In Full Map
                       </Link>,
@@ -5121,7 +5121,7 @@ ShallowWrapper {
                         "className": "link-on-dark",
                         "replace": false,
                         "target": "_blank",
-                        "to": "/dashboard/mines?map=true&&zoom=12&mineName=mine3",
+                        "to": "/dashboard/mines?map=true&lat&long&zoom=14&mineName=mine3",
                       },
                       "ref": null,
                       "rendered": "View In Full Map",
