@@ -17,12 +17,14 @@ const propTypes = {
   mine: CustomPropTypes.mine,
   lat: PropTypes.number,
   long: PropTypes.number,
+  zoom: PropTypes.number,
 };
 
 const defaultProps = {
   mine: null,
   lat: null,
   long: null,
+  zoom: null,
 };
 
 class MineMap extends Component {
@@ -32,6 +34,21 @@ class MineMap extends Component {
     mapFailedToLoad: false,
   };
 
+  componentDidMount() {
+    if (this.props.long !== String.DEFAULT_LONG && this.props.lat !== String.DEFAULT_LAT) {
+      const center = [this.props.long, this.props.lat];
+      this.setState((prevState) => {
+        const newView = prevState.view;
+        newView.center = center;
+        return { view: newView, center };
+      });
+    }
+  }
+
+  /**
+   * This will render the flashing red dot in the mine location on search
+   * @param {*} nextProps
+   */
   componentWillReceiveProps(nextProps) {
     if (nextProps.lat !== this.props.lat || nextProps.long !== this.props.long) {
       const center = [nextProps.long, nextProps.lat];
@@ -42,6 +59,10 @@ class MineMap extends Component {
         return { view: newView, center };
       });
     }
+  }
+
+  componentWillUnmount() {
+    this.setState({ center: null });
   }
 
   /**
@@ -223,38 +244,6 @@ class MineMap extends Component {
   };
 
   render() {
-    if (this.props.mine) {
-      // default to the center of BC and change zoom level if mine location does not exist.
-      // The 0.0000001 that is added to lat and long prevents the pin from dissapearing on the
-      // mine page map under certain zooms.  it string concatinates added precision to the string eg (-113.0830000
-      // becomes -113.08300001). This seems to be a bug with react-argis or some other library
-      let centerOfMap = [String.DEFAULT_LONG, String.DEFAULT_LAT];
-      if (this.props.mine.mine_location) {
-        centerOfMap = [
-          this.props.mine.mine_location.longitude
-            ? parseFloat(this.props.mine.mine_location.longitude) + 0.0000001
-            : String.DEFAULT_LONG,
-          this.props.mine.mine_location.latitude
-            ? parseFloat(this.props.mine.mine_location.latitude) + 0.0000001
-            : String.DEFAULT_LAT,
-        ];
-      }
-      return (
-        // Map located on MineSummary page, - this.props.mine is available, contains 1 mine pin.
-        <Map
-          style={{ width: "100%", height: "100%" }}
-          mapProperties={{ basemap: "topo" }}
-          viewProperties={{
-            center: centerOfMap,
-            zoom: this.props.mine.mine_location ? 8 : 5,
-            constraints: { minZoom: 5 },
-          }}
-          onLoad={this.handleLoadMap}
-        >
-          <MinePin />
-        </Map>
-      );
-    }
     if (this.state.mapFailedToLoad) {
       return (
         // Fallback to default map if any of the layers fail to load
@@ -263,7 +252,7 @@ class MineMap extends Component {
           mapProperties={{ basemap: "topo" }}
           viewProperties={{
             center: [this.props.long, this.props.lat],
-            zoom: 6,
+            zoom: this.props.zoom ? this.props.zoom : 6,
             constraints: { minZoom: 5 },
           }}
           onLoad={this.handleLoadMap}
@@ -282,7 +271,7 @@ class MineMap extends Component {
         mapProperties={{ basemap: "topo" }}
         viewProperties={{
           center: [this.props.long, this.props.lat],
-          zoom: 6,
+          zoom: this.props.zoom ? this.props.zoom : 6,
           constraints: { minZoom: 5 },
           popup: {
             dockOptions: {
