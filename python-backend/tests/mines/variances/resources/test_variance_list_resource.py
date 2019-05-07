@@ -29,6 +29,16 @@ def test_get_variances_invalid_mine_guid(test_client, db_session, auth_headers):
     assert get_resp.status_code == 400
 
 
+def test_get_variances_non_existent_mine_guid(test_client, db_session, auth_headers):
+    batch_size = 3
+    fake_guid = uuid.uuid4()
+    VarianceFactory.create_batch(size=batch_size)
+
+    get_resp = test_client.get(f'/mines/{fake_guid}/variances', headers=auth_headers['full_auth_header'])
+    get_data = json.loads(get_resp.data.decode())
+    assert get_resp.status_code == 404
+
+
 # POST
 def test_post_variance_application(test_client, db_session, auth_headers):
     mine = MineFactory()

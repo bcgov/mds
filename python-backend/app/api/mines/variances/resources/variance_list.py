@@ -74,6 +74,11 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
             raise BadRequest(
                 'Unable to fetch variances. Confirm you\'ve provided a valid mine_guid')
 
+        if len(variances) == 0:
+            mine = Mine.find_by_mine_guid(mine_guid)
+            if mine is None:
+                raise NotFound('Mine')
+
         return variances
 
 
@@ -92,7 +97,7 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
 
         mine = Mine.find_by_mine_guid(mine_guid)
         if mine is None:
-            raise NotFound('Mine.')
+            raise NotFound('Mine')
 
         if core_user_guid:
             core_user = CoreUser.find_by_core_user_guid(core_user_guid)
