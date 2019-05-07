@@ -1,36 +1,39 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MineVarianceTable renders properly 1`] = `
+exports[`MineIncidentTable renders properly 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <MineVarianceTable
-    complianceCodesHash={
-      Object {
-        "305": "2.3.7 - Spills",
-        "306": "2.3.8 - Flammable Waste Storage",
-      }
-    }
-    variances={
+  Symbol(enzyme.__unrendered__): <MineIncidentTable
+    followupActions={
       Array [
         Object {
-          "compliance_article_id": 1,
-          "documents": Array [
-            Object {
-              "created_at": "2019-05-02",
-              "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
-              "document_name": "test.pdf",
-              "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
-              "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
-            },
-          ],
-          "expiry_date": "2019-03-30",
-          "issue_date": "2019-03-01",
-          "note": "notesss",
-          "received_date": "2019-03-01",
-          "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+          "active_ind": true,
+          "description": "No Action",
+          "display_order": 20,
+          "mine_incident_followup_type_code": "NOA",
         },
       ]
     }
+    handleEditMineIncident={[MockFunction]}
+    incidents={
+      Array [
+        Object {
+          "closing_report_summary": "Parent south person form evidence receive tree wide memory but medical car himself benefit key really series sea enter money prove if lawyer seven ready religious shake.",
+          "followup_inspection_no": "721814",
+          "followup_type_code": "NOA",
+          "incident_description": "Paper others interview development military short design often town participant church road daughter.",
+          "incident_timestamp": "2019-04-06T00:34:44+00:00",
+          "mine_guid": "3cfba01f-f8f3-4948-b488-d9e7a915f5ec",
+          "mine_incident_guid": "dc101155-de3e-4f37-8303-eb6a6d2d5866",
+          "mine_incident_id_year": 2019,
+          "mine_incident_report_no": "2019-70",
+          "reported_by": "Robert Bell",
+          "reported_by_role": "Investment banker, operational",
+          "reported_timestamp": "2019-03-17T17:42:37+00:00",
+        },
+      ]
+    }
+    openMineIncidentModal={[MockFunction]}
   />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
@@ -52,38 +55,24 @@ ShallowWrapper {
         columns={
           Array [
             Object {
-              "dataIndex": "expired",
-              "render": [Function],
-              "title": "",
-              "width": 10,
+              "dataIndex": "mine_incident_report_no",
+              "title": "Incident Report No.",
             },
             Object {
-              "dataIndex": "compliance_article_id",
-              "render": [Function],
-              "title": "Code Section",
+              "dataIndex": "incident_timestamp",
+              "title": "Incident Time",
             },
             Object {
-              "dataIndex": "issue_date",
-              "render": [Function],
-              "title": "Issue Date",
+              "dataIndex": "reported_by",
+              "title": "Reported By",
             },
             Object {
-              "dataIndex": "expiry_date",
+              "dataIndex": "followup_action",
               "render": [Function],
-              "title": "Expiry Date",
+              "title": "EMPR Action",
             },
             Object {
-              "dataIndex": "status",
-              "render": [Function],
-              "title": "Approval Status",
-            },
-            Object {
-              "dataIndex": "documents",
-              "render": [Function],
-              "title": "Documents",
-            },
-            Object {
-              "dataIndex": "variance",
+              "dataIndex": "handleEditModal",
               "render": [Function],
               "title": "",
             },
@@ -92,22 +81,33 @@ ShallowWrapper {
         dataSource={
           Array [
             Object {
-              "compliance_article_id": "N/A",
-              "documents": Array [
-                Object {
-                  "created_at": "2019-05-02",
-                  "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
-                  "document_name": "test.pdf",
-                  "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
-                  "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
-                },
-              ],
-              "expiry_date": "Mar 30 2019",
-              "isOverdue": true,
-              "issue_date": "Mar 01 2019",
-              "key": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
-              "note": "notesss",
-              "received_date": "Mar 01 2019",
+              "followup_action": Object {
+                "active_ind": true,
+                "description": "No Action",
+                "display_order": 20,
+                "mine_incident_followup_type_code": "NOA",
+              },
+              "handleEditModal": [MockFunction],
+              "incident": Object {
+                "closing_report_summary": "Parent south person form evidence receive tree wide memory but medical car himself benefit key really series sea enter money prove if lawyer seven ready religious shake.",
+                "followup_inspection_no": "721814",
+                "followup_type_code": "NOA",
+                "incident_description": "Paper others interview development military short design often town participant church road daughter.",
+                "incident_timestamp": "2019-04-06T00:34:44+00:00",
+                "mine_guid": "3cfba01f-f8f3-4948-b488-d9e7a915f5ec",
+                "mine_incident_guid": "dc101155-de3e-4f37-8303-eb6a6d2d5866",
+                "mine_incident_id_year": 2019,
+                "mine_incident_report_no": "2019-70",
+                "reported_by": "Robert Bell",
+                "reported_by_role": "Investment banker, operational",
+                "reported_timestamp": "2019-03-17T17:42:37+00:00",
+              },
+              "incident_timestamp": "Apr 06 2019",
+              "key": undefined,
+              "mine_incident_report_no": "2019-70",
+              "openMineIncidentModal": [MockFunction],
+              "reported_by": "Robert Bell",
+              "reported_timestamp": "Mar 17 2019",
             },
           ]
         }
@@ -116,7 +116,7 @@ ShallowWrapper {
         locale={
           Object {
             "emptyText": <NullScreen
-              type="approved-variances"
+              type="incidents"
             />,
           }
         }
@@ -144,67 +144,64 @@ ShallowWrapper {
         "className": "",
         "columns": Array [
           Object {
-            "dataIndex": "expired",
-            "render": [Function],
-            "title": "",
-            "width": 10,
+            "dataIndex": "mine_incident_report_no",
+            "title": "Incident Report No.",
           },
           Object {
-            "dataIndex": "compliance_article_id",
-            "render": [Function],
-            "title": "Code Section",
+            "dataIndex": "incident_timestamp",
+            "title": "Incident Time",
           },
           Object {
-            "dataIndex": "issue_date",
-            "render": [Function],
-            "title": "Issue Date",
+            "dataIndex": "reported_by",
+            "title": "Reported By",
           },
           Object {
-            "dataIndex": "expiry_date",
+            "dataIndex": "followup_action",
             "render": [Function],
-            "title": "Expiry Date",
+            "title": "EMPR Action",
           },
           Object {
-            "dataIndex": "status",
-            "render": [Function],
-            "title": "Approval Status",
-          },
-          Object {
-            "dataIndex": "documents",
-            "render": [Function],
-            "title": "Documents",
-          },
-          Object {
-            "dataIndex": "variance",
+            "dataIndex": "handleEditModal",
             "render": [Function],
             "title": "",
           },
         ],
         "dataSource": Array [
           Object {
-            "compliance_article_id": "N/A",
-            "documents": Array [
-              Object {
-                "created_at": "2019-05-02",
-                "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
-                "document_name": "test.pdf",
-                "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
-                "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
-              },
-            ],
-            "expiry_date": "Mar 30 2019",
-            "isOverdue": true,
-            "issue_date": "Mar 01 2019",
-            "key": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
-            "note": "notesss",
-            "received_date": "Mar 01 2019",
+            "followup_action": Object {
+              "active_ind": true,
+              "description": "No Action",
+              "display_order": 20,
+              "mine_incident_followup_type_code": "NOA",
+            },
+            "handleEditModal": [MockFunction],
+            "incident": Object {
+              "closing_report_summary": "Parent south person form evidence receive tree wide memory but medical car himself benefit key really series sea enter money prove if lawyer seven ready religious shake.",
+              "followup_inspection_no": "721814",
+              "followup_type_code": "NOA",
+              "incident_description": "Paper others interview development military short design often town participant church road daughter.",
+              "incident_timestamp": "2019-04-06T00:34:44+00:00",
+              "mine_guid": "3cfba01f-f8f3-4948-b488-d9e7a915f5ec",
+              "mine_incident_guid": "dc101155-de3e-4f37-8303-eb6a6d2d5866",
+              "mine_incident_id_year": 2019,
+              "mine_incident_report_no": "2019-70",
+              "reported_by": "Robert Bell",
+              "reported_by_role": "Investment banker, operational",
+              "reported_timestamp": "2019-03-17T17:42:37+00:00",
+            },
+            "incident_timestamp": "Apr 06 2019",
+            "key": undefined,
+            "mine_incident_report_no": "2019-70",
+            "openMineIncidentModal": [MockFunction],
+            "reported_by": "Robert Bell",
+            "reported_timestamp": "Mar 17 2019",
           },
         ],
         "indentSize": 20,
         "loading": false,
         "locale": Object {
           "emptyText": <NullScreen
-            type="approved-variances"
+            type="incidents"
           />,
         },
         "pagination": false,
@@ -236,38 +233,24 @@ ShallowWrapper {
           columns={
             Array [
               Object {
-                "dataIndex": "expired",
-                "render": [Function],
-                "title": "",
-                "width": 10,
+                "dataIndex": "mine_incident_report_no",
+                "title": "Incident Report No.",
               },
               Object {
-                "dataIndex": "compliance_article_id",
-                "render": [Function],
-                "title": "Code Section",
+                "dataIndex": "incident_timestamp",
+                "title": "Incident Time",
               },
               Object {
-                "dataIndex": "issue_date",
-                "render": [Function],
-                "title": "Issue Date",
+                "dataIndex": "reported_by",
+                "title": "Reported By",
               },
               Object {
-                "dataIndex": "expiry_date",
+                "dataIndex": "followup_action",
                 "render": [Function],
-                "title": "Expiry Date",
+                "title": "EMPR Action",
               },
               Object {
-                "dataIndex": "status",
-                "render": [Function],
-                "title": "Approval Status",
-              },
-              Object {
-                "dataIndex": "documents",
-                "render": [Function],
-                "title": "Documents",
-              },
-              Object {
-                "dataIndex": "variance",
+                "dataIndex": "handleEditModal",
                 "render": [Function],
                 "title": "",
               },
@@ -276,22 +259,33 @@ ShallowWrapper {
           dataSource={
             Array [
               Object {
-                "compliance_article_id": "N/A",
-                "documents": Array [
-                  Object {
-                    "created_at": "2019-05-02",
-                    "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
-                    "document_name": "test.pdf",
-                    "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
-                    "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
-                  },
-                ],
-                "expiry_date": "Mar 30 2019",
-                "isOverdue": true,
-                "issue_date": "Mar 01 2019",
-                "key": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
-                "note": "notesss",
-                "received_date": "Mar 01 2019",
+                "followup_action": Object {
+                  "active_ind": true,
+                  "description": "No Action",
+                  "display_order": 20,
+                  "mine_incident_followup_type_code": "NOA",
+                },
+                "handleEditModal": [MockFunction],
+                "incident": Object {
+                  "closing_report_summary": "Parent south person form evidence receive tree wide memory but medical car himself benefit key really series sea enter money prove if lawyer seven ready religious shake.",
+                  "followup_inspection_no": "721814",
+                  "followup_type_code": "NOA",
+                  "incident_description": "Paper others interview development military short design often town participant church road daughter.",
+                  "incident_timestamp": "2019-04-06T00:34:44+00:00",
+                  "mine_guid": "3cfba01f-f8f3-4948-b488-d9e7a915f5ec",
+                  "mine_incident_guid": "dc101155-de3e-4f37-8303-eb6a6d2d5866",
+                  "mine_incident_id_year": 2019,
+                  "mine_incident_report_no": "2019-70",
+                  "reported_by": "Robert Bell",
+                  "reported_by_role": "Investment banker, operational",
+                  "reported_timestamp": "2019-03-17T17:42:37+00:00",
+                },
+                "incident_timestamp": "Apr 06 2019",
+                "key": undefined,
+                "mine_incident_report_no": "2019-70",
+                "openMineIncidentModal": [MockFunction],
+                "reported_by": "Robert Bell",
+                "reported_timestamp": "Mar 17 2019",
               },
             ]
           }
@@ -300,7 +294,7 @@ ShallowWrapper {
           locale={
             Object {
               "emptyText": <NullScreen
-                type="approved-variances"
+                type="incidents"
               />,
             }
           }
@@ -328,67 +322,64 @@ ShallowWrapper {
           "className": "",
           "columns": Array [
             Object {
-              "dataIndex": "expired",
-              "render": [Function],
-              "title": "",
-              "width": 10,
+              "dataIndex": "mine_incident_report_no",
+              "title": "Incident Report No.",
             },
             Object {
-              "dataIndex": "compliance_article_id",
-              "render": [Function],
-              "title": "Code Section",
+              "dataIndex": "incident_timestamp",
+              "title": "Incident Time",
             },
             Object {
-              "dataIndex": "issue_date",
-              "render": [Function],
-              "title": "Issue Date",
+              "dataIndex": "reported_by",
+              "title": "Reported By",
             },
             Object {
-              "dataIndex": "expiry_date",
+              "dataIndex": "followup_action",
               "render": [Function],
-              "title": "Expiry Date",
+              "title": "EMPR Action",
             },
             Object {
-              "dataIndex": "status",
-              "render": [Function],
-              "title": "Approval Status",
-            },
-            Object {
-              "dataIndex": "documents",
-              "render": [Function],
-              "title": "Documents",
-            },
-            Object {
-              "dataIndex": "variance",
+              "dataIndex": "handleEditModal",
               "render": [Function],
               "title": "",
             },
           ],
           "dataSource": Array [
             Object {
-              "compliance_article_id": "N/A",
-              "documents": Array [
-                Object {
-                  "created_at": "2019-05-02",
-                  "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
-                  "document_name": "test.pdf",
-                  "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
-                  "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
-                },
-              ],
-              "expiry_date": "Mar 30 2019",
-              "isOverdue": true,
-              "issue_date": "Mar 01 2019",
-              "key": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
-              "note": "notesss",
-              "received_date": "Mar 01 2019",
+              "followup_action": Object {
+                "active_ind": true,
+                "description": "No Action",
+                "display_order": 20,
+                "mine_incident_followup_type_code": "NOA",
+              },
+              "handleEditModal": [MockFunction],
+              "incident": Object {
+                "closing_report_summary": "Parent south person form evidence receive tree wide memory but medical car himself benefit key really series sea enter money prove if lawyer seven ready religious shake.",
+                "followup_inspection_no": "721814",
+                "followup_type_code": "NOA",
+                "incident_description": "Paper others interview development military short design often town participant church road daughter.",
+                "incident_timestamp": "2019-04-06T00:34:44+00:00",
+                "mine_guid": "3cfba01f-f8f3-4948-b488-d9e7a915f5ec",
+                "mine_incident_guid": "dc101155-de3e-4f37-8303-eb6a6d2d5866",
+                "mine_incident_id_year": 2019,
+                "mine_incident_report_no": "2019-70",
+                "reported_by": "Robert Bell",
+                "reported_by_role": "Investment banker, operational",
+                "reported_timestamp": "2019-03-17T17:42:37+00:00",
+              },
+              "incident_timestamp": "Apr 06 2019",
+              "key": undefined,
+              "mine_incident_report_no": "2019-70",
+              "openMineIncidentModal": [MockFunction],
+              "reported_by": "Robert Bell",
+              "reported_timestamp": "Mar 17 2019",
             },
           ],
           "indentSize": 20,
           "loading": false,
           "locale": Object {
             "emptyText": <NullScreen
-              type="approved-variances"
+              type="incidents"
             />,
           },
           "pagination": false,

@@ -10,7 +10,18 @@ ShallowWrapper {
         "306": "2.3.8 - Flammable Waste Storage",
       }
     }
+    isApplication={false}
+    openEditVarianceModal={[MockFunction]}
     openModal={[MockFunction]}
+    openViewVarianceModal={[MockFunction]}
+    varianceStatusOptionsHash={
+      Object {
+        "APP": "Approved",
+        "DEN": "Denied",
+        "NAP": "Not Applicable",
+        "REV": "In Review",
+      }
+    }
     variances={
       Array [
         Object {
@@ -53,7 +64,7 @@ ShallowWrapper {
         columns={
           Array [
             Object {
-              "dataIndex": "expired",
+              "dataIndex": "isOverdue",
               "render": [Function],
               "title": "",
               "width": 10,
@@ -64,16 +75,30 @@ ShallowWrapper {
               "title": "Code Section",
             },
             Object {
+              "dataIndex": "received_date",
+              "render": [Function],
+              "title": "Submission Date",
+            },
+            Object {
+              "className": "column-hide",
+              "dataIndex": "status",
+              "render": [Function],
+              "title": "Application  Status",
+            },
+            Object {
+              "className": "",
               "dataIndex": "issue_date",
               "render": [Function],
               "title": "Issue Date",
             },
             Object {
+              "className": "",
               "dataIndex": "expiry_date",
               "render": [Function],
               "title": "Expiry Date",
             },
             Object {
+              "className": "",
               "dataIndex": "status",
               "render": [Function],
               "title": "Approval Status",
@@ -104,11 +129,30 @@ ShallowWrapper {
                 },
               ],
               "expiry_date": "Mar 30 2019",
+              "isEditable": false,
               "isOverdue": true,
               "issue_date": "Mar 01 2019",
               "key": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
               "note": "notesss",
               "received_date": "Mar 01 2019",
+              "status": undefined,
+              "variance": Object {
+                "compliance_article_id": 1,
+                "documents": Array [
+                  Object {
+                    "created_at": "2019-05-02",
+                    "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
+                    "document_name": "test.pdf",
+                    "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
+                    "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
+                  },
+                ],
+                "expiry_date": "2019-03-30",
+                "issue_date": "2019-03-01",
+                "note": "notesss",
+                "received_date": "2019-03-01",
+                "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+              },
             },
           ]
         }
@@ -145,7 +189,7 @@ ShallowWrapper {
         "className": "",
         "columns": Array [
           Object {
-            "dataIndex": "expired",
+            "dataIndex": "isOverdue",
             "render": [Function],
             "title": "",
             "width": 10,
@@ -156,16 +200,30 @@ ShallowWrapper {
             "title": "Code Section",
           },
           Object {
+            "dataIndex": "received_date",
+            "render": [Function],
+            "title": "Submission Date",
+          },
+          Object {
+            "className": "column-hide",
+            "dataIndex": "status",
+            "render": [Function],
+            "title": "Application  Status",
+          },
+          Object {
+            "className": "",
             "dataIndex": "issue_date",
             "render": [Function],
             "title": "Issue Date",
           },
           Object {
+            "className": "",
             "dataIndex": "expiry_date",
             "render": [Function],
             "title": "Expiry Date",
           },
           Object {
+            "className": "",
             "dataIndex": "status",
             "render": [Function],
             "title": "Approval Status",
@@ -194,11 +252,30 @@ ShallowWrapper {
               },
             ],
             "expiry_date": "Mar 30 2019",
+            "isEditable": false,
             "isOverdue": true,
             "issue_date": "Mar 01 2019",
             "key": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
             "note": "notesss",
             "received_date": "Mar 01 2019",
+            "status": undefined,
+            "variance": Object {
+              "compliance_article_id": 1,
+              "documents": Array [
+                Object {
+                  "created_at": "2019-05-02",
+                  "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
+                  "document_name": "test.pdf",
+                  "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
+                  "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
+                },
+              ],
+              "expiry_date": "2019-03-30",
+              "issue_date": "2019-03-01",
+              "note": "notesss",
+              "received_date": "2019-03-01",
+              "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+            },
           },
         ],
         "indentSize": 20,
@@ -237,7 +314,7 @@ ShallowWrapper {
           columns={
             Array [
               Object {
-                "dataIndex": "expired",
+                "dataIndex": "isOverdue",
                 "render": [Function],
                 "title": "",
                 "width": 10,
@@ -248,16 +325,30 @@ ShallowWrapper {
                 "title": "Code Section",
               },
               Object {
+                "dataIndex": "received_date",
+                "render": [Function],
+                "title": "Submission Date",
+              },
+              Object {
+                "className": "column-hide",
+                "dataIndex": "status",
+                "render": [Function],
+                "title": "Application  Status",
+              },
+              Object {
+                "className": "",
                 "dataIndex": "issue_date",
                 "render": [Function],
                 "title": "Issue Date",
               },
               Object {
+                "className": "",
                 "dataIndex": "expiry_date",
                 "render": [Function],
                 "title": "Expiry Date",
               },
               Object {
+                "className": "",
                 "dataIndex": "status",
                 "render": [Function],
                 "title": "Approval Status",
@@ -288,11 +379,30 @@ ShallowWrapper {
                   },
                 ],
                 "expiry_date": "Mar 30 2019",
+                "isEditable": false,
                 "isOverdue": true,
                 "issue_date": "Mar 01 2019",
                 "key": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
                 "note": "notesss",
                 "received_date": "Mar 01 2019",
+                "status": undefined,
+                "variance": Object {
+                  "compliance_article_id": 1,
+                  "documents": Array [
+                    Object {
+                      "created_at": "2019-05-02",
+                      "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
+                      "document_name": "test.pdf",
+                      "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
+                      "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
+                    },
+                  ],
+                  "expiry_date": "2019-03-30",
+                  "issue_date": "2019-03-01",
+                  "note": "notesss",
+                  "received_date": "2019-03-01",
+                  "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+                },
               },
             ]
           }
@@ -329,7 +439,7 @@ ShallowWrapper {
           "className": "",
           "columns": Array [
             Object {
-              "dataIndex": "expired",
+              "dataIndex": "isOverdue",
               "render": [Function],
               "title": "",
               "width": 10,
@@ -340,16 +450,30 @@ ShallowWrapper {
               "title": "Code Section",
             },
             Object {
+              "dataIndex": "received_date",
+              "render": [Function],
+              "title": "Submission Date",
+            },
+            Object {
+              "className": "column-hide",
+              "dataIndex": "status",
+              "render": [Function],
+              "title": "Application  Status",
+            },
+            Object {
+              "className": "",
               "dataIndex": "issue_date",
               "render": [Function],
               "title": "Issue Date",
             },
             Object {
+              "className": "",
               "dataIndex": "expiry_date",
               "render": [Function],
               "title": "Expiry Date",
             },
             Object {
+              "className": "",
               "dataIndex": "status",
               "render": [Function],
               "title": "Approval Status",
@@ -378,11 +502,30 @@ ShallowWrapper {
                 },
               ],
               "expiry_date": "Mar 30 2019",
+              "isEditable": false,
               "isOverdue": true,
               "issue_date": "Mar 01 2019",
               "key": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
               "note": "notesss",
               "received_date": "Mar 01 2019",
+              "status": undefined,
+              "variance": Object {
+                "compliance_article_id": 1,
+                "documents": Array [
+                  Object {
+                    "created_at": "2019-05-02",
+                    "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
+                    "document_name": "test.pdf",
+                    "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
+                    "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
+                  },
+                ],
+                "expiry_date": "2019-03-30",
+                "issue_date": "2019-03-01",
+                "note": "notesss",
+                "received_date": "2019-03-01",
+                "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+              },
             },
           ],
           "indentSize": 20,

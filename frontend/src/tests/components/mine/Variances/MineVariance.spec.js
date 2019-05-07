@@ -22,6 +22,7 @@ const setupReducerProps = () => {
   reducerProps.complianceCodesHash = MOCK.HSRCM_HASH;
   reducerProps.complianceCodes = MOCK.DROPDOWN_HSRCM_CODES;
   reducerProps.coreUsers = MOCK.CORE_USERS.results;
+  reducerProps.coreUsersHash = MOCK.CORE_USERS_HASH;
   reducerProps.varianceStatusOptions = MOCK.VARIANCE_DROPDOWN_STATUS_OPTIONS;
   reducerProps.varianceStatusOptionsHash = MOCK.VARIANCE_STATUS_OPTIONS_HASH;
 };

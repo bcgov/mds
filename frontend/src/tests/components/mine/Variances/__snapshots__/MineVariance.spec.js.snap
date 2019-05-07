@@ -62,6 +62,11 @@ ShallowWrapper {
         },
       ]
     }
+    coreUsersHash={
+      Object {
+        "51b3a499-a474-4d52-be99-5c5123d7501c": "BLAH",
+      }
+    }
     createVariance={[MockFunction]}
     fetchVariancesByMine={[MockFunction]}
     mine={
@@ -218,13 +223,14 @@ ShallowWrapper {
             Variance Applications
           </h4>
           <br />
-          <MineVarianceApplicationTable
+          <MineVarianceTable
             complianceCodesHash={
               Object {
                 "305": "2.3.7 - Spills",
                 "306": "2.3.8 - Flammable Waste Storage",
               }
             }
+            isApplication={true}
             mine={
               Object {
                 "mine_expected_documents": Array [
@@ -292,7 +298,8 @@ ShallowWrapper {
                 },
               }
             }
-            openModal={[Function]}
+            openEditVarianceModal={[Function]}
+            openViewVarianceModal={[Function]}
             varianceStatusOptionsHash={
               Object {
                 "APP": "Approved",
@@ -337,6 +344,7 @@ ShallowWrapper {
                 "306": "2.3.8 - Flammable Waste Storage",
               }
             }
+            isApplication={false}
             mine={
               Object {
                 "mine_expected_documents": Array [
@@ -404,7 +412,16 @@ ShallowWrapper {
                 },
               }
             }
-            openModal={[Function]}
+            openEditVarianceModal={[Function]}
+            openViewVarianceModal={[Function]}
+            varianceStatusOptionsHash={
+              Object {
+                "APP": "Approved",
+                "DEN": "Denied",
+                "NAP": "Not Applicable",
+                "REV": "In Review",
+              }
+            }
             variances={
               Array [
                 Object {
@@ -491,13 +508,14 @@ ShallowWrapper {
               Variance Applications
             </h4>,
             <br />,
-            <MineVarianceApplicationTable
+            <MineVarianceTable
               complianceCodesHash={
                 Object {
                   "305": "2.3.7 - Spills",
                   "306": "2.3.8 - Flammable Waste Storage",
                 }
               }
+              isApplication={true}
               mine={
                 Object {
                   "mine_expected_documents": Array [
@@ -565,7 +583,8 @@ ShallowWrapper {
                   },
                 }
               }
-              openModal={[Function]}
+              openEditVarianceModal={[Function]}
+              openViewVarianceModal={[Function]}
               varianceStatusOptionsHash={
                 Object {
                   "APP": "Approved",
@@ -610,6 +629,7 @@ ShallowWrapper {
                   "306": "2.3.8 - Flammable Waste Storage",
                 }
               }
+              isApplication={false}
               mine={
                 Object {
                   "mine_expected_documents": Array [
@@ -677,7 +697,16 @@ ShallowWrapper {
                   },
                 }
               }
-              openModal={[Function]}
+              openEditVarianceModal={[Function]}
+              openViewVarianceModal={[Function]}
+              varianceStatusOptionsHash={
+                Object {
+                  "APP": "Approved",
+                  "DEN": "Denied",
+                  "NAP": "Not Applicable",
+                  "REV": "In Review",
+                }
+              }
               variances={
                 Array [
                   Object {
@@ -743,6 +772,7 @@ ShallowWrapper {
                 "305": "2.3.7 - Spills",
                 "306": "2.3.8 - Flammable Waste Storage",
               },
+              "isApplication": true,
               "mine": Object {
                 "mine_expected_documents": Array [
                   Object {
@@ -808,7 +838,8 @@ ShallowWrapper {
                   "verifying_user": null,
                 },
               },
-              "openModal": [Function],
+              "openEditVarianceModal": [Function],
+              "openViewVarianceModal": [Function],
               "varianceStatusOptionsHash": Object {
                 "APP": "Approved",
                 "DEN": "Denied",
@@ -878,6 +909,7 @@ ShallowWrapper {
                 "305": "2.3.7 - Spills",
                 "306": "2.3.8 - Flammable Waste Storage",
               },
+              "isApplication": false,
               "mine": Object {
                 "mine_expected_documents": Array [
                   Object {
@@ -943,7 +975,14 @@ ShallowWrapper {
                   "verifying_user": null,
                 },
               },
-              "openModal": [Function],
+              "openEditVarianceModal": [Function],
+              "openViewVarianceModal": [Function],
+              "varianceStatusOptionsHash": Object {
+                "APP": "Approved",
+                "DEN": "Denied",
+                "NAP": "Not Applicable",
+                "REV": "In Review",
+              },
               "variances": Array [
                 Object {
                   "compliance_article_id": 1,
@@ -1002,13 +1041,14 @@ ShallowWrapper {
               Variance Applications
             </h4>
             <br />
-            <MineVarianceApplicationTable
+            <MineVarianceTable
               complianceCodesHash={
                 Object {
                   "305": "2.3.7 - Spills",
                   "306": "2.3.8 - Flammable Waste Storage",
                 }
               }
+              isApplication={true}
               mine={
                 Object {
                   "mine_expected_documents": Array [
@@ -1076,7 +1116,8 @@ ShallowWrapper {
                   },
                 }
               }
-              openModal={[Function]}
+              openEditVarianceModal={[Function]}
+              openViewVarianceModal={[Function]}
               varianceStatusOptionsHash={
                 Object {
                   "APP": "Approved",
@@ -1121,6 +1162,7 @@ ShallowWrapper {
                   "306": "2.3.8 - Flammable Waste Storage",
                 }
               }
+              isApplication={false}
               mine={
                 Object {
                   "mine_expected_documents": Array [
@@ -1188,7 +1230,16 @@ ShallowWrapper {
                   },
                 }
               }
-              openModal={[Function]}
+              openEditVarianceModal={[Function]}
+              openViewVarianceModal={[Function]}
+              varianceStatusOptionsHash={
+                Object {
+                  "APP": "Approved",
+                  "DEN": "Denied",
+                  "NAP": "Not Applicable",
+                  "REV": "In Review",
+                }
+              }
               variances={
                 Array [
                   Object {
@@ -1275,13 +1326,14 @@ ShallowWrapper {
                 Variance Applications
               </h4>,
               <br />,
-              <MineVarianceApplicationTable
+              <MineVarianceTable
                 complianceCodesHash={
                   Object {
                     "305": "2.3.7 - Spills",
                     "306": "2.3.8 - Flammable Waste Storage",
                   }
                 }
+                isApplication={true}
                 mine={
                   Object {
                     "mine_expected_documents": Array [
@@ -1349,7 +1401,8 @@ ShallowWrapper {
                     },
                   }
                 }
-                openModal={[Function]}
+                openEditVarianceModal={[Function]}
+                openViewVarianceModal={[Function]}
                 varianceStatusOptionsHash={
                   Object {
                     "APP": "Approved",
@@ -1394,6 +1447,7 @@ ShallowWrapper {
                     "306": "2.3.8 - Flammable Waste Storage",
                   }
                 }
+                isApplication={false}
                 mine={
                   Object {
                     "mine_expected_documents": Array [
@@ -1461,7 +1515,16 @@ ShallowWrapper {
                     },
                   }
                 }
-                openModal={[Function]}
+                openEditVarianceModal={[Function]}
+                openViewVarianceModal={[Function]}
+                varianceStatusOptionsHash={
+                  Object {
+                    "APP": "Approved",
+                    "DEN": "Denied",
+                    "NAP": "Not Applicable",
+                    "REV": "In Review",
+                  }
+                }
                 variances={
                   Array [
                     Object {
@@ -1527,6 +1590,7 @@ ShallowWrapper {
                   "305": "2.3.7 - Spills",
                   "306": "2.3.8 - Flammable Waste Storage",
                 },
+                "isApplication": true,
                 "mine": Object {
                   "mine_expected_documents": Array [
                     Object {
@@ -1592,7 +1656,8 @@ ShallowWrapper {
                     "verifying_user": null,
                   },
                 },
-                "openModal": [Function],
+                "openEditVarianceModal": [Function],
+                "openViewVarianceModal": [Function],
                 "varianceStatusOptionsHash": Object {
                   "APP": "Approved",
                   "DEN": "Denied",
@@ -1662,6 +1727,7 @@ ShallowWrapper {
                   "305": "2.3.7 - Spills",
                   "306": "2.3.8 - Flammable Waste Storage",
                 },
+                "isApplication": false,
                 "mine": Object {
                   "mine_expected_documents": Array [
                     Object {
@@ -1727,7 +1793,14 @@ ShallowWrapper {
                     "verifying_user": null,
                   },
                 },
-                "openModal": [Function],
+                "openEditVarianceModal": [Function],
+                "openViewVarianceModal": [Function],
+                "varianceStatusOptionsHash": Object {
+                  "APP": "Approved",
+                  "DEN": "Denied",
+                  "NAP": "Not Applicable",
+                  "REV": "In Review",
+                },
                 "variances": Array [
                   Object {
                     "compliance_article_id": 1,

@@ -7,12 +7,16 @@ const props = {};
 const dispatchProps = {};
 
 const setupDispatchProps = () => {
-  props.openModal = jest.fn();
+  dispatchProps.openModal = jest.fn();
+  dispatchProps.openEditVarianceModal = jest.fn();
+  dispatchProps.openViewVarianceModal = jest.fn();
 };
 
 const setupProps = () => {
   props.variances = MOCK.VARIANCES.records;
   props.complianceCodesHash = MOCK.HSRCM_HASH;
+  props.varianceStatusOptionsHash = MOCK.VARIANCE_STATUS_OPTIONS_HASH;
+  props.isApplication = false;
 };
 
 beforeEach(() => {
