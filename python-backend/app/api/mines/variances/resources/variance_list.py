@@ -1,8 +1,9 @@
 from app.extensions import api
 from flask_restplus import Resource, fields
-from werkzeug.exceptions import BadRequest
+from werkzeug.exceptions import BadRequest, NotFound
 
 from ..models.variance import Variance
+from ...mine.models.mine import Mine
 from ....utils.access_decorators import requires_any_of, MINE_VIEW, MINE_CREATE
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.utils.custom_reqparser import CustomReqparser
@@ -88,6 +89,10 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
         received_date = data['received_date']
         core_user_guid = data.get('inspector_guid')
         inspector_id = None
+
+        mine = Mine.find_by_mine_guid(mine_guid)
+        if mine is None:
+            raise NotFound('Mine.')
 
         if core_user_guid:
             core_user = CoreUser.find_by_core_user_guid(core_user_guid)

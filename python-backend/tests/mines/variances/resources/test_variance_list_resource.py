@@ -1,4 +1,5 @@
 import json
+import uuid
 
 from tests.factories import VarianceFactory, MineFactory, PartyFactory
 from tests.status_code_gen import RandomComplianceArticleId
@@ -129,3 +130,20 @@ def test_post_variance_missing_compliance_article_id(test_client, db_session, au
     post_data = json.loads(post_resp.data.decode())
     assert post_resp.status_code == 400, post_resp.response
     assert DEFAULT_MISSING_REQUIRED in post_data['message']
+
+
+def test_post_variance_non_existent_mine_guid(test_client, db_session, auth_headers):
+    fake_guid = uuid.uuid4()
+    party = PartyFactory(person=True)
+    test_variance_data = {
+        'compliance_article_id': RandomComplianceArticleId(),
+        'note': 'Biggest mine yet',
+        'received_date': '2019-04-23',
+        'applicant_guid': party.party_guid
+    }
+    post_resp = test_client.post(
+        f'/mines/{fake_guid}/variances',
+        data=test_variance_data,
+        headers=auth_headers['full_auth_header'])
+    post_data = json.loads(post_resp.data.decode())
+    assert post_resp.status_code == 404, post_resp.response
