@@ -181,26 +181,22 @@ const applySortIndicator = (_columns, field, dir) =>
     sortOrder: column.sortField === field ? dir.concat("end") : false,
   }));
 
-export const MineList = (props) => {
-  const tableColumns = applySortIndicator(columns, props.sortField, props.sortDir);
-  const tableData = transformRowData(
-    props.mines,
-    props.mineIds,
-    props.mineRegionHash,
-    props.mineTenureHash,
-    props.mineCommodityOptionsHash
-  );
-  return (
-    <Table
-      align="left"
-      pagination={false}
-      columns={tableColumns}
-      dataSource={tableData}
-      locale={{ emptyText: <NullScreen type="no-results" /> }}
-      onChange={handleTableChange(props.handleMineSearch)}
-    />
-  );
-};
+export const MineList = (props) => (
+  <Table
+    align="left"
+    pagination={false}
+    columns={applySortIndicator(columns, props.sortField, props.sortDir)}
+    dataSource={transformRowData(
+      props.mines,
+      props.mineIds,
+      props.mineRegionHash,
+      props.mineTenureHash,
+      props.mineCommodityOptionsHash
+    )}
+    locale={{ emptyText: <NullScreen type="no-results" /> }}
+    onChange={handleTableChange(props.handleMineSearch)}
+  />
+);
 
 MineList.propTypes = propTypes;
 MineList.defaultProps = defaultProps;
