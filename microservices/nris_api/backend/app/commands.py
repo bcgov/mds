@@ -1,4 +1,5 @@
 import click
+import cx_Oracle
 
 from app.extensions import db  #, oracle_db
 from app.nris.models.test_model import Factorial
