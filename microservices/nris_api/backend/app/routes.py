@@ -2,6 +2,7 @@ from app.utils.logger import get_logger
 from app.extensions import api
 from .config import Config
 
+from flask_restplus import Resource
 from app.nris.namespace import factorial_ns
 
 
@@ -12,13 +13,11 @@ def register_routes(app):
     # Namespaces
     api.add_namespace(factorial_ns)
 
-
     # Healthcheck endpoint
     @api.route('/health')
     class Healthcheck(Resource):
         def get(self):
             return {'success': 'true'}
-
 
     # Global Handlers
     @api.errorhandler(Exception)
