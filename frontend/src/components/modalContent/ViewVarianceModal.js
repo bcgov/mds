@@ -2,55 +2,74 @@ import React from "react";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import { Button, Popconfirm } from "antd";
-import { ELLIPSE } from "@/constants/assets";
+import * as Strings from "@/constants/strings";
+import { ELLIPSE, RED_ELLIPSE } from "@/constants/assets";
 import { VarianceDetails } from "../mine/Variances/VarianceDetails";
 
 const propTypes = {
   closeModal: PropTypes.func.isRequired,
   variance: CustomPropTypes.variance.isRequired,
   mineName: PropTypes.string.isRequired,
-  varianceStatusOptions: PropTypes.objectOf(PropTypes.string).isRequired,
+  varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  coreUsersHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
-export const ViewVarianceModal = (props) => (
-  <div>
-    <div className="inline-flex between">
-      <div>
-        <h5>Lead Inspector</h5>
-        <p>{props.variance.variance_application_status_code}</p>
-      </div>
-      <div>
-        <h5>Application Status</h5>
-        <div style={{ display: "inline-flex" }}>
-          <img className="padding-right icon-sm--img" src={ELLIPSE} alt="status" />
-          <p>{props.varianceStatusOptions[props.variance.variance_application_status_code]}</p>
+export const ViewVarianceModal = (props) => {
+  const isApproved =
+    props.variance.variance_application_status_code === Strings.VARIANCE_APPROVED_CODE;
+  const isOverdue = Date.parse(props.variance.expiry_date) < new Date();
+  return (
+    <div>
+      <div className="inline-flex between block-tablet">
+        <div className="flex-tablet">
+          <p className="field-title">Lead Inspector</p>
+          <p>{props.coreUsersHash[props.variance.inspector_guid] || Strings.EMPTY_FIELD}</p>
         </div>
-      </div>
-      <div>
-        <h5>Approval Status</h5>
-        <div style={{ display: "inline-flex" }}>
-          <img className="padding-right icon-sm--img" src={ELLIPSE} alt="status" />
-          <p>{props.variance.variance_application_status_code}</p>
+        <div className="flex-tablet">
+          <p className="field-title">Application Status</p>
+          <div className="inline-flex--inline">
+            <img
+              className="padding-small--right icon-sm--img"
+              src={isApproved ? ELLIPSE : RED_ELLIPSE}
+              alt="status"
+            />
+            <p>
+              {props.varianceStatusOptionsHash[props.variance.variance_application_status_code]}
+            </p>
+          </div>
         </div>
+        {isApproved && (
+          <div className="flex-tablet">
+            <p className="field-title">Approval Status</p>
+            <div className="inline-flex--inline">
+              <img
+                className="padding-small--right icon-sm--img"
+                src={isOverdue ? RED_ELLIPSE : ELLIPSE}
+                alt="status"
+              />
+              <p>{isOverdue ? "Expired" : "Active"}</p>
+            </div>
+          </div>
+        )}
+      </div>
+      <br />
+      <VarianceDetails variance={props.variance} mineName={props.mineName} isApproved />
+      <div className="right center-mobile">
+        <Popconfirm
+          placement="topRight"
+          title="Are you sure you want to cancel?"
+          onConfirm={props.closeModal}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button className="full-mobile" type="secondary">
+            Cancel
+          </Button>
+        </Popconfirm>
       </div>
     </div>
-    <VarianceDetails variance={props.variance} mineName={props.mineName} />
-    <br />
-    <div className="right center-mobile">
-      <Popconfirm
-        placement="topRight"
-        title="Are you sure you want to cancel?"
-        onConfirm={props.closeModal}
-        okText="Yes"
-        cancelText="No"
-      >
-        <Button className="full-mobile" type="secondary">
-          Cancel
-        </Button>
-      </Popconfirm>
-    </div>
-  </div>
-);
+  );
+};
 
 ViewVarianceModal.propTypes = propTypes;
 

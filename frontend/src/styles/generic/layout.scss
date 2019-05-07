@@ -70,6 +70,10 @@ body {
   & div {
     margin-right: 5px;
   }
+
+  &--inline {
+    display: inline-flex;
+  }
 }
 
 .flex-center {
@@ -84,9 +88,31 @@ body {
   justify-content: flex-start;
 }
 
-.block-mobile {
-  @include mobile {
-    display: block;
+.block {
+  &-mobile {
+    @include mobile {
+      display: block;
+    }
+  }
+
+  &-tablet {
+    @include tablet {
+      display: block;
+    }
+  }
+}
+
+.flex {
+  &-mobile {
+    @include mobile {
+      @include flex;
+    }
+  }
+
+  &-tablet {
+    @include tablet {
+      @include flex;
+    }
   }
 }
 

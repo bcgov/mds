@@ -56,7 +56,7 @@ import {
 } from "@/selectors/staticContentSelectors";
 import { getMineComplianceInfo } from "@/selectors/complianceSelectors";
 import { getVarianceApplications, getApprovedVariances } from "@/selectors/varianceSelectors";
-import { getDropdownCoreUsers } from "@/selectors/userSelectors";
+import { getDropdownCoreUsers, getCoreUsersHash } from "@/selectors/userSelectors";
 import {
   fetchPartyRelationshipTypes,
   fetchPartyRelationships,
@@ -371,6 +371,7 @@ export class MineDashboard extends Component {
                         varianceStatusOptions={this.props.varianceStatusOptions}
                         updateVariance={this.props.updateVariance}
                         varianceStatusOptionsHash={this.props.varianceStatusOptionsHash}
+                        coreUsersHash={this.props.coreUsersHash}
                       />
                     </div>
                   </TabPane>
@@ -430,6 +431,7 @@ const mapStateToProps = (state) => ({
   coreUsers: getDropdownCoreUsers(state),
   varianceStatusOptions: getDropdownVarianceStatusOptions(state),
   varianceStatusOptionsHash: getVarianceStatusOptionsHash(state),
+  coreUsersHash: getCoreUsersHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

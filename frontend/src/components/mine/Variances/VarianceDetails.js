@@ -7,11 +7,16 @@ import DocumentTable from "@/components/common/DocumentTable";
 const propTypes = {
   variance: CustomPropTypes.variance.isRequired,
   mineName: PropTypes.string.isRequired,
+  isApproved: PropTypes.bool,
+};
+
+const defaultProps = {
+  isApproved: false,
 };
 
 export const VarianceDetails = (props) => (
   <div>
-    <h5>application details</h5>
+    <h5>{props.isApproved ? "Variance details" : "application details"}</h5>
     <div className="content--light-grey padding-small">
       <div className="inline-flex padding-small">
         <p className="field-title">Mine</p>
@@ -45,5 +50,6 @@ export const VarianceDetails = (props) => (
 );
 
 VarianceDetails.propTypes = propTypes;
+VarianceDetails.defaultProps = defaultProps;
 
 export default VarianceDetails;

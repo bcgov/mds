@@ -8,7 +8,7 @@ import { RED_CLOCK, BRAND_PENCIL } from "@/constants/assets";
 import NullScreen from "@/components/common/NullScreen";
 import { formatDate } from "@/utils/helpers";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
-import * as String from "@/constants/strings";
+import * as Strings from "@/constants/strings";
 import { COLOR } from "@/constants/styles";
 
 const { errorRed } = COLOR;
@@ -45,7 +45,7 @@ export class MineVarianceTable extends Component {
     }
   };
 
-  handleConditionalEdit = (code) => code === String.VARIANCE_APPLICATION_CODE;
+  handleConditionalEdit = (code) => code === Strings.VARIANCE_APPLICATION_CODE;
 
   transformRowData = (variances, codeHash, statusHash) =>
     variances.sort(this.sortByDate).map((variance) => ({
@@ -53,11 +53,11 @@ export class MineVarianceTable extends Component {
       variance,
       status: statusHash[variance.variance_application_status_code],
       isEditable: this.handleConditionalEdit(variance.variance_application_status_code),
-      compliance_article_id: codeHash[variance.compliance_article_id] || String.EMPTY_FIELD,
-      expiry_date: formatDate(variance.expiry_date) || String.EMPTY_FIELD,
-      issue_date: formatDate(variance.issue_date) || String.EMPTY_FIELD,
+      compliance_article_id: codeHash[variance.compliance_article_id] || Strings.EMPTY_FIELD,
+      expiry_date: formatDate(variance.expiry_date) || Strings.EMPTY_FIELD,
+      issue_date: formatDate(variance.issue_date) || Strings.EMPTY_FIELD,
       note: variance.note,
-      received_date: formatDate(variance.received_date) || String.EMPTY_FIELD,
+      received_date: formatDate(variance.received_date) || Strings.EMPTY_FIELD,
       isOverdue: Date.parse(variance.expiry_date) < new Date(),
       documents: variance.documents,
     }));
@@ -163,7 +163,9 @@ export class MineVarianceTable extends Component {
                 type="primary"
                 size="small"
                 ghost
-                onClick={(event) => this.handleOpenModal(event, record.isEditable, record.variance)}
+                onClick={(event) =>
+                  this.handleOpenModal(event, record.isEditable, record.variance, record.isOverdue)
+                }
               >
                 {record.isEditable ? (
                   <img src={BRAND_PENCIL} alt="Edit/View" />
