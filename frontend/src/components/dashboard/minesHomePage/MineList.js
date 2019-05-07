@@ -160,6 +160,7 @@ const transformRowData = (mines, mineIds, mineRegionHash, mineTenureHash, mineCo
       : Strings.EMPTY_FIELD,
     verified_status: mines[id].verified_status,
   }));
+  console.log("test");
   return result;
 };
 
