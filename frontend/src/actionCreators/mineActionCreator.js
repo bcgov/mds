@@ -30,7 +30,7 @@ const submitMineTypeDetails = (type) => ({ data: { mine_type_guid } }) => {
 
 const handleError = (dispatch, reducer) => (err) => {
   notification.error({
-    message: err.response ? err.response.data.error.message : String.ERROR,
+    message: err.response ? err.response.data.message : String.ERROR,
     duration: 10,
   });
   dispatch(error(reducer));
@@ -385,7 +385,7 @@ export const fetchSubscribedMinesByUser = () => (dispatch) => {
     })
     .catch((err) => {
       notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
+        message: err.response ? err.response.data.message : String.ERROR,
         duration: 10,
       });
       dispatch(error(reducerTypes.GET_SUBSCRIBED_MINES));
