@@ -12,6 +12,7 @@ RUN mkdir -p ${APP_ROOT}/oracle_bin
 
 USER 0
 
+RUN yum install libaio
 # yum install removed for openshift build
 # pkgs build-essential libaio1 python-minimal - don't exist for RHEL 
 # pkgs curl unzip git - are all already installed on python RHEL image
