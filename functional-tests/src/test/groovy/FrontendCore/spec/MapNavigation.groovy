@@ -29,7 +29,7 @@ class  MapNavigationSpec extends GebReportingSpec {
         to Dashboard
 
         when: "Loading is finished and I click the map tab."
-        mapTabButton.click()
+        mapTab.tabSelect.click()
         sleep(500)
         // createMineButton_Dashboard.click()
 

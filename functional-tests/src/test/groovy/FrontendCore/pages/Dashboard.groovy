@@ -31,6 +31,9 @@ class Dashboard extends Page {
         totalMineNum (wait:true) {$("li.ant-pagination-total-text").text()}
         paginationSelection (wait:true) {$("div.ant-select-selection-selected-value")}
 
+        //map tab
+        mapTab (wait:true) {module Tab_Map}
+
     }
 
     def searchResultValidation(keyword){
