@@ -289,7 +289,7 @@
                   },
                   {
                     "name": "FLASK_RUN_PORT",
-                    "value": "5000"
+                    "value": "5500"
                   },
                   {
                     "name": "FLASK_RUN_HOST",
@@ -360,7 +360,7 @@
                 "readinessProbe": {
                   "httpGet": {
                     "path": "${BASE_PATH}/health",
-                    "port": 5000,
+                    "port": 5500,
                     "scheme": "HTTP"
                   }
                 },
@@ -412,8 +412,8 @@
           {
             "name": "web",
             "protocol": "TCP",
-            "port": 5000,
-            "targetPort": 5000
+            "port": 5500,
+            "targetPort": 5500
           }
         ],
         "selector": {
