@@ -73,6 +73,7 @@ ShallowWrapper {
         },
       }
     }
+    zoom={null}
   />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
@@ -87,66 +88,65 @@ ShallowWrapper {
     "key": undefined,
     "nodeType": "function",
     "props": Object {
-      "children": <withRouter(Connect(MinePin)) />,
+      "children": Array [
+        <LocationPin
+          center={
+            Array [
+              null,
+              null,
+            ]
+          }
+          view={Object {}}
+        />,
+        <withRouter(Connect(MinePin)) />,
+      ],
+      "id": "<ARCGIS_PORTAL_MAP_ID>",
       "mapProperties": Object {
         "basemap": "topo",
       },
+      "onFail": [Function],
       "onLoad": [Function],
       "style": Object {
-        "height": "100%",
+        "height": "100vh",
         "width": "100%",
       },
       "viewProperties": Object {
         "center": Array [
-          -127.6476,
-          53.7267,
+          null,
+          null,
         ],
         "constraints": Object {
           "minZoom": 5,
         },
-        "zoom": 8,
+        "popup": Object {
+          "dockOptions": Object {
+            "breakpoint": Object {
+              "height": 0,
+              "width": 0,
+            },
+          },
+        },
+        "zoom": 6,
       },
     },
     "ref": null,
-    "rendered": Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "function",
-      "props": Object {},
-      "ref": null,
-      "rendered": null,
-      "type": [Function],
-    },
-    "type": [Function],
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "function",
-      "props": Object {
-        "children": <withRouter(Connect(MinePin)) />,
-        "mapProperties": Object {
-          "basemap": "topo",
-        },
-        "onLoad": [Function],
-        "style": Object {
-          "height": "100%",
-          "width": "100%",
-        },
-        "viewProperties": Object {
+    "rendered": Array [
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
           "center": Array [
-            -127.6476,
-            53.7267,
+            null,
+            null,
           ],
-          "constraints": Object {
-            "minZoom": 5,
-          },
-          "zoom": 8,
+          "view": Object {},
         },
+        "ref": null,
+        "rendered": null,
+        "type": [Function],
       },
-      "ref": null,
-      "rendered": Object {
+      Object {
         "instance": null,
         "key": undefined,
         "nodeType": "function",
@@ -155,6 +155,83 @@ ShallowWrapper {
         "rendered": null,
         "type": [Function],
       },
+    ],
+    "type": [Function],
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "function",
+      "props": Object {
+        "children": Array [
+          <LocationPin
+            center={
+              Array [
+                null,
+                null,
+              ]
+            }
+            view={Object {}}
+          />,
+          <withRouter(Connect(MinePin)) />,
+        ],
+        "id": "<ARCGIS_PORTAL_MAP_ID>",
+        "mapProperties": Object {
+          "basemap": "topo",
+        },
+        "onFail": [Function],
+        "onLoad": [Function],
+        "style": Object {
+          "height": "100vh",
+          "width": "100%",
+        },
+        "viewProperties": Object {
+          "center": Array [
+            null,
+            null,
+          ],
+          "constraints": Object {
+            "minZoom": 5,
+          },
+          "popup": Object {
+            "dockOptions": Object {
+              "breakpoint": Object {
+                "height": 0,
+                "width": 0,
+              },
+            },
+          },
+          "zoom": 6,
+        },
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "center": Array [
+              null,
+              null,
+            ],
+            "view": Object {},
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "function",
+          "props": Object {},
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+      ],
       "type": [Function],
     },
   ],
