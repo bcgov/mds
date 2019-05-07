@@ -4,7 +4,7 @@ import { Table, Button, Icon } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
-import { RED_CLOCK } from "@/constants/assets";
+import { RED_CLOCK, BRAND_PENCIL } from "@/constants/assets";
 import NullScreen from "@/components/common/NullScreen";
 import { formatDate } from "@/utils/helpers";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
@@ -16,7 +16,15 @@ const { errorRed } = COLOR;
 const propTypes = {
   variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  openModal: PropTypes.func.isRequired,
+  varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  openViewVarianceModal: PropTypes.func.isRequired,
+  isApplication: PropTypes.bool,
+  openEditVarianceModal: PropTypes.func,
+};
+
+const defaultProps = {
+  openEditVarianceModal: () => {},
+  isApplication: false,
 };
 
 export class MineVarianceTable extends Component {
@@ -28,9 +36,23 @@ export class MineVarianceTable extends Component {
     return date1 === date2 ? -1 : date1 - date2;
   };
 
-  transformRowData = (variances, codeHash) =>
+  handleOpenModal = (event, isEditable, variance) => {
+    event.preventDefault();
+    if (isEditable) {
+      this.props.openEditVarianceModal(variance);
+    } else {
+      this.props.openViewVarianceModal(variance);
+    }
+  };
+
+  handleConditionalEdit = (code) => code === String.VARIANCE_APPLICATION_CODE;
+
+  transformRowData = (variances, codeHash, statusHash) =>
     variances.sort(this.sortByDate).map((variance) => ({
       key: variance.variance_guid,
+      variance,
+      status: statusHash[variance.variance_application_status_code],
+      isEditable: this.handleConditionalEdit(variance.variance_application_status_code),
       compliance_article_id: codeHash[variance.compliance_article_id] || String.EMPTY_FIELD,
       expiry_date: formatDate(variance.expiry_date) || String.EMPTY_FIELD,
       issue_date: formatDate(variance.issue_date) || String.EMPTY_FIELD,
@@ -44,15 +66,11 @@ export class MineVarianceTable extends Component {
     const columns = [
       {
         title: "",
-        dataIndex: "expired",
+        dataIndex: "isOverdue",
         width: 10,
-        render: (text, record) => (
+        render: (isOverdue) => (
           <div title="">
-            {record.isOverdue ? (
-              <img className="padding-small" src={RED_CLOCK} alt="expired" />
-            ) : (
-              ""
-            )}
+            {isOverdue ? <img className="padding-small" src={RED_CLOCK} alt="expired" /> : ""}
           </div>
         ),
       },
@@ -66,8 +84,24 @@ export class MineVarianceTable extends Component {
         ),
       },
       {
+        title: "Submission Date",
+        dataIndex: "received_date",
+        render: (text) => <div title="Submission Date">{text}</div>,
+      },
+      {
+        title: "Application  Status",
+        dataIndex: "status",
+        className: !this.props.isApplication ? "column-hide" : "",
+        render: (text, record) => (
+          <div title="Application Status" style={this.errorStyle(record.isOverdue)}>
+            {text}
+          </div>
+        ),
+      },
+      {
         title: "Issue Date",
         dataIndex: "issue_date",
+        className: this.props.isApplication ? "column-hide" : "",
         render: (text, record) => (
           <div title="Issue Date" style={this.errorStyle(record.isOverdue)}>
             {text}
@@ -77,6 +111,7 @@ export class MineVarianceTable extends Component {
       {
         title: "Expiry Date",
         dataIndex: "expiry_date",
+        className: this.props.isApplication ? "column-hide" : "",
         render: (text, record) => (
           <div title="Expiry Date" style={this.errorStyle(record.isOverdue)}>
             {text}
@@ -86,6 +121,7 @@ export class MineVarianceTable extends Component {
       {
         title: "Approval Status",
         dataIndex: "status",
+        className: this.props.isApplication ? "column-hide" : "",
         render: (text, record) => (
           <div title="Approval Status" style={this.errorStyle(record.isOverdue)}>
             {record.isOverdue ? "Expired" : "Active"}
@@ -127,10 +163,13 @@ export class MineVarianceTable extends Component {
                 type="primary"
                 size="small"
                 ghost
-                onClick={(event) => this.props.openModal(event, record.variance)}
+                onClick={(event) => this.handleOpenModal(event, record.isEditable, record.variance)}
               >
-                <Icon type="eye" className="icon-sm" />
-                {/* <img src={BRAND_PENCIL} alt="Edit/View" /> */}
+                {record.isEditable ? (
+                  <img src={BRAND_PENCIL} alt="Edit/View" />
+                ) : (
+                  <Icon type="eye" className="icon-sm" />
+                )}
               </Button>
             </AuthorizationWrapper>
           </div>
@@ -145,7 +184,11 @@ export class MineVarianceTable extends Component {
           pagination={false}
           columns={columns}
           locale={{ emptyText: <NullScreen type="approved-variances" /> }}
-          dataSource={this.transformRowData(this.props.variances, this.props.complianceCodesHash)}
+          dataSource={this.transformRowData(
+            this.props.variances,
+            this.props.complianceCodesHash,
+            this.props.varianceStatusOptionsHash
+          )}
         />
       </div>
     );
@@ -153,5 +196,6 @@ export class MineVarianceTable extends Component {
 }
 
 MineVarianceTable.propTypes = propTypes;
+MineVarianceTable.defaultProps = defaultProps;
 
 export default MineVarianceTable;

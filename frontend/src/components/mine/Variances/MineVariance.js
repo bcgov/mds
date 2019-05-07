@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import MineVarianceTable from "./MineVarianceTable";
-import MineVarianceApplicationTable from "./MineVarianceApplicationTable";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
 import * as Permission from "@/constants/permissions";
@@ -59,7 +58,7 @@ export class MineVariance extends Component {
 
   handleUpdateVariance = (files, variance, isApproved) => (values) => {
     // if the application isApproved, set issue_date to today and set expiry_date 5 years from today,
-    // unless the user set a custom expiry.
+    // unless the user sets a custom expiry.
     const issue_date = isApproved ? moment().format("YYYY-MM-DD") : null;
     let expiry_date;
     if (isApproved) {
@@ -88,8 +87,7 @@ export class MineVariance extends Component {
     });
   };
 
-  openEditVarianceModal = (event, variance) => {
-    event.preventDefault();
+  openEditVarianceModal = (variance) => {
     this.props.openModal({
       props: {
         onSubmit: this.handleUpdateVariance,
@@ -105,8 +103,7 @@ export class MineVariance extends Component {
     });
   };
 
-  openViewVarianceModal = (event, variance) => {
-    event.preventDefault();
+  openViewVarianceModal = (variance) => {
     this.props.openModal({
       props: {
         variance,
@@ -126,6 +123,7 @@ export class MineVariance extends Component {
         mineGuid: this.props.mine.mine_guid,
         complianceCodes: this.props.complianceCodes,
         coreUsers: this.props.coreUsers,
+        varianceStatusOptionsHash: this.props.varianceStatusOptionsHash,
       },
       content: modalConfig.ADD_VARIANCE,
     });
@@ -137,20 +135,23 @@ export class MineVariance extends Component {
         <br />
         <h4 className="uppercase">Variance Applications</h4>
         <br />
-        <MineVarianceApplicationTable
-          openModal={this.openEditVarianceModal}
+        <MineVarianceTable
+          openEditVarianceModal={this.openEditVarianceModal}
+          openViewVarianceModal={this.openViewVarianceModal}
           variances={this.props.varianceApplications}
           complianceCodesHash={this.props.complianceCodesHash}
           mine={this.props.mine}
           varianceStatusOptionsHash={this.props.varianceStatusOptionsHash}
+          isApplication
         />
         <br />
         <h4 className="uppercase">Approved Variances</h4>
         <br />
         <MineVarianceTable
-          openModal={this.openViewVarianceModal}
+          openViewVarianceModal={this.openViewVarianceModal}
           variances={this.props.approvedVariances}
           complianceCodesHash={this.props.complianceCodesHash}
+          varianceStatusOptionsHash={this.props.varianceStatusOptionsHash}
           mine={this.props.mine}
         />
       </div>

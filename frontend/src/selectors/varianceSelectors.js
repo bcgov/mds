@@ -9,7 +9,7 @@ export const getVarianceApplications = createSelector(
   (variances) =>
     variances.filter(
       ({ variance_application_status_code }) =>
-        variance_application_status_code === Strings.VARIANCE_APPLICATION_CODE
+        variance_application_status_code !== Strings.VARIANCE_APPROVED_CODE
     )
 );
 

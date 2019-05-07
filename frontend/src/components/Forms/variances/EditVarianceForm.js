@@ -9,10 +9,10 @@ import * as FORM from "@/constants/forms";
 import * as String from "@/constants/strings";
 import { renderConfig } from "@/components/common/config";
 import { required } from "@/utils/Validate";
-import { resetForm, formatDate } from "@/utils/helpers";
+import { resetForm } from "@/utils/helpers";
 import VarianceFileUpload from "./VarianceFileUpload";
-import DocumentTable from "@/components/common/DocumentTable";
 import CustomPropTypes from "@/customPropTypes";
+import { VarianceDetails } from "../../mine/Variances/VarianceDetails";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -124,36 +124,7 @@ export class EditVarianceForm extends Component {
             </Col>
           </Row>
         )}
-        <h5>application details</h5>
-        <div className="content--light-grey padding-small">
-          <div className="inline-flex padding-small">
-            <p className="field-title">Mine</p>
-            <p> {this.props.mineName || String.EMPTY_FIELD}</p>
-          </div>
-          <div className="inline-flex padding-small">
-            <p className="field-title">Part of Code</p>
-            <p>{this.props.variance.compliance_article_id || String.EMPTY_FIELD}</p>
-          </div>
-          <div className="inline-flex padding-small">
-            <p className="field-title">Submission date</p>
-            <p>{formatDate(this.props.variance.received_date) || String.EMPTY_FIELD}</p>
-          </div>
-          <div className="inline-flex padding-small">
-            <p className="field-title">OHSC Union</p>
-            <p>{this.props.variance.ohsc_ind ? "Yes" : "No"} </p>
-          </div>
-          <div className="inline-flex padding-small">
-            <p className="field-title">Union</p>
-            <p>{this.props.variance.union_ind ? "Yes" : "No"} </p>
-          </div>
-          <div className="inline-flex padding-small">
-            <p className="field-title">Description</p>
-            <p>{this.props.variance.note || String.EMPTY_FIELD}</p>
-          </div>
-        </div>
-        <br />
-        <h5>documents</h5>
-        <DocumentTable documents={this.props.variance.documents} />
+        <VarianceDetails mineName={this.props.mineName} variance={this.props.variance} />
         <br />
         <h5>upload files</h5>
         <p> Please upload all the required documents here for the variance application</p>
