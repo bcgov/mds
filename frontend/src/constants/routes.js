@@ -22,13 +22,8 @@ export const MINE_HOME_PAGE = {
   route: "/dashboard/mines",
   dynamicRoute: ({ page, per_page, ...params }) =>
     `/dashboard/mines/?${queryString.stringify({ page, per_page, ...params }, { sort: false })}`,
-  mapRoute: (lat = null, long = null, zoom = null, mineName = null) => {
-    let searchParam = lat ? `lat=${lat}` : "";
-    searchParam += long ? `&long=${long}` : "";
-    searchParam += zoom ? `&zoom=${zoom}` : "";
-    searchParam += mineName ? `&mineName=${mineName}` : "";
-    return `/dashboard/mines?map=true&${searchParam}`;
-  },
+  mapRoute: (mapParam = null) =>
+    `/dashboard/mines?map=true&${queryString.stringify({ ...mapParam }, { sort: false })}`,
   component: Dashboard,
 };
 

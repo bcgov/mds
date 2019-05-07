@@ -253,12 +253,12 @@ export class MineHeader extends Component {
     );
 
     const mapRoute = this.props.mine.mine_location
-      ? route.MINE_HOME_PAGE.mapRoute(
-          this.props.mine.mine_location.latitude,
-          this.props.mine.mine_location.longitude,
-          12,
-          this.props.mine.mine_name
-        )
+      ? route.MINE_HOME_PAGE.mapRoute({
+          lat: this.props.mine.mine_location.latitude,
+          long: this.props.mine.mine_location.longitude,
+          zoom: String.HIGH_ZOOM,
+          mineName: this.props.mine.mine_name,
+        })
       : route.MINE_HOME_PAGE.mapRoute();
 
     return (

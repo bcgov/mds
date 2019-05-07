@@ -100,7 +100,7 @@ export class Dashboard extends Component {
       mineList: false,
       lat: Number(String.DEFAULT_LAT),
       long: Number(String.DEFAULT_LONG),
-      zoom: 6,
+      zoom: String.DEFAULT_ZOOM,
       showCoordinates: false,
       mineName: null,
       params: {
@@ -158,7 +158,7 @@ export class Dashboard extends Component {
       params: {},
       lat: Number(String.DEFAULT_LAT),
       long: Number(String.DEFAULT_LONG),
-      zoom: 6,
+      zoom: String.DEFAULT_ZOOM,
     });
   }
 
@@ -199,17 +199,16 @@ export class Dashboard extends Component {
         this.setState({ mineList: true });
       });
     }
-    // set the lat, long, zoom, and blinking to true
-    // Only do this if
+
     if (format(lat)[0] && format(long)[0]) {
       this.setState({
         lat: Number(format(lat)[0]),
         long: Number(format(long)[0]),
-        zoom: format(zoom)[0] ? Number(format(zoom)[0]) : 6,
+        zoom: format(zoom)[0] ? Number(format(zoom)[0]) : String.DEFAULT_ZOOM,
         showCoordinates: true,
         mineName: format(mineName)[0],
       });
-      this.handleNavitationFromMine();
+      this.handleScroll("landing-page__content", 200);
     }
   };
 
@@ -229,48 +228,45 @@ export class Dashboard extends Component {
    */
   handleCoordinateSearch = (value) => {
     if (typeof value === "string") {
-      // Case: searching my mine name
       const newVal = value.split(",");
       if (newVal[0] && newVal[1]) {
         this.props.history.push(
-          router.MINE_HOME_PAGE.mapRoute(newVal[1], newVal[0], 12, newVal[2])
+          router.MINE_HOME_PAGE.mapRoute({
+            lat: newVal[1],
+            long: newVal[0],
+            zoom: String.HIGH_ZOOM,
+            mineName: newVal[2],
+          })
         );
-        // TODO: spent 4 hours looking for a solution to not hardcoding this scroll value. Need to find a dynamic way of scroling the screen to this location.
-        scroller.scrollTo("mapElement", {
-          duration: 1000,
-          smooth: true,
-          isDynamic: true,
-          offset: -60,
-        });
+        this.handleScroll("mapElement", -60);
       } else {
         this.setState({
           lat: Number(String.DEFAULT_LAT),
           long: Number(String.DEFAULT_LONG),
-          zoom: 6,
+          zoom: String.DEFAULT_ZOOM,
           showCoordinates: false,
         });
         notification.error({ message: String.NO_COORDINATES, duration: 10 });
       }
     } else {
       this.props.history.push(
-        router.MINE_HOME_PAGE.mapRoute(value.latitude, value.longitude, 12, null)
+        router.MINE_HOME_PAGE.mapRoute({
+          lat: value.latitude,
+          long: value.longitude,
+          zoom: String.HIGH_ZOOM,
+        })
       );
-      scroller.scrollTo("mapElement", {
-        duration: 1000,
-        smooth: true,
-        isDynamic: true,
-        offset: -60,
-      });
+      this.handleScroll("mapElement", -60);
     }
   };
 
-  handleNavitationFromMine = () => {
-    // TODO: spent 4 hours looking for a solution to not hardcoding this scroll value. Need to find a dynamic way of scroling the screen to this location.
-    scroller.scrollTo("landing-page__content", {
+  handleScroll = (element, offset) => {
+    // FIXME: scroll dynamically instead of by a hardcoded value
+    scroller.scrollTo(element, {
       duration: 1000,
       smooth: true,
       isDynamic: true,
-      offset: 200,
+      offset,
     });
   };
 
@@ -282,7 +278,7 @@ export class Dashboard extends Component {
       mineName: "",
       lat: Number(String.DEFAULT_LAT),
       long: Number(String.DEFAULT_LONG),
-      zoom: 6,
+      zoom: String.DEFAULT_ZOOM,
     });
     if (key === "map") {
       this.props.history.push(router.MINE_HOME_PAGE.mapRoute());
