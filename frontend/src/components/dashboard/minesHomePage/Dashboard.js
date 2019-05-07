@@ -334,104 +334,104 @@ export class Dashboard extends Component {
   renderCorrectView() {
     const { search, map, page, per_page } = this.state.params;
     const isMap = map ? "map" : "list";
-    if (this.state.mineList) {
-      return (
-        <div>
-          <Tabs
-            activeKey={isMap}
-            size="large"
-            animated={{ inkBar: true, tabPane: false }}
-            onTabClick={this.handleTabChange}
-          >
-            <TabPane tab="List" key="list">
-              <MineSearch
-                initialValues={this.state.params}
-                {...this.props}
-                handleMineSearch={this.handleMineSearchDebounced}
-                searchValue={search}
+    // if (this.state.mineList) {
+    return (
+      <div>
+        <Tabs
+          activeKey={isMap}
+          size="large"
+          animated={{ inkBar: true, tabPane: false }}
+          onTabClick={this.handleTabChange}
+        >
+          <TabPane tab="List" key="list">
+            <MineSearch
+              initialValues={this.state.params}
+              {...this.props}
+              handleMineSearch={this.handleMineSearchDebounced}
+              searchValue={search}
+            />
+            <div className="tab__content ">
+              <MineList
+                mines={this.props.mines}
+                mineIds={this.props.mineIds}
+                mineRegionHash={this.props.mineRegionHash}
+                mineTenureHash={this.props.mineTenureHash}
+                mineCommodityOptionsHash={this.props.mineCommodityOptionsHash}
+                handleMineSearch={this.handleMineSearch}
+                sortField={this.state.params.sort_field}
+                sortDir={this.state.params.sort_dir}
               />
-              <div className="tab__content ">
-                <MineList
-                  mines={this.props.mines}
-                  mineIds={this.props.mineIds}
-                  mineRegionHash={this.props.mineRegionHash}
-                  mineTenureHash={this.props.mineTenureHash}
-                  mineCommodityOptionsHash={this.props.mineCommodityOptionsHash}
-                  handleMineSearch={this.handleMineSearch}
-                  sortField={this.state.params.sort_field}
-                  sortDir={this.state.params.sort_dir}
+            </div>
+            <div className="center">
+              <ResponsivePagination
+                onPageChange={this.onPageChange}
+                currentPage={Number(page)}
+                pageTotal={Number(this.props.pageData.total)}
+                itemsPerPage={Number(per_page)}
+              />
+            </div>
+          </TabPane>
+          <TabPane tab="Map" key="map">
+            <div className="landing-page__content--search">
+              <Col md={10} xs={24}>
+                <MineSearch
+                  initialValues={this.state.params}
+                  handleCoordinateSearch={this.handleCoordinateSearch}
+                  isMapView
                 />
-              </div>
-              <div className="center">
-                <ResponsivePagination
-                  onPageChange={this.onPageChange}
-                  currentPage={Number(page)}
-                  pageTotal={Number(this.props.pageData.total)}
-                  itemsPerPage={Number(per_page)}
-                />
-              </div>
-            </TabPane>
-            <TabPane tab="Map" key="map">
-              <div className="landing-page__content--search">
-                <Col md={10} xs={24}>
-                  <MineSearch
-                    initialValues={this.state.params}
-                    handleCoordinateSearch={this.handleCoordinateSearch}
-                    isMapView
-                  />
-                </Col>
-                <Col md={2} sm={0} xs={0}>
-                  <div className="center">
-                    <Divider type="vertical" />
+              </Col>
+              <Col md={2} sm={0} xs={0}>
+                <div className="center">
+                  <Divider type="vertical" />
+                  <h2>OR</h2>
+                  <Divider type="vertical" />
+                </div>
+              </Col>
+              <Col md={0} sm={24} xs={24}>
+                <div className="center">
+                  <Divider>
                     <h2>OR</h2>
-                    <Divider type="vertical" />
+                  </Divider>
+                </div>
+              </Col>
+              <Col md={10} xs={24}>
+                <SearchCoordinatesForm onSubmit={this.handleCoordinateSearch} />
+              </Col>
+            </div>
+            {this.state.showCoordinates && (
+              <div>
+                <div className="center center-mobile">
+                  {this.state.mineName ? (
+                    <h2>
+                      Results for: <span className="p">{this.state.mineName}</span>
+                    </h2>
+                  ) : (
+                    <h2> Result for coordinate search:</h2>
+                  )}
+                </div>
+                <div className="center">
+                  <div className="inline-flex evenly center-mobile">
+                    <h2>
+                      Latitude: <span className="p">{this.state.lat}</span>
+                    </h2>
+                    <h2>
+                      Longitude: <span className="p">{this.state.long}</span>
+                    </h2>
                   </div>
-                </Col>
-                <Col md={0} sm={24} xs={24}>
-                  <div className="center">
-                    <Divider>
-                      <h2>OR</h2>
-                    </Divider>
-                  </div>
-                </Col>
-                <Col md={10} xs={24}>
-                  <SearchCoordinatesForm onSubmit={this.handleCoordinateSearch} />
-                </Col>
+                </div>
               </div>
-              {this.state.showCoordinates && (
-                <div>
-                  <div className="center center-mobile">
-                    {this.state.mineName ? (
-                      <h2>
-                        Results for: <span className="p">{this.state.mineName}</span>
-                      </h2>
-                    ) : (
-                      <h2> Result for coordinate search:</h2>
-                    )}
-                  </div>
-                  <div className="center">
-                    <div className="inline-flex evenly center-mobile">
-                      <h2>
-                        Latitude: <span className="p">{this.state.lat}</span>
-                      </h2>
-                      <h2>
-                        Longitude: <span className="p">{this.state.long}</span>
-                      </h2>
-                    </div>
-                  </div>
-                </div>
-              )}
-              <Element name="mapElement">
-                <div>
-                  <MineMap {...this.state} />
-                </div>
-              </Element>
-            </TabPane>
-          </Tabs>
-        </div>
-      );
-    }
-    return <Loading />;
+            )}
+            <Element name="mapElement">
+              <div>
+                <MineMap {...this.state} />
+              </div>
+            </Element>
+          </TabPane>
+        </Tabs>
+      </div>
+    );
+    // }
+    // return <Loading />;
   }
 
   render() {
@@ -456,7 +456,9 @@ export class Dashboard extends Component {
             </div>
           </div>
         </div>
-        <div className="landing-page__content">{this.renderCorrectView()}</div>
+        <div className="landing-page__content">
+          {this.state.mineList ? this.renderCorrectView() : <Loading />}
+        </div>
       </div>
     );
   }
