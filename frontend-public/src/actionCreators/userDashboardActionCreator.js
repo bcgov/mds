@@ -20,7 +20,7 @@ export const fetchUserMineInfo = () => (dispatch) => {
     })
     .catch((err) => {
       notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
+        message: err.response ? err.response.data.message : String.ERROR,
         duration: 10,
       });
       dispatch(error(reducerTypes.GET_USER_MINE_INFO));
@@ -40,7 +40,7 @@ export const fetchMineRecordById = (mineId) => (dispatch) => {
     })
     .catch((err) => {
       notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
+        message: err.response ? err.response.data.message : String.ERROR,
         duration: 10,
       });
       dispatch(error(reducerTypes.GET_MINE_RECORD));
@@ -61,7 +61,7 @@ export const fetchMineDocuments = (mineGuid) => (dispatch) => {
     })
     .catch((err) => {
       notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
+        message: err.response ? err.response.data.message : String.ERROR,
         duration: 10,
       });
       dispatch(error(reducerTypes.GET_MINE_DOCUMENTS));
@@ -85,7 +85,7 @@ export const addDocumentToExpectedDocument = (expectedDocumentGuid, payload) => 
     })
     .catch((err) => {
       notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
+        message: err.response ? err.response.data.message : String.ERROR,
         duration: 10,
       });
       dispatch(error(reducerTypes.ADD_DOCUMENT_TO_EXPECTED_DOCUMENT));
@@ -109,7 +109,7 @@ export const updateExpectedDocument = (id, payload) => (dispatch) => {
     })
     .catch((err) => {
       notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
+        message: err.response ? err.response.data.message : String.ERROR,
         duration: 10,
       });
       dispatch(error(reducerTypes.UPDATE_EXPECTED_DOCUMENT));
@@ -139,7 +139,7 @@ export const removeMineDocumentFromExpectedDocument = (mineDocumentGuid, expecte
     })
     .catch((err) => {
       notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
+        message: err.response ? err.response.data.message : String.ERROR,
         duration: 10,
       });
       dispatch(error(reducerTypes.REMOVE_MINE_EXPECTED_DOCUMENT));
