@@ -86,6 +86,7 @@ export class MineVarianceTable extends Component {
       {
         title: "Submission Date",
         dataIndex: "received_date",
+        className: !this.props.isApplication ? "column-hide" : "",
         render: (text) => <div title="Submission Date">{text}</div>,
       },
       {
