@@ -79,18 +79,10 @@ def test_put_variance(test_client, db_session, auth_headers):
     assert put_data['expiry_date'] == data['expiry_date'].strftime('%Y-%m-%d')
 
 
-def test_put_variance_invalid_variance_id(test_client, db_session, auth_headers):
+def test_put_variance_application_invalid_variance_id(test_client, db_session, auth_headers):
     variance = VarianceFactory()
-    approved_variance = VarianceFactory(approved=True)
     data = {
-        'compliance_article_id': approved_variance.compliance_article_id,
-        'received_date': approved_variance.received_date,
-        # issue/expiry_date not allowed with REV status
-        'variance_application_status_code': 'REV',
-        'inspector_guid': approved_variance.inspector_guid,
-        'note': approved_variance.note,
-        'issue_date': approved_variance.issue_date,
-        'expiry_date': approved_variance.expiry_date
+        'note': 'This is my favourite variance.',
     }
 
     put_resp = test_client.put(
