@@ -13,6 +13,10 @@ RUN mkdir -p ${APP_ROOT}/oracle_bin
 USER 0
 
 RUN yum -y install libaio
+
+RUN yum -y install nc
+
+RUN yum -y install telnet
 # yum install removed for openshift build
 # pkgs build-essential libaio1 python-minimal - don't exist for RHEL 
 # pkgs curl unzip git - are all already installed on python RHEL image
