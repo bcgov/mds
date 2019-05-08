@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { Row, Col } from "antd";
 import { Link } from "react-router-dom";
 import { getUserInfo } from "@/selectors/authenticationSelectors";
-import { getUserMineInfo } from "@/selectors/userMineInfoSelector";
+import { getUserMineInfo } from "@/selectors/userMineSelectors";
 import { fetchUserMineInfo } from "@/actionCreators/userDashboardActionCreator";
 import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
@@ -48,7 +48,9 @@ export class UserDashboard extends Component {
               <ul className="user-mine-list">
                 {mines.map((mine) => (
                   <li key={mine.mine_guid}>
-                    <Link to={routes.MINE_INFO.dynamicRoute(mine.mine_guid)}>{mine.mine_name}</Link>
+                    <Link to={routes.MINE_DASHBOARD.dynamicRoute(mine.mine_guid)}>
+                      {mine.mine_name}
+                    </Link>
                   </li>
                 ))}
               </ul>

@@ -6,9 +6,8 @@ import PropTypes from "prop-types";
 import { Row, Col } from "antd";
 import { find } from "lodash";
 
-import { getMine } from "@/selectors/userMineInfoSelector";
+import { getMine } from "@/selectors/userMineSelectors";
 import CustomPropTypes from "@/customPropTypes";
-import QuestionSidebar from "@/components/common/QuestionsSidebar";
 import Loading from "@/components/common/Loading";
 import {
   fetchMineRecordById,
@@ -16,13 +15,13 @@ import {
 } from "@/actionCreators/userDashboardActionCreator";
 import { modalConfig } from "@/components/modalContent/config";
 import { openModal, closeModal } from "@/actions/modalActions";
-import MineReportTable from "@/components/dashboard/mineInfo/MineReportTable";
+import MineReportTable from "@/components/dashboard/mine/reports/MineReportTable";
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   match: PropTypes.shape({
     params: {
-      mineId: PropTypes.string,
+      id: PropTypes.string,
     },
   }).isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
@@ -31,12 +30,12 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
 };
 
-export class MineInfo extends Component {
+export class Reports extends Component {
   state = { isLoaded: false, selectedDocument: {} };
 
   componentDidMount() {
-    const { mineId } = this.props.match.params;
-    this.props.fetchMineRecordById(mineId).then(() => {
+    const { id } = this.props.match.params;
+    this.props.fetchMineRecordById(id).then(() => {
       this.setState({ isLoaded: true });
     });
   }
@@ -91,18 +90,12 @@ export class MineInfo extends Component {
         {this.props.mine && (
           <div>
             <Row>
-              <Col xs={1} sm={1} md={2} lg={4} />
               <Col xs={22} sm={22} md={14} lg={12}>
                 <h1 className="mine-title">{this.props.mine.mine_name}</h1>
                 <p>Mine No. {this.props.mine.mine_no}</p>
               </Col>
-              <Col xs={22} sm={22} md={6} lg={4}>
-                <QuestionSidebar />
-              </Col>
-              <Col xs={1} sm={1} md={2} lg={4} />
             </Row>
             <Row>
-              <Col xs={1} sm={1} md={2} lg={4} />
               <Col xs={22} sm={22} md={20} lg={16}>
                 <h2>2018 Reports</h2>
                 <br />
@@ -112,7 +105,6 @@ export class MineInfo extends Component {
                   handleEditReportSubmit={this.handleEditReportSubmit}
                 />
               </Col>
-              <Col xs={1} sm={1} md={2} lg={4} />
             </Row>
           </div>
         )}
@@ -136,9 +128,9 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-MineInfo.propTypes = propTypes;
+Reports.propTypes = propTypes;
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(MineInfo);
+)(Reports);

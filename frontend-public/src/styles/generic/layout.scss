@@ -9,9 +9,11 @@ body {
 }
 
 .content {
+  width: 60vw;
   max-height: 100%;
   margin-top: 70px;
   margin-bottom: $default-margin-lg;
+  margin: auto;
   overflow: initial;
 }
 
