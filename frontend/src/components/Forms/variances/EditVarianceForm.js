@@ -124,6 +124,7 @@ export class EditVarianceForm extends Component {
             </Col>
           </Row>
         )}
+        <h5>Application details</h5>
         <VarianceDetails mineName={this.props.mineName} variance={this.props.variance} />
         <br />
         <h5>upload files</h5>

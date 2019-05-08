@@ -4,7 +4,7 @@ import { Table, Button, Icon } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
-import { RED_CLOCK, BRAND_PENCIL } from "@/constants/assets";
+import { RED_CLOCK, EDIT_OUTLINE } from "@/constants/assets";
 import NullScreen from "@/components/common/NullScreen";
 import { formatDate } from "@/utils/helpers";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
@@ -169,7 +169,7 @@ export class MineVarianceTable extends Component {
                 }
               >
                 {record.isEditable ? (
-                  <img src={BRAND_PENCIL} alt="Edit/View" />
+                  <img src={EDIT_OUTLINE} alt="Edit/View" className="icon-svg-filter" />
                 ) : (
                   <Icon type="eye" className="icon-sm" />
                 )}

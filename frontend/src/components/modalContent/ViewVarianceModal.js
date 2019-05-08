@@ -53,7 +53,8 @@ export const ViewVarianceModal = (props) => {
         )}
       </div>
       <br />
-      <VarianceDetails variance={props.variance} mineName={props.mineName} isApproved />
+      <h5>{isApproved ? "Variance details" : "Application details"}</h5>
+      <VarianceDetails variance={props.variance} mineName={props.mineName} />
       <div className="right center-mobile">
         <Popconfirm
           placement="topRight"

@@ -4,7 +4,6 @@ exports[`VarianceDetails renders properly 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <VarianceDetails
-    isApproved={false}
     mineName="mockMineName"
     variance={
       Array [
@@ -42,9 +41,6 @@ ShallowWrapper {
     "nodeType": "host",
     "props": Object {
       "children": Array [
-        <h5>
-          application details
-        </h5>,
         <div
           className="content--light-grey padding-small"
         >
@@ -69,7 +65,9 @@ ShallowWrapper {
             >
               Part of Code
             </p>
-            <p />
+            <p>
+              N/A
+            </p>
           </div>
           <div
             className="inline-flex padding-small"
@@ -79,7 +77,9 @@ ShallowWrapper {
             >
               Submission date
             </p>
-            <p />
+            <p>
+              N/A
+            </p>
           </div>
           <div
             className="inline-flex padding-small"
@@ -115,7 +115,9 @@ ShallowWrapper {
             >
               Description
             </p>
-            <p />
+            <p>
+              N/A
+            </p>
           </div>
         </div>,
         <br />,
@@ -129,17 +131,6 @@ ShallowWrapper {
     },
     "ref": null,
     "rendered": Array [
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "host",
-        "props": Object {
-          "children": "application details",
-        },
-        "ref": null,
-        "rendered": "application details",
-        "type": "h5",
-      },
       Object {
         "instance": null,
         "key": undefined,
@@ -167,7 +158,9 @@ ShallowWrapper {
               >
                 Part of Code
               </p>
-              <p />
+              <p>
+                N/A
+              </p>
             </div>,
             <div
               className="inline-flex padding-small"
@@ -177,7 +170,9 @@ ShallowWrapper {
               >
                 Submission date
               </p>
-              <p />
+              <p>
+                N/A
+              </p>
             </div>,
             <div
               className="inline-flex padding-small"
@@ -213,7 +208,9 @@ ShallowWrapper {
               >
                 Description
               </p>
-              <p />
+              <p>
+                N/A
+              </p>
             </div>,
           ],
           "className": "content--light-grey padding-small",
@@ -283,7 +280,9 @@ ShallowWrapper {
                 >
                   Part of Code
                 </p>,
-                <p />,
+                <p>
+                  N/A
+                </p>,
               ],
               "className": "inline-flex padding-small",
             },
@@ -306,10 +305,10 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "host",
                 "props": Object {
-                  "children": undefined,
+                  "children": "N/A",
                 },
                 "ref": null,
-                "rendered": null,
+                "rendered": "N/A",
                 "type": "p",
               },
             ],
@@ -326,7 +325,9 @@ ShallowWrapper {
                 >
                   Submission date
                 </p>,
-                <p />,
+                <p>
+                  N/A
+                </p>,
               ],
               "className": "inline-flex padding-small",
             },
@@ -349,10 +350,10 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "host",
                 "props": Object {
-                  "children": undefined,
+                  "children": "N/A",
                 },
                 "ref": null,
-                "rendered": null,
+                "rendered": "N/A",
                 "type": "p",
               },
             ],
@@ -473,7 +474,9 @@ ShallowWrapper {
                 >
                   Description
                 </p>,
-                <p />,
+                <p>
+                  N/A
+                </p>,
               ],
               "className": "inline-flex padding-small",
             },
@@ -496,10 +499,10 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "host",
                 "props": Object {
-                  "children": undefined,
+                  "children": "N/A",
                 },
                 "ref": null,
-                "rendered": null,
+                "rendered": "N/A",
                 "type": "p",
               },
             ],
@@ -549,9 +552,6 @@ ShallowWrapper {
       "nodeType": "host",
       "props": Object {
         "children": Array [
-          <h5>
-            application details
-          </h5>,
           <div
             className="content--light-grey padding-small"
           >
@@ -576,7 +576,9 @@ ShallowWrapper {
               >
                 Part of Code
               </p>
-              <p />
+              <p>
+                N/A
+              </p>
             </div>
             <div
               className="inline-flex padding-small"
@@ -586,7 +588,9 @@ ShallowWrapper {
               >
                 Submission date
               </p>
-              <p />
+              <p>
+                N/A
+              </p>
             </div>
             <div
               className="inline-flex padding-small"
@@ -622,7 +626,9 @@ ShallowWrapper {
               >
                 Description
               </p>
-              <p />
+              <p>
+                N/A
+              </p>
             </div>
           </div>,
           <br />,
@@ -636,17 +642,6 @@ ShallowWrapper {
       },
       "ref": null,
       "rendered": Array [
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "host",
-          "props": Object {
-            "children": "application details",
-          },
-          "ref": null,
-          "rendered": "application details",
-          "type": "h5",
-        },
         Object {
           "instance": null,
           "key": undefined,
@@ -674,7 +669,9 @@ ShallowWrapper {
                 >
                   Part of Code
                 </p>
-                <p />
+                <p>
+                  N/A
+                </p>
               </div>,
               <div
                 className="inline-flex padding-small"
@@ -684,7 +681,9 @@ ShallowWrapper {
                 >
                   Submission date
                 </p>
-                <p />
+                <p>
+                  N/A
+                </p>
               </div>,
               <div
                 className="inline-flex padding-small"
@@ -720,7 +719,9 @@ ShallowWrapper {
                 >
                   Description
                 </p>
-                <p />
+                <p>
+                  N/A
+                </p>
               </div>,
             ],
             "className": "content--light-grey padding-small",
@@ -790,7 +791,9 @@ ShallowWrapper {
                   >
                     Part of Code
                   </p>,
-                  <p />,
+                  <p>
+                    N/A
+                  </p>,
                 ],
                 "className": "inline-flex padding-small",
               },
@@ -813,10 +816,10 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "host",
                   "props": Object {
-                    "children": undefined,
+                    "children": "N/A",
                   },
                   "ref": null,
-                  "rendered": null,
+                  "rendered": "N/A",
                   "type": "p",
                 },
               ],
@@ -833,7 +836,9 @@ ShallowWrapper {
                   >
                     Submission date
                   </p>,
-                  <p />,
+                  <p>
+                    N/A
+                  </p>,
                 ],
                 "className": "inline-flex padding-small",
               },
@@ -856,10 +861,10 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "host",
                   "props": Object {
-                    "children": undefined,
+                    "children": "N/A",
                   },
                   "ref": null,
-                  "rendered": null,
+                  "rendered": "N/A",
                   "type": "p",
                 },
               ],
@@ -980,7 +985,9 @@ ShallowWrapper {
                   >
                     Description
                   </p>,
-                  <p />,
+                  <p>
+                    N/A
+                  </p>,
                 ],
                 "className": "inline-flex padding-small",
               },
@@ -1003,10 +1010,10 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "host",
                   "props": Object {
-                    "children": undefined,
+                    "children": "N/A",
                   },
                   "ref": null,
-                  "rendered": null,
+                  "rendered": "N/A",
                   "type": "p",
                 },
               ],
