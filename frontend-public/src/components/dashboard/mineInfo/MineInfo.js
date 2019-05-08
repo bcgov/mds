@@ -16,7 +16,7 @@ import {
 } from "@/actionCreators/userDashboardActionCreator";
 import { modalConfig } from "@/components/modalContent/config";
 import { openModal, closeModal } from "@/actions/modalActions";
-import MineInfoList from "@/components/dashboard/mineInfo/MineInfoList";
+import MineReportTable from "@/components/dashboard/mineInfo/MineReportTable";
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
@@ -106,7 +106,7 @@ export class MineInfo extends Component {
               <Col xs={22} sm={22} md={20} lg={16}>
                 <h2>2018 Reports</h2>
                 <br />
-                <MineInfoList
+                <MineReportTable
                   mine={this.props.mine}
                   openEditReportModal={this.openEditReportModal}
                   handleEditReportSubmit={this.handleEditReportSubmit}

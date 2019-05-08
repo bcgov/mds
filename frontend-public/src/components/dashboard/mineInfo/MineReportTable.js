@@ -145,7 +145,7 @@ const transformRowData = (expectedDocuments, actions) =>
     ...actions,
   }));
 
-const MineInfoList = (props) => (
+const MineReportTable = (props) => (
   <div className="mine-info-padding">
     {props.mine && (
       <Table
@@ -161,6 +161,6 @@ const MineInfoList = (props) => (
   </div>
 );
 
-MineInfoList.propTypes = propTypes;
+MineReportTable.propTypes = propTypes;
 
-export default MineInfoList;
+export default MineReportTable;
