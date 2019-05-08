@@ -259,7 +259,7 @@
                   },
                   {
                     "name": "NRIS_DB_PORT",
-                    "value": "1621"
+                    "value": "1521"
                   },
                   {
                     "name": "ELASTIC_ENABLED",
