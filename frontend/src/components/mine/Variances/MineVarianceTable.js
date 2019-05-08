@@ -30,12 +30,6 @@ const defaultProps = {
 export class MineVarianceTable extends Component {
   errorStyle = (isOverdue) => (isOverdue ? { color: errorRed } : {});
 
-  sortByDate = (variance1, variance2) => {
-    const date1 = Date.parse(variance1.expiry_date) || 0;
-    const date2 = Date.parse(variance2.expiry_date) || 0;
-    return date1 === date2 ? -1 : date1 - date2;
-  };
-
   handleOpenModal = (event, isEditable, variance) => {
     event.preventDefault();
     if (isEditable) {
@@ -48,7 +42,7 @@ export class MineVarianceTable extends Component {
   handleConditionalEdit = (code) => code === Strings.VARIANCE_APPLICATION_CODE;
 
   transformRowData = (variances, codeHash, statusHash) =>
-    variances.sort(this.sortByDate).map((variance) => ({
+    variances.map((variance) => ({
       key: variance.variance_guid,
       variance,
       status: statusHash[variance.variance_application_status_code],
@@ -88,6 +82,7 @@ export class MineVarianceTable extends Component {
         dataIndex: "received_date",
         className: !this.props.isApplication ? "column-hide" : "",
         render: (text) => <div title="Submission Date">{text}</div>,
+        sorter: (a, b) => (a.received_date > b.received_date ? -1 : 1),
       },
       {
         title: "Application  Status",
@@ -98,6 +93,7 @@ export class MineVarianceTable extends Component {
             {text}
           </div>
         ),
+        sorter: (a, b) => (a.status > b.status ? -1 : 1),
       },
       {
         title: "Issue Date",
@@ -108,6 +104,7 @@ export class MineVarianceTable extends Component {
             {text}
           </div>
         ),
+        sorter: (a, b) => (a.issue_date > b.issue_date ? -1 : 1),
       },
       {
         title: "Expiry Date",
@@ -118,6 +115,8 @@ export class MineVarianceTable extends Component {
             {text}
           </div>
         ),
+        sorter: (a, b) => (a.expiry_date > b.expiry_date ? -1 : 1),
+        defaultSortOrder: "descend",
       },
       {
         title: "Approval Status",
@@ -134,7 +133,7 @@ export class MineVarianceTable extends Component {
         dataIndex: "documents",
         render: (text, record) => (
           <div title="Documents">
-            {record.documents
+            {record.documents.length > 0
               ? record.documents.map((file) => (
                   <div key={file.mine_document_guid}>
                     <a
@@ -150,7 +149,7 @@ export class MineVarianceTable extends Component {
                     </a>
                   </div>
                 ))
-              : "-"}
+              : Strings.EMPTY_FIELD}
           </div>
         ),
       },

@@ -1,6 +1,6 @@
 import base64
 import requests
-from werkzeug.exceptions import BadRequest
+from werkzeug.exceptions import BadRequest, NotFound
 
 from flask import request, current_app, Response
 from flask_restplus import Resource
@@ -20,8 +20,7 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
     @api.doc(description='Request a document_manager_guid for uploading a document')
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
     def post(self, mine_guid, variance_guid):
-        # DocumentManager requires parser data, but no arguments are required
-        data = parser.parse_args()
+    
         metadata = self._parse_request_metadata()
         if not metadata or not metadata.get('filename'):
             raise BadRequest('Filename not found in request metadata header')
@@ -57,6 +56,7 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
     @api.marshal_with(VARIANCE_MODEL, code=200)
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
     def put(self, mine_guid, variance_guid):
+        parser = CustomReqparser()
         # Arguments required by MineDocument
         parser.add_argument('document_name', type=str, required=True)
         parser.add_argument('document_manager_guid', type=str, required=True)
