@@ -17,14 +17,11 @@ from app.api.mines.mine_api_models import VARIANCE_MODEL
 
 
 class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
-    # Methods don't share any common parser args, so none are defined here
-    parser = CustomReqparser()
-
     @api.doc(description='Request a document_manager_guid for uploading a document')
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
     def post(self, mine_guid, variance_guid):
         # DocumentManager requires parser data, but no arguments are required
-        data = self.parser.parse_args()
+        data = parser.parse_args()
         metadata = self._parse_request_metadata()
         if not metadata or not metadata.get('filename'):
             raise BadRequest('Filename not found in request metadata header')
@@ -61,15 +58,15 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
     def put(self, mine_guid, variance_guid):
         # Arguments required by MineDocument
-        self.parser.add_argument('document_name', type=str, required=True)
-        self.parser.add_argument('document_manager_guid', type=str, required=True)
+        parser.add_argument('document_name', type=str, required=True)
+        parser.add_argument('document_manager_guid', type=str, required=True)
 
         variance = Variance.find_by_variance_guid(variance_guid)
 
         if not variance:
             raise NotFound('Unable to fetch variance.')
 
-        data = self.parser.parse_args()
+        data = parser.parse_args()
         document_name = data.get('document_name')
         document_manager_guid = data.get('document_manager_guid')
 
