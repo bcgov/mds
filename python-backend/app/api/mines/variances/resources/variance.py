@@ -67,12 +67,12 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
         description='Get a single variance.',
         params={
             'mine_guid': 'GUID of the mine to which the variance is associated',
-            'variance_id': 'ID of the variance to fetch'
+            'variance_guid': 'GUID of the variance to fetch'
         })
     @requires_any_of([MINE_VIEW])
     @api.marshal_with(VARIANCE_MODEL, code=200)
-    def get(self, mine_guid, variance_id):
-        variance = Variance.find_by_mine_guid_and_variance_id(mine_guid, variance_id)
+    def get(self, mine_guid, variance_guid):
+        variance = Variance.find_by_mine_guid_and_variance_guid(mine_guid, variance_guid)
 
         if variance is None:
             raise NotFound('Unable to fetch variance')
@@ -84,12 +84,12 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
         description='Update a variance.',
         params={
             'mine_guid': 'GUID of the mine to which the variance is associated',
-            'variance_id': 'ID of the variance to update'
+            'variance_guid': 'GUID of the variance to update'
         })
     @requires_any_of([MINE_CREATE])
     @api.marshal_with(VARIANCE_MODEL, code=200)
-    def put(self, mine_guid, variance_id):
-        variance = Variance.find_by_mine_guid_and_variance_id(mine_guid, variance_id)
+    def put(self, mine_guid, variance_guid):
+        variance = Variance.find_by_mine_guid_and_variance_guid(mine_guid, variance_guid)
         if variance is None:
             raise NotFound('Unable to fetch variance')
 

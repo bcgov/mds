@@ -1,22 +1,29 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { MineVarianceTable } from "@/components/mine/Variances/MineVarianceTable";
+import { MineIncidentTable } from "@/components/mine/Incidents/MineIncidentTable";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
-const reducerProps = {};
+const props = {};
+const dispatchProps = {};
 
-const setupReducerProps = () => {
-  reducerProps.variances = MOCK.VARIANCES.records;
-  reducerProps.complianceCodesHash = MOCK.HSRCM_HASH;
+const setupDispatchProps = () => {
+  dispatchProps.handleEditMineIncident = jest.fn();
+  dispatchProps.openMineIncidentModal = jest.fn();
+};
+
+const setupProps = () => {
+  props.followupActions = MOCK.FOLLOWUP_ACTIONS;
+  props.incidents = MOCK.INCIDENTS.mine_incidents;
 };
 
 beforeEach(() => {
-  setupReducerProps();
+  setupProps();
+  setupDispatchProps();
 });
 
-describe("MineVarianceTable", () => {
+describe("MineIncidentTable", () => {
   it("renders properly", () => {
-    const component = shallow(<MineVarianceTable {...reducerProps} />);
+    const component = shallow(<MineIncidentTable {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
 });
