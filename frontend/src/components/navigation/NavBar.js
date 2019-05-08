@@ -13,7 +13,7 @@ import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
 import * as Styles from "@/constants/styles";
 import * as Permission from "@/constants/permissions";
-import SearchBar from "@/components/navigation/SearchBar";
+import SearchBar from "@/components/search/SearchBar";
 import {
   LOGO,
   ADMIN,

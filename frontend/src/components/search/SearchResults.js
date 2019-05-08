@@ -12,17 +12,6 @@ import { getPartyRelationshipTypeHash } from "@/selectors/partiesSelectors";
 import { fetchPartyRelationshipTypes } from "@/actionCreators/partiesActionCreator";
 import _ from "lodash";
 
-/**
- * @class Search - search results
- *
- *
-    return (
-      <div>
-
-      </div>
-    );
- */
-
 const propTypes = {
   searchResults: PropTypes.arrayOf(PropTypes.object),
   searchTerms: PropTypes.arrayOf(PropTypes.string),
