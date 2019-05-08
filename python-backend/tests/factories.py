@@ -223,12 +223,16 @@ class VarianceFactory(BaseFactory):
             issue_date=TODAY,
             expiry_date=TODAY,
             inspector_id=factory.SelfAttribute('core_user.core_user_id'))
-     
+        denied = factory.Trait(
+            variance_application_status_code='DEN',
+            inspector_id=factory.SelfAttribute('core_user.core_user_id'))
+        not_applicable = factory.Trait(
+            variance_application_status_code='NAP')
+
     compliance_article_id = factory.LazyFunction(RandomComplianceArticleId)
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     ohsc_ind = factory.Faker('boolean', chance_of_getting_true=50)
     union_ind = factory.Faker('boolean', chance_of_getting_true=50)
-    inspector_id = factory.SelfAttribute('core_user.core_user_id')
     note = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
     received_date = TODAY
     documents = []

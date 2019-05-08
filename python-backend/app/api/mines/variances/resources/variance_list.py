@@ -106,19 +106,43 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
 
             inspector_id = core_user.core_user_id
 
+        # A manual check to prevent a stack trace dump on a foreign key /
+        # constraint error because global error handling doesn't currently work
+        # with these errors
+        variance_application_status_code = data.get('variance_application_status_code') or 'REV'
+        issue_date = data.get('issue_date')
+        expiry_date = data.get('expiry_date')
+        if  variance_application_status_code == 'APP':
+            if expiry_date is None:
+                raise AssertionError('Expiry date required for approved variance.')
+            if issue_date is None:
+                raise AssertionError('Issue date required for approved variance.')
+            if inspector_id is None:
+                raise AssertionError('Inspector required for approved variance.')
+
+        if variance_application_status_code == 'DEN':
+            if inspector_id is None:
+                raise AssertionError('Inspector required for reviewed variance.')
+
+        if variance_application_status_code in ['REV', 'NAP', 'DEN']:
+            if expiry_date is not None:
+                raise AssertionError('Expiry date forbidden unless variance is approved.')
+            if issue_date is not None:
+                raise AssertionError('Issue date forbidden unless variance is approved.')
+
         variance = Variance.create(
             compliance_article_id=compliance_article_id,
             mine_guid=mine_guid,
             received_date=received_date,
             # Optional fields
-            variance_application_status_code=data.get('variance_application_status_code'),
+            variance_application_status_code=variance_application_status_code,
             applicant_guid=data.get('applicant_guid'),
             ohsc_ind=data.get('ohsc_ind'),
             union_ind=data.get('union_ind'),
             inspector_id=inspector_id,
             note=data.get('note'),
-            issue_date=data.get('issue_date'),
-            expiry_date=data.get('expiry_date'))
+            issue_date=issue_date,
+            expiry_date=expiry_date)
 
         if not variance:
             raise BadRequest('Error: Failed to create variance')

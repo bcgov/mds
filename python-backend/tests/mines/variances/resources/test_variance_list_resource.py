@@ -62,7 +62,6 @@ def test_post_variance_application(test_client, db_session, auth_headers):
 
 
 def test_post_approved_variance(test_client, db_session, auth_headers):
-    # Use factory to get valid values
     approved_variance = VarianceFactory(approved=True)
     test_variance_data = {
         'compliance_article_id': approved_variance.compliance_article_id,
@@ -94,7 +93,6 @@ def test_post_approved_variance(test_client, db_session, auth_headers):
 
 
 def test_post_approved_variance(test_client, db_session, auth_headers):
-    # Use factory to get valid values
     approved_variance = VarianceFactory(approved=True)
     test_variance_data = {
         'compliance_article_id': approved_variance.compliance_article_id,
@@ -157,3 +155,206 @@ def test_post_variance_non_existent_mine_guid(test_client, db_session, auth_head
         headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
     assert post_resp.status_code == 404, post_resp.response
+
+
+# Test the business logic
+def test_post_approved_variance_missing_expiry_date(test_client, db_session, auth_headers):
+    approved_variance = VarianceFactory(approved=True)
+    data = {
+        'compliance_article_id': approved_variance.compliance_article_id,
+        'received_date': approved_variance.received_date,
+        'variance_application_status_code': approved_variance.variance_application_status_code,
+        'inspector_guid': approved_variance.inspector_guid,
+        'note': approved_variance.note,
+        'issue_date': approved_variance.issue_date
+    }
+
+    post_resp = test_client.post(
+        f'/mines/{approved_variance.mine_guid}/variances',
+        headers=auth_headers['full_auth_header'],
+        data=data)
+    post_data = json.loads(post_resp.data.decode())
+    assert post_resp.status_code == 400, post_resp.response
+    assert 'expiry' in post_data['message'].lower()
+
+
+def test_post_approved_variance_missing_issue_date(test_client, db_session, auth_headers):
+    approved_variance = VarianceFactory(approved=True)
+    data = {
+        'compliance_article_id': approved_variance.compliance_article_id,
+        'received_date': approved_variance.received_date,
+        'variance_application_status_code': approved_variance.variance_application_status_code,
+        'inspector_guid': approved_variance.inspector_guid,
+        'note': approved_variance.note,
+        'expiry_date': approved_variance.expiry_date
+    }
+
+    post_resp = test_client.post(
+        f'/mines/{approved_variance.mine_guid}/variances',
+        headers=auth_headers['full_auth_header'],
+        data=data)
+    post_data = json.loads(post_resp.data.decode())
+    assert post_resp.status_code == 400, post_resp.response
+    assert 'issue' in post_data['message'].lower()
+
+
+def test_post_approved_variance_missing_inspector_guid(test_client, db_session, auth_headers):
+    approved_variance = VarianceFactory(approved=True)
+    data = {
+        'compliance_article_id': approved_variance.compliance_article_id,
+        'received_date': approved_variance.received_date,
+        'variance_application_status_code': approved_variance.variance_application_status_code,
+        'note': approved_variance.note,
+        'issue_date': approved_variance.issue_date,
+        'expiry_date': approved_variance.expiry_date
+    }
+
+    post_resp = test_client.post(
+        f'/mines/{approved_variance.mine_guid}/variances',
+        headers=auth_headers['full_auth_header'],
+        data=data)
+    post_data = json.loads(post_resp.data.decode())
+    assert post_resp.status_code == 400, post_resp.response
+    assert 'inspector' in post_data['message'].lower()
+
+
+def test_post_denied_variance_missing_inspector_guid(test_client, db_session, auth_headers):
+    denied_variance = VarianceFactory(denied=True)
+    data = {
+        'compliance_article_id': denied_variance.compliance_article_id,
+        'received_date': denied_variance.received_date,
+        'variance_application_status_code': denied_variance.variance_application_status_code,
+        'note': denied_variance.note
+    }
+
+    post_resp = test_client.post(
+        f'/mines/{denied_variance.mine_guid}/variances',
+        headers=auth_headers['full_auth_header'],
+        data=data)
+    post_data = json.loads(post_resp.data.decode())
+    assert post_resp.status_code == 400, post_resp.response
+    assert 'inspector' in post_data['message'].lower()
+
+
+def test_post_denied_variance_with_expiry_date(test_client, db_session, auth_headers):
+    approved_variance = VarianceFactory(approved=True)
+    denied_variance = VarianceFactory(denied=True)
+    data = {
+        'compliance_article_id': denied_variance.compliance_article_id,
+        'received_date': denied_variance.received_date,
+        'variance_application_status_code': denied_variance.variance_application_status_code,
+        'inspector_guid': approved_variance.inspector_guid,
+        'note': denied_variance.note,
+        'expiry_date': approved_variance.expiry_date
+    }
+
+    post_resp = test_client.post(
+        f'/mines/{denied_variance.mine_guid}/variances',
+        headers=auth_headers['full_auth_header'],
+        data=data)
+    post_data = json.loads(post_resp.data.decode())
+    assert post_resp.status_code == 400, post_resp.response
+    assert 'expiry' in post_data['message'].lower()
+
+
+def test_post_denied_variance_with_issue_date(test_client, db_session, auth_headers):
+    denied_variance = VarianceFactory(denied=True)
+    approved_variance = VarianceFactory(approved=True)
+    data = {
+        'compliance_article_id': denied_variance.compliance_article_id,
+        'received_date': denied_variance.received_date,
+        'variance_application_status_code': denied_variance.variance_application_status_code,
+        'inspector_guid': approved_variance.inspector_guid,
+        'note': denied_variance.note,
+        'issue_date': approved_variance.issue_date
+    }
+
+    post_resp = test_client.post(
+        f'/mines/{denied_variance.mine_guid}/variances',
+        headers=auth_headers['full_auth_header'],
+        data=data)
+    post_data = json.loads(post_resp.data.decode())
+    assert post_resp.status_code == 400, post_resp.response
+    assert 'issue' in post_data['message'].lower()
+
+
+def test_post_variance_application_with_expiry_date(test_client, db_session, auth_headers):
+    variance = VarianceFactory()
+    party = PartyFactory(person=True)
+    approved_variance = VarianceFactory(approved=True)
+    data = {
+        'compliance_article_id': variance.compliance_article_id,
+        'note': variance.note,
+        'received_date': variance.received_date,
+        'applicant_guid': party.party_guid,
+        'expiry_date': approved_variance.expiry_date
+    }
+
+    post_resp = test_client.post(
+        f'/mines/{variance.mine_guid}/variances',
+        headers=auth_headers['full_auth_header'],
+        data=data)
+    post_data = json.loads(post_resp.data.decode())
+    assert post_resp.status_code == 400, post_resp.response
+    assert 'expiry' in post_data['message'].lower()
+
+
+def test_post_variance_application_with_issue_date(test_client, db_session, auth_headers):
+    variance = VarianceFactory()
+    party = PartyFactory(person=True)
+    approved_variance = VarianceFactory(approved=True)
+    data = {
+        'compliance_article_id': variance.compliance_article_id,
+        'note': variance.note,
+        'received_date': variance.received_date,
+        'applicant_guid': party.party_guid,
+        'issue_date': approved_variance.issue_date
+    }
+
+    post_resp = test_client.post(
+        f'/mines/{variance.mine_guid}/variances',
+        headers=auth_headers['full_auth_header'],
+        data=data)
+    post_data = json.loads(post_resp.data.decode())
+    assert post_resp.status_code == 400, post_resp.response
+    assert 'issue' in post_data['message'].lower()
+
+
+def test_post_not_applicable_variance_with_expiry_date(test_client, db_session, auth_headers):
+    approved_variance = VarianceFactory(approved=True)
+    nap_variance = VarianceFactory(not_applicable=True)
+    data = {
+        'compliance_article_id': nap_variance.compliance_article_id,
+        'received_date': nap_variance.received_date,
+        'variance_application_status_code': nap_variance.variance_application_status_code,
+        'note': nap_variance.note,
+        'expiry_date': approved_variance.expiry_date
+    }
+
+    post_resp = test_client.post(
+        f'/mines/{nap_variance.mine_guid}/variances',
+        headers=auth_headers['full_auth_header'],
+        data=data)
+    post_data = json.loads(post_resp.data.decode())
+    assert post_resp.status_code == 400, post_resp.response
+    assert 'expiry' in post_data['message'].lower()
+
+
+def test_post_not_applicable_variance_with_issue_date(test_client, db_session, auth_headers):
+    approved_variance = VarianceFactory(approved=True)
+    nap_variance = VarianceFactory(not_applicable=True)
+    data = {
+        'compliance_article_id': nap_variance.compliance_article_id,
+        'received_date': nap_variance.received_date,
+        'variance_application_status_code': nap_variance.variance_application_status_code,
+        'note': nap_variance.note,
+        'issue_date': approved_variance.issue_date
+    }
+
+    post_resp = test_client.post(
+        f'/mines/{nap_variance.mine_guid}/variances',
+        headers=auth_headers['full_auth_header'],
+        data=data)
+    post_data = json.loads(post_resp.data.decode())
+    assert post_resp.status_code == 400, post_resp.response
+    assert 'issue' in post_data['message'].lower()
