@@ -5,8 +5,9 @@ from flask_restplus import Resource, reqparse
 from datetime import datetime
 from flask import request, current_app
 from sqlalchemy import desc, or_
+from flask_restplus import fields
 
-from app.extensions import db
+from app.extensions import db, api
 from app.api.utils.access_decorators import requires_role_mine_view, requires_role_mine_create
 from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 
@@ -17,6 +18,7 @@ from app.api.documents.mines.models.mine_document import MineDocument
 from app.api.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from app.api.utils.access_decorators import requires_role_mine_view
 from app.api.utils.search import search_targets, SearchResult
+from app.api.search.search_api_models import SEARCH_RESULT_RETURN_MODEL
 
 
 class SearchOptionsResource(Resource, UserMixin):
@@ -30,13 +32,10 @@ class SearchOptionsResource(Resource, UserMixin):
 
 
 class SearchResource(Resource, UserMixin):
-    parser = reqparse.RequestParser()
-    parser.add_argument('search_term', type=str, help='Search term.', location='json')
-    parser.add_argument('search_types', type=str, help='Search types.', location='json')
-
-    #@requires_role_mine_view
+    @requires_role_mine_view
+    @api.marshal_with(SEARCH_RESULT_RETURN_MODEL, 200)
     def get(self):
-        search_results = []
+        all_search_results = {}
         app = current_app._get_current_object()
 
         search_term = request.args.get('search_term', None, type=str)
@@ -49,26 +48,31 @@ class SearchResource(Resource, UserMixin):
 
         with ThreadPoolExecutor(max_workers=50) as executor:
             task_list = []
-            for term in search_terms:
-                for type, type_config in search_targets.items():
+
+            for type, type_config in search_targets.items():
+                type_results = []
+                for term in search_terms:
+                    term_results = []
                     task_list.append(
-                        executor.submit(execute_search, app, search_results, term, type_config[0],
+                        executor.submit(execute_search, app, term_results, term, type_config[0],
                                         type_config[1], type_config[2], type_config[3],
-                                        type_config[4], type_config[5], *type_config[6]))
+                                        type_config[4]))
                     for task in as_completed(task_list):
                         try:
                             data = task.result()
                         except Exception as exc:
                             current_app.logger.error(
-                                f'generated an exception: {exc} with search term - {search_term}')
+                                f'generated an exception: {exc} with search term - {term}')
 
-        search_results.sort(key=lambda x: x.score, reverse=True)
+                    type_results += term_results
 
-        return {'search_terms': search_terms, 'search_results': [y.json() for y in search_results]}
+                type_results.sort(key=lambda x: x.score, reverse=True)
+                all_search_results[type] = type_results
+
+        return {'search_terms': search_terms, 'search_results': all_search_results}
 
 
-def execute_search(app, search_results, term, type, comparator, model, columns, has_deleted_ind,
-                   json_function_name, *json_function_args):
+def execute_search(app, search_results, term, type, comparator, model, columns, has_deleted_ind):
     with app.app_context():
         columns_for_exact = [column.ilike(term) for column in columns]
         columns_for_starts = [column.ilike(f'{term}%') for column in columns]
@@ -87,30 +91,22 @@ def execute_search(app, search_results, term, type, comparator, model, columns, 
         contains = contains.order_by(desc(model.create_timestamp)).limit(25).all()
         starts_with = starts_with.order_by(desc(model.create_timestamp)).limit(25).all()
         exact = exact.order_by(desc(model.create_timestamp)).limit(50).all()
-        app.logger.info(str(exact))
+
         for item in exact:
-            search_results.append(
-                SearchResult(500, type,
-                             getattr(item, json_function_name)(*json_function_args)))
+            search_results.append(SearchResult(500, type, item))
 
         for item in starts_with:
             in_list = False
             for item2 in search_results:
-                if getattr(item, json_function_name)(*json_function_args).get(comparator) == str(
-                        item2.result.get(comparator)):
+                if getattr(item, comparator) == getattr(item2.result, comparator):
                     in_list = True
             if not in_list:
-                search_results.append(
-                    SearchResult(75, type,
-                                 getattr(item, json_function_name)(*json_function_args)))
+                search_results.append(SearchResult(75, type, item))
 
         for item in contains:
             in_list = False
             for item2 in search_results:
-                if getattr(item, json_function_name)(*json_function_args).get(comparator) == str(
-                        item2.result.get(comparator)):
+                if getattr(item, comparator) == getattr(item2.result, comparator):
                     in_list = True
             if not in_list:
-                search_results.append(
-                    SearchResult(25, type,
-                                 getattr(item, json_function_name)(*json_function_args)))
+                search_results.append(SearchResult(25, type, item))
