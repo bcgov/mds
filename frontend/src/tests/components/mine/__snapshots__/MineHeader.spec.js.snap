@@ -499,11 +499,11 @@ ShallowWrapper {
             >
               Tenure
             </p>
-            <p>
+            <div>
               <p>
                 N/A
               </p>
-            </p>
+            </div>
           </div>
           <div
             className="inline-flex padding-small wrap"
@@ -651,7 +651,7 @@ ShallowWrapper {
                 className="link-on-dark"
                 replace={false}
                 target="_blank"
-                to="/dashboard/mines?map=true&&zoom=12&mineName=mine3"
+                to="/dashboard/mines?map=true&lat&long&zoom=14&mineName=mine3"
               >
                 View In Full Map
               </Link>
@@ -928,11 +928,11 @@ ShallowWrapper {
               >
                 Tenure
               </p>
-              <p>
+              <div>
                 <p>
                   N/A
                 </p>
-              </p>
+              </div>
             </div>,
             <div
               className="inline-flex padding-small wrap"
@@ -2102,11 +2102,11 @@ ShallowWrapper {
                 >
                   Tenure
                 </p>,
-                <p>
+                <div>
                   <p>
                     N/A
                   </p>
-                </p>,
+                </div>,
               ],
               "className": "inline-flex padding-small",
             },
@@ -2145,7 +2145,7 @@ ShallowWrapper {
                   "rendered": "N/A",
                   "type": "p",
                 },
-                "type": "p",
+                "type": "div",
               },
             ],
             "type": "div",
@@ -2412,7 +2412,7 @@ ShallowWrapper {
                   className="link-on-dark"
                   replace={false}
                   target="_blank"
-                  to="/dashboard/mines?map=true&&zoom=12&mineName=mine3"
+                  to="/dashboard/mines?map=true&lat&long&zoom=14&mineName=mine3"
                 >
                   View In Full Map
                 </Link>
@@ -2536,7 +2536,7 @@ ShallowWrapper {
                     className="link-on-dark"
                     replace={false}
                     target="_blank"
-                    to="/dashboard/mines?map=true&&zoom=12&mineName=mine3"
+                    to="/dashboard/mines?map=true&lat&long&zoom=14&mineName=mine3"
                   >
                     View In Full Map
                   </Link>
@@ -2629,7 +2629,7 @@ ShallowWrapper {
                       className="link-on-dark"
                       replace={false}
                       target="_blank"
-                      to="/dashboard/mines?map=true&&zoom=12&mineName=mine3"
+                      to="/dashboard/mines?map=true&lat&long&zoom=14&mineName=mine3"
                     >
                       View In Full Map
                     </Link>,
@@ -2667,7 +2667,7 @@ ShallowWrapper {
                       "className": "link-on-dark",
                       "replace": false,
                       "target": "_blank",
-                      "to": "/dashboard/mines?map=true&&zoom=12&mineName=mine3",
+                      "to": "/dashboard/mines?map=true&lat&long&zoom=14&mineName=mine3",
                     },
                     "ref": null,
                     "rendered": "View In Full Map",
@@ -2953,11 +2953,11 @@ ShallowWrapper {
               >
                 Tenure
               </p>
-              <p>
+              <div>
                 <p>
                   N/A
                 </p>
-              </p>
+              </div>
             </div>
             <div
               className="inline-flex padding-small wrap"
@@ -3105,7 +3105,7 @@ ShallowWrapper {
                   className="link-on-dark"
                   replace={false}
                   target="_blank"
-                  to="/dashboard/mines?map=true&&zoom=12&mineName=mine3"
+                  to="/dashboard/mines?map=true&lat&long&zoom=14&mineName=mine3"
                 >
                   View In Full Map
                 </Link>
@@ -3382,11 +3382,11 @@ ShallowWrapper {
                 >
                   Tenure
                 </p>
-                <p>
+                <div>
                   <p>
                     N/A
                   </p>
-                </p>
+                </div>
               </div>,
               <div
                 className="inline-flex padding-small wrap"
@@ -4556,11 +4556,11 @@ ShallowWrapper {
                   >
                     Tenure
                   </p>,
-                  <p>
+                  <div>
                     <p>
                       N/A
                     </p>
-                  </p>,
+                  </div>,
                 ],
                 "className": "inline-flex padding-small",
               },
@@ -4599,7 +4599,7 @@ ShallowWrapper {
                     "rendered": "N/A",
                     "type": "p",
                   },
-                  "type": "p",
+                  "type": "div",
                 },
               ],
               "type": "div",
@@ -4866,7 +4866,7 @@ ShallowWrapper {
                     className="link-on-dark"
                     replace={false}
                     target="_blank"
-                    to="/dashboard/mines?map=true&&zoom=12&mineName=mine3"
+                    to="/dashboard/mines?map=true&lat&long&zoom=14&mineName=mine3"
                   >
                     View In Full Map
                   </Link>
@@ -4990,7 +4990,7 @@ ShallowWrapper {
                       className="link-on-dark"
                       replace={false}
                       target="_blank"
-                      to="/dashboard/mines?map=true&&zoom=12&mineName=mine3"
+                      to="/dashboard/mines?map=true&lat&long&zoom=14&mineName=mine3"
                     >
                       View In Full Map
                     </Link>
@@ -5083,7 +5083,7 @@ ShallowWrapper {
                         className="link-on-dark"
                         replace={false}
                         target="_blank"
-                        to="/dashboard/mines?map=true&&zoom=12&mineName=mine3"
+                        to="/dashboard/mines?map=true&lat&long&zoom=14&mineName=mine3"
                       >
                         View In Full Map
                       </Link>,
@@ -5121,7 +5121,7 @@ ShallowWrapper {
                         "className": "link-on-dark",
                         "replace": false,
                         "target": "_blank",
-                        "to": "/dashboard/mines?map=true&&zoom=12&mineName=mine3",
+                        "to": "/dashboard/mines?map=true&lat&long&zoom=14&mineName=mine3",
                       },
                       "ref": null,
                       "rendered": "View In Full Map",

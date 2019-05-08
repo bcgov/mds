@@ -15,6 +15,8 @@ const propTypes = {
     "manager-small",
     "tenure",
     "permit",
+    "variance-applications",
+    "approved-variances",
     "variance",
     "no-results",
     "compliance",
@@ -82,6 +84,18 @@ const NullScreen = (props) => (
       <div>
         <img alt="mine_img" src={PERMIT} />
         <h3>{String.NO_VARIANCE}</h3>
+      </div>
+    )}
+    {props.type === "approved-variances" && (
+      <div>
+        <img alt="mine_img" src={PERMIT} />
+        <h3>{String.NO_APPROVED_VARIANCE}</h3>
+      </div>
+    )}
+    {props.type === "variance-applications" && (
+      <div>
+        <img alt="mine_img" src={PERMIT} />
+        <h3>{String.NO_VARIANCE_APPLICATIONS}</h3>
       </div>
     )}
     {props.type === "applications" && (

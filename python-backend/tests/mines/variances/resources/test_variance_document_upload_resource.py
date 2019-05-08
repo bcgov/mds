@@ -20,7 +20,7 @@ def test_put_file(test_client, db_session, auth_headers):
     }
 
     put_resp = test_client.put(
-        f'/mines/{mine.mine_guid}/variances/{variance.variance_id}/documents',
+        f'/mines/{mine.mine_guid}/variances/{variance.variance_guid}/documents',
         headers=auth_headers['full_auth_header'],
         data=data)
     put_data = json.loads(put_resp.data.decode())
@@ -36,7 +36,7 @@ def test_file_removal(test_client, db_session, auth_headers):
     assert variance_document is not None
 
     delete_resp = test_client.delete(
-        f'/mines/{variance.mine_guid}/variances/{variance.variance_id}/documents/{variance_document.mine_document_guid}',
+        f'/mines/{variance.mine_guid}/variances/{variance.variance_guid}/documents/{variance_document.mine_document_guid}',
         headers=auth_headers['full_auth_header'])
     assert delete_resp.status_code == 204
     assert len(variance.documents) == document_count - 1

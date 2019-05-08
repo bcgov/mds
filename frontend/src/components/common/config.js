@@ -7,6 +7,7 @@ import RenderField from "./RenderField";
 import RenderLargeSelect from "./RenderLargeSelect";
 import RenderSelect from "./RenderSelect";
 import RenderMultiSelect from "./RenderMultiSelect";
+import RenderRadioButtons from "./RenderRadioButtons";
 
 // This file is anticipated to have multiple exports
 // eslint-disable-next-line import/prefer-default-export
@@ -20,4 +21,5 @@ export const renderConfig = {
   SELECT: RenderSelect,
   LARGE_SELECT: RenderLargeSelect,
   MULTI_SELECT: RenderMultiSelect,
+  RADIO: RenderRadioButtons,
 };
