@@ -22,7 +22,7 @@ api = Api(
     default='nris_api',
     default_label='NRIS related operations')
 
-# dsn_tns = cx_Oracle.makedsn(
-#     Config.NRIS_DB_HOSTNAME, Config.NRIS_DB_PORT, service_name=Config.NRIS_DB_SERVICENAME)
-# oracle_db = cx_Oracle.connect(
-#     user=Config.NRIS_DB_USER, password=Config.NRIS_DB_PASSWORD, dsn=dsn_tns)
+dsn_tns = cx_Oracle.makedsn(
+    Config.NRIS_DB_HOSTNAME, Config.NRIS_DB_PORT, service_name=Config.NRIS_DB_SERVICENAME)
+oracle_db = cx_Oracle.connect(
+    user=Config.NRIS_DB_USER, password=Config.NRIS_DB_PASSWORD, dsn=dsn_tns)
