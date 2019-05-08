@@ -75,6 +75,7 @@ ShallowWrapper {
               "title": "Code Section",
             },
             Object {
+              "className": "column-hide",
               "dataIndex": "received_date",
               "render": [Function],
               "title": "Submission Date",
@@ -200,6 +201,7 @@ ShallowWrapper {
             "title": "Code Section",
           },
           Object {
+            "className": "column-hide",
             "dataIndex": "received_date",
             "render": [Function],
             "title": "Submission Date",
@@ -325,6 +327,7 @@ ShallowWrapper {
                 "title": "Code Section",
               },
               Object {
+                "className": "column-hide",
                 "dataIndex": "received_date",
                 "render": [Function],
                 "title": "Submission Date",
@@ -450,6 +453,7 @@ ShallowWrapper {
               "title": "Code Section",
             },
             Object {
+              "className": "column-hide",
               "dataIndex": "received_date",
               "render": [Function],
               "title": "Submission Date",
