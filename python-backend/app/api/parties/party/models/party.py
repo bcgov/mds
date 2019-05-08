@@ -31,8 +31,8 @@ class Party(AuditMixin, Base):
     party_type_code = db.Column(db.String, db.ForeignKey('party_type_code.party_type_code'))
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
-    mine_party_appt = db.relationship('MinePartyAppointment', lazy='joined')
-    address = db.relationship('Address', lazy='joined', secondary='party_address_xref')
+    mine_party_appt = db.relationship('MinePartyAppointment', lazy='select')
+    address = db.relationship('Address', lazy='select', secondary='party_address_xref')
 
     @hybrid_property
     def name(self):

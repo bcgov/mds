@@ -36,8 +36,6 @@ const staticMenuItems = [
       Contacts
     </p>
   </Menu.Item>,
-  <Menu.Divider />,
-  <Menu.ItemGroup title="Recent" />,
 ];
 
 export const SearchBarDropdown = (props) => (
@@ -65,13 +63,17 @@ export const SearchBarDropdown = (props) => (
         ]
       : [
           staticMenuItems,
-          props.searchTermHistory.map((pastSearchTerm) => (
-            <Menu.Item key={pastSearchTerm}>
-              <p style={{ fontStyle: "italic" }}>
-                <Icon type="search" /> {pastSearchTerm}
-              </p>
-            </Menu.Item>
-          )),
+          props.searchTermHistory.length && [
+            <Menu.Divider />,
+            <Menu.ItemGroup title="Recent" />,
+            props.searchTermHistory.map((pastSearchTerm) => (
+              <Menu.Item key={pastSearchTerm}>
+                <p style={{ fontStyle: "italic" }}>
+                  <Icon type="search" /> {pastSearchTerm}
+                </p>
+              </Menu.Item>
+            )),
+          ],
         ]}
   </Menu>
 );
