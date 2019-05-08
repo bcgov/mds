@@ -13,7 +13,7 @@ import { fetchPartyRelationshipTypes } from "@/actionCreators/partiesActionCreat
 import _ from "lodash";
 
 const propTypes = {
-  searchResults: PropTypes.arrayOf(PropTypes.object),
+  searchResults: PropTypes.objectOf(PropTypes.any),
   searchTerms: PropTypes.arrayOf(PropTypes.string),
   partyRelationshipTypeHash: PropTypes.objectOf(PropTypes.strings).isRequired,
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
@@ -26,38 +26,38 @@ const defaultProps = {
 
 const renderSearchResultGroup = (group, searchTerms, partyRelationshipTypeHash) => {
   const highlightRegex = RegExp(`${searchTerms.join("|")}`, "i");
-  if (group.type === "Mines") {
+  if (group.type === "mine") {
     return (
       <MineResultsTable
-        header={group.type}
+        header="Mines"
         highlightRegex={highlightRegex}
         searchResults={group.results}
       />
     );
   }
-  if (group.type === "Permits") {
+  if (group.type === "permit") {
     return (
       <PermitResultsTable
-        header={group.type}
+        header="Permits"
         highlightRegex={highlightRegex}
         searchResults={group.results}
       />
     );
   }
-  if (group.type === "Contacts") {
+  if (group.type === "party") {
     return (
       <ContactResultsTable
-        header={group.type}
+        header="Contacts"
         highlightRegex={highlightRegex}
         searchResults={group.results}
         partyRelationshipTypeHash={partyRelationshipTypeHash}
       />
     );
   }
-  if (group.type === "Permit Documents") {
+  if (group.type === "permit_documents" || group.type === "mine_documents") {
     return (
       <DocumentResultsTable
-        header={group.type}
+        header={group.type === "permit_documents" ? "Permit Documents" : "Mine Documents"}
         highlightRegex={highlightRegex}
         searchResults={group.results}
       />
@@ -75,16 +75,19 @@ export class SearchResults extends Component {
 
   render() {
     // const resultTypes = uniq(this.props.searchResults.map(({ type }) => type));
-
-    const groupedSearchResults = _(this.props.searchResults)
-      .groupBy("type")
-      .map((items, key) => ({
+    const groupedSearchResults = [];
+    Object.entries(this.props.searchResults).forEach((entry) => {
+      const key = entry[0];
+      const value = entry[1];
+      groupedSearchResults.push({
         type: key,
-        score: _.sumBy(items, "score"),
-        results: _.map(items, "result"),
-      }))
-      .orderBy("score", "desc")
-      .value();
+        score: _.sumBy(value, "score"),
+        results: _.map(value, "result"),
+      });
+    });
+
+    groupedSearchResults.sort((a, b) => a.score - b.score);
+    groupedSearchResults.reverse();
 
     return (
       <div className="landing-page">

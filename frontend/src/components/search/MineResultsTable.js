@@ -45,7 +45,7 @@ export const MineResultsTable = (props) => {
         </Row>,
         <Row style={{ paddingTop: "5px", paddingBottom: "15px" }}>
           <Col span={4}>Region</Col>
-          <Col span={6}>{record.region_code}</Col>
+          <Col span={6}>{record.mine_region}</Col>
           <Col span={4}>Status</Col>
           <Col span={10}>
             {record.mine_status[0] && record.mine_status[0].status_labels.join(", ")}

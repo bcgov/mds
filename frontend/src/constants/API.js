@@ -57,6 +57,7 @@ export const PERMITAMENDMENTDOCUMENTS = (permitAmendmentGuid) =>
 
 export const APPLICATIONS = "/applications";
 export const SEARCH = "/search";
+export const SIMPLE_SEARCH = "/search/simple";
 
 // variances
 export const COMPLIANCE_CODES = "/mines/compliance/codes";

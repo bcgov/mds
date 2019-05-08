@@ -3,7 +3,11 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Input, Dropdown, Card } from "antd";
 import { getSearchBarResults } from "@/selectors/searchSelectors";
-import { fetchSearchResults, clearSearchBarResults } from "@/actionCreators/searchActionCreator";
+import {
+  fetchSearchBarResults,
+  fetchSearchResults,
+  clearSearchBarResults,
+} from "@/actionCreators/searchActionCreator";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { SearchBarDropdown } from "@/components/search/SearchBarDropdown";
@@ -13,6 +17,7 @@ const { Search } = Input;
 
 const propTypes = {
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  fetchSearchBarResults: PropTypes.func.isRequired,
   fetchSearchResults: PropTypes.func.isRequired,
   clearSearchBarResults: PropTypes.func.isRequired,
   searchResults: PropTypes.arrayOf(PropTypes.object),
@@ -33,14 +38,14 @@ export class SearchBar extends Component {
 
   constructor(props) {
     super(props);
-    this.fetchSearchResultsDebounced = debounce(this.props.fetchSearchResults, 1000);
+    this.fetchSearchResultsDebounced = debounce(this.props.fetchSearchBarResults, 1000);
   }
 
   changeSearchTerm = (e) => {
     const newSearchTerm = e.target.value;
     this.setState({ searchTerm: newSearchTerm });
 
-    if (this.state.searchTerm.length > 3) {
+    if (newSearchTerm.length > 3) {
       this.fetchSearchResultsDebounced(newSearchTerm);
     }
   };
@@ -123,6 +128,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
+      fetchSearchBarResults,
       fetchSearchResults,
       clearSearchBarResults,
     },

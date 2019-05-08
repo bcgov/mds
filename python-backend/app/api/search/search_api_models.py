@@ -6,6 +6,17 @@ SEARCH_RESULT_MODEL = api.model('SearchResult', {
     'type': fields.String,
 })
 
+SIMPLE_SEARCH_MODEL = api.model('SimpleSearchResult', {
+    'id': fields.String,
+    'value': fields.String,
+})
+
+MINE_PARTY_APPT_MODEL = api.model('MinePartyAppointment',
+                                  {'mine_party_appt_type_code': fields.String})
+MINE_STATUS_MODEL = api.model('MineStatus', {
+    'status_labels': fields.List(fields.String),
+})
+
 PERMIT_SEARCH_MODEL = api.model('Permit', {
     'permit_guid': fields.String,
     'mine_guid': fields.String,
@@ -19,18 +30,21 @@ MINE_SEARCH_MODEL = api.model(
         'mine_no': fields.String,
         'mine_region': fields.String,
         'mine_permit': fields.List(fields.Nested(PERMIT_SEARCH_MODEL)),
+        'mine_status': fields.Nested(MINE_STATUS_MODEL)
     })
 
-PARTY_SEARCH_MODEL = api.model('Party', {
-    'name': fields.String,
-    'email': fields.String,
-    'phone_no': fields.String
-})
+PARTY_SEARCH_MODEL = api.model(
+    'Party', {
+        'name': fields.String,
+        'email': fields.String,
+        'phone_no': fields.String,
+        'mine_party_appt': fields.List(fields.Nested(MINE_PARTY_APPT_MODEL)),
+    })
 
 MINE_DOCUMENT_SEARCH_MODEL = api.model('MineDocument', {
     'mine_guid': fields.String,
     'mine_document_guid': fields.String,
-    'document_name': fields.String
+    'document_name': fields.String,
 })
 
 PERMIT_DOCUMENT_SEARCH_MODEL = api.model(
@@ -41,26 +55,29 @@ PERMIT_DOCUMENT_SEARCH_MODEL = api.model(
     })
 
 MINE_SEARCH_RESULT_MODEL = api.inherit('MineSearchResult', SEARCH_RESULT_MODEL, {
-    'result': fields.List(fields.Nested(MINE_SEARCH_MODEL)),
+    'result': fields.Nested(MINE_SEARCH_MODEL),
 })
 
 PARTY_SEARCH_RESULT_MODEL = api.inherit('PartySearchResult', SEARCH_RESULT_MODEL, {
-    'result': fields.List(fields.Nested(PARTY_SEARCH_MODEL)),
+    'result': fields.Nested(PARTY_SEARCH_MODEL),
 })
 
 PERMIT_SEARCH_RESULT_MODEL = api.inherit('PermitSearchResult', SEARCH_RESULT_MODEL, {
-    'result': fields.List(fields.Nested(PERMIT_SEARCH_MODEL)),
+    'result': fields.Nested(PERMIT_SEARCH_MODEL),
 })
 
-MINE_DOCUMENT_SEARCH_RESULT_MODEL = api.inherit(
-    'MineDocumentSearchResult', SEARCH_RESULT_MODEL, {
-        'result': fields.List(fields.Nested(MINE_DOCUMENT_SEARCH_MODEL)),
-    })
+MINE_DOCUMENT_SEARCH_RESULT_MODEL = api.inherit('MineDocumentSearchResult', SEARCH_RESULT_MODEL, {
+    'result': fields.Nested(MINE_DOCUMENT_SEARCH_MODEL),
+})
 
 PERMIT_DOCUMENT_SEARCH_RESULT_MODEL = api.inherit(
     'PermitDocumentSearchResult', SEARCH_RESULT_MODEL, {
-        'result': fields.List(fields.Nested(PERMIT_DOCUMENT_SEARCH_MODEL)),
+        'result': fields.Nested(PERMIT_DOCUMENT_SEARCH_MODEL),
     })
+
+SIMPLE_SEARCH_RESULT_MODEL = api.inherit('MineSearchResult', SEARCH_RESULT_MODEL, {
+    'result': fields.Nested(SIMPLE_SEARCH_MODEL),
+})
 
 SEARCH_RESULTS_LIST_MODEL = api.model(
     'SearchResultList', {
@@ -75,4 +92,10 @@ SEARCH_RESULT_RETURN_MODEL = api.model(
     'SearchResultReturn', {
         'search_terms': fields.List(fields.String),
         'search_results': fields.Nested(SEARCH_RESULTS_LIST_MODEL),
+    })
+
+SIMPLE_SEARCH_RESULT_RETURN_MODEL = api.model(
+    'SimpleSearchResultReturn', {
+        'search_terms': fields.List(fields.String),
+        'search_results': fields.List(fields.Nested(SIMPLE_SEARCH_RESULT_MODEL)),
     })
