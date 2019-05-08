@@ -13,7 +13,6 @@ def register_commands(app):
 
         dsn_tns = cx_Oracle.makedsn(
             Config.NRIS_DB_HOSTNAME, Config.NRIS_DB_PORT, service_name=Config.NRIS_DB_SERVICENAME)
-        app.logger.info(f'dsn_tns created >> {dsn_tns}')
         print(dsn_tns)
         oracle_db = cx_Oracle.connect(
             user=Config.NRIS_DB_USER, password=Config.NRIS_DB_PASSWORD, dsn=dsn_tns)
@@ -24,3 +23,4 @@ def register_commands(app):
         col = cursor.fetchone()
         cursor.close()
         app.logger.info(col)
+        print(col)
