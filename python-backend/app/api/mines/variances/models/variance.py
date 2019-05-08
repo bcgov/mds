@@ -103,6 +103,26 @@ class Variance(AuditMixin, Base):
         except ValueError:
             raise AssertionError(msg)
 
+    @classmethod
+    def validate_status_with_other_values(cls, status, expiry, issue, inspector):
+        if  status == 'APP':
+            if expiry is None:
+                raise AssertionError('Expiry date required for approved variance.')
+            if issue is None:
+                raise AssertionError('Issue date required for approved variance.')
+            if inspector is None:
+                raise AssertionError('Inspector required for approved variance.')
+
+        if status == 'DEN':
+            if inspector is None:
+                raise AssertionError('Inspector required for reviewed variance.')
+
+        if status in ['REV', 'NAP', 'DEN']:
+            if expiry is not None:
+                raise AssertionError('Expiry date forbidden unless variance is approved.')
+            if issue is not None:
+                raise AssertionError('Issue date forbidden unless variance is approved.')
+
     @validates('mine_guid')
     def validate_mine_guid(self, key, mine_guid):
         if not mine_guid:
