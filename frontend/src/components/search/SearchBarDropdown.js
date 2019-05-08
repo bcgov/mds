@@ -52,8 +52,7 @@ export const SearchBarDropdown = (props) => (
       ? [
           props.searchResults.map((result) => (
             <Menu.Item>
-              <p>{`${result.result.mine_name || ""}${result.result.name || ""}${result.result
-                .permit_no || ""}`}</p>
+              <p>{`${result.result.value || ""}`}</p>
             </Menu.Item>
           )),
           <Menu.Divider />,

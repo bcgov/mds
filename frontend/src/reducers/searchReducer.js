@@ -18,8 +18,12 @@ const searchReducer = (state = initialState, action) => {
       return {
         ...state,
         searchResults: action.payload.search_results,
-        searchBarResults: action.payload.search_results.slice(0, 10),
         searchTerms: action.payload.search_terms,
+      };
+    case actionTypes.STORE_SEARCH_BAR_RESULTS:
+      return {
+        ...state,
+        searchBarResults: action.payload.search_results,
       };
     case actionTypes.CLEAR_SEARCH_RESULTS:
       return {

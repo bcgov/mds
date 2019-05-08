@@ -16,17 +16,16 @@ from app.api.permits.permit.models.permit import Permit
 from app.api.documents.mines.models.mine_document import MineDocument
 from app.api.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 
-# 'Description': (description, Id, Model, [Model.attribute, Model.attribute], has_deleted_ind, json_function, json_function_arguements)
+# 'Description': (description, Id, Model, [Model.attribute, Model.attribute], has_deleted_ind)
 search_targets = {
-    'mine': ('Mines', 'mine_guid', Mine, [Mine.mine_name, Mine.mine_no], True, 'json_for_list', []),
+    'mine': ('Mines', 'mine_guid', Mine, [Mine.mine_name, Mine.mine_no], True, 'mine_name'),
     'party': ('Contacts', 'party_guid', Party,
-              [Party.first_name, Party.party_name, Party.email,
-               Party.phone_no], False, 'json', [True, ['mine_party_appt']]),
-    'permit': ('Permits', 'permit_guid', Permit, [Permit.permit_no], False, 'json_for_list', []),
+              [Party.first_name, Party.party_name, Party.email, Party.phone_no], False, 'name'),
+    'permit': ('Permits', 'permit_guid', Permit, [Permit.permit_no], False, 'permit_no'),
     'mine_documents': ('Mine Documents', 'mine_document_guid', MineDocument,
-                       [MineDocument.document_name], False, 'json', []),
+                       [MineDocument.document_name], False, 'document_name'),
     'permit_documents': ('Permit Documents', 'document_guid', PermitAmendmentDocument,
-                         [PermitAmendmentDocument.document_name], False, 'json', [])
+                         [PermitAmendmentDocument.document_name], False, 'document_name')
 }
 
 
