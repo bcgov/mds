@@ -108,23 +108,14 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
                 continue
             setattr(variance, key, value)
 
-        if variance.variance_application_status_code == 'APP':
-            if variance.expiry_date is None:
-                raise AssertionError('Expiry date required for approved variance.')
-            if variance.issue_date is None:
-                raise AssertionError('Issue date required for approved variance.')
-            if variance.inspector_id is None:
-                raise AssertionError('Inspector required for approved variance.')
-
-        if variance.variance_application_status_code == 'DEN':
-            if variance.inspector_id is None:
-                raise AssertionError('Inspector required for reviewed variance.')
-
-        if variance.variance_application_status_code in ['REV', 'NAP']:
-            if variance.expiry_date is not None:
-                raise AssertionError('Expiry date forbidden for variance application.')
-            if variance.issue_date is not None:
-                raise AssertionError('Issue date forbidden for variance application.')
+        # A manual check to prevent a stack trace dump on a foreign key /
+        # constraint error because global error handling doesn't currently work
+        # with these errors
+        Variance.validate_status_with_other_values(
+            status=variance.variance_application_status_code,
+            issue=variance.issue_date,
+            expiry=variance.expiry_date,
+            inspector=variance.inspector_id)
 
         variance.save()
         return variance
