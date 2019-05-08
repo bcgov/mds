@@ -20,10 +20,6 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
     @api.doc(description='Request a document_manager_guid for uploading a document')
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
     def post(self, mine_guid, variance_id):
-        parser = CustomReqparser()
-
-        # DocumentManager requires parser data, but no arguments are required
-        data = parser.parse_args()
         metadata = self._parse_request_metadata()
         if not metadata or not metadata.get('filename'):
             raise BadRequest('Filename not found in request metadata header')
