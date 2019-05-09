@@ -97,12 +97,6 @@ def register_routes(app):
         return {
             'status': getattr(error, 'status_code', 401),
             'message': str(error),
-            #FE is mixed on expecing error in obj, or wrapped 'error' key.
-            # this is temporary until we remove create_error_payload and raise_error.
-            'error': {
-                'status': getattr(error, 'code', 401),
-                'message': str(error)
-            }
         }, getattr(error, 'status_code', 401)
 
     @api.errorhandler(AssertionError)
@@ -110,12 +104,6 @@ def register_routes(app):
         return {
             'status': getattr(error, 'code', 400),
             'message': str(error),
-            #FE is mixed on expecing error in obj, or wrapped 'error' key.
-            # this is temporary until we remove create_error_payload and raise_error.
-            'error': {
-                'status': getattr(error, 'code', 400),
-                'message': str(error)
-            }
         }, getattr(error, 'code', 400)
 
     @api.errorhandler(Exception)
@@ -126,10 +114,4 @@ def register_routes(app):
         return {
             'status': getattr(error, 'code', 500),
             'message': str(error),
-            #FE is mixed on expecing error in obj, or wrapped 'error' key.
-            # this is temporary until we remove create_error_payload and raise_error.
-            'error': {
-                'status': getattr(error, 'code', 500),
-                'message': str(error)
-            }
         }, getattr(error, 'code', 500)
