@@ -12,30 +12,22 @@ import dataObjects.MineProfileData
 @Title("Map Navigation Page")
 @Stepwise
 class  MapNavigationSpec extends GebReportingSpec {
-    static NAME_GOOD = "Mine-Test ABC"
-    static NAME_GOOD_TWO = "Mine-Test DEF"
-    static STATUS    = "Closed / Orphaned / Long Term Maintenance"
-    static LAGTITUTE = "52.6565"
-    static LONGTITUE = "124.2342"
-    static NOTES     = "This is a test mine"
-    static NULL      = ""
-    static BAD_NAME_1= "r2WP67KnSJulLVayXkRQr2WP67KnSJulLVayXkRQr2WP67KnSJulLVayXkRQR"
-    static BAD_NAME_2= "ab"
-
-
 
     def "Scenario: User is able to navigate to main map."(){
         given: "I go to the Dashboard Page"
         to Dashboard
 
         when: "Loading is finished and I click the map tab."
-        mapTab.tabSelect.click()
-        sleep(500)
-        // createMineButton_Dashboard.click()
+        mapTabSelect.mapTab.click()
+        interact { 
+            moveToElement(mapPin[0])
+            click(mapPin[0])
+        }
+        //TODO: VERIFY CONTENT OF POP UP MODAL
+        viewMineButton.click()
 
-        then: "The map should load"
-        // toastMessage == "Successfully created: " + NAME_GOOD
-
+        then: "The user should navigate to the mine profile"
+        at MineProfilePage
         
     }
 
