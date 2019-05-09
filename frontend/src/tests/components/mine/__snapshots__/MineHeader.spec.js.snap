@@ -499,11 +499,11 @@ ShallowWrapper {
             >
               Tenure
             </p>
-            <p>
+            <div>
               <p>
                 N/A
               </p>
-            </p>
+            </div>
           </div>
           <div
             className="inline-flex padding-small wrap"
@@ -928,11 +928,11 @@ ShallowWrapper {
               >
                 Tenure
               </p>
-              <p>
+              <div>
                 <p>
                   N/A
                 </p>
-              </p>
+              </div>
             </div>,
             <div
               className="inline-flex padding-small wrap"
@@ -2102,11 +2102,11 @@ ShallowWrapper {
                 >
                   Tenure
                 </p>,
-                <p>
+                <div>
                   <p>
                     N/A
                   </p>
-                </p>,
+                </div>,
               ],
               "className": "inline-flex padding-small",
             },
@@ -2145,7 +2145,7 @@ ShallowWrapper {
                   "rendered": "N/A",
                   "type": "p",
                 },
-                "type": "p",
+                "type": "div",
               },
             ],
             "type": "div",
@@ -2953,11 +2953,11 @@ ShallowWrapper {
               >
                 Tenure
               </p>
-              <p>
+              <div>
                 <p>
                   N/A
                 </p>
-              </p>
+              </div>
             </div>
             <div
               className="inline-flex padding-small wrap"
@@ -3382,11 +3382,11 @@ ShallowWrapper {
                 >
                   Tenure
                 </p>
-                <p>
+                <div>
                   <p>
                     N/A
                   </p>
-                </p>
+                </div>
               </div>,
               <div
                 className="inline-flex padding-small wrap"
@@ -4556,11 +4556,11 @@ ShallowWrapper {
                   >
                     Tenure
                   </p>,
-                  <p>
+                  <div>
                     <p>
                       N/A
                     </p>
-                  </p>,
+                  </div>,
                 ],
                 "className": "inline-flex padding-small",
               },
@@ -4599,7 +4599,7 @@ ShallowWrapper {
                     "rendered": "N/A",
                     "type": "p",
                   },
-                  "type": "p",
+                  "type": "div",
                 },
               ],
               "type": "div",

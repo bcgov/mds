@@ -48,6 +48,7 @@ ShallowWrapper {
             },
           ]
         }
+        coreUsers={undefined}
         mineGuid="48593"
         onSubmit={[MockFunction]}
       />,
@@ -69,6 +70,7 @@ ShallowWrapper {
             "value": 306,
           },
         ],
+        "coreUsers": undefined,
         "mineGuid": "48593",
         "onSubmit": [MockFunction],
       },
@@ -98,6 +100,7 @@ ShallowWrapper {
               },
             ]
           }
+          coreUsers={undefined}
           mineGuid="48593"
           onSubmit={[MockFunction]}
         />,
@@ -119,6 +122,7 @@ ShallowWrapper {
               "value": 306,
             },
           ],
+          "coreUsers": undefined,
           "mineGuid": "48593",
           "onSubmit": [MockFunction],
         },

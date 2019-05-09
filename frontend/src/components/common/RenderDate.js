@@ -11,7 +11,7 @@ const propTypes = {
   id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   input: PropTypes.objectOf(PropTypes.any).isRequired,
   label: PropTypes.string.isRequired,
-  placeholder: PropTypes.string.isRequired,
+  placeholder: PropTypes.string,
   onChange: PropTypes.func,
   meta: PropTypes.objectOf(PropTypes.any).isRequired,
   showTime: PropTypes.boolean,
@@ -19,6 +19,7 @@ const propTypes = {
 
 const defaultProps = {
   showTime: false,
+  placeholder: "yyyy-mm-dd",
   onChange: () => {},
 };
 

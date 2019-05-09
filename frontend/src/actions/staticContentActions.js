@@ -64,3 +64,8 @@ export const storeMineIncidentFollowActionOptions = (payload) => ({
   type: ActionTypes.STORE_MINE_INCIDENT_FOLLOWUP_ACTION_OPTIONS,
   payload,
 });
+
+export const storeVarianceStatusOptions = (payload) => ({
+  type: ActionTypes.STORE_VARIANCE_STATUS_OPTIONS,
+  payload,
+});
