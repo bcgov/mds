@@ -255,6 +255,7 @@
           "type": "Recreate",
           "recreateParams": {
             "post": {
+              "failurePolicy": "Retry",
               "execNewPod": {
                 "command": [
                   "/bin/sh",
