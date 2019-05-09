@@ -11,7 +11,7 @@ const initialState = {
   props: {},
   content: null,
   clearOnSubmit: true,
-  widthSize: 520,
+  widthSize: 810,
 };
 
 const modalReducer = (state = initialState, action) => {

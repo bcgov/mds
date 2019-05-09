@@ -11,7 +11,7 @@ const mockState = {
 describe("varianceSelectors", () => {
   const { mineVariances } = mockState;
 
-  it("`getMineStatusOptions` calls `staticContentReducer.getMineStatusOptions`", () => {
+  it("`getMineVariances` calls `staticContentReducer.getMineVariances`", () => {
     const storeAction = storeVariances(Mock.VARIANCES);
     const storeState = varianceReducer({}, storeAction);
     const localMockState = {

@@ -9,7 +9,7 @@ def test_get_person_not_found(test_client, db_session, auth_headers):
     get_resp = test_client.get(f'/parties/{uuid.uuid4()}', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 404
-    assert 'not found' in get_data['error']['message']
+    assert 'not found' in get_data['message']
 
 
 def test_get_person(test_client, db_session, auth_headers):
