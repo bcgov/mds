@@ -45,16 +45,19 @@ export class MineDashboard extends Component {
           </div>
         </Link>
       </div>
-      <div>
-        <Link to={routes.VARIANCES.dynamicRoute(id)}>
-          <div className="link-container">
-            <div className="link-container--content">
-              <img src={SINGLE_DOCUMENT} alt="document" />
-              <h4>Variances</h4>
+      {/* feature-flagging has not been implemented in MineSpace yet, hiding until released to users */}
+      {false && (
+        <div>
+          <Link to={routes.VARIANCES.dynamicRoute(id)}>
+            <div className="link-container">
+              <div className="link-container--content">
+                <img src={SINGLE_DOCUMENT} alt="document" />
+                <h4>Variances</h4>
+              </div>
             </div>
-          </div>
-        </Link>
-      </div>
+          </Link>
+        </div>
+      )}
     </div>
   );
 
