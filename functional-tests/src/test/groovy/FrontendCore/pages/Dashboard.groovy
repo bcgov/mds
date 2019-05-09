@@ -39,7 +39,6 @@ class Dashboard extends Page {
         mapPin (wait:true) {$("path", path: pinSVGpath)}
         viewMineButton (wait:true) {$("button").has("span", text:"View Mine")}
 
-
     }
 
     def searchResultValidation(keyword){
