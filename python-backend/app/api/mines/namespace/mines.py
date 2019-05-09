@@ -53,12 +53,12 @@ api.add_resource(MineSubscriptionResource, '/<string:mine_guid>/subscribe')
 api.add_resource(MineSubscriptionListResource, '/subscribe')
 
 api.add_resource(VarianceListResource, '/<string:mine_guid>/variances')
-api.add_resource(VarianceResource, '/<string:mine_guid>/variances/<string:variance_id>')
+api.add_resource(VarianceResource, '/<string:mine_guid>/variances/<string:variance_guid>')
 api.add_resource(VarianceDocumentUploadResource,
-                 '/<string:mine_guid>/variances/<string:variance_id>/documents')
+                 '/<string:mine_guid>/variances/<string:variance_guid>/documents')
 api.add_resource(
     VarianceUploadedDocumentsResource,
-    '/<string:mine_guid>/variances/<string:variance_id>/documents/<string:mine_document_guid>')
+    '/<string:mine_guid>/variances/<string:variance_guid>/documents/<string:mine_document_guid>')
 
 api.add_resource(MineIncidentListResource, '/<string:mine_guid>/incidents')
 api.add_resource(MineIncidentResource, '/incidents/<string:mine_incident_guid>')

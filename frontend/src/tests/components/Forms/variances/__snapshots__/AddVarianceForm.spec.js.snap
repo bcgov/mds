@@ -17,6 +17,23 @@ ShallowWrapper {
         },
       ]
     }
+    coreUsers={
+      Array [
+        Object {
+          "core_user_guid": "51b3a499-a474-4d52-be99-5c5123d7501c",
+          "email": "user@gov.bc.ca",
+          "idir_user_detail": Object {
+            "bcgov_guid": "13b7821b-04d9-4a1d-a0f4-8f6bba2c6094",
+            "city": "Victoria",
+            "department": "Mines Health, Safety & Enforcement Division",
+            "title": "Geomatics Specialist",
+            "username": "IDIR\\\\BLAH",
+          },
+          "last_logon": null,
+          "phone_no": "555-555-5556",
+        },
+      ]
+    }
     handleSubmit={
       [MockFunction] {
         "calls": Array [
@@ -27,12 +44,12 @@ ShallowWrapper {
       }
     }
     mineGuid="48593"
-    mineNo="B03124"
     onSubmit={
       [MockFunction] {
         "calls": Array [
           Array [
             Object {},
+            true,
           ],
         ],
       }
@@ -53,124 +70,134 @@ ShallowWrapper {
     "nodeType": "class",
     "props": Object {
       "children": Array [
-        <Row
-          gutter={48}
+        <FormItem
+          hasFeedback={false}
+          label="Are you creating an application or an approved variance?"
         >
-          <Col
-            className="border--right--layout"
-            md={12}
-            sm={24}
+          <RadioGroup
+            buttonStyle="outline"
+            disabled={false}
+            onChange={[Function]}
+            value={true}
           >
-            <FormItem
-              hasFeedback={false}
+            <Radio
+              type="radio"
+              value={true}
             >
-              <Field
-                component={[Function]}
-                data={
-                  Array [
-                    Object {
-                      "label": "2.3.7 - Spills",
-                      "value": 305,
-                    },
-                    Object {
-                      "label": "2.3.8 - Flammable Waste Storage",
-                      "value": 306,
-                    },
-                  ]
-                }
-                id="compliance_article_id"
-                label="Part of Code*"
-                name="compliance_article_id"
-                placeholder="Select a part of the code"
-                validate={
-                  Array [
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
-            <FormItem
-              hasFeedback={false}
+               Application 
+            </Radio>
+            <Radio
+              type="radio"
+              value={false}
             >
-              <Field
-                component={[Function]}
-                id="received_date"
-                label="Received date*"
-                name="received_date"
-                validate={
-                  Array [
-                    [Function],
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="issue_date"
-                label="Issue date*"
-                name="issue_date"
-                validate={
-                  Array [
-                    [Function],
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="expiry_date"
-                label="Expiry date*"
-                name="expiry_date"
-                validate={
-                  Array [
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="note"
-                label="Description"
-                name="note"
-                validate={
-                  Array [
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
-          </Col>
-          <Col
-            md={12}
-            sm={24}
+               Approved Variance 
+            </Radio>
+          </RadioGroup>
+        </FormItem>,
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            data={
+              Array [
+                Object {
+                  "label": "2.3.7 - Spills",
+                  "value": 305,
+                },
+                Object {
+                  "label": "2.3.8 - Flammable Waste Storage",
+                  "value": 306,
+                },
+              ]
+            }
+            id="compliance_article_id"
+            label="Part of Code*"
+            name="compliance_article_id"
+            placeholder="Select a part of the code"
+            validate={
+              Array [
+                [Function],
+              ]
+            }
+          />
+        </FormItem>,
+        <FormItem
+          hasFeedback={false}
+          label="Received date"
+        >
+          <p
+            className="p-light"
           >
-            <FormItem
-              hasFeedback={false}
-              label="Upload files*"
-            >
-              <Field
-                component={[Function]}
-                id="VarianceDocumentFileUpload"
-                mineGuid="48593"
-                name="VarianceDocumentFileUpload"
-                onFileLoad={[Function]}
-                onRemoveFile={[Function]}
-              />
-            </FormItem>
-          </Col>
-        </Row>,
+            If the received date is not specified it will be set to todays date
+          </p>
+          <Field
+            component={[Function]}
+            id="received_date"
+            name="received_date"
+            validate={
+              Array [
+                [Function],
+              ]
+            }
+          />
+        </FormItem>,
+        false,
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            id="note"
+            label="Description"
+            name="note"
+            validate={
+              Array [
+                [Function],
+              ]
+            }
+          />
+        </FormItem>,
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            id="ohsc_ind"
+            label="Has this been reviewed by the OHSC?"
+            name="ohsc_ind"
+          />
+        </FormItem>,
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            id="union_ind"
+            label="Has this been reviewed by the union?"
+            name="union_ind"
+          />
+        </FormItem>,
+        <br />,
+        <h5>
+          upload files*
+        </h5>,
+        <p>
+           Please upload all the required documents here for the variance application
+        </p>,
+        <br />,
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            id="VarianceDocumentFileUpload"
+            mineGuid="48593"
+            name="VarianceDocumentFileUpload"
+            onFileLoad={[Function]}
+            onRemoveFile={[Function]}
+          />
+        </FormItem>,
         <div
           className="right center-mobile"
         >
@@ -210,7 +237,7 @@ ShallowWrapper {
             loading={false}
             type="primary"
           >
-            Add Approved Variance
+            Add Variance
           </Button>
         </div>,
       ],
@@ -226,510 +253,377 @@ ShallowWrapper {
         "key": undefined,
         "nodeType": "class",
         "props": Object {
-          "children": Array [
-            <Col
-              className="border--right--layout"
-              md={12}
-              sm={24}
+          "children": <RadioGroup
+            buttonStyle="outline"
+            disabled={false}
+            onChange={[Function]}
+            value={true}
+          >
+            <Radio
+              type="radio"
+              value={true}
             >
-              <FormItem
-                hasFeedback={false}
-              >
-                <Field
-                  component={[Function]}
-                  data={
-                    Array [
-                      Object {
-                        "label": "2.3.7 - Spills",
-                        "value": 305,
-                      },
-                      Object {
-                        "label": "2.3.8 - Flammable Waste Storage",
-                        "value": 306,
-                      },
-                    ]
-                  }
-                  id="compliance_article_id"
-                  label="Part of Code*"
-                  name="compliance_article_id"
-                  placeholder="Select a part of the code"
-                  validate={
-                    Array [
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-              <FormItem
-                hasFeedback={false}
-              >
-                <Field
-                  component={[Function]}
-                  id="received_date"
-                  label="Received date*"
-                  name="received_date"
-                  validate={
-                    Array [
-                      [Function],
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-              <FormItem
-                hasFeedback={false}
-              >
-                <Field
-                  component={[Function]}
-                  id="issue_date"
-                  label="Issue date*"
-                  name="issue_date"
-                  validate={
-                    Array [
-                      [Function],
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-              <FormItem
-                hasFeedback={false}
-              >
-                <Field
-                  component={[Function]}
-                  id="expiry_date"
-                  label="Expiry date*"
-                  name="expiry_date"
-                  validate={
-                    Array [
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-              <FormItem
-                hasFeedback={false}
-              >
-                <Field
-                  component={[Function]}
-                  id="note"
-                  label="Description"
-                  name="note"
-                  validate={
-                    Array [
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-            </Col>,
-            <Col
-              md={12}
-              sm={24}
+               Application 
+            </Radio>
+            <Radio
+              type="radio"
+              value={false}
             >
-              <FormItem
-                hasFeedback={false}
-                label="Upload files*"
+               Approved Variance 
+            </Radio>
+          </RadioGroup>,
+          "hasFeedback": false,
+          "label": "Are you creating an application or an approved variance?",
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "buttonStyle": "outline",
+            "children": Array [
+              <Radio
+                type="radio"
+                value={true}
               >
-                <Field
-                  component={[Function]}
-                  id="VarianceDocumentFileUpload"
-                  mineGuid="48593"
-                  name="VarianceDocumentFileUpload"
-                  onFileLoad={[Function]}
-                  onRemoveFile={[Function]}
-                />
-              </FormItem>
-            </Col>,
+                 Application 
+              </Radio>,
+              <Radio
+                type="radio"
+                value={false}
+              >
+                 Approved Variance 
+              </Radio>,
+            ],
+            "disabled": false,
+            "onChange": [Function],
+            "value": true,
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": " Application ",
+                "type": "radio",
+                "value": true,
+              },
+              "ref": null,
+              "rendered": " Application ",
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": " Approved Variance ",
+                "type": "radio",
+                "value": false,
+              },
+              "ref": null,
+              "rendered": " Approved Variance ",
+              "type": [Function],
+            },
           ],
-          "gutter": 48,
+          "type": [Function],
+        },
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "children": <Field
+            component={[Function]}
+            data={
+              Array [
+                Object {
+                  "label": "2.3.7 - Spills",
+                  "value": 305,
+                },
+                Object {
+                  "label": "2.3.8 - Flammable Waste Storage",
+                  "value": 306,
+                },
+              ]
+            }
+            id="compliance_article_id"
+            label="Part of Code*"
+            name="compliance_article_id"
+            placeholder="Select a part of the code"
+            validate={
+              Array [
+                [Function],
+              ]
+            }
+          />,
+          "hasFeedback": false,
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "component": [Function],
+            "data": Array [
+              Object {
+                "label": "2.3.7 - Spills",
+                "value": 305,
+              },
+              Object {
+                "label": "2.3.8 - Flammable Waste Storage",
+                "value": 306,
+              },
+            ],
+            "id": "compliance_article_id",
+            "label": "Part of Code*",
+            "name": "compliance_article_id",
+            "placeholder": "Select a part of the code",
+            "validate": Array [
+              [Function],
+            ],
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "children": Array [
+            <p
+              className="p-light"
+            >
+              If the received date is not specified it will be set to todays date
+            </p>,
+            <Field
+              component={[Function]}
+              id="received_date"
+              name="received_date"
+              validate={
+                Array [
+                  [Function],
+                ]
+              }
+            />,
+          ],
+          "hasFeedback": false,
+          "label": "Received date",
         },
         "ref": null,
         "rendered": Array [
           Object {
             "instance": null,
             "key": undefined,
-            "nodeType": "class",
+            "nodeType": "host",
             "props": Object {
-              "children": Array [
-                <FormItem
-                  hasFeedback={false}
-                >
-                  <Field
-                    component={[Function]}
-                    data={
-                      Array [
-                        Object {
-                          "label": "2.3.7 - Spills",
-                          "value": 305,
-                        },
-                        Object {
-                          "label": "2.3.8 - Flammable Waste Storage",
-                          "value": 306,
-                        },
-                      ]
-                    }
-                    id="compliance_article_id"
-                    label="Part of Code*"
-                    name="compliance_article_id"
-                    placeholder="Select a part of the code"
-                    validate={
-                      Array [
-                        [Function],
-                      ]
-                    }
-                  />
-                </FormItem>,
-                <FormItem
-                  hasFeedback={false}
-                >
-                  <Field
-                    component={[Function]}
-                    id="received_date"
-                    label="Received date*"
-                    name="received_date"
-                    validate={
-                      Array [
-                        [Function],
-                        [Function],
-                      ]
-                    }
-                  />
-                </FormItem>,
-                <FormItem
-                  hasFeedback={false}
-                >
-                  <Field
-                    component={[Function]}
-                    id="issue_date"
-                    label="Issue date*"
-                    name="issue_date"
-                    validate={
-                      Array [
-                        [Function],
-                        [Function],
-                      ]
-                    }
-                  />
-                </FormItem>,
-                <FormItem
-                  hasFeedback={false}
-                >
-                  <Field
-                    component={[Function]}
-                    id="expiry_date"
-                    label="Expiry date*"
-                    name="expiry_date"
-                    validate={
-                      Array [
-                        [Function],
-                      ]
-                    }
-                  />
-                </FormItem>,
-                <FormItem
-                  hasFeedback={false}
-                >
-                  <Field
-                    component={[Function]}
-                    id="note"
-                    label="Description"
-                    name="note"
-                    validate={
-                      Array [
-                        [Function],
-                      ]
-                    }
-                  />
-                </FormItem>,
-              ],
-              "className": "border--right--layout",
-              "md": 12,
-              "sm": 24,
+              "children": "If the received date is not specified it will be set to todays date",
+              "className": "p-light",
             },
             "ref": null,
-            "rendered": Array [
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "children": <Field
-                    component={[Function]}
-                    data={
-                      Array [
-                        Object {
-                          "label": "2.3.7 - Spills",
-                          "value": 305,
-                        },
-                        Object {
-                          "label": "2.3.8 - Flammable Waste Storage",
-                          "value": 306,
-                        },
-                      ]
-                    }
-                    id="compliance_article_id"
-                    label="Part of Code*"
-                    name="compliance_article_id"
-                    placeholder="Select a part of the code"
-                    validate={
-                      Array [
-                        [Function],
-                      ]
-                    }
-                  />,
-                  "hasFeedback": false,
-                },
-                "ref": null,
-                "rendered": Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "component": [Function],
-                    "data": Array [
-                      Object {
-                        "label": "2.3.7 - Spills",
-                        "value": 305,
-                      },
-                      Object {
-                        "label": "2.3.8 - Flammable Waste Storage",
-                        "value": 306,
-                      },
-                    ],
-                    "id": "compliance_article_id",
-                    "label": "Part of Code*",
-                    "name": "compliance_article_id",
-                    "placeholder": "Select a part of the code",
-                    "validate": Array [
-                      [Function],
-                    ],
-                  },
-                  "ref": null,
-                  "rendered": null,
-                  "type": [Function],
-                },
-                "type": [Function],
-              },
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "children": <Field
-                    component={[Function]}
-                    id="received_date"
-                    label="Received date*"
-                    name="received_date"
-                    validate={
-                      Array [
-                        [Function],
-                        [Function],
-                      ]
-                    }
-                  />,
-                  "hasFeedback": false,
-                },
-                "ref": null,
-                "rendered": Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "component": [Function],
-                    "id": "received_date",
-                    "label": "Received date*",
-                    "name": "received_date",
-                    "validate": Array [
-                      [Function],
-                      [Function],
-                    ],
-                  },
-                  "ref": null,
-                  "rendered": null,
-                  "type": [Function],
-                },
-                "type": [Function],
-              },
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "children": <Field
-                    component={[Function]}
-                    id="issue_date"
-                    label="Issue date*"
-                    name="issue_date"
-                    validate={
-                      Array [
-                        [Function],
-                        [Function],
-                      ]
-                    }
-                  />,
-                  "hasFeedback": false,
-                },
-                "ref": null,
-                "rendered": Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "component": [Function],
-                    "id": "issue_date",
-                    "label": "Issue date*",
-                    "name": "issue_date",
-                    "validate": Array [
-                      [Function],
-                      [Function],
-                    ],
-                  },
-                  "ref": null,
-                  "rendered": null,
-                  "type": [Function],
-                },
-                "type": [Function],
-              },
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "children": <Field
-                    component={[Function]}
-                    id="expiry_date"
-                    label="Expiry date*"
-                    name="expiry_date"
-                    validate={
-                      Array [
-                        [Function],
-                      ]
-                    }
-                  />,
-                  "hasFeedback": false,
-                },
-                "ref": null,
-                "rendered": Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "component": [Function],
-                    "id": "expiry_date",
-                    "label": "Expiry date*",
-                    "name": "expiry_date",
-                    "validate": Array [
-                      [Function],
-                    ],
-                  },
-                  "ref": null,
-                  "rendered": null,
-                  "type": [Function],
-                },
-                "type": [Function],
-              },
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "children": <Field
-                    component={[Function]}
-                    id="note"
-                    label="Description"
-                    name="note"
-                    validate={
-                      Array [
-                        [Function],
-                      ]
-                    }
-                  />,
-                  "hasFeedback": false,
-                },
-                "ref": null,
-                "rendered": Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "component": [Function],
-                    "id": "note",
-                    "label": "Description",
-                    "name": "note",
-                    "validate": Array [
-                      [Function],
-                    ],
-                  },
-                  "ref": null,
-                  "rendered": null,
-                  "type": [Function],
-                },
-                "type": [Function],
-              },
-            ],
-            "type": [Function],
+            "rendered": "If the received date is not specified it will be set to todays date",
+            "type": "p",
           },
           Object {
             "instance": null,
             "key": undefined,
             "nodeType": "class",
             "props": Object {
-              "children": <FormItem
-                hasFeedback={false}
-                label="Upload files*"
-              >
-                <Field
-                  component={[Function]}
-                  id="VarianceDocumentFileUpload"
-                  mineGuid="48593"
-                  name="VarianceDocumentFileUpload"
-                  onFileLoad={[Function]}
-                  onRemoveFile={[Function]}
-                />
-              </FormItem>,
-              "md": 12,
-              "sm": 24,
+              "component": [Function],
+              "id": "received_date",
+              "name": "received_date",
+              "validate": Array [
+                [Function],
+              ],
             },
             "ref": null,
-            "rendered": Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "children": <Field
-                  component={[Function]}
-                  id="VarianceDocumentFileUpload"
-                  mineGuid="48593"
-                  name="VarianceDocumentFileUpload"
-                  onFileLoad={[Function]}
-                  onRemoveFile={[Function]}
-                />,
-                "hasFeedback": false,
-                "label": "Upload files*",
-              },
-              "ref": null,
-              "rendered": Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "component": [Function],
-                  "id": "VarianceDocumentFileUpload",
-                  "mineGuid": "48593",
-                  "name": "VarianceDocumentFileUpload",
-                  "onFileLoad": [Function],
-                  "onRemoveFile": [Function],
-                },
-                "ref": null,
-                "rendered": null,
-                "type": [Function],
-              },
-              "type": [Function],
-            },
+            "rendered": null,
             "type": [Function],
           },
         ],
+        "type": [Function],
+      },
+      false,
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "children": <Field
+            component={[Function]}
+            id="note"
+            label="Description"
+            name="note"
+            validate={
+              Array [
+                [Function],
+              ]
+            }
+          />,
+          "hasFeedback": false,
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "component": [Function],
+            "id": "note",
+            "label": "Description",
+            "name": "note",
+            "validate": Array [
+              [Function],
+            ],
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "children": <Field
+            component={[Function]}
+            id="ohsc_ind"
+            label="Has this been reviewed by the OHSC?"
+            name="ohsc_ind"
+          />,
+          "hasFeedback": false,
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "component": [Function],
+            "id": "ohsc_ind",
+            "label": "Has this been reviewed by the OHSC?",
+            "name": "ohsc_ind",
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "children": <Field
+            component={[Function]}
+            id="union_ind"
+            label="Has this been reviewed by the union?"
+            name="union_ind"
+          />,
+          "hasFeedback": false,
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "component": [Function],
+            "id": "union_ind",
+            "label": "Has this been reviewed by the union?",
+            "name": "union_ind",
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {},
+        "ref": null,
+        "rendered": null,
+        "type": "br",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": "upload files*",
+        },
+        "ref": null,
+        "rendered": "upload files*",
+        "type": "h5",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": " Please upload all the required documents here for the variance application",
+        },
+        "ref": null,
+        "rendered": " Please upload all the required documents here for the variance application",
+        "type": "p",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {},
+        "ref": null,
+        "rendered": null,
+        "type": "br",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "children": <Field
+            component={[Function]}
+            id="VarianceDocumentFileUpload"
+            mineGuid="48593"
+            name="VarianceDocumentFileUpload"
+            onFileLoad={[Function]}
+            onRemoveFile={[Function]}
+          />,
+          "hasFeedback": false,
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "component": [Function],
+            "id": "VarianceDocumentFileUpload",
+            "mineGuid": "48593",
+            "name": "VarianceDocumentFileUpload",
+            "onFileLoad": [Function],
+            "onRemoveFile": [Function],
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
         "type": [Function],
       },
       Object {
@@ -774,7 +668,7 @@ ShallowWrapper {
               loading={false}
               type="primary"
             >
-              Add Approved Variance
+              Add Variance
             </Button>,
           ],
           "className": "right center-mobile",
@@ -835,7 +729,7 @@ ShallowWrapper {
             "nodeType": "class",
             "props": Object {
               "block": false,
-              "children": "Add Approved Variance",
+              "children": "Add Variance",
               "className": "full-mobile",
               "disabled": false,
               "ghost": false,
@@ -844,7 +738,7 @@ ShallowWrapper {
               "type": "primary",
             },
             "ref": null,
-            "rendered": "Add Approved Variance",
+            "rendered": "Add Variance",
             "type": [Function],
           },
         ],
@@ -860,124 +754,134 @@ ShallowWrapper {
       "nodeType": "class",
       "props": Object {
         "children": Array [
-          <Row
-            gutter={48}
+          <FormItem
+            hasFeedback={false}
+            label="Are you creating an application or an approved variance?"
           >
-            <Col
-              className="border--right--layout"
-              md={12}
-              sm={24}
+            <RadioGroup
+              buttonStyle="outline"
+              disabled={false}
+              onChange={[Function]}
+              value={true}
             >
-              <FormItem
-                hasFeedback={false}
+              <Radio
+                type="radio"
+                value={true}
               >
-                <Field
-                  component={[Function]}
-                  data={
-                    Array [
-                      Object {
-                        "label": "2.3.7 - Spills",
-                        "value": 305,
-                      },
-                      Object {
-                        "label": "2.3.8 - Flammable Waste Storage",
-                        "value": 306,
-                      },
-                    ]
-                  }
-                  id="compliance_article_id"
-                  label="Part of Code*"
-                  name="compliance_article_id"
-                  placeholder="Select a part of the code"
-                  validate={
-                    Array [
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-              <FormItem
-                hasFeedback={false}
+                 Application 
+              </Radio>
+              <Radio
+                type="radio"
+                value={false}
               >
-                <Field
-                  component={[Function]}
-                  id="received_date"
-                  label="Received date*"
-                  name="received_date"
-                  validate={
-                    Array [
-                      [Function],
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-              <FormItem
-                hasFeedback={false}
-              >
-                <Field
-                  component={[Function]}
-                  id="issue_date"
-                  label="Issue date*"
-                  name="issue_date"
-                  validate={
-                    Array [
-                      [Function],
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-              <FormItem
-                hasFeedback={false}
-              >
-                <Field
-                  component={[Function]}
-                  id="expiry_date"
-                  label="Expiry date*"
-                  name="expiry_date"
-                  validate={
-                    Array [
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-              <FormItem
-                hasFeedback={false}
-              >
-                <Field
-                  component={[Function]}
-                  id="note"
-                  label="Description"
-                  name="note"
-                  validate={
-                    Array [
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-            </Col>
-            <Col
-              md={12}
-              sm={24}
+                 Approved Variance 
+              </Radio>
+            </RadioGroup>
+          </FormItem>,
+          <FormItem
+            hasFeedback={false}
+          >
+            <Field
+              component={[Function]}
+              data={
+                Array [
+                  Object {
+                    "label": "2.3.7 - Spills",
+                    "value": 305,
+                  },
+                  Object {
+                    "label": "2.3.8 - Flammable Waste Storage",
+                    "value": 306,
+                  },
+                ]
+              }
+              id="compliance_article_id"
+              label="Part of Code*"
+              name="compliance_article_id"
+              placeholder="Select a part of the code"
+              validate={
+                Array [
+                  [Function],
+                ]
+              }
+            />
+          </FormItem>,
+          <FormItem
+            hasFeedback={false}
+            label="Received date"
+          >
+            <p
+              className="p-light"
             >
-              <FormItem
-                hasFeedback={false}
-                label="Upload files*"
-              >
-                <Field
-                  component={[Function]}
-                  id="VarianceDocumentFileUpload"
-                  mineGuid="48593"
-                  name="VarianceDocumentFileUpload"
-                  onFileLoad={[Function]}
-                  onRemoveFile={[Function]}
-                />
-              </FormItem>
-            </Col>
-          </Row>,
+              If the received date is not specified it will be set to todays date
+            </p>
+            <Field
+              component={[Function]}
+              id="received_date"
+              name="received_date"
+              validate={
+                Array [
+                  [Function],
+                ]
+              }
+            />
+          </FormItem>,
+          false,
+          <FormItem
+            hasFeedback={false}
+          >
+            <Field
+              component={[Function]}
+              id="note"
+              label="Description"
+              name="note"
+              validate={
+                Array [
+                  [Function],
+                ]
+              }
+            />
+          </FormItem>,
+          <FormItem
+            hasFeedback={false}
+          >
+            <Field
+              component={[Function]}
+              id="ohsc_ind"
+              label="Has this been reviewed by the OHSC?"
+              name="ohsc_ind"
+            />
+          </FormItem>,
+          <FormItem
+            hasFeedback={false}
+          >
+            <Field
+              component={[Function]}
+              id="union_ind"
+              label="Has this been reviewed by the union?"
+              name="union_ind"
+            />
+          </FormItem>,
+          <br />,
+          <h5>
+            upload files*
+          </h5>,
+          <p>
+             Please upload all the required documents here for the variance application
+          </p>,
+          <br />,
+          <FormItem
+            hasFeedback={false}
+          >
+            <Field
+              component={[Function]}
+              id="VarianceDocumentFileUpload"
+              mineGuid="48593"
+              name="VarianceDocumentFileUpload"
+              onFileLoad={[Function]}
+              onRemoveFile={[Function]}
+            />
+          </FormItem>,
           <div
             className="right center-mobile"
           >
@@ -1017,7 +921,7 @@ ShallowWrapper {
               loading={false}
               type="primary"
             >
-              Add Approved Variance
+              Add Variance
             </Button>
           </div>,
         ],
@@ -1033,510 +937,377 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "class",
           "props": Object {
-            "children": Array [
-              <Col
-                className="border--right--layout"
-                md={12}
-                sm={24}
+            "children": <RadioGroup
+              buttonStyle="outline"
+              disabled={false}
+              onChange={[Function]}
+              value={true}
+            >
+              <Radio
+                type="radio"
+                value={true}
               >
-                <FormItem
-                  hasFeedback={false}
-                >
-                  <Field
-                    component={[Function]}
-                    data={
-                      Array [
-                        Object {
-                          "label": "2.3.7 - Spills",
-                          "value": 305,
-                        },
-                        Object {
-                          "label": "2.3.8 - Flammable Waste Storage",
-                          "value": 306,
-                        },
-                      ]
-                    }
-                    id="compliance_article_id"
-                    label="Part of Code*"
-                    name="compliance_article_id"
-                    placeholder="Select a part of the code"
-                    validate={
-                      Array [
-                        [Function],
-                      ]
-                    }
-                  />
-                </FormItem>
-                <FormItem
-                  hasFeedback={false}
-                >
-                  <Field
-                    component={[Function]}
-                    id="received_date"
-                    label="Received date*"
-                    name="received_date"
-                    validate={
-                      Array [
-                        [Function],
-                        [Function],
-                      ]
-                    }
-                  />
-                </FormItem>
-                <FormItem
-                  hasFeedback={false}
-                >
-                  <Field
-                    component={[Function]}
-                    id="issue_date"
-                    label="Issue date*"
-                    name="issue_date"
-                    validate={
-                      Array [
-                        [Function],
-                        [Function],
-                      ]
-                    }
-                  />
-                </FormItem>
-                <FormItem
-                  hasFeedback={false}
-                >
-                  <Field
-                    component={[Function]}
-                    id="expiry_date"
-                    label="Expiry date*"
-                    name="expiry_date"
-                    validate={
-                      Array [
-                        [Function],
-                      ]
-                    }
-                  />
-                </FormItem>
-                <FormItem
-                  hasFeedback={false}
-                >
-                  <Field
-                    component={[Function]}
-                    id="note"
-                    label="Description"
-                    name="note"
-                    validate={
-                      Array [
-                        [Function],
-                      ]
-                    }
-                  />
-                </FormItem>
-              </Col>,
-              <Col
-                md={12}
-                sm={24}
+                 Application 
+              </Radio>
+              <Radio
+                type="radio"
+                value={false}
               >
-                <FormItem
-                  hasFeedback={false}
-                  label="Upload files*"
+                 Approved Variance 
+              </Radio>
+            </RadioGroup>,
+            "hasFeedback": false,
+            "label": "Are you creating an application or an approved variance?",
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "buttonStyle": "outline",
+              "children": Array [
+                <Radio
+                  type="radio"
+                  value={true}
                 >
-                  <Field
-                    component={[Function]}
-                    id="VarianceDocumentFileUpload"
-                    mineGuid="48593"
-                    name="VarianceDocumentFileUpload"
-                    onFileLoad={[Function]}
-                    onRemoveFile={[Function]}
-                  />
-                </FormItem>
-              </Col>,
+                   Application 
+                </Radio>,
+                <Radio
+                  type="radio"
+                  value={false}
+                >
+                   Approved Variance 
+                </Radio>,
+              ],
+              "disabled": false,
+              "onChange": [Function],
+              "value": true,
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": " Application ",
+                  "type": "radio",
+                  "value": true,
+                },
+                "ref": null,
+                "rendered": " Application ",
+                "type": [Function],
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": " Approved Variance ",
+                  "type": "radio",
+                  "value": false,
+                },
+                "ref": null,
+                "rendered": " Approved Variance ",
+                "type": [Function],
+              },
             ],
-            "gutter": 48,
+            "type": [Function],
+          },
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": <Field
+              component={[Function]}
+              data={
+                Array [
+                  Object {
+                    "label": "2.3.7 - Spills",
+                    "value": 305,
+                  },
+                  Object {
+                    "label": "2.3.8 - Flammable Waste Storage",
+                    "value": 306,
+                  },
+                ]
+              }
+              id="compliance_article_id"
+              label="Part of Code*"
+              name="compliance_article_id"
+              placeholder="Select a part of the code"
+              validate={
+                Array [
+                  [Function],
+                ]
+              }
+            />,
+            "hasFeedback": false,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "component": [Function],
+              "data": Array [
+                Object {
+                  "label": "2.3.7 - Spills",
+                  "value": 305,
+                },
+                Object {
+                  "label": "2.3.8 - Flammable Waste Storage",
+                  "value": 306,
+                },
+              ],
+              "id": "compliance_article_id",
+              "label": "Part of Code*",
+              "name": "compliance_article_id",
+              "placeholder": "Select a part of the code",
+              "validate": Array [
+                [Function],
+              ],
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": Array [
+              <p
+                className="p-light"
+              >
+                If the received date is not specified it will be set to todays date
+              </p>,
+              <Field
+                component={[Function]}
+                id="received_date"
+                name="received_date"
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
+              />,
+            ],
+            "hasFeedback": false,
+            "label": "Received date",
           },
           "ref": null,
           "rendered": Array [
             Object {
               "instance": null,
               "key": undefined,
-              "nodeType": "class",
+              "nodeType": "host",
               "props": Object {
-                "children": Array [
-                  <FormItem
-                    hasFeedback={false}
-                  >
-                    <Field
-                      component={[Function]}
-                      data={
-                        Array [
-                          Object {
-                            "label": "2.3.7 - Spills",
-                            "value": 305,
-                          },
-                          Object {
-                            "label": "2.3.8 - Flammable Waste Storage",
-                            "value": 306,
-                          },
-                        ]
-                      }
-                      id="compliance_article_id"
-                      label="Part of Code*"
-                      name="compliance_article_id"
-                      placeholder="Select a part of the code"
-                      validate={
-                        Array [
-                          [Function],
-                        ]
-                      }
-                    />
-                  </FormItem>,
-                  <FormItem
-                    hasFeedback={false}
-                  >
-                    <Field
-                      component={[Function]}
-                      id="received_date"
-                      label="Received date*"
-                      name="received_date"
-                      validate={
-                        Array [
-                          [Function],
-                          [Function],
-                        ]
-                      }
-                    />
-                  </FormItem>,
-                  <FormItem
-                    hasFeedback={false}
-                  >
-                    <Field
-                      component={[Function]}
-                      id="issue_date"
-                      label="Issue date*"
-                      name="issue_date"
-                      validate={
-                        Array [
-                          [Function],
-                          [Function],
-                        ]
-                      }
-                    />
-                  </FormItem>,
-                  <FormItem
-                    hasFeedback={false}
-                  >
-                    <Field
-                      component={[Function]}
-                      id="expiry_date"
-                      label="Expiry date*"
-                      name="expiry_date"
-                      validate={
-                        Array [
-                          [Function],
-                        ]
-                      }
-                    />
-                  </FormItem>,
-                  <FormItem
-                    hasFeedback={false}
-                  >
-                    <Field
-                      component={[Function]}
-                      id="note"
-                      label="Description"
-                      name="note"
-                      validate={
-                        Array [
-                          [Function],
-                        ]
-                      }
-                    />
-                  </FormItem>,
-                ],
-                "className": "border--right--layout",
-                "md": 12,
-                "sm": 24,
+                "children": "If the received date is not specified it will be set to todays date",
+                "className": "p-light",
               },
               "ref": null,
-              "rendered": Array [
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "children": <Field
-                      component={[Function]}
-                      data={
-                        Array [
-                          Object {
-                            "label": "2.3.7 - Spills",
-                            "value": 305,
-                          },
-                          Object {
-                            "label": "2.3.8 - Flammable Waste Storage",
-                            "value": 306,
-                          },
-                        ]
-                      }
-                      id="compliance_article_id"
-                      label="Part of Code*"
-                      name="compliance_article_id"
-                      placeholder="Select a part of the code"
-                      validate={
-                        Array [
-                          [Function],
-                        ]
-                      }
-                    />,
-                    "hasFeedback": false,
-                  },
-                  "ref": null,
-                  "rendered": Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "class",
-                    "props": Object {
-                      "component": [Function],
-                      "data": Array [
-                        Object {
-                          "label": "2.3.7 - Spills",
-                          "value": 305,
-                        },
-                        Object {
-                          "label": "2.3.8 - Flammable Waste Storage",
-                          "value": 306,
-                        },
-                      ],
-                      "id": "compliance_article_id",
-                      "label": "Part of Code*",
-                      "name": "compliance_article_id",
-                      "placeholder": "Select a part of the code",
-                      "validate": Array [
-                        [Function],
-                      ],
-                    },
-                    "ref": null,
-                    "rendered": null,
-                    "type": [Function],
-                  },
-                  "type": [Function],
-                },
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "children": <Field
-                      component={[Function]}
-                      id="received_date"
-                      label="Received date*"
-                      name="received_date"
-                      validate={
-                        Array [
-                          [Function],
-                          [Function],
-                        ]
-                      }
-                    />,
-                    "hasFeedback": false,
-                  },
-                  "ref": null,
-                  "rendered": Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "class",
-                    "props": Object {
-                      "component": [Function],
-                      "id": "received_date",
-                      "label": "Received date*",
-                      "name": "received_date",
-                      "validate": Array [
-                        [Function],
-                        [Function],
-                      ],
-                    },
-                    "ref": null,
-                    "rendered": null,
-                    "type": [Function],
-                  },
-                  "type": [Function],
-                },
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "children": <Field
-                      component={[Function]}
-                      id="issue_date"
-                      label="Issue date*"
-                      name="issue_date"
-                      validate={
-                        Array [
-                          [Function],
-                          [Function],
-                        ]
-                      }
-                    />,
-                    "hasFeedback": false,
-                  },
-                  "ref": null,
-                  "rendered": Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "class",
-                    "props": Object {
-                      "component": [Function],
-                      "id": "issue_date",
-                      "label": "Issue date*",
-                      "name": "issue_date",
-                      "validate": Array [
-                        [Function],
-                        [Function],
-                      ],
-                    },
-                    "ref": null,
-                    "rendered": null,
-                    "type": [Function],
-                  },
-                  "type": [Function],
-                },
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "children": <Field
-                      component={[Function]}
-                      id="expiry_date"
-                      label="Expiry date*"
-                      name="expiry_date"
-                      validate={
-                        Array [
-                          [Function],
-                        ]
-                      }
-                    />,
-                    "hasFeedback": false,
-                  },
-                  "ref": null,
-                  "rendered": Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "class",
-                    "props": Object {
-                      "component": [Function],
-                      "id": "expiry_date",
-                      "label": "Expiry date*",
-                      "name": "expiry_date",
-                      "validate": Array [
-                        [Function],
-                      ],
-                    },
-                    "ref": null,
-                    "rendered": null,
-                    "type": [Function],
-                  },
-                  "type": [Function],
-                },
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "children": <Field
-                      component={[Function]}
-                      id="note"
-                      label="Description"
-                      name="note"
-                      validate={
-                        Array [
-                          [Function],
-                        ]
-                      }
-                    />,
-                    "hasFeedback": false,
-                  },
-                  "ref": null,
-                  "rendered": Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "class",
-                    "props": Object {
-                      "component": [Function],
-                      "id": "note",
-                      "label": "Description",
-                      "name": "note",
-                      "validate": Array [
-                        [Function],
-                      ],
-                    },
-                    "ref": null,
-                    "rendered": null,
-                    "type": [Function],
-                  },
-                  "type": [Function],
-                },
-              ],
-              "type": [Function],
+              "rendered": "If the received date is not specified it will be set to todays date",
+              "type": "p",
             },
             Object {
               "instance": null,
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "children": <FormItem
-                  hasFeedback={false}
-                  label="Upload files*"
-                >
-                  <Field
-                    component={[Function]}
-                    id="VarianceDocumentFileUpload"
-                    mineGuid="48593"
-                    name="VarianceDocumentFileUpload"
-                    onFileLoad={[Function]}
-                    onRemoveFile={[Function]}
-                  />
-                </FormItem>,
-                "md": 12,
-                "sm": 24,
+                "component": [Function],
+                "id": "received_date",
+                "name": "received_date",
+                "validate": Array [
+                  [Function],
+                ],
               },
               "ref": null,
-              "rendered": Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "children": <Field
-                    component={[Function]}
-                    id="VarianceDocumentFileUpload"
-                    mineGuid="48593"
-                    name="VarianceDocumentFileUpload"
-                    onFileLoad={[Function]}
-                    onRemoveFile={[Function]}
-                  />,
-                  "hasFeedback": false,
-                  "label": "Upload files*",
-                },
-                "ref": null,
-                "rendered": Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "component": [Function],
-                    "id": "VarianceDocumentFileUpload",
-                    "mineGuid": "48593",
-                    "name": "VarianceDocumentFileUpload",
-                    "onFileLoad": [Function],
-                    "onRemoveFile": [Function],
-                  },
-                  "ref": null,
-                  "rendered": null,
-                  "type": [Function],
-                },
-                "type": [Function],
-              },
+              "rendered": null,
               "type": [Function],
             },
           ],
+          "type": [Function],
+        },
+        false,
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": <Field
+              component={[Function]}
+              id="note"
+              label="Description"
+              name="note"
+              validate={
+                Array [
+                  [Function],
+                ]
+              }
+            />,
+            "hasFeedback": false,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "component": [Function],
+              "id": "note",
+              "label": "Description",
+              "name": "note",
+              "validate": Array [
+                [Function],
+              ],
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": <Field
+              component={[Function]}
+              id="ohsc_ind"
+              label="Has this been reviewed by the OHSC?"
+              name="ohsc_ind"
+            />,
+            "hasFeedback": false,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "component": [Function],
+              "id": "ohsc_ind",
+              "label": "Has this been reviewed by the OHSC?",
+              "name": "ohsc_ind",
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": <Field
+              component={[Function]}
+              id="union_ind"
+              label="Has this been reviewed by the union?"
+              name="union_ind"
+            />,
+            "hasFeedback": false,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "component": [Function],
+              "id": "union_ind",
+              "label": "Has this been reviewed by the union?",
+              "name": "union_ind",
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {},
+          "ref": null,
+          "rendered": null,
+          "type": "br",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": "upload files*",
+          },
+          "ref": null,
+          "rendered": "upload files*",
+          "type": "h5",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": " Please upload all the required documents here for the variance application",
+          },
+          "ref": null,
+          "rendered": " Please upload all the required documents here for the variance application",
+          "type": "p",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {},
+          "ref": null,
+          "rendered": null,
+          "type": "br",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": <Field
+              component={[Function]}
+              id="VarianceDocumentFileUpload"
+              mineGuid="48593"
+              name="VarianceDocumentFileUpload"
+              onFileLoad={[Function]}
+              onRemoveFile={[Function]}
+            />,
+            "hasFeedback": false,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "component": [Function],
+              "id": "VarianceDocumentFileUpload",
+              "mineGuid": "48593",
+              "name": "VarianceDocumentFileUpload",
+              "onFileLoad": [Function],
+              "onRemoveFile": [Function],
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
           "type": [Function],
         },
         Object {
@@ -1581,7 +1352,7 @@ ShallowWrapper {
                 loading={false}
                 type="primary"
               >
-                Add Approved Variance
+                Add Variance
               </Button>,
             ],
             "className": "right center-mobile",
@@ -1642,7 +1413,7 @@ ShallowWrapper {
               "nodeType": "class",
               "props": Object {
                 "block": false,
-                "children": "Add Approved Variance",
+                "children": "Add Variance",
                 "className": "full-mobile",
                 "disabled": false,
                 "ghost": false,
@@ -1651,7 +1422,7 @@ ShallowWrapper {
                 "type": "primary",
               },
               "ref": null,
-              "rendered": "Add Approved Variance",
+              "rendered": "Add Variance",
               "type": [Function],
             },
           ],
