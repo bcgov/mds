@@ -6,7 +6,6 @@ import { MINE, TEAM } from "@/constants/assets";
 
 const propTypes = {
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
-  search: PropTypes.func.isRequired,
   searchTerm: PropTypes.string.isRequired,
   searchTermHistory: PropTypes.arrayOf(PropTypes.string).isRequired,
   searchResults: PropTypes.arrayOf(PropTypes.any).isRequired,
@@ -43,9 +42,7 @@ export const SearchBarDropdown = (props) => (
     onMouseDown={(e) => {
       e.target.click(e);
     }}
-    onClick={({ key }) =>
-      key === "search" ? props.search(props.searchTerm) : props.history.push(`/${key}`)
-    }
+    onClick={({ key }) => props.history.push(`/search?q=${key}`)}
     selectable={false}
   >
     {props.searchTerm.length
@@ -56,7 +53,7 @@ export const SearchBarDropdown = (props) => (
             </Menu.Item>
           )),
           <Menu.Divider />,
-          <Menu.Item key="search">
+          <Menu.Item key={props.searchTerm}>
             <h6>{`See all results for "${props.searchTerm}"`}</h6>
           </Menu.Item>,
         ]
