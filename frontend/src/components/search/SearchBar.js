@@ -3,11 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Input, Dropdown, Card } from "antd";
 import { getSearchBarResults } from "@/selectors/searchSelectors";
-import {
-  fetchSearchBarResults,
-  fetchSearchResults,
-  clearSearchBarResults,
-} from "@/actionCreators/searchActionCreator";
+import { fetchSearchBarResults, clearSearchBarResults } from "@/actionCreators/searchActionCreator";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { SearchBarDropdown } from "@/components/search/SearchBarDropdown";
@@ -18,10 +14,10 @@ const { Search } = Input;
 const propTypes = {
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   fetchSearchBarResults: PropTypes.func.isRequired,
-  fetchSearchResults: PropTypes.func.isRequired,
   clearSearchBarResults: PropTypes.func.isRequired,
   searchResults: PropTypes.arrayOf(PropTypes.object),
 };
+
 const defaultProps = {
   searchResults: [],
 };
@@ -51,7 +47,6 @@ export class SearchBar extends Component {
   };
 
   search = (searchTerm) => {
-    this.props.fetchSearchResults(searchTerm);
     this.setState((prevState) => {
       const newSearchTermHistory = prevState.searchTermHistory.slice(
         Math.max(prevState.searchTermHistory.length - 2, 0)
@@ -62,7 +57,7 @@ export class SearchBar extends Component {
         searchTermHistory: newSearchTermHistory,
       };
     });
-    this.props.history.push("/search");
+    this.props.history.push(`/search?q=${searchTerm}`);
   };
 
   clearSearch = () => {
@@ -91,7 +86,6 @@ export class SearchBar extends Component {
           <Card>
             <SearchBarDropdown
               history={this.props.history}
-              search={this.search}
               searchTerm={this.state.searchTerm}
               searchTermHistory={this.state.searchTermHistory}
               searchResults={this.props.searchResults}
@@ -129,7 +123,6 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchSearchBarResults,
-      fetchSearchResults,
       clearSearchBarResults,
     },
     dispatch

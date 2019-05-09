@@ -33,6 +33,7 @@ class SimpleSearchResource(Resource, UserMixin):
 
         reg_exp = regex.compile(r'\'.*?\' | ".*?" | \S+ ', regex.VERBOSE)
         search_terms = reg_exp.findall(search_term)
+        search_terms.append(search_term)
         search_terms = [term.replace('"', '') for term in search_terms]
 
         with ThreadPoolExecutor(max_workers=50) as executor:
