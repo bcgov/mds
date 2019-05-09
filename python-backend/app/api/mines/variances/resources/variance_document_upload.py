@@ -20,7 +20,6 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
     @api.doc(description='Request a document_manager_guid for uploading a document')
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
     def post(self, mine_guid, variance_guid):
-    
         metadata = self._parse_request_metadata()
         if not metadata or not metadata.get('filename'):
             raise BadRequest('Filename not found in request metadata header')
@@ -51,7 +50,7 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         description='Associate an uploaded file with a variance.',
         params={
             'mine_guid': 'guid for the mine with which the variance is associated',
-            'variance_guid': 'ID for the variance to which the document should be associated'
+            'variance_guid': 'GUID for the variance to which the document should be associated'
         })
     @api.marshal_with(VARIANCE_MODEL, code=200)
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
