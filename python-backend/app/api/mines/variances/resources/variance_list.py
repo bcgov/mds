@@ -1,9 +1,10 @@
 from app.extensions import api
 from flask_restplus import Resource, fields
-from werkzeug.exceptions import BadRequest
+from werkzeug.exceptions import BadRequest, NotFound
 
 from ..models.variance import Variance
 from ....utils.access_decorators import requires_any_of, MINE_VIEW, MINE_CREATE, MINESPACE_PROPONENT
+from ...mine.models.mine import Mine
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.mines.mine_api_models import VARIANCE_MODEL
@@ -73,6 +74,11 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
             raise BadRequest(
                 'Unable to fetch variances. Confirm you\'ve provided a valid mine_guid')
 
+        if len(variances) == 0:
+            mine = Mine.find_by_mine_guid(mine_guid)
+            if mine is None:
+                raise NotFound('Mine')
+
         return variances
 
 
@@ -89,6 +95,10 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
         core_user_guid = data.get('inspector_guid')
         inspector_id = None
 
+        mine = Mine.find_by_mine_guid(mine_guid)
+        if mine is None:
+            raise NotFound('Mine')
+
         if core_user_guid:
             core_user = CoreUser.find_by_core_user_guid(core_user_guid)
             if not core_user:
@@ -96,19 +106,31 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
 
             inspector_id = core_user.core_user_id
 
+        # A manual check to prevent a stack trace dump on a foreign key /
+        # constraint error because global error handling doesn't currently work
+        # with these errors
+        variance_application_status_code = data.get('variance_application_status_code') or 'REV'
+        issue_date = data.get('issue_date')
+        expiry_date = data.get('expiry_date')
+        Variance.validate_status_with_other_values(
+            status=variance_application_status_code,
+            issue=issue_date,
+            expiry=expiry_date,
+            inspector=inspector_id)
+
         variance = Variance.create(
             compliance_article_id=compliance_article_id,
             mine_guid=mine_guid,
             received_date=received_date,
             # Optional fields
-            variance_application_status_code=data.get('variance_application_status_code'),
+            variance_application_status_code=variance_application_status_code,
             applicant_guid=data.get('applicant_guid'),
             ohsc_ind=data.get('ohsc_ind'),
             union_ind=data.get('union_ind'),
             inspector_id=inspector_id,
             note=data.get('note'),
-            issue_date=data.get('issue_date'),
-            expiry_date=data.get('expiry_date'))
+            issue_date=issue_date,
+            expiry_date=expiry_date)
 
         if not variance:
             raise BadRequest('Error: Failed to create variance')
