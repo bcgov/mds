@@ -17,7 +17,8 @@ const propTypes = {
 export const ViewVarianceModal = (props) => {
   const isApproved =
     props.variance.variance_application_status_code === Strings.VARIANCE_APPROVED_CODE;
-  const isOverdue = Date.parse(props.variance.expiry_date) < new Date();
+  const isOverdue =
+    props.variance.expiry_date && Date.parse(props.variance.expiry_date) < new Date();
   return (
     <div>
       <div className="inline-flex between block-tablet">
