@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
-import { Row, Col } from "antd";
 import { Link } from "react-router-dom";
 import { getUserInfo } from "@/selectors/authenticationSelectors";
 import { getUserMineInfo } from "@/selectors/userMineSelectors";
@@ -19,8 +18,6 @@ const propTypes = {
   userMineInfo: CustomPropTypes.userMines.isRequired,
 };
 
-// This file is anticipated to use state
-// eslint-disable-next-line react/prefer-stateless-function
 export class UserDashboard extends Component {
   state = { isLoaded: false };
 
@@ -36,9 +33,8 @@ export class UserDashboard extends Component {
     return (
       <div className="user-dashboard-padding">
         {mines && mines.length > 0 && (
-          <Row gutter={16}>
-            <Col xs={1} sm={1} md={2} lg={4} />
-            <Col xs={22} sm={22} md={14} lg={12}>
+          <div className="inline-flex between block-tablet">
+            <div>
               <div>
                 <h1 className="user-title"> Welcome, {this.props.userInfo.preferred_username}.</h1>
                 <p className="large-padding-bot">
@@ -56,14 +52,14 @@ export class UserDashboard extends Component {
               </ul>
               <p className="large-padding-top">
                 Don&#39;t see the mine you are looking for? Contact{" "}
-                <a href="mailto:MDS@gov.bc.ca">MDS@gov.bc.ca</a> for assistance.
+                <a className="underline" href="mailto:MDS@gov.bc.ca">
+                  mds@gov.bc.ca
+                </a>{" "}
+                for assistance.
               </p>
-            </Col>
-            <Col xs={22} sm={22} md={6} lg={4}>
-              <QuestionSidebar />
-            </Col>
-            <Col xs={1} sm={1} md={2} lg={4} />
-          </Row>
+            </div>
+            <QuestionSidebar />
+          </div>
         )}
         {mines && mines.length === 0 && <NullScreen type="no-mines" />}
       </div>

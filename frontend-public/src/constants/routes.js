@@ -1,6 +1,7 @@
-import LandingPage from "@/components/LandingPage";
+import LandingPage from "@/components/landingPage/LandingPage";
 import UserDashboard from "@/components/dashboard/UserDashboard";
 import Reports from "@/components/dashboard/mine/reports/Reports";
+import Variances from "@/components/dashboard/mine/variances/Variances";
 import MineDashboard from "@/components/dashboard/mine/MineDashboard";
 import ReturnPage from "@/components/ReturnPage";
 
@@ -28,7 +29,7 @@ export const MINE_DASHBOARD = {
 export const VARIANCES = {
   route: "/dashboard/mine/:id/variances",
   dynamicRoute: (id) => `/dashboard/mine/${id}/variances`,
-  component: Reports,
+  component: Variances,
 };
 
 export const REPORTS = {

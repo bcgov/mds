@@ -7,20 +7,16 @@ import * as varianceActions from "@/actions/varianceActions";
 import * as API from "@/constants/API";
 import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
-import CustomAxios from "@/customAxios";
+import CustomAxios from "@/utils/customAxios";
 
 export const createVariance = ({ mineGuid }, payload) => (dispatch) => {
-  const message =
-    payload.variance_application_status_code === Strings.VARIANCE_APPLICATION_CODE
-      ? "Successfully applied for a new variance"
-      : "Successfully added an approved variance";
   dispatch(request(reducerTypes.CREATE_MINE_VARIANCE));
   dispatch(showLoading());
   return CustomAxios()
     .post(ENVIRONMENT.apiUrl + API.VARIANCES(mineGuid), payload, createRequestHeader())
     .then((response) => {
       dispatch(hideLoading());
-      notification.success({ message, duration: 10 });
+      notification.success({ message: "Successfully applied for a new variance", duration: 10 });
       dispatch(success(reducerTypes.CREATE_MINE_VARIANCE));
       return response;
     })
@@ -46,7 +42,7 @@ export const updateVariance = ({ mineGuid, varianceGuid, codeLabel }, payload) =
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchVariancesByMine = ({ mineGuid }) => (dispatch) => {
+export const fetchVariancesByMine = (mineGuid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_VARIANCES));
   dispatch(showLoading());
   return CustomAxios(Strings.ERROR)
@@ -95,4 +91,26 @@ export const removeDocumentFromVariance = ({ mineGuid, varianceGuid, mineDocumen
     })
     .catch(() => dispatch(error(reducerTypes.REMOVE_DOCUMENT_FROM_VARIANCE)))
     .finally(() => dispatch(hideLoading()));
+};
+
+export const fetchMineComplianceCodes = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_COMPLIANCE_CODES));
+  return CustomAxios()
+    .get(ENVIRONMENT.apiUrl + API.COMPLIANCE_CODES, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_COMPLIANCE_CODES));
+      dispatch(varianceActions.storeComplianceCodes(response.data));
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_COMPLIANCE_CODES)));
+};
+
+export const fetchVarianceStatusOptions = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_VARIANCE_STATUS_OPTIONS));
+  return CustomAxios()
+    .get(`${ENVIRONMENT.apiUrl + API.VARIANCE_STATUS_CODES}`, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_VARIANCE_STATUS_OPTIONS));
+      dispatch(varianceActions.storeVarianceStatusOptions(response.data));
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_VARIANCE_STATUS_OPTIONS)));
 };

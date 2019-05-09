@@ -44,7 +44,7 @@ class App extends Component {
               <Routes />
               <ModalWrapper />
               <BackTop>
-                <Button type="primary">
+                <Button type="primary" style={{ coloe: "yellow" }}>
                   <Icon type="arrow-up" theme="outlined" />
                 </Button>
               </BackTop>

@@ -3,9 +3,7 @@ import moment from "moment";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
-import { Row, Col } from "antd";
 import { find } from "lodash";
-
 import { getMine } from "@/selectors/userMineSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import Loading from "@/components/common/Loading";
@@ -89,23 +87,16 @@ export class Reports extends Component {
       <div className="mine-info-padding">
         {this.props.mine && (
           <div>
-            <Row>
-              <Col xs={22} sm={22} md={14} lg={12}>
-                <h1 className="mine-title">{this.props.mine.mine_name}</h1>
-                <p>Mine No. {this.props.mine.mine_no}</p>
-              </Col>
-            </Row>
-            <Row>
-              <Col xs={22} sm={22} md={20} lg={16}>
-                <h2>2018 Reports</h2>
-                <br />
-                <MineReportTable
-                  mine={this.props.mine}
-                  openEditReportModal={this.openEditReportModal}
-                  handleEditReportSubmit={this.handleEditReportSubmit}
-                />
-              </Col>
-            </Row>
+            <h1 className="mine-title">{this.props.mine.mine_name}</h1>
+            <p>Mine No. {this.props.mine.mine_no}</p>
+
+            <h2>2018 Reports</h2>
+            <br />
+            <MineReportTable
+              mine={this.props.mine}
+              openEditReportModal={this.openEditReportModal}
+              handleEditReportSubmit={this.handleEditReportSubmit}
+            />
           </div>
         )}
       </div>

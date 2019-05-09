@@ -1,12 +1,21 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import QuestionSidebar from "@/components/common/QuestionsSidebar";
 import { Link } from "react-router-dom";
 import * as routes from "@/constants/routes";
+import { fetchMineRecordById } from "@/actionCreators/userDashboardActionCreator";
+import { getMine } from "@/selectors/userMineSelectors";
+import CustomPropTypes from "@/customPropTypes";
+import { SINGLE_DOCUMENT, DOCUMENTS } from "@/constants/assets";
+import Loading from "@/components/common/Loading";
 
 // import * as routes from "@/constants/routes";
 
 const propTypes = {
+  fetchMineRecordById: PropTypes.func.isRequired,
+  mine: CustomPropTypes.mine.isRequired,
   match: PropTypes.shape({
     params: {
       id: PropTypes.string,
@@ -14,28 +23,78 @@ const propTypes = {
   }).isRequired,
 };
 
-// This file is anticipated to use state
-// eslint-disable-next-line react/prefer-stateless-function
 export class MineDashboard extends Component {
-  componentDidMount() {}
+  state = { isLoaded: false };
+
+  componentDidMount() {
+    const { id } = this.props.match.params;
+    this.props.fetchMineRecordById(id).then(() => {
+      this.setState({ isLoaded: true });
+    });
+  }
+
+  renderLinkCards = (id) => (
+    <div className="inline-flex flex-start">
+      <div>
+        <Link to={routes.REPORTS.dynamicRoute(id)}>
+          <div className="link-container">
+            <div className="link-container--content">
+              <img src={DOCUMENTS} alt="document" />
+              <h4>Reporting</h4>
+            </div>
+          </div>
+        </Link>
+      </div>
+      <div>
+        <Link to={routes.VARIANCES.dynamicRoute(id)}>
+          <div className="link-container">
+            <div className="link-container--content">
+              <img src={SINGLE_DOCUMENT} alt="document" />
+              <h4>Variances</h4>
+            </div>
+          </div>
+        </Link>
+      </div>
+    </div>
+  );
 
   render() {
     const { id } = this.props.match.params;
     return (
       <div className="user-dashboard-padding">
-        <h1> this page is a mess</h1>
-        <div>
-          <Link to={routes.REPORTS.dynamicRoute(id)}>Reporting</Link>
-        </div>
-        <div>
-          <Link to={routes.VARIANCES.dynamicRoute(id)}>Variances</Link>
-        </div>
-        <QuestionSidebar />
+        {this.state.isLoaded ? (
+          <div className="inline-flex between block-tablet">
+            <div>
+              <h1 className="mine-title">{this.props.mine.mine_name}</h1>
+              <p>Mine No. {this.props.mine.mine_no}</p>
+              <br />
+              {this.renderLinkCards(id)}
+            </div>
+            <QuestionSidebar />
+          </div>
+        ) : (
+          <Loading />
+        )}
       </div>
     );
   }
 }
 
+const mapStateToProps = (state) => ({
+  mine: getMine(state),
+});
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      fetchMineRecordById,
+    },
+    dispatch
+  );
+
 MineDashboard.propTypes = propTypes;
 
-export default MineDashboard;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MineDashboard);

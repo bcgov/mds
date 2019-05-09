@@ -1,20 +1,26 @@
 body {
   font-family: $default-font;
   width: 100vw;
+  background-color: $pure-white;
 }
 
 .layout {
+  background-color: $pure-white;
   width: 100vw;
   min-height: 100vh;
 }
 
 .content {
-  width: 60vw;
-  max-height: 100%;
-  margin-top: 70px;
-  margin-bottom: $default-margin-lg;
+  padding: 60px 0;
+  width: 80vw;
+  min-height: 100%;
   margin: auto;
   overflow: initial;
+
+  @include mobile {
+    width: 100vw;
+    margin: 10px;
+  }
 }
 
 .center {
@@ -23,10 +29,6 @@ body {
 
 .right {
   text-align: right;
-}
-
-.float-right {
-  float: right;
 }
 
 .left {
@@ -47,6 +49,16 @@ body {
 
 .inline-flex {
   @include flex;
+}
+
+.block-tablet {
+  @include tablet {
+    display: block;
+  }
+}
+
+.flex-start {
+  justify-content: flex-start;
 }
 
 .flex-center {
