@@ -5,7 +5,6 @@ from datetime import datetime
 from flask import request, current_app
 from flask_restplus import Resource, reqparse, inputs
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
-from sqlalchemy.orm import Session
 from werkzeug.exceptions import BadRequest, NotFound
 
 from ...status.models.mine_status import MineStatus
@@ -101,8 +100,6 @@ class MineListResource(Resource, UserMixin):
 
         paginated_mine_query, pagination_details = self.apply_filter_and_search(request.args)
         mines = paginated_mine_query.all()
-        print(pagination_details)
-        print(len(mines))
         return {
             'mines': mines,
             'current_page': pagination_details.page_number,
@@ -164,7 +161,6 @@ class MineListResource(Resource, UserMixin):
         major_mine_filter_term = args.get('major', None, type=str)
         tsf_filter_term = args.get('tsf', None, type=str)
         # Base query:
-        session = Session()
         mines_query = Mine.query
         # Filter by search_term if provided
         if search_term:
