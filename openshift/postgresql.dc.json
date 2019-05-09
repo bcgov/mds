@@ -253,7 +253,7 @@
         },
         "strategy": {
           "type": "Recreate",
-          "rollingParams": {
+          "recreateParams": {
             "post": {
               "execNewPod": {
                 "command": [
