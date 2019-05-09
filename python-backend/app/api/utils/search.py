@@ -24,8 +24,9 @@ search_targets = {
     'permit': ('Permits', 'permit_guid', Permit, [Permit.permit_no], False, 'permit_no'),
     'mine_documents': ('Mine Documents', 'mine_document_guid', MineDocument,
                        [MineDocument.document_name], False, 'document_name'),
-    'permit_documents': ('Permit Documents', 'document_guid', PermitAmendmentDocument,
-                         [PermitAmendmentDocument.document_name], False, 'document_name')
+    'permit_documents':
+    ('Permit Documents', 'permit_amendment_document_guid', PermitAmendmentDocument,
+     [PermitAmendmentDocument.document_name], False, 'document_name')
 }
 
 

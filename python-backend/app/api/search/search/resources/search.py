@@ -46,67 +46,55 @@ class SearchResource(Resource, UserMixin):
         search_terms = reg_exp.findall(search_term)
         search_terms = [term.replace('"', '') for term in search_terms]
 
-        with ThreadPoolExecutor(max_workers=50) as executor:
-            task_list = []
+        for type, type_config in search_targets.items():
+            type_results = []
+            comparator = type_config[1]
+            model = type_config[2]
+            columns = type_config[3]
+            has_deleted_ind = type_config[4]
+            for term in search_terms:
+                term_results = []
 
-            for type, type_config in search_targets.items():
-                type_results = []
-                for term in search_terms:
-                    term_results = []
-                    task_list.append(
-                        executor.submit(execute_search, app, term_results, term, type_config[0],
-                                        type_config[1], type_config[2], type_config[3],
-                                        type_config[4]))
-                    for task in as_completed(task_list):
-                        try:
-                            data = task.result()
-                        except Exception as exc:
-                            current_app.logger.error(
-                                f'generated an exception: {exc} with search term - {term}')
+                columns_for_exact = [column.ilike(term) for column in columns]
+                columns_for_starts = [column.ilike(f'{term}%') for column in columns]
+                columns_for_contains = [column.ilike(f'%{term}%') for column in columns]
 
-                    type_results += term_results
+                exact = db.session.query(model).filter(or_(*columns_for_exact))
+                starts_with = db.session.query(model).filter(or_(*columns_for_starts))
+                contains = db.session.query(model).filter(or_(*columns_for_contains))
+                #fuzzy? Soundex?
 
-                type_results.sort(key=lambda x: x.score, reverse=True)
-                all_search_results[type] = type_results
+                if has_deleted_ind:
+                    exact = exact.filter_by(deleted_ind=False)
+                    starts_with = starts_with.filter_by(deleted_ind=False)
+                    contains = contains.filter_by(deleted_ind=False)
+
+                contains = contains.order_by(desc(model.create_timestamp)).limit(25).all()
+                starts_with = starts_with.order_by(desc(model.create_timestamp)).limit(25).all()
+                exact = exact.order_by(desc(model.create_timestamp)).limit(50).all()
+
+                for item in exact:
+                    term_results.append(SearchResult(500, type, item))
+
+                for item in starts_with:
+                    in_list = False
+                    for item2 in term_results:
+                        if getattr(item, comparator) == getattr(item2.result, comparator):
+                            in_list = True
+                    if not in_list:
+                        term_results.append(SearchResult(75, type, item))
+
+                for item in contains:
+                    in_list = False
+                    for item2 in term_results:
+                        if getattr(item, comparator) == getattr(item2.result, comparator):
+                            in_list = True
+                    if not in_list:
+                        term_results.append(SearchResult(25, type, item))
+
+                type_results += term_results
+
+            type_results.sort(key=lambda x: x.score, reverse=True)
+            all_search_results[type] = type_results
 
         return {'search_terms': search_terms, 'search_results': all_search_results}
-
-
-def execute_search(app, search_results, term, type, comparator, model, columns, has_deleted_ind):
-    with app.app_context():
-        columns_for_exact = [column.ilike(term) for column in columns]
-        columns_for_starts = [column.ilike(f'{term}%') for column in columns]
-        columns_for_contains = [column.ilike(f'%{term}%') for column in columns]
-
-        exact = db.session.query(model).filter(or_(*columns_for_exact))
-        starts_with = db.session.query(model).filter(or_(*columns_for_starts))
-        contains = db.session.query(model).filter(or_(*columns_for_contains))
-        #fuzzy? Soundex?
-
-        if has_deleted_ind:
-            exact = exact.filter_by(deleted_ind=False)
-            starts_with = starts_with.filter_by(deleted_ind=False)
-            contains = contains.filter_by(deleted_ind=False)
-
-        contains = contains.order_by(desc(model.create_timestamp)).limit(25).all()
-        starts_with = starts_with.order_by(desc(model.create_timestamp)).limit(25).all()
-        exact = exact.order_by(desc(model.create_timestamp)).limit(50).all()
-
-        for item in exact:
-            search_results.append(SearchResult(500, type, item))
-
-        for item in starts_with:
-            in_list = False
-            for item2 in search_results:
-                if getattr(item, comparator) == getattr(item2.result, comparator):
-                    in_list = True
-            if not in_list:
-                search_results.append(SearchResult(75, type, item))
-
-        for item in contains:
-            in_list = False
-            for item2 in search_results:
-                if getattr(item, comparator) == getattr(item2.result, comparator):
-                    in_list = True
-            if not in_list:
-                search_results.append(SearchResult(25, type, item))

@@ -41,17 +41,20 @@ PARTY_SEARCH_MODEL = api.model(
         'mine_party_appt': fields.List(fields.Nested(MINE_PARTY_APPT_MODEL)),
     })
 
-MINE_DOCUMENT_SEARCH_MODEL = api.model('MineDocument', {
-    'mine_guid': fields.String,
-    'mine_document_guid': fields.String,
-    'document_name': fields.String,
-})
+MINE_DOCUMENT_SEARCH_MODEL = api.model(
+    'MineDocument', {
+        'mine_guid': fields.String,
+        'mine_document_guid': fields.String,
+        'document_name': fields.String,
+        'mine_name': fields.String,
+    })
 
 PERMIT_DOCUMENT_SEARCH_MODEL = api.model(
     'PermitDocument', {
         'mine_guid': fields.String,
         'permit_amendment_document_guid': fields.String,
-        'document_name': fields.String
+        'document_name': fields.String,
+        'mine_name': fields.String,
     })
 
 MINE_SEARCH_RESULT_MODEL = api.inherit('MineSearchResult', SEARCH_RESULT_MODEL, {
