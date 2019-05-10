@@ -273,18 +273,6 @@
         },
         "strategy": {
           "type": "Recreate",
-          "recreateParams": {
-            "post": {
-              "failurePolicy": "Retry",
-              "execNewPod": {
-                "command": [
-                  "/bin/sh",
-                  "-c",
-                  "sleep 10 && psql -h 127.0.0.1 -U $POSTGRESQL_USER -q -d $POSTGRESQL_DATABASE -c 'CREATE USER nris' && sleep 60"
-                ]
-              }
-            }
-          },
           "maxSurge": "50%",
           "maxUnavailable": 0
         },
