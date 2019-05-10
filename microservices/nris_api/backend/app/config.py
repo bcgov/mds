@@ -12,7 +12,8 @@ class Config(object):
     DB_PASS = os.environ.get('DB_PASS', 'pass')
     DB_PORT = os.environ.get('DB_PORT', 5432)
     DB_NAME = os.environ.get('DB_NAME', 'db_name')
-    DB_URL = f"postgres://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    #DB_URL = f"postgres://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    DB_URL = f"postgres://{DB_USER}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
     SQLALCHEMY_DATABASE_URI = DB_URL
     SQLALCHEMY_TRACK_MODIFICATIONS = True
