@@ -27,7 +27,7 @@ class Permit(AuditMixin, Base):
         order_by='desc(PermitAmendment.issue_date), desc(PermitAmendment.permit_amendment_id)',
         lazy='select')
 
-    mine_party_appointment = db.relationship('MinePartyAppointment', lazy='select')
+    mine_party_appointment = db.relationship('MinePartyAppointment', lazy='select', uselist=False)
     permitee = association_proxy('mine_party_appointment', 'party.name')
     mine_name = association_proxy('mine', 'mine_name')
 

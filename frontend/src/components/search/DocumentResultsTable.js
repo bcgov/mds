@@ -27,7 +27,7 @@ export const DocumentResultsTable = (props) => {
           <Col span={24}>
             <a
               role="link"
-              key={record.mine_document_guid}
+              key={record.mine_document_guid || record.permit_amendment_document_guid}
               onClick={() =>
                 downloadFileFromDocumentManager(record.document_manager_guid, record.document_name)
               }
@@ -43,6 +43,10 @@ export const DocumentResultsTable = (props) => {
               </p>
             </a>
           </Col>
+        </Row>,
+        <Row style={{ paddingTop: "5px" }}>
+          <Col span={3}>Mine</Col>
+          <Col span={9}>{record.mine_name}</Col>
         </Row>,
       ],
     },

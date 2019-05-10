@@ -24,7 +24,7 @@ export const PermitResultsTable = (props) => {
       dataIndex: "permit_guid",
       key: "permit_guid",
       render: (text, record) => [
-        <Row style={{ paddingBottom: "15px" }}>
+        <Row style={{ paddingBottom: "5px" }}>
           <Col span={12}>
             <Link to={router.MINE_SUMMARY.dynamicRoute(record.mine_guid, "permit")}>
               <p style={{ fontSize: "22px", color: "inherit" }}>
@@ -38,18 +38,10 @@ export const PermitResultsTable = (props) => {
           <Col span={6}>
             <Highlight search={props.highlightRegex}>{record.permitee}</Highlight>
           </Col>
-          <Col span={4}>Permit No.</Col>
-          <Col span={10}>
-            {record.mine_permit.map((permit) => [<span>{permit.permit_no}</span>, <br />])}
-          </Col>
         </Row>,
-        <Row style={{ paddingTop: "5px", paddingBottom: "15px" }}>
-          <Col span={4}>Region</Col>
-          <Col span={6}>{record.mine_region}</Col>
-          <Col span={4}>Status</Col>
-          <Col span={10}>
-            {record.mine_status[0] && record.mine_status[0].status_labels.join(", ")}
-          </Col>
+        <Row style={{ paddingTop: "5px" }}>
+          <Col span={4}>Mine</Col>
+          <Col span={10}>{record.mine_name}</Col>
         </Row>,
       ],
     },
