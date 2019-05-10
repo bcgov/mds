@@ -43,11 +43,18 @@
       "value": "mds"
     },
     {
-      "description": "Admin Username for PostgreSQL user that will be used for accessing the database.",
-      "displayName": "PostgreSQL Admin Connection Username",
+      "description": "Username for nris_api PostgreSQL user that will be used for accessing the database.",
+      "displayName": "PostgreSQL NRIS_API Connection Username",
       "name": "POSTGRESQL_ADMIN_USER",
       "required": true,
       "value": "postgres"
+    },
+    {
+      "description": "Admin Username for PostgreSQL user that will be used for accessing the database.",
+      "displayName": "PostgreSQL Admin Connection Username",
+      "name": "POSTGRESQL_NRIS_USER",
+      "required": true,
+      "value": "nris"
     },
     {
       "description": "Password for the PostgreSQL connection user.",
@@ -63,6 +70,14 @@
       "from": "[a-zA-Z0-9]{16}",
       "generate": "expression",
       "name": "POSTGRESQL_ADMIN_PASSWORD",
+      "required": true
+    },
+    {
+      "description": "Password for nris_api PostgreSQL user that will be used for accessing the database.",
+      "displayName": "PostgreSQL NRIS_API Connection Password",
+      "from": "[a-zA-Z0-9]{16}",
+      "generate": "expression",
+      "name": "POSTGRESQL_NRIS_PASSWORD",
       "required": true
     },
     {
