@@ -43,6 +43,7 @@ MINE_SEARCH_MODEL = api.model(
 
 PARTY_SEARCH_MODEL = api.model(
     'Party', {
+        'party_guid': fields.String,
         'name': fields.String,
         'email': fields.String,
         'phone_no': fields.String,
@@ -55,6 +56,7 @@ MINE_DOCUMENT_SEARCH_MODEL = api.model(
         'mine_document_guid': fields.String,
         'document_name': fields.String,
         'mine_name': fields.String,
+        'document_manager_guid': fields.String,
     })
 
 PERMIT_DOCUMENT_SEARCH_MODEL = api.model(
@@ -63,6 +65,7 @@ PERMIT_DOCUMENT_SEARCH_MODEL = api.model(
         'permit_amendment_document_guid': fields.String,
         'document_name': fields.String,
         'mine_name': fields.String,
+        'document_manager_guid': fields.String,
     })
 
 MINE_SEARCH_RESULT_MODEL = api.inherit('MineSearchResult', SEARCH_RESULT_MODEL, {
