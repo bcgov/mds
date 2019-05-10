@@ -12,7 +12,7 @@ const propTypes = {
 };
 
 const staticMenuItems = [
-  <Menu.ItemGroup title="Search for" />,
+  <Menu.ItemGroup title="Lookup" />,
   <Menu.Item key="dashboard/mines">
     <p>
       <img
@@ -42,7 +42,7 @@ export const SearchBarDropdown = (props) => (
     onMouseDown={(e) => {
       e.target.click(e);
     }}
-    onClick={({ key }) => props.history.push(`/search?q=${key}`)}
+    onClick={({ key }) => props.history.push(key)}
     selectable={false}
   >
     {props.searchTerm.length
@@ -53,7 +53,7 @@ export const SearchBarDropdown = (props) => (
             </Menu.Item>
           )),
           <Menu.Divider />,
-          <Menu.Item key={props.searchTerm}>
+          <Menu.Item key={`/search?q=${props.searchTerm}`}>
             <h6>{`See all results for "${props.searchTerm}"`}</h6>
           </Menu.Item>,
         ]
@@ -61,9 +61,9 @@ export const SearchBarDropdown = (props) => (
           staticMenuItems,
           props.searchTermHistory.length && [
             <Menu.Divider />,
-            <Menu.ItemGroup title="Recent" />,
+            <Menu.ItemGroup title="Recent searches" />,
             props.searchTermHistory.map((pastSearchTerm) => (
-              <Menu.Item key={pastSearchTerm}>
+              <Menu.Item key={`/search?q=${pastSearchTerm}`}>
                 <p style={{ fontStyle: "italic" }}>
                   <Icon type="search" /> {pastSearchTerm}
                 </p>
