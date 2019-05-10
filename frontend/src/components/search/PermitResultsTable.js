@@ -25,7 +25,7 @@ export const PermitResultsTable = (props) => {
       key: "permit_guid",
       render: (text, record) => [
         <Row style={{ paddingBottom: "5px" }}>
-          <Col span={12}>
+          <Col span={24}>
             <Link to={router.MINE_SUMMARY.dynamicRoute(record.mine_guid, "permit")}>
               <p style={{ fontSize: "22px", color: "inherit" }}>
                 <Highlight search={props.highlightRegex}>{record.permit_no}</Highlight>
@@ -34,21 +34,29 @@ export const PermitResultsTable = (props) => {
           </Col>
         </Row>,
         <Row style={{ paddingTop: "5px" }}>
-          <Col span={4}>Permitee</Col>
-          <Col span={6}>
-            <Highlight search={props.highlightRegex}>{record.permitee}</Highlight>
+          <Col xs={24} md={6}>
+            <p>Permitee:</p>
+          </Col>
+          <Col xs={24} md={18}>
+            <p>
+              <Highlight search={props.highlightRegex}>{record.permitee}</Highlight>
+            </p>
           </Col>
         </Row>,
         <Row style={{ paddingTop: "5px" }}>
-          <Col span={4}>Mine</Col>
-          <Col span={10}>{record.mine_name}</Col>
+          <Col xs={24} md={8}>
+            <p>Mine:</p>
+          </Col>
+          <Col xs={24} md={16}>
+            <p>{record.mine_name}</p>
+          </Col>
         </Row>,
       ],
     },
   ];
 
   return (
-    <Col md={12} sm={24} style={{ padding: "30px", paddingBottom: "60px" }}>
+    <div>
       <h2>{props.header}</h2>
       <Divider />
       <Table
@@ -59,7 +67,7 @@ export const PermitResultsTable = (props) => {
         columns={columns}
         dataSource={props.searchResults}
       />
-    </Col>
+    </div>
   );
 };
 

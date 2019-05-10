@@ -3,7 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import queryString from "query-string";
-import { Row } from "antd";
+import { Row, Col } from "antd";
 import { getSearchResults, getSearchTerms } from "@/selectors/searchSelectors";
 import { MineResultsTable } from "@/components/search/MineResultsTable";
 import { PermitResultsTable } from "@/components/search/PermitResultsTable";
@@ -33,39 +33,47 @@ const renderSearchResultGroup = (group, searchTerms, partyRelationshipTypeHash) 
   const highlightRegex = RegExp(`${searchTerms.join("|")}`, "i");
   if (group.type === "mine") {
     return (
-      <MineResultsTable
-        header="Mines"
-        highlightRegex={highlightRegex}
-        searchResults={group.results}
-      />
+      <Col sm={24} lg={12} style={{ padding: "30px", paddingBottom: "60px" }}>
+        <MineResultsTable
+          header="Mines"
+          highlightRegex={highlightRegex}
+          searchResults={group.results}
+        />
+      </Col>
     );
   }
   if (group.type === "permit") {
     return (
-      <PermitResultsTable
-        header="Permits"
-        highlightRegex={highlightRegex}
-        searchResults={group.results}
-      />
+      <Col sm={24} lg={12} style={{ padding: "30px", paddingBottom: "60px" }}>
+        <PermitResultsTable
+          header="Permits"
+          highlightRegex={highlightRegex}
+          searchResults={group.results}
+        />
+      </Col>
     );
   }
   if (group.type === "party") {
     return (
-      <ContactResultsTable
-        header="Contacts"
-        highlightRegex={highlightRegex}
-        searchResults={group.results}
-        partyRelationshipTypeHash={partyRelationshipTypeHash}
-      />
+      <Col sm={24} lg={12} style={{ padding: "30px", paddingBottom: "60px" }}>
+        <ContactResultsTable
+          header="Contacts"
+          highlightRegex={highlightRegex}
+          searchResults={group.results}
+          partyRelationshipTypeHash={partyRelationshipTypeHash}
+        />
+      </Col>
     );
   }
   if (group.type === "permit_documents" || group.type === "mine_documents") {
     return (
-      <DocumentResultsTable
-        header={group.type === "permit_documents" ? "Permit Documents" : "Mine Documents"}
-        highlightRegex={highlightRegex}
-        searchResults={group.results}
-      />
+      <Col sm={24} lg={12} style={{ padding: "30px", paddingBottom: "60px" }}>
+        <DocumentResultsTable
+          header={group.type === "permit_documents" ? "Permit Documents" : "Mine Documents"}
+          highlightRegex={highlightRegex}
+          searchResults={group.results}
+        />
+      </Col>
     );
   }
   return <div />;
@@ -146,7 +154,7 @@ export class SearchResults extends Component {
                     <h2>No Results Found</h2>,
                     <p>Please try another search.</p>,
                   ]}
-                  <Row gutter={48}>
+                  <Row gutter={10}>
                     {groupedSearchResults.map((group) =>
                       renderSearchResultGroup(
                         group,
