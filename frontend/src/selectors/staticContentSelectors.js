@@ -16,6 +16,7 @@ export const {
   getApplicationStatusOptions,
   getComplianceCodes,
   getIncidentFollowupActionOptions,
+  getVarianceStatusOptions,
 } = staticContentReducer;
 
 // removes all expired compliance codes from the array
@@ -151,4 +152,14 @@ export const getMultiSelectComplianceCodes = createSelector(
       const composedLabel = formatComplianceCodeValueOrLabel(code, true);
       return { value: composedValue, label: composedLabel };
     })
+);
+
+export const getDropdownVarianceStatusOptions = createSelector(
+  [getVarianceStatusOptions],
+  (options) => createDropDownList(options, "description", "variance_application_status_code")
+);
+
+export const getVarianceStatusOptionsHash = createSelector(
+  [getDropdownVarianceStatusOptions],
+  createLabelHash
 );

@@ -37,8 +37,8 @@ def test_download_file_no_token(test_client, db_session):
     get_data = json.loads(get_resp.data.decode())
 
     assert get_resp.status_code == 400
-    assert get_data['error']['status'] == 400
-    assert get_data['error']['message'] is not ''
+    assert get_data['status'] == 400
+    assert get_data['message'] is not ''
 
 
 def test_download_file_invalid_token(test_client, db_session):
@@ -46,5 +46,5 @@ def test_download_file_invalid_token(test_client, db_session):
     get_data = json.loads(get_resp.data.decode())
 
     assert get_resp.status_code == 400
-    assert get_data['error']['status'] == 400
-    assert get_data['error']['message'] is not ''
+    assert get_data['status'] == 400
+    assert get_data['message'] is not ''

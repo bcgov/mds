@@ -98,8 +98,9 @@ export class Dashboard extends Component {
     this.handleMineSearchDebounced = debounce(this.handleMineSearch, 1000);
     this.state = {
       mineList: false,
-      lat: String.DEFAULT_LAT,
-      long: String.DEFAULT_LONG,
+      lat: Number(String.DEFAULT_LAT),
+      long: Number(String.DEFAULT_LONG),
+      zoom: String.DEFAULT_ZOOM,
       showCoordinates: false,
       mineName: null,
       params: {
@@ -153,7 +154,12 @@ export class Dashboard extends Component {
 
   componentWillUnmount() {
     this.handleMineSearchDebounced.cancel();
-    this.setState({ params: {} });
+    this.setState({
+      params: {},
+      lat: Number(String.DEFAULT_LAT),
+      long: Number(String.DEFAULT_LONG),
+      zoom: String.DEFAULT_ZOOM,
+    });
   }
 
   renderDataFromURL = (params) => {
@@ -165,6 +171,10 @@ export class Dashboard extends Component {
       major,
       tsf,
       search,
+      lat,
+      long,
+      zoom,
+      mineName,
       ...remainingParams
     } = queryString.parse(params);
     const format = (param) => (param ? param.split(",").filter((x) => x) : []);
@@ -189,6 +199,17 @@ export class Dashboard extends Component {
         this.setState({ mineList: true });
       });
     }
+
+    if (format(lat)[0] && format(long)[0]) {
+      this.setState({
+        lat: Number(format(lat)[0]),
+        long: Number(format(long)[0]),
+        zoom: format(zoom)[0] ? Number(format(zoom)[0]) : String.DEFAULT_ZOOM,
+        showCoordinates: true,
+        mineName: format(mineName)[0],
+      });
+      this.handleScroll("landing-page__content", 200);
+    }
   };
 
   onPageChange = (page, per_page) => {
@@ -209,50 +230,58 @@ export class Dashboard extends Component {
     if (typeof value === "string") {
       const newVal = value.split(",");
       if (newVal[0] && newVal[1]) {
-        this.setState({
-          lat: Number(newVal[1]),
-          long: Number(newVal[0]),
-          showCoordinates: true,
-          mineName: newVal[2],
-        });
-        // TODO: spent 4 hours looking for a solution to not hardcoding this scroll value. Need to find a dynamic way of scroling the screen to this location.
-        scroller.scrollTo("mapElement", {
-          duration: 1000,
-          smooth: true,
-          isDynamic: true,
-          offset: -60,
-        });
-        // window.scrollTo(0, this.mapRef.current.offsetTop);
+        this.props.history.push(
+          router.MINE_HOME_PAGE.mapRoute({
+            lat: newVal[1],
+            long: newVal[0],
+            zoom: String.HIGH_ZOOM,
+            mineName: newVal[2],
+          })
+        );
+        this.handleScroll("mapElement", -60);
       } else {
         this.setState({
-          lat: String.DEFAULT_LAT,
-          long: String.DEFAULT_LONG,
+          lat: Number(String.DEFAULT_LAT),
+          long: Number(String.DEFAULT_LONG),
+          zoom: String.DEFAULT_ZOOM,
           showCoordinates: false,
         });
         notification.error({ message: String.NO_COORDINATES, duration: 10 });
       }
     } else {
-      this.setState({
-        lat: Number(value.latitude),
-        long: Number(value.longitude),
-        showCoordinates: true,
-        mineName: null,
-      });
-      // window.scrollTo(0, this.mapRef.current.offsetTop);
-      scroller.scrollTo("mapElement", {
-        duration: 1000,
-        smooth: true,
-        isDynamic: true,
-        offset: -60,
-      });
+      this.props.history.push(
+        router.MINE_HOME_PAGE.mapRoute({
+          lat: value.latitude,
+          long: value.longitude,
+          zoom: String.HIGH_ZOOM,
+        })
+      );
+      this.handleScroll("mapElement", -60);
     }
+  };
+
+  handleScroll = (element, offset) => {
+    // FIXME: scroll dynamically instead of by a hardcoded value
+    scroller.scrollTo(element, {
+      duration: 1000,
+      smooth: true,
+      isDynamic: true,
+      offset,
+    });
   };
 
   handleTabChange = (key) => {
     const { page, per_page, search } = this.state.params;
-    this.setState({ mineList: false, showCoordinates: false, mineName: "" });
+    this.setState({
+      mineList: false,
+      showCoordinates: false,
+      mineName: "",
+      lat: Number(String.DEFAULT_LAT),
+      long: Number(String.DEFAULT_LONG),
+      zoom: String.DEFAULT_ZOOM,
+    });
     if (key === "map") {
-      this.props.history.push(router.MINE_HOME_PAGE.mapRoute(page, per_page, search));
+      this.props.history.push(router.MINE_HOME_PAGE.mapRoute());
     } else {
       this.props.history.push(router.MINE_HOME_PAGE.dynamicRoute({ page, per_page, search }));
     }
@@ -369,31 +398,34 @@ export class Dashboard extends Component {
                   <SearchCoordinatesForm onSubmit={this.handleCoordinateSearch} />
                 </Col>
               </div>
-              <div>
-                <div className="center center-mobile">
-                  {this.state.mineName && (
-                    <h2>
-                      Results for: <span className="p">{this.state.mineName}</span>
-                    </h2>
-                  )}
-                </div>
-                <div className="center">
-                  <div className="inline-flex evenly center-mobile">
-                    {this.state.showCoordinates && [
+              {this.state.showCoordinates && (
+                <div>
+                  <div className="center center-mobile">
+                    {this.state.mineName ? (
+                      <h2>
+                        Results for: <span className="p">{this.state.mineName}</span>
+                      </h2>
+                    ) : (
+                      <h2> Result for coordinate search:</h2>
+                    )}
+                  </div>
+                  <div className="center">
+                    <div className="inline-flex evenly center-mobile">
                       <h2>
                         Latitude: <span className="p">{this.state.lat}</span>
-                      </h2>,
+                      </h2>
                       <h2>
                         Longitude: <span className="p">{this.state.long}</span>
-                      </h2>,
-                    ]}
+                      </h2>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <Element name="mapElement" />
-              <div>
-                <MineMap {...this.state} />
-              </div>
+              )}
+              <Element name="mapElement">
+                <div>
+                  <MineMap {...this.state} />
+                </div>
+              </Element>
             </TabPane>
           </Tabs>
         </div>

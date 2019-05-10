@@ -10,6 +10,8 @@ export const NO_PREV_MINE_MANAGER = "No previous mine managers found";
 export const NO_PERMITTEE = "No assigned permittee";
 export const NO_PERMIT = "No permit information available";
 export const NO_VARIANCE = "No variance information available";
+export const NO_APPROVED_VARIANCE = "There are no approved variances";
+export const NO_VARIANCE_APPLICATIONS = "There are no pending variance applications";
 export const NO_APPLICATION = "No application information available";
 export const ADD_MINE_MANAGER = "Please add mine manager below";
 export const ADD_TENURE = "Please add tenure number below";
@@ -36,6 +38,8 @@ export const EMPTY_FIELD = "N/A";
 // default coordinates for center of BC
 export const DEFAULT_LAT = 53.7267;
 export const DEFAULT_LONG = -127.6476;
+export const DEFAULT_ZOOM = 6;
+export const HIGH_ZOOM = 14;
 
 // default url values
 export const DEFAULT_PAGE = "1";
@@ -45,3 +49,7 @@ export const DEFAULT_DASHBOARD_PARAMS = "?page=1&per_page=25";
 // mine types
 export const MAJOR_MINE = "Major mine";
 export const REGIONAL_MINE = "Regional mine";
+
+export const VARIANCE_APPLICATION_CODE = "REV";
+export const VARIANCE_APPROVED_CODE = "APP";
+export const VARIANCE_DENIED_CODE = "DEN";
