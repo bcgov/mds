@@ -8,34 +8,42 @@ const propTypes = {
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   searchTerm: PropTypes.string.isRequired,
   searchTermHistory: PropTypes.arrayOf(PropTypes.string).isRequired,
-  searchResults: PropTypes.arrayOf(PropTypes.any).isRequired,
+  searchBarResults: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
 const staticMenuItems = [
-  <Menu.ItemGroup title="Lookup" />,
-  <Menu.Item key="dashboard/mines">
-    <p>
-      <img
-        alt="Mine"
-        className="padding-small--right vertical-align-sm icon-svg-filter"
-        height="25px"
-        src={MINE}
-      />{" "}
-      Mines
-    </p>
-  </Menu.Item>,
-  <Menu.Item key="dashboard/contacts">
-    <p>
-      <img
-        alt="team"
-        className="padding-small--right vertical-align-sm icon-svg-filter"
-        height="25px"
-        src={TEAM}
-      />{" "}
-      Contacts
-    </p>
-  </Menu.Item>,
+  <Menu.ItemGroup title="Lookup">
+    <Menu.Item key="/dashboard/mines">
+      <p>
+        <img
+          alt="Mine"
+          className="padding-small--right vertical-align-sm icon-svg-filter"
+          height="25px"
+          src={MINE}
+        />{" "}
+        Mines
+      </p>
+    </Menu.Item>
+    ,
+    <Menu.Item key="/dashboard/contacts">
+      <p>
+        <img
+          alt="team"
+          className="padding-small--right vertical-align-sm icon-svg-filter"
+          height="25px"
+          src={TEAM}
+        />{" "}
+        Contacts
+      </p>
+    </Menu.Item>
+  </Menu.ItemGroup>,
 ];
+
+const URLFor = (item) =>
+  ({
+    Mines: `/dashboard/${item.result.id}/summary`,
+    Contacts: `/dashboard/${item.result.id}/profile`,
+  }[item.type]);
 
 export const SearchBarDropdown = (props) => (
   <Menu
@@ -45,11 +53,11 @@ export const SearchBarDropdown = (props) => (
     onClick={({ key }) => props.history.push(key)}
     selectable={false}
   >
-    {props.searchTerm.length
+    {props.searchTerm.length && props.searchBarResults.length
       ? [
-          props.searchResults.map((result) => (
-            <Menu.Item>
-              <p>{`${result.result.value || ""}`}</p>
+          props.searchBarResults.map((item) => (
+            <Menu.Item key={URLFor(item)}>
+              <p>{`${item.result.value || ""}`}</p>
             </Menu.Item>
           )),
           <Menu.Divider />,
@@ -61,14 +69,15 @@ export const SearchBarDropdown = (props) => (
           staticMenuItems,
           props.searchTermHistory.length && [
             <Menu.Divider />,
-            <Menu.ItemGroup title="Recent searches" />,
-            props.searchTermHistory.map((pastSearchTerm) => (
-              <Menu.Item key={`/search?q=${pastSearchTerm}`}>
-                <p style={{ fontStyle: "italic" }}>
-                  <Icon type="search" /> {pastSearchTerm}
-                </p>
-              </Menu.Item>
-            )),
+            <Menu.ItemGroup title="Recent searches">
+              {props.searchTermHistory.map((pastSearchTerm) => (
+                <Menu.Item key={`/search?q=${pastSearchTerm}`}>
+                  <p style={{ fontStyle: "italic" }}>
+                    <Icon type="search" /> {pastSearchTerm}
+                  </p>
+                </Menu.Item>
+              ))}
+            </Menu.ItemGroup>,
           ],
         ]}
   </Menu>

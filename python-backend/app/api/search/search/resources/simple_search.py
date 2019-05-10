@@ -16,7 +16,7 @@ from app.api.permits.permit.models.permit import Permit
 from app.api.documents.mines.models.mine_document import MineDocument
 from app.api.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from app.api.utils.access_decorators import requires_role_mine_view
-from app.api.utils.search import search_targets, SearchResult
+from app.api.utils.search import simple_search_targets, SearchResult
 from app.api.search.search_api_models import SIMPLE_SEARCH_RESULT_RETURN_MODEL
 
 
@@ -33,13 +33,12 @@ class SimpleSearchResource(Resource, UserMixin):
 
         reg_exp = regex.compile(r'\'.*?\' | ".*?" | \S+ ', regex.VERBOSE)
         search_terms = reg_exp.findall(search_term)
-        search_terms.append(search_term)
         search_terms = [term.replace('"', '') for term in search_terms]
 
         with ThreadPoolExecutor(max_workers=50) as executor:
             task_list = []
             for term in search_terms:
-                for type, type_config in search_targets.items():
+                for type, type_config in simple_search_targets.items():
                     task_list.append(
                         executor.submit(execute_simple_search, app, search_results, term,
                                         type_config[0], type_config[1], type_config[2],

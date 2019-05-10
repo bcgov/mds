@@ -39,7 +39,7 @@ export const fetchSearchBarResults = (searchTerm) => (dispatch) => {
 };
 
 export const clearSearchBarResults = () => (dispatch) => {
-  dispatch(clear(reducerTypes.CLEAR_SEARCH_RESULTS));
+  dispatch(clear(reducerTypes.CLEAR_SEARCH_BAR_RESULTS));
   dispatch(searchActions.clearSearchBarResults());
-  dispatch(success(reducerTypes.CLEAR_SEARCH_RESULTS));
+  dispatch(success(reducerTypes.CLEAR_SEARCH_BAR_RESULTS));
 };
