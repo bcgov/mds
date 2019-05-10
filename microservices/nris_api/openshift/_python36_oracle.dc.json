@@ -191,20 +191,25 @@
                     "valueFrom": {
                       "secretKeyRef": {
                         "name": "${DB_CONFIG_NAME}",
-                        "key": "database-user"
+                        "key": "database-nris-user"
                       }
                     }
                   },
                   {
                     "name": "DB_HOST",
-                    "value": "${DB_CONFIG_NAME}"
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DB_CONFIG_NAME}",
+                        "key": "database-host"
+                      }
+                    }
                   },
                   {
                     "name": "DB_PASS",
                     "valueFrom": {
                       "secretKeyRef": {
                         "name": "${DB_CONFIG_NAME}",
-                        "key": "database-password"
+                        "key": "database-nris-password"
                       }
                     }
                   },
