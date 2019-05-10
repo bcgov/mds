@@ -34,28 +34,40 @@ export const MineResultsTable = (props) => {
           </Col>
         </Row>,
         <Row style={{ paddingTop: "5px" }}>
-          <Col span={4}>Mine No.</Col>
-          <Col span={6}>
-            <Highlight search={props.highlightRegex}>{record.mine_no}</Highlight>
+          <Col xs={24} md={4}>
+            <p>Mine No.:</p>
           </Col>
-          <Col span={4}>Permit No.</Col>
-          <Col span={10}>
-            {record.mine_permit.map((permit) => [<span>{permit.permit_no}</span>, <br />])}
+          <Col xs={24} md={4}>
+            <p>
+              <Highlight search={props.highlightRegex}>{record.mine_no}</Highlight>
+            </p>
+          </Col>
+          <Col xs={24} md={4}>
+            <p>Permit No.:</p>
+          </Col>
+          <Col xs={24} md={12}>
+            <p>{record.mine_permit.map((permit) => [<span>{permit.permit_no}</span>, <br />])}</p>
           </Col>
         </Row>,
         <Row style={{ paddingTop: "5px", paddingBottom: "15px" }}>
-          <Col span={4}>Region</Col>
-          <Col span={6}>{record.mine_region}</Col>
-          <Col span={4}>Status</Col>
-          <Col span={10}>
-            {record.mine_status[0] && record.mine_status[0].status_labels.join(", ")}
+          <Col xs={24} md={4}>
+            <p>Region:</p>
+          </Col>
+          <Col xs={24} md={4}>
+            <p>{record.mine_region}</p>
+          </Col>
+          <Col xs={24} md={4}>
+            <p>Status:</p>
+          </Col>
+          <Col xs={24} md={12}>
+            <p>{record.mine_status[0] && record.mine_status[0].status_labels.join(", ")}</p>
           </Col>
         </Row>,
       ],
     },
   ];
   return (
-    <Col md={12} sm={24} style={{ padding: "30px", paddingBottom: "60px" }}>
+    <div>
       <h2>{props.header}</h2>
       <Divider />
       <Table
@@ -66,7 +78,7 @@ export const MineResultsTable = (props) => {
         columns={columns}
         dataSource={props.searchResults}
       />
-    </Col>
+    </div>
   );
 };
 

@@ -45,14 +45,18 @@ export const DocumentResultsTable = (props) => {
           </Col>
         </Row>,
         <Row style={{ paddingTop: "5px" }}>
-          <Col span={3}>Mine</Col>
-          <Col span={9}>{record.mine_name}</Col>
+          <Col xs={24} md={6}>
+            <p>Mine:</p>
+          </Col>
+          <Col xs={24} md={18}>
+            <p>{record.mine_name}</p>
+          </Col>
         </Row>,
       ],
     },
   ];
   return (
-    <Col md={12} sm={24} style={{ padding: "30px", paddingBottom: "60px" }}>
+    <div>
       <h2>{props.header}</h2>
       <Divider />
       <Table
@@ -63,7 +67,7 @@ export const DocumentResultsTable = (props) => {
         columns={columns}
         dataSource={props.searchResults}
       />
-    </Col>
+    </div>
   );
 };
 

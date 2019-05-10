@@ -36,35 +36,51 @@ export const ContactResultsTable = (props) => {
           </Col>
         </Row>,
         <Row style={{ paddingTop: "5px" }}>
-          <Col span={3}>Roles</Col>
-          <Col span={9}>
-            {props.partyRelationshipTypeHash.PMT &&
-              record.mine_party_appt.map((pr) => [
-                <span>{props.partyRelationshipTypeHash[pr.mine_party_appt_type_code]}</span>,
-                <br />,
-              ])}
+          <Col xs={24} md={6}>
+            <p>Roles:</p>
           </Col>
-          <Col span={3}>Email</Col>
-          <Col span={9}>
-            <Highlight search={props.highlightRegex}>{record.email}</Highlight>
+          <Col xs={24} md={18}>
+            <p>
+              {props.partyRelationshipTypeHash.PMT &&
+                record.mine_party_appt.map((pr) => [
+                  <span>{props.partyRelationshipTypeHash[pr.mine_party_appt_type_code]}</span>,
+                  <br />,
+                ])}
+            </p>
           </Col>
-          <Col span={3}>Mine</Col>
-          <Col span={9}>
-            <Highlight search={props.highlightRegex}>
-              {record.mine_party_appt[0].mine.mine_name}
-            </Highlight>
+          <Col xs={24} md={6}>
+            <p>Email:</p>
           </Col>
-          <Col span={3}>Phone</Col>
-          <Col>
-            <Highlight search={props.highlightRegex}>{record.phone_no}</Highlight>
-            {record.phone_ext && record.phone_ext}
+          <Col xs={24} md={18}>
+            <p>
+              <Highlight search={props.highlightRegex}>{record.email}</Highlight>
+            </p>
+          </Col>
+          <Col xs={24} md={6}>
+            <p>Mine:</p>
+          </Col>
+          <Col xs={24} md={18}>
+            <p>
+              <Highlight search={props.highlightRegex}>
+                {record.mine_party_appt[0].mine.mine_name}
+              </Highlight>
+            </p>
+          </Col>
+          <Col xs={24} md={6}>
+            <p>Phone:</p>
+          </Col>
+          <Col xs={24} md={18}>
+            <p>
+              <Highlight search={props.highlightRegex}>{record.phone_no}</Highlight>
+              {record.phone_ext && record.phone_ext}
+            </p>
           </Col>
         </Row>,
       ],
     },
   ];
   return (
-    <Col md={12} sm={24} style={{ padding: "30px", paddingBottom: "60px" }}>
+    <div>
       <h2>{props.header}</h2>
       <Divider />
       <Table
@@ -75,7 +91,7 @@ export const ContactResultsTable = (props) => {
         columns={columns}
         dataSource={props.searchResults}
       />
-    </Col>
+    </div>
   );
 };
 

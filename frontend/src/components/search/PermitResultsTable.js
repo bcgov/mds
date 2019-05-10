@@ -44,10 +44,10 @@ export const PermitResultsTable = (props) => {
           </Col>
         </Row>,
         <Row style={{ paddingTop: "5px" }}>
-          <Col xs={24} md={8}>
+          <Col xs={24} md={6}>
             <p>Mine:</p>
           </Col>
-          <Col xs={24} md={16}>
+          <Col xs={24} md={18}>
             <p>{record.mine_name}</p>
           </Col>
         </Row>,
