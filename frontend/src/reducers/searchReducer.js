@@ -25,7 +25,7 @@ const searchReducer = (state = initialState, action) => {
         ...state,
         searchBarResults: action.payload.search_results,
       };
-    case actionTypes.CLEAR_SEARCH_RESULTS:
+    case actionTypes.CLEAR_SEARCH_BAR_RESULTS:
       return {
         ...state,
         searchBarResults: [],

@@ -15,15 +15,11 @@ const propTypes = {
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   fetchSearchBarResults: PropTypes.func.isRequired,
   clearSearchBarResults: PropTypes.func.isRequired,
-  searchResults: PropTypes.arrayOf(PropTypes.object),
-};
-
-const defaultProps = {
-  searchResults: [],
+  searchBarResults: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 const defaultPlaceholderText = "Search";
-const selectedPlaceholderText = "Search for mines, contacts, or more";
+const selectedPlaceholderText = "Type to search for mines, contacts, or more";
 
 export class SearchBar extends Component {
   state = {
@@ -60,13 +56,12 @@ export class SearchBar extends Component {
     this.props.history.push(`/search?q=${searchTerm}`);
   };
 
-  clearSearch = () => {
+  clearSearchBar = () => {
     this.props.clearSearchBarResults();
     this.setState({
       isSelected: true,
       searchTerm: "",
     });
-    // clear store? clear local copy of results?
   };
 
   render = () => (
@@ -88,7 +83,7 @@ export class SearchBar extends Component {
               history={this.props.history}
               searchTerm={this.state.searchTerm}
               searchTermHistory={this.state.searchTermHistory}
-              searchResults={this.props.searchResults}
+              searchBarResults={this.props.searchBarResults}
             />
           </Card>
         }
@@ -102,8 +97,8 @@ export class SearchBar extends Component {
           placeholder={this.state.isSelected ? selectedPlaceholderText : defaultPlaceholderText}
           onSearch={(searchTerm) => this.search(searchTerm)}
           onChange={this.changeSearchTerm}
-          onClick={this.clearSearch}
-          onFocus={this.clearSearch}
+          onClick={this.clearSearchBar}
+          onFocus={this.clearSearchBar}
           onBlur={() =>
             this.setState({
               isSelected: false,
@@ -116,7 +111,7 @@ export class SearchBar extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  searchResults: getSearchBarResults(state),
+  searchBarResults: getSearchBarResults(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -129,7 +124,6 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 SearchBar.propTypes = propTypes;
-SearchBar.defaultProps = defaultProps;
 
 export default connect(
   mapStateToProps,

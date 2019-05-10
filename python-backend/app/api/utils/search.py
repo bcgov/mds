@@ -17,17 +17,20 @@ from app.api.documents.mines.models.mine_document import MineDocument
 from app.api.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 
 # 'Description': (description, Id, Model, [Model.attribute, Model.attribute], has_deleted_ind)
-search_targets = {
+simple_search_targets = {
     'mine': ('Mines', 'mine_guid', Mine, [Mine.mine_name, Mine.mine_no], True, 'mine_name'),
     'party': ('Contacts', 'party_guid', Party,
               [Party.first_name, Party.party_name, Party.email, Party.phone_no], False, 'name'),
+}
+
+search_targets = dict({
     'permit': ('Permits', 'permit_guid', Permit, [Permit.permit_no], False, 'permit_no'),
     'mine_documents': ('Mine Documents', 'mine_document_guid', MineDocument,
                        [MineDocument.document_name], False, 'document_name'),
     'permit_documents':
     ('Permit Documents', 'permit_amendment_document_guid', PermitAmendmentDocument,
      [PermitAmendmentDocument.document_name], False, 'document_name')
-}
+}, **simple_search_targets)
 
 
 class SearchResult:
