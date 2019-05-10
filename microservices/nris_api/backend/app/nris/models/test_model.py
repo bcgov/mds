@@ -1,10 +1,7 @@
 from datetime import datetime
 from app.extensions import db
 from sqlalchemy.orm import validates
-
-
-class Base(db.Model):
-    __abstract__ = True
+from app.utils.base_model import Base
 
 
 class Factorial(Base):
