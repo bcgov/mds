@@ -12,6 +12,6 @@ BEGIN
     IF NOT EXISTS(select from pg_catalog.pg_roles where rolname= 'nris') THEN 
         CREATE USER nris;
         GRANT ALL PRIVILEGES ON SCHEMA nris to nris;
-    END IF
+    END IF;
 END
 $do$; 
