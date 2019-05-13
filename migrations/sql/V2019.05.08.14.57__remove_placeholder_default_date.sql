@@ -1,4 +1,3 @@
--- TODO
 -- mine_location expiry_date
 ALTER TABLE mine_location
 ALTER COLUMN expiry_date DROP NOT NULL,
@@ -62,7 +61,6 @@ UPDATE mine_region_code
 SET expiry_date = NULL
 WHERE expiry_date = '9999-12-31'::date;
 
--- This one has comments that say 9999-12-31 implies that the code is still valid. Comments will need to be updated, and there may be FE changes that need to be made to use NULL as the infinite end
 -- article_act_code expiry_date
 ALTER TABLE article_act_code
 ALTER COLUMN expiry_date DROP NOT NULL,
@@ -72,4 +70,7 @@ UPDATE article_act_code
 SET expiry_date = NULL
 WHERE expiry_date = '9999-12-31'::date;
 
--- variance also has a 9999 comment
+COMMENT ON COLUMN article_act_code.expiry_date IS 'Expiry Date reflects the legal date an Act or Regulation is no longer valid. NULL implies the code value is still valid.';
+
+-- variance
+COMMENT ON COLUMN variance.expiry_date IS 'Expiry Date reflects the legal date a variance is no longer valid. NULL implies the variance is still valid.';
