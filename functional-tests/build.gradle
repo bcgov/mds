@@ -25,7 +25,7 @@ ext {
         gebVersion = '2.2'
         seleniumVersion = '3.14.0'
         chromeDriverVersion = '2.41'
-        geckoDriverVersion = '0.21.0'
+        geckoDriverVersion = '0.24.0'
         ieDriverVersion = '3.14'
         edgeDriverVersion = seleniumVersion
         safariDriverVersion = seleniumVersion
