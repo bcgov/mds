@@ -137,7 +137,7 @@
             "post": {
               "failurePolicy": "ignore",
               "execNewPod": {
-                "containerName": "flask-migrate",
+                "containerName": "${NAME}${SUFFIX}",
                 "command": ["flask", "db upgrade"]
               }
             },
