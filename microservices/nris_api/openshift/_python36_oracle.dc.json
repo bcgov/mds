@@ -137,7 +137,6 @@
             "post": {
               "failurePolicy": "Retry",
               "execNewPod": {
-                "containerName": "flask-migrate",
                 "command": ["flask", "db upgrade"]
               }
             },
