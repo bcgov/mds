@@ -2,7 +2,7 @@ import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
 import { request, success, error } from "@/actions/genericActions";
 import * as reducerTypes from "@/constants/reducerTypes";
-import * as String from "@/constants/strings";
+import * as Strings from "@/constants/strings";
 import * as varianceActions from "@/actions/varianceActions";
 import * as API from "@/constants/API";
 import { ENVIRONMENT } from "@/constants/environment";
@@ -11,7 +11,7 @@ import CustomAxios from "@/customAxios";
 
 export const createVariance = ({ mineGuid }, payload) => (dispatch) => {
   const message =
-    payload.variance_application_status_code === String.VARIANCE_APPLICATION_CODE
+    payload.variance_application_status_code === Strings.VARIANCE_APPLICATION_CODE
       ? "Successfully applied for a new variance"
       : "Successfully added an approved variance";
   dispatch(request(reducerTypes.CREATE_MINE_VARIANCE));
@@ -49,7 +49,7 @@ export const updateVariance = ({ mineGuid, varianceGuid, codeLabel }, payload) =
 export const fetchVariancesByMine = ({ mineGuid }) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_VARIANCES));
   dispatch(showLoading());
-  return CustomAxios(String.ERROR)
+  return CustomAxios(Strings.ERROR)
     .get(ENVIRONMENT.apiUrl + API.VARIANCES(mineGuid), createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_VARIANCES));

@@ -1,11 +1,13 @@
-import Home from "@/components/Home";
+import LandingPage from "@/components/landingPage/LandingPage";
 import UserDashboard from "@/components/dashboard/UserDashboard";
-import MineInfo from "@/components/dashboard/mineInfo/MineInfo";
+import Reports from "@/components/dashboard/mine/reports/Reports";
+import Variances from "@/components/dashboard/mine/variances/Variances";
+import MineDashboard from "@/components/dashboard/mine/MineDashboard";
 import ReturnPage from "@/components/ReturnPage";
 
 export const HOME = {
   route: "/",
-  component: Home,
+  component: LandingPage,
 };
 
 export const RETURN_PAGE = {
@@ -18,8 +20,20 @@ export const DASHBOARD = {
   component: UserDashboard,
 };
 
-export const MINE_INFO = {
-  route: "/dashboard/mine/:mineId",
-  dynamicRoute: (mineId) => `/dashboard/mine/${mineId}`,
-  component: MineInfo,
+export const MINE_DASHBOARD = {
+  route: "/dashboard/mine/:id",
+  dynamicRoute: (id) => `/dashboard/mine/${id}`,
+  component: MineDashboard,
+};
+
+export const VARIANCES = {
+  route: "/dashboard/mine/:id/variances",
+  dynamicRoute: (id) => `/dashboard/mine/${id}/variances`,
+  component: Variances,
+};
+
+export const REPORTS = {
+  route: "/dashboard/mine/:id/reports",
+  dynamicRoute: (id) => `/dashboard/mine/${id}/reports`,
+  component: Reports,
 };

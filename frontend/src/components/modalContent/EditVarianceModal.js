@@ -15,18 +15,16 @@ const propTypes = {
 };
 
 export const EditVarianceModal = (props) => (
-  <div>
-    <EditVarianceForm
-      onSubmit={props.onSubmit}
-      closeModal={props.closeModal}
-      mineGuid={props.mineGuid}
-      mineName={props.mineName}
-      coreUsers={props.coreUsers}
-      variance={props.variance}
-      varianceStatusOptions={props.varianceStatusOptions}
-      initialValues={props.initialValues}
-    />
-  </div>
+  <EditVarianceForm
+    onSubmit={props.onSubmit}
+    closeModal={props.closeModal}
+    mineGuid={props.mineGuid}
+    mineName={props.mineName}
+    coreUsers={props.coreUsers}
+    variance={props.variance}
+    varianceStatusOptions={props.varianceStatusOptions}
+    initialValues={props.initialValues}
+  />
 );
 
 EditVarianceModal.propTypes = propTypes;
