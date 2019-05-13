@@ -12,6 +12,7 @@ import * as router from "@/constants/routes";
 const propTypes = {
   header: PropTypes.string.isRequired,
   highlightRegex: PropTypes.objectOf(PropTypes.Any).isRequired,
+  query: PropTypes.string.isRequired,
   searchResults: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
@@ -35,7 +36,7 @@ export const MineResultsTable = (props) => {
         </Row>,
         <Row style={{ paddingTop: "5px" }}>
           <Col xs={24} md={4}>
-            <p>Mine No.:</p>
+            <p>Mine No.</p>
           </Col>
           <Col xs={24} md={4}>
             <p>
@@ -43,21 +44,19 @@ export const MineResultsTable = (props) => {
             </p>
           </Col>
           <Col xs={24} md={4}>
-            <p>Permit No.:</p>
+            <p>Permit No.</p>
           </Col>
           <Col xs={24} md={12}>
             <p>{record.mine_permit.map((permit) => [<span>{permit.permit_no}</span>, <br />])}</p>
           </Col>
-        </Row>,
-        <Row style={{ paddingTop: "5px", paddingBottom: "15px" }}>
           <Col xs={24} md={4}>
-            <p>Region:</p>
+            <p>Region</p>
           </Col>
           <Col xs={24} md={4}>
             <p>{record.mine_region}</p>
           </Col>
           <Col xs={24} md={4}>
-            <p>Status:</p>
+            <p>Status</p>
           </Col>
           <Col xs={24} md={12}>
             <p>{record.mine_status[0] && record.mine_status[0].status_labels.join(", ")}</p>
@@ -78,6 +77,11 @@ export const MineResultsTable = (props) => {
         columns={columns}
         dataSource={props.searchResults}
       />
+      <Link to={router.MINE_HOME_PAGE.dynamicRoute({ search: props.query })}>
+        <p style={{ fontSize: "22px", color: "inherit", float: "right" }}>
+          See all results in Mines ({props.searchResults.length})
+        </p>
+      </Link>
     </div>
   );
 };

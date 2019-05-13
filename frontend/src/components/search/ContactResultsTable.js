@@ -14,6 +14,7 @@ const propTypes = {
   header: PropTypes.string.isRequired,
   highlightRegex: PropTypes.string.isRequired,
   searchResults: PropTypes.arrayOf(PropTypes.object).isRequired,
+  query: PropTypes.string.isRequired,
   partyRelationshipTypeHash: PropTypes.objectOf(PropTypes.strings).isRequired,
 };
 
@@ -36,10 +37,10 @@ export const ContactResultsTable = (props) => {
           </Col>
         </Row>,
         <Row style={{ paddingTop: "5px" }}>
-          <Col xs={24} md={6}>
-            <p>Roles:</p>
+          <Col xs={24} md={4}>
+            <p>Roles</p>
           </Col>
-          <Col xs={24} md={18}>
+          <Col xs={24} md={8}>
             <p>
               {props.partyRelationshipTypeHash.PMT &&
                 record.mine_party_appt.map((pr) => [
@@ -48,28 +49,28 @@ export const ContactResultsTable = (props) => {
                 ])}
             </p>
           </Col>
-          <Col xs={24} md={6}>
-            <p>Email:</p>
+          <Col xs={24} md={4}>
+            <p>Email</p>
           </Col>
-          <Col xs={24} md={18}>
+          <Col xs={24} md={8}>
             <p>
               <Highlight search={props.highlightRegex}>{record.email}</Highlight>
             </p>
           </Col>
-          <Col xs={24} md={6}>
-            <p>Mine:</p>
+          <Col xs={24} md={4}>
+            <p>Mine</p>
           </Col>
-          <Col xs={24} md={18}>
+          <Col xs={24} md={8}>
             <p>
               <Highlight search={props.highlightRegex}>
                 {record.mine_party_appt[0].mine.mine_name}
               </Highlight>
             </p>
           </Col>
-          <Col xs={24} md={6}>
-            <p>Phone:</p>
+          <Col xs={24} md={4}>
+            <p>Phone</p>
           </Col>
-          <Col xs={24} md={18}>
+          <Col xs={24} md={8}>
             <p>
               <Highlight search={props.highlightRegex}>{record.phone_no}</Highlight>
               {record.phone_ext && record.phone_ext}
@@ -91,6 +92,11 @@ export const ContactResultsTable = (props) => {
         columns={columns}
         dataSource={props.searchResults}
       />
+      <Link to={router.CONTACT_HOME_PAGE.dynamicRoute({ last_name: props.query })}>
+        <p style={{ fontSize: "22px", color: "inherit", float: "right" }}>
+          See all results in Contacts ({props.searchResults.length})
+        </p>
+      </Link>
     </div>
   );
 };

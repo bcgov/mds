@@ -46,7 +46,7 @@ export const DocumentResultsTable = (props) => {
         </Row>,
         <Row style={{ paddingTop: "5px" }}>
           <Col xs={24} md={6}>
-            <p>Mine:</p>
+            <p>Mine</p>
           </Col>
           <Col xs={24} md={18}>
             <p>{record.mine_name}</p>

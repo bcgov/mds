@@ -29,7 +29,7 @@ const defaultProps = {
   searchTerms: [],
 };
 
-const renderSearchResultGroup = (group, searchTerms, partyRelationshipTypeHash) => {
+const renderSearchResultGroup = (group, searchTerms, partyRelationshipTypeHash, queryParams) => {
   const highlightRegex = RegExp(`${searchTerms.join("|")}`, "i");
   if (group.type === "mine") {
     return (
@@ -38,6 +38,7 @@ const renderSearchResultGroup = (group, searchTerms, partyRelationshipTypeHash) 
           header="Mines"
           highlightRegex={highlightRegex}
           searchResults={group.results}
+          query={queryParams}
         />
       </Col>
     );
@@ -61,6 +62,7 @@ const renderSearchResultGroup = (group, searchTerms, partyRelationshipTypeHash) 
           highlightRegex={highlightRegex}
           searchResults={group.results}
           partyRelationshipTypeHash={partyRelationshipTypeHash}
+          query={queryParams}
         />
       </Col>
     );
@@ -159,7 +161,8 @@ export class SearchResults extends Component {
                       renderSearchResultGroup(
                         group,
                         this.props.searchTerms,
-                        this.props.partyRelationshipTypeHash
+                        this.props.partyRelationshipTypeHash,
+                        this.state.params.q
                       )
                     )}
                   </Row>
