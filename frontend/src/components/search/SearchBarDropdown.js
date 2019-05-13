@@ -43,6 +43,7 @@ const URLFor = (item) =>
   ({
     mine: `/dashboard/${item.result.id}/summary`,
     party: `/dashboard/${item.result.id}/profile`,
+    permit: `/dashboard/${item.result.id}/permit`,
   }[item.type]);
 
 export const SearchBarDropdown = (props) => (
@@ -57,7 +58,7 @@ export const SearchBarDropdown = (props) => (
       ? [
           props.searchBarResults.map((item) => (
             <Menu.Item key={URLFor(item)}>
-              <p>{`${`${item.score} - ${item.result.value}` || ""}`}</p>
+              <p>{`${item.result.value || ""}`}</p>
             </Menu.Item>
           )),
           <Menu.Divider />,

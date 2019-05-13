@@ -35,10 +35,10 @@ class SimpleSearchResource(Resource, UserMixin):
 
         with ThreadPoolExecutor(max_workers=50) as executor:
             task_list = []
-            for type, type_config in new_search_targets.items():
+            for type, type_config in simple_search_targets.items():
                 task_list.append(
-                    executor.submit(type_config[1], app, search_results, search_term, search_terms,
-                                    type))
+                    executor.submit(execute_search, app, search_results, search_term, search_terms,
+                                    type, type_config))
             for task in as_completed(task_list):
                 try:
                     data = task.result()
@@ -55,61 +55,40 @@ class SimpleSearchResource(Resource, UserMixin):
 
         search_results = list(grouped_results.values())
         search_results.sort(key=lambda x: x.score, reverse=True)
-        #search_results = search_results.sort(key=lambda x: x.score, reverse=True)
-        #search_results = list(grouped_results.values()).sort(key=lambda x: x.score, reverse=True)
         search_results = search_results[0:10]
 
         return {'search_terms': search_results, 'search_results': search_results}
 
 
-def append_result(search_results, search_term, type, item, identifier, value, score_multiplier=200):
+def append_result(search_results, search_term, type, item, id_field, value_field, score_multiplier):
 
-    if getattr(item, value).lower().startswith(search_term.lower()):
+    if getattr(item, value_field).lower().startswith(search_term.lower()):
         score_multiplier = score_multiplier * 3
 
-    if getattr(item, value).lower() == search_term.lower():
+    if getattr(item, value_field).lower() == search_term.lower():
         score_multiplier = score_multiplier * 10
 
     search_results.append(
         SearchResult(
             getattr(item, 'score') * score_multiplier, type, {
-                'id': getattr(item, identifier),
-                'value': getattr(item, value)
+                'id': getattr(item, id_field),
+                'value': getattr(item, value_field)
             }))
 
 
-def execute_mine_search(app, search_results, search_term, search_terms, type):
+def execute_search(app, search_results, search_term, search_terms, type, type_config):
     with app.app_context():
-        columns = [Mine.mine_name, Mine.mine_no]
         for term in search_terms:
-            for column in columns:
-                similarity = db.session.query(Mine).with_entities(
-                    func.similarity(column, term).label('score'), Mine.mine_guid, Mine.mine_no,
-                    Mine.mine_name).filter(column.ilike(f'{term}%')).order_by(
-                        desc(func.similarity(column, term))).all()
-                [
-                    append_result(search_results, search_term, type, item, 'mine_guid', 'mine_name',
-                                  500) for item in similarity
-                ]
-
-
-def execute_party_search(app, search_results, search_term, search_terms, type):
-    with app.app_context():
-        columns = [Party.first_name, Party.party_name, Party.email, Party.phone_no]
-        for term in search_terms:
-            for column in columns:
-                similarity = db.session.query(Party).with_entities(
-                    func.similarity(column, term).label('score'), Party.party_guid,
-                    func.concat(Party.first_name, ' ', Party.party_name).label('name'),
-                    Party.email).filter(column.ilike(f'{term}%')).order_by(
-                        desc(func.similarity(column, term))).all()
-                [
-                    append_result(search_results, search_term, type, item, 'party_guid', 'name',
-                                  200) for item in similarity
-                ]
-
-
-new_search_targets = {
-    'mine': ('Mines', execute_mine_search),
-    'party': ('Contacts', execute_party_search)
-}
+            if len(term) > 3:
+                for column in type_config['columns']:
+                    similarity = db.session.query(Mine).with_entities(
+                        func.similarity(column, term).label('score'),
+                        *type_config['entities']).filter(column.ilike(f'%{term}%'))
+                    if type_config['has_deleted_ind']:
+                        similarity = similarity.filter_by(deleted_ind=False)
+                    similarity = similarity.order_by(desc(func.similarity(column, term))).all()
+                    [
+                        append_result(search_results, search_term, type, item,
+                                      type_config['id_field'], type_config['value_field'],
+                                      type_config['score_multiplier']) for item in similarity
+                    ]
