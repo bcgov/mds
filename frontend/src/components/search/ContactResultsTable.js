@@ -21,9 +21,13 @@ const propTypes = {
 const defaultProps = {};
 
 const parseQuery = (query) => {
-  const exp = RegExp("@");
-  if (exp.test(query)) {
+  const emailExp = /@/;
+  const phoneExp = /^\d+(-\d*)*$/;
+  if (emailExp.test(query)) {
     return { email: query };
+  }
+  if (phoneExp.test(query)) {
+    return { phone_no: query };
   }
   const terms = query.split(" ");
   if (terms.length === 1) {
@@ -41,11 +45,10 @@ export const ContactResultsTable = (props) => {
       render: (text, record) => [
         <Row>
           <Col span={24}>
-            <Link
-              to={router.PARTY_PROFILE.dynamicRoute(record.party_guid)}
-              style={{ fontSize: "1.5rem", fontWeight: "bold" }}
-            >
-              <Highlight search={props.highlightRegex}>{record.name}</Highlight>
+            <Link to={router.PARTY_PROFILE.dynamicRoute(record.party_guid)}>
+              <p style={{ fontSize: "22px", color: "inherit" }}>
+                <Highlight search={props.highlightRegex}>{record.name}</Highlight>
+              </p>
             </Link>
           </Col>
         </Row>,
