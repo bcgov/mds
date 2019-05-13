@@ -91,7 +91,7 @@ full_additional_search_targets = {
     'permit_documents': {
         'model': PermitAmendmentDocument,
         'primary_column': PermitAmendmentDocument.permit_amendment_document_guid,
-        'description': 'Permits',
+        'description': 'Permit Documents',
         'entities': [PermitAmendmentDocument.permit_amendment_document_guid, PermitAmendmentDocument.document_name],
         'columns': [PermitAmendmentDocument.document_name],
         'has_deleted_ind': False,

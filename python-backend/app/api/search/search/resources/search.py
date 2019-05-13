@@ -76,9 +76,9 @@ class SearchResource(Resource, UserMixin):
         for type in search_types:
             top_search_results_by_type = {}
 
-            max_results = 25
+            max_results = 5
             if len(search_targets) == 1:
-                max_results = 100
+                max_results = 50
 
             for result in top_search_results:
                 if len(top_search_results_by_type) > max_results:
