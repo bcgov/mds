@@ -1,6 +1,6 @@
 import regex
 from multiprocessing import Process
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor, as_completed, wait
 from flask_restplus import Resource, reqparse
 from datetime import datetime
 from flask import request, current_app
@@ -69,7 +69,7 @@ class SearchResource(Resource, UserMixin):
 
         top_search_results = list(grouped_results.values())
         top_search_results.sort(key=lambda x: x.score, reverse=True)
-        top_search_results = top_search_results[0:200]
+        #top_search_results = top_search_results[0:200]
 
         all_search_results = {}
 
@@ -77,7 +77,7 @@ class SearchResource(Resource, UserMixin):
             top_search_results_by_type = {}
 
             max_results = 5
-            if len(search_targets) == 1:
+            if len(search_types) == 1:
                 max_results = 50
 
             for result in top_search_results:

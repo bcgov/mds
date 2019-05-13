@@ -55,14 +55,14 @@ export class SearchBar extends Component {
         searchTermHistory: newSearchTermHistory,
       };
     });
-    this.clearSearchBar();
+    this.clearSearchBar(false);
     this.props.history.push(`/search?q=${searchTerm}`);
   };
 
-  clearSearchBar = () => {
+  clearSearchBar = (isSelected = true) => {
     this.props.clearSearchBarResults();
     this.setState({
-      isSelected: true,
+      isSelected,
       searchTerm: "",
     });
   };
