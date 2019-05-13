@@ -21,9 +21,13 @@ const propTypes = {
 const defaultProps = {};
 
 const parseQuery = (query) => {
-  const exp = RegExp("@");
-  if (exp.test(query)) {
+  const emailExp = /@/;
+  const phoneExp = /^\d+(-\d*)*$/;
+  if (emailExp.test(query)) {
     return { email: query };
+  }
+  if (phoneExp.test(query)) {
+    return { phone_no: query };
   }
   const terms = query.split(" ");
   if (terms.length === 1) {
