@@ -28,10 +28,10 @@ class  DashboardSpec extends GebReportingSpec {
         given: "I go to the Dashboard Page"
         to Dashboard
 
-        // Only continue once loading screen is no longer displayed
-        waitFor { !loadingScreen.isDisplayed() }
+        when: "page is loaded"
+        at Dashboard
 
-        when: "Loading is finished and I click the create a mine button"
+        and: "I click the create a mine button"
         createMineButton_Dashboard.click()
 
         and: "I type in valid mine profile"
@@ -51,10 +51,10 @@ class  DashboardSpec extends GebReportingSpec {
         given: "I go to the Dashboard Page"
         to Dashboard
 
-        // Only continue once loading screen is no longer displayed
-        waitFor { !loadingScreen.isDisplayed() }
+        when: "page is loaded"
+        at Dashboard
 
-        when: "Loading is finished and I click the create a mine button"
+        and: "I click the create a mine button"
         createMineButton_Dashboard.click()
 
         and: "I type in valid mine profile"
@@ -76,10 +76,10 @@ class  DashboardSpec extends GebReportingSpec {
         given: "I am on the Dashboard Page"
         to Dashboard
 
-        // Only continue once loading screen is no longer displayed
-        waitFor { !loadingScreen.isDisplayed() }
+        when: "page is loaded"
+        at Dashboard
 
-        when: "I click to view the first mine"
+        and: "I click to view the first mine"
         viewLink.click()
 
         then:"I can view the page"
