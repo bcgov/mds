@@ -7,6 +7,7 @@ import { SEARCH } from "@/constants/reducerTypes";
  */
 
 const initialState = {
+  searchOptions: [],
   searchResults: [],
   searchBarResults: [],
   searchTerms: [],
@@ -14,6 +15,11 @@ const initialState = {
 
 const searchReducer = (state = initialState, action) => {
   switch (action.type) {
+    case actionTypes.STORE_SEARCH_OPTIONS:
+      return {
+        ...state,
+        searchOptions: action.payload,
+      };
     case actionTypes.STORE_SEARCH_RESULTS:
       return {
         ...state,
@@ -35,6 +41,7 @@ const searchReducer = (state = initialState, action) => {
   }
 };
 
+export const getSearchOptions = (state) => state[SEARCH].searchOptions;
 export const getSearchResults = (state) => state[SEARCH].searchResults;
 export const getSearchBarResults = (state) => state[SEARCH].searchBarResults;
 export const getSearchTerms = (state) => state[SEARCH].searchTerms;

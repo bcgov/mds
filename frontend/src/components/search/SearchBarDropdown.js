@@ -41,8 +41,8 @@ const staticMenuItems = [
 
 const URLFor = (item) =>
   ({
-    Mines: `/dashboard/${item.result.id}/summary`,
-    Contacts: `/dashboard/${item.result.id}/profile`,
+    mine: `/dashboard/${item.result.id}/summary`,
+    party: `/dashboard/${item.result.id}/profile`,
   }[item.type]);
 
 export const SearchBarDropdown = (props) => (
@@ -57,7 +57,7 @@ export const SearchBarDropdown = (props) => (
       ? [
           props.searchBarResults.map((item) => (
             <Menu.Item key={URLFor(item)}>
-              <p>{`${item.result.value || ""}`}</p>
+              <p>{`${`${item.score} - ${item.result.value}` || ""}`}</p>
             </Menu.Item>
           )),
           <Menu.Divider />,

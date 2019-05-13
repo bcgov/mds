@@ -7,11 +7,14 @@ import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
 import CustomAxios from "@/customAxios";
 
-export const fetchSearchResults = (searchTerm) => (dispatch) => {
+export const fetchSearchResults = (searchTerm, searchTypes) => (dispatch) => {
   dispatch(request(reducerTypes.GET_SEARCH_RESULTS));
   dispatch(showLoading("modal"));
   return CustomAxios()
-    .get(`${ENVIRONMENT.apiUrl + API.SEARCH}?search_term=${searchTerm}`, createRequestHeader())
+    .get(
+      ENVIRONMENT.apiUrl + API.SEARCH({ search_term: searchTerm, search_types: searchTypes }),
+      createRequestHeader()
+    )
     .then((response) => {
       dispatch(success(reducerTypes.GET_SEARCH_RESULTS));
       dispatch(searchActions.storeSearchResults(response.data));
@@ -35,6 +38,20 @@ export const fetchSearchBarResults = (searchTerm) => (dispatch) => {
       dispatch(hideLoading("modal"));
     })
     .catch(() => dispatch(error(reducerTypes.GET_SEARCH_BAR_RESULTS)))
+    .finally(() => dispatch(hideLoading("modal")));
+};
+
+export const fetchSearchOptions = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_SEARCH_OPTIONS));
+  dispatch(showLoading("modal"));
+  return CustomAxios()
+    .get(ENVIRONMENT.apiUrl + API.SEARCH_OPTIONS, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_SEARCH_OPTIONS));
+      dispatch(searchActions.storeSearchOptions(response.data));
+      dispatch(hideLoading("modal"));
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_SEARCH_OPTIONS)))
     .finally(() => dispatch(hideLoading("modal")));
 };
 

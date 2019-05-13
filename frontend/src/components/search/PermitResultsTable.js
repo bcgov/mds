@@ -32,20 +32,16 @@ export const PermitResultsTable = (props) => {
               </p>
             </Link>
           </Col>
-        </Row>,
-        <Row style={{ paddingTop: "5px" }}>
           <Col xs={24} md={6}>
-            <p>Permitee:</p>
+            <p>Permitee</p>
           </Col>
           <Col xs={24} md={18}>
             <p>
               <Highlight search={props.highlightRegex}>{record.permitee}</Highlight>
             </p>
           </Col>
-        </Row>,
-        <Row style={{ paddingTop: "5px" }}>
           <Col xs={24} md={6}>
-            <p>Mine:</p>
+            <p>Mine</p>
           </Col>
           <Col xs={24} md={18}>
             <p>{record.mine_name}</p>

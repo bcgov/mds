@@ -40,61 +40,62 @@ class SearchResource(Resource, UserMixin):
 
         search_term = request.args.get('search_term', None, type=str)
         search_types = request.args.get('search_types', None, type=str)
-        search_types = search_types.split(',') if search_types else []
+        search_types = search_types.split(',') if search_types else search_targets.keys()
 
         reg_exp = regex.compile(r'\'.*?\' | ".*?" | \S+ ', regex.VERBOSE)
         search_terms = reg_exp.findall(search_term)
         search_terms = [term.replace('"', '') for term in search_terms]
 
         for type, type_config in search_targets.items():
-            type_results = []
-            comparator = type_config[1]
-            model = type_config[2]
-            columns = type_config[3]
-            has_deleted_ind = type_config[4]
-            for term in search_terms:
-                term_results = []
+            if type in search_types:
+                type_results = []
+                comparator = type_config[1]
+                model = type_config[2]
+                columns = type_config[3]
+                has_deleted_ind = type_config[4]
+                for term in search_terms:
+                    term_results = []
 
-                columns_for_exact = [column.ilike(term) for column in columns]
-                columns_for_starts = [column.ilike(f'{term}%') for column in columns]
-                columns_for_contains = [column.ilike(f'%{term}%') for column in columns]
+                    columns_for_exact = [column.ilike(term) for column in columns]
+                    columns_for_starts = [column.ilike(f'{term}%') for column in columns]
+                    columns_for_contains = [column.ilike(f'%{term}%') for column in columns]
 
-                exact = db.session.query(model).filter(or_(*columns_for_exact))
-                starts_with = db.session.query(model).filter(or_(*columns_for_starts))
-                contains = db.session.query(model).filter(or_(*columns_for_contains))
-                #fuzzy? Soundex?
+                    exact = db.session.query(model).filter(or_(*columns_for_exact))
+                    starts_with = db.session.query(model).filter(or_(*columns_for_starts))
+                    contains = db.session.query(model).filter(or_(*columns_for_contains))
+                    #fuzzy? Soundex?
 
-                if has_deleted_ind:
-                    exact = exact.filter_by(deleted_ind=False)
-                    starts_with = starts_with.filter_by(deleted_ind=False)
-                    contains = contains.filter_by(deleted_ind=False)
+                    if has_deleted_ind:
+                        exact = exact.filter_by(deleted_ind=False)
+                        starts_with = starts_with.filter_by(deleted_ind=False)
+                        contains = contains.filter_by(deleted_ind=False)
 
-                contains = contains.order_by(desc(model.create_timestamp)).limit(25).all()
-                starts_with = starts_with.order_by(desc(model.create_timestamp)).limit(25).all()
-                exact = exact.order_by(desc(model.create_timestamp)).limit(50).all()
+                    contains = contains.order_by(desc(model.create_timestamp)).limit(25).all()
+                    starts_with = starts_with.order_by(desc(model.create_timestamp)).limit(25).all()
+                    exact = exact.order_by(desc(model.create_timestamp)).limit(50).all()
 
-                for item in exact:
-                    term_results.append(SearchResult(500, type, item))
+                    for item in exact:
+                        term_results.append(SearchResult(500, type, item))
 
-                for item in starts_with:
-                    in_list = False
-                    for item2 in term_results:
-                        if getattr(item, comparator) == getattr(item2.result, comparator):
-                            in_list = True
-                    if not in_list:
-                        term_results.append(SearchResult(75, type, item))
+                    for item in starts_with:
+                        in_list = False
+                        for item2 in term_results:
+                            if getattr(item, comparator) == getattr(item2.result, comparator):
+                                in_list = True
+                        if not in_list:
+                            term_results.append(SearchResult(75, type, item))
 
-                for item in contains:
-                    in_list = False
-                    for item2 in term_results:
-                        if getattr(item, comparator) == getattr(item2.result, comparator):
-                            in_list = True
-                    if not in_list:
-                        term_results.append(SearchResult(25, type, item))
+                    for item in contains:
+                        in_list = False
+                        for item2 in term_results:
+                            if getattr(item, comparator) == getattr(item2.result, comparator):
+                                in_list = True
+                        if not in_list:
+                            term_results.append(SearchResult(25, type, item))
 
-                type_results += term_results
+                    type_results += term_results
 
-            type_results.sort(key=lambda x: x.score, reverse=True)
-            all_search_results[type] = type_results
+                type_results.sort(key=lambda x: x.score, reverse=True)
+                all_search_results[type] = type_results
 
         return {'search_terms': search_terms, 'search_results': all_search_results}

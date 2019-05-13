@@ -11,13 +11,18 @@ import { ContactResultsTable } from "@/components/search/ContactResultsTable";
 import { DocumentResultsTable } from "@/components/search/DocumentResultsTable";
 import { getPartyRelationshipTypeHash } from "@/selectors/partiesSelectors";
 import { fetchPartyRelationshipTypes } from "@/actionCreators/partiesActionCreator";
-import { fetchSearchResults } from "@/actionCreators/searchActionCreator";
+import { fetchSearchOptions, fetchSearchResults } from "@/actionCreators/searchActionCreator";
 import Loading from "@/components/common/Loading";
+import LinkButton from "@/components/common/LinkButton";
 import _ from "lodash";
+import { getSearchOptions } from "../../reducers/searchReducer";
 
 const propTypes = {
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  fetchSearchOptions: PropTypes.func.isRequired,
   fetchSearchResults: PropTypes.func.isRequired,
+  searchOptions: PropTypes.arrayOf(PropTypes.any).isRequired,
   searchResults: PropTypes.objectOf(PropTypes.any),
   searchTerms: PropTypes.arrayOf(PropTypes.string),
   partyRelationshipTypeHash: PropTypes.objectOf(PropTypes.strings).isRequired,
@@ -94,6 +99,9 @@ export class SearchResults extends Component {
     if (!this.props.partyRelationshipTypeHash.PMT) {
       this.props.fetchPartyRelationshipTypes();
     }
+    if (!this.props.searchOptions.length) {
+      this.props.fetchSearchOptions();
+    }
     this.handleSearch(this.props.location);
   };
 
@@ -114,10 +122,10 @@ export class SearchResults extends Component {
   handleSearch = (location) => {
     const params = location.search;
     const parsedParams = queryString.parse(params);
-    const { q = this.state.params.q } = parsedParams;
+    const { q = this.state.params.q, t = this.state.params.t } = parsedParams;
 
     if (q) {
-      this.props.fetchSearchResults(q);
+      this.props.fetchSearchResults(q, t);
       this.setState({ isSearching: true, hasSearchTerm: true });
     }
   };
@@ -145,7 +153,26 @@ export class SearchResults extends Component {
           ) : (
             <div>
               <div className="landing-page__header">
-                <h1>Search results for {this.props.searchTerms.map((x) => `"${x}"`).join(", ")}</h1>
+                <h1 style={{ paddingBottom: "5px" }}>
+                  Search results for {this.props.searchTerms.map((t) => `"${t}"`).join(", ")}
+                </h1>
+                <div>
+                  Just show me:
+                  {this.props.searchOptions.map((o) => (
+                    <span style={{ padding: "20px" }}>
+                      <LinkButton
+                        key={o.model_id}
+                        onClick={() => {
+                          this.props.history.push(
+                            `/search?q=${this.state.params.q}&t=${o.model_id}`
+                          );
+                        }}
+                      >
+                        {o.description}
+                      </LinkButton>
+                    </span>
+                  ))}
+                </div>
               </div>
               <div className="landing-page__content">
                 <div className="tab__content">
@@ -174,6 +201,7 @@ export class SearchResults extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  searchOptions: getSearchOptions(state),
   searchResults: getSearchResults(state),
   searchTerms: getSearchTerms(state),
   partyRelationshipTypeHash: getPartyRelationshipTypeHash(state),
@@ -183,6 +211,7 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchPartyRelationshipTypes,
+      fetchSearchOptions,
       fetchSearchResults,
     },
     dispatch

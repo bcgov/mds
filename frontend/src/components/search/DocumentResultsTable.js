@@ -3,6 +3,7 @@ import { Table, Row, Col, Divider } from "antd";
 import PropTypes from "prop-types";
 import Highlight from "react-highlighter";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
+import LinkButton from "@/components/common/LinkButton";
 
 /**
  * @class  DocumentResultsTable - displays a table of mine search results
@@ -25,23 +26,16 @@ export const DocumentResultsTable = (props) => {
       render: (text, record) => [
         <Row style={{ paddingBottom: "15px" }}>
           <Col span={24}>
-            <a
-              role="link"
+            <LinkButton
               key={record.mine_document_guid || record.permit_amendment_document_guid}
               onClick={() =>
                 downloadFileFromDocumentManager(record.document_manager_guid, record.document_name)
               }
-              // Accessibility: Event listener
-              onKeyPress={() =>
-                downloadFileFromDocumentManager(record.document_manager_guid, record.document_name)
-              }
-              // Accessibility: Focusable element
-              tabIndex="0"
             >
               <p style={{ fontSize: "22px", color: "inherit" }}>
                 <Highlight search={props.highlightRegex}>{record.document_name}</Highlight>
               </p>
-            </a>
+            </LinkButton>
           </Col>
         </Row>,
         <Row style={{ paddingTop: "5px" }}>

@@ -23,14 +23,16 @@ simple_search_targets = {
               [Party.first_name, Party.party_name, Party.email, Party.phone_no], False, 'name'),
 }
 
-search_targets = dict({
+additional_search_targets = {
     'permit': ('Permits', 'permit_guid', Permit, [Permit.permit_no], False, 'permit_no'),
     'mine_documents': ('Mine Documents', 'mine_document_guid', MineDocument,
                        [MineDocument.document_name], False, 'document_name'),
     'permit_documents':
     ('Permit Documents', 'permit_amendment_document_guid', PermitAmendmentDocument,
      [PermitAmendmentDocument.document_name], False, 'document_name')
-}, **simple_search_targets)
+}
+
+search_targets = dict(**simple_search_targets, **additional_search_targets)
 
 
 class SearchResult:
