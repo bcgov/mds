@@ -41,8 +41,9 @@ const staticMenuItems = [
 
 const URLFor = (item) =>
   ({
-    Mines: `/dashboard/${item.result.id}/summary`,
-    Contacts: `/dashboard/${item.result.id}/profile`,
+    mine: `/dashboard/${item.result.id}/summary`,
+    party: `/dashboard/${item.result.id}/profile`,
+    permit: `/dashboard/${item.result.id}/permit`,
   }[item.type]);
 
 export const SearchBarDropdown = (props) => (

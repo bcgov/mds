@@ -32,8 +32,6 @@ export const PermitResultsTable = (props) => {
               </p>
             </Link>
           </Col>
-        </Row>,
-        <Row style={{ paddingTop: "5px" }}>
           <Col xs={24} md={6}>
             <p>Permitee</p>
           </Col>
@@ -42,8 +40,6 @@ export const PermitResultsTable = (props) => {
               <Highlight search={props.highlightRegex}>{record.permitee}</Highlight>
             </p>
           </Col>
-        </Row>,
-        <Row style={{ paddingTop: "5px" }}>
           <Col xs={24} md={6}>
             <p>Mine</p>
           </Col>

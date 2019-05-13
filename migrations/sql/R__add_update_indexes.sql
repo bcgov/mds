@@ -10,6 +10,7 @@ CREATE INDEX IF NOT EXISTS application_mine_guid_fkey_idx ON application(mine_gu
 /* Mine */
 CREATE INDEX IF NOT EXISTS active_mine_mine_region_fkey_idx ON mine(mine_region, deleted_ind) WHERE (deleted_ind = false);
 CREATE INDEX IF NOT EXISTS mine_mine_name_search_idx ON mine USING gist (mine_name gist_trgm_ops);
+CREATE INDEX IF NOT EXISTS mine_mine_no_search_idx ON mine USING gist (mine_no gist_trgm_ops);
 
 /* Mine document */
 CREATE INDEX IF NOT EXISTS mine_document_document_name_search_idx on mine_document USING gist (document_name gist_trgm_ops);

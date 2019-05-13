@@ -4,7 +4,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from flask_restplus import Resource, reqparse
 from datetime import datetime
 from flask import request, current_app
-from sqlalchemy import desc, or_
+from sqlalchemy import desc, or_, func
 
 from app.extensions import db, api
 from app.api.utils.access_decorators import requires_role_mine_view, requires_role_mine_create
@@ -28,8 +28,6 @@ class SimpleSearchResource(Resource, UserMixin):
         app = current_app._get_current_object()
 
         search_term = request.args.get('search_term', None, type=str)
-        search_types = request.args.get('search_types', None, type=str)
-        search_types = search_types.split(',') if search_types else []
 
         reg_exp = regex.compile(r'\'.*?\' | ".*?" | \S+ ', regex.VERBOSE)
         search_terms = reg_exp.findall(search_term)
@@ -37,40 +35,60 @@ class SimpleSearchResource(Resource, UserMixin):
 
         with ThreadPoolExecutor(max_workers=50) as executor:
             task_list = []
-            for term in search_terms:
-                for type, type_config in simple_search_targets.items():
-                    task_list.append(
-                        executor.submit(execute_simple_search, app, search_results, term,
-                                        type_config[0], type_config[1], type_config[2],
-                                        type_config[3], type_config[4], type_config[5]))
-                    for task in as_completed(task_list):
-                        try:
-                            data = task.result()
-                        except Exception as exc:
-                            current_app.logger.error(
-                                f'generated an exception: {exc} with search term - {search_term}')
+            for type, type_config in simple_search_targets.items():
+                task_list.append(
+                    executor.submit(execute_search, app, search_results, search_term, search_terms,
+                                    type, type_config))
+            for task in as_completed(task_list):
+                try:
+                    data = task.result()
+                except Exception as exc:
+                    current_app.logger.error(
+                        f'generated an exception: {exc} with search term - {search_term}')
 
+        grouped_results = {}
+        for result in search_results:
+            if (result.result['id'] in grouped_results):
+                grouped_results[result.result['id']].score += result.score
+            else:
+                grouped_results[result.result['id']] = result
+
+        search_results = list(grouped_results.values())
         search_results.sort(key=lambda x: x.score, reverse=True)
         search_results = search_results[0:10]
 
-        return {'search_terms': search_terms, 'search_results': search_results}
+        return {'search_terms': search_results, 'search_results': search_results}
 
 
-def execute_simple_search(app, search_results, term, type, identifier, model, columns,
-                          has_deleted_ind, value):
+def append_result(search_results, search_term, type, item, id_field, value_field, score_multiplier):
+
+    if getattr(item, value_field).lower().startswith(search_term.lower()):
+        score_multiplier = score_multiplier * 3
+
+    if getattr(item, value_field).lower() == search_term.lower():
+        score_multiplier = score_multiplier * 10
+
+    search_results.append(
+        SearchResult(
+            getattr(item, 'score') * score_multiplier, type, {
+                'id': getattr(item, id_field),
+                'value': getattr(item, value_field)
+            }))
+
+
+def execute_search(app, search_results, search_term, search_terms, type, type_config):
     with app.app_context():
-
-        columns_for_starts = [column.ilike(f'{term}%') for column in columns]
-
-        starts_with = db.session.query(model).filter(or_(*columns_for_starts))
-
-        if has_deleted_ind:
-            starts_with = starts_with.filter_by(deleted_ind=False)
-
-        starts_with = starts_with.order_by(desc(model.create_timestamp)).limit(10).all()
-        for item in starts_with:
-            search_results.append(
-                SearchResult(75, type, {
-                    'id': getattr(item, identifier),
-                    'value': getattr(item, value)
-                }))
+        for term in search_terms:
+            if len(term) > 3:
+                for column in type_config['columns']:
+                    similarity = db.session.query(Mine).with_entities(
+                        func.similarity(column, term).label('score'),
+                        *type_config['entities']).filter(column.ilike(f'%{term}%'))
+                    if type_config['has_deleted_ind']:
+                        similarity = similarity.filter_by(deleted_ind=False)
+                    similarity = similarity.order_by(desc(func.similarity(column, term))).all()
+                    [
+                        append_result(search_results, search_term, type, item,
+                                      type_config['id_field'], type_config['value_field'],
+                                      type_config['score_multiplier']) for item in similarity
+                    ]

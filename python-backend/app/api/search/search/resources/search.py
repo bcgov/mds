@@ -1,10 +1,10 @@
 import regex
 from multiprocessing import Process
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor, as_completed, wait
 from flask_restplus import Resource, reqparse
 from datetime import datetime
 from flask import request, current_app
-from sqlalchemy import desc, or_
+from sqlalchemy import desc, func
 from flask_restplus import fields
 
 from app.extensions import db, api
@@ -25,8 +25,8 @@ class SearchOptionsResource(Resource, UserMixin):
     @requires_role_mine_view
     def get(self):
         options = []
-        for key, value in search_targets.items():
-            options.append({'model_id': key, 'description': value[0]})
+        for type, type_config in search_targets.items():
+            options.append({'model_id': type, 'description': type_config['description']})
 
         return options
 
@@ -35,66 +35,99 @@ class SearchResource(Resource, UserMixin):
     @requires_role_mine_view
     @api.marshal_with(SEARCH_RESULT_RETURN_MODEL, 200)
     def get(self):
-        all_search_results = {}
+        search_results = []
         app = current_app._get_current_object()
 
         search_term = request.args.get('search_term', None, type=str)
         search_types = request.args.get('search_types', None, type=str)
-        search_types = search_types.split(',') if search_types else []
+        search_types = search_types.split(',') if search_types else search_targets.keys()
 
         reg_exp = regex.compile(r'\'.*?\' | ".*?" | \S+ ', regex.VERBOSE)
         search_terms = reg_exp.findall(search_term)
         search_terms = [term.replace('"', '') for term in search_terms]
 
-        for type, type_config in search_targets.items():
-            type_results = []
-            comparator = type_config[1]
-            model = type_config[2]
-            columns = type_config[3]
-            has_deleted_ind = type_config[4]
-            for term in search_terms:
-                term_results = []
+        with ThreadPoolExecutor(max_workers=50) as executor:
+            task_list = []
+            for type, type_config in search_targets.items():
+                if type in search_types:
+                    task_list.append(
+                        executor.submit(execute_search, app, search_results, search_term,
+                                        search_terms, type, type_config))
+            for task in as_completed(task_list):
+                try:
+                    data = task.result()
+                except Exception as exc:
+                    current_app.logger.error(
+                        f'generated an exception: {exc} with search term - {search_term}')
 
-                columns_for_exact = [column.ilike(term) for column in columns]
-                columns_for_starts = [column.ilike(f'{term}%') for column in columns]
-                columns_for_contains = [column.ilike(f'%{term}%') for column in columns]
+        grouped_results = {}
+        for result in search_results:
+            if (result.result['id'] in grouped_results):
+                grouped_results[result.result['id']].score += result.score
+            else:
+                grouped_results[result.result['id']] = result
 
-                exact = db.session.query(model).filter(or_(*columns_for_exact))
-                starts_with = db.session.query(model).filter(or_(*columns_for_starts))
-                contains = db.session.query(model).filter(or_(*columns_for_contains))
-                #fuzzy? Soundex?
+        top_search_results = list(grouped_results.values())
+        top_search_results.sort(key=lambda x: x.score, reverse=True)
+        #top_search_results = top_search_results[0:200]
 
-                if has_deleted_ind:
-                    exact = exact.filter_by(deleted_ind=False)
-                    starts_with = starts_with.filter_by(deleted_ind=False)
-                    contains = contains.filter_by(deleted_ind=False)
+        all_search_results = {}
 
-                contains = contains.order_by(desc(model.create_timestamp)).limit(25).all()
-                starts_with = starts_with.order_by(desc(model.create_timestamp)).limit(25).all()
-                exact = exact.order_by(desc(model.create_timestamp)).limit(50).all()
+        for type in search_types:
+            top_search_results_by_type = {}
 
-                for item in exact:
-                    term_results.append(SearchResult(500, type, item))
+            max_results = 5
+            if len(search_types) == 1:
+                max_results = 50
 
-                for item in starts_with:
-                    in_list = False
-                    for item2 in term_results:
-                        if getattr(item, comparator) == getattr(item2.result, comparator):
-                            in_list = True
-                    if not in_list:
-                        term_results.append(SearchResult(75, type, item))
+            for result in top_search_results:
+                if len(top_search_results_by_type) > max_results:
+                    break
+                if result.type == type:
+                    top_search_results_by_type[result.result['id']] = result
 
-                for item in contains:
-                    in_list = False
-                    for item2 in term_results:
-                        if getattr(item, comparator) == getattr(item2.result, comparator):
-                            in_list = True
-                    if not in_list:
-                        term_results.append(SearchResult(25, type, item))
+            full_results = db.session.query(search_targets[type]['model']).filter(
+                search_targets[type]['primary_column'].in_(
+                    top_search_results_by_type.keys())).all()
 
-                type_results += term_results
+            for full_result in full_results:
+                top_search_results_by_type[getattr(
+                    full_result, search_targets[type]['id_field'])].result = full_result
 
-            type_results.sort(key=lambda x: x.score, reverse=True)
-            all_search_results[type] = type_results
+            all_search_results[type] = list(top_search_results_by_type.values())
 
         return {'search_terms': search_terms, 'search_results': all_search_results}
+
+
+def append_result(search_results, search_term, type, item, id_field, value_field, score_multiplier):
+
+    if getattr(item, value_field).lower().startswith(search_term.lower()):
+        score_multiplier = score_multiplier * 3
+
+    if getattr(item, value_field).lower() == search_term.lower():
+        score_multiplier = score_multiplier * 10
+
+    search_results.append(
+        SearchResult(
+            getattr(item, 'score') * score_multiplier, type, {
+                'id': getattr(item, id_field),
+                'value': getattr(item, value_field)
+            }))
+
+
+def execute_search(app, search_results, search_term, search_terms, type, type_config):
+    with app.app_context():
+        for term in search_terms:
+            if len(term) > 3:
+                for column in type_config['columns']:
+                    similarity = db.session.query(Mine).with_entities(
+                        func.similarity(column, term).label('score'),
+                        *type_config['entities']).filter(column.ilike(f'%{term}%'))
+                    if type_config['has_deleted_ind']:
+                        similarity = similarity.filter_by(deleted_ind=False)
+                    similarity = similarity.order_by(desc(func.similarity(column, term))).all()
+                    [
+                        append_result(search_results, search_term, type, item,
+                                      type_config['id_field'], type_config['value_field'],
+                                      type_config['score_multiplier']) for item in similarity
+                    ]
