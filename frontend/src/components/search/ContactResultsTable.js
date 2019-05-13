@@ -28,10 +28,11 @@ export const ContactResultsTable = (props) => {
       render: (text, record) => [
         <Row>
           <Col span={24}>
-            <Link to={router.PARTY_PROFILE.dynamicRoute(record.party_guid)}>
-              <p style={{ fontSize: "22px", color: "inherit" }}>
-                <Highlight search={props.highlightRegex}>{record.name}</Highlight>
-              </p>
+            <Link
+              to={router.PARTY_PROFILE.dynamicRoute(record.party_guid)}
+              style={{ fontSize: "1.5rem", fontWeight: "bold" }}
+            >
+              <Highlight search={props.highlightRegex}>{record.name}</Highlight>
             </Link>
           </Col>
         </Row>,

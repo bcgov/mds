@@ -3,7 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import queryString from "query-string";
-import { Row, Col } from "antd";
+import { Row, Col, Icon } from "antd";
 import { getSearchResults, getSearchTerms } from "@/selectors/searchSelectors";
 import { MineResultsTable } from "@/components/search/MineResultsTable";
 import { PermitResultsTable } from "@/components/search/PermitResultsTable";
@@ -140,6 +140,8 @@ export class SearchResults extends Component {
     groupedSearchResults.sort((a, b) => a.score - b.score);
     groupedSearchResults.reverse();
 
+    const type_filter = this.state.params.t;
+
     return (
       this.state.hasSearchTerm && (
         <div className="landing-page">
@@ -149,24 +151,41 @@ export class SearchResults extends Component {
             <div>
               <div className="landing-page__header">
                 <h1 style={{ paddingBottom: "5px" }}>
-                  Search results for {this.props.searchTerms.map((t) => `"${t}"`).join(", ")}
+                  {type_filter
+                    ? this.props.searchOptions.find((o) => o.model_id === type_filter).description
+                    : "Search results"}{" "}
+                  for {this.props.searchTerms.map((t) => `"${t}"`).join(", ")}
                 </h1>
                 <div>
-                  Just show me:
-                  {this.props.searchOptions.map((o) => (
-                    <span style={{ padding: "20px" }}>
-                      <LinkButton
-                        key={o.model_id}
-                        onClick={() => {
-                          this.props.history.push(
-                            `/search?q=${this.state.params.q}&t=${o.model_id}`
-                          );
-                        }}
-                      >
-                        {o.description}
-                      </LinkButton>
-                    </span>
-                  ))}
+                  {type_filter ? (
+                    <LinkButton
+                      key="all"
+                      onClick={() => {
+                        this.props.history.push(`/search?q=${this.state.params.q}`);
+                      }}
+                    >
+                      <Icon type="arrow-left" style={{ paddingRight: "5px" }} />
+                      Back to all search results
+                    </LinkButton>
+                  ) : (
+                    <p>
+                      Just show me:
+                      {this.props.searchOptions.map((o) => (
+                        <span style={{ padding: "20px" }}>
+                          <LinkButton
+                            key={o.model_id}
+                            onClick={() => {
+                              this.props.history.push(
+                                `/search?q=${this.state.params.q}&t=${o.model_id}`
+                              );
+                            }}
+                          >
+                            {o.description}
+                          </LinkButton>
+                        </span>
+                      ))}
+                    </p>
+                  )}
                 </div>
               </div>
               <div className="landing-page__content">
