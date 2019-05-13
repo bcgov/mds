@@ -5,7 +5,9 @@ set -exv -o pipefail
 #./gradlew chromeTest -DchromeTest.single=CustomJUnitSpecRunner
 #./gradlew chromeHeadlessTest -DchromeHeadlessTest.single=CustomJUnitSpecRunner
 # ./gradlew firefoxHeadlessTest -DfirefoxHeadlessTest.single=CustomJUnitSpecRunner
-###Run both Core and MineSpace tests 
+###Run both Core and MineSpace tests
+Xvfb :1 -screen 0 1024x768x24 &
+export DISPLAY=:1
 ./gradlew firefoxHeadlessTest -DfirefoxHeadlessTest.single=CustomJUnitSpecRunner
 ./gradlew firefoxHeadlessTest -DfirefoxHeadlessTest.single=CustomJUnitPublicSpecRunner
 
@@ -13,6 +15,4 @@ set -exv -o pipefail
 # For more info: https://github.com/BCDevOps/BDDStack/wiki/Running-firefoxHeadlessTest-in-CentOS
 
 # Firefox tests are currently disabled as the user base only uses chrome or IE
-# Xvfb :1 -screen 0 1024x768x24 &
-# export DISPLAY=:1
 #  ./gradlew clean -DfirefoxHeadlessTest.single=CustomJUnitSpecRunner firefoxHeadlessTest
