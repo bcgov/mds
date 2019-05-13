@@ -1,5 +1,5 @@
-import userMineInfoReducer from "@/reducers/userMineInfoReducer";
-import { storeMine, storeUserMineInfo, storeMineDocuments } from "@/actions/userMineInfoActions";
+import userMineReducer from "@/reducers/userMineReducer";
+import { storeMine, storeUserMineInfo, storeMineDocuments } from "@/actions/userMineActions";
 
 const baseExpectedValue = {
   userMineInfo: {},
@@ -10,17 +10,17 @@ const baseExpectedValue = {
 // Creates deep copy of javascript object instead of setting a reference
 const getBaseExpectedValue = () => JSON.parse(JSON.stringify(baseExpectedValue));
 
-describe("userMineInfoReducer", () => {
+describe("userMineReducer", () => {
   it("receives undefined", () => {
     const expectedValue = getBaseExpectedValue();
-    const result = userMineInfoReducer(undefined, {});
+    const result = userMineReducer(undefined, {});
     expect(result).toEqual(expectedValue);
   });
 
   it("receives STORE_USER_MINE_INFO", () => {
     const expectedValue = getBaseExpectedValue();
     expectedValue.userMineInfo = { mines: [{ guid: "4aaad42f-ab69-439a-b5f9-78c35f95d0ff" }] };
-    const result = userMineInfoReducer(
+    const result = userMineReducer(
       undefined,
       storeUserMineInfo({
         mines: [{ guid: "4aaad42f-ab69-439a-b5f9-78c35f95d0ff" }],
@@ -32,7 +32,7 @@ describe("userMineInfoReducer", () => {
   it("receives STORE_MINE", () => {
     const expectedValue = getBaseExpectedValue();
     expectedValue.mine = { guid: "test123" };
-    const result = userMineInfoReducer(undefined, storeMine({ guid: "test123" }));
+    const result = userMineReducer(undefined, storeMine({ guid: "test123" }));
     expect(result).toEqual(expectedValue);
   });
 
@@ -41,7 +41,7 @@ describe("userMineInfoReducer", () => {
     expectedValue.mineDocuments = [
       { mine_guid: "4aaad42f-ab69-439a-b5f9-78c35f95d0ff", document_name: "test" },
     ];
-    const result = userMineInfoReducer(
+    const result = userMineReducer(
       undefined,
       storeMineDocuments({
         mine_documents: [
