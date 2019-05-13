@@ -9,7 +9,15 @@ import * as FORM from "@/constants/forms";
 import * as Strings from "@/constants/strings";
 import * as Styles from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";
-import { required, maxLength, minLength, number, lat, lon } from "@/utils/Validate";
+import {
+  required,
+  maxLength,
+  minLength,
+  dateNotInFuture,
+  number,
+  lat,
+  lon,
+} from "@/utils/Validate";
 import { renderConfig } from "@/components/common/config";
 import { getCurrentMineTypes } from "@/selectors/mineSelectors";
 import {
@@ -312,6 +320,21 @@ export class MineRecordForm extends Component {
                 options={this.props.mineStatusOptions}
                 component={renderConfig.CASCADER}
                 validate={[required]}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <Row gutter={16}>
+          <Col>
+            <Form.Item>
+              <Field
+                id="mine_status_date"
+                name="mine_status_date"
+                label="Date of Status Change"
+                placeholder="Unknown"
+                component={renderConfig.DATE}
+                validate={[dateNotInFuture]}
               />
             </Form.Item>
           </Col>

@@ -17,7 +17,7 @@ class MineStatus(AuditMixin, Base):
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     mine_status_xref_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('mine_status_xref.mine_status_xref_guid'))
-
+    status_date = db.Column(db.DateTime, nullable=True, default=None)
     effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     expiry_date = db.Column(
         db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
