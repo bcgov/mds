@@ -5,7 +5,7 @@ GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO mds;
 GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO mds;
 GRANT postgres TO mds;
 
-CREATE SCHEMA IF NOT EXISTS nris;
+CREATE SCHEMA IF NOT EXISTS nris; --alembic can do this, but user alembic using using probably shouldn't have permission to. 
 DO
 $do$
 BEGIN 
