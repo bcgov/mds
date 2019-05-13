@@ -20,6 +20,12 @@ const propTypes = {
 
 const defaultProps = {};
 
+const parseQuery = (query) => {
+  const terms = query.split(" ");
+
+  return { first_name: terms[0], last_name: terms[1] };
+};
+
 export const ContactResultsTable = (props) => {
   const columns = [
     {
@@ -92,7 +98,7 @@ export const ContactResultsTable = (props) => {
         columns={columns}
         dataSource={props.searchResults}
       />
-      <Link to={router.CONTACT_HOME_PAGE.dynamicRoute({ last_name: props.query })}>
+      <Link to={router.CONTACT_HOME_PAGE.dynamicRoute(parseQuery(props.query))}>
         <p style={{ fontSize: "22px", color: "inherit", float: "right" }}>
           See all results in Contacts ({props.searchResults.length})
         </p>
