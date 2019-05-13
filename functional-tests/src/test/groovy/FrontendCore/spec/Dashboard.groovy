@@ -28,6 +28,9 @@ class  DashboardSpec extends GebReportingSpec {
         given: "I go to the Dashboard Page"
         to Dashboard
 
+        // Only continue once loading screen is no longer displayed
+        waitFor { !loadingScreen.isDisplayed() }
+
         when: "Loading is finished and I click the create a mine button"
         createMineButton_Dashboard.click()
 
@@ -47,6 +50,9 @@ class  DashboardSpec extends GebReportingSpec {
     def "Scenario: User is able to create a mine record with fullmine info "(){
         given: "I go to the Dashboard Page"
         to Dashboard
+
+        // Only continue once loading screen is no longer displayed
+        waitFor { !loadingScreen.isDisplayed() }
 
         when: "Loading is finished and I click the create a mine button"
         createMineButton_Dashboard.click()
@@ -69,6 +75,9 @@ class  DashboardSpec extends GebReportingSpec {
 
         given: "I am on the Dashboard Page"
         to Dashboard
+
+        // Only continue once loading screen is no longer displayed
+        waitFor { !loadingScreen.isDisplayed() }
 
         when: "I click to view the first mine"
         viewLink.click()
