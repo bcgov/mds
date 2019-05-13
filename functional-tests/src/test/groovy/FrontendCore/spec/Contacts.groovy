@@ -45,7 +45,7 @@ class  Contacts extends GebReportingSpec {
         and: "I search for a contact."
         searchBoxFirstName = CONTACT_FIRST_NAME_2
         searchBoxLastName  = CONTACT_LAST_NAME_2
-        applyFilterButton.click()
+        waitFor() { applyFilterButton.click() }
 
         then: "I should get single person with that name."
         contactTableContent.text()startsWith( CONTACT_FULL_NAME_2)
@@ -60,7 +60,7 @@ class  Contacts extends GebReportingSpec {
         at ContactsPage
 
         and: "I click on the contact page link."
-        createContactButton.click()
+        waitFor() { createContactButton.click() }
 
         and: "I fill out the first form."
         createContactForm.createContactFormOne(input1)
