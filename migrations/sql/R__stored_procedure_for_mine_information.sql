@@ -493,7 +493,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                 new.longitude       ,
                 ST_SetSRID(ST_MakePoint(new.longitude, new.latitude), 3005),
                 now()               ,
-                NULL                , -- TODO: Confirm I didn't break this
+                NULL                ,
                 'mms_migration'     ,
                 now()               ,
                 'mms_migration'     ,

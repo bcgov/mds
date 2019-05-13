@@ -359,7 +359,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_manager_information() RETURNS void AS $
                 phone_ext        = null              ,
                 email            = etl.email         ,
                 effective_date   = etl.effective_date,
-                expiry_date      = NULL              , -- TODO: Confirm I didn't break this
+                expiry_date      = NULL              ,
                 update_user      = 'mms_migration'   ,
                 update_timestamp = now()             ,
                 party_type_code  = 'PER'
@@ -411,7 +411,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_manager_information() RETURNS void AS $
                     null                ,
                     email               ,
                     effective_date      ,
-                    NULL                , -- TODO: Confirm I didn't break this
+                    NULL                ,
                     'mms_migration'     ,
                     now()               ,
                     'mms_migration'     ,

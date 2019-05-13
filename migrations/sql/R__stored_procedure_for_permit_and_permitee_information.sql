@@ -743,7 +743,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                 phone_no         = etl.phone_no              ,
                 email            = etl.email                 ,
                 effective_date   = etl.effective_date        ,
-                expiry_date      = authorization_end_date    , -- TODO: Confirm I didn't break this
+                expiry_date      = authorization_end_date    ,
                 update_user      = 'mms_migration'           ,
                 update_timestamp = now()                     ,
                 party_type_code  = etl.party_type
@@ -796,7 +796,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                     phone_no                             ,
                     email                                ,
                     effective_date                       ,
-                    authorization_end_date as expiry_date, -- TODO: Confirm I didn't break this
+                    authorization_end_date as expiry_date,
                     'mms_migration'                      ,
                     now()                                ,
                     'mms_migration'                      ,
