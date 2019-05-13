@@ -107,6 +107,24 @@ services:
     networks:
       - mds
 
+  ####################### NRIS_BACKEND Definition #######################
+  nris_backend:
+    restart: always
+    container_name: nris_python
+    build:
+      context: microservices/nris_api/backend
+      dockerfile: Dockerfile
+    ports:
+      - 5500:5500
+    volumes:
+      - ./microservices/nris_api/backend/:/app/
+    depends_on:
+      - flyway
+    # Export environment variables from .env into the container environment
+    entrypoint: ["bash", "-c", "grep -v '^#' .env | xargs ; flask run"]
+    networks:
+      - mds
+
 ####################### Networks Definition #######################
 networks:
   mds:
