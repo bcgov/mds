@@ -79,7 +79,7 @@ def append_result(search_results, search_term, type, item, id_field, value_field
 def execute_search(app, search_results, search_term, search_terms, type, type_config):
     with app.app_context():
         for term in search_terms:
-            if len(term) > 3:
+            if len(term) > 2:
                 for column in type_config['columns']:
                     similarity = db.session.query(Mine).with_entities(
                         func.similarity(column, term).label('score'),
