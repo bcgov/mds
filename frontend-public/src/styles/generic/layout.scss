@@ -6,20 +6,20 @@ body {
 
 .layout {
   background-color: $pure-white;
-  width: 100vw;
+  width: 100%;
   min-height: 100vh;
 }
 
 .content {
   padding: 60px 0;
-  width: 80vw;
+  width: 80%;
   min-height: 100%;
   margin: auto;
   overflow: initial;
 
   @include mobile {
     width: 100vw;
-    margin: 10px;
+    padding: 10px;
   }
 }
 
