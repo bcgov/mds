@@ -185,7 +185,7 @@ describe("staticContentSelectors", () => {
     expect(getHSRCMComplianceCodesHash(localMockState)).toEqual(mockComplianceCodesHash);
   });
 
-  it("`getVarianceStatusOptions` calls `staticContentReducer.getComplianceCodes`", () => {
+  it("`getVarianceStatusOptions` calls `staticContentReducer.getVarianceStatusOptions`", () => {
     const storeAction = storeVarianceStatusOptions(Mock.VARIANCE_STATUS_OPTIONS);
     const storeState = staticContentReducer({}, storeAction);
     const localMockState = {

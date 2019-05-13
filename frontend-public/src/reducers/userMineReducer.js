@@ -2,8 +2,8 @@ import * as actionTypes from "@/constants/actionTypes";
 import { USER_MINE_INFO } from "@/constants/reducerTypes";
 
 /**
- * @file userMineInfoReducer.js
- * all data associated with user mine records is handled witnin this reducer.
+ * @file userMineReducer.js
+ * all data associated with user mine records is handled within this reducer.
  */
 
 const initialState = {
@@ -12,7 +12,7 @@ const initialState = {
   mineDocuments: [],
 };
 
-const userMineInfoReducer = (state = initialState, action) => {
+const userMineReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.STORE_USER_MINE_INFO:
       return {
@@ -42,4 +42,4 @@ export const getUserMineInfo = (state) => state[USER_MINE_INFO].userMineInfo;
 export const getMine = (state) => state[USER_MINE_INFO].mine;
 export const getMineDocuments = (state) => state[USER_MINE_INFO].mineDocuments;
 
-export default userMineInfoReducer;
+export default userMineReducer;

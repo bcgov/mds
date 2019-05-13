@@ -38,7 +38,7 @@ from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserM
 
 @pytest.mark.parametrize(
     "resource,method,expected_roles",
-    [(ComplianceArticleResource, "get", [MINE_VIEW]),
+    [(ComplianceArticleResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]),
      (DocumentManagerResource, "get", []),
      (DocumentManagerResource, "post", [MINE_CREATE, MINESPACE_PROPONENT]),
      (DocumentManagerResource, "patch", [MINE_CREATE, MINESPACE_PROPONENT]),
@@ -99,9 +99,9 @@ from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserM
      (VarianceDocumentUploadResource, "post", [MINE_CREATE, MINESPACE_PROPONENT]),
      (VarianceDocumentUploadResource, "put", [MINE_CREATE, MINESPACE_PROPONENT]),
      (VarianceUploadedDocumentsResource, "delete", [MINE_CREATE, MINESPACE_PROPONENT]),
-     (VarianceListResource, "get", [MINE_VIEW]), (VarianceListResource, "post", [MINE_CREATE]),
+     (VarianceListResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]), (VarianceListResource, "post", [MINE_CREATE, MINESPACE_PROPONENT]),
      (VarianceResource, "get", [MINE_VIEW]),
-     (VarianceResource, "put", [MINE_CREATE])])
+     (VarianceResource, "put", [MINE_CREATE, MINESPACE_PROPONENT])])
 def test_endpoint_auth(resource, method, expected_roles):
     endpoint = getattr(resource, method, None)
     assert endpoint != None, '{0} does not have a {1} method.'.format(resource, method.upper())
