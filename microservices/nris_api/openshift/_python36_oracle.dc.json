@@ -134,7 +134,7 @@
         "strategy": {
           "type": "Rolling",
           "rollingParams": {
-            "pre": {
+            "post": {
               "failurePolicy": "Retry",
               "execNewPod": {
                 "containerName": "flask-migrate",
