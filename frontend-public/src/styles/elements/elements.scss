@@ -70,12 +70,13 @@ p {
   color: $p-color;
 }
 
-a,
-link {
+a {
   color: $a-color;
-  text-decoration: underline;
   &:hover {
     color: $a-color-hover;
+  }
+
+  &.underline {
     text-decoration: underline;
   }
   & .header-link {

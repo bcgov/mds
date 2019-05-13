@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { getMineDocuments } from "@/selectors/userMineInfoSelector";
+import { getMineDocuments } from "@/selectors/userMineSelectors";
 import {
   fetchMineDocuments,
   addDocumentToExpectedDocument,
