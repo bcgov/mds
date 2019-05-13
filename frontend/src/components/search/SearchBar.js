@@ -55,6 +55,7 @@ export class SearchBar extends Component {
         searchTermHistory: newSearchTermHistory,
       };
     });
+    this.clearSearchBar();
     this.props.history.push(`/search?q=${searchTerm}`);
   };
 
