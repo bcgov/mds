@@ -135,8 +135,9 @@
           "type": "Rolling",
           "rollingParams": {
             "post": {
-              "failurePolicy": "Retry",
+              "failurePolicy": "ignore",
               "execNewPod": {
+                "containerName": "flask-migrate",
                 "command": ["flask", "db upgrade"]
               }
             },
