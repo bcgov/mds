@@ -10,7 +10,7 @@ DO
 $do$
 BEGIN 
     IF NOT EXISTS(select from pg_catalog.pg_roles where rolname= 'nris') THEN 
-        CREATE USER nris;
+        CREATE USER nris with PASSWORD 'VsPJAuMJHu3IVMEv';
         GRANT ALL PRIVILEGES ON SCHEMA nris to nris;
     END IF; 
 END
