@@ -69,7 +69,6 @@ class SearchResource(Resource, UserMixin):
 
         top_search_results = list(grouped_results.values())
         top_search_results.sort(key=lambda x: x.score, reverse=True)
-        #top_search_results = top_search_results[0:200]
 
         all_search_results = {}
 
@@ -118,7 +117,7 @@ def append_result(search_results, search_term, type, item, id_field, value_field
 def execute_search(app, search_results, search_term, search_terms, type, type_config):
     with app.app_context():
         for term in search_terms:
-            if len(term) > 3:
+            if len(term) > 2:
                 for column in type_config['columns']:
                     similarity = db.session.query(Mine).with_entities(
                         func.similarity(column, term).label('score'),

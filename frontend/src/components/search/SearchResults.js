@@ -87,14 +87,10 @@ const renderSearchResultGroup = (group, searchTerms, partyRelationshipTypeHash, 
 };
 
 export class SearchResults extends Component {
-  params = queryString.parse(this.props.location.search);
-
   state = {
     isSearching: false,
     hasSearchTerm: false,
-    params: {
-      ...this.params,
-    },
+    params: {},
   };
 
   componentDidMount = () => {
@@ -122,13 +118,12 @@ export class SearchResults extends Component {
   };
 
   handleSearch = (location) => {
-    const params = location.search;
-    const parsedParams = queryString.parse(params);
-    const { q = this.state.params.q, t = this.state.params.t } = parsedParams;
+    const parsedParams = queryString.parse(location.search);
+    const { q, t } = parsedParams;
 
     if (q) {
       this.props.fetchSearchResults(q, t);
-      this.setState({ isSearching: true, hasSearchTerm: true });
+      this.setState({ params: parsedParams, isSearching: true, hasSearchTerm: true });
     }
   };
 
