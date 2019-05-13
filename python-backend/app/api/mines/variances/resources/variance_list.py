@@ -3,8 +3,8 @@ from flask_restplus import Resource, fields
 from werkzeug.exceptions import BadRequest, NotFound
 
 from ..models.variance import Variance
+from ....utils.access_decorators import requires_any_of, MINE_VIEW, MINE_CREATE, MINESPACE_PROPONENT
 from ...mine.models.mine import Mine
-from ....utils.access_decorators import requires_any_of, MINE_VIEW, MINE_CREATE
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.mines.mine_api_models import VARIANCE_MODEL
@@ -65,7 +65,7 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
     @api.doc(
         description='Get a list of all variances for a given mine.',
         params={'mine_guid': 'guid of the mine for which to fetch variances'})
-    @requires_any_of([MINE_VIEW])
+    @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
     @api.marshal_with(VARIANCE_MODEL, code=200, envelope='records')
     def get(self, mine_guid):
         variances = Variance.find_by_mine_guid(mine_guid)
@@ -86,7 +86,7 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
         description='Create a new variance for a given mine.',
         params={'mine_guid': 'guid of the mine with which to associate the variances'})
     @api.expect(parser)
-    @requires_any_of([MINE_CREATE])
+    @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
     @api.marshal_with(VARIANCE_MODEL, code=200)
     def post(self, mine_guid):
         data = self.parser.parse_args()

@@ -1,0 +1,16 @@
+import * as actionTypes from "../constants/actionTypes";
+
+export const storeVariances = (payload) => ({
+  type: actionTypes.STORE_VARIANCES,
+  payload,
+});
+
+export const storeVarianceStatusOptions = (payload) => ({
+  type: actionTypes.STORE_VARIANCE_STATUS_OPTIONS,
+  payload,
+});
+
+export const storeComplianceCodes = (payload) => ({
+  type: actionTypes.STORE_COMPLIANCE_CODES,
+  payload,
+});
