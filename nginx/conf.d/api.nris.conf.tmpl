@@ -9,7 +9,7 @@ location ${PATH_PREFIX}/nris_api/ {
                 return 503;
         }
 
-        proxy_pass ${API_SERVICE_URL}${PATH_PREFIX}/nris_api/;
+        proxy_pass ${NRIS_API_SERVICE_URL}${PATH_PREFIX}/nris_api/;
         include /opt/app-root/etc/nginx.conf.d/proxy.params;
 }
 
@@ -18,6 +18,6 @@ location ${PATH_PREFIX}/nris_api/v1/ {
                 return 503;
         }
 
-        proxy_pass ${API_SERVICE_URL}${PATH_PREFIX}/nris_api/;
+        proxy_pass ${NRIS_API_SERVICE_URL}${PATH_PREFIX}/nris_api/;
         include /opt/app-root/etc/nginx.conf.d/proxy.params;
 }
