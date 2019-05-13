@@ -133,6 +133,17 @@
       "spec": {
         "strategy": {
           "type": "Rolling",
+          "rollingParams": {
+            "pre": {
+              "failurePolicy": "Retry",
+              "execNewPod": {
+                "containerName": "flask-migrate",
+                "command": [
+                  "flask",
+                  "db upgrade"   
+                ]
+              }
+            },
           "resources": {
             "limits": {
               "cpu": "250m",
