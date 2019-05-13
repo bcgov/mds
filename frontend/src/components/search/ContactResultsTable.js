@@ -21,8 +21,14 @@ const propTypes = {
 const defaultProps = {};
 
 const parseQuery = (query) => {
+  const exp = RegExp("@");
+  if (exp.test(query)) {
+    return { email: query };
+  }
   const terms = query.split(" ");
-
+  if (terms.length === 1) {
+    return { last_name: terms[0] };
+  }
   return { first_name: terms[0], last_name: terms[1] };
 };
 
