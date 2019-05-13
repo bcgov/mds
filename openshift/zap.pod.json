@@ -60,7 +60,7 @@
                 "memory": "1Gi"
               }
             },
-            "imagePullPolicy": "Always"
+            "imagePullPolicy": "IfNotPresent"
           }
         ],
         "restartPolicy": "Never",
