@@ -11,8 +11,6 @@ import CustomPropTypes from "@/customPropTypes";
 import { SINGLE_DOCUMENT, DOCUMENTS } from "@/constants/assets";
 import Loading from "@/components/common/Loading";
 
-// import * as routes from "@/constants/routes";
-
 const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
   mine: CustomPropTypes.mine.isRequired,

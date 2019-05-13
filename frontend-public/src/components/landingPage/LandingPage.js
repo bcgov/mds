@@ -1,7 +1,7 @@
 import React from "react";
 import { Divider, Button } from "antd";
 
-import QuestionSidebar from "../common/QuestionsSidebar";
+import QuestionSidebar from "@/components/common/QuestionsSidebar";
 
 export const LandingPage = () => (
   <div>
@@ -26,8 +26,8 @@ export const LandingPage = () => (
       <br />
       <p>
         MineSpace is a pilot project as a part of the MDS digital product. MineSpace will be the
-        portal through which mines can interact with the Ministry. In time, Mines will be able to
-        submit documentation to the Ministry, as well as check the status of reporting requirements,
+        portal through which mines can interact with the Ministry. In time, mines will be able to
+        submit documentation to the ministry, as well as check the status of reporting requirements,
         and documentation that they have submitted to the ministry for review. The pilot project
         will run in the spring of 2019 with full integration in early 2020.
       </p>

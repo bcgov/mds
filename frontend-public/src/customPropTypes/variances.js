@@ -8,7 +8,7 @@ export const variance = shape({
   applicant_guid: PropTypes.string,
   ohsc_ind: PropTypes.bool,
   union_ind: PropTypes.bool,
-  inspector_id: PropTypes.string,
+  inspector_guid: PropTypes.string,
   expiry_date: PropTypes.string,
   issue_date: PropTypes.string,
   note: PropTypes.string,

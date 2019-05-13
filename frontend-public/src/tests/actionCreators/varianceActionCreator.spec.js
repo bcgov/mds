@@ -30,7 +30,7 @@ describe("`createVariance` action creator", () => {
   const mineGuid = "1234567";
   const mockPayload = {
     effective_date: "1970-01-01",
-    expiry_date: "9999-12-31",
+    expiry_date: "2025-12-31",
   };
   const url = ENVIRONMENT.apiUrl + API.VARIANCES(mineGuid);
   it("Request successful, dispatches `success` with correct response", () => {

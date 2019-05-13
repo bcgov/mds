@@ -32,7 +32,7 @@ const transformRowData = (variances, codeHash, statusHash) =>
     issue_date: formatDate(variance.issue_date) || Strings.EMPTY_FIELD,
     note: variance.note,
     received_date: formatDate(variance.received_date) || Strings.EMPTY_FIELD,
-    isOverdue: Date.parse(variance.expiry_date) < new Date(),
+    isOverdue: variance.expiry_date && Date.parse(variance.expiry_date) < new Date(),
     documents: variance.documents,
   }));
 
@@ -83,7 +83,7 @@ const columns = (isApplication) => [
         {text}
       </div>
     ),
-    sorter: (a, b) => (a.issue_date > b.issue_date ? -1 : 1),
+    sorter: (a, b) => ((a.issue_date || 0) > (b.issue_date || 0) ? -1 : 1),
   },
   {
     title: "Expiry Date",
@@ -94,7 +94,7 @@ const columns = (isApplication) => [
         {text}
       </div>
     ),
-    sorter: (a, b) => (a.expiry_date > b.expiry_date ? -1 : 1),
+    sorter: (a, b) => ((a.expiry_date || 0) > (b.expiry_date || 0) ? -1 : 1),
     defaultSortOrder: "descend",
   },
   {

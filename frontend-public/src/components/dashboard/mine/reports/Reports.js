@@ -89,9 +89,7 @@ export class Reports extends Component {
           <div>
             <h1 className="mine-title">{this.props.mine.mine_name}</h1>
             <p>Mine No. {this.props.mine.mine_no}</p>
-
             <h2>2018 Reports</h2>
-            <br />
             <MineReportTable
               mine={this.props.mine}
               openEditReportModal={this.openEditReportModal}
