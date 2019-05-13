@@ -138,12 +138,13 @@
               "failurePolicy": "Retry",
               "execNewPod": {
                 "containerName": "flask-migrate",
-                "command": [
-                  "flask",
-                  "db upgrade"   
-                ]
+                "command": ["flask", "db upgrade"]
               }
             },
+            "maxSurge": "50%",
+            "maxUnavailable": 0,
+            "timeoutSeconds": 1200
+          },
           "resources": {
             "limits": {
               "cpu": "250m",
