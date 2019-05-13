@@ -57,7 +57,7 @@ class SimpleSearchResource(Resource, UserMixin):
         search_results.sort(key=lambda x: x.score, reverse=True)
         search_results = search_results[0:10]
 
-        return {'search_terms': search_results, 'search_results': search_results}
+        return {'search_terms': search_terms, 'search_results': search_results}
 
 
 def append_result(search_results, search_term, type, item, id_field, value_field, score_multiplier):

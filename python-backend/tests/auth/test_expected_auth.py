@@ -34,6 +34,8 @@ from app.api.permits.permit_amendment.resources.permit_amendment import PermitAm
 from app.api.permits.permit_amendment.resources.permit_amendment_document import PermitAmendmentDocumentResource
 from app.api.users.minespace.resources.minespace_user import MinespaceUserResource
 from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserMineResource
+from app.api.search.search.resources.search import SearchResource, SearchOptionsResource
+from app.api.search.search.resources.simple_search import SimpleSearchResource
 
 
 @pytest.mark.parametrize(
@@ -90,7 +92,10 @@ from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserM
      (PermitAmendmentDocumentResource, "put", [MINE_CREATE]),
      (PermitAmendmentDocumentResource, "delete", [MINE_CREATE]),
      (RequiredDocumentResource, "get", [MINE_VIEW]),
-     (RequiredDocumentResource, "get", [MINE_VIEW]), 
+     (RequiredDocumentResource, "get", [MINE_VIEW]),
+     (SearchResource, "get", [MINE_VIEW]),
+     (SearchOptionsResource, "get", [MINE_VIEW]),
+     (SimpleSearchResource, "get", [MINE_VIEW]), 
      (MinespaceUserResource, 'get', [MINE_ADMIN]),
      (MinespaceUserResource, 'post', [MINE_ADMIN]), 
      (MinespaceUserResource, 'delete', [MINE_ADMIN]),
