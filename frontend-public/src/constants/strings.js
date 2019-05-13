@@ -8,3 +8,8 @@ export const RETURN_PAGE_TYPE = {
   SITEMINDER_LOGOUT: "smlogout",
   LOGOUT: "logout",
 };
+
+export const EMPTY_FIELD = "-";
+
+// variances
+export const VARIANCE_APPROVED_CODE = "APP";
