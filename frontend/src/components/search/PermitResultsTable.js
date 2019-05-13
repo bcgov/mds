@@ -11,7 +11,7 @@ import * as router from "@/constants/routes";
 
 const propTypes = {
   header: PropTypes.string.isRequired,
-  highlightRegex: PropTypes.string.isRequired,
+  highlightRegex: PropTypes.objectOf(PropTypes.regexp).isRequired,
   searchResults: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
@@ -26,14 +26,15 @@ export const PermitResultsTable = (props) => {
       render: (text, record) => [
         <Row style={{ paddingBottom: "5px" }}>
           <Col span={24}>
-            <Link to={router.MINE_SUMMARY.dynamicRoute(record.mine_guid, "permit")}>
-              <p style={{ fontSize: "22px", color: "inherit" }}>
-                <Highlight search={props.highlightRegex}>{record.permit_no}</Highlight>
-              </p>
+            <Link
+              style={{ fontSize: "1.5rem" }}
+              to={router.MINE_SUMMARY.dynamicRoute(record.mine_guid, "permit")}
+            >
+              <Highlight search={props.highlightRegex}>{record.permit_no}</Highlight>
             </Link>
           </Col>
           <Col xs={24} md={6}>
-            <p>Permitee</p>
+            <p>Permittee</p>
           </Col>
           <Col xs={24} md={18}>
             <p>
@@ -56,7 +57,7 @@ export const PermitResultsTable = (props) => {
       <h2>{props.header}</h2>
       <Divider />
       <Table
-        className="nested-table"
+        className="nested-table padding-large--bottom"
         align="left"
         showHeader={false}
         pagination={false}

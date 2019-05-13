@@ -11,7 +11,7 @@ import * as router from "@/constants/routes";
 
 const propTypes = {
   header: PropTypes.string.isRequired,
-  highlightRegex: PropTypes.objectOf(PropTypes.Any).isRequired,
+  highlightRegex: PropTypes.objectOf(PropTypes.regexp).isRequired,
   query: PropTypes.string.isRequired,
   searchResults: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
@@ -27,10 +27,11 @@ export const MineResultsTable = (props) => {
       render: (text, record) => [
         <Row>
           <Col span={24}>
-            <Link to={router.MINE_SUMMARY.dynamicRoute(record.mine_guid)}>
-              <p style={{ fontSize: "22px", color: "inherit" }}>
-                <Highlight search={props.highlightRegex}>{record.mine_name}</Highlight>
-              </p>
+            <Link
+              style={{ fontSize: "1.5rem" }}
+              to={router.MINE_SUMMARY.dynamicRoute(record.mine_guid)}
+            >
+              <Highlight search={props.highlightRegex}>{record.mine_name}</Highlight>
             </Link>
           </Col>
         </Row>,
@@ -70,17 +71,19 @@ export const MineResultsTable = (props) => {
       <h2>{props.header}</h2>
       <Divider />
       <Table
-        className="nested-table"
+        className="nested-table padding-large--bottom"
         align="left"
         showHeader={false}
         pagination={false}
         columns={columns}
         dataSource={props.searchResults}
       />
-      <Link to={router.MINE_HOME_PAGE.dynamicRoute({ search: props.query })}>
-        <p style={{ fontSize: "22px", color: "inherit", float: "right" }}>
-          See all results in Mines ({props.searchResults.length})
-        </p>
+      <Link
+        style={{ float: "right" }}
+        className="padding-large--left"
+        to={router.MINE_HOME_PAGE.dynamicRoute({ search: props.query })}
+      >
+        Advanced lookup for Mines
       </Link>
     </div>
   );

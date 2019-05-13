@@ -14,7 +14,7 @@ import { fetchPartyRelationshipTypes } from "@/actionCreators/partiesActionCreat
 import { fetchSearchOptions, fetchSearchResults } from "@/actionCreators/searchActionCreator";
 import Loading from "@/components/common/Loading";
 import LinkButton from "@/components/common/LinkButton";
-import _ from "lodash";
+import { sumBy, map, mapValues, keyBy } from "lodash";
 import { getSearchOptions } from "../../reducers/searchReducer";
 
 const propTypes = {
@@ -23,6 +23,7 @@ const propTypes = {
   fetchSearchOptions: PropTypes.func.isRequired,
   fetchSearchResults: PropTypes.func.isRequired,
   searchOptions: PropTypes.arrayOf(PropTypes.any).isRequired,
+  searchOptionsHash: PropTypes.objectOf(PropTypes.any).isRequired,
   searchResults: PropTypes.objectOf(PropTypes.any),
   searchTerms: PropTypes.arrayOf(PropTypes.string),
   partyRelationshipTypeHash: PropTypes.objectOf(PropTypes.strings).isRequired,
@@ -34,58 +35,73 @@ const defaultProps = {
   searchTerms: [],
 };
 
-const renderSearchResultGroup = (group, searchTerms, partyRelationshipTypeHash, queryParams) => {
-  const highlightRegex = RegExp(`${searchTerms.join("|")}`, "i");
-  const query = queryString.parse(queryParams);
-  if (group.type === "mine") {
-    return (
-      <Col sm={24} lg={12} style={{ padding: "30px", paddingBottom: "60px" }}>
-        <MineResultsTable
-          header="Mines"
-          highlightRegex={highlightRegex}
-          searchResults={group.results}
-          query={query.q}
-        />
-      </Col>
-    );
-  }
-  if (group.type === "permit") {
-    return (
-      <Col sm={24} lg={12} style={{ padding: "30px", paddingBottom: "60px" }}>
-        <PermitResultsTable
-          header="Permits"
-          highlightRegex={highlightRegex}
-          searchResults={group.results}
-        />
-      </Col>
-    );
-  }
-  if (group.type === "party") {
-    return (
-      <Col sm={24} lg={12} style={{ padding: "30px", paddingBottom: "60px" }}>
-        <ContactResultsTable
-          header="Contacts"
-          highlightRegex={highlightRegex}
-          searchResults={group.results}
-          partyRelationshipTypeHash={partyRelationshipTypeHash}
-          query={query.q}
-        />
-      </Col>
-    );
-  }
-  if (group.type === "permit_documents" || group.type === "mine_documents") {
-    return (
-      <Col sm={24} lg={12} style={{ padding: "30px", paddingBottom: "60px" }}>
-        <DocumentResultsTable
-          header={group.type === "permit_documents" ? "Permit Documents" : "Mine Documents"}
-          highlightRegex={highlightRegex}
-          searchResults={group.results}
-        />
-      </Col>
-    );
-  }
-  return <div />;
-};
+const TableForGroup = (group, highlightRegex, partyRelationshipTypeHash, query) =>
+  ({
+    mine: (
+      <MineResultsTable
+        header="Mines"
+        highlightRegex={highlightRegex}
+        searchResults={group.results}
+        query={query.q}
+      />
+    ),
+    party: (
+      <ContactResultsTable
+        header="Contacts"
+        highlightRegex={highlightRegex}
+        searchResults={group.results}
+        partyRelationshipTypeHash={partyRelationshipTypeHash}
+        query={query.q}
+      />
+    ),
+    permit: (
+      <PermitResultsTable
+        header="Permits"
+        highlightRegex={highlightRegex}
+        searchResults={group.results}
+      />
+    ),
+    mine_documents: (
+      <DocumentResultsTable
+        header="Mine Documents"
+        highlightRegex={highlightRegex}
+        searchResults={group.results}
+      />
+    ),
+    permit_documents: (
+      <DocumentResultsTable
+        header="Permit Documents"
+        highlightRegex={highlightRegex}
+        searchResults={group.results}
+      />
+    ),
+  }[group.type]);
+
+const NoResults = () => (
+  <Row type="flex" justify="center">
+    <Col sm={12} md={8} className="padding-xxl--top">
+      <div className="null-screen">
+        <h2>No Results Found</h2>
+        <p>Please try another search.</p>
+      </div>
+    </Col>
+  </Row>
+);
+
+const CantFindIt = () => (
+  <Row type="flex" justify="center">
+    <Col sm={22} md={18} lg={8} className="padding-large--top padding-xxl--bottom">
+      <div className="null-screen">
+        <h2>Can&#39;t find it?</h2>
+        <p>
+          Try clicking to see more results, or select the advanced lookup if available. Also, double
+          check your spelling to ensure it is correct. If you feel there is a problem, contact the
+          Core administrator to ask for assistance.
+        </p>
+      </div>
+    </Col>
+  </Row>
+);
 
 export class SearchResults extends Component {
   state = {
@@ -131,13 +147,12 @@ export class SearchResults extends Component {
   render = () => {
     const groupedSearchResults = [];
     Object.entries(this.props.searchResults).forEach((entry) => {
-      const key = entry[0];
-      const value = entry[1];
-      groupedSearchResults.push({
-        type: key,
-        score: _.sumBy(value, "score"),
-        results: _.map(value, "result"),
-      });
+      const resultGroup = {
+        type: entry[0],
+        score: sumBy(entry[1], "score"),
+        results: map(entry[1], "result"),
+      };
+      if (resultGroup.score > 0) groupedSearchResults.push(resultGroup);
     });
 
     groupedSearchResults.sort((a, b) => a.score - b.score);
@@ -145,73 +160,89 @@ export class SearchResults extends Component {
 
     const type_filter = this.state.params.t;
 
+    if (this.state.isSearching) return <Loading />;
+
+    const results = this.props.searchTerms.map((t) => `"${t}"`).join(", ");
+
     return (
       this.state.hasSearchTerm && (
         <div className="landing-page">
-          {this.state.isSearching ? (
-            <Loading />
-          ) : (
-            <div>
-              <div className="landing-page__header">
-                <h1 style={{ paddingBottom: "5px" }}>
-                  {type_filter
-                    ? this.props.searchOptions.find((o) => o.model_id === type_filter).description
-                    : "Search results"}{" "}
-                  for {this.props.searchTerms.map((t) => `"${t}"`).join(", ")}
-                </h1>
-                <div>
-                  {type_filter ? (
-                    <LinkButton
-                      key="all"
-                      onClick={() => {
-                        this.props.history.push(`/search?q=${this.state.params.q}`);
-                      }}
-                    >
-                      <Icon type="arrow-left" style={{ paddingRight: "5px" }} />
-                      Back to all search results
-                    </LinkButton>
-                  ) : (
-                    <p>
-                      Just show me:
-                      {this.props.searchOptions.map((o) => (
-                        <span style={{ padding: "20px" }}>
-                          <LinkButton
-                            key={o.model_id}
-                            onClick={() => {
-                              this.props.history.push(
-                                `/search?q=${this.state.params.q}&t=${o.model_id}`
-                              );
-                            }}
-                          >
-                            {o.description}
-                          </LinkButton>
-                        </span>
-                      ))}
-                    </p>
-                  )}
-                </div>
-              </div>
-              <div className="landing-page__content">
-                <div className="tab__content">
-                  {groupedSearchResults.length === 0 && [
-                    <br />,
-                    <h2>No Results Found</h2>,
-                    <p>Please try another search.</p>,
-                  ]}
-                  <Row gutter={10}>
-                    {groupedSearchResults.map((group) =>
-                      renderSearchResultGroup(
-                        group,
-                        this.props.searchTerms,
-                        this.props.partyRelationshipTypeHash,
-                        this.props.location.search
-                      )
-                    )}
-                  </Row>
-                </div>
+          <div>
+            <div className="landing-page__header">
+              <h1 className="padding-small--bottom">
+                {`${
+                  type_filter ? this.props.searchOptionsHash[type_filter] : "Search results"
+                } for ${results}`}
+              </h1>
+              <div>
+                {type_filter ? (
+                  <LinkButton
+                    key="all"
+                    onClick={() => {
+                      this.props.history.push(`/search?q=${this.state.params.q}`);
+                    }}
+                  >
+                    <Icon type="arrow-left" className="padding-small--right" />
+                    {`Back to all search results for ${results}`}
+                  </LinkButton>
+                ) : (
+                  <p>
+                    Just show me:
+                    {this.props.searchOptions.map((o) => (
+                      <span className="padding-large" key={o.model_id}>
+                        <LinkButton
+                          key={o.model_id}
+                          onClick={() => {
+                            this.props.history.push(
+                              `/search?q=${this.state.params.q}&t=${o.model_id}`
+                            );
+                          }}
+                        >
+                          {o.description}
+                        </LinkButton>
+                      </span>
+                    ))}
+                  </p>
+                )}
               </div>
             </div>
-          )}
+            <div className="landing-page__content">
+              <div className="tab__content">
+                {groupedSearchResults.length === 0 && <NoResults />}
+                <Row gutter={48}>
+                  {groupedSearchResults.map((group) => (
+                    <Col
+                      key={group.type}
+                      sm={24}
+                      lg={groupedSearchResults.length === 1 ? 24 : 12}
+                      className="padding-large--top padding-xxl--bottom"
+                    >
+                      {TableForGroup(
+                        group,
+                        RegExp(`${this.props.searchTerms.join("|")}`, "i"),
+                        this.props.partyRelationshipTypeHash,
+                        this.state.params
+                      )}
+                      {!type_filter && (
+                        <LinkButton
+                          style={{ float: "right" }}
+                          key={group.type}
+                          onClick={() => {
+                            this.props.history.push(
+                              `/search?q=${this.state.params.q}&t=${group.type}`
+                            );
+                          }}
+                        >
+                          See more search results for {this.props.searchOptionsHash[group.type]}
+                        </LinkButton>
+                      )}
+                    </Col>
+                  ))}
+                </Row>
+                <CantFindIt />
+              </div>
+            </div>
+          </div>
         </div>
       )
     );
@@ -220,6 +251,7 @@ export class SearchResults extends Component {
 
 const mapStateToProps = (state) => ({
   searchOptions: getSearchOptions(state),
+  searchOptionsHash: mapValues(keyBy(getSearchOptions(state), "model_id"), "description"),
   searchResults: getSearchResults(state),
   searchTerms: getSearchTerms(state),
   partyRelationshipTypeHash: getPartyRelationshipTypeHash(state),
