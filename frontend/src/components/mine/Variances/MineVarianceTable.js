@@ -186,7 +186,13 @@ export class MineVarianceTable extends Component {
           align="left"
           pagination={false}
           columns={columns}
-          locale={{ emptyText: <NullScreen type="approved-variances" /> }}
+          locale={{
+            emptyText: (
+              <NullScreen
+                type={this.props.isApplication ? "variance-applications" : "approved-variances"}
+              />
+            ),
+          }}
           dataSource={this.transformRowData(
             this.props.variances,
             this.props.complianceCodesHash,
