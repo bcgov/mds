@@ -67,12 +67,12 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
         description='Get a single variance.',
         params={
             'mine_guid': 'GUID of the mine to which the variance is associated',
-            'variance_id': 'ID of the variance to fetch'
+            'variance_guid': 'GUID of the variance to fetch'
         })
     @requires_any_of([MINE_VIEW])
     @api.marshal_with(VARIANCE_MODEL, code=200)
-    def get(self, mine_guid, variance_id):
-        variance = Variance.find_by_mine_guid_and_variance_id(mine_guid, variance_id)
+    def get(self, mine_guid, variance_guid):
+        variance = Variance.find_by_mine_guid_and_variance_guid(mine_guid, variance_guid)
 
         if variance is None:
             raise NotFound('Unable to fetch variance')
@@ -84,12 +84,12 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
         description='Update a variance.',
         params={
             'mine_guid': 'GUID of the mine to which the variance is associated',
-            'variance_id': 'ID of the variance to update'
+            'variance_guid': 'GUID of the variance to update'
         })
-    @requires_any_of([MINE_CREATE])
+    @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
     @api.marshal_with(VARIANCE_MODEL, code=200)
-    def put(self, mine_guid, variance_id):
-        variance = Variance.find_by_mine_guid_and_variance_id(mine_guid, variance_id)
+    def put(self, mine_guid, variance_guid):
+        variance = Variance.find_by_mine_guid_and_variance_guid(mine_guid, variance_guid)
         if variance is None:
             raise NotFound('Unable to fetch variance')
 
@@ -108,23 +108,14 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
                 continue
             setattr(variance, key, value)
 
-        if variance.variance_application_status_code == 'APP':
-            if variance.expiry_date is None:
-                raise AssertionError('Expiry date required for approved variance.')
-            if variance.issue_date is None:
-                raise AssertionError('Issue date required for approved variance.')
-            if variance.inspector_id is None:
-                raise AssertionError('Inspector required for approved variance.')
-
-        if variance.variance_application_status_code == 'DEN':
-            if variance.inspector_id is None:
-                raise AssertionError('Inspector required for reviewed variance.')
-
-        if variance.variance_application_status_code in ['REV', 'NAP']:
-            if variance.expiry_date is not None:
-                raise AssertionError('Expiry date forbidden for variance application.')
-            if variance.issue_date is not None:
-                raise AssertionError('Issue date forbidden for variance application.')
+        # A manual check to prevent a stack trace dump on a foreign key /
+        # constraint error because global error handling doesn't currently work
+        # with these errors
+        Variance.validate_status_with_other_values(
+            status=variance.variance_application_status_code,
+            issue=variance.issue_date,
+            expiry=variance.expiry_date,
+            inspector=variance.inspector_id)
 
         variance.save()
         return variance

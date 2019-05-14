@@ -6,7 +6,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
 import CustomPropTypes from "@/customPropTypes";
-import { getMine } from "@/selectors/userMineInfoSelector";
+import { getMine } from "@/selectors/userMineSelectors";
 import {
   removeMineDocumentFromExpectedDocument,
   fetchMineRecordById,

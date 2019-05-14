@@ -2,7 +2,7 @@ import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
 import { request, success, error } from "@/actions/genericActions";
 import * as reducerTypes from "@/constants/reducerTypes";
-import * as String from "@/constants/strings";
+import * as Strings from "@/constants/strings";
 import * as varianceActions from "@/actions/varianceActions";
 import * as API from "@/constants/API";
 import { ENVIRONMENT } from "@/constants/environment";
@@ -10,13 +10,17 @@ import { createRequestHeader } from "@/utils/RequestHeaders";
 import CustomAxios from "@/customAxios";
 
 export const createVariance = ({ mineGuid }, payload) => (dispatch) => {
+  const message =
+    payload.variance_application_status_code === Strings.VARIANCE_APPLICATION_CODE
+      ? "Successfully applied for a new variance"
+      : "Successfully added an approved variance";
   dispatch(request(reducerTypes.CREATE_MINE_VARIANCE));
   dispatch(showLoading());
   return CustomAxios()
     .post(ENVIRONMENT.apiUrl + API.VARIANCES(mineGuid), payload, createRequestHeader())
     .then((response) => {
       dispatch(hideLoading());
-      notification.success({ message: "Successfully created a new variance", duration: 10 });
+      notification.success({ message, duration: 10 });
       dispatch(success(reducerTypes.CREATE_MINE_VARIANCE));
       return response;
     })
@@ -24,10 +28,28 @@ export const createVariance = ({ mineGuid }, payload) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
+export const updateVariance = ({ mineGuid, varianceGuid, codeLabel }, payload) => (dispatch) => {
+  dispatch(request(reducerTypes.UPDATE_MINE_VARIANCE));
+  dispatch(showLoading());
+  return CustomAxios()
+    .put(ENVIRONMENT.apiUrl + API.VARIANCE(mineGuid, varianceGuid), payload, createRequestHeader())
+    .then((response) => {
+      dispatch(hideLoading());
+      notification.success({
+        message: `Successfully updated the variance application for: ${codeLabel}`,
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.UPDATE_MINE_VARIANCE));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.UPDATE_MINE_VARIANCE)))
+    .finally(() => dispatch(hideLoading()));
+};
+
 export const fetchVariancesByMine = ({ mineGuid }) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_VARIANCES));
   dispatch(showLoading());
-  return CustomAxios(String.ERROR)
+  return CustomAxios(Strings.ERROR)
     .get(ENVIRONMENT.apiUrl + API.VARIANCES(mineGuid), createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_VARIANCES));
@@ -38,12 +60,12 @@ export const fetchVariancesByMine = ({ mineGuid }) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const addDocumentToVariance = ({ mineGuid, varianceId }, payload) => (dispatch) => {
+export const addDocumentToVariance = ({ mineGuid, varianceGuid }, payload) => (dispatch) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.ADD_DOCUMENT_TO_VARIANCE));
   return CustomAxios()
     .put(
-      ENVIRONMENT.apiUrl + API.VARIANCE_DOCUMENTS(mineGuid, varianceId),
+      ENVIRONMENT.apiUrl + API.VARIANCE_DOCUMENTS(mineGuid, varianceGuid),
       payload,
       createRequestHeader()
     )
@@ -56,14 +78,14 @@ export const addDocumentToVariance = ({ mineGuid, varianceId }, payload) => (dis
     .finally(() => dispatch(hideLoading()));
 };
 
-export const removeDocumentFromVariance = ({ mineGuid, varianceId, mineDocumentGuid }) => (
+export const removeDocumentFromVariance = ({ mineGuid, varianceGuid, mineDocumentGuid }) => (
   dispatch
 ) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.REMOVE_DOCUMENT_FROM_VARIANCE));
   return CustomAxios()
     .delete(
-      ENVIRONMENT.apiUrl + API.VARIANCE_DOCUMENT(mineGuid, varianceId, mineDocumentGuid),
+      ENVIRONMENT.apiUrl + API.VARIANCE_DOCUMENT(mineGuid, varianceGuid, mineDocumentGuid),
       createRequestHeader()
     )
     .then((response) => {

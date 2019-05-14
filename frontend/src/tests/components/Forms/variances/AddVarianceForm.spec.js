@@ -14,9 +14,9 @@ const setupDispatchProps = () => {
 
 const setupProps = () => {
   props.mineGuid = "48593";
-  props.mineNo = "B03124";
   props.submitting = false;
   props.complianceCodes = MOCK.DROPDOWN_HSRCM_CODES;
+  props.coreUsers = MOCK.CORE_USERS.results;
 };
 
 beforeEach(() => {

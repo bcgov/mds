@@ -1,6 +1,6 @@
 import base64
 import requests
-from werkzeug.exceptions import BadRequest
+from werkzeug.exceptions import BadRequest, NotFound
 
 from flask import request, current_app, Response
 from flask_restplus import Resource
@@ -19,11 +19,7 @@ from app.api.mines.mine_api_models import VARIANCE_MODEL
 class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
     @api.doc(description='Request a document_manager_guid for uploading a document')
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
-    def post(self, mine_guid, variance_id):
-        parser = CustomReqparser()
-
-        # DocumentManager requires parser data, but no arguments are required
-        data = parser.parse_args()
+    def post(self, mine_guid, variance_guid):
         metadata = self._parse_request_metadata()
         if not metadata or not metadata.get('filename'):
             raise BadRequest('Filename not found in request metadata header')
@@ -54,17 +50,20 @@ class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         description='Associate an uploaded file with a variance.',
         params={
             'mine_guid': 'guid for the mine with which the variance is associated',
-            'variance_id': 'ID for the variance to which the document should be associated'
+            'variance_guid': 'GUID for the variance to which the document should be associated'
         })
     @api.marshal_with(VARIANCE_MODEL, code=200)
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
-    def put(self, mine_guid, variance_id):
+    def put(self, mine_guid, variance_guid):
         parser = CustomReqparser()
         # Arguments required by MineDocument
         parser.add_argument('document_name', type=str, required=True)
         parser.add_argument('document_manager_guid', type=str, required=True)
 
-        variance = Variance.find_by_variance_id(variance_id)
+        variance = Variance.find_by_variance_guid(variance_guid)
+
+        if not variance:
+            raise NotFound('Unable to fetch variance.')
 
         data = parser.parse_args()
         document_name = data.get('document_name')
