@@ -89,7 +89,6 @@ const MineIncidentTable = (props) => (
         props.openMineIncidentModal
       )}
     />
-    )
   </div>
 );
 
