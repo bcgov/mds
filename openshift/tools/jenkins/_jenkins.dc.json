@@ -32,7 +32,7 @@
       "kind": "PersistentVolumeClaim",
       "apiVersion": "v1",
       "metadata": {
-        "name": "jenkins-data-v2",
+        "name": "jenkins-data-store",
         "creationTimestamp": null,
         "labels": {
           "app": "jenkins"
@@ -46,7 +46,7 @@
         "accessModes": ["ReadWriteMany"],
         "resources": {
           "requests": {
-            "storage": "20Gi"
+            "storage": "40Gi"
           }
         }
       },
@@ -149,7 +149,6 @@
         ],
         "replicas": 1,
         "revisionHistoryLimit": 10,
-        "test": false,
         "selector": {
           "name": "jenkins"
         },
@@ -167,9 +166,9 @@
           "spec": {
             "volumes": [
               {
-                "name": "jenkins-data-v2",
+                "name": "jenkins-data-store",
                 "persistentVolumeClaim": {
-                  "claimName": "jenkins-data-v2"
+                  "claimName": "jenkins-data-store"
                 }
               }
             ],
