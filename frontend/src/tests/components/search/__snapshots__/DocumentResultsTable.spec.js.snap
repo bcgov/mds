@@ -74,7 +74,7 @@ ShallowWrapper {
         <Table
           align="left"
           bordered={false}
-          className="nested-table"
+          className="nested-table padding-large--bottom"
           columns={
             Array [
               Object {
@@ -177,7 +177,7 @@ ShallowWrapper {
         "props": Object {
           "align": "left",
           "bordered": false,
-          "className": "nested-table",
+          "className": "nested-table padding-large--bottom",
           "columns": Array [
             Object {
               "dataIndex": "document_guid",
@@ -264,7 +264,7 @@ ShallowWrapper {
           <Table
             align="left"
             bordered={false}
-            className="nested-table"
+            className="nested-table padding-large--bottom"
             columns={
               Array [
                 Object {
@@ -367,7 +367,7 @@ ShallowWrapper {
           "props": Object {
             "align": "left",
             "bordered": false,
-            "className": "nested-table",
+            "className": "nested-table padding-large--bottom",
             "columns": Array [
               Object {
                 "dataIndex": "document_guid",
