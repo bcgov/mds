@@ -18,6 +18,8 @@ import { getMineIncidents } from "@/selectors/mineSelectors";
 import {
   getIncidentFollowupActionOptions,
   getDropdownIncidentFollowupActionOptions,
+  getDangerousOccurrenceSubparagraphOptions,
+  getDropdownIncidentDeterminationOptions
 } from "@/selectors/staticContentSelectors";
 
 import MineIncidentTable from "./MineIncidentTable";
@@ -31,6 +33,8 @@ const propTypes = {
   mineIncidents: PropTypes.arrayOf(CustomPropTypes.incident),
   followupActions: PropTypes.arrayOf(CustomPropTypes.incidentFollowupType),
   followupActionsDropdown: PropTypes.arrayOf(CustomPropTypes.dropdownListItem),
+  incidentDeterminationOptions: CustomPropTypes.options.isRequired,
+  doSubparagraphOptions: CustomPropTypes.options.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   fetchMineIncidents: PropTypes.func.isRequired,
@@ -63,15 +67,26 @@ export class MineIncidents extends Component {
     });
   };
 
-  openMineIncidentModal = (event, onSubmit, existingIncident = {}) => {
+  openMineIncidentModal = (
+    event,
+    onSubmit,
+    existingIncident = { dangerous_occurrence_subparagraph_ids: [] }
+  ) => {
     event.preventDefault();
     this.props.openModal({
       props: {
-        initialValues: existingIncident,
+        initialValues: {
+          ...existingIncident,
+          dangerous_occurrence_subparagraph_ids: existingIncident.dangerous_occurrence_subparagraph_ids.map(
+            String
+          ),
+        },
         onSubmit,
         title: ModalContent.ADD_INCIDENT(this.props.mine.mine_name),
         mineGuid: this.props.mine.mine_guid,
         followupActionOptions: this.props.followupActionsDropdown,
+        incidentDeterminationOptions : this.props.incidentDeterminationOptions,
+        doSubparagraphOptions: this.props.doSubparagraphOptions,
       },
       widthSize: "50vw",
       content: modalConfig.MINE_INCIDENT,
@@ -105,6 +120,8 @@ const mapStateToProps = (state) => ({
   mineIncidents: getMineIncidents(state),
   followupActions: getIncidentFollowupActionOptions(state),
   followupActionsDropdown: getDropdownIncidentFollowupActionOptions(state),
+  incidentDeterminationOptions : getDropdownIncidentDeterminationOptions(state),
+  doSubparagraphOptions: getDangerousOccurrenceSubparagraphOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
