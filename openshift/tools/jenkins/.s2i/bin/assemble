@@ -42,4 +42,4 @@ if [ -d ${JENKINS_INSTALL_DIR}/configuration ]; then
 fi
 
 echo "---> Replacing current jenkins version with version 2.164.3..."
-wget http://mirrors.jenkins.io/war-stable/2.164.3/jenkins.war -P /usr/local/bin
+wget http://mirrors.jenkins.io/war-stable/2.164.3/jenkins.war -P /usr/lib/jenkins/
