@@ -24,11 +24,11 @@ export const PermitResultsTable = (props) => {
       dataIndex: "permit_guid",
       key: "permit_guid",
       render: (text, record) => [
-        <Row style={{ paddingBottom: "5px" }}>
+        <Row>
           <Col span={24}>
             <Link
-              style={{ fontSize: "1.5rem" }}
               to={router.MINE_SUMMARY.dynamicRoute(record.mine_guid, "permit")}
+              style={{ fontSize: "1.25rem" }}
             >
               <Highlight search={props.highlightRegex}>{record.permit_no}</Highlight>
             </Link>

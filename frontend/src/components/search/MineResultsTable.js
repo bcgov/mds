@@ -28,14 +28,14 @@ export const MineResultsTable = (props) => {
         <Row>
           <Col span={24}>
             <Link
-              style={{ fontSize: "1.5rem" }}
               to={router.MINE_SUMMARY.dynamicRoute(record.mine_guid)}
+              style={{ fontSize: "1.25rem" }}
             >
               <Highlight search={props.highlightRegex}>{record.mine_name}</Highlight>
             </Link>
           </Col>
         </Row>,
-        <Row style={{ paddingTop: "5px" }}>
+        <Row className="padding-small--top">
           <Col xs={24} md={4}>
             <p>Mine No.</p>
           </Col>
@@ -79,7 +79,7 @@ export const MineResultsTable = (props) => {
         dataSource={props.searchResults}
       />
       <Link
-        style={{ float: "right" }}
+        style={{ float: "right", fontSize: "1.25rem" }}
         className="padding-large--left"
         to={router.MINE_HOME_PAGE.dynamicRoute({ search: props.query })}
       >

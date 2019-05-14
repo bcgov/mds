@@ -187,7 +187,7 @@ export class SearchResults extends Component {
                   </LinkButton>
                 ) : (
                   <p>
-                    Just show me:
+                    <span className="padding-large--right">Just show me:</span>
                     {this.props.searchOptions.map((o) => (
                       <span className="padding-large" key={o.model_id}>
                         <LinkButton
@@ -225,7 +225,7 @@ export class SearchResults extends Component {
                       )}
                       {!type_filter && (
                         <LinkButton
-                          style={{ float: "right" }}
+                          style={{ float: "right", fontSize: "1.25rem" }}
                           key={group.type}
                           onClick={() => {
                             this.props.history.push(
