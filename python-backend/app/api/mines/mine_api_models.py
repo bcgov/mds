@@ -167,6 +167,14 @@ MINE_INCIDENT_FOLLOWUP_TYPE_MODEL = api.model(
         'active_ind': fields.Boolean
     })
 
+MINE_INCIDENT_DETERMINATION_TYPE_MODEL = api.model(
+    'Mine Incident Determination Type', {
+        'mine_incident_determination_type_code': fields.String,
+        'description': fields.String,
+        'display_order': fields.Integer,
+        'active_ind': fields.Boolean
+    })
+
 VARIANCE_DOCUMENT_MODEL = api.inherit(
     'VarianceDocumentModel', MINE_DOCUMENT_MODEL, {
         'created_at': fields.Date
