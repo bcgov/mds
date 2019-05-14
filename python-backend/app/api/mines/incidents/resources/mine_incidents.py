@@ -112,7 +112,7 @@ class MineIncidentListResource(Resource, UserMixin):
         try:
             incident.save()
         except Exception as e:
-            raise InternalServerError(f'Error: {e}')
+            raise InternalServerError(f'Error when saving: {e}')
 
         return incident, 201
 
@@ -197,9 +197,29 @@ class MineIncidentResource(Resource, UserMixin):
             raise NotFound("Mine Incident not found")
 
         data = self.parser.parse_args()
+        do_sub_codes = []
+        if data['determination_type_code'] == 'DO':
+            do_sub_codes = data['dangerous_occurrence_subparagraph_ids']
+            if not do_sub_codes:
+                raise BadRequest(
+                    'Dangerous occurrences require one or more cited sections of HSRC code 1.7.3')
 
         for key, value in data.items():
+            if key == 'dangerous_occurrence_subparagraph_ids':
+                continue
             setattr(incident, key, value)
 
-        incident.save()
+        incident.dangerous_occurrence_subparagraphs = []
+        for id in do_sub_codes:
+            sub = ComplianceArticle.find_by_compliance_article_id(id)
+            if not _compliance_article_is_do_subparagraph(sub):
+                raise BadRequest(
+                    'One of the provided compliance articles is not a sub-paragraph of section 1.7.3 (dangerous occurrences)'
+                )
+            incident.dangerous_occurrence_subparagraphs.append(sub)
+
+        try:
+            incident.save()
+        except Exception as e:
+            raise InternalServerError(f'Error when saving: {e}')
         return incident

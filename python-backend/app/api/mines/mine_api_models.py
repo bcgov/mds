@@ -156,7 +156,9 @@ MINE_INCIDENT_MODEL = api.model(
         'reported_timestamp': DateTime,
         'reported_by': fields.String,
         'reported_by_role': fields.String,
+        'determination_type_code': fields.String,
         'followup_type_code': fields.String,
+        'dangerous_occurrence_subparagraph_ids': fields.List(fields.Integer)
     })
 
 MINE_INCIDENT_FOLLOWUP_TYPE_MODEL = api.model(
