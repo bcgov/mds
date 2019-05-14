@@ -21,6 +21,7 @@ const initialState = {
   applicationStatusCodes: [],
   complianceCodes: [],
   incidentFollowupActionOptions: [],
+  incidentDeterminationOptions: [],
 };
 
 const staticContentReducer = (state = initialState, action) => {
@@ -90,6 +91,11 @@ const staticContentReducer = (state = initialState, action) => {
         ...state,
         incidentFollowupActionOptions: action.payload.options,
       };
+    case actionTypes.STORE_MINE_INCIDENT_DETERMINATION_OPTIONS:
+      return {
+        ...state,
+        incidentDeterminationOptions: action.payload.options,
+      };
     default:
       return state;
   }
@@ -112,5 +118,7 @@ export const getApplicationStatusOptions = (state) => state[STATIC_CONTENT].appl
 export const getComplianceCodes = (state) => state[STATIC_CONTENT].complianceCodes;
 export const getIncidentFollowupActionOptions = (state) =>
   state[STATIC_CONTENT].incidentFollowupActionOptions;
+export const getIncidentDeterminationOptions = (state) =>
+  state[STATIC_CONTENT].incidentDeterminationOptions;
 
 export default staticContentReducer;

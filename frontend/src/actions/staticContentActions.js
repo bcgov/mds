@@ -64,3 +64,8 @@ export const storeMineIncidentFollowActionOptions = (payload) => ({
   type: ActionTypes.STORE_MINE_INCIDENT_FOLLOWUP_ACTION_OPTIONS,
   payload,
 });
+
+export const storeMineIncidentDeterminationOptions = (payload) => ({
+  type: ActionTypes.STORE_MINE_INCIDENT_DETERMINATION_OPTIONS,
+  payload,
+});

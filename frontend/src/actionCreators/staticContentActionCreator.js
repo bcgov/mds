@@ -117,6 +117,17 @@ export const fetchMineIncidentFollowActionOptions = () => (dispatch) => {
     .catch(() => dispatch(error(reducerTypes.GET_MINE_INCIDENT_FOLLOW_ACTION_OPTIONS)));
 };
 
+export const fetchMineIncidentDeterminationOptions = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_MINE_INCIDENT_DETERMINATION_OPTIONS));
+  return CustomAxios()
+    .get(ENVIRONMENT.apiUrl + API.MINE_INCIDENT_DETERMINATION_TYPES, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_MINE_INCIDENT_DETERMINATION_OPTIONS));
+      dispatch(staticContentActions.storeMineIncidentDeterminationOptions(response.data));
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_MINE_INCIDENT_DETERMINATION_OPTIONS)));
+};
+
 export const setOptionsLoaded = () => (dispatch) => {
   dispatch(staticContentActions.loadedOptions(true));
 };
