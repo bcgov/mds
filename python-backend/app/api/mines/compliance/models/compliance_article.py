@@ -13,8 +13,14 @@ class ComplianceArticle(AuditMixin, Base):
     paragraph = db.Column(db.String, nullable=True)
     sub_paragraph = db.Column(db.String, nullable=True)
     description = db.Column(db.String, nullable=False)
+    long_description = db.Column(db.String, nullable=False)
     effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
+    expiry_date = db.Column(
+        db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
 
     def __repr__(self):
         return '<ComplianceArticle %r>' % self.compliance_article_id
+
+    @classmethod
+    def find_by_compliance_article_id(cls, id):
+        return cls.query.filter_by(compliance_article_id=id).first()

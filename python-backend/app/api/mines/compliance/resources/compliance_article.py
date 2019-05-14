@@ -13,6 +13,7 @@ class ComplianceArticleResource(Resource, UserMixin, ErrorMixin):
         'paragraph': fields.String,
         'sub_paragraph': fields.String,
         'description': fields.String,
+        'long_description': fields.String,
         'effective_date': fields.Date,
         'expiry_date': fields.Date
     })
