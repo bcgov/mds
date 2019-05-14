@@ -2,8 +2,6 @@ import * as userReducer from "@/reducers/userReducer";
 import { createSelector } from "reselect";
 import { createLabelHash } from "@/utils/helpers";
 
-// This file is anticipated to have multiple exports
-// eslint-disable-next-line import/prefer-default-export
 export const { getCoreUsers } = userReducer;
 
 export const getDropdownCoreUsers = createSelector(

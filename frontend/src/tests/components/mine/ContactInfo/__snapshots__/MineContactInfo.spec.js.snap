@@ -42,7 +42,7 @@ ShallowWrapper {
         "mine_region": "NE",
         "mine_status": Object {
           "effective_date": "2018-10-16",
-          "expiry_date": "9999-12-31",
+          "expiry_date": null,
           "status_labels": Array [
             "Closed",
             "Care & Maintenance",
@@ -91,11 +91,11 @@ ShallowWrapper {
       Object {
         "1c7da2c4-10d5-4c9f-994a-96427aa0c69b": Object {
           "effective_date": "2018-10-02",
-          "expiry_date": "9999-12-31",
+          "expiry_date": null,
           "party": Object {
             "effective_date": "2018-10-03",
             "email": "JgHxeyjv@aezZIwee.com",
-            "expiry_date": "9999-12-31",
+            "expiry_date": null,
             "first_name": "Tiyudoveh",
             "name": "Tiyudoveh Higesewawa",
             "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
@@ -165,7 +165,7 @@ ShallowWrapper {
             "mine_region": "NE",
             "mine_status": Object {
               "effective_date": "2018-10-16",
-              "expiry_date": "9999-12-31",
+              "expiry_date": null,
               "status_labels": Array [
                 "Closed",
                 "Care & Maintenance",
@@ -214,11 +214,11 @@ ShallowWrapper {
           Object {
             "1c7da2c4-10d5-4c9f-994a-96427aa0c69b": Object {
               "effective_date": "2018-10-02",
-              "expiry_date": "9999-12-31",
+              "expiry_date": null,
               "party": Object {
                 "effective_date": "2018-10-03",
                 "email": "JgHxeyjv@aezZIwee.com",
-                "expiry_date": "9999-12-31",
+                "expiry_date": null,
                 "first_name": "Tiyudoveh",
                 "name": "Tiyudoveh Higesewawa",
                 "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
@@ -278,7 +278,7 @@ ShallowWrapper {
           "mine_region": "NE",
           "mine_status": Object {
             "effective_date": "2018-10-16",
-            "expiry_date": "9999-12-31",
+            "expiry_date": null,
             "status_labels": Array [
               "Closed",
               "Care & Maintenance",
@@ -323,11 +323,11 @@ ShallowWrapper {
         "permittees": Object {
           "1c7da2c4-10d5-4c9f-994a-96427aa0c69b": Object {
             "effective_date": "2018-10-02",
-            "expiry_date": "9999-12-31",
+            "expiry_date": null,
             "party": Object {
               "effective_date": "2018-10-03",
               "email": "JgHxeyjv@aezZIwee.com",
-              "expiry_date": "9999-12-31",
+              "expiry_date": null,
               "first_name": "Tiyudoveh",
               "name": "Tiyudoveh Higesewawa",
               "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
@@ -395,7 +395,7 @@ ShallowWrapper {
               "mine_region": "NE",
               "mine_status": Object {
                 "effective_date": "2018-10-16",
-                "expiry_date": "9999-12-31",
+                "expiry_date": null,
                 "status_labels": Array [
                   "Closed",
                   "Care & Maintenance",
@@ -444,11 +444,11 @@ ShallowWrapper {
             Object {
               "1c7da2c4-10d5-4c9f-994a-96427aa0c69b": Object {
                 "effective_date": "2018-10-02",
-                "expiry_date": "9999-12-31",
+                "expiry_date": null,
                 "party": Object {
                   "effective_date": "2018-10-03",
                   "email": "JgHxeyjv@aezZIwee.com",
-                  "expiry_date": "9999-12-31",
+                  "expiry_date": null,
                   "first_name": "Tiyudoveh",
                   "name": "Tiyudoveh Higesewawa",
                   "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
@@ -508,7 +508,7 @@ ShallowWrapper {
             "mine_region": "NE",
             "mine_status": Object {
               "effective_date": "2018-10-16",
-              "expiry_date": "9999-12-31",
+              "expiry_date": null,
               "status_labels": Array [
                 "Closed",
                 "Care & Maintenance",
@@ -553,11 +553,11 @@ ShallowWrapper {
           "permittees": Object {
             "1c7da2c4-10d5-4c9f-994a-96427aa0c69b": Object {
               "effective_date": "2018-10-02",
-              "expiry_date": "9999-12-31",
+              "expiry_date": null,
               "party": Object {
                 "effective_date": "2018-10-03",
                 "email": "JgHxeyjv@aezZIwee.com",
-                "expiry_date": "9999-12-31",
+                "expiry_date": null,
                 "first_name": "Tiyudoveh",
                 "name": "Tiyudoveh Higesewawa",
                 "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
