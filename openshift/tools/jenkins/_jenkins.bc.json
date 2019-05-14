@@ -83,6 +83,22 @@
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
+        "name": "${NAME}-base",
+        "generation": 1,
+        "creationTimestamp": null,
+        "labels": {}
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        },
+        "tags": []
+      }
+    },
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
         "name": "${NAME}",
         "generation": 1,
         "creationTimestamp": null,
@@ -96,6 +112,47 @@
           "local": false
         },
         "tags": []
+      }
+    },
+    {
+      "kind": "BuildConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}-base"
+      },
+      "spec": {
+        "source": {
+          "type": "Git",
+          "git": {
+            "uri": "${SOURCE_REPOSITORY_URL}",
+            "ref": "${GIT_REF}"
+          },
+          "contextDir": "${SOURCE_CONTEXT_DIR}"
+        },
+        "strategy": {
+          "type": "Docker",
+          "dockerStrategy": {
+            "from": {
+              "kind": "ImageStreamTag",
+              "name": "jenkins-2-rhel7:v3.11"
+            }
+          }
+        },
+        "output": {
+          "to": {
+            "kind": "ImageStreamTag",
+            "name": "${NAME}-base:${VERSION}"
+          }
+        },
+        "completionDeadlineSeconds": 1200,
+        "triggers": [
+          {
+            "type": "ConfigChange"
+          },
+          {
+            "type": "ImageChange"
+          }
+        ]
       }
     },
     {
@@ -133,7 +190,7 @@
           "sourceStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "name": "jenkins-2-rhel7:v3.11"
+              "name": "${NAME}-base:${VERSION}"
             }
           }
         },
@@ -153,9 +210,7 @@
             "memory": "1Gi"
           }
         },
-        "postCommit": {
-          "script": "wget http://mirrors.jenkins.io/war-stable/2.164.3/jenkins.war -O /usr/lib/jenkins/jenkins.war"
-        },
+        "postCommit": {},
         "nodeSelector": null
       }
     }
