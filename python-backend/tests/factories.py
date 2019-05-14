@@ -223,7 +223,7 @@ class VarianceFactory(BaseFactory):
             issue_date=TODAY,
             expiry_date=TODAY,
             inspector_id=factory.SelfAttribute('core_user.core_user_id'))
-     
+
     compliance_article_id = factory.LazyFunction(RandomComplianceArticleId)
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     ohsc_ind = factory.Faker('boolean', chance_of_getting_true=50)
@@ -340,6 +340,9 @@ class MineIncidentFactory(BaseFactory):
     class Meta:
         model = MineIncident
 
+    class Params:
+        do_subparagraph_count = 2
+
     mine_incident_id_year = 2019
     mine_incident_guid = GUID
     incident_timestamp = factory.Faker('past_datetime')
@@ -347,9 +350,13 @@ class MineIncidentFactory(BaseFactory):
     reported_timestamp = factory.Faker('past_datetime')
     reported_by = factory.Faker('name')
     reported_by_role = factory.Faker('job')
-    followup_type_code = "NOA"
+    determination_type_code = factory.LazyFunction(RandomIncidentDeterminationTypeCode)
+    followup_type_code = 'NOA'
     followup_inspection_no = factory.Faker('numerify', text='######')  #nullable???
     closing_report_summary = factory.Faker('sentence', nb_words=20, variable_nb_words=True)
+    dangerous_occurrence_subparagraphs = factory.LazyAttribute(
+        lambda o: SampleDangerousOccurrenceSubparagraphs(o.do_subparagraph_count)
+        if o.determination_type_code == 'DO' else [])
 
 
 class AddressFactory(BaseFactory):
