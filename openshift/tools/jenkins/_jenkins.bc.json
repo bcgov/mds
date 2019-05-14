@@ -153,7 +153,9 @@
             "memory": "1Gi"
           }
         },
-        "postCommit": {},
+        "postCommit": {
+          "script": "wget http://mirrors.jenkins.io/war-stable/2.164.3/jenkins.war -O /usr/lib/jenkins/jenkins.war"
+        },
         "nodeSelector": null
       }
     }
