@@ -25,6 +25,27 @@
       "displayName": "Name",
       "description": "The output/built ImageStream tag names",
       "required": true
+    },
+    {
+      "name": "GIT_REF",
+      "displayName": "Git Reference",
+      "description": "The git reference or branch.",
+      "required": true,
+      "value": "develop"
+    },
+    {
+      "name": "SOURCE_CONTEXT_DIR",
+      "displayName": "Source Context Directory",
+      "description": "The source context directory.",
+      "required": false,
+      "value": "openshift/tools/jenkins"
+    },
+    {
+      "name": "SOURCE_REPOSITORY_URL",
+      "displayName": "Git Repo URL",
+      "description": "The URL to the Git repository.",
+      "required": true,
+      "value": "https://github.com/bcgov/mds.git"
     }
   ],
   "objects": [
@@ -43,11 +64,11 @@
         },
         "tags": [
           {
-            "name": "v3.9.33-3",
+            "name": "v3.11",
             "annotations": null,
             "from": {
               "kind": "DockerImage",
-              "name": "registry.access.redhat.com/openshift3/jenkins-2-rhel7:v3.9.33-3"
+              "name": "registry.access.redhat.com/openshift3/jenkins-2-rhel7:v3.11"
             },
             "generation": 1,
             "importPolicy": {},
@@ -102,16 +123,17 @@
         "source": {
           "type": "Git",
           "git": {
-            "uri": "https://github.com/BCDevOps/openshift-components.git"
+            "uri": "${SOURCE_REPOSITORY_URL}",
+            "ref": "${GIT_REF}"
           },
-          "contextDir": "cicd/jenkins"
+          "contextDir": "${SOURCE_CONTEXT_DIR}"
         },
         "strategy": {
           "type": "Source",
           "sourceStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "name": "jenkins-2-rhel7:v3.9.33-3"
+              "name": "jenkins-2-rhel7:v3.11"
             }
           }
         },

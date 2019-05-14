@@ -32,7 +32,7 @@
       "kind": "PersistentVolumeClaim",
       "apiVersion": "v1",
       "metadata": {
-        "name": "jenkins-data",
+        "name": "jenkins-data-v2",
         "creationTimestamp": null,
         "labels": {
           "app": "jenkins"
@@ -46,7 +46,7 @@
         "accessModes": ["ReadWriteMany"],
         "resources": {
           "requests": {
-            "storage": "10Gi"
+            "storage": "20Gi"
           }
         }
       },
@@ -167,9 +167,9 @@
           "spec": {
             "volumes": [
               {
-                "name": "jenkins-data",
+                "name": "jenkins-data-v2",
                 "persistentVolumeClaim": {
-                  "claimName": "jenkins-data"
+                  "claimName": "jenkins-data-v2"
                 }
               }
             ],
@@ -193,10 +193,6 @@
                   {
                     "name": "KUBERNETES_TRUST_CERTIFICATES",
                     "value": "true"
-                  },
-                  {
-                    "name": "INSTALL_PLUGINS",
-                    "value": "simple-theme-plugin:0.4"
                   },
                   {
                     "name": "JENKINS_SERVICE_NAME",
@@ -223,7 +219,7 @@
                 },
                 "volumeMounts": [
                   {
-                    "name": "jenkins-data",
+                    "name": "jenkins-data-v2",
                     "mountPath": "/var/lib/jenkins"
                   }
                 ],
