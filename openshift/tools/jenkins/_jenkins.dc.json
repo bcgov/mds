@@ -222,7 +222,7 @@
                 },
                 "volumeMounts": [
                   {
-                    "name": "jenkins-data-v2",
+                    "name": "jenkins-data-store",
                     "mountPath": "/var/lib/jenkins"
                   }
                 ],
