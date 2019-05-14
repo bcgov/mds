@@ -12,7 +12,7 @@ import * as router from "@/constants/routes";
 
 const propTypes = {
   header: PropTypes.string.isRequired,
-  highlightRegex: PropTypes.string.isRequired,
+  highlightRegex: PropTypes.objectOf(PropTypes.regexp).isRequired,
   searchResults: PropTypes.arrayOf(PropTypes.object).isRequired,
   query: PropTypes.string.isRequired,
   partyRelationshipTypeHash: PropTypes.objectOf(PropTypes.strings).isRequired,
@@ -45,10 +45,11 @@ export const ContactResultsTable = (props) => {
       render: (text, record) => [
         <Row>
           <Col span={24}>
-            <Link to={router.PARTY_PROFILE.dynamicRoute(record.party_guid)}>
-              <p style={{ fontSize: "22px", color: "inherit" }}>
-                <Highlight search={props.highlightRegex}>{record.name}</Highlight>
-              </p>
+            <Link
+              to={router.PARTY_PROFILE.dynamicRoute(record.party_guid)}
+              style={{ fontSize: "1.5rem" }}
+            >
+              <Highlight search={props.highlightRegex}>{record.name}</Highlight>
             </Link>
           </Col>
         </Row>,
@@ -57,13 +58,15 @@ export const ContactResultsTable = (props) => {
             <p>Roles</p>
           </Col>
           <Col xs={24} md={8}>
-            <p>
-              {props.partyRelationshipTypeHash.PMT &&
-                record.mine_party_appt.map((pr) => [
-                  <span>{props.partyRelationshipTypeHash[pr.mine_party_appt_type_code]}</span>,
-                  <br />,
-                ])}
-            </p>
+            {props.partyRelationshipTypeHash.PMT &&
+              record.mine_party_appt.map((pr) => (
+                <p>
+                  {props.partyRelationshipTypeHash[pr.mine_party_appt_type_code]}
+                  <span className="padding-small--left" style={{ fontStyle: "italic" }}>
+                    ({pr.mine.mine_name})
+                  </span>
+                </p>
+              ))}
           </Col>
           <Col xs={24} md={4}>
             <p>Email</p>
@@ -71,16 +74,6 @@ export const ContactResultsTable = (props) => {
           <Col xs={24} md={8}>
             <p>
               <Highlight search={props.highlightRegex}>{record.email}</Highlight>
-            </p>
-          </Col>
-          <Col xs={24} md={4}>
-            <p>Mine</p>
-          </Col>
-          <Col xs={24} md={8}>
-            <p>
-              <Highlight search={props.highlightRegex}>
-                {record.mine_party_appt[0].mine.mine_name}
-              </Highlight>
             </p>
           </Col>
           <Col xs={24} md={4}>
@@ -99,19 +92,21 @@ export const ContactResultsTable = (props) => {
   return (
     <div>
       <h2>{props.header}</h2>
-      <Divider />
+      <Divider style={{ padding: "0" }} />
       <Table
-        className="nested-table"
+        className="nested-table padding-large--bottom"
         align="left"
         showHeader={false}
         pagination={false}
         columns={columns}
         dataSource={props.searchResults}
       />
-      <Link to={router.CONTACT_HOME_PAGE.dynamicRoute(parseQuery(props.query))}>
-        <p style={{ fontSize: "22px", color: "inherit", float: "right" }}>
-          See all results in Contacts ({props.searchResults.length})
-        </p>
+      <Link
+        style={{ float: "right" }}
+        className="padding-large--left"
+        to={router.CONTACT_HOME_PAGE.dynamicRoute(parseQuery(props.query))}
+      >
+        Advanced lookup for Contacts
       </Link>
     </div>
   );

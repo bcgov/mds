@@ -11,7 +11,7 @@ import LinkButton from "@/components/common/LinkButton";
 
 const propTypes = {
   header: PropTypes.string.isRequired,
-  highlightRegex: PropTypes.objectOf(PropTypes.any).isRequired,
+  highlightRegex: PropTypes.objectOf(PropTypes.regexp).isRequired,
   searchResults: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
@@ -32,7 +32,7 @@ export const DocumentResultsTable = (props) => {
                 downloadFileFromDocumentManager(record.document_manager_guid, record.document_name)
               }
             >
-              <p style={{ fontSize: "22px", color: "inherit" }}>
+              <p style={{ fontSize: "1.5rem", color: "inherit" }}>
                 <Highlight search={props.highlightRegex}>{record.document_name}</Highlight>
               </p>
             </LinkButton>
@@ -54,7 +54,7 @@ export const DocumentResultsTable = (props) => {
       <h2>{props.header}</h2>
       <Divider />
       <Table
-        className="nested-table"
+        className="nested-table padding-large--bottom"
         align="left"
         showHeader={false}
         pagination={false}

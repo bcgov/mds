@@ -5,11 +5,13 @@ const propTypes = {
   key: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   tabIndex: PropTypes.number,
+  style: PropTypes.objectOf(PropTypes.any),
   children: PropTypes.objectOf(PropTypes.any),
 };
 
 const defaultProps = {
   tabIndex: 0,
+  style: null,
   children: null,
 };
 
@@ -22,6 +24,7 @@ const LinkButton = (props) => (
     onKeyPress={props.onClick}
     // Accessibility: Focusable element
     tabIndex={props.tabIndex}
+    style={props.style}
   >
     {props.children}
   </a>
