@@ -32,7 +32,7 @@ ShallowWrapper {
         "mine_region": "NE",
         "mine_status": Object {
           "effective_date": "2018-10-16",
-          "expiry_date": "9999-12-31",
+          "expiry_date": null,
           "status_labels": Array [
             "Closed",
             "Care & Maintenance",
@@ -81,7 +81,7 @@ ShallowWrapper {
           "party": Object {
             "effective_date": "2019-01-02",
             "email": "test@test.test",
-            "expiry_date": "9999-12-31",
+            "expiry_date": null,
             "name": "test company 2 ",
             "party_guid": "43f513af-1142-443b-a1e6-f14ef857f4ea",
             "party_name": "test company 2 ",
@@ -101,7 +101,7 @@ ShallowWrapper {
           "party": Object {
             "effective_date": "2019-01-02",
             "email": "test@test.test",
-            "expiry_date": "9999-12-31",
+            "expiry_date": null,
             "name": "test dude 1 ",
             "party_guid": "97b59b9c-8576-47cb-9a04-d7d0340730d5",
             "party_name": "test dude 1 ",
