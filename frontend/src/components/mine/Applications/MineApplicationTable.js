@@ -9,7 +9,7 @@ import * as Strings from "@/constants/strings";
 import * as Permission from "@/constants/permissions";
 import { getDropdownApplicationStatusOptions } from "@/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
-import { formatFullDateTime } from "@/utils/helpers";
+import { formatDate } from "@/utils/helpers";
 import { EDIT_OUTLINE } from "@/constants/assets";
 
 /**
@@ -91,7 +91,7 @@ const transformRowData = (
   key: application.permit_guid,
   applicationNo: application.application_no || Strings.EMPTY_FIELD,
   status: application.application_status_code || Strings.EMPTY_FIELD,
-  receivedDate: formatFullDateTime(application.received_date) || Strings.EMPTY_FIELD,
+  receivedDate: formatDate(application.received_date) || Strings.EMPTY_FIELD,
   description: application.description || Strings.EMPTY_FIELD,
   applicationEdit: {
     application,
