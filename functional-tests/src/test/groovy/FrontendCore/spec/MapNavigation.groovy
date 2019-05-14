@@ -18,11 +18,14 @@ class  MapNavigationSpec extends GebReportingSpec {
         to Dashboard
 
         when: "Loading is finished and I click the map tab."
+        at Dashboard
         mapTabSelect.mapTab.click()
+        waitFor() {mapPin[0] }
         interact { 
             moveToElement(mapPin[0])
             click(mapPin[0])
         }
+        
         //TODO: VERIFY CONTENT OF POP UP MODAL
         viewMineButton.click()
 
