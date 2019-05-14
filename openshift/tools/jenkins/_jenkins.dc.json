@@ -202,17 +202,21 @@
                     "value": "jenkins-jnlp"
                   },
                   {
+                    "name": "CONTAINER_CORE_LIMIT",
+                    "value": "5"
+                  },
+                  {
                     "name": "JAVA_OPTS",
                     "value": "-XX:+PrintFlagsFinal -XX:MaxMetaspaceSize=2g -Duser.timezone=America/Vancouver -Dhudson.model.DirectoryBrowserSupport.CSP="
                   }
                 ],
                 "resources": {
                   "limits": {
-                    "cpu": "6000m",
+                    "cpu": "6",
                     "memory": "8Gi"
                   },
                   "requests": {
-                    "cpu": "3000m",
+                    "cpu": "3",
                     "memory": "4Gi"
                   }
                 },
