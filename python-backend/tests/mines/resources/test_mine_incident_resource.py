@@ -31,6 +31,7 @@ def test_post_mine_incidents_happy(test_client, db_session, auth_headers):
 
     now_time_string = datetime.now().strftime("%Y-%m-%d %H:%M")
     data = {
+        'determination_type_code': 'NDO',
         'incident_timestamp': now_time_string,
         'incident_description': "Someone got a paper cut",
     }
@@ -41,6 +42,7 @@ def test_post_mine_incidents_happy(test_client, db_session, auth_headers):
 
     post_data = json.loads(post_resp.data.decode())
     assert post_data['mine_guid'] == str(test_mine_guid)
+    assert post_data['determination_type_code'] == data['determination_type_code']
     assert post_data['incident_timestamp'] == now_time_string
 
     #datetime.fromisoformat is in python 3.7
@@ -55,6 +57,7 @@ def test_put_mine_incidents_happy(test_client, db_session, auth_headers):
 
     new_time_string = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d %H:%M")
     data = {
+        'determination_type_code': 'NDO',
         'incident_timestamp': new_time_string,
         'incident_description': "Someone got a second paper cut",
     }
@@ -64,6 +67,7 @@ def test_put_mine_incidents_happy(test_client, db_session, auth_headers):
     assert put_resp.status_code == 200, put_resp.response
 
     put_data = json.loads(put_resp.data.decode())
+    assert put_data['determination_type_code'] == data['determination_type_code']
     assert put_data['incident_timestamp'] == new_time_string
 
     #datetime.fromisoformat is in python 3.7
