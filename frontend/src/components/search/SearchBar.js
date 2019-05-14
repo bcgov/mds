@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Input, Dropdown, Card } from "antd";
+import { Input, Dropdown, Card, Col } from "antd";
 import { getSearchBarResults } from "@/selectors/searchSelectors";
 import { fetchSearchBarResults, clearSearchBarResults } from "@/actionCreators/searchActionCreator";
 import PropTypes from "prop-types";
@@ -45,18 +45,20 @@ export class SearchBar extends Component {
   };
 
   search = (searchTerm) => {
-    this.setState((prevState) => {
-      const newSearchTermHistory = prevState.searchTermHistory.slice(
-        Math.max(prevState.searchTermHistory.length - 2, 0)
-      );
-      newSearchTermHistory.push(searchTerm);
-      return {
-        isSelected: false,
-        searchTermHistory: newSearchTermHistory,
-      };
-    });
-    this.clearSearchBar(false);
-    this.props.history.push(`/search?q=${searchTerm}`);
+    if (searchTerm) {
+      this.setState((prevState) => {
+        const newSearchTermHistory = prevState.searchTermHistory.slice(
+          Math.max(prevState.searchTermHistory.length - 2, 0)
+        );
+        newSearchTermHistory.push(searchTerm);
+        return {
+          isSelected: false,
+          searchTermHistory: newSearchTermHistory,
+        };
+      });
+      this.clearSearchBar(false);
+      this.props.history.push(`/search?q=${searchTerm}`);
+    }
   };
 
   clearSearchBar = (isSelected = true) => {
@@ -68,11 +70,12 @@ export class SearchBar extends Component {
   };
 
   render = () => (
-    <div
+    <Col
       id="searchBox"
+      md={4}
+      lg={6}
+      xl={8}
       style={{
-        width: "30vw",
-        minWidth: "350px",
         marginLeft: "auto",
         marginTop: "auto",
         marginBottom: "auto",
@@ -109,7 +112,7 @@ export class SearchBar extends Component {
           }
         />
       </Dropdown>
-    </div>
+    </Col>
   );
 }
 

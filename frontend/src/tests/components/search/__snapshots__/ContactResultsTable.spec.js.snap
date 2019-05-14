@@ -243,6 +243,7 @@ ShallowWrapper {
           style={
             Object {
               "float": "right",
+              "fontSize": "1.25rem",
             }
           }
           to="/dashboard/contacts/?last_name=Abb"
@@ -406,6 +407,7 @@ ShallowWrapper {
           "replace": false,
           "style": Object {
             "float": "right",
+            "fontSize": "1.25rem",
           },
           "to": "/dashboard/contacts/?last_name=Abb",
         },
@@ -556,6 +558,7 @@ ShallowWrapper {
             style={
               Object {
                 "float": "right",
+                "fontSize": "1.25rem",
               }
             }
             to="/dashboard/contacts/?last_name=Abb"
@@ -719,6 +722,7 @@ ShallowWrapper {
             "replace": false,
             "style": Object {
               "float": "right",
+              "fontSize": "1.25rem",
             },
             "to": "/dashboard/contacts/?last_name=Abb",
           },

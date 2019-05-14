@@ -24,21 +24,20 @@ export const DocumentResultsTable = (props) => {
       dataIndex: "document_guid",
       key: "document_guid",
       render: (text, record) => [
-        <Row style={{ paddingBottom: "15px" }}>
+        <Row>
           <Col span={24}>
             <LinkButton
               key={record.mine_document_guid || record.permit_amendment_document_guid}
               onClick={() =>
                 downloadFileFromDocumentManager(record.document_manager_guid, record.document_name)
               }
+              style={{ fontSize: "1.25rem" }}
             >
-              <p style={{ fontSize: "1.5rem", color: "inherit" }}>
-                <Highlight search={props.highlightRegex}>{record.document_name}</Highlight>
-              </p>
+              <Highlight search={props.highlightRegex}>{record.document_name}</Highlight>
             </LinkButton>
           </Col>
         </Row>,
-        <Row style={{ paddingTop: "5px" }}>
+        <Row className="padding-small--top">
           <Col xs={24} md={6}>
             <p>Mine</p>
           </Col>

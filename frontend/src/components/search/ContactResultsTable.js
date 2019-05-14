@@ -47,13 +47,13 @@ export const ContactResultsTable = (props) => {
           <Col span={24}>
             <Link
               to={router.PARTY_PROFILE.dynamicRoute(record.party_guid)}
-              style={{ fontSize: "1.5rem" }}
+              style={{ fontSize: "1.25rem" }}
             >
               <Highlight search={props.highlightRegex}>{record.name}</Highlight>
             </Link>
           </Col>
         </Row>,
-        <Row style={{ paddingTop: "5px" }}>
+        <Row className="padding-small--top">
           <Col xs={24} md={4}>
             <p>Roles</p>
           </Col>
@@ -102,7 +102,7 @@ export const ContactResultsTable = (props) => {
         dataSource={props.searchResults}
       />
       <Link
-        style={{ float: "right" }}
+        style={{ float: "right", fontSize: "1.25rem" }}
         className="padding-large--left"
         to={router.CONTACT_HOME_PAGE.dynamicRoute(parseQuery(props.query))}
       >
