@@ -65,7 +65,6 @@ const columns = [
     dataIndex: "operationalStatus",
     sortField: "mine_operation_status_code",
     render: (text) => <div title="Operational Status">{text}</div>,
-    sorter: true,
   },
   {
     title: "Permit No.",
