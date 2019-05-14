@@ -28,7 +28,7 @@ services:
       dockerfile: Dockerfile.dev
     environment:
       - POSTGRES_USER=nris
-      - POSTGRES_PASSWORD=test
+      - POSTGRES_PASSWORD=VsPJAuMJHu3IVMEv
       - POSTGRES_DB=nris
     ports:
       - "5432:5432"
