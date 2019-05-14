@@ -9,6 +9,7 @@ const propTypes = {
   title: PropTypes.string,
   followupActionOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   incidentDeterminationOptions: CustomPropTypes.options.isRequired,
+  doSubparagraphOptions: CustomPropTypes.options.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
@@ -24,6 +25,7 @@ export const AddIncidentModal = (props) => (
       title={props.title}
       followupActionOptions={props.followupActionOptions}
       incidentDeterminationOptions={props.incidentDeterminationOptions}
+      doSubparagraphOptions={props.doSubparagraphOptions}
       initialValues={props.initialValues}
     />
   </div>
