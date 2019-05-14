@@ -137,6 +137,8 @@ class MineListResource(Resource, UserMixin):
             mine.mine_location = MineLocation(latitude=lat, longitude=lon)
             cache.delete(MINE_MAP_CACHE)
 
+
+        print("The data is:", data)
         mine_status = _mine_status_processor(data.get('mine_status'), mine)
         db.session.commit()
 
