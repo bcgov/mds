@@ -77,16 +77,20 @@ const TableForGroup = (group, highlightRegex, partyRelationshipTypeHash, query) 
     ),
   }[group.type]);
 
-const NoResults = () => (
-  <Row type="flex" justify="center">
-    <Col sm={12} md={8} className="padding-xxl--top">
-      <div className="null-screen">
-        <h2>No Results Found</h2>
-        <p>Please try another search.</p>
-      </div>
-    </Col>
-  </Row>
-);
+const NoResults = (searchTerms) => {
+  const searchTooShort = !searchTerms.find((term) => term.length > 2);
+  return (
+    <Row type="flex" justify="center">
+      <Col sm={12} md={8} className="padding-xxl--top">
+        <div className="null-screen">
+          <h2>No Results Found</h2>
+          {searchTooShort && <p>Your search needs to be at least three characters.</p>}
+          <p>Please try another search.</p>
+        </div>
+      </Col>
+    </Row>
+  );
+};
 
 const CantFindIt = () => (
   <Row type="flex" justify="center">
@@ -208,7 +212,7 @@ export class SearchResults extends Component {
             </div>
             <div className="landing-page__content">
               <div className="tab__content">
-                {groupedSearchResults.length === 0 && <NoResults />}
+                {groupedSearchResults.length === 0 && NoResults(this.props.searchTerms)}
                 <Row gutter={48}>
                   {groupedSearchResults.map((group) => (
                     <Col

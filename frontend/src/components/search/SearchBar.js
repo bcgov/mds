@@ -45,18 +45,20 @@ export class SearchBar extends Component {
   };
 
   search = (searchTerm) => {
-    this.setState((prevState) => {
-      const newSearchTermHistory = prevState.searchTermHistory.slice(
-        Math.max(prevState.searchTermHistory.length - 2, 0)
-      );
-      newSearchTermHistory.push(searchTerm);
-      return {
-        isSelected: false,
-        searchTermHistory: newSearchTermHistory,
-      };
-    });
-    this.clearSearchBar(false);
-    this.props.history.push(`/search?q=${searchTerm}`);
+    if (searchTerm) {
+      this.setState((prevState) => {
+        const newSearchTermHistory = prevState.searchTermHistory.slice(
+          Math.max(prevState.searchTermHistory.length - 2, 0)
+        );
+        newSearchTermHistory.push(searchTerm);
+        return {
+          isSelected: false,
+          searchTermHistory: newSearchTermHistory,
+        };
+      });
+      this.clearSearchBar(false);
+      this.props.history.push(`/search?q=${searchTerm}`);
+    }
   };
 
   clearSearchBar = (isSelected = true) => {

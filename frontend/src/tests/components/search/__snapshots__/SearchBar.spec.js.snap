@@ -50,7 +50,7 @@ ShallowWrapper {
   Symbol(enzyme.__node__): Object {
     "instance": null,
     "key": undefined,
-    "nodeType": "host",
+    "nodeType": "class",
     "props": Object {
       "children": <Dropdown
         getPopupContainer={[Function]}
@@ -116,14 +116,15 @@ ShallowWrapper {
         />
       </Dropdown>,
       "id": "searchBox",
+      "lg": 6,
+      "md": 4,
       "style": Object {
         "marginBottom": "auto",
         "marginLeft": "auto",
         "marginTop": "auto",
-        "minWidth": "350px",
         "paddingRight": "20px",
-        "width": "30vw",
       },
+      "xl": 8,
     },
     "ref": null,
     "rendered": Object {
@@ -210,13 +211,13 @@ ShallowWrapper {
       },
       "type": [Function],
     },
-    "type": "div",
+    "type": [Function],
   },
   Symbol(enzyme.__nodes__): Array [
     Object {
       "instance": null,
       "key": undefined,
-      "nodeType": "host",
+      "nodeType": "class",
       "props": Object {
         "children": <Dropdown
           getPopupContainer={[Function]}
@@ -282,14 +283,15 @@ ShallowWrapper {
           />
         </Dropdown>,
         "id": "searchBox",
+        "lg": 6,
+        "md": 4,
         "style": Object {
           "marginBottom": "auto",
           "marginLeft": "auto",
           "marginTop": "auto",
-          "minWidth": "350px",
           "paddingRight": "20px",
-          "width": "30vw",
         },
+        "xl": 8,
       },
       "ref": null,
       "rendered": Object {
@@ -376,7 +378,7 @@ ShallowWrapper {
         },
         "type": [Function],
       },
-      "type": "div",
+      "type": [Function],
     },
   ],
   Symbol(enzyme.__options__): Object {
