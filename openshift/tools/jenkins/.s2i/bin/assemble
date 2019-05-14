@@ -10,6 +10,9 @@ shopt -s dotglob
 echo "---> Copying repository files ..."
 cp -Rf /tmp/src/. ${JENKINS_INSTALL_DIR}
 
+echo "---> Replacing current jenkins version with version 2.164.3..."
+wget http://mirrors.jenkins.io/war-stable/2.164.3/jenkins.war -O /usr/lib/jenkins/jenkins.war
+
 # Install jenkins plugins using plugin installer if user has "plugins.txt" file
 # in repository
 if [ -f ${JENKINS_INSTALL_DIR}/plugins.txt ]; then
@@ -40,6 +43,3 @@ if [ -d ${JENKINS_INSTALL_DIR}/configuration ]; then
   /usr/local/bin/fix-permissions ${JENKINS_INSTALL_DIR}/configuration
   rsync -av ${JENKINS_INSTALL_DIR}/configuration/ ${JENKINS_DIR}/configuration
 fi
-
-echo "---> Replacing current jenkins version with version 2.164.3..."
-wget http://mirrors.jenkins.io/war-stable/2.164.3/jenkins.war -P /usr/lib/jenkins/
