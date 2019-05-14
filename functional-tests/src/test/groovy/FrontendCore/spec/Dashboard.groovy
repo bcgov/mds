@@ -28,8 +28,11 @@ class  DashboardSpec extends GebReportingSpec {
         given: "I go to the Dashboard Page"
         to Dashboard
 
-        when: "Loading is finished and I click the create a mine button"
-        createMineButton_Dashboard.click()
+        when: "page is loaded"
+        at Dashboard
+
+        and: "I click the create a mine button"
+        waitFor() { createMineButton_Dashboard.click() }
 
         and: "I type in valid mine profile"
         createMineForm.createMineRecord(input)
@@ -48,8 +51,11 @@ class  DashboardSpec extends GebReportingSpec {
         given: "I go to the Dashboard Page"
         to Dashboard
 
-        when: "Loading is finished and I click the create a mine button"
-        createMineButton_Dashboard.click()
+        when: "page is loaded"
+        at Dashboard
+
+        and: "I click the create a mine button"
+        waitFor() { createMineButton_Dashboard.click() }
 
         and: "I type in valid mine profile"
         createMineForm.createMineRecord(input)
@@ -70,8 +76,11 @@ class  DashboardSpec extends GebReportingSpec {
         given: "I am on the Dashboard Page"
         to Dashboard
 
-        when: "I click to view the first mine"
-        viewLink.click()
+        when: "page is loaded"
+        at Dashboard
+
+        and: "I click to view the first mine"
+        waitFor() { viewLink.click() }
 
         then:"I can view the page"
         at MineProfilePage

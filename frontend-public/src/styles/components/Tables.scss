@@ -1,10 +1,18 @@
 .ant-table-body {
   overflow-x: auto;
 }
+.ant-table table {
+  margin: 20px 0;
+}
+
+.ant-table-thead {
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+}
 
 @include tablet {
   .ant-table table {
     min-width: 100%;
+    margin: 20px 0;
   }
 
   .ant-table-thead {
@@ -69,4 +77,8 @@
   word-break: break-word;
   white-space: normal;
   font-size: 100%;
+}
+
+.column-hide {
+  display: none;
 }

@@ -1,53 +1,40 @@
 import React from "react";
-import { Divider, Row, Col, Button } from "antd";
+import { Divider, Button } from "antd";
 
-import QuestionSidebar from "./common/QuestionsSidebar";
+import QuestionSidebar from "@/components/common/QuestionsSidebar";
 
 export const LandingPage = () => (
   <div>
-    <Row>
-      <Col xs={1} md={4} lg={4} />
-      <Col xs={22} md={16} lg={16}>
-        <h1 className="landing-page-title"> Welcome to MineSpace, an online portal for BC mines</h1>
-      </Col>
-      <Col xs={1} md={4} lg={4} />
-    </Row>
-    <Row>
-      <Col xs={1} md={4} lg={4} />
-      <Col xs={22} md={14} lg={10}>
-        <p>
-          The Mines Digital Service (MDS) is a digital product being iteratively developed and
-          designed to hold mine related data that is user-friendly, trustworthy and reliable. The
-          product will eventually replace the existing internal Mine Management System used by the
-          Ministry and be used to surface information to the{" "}
-          <a href="http://mines.nrs.gov.bc.ca/" target="_blank" rel="noopener noreferrer">
-            BC Mine Information website
-          </a>
-          . The MDS project was started in July to help inspectors manage the mines they work with
-          by replacing existing legacy systems and adding new functionality.
-        </p>
-        <br />
-        <p>
-          MineSpace is a pilot project as a part of the MDS digital product. MineSpace will be the
-          portal through which mines can interact with the Ministry. In time, Mines will be able to
-          submit documentation to the Ministry, as well as check the status of reporting
-          requirements, and documentation that they have submitted to the ministry for review. The
-          pilot project will run in the spring of 2019 with full integration in early 2020.
-        </p>
-      </Col>
-      <Col xs={0} md={2} lg={6} />
-      <Col xs={1} md={4} lg={4} />
-    </Row>
-    <Row>
-      <Col xs={1} md={4} lg={4} />
-      <Col xs={22} md={16} lg={16}>
-        <Divider className="gov-blue" />
-      </Col>
-      <Col xs={1} md={4} lg={4} />
-    </Row>
-    <Row gutter={{ md: 32, lg: 24 }}>
-      <Col xs={1} md={4} lg={4} />
-      <Col xs={22} md={8} lg={11}>
+    <div>
+      <h1 className="landing-page-title"> Welcome to MineSpace, an online portal for BC mines</h1>
+      <p>
+        The Mines Digital Service (MDS) is a digital product being iteratively developed and
+        designed to hold mine related data that is user-friendly, trustworthy and reliable. The
+        product will eventually replace the existing internal Mine Management System used by the
+        Ministry and be used to surface information to the{" "}
+        <a
+          className="underline"
+          href="http://mines.nrs.gov.bc.ca/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          BC Mine Information website
+        </a>
+        . The MDS project was started in July to help inspectors manage the mines they work with by
+        replacing existing legacy systems and adding new functionality.
+      </p>
+      <br />
+      <p>
+        MineSpace is a pilot project as a part of the MDS digital product. MineSpace will be the
+        portal through which mines can interact with the Ministry. In time, mines will be able to
+        submit documentation to the ministry, as well as check the status of reporting requirements,
+        and documentation that they have submitted to the ministry for review. The pilot project
+        will run in the spring of 2019 with full integration in early 2020.
+      </p>
+    </div>
+    <Divider className="gov-blue" style={{ height: "2px" }} />
+    <div className="inline-flex block-tablet">
+      <div className="flex-3">
         <h1 className="large-margin-bot">Participate in the pilot project</h1>
         <h2 className="medium-margin-bot">Requirements</h2>
         <p>You can participate if you:</p>
@@ -93,8 +80,8 @@ export const LandingPage = () => (
           verify your existing credentials if you have not already already done so. This process can
           take time and it is best to begin ahead of time.
         </p>
-      </Col>
-      <Col xs={22} md={8} lg={5}>
+      </div>
+      <div className="flex-1">
         <div className="sidebar-block">
           <div className="sidebar-block-title">
             <h2 className="side-bar-title">Do you have a Business BCeID?</h2>
@@ -124,9 +111,8 @@ export const LandingPage = () => (
           </div>
         </div>
         <QuestionSidebar />
-      </Col>
-      <Col xs={1} md={4} lg={4} />
-    </Row>
+      </div>
+    </div>
   </div>
 );
 

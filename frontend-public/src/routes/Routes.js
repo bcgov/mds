@@ -19,8 +19,18 @@ const Routes = () => (
       />
       <Route
         exact
-        path={routes.MINE_INFO.route}
-        component={AuthenticationGuard()(routes.MINE_INFO.component)}
+        path={routes.MINE_DASHBOARD.route}
+        component={AuthenticationGuard()(routes.MINE_DASHBOARD.component)}
+      />
+      <Route
+        exact
+        path={routes.VARIANCES.route}
+        component={AuthenticationGuard()(routes.VARIANCES.component)}
+      />
+      <Route
+        exact
+        path={routes.REPORTS.route}
+        component={AuthenticationGuard()(routes.REPORTS.component)}
       />
 
       {/* 404 - ROUTE NOT FOUND */}
