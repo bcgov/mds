@@ -26,7 +26,7 @@ from app.api.mines.mine_api_models import MINE_LIST_MODEL, MINE_MODEL
 # This breaks micro-service architecture and is done
 # for search performance until search can be refactored
 from ....permits.permit.models.permit import Permit
-
+import logging
 
 class MineListResource(Resource, UserMixin):
     parser = reqparse.RequestParser()
@@ -115,7 +115,8 @@ class MineListResource(Resource, UserMixin):
     def post(self):
         data = self.parser.parse_args()
         print("*************LOOK HERE******************")
-        print("The data is:", data)
+        logging.warning("The data is:", data)
+        # print("The data is:", data)
         lat = data.get('latitude')
         lon = data.get('longitude')
         if (lat and not lon) or (not lat and lon):
