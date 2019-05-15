@@ -67,6 +67,16 @@ class MineListResource(Resource, UserMixin):
         trim=True,
         required=True,
         location='json')
+    parser.add_argument(
+        'ohsc_ind',
+        type=bool,
+        store_missing=False,
+        help='Indicates if the mine has an OHSC.')
+    parser.add_argument(
+        'union_ind',
+        type=bool,
+        store_missing=False,
+        help='Indicates if the mine has a union.')
 
     @api.doc(
         params={
@@ -127,7 +137,9 @@ class MineListResource(Resource, UserMixin):
             mine_name=data.get('mine_name'),
             mine_note=data.get('mine_note'),
             major_mine_ind=data.get('major_mine_ind'),
-            mine_region=data.get('mine_region'))
+            mine_region=data.get('mine_region'),
+            ohsc_ind=data.get('ohsc_ind'),
+            union_ind=data.get('union_ind'))
 
         db.session.add(mine)
 
@@ -328,6 +340,10 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             mine.major_mine_ind = data['major_mine_ind']
         if 'mine_region' in data:
             mine.mine_region = data['mine_region']
+        if 'ohsc_ind' in data:
+            mine.ohsc_ind = data['ohsc_ind']
+        if 'union_ind' in data:
+            mine.union_ind = data['union_ind']
         mine.save()
 
         # Tenure validation
