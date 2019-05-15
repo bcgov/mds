@@ -8,7 +8,7 @@ import pages.MineProfilePage
 import utils.*
 import dataObjects.MineProfileData
 
-
+//TODO: FIX MAP CACHING ISSUES FOR THIS TEST TO PASS
 @Title("Map Navigation Page")
 @Stepwise
 class  MapNavigationSpec extends GebReportingSpec {
