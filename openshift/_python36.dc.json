@@ -482,7 +482,7 @@
                     "name": "mds-document-storage-data"
                   }
                 ],
-                "imagePullPolicy": "Always"
+                "imagePullPolicy": "IfNotPresent"
               },
               {
                 "name": "flyway-migration",
