@@ -11,15 +11,15 @@ DECLARE
 
     MINE_NO varchar = 'BLAH0000';
     MINE_NAME varchar = 'MINETEST';
-    MINE_LAT numeric = '48'     ;
+    MINE_LAT numeric = '52.1'     ;
     MINE_LONG numeric = '-125'  ;
     MINE_NOTE varchar = 'This is a test record';
     
     MINE_GUID_2 uuid = '38b7573b-a5fa-441b-ae98-6b663357f8bc';
     MINE_NO_2 varchar = 'BLAH0002';
     MINE_NAME_2 varchar = 'MINE2TEST';
-    MINE_LAT_2 numeric = '55'     ;
-    MINE_LONG_2 numeric = '-130'  ;
+    MINE_LAT_2 numeric = '53.2'     ;
+    MINE_LONG_2 numeric = '-126.2'  ;
     MINE_NOTE_2 varchar = 'This is a test record for contacts test';
 
     FIRST_NAME varchar ='Amine';

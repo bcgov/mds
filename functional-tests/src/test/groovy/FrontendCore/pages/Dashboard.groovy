@@ -6,6 +6,8 @@ import modules.*
 class Dashboard extends Page {
     static at = { waitFor() {!loadingScreen.displayed}}
     static url = "dashboard/mines"
+    static pinSVGpath = "M16,3.5c-4.142,0-7.5,3.358-7.5,7.5c0,4.143,7.5,18.121,7.5,18.121S23.5,15.143,23.5,11C23.5,6.858,20.143,3.5,16,3.5z M16,14.584c-1.979,0-3.584-1.604-3.584-3.584S14.021,7.416,16,7.416S19.584,9.021,19.584,11S17.979,14.584,16,14.584z"
+
     static content = {
         //general
         toastMessage (wait: true) {$("div", class:"ant-notification-notice-message").text()}
@@ -13,6 +15,7 @@ class Dashboard extends Page {
 
         //navigation links
         contactPageButton (wait: true) {$("button").has("span", text:"Contacts")}
+        mapTabButton (wait: true)  {$("div", role: 'tab').text("Map")}
 
         //create mine form
         createMineForm { module Form_CreateMine }
@@ -29,6 +32,12 @@ class Dashboard extends Page {
         //pagination
         totalMineNum (wait:true) {$("li.ant-pagination-total-text").text()}
         paginationSelection (wait:true) {$("div.ant-select-selection-selected-value")}
+
+        //map tab
+        mapTabSelect (wait:true) {module Tab_Map_Module}
+        map (wait:true) {$("div", class: "esri-display-object")}
+        mapPin (wait:true) {$("path", path: pinSVGpath)}
+        viewMineButton (wait:true) {$("button").has("span", text:"View Mine")}
 
     }
 
