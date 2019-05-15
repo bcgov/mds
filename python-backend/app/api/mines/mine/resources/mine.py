@@ -116,7 +116,8 @@ class MineListResource(Resource, UserMixin):
     @requires_role_mine_create
     def post(self):
         data = self.parser.parse_args()
-
+        print("*************LOOK HERE******************")
+        print("The data is:", data)
         lat = data.get('latitude')
         lon = data.get('longitude')
         if (lat and not lon) or (not lat and lon):
@@ -137,7 +138,7 @@ class MineListResource(Resource, UserMixin):
             mine.mine_location = MineLocation(latitude=lat, longitude=lon)
             cache.delete(MINE_MAP_CACHE)
 
-
+        print("*************LOOK HERE******************")
         print("The data is:", data)
         mine_status = _mine_status_processor(data.get('mine_status'), mine)
         db.session.commit()
