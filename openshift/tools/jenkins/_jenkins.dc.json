@@ -32,7 +32,7 @@
       "kind": "PersistentVolumeClaim",
       "apiVersion": "v1",
       "metadata": {
-        "name": "jenkins-data",
+        "name": "jenkins-data-store",
         "creationTimestamp": null,
         "labels": {
           "app": "jenkins"
@@ -46,7 +46,7 @@
         "accessModes": ["ReadWriteMany"],
         "resources": {
           "requests": {
-            "storage": "10Gi"
+            "storage": "40Gi"
           }
         }
       },
@@ -149,7 +149,6 @@
         ],
         "replicas": 1,
         "revisionHistoryLimit": 10,
-        "test": false,
         "selector": {
           "name": "jenkins"
         },
@@ -167,9 +166,9 @@
           "spec": {
             "volumes": [
               {
-                "name": "jenkins-data",
+                "name": "jenkins-data-store",
                 "persistentVolumeClaim": {
-                  "claimName": "jenkins-data"
+                  "claimName": "jenkins-data-store"
                 }
               }
             ],
@@ -195,10 +194,6 @@
                     "value": "true"
                   },
                   {
-                    "name": "INSTALL_PLUGINS",
-                    "value": "simple-theme-plugin:0.4"
-                  },
-                  {
                     "name": "JENKINS_SERVICE_NAME",
                     "value": "jenkins"
                   },
@@ -207,23 +202,27 @@
                     "value": "jenkins-jnlp"
                   },
                   {
+                    "name": "CONTAINER_CORE_LIMIT",
+                    "value": "5"
+                  },
+                  {
                     "name": "JAVA_OPTS",
                     "value": "-XX:+PrintFlagsFinal -XX:MaxMetaspaceSize=2g -Duser.timezone=America/Vancouver -Dhudson.model.DirectoryBrowserSupport.CSP="
                   }
                 ],
                 "resources": {
                   "limits": {
-                    "cpu": "6000m",
+                    "cpu": "6",
                     "memory": "8Gi"
                   },
                   "requests": {
-                    "cpu": "3000m",
+                    "cpu": "3",
                     "memory": "4Gi"
                   }
                 },
                 "volumeMounts": [
                   {
-                    "name": "jenkins-data",
+                    "name": "jenkins-data-store",
                     "mountPath": "/var/lib/jenkins"
                   }
                 ],
