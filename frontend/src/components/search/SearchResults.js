@@ -35,7 +35,13 @@ const defaultProps = {
   searchTerms: [],
 };
 
-const TableForGroup = (group, highlightRegex, partyRelationshipTypeHash, query) =>
+const TableForGroup = (
+  group,
+  highlightRegex,
+  partyRelationshipTypeHash,
+  query,
+  showAdvancedLookup
+) =>
   ({
     mine: (
       <MineResultsTable
@@ -43,6 +49,7 @@ const TableForGroup = (group, highlightRegex, partyRelationshipTypeHash, query) 
         highlightRegex={highlightRegex}
         searchResults={group.results}
         query={query.q}
+        showAdvancedLookup={showAdvancedLookup}
       />
     ),
     party: (
@@ -52,6 +59,7 @@ const TableForGroup = (group, highlightRegex, partyRelationshipTypeHash, query) 
         searchResults={group.results}
         partyRelationshipTypeHash={partyRelationshipTypeHash}
         query={query.q}
+        showAdvancedLookup={showAdvancedLookup}
       />
     ),
     permit: (
@@ -81,12 +89,12 @@ const NoResults = (searchTerms) => {
   const searchTooShort = !searchTerms.find((term) => term.length > 2);
   return (
     <Row type="flex" justify="center">
-      <Col sm={12} md={8} className="padding-xxl--top">
-        <div className="null-screen">
-          <h2>No Results Found</h2>
-          {searchTooShort && <p>Your search needs to be at least three characters.</p>}
-          <p>Please try another search.</p>
-        </div>
+      <Col sm={22} md={18} lg={8} className="padding-xxl--top">
+        <h2>No Results Found.</h2>
+        {searchTooShort && (
+          <p>At least one word in your search needs to be at least three characters.</p>
+        )}
+        <p>Please try another search.</p>
       </Col>
     </Row>
   );
@@ -95,14 +103,12 @@ const NoResults = (searchTerms) => {
 const CantFindIt = () => (
   <Row type="flex" justify="center">
     <Col sm={22} md={18} lg={8} className="padding-large--top padding-xxl--bottom">
-      <div className="null-screen">
-        <h2>Can&#39;t find it?</h2>
-        <p>
-          Try clicking to see more results, or select the advanced lookup if available. Also, double
-          check your spelling to ensure it is correct. If you feel there is a problem, contact the
-          Core administrator to ask for assistance.
-        </p>
-      </div>
+      <h2>Can&#39;t find it?</h2>
+      <p>
+        Try clicking to see more results, or select the advanced lookup if available. Also, double
+        check your spelling to ensure it is correct. If you feel there is a problem, contact the
+        Core administrator to ask for assistance.
+      </p>
     </Col>
   </Row>
 );
@@ -225,7 +231,8 @@ export class SearchResults extends Component {
                         group,
                         RegExp(`${this.props.searchTerms.join("|")}`, "i"),
                         this.props.partyRelationshipTypeHash,
-                        this.state.params
+                        this.state.params,
+                        type_filter
                       )}
                       {!type_filter && (
                         <LinkButton

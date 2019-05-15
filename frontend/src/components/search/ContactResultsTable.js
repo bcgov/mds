@@ -16,6 +16,7 @@ const propTypes = {
   searchResults: PropTypes.arrayOf(PropTypes.object).isRequired,
   query: PropTypes.string.isRequired,
   partyRelationshipTypeHash: PropTypes.objectOf(PropTypes.strings).isRequired,
+  showAdvancedLookup: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {};
@@ -33,7 +34,7 @@ const parseQuery = (query) => {
   if (terms.length === 1) {
     return { last_name: terms[0] };
   }
-  return { first_name: terms[0], last_name: terms[1] };
+  return { first_name: terms[0], last_name: terms.slice(1).join(" ") };
 };
 
 export const ContactResultsTable = (props) => {
@@ -54,10 +55,10 @@ export const ContactResultsTable = (props) => {
           </Col>
         </Row>,
         <Row className="padding-small--top">
-          <Col xs={24} md={4}>
+          <Col xs={24} md={8} lg={4}>
             <p>Roles</p>
           </Col>
-          <Col xs={24} md={8}>
+          <Col xs={24} md={16} lg={8}>
             {props.partyRelationshipTypeHash.PMT &&
               record.mine_party_appt.map((pr) => (
                 <p>
@@ -68,18 +69,18 @@ export const ContactResultsTable = (props) => {
                 </p>
               ))}
           </Col>
-          <Col xs={24} md={4}>
+          <Col xs={24} md={8} lg={6} xxl={4}>
             <p>Email</p>
           </Col>
-          <Col xs={24} md={8}>
+          <Col xs={24} md={16} lg={12} xxl={8}>
             <p>
               <Highlight search={props.highlightRegex}>{record.email}</Highlight>
             </p>
           </Col>
-          <Col xs={24} md={4}>
+          <Col xs={24} md={8} lg={6} xxl={4}>
             <p>Phone</p>
           </Col>
-          <Col xs={24} md={8}>
+          <Col xs={24} md={16} lg={12} xxl={8}>
             <p>
               <Highlight search={props.highlightRegex}>{record.phone_no}</Highlight>
               {record.phone_ext && record.phone_ext}
@@ -101,13 +102,15 @@ export const ContactResultsTable = (props) => {
         columns={columns}
         dataSource={props.searchResults}
       />
-      <Link
-        style={{ float: "right", fontSize: "1.25rem" }}
-        className="padding-large--left"
-        to={router.CONTACT_HOME_PAGE.dynamicRoute(parseQuery(props.query))}
-      >
-        Advanced lookup for Contacts
-      </Link>
+      {props.showAdvancedLookup && (
+        <Link
+          style={{ float: "right", fontSize: "1.25rem" }}
+          className="padding-large--left"
+          to={router.CONTACT_HOME_PAGE.dynamicRoute(parseQuery(props.query))}
+        >
+          Advanced lookup for Contacts
+        </Link>
+      )}
     </div>
   );
 };

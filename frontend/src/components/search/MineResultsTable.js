@@ -14,6 +14,7 @@ const propTypes = {
   highlightRegex: PropTypes.objectOf(PropTypes.regexp).isRequired,
   query: PropTypes.string.isRequired,
   searchResults: PropTypes.arrayOf(PropTypes.object).isRequired,
+  showAdvancedLookup: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {};
@@ -78,13 +79,15 @@ export const MineResultsTable = (props) => {
         columns={columns}
         dataSource={props.searchResults}
       />
-      <Link
-        style={{ float: "right", fontSize: "1.25rem" }}
-        className="padding-large--left"
-        to={router.MINE_HOME_PAGE.dynamicRoute({ search: props.query })}
-      >
-        Advanced lookup for Mines
-      </Link>
+      {props.showAdvancedLookup && (
+        <Link
+          style={{ float: "right", fontSize: "1.25rem" }}
+          className="padding-large--left"
+          to={router.MINE_HOME_PAGE.dynamicRoute({ search: props.query })}
+        >
+          Advanced lookup for Mines
+        </Link>
+      )}
     </div>
   );
 };

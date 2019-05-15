@@ -237,19 +237,7 @@ ShallowWrapper {
           }
           useFixedHeader={false}
         />,
-        <Link
-          className="padding-large--left"
-          replace={false}
-          style={
-            Object {
-              "float": "right",
-              "fontSize": "1.25rem",
-            }
-          }
-          to="/dashboard/contacts/?last_name=Abb"
-        >
-          Advanced lookup for Contacts
-        </Link>,
+        undefined,
       ],
     },
     "ref": null,
@@ -397,24 +385,7 @@ ShallowWrapper {
         "rendered": null,
         "type": [Function],
       },
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "children": "Advanced lookup for Contacts",
-          "className": "padding-large--left",
-          "replace": false,
-          "style": Object {
-            "float": "right",
-            "fontSize": "1.25rem",
-          },
-          "to": "/dashboard/contacts/?last_name=Abb",
-        },
-        "ref": null,
-        "rendered": "Advanced lookup for Contacts",
-        "type": [Function],
-      },
+      undefined,
     ],
     "type": "div",
   },
@@ -552,19 +523,7 @@ ShallowWrapper {
             }
             useFixedHeader={false}
           />,
-          <Link
-            className="padding-large--left"
-            replace={false}
-            style={
-              Object {
-                "float": "right",
-                "fontSize": "1.25rem",
-              }
-            }
-            to="/dashboard/contacts/?last_name=Abb"
-          >
-            Advanced lookup for Contacts
-          </Link>,
+          undefined,
         ],
       },
       "ref": null,
@@ -712,24 +671,7 @@ ShallowWrapper {
           "rendered": null,
           "type": [Function],
         },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "children": "Advanced lookup for Contacts",
-            "className": "padding-large--left",
-            "replace": false,
-            "style": Object {
-              "float": "right",
-              "fontSize": "1.25rem",
-            },
-            "to": "/dashboard/contacts/?last_name=Abb",
-          },
-          "ref": null,
-          "rendered": "Advanced lookup for Contacts",
-          "type": [Function],
-        },
+        undefined,
       ],
       "type": "div",
     },

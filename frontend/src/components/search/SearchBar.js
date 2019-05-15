@@ -7,7 +7,7 @@ import { fetchSearchBarResults, clearSearchBarResults } from "@/actionCreators/s
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { SearchBarDropdown } from "@/components/search/SearchBarDropdown";
-import { throttle, debounce } from "lodash";
+import { throttle } from "lodash";
 
 const { Search } = Input;
 
@@ -30,17 +30,18 @@ export class SearchBar extends Component {
 
   constructor(props) {
     super(props);
-    this.fetchSearchResultsThrottled = throttle(this.props.fetchSearchBarResults, 1000);
-    this.fetchSearchResultsDebounced = debounce(this.props.fetchSearchBarResults, 2000);
+    this.fetchSearchResultsThrottled = throttle(this.props.fetchSearchBarResults, 2000, {
+      leading: true,
+      trailing: true,
+    });
   }
 
   changeSearchTerm = (e) => {
     const newSearchTerm = e.target.value;
     this.setState({ searchTerm: newSearchTerm });
 
-    if (newSearchTerm.length > 3) {
+    if (newSearchTerm.length > 2) {
       this.fetchSearchResultsThrottled(newSearchTerm);
-      this.fetchSearchResultsDebounced(newSearchTerm);
     }
   };
 
