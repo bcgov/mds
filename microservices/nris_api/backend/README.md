@@ -1,4 +1,4 @@
-# Backend API
+# NRIS API
 
 The project uses a Python 3.6 runtime environment and [Flask REST-plus](https://flask-restplus.readthedocs.io/en/stable/) framework for the API.
 
@@ -32,35 +32,48 @@ The application assumes you already have a working postgres DB with the required
 Follow the `.env-example` template to create an `.env` file with valid values before running the application.
 
 A. OS Level Installation
- - [Python 3.6](https://www.python.org/downloads/release/python-360/)
- - [Pip](https://pypi.org/project/pip/)
- - [Virtualenv](https://virtualenv.pypa.io/en/stable/)
+
+- [Python 3.6](https://www.python.org/downloads/release/python-360/)
+- [Pip](https://pypi.org/project/pip/)
+- [Virtualenv](https://virtualenv.pypa.io/en/stable/)
 
 1. Create a virtual environment with python 3.6 and activate it
+
 ```
 virtualenv -p python3.6 .venv
 source .venv/bin/activate
 ```
 
 2. Install the requirements
+
 ```
 pip install -r requirements.txt
 ```
 
+3. Run flask migrations in the project
+
+```
+flask db upgrade
+```
+
 3. Run the application
+
 ```
 flask run
 ```
 
 B. Using a docker container
- - [Docker](https://www.docker.com/)
+
+- [Docker](https://www.docker.com/)
 
 1. Switch current directory to the project root
+
 ```
 cd ../
 ```
 
 2. Issue the makefile command that runs the backend
+
 ```
 make backend
 ```
@@ -76,6 +89,7 @@ To see the list of all click commands, checkout `register_commands` method under
 The application uses `pytest` to run the tests and `coverage` to output the results. The testing structure is based around [flask testing documentation.](http://flask.pocoo.org/docs/1.0/testing/)
 
 To run tests, use the following command:
+
 ```
 coverage run --branch --source=app -m pytest
 ```
