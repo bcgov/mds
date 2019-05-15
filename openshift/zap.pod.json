@@ -52,15 +52,15 @@
             ],
             "resources": {
               "limits": {
-                "cpu": "500m",
+                "cpu": "1.5",
                 "memory": "3Gi"
               },
               "requests": {
-                "cpu": "300m",
-                "memory": "1.5Gi"
+                "cpu": "500m",
+                "memory": "1Gi"
               }
             },
-            "imagePullPolicy": "Always"
+            "imagePullPolicy": "IfNotPresent"
           }
         ],
         "restartPolicy": "Never",
