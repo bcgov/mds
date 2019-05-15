@@ -22,7 +22,8 @@ export const {
 // removes all expired compliance codes from the array
 export const getCurrentComplianceCodes = createSelector(
   [getComplianceCodes],
-  (codes) => codes.filter((code) => new Date(code.expiry_date) > new Date())
+  (codes) =>
+    codes.filter((code) => code.expiry_date === null || new Date(code.expiry_date) > new Date())
 );
 
 export const getMineTenureTypesHash = createSelector(
