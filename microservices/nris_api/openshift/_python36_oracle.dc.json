@@ -134,8 +134,8 @@
         "strategy": {
           "type": "Rolling",
           "rollingParams": {
-            "post": {
-              "failurePolicy": "ignore",
+            "pre": {
+              "failurePolicy": "Retry",
               "execNewPod": {
                 "containerName": "app",
                 "command": ["flask", "db upgrade"]
