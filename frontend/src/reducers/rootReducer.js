@@ -75,12 +75,20 @@ export const reducerObject = {
     networkReducer,
     reducerTypes.CREATE_MINE_VARIANCE
   ),
+  [reducerTypes.UPDATE_MINE_VARIANCE]: createReducer(
+    networkReducer,
+    reducerTypes.UPDATE_MINE_VARIANCE
+  ),
   [reducerTypes.GET_MINE_VARIANCES]: createReducer(networkReducer, reducerTypes.GET_MINE_VARIANCES),
   [reducerTypes.REMOVE_DOCUMENT_FROM_VARIANCE]: createReducer(
     networkReducer,
     reducerTypes.REMOVE_DOCUMENT_FROM_VARIANCE
   ),
   [reducerTypes.GET_CORE_USERS]: createReducer(networkReducer, reducerTypes.GET_CORE_USERS),
+  [reducerTypes.GET_VARIANCE_STATUS_OPTIONS]: createReducer(
+    networkReducer,
+    reducerTypes.GET_VARIANCE_STATUS_OPTIONS
+  ),
 };
 
 export const rootReducer = combineReducers(reducerObject);

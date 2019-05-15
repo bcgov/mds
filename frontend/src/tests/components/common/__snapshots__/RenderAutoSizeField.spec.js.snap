@@ -14,6 +14,7 @@ ShallowWrapper {
         "warning": false,
       }
     }
+    placeholder=""
     type=""
   />,
   Symbol(enzyme.__renderer__): Object {
@@ -36,7 +37,7 @@ ShallowWrapper {
       "hasFeedback": false,
       "help": false,
       "label": "",
-      "placeholder": undefined,
+      "placeholder": "",
       "validateStatus": "",
     },
     "ref": null,
@@ -67,7 +68,7 @@ ShallowWrapper {
         "hasFeedback": false,
         "help": false,
         "label": "",
-        "placeholder": undefined,
+        "placeholder": "",
         "validateStatus": "",
       },
       "ref": null,

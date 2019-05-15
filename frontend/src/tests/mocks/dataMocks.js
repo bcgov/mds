@@ -5,7 +5,7 @@ export const createMockHeader = () => ({
   },
 });
 
-export const ERROR = { error: { message: "Errors", status: 400 } };
+export const ERROR = { message: "Errors", status: 400 };
 
 // used for testing selectors
 export const MINE_RESPONSE = {
@@ -26,7 +26,7 @@ export const MINE_RESPONSE = {
         statusvalue: ["CLD", "CM"],
         status_labels: ["Closed", "Care & Maintenance"],
         effective_date: "2018-10-16",
-        expiry_date: "9999-12-31",
+        expiry_date: null,
       },
       mine_tailings_storage_facilities: [
         {
@@ -83,7 +83,7 @@ export const MINE_RESPONSE = {
         statusvalue: ["CLD", "CM"],
         status_labels: ["Closed", "Care & Maintenance"],
         effective_date: "2018-10-16",
-        expiry_date: "9999-12-31",
+        expiry_date: null,
       },
       mine_location: {
         longitude: null,
@@ -164,7 +164,7 @@ export const SUBSCRIBED_MINES = {
         statusvalue: ["CLD", "CM"],
         status_labels: ["Closed", "Care & Maintenance"],
         effective_date: "2018-10-16",
-        expiry_date: "9999-12-31",
+        expiry_date: null,
       },
     },
   ],
@@ -211,7 +211,7 @@ export const MINES = {
         statusvalue: ["CLD", "CM"],
         status_labels: ["Closed", "Care & Maintenance"],
         effective_date: "2018-10-16",
-        expiry_date: "9999-12-31",
+        expiry_date: null,
       },
       verified_status: {
         mine_guid: null,
@@ -245,7 +245,7 @@ export const MINES = {
         statusvalue: ["CLD", "CM"],
         status_labels: ["Closed", "Care & Maintenance"],
         effective_date: "2018-10-16",
-        expiry_date: "9999-12-31",
+        expiry_date: null,
       },
       mine_location: {
         longitude: null,
@@ -627,7 +627,7 @@ export const PERMITTEE = {
   permittees: {
     "1c7da2c4-10d5-4c9f-994a-96427aa0c69b": {
       effective_date: "2018-10-02",
-      expiry_date: "9999-12-31",
+      expiry_date: null,
       party_guid: "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
       party_name: "Yivihoke",
       permit_guid: "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
@@ -635,7 +635,7 @@ export const PERMITTEE = {
       party: {
         effective_date: "2018-10-03",
         email: "JgHxeyjv@aezZIwee.com",
-        expiry_date: "9999-12-31",
+        expiry_date: null,
         first_name: "Tiyudoveh",
         name: "Tiyudoveh Higesewawa",
         party_guid: "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
@@ -893,7 +893,7 @@ export const PARTYRELATIONSHIPS = [
       phone_ext: null,
       email: "test@test.test",
       effective_date: "2019-01-02",
-      expiry_date: "9999-12-31",
+      expiry_date: null,
       party_name: "test company 2 ",
       name: "test company 2 ",
     },
@@ -913,7 +913,7 @@ export const PARTYRELATIONSHIPS = [
       phone_ext: null,
       email: "test@test.test",
       effective_date: "2019-01-02",
-      expiry_date: "9999-12-31",
+      expiry_date: null,
       party_name: "test dude 1 ",
       name: "test dude 1 ",
     },
@@ -936,7 +936,7 @@ export const PARTY_RELATIONSHIP = [
       phone_ext: null,
       email: "test@test.test",
       effective_date: "2019-01-02",
-      expiry_date: "9999-12-31",
+      expiry_date: null,
       party_name: "test company 2 ",
       name: "test company 2 ",
     },
@@ -1120,7 +1120,7 @@ export const APPLICATION_STATUS_CODE_OPTIONS = [
 export const VARIANCES = {
   records: [
     {
-      variance_id: 1249,
+      variance_guid: "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
       compliance_article_id: 1,
       expiry_date: "2019-03-30",
       issue_date: "2019-03-01",
@@ -1128,20 +1128,11 @@ export const VARIANCES = {
       received_date: "2019-03-01",
       documents: [
         {
-          records: [
-            {
-              variance_document_xref_guid: "eda300b7-2155-4bf4-9b3d-06b1f4d8a0fe",
-              variance_id: 1249,
-              mine_document_guid: "d463b9df-7650-4d18-8c73-c8bfb7ae48f0",
-              details: {
-                mine_document_guid: "d463b9df-7650-4d18-8c73-c8bfb7ae48f0",
-                mine_guid: "79edee65-038e-4b26-9048-e41e4c0b7d1a",
-                document_manager_guid: "7426b928-caf7-4e1e-aa59-392895929f97",
-                document_name: "just_a_pdf.PDF",
-                active_ind: "True",
-              },
-            },
-          ],
+          created_at: "2019-05-02",
+          document_manager_guid: "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
+          document_name: "test.pdf",
+          mine_document_guid: "33e6b965-2402-4229-a213-23bbe7fd3e99",
+          mine_guid: "59e73109-48f7-4ad2-977c-3005b5bff010",
         },
       ],
     },
@@ -1155,7 +1146,7 @@ export const COMPLIANCE_CODES = {
       compliance_article_id: 305,
       description: "Spills",
       effective_date: "1970-01-01",
-      expiry_date: "9999-12-31",
+      expiry_date: null,
       paragraph: "7",
       section: "2",
       sub_paragraph: null,
@@ -1166,7 +1157,7 @@ export const COMPLIANCE_CODES = {
       compliance_article_id: 306,
       description: "Flammable Waste Storage",
       effective_date: "1970-01-01",
-      expiry_date: "9999-12-31",
+      expiry_date: null,
       paragraph: "8",
       section: "2",
       sub_paragraph: null,
@@ -1220,12 +1211,20 @@ export const CORE_USERS = {
         city: "Victoria",
         department: "Mines Health, Safety & Enforcement Division",
         title: "Geomatics Specialist",
-        username: "IDIRBLAH",
+        username: "IDIR\\BLAH",
       },
       last_logon: null,
       phone_no: "555-555-5556",
     },
   ],
+};
+
+export const CORE_USERS_DROPDOWN = [
+  { value: "51b3a499-a474-4d52-be99-5c5123d7501c", label: "BLAH" },
+];
+
+export const CORE_USERS_HASH = {
+  "51b3a499-a474-4d52-be99-5c5123d7501c": "BLAH",
 };
 
 export const INCIDENTS = {
@@ -1276,6 +1275,27 @@ export const SIMPLE_SEARCH_RESULTS = {
       },
       score: 375,
       type: "mine",
+    },
+  ],
+};
+
+export const VARIANCE_STATUS_OPTIONS = {
+  records: [
+    {
+      variance_application_status_code: "REV",
+      description: "In Review",
+    },
+    {
+      variance_application_status_code: "NAP",
+      description: "Not Applicable",
+    },
+    {
+      variance_application_status_code: "APP",
+      description: "Approved",
+    },
+    {
+      variance_application_status_code: "DEN",
+      description: "Denied",
     },
   ],
 };
@@ -2008,3 +2028,29 @@ export const MINE_DOCUMENT_SEARCH_RESULTS = [
     document_manager_guid: "99e7cf58-6b48-473c-9d05-4c010839eb8d",
   },
 ];
+
+export const VARIANCE_DROPDOWN_STATUS_OPTIONS = [
+  {
+    label: "In Review",
+    value: "REV",
+  },
+  {
+    label: "Not Applicable",
+    value: "NAP",
+  },
+  {
+    label: "Approved",
+    value: "APP",
+  },
+  {
+    label: "Denied",
+    value: "DEN",
+  },
+];
+
+export const VARIANCE_STATUS_OPTIONS_HASH = {
+  REV: "In Review",
+  NAP: "Not Applicable",
+  APP: "Approved",
+  DEN: "Denied",
+};

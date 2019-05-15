@@ -15,8 +15,8 @@ from app.api.utils.custom_reqparser import CustomReqparser
 class VarianceUploadedDocumentsResource(Resource, UserMixin, ErrorMixin):
     @api.doc(description='Delete a document from a variance.')
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
-    def delete(self, mine_guid, variance_id, mine_document_guid):
-        variance = Variance.find_by_mine_guid_and_variance_id(mine_guid, variance_id)
+    def delete(self, mine_guid, variance_guid, mine_document_guid):
+        variance = Variance.find_by_mine_guid_and_variance_guid(mine_guid, variance_guid)
         mine_document = MineDocument.find_by_mine_document_guid(mine_document_guid)
 
         if variance is None:
@@ -24,7 +24,7 @@ class VarianceUploadedDocumentsResource(Resource, UserMixin, ErrorMixin):
         if mine_document is None:
             raise NotFound('Mine document not found.')
 
-        variance.documents.remove(mine_document)
+        variance.mine_documents.remove(mine_document)
         variance.save()
 
         return ('', 204)

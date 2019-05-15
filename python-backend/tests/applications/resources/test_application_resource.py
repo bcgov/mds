@@ -51,8 +51,10 @@ def test_post_application(test_client, db_session, auth_headers):
     post_data = json.loads(post_resp.data.decode())
 
     assert post_resp.status_code == 201
-    assert len(
-        [key for key, value in post_data.items() if key not in data or value != data[key]]) == 2
+    assert post_data['application_no'] == data['application_no']
+    assert post_data['application_status_code'] == data['application_status_code']
+    assert post_data['description'] == data['description']
+    assert post_data['received_date'] == data['received_date']
 
 
 def test_post_application_bad_mine_guid(test_client, db_session, auth_headers):

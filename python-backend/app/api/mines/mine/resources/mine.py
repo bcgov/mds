@@ -1,12 +1,11 @@
 from decimal import Decimal
 import uuid
 from datetime import datetime
-import json
 
-from flask import request, make_response, current_app
-from flask_restplus import Resource, reqparse, inputs, fields
+from flask import request, current_app
+from flask_restplus import Resource, reqparse, inputs
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
-from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
+from werkzeug.exceptions import BadRequest, NotFound
 
 from ...status.models.mine_status import MineStatus
 from ...status.models.mine_status_xref import MineStatusXref
@@ -17,12 +16,11 @@ from ..models.mine_type_detail import MineTypeDetail
 from ..models.mine import Mine
 from ..models.mineral_tenure_xref import MineralTenureXref
 from ...location.models.mine_location import MineLocation
-from ...location.models.mine_map_view_location import MineMapViewLocation
 from ....utils.random import generate_mine_no
 from app.extensions import api, cache, db
-from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create, requires_any_of, MINE_VIEW, MINESPACE_PROPONENT
+from ....utils.access_decorators import requires_role_mine_create, requires_any_of, MINE_VIEW, MINESPACE_PROPONENT
 from ....utils.resources_mixins import UserMixin, ErrorMixin
-from ....constants import MINE_MAP_CACHE, TIMEOUT_12_HOURS
+from ....constants import MINE_MAP_CACHE
 from app.api.mines.mine_api_models import MINE_LIST_MODEL, MINE_MODEL
 # FIXME: Model import from outside of its namespace
 # This breaks micro-service architecture and is done
@@ -146,8 +144,7 @@ class MineListResource(Resource, UserMixin):
         sort_models = {
             'mine_name': 'Mine',
             'mine_no': 'Mine',
-            'mine_region': 'Mine',
-            'mine_operation_status_code': 'MineStatusXref'
+            'mine_region': 'Mine'
         }
         # Handle ListView request
         items_per_page = args.get('per_page', 25, type=int)
@@ -229,7 +226,6 @@ class MineListResource(Resource, UserMixin):
 
         # Apply sorting
         if sort_model and sort_field and sort_dir:
-            mines_query = mines_query.outerjoin(MineStatus).outerjoin(MineStatusXref)
             sort_criteria = [{'model': sort_model, 'field': sort_field, 'direction': sort_dir}]
             mines_query = apply_sort(mines_query, sort_criteria)
 

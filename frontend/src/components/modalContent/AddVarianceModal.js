@@ -8,6 +8,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   mineGuid: PropTypes.string.isRequired,
   complianceCodes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
+  coreUsers: CustomPropTypes.dropdownListItem.isRequired,
 };
 
 export const AddVarianceModal = (props) => (
@@ -17,6 +18,7 @@ export const AddVarianceModal = (props) => (
       closeModal={props.closeModal}
       mineGuid={props.mineGuid}
       complianceCodes={props.complianceCodes}
+      coreUsers={props.coreUsers}
     />
   </div>
 );

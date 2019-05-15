@@ -7,9 +7,10 @@ import CustomPropTypes from "@/customPropTypes";
 import { RED_CLOCK } from "@/constants/assets";
 import * as ModalContent from "@/constants/modalContent";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
-import * as String from "@/constants/strings";
+import * as Strings from "@/constants/strings";
 import { COLOR } from "@/constants/styles";
 import LinkButton from "@/components/common/LinkButton";
+import { formatDate } from "@/utils/helpers";
 
 const { errorRed } = COLOR;
 
@@ -44,10 +45,9 @@ const columns = [
   {
     title: "HSRC Code",
     dataIndex: "hsrc_code",
-    width: 100,
     render: (text, record) => (
       <div title="Name" style={record.isOverdue ? { color: errorRed } : {}}>
-        {record.doc.hsrc_code}
+        {record.doc.hsrc_code || Strings.EMPTY_FIELD}
       </div>
     ),
   },
@@ -56,21 +56,23 @@ const columns = [
     dataIndex: "due",
     render: (text, record) => (
       <div title="Due" style={record.isOverdue ? { color: errorRed } : {}}>
-        {record.doc.due_date === "None" ? "-" : record.doc.due_date}
+        {formatDate(record.doc.due_date) || Strings.EMPTY_FIELD}
       </div>
     ),
   },
   {
     title: "Received Date",
     dataIndex: "receivedDate",
-    render: (text, record) => <div title="Received Date">{record.doc.received_date || "-"}</div>,
+    render: (text, record) => (
+      <div title="Received Date">{formatDate(record.doc.received_date) || Strings.EMPTY_FIELD}</div>
+    ),
   },
   {
     title: "Status",
     dataIndex: "status",
     render: (test, record) => (
       <div title="Status" style={record.isOverdue ? { color: errorRed } : {}}>
-        {record.doc ? record.doc.expected_document_status.description : String.LOADING}
+        {record.doc ? record.doc.expected_document_status.description : Strings.LOADING}
       </div>
     ),
   },
@@ -81,7 +83,7 @@ const columns = [
       <div title="Documents">
         <ul>
           {!record.doc.related_documents || record.doc.related_documents.length === 0
-            ? "-"
+            ? Strings.EMPTY_FIELD
             : record.doc.related_documents.map((file) => (
                 <li className="wrapped-text">
                   <LinkButton
@@ -141,7 +143,7 @@ const transformRowData = (expectedDocuments, actions) =>
     ...actions,
   }));
 
-const MineInfoList = (props) => (
+const MineReportTable = (props) => (
   <div className="mine-info-padding">
     {props.mine && (
       <Table
@@ -157,6 +159,6 @@ const MineInfoList = (props) => (
   </div>
 );
 
-MineInfoList.propTypes = propTypes;
+MineReportTable.propTypes = propTypes;
 
-export default MineInfoList;
+export default MineReportTable;

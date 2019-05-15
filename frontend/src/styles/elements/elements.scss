@@ -89,6 +89,10 @@ p,
   color: $pure-white;
 }
 
+.p-light {
+  color: $p-light-color;
+}
+
 .bold {
   font-weight: $bold;
 }
@@ -100,6 +104,16 @@ link {
   text-decoration: underline;
   &:hover {
     color: $a-color-hover;
+    text-decoration: underline;
+  }
+}
+
+.link-on-dark {
+  @extend p;
+  color: #ffffff;
+  text-decoration: underline;
+  &:hover {
+    color: #e0e0e0;
     text-decoration: underline;
   }
 }

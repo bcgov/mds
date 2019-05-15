@@ -9,16 +9,18 @@ from app.extensions import db
 
 from .variance_application_status_code import VarianceApplicationStatusCode
 from ....utils.models_mixins import AuditMixin, Base
-from ....documents.variances.models.variance import VarianceDocument
+from ....documents.variances.models.variance import VarianceDocumentXref
 
 INVALID_GUID = 'Invalid guid.'
 INVALID_MINE_GUID = 'Invalid mine_guid.'
 INVALID_APPLICANT_GUID = 'Invalid applicant_guid.'
+INVALID_VARIANCE_GUID = 'Invalid variance_guid.'
 MISSING_MINE_GUID = 'Missing mine_guid.'
 
 class Variance(AuditMixin, Base):
     __tablename__ = "variance"
     variance_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
+    variance_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
     compliance_article_id = db.Column(
         db.Integer,
         db.ForeignKey('compliance_article.compliance_article_id'),
@@ -39,7 +41,8 @@ class Variance(AuditMixin, Base):
     received_date = db.Column(db.DateTime, nullable=False)
     expiry_date = db.Column(db.DateTime)
 
-    documents = db.relationship('MineDocument', lazy='joined', secondary='variance_document_xref')
+    documents = db.relationship('VarianceDocumentXref', lazy='joined')
+    mine_documents = db.relationship('MineDocument', lazy='joined', secondary='variance_document_xref')
     inspector = db.relationship('CoreUser', lazy='joined')
 
     inspector_guid = association_proxy('inspector', 'core_user_guid')
@@ -47,6 +50,7 @@ class Variance(AuditMixin, Base):
 
     def __repr__(self):
         return '<Variance %r>' % self.variance_id
+
 
     @classmethod
     def create(
@@ -90,9 +94,15 @@ class Variance(AuditMixin, Base):
         return cls.query.filter_by(variance_id=variance_id).first()
 
     @classmethod
-    def find_by_mine_guid_and_variance_id(cls, mine_guid, variance_id):
+    def find_by_variance_guid(cls, variance_guid):
+        cls.validate_guid(variance_guid, INVALID_VARIANCE_GUID)
+        return cls.query.filter_by(variance_guid=variance_guid).first()
+
+    @classmethod
+    def find_by_mine_guid_and_variance_guid(cls, mine_guid, variance_guid):
         cls.validate_guid(mine_guid, INVALID_MINE_GUID)
-        return cls.query.filter_by(mine_guid=mine_guid, variance_id=variance_id).first()
+        cls.validate_guid(variance_guid, INVALID_VARIANCE_GUID)
+        return cls.query.filter_by(mine_guid=mine_guid, variance_guid=variance_guid).first()
 
     @classmethod
     def validate_guid(cls, guid, msg=INVALID_GUID):
@@ -100,6 +110,26 @@ class Variance(AuditMixin, Base):
             uuid.UUID(str(guid), version=4)
         except ValueError:
             raise AssertionError(msg)
+
+    @classmethod
+    def validate_status_with_other_values(cls, status, expiry, issue, inspector):
+        if  status == 'APP':
+            if expiry is None:
+                raise AssertionError('Expiry date required for approved variance.')
+            if issue is None:
+                raise AssertionError('Issue date required for approved variance.')
+            if inspector is None:
+                raise AssertionError('Inspector required for approved variance.')
+
+        if status == 'DEN':
+            if inspector is None:
+                raise AssertionError('Inspector required for reviewed variance.')
+
+        if status in ['REV', 'NAP', 'DEN']:
+            if expiry is not None:
+                raise AssertionError('Expiry date forbidden unless variance is approved.')
+            if issue is not None:
+                raise AssertionError('Issue date forbidden unless variance is approved.')
 
     @validates('mine_guid')
     def validate_mine_guid(self, key, mine_guid):

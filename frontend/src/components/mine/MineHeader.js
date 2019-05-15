@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import MineMap from "@/components/maps/MineMap";
+import MineHeaderMap from "@/components/maps/MineHeaderMap";
+
 import { Menu, Divider, Button, Dropdown, Tag, Popover, Popconfirm } from "antd";
 import {
   ELLIPSE,
@@ -16,6 +18,7 @@ import {
   YELLOW_HAZARD,
   SUCCESS_CHECKMARK,
 } from "@/constants/assets";
+import * as route from "@/constants/routes";
 import { getUserInfo } from "@/selectors/authenticationSelectors";
 import * as String from "@/constants/strings";
 import * as ModalContent from "@/constants/modalContent";
@@ -249,6 +252,15 @@ export class MineHeader extends Component {
       </Menu>
     );
 
+    const mapRoute = this.props.mine.mine_location
+      ? route.MINE_HOME_PAGE.mapRoute({
+          lat: this.props.mine.mine_location.latitude,
+          long: this.props.mine.mine_location.longitude,
+          zoom: String.HIGH_ZOOM,
+          mineName: this.props.mine.mine_name,
+        })
+      : route.MINE_HOME_PAGE.mapRoute();
+
     return (
       <div className="dashboard__header--card">
         <div className="dashboard__header--card__content">
@@ -344,7 +356,7 @@ export class MineHeader extends Component {
           )}
           <div className="inline-flex padding-small">
             <p className="field-title">Tenure</p>
-            <p>
+            <div>
               {this.props.transformedMineTypes.mine_tenure_type_code.length > 0 ? (
                 this.props.transformedMineTypes.mine_tenure_type_code.map((tenure) => (
                   <span className="mine_tenure" key={tenure}>
@@ -354,7 +366,7 @@ export class MineHeader extends Component {
               ) : (
                 <p>{String.EMPTY_FIELD}</p>
               )}
-            </p>
+            </div>
           </div>
           <div className="inline-flex padding-small wrap">
             <p className="field-title">Commodity</p>
@@ -403,7 +415,7 @@ export class MineHeader extends Component {
           </div>
         </div>
         <div className="dashboard__header--card__map">
-          <MineMap mine={this.props.mine} />
+          <MineHeaderMap mine={this.props.mine} />
           <div className="dashboard__header--card__map--footer">
             <div className="inline-flex between">
               <p className="p-white">
@@ -419,12 +431,17 @@ export class MineHeader extends Component {
                   : String.EMPTY_FIELD}
               </p>
             </div>
-            <p className="p-white">
-              Region:{" "}
-              {this.props.mine.mine_region
-                ? this.props.mineRegionHash[this.props.mine.mine_region]
-                : String.EMPTY_FIELD}
-            </p>
+            <div className="inline-flex between">
+              <p className="p-white">
+                Region:{" "}
+                {this.props.mine.mine_region
+                  ? this.props.mineRegionHash[this.props.mine.mine_region]
+                  : String.EMPTY_FIELD}
+              </p>
+              <Link className="link-on-dark" to={mapRoute} target="_blank">
+                View In Full Map
+              </Link>
+            </div>
           </div>
         </div>
       </div>

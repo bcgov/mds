@@ -16,12 +16,14 @@ export const {
   getApplicationStatusOptions,
   getComplianceCodes,
   getIncidentFollowupActionOptions,
+  getVarianceStatusOptions,
 } = staticContentReducer;
 
 // removes all expired compliance codes from the array
 export const getCurrentComplianceCodes = createSelector(
   [getComplianceCodes],
-  (codes) => codes.filter((code) => new Date(code.expiry_date) > new Date())
+  (codes) =>
+    codes.filter((code) => code.expiry_date === null || new Date(code.expiry_date) > new Date())
 );
 
 export const getMineTenureTypesHash = createSelector(
@@ -151,4 +153,14 @@ export const getMultiSelectComplianceCodes = createSelector(
       const composedLabel = formatComplianceCodeValueOrLabel(code, true);
       return { value: composedValue, label: composedLabel };
     })
+);
+
+export const getDropdownVarianceStatusOptions = createSelector(
+  [getVarianceStatusOptions],
+  (options) => createDropDownList(options, "description", "variance_application_status_code")
+);
+
+export const getVarianceStatusOptionsHash = createSelector(
+  [getDropdownVarianceStatusOptions],
+  createLabelHash
 );

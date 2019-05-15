@@ -34,7 +34,7 @@ ShallowWrapper {
         "mine_region": "NE",
         "mine_status": Object {
           "effective_date": "2018-10-16",
-          "expiry_date": "9999-12-31",
+          "expiry_date": null,
           "status_labels": Array [
             "Closed",
             "Care & Maintenance",
@@ -499,11 +499,11 @@ ShallowWrapper {
             >
               Tenure
             </p>
-            <p>
+            <div>
               <p>
                 N/A
               </p>
-            </p>
+            </div>
           </div>
           <div
             className="inline-flex padding-small wrap"
@@ -547,7 +547,7 @@ ShallowWrapper {
         <div
           className="dashboard__header--card__map"
         >
-          <MineMap
+          <MineHeaderMap
             lat={null}
             long={null}
             mine={
@@ -578,7 +578,7 @@ ShallowWrapper {
                 "mine_region": "NE",
                 "mine_status": Object {
                   "effective_date": "2018-10-16",
-                  "expiry_date": "9999-12-31",
+                  "expiry_date": null,
                   "status_labels": Array [
                     "Closed",
                     "Care & Maintenance",
@@ -637,13 +637,25 @@ ShallowWrapper {
                  
               </p>
             </div>
-            <p
-              className="p-white"
+            <div
+              className="inline-flex between"
             >
-              Region:
-               
-              North East
-            </p>
+              <p
+                className="p-white"
+              >
+                Region:
+                 
+                North East
+              </p>
+              <Link
+                className="link-on-dark"
+                replace={false}
+                target="_blank"
+                to="/dashboard/mines?map=true&lat&long&zoom=14&mineName=mine3"
+              >
+                View In Full Map
+              </Link>
+            </div>
           </div>
         </div>,
       ],
@@ -916,11 +928,11 @@ ShallowWrapper {
               >
                 Tenure
               </p>
-              <p>
+              <div>
                 <p>
                   N/A
                 </p>
-              </p>
+              </div>
             </div>,
             <div
               className="inline-flex padding-small wrap"
@@ -2090,11 +2102,11 @@ ShallowWrapper {
                 >
                   Tenure
                 </p>,
-                <p>
+                <div>
                   <p>
                     N/A
                   </p>
-                </p>,
+                </div>,
               ],
               "className": "inline-flex padding-small",
             },
@@ -2133,7 +2145,7 @@ ShallowWrapper {
                   "rendered": "N/A",
                   "type": "p",
                 },
-                "type": "p",
+                "type": "div",
               },
             ],
             "type": "div",
@@ -2296,7 +2308,7 @@ ShallowWrapper {
         "nodeType": "host",
         "props": Object {
           "children": Array [
-            <MineMap
+            <MineHeaderMap
               lat={null}
               long={null}
               mine={
@@ -2327,7 +2339,7 @@ ShallowWrapper {
                   "mine_region": "NE",
                   "mine_status": Object {
                     "effective_date": "2018-10-16",
-                    "expiry_date": "9999-12-31",
+                    "expiry_date": null,
                     "status_labels": Array [
                       "Closed",
                       "Care & Maintenance",
@@ -2386,13 +2398,25 @@ ShallowWrapper {
                    
                 </p>
               </div>
-              <p
-                className="p-white"
+              <div
+                className="inline-flex between"
               >
-                Region:
-                 
-                North East
-              </p>
+                <p
+                  className="p-white"
+                >
+                  Region:
+                   
+                  North East
+                </p>
+                <Link
+                  className="link-on-dark"
+                  replace={false}
+                  target="_blank"
+                  to="/dashboard/mines?map=true&lat&long&zoom=14&mineName=mine3"
+                >
+                  View In Full Map
+                </Link>
+              </div>
             </div>,
           ],
           "className": "dashboard__header--card__map",
@@ -2433,7 +2457,7 @@ ShallowWrapper {
                 "mine_region": "NE",
                 "mine_status": Object {
                   "effective_date": "2018-10-16",
-                  "expiry_date": "9999-12-31",
+                  "expiry_date": null,
                   "status_labels": Array [
                     "Closed",
                     "Care & Maintenance",
@@ -2498,13 +2522,25 @@ ShallowWrapper {
                      
                   </p>
                 </div>,
-                <p
-                  className="p-white"
+                <div
+                  className="inline-flex between"
                 >
-                  Region:
-                   
-                  North East
-                </p>,
+                  <p
+                    className="p-white"
+                  >
+                    Region:
+                     
+                    North East
+                  </p>
+                  <Link
+                    className="link-on-dark"
+                    replace={false}
+                    target="_blank"
+                    to="/dashboard/mines?map=true&lat&long&zoom=14&mineName=mine3"
+                  >
+                    View In Full Map
+                  </Link>
+                </div>,
               ],
               "className": "dashboard__header--card__map--footer",
             },
@@ -2582,19 +2618,63 @@ ShallowWrapper {
                 "nodeType": "host",
                 "props": Object {
                   "children": Array [
-                    "Region:",
-                    " ",
-                    "North East",
+                    <p
+                      className="p-white"
+                    >
+                      Region:
+                       
+                      North East
+                    </p>,
+                    <Link
+                      className="link-on-dark"
+                      replace={false}
+                      target="_blank"
+                      to="/dashboard/mines?map=true&lat&long&zoom=14&mineName=mine3"
+                    >
+                      View In Full Map
+                    </Link>,
                   ],
-                  "className": "p-white",
+                  "className": "inline-flex between",
                 },
                 "ref": null,
                 "rendered": Array [
-                  "Region:",
-                  " ",
-                  "North East",
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": Array [
+                        "Region:",
+                        " ",
+                        "North East",
+                      ],
+                      "className": "p-white",
+                    },
+                    "ref": null,
+                    "rendered": Array [
+                      "Region:",
+                      " ",
+                      "North East",
+                    ],
+                    "type": "p",
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": "View In Full Map",
+                      "className": "link-on-dark",
+                      "replace": false,
+                      "target": "_blank",
+                      "to": "/dashboard/mines?map=true&lat&long&zoom=14&mineName=mine3",
+                    },
+                    "ref": null,
+                    "rendered": "View In Full Map",
+                    "type": [Function],
+                  },
                 ],
-                "type": "p",
+                "type": "div",
               },
             ],
             "type": "div",
@@ -2873,11 +2953,11 @@ ShallowWrapper {
               >
                 Tenure
               </p>
-              <p>
+              <div>
                 <p>
                   N/A
                 </p>
-              </p>
+              </div>
             </div>
             <div
               className="inline-flex padding-small wrap"
@@ -2921,7 +3001,7 @@ ShallowWrapper {
           <div
             className="dashboard__header--card__map"
           >
-            <MineMap
+            <MineHeaderMap
               lat={null}
               long={null}
               mine={
@@ -2952,7 +3032,7 @@ ShallowWrapper {
                   "mine_region": "NE",
                   "mine_status": Object {
                     "effective_date": "2018-10-16",
-                    "expiry_date": "9999-12-31",
+                    "expiry_date": null,
                     "status_labels": Array [
                       "Closed",
                       "Care & Maintenance",
@@ -3011,13 +3091,25 @@ ShallowWrapper {
                    
                 </p>
               </div>
-              <p
-                className="p-white"
+              <div
+                className="inline-flex between"
               >
-                Region:
-                 
-                North East
-              </p>
+                <p
+                  className="p-white"
+                >
+                  Region:
+                   
+                  North East
+                </p>
+                <Link
+                  className="link-on-dark"
+                  replace={false}
+                  target="_blank"
+                  to="/dashboard/mines?map=true&lat&long&zoom=14&mineName=mine3"
+                >
+                  View In Full Map
+                </Link>
+              </div>
             </div>
           </div>,
         ],
@@ -3290,11 +3382,11 @@ ShallowWrapper {
                 >
                   Tenure
                 </p>
-                <p>
+                <div>
                   <p>
                     N/A
                   </p>
-                </p>
+                </div>
               </div>,
               <div
                 className="inline-flex padding-small wrap"
@@ -4464,11 +4556,11 @@ ShallowWrapper {
                   >
                     Tenure
                   </p>,
-                  <p>
+                  <div>
                     <p>
                       N/A
                     </p>
-                  </p>,
+                  </div>,
                 ],
                 "className": "inline-flex padding-small",
               },
@@ -4507,7 +4599,7 @@ ShallowWrapper {
                     "rendered": "N/A",
                     "type": "p",
                   },
-                  "type": "p",
+                  "type": "div",
                 },
               ],
               "type": "div",
@@ -4670,7 +4762,7 @@ ShallowWrapper {
           "nodeType": "host",
           "props": Object {
             "children": Array [
-              <MineMap
+              <MineHeaderMap
                 lat={null}
                 long={null}
                 mine={
@@ -4701,7 +4793,7 @@ ShallowWrapper {
                     "mine_region": "NE",
                     "mine_status": Object {
                       "effective_date": "2018-10-16",
-                      "expiry_date": "9999-12-31",
+                      "expiry_date": null,
                       "status_labels": Array [
                         "Closed",
                         "Care & Maintenance",
@@ -4760,13 +4852,25 @@ ShallowWrapper {
                      
                   </p>
                 </div>
-                <p
-                  className="p-white"
+                <div
+                  className="inline-flex between"
                 >
-                  Region:
-                   
-                  North East
-                </p>
+                  <p
+                    className="p-white"
+                  >
+                    Region:
+                     
+                    North East
+                  </p>
+                  <Link
+                    className="link-on-dark"
+                    replace={false}
+                    target="_blank"
+                    to="/dashboard/mines?map=true&lat&long&zoom=14&mineName=mine3"
+                  >
+                    View In Full Map
+                  </Link>
+                </div>
               </div>,
             ],
             "className": "dashboard__header--card__map",
@@ -4807,7 +4911,7 @@ ShallowWrapper {
                   "mine_region": "NE",
                   "mine_status": Object {
                     "effective_date": "2018-10-16",
-                    "expiry_date": "9999-12-31",
+                    "expiry_date": null,
                     "status_labels": Array [
                       "Closed",
                       "Care & Maintenance",
@@ -4872,13 +4976,25 @@ ShallowWrapper {
                        
                     </p>
                   </div>,
-                  <p
-                    className="p-white"
+                  <div
+                    className="inline-flex between"
                   >
-                    Region:
-                     
-                    North East
-                  </p>,
+                    <p
+                      className="p-white"
+                    >
+                      Region:
+                       
+                      North East
+                    </p>
+                    <Link
+                      className="link-on-dark"
+                      replace={false}
+                      target="_blank"
+                      to="/dashboard/mines?map=true&lat&long&zoom=14&mineName=mine3"
+                    >
+                      View In Full Map
+                    </Link>
+                  </div>,
                 ],
                 "className": "dashboard__header--card__map--footer",
               },
@@ -4956,19 +5072,63 @@ ShallowWrapper {
                   "nodeType": "host",
                   "props": Object {
                     "children": Array [
-                      "Region:",
-                      " ",
-                      "North East",
+                      <p
+                        className="p-white"
+                      >
+                        Region:
+                         
+                        North East
+                      </p>,
+                      <Link
+                        className="link-on-dark"
+                        replace={false}
+                        target="_blank"
+                        to="/dashboard/mines?map=true&lat&long&zoom=14&mineName=mine3"
+                      >
+                        View In Full Map
+                      </Link>,
                     ],
-                    "className": "p-white",
+                    "className": "inline-flex between",
                   },
                   "ref": null,
                   "rendered": Array [
-                    "Region:",
-                    " ",
-                    "North East",
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": Array [
+                          "Region:",
+                          " ",
+                          "North East",
+                        ],
+                        "className": "p-white",
+                      },
+                      "ref": null,
+                      "rendered": Array [
+                        "Region:",
+                        " ",
+                        "North East",
+                      ],
+                      "type": "p",
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": "View In Full Map",
+                        "className": "link-on-dark",
+                        "replace": false,
+                        "target": "_blank",
+                        "to": "/dashboard/mines?map=true&lat&long&zoom=14&mineName=mine3",
+                      },
+                      "ref": null,
+                      "rendered": "View In Full Map",
+                      "type": [Function],
+                    },
                   ],
-                  "type": "p",
+                  "type": "div",
                 },
               ],
               "type": "div",

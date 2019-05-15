@@ -5,7 +5,7 @@ export const createMockHeader = () => ({
   },
 });
 
-export const ERROR = { error: { message: "Errors", status: 400 } };
+export const ERROR = { message: "Errors", status: 400 };
 
 // used for testing selectors
 export const MINE_RESPONSE = {
@@ -889,3 +889,115 @@ export const PARTYRELATIONSHIPTYPES = [
     grouping_level: "1",
   },
 ];
+
+export const VARIANCE_STATUS_OPTIONS = {
+  records: [
+    {
+      variance_application_status_code: "REV",
+      description: "In Review",
+    },
+    {
+      variance_application_status_code: "NAP",
+      description: "Not Applicable",
+    },
+    {
+      variance_application_status_code: "APP",
+      description: "Approved",
+    },
+    {
+      variance_application_status_code: "DEN",
+      description: "Denied",
+    },
+  ],
+};
+
+export const VARIANCE_DROPDOWN_STATUS_OPTIONS = [
+  {
+    label: "In Review",
+    value: "REV",
+  },
+  {
+    label: "Not Applicable",
+    value: "NAP",
+  },
+  {
+    label: "Approved",
+    value: "APP",
+  },
+  {
+    label: "Denied",
+    value: "DEN",
+  },
+];
+
+export const VARIANCE_STATUS_OPTIONS_HASH = {
+  REV: "In Review",
+  NAP: "Not Applicable",
+  APP: "Approved",
+  DEN: "Denied",
+};
+
+export const COMPLIANCE_CODES = {
+  records: [
+    {
+      article_act_code: "HSRCM",
+      compliance_article_id: 305,
+      description: "Spills",
+      effective_date: "1970-01-01",
+      expiry_date: "9999-12-31",
+      paragraph: "7",
+      section: "2",
+      sub_paragraph: null,
+      sub_section: "3",
+    },
+    {
+      article_act_code: "HSRCM",
+      compliance_article_id: 306,
+      description: "Flammable Waste Storage",
+      effective_date: "1970-01-01",
+      expiry_date: "9999-12-31",
+      paragraph: "8",
+      section: "2",
+      sub_paragraph: null,
+      sub_section: "3",
+    },
+  ],
+};
+
+export const DROPDOWN_HSRCM_CODES = [
+  {
+    value: 305,
+    label: "2.3.7 - Spills",
+  },
+  {
+    value: 306,
+    label: "2.3.8 - Flammable Waste Storage",
+  },
+];
+
+export const HSRCM_HASH = {
+  305: "2.3.7 - Spills",
+  306: "2.3.8 - Flammable Waste Storage",
+};
+
+export const VARIANCES = {
+  records: [
+    {
+      variance_guid: "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+      compliance_article_id: 1,
+      expiry_date: "2019-03-30",
+      issue_date: "2019-03-01",
+      note: "notesss",
+      received_date: "2019-03-01",
+      documents: [
+        {
+          created_at: "2019-05-02",
+          document_manager_guid: "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
+          document_name: "test.pdf",
+          mine_document_guid: "33e6b965-2402-4229-a213-23bbe7fd3e99",
+          mine_guid: "59e73109-48f7-4ad2-977c-3005b5bff010",
+        },
+      ],
+    },
+  ],
+};

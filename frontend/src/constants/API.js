@@ -66,11 +66,12 @@ export const SIMPLE_SEARCH = "/search/simple";
 // Variances
 export const COMPLIANCE_CODES = "/mines/compliance/codes";
 export const VARIANCES = (mineGuid) => `/mines/${mineGuid}/variances`;
-export const VARIANCE = (mineGuid, varianceId) => `/mines/${mineGuid}/variances/${varianceId}`;
-export const VARIANCE_DOCUMENTS = (mineGuid, varianceId) =>
-  `/mines/${mineGuid}/variances/${varianceId}/documents`;
-export const VARIANCE_DOCUMENT = (mineGuid, varianceId, documentManagerGuid) =>
-  `/mines/${mineGuid}/variances/${varianceId}/documents/${documentManagerGuid}`;
+export const VARIANCE = (mineGuid, varianceGuid) => `/mines/${mineGuid}/variances/${varianceGuid}`;
+export const VARIANCE_DOCUMENTS = (mineGuid, varianceGuid) =>
+  `/mines/${mineGuid}/variances/${varianceGuid}/documents`;
+export const VARIANCE_DOCUMENT = (mineGuid, varianceGuid, documentManagerGuid) =>
+  `/mines/${mineGuid}/variances/${varianceGuid}/documents/${documentManagerGuid}`;
+export const VARIANCE_STATUS_CODES = "/variances/status-codes";
 
 // Users
 export const CORE_USER = "/users/core";
