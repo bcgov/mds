@@ -29,4 +29,3 @@ try:
         user=Config.NRIS_DB_USER, password=Config.NRIS_DB_PASSWORD, dsn=dsn_tns)
 except:
     oracle_db = None
-    print('could not connect to oracle db')

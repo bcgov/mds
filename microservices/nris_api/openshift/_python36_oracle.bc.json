@@ -74,7 +74,7 @@
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${NAME}-cxoracle-base",
+        "name": "${NAME}-base",
         "creationTimestamp": null,
         "annotations": {
           "description": "Python Runtime Image"
@@ -113,7 +113,7 @@
       "kind": "BuildConfig",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${NAME}-cxoracle-base${SUFFIX}",
+        "name": "${NAME}-base${SUFFIX}",
         "creationTimestamp": null,
         "labels": {},
         "annotations": {}
@@ -149,7 +149,7 @@
         "output": {
           "to": {
             "kind": "ImageStreamTag",
-            "name": "${NAME}-cxoracle-base:${VERSION}"
+            "name": "${NAME}-base:${VERSION}"
           }
         },
         "resources": {
