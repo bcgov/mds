@@ -130,7 +130,7 @@
                 "value": "${GIT_BRANCH}"
               }
             ],
-            "imagePullPolicy": "Always"
+            "imagePullPolicy": "IfNotPresent"
           }
         ],
         "restartPolicy": "Never",
