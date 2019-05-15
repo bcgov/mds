@@ -393,7 +393,7 @@ class PartyFactory(BaseFactory):
     phone_ext = factory.Iterator([None, '123'])
     email = None
     effective_date = TODAY
-    expiry_date = datetime.strptime('9999-12-31', '%Y-%m-%d')  # holdover till datetime refactor
+    expiry_date = None
     party_type_code = None
 
     mine_party_appt = []
