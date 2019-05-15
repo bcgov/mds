@@ -43,7 +43,6 @@ app {
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}"
                     ]
                 ],
-                // bc for NRIS API Backend 
                 [
                     'file':'microservices/nris_api/openshift/_python36_oracle.bc.json',
                     'params':[
