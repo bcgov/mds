@@ -29,7 +29,7 @@ from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointme
 from app.api.permits.permit.models.permit import Permit
 from app.api.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
-from app.api.users.core.models.core_user import CoreUser
+from app.api.users.core.models.core_user import CoreUser, IdirUserDetail
 from app.api.users.minespace.models.minespace_user import MinespaceUser
 
 GUID = factory.LazyFunction(uuid.uuid4)
@@ -392,7 +392,7 @@ class PartyFactory(BaseFactory):
     phone_ext = factory.Iterator([None, '123'])
     email = None
     effective_date = TODAY
-    expiry_date = datetime.strptime('9999-12-31', '%Y-%m-%d')  # holdover till datetime refactor
+    expiry_date = None
     party_type_code = None
 
     mine_party_appt = []
@@ -428,6 +428,23 @@ class CoreUserFactory(BaseFactory):
     email = factory.Faker('email')
     phone_no = factory.Faker('numerify', text='###-###-####')
     last_logon = TODAY
+    idir_user_detail = factory.SubFactory('tests.factories.IdirUserDetailFactory')
+
+    @factory.post_generation
+    def idir_user_detail(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        IdirUserDetailFactory.create(core_user_id=obj.core_user_id, **kwargs)
+
+
+class IdirUserDetailFactory(BaseFactory):
+    class Meta:
+        model = IdirUserDetail
+
+    core_user_id = factory.SelfAttribute('core_user.core_user_id')
+    bcgov_guid = GUID
+    username = factory.Faker('first_name')
 
 
 class MinespaceUserFactory(BaseFactory):
