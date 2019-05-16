@@ -37,7 +37,6 @@ describe("`createVariance` action creator", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPost(url).reply(200, mockResponse);
     return createVariance({ mineGuid }, mockPayload)(dispatch).then(() => {
-      expect(true).toBe(false);
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(5);
