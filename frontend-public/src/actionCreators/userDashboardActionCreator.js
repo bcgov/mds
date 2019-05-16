@@ -2,7 +2,7 @@ import axios from "axios";
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
 import { request, success, error } from "@/actions/genericActions";
-import * as userMineInfoActions from "@/actions/userMineInfoActions";
+import * as userMineActions from "@/actions/userMineActions";
 import * as reducerTypes from "@/constants/reducerTypes";
 import * as API from "@/constants/API";
 import { ENVIRONMENT } from "@/constants/environment";
@@ -15,12 +15,12 @@ export const fetchUserMineInfo = () => (dispatch) => {
     .get(`${ENVIRONMENT.apiUrl + API.USER_MINE_INFO}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_USER_MINE_INFO));
-      dispatch(userMineInfoActions.storeUserMineInfo(response.data));
+      dispatch(userMineActions.storeUserMineInfo(response.data));
       dispatch(hideLoading());
     })
     .catch((err) => {
       notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
+        message: err.response ? err.response.data.message : String.ERROR,
         duration: 10,
       });
       dispatch(error(reducerTypes.GET_USER_MINE_INFO));
@@ -35,12 +35,12 @@ export const fetchMineRecordById = (mineId) => (dispatch) => {
     .get(`${ENVIRONMENT.apiUrl + API.MINE}/${mineId}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_RECORD));
-      dispatch(userMineInfoActions.storeMine(response.data));
+      dispatch(userMineActions.storeMine(response.data));
       dispatch(hideLoading());
     })
     .catch((err) => {
       notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
+        message: err.response ? err.response.data.message : String.ERROR,
         duration: 10,
       });
       dispatch(error(reducerTypes.GET_MINE_RECORD));
@@ -55,13 +55,13 @@ export const fetchMineDocuments = (mineGuid) => (dispatch) => {
     .get(`${ENVIRONMENT.apiUrl}${API.MINE_DOCUMENTS}/${mineGuid}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_DOCUMENTS));
-      dispatch(userMineInfoActions.storeMineDocuments(response.data));
+      dispatch(userMineActions.storeMineDocuments(response.data));
       dispatch(hideLoading());
       return response;
     })
     .catch((err) => {
       notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
+        message: err.response ? err.response.data.message : String.ERROR,
         duration: 10,
       });
       dispatch(error(reducerTypes.GET_MINE_DOCUMENTS));
@@ -85,7 +85,7 @@ export const addDocumentToExpectedDocument = (expectedDocumentGuid, payload) => 
     })
     .catch((err) => {
       notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
+        message: err.response ? err.response.data.message : String.ERROR,
         duration: 10,
       });
       dispatch(error(reducerTypes.ADD_DOCUMENT_TO_EXPECTED_DOCUMENT));
@@ -109,7 +109,7 @@ export const updateExpectedDocument = (id, payload) => (dispatch) => {
     })
     .catch((err) => {
       notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
+        message: err.response ? err.response.data.message : String.ERROR,
         duration: 10,
       });
       dispatch(error(reducerTypes.UPDATE_EXPECTED_DOCUMENT));
@@ -139,7 +139,7 @@ export const removeMineDocumentFromExpectedDocument = (mineDocumentGuid, expecte
     })
     .catch((err) => {
       notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
+        message: err.response ? err.response.data.message : String.ERROR,
         duration: 10,
       });
       dispatch(error(reducerTypes.REMOVE_MINE_EXPECTED_DOCUMENT));

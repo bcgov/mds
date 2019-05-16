@@ -19,10 +19,10 @@
 }
 
 .sidebar-block {
-  width: 100%;
-  margin: $default-margin-lg 0px;
+  width: 309px;
+  margin: $default-margin-lg 0;
   @include tablet {
-    margin-left: $default-margin-lg;
+    width: 100%;
   }
 }
 
@@ -50,4 +50,14 @@
   span {
     font-size: $default-h4;
   }
+}
+
+.flex-3 {
+  flex: 3;
+  margin: 10px;
+}
+
+.flex-1 {
+  flex: 1;
+  margin: 10px;
 }

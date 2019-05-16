@@ -29,6 +29,7 @@ import {
   fetchMineIncidentFollowActionOptions,
   fetchMineIncidentDeterminationOptions,
   setOptionsLoaded,
+  fetchVarianceStatusOptions,
 } from "@/actionCreators/staticContentActionCreator";
 import {
   getMines,
@@ -40,6 +41,7 @@ import {
   createVariance,
   fetchVariancesByMine,
   addDocumentToVariance,
+  updateVariance,
 } from "@/actionCreators/varianceActionCreator";
 import {
   getMineRegionHash,
@@ -49,11 +51,13 @@ import {
   getDropdownHSRCMComplianceCodes,
   getHSRCMComplianceCodesHash,
   getMultiSelectComplianceCodes,
+  getDropdownVarianceStatusOptions,
+  getVarianceStatusOptionsHash,
   getOptionsLoaded,
 } from "@/selectors/staticContentSelectors";
 import { getMineComplianceInfo } from "@/selectors/complianceSelectors";
-import { getMineVariances } from "@/selectors/varianceSelectors";
-import { getCoreUsers } from "@/selectors/userSelectors";
+import { getVarianceApplications, getApprovedVariances } from "@/selectors/varianceSelectors";
+import { getDropdownCoreUsers, getCoreUsersHash } from "@/selectors/userSelectors";
 import {
   fetchPartyRelationshipTypes,
   fetchPartyRelationships,
@@ -109,6 +113,10 @@ const propTypes = {
   fetchMineIncidentDeterminationOptions: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+  varianceStatusOptions: CustomPropTypes.dropdownListItem.isRequired,
+  updateVariance: PropTypes.func.isRequired,
+  varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  fetchVarianceStatusOptions: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -153,6 +161,7 @@ export class MineDashboard extends Component {
     this.props.fetchMineComplianceCodes();
     this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
     this.props.fetchSubscribedMinesByUser();
+    this.props.fetchVarianceStatusOptions();
     this.props.fetchCoreUsers();
     if (activeTab) {
       this.setState({ activeTab });
@@ -352,14 +361,20 @@ export class MineDashboard extends Component {
                     <div className="tab__content">
                       <MineVariance
                         mine={mine}
+                        coreUsers={this.props.coreUsers}
                         createVariance={this.props.createVariance}
                         addDocumentToVariance={this.props.addDocumentToVariance}
                         openModal={this.props.openModal}
                         closeModal={this.props.closeModal}
                         fetchVariancesByMine={this.props.fetchVariancesByMine}
-                        variances={this.props.variances}
+                        varianceApplications={this.props.varianceApplications}
+                        approvedVariances={this.props.approvedVariances}
                         complianceCodes={this.props.complianceCodes}
                         complianceCodesHash={this.props.complianceCodesHash}
+                        varianceStatusOptions={this.props.varianceStatusOptions}
+                        updateVariance={this.props.updateVariance}
+                        varianceStatusOptionsHash={this.props.varianceStatusOptionsHash}
+                        coreUsersHash={this.props.coreUsersHash}
                       />
                     </div>
                   </TabPane>
@@ -410,12 +425,16 @@ const mapStateToProps = (state) => ({
   transformedMineTypes: getTransformedMineTypes(state),
   optionsLoaded: getOptionsLoaded(state),
   subscribed: getIsUserSubscribed(state),
-  variances: getMineVariances(state),
+  approvedVariances: getApprovedVariances(state),
+  varianceApplications: getVarianceApplications(state),
   complianceCodes: getDropdownHSRCMComplianceCodes(state),
   multiSelectComplianceCodes: getMultiSelectComplianceCodes(state),
   complianceCodesHash: getHSRCMComplianceCodesHash(state),
   mineComplianceInfo: getMineComplianceInfo(state),
-  coreUsers: getCoreUsers(state),
+  coreUsers: getDropdownCoreUsers(state),
+  varianceStatusOptions: getDropdownVarianceStatusOptions(state),
+  varianceStatusOptionsHash: getVarianceStatusOptionsHash(state),
+  coreUsersHash: getCoreUsersHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -450,6 +469,8 @@ const mapDispatchToProps = (dispatch) =>
       fetchCoreUsers,
       fetchMineIncidentFollowActionOptions,
       fetchMineIncidentDeterminationOptions,
+      fetchVarianceStatusOptions,
+      updateVariance,
     },
     dispatch
   );

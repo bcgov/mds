@@ -34,7 +34,7 @@ ShallowWrapper {
         "mine_region": "NE",
         "mine_status": Object {
           "effective_date": "2018-10-16",
-          "expiry_date": "9999-12-31",
+          "expiry_date": null,
           "status_labels": Array [
             "Closed",
             "Care & Maintenance",
@@ -499,11 +499,11 @@ ShallowWrapper {
             >
               Tenure
             </p>
-            <p>
+            <div>
               <p>
                 N/A
               </p>
-            </p>
+            </div>
           </div>
           <div
             className="inline-flex padding-small wrap"
@@ -578,7 +578,7 @@ ShallowWrapper {
                 "mine_region": "NE",
                 "mine_status": Object {
                   "effective_date": "2018-10-16",
-                  "expiry_date": "9999-12-31",
+                  "expiry_date": null,
                   "status_labels": Array [
                     "Closed",
                     "Care & Maintenance",
@@ -928,11 +928,11 @@ ShallowWrapper {
               >
                 Tenure
               </p>
-              <p>
+              <div>
                 <p>
                   N/A
                 </p>
-              </p>
+              </div>
             </div>,
             <div
               className="inline-flex padding-small wrap"
@@ -2102,11 +2102,11 @@ ShallowWrapper {
                 >
                   Tenure
                 </p>,
-                <p>
+                <div>
                   <p>
                     N/A
                   </p>
-                </p>,
+                </div>,
               ],
               "className": "inline-flex padding-small",
             },
@@ -2145,7 +2145,7 @@ ShallowWrapper {
                   "rendered": "N/A",
                   "type": "p",
                 },
-                "type": "p",
+                "type": "div",
               },
             ],
             "type": "div",
@@ -2339,7 +2339,7 @@ ShallowWrapper {
                   "mine_region": "NE",
                   "mine_status": Object {
                     "effective_date": "2018-10-16",
-                    "expiry_date": "9999-12-31",
+                    "expiry_date": null,
                     "status_labels": Array [
                       "Closed",
                       "Care & Maintenance",
@@ -2457,7 +2457,7 @@ ShallowWrapper {
                 "mine_region": "NE",
                 "mine_status": Object {
                   "effective_date": "2018-10-16",
-                  "expiry_date": "9999-12-31",
+                  "expiry_date": null,
                   "status_labels": Array [
                     "Closed",
                     "Care & Maintenance",
@@ -2953,11 +2953,11 @@ ShallowWrapper {
               >
                 Tenure
               </p>
-              <p>
+              <div>
                 <p>
                   N/A
                 </p>
-              </p>
+              </div>
             </div>
             <div
               className="inline-flex padding-small wrap"
@@ -3032,7 +3032,7 @@ ShallowWrapper {
                   "mine_region": "NE",
                   "mine_status": Object {
                     "effective_date": "2018-10-16",
-                    "expiry_date": "9999-12-31",
+                    "expiry_date": null,
                     "status_labels": Array [
                       "Closed",
                       "Care & Maintenance",
@@ -3382,11 +3382,11 @@ ShallowWrapper {
                 >
                   Tenure
                 </p>
-                <p>
+                <div>
                   <p>
                     N/A
                   </p>
-                </p>
+                </div>
               </div>,
               <div
                 className="inline-flex padding-small wrap"
@@ -4556,11 +4556,11 @@ ShallowWrapper {
                   >
                     Tenure
                   </p>,
-                  <p>
+                  <div>
                     <p>
                       N/A
                     </p>
-                  </p>,
+                  </div>,
                 ],
                 "className": "inline-flex padding-small",
               },
@@ -4599,7 +4599,7 @@ ShallowWrapper {
                     "rendered": "N/A",
                     "type": "p",
                   },
-                  "type": "p",
+                  "type": "div",
                 },
               ],
               "type": "div",
@@ -4793,7 +4793,7 @@ ShallowWrapper {
                     "mine_region": "NE",
                     "mine_status": Object {
                       "effective_date": "2018-10-16",
-                      "expiry_date": "9999-12-31",
+                      "expiry_date": null,
                       "status_labels": Array [
                         "Closed",
                         "Care & Maintenance",
@@ -4911,7 +4911,7 @@ ShallowWrapper {
                   "mine_region": "NE",
                   "mine_status": Object {
                     "effective_date": "2018-10-16",
-                    "expiry_date": "9999-12-31",
+                    "expiry_date": null,
                     "status_labels": Array [
                       "Closed",
                       "Care & Maintenance",

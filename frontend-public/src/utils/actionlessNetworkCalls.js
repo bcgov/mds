@@ -21,7 +21,7 @@ const downloadFileFromDocumentManager = (docManagerGuid) => {
     })
     .catch((err) => {
       notification.error({
-        message: err.response ? err.response.data.error.message : String.ERROR,
+        message: err.response ? err.response.data.message : String.ERROR,
         duration: 10,
       });
     });

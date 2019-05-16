@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+    <actions/>
+    <description></description>
+    <keepDependencies>false</keepDependencies>
+    <properties/>
+    <scm class="hudson.scm.NullSCM"/>
+    <canRoam>true</canRoam>
+    <disabled>false</disabled>
+    <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+    <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+    <triggers>
+        <org.jvnet.hudson.plugins.triggers.startup.HudsonStartupTrigger plugin="startup-trigger-plugin@2.8">
+            <spec></spec>
+            <label>master</label>
+            <quietPeriod>0</quietPeriod>
+            <runOnChoice>ON_BOTH</runOnChoice>
+        </org.jvnet.hudson.plugins.triggers.startup.HudsonStartupTrigger>
+    </triggers>
+    <concurrentBuild>false</concurrentBuild>
+    <builders>
+        <hudson.plugins.groovy.SystemGroovy plugin="groovy@2.0">
+            <source class="hudson.plugins.groovy.StringSystemScriptSource">
+                <script plugin="script-security@1.41">
+                    <script>println &apos;Hello World&apos;;
+                        evaluate([:])</script>
+                    <sandbox>false</sandbox>
+                </script>
+            </source>
+        </hudson.plugins.groovy.SystemGroovy>
+    </builders>
+    <publishers/>
+    <buildWrappers/>
+</project>

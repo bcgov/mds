@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm, change } from "redux-form";
 import { remove } from "lodash";
-import { Form, Button, Col, Row, Popconfirm } from "antd";
+import { Form, Button, Popconfirm, Radio } from "antd";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import { required, dateNotInFuture, maxLength } from "@/utils/Validate";
@@ -16,6 +16,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
   mineGuid: PropTypes.string.isRequired,
+  coreUsers: CustomPropTypes.dropdownListItem.isRequired,
   complianceCodes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
 
@@ -23,6 +24,7 @@ export class AddVarianceForm extends Component {
   state = {
     uploadedFiles: [],
     documentNameGuidMap: {},
+    isApplication: true,
   };
 
   onFileLoad = (documentName, document_manager_guid) => {
@@ -41,34 +43,52 @@ export class AddVarianceForm extends Component {
     change("uploadedFiles", this.state.uploadedFiles);
   };
 
+  onChange = (e) => {
+    this.setState({
+      isApplication: e.target.value,
+    });
+  };
+
   render() {
     return (
       <Form
         layout="vertical"
-        onSubmit={this.props.handleSubmit(this.props.onSubmit(this.state.documentNameGuidMap))}
+        onSubmit={this.props.handleSubmit(
+          this.props.onSubmit(this.state.documentNameGuidMap, this.state.isApplication)
+        )}
       >
-        <Row gutter={48}>
-          <Col md={12} sm={24} className="border--right--layout">
-            <Form.Item>
-              <Field
-                id="compliance_article_id"
-                name="compliance_article_id"
-                label="Part of Code*"
-                placeholder="Select a part of the code"
-                component={renderConfig.SELECT}
-                validate={[required]}
-                data={this.props.complianceCodes}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Field
-                id="received_date"
-                name="received_date"
-                label="Received date*"
-                component={renderConfig.DATE}
-                validate={[required, dateNotInFuture]}
-              />
-            </Form.Item>
+        <Form.Item label="Are you creating an application or an approved variance?">
+          <Radio.Group onChange={this.onChange} value={this.state.isApplication}>
+            <Radio value> Application </Radio>
+            <Radio value={false}> Approved Variance </Radio>
+          </Radio.Group>
+        </Form.Item>
+        <Form.Item>
+          <Field
+            id="compliance_article_id"
+            name="compliance_article_id"
+            label="Part of Code*"
+            placeholder="Select a part of the code"
+            component={renderConfig.SELECT}
+            validate={[required]}
+            data={this.props.complianceCodes}
+          />
+        </Form.Item>
+        <Form.Item label={this.state.isApplication ? "Received date" : "Received date*"}>
+          {this.state.isApplication && (
+            <p className="p-light">
+              If the received date is not specified it will be set to todays date
+            </p>
+          )}
+          <Field
+            id="received_date"
+            name="received_date"
+            component={renderConfig.DATE}
+            validate={this.state.isApplication ? [dateNotInFuture] : [required, dateNotInFuture]}
+          />
+        </Form.Item>
+        {!this.state.isApplication && (
+          <div>
             <Form.Item>
               <Field
                 id="issue_date"
@@ -89,27 +109,55 @@ export class AddVarianceForm extends Component {
             </Form.Item>
             <Form.Item>
               <Field
-                id="note"
-                name="note"
-                label="Description"
-                component={renderConfig.AUTO_SIZE_FIELD}
-                validate={[maxLength(300)]}
+                id="inspector_guid"
+                name="inspector_guid"
+                label="Lead inspectors IDIR*"
+                component={renderConfig.SELECT}
+                validate={[required]}
+                data={this.props.coreUsers}
               />
             </Form.Item>
-          </Col>
-          <Col md={12} sm={24}>
-            <Form.Item label="Upload files*">
-              <Field
-                id="VarianceDocumentFileUpload"
-                name="VarianceDocumentFileUpload"
-                onFileLoad={this.onFileLoad}
-                onRemoveFile={this.onRemoveFile}
-                mineGuid={this.props.mineGuid}
-                component={VarianceFileUpload}
-              />
-            </Form.Item>
-          </Col>
-        </Row>
+          </div>
+        )}
+        <Form.Item>
+          <Field
+            id="note"
+            name="note"
+            label="Description"
+            component={renderConfig.AUTO_SIZE_FIELD}
+            validate={[maxLength(300)]}
+          />
+        </Form.Item>
+        <Form.Item>
+          <Field
+            id="ohsc_ind"
+            name="ohsc_ind"
+            label="Has this been reviewed by the OHSC?"
+            component={renderConfig.RADIO}
+          />
+        </Form.Item>
+        <Form.Item>
+          <Field
+            id="union_ind"
+            name="union_ind"
+            label="Has this been reviewed by the union?"
+            component={renderConfig.RADIO}
+          />
+        </Form.Item>
+        <br />
+        <h5>upload files*</h5>
+        <p> Please upload all the required documents here for the variance application</p>
+        <br />
+        <Form.Item>
+          <Field
+            id="VarianceDocumentFileUpload"
+            name="VarianceDocumentFileUpload"
+            onFileLoad={this.onFileLoad}
+            onRemoveFile={this.onRemoveFile}
+            mineGuid={this.props.mineGuid}
+            component={VarianceFileUpload}
+          />
+        </Form.Item>
         <div className="right center-mobile">
           <Popconfirm
             placement="topRight"
@@ -128,7 +176,7 @@ export class AddVarianceForm extends Component {
             htmlType="submit"
             disabled={this.props.submitting}
           >
-            Add Approved Variance
+            Add Variance
           </Button>
         </div>
       </Form>

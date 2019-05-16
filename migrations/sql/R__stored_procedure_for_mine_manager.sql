@@ -359,7 +359,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_manager_information() RETURNS void AS $
                 phone_ext        = null              ,
                 email            = etl.email         ,
                 effective_date   = etl.effective_date,
-                expiry_date      = '9999-12-31'::date,
+                expiry_date      = NULL              ,
                 update_user      = 'mms_migration'   ,
                 update_timestamp = now()             ,
                 party_type_code  = 'PER'
@@ -411,7 +411,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_manager_information() RETURNS void AS $
                     null                ,
                     email               ,
                     effective_date      ,
-                    '9999-12-31'::date  ,
+                    NULL                ,
                     'mms_migration'     ,
                     now()               ,
                     'mms_migration'     ,
@@ -516,5 +516,5 @@ CREATE OR REPLACE FUNCTION transfer_mine_manager_information() RETURNS void AS $
             RAISE NOTICE '.... Total mine manager appt records: %', total_row;
             RAISE NOTICE 'Finish updating mine manager.';
         END;
-    END; 
+    END;
 $$LANGUAGE plpgsql;

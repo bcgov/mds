@@ -15,7 +15,7 @@ application_model = api.model(
         'application_no': fields.String,
         'application_status_code': fields.String,
         'description': fields.String,
-        'received_date': fields.DateTime,
+        'received_date': fields.Date,
     })
 
 

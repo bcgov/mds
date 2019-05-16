@@ -153,3 +153,14 @@ export const fetchMineComplianceCodes = () => (dispatch) => {
     })
     .catch(() => dispatch(error(reducerTypes.GET_COMPLIANCE_CODES)));
 };
+
+export const fetchVarianceStatusOptions = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_VARIANCE_STATUS_OPTIONS));
+  return CustomAxios()
+    .get(`${ENVIRONMENT.apiUrl + API.VARIANCE_STATUS_CODES}`, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_VARIANCE_STATUS_OPTIONS));
+      dispatch(staticContentActions.storeVarianceStatusOptions(response.data));
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_VARIANCE_STATUS_OPTIONS)));
+};

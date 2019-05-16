@@ -22,6 +22,7 @@ const initialState = {
   complianceCodes: [],
   incidentFollowupActionOptions: [],
   incidentDeterminationOptions: [],
+  varianceStatusOptions: [],
 };
 
 const staticContentReducer = (state = initialState, action) => {
@@ -96,6 +97,11 @@ const staticContentReducer = (state = initialState, action) => {
         ...state,
         incidentDeterminationOptions: action.payload.options,
       };
+    case actionTypes.STORE_VARIANCE_STATUS_OPTIONS:
+      return {
+        ...state,
+        varianceStatusOptions: action.payload.records,
+      };
     default:
       return state;
   }
@@ -120,5 +126,6 @@ export const getIncidentFollowupActionOptions = (state) =>
   state[STATIC_CONTENT].incidentFollowupActionOptions;
 export const getIncidentDeterminationOptions = (state) =>
   state[STATIC_CONTENT].incidentDeterminationOptions;
+export const getVarianceStatusOptions = (state) => state[STATIC_CONTENT].varianceStatusOptions;
 
 export default staticContentReducer;

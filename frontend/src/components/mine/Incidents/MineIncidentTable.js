@@ -75,7 +75,7 @@ const transformRowData = (incidents, actions, handleEditModal, openMineIncidentM
       incident,
     }));
 
-const MineIncidentTable = (props) => (
+export const MineIncidentTable = (props) => (
   <div>
     <Table
       align="left"

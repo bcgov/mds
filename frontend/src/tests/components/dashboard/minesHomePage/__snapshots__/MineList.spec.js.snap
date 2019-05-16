@@ -48,7 +48,7 @@ ShallowWrapper {
           "mine_region": "NE",
           "mine_status": Object {
             "effective_date": "2018-10-16",
-            "expiry_date": "9999-12-31",
+            "expiry_date": null,
             "status_labels": Array [
               "Closed",
               "Care & Maintenance",
@@ -122,7 +122,7 @@ ShallowWrapper {
           "mine_region": "NE",
           "mine_status": Object {
             "effective_date": "2018-10-16",
-            "expiry_date": "9999-12-31",
+            "expiry_date": null,
             "status_labels": Array [
               "Closed",
               "Care & Maintenance",
@@ -205,7 +205,6 @@ ShallowWrapper {
           "render": [Function],
           "sortField": "mine_operation_status_code",
           "sortOrder": false,
-          "sorter": true,
           "title": "Operational Status",
           "width": 160,
         },
@@ -383,7 +382,6 @@ ShallowWrapper {
             "render": [Function],
             "sortField": "mine_operation_status_code",
             "sortOrder": false,
-            "sorter": true,
             "title": "Operational Status",
             "width": 160,
           },

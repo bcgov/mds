@@ -607,7 +607,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
             SELECT COUNT(*) FROM updated_rows INTO update_row;
             RAISE NOTICE '....# of records in permit: %', old_row;
             RAISE NOTICE '....# of records updated in permit: %', update_row;
-			
+
             -- Upsert permit amendment data from ETL_PERMIT
             RAISE NOTICE '.. Update existing permit amendment records with latest MMS data';
             WITH updated_rows AS (
@@ -647,7 +647,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                     create_user         ,
                     create_timestamp    ,
                     update_user         ,
-                    update_timestamp    
+                    update_timestamp
                 )
                 SELECT
                     new_permit.permit_guid         ,
@@ -657,22 +657,22 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                     'mms_migration'                ,
                     now()                          ,
                     'mms_migration'                ,
-                    now()                          
+                    now()
                 FROM new_permit
                 INNER JOIN ETL_MINE ON
                     new_permit.mine_guid = ETL_MINE.mine_guid
                 RETURNING 1
             )
             SELECT COUNT(*) FROM inserted_rows INTO insert_row;
-			
+
             RAISE NOTICE '.. Update ETL_PERMIT and all_permit_info with newly inserted permit_guids for new amendments';
 			UPDATE ETL_PERMIT SET permit_guid = (select permit_guid from permit WHERE ETL_PERMIT.permit_no=permit.permit_no and ETL_PERMIT.mine_guid = permit.mine_guid limit 1)
 			where permit_amendment_guid NOT IN (
 				SELECT permit_amendment_guid
 				FROM permit_amendment
-				);	
-				
-				
+				);
+
+
             RAISE NOTICE '.. Insert new MMS ETL_PERMIT records into permit amendment';
             WITH
             --Select only new entry in ETL_PERMIT table
@@ -694,7 +694,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                     create_user            			,
                     create_timestamp       			,
                     update_user            			,
-                    update_timestamp       			
+                    update_timestamp
                 )
                 SELECT
                     permit.permit_id				         	,
@@ -706,15 +706,15 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                     'mms_migration'                				,
                     now()                          				,
                     'mms_migration'                				,
-                    now()                          
+                    now()
                 FROM new_permit_amendment
                 INNER JOIN permit ON
                     new_permit_amendment.permit_guid = permit.permit_guid
                 RETURNING 1
             )
             SELECT COUNT(*) FROM inserted_rows INTO insert_amendment_row;
-			
-			
+
+
             SELECT COUNT(*) FROM permit INTO total_row;
             SELECT COUNT(*) FROM permit_amendment INTO total_amendment_row;
             RAISE NOTICE '.... # of new permit records loaded into MDS: %', insert_row;
@@ -743,7 +743,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                 phone_no         = etl.phone_no              ,
                 email            = etl.email                 ,
                 effective_date   = etl.effective_date        ,
-                expiry_date      = COALESCE(authorization_end_date,'9999-12-31'::date),
+                expiry_date      = authorization_end_date    ,
                 update_user      = 'mms_migration'           ,
                 update_timestamp = now()                     ,
                 party_type_code  = etl.party_type
@@ -790,17 +790,17 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                     party_type_code
                 )
                 SELECT
-                    party_guid            ,
-                    first_name            ,
-                    party_name            ,
-                    phone_no              ,
-                    email                 ,
-                    effective_date        ,
-                    COALESCE(authorization_end_date,'9999-12-31'::date) as expiry_date,
-                    'mms_migration'       ,
-                    now()                 ,
-                    'mms_migration'       ,
-                    now()                 ,
+                    party_guid                           ,
+                    first_name                           ,
+                    party_name                           ,
+                    phone_no                             ,
+                    email                                ,
+                    effective_date                       ,
+                    authorization_end_date as expiry_date,
+                    'mms_migration'                      ,
+                    now()                                ,
+                    'mms_migration'                      ,
+                    now()                                ,
                     party_type
                 FROM new_party
                 RETURNING 1
@@ -888,5 +888,5 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
             RAISE NOTICE '.... Total permittee records in MDS: %', total_row;
             RAISE NOTICE 'Finish updating permits and permittees.';
         END;
-    END; 
+    END;
 $$LANGUAGE plpgsql;
