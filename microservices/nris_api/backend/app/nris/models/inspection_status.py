@@ -1,0 +1,14 @@
+from datetime import datetime
+from app.extensions import db
+from sqlalchemy.orm import validates
+from app.utils.base_model import Base
+
+
+class InspectionStatus(Base):
+    __tablename__ = "inspection_status"
+    inspection_status_id = db.Column(db.Integer, primary_key=True)
+    inspection_status_code = db.Column(db.String, nullable=False)
+    inspection_status_description = db.Column(db.Integer)
+
+    def __repr__(self):
+        return f'<inspection_status_code={self.inspection_status_code} inspection_status_description={self.inspection_status_description}>'
