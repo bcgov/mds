@@ -428,7 +428,6 @@ class CoreUserFactory(BaseFactory):
     email = factory.Faker('email')
     phone_no = factory.Faker('numerify', text='###-###-####')
     last_logon = TODAY
-    idir_user_detail = factory.SubFactory('tests.factories.IdirUserDetailFactory')
 
     @factory.post_generation
     def idir_user_detail(obj, create, extracted, **kwargs):
