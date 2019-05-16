@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
+
 import { formatDate } from "@/utils/helpers";
 import DocumentTable from "@/components/common/DocumentTable";
 import * as Strings from "@/constants/strings";
@@ -8,6 +9,11 @@ import * as Strings from "@/constants/strings";
 const propTypes = {
   variance: CustomPropTypes.variance.isRequired,
   mineName: PropTypes.string.isRequired,
+  removeDocument: PropTypes.func,
+};
+
+const defaultProps = {
+  removeDocument: () => {},
 };
 
 export const VarianceDetails = (props) => (
@@ -40,10 +46,15 @@ export const VarianceDetails = (props) => (
     </div>
     <br />
     <h5>documents</h5>
-    <DocumentTable documents={props.variance.documents} />
+    <DocumentTable
+      documents={props.variance.documents}
+      associatedGuid={props.variance.variance_guid}
+      removeDocument={props.removeDocument}
+    />
   </div>
 );
 
 VarianceDetails.propTypes = propTypes;
+VarianceDetails.defaultProps = defaultProps;
 
 export default VarianceDetails;

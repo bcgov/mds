@@ -132,7 +132,7 @@ export class AddVarianceForm extends Component {
           <Field
             id="ohsc_ind"
             name="ohsc_ind"
-            label="Has this been reviewed by the OHSC?"
+            label="Does this mine have an OHSC?"
             component={renderConfig.RADIO}
           />
         </Form.Item>
@@ -140,7 +140,7 @@ export class AddVarianceForm extends Component {
           <Field
             id="union_ind"
             name="union_ind"
-            label="Has this been reviewed by the union?"
+            label="Does this mine have a union?"
             component={renderConfig.RADIO}
           />
         </Form.Item>

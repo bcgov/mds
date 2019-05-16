@@ -12,6 +12,7 @@ const propTypes = {
   variance: CustomPropTypes.variance.isRequired,
   varianceStatusOptions: CustomPropTypes.options.isRequired,
   initialValues: CustomPropTypes.variance.isRequired,
+  removeDocument: PropTypes.func.isRequired,
 };
 
 export const EditVarianceModal = (props) => (
@@ -24,6 +25,7 @@ export const EditVarianceModal = (props) => (
     variance={props.variance}
     varianceStatusOptions={props.varianceStatusOptions}
     initialValues={props.initialValues}
+    removeDocument={props.removeDocument}
   />
 );
 

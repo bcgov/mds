@@ -78,7 +78,7 @@ export const addDocumentToVariance = ({ mineGuid, varianceGuid }, payload) => (d
     .finally(() => dispatch(hideLoading()));
 };
 
-export const removeDocumentFromVariance = ({ mineGuid, varianceGuid, mineDocumentGuid }) => (
+export const removeDocumentFromVariance = (mineGuid, varianceGuid, mineDocumentGuid) => (
   dispatch
 ) => {
   dispatch(showLoading());

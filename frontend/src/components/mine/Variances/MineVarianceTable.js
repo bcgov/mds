@@ -121,7 +121,7 @@ export class MineVarianceTable extends Component {
       },
       {
         title: "Approval Status",
-        dataIndex: "status",
+        dataIndex: "",
         className: this.props.isApplication ? "column-hide" : "",
         render: (text, record) => (
           <div title="Approval Status" style={this.errorStyle(record.isOverdue)}>

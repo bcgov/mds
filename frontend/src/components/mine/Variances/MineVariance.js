@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
 import MineVarianceTable from "./MineVarianceTable";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
@@ -10,6 +12,7 @@ import CustomPropTypes from "@/customPropTypes";
 import AddButton from "@/components/common/AddButton";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import NullScreen from "@/components/common/NullScreen";
+import { removeDocumentFromVariance } from "@/actionCreators/varianceActionCreator";
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
@@ -27,6 +30,7 @@ const propTypes = {
   updateVariance: PropTypes.func.isRequired,
   varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   coreUsersHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  removeDocumentFromVariance: PropTypes.func.isRequired,
 };
 
 export class MineVariance extends Component {
@@ -88,6 +92,11 @@ export class MineVariance extends Component {
     });
   };
 
+  handleRemoveDocument = (event, varianceGuid, documentGuid) => {
+    event.preventDefault();
+    this.props.removeDocumentFromVariance(this.props.mine.mine_guid, varianceGuid, documentGuid);
+  };
+
   openEditVarianceModal = (variance) => {
     this.props.openModal({
       props: {
@@ -99,6 +108,7 @@ export class MineVariance extends Component {
         coreUsers: this.props.coreUsers,
         varianceStatusOptions: this.props.varianceStatusOptions,
         initialValues: variance,
+        removeDocument: this.handleRemoveDocument,
       },
       content: modalConfig.EDIT_VARIANCE,
     });
@@ -114,6 +124,7 @@ export class MineVariance extends Component {
         coreUsersHash: this.props.coreUsersHash,
       },
       content: modalConfig.VIEW_VARIANCE,
+      isViewOnly: true,
     });
   };
 
@@ -175,6 +186,16 @@ export class MineVariance extends Component {
   }
 }
 
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      removeDocumentFromVariance,
+    },
+    dispatch
+  );
 MineVariance.propTypes = propTypes;
 
-export default MineVariance;
+export default connect(
+  null,
+  mapDispatchToProps
+)(MineVariance);
