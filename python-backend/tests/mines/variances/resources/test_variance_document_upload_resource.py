@@ -1,5 +1,4 @@
 import json
-import uuid
 
 from tests.factories import (
     VarianceFactory,
