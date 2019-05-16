@@ -44,6 +44,7 @@ def register_extensions(app):
     jwt.init_app(app)
     migrate.init_app(app, db)
     #apm.init_app(app) if app.config['ELASTIC_ENABLED'] == '1' else None
+    from app.nris.etl.models.nris_raw_data import NRISRawData
     sched.init_app(app)
 
     CORS(app)
