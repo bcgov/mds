@@ -139,8 +139,9 @@
               "execNewPod": {
                 "containerName": "app",
                 "command": [
-                  "flask",
-                  "db upgrade"
+                  "bash",
+                  "-c",
+                  "cd /opt/app-root && flask db upgrade"
                 ]
               }
             },
@@ -165,9 +166,7 @@
             "type": "ImageChange",
             "imageChangeParams": {
               "automatic": true,
-              "containerNames": [
-                "app"
-              ],
+              "containerNames": ["app"],
               "from": {
                 "kind": "ImageStreamTag",
                 "name": "${NAME}:${VERSION}"
