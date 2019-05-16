@@ -383,7 +383,16 @@
           "containerId": "6aa7813a-c58d-44d8-97fb-3f9f3920121d"
         }
       ],
-      "minespace-dev": [],
+      "minespace-dev": [
+        {
+          "id": "8c307d2a-ad2b-4c9a-88aa-2e7a1b8d0add",
+          "name": "uma_protection",
+          "scopeParamRequired": false,
+          "composite": false,
+          "clientRole": true,
+          "containerId": "a7d4e108-a78f-4387-9c77-53574e194ef9"
+        }
+      ],
       "minespace-local": [],
       "account": [
         {
@@ -649,12 +658,10 @@
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
       "redirectUris": [
-        "http://localhost:3020/*",
         "http://localhost:3000/*"
       ],
       "webOrigins": [
-        "http://localhost:3000",
-        "http://localhost:3020"
+        "http://localhost:3000"
       ],
       "notBefore": 0,
       "bearerOnly": false,
@@ -1079,7 +1086,7 @@
       "standardFlowEnabled": true,
       "implicitFlowEnabled": false,
       "directAccessGrantsEnabled": false,
-      "serviceAccountsEnabled": false,
+      "serviceAccountsEnabled": true,
       "publicClient": true,
       "frontchannelLogout": false,
       "protocol": "openid-connect",
@@ -1099,6 +1106,21 @@
       "fullScopeAllowed": true,
       "nodeReRegistrationTimeout": -1,
       "protocolMappers": [
+        {
+          "id": "739e5d92-a458-49f9-8b0b-d05646f850dc",
+          "name": "Client Host",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "consentText": "",
+          "config": {
+            "user.session.note": "clientHost",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "clientHost",
+            "jsonType.label": "String"
+          }
+        },
         {
           "id": "959182e9-b48c-41c3-9275-23cf0a15a17a",
           "name": "role list",
@@ -1187,6 +1209,21 @@
           }
         },
         {
+          "id": "bb71f359-7158-42a3-9eb6-7c2ff0d17244",
+          "name": "Client IP Address",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "consentText": "",
+          "config": {
+            "user.session.note": "clientAddress",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "clientAddress",
+            "jsonType.label": "String"
+          }
+        },
+        {
           "id": "c5dc894e-386c-4998-9855-ea7e4fb9abcc",
           "name": "email",
           "protocol": "openid-connect",
@@ -1199,6 +1236,21 @@
             "id.token.claim": "true",
             "access.token.claim": "true",
             "claim.name": "email",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "3aa0a2a3-96a3-476c-b5d4-e3ca00eafba5",
+          "name": "Client ID",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "consentText": "",
+          "config": {
+            "user.session.note": "clientId",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "clientId",
             "jsonType.label": "String"
           }
         }
@@ -1220,14 +1272,10 @@
       "secret": "**********",
       "redirectUris": [
         "https://minesdigitalservices-test.pathfinder.gov.bc.ca/*",
-        "https://minesdigitalservices-test-demo.pathfinder.gov.bc.ca/*",
-        "https://minespace-test-demo.pathfinder.gov.bc.ca/*",
-        "https://minespace-test.pathfinder.gov.bc.ca/*"
+        "https://minesdigitalservices-test-demo.pathfinder.gov.bc.ca/*"
       ],
       "webOrigins": [
-        "https://minespace-test.pathfinder.gov.bc.ca",
         "https://minesdigitalservices-test-demo.pathfinder.gov.bc.ca",
-        "https://minespace-test-demo.pathfinder.gov.bc.ca",
         "https://minesdigitalservices-test.pathfinder.gov.bc.ca"
       ],
       "notBefore": 0,
@@ -1487,6 +1535,24 @@
         "policies": [],
         "scopes": [
           {
+            "name": "configure"
+          },
+          {
+            "name": "map-roles-composite"
+          },
+          {
+            "name": "map-roles-client-scope"
+          },
+          {
+            "name": "map-roles"
+          },
+          {
+            "name": "view"
+          },
+          {
+            "name": "manage"
+          },
+          {
             "name": "token-exchange"
           },
           {
@@ -1512,12 +1578,10 @@
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
       "redirectUris": [
-        "https://minesdigitalservices-dev.pathfinder.gov.bc.ca/*",
-        "https://minespace-dev.pathfinder.gov.bc.ca/*"
+        "https://minesdigitalservices-dev.pathfinder.gov.bc.ca/*"
       ],
       "webOrigins": [
-        "https://minesdigitalservices-dev.pathfinder.gov.bc.ca",
-        "https://minespace-dev.pathfinder.gov.bc.ca"
+        "https://minesdigitalservices-dev.pathfinder.gov.bc.ca"
       ],
       "notBefore": 0,
       "bearerOnly": false,
