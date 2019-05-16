@@ -14,7 +14,10 @@ class Address(Base):
     address_line_1 = db.Column(db.String, nullable=True)
     address_line_2 = db.Column(db.String, nullable=True)
     city = db.Column(db.String, nullable=True)
-    sub_division_code = db.Column(db.String, nullable=True)
+    sub_division_code = db.Column(
+        db.String,
+        db.ForeignKey('sub_division_code.sub_division_code'),
+        nullable=True)
     post_code = db.Column(db.String, nullable=True)
     address_type_code = db.Column(db.String, nullable=False, server_default=FetchedValue())
 
