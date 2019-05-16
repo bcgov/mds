@@ -9,7 +9,9 @@ export const getDropdownCoreUsers = createSelector(
   (users) =>
     users.map((user) => {
       // the username is prepended with "IDIR\", remove before displaying on UI
-      const formattedLabel = user.idir_user_detail.username.replace("IDIR\\", "");
+      const formattedLabel = user.idir_user_detail.username
+        ? user.idir_user_detail.username.replace("IDIR\\", "")
+        : "";
       return { value: user.core_user_guid, label: formattedLabel };
     })
 );
