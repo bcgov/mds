@@ -299,6 +299,16 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         trim=True,
         store_missing=False,
         location='json')
+    parser.add_argument(
+        'ohsc_ind',
+        type=bool,
+        store_missing=False,
+        help='Indicates if the mine has an OHSC.')
+    parser.add_argument(
+        'union_ind',
+        type=bool,
+        store_missing=False,
+        help='Indicates if the mine has a union.')
 
     @api.doc(description='Returns the specific mine from the mine_guid or mine_no provided.')
     @api.marshal_with(MINE_MODEL, code=200)

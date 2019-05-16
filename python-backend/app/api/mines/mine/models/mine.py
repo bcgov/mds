@@ -25,8 +25,8 @@ class Mine(AuditMixin, Base):
     major_mine_ind = db.Column(db.Boolean, nullable=False, default=False)
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     mine_region = db.Column(db.String(2), db.ForeignKey('mine_region_code.mine_region_code'))
-    ohsc_ind = db.Column(db.Boolean, server_default=FetchedValue())
-    union_ind = db.Column(db.Boolean, server_default=FetchedValue())
+    ohsc_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
+    union_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     # Relationships
 
     #Almost always used and 1:1, so these are joined
