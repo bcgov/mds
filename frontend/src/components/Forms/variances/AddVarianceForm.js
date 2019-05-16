@@ -129,7 +129,7 @@ export class AddVarianceForm extends Component {
           />
         </Form.Item>
         <br />
-        <h5>upload files*</h5>
+        <h5>upload files</h5>
         <p> Please upload all the required documents here for the variance application</p>
         <br />
         <Form.Item>
