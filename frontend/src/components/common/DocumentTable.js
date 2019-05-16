@@ -19,6 +19,20 @@ const defaultProps = {
 };
 
 export class DocumentTable extends Component {
+  state = { documents: [] };
+
+  componentDidMount() {
+    this.setState({ documents: this.props.documents });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const documentsChanged = nextProps.documents !== this.props.documents;
+    if (documentsChanged) {
+      console.log("IM HERE");
+      this.setState({ documents: nextProps.documents });
+    }
+  }
+
   transformRowData = (documents) =>
     documents.map((document) => ({
       key: document.mine_document_guid,
@@ -57,6 +71,7 @@ export class DocumentTable extends Component {
         title: "",
         dataIndex: "updateEdit",
         width: 10,
+        className: !this.props.associatedGuid ? "column-hide" : "",
         render: (text, record) => (
           <div title="" align="right">
             <Popconfirm
@@ -84,7 +99,7 @@ export class DocumentTable extends Component {
           pagination={false}
           columns={columns}
           locale={{ emptyText: "This variance does not contain any documents" }}
-          dataSource={this.transformRowData(this.props.documents)}
+          dataSource={this.transformRowData(this.state.documents)}
         />
       </div>
     );

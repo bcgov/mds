@@ -94,7 +94,11 @@ export class MineVariance extends Component {
 
   handleRemoveDocument = (event, varianceGuid, documentGuid) => {
     event.preventDefault();
-    this.props.removeDocumentFromVariance(this.props.mine.mine_guid, varianceGuid, documentGuid);
+    this.props
+      .removeDocumentFromVariance(this.props.mine.mine_guid, varianceGuid, documentGuid)
+      .then(() => {
+        this.props.fetchVariancesByMine({ mineGuid: this.props.mine.mine_guid });
+      });
   };
 
   openEditVarianceModal = (variance) => {

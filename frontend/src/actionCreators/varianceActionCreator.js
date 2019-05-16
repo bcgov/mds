@@ -60,6 +60,20 @@ export const fetchVariancesByMine = ({ mineGuid }) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
+export const fetchVariancesById = (mineGuid, varianceGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.GET_MINE_VARIANCES));
+  dispatch(showLoading());
+  return CustomAxios(Strings.ERROR)
+    .get(ENVIRONMENT.apiUrl + API.VARIANCES(mineGuid, varianceGuid), createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_MINE_VARIANCES));
+      dispatch(varianceActions.storeVariances(response.data));
+      dispatch(hideLoading());
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_MINE_VARIANCES)))
+    .finally(() => dispatch(hideLoading()));
+};
+
 export const addDocumentToVariance = ({ mineGuid, varianceGuid }, payload) => (dispatch) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.ADD_DOCUMENT_TO_VARIANCE));

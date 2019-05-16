@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import EditVarianceForm from "@/components/Forms/variances/EditVarianceForm";
@@ -15,19 +15,30 @@ const propTypes = {
   removeDocument: PropTypes.func.isRequired,
 };
 
-export const EditVarianceModal = (props) => (
-  <EditVarianceForm
-    onSubmit={props.onSubmit}
-    closeModal={props.closeModal}
-    mineGuid={props.mineGuid}
-    mineName={props.mineName}
-    coreUsers={props.coreUsers}
-    variance={props.variance}
-    varianceStatusOptions={props.varianceStatusOptions}
-    initialValues={props.initialValues}
-    removeDocument={props.removeDocument}
-  />
-);
+export class EditVarianceModal extends Component {
+  componentWillReceiveProps(nextProps) {
+    const documentsChanged = nextProps.variance !== this.props.variance;
+    if (documentsChanged) {
+      console.log("IM HERE");
+    }
+  }
+
+  render() {
+    return (
+      <EditVarianceForm
+        onSubmit={this.props.onSubmit}
+        closeModal={this.props.closeModal}
+        mineGuid={this.props.mineGuid}
+        mineName={this.props.mineName}
+        coreUsers={this.props.coreUsers}
+        variance={this.props.variance}
+        varianceStatusOptions={this.props.varianceStatusOptions}
+        initialValues={this.props.initialValues}
+        removeDocument={this.props.removeDocument}
+      />
+    );
+  }
+}
 
 EditVarianceModal.propTypes = propTypes;
 
