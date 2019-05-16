@@ -88,5 +88,5 @@ def SampleDangerousOccurrenceSubparagraphs(num):
     return random.sample(
         db.session.query(ComplianceArticle).filter(
             ComplianceArticle.section == '1', ComplianceArticle.sub_section == '7',
-            ComplianceArticle.paragraph == '3', ComplianceArticle.sub_paragraph is not None).all(),
+            ComplianceArticle.paragraph == '3', ComplianceArticle.sub_paragraph != None).all(),
         num)

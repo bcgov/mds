@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from app.extensions import db
 from app.api.mines.incidents.models.mine_incident import MineIncident
 from tests.factories import MineFactory
+from tests.status_code_gen import SampleDangerousOccurrenceSubparagraphs
 
 
 # GET
@@ -51,6 +52,52 @@ def test_post_mine_incidents_happy(test_client, db_session, auth_headers):
     assert post_data['incident_description'] == data['incident_description']
 
 
+def test_post_mine_incidents_dangerous_occurrence_happy(test_client, db_session, auth_headers):
+    test_mine_guid = MineFactory().mine_guid
+
+    do_subparagraph_count = 2
+    do_ids = [
+        sub.compliance_article_id
+        for sub in SampleDangerousOccurrenceSubparagraphs(do_subparagraph_count)
+    ]
+
+    now_time_string = datetime.now().strftime("%Y-%m-%d %H:%M")
+    data = {
+        'determination_type_code': 'DO',
+        'incident_timestamp': now_time_string,
+        'incident_description': "Someone got a really bad paper cut",
+        'dangerous_occurrence_subparagraph_ids': do_ids
+    }
+
+    post_resp = test_client.post(
+        f'/mines/{test_mine_guid}/incidents', json=data, headers=auth_headers['full_auth_header'])
+    assert post_resp.status_code == 201, post_resp.response
+
+    post_data = json.loads(post_resp.data.decode())
+    assert post_data['mine_guid'] == str(test_mine_guid)
+    assert post_data['determination_type_code'] == data['determination_type_code']
+    assert post_data['incident_timestamp'] == now_time_string
+    assert post_data['incident_description'] == data['incident_description']
+    assert set(post_data['dangerous_occurrence_subparagraph_ids']) == set(
+        data['dangerous_occurrence_subparagraph_ids'])
+
+
+def test_post_mine_incidents_dangerous_occurrence_no_subs(test_client, db_session, auth_headers):
+    test_mine_guid = MineFactory().mine_guid
+
+    now_time_string = datetime.now().strftime("%Y-%m-%d %H:%M")
+    data = {
+        'determination_type_code': 'DO',
+        'incident_timestamp': now_time_string,
+        'incident_description': "Someone got a really bad paper cut",
+        'dangerous_occurrence_subparagraph_ids': []
+    }
+
+    post_resp = test_client.post(
+        f'/mines/{test_mine_guid}/incidents', json=data, headers=auth_headers['full_auth_header'])
+    assert post_resp.status_code == 400
+
+
 # PUT
 def test_put_mine_incidents_happy(test_client, db_session, auth_headers):
     test_guid = MineFactory().mine_incidents[0].mine_incident_guid
@@ -69,8 +116,53 @@ def test_put_mine_incidents_happy(test_client, db_session, auth_headers):
     put_data = json.loads(put_resp.data.decode())
     assert put_data['determination_type_code'] == data['determination_type_code']
     assert put_data['incident_timestamp'] == new_time_string
-
-    #datetime.fromisoformat is in python 3.7
-    #assert datetime.fromisoformat(post_data['incident_timestamp']) == datetime.strptime(
-    #    data['incident_timestamp'], '%Y-%m-%d %H:%M')
     assert put_data['incident_description'] == data['incident_description']
+
+
+def test_put_mine_incidents_dangerous_occurrence_happy(test_client, db_session, auth_headers):
+    existing_incident_guid = MineFactory().mine_incidents[0].mine_incident_guid
+
+    do_subparagraph_count = 2
+    do_ids = [
+        sub.compliance_article_id
+        for sub in SampleDangerousOccurrenceSubparagraphs(do_subparagraph_count)
+    ]
+
+    new_time_string = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d %H:%M")
+    data = {
+        'determination_type_code': 'DO',
+        'incident_timestamp': new_time_string,
+        'incident_description': "Someone got a really bad paper cut",
+        'dangerous_occurrence_subparagraph_ids': do_ids
+    }
+
+    put_resp = test_client.put(
+        f'/mines/incidents/{existing_incident_guid}',
+        json=data,
+        headers=auth_headers['full_auth_header'])
+    assert put_resp.status_code == 200, put_resp.response
+
+    put_data = json.loads(put_resp.data.decode())
+    assert put_data['determination_type_code'] == data['determination_type_code']
+    assert put_data['incident_timestamp'] == new_time_string
+    assert put_data['incident_description'] == data['incident_description']
+    assert set(put_data['dangerous_occurrence_subparagraph_ids']) == set(
+        data['dangerous_occurrence_subparagraph_ids'])
+
+
+def test_put_mine_incidents_dangerous_occurrence_no_subs(test_client, db_session, auth_headers):
+    existing_incident_guid = MineFactory().mine_incidents[0].mine_incident_guid
+
+    new_time_string = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d %H:%M")
+    data = {
+        'determination_type_code': 'DO',
+        'incident_timestamp': new_time_string,
+        'incident_description': "Someone got a really bad paper cut",
+        'dangerous_occurrence_subparagraph_ids': []
+    }
+
+    put_resp = test_client.put(
+        f'/mines/incidents/{existing_incident_guid}',
+        json=data,
+        headers=auth_headers['full_auth_header'])
+    assert put_resp.status_code == 400, put_resp.response
