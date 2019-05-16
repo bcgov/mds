@@ -15,7 +15,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from app.commands import register_commands
 from app.routes import register_routes
 from app.extensions import api, db, jwt, sched, apm, migrate
-
+from app.nris.etl.models.nris_raw_data import NRISRawData
 #from app.api import api
 from app.config import Config
 
@@ -43,8 +43,8 @@ def register_extensions(app):
     db.init_app(app)
     jwt.init_app(app)
     migrate.init_app(app, db)
+
     #apm.init_app(app) if app.config['ELASTIC_ENABLED'] == '1' else None
-    from app.nris.etl.models.nris_raw_data import NRISRawData
     sched.init_app(app)
 
     CORS(app)
