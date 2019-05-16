@@ -141,7 +141,7 @@
                 "command": [
                   "bash",
                   "-c",
-                  "cd /opt/app-root && flask db upgrade"
+                  "cd /opt/app-root/src && flask db upgrade"
                 ]
               }
             },
