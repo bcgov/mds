@@ -261,6 +261,9 @@ export class MineHeader extends Component {
         })
       : route.MINE_HOME_PAGE.mapRoute();
 
+    console.log("*********The props on the mine are***********");
+    console.log(this.props);
+
     return (
       <div className="dashboard__header--card">
         <div className="dashboard__header--card__content">
@@ -328,24 +331,36 @@ export class MineHeader extends Component {
             </div>
           </div>
           {this.props.mine.mine_status[0] && (
-            <div className="inline-flex padding-small">
-              <p className="field-title">Operating Status </p>
-              <img
-                alt="status"
-                className="dashboard__header--card__content--status__img"
-                src={
-                  this.props.mine.mine_status[0].status_values[0] === "OP" ? ELLIPSE : RED_ELLIPSE
-                }
-              />
-              {this.props.mine.mine_status[0] ? (
-                this.props.mine.mine_status[0].status_labels.map((label) => (
-                  <p className="mine__status" key={label}>
-                    {label}
-                  </p>
-                ))
-              ) : (
-                <p>{String.EMPTY_FIELD}</p>
-              )}
+            <div>
+              <div className="inline-flex padding-small">
+                <p className="field-title">Operating Status </p>
+                <img
+                  alt="status"
+                  className="dashboard__header--card__content--status__img"
+                  src={
+                    this.props.mine.mine_status[0].status_values[0] === "OP" ? ELLIPSE : RED_ELLIPSE
+                  }
+                />
+                {this.props.mine.mine_status[0] ? (
+                  this.props.mine.mine_status[0].status_labels.map((label) => (
+                    <p className="mine__status" key={label}>
+                      {label}
+                    </p>
+                  ))
+                ) : (
+                  <p>{String.EMPTY_FIELD}</p>
+                )}
+              </div>
+
+              <div className="inline-flex padding-small">
+                <p className="field-title">Status Since </p>
+
+                {this.props.mine.mine_status[0].status_date ? (
+                  this.props.mine.mine_status[0].status_date
+                ) : (
+                  <p>Not Entered</p>
+                )}
+              </div>
             </div>
           )}
           {!this.props.mine.mine_status[0] && (
