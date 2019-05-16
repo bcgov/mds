@@ -160,7 +160,7 @@ ShallowWrapper {
         </FormItem>,
         <br />,
         <h5>
-          upload files*
+          upload files
         </h5>,
         <p>
            Please upload all the required documents here for the variance application
@@ -486,10 +486,10 @@ ShallowWrapper {
         "key": undefined,
         "nodeType": "host",
         "props": Object {
-          "children": "upload files*",
+          "children": "upload files",
         },
         "ref": null,
-        "rendered": "upload files*",
+        "rendered": "upload files",
         "type": "h5",
       },
       Object {
@@ -764,7 +764,7 @@ ShallowWrapper {
           </FormItem>,
           <br />,
           <h5>
-            upload files*
+            upload files
           </h5>,
           <p>
              Please upload all the required documents here for the variance application
@@ -1090,10 +1090,10 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "host",
           "props": Object {
-            "children": "upload files*",
+            "children": "upload files",
           },
           "ref": null,
-          "rendered": "upload files*",
+          "rendered": "upload files",
           "type": "h5",
         },
         Object {
