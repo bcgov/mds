@@ -1,7 +1,8 @@
 import click
 
 from app.extensions import db, oracle_db
-from app.nris.etl.models.nris_raw_data import NRISRawData
+from app.nris.models.nris_raw_data import NRISRawData
+from app.nris.etl.nris_etl import convert_xml_to_json
 
 
 def register_commands(app):
@@ -19,3 +20,8 @@ def register_commands(app):
             db.session.commit()
 
         cursor.close()
+
+    @app.cli.command()
+    def _test_xml():
+        nris_data = db.session.query(NRISRawData).all()
+        convert_xml_to_json(nris_data[0].nris_data)
