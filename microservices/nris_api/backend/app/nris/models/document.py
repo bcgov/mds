@@ -4,18 +4,18 @@ from sqlalchemy.orm import validates
 from sqlalchemy.ext.associationproxy import association_proxy
 from app.utils.base_model import Base
 
+from app.nris.models.document_type import DocumentType
+
 
 class Document(Base):
     __tablename__ = "document"
     document_id = db.Column(db.Integer, primary_key=True)
     external_id = db.Column(db.Integer)
-    file_name = db.Column(db.String)
+    document_date = db.Column(db.DateTime)
     document_type_id = db.Column(db.Integer, db.ForeignKey('document_type.document_type_id'))
     document_type = association_proxy('document_type', 'document_type')
-
-    input_val = db.Column(db.Integer, nullable=False, unique=True)
-    output_val = db.Column(db.Integer, nullable=False)
-    exec_timestamp = db.Column(db.DateTime, nullable=False, default=datetime.now())
+    file_name = db.Column(db.String(1024))
+    comment = (db.String(1024))
 
     def __repr__(self):
-        return f'<inspection_id={self.inspection_status_code} inspection_status_description={self.inspection_status_description}>'
+        return f'<Document document_id={self.document_id} file_name={self.file_name}>'

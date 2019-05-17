@@ -5,14 +5,16 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from app.utils.base_model import Base
 
 from app.nris.models.inspection import Inspection
-from app.nris.models.document import Document
 
 
-class InspectionDocumentXref(Base):
-    __tablename__ = "inspection_document_xref"
+class Location(Base):
+    __tablename__ = "location"
+    location_id = db.Column(db.Integer, primary_key=True)
     inspection_id = db.Column(
         db.Integer, db.ForeignKey('inspection.inspection_id'), primary_key=True)
-    document_id = db.Column(db.Integer, db.ForeignKey('document.document_id'), primary_key=True)
+    description = db.Column(db.String(256))
+    notes = db.Column(db.String(2048))
+    utm_coordinates = db.Column(db.String(256))
 
     def __repr__(self):
-        return f'<InspectionDocumentXref inspection_id={self.inspection_id} document_id={self.document_id}>'
+        return f'<Location location_id={self.order_id}>'
