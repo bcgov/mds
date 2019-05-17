@@ -87,32 +87,6 @@ ShallowWrapper {
             <p
               className="field-title"
             >
-              OHSC Union
-            </p>
-            <p>
-              No
-               
-            </p>
-          </div>
-          <div
-            className="inline-flex padding-small"
-          >
-            <p
-              className="field-title"
-            >
-              Union
-            </p>
-            <p>
-              No
-               
-            </p>
-          </div>
-          <div
-            className="inline-flex padding-small"
-          >
-            <p
-              className="field-title"
-            >
               Description
             </p>
             <p>
@@ -172,32 +146,6 @@ ShallowWrapper {
               </p>
               <p>
                 N/A
-              </p>
-            </div>,
-            <div
-              className="inline-flex padding-small"
-            >
-              <p
-                className="field-title"
-              >
-                OHSC Union
-              </p>
-              <p>
-                No
-                 
-              </p>
-            </div>,
-            <div
-              className="inline-flex padding-small"
-            >
-              <p
-                className="field-title"
-              >
-                Union
-              </p>
-              <p>
-                No
-                 
               </p>
             </div>,
             <div
@@ -368,110 +316,6 @@ ShallowWrapper {
                 <p
                   className="field-title"
                 >
-                  OHSC Union
-                </p>,
-                <p>
-                  No
-                   
-                </p>,
-              ],
-              "className": "inline-flex padding-small",
-            },
-            "ref": null,
-            "rendered": Array [
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "host",
-                "props": Object {
-                  "children": "OHSC Union",
-                  "className": "field-title",
-                },
-                "ref": null,
-                "rendered": "OHSC Union",
-                "type": "p",
-              },
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "host",
-                "props": Object {
-                  "children": Array [
-                    "No",
-                    " ",
-                  ],
-                },
-                "ref": null,
-                "rendered": Array [
-                  "No",
-                  " ",
-                ],
-                "type": "p",
-              },
-            ],
-            "type": "div",
-          },
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "host",
-            "props": Object {
-              "children": Array [
-                <p
-                  className="field-title"
-                >
-                  Union
-                </p>,
-                <p>
-                  No
-                   
-                </p>,
-              ],
-              "className": "inline-flex padding-small",
-            },
-            "ref": null,
-            "rendered": Array [
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "host",
-                "props": Object {
-                  "children": "Union",
-                  "className": "field-title",
-                },
-                "ref": null,
-                "rendered": "Union",
-                "type": "p",
-              },
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "host",
-                "props": Object {
-                  "children": Array [
-                    "No",
-                    " ",
-                  ],
-                },
-                "ref": null,
-                "rendered": Array [
-                  "No",
-                  " ",
-                ],
-                "type": "p",
-              },
-            ],
-            "type": "div",
-          },
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "host",
-            "props": Object {
-              "children": Array [
-                <p
-                  className="field-title"
-                >
                   Description
                 </p>,
                 <p>
@@ -598,32 +442,6 @@ ShallowWrapper {
               <p
                 className="field-title"
               >
-                OHSC Union
-              </p>
-              <p>
-                No
-                 
-              </p>
-            </div>
-            <div
-              className="inline-flex padding-small"
-            >
-              <p
-                className="field-title"
-              >
-                Union
-              </p>
-              <p>
-                No
-                 
-              </p>
-            </div>
-            <div
-              className="inline-flex padding-small"
-            >
-              <p
-                className="field-title"
-              >
                 Description
               </p>
               <p>
@@ -683,32 +501,6 @@ ShallowWrapper {
                 </p>
                 <p>
                   N/A
-                </p>
-              </div>,
-              <div
-                className="inline-flex padding-small"
-              >
-                <p
-                  className="field-title"
-                >
-                  OHSC Union
-                </p>
-                <p>
-                  No
-                   
-                </p>
-              </div>,
-              <div
-                className="inline-flex padding-small"
-              >
-                <p
-                  className="field-title"
-                >
-                  Union
-                </p>
-                <p>
-                  No
-                   
                 </p>
               </div>,
               <div
@@ -865,110 +657,6 @@ ShallowWrapper {
                   },
                   "ref": null,
                   "rendered": "N/A",
-                  "type": "p",
-                },
-              ],
-              "type": "div",
-            },
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "host",
-              "props": Object {
-                "children": Array [
-                  <p
-                    className="field-title"
-                  >
-                    OHSC Union
-                  </p>,
-                  <p>
-                    No
-                     
-                  </p>,
-                ],
-                "className": "inline-flex padding-small",
-              },
-              "ref": null,
-              "rendered": Array [
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "host",
-                  "props": Object {
-                    "children": "OHSC Union",
-                    "className": "field-title",
-                  },
-                  "ref": null,
-                  "rendered": "OHSC Union",
-                  "type": "p",
-                },
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "host",
-                  "props": Object {
-                    "children": Array [
-                      "No",
-                      " ",
-                    ],
-                  },
-                  "ref": null,
-                  "rendered": Array [
-                    "No",
-                    " ",
-                  ],
-                  "type": "p",
-                },
-              ],
-              "type": "div",
-            },
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "host",
-              "props": Object {
-                "children": Array [
-                  <p
-                    className="field-title"
-                  >
-                    Union
-                  </p>,
-                  <p>
-                    No
-                     
-                  </p>,
-                ],
-                "className": "inline-flex padding-small",
-              },
-              "ref": null,
-              "rendered": Array [
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "host",
-                  "props": Object {
-                    "children": "Union",
-                    "className": "field-title",
-                  },
-                  "ref": null,
-                  "rendered": "Union",
-                  "type": "p",
-                },
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "host",
-                  "props": Object {
-                    "children": Array [
-                      "No",
-                      " ",
-                    ],
-                  },
-                  "ref": null,
-                  "rendered": Array [
-                    "No",
-                    " ",
-                  ],
                   "type": "p",
                 },
               ],
