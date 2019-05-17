@@ -113,7 +113,6 @@ services:
     container_name: nris_python
     build:
       context: microservices/nris_api/backend
-      dockerfile: Dockerfile
     ports:
       - 5500:5500
     volumes:
