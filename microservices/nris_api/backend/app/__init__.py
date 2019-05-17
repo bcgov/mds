@@ -15,8 +15,9 @@ from sqlalchemy.exc import SQLAlchemyError
 from app.commands import register_commands
 from app.routes import register_routes
 from app.extensions import api, db, jwt, sched, apm, migrate
-from app.nris.etl.models.nris_raw_data import NRISRawData
-#from app.api import api
+
+from app.nris.models import *
+
 from app.config import Config
 
 
