@@ -39,9 +39,7 @@ class AddIncidentForm extends Component {
   };
 
   validateDoSubparagraphs = (value) =>
-    this.state.doDetermination === "DO" && value.length === 0
-      ? "This is a required field"
-      : undefined;
+    value.length === 0 ? "This is a required field" : undefined;
 
   render() {
     return (
