@@ -436,7 +436,7 @@ class IdirUserDetailFactory(BaseFactory):
         model = IdirUserDetail
 
     class Params:
-        core_user = factory.SubFactory('tests.factories.CoreUserFactory')
+        core_user = factory.SubFactory(CoreUserFactory)
 
     core_user_id = factory.SelfAttribute('core_user.core_user_id')
     bcgov_guid = GUID
