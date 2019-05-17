@@ -428,18 +428,15 @@ class CoreUserFactory(BaseFactory):
     email = factory.Faker('email')
     phone_no = factory.Faker('numerify', text='###-###-####')
     last_logon = TODAY
-
-    @factory.post_generation
-    def idir_user_detail(obj, create, extracted, **kwargs):
-        if not create:
-            return
-
-        IdirUserDetailFactory.create(core_user_id=obj.core_user_id, **kwargs)
+    idir_user_detail = factory.RelatedFactory('tests.factories.IdirUserDetailFactory', 'core_user')
 
 
 class IdirUserDetailFactory(BaseFactory):
     class Meta:
         model = IdirUserDetail
+
+    class Params:
+        core_user = factory.SubFactory('tests.factories.CoreUserFactory')
 
     core_user_id = factory.SelfAttribute('core_user.core_user_id')
     bcgov_guid = GUID
