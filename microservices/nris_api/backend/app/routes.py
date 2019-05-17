@@ -3,7 +3,6 @@ from app.extensions import api
 from .config import Config
 
 from flask_restplus import Resource
-from app.nris.namespace import factorial_ns
 
 
 def register_routes(app):
@@ -11,7 +10,6 @@ def register_routes(app):
     app.add_url_rule('/', endpoint='index')
 
     # Namespaces
-    api.add_namespace(factorial_ns)
 
     # Healthcheck endpoint
     @api.route('/health')
