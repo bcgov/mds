@@ -112,7 +112,7 @@ def append_result(search_results, search_term, type, item, id_field, value_field
             }))
 
 
-def execute_search(app, search_results, search_term, search_terms, type, type_config):
+def execute_search(app, search_results, search_term, search_terms, type, type_config, limit_results=None):
     with app.app_context():
         for term in search_terms:
             if len(term) > 2:
@@ -126,7 +126,12 @@ def execute_search(app, search_results, search_term, search_terms, type, type_co
                     if type_config['has_deleted_ind']:
                         similarity = similarity.filter_by(deleted_ind=False)
 
-                    similarity = similarity.order_by(desc(func.similarity(column, term))).all()
+                    similarity = similarity.order_by(desc(func.similarity(column, term)))
+                    
+                    if limit_results:
+                        similarity = similarity.limit(limit_results)
+
+                    similarity = similarity.all()
 
                     for item in similarity:
                         append_result(search_results, search_term, type, item,

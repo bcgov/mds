@@ -29,7 +29,7 @@ class SimpleSearchResource(Resource, UserMixin):
             for type, type_config in simple_search_targets.items():
                 task_list.append(
                     executor.submit(execute_search, app, search_results, search_term, search_terms,
-                                    type, type_config))
+                                    type, type_config, 200))
             for task in as_completed(task_list):
                 try:
                     data = task.result()
