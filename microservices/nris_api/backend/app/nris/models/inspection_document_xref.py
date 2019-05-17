@@ -4,6 +4,9 @@ from sqlalchemy.orm import validates
 from sqlalchemy.ext.associationproxy import association_proxy
 from app.utils.base_model import Base
 
+from app.nris.models.inspection import Inspection
+from app.nris.models.document import Document
+
 
 class InspectionDocumentXref(Base):
     __tablename__ = "inspection_document_xref"

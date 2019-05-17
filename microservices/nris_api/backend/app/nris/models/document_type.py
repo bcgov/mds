@@ -8,7 +8,7 @@ from app.utils.base_model import Base
 class DocumentType(Base):
     __tablename__ = "document_type"
     document_type_id = db.Column(db.Integer, primary_key=True)
-    document_type = db.Column(db.Integer)
+    document_type = db.Column(db.String(256))
 
     def __repr__(self):
-        return f'<document_type_id={self.document_type_id} document_type={self.document_type}>'
+        return f'<DocumentType document_type_id={self.document_type_id} document_type={self.document_type}>'
