@@ -43,7 +43,7 @@ def register_extensions(app):
     db.init_app(app)
     jwt.init_app(app)
     migrate.init_app(app, db)
-    #apm.init_app(app) if app.config['ELASTIC_ENABLED'] == '1' else None
+    apm.init_app(app) if app.config['ELASTIC_ENABLED'] == '1' else None
     sched.init_app(app)
 
     CORS(app)
