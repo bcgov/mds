@@ -1,14 +1,5 @@
-import regex
-from multiprocessing import Process
-from concurrent.futures import ThreadPoolExecutor, as_completed
-from flask_restplus import Resource, reqparse
-from datetime import datetime
-from flask import request, current_app
 from sqlalchemy import desc, or_, func
-
 from app.extensions import db
-from app.api.utils.access_decorators import requires_role_mine_view, requires_role_mine_create
-from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 
 from app.api.mines.mine.models.mine import Mine
 from app.api.parties.party.models.party import Party
@@ -16,14 +7,13 @@ from app.api.permits.permit.models.permit import Permit
 from app.api.documents.mines.models.mine_document import MineDocument
 from app.api.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 
-# 'Description': (description, Id, Model, [Model.attribute, Model.attribute], has_deleted_ind)
 common_search_targets = {
     'mine': {
         'model': Mine,
         'primary_column': Mine.mine_guid,
         'description': 'Mines',
-        'entities': [Mine.mine_guid, Mine.mine_no, Mine.mine_name],
-        'columns': [Mine.mine_name, Mine.mine_no],
+        'entities_to_return': [Mine.mine_guid, Mine.mine_no, Mine.mine_name],
+        'columns_to_search': [Mine.mine_name, Mine.mine_no],
         'has_deleted_ind': True,
         'id_field': 'mine_guid',
         'value_field': 'mine_name',
@@ -35,11 +25,11 @@ common_search_targets = {
         'primary_column': Party.party_guid,
         'description':
         'Contacts',
-        'entities': [
+        'entities_to_return': [
             Party.party_guid,
             func.concat(Party.first_name, ' ', Party.party_name).label('name'), Party.email
         ],
-        'columns': [Party.first_name, Party.party_name, Party.email, Party.phone_no],
+        'columns_to_search': [Party.first_name, Party.party_name, Party.email, Party.phone_no],
         'has_deleted_ind':
         True,
         'id_field':
@@ -56,8 +46,8 @@ simple_additional_search_targets = {
         'model': Permit,
         'primary_column': Permit.permit_guid,
         'description': 'Permits',
-        'entities': [Permit.permit_guid, Permit.mine_guid, Permit.permit_no],
-        'columns': [Permit.permit_no],
+        'entities_to_return': [Permit.permit_guid, Permit.mine_guid, Permit.permit_no],
+        'columns_to_search': [Permit.permit_no],
         'has_deleted_ind': False,
         'id_field': 'mine_guid',
         'value_field': 'permit_no',
@@ -70,8 +60,8 @@ full_additional_search_targets = {
         'model': Permit,
         'primary_column': Permit.permit_guid,
         'description': 'Permits',
-        'entities': [Permit.permit_guid, Permit.permit_no],
-        'columns': [Permit.permit_no],
+        'entities_to_return': [Permit.permit_guid, Permit.permit_no],
+        'columns_to_search': [Permit.permit_no],
         'has_deleted_ind': False,
         'id_field': 'permit_guid',
         'value_field': 'permit_no',
@@ -81,8 +71,8 @@ full_additional_search_targets = {
         'model': MineDocument,
         'primary_column': MineDocument.mine_document_guid,
         'description': 'Mine Documents',
-        'entities': [MineDocument.mine_document_guid, MineDocument.document_name],
-        'columns': [MineDocument.document_name],
+        'entities_to_return': [MineDocument.mine_document_guid, MineDocument.document_name],
+        'columns_to_search': [MineDocument.document_name],
         'has_deleted_ind': False,
         'id_field': 'mine_document_guid',
         'value_field': 'document_name',
@@ -92,8 +82,8 @@ full_additional_search_targets = {
         'model': PermitAmendmentDocument,
         'primary_column': PermitAmendmentDocument.permit_amendment_document_guid,
         'description': 'Permit Documents',
-        'entities': [PermitAmendmentDocument.permit_amendment_document_guid, PermitAmendmentDocument.document_name],
-        'columns': [PermitAmendmentDocument.document_name],
+        'entities_to_return': [PermitAmendmentDocument.permit_amendment_document_guid, PermitAmendmentDocument.document_name],
+        'columns_to_search': [PermitAmendmentDocument.document_name],
         'has_deleted_ind': False,
         'id_field': 'permit_amendment_document_guid',
         'value_field': 'document_name',
@@ -104,6 +94,44 @@ full_additional_search_targets = {
 simple_search_targets = dict(**common_search_targets, **simple_additional_search_targets)
 search_targets = dict(**common_search_targets, **full_additional_search_targets)
 
+def append_result(search_results, search_term, type, item, id_field, value_field, score_multiplier):
+
+    # Find matches that start with the search term and apply a multiplier
+    if getattr(item, value_field).lower().startswith(search_term.lower()):
+        score_multiplier = score_multiplier * 3
+
+    # Find matches that exactly match the search term and apply a multiplier
+    if getattr(item, value_field).lower() == search_term.lower():
+        score_multiplier = score_multiplier * 10
+
+    search_results.append(
+        SearchResult(
+            getattr(item, 'score') * score_multiplier, type, {
+                'id': getattr(item, id_field),
+                'value': getattr(item, value_field)
+            }))
+
+
+def execute_search(app, search_results, search_term, search_terms, type, type_config):
+    with app.app_context():
+        for term in search_terms:
+            if len(term) > 2:
+                for column in type_config['columns_to_search']:
+
+                    # Query should return with the calculated column "score", as well as the columns defined in the configuration 
+                    similarity = db.session.query(type_config['model']).with_entities(
+                        func.similarity(column, term).label('score'),
+                        *type_config['entities_to_return']).filter(column.ilike(f'%{term}%'))
+
+                    if type_config['has_deleted_ind']:
+                        similarity = similarity.filter_by(deleted_ind=False)
+
+                    similarity = similarity.order_by(desc(func.similarity(column, term))).all()
+
+                    for item in similarity:
+                        append_result(search_results, search_term, type, item,
+                                      type_config['id_field'], type_config['value_field'],
+                                      type_config['score_multiplier'])
 
 class SearchResult:
     def __init__(self, score, type, result):

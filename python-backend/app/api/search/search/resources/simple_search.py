@@ -1,22 +1,12 @@
 import regex
-from multiprocessing import Process
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from flask_restplus import Resource, reqparse
-from datetime import datetime
+from flask_restplus import Resource
 from flask import request, current_app
-from sqlalchemy import desc, or_, func
 
 from app.extensions import db, api
 from app.api.utils.access_decorators import requires_role_mine_view, requires_role_mine_create
 from app.api.utils.resources_mixins import UserMixin, ErrorMixin
-
-from app.api.mines.mine.models.mine import Mine
-from app.api.parties.party.models.party import Party
-from app.api.permits.permit.models.permit import Permit
-from app.api.documents.mines.models.mine_document import MineDocument
-from app.api.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
-from app.api.utils.access_decorators import requires_role_mine_view
-from app.api.utils.search import simple_search_targets, SearchResult
+from app.api.utils.search import simple_search_targets, append_result, execute_search, SearchResult
 from app.api.search.search_api_models import SIMPLE_SEARCH_RESULT_RETURN_MODEL
 
 
@@ -29,6 +19,7 @@ class SimpleSearchResource(Resource, UserMixin):
 
         search_term = request.args.get('search_term', None, type=str)
 
+        # Split incoming search query by space to search by individual words
         reg_exp = regex.compile(r'\'.*?\' | ".*?" | \S+ ', regex.VERBOSE)
         search_terms = reg_exp.findall(search_term)
         search_terms = [term.replace('"', '') for term in search_terms]
@@ -58,37 +49,3 @@ class SimpleSearchResource(Resource, UserMixin):
         search_results = search_results[0:10]
 
         return {'search_terms': search_terms, 'search_results': search_results}
-
-
-def append_result(search_results, search_term, type, item, id_field, value_field, score_multiplier):
-
-    if getattr(item, value_field).lower().startswith(search_term.lower()):
-        score_multiplier = score_multiplier * 3
-
-    if getattr(item, value_field).lower() == search_term.lower():
-        score_multiplier = score_multiplier * 10
-
-    search_results.append(
-        SearchResult(
-            getattr(item, 'score') * score_multiplier, type, {
-                'id': getattr(item, id_field),
-                'value': getattr(item, value_field)
-            }))
-
-
-def execute_search(app, search_results, search_term, search_terms, type, type_config):
-    with app.app_context():
-        for term in search_terms:
-            if len(term) > 2:
-                for column in type_config['columns']:
-                    similarity = db.session.query(Mine).with_entities(
-                        func.similarity(column, term).label('score'),
-                        *type_config['entities']).filter(column.ilike(f'%{term}%'))
-                    if type_config['has_deleted_ind']:
-                        similarity = similarity.filter_by(deleted_ind=False)
-                    similarity = similarity.order_by(desc(func.similarity(column, term))).all()
-                    [
-                        append_result(search_results, search_term, type, item,
-                                      type_config['id_field'], type_config['value_field'],
-                                      type_config['score_multiplier']) for item in similarity
-                    ]
