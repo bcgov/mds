@@ -200,7 +200,7 @@
           "sourceStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "name": "${NAME}-cxoracle-base:${VERSION}"
+              "name": "${NAME}-base:${VERSION}"
             },
             "env": [
               {

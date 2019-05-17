@@ -48,31 +48,31 @@ class IdirUserDetail(AuditMixin, Base):
             return None
 
     @validates('bcgov_guid')
-    def validate_status_code(self, key, bcgov_guid):
+    def validate_bcgov_guid(self, key, bcgov_guid):
         if not bcgov_guid:
             raise AssertionError('BCGOV guid is not provided.')
         return bcgov_guid
 
     @validates('username')
-    def validate_application_no(self, key, username):
+    def validate_username(self, key, username):
         if len(username) > 128:
             raise AssertionError('Username must not exceed 128 characters.')
         return username
 
     @validates('title')
-    def validate_application_no(self, key, title):
+    def validate_title(self, key, title):
         if len(title) > 254:
             raise AssertionError('Title must not exceed 254 characters.')
         return title
 
     @validates('city')
-    def validate_application_no(self, key, city):
+    def validate_city(self, key, city):
         if len(city) > 128:
             raise AssertionError('City must not exceed 128 characters.')
         return city
 
     @validates('department')
-    def validate_application_no(self, key, department):
+    def validate_department(self, key, department):
         if len(department) > 254:
             raise AssertionError('Department must not exceed 254 characters.')
         return department

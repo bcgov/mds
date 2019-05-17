@@ -44,7 +44,7 @@
       "value": "/"
     },
     {
-      "name": "MDS_NRIS_ODB_CREDENTIALS",
+      "name": "NRIS_ODB_CREDENTIALS",
       "required": false,
       "value": "template.mds-nris-odb-credentials"
     },
@@ -138,7 +138,11 @@
               "failurePolicy": "Retry",
               "execNewPod": {
                 "containerName": "app",
-                "command": ["flask", "db upgrade"]
+                "command": [
+                  "bash",
+                  "-c",
+                  "cd /opt/app-root/src && flask db upgrade"
+                ]
               }
             },
             "maxSurge": "50%",
@@ -242,7 +246,7 @@
                     "name": "NRIS_DB_HOSTNAME",
                     "valueFrom": {
                       "secretKeyRef": {
-                        "name": "${MDS_NRIS_ODB_CREDENTIALS}",
+                        "name": "${NRIS_ODB_CREDENTIALS}",
                         "key": "db-host"
                       }
                     }
@@ -251,7 +255,7 @@
                     "name": "NRIS_DB_SERVICENAME",
                     "valueFrom": {
                       "secretKeyRef": {
-                        "name": "${MDS_NRIS_ODB_CREDENTIALS}",
+                        "name": "${NRIS_ODB_CREDENTIALS}",
                         "key": "db-service"
                       }
                     }
@@ -260,7 +264,7 @@
                     "name": "NRIS_DB_USER",
                     "valueFrom": {
                       "secretKeyRef": {
-                        "name": "${MDS_NRIS_ODB_CREDENTIALS}",
+                        "name": "${NRIS_ODB_CREDENTIALS}",
                         "key": "db-user"
                       }
                     }
@@ -269,7 +273,7 @@
                     "name": "NRIS_DB_PASSWORD",
                     "valueFrom": {
                       "secretKeyRef": {
-                        "name": "${MDS_NRIS_ODB_CREDENTIALS}",
+                        "name": "${NRIS_ODB_CREDENTIALS}",
                         "key": "db-password"
                       }
                     }
