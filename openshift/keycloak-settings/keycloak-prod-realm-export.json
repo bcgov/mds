@@ -1027,12 +1027,10 @@
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
       "redirectUris": [
-        "https://minespace.gov.bc.ca/*",
         "https://minesdigitalservices.gov.bc.ca/*"
       ],
       "webOrigins": [
-        "https://minesdigitalservices.gov.bc.ca",
-        "https://minespace.gov.bc.ca"
+        "https://minesdigitalservices.gov.bc.ca"
       ],
       "notBefore": 0,
       "bearerOnly": false,
