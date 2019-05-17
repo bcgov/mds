@@ -6,6 +6,8 @@ export const mine = shape({
   mine_no: PropTypes.string,
   mine_name: PropTypes.string,
   mine_expected_documents: arrayOf(mineExpectedDocument),
+  ohsc_ind: PropTypes.bool,
+  union_ind: PropTypes.bool,
 });
 
 export const mineTypes = shape({
