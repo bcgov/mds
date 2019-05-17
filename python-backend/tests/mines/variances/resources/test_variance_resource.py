@@ -57,8 +57,6 @@ def test_put_variance(test_client, db_session, auth_headers):
         'compliance_article_id': approved_variance.compliance_article_id,
         'received_date': approved_variance.received_date,
         'variance_application_status_code': approved_variance.variance_application_status_code,
-        'ohsc_ind': True,
-        'union_ind': True,
         'inspector_guid': approved_variance.inspector_guid,
         'note': approved_variance.note,
         'issue_date': approved_variance.issue_date,
@@ -74,8 +72,6 @@ def test_put_variance(test_client, db_session, auth_headers):
     assert put_data['compliance_article_id'] == data['compliance_article_id']
     assert put_data['received_date'] == data['received_date'].strftime('%Y-%m-%d')
     assert put_data['variance_application_status_code'] == data['variance_application_status_code']
-    assert put_data['ohsc_ind'] == data['ohsc_ind']
-    assert put_data['union_ind'] == data['union_ind']
     assert put_data['inspector_guid'] == str(data['inspector_guid'])
     assert put_data['note'] == data['note']
     assert put_data['issue_date'] == data['issue_date'].strftime('%Y-%m-%d')

@@ -9,6 +9,8 @@ export const mine = shape({
   mine_name: PropTypes.string,
   mine_note: PropTypes.string,
   mine_region: PropTypes.string,
+  ohsc_ind: PropTypes.bool,
+  union_ind: PropTypes.bool,
   major_mine_ind: PropTypes.bool,
   mine_permit: arrayOf(permit),
   mine_expected_documents: arrayOf(mineExpectedDocument),
