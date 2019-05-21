@@ -12,3 +12,7 @@ class InspectionStatus(Base):
 
     def __repr__(self):
         return f'<InspectionStatus inspection_status_code={self.inspection_status_code} inspection_status_description={self.inspection_status_description}>'
+    
+    @classmethod
+    def find_all_inspection_status(cls):
+        return cls.query.all()
