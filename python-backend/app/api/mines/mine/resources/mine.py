@@ -431,10 +431,13 @@ def _mine_operation_code_processor(mine_status, index):
 def _mine_status_processor(mine_status, status_date, mine):
 
     if not mine_status:
+        existing_status_date = mine.mine_status[0].status_date if mine.mine_status else None
+        if status_date is existing_status_date:
+            return mine.mine_status
+
         new_status = MineStatus(status_date=status_date)
         mine.mine_status.append(new_status)
         new_status.save()
-
         mine.save(commit=False)
         return new_status
 
@@ -448,7 +451,6 @@ def _mine_status_processor(mine_status, status_date, mine):
         raise BadRequest('Invalid status_code, reason_code, and sub_reason_code combination.')
 
     existing_status = mine.mine_status[0] if mine.mine_status else None
-
     if existing_status:
         if existing_status.mine_status_xref_guid == mine_status_xref.mine_status_xref_guid \
                 and status_date == existing_status.status_date:
