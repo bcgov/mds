@@ -5,7 +5,6 @@ This folder contains following:
 ```
 |-- Dockerfile (Dockerfile definition for OpenShift build)
 |-- Dockerfile.dev (Dockerfile definition for local development)
-|-- etl\ (Directory containing SQL scripts for any ETL process)
 |-- sql\ (Directory containing SQL scripts for migrations to be run by Flyway)
 ```
 
