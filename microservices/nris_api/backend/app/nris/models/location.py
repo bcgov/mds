@@ -10,8 +10,7 @@ from app.nris.models.inspection import Inspection
 class Location(Base):
     __tablename__ = "location"
     location_id = db.Column(db.Integer, primary_key=True)
-    inspection_id = db.Column(
-        db.Integer, db.ForeignKey('inspection.inspection_id'), primary_key=True)
+    order_id = db.Column(db.Integer, db.ForeignKey('order.order_id'), primary_key=True)
     description = db.Column(db.String(256))
     notes = db.Column(db.String(2048))
     utm_coordinates = db.Column(db.String(256))
