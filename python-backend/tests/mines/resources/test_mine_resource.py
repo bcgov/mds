@@ -107,6 +107,8 @@ def test_post_mine_success_all(test_client, db_session, auth_headers):
         "mine_note": "This is a note",
         "mine_region": "SW",
         "mine_status": "CLD,REC,LWT",
+        "union_ind": True,
+        "ohsc_ind": False
     }
     post_resp = test_client.post(
         '/mines', json=test_mine_data, headers=auth_headers['full_auth_header'])
@@ -116,6 +118,8 @@ def test_post_mine_success_all(test_client, db_session, auth_headers):
     assert post_data['mine_location']['latitude'] == test_mine_data['latitude']
     assert post_data['mine_location']['longitude'] == test_mine_data['longitude']
     assert post_data['mine_note'] == test_mine_data['mine_note']
+    assert post_data['union_ind'] == test_mine_data['union_ind']
+    assert post_data['ohsc_ind'] == test_mine_data['ohsc_ind']
 
 
 def test_post_mine_redundant_name(test_client, db_session, auth_headers):
@@ -246,7 +250,7 @@ def test_put_mine_tenure_already_exists(test_client, db_session, auth_headers):
         tenure_number_id=tenure_id).save()
 
     test_tenure_data = {
-        "tenure_number_id": tenure_id    
+        "tenure_number_id": tenure_id
     }
     put_resp = test_client.put(
         f'/mines/{mine.mine_no}', json=test_tenure_data, headers=auth_headers['full_auth_header'])

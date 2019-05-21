@@ -38,16 +38,6 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
         store_missing=False,
         help='A 3-character code indicating the status type of the variance. Default: REV')
     parser.add_argument(
-        'ohsc_ind',
-        type=bool,
-        store_missing=False,
-        help='Indicates if variance application has been reviewed by the OHSC.')
-    parser.add_argument(
-        'union_ind',
-        type=bool,
-        store_missing=False,
-        help='Indicates if variance application has been reviewed by the union.')
-    parser.add_argument(
         'inspector_guid',
         type=str,
         store_missing=False,

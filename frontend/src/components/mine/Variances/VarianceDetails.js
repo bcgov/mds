@@ -26,14 +26,6 @@ export const VarianceDetails = (props) => (
         <p>{formatDate(props.variance.received_date) || Strings.EMPTY_FIELD}</p>
       </div>
       <div className="inline-flex padding-small">
-        <p className="field-title">OHSC Union</p>
-        <p>{props.variance.ohsc_ind ? "Yes" : "No"} </p>
-      </div>
-      <div className="inline-flex padding-small">
-        <p className="field-title">Union</p>
-        <p>{props.variance.union_ind ? "Yes" : "No"} </p>
-      </div>
-      <div className="inline-flex padding-small">
         <p className="field-title">Description</p>
         <p>{props.variance.note || Strings.EMPTY_FIELD}</p>
       </div>
