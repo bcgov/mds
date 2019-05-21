@@ -118,8 +118,7 @@ services:
       - ./microservices/nris_api/backend/:/app/
     depends_on:
       - flyway
-    # Export environment variables from .env into the container environment
-    entrypoint: ["bash", "-c", "grep -v '^#' .env | xargs ; flask run"]
+    env_file: ./microservices/nris_api/backend/.env
     networks:
       - mds
 
