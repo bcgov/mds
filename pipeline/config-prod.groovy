@@ -349,7 +349,7 @@ environments {
                 }
                 'mds-nris-backend' { 
                     HOST = "http://mds-nris-backend${vars.deployment.suffix}:5500"
-                    PATH = "/nris_api"
+                    PATH = "/nris-api"
                 }
                 'mds-redis' {
                     HOST = "http://mds-redis${vars.deployment.suffix}"
