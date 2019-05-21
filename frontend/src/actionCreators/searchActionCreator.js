@@ -9,7 +9,7 @@ import CustomAxios from "@/customAxios";
 
 export const fetchSearchResults = (searchTerm, searchTypes) => (dispatch) => {
   dispatch(request(reducerTypes.GET_SEARCH_RESULTS));
-  dispatch(showLoading("modal"));
+  dispatch(showLoading());
   return CustomAxios()
     .get(
       ENVIRONMENT.apiUrl + API.SEARCH({ search_term: searchTerm, search_types: searchTypes }),
@@ -18,15 +18,15 @@ export const fetchSearchResults = (searchTerm, searchTypes) => (dispatch) => {
     .then((response) => {
       dispatch(success(reducerTypes.GET_SEARCH_RESULTS));
       dispatch(searchActions.storeSearchResults(response.data));
-      dispatch(hideLoading("modal"));
+      dispatch(hideLoading());
     })
     .catch(() => dispatch(error(reducerTypes.GET_SEARCH_RESULTS)))
-    .finally(() => dispatch(hideLoading("modal")));
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const fetchSearchBarResults = (searchTerm) => (dispatch) => {
   dispatch(request(reducerTypes.GET_SEARCH_BAR_RESULTS));
-  dispatch(showLoading("modal"));
+  dispatch(showLoading());
   return CustomAxios()
     .get(
       `${ENVIRONMENT.apiUrl + API.SIMPLE_SEARCH}?search_term=${searchTerm}`,
@@ -35,24 +35,24 @@ export const fetchSearchBarResults = (searchTerm) => (dispatch) => {
     .then((response) => {
       dispatch(success(reducerTypes.GET_SEARCH_BAR_RESULTS));
       dispatch(searchActions.storeSearchBarResults(response.data));
-      dispatch(hideLoading("modal"));
+      dispatch(hideLoading());
     })
     .catch(() => dispatch(error(reducerTypes.GET_SEARCH_BAR_RESULTS)))
-    .finally(() => dispatch(hideLoading("modal")));
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const fetchSearchOptions = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_SEARCH_OPTIONS));
-  dispatch(showLoading("modal"));
+  dispatch(showLoading());
   return CustomAxios()
     .get(ENVIRONMENT.apiUrl + API.SEARCH_OPTIONS, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_SEARCH_OPTIONS));
       dispatch(searchActions.storeSearchOptions(response.data));
-      dispatch(hideLoading("modal"));
+      dispatch(hideLoading());
     })
     .catch(() => dispatch(error(reducerTypes.GET_SEARCH_OPTIONS)))
-    .finally(() => dispatch(hideLoading("modal")));
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const clearSearchBarResults = () => (dispatch) => {

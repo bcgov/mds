@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import Highlight from "react-highlighter";
 import { Link } from "react-router-dom";
 import * as router from "@/constants/routes";
+import * as Strings from "@/constants/strings";
 
 /**
  * @class  MineResultsTable - displays a table of mine search results
@@ -28,10 +29,7 @@ export const MineResultsTable = (props) => {
       render: (text, record) => [
         <Row>
           <Col span={24}>
-            <Link
-              to={router.MINE_SUMMARY.dynamicRoute(record.mine_guid)}
-              style={{ fontSize: "1.25rem" }}
-            >
+            <Link to={router.MINE_SUMMARY.dynamicRoute(record.mine_guid)}>
               <Highlight search={props.highlightRegex}>{record.mine_name}</Highlight>
             </Link>
           </Col>
@@ -81,9 +79,13 @@ export const MineResultsTable = (props) => {
       />
       {props.showAdvancedLookup && (
         <Link
-          style={{ float: "right", fontSize: "1.25rem" }}
+          style={{ float: "right" }}
           className="padding-large--left"
-          to={router.MINE_HOME_PAGE.dynamicRoute({ search: props.query })}
+          to={router.MINE_HOME_PAGE.dynamicRoute({
+            search: props.query,
+            page: Strings.DEFAULT_PAGE,
+            per_page: Strings.DEFAULT_PER_PAGE,
+          })}
         >
           Advanced lookup for Mines
         </Link>

@@ -2,9 +2,10 @@ import React from "react";
 import { Table, Row, Col, Divider } from "antd";
 import PropTypes from "prop-types";
 import Highlight from "react-highlighter";
-
+import { Validate } from "@/utils/Validate";
 import { Link } from "react-router-dom";
 import * as router from "@/constants/routes";
+import * as Strings from "@/constants/strings";
 
 /**
  * @class  ContactResultsTable - displays a table of mine search results
@@ -22,12 +23,10 @@ const propTypes = {
 const defaultProps = {};
 
 const parseQuery = (query) => {
-  const emailExp = /@/;
-  const phoneExp = /^\d+(-\d*)*$/;
-  if (emailExp.test(query)) {
+  if (Validate.EMAIL_REGEX.test(query)) {
     return { email: query };
   }
-  if (phoneExp.test(query)) {
+  if (Validate.PHONE_REGEX.test(query)) {
     return { phone_no: query };
   }
   const terms = query.split(" ");
@@ -46,10 +45,7 @@ export const ContactResultsTable = (props) => {
       render: (text, record) => [
         <Row>
           <Col span={24}>
-            <Link
-              to={router.PARTY_PROFILE.dynamicRoute(record.party_guid)}
-              style={{ fontSize: "1.25rem" }}
-            >
+            <Link to={router.PARTY_PROFILE.dynamicRoute(record.party_guid)}>
               <Highlight search={props.highlightRegex}>{record.name}</Highlight>
             </Link>
           </Col>
@@ -104,9 +100,13 @@ export const ContactResultsTable = (props) => {
       />
       {props.showAdvancedLookup && (
         <Link
-          style={{ float: "right", fontSize: "1.25rem" }}
+          style={{ float: "right" }}
           className="padding-large--left"
-          to={router.CONTACT_HOME_PAGE.dynamicRoute(parseQuery(props.query))}
+          to={router.CONTACT_HOME_PAGE.dynamicRoute({
+            ...parseQuery(props.query),
+            page: Strings.DEFAULT_PAGE,
+            per_page: Strings.DEFAULT_PER_PAGE,
+          })}
         >
           Advanced lookup for Contacts
         </Link>

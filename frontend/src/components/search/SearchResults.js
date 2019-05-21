@@ -13,7 +13,8 @@ import { getPartyRelationshipTypeHash } from "@/selectors/partiesSelectors";
 import { fetchPartyRelationshipTypes } from "@/actionCreators/partiesActionCreator";
 import { fetchSearchOptions, fetchSearchResults } from "@/actionCreators/searchActionCreator";
 import Loading from "@/components/common/Loading";
-import LinkButton from "@/components/common/LinkButton";
+import { Link } from "react-router-dom";
+import * as router from "@/constants/routes";
 import { sumBy, map, mapValues, keyBy } from "lodash";
 import { getSearchOptions } from "../../reducers/searchReducer";
 
@@ -186,30 +187,23 @@ export class SearchResults extends Component {
               </h1>
               <div>
                 {type_filter ? (
-                  <LinkButton
-                    key="all"
-                    onClick={() => {
-                      this.props.history.push(`/search?q=${this.state.params.q}`);
-                    }}
-                  >
+                  <Link to={router.SEARCH_RESULTS.dynamicRoute({ q: this.state.params.q })}>
                     <Icon type="arrow-left" className="padding-small--right" />
                     {`Back to all search results for ${results}`}
-                  </LinkButton>
+                  </Link>
                 ) : (
                   <p>
                     <span className="padding-large--right">Just show me:</span>
                     {this.props.searchOptions.map((o) => (
                       <span className="padding-large" key={o.model_id}>
-                        <LinkButton
-                          key={o.model_id}
-                          onClick={() => {
-                            this.props.history.push(
-                              `/search?q=${this.state.params.q}&t=${o.model_id}`
-                            );
-                          }}
+                        <Link
+                          to={router.SEARCH_RESULTS.dynamicRoute({
+                            q: this.state.params.q,
+                            t: o.model_id,
+                          })}
                         >
                           {o.description}
-                        </LinkButton>
+                        </Link>
                       </span>
                     ))}
                   </p>
@@ -235,17 +229,15 @@ export class SearchResults extends Component {
                         type_filter
                       )}
                       {!type_filter && (
-                        <LinkButton
-                          style={{ float: "right", fontSize: "1.25rem" }}
-                          key={group.type}
-                          onClick={() => {
-                            this.props.history.push(
-                              `/search?q=${this.state.params.q}&t=${group.type}`
-                            );
-                          }}
+                        <Link
+                          style={{ float: "right" }}
+                          to={router.SEARCH_RESULTS.dynamicRoute({
+                            q: this.state.params.q,
+                            t: group.type,
+                          })}
                         >
                           See more search results for {this.props.searchOptionsHash[group.type]}
-                        </LinkButton>
+                        </Link>
                       )}
                     </Col>
                   ))}

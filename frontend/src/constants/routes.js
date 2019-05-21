@@ -61,5 +61,6 @@ export const ADMIN_DASHBOARD = {
 
 export const SEARCH_RESULTS = {
   route: "/search",
+  dynamicRoute: ({ q, t }) => (t ? `/search?q=${q}&t=${t}` : `/search?q=${q}`),
   component: SearchResults,
 };

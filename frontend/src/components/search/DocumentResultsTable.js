@@ -31,7 +31,6 @@ export const DocumentResultsTable = (props) => {
               onClick={() =>
                 downloadFileFromDocumentManager(record.document_manager_guid, record.document_name)
               }
-              style={{ fontSize: "1.25rem" }}
             >
               <Highlight search={props.highlightRegex}>{record.document_name}</Highlight>
             </LinkButton>

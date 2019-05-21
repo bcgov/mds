@@ -6,6 +6,7 @@ import { getSearchBarResults } from "@/selectors/searchSelectors";
 import { fetchSearchBarResults, clearSearchBarResults } from "@/actionCreators/searchActionCreator";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
+import * as router from "@/constants/routes";
 import { SearchBarDropdown } from "@/components/search/SearchBarDropdown";
 import { throttle } from "lodash";
 
@@ -58,7 +59,7 @@ export class SearchBar extends Component {
         };
       });
       this.clearSearchBar(false);
-      this.props.history.push(`/search?q=${searchTerm}`);
+      this.props.history.push(router.SEARCH_RESULTS.dynamicRoute({ q: searchTerm }));
     }
   };
 
