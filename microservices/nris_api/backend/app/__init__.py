@@ -24,7 +24,8 @@ def create_app(test_config=None):
     """Create and configure an instance of the Flask application."""
     app = Flask(__name__)
 
-    app.config.from_object(Config)
+    config = test_config if test_config else Config
+    app.config.from_object(config)
 
     register_extensions(app)
     register_routes(app)
