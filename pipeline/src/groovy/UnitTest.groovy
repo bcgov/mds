@@ -48,6 +48,8 @@ def frontendPublicIsName = "mds-frontend-public-${config.app.build.env.id}"
 def frontEndDeploymentConfigs = ocGet(['is','-l', "app-name=${config.app.name},image-stream.name=${frontendIsName}", "--namespace=${namespace}"])
 def frontEndPublicDeploymentConfigs = ocGet(['is','-l', "app-name=${config.app.name},image-stream.name=${frontendPublicIsName}", "--namespace=${namespace}"])
 def backEndDeploymentConfigs = ocGet(['is','-l', "app-name=${config.app.name},image-stream.name=mds-python-backend", "--namespace=${namespace}"])
+def nrisBackendDeploymentConfigs = ocGet(['is','-l', "app-name=${config.app.name},image-stream.name=mds-nris-backend", "--namespace=${namespace}"])
+
 
 // Run frontend tests
 frontEndDeploymentConfigs.items.each {Map object ->
