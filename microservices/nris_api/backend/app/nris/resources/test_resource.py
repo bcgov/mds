@@ -3,9 +3,9 @@ from datetime import datetime
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
 from app.extensions import api, db
-from app.utils.logger import get_logger
-from app.utils.access_decorators import requires_role_nris_view
-from ..models.test_model import Factorial
+from app.nris.utils.logger import get_logger
+from app.nris.utils.access_decorators import requires_role_nris_view
+from app.nris.models.test_model import Factorial
 
 factorial_model = api.model('Factorial', {
     'input_val': fields.Integer,

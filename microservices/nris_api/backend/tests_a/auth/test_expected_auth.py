@@ -1,7 +1,7 @@
 import pytest
-from app.api.utils.access_decorators import NRIS_VIEW
+from app.nris.utils.access_decorators import NRIS_VIEW
 
-from app.nris.resources.factorial_resource import FactorialResource
+from app.nris.resources.test_resource import FactorialResource
 
 
 @pytest.mark.parametrize("resource,method,expected_roles",

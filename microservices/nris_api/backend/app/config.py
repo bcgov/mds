@@ -23,6 +23,9 @@ class Config(object):
     NRIS_DB_SERVICENAME = os.environ.get('NRIS_DB_SERVICENAME', 'localhost')
     NRIS_DB_HOSTNAME = os.environ.get('NRIS_DB_HOSTNAME', 'localhost')
 
+    def JWT_ROLE_CALLBACK(jwt_dict):
+        return (jwt_dict['realm_access']['roles'])
+
 
 class TestConfig(Config):
     TESTING = os.environ.get('TESTING', True)
@@ -45,18 +48,13 @@ class TestConfig(Config):
     # Dummy Private Keys for testing purposes, can replace these keys with any other generated key.
     JWT_OIDC_TEST_KEYS = {
         "keys": [{
-            "kid":
-            "flask-jwt-oidc-test-client",
-            "kty":
-            "RSA",
-            "alg":
-            "RS256",
-            "use":
-            "sig",
+            "kid": "flask-jwt-oidc-test-client",
+            "kty": "RSA",
+            "alg": "RS256",
+            "use": "sig",
             "n":
             "AN-fWcpCyE5KPzHDjigLaSUVZI0uYrcGcc40InVtl-rQRDmAh-C2W8H4_Hxhr5VLc6crsJ2LiJTV_E72S03pzpOOaaYV6-TzAjCou2GYJIXev7f6Hh512PuG5wyxda_TlBSsI-gvphRTPsKCnPutrbiukCYrnPuWxX5_cES9eStR",
-            "e":
-            "AQAB"
+            "e": "AQAB"
         }]
     }
     # Dummy Private Keys for testing purposes.

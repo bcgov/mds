@@ -1,4 +1,4 @@
-from app.utils.access_decorators import NRIS_VIEW  #, NRIS_CREATE, NRIS_CREATE, MINESPACE_PROPONENT
+from app.nris.utils.access_decorators import NRIS_VIEW  #, NRIS_CREATE, NRIS_CREATE, MINESPACE_PROPONENT
 
 # Auth Constants
 TOKEN_HEADER = {"alg": "RS256", "typ": "JWT", "kid": "flask-jwt-oidc-test-client"}

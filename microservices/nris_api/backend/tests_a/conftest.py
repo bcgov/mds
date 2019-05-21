@@ -5,13 +5,9 @@ from datetime import datetime, timedelta
 from app import create_app
 from app.config import TestConfig
 from app.extensions import db, jwt as _jwt
-from app.api.utils.include.user_info import User
 
-from .constants import *
-from tests.factories import FACTORY_LIST
-
-from app import auth
-auth.apply_security = False
+from tests_a.constants import *
+from tests_a.factories import FACTORY_LIST
 
 
 @pytest.fixture(scope="session")
@@ -62,8 +58,6 @@ def test_client():
     client = app.test_client()
     ctx = app.app_context()
     ctx.push()
-
-    User._test_mode = True
 
     yield client
 
