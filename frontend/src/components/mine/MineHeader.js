@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
+import { change } from "redux-form";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -31,6 +32,7 @@ import {
   fetchMineVerifiedStatuses,
 } from "@/actionCreators/mineActionCreator";
 import { formatDate } from "@/utils/helpers";
+import * as FORM from "@/constants/forms";
 
 /**
  * @class MineHeader.js contains header section of MineDashboard before the tabs. Including map, mineName, mineNumber.
@@ -39,6 +41,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   updateMineRecord: PropTypes.func.isRequired,
+  change: PropTypes.func.isRequired,
   removeMineType: PropTypes.func.isRequired,
   handleUnSubscribe: PropTypes.func.isRequired,
   subscribed: PropTypes.bool.isRequired,
@@ -57,14 +60,32 @@ const propTypes = {
 };
 
 export class MineHeader extends Component {
-  state = { menuVisible: false };
+  state = {
+    menuVisible: false,
+  };
+
+  // component did update, use previous props
+  // componentDidUpdate(prevProps) {
+  //   // Typical usage (don't forget to compare props):
+  //   if (this.props.mineRecordFormData.values.mine_status !== prevProps.mineRecordFormData.values.mine_status) {
+  //     this.props.mineRecordFormData.values.
+  //   }
+  // }
 
   handleUpdateMineRecord = (value) => {
+    // console.log("************look here***************");
+    // console.log(value);
     const mineStatus = value.mine_status.join(",");
+    // const statusDate = value.mine_status_date;
     return this.props
       .updateMineRecord(
         this.props.mine.mine_guid,
-        { ...value, mine_status: mineStatus, mineType: this.props.mine.mine_type },
+        {
+          ...value,
+          mine_status: mineStatus,
+          // status_date: statusDate,
+          mineType: this.props.mine.mine_type,
+        },
         value.mine_name
       )
       .then(() => {
@@ -117,6 +138,12 @@ export class MineHeader extends Component {
     this.setState({ menuVisible: false });
   };
 
+  handleClearStatusDate = () => {
+    console.log("THE CLEAR FIELD WAS CALLED!!!!!!!");
+    this.props.change(FORM.MINE_RECORD, "status_date", null);
+    // this.props.clearFields(FORM.MINE_RECORD, false, false, "status_date");
+  };
+
   openTailingsModal(event, onSubmit, title) {
     event.preventDefault();
     this.props.openModal({
@@ -132,17 +159,19 @@ export class MineHeader extends Component {
       latitude: mine.mine_location ? mine.mine_location.latitude : null,
       longitude: mine.mine_location ? mine.mine_location.longitude : null,
       mine_status: mine.mine_status[0] ? mine.mine_status[0].status_values : null,
+      status_date: mine.mine_status[0] ? mine.mine_status[0].status_date : null,
       major_mine_ind: mine.major_mine_ind ? mine.major_mine_ind : false,
       mine_region: mine.mine_region,
       mine_note: mine.mine_note,
     };
-
+    // this.setState({statusOnModalOpen:initialValues.mine_status})
     this.props.openModal({
       props: {
         onSubmit,
         handleDelete,
         title,
         initialValues,
+        handleClearStatusDate: this.handleClearStatusDate,
       },
       content: modalConfig.MINE_RECORD,
       clearOnSubmit: false,
@@ -356,7 +385,7 @@ export class MineHeader extends Component {
                 <p className="field-title">Status Since </p>
 
                 {this.props.mine.mine_status[0].status_date ? (
-                  this.props.mine.mine_status[0].status_date
+                  formatDate(this.props.mine.mine_status[0].status_date)
                 ) : (
                   <p>Not Entered</p>
                 )}
@@ -466,6 +495,7 @@ export class MineHeader extends Component {
 
 const mapStateToProps = (state) => ({
   userInfo: getUserInfo(state),
+  // mineRecordFormData: state.form.MINE_RECORD,
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -473,6 +503,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       setMineVerifiedStatus,
       fetchMineVerifiedStatuses,
+      change,
     },
     dispatch
   );

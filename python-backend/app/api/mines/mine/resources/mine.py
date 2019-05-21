@@ -30,6 +30,8 @@ import logging
 
 
 class MineListResource(Resource, UserMixin):
+    logging.warning("The mine list resource was called")
+    print("The mine list resource was called print")
     parser = reqparse.RequestParser()
     parser.add_argument(
         'mine_name', type=str, help='Name of the mine.', trim=True, required=True, location='json')
@@ -241,6 +243,8 @@ class MineListResource(Resource, UserMixin):
 
 
 class MineResource(Resource, UserMixin, ErrorMixin):
+    logging.warning("The mine resource was called")
+    print("The mine resource was called print")
     parser = reqparse.RequestParser()
     parser.add_argument(
         'mine_name',
@@ -369,9 +373,11 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 latitude=data['latitude'], longitude=data['longitude'])
             mine.save()
             cache.delete(MINE_MAP_CACHE)
-
+        print("****************The data is:***************", data)
+        logging.warning("****************The data is2:***************")
+        logging.warning(data)
         # Status validation
-        _mine_status_processor(data.get('mine_status'),data.get('status_date'), mine)
+        _mine_status_processor(data.get('mine_status'), data.get('status_date'), mine)
         return mine
 
 
@@ -410,8 +416,23 @@ def _mine_operation_code_processor(mine_status, index):
 
 
 def _mine_status_processor(mine_status, status_date, mine):
+    logging.warning("The mine status date is")
+    logging.warning(mine_status)
+    logging.warning("The status date is")
+    logging.warning(status_date)
+#if new status date is different from old status date updtate it (even if null)
+    # if not mine_status:
+    #     # handle status date change
+    #
+    #     return mine.mine_status
+
     if not mine_status:
-        return mine.mine_status
+        new_status = MineStatus(status_date=status_date)
+        mine.mine_status.append(new_status)
+        new_status.save()
+
+        mine.save(commit=False)
+        return new_status
 
     current_app.logger.info(f'updating mine no={mine.mine_no} to new_status={mine_status}')
 
@@ -423,18 +444,24 @@ def _mine_status_processor(mine_status, status_date, mine):
         raise BadRequest('Invalid status_code, reason_code, and sub_reason_code combination.')
 
     existing_status = mine.mine_status[0] if mine.mine_status else None
+    logging.warning("The existing status status_date is")
+    logging.warning(existing_status.status_date)
+
     if existing_status:
-        if existing_status.mine_status_xref_guid == mine_status_xref.mine_status_xref_guid:
+        if existing_status.mine_status_xref_guid == mine_status_xref.mine_status_xref_guid \
+                and status_date == existing_status.status_date:
             return existing_status
 
         existing_status.expiry_date = datetime.today()
         existing_status.active_ind = False
         existing_status.save()
-
-    new_status = MineStatus(mine_status_xref_guid=mine_status_xref.mine_status_xref_guid, status_date=status_date)
+    if not status_date:
+        new_status = MineStatus(mine_status_xref_guid=mine_status_xref.mine_status_xref_guid)
+    else:
+        new_status = MineStatus(mine_status_xref_guid=mine_status_xref.mine_status_xref_guid, status_date=status_date)
     mine.mine_status.append(new_status)
     new_status.save()
-
+    logging.warning("This new status was reached***************")
     mine.save(commit=False)
     return new_status
 

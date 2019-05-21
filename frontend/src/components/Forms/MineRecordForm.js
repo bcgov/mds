@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { Field, reduxForm, FieldArray, getFormValues } from "redux-form";
+import { Field, reduxForm, FieldArray, getFormValues, formValueSelector } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm, Icon, Collapse, notification, Tag } from "antd";
 import { difference, map, isEmpty, uniq } from "lodash";
 import * as FORM from "@/constants/forms";
@@ -35,8 +35,10 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   change: PropTypes.func.isRequired,
+  handleClearStatusDate: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired,
   title: PropTypes.string,
+  mineStatus: PropTypes.arrayOf(CustomPropTypes.mineTypes),
   mineStatusOptions: CustomPropTypes.options.isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
   mineTenureTypes: CustomPropTypes.options.isRequired,
@@ -54,6 +56,7 @@ const defaultProps = {
   title: "",
   currentMineTypes: [],
   mine_types: [],
+  mineStatus: [],
 };
 
 export class MineRecordForm extends Component {
@@ -109,6 +112,12 @@ export class MineRecordForm extends Component {
         "mine_types",
         nextProps.mine_types.slice(0, nextProps.mine_types.length - 1).concat(defaultValue)
       );
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.mineStatus && prevProps.mineStatus !== this.props.mineStatus) {
+      this.props.handleClearStatusDate();
     }
   }
 
@@ -329,8 +338,8 @@ export class MineRecordForm extends Component {
           <Col>
             <Form.Item>
               <Field
-                id="mine_status_date"
-                name="mine_status_date"
+                id="status_date"
+                name="status_date"
                 label="Date of Status Change"
                 placeholder="Unknown"
                 component={renderConfig.DATE}
@@ -433,6 +442,7 @@ export class MineRecordForm extends Component {
 
 MineRecordForm.propTypes = propTypes;
 MineRecordForm.defaultProps = defaultProps;
+const selector = formValueSelector(FORM.MINE_RECORD);
 
 export default compose(
   connect((state) => ({
@@ -446,6 +456,7 @@ export default compose(
     mineTenureTypes: getMineTenureTypeOptions(state),
     conditionalCommodityOptions: getConditionalCommodityOptions(state),
     conditionalDisturbanceOptions: getConditionalDisturbanceOptionsHash(state),
+    mineStatus: selector(state, "mine_status"),
   })),
   reduxForm({
     form: FORM.MINE_RECORD,
