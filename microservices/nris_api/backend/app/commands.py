@@ -24,4 +24,5 @@ def register_commands(app):
     @app.cli.command()
     def _test_xml():
         nris_data = db.session.query(NRISRawData).all()
-        _etl_nris_data(nris_data[0].nris_data)
+        for item in nris_data:
+            _etl_nris_data(item.nris_data)
