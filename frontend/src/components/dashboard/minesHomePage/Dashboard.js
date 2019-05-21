@@ -50,6 +50,7 @@ import * as String from "@/constants/strings";
 import * as Permission from "@/constants/permissions";
 import * as ModalContent from "@/constants/modalContent";
 import AddButton from "@/components/common/AddButton";
+import * as FORM from "@/constants/forms";
 
 /**
  * @class Dashboard is the main landing page of the application, currently contains a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
@@ -307,7 +308,7 @@ export class Dashboard extends Component {
   };
 
   handleClearStatusDate = () => {
-    //    this.props.change(FORM.MINE_RECORD, "status_date", null);
+    this.props.change(FORM.MINE_RECORD, "status_date", null);
   };
 
   handleSubmit = (value) => {
