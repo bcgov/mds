@@ -2,7 +2,7 @@ import click
 
 from app.extensions import db, oracle_db
 from app.nris.models.nris_raw_data import NRISRawData
-from app.nris.etl.nris_etl import convert_xml_to_json
+from app.nris.etl.nris_etl import _etl_nris_data
 
 
 def register_commands(app):
@@ -24,4 +24,4 @@ def register_commands(app):
     @app.cli.command()
     def _test_xml():
         nris_data = db.session.query(NRISRawData).all()
-        convert_xml_to_json(nris_data[0].nris_data)
+        _etl_nris_data(nris_data[0].nris_data)
