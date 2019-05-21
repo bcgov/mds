@@ -13,8 +13,8 @@ services:
       - ./backend/:/app/
     depends_on:
       - nris_database
-    env_file: backend/.env
     # Export environment variables from .env into the container environment
+    entrypoint: ["bash", "-c", "grep -v '^#' .env | xargs ; flask run"]
     networks:
       - nris
 
