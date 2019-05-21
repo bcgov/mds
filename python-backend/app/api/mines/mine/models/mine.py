@@ -25,6 +25,8 @@ class Mine(AuditMixin, Base):
     major_mine_ind = db.Column(db.Boolean, nullable=False, default=False)
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     mine_region = db.Column(db.String(2), db.ForeignKey('mine_region_code.mine_region_code'))
+    ohsc_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
+    union_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     # Relationships
 
     #Almost always used and 1:1, so these are joined
@@ -197,13 +199,22 @@ class Mine(AuditMixin, Base):
         return result
 
     @classmethod
-    def create_mine(cls, mine_no, mine_name, mine_category, mine_region, add_to_session=True):
+    def create_mine(cls,
+                    mine_no,
+                    mine_name,
+                    mine_category,
+                    mine_region,
+                    add_to_session=True,
+                    ohsc_ind=None,
+                    union_ind=None):
         mine = cls(
             mine_guid=uuid.uuid4(),
             mine_no=mine_no,
             mine_name=mine_name,
             major_mine_ind=mine_category,
-            mine_region=mine_region)
+            mine_region=mine_region,
+            ohsc_ind=ohsc_ind,
+            union_ind=union_ind)
         if add_to_session:
             mine.save(commit=False)
         return mine

@@ -98,7 +98,7 @@ app {
                             'NODE_ENV': "${vars.deployment.node_env}",
                             'MAP_PORTAL_ID': "${vars.deployment.map_portal_id}",
                             'KEYCLOAK_RESOURCE': "${vars.keycloak.resource}",
-                            'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId}",
+                            'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId_core}",
                             'KEYCLOAK_URL': "${vars.keycloak.url}",
                             'KEYCLOAK_IDP_HINT': "${vars.keycloak.idpHint_core}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api"
@@ -122,7 +122,7 @@ app {
                             'BASE_PATH': "${vars.modules.'mds-frontend-public'.PATH}",
                             'NODE_ENV': "${vars.deployment.node_env}",
                             'KEYCLOAK_RESOURCE': "${vars.keycloak.resource}",
-                            'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId}",
+                            'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId_minespace}",
                             'KEYCLOAK_URL': "${vars.keycloak.url}",
                             'KEYCLOAK_IDP_HINT': "${vars.keycloak.idpHint_minespace}",
                             'SITEMINDER_URL': "${vars.keycloak.siteminder_url}",
@@ -148,6 +148,7 @@ app {
                             'ROUTE': "${vars.modules.'mds-nginx'.ROUTE}",
                             'PATH_PREFIX': "${vars.modules.'mds-nginx'.PATH}",
                             'CORE_SERVICE_URL': "${vars.modules.'mds-frontend'.HOST}",
+                            'NRIS_API_SERVICE_URL': "${vars.modules.'mds-nris-backend'.HOST}",
                             'MINESPACE_SERVICE_URL': "${vars.modules.'mds-frontend-public'.HOST}",
                             'API_SERVICE_URL': "${vars.modules.'mds-python-backend'.HOST}",
                     ]
@@ -166,7 +167,7 @@ app {
                             'REPLICA_MIN':"${vars.resources.python.replica_min}",
                             'REPLICA_MAX':"${vars.resources.python.replica_max}",
                             'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
-                            'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId}",
+                            'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId_core}",
                             'APPLICATION_DOMAIN': "${vars.modules.'mds-python-backend'.HOST}",
                             'BASE_PATH': "${vars.modules.'mds-python-backend'.PATH}",
                             'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}",
@@ -177,6 +178,32 @@ app {
                             'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api",
+                    ]
+                ],
+                [
+                    'file':'microservices/nris_api/openshift/_python36_oracle.dc.json',
+                    'params':[
+                            'NAME':"mds-nris-backend",
+                            'SUFFIX': "${vars.deployment.suffix}",
+                            'VERSION':"${app.deployment.version}",
+                            'CPU_REQUEST':"${vars.resources.python.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.python.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.python.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.python.memory_limit}",
+                            'REPLICA_MIN':"${vars.resources.python.replica_min}",
+                            'REPLICA_MAX':"${vars.resources.python.replica_max}",
+                            'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
+                            'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId}",
+                            'APPLICATION_DOMAIN': "${vars.modules.'mds-nris-backend'.HOST}",
+                            'BASE_PATH': "${vars.modules.'mds-nris-backend'.PATH}",
+                            'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}-nris",
+                            'REDIS_CONFIG_NAME': "mds-redis${vars.deployment.suffix}",
+                            'CACHE_REDIS_HOST': "mds-redis${vars.deployment.suffix}",
+                            'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled}",
+                            'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name}",
+                            'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}",
+                            'ENVIRONMENT_NAME':"${app.deployment.env.name}",
+                            'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/nris_api",
                     ]
                 ]
         ]
@@ -193,7 +220,8 @@ environments {
                 changeId = "${opt.'pr'}"
             }
             keycloak {
-                clientId = "mines-application-dev"
+                clientId_core = "mines-application-dev"
+                clientId_minespace = "minespace-dev"
                 resource = "mines-application-dev"
                 idpHint_core = "dev"
                 idpHint_minespace = "dev"
@@ -270,6 +298,10 @@ environments {
                 'mds-python-backend' {
                     HOST = "http://mds-python-backend${vars.deployment.suffix}:5000"
                     PATH = "/${vars.git.changeId}/api"
+                }
+                'mds-nris-backend' { 
+                    HOST = "http://mds-nris-backend${vars.deployment.suffix}:5500"
+                    PATH = "/${vars.git.changeId}/nris_api"
                 }
                 'mds-redis' {
                     HOST = "http://mds-redis${vars.deployment.suffix}"

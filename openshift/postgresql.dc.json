@@ -43,11 +43,18 @@
       "value": "mds"
     },
     {
-      "description": "Admin Username for PostgreSQL user that will be used for accessing the database.",
-      "displayName": "PostgreSQL Admin Connection Username",
+      "description": "Username for nris_api PostgreSQL user that will be used for accessing the database.",
+      "displayName": "PostgreSQL NRIS_API Connection Username",
       "name": "POSTGRESQL_ADMIN_USER",
       "required": true,
       "value": "postgres"
+    },
+    {
+      "description": "Admin Username for PostgreSQL user that will be used for accessing the database.",
+      "displayName": "PostgreSQL Admin Connection Username",
+      "name": "POSTGRESQL_NRIS_USER",
+      "required": true,
+      "value": "nris"
     },
     {
       "description": "Password for the PostgreSQL connection user.",
@@ -63,6 +70,13 @@
       "from": "[a-zA-Z0-9]{16}",
       "generate": "expression",
       "name": "POSTGRESQL_ADMIN_PASSWORD",
+      "required": true
+    },
+    {
+      "description": "Password for nris_api PostgreSQL user that will be used for accessing the database.",
+      "displayName": "PostgreSQL NRIS_API Connection Password",
+      "value": "VsPJAuMJHu3IVMEv",
+      "name": "POSTGRESQL_NRIS_PASSWORD",
       "required": true
     },
     {
@@ -170,6 +184,25 @@
         "oracle-fdw-user": null,
         "oracle-fdw-password": null,
         "oracle-fdw-schema": null
+      }
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "Secret",
+      "metadata": {
+        "annotations": {
+          "template.openshift.io/expose-database-host": "{.data['database-host']}",
+          "template.openshift.io/expose-database-name": "{.data['database-name']}",
+          "template.openshift.io/expose-nris-password": "{.data['database-nris-password']}",
+          "template.openshift.io/expose-nris-user": "{.data['database-nris-user']}"
+        },
+        "name": "${DATABASE_SERVICE_NAME}-nris"
+      },
+      "stringData": {
+        "database-host": "${DATABASE_SERVICE_NAME}",
+        "database-name": "${POSTGRESQL_DATABASE}",
+        "database-nris-password": "${POSTGRESQL_NRIS_PASSWORD}",
+        "database-nris-user": "${POSTGRESQL_NRIS_USER}"
       }
     },
     {
@@ -300,6 +333,24 @@
                       "secretKeyRef": {
                         "key": "database-name",
                         "name": "${DATABASE_SERVICE_NAME}"
+                      }
+                    }
+                  },
+                  {
+                    "name": "POSTGRESQL_NRIS_USER",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "database-nris-user",
+                        "name": "${DATABASE_SERVICE_NAME}-nris"
+                      }
+                    }
+                  },
+                  {
+                    "name": "POSTGRESQL_NRIS_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "database-nris-password",
+                        "name": "${DATABASE_SERVICE_NAME}-nris"
                       }
                     }
                   },

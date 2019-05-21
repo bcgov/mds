@@ -66,7 +66,7 @@ class MineStatus(AuditMixin, Base):
             'status_values': self.status_values,
             'status_labels': self.status_labels,
             'effective_date': self.effective_date.isoformat(),
-            'expiry_date': self.expiry_date.isoformat()
+            'expiry_date': self.expiry_date.isoformat() if self.expiry_date is not None else None
         }
 
     @classmethod
