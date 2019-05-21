@@ -471,7 +471,8 @@ def _mine_status_processor(mine_status, status_date, mine):
 
     existing_status = mine.mine_status[0] if mine.mine_status else None
     logging.warning("The existing status status_date is")
-    logging.warning(existing_status.status_date)
+    if existing_status:
+        logging.warning(existing_status.status_date)
 
     if existing_status:
         if existing_status.mine_status_xref_guid == mine_status_xref.mine_status_xref_guid \

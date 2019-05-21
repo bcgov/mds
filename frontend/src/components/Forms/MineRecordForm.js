@@ -38,7 +38,7 @@ const propTypes = {
   handleClearStatusDate: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired,
   title: PropTypes.string,
-  mineStatus: PropTypes.arrayOf(CustomPropTypes.mineTypes),
+  mineStatus: PropTypes.arrayOf(PropTypes.string),
   mineStatusOptions: CustomPropTypes.options.isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
   mineTenureTypes: CustomPropTypes.options.isRequired,
@@ -116,7 +116,7 @@ export class MineRecordForm extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.mineStatus && prevProps.mineStatus !== this.props.mineStatus) {
+    if (prevProps.mineStatus[0] && prevProps.mineStatus !== this.props.mineStatus) {
       this.props.handleClearStatusDate();
     }
   }

@@ -114,6 +114,7 @@ ShallowWrapper {
         },
       ]
     }
+    mineStatus={Array []}
     mineStatusOptions={
       Array [
         Object {
@@ -364,6 +365,28 @@ ShallowWrapper {
                   ]
                 }
                 placeholder="Please select status"
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
+              />
+            </FormItem>
+          </Col>
+        </Row>,
+        <Row
+          gutter={16}
+        >
+          <Col>
+            <FormItem
+              hasFeedback={false}
+            >
+              <Field
+                component={[Function]}
+                id="status_date"
+                label="Date of Status Change"
+                name="status_date"
+                placeholder="Unknown"
                 validate={
                   Array [
                     [Function],
@@ -1063,6 +1086,99 @@ ShallowWrapper {
                   },
                 ],
                 "placeholder": "Please select status",
+                "validate": Array [
+                  [Function],
+                ],
+              },
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
+            "type": [Function],
+          },
+          "type": [Function],
+        },
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "children": <Col>
+            <FormItem
+              hasFeedback={false}
+            >
+              <Field
+                component={[Function]}
+                id="status_date"
+                label="Date of Status Change"
+                name="status_date"
+                placeholder="Unknown"
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
+              />
+            </FormItem>
+          </Col>,
+          "gutter": 16,
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": <FormItem
+              hasFeedback={false}
+            >
+              <Field
+                component={[Function]}
+                id="status_date"
+                label="Date of Status Change"
+                name="status_date"
+                placeholder="Unknown"
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
+              />
+            </FormItem>,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": <Field
+                component={[Function]}
+                id="status_date"
+                label="Date of Status Change"
+                name="status_date"
+                placeholder="Unknown"
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
+              />,
+              "hasFeedback": false,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "component": [Function],
+                "id": "status_date",
+                "label": "Date of Status Change",
+                "name": "status_date",
+                "placeholder": "Unknown",
                 "validate": Array [
                   [Function],
                 ],
@@ -1924,6 +2040,28 @@ ShallowWrapper {
           <Row
             gutter={16}
           >
+            <Col>
+              <FormItem
+                hasFeedback={false}
+              >
+                <Field
+                  component={[Function]}
+                  id="status_date"
+                  label="Date of Status Change"
+                  name="status_date"
+                  placeholder="Unknown"
+                  validate={
+                    Array [
+                      [Function],
+                    ]
+                  }
+                />
+              </FormItem>
+            </Col>
+          </Row>,
+          <Row
+            gutter={16}
+          >
             <Col
               span={24}
             >
@@ -2611,6 +2749,99 @@ ShallowWrapper {
                     },
                   ],
                   "placeholder": "Please select status",
+                  "validate": Array [
+                    [Function],
+                  ],
+                },
+                "ref": null,
+                "rendered": null,
+                "type": [Function],
+              },
+              "type": [Function],
+            },
+            "type": [Function],
+          },
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": <Col>
+              <FormItem
+                hasFeedback={false}
+              >
+                <Field
+                  component={[Function]}
+                  id="status_date"
+                  label="Date of Status Change"
+                  name="status_date"
+                  placeholder="Unknown"
+                  validate={
+                    Array [
+                      [Function],
+                    ]
+                  }
+                />
+              </FormItem>
+            </Col>,
+            "gutter": 16,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": <FormItem
+                hasFeedback={false}
+              >
+                <Field
+                  component={[Function]}
+                  id="status_date"
+                  label="Date of Status Change"
+                  name="status_date"
+                  placeholder="Unknown"
+                  validate={
+                    Array [
+                      [Function],
+                    ]
+                  }
+                />
+              </FormItem>,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": <Field
+                  component={[Function]}
+                  id="status_date"
+                  label="Date of Status Change"
+                  name="status_date"
+                  placeholder="Unknown"
+                  validate={
+                    Array [
+                      [Function],
+                    ]
+                  }
+                />,
+                "hasFeedback": false,
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "component": [Function],
+                  "id": "status_date",
+                  "label": "Date of Status Change",
+                  "name": "status_date",
+                  "placeholder": "Unknown",
                   "validate": Array [
                     [Function],
                   ],

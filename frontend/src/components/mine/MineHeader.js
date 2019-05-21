@@ -127,8 +127,8 @@ export class MineHeader extends Component {
   };
 
   handleClearStatusDate = () => {
-    console.log("THE CLEAR FIELD WAS CALLED!!!!!!!");
-    this.props.change(FORM.MINE_RECORD, "status_date", null);
+    const date = new Date();
+    this.props.change(FORM.MINE_RECORD, "status_date", date);
   };
 
   openTailingsModal(event, onSubmit, title) {
@@ -478,7 +478,6 @@ export class MineHeader extends Component {
 
 const mapStateToProps = (state) => ({
   userInfo: getUserInfo(state),
-  // mineRecordFormData: state.form.MINE_RECORD,
 });
 
 const mapDispatchToProps = (dispatch) =>

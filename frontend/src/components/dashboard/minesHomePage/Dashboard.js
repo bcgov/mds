@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { change } from "redux-form";
 import { Element, scroller } from "react-scroll";
 import { debounce, isEmpty } from "lodash";
 import PropTypes from "prop-types";
@@ -305,13 +306,14 @@ export class Dashboard extends Component {
     );
   };
 
+  handleClearStatusDate = () => {
+    //    this.props.change(FORM.MINE_RECORD, "status_date", null);
+  };
+
   handleSubmit = (value) => {
     const mineStatus = value.mine_status.join(",");
-    console.log("***********The value is**********");
-    console.log(value);
-    const status_date = value.mine_status_date;
     return this.props
-      .createMineRecord({ ...value, mine_status: mineStatus, status_date })
+      .createMineRecord({ ...value, mine_status: mineStatus })
       .then(() => {
         this.props.closeModal();
       })
@@ -329,6 +331,7 @@ export class Dashboard extends Component {
         handleDelete,
         onSubmit,
         title,
+        handleClearStatusDate: this.handleClearStatusDate,
       },
       content: modalConfig.MINE_RECORD,
     });
@@ -497,6 +500,7 @@ const mapDispatchToProps = (dispatch) =>
       setOptionsLoaded,
       fetchPartyRelationshipTypes,
       fetchMineIncidentFollowActionOptions,
+      change,
     },
     dispatch
   );
