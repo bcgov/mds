@@ -64,26 +64,14 @@ export class MineHeader extends Component {
     menuVisible: false,
   };
 
-  // component did update, use previous props
-  // componentDidUpdate(prevProps) {
-  //   // Typical usage (don't forget to compare props):
-  //   if (this.props.mineRecordFormData.values.mine_status !== prevProps.mineRecordFormData.values.mine_status) {
-  //     this.props.mineRecordFormData.values.
-  //   }
-  // }
-
   handleUpdateMineRecord = (value) => {
-    // console.log("************look here***************");
-    // console.log(value);
     const mineStatus = value.mine_status.join(",");
-    // const statusDate = value.mine_status_date;
     return this.props
       .updateMineRecord(
         this.props.mine.mine_guid,
         {
           ...value,
           mine_status: mineStatus,
-          // status_date: statusDate,
           mineType: this.props.mine.mine_type,
         },
         value.mine_name
@@ -141,7 +129,6 @@ export class MineHeader extends Component {
   handleClearStatusDate = () => {
     console.log("THE CLEAR FIELD WAS CALLED!!!!!!!");
     this.props.change(FORM.MINE_RECORD, "status_date", null);
-    // this.props.clearFields(FORM.MINE_RECORD, false, false, "status_date");
   };
 
   openTailingsModal(event, onSubmit, title) {
@@ -164,7 +151,6 @@ export class MineHeader extends Component {
       mine_region: mine.mine_region,
       mine_note: mine.mine_note,
     };
-    // this.setState({statusOnModalOpen:initialValues.mine_status})
     this.props.openModal({
       props: {
         onSubmit,
@@ -289,9 +275,6 @@ export class MineHeader extends Component {
           mineName: this.props.mine.mine_name,
         })
       : route.MINE_HOME_PAGE.mapRoute();
-
-    console.log("*********The props on the mine are***********");
-    console.log(this.props);
 
     return (
       <div className="dashboard__header--card">
