@@ -210,7 +210,7 @@
                 "command": [
                   "bash",
                   "-c",
-                  "cd $FLYWAY_HOME && ./flyway migrate && ./flyway -url=jdbc:postgresql://$FLYWAY_DB_HOST/mds_test migrate"
+                  "cd $FLYWAY_HOME && ./run_migrations.sh"
                 ]
               }
             },
