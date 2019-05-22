@@ -6,8 +6,8 @@ from app import create_app
 from app.config import TestConfig
 from app.extensions import db, jwt as _jwt
 
-from tests_a.constants import *
-from tests_a.factories import FACTORY_LIST
+from tests.constants import *
+from tests.factories import FACTORY_LIST
 
 
 @pytest.fixture(scope="session")
