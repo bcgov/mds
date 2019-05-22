@@ -1,6 +1,7 @@
 import json
 import uuid
 
+from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
@@ -18,6 +19,9 @@ class MineDocument(AuditMixin, Base):
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     mine_expected_document = db.relationship(
         'MineExpectedDocument', secondary='mine_expected_document_xref')
+    mine = db.relationship('Mine', lazy='joined')
+
+    mine_name = association_proxy('mine', 'mine_name')
 
     def json(self):
         return {

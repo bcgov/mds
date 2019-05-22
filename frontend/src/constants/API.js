@@ -44,7 +44,8 @@ export const PROVINCE_CODES = "/parties/sub-division-codes";
 export const MINE_VERIFIED_STATUSES = (params = {}) =>
   `/mines/verified-status?${queryString.stringify(params)}`;
 export const MINE_VERIFIED_STATUS = (mine_guid) => `/mines/${mine_guid}/verified-status`;
-// permits
+
+// Permits
 export const PERMIT = (params) =>
   params ? `/permits?${queryString.stringify(params)}` : "/permits";
 export const PERMITAMENDMENTS = (permitGuid) => `${PERMIT()}/${permitGuid}/amendments`;
@@ -57,7 +58,12 @@ export const PERMITAMENDMENTDOCUMENTS = (permitAmendmentGuid) =>
 
 export const APPLICATIONS = "/applications";
 
-// variances
+// Search
+export const SEARCH = (params) => (params ? `/search?${queryString.stringify(params)}` : "/search");
+export const SEARCH_OPTIONS = "/search/options";
+export const SIMPLE_SEARCH = "/search/simple";
+
+// Variances
 export const COMPLIANCE_CODES = "/mines/compliance/codes";
 export const VARIANCES = (mineGuid) => `/mines/${mineGuid}/variances`;
 export const VARIANCE = (mineGuid, varianceGuid) => `/mines/${mineGuid}/variances/${varianceGuid}`;
@@ -67,9 +73,10 @@ export const VARIANCE_DOCUMENT = (mineGuid, varianceGuid, documentManagerGuid) =
   `/mines/${mineGuid}/variances/${varianceGuid}/documents/${documentManagerGuid}`;
 export const VARIANCE_STATUS_CODES = "/variances/status-codes";
 
-// users
+// Users
 export const CORE_USER = "/users/core";
-// incidents
+
+// Incidents
 export const MINE_INCIDENTS = (mine_guid) => `/mines/${mine_guid}/incidents`;
 export const MINE_INCIDENT = (mine_incident_guid) => `/mines/incidents/${mine_incident_guid}`;
 export const MINE_INCIDENT_FOLLOWUP_ACTIONS = `/mines/incidents/followup-types`;

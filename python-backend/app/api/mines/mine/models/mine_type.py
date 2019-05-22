@@ -16,7 +16,7 @@ class MineType(AuditMixin, Base):
         'MineTypeDetail',
         backref='mine_type_detail_xref',
         order_by='desc(MineTypeDetail.update_timestamp)',
-        lazy='joined')
+        lazy='select')
 
     def __repr__(self):
         return '<MineType %r>' % self.mine_type_guid

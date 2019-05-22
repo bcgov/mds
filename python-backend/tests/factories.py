@@ -29,7 +29,7 @@ from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointme
 from app.api.permits.permit.models.permit import Permit
 from app.api.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
-from app.api.users.core.models.core_user import CoreUser
+from app.api.users.core.models.core_user import CoreUser, IdirUserDetail
 from app.api.users.minespace.models.minespace_user import MinespaceUser
 
 GUID = factory.LazyFunction(uuid.uuid4)
@@ -226,15 +226,11 @@ class VarianceFactory(BaseFactory):
         denied = factory.Trait(
             variance_application_status_code='DEN',
             inspector_id=factory.SelfAttribute('core_user.core_user_id'))
-        not_applicable = factory.Trait(
-            variance_application_status_code='NAP')
+        not_applicable = factory.Trait(variance_application_status_code='NAP')
 
-    variance_id = factory.Sequence(lambda n: n)
     variance_guid = GUID
     compliance_article_id = factory.LazyFunction(RandomComplianceArticleId)
     mine_guid = factory.SelfAttribute('mine.mine_guid')
-    ohsc_ind = factory.Faker('boolean', chance_of_getting_true=50)
-    union_ind = factory.Faker('boolean', chance_of_getting_true=50)
     note = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
     received_date = TODAY
     documents = []
@@ -395,7 +391,7 @@ class PartyFactory(BaseFactory):
     phone_ext = factory.Iterator([None, '123'])
     email = None
     effective_date = TODAY
-    expiry_date = datetime.strptime('9999-12-31', '%Y-%m-%d')  # holdover till datetime refactor
+    expiry_date = None
     party_type_code = None
 
     mine_party_appt = []
@@ -431,6 +427,19 @@ class CoreUserFactory(BaseFactory):
     email = factory.Faker('email')
     phone_no = factory.Faker('numerify', text='###-###-####')
     last_logon = TODAY
+    idir_user_detail = factory.RelatedFactory('tests.factories.IdirUserDetailFactory', 'core_user')
+
+
+class IdirUserDetailFactory(BaseFactory):
+    class Meta:
+        model = IdirUserDetail
+
+    class Params:
+        core_user = factory.SubFactory(CoreUserFactory)
+
+    core_user_id = factory.SelfAttribute('core_user.core_user_id')
+    bcgov_guid = GUID
+    username = factory.Faker('first_name')
 
 
 class MinespaceUserFactory(BaseFactory):
@@ -478,6 +487,8 @@ class MineFactory(BaseFactory):
     mine_note = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
     major_mine_ind = factory.Faker('boolean', chance_of_getting_true=50)
     mine_region = factory.LazyFunction(RandomMineRegionCode)
+    ohsc_ind = factory.Faker('boolean', chance_of_getting_true=50)
+    union_ind = factory.Faker('boolean', chance_of_getting_true=50)
     mine_location = factory.RelatedFactory(MineLocationFactory, 'mine')
     mine_type = factory.RelatedFactory(MineTypeFactory, 'mine')
     verified_status = factory.RelatedFactory(MineVerifiedStatusFactory, 'mine')

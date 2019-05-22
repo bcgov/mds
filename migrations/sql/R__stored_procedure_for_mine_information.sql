@@ -28,11 +28,11 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
             CREATE INDEX IF NOT EXISTS etl_mine_mine_no_idx ON ETL_MINE (mine_no);
             CREATE INDEX IF NOT EXISTS etl_mine_mine_guid_idx ON ETL_MINE (mine_guid);
             SELECT count(*) FROM ETL_MINE into old_row;
-            
+
             -- Migration step from previous ETL process
             -- Delete all major mines from the ETL_MINE table
             DELETE FROM ETL_MINE WHERE major_mine_ind = TRUE;
-            
+
             -- Upsert data into ETL_MINE from MMS
             RAISE NOTICE '.. Update existing records with latest MMS data';
             UPDATE ETL_MINE
@@ -230,7 +230,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                 mms.mmsnow.cid = mms.mmspmt.cid
                 AND lat_dec IS NOT NULL
                 AND lon_dec IS NOT NULL;
-            
+
             -- Update existing ETL_LOCATION records
             WITH pmt_now_preferred AS (
                 SELECT
@@ -493,7 +493,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                 new.longitude       ,
                 ST_SetSRID(ST_MakePoint(new.longitude, new.latitude), 3005),
                 now()               ,
-                '9999-12-31'::date  ,
+                NULL                ,
                 'mms_migration'     ,
                 now()               ,
                 'mms_migration'     ,
@@ -561,5 +561,5 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
             RAISE NOTICE '....Total mine_type records in MDS: %.', new_row;
             RAISE NOTICE 'Finish updating mine list in MDS';
         END;
-    END; 
+    END;
 $$LANGUAGE plpgsql;

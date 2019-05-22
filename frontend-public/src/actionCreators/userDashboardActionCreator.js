@@ -2,7 +2,7 @@ import axios from "axios";
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
 import { request, success, error } from "@/actions/genericActions";
-import * as userMineInfoActions from "@/actions/userMineInfoActions";
+import * as userMineActions from "@/actions/userMineActions";
 import * as reducerTypes from "@/constants/reducerTypes";
 import * as API from "@/constants/API";
 import { ENVIRONMENT } from "@/constants/environment";
@@ -15,7 +15,7 @@ export const fetchUserMineInfo = () => (dispatch) => {
     .get(`${ENVIRONMENT.apiUrl + API.USER_MINE_INFO}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_USER_MINE_INFO));
-      dispatch(userMineInfoActions.storeUserMineInfo(response.data));
+      dispatch(userMineActions.storeUserMineInfo(response.data));
       dispatch(hideLoading());
     })
     .catch((err) => {
@@ -35,7 +35,7 @@ export const fetchMineRecordById = (mineId) => (dispatch) => {
     .get(`${ENVIRONMENT.apiUrl + API.MINE}/${mineId}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_RECORD));
-      dispatch(userMineInfoActions.storeMine(response.data));
+      dispatch(userMineActions.storeMine(response.data));
       dispatch(hideLoading());
     })
     .catch((err) => {
@@ -55,7 +55,7 @@ export const fetchMineDocuments = (mineGuid) => (dispatch) => {
     .get(`${ENVIRONMENT.apiUrl}${API.MINE_DOCUMENTS}/${mineGuid}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_DOCUMENTS));
-      dispatch(userMineInfoActions.storeMineDocuments(response.data));
+      dispatch(userMineActions.storeMineDocuments(response.data));
       dispatch(hideLoading());
       return response;
     })

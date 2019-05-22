@@ -43,7 +43,10 @@ const NullScreen = (props) => (
       <div className="no-nav-bar">
         <h3>You are not authorized to manage information for any mines.</h3>
         <p>
-          Please contact your MDS administrator at <a href="mailto:MDS@gov.bc.ca">MDS@gov.bc.ca</a>{" "}
+          Please contact your MDS administrator at{" "}
+          <a className="underline" href="mailto:MDS@gov.bc.ca">
+            MDS@gov.bc.ca
+          </a>{" "}
           for assistance.
         </p>
       </div>

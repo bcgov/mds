@@ -38,16 +38,6 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
         store_missing=False,
         help='A 3-character code indicating the status type of the variance. Default: REV')
     parser.add_argument(
-        'ohsc_ind',
-        type=bool,
-        store_missing=False,
-        help='Indicates if variance application has been reviewed by the OHSC.')
-    parser.add_argument(
-        'union_ind',
-        type=bool,
-        store_missing=False,
-        help='Indicates if variance application has been reviewed by the union.')
-    parser.add_argument(
         'inspector_guid',
         type=str,
         store_missing=False,
@@ -86,7 +76,7 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             'mine_guid': 'GUID of the mine to which the variance is associated',
             'variance_guid': 'GUID of the variance to update'
         })
-    @requires_any_of([MINE_CREATE])
+    @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
     @api.marshal_with(VARIANCE_MODEL, code=200)
     def put(self, mine_guid, variance_guid):
         variance = Variance.find_by_mine_guid_and_variance_guid(mine_guid, variance_guid)

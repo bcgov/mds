@@ -1,12 +1,11 @@
 from decimal import Decimal
 import uuid
 from datetime import datetime
-import json
 
-from flask import request, make_response, current_app
-from flask_restplus import Resource, reqparse, inputs, fields
+from flask import request, current_app
+from flask_restplus import Resource, reqparse, inputs
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
-from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
+from werkzeug.exceptions import BadRequest, NotFound
 
 from ...status.models.mine_status import MineStatus
 from ...status.models.mine_status_xref import MineStatusXref
@@ -17,12 +16,11 @@ from ..models.mine_type_detail import MineTypeDetail
 from ..models.mine import Mine
 from ..models.mineral_tenure_xref import MineralTenureXref
 from ...location.models.mine_location import MineLocation
-from ...location.models.mine_map_view_location import MineMapViewLocation
 from ....utils.random import generate_mine_no
 from app.extensions import api, cache, db
-from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create, requires_any_of, MINE_VIEW, MINESPACE_PROPONENT
+from ....utils.access_decorators import requires_role_mine_create, requires_any_of, MINE_VIEW, MINESPACE_PROPONENT
 from ....utils.resources_mixins import UserMixin, ErrorMixin
-from ....constants import MINE_MAP_CACHE, TIMEOUT_12_HOURS
+from ....constants import MINE_MAP_CACHE
 from app.api.mines.mine_api_models import MINE_LIST_MODEL, MINE_MODEL
 # FIXME: Model import from outside of its namespace
 # This breaks micro-service architecture and is done
@@ -69,6 +67,16 @@ class MineListResource(Resource, UserMixin):
         trim=True,
         required=True,
         location='json')
+    parser.add_argument(
+        'ohsc_ind',
+        type=bool,
+        store_missing=False,
+        help='Indicates if the mine has an OHSC.')
+    parser.add_argument(
+        'union_ind',
+        type=bool,
+        store_missing=False,
+        help='Indicates if the mine has a union.')
 
     @api.doc(
         params={
@@ -129,7 +137,9 @@ class MineListResource(Resource, UserMixin):
             mine_name=data.get('mine_name'),
             mine_note=data.get('mine_note'),
             major_mine_ind=data.get('major_mine_ind'),
-            mine_region=data.get('mine_region'))
+            mine_region=data.get('mine_region'),
+            ohsc_ind=data.get('ohsc_ind'),
+            union_ind=data.get('union_ind'))
 
         db.session.add(mine)
 
@@ -146,8 +156,7 @@ class MineListResource(Resource, UserMixin):
         sort_models = {
             'mine_name': 'Mine',
             'mine_no': 'Mine',
-            'mine_region': 'Mine',
-            'mine_operation_status_code': 'MineStatusXref'
+            'mine_region': 'Mine'
         }
         # Handle ListView request
         items_per_page = args.get('per_page', 25, type=int)
@@ -229,7 +238,6 @@ class MineListResource(Resource, UserMixin):
 
         # Apply sorting
         if sort_model and sort_field and sort_dir:
-            mines_query = mines_query.outerjoin(MineStatus).outerjoin(MineStatusXref)
             sort_criteria = [{'model': sort_model, 'field': sort_field, 'direction': sort_dir}]
             mines_query = apply_sort(mines_query, sort_criteria)
 
@@ -291,6 +299,16 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         trim=True,
         store_missing=False,
         location='json')
+    parser.add_argument(
+        'ohsc_ind',
+        type=bool,
+        store_missing=False,
+        help='Indicates if the mine has an OHSC.')
+    parser.add_argument(
+        'union_ind',
+        type=bool,
+        store_missing=False,
+        help='Indicates if the mine has a union.')
 
     @api.doc(description='Returns the specific mine from the mine_guid or mine_no provided.')
     @api.marshal_with(MINE_MODEL, code=200)
@@ -308,7 +326,6 @@ class MineResource(Resource, UserMixin, ErrorMixin):
     @api.doc(description='Updates the specified mine.')
     @requires_role_mine_create
     def put(self, mine_no_or_guid):
-
         mine = Mine.find_by_mine_no_or_guid(mine_no_or_guid)
         if not mine:
             raise NotFound("Mine not found.")
@@ -332,6 +349,10 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             mine.major_mine_ind = data['major_mine_ind']
         if 'mine_region' in data:
             mine.mine_region = data['mine_region']
+        if 'ohsc_ind' in data:
+            mine.ohsc_ind = data['ohsc_ind']
+        if 'union_ind' in data:
+            mine.union_ind = data['union_ind']
         mine.save()
 
         # Tenure validation

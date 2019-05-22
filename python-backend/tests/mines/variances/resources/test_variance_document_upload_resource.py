@@ -40,3 +40,13 @@ def test_file_removal(test_client, db_session, auth_headers):
         headers=auth_headers['full_auth_header'])
     assert delete_resp.status_code == 204
     assert len(variance.documents) == document_count - 1
+
+
+def test_file_removal_not_on_variance(test_client, db_session, auth_headers):
+    variance = VarianceFactory()
+    mine_document_guid = MineDocumentFactory().mine_document_guid
+
+    delete_resp = test_client.delete(
+        f'/mines/{variance.mine_guid}/variances/{variance.variance_guid}/documents/{mine_document_guid}',
+        headers=auth_headers['full_auth_header'])
+    assert delete_resp.status_code == 404

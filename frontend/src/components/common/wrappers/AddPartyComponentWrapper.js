@@ -10,6 +10,7 @@ import { Radio, Icon, Divider } from "antd";
 import AddQuickPartyForm from "@/components/Forms/parties/AddQuickPartyForm";
 import { createParty, setAddPartyFormState } from "@/actionCreators/partiesActionCreator";
 import { getAddPartyFormState } from "@/selectors/partiesSelectors";
+import LinkButton from "../LinkButton";
 
 const propTypes = {
   childProps: PropTypes.objectOf(PropTypes.string),
@@ -95,17 +96,10 @@ export class AddPartyComponentWrapper extends Component {
   renderAddParty = () => (
     <div>
       <h2>Add new {this.props.addPartyFormState.partyLabel}</h2>
-      <a
-        role="link"
-        onClick={this.resetAddPartyForm}
-        // Accessibility: Event listener
-        onKeyPress={this.resetAddPartyForm}
-        // Accessibility: Focusable element
-        tabIndex="0"
-      >
+      <LinkButton onClick={this.resetAddPartyForm}>
         <Icon type="arrow-left" style={{ paddingRight: "5px" }} />
         Back to: {this.props.childProps.title}
-      </a>
+      </LinkButton>
       <Divider />
       <div className="center">
         {this.props.addPartyFormState.person && this.props.addPartyFormState.organization && (

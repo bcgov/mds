@@ -91,7 +91,7 @@ task('cd-functional-test', type: JavaExec) {
 }
 
 task('cd-unit-test', type: JavaExec) {
-    description 'Run ZAP Groovy script'
+    description 'Run Unit Tests and SonarQube Reporting'
 
     // Set main property to name of Groovy script class.
     main = 'UnitTest'

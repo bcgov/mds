@@ -10,6 +10,7 @@ import { formatDate } from "@/utils/helpers";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 import * as Strings from "@/constants/strings";
 import { COLOR } from "@/constants/styles";
+import LinkButton from "@/components/common/LinkButton";
 
 const { errorRed } = COLOR;
 
@@ -48,11 +49,12 @@ export class MineVarianceTable extends Component {
       status: statusHash[variance.variance_application_status_code],
       isEditable: this.handleConditionalEdit(variance.variance_application_status_code),
       compliance_article_id: codeHash[variance.compliance_article_id] || Strings.EMPTY_FIELD,
-      expiry_date: formatDate(variance.expiry_date) || Strings.EMPTY_FIELD,
+      expiry_date:
+        (variance.expiry_date && formatDate(variance.expiry_date)) || Strings.EMPTY_FIELD,
       issue_date: formatDate(variance.issue_date) || Strings.EMPTY_FIELD,
       note: variance.note,
       received_date: formatDate(variance.received_date) || Strings.EMPTY_FIELD,
-      isOverdue: Date.parse(variance.expiry_date) < new Date(),
+      isOverdue: variance.expiry_date && Date.parse(variance.expiry_date) < new Date(),
       documents: variance.documents,
     }));
 
@@ -115,7 +117,7 @@ export class MineVarianceTable extends Component {
             {text}
           </div>
         ),
-        sorter: (a, b) => (a.expiry_date > b.expiry_date ? -1 : 1),
+        sorter: (a, b) => ((a.expiry_date || 0) > (b.expiry_date || 0) ? -1 : 1),
         defaultSortOrder: "descend",
       },
       {
@@ -136,17 +138,12 @@ export class MineVarianceTable extends Component {
             {record.documents.length > 0
               ? record.documents.map((file) => (
                   <div key={file.mine_document_guid}>
-                    <a
-                      role="link"
+                    <LinkButton
                       key={file.mine_document_guid}
                       onClick={() => downloadFileFromDocumentManager(file.document_manager_guid)}
-                      // Accessibility: Event listener
-                      onKeyPress={() => downloadFileFromDocumentManager(file.document_manager_guid)}
-                      // Accessibility: Focusable element
-                      tabIndex="0"
                     >
                       {file.document_name}
-                    </a>
+                    </LinkButton>
                   </div>
                 ))
               : Strings.EMPTY_FIELD}
@@ -185,7 +182,13 @@ export class MineVarianceTable extends Component {
           align="left"
           pagination={false}
           columns={columns}
-          locale={{ emptyText: <NullScreen type="approved-variances" /> }}
+          locale={{
+            emptyText: (
+              <NullScreen
+                type={this.props.isApplication ? "variance-applications" : "approved-variances"}
+              />
+            ),
+          }}
           dataSource={this.transformRowData(
             this.props.variances,
             this.props.complianceCodesHash,

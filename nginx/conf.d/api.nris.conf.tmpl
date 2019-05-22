@@ -1,0 +1,23 @@
+# ----------------------------------------------------------------------
+# | API endpoint                                                       |
+# ----------------------------------------------------------------------
+
+# Proxy incoming requests for /nris_api to the backend container
+
+location ${PATH_PREFIX}/nris-api/ {
+        if (-f /opt/app-root/src/html/maintenance_on.html){
+                return 503;
+        }
+
+        proxy_pass ${NRIS_API_SERVICE_URL}${PATH_PREFIX}/nris-api/;
+        include /opt/app-root/etc/nginx.conf.d/proxy.params;
+}
+
+location ${PATH_PREFIX}/nris-api/v1/ {
+        if (-f /opt/app-root/src/html/maintenance_on.html){
+                return 503;
+        }
+
+        proxy_pass ${NRIS_API_SERVICE_URL}${PATH_PREFIX}/nris-api/;
+        include /opt/app-root/etc/nginx.conf.d/proxy.params;
+}

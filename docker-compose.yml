@@ -68,6 +68,7 @@ services:
     container_name: mds_backend
     build:
       context: python-backend
+    env_file: python-backend/.env
     ports:
       - 5000:5000
     volumes:
@@ -75,8 +76,6 @@ services:
     depends_on:
       - flyway
       - redis
-    # Export environment variables from .env into the container environment
-    entrypoint: ["bash", "-c", "grep -v '^#' .env | xargs ; flask run"]
     networks:
       - mds
 
@@ -104,6 +103,22 @@ services:
       - 3000:3000
     depends_on:
       - backend
+    networks:
+      - mds
+
+  ####################### NRIS_BACKEND Definition #######################
+  nris_backend:
+    restart: always
+    container_name: nris_python
+    build:
+      context: microservices/nris_api/backend
+    ports:
+      - 5500:5500
+    volumes:
+      - ./microservices/nris_api/backend/:/app/
+    depends_on:
+      - flyway
+    env_file: ./microservices/nris_api/backend/.env
     networks:
       - mds
 
