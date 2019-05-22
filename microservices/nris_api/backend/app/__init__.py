@@ -24,7 +24,8 @@ def create_app(test_config=None):
     """Create and configure an instance of the Flask application."""
     app = Flask(__name__)
 
-    app.config.from_object(Config)
+    config = test_config if test_config else Config
+    app.config.from_object(config)
 
     register_extensions(app)
     register_routes(app)
@@ -43,7 +44,7 @@ def register_extensions(app):
     db.init_app(app)
     jwt.init_app(app)
     migrate.init_app(app, db)
-    #apm.init_app(app) if app.config['ELASTIC_ENABLED'] == '1' else None
+    apm.init_app(app) if app.config['ELASTIC_ENABLED'] == '1' else None
     sched.init_app(app)
 
     CORS(app)
