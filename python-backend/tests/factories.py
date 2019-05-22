@@ -226,8 +226,7 @@ class VarianceFactory(BaseFactory):
         denied = factory.Trait(
             variance_application_status_code='DEN',
             inspector_id=factory.SelfAttribute('core_user.core_user_id'))
-        not_applicable = factory.Trait(
-            variance_application_status_code='NAP')
+        not_applicable = factory.Trait(variance_application_status_code='NAP')
 
     variance_guid = GUID
     compliance_article_id = factory.LazyFunction(RandomComplianceArticleId)

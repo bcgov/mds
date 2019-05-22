@@ -3,7 +3,6 @@ import { createRequestHeader } from "@/utils/RequestHeaders";
 import { ENVIRONMENT } from "@/constants/environment";
 import { DOCUMENT_MANAGER_FILE_GET_URL, DOCUMENT_MANAGER_TOKEN_GET_URL } from "@/constants/API";
 
-
 const downloadFileFromDocumentManager = (docManagerGuid) => {
   if (!docManagerGuid) {
     throw new Error("Must provide docManagerGuid");

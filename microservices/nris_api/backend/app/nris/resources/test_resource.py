@@ -3,9 +3,9 @@ from datetime import datetime
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
 from app.extensions import api, db
-from app.utils.logger import get_logger
-from app.utils.access_decorators import requires_role_mine_view, requires_role_mine_create
-from ..models.test_model import Factorial
+from app.nris.utils.logger import get_logger
+from app.nris.utils.access_decorators import requires_role_nris_view
+from app.nris.models.test_model import Factorial
 
 factorial_model = api.model('Factorial', {
     'input_val': fields.Integer,
@@ -21,6 +21,7 @@ def _factorial(n):
 
 
 class FactorialResource(Resource):
+    @requires_role_nris_view
     @api.marshal_with(factorial_model, envelope='records', code=200)
     @api.doc(description='returns the factorial of the provided value.')
     def get(self, input_val):

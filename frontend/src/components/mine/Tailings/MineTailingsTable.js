@@ -10,6 +10,7 @@ import { formatDate } from "@/utils/helpers";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 import * as String from "@/constants/strings";
 import { COLOR } from "@/constants/styles";
+import LinkButton from "@/components/common/LinkButton";
 
 const { errorRed } = COLOR;
 
@@ -99,17 +100,12 @@ const columns = [
         ) : (
           record.doc.related_documents.map((file) => (
             <div key={file.mine_document_guid}>
-              <a
-                role="link"
+              <LinkButton
                 key={file.mine_document_guid}
                 onClick={() => downloadFileFromDocumentManager(file.document_manager_guid)}
-                // Accessibility: Event listener
-                onKeyPress={() => downloadFileFromDocumentManager(file.document_manager_guid)}
-                // Accessibility: Focusable element
-                tabIndex="0"
               >
                 {file.document_name}
-              </a>
+              </LinkButton>
             </div>
           ))
         )}

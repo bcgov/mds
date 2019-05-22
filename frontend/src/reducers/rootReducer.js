@@ -13,6 +13,7 @@ import staticContentReducer from "@/reducers/staticContentReducer";
 import minespaceReducer from "@/reducers/minespaceReducer";
 import permitReducer from "@/reducers/permitReducer";
 import applicationReducer from "@/reducers/applicationReducer";
+import searchReducer from "@/reducers/searchReducer";
 import varianceReducer from "@/reducers/varianceReducer";
 import userReducer from "@/reducers/userReducer";
 
@@ -28,6 +29,7 @@ export const reducerObject = {
   [reducerTypes.COMPLIANCE]: complianceReducer,
   [reducerTypes.STATIC_CONTENT]: staticContentReducer,
   [reducerTypes.MINESPACE]: minespaceReducer,
+  [reducerTypes.SEARCH]: searchReducer,
   [reducerTypes.VARIANCES]: varianceReducer,
   [reducerTypes.USERS]: userReducer,
   [reducerTypes.CREATE_PARTY]: createReducer(networkReducer, reducerTypes.CREATE_PARTY),

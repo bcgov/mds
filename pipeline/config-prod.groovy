@@ -162,6 +162,7 @@ app {
                             'ROUTE': "${vars.modules.'mds-nginx'.ROUTE}",
                             'PATH_PREFIX': "${vars.modules.'mds-nginx'.PATH}",
                             'CORE_SERVICE_URL': "${vars.modules.'mds-frontend'.HOST}",
+                            'NRIS_API_SERVICE_URL': "${vars.modules.'mds-nris-backend'.HOST}",
                             'MINESPACE_SERVICE_URL': "${vars.modules.'mds-frontend-public'.HOST}",
                             'API_SERVICE_URL': "${vars.modules.'mds-python-backend'.HOST}",
                     ]
@@ -191,6 +192,32 @@ app {
                             'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api",
+                    ]
+                ],
+                [
+                    'file':'microservices/nris_api/openshift/_python36_oracle.dc.json',
+                    'params':[
+                            'NAME':"mds-nris-backend",
+                            'SUFFIX': "${vars.deployment.suffix}",
+                            'VERSION':"${app.deployment.version}",
+                            'CPU_REQUEST':"${vars.resources.python.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.python.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.python.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.python.memory_limit}",
+                            'REPLICA_MIN':"${vars.resources.python.replica_min}",
+                            'REPLICA_MAX':"${vars.resources.python.replica_max}",
+                            'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
+                            'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId}",
+                            'APPLICATION_DOMAIN': "${vars.modules.'mds-nris-backend'.HOST}",
+                            'BASE_PATH': "${vars.modules.'mds-nris-backend'.PATH}",
+                            'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}-nris",
+                            'REDIS_CONFIG_NAME': "mds-redis${vars.deployment.suffix}",
+                            'CACHE_REDIS_HOST': "mds-redis${vars.deployment.suffix}",
+                            'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled}",
+                            'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name_nris}",
+                            'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}",
+                            'ENVIRONMENT_NAME':"${app.deployment.env.name}",
+                            'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/nris_api",
                     ]
                 ],
                 [
@@ -326,6 +353,7 @@ environments {
                 map_portal_id = "803130a9bebb4035b3ac671aafab12d7"
                 elastic_enabled = 1
                 elastic_service_name = "MDS Prod"
+                elastic_service_name_nris = "NRIS API Prod"
             }
             modules {
                 'mds-frontend' {
@@ -345,6 +373,10 @@ environments {
                 'mds-python-backend' {
                     HOST = "http://mds-python-backend${vars.deployment.suffix}:5000"
                     PATH = "/api"
+                }
+                'mds-nris-backend' { 
+                    HOST = "http://mds-nris-backend${vars.deployment.suffix}:5500"
+                    PATH = "/nris-api"
                 }
                 'mds-redis' {
                     HOST = "http://mds-redis${vars.deployment.suffix}"
