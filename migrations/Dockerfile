@@ -20,8 +20,9 @@ RUN yum install -y https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel
 # Install envsubst utility
 RUN yum install -y gettext
 
-# Copy over the SQL scripts
+# Copy over the SQL files and scripts
 COPY sql/* $FLYWAY_HOME/sql/
+COPY scripts/* $FLYWAY_HOME/scripts/
 
 RUN chmod -R 777 $FLYWAY_HOME
 
