@@ -5,6 +5,7 @@ import { debounce } from "lodash";
 import { compareTwoStrings } from "string-similarity";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
+import LinkButton from "@/components/common/LinkButton";
 
 import { Icon, Divider, AutoComplete } from "antd";
 import { Field } from "redux-form";
@@ -47,17 +48,10 @@ const renderAddPartyFooter = (showAddParty, partyLabel) => (
   <div className="wrapped-text">
     <Divider style={{ margin: "0" }} />
     <p className="footer-text">{`Can't find the ${partyLabel} you are looking for?`}</p>
-    <a
-      role="link"
-      onClick={showAddParty}
-      // Accessibility: Event listener
-      onKeyPress={showAddParty}
-      // Accessibility: Focusable element
-      tabIndex="0"
-    >
+    <LinkButton onClick={showAddParty}>
       <Icon type="plus" style={{ paddingRight: "5px" }} />
       {`Add a new ${partyLabel}`}
-    </a>
+    </LinkButton>
   </div>
 );
 
