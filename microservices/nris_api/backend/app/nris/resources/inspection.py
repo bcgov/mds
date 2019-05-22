@@ -8,12 +8,13 @@ from app.extensions import api, db
 from app.nris.utils.logger import get_logger
 from app.nris.utils.access_decorators import requires_role_nris_view
 
-from app.nris.models.inspection import Inspection
+from app.nris.models.inspection import Inspection, INSPECTION_RESPONSE_MODEL
 
 
 @api.route('/inspection')
 class InspectionResource(Resource):
     @api.doc(params={'mine_guid': 'Core mine_guid to filter'})
+    @api.marshal_with(INSPECTION_RESPONSE_MODEL, envelope='records', code=200)
     @requires_role_nris_view
     def get(self):
         #not sure how to format dates to make this works.
