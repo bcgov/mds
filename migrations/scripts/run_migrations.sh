@@ -1,4 +1,5 @@
 #!/bin/sh
+set -exv -o pipefail
 
 # Change directory to Flyway home
 cd $FLYWAY_HOME
