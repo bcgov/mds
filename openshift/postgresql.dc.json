@@ -286,8 +286,22 @@
         },
         "strategy": {
           "type": "Recreate",
-          "maxSurge": "50%",
-          "maxUnavailable": 0
+          "recreateParams": {
+            "post": {
+              "failurePolicy": "Retry",
+              "execNewPod": {
+                "containerName": "postgresql",
+                "command": [
+                  "bash",
+                  "-c",
+                  "envsubst < create_schema_role_users.sql.tmpl > create_schema_role_users.sql "
+                ]
+              }
+            },
+            "maxSurge": "50%",
+            "maxUnavailable": 0,
+            "timeoutSeconds": 600
+          }
         },
         "template": {
           "metadata": {
@@ -337,7 +351,7 @@
                     }
                   },
                   {
-                    "name": "POSTGRESQL_NRIS_USER",
+                    "name": "NRIS_SCHEMA",
                     "valueFrom": {
                       "secretKeyRef": {
                         "key": "database-nris-user",
@@ -346,7 +360,16 @@
                     }
                   },
                   {
-                    "name": "POSTGRESQL_NRIS_PASSWORD",
+                    "name": "NRIS_USER",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "database-nris-user",
+                        "name": "${DATABASE_SERVICE_NAME}-nris"
+                      }
+                    }
+                  },
+                  {
+                    "name": "NRIS_PASSWORD",
                     "valueFrom": {
                       "secretKeyRef": {
                         "key": "database-nris-password",
