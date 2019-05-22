@@ -9,9 +9,8 @@ from app.nris.utils.access_decorators import requires_role_nris_view
 from app.nris.models.inspection import Inspection, INSPECTION_RESPONSE_MODEL
 
 
-@api.route('/inspection')
+@api.route('/inspections')
 class InspectionListResource(Resource):
-    @api.doc(params={'mine_guid': 'Core mine_guid to filter'})
     @api.marshal_with(INSPECTION_RESPONSE_MODEL, envelope='records', code=200)
     @requires_role_nris_view
     def get(self):
@@ -21,7 +20,7 @@ class InspectionListResource(Resource):
         return filtered_results
 
 
-@api.route('/inspection/<int:external_id>')
+@api.route('/inspections/<int:external_id>')
 class InspectionListResource(Resource):
     @api.marshal_with(INSPECTION_RESPONSE_MODEL, code=200)
     @requires_role_nris_view
