@@ -181,6 +181,32 @@ app {
                     ]
                 ],
                 [
+                    'file':'microservices/nris_api/openshift/_python36_oracle.dc.json',
+                    'params':[
+                            'NAME':"mds-nris-backend",
+                            'SUFFIX': "${vars.deployment.suffix}",
+                            'VERSION':"${app.deployment.version}",
+                            'CPU_REQUEST':"${vars.resources.python.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.python.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.python.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.python.memory_limit}",
+                            'REPLICA_MIN':"${vars.resources.python.replica_min}",
+                            'REPLICA_MAX':"${vars.resources.python.replica_max}",
+                            'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
+                            'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId}",
+                            'APPLICATION_DOMAIN': "${vars.modules.'mds-nris-backend'.HOST}",
+                            'BASE_PATH': "${vars.modules.'mds-nris-backend'.PATH}",
+                            'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}-nris",
+                            'REDIS_CONFIG_NAME': "mds-redis${vars.deployment.suffix}",
+                            'CACHE_REDIS_HOST': "mds-redis${vars.deployment.suffix}",
+                            'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled}",
+                            'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name_nris}",
+                            'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}",
+                            'ENVIRONMENT_NAME':"${app.deployment.env.name}",
+                            'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/nris_api",
+                    ]
+                ],
+                [
                     'file':'openshift/tools/schemaspy.dc.json',
                     'params':[
                             'NAME':"schemaspy",
@@ -306,6 +332,7 @@ environments {
                 map_portal_id = "e926583cd0114cd19ebc591f344e30dc"
                 elastic_enabled = 1
                 elastic_service_name = "MDS Test"
+                elastic_service_name_nris = "NRIS API Test"
             }
             modules {
                 'mds-frontend' {

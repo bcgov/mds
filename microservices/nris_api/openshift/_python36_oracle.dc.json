@@ -79,11 +79,11 @@
     },
     {
       "name": "ELASTIC_ENABLED",
-      "value": "0"
+      "value": "1"
     },
     {
       "name": "ELASTIC_SERVICE_NAME",
-      "value": "MDS Dev"
+      "value": "NRIS API Dev"
     },
     {
       "name": "REDIS_CONFIG_NAME",

@@ -1,7 +1,9 @@
 from datetime import datetime
 from app.extensions import db
 from sqlalchemy.orm import validates
-from app.utils.base_model import Base
+from app.nris.utils.base_model import Base
+
+db.metadata.clear()
 
 
 class Factorial(Base):
