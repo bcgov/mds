@@ -286,22 +286,8 @@
         },
         "strategy": {
           "type": "Recreate",
-          "recreateParams": {
-            "post": {
-              "failurePolicy": "Retry",
-              "execNewPod": {
-                "containerName": "postgresql",
-                "command": [
-                  "bash",
-                  "-c",
-                  "envsubst < create_schema_role_users.sql.tmpl > create_schema_role_users.sql "
-                ]
-              }
-            },
-            "maxSurge": "50%",
-            "maxUnavailable": 0,
-            "timeoutSeconds": 600
-          }
+          "maxSurge": "50%",
+          "maxUnavailable": 0
         },
         "template": {
           "metadata": {

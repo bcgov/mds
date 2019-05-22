@@ -210,7 +210,7 @@
                 "command": [
                   "bash",
                   "-c",
-                  "cd $FLYWAY_HOME && ./run_migrations.sh"
+                  "cd $FLYWAY_HOME/scripts && ./run_migrations.sh"
                 ]
               }
             },
@@ -553,6 +553,15 @@
                       "secretKeyRef": {
                         "name": "${DB_CONFIG_NAME}",
                         "key": "database-name"
+                      }
+                    }
+                  },
+                  {
+                    "name": "NRIS_USER_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${MDS_NRIS_API_SECRET}",
+                        "key": "password"
                       }
                     }
                   },
