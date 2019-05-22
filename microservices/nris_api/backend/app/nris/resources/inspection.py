@@ -28,4 +28,7 @@ class InspectionListResource(Resource):
     @api.marshal_with(INSPECTION_RESPONSE_MODEL, code=200)
     @requires_role_nris_view
     def get(self, external_id):
-        return Inspection.query.filter_by(external_id=external_id).first()
+        inspection = Inspection.query.filter_by(external_id=external_id).first()
+        if not inspection:
+            raise NotFound("Inspection not found")
+        return inspection
