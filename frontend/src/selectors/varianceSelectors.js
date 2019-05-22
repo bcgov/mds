@@ -2,7 +2,7 @@ import * as varianceReducer from "@/reducers/varianceReducer";
 import { createSelector } from "reselect";
 import * as Strings from "@/constants/strings";
 
-export const { getMineVariances } = varianceReducer;
+export const { getMineVariances, getVariance } = varianceReducer;
 
 export const getVarianceApplications = createSelector(
   [getMineVariances],

@@ -61,16 +61,16 @@ export const fetchVariancesByMine = ({ mineGuid }) => (dispatch) => {
 };
 
 export const fetchVariancesById = (mineGuid, varianceGuid) => (dispatch) => {
-  dispatch(request(reducerTypes.GET_MINE_VARIANCES));
+  dispatch(request(reducerTypes.GET_VARIANCE));
   dispatch(showLoading());
   return CustomAxios(Strings.ERROR)
-    .get(ENVIRONMENT.apiUrl + API.VARIANCES(mineGuid, varianceGuid), createRequestHeader())
+    .get(ENVIRONMENT.apiUrl + API.VARIANCE(mineGuid, varianceGuid), createRequestHeader())
     .then((response) => {
-      dispatch(success(reducerTypes.GET_MINE_VARIANCES));
-      dispatch(varianceActions.storeVariances(response.data));
+      dispatch(success(reducerTypes.GET_VARIANCE));
+      dispatch(varianceActions.storeVariance(response.data));
       dispatch(hideLoading());
     })
-    .catch(() => dispatch(error(reducerTypes.GET_MINE_VARIANCES)))
+    .catch(() => dispatch(error(reducerTypes.GET_VARIANCE)))
     .finally(() => dispatch(hideLoading()));
 };
 
