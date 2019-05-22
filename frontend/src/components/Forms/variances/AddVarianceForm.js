@@ -16,8 +16,8 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
   mineGuid: PropTypes.string.isRequired,
-  coreUsers: CustomPropTypes.dropdownListItem.isRequired,
-  complianceCodes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
+  coreUsers: CustomPropTypes.options.isRequired,
+  complianceCodes: CustomPropTypes.options.isRequired,
 };
 
 export class AddVarianceForm extends Component {
