@@ -13,6 +13,7 @@ import { getPartyRelationships } from "@/selectors/partiesSelectors";
 import { getDropdownPermitStatusOptions } from "@/selectors/staticContentSelectors";
 import { BRAND_PENCIL, EDIT, EDIT_OUTLINE, CARAT } from "@/constants/assets";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
+import LinkButton from "@/components/common/LinkButton";
 
 /**
  * @class  MinePermitTable - displays a table of permits and permit amendments
@@ -39,17 +40,12 @@ const defaultProps = {
 };
 
 const renderDocumentLink = (file, text) => (
-  <a
-    role="link"
+  <LinkButton
     key={file.mine_document_guid}
     onClick={() => downloadFileFromDocumentManager(file.document_manager_guid)}
-    // Accessibility: Event listener
-    onKeyPress={() => downloadFileFromDocumentManager(file.document_manager_guid)}
-    // Accessibility: Focusable element
-    tabIndex="0"
   >
     {text}
-  </a>
+  </LinkButton>
 );
 
 const renderPermitNo = (permit) => {
