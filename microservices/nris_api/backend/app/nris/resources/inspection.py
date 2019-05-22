@@ -19,12 +19,13 @@ class InspectionListResource(Resource):
     def get(self):
         filter_fields = ['inspection_status_code', 'business_area', 'mine_no', 'inspector_idir']
         filtered_params = {k: v for (k, v) in request.args.items() if k in filter_fields}
-        filtered_query = Inspection.query.filter_by(**filtered_params).all()
-        return filtered_query
+        filtered_results = Inspection.query.filter_by(**filtered_params).all()
+        return filtered_results
 
 
 @api.route('/inspection/<int:external_id>')
 class InspectionListResource(Resource):
+    @api.marshal_with(INSPECTION_RESPONSE_MODEL, code=200)
     @requires_role_nris_view
     def get(self, external_id):
         return Inspection.query.filter_by(external_id=external_id).first()
