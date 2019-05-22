@@ -386,7 +386,7 @@ ShallowWrapper {
                 id="status_date"
                 label="Date of Status Change"
                 name="status_date"
-                placeholder="Unknown"
+                placeholder="yyyy-mm-dd"
                 validate={
                   Array [
                     [Function],
@@ -1114,7 +1114,7 @@ ShallowWrapper {
                 id="status_date"
                 label="Date of Status Change"
                 name="status_date"
-                placeholder="Unknown"
+                placeholder="yyyy-mm-dd"
                 validate={
                   Array [
                     [Function],
@@ -1139,7 +1139,7 @@ ShallowWrapper {
                 id="status_date"
                 label="Date of Status Change"
                 name="status_date"
-                placeholder="Unknown"
+                placeholder="yyyy-mm-dd"
                 validate={
                   Array [
                     [Function],
@@ -1159,7 +1159,7 @@ ShallowWrapper {
                 id="status_date"
                 label="Date of Status Change"
                 name="status_date"
-                placeholder="Unknown"
+                placeholder="yyyy-mm-dd"
                 validate={
                   Array [
                     [Function],
@@ -1178,7 +1178,7 @@ ShallowWrapper {
                 "id": "status_date",
                 "label": "Date of Status Change",
                 "name": "status_date",
-                "placeholder": "Unknown",
+                "placeholder": "yyyy-mm-dd",
                 "validate": Array [
                   [Function],
                 ],
@@ -2049,7 +2049,7 @@ ShallowWrapper {
                   id="status_date"
                   label="Date of Status Change"
                   name="status_date"
-                  placeholder="Unknown"
+                  placeholder="yyyy-mm-dd"
                   validate={
                     Array [
                       [Function],
@@ -2777,7 +2777,7 @@ ShallowWrapper {
                   id="status_date"
                   label="Date of Status Change"
                   name="status_date"
-                  placeholder="Unknown"
+                  placeholder="yyyy-mm-dd"
                   validate={
                     Array [
                       [Function],
@@ -2802,7 +2802,7 @@ ShallowWrapper {
                   id="status_date"
                   label="Date of Status Change"
                   name="status_date"
-                  placeholder="Unknown"
+                  placeholder="yyyy-mm-dd"
                   validate={
                     Array [
                       [Function],
@@ -2822,7 +2822,7 @@ ShallowWrapper {
                   id="status_date"
                   label="Date of Status Change"
                   name="status_date"
-                  placeholder="Unknown"
+                  placeholder="yyyy-mm-dd"
                   validate={
                     Array [
                       [Function],
@@ -2841,7 +2841,7 @@ ShallowWrapper {
                   "id": "status_date",
                   "label": "Date of Status Change",
                   "name": "status_date",
-                  "placeholder": "Unknown",
+                  "placeholder": "yyyy-mm-dd",
                   "validate": Array [
                     [Function],
                   ],
