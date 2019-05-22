@@ -13,7 +13,7 @@
       "required": true
     },
     {
-      "name": "NAME_SUFFIX",
+      "name": "SUFFIX",
       "displayName": "Name Suffix",
       "description": "A suffix appended to all objects",
       "required": true
