@@ -11,9 +11,11 @@ class Order(Base):
     __tablename__ = "order"
     order_id = db.Column(db.Integer, primary_key=True)
     inspection_id = db.Column(db.Integer, db.ForeignKey('inspection.inspection_id'))
+    location_id = db.Column(db.Integer, db.ForeignKey('location.location_id'))
+    location = relationship("Location")
+
     order_type_id = db.Column(db.Integer, db.ForeignKey('order_type.order_type_id'))
     order_type = association_proxy('order_type', 'order_type')
-    locations = db.relationship('Location', lazy='selectin')
     documents = db.relationship('Document', lazy='selectin', secondary='order_document_xref')
     advisory_details = db.relationship(
         'OrderAdvisoryDetail', lazy='selectin', secondary='order_advisory_detail')
