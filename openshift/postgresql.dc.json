@@ -17,16 +17,9 @@
       "value": "postgresql"
     },
     {
-      "description": "The OpenShift ImageStream name.",
-      "displayName": "IMAGE_STREAM_NAME",
-      "name": "IMAGE_STREAM_NAME",
+      "name": "SUFFIX",
+      "required": true,
       "value": "postgresql"
-    },
-    {
-      "description": "The OpenShift Namespace where the ImageStream resides.",
-      "displayName": "Namespace",
-      "name": "IMAGE_STREAM_NAMESPACE",
-      "value": "openshift"
     },
     {
       "description": "The name of the OpenShift Service exposed for the database.",
@@ -36,85 +29,45 @@
       "value": "postgresql"
     },
     {
-      "description": "Username for PostgreSQL user that will be used for accessing the database.",
-      "displayName": "PostgreSQL Connection Username",
-      "name": "POSTGRESQL_USER",
+      "description": "The OpenShift ImageStream name.",
+      "displayName": "IMAGE_STREAM_NAME",
+      "name": "IMAGE_STREAM_NAME",
+      "value": "postgresql"
+    },
+    {
+      "description": "The OpenShift Namespace where the ImageStream resides.",
+      "displayName": "Namespace",
+      "name": "IMAGE_STREAM_NAMESPACE",
+      "value": ""
+    },
+    {
+      "description": "Version of PostgreSQL image to be used (9.2, 9.4, 9.5 or latest).",
+      "displayName": "Version of PostgreSQL Image",
+      "name": "IMAGE_STREAM_VERSION",
       "required": true,
-      "value": "mds"
+      "value": "9.6"
     },
     {
-      "description": "Username for nris_api PostgreSQL user that will be used for accessing the database.",
-      "displayName": "PostgreSQL NRIS_API Connection Username",
-      "name": "POSTGRESQL_ADMIN_USER",
-      "required": true,
-      "value": "postgres"
+      "description": "Oracle FDW secret name",
+      "name": "FDW_SECRET_NAME",
+      "value": "template.mds-postgresql-mms-fdw-secret"
     },
     {
-      "description": "Admin Username for PostgreSQL user that will be used for accessing the database.",
-      "displayName": "PostgreSQL Admin Connection Username",
-      "name": "POSTGRESQL_NRIS_USER",
-      "required": true,
-      "value": "nris"
+      "description": "Postgres secret name",
+      "name": "POSTGRES_SECRET_NAME",
+      "value": "template.mds-postgresql-secret"
     },
     {
-      "description": "Password for the PostgreSQL connection user.",
-      "displayName": "PostgreSQL Connection Password",
-      "from": "[a-zA-Z0-9]{16}",
-      "generate": "expression",
-      "name": "POSTGRESQL_PASSWORD",
-      "required": true
-    },
-    {
-      "description": "Password for the PostgreSQL admin user.",
-      "displayName": "PostgreSQL Admin Connection Password",
-      "from": "[a-zA-Z0-9]{16}",
-      "generate": "expression",
-      "name": "POSTGRESQL_ADMIN_PASSWORD",
-      "required": true
-    },
-    {
-      "description": "Password for nris_api PostgreSQL user that will be used for accessing the database.",
-      "displayName": "PostgreSQL NRIS_API Connection Password",
-      "value": "VsPJAuMJHu3IVMEv",
-      "name": "POSTGRESQL_NRIS_PASSWORD",
-      "required": true
-    },
-    {
-      "description": "Oracle FDW name",
-      "name": "FDW_NAME",
-      "value": ""
-    },
-    {
-      "description": "Oracle FDW remote schema name",
-      "name": "FDW_FOREIGN_SCHEMA",
-      "value": ""
-    },
-    {
-      "description": "Oracle FDW remote server name",
-      "name": "FDW_FOREIGN_SERVER",
-      "value": ""
-    },
-    {
-      "description": "Oracle FDW user",
-      "name": "FDW_USER",
-      "value": ""
-    },
-    {
-      "description": "Oracle FDW pass",
-      "name": "FDW_PASS",
-      "value": ""
-    },
-    {
-      "description": "Oracle FDW postgres schema",
-      "name": "FDW_SCHEMA",
-      "value": ""
+      "description": "Postgres NRIS secret name",
+      "name": "POSTGRES_NRIS_SECRET_NAME",
+      "value": "template.mds-postgresql-nris-secret"
     },
     {
       "description": "Name of the PostgreSQL database accessed.",
       "displayName": "PostgreSQL Database Name",
       "name": "POSTGRESQL_DATABASE",
       "required": true,
-      "value": "sampledb"
+      "value": "mds"
     },
     {
       "description": "Volume space available for data, e.g. 512Mi, 2Gi.",
@@ -122,25 +75,6 @@
       "name": "VOLUME_CAPACITY",
       "required": true,
       "value": "1Gi"
-    },
-    {
-      "description": "Version of PostgreSQL image to be used (9.2, 9.4, 9.5 or latest).",
-      "displayName": "Version of PostgreSQL Image",
-      "name": "IMAGE_STREAM_VERSION",
-      "required": true,
-      "value": "9.5"
-    },
-    {
-      "description": "Indicator to enable pgcrypto extension (provided out-of-the-box with PostgreSQL).",
-      "displayName": "Flag to enable pgcrypto PostgreSQL extension.",
-      "name": "PGCRYPTO_EXTENSION",
-      "value": "Y"
-    },
-    {
-      "description": "Indicator to enable postgis extension (from official PostgeSQL YUM repo).",
-      "displayName": "Flag to enable postgis PostgreSQL extension.",
-      "name": "POSTGIS_EXTENSION",
-      "value": "Y"
     },
     {
       "name": "CPU_LIMIT",
@@ -169,21 +103,12 @@
           "template.openshift.io/expose-password": "{.data['database-password']}",
           "template.openshift.io/expose-admin-password": "{.data['database-admin-password']}",
           "template.openshift.io/expose-admin-username": "{.data['database-admin-user']}",
-          "as-copy-of": "template.${NAME}-secret"
+          "as-copy-of": "${POSTGRES_SECRET_NAME}"
         },
-        "name": "${DATABASE_SERVICE_NAME}"
+        "name": "${NAME}${SUFFIX}"
       },
       "stringData": {
-        "database-name": "${POSTGRESQL_DATABASE}",
-        "database-password": "${POSTGRESQL_PASSWORD}",
-        "database-admin-password": "${POSTGRESQL_ADMIN_PASSWORD}",
-        "database-user": null,
-        "oracle-fdw-name": null,
-        "oracle-fdw-foreign-schema": null,
-        "oracle-fdw-foreign-server": null,
-        "oracle-fdw-user": null,
-        "oracle-fdw-password": null,
-        "oracle-fdw-schema": null
+        "database-name": "${POSTGRESQL_DATABASE}"
       }
     },
     {
@@ -195,15 +120,12 @@
           "template.openshift.io/expose-database-name": "{.data['database-name']}",
           "template.openshift.io/expose-nris-password": "{.data['database-nris-password']}",
           "template.openshift.io/expose-nris-user": "{.data['database-nris-user']}",
-          "as-copy-of": "template.${NAME}-nris-secret"
+          "as-copy-of": "${POSTGRES_NRIS_SECRET_NAME}"
         },
-        "name": "${DATABASE_SERVICE_NAME}-nris"
+        "name": "${NAME}${SUFFIX}-nris"
       },
       "stringData": {
-        "database-host": "${DATABASE_SERVICE_NAME}",
-        "database-name": "${POSTGRESQL_DATABASE}",
-        "database-nris-password": "${POSTGRESQL_NRIS_PASSWORD}",
-        "database-nris-user": "${POSTGRESQL_NRIS_USER}"
+        "database-host": "${NAME}${SUFFIX}"
       }
     },
     {
@@ -213,7 +135,7 @@
         "annotations": {
           "template.openshift.io/expose-uri": "postgres://{.spec.clusterIP}:{.spec.ports[?(.name==\"postgresql\")].port}"
         },
-        "name": "${DATABASE_SERVICE_NAME}"
+        "name": "${NAME}${SUFFIX}"
       },
       "spec": {
         "ports": [
@@ -226,7 +148,7 @@
           }
         ],
         "selector": {
-          "name": "${DATABASE_SERVICE_NAME}"
+          "name": "${NAME}${SUFFIX}"
         },
         "sessionAffinity": "None",
         "type": "ClusterIP"
@@ -239,7 +161,7 @@
       "apiVersion": "v1",
       "kind": "PersistentVolumeClaim",
       "metadata": {
-        "name": "${DATABASE_SERVICE_NAME}",
+        "name": "${NAME}${SUFFIX}",
         "annotations": {
           "volume.beta.kubernetes.io/storage-class": "gluster-file-db",
           "volume.beta.kubernetes.io/storage-provisioner": "kubernetes.io/glusterfs"
@@ -278,12 +200,12 @@
         "annotations": {
           "template.alpha.openshift.io/wait-for-ready": "true"
         },
-        "name": "${DATABASE_SERVICE_NAME}"
+        "name": "${NAME}${SUFFIX}"
       },
       "spec": {
         "replicas": 1,
         "selector": {
-          "name": "${DATABASE_SERVICE_NAME}"
+          "name": "${NAME}${SUFFIX}"
         },
         "strategy": {
           "type": "Recreate",
@@ -293,7 +215,7 @@
         "template": {
           "metadata": {
             "labels": {
-              "name": "${DATABASE_SERVICE_NAME}"
+              "name": "${NAME}${SUFFIX}"
             }
           },
           "spec": {
@@ -306,7 +228,7 @@
                     "valueFrom": {
                       "secretKeyRef": {
                         "key": "database-user",
-                        "name": "${DATABASE_SERVICE_NAME}"
+                        "name": "${POSTGRES_SECRET_NAME}"
                       }
                     }
                   },
@@ -315,7 +237,7 @@
                     "valueFrom": {
                       "secretKeyRef": {
                         "key": "database-password",
-                        "name": "${DATABASE_SERVICE_NAME}"
+                        "name": "${POSTGRES_SECRET_NAME}"
                       }
                     }
                   },
@@ -324,7 +246,7 @@
                     "valueFrom": {
                       "secretKeyRef": {
                         "key": "database-admin-password",
-                        "name": "${DATABASE_SERVICE_NAME}"
+                        "name": "${POSTGRES_SECRET_NAME}"
                       }
                     }
                   },
@@ -333,16 +255,7 @@
                     "valueFrom": {
                       "secretKeyRef": {
                         "key": "database-name",
-                        "name": "${DATABASE_SERVICE_NAME}"
-                      }
-                    }
-                  },
-                  {
-                    "name": "NRIS_SCHEMA",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "key": "database-nris-user",
-                        "name": "${DATABASE_SERVICE_NAME}-nris"
+                        "name": "${POSTGRES_SECRET_NAME}"
                       }
                     }
                   },
@@ -351,7 +264,7 @@
                     "valueFrom": {
                       "secretKeyRef": {
                         "key": "oracle-fdw-name",
-                        "name": "${DATABASE_SERVICE_NAME}"
+                        "name": "${FDW_SECRET_NAME}"
                       }
                     }
                   },
@@ -360,7 +273,7 @@
                     "valueFrom": {
                       "secretKeyRef": {
                         "key": "oracle-fdw-foreign-schema",
-                        "name": "${DATABASE_SERVICE_NAME}"
+                        "name": "${FDW_SECRET_NAME}"
                       }
                     }
                   },
@@ -369,7 +282,7 @@
                     "valueFrom": {
                       "secretKeyRef": {
                         "key": "oracle-fdw-foreign-server",
-                        "name": "${DATABASE_SERVICE_NAME}"
+                        "name": "${FDW_SECRET_NAME}"
                       }
                     }
                   },
@@ -378,7 +291,7 @@
                     "valueFrom": {
                       "secretKeyRef": {
                         "key": "oracle-fdw-user",
-                        "name": "${DATABASE_SERVICE_NAME}"
+                        "name": "${FDW_SECRET_NAME}"
                       }
                     }
                   },
@@ -387,7 +300,7 @@
                     "valueFrom": {
                       "secretKeyRef": {
                         "key": "oracle-fdw-password",
-                        "name": "${DATABASE_SERVICE_NAME}"
+                        "name": "${FDW_SECRET_NAME}"
                       }
                     }
                   },
@@ -396,7 +309,7 @@
                     "valueFrom": {
                       "secretKeyRef": {
                         "key": "oracle-fdw-schema",
-                        "name": "${DATABASE_SERVICE_NAME}"
+                        "name": "${FDW_SECRET_NAME}"
                       }
                     }
                   },
@@ -459,11 +372,11 @@
                 "volumeMounts": [
                   {
                     "mountPath": "/var/lib/pgsql/data",
-                    "name": "${DATABASE_SERVICE_NAME}-data"
+                    "name": "${NAME}${SUFFIX}-data"
                   },
                   {
                     "mountPath": "/var/run/postgresql",
-                    "name": "${DATABASE_SERVICE_NAME}-run"
+                    "name": "${NAME}${SUFFIX}-run"
                   }
                 ]
               }
@@ -472,13 +385,13 @@
             "restartPolicy": "Always",
             "volumes": [
               {
-                "name": "${DATABASE_SERVICE_NAME}-data",
+                "name": "${NAME}${SUFFIX}-data",
                 "persistentVolumeClaim": {
-                  "claimName": "${DATABASE_SERVICE_NAME}"
+                  "claimName": "${NAME}${SUFFIX}"
                 }
               },
               {
-                "name": "${DATABASE_SERVICE_NAME}-run",
+                "name": "${NAME}${SUFFIX}-run",
                 "emptyDir": {}
               }
             ]
