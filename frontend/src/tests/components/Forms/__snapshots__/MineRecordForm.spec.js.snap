@@ -75,6 +75,7 @@ ShallowWrapper {
     }
     handleDelete={[MockFunction]}
     handleSubmit={[MockFunction]}
+    initialValues={Object {}}
     mineCommodityOptionsHash={
       Object {
         "CG": "Construction Aggregate",
