@@ -12,13 +12,13 @@ from app.nris.models.inspection import Inspection
 
 
 @api.route('/inspection')
-class InspectionResource(Resource):
+class InspectionListResource(Resource):
     @api.doc(params={'mine_guid': 'Core mine_guid to filter'})
     @requires_role_nris_view
     def get(self):
         #not sure how to format dates to make this works.
-        allowable_fields = ['inspection_status_code', 'business_area', 'mine_no', 'inspector_idir']
-        filtered_params = {key: value for (key, value) in request.args if key in allowable_fields}
+        filter_fields = ['inspection_status_code', 'business_area', 'mine_no', 'inspector_idir']
+        filtered_params = {k: v for (k, v) in request.args.items() if k in filter_fields}
         filtered_query = Inspection.query.filter_by(**filtered_params).all()
 
-        return len(filtered_query)
+        return filtered_query
