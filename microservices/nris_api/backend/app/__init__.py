@@ -18,6 +18,8 @@ from app.extensions import api, db, jwt, sched, apm, migrate
 
 from app.nris.models import *
 
+from app.nris.scheduled_jobs.NRIS_etl import _schedule_NRIS_ETL_jobs
+
 from app.config import Config
 
 
@@ -31,6 +33,7 @@ def create_app(test_config=None):
     register_extensions(app)
     register_routes(app)
     register_commands(app)
+    register_scheduled_jobs(app)
 
     return app
 
@@ -52,3 +55,10 @@ def register_extensions(app):
     Compress(app)
 
     return None
+
+
+def register_scheduled_jobs(app):
+    if app.config.get('ENVIRONMENT_NAME') in ['test', 'prod']:
+        if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == 'true':
+            sched.start()
+            _schedule_ETL_jobs()
