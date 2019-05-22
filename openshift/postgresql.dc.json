@@ -194,7 +194,8 @@
           "template.openshift.io/expose-database-host": "{.data['database-host']}",
           "template.openshift.io/expose-database-name": "{.data['database-name']}",
           "template.openshift.io/expose-nris-password": "{.data['database-nris-password']}",
-          "template.openshift.io/expose-nris-user": "{.data['database-nris-user']}"
+          "template.openshift.io/expose-nris-user": "{.data['database-nris-user']}",
+          "as-copy-of": "template.${NAME}-nris-secret"
         },
         "name": "${DATABASE_SERVICE_NAME}-nris"
       },

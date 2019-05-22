@@ -566,6 +566,24 @@
                     }
                   },
                   {
+                    "name": "LOGSTASH_USER_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DB_CONFIG_NAME}",
+                        "key": "logstash-user-password"
+                      }
+                    }
+                  },
+                  {
+                    "name": "METABASE_USER_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DB_CONFIG_NAME}",
+                        "key": "metabase-user-password"
+                      }
+                    }
+                  },
+                  {
                     "name": "FLYWAY_OUT_OF_ORDER",
                     "value": "true"
                   },
