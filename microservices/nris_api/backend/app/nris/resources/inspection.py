@@ -11,10 +11,12 @@ from app.nris.models.inspection import Inspection, INSPECTION_RESPONSE_MODEL
 
 @api.route('/inspections')
 class InspectionListResource(Resource):
+    filter_fields = ['inspection_status_code', 'business_area', 'mine_no', 'inspector_idir']
+
+    @api.doc(params={field: "Filter by exact match" for field in filter_fields})
     @api.marshal_with(INSPECTION_RESPONSE_MODEL, envelope='records', code=200)
     @requires_role_nris_view
     def get(self):
-        filter_fields = ['inspection_status_code', 'business_area', 'mine_no', 'inspector_idir']
         filtered_params = {k: v for (k, v) in request.args.items() if k in filter_fields}
         filtered_results = Inspection.query.filter_by(**filtered_params).all()
         return filtered_results
