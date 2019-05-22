@@ -6,7 +6,7 @@ from app.utils.base_model import Base
 
 
 class OrderRequestDetail(Base):
-    __tablename__ = "order_advisory_detail"
+    __tablename__ = "order_request_detail"
     order_request_detail_id = db.Column(db.Integer, primary_key=True)
     order_id = db.Column(db.Integer, db.ForeignKey('order.order_id'))
     detail = db.Column(db.String(2048))
