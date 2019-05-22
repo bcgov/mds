@@ -82,6 +82,13 @@ export class PartyProfile extends Component {
     });
   }
 
+  componentWillReceiveProps = (nextProps) => {
+    if (nextProps.match !== this.props.match) {
+      const { id } = nextProps.match.params;
+      this.props.fetchPartyById(id);
+    }
+  };
+
   openEditPartyModal = (event, party, onSubmit, title, isPerson, provinceOptions) => {
     const initialValues = {
       ...party,
@@ -157,7 +164,7 @@ export class PartyProfile extends Component {
         startDate: formatDate(relationship.start_date) || "Unknown",
       }));
 
-    if (this.state.isLoaded) {
+    if (this.state.isLoaded && parties) {
       const formatedName = formatTitleString(parties.name);
       const isPerson = parties.party_type_code === ModalContent.PERSON;
       return (

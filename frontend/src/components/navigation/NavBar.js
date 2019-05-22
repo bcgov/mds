@@ -13,6 +13,7 @@ import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
 import * as Styles from "@/constants/styles";
 import * as Permission from "@/constants/permissions";
+import SearchBar from "@/components/search/SearchBar";
 import {
   LOGO,
   ADMIN,
@@ -291,6 +292,7 @@ export class NavBar extends Component {
               <img alt="menu" src={!this.props.isMenuOpen ? HAMBURGER : CLOSE} className="img-lg" />
             </Button>
           </MediaQuery>
+          <SearchBar />
           <MediaQuery minWidth={769}>{this.renderFullNav()}</MediaQuery>
         </div>
         <MediaQuery maxWidth={768}>{this.renderHamburgerNav()}</MediaQuery>
