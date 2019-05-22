@@ -51,7 +51,6 @@ export const updateParty = (payload, partyGuid) => (dispatch) => {
 };
 
 export const fetchParties = (params = {}) => (dispatch) => {
-  console.log("$$$$$$$$$$$$$$$$$$$$$$Get parties called");
   dispatch(request(reducerTypes.GET_PARTIES));
   dispatch(showLoading("modal"));
   return CustomAxios()
@@ -59,7 +58,6 @@ export const fetchParties = (params = {}) => (dispatch) => {
     .then((response) => {
       dispatch(success(reducerTypes.GET_PARTIES));
       dispatch(partyActions.storeParties(response.data));
-      console.log("The response data is:", response.data);
     })
     .catch(() => dispatch(error(reducerTypes.GET_PARTIES)))
     .finally(() => dispatch(hideLoading("modal")));

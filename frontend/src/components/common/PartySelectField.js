@@ -13,6 +13,7 @@ import RenderLargeSelect from "./RenderLargeSelect";
 import { fetchParties, setAddPartyFormState } from "@/actionCreators/partiesActionCreator";
 import { getRawParties, getLastCreatedParty } from "@/selectors/partiesSelectors";
 import { createItemMap, createItemIdsArray } from "@/utils/helpers";
+import { Validate } from "@/utils/Validate";
 
 const propTypes = {
   id: PropTypes.string,
@@ -73,7 +74,9 @@ const transformData = (data, options, footer, searchTerm) => {
   const transformedData = data
     .map((opt) => (
       <AutoComplete.Option key={opt} value={opt}>
-        {options[opt].name}
+        {`${options[opt].name}, ${
+          Validate.checkEmail(options[opt].email) ? options[opt].email : "Email Unknown"
+        }`}
       </AutoComplete.Option>
     ))
     .sort(
@@ -100,8 +103,6 @@ export class PartySelectField extends Component {
   }
 
   showAddPartyForm = () => {
-    console("$$$$$$$$$$$$$$$$The add party form was called$$$$$$$$$$$$$$$$$$$$$");
-    console.log(this.props);
     this.props.setAddPartyFormState({
       showingAddPartyForm: true,
       person: !this.props.person,
