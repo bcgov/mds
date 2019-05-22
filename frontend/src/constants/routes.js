@@ -6,6 +6,7 @@ import MineDashboard from "@/components/mine/MineDashboard";
 import PartyProfile from "@/components/parties/PartyProfile";
 import RelationshipProfile from "@/components/parties/RelationshipProfile";
 import AdminDashboard from "@/components/admin/AdminDashboard";
+import SearchResults from "@/components/search/SearchResults";
 import CustomHomePage from "@/components/dashboard/customHomePage/CustomHomePage";
 
 export const DASHBOARD = {
@@ -56,4 +57,10 @@ export const RELATIONSHIP_PROFILE = {
 export const ADMIN_DASHBOARD = {
   route: "/admin/dashboard",
   component: AdminDashboard,
+};
+
+export const SEARCH_RESULTS = {
+  route: "/search",
+  dynamicRoute: ({ q, t }) => (t ? `/search?q=${q}&t=${t}` : `/search?q=${q}`),
+  component: SearchResults,
 };
