@@ -6,8 +6,8 @@ from app import create_app
 from app.config import TestConfig
 from app.extensions import db, jwt as _jwt
 
-from tests_a.constants import *
-from tests_a.factories import FACTORY_LIST
+from tests.constants import *
+from tests.factories import FACTORY_LIST
 
 
 @pytest.fixture(scope="session")
@@ -20,7 +20,8 @@ def app(request):
 def auth_headers(app):
     base_auth_token = _jwt.create_jwt(BASE_AUTH_CLAIMS, TOKEN_HEADER)
     full_auth_token = _jwt.create_jwt(FULL_AUTH_CLAIMS, TOKEN_HEADER)
-    view_only_auth_token = _jwt.create_jwt(NRIS_VIEW_ONLY_AUTH_CLAIMS, TOKEN_HEADER)
+    view_only_auth_token = _jwt.create_jwt(
+        NRIS_VIEW_ONLY_AUTH_CLAIMS, TOKEN_HEADER)
     # create_only_auth_token = _jwt.create_jwt(CREATE_ONLY_AUTH_CLAIMS, TOKEN_HEADER)
     # admin_only_auth_token = _jwt.create_jwt(ADMIN_ONLY_AUTH_CLAIMS, TOKEN_HEADER)
     # proponent_only_auth_token = _jwt.create_jwt(PROPONENT_ONLY_AUTH_CLAIMS, TOKEN_HEADER)
