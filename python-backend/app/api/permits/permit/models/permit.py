@@ -3,6 +3,7 @@ from datetime import datetime
 import uuid
 
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import validates
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
@@ -25,6 +26,10 @@ class Permit(AuditMixin, Base):
         "and_(PermitAmendment.permit_id == Permit.permit_id, PermitAmendment.deleted_ind==False)",
         order_by='desc(PermitAmendment.issue_date), desc(PermitAmendment.permit_amendment_id)',
         lazy='select')
+
+    mine_party_appointment = db.relationship('MinePartyAppointment', lazy='select', uselist=False)
+    permitee = association_proxy('mine_party_appointment', 'party.name')
+    mine_name = association_proxy('mine', 'mine_name')
 
     def __repr__(self):
         return '<Permit %r>' % self.permit_guid
