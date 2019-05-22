@@ -346,24 +346,6 @@
                     }
                   },
                   {
-                    "name": "NRIS_USER",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "key": "database-nris-user",
-                        "name": "${DATABASE_SERVICE_NAME}-nris"
-                      }
-                    }
-                  },
-                  {
-                    "name": "NRIS_PASSWORD",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "key": "database-nris-password",
-                        "name": "${DATABASE_SERVICE_NAME}-nris"
-                      }
-                    }
-                  },
-                  {
                     "name": "FDW_NAME",
                     "valueFrom": {
                       "secretKeyRef": {
