@@ -326,7 +326,6 @@ export class Dashboard extends Component {
         handleDelete,
         onSubmit,
         title,
-        handleClearStatusDate: this.handleClearStatusDate,
       },
       content: modalConfig.MINE_RECORD,
     });

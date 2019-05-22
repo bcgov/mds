@@ -149,7 +149,6 @@ export class MineHeader extends Component {
         handleDelete,
         title,
         initialValues,
-        handleClearStatusDate: this.handleClearStatusDate,
       },
       content: modalConfig.MINE_RECORD,
       clearOnSubmit: false,
