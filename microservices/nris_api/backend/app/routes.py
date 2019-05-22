@@ -5,7 +5,6 @@ from .config import Config
 from flask_jwt_oidc.exceptions import AuthError
 
 from flask_restplus import Resource
-from app.nris.namespace import factorial_ns
 
 
 def register_routes(app):

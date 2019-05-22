@@ -1,7 +1,7 @@
 from datetime import datetime
 from app.extensions import db
 from sqlalchemy.orm import validates
-from app.utils.base_model import Base
+from app.nris.utils.base_model import Base
 
 
 class InspectionStatus(Base):
@@ -12,7 +12,7 @@ class InspectionStatus(Base):
 
     def __repr__(self):
         return f'<InspectionStatus inspection_status_code={self.inspection_status_code} inspection_status_description={self.inspection_status_description}>'
-    
+
     @classmethod
     def find_all_inspection_status(cls):
         return cls.query.all()
