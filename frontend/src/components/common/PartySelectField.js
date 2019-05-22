@@ -100,6 +100,8 @@ export class PartySelectField extends Component {
   }
 
   showAddPartyForm = () => {
+    console("$$$$$$$$$$$$$$$$The add party form was called$$$$$$$$$$$$$$$$$$$$$");
+    console.log(this.props);
     this.props.setAddPartyFormState({
       showingAddPartyForm: true,
       person: !this.props.person,
