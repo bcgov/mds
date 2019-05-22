@@ -128,24 +128,8 @@ export class AddVarianceForm extends Component {
             validate={[maxLength(300)]}
           />
         </Form.Item>
-        <Form.Item>
-          <Field
-            id="ohsc_ind"
-            name="ohsc_ind"
-            label="Does this mine have an OHSC?"
-            component={renderConfig.RADIO}
-          />
-        </Form.Item>
-        <Form.Item>
-          <Field
-            id="union_ind"
-            name="union_ind"
-            label="Does this mine have a union?"
-            component={renderConfig.RADIO}
-          />
-        </Form.Item>
         <br />
-        <h5>upload files*</h5>
+        <h5>upload files</h5>
         <p> Please upload all the required documents here for the variance application</p>
         <br />
         <Form.Item>

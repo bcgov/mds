@@ -112,7 +112,7 @@ app {
                             'NODE_ENV': "${vars.deployment.node_env}",
                             'MAP_PORTAL_ID': "${vars.deployment.map_portal_id}",
                             'KEYCLOAK_RESOURCE': "${vars.keycloak.resource}",
-                            'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId}",
+                            'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId_core}",
                             'KEYCLOAK_URL': "${vars.keycloak.url}",
                             'KEYCLOAK_IDP_HINT': "${vars.keycloak.idpHint_core}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api"
@@ -136,7 +136,7 @@ app {
                             'BASE_PATH': "${vars.modules.'mds-frontend-public'.PATH}",
                             'NODE_ENV': "${vars.deployment.node_env}",
                             'KEYCLOAK_RESOURCE': "${vars.keycloak.resource}",
-                            'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId}",
+                            'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId_minespace}",
                             'KEYCLOAK_URL': "${vars.keycloak.url}",
                             'KEYCLOAK_IDP_HINT': "${vars.keycloak.idpHint_minespace}",
                             'SITEMINDER_URL': "${vars.keycloak.siteminder_url}",
@@ -162,6 +162,7 @@ app {
                             'ROUTE': "${vars.modules.'mds-nginx'.ROUTE}",
                             'PATH_PREFIX': "${vars.modules.'mds-nginx'.PATH}",
                             'CORE_SERVICE_URL': "${vars.modules.'mds-frontend'.HOST}",
+                            'NRIS_API_SERVICE_URL': "${vars.modules.'mds-nris-backend'.HOST}",
                             'MINESPACE_SERVICE_URL': "${vars.modules.'mds-frontend-public'.HOST}",
                             'API_SERVICE_URL': "${vars.modules.'mds-python-backend'.HOST}",
                     ]
@@ -180,7 +181,7 @@ app {
                             'REPLICA_MIN':"${vars.resources.python.replica_min}",
                             'REPLICA_MAX':"${vars.resources.python.replica_max}",
                             'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
-                            'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId}",
+                            'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId_core}",
                             'APPLICATION_DOMAIN': "${vars.modules.'mds-python-backend'.HOST}",
                             'BASE_PATH': "${vars.modules.'mds-python-backend'.PATH}",
                             'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}",
@@ -200,8 +201,6 @@ app {
                             'VERSION':"${app.deployment.version}",
                             'SUFFIX': "${vars.deployment.suffix}",
                             'BACKEND_HOST': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api",
-                            'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
-                            'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId}",
                             'APPLICATION_DOMAIN': "${vars.modules.'schemaspy'.HOST}",
                             'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}"
                     ]
@@ -307,7 +306,8 @@ environments {
                 }
             }
             keycloak {
-                clientId = "mines-application-prod"
+                clientId_core = "mines-application-prod"
+                clientId_minespace = "minespace-prod"
                 resource = "mines-application-prod"
                 idpHint_core = "idir"
                 idpHint_minespace = "bceid"
@@ -346,6 +346,10 @@ environments {
                 'mds-python-backend' {
                     HOST = "http://mds-python-backend${vars.deployment.suffix}:5000"
                     PATH = "/api"
+                }
+                'mds-nris-backend' { 
+                    HOST = "http://mds-nris-backend${vars.deployment.suffix}:5500"
+                    PATH = "/nris-api"
                 }
                 'mds-redis' {
                     HOST = "http://mds-redis${vars.deployment.suffix}"

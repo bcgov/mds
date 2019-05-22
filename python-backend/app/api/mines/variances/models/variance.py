@@ -33,8 +33,6 @@ class Variance(AuditMixin, Base):
         db.ForeignKey('variance_application_status_code.variance_application_status_code'),
         nullable=False,
         server_default=FetchedValue())
-    ohsc_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
-    union_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     inspector_id = db.Column(db.Integer, db.ForeignKey('core_user.core_user_id'))
     note = db.Column(db.String, nullable=False, server_default=FetchedValue())
     issue_date = db.Column(db.DateTime)
@@ -61,8 +59,6 @@ class Variance(AuditMixin, Base):
             # Optional Params
             applicant_guid=None,
             variance_application_status_code=None,
-            ohsc_ind=None,
-            union_ind=None,
             inspector_id=None,
             note=None,
             issue_date=None,
@@ -73,8 +69,6 @@ class Variance(AuditMixin, Base):
             mine_guid=mine_guid,
             variance_application_status_code=variance_application_status_code,
             applicant_guid=applicant_guid,
-            ohsc_ind=ohsc_ind,
-            union_ind=union_ind,
             inspector_id=inspector_id,
             note=note,
             issue_date=issue_date,

@@ -38,16 +38,6 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
         store_missing=False,
         help='GUID of the party on behalf of which the application was made.')
     parser.add_argument(
-        'ohsc_ind',
-        type=bool,
-        store_missing=False,
-        help='Indicates if variance application has been reviewed by the OHSC.')
-    parser.add_argument(
-        'union_ind',
-        type=bool,
-        store_missing=False,
-        help='Indicates if variance application has been reviewed by the union.')
-    parser.add_argument(
         'inspector_guid',
         type=str,
         store_missing=False,
@@ -125,8 +115,6 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
             # Optional fields
             variance_application_status_code=variance_application_status_code,
             applicant_guid=data.get('applicant_guid'),
-            ohsc_ind=data.get('ohsc_ind'),
-            union_ind=data.get('union_ind'),
             inspector_id=inspector_id,
             note=data.get('note'),
             issue_date=issue_date,
