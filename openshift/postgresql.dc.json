@@ -99,10 +99,6 @@
       "kind": "Secret",
       "metadata": {
         "annotations": {
-          "template.openshift.io/expose-database_name": "{.data['database-name']}",
-          "template.openshift.io/expose-password": "{.data['database-password']}",
-          "template.openshift.io/expose-admin-password": "{.data['database-admin-password']}",
-          "template.openshift.io/expose-admin-username": "{.data['database-admin-user']}",
           "as-copy-of": "${POSTGRES_SECRET_NAME}"
         },
         "name": "${NAME}${SUFFIX}"
@@ -116,10 +112,6 @@
       "kind": "Secret",
       "metadata": {
         "annotations": {
-          "template.openshift.io/expose-database-host": "{.data['database-host']}",
-          "template.openshift.io/expose-database-name": "{.data['database-name']}",
-          "template.openshift.io/expose-nris-password": "{.data['database-nris-password']}",
-          "template.openshift.io/expose-nris-user": "{.data['database-nris-user']}",
           "as-copy-of": "${POSTGRES_NRIS_SECRET_NAME}"
         },
         "name": "${NAME}${SUFFIX}-nris"
