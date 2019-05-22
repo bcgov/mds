@@ -17,6 +17,7 @@ from app.routes import register_routes
 from app.extensions import api, db, jwt, sched, apm, migrate
 
 from app.nris.models import *
+from app.nris.resources import *
 
 from app.nris.scheduled_jobs.NRIS_etl import _schedule_NRIS_ETL_jobs
 
