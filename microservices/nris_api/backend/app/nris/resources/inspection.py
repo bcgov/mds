@@ -14,7 +14,7 @@ from app.nris.models.inspection import Inspection
 @api.route('/inspection')
 class InspectionResource(Resource):
     @api.doc(params={'mine_guid': 'Core mine_guid to filter'})
-    #@requires_role_nris_view
+    @requires_role_nris_view
     def get(self):
         inspections = Inspection.query.all()
 

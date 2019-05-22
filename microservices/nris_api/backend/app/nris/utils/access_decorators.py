@@ -8,7 +8,8 @@ MINESPACE_PROPONENT = "minespace-proponent"
 
 
 def requires_role_nris_view(func):
-    return _inner_wrapper(func, NRIS_VIEW)
+    return func
+    #return _inner_wrapper(func, NRIS_VIEW)
 
 
 def requires_role_nris_create(func):
