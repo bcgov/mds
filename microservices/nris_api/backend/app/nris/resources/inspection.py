@@ -1,4 +1,4 @@
-import requests
+from flask import request
 
 from flask_restplus import Resource, Namespace, reqparse, fields
 from datetime import datetime
@@ -16,6 +16,9 @@ class InspectionResource(Resource):
     @api.doc(params={'mine_guid': 'Core mine_guid to filter'})
     @requires_role_nris_view
     def get(self):
-        inspections = Inspection.query.all()
+        #not sure how to format dates to make this works.
+        allowable_fields = ['inspection_status_code', 'business_area', 'mine_no', 'inspector_idir']
+        filtered_params = {key: value for (key, value) in request.args if key in allowable_fields}
+        filtered_query = Inspection.query.filter_by(**filtered_params).all()
 
-        return len(inspections)
+        return len(filtered_query)
