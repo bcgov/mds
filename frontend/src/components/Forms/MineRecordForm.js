@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { Field, reduxForm, FieldArray, getFormValues, formValueSelector } from "redux-form";
+import { Field, reduxForm, FieldArray, formValueSelector, getFormValues } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm, Icon, Collapse, notification, Tag } from "antd";
 import { difference, map, isEmpty, uniq } from "lodash";
 import * as FORM from "@/constants/forms";
@@ -122,6 +122,7 @@ export class MineRecordForm extends Component {
       nextProps.mineStatus !== this.props.mineStatus &&
       this.props.initialValues.mine_status
     ) {
+      console.warn(this.props.initialValues);
       const date = new Date();
       this.props.change("status_date", date);
     }
@@ -453,7 +454,6 @@ const selector = formValueSelector(FORM.MINE_RECORD);
 export default compose(
   connect((state) => ({
     mine_types: (getFormValues(FORM.MINE_RECORD)(state) || {}).mine_types,
-    status_date: (getFormValues(FORM.MINE_RECORD)(state) || {}).status_date,
     currentMineTypes: getCurrentMineTypes(state),
     mineStatusOptions: getMineStatusOptions(state),
     mineRegionOptions: getMineRegionOptions(state),
@@ -464,6 +464,8 @@ export default compose(
     conditionalCommodityOptions: getConditionalCommodityOptions(state),
     conditionalDisturbanceOptions: getConditionalDisturbanceOptionsHash(state),
     mineStatus: selector(state, "mine_status"),
+    // mine_types: selector(state, "mine_types"),
+    status_date: selector(state, "status_date"),
   })),
   reduxForm({
     form: FORM.MINE_RECORD,
