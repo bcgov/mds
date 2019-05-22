@@ -106,9 +106,7 @@ app {
                     'params':[
                         'NAME':"mds-postgresql",
                         'SUFFIX': "${app.build.suffix}",
-                        'TAG_NAME':"${app.build.version}",
-                        'SOURCE_CONTEXT_DIR': "docker-images/postgres-96-oracle-fdw",
-                        'SOURCE_REPOSITORY_URL': "${app.git.uri}"
+                        'TAG_NAME':"${app.build.version}"
                     ]
                 ],
                 [
