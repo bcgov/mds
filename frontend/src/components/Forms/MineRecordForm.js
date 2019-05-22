@@ -35,7 +35,7 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   change: PropTypes.func.isRequired,
-  handleClearStatusDate: PropTypes.func.isRequired,
+  initialValues: PropTypes.objectOf(),
   handleDelete: PropTypes.func.isRequired,
   title: PropTypes.string,
   mineStatus: PropTypes.arrayOf(PropTypes.string),
@@ -57,6 +57,7 @@ const defaultProps = {
   currentMineTypes: [],
   mine_types: [],
   mineStatus: [],
+  initialValues: {},
 };
 
 export class MineRecordForm extends Component {
@@ -114,9 +115,15 @@ export class MineRecordForm extends Component {
       );
     }
 
-    // If the status exists, the status date should be cleared, or set to the current date
-    if (this.props.mineStatus[0] && nextProps.mineStatus !== this.props.mineStatus) {
-      this.props.handleClearStatusDate();
+    // If the status exists, the status date should set to the current date,
+    // checking intial values insures this only happens on edit
+    if (
+      this.props.mineStatus[0] &&
+      nextProps.mineStatus !== this.props.mineStatus &&
+      this.props.initialValues.mine_status
+    ) {
+      const date = new Date();
+      this.props.change("status_date", date);
     }
   }
 
@@ -446,6 +453,7 @@ const selector = formValueSelector(FORM.MINE_RECORD);
 export default compose(
   connect((state) => ({
     mine_types: (getFormValues(FORM.MINE_RECORD)(state) || {}).mine_types,
+    status_date: (getFormValues(FORM.MINE_RECORD)(state) || {}).status_date,
     currentMineTypes: getCurrentMineTypes(state),
     mineStatusOptions: getMineStatusOptions(state),
     mineRegionOptions: getMineRegionOptions(state),

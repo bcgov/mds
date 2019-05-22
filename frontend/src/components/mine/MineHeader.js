@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
-import { change } from "redux-form";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -32,7 +31,6 @@ import {
   fetchMineVerifiedStatuses,
 } from "@/actionCreators/mineActionCreator";
 import { formatDate } from "@/utils/helpers";
-import * as FORM from "@/constants/forms";
 
 /**
  * @class MineHeader.js contains header section of MineDashboard before the tabs. Including map, mineName, mineNumber.
@@ -41,7 +39,6 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   updateMineRecord: PropTypes.func.isRequired,
-  change: PropTypes.func.isRequired,
   removeMineType: PropTypes.func.isRequired,
   handleUnSubscribe: PropTypes.func.isRequired,
   subscribed: PropTypes.bool.isRequired,
@@ -124,11 +121,6 @@ export class MineHeader extends Component {
 
   handleMenuClick = () => {
     this.setState({ menuVisible: false });
-  };
-
-  handleClearStatusDate = () => {
-    const date = new Date();
-    this.props.change(FORM.MINE_RECORD, "status_date", date);
   };
 
   openTailingsModal(event, onSubmit, title) {
@@ -485,7 +477,6 @@ const mapDispatchToProps = (dispatch) =>
     {
       setMineVerifiedStatus,
       fetchMineVerifiedStatuses,
-      change,
     },
     dispatch
   );

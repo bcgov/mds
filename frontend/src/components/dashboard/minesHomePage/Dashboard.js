@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { change } from "redux-form";
 import { Element, scroller } from "react-scroll";
 import { debounce, isEmpty } from "lodash";
 import PropTypes from "prop-types";
@@ -50,7 +49,6 @@ import * as String from "@/constants/strings";
 import * as Permission from "@/constants/permissions";
 import * as ModalContent from "@/constants/modalContent";
 import AddButton from "@/components/common/AddButton";
-import * as FORM from "@/constants/forms";
 
 /**
  * @class Dashboard is the main landing page of the application, currently contains a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
@@ -307,10 +305,6 @@ export class Dashboard extends Component {
     );
   };
 
-  handleClearStatusDate = () => {
-    this.props.change(FORM.MINE_RECORD, "status_date", null);
-  };
-
   handleSubmit = (value) => {
     const mineStatus = value.mine_status.join(",");
     return this.props
@@ -501,7 +495,6 @@ const mapDispatchToProps = (dispatch) =>
       setOptionsLoaded,
       fetchPartyRelationshipTypes,
       fetchMineIncidentFollowActionOptions,
-      change,
     },
     dispatch
   );
