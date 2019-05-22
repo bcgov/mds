@@ -55,7 +55,7 @@ export const ViewVarianceModal = (props) => {
       </div>
       <br />
       <h5>{isApproved ? "Variance details" : "Application details"}</h5>
-      <VarianceDetails variance={props.variance} mineName={props.mineName} />
+      <VarianceDetails variance={props.variance} mineName={props.mineName} isViewOnly />
       <div className="right center-mobile">
         <Button className="full-mobile" type="secondary" onClick={props.closeModal}>
           Close

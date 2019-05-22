@@ -30,33 +30,44 @@ const defaultProps = {
 };
 
 export class EditVarianceModal extends Component {
+  state = { isLoaded: false };
+
   componentDidMount() {
-    this.props.fetchVariancesById(this.props.mineGuid, this.props.varianceGuid);
+    this.props
+      .fetchVariancesById(this.props.mineGuid, this.props.varianceGuid)
+      .then(this.setState({ isLoaded: true }));
   }
 
-  handleRemoveDocument = (event, varianceGuid, documentGuid) => {
+  // handling delete functionality inside the modal, so the data can be updated properly.
+  handleRemoveDocument = (event, documentGuid) => {
     event.preventDefault();
     this.props
-      .removeDocumentFromVariance(this.props.mineGuid, varianceGuid, documentGuid)
+      .removeDocumentFromVariance(this.props.mineGuid, this.props.varianceGuid, documentGuid)
       .then(() => {
-        this.props.fetchVariancesById(this.props.mineGuid, varianceGuid);
+        this.props
+          .fetchVariancesById(this.props.mineGuid, this.props.varianceGuid)
+          .then(this.setState({ isLoaded: true }));
         this.props.fetchVariancesByMine({ mineGuid: this.props.mineGuid });
       });
   };
 
   render() {
     return (
-      <EditVarianceForm
-        onSubmit={this.props.onSubmit}
-        closeModal={this.props.closeModal}
-        mineGuid={this.props.mineGuid}
-        mineName={this.props.mineName}
-        coreUsers={this.props.coreUsers}
-        variance={this.props.variance}
-        varianceStatusOptions={this.props.varianceStatusOptions}
-        initialValues={this.props.variance}
-        removeDocument={this.handleRemoveDocument}
-      />
+      <div>
+        {this.state.isLoaded && (
+          <EditVarianceForm
+            onSubmit={this.props.onSubmit}
+            closeModal={this.props.closeModal}
+            mineGuid={this.props.mineGuid}
+            mineName={this.props.mineName}
+            coreUsers={this.props.coreUsers}
+            variance={this.props.variance}
+            varianceStatusOptions={this.props.varianceStatusOptions}
+            initialValues={this.props.variance}
+            removeDocument={this.handleRemoveDocument}
+          />
+        )}
+      </div>
     );
   }
 }

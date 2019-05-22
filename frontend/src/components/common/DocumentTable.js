@@ -9,13 +9,12 @@ import * as String from "@/constants/strings";
 const propTypes = {
   documents: PropTypes.arrayOf(CustomPropTypes.mineDocument),
   removeDocument: PropTypes.func,
-  associatedGuid: PropTypes.string,
+  isViewOnly: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
   documents: [],
   removeDocument: () => {},
-  associatedGuid: "",
 };
 
 export class DocumentTable extends Component {
@@ -57,15 +56,13 @@ export class DocumentTable extends Component {
         title: "",
         dataIndex: "updateEdit",
         width: 10,
-        className: !this.props.associatedGuid ? "column-hide" : "",
+        className: this.props.isViewOnly ? "column-hide" : "",
         render: (text, record) => (
           <div title="" align="right">
             <Popconfirm
               placement="topLeft"
               title={`Are you sure you want to delete ${record.name}?`}
-              onConfirm={(event) =>
-                this.props.removeDocument(event, this.props.associatedGuid, record.key)
-              }
+              onConfirm={(event) => this.props.removeDocument(event, record.key)}
               okText="Delete"
               cancelText="Cancel"
             >

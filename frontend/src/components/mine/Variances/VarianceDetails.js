@@ -10,10 +10,12 @@ const propTypes = {
   variance: CustomPropTypes.variance.isRequired,
   mineName: PropTypes.string.isRequired,
   removeDocument: PropTypes.func,
+  isViewOnly: PropTypes.bool,
 };
 
 const defaultProps = {
   removeDocument: () => {},
+  isViewOnly: false,
 };
 
 export const VarianceDetails = (props) => (
@@ -40,8 +42,8 @@ export const VarianceDetails = (props) => (
     <h5>documents</h5>
     <DocumentTable
       documents={props.variance.documents}
-      associatedGuid={props.variance.variance_guid}
       removeDocument={props.removeDocument}
+      isViewOnly={props.isViewOnly}
     />
   </div>
 );
