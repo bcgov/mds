@@ -326,7 +326,6 @@ class MineResource(Resource, UserMixin, ErrorMixin):
     @api.doc(description='Updates the specified mine.')
     @requires_role_mine_create
     def put(self, mine_no_or_guid):
-
         mine = Mine.find_by_mine_no_or_guid(mine_no_or_guid)
         if not mine:
             raise NotFound("Mine not found.")
