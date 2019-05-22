@@ -25,7 +25,7 @@ DO
 $$
 BEGIN
     IF NOT EXISTS(select from pg_catalog.pg_roles where rolname= 'metabase') THEN
-        CREATE USER logstash with PASSWORD '$METABASE_USER_PASSWORD';
+        CREATE USER metabase with PASSWORD '$METABASE_USER_PASSWORD';
     END IF;
 END
 $$;
