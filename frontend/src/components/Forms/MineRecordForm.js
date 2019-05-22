@@ -113,10 +113,9 @@ export class MineRecordForm extends Component {
         nextProps.mine_types.slice(0, nextProps.mine_types.length - 1).concat(defaultValue)
       );
     }
-  }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.mineStatus[0] && prevProps.mineStatus !== this.props.mineStatus) {
+    // If the status exists, the status date should be cleared, or set to the current date
+    if (this.props.mineStatus[0] && nextProps.mineStatus !== this.props.mineStatus) {
       this.props.handleClearStatusDate();
     }
   }
@@ -341,7 +340,7 @@ export class MineRecordForm extends Component {
                 id="status_date"
                 name="status_date"
                 label="Date of Status Change"
-                placeholder="Unknown"
+                placeholder="yyyy-mm-dd"
                 component={renderConfig.DATE}
                 validate={[dateNotInFuture]}
               />
