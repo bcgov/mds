@@ -16,13 +16,13 @@ class Order(Base):
     locations = db.relationship('Location', lazy='selectin')
     documents = db.relationship('Document', lazy='selectin', secondary='order_document_xref')
     advisory_details = db.relationship(
-        'OrderAdvisoryDetail', lazy='selectin', secondary='order_advisory_detail')
+        'OrderAdvisoryDetail', lazy='selectin')
     request_details = db.relationship(
-        'OrderRequestDetail', lazy='selectin', secondary='order_request_detail')
+        'OrderRequestDetail', lazy='selectin')
     stop_details = db.relationship(
-        'OrderStopDetail', lazy='selectin', secondary='order_stop_detail')
+        'OrderStopDetail', lazy='selectin')
     warning_details = db.relationship(
-        'OrderWarningDetail', lazy='selectin', secondary='order_warning_detail')
+        'OrderWarningDetail', lazy='selectin')
 
     def __repr__(self):
         return f'<Order order_id={self.order_id}>'
