@@ -99,6 +99,7 @@
       "kind": "Secret",
       "metadata": {
         "annotations": {
+          "template.openshift.io/expose-database-name": "{.data['database-name']}",
           "as-copy-of": "${POSTGRES_SECRET_NAME}"
         },
         "name": "${NAME}${SUFFIX}"
@@ -112,6 +113,7 @@
       "kind": "Secret",
       "metadata": {
         "annotations": {
+          "template.openshift.io/expose-database-host": "{.data['database-host']}",
           "as-copy-of": "${POSTGRES_NRIS_SECRET_NAME}"
         },
         "name": "${NAME}${SUFFIX}-nris"
