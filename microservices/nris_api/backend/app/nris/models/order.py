@@ -10,13 +10,13 @@ from app.nris.models.order_type import OrderType
 class Order(Base):
     __tablename__ = "order"
     order_id = db.Column(db.Integer, primary_key=True)
-    inspection_id = db.Column(db.Integer, db.ForeignKey('inspection.inspection_id'))
-    location_id = db.Column(db.Integer, db.ForeignKey('location.location_id'))
+    inspection_id = db.Column(db.Integer, db.ForeignKey('nris.inspection.inspection_id'))
+    location_id = db.Column(db.Integer, db.ForeignKey('nris.location.location_id'))
     location = db.relationship("Location", lazy='selectin')
 
-    order_type_id = db.Column(db.Integer, db.ForeignKey('order_type.order_type_id'))
+    order_type_id = db.Column(db.Integer, db.ForeignKey('nris.order_type.order_type_id'))
     order_type = db.relationship('OrderType', lazy='selectin')
-    documents = db.relationship('Document', lazy='selectin', secondary='order_document_xref')
+    documents = db.relationship('Document', lazy='selectin', secondary='nris.order_document_xref')
     advisory_details = db.relationship('OrderAdvisoryDetail', lazy='selectin')
     request_details = db.relationship('OrderRequestDetail', lazy='selectin')
     stop_details = db.relationship('OrderStopDetail', lazy='selectin')

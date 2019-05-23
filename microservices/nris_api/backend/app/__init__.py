@@ -17,6 +17,7 @@ from app.routes import register_routes
 from app.extensions import api, db, jwt, sched, apm, migrate
 
 from app.nris.models import *
+from app.nris.resources import *
 
 from app.nris.scheduled_jobs.NRIS_etl import _schedule_NRIS_ETL_jobs
 
@@ -61,4 +62,4 @@ def register_scheduled_jobs(app):
     if app.config.get('ENVIRONMENT_NAME') in ['test', 'prod']:
         if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == 'true':
             sched.start()
-            _schedule_ETL_jobs()
+            _schedule_NRIS_ETL_jobs(app)

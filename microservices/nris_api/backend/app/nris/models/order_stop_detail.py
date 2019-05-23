@@ -8,7 +8,7 @@ from app.nris.utils.base_model import Base
 class OrderStopDetail(Base):
     __tablename__ = "order_stop_detail"
     order_stop_detail_id = db.Column(db.Integer, primary_key=True)
-    order_id = db.Column(db.Integer, db.ForeignKey('order.order_id'))
+    order_id = db.Column(db.Integer, db.ForeignKey('nris.order.order_id'))
     detail = db.Column(db.String())
     stop_type = db.Column(db.String(256))
     response_status = db.Column(db.String(64))
@@ -17,6 +17,7 @@ class OrderStopDetail(Base):
     response = db.Column(db.String())
     response_received = db.Column(db.DateTime)
     completion_date = db.Column(db.DateTime)
+    legislations = db.relationship("Legislation")
     authority_act = db.Column(db.String(64))
     authority_act_section = db.Column(db.String(64))
 

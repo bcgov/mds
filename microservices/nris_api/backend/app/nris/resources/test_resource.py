@@ -5,7 +5,6 @@ from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 from app.extensions import api, db
 from app.nris.utils.logger import get_logger
 from app.nris.utils.access_decorators import requires_role_nris_view
-from app.nris.models.test_model import Factorial
 
 factorial_model = api.model('Factorial', {
     'input_val': fields.Integer,

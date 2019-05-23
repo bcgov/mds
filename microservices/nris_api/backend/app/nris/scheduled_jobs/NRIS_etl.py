@@ -1,5 +1,5 @@
 from app.extensions import db, sched
-from app.utils.apm import register_apm
+from app.nris.utils.apm import register_apm
 from app.constants import ETL, TIMEOUT_24_HOURS
 from random import randint
 from time import sleep
