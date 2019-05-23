@@ -223,17 +223,33 @@ def _save_order_legislation(order_legislation):
     compliance_article_id = order_legislation.find('compliance_article_id')
     compliance_article_comments = order_legislation.find('compliance_article_comments')
 
-    legislation.estimated_incident_date = estimated_incident_date.text if estimated_incident_date is not None else None
+    legislation.estimated_incident_date = _parse_dumb_nris_date_string(
+        estimated_incident_date.text) if estimated_incident_date is not None else None
     legislation.noncompliant_description = noncompliant_description.text if noncompliant_description is not None else None
 
-    legislation.parent_act = _save_legislation_act(parent_act)
+    legislation.parent_legislation_act = _save_legislation_act(parent_act)
     legislation_act_regulation = _save_legislation_act(act_regulation)
-    legislation.act_regulation = legislation_act_regulation
-    legislation.section = _save_legislation_act_section(legislation_act_regulation, section)
+
+    legislation.regulation_legislation_act_section = _save_legislation_act_section(
+        legislation_act_regulation, section)
     legislation.compliance_article = _save_compliance_article(compliance_article_id,
                                                               compliance_article_comments)
 
     return legislation
+
+
+def _parse_dumb_nris_date_string(_dumb_nris_date_string):
+    return _replace_string_at_index(_dumb_nris_date_string, "T", 10)
+
+
+def _replace_string_at_index(s, newstring, index, nofail=False):
+    if not nofail and index not in range(len(s)):
+        raise ValueError("index outside given string")
+    if index < 0:
+        return newstring + s
+    if index > len(s):
+        return s + newstring
+    return s[:index] + newstring + s[index + 1:]
 
 
 def _save_legislation_act(legislation_act_to_get):
