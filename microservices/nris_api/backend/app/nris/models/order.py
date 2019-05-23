@@ -22,7 +22,7 @@ class Order(Base):
     #location = db.relationship("Location")
 
     order_type_id = db.Column(db.Integer, db.ForeignKey('nris.order_type.order_type_id'))
-    order_type = association_proxy('order_type', 'nris.order_type')
+    order_type = db.relationship('OrderType', lazy='selectin')
     documents = db.relationship('Document', lazy='selectin', secondary='nris.order_document_xref')
 
     #advisory_details = db.relationship('OrderAdvisoryDetail', lazy='selectin')

@@ -12,3 +12,7 @@ class OrderType(Base):
 
     def __repr__(self):
         return f'<OrderType order_type_id={self.order_type_id} order_type={self.order_type}>'
+
+    @classmethod
+    def find_all_order_types(cls):
+        return cls.query.all()

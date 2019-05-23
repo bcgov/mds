@@ -7,6 +7,13 @@ from app.extensions import db
 
 from app.nris.models.inspection import Inspection
 from app.nris.models.inspection_status import InspectionStatus
+from app.nris.models.location import Location
+from app.nris.models.order import Order
+from app.nris.models.order_request_detail import OrderRequestDetail
+from app.nris.models.order_advisory_detail import OrderAdvisoryDetail
+from app.nris.models.order_warning_detail import OrderWarningDetail
+from app.nris.models.order_stop_detail import OrderStopDetail
+from app.nris.models.order_type import OrderType
 
 
 def _etl_nris_data(input):
@@ -73,6 +80,9 @@ def _etl_nris_data(input):
 
         db.session.add(inspection)
         db.session.commit()
+        inspection_data = data.find('inspection')
+        if inspection_data is not None:
+            _save_orders(inspection_data, inspection.inspection_id)
 
 
 def _create_status(status):
@@ -80,3 +90,76 @@ def _create_status(status):
     db.session.add(inspection_status)
     db.session.commit()
     return inspection_status
+
+
+def _save_orders(inspection, inspection_id):
+    for stop in inspection.findall('stops'):
+        order_location = stop.find('secondary_locations')
+        if order_location is not None:
+            latitude = order_location.find('secondary_latitude')
+            longitude = order_location.find('secondary_longitude')
+            desc = order_location.find('secondary_location_description')
+            notes = order_location.find('secondary_location_notes')
+            utm_info = order_location.find('secondary_location_utm')
+            if utm_info is not None:
+                utm_easting = utm_info.find('utm_easting')
+                utm_northing = utm_info.find('utm_northing')
+                utm_zone_number = utm_info.find('zone_number')
+                utm_zone_letter = utm_info.find('zone_letter')
+            location = Location(
+                description=desc.text if desc is not None else None,
+                notes=notes.text if notes is not None else None,
+                latitude=latitude.text if latitude is not None else None,
+                longitude=longitude.text if longitude is not None else None,
+                utm_easting=utm_easting.text if utm_easting is not None else None,
+                utm_northing=utm_northing.text if utm_northing is not None else None,
+                zone_number=utm_zone_number.text if utm_zone_number is not None else None,
+                zone_letter=utm_zone_letter.text if utm_zone_letter is not None else None)
+            db.session.add(location)
+
+        stop_type = stop.find('stop_type')
+        order = Order(inspection_id=inspection_id)
+        order.location = location
+
+        order_types = OrderType.find_all_order_types()
+        type_found = False
+        order_type = None
+        if stop_type is not None:
+            for type in order_types:
+                if type.order_type == stop_type.text:
+                    type_found = True
+                    order_type = type
+        if not type_found:
+            order_type = OrderType(order_type=stop_type.text)
+            db.session.add(order_type)
+
+        order.order_type = order_type
+
+        for stop_order in stop.findall('stop_orders'):
+            stop_detail = OrderStopDetail(order_id=order.order_id)
+
+            detail = stop_order.find('order_detail')
+            stop_type = stop_order.find('order_type')
+            response_status = stop_order.find('order_response_status')
+            stop_status = stop_order.find('order_status')
+            observation = stop_order.find('order_observation')
+            response = stop_order.find('order_response')
+            response_received = stop_order.find('order_response_received_date')
+            completion_date = stop_order.find('order_completion_date')
+            authority_act = stop_order.find('order_authority_act')
+            authority_act_section = stop_order.find('order_authority_section')
+
+            stop_detail.detail = detail.text if detail is not None else None
+            stop_detail.stop_type = stop_type.text if stop_type is not None else None
+            stop_detail.response_status = response_status.text if response_status is not None else None
+            stop_detail.stop_status = stop_status.text if stop_status is not None else None
+            stop_detail.observation = observation.text if observation is not None else None
+            stop_detail.response = response.text if response is not None else None
+            stop_detail.response_received = response_received.text if response_received is not None else None
+            stop_detail.completion_date = completion_date.text if completion_date is not None else None
+            stop_detail.authority_act = authority_act.text if authority_act is not None else None
+            stop_detail.authority_act_section = authority_act_section.text if authority_act_section is not None else None
+
+            order.stop_details.append(stop_detail)
+        db.session.add(order)
+        db.session.commit()
