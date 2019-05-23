@@ -12,7 +12,7 @@ module_path = 'inspections/<int:inspection_id>/orders'
 filter_fields = ['order_type']
 
 
-@api.route(f'/{module_path}')
+#@api.route(f'/{module_path}')
 class OrderListResource(Resource):
     @api.doc(params={field: "Filter by exact match" for field in filter_fields})
     @api.marshal_with(RESPONSE_MODEL, envelope='records', code=200)
@@ -24,7 +24,8 @@ class OrderListResource(Resource):
         return filtered_results
 
 
-@api.route(f'/{module_path}/<int:id>')
+#not sure what we are doing with this endpoint yet.
+#@api.route(f'/{module_path}/<int:id>')
 class OrderResource(Resource):
     @api.marshal_with(RESPONSE_MODEL, code=200)
     @requires_role_nris_view
