@@ -56,6 +56,10 @@ class MineListResource(Resource, UserMixin):
         required=True,
         location='json')
     parser.add_argument(
+        'status_date',
+        help='The date when the current status took effect',
+        location='json')
+    parser.add_argument(
         'major_mine_ind',
         type=inputs.boolean,
         help='Indication if mine is major_mine_ind or regional. Accepts "true", "false", "1", "0".',
@@ -124,7 +128,6 @@ class MineListResource(Resource, UserMixin):
     @requires_role_mine_create
     def post(self):
         data = self.parser.parse_args()
-
         lat = data.get('latitude')
         lon = data.get('longitude')
         if (lat and not lon) or (not lat and lon):
@@ -147,7 +150,7 @@ class MineListResource(Resource, UserMixin):
             mine.mine_location = MineLocation(latitude=lat, longitude=lon)
             cache.delete(MINE_MAP_CACHE)
 
-        mine_status = _mine_status_processor(data.get('mine_status'), mine)
+        mine_status = _mine_status_processor(data.get('mine_status'), data.get('status_date'), mine)
         db.session.commit()
 
         return mine
@@ -287,6 +290,10 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         store_missing=False,
         location='json')
     parser.add_argument(
+        'status_date',
+        help='The date when the current status took effect',
+        location='json')
+    parser.add_argument(
         'major_mine_ind',
         type=inputs.boolean,
         help='Indication if mine is major_mine_ind or regional. Accepts "true", "false", "1", "0".',
@@ -381,9 +388,8 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 latitude=data['latitude'], longitude=data['longitude'])
             mine.save()
             cache.delete(MINE_MAP_CACHE)
-
         # Status validation
-        _mine_status_processor(data.get('mine_status'), mine)
+        _mine_status_processor(data.get('mine_status'), data.get('status_date'), mine)
         return mine
 
 
@@ -421,9 +427,18 @@ def _mine_operation_code_processor(mine_status, index):
         return None
 
 
-def _mine_status_processor(mine_status, mine):
+def _mine_status_processor(mine_status, status_date, mine):
+
     if not mine_status:
-        return mine.mine_status
+        existing_status_date = mine.mine_status[0].status_date if mine.mine_status else None
+        if status_date == existing_status_date:
+            return mine.mine_status
+
+        new_status = MineStatus(status_date=status_date)
+        mine.mine_status.append(new_status)
+        new_status.save()
+        mine.save(commit=False)
+        return new_status
 
     current_app.logger.info(f'updating mine no={mine.mine_no} to new_status={mine_status}')
 
@@ -436,17 +451,16 @@ def _mine_status_processor(mine_status, mine):
 
     existing_status = mine.mine_status[0] if mine.mine_status else None
     if existing_status:
-        if existing_status.mine_status_xref_guid == mine_status_xref.mine_status_xref_guid:
+        if existing_status.mine_status_xref_guid == mine_status_xref.mine_status_xref_guid \
+                and status_date == existing_status.status_date:
             return existing_status
 
         existing_status.expiry_date = datetime.today()
         existing_status.active_ind = False
         existing_status.save()
-
-    new_status = MineStatus(mine_status_xref_guid=mine_status_xref.mine_status_xref_guid)
+    new_status = MineStatus(mine_status_xref_guid=mine_status_xref.mine_status_xref_guid, status_date=status_date)
     mine.mine_status.append(new_status)
     new_status.save()
-
     mine.save(commit=False)
     return new_status
 

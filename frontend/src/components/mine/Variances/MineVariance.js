@@ -95,10 +95,9 @@ export class MineVariance extends Component {
         title: this.props.complianceCodesHash[variance.compliance_article_id],
         mineGuid: this.props.mine.mine_guid,
         mineName: this.props.mine.mine_name,
-        variance,
+        varianceGuid: variance.variance_guid,
         coreUsers: this.props.coreUsers,
         varianceStatusOptions: this.props.varianceStatusOptions,
-        initialValues: variance,
       },
       content: modalConfig.EDIT_VARIANCE,
     });
@@ -114,6 +113,7 @@ export class MineVariance extends Component {
         coreUsersHash: this.props.coreUsersHash,
       },
       content: modalConfig.VIEW_VARIANCE,
+      isViewOnly: true,
     });
   };
 

@@ -57,14 +57,20 @@ const propTypes = {
 };
 
 export class MineHeader extends Component {
-  state = { menuVisible: false };
+  state = {
+    menuVisible: false,
+  };
 
   handleUpdateMineRecord = (value) => {
     const mineStatus = value.mine_status.join(",");
     return this.props
       .updateMineRecord(
         this.props.mine.mine_guid,
-        { ...value, mine_status: mineStatus, mineType: this.props.mine.mine_type },
+        {
+          ...value,
+          mine_status: mineStatus,
+          mineType: this.props.mine.mine_type,
+        },
         value.mine_name
       )
       .then(() => {
@@ -132,11 +138,11 @@ export class MineHeader extends Component {
       latitude: mine.mine_location ? mine.mine_location.latitude : null,
       longitude: mine.mine_location ? mine.mine_location.longitude : null,
       mine_status: mine.mine_status[0] ? mine.mine_status[0].status_values : null,
+      status_date: mine.mine_status[0] ? mine.mine_status[0].status_date : null,
       major_mine_ind: mine.major_mine_ind ? mine.major_mine_ind : false,
       mine_region: mine.mine_region,
       mine_note: mine.mine_note,
     };
-
     this.props.openModal({
       props: {
         onSubmit,
@@ -328,24 +334,36 @@ export class MineHeader extends Component {
             </div>
           </div>
           {this.props.mine.mine_status[0] && (
-            <div className="inline-flex padding-small">
-              <p className="field-title">Operating Status </p>
-              <img
-                alt="status"
-                className="dashboard__header--card__content--status__img"
-                src={
-                  this.props.mine.mine_status[0].status_values[0] === "OP" ? ELLIPSE : RED_ELLIPSE
-                }
-              />
-              {this.props.mine.mine_status[0] ? (
-                this.props.mine.mine_status[0].status_labels.map((label) => (
-                  <p className="mine__status" key={label}>
-                    {label}
-                  </p>
-                ))
-              ) : (
-                <p>{String.EMPTY_FIELD}</p>
-              )}
+            <div>
+              <div className="inline-flex padding-small">
+                <p className="field-title">Operating Status </p>
+                <img
+                  alt="status"
+                  className="dashboard__header--card__content--status__img"
+                  src={
+                    this.props.mine.mine_status[0].status_values[0] === "OP" ? ELLIPSE : RED_ELLIPSE
+                  }
+                />
+                {this.props.mine.mine_status[0] ? (
+                  this.props.mine.mine_status[0].status_labels.map((label) => (
+                    <p className="mine__status" key={label}>
+                      {label}
+                    </p>
+                  ))
+                ) : (
+                  <p>{String.EMPTY_FIELD}</p>
+                )}
+              </div>
+
+              <div className="inline-flex padding-small">
+                <p className="field-title">Status Since </p>
+
+                {this.props.mine.mine_status[0].status_date ? (
+                  formatDate(this.props.mine.mine_status[0].status_date)
+                ) : (
+                  <p>Not Entered</p>
+                )}
+              </div>
             </div>
           )}
           {!this.props.mine.mine_status[0] && (
