@@ -19,6 +19,7 @@ class OrderStopDetail(Base):
     legislations = db.relationship("Legislation")
     authority_act = db.Column(db.String(64))
     authority_act_section = db.Column(db.String(64))
+    documents = db.relationship('Document', lazy='selectin', secondary='nris.order_stop_detail_document_xref')
 
     def __repr__(self):
         return f'<OrderStopDetail order_stop_detail_id={self.order_stop_detail_id}> order_id={self.order_id}'
