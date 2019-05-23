@@ -103,9 +103,6 @@
           "as-copy-of": "${POSTGRES_SECRET_NAME}"
         },
         "name": "${NAME}${SUFFIX}"
-      },
-      "stringData": {
-        "database-name": "${POSTGRESQL_DATABASE}"
       }
     },
     {
@@ -119,7 +116,7 @@
         "name": "${NAME}${SUFFIX}-nris"
       },
       "stringData": {
-        "database-host": "${NAME}${SUFFIX}"
+        "metadata.database-host": "${NAME}${SUFFIX}"
       }
     },
     {
