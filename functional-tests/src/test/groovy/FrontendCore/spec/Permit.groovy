@@ -23,5 +23,28 @@ class  PermitSpec extends GebReportingSpec {
         assert permitTab.permit_no.text() != ''
     }
 
+    def "User can create a permit"(){
+        //click on add new permit
+        //fill out form
+        //upload file
+        //click add new permit
+        //confirm that permit is present
+    }
+
+    def "User can upload a doc to a permit"(){
+        
+    }
+
+    def "User can add an amendment to a permit"(){
+        
+    }
+    
+    def "User can add an amalgamate a permit"(){
+        
+    }
+
+    def "User can edit the status of a permit"(){
+        
+    }
 
 }
