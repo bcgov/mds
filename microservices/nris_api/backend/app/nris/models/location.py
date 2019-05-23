@@ -5,8 +5,6 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from app.nris.utils.base_model import Base
 from flask_restplus import fields
 
-from app.nris.models.inspection import Inspection
-
 LOCATION_RESPONSE_MODEL = api.model(
     'location', {
         'description': fields.String,
