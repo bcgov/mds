@@ -12,3 +12,7 @@ class DocumentType(Base):
 
     def __repr__(self):
         return f'<DocumentType document_type_id={self.document_type_id} document_type={self.document_type}>'
+
+    @classmethod
+    def find_all_document_types(cls):
+        return cls.query.all()

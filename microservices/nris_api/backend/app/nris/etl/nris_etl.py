@@ -18,6 +18,8 @@ from app.nris.models.legislation import Legislation
 from app.nris.models.legislation_act import LegislationAct
 from app.nris.models.legislation_act_section import LegislationActSection
 from app.nris.models.legislation_compliance_article import LegislationComplianceArticle
+from app.nris.models.document import Document
+from app.nris.models.document_type import DocumentType
 
 
 def _clean_nris_data():
@@ -55,9 +57,9 @@ def _etl_nris_data(input):
                 status = code
 
         if not code_exists:
-            status = _create_status(assessment_status_code)
+            status = create_status(assessment_status_code)
 
-        inspection.inspection_status_id = status.inspection_status_id
+        inspection.inspection_status = status
 
         if assessment_status_code == 'Complete':
             completed_date = data.find('completion_date')
@@ -80,18 +82,22 @@ def _etl_nris_data(input):
         db.session.add(inspection)
 
         inspection_data = data.find('inspection')
+
+        for attachment in data.findall('attachment'):
+            doc = save_document(attachment)
+            inspection.documents.append(doc)
+
         if inspection_data is not None:
-            _save_stops(inspection_data, inspection)
+            save_stops(inspection_data, inspection)
 
 
-def _create_status(status):
+def create_status(status):
     inspection_status = InspectionStatus(inspection_status_code=status)
     db.session.add(inspection_status)
-    db.session.commit()
     return inspection_status
 
 
-def _save_stops(nris_inspection_data, inspection):
+def save_stops(nris_inspection_data, inspection):
     for stop in nris_inspection_data.findall('stops'):
         order_location = stop.find('secondary_locations')
         if order_location is not None:
@@ -136,7 +142,7 @@ def _save_stops(nris_inspection_data, inspection):
         order.order_type = order_type
 
         for stop_order in stop.findall('stop_orders'):
-            stop_detail = _save_stop_order(stop_order)
+            stop_detail = save_stop_order(stop_order)
             order.stop_details.append(stop_detail)
 
         for stop_advisory in stop.findall('stop_advisories'):
@@ -162,11 +168,15 @@ def _save_stops(nris_inspection_data, inspection):
                 response=response.text if response is not None else None)
             order.request_details.append(request)
 
+        for attachment in stop.findall('attachment'):
+            doc = save_document(attachment)
+            order.documents.append(doc)
+
         db.session.add(order)
         db.session.commit()
 
 
-def _save_stop_order(stop_order):
+def save_stop_order(stop_order):
     stop_detail = OrderStopDetail()
 
     detail = stop_order.find('order_detail')
@@ -194,6 +204,10 @@ def _save_stop_order(stop_order):
     stop_detail.completion_date = completion_date.text if completion_date is not None else None
     stop_detail.authority_act = authority_act.text if authority_act is not None else None
     stop_detail.authority_act_section = authority_act_section.text if authority_act_section is not None else None
+
+    for attachment in stop_order.findall('attachment'):
+        doc = save_document(attachment)
+        stop_detail.documents.append(doc)
 
     return stop_detail
 
@@ -269,3 +283,39 @@ def _save_compliance_article(compliance_article_id, compliance_article_comments)
             db.session.add(compliance_article)
 
         return compliance_article
+
+
+def save_document(attachment):
+    external_id = attachment.find('attachment_id')
+    document_date = attachment.find('attachment_date')
+    file_name = attachment.find('file_path')
+    comment = attachment.find('attachment_comment')
+
+    doc = Document(
+        external_id=external_id.text if external_id is not None else None,
+        document_date=document_date.text if document_date is not None else None,
+        file_name=file_name.text if file_name is not None else None,
+        comment=comment.text if comment is not None else None)
+
+    file_type = attachment.find('file_type')
+    doc_type = find_or_save_doc_type(file_type)
+
+    doc.document_type = doc_type
+
+    db.session.add(doc)
+    return doc
+
+
+def find_or_save_doc_type(file_type):
+    types = DocumentType.find_all_document_types()
+    type_found = False
+    doc_type = None
+    if file_type is not None:
+        for type in types:
+            if type.document_type == file_type.text:
+                type_found = True
+                doc_type = type
+    if not type_found:
+        doc_type = DocumentType(document_type=file_type.text)
+
+    return doc_type

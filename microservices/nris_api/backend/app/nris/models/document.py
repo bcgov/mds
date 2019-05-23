@@ -23,7 +23,7 @@ class Document(Base):
     external_id = db.Column(db.Integer)
     document_date = db.Column(db.DateTime)
     document_type_id = db.Column(db.Integer, db.ForeignKey('nris.document_type.document_type_id'))
-    document_type = association_proxy('document_type', 'document_type')
+    document_type = db.relationship("DocumentType", lazy='selectin')
     file_name = db.Column(db.String(1024))
     comment = (db.String(1024))
 
