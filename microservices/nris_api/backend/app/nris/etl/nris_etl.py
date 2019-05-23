@@ -135,7 +135,7 @@ def save_stops(nris_inspection_data, inspection):
             order_type = OrderType(order_type=stop_type.text)
             db.session.add(order_type)
 
-        order.order_type = order_type
+        order.order_type_rel = order_type
 
         for stop_order in stop.findall('stop_orders'):
             stop_detail = save_stop_order(stop_order)
@@ -219,7 +219,7 @@ def save_document(attachment):
     file_type = attachment.find('file_type')
     doc_type = find_or_save_doc_type(file_type)
 
-    doc.document_type = doc_type
+    doc.document_type_rel = doc_type
 
     db.session.add(doc)
     return doc
