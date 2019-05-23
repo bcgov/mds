@@ -215,7 +215,7 @@
                 "command": [
                   "bash",
                   "-c",
-                  "cd $FLYWAY_HOME/scripts && ./run_migrations.sh"
+                  "$FLYWAY_HOME/scripts/run_migrations.sh"
                 ]
               }
             },

@@ -5,7 +5,6 @@ set -exv -o pipefail
 cd $FLYWAY_HOME
 
 # Substitute environment variables in template files
-export DOLAR='$'
 if ls $FLYWAY_HOME/sql/*.tmpl > /dev/null 2>&1 ; then
 echo "---> substituting environment variables in templates"
 for file in $FLYWAY_HOME/sql/*.tmpl; do
