@@ -31,6 +31,11 @@
       "required": true
     },
     {
+      "name": "DB_NRIS_CONFIG_NAME",
+      "description": "Configuration name for the nris database",
+      "required": true
+    },
+    {
       "name": "VERSION",
       "required": true
     },
@@ -560,8 +565,8 @@
                     "name": "NRIS_USER_PASSWORD",
                     "valueFrom": {
                       "secretKeyRef": {
-                        "name": "${MDS_NRIS_API_SECRET}",
-                        "key": "password"
+                        "name": "${DB_NRIS_CONFIG_NAME}",
+                        "key": "database-nris-password"
                       }
                     }
                   },
