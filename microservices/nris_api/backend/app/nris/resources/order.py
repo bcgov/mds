@@ -8,7 +8,7 @@ from app.nris.utils.access_decorators import requires_role_nris_view
 
 from app.nris.models.order import Order as Model, ORDER_RESPONSE_MODEL as RESPONSE_MODEL
 
-module_path = 'orders'
+module_path = 'inspections/<int:inspection_id>/orders'
 filter_fields = ['order_type']
 
 
@@ -17,9 +17,10 @@ class OrderListResource(Resource):
     @api.doc(params={field: "Filter by exact match" for field in filter_fields})
     @api.marshal_with(RESPONSE_MODEL, envelope='records', code=200)
     @requires_role_nris_view
-    def get(self):
+    def get(self, inspection_id):
         filtered_params = {k: v.strip() for (k, v) in request.args.items() if k in filter_fields}
-        filtered_results = Model.query.filter_by(**filtered_params).all()
+        filtered_results = Model.query.filter_by(inspection_id=inspection_id,
+                                                 **filtered_params).all()
         return filtered_results
 
 
@@ -27,8 +28,8 @@ class OrderListResource(Resource):
 class OrderResource(Resource):
     @api.marshal_with(RESPONSE_MODEL, code=200)
     @requires_role_nris_view
-    def get(self, id):
-        result = Model.query.filter_by(external_id=id).first()
+    def get(self, inspection_id, id):
+        result = Model.query.filter_by(inspection_id=inspection_id, external_id=id).first()
         if not result:
             raise NotFound(f"{Model.__name__} not found")
         return result
