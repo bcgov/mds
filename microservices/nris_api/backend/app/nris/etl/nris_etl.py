@@ -14,6 +14,10 @@ from app.nris.models.order_advisory_detail import OrderAdvisoryDetail
 from app.nris.models.order_warning_detail import OrderWarningDetail
 from app.nris.models.order_stop_detail import OrderStopDetail
 from app.nris.models.order_type import OrderType
+from app.nris.models.legislation import Legislation
+from app.nris.models.legislation_act import LegislationAct
+from app.nris.models.legislation_act_section import LegislationActSection
+from app.nris.models.legislation_compliance_article import LegislationComplianceArticle
 
 
 def _clean_nris_data():
@@ -176,6 +180,10 @@ def _save_stop_order(stop_order):
     authority_act = stop_order.find('order_authority_act')
     authority_act_section = stop_order.find('order_authority_section')
 
+    for order_legislation in stop_order.findall('order_legislations'):
+        legislation = _save_order_legislation(order_legislation)
+        stop_detail.legislations.append(legislation)
+
     stop_detail.detail = detail.text if detail is not None else None
     stop_detail.stop_type = stop_type.text if stop_type is not None else None
     stop_detail.response_status = response_status.text if response_status is not None else None
@@ -188,3 +196,76 @@ def _save_stop_order(stop_order):
     stop_detail.authority_act_section = authority_act_section.text if authority_act_section is not None else None
 
     return stop_detail
+
+
+def _save_order_legislation(order_legislation):
+    legislation = Legislation()
+
+    estimated_incident_date = order_legislation.find('estimated_incident_date')
+    noncompliant_description = order_legislation.find('noncompliant_description')
+    parent_act = order_legislation.find('parent_act')
+    act_regulation = order_legislation.find('act_regulation')
+    section = order_legislation.find('section')
+    compliance_article_id = order_legislation.find('compliance_article_id')
+    compliance_article_comments = order_legislation.find('compliance_article_comments')
+
+    legislation.estimated_incident_date = estimated_incident_date.text if estimated_incident_date is not None else None
+    legislation.noncompliant_description = noncompliant_description.text if noncompliant_description is not None else None
+
+    legislation.parent_act = _save_legislation_act(parent_act)
+    legislation_act_regulation = _save_legislation_act(act_regulation)
+    legislation.act_regulation = legislation_act_regulation
+    legislation.section = _save_legislation_act_section(legislation_act_regulation, section)
+    legislation.compliance_article = _save_compliance_article(compliance_article_id,
+                                                              compliance_article_comments)
+
+    return legislation
+
+
+def _save_legislation_act(legislation_act_to_get):
+    legislation_acts = LegislationAct.find_all_legislation_acts()
+    act_found = False
+    legislation_act = None
+
+    if legislation_act_to_get is not None:
+        for act in legislation_acts:
+            if act.act == legislation_act_to_get.text:
+                act_found = True
+                legislation_act = act
+
+        if not act_found:
+            legislation_act = LegislationAct(act=legislation_act_to_get.text)
+            db.session.add(legislation_act)
+
+    return legislation_act
+
+
+def _save_legislation_act_section(legislation_act, section_to_get):
+    section_found = False
+    section = None
+
+    if legislation_act is not None and section_to_get is not None:
+        for legislation_act_section in legislation_act.sections:
+            if legislation_act_section.section == section_to_get.text:
+                section_found = True
+                section = legislation_act_section
+
+            if not section_found:
+                section = LegislationActSection(section=section_to_get.text)
+                legislation_act.sections.append(section)
+                db.session.add(section)
+
+    return section
+
+
+def _save_compliance_article(compliance_article_id, compliance_article_comments):
+    if compliance_article_id is not None:
+        compliance_article = LegislationComplianceArticle.find_legislation_compliance_article_by_external_id(
+            compliance_article_id.text)
+
+        if compliance_article is None:
+            compliance_article = LegislationComplianceArticle(
+                external_id=compliance_article_id.text, comments=compliance_article_comments.text)
+            db.session.add(compliance_article)
+
+        return compliance_article
