@@ -18,13 +18,13 @@ class InspectionListResource(Resource):
     @api.marshal_with(RESPONSE_MODEL, envelope='records', code=200)
     @requires_role_nris_view
     def get(self):
-        filtered_params = {k: v for (k, v) in request.args.items() if k in filter_fields}
+        filtered_params = {k: v.strip() for (k, v) in request.args.items() if k in filter_fields}
         filtered_results = Model.query.filter_by(**filtered_params).all()
         return filtered_results
 
 
 @api.route(f'/{module_path}/<int:id>')
-class InspectionListResource(Resource):
+class InspectionResource(Resource):
     @api.marshal_with(RESPONSE_MODEL, code=200)
     @requires_role_nris_view
     def get(self, id):
