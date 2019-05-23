@@ -54,6 +54,7 @@ app {
                     'file':'openshift/postgresql.dc.json',
                     'params':[
                             'NAME':"mds-postgresql",
+                            'SUFFIX':"${vars.deployment.suffix}",
                             'DATABASE_SERVICE_NAME':"mds-postgresql${vars.deployment.suffix}",
                             'CPU_REQUEST':"${vars.resources.postgres.cpu_request}",
                             'CPU_LIMIT':"${vars.resources.postgres.cpu_limit}",
@@ -374,7 +375,7 @@ environments {
                     HOST = "http://mds-python-backend${vars.deployment.suffix}:5000"
                     PATH = "/api"
                 }
-                'mds-nris-backend' { 
+                'mds-nris-backend' {
                     HOST = "http://mds-nris-backend${vars.deployment.suffix}:5500"
                     PATH = "/nris-api"
                 }
