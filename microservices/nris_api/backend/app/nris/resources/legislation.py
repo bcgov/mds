@@ -6,14 +6,14 @@ from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 from app.extensions import api, db
 from app.nris.utils.access_decorators import requires_role_nris_view
 
-from app.nris.models.order import Order as Model, ORDER_RESPONSE_MODEL as RESPONSE_MODEL
+from app.nris.models.legislation import Legislation as Model, LEGISLATION_RESPONSE_MODEL as RESPONSE_MODEL
 
-module_path = 'orders'
-filter_fields = ['order_type']
+module_path = 'legislations'
+filter_fields = ['noncompliant_description', 'parent_act', 'section']
 
 
 @api.route(f'/{module_path}')
-class OrderListResource(Resource):
+class LegislationListResource(Resource):
     @api.doc(params={field: "Filter by exact match" for field in filter_fields})
     @api.marshal_with(RESPONSE_MODEL, envelope='records', code=200)
     @requires_role_nris_view
@@ -24,7 +24,7 @@ class OrderListResource(Resource):
 
 
 @api.route(f'/{module_path}/<int:id>')
-class OrderResource(Resource):
+class LegislationResource(Resource):
     @api.marshal_with(RESPONSE_MODEL, code=200)
     @requires_role_nris_view
     def get(self, id):
