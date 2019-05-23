@@ -14,18 +14,7 @@ import * as Strings from "@/constants/strings";
 import * as Styles from "@/constants/styles";
 import * as Permission from "@/constants/permissions";
 import SearchBar from "@/components/search/SearchBar";
-import {
-  LOGO,
-  ADMIN,
-  MINE,
-  HAMBURGER,
-  LOGOUT_WHITE,
-  LOGOUT,
-  TEAM,
-  CLOSE,
-  SUCCESS_CHECKMARK,
-  YELLOW_HAZARD,
-} from "@/constants/assets";
+import { LOGO, HAMBURGER, CLOSE, SUCCESS_CHECKMARK, YELLOW_HAZARD } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { fetchMineVerifiedStatuses } from "@/actionCreators/mineActionCreator";
 import { getCurrentUserVerifiedMines, getCurrentUserUnverifiedMines } from "@/reducers/mineReducer";
@@ -53,11 +42,17 @@ const defaultProps = {
 
 export class NavBar extends Component {
   menu = (
-    <Menu>
-      <Menu.Item key="0">
+    <Menu id="menu__dropdown">
+      <AuthorizationWrapper inTesting>
+        <div className="custom-menu-item">
+          <Link to={router.CUSTOM_HOME_PAGE.route}>
+            <button type="button">My Dashboard</button>
+          </Link>
+        </div>
+      </AuthorizationWrapper>
+      <Menu.Item key="1">
         <button type="button" onClick={this.handleLogout}>
-          <img alt="Logout" src={LOGOUT} className="menu__img" />
-          Logout
+          Log Out
         </button>
       </Menu.Item>
     </Menu>
@@ -100,7 +95,6 @@ export class NavBar extends Component {
           }
           className="menu__btn--link"
         >
-          <img alt="Mine" className="padding-small--right vertical-align-sm" src={MINE} />
           Mines
         </Button>
       </Link>
@@ -118,7 +112,6 @@ export class NavBar extends Component {
           }
           className="menu__btn--link"
         >
-          <img alt="team" className="padding-small--right icon-sm vertical-align-sm" src={TEAM} />
           Contacts
         </Button>
       </Link>
@@ -132,11 +125,6 @@ export class NavBar extends Component {
             }
             className="menu__btn--link"
           >
-            <img
-              alt="Admin"
-              className="padding-small--right icon-sm vertical-align-sm"
-              src={ADMIN}
-            />
             Admin
           </Button>
         </Link>
@@ -199,7 +187,6 @@ export class NavBar extends Component {
                     }
                     className="menu--hamburger__btn--link"
                   >
-                    <img alt="Mine" className="img-lg padding-large--right" src={MINE} />
                     Mines
                   </Button>
                 </Link>
@@ -221,7 +208,6 @@ export class NavBar extends Component {
                     }
                     className="menu--hamburger__btn--link"
                   >
-                    <img alt="team" src={TEAM} className="img-lg padding-large--right" />
                     Contacts
                   </Button>
                 </Link>
@@ -240,8 +226,25 @@ export class NavBar extends Component {
                     }
                     className="menu--hamburger__btn--link"
                   >
-                    <img alt="Admin" src={ADMIN} className="img-lg padding-large--right" />
                     Admin
+                  </Button>
+                </Link>
+              </Col>
+            </Row>
+          </AuthorizationWrapper>
+          <AuthorizationWrapper inTesting>
+            <Row>
+              <Col span={24}>
+                <Link to={router.CUSTOM_HOME_PAGE.route}>
+                  <Button
+                    id={
+                      includes(this.props.activeButton, router.CUSTOM_HOME_PAGE.route)
+                        ? "active-dashboard-btn--mobile"
+                        : ""
+                    }
+                    className="menu--hamburger__btn--link"
+                  >
+                    My Dashboard
                   </Button>
                 </Link>
               </Col>
@@ -254,7 +257,6 @@ export class NavBar extends Component {
                 onClick={this.handleLogout}
                 className="menu--hamburger__btn--link"
               >
-                <img alt="Logout" src={LOGOUT_WHITE} className="img-lg padding-large--right" />
                 Logout
               </button>
             </Col>
@@ -281,6 +283,7 @@ export class NavBar extends Component {
           >
             <img alt="Home" className="menu__img" src={LOGO} />
           </Link>
+          <SearchBar />
           <MediaQuery maxWidth={768}>
             <Button
               ghost
@@ -292,7 +295,6 @@ export class NavBar extends Component {
               <img alt="menu" src={!this.props.isMenuOpen ? HAMBURGER : CLOSE} className="img-lg" />
             </Button>
           </MediaQuery>
-          <SearchBar />
           <MediaQuery minWidth={769}>{this.renderFullNav()}</MediaQuery>
         </div>
         <MediaQuery maxWidth={768}>{this.renderHamburgerNav()}</MediaQuery>

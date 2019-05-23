@@ -13,7 +13,7 @@ import {
   BRAND_DOCUMENT,
   EDIT,
   INFO_CIRCLE,
-  BELL,
+  SUBSCRIBE,
   UNSUBSCRIBE,
   YELLOW_HAZARD,
   SUCCESS_CHECKMARK,
@@ -182,7 +182,7 @@ export class MineHeader extends Component {
             {ModalContent.ADD_TAILINGS}
           </button>
         </Menu.Item>
-        <AuthorizationWrapper inDevelopment>
+        <AuthorizationWrapper inTesting>
           {this.props.subscribed ? (
             <div className="custom-menu-item">
               <Popconfirm
@@ -201,7 +201,7 @@ export class MineHeader extends Component {
           ) : (
             <div className="custom-menu-item">
               <button type="button" className="full" onClick={this.props.handleSubscription}>
-                <img alt="document" className="padding-small" src={BELL} />
+                <img alt="document" className="padding-small" src={SUBSCRIBE} />
                 Subscribe
               </button>
             </div>
@@ -286,7 +286,7 @@ export class MineHeader extends Component {
               )}
             </h1>
             <div>
-              {this.props.subscribed && <img src={BELL} alt="bell" />}
+              {this.props.subscribed && <img src={SUBSCRIBE} alt="SUBSCRIBE" />}
               <AuthorizationWrapper
                 permission={Permission.CREATE}
                 isMajorMine={this.props.mine.major_mine_ind}
