@@ -19,7 +19,6 @@ export const createVariance = ({ mineGuid }, payload) => (dispatch) => {
   return CustomAxios()
     .post(ENVIRONMENT.apiUrl + API.VARIANCES(mineGuid), payload, createRequestHeader())
     .then((response) => {
-      dispatch(hideLoading());
       notification.success({ message, duration: 10 });
       dispatch(success(reducerTypes.CREATE_MINE_VARIANCE));
       return response;
@@ -34,7 +33,6 @@ export const updateVariance = ({ mineGuid, varianceGuid, codeLabel }, payload) =
   return CustomAxios()
     .put(ENVIRONMENT.apiUrl + API.VARIANCE(mineGuid, varianceGuid), payload, createRequestHeader())
     .then((response) => {
-      dispatch(hideLoading());
       notification.success({
         message: `Successfully updated the variance application for: ${codeLabel}`,
         duration: 10,
@@ -54,7 +52,6 @@ export const fetchVariancesByMine = ({ mineGuid }) => (dispatch) => {
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_VARIANCES));
       dispatch(varianceActions.storeVariances(response.data));
-      dispatch(hideLoading());
     })
     .catch(() => dispatch(error(reducerTypes.GET_MINE_VARIANCES)))
     .finally(() => dispatch(hideLoading()));
@@ -68,14 +65,13 @@ export const fetchVariancesById = (mineGuid, varianceGuid) => (dispatch) => {
     .then((response) => {
       dispatch(success(reducerTypes.GET_VARIANCE));
       dispatch(varianceActions.storeVariance(response.data));
-      dispatch(hideLoading("modal"));
     })
     .catch(() => dispatch(error(reducerTypes.GET_VARIANCE)))
     .finally(() => dispatch(hideLoading("modal")));
 };
 
 export const addDocumentToVariance = ({ mineGuid, varianceGuid }, payload) => (dispatch) => {
-  dispatch(showLoading());
+  dispatch(showLoading("modal"));
   dispatch(request(reducerTypes.ADD_DOCUMENT_TO_VARIANCE));
   return CustomAxios()
     .put(
@@ -85,17 +81,16 @@ export const addDocumentToVariance = ({ mineGuid, varianceGuid }, payload) => (d
     )
     .then((response) => {
       dispatch(success(reducerTypes.ADD_DOCUMENT_TO_VARIANCE));
-      dispatch(hideLoading());
       return response;
     })
     .catch(() => dispatch(error(reducerTypes.ADD_DOCUMENT_TO_VARIANCE)))
-    .finally(() => dispatch(hideLoading()));
+    .finally(() => dispatch(hideLoading("modal")));
 };
 
 export const removeDocumentFromVariance = (mineGuid, varianceGuid, mineDocumentGuid) => (
   dispatch
 ) => {
-  dispatch(showLoading());
+  dispatch(showLoading("modal"));
   dispatch(request(reducerTypes.REMOVE_DOCUMENT_FROM_VARIANCE));
   return CustomAxios()
     .delete(
@@ -104,9 +99,8 @@ export const removeDocumentFromVariance = (mineGuid, varianceGuid, mineDocumentG
     )
     .then((response) => {
       dispatch(success(reducerTypes.REMOVE_DOCUMENT_FROM_VARIANCE));
-      dispatch(hideLoading());
       return response;
     })
     .catch(() => dispatch(error(reducerTypes.REMOVE_DOCUMENT_FROM_VARIANCE)))
-    .finally(() => dispatch(hideLoading()));
+    .finally(() => dispatch(hideLoading("modal")));
 };

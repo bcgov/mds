@@ -40,7 +40,7 @@ describe("`createVariance` action creator", () => {
     return createVariance({ mineGuid }, mockPayload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(5);
+      expect(dispatch).toHaveBeenCalledTimes(4);
     });
   });
 
@@ -64,7 +64,7 @@ describe("`fetchVariancesByMine` action creator", () => {
     return fetchVariancesByMine({ mineGuid })(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(6);
+      expect(dispatch).toHaveBeenCalledTimes(5);
     });
   });
 
@@ -88,7 +88,7 @@ describe("`fetchVariancesById` action creator", () => {
     return fetchVariancesById(mineGuid, varianceGuid)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(6);
+      expect(dispatch).toHaveBeenCalledTimes(5);
     });
   });
 
@@ -117,7 +117,7 @@ describe("`updateVariance` action creator", () => {
     return updateVariance({ mineGuid, varianceGuid, codeLabel }, mockPayload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(5);
+      expect(dispatch).toHaveBeenCalledTimes(4);
     });
   });
 
@@ -145,7 +145,7 @@ describe("`addDocumentToVariance` action creator", () => {
     return addDocumentToVariance({ mineGuid, varianceGuid }, mockPayload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(5);
+      expect(dispatch).toHaveBeenCalledTimes(4);
     });
   });
 
@@ -171,7 +171,7 @@ describe("`removeDocumentFromVariance` action creator", () => {
       () => {
         expect(requestSpy).toHaveBeenCalledTimes(1);
         expect(successSpy).toHaveBeenCalledTimes(1);
-        expect(dispatch).toHaveBeenCalledTimes(5);
+        expect(dispatch).toHaveBeenCalledTimes(4);
       }
     );
   });

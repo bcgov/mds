@@ -30,12 +30,8 @@ const defaultProps = {
 };
 
 export class EditVarianceModal extends Component {
-  state = { isLoaded: false };
-
   componentDidMount() {
-    this.props
-      .fetchVariancesById(this.props.mineGuid, this.props.varianceGuid)
-      .then(this.setState({ isLoaded: true }));
+    this.props.fetchVariancesById(this.props.mineGuid, this.props.varianceGuid);
   }
 
   // handling delete functionality inside the modal, so the data can be updated properly.
@@ -44,30 +40,24 @@ export class EditVarianceModal extends Component {
     this.props
       .removeDocumentFromVariance(this.props.mineGuid, this.props.varianceGuid, documentGuid)
       .then(() => {
-        this.props
-          .fetchVariancesById(this.props.mineGuid, this.props.varianceGuid)
-          .then(this.setState({ isLoaded: true }));
+        this.props.fetchVariancesById(this.props.mineGuid, this.props.varianceGuid);
         this.props.fetchVariancesByMine({ mineGuid: this.props.mineGuid });
       });
   };
 
   render() {
     return (
-      <div>
-        {this.state.isLoaded && (
-          <EditVarianceForm
-            onSubmit={this.props.onSubmit}
-            closeModal={this.props.closeModal}
-            mineGuid={this.props.mineGuid}
-            mineName={this.props.mineName}
-            coreUsers={this.props.coreUsers}
-            variance={this.props.variance}
-            varianceStatusOptions={this.props.varianceStatusOptions}
-            initialValues={this.props.variance}
-            removeDocument={this.handleRemoveDocument}
-          />
-        )}
-      </div>
+      <EditVarianceForm
+        onSubmit={this.props.onSubmit}
+        closeModal={this.props.closeModal}
+        mineGuid={this.props.mineGuid}
+        mineName={this.props.mineName}
+        coreUsers={this.props.coreUsers}
+        variance={this.props.variance}
+        varianceStatusOptions={this.props.varianceStatusOptions}
+        initialValues={this.props.variance}
+        removeDocument={this.handleRemoveDocument}
+      />
     );
   }
 }
