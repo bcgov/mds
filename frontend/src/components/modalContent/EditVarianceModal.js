@@ -5,7 +5,7 @@ import { bindActionCreators } from "redux";
 import CustomPropTypes from "@/customPropTypes";
 import EditVarianceForm from "@/components/Forms/variances/EditVarianceForm";
 import {
-  fetchVariancesById,
+  fetchVarianceById,
   removeDocumentFromVariance,
   fetchVariancesByMine,
 } from "@/actionCreators/varianceActionCreator";
@@ -19,7 +19,7 @@ const propTypes = {
   coreUsers: CustomPropTypes.options.isRequired,
   variance: CustomPropTypes.variance,
   varianceStatusOptions: CustomPropTypes.options.isRequired,
-  fetchVariancesById: PropTypes.func.isRequired,
+  fetchVarianceById: PropTypes.func.isRequired,
   varianceGuid: PropTypes.string.isRequired,
   removeDocumentFromVariance: PropTypes.func.isRequired,
   fetchVariancesByMine: PropTypes.func.isRequired,
@@ -31,7 +31,7 @@ const defaultProps = {
 
 export class EditVarianceModal extends Component {
   componentDidMount() {
-    this.props.fetchVariancesById(this.props.mineGuid, this.props.varianceGuid);
+    this.props.fetchVarianceById(this.props.mineGuid, this.props.varianceGuid);
   }
 
   // handling delete functionality inside the modal, so the data can be updated properly.
@@ -40,7 +40,7 @@ export class EditVarianceModal extends Component {
     this.props
       .removeDocumentFromVariance(this.props.mineGuid, this.props.varianceGuid, documentGuid)
       .then(() => {
-        this.props.fetchVariancesById(this.props.mineGuid, this.props.varianceGuid);
+        this.props.fetchVarianceById(this.props.mineGuid, this.props.varianceGuid);
         this.props.fetchVariancesByMine({ mineGuid: this.props.mineGuid });
       });
   };
@@ -69,7 +69,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      fetchVariancesById,
+      fetchVarianceById,
       removeDocumentFromVariance,
       fetchVariancesByMine,
     },

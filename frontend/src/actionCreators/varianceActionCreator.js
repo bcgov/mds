@@ -57,7 +57,7 @@ export const fetchVariancesByMine = ({ mineGuid }) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchVariancesById = (mineGuid, varianceGuid) => (dispatch) => {
+export const fetchVarianceById = (mineGuid, varianceGuid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_VARIANCE));
   dispatch(showLoading("modal"));
   return CustomAxios(Strings.ERROR)

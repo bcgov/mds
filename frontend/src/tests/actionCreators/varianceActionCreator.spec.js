@@ -6,7 +6,7 @@ import {
   updateVariance,
   addDocumentToVariance,
   removeDocumentFromVariance,
-  fetchVariancesById,
+  fetchVarianceById,
 } from "@/actionCreators/varianceActionCreator";
 import * as genericActions from "@/actions/genericActions";
 import * as API from "@/constants/API";
@@ -78,14 +78,14 @@ describe("`fetchVariancesByMine` action creator", () => {
   });
 });
 
-describe("`fetchVariancesById` action creator", () => {
+describe("`fetchVarianceById` action creator", () => {
   const mineGuid = "1234567";
   const varianceGuid = "4775934";
   const url = ENVIRONMENT.apiUrl + API.VARIANCE(mineGuid, varianceGuid);
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchVariancesById(mineGuid, varianceGuid)(dispatch).then(() => {
+    return fetchVarianceById(mineGuid, varianceGuid)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(5);
@@ -94,7 +94,7 @@ describe("`fetchVariancesById` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
-    return fetchVariancesById(mineGuid, varianceGuid)(dispatch).then(() => {
+    return fetchVarianceById(mineGuid, varianceGuid)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
