@@ -16,6 +16,11 @@ from app.nris.models.order_stop_detail import OrderStopDetail
 from app.nris.models.order_type import OrderType
 
 
+def _clean_nris_data():
+    db.session.execute('truncate table inspection cascade;')
+    db.session.commit()
+
+
 def _etl_nris_data(input):
 
     xmlstring = re.sub(' xmlns="[^"]+"', '', input, count=1)

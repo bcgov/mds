@@ -2,7 +2,7 @@ import click
 
 from app.extensions import db, oracle_db, sched
 from app.nris.models.nris_raw_data import NRISRawData
-from app.nris.etl.nris_etl import _etl_nris_data
+from app.nris.etl.nris_etl import _etl_nris_data, _clean_nris_data
 from app.nris.scheduled_jobs import NRIS_etl
 
 
@@ -21,6 +21,10 @@ def register_commands(app):
             db.session.commit()
 
         cursor.close()
+
+    @app.cli.command()
+    def _test_clean_nris_data():
+        _clean_nris_data()
 
     @app.cli.command()
     def _test_xml():

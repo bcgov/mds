@@ -1,8 +1,28 @@
 from datetime import datetime
-from app.extensions import db
+from app.extensions import db, api
 from sqlalchemy.orm import validates
 from sqlalchemy.ext.associationproxy import association_proxy
 from app.nris.utils.base_model import Base
+from flask_restplus import fields
+
+from app.nris.models.document import DOCUMENT_RESPONSE_MODEL
+from app.nris.models.legislation import LEGISLATION_RESPONSE_MODEL
+
+STOP_DETAILS_RESPONSE_MODEL = api.model(
+    'order_stop_detail', {
+        'detail': fields.String,
+        'stop_type': fields.String,
+        'response_status': fields.String,
+        'stop_status': fields.String,
+        'observation': fields.String,
+        'response': fields.String,
+        'response_received': fields.Date,
+        'completion_date': fields.Date,
+        'legislations': fields.List(fields.Nested(LEGISLATION_RESPONSE_MODEL)),
+        'authority_act': fields.String,
+        'authority_act_section': fields.String,
+        'documents': fields.List(fields.Nested(DOCUMENT_RESPONSE_MODEL)),
+    })
 
 
 class OrderStopDetail(Base):
@@ -20,7 +40,8 @@ class OrderStopDetail(Base):
     legislations = db.relationship("Legislation")
     authority_act = db.Column(db.String(64))
     authority_act_section = db.Column(db.String(64))
-    documents = db.relationship('Document', lazy='selectin', secondary='nris.order_stop_detail_document_xref')
+    documents = db.relationship(
+        'Document', lazy='selectin', secondary='nris.order_stop_detail_document_xref')
 
     def __repr__(self):
         return f'<OrderStopDetail order_stop_detail_id={self.order_stop_detail_id}> order_id={self.order_id}'

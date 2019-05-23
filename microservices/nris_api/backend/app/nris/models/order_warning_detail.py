@@ -1,8 +1,14 @@
 from datetime import datetime
-from app.extensions import db
+from app.extensions import db, api
 from sqlalchemy.orm import validates
 from sqlalchemy.ext.associationproxy import association_proxy
 from app.nris.utils.base_model import Base
+from flask_restplus import fields
+
+WARNING_DETAILS_RESPONSE_MODEL = api.model('order', {
+    'detail': fields.String,
+    'respond_date': fields.Date,
+})
 
 
 class OrderWarningDetail(Base):

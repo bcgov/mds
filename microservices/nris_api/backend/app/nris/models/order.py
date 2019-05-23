@@ -7,11 +7,22 @@ from app.nris.utils.base_model import Base
 
 from app.nris.models.order_type import OrderType
 from app.nris.models.document import DOCUMENT_RESPONSE_MODEL
+from app.nris.models.location import LOCATION_RESPONSE_MODEL
+from app.nris.models.order_advisory_detail import ADVISORY_DETAILS_RESPONSE_MODEL
+from app.nris.models.order_request_detail import REQUEST_DETAILS_RESPONSE_MODEL
+from app.nris.models.order_stop_detail import STOP_DETAILS_RESPONSE_MODEL
+from app.nris.models.order_warning_detail import WARNING_DETAILS_RESPONSE_MODEL
 
-ORDER_RESPONSE_MODEL = api.model('order', {
-    'order_type': fields.String,
-    'documents': fields.List(fields.Nested(DOCUMENT_RESPONSE_MODEL)),
-})
+ORDER_RESPONSE_MODEL = api.model(
+    'order', {
+        'location': fields.Nested(LOCATION_RESPONSE_MODEL),
+        'order_type': fields.String,
+        'documents': fields.List(fields.Nested(DOCUMENT_RESPONSE_MODEL)),
+        'advisory_details': fields.List(fields.Nested(ADVISORY_DETAILS_RESPONSE_MODEL)),
+        'request_details': fields.List(fields.Nested(REQUEST_DETAILS_RESPONSE_MODEL)),
+        'stop_details': fields.List(fields.Nested(STOP_DETAILS_RESPONSE_MODEL)),
+        'warning_details': fields.List(fields.Nested(WARNING_DETAILS_RESPONSE_MODEL)),
+    })
 
 
 class Order(Base):
