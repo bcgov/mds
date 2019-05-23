@@ -213,12 +213,7 @@
                   },
                   {
                     "name": "DB_HOST",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${DB_CONFIG_NAME}",
-                        "key": "database-host"
-                      }
-                    }
+                    "value": "${DB_CONFIG_NAME}"
                   },
                   {
                     "name": "DB_PASS",
