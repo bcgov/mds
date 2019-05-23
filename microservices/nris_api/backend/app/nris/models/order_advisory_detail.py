@@ -9,7 +9,7 @@ class OrderAdvisoryDetail(Base):
     __tablename__ = "order_advisory_detail"
     order_advisory_detail_id = db.Column(db.Integer, primary_key=True)
     order_id = db.Column(db.Integer, db.ForeignKey('nris.order.order_id'))
-    detail = db.Column(db.String(2048))
+    detail = db.Column(db.String())
 
     def __repr__(self):
         return f'<OrderAdvisoryDetail order_advisory_detail_id={self.order_advisory_detail_id}> order_id={self.order_id}'

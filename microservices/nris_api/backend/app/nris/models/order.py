@@ -19,16 +19,16 @@ class Order(Base):
     order_id = db.Column(db.Integer, primary_key=True)
     inspection_id = db.Column(db.Integer, db.ForeignKey('nris.inspection.inspection_id'))
     location_id = db.Column(db.Integer, db.ForeignKey('nris.location.location_id'))
-    #location = db.relationship("Location")
+    location = db.relationship("Location")
 
     order_type_id = db.Column(db.Integer, db.ForeignKey('nris.order_type.order_type_id'))
     order_type = db.relationship('OrderType', lazy='selectin')
     documents = db.relationship('Document', lazy='selectin', secondary='nris.order_document_xref')
 
-    #advisory_details = db.relationship('OrderAdvisoryDetail', lazy='selectin')
-    #request_details = db.relationship('OrderRequestDetail', lazy='selectin')
-    #stop_details = db.relationship('OrderStopDetail', lazy='selectin')
-    #warning_details = db.relationship('OrderWarningDetail', lazy='selectin')
+    advisory_details = db.relationship('OrderAdvisoryDetail', lazy='selectin')
+    request_details = db.relationship('OrderRequestDetail', lazy='selectin')
+    stop_details = db.relationship('OrderStopDetail', lazy='selectin')
+    warning_details = db.relationship('OrderWarningDetail', lazy='selectin')
 
     def __repr__(self):
         return f'<Order order_id={self.order_id}>'

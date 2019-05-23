@@ -82,7 +82,7 @@ def _etl_nris_data(input):
         db.session.commit()
         inspection_data = data.find('inspection')
         if inspection_data is not None:
-            _save_orders(inspection_data, inspection.inspection_id)
+            _save_stops(inspection_data, inspection.inspection_id)
 
 
 def _create_status(status):
@@ -92,7 +92,7 @@ def _create_status(status):
     return inspection_status
 
 
-def _save_orders(inspection, inspection_id):
+def _save_stops(inspection, inspection_id):
     for stop in inspection.findall('stops'):
         order_location = stop.find('secondary_locations')
         if order_location is not None:
@@ -136,30 +136,59 @@ def _save_orders(inspection, inspection_id):
         order.order_type = order_type
 
         for stop_order in stop.findall('stop_orders'):
-            stop_detail = OrderStopDetail(order_id=order.order_id)
-
-            detail = stop_order.find('order_detail')
-            stop_type = stop_order.find('order_type')
-            response_status = stop_order.find('order_response_status')
-            stop_status = stop_order.find('order_status')
-            observation = stop_order.find('order_observation')
-            response = stop_order.find('order_response')
-            response_received = stop_order.find('order_response_received_date')
-            completion_date = stop_order.find('order_completion_date')
-            authority_act = stop_order.find('order_authority_act')
-            authority_act_section = stop_order.find('order_authority_section')
-
-            stop_detail.detail = detail.text if detail is not None else None
-            stop_detail.stop_type = stop_type.text if stop_type is not None else None
-            stop_detail.response_status = response_status.text if response_status is not None else None
-            stop_detail.stop_status = stop_status.text if stop_status is not None else None
-            stop_detail.observation = observation.text if observation is not None else None
-            stop_detail.response = response.text if response is not None else None
-            stop_detail.response_received = response_received.text if response_received is not None else None
-            stop_detail.completion_date = completion_date.text if completion_date is not None else None
-            stop_detail.authority_act = authority_act.text if authority_act is not None else None
-            stop_detail.authority_act_section = authority_act_section.text if authority_act_section is not None else None
-
+            stop_detail = _save_stop_order(stop_order)
             order.stop_details.append(stop_detail)
+
+        for stop_advisory in stop.findall('stop_advisories'):
+            detail = stop_advisory.find('advisory_detail')
+            advisory = OrderAdvisoryDetail(detail=detail.text if detail is not None else None)
+            order.advisory_details.append(advisory)
+
+        for stop_warning in stop.findall('stop_warnings'):
+            detail = stop_warning.find('warning_detail')
+            respond_date = stop_warning.find('warning_respond_date')
+            warning = OrderWarningDetail(
+                detail=detail.text if detail is not None else None,
+                respond_date=respond_date.text if respond_date is not None else None)
+            order.warning_details.append(warning)
+
+        for stop_request in stop.findall('stop_requests'):
+            detail = stop_request.find('request_detail')
+            response = stop_request.find('request_response')
+            respond_date = stop_request.find('request_respond_date')
+            request = OrderRequestDetail(
+                detail=detail.text if detail is not None else None,
+                respond_date=respond_date.text if respond_date is not None else None,
+                response=response.text if response is not None else None)
+            order.request_details.append(request)
+
         db.session.add(order)
         db.session.commit()
+
+
+def _save_stop_order(stop_order):
+    stop_detail = OrderStopDetail()
+
+    detail = stop_order.find('order_detail')
+    stop_type = stop_order.find('order_type')
+    response_status = stop_order.find('order_response_status')
+    stop_status = stop_order.find('order_status')
+    observation = stop_order.find('order_observation')
+    response = stop_order.find('order_response')
+    response_received = stop_order.find('order_response_received_date')
+    completion_date = stop_order.find('order_completion_date')
+    authority_act = stop_order.find('order_authority_act')
+    authority_act_section = stop_order.find('order_authority_section')
+
+    stop_detail.detail = detail.text if detail is not None else None
+    stop_detail.stop_type = stop_type.text if stop_type is not None else None
+    stop_detail.response_status = response_status.text if response_status is not None else None
+    stop_detail.stop_status = stop_status.text if stop_status is not None else None
+    stop_detail.observation = observation.text if observation is not None else None
+    stop_detail.response = response.text if response is not None else None
+    stop_detail.response_received = response_received.text if response_received is not None else None
+    stop_detail.completion_date = completion_date.text if completion_date is not None else None
+    stop_detail.authority_act = authority_act.text if authority_act is not None else None
+    stop_detail.authority_act_section = authority_act_section.text if authority_act_section is not None else None
+
+    return stop_detail

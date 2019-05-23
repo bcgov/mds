@@ -9,8 +9,8 @@ class OrderRequestDetail(Base):
     __tablename__ = "order_request_detail"
     order_request_detail_id = db.Column(db.Integer, primary_key=True)
     order_id = db.Column(db.Integer, db.ForeignKey('nris.order.order_id'))
-    detail = db.Column(db.String(2048))
-    response = db.Column(db.String(2048))
+    detail = db.Column(db.String())
+    response = db.Column(db.String())
     respond_date = db.Column(db.DateTime)
 
     def __repr__(self):

@@ -9,7 +9,7 @@ class OrderWarningDetail(Base):
     __tablename__ = "order_warning_detail"
     order_warning_detail_id = db.Column(db.Integer, primary_key=True)
     order_id = db.Column(db.Integer, db.ForeignKey('nris.order.order_id'))
-    detail = db.Column(db.String(2048))
+    detail = db.Column(db.String())
     respond_date = db.Column(db.DateTime)
 
     def __repr__(self):
