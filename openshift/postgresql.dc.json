@@ -101,7 +101,8 @@
         "annotations": {
           "as-copy-of": "${POSTGRES_SECRET_NAME}"
         },
-        "name": "${NAME}${SUFFIX}"
+        "name": "${NAME}${SUFFIX}",
+        "stringData": {}
       }
     },
     {
