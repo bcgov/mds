@@ -13,8 +13,8 @@ from app.nris.models.order_request_detail import REQUEST_DETAILS_RESPONSE_MODEL
 from app.nris.models.order_stop_detail import STOP_DETAILS_RESPONSE_MODEL
 from app.nris.models.order_warning_detail import WARNING_DETAILS_RESPONSE_MODEL
 
-ORDER_RESPONSE_MODEL = api.model(
-    'order', {
+INSPECTION_ORDER_RESPONSE_MODEL = api.model(
+    'inspection_order', {
         'location': fields.Nested(LOCATION_RESPONSE_MODEL),
         'order_type': fields.String,
         'documents': fields.List(fields.Nested(DOCUMENT_RESPONSE_MODEL)),
@@ -25,9 +25,9 @@ ORDER_RESPONSE_MODEL = api.model(
     })
 
 
-class Order(Base):
-    __tablename__ = "order"
-    order_id = db.Column(db.Integer, primary_key=True)
+class InspectionOrder(Base):
+    __tablename__ = "inspection_order"
+    inspection_order_id = db.Column(db.Integer, primary_key=True)
     inspection_id = db.Column(db.Integer, db.ForeignKey('nris.inspection.inspection_id'))
     location_id = db.Column(db.Integer, db.ForeignKey('nris.location.location_id'))
     location = db.relationship("Location")
@@ -43,4 +43,4 @@ class Order(Base):
     warning_details = db.relationship('OrderWarningDetail', lazy='selectin')
 
     def __repr__(self):
-        return f'<Order order_id={self.order_id}>'
+        return f'<InspectionOrder inspection_order_id={self.inspection_order_id}>'

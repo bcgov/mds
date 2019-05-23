@@ -8,7 +8,7 @@ from app.extensions import db
 from app.nris.models.inspection import Inspection
 from app.nris.models.inspection_status import InspectionStatus
 from app.nris.models.location import Location
-from app.nris.models.order import Order
+from app.nris.models.inspection_order import InspectionOrder
 from app.nris.models.order_request_detail import OrderRequestDetail
 from app.nris.models.order_advisory_detail import OrderAdvisoryDetail
 from app.nris.models.order_warning_detail import OrderWarningDetail
@@ -123,9 +123,9 @@ def save_stops(nris_inspection_data, inspection):
             db.session.add(location)
 
         stop_type = stop.find('stop_type')
-        order = Order()
+        order = InspectionOrder()
         order.location = location
-        inspection.orders.append(order)
+        inspection.inspection_orders.append(order)
 
         order_types = OrderType.find_all_order_types()
         type_found = False

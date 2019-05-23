@@ -31,4 +31,4 @@ class Location(Base):
     zone_letter = db.Column(db.String(8))
 
     def __repr__(self):
-        return f'<Location location_id={self.order_id}>'
+        return f'<Location location_id={self.location_id}>'

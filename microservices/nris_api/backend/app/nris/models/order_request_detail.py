@@ -15,10 +15,11 @@ REQUEST_DETAILS_RESPONSE_MODEL = api.model('order_request_detail', {
 class OrderRequestDetail(Base):
     __tablename__ = "order_request_detail"
     order_request_detail_id = db.Column(db.Integer, primary_key=True)
-    order_id = db.Column(db.Integer, db.ForeignKey('nris.order.order_id'))
+    inspection_order_id = db.Column(db.Integer,
+                                    db.ForeignKey('nris.inspection_order.inspection_order_id'))
     detail = db.Column(db.String())
     response = db.Column(db.String())
     respond_date = db.Column(db.DateTime)
 
     def __repr__(self):
-        return f'<OrderRequestDetail order_request_detail_id={self.order_request_detail_id}> order_id={self.order_id}'
+        return f'<OrderRequestDetail order_request_detail_id={self.order_request_detail_id}> inspection_order_id={self.inspection_order_id}'
