@@ -12,6 +12,7 @@ import {
   getContent,
   getClearOnSubmit,
   getWidthSize,
+  getIsViewOnly,
 } from "@/selectors/modalSelectors";
 import AddPartyComponentWrapper from "./AddPartyComponentWrapper";
 
@@ -22,6 +23,7 @@ const propTypes = {
   props: PropTypes.objectOf(PropTypes.string),
   clearOnSubmit: PropTypes.bool.isRequired,
   widthSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  isViewOnly: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -43,13 +45,6 @@ export class ModalWrapper extends Component {
     this.props.closeModal();
   };
 
-  renderTitle = () => (
-    <div className="inline-flex between">
-      <h1>{this.props.props.title}</h1>
-      <Icon type="close" />
-    </div>
-  );
-
   closeModal = (event) => {
     event.preventDefault();
     this.props.closeModal();
@@ -64,17 +59,23 @@ export class ModalWrapper extends Component {
         closable={false}
         footer={null}
       >
-        <Popconfirm
-          placement="bottomRight"
-          title="Are you sure you want to cancel?"
-          okText="Yes"
-          cancelText="No"
-          onConfirm={(event) => this.closeModal(event)}
-        >
-          <Button ghost className="modal__close">
+        {this.props.isViewOnly ? (
+          <Button ghost className="modal__close" onClick={(event) => this.closeModal(event)}>
             <Icon type="close" />
           </Button>
-        </Popconfirm>
+        ) : (
+          <Popconfirm
+            placement="bottomRight"
+            title="Are you sure you want to cancel?"
+            okText="Yes"
+            cancelText="No"
+            onConfirm={(event) => this.closeModal(event)}
+          >
+            <Button ghost className="modal__close">
+              <Icon type="close" />
+            </Button>
+          </Popconfirm>
+        )}
         <LoadingBar
           scope="modal"
           style={{
@@ -106,6 +107,7 @@ const mapStateToProps = (state) => ({
   props: getProps(state),
   content: getContent(state),
   clearOnSubmit: getClearOnSubmit(state),
+  isViewOnly: getIsViewOnly(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
