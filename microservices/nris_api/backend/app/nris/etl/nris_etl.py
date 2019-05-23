@@ -32,15 +32,13 @@ def _etl_nris_data(input):
         assessment_status_code = assessment_status.text
 
     if assessment_status_code != 'Deleted':
-
-        if assessment_id is not None:
-            inspection = Inspection(external_id=assessment_id.text)
         assessment_date = data.find('assessment_date')
-        if assessment_date is not None:
-            inspection.inspection_date = assessment_date.text
         business_area = data.find('businessArea').find('business_area_name')
-        if business_area is not None:
-            inspection.business_area = business_area.text
+
+        inspection = Inspection(
+            external_id=assessment_id.text if assessment_id is not None else None)
+        inspection.inspection_date = assessment_date.text if assessment_date is not None else None
+        inspection.business_area = business_area.text if business_area is not None else None
 
         status_codes = InspectionStatus.find_all_inspection_status()
         code_exists = False
@@ -59,35 +57,27 @@ def _etl_nris_data(input):
 
         if assessment_status_code == 'Complete':
             completed_date = data.find('completion_date')
-
-            if completed_date is not None:
-                inspection.completed_date = completed_date.text
+            inspection.completed_date = completed_date.text if completed_date is not None else None
 
         mine_number = data.find('location').find('location_id')
-        if mine_number is not None:
-            inspection.mine_no = mine_number.text
         inspector = data.find('assessor')
-        if inspector is not None:
-            inspection.inspector_idir = inspector.text
         intro = data.find('report_introduction')
-        if intro is not None:
-            inspection.inspection_introduction = intro.text
         preamble = data.find('report_preamble')
-        if preamble is not None:
-            inspection.inspection_preamble = preamble.text
         closing = data.find('report_closing')
-        if closing is not None:
-            inspection.inspection_closing = closing.text
-
         notes = data.find('officer_notes')
-        if notes is not None:
-            inspection.officer_notes = notes.text
+
+        inspection.mine_no = mine_number.text if mine_number is not None else None
+        inspection.inspector_idir = inspector.text if inspector is not None else None
+        inspection.inspection_introduction = intro.text if intro is not None else None
+        inspection.inspection_preamble = preamble.text if preamble is not None else None
+        inspection.inspection_closing = closing.text if closing is not None else None
+        inspection.officer_notes = notes.text if notes is not None else None
 
         db.session.add(inspection)
-        db.session.commit()
+
         inspection_data = data.find('inspection')
         if inspection_data is not None:
-            _save_stops(inspection_data, inspection.inspection_id)
+            _save_stops(inspection_data, inspection)
 
 
 def _create_status(status):
@@ -97,8 +87,8 @@ def _create_status(status):
     return inspection_status
 
 
-def _save_stops(inspection, inspection_id):
-    for stop in inspection.findall('stops'):
+def _save_stops(nris_inspection_data, inspection):
+    for stop in nris_inspection_data.findall('stops'):
         order_location = stop.find('secondary_locations')
         if order_location is not None:
             latitude = order_location.find('secondary_latitude')
@@ -123,8 +113,9 @@ def _save_stops(inspection, inspection_id):
             db.session.add(location)
 
         stop_type = stop.find('stop_type')
-        order = Order(inspection_id=inspection_id)
+        order = Order()
         order.location = location
+        inspection.orders.append(order)
 
         order_types = OrderType.find_all_order_types()
         type_found = False
