@@ -115,14 +115,15 @@
       "metadata": {
         "annotations": {
           "as-copy-of": "${POSTGRES_NRIS_SECRET_NAME}",
-          "template.openshift.io/expose-database-host": "${NAME}${SUFFIX}",
           "template.openshift.io/expose-database-name": "{.data['database-name']}",
           "template.openshift.io/expose-nris-password": "{.data['database-nris-password']}",
           "template.openshift.io/expose-nris-user": "{.data['database-nris-user']}"
         },
         "name": "${NAME}${SUFFIX}-nris"
       },
-      "stringData": {}
+      "stringData": {
+        "database-host": "${NAME}${SUFFIX}"
+      }
     },
     {
       "apiVersion": "v1",
