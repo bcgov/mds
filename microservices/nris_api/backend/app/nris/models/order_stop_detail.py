@@ -16,6 +16,7 @@ class OrderStopDetail(Base):
     observation = db.Column(db.String(2048))
     response = db.Column(db.String(2048))
     response_received = db.Column(db.DateTime)
+    legislations = db.relationship("Legislation")
     authority_act = db.Column(db.String(64))
     authority_act_section = db.Column(db.String(64))
 
