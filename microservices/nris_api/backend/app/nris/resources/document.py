@@ -6,7 +6,7 @@ from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 from app.extensions import api, db
 from app.nris.utils.access_decorators import requires_role_nris_view
 
-from app.nris.models.inspection import Document as Model, DOCUMENT_RESPONSE_MODEL as RESPONSE_MODEL
+from app.nris.models.document import Document as Model, DOCUMENT_RESPONSE_MODEL as RESPONSE_MODEL
 
 module_path = 'documents'
 filter_fields = ['document_type', 'file_name']
