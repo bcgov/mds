@@ -10,7 +10,7 @@ import {
   fetchVariancesByMine,
 } from "@/actionCreators/varianceActionCreator";
 import { getVariance } from "@/selectors/varianceSelectors";
-import { Spin, Icon } from "antd";
+import LoadingWrapper from "../common/wrappers/LoadingWrapper";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
@@ -35,9 +35,9 @@ export class EditVarianceModal extends Component {
   state = { isLoaded: false };
 
   componentDidMount() {
-    this.props
-      .fetchVarianceById(this.props.mineGuid, this.props.varianceGuid)
-      .then(this.setState({ isLoaded: true }));
+    this.props.fetchVarianceById(this.props.mineGuid, this.props.varianceGuid).then(() => {
+      this.setState({ isLoaded: true });
+    });
   }
 
   // handling delete functionality inside the modal, so the data can be updated properly.
@@ -56,12 +56,10 @@ export class EditVarianceModal extends Component {
   }
 
   render() {
-    const antIcon = <Icon type="loading" style={{ fontSize: 50, color: "black" }} spin />;
     return (
       <div>
-        {this.state.isLoaded ? (
+        <LoadingWrapper condition={this.state.isLoaded}>
           <EditVarianceForm
-            isLoaded={this.state.isLoaded}
             onSubmit={this.props.onSubmit}
             closeModal={this.props.closeModal}
             mineGuid={this.props.mineGuid}
@@ -73,11 +71,7 @@ export class EditVarianceModal extends Component {
             removeDocument={this.handleRemoveDocument}
             complianceCodesHash={this.props.complianceCodesHash}
           />
-        ) : (
-          <div id="loading-screen--small">
-            <Spin indicator={antIcon} />
-          </div>
-        )}
+        </LoadingWrapper>
       </div>
     );
   }

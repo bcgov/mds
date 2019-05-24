@@ -1,9 +1,10 @@
 import React from "react";
 import { PropTypes } from "prop-types";
 import { Spin, Icon } from "antd";
+import * as Style from "@/constants/styles";
 
 /**
- * @constant LoadingWrapper renders react children || or loading view || null screen
+ * @constant LoadingWrapper renders react children || or loading view
  */
 
 const propTypes = {
@@ -11,17 +12,19 @@ const propTypes = {
   children: PropTypes.element.isRequired,
 };
 
-// eslint-disable-next-line react/destructuring-assignment
-export const LoadingWrapper = ({ children: Children, ...props }) => {
-  console.log(props.condition);
-  const antIcon = <Icon type="loading" style={{ fontSize: 50, color: "black" }} spin />;
+export const LoadingWrapper = (props) => {
+  const antIcon = (
+    <Icon type="loading" style={{ fontSize: 80, color: Style.COLOR.mediumGrey }} spin />
+  );
   return (
     <span>
       {props.condition ? (
-        <span>{Children}</span>
+        <span>
+          <div className="fade-in">{props.children}</div>
+        </span>
       ) : (
-        <div id="loading-screen--small">
-          <Spin indicator={antIcon} />
+        <div className="loading-screen--small">
+          <Spin id="spinner" indicator={antIcon} />
         </div>
       )}
     </span>

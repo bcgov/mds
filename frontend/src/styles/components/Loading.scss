@@ -16,6 +16,11 @@
 }
 
 .loading-screen--small {
-  margin: 30%;
-  text-align: center;
+  min-height: 500px;
+  width: 100%;
+  #spinner {
+    // offset size of spinner to canter
+    left: 45% !important;
+    @include center(true, true);
+  }
 }
