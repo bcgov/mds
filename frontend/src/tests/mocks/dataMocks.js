@@ -1139,6 +1139,24 @@ export const VARIANCES = {
   ],
 };
 
+export const VARIANCE = {
+  variance_guid: "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+  compliance_article_id: 1,
+  expiry_date: "2019-03-30",
+  issue_date: "2019-03-01",
+  note: "notesss",
+  received_date: "2019-03-01",
+  documents: [
+    {
+      created_at: "2019-05-02",
+      document_manager_guid: "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
+      document_name: "test.pdf",
+      mine_document_guid: "33e6b965-2402-4229-a213-23bbe7fd3e99",
+      mine_guid: "59e73109-48f7-4ad2-977c-3005b5bff010",
+    },
+  ],
+};
+
 export const COMPLIANCE_CODES = {
   records: [
     {
@@ -1257,6 +1275,28 @@ export const FOLLOWUP_ACTIONS = [
   },
 ];
 
+export const SIMPLE_SEARCH_RESULTS = {
+  search_terms: ["Abb"],
+  search_results: [
+    {
+      result: {
+        id: "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
+        value: "Abbott Inc",
+      },
+      score: 375,
+      type: "mine",
+    },
+    {
+      result: {
+        id: "5a993f02-1006-4a07-a448-f4064294de11",
+        value: "Abbott PLC",
+      },
+      score: 375,
+      type: "mine",
+    },
+  ],
+};
+
 export const VARIANCE_STATUS_OPTIONS = {
   records: [
     {
@@ -1277,6 +1317,735 @@ export const VARIANCE_STATUS_OPTIONS = {
     },
   ],
 };
+
+export const SEARCH_OPTIONS = [
+  {
+    model_id: "mine",
+    description: "Mines",
+  },
+  {
+    model_id: "party",
+    description: "Contacts",
+  },
+  {
+    model_id: "permit",
+    description: "Permits",
+  },
+  {
+    model_id: "mine_documents",
+    description: "Mine Documents",
+  },
+  {
+    model_id: "permit_documents",
+    description: "Permit Documents",
+  },
+];
+
+export const SEARCH_RESULTS = {
+  search_terms: ["Abb"],
+  search_results: {
+    mine: [
+      {
+        result: {
+          mine_guid: "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
+          mine_name: "Abbott Inc",
+          mine_no: "13353605",
+          mine_region: "SW",
+          mine_permit: [
+            {
+              permit_guid: "dfbc581b-fedf-415f-9543-b590d8ff9dcc",
+              mine_guid: "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
+              permit_no: "P-1707761",
+              mine_name: "Abbott Inc",
+              permitee: "Leslie Reed, Bailey and Gomez",
+            },
+          ],
+          mine_status: [
+            {
+              status_labels: ["Closed", "Unknown"],
+            },
+          ],
+        },
+        score: 375,
+        type: "mine",
+      },
+      {
+        result: {
+          mine_guid: "5a993f02-1006-4a07-a448-f4064294de11",
+          mine_name: "Abbott PLC",
+          mine_no: "63830194",
+          mine_region: "SC",
+          mine_permit: [
+            {
+              permit_guid: "ffcf7d9a-8a1a-4c56-9a2e-b5bbf82bc175",
+              mine_guid: "5a993f02-1006-4a07-a448-f4064294de11",
+              permit_no: "G-3117130",
+              mine_name: "Abbott PLC",
+              permitee: "Rachel Patterson LLC",
+            },
+          ],
+          mine_status: [
+            {
+              status_labels: ["Closed", "Unknown"],
+            },
+          ],
+        },
+        score: 375,
+        type: "mine",
+      },
+      {
+        result: {
+          mine_guid: "bbf2ccfe-9da6-4d88-95df-fe9997d64d96",
+          mine_name: "Abbott Ltd",
+          mine_no: "24326469",
+          mine_region: "SW",
+          mine_permit: [
+            {
+              permit_guid: "3528ffc0-f917-4553-aa14-639a396cbf71",
+              mine_guid: "bbf2ccfe-9da6-4d88-95df-fe9997d64d96",
+              permit_no: "M-8412263",
+              mine_name: "Abbott Ltd",
+              permitee: "Julia Martin, Chapman and White",
+            },
+          ],
+          mine_status: [
+            {
+              status_labels: ["Closed"],
+            },
+          ],
+        },
+        score: 375,
+        type: "mine",
+      },
+      {
+        result: {
+          mine_guid: "72de71d3-edc9-4e42-ba7b-7a18ff97a8e2",
+          mine_name: "Abbott PLC",
+          mine_no: "14676857",
+          mine_region: "NW",
+          mine_permit: [
+            {
+              permit_guid: "a4132a01-9d78-458a-b4d2-e7bb9ee0900b",
+              mine_guid: "72de71d3-edc9-4e42-ba7b-7a18ff97a8e2",
+              permit_no: "Q-9936020",
+              mine_name: "Abbott PLC",
+              permitee: "Cheryl Hernandez, Cook and Galvan",
+            },
+          ],
+          mine_status: [
+            {
+              status_labels: ["Operating", "Year round"],
+            },
+          ],
+        },
+        score: 375,
+        type: "mine",
+      },
+      {
+        result: {
+          mine_guid: "e8ccfdd4-c852-4116-be2c-b2cc7f3148a3",
+          mine_name: "Abbott Inc",
+          mine_no: "75293246",
+          mine_region: "NE",
+          mine_permit: [
+            {
+              permit_guid: "732002b5-fc47-4203-bd59-a41772392ccd",
+              mine_guid: "e8ccfdd4-c852-4116-be2c-b2cc7f3148a3",
+              permit_no: "CX-4742851",
+              mine_name: "Abbott Inc",
+              permitee: "Christina Brown PLC",
+            },
+          ],
+          mine_status: [
+            {
+              status_labels: ["Closed", "Orphaned", "Site Visit Required"],
+            },
+          ],
+        },
+        score: 375,
+        type: "mine",
+      },
+      {
+        result: {
+          mine_guid: "2b626772-1c3d-4e98-98d5-10d66b9d5555",
+          mine_name: "Abbott-Garza",
+          mine_no: "11557593",
+          mine_region: "NW",
+          mine_permit: [
+            {
+              permit_guid: "ed8395ec-b7c2-4e07-82e5-5bfb1a143bf3",
+              mine_guid: "2b626772-1c3d-4e98-98d5-10d66b9d5555",
+              permit_no: "G-1987651",
+              mine_name: "Abbott-Garza",
+              permitee: "Justin Bray Group",
+            },
+          ],
+          mine_status: [
+            {
+              status_labels: ["Closed", "Reclamation", "Long Term Maintenance"],
+            },
+          ],
+        },
+        score: 321,
+        type: "mine",
+      },
+    ],
+    party: [
+      {
+        result: {
+          party_guid: "c0816fad-ef1d-4fa8-be74-2a57d1b3d05b",
+          name: "Cody Abbott",
+          email: "Cody.Abbott@example.com",
+          phone_no: "401-392-0090",
+          mine_party_appt: [
+            {
+              mine_party_appt_type_code: "EOR",
+              mine: {
+                mine_name: "Lopez-Hale",
+              },
+            },
+          ],
+        },
+        score: 75,
+        type: "party",
+      },
+      {
+        result: {
+          party_guid: "bb93b7de-8ef3-44c2-8c3c-d1ce21e98aa6",
+          name: "Eric Abbott",
+          email: "Eric.Abbott@example.com",
+          phone_no: "659-797-6365",
+          mine_party_appt: [
+            {
+              mine_party_appt_type_code: "EOR",
+              mine: {
+                mine_name: "French Inc",
+              },
+            },
+          ],
+        },
+        score: 75,
+        type: "party",
+      },
+      {
+        result: {
+          party_guid: "e59f15a0-4bf1-4963-9546-1009e7e96f23",
+          name: "Chad Abbott",
+          email: "Chad.Abbott@example.com",
+          phone_no: "242-001-2306",
+          mine_party_appt: [
+            {
+              mine_party_appt_type_code: "EOR",
+              mine: {
+                mine_name: "Nguyen, Case and Fernandez",
+              },
+            },
+          ],
+        },
+        score: 75,
+        type: "party",
+      },
+      {
+        result: {
+          party_guid: "e412fdd0-e640-4bfa-805e-86b331f29b6d",
+          name: "Kyle Abbott",
+          email: "Kyle.Abbott@example.com",
+          phone_no: "988-817-2676",
+          mine_party_appt: [
+            {
+              mine_party_appt_type_code: "MMG",
+              mine: {
+                mine_name: "Anderson-Martin",
+              },
+            },
+          ],
+        },
+        score: 75,
+        type: "party",
+      },
+      {
+        result: {
+          party_guid: "70bf5e33-26a2-4bfa-9841-7fe46b089712",
+          name: "Lee Abbott",
+          email: "Lee.Abbott@example.com",
+          phone_no: "593-906-1501",
+          mine_party_appt: [
+            {
+              mine_party_appt_type_code: "MMG",
+              mine: {
+                mine_name: "Garza, Kelly and Williams",
+              },
+            },
+          ],
+        },
+        score: 75,
+        type: "party",
+      },
+      {
+        result: {
+          party_guid: "b4058b95-a367-428c-bc85-50c2e008e96f",
+          name: "Dawn Abbott",
+          email: "Dawn.Abbott@example.com",
+          phone_no: "743-912-5775",
+          mine_party_appt: [
+            {
+              mine_party_appt_type_code: "MMG",
+              mine: {
+                mine_name: "Schmidt Ltd",
+              },
+            },
+          ],
+        },
+        score: 74,
+        type: "party",
+      },
+    ],
+    permit: [
+      {
+        result: {
+          permit_guid: "9df4593a-4b58-4cee-8c3a-1cad5df7d3f6",
+          mine_guid: "5bf528d0-9e5a-421e-92c5-7e088374dad5",
+          permit_no: "CX-803",
+          mine_name: "Wheeler Inc",
+          permitee: "Carl Taylor, Goodwin and Wade",
+        },
+        score: 1285,
+        type: "permit",
+      },
+      {
+        result: {
+          permit_guid: "b066a984-55fc-47aa-8ecf-fb3bf33ec2bb",
+          mine_guid: "d5aeba94-6d58-4617-b71e-b16a145de86e",
+          permit_no: "CX-7230",
+          mine_name: "Reese, Brown and Diaz",
+          permitee: "Traci Franklin-Baker",
+        },
+        score: 1125,
+        type: "permit",
+      },
+      {
+        result: {
+          permit_guid: "88280bbd-18ab-483d-94d4-94e3063622f1",
+          mine_guid: "af9b3e68-981e-42cb-9931-34f37d006378",
+          permit_no: "CX-4926",
+          mine_name: "Mcgrath and Sons",
+          permitee: "Paul Parker, Mckee and Wilson",
+        },
+        score: 1125,
+        type: "permit",
+      },
+      {
+        result: {
+          permit_guid: "38e01cc1-bc49-430b-9453-1df508b98e64",
+          mine_guid: "5392aef5-9a7b-4a94-98cd-66582fe423cb",
+          permit_no: "CX-9917",
+          mine_name: "Brown-Wheeler",
+          permitee: "Nathaniel Harris-Randolph",
+        },
+        score: 1125,
+        type: "permit",
+      },
+      {
+        result: {
+          permit_guid: "db1cbe69-1f13-4be3-a874-0093af1e6a49",
+          mine_guid: "74b668b3-0bce-4886-a93f-25fb59783ed3",
+          permit_no: "CX-7566",
+          mine_name: "Williams-Baird",
+          permitee: "Jeffery Jones, Benson and Frazier",
+        },
+        score: 1125,
+        type: "permit",
+      },
+      {
+        result: {
+          permit_guid: "ab74c658-891f-4a56-9604-fa4ba694ae73",
+          mine_guid: "25003e54-314e-492e-b858-5af18381c6d3",
+          permit_no: "CX-63820",
+          mine_name: "Harmon and Sons",
+          permitee: "Denise Arroyo-Moran",
+        },
+        score: 999,
+        type: "permit",
+      },
+    ],
+    mine_documents: [
+      {
+        result: {
+          mine_guid: "e56e4252-1ce2-45e7-b362-762aa144bae0",
+          mine_document_guid: "f8341ebb-d673-42c1-bad2-8db22d7e3ddb",
+          document_name: "above.js",
+          mine_name: "Conrad Ltd",
+          document_manager_guid: "a8248ab9-43d0-478a-9380-0891868e3f8d",
+        },
+        score: 225,
+        type: "mine_documents",
+      },
+      {
+        result: {
+          mine_guid: "6f165b2a-fa60-4ed5-aa06-0aeed06659b5",
+          mine_document_guid: "be071be2-346d-44dc-8f8f-fb4201b50d7e",
+          document_name: "about.js",
+          mine_name: "Lozano, Hanson and Smith",
+          document_manager_guid: "dfc16cff-6542-4807-9ffc-af7ec00efd79",
+        },
+        score: 225,
+        type: "mine_documents",
+      },
+      {
+        result: {
+          mine_guid: "5422ce91-774a-4ced-beba-78d36bbb8676",
+          mine_document_guid: "25db4852-83dd-4916-8c10-33e1d78aa279",
+          document_name: "above.avi",
+          mine_name: "Rose Inc",
+          document_manager_guid: "a79fb6bd-d7b8-4a92-98e6-85598a2f853f",
+        },
+        score: 225,
+        type: "mine_documents",
+      },
+      {
+        result: {
+          mine_guid: "7f2319d0-920d-4776-8856-4903c39665db",
+          mine_document_guid: "c207486f-dbdd-4b3f-99a0-a650abddf85e",
+          document_name: "above.avi",
+          mine_name: "Hall Ltd",
+          document_manager_guid: "14bd5393-8586-4561-afbe-727fdbefcb65",
+        },
+        score: 225,
+        type: "mine_documents",
+      },
+      {
+        result: {
+          mine_guid: "51884cec-18d8-4dc3-87a3-6ed7047056f1",
+          mine_document_guid: "2c111d6b-f360-4eb5-b37d-fe9a935cd40f",
+          document_name: "above.avi",
+          mine_name: "Lawrence-Vargas",
+          document_manager_guid: "a8034837-a710-40f8-9c3b-8ae08a444b4d",
+        },
+        score: 225,
+        type: "mine_documents",
+      },
+      {
+        result: {
+          mine_guid: "fa173dcb-4d5c-4e3d-a3d6-e379308688ea",
+          mine_document_guid: "28060d75-f434-4f58-9082-fc4a05a696ad",
+          document_name: "about.js",
+          mine_name: "Thomas-Jackson",
+          document_manager_guid: "99e7cf58-6b48-473c-9d05-4c010839eb8d",
+        },
+        score: 225,
+        type: "mine_documents",
+      },
+    ],
+    permit_documents: [],
+  },
+};
+
+export const MINE_SEARCH_RESULTS = [
+  {
+    mine_guid: "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
+    mine_name: "Abbott Inc",
+    mine_no: "13353605",
+    mine_region: "SW",
+    mine_permit: [
+      {
+        permit_guid: "dfbc581b-fedf-415f-9543-b590d8ff9dcc",
+        mine_guid: "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
+        permit_no: "P-1707761",
+        mine_name: "Abbott Inc",
+        permitee: "Leslie Reed, Bailey and Gomez",
+      },
+    ],
+    mine_status: [
+      {
+        status_labels: ["Closed", "Unknown"],
+      },
+    ],
+  },
+  {
+    mine_guid: "5a993f02-1006-4a07-a448-f4064294de11",
+    mine_name: "Abbott PLC",
+    mine_no: "63830194",
+    mine_region: "SC",
+    mine_permit: [
+      {
+        permit_guid: "ffcf7d9a-8a1a-4c56-9a2e-b5bbf82bc175",
+        mine_guid: "5a993f02-1006-4a07-a448-f4064294de11",
+        permit_no: "G-3117130",
+        mine_name: "Abbott PLC",
+        permitee: "Rachel Patterson LLC",
+      },
+    ],
+    mine_status: [
+      {
+        status_labels: ["Closed", "Unknown"],
+      },
+    ],
+  },
+  {
+    mine_guid: "bbf2ccfe-9da6-4d88-95df-fe9997d64d96",
+    mine_name: "Abbott Ltd",
+    mine_no: "24326469",
+    mine_region: "SW",
+    mine_permit: [
+      {
+        permit_guid: "3528ffc0-f917-4553-aa14-639a396cbf71",
+        mine_guid: "bbf2ccfe-9da6-4d88-95df-fe9997d64d96",
+        permit_no: "M-8412263",
+        mine_name: "Abbott Ltd",
+        permitee: "Julia Martin, Chapman and White",
+      },
+    ],
+    mine_status: [
+      {
+        status_labels: ["Closed"],
+      },
+    ],
+  },
+  {
+    mine_guid: "72de71d3-edc9-4e42-ba7b-7a18ff97a8e2",
+    mine_name: "Abbott PLC",
+    mine_no: "14676857",
+    mine_region: "NW",
+    mine_permit: [
+      {
+        permit_guid: "a4132a01-9d78-458a-b4d2-e7bb9ee0900b",
+        mine_guid: "72de71d3-edc9-4e42-ba7b-7a18ff97a8e2",
+        permit_no: "Q-9936020",
+        mine_name: "Abbott PLC",
+        permitee: "Cheryl Hernandez, Cook and Galvan",
+      },
+    ],
+    mine_status: [
+      {
+        status_labels: ["Operating", "Year round"],
+      },
+    ],
+  },
+  {
+    mine_guid: "e8ccfdd4-c852-4116-be2c-b2cc7f3148a3",
+    mine_name: "Abbott Inc",
+    mine_no: "75293246",
+    mine_region: "NE",
+    mine_permit: [
+      {
+        permit_guid: "732002b5-fc47-4203-bd59-a41772392ccd",
+        mine_guid: "e8ccfdd4-c852-4116-be2c-b2cc7f3148a3",
+        permit_no: "CX-4742851",
+        mine_name: "Abbott Inc",
+        permitee: "Christina Brown PLC",
+      },
+    ],
+    mine_status: [
+      {
+        status_labels: ["Closed", "Orphaned", "Site Visit Required"],
+      },
+    ],
+  },
+  {
+    mine_guid: "2b626772-1c3d-4e98-98d5-10d66b9d5555",
+    mine_name: "Abbott-Garza",
+    mine_no: "11557593",
+    mine_region: "NW",
+    mine_permit: [
+      {
+        permit_guid: "ed8395ec-b7c2-4e07-82e5-5bfb1a143bf3",
+        mine_guid: "2b626772-1c3d-4e98-98d5-10d66b9d5555",
+        permit_no: "G-1987651",
+        mine_name: "Abbott-Garza",
+        permitee: "Justin Bray Group",
+      },
+    ],
+    mine_status: [
+      {
+        status_labels: ["Closed", "Reclamation", "Long Term Maintenance"],
+      },
+    ],
+  },
+];
+
+export const PERMIT_SEARCH_RESULTS = [
+  {
+    permit_guid: "9df4593a-4b58-4cee-8c3a-1cad5df7d3f6",
+    mine_guid: "5bf528d0-9e5a-421e-92c5-7e088374dad5",
+    permit_no: "CX-803",
+    mine_name: "Wheeler Inc",
+    permitee: "Carl Taylor, Goodwin and Wade",
+  },
+
+  {
+    permit_guid: "b066a984-55fc-47aa-8ecf-fb3bf33ec2bb",
+    mine_guid: "d5aeba94-6d58-4617-b71e-b16a145de86e",
+    permit_no: "CX-7230",
+    mine_name: "Reese, Brown and Diaz",
+    permitee: "Traci Franklin-Baker",
+  },
+
+  {
+    permit_guid: "88280bbd-18ab-483d-94d4-94e3063622f1",
+    mine_guid: "af9b3e68-981e-42cb-9931-34f37d006378",
+    permit_no: "CX-4926",
+    mine_name: "Mcgrath and Sons",
+    permitee: "Paul Parker, Mckee and Wilson",
+  },
+
+  {
+    permit_guid: "38e01cc1-bc49-430b-9453-1df508b98e64",
+    mine_guid: "5392aef5-9a7b-4a94-98cd-66582fe423cb",
+    permit_no: "CX-9917",
+    mine_name: "Brown-Wheeler",
+    permitee: "Nathaniel Harris-Randolph",
+  },
+
+  {
+    permit_guid: "db1cbe69-1f13-4be3-a874-0093af1e6a49",
+    mine_guid: "74b668b3-0bce-4886-a93f-25fb59783ed3",
+    permit_no: "CX-7566",
+    mine_name: "Williams-Baird",
+    permitee: "Jeffery Jones, Benson and Frazier",
+  },
+
+  {
+    permit_guid: "ab74c658-891f-4a56-9604-fa4ba694ae73",
+    mine_guid: "25003e54-314e-492e-b858-5af18381c6d3",
+    permit_no: "CX-63820",
+    mine_name: "Harmon and Sons",
+    permitee: "Denise Arroyo-Moran",
+  },
+];
+
+export const PARTY_SEARCH_RESULTS = [
+  {
+    party_guid: "c0816fad-ef1d-4fa8-be74-2a57d1b3d05b",
+    name: "Cody Abbott",
+    email: "Cody.Abbott@example.com",
+    phone_no: "401-392-0090",
+    mine_party_appt: [
+      {
+        mine_party_appt_type_code: "EOR",
+        mine: {
+          mine_name: "Lopez-Hale",
+        },
+      },
+    ],
+  },
+  {
+    party_guid: "bb93b7de-8ef3-44c2-8c3c-d1ce21e98aa6",
+    name: "Eric Abbott",
+    email: "Eric.Abbott@example.com",
+    phone_no: "659-797-6365",
+    mine_party_appt: [
+      {
+        mine_party_appt_type_code: "EOR",
+        mine: {
+          mine_name: "French Inc",
+        },
+      },
+    ],
+  },
+  {
+    party_guid: "e59f15a0-4bf1-4963-9546-1009e7e96f23",
+    name: "Chad Abbott",
+    email: "Chad.Abbott@example.com",
+    phone_no: "242-001-2306",
+    mine_party_appt: [
+      {
+        mine_party_appt_type_code: "EOR",
+        mine: {
+          mine_name: "Nguyen, Case and Fernandez",
+        },
+      },
+    ],
+  },
+  {
+    party_guid: "e412fdd0-e640-4bfa-805e-86b331f29b6d",
+    name: "Kyle Abbott",
+    email: "Kyle.Abbott@example.com",
+    phone_no: "988-817-2676",
+    mine_party_appt: [
+      {
+        mine_party_appt_type_code: "MMG",
+        mine: {
+          mine_name: "Anderson-Martin",
+        },
+      },
+    ],
+  },
+
+  {
+    party_guid: "70bf5e33-26a2-4bfa-9841-7fe46b089712",
+    name: "Lee Abbott",
+    email: "Lee.Abbott@example.com",
+    phone_no: "593-906-1501",
+    mine_party_appt: [
+      {
+        mine_party_appt_type_code: "MMG",
+        mine: {
+          mine_name: "Garza, Kelly and Williams",
+        },
+      },
+    ],
+  },
+
+  {
+    party_guid: "b4058b95-a367-428c-bc85-50c2e008e96f",
+    name: "Dawn Abbott",
+    email: "Dawn.Abbott@example.com",
+    phone_no: "743-912-5775",
+    mine_party_appt: [
+      {
+        mine_party_appt_type_code: "MMG",
+        mine: {
+          mine_name: "Schmidt Ltd",
+        },
+      },
+    ],
+  },
+];
+
+export const MINE_DOCUMENT_SEARCH_RESULTS = [
+  {
+    mine_guid: "e56e4252-1ce2-45e7-b362-762aa144bae0",
+    mine_document_guid: "f8341ebb-d673-42c1-bad2-8db22d7e3ddb",
+    document_name: "above.js",
+    mine_name: "Conrad Ltd",
+    document_manager_guid: "a8248ab9-43d0-478a-9380-0891868e3f8d",
+  },
+  {
+    mine_guid: "6f165b2a-fa60-4ed5-aa06-0aeed06659b5",
+    mine_document_guid: "be071be2-346d-44dc-8f8f-fb4201b50d7e",
+    document_name: "about.js",
+    mine_name: "Lozano, Hanson and Smith",
+    document_manager_guid: "dfc16cff-6542-4807-9ffc-af7ec00efd79",
+  },
+  {
+    mine_guid: "5422ce91-774a-4ced-beba-78d36bbb8676",
+    mine_document_guid: "25db4852-83dd-4916-8c10-33e1d78aa279",
+    document_name: "above.avi",
+    mine_name: "Rose Inc",
+    document_manager_guid: "a79fb6bd-d7b8-4a92-98e6-85598a2f853f",
+  },
+  {
+    mine_guid: "7f2319d0-920d-4776-8856-4903c39665db",
+    mine_document_guid: "c207486f-dbdd-4b3f-99a0-a650abddf85e",
+    document_name: "above.avi",
+    mine_name: "Hall Ltd",
+    document_manager_guid: "14bd5393-8586-4561-afbe-727fdbefcb65",
+  },
+  {
+    mine_guid: "51884cec-18d8-4dc3-87a3-6ed7047056f1",
+    mine_document_guid: "2c111d6b-f360-4eb5-b37d-fe9a935cd40f",
+    document_name: "above.avi",
+    mine_name: "Lawrence-Vargas",
+    document_manager_guid: "a8034837-a710-40f8-9c3b-8ae08a444b4d",
+  },
+  {
+    mine_guid: "fa173dcb-4d5c-4e3d-a3d6-e379308688ea",
+    mine_document_guid: "28060d75-f434-4f58-9082-fc4a05a696ad",
+    document_name: "about.js",
+    mine_name: "Thomas-Jackson",
+    document_manager_guid: "99e7cf58-6b48-473c-9d05-4c010839eb8d",
+  },
+];
 
 export const VARIANCE_DROPDOWN_STATUS_OPTIONS = [
   {

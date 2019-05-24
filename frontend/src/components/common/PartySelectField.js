@@ -5,6 +5,7 @@ import { debounce } from "lodash";
 import { compareTwoStrings } from "string-similarity";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
+import LinkButton from "@/components/common/LinkButton";
 
 import { Icon, Divider, AutoComplete } from "antd";
 import { Field } from "redux-form";
@@ -13,6 +14,7 @@ import RenderLargeSelect from "./RenderLargeSelect";
 import { fetchParties, setAddPartyFormState } from "@/actionCreators/partiesActionCreator";
 import { getRawParties, getLastCreatedParty } from "@/selectors/partiesSelectors";
 import { createItemMap, createItemIdsArray } from "@/utils/helpers";
+import { Validate } from "@/utils/Validate";
 
 const propTypes = {
   id: PropTypes.string,
@@ -47,17 +49,10 @@ const renderAddPartyFooter = (showAddParty, partyLabel) => (
   <div className="wrapped-text">
     <Divider style={{ margin: "0" }} />
     <p className="footer-text">{`Can't find the ${partyLabel} you are looking for?`}</p>
-    <a
-      role="link"
-      onClick={showAddParty}
-      // Accessibility: Event listener
-      onKeyPress={showAddParty}
-      // Accessibility: Focusable element
-      tabIndex="0"
-    >
+    <LinkButton onClick={showAddParty}>
       <Icon type="plus" style={{ paddingRight: "5px" }} />
       {`Add a new ${partyLabel}`}
-    </a>
+    </LinkButton>
   </div>
 );
 
@@ -73,7 +68,9 @@ const transformData = (data, options, footer, searchTerm) => {
   const transformedData = data
     .map((opt) => (
       <AutoComplete.Option key={opt} value={opt}>
-        {options[opt].name}
+        {`${options[opt].name}, ${
+          Validate.checkEmail(options[opt].email) ? options[opt].email : "Email Unknown"
+        }`}
       </AutoComplete.Option>
     ))
     .sort(

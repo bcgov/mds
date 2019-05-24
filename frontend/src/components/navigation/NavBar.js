@@ -13,18 +13,8 @@ import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
 import * as Styles from "@/constants/styles";
 import * as Permission from "@/constants/permissions";
-import {
-  LOGO,
-  ADMIN,
-  MINE,
-  HAMBURGER,
-  LOGOUT_WHITE,
-  LOGOUT,
-  TEAM,
-  CLOSE,
-  SUCCESS_CHECKMARK,
-  YELLOW_HAZARD,
-} from "@/constants/assets";
+import SearchBar from "@/components/search/SearchBar";
+import { LOGO, HAMBURGER, CLOSE, SUCCESS_CHECKMARK, YELLOW_HAZARD } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { fetchMineVerifiedStatuses } from "@/actionCreators/mineActionCreator";
 import { getCurrentUserVerifiedMines, getCurrentUserUnverifiedMines } from "@/reducers/mineReducer";
@@ -39,7 +29,7 @@ const propTypes = {
   isMenuOpen: PropTypes.bool.isRequired,
   logoutUser: PropTypes.func.isRequired,
   toggleHamburgerMenu: PropTypes.func.isRequired,
-  keycloak: { logout: PropTypes.func.isRequired }.isRequired,
+  keycloak: { logout: PropTypes.func }.isRequired,
   fetchMineVerifiedStatuses: PropTypes.func.isRequired,
   currentUserVerifiedMines: PropTypes.arrayOf(CustomPropTypes.mineVerificationStatus),
   currentUserUnverifiedMines: PropTypes.arrayOf(CustomPropTypes.mineVerificationStatus),
@@ -51,20 +41,15 @@ const defaultProps = {
 };
 
 export class NavBar extends Component {
-  menu = (
-    <Menu>
-      <Menu.Item key="0">
-        <button type="button" onClick={this.handleLogout}>
-          <img alt="Logout" src={LOGOUT} className="menu__img" />
-          Logout
-        </button>
-      </Menu.Item>
-    </Menu>
-  );
-
   componentDidMount() {
     this.props.fetchMineVerifiedStatuses(`idir\\${this.props.userInfo.preferred_username}`);
   }
+
+  handleLogout = () => {
+    this.props.keycloak.logout();
+    localStorage.removeItem("jwt");
+    this.props.logoutUser();
+  };
 
   unverifiedMinesMenu = () => (
     <Menu>
@@ -78,12 +63,6 @@ export class NavBar extends Component {
       ))}
     </Menu>
   );
-
-  handleLogout = () => {
-    this.props.keycloak.logout();
-    localStorage.removeItem("jwt");
-    this.props.logoutUser();
-  };
 
   renderFullNav = () => (
     <div className="inline-flex">
@@ -99,7 +78,6 @@ export class NavBar extends Component {
           }
           className="menu__btn--link"
         >
-          <img alt="Mine" className="padding-small--right vertical-align-sm" src={MINE} />
           Mines
         </Button>
       </Link>
@@ -117,7 +95,6 @@ export class NavBar extends Component {
           }
           className="menu__btn--link"
         >
-          <img alt="team" className="padding-small--right icon-sm vertical-align-sm" src={TEAM} />
           Contacts
         </Button>
       </Link>
@@ -131,11 +108,6 @@ export class NavBar extends Component {
             }
             className="menu__btn--link"
           >
-            <img
-              alt="Admin"
-              className="padding-small--right icon-sm vertical-align-sm"
-              src={ADMIN}
-            />
             Admin
           </Button>
         </Link>
@@ -198,7 +170,6 @@ export class NavBar extends Component {
                     }
                     className="menu--hamburger__btn--link"
                   >
-                    <img alt="Mine" className="img-lg padding-large--right" src={MINE} />
                     Mines
                   </Button>
                 </Link>
@@ -220,7 +191,6 @@ export class NavBar extends Component {
                     }
                     className="menu--hamburger__btn--link"
                   >
-                    <img alt="team" src={TEAM} className="img-lg padding-large--right" />
                     Contacts
                   </Button>
                 </Link>
@@ -239,8 +209,25 @@ export class NavBar extends Component {
                     }
                     className="menu--hamburger__btn--link"
                   >
-                    <img alt="Admin" src={ADMIN} className="img-lg padding-large--right" />
                     Admin
+                  </Button>
+                </Link>
+              </Col>
+            </Row>
+          </AuthorizationWrapper>
+          <AuthorizationWrapper inTesting>
+            <Row>
+              <Col span={24}>
+                <Link to={router.CUSTOM_HOME_PAGE.route}>
+                  <Button
+                    id={
+                      includes(this.props.activeButton, router.CUSTOM_HOME_PAGE.route)
+                        ? "active-dashboard-btn--mobile"
+                        : ""
+                    }
+                    className="menu--hamburger__btn--link"
+                  >
+                    My Dashboard
                   </Button>
                 </Link>
               </Col>
@@ -250,11 +237,10 @@ export class NavBar extends Component {
             <Col span={24}>
               <button
                 type="button"
-                onClick={this.handleLogout}
+                onClick={() => this.handleLogout()}
                 className="menu--hamburger__btn--link"
               >
-                <img alt="Logout" src={LOGOUT_WHITE} className="img-lg padding-large--right" />
-                Logout
+                Log Out
               </button>
             </Col>
           </Row>
@@ -266,6 +252,23 @@ export class NavBar extends Component {
         </div>
       )}
     </div>
+  );
+
+  menu = () => (
+    <Menu id="menu__dropdown">
+      <AuthorizationWrapper inTesting>
+        <div className="custom-menu-item">
+          <Link to={router.CUSTOM_HOME_PAGE.route}>
+            <button type="button">My Dashboard</button>
+          </Link>
+        </div>
+      </AuthorizationWrapper>
+      <Menu.Item key="1">
+        <button type="button" onClick={() => this.handleLogout()}>
+          Log Out
+        </button>
+      </Menu.Item>
+    </Menu>
   );
 
   render() {
@@ -280,6 +283,7 @@ export class NavBar extends Component {
           >
             <img alt="Home" className="menu__img" src={LOGO} />
           </Link>
+          <SearchBar />
           <MediaQuery maxWidth={768}>
             <Button
               ghost

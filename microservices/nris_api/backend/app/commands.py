@@ -1,7 +1,6 @@
 import click
 
 from app.extensions import db, oracle_db
-from app.nris.models.test_model import Factorial
 
 
 def register_commands(app):

@@ -66,6 +66,7 @@ STATUS_MODEL = api.model(
         'status_labels': fields.List(fields.String),
         'effective_date': Date,
         'expiry_date': Date,
+        'status_date': Date,
     })
 
 MINE_TSF_MODEL = api.model(

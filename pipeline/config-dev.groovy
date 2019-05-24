@@ -200,7 +200,7 @@ app {
                             'REDIS_CONFIG_NAME': "mds-redis${vars.deployment.suffix}",
                             'CACHE_REDIS_HOST': "mds-redis${vars.deployment.suffix}",
                             'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled}",
-                            'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name}",
+                            'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name_nris}",
                             'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/nris_api",
@@ -279,6 +279,7 @@ environments {
                 map_portal_id = "e926583cd0114cd19ebc591f344e30dc"
                 elastic_enabled = 1
                 elastic_service_name = "MDS Dev"
+                elastic_service_name_nris = "NRIS API Dev"
             }
             modules {
                 'mds-frontend' {
@@ -301,7 +302,7 @@ environments {
                 }
                 'mds-nris-backend' { 
                     HOST = "http://mds-nris-backend${vars.deployment.suffix}:5500"
-                    PATH = "/${vars.git.changeId}/nris_api"
+                    PATH = "/${vars.git.changeId}/nris-api"
                 }
                 'mds-redis' {
                     HOST = "http://mds-redis${vars.deployment.suffix}"

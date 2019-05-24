@@ -9,6 +9,11 @@ CREATE INDEX IF NOT EXISTS application_mine_guid_fkey_idx ON application(mine_gu
 
 /* Mine */
 CREATE INDEX IF NOT EXISTS active_mine_mine_region_fkey_idx ON mine(mine_region, deleted_ind) WHERE (deleted_ind = false);
+CREATE INDEX IF NOT EXISTS mine_mine_name_search_idx ON mine USING gist (mine_name gist_trgm_ops);
+CREATE INDEX IF NOT EXISTS mine_mine_no_search_idx ON mine USING gist (mine_no gist_trgm_ops);
+
+/* Mine document */
+CREATE INDEX IF NOT EXISTS mine_document_document_name_search_idx on mine_document USING gist (document_name gist_trgm_ops);
 
 /* Mine expected document */
 CREATE INDEX IF NOT EXISTS active_mine_expected_document_mine_guid_fkey_idx ON mine_expected_document(mine_guid, active_ind) WHERE (active_ind = true);
@@ -36,6 +41,10 @@ CREATE INDEX IF NOT EXISTS active_mine_type_mine_tenure_type_code_fkey_idx ON mi
 DROP INDEX IF EXISTS active_party_sub_division_code_fkey_idx;
 DROP INDEX IF EXISTS active_party_address_type_code_fkey_idx;
 CREATE INDEX IF NOT EXISTS active_party_party_type_code_fkey_idx ON party(party_type_code, deleted_ind) WHERE (deleted_ind = false);
+CREATE INDEX IF NOT EXISTS party_email_search_idx ON party USING gist (email gist_trgm_ops);
+CREATE INDEX IF NOT EXISTS party_first_name_search_idx ON party USING gist (first_name gist_trgm_ops);
+CREATE INDEX IF NOT EXISTS party_party_name_search_idx ON party USING gist (party_name gist_trgm_ops);
+CREATE INDEX IF NOT EXISTS party_phone_no_search_idx ON party USING gist (phone_no gist_trgm_ops);
 
 /* Permit */
 CREATE INDEX IF NOT EXISTS permit_permit_status_code_fkey_idx ON permit(permit_status_code);

@@ -182,19 +182,51 @@ body {
 }
 
 .padding-small {
+  &--left {
+    padding-left: $default-padding-sm;
+  }
   &--right {
-    padding-right: 5px;
+    padding-right: $default-padding-sm;
+  }
+  &--top {
+    padding-top: $default-padding-sm;
+  }
+  &--bottom {
+    padding-bottom: $default-padding-sm;
   }
   padding: $default-padding-sm;
 }
 
 .padding-large {
+  &--top {
+    padding-top: $default-padding-lg;
+  }
+  &--bottom {
+    padding-bottom: $default-padding-lg;
+  }
   &--right {
     padding-right: $default-padding-lg;
   }
   &--left {
-    padding-left: 25px;
+    padding-left: $default-padding-lg;
   }
+  padding: $default-padding-lg;
+}
+
+.padding-xxl {
+  &--top {
+    padding-top: $default-padding-xxl;
+  }
+  &--bottom {
+    padding-bottom: $default-padding-xxl;
+  }
+  &--right {
+    padding-right: $default-padding-xxl;
+  }
+  &--left {
+    padding-left: $default-padding-xxl;
+  }
+  padding: $default-padding-xxl;
 }
 
 .margin-small {
@@ -236,6 +268,7 @@ body {
 
 .img-lg {
   height: 30px;
+  font-size: 26px;
 }
 
 .vertical-align {
