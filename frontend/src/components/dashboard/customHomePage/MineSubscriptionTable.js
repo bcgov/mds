@@ -10,7 +10,7 @@ import CustomPropTypes from "@/customPropTypes";
 import { UNSUBSCRIBE } from "@/constants/assets";
 
 /**
- * @class MineSubscriptionTable is the main landing page of the application
+ * @class MineSubscriptionTable is a user specific table of mines they have subscribed to with the ability to unsubscribe
  *
  */
 

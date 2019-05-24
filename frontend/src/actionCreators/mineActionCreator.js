@@ -349,7 +349,6 @@ export const subscribe = (mineGuid, mineName) => (dispatch) => {
         duration: 10,
       });
       dispatch(success(reducerTypes.SUBSCRIBE));
-      dispatch(hideLoading());
     })
     .catch(() => dispatch(error(reducerTypes.SUBSCRIBE)))
     .finally(() => dispatch(hideLoading()));
@@ -366,7 +365,6 @@ export const unSubscribe = (mineGuid, mineName) => (dispatch) => {
         duration: 10,
       });
       dispatch(success(reducerTypes.UNSUBSCRIBE));
-      dispatch(hideLoading());
     })
     .catch(() => dispatch(error(reducerTypes.SUBSCRIBE)))
     .finally(() => dispatch(hideLoading()));
@@ -375,22 +373,15 @@ export const unSubscribe = (mineGuid, mineName) => (dispatch) => {
 export const fetchSubscribedMinesByUser = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_SUBSCRIBED_MINES));
   dispatch(showLoading());
-  return axios
+  return CustomAxios()
     .get(ENVIRONMENT.apiUrl + API.MINE_SUBSCRIPTION, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_SUBSCRIBED_MINES));
       dispatch(mineActions.storeSubscribedMines(response.data));
-      dispatch(hideLoading());
       return response;
     })
-    .catch((err) => {
-      notification.error({
-        message: err.response ? err.response.data.message : String.ERROR,
-        duration: 10,
-      });
-      dispatch(error(reducerTypes.GET_SUBSCRIBED_MINES));
-      dispatch(hideLoading());
-    });
+    .catch(() => dispatch(error(reducerTypes.GET_SUBSCRIBED_MINES)))
+    .finally(() => dispatch(hideLoading()));
 };
 
 // MineIncidents

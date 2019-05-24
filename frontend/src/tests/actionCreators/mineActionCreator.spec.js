@@ -381,7 +381,7 @@ describe("`unSubscribe` action creator", () => {
     return unSubscribe(mineGuid, mineName)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(5);
+      expect(dispatch).toHaveBeenCalledTimes(4);
     });
   });
 
@@ -405,7 +405,7 @@ describe("`subscribe` action creator", () => {
     return subscribe(mineGuid, mineName)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(5);
+      expect(dispatch).toHaveBeenCalledTimes(4);
     });
   });
 
