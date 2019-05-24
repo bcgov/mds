@@ -9,7 +9,7 @@ class LegislationActSection(Base):
     __tablename__ = "legislation_act_section"
     legislation_act_section_id = db.Column(db.Integer, primary_key=True)
     legislation_act_id = db.Column(db.Integer,
-                                   db.ForeignKey('nris.legislation_act.legislation_act_id'))
+                                   db.ForeignKey('legislation_act.legislation_act_id'))
     section = db.Column(db.String(64))
 
     def __repr__(self):

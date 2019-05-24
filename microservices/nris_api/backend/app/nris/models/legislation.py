@@ -19,19 +19,19 @@ class Legislation(Base):
     __tablename__ = "legislation"
     legislation_id = db.Column(db.Integer, primary_key=True)
     order_stop_detail_id = db.Column(db.Integer,
-                                     db.ForeignKey('nris.order_stop_detail.order_stop_detail_id'))
+                                     db.ForeignKey('order_stop_detail.order_stop_detail_id'))
     estimated_incident_date = db.Column(db.DateTime)
     noncompliant_description = db.Column(db.String(256))
-    parent_act_id = db.Column(db.Integer, db.ForeignKey('nris.legislation_act.legislation_act_id'))
+    parent_act_id = db.Column(db.Integer, db.ForeignKey('legislation_act.legislation_act_id'))
     legislation_act_section_id = db.Column(
-        db.ForeignKey('nris.legislation_act_section.legislation_act_section_id'))
+        db.ForeignKey('legislation_act_section.legislation_act_section_id'))
     compliance_article_id = db.Column(
         db.Integer,
-        db.ForeignKey('nris.legislation_compliance_article.legislation_compliance_article_id'))
+        db.ForeignKey('legislation_compliance_article.legislation_compliance_article_id'))
 
     parent_legislation_act = db.relationship("LegislationAct")
     regulation_legislation_act = db.relationship(
-        "LegislationAct", secondary='nris.legislation_act_section')
+        "LegislationAct", secondary='legislation_act_section')
     regulation_legislation_act_section = db.relationship("LegislationActSection")
     compliance_article = db.relationship("LegislationComplianceArticle")
 
