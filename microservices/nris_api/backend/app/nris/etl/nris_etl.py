@@ -36,9 +36,10 @@ END $$;
 """
 
 
-def _clean_nris_data():
+def clean_nris_data():
     db.session.execute(TRUNCATE_TABLES_SQL)
     db.session.commit()
+
 def clean_nris_xml_import():
     db.session.execute('truncate table nris_raw_data cascade;')
     db.session.commit()
