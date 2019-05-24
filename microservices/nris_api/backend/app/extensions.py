@@ -27,6 +27,5 @@ try:
         Config.NRIS_DB_HOSTNAME, Config.NRIS_DB_PORT, service_name=Config.NRIS_DB_SERVICENAME)
     oracle_db = cx_Oracle.connect(
         user=Config.NRIS_DB_USER, password=Config.NRIS_DB_PASSWORD, dsn=dsn_tns)
-except Exception as e:
-    raise e
+except cx_Oracle.DatabaseError as e:
     oracle_db = None

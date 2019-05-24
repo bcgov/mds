@@ -47,19 +47,22 @@ def clean_nris_xml_import():
 
 
 def import_nris_xml():
-    cursor = oracle_db.cursor()
+    if oracle_db is not None:
+        cursor = oracle_db.cursor()
 
-    cursor.execute(
-        "select xml_document from CORS.CORS_CV_ASSESSMENTS_XVW where business_area = 'EMPR'")
+        cursor.execute(
+            "select xml_document from CORS.CORS_CV_ASSESSMENTS_XVW where business_area = 'EMPR'")
 
-    results = cursor.fetchall()
+        results = cursor.fetchall()
 
-    for result in results:
-        data = NRISRawData.create(result[0].read())
-        db.session.add(data)
-        db.session.commit()
+        for result in results:
+            data = NRISRawData.create(result[0].read())
+            db.session.add(data)
+            db.session.commit()
 
-    cursor.close()
+        cursor.close()
+    else:
+        current_app.logger.info("The connection to the NRIS database is unavailable at this time.")
 
 
 def etl_nris_data():
