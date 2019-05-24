@@ -3,7 +3,7 @@ from xml.etree.ElementTree import fromstring
 from flask import current_app
 from json import dumps
 from xml.etree import ElementTree as ET
-from app.extensions import db
+from app.extensions import db, oracle_db
 
 from app.nris.models.inspection import Inspection
 from app.nris.models.inspection_status import InspectionStatus
@@ -20,22 +20,54 @@ from app.nris.models.legislation_act_section import LegislationActSection
 from app.nris.models.legislation_compliance_article import LegislationComplianceArticle
 from app.nris.models.document import Document
 from app.nris.models.document_type import DocumentType
+from app.nris.models.nris_raw_data import NRISRawData
+
+# TODO: Convert into class
 
 
-def _clean_nris_data():
+def clean_nris_data():
     db.session.execute('truncate table inspection cascade;')
     db.session.execute('truncate table legislation_act cascade;')
-    db.session.execute('truncate table legislation_compliance_article cascade;')
+    db.session.execute(
+        'truncate table legislation_compliance_article cascade;')
     db.session.execute('truncate table order_type cascade;')
     db.session.execute('truncate table document cascade;')
     db.session.execute('truncate table document_type cascade;')
     db.session.execute('truncate table inspection_status cascade;')
     db.session.execute('truncate table location cascade;')
+    # db.session.execute('truncate table nris_raw_data cascade;')
+    db.session.commit()
+
+
+def clean_nris_xml_import():
     db.session.execute('truncate table nris_raw_data cascade;')
     db.session.commit()
 
 
-def _etl_nris_data(input):
+def import_nris_xml():
+    cursor = oracle_db.cursor()
+
+    cursor.execute(
+        "select xml_document from CORS.CORS_CV_ASSESSMENTS_XVW where business_area = 'EMPR'"
+    )
+
+    results = cursor.fetchall()
+
+    for result in results:
+        data = NRISRawData.create(result[0].read())
+        db.session.add(data)
+        db.session.commit()
+
+    cursor.close()
+
+
+def etl_nris_data():
+    nris_data = db.session.query(NRISRawData).all()
+    for item in nris_data:
+        _parse_nris_element(item.nris_data)
+
+
+def _parse_nris_element(input):
 
     xmlstring = re.sub(' xmlns="[^"]+"', '', input, count=1)
     data = ET.fromstring(xmlstring)
@@ -65,7 +97,7 @@ def _etl_nris_data(input):
                 status = code
 
         if not code_exists:
-            status = create_status(assessment_status_code)
+            status = _create_status(assessment_status_code)
 
         inspection.inspection_status = status
 
@@ -92,20 +124,20 @@ def _etl_nris_data(input):
         inspection_data = data.find('inspection')
 
         for attachment in data.findall('attachment'):
-            doc = save_document(attachment)
+            doc = _save_document(attachment)
             inspection.documents.append(doc)
 
         if inspection_data is not None:
-            save_stops(inspection_data, inspection)
+            _save_stops(inspection_data, inspection)
 
 
-def create_status(status):
+def _create_status(status):
     inspection_status = InspectionStatus(inspection_status_code=status)
     db.session.add(inspection_status)
     return inspection_status
 
 
-def save_stops(nris_inspection_data, inspection):
+def _save_stops(nris_inspection_data, inspection):
     for stop in nris_inspection_data.findall('stops'):
         order_location = stop.find('secondary_locations')
         if order_location is not None:
@@ -150,12 +182,13 @@ def save_stops(nris_inspection_data, inspection):
         order.order_type_rel = order_type
 
         for stop_order in stop.findall('stop_orders'):
-            stop_detail = save_stop_order(stop_order)
+            stop_detail = _save_stop_order(stop_order)
             order.stop_details.append(stop_detail)
 
         for stop_advisory in stop.findall('stop_advisories'):
             detail = stop_advisory.find('advisory_detail')
-            advisory = OrderAdvisoryDetail(detail=detail.text if detail is not None else None)
+            advisory = OrderAdvisoryDetail(
+                detail=detail.text if detail is not None else None)
             order.advisory_details.append(advisory)
 
         for stop_warning in stop.findall('stop_warnings'):
@@ -177,14 +210,14 @@ def save_stops(nris_inspection_data, inspection):
             order.request_details.append(request)
 
         for attachment in stop.findall('attachment'):
-            doc = save_document(attachment)
+            doc = _save_document(attachment)
             order.documents.append(doc)
 
         db.session.add(order)
         db.session.commit()
 
 
-def save_stop_order(stop_order):
+def _save_stop_order(stop_order):
     stop_detail = OrderStopDetail()
 
     detail = stop_order.find('order_detail')
@@ -214,7 +247,7 @@ def save_stop_order(stop_order):
     stop_detail.authority_act_section = authority_act_section.text if authority_act_section is not None else None
 
     for attachment in stop_order.findall('attachment'):
-        doc = save_document(attachment)
+        doc = _save_document(attachment)
         stop_detail.documents.append(doc)
 
     return stop_detail
@@ -224,12 +257,14 @@ def _save_order_legislation(order_legislation):
     legislation = Legislation()
 
     estimated_incident_date = order_legislation.find('estimated_incident_date')
-    noncompliant_description = order_legislation.find('noncompliant_description')
+    noncompliant_description = order_legislation.find(
+        'noncompliant_description')
     parent_act = order_legislation.find('parent_act')
     act_regulation = order_legislation.find('act_regulation')
     section = order_legislation.find('section')
     compliance_article_id = order_legislation.find('compliance_article_id')
-    compliance_article_comments = order_legislation.find('compliance_article_comments')
+    compliance_article_comments = order_legislation.find(
+        'compliance_article_comments')
 
     legislation.estimated_incident_date = _parse_dumb_nris_date_string(
         estimated_incident_date.text) if estimated_incident_date is not None else None
@@ -309,7 +344,7 @@ def _save_compliance_article(compliance_article_id, compliance_article_comments)
         return compliance_article
 
 
-def save_document(attachment):
+def _save_document(attachment):
     external_id = attachment.find('attachment_id')
     document_date = attachment.find('attachment_date')
     file_name = attachment.find('file_path')
@@ -322,7 +357,7 @@ def save_document(attachment):
         comment=comment.text if comment is not None else None)
 
     file_type = attachment.find('file_type')
-    doc_type = find_or_save_doc_type(file_type)
+    doc_type = _find_or_save_doc_type(file_type)
 
     doc.document_type_rel = doc_type
 
@@ -330,7 +365,7 @@ def save_document(attachment):
     return doc
 
 
-def find_or_save_doc_type(file_type):
+def _find_or_save_doc_type(file_type):
     types = DocumentType.find_all_document_types()
     type_found = False
     doc_type = None
