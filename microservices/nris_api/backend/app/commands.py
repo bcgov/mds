@@ -19,9 +19,6 @@ def register_commands(app):
     def _clean_nris_raw_data():
         clean_nris_xml_import()
 
-    # if app.config.get('ENVIRONMENT_NAME') in ['test', 'prod']:
-
-    @sched.app.cli.command()
-    def run_nightly_NRIS_ETL():
-        with sched.app.app_context():
-            nris_jobs.run_nightly_NRIS_ETL()
+    @app.cli.command()
+    def _run_nris_etl():
+        etl_nris_data()
