@@ -29,9 +29,9 @@ def run_nightly_NRIS_ETL():
         current_app.logger.info('XML Import completed')
         # TODO: Insert update into status table
 
-    except:
+    except Exception as e:
         current_app.logger.error(
-            "Unexpected error with NRIS XML import:", sys.exc_info()[0])
+            "Unexpected error with NRIS XML import:", e)
         return
 
     try:
@@ -40,4 +40,4 @@ def run_nightly_NRIS_ETL():
 
     except:
         current_app.logger.error(
-            "Unexpected error with NRIS ETL:", sys.exc_info()[0])
+            "Unexpected error with NRIS ETL")

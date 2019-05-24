@@ -22,8 +22,6 @@ def register_commands(app):
     # if app.config.get('ENVIRONMENT_NAME') in ['test', 'prod']:
 
     @sched.app.cli.command()
-    def __run_nightly_NRIS_ETL():
+    def run_nightly_NRIS_ETL():
         with sched.app.app_context():
-            print('Starting the ETL.')
             nris_jobs.run_nightly_NRIS_ETL()
-            print('Completed running the ETL.')
