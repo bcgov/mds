@@ -49,6 +49,7 @@ const setupReducerProps = () => {
   reducerProps.coreUsers = MOCK.CORE_USERS.results;
   reducerProps.varianceStatusOptions = MOCK.VARIANCE_DROPDOWN_STATUS_OPTIONS;
   reducerProps.varianceStatusOptionsHash = MOCK.VARIANCE_STATUS_OPTIONS_HASH;
+  reducerProps.userRoles = MOCK.USER_ACCESS_DATA;
 };
 
 beforeEach(() => {

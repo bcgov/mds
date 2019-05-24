@@ -99,7 +99,7 @@ const columns = (isApplication) => [
   },
   {
     title: "Approval Status",
-    dataIndex: "status",
+    dataIndex: "",
     className: isApplication ? "column-hide" : "",
     render: (text, record) => (
       <div title="Approval Status" style={errorStyle(record.isOverdue)}>

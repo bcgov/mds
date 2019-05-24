@@ -12,6 +12,7 @@ const initialState = {
   content: null,
   clearOnSubmit: true,
   widthSize: 810,
+  isViewOnly: false,
 };
 
 const modalReducer = (state = initialState, action) => {
@@ -21,6 +22,7 @@ const modalReducer = (state = initialState, action) => {
         props,
         content,
         widthSize = initialState.widthSize,
+        isViewOnly = initialState.isViewOnly,
         clearOnSubmit = initialState.clearOnSubmit,
       } = action.payload;
       return {
@@ -29,6 +31,7 @@ const modalReducer = (state = initialState, action) => {
         props,
         content,
         widthSize,
+        isViewOnly,
         clearOnSubmit,
       };
     case actionTypes.CLOSE_MODAL:
@@ -45,6 +48,7 @@ export const getIsModalOpen = (state) => state[MODAL].isModalOpen;
 export const getProps = (state) => state[MODAL].props;
 export const getContent = (state) => state[MODAL].content;
 export const getWidthSize = (state) => state[MODAL].widthSize;
+export const getIsViewOnly = (state) => state[MODAL].isViewOnly;
 export const getClearOnSubmit = (state) => state[MODAL].clearOnSubmit;
 
 export default modalReducer;
