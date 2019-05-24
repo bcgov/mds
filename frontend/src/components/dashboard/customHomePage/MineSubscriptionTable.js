@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import PropTypes, { objectOf, string } from "prop-types";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { Table, Popconfirm } from "antd";
 import { uniqBy } from "lodash";
@@ -17,9 +17,9 @@ import { UNSUBSCRIBE } from "@/constants/assets";
 const propTypes = {
   handleUnSubscribe: PropTypes.func.isRequired,
   subscribedMines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
-  mineRegionHash: objectOf(string).isRequired,
-  mineTenureHash: objectOf(string).isRequired,
-  mineCommodityOptionsHash: objectOf(string).isRequired,
+  mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineTenureHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export class MineSubscriptionTable extends Component {
