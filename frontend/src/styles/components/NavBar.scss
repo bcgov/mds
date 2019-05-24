@@ -34,6 +34,16 @@
   }
 }
 
+#menu__dropdown {
+  background-color: $nav-color;
+  text-align: right;
+
+  button,
+  a {
+    color: $pure-white !important;
+  }
+}
+
 .menu--hamburger {
   position: fixed;
   z-index: 100;
@@ -80,7 +90,8 @@
 #active-admin-btn,
 #active-mine-btn--mobile,
 #active-contact-btn--mobile,
-#active-admin-btn--mobile {
+#active-admin-btn--mobile,
+#active-dashboard-btn--mobile {
   color: $pure-white;
   background-color: $primary-btn-color;
   border: none;
