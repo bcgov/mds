@@ -28,7 +28,7 @@ STOP_DETAILS_RESPONSE_MODEL = api.model(
 class OrderStopDetail(Base):
     __tablename__ = "order_stop_detail"
     order_stop_detail_id = db.Column(db.Integer, primary_key=True)
-    inspection_order_id = db.Column(db.Integer, db.ForeignKey('inspection_order.inspection_order_id'))
+    inspected_location_id = db.Column(db.Integer, db.ForeignKey('inspected_location.inspected_location_id'))
     detail = db.Column(db.String())
     stop_type = db.Column(db.String(256))
     response_status = db.Column(db.String(64))
@@ -44,4 +44,4 @@ class OrderStopDetail(Base):
         'Document', lazy='selectin', secondary='order_stop_detail_document_xref')
 
     def __repr__(self):
-        return f'<OrderStopDetail order_stop_detail_id={self.order_stop_detail_id}> inspection_order_id={self.inspection_order_id}'
+        return f'<OrderStopDetail order_stop_detail_id={self.order_stop_detail_id}> inspected_location_id={self.inspected_location_id}'

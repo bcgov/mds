@@ -6,7 +6,7 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from app.nris.utils.base_model import Base
 
 from app.nris.models.inspection_status import InspectionStatus
-from app.nris.models.inspection_order import INSPECTION_ORDER_RESPONSE_MODEL
+from app.nris.models.inspected_location import INSPECTED_LOCATION_RESPONSE_MODEL
 from app.nris.models.document import DOCUMENT_RESPONSE_MODEL
 
 INSPECTION_RESPONSE_MODEL = api.model(
@@ -23,7 +23,7 @@ INSPECTION_RESPONSE_MODEL = api.model(
         'inspection_closing': fields.String,
         'officer_notes': fields.String,
         'documents': fields.List(fields.Nested(DOCUMENT_RESPONSE_MODEL)),
-        'inspection_orders': fields.List(fields.Nested(INSPECTION_ORDER_RESPONSE_MODEL)),
+        'inspected_locations': fields.List(fields.Nested(INSPECTED_LOCATION_RESPONSE_MODEL)),
     })
 
 
@@ -47,7 +47,7 @@ class Inspection(Base):
     officer_notes = db.Column(db.String())
     documents = db.relationship(
         'Document', lazy='selectin', secondary='inspection_document_xref')
-    inspection_orders = db.relationship("InspectionOrder")
+    inspected_locations = db.relationship("InspectedLocation")
 
     def __repr__(self):
         return f'<Inspection inspection_id={self.inspection_id} inspection_status_description={self.inspection_status_description}>'

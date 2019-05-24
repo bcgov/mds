@@ -8,12 +8,12 @@ from app.extensions import db, oracle_db
 from app.nris.models.inspection import Inspection
 from app.nris.models.inspection_status import InspectionStatus
 from app.nris.models.location import Location
-from app.nris.models.inspection_order import InspectionOrder
+from app.nris.models.inspected_location import InspectedLocation
 from app.nris.models.order_request_detail import OrderRequestDetail
 from app.nris.models.order_advisory_detail import OrderAdvisoryDetail
 from app.nris.models.order_warning_detail import OrderWarningDetail
 from app.nris.models.order_stop_detail import OrderStopDetail
-from app.nris.models.order_type import OrderType
+from app.nris.models.inspected_location_type import InspectedLocationType
 from app.nris.models.legislation import Legislation
 from app.nris.models.legislation_act import LegislationAct
 from app.nris.models.legislation_act_section import LegislationActSection
@@ -40,6 +40,7 @@ def clean_nris_data():
     db.session.execute(TRUNCATE_TABLES_SQL)
     db.session.commit()
 
+
 def clean_nris_xml_import():
     db.session.execute('truncate table nris_raw_data cascade;')
     db.session.commit()
@@ -49,8 +50,7 @@ def import_nris_xml():
     cursor = oracle_db.cursor()
 
     cursor.execute(
-        "select xml_document from CORS.CORS_CV_ASSESSMENTS_XVW where business_area = 'EMPR'"
-    )
+        "select xml_document from CORS.CORS_CV_ASSESSMENTS_XVW where business_area = 'EMPR'")
 
     results = cursor.fetchall()
 
@@ -163,22 +163,21 @@ def _save_stops(nris_inspection_data, inspection):
             db.session.add(location)
 
         stop_type = stop.find('stop_type')
-        order = InspectionOrder()
-        order.location = location
-        inspection.inspection_orders.append(order)
+        inspected_location = InspectedLocation()
+        inspected_location.location = location
+        inspection.inspected_locations.append(inspected_location)
 
-        order_type = find_or_save_order_type(stop_type)
-        order.order_type_rel = order_type
+        inspected_location_type = find_or_save_inspected_location_type(stop_type)
+        inspected_location.inspected_location_type_rel = inspected_location_type
 
         for stop_order in stop.findall('stop_orders'):
             stop_detail = _save_stop_order(stop_order)
-            order.stop_details.append(stop_detail)
+            inspected_location.stop_details.append(stop_detail)
 
         for stop_advisory in stop.findall('stop_advisories'):
             detail = stop_advisory.find('advisory_detail')
-            advisory = OrderAdvisoryDetail(
-                detail=detail.text if detail is not None else None)
-            order.advisory_details.append(advisory)
+            advisory = OrderAdvisoryDetail(detail=detail.text if detail is not None else None)
+            inspected_location.advisory_details.append(advisory)
 
         for stop_warning in stop.findall('stop_warnings'):
             detail = stop_warning.find('warning_detail')
@@ -186,7 +185,7 @@ def _save_stops(nris_inspection_data, inspection):
             warning = OrderWarningDetail(
                 detail=detail.text if detail is not None else None,
                 respond_date=respond_date.text if respond_date is not None else None)
-            order.warning_details.append(warning)
+            inspected_location.warning_details.append(warning)
 
         for stop_request in stop.findall('stop_requests'):
             detail = stop_request.find('request_detail')
@@ -196,13 +195,13 @@ def _save_stops(nris_inspection_data, inspection):
                 detail=detail.text if detail is not None else None,
                 respond_date=respond_date.text if respond_date is not None else None,
                 response=response.text if response is not None else None)
-            order.request_details.append(request)
+            inspected_location.request_details.append(request)
 
         for attachment in stop.findall('attachment'):
             doc = _save_document(attachment)
-            order.documents.append(doc)
+            inspected_location.documents.append(doc)
 
-        db.session.add(order)
+        db.session.add(inspected_location)
         db.session.commit()
 
 
@@ -242,33 +241,31 @@ def _save_stop_order(stop_order):
     return stop_detail
 
 
-def find_or_save_order_type(stop_type):
-    order_types = OrderType.find_all_order_types()
+def find_or_save_inspected_location_type(stop_type):
+    inspected_location_types = InspectedLocationType.find_all_inspected_location_types()
     type_found = False
-    order_type = None
+    inspected_location_type = None
     if stop_type is not None:
-        for type in order_types:
-            if type.order_type == stop_type.text:
+        for type in inspected_location_types:
+            if type.inspected_location_type == stop_type.text:
                 type_found = True
-                order_type = type
+                inspected_location_type = type
     if not type_found:
-        order_type = OrderType(order_type=stop_type.text)
-        db.session.add(order_type)
-    return order_type
+        inspected_location_type = InspectedLocationType(inspected_location_type=stop_type.text)
+        db.session.add(inspected_location_type)
+    return inspected_location_type
 
 
 def _save_order_legislation(order_legislation):
     legislation = Legislation()
 
     estimated_incident_date = order_legislation.find('estimated_incident_date')
-    noncompliant_description = order_legislation.find(
-        'noncompliant_description')
+    noncompliant_description = order_legislation.find('noncompliant_description')
     parent_act = order_legislation.find('parent_act')
     act_regulation = order_legislation.find('act_regulation')
     section = order_legislation.find('section')
     compliance_article_id = order_legislation.find('compliance_article_id')
-    compliance_article_comments = order_legislation.find(
-        'compliance_article_comments')
+    compliance_article_comments = order_legislation.find('compliance_article_comments')
 
     legislation.estimated_incident_date = _parse_dumb_nris_date_string(
         estimated_incident_date.text) if estimated_incident_date is not None else None

@@ -6,14 +6,14 @@ from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 from app.extensions import api, db
 from app.nris.utils.access_decorators import requires_role_nris_view
 
-from app.nris.models.inspection_order import InspectionOrder as Model, INSPECTION_ORDER_RESPONSE_MODEL as RESPONSE_MODEL
+from app.nris.models.inspected_location import InspectedLocation as Model, INSPECTED_LOCATION_RESPONSE_MODEL as RESPONSE_MODEL
 
-module_path = 'inspections/<int:inspection_id>/orders'
-filter_fields = ['order_type']
+module_path = 'inspections/<int:inspection_id>/inspected_locations'
+filter_fields = ['inspected_location_type']
 
 
 #@api.route(f'/{module_path}')
-class OrderListResource(Resource):
+class InspectedLocationListResource(Resource):
     @api.doc(params={field: "Filter by exact match" for field in filter_fields})
     @api.marshal_with(RESPONSE_MODEL, envelope='records', code=200)
     @requires_role_nris_view
@@ -26,7 +26,7 @@ class OrderListResource(Resource):
 
 #not sure what we are doing with this endpoint yet.
 #@api.route(f'/{module_path}/<int:id>')
-class OrderResource(Resource):
+class InspectedLocationResource(Resource):
     @api.marshal_with(RESPONSE_MODEL, code=200)
     @requires_role_nris_view
     def get(self, inspection_id, id):
