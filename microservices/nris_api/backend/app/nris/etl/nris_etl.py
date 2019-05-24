@@ -22,23 +22,23 @@ from app.nris.models.document import Document
 from app.nris.models.document_type import DocumentType
 from app.nris.models.nris_raw_data import NRISRawData
 
-# TODO: Convert into class
+# Truncates all tables on the nris schema, except for the alembic_version table and the nris_raw_data table.
+TRUNCATE_TABLES_SQL = """
+DO $$
+DECLARE
+i TEXT;
+BEGIN
+ FOR i IN (select distinct concat(table_schema, '.', table_name)  from information_schema.tables where table_catalog = 'mds' and table_schema = 'nris' and table_name != 'alembic_version' and table_name != 'nris_raw_data') LOOP
+         EXECUTE 'TRUNCATE TABLE '|| i ||' RESTART IDENTITY CASCADE;';
+
+  END LOOP;
+END $$;
+"""
 
 
-def clean_nris_data():
-    db.session.execute('truncate table inspection cascade;')
-    db.session.execute('truncate table legislation_act cascade;')
-    db.session.execute(
-        'truncate table legislation_compliance_article cascade;')
-    db.session.execute('truncate table order_type cascade;')
-    db.session.execute('truncate table document cascade;')
-    db.session.execute('truncate table document_type cascade;')
-    db.session.execute('truncate table inspection_status cascade;')
-    db.session.execute('truncate table location cascade;')
-    # db.session.execute('truncate table nris_raw_data cascade;')
+def _clean_nris_data():
+    db.session.execute(TRUNCATE_TABLES_SQL)
     db.session.commit()
-
-
 def clean_nris_xml_import():
     db.session.execute('truncate table nris_raw_data cascade;')
     db.session.commit()
@@ -86,18 +86,7 @@ def _parse_nris_element(input):
         inspection.inspection_date = assessment_date.text if assessment_date is not None else None
         inspection.business_area = business_area.text if business_area is not None else None
 
-        status_codes = InspectionStatus.find_all_inspection_status()
-        code_exists = False
-        status = None
-
-        for code in status_codes:
-
-            if code.inspection_status_code == assessment_status_code:
-                code_exists = True
-                status = code
-
-        if not code_exists:
-            status = _create_status(assessment_status_code)
+        status = create_status(assessment_status_code)
 
         inspection.inspection_status = status
 
@@ -131,10 +120,20 @@ def _parse_nris_element(input):
             _save_stops(inspection_data, inspection)
 
 
-def _create_status(status):
-    inspection_status = InspectionStatus(inspection_status_code=status)
-    db.session.add(inspection_status)
-    return inspection_status
+def create_status(assessment_status_code):
+    status_codes = InspectionStatus.find_all_inspection_status()
+    code_exists = False
+    status = None
+
+    for code in status_codes:
+        if code.inspection_status_code == assessment_status_code:
+            code_exists = True
+            status = code
+
+    if not code_exists:
+        status = InspectionStatus(inspection_status_code=assessment_status_code)
+        db.session.add(status)
+    return status
 
 
 def _save_stops(nris_inspection_data, inspection):
@@ -167,18 +166,7 @@ def _save_stops(nris_inspection_data, inspection):
         order.location = location
         inspection.inspection_orders.append(order)
 
-        order_types = OrderType.find_all_order_types()
-        type_found = False
-        order_type = None
-        if stop_type is not None:
-            for type in order_types:
-                if type.order_type == stop_type.text:
-                    type_found = True
-                    order_type = type
-        if not type_found:
-            order_type = OrderType(order_type=stop_type.text)
-            db.session.add(order_type)
-
+        order_type = find_or_save_order_type(stop_type)
         order.order_type_rel = order_type
 
         for stop_order in stop.findall('stop_orders'):
@@ -251,6 +239,21 @@ def _save_stop_order(stop_order):
         stop_detail.documents.append(doc)
 
     return stop_detail
+
+
+def find_or_save_order_type(stop_type):
+    order_types = OrderType.find_all_order_types()
+    type_found = False
+    order_type = None
+    if stop_type is not None:
+        for type in order_types:
+            if type.order_type == stop_type.text:
+                type_found = True
+                order_type = type
+    if not type_found:
+        order_type = OrderType(order_type=stop_type.text)
+        db.session.add(order_type)
+    return order_type
 
 
 def _save_order_legislation(order_legislation):
