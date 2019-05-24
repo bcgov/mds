@@ -24,6 +24,14 @@ from app.nris.models.document_type import DocumentType
 
 def _clean_nris_data():
     db.session.execute('truncate table inspection cascade;')
+    db.session.execute('truncate table legislation_act cascade;')
+    db.session.execute('truncate table legislation_compliance_article cascade;')
+    db.session.execute('truncate table order_type cascade;')
+    db.session.execute('truncate table document cascade;')
+    db.session.execute('truncate table document_type cascade;')
+    db.session.execute('truncate table inspection_status cascade;')
+    db.session.execute('truncate table location cascade;')
+    db.session.execute('truncate table nris_raw_data cascade;')
     db.session.commit()
 
 
@@ -283,10 +291,10 @@ def _save_legislation_act_section(legislation_act, section_to_get):
                 section_found = True
                 section = legislation_act_section
 
-            if not section_found:
-                section = LegislationActSection(section=section_to_get.text)
-                legislation_act.sections.append(section)
-                db.session.add(section)
+        if not section_found:
+            section = LegislationActSection(section=section_to_get.text)
+            legislation_act.sections.append(section)
+            db.session.add(section)
 
     return section
 

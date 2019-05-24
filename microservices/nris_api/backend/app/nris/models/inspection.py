@@ -34,9 +34,10 @@ class Inspection(Base):
     inspection_date = db.Column(db.DateTime)
     completed_date = db.Column(db.DateTime)
     inspection_status_id = db.Column(db.Integer,
-                                     db.ForeignKey('nris.inspection_status.inspection_status_id'))
+                                     db.ForeignKey('inspection_status.inspection_status_id'))
     inspection_status = db.relationship("InspectionStatus")
-    inspection_status_code = association_proxy('inspection_status', 'inspection_status_code')
+    inspection_status_code = association_proxy(
+        'inspection_status', 'inspection_status_code')
     business_area = db.Column(db.String(256))
     mine_no = db.Column(db.String(64))
     inspector_idir = db.Column(db.String(256))
@@ -45,7 +46,7 @@ class Inspection(Base):
     inspection_closing = db.Column(db.String())
     officer_notes = db.Column(db.String())
     documents = db.relationship(
-        'Document', lazy='selectin', secondary='nris.inspection_document_xref')
+        'Document', lazy='selectin', secondary='inspection_document_xref')
     inspection_orders = db.relationship("InspectionOrder")
 
     def __repr__(self):

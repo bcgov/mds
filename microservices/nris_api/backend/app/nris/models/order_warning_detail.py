@@ -15,7 +15,7 @@ class OrderWarningDetail(Base):
     __tablename__ = "order_warning_detail"
     order_warning_detail_id = db.Column(db.Integer, primary_key=True)
     inspection_order_id = db.Column(db.Integer,
-                                    db.ForeignKey('nris.inspection_order.inspection_order_id'))
+                                    db.ForeignKey('inspection_order.inspection_order_id'))
     detail = db.Column(db.String())
     respond_date = db.Column(db.DateTime)
 
