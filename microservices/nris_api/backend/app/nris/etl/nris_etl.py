@@ -87,7 +87,7 @@ def _parse_nris_element(input):
         inspection.inspection_date = assessment_date.text if assessment_date is not None else None
         inspection.business_area = business_area.text if business_area is not None else None
 
-        status = create_status(assessment_status_code)
+        status = _create_status(assessment_status_code)
 
         inspection.inspection_status = status
 
@@ -121,7 +121,7 @@ def _parse_nris_element(input):
             _save_stops(inspection_data, inspection)
 
 
-def create_status(assessment_status_code):
+def _create_status(assessment_status_code):
     status_codes = InspectionStatus.find_all_inspection_status()
     code_exists = False
     status = None
@@ -167,7 +167,7 @@ def _save_stops(nris_inspection_data, inspection):
         inspected_location.location = location
         inspection.inspected_locations.append(inspected_location)
 
-        inspected_location_type = find_or_save_inspected_location_type(stop_type)
+        inspected_location_type = _find_or_save_inspected_location_type(stop_type)
         inspected_location.inspected_location_type_rel = inspected_location_type
 
         for stop_order in stop.findall('stop_orders'):
@@ -241,7 +241,7 @@ def _save_stop_order(stop_order):
     return stop_detail
 
 
-def find_or_save_inspected_location_type(stop_type):
+def _find_or_save_inspected_location_type(stop_type):
     inspected_location_types = InspectedLocationType.find_all_inspected_location_types()
     type_found = False
     inspected_location_type = None
