@@ -53,6 +53,7 @@ ShallowWrapper {
               }
             />
           </Link>
+          <Connect(withRouter(SearchBar)) />
           <MediaQuery
             maxWidth={768}
             values={Object {}}
@@ -82,7 +83,6 @@ ShallowWrapper {
               />
             </Button>
           </MediaQuery>
-          <Connect(withRouter(SearchBar)) />
           <MediaQuery
             minWidth={769}
             values={Object {}}
@@ -102,15 +102,6 @@ ShallowWrapper {
                   id=""
                   loading={false}
                 >
-                  <img
-                    alt="Mine"
-                    className="padding-small--right vertical-align-sm"
-                    src={
-                      Object {
-                        "process": [Function],
-                      }
-                    }
-                  />
                   Mines
                 </Button>
               </Link>
@@ -126,15 +117,6 @@ ShallowWrapper {
                   id=""
                   loading={false}
                 >
-                  <img
-                    alt="team"
-                    className="padding-small--right icon-sm vertical-align-sm"
-                    src={
-                      Object {
-                        "process": [Function],
-                      }
-                    }
-                  />
                   Contacts
                 </Button>
               </Link>
@@ -153,15 +135,6 @@ ShallowWrapper {
                     id=""
                     loading={false}
                   >
-                    <img
-                      alt="Admin"
-                      className="padding-small--right icon-sm vertical-align-sm"
-                      src={
-                        Object {
-                          "process": [Function],
-                        }
-                      }
-                    />
                     Admin
                   </Button>
                 </Link>
@@ -169,27 +142,7 @@ ShallowWrapper {
               <Dropdown
                 mouseEnterDelay={0.15}
                 mouseLeaveDelay={0.1}
-                overlay={
-                  <Menu>
-                    <MenuItem>
-                      <button
-                        onClick={undefined}
-                        type="button"
-                      >
-                        <img
-                          alt="Logout"
-                          className="menu__img"
-                          src={
-                            Object {
-                              "process": [Function],
-                            }
-                          }
-                        />
-                        Logout
-                      </button>
-                    </MenuItem>
-                  </Menu>
-                }
+                overlay={[Function]}
                 placement="bottomLeft"
               >
                 <button
@@ -280,6 +233,7 @@ ShallowWrapper {
                 }
               />
             </Link>,
+            <Connect(withRouter(SearchBar)) />,
             <MediaQuery
               maxWidth={768}
               values={Object {}}
@@ -309,7 +263,6 @@ ShallowWrapper {
                 />
               </Button>
             </MediaQuery>,
-            <Connect(withRouter(SearchBar)) />,
             <MediaQuery
               minWidth={769}
               values={Object {}}
@@ -329,15 +282,6 @@ ShallowWrapper {
                     id=""
                     loading={false}
                   >
-                    <img
-                      alt="Mine"
-                      className="padding-small--right vertical-align-sm"
-                      src={
-                        Object {
-                          "process": [Function],
-                        }
-                      }
-                    />
                     Mines
                   </Button>
                 </Link>
@@ -353,15 +297,6 @@ ShallowWrapper {
                     id=""
                     loading={false}
                   >
-                    <img
-                      alt="team"
-                      className="padding-small--right icon-sm vertical-align-sm"
-                      src={
-                        Object {
-                          "process": [Function],
-                        }
-                      }
-                    />
                     Contacts
                   </Button>
                 </Link>
@@ -380,15 +315,6 @@ ShallowWrapper {
                       id=""
                       loading={false}
                     >
-                      <img
-                        alt="Admin"
-                        className="padding-small--right icon-sm vertical-align-sm"
-                        src={
-                          Object {
-                            "process": [Function],
-                          }
-                        }
-                      />
                       Admin
                     </Button>
                   </Link>
@@ -396,27 +322,7 @@ ShallowWrapper {
                 <Dropdown
                   mouseEnterDelay={0.15}
                   mouseLeaveDelay={0.1}
-                  overlay={
-                    <Menu>
-                      <MenuItem>
-                        <button
-                          onClick={undefined}
-                          type="button"
-                        >
-                          <img
-                            alt="Logout"
-                            className="menu__img"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
-                            }
-                          />
-                          Logout
-                        </button>
-                      </MenuItem>
-                    </Menu>
-                  }
+                  overlay={[Function]}
                   placement="bottomLeft"
                 >
                   <button
@@ -520,6 +426,15 @@ ShallowWrapper {
             "instance": null,
             "key": undefined,
             "nodeType": "class",
+            "props": Object {},
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
             "props": Object {
               "children": <Button
                 block={false}
@@ -598,15 +513,6 @@ ShallowWrapper {
             "instance": null,
             "key": undefined,
             "nodeType": "class",
-            "props": Object {},
-            "ref": null,
-            "rendered": null,
-            "type": [Function],
-          },
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
             "props": Object {
               "children": <div
                 className="inline-flex"
@@ -623,15 +529,6 @@ ShallowWrapper {
                     id=""
                     loading={false}
                   >
-                    <img
-                      alt="Mine"
-                      className="padding-small--right vertical-align-sm"
-                      src={
-                        Object {
-                          "process": [Function],
-                        }
-                      }
-                    />
                     Mines
                   </Button>
                 </Link>
@@ -647,15 +544,6 @@ ShallowWrapper {
                     id=""
                     loading={false}
                   >
-                    <img
-                      alt="team"
-                      className="padding-small--right icon-sm vertical-align-sm"
-                      src={
-                        Object {
-                          "process": [Function],
-                        }
-                      }
-                    />
                     Contacts
                   </Button>
                 </Link>
@@ -674,15 +562,6 @@ ShallowWrapper {
                       id=""
                       loading={false}
                     >
-                      <img
-                        alt="Admin"
-                        className="padding-small--right icon-sm vertical-align-sm"
-                        src={
-                          Object {
-                            "process": [Function],
-                          }
-                        }
-                      />
                       Admin
                     </Button>
                   </Link>
@@ -690,27 +569,7 @@ ShallowWrapper {
                 <Dropdown
                   mouseEnterDelay={0.15}
                   mouseLeaveDelay={0.1}
-                  overlay={
-                    <Menu>
-                      <MenuItem>
-                        <button
-                          onClick={undefined}
-                          type="button"
-                        >
-                          <img
-                            alt="Logout"
-                            className="menu__img"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
-                            }
-                          />
-                          Logout
-                        </button>
-                      </MenuItem>
-                    </Menu>
-                  }
+                  overlay={[Function]}
                   placement="bottomLeft"
                 >
                   <button
@@ -791,15 +650,6 @@ ShallowWrapper {
                       id=""
                       loading={false}
                     >
-                      <img
-                        alt="Mine"
-                        className="padding-small--right vertical-align-sm"
-                        src={
-                          Object {
-                            "process": [Function],
-                          }
-                        }
-                      />
                       Mines
                     </Button>
                   </Link>,
@@ -815,15 +665,6 @@ ShallowWrapper {
                       id=""
                       loading={false}
                     >
-                      <img
-                        alt="team"
-                        className="padding-small--right icon-sm vertical-align-sm"
-                        src={
-                          Object {
-                            "process": [Function],
-                          }
-                        }
-                      />
                       Contacts
                     </Button>
                   </Link>,
@@ -842,15 +683,6 @@ ShallowWrapper {
                         id=""
                         loading={false}
                       >
-                        <img
-                          alt="Admin"
-                          className="padding-small--right icon-sm vertical-align-sm"
-                          src={
-                            Object {
-                              "process": [Function],
-                            }
-                          }
-                        />
                         Admin
                       </Button>
                     </Link>
@@ -858,27 +690,7 @@ ShallowWrapper {
                   <Dropdown
                     mouseEnterDelay={0.15}
                     mouseLeaveDelay={0.1}
-                    overlay={
-                      <Menu>
-                        <MenuItem>
-                          <button
-                            onClick={undefined}
-                            type="button"
-                          >
-                            <img
-                              alt="Logout"
-                              className="menu__img"
-                              src={
-                                Object {
-                                  "process": [Function],
-                                }
-                              }
-                            />
-                            Logout
-                          </button>
-                        </MenuItem>
-                      </Menu>
-                    }
+                    overlay={[Function]}
                     placement="bottomLeft"
                   >
                     <button
@@ -954,15 +766,6 @@ ShallowWrapper {
                       id=""
                       loading={false}
                     >
-                      <img
-                        alt="Mine"
-                        className="padding-small--right vertical-align-sm"
-                        src={
-                          Object {
-                            "process": [Function],
-                          }
-                        }
-                      />
                       Mines
                     </Button>,
                     "replace": false,
@@ -975,18 +778,7 @@ ShallowWrapper {
                     "nodeType": "class",
                     "props": Object {
                       "block": false,
-                      "children": Array [
-                        <img
-                          alt="Mine"
-                          className="padding-small--right vertical-align-sm"
-                          src={
-                            Object {
-                              "process": [Function],
-                            }
-                          }
-                        />,
-                        "Mines",
-                      ],
+                      "children": "Mines",
                       "className": "menu__btn--link",
                       "ghost": false,
                       "htmlType": "button",
@@ -994,24 +786,7 @@ ShallowWrapper {
                       "loading": false,
                     },
                     "ref": null,
-                    "rendered": Array [
-                      Object {
-                        "instance": null,
-                        "key": undefined,
-                        "nodeType": "host",
-                        "props": Object {
-                          "alt": "Mine",
-                          "className": "padding-small--right vertical-align-sm",
-                          "src": Object {
-                            "process": [Function],
-                          },
-                        },
-                        "ref": null,
-                        "rendered": null,
-                        "type": "img",
-                      },
-                      "Mines",
-                    ],
+                    "rendered": "Mines",
                     "type": [Function],
                   },
                   "type": [Function],
@@ -1029,15 +804,6 @@ ShallowWrapper {
                       id=""
                       loading={false}
                     >
-                      <img
-                        alt="team"
-                        className="padding-small--right icon-sm vertical-align-sm"
-                        src={
-                          Object {
-                            "process": [Function],
-                          }
-                        }
-                      />
                       Contacts
                     </Button>,
                     "replace": false,
@@ -1050,18 +816,7 @@ ShallowWrapper {
                     "nodeType": "class",
                     "props": Object {
                       "block": false,
-                      "children": Array [
-                        <img
-                          alt="team"
-                          className="padding-small--right icon-sm vertical-align-sm"
-                          src={
-                            Object {
-                              "process": [Function],
-                            }
-                          }
-                        />,
-                        "Contacts",
-                      ],
+                      "children": "Contacts",
                       "className": "menu__btn--link",
                       "ghost": false,
                       "htmlType": "button",
@@ -1069,24 +824,7 @@ ShallowWrapper {
                       "loading": false,
                     },
                     "ref": null,
-                    "rendered": Array [
-                      Object {
-                        "instance": null,
-                        "key": undefined,
-                        "nodeType": "host",
-                        "props": Object {
-                          "alt": "team",
-                          "className": "padding-small--right icon-sm vertical-align-sm",
-                          "src": Object {
-                            "process": [Function],
-                          },
-                        },
-                        "ref": null,
-                        "rendered": null,
-                        "type": "img",
-                      },
-                      "Contacts",
-                    ],
+                    "rendered": "Contacts",
                     "type": [Function],
                   },
                   "type": [Function],
@@ -1108,15 +846,6 @@ ShallowWrapper {
                         id=""
                         loading={false}
                       >
-                        <img
-                          alt="Admin"
-                          className="padding-small--right icon-sm vertical-align-sm"
-                          src={
-                            Object {
-                              "process": [Function],
-                            }
-                          }
-                        />
                         Admin
                       </Button>
                     </Link>,
@@ -1136,15 +865,6 @@ ShallowWrapper {
                         id=""
                         loading={false}
                       >
-                        <img
-                          alt="Admin"
-                          className="padding-small--right icon-sm vertical-align-sm"
-                          src={
-                            Object {
-                              "process": [Function],
-                            }
-                          }
-                        />
                         Admin
                       </Button>,
                       "replace": false,
@@ -1157,18 +877,7 @@ ShallowWrapper {
                       "nodeType": "class",
                       "props": Object {
                         "block": false,
-                        "children": Array [
-                          <img
-                            alt="Admin"
-                            className="padding-small--right icon-sm vertical-align-sm"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
-                            }
-                          />,
-                          "Admin",
-                        ],
+                        "children": "Admin",
                         "className": "menu__btn--link",
                         "ghost": false,
                         "htmlType": "button",
@@ -1176,24 +885,7 @@ ShallowWrapper {
                         "loading": false,
                       },
                       "ref": null,
-                      "rendered": Array [
-                        Object {
-                          "instance": null,
-                          "key": undefined,
-                          "nodeType": "host",
-                          "props": Object {
-                            "alt": "Admin",
-                            "className": "padding-small--right icon-sm vertical-align-sm",
-                            "src": Object {
-                              "process": [Function],
-                            },
-                          },
-                          "ref": null,
-                          "rendered": null,
-                          "type": "img",
-                        },
-                        "Admin",
-                      ],
+                      "rendered": "Admin",
                       "type": [Function],
                     },
                     "type": [Function],
@@ -1222,25 +914,7 @@ ShallowWrapper {
                     </button>,
                     "mouseEnterDelay": 0.15,
                     "mouseLeaveDelay": 0.1,
-                    "overlay": <Menu>
-                      <MenuItem>
-                        <button
-                          onClick={undefined}
-                          type="button"
-                        >
-                          <img
-                            alt="Logout"
-                            className="menu__img"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
-                            }
-                          />
-                          Logout
-                        </button>
-                      </MenuItem>
-                    </Menu>,
+                    "overlay": [Function],
                     "placement": "bottomLeft",
                   },
                   "ref": null,
@@ -1508,6 +1182,7 @@ ShallowWrapper {
                 }
               />
             </Link>
+            <Connect(withRouter(SearchBar)) />
             <MediaQuery
               maxWidth={768}
               values={Object {}}
@@ -1537,7 +1212,6 @@ ShallowWrapper {
                 />
               </Button>
             </MediaQuery>
-            <Connect(withRouter(SearchBar)) />
             <MediaQuery
               minWidth={769}
               values={Object {}}
@@ -1557,15 +1231,6 @@ ShallowWrapper {
                     id=""
                     loading={false}
                   >
-                    <img
-                      alt="Mine"
-                      className="padding-small--right vertical-align-sm"
-                      src={
-                        Object {
-                          "process": [Function],
-                        }
-                      }
-                    />
                     Mines
                   </Button>
                 </Link>
@@ -1581,15 +1246,6 @@ ShallowWrapper {
                     id=""
                     loading={false}
                   >
-                    <img
-                      alt="team"
-                      className="padding-small--right icon-sm vertical-align-sm"
-                      src={
-                        Object {
-                          "process": [Function],
-                        }
-                      }
-                    />
                     Contacts
                   </Button>
                 </Link>
@@ -1608,15 +1264,6 @@ ShallowWrapper {
                       id=""
                       loading={false}
                     >
-                      <img
-                        alt="Admin"
-                        className="padding-small--right icon-sm vertical-align-sm"
-                        src={
-                          Object {
-                            "process": [Function],
-                          }
-                        }
-                      />
                       Admin
                     </Button>
                   </Link>
@@ -1624,27 +1271,7 @@ ShallowWrapper {
                 <Dropdown
                   mouseEnterDelay={0.15}
                   mouseLeaveDelay={0.1}
-                  overlay={
-                    <Menu>
-                      <MenuItem>
-                        <button
-                          onClick={undefined}
-                          type="button"
-                        >
-                          <img
-                            alt="Logout"
-                            className="menu__img"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
-                            }
-                          />
-                          Logout
-                        </button>
-                      </MenuItem>
-                    </Menu>
-                  }
+                  overlay={[Function]}
                   placement="bottomLeft"
                 >
                   <button
@@ -1735,6 +1362,7 @@ ShallowWrapper {
                   }
                 />
               </Link>,
+              <Connect(withRouter(SearchBar)) />,
               <MediaQuery
                 maxWidth={768}
                 values={Object {}}
@@ -1764,7 +1392,6 @@ ShallowWrapper {
                   />
                 </Button>
               </MediaQuery>,
-              <Connect(withRouter(SearchBar)) />,
               <MediaQuery
                 minWidth={769}
                 values={Object {}}
@@ -1784,15 +1411,6 @@ ShallowWrapper {
                       id=""
                       loading={false}
                     >
-                      <img
-                        alt="Mine"
-                        className="padding-small--right vertical-align-sm"
-                        src={
-                          Object {
-                            "process": [Function],
-                          }
-                        }
-                      />
                       Mines
                     </Button>
                   </Link>
@@ -1808,15 +1426,6 @@ ShallowWrapper {
                       id=""
                       loading={false}
                     >
-                      <img
-                        alt="team"
-                        className="padding-small--right icon-sm vertical-align-sm"
-                        src={
-                          Object {
-                            "process": [Function],
-                          }
-                        }
-                      />
                       Contacts
                     </Button>
                   </Link>
@@ -1835,15 +1444,6 @@ ShallowWrapper {
                         id=""
                         loading={false}
                       >
-                        <img
-                          alt="Admin"
-                          className="padding-small--right icon-sm vertical-align-sm"
-                          src={
-                            Object {
-                              "process": [Function],
-                            }
-                          }
-                        />
                         Admin
                       </Button>
                     </Link>
@@ -1851,27 +1451,7 @@ ShallowWrapper {
                   <Dropdown
                     mouseEnterDelay={0.15}
                     mouseLeaveDelay={0.1}
-                    overlay={
-                      <Menu>
-                        <MenuItem>
-                          <button
-                            onClick={undefined}
-                            type="button"
-                          >
-                            <img
-                              alt="Logout"
-                              className="menu__img"
-                              src={
-                                Object {
-                                  "process": [Function],
-                                }
-                              }
-                            />
-                            Logout
-                          </button>
-                        </MenuItem>
-                      </Menu>
-                    }
+                    overlay={[Function]}
                     placement="bottomLeft"
                   >
                     <button
@@ -1975,6 +1555,15 @@ ShallowWrapper {
               "instance": null,
               "key": undefined,
               "nodeType": "class",
+              "props": Object {},
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
               "props": Object {
                 "children": <Button
                   block={false}
@@ -2053,15 +1642,6 @@ ShallowWrapper {
               "instance": null,
               "key": undefined,
               "nodeType": "class",
-              "props": Object {},
-              "ref": null,
-              "rendered": null,
-              "type": [Function],
-            },
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
               "props": Object {
                 "children": <div
                   className="inline-flex"
@@ -2078,15 +1658,6 @@ ShallowWrapper {
                       id=""
                       loading={false}
                     >
-                      <img
-                        alt="Mine"
-                        className="padding-small--right vertical-align-sm"
-                        src={
-                          Object {
-                            "process": [Function],
-                          }
-                        }
-                      />
                       Mines
                     </Button>
                   </Link>
@@ -2102,15 +1673,6 @@ ShallowWrapper {
                       id=""
                       loading={false}
                     >
-                      <img
-                        alt="team"
-                        className="padding-small--right icon-sm vertical-align-sm"
-                        src={
-                          Object {
-                            "process": [Function],
-                          }
-                        }
-                      />
                       Contacts
                     </Button>
                   </Link>
@@ -2129,15 +1691,6 @@ ShallowWrapper {
                         id=""
                         loading={false}
                       >
-                        <img
-                          alt="Admin"
-                          className="padding-small--right icon-sm vertical-align-sm"
-                          src={
-                            Object {
-                              "process": [Function],
-                            }
-                          }
-                        />
                         Admin
                       </Button>
                     </Link>
@@ -2145,27 +1698,7 @@ ShallowWrapper {
                   <Dropdown
                     mouseEnterDelay={0.15}
                     mouseLeaveDelay={0.1}
-                    overlay={
-                      <Menu>
-                        <MenuItem>
-                          <button
-                            onClick={undefined}
-                            type="button"
-                          >
-                            <img
-                              alt="Logout"
-                              className="menu__img"
-                              src={
-                                Object {
-                                  "process": [Function],
-                                }
-                              }
-                            />
-                            Logout
-                          </button>
-                        </MenuItem>
-                      </Menu>
-                    }
+                    overlay={[Function]}
                     placement="bottomLeft"
                   >
                     <button
@@ -2246,15 +1779,6 @@ ShallowWrapper {
                         id=""
                         loading={false}
                       >
-                        <img
-                          alt="Mine"
-                          className="padding-small--right vertical-align-sm"
-                          src={
-                            Object {
-                              "process": [Function],
-                            }
-                          }
-                        />
                         Mines
                       </Button>
                     </Link>,
@@ -2270,15 +1794,6 @@ ShallowWrapper {
                         id=""
                         loading={false}
                       >
-                        <img
-                          alt="team"
-                          className="padding-small--right icon-sm vertical-align-sm"
-                          src={
-                            Object {
-                              "process": [Function],
-                            }
-                          }
-                        />
                         Contacts
                       </Button>
                     </Link>,
@@ -2297,15 +1812,6 @@ ShallowWrapper {
                           id=""
                           loading={false}
                         >
-                          <img
-                            alt="Admin"
-                            className="padding-small--right icon-sm vertical-align-sm"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
-                            }
-                          />
                           Admin
                         </Button>
                       </Link>
@@ -2313,27 +1819,7 @@ ShallowWrapper {
                     <Dropdown
                       mouseEnterDelay={0.15}
                       mouseLeaveDelay={0.1}
-                      overlay={
-                        <Menu>
-                          <MenuItem>
-                            <button
-                              onClick={undefined}
-                              type="button"
-                            >
-                              <img
-                                alt="Logout"
-                                className="menu__img"
-                                src={
-                                  Object {
-                                    "process": [Function],
-                                  }
-                                }
-                              />
-                              Logout
-                            </button>
-                          </MenuItem>
-                        </Menu>
-                      }
+                      overlay={[Function]}
                       placement="bottomLeft"
                     >
                       <button
@@ -2409,15 +1895,6 @@ ShallowWrapper {
                         id=""
                         loading={false}
                       >
-                        <img
-                          alt="Mine"
-                          className="padding-small--right vertical-align-sm"
-                          src={
-                            Object {
-                              "process": [Function],
-                            }
-                          }
-                        />
                         Mines
                       </Button>,
                       "replace": false,
@@ -2430,18 +1907,7 @@ ShallowWrapper {
                       "nodeType": "class",
                       "props": Object {
                         "block": false,
-                        "children": Array [
-                          <img
-                            alt="Mine"
-                            className="padding-small--right vertical-align-sm"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
-                            }
-                          />,
-                          "Mines",
-                        ],
+                        "children": "Mines",
                         "className": "menu__btn--link",
                         "ghost": false,
                         "htmlType": "button",
@@ -2449,24 +1915,7 @@ ShallowWrapper {
                         "loading": false,
                       },
                       "ref": null,
-                      "rendered": Array [
-                        Object {
-                          "instance": null,
-                          "key": undefined,
-                          "nodeType": "host",
-                          "props": Object {
-                            "alt": "Mine",
-                            "className": "padding-small--right vertical-align-sm",
-                            "src": Object {
-                              "process": [Function],
-                            },
-                          },
-                          "ref": null,
-                          "rendered": null,
-                          "type": "img",
-                        },
-                        "Mines",
-                      ],
+                      "rendered": "Mines",
                       "type": [Function],
                     },
                     "type": [Function],
@@ -2484,15 +1933,6 @@ ShallowWrapper {
                         id=""
                         loading={false}
                       >
-                        <img
-                          alt="team"
-                          className="padding-small--right icon-sm vertical-align-sm"
-                          src={
-                            Object {
-                              "process": [Function],
-                            }
-                          }
-                        />
                         Contacts
                       </Button>,
                       "replace": false,
@@ -2505,18 +1945,7 @@ ShallowWrapper {
                       "nodeType": "class",
                       "props": Object {
                         "block": false,
-                        "children": Array [
-                          <img
-                            alt="team"
-                            className="padding-small--right icon-sm vertical-align-sm"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
-                            }
-                          />,
-                          "Contacts",
-                        ],
+                        "children": "Contacts",
                         "className": "menu__btn--link",
                         "ghost": false,
                         "htmlType": "button",
@@ -2524,24 +1953,7 @@ ShallowWrapper {
                         "loading": false,
                       },
                       "ref": null,
-                      "rendered": Array [
-                        Object {
-                          "instance": null,
-                          "key": undefined,
-                          "nodeType": "host",
-                          "props": Object {
-                            "alt": "team",
-                            "className": "padding-small--right icon-sm vertical-align-sm",
-                            "src": Object {
-                              "process": [Function],
-                            },
-                          },
-                          "ref": null,
-                          "rendered": null,
-                          "type": "img",
-                        },
-                        "Contacts",
-                      ],
+                      "rendered": "Contacts",
                       "type": [Function],
                     },
                     "type": [Function],
@@ -2563,15 +1975,6 @@ ShallowWrapper {
                           id=""
                           loading={false}
                         >
-                          <img
-                            alt="Admin"
-                            className="padding-small--right icon-sm vertical-align-sm"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
-                            }
-                          />
                           Admin
                         </Button>
                       </Link>,
@@ -2591,15 +1994,6 @@ ShallowWrapper {
                           id=""
                           loading={false}
                         >
-                          <img
-                            alt="Admin"
-                            className="padding-small--right icon-sm vertical-align-sm"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
-                            }
-                          />
                           Admin
                         </Button>,
                         "replace": false,
@@ -2612,18 +2006,7 @@ ShallowWrapper {
                         "nodeType": "class",
                         "props": Object {
                           "block": false,
-                          "children": Array [
-                            <img
-                              alt="Admin"
-                              className="padding-small--right icon-sm vertical-align-sm"
-                              src={
-                                Object {
-                                  "process": [Function],
-                                }
-                              }
-                            />,
-                            "Admin",
-                          ],
+                          "children": "Admin",
                           "className": "menu__btn--link",
                           "ghost": false,
                           "htmlType": "button",
@@ -2631,24 +2014,7 @@ ShallowWrapper {
                           "loading": false,
                         },
                         "ref": null,
-                        "rendered": Array [
-                          Object {
-                            "instance": null,
-                            "key": undefined,
-                            "nodeType": "host",
-                            "props": Object {
-                              "alt": "Admin",
-                              "className": "padding-small--right icon-sm vertical-align-sm",
-                              "src": Object {
-                                "process": [Function],
-                              },
-                            },
-                            "ref": null,
-                            "rendered": null,
-                            "type": "img",
-                          },
-                          "Admin",
-                        ],
+                        "rendered": "Admin",
                         "type": [Function],
                       },
                       "type": [Function],
@@ -2677,25 +2043,7 @@ ShallowWrapper {
                       </button>,
                       "mouseEnterDelay": 0.15,
                       "mouseLeaveDelay": 0.1,
-                      "overlay": <Menu>
-                        <MenuItem>
-                          <button
-                            onClick={undefined}
-                            type="button"
-                          >
-                            <img
-                              alt="Logout"
-                              className="menu__img"
-                              src={
-                                Object {
-                                  "process": [Function],
-                                }
-                              }
-                            />
-                            Logout
-                          </button>
-                        </MenuItem>
-                      </Menu>,
+                      "overlay": [Function],
                       "placement": "bottomLeft",
                     },
                     "ref": null,

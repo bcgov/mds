@@ -247,14 +247,16 @@ export class MineDashboard extends Component {
 
   handleSubscription = () => {
     const { id } = this.props.match.params;
-    this.props.subscribe(id).then(() => {
+    const mineName = this.props.mines[id].mine_name;
+    this.props.subscribe(id, mineName).then(() => {
       this.props.fetchSubscribedMinesByUser();
     });
   };
 
   handleUnSubscribe = () => {
     const { id } = this.props.match.params;
-    this.props.unSubscribe(id).then(() => {
+    const mineName = this.props.mines[id].mine_name;
+    this.props.unSubscribe(id, mineName).then(() => {
       this.props.fetchSubscribedMinesByUser();
     });
   };
