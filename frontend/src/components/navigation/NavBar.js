@@ -29,7 +29,7 @@ const propTypes = {
   isMenuOpen: PropTypes.bool.isRequired,
   logoutUser: PropTypes.func.isRequired,
   toggleHamburgerMenu: PropTypes.func.isRequired,
-  keycloak: { logout: PropTypes.func.isRequired }.isRequired,
+  keycloak: { logout: PropTypes.func }.isRequired,
   fetchMineVerifiedStatuses: PropTypes.func.isRequired,
   currentUserVerifiedMines: PropTypes.arrayOf(CustomPropTypes.mineVerificationStatus),
   currentUserUnverifiedMines: PropTypes.arrayOf(CustomPropTypes.mineVerificationStatus),
@@ -41,26 +41,15 @@ const defaultProps = {
 };
 
 export class NavBar extends Component {
-  menu = (
-    <Menu id="menu__dropdown">
-      <AuthorizationWrapper inTesting>
-        <div className="custom-menu-item">
-          <Link to={router.CUSTOM_HOME_PAGE.route}>
-            <button type="button">My Dashboard</button>
-          </Link>
-        </div>
-      </AuthorizationWrapper>
-      <Menu.Item key="1">
-        <button type="button" onClick={this.handleLogout}>
-          Log Out
-        </button>
-      </Menu.Item>
-    </Menu>
-  );
-
   componentDidMount() {
     this.props.fetchMineVerifiedStatuses(`idir\\${this.props.userInfo.preferred_username}`);
   }
+
+  handleLogout = () => {
+    this.props.keycloak.logout();
+    localStorage.removeItem("jwt");
+    this.props.logoutUser();
+  };
 
   unverifiedMinesMenu = () => (
     <Menu>
@@ -74,12 +63,6 @@ export class NavBar extends Component {
       ))}
     </Menu>
   );
-
-  handleLogout = () => {
-    this.props.keycloak.logout();
-    localStorage.removeItem("jwt");
-    this.props.logoutUser();
-  };
 
   renderFullNav = () => (
     <div className="inline-flex">
@@ -254,10 +237,10 @@ export class NavBar extends Component {
             <Col span={24}>
               <button
                 type="button"
-                onClick={this.handleLogout}
+                onClick={() => this.handleLogout()}
                 className="menu--hamburger__btn--link"
               >
-                Logout
+                Log Out
               </button>
             </Col>
           </Row>
@@ -269,6 +252,23 @@ export class NavBar extends Component {
         </div>
       )}
     </div>
+  );
+
+  menu = () => (
+    <Menu id="menu__dropdown">
+      <AuthorizationWrapper inTesting>
+        <div className="custom-menu-item">
+          <Link to={router.CUSTOM_HOME_PAGE.route}>
+            <button type="button">My Dashboard</button>
+          </Link>
+        </div>
+      </AuthorizationWrapper>
+      <Menu.Item key="1">
+        <button type="button" onClick={() => this.handleLogout()}>
+          Log Out
+        </button>
+      </Menu.Item>
+    </Menu>
   );
 
   render() {

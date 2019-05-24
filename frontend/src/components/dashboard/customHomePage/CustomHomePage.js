@@ -20,7 +20,7 @@ import { fetchSubscribedMinesByUser, unSubscribe } from "@/actionCreators/mineAc
 import { MineSubscriptionTable } from "./MineSubscriptionTable";
 
 /**
- * @class CustomHomePage is the main landing page of the application
+ * @class CustomHomePage is a personalized landing page for users
  *
  */
 
@@ -44,9 +44,9 @@ export class CustomHomePage extends Component {
     this.props.fetchMineCommodityOptions();
   }
 
-  handleUnSubscribe = (event, mineGuid) => {
+  handleUnSubscribe = (event, mineGuid, mineName) => {
     event.preventDefault();
-    this.props.unSubscribe(mineGuid).then(() => {
+    this.props.unSubscribe(mineGuid, mineName).then(() => {
       this.props.fetchSubscribedMinesByUser();
     });
   };
@@ -97,5 +97,5 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  AuthorizationGuard(Permission.IN_DEVELOPMENT)
+  AuthorizationGuard(Permission.IN_TESTING)
 )(CustomHomePage);

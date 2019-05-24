@@ -373,11 +373,12 @@ describe("`fetchSubscribedMinesByUser` action creator", () => {
 
 describe("`unSubscribe` action creator", () => {
   const mineGuid = "12345";
+  const mineName = "mockMine";
   const url = ENVIRONMENT.apiUrl + API.SUBSCRIPTION(mineGuid);
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onDelete(url).reply(200, mockResponse);
-    return unSubscribe(mineGuid)(dispatch).then(() => {
+    return unSubscribe(mineGuid, mineName)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(5);
@@ -386,7 +387,7 @@ describe("`unSubscribe` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onDelete(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
-    return unSubscribe(mineGuid)(dispatch).then(() => {
+    return unSubscribe(mineGuid, mineName)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -396,11 +397,12 @@ describe("`unSubscribe` action creator", () => {
 
 describe("`subscribe` action creator", () => {
   const mineGuid = "12345";
+  const mineName = "mockMine";
   const url = ENVIRONMENT.apiUrl + API.SUBSCRIPTION(mineGuid);
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPost(url).reply(200, mockResponse);
-    return subscribe(mineGuid)(dispatch).then(() => {
+    return subscribe(mineGuid, mineName)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(5);
@@ -409,7 +411,7 @@ describe("`subscribe` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPost(url).reply(400, MOCK.ERROR);
-    return subscribe(mineGuid)(dispatch).then(() => {
+    return subscribe(mineGuid, mineName)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

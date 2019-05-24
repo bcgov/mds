@@ -338,14 +338,14 @@ export const setMineVerifiedStatus = (mine_guid, payload) => (dispatch) => {
 };
 
 // mine subscription
-export const subscribe = (mineGuid) => (dispatch) => {
+export const subscribe = (mineGuid, mineName) => (dispatch) => {
   dispatch(request(reducerTypes.SUBSCRIBE));
   dispatch(showLoading());
   return CustomAxios()
     .post(ENVIRONMENT.apiUrl + API.SUBSCRIPTION(mineGuid), {}, createRequestHeader())
     .then(() => {
       notification.success({
-        message: "Successfully subscribed",
+        message: `Successfully subscribed ${mineName}`,
         duration: 10,
       });
       dispatch(success(reducerTypes.SUBSCRIBE));
@@ -355,14 +355,14 @@ export const subscribe = (mineGuid) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const unSubscribe = (mineGuid) => (dispatch) => {
+export const unSubscribe = (mineGuid, mineName) => (dispatch) => {
   dispatch(request(reducerTypes.UNSUBSCRIBE));
   dispatch(showLoading());
   return CustomAxios()
     .delete(ENVIRONMENT.apiUrl + API.SUBSCRIPTION(mineGuid), createRequestHeader())
     .then(() => {
       notification.success({
-        message: "Successfully unsubscribed",
+        message: `Successfully unsubscribed ${mineName}`,
         duration: 10,
       });
       dispatch(success(reducerTypes.UNSUBSCRIBE));

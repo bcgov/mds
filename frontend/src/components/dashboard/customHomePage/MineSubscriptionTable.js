@@ -139,11 +139,11 @@ export class MineSubscriptionTable extends Component {
         width: 150,
         render: (text, record) => (
           <Popconfirm
-            placement="top"
+            placement="left"
             title={`Are you sure you want to unsubscribe from ${record.mineName}?`}
             okText="Yes"
             cancelText="No"
-            onConfirm={(event) => this.props.handleUnSubscribe(event, record.key)}
+            onConfirm={(event) => this.props.handleUnSubscribe(event, record.key, record.mineName)}
           >
             <button type="button">
               <img alt="document" src={UNSUBSCRIBE} />

@@ -298,7 +298,7 @@ ShallowWrapper {
                         </button>
                       </MenuItem>
                       <Connect(AuthorizationWrapper)
-                        inDevelopment={true}
+                        inTesting={true}
                       >
                         <div
                           className="custom-menu-item"
@@ -726,7 +726,7 @@ ShallowWrapper {
                           </button>
                         </MenuItem>
                         <Connect(AuthorizationWrapper)
-                          inDevelopment={true}
+                          inTesting={true}
                         >
                           <div
                             className="custom-menu-item"
@@ -1037,7 +1037,7 @@ ShallowWrapper {
                             </button>
                           </MenuItem>
                           <Connect(AuthorizationWrapper)
-                            inDevelopment={true}
+                            inTesting={true}
                           >
                             <div
                               className="custom-menu-item"
@@ -1251,7 +1251,7 @@ ShallowWrapper {
                               </button>
                             </MenuItem>
                             <Connect(AuthorizationWrapper)
-                              inDevelopment={true}
+                              inTesting={true}
                             >
                               <div
                                 className="custom-menu-item"
@@ -1441,7 +1441,7 @@ ShallowWrapper {
                               </button>
                             </MenuItem>
                             <Connect(AuthorizationWrapper)
-                              inDevelopment={true}
+                              inTesting={true}
                             >
                               <div
                                 className="custom-menu-item"
@@ -1649,7 +1649,7 @@ ShallowWrapper {
                             </button>
                           </MenuItem>
                           <Connect(AuthorizationWrapper)
-                            inDevelopment={true}
+                            inTesting={true}
                           >
                             <div
                               className="custom-menu-item"
@@ -2752,7 +2752,7 @@ ShallowWrapper {
                           </button>
                         </MenuItem>
                         <Connect(AuthorizationWrapper)
-                          inDevelopment={true}
+                          inTesting={true}
                         >
                           <div
                             className="custom-menu-item"
@@ -3180,7 +3180,7 @@ ShallowWrapper {
                             </button>
                           </MenuItem>
                           <Connect(AuthorizationWrapper)
-                            inDevelopment={true}
+                            inTesting={true}
                           >
                             <div
                               className="custom-menu-item"
@@ -3491,7 +3491,7 @@ ShallowWrapper {
                               </button>
                             </MenuItem>
                             <Connect(AuthorizationWrapper)
-                              inDevelopment={true}
+                              inTesting={true}
                             >
                               <div
                                 className="custom-menu-item"
@@ -3705,7 +3705,7 @@ ShallowWrapper {
                                 </button>
                               </MenuItem>
                               <Connect(AuthorizationWrapper)
-                                inDevelopment={true}
+                                inTesting={true}
                               >
                                 <div
                                   className="custom-menu-item"
@@ -3895,7 +3895,7 @@ ShallowWrapper {
                                 </button>
                               </MenuItem>
                               <Connect(AuthorizationWrapper)
-                                inDevelopment={true}
+                                inTesting={true}
                               >
                                 <div
                                   className="custom-menu-item"
@@ -4103,7 +4103,7 @@ ShallowWrapper {
                               </button>
                             </MenuItem>
                             <Connect(AuthorizationWrapper)
-                              inDevelopment={true}
+                              inTesting={true}
                             >
                               <div
                                 className="custom-menu-item"

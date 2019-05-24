@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import MineHeaderMap from "@/components/maps/MineHeaderMap";
 
-import { Menu, Divider, Button, Dropdown, Tag, Popover, Popconfirm } from "antd";
+import { Menu, Divider, Button, Dropdown, Tag, Popover, Popconfirm, Tooltip } from "antd";
 import {
   ELLIPSE,
   BRAND_PENCIL,
@@ -51,7 +51,7 @@ const propTypes = {
   mineTenureHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineDisturbanceOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  transformedMineTypes: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.strings)).isRequired,
+  transformedMineTypes: CustomPropTypes.transformedMineTypes.isRequired,
   fetchMineVerifiedStatuses: PropTypes.func.isRequired,
   userInfo: PropTypes.shape({ preferred_username: PropTypes.string.isRequired }).isRequired,
 };
@@ -188,8 +188,8 @@ export class MineHeader extends Component {
             {ModalContent.ADD_TAILINGS}
           </button>
         </Menu.Item>
-        <AuthorizationWrapper inTesting>
-          {this.props.subscribed ? (
+        {this.props.subscribed ? (
+          <AuthorizationWrapper inTesting>
             <div className="custom-menu-item">
               <Popconfirm
                 placement="left"
@@ -204,15 +204,17 @@ export class MineHeader extends Component {
                 </button>
               </Popconfirm>
             </div>
-          ) : (
+          </AuthorizationWrapper>
+        ) : (
+          <AuthorizationWrapper inTesting>
             <div className="custom-menu-item">
               <button type="button" className="full" onClick={this.props.handleSubscription}>
                 <img alt="document" className="padding-small" src={SUBSCRIBE} />
                 Subscribe
               </button>
             </div>
-          )}
-        </AuthorizationWrapper>
+          </AuthorizationWrapper>
+        )}
 
         <AuthorizationWrapper inTesting>
           {this.props.mine.verified_status.healthy_ind !== true && (
@@ -292,7 +294,11 @@ export class MineHeader extends Component {
               )}
             </h1>
             <div>
-              {this.props.subscribed && <img src={SUBSCRIBE} alt="SUBSCRIBE" />}
+              {this.props.subscribed && (
+                <Tooltip title="Subscribed" placement="top" mouseEnterDelay={1}>
+                  <img src={SUBSCRIBE} alt="SUBSCRIBE" />
+                </Tooltip>
+              )}
               <AuthorizationWrapper
                 permission={Permission.CREATE}
                 isMajorMine={this.props.mine.major_mine_ind}
