@@ -14,3 +14,8 @@
     @include center(true, true);
   }
 }
+
+.loading-screen--small {
+  margin: 30%;
+  text-align: center;
+}

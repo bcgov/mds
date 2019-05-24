@@ -11,6 +11,7 @@ const propTypes = {
   variance: CustomPropTypes.variance.isRequired,
   mineName: PropTypes.string.isRequired,
   varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   coreUsersHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
@@ -55,7 +56,12 @@ export const ViewVarianceModal = (props) => {
       </div>
       <br />
       <h5>{isApproved ? "Variance details" : "Application details"}</h5>
-      <VarianceDetails variance={props.variance} mineName={props.mineName} isViewOnly />
+      <VarianceDetails
+        variance={props.variance}
+        mineName={props.mineName}
+        isViewOnly
+        complianceCodesHash={props.complianceCodesHash}
+      />
       <div className="right center-mobile">
         <Button className="full-mobile" type="secondary" onClick={props.closeModal}>
           Close
