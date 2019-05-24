@@ -19,7 +19,7 @@ from app.extensions import api, db, jwt, sched, apm, migrate
 from app.nris.models import *
 from app.nris.resources import *
 
-from app.nris.scheduled_jobs.NRIS_etl import _schedule_NRIS_ETL_jobs
+from app.nris.scheduled_jobs.nris_jobs import _schedule_NRIS_ETL_jobs
 
 from app.config import Config
 
