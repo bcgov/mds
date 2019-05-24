@@ -21,17 +21,22 @@ from app.nris.models.legislation_compliance_article import LegislationCompliance
 from app.nris.models.document import Document
 from app.nris.models.document_type import DocumentType
 
+# Truncates all tables on the nris schema, except for the alembic_version table and the nris_raw_data table.
+TRUNCATE_TABLES_SQL = """
+DO $$
+DECLARE
+i TEXT;
+BEGIN
+ FOR i IN (select distinct concat(table_schema, '.', table_name)  from information_schema.tables where table_catalog = 'mds' and table_schema = 'nris' and table_name != 'alembic_version' and table_name != 'nris_raw_data') LOOP
+         EXECUTE 'TRUNCATE TABLE '|| i ||' RESTART IDENTITY CASCADE;';
+
+  END LOOP;
+END $$;
+"""
+
 
 def _clean_nris_data():
-    db.session.execute('truncate table inspection cascade;')
-    db.session.execute('truncate table legislation_act cascade;')
-    db.session.execute('truncate table legislation_compliance_article cascade;')
-    db.session.execute('truncate table order_type cascade;')
-    db.session.execute('truncate table document cascade;')
-    db.session.execute('truncate table document_type cascade;')
-    db.session.execute('truncate table inspection_status cascade;')
-    db.session.execute('truncate table location cascade;')
-    db.session.execute('truncate table nris_raw_data cascade;')
+    db.session.execute(TRUNCATE_TABLES_SQL)
     db.session.commit()
 
 
