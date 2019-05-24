@@ -17,17 +17,15 @@ export const LoadingWrapper = (props) => {
     <Icon type="loading" style={{ fontSize: 80, color: Style.COLOR.mediumGrey }} spin />
   );
   return (
-    <span>
+    <div>
       {props.condition ? (
-        <span>
-          <div className="fade-in">{props.children}</div>
-        </span>
+        <div className="fade-in">{props.children}</div>
       ) : (
         <div className="loading-screen--small">
           <Spin id="spinner" indicator={antIcon} />
         </div>
       )}
-    </span>
+    </div>
   );
 };
 
