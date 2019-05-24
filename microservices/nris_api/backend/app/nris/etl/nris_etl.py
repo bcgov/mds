@@ -46,18 +46,7 @@ def _etl_nris_data(input):
         inspection.inspection_date = assessment_date.text if assessment_date is not None else None
         inspection.business_area = business_area.text if business_area is not None else None
 
-        status_codes = InspectionStatus.find_all_inspection_status()
-        code_exists = False
-        status = None
-
-        for code in status_codes:
-
-            if code.inspection_status_code == assessment_status_code:
-                code_exists = True
-                status = code
-
-        if not code_exists:
-            status = create_status(assessment_status_code)
+        status = create_status(assessment_status_code)
 
         inspection.inspection_status = status
 
@@ -91,10 +80,20 @@ def _etl_nris_data(input):
             save_stops(inspection_data, inspection)
 
 
-def create_status(status):
-    inspection_status = InspectionStatus(inspection_status_code=status)
-    db.session.add(inspection_status)
-    return inspection_status
+def create_status(assessment_status_code):
+    status_codes = InspectionStatus.find_all_inspection_status()
+    code_exists = False
+    status = None
+
+    for code in status_codes:
+        if code.inspection_status_code == assessment_status_code:
+            code_exists = True
+            status = code
+
+    if not code_exists:
+        status = InspectionStatus(inspection_status_code=assessment_status_code)
+        db.session.add(status)
+    return status
 
 
 def save_stops(nris_inspection_data, inspection):
@@ -127,18 +126,7 @@ def save_stops(nris_inspection_data, inspection):
         order.location = location
         inspection.inspection_orders.append(order)
 
-        order_types = OrderType.find_all_order_types()
-        type_found = False
-        order_type = None
-        if stop_type is not None:
-            for type in order_types:
-                if type.order_type == stop_type.text:
-                    type_found = True
-                    order_type = type
-        if not type_found:
-            order_type = OrderType(order_type=stop_type.text)
-            db.session.add(order_type)
-
+        order_type = find_or_save_order_type(stop_type)
         order.order_type_rel = order_type
 
         for stop_order in stop.findall('stop_orders'):
@@ -210,6 +198,21 @@ def save_stop_order(stop_order):
         stop_detail.documents.append(doc)
 
     return stop_detail
+
+
+def find_or_save_order_type(stop_type):
+    order_types = OrderType.find_all_order_types()
+    type_found = False
+    order_type = None
+    if stop_type is not None:
+        for type in order_types:
+            if type.order_type == stop_type.text:
+                type_found = True
+                order_type = type
+    if not type_found:
+        order_type = OrderType(order_type=stop_type.text)
+        db.session.add(order_type)
+    return order_type
 
 
 def _save_order_legislation(order_legislation):
