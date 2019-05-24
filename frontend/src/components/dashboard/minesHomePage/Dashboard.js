@@ -350,7 +350,7 @@ export class Dashboard extends Component {
                 handleMineSearch={this.handleMineSearchDebounced}
                 searchValue={search}
               />
-              <div className="tab__content ">
+              <div className="tab__content">
                 <MineList
                   mines={this.props.mines}
                   mineIds={this.props.mineIds}
