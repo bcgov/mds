@@ -54,6 +54,7 @@ app {
                     'file':'openshift/postgresql.dc.json',
                     'params':[
                             'NAME':"mds-postgresql",
+                            'SUFFIX':"${vars.deployment.suffix}",
                             'DATABASE_SERVICE_NAME':"mds-postgresql${vars.deployment.suffix}",
                             'CPU_REQUEST':"${vars.resources.postgres.cpu_request}",
                             'CPU_LIMIT':"${vars.resources.postgres.cpu_limit}",
@@ -185,6 +186,7 @@ app {
                             'APPLICATION_DOMAIN': "${vars.modules.'mds-python-backend'.HOST}",
                             'BASE_PATH': "${vars.modules.'mds-python-backend'.PATH}",
                             'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}",
+                            'DB_NRIS_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}-nris",
                             'REDIS_CONFIG_NAME': "mds-redis${vars.deployment.suffix}",
                             'CACHE_REDIS_HOST': "mds-redis${vars.deployment.suffix}",
                             'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled}",
@@ -213,6 +215,7 @@ app {
                             'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}-nris",
                             'REDIS_CONFIG_NAME': "mds-redis${vars.deployment.suffix}",
                             'CACHE_REDIS_HOST': "mds-redis${vars.deployment.suffix}",
+                            'DB_HOST': "mds-postgresql${vars.deployment.suffix}",
                             'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled}",
                             'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name_nris}",
                             'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}",
@@ -374,7 +377,7 @@ environments {
                     HOST = "http://mds-python-backend${vars.deployment.suffix}:5000"
                     PATH = "/api"
                 }
-                'mds-nris-backend' { 
+                'mds-nris-backend' {
                     HOST = "http://mds-nris-backend${vars.deployment.suffix}:5500"
                     PATH = "/nris-api"
                 }

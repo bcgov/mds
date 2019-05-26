@@ -130,12 +130,12 @@
         },
         "resources": {
           "limits": {
-            "cpu": "150m",
-            "memory": "1Gi"
+            "cpu": "1",
+            "memory": "2Gi"
           },
           "requests": {
-            "cpu": "100m",
-            "memory": "1Gi"
+            "cpu": "500m",
+            "memory": "512Mi"
           }
         }
       }
