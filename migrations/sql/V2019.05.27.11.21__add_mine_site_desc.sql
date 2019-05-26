@@ -1,0 +1,1 @@
+ALTER TABLE mine ADD COLUMN mine_location_description character varying;
