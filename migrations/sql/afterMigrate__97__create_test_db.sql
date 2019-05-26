@@ -1,5 +1,5 @@
 DO
-$do$
+$$
 DECLARE
 BEGIN
   CREATE EXTENSION IF NOT EXISTS dblink;
@@ -16,4 +16,4 @@ BEGIN
     PERFORM dblink_exec('CREATE DATABASE mds_test OWNER mds');
   END IF;
 END
-$do$;
+$$;
