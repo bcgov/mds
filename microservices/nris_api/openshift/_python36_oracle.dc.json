@@ -25,6 +25,11 @@
       "required": true
     },
     {
+      "name": "DB_HOST",
+      "displayName": "Database Host Name",
+      "required": true
+    },
+    {
       "name": "VERSION",
       "required": true
     },
@@ -213,12 +218,7 @@
                   },
                   {
                     "name": "DB_HOST",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${DB_CONFIG_NAME}",
-                        "key": "database-host"
-                      }
-                    }
+                    "value": "${DB_HOST}"
                   },
                   {
                     "name": "DB_PASS",

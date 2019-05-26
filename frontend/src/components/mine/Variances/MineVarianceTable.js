@@ -18,13 +18,14 @@ const propTypes = {
   variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  openViewVarianceModal: PropTypes.func.isRequired,
+  openViewVarianceModal: PropTypes.func,
   isApplication: PropTypes.bool,
   openEditVarianceModal: PropTypes.func,
 };
 
 const defaultProps = {
   openEditVarianceModal: () => {},
+  openViewVarianceModal: () => {},
   isApplication: false,
 };
 
@@ -122,7 +123,7 @@ export class MineVarianceTable extends Component {
       },
       {
         title: "Approval Status",
-        dataIndex: "status",
+        dataIndex: "",
         className: this.props.isApplication ? "column-hide" : "",
         render: (text, record) => (
           <div title="Approval Status" style={this.errorStyle(record.isOverdue)}>
