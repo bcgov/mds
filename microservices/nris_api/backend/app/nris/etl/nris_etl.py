@@ -52,9 +52,9 @@ def clean_nris_xml_import():
 def import_nris_xml():
     try:
         dsn_tns = cx_Oracle.makedsn(
-            Config.get('NRIS_DB_HOSTNAME'), Config.get('NRIS_DB_PORT'), service_name=Config.get('NRIS_DB_SERVICENAME'))
+            Config['NRIS_DB_HOSTNAME'], Config['NRIS_DB_PORT'], service_name=Config['NRIS_DB_SERVICENAME'])
         oracle_db = cx_Oracle.connect(
-            user=Config.get('NRIS_DB_USER'), password=Config.get('NRIS_DB_PASSWORD'), dsn=dsn_tns)
+            user=Config['NRIS_DB_USER'], password=Config['NRIS_DB_PASSWORD'], dsn=dsn_tns)
 
         cursor = oracle_db.cursor()
 
