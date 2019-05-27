@@ -35,7 +35,6 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   change: PropTypes.func.isRequired,
-  initialValues: PropTypes.objectOf(CustomPropTypes.mineProfile),
   handleDelete: PropTypes.func.isRequired,
   title: PropTypes.string,
   mineStatus: PropTypes.arrayOf(PropTypes.string),
@@ -57,7 +56,6 @@ const defaultProps = {
   currentMineTypes: [],
   mine_types: [],
   mineStatus: [],
-  initialValues: {},
 };
 
 export class MineRecordForm extends Component {
@@ -115,13 +113,10 @@ export class MineRecordForm extends Component {
       );
     }
 
-    // If the status exists, the status date should set to the current date,
-    // checking intial values insures this only happens on edit
-    if (
-      this.props.mineStatus[0] &&
-      nextProps.mineStatus !== this.props.mineStatus &&
-      this.props.initialValues.mine_status
-    ) {
+    // If the status has been changed, the status date should set to todays date,
+    const statusChanged =
+      nextProps.mineStatus !== null && nextProps.mineStatus !== this.props.mineStatus;
+    if (statusChanged) {
       const date = new Date();
       this.props.change("status_date", date);
     }
@@ -342,11 +337,13 @@ export class MineRecordForm extends Component {
 
         <Row gutter={16}>
           <Col>
-            <Form.Item>
+            <Form.Item label="Date of Status Change">
+              <p className="p-light">
+                The date will default to todays date, unless otherwise specified.
+              </p>
               <Field
                 id="status_date"
                 name="status_date"
-                label="Date of Status Change"
                 placeholder="yyyy-mm-dd"
                 component={renderConfig.DATE}
                 validate={[dateNotInFuture]}
