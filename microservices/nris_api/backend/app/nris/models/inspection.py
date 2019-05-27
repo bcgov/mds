@@ -15,6 +15,8 @@ INSPECTION_RESPONSE_MODEL = api.model(
         'inspection_date': fields.DateTime,
         'completed_date': fields.DateTime,
         'inspection_status_code': fields.String,
+        'inspection_type_code': fields.String,
+        'inspection_report_sent_date': fields.DateTime,
         'business_area': fields.String,
         'mine_no': fields.String,
         'inspector_idir': fields.String,
