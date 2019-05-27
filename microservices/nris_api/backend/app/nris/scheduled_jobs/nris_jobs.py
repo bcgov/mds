@@ -11,13 +11,13 @@ import cx_Oracle
 # the schedule of these jobs is set using server time (UTC)
 
 
-def _schedule_NRIS_ETL_jobs(app):
+def _schedule_nris_etl_jobs(app):
     app.apscheduler.add_job(
-        func=run_nightly_NRIS_ETL(), trigger='cron', id='ETL', hour=11, minute=0)
+        func=run_nightly_nris_etl(), trigger='cron', id='ETL', hour=11, minute=0)
 
 
 @register_apm
-def run_nightly_NRIS_ETL():
+def run_nightly_nris_etl():
     """This nightly job initiates the ETL from NRIS into our app domain."""
 
     current_app.logger.info('Starting ETL process')
@@ -31,12 +31,10 @@ def run_nightly_NRIS_ETL():
         # TODO: Insert update into status table
 
     except cx_Oracle.DatabaseError as e:
-        current_app.logger.error(
-            "Error establishing connection to NRIS database: " + str(e))
+        current_app.logger.error("Error establishing connection to NRIS database: " + str(e))
         return
     except Exception as e:
-        current_app.logger.error(
-            "Unexpected error with NRIS XML import: " + str(e))
+        current_app.logger.error("Unexpected error with NRIS XML import: " + str(e))
         raise
 
     try:
