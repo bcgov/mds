@@ -20,7 +20,7 @@ schema_name = config.get_main_option('schema_name')
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 config.set_main_option('sqlalchemy.url',
-                       current_app.config.get('SQLALCHEMY_DATABASE_URI'))
+                       current_app.config['SQLALCHEMY_DATABASE_URI'])
 target_metadata = current_app.extensions['migrate'].db.metadata
 
 # other values from the config, defined by the needs of env.py,

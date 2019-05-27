@@ -21,14 +21,14 @@ from app.nris.resources import *
 
 from app.nris.scheduled_jobs.nris_jobs import _schedule_NRIS_ETL_jobs
 
-from app.config import Config
+from .config import Config
 
 
-def create_app(test_config=None):
+def create_app(config_object=None):
     """Create and configure an instance of the Flask application."""
     app = Flask(__name__)
 
-    config = test_config if test_config else Config
+    config = config_object if config_object else Config
     app.config.from_object(config)
 
     register_extensions(app)
@@ -59,7 +59,7 @@ def register_extensions(app):
 
 
 def register_scheduled_jobs(app):
-    if app.config.get('ENVIRONMENT_NAME') in ['test', 'prod']:
+    if app.config['ENVIRONMENT_NAME'] in ['test', 'prod']:
         if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == 'true':
             sched.start()
             _schedule_NRIS_ETL_jobs(app)
