@@ -26,4 +26,4 @@ def register_commands(app):
     @sched.app.cli.command()
     def run_nightly_nris_etl():
         with sched.app.app_context():
-            nris_jobs.run_nightly_NRIS_ETL()
+            nris_jobs.run_nightly_nris_etl()
