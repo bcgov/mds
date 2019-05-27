@@ -10,6 +10,7 @@ import {
   fetchVariancesByMine,
 } from "@/actionCreators/varianceActionCreator";
 import { getVariance } from "@/selectors/varianceSelectors";
+import LoadingWrapper from "../common/wrappers/LoadingWrapper";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
@@ -22,6 +23,7 @@ const propTypes = {
   fetchVarianceById: PropTypes.func.isRequired,
   varianceGuid: PropTypes.string.isRequired,
   removeDocumentFromVariance: PropTypes.func.isRequired,
+  complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   fetchVariancesByMine: PropTypes.func.isRequired,
 };
 
@@ -30,8 +32,12 @@ const defaultProps = {
 };
 
 export class EditVarianceModal extends Component {
+  state = { isLoaded: false };
+
   componentDidMount() {
-    this.props.fetchVarianceById(this.props.mineGuid, this.props.varianceGuid);
+    this.props.fetchVarianceById(this.props.mineGuid, this.props.varianceGuid).then(() => {
+      this.setState({ isLoaded: true });
+    });
   }
 
   // handling delete functionality inside the modal, so the data can be updated properly.
@@ -45,19 +51,28 @@ export class EditVarianceModal extends Component {
       });
   };
 
+  componentDidUnmount() {
+    this.setState({ isLoaded: false });
+  }
+
   render() {
     return (
-      <EditVarianceForm
-        onSubmit={this.props.onSubmit}
-        closeModal={this.props.closeModal}
-        mineGuid={this.props.mineGuid}
-        mineName={this.props.mineName}
-        coreUsers={this.props.coreUsers}
-        variance={this.props.variance}
-        varianceStatusOptions={this.props.varianceStatusOptions}
-        initialValues={this.props.variance}
-        removeDocument={this.handleRemoveDocument}
-      />
+      <div>
+        <LoadingWrapper condition={this.state.isLoaded}>
+          <EditVarianceForm
+            onSubmit={this.props.onSubmit}
+            closeModal={this.props.closeModal}
+            mineGuid={this.props.mineGuid}
+            mineName={this.props.mineName}
+            coreUsers={this.props.coreUsers}
+            variance={this.props.variance}
+            varianceStatusOptions={this.props.varianceStatusOptions}
+            initialValues={this.props.variance}
+            removeDocument={this.handleRemoveDocument}
+            complianceCodesHash={this.props.complianceCodesHash}
+          />
+        </LoadingWrapper>
+      </div>
     );
   }
 }
