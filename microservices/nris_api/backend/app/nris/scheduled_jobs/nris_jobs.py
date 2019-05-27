@@ -6,6 +6,7 @@ from flask import current_app
 from random import randint
 from time import sleep
 import sys
+import cx_Oracle
 
 # the schedule of these jobs is set using server time (UTC)
 
@@ -29,9 +30,14 @@ def run_nightly_NRIS_ETL():
         current_app.logger.info('XML Import completed')
         # TODO: Insert update into status table
 
-    except Exception as e:
-        current_app.logger.error("Unexpected error with NRIS XML import:", e)
+    except cx_Oracle.DatabaseError as e:
+        current_app.logger.error(
+            "Error establishing connection to NRIS database: " + str(e))
         return
+    except Exception as e:
+        current_app.logger.error(
+            "Unexpected error with NRIS XML import: " + str(e))
+        raise
 
     try:
         clean_nris_data()
