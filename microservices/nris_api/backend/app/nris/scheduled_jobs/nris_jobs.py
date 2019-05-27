@@ -12,8 +12,7 @@ import cx_Oracle
 
 
 def _schedule_nris_etl_jobs(app):
-    app.apscheduler.add_job(
-        func=run_nightly_nris_etl(), trigger='cron', id='ETL', hour=11, minute=0)
+    app.apscheduler.add_job(func=run_nightly_nris_etl, trigger='cron', id='ETL', hour=11, minute=0)
 
 
 @register_apm
