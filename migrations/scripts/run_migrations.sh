@@ -13,8 +13,11 @@ for file in $FLYWAY_HOME/sql/*.tmpl; do
 done
 fi
 
+# Make flyway binary discoverable
+export PATH="$FLYWAY_HOME:$PATH"
+
 # Run migrations for mds database
-./flyway migrate
+flyway migrate
 
 # Run migrations for mds_test database
-./flyway -url=jdbc:postgresql://$FLYWAY_DB_HOST/mds_test migrate
+flyway -url=jdbc:postgresql://$FLYWAY_DB_HOST/mds_test migrate

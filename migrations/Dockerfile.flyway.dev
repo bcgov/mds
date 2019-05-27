@@ -1,0 +1,8 @@
+FROM boxfuse/flyway:5.2.4-alpine
+
+RUN apk add gettext
+
+COPY sql/* /flyway/sql/
+COPY scripts/* /flyway/scripts/
+
+ENTRYPOINT /flyway/scripts/run_migrations.sh
