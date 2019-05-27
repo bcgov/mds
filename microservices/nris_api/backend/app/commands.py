@@ -8,7 +8,7 @@ from app.nris.scheduled_jobs import nris_jobs
 
 def register_commands(app):
     @app.cli.command()
-    def _get_nris_raw_data():
+    def _import_nris_raw_data():
         import_nris_xml()
 
     @app.cli.command()
