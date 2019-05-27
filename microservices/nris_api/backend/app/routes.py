@@ -5,15 +5,11 @@ from .config import Config
 from flask_jwt_oidc.exceptions import AuthError
 
 from flask_restplus import Resource
-from app.nris.namespace import factorial_ns
 
 
 def register_routes(app):
     # Set URL rules for resources
     app.add_url_rule('/', endpoint='index')
-
-    # Namespaces
-    api.add_namespace(factorial_ns)
 
     # Healthcheck endpoint
     @api.route('/health')
