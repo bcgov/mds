@@ -10,6 +10,7 @@ const propTypes = {
   variance: CustomPropTypes.variance.isRequired,
   mineName: PropTypes.string.isRequired,
   removeDocument: PropTypes.func,
+  complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   isViewOnly: PropTypes.bool,
 };
 
@@ -27,7 +28,11 @@ export const VarianceDetails = (props) => (
       </div>
       <div className="inline-flex padding-small">
         <p className="field-title">Part of Code</p>
-        <p>{props.variance.compliance_article_id || Strings.EMPTY_FIELD}</p>
+        <p>
+          {props.variance.compliance_article_id
+            ? props.complianceCodesHash[props.variance.compliance_article_id]
+            : Strings.EMPTY_FIELD}
+        </p>
       </div>
       <div className="inline-flex padding-small">
         <p className="field-title">Submission date</p>
