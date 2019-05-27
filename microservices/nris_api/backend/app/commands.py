@@ -23,6 +23,10 @@ def register_commands(app):
     def _run_nris_etl():
         etl_nris_data()
 
+    @app.cli.command()
+    def _run_nris_etl():
+        etl_nris_data()
+
     @sched.app.cli.command()
     def run_nightly_NRIS_ETL():
         with sched.app.app_context():
