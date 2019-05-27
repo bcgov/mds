@@ -5,8 +5,8 @@ from sqlalchemy.orm import validates
 from sqlalchemy.ext.associationproxy import association_proxy
 from app.nris.utils.base_model import Base
 
-LEGISLATION_RESPONSE_MODEL = api.model(
-    'legislation', {
+NONCOMPLIANCE_LEGISLATION_RESPONSE_MODEL = api.model(
+    'noncompliance_legislation', {
         'estimated_incident_date': fields.DateTime,
         'noncompliant_description': fields.String,
         'parent_act': fields.String,
@@ -15,9 +15,9 @@ LEGISLATION_RESPONSE_MODEL = api.model(
     })
 
 
-class Legislation(Base):
-    __tablename__ = "legislation"
-    legislation_id = db.Column(db.Integer, primary_key=True)
+class NonComplianceLegislation(Base):
+    __tablename__ = "noncompliance_legislation"
+    noncompliance_legislation_id = db.Column(db.Integer, primary_key=True)
     order_stop_detail_id = db.Column(db.Integer,
                                      db.ForeignKey('order_stop_detail.order_stop_detail_id'))
     estimated_incident_date = db.Column(db.DateTime)
@@ -41,4 +41,4 @@ class Legislation(Base):
     compliance_article_comments = association_proxy('compliance_article', 'comments')
 
     def __repr__(self):
-        return f'<Legislation legislation_id={self.legislation_id} >'
+        return f'<Legislation noncompliance_legislation_id={self.noncompliance_legislation_id} >'
