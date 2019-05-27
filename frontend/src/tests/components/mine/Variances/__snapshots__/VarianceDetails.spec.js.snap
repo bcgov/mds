@@ -4,6 +4,12 @@ exports[`VarianceDetails renders properly 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <VarianceDetails
+    complianceCodesHash={
+      Object {
+        "305": "2.3.7 - Spills",
+        "306": "2.3.8 - Flammable Waste Storage",
+      }
+    }
     isViewOnly={false}
     mineName="mockMineName"
     removeDocument={[MockFunction]}
