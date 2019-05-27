@@ -285,8 +285,8 @@ def _save_order_noncompliance_permit(order_permit):
     permit_section_title = order_permit.find('permit_section_title')
 
     noncompliance_permit.section_number = permit_section_number.text if permit_section_number is not None else None
-    noncompliance_permit.section_title = permit_section_text.text if permit_section_text is not None else None
-    noncompliance_permit.section_text = permit_section_title.text if permit_section_title is not None else None
+    noncompliance_permit.section_title = permit_section_title.text if permit_section_title is not None else None
+    noncompliance_permit.section_text = permit_section_text.text if permit_section_text is not None else None
 
     return noncompliance_permit
 
