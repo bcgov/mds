@@ -1,4 +1,4 @@
-from app.extensions import db, oracle_db, sched
+from app.extensions import db, sched
 from app.nris.utils.apm import register_apm
 from app.nris.etl.nris_etl import import_nris_xml, clean_nris_xml_import, etl_nris_data, clean_nris_data
 from app.constants import ETL, TIMEOUT_24_HOURS

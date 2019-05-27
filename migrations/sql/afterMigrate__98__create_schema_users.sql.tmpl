@@ -1,0 +1,31 @@
+CREATE SCHEMA IF NOT EXISTS nris;
+
+-- Create NRIS User if it doesn't exist
+DO
+$$
+BEGIN
+    IF NOT EXISTS(select from pg_catalog.pg_roles where rolname= 'nris') THEN
+        CREATE USER nris with PASSWORD '$NRIS_USER_PASSWORD';
+    END IF;
+END
+$$;
+
+-- Create Logstash User if it doesn't exist
+DO
+$$
+BEGIN
+    IF NOT EXISTS(select from pg_catalog.pg_roles where rolname= 'logstash') THEN
+        CREATE USER logstash with PASSWORD '$LOGSTASH_USER_PASSWORD';
+    END IF;
+END
+$$;
+
+-- Create Metabase User if it doesn't exist
+DO
+$$
+BEGIN
+    IF NOT EXISTS(select from pg_catalog.pg_roles where rolname= 'metabase') THEN
+        CREATE USER metabase with PASSWORD '$METABASE_USER_PASSWORD';
+    END IF;
+END
+$$;

@@ -1,9 +1,9 @@
 import re
 from xml.etree.ElementTree import fromstring
-from flask import current_app
+from flask import current_app, Config
 from json import dumps
 from xml.etree import ElementTree as ET
-from app.extensions import db, oracle_db
+from app.extensions import db
 
 from app.nris.models.inspection import Inspection
 from app.nris.models.inspection_status import InspectionStatus
@@ -22,6 +22,9 @@ from app.nris.models.legislation_compliance_article import LegislationCompliance
 from app.nris.models.document import Document
 from app.nris.models.document_type import DocumentType
 from app.nris.models.nris_raw_data import NRISRawData
+
+import cx_Oracle
+
 
 # Truncates all tables on the nris schema, except for the alembic_version table and the nris_raw_data table.
 TRUNCATE_TABLES_SQL = """
@@ -48,19 +51,30 @@ def clean_nris_xml_import():
 
 
 def import_nris_xml():
-    cursor = oracle_db.cursor()
+    try:
+        dsn_tns = cx_Oracle.makedsn(
+            Config.get('NRIS_DB_HOSTNAME'), Config.get('NRIS_DB_PORT'), service_name=Config.get('NRIS_DB_SERVICENAME'))
+        oracle_db = cx_Oracle.connect(
+            user=Config.get('NRIS_DB_USER'), password=Config.get('NRIS_DB_PASSWORD'), dsn=dsn_tns)
 
-    cursor.execute(
-        "select xml_document from CORS.CORS_CV_ASSESSMENTS_XVW where business_area = 'EMPR'")
+        cursor = oracle_db.cursor()
 
-    results = cursor.fetchall()
+        cursor.execute(
+            "select xml_document from CORS.CORS_CV_ASSESSMENTS_XVW where business_area = 'EMPR'")
 
-    for result in results:
-        data = NRISRawData.create(result[0].read())
-        db.session.add(data)
-        db.session.commit()
+        results = cursor.fetchall()
 
-    cursor.close()
+        for result in results:
+            data = NRISRawData.create(result[0].read())
+            db.session.add(data)
+            db.session.commit()
+
+        cursor.close()
+
+    except cx_Oracle.DatabaseError as e:
+        current_app.logger.error(
+            "Error establishing connection to NRIS database.", e)
+        raise e
 
 
 def etl_nris_data():
@@ -133,7 +147,8 @@ def _create_status(assessment_status_code):
             status = code
 
     if not code_exists:
-        status = InspectionStatus(inspection_status_code=assessment_status_code)
+        status = InspectionStatus(
+            inspection_status_code=assessment_status_code)
         db.session.add(status)
     return status
 
@@ -168,7 +183,8 @@ def _save_stops(nris_inspection_data, inspection):
         inspected_location.location = location
         inspection.inspected_locations.append(inspected_location)
 
-        inspected_location_type = _find_or_save_inspected_location_type(stop_type)
+        inspected_location_type = _find_or_save_inspected_location_type(
+            stop_type)
         inspected_location.inspected_location_type_rel = inspected_location_type
 
         for stop_order in stop.findall('stop_orders'):
@@ -177,7 +193,8 @@ def _save_stops(nris_inspection_data, inspection):
 
         for stop_advisory in stop.findall('stop_advisories'):
             detail = stop_advisory.find('advisory_detail')
-            advisory = OrderAdvisoryDetail(detail=detail.text if detail is not None else None)
+            advisory = OrderAdvisoryDetail(
+                detail=detail.text if detail is not None else None)
             inspected_location.advisory_details.append(advisory)
 
         for stop_warning in stop.findall('stop_warnings'):
@@ -256,7 +273,8 @@ def _find_or_save_inspected_location_type(stop_type):
                 type_found = True
                 inspected_location_type = type
     if not type_found:
-        inspected_location_type = InspectedLocationType(inspected_location_type=stop_type.text)
+        inspected_location_type = InspectedLocationType(
+            inspected_location_type=stop_type.text)
         db.session.add(inspected_location_type)
     return inspected_location_type
 
@@ -279,12 +297,14 @@ def _save_order_noncompliance_legislation(order_legislation):
     noncompliance_legislation = NonComplianceLegislation()
 
     estimated_incident_date = order_legislation.find('estimated_incident_date')
-    noncompliant_description = order_legislation.find('noncompliant_description')
+    noncompliant_description = order_legislation.find(
+        'noncompliant_description')
     parent_act = order_legislation.find('parent_act')
     act_regulation = order_legislation.find('act_regulation')
     section = order_legislation.find('section')
     compliance_article_id = order_legislation.find('compliance_article_id')
-    compliance_article_comments = order_legislation.find('compliance_article_comments')
+    compliance_article_comments = order_legislation.find(
+        'compliance_article_comments')
 
     noncompliance_legislation.estimated_incident_date = _parse_dumb_nris_date_string(
         estimated_incident_date.text) if estimated_incident_date is not None else None
