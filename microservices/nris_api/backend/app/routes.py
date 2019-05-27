@@ -11,8 +11,6 @@ def register_routes(app):
     # Set URL rules for resources
     app.add_url_rule('/', endpoint='index')
 
-    # Namespaces
-
     # Healthcheck endpoint
     @api.route('/health')
     class Healthcheck(Resource):
