@@ -1,1 +1,1 @@
-ALTER TABLE mine ADD COLUMN mine_location_description character varying;
+ALTER TABLE mine_location ADD COLUMN mine_location_description character varying;

@@ -187,7 +187,8 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                 mine_guid       uuid                ,
                 mine_no         varchar(7)          ,
                 latitude        numeric(9,7)        ,
-                longitude       numeric(11,7)
+                longitude       numeric(11,7)       ,
+                mine_location_description       varchar
             );
             CREATE INDEX ON ETL_LOCATION (mine_no);
             CREATE INDEX ON ETL_LOCATION (mine_guid);
@@ -199,6 +200,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
             CREATE TEMP TABLE IF NOT EXISTS pmt_now (
                 lat_dec   numeric(11,7),
                 lon_dec   numeric(11,7),
+                mine_location_description    varchar,
                 permit_no varchar(12)  ,
                 mine_no   varchar(10)  ,
                 latest    bigint
@@ -207,6 +209,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
             INSERT INTO pmt_now(
                 lat_dec ,
                 lon_dec ,
+                mine_location_description,
                 permit_no,
                 mine_no  ,
                 latest
@@ -214,6 +217,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
             SELECT
                 lat_dec,
                 lon_dec,
+                site_desc,
                 permit_no,
                 mms.mmsnow.mine_no,
                 CASE
@@ -236,6 +240,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                 SELECT
                     lat_dec,
                     lon_dec,
+                    mine_location_description,
                     permit_no,
                     mine_no,
                     latest
@@ -247,6 +252,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
             UPDATE ETL_LOCATION
             SET mine_guid = ETL_MINE.mine_guid,
                 mine_no   = ETL_MINE.mine_no  ,
+                mine_location_description = pmt_now_preferred.mine_location_description,
                 latitude  = COALESCE(
                     -- Preferred Latitude
                     (
@@ -341,6 +347,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                 SELECT
                     lat_dec,
                     lon_dec,
+                    mine_location_description,
                     permit_no,
                     mine_no,
                     latest
@@ -352,11 +359,13 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
             INSERT INTO ETL_LOCATION(
                 mine_guid           ,
                 mine_no             ,
+                mine_location_description,
                 latitude            ,
                 longitude           )
             SELECT
                 new.mine_guid,
                 new.mine_no  ,
+                new.mine_location_description,
                 COALESCE(
                     -- Preferred Latitude
                     (
@@ -450,6 +459,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                 UPDATE mine_location
                 SET latitude         = ETL_LOCATION.latitude ,
                     longitude        = ETL_LOCATION.longitude,
+                    mine_location_description = ETL_LOCATION.mine_location_description,
                     geom             = ST_SetSRID(ST_MakePoint(ETL_LOCATION.longitude, ETL_LOCATION.latitude), 3005),
                     update_user      = 'mms_migration'      ,
                     update_timestamp = now()
@@ -479,6 +489,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                 mine_guid           ,
                 latitude            ,
                 longitude           ,
+                mine_location_description,
                 geom                ,
                 effective_date      ,
                 expiry_date         ,
@@ -491,6 +502,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                 new.mine_guid       ,
                 new.latitude        ,
                 new.longitude       ,
+                new.mine_location_description,
                 ST_SetSRID(ST_MakePoint(new.longitude, new.latitude), 3005),
                 now()               ,
                 NULL                ,
