@@ -51,33 +51,27 @@ def clean_nris_xml_import():
 
 
 def import_nris_xml():
-    try:
-        dsn_tns = cx_Oracle.makedsn(
-            current_app.config['NRIS_DB_HOSTNAME'],
-            current_app.config['NRIS_DB_PORT'],
-            service_name=current_app.config['NRIS_DB_SERVICENAME'])
-        oracle_db = cx_Oracle.connect(
-            user=current_app.config['NRIS_DB_USER'],
-            password=current_app.config['NRIS_DB_PASSWORD'],
-            dsn=dsn_tns)
+    dsn_tns = cx_Oracle.makedsn(
+        current_app.config['NRIS_DB_HOSTNAME'],
+        current_app.config['NRIS_DB_PORT'],
+        service_name=current_app.config['NRIS_DB_SERVICENAME'])
+    oracle_db = cx_Oracle.connect(
+        user=current_app.config['NRIS_DB_USER'],
+        password=current_app.config['NRIS_DB_PASSWORD'],
+        dsn=dsn_tns)
 
-        cursor = oracle_db.cursor()
+    cursor = oracle_db.cursor()
 
-        cursor.execute(
-            "select xml_document from CORS.CORS_CV_ASSESSMENTS_XVW where business_area = 'EMPR'")
+    cursor.execute(
+        "select xml_document from CORS.CORS_CV_ASSESSMENTS_XVW where business_area = 'EMPR'")
 
-        results = cursor.fetchall()
+    results = cursor.fetchall()
+    for result in results:
+        data = NRISRawData.create(result[0].read())
+        db.session.add(data)
 
-        for result in results:
-            data = NRISRawData.create(result[0].read())
-            db.session.add(data)
-            db.session.commit()
-
-        cursor.close()
-
-    except cx_Oracle.DatabaseError as e:
-        current_app.logger.error("Error establishing connection to NRIS database.", e)
-        raise e
+    cursor.close()
+    db.session.commit()
 
 
 def etl_nris_data():
