@@ -1,6 +1,6 @@
 import re
 from xml.etree.ElementTree import fromstring
-from flask import current_app, Config
+from flask import current_app
 from json import dumps
 from xml.etree import ElementTree as ET
 from app.extensions import db
@@ -53,9 +53,9 @@ def clean_nris_xml_import():
 def import_nris_xml():
     try:
         dsn_tns = cx_Oracle.makedsn(
-            Config['NRIS_DB_HOSTNAME'], Config['NRIS_DB_PORT'], service_name=Config['NRIS_DB_SERVICENAME'])
+            current_app.config['NRIS_DB_HOSTNAME'], current_app.config['NRIS_DB_PORT'], service_name=current_app.config['NRIS_DB_SERVICENAME'])
         oracle_db = cx_Oracle.connect(
-            user=Config['NRIS_DB_USER'], password=Config['NRIS_DB_PASSWORD'], dsn=dsn_tns)
+            user=current_app.config['NRIS_DB_USER'], password=current_app.config['NRIS_DB_PASSWORD'], dsn=dsn_tns)
 
         cursor = oracle_db.cursor()
 
@@ -238,8 +238,10 @@ def _save_stop_order(stop_order):
     authority_act_section = stop_order.find('order_authority_section')
 
     for order_legislation in stop_order.findall('order_legislations'):
-        noncompliance_legislation = _save_order_noncompliance_legislation(order_legislation)
-        stop_detail.noncompliance_legislations.append(noncompliance_legislation)
+        noncompliance_legislation = _save_order_noncompliance_legislation(
+            order_legislation)
+        stop_detail.noncompliance_legislations.append(
+            noncompliance_legislation)
 
     for order_permit in stop_order.findall('order_permits'):
         noncompliance_permit = _save_order_noncompliance_permit(order_permit)
@@ -310,7 +312,8 @@ def _save_order_noncompliance_legislation(order_legislation):
         estimated_incident_date.text) if estimated_incident_date is not None else None
     noncompliance_legislation.noncompliant_description = noncompliant_description.text if noncompliant_description is not None else None
 
-    noncompliance_legislation.parent_legislation_act = _save_legislation_act(parent_act)
+    noncompliance_legislation.parent_legislation_act = _save_legislation_act(
+        parent_act)
     legislation_act_regulation = _save_legislation_act(act_regulation)
 
     noncompliance_legislation.regulation_legislation_act_section = _save_legislation_act_section(
