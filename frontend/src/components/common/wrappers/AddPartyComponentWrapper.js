@@ -138,11 +138,13 @@ export class AddPartyComponentWrapper extends Component {
           {/* Set original form to display:none to preserve its state, while not allowing any interaction such as tabbing to the hidden form. */}
           <div style={this.state.addingParty ? { display: "none" } : {}}>
             {ChildComponent && (
-              <ChildComponent
-                closeModal={this.props.closeModal}
-                clearOnSubmit={this.props.clearOnSubmit}
-                {...this.props.childProps}
-              />
+              <div className="fade-in">
+                <ChildComponent
+                  closeModal={this.props.closeModal}
+                  clearOnSubmit={this.props.clearOnSubmit}
+                  {...this.props.childProps}
+                />
+              </div>
             )}
           </div>
           <div>{this.state.addingParty && this.renderAddParty()}</div>

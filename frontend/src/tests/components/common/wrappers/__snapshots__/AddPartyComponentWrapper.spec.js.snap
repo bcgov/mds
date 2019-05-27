@@ -78,11 +78,15 @@ ShallowWrapper {
         <div
           style={Object {}}
         >
-          <mockConstructor
-            clearOnSubmit={false}
-            closeModal={[MockFunction]}
-            title="mockTitle"
-          />
+          <div
+            className="fade-in"
+          >
+            <mockConstructor
+              clearOnSubmit={false}
+              closeModal={[MockFunction]}
+              title="mockTitle"
+            />
+          </div>
         </div>
         <div />
       </Carousel>,
@@ -101,11 +105,15 @@ ShallowWrapper {
           <div
             style={Object {}}
           >
-            <mockConstructor
-              clearOnSubmit={false}
-              closeModal={[MockFunction]}
-              title="mockTitle"
-            />
+            <div
+              className="fade-in"
+            >
+              <mockConstructor
+                clearOnSubmit={false}
+                closeModal={[MockFunction]}
+                title="mockTitle"
+              />
+            </div>
           </div>,
           <div />,
         ],
@@ -137,26 +145,45 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "host",
           "props": Object {
-            "children": <mockConstructor
-              clearOnSubmit={false}
-              closeModal={[MockFunction]}
-              title="mockTitle"
-            />,
+            "children": <div
+              className="fade-in"
+            >
+              <mockConstructor
+                clearOnSubmit={false}
+                closeModal={[MockFunction]}
+                title="mockTitle"
+              />
+            </div>,
             "style": Object {},
           },
           "ref": null,
           "rendered": Object {
             "instance": null,
             "key": undefined,
-            "nodeType": "function",
+            "nodeType": "host",
             "props": Object {
-              "clearOnSubmit": false,
-              "closeModal": [MockFunction],
-              "title": "mockTitle",
+              "children": <mockConstructor
+                clearOnSubmit={false}
+                closeModal={[MockFunction]}
+                title="mockTitle"
+              />,
+              "className": "fade-in",
             },
             "ref": null,
-            "rendered": null,
-            "type": [MockFunction],
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "function",
+              "props": Object {
+                "clearOnSubmit": false,
+                "closeModal": [MockFunction],
+                "title": "mockTitle",
+              },
+              "ref": null,
+              "rendered": null,
+              "type": [MockFunction],
+            },
+            "type": "div",
           },
           "type": "div",
         },
@@ -211,11 +238,15 @@ ShallowWrapper {
           <div
             style={Object {}}
           >
-            <mockConstructor
-              clearOnSubmit={false}
-              closeModal={[MockFunction]}
-              title="mockTitle"
-            />
+            <div
+              className="fade-in"
+            >
+              <mockConstructor
+                clearOnSubmit={false}
+                closeModal={[MockFunction]}
+                title="mockTitle"
+              />
+            </div>
           </div>
           <div />
         </Carousel>,
@@ -234,11 +265,15 @@ ShallowWrapper {
             <div
               style={Object {}}
             >
-              <mockConstructor
-                clearOnSubmit={false}
-                closeModal={[MockFunction]}
-                title="mockTitle"
-              />
+              <div
+                className="fade-in"
+              >
+                <mockConstructor
+                  clearOnSubmit={false}
+                  closeModal={[MockFunction]}
+                  title="mockTitle"
+                />
+              </div>
             </div>,
             <div />,
           ],
@@ -270,26 +305,45 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "host",
             "props": Object {
-              "children": <mockConstructor
-                clearOnSubmit={false}
-                closeModal={[MockFunction]}
-                title="mockTitle"
-              />,
+              "children": <div
+                className="fade-in"
+              >
+                <mockConstructor
+                  clearOnSubmit={false}
+                  closeModal={[MockFunction]}
+                  title="mockTitle"
+                />
+              </div>,
               "style": Object {},
             },
             "ref": null,
             "rendered": Object {
               "instance": null,
               "key": undefined,
-              "nodeType": "function",
+              "nodeType": "host",
               "props": Object {
-                "clearOnSubmit": false,
-                "closeModal": [MockFunction],
-                "title": "mockTitle",
+                "children": <mockConstructor
+                  clearOnSubmit={false}
+                  closeModal={[MockFunction]}
+                  title="mockTitle"
+                />,
+                "className": "fade-in",
               },
               "ref": null,
-              "rendered": null,
-              "type": [MockFunction],
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "function",
+                "props": Object {
+                  "clearOnSubmit": false,
+                  "closeModal": [MockFunction],
+                  "title": "mockTitle",
+                },
+                "ref": null,
+                "rendered": null,
+                "type": [MockFunction],
+              },
+              "type": "div",
             },
             "type": "div",
           },
