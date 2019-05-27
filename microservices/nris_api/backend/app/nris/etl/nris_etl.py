@@ -21,6 +21,7 @@ from app.nris.models.legislation_compliance_article import LegislationCompliance
 from app.nris.models.document import Document
 from app.nris.models.document_type import DocumentType
 from app.nris.models.nris_raw_data import NRISRawData
+from app.nris.models.inspection_type import InspectionType
 
 # Truncates all tables on the nris schema, except for the alembic_version table and the nris_raw_data table.
 TRUNCATE_TABLES_SQL = """
@@ -77,6 +78,8 @@ def _parse_nris_element(input):
     data = ET.fromstring(xmlstring)
     assessment_id = data.find('assessment_id')
     assessment_status = data.find('assessment_status')
+    inspection_type = data.find('inspection_type')
+    inspection_report_sent_date = data.find('inspct_report_sent_date')
 
     if assessment_status is not None:
         assessment_status_code = assessment_status.text
@@ -89,10 +92,13 @@ def _parse_nris_element(input):
             external_id=assessment_id.text if assessment_id is not None else None)
         inspection.inspection_date = assessment_date.text if assessment_date is not None else None
         inspection.business_area = business_area.text if business_area is not None else None
-
+        inspection.inspection_report_sent_date = inspection_report_sent_date.text if inspection_report_sent_date is not None else None
         status = _create_status(assessment_status_code)
 
         inspection.inspection_status = status
+        if inspection_type is not None:
+            inspection_type_code = _find_or_save_inspection_type(inspection_type.text)
+            inspection.inspection_type = inspection_type_code
 
         if assessment_status_code == 'Complete':
             completed_date = data.find('completion_date')
@@ -380,5 +386,21 @@ def _find_or_save_doc_type(file_type):
                 doc_type = type
     if not type_found:
         doc_type = DocumentType(document_type=file_type.text)
+        db.session.add(doc_type)
 
     return doc_type
+
+
+def _find_or_save_inspection_type(inspection_type):
+    types = DocumentType.find_all_document_types()
+    type_found = False
+    inspec_type = None
+    if inspection_type is not None:
+        for type in types:
+            if type.inspection_type_code == inspection_type.text:
+                type_found = True
+                inspec_type = type
+    if not type_found:
+        inspec_type = InspectionType(InspectionType=inspection_type.text)
+        db.session.add(inspec_type)
+    return inspec_type

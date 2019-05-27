@@ -33,11 +33,14 @@ class Inspection(Base):
     external_id = db.Column(db.Integer)
     inspection_date = db.Column(db.DateTime)
     completed_date = db.Column(db.DateTime)
+    inspection_report_sent_date = db.Column(db.DateTime)
     inspection_status_id = db.Column(db.Integer,
                                      db.ForeignKey('inspection_status.inspection_status_id'))
     inspection_status = db.relationship("InspectionStatus")
-    inspection_status_code = association_proxy(
-        'inspection_status', 'inspection_status_code')
+    inspection_status_code = association_proxy('inspection_status', 'inspection_status_code')
+    inspection_type_id = db.Column(db.Integer, db.ForeignKey('inspection_type.inspection_type_id'))
+    inspection_type = db.relationship("InspectionType")
+    inspection_type_code = association_proxy('inspection_type', 'inspection_type_code')
     business_area = db.Column(db.String(256))
     mine_no = db.Column(db.String(64))
     inspector_idir = db.Column(db.String(256))
@@ -45,8 +48,7 @@ class Inspection(Base):
     inspection_preamble = db.Column(db.String())
     inspection_closing = db.Column(db.String())
     officer_notes = db.Column(db.String())
-    documents = db.relationship(
-        'Document', lazy='selectin', secondary='inspection_document_xref')
+    documents = db.relationship('Document', lazy='selectin', secondary='inspection_document_xref')
     inspected_locations = db.relationship("InspectedLocation")
 
     def __repr__(self):
