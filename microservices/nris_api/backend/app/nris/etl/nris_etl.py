@@ -3,7 +3,7 @@ from xml.etree.ElementTree import fromstring
 from flask import current_app, Config
 from json import dumps
 from xml.etree import ElementTree as ET
-from app.extensions import db, oracle_db
+from app.extensions import db
 
 from app.nris.models.inspection import Inspection
 from app.nris.models.inspection_status import InspectionStatus
