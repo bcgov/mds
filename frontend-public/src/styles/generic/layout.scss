@@ -45,6 +45,17 @@ body {
 
 .flex {
   display: flex;
+  &-mobile {
+    @include mobile {
+      @include flex;
+    }
+  }
+
+  &-tablet {
+    @include tablet {
+      @include flex;
+    }
+  }
 }
 
 .inline-flex {
@@ -111,6 +122,10 @@ body {
   padding-right: $default-padding-lg;
 }
 
+.padding-small {
+  padding: $default-padding-sm;
+}
+
 .gov-blue {
   background: $gov-blue;
 }
@@ -127,4 +142,23 @@ body {
   font-size: $default-p;
   font-weight: $semi-bold;
   color: $p-color;
+}
+
+// reusable icon classes
+// using important to override any existing styling from ant design.
+.icon {
+  &-sm {
+    font-size: 20px !important;
+    &--img {
+      width: 15px;
+      height: 26px;
+    }
+  }
+
+  &-md {
+    &--img {
+      width: 30px;
+      height: 20px;
+    }
+  }
 }

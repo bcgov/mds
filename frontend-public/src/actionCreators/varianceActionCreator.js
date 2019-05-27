@@ -9,14 +9,17 @@ import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
 import CustomAxios from "@/utils/customAxios";
 
-export const createVariance = ({ mineGuid }, payload) => (dispatch) => {
+export const createVariance = (mineGuid, mineName, payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_MINE_VARIANCE));
   dispatch(showLoading());
   return CustomAxios()
     .post(ENVIRONMENT.apiUrl + API.VARIANCES(mineGuid), payload, createRequestHeader())
     .then((response) => {
       dispatch(hideLoading());
-      notification.success({ message: "Successfully applied for a new variance", duration: 10 });
+      notification.success({
+        message: `Successfully applied for a variance for ${mineName}`,
+        duration: 10,
+      });
       dispatch(success(reducerTypes.CREATE_MINE_VARIANCE));
       return response;
     })

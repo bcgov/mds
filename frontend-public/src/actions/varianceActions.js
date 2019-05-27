@@ -5,6 +5,11 @@ export const storeVariances = (payload) => ({
   payload,
 });
 
+export const storeVariance = (payload) => ({
+  type: actionTypes.STORE_VARIANCE,
+  payload,
+});
+
 export const storeVarianceStatusOptions = (payload) => ({
   type: actionTypes.STORE_VARIANCE_STATUS_OPTIONS,
   payload,
