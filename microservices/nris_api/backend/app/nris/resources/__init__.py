@@ -1,3 +1,4 @@
+# Scans through all files in the resources folder and automatically imports them.
 from os.path import dirname, basename, isfile, join
 import glob
 modules = glob.glob(join(dirname(__file__), "*.py"))
