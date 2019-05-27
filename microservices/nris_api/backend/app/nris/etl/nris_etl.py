@@ -80,6 +80,10 @@ def etl_nris_data():
         _parse_nris_element(item.nris_data)
 
 
+def _parse_element_text(_element):
+    return _element.text if _element is not None else None
+
+
 def _parse_nris_element(input):
 
     xmlstring = re.sub(' xmlns="[^"]+"', '', input, count=1)
@@ -94,17 +98,16 @@ def _parse_nris_element(input):
         assessment_date = data.find('assessment_date')
         business_area = data.find('businessArea').find('business_area_name')
 
-        inspection = Inspection(
-            external_id=assessment_id.text if assessment_id is not None else None)
-        inspection.inspection_date = assessment_date.text if assessment_date is not None else None
-        inspection.business_area = business_area.text if business_area is not None else None
+        inspection = Inspection(external_id=_parse_element_text(assessment_id))
+        inspection.inspection_date = _parse_element_text(assessment_date)
+        inspection.business_area = _parse_element_text(business_area)
         status = _create_status(assessment_status_code)
 
         inspection.inspection_status = status
 
         if assessment_status_code == 'Complete':
             completed_date = data.find('completion_date')
-            inspection.completed_date = completed_date.text if completed_date is not None else None
+            inspection.completed_date = _parse_element_text(completed_date)
 
         mine_number = data.find('location').find('location_id')
         inspector = data.find('assessor')
@@ -113,19 +116,19 @@ def _parse_nris_element(input):
         closing = data.find('report_closing')
         notes = data.find('officer_notes')
 
-        inspection.mine_no = mine_number.text if mine_number is not None else None
-        inspection.inspector_idir = inspector.text if inspector is not None else None
-        inspection.inspection_introduction = intro.text if intro is not None else None
-        inspection.inspection_preamble = preamble.text if preamble is not None else None
-        inspection.inspection_closing = closing.text if closing is not None else None
-        inspection.officer_notes = notes.text if notes is not None else None
+        inspection.mine_no = _parse_element_text(mine_number)
+        inspection.inspector_idir = _parse_element_text(inspector)
+        inspection.inspection_introduction = _parse_element_text(intro)
+        inspection.inspection_preamble = _parse_element_text(preamble)
+        inspection.inspection_closing = _parse_element_text(closing)
+        inspection.officer_notes = _parse_element_text(notes)
 
         db.session.add(inspection)
 
         inspection_data = data.find('inspection')
         inspection_type = inspection_data.find('inspection_type')
         inspection_report_sent_date = inspection_data.find('inspct_report_sent_date')
-        inspection.inspection_report_sent_date = inspection_report_sent_date.text if inspection_report_sent_date is not None else None
+        inspection.inspection_report_sent_date = _parse_element_text(inspection_report_sent_date)
         if inspection_type is not None:
             inspection_type_code = _find_or_save_inspection_type(inspection_type)
             inspection.inspection_type = inspection_type_code
@@ -169,14 +172,14 @@ def _save_stops(nris_inspection_data, inspection):
                 utm_zone_number = utm_info.find('zone_number')
                 utm_zone_letter = utm_info.find('zone_letter')
             location = Location(
-                description=desc.text if desc is not None else None,
-                notes=notes.text if notes is not None else None,
-                latitude=latitude.text if latitude is not None else None,
-                longitude=longitude.text if longitude is not None else None,
-                utm_easting=utm_easting.text if utm_easting is not None else None,
-                utm_northing=utm_northing.text if utm_northing is not None else None,
-                zone_number=utm_zone_number.text if utm_zone_number is not None else None,
-                zone_letter=utm_zone_letter.text if utm_zone_letter is not None else None)
+                description=_parse_element_text(desc),
+                notes=_parse_element_text(notes),
+                latitude=_parse_element_text(latitude),
+                longitude=_parse_element_text(longitude),
+                utm_easting=_parse_element_text(utm_easting),
+                utm_northing=_parse_element_text(utm_northing),
+                zone_number=_parse_element_text(utm_zone_number),
+                zone_letter=_parse_element_text(utm_zone_letter))
             db.session.add(location)
 
         stop_type = stop.find('stop_type')
@@ -193,15 +196,14 @@ def _save_stops(nris_inspection_data, inspection):
 
         for stop_advisory in stop.findall('stop_advisories'):
             detail = stop_advisory.find('advisory_detail')
-            advisory = OrderAdvisoryDetail(detail=detail.text if detail is not None else None)
+            advisory = OrderAdvisoryDetail(detail=_parse_element_text(detail))
             inspected_location.advisory_details.append(advisory)
 
         for stop_warning in stop.findall('stop_warnings'):
             detail = stop_warning.find('warning_detail')
             respond_date = stop_warning.find('warning_respond_date')
             warning = OrderWarningDetail(
-                detail=detail.text if detail is not None else None,
-                respond_date=respond_date.text if respond_date is not None else None)
+                detail=_parse_element_text(detail), respond_date=_parse_element_text(respond_date))
             inspected_location.warning_details.append(warning)
 
         for stop_request in stop.findall('stop_requests'):
@@ -209,9 +211,9 @@ def _save_stops(nris_inspection_data, inspection):
             response = stop_request.find('request_response')
             respond_date = stop_request.find('request_respond_date')
             request = OrderRequestDetail(
-                detail=detail.text if detail is not None else None,
-                respond_date=respond_date.text if respond_date is not None else None,
-                response=response.text if response is not None else None)
+                detail=_parse_element_text(detail),
+                respond_date=_parse_element_text(respond_date),
+                response=_parse_element_text(response))
             inspected_location.request_details.append(request)
 
         for attachment in stop.findall('attachment'):
@@ -244,16 +246,16 @@ def _save_stop_order(stop_order):
         noncompliance_permit = _save_order_noncompliance_permit(order_permit)
         stop_detail.noncompliance_permits.append(noncompliance_permit)
 
-    stop_detail.detail = detail.text if detail is not None else None
-    stop_detail.stop_type = stop_type.text if stop_type is not None else None
-    stop_detail.response_status = response_status.text if response_status is not None else None
-    stop_detail.stop_status = stop_status.text if stop_status is not None else None
-    stop_detail.observation = observation.text if observation is not None else None
-    stop_detail.response = response.text if response is not None else None
-    stop_detail.response_received = response_received.text if response_received is not None else None
-    stop_detail.completion_date = completion_date.text if completion_date is not None else None
-    stop_detail.authority_act = authority_act.text if authority_act is not None else None
-    stop_detail.authority_act_section = authority_act_section.text if authority_act_section is not None else None
+    stop_detail.detail = _parse_element_text(detail)
+    stop_detail.stop_type = _parse_element_text(stop_type)
+    stop_detail.response_status = _parse_element_text(response_status)
+    stop_detail.stop_status = _parse_element_text(stop_status)
+    stop_detail.observation = _parse_element_text(observation)
+    stop_detail.response = _parse_element_text(response)
+    stop_detail.response_received = _parse_element_text(response_received)
+    stop_detail.completion_date = _parse_element_text(completion_date)
+    stop_detail.authority_act = _parse_element_text(authority_act)
+    stop_detail.authority_act_section = _parse_element_text(authority_act_section)
 
     for attachment in stop_order.findall('attachment'):
         doc = _save_document(attachment)
@@ -284,9 +286,9 @@ def _save_order_noncompliance_permit(order_permit):
     permit_section_text = order_permit.find('permit_section_text')
     permit_section_title = order_permit.find('permit_section_title')
 
-    noncompliance_permit.section_number = permit_section_number.text if permit_section_number is not None else None
-    noncompliance_permit.section_title = permit_section_title.text if permit_section_title is not None else None
-    noncompliance_permit.section_text = permit_section_text.text if permit_section_text is not None else None
+    noncompliance_permit.section_number = _parse_element_text(permit_section_number)
+    noncompliance_permit.section_title = _parse_element_text(permit_section_title)
+    noncompliance_permit.section_text = _parse_element_text(permit_section_text)
 
     return noncompliance_permit
 
@@ -303,8 +305,9 @@ def _save_order_noncompliance_legislation(order_legislation):
     compliance_article_comments = order_legislation.find('compliance_article_comments')
 
     noncompliance_legislation.estimated_incident_date = _parse_dumb_nris_date_string(
-        estimated_incident_date.text) if estimated_incident_date is not None else None
-    noncompliance_legislation.noncompliant_description = noncompliant_description.text if noncompliant_description is not None else None
+        _parse_element_text(estimated_incident_date))
+    noncompliance_legislation.noncompliant_description = _parse_element_text(
+        noncompliant_description)
 
     noncompliance_legislation.parent_legislation_act = _save_legislation_act(parent_act)
     legislation_act_regulation = _save_legislation_act(act_regulation)
@@ -318,6 +321,9 @@ def _save_order_noncompliance_legislation(order_legislation):
 
 
 def _parse_dumb_nris_date_string(_dumb_nris_date_string):
+    if _dumb_nris_date_string is None:
+        return None
+
     return _replace_string_at_index(_dumb_nris_date_string, "T", 10)
 
 
@@ -387,10 +393,10 @@ def _save_document(attachment):
     comment = attachment.find('attachment_comment')
 
     doc = Document(
-        external_id=external_id.text if external_id is not None else None,
-        document_date=document_date.text if document_date is not None else None,
-        file_name=file_name.text if file_name is not None else None,
-        comment=comment.text if comment is not None else None)
+        external_id=_parse_element_text(external_id),
+        document_date=_parse_element_text(document_date),
+        file_name=_parse_element_text(file_name),
+        comment=_parse_element_text(comment))
 
     file_type = attachment.find('file_type')
     doc_type = _find_or_save_doc_type(file_type)
