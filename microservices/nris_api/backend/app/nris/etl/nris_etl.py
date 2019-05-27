@@ -14,7 +14,8 @@ from app.nris.models.order_advisory_detail import OrderAdvisoryDetail
 from app.nris.models.order_warning_detail import OrderWarningDetail
 from app.nris.models.order_stop_detail import OrderStopDetail
 from app.nris.models.inspected_location_type import InspectedLocationType
-from app.nris.models.legislation import Legislation
+from app.nris.models.noncompliance_legislation import NonComplianceLegislation
+from app.nris.models.noncompliance_permit import NonCompliancePermit
 from app.nris.models.legislation_act import LegislationAct
 from app.nris.models.legislation_act_section import LegislationActSection
 from app.nris.models.legislation_compliance_article import LegislationComplianceArticle
@@ -220,8 +221,12 @@ def _save_stop_order(stop_order):
     authority_act_section = stop_order.find('order_authority_section')
 
     for order_legislation in stop_order.findall('order_legislations'):
-        legislation = _save_order_legislation(order_legislation)
-        stop_detail.legislations.append(legislation)
+        noncompliance_legislation = _save_order_noncompliance_legislation(order_legislation)
+        stop_detail.noncompliance_legislations.append(noncompliance_legislation)
+
+    for order_permit in stop_order.findall('order_permits'):
+        noncompliance_permit = _save_order_noncompliance_permit(order_permit)
+        stop_detail.noncompliance_permits.append(noncompliance_permit)
 
     stop_detail.detail = detail.text if detail is not None else None
     stop_detail.stop_type = stop_type.text if stop_type is not None else None
@@ -256,8 +261,22 @@ def _find_or_save_inspected_location_type(stop_type):
     return inspected_location_type
 
 
-def _save_order_legislation(order_legislation):
-    legislation = Legislation()
+def _save_order_noncompliance_permit(order_permit):
+    noncompliance_permit = NonCompliancePermit()
+
+    permit_section_number = order_permit.find('permit_section_number')
+    permit_section_text = order_permit.find('permit_section_text')
+    permit_section_title = order_permit.find('permit_section_title')
+
+    noncompliance_permit.section_number = permit_section_number.text if permit_section_number is not None else None
+    noncompliance_permit.section_title = permit_section_text.text if permit_section_text is not None else None
+    noncompliance_permit.section_text = permit_section_title.text if permit_section_title is not None else None
+
+    return noncompliance_permit
+
+
+def _save_order_noncompliance_legislation(order_legislation):
+    noncompliance_legislation = NonComplianceLegislation()
 
     estimated_incident_date = order_legislation.find('estimated_incident_date')
     noncompliant_description = order_legislation.find('noncompliant_description')
@@ -267,19 +286,19 @@ def _save_order_legislation(order_legislation):
     compliance_article_id = order_legislation.find('compliance_article_id')
     compliance_article_comments = order_legislation.find('compliance_article_comments')
 
-    legislation.estimated_incident_date = _parse_dumb_nris_date_string(
+    noncompliance_legislation.estimated_incident_date = _parse_dumb_nris_date_string(
         estimated_incident_date.text) if estimated_incident_date is not None else None
-    legislation.noncompliant_description = noncompliant_description.text if noncompliant_description is not None else None
+    noncompliance_legislation.noncompliant_description = noncompliant_description.text if noncompliant_description is not None else None
 
-    legislation.parent_legislation_act = _save_legislation_act(parent_act)
+    noncompliance_legislation.parent_legislation_act = _save_legislation_act(parent_act)
     legislation_act_regulation = _save_legislation_act(act_regulation)
 
-    legislation.regulation_legislation_act_section = _save_legislation_act_section(
+    noncompliance_legislation.regulation_legislation_act_section = _save_legislation_act_section(
         legislation_act_regulation, section)
-    legislation.compliance_article = _save_compliance_article(compliance_article_id,
-                                                              compliance_article_comments)
+    noncompliance_legislation.compliance_article = _save_compliance_article(
+        compliance_article_id, compliance_article_comments)
 
-    return legislation
+    return noncompliance_legislation
 
 
 def _parse_dumb_nris_date_string(_dumb_nris_date_string):
