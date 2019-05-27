@@ -1,4 +1,4 @@
-ALTER TABLE compliance_article ADD COLUMN long_description text;
+ALTER TABLE compliance_article ADD COLUMN long_description character varying(500);
 UPDATE compliance_article SET long_description = description;
 INSERT INTO compliance_article
     (
