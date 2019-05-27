@@ -8,7 +8,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   mineGuid: PropTypes.string.isRequired,
   complianceCodes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
-  coreUsers: CustomPropTypes.dropdownListItem.isRequired,
+  coreUsers: CustomPropTypes.options.isRequired,
 };
 
 export const AddVarianceModal = (props) => (
