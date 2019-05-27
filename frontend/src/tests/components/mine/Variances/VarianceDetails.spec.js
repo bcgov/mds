@@ -11,6 +11,7 @@ const setupDispatchProps = () => {
 };
 const setupProps = () => {
   props.variance = MOCK.VARIANCES.records;
+  props.complianceCodesHash = MOCK.HSRCM_HASH;
   props.mineName = "mockMineName";
   props.isViewOnly = false;
 };
