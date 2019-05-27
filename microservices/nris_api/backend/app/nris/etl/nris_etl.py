@@ -26,7 +26,6 @@ from app.nris.models.inspection_type import InspectionType
 
 import cx_Oracle
 
-
 # Truncates all tables on the nris schema, except for the alembic_version table and the nris_raw_data table.
 TRUNCATE_TABLES_SQL = """
 DO $$
@@ -54,9 +53,13 @@ def clean_nris_xml_import():
 def import_nris_xml():
     try:
         dsn_tns = cx_Oracle.makedsn(
-            current_app.config['NRIS_DB_HOSTNAME'], current_app.config['NRIS_DB_PORT'], service_name=current_app.config['NRIS_DB_SERVICENAME'])
+            current_app.config['NRIS_DB_HOSTNAME'],
+            current_app.config['NRIS_DB_PORT'],
+            service_name=current_app.config['NRIS_DB_SERVICENAME'])
         oracle_db = cx_Oracle.connect(
-            user=current_app.config['NRIS_DB_USER'], password=current_app.config['NRIS_DB_PASSWORD'], dsn=dsn_tns)
+            user=current_app.config['NRIS_DB_USER'],
+            password=current_app.config['NRIS_DB_PASSWORD'],
+            dsn=dsn_tns)
 
         cursor = oracle_db.cursor()
 
@@ -73,8 +76,7 @@ def import_nris_xml():
         cursor.close()
 
     except cx_Oracle.DatabaseError as e:
-        current_app.logger.error(
-            "Error establishing connection to NRIS database.", e)
+        current_app.logger.error("Error establishing connection to NRIS database.", e)
         raise e
 
 
@@ -90,8 +92,6 @@ def _parse_nris_element(input):
     data = ET.fromstring(xmlstring)
     assessment_id = data.find('assessment_id')
     assessment_status = data.find('assessment_status')
-    inspection_type = data.find('inspection_type')
-    inspection_report_sent_date = data.find('inspct_report_sent_date')
 
     if assessment_status is not None:
         assessment_status_code = assessment_status.text
@@ -104,13 +104,9 @@ def _parse_nris_element(input):
             external_id=assessment_id.text if assessment_id is not None else None)
         inspection.inspection_date = assessment_date.text if assessment_date is not None else None
         inspection.business_area = business_area.text if business_area is not None else None
-        inspection.inspection_report_sent_date = inspection_report_sent_date.text if inspection_report_sent_date is not None else None
         status = _create_status(assessment_status_code)
 
         inspection.inspection_status = status
-        if inspection_type is not None:
-            inspection_type_code = _find_or_save_inspection_type(inspection_type.text)
-            inspection.inspection_type = inspection_type_code
 
         if assessment_status_code == 'Complete':
             completed_date = data.find('completion_date')
@@ -133,6 +129,12 @@ def _parse_nris_element(input):
         db.session.add(inspection)
 
         inspection_data = data.find('inspection')
+        inspection_type = inspection_data.find('inspection_type')
+        inspection_report_sent_date = inspection_data.find('inspct_report_sent_date')
+        inspection.inspection_report_sent_date = inspection_report_sent_date.text if inspection_report_sent_date is not None else None
+        if inspection_type is not None:
+            inspection_type_code = _find_or_save_inspection_type(inspection_type)
+            inspection.inspection_type = inspection_type_code
 
         for attachment in data.findall('attachment'):
             doc = _save_document(attachment)
@@ -153,8 +155,7 @@ def _create_status(assessment_status_code):
             status = code
 
     if not code_exists:
-        status = InspectionStatus(
-            inspection_status_code=assessment_status_code)
+        status = InspectionStatus(inspection_status_code=assessment_status_code)
         db.session.add(status)
     return status
 
@@ -189,8 +190,7 @@ def _save_stops(nris_inspection_data, inspection):
         inspected_location.location = location
         inspection.inspected_locations.append(inspected_location)
 
-        inspected_location_type = _find_or_save_inspected_location_type(
-            stop_type)
+        inspected_location_type = _find_or_save_inspected_location_type(stop_type)
         inspected_location.inspected_location_type_rel = inspected_location_type
 
         for stop_order in stop.findall('stop_orders'):
@@ -199,8 +199,7 @@ def _save_stops(nris_inspection_data, inspection):
 
         for stop_advisory in stop.findall('stop_advisories'):
             detail = stop_advisory.find('advisory_detail')
-            advisory = OrderAdvisoryDetail(
-                detail=detail.text if detail is not None else None)
+            advisory = OrderAdvisoryDetail(detail=detail.text if detail is not None else None)
             inspected_location.advisory_details.append(advisory)
 
         for stop_warning in stop.findall('stop_warnings'):
@@ -244,10 +243,8 @@ def _save_stop_order(stop_order):
     authority_act_section = stop_order.find('order_authority_section')
 
     for order_legislation in stop_order.findall('order_legislations'):
-        noncompliance_legislation = _save_order_noncompliance_legislation(
-            order_legislation)
-        stop_detail.noncompliance_legislations.append(
-            noncompliance_legislation)
+        noncompliance_legislation = _save_order_noncompliance_legislation(order_legislation)
+        stop_detail.noncompliance_legislations.append(noncompliance_legislation)
 
     for order_permit in stop_order.findall('order_permits'):
         noncompliance_permit = _save_order_noncompliance_permit(order_permit)
@@ -281,8 +278,7 @@ def _find_or_save_inspected_location_type(stop_type):
                 type_found = True
                 inspected_location_type = type
     if not type_found:
-        inspected_location_type = InspectedLocationType(
-            inspected_location_type=stop_type.text)
+        inspected_location_type = InspectedLocationType(inspected_location_type=stop_type.text)
         db.session.add(inspected_location_type)
     return inspected_location_type
 
@@ -305,21 +301,18 @@ def _save_order_noncompliance_legislation(order_legislation):
     noncompliance_legislation = NonComplianceLegislation()
 
     estimated_incident_date = order_legislation.find('estimated_incident_date')
-    noncompliant_description = order_legislation.find(
-        'noncompliant_description')
+    noncompliant_description = order_legislation.find('noncompliant_description')
     parent_act = order_legislation.find('parent_act')
     act_regulation = order_legislation.find('act_regulation')
     section = order_legislation.find('section')
     compliance_article_id = order_legislation.find('compliance_article_id')
-    compliance_article_comments = order_legislation.find(
-        'compliance_article_comments')
+    compliance_article_comments = order_legislation.find('compliance_article_comments')
 
     noncompliance_legislation.estimated_incident_date = _parse_dumb_nris_date_string(
         estimated_incident_date.text) if estimated_incident_date is not None else None
     noncompliance_legislation.noncompliant_description = noncompliant_description.text if noncompliant_description is not None else None
 
-    noncompliance_legislation.parent_legislation_act = _save_legislation_act(
-        parent_act)
+    noncompliance_legislation.parent_legislation_act = _save_legislation_act(parent_act)
     legislation_act_regulation = _save_legislation_act(act_regulation)
 
     noncompliance_legislation.regulation_legislation_act_section = _save_legislation_act_section(
@@ -431,7 +424,7 @@ def _find_or_save_doc_type(file_type):
 
 
 def _find_or_save_inspection_type(inspection_type):
-    types = DocumentType.find_all_document_types()
+    types = InspectionType.find_all_inspection_types()
     type_found = False
     inspec_type = None
     if inspection_type is not None:
@@ -440,6 +433,6 @@ def _find_or_save_inspection_type(inspection_type):
                 type_found = True
                 inspec_type = type
     if not type_found:
-        inspec_type = InspectionType(InspectionType=inspection_type.text)
+        inspec_type = InspectionType(inspection_type_code=inspection_type.text)
         db.session.add(inspec_type)
     return inspec_type
