@@ -223,8 +223,8 @@ exports.hardSourceWebPackPlugin = () => ({
   plugins: [new HardSourceWebpackPlugin()],
 });
 
-exports.clean = (path) => ({
-  plugins: [new CleanWebpackPlugin([path])],
+exports.clean = () => ({
+  plugins: [new CleanWebpackPlugin()],
 });
 
 exports.copy = (from, to) => ({
