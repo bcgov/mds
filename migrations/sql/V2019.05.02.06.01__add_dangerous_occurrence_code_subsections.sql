@@ -55,5 +55,19 @@ CREATE TABLE IF NOT EXISTS mine_incident_do_subparagraph
 ALTER TABLE mine_incident_do_subparagraph OWNER TO mds;
 COMMENT ON TABLE mine_incident_do_subparagraph IS 'A list of compliance code sub-paragraphs relevant to a mine_incident that is deemed to be a dangerous occurrence.';
 
+INSERT INTO mine_incident_determination_type
+(
+    mine_incident_determination_type_code,
+    description                          ,
+    display_order                        ,
+    create_user                          ,
+    update_user
+)
+VALUES
+    ('PEN', 'Pending determination', 10, 'system-mds', 'system-mds'),
+    ('DO', 'This was a dangerous occurrence', 20, 'system-mds', 'system-mds'),
+    ('NDO', 'This was not a dangerous occurrence', 30, 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
 ALTER TABLE mine_incident ADD COLUMN determination_type_code character varying(3) default 'PEN';
 ALTER TABLE mine_incident ADD CONSTRAINT mine_incident_determination_fkey FOREIGN KEY (determination_type_code) REFERENCES mine_incident_determination_type(mine_incident_determination_type_code)
