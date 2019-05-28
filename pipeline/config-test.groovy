@@ -188,12 +188,12 @@ app {
                             'NAME':"mds-nris-backend",
                             'SUFFIX': "${vars.deployment.suffix}",
                             'VERSION':"${app.deployment.version}",
-                            'CPU_REQUEST':"${vars.resources.python.cpu_request}",
-                            'CPU_LIMIT':"${vars.resources.python.cpu_limit}",
-                            'MEMORY_REQUEST':"${vars.resources.python.memory_request}",
-                            'MEMORY_LIMIT':"${vars.resources.python.memory_limit}",
-                            'REPLICA_MIN':"${vars.resources.python.replica_min}",
-                            'REPLICA_MAX':"${vars.resources.python.replica_max}",
+                            'CPU_REQUEST':"${vars.resources.python-lite.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.python-lite.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.python-lite.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.python-lite.memory_limit}",
+                            'REPLICA_MIN':"${vars.resources.python-lite.replica_min}",
+                            'REPLICA_MAX':"${vars.resources.python-lite.replica_max}",
                             'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
                             'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId}",
                             'APPLICATION_DOMAIN': "${vars.modules.'mds-nris-backend'.HOST}",
@@ -297,6 +297,14 @@ environments {
                     memory_limit = "3Gi"
                     replica_min = 2
                     replica_max = 4
+                }
+                python-lite {
+                    cpu_request = "100m"
+                    cpu_limit = "200m"
+                    memory_request = "512Mi"
+                    memory_limit = "1Gi"
+                    replica_min = 1
+                    replica_max = 1
                 }
                 postgres {
                     cpu_request = "200m"
