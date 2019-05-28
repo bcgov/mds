@@ -21,5 +21,5 @@ GRANT SELECT ON ALL TABLES IN SCHEMA public TO logstash;
 /**
 Allow metabase user to READ anything on the mds schema
 **/
-GRANT SELECT ON ALL TABLES IN SCHEMA public TO metabase;
-GRANT SELECT ON ALL TABLES IN SCHEMA nris TO metabase;
+GRANT USAGE ON SCHEMA public TO metabase;
+GRANT USAGE ON SCHEMA nris TO metabase;
