@@ -65,6 +65,10 @@ export const storeMineIncidentFollowActionOptions = (payload) => ({
   payload,
 });
 
+export const storeMineIncidentDeterminationOptions = (payload) => ({
+  type: ActionTypes.STORE_MINE_INCIDENT_DETERMINATION_OPTIONS,
+  payload,
+});
 export const storeVarianceStatusOptions = (payload) => ({
   type: ActionTypes.STORE_VARIANCE_STATUS_OPTIONS,
   payload,
