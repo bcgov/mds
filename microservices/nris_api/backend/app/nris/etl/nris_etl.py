@@ -46,7 +46,8 @@ def clean_nris_data():
 
 
 def clean_nris_xml_import():
-    db.session.execute('truncate table nris_raw_data cascade;')
+    db.session.execute(
+        'truncate table nris_raw_data restart identity cascade;')
     db.session.commit()
 
 
@@ -127,10 +128,13 @@ def _parse_nris_element(input):
 
         inspection_data = data.find('inspection')
         inspection_type = inspection_data.find('inspection_type')
-        inspection_report_sent_date = inspection_data.find('inspct_report_sent_date')
-        inspection.inspection_report_sent_date = _parse_element_text(inspection_report_sent_date)
+        inspection_report_sent_date = inspection_data.find(
+            'inspct_report_sent_date')
+        inspection.inspection_report_sent_date = _parse_element_text(
+            inspection_report_sent_date)
         if inspection_type is not None:
-            inspection_type_code = _find_or_save_inspection_type(inspection_type)
+            inspection_type_code = _find_or_save_inspection_type(
+                inspection_type)
             inspection.inspection_type = inspection_type_code
 
         for attachment in data.findall('attachment'):
@@ -152,7 +156,8 @@ def _create_status(assessment_status_code):
             status = code
 
     if not code_exists:
-        status = InspectionStatus(inspection_status_code=assessment_status_code)
+        status = InspectionStatus(
+            inspection_status_code=assessment_status_code)
         db.session.add(status)
     return status
 
@@ -187,7 +192,8 @@ def _save_stops(nris_inspection_data, inspection):
         inspected_location.location = location
         inspection.inspected_locations.append(inspected_location)
 
-        inspected_location_type = _find_or_save_inspected_location_type(stop_type)
+        inspected_location_type = _find_or_save_inspected_location_type(
+            stop_type)
         inspected_location.inspected_location_type_rel = inspected_location_type
 
         for stop_order in stop.findall('stop_orders'):
@@ -239,8 +245,10 @@ def _save_stop_order(stop_order):
     authority_act_section = stop_order.find('order_authority_section')
 
     for order_legislation in stop_order.findall('order_legislations'):
-        noncompliance_legislation = _save_order_noncompliance_legislation(order_legislation)
-        stop_detail.noncompliance_legislations.append(noncompliance_legislation)
+        noncompliance_legislation = _save_order_noncompliance_legislation(
+            order_legislation)
+        stop_detail.noncompliance_legislations.append(
+            noncompliance_legislation)
 
     for order_permit in stop_order.findall('order_permits'):
         noncompliance_permit = _save_order_noncompliance_permit(order_permit)
@@ -255,7 +263,8 @@ def _save_stop_order(stop_order):
     stop_detail.response_received = _parse_element_text(response_received)
     stop_detail.completion_date = _parse_element_text(completion_date)
     stop_detail.authority_act = _parse_element_text(authority_act)
-    stop_detail.authority_act_section = _parse_element_text(authority_act_section)
+    stop_detail.authority_act_section = _parse_element_text(
+        authority_act_section)
 
     for attachment in stop_order.findall('attachment'):
         doc = _save_document(attachment)
@@ -274,7 +283,8 @@ def _find_or_save_inspected_location_type(stop_type):
                 type_found = True
                 inspected_location_type = type
     if not type_found:
-        inspected_location_type = InspectedLocationType(inspected_location_type=stop_type.text)
+        inspected_location_type = InspectedLocationType(
+            inspected_location_type=stop_type.text)
         db.session.add(inspected_location_type)
     return inspected_location_type
 
@@ -286,9 +296,12 @@ def _save_order_noncompliance_permit(order_permit):
     permit_section_text = order_permit.find('permit_section_text')
     permit_section_title = order_permit.find('permit_section_title')
 
-    noncompliance_permit.section_number = _parse_element_text(permit_section_number)
-    noncompliance_permit.section_title = _parse_element_text(permit_section_title)
-    noncompliance_permit.section_text = _parse_element_text(permit_section_text)
+    noncompliance_permit.section_number = _parse_element_text(
+        permit_section_number)
+    noncompliance_permit.section_title = _parse_element_text(
+        permit_section_title)
+    noncompliance_permit.section_text = _parse_element_text(
+        permit_section_text)
 
     return noncompliance_permit
 
@@ -297,19 +310,22 @@ def _save_order_noncompliance_legislation(order_legislation):
     noncompliance_legislation = NonComplianceLegislation()
 
     estimated_incident_date = order_legislation.find('estimated_incident_date')
-    noncompliant_description = order_legislation.find('noncompliant_description')
+    noncompliant_description = order_legislation.find(
+        'noncompliant_description')
     parent_act = order_legislation.find('parent_act')
     act_regulation = order_legislation.find('act_regulation')
     section = order_legislation.find('section')
     compliance_article_id = order_legislation.find('compliance_article_id')
-    compliance_article_comments = order_legislation.find('compliance_article_comments')
+    compliance_article_comments = order_legislation.find(
+        'compliance_article_comments')
 
     noncompliance_legislation.estimated_incident_date = _parse_dumb_nris_date_string(
         _parse_element_text(estimated_incident_date))
     noncompliance_legislation.noncompliant_description = _parse_element_text(
         noncompliant_description)
 
-    noncompliance_legislation.parent_legislation_act = _save_legislation_act(parent_act)
+    noncompliance_legislation.parent_legislation_act = _save_legislation_act(
+        parent_act)
     legislation_act_regulation = _save_legislation_act(act_regulation)
 
     noncompliance_legislation.regulation_legislation_act_section = _save_legislation_act_section(
