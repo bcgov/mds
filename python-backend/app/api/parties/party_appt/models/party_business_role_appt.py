@@ -29,3 +29,40 @@ class PartyBusinessRoleAppt(AuditMixin, Base):
 
     party_business_role = db.relationship(
         'PartyBusinessRoleCode', backref='part_business_role_appt', lazy='joined')
+
+     @classmethod
+    def find_by_business_role_appt_id(cls, _id):
+        try:
+            return cls.query.filter_by(party_business_role_appt_id=_id).first()
+        except ValueError:
+            return None
+
+    @classmethod
+    def find_by_party_guid(cls, _id):
+        try:
+            return cls.find_by(party_guid=_id)
+        except ValueError:
+            return None
+
+    @classmethod
+    def find_parties_by_business_role_code(cls, code):
+        try:
+            return cls.find_by(party_business_role_code=[code])
+        except ValueError:
+            return None
+    
+    @classmethod
+    def create(cls,
+               party_business_role_code,
+               party_guid,
+               started_at=None,
+               ended_at=None,
+               add_to_session=True):
+        party_business_role_appt = cls(
+            party_business_role_code=party_business_role_code,
+            party_guid=party_guid,
+            started_at=started_at,
+            ended_at=ended_at)
+        if add_to_session:
+            party_business_role_appt.save(commit=False)
+        return party_business_role_appt
