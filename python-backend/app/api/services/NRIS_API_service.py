@@ -15,6 +15,7 @@ from app.extensions import cache
 from ..constants import NRIS_TOKEN, NRIS_COMPLIANCE_DATA, TIMEOUT_24_HOURS, TIMEOUT_12_HOURS
 from app.api.utils.apm import register_apm
 
+
 def _get_datetime_from_NRIS_data(date):
     return datetime.strptime(date, '%Y-%m-%d %H:%M')
 
@@ -35,6 +36,7 @@ def _get_fiscal_year():
 
     fiscal_year_end = datetime(current_year, march, day, hour, minute, second)
     return current_year if current_date > fiscal_year_end else current_year - 1
+
 
 @register_apm
 def _get_NRIS_data_by_mine(token, mine_no):

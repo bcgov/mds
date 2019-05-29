@@ -14,25 +14,27 @@ def register_apm(func):
     """
 
     def wrapper(*args, **kwargs):
-        client = None
+        config = None
         if current_app:
-            client = Client(current_app.config['ELASTIC_APM'])
+            config = current_app.config['ELASTIC_APM']
         elif sched.app:
-            client = Client(sched.app.app_context().app.config['ELASTIC_APM'])
+            config = sched.app.app_context().app.config['ELASTIC_APM']
 
-        # ensure client was created properly
-        if client:
+        client = Client(config)
+        if client and config.get('SECRET_TOKEN'):
             client.begin_transaction('registered_funcs')
             try:
-                func(*args, **kwargs)
+                result = func(*args, **kwargs)
+                print(result)
                 client.end_transaction(f'{func.__name__} - success')
             except Exception as e:
                 client.capture_exception()
                 client.end_transaction(f'{func.__name__} - error')
                 raise e
+
         else:
-            print(
-                f'could not create ElasticAPM client... running <{func.__name__}> without APM')
-            func(*args, **kwargs)
+            print(f'could not create ElasticAPM client... running <{func.__name__}> without APM')
+            result = func(*args, **kwargs)
+        return result
 
     return wrapper
