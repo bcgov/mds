@@ -23,6 +23,11 @@ def register_commands(app):
         _import_empr_idir_users()
 
     @app.cli.command()
+    def test_nris_api():
+        from app.api.services.NRIS_API_service import _get_NRIS_data_by_mine
+        print(_get_NRIS_data_by_mine("", "0100287"))
+
+    @app.cli.command()
     @click.argument('num')
     @click.argument('threading', default=True)
     def create_data(num, threading):
@@ -60,10 +65,11 @@ def register_commands(app):
             for _ in range(int(num)):
                 mine = MineFactory()
                 eor = MinePartyAppointmentFactory(mine=mine, mine_party_appt_type_code='EOR')
-                mine_manager = MinePartyAppointmentFactory(
-                    mine=mine, mine_party_appt_type_code='MMG')
-                permitee = MinePartyAppointmentFactory(
-                    mine=mine, mine_party_appt_type_code='PMT', party__company=True)
+                mine_manager = MinePartyAppointmentFactory(mine=mine,
+                                                           mine_party_appt_type_code='MMG')
+                permitee = MinePartyAppointmentFactory(mine=mine,
+                                                       mine_party_appt_type_code='PMT',
+                                                       party__company=True)
             try:
                 db.session.commit()
                 print(f'Created {num} random mines with related data.')

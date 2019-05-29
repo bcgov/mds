@@ -45,7 +45,8 @@ class Config(object):
 
     NRIS_TOKEN_URL = os.environ.get('NRIS_TOKEN_URL', None)
     NRIS_INSPECTION_URL = os.environ.get('NRIS_INSPECTION_URL', None)
-
+    NRIS_API_INSPECTION_URL = os.environ.get('NRIS_API_INSPECTION_URL',
+                                             'http://nris_backend:5500/inspections')
     # Cache settings
     CACHE_TYPE = os.environ.get('CACHE_TYPE', 'redis')
     CACHE_REDIS_HOST = os.environ.get('CACHE_REDIS_HOST', 'redis')
@@ -100,18 +101,13 @@ class TestConfig(Config):
 
     JWT_OIDC_TEST_KEYS = {
         "keys": [{
-            "kid":
-            "flask-jwt-oidc-test-client",
-            "kty":
-            "RSA",
-            "alg":
-            "RS256",
-            "use":
-            "sig",
+            "kid": "flask-jwt-oidc-test-client",
+            "kty": "RSA",
+            "alg": "RS256",
+            "use": "sig",
             "n":
             "AN-fWcpCyE5KPzHDjigLaSUVZI0uYrcGcc40InVtl-rQRDmAh-C2W8H4_Hxhr5VLc6crsJ2LiJTV_E72S03pzpOOaaYV6-TzAjCou2GYJIXev7f6Hh512PuG5wyxda_TlBSsI-gvphRTPsKCnPutrbiukCYrnPuWxX5_cES9eStR",
-            "e":
-            "AQAB"
+            "e": "AQAB"
         }]
     }
     # Dummy Private Keys for testing purposes.
