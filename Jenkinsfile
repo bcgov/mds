@@ -37,7 +37,7 @@ pipeline {
                 echo "Deploy (TEST-UX) ..."
                 sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-deploy -Pargs.--config=pipeline/config-test-ux.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=test-ux'
                 // Exit after deploying to test env
-                sh 'exit 0'
+                sh 'exit 1'
             }
         }
         stage('Deploy (DEV)') {
