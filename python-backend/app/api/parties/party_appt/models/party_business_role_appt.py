@@ -33,7 +33,8 @@ class PartyBusinessRoleAppt(AuditMixin, Base):
      @classmethod
     def find_by_business_role_appt_id(cls, _id):
         try:
-            return cls.query.filter_by(party_business_role_appt_id=_id).first()
+            return cls.query.filter_by(party_business_role_appt_id=_id).filter_by(
+                active_ind=False).first()
         except ValueError:
             return None
 
