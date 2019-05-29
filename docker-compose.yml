@@ -117,6 +117,7 @@ services:
       - ./microservices/nris_api/backend/:/app/
     depends_on:
       - flyway
+      - redis
     env_file: ./microservices/nris_api/backend/.env
     networks:
       - mds
