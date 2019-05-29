@@ -30,7 +30,7 @@ class PartyBusinessRoleAppt(AuditMixin, Base):
     party_business_role = db.relationship(
         'PartyBusinessRoleCode', backref='part_business_role_appt', lazy='joined')
 
-     @classmethod
+    @classmethod
     def find_by_business_role_appt_id(cls, _id):
         try:
             return cls.query.filter_by(party_business_role_appt_id=_id).filter_by(
@@ -41,17 +41,17 @@ class PartyBusinessRoleAppt(AuditMixin, Base):
     @classmethod
     def find_by_party_guid(cls, _id):
         try:
-            return cls.find_by(party_guid=_id)
+            return cls.filter_by(active_ind=False).find_by(party_guid=_id)
         except ValueError:
             return None
 
     @classmethod
     def find_parties_by_business_role_code(cls, code):
         try:
-            return cls.find_by(party_business_role_code=[code])
+            return cls.filter_by(active_ind=False).find_by(party_business_role_code=[code])
         except ValueError:
             return None
-    
+
     @classmethod
     def create(cls,
                party_business_role_code,
