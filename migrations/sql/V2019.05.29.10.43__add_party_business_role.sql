@@ -26,11 +26,9 @@ CREATE TABLE IF NOT EXISTS party_business_role_appt
     update_timestamp            timestamp with time zone DEFAULT now()  NOT NULL
 );
 
-COMMENT ON TABLE party_business_role_appt is 'Assignment of business roles to parties.'
+COMMENT ON TABLE party_business_role_appt is 'Assignment of business roles to parties.';
 
-ALTER TABLE ONLY party_business_role_appt
-    ADD CONSTRAINT party_business_role_appt_party_guid_fkey FOREIGN KEY (party_guid) REFERENCES party(party_guid);
-ALTER TABLE ONLY party_business_role_appt
-    ADD CONSTRAINT party_business_role_appt_party_business_role_code_fkey FOREIGN KEY (party_business_role_code) REFERENCES party_business_role_code(party_business_role_code);
+ALTER TABLE ONLY party_business_role_appt ADD CONSTRAINT party_business_role_appt_party_guid_fkey FOREIGN KEY (party_guid) REFERENCES party(party_guid);
+ALTER TABLE ONLY party_business_role_appt ADD CONSTRAINT party_business_role_appt_party_business_role_code_fkey FOREIGN KEY (party_business_role_code) REFERENCES party_business_role_code(party_business_role_code);
 
 INSERT INTO party_business_role_code (party_business_role_code, description, create_user, update_user) VALUES ('INS', 'Inspector', 'system-mds', 'system-mds');
