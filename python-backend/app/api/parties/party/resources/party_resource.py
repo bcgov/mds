@@ -74,6 +74,21 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
         type=str,
         store_missing=False,
         help='The postal code of the party address. Ex: A0B1C2')
+    parser.add_argument(
+        'job_title',
+        type=str,
+        store_missing=False,
+        help='The job title of the party. Ex "Chief of Inspections"')
+    parser.add_argument(
+        'postnominal_letters',
+        type=str,
+        store_missing=False,
+        help='Suffixes for a party name. Ex "BSc, PhD")
+    parser.add_argument(
+        'idir_username',
+        type=str,
+        store_missing=False,
+        help='The IDIR username of the party. Ex "IDIR\JSMITH"')
 
     PARTY_LIST_RESULT_LIMIT = 25
 
