@@ -40,7 +40,7 @@ END $$;
 """
 
 
-def clean_nris_data():
+def clean_nris_etl_data():
     db.session.execute(TRUNCATE_TABLES_SQL)
     db.session.commit()
 
