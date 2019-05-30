@@ -34,7 +34,7 @@ def register_apm(func):
                 raise e
 
         else:
-            print(f'could not create ElasticAPM client... running <{func.__name__}> without APM')
+            print(f'Running <{func.__name__}> without APM')
             result = func(*args, **kwargs)
         return result
 
