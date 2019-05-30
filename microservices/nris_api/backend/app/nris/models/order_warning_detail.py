@@ -5,9 +5,10 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from app.nris.utils.base_model import Base
 from flask_restplus import fields
 
+from app.nris.utils.model_utils import Date
 WARNING_DETAILS_RESPONSE_MODEL = api.model('order_warning_detail', {
     'detail': fields.String,
-    'respond_date': fields.Date,
+    'respond_date': Date,
 })
 
 

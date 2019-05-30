@@ -8,15 +8,16 @@ from app.nris.utils.base_model import Base
 from app.nris.models.inspection_status import InspectionStatus
 from app.nris.models.inspected_location import INSPECTED_LOCATION_RESPONSE_MODEL
 from app.nris.models.document import DOCUMENT_RESPONSE_MODEL
+from app.nris.utils.model_utils import Date
 
 INSPECTION_RESPONSE_MODEL = api.model(
     'inspection', {
         'external_id': fields.Integer,
-        'inspection_date': fields.DateTime,
-        'completed_date': fields.DateTime,
+        'inspection_date': Date,
+        'completed_date': Date,
         'inspection_status_code': fields.String,
         'inspection_type_code': fields.String,
-        'inspection_report_sent_date': fields.DateTime,
+        'inspection_report_sent_date': Date,
         'business_area': fields.String,
         'mine_no': fields.String,
         'inspector_idir': fields.String,
