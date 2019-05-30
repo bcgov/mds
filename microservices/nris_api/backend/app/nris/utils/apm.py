@@ -15,6 +15,7 @@ def register_apm(func):
 
     def wrapper(*args, **kwargs):
         config = None
+        result = None
         if current_app:
             config = current_app.config['ELASTIC_APM']
         elif sched.app:
