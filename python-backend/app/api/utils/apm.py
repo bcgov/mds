@@ -26,13 +26,11 @@ def register_apm(func):
             client.begin_transaction('registered_funcs')
             try:
                 result = func(*args, **kwargs)
-                print(result)
                 client.end_transaction(f'{func.__name__} - success')
             except Exception as e:
                 client.capture_exception()
                 client.end_transaction(f'{func.__name__} - error')
                 raise e
-
         else:
             print(f'Running <{func.__name__}> without APM')
             result = func(*args, **kwargs)
