@@ -35,7 +35,7 @@ class Party(AuditMixin, Base):
     address = db.relationship('Address', lazy='select', secondary='party_address_xref')
     job_title = db.Column(db.String, nullable=True)
     postnominal_letters = db.Column(db.String, nullable=True)
-
+    idir_username = db.Column(db.String, nullable=True)
 
     @hybrid_property
     def name(self):
@@ -62,7 +62,8 @@ class Party(AuditMixin, Base):
             'name': self.name,
             'address': self.address[0].json() if len(self.address) > 0 else [{}],
             'job_title': self.job_title,
-            'postnominal_letters': self.postnominal_letters
+            'postnominal_letters': self.postnominal_letters,
+            'idir_username': self.idir_username
         }
         if self.party_type_code == PARTY_STATUS_CODE['per']:
             context.update({
