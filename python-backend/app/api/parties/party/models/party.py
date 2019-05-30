@@ -33,6 +33,9 @@ class Party(AuditMixin, Base):
 
     mine_party_appt = db.relationship('MinePartyAppointment', lazy='select')
     address = db.relationship('Address', lazy='select', secondary='party_address_xref')
+    job_title = db.Column(db.String, nullable=True)
+    postnominal_letters = db.Column(db.String, nullable=True)
+
 
     @hybrid_property
     def name(self):
@@ -57,7 +60,9 @@ class Party(AuditMixin, Base):
             'expiry_date': self.expiry_date.isoformat() if self.expiry_date is not None else None,
             'party_name': self.party_name,
             'name': self.name,
-            'address': self.address[0].json() if len(self.address) > 0 else [{}]
+            'address': self.address[0].json() if len(self.address) > 0 else [{}],
+            'job_title': self.job_title,
+            'postnominal_letters': self.postnominal_letters
         }
         if self.party_type_code == PARTY_STATUS_CODE['per']:
             context.update({
