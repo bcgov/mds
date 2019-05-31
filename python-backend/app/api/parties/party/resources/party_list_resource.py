@@ -84,7 +84,8 @@ class PartyListResource(Resource, UserMixin, ErrorMixin):
             'type': 'A person (PER) or organisation (ORG)',
             'role': 'A comma separated list of roles to be filtered by',
             'sort_field': 'enum[party_name] Default: party_name',
-            'sort_dir': 'enum[asc, desc] Default: asc'
+            'sort_dir': 'enum[asc, desc] Default: asc',
+            'business_role': 'A business role or roles to filter on'
         })
     @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
     @api.marshal_with(PAGINATED_PARTY_LIST, code=200)
@@ -194,8 +195,6 @@ class PartyListResource(Resource, UserMixin, ErrorMixin):
                 business_role_filter)
             contact_query = contact_query.intersect(
                 business_role_query) if contact_query else business_role_query
-            current_app.logger.info(contact_query)
-            current_app.logger.info(business_roles[0])
 
         # Apply sorting
         if sort_model and sort_field and sort_dir:
