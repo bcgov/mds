@@ -110,18 +110,15 @@ def _process_NRIS_data(raw_data):
             result['last_inspection'] = inspection_date
             result['last_inspector'] = inspector
 
-        current_app.logger.debug(
-            f'insp_date={inspection_date} is in current fiscal? {current_fiscal_bool}')
-        current_app.logger.debug(
-            f'insp_date={inspection_date} is in last 12 months? {last_12_months_bool}')
-
-        order_count = 0
+        order_count = 1
         for location in inspection['inspected_locations']:
             for stop in location['stop_details']:
                 legislation = stop['noncompliance_legislations']
                 violation = None
                 if legislation:
                     violation = legislation[0].get('section')
+                else:
+                    violation = stop['noncompliance_permits'].get('permitSectionNumber')
 
                 order = {
                     'order_no': str(inspection['external_id']) + '-' + str(order_count),
@@ -139,7 +136,7 @@ def _process_NRIS_data(raw_data):
 
                 #Overdue
                 if stop['completion_date'] is not None and \
-                _get_datetime_from_NRIS_data(stop['completion_date']) < datetime.now() and \
+                _get_datetime_from_NRIS_data(stop['completion_date']) < (datetime.utcnow() - relativedelta(days=1)) and \
                 order['order_status'] == 'Open':
                     result['num_overdue_orders'] += 1
                     order['overdue'] = True
