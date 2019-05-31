@@ -102,7 +102,7 @@ def _get_EMPR_data_from_NRIS(mine_no):
         return empr_nris_resp.json()
 
 
-def _process_NRIS_data(data, mine_no):
+def _process_NRIS_data(data):
     data = sorted(
         data,
         key=lambda k: datetime.strptime(k.get('assessmentDate'), '%Y-%m-%d %H:%M'),
@@ -200,5 +200,4 @@ def _process_NRIS_data(data, mine_no):
         'section_35_orders': section_35_orders,
         'orders': orders_list,
     }
-    cache.set(NRIS_COMPLIANCE_DATA(mine_no), overview, timeout=TIMEOUT_24_HOURS)
     return overview

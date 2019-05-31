@@ -30,5 +30,6 @@ class MineComplianceResource(Resource, UserMixin, ErrorMixin):
             except TypeError as e:
                 return self.create_error_payload(500, str(e)), 500
 
-            result = NRIS_service._process_NRIS_data(response_data, mine_no)
+            result = NRIS_service._process_NRIS_data(response_data)
+            cache.set(NRIS_COMPLIANCE_DATA(mine_no), result, timeout=TIMEOUT_24_HOURS)
         return result
