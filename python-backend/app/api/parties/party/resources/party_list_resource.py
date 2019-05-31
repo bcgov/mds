@@ -1,14 +1,15 @@
 import uuid
-from flask import request
+from flask import request, current_app
 from flask_restplus import Resource
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
-from werkzeug.exceptions import BadRequest
+from werkzeug.exceptions import BadRequest, InternalServerError
 from sqlalchemy import and_, or_
 
 from ..models.party import Party
 from ..models.address import Address
 from ..models.party_type_code import PartyTypeCode
 from ...party_appt.models.mine_party_appt import MinePartyAppointment
+from app.api.parties.party_appt.models.party_business_role_appt import PartyBusinessRoleAppointment
 from ...response_models import PARTY, PAGINATED_PARTY_LIST
 
 from ....constants import PARTY_STATUS_CODE
@@ -139,7 +140,12 @@ class PartyListResource(Resource, UserMixin, ErrorMixin):
         }
 
         # Handle ListView request
-        items_per_page = args.get('per_page', 25, type=int)
+        items_per_page = args.get('per_page', 25)
+        if items_per_page == 'all':
+            items_per_page = None
+        else:
+            items_per_page = int(items_per_page)
+
         page = args.get('page', 1, type=int)
         # parse the filter terms
         first_name_filter_term = args.get('first_name', None, type=str)
@@ -152,6 +158,7 @@ class PartyListResource(Resource, UserMixin, ErrorMixin):
         phone_filter_term = args.get('phone_no', None, type=str)
         sort_field = args.get('sort_field', 'party_name', type=str)
         sort_dir = args.get('sort_dir', 'asc', type=str)
+        business_roles = args.getlist('business_role', None)
         sort_model = sort_models.get(sort_field)
 
         conditions = [Party.deleted_ind == False]
@@ -180,6 +187,15 @@ class PartyListResource(Resource, UserMixin, ErrorMixin):
             role_filter = MinePartyAppointment.mine_party_appt_type_code.like(role_filter_term)
             role_query = Party.query.join(MinePartyAppointment).filter(role_filter)
             contact_query = contact_query.intersect(role_query) if contact_query else role_query
+        if business_roles and len(business_roles) > 0:
+            business_role_filter = PartyBusinessRoleAppointment.party_business_role_code.in_(
+                business_roles)
+            business_role_query = Party.query.join(PartyBusinessRoleAppointment).filter(
+                business_role_filter)
+            contact_query = contact_query.intersect(
+                business_role_query) if contact_query else business_role_query
+            current_app.logger.info(contact_query)
+            current_app.logger.info(business_roles[0])
 
         # Apply sorting
         if sort_model and sort_field and sort_dir:

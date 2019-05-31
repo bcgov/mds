@@ -12,7 +12,7 @@ from app.api.parties.party.models.party import Party
 from ....utils.models_mixins import AuditMixin, Base
 
 
-class PartyBusinessRoleAppt(AuditMixin, Base):
+class PartyBusinessRoleAppointment(AuditMixin, Base):
     __tablename__ = "party_business_role_appt"
     # Columns
     party_business_role_appt_id = db.Column(
@@ -34,21 +34,21 @@ class PartyBusinessRoleAppt(AuditMixin, Base):
     def find_by_business_role_appt_id(cls, _id):
         try:
             return cls.query.filter_by(party_business_role_appt_id=_id).filter_by(
-                active_ind=False).first()
+                active_ind=True).first()
         except ValueError:
             return None
 
     @classmethod
     def find_by_party_guid(cls, _id):
         try:
-            return cls.filter_by(active_ind=False).find_by(party_guid=_id)
+            return cls.filter_by(active_ind=True).find_by(party_guid=_id)
         except ValueError:
             return None
 
     @classmethod
     def find_parties_by_business_role_code(cls, code):
         try:
-            return cls.filter_by(active_ind=False).find_by(party_business_role_code=[code])
+            return cls.filter_by(active_ind=True).find_by(party_business_role_code=[code])
         except ValueError:
             return None
 
