@@ -20,9 +20,9 @@ class PartyBusinessRoleAppointment(AuditMixin, Base):
     party_business_role_code = db.Column(
         db.String(32), db.ForeignKey('party_business_role_code.party_business_role_code'))
     party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
-    started_at = db.Column(db.DateTime)
-    ended_at = db.Column(db.DateTime)
-    active_ind = db.Column(db.String(60), server_default=FetchedValue())
+    start_date = db.Column(db.DateTime)
+    end_date = db.Column(db.DateTime)
+    deleted_ind = db.Column(db.String(60), server_default=FetchedValue())
 
     # Relationships
     party = db.relationship('Party', lazy='joined')
@@ -56,14 +56,14 @@ class PartyBusinessRoleAppointment(AuditMixin, Base):
     def create(cls,
                party_business_role_code,
                party_guid,
-               started_at=None,
-               ended_at=None,
+               start_date=None,
+               end_date=None,
                add_to_session=True):
         party_business_role_appt = cls(
             party_business_role_code=party_business_role_code,
             party_guid=party_guid,
-            started_at=started_at,
-            ended_at=ended_at)
+            start_date=start_date,
+            end_date=end_date)
         if add_to_session:
             party_business_role_appt.save(commit=False)
         return party_business_role_appt
