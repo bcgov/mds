@@ -24,9 +24,9 @@ STOP_DETAILS_RESPONSE_MODEL = api.model(
         'response':
         fields.String,
         'response_received':
-        fields.Date,
+        fields.DateTime,
         'completion_date':
-        fields.Date,
+        fields.DateTime,
         'noncompliance_legislations':
         fields.List(fields.Nested(NONCOMPLIANCE_LEGISLATION_RESPONSE_MODEL)),
         'noncompliance_permits':
@@ -57,8 +57,9 @@ class OrderStopDetail(Base):
     noncompliance_permits = db.relationship("NonCompliancePermit")
     authority_act = db.Column(db.String(64))
     authority_act_section = db.Column(db.String(64))
-    documents = db.relationship(
-        'Document', lazy='selectin', secondary='order_stop_detail_document_xref')
+    documents = db.relationship('Document',
+                                lazy='selectin',
+                                secondary='order_stop_detail_document_xref')
 
     def __repr__(self):
         return f'<OrderStopDetail order_stop_detail_id={self.order_stop_detail_id}> inspected_location_id={self.inspected_location_id}'
