@@ -32,6 +32,8 @@ const defaultProps = {
 export class MineVarianceTable extends Component {
   errorStyle = (isOverdue) => (isOverdue ? { color: errorRed } : {});
 
+  hideColumn = (isApplication) => (isApplication ? "column-hide" : "");
+
   handleOpenModal = (event, isEditable, variance) => {
     event.preventDefault();
     if (isEditable) {
@@ -83,16 +85,24 @@ export class MineVarianceTable extends Component {
       {
         title: "Submission Date",
         dataIndex: "received_date",
-        className: !this.props.isApplication ? "column-hide" : "",
-        render: (text) => <div title="Submission Date">{text}</div>,
+        className: this.hideColumn(!this.props.isApplication),
+        render: (text) => (
+          <div className={this.hideColumn(!this.props.isApplication)} title="Submission Date">
+            {text}
+          </div>
+        ),
         sorter: (a, b) => (a.received_date > b.received_date ? -1 : 1),
       },
       {
         title: "Application  Status",
         dataIndex: "status",
-        className: !this.props.isApplication ? "column-hide" : "",
+        className: this.hideColumn(!this.props.isApplication),
         render: (text, record) => (
-          <div title="Application Status" style={this.errorStyle(record.isOverdue)}>
+          <div
+            className={this.hideColumn(!this.props.isApplication)}
+            title="Application Status"
+            style={this.errorStyle(record.isOverdue)}
+          >
             {text}
           </div>
         ),
@@ -101,9 +111,13 @@ export class MineVarianceTable extends Component {
       {
         title: "Issue Date",
         dataIndex: "issue_date",
-        className: this.props.isApplication ? "column-hide" : "",
+        className: this.hideColumn(this.props.isApplication),
         render: (text, record) => (
-          <div title="Issue Date" style={this.errorStyle(record.isOverdue)}>
+          <div
+            className={this.hideColumn(this.props.isApplication)}
+            title="Issue Date"
+            style={this.errorStyle(record.isOverdue)}
+          >
             {text}
           </div>
         ),
@@ -112,9 +126,13 @@ export class MineVarianceTable extends Component {
       {
         title: "Expiry Date",
         dataIndex: "expiry_date",
-        className: this.props.isApplication ? "column-hide" : "",
+        className: this.hideColumn(this.props.isApplication),
         render: (text, record) => (
-          <div title="Expiry Date" style={this.errorStyle(record.isOverdue)}>
+          <div
+            className={this.hideColumn(this.props.isApplication)}
+            title="Expiry Date"
+            style={this.errorStyle(record.isOverdue)}
+          >
             {text}
           </div>
         ),
@@ -124,9 +142,13 @@ export class MineVarianceTable extends Component {
       {
         title: "Approval Status",
         dataIndex: "",
-        className: this.props.isApplication ? "column-hide" : "",
+        className: this.hideColumn(this.props.isApplication),
         render: (text, record) => (
-          <div title="Approval Status" style={this.errorStyle(record.isOverdue)}>
+          <div
+            className={this.hideColumn(this.props.isApplication)}
+            title="Approval Status"
+            style={this.errorStyle(record.isOverdue)}
+          >
             {record.isOverdue ? "Expired" : "Active"}
           </div>
         ),
