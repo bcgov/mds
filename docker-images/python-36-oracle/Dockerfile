@@ -7,8 +7,10 @@ ENV LD_LIBRARY_PATH="${APP_ROOT}/oracle_bin/instantclient" \
 
 RUN mkdir -p /tmp/oracle
 
-RUN curl -o /tmp/oracle/instantclient-basic-linux.x64-19.3.0.0.0.zip http://mds-local-http:8080/data/instantclient-basic-linux.x64-19.3.0.0.0.zip
-RUN curl -o /tmp/oracle/instantclient-sdk-linux.x64-19.3.0.0.0.zip http://mds-local-http:8080/data/instantclient-sdk-linux.x64-19.3.0.0.0.zip
+RUN curl --connect-timeout 5 --max-time 10 --retry 5 --retry-delay 0 --retry-max-time 60 \
+    -o /tmp/oracle/instantclient-basic-linux.x64-19.3.0.0.0.zip http://mds-local-http:8080/data/instantclient-basic-linux.x64-19.3.0.0.0.zip
+RUN curl --connect-timeout 5 --max-time 10 --retry 5 --retry-delay 0 --retry-max-time 60 \
+    -o /tmp/oracle/instantclient-sdk-linux.x64-19.3.0.0.0.zip http://mds-local-http:8080/data/instantclient-sdk-linux.x64-19.3.0.0.0.zip
 
 RUN mkdir -p ${APP_ROOT}/oracle_bin
 
