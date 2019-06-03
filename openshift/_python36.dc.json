@@ -350,15 +350,6 @@
                     }
                   },
                   {
-                    "name": "NRIS_INSPECTION_URL",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${MDS_NRIS_API_SECRET}",
-                        "key": "inspection-url"
-                      }
-                    }
-                  },
-                  {
                     "name": "LDAP_IDIR_USERNAME",
                     "valueFrom": {
                       "secretKeyRef": {
