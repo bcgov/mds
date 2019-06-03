@@ -10,7 +10,6 @@ from app import auth
 from app.api.utils.include.user_info import User
 from app.api.utils.random import generate_mine_no, generate_mine_name, random_geo, random_key_gen, random_date, random_region, random_mine_category
 from app.extensions import db, sched
-from app.scheduled_jobs import NRIS_jobs
 from app.scheduled_jobs import ETL_jobs
 
 from tests.factories import MineFactory, MinePartyAppointmentFactory
