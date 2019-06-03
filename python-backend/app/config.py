@@ -44,8 +44,7 @@ class Config(object):
     MINES_URL = os.environ.get('MINES_URL', 'http://localhost:5000')
 
     NRIS_TOKEN_URL = os.environ.get('NRIS_TOKEN_URL', None)
-    NRIS_API_INSPECTION_URL = os.environ.get('NRIS_API_INSPECTION_URL',
-                                             'http://nris_backend:5500/inspections')
+    NRIS_API_URL = os.environ.get('NRIS_API_URL', 'http://nris_backend:5500')
     # Cache settings
     CACHE_TYPE = os.environ.get('CACHE_TYPE', 'redis')
     CACHE_REDIS_HOST = os.environ.get('CACHE_REDIS_HOST', 'redis')

@@ -133,6 +133,10 @@
     {
       "name": "API_URL",
       "required": true
+    },
+    {
+      "name": "NRIS_API_URL",
+      "required": true
     }
   ],
   "objects": [
@@ -392,6 +396,10 @@
                         "key": "server-url"
                       }
                     }
+                  },
+                  {
+                    "name": "NRIS_API_URL",
+                    "value": "${NRIS_API_URL}"
                   },
                   {
                     "name": "FLASK_RUN_PORT",

@@ -43,7 +43,7 @@ def _get_fiscal_year():
 def _get_NRIS_data_by_mine(auth_token, mine_no):
     current_date = datetime.utcnow()
 
-    url = current_app.config['NRIS_API_INSPECTION_URL']
+    url = current_app.config['NRIS_API_URL'] + '/inspections'
 
     if url is None:
         raise TypeError('Could not load the NRIS URL.')
