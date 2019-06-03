@@ -18,7 +18,7 @@ const varianceReducer = (state = initialState, action) => {
     case actionTypes.STORE_VARIANCE:
       return {
         ...state,
-        variances: action.payload,
+        variance: action.payload,
       };
     case actionTypes.STORE_COMPLIANCE_CODES:
       return {
@@ -36,7 +36,7 @@ const varianceReducer = (state = initialState, action) => {
 };
 
 export const getMineVariances = (state) => state[VARIANCES].mineVariances;
-export const getVariance = (state) => state[VARIANCES].variances;
+export const getVariance = (state) => state[VARIANCES].variance;
 export const getComplianceCodes = (state) => state[VARIANCES].complianceCodes;
 export const getIncidentFollowupActionOptions = (state) =>
   state[VARIANCES].incidentFollowupActionOptions;

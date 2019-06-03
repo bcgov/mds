@@ -17,12 +17,11 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   mineGuid: PropTypes.string.isRequired,
   mineName: PropTypes.string.isRequired,
-  coreUsers: CustomPropTypes.options.isRequired,
   variance: CustomPropTypes.variance,
-  varianceStatusOptions: CustomPropTypes.options.isRequired,
   fetchVarianceById: PropTypes.func.isRequired,
   varianceGuid: PropTypes.string.isRequired,
   removeDocumentFromVariance: PropTypes.func.isRequired,
+  varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   fetchVariancesByMine: PropTypes.func.isRequired,
 };
@@ -43,17 +42,13 @@ export class EditVarianceModal extends Component {
   // handling delete functionality inside the modal, so the data can be updated properly.
   handleRemoveDocument = (event, documentGuid) => {
     event.preventDefault();
-    this.props
+    return this.props
       .removeDocumentFromVariance(this.props.mineGuid, this.props.varianceGuid, documentGuid)
       .then(() => {
         this.props.fetchVarianceById(this.props.mineGuid, this.props.varianceGuid);
-        this.props.fetchVariancesByMine({ mineGuid: this.props.mineGuid });
+        this.props.fetchVariancesByMine(this.props.mineGuid);
       });
   };
-
-  componentDidUnmount() {
-    this.setState({ isLoaded: false });
-  }
 
   render() {
     return (
@@ -64,9 +59,8 @@ export class EditVarianceModal extends Component {
             closeModal={this.props.closeModal}
             mineGuid={this.props.mineGuid}
             mineName={this.props.mineName}
-            coreUsers={this.props.coreUsers}
             variance={this.props.variance}
-            varianceStatusOptions={this.props.varianceStatusOptions}
+            varianceStatusOptionsHash={this.props.varianceStatusOptionsHash}
             initialValues={this.props.variance}
             removeDocument={this.handleRemoveDocument}
             complianceCodesHash={this.props.complianceCodesHash}

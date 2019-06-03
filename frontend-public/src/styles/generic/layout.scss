@@ -86,6 +86,13 @@ body {
   text-align: left;
 }
 
+.full-mobile {
+  @include mobile {
+    width: 100% !important;
+    margin: 5px 0;
+  }
+}
+
 .full-height {
   height: inherit !important;
 }
@@ -130,8 +137,13 @@ body {
   background: $gov-blue;
 }
 
-.margin-small {
-  margin: $default-margin-sm;
+.margin {
+  &-small {
+    margin: $default-margin-sm;
+  }
+  &--bottom {
+    margin-bottom: $default-margin-md;
+  }
 }
 
 .lightest-grey-bg {

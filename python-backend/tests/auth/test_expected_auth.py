@@ -105,7 +105,7 @@ from app.api.search.search.resources.simple_search import SimpleSearchResource
      (VarianceDocumentUploadResource, "put", [MINE_CREATE, MINESPACE_PROPONENT]),
      (VarianceUploadedDocumentsResource, "delete", [MINE_CREATE, MINESPACE_PROPONENT]),
      (VarianceListResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]), (VarianceListResource, "post", [MINE_CREATE, MINESPACE_PROPONENT]),
-     (VarianceResource, "get", [MINE_VIEW]),
+     (VarianceResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]),
      (VarianceResource, "put", [MINE_CREATE, MINESPACE_PROPONENT])])
 def test_endpoint_auth(resource, method, expected_roles):
     endpoint = getattr(resource, method, None)

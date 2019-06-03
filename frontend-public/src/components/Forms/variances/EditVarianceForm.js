@@ -4,20 +4,24 @@ import { Field, reduxForm, change } from "redux-form";
 import { remove } from "lodash";
 import { Form, Button, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
+import CustomPropTypes from "@/customPropTypes";
 import { resetForm } from "@/utils/helpers";
-// import CustomPropTypes from "@/customPropTypes";
 import { VarianceDetails } from "@/components/dashboard/mine/variances/VarianceDetails";
 import VarianceFileUpload from "@/components/Forms/variances/VarianceFileUpload";
 
 const propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+  removeDocument: PropTypes.func.isRequired,
+  mineName: PropTypes.string.isRequired,
+  variance: CustomPropTypes.variance.isRequired,
   submitting: PropTypes.bool.isRequired,
+  varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineGuid: PropTypes.string.isRequired,
+  complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
-export class AddVarianceForm extends Component {
+export class EditVarianceForm extends Component {
   state = {
     uploadedFiles: [],
     documentNameGuidMap: {},
@@ -39,24 +43,31 @@ export class AddVarianceForm extends Component {
     change("uploadedFiles", this.state.uploadedFiles);
   };
 
+  handleSubmit = (event) => {
+    const codeLabel = this.props.complianceCodesHash[this.props.variance.compliance_article_id];
+    event.preventDefault();
+    this.props.onSubmit(
+      this.state.documentNameGuidMap,
+      this.props.variance.variance_guid,
+      codeLabel
+    );
+  };
+
   render() {
     return (
-      <Form
-        layout="vertical"
-        onSubmit={this.props.handleSubmit(this.props.onSubmit(this.state.documentNameGuidMap))}
-      >
-        <Form.Item label="Application Details" />
+      <Form layout="vertical" onSubmit={(event) => this.handleSubmit(event)}>
         <VarianceDetails
           mineName={this.props.mineName}
           variance={this.props.variance}
           removeDocument={this.props.removeDocument}
+          varianceStatusOptionsHash={this.props.varianceStatusOptionsHash}
           complianceCodesHash={this.props.complianceCodesHash}
         />
         <Form.Item label="Attached Files">
           <p> Please upload all the required documents here for the variance application</p>
           <Field
-            id="VarianceDocumentFileUpload"
-            name="VarianceDocumentFileUpload"
+            id="uploadedFiles"
+            name="uploadedFiles"
             onFileLoad={this.onFileLoad}
             onRemoveFile={this.onRemoveFile}
             mineGuid={this.props.mineGuid}
@@ -89,10 +100,10 @@ export class AddVarianceForm extends Component {
   }
 }
 
-AddVarianceForm.propTypes = propTypes;
+EditVarianceForm.propTypes = propTypes;
 
 export default reduxForm({
-  form: FORM.ADD_VARIANCE,
+  form: FORM.EDIT_VARIANCE,
   touchOnBlur: false,
-  onSubmitSuccess: resetForm(FORM.ADD_VARIANCE),
-})(AddVarianceForm);
+  onSubmitSuccess: resetForm(FORM.EDIT_VARIANCE),
+})(EditVarianceForm);

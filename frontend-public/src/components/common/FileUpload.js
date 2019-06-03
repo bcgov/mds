@@ -17,14 +17,16 @@ const propTypes = {
   maxFileSize: PropTypes.string,
   acceptedFileTypesMap: PropTypes.objectOf(PropTypes.string),
   onFileLoad: PropTypes.func,
+  allowRevert: PropTypes.bool,
   chunkSize: PropTypes.number,
 };
 
 const defaultProps = {
   maxFileSize: "100MB",
   acceptedFileTypesMap: {},
+  allowRevert: false,
   onFileLoad: () => {},
-  chunkSize: 1048576, //1MB
+  chunkSize: 1048576, // 1MB
 };
 
 class FileUpload extends React.Component {
@@ -53,7 +55,7 @@ class FileUpload extends React.Component {
             progress(true, bytesUploaded, bytesTotal);
           },
           onSuccess: () => {
-            const documentGuid = upload.url.split("/").pop()
+            const documentGuid = upload.url.split("/").pop();
             load(documentGuid);
             this.props.onFileLoad(file.name, documentGuid);
           },
@@ -77,7 +79,7 @@ class FileUpload extends React.Component {
       <FilePond
         server={this.server}
         name="file"
-        allowRevert={false}
+        allowRevert={this.props.allowRevert}
         allowMultiple
         maxFileSize={this.props.maxFileSize}
         allowFileTypeValidation={acceptedFileTypes.length > 0}

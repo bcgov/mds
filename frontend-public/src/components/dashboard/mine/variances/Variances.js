@@ -17,6 +17,7 @@ import {
   fetchVarianceStatusOptions,
   createVariance,
   addDocumentToVariance,
+  updateVariance,
 } from "@/actionCreators/varianceActionCreator";
 import {
   getVarianceApplications,
@@ -28,13 +29,14 @@ import {
 import VarianceTable from "@/components/dashboard/mine/variances/VarianceTable";
 
 const propTypes = {
-  mine: CustomPropTypes.mine.isRequired,
+  mine: CustomPropTypes.mine,
   match: PropTypes.shape({
     params: {
       id: PropTypes.string,
     },
   }).isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
+  updateVariance: PropTypes.func.isRequired,
   fetchVariancesByMine: PropTypes.func.isRequired,
   fetchMineComplianceCodes: PropTypes.func.isRequired,
   fetchVarianceStatusOptions: PropTypes.func.isRequired,
@@ -47,6 +49,10 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   createVariance: PropTypes.func.isRequired,
   addDocumentToVariance: PropTypes.func.isRequired,
+};
+
+const defaultProps = {
+  mine: {},
 };
 
 export class Variances extends Component {
@@ -62,6 +68,17 @@ export class Variances extends Component {
     this.props.fetchVarianceStatusOptions();
   }
 
+  handlAddDocuments = (files, varianceGuid) => {
+    Promise.all(
+      Object.entries(files).map(([document_manager_guid, document_name]) =>
+        this.props.addDocumentToVariance(this.props.mine.mine_guid, varianceGuid, {
+          document_manager_guid,
+          document_name,
+        })
+      )
+    );
+  };
+
   handleAddVariances = (files) => (values) => {
     const received_date = values.received_date
       ? values.received_date
@@ -70,31 +87,29 @@ export class Variances extends Component {
     return this.props
       .createVariance(this.props.mine.mine_guid, this.props.mine.mine_name, newValues)
       .then(async ({ data: { variance_guid } }) => {
-        await Promise.all(
-          Object.entries(files).map(([document_manager_guid, document_name]) =>
-            this.props.addDocumentToVariance(
-              { mineGuid: this.props.mine.mine_guid, varianceGuid: variance_guid },
-              {
-                document_manager_guid,
-                document_name,
-              }
-            )
-          )
-        );
+        await this.handlAddDocuments(files, variance_guid);
         this.props.closeModal();
         this.props.fetchVariancesByMine(this.props.mine.mine_guid);
       });
   };
 
+  handleUpdateVariance = (files, varianceGuid, codeLabel) => this.props
+      .updateVariance(this.props.mine.mine_guid, varianceGuid, codeLabel)
+      .then(async () => {
+        await this.handlAddDocuments(files, varianceGuid);
+        this.props.fetchVariancesByMine(this.props.mine.mine_guid);
+        this.props.closeModal();
+      });
+
   openEditVarianceModal = (variance) => {
     this.props.openModal({
       props: {
-        type: "edit",
         onSubmit: this.handleUpdateVariance,
         title: this.props.complianceCodesHash[variance.compliance_article_id],
         mineGuid: this.props.mine.mine_guid,
         mineName: this.props.mine.mine_name,
         varianceGuid: variance.variance_guid,
+        varianceStatusOptionsHash: this.props.varianceStatusOptionsHash,
         complianceCodesHash: this.props.complianceCodesHash,
       },
       content: modalConfig.EDIT_VARIANCE,
@@ -191,12 +206,14 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineComplianceCodes,
       fetchVarianceStatusOptions,
       createVariance,
+      updateVariance,
       addDocumentToVariance,
     },
     dispatch
   );
 
 Variances.propTypes = propTypes;
+Variances.defaultProps = defaultProps;
 
 export default connect(
   mapStateToProps,

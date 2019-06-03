@@ -16,12 +16,13 @@ const propTypes = {
   varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   isApplication: PropTypes.bool,
   openEditVarianceModal: PropTypes.func,
-  openViewVarianceModal: PropTypes.func.isRequired,
+  openViewVarianceModal: PropTypes.func,
 };
 
 const defaultProps = {
   isApplication: false,
   openEditVarianceModal: () => {},
+  openViewVarianceModal: () => {},
 };
 
 export class VarianceTable extends Component {
@@ -76,16 +77,27 @@ export class VarianceTable extends Component {
     {
       title: "Submission Date",
       dataIndex: "received_date",
+      // className on the column - applies to the entire column when full size
+      //  This attribute has no effect on the responsive view, same class is added to the div to handle responsive views
       className: !isApplication ? "column-hide" : "",
-      render: (text) => <div title="Submission Date">{text}</div>,
+      render: (text) => (
+        <div className={!isApplication ? "column-hide" : ""} title="Submission Date">
+          {text}
+        </div>
+      ),
       sorter: (a, b) => (a.received_date > b.received_date ? -1 : 1),
+      defaultSortOrder: "ascend",
     },
     {
       title: "Application  Status",
       dataIndex: "status",
       className: !isApplication ? "column-hide" : "",
       render: (text, record) => (
-        <div title="Application Status" style={this.errorStyle(record.isOverdue)}>
+        <div
+          title="Application Status"
+          className={!isApplication ? "column-hide" : ""}
+          style={this.errorStyle(record.isOverdue)}
+        >
           {text}
         </div>
       ),
@@ -96,7 +108,11 @@ export class VarianceTable extends Component {
       dataIndex: "issue_date",
       className: isApplication ? "column-hide" : "",
       render: (text, record) => (
-        <div title="Issue Date" style={this.errorStyle(record.isOverdue)}>
+        <div
+          title="Issue Date"
+          className={isApplication ? "column-hide" : ""}
+          style={this.errorStyle(record.isOverdue)}
+        >
           {text}
         </div>
       ),
@@ -107,7 +123,11 @@ export class VarianceTable extends Component {
       dataIndex: "expiry_date",
       className: isApplication ? "column-hide" : "",
       render: (text, record) => (
-        <div title="Expiry Date" style={this.errorStyle(record.isOverdue)}>
+        <div
+          className={isApplication ? "column-hide" : ""}
+          title="Expiry Date"
+          style={this.errorStyle(record.isOverdue)}
+        >
           {text}
         </div>
       ),
@@ -119,7 +139,11 @@ export class VarianceTable extends Component {
       dataIndex: "",
       className: isApplication ? "column-hide" : "",
       render: (text, record) => (
-        <div title="Approval Status" style={this.errorStyle(record.isOverdue)}>
+        <div
+          className={isApplication ? "column-hide" : ""}
+          title="Approval Status"
+          style={this.errorStyle(record.isOverdue)}
+        >
           {record.isOverdue ? "Expired" : "Active"}
         </div>
       ),

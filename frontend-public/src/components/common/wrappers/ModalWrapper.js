@@ -10,15 +10,12 @@ import { getIsModalOpen, getProps, getContent, getClearOnSubmit } from "@/select
 const propTypes = {
   closeModal: PropTypes.func.isRequired,
   isModalOpen: PropTypes.bool.isRequired,
-  content: PropTypes.func.isRequired,
-  props: PropTypes.objectOf(PropTypes.string),
+  content: PropTypes.func,
   clearOnSubmit: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
-  props: {
-    title: "",
-  },
+  content: () => {},
 };
 
 export class ModalWrapper extends Component {
@@ -36,6 +33,7 @@ export class ModalWrapper extends Component {
     const ChildComponent = this.props.content;
     return (
       <Modal
+        width={810}
         title={this.props.props.title}
         visible={this.props.isModalOpen}
         closable={false}

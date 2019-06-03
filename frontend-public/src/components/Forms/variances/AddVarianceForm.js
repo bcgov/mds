@@ -45,9 +45,7 @@ export class AddVarianceForm extends Component {
     return (
       <Form
         layout="vertical"
-        onSubmit={this.props.handleSubmit(
-          this.props.onSubmit(this.state.documentNameGuidMap, this.state.isApplication)
-        )}
+        onSubmit={this.props.handleSubmit(this.props.onSubmit(this.state.documentNameGuidMap))}
       >
         <Field
           id="compliance_article_id"
@@ -70,8 +68,8 @@ export class AddVarianceForm extends Component {
         <Form.Item label="Attached Files">
           <p> Please upload all the required documents here for the variance application</p>
           <Field
-            id="VarianceDocumentFileUpload"
-            name="VarianceDocumentFileUpload"
+            id="uploadedFiles"
+            name="uploadedFiles"
             onFileLoad={this.onFileLoad}
             onRemoveFile={this.onRemoveFile}
             mineGuid={this.props.mineGuid}

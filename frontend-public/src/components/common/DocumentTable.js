@@ -60,8 +60,8 @@ export class DocumentTable extends Component {
         render: (text, record) => (
           <div title="" align="right">
             <Popconfirm
-              placement="topLeft"
-              title={`Are you sure you want to delete ${record.name}?`}
+              placement="topRight"
+              title={`Are you sure you want to remove ${record.name} from this application?`}
               onConfirm={(event) => this.props.removeDocument(event, record.key)}
               okText="Delete"
               cancelText="Cancel"
@@ -76,15 +76,13 @@ export class DocumentTable extends Component {
     ];
 
     return (
-      <div>
-        <Table
-          align="left"
-          pagination={false}
-          columns={columns}
-          locale={{ emptyText: "This variance does not contain any documents" }}
-          dataSource={this.transformRowData(this.props.documents)}
-        />
-      </div>
+      <Table
+        align="left"
+        pagination={false}
+        columns={columns}
+        locale={{ emptyText: "This variance does not contain any documents" }}
+        dataSource={this.transformRowData(this.props.documents)}
+      />
     );
   }
 }
