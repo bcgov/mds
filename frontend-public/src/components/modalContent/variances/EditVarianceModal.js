@@ -34,18 +34,27 @@ export class EditVarianceModal extends Component {
   state = { isLoaded: false };
 
   componentDidMount() {
-    this.props.fetchVarianceById(this.props.mineGuid, this.props.varianceGuid).then(() => {
-      this.setState({ isLoaded: true });
-    });
+    this.props
+      .fetchVarianceById({ mineGuid: this.props.mineGuid, varianceGuid: this.props.varianceGuid })
+      .then(() => {
+        this.setState({ isLoaded: true });
+      });
   }
 
   handleRemoveDocument = (event, documentGuid) => {
     event.preventDefault();
     return this.props
-      .removeDocumentFromVariance(this.props.mineGuid, this.props.varianceGuid, documentGuid)
+      .removeDocumentFromVariance({
+        mineGuid: this.props.mineGuid,
+        varianceGuid: this.props.varianceGuid,
+        mineDocumentGuid: documentGuid,
+      })
       .then(() => {
-        this.props.fetchVarianceById(this.props.mineGuid, this.props.varianceGuid);
-        this.props.fetchVariancesByMine(this.props.mineGuid);
+        this.props.fetchVarianceById({
+          mineGuid: this.props.mineGuid,
+          varianceGuid: this.props.varianceGuid,
+        });
+        this.props.fetchVariancesByMine({ mineGuid: this.props.mineGuid });
       });
   };
 

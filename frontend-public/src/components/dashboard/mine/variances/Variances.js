@@ -63,7 +63,7 @@ export class Variances extends Component {
     this.props.fetchMineRecordById(id).then(() => {
       this.setState({ isLoaded: true });
     });
-    this.props.fetchVariancesByMine(id);
+    this.props.fetchVariancesByMine({ mineGuid: id });
     this.props.fetchMineComplianceCodes();
     this.props.fetchVarianceStatusOptions();
   }
@@ -71,10 +71,13 @@ export class Variances extends Component {
   handleAddDocuments = (files, varianceGuid) =>
     Promise.all(
       Object.entries(files).map(([document_manager_guid, document_name]) =>
-        this.props.addDocumentToVariance(this.props.mine.mine_guid, varianceGuid, {
-          document_manager_guid,
-          document_name,
-        })
+        this.props.addDocumentToVariance(
+          { mineGuid: this.props.mine.mine_guid, varianceGuid },
+          {
+            document_manager_guid,
+            document_name,
+          }
+        )
       )
     );
 
@@ -82,20 +85,25 @@ export class Variances extends Component {
     const received_date = moment().format("YYYY-MM-DD");
     const newValues = { received_date, ...values };
     return this.props
-      .createVariance(this.props.mine.mine_guid, this.props.mine.mine_name, newValues)
+      .createVariance(
+        { mineGuid: this.props.mine.mine_guid, mineName: this.props.mine.mine_name },
+        newValues
+      )
       .then(async ({ data: { variance_guid } }) => {
         await this.handleAddDocuments(files, variance_guid);
         this.props.closeModal();
-        this.props.fetchVariancesByMine(this.props.mine.mine_guid);
+        this.props.fetchVariancesByMine({ mineGuid: this.props.mine.mine_guid });
       });
   };
 
   handleUpdateVariance = (files, varianceGuid, codeLabel) =>
-    this.props.updateVariance(this.props.mine.mine_guid, varianceGuid, codeLabel).then(async () => {
-      await this.handleAddDocuments(files, varianceGuid);
-      this.props.fetchVariancesByMine(this.props.mine.mine_guid);
-      this.props.closeModal();
-    });
+    this.props
+      .updateVariance({ mineGuid: this.props.mine.mine_guid, varianceGuid, codeLabel })
+      .then(async () => {
+        await this.handleAddDocuments(files, varianceGuid);
+        this.props.fetchVariancesByMine({ mineGuid: this.props.mine.mine_guid });
+        this.props.closeModal();
+      });
 
   openEditVarianceModal = (variance) => {
     this.props.openModal({

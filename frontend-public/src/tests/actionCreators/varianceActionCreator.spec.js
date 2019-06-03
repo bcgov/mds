@@ -40,7 +40,7 @@ describe("`createVariance` action creator", () => {
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPost(url).reply(200, mockResponse);
-    return createVariance(mineGuid, mineName, mockPayload)(dispatch).then(() => {
+    return createVariance({ mineGuid, mineName }, mockPayload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -49,7 +49,7 @@ describe("`createVariance` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPost(url).reply(400, MOCK.ERROR);
-    return createVariance(mineGuid, mineName, mockPayload)(dispatch).then(() => {
+    return createVariance({ mineGuid, mineName }, mockPayload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -64,7 +64,7 @@ describe("`fetchVariancesByMine` action creator", () => {
     const mockResponse = { data: { success: true } };
 
     mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchVariancesByMine(mineGuid)(dispatch).then(() => {
+    return fetchVariancesByMine({ mineGuid })(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(5);
@@ -73,7 +73,7 @@ describe("`fetchVariancesByMine` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
-    return fetchVariancesByMine(mineGuid)(dispatch).then(() => {
+    return fetchVariancesByMine({ mineGuid })(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -89,7 +89,7 @@ describe("`fetchVarianceById` action creator", () => {
     const mockResponse = { data: { success: true } };
 
     mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchVarianceById(mineGuid, varianceGuid)(dispatch).then(() => {
+    return fetchVarianceById({ mineGuid, varianceGuid })(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(5);
@@ -98,7 +98,7 @@ describe("`fetchVarianceById` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
-    return fetchVarianceById(mineGuid, varianceGuid)(dispatch).then(() => {
+    return fetchVarianceById({ mineGuid, varianceGuid })(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -118,7 +118,7 @@ describe("`updateVariance` action creator", () => {
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPut(url).reply(200, mockResponse);
-    return updateVariance(mineGuid, varianceGuid, codeLabel, mockPayload)(dispatch).then(() => {
+    return updateVariance({ mineGuid, varianceGuid, codeLabel }, mockPayload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -127,7 +127,7 @@ describe("`updateVariance` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPut(url).reply(400, MOCK.ERROR);
-    return updateVariance(mineGuid, varianceGuid, codeLabel, mockPayload)(dispatch).then(() => {
+    return updateVariance({ mineGuid, varianceGuid, codeLabel }, mockPayload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -146,7 +146,7 @@ describe("`addDocumentToVariance` action creator", () => {
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPut(url).reply(200, mockResponse);
-    return addDocumentToVariance(mineGuid, varianceGuid, mockPayload)(dispatch).then(() => {
+    return addDocumentToVariance({ mineGuid, varianceGuid }, mockPayload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -155,7 +155,7 @@ describe("`addDocumentToVariance` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPut(url).reply(400, MOCK.ERROR);
-    return addDocumentToVariance(mineGuid, varianceGuid, mockPayload)(dispatch).then(() => {
+    return addDocumentToVariance({ mineGuid, varianceGuid }, mockPayload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -171,7 +171,7 @@ describe("`removeDocumentFromVariance` action creator", () => {
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onDelete(url).reply(200, mockResponse);
-    return removeDocumentFromVariance(mineGuid, varianceGuid, mineDocumentGuid)(dispatch).then(
+    return removeDocumentFromVariance({ mineGuid, varianceGuid, mineDocumentGuid })(dispatch).then(
       () => {
         expect(requestSpy).toHaveBeenCalledTimes(1);
         expect(successSpy).toHaveBeenCalledTimes(1);
@@ -182,7 +182,7 @@ describe("`removeDocumentFromVariance` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onDelete(url).reply(400, MOCK.ERROR);
-    return removeDocumentFromVariance(mineGuid, varianceGuid)(dispatch).then(() => {
+    return removeDocumentFromVariance({ mineGuid, varianceGuid })(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

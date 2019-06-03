@@ -9,7 +9,7 @@ import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
 import CustomAxios from "@/utils/customAxios";
 
-export const createVariance = (mineGuid, mineName, payload) => (dispatch) => {
+export const createVariance = ({ mineGuid, mineName }, payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_MINE_VARIANCE));
   dispatch(showLoading());
   return CustomAxios()
@@ -26,7 +26,7 @@ export const createVariance = (mineGuid, mineName, payload) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const updateVariance = (mineGuid, varianceGuid, codeLabel, payload) => (dispatch) => {
+export const updateVariance = ({ mineGuid, varianceGuid, codeLabel }, payload) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_MINE_VARIANCE));
   dispatch(showLoading());
   return CustomAxios()
@@ -43,7 +43,7 @@ export const updateVariance = (mineGuid, varianceGuid, codeLabel, payload) => (d
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchVariancesByMine = (mineGuid) => (dispatch) => {
+export const fetchVariancesByMine = ({ mineGuid }) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_VARIANCES));
   dispatch(showLoading());
   return CustomAxios(Strings.ERROR)
@@ -56,7 +56,7 @@ export const fetchVariancesByMine = (mineGuid) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchVarianceById = (mineGuid, varianceGuid) => (dispatch) => {
+export const fetchVarianceById = ({ mineGuid, varianceGuid }) => (dispatch) => {
   dispatch(request(reducerTypes.GET_VARIANCE));
   dispatch(showLoading("modal"));
   return CustomAxios(Strings.ERROR)
@@ -69,7 +69,7 @@ export const fetchVarianceById = (mineGuid, varianceGuid) => (dispatch) => {
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const addDocumentToVariance = (mineGuid, varianceGuid, payload) => (dispatch) => {
+export const addDocumentToVariance = ({ mineGuid, varianceGuid }, payload) => (dispatch) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.ADD_DOCUMENT_TO_VARIANCE));
   return CustomAxios()
@@ -86,7 +86,7 @@ export const addDocumentToVariance = (mineGuid, varianceGuid, payload) => (dispa
     .finally(() => dispatch(hideLoading()));
 };
 
-export const removeDocumentFromVariance = (mineGuid, varianceGuid, mineDocumentGuid) => (
+export const removeDocumentFromVariance = ({ mineGuid, varianceGuid, mineDocumentGuid }) => (
   dispatch
 ) => {
   dispatch(showLoading());
