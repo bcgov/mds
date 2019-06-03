@@ -70,31 +70,6 @@ MINE_COMPLIANCE_RESPONSE_MODEL = api.model(
     })
 
 
-class MineComplianceResource(Resource, UserMixin, ErrorMixin):
-    @api.doc(params={'mine_no': 'Mine ID.'})
-    @requires_role_mine_view
-    def get(self, mine_no=None):
-
-        result = None  #cache.get(NRIS_COMPLIANCE_DATA(mine_no))
-        if result is None:
-            try:
-                response_data = NRIS_service._get_EMPR_data_from_NRIS(mine_no)
-            except requests.exceptions.Timeout:
-                return self.create_error_payload(408, 'NRIS is down or unresponsive.'), 408
-            except requests.exceptions.HTTPError as errhttp:
-                return self.create_error_payload(
-                    errhttp.response.status_code,
-                    'An NRIS error has occurred and no data is available at this time. Please check again later. If the problem persists please contact your NRIS administrator.'
-                ), errhttp.response.status_code
-            except TypeError as e:
-                return self.create_error_payload(500, str(e)), 500
-
-            result = NRIS_service._process_NRIS_data(response_data)
-        #    cache.set(NRIS_COMPLIANCE_DATA(mine_no), result, timeout=TIMEOUT_24_HOURS)
-        return result
-
-
-
 class MineComplianceSummaryResource(Resource, UserMixin, ErrorMixin):
     @api.marshal_with(MINE_COMPLIANCE_RESPONSE_MODEL, code=200)
     @requires_role_mine_view
