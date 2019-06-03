@@ -2,6 +2,7 @@ import requests
 from datetime import datetime
 from flask_restplus import Resource, fields
 from flask import request
+from werkzeug.exceptions import BadRequest, NotFound
 
 from app.extensions import api
 from ....utils.access_decorators import requires_role_mine_view
@@ -10,6 +11,7 @@ from ....constants import NRIS_COMPLIANCE_DATA, TIMEOUT_24_HOURS
 from app.api.services import NRIS_service, NRIS_API_service
 from app.extensions import cache
 
+from app.api.mines.mine.models.mine import Mine
 
 class DateTime(fields.Raw):
     def format(self, value):
@@ -98,6 +100,11 @@ class MineComplianceSummaryResource(Resource, UserMixin, ErrorMixin):
     @requires_role_mine_view
     def get(self, mine_no):
         result = None
+
+        mine = Mine.find_by_mine_no_or_guid(mine_no)
+        if not mine:
+            raise NotFound("No mine record in CORE.")     
+
         try:
             raw_data = NRIS_API_service._get_NRIS_data_by_mine(request.headers.get('Authorization'),
                                                                mine_no)

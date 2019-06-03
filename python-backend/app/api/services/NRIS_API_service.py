@@ -88,7 +88,7 @@ def _process_NRIS_data(raw_data):
         },
         'orders': [],
     }
-    sorted_records = sorted(raw_data['records'],
+    sorted_records = sorted(raw_data.get('records') or [],
                             key=lambda k: _get_datetime_from_NRIS_data(k['inspection_date']),
                             reverse=True)
 
@@ -117,8 +117,8 @@ def _process_NRIS_data(raw_data):
                 violation = None
                 if legislation:
                     violation = legislation[0].get('section')
-                else:
-                    violation = stop['noncompliance_permits'].get('permitSectionNumber')
+                elif stop['noncompliance_permits']:
+                    violation = stop['noncompliance_permits'][0].get('permitSectionNumber')
 
                 order = {
                     'order_no': str(inspection['external_id']) + '-' + str(order_count),
