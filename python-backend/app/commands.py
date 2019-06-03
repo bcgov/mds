@@ -80,16 +80,6 @@ def register_commands(app):
     if app.config.get('ENVIRONMENT_NAME') in ['test', 'prod']:
 
         @sched.app.cli.command()
-        def _run_nris_jobs():
-            with sched.app.app_context():
-                print('Started NRIS job to cache Major Mines list.')
-                NRIS_jobs._cache_major_mines_list()
-                print('Completed caching the Major Mines list.')
-                print('Caching all NRIS data for Major Mines')
-                NRIS_jobs._cache_all_NRIS_major_mines_data()
-                print('Done!')
-
-        @sched.app.cli.command()
         def _run_etl():
             with sched.app.app_context():
                 print('starting the ETL.')
