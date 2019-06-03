@@ -29,11 +29,11 @@ const defaultProps = {
   isApplication: false,
 };
 
+const errorStyle = (isOverdue) => (isOverdue ? { color: errorRed } : {});
+
+const hideColumn = (isApplication) => (isApplication ? "column-hide" : "");
+
 export class MineVarianceTable extends Component {
-  errorStyle = (isOverdue) => (isOverdue ? { color: errorRed } : {});
-
-  hideColumn = (isApplication) => (isApplication ? "column-hide" : "");
-
   handleOpenModal = (event, isEditable, variance) => {
     event.preventDefault();
     if (isEditable) {
@@ -77,7 +77,7 @@ export class MineVarianceTable extends Component {
         title: "Code Section",
         dataIndex: "compliance_article_id",
         render: (text, record) => (
-          <div title="Code Section" style={this.errorStyle(record.isOverdue)}>
+          <div title="Code Section" style={errorStyle(record.isOverdue)}>
             {text}
           </div>
         ),
@@ -85,9 +85,9 @@ export class MineVarianceTable extends Component {
       {
         title: "Submission Date",
         dataIndex: "received_date",
-        className: this.hideColumn(!this.props.isApplication),
+        className: hideColumn(!this.props.isApplication),
         render: (text) => (
-          <div className={this.hideColumn(!this.props.isApplication)} title="Submission Date">
+          <div className={hideColumn(!this.props.isApplication)} title="Submission Date">
             {text}
           </div>
         ),
@@ -96,12 +96,12 @@ export class MineVarianceTable extends Component {
       {
         title: "Application  Status",
         dataIndex: "status",
-        className: this.hideColumn(!this.props.isApplication),
+        className: hideColumn(!this.props.isApplication),
         render: (text, record) => (
           <div
-            className={this.hideColumn(!this.props.isApplication)}
+            className={hideColumn(!this.props.isApplication)}
             title="Application Status"
-            style={this.errorStyle(record.isOverdue)}
+            style={errorStyle(record.isOverdue)}
           >
             {text}
           </div>
@@ -111,12 +111,12 @@ export class MineVarianceTable extends Component {
       {
         title: "Issue Date",
         dataIndex: "issue_date",
-        className: this.hideColumn(this.props.isApplication),
+        className: hideColumn(this.props.isApplication),
         render: (text, record) => (
           <div
-            className={this.hideColumn(this.props.isApplication)}
+            className={hideColumn(this.props.isApplication)}
             title="Issue Date"
-            style={this.errorStyle(record.isOverdue)}
+            style={errorStyle(record.isOverdue)}
           >
             {text}
           </div>
@@ -126,12 +126,12 @@ export class MineVarianceTable extends Component {
       {
         title: "Expiry Date",
         dataIndex: "expiry_date",
-        className: this.hideColumn(this.props.isApplication),
+        className: hideColumn(this.props.isApplication),
         render: (text, record) => (
           <div
-            className={this.hideColumn(this.props.isApplication)}
+            className={hideColumn(this.props.isApplication)}
             title="Expiry Date"
-            style={this.errorStyle(record.isOverdue)}
+            style={errorStyle(record.isOverdue)}
           >
             {text}
           </div>
@@ -142,12 +142,12 @@ export class MineVarianceTable extends Component {
       {
         title: "Approval Status",
         dataIndex: "",
-        className: this.hideColumn(this.props.isApplication),
+        className: hideColumn(this.props.isApplication),
         render: (text, record) => (
           <div
-            className={this.hideColumn(this.props.isApplication)}
+            className={hideColumn(this.props.isApplication)}
             title="Approval Status"
-            style={this.errorStyle(record.isOverdue)}
+            style={errorStyle(record.isOverdue)}
           >
             {record.isOverdue ? "Expired" : "Active"}
           </div>
