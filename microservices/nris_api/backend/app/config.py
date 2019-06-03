@@ -19,6 +19,12 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = DB_URL
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
+    JWT_OIDC_WELL_KNOWN_CONFIG = os.environ.get(
+    'JWT_OIDC_WELL_KNOWN_CONFIG',
+    'https://localhost:8080/auth/realms/mds/.well-known/openid-configuration')
+    JWT_OIDC_AUDIENCE = os.environ.get('JWT_OIDC_AUDIENCE', 'mds')
+    JWT_OIDC_ALGORITHMS = os.environ.get('JWT_OIDC_ALGORITHMS', 'RS256')
+
     NRIS_DB_USER = os.environ.get('NRIS_DB_USER', 'localhost')
     NRIS_DB_PASSWORD = os.environ.get('NRIS_DB_PASSWORD', 'localhost')
     NRIS_DB_PORT = os.environ.get('NRIS_DB_PORT', 'localhost')
