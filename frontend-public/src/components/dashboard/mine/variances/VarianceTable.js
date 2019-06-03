@@ -77,8 +77,9 @@ export class VarianceTable extends Component {
     {
       title: "Submission Date",
       dataIndex: "received_date",
-      // className on the column - applies to the entire column when full size
-      //  This attribute has no effect on the responsive view, same class is added to the div to handle responsive views
+      /*  className on the column - applies to the entire column when full size
+          This attribute has no effect on the responsive view, same class is added to the div to handle responsive views
+      */
       className: !isApplication ? "column-hide" : "",
       render: (text) => (
         <div className={!isApplication ? "column-hide" : ""} title="Submission Date">

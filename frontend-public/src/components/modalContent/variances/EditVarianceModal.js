@@ -39,7 +39,6 @@ export class EditVarianceModal extends Component {
     });
   }
 
-  // handling delete functionality inside the modal, so the data can be updated properly.
   handleRemoveDocument = (event, documentGuid) => {
     event.preventDefault();
     return this.props

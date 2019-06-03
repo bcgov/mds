@@ -37,7 +37,7 @@ export class AddVarianceForm extends Component {
   };
 
   onRemoveFile = (fileItem) => {
-    remove(this.state.uploadedFiles, { document_manager_guid: fileItem.serverId });
+    remove(this.state.documentNameGuidMap, { document_manager_guid: fileItem.serverId });
     change("uploadedFiles", this.state.uploadedFiles);
   };
 
@@ -66,7 +66,7 @@ export class AddVarianceForm extends Component {
         />
 
         <Form.Item label="Attached Files">
-          <p> Please upload all the required documents here for the variance application</p>
+          <p>Please upload all the required documents here for the variance application</p>
           <Field
             id="uploadedFiles"
             name="uploadedFiles"

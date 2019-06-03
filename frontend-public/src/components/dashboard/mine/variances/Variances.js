@@ -68,7 +68,7 @@ export class Variances extends Component {
     this.props.fetchVarianceStatusOptions();
   }
 
-  handlAddDocuments = (files, varianceGuid) => {
+  handleAddDocuments = (files, varianceGuid) =>
     Promise.all(
       Object.entries(files).map(([document_manager_guid, document_name]) =>
         this.props.addDocumentToVariance(this.props.mine.mine_guid, varianceGuid, {
@@ -77,29 +77,25 @@ export class Variances extends Component {
         })
       )
     );
-  };
 
   handleAddVariances = (files) => (values) => {
-    const received_date = values.received_date
-      ? values.received_date
-      : moment().format("YYYY-MM-DD");
+    const received_date = moment().format("YYYY-MM-DD");
     const newValues = { received_date, ...values };
     return this.props
       .createVariance(this.props.mine.mine_guid, this.props.mine.mine_name, newValues)
       .then(async ({ data: { variance_guid } }) => {
-        await this.handlAddDocuments(files, variance_guid);
+        await this.handleAddDocuments(files, variance_guid);
         this.props.closeModal();
         this.props.fetchVariancesByMine(this.props.mine.mine_guid);
       });
   };
 
-  handleUpdateVariance = (files, varianceGuid, codeLabel) => this.props
-      .updateVariance(this.props.mine.mine_guid, varianceGuid, codeLabel)
-      .then(async () => {
-        await this.handlAddDocuments(files, varianceGuid);
-        this.props.fetchVariancesByMine(this.props.mine.mine_guid);
-        this.props.closeModal();
-      });
+  handleUpdateVariance = (files, varianceGuid, codeLabel) =>
+    this.props.updateVariance(this.props.mine.mine_guid, varianceGuid, codeLabel).then(async () => {
+      await this.handleAddDocuments(files, varianceGuid);
+      this.props.fetchVariancesByMine(this.props.mine.mine_guid);
+      this.props.closeModal();
+    });
 
   openEditVarianceModal = (variance) => {
     this.props.openModal({

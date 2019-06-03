@@ -90,6 +90,7 @@ class FileUpload extends React.Component {
             files: map(fileItems, "file"),
           });
         }}
+        onRemoveFiles={this.props.onRemoveFile}
       >
         {this.state.files.map((file) => (
           <File key={file} src={file} origin="local" />

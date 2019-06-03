@@ -4,7 +4,7 @@ import { Table, Icon, Popconfirm, Button } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import { formatDate } from "@/utils/helpers";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
-import * as String from "@/constants/strings";
+import * as Strings from "@/constants/strings";
 
 const propTypes = {
   documents: PropTypes.arrayOf(CustomPropTypes.mineDocument),
@@ -22,7 +22,7 @@ export class DocumentTable extends Component {
     documents.map((document) => ({
       key: document.mine_document_guid,
       name: document.document_name,
-      created_at: formatDate(document.created_at) || String.EMPTY_FIELD,
+      created_at: formatDate(document.created_at) || Strings.EMPTY_FIELD,
     }));
 
   render() {

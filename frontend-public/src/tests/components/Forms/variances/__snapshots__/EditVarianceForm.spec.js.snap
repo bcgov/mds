@@ -103,7 +103,7 @@ ShallowWrapper {
           label="Attached Files"
         >
           <p>
-             Please upload all the required documents here for the variance application
+            Please upload all the required documents here for the variance application
           </p>
           <Field
             component={[Function]}
@@ -209,7 +209,7 @@ ShallowWrapper {
         "props": Object {
           "children": Array [
             <p>
-               Please upload all the required documents here for the variance application
+              Please upload all the required documents here for the variance application
             </p>,
             <Field
               component={[Function]}
@@ -231,10 +231,10 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "host",
             "props": Object {
-              "children": " Please upload all the required documents here for the variance application",
+              "children": "Please upload all the required documents here for the variance application",
             },
             "ref": null,
-            "rendered": " Please upload all the required documents here for the variance application",
+            "rendered": "Please upload all the required documents here for the variance application",
             "type": "p",
           },
           Object {
@@ -425,7 +425,7 @@ ShallowWrapper {
             label="Attached Files"
           >
             <p>
-               Please upload all the required documents here for the variance application
+              Please upload all the required documents here for the variance application
             </p>
             <Field
               component={[Function]}
@@ -531,7 +531,7 @@ ShallowWrapper {
           "props": Object {
             "children": Array [
               <p>
-                 Please upload all the required documents here for the variance application
+                Please upload all the required documents here for the variance application
               </p>,
               <Field
                 component={[Function]}
@@ -553,10 +553,10 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "host",
               "props": Object {
-                "children": " Please upload all the required documents here for the variance application",
+                "children": "Please upload all the required documents here for the variance application",
               },
               "ref": null,
-              "rendered": " Please upload all the required documents here for the variance application",
+              "rendered": "Please upload all the required documents here for the variance application",
               "type": "p",
             },
             Object {
