@@ -169,19 +169,14 @@
                   },
                   {
                     "name": "JDBC_USER",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${DB_CONFIG_NAME}",
-                        "key": "database-user"
-                      }
-                    }
+                    "value": "logstash"
                   },
                   {
                     "name": "JDBC_PASSWORD",
                     "valueFrom": {
                       "secretKeyRef": {
                         "name": "${DB_CONFIG_NAME}",
-                        "key": "database-password"
+                        "key": "logstash-user-password"
                       }
                     }
                   }

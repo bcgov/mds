@@ -75,6 +75,13 @@ ShallowWrapper {
         ],
       }
     }
+    fetchMineIncidentDeterminationOptions={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
     fetchMineIncidentFollowActionOptions={
       [MockFunction] {
         "calls": Array [
@@ -567,6 +574,17 @@ ShallowWrapper {
     unSubscribe={[MockFunction]}
     updateMineRecord={[MockFunction]}
     updateVariance={[MockFunction]}
+    userRoles={
+      Array [
+        "mds-mine-view",
+        "idir",
+        "mds-mine-create",
+        "offline_access",
+        "admin",
+        "uma_authorization",
+        "mds-mine-admin",
+      ]
+    }
     varianceStatusOptions={
       Array [
         Object {

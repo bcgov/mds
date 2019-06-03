@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
-import { Button, Popconfirm } from "antd";
+import { Button } from "antd";
 import * as Strings from "@/constants/strings";
 import { ELLIPSE, RED_ELLIPSE } from "@/constants/assets";
 import { VarianceDetails } from "../mine/Variances/VarianceDetails";
@@ -11,6 +11,7 @@ const propTypes = {
   variance: CustomPropTypes.variance.isRequired,
   mineName: PropTypes.string.isRequired,
   varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   coreUsersHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
@@ -55,19 +56,16 @@ export const ViewVarianceModal = (props) => {
       </div>
       <br />
       <h5>{isApproved ? "Variance details" : "Application details"}</h5>
-      <VarianceDetails variance={props.variance} mineName={props.mineName} />
+      <VarianceDetails
+        variance={props.variance}
+        mineName={props.mineName}
+        isViewOnly
+        complianceCodesHash={props.complianceCodesHash}
+      />
       <div className="right center-mobile">
-        <Popconfirm
-          placement="topRight"
-          title="Are you sure you want to cancel?"
-          onConfirm={props.closeModal}
-          okText="Yes"
-          cancelText="No"
-        >
-          <Button className="full-mobile" type="secondary">
-            Cancel
-          </Button>
-        </Popconfirm>
+        <Button className="full-mobile" type="secondary" onClick={props.closeModal}>
+          Close
+        </Button>
       </div>
     </div>
   );

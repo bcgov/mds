@@ -15,6 +15,7 @@
   &__btn {
     padding: $default-padding-sm;
     color: $pure-white;
+    height: 100%;
 
     &--link {
       color: $pure-white;
@@ -30,6 +31,16 @@
         border-radius: 0;
       }
     }
+  }
+}
+
+#menu__dropdown {
+  background-color: $nav-color;
+  text-align: right;
+
+  button,
+  a {
+    color: $pure-white !important;
   }
 }
 
@@ -79,7 +90,8 @@
 #active-admin-btn,
 #active-mine-btn--mobile,
 #active-contact-btn--mobile,
-#active-admin-btn--mobile {
+#active-admin-btn--mobile,
+#active-dashboard-btn--mobile {
   color: $pure-white;
   background-color: $primary-btn-color;
   border: none;

@@ -25,6 +25,8 @@ const propTypes = {
   variance: CustomPropTypes.variance.isRequired,
   varianceStatusOptions: CustomPropTypes.options.isRequired,
   statusCode: PropTypes.string.isRequired,
+  removeDocument: PropTypes.func.isRequired,
+  complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const inspectorRequired = (value) =>
@@ -125,7 +127,12 @@ export class EditVarianceForm extends Component {
           </Row>
         )}
         <h5>Application details</h5>
-        <VarianceDetails mineName={this.props.mineName} variance={this.props.variance} />
+        <VarianceDetails
+          mineName={this.props.mineName}
+          variance={this.props.variance}
+          removeDocument={this.props.removeDocument}
+          complianceCodesHash={this.props.complianceCodesHash}
+        />
         <br />
         <h5>upload files</h5>
         <p> Please upload all the required documents here for the variance application</p>

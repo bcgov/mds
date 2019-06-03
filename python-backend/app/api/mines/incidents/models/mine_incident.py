@@ -7,6 +7,9 @@ from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 from ....utils.models_mixins import AuditMixin, Base
 from .mine_incident_followup_type import MineIncidentFollowupType
+from app.api.mines.incidents.models.mine_incident_determination_type import MineIncidentDeterminationType
+from app.api.mines.compliance.models.compliance_article import ComplianceArticle
+from app.api.mines.incidents.models.mine_incident_do_subparagraph import MineIncidentDoSubparagraph
 
 
 class MineIncident(AuditMixin, Base):
@@ -27,18 +30,32 @@ class MineIncident(AuditMixin, Base):
     reported_by = db.Column(db.String)
     reported_by_role = db.Column(db.String)
 
+    determination_type_code = db.Column(
+        db.String,
+        db.ForeignKey('mine_incident_determination_type.mine_incident_determination_type_code'))
     followup_type_code = db.Column(
         db.String, db.ForeignKey('mine_incident_followup_type.mine_incident_followup_type_code'))
     followup_inspection_no = db.Column(db.String)
 
     closing_report_summary = db.Column(db.String)
 
+    determination_type = db.relationship(
+        'MineIncidentDeterminationType', backref='mine_incidents', lazy='joined', uselist=False)
+    dangerous_occurrence_subparagraphs = db.relationship(
+        'ComplianceArticle',
+        backref='mine_incidents',
+        lazy='joined',
+        secondary='mine_incident_do_subparagraph')
     followup_type = db.relationship(
-        'MineIncidentFollowupType', backref='mine_incident', lazy='joined')
+        'MineIncidentFollowupType', backref='mine_incidents', lazy='joined', uselist=False)
 
     @hybrid_property
     def mine_incident_report_no(self):
         return str(self.mine_incident_id_year) + '-' + str(self.mine_incident_id)
+
+    @hybrid_property
+    def dangerous_occurrence_subparagraph_ids(self):
+        return [sub.compliance_article_id for sub in self.dangerous_occurrence_subparagraphs]
 
     @classmethod
     def find_by_mine_incident_guid(cls, _id):
@@ -53,6 +70,7 @@ class MineIncident(AuditMixin, Base):
                mine,
                incident_timestamp,
                incident_description,
+               determination_type_code='PEN',
                followup_type_code='UND',
                followup_inspection_no=None,
                reported_timestamp=None,
@@ -65,6 +83,7 @@ class MineIncident(AuditMixin, Base):
             reported_timestamp=reported_timestamp,
             reported_by=reported_by,
             reported_by_role=reported_by_role,
+            determination_type_code=determination_type_code,
             followup_type_code=followup_type_code,
             followup_inspection_no=followup_inspection_no,
         )

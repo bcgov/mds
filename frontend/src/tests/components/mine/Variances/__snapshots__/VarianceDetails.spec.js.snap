@@ -4,7 +4,15 @@ exports[`VarianceDetails renders properly 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <VarianceDetails
+    complianceCodesHash={
+      Object {
+        "305": "2.3.7 - Spills",
+        "306": "2.3.8 - Flammable Waste Storage",
+      }
+    }
+    isViewOnly={false}
     mineName="mockMineName"
+    removeDocument={[MockFunction]}
     variance={
       Array [
         Object {
@@ -100,6 +108,8 @@ ShallowWrapper {
         </h5>,
         <DocumentTable
           documents={Array []}
+          isViewOnly={false}
+          removeDocument={[MockFunction]}
         />,
       ],
     },
@@ -381,6 +391,8 @@ ShallowWrapper {
         "nodeType": "class",
         "props": Object {
           "documents": Array [],
+          "isViewOnly": false,
+          "removeDocument": [MockFunction],
         },
         "ref": null,
         "rendered": null,
@@ -455,6 +467,8 @@ ShallowWrapper {
           </h5>,
           <DocumentTable
             documents={Array []}
+            isViewOnly={false}
+            removeDocument={[MockFunction]}
           />,
         ],
       },
@@ -736,6 +750,8 @@ ShallowWrapper {
           "nodeType": "class",
           "props": Object {
             "documents": Array [],
+            "isViewOnly": false,
+            "removeDocument": [MockFunction],
           },
           "ref": null,
           "rendered": null,

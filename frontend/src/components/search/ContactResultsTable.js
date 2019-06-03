@@ -79,7 +79,7 @@ export const ContactResultsTable = (props) => {
           <Col xs={24} md={16} lg={12} xxl={8}>
             <p>
               <Highlight search={props.highlightRegex}>{record.phone_no}</Highlight>
-              {record.phone_ext && record.phone_ext}
+              {record.phone_ext}
             </p>
           </Col>
         </Row>,

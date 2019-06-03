@@ -27,6 +27,7 @@ import {
   fetchApplicationStatusOptions,
   fetchMineComplianceCodes,
   fetchMineIncidentFollowActionOptions,
+  fetchMineIncidentDeterminationOptions,
   setOptionsLoaded,
   fetchVarianceStatusOptions,
 } from "@/actionCreators/staticContentActionCreator";
@@ -78,6 +79,9 @@ import MineApplicationInfo from "@/components/mine/Applications/MineApplicationI
 import Loading from "@/components/common/Loading";
 import { formatParamStringToArray } from "@/utils/helpers";
 import { detectProdEnvironment } from "@/utils/environmentUtils";
+import { getUserAccessData } from "@/selectors/authenticationSelectors";
+import { USER_ROLES } from "@/constants/environment";
+import * as Permission from "@/constants/permissions";
 
 /**
  * @class MineDashboard.js is an individual mines dashboard, gets Mine data from redux and passes into children.
@@ -102,16 +106,16 @@ const propTypes = {
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
   optionsLoaded: PropTypes.bool.isRequired,
-  variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
   complianceCodes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineComplianceInfo: CustomPropTypes.mineComplianceInfo,
   fetchMineComplianceInfo: PropTypes.func.isRequired,
   fetchApplications: PropTypes.func.isRequired,
   fetchMineIncidentFollowActionOptions: PropTypes.func.isRequired,
+  fetchMineIncidentDeterminationOptions: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  varianceStatusOptions: CustomPropTypes.dropdownListItem.isRequired,
+  varianceStatusOptions: CustomPropTypes.options.isRequired,
   updateVariance: PropTypes.func.isRequired,
   varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   fetchVarianceStatusOptions: PropTypes.func.isRequired,
@@ -153,6 +157,7 @@ export class MineDashboard extends Component {
       this.props.fetchPermitStatusOptions();
       this.props.fetchApplicationStatusOptions();
       this.props.fetchMineIncidentFollowActionOptions();
+      this.props.fetchMineIncidentDeterminationOptions();
       this.props.setOptionsLoaded();
     }
     this.props.fetchMineComplianceCodes();
@@ -245,14 +250,16 @@ export class MineDashboard extends Component {
 
   handleSubscription = () => {
     const { id } = this.props.match.params;
-    this.props.subscribe(id).then(() => {
+    const mineName = this.props.mines[id].mine_name;
+    this.props.subscribe(id, mineName).then(() => {
       this.props.fetchSubscribedMinesByUser();
     });
   };
 
   handleUnSubscribe = () => {
     const { id } = this.props.match.params;
-    this.props.unSubscribe(id).then(() => {
+    const mineName = this.props.mines[id].mine_name;
+    this.props.unSubscribe(id, mineName).then(() => {
       this.props.fetchSubscribedMinesByUser();
     });
   };
@@ -286,6 +293,8 @@ export class MineDashboard extends Component {
     const { id } = this.props.match.params;
     const mine = this.props.mines[id];
     const isDevOrTest = !detectProdEnvironment();
+    // temporary check, cannot wrap tabs in an AuthWrapper
+    const isAdmin = this.props.userRoles.includes(USER_ROLES[Permission.ADMIN]);
     if (!mine) {
       return <Loading />;
     }
@@ -353,7 +362,7 @@ export class MineDashboard extends Component {
                   </div>
                 </TabPane>
                 {/* can't wrap a TabPane in the authWrapper without interfering with the Tabs behaviour */}
-                {isDevOrTest && (
+                {isAdmin && (
                   <TabPane tab="Variance" key="variance">
                     <div className="tab__content">
                       <MineVariance
@@ -432,6 +441,7 @@ const mapStateToProps = (state) => ({
   varianceStatusOptions: getDropdownVarianceStatusOptions(state),
   varianceStatusOptionsHash: getVarianceStatusOptionsHash(state),
   coreUsersHash: getCoreUsersHash(state),
+  userRoles: getUserAccessData(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -465,6 +475,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineComplianceCodes,
       fetchCoreUsers,
       fetchMineIncidentFollowActionOptions,
+      fetchMineIncidentDeterminationOptions,
       fetchVarianceStatusOptions,
       updateVariance,
     },

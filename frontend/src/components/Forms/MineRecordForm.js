@@ -2,14 +2,22 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { Field, reduxForm, FieldArray, getFormValues } from "redux-form";
+import { Field, reduxForm, FieldArray, formValueSelector } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm, Icon, Collapse, notification, Tag } from "antd";
 import { difference, map, isEmpty, uniq } from "lodash";
 import * as FORM from "@/constants/forms";
 import * as Strings from "@/constants/strings";
 import * as Styles from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";
-import { required, maxLength, minLength, number, lat, lon } from "@/utils/Validate";
+import {
+  required,
+  maxLength,
+  minLength,
+  dateNotInFuture,
+  number,
+  lat,
+  lon,
+} from "@/utils/Validate";
 import { renderConfig } from "@/components/common/config";
 import { getCurrentMineTypes } from "@/selectors/mineSelectors";
 import {
@@ -29,6 +37,7 @@ const propTypes = {
   change: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired,
   title: PropTypes.string,
+  mineStatus: PropTypes.arrayOf(PropTypes.string),
   mineStatusOptions: CustomPropTypes.options.isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
   mineTenureTypes: CustomPropTypes.options.isRequired,
@@ -46,6 +55,7 @@ const defaultProps = {
   title: "",
   currentMineTypes: [],
   mine_types: [],
+  mineStatus: [],
 };
 
 export class MineRecordForm extends Component {
@@ -101,6 +111,14 @@ export class MineRecordForm extends Component {
         "mine_types",
         nextProps.mine_types.slice(0, nextProps.mine_types.length - 1).concat(defaultValue)
       );
+    }
+
+    // If the status has been changed, the status date should set to todays date,
+    const statusChanged =
+      nextProps.mineStatus !== null && nextProps.mineStatus !== this.props.mineStatus;
+    if (statusChanged) {
+      const date = new Date();
+      this.props.change("status_date", date);
     }
   }
 
@@ -316,6 +334,23 @@ export class MineRecordForm extends Component {
             </Form.Item>
           </Col>
         </Row>
+
+        <Row gutter={16}>
+          <Col>
+            <Form.Item label="Date of Status Change">
+              <p className="p-light">
+                The date will default to todays date, unless otherwise specified.
+              </p>
+              <Field
+                id="status_date"
+                name="status_date"
+                placeholder="yyyy-mm-dd"
+                component={renderConfig.DATE}
+                validate={[dateNotInFuture]}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
         <Row gutter={16}>
           <Col span={24}>
             <Form.Item>
@@ -410,10 +445,10 @@ export class MineRecordForm extends Component {
 
 MineRecordForm.propTypes = propTypes;
 MineRecordForm.defaultProps = defaultProps;
+const selector = formValueSelector(FORM.MINE_RECORD);
 
 export default compose(
   connect((state) => ({
-    mine_types: (getFormValues(FORM.MINE_RECORD)(state) || {}).mine_types,
     currentMineTypes: getCurrentMineTypes(state),
     mineStatusOptions: getMineStatusOptions(state),
     mineRegionOptions: getMineRegionOptions(state),
@@ -423,6 +458,9 @@ export default compose(
     mineTenureTypes: getMineTenureTypeOptions(state),
     conditionalCommodityOptions: getConditionalCommodityOptions(state),
     conditionalDisturbanceOptions: getConditionalDisturbanceOptionsHash(state),
+    mineStatus: selector(state, "mine_status"),
+    mine_types: selector(state, "mine_types"),
+    status_date: selector(state, "status_date"),
   })),
   reduxForm({
     form: FORM.MINE_RECORD,

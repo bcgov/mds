@@ -25,6 +25,7 @@ const setupDispatchProps = () => {
   dispatchProps.fetchPartyRelationships = jest.fn(() => Promise.resolve());
   dispatchProps.fetchPermitStatusOptions = jest.fn(() => Promise.resolve());
   dispatchProps.fetchApplicationStatusOptions = jest.fn();
+  dispatchProps.fetchMineIncidentDeterminationOptions = jest.fn();
   dispatchProps.fetchMineIncidentFollowActionOptions = jest.fn();
   dispatchProps.setOptionsLoaded = jest.fn();
   dispatchProps.fetchCoreUsers = jest.fn();
@@ -49,6 +50,7 @@ const setupReducerProps = () => {
   reducerProps.coreUsers = MOCK.CORE_USERS.results;
   reducerProps.varianceStatusOptions = MOCK.VARIANCE_DROPDOWN_STATUS_OPTIONS;
   reducerProps.varianceStatusOptionsHash = MOCK.VARIANCE_STATUS_OPTIONS_HASH;
+  reducerProps.userRoles = MOCK.USER_ACCESS_DATA;
 };
 
 beforeEach(() => {
