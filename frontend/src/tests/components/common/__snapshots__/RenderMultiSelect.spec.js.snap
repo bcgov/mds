@@ -68,8 +68,12 @@ ShallowWrapper {
           showSearch={false}
           transitionName="slide-up"
         >
-          <Option />
-          <Option />
+          <Option
+            title={undefined}
+          />
+          <Option
+            title={undefined}
+          />
         </Select>
       </FormItem>,
     },
@@ -91,8 +95,12 @@ ShallowWrapper {
           showSearch={false}
           transitionName="slide-up"
         >
-          <Option />
-          <Option />
+          <Option
+            title={undefined}
+          />
+          <Option
+            title={undefined}
+          />
         </Select>,
         "hasFeedback": false,
         "help": false,
@@ -106,8 +114,12 @@ ShallowWrapper {
         "nodeType": "class",
         "props": Object {
           "children": Array [
-            <Option />,
-            <Option />,
+            <Option
+              title={undefined}
+            />,
+            <Option
+              title={undefined}
+            />,
           ],
           "choiceTransitionName": "zoom",
           "disabled": false,
@@ -128,6 +140,7 @@ ShallowWrapper {
             "nodeType": "class",
             "props": Object {
               "children": undefined,
+              "title": undefined,
             },
             "ref": null,
             "rendered": null,
@@ -139,6 +152,7 @@ ShallowWrapper {
             "nodeType": "class",
             "props": Object {
               "children": undefined,
+              "title": undefined,
             },
             "ref": null,
             "rendered": null,
@@ -175,8 +189,12 @@ ShallowWrapper {
             showSearch={false}
             transitionName="slide-up"
           >
-            <Option />
-            <Option />
+            <Option
+              title={undefined}
+            />
+            <Option
+              title={undefined}
+            />
           </Select>
         </FormItem>,
       },
@@ -198,8 +216,12 @@ ShallowWrapper {
             showSearch={false}
             transitionName="slide-up"
           >
-            <Option />
-            <Option />
+            <Option
+              title={undefined}
+            />
+            <Option
+              title={undefined}
+            />
           </Select>,
           "hasFeedback": false,
           "help": false,
@@ -213,8 +235,12 @@ ShallowWrapper {
           "nodeType": "class",
           "props": Object {
             "children": Array [
-              <Option />,
-              <Option />,
+              <Option
+                title={undefined}
+              />,
+              <Option
+                title={undefined}
+              />,
             ],
             "choiceTransitionName": "zoom",
             "disabled": false,
@@ -235,6 +261,7 @@ ShallowWrapper {
               "nodeType": "class",
               "props": Object {
                 "children": undefined,
+                "title": undefined,
               },
               "ref": null,
               "rendered": null,
@@ -246,6 +273,7 @@ ShallowWrapper {
               "nodeType": "class",
               "props": Object {
                 "children": undefined,
+                "title": undefined,
               },
               "ref": null,
               "rendered": null,

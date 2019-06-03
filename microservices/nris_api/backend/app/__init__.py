@@ -16,20 +16,25 @@ from app.commands import register_commands
 from app.routes import register_routes
 from app.extensions import api, db, jwt, sched, apm, migrate
 
-#from app.api import api
-from app.config import Config
+from app.nris.models import *
+from app.nris.resources import *
+
+from app.nris.scheduled_jobs.nris_jobs import _schedule_nris_etl_jobs
+
+from .config import Config
 
 
-def create_app(test_config=None):
+def create_app(config_object=None):
     """Create and configure an instance of the Flask application."""
     app = Flask(__name__)
 
-    config = test_config if test_config else Config
+    config = config_object if config_object else Config
     app.config.from_object(config)
 
     register_extensions(app)
     register_routes(app)
     register_commands(app)
+    register_scheduled_jobs(app)
 
     return app
 
@@ -51,3 +56,11 @@ def register_extensions(app):
     Compress(app)
 
     return None
+
+
+def register_scheduled_jobs(app):
+    if app.config['ENVIRONMENT_NAME'] in [
+            'test', 'prod'
+    ] and (not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == 'true'):
+        sched.start()
+        _schedule_nris_etl_jobs(app)

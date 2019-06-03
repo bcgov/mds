@@ -27,6 +27,7 @@ import {
   fetchApplicationStatusOptions,
   fetchMineComplianceCodes,
   fetchMineIncidentFollowActionOptions,
+  fetchMineIncidentDeterminationOptions,
   setOptionsLoaded,
   fetchVarianceStatusOptions,
 } from "@/actionCreators/staticContentActionCreator";
@@ -111,6 +112,7 @@ const propTypes = {
   fetchMineComplianceInfo: PropTypes.func.isRequired,
   fetchApplications: PropTypes.func.isRequired,
   fetchMineIncidentFollowActionOptions: PropTypes.func.isRequired,
+  fetchMineIncidentDeterminationOptions: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   varianceStatusOptions: CustomPropTypes.options.isRequired,
@@ -155,6 +157,7 @@ export class MineDashboard extends Component {
       this.props.fetchPermitStatusOptions();
       this.props.fetchApplicationStatusOptions();
       this.props.fetchMineIncidentFollowActionOptions();
+      this.props.fetchMineIncidentDeterminationOptions();
       this.props.setOptionsLoaded();
     }
     this.props.fetchMineComplianceCodes();
@@ -472,6 +475,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineComplianceCodes,
       fetchCoreUsers,
       fetchMineIncidentFollowActionOptions,
+      fetchMineIncidentDeterminationOptions,
       fetchVarianceStatusOptions,
       updateVariance,
     },

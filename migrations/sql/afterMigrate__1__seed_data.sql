@@ -403,6 +403,20 @@ VALUES
     ('INV', 'Investigation', 40, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
+INSERT INTO mine_incident_determination_type
+(
+    mine_incident_determination_type_code,
+    description                          ,
+    display_order                        ,
+    create_user                          ,
+    update_user
+)
+VALUES
+    ('PEN', 'Pending determination', 10, 'system-mds', 'system-mds'),
+    ('DO', 'This was a dangerous occurrence', 20, 'system-mds', 'system-mds'),
+    ('NDO', 'This was not a dangerous occurrence', 30, 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
 INSERT INTO variance_application_status_code (
     variance_application_status_code,
     description,
