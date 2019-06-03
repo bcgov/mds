@@ -3,16 +3,17 @@ from werkzeug.exceptions import NotFound
 from flask_restplus import Resource
 from app.extensions import api
 
-from ..models.variance import Variance
 from ...mine.models.mine import Mine
 from ....documents.mines.models.mine_document import MineDocument
 from ....utils.access_decorators import (requires_any_of, MINE_CREATE,
                                          MINESPACE_PROPONENT)
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.utils.custom_reqparser import CustomReqparser
+# TODO: Refactor to use API call
+from app.api.variances.models.variance import Variance
 
 
-class VarianceUploadedDocumentsResource(Resource, UserMixin, ErrorMixin):
+class MineVarianceUploadedDocumentsResource(Resource, UserMixin, ErrorMixin):
     @api.doc(description='Delete a document from a variance.')
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
     def delete(self, mine_guid, variance_guid, mine_document_guid):

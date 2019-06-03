@@ -1,10 +1,10 @@
 import pytest
 import uuid
 
-from app.api.mines.variances.models.variance import (Variance,
-                                                     INVALID_MINE_GUID,
-                                                     MISSING_MINE_GUID,
-                                                     INVALID_VARIANCE_GUID)
+from app.api.variances.models.variance import (Variance,
+                                               INVALID_MINE_GUID,
+                                               MISSING_MINE_GUID,
+                                               INVALID_VARIANCE_GUID)
 from tests.factories import VarianceFactory, MineFactory
 from tests.status_code_gen import RandomComplianceArticleId
 

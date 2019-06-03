@@ -2,8 +2,8 @@ from flask_restplus import Resource
 from app.extensions import api
 
 from ..models.variance_application_status_code import VarianceApplicationStatusCode
-from ....utils.access_decorators import requires_any_of, MINE_VIEW, MINESPACE_PROPONENT
-from ....utils.resources_mixins import UserMixin, ErrorMixin
+from ...utils.access_decorators import requires_any_of, MINE_VIEW, MINESPACE_PROPONENT
+from ...utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.mines.mine_api_models import VARIANCE_APPLICATION_STATUS_CODE_MODEL
 
 
