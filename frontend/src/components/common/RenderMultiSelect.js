@@ -51,7 +51,7 @@ export const RenderMultiSelect = (props) => (
         filterOption={props.filterOption || caseInsensitiveLabelFilter}
       >
         {props.data &&
-          props.data.map(({ value, label }) => <Select.Option key={value}>{label}</Select.Option>)}
+          props.data.map(({ value, label, tooltip }) => <Select.Option key={value} title={tooltip}>{label}</Select.Option>)}
       </Select>
     </Form.Item>
   </div>
