@@ -1,6 +1,6 @@
 from app.extensions import db, sched, cache
 from app.nris.utils.apm import register_apm
-from app.nris.etl.nris_etl import import_nris_xml, clean_nris_xml_import, etl_nris_data, clean_nris_data
+from app.nris.etl.nris_etl import import_nris_xml, clean_nris_xml_import, etl_nris_data, clean_nris_etl_data
 from app.constants import ETL, TIMEOUT_12_HOURS, NRIS_JOB_PREFIX, NRIS_ETL_JOB
 from flask import current_app
 from random import randint
@@ -41,7 +41,7 @@ def _run_nris_etl():
             sched.app.logger.info('XML Import completed')
             # TODO: Insert update into status table
 
-            clean_nris_data()
+            clean_nris_etl_data()
             etl_nris_data()
             sched.app.logger.info('NRIS ETL Completed!')
 
