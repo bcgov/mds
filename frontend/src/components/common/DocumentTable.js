@@ -4,7 +4,7 @@ import { Table, Icon, Popconfirm, Button } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import { formatDate } from "@/utils/helpers";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
-import * as String from "@/constants/strings";
+import * as Strings from "@/constants/strings";
 
 const propTypes = {
   documents: PropTypes.arrayOf(CustomPropTypes.mineDocument),
@@ -22,7 +22,7 @@ export class DocumentTable extends Component {
     documents.map((document) => ({
       key: document.mine_document_guid,
       name: document.document_name,
-      created_at: formatDate(document.created_at) || String.EMPTY_FIELD,
+      created_at: formatDate(document.created_at) || Strings.EMPTY_FIELD,
     }));
 
   render() {
@@ -58,7 +58,7 @@ export class DocumentTable extends Component {
         width: 10,
         className: this.props.isViewOnly ? "column-hide" : "",
         render: (text, record) => (
-          <div title="" align="right">
+          <div title="" align="right" className={this.props.isViewOnly ? "column-hide" : ""}>
             <Popconfirm
               placement="topLeft"
               title={`Are you sure you want to delete ${record.name}?`}
