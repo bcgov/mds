@@ -59,7 +59,7 @@ class MineVarianceResource(Resource, UserMixin, ErrorMixin):
             'mine_guid': 'GUID of the mine to which the variance is associated',
             'variance_guid': 'GUID of the variance to fetch'
         })
-    @requires_any_of([MINE_VIEW])
+    @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
     @api.marshal_with(VARIANCE_MODEL, code=200)
     def get(self, mine_guid, variance_guid):
         variance = Variance.find_by_mine_guid_and_variance_guid(mine_guid, variance_guid)

@@ -96,3 +96,9 @@ li {
 .bold {
   font-weight: $bold;
 }
+.field-title {
+  font-size: $default-p;
+  color: $p-color;
+  font-weight: $semi-bold;
+  margin-right: 5px;
+}

@@ -84,7 +84,7 @@ from app.api.search.search.resources.simple_search import SimpleSearchResource
      (MineVarianceUploadedDocumentsResource, "delete", [MINE_CREATE, MINESPACE_PROPONENT]),
      (MineVarianceListResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]),
      (MineVarianceListResource, "post", [MINE_CREATE, MINESPACE_PROPONENT]),
-     (MineVarianceResource, "get", [MINE_VIEW]),
+     (MineVarianceResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]),
      (MineVarianceResource, "put", [MINE_CREATE, MINESPACE_PROPONENT]),
      (PartyListResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]),
      (PartyListResource, "post", [MINE_CREATE]),
