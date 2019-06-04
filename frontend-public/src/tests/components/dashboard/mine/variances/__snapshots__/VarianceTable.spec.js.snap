@@ -11,6 +11,8 @@ ShallowWrapper {
       }
     }
     isApplication={false}
+    openEditVarianceModal={[MockFunction]}
+    openViewVarianceModal={[MockFunction]}
     varianceStatusOptionsHash={
       Object {
         "APP": "Approved",
@@ -74,6 +76,7 @@ ShallowWrapper {
             Object {
               "className": "column-hide",
               "dataIndex": "received_date",
+              "defaultSortOrder": "ascend",
               "render": [Function],
               "sorter": [Function],
               "title": "Submission Date",
@@ -102,7 +105,7 @@ ShallowWrapper {
             },
             Object {
               "className": "",
-              "dataIndex": "status",
+              "dataIndex": "",
               "render": [Function],
               "title": "Approval Status",
             },
@@ -110,6 +113,11 @@ ShallowWrapper {
               "dataIndex": "documents",
               "render": [Function],
               "title": "Documents",
+            },
+            Object {
+              "dataIndex": "variance",
+              "render": [Function],
+              "title": "",
             },
           ]
         }
@@ -127,6 +135,7 @@ ShallowWrapper {
                 },
               ],
               "expiry_date": "Mar 30 2019",
+              "isEditable": false,
               "isOverdue": true,
               "issue_date": "Mar 01 2019",
               "key": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
@@ -197,6 +206,7 @@ ShallowWrapper {
           Object {
             "className": "column-hide",
             "dataIndex": "received_date",
+            "defaultSortOrder": "ascend",
             "render": [Function],
             "sorter": [Function],
             "title": "Submission Date",
@@ -225,7 +235,7 @@ ShallowWrapper {
           },
           Object {
             "className": "",
-            "dataIndex": "status",
+            "dataIndex": "",
             "render": [Function],
             "title": "Approval Status",
           },
@@ -233,6 +243,11 @@ ShallowWrapper {
             "dataIndex": "documents",
             "render": [Function],
             "title": "Documents",
+          },
+          Object {
+            "dataIndex": "variance",
+            "render": [Function],
+            "title": "",
           },
         ],
         "dataSource": Array [
@@ -248,6 +263,7 @@ ShallowWrapper {
               },
             ],
             "expiry_date": "Mar 30 2019",
+            "isEditable": false,
             "isOverdue": true,
             "issue_date": "Mar 01 2019",
             "key": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
@@ -320,6 +336,7 @@ ShallowWrapper {
               Object {
                 "className": "column-hide",
                 "dataIndex": "received_date",
+                "defaultSortOrder": "ascend",
                 "render": [Function],
                 "sorter": [Function],
                 "title": "Submission Date",
@@ -348,7 +365,7 @@ ShallowWrapper {
               },
               Object {
                 "className": "",
-                "dataIndex": "status",
+                "dataIndex": "",
                 "render": [Function],
                 "title": "Approval Status",
               },
@@ -356,6 +373,11 @@ ShallowWrapper {
                 "dataIndex": "documents",
                 "render": [Function],
                 "title": "Documents",
+              },
+              Object {
+                "dataIndex": "variance",
+                "render": [Function],
+                "title": "",
               },
             ]
           }
@@ -373,6 +395,7 @@ ShallowWrapper {
                   },
                 ],
                 "expiry_date": "Mar 30 2019",
+                "isEditable": false,
                 "isOverdue": true,
                 "issue_date": "Mar 01 2019",
                 "key": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
@@ -443,6 +466,7 @@ ShallowWrapper {
             Object {
               "className": "column-hide",
               "dataIndex": "received_date",
+              "defaultSortOrder": "ascend",
               "render": [Function],
               "sorter": [Function],
               "title": "Submission Date",
@@ -471,7 +495,7 @@ ShallowWrapper {
             },
             Object {
               "className": "",
-              "dataIndex": "status",
+              "dataIndex": "",
               "render": [Function],
               "title": "Approval Status",
             },
@@ -479,6 +503,11 @@ ShallowWrapper {
               "dataIndex": "documents",
               "render": [Function],
               "title": "Documents",
+            },
+            Object {
+              "dataIndex": "variance",
+              "render": [Function],
+              "title": "",
             },
           ],
           "dataSource": Array [
@@ -494,6 +523,7 @@ ShallowWrapper {
                 },
               ],
               "expiry_date": "Mar 30 2019",
+              "isEditable": false,
               "isOverdue": true,
               "issue_date": "Mar 01 2019",
               "key": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",

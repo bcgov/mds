@@ -13,3 +13,4 @@ export const EMPTY_FIELD = "-";
 
 // variances
 export const VARIANCE_APPROVED_CODE = "APP";
+export const VARIANCE_APPLICATION_CODE = "REV";
