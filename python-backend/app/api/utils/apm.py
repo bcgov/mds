@@ -22,7 +22,7 @@ def register_apm(func):
             config = sched.app.app_context().app.config['ELASTIC_APM']
 
         client = Client(config)
-        if client and config.get('ELASTIC_SECRET_TOKEN'):
+        if client and config.get('SECRET_TOKEN'):
             client.begin_transaction('registered_funcs')
             try:
                 result = func(*args, **kwargs)
