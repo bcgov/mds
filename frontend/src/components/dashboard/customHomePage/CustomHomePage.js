@@ -13,7 +13,7 @@ import {
   fetchMineTenureTypes,
   fetchMineCommodityOptions,
 } from "@/actionCreators/staticContentActionCreator";
-import PropTypes, { objectOf, string } from "prop-types";
+import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import { getSubscribedMines } from "@/selectors/mineSelectors";
 import { fetchSubscribedMinesByUser, unSubscribe } from "@/actionCreators/mineActionCreator";
@@ -31,9 +31,9 @@ const propTypes = {
   fetchMineCommodityOptions: PropTypes.func.isRequired,
   unSubscribe: PropTypes.func.isRequired,
   subscribedMines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
-  mineRegionHash: objectOf(string).isRequired,
-  mineTenureHash: objectOf(string).isRequired,
-  mineCommodityOptionsHash: objectOf(string).isRequired,
+  mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineTenureHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export class CustomHomePage extends Component {
