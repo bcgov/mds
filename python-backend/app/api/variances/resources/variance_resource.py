@@ -15,7 +15,10 @@ PER_PAGE_DEFAULT = 25
 class VarianceResource(Resource, UserMixin, ErrorMixin):
     @api.doc(
         description='Get a list of variances.',
-        params={})
+        params={
+            'page': f'The page number of paginated records to return. Default: {PAGE_DEFAULT}',
+            'per_page': f'The number of records to return per page. Default: {PER_PAGE_DEFAULT}'
+        })
     @requires_any_of([MINE_VIEW])
     @api.marshal_with(PAGINATED_VARIANCE_LIST, code=200)
     def get(self):
