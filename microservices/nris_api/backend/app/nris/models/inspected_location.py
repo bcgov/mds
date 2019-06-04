@@ -37,13 +37,14 @@ class InspectedLocation(Base):
     inspected_location_type_rel = db.relationship('InspectedLocationType', lazy='selectin')
     inspected_location_type = association_proxy('inspected_location_type_rel',
                                                 'inspected_location_type')
-    documents = db.relationship(
-        'Document', lazy='selectin', secondary='inspected_location_document_xref')
+    documents = db.relationship('Document',
+                                lazy='selectin',
+                                secondary='inspected_location_document_xref')
 
-    advisory_details = db.relationship('OrderAdvisoryDetail', lazy='selectin')
-    request_details = db.relationship('OrderRequestDetail', lazy='selectin')
-    stop_details = db.relationship('OrderStopDetail', lazy='selectin')
-    warning_details = db.relationship('OrderWarningDetail', lazy='selectin')
+    advisory_details = db.relationship('OrderAdvisoryDetail', lazy='joined')
+    request_details = db.relationship('OrderRequestDetail', lazy='joined')
+    stop_details = db.relationship('OrderStopDetail', lazy='joined')
+    warning_details = db.relationship('OrderWarningDetail', lazy='joined')
 
     def __repr__(self):
         return f'<InspectedLocation inspected_location_id={self.inspected_location_id}>'
