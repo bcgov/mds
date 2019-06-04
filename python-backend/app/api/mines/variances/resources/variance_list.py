@@ -12,7 +12,7 @@ from app.api.variances.models.variance import Variance
 # The need to access the guid -> id lookup forces an import as the id primary
 # key is not available via the API. The interal-only primary key +
 # cross-namespace foreign key constraints are interally inconsistent
-from app.api.users.core.models.core_user import CoreUser
+from app.api.parties.party.models.party import Party
 
 
 class MineVarianceListResource(Resource, UserMixin, ErrorMixin):
