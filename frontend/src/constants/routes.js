@@ -1,5 +1,6 @@
 import queryString from "query-string";
 import Home from "@/components/Home";
+import Logout from "@/components/Logout";
 import Dashboard from "@/components/dashboard/minesHomePage/Dashboard";
 import ContactHomePage from "@/components/dashboard/contactsHomePage/ContactHomePage";
 import MineDashboard from "@/components/mine/MineDashboard";
@@ -17,6 +18,11 @@ export const DASHBOARD = {
 export const CUSTOM_HOME_PAGE = {
   route: "/home/",
   component: CustomHomePage,
+};
+
+export const LOGOUT = {
+  route: "/logout-confirmed",
+  component: Logout,
 };
 
 export const MINE_HOME_PAGE = {
