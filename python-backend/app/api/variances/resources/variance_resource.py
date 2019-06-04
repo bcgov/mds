@@ -17,7 +17,7 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
         description='Get a list of variances.',
         params={})
     @requires_any_of([MINE_VIEW])
-    @api.marshal_with(PAGINATED_VARIANCE_LIST, code=200, envelope='records')
+    @api.marshal_with(PAGINATED_VARIANCE_LIST, code=200)
     def get(self):
         paginated_variances, pagination_details = apply_pagination(
             Variance.query,
