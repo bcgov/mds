@@ -65,7 +65,8 @@ export const SIMPLE_SEARCH = "/search/simple";
 
 // Variances
 export const COMPLIANCE_CODES = "/mines/compliance/codes";
-export const VARIANCES = (mineGuid) => `/mines/${mineGuid}/variances`;
+export const MINE_VARIANCES = (mineGuid) => `/mines/${mineGuid}/variances`;
+export const VARIANCES = "/variances";
 export const VARIANCE = (mineGuid, varianceGuid) => `/mines/${mineGuid}/variances/${varianceGuid}`;
 export const VARIANCE_DOCUMENTS = (mineGuid, varianceGuid) =>
   `/mines/${mineGuid}/variances/${varianceGuid}/documents`;

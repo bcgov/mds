@@ -17,7 +17,7 @@ export const createVariance = ({ mineGuid }, payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_MINE_VARIANCE));
   dispatch(showLoading());
   return CustomAxios()
-    .post(ENVIRONMENT.apiUrl + API.VARIANCES(mineGuid), payload, createRequestHeader())
+    .post(ENVIRONMENT.apiUrl + API.MINE_VARIANCES(mineGuid), payload, createRequestHeader())
     .then((response) => {
       notification.success({ message, duration: 10 });
       dispatch(success(reducerTypes.CREATE_MINE_VARIANCE));
@@ -45,15 +45,15 @@ export const updateVariance = ({ mineGuid, varianceGuid, codeLabel }, payload) =
 };
 
 export const fetchVariancesByMine = ({ mineGuid }) => (dispatch) => {
-  dispatch(request(reducerTypes.GET_MINE_VARIANCES));
+  dispatch(request(reducerTypes.GET_VARIANCES));
   dispatch(showLoading());
   return CustomAxios(Strings.ERROR)
-    .get(ENVIRONMENT.apiUrl + API.VARIANCES(mineGuid), createRequestHeader())
+    .get(ENVIRONMENT.apiUrl + API.MINE_VARIANCES(mineGuid), createRequestHeader())
     .then((response) => {
-      dispatch(success(reducerTypes.GET_MINE_VARIANCES));
+      dispatch(success(reducerTypes.GET_VARIANCES));
       dispatch(varianceActions.storeVariances(response.data));
     })
-    .catch(() => dispatch(error(reducerTypes.GET_MINE_VARIANCES)))
+    .catch(() => dispatch(error(reducerTypes.GET_VARIANCES)))
     .finally(() => dispatch(hideLoading()));
 };
 
@@ -103,4 +103,17 @@ export const removeDocumentFromVariance = (mineGuid, varianceGuid, mineDocumentG
     })
     .catch(() => dispatch(error(reducerTypes.REMOVE_DOCUMENT_FROM_VARIANCE)))
     .finally(() => dispatch(hideLoading("modal")));
+};
+
+export const fetchVariances = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_VARIANCES));
+  dispatch(showLoading());
+  return CustomAxios(Strings.ERROR)
+    .get(ENVIRONMENT.apiUrl + API.VARIANCES, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_VARIANCES));
+      dispatch(varianceActions.storeVariances(response.data));
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_VARIANCES)))
+    .finally(() => dispatch(hideLoading()));
 };

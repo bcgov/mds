@@ -79,7 +79,7 @@ export const reducerObject = {
     networkReducer,
     reducerTypes.UPDATE_MINE_VARIANCE
   ),
-  [reducerTypes.GET_MINE_VARIANCES]: createReducer(networkReducer, reducerTypes.GET_MINE_VARIANCES),
+  [reducerTypes.GET_VARIANCES]: createReducer(networkReducer, reducerTypes.GET_VARIANCES),
   [reducerTypes.GET_VARIANCE]: createReducer(networkReducer, reducerTypes.GET_VARIANCE),
   [reducerTypes.REMOVE_DOCUMENT_FROM_VARIANCE]: createReducer(
     networkReducer,

@@ -3,7 +3,7 @@ import { storeVariances, storeVariance } from "@/actions/varianceActions";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const baseExpectedValue = {
-  mineVariances: [],
+  variances: [],
   variance: {},
 };
 
@@ -19,7 +19,7 @@ describe("varianceReducer", () => {
 
   it("receives STORE_STATUS_OPTIONS", () => {
     const expectedValue = getBaseExpectedValue();
-    expectedValue.mineVariances = MOCK.VARIANCES.records;
+    expectedValue.variances = MOCK.VARIANCES.records;
     const result = varianceReducer(undefined, storeVariances(MOCK.VARIANCES));
     expect(result).toEqual(expectedValue);
   });

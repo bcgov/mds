@@ -10,7 +10,7 @@ import CustomPropTypes from "@/customPropTypes";
 import { UNSUBSCRIBE } from "@/constants/assets";
 
 /**
- * @class MineSubscriptionTable is a user specific table of mines they have subscribed to with the ability to unsubscribe
+ * @class SubscriptionTable is a user specific table of mines they have subscribed to with the ability to unsubscribe
  *
  */
 
@@ -22,7 +22,7 @@ const propTypes = {
   mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
-export class MineSubscriptionTable extends Component {
+export class SubscriptionTable extends Component {
   transformRowData = (mines, mineRegionHash, mineTenureHash, mineCommodityHash) =>
     mines.map((mine) => ({
       key: mine.mine_guid,
@@ -172,6 +172,6 @@ export class MineSubscriptionTable extends Component {
   }
 }
 
-MineSubscriptionTable.propTypes = propTypes;
+SubscriptionTable.propTypes = propTypes;
 
-export default MineSubscriptionTable;
+export default SubscriptionTable;

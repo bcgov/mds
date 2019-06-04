@@ -144,7 +144,7 @@ ShallowWrapper {
         <div
           className="landing-page__content"
         >
-          <MineSubscriptionTable
+          <SubscriptionTable
             handleUnSubscribe={[Function]}
             mineCommodityOptionsHash={
               Object {
@@ -268,7 +268,7 @@ ShallowWrapper {
         "key": undefined,
         "nodeType": "host",
         "props": Object {
-          "children": <MineSubscriptionTable
+          "children": <SubscriptionTable
             handleUnSubscribe={[Function]}
             mineCommodityOptionsHash={
               Object {
@@ -471,7 +471,7 @@ ShallowWrapper {
           <div
             className="landing-page__content"
           >
-            <MineSubscriptionTable
+            <SubscriptionTable
               handleUnSubscribe={[Function]}
               mineCommodityOptionsHash={
                 Object {
@@ -595,7 +595,7 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "host",
           "props": Object {
-            "children": <MineSubscriptionTable
+            "children": <SubscriptionTable
               handleUnSubscribe={[Function]}
               mineCommodityOptionsHash={
                 Object {

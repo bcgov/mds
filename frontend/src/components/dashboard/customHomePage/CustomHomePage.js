@@ -17,7 +17,7 @@ import PropTypes, { objectOf, string } from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import { getSubscribedMines } from "@/selectors/mineSelectors";
 import { fetchSubscribedMinesByUser, unSubscribe } from "@/actionCreators/mineActionCreator";
-import { MineSubscriptionTable } from "./MineSubscriptionTable";
+import { SubscriptionTable } from "./SubscriptionTable";
 
 /**
  * @class CustomHomePage is a personalized landing page for users
@@ -58,7 +58,7 @@ export class CustomHomePage extends Component {
           <h1>My Dashboard</h1>
         </div>
         <div className="landing-page__content">
-          <MineSubscriptionTable
+          <SubscriptionTable
             subscribedMines={this.props.subscribedMines}
             mineRegionHash={this.props.mineRegionHash}
             mineTenureHash={this.props.mineTenureHash}

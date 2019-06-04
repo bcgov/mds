@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MineSubscriptionTable renders properly 1`] = `
+exports[`SubscriptionTable renders properly 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <MineSubscriptionTable
+  Symbol(enzyme.__unrendered__): <SubscriptionTable
     mineCommodityOptionsHash={
       Object {
         "CG": "Construction Aggregate",
