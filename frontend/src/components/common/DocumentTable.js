@@ -58,7 +58,7 @@ export class DocumentTable extends Component {
         width: 10,
         className: this.props.isViewOnly ? "column-hide" : "",
         render: (text, record) => (
-          <div title="" align="right">
+          <div title="" align="right" className={this.props.isViewOnly ? "column-hide" : ""}>
             <Popconfirm
               placement="topLeft"
               title={`Are you sure you want to delete ${record.name}?`}
