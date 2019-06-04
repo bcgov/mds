@@ -217,7 +217,7 @@ class VarianceFactory(BaseFactory):
 
     class Params:
         mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
-        core_user = factory.SubFactory('tests.factories.CoreUserFactory')
+        party = factory.SubFactory('tests.factories.PartyFactory', person=True)
         approved = factory.Trait(
             variance_application_status_code='APP',
             issue_date=TODAY,
