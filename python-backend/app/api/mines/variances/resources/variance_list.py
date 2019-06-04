@@ -7,7 +7,6 @@ from ...mine.models.mine import Mine
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.mines.mine_api_models import VARIANCE_MODEL
-# TODO: Refactor to use API call
 from app.api.variances.models.variance import Variance
 
 # The need to access the guid -> id lookup forces an import as the id primary

@@ -9,7 +9,6 @@ from ....utils.access_decorators import (requires_any_of, MINE_CREATE,
                                          MINESPACE_PROPONENT)
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.utils.custom_reqparser import CustomReqparser
-# TODO: Refactor to use API call
 from app.api.variances.models.variance import Variance
 
 
