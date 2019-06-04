@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
+import { Field, reduxForm, change } from "redux-form";
 import { fromPairs } from "lodash";
 import { Form, Button, Popconfirm, Radio } from "antd";
 import * as FORM from "@/constants/forms";
@@ -11,6 +11,7 @@ import VarianceFileUpload from "./VarianceFileUpload";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
+  change: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
@@ -42,6 +43,10 @@ export class AddVarianceForm extends Component {
     this.setState({
       isApplication: e.target.value,
     });
+    // reset the date fields if user toggles between application and approved
+    this.props.change("received_date", null);
+    this.props.change("expiry_date", null);
+    this.props.change("issue_date", null);
   };
 
   render() {
@@ -166,6 +171,7 @@ export class AddVarianceForm extends Component {
 AddVarianceForm.propTypes = propTypes;
 
 export default reduxForm({
+  change,
   form: FORM.ADD_VARIANCE,
   touchOnBlur: false,
   onSubmitSuccess: resetForm(FORM.ADD_VARIANCE),
