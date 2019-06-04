@@ -3,6 +3,7 @@ import {
   storeVariances,
   storeVarianceStatusOptions,
   storeComplianceCodes,
+  storeVariance,
 } from "@/actions/varianceActions";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
@@ -10,6 +11,7 @@ const baseExpectedValue = {
   mineVariances: [],
   varianceStatusOptions: [],
   complianceCodes: [],
+  variance: {},
 };
 
 // Creates deep copy of javascript object instead of setting a reference
@@ -22,10 +24,17 @@ describe("varianceReducer", () => {
     expect(result).toEqual(expectedValue);
   });
 
-  it("receives STORE_STATUS_OPTIONS", () => {
+  it("receives STORE_VARIANCES", () => {
     const expectedValue = getBaseExpectedValue();
     expectedValue.mineVariances = MOCK.VARIANCES.records;
     const result = varianceReducer(undefined, storeVariances(MOCK.VARIANCES));
+    expect(result).toEqual(expectedValue);
+  });
+
+  it("receives STORE_VARIANCE", () => {
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.variance = MOCK.VARIANCE;
+    const result = varianceReducer(undefined, storeVariance(MOCK.VARIANCE));
     expect(result).toEqual(expectedValue);
   });
 

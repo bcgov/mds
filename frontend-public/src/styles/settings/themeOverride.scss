@@ -8,6 +8,10 @@
   }
 }
 
+.ant-btn {
+  margin: 5px;
+}
+
 .ant-btn-primary {
   color: $pure-white;
   background-color: $primary-btn-color;
@@ -24,6 +28,10 @@
     color: $p-color;
     font-weight: $semi-bold;
   }
+}
+
+.ant-form-vertical .ant-form-item {
+  padding-bottom: 0;
 }
 
 .ant-modal-title {

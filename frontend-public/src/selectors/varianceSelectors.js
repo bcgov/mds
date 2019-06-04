@@ -3,7 +3,12 @@ import { createSelector } from "reselect";
 import * as Strings from "@/constants/strings";
 import { createLabelHash, createDropDownList } from "@/utils/helpers";
 
-export const { getMineVariances, getComplianceCodes, getVarianceStatusOptions } = varianceReducer;
+export const {
+  getMineVariances,
+  getComplianceCodes,
+  getVarianceStatusOptions,
+  getVariance,
+} = varianceReducer;
 
 export const getVarianceApplications = createSelector(
   [getMineVariances],

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Table } from "antd";
+import { Table, Icon, Popconfirm, Button } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import { formatDate } from "@/utils/helpers";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
@@ -8,10 +8,13 @@ import * as Strings from "@/constants/strings";
 
 const propTypes = {
   documents: PropTypes.arrayOf(CustomPropTypes.mineDocument),
+  removeDocument: PropTypes.func,
+  isViewOnly: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
   documents: [],
+  removeDocument: () => {},
 };
 
 export class DocumentTable extends Component {
@@ -49,18 +52,37 @@ export class DocumentTable extends Component {
         dataIndex: "created_at",
         render: (text) => <div title="Upload date">{text}</div>,
       },
+      {
+        title: "",
+        dataIndex: "updateEdit",
+        width: 10,
+        className: this.props.isViewOnly ? "column-hide" : "",
+        render: (text, record) => (
+          <div title="" align="right">
+            <Popconfirm
+              placement="topRight"
+              title={`Are you sure you want to remove ${record.name} from this application?`}
+              onConfirm={(event) => this.props.removeDocument(event, record.key)}
+              okText="Delete"
+              cancelText="Cancel"
+            >
+              <Button ghost type="primary" size="small">
+                <Icon type="minus-circle" theme="outlined" />
+              </Button>
+            </Popconfirm>
+          </div>
+        ),
+      },
     ];
 
     return (
-      <div>
-        <Table
-          align="left"
-          pagination={false}
-          columns={columns}
-          locale={{ emptyText: "This variance does not contain any documents" }}
-          dataSource={this.transformRowData(this.props.documents)}
-        />
-      </div>
+      <Table
+        align="left"
+        pagination={false}
+        columns={columns}
+        locale={{ emptyText: "This variance does not contain any documents" }}
+        dataSource={this.transformRowData(this.props.documents)}
+      />
     );
   }
 }
