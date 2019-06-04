@@ -28,9 +28,8 @@ const setupDispatchProps = () => {
   dispatchProps.fetchMineIncidentDeterminationOptions = jest.fn();
   dispatchProps.fetchMineIncidentFollowActionOptions = jest.fn();
   dispatchProps.setOptionsLoaded = jest.fn();
-  dispatchProps.fetchCoreUsers = jest.fn();
+  dispatchProps.fetchInspectors = jest.fn();
   dispatchProps.match = {};
-  dispatchProps.fetchCoreUsers = jest.fn();
   dispatchProps.updateVariance = jest.fn();
   dispatchProps.fetchVarianceStatusOptions = jest.fn();
 };

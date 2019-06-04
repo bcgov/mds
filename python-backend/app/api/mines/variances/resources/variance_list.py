@@ -38,10 +38,10 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
         store_missing=False,
         help='GUID of the party on behalf of which the application was made.')
     parser.add_argument(
-        'inspector_guid',
+        'inspector_party_guid',
         type=str,
         store_missing=False,
-        help='GUID of the user who inspected the mine during the variance application process.')
+        help='GUID of the party who inspected the mine during the variance application process.')
     parser.add_argument(
         'note',
         type=str,
@@ -71,7 +71,6 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
 
         return variances
 
-
     @api.doc(
         description='Create a new variance for a given mine.',
         params={'mine_guid': 'guid of the mine with which to associate the variances'})
@@ -82,19 +81,11 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
         data = self.parser.parse_args()
         compliance_article_id = data['compliance_article_id']
         received_date = data['received_date']
-        core_user_guid = data.get('inspector_guid')
-        inspector_id = None
+        inspector_party_guid = data.get('inspector_party_guid')
 
         mine = Mine.find_by_mine_guid(mine_guid)
         if mine is None:
             raise NotFound('Mine')
-
-        if core_user_guid:
-            core_user = CoreUser.find_by_core_user_guid(core_user_guid)
-            if not core_user:
-                raise BadRequest('Unable to find inspector.')
-
-            inspector_id = core_user.core_user_id
 
         # A manual check to prevent a stack trace dump on a foreign key /
         # constraint error because global error handling doesn't currently work
@@ -106,7 +97,7 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
             status=variance_application_status_code,
             issue=issue_date,
             expiry=expiry_date,
-            inspector=inspector_id)
+            inspector=inspector_party_guid)
 
         variance = Variance.create(
             compliance_article_id=compliance_article_id,
@@ -115,7 +106,7 @@ class VarianceListResource(Resource, UserMixin, ErrorMixin):
             # Optional fields
             variance_application_status_code=variance_application_status_code,
             applicant_guid=data.get('applicant_guid'),
-            inspector_id=inspector_id,
+            inspector_party_guid=inspector_party_guid,
             note=data.get('note'),
             issue_date=issue_date,
             expiry_date=expiry_date)

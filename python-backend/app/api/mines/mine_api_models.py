@@ -191,7 +191,7 @@ VARIANCE_MODEL = api.model(
         'compliance_article_id': fields.Integer,
         'variance_application_status_code': fields.String,
         'applicant_guid': fields.String,
-        'inspector_guid': fields.String,
+        'inspector_party_guid': fields.String,
         'note': fields.String,
         'issue_date': fields.Date,
         'received_date': fields.Date,

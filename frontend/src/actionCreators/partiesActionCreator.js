@@ -206,3 +206,20 @@ export const setAddPartyFormState = (addPartyFormState) => (dispatch) => {
   dispatch(partyActions.storeAddPartyFormState(addPartyFormState));
   return addPartyFormState;
 };
+
+export const fetchInspectors = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_INSPECTORS));
+  dispatch(showLoading("modal"));
+  return CustomAxios()
+    .get(
+      ENVIRONMENT.apiUrl +
+        API.PARTIES_LIST_QUERY({ page: 1, per_page: "all", business_role: "INS" }),
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_INSPECTORS));
+      dispatch(partyActions.storeInspectors(response.data));
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_INSPECTORS)))
+    .finally(() => dispatch(hideLoading("modal")));
+};

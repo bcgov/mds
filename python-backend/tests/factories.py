@@ -222,10 +222,10 @@ class VarianceFactory(BaseFactory):
             variance_application_status_code='APP',
             issue_date=TODAY,
             expiry_date=TODAY,
-            inspector_id=factory.SelfAttribute('core_user.core_user_id'))
+            inspector_party_guid=factory.SelfAttribute('party.party_guid'))
         denied = factory.Trait(
             variance_application_status_code='DEN',
-            inspector_id=factory.SelfAttribute('core_user.core_user_id'))
+            inspector_party_guid=factory.SelfAttribute('party.party_guid'))
         not_applicable = factory.Trait(variance_application_status_code='NAP')
 
     variance_guid = GUID

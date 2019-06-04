@@ -47,7 +47,7 @@ ShallowWrapper {
         ],
       }
     }
-    fetchCoreUsers={
+    fetchInspectors={
       [MockFunction] {
         "calls": Array [
           Array [],
