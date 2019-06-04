@@ -51,7 +51,7 @@ class Inspection(Base):
     inspection_closing = db.Column(db.String())
     officer_notes = db.Column(db.String())
     documents = db.relationship('Document', lazy='selectin', secondary='inspection_document_xref')
-    inspected_locations = db.relationship("InspectedLocation" lazy='joined')
+    inspected_locations = db.relationship("InspectedLocation", lazy='joined')
 
     def __repr__(self):
         return f'<Inspection inspection_id={self.inspection_id} inspection_status_description={self.inspection_status_description}>'
