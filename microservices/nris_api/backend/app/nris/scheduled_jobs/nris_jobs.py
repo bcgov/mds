@@ -28,7 +28,6 @@ def nris_etl_job():
 
 @register_apm("NRIS ETL Job")
 def _run_nris_etl():
-    print("hello")
     with sched.app.app_context():
 
         sched.app.logger.info('Starting ETL process')
