@@ -5,7 +5,7 @@ from dateutil.relativedelta import relativedelta
 from datetime import datetime, timedelta
 from flask import request, current_app
 from werkzeug import exceptions
-from ..constants import NRIS_TOKEN, NRIS_COMPLIANCE_DATA, TIMEOUT_24_HOURS, TIMEOUT_12_HOURS
+from ..constants import NRIS_TOKEN, NRIS_COMPLIANCE_DATA
 from app.api.utils.apm import register_apm
 
 

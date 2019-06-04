@@ -91,6 +91,5 @@ class MineComplianceSummaryResource(Resource, UserMixin, ErrorMixin):
                 raise
 
             result = NRIS_API_service._process_NRIS_data(raw_data)
-            cache.set(NRIS_COMPLIANCE_DATA(mine_no), result, timeout=TIMEOUT_24_HOURS)
-    
+            cache.set(NRIS_COMPLIANCE_DATA(mine_no), result, timeout=TIMEOUT_60_MINUTES)
         return result
