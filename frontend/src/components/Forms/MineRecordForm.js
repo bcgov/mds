@@ -25,7 +25,7 @@ import {
   getConditionalCommodityOptions,
   getDisturbanceOptionHash,
   getCommodityOptionHash,
-  getMineStatusOptions,
+  getMineStatusDropdownOptions,
   getMineRegionOptions,
   getMineTenureTypeOptions,
   getMineTenureTypesHash,
@@ -450,7 +450,7 @@ const selector = formValueSelector(FORM.MINE_RECORD);
 export default compose(
   connect((state) => ({
     currentMineTypes: getCurrentMineTypes(state),
-    mineStatusOptions: getMineStatusOptions(state),
+    mineStatusOptions: getMineStatusDropdownOptions(state),
     mineRegionOptions: getMineRegionOptions(state),
     mineTenureHash: getMineTenureTypesHash(state),
     mineCommodityOptionsHash: getCommodityOptionHash(state),

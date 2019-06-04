@@ -15,7 +15,7 @@ const setupDispatchProps = () => {
 
 const setupProps = () => {
   props.title = "mockTitle";
-  props.mineStatusOptions = MOCK.STATUS_OPTIONS.options;
+  props.mineStatusOptions = MOCK.STATUS_OPTIONS.records;
   props.mineRegionOptions = MOCK.REGION_OPTIONS.options;
   props.mineTenureTypes = MOCK.TENURE_TYPES;
   props.mineCommodityOptionsHash = MOCK.COMMODITY_OPTIONS_HASH;

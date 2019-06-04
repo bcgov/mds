@@ -1001,3 +1001,21 @@ export const VARIANCES = {
     },
   ],
 };
+
+export const VARIANCE = {
+  variance_guid: "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+  compliance_article_id: 1,
+  expiry_date: "2019-03-30",
+  issue_date: "2019-03-01",
+  note: "notesss",
+  received_date: "2019-03-01",
+  documents: [
+    {
+      created_at: "2019-05-02",
+      document_manager_guid: "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
+      document_name: "test.pdf",
+      mine_document_guid: "33e6b965-2402-4229-a213-23bbe7fd3e99",
+      mine_guid: "59e73109-48f7-4ad2-977c-3005b5bff010",
+    },
+  ],
+};

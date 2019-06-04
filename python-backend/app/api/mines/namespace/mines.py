@@ -7,7 +7,7 @@ from ..mine.resources.mine_type_detail import MineTypeDetailResource
 from ..mine.resources.mine_tenure_type_code import MineTenureTypeCodeResource
 from ..mine.resources.mine_disturbance_code import MineDisturbanceCodeResource
 from ..mine.resources.mine_commodity_code import MineCommodityCodeResource
-from ..status.resources.status import MineStatusResource
+from ..status.resources.status import MineStatusResource, MineStatusListResource
 from ..region.resources.region import MineRegionResource
 from ..tailings.resources.tailings import MineTailingsStorageFacilityListResource
 from ..compliance.resources.compliance import MineComplianceResource
@@ -33,7 +33,8 @@ api.add_resource(MineListSearch, '/search')
 api.add_resource(MineTenureTypeCodeResource, '/mine-tenure-type-codes')
 api.add_resource(MineDisturbanceCodeResource, '/disturbance-codes')
 api.add_resource(MineCommodityCodeResource, '/commodity-codes')
-api.add_resource(MineStatusResource, '/status', '/status/<string:mine_status_guid>')
+api.add_resource(MineStatusResource, '/status/<string:mine_status_guid>')
+api.add_resource(MineStatusListResource, '/status')
 api.add_resource(MineRegionResource, '/region', '/region/<string:mine_region_guid>')
 
 api.add_resource(MineTailingsStorageFacilityListResource, '/<string:mine_guid>/tailings')

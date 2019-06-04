@@ -192,3 +192,43 @@ export const getVarianceStatusOptionsHash = createSelector(
   [getDropdownVarianceStatusOptions],
   createLabelHash
 );
+
+const itemInList = (child, itemToAdd) => {
+  let item = child.find((x) => x.value === itemToAdd.code);
+
+  if (item === undefined) {
+    item = { value: itemToAdd.code, label: itemToAdd.label, children: [] };
+    child.push(item);
+  }
+
+  return item;
+};
+
+const transformMineStatus = (data) => {
+  const statusOptions = [];
+
+  data.forEach((status) => {
+    const code = itemInList(statusOptions, {
+      code: status.mine_operation_status.mine_operation_status_code,
+      label: status.mine_operation_status.description,
+    });
+    if (status.mine_operation_status_reason.mine_operation_status_reason_code !== null) {
+      const reason = itemInList(code.children, {
+        code: status.mine_operation_status_reason.mine_operation_status_reason_code,
+        label: status.mine_operation_status_reason.description,
+      });
+      if (status.mine_operation_status_sub_reason.mine_operation_status_sub_reason_code !== null) {
+        itemInList(reason.children, {
+          code: status.mine_operation_status_sub_reason.mine_operation_status_sub_reason_code,
+          label: status.mine_operation_status_sub_reason.description,
+        });
+      }
+    }
+  });
+  return statusOptions;
+};
+
+export const getMineStatusDropdownOptions = createSelector(
+  getMineStatusOptions,
+  transformMineStatus
+);
