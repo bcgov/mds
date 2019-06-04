@@ -1,4 +1,5 @@
 from flask_restplus import Resource
+from flask import current_app
 from werkzeug.exceptions import BadRequest, NotFound
 from ..models.mine_status import MineStatus
 from app.api.mines.status.models.mine_status_xref import MineStatusXref
@@ -13,6 +14,7 @@ class MineStatusListResource(Resource, UserMixin):
     @api.marshal_with(MINE_STATUS_CODE_MODEL, envelope='records')
     @requires_role_mine_view
     def get(self):
+        current_app.logger.info(MINE_STATUS_OPTIONS)
         return MineStatusXref.active_status_codes()
 
 

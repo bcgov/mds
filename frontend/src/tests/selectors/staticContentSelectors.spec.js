@@ -33,7 +33,7 @@ import { STATIC_CONTENT } from "@/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
 
 const mockState = {
-  mineStatusOptions: Mock.STATUS_OPTIONS.options,
+  mineStatusOptions: Mock.STATUS_OPTIONS.records,
   mineRegionOptions: Mock.REGION_OPTIONS.options,
   mineTenureTypes: Mock.TENURE_TYPES,
   expectedDocumentStatusOptions: Mock.EXPECTED_DOCUMENT_STATUS_OPTIONS.options,
@@ -46,7 +46,7 @@ const mockState = {
 };
 
 describe("staticContentSelectors", () => {
-  const { mineStatusOptions, mineDisturbanceOptions, mineCommodityOptions } = mockState;
+  const { mineDisturbanceOptions, mineCommodityOptions } = mockState;
   const { mineTSFRequiredReports, provinceOptions } = mockState;
   let { mineRegionOptions, mineTenureTypes } = mockState;
 
@@ -56,7 +56,7 @@ describe("staticContentSelectors", () => {
     const localMockState = {
       [STATIC_CONTENT]: storeState,
     };
-    expect(getMineStatusDropdownOptions(localMockState)).toEqual(mineStatusOptions);
+    expect(getMineStatusDropdownOptions(localMockState)).toEqual(Mock.STATUS_OPTIONS_DROPDOWN);
   });
 
   it("`getMineRegionOptions` calls `staticContentReducer.getMineRegionOptions`", () => {

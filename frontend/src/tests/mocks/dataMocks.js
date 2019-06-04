@@ -486,85 +486,259 @@ export const PAGE_DATA = {
 
 export const COORDINATES = [48.70707, -122.489504];
 export const STATUS_OPTIONS = {
-  options: [
+  records: [
     {
-      value: "ABN",
-      label: "Abandoned",
+      mine_status_xref_guid: "d5c1d966-04ef-4bdb-b7b7-feaead5cf836",
+      mine_operation_status: {
+        mine_operation_status_code: "ABN",
+        description: "Abandoned",
+      },
+      mine_operation_status_reason: {
+        mine_operation_status_reason_code: null,
+        description: null,
+      },
+      mine_operation_status_sub_reason: {
+        mine_operation_status_sub_reason_code: null,
+        description: null,
+      },
     },
     {
-      value: "CLD",
-      label: "Closed",
-      children: [
-        {
-          value: "CM",
-          label: "Care & Maintenance",
-        },
-        {
-          value: "REC",
-          label: "Reclamation",
-          children: [
-            {
-              value: "LTM",
-              label: "Long Term Maintenance",
-            },
-            {
-              value: "LWT",
-              label: "Long Term Maintenance Water Treatment",
-            },
-            {
-              value: "PRP",
-              label: "Permit Release Pending",
-            },
-          ],
-        },
-        {
-          value: "ORP",
-          label: "Orphaned",
-          children: [
-            {
-              value: "LTM",
-              label: "Long Term Maintenance",
-            },
-            {
-              value: "LWT",
-              label: "Long Term Maintenance Water Treatment",
-            },
-            {
-              value: "RNS",
-              label: "Reclamation Not Starte",
-            },
-            {
-              value: "SVR",
-              label: "Site Visit Required",
-            },
-          ],
-        },
-        {
-          value: "UN",
-          label: "Unknown",
-        },
-      ],
+      mine_status_xref_guid: "d6ab34fd-d903-4eac-bdf5-65cf8009b8e9",
+      mine_operation_status: {
+        mine_operation_status_code: "CLD",
+        description: "Closed",
+      },
+      mine_operation_status_reason: {
+        mine_operation_status_reason_code: null,
+        description: null,
+      },
+      mine_operation_status_sub_reason: {
+        mine_operation_status_sub_reason_code: null,
+        description: null,
+      },
     },
     {
-      value: "NS",
-      label: "Not Started",
+      mine_status_xref_guid: "251dc078-bb13-4cb9-b6dd-81310b9cb864",
+      mine_operation_status: {
+        mine_operation_status_code: "CLD",
+        description: "Closed",
+      },
+      mine_operation_status_reason: {
+        mine_operation_status_reason_code: "CM",
+        description: "Care & Maintenance",
+      },
+      mine_operation_status_sub_reason: {
+        mine_operation_status_sub_reason_code: null,
+        description: null,
+      },
     },
     {
-      value: "OP",
-      label: "Operating",
-      children: [
-        {
-          value: "YR",
-          label: "Year round",
-        },
-        {
-          value: "SEA",
-          label: "Seasonal",
-        },
-      ],
+      mine_status_xref_guid: "0d85c5b2-2cc1-4e2e-8caa-33a6504d3032",
+      mine_operation_status: {
+        mine_operation_status_code: "CLD",
+        description: "Closed",
+      },
+      mine_operation_status_reason: {
+        mine_operation_status_reason_code: "REC",
+        description: "Reclamation",
+      },
+      mine_operation_status_sub_reason: {
+        mine_operation_status_sub_reason_code: "LTM",
+        description: "Long Term Maintenance",
+      },
+    },
+    {
+      mine_status_xref_guid: "acc1195c-81e9-475a-8653-e58cc4893794",
+      mine_operation_status: {
+        mine_operation_status_code: "CLD",
+        description: "Closed",
+      },
+      mine_operation_status_reason: {
+        mine_operation_status_reason_code: "REC",
+        description: "Reclamation",
+      },
+      mine_operation_status_sub_reason: {
+        mine_operation_status_sub_reason_code: "LWT",
+        description: "Long Term Maintenance & Water Treatment",
+      },
+    },
+    {
+      mine_status_xref_guid: "e3bdc022-43ff-40c9-8807-dc93779362b3",
+      mine_operation_status: {
+        mine_operation_status_code: "CLD",
+        description: "Closed",
+      },
+      mine_operation_status_reason: {
+        mine_operation_status_reason_code: "REC",
+        description: "Reclamation",
+      },
+      mine_operation_status_sub_reason: {
+        mine_operation_status_sub_reason_code: "PRP",
+        description: "Permit Release Pending",
+      },
+    },
+    {
+      mine_status_xref_guid: "c9c490f7-d7fd-41fe-9409-e0218edff065",
+      mine_operation_status: {
+        mine_operation_status_code: "CLD",
+        description: "Closed",
+      },
+      mine_operation_status_reason: {
+        mine_operation_status_reason_code: "ORP",
+        description: "Orphaned",
+      },
+      mine_operation_status_sub_reason: {
+        mine_operation_status_sub_reason_code: "LTM",
+        description: "Long Term Maintenance",
+      },
+    },
+    {
+      mine_status_xref_guid: "1b30ddaa-9573-4c3f-9e4e-d83eddf52736",
+      mine_operation_status: {
+        mine_operation_status_code: "CLD",
+        description: "Closed",
+      },
+      mine_operation_status_reason: {
+        mine_operation_status_reason_code: "ORP",
+        description: "Orphaned",
+      },
+      mine_operation_status_sub_reason: {
+        mine_operation_status_sub_reason_code: "LWT",
+        description: "Long Term Maintenance & Water Treatment",
+      },
+    },
+    {
+      mine_status_xref_guid: "6c6ed5d7-f251-4533-976a-df54013d08d5",
+      mine_operation_status: {
+        mine_operation_status_code: "CLD",
+        description: "Closed",
+      },
+      mine_operation_status_reason: {
+        mine_operation_status_reason_code: "ORP",
+        description: "Orphaned",
+      },
+      mine_operation_status_sub_reason: {
+        mine_operation_status_sub_reason_code: "RNS",
+        description: "Reclamation Not Started",
+      },
+    },
+    {
+      mine_status_xref_guid: "2d12f1cd-b49c-4cd6-9c46-b53516128ce9",
+      mine_operation_status: {
+        mine_operation_status_code: "CLD",
+        description: "Closed",
+      },
+      mine_operation_status_reason: {
+        mine_operation_status_reason_code: "ORP",
+        description: "Orphaned",
+      },
+      mine_operation_status_sub_reason: {
+        mine_operation_status_sub_reason_code: "SVR",
+        description: "Site Visit Required",
+      },
+    },
+    {
+      mine_status_xref_guid: "0b414d87-b703-4d82-8926-b6cb057944e4",
+      mine_operation_status: {
+        mine_operation_status_code: "CLD",
+        description: "Closed",
+      },
+      mine_operation_status_reason: {
+        mine_operation_status_reason_code: "UN",
+        description: "Unknown",
+      },
+      mine_operation_status_sub_reason: {
+        mine_operation_status_sub_reason_code: null,
+        description: null,
+      },
+    },
+    {
+      mine_status_xref_guid: "fbdadfd6-b9ac-4483-b6e7-a36d1bb41a1d",
+      mine_operation_status: {
+        mine_operation_status_code: "NS",
+        description: "Not Started",
+      },
+      mine_operation_status_reason: {
+        mine_operation_status_reason_code: null,
+        description: null,
+      },
+      mine_operation_status_sub_reason: {
+        mine_operation_status_sub_reason_code: null,
+        description: null,
+      },
+    },
+    {
+      mine_status_xref_guid: "578abd0e-02e8-4a0a-8959-750e8c99cbb5",
+      mine_operation_status: {
+        mine_operation_status_code: "OP",
+        description: "Operating",
+      },
+      mine_operation_status_reason: {
+        mine_operation_status_reason_code: "YR",
+        description: "Year round",
+      },
+      mine_operation_status_sub_reason: {
+        mine_operation_status_sub_reason_code: null,
+        description: null,
+      },
+    },
+    {
+      mine_status_xref_guid: "3eed5e61-1bbb-4d98-99e9-4eb3c0e8b507",
+      mine_operation_status: {
+        mine_operation_status_code: "OP",
+        description: "Operating",
+      },
+      mine_operation_status_reason: {
+        mine_operation_status_reason_code: "SEA",
+        description: "Seasonal",
+      },
+      mine_operation_status_sub_reason: {
+        mine_operation_status_sub_reason_code: null,
+        description: null,
+      },
     },
   ],
 };
+
+export const STATUS_OPTIONS_DROPDOWN = [
+  { value: "ABN", label: "Abandoned", children: [] },
+  {
+    value: "CLD",
+    label: "Closed",
+    children: [
+      { value: "CM", label: "Care & Maintenance", children: [] },
+      {
+        value: "REC",
+        label: "Reclamation",
+        children: [
+          { value: "LTM", label: "Long Term Maintenance", children: [] },
+          { value: "LWT", label: "Long Term Maintenance & Water Treatment", children: [] },
+          { value: "PRP", label: "Permit Release Pending", children: [] },
+        ],
+      },
+      {
+        value: "ORP",
+        label: "Orphaned",
+        children: [
+          { value: "LTM", label: "Long Term Maintenance", children: [] },
+          { value: "LWT", label: "Long Term Maintenance & Water Treatment", children: [] },
+          { value: "RNS", label: "Reclamation Not Started", children: [] },
+          { value: "SVR", label: "Site Visit Required", children: [] },
+        ],
+      },
+      { value: "UN", label: "Unknown", children: [] },
+    ],
+  },
+  { value: "NS", label: "Not Started", children: [] },
+  {
+    value: "OP",
+    label: "Operating",
+    children: [
+      { value: "YR", label: "Year round", children: [] },
+      { value: "SEA", label: "Seasonal", children: [] },
+    ],
+  },
+];
 
 export const REGION_OPTIONS = {
   options: [
