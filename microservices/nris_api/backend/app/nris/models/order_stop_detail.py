@@ -53,8 +53,8 @@ class OrderStopDetail(Base):
     response = db.Column(db.String())
     response_received = db.Column(db.DateTime)
     completion_date = db.Column(db.DateTime)
-    noncompliance_legislations = db.relationship("NonComplianceLegislation")
-    noncompliance_permits = db.relationship("NonCompliancePermit")
+    noncompliance_legislations = db.relationship("NonComplianceLegislation", lazy='joined')
+    noncompliance_permits = db.relationship("NonCompliancePermit", lazy='joined')
     authority_act = db.Column(db.String(64))
     authority_act_section = db.Column(db.String(64))
     documents = db.relationship('Document',

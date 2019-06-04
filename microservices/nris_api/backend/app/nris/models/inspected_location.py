@@ -30,7 +30,7 @@ class InspectedLocation(Base):
     inspected_location_id = db.Column(db.Integer, primary_key=True)
     inspection_id = db.Column(db.Integer, db.ForeignKey('inspection.inspection_id'))
     location_id = db.Column(db.Integer, db.ForeignKey('location.location_id'))
-    location = db.relationship("Location")
+    location = db.relationship("Location", lazy='joined')
 
     inspected_location_type_id = db.Column(
         db.Integer, db.ForeignKey('inspected_location_type.inspected_location_type_id'))
