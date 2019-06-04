@@ -7,7 +7,6 @@ from flask import request, current_app, Response
 from flask_restplus import Resource, fields
 from app.extensions import api, db
 
-from ..models.variance import Variance
 from ...mine.models.mine import Mine
 from ....documents.mines.models.mine_document import MineDocument
 from ....utils.access_decorators import (requires_any_of, MINE_VIEW, MINE_CREATE,
@@ -15,13 +14,14 @@ from ....utils.access_decorators import (requires_any_of, MINE_VIEW, MINE_CREATE
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.mines.mine_api_models import VARIANCE_MODEL
+from app.api.variances.models.variance import Variance
 # The need to access the guid -> id lookup forces an import as the id primary
 # key is not available via the API. The interal-only primary key +
 # cross-namespace foreign key constraints are interally inconsistent
 from app.api.parties.party.models.party import Party
 
 
-class VarianceResource(Resource, UserMixin, ErrorMixin):
+class MineVarianceResource(Resource, UserMixin, ErrorMixin):
     parser = CustomReqparser()
     parser.add_argument(
         'compliance_article_id',
@@ -58,7 +58,7 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             'mine_guid': 'GUID of the mine to which the variance is associated',
             'variance_guid': 'GUID of the variance to fetch'
         })
-    @requires_any_of([MINE_VIEW])
+    @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
     @api.marshal_with(VARIANCE_MODEL, code=200)
     def get(self, mine_guid, variance_guid):
         variance = Variance.find_by_mine_guid_and_variance_guid(mine_guid, variance_guid)

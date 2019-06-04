@@ -2,19 +2,20 @@ from app.extensions import api
 from flask_restplus import Resource, fields
 from werkzeug.exceptions import BadRequest, NotFound
 
-from ..models.variance import Variance
 from ....utils.access_decorators import requires_any_of, MINE_VIEW, MINE_CREATE, MINESPACE_PROPONENT
 from ...mine.models.mine import Mine
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.mines.mine_api_models import VARIANCE_MODEL
+from app.api.variances.models.variance import Variance
+
 # The need to access the guid -> id lookup forces an import as the id primary
 # key is not available via the API. The interal-only primary key +
 # cross-namespace foreign key constraints are interally inconsistent
 from app.api.users.core.models.core_user import CoreUser
 
 
-class VarianceListResource(Resource, UserMixin, ErrorMixin):
+class MineVarianceListResource(Resource, UserMixin, ErrorMixin):
     parser = CustomReqparser()
     parser.add_argument(
         'compliance_article_id',

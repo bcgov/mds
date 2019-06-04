@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm, change, getFormValues } from "redux-form";
-import { remove } from "lodash";
+import { Field, reduxForm, getFormValues } from "redux-form";
+import { fromPairs } from "lodash";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { Form, Button, Popconfirm, Row, Col } from "antd";
@@ -35,7 +35,6 @@ const inspectorRequired = (value) =>
 export class EditVarianceForm extends Component {
   state = {
     uploadedFiles: [],
-    documentNameGuidMap: {},
     statusChangedToApproved: false,
     isApprovedOrDenied: false,
   };
@@ -55,19 +54,15 @@ export class EditVarianceForm extends Component {
   }
 
   onFileLoad = (documentName, document_manager_guid) => {
-    this.state.uploadedFiles.push({ documentName, document_manager_guid });
-    this.setState(({ documentNameGuidMap }) => ({
-      documentNameGuidMap: {
-        [document_manager_guid]: documentName,
-        ...documentNameGuidMap,
-      },
+    this.setState((prevState) => ({
+      uploadedFiles: [[document_manager_guid, documentName], ...prevState.uploadedFiles],
     }));
-    change("uploadedFiles", this.state.uploadedFiles);
   };
 
   onRemoveFile = (fileItem) => {
-    remove(this.state.uploadedFiles, { document_manager_guid: fileItem.serverId });
-    change("uploadedFiles", this.state.uploadedFiles);
+    this.setState((prevState) => ({
+      uploadedFiles: prevState.uploadedFiles.filter((fileArr) => fileArr[0] !== fileItem.serverId),
+    }));
   };
 
   render() {
@@ -76,7 +71,7 @@ export class EditVarianceForm extends Component {
         layout="vertical"
         onSubmit={this.props.handleSubmit(
           this.props.onSubmit(
-            this.state.documentNameGuidMap,
+            fromPairs(this.state.uploadedFiles),
             this.props.variance,
             this.state.statusChangedToApproved
           )

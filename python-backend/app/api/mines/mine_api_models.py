@@ -198,9 +198,3 @@ VARIANCE_MODEL = api.model(
         'expiry_date': fields.Date,
         'documents': fields.Nested(VARIANCE_DOCUMENT_MODEL)
     })
-
-VARIANCE_APPLICATION_STATUS_CODE_MODEL = api.model(
-    'VarianceApplicationStatusCode', {
-        'variance_application_status_code': fields.String,
-        'description': fields.String
-    })
