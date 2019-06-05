@@ -15,10 +15,10 @@ from ..compliance.resources.compliance_article import ComplianceArticleResource
 from ..mine.resources.mine_basicinfo import MineBasicInfoResource
 from app.api.mines.mine.resources.mine_verified_status import MineVerifiedStatusResource, MineVerifiedStatusListResource
 from ..subscription.resources.subscription import MineSubscriptionResource, MineSubscriptionListResource
-from ..variances.resources.variance import VarianceResource
-from ..variances.resources.variance_list import VarianceListResource
-from ..variances.resources.variance_document_upload import VarianceDocumentUploadResource
-from ..variances.resources.variance_uploaded_documents import VarianceUploadedDocumentsResource
+from ..variances.resources.variance import MineVarianceResource
+from ..variances.resources.variance_list import MineVarianceListResource
+from ..variances.resources.variance_document_upload import MineVarianceDocumentUploadResource
+from ..variances.resources.variance_uploaded_documents import MineVarianceUploadedDocumentsResource
 from ..incidents.resources.mine_incidents import MineIncidentListResource, MineIncidentResource
 from ..incidents.resources.mine_incident_followup_types import MineIncidentFollowupTypeResource
 from ..incidents.resources.mine_incident_determination_types import MineIncidentDeterminationTypeResource
@@ -54,12 +54,12 @@ api.add_resource(MineVerifiedStatusListResource, '/verified-status')
 api.add_resource(MineSubscriptionResource, '/<string:mine_guid>/subscribe')
 api.add_resource(MineSubscriptionListResource, '/subscribe')
 
-api.add_resource(VarianceListResource, '/<string:mine_guid>/variances')
-api.add_resource(VarianceResource, '/<string:mine_guid>/variances/<string:variance_guid>')
-api.add_resource(VarianceDocumentUploadResource,
+api.add_resource(MineVarianceListResource, '/<string:mine_guid>/variances')
+api.add_resource(MineVarianceResource, '/<string:mine_guid>/variances/<string:variance_guid>')
+api.add_resource(MineVarianceDocumentUploadResource,
                  '/<string:mine_guid>/variances/<string:variance_guid>/documents')
 api.add_resource(
-    VarianceUploadedDocumentsResource,
+    MineVarianceUploadedDocumentsResource,
     '/<string:mine_guid>/variances/<string:variance_guid>/documents/<string:mine_document_guid>')
 
 api.add_resource(MineIncidentListResource, '/<string:mine_guid>/incidents')

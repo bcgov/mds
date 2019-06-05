@@ -2,7 +2,7 @@ import json
 import uuid
 
 from tests.factories import VarianceFactory, MineFactory
-from app.api.mines.variances.models.variance import INVALID_MINE_GUID, INVALID_VARIANCE_GUID
+from app.api.variances.models.variance import INVALID_MINE_GUID, INVALID_VARIANCE_GUID
 
 
 # GET
