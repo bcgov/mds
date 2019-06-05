@@ -20,7 +20,7 @@ import utils.DataCleanup
         // Tailings.class,
         // Contacts.class,
         // // MapNavigationSpec.class,//TODO: UNCOMEMENT WHEN MDS-1924 IS DONE 
-        // DataCleanup.class,
+        DataCleanup.class,
 ])
 
 class CustomJUnitSpecRunner {

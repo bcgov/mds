@@ -77,6 +77,8 @@ environments {
 			options.setProfile(profile);
 			options.addPreference("browser.download.dir", Const.DOWNLOAD_PATH);
 			options.addPreference("browser.download.useDownloadDir", true);
+			options.addArguments("--width=1920")
+			options.addArguments("--height=1080")
 			new FirefoxDriver(options);
 		}
 	}
