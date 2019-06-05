@@ -28,7 +28,6 @@ const baseExpectedValue = {
   applicationStatusCodes: [],
   partyRelationshipTypes: [],
   complianceCodes: [],
-  optionsLoaded: false,
   incidentFollowupActionOptions: [],
   incidentDeterminationOptions: [],
   varianceStatusOptions: [],

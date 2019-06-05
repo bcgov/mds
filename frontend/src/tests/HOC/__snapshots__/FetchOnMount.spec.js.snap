@@ -4,23 +4,111 @@ exports[`FetchOnMount should render 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <fetchOnMount
-    fetchApplicationStatusOptions={[MockFunction]}
-    fetchExpectedDocumentStatusOptions={[MockFunction]}
-    fetchMineCommodityOptions={[MockFunction]}
-    fetchMineComplianceCodes={[MockFunction]}
-    fetchMineDisturbanceOptions={[MockFunction]}
-    fetchMineIncidentDeterminationOptions={[MockFunction]}
-    fetchMineIncidentFollowActionOptions={[MockFunction]}
-    fetchMineTailingsRequiredDocuments={[MockFunction]}
-    fetchMineTenureTypes={[MockFunction]}
-    fetchPartyRelationshipTypes={[MockFunction]}
-    fetchPermitStatusOptions={[MockFunction]}
-    fetchProvinceCodes={[MockFunction]}
-    fetchRegionOptions={[MockFunction]}
-    fetchStatusOptions={[MockFunction]}
-    fetchVarianceStatusOptions={[MockFunction]}
-    optionsLoaded={true}
-    setOptionsLoaded={[MockFunction]}
+    fetchApplicationStatusOptions={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
+    fetchExpectedDocumentStatusOptions={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
+    fetchMineCommodityOptions={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
+    fetchMineComplianceCodes={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
+    fetchMineDisturbanceOptions={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
+    fetchMineIncidentDeterminationOptions={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
+    fetchMineIncidentFollowActionOptions={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
+    fetchMineTailingsRequiredDocuments={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
+    fetchMineTenureTypes={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
+    fetchPartyRelationshipTypes={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
+    fetchPermitStatusOptions={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
+    fetchProvinceCodes={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
+    fetchRegionOptions={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
+    fetchStatusOptions={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
+    fetchVarianceStatusOptions={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
   />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
@@ -35,23 +123,81 @@ ShallowWrapper {
     "key": undefined,
     "nodeType": "function",
     "props": Object {
-      "fetchApplicationStatusOptions": [MockFunction],
-      "fetchExpectedDocumentStatusOptions": [MockFunction],
-      "fetchMineCommodityOptions": [MockFunction],
-      "fetchMineComplianceCodes": [MockFunction],
-      "fetchMineDisturbanceOptions": [MockFunction],
-      "fetchMineIncidentDeterminationOptions": [MockFunction],
-      "fetchMineIncidentFollowActionOptions": [MockFunction],
-      "fetchMineTailingsRequiredDocuments": [MockFunction],
-      "fetchMineTenureTypes": [MockFunction],
-      "fetchPartyRelationshipTypes": [MockFunction],
-      "fetchPermitStatusOptions": [MockFunction],
-      "fetchProvinceCodes": [MockFunction],
-      "fetchRegionOptions": [MockFunction],
-      "fetchStatusOptions": [MockFunction],
-      "fetchVarianceStatusOptions": [MockFunction],
-      "optionsLoaded": true,
-      "setOptionsLoaded": [MockFunction],
+      "fetchApplicationStatusOptions": [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      },
+      "fetchExpectedDocumentStatusOptions": [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      },
+      "fetchMineCommodityOptions": [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      },
+      "fetchMineComplianceCodes": [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      },
+      "fetchMineDisturbanceOptions": [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      },
+      "fetchMineIncidentDeterminationOptions": [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      },
+      "fetchMineIncidentFollowActionOptions": [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      },
+      "fetchMineTailingsRequiredDocuments": [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      },
+      "fetchMineTenureTypes": [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      },
+      "fetchPartyRelationshipTypes": [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      },
+      "fetchPermitStatusOptions": [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      },
+      "fetchProvinceCodes": [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      },
+      "fetchRegionOptions": [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      },
+      "fetchStatusOptions": [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      },
+      "fetchVarianceStatusOptions": [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      },
     },
     "ref": null,
     "rendered": null,
@@ -63,23 +209,81 @@ ShallowWrapper {
       "key": undefined,
       "nodeType": "function",
       "props": Object {
-        "fetchApplicationStatusOptions": [MockFunction],
-        "fetchExpectedDocumentStatusOptions": [MockFunction],
-        "fetchMineCommodityOptions": [MockFunction],
-        "fetchMineComplianceCodes": [MockFunction],
-        "fetchMineDisturbanceOptions": [MockFunction],
-        "fetchMineIncidentDeterminationOptions": [MockFunction],
-        "fetchMineIncidentFollowActionOptions": [MockFunction],
-        "fetchMineTailingsRequiredDocuments": [MockFunction],
-        "fetchMineTenureTypes": [MockFunction],
-        "fetchPartyRelationshipTypes": [MockFunction],
-        "fetchPermitStatusOptions": [MockFunction],
-        "fetchProvinceCodes": [MockFunction],
-        "fetchRegionOptions": [MockFunction],
-        "fetchStatusOptions": [MockFunction],
-        "fetchVarianceStatusOptions": [MockFunction],
-        "optionsLoaded": true,
-        "setOptionsLoaded": [MockFunction],
+        "fetchApplicationStatusOptions": [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+        },
+        "fetchExpectedDocumentStatusOptions": [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+        },
+        "fetchMineCommodityOptions": [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+        },
+        "fetchMineComplianceCodes": [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+        },
+        "fetchMineDisturbanceOptions": [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+        },
+        "fetchMineIncidentDeterminationOptions": [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+        },
+        "fetchMineIncidentFollowActionOptions": [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+        },
+        "fetchMineTailingsRequiredDocuments": [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+        },
+        "fetchMineTenureTypes": [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+        },
+        "fetchPartyRelationshipTypes": [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+        },
+        "fetchPermitStatusOptions": [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+        },
+        "fetchProvinceCodes": [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+        },
+        "fetchRegionOptions": [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+        },
+        "fetchStatusOptions": [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+        },
+        "fetchVarianceStatusOptions": [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+        },
       },
       "ref": null,
       "rendered": null,

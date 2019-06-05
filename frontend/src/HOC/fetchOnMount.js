@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import hoistNonReactStatics from "hoist-non-react-statics";
 import PropTypes from "prop-types";
-import { getOptionsLoaded } from "@/selectors/staticContentSelectors";
 import {
   fetchMineDisturbanceOptions,
   fetchStatusOptions,
@@ -15,7 +14,6 @@ import {
   fetchApplicationStatusOptions,
   fetchMineIncidentFollowActionOptions,
   fetchMineIncidentDeterminationOptions,
-  setOptionsLoaded,
   fetchProvinceCodes,
   fetchMineComplianceCodes,
   fetchVarianceStatusOptions,
@@ -38,43 +36,34 @@ const propTypes = {
   fetchPermitStatusOptions: PropTypes.func.isRequired,
   fetchApplicationStatusOptions: PropTypes.func.isRequired,
   fetchMineIncidentFollowActionOptions: PropTypes.func.isRequired,
-  setOptionsLoaded: PropTypes.func.isRequired,
   fetchProvinceCodes: PropTypes.func.isRequired,
   fetchMineComplianceCodes: PropTypes.func.isRequired,
   fetchVarianceStatusOptions: PropTypes.func.isRequired,
   fetchMineIncidentDeterminationOptions: PropTypes.func.isRequired,
   fetchMineCommodityOptions: PropTypes.func.isRequired,
-  optionsLoaded: PropTypes.bool.isRequired,
 };
 
 export const FetchOnMount = (WrappedComponent) => {
   const fetchOnMount = (props) => {
-    if (!props.optionsLoaded) {
-      props.fetchMineDisturbanceOptions();
-      props.fetchStatusOptions();
-      props.fetchRegionOptions();
-      props.fetchMineTenureTypes();
-      props.fetchMineTailingsRequiredDocuments();
-      props.fetchExpectedDocumentStatusOptions();
-      props.fetchPermitStatusOptions();
-      props.fetchApplicationStatusOptions();
-      props.fetchMineIncidentFollowActionOptions();
-      props.fetchProvinceCodes();
-      props.fetchMineComplianceCodes();
-      props.fetchVarianceStatusOptions();
-      props.fetchMineIncidentDeterminationOptions();
-      props.fetchMineCommodityOptions();
-      props.fetchPartyRelationshipTypes();
-      props.setOptionsLoaded();
-    }
+    props.fetchMineDisturbanceOptions();
+    props.fetchStatusOptions();
+    props.fetchRegionOptions();
+    props.fetchMineTenureTypes();
+    props.fetchMineTailingsRequiredDocuments();
+    props.fetchExpectedDocumentStatusOptions();
+    props.fetchPermitStatusOptions();
+    props.fetchApplicationStatusOptions();
+    props.fetchMineIncidentFollowActionOptions();
+    props.fetchProvinceCodes();
+    props.fetchMineComplianceCodes();
+    props.fetchVarianceStatusOptions();
+    props.fetchMineIncidentDeterminationOptions();
+    props.fetchMineCommodityOptions();
+    props.fetchPartyRelationshipTypes();
     return <WrappedComponent {...props} />;
   };
 
   hoistNonReactStatics(fetchOnMount, WrappedComponent);
-
-  const mapStateToProps = (state) => ({
-    optionsLoaded: getOptionsLoaded(state),
-  });
 
   const mapDispatchToProps = (dispatch) =>
     bindActionCreators(
@@ -89,7 +78,6 @@ export const FetchOnMount = (WrappedComponent) => {
         fetchApplicationStatusOptions,
         fetchMineIncidentFollowActionOptions,
         fetchMineIncidentDeterminationOptions,
-        setOptionsLoaded,
         fetchProvinceCodes,
         fetchMineComplianceCodes,
         fetchVarianceStatusOptions,
@@ -100,7 +88,7 @@ export const FetchOnMount = (WrappedComponent) => {
     );
 
   return connect(
-    mapStateToProps,
+    null,
     mapDispatchToProps
   )(fetchOnMount);
 };

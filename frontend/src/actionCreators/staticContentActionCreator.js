@@ -128,10 +128,6 @@ export const fetchMineIncidentDeterminationOptions = () => (dispatch) => {
     .catch(() => dispatch(error(reducerTypes.GET_MINE_INCIDENT_DETERMINATION_OPTIONS)));
 };
 
-export const setOptionsLoaded = () => (dispatch) => {
-  dispatch(staticContentActions.loadedOptions(true));
-};
-
 export const fetchProvinceCodes = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_PROVINCE_CODES));
   return CustomAxios()
