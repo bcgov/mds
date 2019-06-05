@@ -49,7 +49,7 @@ class MineStatusXref(AuditMixin, Base):
         }
 
     @classmethod
-    def active_status_codes(cls):
+    def active(cls):
         return cls.query.filter_by(active_ind=True).all()
 
     @classmethod

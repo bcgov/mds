@@ -25,7 +25,7 @@ import {
   getConditionalCommodityOptions,
   getDisturbanceOptionHash,
   getCommodityOptionHash,
-  getMineStatusDropdownOptions,
+  getMineStatusDropDownOptions,
   getMineRegionOptions,
   getMineTenureTypeOptions,
   getMineTenureTypesHash,
@@ -38,7 +38,7 @@ const propTypes = {
   handleDelete: PropTypes.func.isRequired,
   title: PropTypes.string,
   mineStatus: PropTypes.arrayOf(PropTypes.string),
-  mineStatusOptions: CustomPropTypes.options.isRequired,
+  mineStatusDropDownOptions: CustomPropTypes.options.isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
   mineTenureTypes: CustomPropTypes.options.isRequired,
   mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -327,7 +327,7 @@ export class MineRecordForm extends Component {
                 name="mine_status"
                 label="Mine Status *"
                 placeholder="Please select status"
-                options={this.props.mineStatusOptions}
+                options={this.props.mineStatusDropDownOptions}
                 component={renderConfig.CASCADER}
                 validate={[required]}
               />
@@ -450,7 +450,7 @@ const selector = formValueSelector(FORM.MINE_RECORD);
 export default compose(
   connect((state) => ({
     currentMineTypes: getCurrentMineTypes(state),
-    mineStatusOptions: getMineStatusDropdownOptions(state),
+    mineStatusDropDownOptions: getMineStatusDropDownOptions(state),
     mineRegionOptions: getMineRegionOptions(state),
     mineTenureHash: getMineTenureTypesHash(state),
     mineCommodityOptionsHash: getCommodityOptionHash(state),

@@ -740,6 +740,46 @@ export const STATUS_OPTIONS_DROPDOWN = [
   },
 ];
 
+export const a = [
+  {
+    value: "CLD",
+    label: "Closed",
+    children: [
+      {
+        value: "ORP",
+        label: "Orphaned",
+        children: [
+          { value: "LTM", label: "Long Term Maintenance" },
+          { value: "LWT", label: "Long Term Maintenance & Water Treatment" },
+          { value: "RNS", label: "Reclamation Not Started" },
+          { value: "SVR", label: "Site Visit Required" },
+        ],
+      },
+      {
+        value: "REC",
+        label: "Reclamation",
+        children: [
+          { value: "LTM", label: "Long Term Maintenance" },
+          { value: "LWT", label: "Long Term Maintenance & Water Treatment" },
+          { value: "PRP", label: "Permit Release Pending" },
+        ],
+      },
+      { value: "UN", label: "Unknown", children: [] },
+      { value: "CM", label: "Care & Maintenance", children: [] },
+    ],
+  },
+  { value: "ABN", label: "Abandoned", children: [] },
+  { value: "NS", label: "Not Started", children: [] },
+  {
+    value: "OP",
+    label: "Operating",
+    children: [
+      { value: "SEA", label: "Seasonal", children: [] },
+      { value: "YR", label: "Year round", children: [] },
+    ],
+  },
+];
+
 export const REGION_OPTIONS = {
   options: [
     {

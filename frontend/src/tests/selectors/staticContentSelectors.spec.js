@@ -1,6 +1,6 @@
 import {
   getMineRegionOptions,
-  getMineStatusDropdownOptions,
+  getMineStatusDropDownOptions,
   getMineRegionHash,
   getMineTSFRequiredReports,
   getMineTenureTypesHash,
@@ -50,13 +50,13 @@ describe("staticContentSelectors", () => {
   const { mineTSFRequiredReports, provinceOptions } = mockState;
   let { mineRegionOptions, mineTenureTypes } = mockState;
 
-  it("`getMineStatusDropdownOptions` calls `staticContentReducer.getMineStatusDropdownOptions`", () => {
+  it("`getMineStatusDropDownOptions` calls `staticContentReducer.getMineStatusDropDownOptions`", () => {
     const storeAction = storeStatusOptions(Mock.STATUS_OPTIONS);
     const storeState = staticContentReducer({}, storeAction);
     const localMockState = {
       [STATIC_CONTENT]: storeState,
     };
-    expect(getMineStatusDropdownOptions(localMockState)).toEqual(Mock.STATUS_OPTIONS_DROPDOWN);
+    expect(getMineStatusDropDownOptions(localMockState)).toEqual(Mock.STATUS_OPTIONS_DROPDOWN);
   });
 
   it("`getMineRegionOptions` calls `staticContentReducer.getMineRegionOptions`", () => {
