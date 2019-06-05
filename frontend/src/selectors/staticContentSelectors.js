@@ -201,6 +201,7 @@ const transformMineStatusSubReason = (reasons) =>
     .map((subreasons) => ({
       value: subreasons[0].mine_operation_status_sub_reason.mine_operation_status_sub_reason_code,
       label: subreasons[0].mine_operation_status_sub_reason.description,
+      children: [],
     }))
     .value();
 
