@@ -212,8 +212,7 @@ export const fetchInspectors = () => (dispatch) => {
   dispatch(showLoading("modal"));
   return CustomAxios()
     .get(
-      ENVIRONMENT.apiUrl +
-        API.PARTIES_LIST_QUERY({ page: 1, per_page: "all", business_role: "INS" }),
+      ENVIRONMENT.apiUrl + API.PARTIES_LIST_QUERY({ per_page: "all", business_role: "INS" }),
       createRequestHeader()
     )
     .then((response) => {
