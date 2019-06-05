@@ -7,7 +7,7 @@ from werkzeug.exceptions import BadRequest, NotFound
 from app.extensions import api
 from ....utils.access_decorators import requires_role_mine_view
 from ....utils.resources_mixins import UserMixin, ErrorMixin
-from ....constants import NRIS_COMPLIANCE_DATA, TIMEOUT_24_HOURS
+from ....constants import NRIS_COMPLIANCE_DATA, TIMEOUT_60_MINUTES
 from app.api.services import NRIS_API_service
 from app.extensions import cache
 
