@@ -312,6 +312,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
             FROM ETL_MINE
             WHERE
                 ETL_MINE.mine_guid = ETL_LOCATION.mine_guid
+                AND ETL_LOCATION.mine_guid = pmt_now_preferred.mine_no
                 AND
                 -- Matches business logic requirements
                 (
