@@ -39,7 +39,6 @@ def register_apm(name=None):
             else:
                 print(f'Running <{_name}> without APM')
                 result = func(*args, **kwargs)
-            return result
 
         return wrapped_f
 
