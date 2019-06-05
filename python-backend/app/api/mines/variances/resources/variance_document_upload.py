@@ -6,7 +6,6 @@ from flask import request, current_app, Response
 from flask_restplus import Resource
 from app.extensions import api
 
-from ..models.variance import Variance
 from ...mine.models.mine import Mine
 from ....documents.mines.models.mine_document import MineDocument
 from ....utils.access_decorators import (requires_any_of, MINE_CREATE,
@@ -14,9 +13,10 @@ from ....utils.access_decorators import (requires_any_of, MINE_CREATE,
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.mines.mine_api_models import VARIANCE_MODEL
+from app.api.variances.models.variance import Variance
 
 
-class VarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
+class MineVarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
     @api.doc(description='Request a document_manager_guid for uploading a document')
     @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
     def post(self, mine_guid, variance_guid):
