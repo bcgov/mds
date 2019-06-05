@@ -5,12 +5,10 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { Tabs, Table } from "antd";
 import { isEmpty } from "lodash";
-import {
-  fetchPartyRelationshipTypes,
-  fetchPartyRelationships,
-} from "@/actionCreators/partiesActionCreator";
+import { fetchPartyRelationships } from "@/actionCreators/partiesActionCreator";
 import { fetchMineRecordById } from "@/actionCreators/mineActionCreator";
-import { getPartyRelationshipTypesList, getPartyRelationships } from "@/selectors/partiesSelectors";
+import { getPartyRelationships } from "@/selectors/partiesSelectors";
+import { getPartyRelationshipTypesOptions } from "@/selectors/staticContentSelectors";
 import { getMines } from "@/selectors/mineSelectors";
 import Loading from "@/components/common/Loading";
 import * as router from "@/constants/routes";
@@ -27,7 +25,6 @@ const { TabPane } = Tabs;
 
 const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
-  fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   partyRelationshipTypes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem),
@@ -62,10 +59,6 @@ export class RelationshipProfile extends Component {
     const { id, typeCode } = this.props.match.params;
     const mine = this.props.mines[id];
 
-    // Fetch any props not provided
-    if (this.props.partyRelationshipTypes.length === 0) {
-      this.props.fetchPartyRelationshipTypes();
-    }
     if (this.props.partyRelationships.length === 0) {
       this.props.fetchPartyRelationships({
         mine_guid: id,
@@ -206,7 +199,7 @@ export class RelationshipProfile extends Component {
 }
 const mapStateToProps = (state) => ({
   mines: getMines(state),
-  partyRelationshipTypes: getPartyRelationshipTypesList(state),
+  partyRelationshipTypes: getPartyRelationshipTypesOptions(state),
   partyRelationships: getPartyRelationships(state),
 });
 
@@ -214,7 +207,6 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchMineRecordById,
-      fetchPartyRelationshipTypes,
       fetchPartyRelationships,
     },
     dispatch

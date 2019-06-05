@@ -4,13 +4,6 @@ exports[`Search renders properly 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <SearchResults
-    fetchPartyRelationshipTypes={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
-    }
     fetchSearchOptions={[MockFunction]}
     fetchSearchResults={[MockFunction]}
     history={

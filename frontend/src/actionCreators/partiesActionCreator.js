@@ -76,19 +76,6 @@ export const fetchPartyById = (id) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchPartyRelationshipTypes = () => (dispatch) => {
-  dispatch(request(reducerTypes.GET_PARTY_RELATIONSHIP_TYPES));
-  dispatch(showLoading());
-  return CustomAxios()
-    .get(`${ENVIRONMENT.apiUrl + API.PARTY}/mines/relationship-types`, createRequestHeader())
-    .then((response) => {
-      dispatch(success(reducerTypes.GET_PARTY_RELATIONSHIP_TYPES));
-      dispatch(partyActions.storePartyRelationshipTypes(response.data));
-    })
-    .catch(() => dispatch(error(reducerTypes.GET_PARTY_RELATIONSHIP_TYPES)))
-    .finally(() => dispatch(hideLoading()));
-};
-
 export const addPartyRelationship = (payload) => (dispatch) => {
   dispatch(request(reducerTypes.ADD_PARTY_RELATIONSHIP));
   dispatch(showLoading());

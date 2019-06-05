@@ -4,7 +4,8 @@ import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
 import PropTypes from "prop-types";
 import { Contact } from "@/components/mine/ContactInfo/PartyRelationships/Contact";
-import { getPartyRelationshipTypes, getPartyRelationships } from "@/selectors/partiesSelectors";
+import { getPartyRelationships } from "@/selectors/partiesSelectors";
+import { getPartyRelationshipTypes } from "@/selectors/staticContentSelectors";
 import { getMineComplianceInfo } from "@/selectors/complianceSelectors";
 
 import { connect } from "react-redux";

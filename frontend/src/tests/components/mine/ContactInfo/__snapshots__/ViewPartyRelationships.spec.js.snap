@@ -11,6 +11,7 @@ ShallowWrapper {
     fetchMineRecordById={[MockFunction]}
     fetchParties={[MockFunction]}
     fetchPartyRelationships={[MockFunction]}
+    getPartyRelationshipTypesOptions={Array []}
     handleChange={[MockFunction]}
     mine={
       Object {
@@ -81,7 +82,6 @@ ShallowWrapper {
     }
     openModal={[MockFunction]}
     partyRelationshipTypes={Array []}
-    partyRelationshipTypesList={Array []}
     partyRelationships={Array []}
     removePartyRelationship={[MockFunction]}
     updatePartyRelationship={[MockFunction]}

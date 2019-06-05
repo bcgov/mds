@@ -13,7 +13,6 @@ ShallowWrapper {
         ],
       }
     }
-    fetchPartyRelationshipTypes={[MockFunction]}
     fetchPartyRelationships={
       [MockFunction] {
         "calls": Array [

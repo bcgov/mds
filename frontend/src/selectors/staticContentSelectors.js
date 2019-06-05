@@ -17,6 +17,7 @@ export const {
   getComplianceCodes,
   getIncidentFollowupActionOptions,
   getIncidentDeterminationOptions,
+  getPartyRelationshipTypes,
   getVarianceStatusOptions,
 } = staticContentReducer;
 
@@ -190,5 +191,15 @@ export const getDropdownVarianceStatusOptions = createSelector(
 
 export const getVarianceStatusOptionsHash = createSelector(
   [getDropdownVarianceStatusOptions],
+  createLabelHash
+);
+
+export const getPartyRelationshipTypesOptions = createSelector(
+  [getPartyRelationshipTypes],
+  (options) => createDropDownList(options, "description", "mine_party_appt_type_code")
+);
+
+export const getPartyRelationshipTypeHash = createSelector(
+  [getPartyRelationshipTypesOptions],
   createLabelHash
 );

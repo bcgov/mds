@@ -23,13 +23,6 @@ ShallowWrapper {
         ],
       }
     }
-    fetchPartyRelationshipTypes={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
-    }
     history={
       Object {
         "location": Object {},

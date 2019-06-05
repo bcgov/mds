@@ -13,7 +13,6 @@ const setupDispatchProps = () => {
   dispatchProps.createMineRecord = jest.fn();
   dispatchProps.openModal = jest.fn();
   dispatchProps.closeModal = jest.fn();
-  dispatchProps.fetchPartyRelationshipTypes = jest.fn();
 };
 
 const setupReducerProps = () => {

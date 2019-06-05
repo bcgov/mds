@@ -11,6 +11,7 @@ import {
   storeApplicationStatusOptions,
   storeComplianceCodes,
   storeVarianceStatusOptions,
+  storePartyRelationshipTypes,
 } from "@/actions/staticContentActions";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
@@ -25,6 +26,7 @@ const baseExpectedValue = {
   provinceOptions: [],
   permitStatusCodes: [],
   applicationStatusCodes: [],
+  partyRelationshipTypes: [],
   complianceCodes: [],
   optionsLoaded: false,
   incidentFollowupActionOptions: [],
@@ -131,6 +133,16 @@ describe("staticContentReducer", () => {
     const result = staticContentReducer(
       undefined,
       storeVarianceStatusOptions(MOCK.VARIANCE_STATUS_OPTIONS)
+    );
+    expect(result).toEqual(expectedValue);
+  });
+
+  it("receives STORE_PARTY_RELATIONSHIP_TYPES", () => {
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.partyRelationshipTypes = MOCK.PARTY_RELATIONSHIP_TYPES;
+    const result = staticContentReducer(
+      undefined,
+      storePartyRelationshipTypes(MOCK.PARTY_RELATIONSHIP_TYPES)
     );
     expect(result).toEqual(expectedValue);
   });

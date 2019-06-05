@@ -7,20 +7,15 @@ import queryString from "query-string";
 import * as Strings from "@/constants/strings";
 import { openModal, closeModal } from "@/actions/modalActions";
 import CustomPropTypes from "@/customPropTypes";
-import {
-  fetchParties,
-  createParty,
-  fetchPartyRelationshipTypes,
-} from "@/actionCreators/partiesActionCreator";
+import { fetchParties, createParty } from "@/actionCreators/partiesActionCreator";
 import * as FORM from "@/constants/forms";
 import * as Permission from "@/constants/permissions";
-import { getDropdownProvinceOptions } from "@/selectors/staticContentSelectors";
 import {
-  getParties,
-  getPartyPageData,
+  getDropdownProvinceOptions,
+  getPartyRelationshipTypesOptions,
   getPartyRelationshipTypeHash,
-  getPartyRelationshipTypesList,
-} from "@/selectors/partiesSelectors";
+} from "@/selectors/staticContentSelectors";
+import { getParties, getPartyPageData } from "@/selectors/partiesSelectors";
 import ContactSearch from "@/components/dashboard/contactsHomePage/ContactSearch";
 import ContactList from "@/components/dashboard/contactsHomePage/ContactList";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
@@ -39,7 +34,6 @@ import AddButton from "@/components/common/AddButton";
 const propTypes = {
   fetchParties: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
-  fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   change: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
@@ -62,11 +56,6 @@ export class ContactHomePage extends Component {
       ...this.params,
     },
   };
-
-  componentWillMount() {
-    // Fetch dependencies from API
-    this.props.fetchPartyRelationshipTypes();
-  }
 
   componentDidMount() {
     const params = this.props.location.search;
@@ -247,7 +236,7 @@ const mapStateToProps = (state) => ({
   pageData: getPartyPageData(state),
   provinceOptions: getDropdownProvinceOptions(state),
   relationshipTypeHash: getPartyRelationshipTypeHash(state),
-  partyRelationshipTypesList: getPartyRelationshipTypesList(state),
+  partyRelationshipTypesList: getPartyRelationshipTypesOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -255,7 +244,6 @@ const mapDispatchToProps = (dispatch) =>
     {
       fetchParties,
       createParty,
-      fetchPartyRelationshipTypes,
       openModal,
       closeModal,
       change,

@@ -15,6 +15,7 @@ const initialState = {
   mineCommodityOptions: [],
   expectedDocumentStatusOptions: [],
   mineTSFRequiredReports: [],
+  partyRelationshipTypes: [],
   provinceOptions: [],
   optionsLoaded: false,
   permitStatusCodes: [],
@@ -102,6 +103,11 @@ const staticContentReducer = (state = initialState, action) => {
         ...state,
         varianceStatusOptions: action.payload.records,
       };
+    case actionTypes.STORE_PARTY_RELATIONSHIP_TYPES:
+      return {
+        ...state,
+        partyRelationshipTypes: action.payload,
+      };
     default:
       return state;
   }
@@ -127,5 +133,6 @@ export const getIncidentFollowupActionOptions = (state) =>
 export const getIncidentDeterminationOptions = (state) =>
   state[STATIC_CONTENT].incidentDeterminationOptions;
 export const getVarianceStatusOptions = (state) => state[STATIC_CONTENT].varianceStatusOptions;
+export const getPartyRelationshipTypes = (state) => state[STATIC_CONTENT].partyRelationshipTypes;
 
 export default staticContentReducer;

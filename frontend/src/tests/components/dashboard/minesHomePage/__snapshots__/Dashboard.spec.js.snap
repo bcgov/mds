@@ -15,7 +15,6 @@ ShallowWrapper {
         ],
       }
     }
-    fetchPartyRelationshipTypes={[MockFunction]}
     history={
       Object {
         "location": Object {},

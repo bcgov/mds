@@ -13,6 +13,7 @@ ShallowWrapper {
     fetchMineIncidentFollowActionOptions={[MockFunction]}
     fetchMineTailingsRequiredDocuments={[MockFunction]}
     fetchMineTenureTypes={[MockFunction]}
+    fetchPartyRelationshipTypes={[MockFunction]}
     fetchPermitStatusOptions={[MockFunction]}
     fetchProvinceCodes={[MockFunction]}
     fetchRegionOptions={[MockFunction]}
@@ -43,6 +44,7 @@ ShallowWrapper {
       "fetchMineIncidentFollowActionOptions": [MockFunction],
       "fetchMineTailingsRequiredDocuments": [MockFunction],
       "fetchMineTenureTypes": [MockFunction],
+      "fetchPartyRelationshipTypes": [MockFunction],
       "fetchPermitStatusOptions": [MockFunction],
       "fetchProvinceCodes": [MockFunction],
       "fetchRegionOptions": [MockFunction],
@@ -70,6 +72,7 @@ ShallowWrapper {
         "fetchMineIncidentFollowActionOptions": [MockFunction],
         "fetchMineTailingsRequiredDocuments": [MockFunction],
         "fetchMineTenureTypes": [MockFunction],
+        "fetchPartyRelationshipTypes": [MockFunction],
         "fetchPermitStatusOptions": [MockFunction],
         "fetchProvinceCodes": [MockFunction],
         "fetchRegionOptions": [MockFunction],

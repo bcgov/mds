@@ -16,7 +16,6 @@ const setupDispatchProps = () => {
   dispatchProps.fetchVariancesByMine = jest.fn();
   dispatchProps.fetchStatusOptions = jest.fn();
   dispatchProps.fetchRelationshipTypes = jest.fn();
-  dispatchProps.fetchPartyRelationshipTypes = jest.fn();
   dispatchProps.fetchPartyRelationships = jest.fn(() => Promise.resolve());
   dispatchProps.fetchCoreUsers = jest.fn();
   dispatchProps.match = {};

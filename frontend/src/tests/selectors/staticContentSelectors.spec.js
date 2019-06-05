@@ -16,6 +16,7 @@ import {
   getVarianceStatusOptions,
   getVarianceStatusOptionsHash,
   getDropdownVarianceStatusOptions,
+  getPartyRelationshipTypes,
 } from "@/selectors/staticContentSelectors";
 import staticContentReducer from "@/reducers/staticContentReducer";
 import {
@@ -28,6 +29,7 @@ import {
   storeProvinceCodes,
   storeComplianceCodes,
   storeVarianceStatusOptions,
+  storePartyRelationshipTypes,
 } from "@/actions/staticContentActions";
 import { STATIC_CONTENT } from "@/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
@@ -36,6 +38,7 @@ const mockState = {
   mineStatusOptions: Mock.STATUS_OPTIONS.options,
   mineRegionOptions: Mock.REGION_OPTIONS.options,
   mineTenureTypes: Mock.TENURE_TYPES,
+  partyRelationshipTypes: Mock.PARTY_RELATIONSHIP_TYPES,
   expectedDocumentStatusOptions: Mock.EXPECTED_DOCUMENT_STATUS_OPTIONS.options,
   mineTSFRequiredReports: Mock.MINE_TSF_REQUIRED_REPORTS_RESPONSE.required_documents,
   mineDisturbanceOptions: Mock.DISTURBANCE_OPTIONS.options,
@@ -47,7 +50,7 @@ const mockState = {
 
 describe("staticContentSelectors", () => {
   const { mineStatusOptions, mineDisturbanceOptions, mineCommodityOptions } = mockState;
-  const { mineTSFRequiredReports, provinceOptions } = mockState;
+  const { mineTSFRequiredReports, provinceOptions, partyRelationshipTypes } = mockState;
   let { mineRegionOptions, mineTenureTypes } = mockState;
 
   it("`getMineStatusOptions` calls `staticContentReducer.getMineStatusOptions`", () => {
@@ -213,5 +216,14 @@ describe("staticContentSelectors", () => {
     };
     const mockVarianceStatusOptionsHash = Mock.VARIANCE_STATUS_OPTIONS_HASH;
     expect(getVarianceStatusOptionsHash(localMockState)).toEqual(mockVarianceStatusOptionsHash);
+  });
+
+  it("`getPartyRelationshipTypes` calls `staticContentReducer.getPartyRelationshipTypes`", () => {
+    const storeAction = storePartyRelationshipTypes(Mock.PARTY_RELATIONSHIP_TYPES);
+    const storeState = staticContentReducer({}, storeAction);
+    const localMockState = {
+      [STATIC_CONTENT]: storeState,
+    };
+    expect(getPartyRelationshipTypes(localMockState)).toEqual(partyRelationshipTypes);
   });
 });

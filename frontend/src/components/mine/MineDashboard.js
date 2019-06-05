@@ -43,10 +43,7 @@ import {
 import { getMineComplianceInfo } from "@/selectors/complianceSelectors";
 import { getVarianceApplications, getApprovedVariances } from "@/selectors/varianceSelectors";
 import { getDropdownCoreUsers, getCoreUsersHash } from "@/selectors/userSelectors";
-import {
-  fetchPartyRelationshipTypes,
-  fetchPartyRelationships,
-} from "@/actionCreators/partiesActionCreator";
+import { fetchPartyRelationships } from "@/actionCreators/partiesActionCreator";
 import { fetchApplications } from "@/actionCreators/applicationActionCreator";
 import { fetchMineComplianceInfo } from "@/actionCreators/complianceActionCreator";
 import CustomPropTypes from "@/customPropTypes";
@@ -84,7 +81,6 @@ const propTypes = {
   createTailingsStorageFacility: PropTypes.func.isRequired,
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
   mineTenureHash: PropTypes.objectOf(PropTypes.string),
-  fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
   complianceCodes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -415,7 +411,6 @@ const mapDispatchToProps = (dispatch) =>
       openModal,
       closeModal,
       fetchPartyRelationships,
-      fetchPartyRelationshipTypes,
       fetchMineComplianceInfo,
       fetchApplications,
       fetchSubscribedMinesByUser,

@@ -23,11 +23,11 @@ import {
   fetchPartyRelationships,
 } from "@/actionCreators/partiesActionCreator";
 import { createTailingsStorageFacility } from "@/actionCreators/mineActionCreator";
+import { getPartyRelationships } from "@/selectors/partiesSelectors";
 import {
   getPartyRelationshipTypes,
-  getPartyRelationshipTypesList,
-  getPartyRelationships,
-} from "@/selectors/partiesSelectors";
+  getPartyRelationshipTypesOptions,
+} from "@/selectors/staticContentSelectors";
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
@@ -35,7 +35,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   partyRelationshipTypes: PropTypes.arrayOf(CustomPropTypes.partyRelationshipType),
-  partyRelationshipTypesList: PropTypes.arrayOf(CustomPropTypes.dropdownListItem),
+  getPartyRelationshipTypesOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem),
   addPartyRelationship: PropTypes.func.isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
@@ -48,7 +48,7 @@ const propTypes = {
 
 const defaultProps = {
   partyRelationshipTypes: [],
-  partyRelationshipTypesList: [],
+  getPartyRelationshipTypesOptions: [],
   partyRelationships: [],
 };
 
@@ -83,7 +83,7 @@ export class ViewPartyRelationships extends Component {
   };
 
   openAddPartyRelationshipModal = (value, onSubmit, handleChange, onPartySubmit, title, mine) => {
-    if (!this.props.partyRelationshipTypesList) return;
+    if (!this.props.getPartyRelationshipTypesOptions) return;
 
     if (value.mine_party_appt_type_code === "PMT") {
       this.RoleConfirmation.current.click();
@@ -118,7 +118,7 @@ export class ViewPartyRelationships extends Component {
     });
 
   openEditPartyRelationshipModal = (partyRelationship, onSubmit, handleChange, mine) => {
-    if (!this.props.partyRelationshipTypesList) return;
+    if (!this.props.getPartyRelationshipTypesOptions) return;
     this.setState({
       selectedPartyRelationship: partyRelationship,
     });
@@ -127,7 +127,7 @@ export class ViewPartyRelationships extends Component {
         onSubmit,
         handleChange,
         title: `Update ${
-          this.props.partyRelationshipTypesList.find(
+          this.props.getPartyRelationshipTypesOptions.find(
             ({ value }) => value === partyRelationship.mine_party_appt_type_code
           ).label
         }: ${partyRelationship.party.name}`,
@@ -191,7 +191,7 @@ export class ViewPartyRelationships extends Component {
           <InactiveContact
             partyRelationshipTypeCode={typeCode}
             partyRelationshipTitle={
-              this.props.partyRelationshipTypesList.find((x) => x.value === typeCode).label
+              this.props.getPartyRelationshipTypesOptions.find((x) => x.value === typeCode).label
             }
             mine={this.props.mine}
           />
@@ -245,12 +245,12 @@ export class ViewPartyRelationships extends Component {
 
   renderPartyRelationship = (partyRelationship) => {
     if (
-      this.props.partyRelationshipTypesList.length <= 0 ||
+      this.props.getPartyRelationshipTypesOptions.length <= 0 ||
       this.props.partyRelationshipTypes.length <= 0
     )
       return <div />;
 
-    const partyRelationshipTitle = this.props.partyRelationshipTypesList.find(
+    const partyRelationshipTitle = this.props.getPartyRelationshipTypesOptions.find(
       ({ value }) => value === partyRelationship.mine_party_appt_type_code
     ).label;
 
@@ -369,7 +369,7 @@ export class ViewPartyRelationships extends Component {
 
   render() {
     if (
-      !this.props.partyRelationshipTypesList.length > 0 ||
+      !this.props.getPartyRelationshipTypesOptions.length > 0 ||
       !this.props.partyRelationshipTypes.length > 0
     )
       return <Loading />;
@@ -430,7 +430,7 @@ export class ViewPartyRelationships extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  partyRelationshipTypesList: getPartyRelationshipTypesList(state),
+  getPartyRelationshipTypesOptions: getPartyRelationshipTypesOptions(state),
   partyRelationshipTypes: getPartyRelationshipTypes(state),
   partyRelationships: getPartyRelationships(state),
 });

@@ -6,7 +6,6 @@ const baseExpectedValue = {
   rawParties: [],
   partyIds: [],
   partyRelationships: [],
-  partyRelationshipTypes: [],
   partyPageData: {},
   addPartyFormState: {},
   lastCreatedParty: {},

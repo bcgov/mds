@@ -19,6 +19,7 @@ import {
   fetchProvinceCodes,
   fetchMineComplianceCodes,
   fetchVarianceStatusOptions,
+  fetchPartyRelationshipTypes,
   fetchMineCommodityOptions,
 } from "@/actionCreators/staticContentActionCreator";
 
@@ -63,6 +64,7 @@ export const FetchOnMount = (WrappedComponent) => {
       props.fetchVarianceStatusOptions();
       props.fetchMineIncidentDeterminationOptions();
       props.fetchMineCommodityOptions();
+      props.fetchPartyRelationshipTypes();
       props.setOptionsLoaded();
     }
     return <WrappedComponent {...props} />;
@@ -91,6 +93,7 @@ export const FetchOnMount = (WrappedComponent) => {
         fetchProvinceCodes,
         fetchMineComplianceCodes,
         fetchVarianceStatusOptions,
+        fetchPartyRelationshipTypes,
         fetchMineCommodityOptions,
       },
       dispatch

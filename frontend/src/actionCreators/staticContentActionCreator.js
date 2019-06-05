@@ -164,3 +164,14 @@ export const fetchVarianceStatusOptions = () => (dispatch) => {
     })
     .catch(() => dispatch(error(reducerTypes.GET_VARIANCE_STATUS_OPTIONS)));
 };
+
+export const fetchPartyRelationshipTypes = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_PARTY_RELATIONSHIP_TYPES));
+  return CustomAxios()
+    .get(`${ENVIRONMENT.apiUrl + API.PARTY}/mines/relationship-types`, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_PARTY_RELATIONSHIP_TYPES));
+      dispatch(staticContentActions.storePartyRelationshipTypes(response.data));
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_PARTY_RELATIONSHIP_TYPES)));
+};

@@ -14,7 +14,6 @@ import {
   createMineRecord,
   fetchMineRecordsForMap,
 } from "@/actionCreators/mineActionCreator";
-import { fetchPartyRelationshipTypes } from "@/actionCreators/partiesActionCreator";
 import { getMines, getMineIds, getMinesPageData } from "@/selectors/mineSelectors";
 import {
   getMineRegionHash,
@@ -55,7 +54,6 @@ const propTypes = {
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
   mineIds: PropTypes.arrayOf(PropTypes.string).isRequired,
   pageData: CustomPropTypes.minePageData.isRequired,
-  fetchPartyRelationshipTypes: PropTypes.func.isRequired,
 };
 
 const joinOrRemove = (param, key) => (isEmpty(param) ? {} : { [key]: param.join(",") });
@@ -452,7 +450,6 @@ const mapDispatchToProps = (dispatch) =>
       createMineRecord,
       openModal,
       closeModal,
-      fetchPartyRelationshipTypes,
     },
     dispatch
   );

@@ -8,7 +8,6 @@ const reducerProps = {};
 
 const setupDispatchProps = () => {
   dispatchProps.fetchSearchOptions = jest.fn();
-  dispatchProps.fetchPartyRelationshipTypes = jest.fn();
   dispatchProps.fetchSearchResults = jest.fn();
 };
 

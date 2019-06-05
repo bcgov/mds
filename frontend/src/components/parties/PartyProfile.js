@@ -8,21 +8,19 @@ import { Tabs, Icon, Table, Button, Popconfirm } from "antd";
 import { uniq } from "lodash";
 import {
   fetchPartyById,
-  fetchPartyRelationshipTypes,
   fetchPartyRelationships,
   updateParty,
   deleteParty,
 } from "@/actionCreators/partiesActionCreator";
-import { getDropdownProvinceOptions } from "@/selectors/staticContentSelectors";
+import {
+  getDropdownProvinceOptions,
+  getPartyRelationshipTypeHash,
+} from "@/selectors/staticContentSelectors";
 import { EDIT } from "@/constants/assets";
 import { openModal, closeModal } from "@/actions/modalActions";
 import { modalConfig } from "@/components/modalContent/config";
 import { fetchMineBasicInfoList } from "@/actionCreators/mineActionCreator";
-import {
-  getParties,
-  getPartyRelationships,
-  getPartyRelationshipTypeHash,
-} from "@/selectors/partiesSelectors";
+import { getParties, getPartyRelationships } from "@/selectors/partiesSelectors";
 import { getMineBasicInfoListHash } from "@/selectors/mineSelectors";
 import Loading from "@/components/common/Loading";
 import * as router from "@/constants/routes";
@@ -42,7 +40,6 @@ const { TabPane } = Tabs;
 
 const propTypes = {
   fetchPartyById: PropTypes.func.isRequired,
-  fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
   fetchMineBasicInfoList: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
@@ -73,7 +70,6 @@ export class PartyProfile extends Component {
     this.props.fetchPartyRelationships({ party_guid: id, relationships: "party" }).then(() => {
       const mine_guids = uniq(this.props.partyRelationships.map(({ mine_guid }) => mine_guid));
       this.props.fetchMineBasicInfoList(mine_guids).then(() => {
-        this.props.fetchPartyRelationshipTypes();
         this.setState({ isLoaded: true });
       });
     });
@@ -270,7 +266,6 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchPartyById,
-      fetchPartyRelationshipTypes,
       fetchPartyRelationships,
       fetchMineBasicInfoList,
       deleteParty,

@@ -22,6 +22,7 @@ const setupDispatchProps = () => {
   dispatchProps.fetchVarianceStatusOptions = jest.fn();
   dispatchProps.fetchMineIncidentDeterminationOptions = jest.fn();
   dispatchProps.fetchMineCommodityOptions = jest.fn();
+  dispatchProps.fetchPartyRelationshipTypes = jest.fn();
 };
 
 const setupProps = () => {

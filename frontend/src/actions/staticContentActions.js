@@ -73,3 +73,8 @@ export const storeVarianceStatusOptions = (payload) => ({
   type: ActionTypes.STORE_VARIANCE_STATUS_OPTIONS,
   payload,
 });
+
+export const storePartyRelationshipTypes = (payload) => ({
+  type: ActionTypes.STORE_PARTY_RELATIONSHIP_TYPES,
+  payload,
+});
