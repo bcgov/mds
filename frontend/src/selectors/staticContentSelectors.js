@@ -194,82 +194,36 @@ export const getVarianceStatusOptionsHash = createSelector(
   createLabelHash
 );
 
-// const itemInList = (itemList, itemToAdd) => {
-//   let item = itemList.find((x) => x.value === itemToAdd.code);
+const transformMineStatusSubReason = (reasons) =>
+  chain(reasons)
+    .groupBy((s) => s.mine_operation_status_sub_reason.mine_operation_status_sub_reason_code)
+    .filter((g) => g[0].mine_operation_status_sub_reason.mine_operation_status_sub_reason_code)
+    .map((subreasons) => ({
+      value: subreasons[0].mine_operation_status_sub_reason.mine_operation_status_sub_reason_code,
+      label: subreasons[0].mine_operation_status_sub_reason.description,
+    }))
+    .value();
 
-//   if (item === undefined) {
-//     item = {
-//       value: itemToAdd.code,
-//       label: itemToAdd.label,
-//       children: [],
-//     };
-//     itemList.push(item);
-//   }
+const transformMineStatusReason = (codes) =>
+  chain(codes)
+    .groupBy((s) => s.mine_operation_status_reason.mine_operation_status_reason_code)
+    .filter((g) => g[0].mine_operation_status_reason.mine_operation_status_reason_code)
+    .map((reasons) => ({
+      value: reasons[0].mine_operation_status_reason.mine_operation_status_reason_code,
+      label: reasons[0].mine_operation_status_reason.description,
+      children: transformMineStatusSubReason(reasons),
+    }))
+    .value();
 
-//   return item;
-// };
-
-const transformMineStatus = (data) => {
-  const result = chain(data)
-    .groupBy((status) => status.mine_operation_status.mine_operation_status_code)
-    .map((statusCodeGroup) => ({
-      value: statusCodeGroup[0].mine_operation_status.mine_operation_status_code,
-      label: statusCodeGroup[0].mine_operation_status.description,
-      children: chain(statusCodeGroup)
-        .groupBy((status) => status.mine_operation_status_reason.mine_operation_status_reason_code)
-        .filter(
-          (statusReasonGroup) =>
-            statusReasonGroup[0].mine_operation_status_reason.mine_operation_status_reason_code
-        )
-        .map((statusReasonGroup) => ({
-          value:
-            statusReasonGroup[0].mine_operation_status_reason.mine_operation_status_reason_code,
-          label: statusReasonGroup[0].mine_operation_status_reason.description,
-          children: chain(statusReasonGroup)
-            .groupBy(
-              (status) =>
-                status.mine_operation_status_sub_reason.mine_operation_status_sub_reason_code
-            )
-            .filter(
-              (statusSubReasonGroup) =>
-                statusSubReasonGroup[0].mine_operation_status_sub_reason
-                  .mine_operation_status_sub_reason_code
-            )
-            .map((statusSubReasonGroup) => ({
-              value:
-                statusSubReasonGroup[0].mine_operation_status_sub_reason
-                  .mine_operation_status_sub_reason_code,
-              label: statusSubReasonGroup[0].mine_operation_status_sub_reason.description,
-              children: [],
-            }))
-            .value(),
-        }))
-        .value(),
-    }));
-
-  // const result = [];
-
-  // data.forEach((status) => {
-  //   const code = itemInList(result, {
-  //     code: status.mine_operation_status.mine_operation_status_code,
-  //     label: status.mine_operation_status.description,
-  //   });
-  //   if (status.mine_operation_status_reason.mine_operation_status_reason_code !== null) {
-  //     const reason = itemInList(code.children, {
-  //       code: status.mine_operation_status_reason.mine_operation_status_reason_code,
-  //       label: status.mine_operation_status_reason.description,
-  //     });
-  //     if (status.mine_operation_status_sub_reason.mine_operation_status_sub_reason_code !== null) {
-  //       itemInList(reason.children, {
-  //         code: status.mine_operation_status_sub_reason.mine_operation_status_sub_reason_code,
-  //         label: status.mine_operation_status_sub_reason.description,
-  //       });
-  //     }
-  //   }
-  // });
-  alert(JSON.stringify(result));
-  return result.value();
-};
+const transformMineStatus = (data) =>
+  chain(data)
+    .groupBy((s) => s.mine_operation_status.mine_operation_status_code)
+    .map((codes) => ({
+      value: codes[0].mine_operation_status.mine_operation_status_code,
+      label: codes[0].mine_operation_status.description,
+      children: transformMineStatusReason(codes),
+    }))
+    .value();
 
 export const getMineStatusDropDownOptions = createSelector(
   getMineStatusOptions,
