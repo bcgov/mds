@@ -193,12 +193,16 @@ export const getVarianceStatusOptionsHash = createSelector(
   createLabelHash
 );
 
-const itemInList = (child, itemToAdd) => {
-  let item = child.find((x) => x.value === itemToAdd.code);
+const itemInList = (itemList, itemToAdd) => {
+  let item = itemList.find((x) => x.value === itemToAdd.code);
 
   if (item === undefined) {
-    item = { value: itemToAdd.code, label: itemToAdd.label, children: [] };
-    child.push(item);
+    item = {
+      value: itemToAdd.code,
+      label: itemToAdd.label,
+      children: [],
+    };
+    itemList.push(item);
   }
 
   return item;
