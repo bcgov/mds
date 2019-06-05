@@ -13,26 +13,15 @@ const setupDispatchProps = () => {
   dispatchProps.subscribe = jest.fn();
   dispatchProps.unSubscribe = jest.fn();
   dispatchProps.createVariance = jest.fn();
-  dispatchProps.fetchMineComplianceCodes = jest.fn();
   dispatchProps.fetchVariancesByMine = jest.fn();
   dispatchProps.fetchStatusOptions = jest.fn();
-  dispatchProps.fetchMineDisturbanceOptions = jest.fn();
-  dispatchProps.fetchRegionOptions = jest.fn();
-  dispatchProps.fetchMineTenureTypes = jest.fn();
-  dispatchProps.fetchMineCommodityOptions = jest.fn();
   dispatchProps.fetchRelationshipTypes = jest.fn();
   dispatchProps.fetchPartyRelationshipTypes = jest.fn();
   dispatchProps.fetchPartyRelationships = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchPermitStatusOptions = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchApplicationStatusOptions = jest.fn();
-  dispatchProps.fetchMineIncidentDeterminationOptions = jest.fn();
-  dispatchProps.fetchMineIncidentFollowActionOptions = jest.fn();
-  dispatchProps.setOptionsLoaded = jest.fn();
   dispatchProps.fetchCoreUsers = jest.fn();
   dispatchProps.match = {};
   dispatchProps.fetchCoreUsers = jest.fn();
   dispatchProps.updateVariance = jest.fn();
-  dispatchProps.fetchVarianceStatusOptions = jest.fn();
 };
 
 const setupReducerProps = () => {

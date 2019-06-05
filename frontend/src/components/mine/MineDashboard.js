@@ -18,20 +18,6 @@ import {
   subscribe,
 } from "@/actionCreators/mineActionCreator";
 import {
-  fetchStatusOptions,
-  fetchRegionOptions,
-  fetchMineTenureTypes,
-  fetchMineDisturbanceOptions,
-  fetchMineCommodityOptions,
-  fetchPermitStatusOptions,
-  fetchApplicationStatusOptions,
-  fetchMineComplianceCodes,
-  fetchMineIncidentFollowActionOptions,
-  fetchMineIncidentDeterminationOptions,
-  setOptionsLoaded,
-  fetchVarianceStatusOptions,
-} from "@/actionCreators/staticContentActionCreator";
-import {
   getMines,
   getCurrentMineTypes,
   getTransformedMineTypes,
@@ -53,7 +39,6 @@ import {
   getMultiSelectComplianceCodes,
   getDropdownVarianceStatusOptions,
   getVarianceStatusOptionsHash,
-  getOptionsLoaded,
 } from "@/selectors/staticContentSelectors";
 import { getMineComplianceInfo } from "@/selectors/complianceSelectors";
 import { getVarianceApplications, getApprovedVariances } from "@/selectors/varianceSelectors";
@@ -98,27 +83,20 @@ const propTypes = {
   createVariance: PropTypes.func.isRequired,
   createTailingsStorageFacility: PropTypes.func.isRequired,
   fetchStatusOptions: PropTypes.func.isRequired,
-  setOptionsLoaded: PropTypes.func.isRequired,
-  fetchMineTenureTypes: PropTypes.func.isRequired,
-  fetchMineComplianceCodes: PropTypes.func.isRequired,
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
   mineTenureHash: PropTypes.objectOf(PropTypes.string),
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
-  optionsLoaded: PropTypes.bool.isRequired,
   complianceCodes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineComplianceInfo: CustomPropTypes.mineComplianceInfo,
   fetchMineComplianceInfo: PropTypes.func.isRequired,
   fetchApplications: PropTypes.func.isRequired,
-  fetchMineIncidentFollowActionOptions: PropTypes.func.isRequired,
-  fetchMineIncidentDeterminationOptions: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   varianceStatusOptions: CustomPropTypes.options.isRequired,
   updateVariance: PropTypes.func.isRequired,
   varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  fetchVarianceStatusOptions: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -147,23 +125,8 @@ export class MineDashboard extends Component {
   componentWillMount() {
     const { id, activeTab } = this.props.match.params;
     this.loadMineData(id);
-    if (!this.props.optionsLoaded) {
-      this.props.fetchStatusOptions();
-      this.props.fetchRegionOptions();
-      this.props.fetchMineTenureTypes();
-      this.props.fetchMineDisturbanceOptions();
-      this.props.fetchMineCommodityOptions();
-      this.props.fetchPartyRelationshipTypes();
-      this.props.fetchPermitStatusOptions();
-      this.props.fetchApplicationStatusOptions();
-      this.props.fetchMineIncidentFollowActionOptions();
-      this.props.fetchMineIncidentDeterminationOptions();
-      this.props.setOptionsLoaded();
-    }
-    this.props.fetchMineComplianceCodes();
     this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
     this.props.fetchSubscribedMinesByUser();
-    this.props.fetchVarianceStatusOptions();
     this.props.fetchCoreUsers();
     if (activeTab) {
       this.setState({ activeTab });
@@ -429,7 +392,6 @@ const mapStateToProps = (state) => ({
   mineDisturbanceOptionsHash: getDisturbanceOptionHash(state),
   currentMineTypes: getCurrentMineTypes(state),
   transformedMineTypes: getTransformedMineTypes(state),
-  optionsLoaded: getOptionsLoaded(state),
   subscribed: getIsUserSubscribed(state),
   approvedVariances: getApprovedVariances(state),
   varianceApplications: getVarianceApplications(state),
@@ -448,11 +410,6 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchMineRecordById,
-      fetchStatusOptions,
-      fetchRegionOptions,
-      fetchMineTenureTypes,
-      fetchMineDisturbanceOptions,
-      fetchMineCommodityOptions,
       updateMineRecord,
       createTailingsStorageFacility,
       removeMineType,
@@ -460,9 +417,6 @@ const mapDispatchToProps = (dispatch) =>
       closeModal,
       fetchPartyRelationships,
       fetchPartyRelationshipTypes,
-      fetchPermitStatusOptions,
-      fetchApplicationStatusOptions,
-      setOptionsLoaded,
       fetchMineComplianceInfo,
       fetchApplications,
       fetchSubscribedMinesByUser,
@@ -472,11 +426,7 @@ const mapDispatchToProps = (dispatch) =>
       createVariance,
       addDocumentToVariance,
       fetchVariancesByMine,
-      fetchMineComplianceCodes,
       fetchCoreUsers,
-      fetchMineIncidentFollowActionOptions,
-      fetchMineIncidentDeterminationOptions,
-      fetchVarianceStatusOptions,
       updateVariance,
     },
     dispatch

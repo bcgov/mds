@@ -40,49 +40,7 @@ ShallowWrapper {
       ]
     }
     createVariance={[MockFunction]}
-    fetchApplicationStatusOptions={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
-    }
     fetchCoreUsers={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
-    }
-    fetchMineCommodityOptions={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
-    }
-    fetchMineComplianceCodes={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
-    }
-    fetchMineDisturbanceOptions={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
-    }
-    fetchMineIncidentDeterminationOptions={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
-    }
-    fetchMineIncidentFollowActionOptions={
       [MockFunction] {
         "calls": Array [
           Array [],
@@ -98,20 +56,7 @@ ShallowWrapper {
         ],
       }
     }
-    fetchMineTenureTypes={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
-    }
-    fetchPartyRelationshipTypes={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
-    }
+    fetchPartyRelationshipTypes={[MockFunction]}
     fetchPartyRelationships={
       [MockFunction] {
         "calls": Array [
@@ -124,36 +69,9 @@ ShallowWrapper {
         ],
       }
     }
-    fetchPermitStatusOptions={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
-    }
-    fetchRegionOptions={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
-    }
     fetchRelationshipTypes={[MockFunction]}
-    fetchStatusOptions={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
-    }
+    fetchStatusOptions={[MockFunction]}
     fetchSubscribedMinesByUser={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
-    }
-    fetchVarianceStatusOptions={
       [MockFunction] {
         "calls": Array [
           Array [],
@@ -561,13 +479,6 @@ ShallowWrapper {
             "verifying_user": null,
           },
         },
-      }
-    }
-    setOptionsLoaded={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
       }
     }
     subscribe={[MockFunction]}

@@ -8,11 +8,6 @@ import {
   getMineTenureTypesHash,
   getCommodityOptionHash,
 } from "@/selectors/staticContentSelectors";
-import {
-  fetchRegionOptions,
-  fetchMineTenureTypes,
-  fetchMineCommodityOptions,
-} from "@/actionCreators/staticContentActionCreator";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import { getSubscribedMines } from "@/selectors/mineSelectors";
@@ -26,9 +21,6 @@ import { MineSubscriptionTable } from "./MineSubscriptionTable";
 
 const propTypes = {
   fetchSubscribedMinesByUser: PropTypes.func.isRequired,
-  fetchMineTenureTypes: PropTypes.func.isRequired,
-  fetchRegionOptions: PropTypes.func.isRequired,
-  fetchMineCommodityOptions: PropTypes.func.isRequired,
   unSubscribe: PropTypes.func.isRequired,
   subscribedMines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -39,9 +31,6 @@ const propTypes = {
 export class CustomHomePage extends Component {
   componentDidMount() {
     this.props.fetchSubscribedMinesByUser();
-    this.props.fetchMineTenureTypes();
-    this.props.fetchRegionOptions();
-    this.props.fetchMineCommodityOptions();
   }
 
   handleUnSubscribe = (event, mineGuid, mineName) => {
@@ -85,9 +74,6 @@ const mapDispatchToProps = (dispatch) =>
     {
       fetchSubscribedMinesByUser,
       unSubscribe,
-      fetchRegionOptions,
-      fetchMineTenureTypes,
-      fetchMineCommodityOptions,
     },
     dispatch
   );

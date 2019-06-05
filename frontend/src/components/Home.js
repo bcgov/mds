@@ -1,9 +1,29 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { compose, bindActionCreators } from "redux";
 import { Layout, BackTop, Button, Icon } from "antd";
 import PropTypes from "prop-types";
 import MediaQuery from "react-responsive";
 import LoadingBar from "react-redux-loading-bar";
 import DashboardRoutes from "@/routes/DashboardRoutes";
+import {
+  fetchMineDisturbanceOptions,
+  fetchStatusOptions,
+  fetchRegionOptions,
+  fetchMineTenureTypes,
+  fetchMineTailingsRequiredDocuments,
+  fetchExpectedDocumentStatusOptions,
+  fetchPermitStatusOptions,
+  fetchApplicationStatusOptions,
+  fetchMineIncidentFollowActionOptions,
+  fetchMineIncidentDeterminationOptions,
+  setOptionsLoaded,
+  fetchProvinceCodes,
+  fetchMineComplianceCodes,
+  fetchVarianceStatusOptions,
+  fetchMineCommodityOptions,
+} from "@/actionCreators/staticContentActionCreator";
+import { getOptionsLoaded } from "@/selectors/staticContentSelectors";
 import { AuthenticationGuard } from "@/HOC/AuthenticationGuard";
 import NavBar from "./navigation/NavBar";
 import WarningBanner from "@/components/common/WarningBanner";
@@ -20,6 +40,22 @@ import {
 
 const propTypes = {
   location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
+  fetchMineDisturbanceOptions: PropTypes.func.isRequired,
+  fetchStatusOptions: PropTypes.func.isRequired,
+  fetchRegionOptions: PropTypes.func.isRequired,
+  fetchMineTenureTypes: PropTypes.func.isRequired,
+  fetchMineTailingsRequiredDocuments: PropTypes.func.isRequired,
+  fetchExpectedDocumentStatusOptions: PropTypes.func.isRequired,
+  fetchPermitStatusOptions: PropTypes.func.isRequired,
+  fetchApplicationStatusOptions: PropTypes.func.isRequired,
+  fetchMineIncidentFollowActionOptions: PropTypes.func.isRequired,
+  setOptionsLoaded: PropTypes.func.isRequired,
+  fetchProvinceCodes: PropTypes.func.isRequired,
+  fetchMineComplianceCodes: PropTypes.func.isRequired,
+  fetchVarianceStatusOptions: PropTypes.func.isRequired,
+  fetchMineIncidentDeterminationOptions: PropTypes.func.isRequired,
+  fetchMineCommodityOptions: PropTypes.func.isRequired,
+  optionsLoaded: PropTypes.bool.isRequired,
 };
 
 export class Home extends Component {
@@ -39,6 +75,7 @@ export class Home extends Component {
       isDev: detectDevelopmentEnvironment(),
     });
     this.handleActiveButton(this.props.location.pathname);
+    this.fetchStaticContent();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -48,6 +85,26 @@ export class Home extends Component {
       this.setState({ isMenuOpen: false });
     }
   }
+
+  fetchStaticContent = () => {
+    if (!this.props.optionsLoaded) {
+      this.props.fetchMineDisturbanceOptions();
+      this.props.fetchStatusOptions();
+      this.props.fetchRegionOptions();
+      this.props.fetchMineTenureTypes();
+      this.props.fetchMineTailingsRequiredDocuments();
+      this.props.fetchExpectedDocumentStatusOptions();
+      this.props.fetchPermitStatusOptions();
+      this.props.fetchApplicationStatusOptions();
+      this.props.fetchMineIncidentFollowActionOptions();
+      this.props.fetchProvinceCodes();
+      this.props.fetchMineComplianceCodes();
+      this.props.fetchVarianceStatusOptions();
+      this.props.fetchMineIncidentDeterminationOptions();
+      this.props.fetchMineCommodityOptions();
+      this.props.setOptionsLoaded();
+    }
+  };
 
   handleActiveButton = (path) => {
     this.setState({ activeNavButton: path });
@@ -109,4 +166,38 @@ export class Home extends Component {
 
 Home.propTypes = propTypes;
 
-export default AuthenticationGuard(Home);
+const mapStateToProps = (state) => ({
+  optionsLoaded: getOptionsLoaded(state),
+});
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      fetchMineDisturbanceOptions,
+      fetchStatusOptions,
+      fetchRegionOptions,
+      fetchMineTenureTypes,
+      fetchMineTailingsRequiredDocuments,
+      fetchExpectedDocumentStatusOptions,
+      fetchPermitStatusOptions,
+      fetchApplicationStatusOptions,
+      fetchMineIncidentFollowActionOptions,
+      fetchMineIncidentDeterminationOptions,
+      setOptionsLoaded,
+      fetchProvinceCodes,
+      fetchMineComplianceCodes,
+      fetchVarianceStatusOptions,
+      fetchMineCommodityOptions,
+    },
+    dispatch
+  );
+
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  AuthenticationGuard
+)(Home);
+
+// export default AuthenticationGuard(Home);

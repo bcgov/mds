@@ -30,13 +30,6 @@ ShallowWrapper {
         ],
       }
     }
-    fetchProvinceCodes={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
-    }
     history={
       Object {
         "location": Object {},

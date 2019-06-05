@@ -14,10 +14,6 @@ import {
   updateExpectedDocument,
 } from "@/actionCreators/mineActionCreator";
 import {
-  fetchExpectedDocumentStatusOptions,
-  fetchMineTailingsRequiredDocuments,
-} from "@/actionCreators/staticContentActionCreator";
-import {
   getExpectedDocumentStatusOptions,
   getMineTSFRequiredReports,
 } from "@/selectors/staticContentSelectors";
@@ -34,23 +30,16 @@ const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  fetchExpectedDocumentStatusOptions: PropTypes.func.isRequired,
   expectedDocumentStatusOptions: PropTypes.arrayOf(CustomPropTypes.mineExpectedDocumentStatus)
     .isRequired,
   updateExpectedDocument: PropTypes.func.isRequired,
   removeExpectedDocument: PropTypes.func.isRequired,
   mineTSFRequiredReports: PropTypes.arrayOf(PropTypes.any).isRequired,
-  fetchMineTailingsRequiredDocuments: PropTypes.func.isRequired,
   createMineExpectedDocument: PropTypes.func.isRequired,
 };
 
 export class MineTailingsInfo extends Component {
   state = { selectedDocument: {} };
-
-  componentDidMount() {
-    this.props.fetchExpectedDocumentStatusOptions();
-    this.props.fetchMineTailingsRequiredDocuments();
-  }
 
   handleAddReportSubmit = (value) => {
     const requiredReport = this.props.mineTSFRequiredReports.find(
@@ -196,9 +185,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      fetchExpectedDocumentStatusOptions,
       updateExpectedDocument,
-      fetchMineTailingsRequiredDocuments,
       removeExpectedDocument,
       createMineExpectedDocument,
     },

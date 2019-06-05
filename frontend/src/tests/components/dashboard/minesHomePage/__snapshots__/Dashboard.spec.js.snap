@@ -6,41 +6,6 @@ ShallowWrapper {
   Symbol(enzyme.__unrendered__): <Dashboard
     closeModal={[MockFunction]}
     createMineRecord={[MockFunction]}
-    fetchApplicationStatusOptions={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
-    }
-    fetchMineCommodityOptions={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
-    }
-    fetchMineDisturbanceOptions={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
-    }
-    fetchMineIncidentDeterminationOptions={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
-    }
-    fetchMineIncidentFollowActionOptions={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
-    }
     fetchMineRecords={
       [MockFunction] {
         "calls": Array [
@@ -50,41 +15,7 @@ ShallowWrapper {
         ],
       }
     }
-    fetchMineTenureTypes={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
-    }
-    fetchPartyRelationshipTypes={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
-    }
-    fetchPermitStatusOptions={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
-    }
-    fetchRegionOptions={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
-    }
-    fetchStatusOptions={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
-    }
+    fetchPartyRelationshipTypes={[MockFunction]}
     history={
       Object {
         "location": Object {},
@@ -441,13 +372,6 @@ ShallowWrapper {
         "prev_num": null,
         "total": 9000,
         "total_pages": 360,
-      }
-    }
-    setOptionsLoaded={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
       }
     }
   />,

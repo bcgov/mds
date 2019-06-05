@@ -4,27 +4,6 @@ exports[`CustomHomePage renders properly 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <CustomHomePage
-    fetchMineCommodityOptions={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
-    }
-    fetchMineTenureTypes={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
-    }
-    fetchRegionOptions={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
-    }
     fetchSubscribedMinesByUser={
       [MockFunction] {
         "calls": Array [

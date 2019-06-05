@@ -29,21 +29,7 @@ ShallowWrapper {
         },
       ]
     }
-    fetchExpectedDocumentStatusOptions={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
-    }
     fetchMineRecordById={[MockFunction]}
-    fetchMineTailingsRequiredDocuments={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
-    }
     match={Object {}}
     mine={
       Object {

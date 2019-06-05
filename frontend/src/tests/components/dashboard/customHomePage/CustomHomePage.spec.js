@@ -8,9 +8,6 @@ const reducerProps = {};
 
 const setupDispatchProps = () => {
   dispatchProps.fetchSubscribedMinesByUser = jest.fn();
-  dispatchProps.fetchMineTenureTypes = jest.fn();
-  dispatchProps.fetchRegionOptions = jest.fn();
-  dispatchProps.fetchMineCommodityOptions = jest.fn();
   dispatchProps.unSubscribe = jest.fn();
 };
 

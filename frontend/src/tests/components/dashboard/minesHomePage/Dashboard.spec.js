@@ -11,19 +11,9 @@ const reducerProps = {};
 const setupDispatchProps = () => {
   dispatchProps.fetchMineRecords = jest.fn(() => Promise.resolve({}));
   dispatchProps.createMineRecord = jest.fn();
-  dispatchProps.fetchStatusOptions = jest.fn();
-  dispatchProps.fetchRegionOptions = jest.fn();
-  dispatchProps.fetchMineDisturbanceOptions = jest.fn();
-  dispatchProps.fetchMineTenureTypes = jest.fn();
-  dispatchProps.fetchMineCommodityOptions = jest.fn();
   dispatchProps.openModal = jest.fn();
   dispatchProps.closeModal = jest.fn();
   dispatchProps.fetchPartyRelationshipTypes = jest.fn();
-  dispatchProps.fetchPermitStatusOptions = jest.fn();
-  dispatchProps.fetchApplicationStatusOptions = jest.fn();
-  dispatchProps.fetchMineIncidentDeterminationOptions = jest.fn();
-  dispatchProps.fetchMineIncidentFollowActionOptions = jest.fn();
-  dispatchProps.setOptionsLoaded = jest.fn();
 };
 
 const setupReducerProps = () => {
@@ -63,8 +53,6 @@ describe("Dashboard", () => {
       const params = reducerProps.location.search;
       instance.renderDataFromURL(params);
       expect(renderDataFromURLSpy).toHaveBeenCalledWith(params);
-      expect(dispatchProps.fetchStatusOptions).toHaveBeenCalled();
-      expect(dispatchProps.fetchRegionOptions).toHaveBeenCalled();
     });
 
     it("componentDidMount without `params` from the URL", () => {
@@ -82,8 +70,6 @@ describe("Dashboard", () => {
           per_page: String.DEFAULT_PER_PAGE,
         })
       );
-      expect(dispatchProps.fetchStatusOptions).toHaveBeenCalled();
-      expect(dispatchProps.fetchRegionOptions).toHaveBeenCalled();
     });
   });
 });

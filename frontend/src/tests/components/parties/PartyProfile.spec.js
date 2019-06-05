@@ -10,7 +10,6 @@ const setupDispatchProps = () => {
   dispatchProps.fetchPartyById = jest.fn();
   dispatchProps.fetchPartyRelationships = jest.fn(() => Promise.resolve());
   dispatchProps.fetchPartyRelationshipTypes = jest.fn();
-  dispatchProps.fetchProvinceCodes = jest.fn();
   dispatchProps.fetchMineBasicInfoList = jest.fn();
   dispatchProps.openModal = jest.fn();
   dispatchProps.closrModal = jest.fn();

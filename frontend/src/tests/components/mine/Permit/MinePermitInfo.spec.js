@@ -8,7 +8,6 @@ const props = {};
 
 const setupDispatchProps = () => {
   dispatchProps.fetchPermits = jest.fn();
-  dispatchProps.fetchPermitStatusOptions = jest.fn();
 };
 
 const setupProps = () => {

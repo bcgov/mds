@@ -10,7 +10,6 @@ const reducerProps = {};
 
 const setupDispatchProps = () => {
   dispatchProps.fetchParties = jest.fn(() => Promise.resolve({}));
-  dispatchProps.fetchProvinceCodes = jest.fn();
   dispatchProps.fetchPartyRelationshipTypes = jest.fn(() => Promise.resolve({}));
   dispatchProps.openModal = jest.fn();
   dispatchProps.closeModal = jest.fn();

@@ -28,13 +28,6 @@ ShallowWrapper {
         ],
       }
     }
-    fetchProvinceCodes={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
-    }
     match={
       Object {
         "isExact": true,

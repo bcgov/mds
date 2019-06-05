@@ -18,8 +18,6 @@ const setupDispatchProps = () => {
   dispatchProps.fetchMineRecordById = jest.fn();
   dispatchProps.openModal = jest.fn();
   dispatchProps.closeModal = jest.fn();
-  dispatchProps.fetchExpectedDocumentStatusOptions = jest.fn();
-  dispatchProps.fetchMineTailingsRequiredDocuments = jest.fn();
 };
 
 beforeEach(() => {

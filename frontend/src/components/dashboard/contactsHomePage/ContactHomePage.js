@@ -13,7 +13,6 @@ import {
   fetchPartyRelationshipTypes,
 } from "@/actionCreators/partiesActionCreator";
 import * as FORM from "@/constants/forms";
-import { fetchProvinceCodes } from "@/actionCreators/staticContentActionCreator";
 import * as Permission from "@/constants/permissions";
 import { getDropdownProvinceOptions } from "@/selectors/staticContentSelectors";
 import {
@@ -39,7 +38,6 @@ import AddButton from "@/components/common/AddButton";
 
 const propTypes = {
   fetchParties: PropTypes.func.isRequired,
-  fetchProvinceCodes: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   change: PropTypes.func.isRequired,
@@ -68,7 +66,6 @@ export class ContactHomePage extends Component {
   componentWillMount() {
     // Fetch dependencies from API
     this.props.fetchPartyRelationshipTypes();
-    this.props.fetchProvinceCodes();
   }
 
   componentDidMount() {
@@ -257,7 +254,6 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchParties,
-      fetchProvinceCodes,
       createParty,
       fetchPartyRelationshipTypes,
       openModal,

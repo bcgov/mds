@@ -14,18 +14,6 @@ import {
   createMineRecord,
   fetchMineRecordsForMap,
 } from "@/actionCreators/mineActionCreator";
-import {
-  fetchStatusOptions,
-  fetchRegionOptions,
-  fetchMineTenureTypes,
-  fetchMineDisturbanceOptions,
-  fetchMineCommodityOptions,
-  fetchPermitStatusOptions,
-  fetchApplicationStatusOptions,
-  fetchMineIncidentFollowActionOptions,
-  fetchMineIncidentDeterminationOptions,
-  setOptionsLoaded,
-} from "@/actionCreators/staticContentActionCreator";
 import { fetchPartyRelationshipTypes } from "@/actionCreators/partiesActionCreator";
 import { getMines, getMineIds, getMinesPageData } from "@/selectors/mineSelectors";
 import {
@@ -36,7 +24,6 @@ import {
   getMineRegionOptions,
   getMineTenureTypeOptions,
   getDropdownCommodityOptions,
-  getOptionsLoaded,
 } from "@/selectors/staticContentSelectors";
 import MineList from "@/components/dashboard/minesHomePage/MineList";
 import MineSearch from "@/components/dashboard/minesHomePage/MineSearch";
@@ -61,10 +48,6 @@ const propTypes = {
   fetchMineRecords: PropTypes.func.isRequired,
   fetchMineRecordsForMap: PropTypes.func.isRequired,
   createMineRecord: PropTypes.func.isRequired,
-  fetchStatusOptions: PropTypes.func.isRequired,
-  setOptionsLoaded: PropTypes.func.isRequired,
-  fetchMineCommodityOptions: PropTypes.func.isRequired,
-  fetchMineDisturbanceOptions: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
@@ -72,11 +55,7 @@ const propTypes = {
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
   mineIds: PropTypes.arrayOf(PropTypes.string).isRequired,
   pageData: CustomPropTypes.minePageData.isRequired,
-  optionsLoaded: PropTypes.bool.isRequired,
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
-  fetchApplicationStatusOptions: PropTypes.func.isRequired,
-  fetchMineIncidentFollowActionOptions: PropTypes.func.isRequired,
-  fetchMineIncidentDeterminationOptions: PropTypes.func.isRequired,
 };
 
 const joinOrRemove = (param, key) => (isEmpty(param) ? {} : { [key]: param.join(",") });
@@ -130,19 +109,6 @@ export class Dashboard extends Component {
           per_page: String.DEFAULT_PER_PAGE,
         })
       );
-    }
-    if (!this.props.optionsLoaded) {
-      this.props.fetchStatusOptions();
-      this.props.fetchRegionOptions();
-      this.props.fetchMineTenureTypes();
-      this.props.fetchMineDisturbanceOptions();
-      this.props.fetchMineCommodityOptions();
-      this.props.fetchPartyRelationshipTypes();
-      this.props.fetchPermitStatusOptions();
-      this.props.fetchApplicationStatusOptions();
-      this.props.fetchMineIncidentFollowActionOptions();
-      this.props.fetchMineIncidentDeterminationOptions();
-      this.props.setOptionsLoaded();
     }
   }
 
@@ -476,7 +442,6 @@ const mapStateToProps = (state) => ({
   mineRegionOptions: getMineRegionOptions(state),
   mineTenureTypes: getMineTenureTypeOptions(state),
   mineCommodityOptions: getDropdownCommodityOptions(state),
-  optionsLoaded: getOptionsLoaded(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -484,20 +449,10 @@ const mapDispatchToProps = (dispatch) =>
     {
       fetchMineRecords,
       fetchMineRecordsForMap,
-      fetchStatusOptions,
-      fetchRegionOptions,
       createMineRecord,
-      fetchMineTenureTypes,
-      fetchMineCommodityOptions,
-      fetchMineDisturbanceOptions,
-      fetchPermitStatusOptions,
-      fetchApplicationStatusOptions,
       openModal,
       closeModal,
-      setOptionsLoaded,
       fetchPartyRelationshipTypes,
-      fetchMineIncidentFollowActionOptions,
-      fetchMineIncidentDeterminationOptions,
     },
     dispatch
   );
