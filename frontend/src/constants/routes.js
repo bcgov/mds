@@ -21,7 +21,7 @@ export const CUSTOM_HOME_PAGE = {
 };
 
 export const LOGOUT = {
-  route: "/logout-confirmed",
+  route: "/logout-confirmed/",
   component: Logout,
 };
 

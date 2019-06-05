@@ -17,12 +17,17 @@ const propTypes = {
 };
 
 export class Logout extends Component {
+  loggedIn = (this.props.keycloak && this.props.keycloak.logout) || localStorage.getItem("jwt");
+
   componentDidMount() {
-    this.handleLogout();
-    notification.success({
-      message: "You have successfully logged out of Core",
-      duration: 10,
-    });
+    if (this.loggedIn) {
+      this.handleLogout();
+    } else {
+      notification.success({
+        message: "You have successfully logged out of Core",
+        duration: 10,
+      });
+    }
   }
 
   handleLogout = () => {
@@ -37,15 +42,17 @@ export class Logout extends Component {
 
   render() {
     return (
-      <div className="logout-screen">
-        <img alt="mine_img" src={LOGO_PURPLE} />
-        <p>If you would like to return to CORE, please log in below</p>
-        <Link to={router.MINE_HOME_PAGE.route}>
-          <Button className="full-mobile" type="primary">
-            Log In
-          </Button>
-        </Link>
-      </div>
+      !this.loggedIn && (
+        <div className="logout-screen">
+          <img alt="mine_img" src={LOGO_PURPLE} />
+          <p>If you would like to return to CORE, please log in below</p>
+          <Link to={router.MINE_HOME_PAGE.route}>
+            <Button className="full-mobile" type="primary">
+              Log In
+            </Button>
+          </Link>
+        </div>
+      )
     );
   }
 }
