@@ -15,30 +15,27 @@ def register_apm(name=None):
 
     def wrap(func):
         def wrapped_f(*args, **kwargs):
-            config = None
-            result = None
+            client = None
             if current_app:
-                config = current_app.config['ELASTIC_APM']
-                apm_enabled = current_app.config['ELASTIC_ENABLED']
+                client = Client(current_app.config['ELASTIC_APM'])
             elif sched.app:
-                config = sched.app.app_context().app.config['ELASTIC_APM']
-                apm_enabled = sched.app.app_context().app.config['ELASTIC_ENABLED']
+                client = Client(sched.app.app_context().app.config['ELASTIC_APM'])
 
             _name = name if name is not None else func.__name__
 
-            client = Client(config)
-            if client and apm_enabled:
+            # ensure client was created properly
+            if client:
                 client.begin_transaction('registered_funcs')
                 try:
-                    result = func(*args, **kwargs)
+                    func(*args, **kwargs)
                     client.end_transaction(f'{_name} - success')
                 except Exception as e:
                     client.capture_exception()
                     client.end_transaction(f'{_name} - error')
                     raise e
             else:
-                print(f'Running <{_name}> without APM')
-                result = func(*args, **kwargs)
+                print(f'could not create ElasticAPM client... running <{_name}> without APM')
+                func(*args, **kwargs)
 
         return wrapped_f
 
