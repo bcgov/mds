@@ -15,6 +15,7 @@ db = SQLAlchemy()
 migrate = Migrate()
 jwt = JwtManager()
 sched = APScheduler()
+cache = Cache()
 
 api = Api(
     prefix=f'{Config.BASE_PATH}',
