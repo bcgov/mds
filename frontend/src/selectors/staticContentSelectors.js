@@ -197,7 +197,11 @@ const itemInList = (child, itemToAdd) => {
   let item = child.find((x) => x.value === itemToAdd.code);
 
   if (item === undefined) {
-    item = { value: itemToAdd.code, label: itemToAdd.label, children: [] };
+    item = {
+      value: itemToAdd.code,
+      label: itemToAdd.label,
+      children: [],
+    };
     child.push(item);
   }
 
@@ -218,11 +222,16 @@ const transformMineStatus = (data) => {
         label: status.mine_operation_status_reason.description,
       });
       if (status.mine_operation_status_sub_reason.mine_operation_status_sub_reason_code !== null) {
-        itemInList(reason.children, {
+        const subReason = itemInList(reason.children, {
           code: status.mine_operation_status_sub_reason.mine_operation_status_sub_reason_code,
           label: status.mine_operation_status_sub_reason.description,
         });
+        subReason.title = status.description;
+      } else {
+        reason.title = status.description;
       }
+    } else {
+      code.title = status.description;
     }
   });
   return statusOptions;

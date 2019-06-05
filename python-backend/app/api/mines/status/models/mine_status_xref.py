@@ -30,6 +30,7 @@ class MineStatusXref(AuditMixin, Base):
             'mine_operation_status_sub_reason_code.mine_operation_status_sub_reason_code'))
     mine_operation_status_sub_reason = db.relationship(
         'MineOperationStatusSubReasonCode', lazy='joined')
+    description = db.Column(db.String(1024))
 
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 

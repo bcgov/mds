@@ -228,5 +228,6 @@ MINE_STATUS_CODE_MODEL = api.model(
             'mine_status_xref_guid':fields.String(),
             'mine_operation_status':fields.Nested(MINE_OPERATION_STATUS_CODE_MODEL),
             'mine_operation_status_reason':fields.Nested(MINE_OPERATION_STATUS_REASON_CODE_MODEL),
-            'mine_operation_status_sub_reason':fields.Nested(MINE_OPERATION_STATUS_SUB_REASON_CODE_MODEL)
+            'mine_operation_status_sub_reason':fields.Nested(MINE_OPERATION_STATUS_SUB_REASON_CODE_MODEL),
+            'description': fields.String(),
     })

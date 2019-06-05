@@ -488,52 +488,24 @@ export const COORDINATES = [48.70707, -122.489504];
 export const STATUS_OPTIONS = {
   records: [
     {
-      mine_status_xref_guid: "d5c1d966-04ef-4bdb-b7b7-feaead5cf836",
-      mine_operation_status: {
-        mine_operation_status_code: "ABN",
-        description: "Abandoned",
-      },
-      mine_operation_status_reason: {
-        mine_operation_status_reason_code: null,
-        description: null,
-      },
-      mine_operation_status_sub_reason: {
-        mine_operation_status_sub_reason_code: null,
-        description: null,
-      },
-    },
-    {
-      mine_status_xref_guid: "d6ab34fd-d903-4eac-bdf5-65cf8009b8e9",
+      mine_status_xref_guid: "0b14738f-7980-49ba-b447-ff5a1859dded",
       mine_operation_status: {
         mine_operation_status_code: "CLD",
         description: "Closed",
       },
       mine_operation_status_reason: {
-        mine_operation_status_reason_code: null,
-        description: null,
+        mine_operation_status_reason_code: "ORP",
+        description: "Orphaned",
       },
       mine_operation_status_sub_reason: {
-        mine_operation_status_sub_reason_code: null,
-        description: null,
+        mine_operation_status_sub_reason_code: "LTM",
+        description: "Long Term Maintenance",
       },
+      description:
+        "The permittee is not able or available to meet permit obligations. The Ministry has taken over responsibility for the mine. Reclamation work is under way. There are long-term care and maintenance activities on site. Contractors are performing the work.",
     },
     {
-      mine_status_xref_guid: "251dc078-bb13-4cb9-b6dd-81310b9cb864",
-      mine_operation_status: {
-        mine_operation_status_code: "CLD",
-        description: "Closed",
-      },
-      mine_operation_status_reason: {
-        mine_operation_status_reason_code: "CM",
-        description: "Care & Maintenance",
-      },
-      mine_operation_status_sub_reason: {
-        mine_operation_status_sub_reason_code: null,
-        description: null,
-      },
-    },
-    {
-      mine_status_xref_guid: "0d85c5b2-2cc1-4e2e-8caa-33a6504d3032",
+      mine_status_xref_guid: "b001f941-2421-43a5-aade-f52fe4aecbd1",
       mine_operation_status: {
         mine_operation_status_code: "CLD",
         description: "Closed",
@@ -546,9 +518,28 @@ export const STATUS_OPTIONS = {
         mine_operation_status_sub_reason_code: "LTM",
         description: "Long Term Maintenance",
       },
+      description:
+        "The mine is closed and not expected to re-open. Reclamation work is under way. There are long-term care and maintenance activities on site. Permit and HSRC obligations are still in place. Site is subject to inspection and still has reporting to file with the Ministry.",
     },
     {
-      mine_status_xref_guid: "acc1195c-81e9-475a-8653-e58cc4893794",
+      mine_status_xref_guid: "1c04fe6a-ce61-4e0a-be69-2a4130dfaa18",
+      mine_operation_status: {
+        mine_operation_status_code: "CLD",
+        description: "Closed",
+      },
+      mine_operation_status_reason: {
+        mine_operation_status_reason_code: "ORP",
+        description: "Orphaned",
+      },
+      mine_operation_status_sub_reason: {
+        mine_operation_status_sub_reason_code: "LWT",
+        description: "Long Term Maintenance & Water Treatment",
+      },
+      description:
+        "The permittee is not able or available to meet permit obligations. The Ministry has taken over responsibility for the mine. Reclamation work is under way. There are long-term care and maintenance activities on site in addition to water treatment. Contractors are performing the work.",
+    },
+    {
+      mine_status_xref_guid: "044f007d-caa6-4139-8891-1a65935ee595",
       mine_operation_status: {
         mine_operation_status_code: "CLD",
         description: "Closed",
@@ -561,9 +552,11 @@ export const STATUS_OPTIONS = {
         mine_operation_status_sub_reason_code: "LWT",
         description: "Long Term Maintenance & Water Treatment",
       },
+      description:
+        "The mine is closed and not expected to re-open. Reclamation work is under way. There are long-term care and maintenance activities on site in addition to water treatment. Permit and HSRC obligations are still in place. Site is subject to inspection and still has reporting to file with the Ministry.",
     },
     {
-      mine_status_xref_guid: "e3bdc022-43ff-40c9-8807-dc93779362b3",
+      mine_status_xref_guid: "d360d834-b483-4e1a-8057-f85c9df8f184",
       mine_operation_status: {
         mine_operation_status_code: "CLD",
         description: "Closed",
@@ -576,39 +569,11 @@ export const STATUS_OPTIONS = {
         mine_operation_status_sub_reason_code: "PRP",
         description: "Permit Release Pending",
       },
+      description:
+        "Reclamation work is complete, no additional care required. Ministry needs to return bond and close permit for mine to be Abandoned.",
     },
     {
-      mine_status_xref_guid: "c9c490f7-d7fd-41fe-9409-e0218edff065",
-      mine_operation_status: {
-        mine_operation_status_code: "CLD",
-        description: "Closed",
-      },
-      mine_operation_status_reason: {
-        mine_operation_status_reason_code: "ORP",
-        description: "Orphaned",
-      },
-      mine_operation_status_sub_reason: {
-        mine_operation_status_sub_reason_code: "LTM",
-        description: "Long Term Maintenance",
-      },
-    },
-    {
-      mine_status_xref_guid: "1b30ddaa-9573-4c3f-9e4e-d83eddf52736",
-      mine_operation_status: {
-        mine_operation_status_code: "CLD",
-        description: "Closed",
-      },
-      mine_operation_status_reason: {
-        mine_operation_status_reason_code: "ORP",
-        description: "Orphaned",
-      },
-      mine_operation_status_sub_reason: {
-        mine_operation_status_sub_reason_code: "LWT",
-        description: "Long Term Maintenance & Water Treatment",
-      },
-    },
-    {
-      mine_status_xref_guid: "6c6ed5d7-f251-4533-976a-df54013d08d5",
+      mine_status_xref_guid: "efe8ee38-2abe-4ca7-9e42-ff1d3a142188",
       mine_operation_status: {
         mine_operation_status_code: "CLD",
         description: "Closed",
@@ -621,9 +586,11 @@ export const STATUS_OPTIONS = {
         mine_operation_status_sub_reason_code: "RNS",
         description: "Reclamation Not Started",
       },
+      description:
+        "The permittee is not able or available to meet permit obligations. The Ministry has taken over responsibility for the mine. Reclamation work has not started. A contractor has not been retained to perform the work.",
     },
     {
-      mine_status_xref_guid: "2d12f1cd-b49c-4cd6-9c46-b53516128ce9",
+      mine_status_xref_guid: "c419022a-5b13-4146-b23f-770d0f4c4337",
       mine_operation_status: {
         mine_operation_status_code: "CLD",
         description: "Closed",
@@ -636,24 +603,44 @@ export const STATUS_OPTIONS = {
         mine_operation_status_sub_reason_code: "SVR",
         description: "Site Visit Required",
       },
+      description:
+        "The permittee is not able or available to meet permit obligations. The Ministry will take over responsibility for the mine. The site needs to be visited and assessed to determine status and work required.",
     },
     {
-      mine_status_xref_guid: "0b414d87-b703-4d82-8926-b6cb057944e4",
+      mine_status_xref_guid: "1397385d-80a5-47a0-a796-e6be9c28de06",
       mine_operation_status: {
-        mine_operation_status_code: "CLD",
-        description: "Closed",
+        mine_operation_status_code: "ABN",
+        description: "Abandoned",
       },
       mine_operation_status_reason: {
-        mine_operation_status_reason_code: "UN",
-        description: "Unknown",
+        mine_operation_status_reason_code: null,
+        description: null,
       },
       mine_operation_status_sub_reason: {
         mine_operation_status_sub_reason_code: null,
         description: null,
       },
+      description:
+        "The mine site is shut down, the permit obligations have been fulfilled. Bond has been returned if permittee completed reclamation work.",
     },
     {
-      mine_status_xref_guid: "fbdadfd6-b9ac-4483-b6e7-a36d1bb41a1d",
+      mine_status_xref_guid: "4c431538-2c2c-4010-9f65-e4d67db96818",
+      mine_operation_status: {
+        mine_operation_status_code: "CLD",
+        description: "Closed",
+      },
+      mine_operation_status_reason: {
+        mine_operation_status_reason_code: null,
+        description: null,
+      },
+      mine_operation_status_sub_reason: {
+        mine_operation_status_sub_reason_code: null,
+        description: null,
+      },
+      description: null,
+    },
+    {
+      mine_status_xref_guid: "d4b402ce-84ec-4c8f-a531-5e4abc110cdc",
       mine_operation_status: {
         mine_operation_status_code: "NS",
         description: "Not Started",
@@ -666,24 +653,11 @@ export const STATUS_OPTIONS = {
         mine_operation_status_sub_reason_code: null,
         description: null,
       },
+      description:
+        "No mine related work has started at this site (including exploration). The mine record may have been created as placeholder for an exploration permit. Sites with closed exploration permits that are constructing production facilities also fit into this category.",
     },
     {
-      mine_status_xref_guid: "578abd0e-02e8-4a0a-8959-750e8c99cbb5",
-      mine_operation_status: {
-        mine_operation_status_code: "OP",
-        description: "Operating",
-      },
-      mine_operation_status_reason: {
-        mine_operation_status_reason_code: "YR",
-        description: "Year round",
-      },
-      mine_operation_status_sub_reason: {
-        mine_operation_status_sub_reason_code: null,
-        description: null,
-      },
-    },
-    {
-      mine_status_xref_guid: "3eed5e61-1bbb-4d98-99e9-4eb3c0e8b507",
+      mine_status_xref_guid: "1ef87948-17f8-4a06-8589-afc1bb4f4dd6",
       mine_operation_status: {
         mine_operation_status_code: "OP",
         description: "Operating",
@@ -696,6 +670,59 @@ export const STATUS_OPTIONS = {
         mine_operation_status_sub_reason_code: null,
         description: null,
       },
+      description:
+        "This mine operates seasonally. Dates shown are from the most recently approved NoW application. Confirm operating dates with operator or permittee before visiting.",
+    },
+    {
+      mine_status_xref_guid: "0b86ff77-fdcf-4e81-a6fc-2401e2f53c23",
+      mine_operation_status: {
+        mine_operation_status_code: "OP",
+        description: "Operating",
+      },
+      mine_operation_status_reason: {
+        mine_operation_status_reason_code: "YR",
+        description: "Year round",
+      },
+      mine_operation_status_sub_reason: {
+        mine_operation_status_sub_reason_code: null,
+        description: null,
+      },
+      description:
+        "This mine operates year-round (can be conducting exploration and/or production activities).",
+    },
+    {
+      mine_status_xref_guid: "f3e60c05-b3df-4a6b-83b5-f5f390ca1c71",
+      mine_operation_status: {
+        mine_operation_status_code: "CLD",
+        description: "Closed",
+      },
+      mine_operation_status_reason: {
+        mine_operation_status_reason_code: "UN",
+        description: "Unknown",
+      },
+      mine_operation_status_sub_reason: {
+        mine_operation_status_sub_reason_code: null,
+        description: null,
+      },
+      description:
+        "Ministry has not determined if the permittee is able or available to meet permit obligations. A visit to the site is required.",
+    },
+    {
+      mine_status_xref_guid: "887873b5-6298-42db-a712-3fee5946fefe",
+      mine_operation_status: {
+        mine_operation_status_code: "CLD",
+        description: "Closed",
+      },
+      mine_operation_status_reason: {
+        mine_operation_status_reason_code: "CM",
+        description: "Care & Maintenance",
+      },
+      mine_operation_status_sub_reason: {
+        mine_operation_status_sub_reason_code: null,
+        description: null,
+      },
+      description:
+        "The mine is temporarily closed. It is expected that it will eventually re-open. Permit and HSRC obligations are still in place. Site is subject to inspection and still has reporting to file with the Ministry.",
     },
   ],
 };
