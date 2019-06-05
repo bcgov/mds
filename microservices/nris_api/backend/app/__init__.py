@@ -14,7 +14,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from app.commands import register_commands
 from app.routes import register_routes
-from app.extensions import api, db, jwt, sched, apm, migrate
+from app.extensions import api, cache, db, jwt, sched, apm, migrate
 
 from app.nris.models import *
 from app.nris.resources import *
@@ -46,6 +46,7 @@ def register_extensions(app):
     apidoc.static_url_path = f'{Config.BASE_PATH}/swaggerui'
     api.init_app(app)
 
+    cache.init_app(app)
     db.init_app(app)
     jwt.init_app(app)
     migrate.init_app(app, db)
