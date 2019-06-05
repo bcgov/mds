@@ -23,6 +23,8 @@ def register_apm(name=None):
                 config = sched.app.app_context().app.config['ELASTIC_APM']
 
             _name = name if name is not None else func.__name__
+
+            client = Client(config)
             if client and config.get('SECRET_TOKEN'):
                 client.begin_transaction('registered_funcs')
                 try:
