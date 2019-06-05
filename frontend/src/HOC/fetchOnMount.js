@@ -1,7 +1,8 @@
-/* eslint-disable */
+import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import hoistNonReactStatics from "hoist-non-react-statics";
+import PropTypes from "prop-types";
 import { getOptionsLoaded } from "@/selectors/staticContentSelectors";
 import {
   fetchMineDisturbanceOptions,
@@ -22,12 +23,50 @@ import {
 } from "@/actionCreators/staticContentActionCreator";
 
 /**
- * @constant FetchOnMount - Higher Order Component that checks if user has the has the correct permission, if so, render component, else render a NullScreen.
- * NOTE: feature flagging, in order to hide routes that Are not ready to be in PROD, pass in `inDevelopment` or 'inTesting` param to keep the content environment specific.
+ * @constant FetchOnMount - Higher Order Component that makes all staticContent network requests when Home.js loads.
+ *
  */
 
+const propTypes = {
+  fetchMineDisturbanceOptions: PropTypes.func.isRequired,
+  fetchStatusOptions: PropTypes.func.isRequired,
+  fetchRegionOptions: PropTypes.func.isRequired,
+  fetchMineTenureTypes: PropTypes.func.isRequired,
+  fetchMineTailingsRequiredDocuments: PropTypes.func.isRequired,
+  fetchExpectedDocumentStatusOptions: PropTypes.func.isRequired,
+  fetchPermitStatusOptions: PropTypes.func.isRequired,
+  fetchApplicationStatusOptions: PropTypes.func.isRequired,
+  fetchMineIncidentFollowActionOptions: PropTypes.func.isRequired,
+  setOptionsLoaded: PropTypes.func.isRequired,
+  fetchProvinceCodes: PropTypes.func.isRequired,
+  fetchMineComplianceCodes: PropTypes.func.isRequired,
+  fetchVarianceStatusOptions: PropTypes.func.isRequired,
+  fetchMineIncidentDeterminationOptions: PropTypes.func.isRequired,
+  fetchMineCommodityOptions: PropTypes.func.isRequired,
+  optionsLoaded: PropTypes.bool.isRequired,
+};
+
 export const FetchOnMount = (WrappedComponent) => {
-  const fetchOnMount = (props) => {};
+  const fetchOnMount = (props) => {
+    if (!props.optionsLoaded) {
+      props.fetchMineDisturbanceOptions();
+      props.fetchStatusOptions();
+      props.fetchRegionOptions();
+      props.fetchMineTenureTypes();
+      props.fetchMineTailingsRequiredDocuments();
+      props.fetchExpectedDocumentStatusOptions();
+      props.fetchPermitStatusOptions();
+      props.fetchApplicationStatusOptions();
+      props.fetchMineIncidentFollowActionOptions();
+      props.fetchProvinceCodes();
+      props.fetchMineComplianceCodes();
+      props.fetchVarianceStatusOptions();
+      props.fetchMineIncidentDeterminationOptions();
+      props.fetchMineCommodityOptions();
+      props.setOptionsLoaded();
+    }
+    return <WrappedComponent {...props} />;
+  };
 
   hoistNonReactStatics(fetchOnMount, WrappedComponent);
 
@@ -63,4 +102,5 @@ export const FetchOnMount = (WrappedComponent) => {
   )(fetchOnMount);
 };
 
+FetchOnMount.propTypes = propTypes;
 export default FetchOnMount;

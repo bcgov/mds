@@ -4,27 +4,11 @@ exports[`Home renders properly 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <Home
-    fetchApplicationStatusOptions={[MockFunction]}
-    fetchExpectedDocumentStatusOptions={[MockFunction]}
-    fetchMineCommodityOptions={[MockFunction]}
-    fetchMineComplianceCodes={[MockFunction]}
-    fetchMineDisturbanceOptions={[MockFunction]}
-    fetchMineIncidentDeterminationOptions={[MockFunction]}
-    fetchMineIncidentFollowActionOptions={[MockFunction]}
-    fetchMineTailingsRequiredDocuments={[MockFunction]}
-    fetchMineTenureTypes={[MockFunction]}
-    fetchPermitStatusOptions={[MockFunction]}
-    fetchProvinceCodes={[MockFunction]}
-    fetchRegionOptions={[MockFunction]}
-    fetchStatusOptions={[MockFunction]}
-    fetchVarianceStatusOptions={[MockFunction]}
     location={
       Object {
         "pathname": " ",
       }
     }
-    optionsLoaded={true}
-    setOptionsLoaded={[MockFunction]}
   />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
