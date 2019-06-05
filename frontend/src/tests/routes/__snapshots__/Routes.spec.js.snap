@@ -25,6 +25,11 @@ ShallowWrapper {
         />
         <Route
           component={[Function]}
+          exact={true}
+          path="/logout-confirmed/"
+        />
+        <Route
+          component={[Function]}
           path="/"
         />
       </Switch>,
@@ -43,6 +48,11 @@ ShallowWrapper {
           />,
           <Route
             component={[Function]}
+            exact={true}
+            path="/logout-confirmed/"
+          />,
+          <Route
+            component={[Function]}
             path="/"
           />,
         ],
@@ -57,6 +67,19 @@ ShallowWrapper {
             "exact": true,
             "path": "/",
             "redirectTo": "/dashboard/mines/?page=1&per_page=25",
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "component": [Function],
+            "exact": true,
+            "path": "/logout-confirmed/",
           },
           "ref": null,
           "rendered": null,
@@ -93,6 +116,11 @@ ShallowWrapper {
           />
           <Route
             component={[Function]}
+            exact={true}
+            path="/logout-confirmed/"
+          />
+          <Route
+            component={[Function]}
             path="/"
           />
         </Switch>,
@@ -111,6 +139,11 @@ ShallowWrapper {
             />,
             <Route
               component={[Function]}
+              exact={true}
+              path="/logout-confirmed/"
+            />,
+            <Route
+              component={[Function]}
               path="/"
             />,
           ],
@@ -125,6 +158,19 @@ ShallowWrapper {
               "exact": true,
               "path": "/",
               "redirectTo": "/dashboard/mines/?page=1&per_page=25",
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "component": [Function],
+              "exact": true,
+              "path": "/logout-confirmed/",
             },
             "ref": null,
             "rendered": null,
