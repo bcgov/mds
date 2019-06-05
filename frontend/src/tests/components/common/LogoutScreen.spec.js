@@ -13,7 +13,7 @@ beforeEach(() => {
   setupProps();
 });
 
-describe("LogoutScreen", () => {
+describe("Logout", () => {
   it("renders properly", () => {
     const component = shallow(<Logout {...props} />);
     expect(component).toMatchSnapshot();
