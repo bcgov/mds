@@ -188,6 +188,7 @@ VARIANCE_DOCUMENT_MODEL = api.inherit(
 VARIANCE_MODEL = api.model(
     'Variance', {
         'variance_guid': fields.String,
+        'mine_guid': fields.String,
         'compliance_article_id': fields.Integer,
         'variance_application_status_code': fields.String,
         'applicant_guid': fields.String,
@@ -197,10 +198,4 @@ VARIANCE_MODEL = api.model(
         'received_date': fields.Date,
         'expiry_date': fields.Date,
         'documents': fields.Nested(VARIANCE_DOCUMENT_MODEL)
-    })
-
-VARIANCE_APPLICATION_STATUS_CODE_MODEL = api.model(
-    'VarianceApplicationStatusCode', {
-        'variance_application_status_code': fields.String,
-        'description': fields.String
     })
