@@ -252,7 +252,14 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
             UPDATE ETL_LOCATION
             SET mine_guid = ETL_MINE.mine_guid,
                 mine_no   = ETL_MINE.mine_no  ,
-                mine_location_description = pmt_now_preferred.mine_location_description,
+                mine_location_description = COALESCE(
+                    (
+                        SELECT mine_location_description
+                        FROM pmt_now_preferred
+                        WHERE mine_no = ETL_LOCATION.mine_no
+                        ORDER BY latest DESC
+                        LIMIT 1
+                    )),
                 latitude  = COALESCE(
                     -- Preferred Latitude
                     (
@@ -312,7 +319,6 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
             FROM ETL_MINE
             WHERE
                 ETL_MINE.mine_guid = ETL_LOCATION.mine_guid
-                AND ETL_LOCATION.mine_guid = pmt_now_preferred.mine_no
                 AND
                 -- Matches business logic requirements
                 (
