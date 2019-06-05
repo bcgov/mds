@@ -3,7 +3,7 @@ DECLARE inserted_party_guid uuid;
 DECLARE inserted_address_id integer;
 BEGIN
 
-IF NOT (SELECT current_database() = 'mds_test') THEN	
+IF (SELECT NOT current_database() = 'mds_test' AND COUNT(party_guid) > 0 from Party) THEN	
 	
 	INSERT INTO party_type_code
 		(
