@@ -1,10 +1,15 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import { Button } from "antd";
 
+import * as router from "@/constants/routes";
 import { getKeycloak } from "@/selectors/authenticationSelectors";
 import { logoutUser } from "@/actions/authenticationActions";
+
+import { LOGO_PURPLE } from "@/constants/assets";
 
 const propTypes = {
   logoutUser: PropTypes.func.isRequired,
@@ -27,7 +32,17 @@ export class Logout extends Component {
   };
 
   render() {
-    return <h1>You logged out. So happy for you.</h1>;
+    return (
+      <div className="logout-screen">
+        <img alt="mine_img" src={LOGO_PURPLE} />
+        <p>If you would like to return to CORE, please log in below</p>
+        <Link to={router.MINE_HOME_PAGE.route}>
+          <Button className="full-mobile" type="primary">
+            Log In
+          </Button>
+        </Link>
+      </div>
+    );
   }
 }
 const mapStateToProps = (state) => ({
