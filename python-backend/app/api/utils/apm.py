@@ -18,11 +18,13 @@ def register_apm(func):
         result = None
         if current_app:
             config = current_app.config['ELASTIC_APM']
+            apm_enabled = current_app.config['ELASTIC_ENABLED']
         elif sched.app:
             config = sched.app.app_context().app.config['ELASTIC_APM']
+            apm_enabled = sched.app.app_context().app.config['ELASTIC_ENABLED']
 
         client = Client(config)
-        if client and config.get('SECRET_TOKEN'):
+        if client and apm_enabled:
             client.begin_transaction('registered_funcs')
             try:
                 result = func(*args, **kwargs)
