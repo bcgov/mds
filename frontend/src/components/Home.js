@@ -112,6 +112,6 @@ export class Home extends Component {
 Home.propTypes = propTypes;
 
 export default compose(
-  FetchOnMount,
-  AuthenticationGuard
+  AuthenticationGuard,
+  FetchOnMount
 )(Home);

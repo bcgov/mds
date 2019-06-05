@@ -82,7 +82,6 @@ const propTypes = {
   unSubscribe: PropTypes.func.isRequired,
   createVariance: PropTypes.func.isRequired,
   createTailingsStorageFacility: PropTypes.func.isRequired,
-  fetchStatusOptions: PropTypes.func.isRequired,
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
   mineTenureHash: PropTypes.objectOf(PropTypes.string),
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
