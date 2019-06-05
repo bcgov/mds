@@ -30,6 +30,6 @@ def register_commands(app):
         print("NRIS ETL complete")
 
     @sched.app.cli.command()
-    def run_nightly_nris_etl():
+    def run_nris_etl_job():
         with sched.app.app_context():
-            nris_jobs.run_nightly_nris_etl()
+            nris_jobs.nris_etl_job()
