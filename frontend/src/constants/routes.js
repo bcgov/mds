@@ -1,6 +1,6 @@
 import queryString from "query-string";
 import Home from "@/components/Home";
-import Logout from "@/components/Logout";
+import Logout from "@/components/common/Logout";
 import Dashboard from "@/components/dashboard/minesHomePage/Dashboard";
 import ContactHomePage from "@/components/dashboard/contactsHomePage/ContactHomePage";
 import MineDashboard from "@/components/mine/MineDashboard";
