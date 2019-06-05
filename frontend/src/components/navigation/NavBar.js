@@ -7,8 +7,7 @@ import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import MediaQuery from "react-responsive";
 import { includes } from "lodash";
-import { getUserInfo, getKeycloak } from "@/selectors/authenticationSelectors";
-import { logoutUser } from "@/actions/authenticationActions";
+import { getUserInfo } from "@/selectors/authenticationSelectors";
 import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
 import * as Styles from "@/constants/styles";
@@ -27,9 +26,7 @@ const propTypes = {
   userInfo: PropTypes.shape({ preferred_username: PropTypes.string.isRequired }).isRequired,
   activeButton: PropTypes.string.isRequired,
   isMenuOpen: PropTypes.bool.isRequired,
-  logoutUser: PropTypes.func.isRequired,
   toggleHamburgerMenu: PropTypes.func.isRequired,
-  keycloak: { logout: PropTypes.func }.isRequired,
   fetchMineVerifiedStatuses: PropTypes.func.isRequired,
   currentUserVerifiedMines: PropTypes.arrayOf(CustomPropTypes.mineVerificationStatus),
   currentUserUnverifiedMines: PropTypes.arrayOf(CustomPropTypes.mineVerificationStatus),
@@ -44,12 +41,6 @@ export class NavBar extends Component {
   componentDidMount() {
     this.props.fetchMineVerifiedStatuses(`idir\\${this.props.userInfo.preferred_username}`);
   }
-
-  handleLogout = () => {
-    this.props.keycloak.logout();
-    localStorage.removeItem("jwt");
-    this.props.logoutUser();
-  };
 
   unverifiedMinesMenu = () => (
     <Menu>
@@ -235,13 +226,11 @@ export class NavBar extends Component {
           </AuthorizationWrapper>
           <Row>
             <Col span={24}>
-              <button
-                type="button"
-                onClick={() => this.handleLogout()}
-                className="menu--hamburger__btn--link"
-              >
-                Log Out
-              </button>
+              <Link to={router.LOGOUT.route}>
+                <button type="button" className="menu--hamburger__btn--link">
+                  Log Out
+                </button>
+              </Link>
             </Col>
           </Row>
           <div className="menu--hamburger--footer">
@@ -264,9 +253,9 @@ export class NavBar extends Component {
         </div>
       </AuthorizationWrapper>
       <Menu.Item key="1">
-        <button type="button" onClick={() => this.handleLogout()}>
-          Log Out
-        </button>
+        <Link to={router.LOGOUT.route}>
+          <button type="button">Log Out</button>
+        </Link>
       </Menu.Item>
     </Menu>
   );
@@ -305,7 +294,6 @@ export class NavBar extends Component {
 
 const mapStateToProps = (state) => ({
   userInfo: getUserInfo(state),
-  keycloak: getKeycloak(state),
   currentUserVerifiedMines: getCurrentUserVerifiedMines(state),
   currentUserUnverifiedMines: getCurrentUserUnverifiedMines(state),
 });
@@ -313,7 +301,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      logoutUser,
       fetchMineVerifiedStatuses,
     },
     dispatch
