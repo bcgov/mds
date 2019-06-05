@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { Button } from "antd";
+import { Button, notification } from "antd";
 
 import * as router from "@/constants/routes";
 import { getKeycloak } from "@/selectors/authenticationSelectors";
@@ -19,6 +19,10 @@ const propTypes = {
 export class Logout extends Component {
   componentDidMount() {
     this.handleLogout();
+    notification.success({
+      message: "You have successfully logged out of Core",
+      duration: 10,
+    });
   }
 
   handleLogout = () => {
