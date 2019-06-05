@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form, Button, Col, Row, Popconfirm } from "antd";
+import { Form, Button, Col, Row, Popconfirm, Steps } from "antd";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderDate from "@/components/common/RenderDate";
@@ -21,6 +21,25 @@ const propTypes = {
   followupActionOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   incidentDeterminationOptions: CustomPropTypes.options.isRequired,
   doSubparagraphOptions: CustomPropTypes.options.isRequired,
+};
+
+const { Step } = Steps;
+
+const stepPropTypes = {
+  id: PropTypes.string.isRequired,
+  children: PropTypes.element,
+};
+
+const StepSection = (props) => {
+  if (props.id === 0) {
+    return <div>{props.children}</div>;
+  }
+  return null;
+};
+
+StepSection.propTypes = stepPropTypes;
+StepSection.defaultProps = {
+  children: null,
 };
 
 class AddIncidentForm extends Component {
@@ -46,6 +65,37 @@ class AddIncidentForm extends Component {
       <Form layout="vertical" onSubmit={this.props.handleSubmit(this.props.onSubmit)}>
         <Row gutter={16}>
           <Col>
+            <Steps size="small" current={0}>
+              <Step title="Initial Report" />
+              <Step title="Add details" />
+              <Step title="Follow Up" />
+            </Steps>
+            <StepSection id={0}>
+              <p>Ministry Incident No.</p>
+              <p>Incident reported to* (typeahead)</p>
+              <p>Inspector responsible* (typeahead)</p>
+              <h2>Reporter Details</h2>
+              <p>Reported by* (name)</p>
+              <p>Phone number (formatted phone)</p>
+              <p>Email</p>
+              <p>Date Reported (date)</p>
+              <p>Time Reported (time)</p>
+            </StepSection>
+            <StepSection id={1}>
+              <h2>Incident Details</h2>
+              <p>Incident date*</p>
+              <p>Incident time*</p>
+              <p>Number of fatalities</p>
+              <p>Number of injuries</p>
+              <p>Were emergency services called?*</p>
+            </StepSection>
+            <StepSection id={2}>
+              <h2>Follow-up Information</h2>
+              <p>Was there a follow-up inspection (bool)?</p>
+              <p>Was it escalated to EMPR investigation</p>
+              <p>Recommendations (big ol text box)</p>
+              <p>Add another recommendation</p>
+            </StepSection>
             <Form.Item>
               <Field
                 id="incident_timestamp"
