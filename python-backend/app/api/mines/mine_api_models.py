@@ -22,7 +22,8 @@ BASIC_MINE_LIST = api.model(
         'mine_guid': fields.String,
         'mine_name': fields.String,
         'mine_no': fields.String,
-        'mine_location': fields.Nested(BASIC_MINE_LOCATION_MODEL)
+        'mine_location': fields.Nested(BASIC_MINE_LOCATION_MODEL),
+        'mine_location_description': fields.String,
     })
 
 MINE_TENURE_TYPE_CODE_MODEL = api.model('MineTenureTypeCode', {
@@ -36,6 +37,7 @@ MINE_LOCATION_MODEL = api.model(
         'mine_guid': fields.String,
         'latitude': fields.Fixed(description='fixed precision decimal.', decimals=7),
         'longitude': fields.Fixed(description='fixed precision decimal.', decimals=7),
+        'mine_location_description': fields.String,
     })
 
 MINE_DOCUMENT_MODEL = api.model(
@@ -50,6 +52,7 @@ PERMIT_MODEL = api.model('MinePermit', {
     'permit_guid': fields.String,
     'permit_no': fields.String,
     'permit_status_code': fields.String,
+    'permit_status_code_description': fields.String,
 })
 
 EXPECTED_DOCUMENT_STATUS_MODEL = api.model('ExpectedDocumentStatus', {

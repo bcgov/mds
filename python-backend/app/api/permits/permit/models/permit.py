@@ -41,6 +41,7 @@ class Permit(AuditMixin, Base):
             'mine_guid': str(self.mine_guid),
             'permit_no': self.permit_no,
             'permit_status_code': self.permit_status_code,
+            'permit_status_code_description': self.permit_status_code.description,
             'amendments': [x.json() for x in self.permit_amendments]
         }
 
@@ -50,7 +51,8 @@ class Permit(AuditMixin, Base):
             'permit_guid': str(self.permit_guid),
             'mine_guid': str(self.mine_guid),
             'permit_no': self.permit_no,
-            'permit_status_code': self.permit_status_code
+            'permit_status_code': self.permit_status_code,
+            'permit_status_code_description': self.permit_status_code.description
         }
 
     @classmethod
