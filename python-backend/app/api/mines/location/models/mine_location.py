@@ -1,14 +1,14 @@
 from datetime import datetime
-import uuid
 import utm
 
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
-from sqlalchemy.ext.hybrid import hybrid_property, hybrid_method
+from sqlalchemy.orm import reconstructor
+from sqlalchemy.ext.hybrid import hybrid_property
 
 from geoalchemy2 import Geometry
 from ....utils.models_mixins import AuditMixin, Base
-from app.extensions import db, cache
+from app.extensions import db
 
 
 class MineLocation(AuditMixin, Base):
@@ -27,8 +27,26 @@ class MineLocation(AuditMixin, Base):
     def __repr__(self):
         return '<MineLocation %r>' % self.mine_guid
 
-    @hybrid_method
-    def get_utm(self):
+    def __init__(self):
+        self.utm_values = ()
+
+    @reconstructor
+    def init_on_load(self):
         if self.latitude and self.longitude:
-            utm_easting, utm_northing, utm_zone_number, utm_zone_letter = utm.from_latlon(self.latitude, self.longitude)
-            return utm_easting, utm_northing, utm_zone_number
+            self.utm_values = utm.from_latlon(self.latitude, self.longitude)
+
+    @hybrid_property
+    def utm_easting(self):
+        return self.utm_values[0]
+
+    @hybrid_property
+    def utm_northing(self):
+        return self.utm_values[1]
+
+    @hybrid_property
+    def utm_zone_number(self):
+        return self.utm_values[2]
+
+    @hybrid_property
+    def utm_zone_letter(self):
+        return self.utm_values[3]

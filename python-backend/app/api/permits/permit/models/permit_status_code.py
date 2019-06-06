@@ -1,8 +1,3 @@
-from datetime import datetime
-
-import uuid
-
-from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import validates
 from app.extensions import db
 

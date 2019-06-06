@@ -1,15 +1,7 @@
-from datetime import datetime
-import re
-import uuid
-
-from sqlalchemy import func
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
 from app.extensions import db
 
 from ....utils.models_mixins import AuditMixin, Base
-from ....constants import PARTY_STATUS_CODE
 
 
 class PartyTypeCode(AuditMixin, Base):

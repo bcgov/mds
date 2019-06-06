@@ -15,6 +15,10 @@ class Date(fields.Raw):
 BASIC_MINE_LOCATION_MODEL = api.model('BasicMineLocation', {
     'latitude': fields.String,
     'longitude': fields.String,
+    'utm_easting': fields.String,
+    'utm_northing': fields.String,
+    'utm_zone_number': fields.String,
+    'utm_zone_letter': fields.String,
 })
 
 BASIC_MINE_LIST = api.model(
@@ -37,6 +41,10 @@ MINE_LOCATION_MODEL = api.model(
         'mine_guid': fields.String,
         'latitude': fields.Fixed(description='fixed precision decimal.', decimals=7),
         'longitude': fields.Fixed(description='fixed precision decimal.', decimals=7),
+        'utm_easting': fields.String,
+        'utm_northing': fields.String,
+        'utm_zone_number': fields.String,
+        'utm_zone_letter': fields.String,
         'mine_location_description': fields.String,
     })
 
