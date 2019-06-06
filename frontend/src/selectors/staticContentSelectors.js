@@ -198,9 +198,9 @@ const transformMineStatusSubReason = (reasons) =>
   chain(reasons)
     .groupBy((s) => s.mine_operation_status_sub_reason.mine_operation_status_sub_reason_code)
     .filter((g) => g[0].mine_operation_status_sub_reason.mine_operation_status_sub_reason_code)
-    .map((subreasons) => ({
-      value: subreasons[0].mine_operation_status_sub_reason.mine_operation_status_sub_reason_code,
-      label: subreasons[0].mine_operation_status_sub_reason.description,
+    .map((subReasons) => ({
+      value: subReasons[0].mine_operation_status_sub_reason.mine_operation_status_sub_reason_code,
+      label: subReasons[0].mine_operation_status_sub_reason.description,
       children: [],
     }))
     .value();
