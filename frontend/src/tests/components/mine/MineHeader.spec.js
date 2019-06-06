@@ -15,7 +15,7 @@ const setupDispatchProps = () => {
 
 const setupProps = () => {
   props.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
-  props.mineStatusOptions = MOCK.STATUS_OPTIONS.options;
+  props.mineStatusOptions = MOCK.STATUS_OPTIONS.records;
   props.mineRegionOptions = MOCK.REGION_OPTIONS.options;
   props.mineRegionHash = MOCK.REGION_HASH;
   props.mineTenureTypes = MOCK.TENURE_TYPES;

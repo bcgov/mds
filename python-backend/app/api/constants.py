@@ -293,92 +293,6 @@ MINE_OPERATION_STATUS_SUB_REASON = {
 }
 
 
-MINE_STATUS_OPTIONS = [
-    {
-        'value': MINE_OPERATION_STATUS['abandoned']['value'],
-        'label': MINE_OPERATION_STATUS['abandoned']['label'],
-        'children': []
-    },
-    {
-        'value': MINE_OPERATION_STATUS['closed']['value'],
-        'label': MINE_OPERATION_STATUS['closed']['label'],
-        'children': [
-            {
-                'value': MINE_OPERATION_STATUS_REASON['care_maintenance']['value'],
-                'label': MINE_OPERATION_STATUS_REASON['care_maintenance']['label'],
-                'children': []
-            },
-            {
-                'value': MINE_OPERATION_STATUS_REASON['reclamation']['value'],
-                'label': MINE_OPERATION_STATUS_REASON['reclamation']['label'],
-                'children': [
-                    {
-                        'value': MINE_OPERATION_STATUS_SUB_REASON['long_term_maintenance']['value'],
-                        'label': MINE_OPERATION_STATUS_SUB_REASON['long_term_maintenance']['label']
-                    },
-                    {
-                        'value': MINE_OPERATION_STATUS_SUB_REASON['long_term_maintenance_water_treatment']['value'],
-                        'label': MINE_OPERATION_STATUS_SUB_REASON['long_term_maintenance_water_treatment']['label']
-                    },
-                    {
-                        'value': MINE_OPERATION_STATUS_SUB_REASON['permit_release_pending']['value'],
-                        'label': MINE_OPERATION_STATUS_SUB_REASON['permit_release_pending']['label']
-                    }
-                ]
-            },
-            {
-                'value': MINE_OPERATION_STATUS_REASON['orphaned']['value'],
-                'label': MINE_OPERATION_STATUS_REASON['orphaned']['label'],
-                'children': [
-                    {
-                        'value': MINE_OPERATION_STATUS_SUB_REASON['long_term_maintenance']['value'],
-                        'label': MINE_OPERATION_STATUS_SUB_REASON['long_term_maintenance']['label']
-                    },
-                    {
-                        'value': MINE_OPERATION_STATUS_SUB_REASON['long_term_maintenance_water_treatment']['value'],
-                        'label': MINE_OPERATION_STATUS_SUB_REASON['long_term_maintenance_water_treatment']['label']
-                    },
-                    {
-                        'value': MINE_OPERATION_STATUS_SUB_REASON['reclamation_not_started']['value'],
-                        'label': MINE_OPERATION_STATUS_SUB_REASON['reclamation_not_started']['label']
-                    },
-                    {
-                        'value': MINE_OPERATION_STATUS_SUB_REASON['site_visit_required']['value'],
-                        'label': MINE_OPERATION_STATUS_SUB_REASON['site_visit_required']['label']
-                    }
-                ]
-            },
-            {
-                'value': MINE_OPERATION_STATUS_REASON['unknown']['value'],
-                'label': MINE_OPERATION_STATUS_REASON['unknown']['label'],
-                'children': []
-            },
-        ]
-    },
-    {
-        'value': MINE_OPERATION_STATUS['not_started']['value'],
-        'label': MINE_OPERATION_STATUS['not_started']['label'],
-        'children': []
-    },
-    {
-        'value': MINE_OPERATION_STATUS['operating']['value'],
-        'label': MINE_OPERATION_STATUS['operating']['label'],
-        'children': [
-            {
-                'value': MINE_OPERATION_STATUS_REASON['year_round']['value'],
-                'label': MINE_OPERATION_STATUS_REASON['year_round']['label'],
-                'children': []
-            },
-            {
-                'value': MINE_OPERATION_STATUS_REASON['seasonal']['value'],
-                'label': MINE_OPERATION_STATUS_REASON['seasonal']['label'],
-                'children': []
-            }
-        ]
-    }
-]
-
-
 #Region Code
 MINE_REGION_OPTIONS = [
     {
@@ -408,7 +322,7 @@ NRIS_MMLIST_JOB = "processed_list"
 NRIS_MAJOR_MINE_LIST = "major_mine_list"
 NRIS_JOB_PREFIX = "nris_sched_job_"
 NRIS_TOKEN = 'nris:token'
-def NRIS_COMPLIANCE_DATA(mine_no): return f'mine:{mine_no}:compliance-data'
+def NRIS_COMPLIANCE_DATA(mine_no): return f'mine:{mine_no}:api-compliance-data'
 def FILE_UPLOAD_SIZE(document_guid): return f'document-manager:{document_guid}:file-size'
 def FILE_UPLOAD_OFFSET(document_guid): return f'document-manager:{document_guid}:offset'
 def FILE_UPLOAD_PATH(document_guid): return f'document-manager:{document_guid}:file-path'

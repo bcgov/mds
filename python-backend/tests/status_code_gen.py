@@ -2,7 +2,7 @@ import random
 
 from app.extensions import db
 from app.api.applications.models.application_status_code import ApplicationStatusCode
-from app.api.constants import COMMODITY_CODES_CONFIG, DISTURBANCE_CODES_CONFIG, MINE_STATUS_OPTIONS
+from app.api.constants import COMMODITY_CODES_CONFIG, DISTURBANCE_CODES_CONFIG
 from app.api.documents.expected.models.document_status import ExpectedDocumentStatus
 from app.api.documents.required.models.required_documents import RequiredDocument
 from app.api.mines.incidents.models.mine_incident_determination_type import MineIncidentDeterminationType
@@ -88,5 +88,4 @@ def SampleDangerousOccurrenceSubparagraphs(num):
     return random.sample(
         db.session.query(ComplianceArticle).filter(
             ComplianceArticle.section == '1', ComplianceArticle.sub_section == '7',
-            ComplianceArticle.paragraph == '3', ComplianceArticle.sub_paragraph != None).all(),
-        num)
+            ComplianceArticle.paragraph == '3', ComplianceArticle.sub_paragraph != None).all(), num)

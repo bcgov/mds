@@ -12,15 +12,14 @@ def register_apm(name=None):
     :return: Wrapped function
     :rtype: func
     """
-    def wrap(func):
 
+    def wrap(func):
         def wrapped_f(*args, **kwargs):
             client = None
             if current_app:
                 client = Client(current_app.config['ELASTIC_APM'])
             elif sched.app:
-                client = Client(
-                    sched.app.app_context().app.config['ELASTIC_APM'])
+                client = Client(sched.app.app_context().app.config['ELASTIC_APM'])
 
             _name = name if name is not None else func.__name__
 
@@ -35,9 +34,9 @@ def register_apm(name=None):
                     client.end_transaction(f'{_name} - error')
                     raise e
             else:
-                print(
-                    f'could not create ElasticAPM client... running <{_name}> without APM')
+                print(f'could not create ElasticAPM client... running <{_name}> without APM')
                 func(*args, **kwargs)
+
         return wrapped_f
 
     return wrap
