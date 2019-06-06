@@ -372,7 +372,14 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
             SELECT
                 new.mine_guid,
                 new.mine_no  ,
-                new.mine_location_description,
+                COALESCE(
+                    (
+                        SELECT mine_location_description
+                        FROM pmt_now_preferred
+                        WHERE mine_no = new.mine_no
+                        LIMIT 1
+                    )
+                ),
                 COALESCE(
                     -- Preferred Latitude
                     (
