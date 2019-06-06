@@ -234,6 +234,7 @@ const transformMineStatus = (data) => {
       code.title = status.description;
     }
   });
+  console.log(JSON.stringify(statusOptions));
   return statusOptions;
 };
 
