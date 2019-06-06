@@ -22,7 +22,8 @@ beforeEach(() => {
 
 describe("`fetchMineComplianceInfo` action creator", () => {
   const mineNo = "1234567";
-  const url = `${ENVIRONMENT.apiUrl + API.MINE_COMPLIANCE_INFO}/${mineNo}`;
+
+  const url = `${ENVIRONMENT.apiUrl}${API.MINE_COMPLIANCE_SUMMARY(mineNo)}`;
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
