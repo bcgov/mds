@@ -359,6 +359,15 @@ export class MineHeader extends Component {
                 ) : (
                   <p>{String.EMPTY_FIELD}</p>
                 )}
+                {this.props.mine.mine_status[0] && (
+                  <img
+                    alt="info"
+                    className="padding-small"
+                    src={INFO_CIRCLE}
+                    style={{ padding: 0, margin: 0 }}
+                    title={this.props.mine.mine_status[0].status_description}
+                  />
+                )}
               </div>
 
               <div className="inline-flex padding-small">
