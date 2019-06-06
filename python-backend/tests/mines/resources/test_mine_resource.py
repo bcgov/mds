@@ -298,7 +298,6 @@ def test_put_mine_name(test_client, db_session, auth_headers):
     put_resp = test_client.put(
         f'/mines/{mine_guid}', json=test_tenure_data, headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
-    print(put_data)
     assert put_data['mine_name'] == test_tenure_data['mine_name']
     assert put_resp.status_code == 200
 
