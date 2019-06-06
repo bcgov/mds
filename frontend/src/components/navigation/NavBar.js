@@ -57,6 +57,20 @@ export class NavBar extends Component {
 
   renderFullNav = () => (
     <div className="inline-flex">
+      <Dropdown overlay={this.reportingDropdown} placement="bottomLeft">
+        <button
+          id={
+            includes(this.props.activeButton, router.REPORTING_DASHBOARD.route)
+              ? "active-mine-btn"
+              : ""
+          }
+          type="button"
+          className="menu__btn"
+        >
+          <span className="padding-small--right">Provincial Reporting</span>
+          <Icon type="down" />
+        </button>
+      </Dropdown>
       <Link
         to={router.MINE_HOME_PAGE.dynamicRoute({
           page: Strings.DEFAULT_PAGE,
@@ -203,6 +217,18 @@ export class NavBar extends Component {
                     Admin
                   </Button>
                 </Link>
+                <Link to={router.REPORTING_DASHBOARD.route}>
+                  <Button
+                    id={
+                      includes(this.props.activeButton, router.REPORTING_DASHBOARD.route)
+                        ? "active-mine-btn--mobile"
+                        : ""
+                    }
+                    className="menu--hamburger__btn--link"
+                  >
+                    Reporting Dashboard
+                  </Button>
+                </Link>
               </Col>
             </Row>
           </AuthorizationWrapper>
@@ -257,6 +283,16 @@ export class NavBar extends Component {
           <button type="button">Log Out</button>
         </Link>
       </Menu.Item>
+    </Menu>
+  );
+
+  reportingDropdown = () => (
+    <Menu id="menu__dropdown">
+      <div className="custom-menu-item">
+        <Link to={router.REPORTING_DASHBOARD.route}>
+          <button type="button">Dashboard</button>
+        </Link>
+      </div>
     </Menu>
   );
 
