@@ -30,6 +30,8 @@ const defaultProps = {
 // const invalidReportingPayload = (addPartyFormValues, isPerson) => false;
 
 export class AddIncidentModal extends Component {
+  state = { current: 0 };
+
   cancel = () => {
     this.props.closeModal();
     // this.props.reset(FORM.ADD_FULL_PARTY);
@@ -73,9 +75,9 @@ export class AddIncidentModal extends Component {
 
   renderStepButtons() {
     // "You're not my real buttons, you're just stepbuttons!"
-    let buttons;
+    const buttons = [];
     if (this.state.current > 0)
-      buttons += (
+      buttons.push(
         <Button type="tertiary" className="full-mobile" onClick={() => this.prev()}>
           Back
         </Button>
@@ -83,9 +85,9 @@ export class AddIncidentModal extends Component {
 
     switch (this.state.current) {
       case 0:
-        buttons += (
+        buttons.push(
           <Button
-            type="primary"
+            type="tertiary"
             className="full-mobile"
             onClick={() => this.next()}
             disabled={false}
@@ -95,9 +97,9 @@ export class AddIncidentModal extends Component {
         );
         break;
       case 1:
-        buttons += (
+        buttons.push(
           <Button
-            type="primary"
+            type="tertiary"
             className="full-mobile"
             onClick={() => this.next()}
             disabled={false}
@@ -105,7 +107,7 @@ export class AddIncidentModal extends Component {
             Next
           </Button>
         );
-        buttons += (
+        buttons.push(
           <Button
             type="primary"
             className="full-mobile"
@@ -118,7 +120,7 @@ export class AddIncidentModal extends Component {
         break;
       case 2:
         // Follow Up
-        buttons += (
+        buttons.push(
           <Button
             type="primary"
             className="full-mobile"
@@ -162,6 +164,7 @@ export class AddIncidentModal extends Component {
                 <Step key={step.title} title={step.title} />
               ))}
             </Steps>
+            <br />
             <div>{steps[this.state.current].content}</div>
             <div className="right center-mobile">
               <Popconfirm
