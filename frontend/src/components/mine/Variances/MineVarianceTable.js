@@ -1,8 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Table, Button, Icon } from "antd";
+import { connect } from "react-redux";
 import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import {
+  getVarianceStatusOptionsHash,
+  getHSRCMComplianceCodesHash,
+} from "@/selectors/staticContentSelectors";
 import * as Permission from "@/constants/permissions";
 import { RED_CLOCK, EDIT_OUTLINE } from "@/constants/assets";
 import NullScreen from "@/components/common/NullScreen";
@@ -226,4 +231,9 @@ export class MineVarianceTable extends Component {
 MineVarianceTable.propTypes = propTypes;
 MineVarianceTable.defaultProps = defaultProps;
 
-export default MineVarianceTable;
+const mapStateToProps = (state) => ({
+  complianceCodesHash: getHSRCMComplianceCodesHash(state),
+  varianceStatusOptionsHash: getVarianceStatusOptionsHash(state),
+});
+
+export default connect(mapStateToProps)(MineVarianceTable);
