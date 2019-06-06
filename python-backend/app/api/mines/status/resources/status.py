@@ -13,15 +13,14 @@ class MineStatusListResource(Resource, UserMixin):
     @api.marshal_with(MINE_STATUS_CODE_MODEL, envelope='records')
     @requires_role_mine_view
     def get(self):
-        return MineStatusXref.active_status_codes()
+        return MineStatusXref.active()
 
 
 class MineStatusResource(Resource, UserMixin, ErrorMixin):
     @api.doc(params={'mine_status_guid': 'Mine status guid.'})
     @requires_role_mine_view
     def get(self, mine_status_guid):
-        if not mine_status_guid:
-            raise BadRequest('A mine guid must be provided.')
+
         mine_status = MineStatus.find_by_mine_status_guid(mine_status_guid)
         if not mine_status:
             raise NotFound('Mine Status not found')

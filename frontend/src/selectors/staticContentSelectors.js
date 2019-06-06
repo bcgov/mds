@@ -1,3 +1,4 @@
+import { chain } from "lodash";
 import * as staticContentReducer from "@/reducers/staticContentReducer";
 import { createSelector } from "reselect";
 import { createLabelHash, createDropDownList } from "@/utils/helpers";
@@ -193,52 +194,39 @@ export const getVarianceStatusOptionsHash = createSelector(
   createLabelHash
 );
 
-const itemInList = (itemList, itemToAdd) => {
-  let item = itemList.find((x) => x.value === itemToAdd.code);
-
-  if (item === undefined) {
-    item = {
-      value: itemToAdd.code,
-      label: itemToAdd.label,
+const transformMineStatusSubReason = (reasons) =>
+  chain(reasons)
+    .groupBy((s) => s.mine_operation_status_sub_reason.mine_operation_status_sub_reason_code)
+    .filter((g) => g[0].mine_operation_status_sub_reason.mine_operation_status_sub_reason_code)
+    .map((subReasons) => ({
+      value: subReasons[0].mine_operation_status_sub_reason.mine_operation_status_sub_reason_code,
+      label: subReasons[0].mine_operation_status_sub_reason.description,
       children: [],
-    };
-    itemList.push(item);
-  }
+    }))
+    .value();
 
-  return item;
-};
+const transformMineStatusReason = (codes) =>
+  chain(codes)
+    .groupBy((s) => s.mine_operation_status_reason.mine_operation_status_reason_code)
+    .filter((g) => g[0].mine_operation_status_reason.mine_operation_status_reason_code)
+    .map((reasons) => ({
+      value: reasons[0].mine_operation_status_reason.mine_operation_status_reason_code,
+      label: reasons[0].mine_operation_status_reason.description,
+      children: transformMineStatusSubReason(reasons),
+    }))
+    .value();
 
-const transformMineStatus = (data) => {
-  const statusOptions = [];
+const transformMineStatus = (data) =>
+  chain(data)
+    .groupBy((s) => s.mine_operation_status.mine_operation_status_code)
+    .map((codes) => ({
+      value: codes[0].mine_operation_status.mine_operation_status_code,
+      label: codes[0].mine_operation_status.description,
+      children: transformMineStatusReason(codes),
+    }))
+    .value();
 
-  data.forEach((status) => {
-    const code = itemInList(statusOptions, {
-      code: status.mine_operation_status.mine_operation_status_code,
-      label: status.mine_operation_status.description,
-    });
-    if (status.mine_operation_status_reason.mine_operation_status_reason_code !== null) {
-      const reason = itemInList(code.children, {
-        code: status.mine_operation_status_reason.mine_operation_status_reason_code,
-        label: status.mine_operation_status_reason.description,
-      });
-      if (status.mine_operation_status_sub_reason.mine_operation_status_sub_reason_code !== null) {
-        const subReason = itemInList(reason.children, {
-          code: status.mine_operation_status_sub_reason.mine_operation_status_sub_reason_code,
-          label: status.mine_operation_status_sub_reason.description,
-        });
-        subReason.title = status.description;
-      } else {
-        reason.title = status.description;
-      }
-    } else {
-      code.title = status.description;
-    }
-  });
-  console.log(JSON.stringify(statusOptions));
-  return statusOptions;
-};
-
-export const getMineStatusDropdownOptions = createSelector(
+export const getMineStatusDropDownOptions = createSelector(
   getMineStatusOptions,
   transformMineStatus
 );

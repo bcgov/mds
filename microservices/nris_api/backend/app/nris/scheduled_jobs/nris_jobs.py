@@ -11,8 +11,7 @@ import cx_Oracle
 
 def _schedule_nris_etl_jobs(app):
     # the schedule of these jobs is set using server time (UTC)
-    app.apscheduler.add_job(func=nris_etl_job,
-                            trigger='cron', id='ETL', hour=11, minute=0)
+    app.apscheduler.add_job(func=nris_etl_job, trigger='cron', id='ETL', hour=11, minute=0)
 
 
 def nris_etl_job():
@@ -20,10 +19,13 @@ def nris_etl_job():
 
     job_running = cache.get(NRIS_JOB_PREFIX + NRIS_ETL_JOB)
     if job_running is None:
-        cache.set(NRIS_JOB_PREFIX + NRIS_ETL_JOB,
-                  'True', timeout=TIMEOUT_12_HOURS)
-        _run_nris_etl()
-        cache.delete(NRIS_JOB_PREFIX + NRIS_ETL_JOB)
+        try:
+            cache.set(NRIS_JOB_PREFIX + NRIS_ETL_JOB, 'True', timeout=TIMEOUT_12_HOURS)
+            _run_nris_etl()
+        finally:
+            cache.delete(NRIS_JOB_PREFIX + NRIS_ETL_JOB)
+    else:
+        print("Job is running")
 
 
 @register_apm("NRIS ETL Job")
@@ -45,8 +47,6 @@ def _run_nris_etl():
             sched.app.logger.info('NRIS ETL Completed!')
 
         except cx_Oracle.DatabaseError as e:
-            sched.app.logger.error(
-                "Error establishing connection to NRIS database: " + str(e))
+            sched.app.logger.error("Error establishing connection to NRIS database: " + str(e))
         except Exception as e:
-            sched.app.logger.error(
-                "Unexpected error with NRIS XML import: " + str(e))
+            sched.app.logger.error("Unexpected error with NRIS XML import: " + str(e))
