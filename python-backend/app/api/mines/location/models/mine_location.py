@@ -30,7 +30,10 @@ class MineLocation(AuditMixin, Base):
     @reconstructor
     def init_on_load(self):
         if self.latitude and self.longitude:
-            self.utm_values = utm.from_latlon(self.latitude, self.longitude)
+            try:
+                self.utm_values = utm.from_latlon(self.latitude, self.longitude)
+            except utm.error.OutOfRangeError:
+                self.utm_values = ()
 
     @hybrid_property
     def utm_easting(self):
