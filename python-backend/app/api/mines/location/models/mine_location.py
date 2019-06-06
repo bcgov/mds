@@ -19,16 +19,13 @@ class MineLocation(AuditMixin, Base):
     latitude = db.Column(db.Numeric(9, 7))
     longitude = db.Column(db.Numeric(11, 7))
     geom = db.Column(Geometry('POINT', 3005))
-    mine_location_description = db.Column(db.String, nullable=False)
+    mine_location_description = db.Column(db.String)
     effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     expiry_date = db.Column(
         db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
 
     def __repr__(self):
         return '<MineLocation %r>' % self.mine_guid
-
-    def __init__(self):
-        self.utm_values = ()
 
     @reconstructor
     def init_on_load(self):
