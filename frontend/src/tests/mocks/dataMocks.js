@@ -729,120 +729,123 @@ export const STATUS_OPTIONS = {
 
 export const STATUS_OPTIONS_DROPDOWN = [
   {
-    value: "CLD",
-    label: "Closed",
     children: [
       {
-        value: "ORP",
-        label: "Orphaned",
         children: [
           {
-            value: "LTM",
-            label: "Long Term Maintenance",
             children: [],
+            label: "Long Term Maintenance",
             title:
               "The permittee is not able or available to meet permit obligations. The Ministry has taken over responsibility for the mine. Reclamation work is under way. There are long-term care and maintenance activities on site. Contractors are performing the work.",
+            value: "LTM",
           },
           {
-            value: "LWT",
-            label: "Long Term Maintenance & Water Treatment",
             children: [],
+            label: "Long Term Maintenance & Water Treatment",
             title:
               "The permittee is not able or available to meet permit obligations. The Ministry has taken over responsibility for the mine. Reclamation work is under way. There are long-term care and maintenance activities on site in addition to water treatment. Contractors are performing the work.",
+            value: "LWT",
           },
           {
-            value: "RNS",
-            label: "Reclamation Not Started",
             children: [],
+            label: "Reclamation Not Started",
             title:
               "The permittee is not able or available to meet permit obligations. The Ministry has taken over responsibility for the mine. Reclamation work has not started. A contractor has not been retained to perform the work.",
+            value: "RNS",
           },
           {
-            value: "SVR",
-            label: "Site Visit Required",
             children: [],
+            label: "Site Visit Required",
             title:
               "The permittee is not able or available to meet permit obligations. The Ministry will take over responsibility for the mine. The site needs to be visited and assessed to determine status and work required.",
+            value: "SVR",
           },
         ],
+        label: "Orphaned",
+        title: null,
+        value: "ORP",
       },
       {
-        value: "REC",
-        label: "Reclamation",
         children: [
           {
-            value: "LTM",
-            label: "Long Term Maintenance",
             children: [],
+            label: "Long Term Maintenance",
             title:
               "The mine is closed and not expected to re-open. Reclamation work is under way. There are long-term care and maintenance activities on site. Permit and HSRC obligations are still in place. Site is subject to inspection and still has reporting to file with the Ministry.",
+            value: "LTM",
           },
           {
-            value: "LWT",
-            label: "Long Term Maintenance & Water Treatment",
             children: [],
+            label: "Long Term Maintenance & Water Treatment",
             title:
               "The mine is closed and not expected to re-open. Reclamation work is under way. There are long-term care and maintenance activities on site in addition to water treatment. Permit and HSRC obligations are still in place. Site is subject to inspection and still has reporting to file with the Ministry.",
+            value: "LWT",
           },
           {
-            value: "PRP",
-            label: "Permit Release Pending",
             children: [],
+            label: "Permit Release Pending",
             title:
               "Reclamation work is complete, no additional care required. Ministry needs to return bond and close permit for mine to be Abandoned.",
+            value: "PRP",
           },
         ],
+        label: "Reclamation",
+        title: null,
+        value: "REC",
       },
       {
-        value: "UN",
-        label: "Unknown",
         children: [],
+        label: "Unknown",
         title:
           "Ministry has not determined if the permittee is able or available to meet permit obligations. A visit to the site is required.",
+        value: "UN",
       },
       {
-        value: "CM",
-        label: "Care & Maintenance",
         children: [],
+        label: "Care & Maintenance",
         title:
           "The mine is temporarily closed. It is expected that it will eventually re-open. Permit and HSRC obligations are still in place. Site is subject to inspection and still has reporting to file with the Ministry.",
+        value: "CM",
       },
     ],
+    label: "Closed",
     title: null,
+    value: "CLD",
   },
   {
-    value: "ABN",
-    label: "Abandoned",
     children: [],
+    label: "Abandoned",
     title:
       "The mine site is shut down, the permit obligations have been fulfilled. Bond has been returned if permittee completed reclamation work.",
+    value: "ABN",
   },
   {
-    value: "NS",
-    label: "Not Started",
     children: [],
+    label: "Not Started",
     title:
       "No mine related work has started at this site (including exploration). The mine record may have been created as placeholder for an exploration permit. Sites with closed exploration permits that are constructing production facilities also fit into this category.",
+    value: "NS",
   },
   {
-    value: "OP",
-    label: "Operating",
     children: [
       {
-        value: "SEA",
-        label: "Seasonal",
         children: [],
+        label: "Seasonal",
         title:
           "This mine operates seasonally. Dates shown are from the most recently approved NoW application. Confirm operating dates with operator or permittee before visiting.",
+        value: "SEA",
       },
       {
-        value: "YR",
-        label: "Year round",
         children: [],
+        label: "Year round",
         title:
           "This mine operates year-round (can be conducting exploration and/or production activities).",
+        value: "YR",
       },
     ],
+    label: "Operating",
+    title: null,
+    value: "OP",
   },
 ];
 
