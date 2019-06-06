@@ -37,16 +37,16 @@ class MineLocation(AuditMixin, Base):
 
     @hybrid_property
     def utm_easting(self):
-        return self.utm_values[0]
+        return self.utm_values[0] if self.utm_values else None
 
     @hybrid_property
     def utm_northing(self):
-        return self.utm_values[1]
+        return self.utm_values[1] if self.utm_values else None
 
     @hybrid_property
     def utm_zone_number(self):
-        return self.utm_values[2]
+        return self.utm_values[2] if self.utm_values else None
 
     @hybrid_property
     def utm_zone_letter(self):
-        return self.utm_values[3]
+        return self.utm_values[3] if self.utm_values else None

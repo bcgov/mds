@@ -268,7 +268,7 @@ environments {
                 }
                 postgres {
                     cpu_request = "50m"
-                    cpu_limit = "1"
+                    cpu_limit = "100m"
                     memory_request = "384Mi"
                     memory_limit = "768Mi"
                 }

@@ -1,4 +1,5 @@
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import validates
 from sqlalchemy.schema import FetchedValue
@@ -34,6 +35,10 @@ class Permit(AuditMixin, Base):
     def __repr__(self):
         return '<Permit %r>' % self.permit_guid
 
+    @hybrid_property
+    def permit_status_code_description(self):
+        return self.permit_status_code_relationship.description
+
     def json(self):
         return {
             'permit_id': str(self.permit_id),
@@ -41,7 +46,7 @@ class Permit(AuditMixin, Base):
             'mine_guid': str(self.mine_guid),
             'permit_no': self.permit_no,
             'permit_status_code': self.permit_status_code,
-            'permit_status_code_description': self.permit_status_code_relationship.description,
+            'permit_status_code_description': self.permit_status_code_description,
             'amendments': [x.json() for x in self.permit_amendments]
         }
 
@@ -52,7 +57,7 @@ class Permit(AuditMixin, Base):
             'mine_guid': str(self.mine_guid),
             'permit_no': self.permit_no,
             'permit_status_code': self.permit_status_code,
-            'permit_status_code_description': self.permit_status_code_relationship.description
+            'permit_status_code_description': self.permit_status_code_description
         }
 
     @classmethod
