@@ -362,9 +362,9 @@ export class MineHeader extends Component {
                 {this.props.mine.mine_status[0] && (
                   <img
                     alt="info"
-                    className="padding-small"
+                    className="dashboard__header--card__content--status__img"
                     src={INFO_CIRCLE}
-                    style={{ padding: 0, margin: 0 }}
+                    style={{ marginLeft: 5 }}
                     title={this.props.mine.mine_status[0].status_description}
                   />
                 )}
