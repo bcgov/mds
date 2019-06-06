@@ -157,19 +157,28 @@ MINE_INCIDENT_MODEL = api.model(
         'incident_timestamp': DateTime,
         'incident_description': fields.String,
         'reported_timestamp': DateTime,
-        'reported_by': fields.String,
-        'reported_by_role': fields.String,
+        'reported_by_name': fields.String,
+        'reported_by_phone_no': fields.String,
+        'reported_by_phone_ext': fields.String,
+        'emergency_services_called': fields.Boolean, 
+        'number_of_injuries': fields.Integer,
+        'number_of_fatalities': fields.Integer,
+        'reported_to_inspector_party_guid':  fields.String,
+        'responsible_inspector_party_guid':  fields.String,
         'determination_type_code': fields.String,
-        'followup_type_code': fields.String,
+        'status_code': fields.String,
+        'followup_investigation_type_code': fields.String,
+        'followup_inspection': fields.Boolean,
+        'followup_inspection_date': DateTime,
+        'determination_inspector_party_guid': fields.String,
         'dangerous_occurrence_subparagraph_ids': fields.List(fields.Integer)
     })
 
-MINE_INCIDENT_FOLLOWUP_TYPE_MODEL = api.model(
-    'Mine Incident Followup Type', {
-        'mine_incident_followup_type_code': fields.String,
+MINE_INCIDENT_FOLLOWUP_INVESTIGATION_TYPE_MODEL = api.model(
+    'Mine Incident Followup Investigation Type', {
+        'mine_incident_followup_investigation_type_code': fields.String,
         'description': fields.String,
         'display_order': fields.Integer,
-        'active_ind': fields.Boolean
     })
 
 MINE_INCIDENT_DETERMINATION_TYPE_MODEL = api.model(
