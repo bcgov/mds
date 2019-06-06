@@ -15,6 +15,7 @@ const Routes = () => (
           per_page: Strings.DEFAULT_PER_PAGE,
         })}
       />
+      <Route exact path={routes.LOGOUT.route} component={routes.LOGOUT.component} />
       <Route path={routes.DASHBOARD.route} component={routes.DASHBOARD.component} />
     </Switch>
   </div>

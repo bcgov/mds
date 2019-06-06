@@ -180,6 +180,7 @@ app {
                             'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api",
+                            'NRIS_API_URL': "${vars.modules.'mds-nris-backend'.HOST}${vars.modules.'mds-nris-backend'.PATH}",
                     ]
                 ],
                 [
@@ -195,7 +196,7 @@ app {
                             'REPLICA_MIN':"${vars.resources.python_lite.replica_min}",
                             'REPLICA_MAX':"${vars.resources.python_lite.replica_max}",
                             'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
-                            'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId}",
+                            'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId_core}",
                             'APPLICATION_DOMAIN': "${vars.modules.'mds-nris-backend'.HOST}",
                             'BASE_PATH': "${vars.modules.'mds-nris-backend'.PATH}",
                             'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}-nris",

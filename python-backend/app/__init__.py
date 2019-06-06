@@ -23,7 +23,6 @@ from app.commands import register_commands
 from app.config import Config
 from app.extensions import db, jwt, api, cache, sched, apm
 
-from app.scheduled_jobs.NRIS_jobs import _schedule_NRIS_jobs
 from app.scheduled_jobs.ETL_jobs import _schedule_ETL_jobs
 from app.scheduled_jobs.IDIR_jobs import _schedule_IDIR_jobs
 
@@ -71,7 +70,6 @@ def register_scheduled_jobs(app):
         if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == 'true':
             sched.start()
             _schedule_IDIR_jobs(app)
-            _schedule_NRIS_jobs(app)
             _schedule_ETL_jobs(app)
 
 
