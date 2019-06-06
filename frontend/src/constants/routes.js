@@ -7,6 +7,7 @@ import MineDashboard from "@/components/mine/MineDashboard";
 import PartyProfile from "@/components/parties/PartyProfile";
 import RelationshipProfile from "@/components/parties/RelationshipProfile";
 import AdminDashboard from "@/components/admin/AdminDashboard";
+import ReportingDashboard from "@/components/dashboard/reporting/ReportingDashboard";
 import SearchResults from "@/components/search/SearchResults";
 import CustomHomePage from "@/components/dashboard/customHomePage/CustomHomePage";
 
@@ -58,6 +59,11 @@ export const RELATIONSHIP_PROFILE = {
   route: "/dashboard/:id/history/:typeCode",
   dynamicRoute: (id, typeCode) => `/dashboard/${id}/history/${typeCode}`,
   component: RelationshipProfile,
+};
+
+export const REPORTING_DASHBOARD = {
+  route: "/dashboard/reporting",
+  component: ReportingDashboard,
 };
 
 export const ADMIN_DASHBOARD = {
