@@ -181,80 +181,214 @@ ShallowWrapper {
     mineStatusOptions={
       Array [
         Object {
-          "label": "Abandoned",
-          "value": "ABN",
+          "mine_operation_status": Object {
+            "description": "Abandoned",
+            "mine_operation_status_code": "ABN",
+          },
+          "mine_operation_status_reason": Object {
+            "description": null,
+            "mine_operation_status_reason_code": null,
+          },
+          "mine_operation_status_sub_reason": Object {
+            "description": null,
+            "mine_operation_status_sub_reason_code": null,
+          },
+          "mine_status_xref_guid": "d5c1d966-04ef-4bdb-b7b7-feaead5cf836",
         },
         Object {
-          "children": Array [
-            Object {
-              "label": "Care & Maintenance",
-              "value": "CM",
-            },
-            Object {
-              "children": Array [
-                Object {
-                  "label": "Long Term Maintenance",
-                  "value": "LTM",
-                },
-                Object {
-                  "label": "Long Term Maintenance Water Treatment",
-                  "value": "LWT",
-                },
-                Object {
-                  "label": "Permit Release Pending",
-                  "value": "PRP",
-                },
-              ],
-              "label": "Reclamation",
-              "value": "REC",
-            },
-            Object {
-              "children": Array [
-                Object {
-                  "label": "Long Term Maintenance",
-                  "value": "LTM",
-                },
-                Object {
-                  "label": "Long Term Maintenance Water Treatment",
-                  "value": "LWT",
-                },
-                Object {
-                  "label": "Reclamation Not Starte",
-                  "value": "RNS",
-                },
-                Object {
-                  "label": "Site Visit Required",
-                  "value": "SVR",
-                },
-              ],
-              "label": "Orphaned",
-              "value": "ORP",
-            },
-            Object {
-              "label": "Unknown",
-              "value": "UN",
-            },
-          ],
-          "label": "Closed",
-          "value": "CLD",
+          "mine_operation_status": Object {
+            "description": "Closed",
+            "mine_operation_status_code": "CLD",
+          },
+          "mine_operation_status_reason": Object {
+            "description": null,
+            "mine_operation_status_reason_code": null,
+          },
+          "mine_operation_status_sub_reason": Object {
+            "description": null,
+            "mine_operation_status_sub_reason_code": null,
+          },
+          "mine_status_xref_guid": "d6ab34fd-d903-4eac-bdf5-65cf8009b8e9",
         },
         Object {
-          "label": "Not Started",
-          "value": "NS",
+          "mine_operation_status": Object {
+            "description": "Closed",
+            "mine_operation_status_code": "CLD",
+          },
+          "mine_operation_status_reason": Object {
+            "description": "Care & Maintenance",
+            "mine_operation_status_reason_code": "CM",
+          },
+          "mine_operation_status_sub_reason": Object {
+            "description": null,
+            "mine_operation_status_sub_reason_code": null,
+          },
+          "mine_status_xref_guid": "251dc078-bb13-4cb9-b6dd-81310b9cb864",
         },
         Object {
-          "children": Array [
-            Object {
-              "label": "Year round",
-              "value": "YR",
-            },
-            Object {
-              "label": "Seasonal",
-              "value": "SEA",
-            },
-          ],
-          "label": "Operating",
-          "value": "OP",
+          "mine_operation_status": Object {
+            "description": "Closed",
+            "mine_operation_status_code": "CLD",
+          },
+          "mine_operation_status_reason": Object {
+            "description": "Reclamation",
+            "mine_operation_status_reason_code": "REC",
+          },
+          "mine_operation_status_sub_reason": Object {
+            "description": "Long Term Maintenance",
+            "mine_operation_status_sub_reason_code": "LTM",
+          },
+          "mine_status_xref_guid": "0d85c5b2-2cc1-4e2e-8caa-33a6504d3032",
+        },
+        Object {
+          "mine_operation_status": Object {
+            "description": "Closed",
+            "mine_operation_status_code": "CLD",
+          },
+          "mine_operation_status_reason": Object {
+            "description": "Reclamation",
+            "mine_operation_status_reason_code": "REC",
+          },
+          "mine_operation_status_sub_reason": Object {
+            "description": "Long Term Maintenance & Water Treatment",
+            "mine_operation_status_sub_reason_code": "LWT",
+          },
+          "mine_status_xref_guid": "acc1195c-81e9-475a-8653-e58cc4893794",
+        },
+        Object {
+          "mine_operation_status": Object {
+            "description": "Closed",
+            "mine_operation_status_code": "CLD",
+          },
+          "mine_operation_status_reason": Object {
+            "description": "Reclamation",
+            "mine_operation_status_reason_code": "REC",
+          },
+          "mine_operation_status_sub_reason": Object {
+            "description": "Permit Release Pending",
+            "mine_operation_status_sub_reason_code": "PRP",
+          },
+          "mine_status_xref_guid": "e3bdc022-43ff-40c9-8807-dc93779362b3",
+        },
+        Object {
+          "mine_operation_status": Object {
+            "description": "Closed",
+            "mine_operation_status_code": "CLD",
+          },
+          "mine_operation_status_reason": Object {
+            "description": "Orphaned",
+            "mine_operation_status_reason_code": "ORP",
+          },
+          "mine_operation_status_sub_reason": Object {
+            "description": "Long Term Maintenance",
+            "mine_operation_status_sub_reason_code": "LTM",
+          },
+          "mine_status_xref_guid": "c9c490f7-d7fd-41fe-9409-e0218edff065",
+        },
+        Object {
+          "mine_operation_status": Object {
+            "description": "Closed",
+            "mine_operation_status_code": "CLD",
+          },
+          "mine_operation_status_reason": Object {
+            "description": "Orphaned",
+            "mine_operation_status_reason_code": "ORP",
+          },
+          "mine_operation_status_sub_reason": Object {
+            "description": "Long Term Maintenance & Water Treatment",
+            "mine_operation_status_sub_reason_code": "LWT",
+          },
+          "mine_status_xref_guid": "1b30ddaa-9573-4c3f-9e4e-d83eddf52736",
+        },
+        Object {
+          "mine_operation_status": Object {
+            "description": "Closed",
+            "mine_operation_status_code": "CLD",
+          },
+          "mine_operation_status_reason": Object {
+            "description": "Orphaned",
+            "mine_operation_status_reason_code": "ORP",
+          },
+          "mine_operation_status_sub_reason": Object {
+            "description": "Reclamation Not Started",
+            "mine_operation_status_sub_reason_code": "RNS",
+          },
+          "mine_status_xref_guid": "6c6ed5d7-f251-4533-976a-df54013d08d5",
+        },
+        Object {
+          "mine_operation_status": Object {
+            "description": "Closed",
+            "mine_operation_status_code": "CLD",
+          },
+          "mine_operation_status_reason": Object {
+            "description": "Orphaned",
+            "mine_operation_status_reason_code": "ORP",
+          },
+          "mine_operation_status_sub_reason": Object {
+            "description": "Site Visit Required",
+            "mine_operation_status_sub_reason_code": "SVR",
+          },
+          "mine_status_xref_guid": "2d12f1cd-b49c-4cd6-9c46-b53516128ce9",
+        },
+        Object {
+          "mine_operation_status": Object {
+            "description": "Closed",
+            "mine_operation_status_code": "CLD",
+          },
+          "mine_operation_status_reason": Object {
+            "description": "Unknown",
+            "mine_operation_status_reason_code": "UN",
+          },
+          "mine_operation_status_sub_reason": Object {
+            "description": null,
+            "mine_operation_status_sub_reason_code": null,
+          },
+          "mine_status_xref_guid": "0b414d87-b703-4d82-8926-b6cb057944e4",
+        },
+        Object {
+          "mine_operation_status": Object {
+            "description": "Not Started",
+            "mine_operation_status_code": "NS",
+          },
+          "mine_operation_status_reason": Object {
+            "description": null,
+            "mine_operation_status_reason_code": null,
+          },
+          "mine_operation_status_sub_reason": Object {
+            "description": null,
+            "mine_operation_status_sub_reason_code": null,
+          },
+          "mine_status_xref_guid": "fbdadfd6-b9ac-4483-b6e7-a36d1bb41a1d",
+        },
+        Object {
+          "mine_operation_status": Object {
+            "description": "Operating",
+            "mine_operation_status_code": "OP",
+          },
+          "mine_operation_status_reason": Object {
+            "description": "Year round",
+            "mine_operation_status_reason_code": "YR",
+          },
+          "mine_operation_status_sub_reason": Object {
+            "description": null,
+            "mine_operation_status_sub_reason_code": null,
+          },
+          "mine_status_xref_guid": "578abd0e-02e8-4a0a-8959-750e8c99cbb5",
+        },
+        Object {
+          "mine_operation_status": Object {
+            "description": "Operating",
+            "mine_operation_status_code": "OP",
+          },
+          "mine_operation_status_reason": Object {
+            "description": "Seasonal",
+            "mine_operation_status_reason_code": "SEA",
+          },
+          "mine_operation_status_sub_reason": Object {
+            "description": null,
+            "mine_operation_status_sub_reason_code": null,
+          },
+          "mine_status_xref_guid": "3eed5e61-1bbb-4d98-99e9-4eb3c0e8b507",
         },
       ]
     }

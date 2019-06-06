@@ -133,6 +133,10 @@
     {
       "name": "API_URL",
       "required": true
+    },
+    {
+      "name": "NRIS_API_URL",
+      "required": true
     }
   ],
   "objects": [
@@ -350,15 +354,6 @@
                     }
                   },
                   {
-                    "name": "NRIS_INSPECTION_URL",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${MDS_NRIS_API_SECRET}",
-                        "key": "inspection-url"
-                      }
-                    }
-                  },
-                  {
                     "name": "LDAP_IDIR_USERNAME",
                     "valueFrom": {
                       "secretKeyRef": {
@@ -401,6 +396,10 @@
                         "key": "server-url"
                       }
                     }
+                  },
+                  {
+                    "name": "NRIS_API_URL",
+                    "value": "${NRIS_API_URL}"
                   },
                   {
                     "name": "FLASK_RUN_PORT",
