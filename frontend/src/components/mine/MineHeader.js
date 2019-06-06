@@ -351,11 +351,7 @@ export class MineHeader extends Component {
                   }
                 />
                 {this.props.mine.mine_status[0] ? (
-                  this.props.mine.mine_status[0].status_labels.map((label) => (
-                    <p className="mine__status" key={label}>
-                      {label}
-                    </p>
-                  ))
+                  <p>{this.props.mine.mine_status[0].status_labels.join(", ")}</p>
                 ) : (
                   <p>{String.EMPTY_FIELD}</p>
                 )}
