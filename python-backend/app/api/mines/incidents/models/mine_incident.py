@@ -6,7 +6,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 from ....utils.models_mixins import AuditMixin, Base
-from .mine_incident_followup_type import MineIncidentFollowupType
+from .mine_incident_followup_investigation_type import MineIncidentFollowupInvestigationType
 from app.api.mines.incidents.models.mine_incident_determination_type import MineIncidentDeterminationType
 from app.api.mines.compliance.models.compliance_article import ComplianceArticle
 from app.api.mines.incidents.models.mine_incident_do_subparagraph import MineIncidentDoSubparagraph
@@ -33,8 +33,11 @@ class MineIncident(AuditMixin, Base):
     determination_type_code = db.Column(
         db.String,
         db.ForeignKey('mine_incident_determination_type.mine_incident_determination_type_code'))
-    followup_type_code = db.Column(
-        db.String, db.ForeignKey('mine_incident_followup_type.mine_incident_followup_type_code'))
+    followup_investigation_type_code = db.Column(
+        db.String,
+        db.ForeignKey(
+            'mine_incident_followup_investigation_type.mine_incident_followup_investigation_type_code'
+        ))
     followup_inspection_no = db.Column(db.String)
 
     closing_report_summary = db.Column(db.String)
@@ -46,8 +49,11 @@ class MineIncident(AuditMixin, Base):
         backref='mine_incidents',
         lazy='joined',
         secondary='mine_incident_do_subparagraph')
-    followup_type = db.relationship(
-        'MineIncidentFollowupType', backref='mine_incidents', lazy='joined', uselist=False)
+    followup_investigation_type = db.relationship(
+        'MineIncidentFollowupInvestigationType',
+        backref='mine_incidents',
+        lazy='joined',
+        uselist=False)
 
     @hybrid_property
     def mine_incident_report_no(self):

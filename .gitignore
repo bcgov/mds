@@ -15,4 +15,5 @@ __pycache__
 *.sw*
 python-backend/document_uploads/
 *last-backup
+venv*
 
