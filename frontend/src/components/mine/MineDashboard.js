@@ -295,6 +295,7 @@ export class MineDashboard extends Component {
     const isDevOrTest = !detectProdEnvironment();
     // temporary check, cannot wrap tabs in an AuthWrapper
     const isAdmin = this.props.userRoles.includes(USER_ROLES[Permission.ADMIN]);
+    const isAdminOrTest = isDevOrTest || isAdmin;
     if (!mine) {
       return <Loading />;
     }
@@ -362,7 +363,7 @@ export class MineDashboard extends Component {
                   </div>
                 </TabPane>
                 {/* can't wrap a TabPane in the authWrapper without interfering with the Tabs behaviour */}
-                {isAdmin && (
+                {isAdminOrTest && (
                   <TabPane tab="Variance" key="variance">
                     <div className="tab__content">
                       <MineVariance
