@@ -7,21 +7,21 @@ export class ReportingDashboard extends Component {
 
   componentWillMount() {
     axios
-      .get(`${process.env.BASE_PATH}/metabase-token`, {
+      .get(`http://localhost:5000/reporting/core-dashboard`, {
         headers: {
-          Authorization: "authtoken",
+          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
         },
       })
       // TODO: Safely handle unauthorized / failed request
       .then((res) => {
-        const { dashboardUrl } = res.data ? res.data : {};
-        this.setState({ dashboardUrl });
+        const { dashboard_url } = res.data ? res.data : {};
+        this.setState({ dashboard_url });
       })
       .catch(console.error);
   }
 
   render() {
-    const iframeUrl = `${this.state.dashboardUrl}#bordered=true&titled=false`;
+    const iframeUrl = `${this.state.dashboard_url}#bordered=true&titled=false`;
     return (
       <iframe
         title="metabaseDashboard"

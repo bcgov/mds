@@ -372,6 +372,24 @@
                     }
                   },
                   {
+                    "name": "METABASE_SITE_URL",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${MDS_METABASE_SITE_URL}",
+                        "key": "server-url"
+                      }
+                    }
+                  },
+                  {
+                    "name": "METABASE_SECRET_KEY",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${MDS_METABASE_SECRET_KEY}",
+                        "key": "secret-token"
+                      }
+                    }
+                  },
+                  {
                     "name": "ELASTIC_ENABLED",
                     "value": "${ELASTIC_ENABLED}"
                   },

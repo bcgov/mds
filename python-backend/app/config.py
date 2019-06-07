@@ -30,6 +30,9 @@ class Config(object):
     LDAP_IDIR_USERNAME = os.environ.get('LDAP_IDIR_USERNAME', "idir_username")
     LDAP_IDIR_PASSWORD = os.environ.get('LDAP_IDIR_PASSWORD', "idir_password")
 
+    METABASE_SITE_URL = os.environ.get('METABASE_SITE_URL', None)
+    METABASE_SECRET_KEY = os.environ.get('METABASE_SECRET_KEY', None)
+
     BUNDLE_ERRORS = True  #RequestParser global config
 
     def JWT_ROLE_CALLBACK(jwt_dict):

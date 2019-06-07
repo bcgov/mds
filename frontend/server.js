@@ -1,9 +1,7 @@
 const express = require("express");
 const cacheControl = require("express-cache-controller");
 const dotenv = require("dotenv").config({ path: `${__dirname}/.env` });
-const jwt = require("jsonwebtoken");
 
-const { METABASE_SITE_URL, METABASE_SECRET_KEY } = process.env;
 let { BASE_PATH } = process.env;
 let BUILD_DIR = process.env.BUILD_DIR || "build";
 let PORT = process.env.PORT || 3000;
@@ -45,21 +43,6 @@ app.get(`${BASE_PATH}/env`, (req, res) => {
     keycloak_role_view: process.env.KEYCLOAK_ROLE_VIEW,
     environment: process.env.NODE_ENV,
   });
-});
-
-app.get(`${BASE_PATH}/metabase-token`, async (req, res) => {
-  // TODO: check user's auth token is valid instead of this string
-  if (req.header("Authorization") !== "authtoken") {
-    const reason = "Invalid Authorization header";
-    res.send({ status: 401, status_message: "Unauthorized", message: reason });
-  }
-  const payload = {
-    resource: { dashboard: 136 },
-    params: {},
-  };
-  const token = jwt.sign(payload, METABASE_SECRET_KEY);
-  const dashboardUrl = `${METABASE_SITE_URL}/embed/dashboard/${token}`;
-  res.json({ dashboardUrl });
 });
 
 app.use(`${BASE_PATH}/`, staticServe);
