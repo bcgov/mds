@@ -71,10 +71,6 @@ class Form_Create_And_Edit_Permit extends Module {
 
     }
 
-    def editPermitStatus() {
-
-    }
-
     def completePermitAmendment(){
         // fill out permittee
         permittee = "Halfthor"
