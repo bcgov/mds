@@ -729,7 +729,21 @@ export const STATUS_OPTIONS = {
 
 export const STATUS_OPTIONS_DROPDOWN = [
   {
+    children: [],
+    label: "Abandoned",
+    title:
+      "The mine site is shut down, the permit obligations have been fulfilled. Bond has been returned if permittee completed reclamation work.",
+    value: "ABN",
+  },
+  {
     children: [
+      {
+        children: [],
+        label: "Care & Maintenance",
+        title:
+          "The mine is temporarily closed. It is expected that it will eventually re-open. Permit and HSRC obligations are still in place. Site is subject to inspection and still has reporting to file with the Ministry.",
+        value: "CM",
+      },
       {
         children: [
           {
@@ -800,24 +814,10 @@ export const STATUS_OPTIONS_DROPDOWN = [
           "Ministry has not determined if the permittee is able or available to meet permit obligations. A visit to the site is required.",
         value: "UN",
       },
-      {
-        children: [],
-        label: "Care & Maintenance",
-        title:
-          "The mine is temporarily closed. It is expected that it will eventually re-open. Permit and HSRC obligations are still in place. Site is subject to inspection and still has reporting to file with the Ministry.",
-        value: "CM",
-      },
     ],
     label: "Closed",
     title: null,
     value: "CLD",
-  },
-  {
-    children: [],
-    label: "Abandoned",
-    title:
-      "The mine site is shut down, the permit obligations have been fulfilled. Bond has been returned if permittee completed reclamation work.",
-    value: "ABN",
   },
   {
     children: [],
