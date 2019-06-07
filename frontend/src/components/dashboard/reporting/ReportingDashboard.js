@@ -1,28 +1,17 @@
 import React, { Component } from "react";
-// TODO: use our custom axios instance
-import axios from "axios";
+import { fetchCoreDashboard } from "@/actionCreators/reportingActionCreator";
 
 export class ReportingDashboard extends Component {
   state = {};
 
-  componentWillMount() {
-    axios
-      .get(`http://localhost:5000/reporting/core-dashboard`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-        },
-      })
-      // TODO: Safely handle unauthorized / failed request
-      .then((res) => {
-        const { dashboard_url } = res.data ? res.data : {};
-        this.setState({ dashboard_url });
-      })
-      .catch(console.error);
+  async componentDidMount() {
+    const dashboard_url = await fetchCoreDashboard();
+    this.setState({ dashboard_url });
   }
 
   render() {
     const iframeUrl = `${this.state.dashboard_url}#bordered=true&titled=false`;
-    return (
+    return this.state.dashboard_url ? (
       <iframe
         title="metabaseDashboard"
         src={iframeUrl}
@@ -31,6 +20,8 @@ export class ReportingDashboard extends Component {
         height="2700px"
         allowTransparency
       />
+    ) : (
+      <div />
     );
   }
 }
