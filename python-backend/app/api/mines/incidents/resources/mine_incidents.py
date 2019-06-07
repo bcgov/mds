@@ -8,6 +8,7 @@ from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.access_decorators import requires_role_mine_view, requires_role_mine_create
 
 from app.api.mines.mine.models.mine import Mine
+from app.api.parties.party.models.party import Party
 from ..models.mine_incident import MineIncident
 from app.api.mines.compliance.models.compliance_article import ComplianceArticle
 from ...mine_api_models import MINE_INCIDENT_MODEL
@@ -23,45 +24,30 @@ def _compliance_article_is_do_subparagraph(ca):
 class MineIncidentListResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
     #required
-    parser.add_argument(
-        'incident_timestamp',
-        help='Datetime of when the incident occured ',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None,
-        location='json',
-        required=True)
-    parser.add_argument(
-        'incident_description',
-        help='reported details of the incident',
-        type=str,
-        location='json',
-        required=True)
-    #optional and defaulted
-    parser.add_argument(
-        'determination_type_code',
-        help='Mark incident as a dangerous occurance',
-        type=str,
-        location='json'),
-    parser.add_argument(
-        'followup_investigation_type_code',
-        help='Mark incident to have a follow up inspection',
-        type=str,
-        location='json')
-    #nullable
-    parser.add_argument(
-        'dangerous_occurrence_subparagraph_ids',
-        help='List of dangerous occurrence sub-paragraphs from the HSRC code',
-        type=list,
-        location='json')
-    parser.add_argument(
-        'reported_timestamp',
-        help='Datetime of when the incident was reported',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None,
-        location='json')
-    parser.add_argument(
-        'reported_by_name',
-        help='Name of party who reported the incident',
-        type=str,
-        location='json')
+    parser.add_argument('incident_timestamp',
+                        type=inputs.datetime_from_iso8601,
+                        location='json',
+                        required=True)
+    parser.add_argument('incident_description', type=str, location='json', required=True)
+    parser.add_argument('reported_timestamp', type=inputs.datetime_from_iso8601, location='json')
+    parser.add_argument('reported_by_name', type=str, location='json')
+    parser.add_argument('reported_by_email', type=str, location='json')
+    parser.add_argument('reported_by_phone_no', type=str, location='json')
+    parser.add_argument('reported_by_phone_ext', type=str, location='json')
+    parser.add_argument('emergency_services_called', type=inputs.boolean, location='json')
+    parser.add_argument('number_of_injuries', type=int, location='json')
+    parser.add_argument('number_of_fatalities', type=int, location='json')
+    parser.add_argument('reported_to_inspector_party_guid', type=str, location='json')
+    parser.add_argument('responsible_inspector_party_guid', type=str, location='json')
+    parser.add_argument('determination_inspector_party_guid', type=str, location='json')
+    parser.add_argument('determination_type_code', type=str, location='json')
+    parser.add_argument('followup_investigation_type_code', type=str, location='json')
+    parser.add_argument('followup_inspection', type=inputs.boolean, location='json')
+    parser.add_argument('followup_inspection_date',
+                        type=inputs.datetime_from_iso8601,
+                        location='json')
+    parser.add_argument('status_code', type=str, location='json')
+    parser.add_argument('dangerous_occurrence_subparagraph_ids', type=list, location='json')
 
     @api.marshal_with(MINE_INCIDENT_MODEL, envelope='mine_incidents', code=200, as_list=True)
     @api.doc(description='returns the incidents for a given mine.')
@@ -72,7 +58,7 @@ class MineIncidentListResource(Resource, UserMixin):
             raise NotFound("Mine not found")
         return mine.mine_incidents
 
-    @api.expect(parser)
+    @api.expect(MINE_INCIDENT_MODEL)
     @api.doc(description='creates a new incident for the mine')
     @api.marshal_with(MINE_INCIDENT_MODEL, code=201)
     @requires_role_mine_create
@@ -99,6 +85,33 @@ class MineIncidentListResource(Resource, UserMixin):
             reported_timestamp=data['reported_timestamp'],
             reported_by_name=data['reported_by_name'],
         )
+
+        incident.reported_by_email = data.get('reported_by_email')
+        incident.reported_by_phone_no = data.get('reported_by_phone_no')  #string
+        incident.reported_by_phone_ext = data.get('reported_by_phone_ext')  #string
+        incident.number_of_fatalities = data.get('number_of_fatalities')  #int
+        incident.number_of_injuries = data.get('number_of_injuries')  #int
+        incident.emergency_services_called = data.get('emergency_services_called')  #bool
+        incident.followup_inspection = data.get('followup_inspection')  #bool
+        incident.followup_inspection_date = data.get('followup_inspection_date')
+
+        #lookup and validated inspector party relationships
+        tmp_party = Party.query.filter_by(
+            party_guid=data.get('reported_to_inspector_party_guid')).first()
+        if tmp_party and tmp_party.hasBusinessRole('INS'):
+            incident.reported_to_inspector_party_guid = tmp_party.party_guid
+        tmp_party = Party.query.filter_by(
+            party_guid=data.get('responsible_inspector_party_guid')).first()
+        if tmp_party and tmp_party.hasBusinessRole('INS'):
+            incident.responsible_inspector_party_guid = tmp_party.party_guid
+        tmp_party = Party.query.filter_by(
+            party_guid=data.get('determination_inspector_party_guid')).first()
+        if tmp_party and tmp_party.hasBusinessRole('INS'):
+            incident.determination_inspector_party_guid = tmp_party.party_guid
+
+        incident.determination_type_code = data.get('determination_type_code')
+        incident.followup_investigation_type_code = data.get('followup_investigation_type_code')
+
         for id in do_sub_codes:
             sub = ComplianceArticle.find_by_compliance_article_id(id)
             if not _compliance_article_is_do_subparagraph(sub):
@@ -116,48 +129,41 @@ class MineIncidentListResource(Resource, UserMixin):
 
 class MineIncidentResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
-    parser.add_argument(
-        'incident_timestamp',
-        help='Datetime of when the incident occured ',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None,
-        location='json',
-        store_missing=False)
-    parser.add_argument(
-        'incident_description',
-        help='reported details of the incident',
-        type=str,
-        location='json',
-        store_missing=False)
-    parser.add_argument(
-        'reported_timestamp',
-        help='Datetime of when the incident was reported',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None,
-        location='json',
-        store_missing=False)
-    parser.add_argument(
-        'reported_by_name',
-        help='Name of party who reported the incident',
-        type=str,
-        location='json',
-        store_missing=False)
-    parser.add_argument(
-        'determination_type_code',
-        help='Mark incident as a dangerous occurance',
-        type=str,
-        location='json',
-        store_missing=False)
-    parser.add_argument(
-        'followup_investigation_type_code',
-        help='Mark incident to have a follow up inspection',
-        location='json',
-        type=str,
-        store_missing=False)
-    parser.add_argument(
-        'dangerous_occurrence_subparagraph_ids',
-        help='List of dangerous occurrence sub-paragraphs from the HSRC code',
-        type=list,
-        location='json',
-        store_missing=False)
+    parser.add_argument('incident_timestamp',
+                        help='Datetime of when the incident occured ',
+                        type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None,
+                        location='json',
+                        store_missing=False)
+    parser.add_argument('incident_description',
+                        help='reported details of the incident',
+                        type=str,
+                        location='json',
+                        store_missing=False)
+    parser.add_argument('reported_timestamp',
+                        help='Datetime of when the incident was reported',
+                        type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None,
+                        location='json',
+                        store_missing=False)
+    parser.add_argument('reported_by_name',
+                        help='Name of party who reported the incident',
+                        type=str,
+                        location='json',
+                        store_missing=False)
+    parser.add_argument('determination_type_code',
+                        help='Mark incident as a dangerous occurance',
+                        type=str,
+                        location='json',
+                        store_missing=False)
+    parser.add_argument('followup_investigation_type_code',
+                        help='Mark incident to have a follow up inspection',
+                        location='json',
+                        type=str,
+                        store_missing=False)
+    parser.add_argument('dangerous_occurrence_subparagraph_ids',
+                        help='List of dangerous occurrence sub-paragraphs from the HSRC code',
+                        type=list,
+                        location='json',
+                        store_missing=False)
 
     @api.marshal_with(MINE_INCIDENT_MODEL, code=200)
     @requires_role_mine_view
