@@ -1,22 +1,21 @@
 import React from "react";
-// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { Form, Col, Row } from "antd";
 import * as FORM from "@/constants/forms";
-// import CustomPropTypes from "@/customPropTypes";
+import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderDate from "@/components/common/RenderDate";
 import { required, dateNotInFuture } from "@/utils/Validate";
 
-// const propTypes = {
-//   isPerson: PropTypes.bool.isRequired,
-//   togglePartyChange: PropTypes.func.isRequired,
-//   followupActionOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
-// };
+const propTypes = {
+  followupActionOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
+  incidentStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
+};
 
-export const AddIncidentFollowUpForm = () => (
+export const AddIncidentFollowUpForm = (props) => (
   <div>
     <Form layout="vertical">
       <Row gutter={48}>
@@ -45,23 +44,19 @@ export const AddIncidentFollowUpForm = () => (
           </Form.Item>
           <Form.Item>
             <Field
-              id="followup_inspection"
-              name="emergency_services_called"
-              label="Were emergency services called?*"
+              id="mine_incident_followup_investigation_type"
+              name="mine_incident_followup_investigation_type"
+              label="Was it escalated to EMPR investigation?*"
               placeholder="Please choose one"
-              component={renderConfig.RADIO}
-              data={[
-                { id: "yes_miu", label: "Yes  - MIU Investigation" },
-                { id: "yes_inspector", label: "Yes  - Inspector Investigation" },
-                { id: "no", label: "No" },
-              ]}
+              component={renderConfig.SELECT}
+              data={props.followupActionOptions}
               validate={[required]}
             />
           </Form.Item>
           <Form.Item>
             <Field
-              id="incident_recommendations"
-              name="incident_recommendations"
+              id="recommendations"
+              name="recommendation"
               label="Recommendation"
               placeholder="Provide recommendation actions"
               component={RenderAutoSizeField}
@@ -72,8 +67,19 @@ export const AddIncidentFollowUpForm = () => (
 
           <Form.Item>
             <Field
-              id="determinator"
-              name="determinator"
+              id="status_code"
+              name="status_code"
+              label="Incident status?*"
+              component={renderConfig.SELECT}
+              data={props.incidentStatusOptions}
+              placeholder="typeahead, auto populated"
+            />
+          </Form.Item>
+
+          <Form.Item>
+            <Field
+              id="determination_inspector_party_guid"
+              name="determination_inspector_party_guid"
               label="Who made the determination?"
               placeholder="typeahead, auto populated"
               component={RenderField}
@@ -87,7 +93,7 @@ export const AddIncidentFollowUpForm = () => (
   </div>
 );
 
-// AddIncidentFollowUpForm.propTypes = propTypes;
+AddIncidentFollowUpForm.propTypes = propTypes;
 
 export default reduxForm({
   form: FORM.ADD_INCIDENT_FOLLOWUP,

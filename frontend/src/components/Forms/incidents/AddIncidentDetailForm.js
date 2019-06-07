@@ -4,13 +4,12 @@ import CustomPropTypes from "@/customPropTypes";
 import { Field, reduxForm } from "redux-form";
 import { Form, Col, Row } from "antd";
 import * as FORM from "@/constants/forms";
-// import CustomPropTypes from "@/customPropTypes";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderDate from "@/components/common/RenderDate";
 import { renderConfig } from "@/components/common/config";
 
-import { required, dateNotInFuture } from "@/utils/Validate";
+import { required, maxLength, number, dateNotInFuture } from "@/utils/Validate";
 
 const propTypes = {
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -46,20 +45,22 @@ class AddIncidentDetailForm extends Component {
             </Form.Item>
             <Form.Item>
               <Field
-                id="fatalities"
-                name="fatalities"
+                id="number_of_fatalities"
+                name="number_of_fatalities"
                 label="Number of Fatalities:"
                 placeholder="isNumber"
                 component={RenderField}
+                validate={[number, maxLength(10)]}
               />
             </Form.Item>
             <Form.Item>
               <Field
-                id="injuries"
-                name="injuries"
+                id="number_of_injuries"
+                name="number_of_injuries"
                 label="Number of injuries:"
                 placeholder="isNumber"
                 component={RenderField}
+                validate={[number, maxLength(10)]}
               />
             </Form.Item>
             <Form.Item>
@@ -96,11 +97,12 @@ class AddIncidentDetailForm extends Component {
             </Form.Item>
             <Form.Item>
               <Field
-                id="determinator"
-                name="determinator"
+                id="determination_inspector_party_guid"
+                name="determination_inspector_party_guid"
                 label="Who made the determination?"
                 placeholder="typeahead, auto populated"
                 component={RenderField}
+                validate={[required]}
               />
             </Form.Item>
 
@@ -126,9 +128,9 @@ class AddIncidentDetailForm extends Component {
               <span>
                 <Form.Item>
                   <Field
-                    id="incident_status"
-                    name="incident_status"
-                    label="Which section(s) of the code apply to this dangerous occurrence?*"
+                    id="status_code"
+                    name="status_code"
+                    label="Status"
                     placeholder="Please choose one or more"
                     component={renderConfig.MULTI_SELECT}
                     data={this.props.doSubparagraphOptions}
@@ -137,15 +139,6 @@ class AddIncidentDetailForm extends Component {
                 </Form.Item>
               </span>
             ) : null}
-            <Form.Item>
-              <Field
-                id="determinator"
-                name="determinator"
-                label="Who made the determination?"
-                placeholder="typeahead, auto populated"
-                component={RenderField}
-              />
-            </Form.Item>
           </Col>
         </Row>
       </Form>

@@ -14,20 +14,39 @@ const { Step } = Steps;
 
 const propTypes = {
   closeModal: PropTypes.func.isRequired,
-  // onSubmit: PropTypes.func.isRequired,
-  title: PropTypes.string,
-  // followupActionOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   incidentDeterminationOptions: CustomPropTypes.options.isRequired,
   doSubparagraphOptions: CustomPropTypes.options.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   incidentNumber: PropTypes.string.isRequired,
+  // addReportingFormValues: PropTypes.objectOf(PropTypes.strings),
+  // addDetailFormValues: PropTypes.objectOf(PropTypes.strings),
+  addFollowUpFormValues: PropTypes.objectOf(PropTypes.strings),
 };
 
 const defaultProps = {
-  title: "",
+  // addReportingFormValues: {},
+  // addDetailFormValues: {},
+  addFollowUpFormValues: {},
 };
 
-// const invalidReportingPayload = (addPartyFormValues, isPerson) => false;
+// TODO: Should move these into the forms themselves
+const invalidReportingPayload = () => false;
+// addReportingFormValues.reported_timestamp === undefined ||
+// addReportingFormValues.reported_by_name === undefined ||
+// addReportingFormValues.reported_to_inspector_party_guid === undefined ||
+// addReportingFormValues.responsible_inspector_party_guid === undefined;
+const invalidDetailPayload = () => false;
+// addDetailFormValues.determination_inspector_party_guid === undefined ||
+// (addDetailFormValues.determination_type_code === 'DO' && addDetailFormValues.DoSubparagraphs.length === 0) ||
+// addDetailFormValues.determination_type_code === undefined ||
+// addDetailFormValues.incident_description === undefined ||
+// addDetailFormValues.emergency_services_called === undefined ||
+// addDetailFormValues.incident_timestamp === undefined;
+
+const invalidFollowUpPayload = () => false;
+// addFollowUpFormValuesmine_incident_followup_investigation_type
+// followup_inspection_date;
+// addFollowUpFormValues.emergency_services_called;
 
 export class AddIncidentModal extends Component {
   state = { current: 0 };
@@ -39,10 +58,12 @@ export class AddIncidentModal extends Component {
 
   next() {
     this.setState((prevState) => ({ current: prevState.current + 1 }));
+    this.renderStepButtons();
   }
 
   prev() {
     this.setState((prevState) => ({ current: prevState.current - 1 }));
+    this.renderStepButtons();
   }
 
   renderStep1() {
@@ -73,71 +94,6 @@ export class AddIncidentModal extends Component {
     );
   }
 
-  renderStepButtons() {
-    // "You're not my real buttons, you're just stepbuttons!"
-    const buttons = [];
-    if (this.state.current > 0)
-      buttons.push(
-        <Button type="tertiary" className="full-mobile" onClick={() => this.prev()}>
-          Back
-        </Button>
-      );
-
-    switch (this.state.current) {
-      case 0:
-        buttons.push(
-          <Button
-            type="tertiary"
-            className="full-mobile"
-            onClick={() => this.next()}
-            disabled={false}
-          >
-            Next
-          </Button>
-        );
-        break;
-      case 1:
-        buttons.push(
-          <Button
-            type="tertiary"
-            className="full-mobile"
-            onClick={() => this.next()}
-            disabled={false}
-          >
-            Next
-          </Button>
-        );
-        buttons.push(
-          <Button
-            type="primary"
-            className="full-mobile"
-            onClick={(event) => this.handleIncidentSubmit(event, false)}
-            // disabled={invalidIncidentPayload(this.props.addIncidentFormValues, this.state.isPerson)}
-          >
-            Save initial incident
-          </Button>
-        );
-        break;
-      case 2:
-        // Follow Up
-        buttons.push(
-          <Button
-            type="primary"
-            className="full-mobile"
-            onClick={(event) => this.handleIncidentSubmit(event, false)}
-            // disabled={invalidIncidentPayload(this.props.addIncidentFormValues, this.state.isPerson)}
-          >
-            Submit
-          </Button>
-        );
-        break;
-      default:
-        break;
-    }
-
-    return buttons;
-  }
-
   render() {
     const steps = [
       {
@@ -157,7 +113,6 @@ export class AddIncidentModal extends Component {
     return (
       <div>
         <div>
-          <h4>{this.props.title}</h4>
           <div>
             <Steps current={this.state.current}>
               {steps.map((step) => (
@@ -179,7 +134,64 @@ export class AddIncidentModal extends Component {
                 </Button>
               </Popconfirm>
 
-              {this.renderStepButtons()}
+              {this.state.current === 0 && (
+                <Button
+                  id="step1-next"
+                  type="tertiary"
+                  className="full-mobile"
+                  onClick={() => this.next()}
+                  disabled={invalidReportingPayload()}
+                >
+                  Next
+                </Button>
+              )}
+
+              {this.state.current === 1 && [
+                <Button
+                  id="step-back"
+                  type="tertiary"
+                  className="full-mobile"
+                  onClick={() => this.prev()}
+                >
+                  Back
+                </Button>,
+                <Button
+                  id="step2-next"
+                  type="tertiary"
+                  className="full-mobile"
+                  onClick={() => this.next()}
+                  disabled={invalidDetailPayload()}
+                >
+                  Next
+                </Button>,
+                <Button
+                  type="primary"
+                  className="full-mobile"
+                  onClick={(event) => this.handleIncidentSubmit(event, false)}
+                  disabled={invalidDetailPayload()}
+                >
+                  Save initial incident
+                </Button>,
+              ]}
+
+              {this.state.current === 2 && [
+                <Button
+                  id="step-back"
+                  type="tertiary"
+                  className="full-mobile"
+                  onClick={() => this.prev()}
+                >
+                  Back
+                </Button>,
+                <Button
+                  type="primary"
+                  className="full-mobile"
+                  onClick={(event) => this.handleIncidentSubmit(event, false)}
+                  disabled={invalidFollowUpPayload(this.props.addFollowUpFormValues)}
+                >
+                  Submit
+                </Button>,
+              ]}
             </div>
           </div>
         </div>

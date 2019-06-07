@@ -3,11 +3,10 @@ import React from "react";
 import { Field, reduxForm } from "redux-form";
 import { Form, Col, Row } from "antd";
 import * as FORM from "@/constants/forms";
-// import { required, email, phoneNumber, maxLength, number, postalCode } from "@/utils/Validate";
-// import { normalizePhone, upperCase } from "@/utils/helpers";
+import { required, email, number, phoneNumber, maxLength, dateNotInFuture } from "@/utils/Validate";
+import { normalizePhone } from "@/utils/helpers";
 import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
-import { required, dateNotInFuture } from "@/utils/Validate";
 // import { resetForm } from "@/utils/helpers";
 
 // const propTypes = {
@@ -21,8 +20,8 @@ export const AddIncidentReportingForm = () => (
         <Col>
           <Form.Item>
             <Field
-              id="incident_no"
-              name="incident_no"
+              id="mine_incident_id_year+mine_incident_report_no"
+              name="mine_incident_id_year+mine_incident_report_no"
               label="Ministry Incident No."
               placeholder="2019-0026"
               component={RenderField}
@@ -30,8 +29,8 @@ export const AddIncidentReportingForm = () => (
           </Form.Item>
           <Form.Item>
             <Field
-              id="reported_to"
-              name="reported_to"
+              id="reported_to_inspector_party_guid"
+              name="reported_to_inspector_party_guid"
               label="Incident reported to*:"
               placeholder="Typeahead"
               component={RenderField}
@@ -40,9 +39,9 @@ export const AddIncidentReportingForm = () => (
           </Form.Item>
           <Form.Item>
             <Field
-              id="inspector_responsible"
-              name="inspector_responsible"
-              label="Inspector responsible:"
+              id="responsible_inspector_party_guid"
+              name="responsible_inspector_party_guid"
+              label="Inspector responsible:*"
               placeholder="Typeahead"
               component={RenderField}
               validate={[required]}
@@ -51,8 +50,8 @@ export const AddIncidentReportingForm = () => (
           <h4>Reporter Details</h4>
           <Form.Item>
             <Field
-              id="reported_by"
-              name="reported_by"
+              id="reported_by_name"
+              name="reported_by_name"
               label="Reported by"
               placeholder="Text"
               component={RenderField}
@@ -61,20 +60,33 @@ export const AddIncidentReportingForm = () => (
           </Form.Item>
           <Form.Item>
             <Field
-              id="phone_number"
-              name="phone_number"
+              id="reported_by_phone_no"
+              name="reported_by_phone_no"
               label="Phone number"
               placeholder="Phone format"
               component={RenderField}
+              validate={[phoneNumber, maxLength(12)]}
+              normalize={normalizePhone}
             />
           </Form.Item>
           <Form.Item>
             <Field
-              id="email"
-              name="email"
+              id="reported_by_phone_ext"
+              name="reported_by_phone_ext"
+              label="Phone extension"
+              placeholder="Phone format"
+              component={RenderField}
+              validate={[number, maxLength(4)]}
+            />
+          </Form.Item>
+          <Form.Item>
+            <Field
+              id="reported_by_email"
+              name="reported_by_email"
               label="Email"
               placeholder="email format"
               component={RenderField}
+              validate={[email]}
             />
           </Form.Item>
           <Form.Item>
