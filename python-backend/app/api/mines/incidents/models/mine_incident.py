@@ -28,6 +28,22 @@ class MineIncident(AuditMixin, Base):
 
     reported_timestamp = db.Column(db.DateTime)
     reported_by_name = db.Column(db.String)
+    reported_by_email = db.Column(db.String)
+    reported_by_phone_no = db.Column(db.String)
+    reported_by_phone_ext = db.Column(db.String)
+
+    number_of_fatalities = db.Column(db.Integer)
+    number_of_injuries = db.Column(db.Integer)
+    emergency_services_called = db.Column(db.Boolean)
+    followup_inspection = db.Column(db.Boolean)
+    followup_inspection_date = db.Column(db.DateTime)
+
+    reported_to_inspector_party_guid = db.Column(
+        UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=False)
+    responsible_inspector_party_guid = db.Column(
+        UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=False)
+    determination_inspector_party_guid = db.Column(
+        UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=False)
 
     determination_type_code = db.Column(
         db.String,

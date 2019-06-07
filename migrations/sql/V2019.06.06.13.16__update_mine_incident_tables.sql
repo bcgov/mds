@@ -46,6 +46,7 @@ ADD COLUMN status_code CHARACTER VARYING(3) REFERENCES mine_incident_status_code
 ADD COLUMN reported_by_name CHARACTER VARYING(255),
 ADD COLUMN reported_by_phone_no CHARACTER VARYING(12),
 ADD COLUMN reported_by_phone_ext CHARACTER VARYING(4),
+ADD COLUMN reported_by_email CHARACTER VARYING(254),
 ADD COLUMN reported_to_inspector_party_guid UUID REFERENCES party(party_guid),
 ADD COLUMN responsible_inspector_party_guid UUID REFERENCES party(party_guid),
 ADD COLUMN determination_inspector_party_guid UUID REFERENCES party(party_guid),
