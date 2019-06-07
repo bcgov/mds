@@ -42,7 +42,7 @@ class MineIncidentListResource(Resource, UserMixin):
         type=str,
         location='json'),
     parser.add_argument(
-        'followup_type_code',
+        'followup_investigation_type_code',
         help='Mark incident to have a follow up inspection',
         type=str,
         location='json')
@@ -53,16 +53,15 @@ class MineIncidentListResource(Resource, UserMixin):
         type=list,
         location='json')
     parser.add_argument(
-        'followup_inspection_no', help='NRIS ID of follow up inspection', type=str, location='json')
-    parser.add_argument(
         'reported_timestamp',
         help='Datetime of when the incident was reported',
         type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None,
         location='json')
     parser.add_argument(
-        'reported_by', help='Name of party who reported the incident', type=str, location='json')
-    parser.add_argument(
-        'reported_by_role', help='Job title of incident reporter', type=str, location='json')
+        'reported_by_name',
+        help='Name of party who reported the incident',
+        type=str,
+        location='json')
 
     @api.marshal_with(MINE_INCIDENT_MODEL, envelope='mine_incidents', code=200, as_list=True)
     @api.doc(description='returns the incidents for a given mine.')
@@ -95,12 +94,10 @@ class MineIncidentListResource(Resource, UserMixin):
             mine,
             data['incident_timestamp'],
             data['incident_description'],
-            determination_type_code=data['determination_type_code'] or 'PEN',
-            followup_type_code=data['followup_type_code'] or 'UND',
-            followup_inspection_no=data['followup_inspection_no'],
+            determination_type_code=data['determination_type_code'],
+            followup_investigation_type_code=data['followup_investigation_type_code'],
             reported_timestamp=data['reported_timestamp'],
-            reported_by=data['reported_by'],
-            reported_by_role=data['reported_by_role'],
+            reported_by_name=data['reported_by_name'],
         )
         for id in do_sub_codes:
             sub = ComplianceArticle.find_by_compliance_article_id(id)
@@ -138,14 +135,8 @@ class MineIncidentResource(Resource, UserMixin):
         location='json',
         store_missing=False)
     parser.add_argument(
-        'reported_by',
+        'reported_by_name',
         help='Name of party who reported the incident',
-        type=str,
-        location='json',
-        store_missing=False)
-    parser.add_argument(
-        'reported_by_role',
-        help='Job title of incident reporter',
         type=str,
         location='json',
         store_missing=False)
@@ -156,7 +147,7 @@ class MineIncidentResource(Resource, UserMixin):
         location='json',
         store_missing=False)
     parser.add_argument(
-        'followup_type_code',
+        'followup_investigation_type_code',
         help='Mark incident to have a follow up inspection',
         location='json',
         type=str,
@@ -166,18 +157,6 @@ class MineIncidentResource(Resource, UserMixin):
         help='List of dangerous occurrence sub-paragraphs from the HSRC code',
         type=list,
         location='json',
-        store_missing=False)
-    parser.add_argument(
-        'followup_inspection_no',
-        help='NRIS inspection related to this incident',
-        location='json',
-        type=str,
-        store_missing=False)
-    parser.add_argument(
-        'closing_report_summary',
-        help='Report from mine in reaction to the incident',
-        location='json',
-        type=str,
         store_missing=False)
 
     @api.marshal_with(MINE_INCIDENT_MODEL, code=200)

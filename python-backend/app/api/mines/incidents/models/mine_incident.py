@@ -27,8 +27,7 @@ class MineIncident(AuditMixin, Base):
     incident_description = db.Column(db.String, nullable=False)
 
     reported_timestamp = db.Column(db.DateTime)
-    reported_by = db.Column(db.String)
-    reported_by_role = db.Column(db.String)
+    reported_by_name = db.Column(db.String)
 
     determination_type_code = db.Column(
         db.String,
@@ -38,9 +37,6 @@ class MineIncident(AuditMixin, Base):
         db.ForeignKey(
             'mine_incident_followup_investigation_type.mine_incident_followup_investigation_type_code'
         ))
-    followup_inspection_no = db.Column(db.String)
-
-    closing_report_summary = db.Column(db.String)
 
     determination_type = db.relationship(
         'MineIncidentDeterminationType', backref='mine_incidents', lazy='joined', uselist=False)
@@ -76,22 +72,18 @@ class MineIncident(AuditMixin, Base):
                mine,
                incident_timestamp,
                incident_description,
-               determination_type_code='PEN',
-               followup_type_code='UND',
-               followup_inspection_no=None,
+               determination_type_code=None,
+               followup_investigation_type_code=None,
                reported_timestamp=None,
-               reported_by=None,
-               reported_by_role=None,
+               reported_by_name=None,
                add_to_session=True):
         mine_incident = cls(
             incident_timestamp=incident_timestamp,
             incident_description=incident_description,
             reported_timestamp=reported_timestamp,
-            reported_by=reported_by,
-            reported_by_role=reported_by_role,
+            reported_by_name=reported_by_name,
             determination_type_code=determination_type_code,
-            followup_type_code=followup_type_code,
-            followup_inspection_no=followup_inspection_no,
+            followup_investigation_type_code=followup_investigation_type_code,
         )
         mine.mine_incidents.append(mine_incident)
         if add_to_session:
