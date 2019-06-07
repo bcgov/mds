@@ -40,14 +40,6 @@ ShallowWrapper {
       ]
     }
     createVariance={[MockFunction]}
-    fetchCoreUsers={
-    fetchApplicationStatusOptions={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
-    }
     fetchInspectors={
       [MockFunction] {
         "calls": Array [
