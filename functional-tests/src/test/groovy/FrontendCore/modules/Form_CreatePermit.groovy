@@ -3,7 +3,7 @@ package modules
 import geb.Module
 import utils.Const
 
-class Form_CreatePermit extends Module {
+class Form_Create_And_Edit_Permit extends Module {
     static PERMITTEE = "Halfthor"
     static PERMITTEE_FULL_NAME = "Halfthor Zavicus, test@blah.do"
     static PERMIT_TYPE = "Mineral"
@@ -68,6 +68,10 @@ class Form_CreatePermit extends Module {
         calendarInput = ISSUE_DATE
 
         submitButton.click()
+
+    }
+
+    def editPermitStatus() {
 
     }
 
