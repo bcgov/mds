@@ -5,6 +5,7 @@ from sqlalchemy.orm import validates
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.hybrid import hybrid_property
 from app.extensions import db
+from sqlalchemy.ext.associationproxy import association_proxy
 
 from ....utils.models_mixins import AuditMixin, Base
 from .mine_status_xref import MineStatusXref
@@ -24,6 +25,7 @@ class MineStatus(AuditMixin, Base):
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     mine_status_xref = db.relationship('MineStatusXref', lazy='joined')
+    status_description = association_proxy('mine_status_xref', 'description')
 
     @hybrid_property
     def status_values(self):
