@@ -1,22 +1,27 @@
 import React, { Component } from "react";
-import jwt from "jsonwebtoken";
-
-const { METABASE_SITE_URL = "", METABASE_SECRET_KEY = "" } = process.env;
-
-const payload = {
-  resource: { dashboard: 136 },
-  params: {},
-};
+// TODO: use our custom axios instance
+import axios from "axios";
 
 export class ReportingDashboard extends Component {
-  state = {
-    token: jwt.sign(payload, METABASE_SECRET_KEY),
-  };
+  state = {};
+
+  componentWillMount() {
+    axios
+      .get(`${process.env.BASE_PATH}/metabase-token`, {
+        headers: {
+          Authorization: "authtoken",
+        },
+      })
+      // TODO: Safely handle unauthorized / failed request
+      .then((res) => {
+        const { dashboardUrl } = res.data ? res.data : {};
+        this.setState({ dashboardUrl });
+      })
+      .catch(console.error);
+  }
 
   render() {
-    const iframeUrl = `${METABASE_SITE_URL}/embed/dashboard/${
-      this.state.token
-    }#bordered=true&titled=false`;
+    const iframeUrl = `${this.state.dashboardUrl}#bordered=true&titled=false`;
     return (
       <iframe
         title="metabaseDashboard"
