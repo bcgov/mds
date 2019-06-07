@@ -52,8 +52,8 @@ DECLARE
 
     PERMIT_NO1 varchar = 'BLAHPER-01';
     PERMIT_NO2 varchar = 'BLAHPER-02';
-    ISSUE_DATE1 date = '1902-02-02';
-    ISSUE_DATE2 date = '1956-03-03';
+    ISSUE_DATE1 date = '2002-02-02';
+    ISSUE_DATE2 date = '2003-03-03';
 
 BEGIN
 
