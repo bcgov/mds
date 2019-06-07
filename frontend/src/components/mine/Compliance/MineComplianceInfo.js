@@ -44,11 +44,11 @@ export class MineComplianceInfo extends Component {
               <div className="compliance--content">
                 <MineComplianceCard
                   title="Count of inspections (Past 12 months)"
-                  content={this.props.mineComplianceInfo.num_inspections}
+                  content={this.props.mineComplianceInfo.last_12_months.num_inspections}
                 />
                 <MineComplianceCard
                   title={`Count of inspections (Since April 1, ${fiscalYear})`}
-                  content={this.props.mineComplianceInfo.num_inspections_since_april}
+                  content={this.props.mineComplianceInfo.current_fiscal.num_inspections}
                 />
                 <MineComplianceCard
                   title="Last inspection date"
@@ -70,11 +70,11 @@ export class MineComplianceInfo extends Component {
                 />
                 <MineComplianceCard
                   title="Warnings issued in the past 12 months"
-                  content={this.props.mineComplianceInfo.warnings}
+                  content={this.props.mineComplianceInfo.last_12_months.num_warnings}
                 />
                 <MineComplianceCard
                   title="Advisories issued in the past 12 months"
-                  content={this.props.mineComplianceInfo.advisories}
+                  content={this.props.mineComplianceInfo.last_12_months.num_advisories}
                 />
               </div>
             </div>

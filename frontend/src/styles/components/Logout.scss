@@ -1,0 +1,14 @@
+.logout-screen {
+  text-align: center;
+  margin-top: $default-margin-lg;
+
+  p {
+    margin-top: 42px;
+    margin-bottom: 13px;
+  }
+
+  @include center(true, true);
+  @include mobile {
+    margin: 0;
+  }
+}

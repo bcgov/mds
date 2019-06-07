@@ -29,11 +29,12 @@ class NonComplianceLegislation(Base):
         db.Integer,
         db.ForeignKey('legislation_compliance_article.legislation_compliance_article_id'))
 
-    parent_legislation_act = db.relationship("LegislationAct")
-    regulation_legislation_act = db.relationship(
-        "LegislationAct", secondary='legislation_act_section')
-    regulation_legislation_act_section = db.relationship("LegislationActSection")
-    compliance_article = db.relationship("LegislationComplianceArticle")
+    parent_legislation_act = db.relationship("LegislationAct", lazy='joined')
+    regulation_legislation_act = db.relationship("LegislationAct",
+                                                 secondary='legislation_act_section',
+                                                 lazy='joined')
+    regulation_legislation_act_section = db.relationship("LegislationActSection", lazy='joined')
+    compliance_article = db.relationship("LegislationComplianceArticle", lazy='joined')
 
     parent_act = association_proxy('parent_legislation_act', 'act')
     regulation_act = association_proxy('regulation_legislation_act', 'act')

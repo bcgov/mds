@@ -1,3 +1,4 @@
+import { chain } from "lodash";
 import * as staticContentReducer from "@/reducers/staticContentReducer";
 import { createSelector } from "reselect";
 import { createLabelHash, createDropDownList } from "@/utils/helpers";
@@ -191,4 +192,41 @@ export const getDropdownVarianceStatusOptions = createSelector(
 export const getVarianceStatusOptionsHash = createSelector(
   [getDropdownVarianceStatusOptions],
   createLabelHash
+);
+
+const transformMineStatusSubReason = (reasons) =>
+  chain(reasons)
+    .groupBy((s) => s.mine_operation_status_sub_reason.mine_operation_status_sub_reason_code)
+    .filter((g) => g[0].mine_operation_status_sub_reason.mine_operation_status_sub_reason_code)
+    .map((subReasons) => ({
+      value: subReasons[0].mine_operation_status_sub_reason.mine_operation_status_sub_reason_code,
+      label: subReasons[0].mine_operation_status_sub_reason.description,
+      children: [],
+    }))
+    .value();
+
+const transformMineStatusReason = (codes) =>
+  chain(codes)
+    .groupBy((s) => s.mine_operation_status_reason.mine_operation_status_reason_code)
+    .filter((g) => g[0].mine_operation_status_reason.mine_operation_status_reason_code)
+    .map((reasons) => ({
+      value: reasons[0].mine_operation_status_reason.mine_operation_status_reason_code,
+      label: reasons[0].mine_operation_status_reason.description,
+      children: transformMineStatusSubReason(reasons),
+    }))
+    .value();
+
+const transformMineStatus = (data) =>
+  chain(data)
+    .groupBy((s) => s.mine_operation_status.mine_operation_status_code)
+    .map((codes) => ({
+      value: codes[0].mine_operation_status.mine_operation_status_code,
+      label: codes[0].mine_operation_status.description,
+      children: transformMineStatusReason(codes),
+    }))
+    .value();
+
+export const getMineStatusDropDownOptions = createSelector(
+  getMineStatusOptions,
+  transformMineStatus
 );
