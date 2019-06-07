@@ -18,7 +18,8 @@ from app.api.variances.models.variance import Variance
 # The need to access the guid -> id lookup forces an import as the id primary
 # key is not available via the API. The interal-only primary key +
 # cross-namespace foreign key constraints are interally inconsistent
-from app.api.users.core.models.core_user import CoreUser
+from app.api.parties.party.models.party import Party
+from app.api.parties.party_appt.models.party_business_role_appt import PartyBusinessRoleAppointment
 
 
 class MineVarianceResource(Resource, UserMixin, ErrorMixin):
@@ -38,10 +39,10 @@ class MineVarianceResource(Resource, UserMixin, ErrorMixin):
         store_missing=False,
         help='A 3-character code indicating the status type of the variance. Default: REV')
     parser.add_argument(
-        'inspector_guid',
+        'inspector_party_guid',
         type=str,
         store_missing=False,
-        help='GUID of the user who inspected the mine during the variance application process.')
+        help='GUID of the party who inspected the mine during the variance application process.')
     parser.add_argument(
         'note',
         type=str,
@@ -51,7 +52,6 @@ class MineVarianceResource(Resource, UserMixin, ErrorMixin):
         'issue_date', store_missing=False, help='The date on which the variance was issued.')
     parser.add_argument(
         'expiry_date', store_missing=False, help='The date on which the variance expires.')
-
 
     @api.doc(
         description='Get a single variance.',
@@ -69,7 +69,6 @@ class MineVarianceResource(Resource, UserMixin, ErrorMixin):
 
         return variance
 
-
     @api.doc(
         description='Update a variance.',
         params={
@@ -85,16 +84,19 @@ class MineVarianceResource(Resource, UserMixin, ErrorMixin):
 
         data = self.parser.parse_args()
 
-        core_user_guid = data.get('inspector_guid')
-        if core_user_guid:
-            core_user = CoreUser.find_by_core_user_guid(core_user_guid)
-            if not core_user:
+        inspector_party_guid = data.get('inspector_party_guid')
+        if inspector_party_guid:
+            inspector = Party.find_by_party_guid(inspector_party_guid)
+            if not inspector:
                 raise BadRequest('Unable to find new inspector.')
+            business_roles = PartyBusinessRoleAppointment.find_by_party_guid(inspector_party_guid)
+            if not [x for x in business_roles if x.party_business_role_code == 'INS']:
+                raise BadRequest('Party is not an inspector.')
 
-            variance.inspector_id = core_user.core_user_id
+            variance.inspector_party_guid = inspector_party_guid
 
         for key, value in data.items():
-            if key in ['inspector_guid']:
+            if key in ['inspector_party_guid']:
                 continue
             setattr(variance, key, value)
 
@@ -105,7 +107,7 @@ class MineVarianceResource(Resource, UserMixin, ErrorMixin):
             status=variance.variance_application_status_code,
             issue=variance.issue_date,
             expiry=variance.expiry_date,
-            inspector=variance.inspector_id)
+            inspector=variance.inspector_party_guid)
 
         variance.save()
         return variance

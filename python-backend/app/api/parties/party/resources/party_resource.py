@@ -37,13 +37,9 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
         help='The extension of the phone number. Ex: 1234',
         store_missing=False)
     parser.add_argument('email', type=str, help='The email of the party.', store_missing=False)
+    parser.add_argument('email', type=str, help='The email of the party.', store_missing=False)
     parser.add_argument(
-        'email', type=str, help='The email of the party.', store_missing=False)
-    parser.add_argument(
-        'party_type_code',
-        type=str,
-        help='The type of the party. Ex: PER',
-        store_missing=False)
+        'party_type_code', type=str, help='The type of the party. Ex: PER', store_missing=False)
     parser.add_argument(
         'suite_no',
         type=str,
@@ -74,12 +70,26 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
         type=str,
         store_missing=False,
         help='The postal code of the party address. Ex: A0B1C2')
+    parser.add_argument(
+        'job_title',
+        type=str,
+        store_missing=False,
+        help='The job title of the party. Ex "Chief of Inspections"')
+    parser.add_argument(
+        'postnominal_letters',
+        type=str,
+        store_missing=False,
+        help='Suffixes for a party name. Ex "BSc, PhD"')
+    parser.add_argument(
+        'idir_username',
+        type=str,
+        store_missing=False,
+        help='The IDIR username of the party. Ex "IDIR\JSMITH"')
 
     PARTY_LIST_RESULT_LIMIT = 25
 
     @api.doc(
-        description='Fetch a party by guid',
-        params={
+        description='Fetch a party by guid', params={
             'party_guid': 'guid of the party to fetch',
         })
     @requires_role_mine_view
@@ -91,13 +101,9 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
 
         return party
 
-
     @api.expect(parser)
     @api.doc(
-        description='Update a party by guid',
-        params={
-            'party_guid': 'guid of the party to update.'
-        })
+        description='Update a party by guid', params={'party_guid': 'guid of the party to update.'})
     @requires_role_mine_create
     @api.marshal_with(PARTY, code=200)
     def put(self, party_guid):
@@ -128,10 +134,7 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
         return existing_party
 
     @api.doc(
-        description='Delete a party by guid',
-        params={
-            'party_guid': 'guid of the party to delete.'
-        })
+        description='Delete a party by guid', params={'party_guid': 'guid of the party to delete.'})
     @requires_role_mine_admin
     def delete(self, party_guid):
         if party_guid is None:

@@ -16,6 +16,7 @@ const initialState = {
   partyPageData: {},
   addPartyFormState: {},
   lastCreatedParty: {},
+  inspectors: [],
 };
 
 const partiesReducer = (state = initialState, action) => {
@@ -56,6 +57,11 @@ const partiesReducer = (state = initialState, action) => {
         lastCreatedParty: action.payload,
         rawParties: [action.payload],
       };
+    case actionTypes.STORE_INSPECTORS:
+      return {
+        ...state,
+        inspectors: action.payload.records,
+      };
     default:
       return state;
   }
@@ -75,5 +81,6 @@ export const getPartyRelationships = (state) => state[PARTIES].partyRelationship
 export const getPartyPageData = (state) => state[PARTIES].partyPageData;
 export const getAddPartyFormState = (state) => state[PARTIES].addPartyFormState;
 export const getLastCreatedParty = (state) => state[PARTIES].lastCreatedParty;
+export const getInspectors = (state) => state[PARTIES].inspectors;
 
 export default partiesReducer;
