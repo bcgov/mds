@@ -85,5 +85,17 @@ class Form_CreatePermit extends Module {
 
     }
    
+    def amalgamatePermit() {
+         // fill out permittee
+        permittee = "Halfthor"
+        permitteeName.click()
+
+         // fill out issue date
+        issueDate.click()
+        calendarInput = AMENDMENT_DATE
+
+        descriptionField = "A fancy amalgamation description"
+        submitButton.click()
+    }
       
 }

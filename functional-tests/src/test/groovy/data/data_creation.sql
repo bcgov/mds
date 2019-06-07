@@ -90,9 +90,6 @@ BEGIN
         (PERMIT_GUID1, MINE_GUID, PERMIT_NO1, 'C', IDIR_USER, DEFAULT, IDIR_USER, DEFAULT, DEFAULT),
         (PERMIT_GUID2, MINE_GUID, PERMIT_NO2, 'O', IDIR_USER, DEFAULT, IDIR_USER, DEFAULT, DEFAULT);
 
-    -- INSERT INTO permit_amendment
-    -- VALUES
-    --     (permit_amendment_guid, permit_id,)
     INSERT INTO mine_party_appt
         (mine_guid, party_guid, mine_party_appt_type_code, permit_guid, create_user, update_user)
     VALUES

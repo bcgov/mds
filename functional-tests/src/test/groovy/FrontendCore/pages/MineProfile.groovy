@@ -47,7 +47,7 @@ class MineProfilePage extends Page {
         // uploadCompleteMessage (wait:true) {$("span.filepond--file-status-main", text:"Upload complete")}
         // editPermitFileButton (wait:true) {$("button", text: "Edit initial permit for M-66666")}
 
-        // downloadTestFileLink (wait:true) {$("a", text: Const.TEST_FILE_NAME)}
+        downloadTestFileLink (wait:true) {$("a", text: Const.TEST_FILE_NAME)}
         
 
     }
