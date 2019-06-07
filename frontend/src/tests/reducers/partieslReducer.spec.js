@@ -9,6 +9,7 @@ const baseExpectedValue = {
   partyPageData: {},
   addPartyFormState: {},
   lastCreatedParty: {},
+  inspectors: [],
 };
 
 // Creates deep copy of javascript object instead of setting a reference

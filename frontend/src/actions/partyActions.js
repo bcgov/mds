@@ -25,3 +25,8 @@ export const storeLastCreatedParty = (payload) => ({
   type: ActionTypes.STORE_LAST_CREATED_PARTY,
   payload,
 });
+
+export const storeInspectors = (payload) => ({
+  type: ActionTypes.STORE_INSPECTORS,
+  payload,
+});

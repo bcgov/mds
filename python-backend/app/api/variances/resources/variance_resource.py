@@ -12,6 +12,7 @@ from ...utils.resources_mixins import UserMixin, ErrorMixin
 PAGE_DEFAULT = 1
 PER_PAGE_DEFAULT = 25
 
+
 class VarianceResource(Resource, UserMixin, ErrorMixin):
     @api.doc(
         description='Get a list of variances.',
@@ -23,8 +24,7 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
     @api.marshal_with(PAGINATED_VARIANCE_LIST, code=200)
     def get(self):
         paginated_variances, pagination_details = apply_pagination(
-            Variance.query,
-            request.args.get('page', PAGE_DEFAULT, type=int),
+            Variance.query, request.args.get('page', PAGE_DEFAULT, type=int),
             request.args.get('per_page', PER_PAGE_DEFAULT, type=int))
 
         if not paginated_variances:
