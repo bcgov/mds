@@ -17,7 +17,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   mineGuid: PropTypes.string.isRequired,
   mineName: PropTypes.string.isRequired,
-  coreUsers: CustomPropTypes.options.isRequired,
+  inspectors: CustomPropTypes.options.isRequired,
   variance: CustomPropTypes.variance,
   varianceStatusOptions: CustomPropTypes.options.isRequired,
   fetchVarianceById: PropTypes.func.isRequired,
@@ -64,7 +64,7 @@ export class EditVarianceModal extends Component {
             closeModal={this.props.closeModal}
             mineGuid={this.props.mineGuid}
             mineName={this.props.mineName}
-            coreUsers={this.props.coreUsers}
+            inspectors={this.props.inspectors}
             variance={this.props.variance}
             varianceStatusOptions={this.props.varianceStatusOptions}
             initialValues={this.props.variance}
