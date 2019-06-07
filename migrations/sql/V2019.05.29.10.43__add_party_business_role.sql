@@ -14,12 +14,12 @@ COMMENT ON TABLE party_business_role_code IS 'Business roles that a party belong
 
 CREATE TABLE IF NOT EXISTS party_business_role_appt
 (
-    party_business_role_id      serial                                  NOT NULL PRIMARY KEY,
+    party_business_role_appt_id      serial                                  NOT NULL PRIMARY KEY,
     party_guid                  uuid                                    NOT NULL            ,
     party_business_role_code    character varying(32)                   NOT NULL            ,
     start_date                  timestamptz                             NOT NULL            ,
     end_date                    timestamptz,
-    deleted_ind                 boolean DEFAULT true                    NOT NULL            ,
+    deleted_ind                 boolean DEFAULT false                    NOT NULL            ,
     create_user                 character varying(60)                   NOT NULL            ,
     create_timestamp            timestamp with time zone DEFAULT now()  NOT NULL            ,
     update_user                 character varying(60)                   NOT NULL            ,

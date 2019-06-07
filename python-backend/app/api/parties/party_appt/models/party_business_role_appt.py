@@ -28,29 +28,39 @@ class PartyBusinessRoleAppointment(AuditMixin, Base):
     party = db.relationship('Party', lazy='joined')
 
     party_business_role = db.relationship(
-        'PartyBusinessRoleCode', backref='part_business_role_appt', lazy='joined')
+        'PartyBusinessRoleCode', backref='party_business_role_appt', lazy='joined')
 
     @classmethod
     def find_by_business_role_appt_id(cls, _id):
         try:
             return cls.query.filter_by(party_business_role_appt_id=_id).filter_by(
-                active_ind=True).first()
+                deleted_ind=False).first()
         except ValueError:
             return None
 
     @classmethod
     def find_by_party_guid(cls, _id):
         try:
-            return cls.filter_by(active_ind=True).find_by(party_guid=_id)
+            return cls.find_by(party_guid=_id)
         except ValueError:
             return None
 
     @classmethod
     def find_parties_by_business_role_code(cls, code):
         try:
-            return cls.filter_by(active_ind=True).find_by(party_business_role_code=[code])
+            return cls.find_by(party_business_role_codes=[code])
         except ValueError:
             return None
+
+    @classmethod
+    def find_by(cls, party_guid=None, party_business_role_codes=None):
+        built_query = cls.query.filter_by(deleted_ind=False)
+        if party_guid:
+            built_query = built_query.filter_by(party_guid=party_guid)
+        if party_business_role_codes:
+            built_query = built_query.filter(
+                cls.party_business_role_code.in_(party_business_role_codes))
+        return built_query.all()
 
     @classmethod
     def create(cls,
