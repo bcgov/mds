@@ -35,7 +35,7 @@ const setupReducerProps = () => {
   reducerProps.mines = MOCK.MINES.mines;
   reducerProps.mineIds = MOCK.MINES.mineIds;
   reducerProps.pageData = MOCK.PAGE_DATA;
-  reducerProps.mineStatusOptions = MOCK.STATUS_OPTIONS.options;
+  reducerProps.mineStatusOptions = MOCK.STATUS_OPTIONS.records;
   reducerProps.mineRegionOptions = MOCK.REGION_OPTIONS.options;
   reducerProps.mineDisturbanceOptions = MOCK.DISTURBANCE_OPTIONS;
   reducerProps.mineRegionHash = MOCK.REGION_HASH;
