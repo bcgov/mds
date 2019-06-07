@@ -19,6 +19,7 @@ BASIC_MINE_LOCATION_MODEL = api.model('BasicMineLocation', {
     'utm_northing': fields.String,
     'utm_zone_number': fields.String,
     'utm_zone_letter': fields.String,
+    'mine_location_description': fields.String,
 })
 
 BASIC_MINE_LIST = api.model(
@@ -27,7 +28,6 @@ BASIC_MINE_LIST = api.model(
         'mine_name': fields.String,
         'mine_no': fields.String,
         'mine_location': fields.Nested(BASIC_MINE_LOCATION_MODEL),
-        'mine_location_description': fields.String,
     })
 
 MINE_TENURE_TYPE_CODE_MODEL = api.model('MineTenureTypeCode', {
