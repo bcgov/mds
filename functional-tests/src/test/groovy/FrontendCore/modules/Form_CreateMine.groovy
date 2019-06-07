@@ -11,8 +11,8 @@ class Form_CreateMine extends Module {
         //mine profile input
         mineNameBox (wait:true) {$("input", id:"mine_name")}
         statusLabel (wait:true) {$("span.ant-cascader-picker")}
-        status_level1 (wait:true) {$("ul.ant-cascader-menu",0).find("li",0)}//Closed option
-        status_level2 (wait:true) {$("ul.ant-cascader-menu",1).find("li",2)}//Orphaned
+        status_level1 (wait:true) {$("ul.ant-cascader-menu",0).find("li",1)}//Closed option
+        status_level2 (wait:true) {$("ul.ant-cascader-menu",1).find("li",1)}//Orphaned
         status_level3 (wait:true) {$("ul.ant-cascader-menu",2).find("li",0)}//Long Term Maintenance
 
         regionLabel (wait:true) {$("#mine_region.ant-select-enabled")}

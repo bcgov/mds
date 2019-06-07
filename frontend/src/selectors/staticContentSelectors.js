@@ -204,7 +204,8 @@ const transformMineStatusSubReason = (reasons) =>
       title: subReasons[0].description,
       children: [],
     }))
-    .value();
+    .value()
+    .sort((a, b) => (a.label < b.label ? -1 : 1));
 
 const transformMineStatusReason = (codes) =>
   chain(codes)
@@ -218,7 +219,8 @@ const transformMineStatusReason = (codes) =>
         : reasons[0].description,
       children: transformMineStatusSubReason(reasons),
     }))
-    .value();
+    .value()
+    .sort((a, b) => (a.label < b.label ? -1 : 1));
 
 const transformMineStatus = (data) =>
   chain(data)
@@ -231,7 +233,8 @@ const transformMineStatus = (data) =>
         : codes[0].description,
       children: transformMineStatusReason(codes),
     }))
-    .value();
+    .value()
+    .sort((a, b) => (a.label < b.label ? -1 : 1));
 
 export const getMineStatusDropDownOptions = createSelector(
   getMineStatusOptions,
