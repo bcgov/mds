@@ -30,7 +30,7 @@ const staticContentReducer = (state = initialState, action) => {
     case actionTypes.STORE_STATUS_OPTIONS:
       return {
         ...state,
-        mineStatusOptions: action.payload.options,
+        mineStatusOptions: action.payload.records,
       };
     case actionTypes.STORE_REGION_OPTIONS:
       return {

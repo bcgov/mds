@@ -1,4 +1,6 @@
 import React, { Fragment } from "react";
+import { compose } from "redux";
+import { FetchOnMount } from "@/HOC/FetchOnMount";
 import { BrowserRouter } from "react-router-dom";
 import Routes from "./routes/Routes";
 import { hot } from "react-hot-loader";
@@ -13,4 +15,7 @@ const App = () => (
   </BrowserRouter>
 );
 
-export default hot(module)(App);
+export default compose(
+  hot(module),
+  FetchOnMount
+)(App);

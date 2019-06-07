@@ -1,12 +1,10 @@
 import React, { Component } from "react";
-import { compose } from "redux";
 import { Layout, BackTop, Button, Icon } from "antd";
 import PropTypes from "prop-types";
 import MediaQuery from "react-responsive";
 import LoadingBar from "react-redux-loading-bar";
 import DashboardRoutes from "@/routes/DashboardRoutes";
 import { AuthenticationGuard } from "@/HOC/AuthenticationGuard";
-import { FetchOnMount } from "@/HOC/FetchOnMount";
 import NavBar from "./navigation/NavBar";
 import WarningBanner from "@/components/common/WarningBanner";
 import * as Styles from "@/constants/styles";
@@ -111,7 +109,4 @@ export class Home extends Component {
 
 Home.propTypes = propTypes;
 
-export default compose(
-  AuthenticationGuard,
-  FetchOnMount
-)(Home);
+export default AuthenticationGuard(Home);

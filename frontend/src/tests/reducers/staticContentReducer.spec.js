@@ -45,7 +45,7 @@ describe("staticContentReducer", () => {
 
   it("receives STORE_STATUS_OPTIONS", () => {
     const expectedValue = getBaseExpectedValue();
-    expectedValue.mineStatusOptions = MOCK.STATUS_OPTIONS.options;
+    expectedValue.mineStatusOptions = MOCK.STATUS_OPTIONS.records;
     const result = staticContentReducer(undefined, storeStatusOptions(MOCK.STATUS_OPTIONS));
     expect(result).toEqual(expectedValue);
   });

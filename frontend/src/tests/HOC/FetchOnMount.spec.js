@@ -4,6 +4,7 @@ import { FetchOnMount } from "@/HOC/FetchOnMount";
 
 const Component = FetchOnMount(() => <div>Test</div>);
 const dispatchProps = {};
+const props = {};
 
 const setupDispatchProps = () => {
   dispatchProps.fetchMineDisturbanceOptions = jest.fn();
@@ -23,13 +24,18 @@ const setupDispatchProps = () => {
   dispatchProps.fetchPartyRelationshipTypes = jest.fn();
 };
 
+const setupProps = () => {
+  props.isAuthenticated = true;
+};
+
 beforeEach(() => {
   setupDispatchProps();
+  setupProps();
 });
 
 describe("FetchOnMount", () => {
   it("should render", () => {
-    const component = shallow(<Component.WrappedComponent {...dispatchProps} />);
+    const component = shallow(<Component.WrappedComponent {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
     expect(component.html()).toEqual("<div>Test</div>");
   });
