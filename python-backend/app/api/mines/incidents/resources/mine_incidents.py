@@ -25,11 +25,14 @@ class MineIncidentListResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
     #required
     parser.add_argument('incident_timestamp',
-                        type=inputs.datetime_from_iso8601,
+                        type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None,
                         location='json',
                         required=True)
     parser.add_argument('incident_description', type=str, location='json', required=True)
-    parser.add_argument('reported_timestamp', type=inputs.datetime_from_iso8601, location='json')
+    parser.add_argument('reported_timestamp',
+                        type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None,
+                        required=True,
+                        location='json')
     parser.add_argument('reported_by_name', type=str, location='json')
     parser.add_argument('reported_by_email', type=str, location='json')
     parser.add_argument('reported_by_phone_no', type=str, location='json')
@@ -44,7 +47,8 @@ class MineIncidentListResource(Resource, UserMixin):
     parser.add_argument('followup_investigation_type_code', type=str, location='json')
     parser.add_argument('followup_inspection', type=inputs.boolean, location='json')
     parser.add_argument('followup_inspection_date',
-                        type=inputs.datetime_from_iso8601,
+                        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+                        store_missing=False,
                         location='json')
     parser.add_argument('status_code', type=str, location='json')
     parser.add_argument('dangerous_occurrence_subparagraph_ids', type=list, location='json')

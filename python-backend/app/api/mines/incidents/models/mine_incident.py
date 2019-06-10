@@ -10,6 +10,7 @@ from .mine_incident_followup_investigation_type import MineIncidentFollowupInves
 from app.api.mines.incidents.models.mine_incident_determination_type import MineIncidentDeterminationType
 from app.api.mines.compliance.models.compliance_article import ComplianceArticle
 from app.api.mines.incidents.models.mine_incident_do_subparagraph import MineIncidentDoSubparagraph
+from app.api.mines.incidents.models.mine_incident_recommendation import MineIncidentRecommendation
 
 
 class MineIncident(AuditMixin, Base):
@@ -53,6 +54,11 @@ class MineIncident(AuditMixin, Base):
     determination_type_code = db.Column(
         db.String,
         db.ForeignKey('mine_incident_determination_type.mine_incident_determination_type_code'))
+    
+    status_code = db.Column(
+        db.String,
+        db.ForeignKey('mine_incident_status_code.mine_incident_status_code'))
+
     followup_investigation_type_code = db.Column(
         db.String,
         db.ForeignKey(
@@ -71,6 +77,8 @@ class MineIncident(AuditMixin, Base):
                                                   backref='mine_incidents',
                                                   lazy='joined',
                                                   uselist=False)
+
+    recommendations = db.relationship('MineIncidentRecommendation', lazy='selectin')
 
     @hybrid_property
     def mine_incident_report_no(self):

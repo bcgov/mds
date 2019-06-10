@@ -191,6 +191,9 @@ MINE_INCIDENT_DETERMINATION_TYPE_MODEL = api.model(
         'active_ind': fields.Boolean
     })
 
+MINE_INCIDENT_STATUS_CDOE_MODEL = api.model("Mine Incident Status Codes",
+ {'mine_incident_status_code': fields.String, 'description': fields.String, 'display_order': fields.Integer})
+
 VARIANCE_DOCUMENT_MODEL = api.inherit(
     'VarianceDocumentModel', MINE_DOCUMENT_MODEL, {
         'created_at': fields.Date
