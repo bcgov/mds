@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { debounce } from "lodash";
-import { compareTwoStrings } from "string-similarity";
+import { throttle } from "lodash";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import LinkButton from "@/components/common/LinkButton";
@@ -11,8 +10,10 @@ import { Icon, Divider, AutoComplete } from "antd";
 import { Field } from "redux-form";
 import RenderLargeSelect from "./RenderLargeSelect";
 
-import { fetchParties, setAddPartyFormState } from "@/actionCreators/partiesActionCreator";
-import { getRawParties, getLastCreatedParty } from "@/selectors/partiesSelectors";
+import { fetchSearchResults } from "@/actionCreators/searchActionCreator";
+import { getSearchResults } from "@/selectors/searchSelectors";
+import { setAddPartyFormState } from "@/actionCreators/partiesActionCreator";
+import { getLastCreatedParty } from "@/selectors/partiesSelectors";
 import { createItemMap, createItemIdsArray } from "@/utils/helpers";
 import { Validate } from "@/utils/Validate";
 
@@ -27,8 +28,8 @@ const propTypes = {
   organization: PropTypes.bool,
   allowAddingParties: PropTypes.bool,
   validate: PropTypes.arrayOf(PropTypes.func),
-  parties: PropTypes.arrayOf(CustomPropTypes.party),
-  fetchParties: PropTypes.func.isRequired,
+  searchResults: PropTypes.objectOf(PropTypes.any),
+  fetchSearchResults: PropTypes.func.isRequired,
   setAddPartyFormState: PropTypes.func.isRequired,
   lastCreatedParty: CustomPropTypes.party.isRequired,
 };
@@ -42,7 +43,7 @@ const defaultProps = {
   organization: false,
   allowAddingParties: false,
   validate: [],
-  parties: [],
+  searchResults: [],
 };
 
 const renderAddPartyFooter = (showAddParty, partyLabel) => (
@@ -56,28 +57,15 @@ const renderAddPartyFooter = (showAddParty, partyLabel) => (
   </div>
 );
 
-const transformData = (data, options, footer, searchTerm) => {
-  // Party data is converted to AutoComplete Options, then sorted by similarity to the search text based on.
-  // This handles multi-word names, middle names, and alternatives orders (depending on what the back end
-  // returns). For example, a search for John Smith could show the results in the order below, without
-  // completely filtering any out:
-  // John Smith
-  // Smith John
-  // John James Smith
-  // John Williams
-  const transformedData = data
-    .map((opt) => (
-      <AutoComplete.Option key={opt} value={opt}>
-        {`${options[opt].name}, ${
-          Validate.checkEmail(options[opt].email) ? options[opt].email : "Email Unknown"
-        }`}
-      </AutoComplete.Option>
-    ))
-    .sort(
-      (a, b) =>
-        compareTwoStrings(searchTerm, b.props.children) -
-        compareTwoStrings(searchTerm, a.props.children)
-    );
+const transformData = (data, options, footer) => {
+  const transformedData = data.map((opt) => (
+    <AutoComplete.Option key={opt} value={opt}>
+      {`${options[opt].name}, ${
+        Validate.checkEmail(options[opt].email) ? options[opt].email : "Email Unknown"
+      }`}
+    </AutoComplete.Option>
+  ));
+
   // Display footer only if desired (Add new party behavior is enabled.)
   return footer
     ? transformedData.concat(
@@ -93,7 +81,10 @@ export class PartySelectField extends Component {
 
   constructor(props) {
     super(props);
-    this.fetchPartiesDebounced = debounce(this.props.fetchParties, 1000);
+    this.fetchSearchResultsThrottled = throttle(this.props.fetchSearchResults, 2000, {
+      leading: true,
+      trailing: true,
+    });
   }
 
   showAddPartyForm = () => {
@@ -107,8 +98,8 @@ export class PartySelectField extends Component {
 
   componentWillReceiveProps = (nextProps) => {
     // If new search results have been returned, transform the results and store them in component state.
-    if (this.props.parties !== nextProps.parties) {
-      let filteredParties = nextProps.parties;
+    if (this.props.searchResults !== nextProps.searchResults) {
+      let filteredParties = nextProps.searchResults.party.map((sr) => sr.result);
 
       if (this.props.organization && !this.props.person) {
         filteredParties = filteredParties.filter(
@@ -144,7 +135,9 @@ export class PartySelectField extends Component {
   };
 
   handleSearch = (value) => {
-    this.fetchPartiesDebounced({ name_search: value });
+    if (value.length > 2) {
+      this.fetchSearchResultsThrottled(value, "party");
+    }
     this.setState({ selectedOption: { key: value, label: value } });
   };
 
@@ -173,14 +166,14 @@ export class PartySelectField extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  parties: getRawParties(state),
   lastCreatedParty: getLastCreatedParty(state),
+  searchResults: getSearchResults(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      fetchParties,
+      fetchSearchResults,
       setAddPartyFormState,
     },
     dispatch

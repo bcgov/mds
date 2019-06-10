@@ -4,6 +4,7 @@ import { VarianceTable } from "@/components/dashboard/mine/variances/VarianceTab
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const props = {};
+const dispatchProps = {};
 
 const setupProps = () => {
   props.variances = MOCK.VARIANCES.records;
@@ -12,13 +13,19 @@ const setupProps = () => {
   props.isApplication = false;
 };
 
+const setupDispatchProps = () => {
+  dispatchProps.openEditVarianceModal = jest.fn();
+  dispatchProps.openViewVarianceModal = jest.fn();
+};
+
 beforeEach(() => {
   setupProps();
+  setupDispatchProps();
 });
 
 describe("VarianceTable", () => {
   it("renders properly", () => {
-    const component = shallow(<VarianceTable {...props} />);
+    const component = shallow(<VarianceTable {...props} {...dispatchProps} />);
     expect(component).toMatchSnapshot();
   });
 });

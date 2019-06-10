@@ -7,7 +7,6 @@ from flask import request, current_app, Response
 from flask_restplus import Resource, fields
 from app.extensions import api, db
 
-from ..models.variance import Variance
 from ...mine.models.mine import Mine
 from ....documents.mines.models.mine_document import MineDocument
 from ....utils.access_decorators import (requires_any_of, MINE_VIEW, MINE_CREATE,
@@ -15,13 +14,15 @@ from ....utils.access_decorators import (requires_any_of, MINE_VIEW, MINE_CREATE
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.mines.mine_api_models import VARIANCE_MODEL
+from app.api.variances.models.variance import Variance
 # The need to access the guid -> id lookup forces an import as the id primary
 # key is not available via the API. The interal-only primary key +
 # cross-namespace foreign key constraints are interally inconsistent
-from app.api.users.core.models.core_user import CoreUser
+from app.api.parties.party.models.party import Party
+from app.api.parties.party_appt.models.party_business_role_appt import PartyBusinessRoleAppointment
 
 
-class VarianceResource(Resource, UserMixin, ErrorMixin):
+class MineVarianceResource(Resource, UserMixin, ErrorMixin):
     parser = CustomReqparser()
     parser.add_argument(
         'compliance_article_id',
@@ -38,10 +39,10 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
         store_missing=False,
         help='A 3-character code indicating the status type of the variance. Default: REV')
     parser.add_argument(
-        'inspector_guid',
+        'inspector_party_guid',
         type=str,
         store_missing=False,
-        help='GUID of the user who inspected the mine during the variance application process.')
+        help='GUID of the party who inspected the mine during the variance application process.')
     parser.add_argument(
         'note',
         type=str,
@@ -52,14 +53,13 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument(
         'expiry_date', store_missing=False, help='The date on which the variance expires.')
 
-
     @api.doc(
         description='Get a single variance.',
         params={
             'mine_guid': 'GUID of the mine to which the variance is associated',
             'variance_guid': 'GUID of the variance to fetch'
         })
-    @requires_any_of([MINE_VIEW])
+    @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
     @api.marshal_with(VARIANCE_MODEL, code=200)
     def get(self, mine_guid, variance_guid):
         variance = Variance.find_by_mine_guid_and_variance_guid(mine_guid, variance_guid)
@@ -68,7 +68,6 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             raise NotFound('Unable to fetch variance')
 
         return variance
-
 
     @api.doc(
         description='Update a variance.',
@@ -85,16 +84,19 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
 
         data = self.parser.parse_args()
 
-        core_user_guid = data.get('inspector_guid')
-        if core_user_guid:
-            core_user = CoreUser.find_by_core_user_guid(core_user_guid)
-            if not core_user:
+        inspector_party_guid = data.get('inspector_party_guid')
+        if inspector_party_guid:
+            inspector = Party.find_by_party_guid(inspector_party_guid)
+            if not inspector:
                 raise BadRequest('Unable to find new inspector.')
+            business_roles = PartyBusinessRoleAppointment.find_by_party_guid(inspector_party_guid)
+            if not [x for x in business_roles if x.party_business_role_code == 'INS']:
+                raise BadRequest('Party is not an inspector.')
 
-            variance.inspector_id = core_user.core_user_id
+            variance.inspector_party_guid = inspector_party_guid
 
         for key, value in data.items():
-            if key in ['inspector_guid']:
+            if key in ['inspector_party_guid']:
                 continue
             setattr(variance, key, value)
 
@@ -105,7 +107,7 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             status=variance.variance_application_status_code,
             issue=variance.issue_date,
             expiry=variance.expiry_date,
-            inspector=variance.inspector_id)
+            inspector=variance.inspector_party_guid)
 
         variance.save()
         return variance

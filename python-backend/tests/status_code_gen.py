@@ -2,7 +2,7 @@ import random
 
 from app.extensions import db
 from app.api.applications.models.application_status_code import ApplicationStatusCode
-from app.api.constants import COMMODITY_CODES_CONFIG, DISTURBANCE_CODES_CONFIG, MINE_STATUS_OPTIONS
+from app.api.constants import COMMODITY_CODES_CONFIG, DISTURBANCE_CODES_CONFIG
 from app.api.documents.expected.models.document_status import ExpectedDocumentStatus
 from app.api.documents.required.models.required_documents import RequiredDocument
 from app.api.mines.incidents.models.mine_incident_determination_type import MineIncidentDeterminationType
@@ -15,6 +15,7 @@ from app.api.mines.status.models.mine_status_xref import MineStatusXref
 from app.api.mines.compliance.models.compliance_article import ComplianceArticle
 from app.api.parties.party.models.sub_division_code import SubDivisionCode
 from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
+from app.api.parties.party_appt.models.party_business_role_code import PartyBusinessRoleCode
 
 
 def RandomApplicationStatusCode():
@@ -73,6 +74,11 @@ def RandomMinePartyAppointmentTypeCode():
         [x.mine_party_appt_type_code for x in db.session.query(MinePartyAppointmentType).all()])
 
 
+def RandomPartyBusinessRoleCode():
+    return random.choice(
+        [x.party_business_role_code for x in db.session.query(PartyBusinessRoleCode)])
+
+
 def RandomComplianceArticleId():
     return random.choice(
         [x.compliance_article_id for x in db.session.query(ComplianceArticle).all()])
@@ -88,5 +94,4 @@ def SampleDangerousOccurrenceSubparagraphs(num):
     return random.sample(
         db.session.query(ComplianceArticle).filter(
             ComplianceArticle.section == '1', ComplianceArticle.sub_section == '7',
-            ComplianceArticle.paragraph == '3', ComplianceArticle.sub_paragraph != None).all(),
-        num)
+            ComplianceArticle.paragraph == '3', ComplianceArticle.sub_paragraph != None).all(), num)

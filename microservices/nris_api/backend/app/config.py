@@ -19,6 +19,12 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = DB_URL
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
+    JWT_OIDC_WELL_KNOWN_CONFIG = os.environ.get(
+    'JWT_OIDC_WELL_KNOWN_CONFIG',
+    'https://localhost:8080/auth/realms/mds/.well-known/openid-configuration')
+    JWT_OIDC_AUDIENCE = os.environ.get('JWT_OIDC_AUDIENCE', 'mds')
+    JWT_OIDC_ALGORITHMS = os.environ.get('JWT_OIDC_ALGORITHMS', 'RS256')
+
     NRIS_DB_USER = os.environ.get('NRIS_DB_USER', 'localhost')
     NRIS_DB_PASSWORD = os.environ.get('NRIS_DB_PASSWORD', 'localhost')
     NRIS_DB_PORT = os.environ.get('NRIS_DB_PORT', 'localhost')
@@ -39,6 +45,13 @@ class Config(object):
         'DEBUG': ELASTIC_DEBUG
     }
 
+    # Cache settings
+    CACHE_TYPE = os.environ.get('CACHE_TYPE', 'redis')
+    CACHE_REDIS_HOST = os.environ.get('CACHE_REDIS_HOST', 'redis')
+    CACHE_REDIS_PORT = os.environ.get('CACHE_REDIS_PORT', 6379)
+    CACHE_REDIS_PASS = os.environ.get('CACHE_REDIS_PASS', 'redis-password')
+    CACHE_REDIS_URL = 'redis://:{0}@{1}:{2}'.format(CACHE_REDIS_PASS, CACHE_REDIS_HOST,
+                                                    CACHE_REDIS_PORT)
 
     def JWT_ROLE_CALLBACK(jwt_dict):
         return (jwt_dict['realm_access']['roles'])

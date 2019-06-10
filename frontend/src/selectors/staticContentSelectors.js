@@ -1,3 +1,4 @@
+import { chain } from "lodash";
 import * as staticContentReducer from "@/reducers/staticContentReducer";
 import { createSelector } from "reselect";
 import { createLabelHash, createDropDownList } from "@/utils/helpers";
@@ -191,4 +192,51 @@ export const getDropdownVarianceStatusOptions = createSelector(
 export const getVarianceStatusOptionsHash = createSelector(
   [getDropdownVarianceStatusOptions],
   createLabelHash
+);
+
+const transformMineStatusSubReason = (reasons) =>
+  chain(reasons)
+    .groupBy((s) => s.mine_operation_status_sub_reason.mine_operation_status_sub_reason_code)
+    .filter((g) => g[0].mine_operation_status_sub_reason.mine_operation_status_sub_reason_code)
+    .map((subReasons) => ({
+      value: subReasons[0].mine_operation_status_sub_reason.mine_operation_status_sub_reason_code,
+      label: subReasons[0].mine_operation_status_sub_reason.description,
+      title: subReasons[0].description,
+      children: [],
+    }))
+    .value()
+    .sort((a, b) => (a.label < b.label ? -1 : 1));
+
+const transformMineStatusReason = (codes) =>
+  chain(codes)
+    .groupBy((s) => s.mine_operation_status_reason.mine_operation_status_reason_code)
+    .filter((g) => g[0].mine_operation_status_reason.mine_operation_status_reason_code)
+    .map((reasons) => ({
+      value: reasons[0].mine_operation_status_reason.mine_operation_status_reason_code,
+      label: reasons[0].mine_operation_status_reason.description,
+      title: reasons[0].mine_operation_status_sub_reason.mine_operation_status_sub_reason_code
+        ? null
+        : reasons[0].description,
+      children: transformMineStatusSubReason(reasons),
+    }))
+    .value()
+    .sort((a, b) => (a.label < b.label ? -1 : 1));
+
+const transformMineStatus = (data) =>
+  chain(data)
+    .groupBy((s) => s.mine_operation_status.mine_operation_status_code)
+    .map((codes) => ({
+      value: codes[0].mine_operation_status.mine_operation_status_code,
+      label: codes[0].mine_operation_status.description,
+      title: codes[0].mine_operation_status_reason.mine_operation_status_reason_code
+        ? null
+        : codes[0].description,
+      children: transformMineStatusReason(codes),
+    }))
+    .value()
+    .sort((a, b) => (a.label < b.label ? -1 : 1));
+
+export const getMineStatusDropDownOptions = createSelector(
+  getMineStatusOptions,
+  transformMineStatus
 );

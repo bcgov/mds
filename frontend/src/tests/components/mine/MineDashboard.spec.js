@@ -28,9 +28,8 @@ const setupDispatchProps = () => {
   dispatchProps.fetchMineIncidentDeterminationOptions = jest.fn();
   dispatchProps.fetchMineIncidentFollowActionOptions = jest.fn();
   dispatchProps.setOptionsLoaded = jest.fn();
-  dispatchProps.fetchCoreUsers = jest.fn();
+  dispatchProps.fetchInspectors = jest.fn();
   dispatchProps.match = {};
-  dispatchProps.fetchCoreUsers = jest.fn();
   dispatchProps.updateVariance = jest.fn();
   dispatchProps.fetchVarianceStatusOptions = jest.fn();
 };
@@ -42,7 +41,7 @@ const setupReducerProps = () => {
   reducerProps.variances = MOCK.VARIANCES.records;
   reducerProps.complianceCodesHash = MOCK.HSRCM_HASH;
   reducerProps.complianceCodes = MOCK.DROPDOWN_HSRCM_CODES;
-  reducerProps.mineStatusOptions = MOCK.STATUS_OPTIONS.options;
+  reducerProps.mineStatusOptions = MOCK.STATUS_OPTIONS.records;
   reducerProps.mineRegionOptions = MOCK.REGION_OPTIONS.options;
   reducerProps.mineDisturbanceOptions = MOCK.DISTURBANCE_OPTIONS;
   reducerProps.mineTenureTypes = MOCK.TENURE_TYPES;

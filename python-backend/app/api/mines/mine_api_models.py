@@ -67,6 +67,7 @@ STATUS_MODEL = api.model(
         'effective_date': Date,
         'expiry_date': Date,
         'status_date': Date,
+        'status_description': fields.String,
     })
 
 MINE_TSF_MODEL = api.model(
@@ -188,10 +189,11 @@ VARIANCE_DOCUMENT_MODEL = api.inherit(
 VARIANCE_MODEL = api.model(
     'Variance', {
         'variance_guid': fields.String,
+        'mine_guid': fields.String,
         'compliance_article_id': fields.Integer,
         'variance_application_status_code': fields.String,
         'applicant_guid': fields.String,
-        'inspector_guid': fields.String,
+        'inspector_party_guid': fields.String,
         'note': fields.String,
         'issue_date': fields.Date,
         'received_date': fields.Date,
@@ -199,8 +201,29 @@ VARIANCE_MODEL = api.model(
         'documents': fields.Nested(VARIANCE_DOCUMENT_MODEL)
     })
 
-VARIANCE_APPLICATION_STATUS_CODE_MODEL = api.model(
-    'VarianceApplicationStatusCode', {
-        'variance_application_status_code': fields.String,
-        'description': fields.String
+MINE_OPERATION_STATUS_CODE_MODEL = api.model(
+    'MineOperationStatusCode', {
+        'mine_operation_status_code': fields.String(),
+        'description': fields.String()
+    })
+
+MINE_OPERATION_STATUS_REASON_CODE_MODEL = api.model(
+    'MineOperationStatusReasonCode', {
+        'mine_operation_status_reason_code': fields.String(),
+        'description': fields.String()
+    })
+
+MINE_OPERATION_STATUS_SUB_REASON_CODE_MODEL = api.model(
+    'MineOperationStatusSubReasonCode', {
+        'mine_operation_status_sub_reason_code': fields.String(),
+        'description': fields.String()
+    })
+
+MINE_STATUS_CODE_MODEL = api.model(
+        'MineStatusCode', {
+            'mine_status_xref_guid':fields.String(),
+            'mine_operation_status':fields.Nested(MINE_OPERATION_STATUS_CODE_MODEL),
+            'mine_operation_status_reason':fields.Nested(MINE_OPERATION_STATUS_REASON_CODE_MODEL),
+            'mine_operation_status_sub_reason':fields.Nested(MINE_OPERATION_STATUS_SUB_REASON_CODE_MODEL),
+            'description': fields.String(),
     })

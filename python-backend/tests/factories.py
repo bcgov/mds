@@ -22,7 +22,6 @@ from app.api.mines.incidents.models.mine_incident import MineIncident
 from app.api.mines.status.models.mine_status import MineStatus
 from app.api.mines.subscription.models.subscription import Subscription
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
-from app.api.mines.variances.models.variance import Variance
 from app.api.parties.party.models.party import Party
 from app.api.parties.party.models.address import Address
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
@@ -31,6 +30,8 @@ from app.api.permits.permit_amendment.models.permit_amendment import PermitAmend
 from app.api.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from app.api.users.core.models.core_user import CoreUser, IdirUserDetail
 from app.api.users.minespace.models.minespace_user import MinespaceUser
+from app.api.variances.models.variance import Variance
+from app.api.parties.party_appt.models.party_business_role_appt import PartyBusinessRoleAppointment
 
 GUID = factory.LazyFunction(uuid.uuid4)
 TODAY = factory.LazyFunction(datetime.now)
@@ -217,15 +218,15 @@ class VarianceFactory(BaseFactory):
 
     class Params:
         mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
-        core_user = factory.SubFactory('tests.factories.CoreUserFactory')
+        inspector = factory.SubFactory('tests.factories.PartyBusinessRoleFactory')
         approved = factory.Trait(
             variance_application_status_code='APP',
             issue_date=TODAY,
             expiry_date=TODAY,
-            inspector_id=factory.SelfAttribute('core_user.core_user_id'))
+            inspector_party_guid=factory.SelfAttribute('inspector.party_guid'))
         denied = factory.Trait(
             variance_application_status_code='DEN',
-            inspector_id=factory.SelfAttribute('core_user.core_user_id'))
+            inspector_party_guid=factory.SelfAttribute('inspector.party_guid'))
         not_applicable = factory.Trait(variance_application_status_code='NAP')
 
     variance_guid = GUID
@@ -403,6 +404,16 @@ class PartyFactory(BaseFactory):
 
     mine_party_appt = []
     address = factory.List([factory.SubFactory(AddressFactory) for _ in range(1)])
+
+
+class PartyBusinessRoleFactory(BaseFactory):
+    class Meta:
+        model = PartyBusinessRoleAppointment
+
+    party_business_role_code = factory.LazyFunction(RandomPartyBusinessRoleCode)
+    party = factory.SubFactory(PartyFactory, person=True)
+    start_date = TODAY
+    end_date = None
 
 
 class MinePartyAppointmentFactory(BaseFactory):

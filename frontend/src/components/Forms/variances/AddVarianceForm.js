@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm, change } from "redux-form";
-import { remove } from "lodash";
+import { fromPairs } from "lodash";
 import { Form, Button, Popconfirm, Radio } from "antd";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
@@ -11,42 +11,42 @@ import VarianceFileUpload from "./VarianceFileUpload";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
+  change: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
   mineGuid: PropTypes.string.isRequired,
-  coreUsers: CustomPropTypes.options.isRequired,
+  inspectors: CustomPropTypes.options.isRequired,
   complianceCodes: CustomPropTypes.options.isRequired,
 };
 
 export class AddVarianceForm extends Component {
   state = {
     uploadedFiles: [],
-    documentNameGuidMap: {},
     isApplication: true,
   };
 
   onFileLoad = (documentName, document_manager_guid) => {
-    this.state.uploadedFiles.push({ documentName, document_manager_guid });
-    this.setState(({ documentNameGuidMap }) => ({
-      documentNameGuidMap: {
-        [document_manager_guid]: documentName,
-        ...documentNameGuidMap,
-      },
+    this.setState((prevState) => ({
+      uploadedFiles: [[document_manager_guid, documentName], ...prevState.uploadedFiles],
     }));
-    change("uploadedFiles", this.state.uploadedFiles);
   };
 
   onRemoveFile = (fileItem) => {
-    remove(this.state.uploadedFiles, { document_manager_guid: fileItem.serverId });
-    change("uploadedFiles", this.state.uploadedFiles);
+    this.setState((prevState) => ({
+      uploadedFiles: prevState.uploadedFiles.filter((fileArr) => fileArr[0] !== fileItem.serverId),
+    }));
   };
 
   onChange = (e) => {
     this.setState({
       isApplication: e.target.value,
     });
+    // reset the date fields if user toggles between application and approved
+    this.props.change("received_date", null);
+    this.props.change("expiry_date", null);
+    this.props.change("issue_date", null);
   };
 
   render() {
@@ -54,7 +54,7 @@ export class AddVarianceForm extends Component {
       <Form
         layout="vertical"
         onSubmit={this.props.handleSubmit(
-          this.props.onSubmit(this.state.documentNameGuidMap, this.state.isApplication)
+          this.props.onSubmit(fromPairs(this.state.uploadedFiles), this.state.isApplication)
         )}
       >
         <Form.Item label="Are you creating an application or an approved variance?">
@@ -109,12 +109,12 @@ export class AddVarianceForm extends Component {
             </Form.Item>
             <Form.Item>
               <Field
-                id="inspector_guid"
-                name="inspector_guid"
+                id="inspector_party_guid"
+                name="inspector_party_guid"
                 label="Lead inspectors IDIR*"
                 component={renderConfig.SELECT}
                 validate={[required]}
-                data={this.props.coreUsers}
+                data={this.props.inspectors}
               />
             </Form.Item>
           </div>
@@ -171,6 +171,7 @@ export class AddVarianceForm extends Component {
 AddVarianceForm.propTypes = propTypes;
 
 export default reduxForm({
+  change,
   form: FORM.ADD_VARIANCE,
   touchOnBlur: false,
   onSubmitSuccess: resetForm(FORM.ADD_VARIANCE),

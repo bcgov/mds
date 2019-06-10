@@ -20,13 +20,13 @@ const propTypes = {
   complianceCodes: CustomPropTypes.options.isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   fetchVariancesByMine: PropTypes.func.isRequired,
-  coreUsers: CustomPropTypes.options.isRequired,
+  inspectors: CustomPropTypes.options.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   varianceStatusOptions: CustomPropTypes.options.isRequired,
   updateVariance: PropTypes.func.isRequired,
   varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  coreUsersHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  inspectorsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export class MineVariance extends Component {
@@ -96,7 +96,7 @@ export class MineVariance extends Component {
         mineGuid: this.props.mine.mine_guid,
         mineName: this.props.mine.mine_name,
         varianceGuid: variance.variance_guid,
-        coreUsers: this.props.coreUsers,
+        inspectors: this.props.inspectors,
         complianceCodesHash: this.props.complianceCodesHash,
         varianceStatusOptions: this.props.varianceStatusOptions,
       },
@@ -112,7 +112,7 @@ export class MineVariance extends Component {
         mineName: this.props.mine.mine_name,
         varianceStatusOptionsHash: this.props.varianceStatusOptionsHash,
         complianceCodesHash: this.props.complianceCodesHash,
-        coreUsersHash: this.props.coreUsersHash,
+        inspectorsHash: this.props.inspectorsHash,
       },
       content: modalConfig.VIEW_VARIANCE,
       isViewOnly: true,
@@ -127,7 +127,7 @@ export class MineVariance extends Component {
         title: ModalContent.ADD_VARIANCE(this.props.mine.mine_name),
         mineGuid: this.props.mine.mine_guid,
         complianceCodes: this.props.complianceCodes,
-        coreUsers: this.props.coreUsers,
+        inspectors: this.props.inspectors,
       },
       content: modalConfig.ADD_VARIANCE,
     });

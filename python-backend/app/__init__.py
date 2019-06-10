@@ -12,18 +12,17 @@ from flask_jwt_oidc.exceptions import AuthError
 from app.api.parties.namespace.parties import api as parties_api
 from app.api.applications.namespace.applications import api as applications_api
 from app.api.mines.namespace.mines import api as mines_api
-from app.api.mines.namespace.variances import api as variances_api
 from app.api.permits.namespace.permits import api as permits_api
 from app.api.documents.namespace.documents import api as document_api
 from app.api.document_manager.namespace.document_manager import api as document_manager_api
 from app.api.users.namespace.users import api as users_api
 from app.api.search.namespace.search import api as search_api
+from app.api.variances.namespace.variances import api as variances_api
 
 from app.commands import register_commands
 from app.config import Config
 from app.extensions import db, jwt, api, cache, sched, apm
 
-from app.scheduled_jobs.NRIS_jobs import _schedule_NRIS_jobs
 from app.scheduled_jobs.ETL_jobs import _schedule_ETL_jobs
 from app.scheduled_jobs.IDIR_jobs import _schedule_IDIR_jobs
 
@@ -71,7 +70,6 @@ def register_scheduled_jobs(app):
         if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == 'true':
             sched.start()
             _schedule_IDIR_jobs(app)
-            _schedule_NRIS_jobs(app)
             _schedule_ETL_jobs(app)
 
 

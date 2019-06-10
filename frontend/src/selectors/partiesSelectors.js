@@ -12,6 +12,7 @@ export const {
   getPartyPageData,
   getAddPartyFormState,
   getLastCreatedParty,
+  getInspectors,
 } = partiesReducer;
 
 export const getSummaryPartyRelationships = createSelector(
@@ -22,5 +23,15 @@ export const getSummaryPartyRelationships = createSelector(
 
 export const getPartyRelationshipTypeHash = createSelector(
   [getPartyRelationshipTypesList],
+  createLabelHash
+);
+
+export const getDropdownInspectors = createSelector(
+  [getInspectors],
+  (parties) => parties.map((party) => ({ value: party.party_guid, label: party.name }))
+);
+
+export const getInspectorsHash = createSelector(
+  [getDropdownInspectors],
   createLabelHash
 );

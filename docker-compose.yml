@@ -75,6 +75,7 @@ services:
     depends_on:
       - flyway
       - redis
+      - nris_backend
     networks:
       - mds
 
@@ -113,10 +114,13 @@ services:
       context: microservices/nris_api/backend
     ports:
       - 5500:5500
+    expose:
+      - 5500
     volumes:
       - ./microservices/nris_api/backend/:/app/
     depends_on:
       - flyway
+      - redis
     env_file: ./microservices/nris_api/backend/.env
     networks:
       - mds

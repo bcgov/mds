@@ -10,7 +10,6 @@ from app import auth
 from app.api.utils.include.user_info import User
 from app.api.utils.random import generate_mine_no, generate_mine_name, random_geo, random_key_gen, random_date, random_region, random_mine_category
 from app.extensions import db, sched
-from app.scheduled_jobs import NRIS_jobs
 from app.scheduled_jobs import ETL_jobs
 
 from tests.factories import MineFactory, MinePartyAppointmentFactory
@@ -21,6 +20,11 @@ def register_commands(app):
     def import_idir():
         from app.scheduled_jobs.IDIR_jobs import _import_empr_idir_users
         _import_empr_idir_users()
+
+    @app.cli.command()
+    def test_nris_api():
+        from app.api.services.NRIS_API_service import _get_NRIS_data_by_mine
+        print(_get_NRIS_data_by_mine("", "0100287"))
 
     @app.cli.command()
     @click.argument('num')
@@ -60,10 +64,11 @@ def register_commands(app):
             for _ in range(int(num)):
                 mine = MineFactory()
                 eor = MinePartyAppointmentFactory(mine=mine, mine_party_appt_type_code='EOR')
-                mine_manager = MinePartyAppointmentFactory(
-                    mine=mine, mine_party_appt_type_code='MMG')
-                permitee = MinePartyAppointmentFactory(
-                    mine=mine, mine_party_appt_type_code='PMT', party__company=True)
+                mine_manager = MinePartyAppointmentFactory(mine=mine,
+                                                           mine_party_appt_type_code='MMG')
+                permitee = MinePartyAppointmentFactory(mine=mine,
+                                                       mine_party_appt_type_code='PMT',
+                                                       party__company=True)
             try:
                 db.session.commit()
                 print(f'Created {num} random mines with related data.')
@@ -72,16 +77,6 @@ def register_commands(app):
                 raise
 
     if app.config.get('ENVIRONMENT_NAME') in ['test', 'prod']:
-
-        @sched.app.cli.command()
-        def _run_nris_jobs():
-            with sched.app.app_context():
-                print('Started NRIS job to cache Major Mines list.')
-                NRIS_jobs._cache_major_mines_list()
-                print('Completed caching the Major Mines list.')
-                print('Caching all NRIS data for Major Mines')
-                NRIS_jobs._cache_all_NRIS_major_mines_data()
-                print('Done!')
 
         @sched.app.cli.command()
         def _run_etl():

@@ -7,7 +7,6 @@ import queryString from "query-string";
 import { isEmpty } from "lodash";
 import { openModal, closeModal } from "@/actions/modalActions";
 import { fetchPermits } from "@/actionCreators/permitActionCreator";
-import { fetchCoreUsers } from "@/actionCreators/userActionCreator";
 import {
   fetchMineRecordById,
   updateMineRecord,
@@ -57,10 +56,11 @@ import {
 } from "@/selectors/staticContentSelectors";
 import { getMineComplianceInfo } from "@/selectors/complianceSelectors";
 import { getVarianceApplications, getApprovedVariances } from "@/selectors/varianceSelectors";
-import { getDropdownCoreUsers, getCoreUsersHash } from "@/selectors/userSelectors";
+import { getDropdownInspectors, getInspectorsHash } from "@/selectors/partiesSelectors";
 import {
   fetchPartyRelationshipTypes,
   fetchPartyRelationships,
+  fetchInspectors,
 } from "@/actionCreators/partiesActionCreator";
 import { fetchApplications } from "@/actionCreators/applicationActionCreator";
 import { fetchMineComplianceInfo } from "@/actionCreators/complianceActionCreator";
@@ -164,7 +164,7 @@ export class MineDashboard extends Component {
     this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
     this.props.fetchSubscribedMinesByUser();
     this.props.fetchVarianceStatusOptions();
-    this.props.fetchCoreUsers();
+    this.props.fetchInspectors();
     if (activeTab) {
       this.setState({ activeTab });
     }
@@ -295,6 +295,7 @@ export class MineDashboard extends Component {
     const isDevOrTest = !detectProdEnvironment();
     // temporary check, cannot wrap tabs in an AuthWrapper
     const isAdmin = this.props.userRoles.includes(USER_ROLES[Permission.ADMIN]);
+    const showVariances = isDevOrTest || isAdmin;
     if (!mine) {
       return <Loading />;
     }
@@ -362,12 +363,12 @@ export class MineDashboard extends Component {
                   </div>
                 </TabPane>
                 {/* can't wrap a TabPane in the authWrapper without interfering with the Tabs behaviour */}
-                {isAdmin && (
+                {showVariances && (
                   <TabPane tab="Variance" key="variance">
                     <div className="tab__content">
                       <MineVariance
                         mine={mine}
-                        coreUsers={this.props.coreUsers}
+                        inspectors={this.props.inspectors}
                         createVariance={this.props.createVariance}
                         addDocumentToVariance={this.props.addDocumentToVariance}
                         openModal={this.props.openModal}
@@ -380,7 +381,7 @@ export class MineDashboard extends Component {
                         varianceStatusOptions={this.props.varianceStatusOptions}
                         updateVariance={this.props.updateVariance}
                         varianceStatusOptionsHash={this.props.varianceStatusOptionsHash}
-                        coreUsersHash={this.props.coreUsersHash}
+                        inspectorsHash={this.props.inspectorsHash}
                       />
                     </div>
                   </TabPane>
@@ -437,10 +438,10 @@ const mapStateToProps = (state) => ({
   multiSelectComplianceCodes: getMultiSelectComplianceCodes(state),
   complianceCodesHash: getHSRCMComplianceCodesHash(state),
   mineComplianceInfo: getMineComplianceInfo(state),
-  coreUsers: getDropdownCoreUsers(state),
+  inspectors: getDropdownInspectors(state),
   varianceStatusOptions: getDropdownVarianceStatusOptions(state),
   varianceStatusOptionsHash: getVarianceStatusOptionsHash(state),
-  coreUsersHash: getCoreUsersHash(state),
+  inspectorsHash: getInspectorsHash(state),
   userRoles: getUserAccessData(state),
 });
 
@@ -473,7 +474,7 @@ const mapDispatchToProps = (dispatch) =>
       addDocumentToVariance,
       fetchVariancesByMine,
       fetchMineComplianceCodes,
-      fetchCoreUsers,
+      fetchInspectors,
       fetchMineIncidentFollowActionOptions,
       fetchMineIncidentDeterminationOptions,
       fetchVarianceStatusOptions,

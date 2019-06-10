@@ -7,18 +7,18 @@ from ..mine.resources.mine_type_detail import MineTypeDetailResource
 from ..mine.resources.mine_tenure_type_code import MineTenureTypeCodeResource
 from ..mine.resources.mine_disturbance_code import MineDisturbanceCodeResource
 from ..mine.resources.mine_commodity_code import MineCommodityCodeResource
-from ..status.resources.status import MineStatusResource
+from ..status.resources.status import MineStatusResource, MineStatusListResource
 from ..region.resources.region import MineRegionResource
 from ..tailings.resources.tailings import MineTailingsStorageFacilityListResource
-from ..compliance.resources.compliance import MineComplianceResource
+from ..compliance.resources.compliance import MineComplianceSummaryResource
 from ..compliance.resources.compliance_article import ComplianceArticleResource
 from ..mine.resources.mine_basicinfo import MineBasicInfoResource
 from app.api.mines.mine.resources.mine_verified_status import MineVerifiedStatusResource, MineVerifiedStatusListResource
 from ..subscription.resources.subscription import MineSubscriptionResource, MineSubscriptionListResource
-from ..variances.resources.variance import VarianceResource
-from ..variances.resources.variance_list import VarianceListResource
-from ..variances.resources.variance_document_upload import VarianceDocumentUploadResource
-from ..variances.resources.variance_uploaded_documents import VarianceUploadedDocumentsResource
+from ..variances.resources.variance import MineVarianceResource
+from ..variances.resources.variance_list import MineVarianceListResource
+from ..variances.resources.variance_document_upload import MineVarianceDocumentUploadResource
+from ..variances.resources.variance_uploaded_documents import MineVarianceUploadedDocumentsResource
 from ..incidents.resources.mine_incidents import MineIncidentListResource, MineIncidentResource
 from ..incidents.resources.mine_incident_followup_types import MineIncidentFollowupTypeResource
 from ..incidents.resources.mine_incident_determination_types import MineIncidentDeterminationTypeResource
@@ -33,12 +33,13 @@ api.add_resource(MineListSearch, '/search')
 api.add_resource(MineTenureTypeCodeResource, '/mine-tenure-type-codes')
 api.add_resource(MineDisturbanceCodeResource, '/disturbance-codes')
 api.add_resource(MineCommodityCodeResource, '/commodity-codes')
-api.add_resource(MineStatusResource, '/status', '/status/<string:mine_status_guid>')
+api.add_resource(MineStatusResource, '/status/<string:mine_status_guid>')
+api.add_resource(MineStatusListResource, '/status')
 api.add_resource(MineRegionResource, '/region', '/region/<string:mine_region_guid>')
 
 api.add_resource(MineTailingsStorageFacilityListResource, '/<string:mine_guid>/tailings')
 
-api.add_resource(MineComplianceResource, '/compliance', '/compliance/<string:mine_no>')
+api.add_resource(MineComplianceSummaryResource, '/<string:mine_no>/compliance/summary')
 api.add_resource(ComplianceArticleResource, '/compliance/codes')
 
 api.add_resource(MineTypeResource, '/mine-types/<string:mine_type_guid>')
@@ -53,12 +54,12 @@ api.add_resource(MineVerifiedStatusListResource, '/verified-status')
 api.add_resource(MineSubscriptionResource, '/<string:mine_guid>/subscribe')
 api.add_resource(MineSubscriptionListResource, '/subscribe')
 
-api.add_resource(VarianceListResource, '/<string:mine_guid>/variances')
-api.add_resource(VarianceResource, '/<string:mine_guid>/variances/<string:variance_guid>')
-api.add_resource(VarianceDocumentUploadResource,
+api.add_resource(MineVarianceListResource, '/<string:mine_guid>/variances')
+api.add_resource(MineVarianceResource, '/<string:mine_guid>/variances/<string:variance_guid>')
+api.add_resource(MineVarianceDocumentUploadResource,
                  '/<string:mine_guid>/variances/<string:variance_guid>/documents')
 api.add_resource(
-    VarianceUploadedDocumentsResource,
+    MineVarianceUploadedDocumentsResource,
     '/<string:mine_guid>/variances/<string:variance_guid>/documents/<string:mine_document_guid>')
 
 api.add_resource(MineIncidentListResource, '/<string:mine_guid>/incidents')
