@@ -87,19 +87,21 @@ export const DefaultContact = (props) => (
           permission={Permission.CREATE}
           isMajorMine={props.mine.major_mine_ind}
         >
-          <Button
-            type="primary"
-            onClick={() =>
-              props.openEditPartyRelationshipModal(
-                props.partyRelationship,
-                props.onSubmitEditPartyRelationship,
-                props.handleChange,
-                props.mine
-              )
-            }
-          >
-            Update
-          </Button>
+          {props.partyRelationship !== "PMT" && (
+            <Button
+              type="primary"
+              onClick={() =>
+                props.openEditPartyRelationshipModal(
+                  props.partyRelationship,
+                  props.onSubmitEditPartyRelationship,
+                  props.handleChange,
+                  props.mine
+                )
+              }
+            >
+              Update
+            </Button>
+          )}
         </AuthorizationWrapper>
       )}
     </div>

@@ -28,6 +28,8 @@ import {
   getPartyRelationshipTypesList,
   getPartyRelationships,
 } from "@/selectors/partiesSelectors";
+import { getUserAccessData } from "@/selectors/authenticationSelectors";
+import { USER_ROLES } from "@/constants/environment";
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
@@ -44,6 +46,7 @@ const propTypes = {
   updatePartyRelationship: PropTypes.func.isRequired,
   removePartyRelationship: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {
@@ -85,7 +88,10 @@ export class ViewPartyRelationships extends Component {
   openAddPartyRelationshipModal = (value, onSubmit, handleChange, onPartySubmit, title, mine) => {
     if (!this.props.partyRelationshipTypesList) return;
 
-    if (value.mine_party_appt_type_code === "PMT") {
+    if (
+      value.mine_party_appt_type_code === "PMT" &&
+      !this.props.userRoles.includes(USER_ROLES[Permission.ADMIN])
+    ) {
       this.RoleConfirmation.current.click();
       return;
     }
@@ -433,6 +439,7 @@ const mapStateToProps = (state) => ({
   partyRelationshipTypesList: getPartyRelationshipTypesList(state),
   partyRelationshipTypes: getPartyRelationshipTypes(state),
   partyRelationships: getPartyRelationships(state),
+  userRoles: getUserAccessData(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
