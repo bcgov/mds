@@ -65,7 +65,7 @@ class  PermitSpec extends GebReportingSpec {
         permitTab.editPermitFileButton.click()
         downloadTestFileLink
 
-        then: "The file is attatched to the permit."
+        then: "The file is attached to the permit."
         downloadTestFileLink.text() == Const.TEST_FILE_NAME
     }
 
@@ -75,7 +75,6 @@ class  PermitSpec extends GebReportingSpec {
 
         and: "User downloads the  test file"
         downloadTestFileLink.click()
-        print(Const.DOWNLOAD_PATH+'/'+Const.TEST_FILE_NAME)
         def file = new File(Const.DOWNLOAD_PATH+'/'+Const.TEST_FILE_NAME)
         // allow time for the file to be created in the DOWNLOAD_PATH
         waitFor(){file.exists()}
