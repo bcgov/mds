@@ -56,7 +56,7 @@ export const AddIncidentFollowUpForm = (props) => (
               name="recommendation"
               label="Recommendation"
               placeholder="Provide recommendation actions"
-              component={renderConfig.AUTO_SIZE_FIELD}
+              component={renderConfig.SCROLL_FIELD}
               validate={[required]}
             />
           </Form.Item>

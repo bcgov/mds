@@ -76,7 +76,7 @@ class AddIncidentDetailForm extends Component {
                 name="incident_description"
                 label="Description of incident"
                 placeholder="Provide a detailed description of the incident"
-                component={renderConfig.AUTO_SIZE_FIELD}
+                component={renderConfig.SCROLL_FIELD}
                 validate={[required]}
               />
             </Form.Item>
