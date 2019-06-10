@@ -19,11 +19,13 @@ const propTypes = {
   onSubmitEditPartyRelationship: PropTypes.func.isRequired,
   otherDetails: PropTypes.objectOf(PropTypes.any).isRequired,
   isEditable: PropTypes.bool.isRequired,
+  editPermission: PropTypes.string,
   compact: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
   partyRelationshipSubTitle: "",
+  editPermission: Permission.CREATE,
 };
 
 export const DefaultContact = (props) => (
@@ -84,7 +86,7 @@ export const DefaultContact = (props) => (
     <div className="right">
       {props.isEditable && !props.compact && (
         <AuthorizationWrapper
-          permission={Permission.CREATE}
+          permission={props.editPermission}
           isMajorMine={props.mine.major_mine_ind}
         >
           <Button
