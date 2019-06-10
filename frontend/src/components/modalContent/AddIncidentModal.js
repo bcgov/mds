@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { getFormValues } from "redux-form";
+import { bindActionCreators } from "redux";
+import { getFormValues, reset } from "redux-form";
 import { Steps, Button, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import AddIncidentReportingForm from "@/components/Forms/incidents/AddIncidentReportingForm";
@@ -16,17 +17,19 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   incidentDeterminationOptions: CustomPropTypes.options.isRequired,
   doSubparagraphOptions: CustomPropTypes.options.isRequired,
+  followupActionOptions: PropTypes.objectOf(PropTypes.strings).isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
-  incidentNumber: PropTypes.string.isRequired,
+  // incidentNumber: PropTypes.string.isRequired,
   // addReportingFormValues: PropTypes.objectOf(PropTypes.strings),
   // addDetailFormValues: PropTypes.objectOf(PropTypes.strings),
-  addFollowUpFormValues: PropTypes.objectOf(PropTypes.strings),
+  // addFollowUpFormValues: PropTypes.objectOf(PropTypes.strings),
+  reset: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
   // addReportingFormValues: {},
   // addDetailFormValues: {},
-  addFollowUpFormValues: {},
+  // addFollowUpFormValues: {},
 };
 
 // TODO: Should move these into the forms themselves
@@ -53,26 +56,21 @@ export class AddIncidentModal extends Component {
 
   cancel = () => {
     this.props.closeModal();
-    // this.props.reset(FORM.ADD_FULL_PARTY);
+    this.props.reset(FORM.ADD_INCIDENT_REPORTING);
+    this.props.reset(FORM.ADD_INCIDENT_DETAIL);
+    this.props.reset(FORM.ADD_INCIDENT_REPORTING);
   };
 
   next() {
     this.setState((prevState) => ({ current: prevState.current + 1 }));
-    this.renderStepButtons();
   }
 
   prev() {
     this.setState((prevState) => ({ current: prevState.current - 1 }));
-    this.renderStepButtons();
   }
 
   renderStep1() {
-    return (
-      <AddIncidentReportingForm
-        incidentNumber={this.props.incidentNumber}
-        initialValues={this.props.initialValues}
-      />
-    );
+    return <AddIncidentReportingForm initialValues={this.props.initialValues} />;
   }
 
   renderStep2() {
@@ -90,6 +88,7 @@ export class AddIncidentModal extends Component {
       <AddIncidentFollowUpForm
         initialValues={this.props.initialValues}
         incidentDeterminationOptions={this.props.incidentDeterminationOptions}
+        followupActionOptions={this.props.followupActionOptions}
       />
     );
   }
@@ -187,7 +186,7 @@ export class AddIncidentModal extends Component {
                   type="primary"
                   className="full-mobile"
                   onClick={(event) => this.handleIncidentSubmit(event, false)}
-                  disabled={invalidFollowUpPayload(this.props.addFollowUpFormValues)}
+                  disabled={invalidFollowUpPayload()}
                 >
                   Submit
                 </Button>,
@@ -203,15 +202,22 @@ export class AddIncidentModal extends Component {
 const mapStateToProps = (state) => ({
   addReportingFormValues: getFormValues(FORM.ADD_INCIDENT_REPORTING)(state) || {},
   addDetailFormValues: getFormValues(FORM.ADD_INCIDENT_DETAIL)(state) || {},
-  addFollowUpFormValues: getFormValues(FORM.ADD_INCIDENT_FOLLOWUP)(state) || {},
+  // addFollowUpFormValues: getFormValues(FORM.ADD_INCIDENT_FOLLOWUP)(state) || {},
 });
 
-// const mapDispatchToProps = (dispatch) => ({});
-
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      //      submit,
+      reset,
+      //      change,
+    },
+    dispatch
+  );
 AddIncidentModal.propTypes = propTypes;
 AddIncidentModal.defaultProps = defaultProps;
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(AddIncidentModal);
