@@ -7,7 +7,6 @@ class Form_Create_And_Edit_Permit extends Module {
     static PERMITTEE = "Halfthor"
     static PERMITTEE_FULL_NAME = "Halfthor Zavicus, test@blah.do"
     static PERMIT_TYPE = "Mineral"
-    static PERMIT_NUMBER = "66666"
     static PERMIT_STATUS = "Open"
     static ISSUE_DATE = '1983-12-08'
     static AMENDMENT_DATE =  "1984-12-08"
@@ -37,7 +36,7 @@ class Form_Create_And_Edit_Permit extends Module {
         issueDate (wait:true) {$("input", name:"issue_date")}
         calendarInput (wait:true) {$("input", class:"ant-calendar-input ")}
 
-        //todo: uploadFiles
+        //TODO: at some point we may want to uploadFiles from these forms
 
         submitButton  (wait:true) {$("button", type: "submit")}
         // submitButton  (wait:true) {$("button").has("span", text:MODAL_HEADER)}
@@ -50,7 +49,7 @@ class Form_Create_And_Edit_Permit extends Module {
     def completePermitForm(){
         waitFor() {header==MODAL_HEADER}
         // fill out permittee
-        permittee = "Halfthor"
+        permittee = PERMITTEE
         permitteeName.click()
 
         // fill permit type
@@ -58,7 +57,7 @@ class Form_Create_And_Edit_Permit extends Module {
         mineralTypeOption.click()
 
         // fill out permit number
-        permitNumber = PERMIT_NUMBER
+        permitNumber = Const.PERMIT_NUMBER
         // select and fill out the permit status
         permitStatus.click()
         openStatusDropdownOption.click()
@@ -73,28 +72,28 @@ class Form_Create_And_Edit_Permit extends Module {
 
     def completePermitAmendment(){
         // fill out permittee
-        permittee = "Halfthor"
+        permittee = PERMITTEE
         permitteeName.click()
 
          // fill out issue date
         issueDate.click()
         calendarInput = AMENDMENT_DATE
 
-        descriptionField = "A fancy description"
+        descriptionField = Const.PERMIT_DESCRIPTION
         submitButton.click()
 
     }
    
     def amalgamatePermit() {
          // fill out permittee
-        permittee = "Halfthor"
+        permittee = PERMITTEE
         permitteeName.click()
 
          // fill out issue date
         issueDate.click()
         calendarInput = AMENDMENT_DATE
 
-        descriptionField = "A fancy amalgamation description"
+        descriptionField = Const.AMALGAMATION_DESCRIPTION
         submitButton.click()
     }
       

@@ -1,9 +1,10 @@
 package modules
 
 import geb.Module 
+import utils.*
 
 class Tab_Permit extends Module {
-    static PERMIT_NUMBER = "M-66666"
+    static PERMIT_NUMBER = "M-"+Const.PERMIT_NUMBER
     static at = {activeTab=='Permit'}
     static content = {
         activeTab (wait:true) {$("div.ant-tabs-tab-active").text()}
@@ -18,16 +19,16 @@ class Tab_Permit extends Module {
         permitTitle (wait:true) {$("div", title: "Permit No.",text: PERMIT_NUMBER)}
         addEditButton (wait:true) {$("button").has("div", text: "Add/Edit")}
         
-        hoverDropdown (wait:true) {$("ul", role:"menu").has("button", text: "Edit permit status").findAll { it.displayed } }
-        editPermitStatusButton (wait:true) {$("button", text: "Edit permit status").findAll { it.displayed } }
-        addAmendmentButton (wait:true) {$("button", text: "Add permit amendment").findAll { it.displayed } }
-        amalgamatePermitButton (wait:true) {$("button", text: "Amalgamate permit").findAll { it.displayed } }
+        hoverDropdown (wait:true) {$("ul", role:"menu").has("button", text: "Edit permit status")}
+        editPermitStatusButton (wait:true) {$("button", text: "Edit permit status")}
+        addAmendmentButton (wait:true) {$("button", text: "Add permit amendment")}
+        amalgamatePermitButton (wait:true) {$("button", text: "Amalgamate permit")}
 
         editPermitFormStatusDropdown (wait:true) {$("div", id: "permit_status_code")}
         closedDropdownOption (wait:true) {$("li", text: "Closed")}
         submitEditPermitStatus (wait:true) {$("button", type: "submit")}
         amendmentDescriptions (wait:true) {$("div", title: "Description")}
-        amendmentDescriptionSpecific (wait:true) {$("div", title: "Description").has(text:"A fancy description" )}
+        amendmentDescriptionSpecific (wait:true) {$("div", title: "Description").has(text:Const.PERMIT_DESCRIPTION )}
         openFileModalButton (wait:true) {$("button").has("img", alt: "Edit")}
         uploadField (wait:true) {$("input.filepond--browser")}
         uploadCompleteMessage (wait:true) {$("span.filepond--file-status-main", text:"Upload complete")}

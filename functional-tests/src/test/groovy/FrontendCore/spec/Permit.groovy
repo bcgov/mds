@@ -16,7 +16,7 @@ import utils.*
 @Title("MDS-MineProfile-PermitTab")
 @Stepwise
 class  PermitSpec extends GebReportingSpec {
-    static PERMIT_NUMBER = "M-66666"
+    static PERMIT_NUMBER = "M-"+Const.PERMIT_NUMBER
 
     @Rule
     TemporaryFolder dir = new TemporaryFolder()
@@ -34,7 +34,7 @@ class  PermitSpec extends GebReportingSpec {
         when: "I click on the new permit"
         permitTab.newPermitButton.click()
         newPermitForm.completePermitForm()
-        then: "A permit with the correct ID is present in the permit's tab"
+        then: "A permit with the correct ID is present in the permits tab"
         permitTab.permitTitle.text() == PERMIT_NUMBER
     }
 
@@ -44,7 +44,6 @@ class  PermitSpec extends GebReportingSpec {
         permitTab.editPermitStatusButton.click()
 
         and: "I change the status of the permit to closed."
-        // THIS NEEDS TO GET MOVED TO THE FORMS OPTIONS
         permitTab.editPermitFormStatusDropdown.click()
         permitTab.closedDropdownOption.click()
         permitTab.submitEditPermitStatus.click()
@@ -105,10 +104,10 @@ class  PermitSpec extends GebReportingSpec {
         permitTab.amendmentDescriptionSpecific
        
         then: "An Amendment is added to the permit in question"
-        assert permitTab.amendmentDescriptions.children()[0].text()== "A fancy description"
+        assert permitTab.amendmentDescriptions.children()[0].text()== Const.PERMIT_DESCRIPTION
     }
     
-    def "User can add an amalgamate a permit"(){
+    def "User can amalgamate a permit"(){
         when: "The user amalgamates a permit."
         moveToFooterAndHoverOnEdit()
         permitTab.amalgamatePermitButton.click()
@@ -120,8 +119,8 @@ class  PermitSpec extends GebReportingSpec {
         waitFor() {permitTab.hoverDropdown}
 
         then: "There is no 'amalgamate' option in the Add/Edit dropdown."
-        assert permitTab.hoverDropdown.children().has(text:"Add permit amendment").isDisplayed() == true 
-        assert permitTab.hoverDropdown.children().has(text:"Amalgamate permit").isDisplayed() == false
+        assert permitTab.hoverDropdown.children().has(text:"Add permit amendment").isDisplayed()
+        assert !permitTab.hoverDropdown.children().has(text:"Amalgamate permit").isDisplayed()
 
     }
 
