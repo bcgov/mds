@@ -461,7 +461,7 @@
                   },
                   {
                     "name": "METABASE_SITE_URL",
-                    "value": "http://mds-metabase-empr-mds-prod.pathfinder.gov.bc.ca"
+                    "value": "https://mds-metabase-empr-mds-prod.pathfinder.gov.bc.ca"
                   }
                 ],
                 "resources": {
