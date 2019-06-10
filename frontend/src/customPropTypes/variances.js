@@ -6,7 +6,7 @@ export const variance = shape({
   compliance_article_id: PropTypes.number,
   variance_application_status_code: PropTypes.string,
   applicant_guid: PropTypes.string,
-  inspector_guid: PropTypes.string,
+  inspector_party_guid: PropTypes.string,
   expiry_date: PropTypes.string,
   issue_date: PropTypes.string,
   note: PropTypes.string,

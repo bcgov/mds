@@ -67,7 +67,7 @@ def test_post_approved_variance(test_client, db_session, auth_headers):
         'compliance_article_id': approved_variance.compliance_article_id,
         'received_date': approved_variance.received_date,
         'variance_application_status_code': approved_variance.variance_application_status_code,
-        'inspector_guid': approved_variance.inspector_guid,
+        'inspector_party_guid': approved_variance.inspector_party_guid,
         'note': 'Biggest mine yet',
         'issue_date': approved_variance.issue_date,
         'expiry_date': approved_variance.expiry_date
@@ -82,7 +82,7 @@ def test_post_approved_variance(test_client, db_session, auth_headers):
     assert post_data['received_date'] == test_variance_data['received_date'].strftime('%Y-%m-%d')
     assert post_data['variance_application_status_code'] == test_variance_data[
         'variance_application_status_code']
-    assert post_data['inspector_guid'] == str(test_variance_data['inspector_guid'])
+    assert post_data['inspector_party_guid'] == str(test_variance_data['inspector_party_guid'])
     assert post_data['note'] == test_variance_data['note']
     assert post_data['issue_date'] == test_variance_data['issue_date'].strftime('%Y-%m-%d')
     assert post_data['expiry_date'] == test_variance_data['expiry_date'].strftime('%Y-%m-%d')
@@ -94,7 +94,7 @@ def test_post_approved_variance(test_client, db_session, auth_headers):
         'compliance_article_id': approved_variance.compliance_article_id,
         'received_date': approved_variance.received_date,
         'variance_application_status_code': approved_variance.variance_application_status_code,
-        'inspector_guid': approved_variance.inspector_guid,
+        'inspector_party_guid': approved_variance.inspector_party_guid,
         'note': 'Biggest mine yet',
         'issue_date': approved_variance.issue_date,
         'expiry_date': approved_variance.expiry_date
@@ -109,7 +109,7 @@ def test_post_approved_variance(test_client, db_session, auth_headers):
     assert post_data['received_date'] == test_variance_data['received_date'].strftime('%Y-%m-%d')
     assert post_data['variance_application_status_code'] == test_variance_data[
         'variance_application_status_code']
-    assert post_data['inspector_guid'] == str(test_variance_data['inspector_guid'])
+    assert post_data['inspector_party_guid'] == str(test_variance_data['inspector_party_guid'])
     assert post_data['note'] == test_variance_data['note']
     assert post_data['issue_date'] == test_variance_data['issue_date'].strftime('%Y-%m-%d')
     assert post_data['expiry_date'] == test_variance_data['expiry_date'].strftime('%Y-%m-%d')
@@ -156,7 +156,7 @@ def test_post_approved_variance_missing_expiry_date(test_client, db_session, aut
         'compliance_article_id': approved_variance.compliance_article_id,
         'received_date': approved_variance.received_date,
         'variance_application_status_code': approved_variance.variance_application_status_code,
-        'inspector_guid': approved_variance.inspector_guid,
+        'inspector_party_guid': approved_variance.inspector_party_guid,
         'note': approved_variance.note,
         'issue_date': approved_variance.issue_date
     }
@@ -176,7 +176,7 @@ def test_post_approved_variance_missing_issue_date(test_client, db_session, auth
         'compliance_article_id': approved_variance.compliance_article_id,
         'received_date': approved_variance.received_date,
         'variance_application_status_code': approved_variance.variance_application_status_code,
-        'inspector_guid': approved_variance.inspector_guid,
+        'inspector_party_guid': approved_variance.inspector_party_guid,
         'note': approved_variance.note,
         'expiry_date': approved_variance.expiry_date
     }
@@ -190,7 +190,7 @@ def test_post_approved_variance_missing_issue_date(test_client, db_session, auth
     assert 'issue' in post_data['message'].lower()
 
 
-def test_post_approved_variance_missing_inspector_guid(test_client, db_session, auth_headers):
+def test_post_approved_variance_missing_inspector_party_guid(test_client, db_session, auth_headers):
     approved_variance = VarianceFactory(approved=True)
     data = {
         'compliance_article_id': approved_variance.compliance_article_id,
@@ -210,7 +210,7 @@ def test_post_approved_variance_missing_inspector_guid(test_client, db_session, 
     assert 'inspector' in post_data['message'].lower()
 
 
-def test_post_denied_variance_missing_inspector_guid(test_client, db_session, auth_headers):
+def test_post_denied_variance_missing_inspector_party_guid(test_client, db_session, auth_headers):
     denied_variance = VarianceFactory(denied=True)
     data = {
         'compliance_article_id': denied_variance.compliance_article_id,
@@ -235,7 +235,7 @@ def test_post_denied_variance_with_expiry_date(test_client, db_session, auth_hea
         'compliance_article_id': denied_variance.compliance_article_id,
         'received_date': denied_variance.received_date,
         'variance_application_status_code': denied_variance.variance_application_status_code,
-        'inspector_guid': approved_variance.inspector_guid,
+        'inspector_party_guid': approved_variance.inspector_party_guid,
         'note': denied_variance.note,
         'expiry_date': approved_variance.expiry_date
     }
@@ -256,7 +256,7 @@ def test_post_denied_variance_with_issue_date(test_client, db_session, auth_head
         'compliance_article_id': denied_variance.compliance_article_id,
         'received_date': denied_variance.received_date,
         'variance_application_status_code': denied_variance.variance_application_status_code,
-        'inspector_guid': approved_variance.inspector_guid,
+        'inspector_party_guid': approved_variance.inspector_party_guid,
         'note': denied_variance.note,
         'issue_date': approved_variance.issue_date
     }
