@@ -12,6 +12,7 @@ const propTypes = {
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   incidentDeterminationOptions: CustomPropTypes.options.isRequired,
   doSubparagraphOptions: CustomPropTypes.options.isRequired,
+  inspectors: CustomPropTypes.options.isRequired,
 };
 
 class AddIncidentDetailForm extends Component {
@@ -95,9 +96,8 @@ class AddIncidentDetailForm extends Component {
                 id="determination_inspector_party_guid"
                 name="determination_inspector_party_guid"
                 label="Who made the determination?"
-                placeholder="Start typing inspector name"
-                component={renderConfig.FIELD}
-                validate={[required]}
+                component={renderConfig.SELECT}
+                data={this.props.inspectors}
               />
             </Form.Item>
 

@@ -6,10 +6,12 @@ import * as FORM from "@/constants/forms";
 import { required, email, number, phoneNumber, maxLength, dateNotInFuture } from "@/utils/Validate";
 import { normalizePhone } from "@/utils/helpers";
 import { renderConfig } from "@/components/common/config";
+import CustomPropTypes from "@/customPropTypes";
 // import { resetForm } from "@/utils/helpers";
 
 const propTypes = {
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
+  inspectors: CustomPropTypes.options.isRequired,
 };
 
 export const AddIncidentReportingForm = (props) => (
@@ -24,8 +26,9 @@ export const AddIncidentReportingForm = (props) => (
               name="reported_to_inspector_party_guid"
               label="Incident reported to*:"
               placeholder="Start typing inspector name"
-              component={renderConfig.FIELD}
+              component={renderConfig.SELECT}
               validate={[required]}
+              data={props.inspectors}
             />
           </Form.Item>
           <Form.Item>
@@ -33,9 +36,10 @@ export const AddIncidentReportingForm = (props) => (
               id="responsible_inspector_party_guid"
               name="responsible_inspector_party_guid"
               label="Inspector responsible:*"
+              component={renderConfig.SELECT}
               placeholder="Start typing inspector name"
-              component={renderConfig.FIELD}
               validate={[required]}
+              data={props.inspectors}
             />
           </Form.Item>
           <h4>Reporter Details</h4>
