@@ -17,11 +17,10 @@ class Form_Create_And_Edit_Permit extends Module {
     static content = {
         header {$("div", id:"rcDialogTitle0").text()}
 
-        // Permittee (wait:true) {}
         permittee (wait:true) {$("div", id:"permittee_party_guid").find('input')}
         permitteeName (wait:true) {$("li", text: PERMITTEE_FULL_NAME)}
 
-        //Permit Type
+        // Permit Type
         permitType (wait:true) {$("div", id:"permit_type")}
         mineralTypeOption (wait:true) {$("li", text: PERMIT_TYPE)}
 
@@ -34,14 +33,13 @@ class Form_Create_And_Edit_Permit extends Module {
 
         // Date content objects
         issueDate (wait:true) {$("input", name:"issue_date")}
-        calendarInput (wait:true) {$("input", class:"ant-calendar-input ")}
+        calendarInput (wait:true) {$("input", class:"ant-calendar-input")}
 
-        //TODO: at some point we may want to uploadFiles from these forms
+        // TODO: at some point we may want to uploadFiles from these forms
 
         submitButton  (wait:true) {$("button", type: "submit")}
-        // submitButton  (wait:true) {$("button").has("span", text:MODAL_HEADER)}
 
-        //Permit amendment forms
+        // Permit amendment forms
         descriptionField (wait:true) {$("textarea", id: "description")}
         
     }
@@ -85,11 +83,11 @@ class Form_Create_And_Edit_Permit extends Module {
     }
    
     def amalgamatePermit() {
-         // fill out permittee
+        // fill out permittee
         permittee = PERMITTEE
         permitteeName.click()
 
-         // fill out issue date
+        // fill out issue date
         issueDate.click()
         calendarInput = AMENDMENT_DATE
 

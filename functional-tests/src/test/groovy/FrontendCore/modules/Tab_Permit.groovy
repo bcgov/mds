@@ -12,7 +12,7 @@ class Tab_Permit extends Module {
 
         permit_no (wait:true) {$("td", text: contains("BLAHPER-01"), 0)}
 
-        //Permit Tab objects
+        // Permit Tab objects
         newPermitButton (wait:true) {$("button", text: "Add a New Permit")}
         newPermitForm { module Form_CreatePermit }
         permitRow (wait:true) {$("tr").has("div", title: "Permit No.",text: PERMIT_NUMBER)}

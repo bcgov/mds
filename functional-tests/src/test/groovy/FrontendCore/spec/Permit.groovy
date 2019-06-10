@@ -77,15 +77,8 @@ class  PermitSpec extends GebReportingSpec {
         downloadTestFileLink.click()
         print(Const.DOWNLOAD_PATH+'/'+Const.TEST_FILE_NAME)
         def file = new File(Const.DOWNLOAD_PATH+'/'+Const.TEST_FILE_NAME)
-        //allow time for the file to be created in the DOWNLOAD_PATH
-        int counter = 0
-        while (!file.exists()) {
-            if (counter>=20 ){
-                throw(new Error("Could not find the file"))
-            }
-            sleep(1000)
-            counter++
-        }
+        // allow time for the file to be created in the DOWNLOAD_PATH
+        waitFor(){file.exists()}
         String lineString = file.getText('UTF-8')
         file.delete()
 
