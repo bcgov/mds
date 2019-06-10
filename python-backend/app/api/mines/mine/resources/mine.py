@@ -415,7 +415,7 @@ class MineListSearch(Resource):
                     'mine_no': x.mine_no,
                     'latitude': str(x.mine_location.latitude) if x.mine_location else '',
                     'longitude': str(x.mine_location.longitude) if x.mine_location else '',
-                    'mine_location_description': x.mine_location.mine_location_description,
+                    'mine_location_description': x.mine_location.mine_location_description if x.mine_location else '',
                     },
                 mines))
         return {'mines': result}
