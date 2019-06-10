@@ -5,7 +5,6 @@ import { Form, Col, Row } from "antd";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
-import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import { required, dateNotInFuture } from "@/utils/Validate";
 
@@ -72,16 +71,6 @@ export const AddIncidentFollowUpForm = (props) => (
               component={renderConfig.SELECT}
               data={props.incidentStatusOptions}
               placeholder="typeahead, auto populated"
-            />
-          </Form.Item>
-
-          <Form.Item>
-            <Field
-              id="determination_inspector_party_guid"
-              name="determination_inspector_party_guid"
-              label="Who made the determination?"
-              placeholder="typeahead, auto populated"
-              component={RenderField}
             />
           </Form.Item>
           <h4>Final Investigation Report Documents</h4>

@@ -19,6 +19,7 @@ const propTypes = {
   doSubparagraphOptions: CustomPropTypes.options.isRequired,
   followupActionOptions: PropTypes.objectOf(PropTypes.strings).isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
+  inspectors: CustomPropTypes.options.isRequired,
   // incidentNumber: PropTypes.string.isRequired,
   // addReportingFormValues: PropTypes.objectOf(PropTypes.strings),
   // addDetailFormValues: PropTypes.objectOf(PropTypes.strings),
@@ -70,7 +71,12 @@ export class AddIncidentModal extends Component {
   }
 
   renderStep1() {
-    return <AddIncidentReportingForm initialValues={this.props.initialValues} />;
+    return (
+      <AddIncidentReportingForm
+        initialValues={this.props.initialValues}
+        inspectors={this.props.inspectors}
+      />
+    );
   }
 
   renderStep2() {
@@ -79,6 +85,7 @@ export class AddIncidentModal extends Component {
         initialValues={this.props.initialValues}
         doSubparagraphOptions={this.props.doSubparagraphOptions}
         incidentDeterminationOptions={this.props.incidentDeterminationOptions}
+        inspectors={this.props.inspectors}
       />
     );
   }
