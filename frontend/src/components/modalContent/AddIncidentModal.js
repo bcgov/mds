@@ -17,6 +17,7 @@ const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   incidentDeterminationOptions: CustomPropTypes.options.isRequired,
+  incidentStatusOptions: CustomPropTypes.options.isRequired,
   doSubparagraphOptions: CustomPropTypes.options.isRequired,
   followupActionOptions: PropTypes.objectOf(PropTypes.strings).isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -119,6 +120,7 @@ export class AddIncidentModal extends Component {
         initialValues={this.props.initialValues}
         doSubparagraphOptions={this.props.doSubparagraphOptions}
         incidentDeterminationOptions={this.props.incidentDeterminationOptions}
+        incidentStatusOptions={this.props.incidentStatusOptions}
         inspectors={this.props.inspectors}
       />
     );
@@ -155,6 +157,7 @@ export class AddIncidentModal extends Component {
         initialValues={this.props.initialValues}
         incidentDeterminationOptions={this.props.incidentDeterminationOptions}
         followupActionOptions={this.props.followupActionOptions}
+        incidentStatusOptions={this.props.incidentStatusOptions}
       />
     );
   }

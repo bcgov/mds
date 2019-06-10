@@ -20,6 +20,7 @@ import {
   getDropdownIncidentFollowupActionOptions,
   getDangerousOccurrenceSubparagraphOptions,
   getDropdownIncidentDeterminationOptions,
+  getDropdownIncidentStatusCodeOptions,
 } from "@/selectors/staticContentSelectors";
 
 import MineIncidentTable from "./MineIncidentTable";
@@ -34,6 +35,7 @@ const propTypes = {
   followupActions: PropTypes.arrayOf(CustomPropTypes.incidentFollowupType),
   followupActionsDropdown: PropTypes.arrayOf(CustomPropTypes.dropdownListItem),
   incidentDeterminationOptions: CustomPropTypes.options.isRequired,
+  incidentStatusOptions: CustomPropTypes.options.isRequired,
   doSubparagraphOptions: CustomPropTypes.options.isRequired,
   inspectors: CustomPropTypes.options.isRequired,
   openModal: PropTypes.func.isRequired,
@@ -87,6 +89,7 @@ export class MineIncidents extends Component {
         mineGuid: this.props.mine.mine_guid,
         followupActionOptions: this.props.followupActionsDropdown,
         incidentDeterminationOptions: this.props.incidentDeterminationOptions,
+        incidentStatusOptions: this.props.incidentStatusOptions,
         doSubparagraphOptions: this.props.doSubparagraphOptions,
         inspectors: this.props.inspectors,
       },
@@ -123,6 +126,7 @@ const mapStateToProps = (state) => ({
   followupActions: getIncidentFollowupActionOptions(state),
   followupActionsDropdown: getDropdownIncidentFollowupActionOptions(state),
   incidentDeterminationOptions: getDropdownIncidentDeterminationOptions(state),
+  incidentStatusOptions: getDropdownIncidentStatusCodeOptions(state),
   doSubparagraphOptions: getDangerousOccurrenceSubparagraphOptions(state),
 });
 
