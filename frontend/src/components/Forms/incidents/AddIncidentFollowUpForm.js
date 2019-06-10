@@ -5,7 +5,6 @@ import { Form, Col, Row } from "antd";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
-import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import { required, dateNotInFuture } from "@/utils/Validate";
 
 const propTypes = {
@@ -57,12 +56,10 @@ export const AddIncidentFollowUpForm = (props) => (
               name="recommendation"
               label="Recommendation"
               placeholder="Provide recommendation actions"
-              component={RenderAutoSizeField}
+              component={renderConfig.AUTO_SIZE_FIELD}
               validate={[required]}
             />
           </Form.Item>
-          <p>Add another recommendation</p>
-
           <Form.Item>
             <Field
               id="status_code"
@@ -70,7 +67,6 @@ export const AddIncidentFollowUpForm = (props) => (
               label="Incident status?*"
               component={renderConfig.SELECT}
               data={props.incidentStatusOptions}
-              placeholder="typeahead, auto populated"
             />
           </Form.Item>
           <h4>Final Investigation Report Documents</h4>

@@ -14,6 +14,7 @@ import CustomPropTypes from "@/customPropTypes";
 const { Step } = Steps;
 
 const propTypes = {
+  onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   incidentDeterminationOptions: CustomPropTypes.options.isRequired,
   doSubparagraphOptions: CustomPropTypes.options.isRequired,
@@ -21,16 +22,16 @@ const propTypes = {
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   inspectors: CustomPropTypes.options.isRequired,
   // incidentNumber: PropTypes.string.isRequired,
-  // addReportingFormValues: PropTypes.objectOf(PropTypes.strings),
-  // addDetailFormValues: PropTypes.objectOf(PropTypes.strings),
-  // addFollowUpFormValues: PropTypes.objectOf(PropTypes.strings),
+  addReportingFormValues: PropTypes.objectOf(PropTypes.strings),
+  addDetailFormValues: PropTypes.objectOf(PropTypes.strings),
+  addFollowUpFormValues: PropTypes.objectOf(PropTypes.strings),
   reset: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
-  // addReportingFormValues: {},
-  // addDetailFormValues: {},
-  // addFollowUpFormValues: {},
+  addReportingFormValues: {},
+  addDetailFormValues: {},
+  addFollowUpFormValues: {},
 };
 
 // TODO: Should move these into the forms themselves
@@ -55,11 +56,30 @@ const invalidFollowUpPayload = () => false;
 export class AddIncidentModal extends Component {
   state = { current: 0 };
 
+  handleIncidentSubmit = async (event) => {
+    event.preventDefault();
+    const payload = {
+      ...this.props.addReportingFormValues,
+      ...this.props.addDetailFormValues,
+      ...this.props.addFollowUpFormValues,
+    };
+
+    await this.props.onSubmit(payload).then((data) => {
+      this.props.reset(FORM.ADD_INCIDENT_REPORTING);
+      this.props.reset(FORM.ADD_INCIDENT_DETAIL);
+      this.props.reset(FORM.ADD_INCIDENT_FOLLOWUP);
+      this.props.closeModal();
+      return data;
+    });
+
+    return Promise.resolve();
+  };
+
   cancel = () => {
     this.props.closeModal();
     this.props.reset(FORM.ADD_INCIDENT_REPORTING);
     this.props.reset(FORM.ADD_INCIDENT_DETAIL);
-    this.props.reset(FORM.ADD_INCIDENT_REPORTING);
+    this.props.reset(FORM.ADD_INCIDENT_FOLLOWUP);
   };
 
   next() {
@@ -209,7 +229,7 @@ export class AddIncidentModal extends Component {
 const mapStateToProps = (state) => ({
   addReportingFormValues: getFormValues(FORM.ADD_INCIDENT_REPORTING)(state) || {},
   addDetailFormValues: getFormValues(FORM.ADD_INCIDENT_DETAIL)(state) || {},
-  // addFollowUpFormValues: getFormValues(FORM.ADD_INCIDENT_FOLLOWUP)(state) || {},
+  addFollowUpFormValues: getFormValues(FORM.ADD_INCIDENT_FOLLOWUP)(state) || {},
 });
 
 const mapDispatchToProps = (dispatch) =>
