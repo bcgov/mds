@@ -97,6 +97,11 @@ const staticContentReducer = (state = initialState, action) => {
         ...state,
         incidentDeterminationOptions: action.payload.records,
       };
+    case actionTypes.STORE_MINE_INCIDENT_STATUS_CODE_OPTIONS:
+      return {
+        ...state,
+        incidentStatusCodeOptions: action.payload.records,
+      };
     case actionTypes.STORE_VARIANCE_STATUS_OPTIONS:
       return {
         ...state,
@@ -126,6 +131,8 @@ export const getIncidentFollowupActionOptions = (state) =>
   state[STATIC_CONTENT].incidentFollowupActionOptions;
 export const getIncidentDeterminationOptions = (state) =>
   state[STATIC_CONTENT].incidentDeterminationOptions;
+export const getIncidentStatusCodeOptions = (state) =>
+  state[STATIC_CONTENT].incidentStatusCodeOptions;
 export const getVarianceStatusOptions = (state) => state[STATIC_CONTENT].varianceStatusOptions;
 
 export default staticContentReducer;

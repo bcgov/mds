@@ -9,7 +9,7 @@ import { required, dateNotInFuture } from "@/utils/Validate";
 
 const propTypes = {
   followupActionOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
-  incidentStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
+  incidentStatusCodeOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
 
 export const AddIncidentFollowUpForm = (props) => (
@@ -55,7 +55,7 @@ export const AddIncidentFollowUpForm = (props) => (
               name="status_code"
               label="Incident status?*"
               component={renderConfig.SELECT}
-              data={props.incidentStatusOptions}
+              data={props.incidentStatusCodeOptions}
             />
           </Form.Item>
 

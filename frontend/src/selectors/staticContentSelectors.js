@@ -18,7 +18,7 @@ export const {
   getComplianceCodes,
   getIncidentFollowupActionOptions,
   getIncidentDeterminationOptions,
-  getIncidentStatusOptions,
+  getIncidentStatusCodeOptions,
   getVarianceStatusOptions,
 } = staticContentReducer;
 
@@ -119,7 +119,7 @@ export const getDropdownIncidentDeterminationOptions = createSelector(
 );
 
 export const getDropdownIncidentStatusCodeOptions = createSelector(
-  [getIncidentStatusOptions],
+  [getIncidentStatusCodeOptions],
   (options) => createDropDownList(options, "description", "mine_incident_status_code")
 );
 
