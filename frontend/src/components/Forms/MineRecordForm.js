@@ -334,7 +334,22 @@ export class MineRecordForm extends Component {
             </Form.Item>
           </Col>
         </Row>
-
+        <Row gutter={16}>
+          <Col>
+            <Form.Item label="Is this a historic status?">
+              <p className="p-light">
+                The date will default to todays date, unless otherwise specified.
+              </p>
+              <Field
+                id="status_date"
+                name="status_date"
+                placeholder="yyyy-mm-dd"
+                component={renderConfig.DATE}
+                validate={[dateNotInFuture]}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
         <Row gutter={16}>
           <Col>
             <Form.Item label="Date of Status Change">
