@@ -15,7 +15,7 @@ const propTypes = {
   mineTenureTypes: CustomPropTypes.options.isRequired,
   mineCommodityOptions: CustomPropTypes.options.isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
-  mineStatusOptions: CustomPropTypes.options.isRequired,
+  mineStatusDropDownOptions: CustomPropTypes.options.isRequired,
   isAdvanceSearch: PropTypes.bool.isRequired,
 };
 
@@ -52,7 +52,7 @@ export class AdvancedMineSearchForm extends Component {
                   name="status"
                   placeholder="Select Mine Status"
                   component={renderConfig.MULTI_SELECT}
-                  data={this.props.mineStatusOptions}
+                  data={this.props.mineStatusDropDownOptions}
                 />
               </Col>
               <Col md={12} xs={24}>
