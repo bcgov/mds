@@ -353,6 +353,7 @@ class MineIncidentFactory(BaseFactory):
     reported_timestamp = factory.Faker('past_datetime')
     reported_by_name = factory.Faker('name')
     determination_type_code = factory.LazyFunction(RandomIncidentDeterminationTypeCode)
+    status_code = factory.LazyFunction(RandomIncidentStatusCode)
     followup_investigation_type_code = 'NO'
     dangerous_occurrence_subparagraphs = factory.LazyAttribute(
         lambda o: SampleDangerousOccurrenceSubparagraphs(o.do_subparagraph_count)
