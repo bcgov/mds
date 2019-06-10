@@ -70,8 +70,7 @@ export const AddIncidentFollowUpForm = (props) => (
             />
           </Form.Item>
 
-          <h4>Final Investigation Report Documents</h4>
-          <p>Insert document section here</p>
+          {/* TODO: <h4>Final Investigation Report Documents</h4> */}
         </Col>
       </Row>
     </Form>

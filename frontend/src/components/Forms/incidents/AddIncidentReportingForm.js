@@ -86,7 +86,8 @@ export const AddIncidentReportingForm = (props) => (
               name="reported_timestamp"
               label="Reported Date and Time"
               placeholder="Please select date and time"
-              component={renderConfig.FIELD}
+              component={renderConfig.DATE}
+              showTime
               validate={[required, dateNotInFuture]}
             />
           </Form.Item>
