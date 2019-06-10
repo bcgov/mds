@@ -1,11 +1,17 @@
+// <label> is being used as is to replicate ant design structure of other rendered fields but,
+// this causes a linting error. Disabling this rule for this file as jsx structure does not allow
+// disabling it on the specific line.
+/* eslint-disable jsx-a11y/label-has-associated-control */
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
-import { Form, Col, Row } from "antd";
+import { Field, reduxForm, FieldArray } from "redux-form";
+import { Form, Col, Row, Icon } from "antd";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
 import { required, dateNotInFuture } from "@/utils/Validate";
+import LinkButton from "@/components/common/LinkButton";
 
 const propTypes = {
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -13,6 +19,23 @@ const propTypes = {
   incidentStatusCodeOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   hasFatalities: PropTypes.bool.isRequired,
 };
+
+const renderRecommendations = ({ fields }) => [
+  <div className="ant-col ant-form-item-label">
+    <label>Recommendations</label>
+  </div>,
+  fields.map((recommendation) => (
+    <Field
+      name={`${recommendation}.recommendation`}
+      placeholder="Provide recommendation actions"
+      component={renderConfig.AUTO_SIZE_FIELD}
+    />
+  )),
+  <LinkButton onClick={() => fields.push({})}>
+    <Icon type="plus" className="padding-small--right padding-large--bottom" />
+    {fields.length ? `Add another recommendation` : `Add a recommendation`}
+  </LinkButton>,
+];
 
 export class AddIncidentFollowUpForm extends Component {
   componentWillMount() {
@@ -50,16 +73,11 @@ export class AddIncidentFollowUpForm extends Component {
                   validate={[required]}
                 />
               </Form.Item>
-              <Form.Item>
-                <Field
-                  id="recommendations"
-                  name="recommendation"
-                  label="Recommendation"
-                  placeholder="Provide recommendation actions"
-                  component={renderConfig.SCROLL_FIELD}
-                  validate={[required]}
-                />
-              </Form.Item>
+              <FieldArray
+                id="recommendations"
+                name="recommendations"
+                component={renderRecommendations}
+              />
               <Form.Item>
                 <Field
                   id="status_code"
