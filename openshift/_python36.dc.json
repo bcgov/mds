@@ -74,6 +74,16 @@
       "value": "template.mds-idir-secret"
     },
     {
+      "name": "MDS_METABASE_SECRET",
+      "required": false,
+      "value": "template.mds-metabase-key"
+    },
+    {
+      "name": "METABASE_SITE_URL",
+      "required": false,
+      "value": "https://mds-metabase-empr-mds-prod.pathfinder.gov.bc.ca"
+    },
+    {
       "name": "REDIS_CONFIG_NAME",
       "required": false,
       "value": "template.mds-redis-secret"
@@ -451,17 +461,17 @@
                     "value": "${ENVIRONMENT_NAME}"
                   },
                   {
-                    "name": "METABASE_SECRET_KEY",
+                    "name": "METABASE_EMBEDDING_SECRET_KEY",
                     "valueFrom": {
                       "secretKeyRef": {
-                        "name": "${DB_CONFIG_NAME}",
-                        "key": "metabase-secret-key"
+                        "name": "${MDS_METABASE_SECRET}",
+                        "key": "embedding-secret-key"
                       }
                     }
                   },
                   {
                     "name": "METABASE_SITE_URL",
-                    "value": "https://mds-metabase-empr-mds-prod.pathfinder.gov.bc.ca"
+                    "value": "${METABASE_SITE_URL}"
                   }
                 ],
                 "resources": {

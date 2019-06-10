@@ -19,7 +19,8 @@ class CoreDashboardResource(Resource, UserMixin):
 
           }
         }
-        token = jwt.encode(payload, current_app.config['METABASE_SECRET_KEY'], algorithm="HS256")
+METABASE_EMBEDDING_SECRET_KEY=
+        token = jwt.encode(payload, current_app.config['METABASE_EMBEDDING_SECRET_KEY'], algorithm="HS256")
 
         dashboard_url = current_app.config['METABASE_SITE_URL'] + "/embed/dashboard/" + token.decode("utf8")
         return { 'dashboard_url': dashboard_url }

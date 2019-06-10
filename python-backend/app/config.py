@@ -31,7 +31,7 @@ class Config(object):
     LDAP_IDIR_PASSWORD = os.environ.get('LDAP_IDIR_PASSWORD', "idir_password")
 
     METABASE_SITE_URL = os.environ.get('METABASE_SITE_URL', None)
-    METABASE_SECRET_KEY = os.environ.get('METABASE_SECRET_KEY', None)
+    METABASE_EMBEDDING_SECRET_KEY = os.environ.get('METABASE_EMBEDDING_SECRET_KEY', None)
 
     BUNDLE_ERRORS = True  #RequestParser global config
 
