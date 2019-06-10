@@ -164,5 +164,5 @@ stop:
 clean:
 	@echo "+\n++ Cleaning ...\n+"
 	@docker-compose rm -f -v -s
-	@docker rmi -f mds_postgres mds_backend mds_frontend
+	@docker rmi -f mds_postgres mds_backend mds_frontend mds_flyway
 	@docker volume rm mds_postgres-data -f
