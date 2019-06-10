@@ -1,5 +1,5 @@
 import React from "react";
-// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { Form, Col, Row } from "antd";
 import * as FORM from "@/constants/forms";
@@ -9,11 +9,11 @@ import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
 // import { resetForm } from "@/utils/helpers";
 
-// const propTypes = {
-//   fol: PropTypes.bool.isRequired,
-// };
+const propTypes = {
+  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
+};
 
-export const AddIncidentReportingForm = () => (
+export const AddIncidentReportingForm = (props) => (
   <div>
     <Form layout="vertical">
       <Row gutter={48}>
@@ -25,6 +25,7 @@ export const AddIncidentReportingForm = () => (
               label="Ministry Incident No."
               placeholder="2019-0026"
               component={RenderField}
+              data={props.initialValues.incident}
             />
           </Form.Item>
           <Form.Item>
@@ -96,7 +97,6 @@ export const AddIncidentReportingForm = () => (
               label="Reported Date and Time"
               placeholder="Please select date and time"
               component={RenderDate}
-              showTime
               validate={[required, dateNotInFuture]}
             />
           </Form.Item>
@@ -106,7 +106,7 @@ export const AddIncidentReportingForm = () => (
   </div>
 );
 
-// AddIncidentReportingForm.propTypes = propTypes;
+AddIncidentReportingForm.propTypes = propTypes;
 
 export default reduxForm({
   form: FORM.ADD_INCIDENT_REPORTING,

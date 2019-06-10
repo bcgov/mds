@@ -6,7 +6,6 @@ import { Form, Col, Row } from "antd";
 import * as FORM from "@/constants/forms";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
-import RenderDate from "@/components/common/RenderDate";
 import { renderConfig } from "@/components/common/config";
 
 import { required, maxLength, number, dateNotInFuture } from "@/utils/Validate";
@@ -38,8 +37,7 @@ class AddIncidentDetailForm extends Component {
                 name="incident_timestamp"
                 label="Incident Date and Time"
                 placeholder="Please select date and time"
-                component={RenderDate}
-                showTime
+                component={renderConfig.DATE}
                 validate={[required, dateNotInFuture]}
               />
             </Form.Item>

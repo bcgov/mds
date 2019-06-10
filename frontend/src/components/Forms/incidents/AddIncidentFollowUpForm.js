@@ -7,7 +7,6 @@ import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
-import RenderDate from "@/components/common/RenderDate";
 import { required, dateNotInFuture } from "@/utils/Validate";
 
 const propTypes = {
@@ -38,7 +37,7 @@ export const AddIncidentFollowUpForm = (props) => (
               name="followup_inspection_date"
               label="Inspection date"
               placeholder="Please select date and time"
-              component={RenderDate}
+              component={renderConfig.DATE}
               validate={[required, dateNotInFuture]}
             />
           </Form.Item>
