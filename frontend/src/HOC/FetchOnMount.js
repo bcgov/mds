@@ -23,7 +23,7 @@ import {
 } from "@/actionCreators/staticContentActionCreator";
 
 /**
- * @constant FetchOnMount - Higher Order Component that makes all staticContent network requests when Home.js loads.
+ * @constant FetchOnMount - Higher Order Component that makes all staticContent network requests when App.js loads.
  *
  */
 
