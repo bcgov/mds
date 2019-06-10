@@ -13,6 +13,7 @@ const propTypes = {
   incidentDeterminationOptions: CustomPropTypes.options.isRequired,
   doSubparagraphOptions: CustomPropTypes.options.isRequired,
   inspectors: CustomPropTypes.options.isRequired,
+  incidentStatusCodeOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
 
 class AddIncidentDetailForm extends Component {
@@ -134,9 +135,9 @@ class AddIncidentDetailForm extends Component {
                   <Field
                     id="status_code"
                     name="status_code"
-                    label="Status"
-                    placeholder="Please choose one or more"
-                    component={renderConfig.FIELD}
+                    label="Incident status?*"
+                    component={renderConfig.SELECT}
+                    data={this.props.incidentStatusCodeOptions}
                   />
                 </Form.Item>
               </span>

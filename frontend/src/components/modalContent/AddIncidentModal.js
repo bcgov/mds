@@ -126,6 +126,8 @@ export class AddIncidentModal extends Component {
   }
 
   renderStep2Buttons() {
+    // props.addDetailFormValues.determination_type_code ==="DO"
+
     return [
       <Button id="step-back" type="tertiary" className="full-mobile" onClick={() => this.prev()}>
         Back
@@ -157,6 +159,10 @@ export class AddIncidentModal extends Component {
         incidentDeterminationOptions={this.props.incidentDeterminationOptions}
         followupActionOptions={this.props.followupActionOptions}
         incidentStatusCodeOptions={this.props.incidentStatusCodeOptions}
+        hasFatalities={
+          this.props.addDetailFormValues.fatalities.isInteger() &&
+          this.props.addDetailFormValues.fatalities > 0
+        }
       />
     );
   }
@@ -203,7 +209,9 @@ export class AddIncidentModal extends Component {
               ))}
             </Steps>
             <br />
+
             <div>{steps[this.state.current].content}</div>
+
             <div className="right center-mobile">
               <Popconfirm
                 placement="top"
@@ -217,6 +225,7 @@ export class AddIncidentModal extends Component {
                 </Button>
               </Popconfirm>
 
+              {/* Issue with rendering if we follow same approach as step content above */}
               {this.state.current === 0 && this.renderStep1Buttons()}
               {this.state.current === 1 && this.renderStep2Buttons()}
               {this.state.current === 2 && this.renderStep3Buttons()}
