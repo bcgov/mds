@@ -5,8 +5,7 @@ import { Form, Col, Row } from "antd";
 import * as FORM from "@/constants/forms";
 import { required, email, number, phoneNumber, maxLength, dateNotInFuture } from "@/utils/Validate";
 import { normalizePhone } from "@/utils/helpers";
-import RenderField from "@/components/common/RenderField";
-import RenderDate from "@/components/common/RenderDate";
+import { renderConfig } from "@/components/common/config";
 // import { resetForm } from "@/utils/helpers";
 
 const propTypes = {
@@ -24,7 +23,7 @@ export const AddIncidentReportingForm = (props) => (
               name="mine_incident_id_year+mine_incident_report_no"
               label="Ministry Incident No."
               placeholder="2019-0026"
-              component={RenderField}
+              component={renderConfig.FIELD}
               data={props.initialValues.incident}
             />
           </Form.Item>
@@ -34,7 +33,7 @@ export const AddIncidentReportingForm = (props) => (
               name="reported_to_inspector_party_guid"
               label="Incident reported to*:"
               placeholder="Typeahead"
-              component={RenderField}
+              component={renderConfig.FIELD}
               validate={[required]}
             />
           </Form.Item>
@@ -44,7 +43,7 @@ export const AddIncidentReportingForm = (props) => (
               name="responsible_inspector_party_guid"
               label="Inspector responsible:*"
               placeholder="Typeahead"
-              component={RenderField}
+              component={renderConfig.FIELD}
               validate={[required]}
             />
           </Form.Item>
@@ -55,7 +54,7 @@ export const AddIncidentReportingForm = (props) => (
               name="reported_by_name"
               label="Reported by"
               placeholder="Text"
-              component={RenderField}
+              component={renderConfig.FIELD}
               validate={[required]}
             />
           </Form.Item>
@@ -65,7 +64,7 @@ export const AddIncidentReportingForm = (props) => (
               name="reported_by_phone_no"
               label="Phone number"
               placeholder="Phone format"
-              component={RenderField}
+              component={renderConfig.FIELD}
               validate={[phoneNumber, maxLength(12)]}
               normalize={normalizePhone}
             />
@@ -76,7 +75,7 @@ export const AddIncidentReportingForm = (props) => (
               name="reported_by_phone_ext"
               label="Phone extension"
               placeholder="Phone format"
-              component={RenderField}
+              component={renderConfig.FIELD}
               validate={[number, maxLength(4)]}
             />
           </Form.Item>
@@ -86,7 +85,7 @@ export const AddIncidentReportingForm = (props) => (
               name="reported_by_email"
               label="Email"
               placeholder="email format"
-              component={RenderField}
+              component={renderConfig.FIELD}
               validate={[email]}
             />
           </Form.Item>
@@ -96,7 +95,7 @@ export const AddIncidentReportingForm = (props) => (
               name="reported_timestamp"
               label="Reported Date and Time"
               placeholder="Please select date and time"
-              component={RenderDate}
+              component={renderConfig.FIELD}
               validate={[required, dateNotInFuture]}
             />
           </Form.Item>

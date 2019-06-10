@@ -4,8 +4,7 @@ import CustomPropTypes from "@/customPropTypes";
 import { Field, reduxForm } from "redux-form";
 import { Form, Col, Row } from "antd";
 import * as FORM from "@/constants/forms";
-import RenderField from "@/components/common/RenderField";
-import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
+import RenderDate from "@/components/common/RenderDate";
 import { renderConfig } from "@/components/common/config";
 
 import { required, maxLength, number, dateNotInFuture } from "@/utils/Validate";
@@ -37,7 +36,8 @@ class AddIncidentDetailForm extends Component {
                 name="incident_timestamp"
                 label="Incident Date and Time"
                 placeholder="Please select date and time"
-                component={renderConfig.DATE}
+                component={RenderDate}
+                showTime
                 validate={[required, dateNotInFuture]}
               />
             </Form.Item>
@@ -47,7 +47,7 @@ class AddIncidentDetailForm extends Component {
                 name="number_of_fatalities"
                 label="Number of Fatalities:"
                 placeholder="isNumber"
-                component={RenderField}
+                component={renderConfig.FIELD}
                 validate={[number, maxLength(10)]}
               />
             </Form.Item>
@@ -57,7 +57,7 @@ class AddIncidentDetailForm extends Component {
                 name="number_of_injuries"
                 label="Number of injuries:"
                 placeholder="isNumber"
-                component={RenderField}
+                component={renderConfig.FIELD}
                 validate={[number, maxLength(10)]}
               />
             </Form.Item>
@@ -78,7 +78,7 @@ class AddIncidentDetailForm extends Component {
                 name="incident_description"
                 label="Description of incident"
                 placeholder="Provide a detailed description of the incident"
-                component={RenderAutoSizeField}
+                component={renderConfig.AUTO_SIZE_FIELD}
                 validate={[required]}
               />
             </Form.Item>
@@ -99,7 +99,7 @@ class AddIncidentDetailForm extends Component {
                 name="determination_inspector_party_guid"
                 label="Who made the determination?"
                 placeholder="typeahead, auto populated"
-                component={RenderField}
+                component={renderConfig.FIELD}
                 validate={[required]}
               />
             </Form.Item>
