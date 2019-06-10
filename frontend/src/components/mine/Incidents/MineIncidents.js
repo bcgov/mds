@@ -19,7 +19,7 @@ import {
   getIncidentFollowupActionOptions,
   getDropdownIncidentFollowupActionOptions,
   getDangerousOccurrenceSubparagraphOptions,
-  getDropdownIncidentDeterminationOptions
+  getDropdownIncidentDeterminationOptions,
 } from "@/selectors/staticContentSelectors";
 
 import MineIncidentTable from "./MineIncidentTable";
@@ -35,6 +35,7 @@ const propTypes = {
   followupActionsDropdown: PropTypes.arrayOf(CustomPropTypes.dropdownListItem),
   incidentDeterminationOptions: CustomPropTypes.options.isRequired,
   doSubparagraphOptions: CustomPropTypes.options.isRequired,
+  inspectors: CustomPropTypes.options.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   fetchMineIncidents: PropTypes.func.isRequired,
@@ -85,8 +86,9 @@ export class MineIncidents extends Component {
         title: ModalContent.ADD_INCIDENT(this.props.mine.mine_name),
         mineGuid: this.props.mine.mine_guid,
         followupActionOptions: this.props.followupActionsDropdown,
-        incidentDeterminationOptions : this.props.incidentDeterminationOptions,
+        incidentDeterminationOptions: this.props.incidentDeterminationOptions,
         doSubparagraphOptions: this.props.doSubparagraphOptions,
+        inspectors: this.props.inspectors,
       },
       widthSize: "50vw",
       content: modalConfig.MINE_INCIDENT,
@@ -120,7 +122,7 @@ const mapStateToProps = (state) => ({
   mineIncidents: getMineIncidents(state),
   followupActions: getIncidentFollowupActionOptions(state),
   followupActionsDropdown: getDropdownIncidentFollowupActionOptions(state),
-  incidentDeterminationOptions : getDropdownIncidentDeterminationOptions(state),
+  incidentDeterminationOptions: getDropdownIncidentDeterminationOptions(state),
   doSubparagraphOptions: getDangerousOccurrenceSubparagraphOptions(state),
 });
 
