@@ -15,7 +15,8 @@ import LinkButton from "@/components/common/LinkButton";
 
 const propTypes = {
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
-  followupActionOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
+  followupActionOptions: CustomPropTypes.options.isRequired,
+  incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
   hasFatalities: PropTypes.bool.isRequired,
 };
 
@@ -51,16 +52,18 @@ export class AddIncidentFollowUpForm extends Component {
             <Col>
               <h4>Follow-up Information</h4>
 
-              <Form.Item>
-                <Field
-                  id="followup_inspection_date"
-                  name="followup_inspection_date"
-                  label="Inspection date"
-                  placeholder="Please select date and time"
-                  component={renderConfig.DATE}
-                  validate={[required, dateNotInFuture]}
-                />
-              </Form.Item>
+              {!this.props.hasFatalities && (
+                <Form.Item>
+                  <Field
+                    id="followup_inspection_date"
+                    name="followup_inspection_date"
+                    label="Inspection date"
+                    placeholder="Please select date and time"
+                    component={renderConfig.DATE}
+                    validate={[required, dateNotInFuture]}
+                  />
+                </Form.Item>
+              )}
               <Form.Item>
                 <Field
                   id="mine_incident_followup_investigation_type"
@@ -72,12 +75,14 @@ export class AddIncidentFollowUpForm extends Component {
                   validate={[required]}
                 />
               </Form.Item>
-              <FieldArray
-                id="recommendations"
-                name="recommendations"
-                component={renderRecommendations}
-              />
-              {/*
+              {!this.props.hasFatalities && (
+                <FieldArray
+                  id="recommendations"
+                  name="recommendations"
+                  component={renderRecommendations}
+                />
+              )}
+
               <Form.Item>
                 <Field
                   id="status_code"
@@ -86,7 +91,7 @@ export class AddIncidentFollowUpForm extends Component {
                   component={renderConfig.SELECT}
                   data={this.props.incidentStatusCodeOptions}
                 />
-              </Form.Item> */}
+              </Form.Item>
 
               {/* TODO: <h4>Final Investigation Report Documents</h4> */}
             </Col>
