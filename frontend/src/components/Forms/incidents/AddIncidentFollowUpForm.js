@@ -16,7 +16,6 @@ import LinkButton from "@/components/common/LinkButton";
 const propTypes = {
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   followupActionOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
-  incidentStatusCodeOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   hasFatalities: PropTypes.bool.isRequired,
 };
 
@@ -78,6 +77,7 @@ export class AddIncidentFollowUpForm extends Component {
                 name="recommendations"
                 component={renderRecommendations}
               />
+              {/*
               <Form.Item>
                 <Field
                   id="status_code"
@@ -86,7 +86,7 @@ export class AddIncidentFollowUpForm extends Component {
                   component={renderConfig.SELECT}
                   data={this.props.incidentStatusCodeOptions}
                 />
-              </Form.Item>
+              </Form.Item> */}
 
               {/* TODO: <h4>Final Investigation Report Documents</h4> */}
             </Col>

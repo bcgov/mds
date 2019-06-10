@@ -160,8 +160,9 @@ export class AddIncidentModal extends Component {
         followupActionOptions={this.props.followupActionOptions}
         incidentStatusCodeOptions={this.props.incidentStatusCodeOptions}
         hasFatalities={
-          this.props.addDetailFormValues.fatalities.isInteger() &&
-          this.props.addDetailFormValues.fatalities > 0
+          // this.props.addDetailFormValues.fatalities.isInteger() &&
+          // this.props.addDetailFormValues.fatalities > 0
+          false
         }
       />
     );
