@@ -12,7 +12,7 @@ const propTypes = {
   mineName: PropTypes.string.isRequired,
   varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  coreUsersHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  inspectorsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export const ViewVarianceModal = (props) => {
@@ -25,7 +25,7 @@ export const ViewVarianceModal = (props) => {
       <div className="inline-flex between block-tablet">
         <div className="flex-tablet">
           <p className="field-title">Lead Inspector</p>
-          <p>{props.coreUsersHash[props.variance.inspector_guid] || Strings.EMPTY_FIELD}</p>
+          <p>{props.inspectorsHash[props.variance.inspector_party_guid] || Strings.EMPTY_FIELD}</p>
         </div>
         <div className="flex-tablet">
           <p className="field-title">Application Status</p>
