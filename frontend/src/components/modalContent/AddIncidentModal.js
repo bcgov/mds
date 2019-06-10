@@ -147,7 +147,7 @@ export class AddIncidentModal extends Component {
         onClick={(event) => this.handleIncidentSubmit(event, false)}
         disabled={invalidDetailPayload()}
       >
-        Save initial incident
+        Save incident
       </Button>,
     ];
   }
