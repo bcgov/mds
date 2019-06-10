@@ -69,7 +69,7 @@ export const AddIncidentReportingForm = (props) => (
               id="reported_by_phone_ext"
               name="reported_by_phone_ext"
               label="Phone extension"
-              placeholder="example@domain.com"
+              placeholder=""
               component={renderConfig.FIELD}
               validate={[number, maxLength(4)]}
             />
@@ -79,7 +79,7 @@ export const AddIncidentReportingForm = (props) => (
               id="reported_by_email"
               name="reported_by_email"
               label="Email"
-              placeholder="email format"
+              placeholder="example@domain.com"
               component={renderConfig.FIELD}
               validate={[email]}
             />

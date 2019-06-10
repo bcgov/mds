@@ -20,17 +20,6 @@ export const AddIncidentFollowUpForm = (props) => (
           <h4>Follow-up Information</h4>
           <Form.Item>
             <Field
-              id="followup_inspection"
-              name="emergency_services_called"
-              label="Were emergency services called?*"
-              placeholder="Please choose one"
-              component={renderConfig.RADIO}
-              data={[{ id: "yes", label: "Yes" }, { id: "no", label: "No" }]}
-              validate={[required]}
-            />
-          </Form.Item>
-          <Form.Item>
-            <Field
               id="followup_inspection_date"
               name="followup_inspection_date"
               label="Inspection date"

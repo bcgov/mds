@@ -24,6 +24,15 @@ class AddIncidentDetailForm extends Component {
     };
   }
 
+  onDoDeterminationChange = (chars, value) => {
+    this.setState({
+      doDetermination: value,
+    });
+  };
+
+  validateDoSubparagraphs = (value) =>
+    value.length === 0 ? "This is a required field" : undefined;
+
   render() {
     return (
       <Form layout="vertical">
@@ -54,7 +63,7 @@ class AddIncidentDetailForm extends Component {
               <Field
                 id="number_of_injuries"
                 name="number_of_injuries"
-                label="Number of injuries:"
+                label="Number of Injuries:"
                 component={renderConfig.FIELD}
                 validate={[number, maxLength(10)]}
               />
@@ -87,7 +96,7 @@ class AddIncidentDetailForm extends Component {
                 label="Inspector's Determination*"
                 component={renderConfig.SELECT}
                 data={this.props.incidentDeterminationOptions}
-                // onChange={this.onDoDeterminationChange}
+                onChange={this.onDoDeterminationChange}
                 validate={[required]}
               />
             </Form.Item>
@@ -119,7 +128,7 @@ class AddIncidentDetailForm extends Component {
               </span>
             ) : null}
 
-            {this.state.doDetermination === "non-DO" ? (
+            {this.state.doDetermination === "NDO" ? (
               <span>
                 <Form.Item>
                   <Field
@@ -127,9 +136,7 @@ class AddIncidentDetailForm extends Component {
                     name="status_code"
                     label="Status"
                     placeholder="Please choose one or more"
-                    component={renderConfig.MULTI_SELECT}
-                    data={this.props.doSubparagraphOptions}
-                    // validate={[this.validateDoSubparagraphs]}
+                    component={renderConfig.FIELD}
                   />
                 </Form.Item>
               </span>

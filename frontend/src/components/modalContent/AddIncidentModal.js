@@ -99,6 +99,20 @@ export class AddIncidentModal extends Component {
     );
   }
 
+  renderStep1Buttons() {
+    return (
+      <Button
+        id="step1-next"
+        type="tertiary"
+        className="full-mobile"
+        onClick={() => this.next()}
+        disabled={invalidReportingPayload()}
+      >
+        Next
+      </Button>
+    );
+  }
+
   renderStep2() {
     return (
       <AddIncidentDetailForm
@@ -110,6 +124,31 @@ export class AddIncidentModal extends Component {
     );
   }
 
+  renderStep2Buttons() {
+    return [
+      <Button id="step-back" type="tertiary" className="full-mobile" onClick={() => this.prev()}>
+        Back
+      </Button>,
+      <Button
+        id="step2-next"
+        type="tertiary"
+        className="full-mobile"
+        onClick={() => this.next()}
+        disabled={invalidDetailPayload()}
+      >
+        Next
+      </Button>,
+      <Button
+        type="primary"
+        className="full-mobile"
+        onClick={(event) => this.handleIncidentSubmit(event, false)}
+        disabled={invalidDetailPayload()}
+      >
+        Save initial incident
+      </Button>,
+    ];
+  }
+
   renderStep3() {
     return (
       <AddIncidentFollowUpForm
@@ -118,6 +157,22 @@ export class AddIncidentModal extends Component {
         followupActionOptions={this.props.followupActionOptions}
       />
     );
+  }
+
+  renderStep3Buttons() {
+    return [
+      <Button id="step-back" type="tertiary" className="full-mobile" onClick={() => this.prev()}>
+        Back
+      </Button>,
+      <Button
+        type="primary"
+        className="full-mobile"
+        onClick={(event) => this.handleIncidentSubmit(event, false)}
+        disabled={invalidFollowUpPayload()}
+      >
+        Submit
+      </Button>,
+    ];
   }
 
   render() {
@@ -160,64 +215,9 @@ export class AddIncidentModal extends Component {
                 </Button>
               </Popconfirm>
 
-              {this.state.current === 0 && (
-                <Button
-                  id="step1-next"
-                  type="tertiary"
-                  className="full-mobile"
-                  onClick={() => this.next()}
-                  disabled={invalidReportingPayload()}
-                >
-                  Next
-                </Button>
-              )}
-
-              {this.state.current === 1 && [
-                <Button
-                  id="step-back"
-                  type="tertiary"
-                  className="full-mobile"
-                  onClick={() => this.prev()}
-                >
-                  Back
-                </Button>,
-                <Button
-                  id="step2-next"
-                  type="tertiary"
-                  className="full-mobile"
-                  onClick={() => this.next()}
-                  disabled={invalidDetailPayload()}
-                >
-                  Next
-                </Button>,
-                <Button
-                  type="primary"
-                  className="full-mobile"
-                  onClick={(event) => this.handleIncidentSubmit(event, false)}
-                  disabled={invalidDetailPayload()}
-                >
-                  Save initial incident
-                </Button>,
-              ]}
-
-              {this.state.current === 2 && [
-                <Button
-                  id="step-back"
-                  type="tertiary"
-                  className="full-mobile"
-                  onClick={() => this.prev()}
-                >
-                  Back
-                </Button>,
-                <Button
-                  type="primary"
-                  className="full-mobile"
-                  onClick={(event) => this.handleIncidentSubmit(event, false)}
-                  disabled={invalidFollowUpPayload()}
-                >
-                  Submit
-                </Button>,
-              ]}
+              {this.state.current === 0 && this.renderStep1Buttons()}
+              {this.state.current === 1 && this.renderStep2Buttons()}
+              {this.state.current === 2 && this.renderStep3Buttons()}
             </div>
           </div>
         </div>
