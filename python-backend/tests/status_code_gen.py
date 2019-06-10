@@ -15,6 +15,7 @@ from app.api.mines.status.models.mine_status_xref import MineStatusXref
 from app.api.mines.compliance.models.compliance_article import ComplianceArticle
 from app.api.parties.party.models.sub_division_code import SubDivisionCode
 from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
+from app.api.parties.party_appt.models.party_business_role_code import PartyBusinessRoleCode
 
 
 def RandomApplicationStatusCode():
@@ -71,6 +72,11 @@ def RandomSubDivisionCode():
 def RandomMinePartyAppointmentTypeCode():
     return random.choice(
         [x.mine_party_appt_type_code for x in db.session.query(MinePartyAppointmentType).all()])
+
+
+def RandomPartyBusinessRoleCode():
+    return random.choice(
+        [x.party_business_role_code for x in db.session.query(PartyBusinessRoleCode)])
 
 
 def RandomComplianceArticleId():

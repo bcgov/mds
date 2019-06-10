@@ -17,7 +17,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
   mineGuid: PropTypes.string.isRequired,
-  coreUsers: CustomPropTypes.options.isRequired,
+  inspectors: CustomPropTypes.options.isRequired,
   complianceCodes: CustomPropTypes.options.isRequired,
 };
 
@@ -109,12 +109,12 @@ export class AddVarianceForm extends Component {
             </Form.Item>
             <Form.Item>
               <Field
-                id="inspector_guid"
-                name="inspector_guid"
+                id="inspector_party_guid"
+                name="inspector_party_guid"
                 label="Lead inspectors IDIR*"
                 component={renderConfig.SELECT}
                 validate={[required]}
-                data={this.props.coreUsers}
+                data={this.props.inspectors}
               />
             </Form.Item>
           </div>

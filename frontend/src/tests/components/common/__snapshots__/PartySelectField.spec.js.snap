@@ -5,14 +5,14 @@ ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <PartySelectField
     allowAddingParties={false}
-    fetchParties={[MockFunction]}
+    fetchSearchResults={[MockFunction]}
     id="party_guid"
     label="Name*"
     name="party_guid"
     organization={false}
-    parties={Array []}
     partyLabel="contact"
     person={false}
+    searchResults={Array []}
     validate={Array []}
   />,
   Symbol(enzyme.__renderer__): Object {
@@ -31,16 +31,16 @@ ShallowWrapper {
       "allowAddingParties": false,
       "component": [Function],
       "dataSource": Array [],
-      "fetchParties": [MockFunction],
+      "fetchSearchResults": [MockFunction],
       "handleSearch": [Function],
       "handleSelect": [Function],
       "id": "party_guid",
       "label": "Name*",
       "name": "party_guid",
       "organization": false,
-      "parties": Array [],
       "partyLabel": "contact",
       "person": false,
+      "searchResults": Array [],
       "selectedOption": Object {
         "key": "",
         "label": "",
@@ -62,16 +62,16 @@ ShallowWrapper {
         "allowAddingParties": false,
         "component": [Function],
         "dataSource": Array [],
-        "fetchParties": [MockFunction],
+        "fetchSearchResults": [MockFunction],
         "handleSearch": [Function],
         "handleSelect": [Function],
         "id": "party_guid",
         "label": "Name*",
         "name": "party_guid",
         "organization": false,
-        "parties": Array [],
         "partyLabel": "contact",
         "person": false,
+        "searchResults": Array [],
         "selectedOption": Object {
           "key": "",
           "label": "",
