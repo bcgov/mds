@@ -46,7 +46,6 @@ class AddIncidentDetailForm extends Component {
                 id="number_of_fatalities"
                 name="number_of_fatalities"
                 label="Number of Fatalities:"
-                placeholder="isNumber"
                 component={renderConfig.FIELD}
                 validate={[number, maxLength(10)]}
               />
@@ -56,7 +55,6 @@ class AddIncidentDetailForm extends Component {
                 id="number_of_injuries"
                 name="number_of_injuries"
                 label="Number of injuries:"
-                placeholder="isNumber"
                 component={renderConfig.FIELD}
                 validate={[number, maxLength(10)]}
               />
@@ -98,7 +96,7 @@ class AddIncidentDetailForm extends Component {
                 id="determination_inspector_party_guid"
                 name="determination_inspector_party_guid"
                 label="Who made the determination?"
-                placeholder="typeahead, auto populated"
+                placeholder="Start typing inspector name"
                 component={renderConfig.FIELD}
                 validate={[required]}
               />

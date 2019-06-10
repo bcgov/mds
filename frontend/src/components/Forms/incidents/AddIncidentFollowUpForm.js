@@ -60,8 +60,6 @@ export const AddIncidentFollowUpForm = (props) => (
               validate={[required]}
             />
           </Form.Item>
-          <p>Add another recommendation</p>
-
           <Form.Item>
             <Field
               id="status_code"
@@ -69,19 +67,9 @@ export const AddIncidentFollowUpForm = (props) => (
               label="Incident status?*"
               component={renderConfig.SELECT}
               data={props.incidentStatusOptions}
-              placeholder="typeahead, auto populated"
             />
           </Form.Item>
 
-          <Form.Item>
-            <Field
-              id="determination_inspector_party_guid"
-              name="determination_inspector_party_guid"
-              label="Who made the determination?"
-              placeholder="typeahead, auto populated"
-              component={renderConfig.FIELD}
-            />
-          </Form.Item>
           <h4>Final Investigation Report Documents</h4>
           <p>Insert document section here</p>
         </Col>

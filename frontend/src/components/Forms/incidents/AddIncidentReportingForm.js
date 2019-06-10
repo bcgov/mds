@@ -17,22 +17,13 @@ export const AddIncidentReportingForm = (props) => (
     <Form layout="vertical">
       <Row gutter={48}>
         <Col>
-          <Form.Item>
-            <Field
-              id="mine_incident_id_year+mine_incident_report_no"
-              name="mine_incident_id_year+mine_incident_report_no"
-              label="Ministry Incident No."
-              placeholder="2019-0026"
-              component={renderConfig.FIELD}
-              data={props.initialValues.incident}
-            />
-          </Form.Item>
+          {props.initialValues && <h4>Ministry Incident No. : xxxx-xx</h4>}
           <Form.Item>
             <Field
               id="reported_to_inspector_party_guid"
               name="reported_to_inspector_party_guid"
               label="Incident reported to*:"
-              placeholder="Typeahead"
+              placeholder="Start typing inspector name"
               component={renderConfig.FIELD}
               validate={[required]}
             />
@@ -42,7 +33,7 @@ export const AddIncidentReportingForm = (props) => (
               id="responsible_inspector_party_guid"
               name="responsible_inspector_party_guid"
               label="Inspector responsible:*"
-              placeholder="Typeahead"
+              placeholder="Start typing inspector name"
               component={renderConfig.FIELD}
               validate={[required]}
             />
@@ -53,7 +44,7 @@ export const AddIncidentReportingForm = (props) => (
               id="reported_by_name"
               name="reported_by_name"
               label="Reported by"
-              placeholder="Text"
+              placeholder="Provide name of reporter"
               component={renderConfig.FIELD}
               validate={[required]}
             />
@@ -63,7 +54,7 @@ export const AddIncidentReportingForm = (props) => (
               id="reported_by_phone_no"
               name="reported_by_phone_no"
               label="Phone number"
-              placeholder="Phone format"
+              placeholder="xxx-xxx-xxxx"
               component={renderConfig.FIELD}
               validate={[phoneNumber, maxLength(12)]}
               normalize={normalizePhone}
@@ -74,7 +65,7 @@ export const AddIncidentReportingForm = (props) => (
               id="reported_by_phone_ext"
               name="reported_by_phone_ext"
               label="Phone extension"
-              placeholder="Phone format"
+              placeholder="example@domain.com"
               component={renderConfig.FIELD}
               validate={[number, maxLength(4)]}
             />
