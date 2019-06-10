@@ -588,19 +588,6 @@
                     }
                   },
                   {
-                    "name": "METABASE_SECRET_KEY",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${DB_CONFIG_NAME}",
-                        "key": "metabase-secret-key"
-                      }
-                    }
-                  },
-                  {
-                    "name": "METABASE_SITE_URL",
-                    "value": "http://mds-metabase-empr-mds-prod.pathfinder.gov.bc.ca"
-                  },
-                  {
                     "name": "FLYWAY_OUT_OF_ORDER",
                     "value": "true"
                   },
