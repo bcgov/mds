@@ -30,3 +30,4 @@ utm==0.4.2
 uwsgi==2.0.17.1
 uwsgitop==0.10
 Werkzeug==0.14.1
+PyJWT==1.7.1
