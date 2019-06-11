@@ -71,6 +71,17 @@ ShallowWrapper {
               id="recommendations"
               name="recommendations"
             />
+            <FormItem
+              hasFeedback={false}
+            >
+              <Field
+                component={[Function]}
+                data={undefined}
+                id="status_code"
+                label="Incident status?*"
+                name="status_code"
+              />
+            </FormItem>
           </Col>
         </Row>
       </Form>,
@@ -127,6 +138,17 @@ ShallowWrapper {
               id="recommendations"
               name="recommendations"
             />
+            <FormItem
+              hasFeedback={false}
+            >
+              <Field
+                component={[Function]}
+                data={undefined}
+                id="status_code"
+                label="Incident status?*"
+                name="status_code"
+              />
+            </FormItem>
           </Col>
         </Row>,
         "colon": true,
@@ -183,6 +205,17 @@ ShallowWrapper {
               id="recommendations"
               name="recommendations"
             />
+            <FormItem
+              hasFeedback={false}
+            >
+              <Field
+                component={[Function]}
+                data={undefined}
+                id="status_code"
+                label="Incident status?*"
+                name="status_code"
+              />
+            </FormItem>
           </Col>,
           "gutter": 48,
         },
@@ -235,6 +268,17 @@ ShallowWrapper {
                 id="recommendations"
                 name="recommendations"
               />,
+              <FormItem
+                hasFeedback={false}
+              >
+                <Field
+                  component={[Function]}
+                  data={undefined}
+                  id="status_code"
+                  label="Incident status?*"
+                  name="status_code"
+                />
+              </FormItem>,
             ],
           },
           "ref": null,
@@ -347,6 +391,38 @@ ShallowWrapper {
               "rendered": null,
               "type": [Function],
             },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": <Field
+                  component={[Function]}
+                  data={undefined}
+                  id="status_code"
+                  label="Incident status?*"
+                  name="status_code"
+                />,
+                "hasFeedback": false,
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "component": [Function],
+                  "data": undefined,
+                  "id": "status_code",
+                  "label": "Incident status?*",
+                  "name": "status_code",
+                },
+                "ref": null,
+                "rendered": null,
+                "type": [Function],
+              },
+              "type": [Function],
+            },
           ],
           "type": [Function],
         },
@@ -414,6 +490,17 @@ ShallowWrapper {
                 id="recommendations"
                 name="recommendations"
               />
+              <FormItem
+                hasFeedback={false}
+              >
+                <Field
+                  component={[Function]}
+                  data={undefined}
+                  id="status_code"
+                  label="Incident status?*"
+                  name="status_code"
+                />
+              </FormItem>
             </Col>
           </Row>
         </Form>,
@@ -470,6 +557,17 @@ ShallowWrapper {
                 id="recommendations"
                 name="recommendations"
               />
+              <FormItem
+                hasFeedback={false}
+              >
+                <Field
+                  component={[Function]}
+                  data={undefined}
+                  id="status_code"
+                  label="Incident status?*"
+                  name="status_code"
+                />
+              </FormItem>
             </Col>
           </Row>,
           "colon": true,
@@ -526,6 +624,17 @@ ShallowWrapper {
                 id="recommendations"
                 name="recommendations"
               />
+              <FormItem
+                hasFeedback={false}
+              >
+                <Field
+                  component={[Function]}
+                  data={undefined}
+                  id="status_code"
+                  label="Incident status?*"
+                  name="status_code"
+                />
+              </FormItem>
             </Col>,
             "gutter": 48,
           },
@@ -578,6 +687,17 @@ ShallowWrapper {
                   id="recommendations"
                   name="recommendations"
                 />,
+                <FormItem
+                  hasFeedback={false}
+                >
+                  <Field
+                    component={[Function]}
+                    data={undefined}
+                    id="status_code"
+                    label="Incident status?*"
+                    name="status_code"
+                  />
+                </FormItem>,
               ],
             },
             "ref": null,
@@ -688,6 +808,38 @@ ShallowWrapper {
                 },
                 "ref": null,
                 "rendered": null,
+                "type": [Function],
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": <Field
+                    component={[Function]}
+                    data={undefined}
+                    id="status_code"
+                    label="Incident status?*"
+                    name="status_code"
+                  />,
+                  "hasFeedback": false,
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "component": [Function],
+                    "data": undefined,
+                    "id": "status_code",
+                    "label": "Incident status?*",
+                    "name": "status_code",
+                  },
+                  "ref": null,
+                  "rendered": null,
+                  "type": [Function],
+                },
                 "type": [Function],
               },
             ],
