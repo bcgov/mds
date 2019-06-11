@@ -26,13 +26,33 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
     @requires_any_of([MINE_VIEW])
     @api.marshal_with(PAGINATED_VARIANCE_LIST, code=200)
     def get(self):
+        records, pagination_details = self._apply_filters_and_pagination(
+            page_number=request.args.get('page', PAGE_DEFAULT, type=int),
+            page_size=request.args.get('per_page', PER_PAGE_DEFAULT, type=int),
+            application_status=request.args.get('variance_application_status_code', type=str))
+
+        if not records:
+            raise BadRequest('Unable to fetch variances.')
+
+        return {
+            'records': records.all(),
+            'current_page': pagination_details.page_number,
+            'total_pages': pagination_details.num_pages,
+            'items_per_page': pagination_details.page_size,
+            'total': pagination_details.total_results,
+        }
+
+
+    def _apply_filters_and_pagination(self,
+                                      page_number=None,
+                                      page_size=None,
+                                      application_status=None):
         status_filter_values = list(map(
             lambda x: x.variance_application_status_code,
             VarianceApplicationStatusCode.active()))
 
-        status_param = request.args.get('variance_application_status_code')
-        if status_param is not None:
-            status_filter_values = status_param.split(',')
+        if application_status is not None:
+            status_filter_values = application_status.split(',')
 
         filtered_query = apply_filters(
             Variance.query,
@@ -42,17 +62,4 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
                 'value': status_filter_values
             }])
 
-        paginated_variances, pagination_details = apply_pagination(
-            filtered_query, request.args.get('page', PAGE_DEFAULT, type=int),
-            request.args.get('per_page', PER_PAGE_DEFAULT, type=int))
-
-        if not paginated_variances:
-            raise BadRequest('Unable to fetch variances.')
-
-        return {
-            'records': paginated_variances.all(),
-            'current_page': pagination_details.page_number,
-            'total_pages': pagination_details.num_pages,
-            'items_per_page': pagination_details.page_size,
-            'total': pagination_details.total_results,
-        }
+        return apply_pagination(filtered_query, page_number, page_size)
