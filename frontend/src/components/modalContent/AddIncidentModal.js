@@ -22,9 +22,9 @@ const propTypes = {
   doSubparagraphOptions: CustomPropTypes.options.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   inspectors: CustomPropTypes.options.isRequired,
-  addReportingFormValues: PropTypes.objectOf(PropTypes.strings),
-  addDetailFormValues: PropTypes.objectOf(PropTypes.strings),
-  addFollowUpFormValues: PropTypes.objectOf(PropTypes.strings),
+  addReportingFormValues: PropTypes.objectOf(PropTypes.any),
+  addDetailFormValues: PropTypes.objectOf(PropTypes.any),
+  addFollowUpFormValues: PropTypes.objectOf(PropTypes.any),
   reset: PropTypes.func.isRequired,
 };
 
