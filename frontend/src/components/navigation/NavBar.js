@@ -42,6 +42,8 @@ export class NavBar extends Component {
     this.props.fetchMineVerifiedStatuses(`idir\\${this.props.userInfo.preferred_username}`);
   }
 
+  ifActiveButton = (route) => (includes(this.props.activeButton, route) ? "active-menu-btn" : "");
+
   unverifiedMinesMenu = () => (
     <Menu>
       <Menu.ItemGroup title="Please re-verify the following mines:" />
@@ -57,18 +59,23 @@ export class NavBar extends Component {
 
   renderFullNav = () => (
     <div className="inline-flex">
+      <Dropdown overlay={this.reportingDropdown} placement="bottomLeft">
+        <button
+          id={this.ifActiveButton(router.REPORTING_DASHBOARD.route)}
+          type="button"
+          className="menu__btn"
+        >
+          <span className="padding-small--right">Provincial Reporting</span>
+          <Icon type="down" />
+        </button>
+      </Dropdown>
       <Link
         to={router.MINE_HOME_PAGE.dynamicRoute({
           page: Strings.DEFAULT_PAGE,
           per_page: Strings.DEFAULT_PER_PAGE,
         })}
       >
-        <Button
-          id={
-            includes(this.props.activeButton, router.MINE_HOME_PAGE.route) ? "active-mine-btn" : ""
-          }
-          className="menu__btn--link"
-        >
+        <Button id={this.ifActiveButton(router.MINE_HOME_PAGE.route)} className="menu__btn--link">
           Mines
         </Button>
       </Link>
@@ -79,11 +86,7 @@ export class NavBar extends Component {
         })}
       >
         <Button
-          id={
-            includes(this.props.activeButton, router.CONTACT_HOME_PAGE.route)
-              ? "active-contact-btn"
-              : ""
-          }
+          id={this.ifActiveButton(router.CONTACT_HOME_PAGE.route)}
           className="menu__btn--link"
         >
           Contacts
@@ -92,11 +95,7 @@ export class NavBar extends Component {
       <AuthorizationWrapper permission={Permission.ADMIN}>
         <Link to={router.ADMIN_DASHBOARD.route}>
           <Button
-            id={
-              includes(this.props.activeButton, router.ADMIN_DASHBOARD.route)
-                ? "active-admin-btn"
-                : ""
-            }
+            id={this.ifActiveButton(router.ADMIN_DASHBOARD.route)}
             className="menu__btn--link"
           >
             Admin
@@ -154,11 +153,7 @@ export class NavBar extends Component {
                   })}
                 >
                   <Button
-                    id={
-                      includes(this.props.activeButton, router.MINE_HOME_PAGE.route)
-                        ? "active-mine-btn--mobile"
-                        : ""
-                    }
+                    id={this.ifActiveButton(router.MINE_HOME_PAGE.route)}
                     className="menu--hamburger__btn--link"
                   >
                     Mines
@@ -175,11 +170,7 @@ export class NavBar extends Component {
                   })}
                 >
                   <Button
-                    id={
-                      includes(this.props.activeButton, router.CONTACT_HOME_PAGE.route)
-                        ? "active-contact-btn--mobile"
-                        : ""
-                    }
+                    id={this.ifActiveButton(router.CONTACT_HOME_PAGE.route)}
                     className="menu--hamburger__btn--link"
                   >
                     Contacts
@@ -193,14 +184,18 @@ export class NavBar extends Component {
               <Col span={24}>
                 <Link to={router.ADMIN_DASHBOARD.route}>
                   <Button
-                    id={
-                      includes(this.props.activeButton, router.ADMIN_DASHBOARD.route)
-                        ? "active-admin-btn--mobile"
-                        : ""
-                    }
+                    id={this.ifActiveButton(router.ADMIN_DASHBOARD.route)}
                     className="menu--hamburger__btn--link"
                   >
                     Admin
+                  </Button>
+                </Link>
+                <Link to={router.REPORTING_DASHBOARD.route}>
+                  <Button
+                    id={this.ifActiveButton(router.REPORTING_DASHBOARD.route)}
+                    className="menu--hamburger__btn--link"
+                  >
+                    Reporting Dashboard
                   </Button>
                 </Link>
               </Col>
@@ -213,7 +208,7 @@ export class NavBar extends Component {
                   <Button
                     id={
                       includes(this.props.activeButton, router.CUSTOM_HOME_PAGE.route)
-                        ? "active-dashboard-btn--mobile"
+                        ? "active-menu-btn"
                         : ""
                     }
                     className="menu--hamburger__btn--link"
@@ -257,6 +252,16 @@ export class NavBar extends Component {
           <button type="button">Log Out</button>
         </Link>
       </Menu.Item>
+    </Menu>
+  );
+
+  reportingDropdown = () => (
+    <Menu id="menu__dropdown">
+      <div className="custom-menu-item">
+        <Link to={router.REPORTING_DASHBOARD.route}>
+          <button type="button">Dashboard</button>
+        </Link>
+      </div>
     </Menu>
   );
 
