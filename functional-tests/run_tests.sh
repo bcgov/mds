@@ -9,7 +9,7 @@ set -exv -o pipefail
 
 # Config needed for firefoxHeadlessTest
 # For more info: https://github.com/BCDevOps/BDDStack/wiki/Running-firefoxHeadlessTest-in-CentOS
-Xvfb :1 -screen 0 1024x768x24 &
+Xvfb :1 -screen 0 1920x1080x24 &
 export DISPLAY=:1
 
 ###Run both Core and MineSpace tests

@@ -75,16 +75,8 @@ class Tailings extends GebReportingSpec {
         tailingsTab.downloadLink[0].click()
         print(Const.DOWNLOAD_PATH+'/'+Const.TEST_FILE_NAME)
         def file = new File(Const.DOWNLOAD_PATH+'/'+Const.TEST_FILE_NAME)
-        //allow time for the file to be created in the DOWNLOAD_PATH
-        //throw an error if it takes more than 20sec
-        int counter = 0
-        while (!file.exists()) {
-            if (counter>=20 ){
-                throw(new Error("Could not find the file"))
-            }
-            sleep(1000)
-            counter++
-        }
+        // allow time for the file to be created in the DOWNLOAD_PATH
+        waitFor(){file.exists()}
         String lineString = file.getText('UTF-8')
         file.delete()
         then: "The doc upload complete message is shown"

@@ -64,6 +64,9 @@ export const SEARCH = (params) => (params ? `/search?${queryString.stringify(par
 export const SEARCH_OPTIONS = "/search/options";
 export const SIMPLE_SEARCH = "/search/simple";
 
+// Reporting
+export const CORE_DASHBOARD = `/reporting/core-dashboard`;
+
 // Variances
 export const COMPLIANCE_CODES = "/mines/compliance/codes";
 export const VARIANCES = (mineGuid) => `/mines/${mineGuid}/variances`;

@@ -24,6 +24,14 @@ class MineProfilePage extends Page {
         contactInfoTab (wait:true) {module Tab_Contact}
         tailingsTab (wait:true) {module Tab_Tailings}
 
+
+        //Footer
+        footer (wait:true) {$("div", class: "footer")}
+
+        //Permit Tab objects
+        newPermitForm { module Form_Create_And_Edit_Permit }
+        downloadTestFileLink (wait:true) {$("a", text: Const.TEST_FILE_NAME)}
+
     }
 
 }
