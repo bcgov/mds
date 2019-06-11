@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { Field, reduxForm, FieldArray, formValueSelector } from "redux-form";
-import { Form, Button, Col, Row, Popconfirm, Icon, Collapse, notification, Tag } from "antd";
+import { Form, Button, Col, Row, Popconfirm, Icon, Collapse, notification, Tag, Radio } from "antd";
 import { difference, map, isEmpty, uniq } from "lodash";
 import * as FORM from "@/constants/forms";
 import * as Strings from "@/constants/strings";
@@ -62,6 +62,7 @@ export class MineRecordForm extends Component {
   state = {
     activeKey: [],
     usedTenureTypes: [],
+    showStatusDate: false,
   };
 
   componentDidMount() {
@@ -174,6 +175,9 @@ export class MineRecordForm extends Component {
       </div>
     </div>
   );
+
+  toggleStatusDate = () =>
+    this.setState((prevState) => ({ showStatusDate: !prevState.showStatusDate }));
 
   createExistingPanelHeader = (mineTenureCode) => (
     <div className="inline-flex between">
@@ -336,36 +340,36 @@ export class MineRecordForm extends Component {
         </Row>
         <Row gutter={16}>
           <Col>
-            <Form.Item label="Is this a historic status?">
-              <p className="p-light">
-                The date will default to todays date, unless otherwise specified.
-              </p>
-              <Field
-                id="status_date"
-                name="status_date"
-                placeholder="yyyy-mm-dd"
-                component={renderConfig.DATE}
-                validate={[dateNotInFuture]}
-              />
+            <Form.Item label="Is this a historic mine status?">
+              <Radio.Group
+                onChange={this.toggleStatusDate}
+                value={this.state.showStatusDate}
+                defaultValue={this.state.showStatusDate}
+              >
+                <Radio value>Yes</Radio>
+                <Radio value={false}>No</Radio>
+              </Radio.Group>
             </Form.Item>
           </Col>
         </Row>
-        <Row gutter={16}>
-          <Col>
-            <Form.Item label="Date of Status Change">
-              <p className="p-light">
-                The date will default to todays date, unless otherwise specified.
-              </p>
-              <Field
-                id="status_date"
-                name="status_date"
-                placeholder="yyyy-mm-dd"
-                component={renderConfig.DATE}
-                validate={[dateNotInFuture]}
-              />
-            </Form.Item>
-          </Col>
-        </Row>
+        {this.state.showStatusDate && (
+          <Row gutter={16}>
+            <Col>
+              <Form.Item label="Date of Status Change" className="padding-large">
+                <p className="p-light">
+                  The date will default to todays date, unless otherwise specified.
+                </p>
+                <Field
+                  id="status_date"
+                  name="status_date"
+                  placeholder="yyyy-mm-dd"
+                  component={renderConfig.DATE}
+                  validate={[dateNotInFuture]}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+        )}
         <Row gutter={16}>
           <Col span={24}>
             <Form.Item>
