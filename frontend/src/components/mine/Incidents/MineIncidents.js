@@ -33,7 +33,7 @@ const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   mineIncidents: PropTypes.arrayOf(CustomPropTypes.incident),
   followupActions: PropTypes.arrayOf(CustomPropTypes.incidentFollowupType),
-  followupActionsDropdown: PropTypes.arrayOf(CustomPropTypes.dropdownListItem),
+  followupActionsOptions: CustomPropTypes.options.isRequired,
   incidentDeterminationOptions: CustomPropTypes.options.isRequired,
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
   doSubparagraphOptions: CustomPropTypes.options.isRequired,
@@ -48,7 +48,6 @@ const propTypes = {
 const defaultProps = {
   mineIncidents: [],
   followupActions: [],
-  followupActionsDropdown: [],
 };
 
 export class MineIncidents extends Component {
@@ -87,7 +86,7 @@ export class MineIncidents extends Component {
         onSubmit,
         title: ModalContent.ADD_INCIDENT(this.props.mine.mine_name),
         mineGuid: this.props.mine.mine_guid,
-        followupActionOptions: this.props.followupActionsDropdown,
+        followupActionOptions: this.props.followupActionsOptions,
         incidentDeterminationOptions: this.props.incidentDeterminationOptions,
         incidentStatusCodeOptions: this.props.incidentStatusCodeOptions,
         doSubparagraphOptions: this.props.doSubparagraphOptions,
@@ -124,7 +123,7 @@ export class MineIncidents extends Component {
 const mapStateToProps = (state) => ({
   mineIncidents: getMineIncidents(state),
   followupActions: getIncidentFollowupActionOptions(state),
-  followupActionsDropdown: getDropdownIncidentFollowupActionOptions(state),
+  followupActionsOptions: getDropdownIncidentFollowupActionOptions(state),
   incidentDeterminationOptions: getDropdownIncidentDeterminationOptions(state),
   incidentStatusCodeOptions: getDropdownIncidentStatusCodeOptions(state),
   doSubparagraphOptions: getDangerousOccurrenceSubparagraphOptions(state),

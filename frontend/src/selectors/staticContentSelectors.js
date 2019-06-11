@@ -110,7 +110,8 @@ export const getDropdownApplicationStatusOptions = createSelector(
 
 export const getDropdownIncidentFollowupActionOptions = createSelector(
   [getIncidentFollowupActionOptions],
-  (options) => createDropDownList(options, "description", "mine_incident_followup_type_code")
+  (options) =>
+    createDropDownList(options, "description", "mine_incident_followup_investigation_type_code")
 );
 
 export const getDropdownIncidentDeterminationOptions = createSelector(
