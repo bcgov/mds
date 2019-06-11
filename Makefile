@@ -112,6 +112,8 @@ frontend-build:
 	@echo "+\n++ Performing frontend build ...\n+"
 	@docker-compose build frontend
 
+
+
 frontend-run:
 	@echo "+\n++ Running frontend...\n+"
 	@docker-compose up -d frontend
