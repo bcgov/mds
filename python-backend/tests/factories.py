@@ -135,6 +135,7 @@ class MineLocationFactory(BaseFactory):
     latitude = factory.Faker('latitude')  # or factory.fuzzy.FuzzyFloat(49, 60) for ~ inside BC
     longitude = factory.Faker('longitude')  # or factory.fuzzy.FuzzyFloat(-132, -114.7) for ~ BC
     geom = factory.LazyAttribute(lambda o: 'SRID=3005;POINT(%f %f)' % (o.longitude, o.latitude))
+    mine_location_description = factory.Faker('sentence', nb_words=8, variable_nb_words=True)
     effective_date = TODAY
     expiry_date = TODAY
     mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
