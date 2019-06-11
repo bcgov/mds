@@ -44,8 +44,8 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
 
 
     def _apply_filters_and_pagination(self,
-                                      page_number=None,
-                                      page_size=None,
+                                      page_number=PAGE_DEFAULT,
+                                      page_size=PER_PAGE_DEFAULT,
                                       application_status=None):
         status_filter_values = list(map(
             lambda x: x.variance_application_status_code,
