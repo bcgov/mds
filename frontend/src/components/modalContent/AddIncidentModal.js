@@ -18,8 +18,8 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   incidentDeterminationOptions: CustomPropTypes.options.isRequired,
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
+  followupActionOptions: CustomPropTypes.options.isRequired,
   doSubparagraphOptions: CustomPropTypes.options.isRequired,
-  followupActionOptions: PropTypes.objectOf(PropTypes.strings).isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   inspectors: CustomPropTypes.options.isRequired,
   addReportingFormValues: PropTypes.objectOf(PropTypes.strings),
@@ -159,11 +159,7 @@ export class AddIncidentModal extends Component {
         incidentDeterminationOptions={this.props.incidentDeterminationOptions}
         followupActionOptions={this.props.followupActionOptions}
         incidentStatusCodeOptions={this.props.incidentStatusCodeOptions}
-        hasFatalities={
-          // this.props.addDetailFormValues.fatalities.isInteger() &&
-          // this.props.addDetailFormValues.fatalities > 0
-          false
-        }
+        hasFatalities
       />
     );
   }

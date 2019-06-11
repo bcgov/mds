@@ -13,7 +13,7 @@ const propTypes = {
   incidentDeterminationOptions: CustomPropTypes.options.isRequired,
   doSubparagraphOptions: CustomPropTypes.options.isRequired,
   inspectors: CustomPropTypes.options.isRequired,
-  incidentStatusCodeOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
+  incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
 };
 
 class AddIncidentDetailForm extends Component {
