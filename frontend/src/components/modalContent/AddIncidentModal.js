@@ -126,30 +126,34 @@ export class AddIncidentModal extends Component {
   }
 
   renderStep2Buttons() {
-    // props.addDetailFormValues.determination_type_code ==="DO"
+    const determination = this.props.addDetailFormValues.determination_type_code;
 
-    return [
-      <Button id="step-back" type="tertiary" className="full-mobile" onClick={() => this.prev()}>
-        Back
-      </Button>,
-      <Button
-        id="step2-next"
-        type="tertiary"
-        className="full-mobile"
-        onClick={() => this.next()}
-        disabled={invalidDetailPayload()}
-      >
-        Next
-      </Button>,
-      <Button
-        type="primary"
-        className="full-mobile"
-        onClick={(event) => this.handleIncidentSubmit(event, false)}
-        disabled={invalidDetailPayload()}
-      >
-        Save incident
-      </Button>,
-    ];
+    return (
+      <span>
+        <Button id="step-back" type="tertiary" className="full-mobile" onClick={() => this.prev()}>
+          Back
+        </Button>
+        {determination !== "NDO" && (
+          <Button
+            id="step2-next"
+            type="tertiary"
+            className="full-mobile"
+            onClick={() => this.next()}
+            disabled={invalidDetailPayload()}
+          >
+            Next
+          </Button>
+        )}
+        <Button
+          type="primary"
+          className="full-mobile"
+          onClick={(event) => this.handleIncidentSubmit(event, false)}
+          disabled={invalidDetailPayload()}
+        >
+          Save&nbsp;{determination !== "NDO" && <span>initial&nbsp;</span>}incident
+        </Button>
+      </span>
+    );
   }
 
   renderStep3() {
