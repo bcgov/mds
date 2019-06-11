@@ -25,6 +25,11 @@ const DashboardRoutes = () => (
     />
     <Route exact path={routes.ADMIN_DASHBOARD.route} component={routes.ADMIN_DASHBOARD.component} />
     <Route exact path={routes.SEARCH_RESULTS.route} component={routes.SEARCH_RESULTS.component} />
+    <Route
+      exact
+      path={routes.REPORTING_DASHBOARD.route}
+      component={routes.REPORTING_DASHBOARD.component}
+    />
     <Route component={PageNotFound} />
   </Switch>
 );
