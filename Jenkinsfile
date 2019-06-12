@@ -1,9 +1,11 @@
 pipeline {
     agent none
+    environment {
+     file = readTrusted 'pipeline/build.grade'
+   }
     options {
         disableResume()
     }
-    def file = readTrusted 'pipeline/build.grade'
     stages {
         stage('No-Hack') {
             agent { label 'master' }
