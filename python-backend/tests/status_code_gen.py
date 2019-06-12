@@ -16,6 +16,7 @@ from app.api.mines.compliance.models.compliance_article import ComplianceArticle
 from app.api.parties.party.models.sub_division_code import SubDivisionCode
 from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
 from app.api.parties.party_appt.models.party_business_role_code import PartyBusinessRoleCode
+from app.api.variances.models.variance_document_category_code import VarianceDocumentCategoryCode
 
 
 def RandomApplicationStatusCode():
@@ -87,6 +88,12 @@ def RandomComplianceArticleId():
 def RandomIncidentDeterminationTypeCode():
     return random.choice([
         x.mine_incident_determination_type_code for x in MineIncidentDeterminationType.get_active()
+    ])
+
+
+def RandomVarianceDocumentCategoryCode():
+    return random.choice([
+        x.variance_document_category_code for x in VarianceDocumentCategoryCode.active()
     ])
 
 

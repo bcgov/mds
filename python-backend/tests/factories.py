@@ -262,6 +262,7 @@ class VarianceDocumentFactory(BaseFactory):
     variance_document_xref_guid = GUID
     mine_document_guid = factory.SelfAttribute('mine_document.mine_document_guid')
     variance_id = factory.SelfAttribute('variance.variance_id')
+    variance_document_category_code = factory.LazyFunction(RandomVarianceDocumentCategoryCode)
 
 
 def RandomPermitNumber():
