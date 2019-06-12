@@ -5,6 +5,7 @@ ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <ReduxForm
     handleSubmit={[MockFunction]}
+    initialValues={Object {}}
   />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
@@ -25,7 +26,7 @@ ShallowWrapper {
       "form": "ADD_INCIDENT_DETAIL",
       "getFormState": [Function],
       "handleSubmit": [MockFunction],
-      "initialValues": undefined,
+      "initialValues": Object {},
       "keepDirtyOnReinitialize": false,
       "persistentSubmitErrors": false,
       "pure": true,
@@ -53,7 +54,7 @@ ShallowWrapper {
         "form": "ADD_INCIDENT_DETAIL",
         "getFormState": [Function],
         "handleSubmit": [MockFunction],
-        "initialValues": undefined,
+        "initialValues": Object {},
         "keepDirtyOnReinitialize": false,
         "persistentSubmitErrors": false,
         "pure": true,

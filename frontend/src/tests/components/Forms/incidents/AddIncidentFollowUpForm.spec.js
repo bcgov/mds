@@ -9,7 +9,9 @@ const setupDispatchProps = () => {
   dispatchProps.handleSubmit = jest.fn();
 };
 
-const setupProps = () => {};
+const setupProps = () => {
+  props.initialValues = {};
+};
 
 beforeEach(() => {
   setupDispatchProps();

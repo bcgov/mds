@@ -86,7 +86,7 @@ ShallowWrapper {
             <Button
               block={false}
               className="full-mobile"
-              disabled={false}
+              disabled={true}
               ghost={false}
               htmlType="button"
               id="step1-next"
@@ -160,7 +160,7 @@ ShallowWrapper {
             <Button
               block={false}
               className="full-mobile"
-              disabled={false}
+              disabled={true}
               ghost={false}
               htmlType="button"
               id="step1-next"
@@ -233,7 +233,7 @@ ShallowWrapper {
               <Button
                 block={false}
                 className="full-mobile"
-                disabled={false}
+                disabled={true}
                 ghost={false}
                 htmlType="button"
                 id="step1-next"
@@ -374,7 +374,7 @@ ShallowWrapper {
                 <Button
                   block={false}
                   className="full-mobile"
-                  disabled={false}
+                  disabled={true}
                   ghost={false}
                   htmlType="button"
                   id="step1-next"
@@ -447,7 +447,7 @@ ShallowWrapper {
                   "block": false,
                   "children": "Next",
                   "className": "full-mobile",
-                  "disabled": false,
+                  "disabled": true,
                   "ghost": false,
                   "htmlType": "button",
                   "id": "step1-next",
@@ -532,7 +532,7 @@ ShallowWrapper {
               <Button
                 block={false}
                 className="full-mobile"
-                disabled={false}
+                disabled={true}
                 ghost={false}
                 htmlType="button"
                 id="step1-next"
@@ -606,7 +606,7 @@ ShallowWrapper {
               <Button
                 block={false}
                 className="full-mobile"
-                disabled={false}
+                disabled={true}
                 ghost={false}
                 htmlType="button"
                 id="step1-next"
@@ -679,7 +679,7 @@ ShallowWrapper {
                 <Button
                   block={false}
                   className="full-mobile"
-                  disabled={false}
+                  disabled={true}
                   ghost={false}
                   htmlType="button"
                   id="step1-next"
@@ -820,7 +820,7 @@ ShallowWrapper {
                   <Button
                     block={false}
                     className="full-mobile"
-                    disabled={false}
+                    disabled={true}
                     ghost={false}
                     htmlType="button"
                     id="step1-next"
@@ -893,7 +893,7 @@ ShallowWrapper {
                     "block": false,
                     "children": "Next",
                     "className": "full-mobile",
-                    "disabled": false,
+                    "disabled": true,
                     "ghost": false,
                     "htmlType": "button",
                     "id": "step1-next",
