@@ -3,6 +3,7 @@ pipeline {
     options {
         disableResume()
     }
+    def file = readTrusted 'pipeline/build.grade'
     stages {
         stage('No-Hack') {
             agent { label 'master' }
@@ -11,7 +12,6 @@ pipeline {
                 script {
                     abortAllPreviousBuildInProgress(currentBuild)
                 }
-                def file = readTrusted 'pipeline/build.grade'
                 echo file
                 sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b ${file} cd-build -Pargs.--config=pipeline/config-build.groovy -Pargs.--pr=${CHANGE_ID}'
             }
