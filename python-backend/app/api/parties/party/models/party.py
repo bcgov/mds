@@ -47,7 +47,7 @@ class Party(AuditMixin, Base):
     def business_roles(self):
         return [
             x.party_business_role for x in self.business_role_appts
-            if (x.expiry_date and x.expiry_date > datetime.utcnow())
+            if (not x.expiry_date or x.expiry_date > datetime.utcnow())
         ]
 
     def hasBusinessRole(self, role):
