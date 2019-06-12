@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { getFormValues, reset } from "redux-form";
+import { getFormValues } from "redux-form";
+import { resetForm } from "@/utils/helpers";
 import { Steps, Button, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import AddIncidentReportingForm from "@/components/Forms/incidents/AddIncidentReportingForm";
@@ -25,7 +26,6 @@ const propTypes = {
   addReportingFormValues: PropTypes.objectOf(PropTypes.any),
   addDetailFormValues: PropTypes.objectOf(PropTypes.any),
   addFollowUpFormValues: PropTypes.objectOf(PropTypes.any),
-  reset: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -75,9 +75,9 @@ export class AddIncidentModal extends Component {
     await this.props
       .onSubmit(payload)
       .then((data) => {
-        this.props.reset(FORM.ADD_INCIDENT_REPORTING);
-        this.props.reset(FORM.ADD_INCIDENT_DETAIL);
-        this.props.reset(FORM.ADD_INCIDENT_FOLLOWUP);
+        resetForm(FORM.ADD_INCIDENT_REPORTING);
+        resetForm(FORM.ADD_INCIDENT_DETAIL);
+        resetForm(FORM.ADD_INCIDENT_FOLLOWUP);
         this.props.closeModal();
         console.log("Success", data);
         return data;
@@ -91,9 +91,9 @@ export class AddIncidentModal extends Component {
 
   cancel = () => {
     this.props.closeModal();
-    this.props.reset(FORM.ADD_INCIDENT_REPORTING);
-    this.props.reset(FORM.ADD_INCIDENT_DETAIL);
-    this.props.reset(FORM.ADD_INCIDENT_FOLLOWUP);
+    resetForm(FORM.ADD_INCIDENT_REPORTING);
+    resetForm(FORM.ADD_INCIDENT_DETAIL);
+    resetForm(FORM.ADD_INCIDENT_FOLLOWUP);
   };
 
   next() {
@@ -262,7 +262,6 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       //      submit,
-      reset,
       //      change,
     },
     dispatch

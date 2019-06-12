@@ -11,7 +11,7 @@ from ....utils.models_mixins import AuditMixin, Base
 
 class PartyBusinessRoleCode(AuditMixin, Base):
     __tablename__ = 'party_business_role_code'
-    party_business_role_code = db.Column(db.String(32), nullable=False, primary_key=True)
+    party_business_role_code = db.Column(db.String(3), nullable=False, primary_key=True)
     description = db.Column(db.String(100), nullable=False)
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 

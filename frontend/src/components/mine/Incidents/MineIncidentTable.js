@@ -41,14 +41,16 @@ const columns = [
   {
     title: "",
     dataIndex: "handleEditModal",
-    render: (handleEdit, record) => (
+    render: (handleEditMineIncident, record) => (
       <div title="" align="right">
         <AuthorizationWrapper permission={Permission.CREATE}>
           <Button
             type="primary"
             size="small"
             ghost
-            onClick={(event) => record.openMineIncidentModal(event, handleEdit, record.incident)}
+            onClick={(event) =>
+              record.openMineIncidentModal(event, record.handleEditMineIncident, record.incident)
+            }
           >
             <img src={BRAND_PENCIL} alt="Edit TSF Report" />
           </Button>
@@ -58,7 +60,7 @@ const columns = [
   },
 ];
 
-const transformRowData = (incidents, actions, handleEditModal, openMineIncidentModal) =>
+const transformRowData = (incidents, actions, handleEditMineIncident, openMineIncidentModal) =>
   incidents
     .sort((i) => i.mine_incident_report_no)
     .map((incident) => ({
@@ -70,7 +72,7 @@ const transformRowData = (incidents, actions, handleEditModal, openMineIncidentM
       followup_action: actions.find(
         (x) => x.mine_incident_followup_type_code === incident.followup_type_code
       ),
-      handleEditModal,
+      handleEditMineIncident,
       openMineIncidentModal,
       incident,
     }));
