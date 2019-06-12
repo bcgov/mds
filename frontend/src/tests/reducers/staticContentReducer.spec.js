@@ -29,6 +29,7 @@ const baseExpectedValue = {
   optionsLoaded: false,
   incidentFollowupActionOptions: [],
   incidentDeterminationOptions: [],
+  incidentStatusCodeOptions: [],
   varianceStatusOptions: [],
 };
 
