@@ -244,7 +244,11 @@ export const getMineStatusDropDownOptions = createSelector(
 
 export const getDropdownVarianceDocumentCategoryOptions = createSelector(
   [getVarianceDocumentCategoryOptions],
-  (options) => createDropDownList(options, "description", "variance_document_category_code")
+  (options) =>
+    options.map((option) => {
+      const composedLabel = `${option.description} Document`;
+      return { value: option.variance_document_category_code, label: composedLabel };
+    })
 );
 
 export const getVarianceDocumentCategoryOptionsHash = createSelector(
