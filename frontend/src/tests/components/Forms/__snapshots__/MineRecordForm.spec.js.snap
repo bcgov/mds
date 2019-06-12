@@ -75,6 +75,7 @@ ShallowWrapper {
     }
     handleDelete={[MockFunction]}
     handleSubmit={[MockFunction]}
+    isCreated={false}
     mineCommodityOptionsHash={
       Object {
         "CG": "Construction Aggregate",
@@ -114,7 +115,6 @@ ShallowWrapper {
         },
       ]
     }
-    mineStatus={Array []}
     mineStatusOptions={
       Array [
         Object {
@@ -432,6 +432,7 @@ ShallowWrapper {
                 id="mine_status"
                 label="Mine Status *"
                 name="mine_status"
+                onChange={[Function]}
                 options={undefined}
                 placeholder="Please select status"
                 validate={
@@ -449,27 +450,32 @@ ShallowWrapper {
           <Col>
             <FormItem
               hasFeedback={false}
-              label="Date of Status Change"
+              label="Is this a historic mine status?"
             >
-              <p
-                className="p-light"
+              <RadioGroup
+                buttonStyle="outline"
+                defaultValue={false}
+                disabled={false}
+                onChange={[Function]}
+                value={false}
               >
-                The date will default to todays date, unless otherwise specified.
-              </p>
-              <Field
-                component={[Function]}
-                id="status_date"
-                name="status_date"
-                placeholder="yyyy-mm-dd"
-                validate={
-                  Array [
-                    [Function],
-                  ]
-                }
-              />
+                <Radio
+                  type="radio"
+                  value={true}
+                >
+                  Yes
+                </Radio>
+                <Radio
+                  type="radio"
+                  value={false}
+                >
+                  No
+                </Radio>
+              </RadioGroup>
             </FormItem>
           </Col>
         </Row>,
+        false,
         <Row
           gutter={16}
         >
@@ -777,6 +783,7 @@ ShallowWrapper {
                 id="mine_status"
                 label="Mine Status *"
                 name="mine_status"
+                onChange={[Function]}
                 options={undefined}
                 placeholder="Please select status"
                 validate={
@@ -803,6 +810,7 @@ ShallowWrapper {
                 id="mine_status"
                 label="Mine Status *"
                 name="mine_status"
+                onChange={[Function]}
                 options={undefined}
                 placeholder="Please select status"
                 validate={
@@ -824,6 +832,7 @@ ShallowWrapper {
                 id="mine_status"
                 label="Mine Status *"
                 name="mine_status"
+                onChange={[Function]}
                 options={undefined}
                 placeholder="Please select status"
                 validate={
@@ -844,6 +853,7 @@ ShallowWrapper {
                 "id": "mine_status",
                 "label": "Mine Status *",
                 "name": "mine_status",
+                "onChange": [Function],
                 "options": undefined,
                 "placeholder": "Please select status",
                 "validate": Array [
@@ -868,24 +878,28 @@ ShallowWrapper {
           "children": <Col>
             <FormItem
               hasFeedback={false}
-              label="Date of Status Change"
+              label="Is this a historic mine status?"
             >
-              <p
-                className="p-light"
+              <RadioGroup
+                buttonStyle="outline"
+                defaultValue={false}
+                disabled={false}
+                onChange={[Function]}
+                value={false}
               >
-                The date will default to todays date, unless otherwise specified.
-              </p>
-              <Field
-                component={[Function]}
-                id="status_date"
-                name="status_date"
-                placeholder="yyyy-mm-dd"
-                validate={
-                  Array [
-                    [Function],
-                  ]
-                }
-              />
+                <Radio
+                  type="radio"
+                  value={true}
+                >
+                  Yes
+                </Radio>
+                <Radio
+                  type="radio"
+                  value={false}
+                >
+                  No
+                </Radio>
+              </RadioGroup>
             </FormItem>
           </Col>,
           "gutter": 16,
@@ -898,24 +912,28 @@ ShallowWrapper {
           "props": Object {
             "children": <FormItem
               hasFeedback={false}
-              label="Date of Status Change"
+              label="Is this a historic mine status?"
             >
-              <p
-                className="p-light"
+              <RadioGroup
+                buttonStyle="outline"
+                defaultValue={false}
+                disabled={false}
+                onChange={[Function]}
+                value={false}
               >
-                The date will default to todays date, unless otherwise specified.
-              </p>
-              <Field
-                component={[Function]}
-                id="status_date"
-                name="status_date"
-                placeholder="yyyy-mm-dd"
-                validate={
-                  Array [
-                    [Function],
-                  ]
-                }
-              />
+                <Radio
+                  type="radio"
+                  value={true}
+                >
+                  Yes
+                </Radio>
+                <Radio
+                  type="radio"
+                  value={false}
+                >
+                  No
+                </Radio>
+              </RadioGroup>
             </FormItem>,
           },
           "ref": null,
@@ -924,65 +942,93 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "class",
             "props": Object {
-              "children": Array [
-                <p
-                  className="p-light"
+              "children": <RadioGroup
+                buttonStyle="outline"
+                defaultValue={false}
+                disabled={false}
+                onChange={[Function]}
+                value={false}
+              >
+                <Radio
+                  type="radio"
+                  value={true}
                 >
-                  The date will default to todays date, unless otherwise specified.
-                </p>,
-                <Field
-                  component={[Function]}
-                  id="status_date"
-                  name="status_date"
-                  placeholder="yyyy-mm-dd"
-                  validate={
-                    Array [
-                      [Function],
-                    ]
-                  }
-                />,
-              ],
+                  Yes
+                </Radio>
+                <Radio
+                  type="radio"
+                  value={false}
+                >
+                  No
+                </Radio>
+              </RadioGroup>,
               "hasFeedback": false,
-              "label": "Date of Status Change",
+              "label": "Is this a historic mine status?",
             },
             "ref": null,
-            "rendered": Array [
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "host",
-                "props": Object {
-                  "children": "The date will default to todays date, unless otherwise specified.",
-                  "className": "p-light",
-                },
-                "ref": null,
-                "rendered": "The date will default to todays date, unless otherwise specified.",
-                "type": "p",
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "buttonStyle": "outline",
+                "children": Array [
+                  <Radio
+                    type="radio"
+                    value={true}
+                  >
+                    Yes
+                  </Radio>,
+                  <Radio
+                    type="radio"
+                    value={false}
+                  >
+                    No
+                  </Radio>,
+                ],
+                "defaultValue": false,
+                "disabled": false,
+                "onChange": [Function],
+                "value": false,
               },
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "component": [Function],
-                  "id": "status_date",
-                  "name": "status_date",
-                  "placeholder": "yyyy-mm-dd",
-                  "validate": Array [
-                    [Function],
-                  ],
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "Yes",
+                    "type": "radio",
+                    "value": true,
+                  },
+                  "ref": null,
+                  "rendered": "Yes",
+                  "type": [Function],
                 },
-                "ref": null,
-                "rendered": null,
-                "type": [Function],
-              },
-            ],
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "No",
+                    "type": "radio",
+                    "value": false,
+                  },
+                  "ref": null,
+                  "rendered": "No",
+                  "type": [Function],
+                },
+              ],
+              "type": [Function],
+            },
             "type": [Function],
           },
           "type": [Function],
         },
         "type": [Function],
       },
+      false,
       Object {
         "instance": null,
         "key": undefined,
@@ -1737,6 +1783,7 @@ ShallowWrapper {
                   id="mine_status"
                   label="Mine Status *"
                   name="mine_status"
+                  onChange={[Function]}
                   options={undefined}
                   placeholder="Please select status"
                   validate={
@@ -1754,27 +1801,32 @@ ShallowWrapper {
             <Col>
               <FormItem
                 hasFeedback={false}
-                label="Date of Status Change"
+                label="Is this a historic mine status?"
               >
-                <p
-                  className="p-light"
+                <RadioGroup
+                  buttonStyle="outline"
+                  defaultValue={false}
+                  disabled={false}
+                  onChange={[Function]}
+                  value={false}
                 >
-                  The date will default to todays date, unless otherwise specified.
-                </p>
-                <Field
-                  component={[Function]}
-                  id="status_date"
-                  name="status_date"
-                  placeholder="yyyy-mm-dd"
-                  validate={
-                    Array [
-                      [Function],
-                    ]
-                  }
-                />
+                  <Radio
+                    type="radio"
+                    value={true}
+                  >
+                    Yes
+                  </Radio>
+                  <Radio
+                    type="radio"
+                    value={false}
+                  >
+                    No
+                  </Radio>
+                </RadioGroup>
               </FormItem>
             </Col>
           </Row>,
+          false,
           <Row
             gutter={16}
           >
@@ -2082,6 +2134,7 @@ ShallowWrapper {
                   id="mine_status"
                   label="Mine Status *"
                   name="mine_status"
+                  onChange={[Function]}
                   options={undefined}
                   placeholder="Please select status"
                   validate={
@@ -2108,6 +2161,7 @@ ShallowWrapper {
                   id="mine_status"
                   label="Mine Status *"
                   name="mine_status"
+                  onChange={[Function]}
                   options={undefined}
                   placeholder="Please select status"
                   validate={
@@ -2129,6 +2183,7 @@ ShallowWrapper {
                   id="mine_status"
                   label="Mine Status *"
                   name="mine_status"
+                  onChange={[Function]}
                   options={undefined}
                   placeholder="Please select status"
                   validate={
@@ -2149,6 +2204,7 @@ ShallowWrapper {
                   "id": "mine_status",
                   "label": "Mine Status *",
                   "name": "mine_status",
+                  "onChange": [Function],
                   "options": undefined,
                   "placeholder": "Please select status",
                   "validate": Array [
@@ -2173,24 +2229,28 @@ ShallowWrapper {
             "children": <Col>
               <FormItem
                 hasFeedback={false}
-                label="Date of Status Change"
+                label="Is this a historic mine status?"
               >
-                <p
-                  className="p-light"
+                <RadioGroup
+                  buttonStyle="outline"
+                  defaultValue={false}
+                  disabled={false}
+                  onChange={[Function]}
+                  value={false}
                 >
-                  The date will default to todays date, unless otherwise specified.
-                </p>
-                <Field
-                  component={[Function]}
-                  id="status_date"
-                  name="status_date"
-                  placeholder="yyyy-mm-dd"
-                  validate={
-                    Array [
-                      [Function],
-                    ]
-                  }
-                />
+                  <Radio
+                    type="radio"
+                    value={true}
+                  >
+                    Yes
+                  </Radio>
+                  <Radio
+                    type="radio"
+                    value={false}
+                  >
+                    No
+                  </Radio>
+                </RadioGroup>
               </FormItem>
             </Col>,
             "gutter": 16,
@@ -2203,24 +2263,28 @@ ShallowWrapper {
             "props": Object {
               "children": <FormItem
                 hasFeedback={false}
-                label="Date of Status Change"
+                label="Is this a historic mine status?"
               >
-                <p
-                  className="p-light"
+                <RadioGroup
+                  buttonStyle="outline"
+                  defaultValue={false}
+                  disabled={false}
+                  onChange={[Function]}
+                  value={false}
                 >
-                  The date will default to todays date, unless otherwise specified.
-                </p>
-                <Field
-                  component={[Function]}
-                  id="status_date"
-                  name="status_date"
-                  placeholder="yyyy-mm-dd"
-                  validate={
-                    Array [
-                      [Function],
-                    ]
-                  }
-                />
+                  <Radio
+                    type="radio"
+                    value={true}
+                  >
+                    Yes
+                  </Radio>
+                  <Radio
+                    type="radio"
+                    value={false}
+                  >
+                    No
+                  </Radio>
+                </RadioGroup>
               </FormItem>,
             },
             "ref": null,
@@ -2229,65 +2293,93 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "children": Array [
-                  <p
-                    className="p-light"
+                "children": <RadioGroup
+                  buttonStyle="outline"
+                  defaultValue={false}
+                  disabled={false}
+                  onChange={[Function]}
+                  value={false}
+                >
+                  <Radio
+                    type="radio"
+                    value={true}
                   >
-                    The date will default to todays date, unless otherwise specified.
-                  </p>,
-                  <Field
-                    component={[Function]}
-                    id="status_date"
-                    name="status_date"
-                    placeholder="yyyy-mm-dd"
-                    validate={
-                      Array [
-                        [Function],
-                      ]
-                    }
-                  />,
-                ],
+                    Yes
+                  </Radio>
+                  <Radio
+                    type="radio"
+                    value={false}
+                  >
+                    No
+                  </Radio>
+                </RadioGroup>,
                 "hasFeedback": false,
-                "label": "Date of Status Change",
+                "label": "Is this a historic mine status?",
               },
               "ref": null,
-              "rendered": Array [
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "host",
-                  "props": Object {
-                    "children": "The date will default to todays date, unless otherwise specified.",
-                    "className": "p-light",
-                  },
-                  "ref": null,
-                  "rendered": "The date will default to todays date, unless otherwise specified.",
-                  "type": "p",
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "buttonStyle": "outline",
+                  "children": Array [
+                    <Radio
+                      type="radio"
+                      value={true}
+                    >
+                      Yes
+                    </Radio>,
+                    <Radio
+                      type="radio"
+                      value={false}
+                    >
+                      No
+                    </Radio>,
+                  ],
+                  "defaultValue": false,
+                  "disabled": false,
+                  "onChange": [Function],
+                  "value": false,
                 },
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "component": [Function],
-                    "id": "status_date",
-                    "name": "status_date",
-                    "placeholder": "yyyy-mm-dd",
-                    "validate": Array [
-                      [Function],
-                    ],
+                "ref": null,
+                "rendered": Array [
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": "Yes",
+                      "type": "radio",
+                      "value": true,
+                    },
+                    "ref": null,
+                    "rendered": "Yes",
+                    "type": [Function],
                   },
-                  "ref": null,
-                  "rendered": null,
-                  "type": [Function],
-                },
-              ],
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": "No",
+                      "type": "radio",
+                      "value": false,
+                    },
+                    "ref": null,
+                    "rendered": "No",
+                    "type": [Function],
+                  },
+                ],
+                "type": [Function],
+              },
               "type": [Function],
             },
             "type": [Function],
           },
           "type": [Function],
         },
+        false,
         Object {
           "instance": null,
           "key": undefined,

@@ -5,6 +5,7 @@ ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <MineRecordModal
     initialValues={Object {}}
+    isCreated={false}
     mineRegionOptions={
       Array [
         Object {
@@ -275,6 +276,7 @@ ShallowWrapper {
     "props": Object {
       "children": <Connect(ReduxForm)
         initialValues={Object {}}
+        isCreated={false}
         mineRegionOptions={
           Array [
             Object {
@@ -538,6 +540,7 @@ ShallowWrapper {
       "nodeType": "class",
       "props": Object {
         "initialValues": Object {},
+        "isCreated": false,
         "mineRegionOptions": Array [
           Object {
             "label": "South West",
@@ -803,6 +806,7 @@ ShallowWrapper {
       "props": Object {
         "children": <Connect(ReduxForm)
           initialValues={Object {}}
+          isCreated={false}
           mineRegionOptions={
             Array [
               Object {
@@ -1066,6 +1070,7 @@ ShallowWrapper {
         "nodeType": "class",
         "props": Object {
           "initialValues": Object {},
+          "isCreated": false,
           "mineRegionOptions": Array [
             Object {
               "label": "South West",
