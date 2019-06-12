@@ -19,6 +19,7 @@ export const {
   getIncidentFollowupActionOptions,
   getIncidentDeterminationOptions,
   getVarianceStatusOptions,
+  getVarianceDocumentCategoryOptions,
 } = staticContentReducer;
 
 // removes all expired compliance codes from the array
@@ -239,4 +240,14 @@ const transformMineStatus = (data) =>
 export const getMineStatusDropDownOptions = createSelector(
   getMineStatusOptions,
   transformMineStatus
+);
+
+export const getDropdownVarianceDocumentCategoryOptions = createSelector(
+  [getVarianceDocumentCategoryOptions],
+  (options) => createDropDownList(options, "description", "variance_document_category_code")
+);
+
+export const getVarianceDocumentCategoryOptionsHash = createSelector(
+  [getDropdownVarianceDocumentCategoryOptions],
+  createLabelHash
 );

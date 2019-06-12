@@ -22,6 +22,7 @@ export class DocumentTable extends Component {
     documents.map((document) => ({
       key: document.mine_document_guid,
       name: document.document_name,
+      category: document.variance_document_category_code || Strings.EMPTY_FIELD,
       created_at: formatDate(document.created_at) || Strings.EMPTY_FIELD,
     }));
 
@@ -46,6 +47,11 @@ export class DocumentTable extends Component {
             </div>
           </div>
         ),
+      },
+      {
+        title: "Category",
+        dataIndex: "category",
+        render: (text) => <div title="Upload date">{text}</div>,
       },
       {
         title: "Upload date",
