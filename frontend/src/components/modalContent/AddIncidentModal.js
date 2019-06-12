@@ -40,6 +40,7 @@ const invalidReportingPayload = (addReportingFormValues) =>
   addReportingFormValues.reported_by_name === undefined ||
   addReportingFormValues.reported_to_inspector_party_guid === undefined ||
   addReportingFormValues.responsible_inspector_party_guid === undefined;
+
 const invalidDetailPayload = (addDetailFormValues) =>
   addDetailFormValues.determination_inspector_party_guid === undefined ||
   (addDetailFormValues.determination_type_code === "DO" &&
@@ -57,6 +58,10 @@ const invalidFollowUpPayload = (addFollowUpFormValues) =>
 export class AddIncidentModal extends Component {
   state = { current: 0 };
 
+  componentDidMount() {
+    console.error("Props", this.props);
+  }
+
   handleIncidentSubmit = async (event) => {
     event.preventDefault();
     const payload = {
@@ -65,13 +70,21 @@ export class AddIncidentModal extends Component {
       ...this.props.addFollowUpFormValues,
     };
 
-    await this.props.onSubmit(payload).then((data) => {
-      this.props.reset(FORM.ADD_INCIDENT_REPORTING);
-      this.props.reset(FORM.ADD_INCIDENT_DETAIL);
-      this.props.reset(FORM.ADD_INCIDENT_FOLLOWUP);
-      this.props.closeModal();
-      return data;
-    });
+    console.log("Payload", payload);
+
+    await this.props
+      .onSubmit(payload)
+      .then((data) => {
+        this.props.reset(FORM.ADD_INCIDENT_REPORTING);
+        this.props.reset(FORM.ADD_INCIDENT_DETAIL);
+        this.props.reset(FORM.ADD_INCIDENT_FOLLOWUP);
+        this.props.closeModal();
+        console.log("Success", data);
+        return data;
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
 
     return Promise.resolve();
   };
@@ -140,7 +153,7 @@ export class AddIncidentModal extends Component {
             type="tertiary"
             className="full-mobile"
             onClick={() => this.next()}
-            disabled={invalidDetailPayload()}
+            disabled={invalidDetailPayload(this.props.addDetailFormValues)}
           >
             Next
           </Button>

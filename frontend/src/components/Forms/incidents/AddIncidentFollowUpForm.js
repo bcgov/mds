@@ -12,6 +12,7 @@ import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
 import { required, dateNotInFuture } from "@/utils/Validate";
 import LinkButton from "@/components/common/LinkButton";
+import { resetForm } from "@/utils/helpers";
 
 const propTypes = {
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -107,4 +108,5 @@ AddIncidentFollowUpForm.propTypes = propTypes;
 export default reduxForm({
   form: FORM.ADD_INCIDENT_FOLLOWUP,
   destroyOnUnmount: false,
+  onSubmitSuccess: resetForm(FORM.ADD_INCIDENT_FOLLOWUP),
 })(AddIncidentFollowUpForm);

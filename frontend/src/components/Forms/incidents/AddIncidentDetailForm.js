@@ -5,6 +5,7 @@ import { Field, reduxForm } from "redux-form";
 import { Form, Col, Row } from "antd";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
+import { resetForm } from "@/utils/helpers";
 
 import { required, maxLength, number, dateNotInFuture } from "@/utils/Validate";
 
@@ -84,7 +85,7 @@ class AddIncidentDetailForm extends Component {
               <Field
                 id="incident_description"
                 name="incident_description"
-                label="Description of incident"
+                label="Description of incident*"
                 placeholder="Provide a detailed description of the incident"
                 component={renderConfig.SCROLL_FIELD}
                 validate={[required]}
@@ -105,7 +106,7 @@ class AddIncidentDetailForm extends Component {
               <Field
                 id="determination_inspector_party_guid"
                 name="determination_inspector_party_guid"
-                label="Who made the determination?"
+                label="Who made the determination?*"
                 component={renderConfig.SELECT}
                 data={this.props.inspectors}
               />
@@ -154,4 +155,5 @@ AddIncidentDetailForm.propTypes = propTypes;
 export default reduxForm({
   form: FORM.ADD_INCIDENT_DETAIL,
   destroyOnUnmount: false,
+  onSubmitSuccess: resetForm(FORM.ADD_INCIDENT_DETAIL),
 })(AddIncidentDetailForm);
