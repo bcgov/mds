@@ -321,7 +321,7 @@ export class Dashboard extends Component {
       });
   };
 
-  openModal(event, onSubmit, title, isCreated) {
+  openModal(event, onSubmit, title) {
     const handleDelete = () => {};
     event.preventDefault();
     this.props.openModal({
@@ -329,7 +329,7 @@ export class Dashboard extends Component {
         handleDelete,
         onSubmit,
         title,
-        isCreated,
+        isNewRecord: true,
       },
       content: modalConfig.MINE_RECORD,
     });
@@ -451,7 +451,7 @@ export class Dashboard extends Component {
               <AuthorizationWrapper permission={Permission.ADMIN}>
                 <AddButton
                   onClick={(event) =>
-                    this.openModal(event, this.handleSubmit, ModalContent.CREATE_MINE_RECORD, true)
+                    this.openModal(event, this.handleSubmit, ModalContent.CREATE_MINE_RECORD)
                   }
                 >
                   {ModalContent.CREATE_MINE_RECORD}

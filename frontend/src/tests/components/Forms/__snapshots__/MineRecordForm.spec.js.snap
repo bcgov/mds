@@ -75,7 +75,7 @@ ShallowWrapper {
     }
     handleDelete={[MockFunction]}
     handleSubmit={[MockFunction]}
-    isCreated={false}
+    isNewRecord={false}
     mineCommodityOptionsHash={
       Object {
         "CG": "Construction Aggregate",

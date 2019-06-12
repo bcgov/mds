@@ -5,11 +5,11 @@ import MineRecordForm from "@/components/Forms/MineRecordForm";
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  isCreated: PropTypes.bool,
+  isNewRecord: PropTypes.bool,
 };
 
 const defaultProps = {
-  isCreated: false,
+  isNewRecord: false,
 };
 
 export const MineRecordModal = (props) => (

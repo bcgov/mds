@@ -48,14 +48,14 @@ const propTypes = {
   conditionalCommodityOptions: PropTypes.objectOf(CustomPropTypes.options).isRequired,
   currentMineTypes: PropTypes.arrayOf(CustomPropTypes.mineTypes),
   submitting: PropTypes.bool.isRequired,
-  isCreated: PropTypes.bool,
+  isNewRecord: PropTypes.bool,
 };
 
 const defaultProps = {
   title: "",
   currentMineTypes: [],
   mine_types: [],
-  isCreated: false,
+  isNewRecord: false,
 };
 
 export class MineRecordForm extends Component {
@@ -69,7 +69,7 @@ export class MineRecordForm extends Component {
     const existingMineTypes = map(this.props.currentMineTypes, "mine_tenure_type_code");
     this.setState({ usedTenureTypes: existingMineTypes });
 
-    if (this.props.isCreated) {
+    if (this.props.isNewRecord) {
       const date = new Date();
       this.props.change("status_date", date);
     }
