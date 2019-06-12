@@ -9,7 +9,7 @@ from ...utils.resources_mixins import UserMixin, ErrorMixin
 
 class VarianceDocumentCategoryCodeResource(Resource, UserMixin, ErrorMixin):
     @api.doc(
-        description='Get a list of all active variance document category codes.',
+        description='Get a list of all variance document category codes.',
         params={})
     @requires_any_of([MINE_VIEW])
     @api.marshal_with(VARIANCE_DOCUMENT_CATEGORY_CODE, code=200, envelope='records')

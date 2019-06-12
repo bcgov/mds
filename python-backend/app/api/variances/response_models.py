@@ -26,6 +26,7 @@ VARIANCE = api.model(
         'applicant_guid': fields.String,
         'inspector_party_guid': fields.String,
         'note': fields.String,
+        'parties_notified_ind': fields.Boolean,
         'issue_date': fields.Date,
         'received_date': fields.Date,
         'expiry_date': fields.Date,

@@ -20,7 +20,7 @@ ADD COLUMN parties_notified_ind boolean DEFAULT FALSE NOT NULL;
 -- 3) Add categories to variance documents
 CREATE TABLE IF NOT EXISTS variance_document_category_code
 (
-    variance_document_category_code varchar(3)   PRIMARY KEY                        ,
+    variance_document_category_code varchar(3)               PRIMARY KEY            ,
     description                     varchar(100)                            NOT NULL,
     active_ind                      boolean                  DEFAULT TRUE   NOT NULL,
     create_user                     character varying(60)                   NOT NULL,
