@@ -19,7 +19,12 @@ export const AddIncidentReportingForm = (props) => (
     <Form layout="vertical">
       <Row gutter={48}>
         <Col>
-          {props.initialValues && <h4>Ministry Incident No. : xxxx-xxxx</h4>}
+          {props.initialValues.mine_incident_id_year && (
+            <h4>
+              Ministry Incident No. : {props.initialValues.mine_incident_id_year}-
+              {props.initialValues.mine_incident_report_no}
+            </h4>
+          )}
           <Form.Item>
             <Field
               id="reported_to_inspector_party_guid"

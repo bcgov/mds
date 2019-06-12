@@ -35,23 +35,24 @@ const defaultProps = {
 };
 
 // TODO: Should move these into the forms themselves
-const invalidReportingPayload = () => false;
-// addReportingFormValues.reported_timestamp === undefined ||
-// addReportingFormValues.reported_by_name === undefined ||
-// addReportingFormValues.reported_to_inspector_party_guid === undefined ||
-// addReportingFormValues.responsible_inspector_party_guid === undefined;
-const invalidDetailPayload = () => false;
-// addDetailFormValues.determination_inspector_party_guid === undefined ||
-// (addDetailFormValues.determination_type_code === 'DO' && addDetailFormValues.DoSubparagraphs.length === 0) ||
-// addDetailFormValues.determination_type_code === undefined ||
-// addDetailFormValues.incident_description === undefined ||
-// addDetailFormValues.emergency_services_called === undefined ||
-// addDetailFormValues.incident_timestamp === undefined;
+const invalidReportingPayload = (addReportingFormValues) =>
+  addReportingFormValues.reported_timestamp === undefined ||
+  addReportingFormValues.reported_by_name === undefined ||
+  addReportingFormValues.reported_to_inspector_party_guid === undefined ||
+  addReportingFormValues.responsible_inspector_party_guid === undefined;
+const invalidDetailPayload = (addDetailFormValues) =>
+  addDetailFormValues.determination_inspector_party_guid === undefined ||
+  (addDetailFormValues.determination_type_code === "DO" &&
+    addDetailFormValues.DoSubparagraphs.length === 0) ||
+  addDetailFormValues.determination_type_code === undefined ||
+  addDetailFormValues.incident_description === undefined ||
+  addDetailFormValues.emergency_services_called === undefined ||
+  addDetailFormValues.incident_timestamp === undefined;
 
-const invalidFollowUpPayload = () => false;
-// addFollowUpFormValuesmine_incident_followup_investigation_type
-// followup_inspection_date;
-// addFollowUpFormValues.emergency_services_called;
+const invalidFollowUpPayload = (addFollowUpFormValues) =>
+  addFollowUpFormValues.mine_incident_followup_investigation_type ||
+  addFollowUpFormValues.followup_inspection_date ||
+  addFollowUpFormValues.emergency_services_called;
 
 export class AddIncidentModal extends Component {
   state = { current: 0 };
@@ -106,7 +107,7 @@ export class AddIncidentModal extends Component {
         type="tertiary"
         className="full-mobile"
         onClick={() => this.next()}
-        disabled={invalidReportingPayload()}
+        disabled={invalidReportingPayload(this.props.addReportingFormValues)}
       >
         Next
       </Button>
@@ -148,7 +149,7 @@ export class AddIncidentModal extends Component {
           type="primary"
           className="full-mobile"
           onClick={(event) => this.handleIncidentSubmit(event, false)}
-          disabled={invalidDetailPayload()}
+          disabled={invalidDetailPayload(this.props.addDetailFormValues)}
         >
           Save&nbsp;{determination !== "NDO" && <span>initial&nbsp;</span>}incident
         </Button>
@@ -177,7 +178,7 @@ export class AddIncidentModal extends Component {
         type="primary"
         className="full-mobile"
         onClick={(event) => this.handleIncidentSubmit(event, false)}
-        disabled={invalidFollowUpPayload()}
+        disabled={invalidFollowUpPayload(this.props.addFollowUpFormValues)}
       >
         Submit
       </Button>,
