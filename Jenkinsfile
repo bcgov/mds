@@ -14,8 +14,8 @@ pipeline {
                 script {
                     abortAllPreviousBuildInProgress(currentBuild)
                 }
-                sh 'echo ${file} > trustedfile'
-                sh 'cmp --silent trustedFile pipeline/build.gradle'
+                writeFile file: 'trustedfile.gradle', text: file
+                sh 'cmp --silent trustedFile.gradle pipeline/build.gradle'
                 sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b ${file} cd-build -Pargs.--config=pipeline/config-build.groovy -Pargs.--pr=${CHANGE_ID}'
             }
         }
