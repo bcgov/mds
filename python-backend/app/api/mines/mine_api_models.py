@@ -194,7 +194,8 @@ MINE_INCIDENT_DETERMINATION_TYPE_MODEL = api.model(
 
 VARIANCE_DOCUMENT_MODEL = api.inherit(
     'VarianceDocumentModel', MINE_DOCUMENT_MODEL, {
-        'created_at': fields.Date
+        'created_at': fields.Date,
+        'variance_document_category_code': fields.String
     })
 
 VARIANCE_MODEL = api.model(
