@@ -37,13 +37,21 @@ class Party(AuditMixin, Base):
     postnominal_letters = db.Column(db.String, nullable=True)
     idir_username = db.Column(db.String, nullable=True)
 
+    business_role_appts = db.relationship('PartyBusinessRoleAppointment', lazy='select')
+
     @hybrid_property
     def name(self):
         return self.first_name + ' ' + self.party_name if self.first_name else self.party_name
 
     @hybrid_property
+    def business_roles(self):
+        return [
+            x.party_business_role for x in self.business_role_appts
+            if (x.expiry_date and x.expiry_date > datetime.utcnow())
+        ]
+
     def hasBusinessRole(self, role):
-        return [x for x in business_roles if x.party_business_role_code == role] == []
+        return [x for x in self.business_roles if x.party_business_role_code == role] == []
 
     @name.expression
     def name(cls):
