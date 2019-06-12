@@ -14,3 +14,5 @@ UPDATE mine_status_xref SET description = 'This mine operates year-round (can be
 WHERE mine_operation_status_code = 'OP' and mine_operation_status_reason_code = 'YR' and mine_operation_status_sub_reason_code is null;
 UPDATE mine_status_xref SET description = 'This mine operates seasonally. Dates shown are from the most recently approved NoW application. Confirm operating dates with operator or permittee before visiting.' 
 WHERE mine_operation_status_code = 'OP' and mine_operation_status_reason_code = 'SEA' and mine_operation_status_sub_reason_code is null;
+
+DELETE FROM mine_status_xref mine_operation_status_code = 'CLD' and mine_operation_status_reason_code is null and mine_operation_status_sub_reason_code is null;
