@@ -37,7 +37,6 @@ const propTypes = {
   change: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired,
   title: PropTypes.string,
-  mineStatus: PropTypes.arrayOf(PropTypes.string),
   mineStatusDropDownOptions: CustomPropTypes.options.isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
   mineTenureTypes: CustomPropTypes.options.isRequired,
@@ -49,13 +48,14 @@ const propTypes = {
   conditionalCommodityOptions: PropTypes.objectOf(CustomPropTypes.options).isRequired,
   currentMineTypes: PropTypes.arrayOf(CustomPropTypes.mineTypes),
   submitting: PropTypes.bool.isRequired,
+  isCreated: PropTypes.bool,
 };
 
 const defaultProps = {
   title: "",
   currentMineTypes: [],
   mine_types: [],
-  mineStatus: [],
+  isCreated: false,
 };
 
 export class MineRecordForm extends Component {
@@ -68,6 +68,11 @@ export class MineRecordForm extends Component {
   componentDidMount() {
     const existingMineTypes = map(this.props.currentMineTypes, "mine_tenure_type_code");
     this.setState({ usedTenureTypes: existingMineTypes });
+
+    if (this.props.isCreated) {
+      const date = new Date();
+      this.props.change("status_date", date);
+    }
   }
 
   /**
@@ -112,14 +117,6 @@ export class MineRecordForm extends Component {
         "mine_types",
         nextProps.mine_types.slice(0, nextProps.mine_types.length - 1).concat(defaultValue)
       );
-    }
-
-    // If the status has been changed, the status date should set to todays date,
-    const statusChanged =
-      nextProps.mineStatus !== null && nextProps.mineStatus !== this.props.mineStatus;
-    if (statusChanged) {
-      const date = new Date();
-      this.props.change("status_date", date);
     }
   }
 
@@ -178,6 +175,12 @@ export class MineRecordForm extends Component {
 
   toggleStatusDate = () =>
     this.setState((prevState) => ({ showStatusDate: !prevState.showStatusDate }));
+
+  // When the status changes, set the status date to current date.
+  onStatusChange = () => {
+    const date = new Date();
+    this.props.change("status_date", date);
+  };
 
   createExistingPanelHeader = (mineTenureCode) => (
     <div className="inline-flex between">
@@ -334,6 +337,7 @@ export class MineRecordForm extends Component {
                 options={this.props.mineStatusDropDownOptions}
                 component={renderConfig.CASCADER}
                 validate={[required]}
+                onChange={this.onStatusChange}
               />
             </Form.Item>
           </Col>
@@ -364,7 +368,7 @@ export class MineRecordForm extends Component {
                   name="status_date"
                   placeholder="yyyy-mm-dd"
                   component={renderConfig.DATE}
-                  validate={[dateNotInFuture]}
+                  validate={[dateNotInFuture, required]}
                 />
               </Form.Item>
             </Col>
