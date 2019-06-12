@@ -460,12 +460,10 @@ def _mine_status_processor(mine_status, status_date, mine):
         existing_status.expiry_date = datetime.today()
         existing_status.active_ind = False
         existing_status.save()
-    print("The status date is: ", status_date)
     if status_date == '':
         new_status = MineStatus(mine_status_xref_guid=mine_status_xref.mine_status_xref_guid)
     else:
         new_status = MineStatus(mine_status_xref_guid=mine_status_xref.mine_status_xref_guid, status_date=status_date)
-
     mine.mine_status.append(new_status)
     new_status.save()
     mine.save(commit=False)
