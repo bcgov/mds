@@ -20,10 +20,7 @@ export const AddIncidentReportingForm = (props) => (
       <Row gutter={48}>
         <Col>
           {props.initialValues.mine_incident_id_year && (
-            <h4>
-              Ministry Incident No. : {props.initialValues.mine_incident_id_year}-
-              {props.initialValues.mine_incident_report_no}
-            </h4>
+            <h4>{`Ministry Incident No. :  ${props.initialValues.mine_incident_report_no}`}</h4>
           )}
           <Form.Item>
             <Field

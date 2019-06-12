@@ -22,6 +22,7 @@ const initialState = {
   complianceCodes: [],
   incidentFollowupActionOptions: [],
   incidentDeterminationOptions: [],
+  incidentStatusCodeOptions: [],
   varianceStatusOptions: [],
 };
 
