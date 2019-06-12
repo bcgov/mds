@@ -35,25 +35,6 @@ const defaultProps = {
 };
 
 // TODO: Should move these into the forms themselves
-const invalidReportingPayload = (addReportingFormValues) =>
-  addReportingFormValues.reported_timestamp === undefined ||
-  addReportingFormValues.reported_by_name === undefined ||
-  addReportingFormValues.reported_to_inspector_party_guid === undefined ||
-  addReportingFormValues.responsible_inspector_party_guid === undefined;
-
-const invalidDetailPayload = (addDetailFormValues) =>
-  addDetailFormValues.determination_inspector_party_guid === undefined ||
-  (addDetailFormValues.determination_type_code === "DO" &&
-    addDetailFormValues.DoSubparagraphs.length === 0) ||
-  addDetailFormValues.determination_type_code === undefined ||
-  addDetailFormValues.incident_description === undefined ||
-  addDetailFormValues.emergency_services_called === undefined ||
-  addDetailFormValues.incident_timestamp === undefined;
-
-const invalidFollowUpPayload = (addFollowUpFormValues) =>
-  addFollowUpFormValues.mine_incident_followup_investigation_type ||
-  addFollowUpFormValues.followup_inspection_date ||
-  addFollowUpFormValues.emergency_services_called;
 
 export class AddIncidentModal extends Component {
   state = { current: 0 };
@@ -72,19 +53,13 @@ export class AddIncidentModal extends Component {
 
     console.log("Payload", payload);
 
-    await this.props
-      .onSubmit(payload)
-      .then((data) => {
-        resetForm(FORM.ADD_INCIDENT_REPORTING);
-        resetForm(FORM.ADD_INCIDENT_DETAIL);
-        resetForm(FORM.ADD_INCIDENT_FOLLOWUP);
-        this.props.closeModal();
-        console.log("Success", data);
-        return data;
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
+    await this.props.onSubmit(payload).then((data) => {
+      resetForm(FORM.ADD_INCIDENT_REPORTING);
+      resetForm(FORM.ADD_INCIDENT_DETAIL);
+      resetForm(FORM.ADD_INCIDENT_FOLLOWUP);
+      this.props.closeModal();
+      return data;
+    });
 
     return Promise.resolve();
   };
@@ -104,6 +79,39 @@ export class AddIncidentModal extends Component {
     this.setState((prevState) => ({ current: prevState.current - 1 }));
   }
 
+  invalidReportingPayload() {
+    return (
+      this.props.addReportingFormValues.reported_timestamp === undefined ||
+      this.props.addReportingFormValues.reported_by_name === undefined ||
+      this.props.addReportingFormValues.reported_to_inspector_party_guid === undefined ||
+      this.props.addReportingFormValues.responsible_inspector_party_guid === undefined
+    );
+  }
+
+  invalidDetailPayload() {
+    return (
+      this.props.addDetailFormValues.determination_inspector_party_guid === undefined ||
+      // If DO, need subparagraphs
+      (this.props.addDetailFormValues.determination_type_code === "DO" &&
+        this.props.addDetailFormValues.DoSubparagraphs &&
+        this.props.addDetailFormValues.DoSubparagraphs.length === 0) ||
+      // If NDO, need incident status
+      (this.props.addDetailFormValues.determination_type_code === "NDO" &&
+        this.props.addDetailFormValues.status_code === undefined) ||
+      this.props.addDetailFormValues.determination_type_code === undefined ||
+      this.props.addDetailFormValues.incident_description === undefined ||
+      this.props.addDetailFormValues.emergency_services_called === undefined ||
+      this.props.addDetailFormValues.incident_timestamp === undefined
+    );
+  }
+
+  invalidFollowUpPayload() {
+    return (
+      this.props.addFollowUpFormValues.status_code === undefined ||
+      this.props.addFollowUpFormValues.mine_incident_followup_investigation_type === undefined
+    );
+  }
+
   renderStep1() {
     return (
       <AddIncidentReportingForm
@@ -120,7 +128,7 @@ export class AddIncidentModal extends Component {
         type="tertiary"
         className="full-mobile"
         onClick={() => this.next()}
-        disabled={invalidReportingPayload(this.props.addReportingFormValues)}
+        disabled={this.invalidReportingPayload()}
       >
         Next
       </Button>
@@ -153,7 +161,7 @@ export class AddIncidentModal extends Component {
             type="tertiary"
             className="full-mobile"
             onClick={() => this.next()}
-            disabled={invalidDetailPayload(this.props.addDetailFormValues)}
+            disabled={this.invalidDetailPayload()}
           >
             Next
           </Button>
@@ -162,7 +170,7 @@ export class AddIncidentModal extends Component {
           type="primary"
           className="full-mobile"
           onClick={(event) => this.handleIncidentSubmit(event, false)}
-          disabled={invalidDetailPayload(this.props.addDetailFormValues)}
+          disabled={this.invalidDetailPayload()}
         >
           Save&nbsp;{determination !== "NDO" && <span>initial&nbsp;</span>}incident
         </Button>
@@ -191,7 +199,7 @@ export class AddIncidentModal extends Component {
         type="primary"
         className="full-mobile"
         onClick={(event) => this.handleIncidentSubmit(event, false)}
-        disabled={invalidFollowUpPayload(this.props.addFollowUpFormValues)}
+        disabled={this.invalidFollowUpPayload()}
       >
         Submit
       </Button>,
