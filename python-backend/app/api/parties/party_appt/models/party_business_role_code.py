@@ -16,7 +16,7 @@ class PartyBusinessRoleCode(AuditMixin, Base):
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     def __repr__(self):
-        return '<PartyBusinessRoleCode %r>' % self.party_type_code
+        return '<PartyBusinessRoleCode %r>' % self.party_business_role_code
 
     @classmethod
     def find_by_party_business_role_code(cls, _id):

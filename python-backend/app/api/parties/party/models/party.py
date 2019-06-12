@@ -24,34 +24,28 @@ class Party(AuditMixin, Base):
     phone_no = db.Column(db.String, nullable=False)
     phone_ext = db.Column(db.String, nullable=True)
     email = db.Column(db.String, nullable=True)
-    effective_date = db.Column(
-        db.DateTime, nullable=False, default=datetime.utcnow)
-    expiry_date = db.Column(db.DateTime,
-                            nullable=False,
-                            default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
-    party_type_code = db.Column(db.String, db.ForeignKey(
-        'party_type_code.party_type_code'))
-    deleted_ind = db.Column(db.Boolean, nullable=False,
-                            server_default=FetchedValue())
+    effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    expiry_date = db.Column(
+        db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
+    party_type_code = db.Column(db.String, db.ForeignKey('party_type_code.party_type_code'))
+    deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     mine_party_appt = db.relationship('MinePartyAppointment', lazy='select')
-    address = db.relationship('Address', lazy='select',
-                              secondary='party_address_xref')
+    address = db.relationship('Address', lazy='select', secondary='party_address_xref')
     job_title = db.Column(db.String, nullable=True)
     postnominal_letters = db.Column(db.String, nullable=True)
     idir_username = db.Column(db.String, nullable=True)
 
-    business_role_appts = db.relationship(
-        'PartyBusinessRoleAppointment', lazy='select')
+    business_role_appts = db.relationship('PartyBusinessRoleAppointment', lazy='select')
 
     @hybrid_property
     def name(self):
         return self.first_name + ' ' + self.party_name if self.first_name else self.party_name
 
     @hybrid_property
-    def business_roles(self):
+    def business_roles_codes(self):
         return [
-            x.party_business_role for x in self.business_role_appts
+            x.party_business_role_code for x in self.business_role_appts
             if (not x.end_date or x.end_date > datetime.utcnow())
         ]
 
@@ -107,14 +101,12 @@ class Party(AuditMixin, Base):
             cls.party_type_code == party_type_code, cls.deleted_ind == False
         ]
         if first_name:
-            filters.append(func.lower(cls.first_name)
-                           == func.lower(first_name))
+            filters.append(func.lower(cls.first_name) == func.lower(first_name))
         return cls.query.filter(*filters).first()
 
     @classmethod
     def search_by_name(cls, search_term, party_type=None, query_limit=50):
-        _filter_by_name = func.upper(
-            cls.name).contains(func.upper(search_term))
+        _filter_by_name = func.upper(cls.name).contains(func.upper(search_term))
         if party_type:
             return cls.query.filter(
                 cls.party_type_code == party_type).filter(_filter_by_name).filter(
@@ -170,8 +162,7 @@ class Party(AuditMixin, Base):
         if self.party_type_code == 'PER' and not first_name:
             raise AssertionError('Person first name is not provided.')
         if first_name and len(first_name) > 100:
-            raise AssertionError(
-                'Person first name must not exceed 100 characters.')
+            raise AssertionError('Person first name must not exceed 100 characters.')
         return first_name
 
     @validates('party_name')
@@ -187,8 +178,7 @@ class Party(AuditMixin, Base):
         if not phone_no:
             raise AssertionError('Party phone number is not provided.')
         if not re.match(r'[0-9]{3}-[0-9]{3}-[0-9]{4}', phone_no):
-            raise AssertionError(
-                'Invalid phone number format, must be of XXX-XXX-XXXX.')
+            raise AssertionError('Invalid phone number format, must be of XXX-XXX-XXXX.')
         return phone_no
 
     @validates('email')
