@@ -73,7 +73,7 @@ ShallowWrapper {
               <Field
                 component={[Function]}
                 id="reported_by_name"
-                label="Reported by"
+                label="Reported by*"
                 name="reported_by_name"
                 placeholder="Provide name of reporter"
                 validate={
@@ -140,7 +140,7 @@ ShallowWrapper {
               <Field
                 component={[Function]}
                 id="reported_timestamp"
-                label="Reported Date and Time"
+                label="Reported Date and Time*"
                 name="reported_timestamp"
                 placeholder="Please select date and time"
                 showTime={true}
@@ -209,7 +209,7 @@ ShallowWrapper {
               <Field
                 component={[Function]}
                 id="reported_by_name"
-                label="Reported by"
+                label="Reported by*"
                 name="reported_by_name"
                 placeholder="Provide name of reporter"
                 validate={
@@ -276,7 +276,7 @@ ShallowWrapper {
               <Field
                 component={[Function]}
                 id="reported_timestamp"
-                label="Reported Date and Time"
+                label="Reported Date and Time*"
                 name="reported_timestamp"
                 placeholder="Please select date and time"
                 showTime={true}
@@ -345,7 +345,7 @@ ShallowWrapper {
               <Field
                 component={[Function]}
                 id="reported_by_name"
-                label="Reported by"
+                label="Reported by*"
                 name="reported_by_name"
                 placeholder="Provide name of reporter"
                 validate={
@@ -412,7 +412,7 @@ ShallowWrapper {
               <Field
                 component={[Function]}
                 id="reported_timestamp"
-                label="Reported Date and Time"
+                label="Reported Date and Time*"
                 name="reported_timestamp"
                 placeholder="Please select date and time"
                 showTime={true}
@@ -478,7 +478,7 @@ ShallowWrapper {
                 <Field
                   component={[Function]}
                   id="reported_by_name"
-                  label="Reported by"
+                  label="Reported by*"
                   name="reported_by_name"
                   placeholder="Provide name of reporter"
                   validate={
@@ -545,7 +545,7 @@ ShallowWrapper {
                 <Field
                   component={[Function]}
                   id="reported_timestamp"
-                  label="Reported Date and Time"
+                  label="Reported Date and Time*"
                   name="reported_timestamp"
                   placeholder="Please select date and time"
                   showTime={true}
@@ -665,7 +665,7 @@ ShallowWrapper {
                 "children": <Field
                   component={[Function]}
                   id="reported_by_name"
-                  label="Reported by"
+                  label="Reported by*"
                   name="reported_by_name"
                   placeholder="Provide name of reporter"
                   validate={
@@ -684,7 +684,7 @@ ShallowWrapper {
                 "props": Object {
                   "component": [Function],
                   "id": "reported_by_name",
-                  "label": "Reported by",
+                  "label": "Reported by*",
                   "name": "reported_by_name",
                   "placeholder": "Provide name of reporter",
                   "validate": Array [
@@ -831,7 +831,7 @@ ShallowWrapper {
                 "children": <Field
                   component={[Function]}
                   id="reported_timestamp"
-                  label="Reported Date and Time"
+                  label="Reported Date and Time*"
                   name="reported_timestamp"
                   placeholder="Please select date and time"
                   showTime={true}
@@ -852,7 +852,7 @@ ShallowWrapper {
                 "props": Object {
                   "component": [Function],
                   "id": "reported_timestamp",
-                  "label": "Reported Date and Time",
+                  "label": "Reported Date and Time*",
                   "name": "reported_timestamp",
                   "placeholder": "Please select date and time",
                   "showTime": true,
@@ -935,7 +935,7 @@ ShallowWrapper {
                 <Field
                   component={[Function]}
                   id="reported_by_name"
-                  label="Reported by"
+                  label="Reported by*"
                   name="reported_by_name"
                   placeholder="Provide name of reporter"
                   validate={
@@ -1002,7 +1002,7 @@ ShallowWrapper {
                 <Field
                   component={[Function]}
                   id="reported_timestamp"
-                  label="Reported Date and Time"
+                  label="Reported Date and Time*"
                   name="reported_timestamp"
                   placeholder="Please select date and time"
                   showTime={true}
@@ -1071,7 +1071,7 @@ ShallowWrapper {
                 <Field
                   component={[Function]}
                   id="reported_by_name"
-                  label="Reported by"
+                  label="Reported by*"
                   name="reported_by_name"
                   placeholder="Provide name of reporter"
                   validate={
@@ -1138,7 +1138,7 @@ ShallowWrapper {
                 <Field
                   component={[Function]}
                   id="reported_timestamp"
-                  label="Reported Date and Time"
+                  label="Reported Date and Time*"
                   name="reported_timestamp"
                   placeholder="Please select date and time"
                   showTime={true}
@@ -1207,7 +1207,7 @@ ShallowWrapper {
                 <Field
                   component={[Function]}
                   id="reported_by_name"
-                  label="Reported by"
+                  label="Reported by*"
                   name="reported_by_name"
                   placeholder="Provide name of reporter"
                   validate={
@@ -1274,7 +1274,7 @@ ShallowWrapper {
                 <Field
                   component={[Function]}
                   id="reported_timestamp"
-                  label="Reported Date and Time"
+                  label="Reported Date and Time*"
                   name="reported_timestamp"
                   placeholder="Please select date and time"
                   showTime={true}
@@ -1340,7 +1340,7 @@ ShallowWrapper {
                   <Field
                     component={[Function]}
                     id="reported_by_name"
-                    label="Reported by"
+                    label="Reported by*"
                     name="reported_by_name"
                     placeholder="Provide name of reporter"
                     validate={
@@ -1407,7 +1407,7 @@ ShallowWrapper {
                   <Field
                     component={[Function]}
                     id="reported_timestamp"
-                    label="Reported Date and Time"
+                    label="Reported Date and Time*"
                     name="reported_timestamp"
                     placeholder="Please select date and time"
                     showTime={true}
@@ -1527,7 +1527,7 @@ ShallowWrapper {
                   "children": <Field
                     component={[Function]}
                     id="reported_by_name"
-                    label="Reported by"
+                    label="Reported by*"
                     name="reported_by_name"
                     placeholder="Provide name of reporter"
                     validate={
@@ -1546,7 +1546,7 @@ ShallowWrapper {
                   "props": Object {
                     "component": [Function],
                     "id": "reported_by_name",
-                    "label": "Reported by",
+                    "label": "Reported by*",
                     "name": "reported_by_name",
                     "placeholder": "Provide name of reporter",
                     "validate": Array [
@@ -1693,7 +1693,7 @@ ShallowWrapper {
                   "children": <Field
                     component={[Function]}
                     id="reported_timestamp"
-                    label="Reported Date and Time"
+                    label="Reported Date and Time*"
                     name="reported_timestamp"
                     placeholder="Please select date and time"
                     showTime={true}
@@ -1714,7 +1714,7 @@ ShallowWrapper {
                   "props": Object {
                     "component": [Function],
                     "id": "reported_timestamp",
-                    "label": "Reported Date and Time",
+                    "label": "Reported Date and Time*",
                     "name": "reported_timestamp",
                     "placeholder": "Please select date and time",
                     "showTime": true,
