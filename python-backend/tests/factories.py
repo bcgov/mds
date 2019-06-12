@@ -231,6 +231,7 @@ class VarianceFactory(BaseFactory):
         not_applicable = factory.Trait(variance_application_status_code='NAP')
 
     variance_guid = GUID
+    variance_application_status_code = factory.LazyFunction(RandomVarianceApplicationStatusCode)
     compliance_article_id = factory.LazyFunction(RandomComplianceArticleId)
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     note = factory.Faker('sentence', nb_words=6, variable_nb_words=True)

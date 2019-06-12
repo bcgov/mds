@@ -16,6 +16,7 @@ from app.api.mines.compliance.models.compliance_article import ComplianceArticle
 from app.api.parties.party.models.sub_division_code import SubDivisionCode
 from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
 from app.api.parties.party_appt.models.party_business_role_code import PartyBusinessRoleCode
+from app.api.variances.models.variance_application_status_code import VarianceApplicationStatusCode
 
 
 def RandomApplicationStatusCode():
@@ -95,3 +96,11 @@ def SampleDangerousOccurrenceSubparagraphs(num):
         db.session.query(ComplianceArticle).filter(
             ComplianceArticle.section == '1', ComplianceArticle.sub_section == '7',
             ComplianceArticle.paragraph == '3', ComplianceArticle.sub_paragraph != None).all(), num)
+
+def RandomVarianceApplicationStatusCode():
+    return random.choice([
+        x.variance_application_status_code
+        for x in filter(
+            lambda x: x.variance_application_status_code not in ['APP', 'DEN'],
+            VarianceApplicationStatusCode.active())
+    ])
