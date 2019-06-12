@@ -1,7 +1,7 @@
 pipeline {
     agent none
     environment {
-     file = readTrusted 'pipeline/build.grade'
+     file = readTrusted 'pipeline/build.gradle'
    }
     options {
         disableResume()
@@ -14,7 +14,8 @@ pipeline {
                 script {
                     abortAllPreviousBuildInProgress(currentBuild)
                 }
-                echo file
+                sh 'echo ${file} > trustedfile'
+                sh 'cmp --silent trustedFile pipeline/build.gradle'
                 sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b ${file} cd-build -Pargs.--config=pipeline/config-build.groovy -Pargs.--pr=${CHANGE_ID}'
             }
         }
