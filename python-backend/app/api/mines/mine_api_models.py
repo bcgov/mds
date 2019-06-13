@@ -15,6 +15,11 @@ class Date(fields.Raw):
 BASIC_MINE_LOCATION_MODEL = api.model('BasicMineLocation', {
     'latitude': fields.String,
     'longitude': fields.String,
+    'utm_easting': fields.String,
+    'utm_northing': fields.String,
+    'utm_zone_number': fields.String,
+    'utm_zone_letter': fields.String,
+    'mine_location_description': fields.String,
 })
 
 BASIC_MINE_LIST = api.model(
@@ -22,7 +27,7 @@ BASIC_MINE_LIST = api.model(
         'mine_guid': fields.String,
         'mine_name': fields.String,
         'mine_no': fields.String,
-        'mine_location': fields.Nested(BASIC_MINE_LOCATION_MODEL)
+        'mine_location': fields.Nested(BASIC_MINE_LOCATION_MODEL),
     })
 
 MINE_TENURE_TYPE_CODE_MODEL = api.model('MineTenureTypeCode', {
@@ -36,6 +41,11 @@ MINE_LOCATION_MODEL = api.model(
         'mine_guid': fields.String,
         'latitude': fields.Fixed(description='fixed precision decimal.', decimals=7),
         'longitude': fields.Fixed(description='fixed precision decimal.', decimals=7),
+        'utm_easting': fields.String,
+        'utm_northing': fields.String,
+        'utm_zone_number': fields.String,
+        'utm_zone_letter': fields.String,
+        'mine_location_description': fields.String,
     })
 
 MINE_DOCUMENT_MODEL = api.model(
@@ -50,6 +60,7 @@ PERMIT_MODEL = api.model('MinePermit', {
     'permit_guid': fields.String,
     'permit_no': fields.String,
     'permit_status_code': fields.String,
+    'permit_status_code_description': fields.String,
 })
 
 EXPECTED_DOCUMENT_STATUS_MODEL = api.model('ExpectedDocumentStatus', {
@@ -67,6 +78,7 @@ STATUS_MODEL = api.model(
         'effective_date': Date,
         'expiry_date': Date,
         'status_date': Date,
+        'status_description': fields.String,
     })
 
 MINE_TSF_MODEL = api.model(
@@ -182,7 +194,8 @@ MINE_INCIDENT_DETERMINATION_TYPE_MODEL = api.model(
 
 VARIANCE_DOCUMENT_MODEL = api.inherit(
     'VarianceDocumentModel', MINE_DOCUMENT_MODEL, {
-        'created_at': fields.Date
+        'created_at': fields.Date,
+        'variance_document_category_code': fields.String
     })
 
 VARIANCE_MODEL = api.model(
@@ -192,8 +205,9 @@ VARIANCE_MODEL = api.model(
         'compliance_article_id': fields.Integer,
         'variance_application_status_code': fields.String,
         'applicant_guid': fields.String,
-        'inspector_guid': fields.String,
+        'inspector_party_guid': fields.String,
         'note': fields.String,
+        'parties_notified_ind': fields.Boolean,
         'issue_date': fields.Date,
         'received_date': fields.Date,
         'expiry_date': fields.Date,
@@ -223,5 +237,6 @@ MINE_STATUS_CODE_MODEL = api.model(
             'mine_status_xref_guid':fields.String(),
             'mine_operation_status':fields.Nested(MINE_OPERATION_STATUS_CODE_MODEL),
             'mine_operation_status_reason':fields.Nested(MINE_OPERATION_STATUS_REASON_CODE_MODEL),
-            'mine_operation_status_sub_reason':fields.Nested(MINE_OPERATION_STATUS_SUB_REASON_CODE_MODEL)
+            'mine_operation_status_sub_reason':fields.Nested(MINE_OPERATION_STATUS_SUB_REASON_CODE_MODEL),
+            'description': fields.String(),
     })

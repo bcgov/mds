@@ -15,6 +15,9 @@ from app.api.mines.status.models.mine_status_xref import MineStatusXref
 from app.api.mines.compliance.models.compliance_article import ComplianceArticle
 from app.api.parties.party.models.sub_division_code import SubDivisionCode
 from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
+from app.api.parties.party_appt.models.party_business_role_code import PartyBusinessRoleCode
+from app.api.variances.models.variance_document_category_code import VarianceDocumentCategoryCode
+from app.api.variances.models.variance_application_status_code import VarianceApplicationStatusCode
 
 
 def RandomApplicationStatusCode():
@@ -73,6 +76,11 @@ def RandomMinePartyAppointmentTypeCode():
         [x.mine_party_appt_type_code for x in db.session.query(MinePartyAppointmentType).all()])
 
 
+def RandomPartyBusinessRoleCode():
+    return random.choice(
+        [x.party_business_role_code for x in db.session.query(PartyBusinessRoleCode)])
+
+
 def RandomComplianceArticleId():
     return random.choice(
         [x.compliance_article_id for x in db.session.query(ComplianceArticle).all()])
@@ -84,8 +92,22 @@ def RandomIncidentDeterminationTypeCode():
     ])
 
 
+def RandomVarianceDocumentCategoryCode():
+    return random.choice([
+        x.variance_document_category_code for x in VarianceDocumentCategoryCode.active()
+    ])
+
+
 def SampleDangerousOccurrenceSubparagraphs(num):
     return random.sample(
         db.session.query(ComplianceArticle).filter(
             ComplianceArticle.section == '1', ComplianceArticle.sub_section == '7',
             ComplianceArticle.paragraph == '3', ComplianceArticle.sub_paragraph != None).all(), num)
+
+def RandomVarianceApplicationStatusCode():
+    return random.choice([
+        x.variance_application_status_code
+        for x in filter(
+            lambda x: x.variance_application_status_code not in ['APP', 'DEN'],
+            VarianceApplicationStatusCode.active())
+    ])

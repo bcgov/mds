@@ -96,7 +96,7 @@ cache:
 
 database-build:
 	@echo "+\n++ Performing postgres build ...\n+"
-	@docker-compose build postgres
+	@docker-compose build postgres flyway
 
 database-run:
 	@echo "+\n++ Running postgres and Flyway migrations...\n+"
@@ -164,5 +164,5 @@ stop:
 clean:
 	@echo "+\n++ Cleaning ...\n+"
 	@docker-compose rm -f -v -s
-	@docker rmi -f mds_postgres mds_backend mds_frontend
+	@docker rmi -f mds_postgres mds_backend mds_frontend mds_flyway
 	@docker volume rm mds_postgres-data -f

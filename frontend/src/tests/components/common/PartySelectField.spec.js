@@ -6,7 +6,7 @@ const dispatchProps = {};
 const props = {};
 
 const setupDispatchProps = () => {
-  dispatchProps.fetchParties = jest.fn();
+  dispatchProps.fetchSearchResults = jest.fn();
 };
 
 const setupProps = () => {};

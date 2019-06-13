@@ -414,7 +414,9 @@ class MineListSearch(Resource):
                     'mine_name': x.mine_name,
                     'mine_no': x.mine_no,
                     'latitude': str(x.mine_location.latitude) if x.mine_location else '',
-                    'longitude': str(x.mine_location.longitude) if x.mine_location else '', },
+                    'longitude': str(x.mine_location.longitude) if x.mine_location else '',
+                    'mine_location_description': x.mine_location.mine_location_description if x.mine_location else '',
+                    },
                 mines))
         return {'mines': result}
 
@@ -458,7 +460,10 @@ def _mine_status_processor(mine_status, status_date, mine):
         existing_status.expiry_date = datetime.today()
         existing_status.active_ind = False
         existing_status.save()
-    new_status = MineStatus(mine_status_xref_guid=mine_status_xref.mine_status_xref_guid, status_date=status_date)
+    if status_date == '':
+        new_status = MineStatus(mine_status_xref_guid=mine_status_xref.mine_status_xref_guid)
+    else:
+        new_status = MineStatus(mine_status_xref_guid=mine_status_xref.mine_status_xref_guid, status_date=status_date)
     mine.mine_status.append(new_status)
     new_status.save()
     mine.save(commit=False)

@@ -201,9 +201,11 @@ const transformMineStatusSubReason = (reasons) =>
     .map((subReasons) => ({
       value: subReasons[0].mine_operation_status_sub_reason.mine_operation_status_sub_reason_code,
       label: subReasons[0].mine_operation_status_sub_reason.description,
+      title: subReasons[0].description,
       children: [],
     }))
-    .value();
+    .value()
+    .sort((a, b) => (a.label < b.label ? -1 : 1));
 
 const transformMineStatusReason = (codes) =>
   chain(codes)
@@ -212,9 +214,13 @@ const transformMineStatusReason = (codes) =>
     .map((reasons) => ({
       value: reasons[0].mine_operation_status_reason.mine_operation_status_reason_code,
       label: reasons[0].mine_operation_status_reason.description,
+      title: reasons[0].mine_operation_status_sub_reason.mine_operation_status_sub_reason_code
+        ? null
+        : reasons[0].description,
       children: transformMineStatusSubReason(reasons),
     }))
-    .value();
+    .value()
+    .sort((a, b) => (a.label < b.label ? -1 : 1));
 
 const transformMineStatus = (data) =>
   chain(data)
@@ -222,9 +228,13 @@ const transformMineStatus = (data) =>
     .map((codes) => ({
       value: codes[0].mine_operation_status.mine_operation_status_code,
       label: codes[0].mine_operation_status.description,
+      title: codes[0].mine_operation_status_reason.mine_operation_status_reason_code
+        ? null
+        : codes[0].description,
       children: transformMineStatusReason(codes),
     }))
-    .value();
+    .value()
+    .sort((a, b) => (a.label < b.label ? -1 : 1));
 
 export const getMineStatusDropDownOptions = createSelector(
   getMineStatusOptions,
