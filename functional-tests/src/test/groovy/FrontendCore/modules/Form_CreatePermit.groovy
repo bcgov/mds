@@ -10,7 +10,7 @@ class Form_Create_And_Edit_Permit extends Module {
     static PERMIT_STATUS = "Open"
     static ISSUE_DATE = '1983-12-08'
     static AMENDMENT_DATE =  "1984-12-08"
-    static MINE_NAME = "MINETEST"
+    static MINE_NAME = "!!MINETEST"
     static MODAL_HEADER = "Add a new permit to "+MINE_NAME
 
     static at = { waitFor() {header=="Add New Contact"}}
