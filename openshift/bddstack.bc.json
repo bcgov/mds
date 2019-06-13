@@ -92,7 +92,7 @@
             "from": {
               "kind": "ImageStreamTag",
               "namespace": "bcgov",
-              "name": "jenkins-slave-bddstack:v1-latest"
+              "name": "jenkins-slave-bddstack:v1-stable"
             }
           }
         },
