@@ -16,6 +16,7 @@ const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
+  documentCategoryOptions: CustomPropTypes.options.isRequired,
   mineGuid: PropTypes.string.isRequired,
   inspectors: CustomPropTypes.options.isRequired,
   complianceCodes: CustomPropTypes.options.isRequired,
@@ -50,6 +51,7 @@ export class AddVarianceForm extends Component {
   };
 
   render() {
+    const filesUploaded = this.state.uploadedFiles.length >= 1;
     return (
       <Form
         layout="vertical"
@@ -130,30 +132,20 @@ export class AddVarianceForm extends Component {
         </Form.Item>
         <br />
         <h5>upload files</h5>
-        <p> Please upload all the required documents here for the variance application</p>
+        <p className="p-light">
+          All documents uploaded will be associated with the category selected, if you would like to
+          add a different category of documents please submit and edit the variance.
+        </p>
         <br />
         <Form.Item>
           <Field
             id="variance_document_category_code"
             name="variance_document_category_code"
-            label="Document Category*"
-            placeholder="Select a part of the code"
+            label={filesUploaded ? "Document Category*" : "Document Category"}
+            placeholder="Please select category"
             component={renderConfig.SELECT}
-            validate={[required]}
-            data={[
-              {
-                value: "REQ",
-                label: "Request Document",
-              },
-              {
-                value: "REC",
-                label: "Recommendation Document",
-              },
-              {
-                value: "DEC",
-                label: "Decision Document",
-              },
-            ]}
+            validate={filesUploaded ? [required] : []}
+            data={this.props.documentCategoryOptions}
           />
         </Form.Item>
         <Form.Item>
