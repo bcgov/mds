@@ -134,12 +134,45 @@ export class AddVarianceForm extends Component {
         <br />
         <Form.Item>
           <Field
+            id="variance_document_category_code"
+            name="variance_document_category_code"
+            label="Document Category*"
+            placeholder="Select a part of the code"
+            component={renderConfig.SELECT}
+            validate={[required]}
+            data={[
+              {
+                value: "REQ",
+                label: "Request Document",
+              },
+              {
+                value: "REC",
+                label: "Recommendation Document",
+              },
+              {
+                value: "DEC",
+                label: "Decision Document",
+              },
+            ]}
+          />
+        </Form.Item>
+        <Form.Item>
+          <Field
             id="VarianceDocumentFileUpload"
             name="VarianceDocumentFileUpload"
             onFileLoad={this.onFileLoad}
             onRemoveFile={this.onRemoveFile}
             mineGuid={this.props.mineGuid}
             component={VarianceFileUpload}
+          />
+        </Form.Item>
+        <Form.Item>
+          <Field
+            id="parties_notified_ind"
+            name="parties_notified_ind"
+            label="Affected parties have been notified about this Variance request and decision"
+            type="checkbox"
+            component={renderConfig.CHECKBOX}
           />
         </Form.Item>
         <div className="right center-mobile">
