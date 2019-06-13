@@ -231,10 +231,10 @@ class VarianceFactory(BaseFactory):
         not_applicable = factory.Trait(variance_application_status_code='NAP')
 
     variance_guid = GUID
-    variance_application_status_code = factory.LazyFunction(RandomVarianceApplicationStatusCode)
     compliance_article_id = factory.LazyFunction(RandomComplianceArticleId)
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     note = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
+    parties_notified_ind = factory.Faker('boolean', chance_of_getting_true=50)
     received_date = TODAY
     documents = []
 
@@ -263,6 +263,7 @@ class VarianceDocumentFactory(BaseFactory):
     variance_document_xref_guid = GUID
     mine_document_guid = factory.SelfAttribute('mine_document.mine_document_guid')
     variance_id = factory.SelfAttribute('variance.variance_id')
+    variance_document_category_code = factory.LazyFunction(RandomVarianceDocumentCategoryCode)
 
 
 def RandomPermitNumber():
