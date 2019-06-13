@@ -1,7 +1,3 @@
-fileNamesToVerify = ['pipeline/build.gradle', 'pipeline/config-prod.groovy', 'pipeline/src/groovy/Build.groovy',
-'pipeline/src/groovy/Deploy.groovy', 'pipeline/src/groovy/UnitTest.groovy', 'pipeline/src/groovy/BddStack.groovy',
-'pipeline/src/groovy/Zap.groovy', 'pipeline/src/groovy/Clean.groovy']
-
 pipeline {
     agent none
     options {
@@ -13,9 +9,14 @@ pipeline {
             steps {
                 echo "Aborting all running jobs ..."
                 script {
+                    // Kill any running jobs
                     abortAllPreviousBuildInProgress(currentBuild)
-                    for (int i = 0; i < fileNamesToVerify.size(); i++) {
-                        currentFilename = fileNamesToVerify[i]
+
+                    // Grab any files ending in .gradle or .groovy
+                    // Verify they match the Trusted version
+                    files = findFiles(glob: 'pipeline/**/*.gr*')
+                    for (def file : files) {
+                        currentFilename = file.path
                         fileContent = readTrusted currentFilename
                         writeFile file: 'currentFile', text: fileContent
                         sh "cmp ${currentFilename} currentFile"
