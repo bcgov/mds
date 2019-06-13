@@ -41,7 +41,7 @@ const columns = [
   {
     title: "",
     dataIndex: "handleEditModal",
-    render: (handleEditMineIncident, record) => (
+    render: (text, record) => (
       <div title="" align="right">
         <AuthorizationWrapper permission={Permission.CREATE}>
           <Button
@@ -52,7 +52,7 @@ const columns = [
               record.openMineIncidentModal(event, record.handleEditMineIncident, record.incident)
             }
           >
-            <img src={BRAND_PENCIL} alt="Edit TSF Report" />
+            <img src={BRAND_PENCIL} alt="Edit Incident" />
           </Button>
         </AuthorizationWrapper>
       </div>

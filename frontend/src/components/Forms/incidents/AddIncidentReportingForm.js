@@ -109,4 +109,5 @@ export default reduxForm({
   destroyOnUnmount: false,
   touchOnBlur: false,
   onSubmitSuccess: resetForm(FORM.ADD_INCIDENT_REPORTING),
+  enableReinitialize: true,
 })(AddIncidentReportingForm);

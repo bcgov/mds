@@ -91,6 +91,7 @@ export class MineIncidents extends Component {
         incidentStatusCodeOptions: this.props.incidentStatusCodeOptions,
         doSubparagraphOptions: this.props.doSubparagraphOptions,
         inspectors: this.props.inspectors,
+        clearOnSubmit: true,
       },
       widthSize: "50vw",
       content: modalConfig.MINE_INCIDENT,

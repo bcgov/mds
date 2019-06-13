@@ -156,4 +156,5 @@ export default reduxForm({
   form: FORM.ADD_INCIDENT_DETAIL,
   destroyOnUnmount: false,
   onSubmitSuccess: resetForm(FORM.ADD_INCIDENT_DETAIL),
+  enableReinitialize: true,
 })(AddIncidentDetailForm);

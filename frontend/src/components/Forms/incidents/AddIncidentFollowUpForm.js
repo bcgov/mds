@@ -131,4 +131,5 @@ export default reduxForm({
   form: FORM.ADD_INCIDENT_FOLLOWUP,
   destroyOnUnmount: false,
   onSubmitSuccess: resetForm(FORM.ADD_INCIDENT_FOLLOWUP),
+  enableReinitialize: true,
 })(AddIncidentFollowUpForm);
