@@ -11,12 +11,11 @@
       "metadata": {
         "name": "mds-database-backup${SUFFIX}",
         "annotations": {
-          "volume.beta.kubernetes.io/storage-class": "gluster-file",
-          "volume.beta.kubernetes.io/storage-provisioner": "kubernetes.io/glusterfs"
+          "volume.beta.kubernetes.io/storage-class": "nfs-backup"
         }
       },
       "spec": {
-        "accessModes": ["ReadWriteMany"],
+        "accessModes": ["ReadWriteOnce"],
         "resources": {
           "requests": {
             "storage": "${PERSISTENT_VOLUME_SIZE}"
