@@ -4,17 +4,25 @@ DECLARE
     IDIR_USER varchar = '%bdd-test%';
 BEGIN
     DELETE FROM mine_party_appt WHERE create_user LIKE IDIR_USER;
-    -- DELETE FROM permit_amendment_document
-    -- WHERE permit_amendment_id = ANY (
-    --     SELECT permit_amendment_id FROM permit_amendment
-    --     WHERE permit_id = ANY (
-    --     SELECT permit_id FROM permit WHERE create_user LIKE IDIR_USER)
-    -- );
-    -- DELETE FROM permit_amendment
+    DELETE FROM mine_party_appt
+    WHERE permit_guid = ANY (
+        SELECT permit_guid FROM permit WHERE create_user LIKE IDIR_USER);
+
+    DELETE FROM permit_amendment_document
+    WHERE permit_amendment_id = ANY (
+        SELECT permit_amendment_id FROM permit_amendment
+        WHERE permit_id = ANY (
+        SELECT permit_id FROM permit WHERE create_user LIKE IDIR_USER)
+    );
+    DELETE FROM permit_amendment
+    WHERE permit_id = ANY (
+    SELECT permit_id FROM permit WHERE create_user LIKE IDIR_USER);
+    
+    -- DELETE FROM mine_party_appt
     -- WHERE permit_id = ANY (
     -- SELECT permit_id FROM permit WHERE create_user LIKE IDIR_USER);
-    -- DELETE FROM permit WHERE create_user LIKE IDIR_USER;
-    DELETE FROM permit WHERE create_user LIKE IDIR_USER ON DELETE CASCADE;
+    
+    DELETE FROM permit WHERE create_user LIKE IDIR_USER;
     DELETE FROM party_address_xref
     WHERE party_guid = ANY (
     SELECT party_guid
