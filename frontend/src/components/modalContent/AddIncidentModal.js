@@ -1,3 +1,5 @@
+// Passing props into function causes linter to not recognize use of props used in that function.
+/* eslint-disable react/no-unused-prop-types */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -34,7 +36,6 @@ const defaultProps = {
   addFollowUpFormValues: {},
 };
 
-// TODO: Should move these into the forms themselves
 const invalidReportingPayload = (addReportingFormValues) =>
   addReportingFormValues.reported_timestamp === undefined ||
   addReportingFormValues.reported_by_name === undefined ||
@@ -58,6 +59,93 @@ const invalidDetailPayload = (addDetailFormValues) =>
 const invalidFollowUpPayload = (addFollowUpFormValues) =>
   addFollowUpFormValues.status_code === undefined ||
   addFollowUpFormValues.mine_incident_followup_investigation_type === undefined;
+
+const StepForms = (props, next, prev, handleIncidentSubmit) => [
+  {
+    title: "Initial Report",
+    content: (
+      <AddIncidentReportingForm initialValues={props.initialValues} inspectors={props.inspectors} />
+    ),
+    buttons: (
+      <Button
+        id="step1-next"
+        type="tertiary"
+        className="full-mobile"
+        onClick={() => next()}
+        disabled={invalidReportingPayload(props.addReportingFormValues)}
+      >
+        Next
+      </Button>
+    ),
+  },
+  {
+    title: "Add Details",
+    content: (
+      <AddIncidentDetailForm
+        initialValues={props.initialValues}
+        doSubparagraphOptions={props.doSubparagraphOptions}
+        incidentDeterminationOptions={props.incidentDeterminationOptions}
+        incidentStatusCodeOptions={props.incidentStatusCodeOptions}
+        inspectors={props.inspectors}
+      />
+    ),
+    buttons: (
+      <span>
+        <Button id="step-back" type="tertiary" className="full-mobile" onClick={() => prev()}>
+          Back
+        </Button>
+        {props.addDetailFormValues.determination_type_code !== "NDO" && (
+          <Button
+            id="step2-next"
+            type="tertiary"
+            className="full-mobile"
+            onClick={() => next()}
+            disabled={invalidDetailPayload(props.addDetailFormValues)}
+          >
+            Next
+          </Button>
+        )}
+        <Button
+          type="primary"
+          className="full-mobile"
+          onClick={(event) => handleIncidentSubmit(event, false)}
+          disabled={invalidDetailPayload(props.addDetailFormValues)}
+        >
+          Save&nbsp;
+          {props.addDetailFormValues.determination_type_code !== "NDO" && (
+            <span>initial&nbsp;</span>
+          )}
+          incident
+        </Button>
+      </span>
+    ),
+  },
+  {
+    title: "Follow Up",
+    content: (
+      <AddIncidentFollowUpForm
+        initialValues={props.initialValues}
+        incidentDeterminationOptions={props.incidentDeterminationOptions}
+        followupActionOptions={props.followupActionOptions}
+        incidentStatusCodeOptions={props.incidentStatusCodeOptions}
+        hasFatalities={props.addDetailFormValues.number_of_fatalities > 0}
+      />
+    ),
+    buttons: [
+      <Button id="step-back" type="tertiary" className="full-mobile" onClick={() => prev()}>
+        Back
+      </Button>,
+      <Button
+        type="primary"
+        className="full-mobile"
+        onClick={(event) => handleIncidentSubmit(event, false)}
+        disabled={invalidFollowUpPayload(props.addFollowUpFormValues)}
+      >
+        Submit
+      </Button>,
+    ],
+  },
+];
 
 export class AddIncidentModal extends Component {
   state = { current: 0 };
@@ -84,123 +172,23 @@ export class AddIncidentModal extends Component {
 
   prev = () => this.setState((prevState) => ({ current: prevState.current - 1 }));
 
-  renderStep1 = () => (
-    <AddIncidentReportingForm
-      initialValues={this.props.initialValues}
-      inspectors={this.props.inspectors}
-    />
-  );
-
-  renderStep1Buttons = () => (
-    <Button
-      id="step1-next"
-      type="tertiary"
-      className="full-mobile"
-      onClick={() => this.next()}
-      disabled={invalidReportingPayload(this.props.addReportingFormValues)}
-    >
-      Next
-    </Button>
-  );
-
-  renderStep2 = () => (
-    <AddIncidentDetailForm
-      initialValues={this.props.initialValues}
-      doSubparagraphOptions={this.props.doSubparagraphOptions}
-      incidentDeterminationOptions={this.props.incidentDeterminationOptions}
-      incidentStatusCodeOptions={this.props.incidentStatusCodeOptions}
-      inspectors={this.props.inspectors}
-    />
-  );
-
-  renderStep2Buttons = () => {
-    const determination = this.props.addDetailFormValues.determination_type_code;
-
-    return (
-      <span>
-        <Button id="step-back" type="tertiary" className="full-mobile" onClick={() => this.prev()}>
-          Back
-        </Button>
-        {determination !== "NDO" && (
-          <Button
-            id="step2-next"
-            type="tertiary"
-            className="full-mobile"
-            onClick={() => this.next()}
-            disabled={invalidDetailPayload(this.props.addDetailFormValues)}
-          >
-            Next
-          </Button>
-        )}
-        <Button
-          type="primary"
-          className="full-mobile"
-          onClick={(event) => this.handleIncidentSubmit(event, false)}
-          disabled={invalidDetailPayload(this.props.addDetailFormValues)}
-        >
-          Save&nbsp;{determination !== "NDO" && <span>initial&nbsp;</span>}incident
-        </Button>
-      </span>
-    );
-  };
-
-  renderStep3 = () => (
-    <AddIncidentFollowUpForm
-      initialValues={this.props.initialValues}
-      incidentDeterminationOptions={this.props.incidentDeterminationOptions}
-      followupActionOptions={this.props.followupActionOptions}
-      incidentStatusCodeOptions={this.props.incidentStatusCodeOptions}
-      hasFatalities={this.props.addDetailFormValues.number_of_fatalities > 0}
-    />
-  );
-
-  renderStep3Buttons = () => [
-    <Button id="step-back" type="tertiary" className="full-mobile" onClick={() => this.prev()}>
-      Back
-    </Button>,
-    <Button
-      type="primary"
-      className="full-mobile"
-      onClick={(event) => this.handleIncidentSubmit(event, false)}
-      disabled={invalidFollowUpPayload(this.props.addFollowUpFormValues)}
-    >
-      Submit
-    </Button>,
-  ];
-
   render = () => {
-    const steps = [
-      {
-        title: "Initial Report",
-        content: this.renderStep1(),
-      },
-      {
-        title: "Add Details",
-        content: this.renderStep2(),
-      },
-      {
-        title: "Follow Up",
-        content: this.renderStep3(),
-      },
-    ];
+    const Forms = StepForms(this.props, this.next, this.prev, this.handleIncidentSubmit);
 
     return (
       <div>
         <div>
           <div>
             <Steps current={this.state.current}>
-              {steps.map((step) => (
+              {Forms.map((step) => (
                 <Step key={step.title} title={step.title} />
               ))}
             </Steps>
             <br />
 
-            <div>{steps[this.state.current].content}</div>
+            <div>{Forms[this.state.current].content}</div>
 
             <div className="right center-mobile">
-              <Button type="secondary" className="full-mobile" onClick={() => this.resetForms()}>
-                Reset
-              </Button>
               <Popconfirm
                 placement="top"
                 title="Are you sure you want to cancel?"
@@ -213,10 +201,7 @@ export class AddIncidentModal extends Component {
                 </Button>
               </Popconfirm>
 
-              {/* Issue with rendering if we follow same approach as step content above */}
-              {this.state.current === 0 && this.renderStep1Buttons()}
-              {this.state.current === 1 && this.renderStep2Buttons()}
-              {this.state.current === 2 && this.renderStep3Buttons()}
+              {Forms[this.state.current].buttons}
             </div>
           </div>
         </div>
