@@ -45,7 +45,7 @@ export const VarianceDetails = (props) => (
       </div>
       {props.isViewOnly && (
         <div className="inline-flex padding-small">
-          <p className="field-title">Affected partied notified</p>
+          <p className="field-title">Affected parties have been notified</p>
           <p>{props.variance.parties_notified_ind ? "Yes" : "No"}</p>
         </div>
       )}
