@@ -99,22 +99,22 @@ class  PermitSpec extends GebReportingSpec {
         assert permitTab.amendmentDescriptions.children()[0].text()== Const.PERMIT_DESCRIPTION
     }
     
-    def "User can amalgamate a permit"(){
-        when: "The user amalgamates a permit."
-        moveToFooterAndHoverOnEdit()
-        permitTab.amalgamatePermitButton.click()
-        newPermitForm.amalgamatePermit()
-        waitFor(){permitTab.permitRow.children().has(text:"Add/Edit")}
+    // def "User can amalgamate a permit"(){
+    //     when: "The user amalgamates a permit."
+    //     moveToFooterAndHoverOnEdit()
+    //     permitTab.amalgamatePermitButton.click()
+    //     newPermitForm.amalgamatePermit()
+    //     waitFor(){permitTab.permitRow.children().has(text:"Add/Edit")}
 
-        and: "The user hovers over the Add/Edit button."
-        moveToFooterAndHoverOnEdit()
-        waitFor() {permitTab.hoverDropdown}
+    //     and: "The user hovers over the Add/Edit button."
+    //     moveToFooterAndHoverOnEdit()
+    //     waitFor() {permitTab.hoverDropdown}
 
-        then: "There is no 'amalgamate' option in the Add/Edit dropdown."
-        assert permitTab.hoverDropdown.children().has(text:"Add permit amendment").isDisplayed()
-        assert !permitTab.hoverDropdown.children().has(text:"Amalgamate permit").isDisplayed()
+    //     then: "There is no 'amalgamate' option in the Add/Edit dropdown."
+    //     assert permitTab.hoverDropdown.children().has(text:"Add permit amendment").isDisplayed()
+    //     assert !permitTab.hoverDropdown.children().has(text:"Amalgamate permit").isDisplayed()
 
-    }
+    // }
 
     def moveToFooterAndHoverOnEdit() {
         interact {
