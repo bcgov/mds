@@ -12,8 +12,8 @@ import dataObjects.MineProfileData
 @Title("MDS-Dashboard Page")
 @Stepwise
 class  DashboardSpec extends GebReportingSpec {
-    static NAME_GOOD = "Mine-Test ABC"
-    static NAME_GOOD_TWO = "Mine-Test DEF"
+    static NAME_GOOD = "!!!Mine-Test ABC"
+    static NAME_GOOD_TWO = "!!!Mine-Test DEF"
     static STATUS    = "Closed / Orphaned / Long Term Maintenance"
     static LAGTITUTE = "52.6565"
     static LONGTITUE = "124.2342"
