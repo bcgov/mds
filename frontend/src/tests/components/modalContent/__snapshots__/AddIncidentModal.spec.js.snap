@@ -56,6 +56,17 @@ ShallowWrapper {
           <div
             className="right center-mobile"
           >
+            <Button
+              block={false}
+              className="full-mobile"
+              ghost={false}
+              htmlType="button"
+              loading={false}
+              onClick={[Function]}
+              type="secondary"
+            >
+              Reset
+            </Button>
             <Popconfirm
               cancelText="No"
               icon={
@@ -130,6 +141,17 @@ ShallowWrapper {
           <div
             className="right center-mobile"
           >
+            <Button
+              block={false}
+              className="full-mobile"
+              ghost={false}
+              htmlType="button"
+              loading={false}
+              onClick={[Function]}
+              type="secondary"
+            >
+              Reset
+            </Button>
             <Popconfirm
               cancelText="No"
               icon={
@@ -203,6 +225,17 @@ ShallowWrapper {
             <div
               className="right center-mobile"
             >
+              <Button
+                block={false}
+                className="full-mobile"
+                ghost={false}
+                htmlType="button"
+                loading={false}
+                onClick={[Function]}
+                type="secondary"
+              >
+                Reset
+              </Button>
               <Popconfirm
                 cancelText="No"
                 icon={
@@ -344,6 +377,17 @@ ShallowWrapper {
             "nodeType": "host",
             "props": Object {
               "children": Array [
+                <Button
+                  block={false}
+                  className="full-mobile"
+                  ghost={false}
+                  htmlType="button"
+                  loading={false}
+                  onClick={[Function]}
+                  type="secondary"
+                >
+                  Reset
+                </Button>,
                 <Popconfirm
                   cancelText="No"
                   icon={
@@ -391,6 +435,24 @@ ShallowWrapper {
             },
             "ref": null,
             "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "block": false,
+                  "children": "Reset",
+                  "className": "full-mobile",
+                  "ghost": false,
+                  "htmlType": "button",
+                  "loading": false,
+                  "onClick": [Function],
+                  "type": "secondary",
+                },
+                "ref": null,
+                "rendered": "Reset",
+                "type": [Function],
+              },
               Object {
                 "instance": null,
                 "key": undefined,
@@ -502,6 +564,17 @@ ShallowWrapper {
             <div
               className="right center-mobile"
             >
+              <Button
+                block={false}
+                className="full-mobile"
+                ghost={false}
+                htmlType="button"
+                loading={false}
+                onClick={[Function]}
+                type="secondary"
+              >
+                Reset
+              </Button>
               <Popconfirm
                 cancelText="No"
                 icon={
@@ -576,6 +649,17 @@ ShallowWrapper {
             <div
               className="right center-mobile"
             >
+              <Button
+                block={false}
+                className="full-mobile"
+                ghost={false}
+                htmlType="button"
+                loading={false}
+                onClick={[Function]}
+                type="secondary"
+              >
+                Reset
+              </Button>
               <Popconfirm
                 cancelText="No"
                 icon={
@@ -649,6 +733,17 @@ ShallowWrapper {
               <div
                 className="right center-mobile"
               >
+                <Button
+                  block={false}
+                  className="full-mobile"
+                  ghost={false}
+                  htmlType="button"
+                  loading={false}
+                  onClick={[Function]}
+                  type="secondary"
+                >
+                  Reset
+                </Button>
                 <Popconfirm
                   cancelText="No"
                   icon={
@@ -790,6 +885,17 @@ ShallowWrapper {
               "nodeType": "host",
               "props": Object {
                 "children": Array [
+                  <Button
+                    block={false}
+                    className="full-mobile"
+                    ghost={false}
+                    htmlType="button"
+                    loading={false}
+                    onClick={[Function]}
+                    type="secondary"
+                  >
+                    Reset
+                  </Button>,
                   <Popconfirm
                     cancelText="No"
                     icon={
@@ -837,6 +943,24 @@ ShallowWrapper {
               },
               "ref": null,
               "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "block": false,
+                    "children": "Reset",
+                    "className": "full-mobile",
+                    "ghost": false,
+                    "htmlType": "button",
+                    "loading": false,
+                    "onClick": [Function],
+                    "type": "secondary",
+                  },
+                  "ref": null,
+                  "rendered": "Reset",
+                  "type": [Function],
+                },
                 Object {
                   "instance": null,
                   "key": undefined,

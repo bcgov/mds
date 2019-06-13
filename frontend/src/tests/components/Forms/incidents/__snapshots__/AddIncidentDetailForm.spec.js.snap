@@ -21,7 +21,7 @@ ShallowWrapper {
     "nodeType": "class",
     "props": Object {
       "destroyOnUnmount": false,
-      "enableReinitialize": false,
+      "enableReinitialize": true,
       "forceUnregisterOnUnmount": false,
       "form": "ADD_INCIDENT_DETAIL",
       "getFormState": [Function],
@@ -50,7 +50,7 @@ ShallowWrapper {
       "nodeType": "class",
       "props": Object {
         "destroyOnUnmount": false,
-        "enableReinitialize": false,
+        "enableReinitialize": true,
         "forceUnregisterOnUnmount": false,
         "form": "ADD_INCIDENT_DETAIL",
         "getFormState": [Function],
