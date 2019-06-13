@@ -49,6 +49,11 @@ class MineVarianceResource(Resource, UserMixin, ErrorMixin):
         store_missing=False,
         help='A note to include on the variance. Limited to 300 characters.')
     parser.add_argument(
+        'parties_notified_ind',
+        type=bool,
+        store_missing=False,
+        help='Indicates if the relevant parties have been notified of variance request and decision.')
+    parser.add_argument(
         'issue_date', store_missing=False, help='The date on which the variance was issued.')
     parser.add_argument(
         'expiry_date', store_missing=False, help='The date on which the variance expires.')
