@@ -23,8 +23,10 @@ const propTypes = {
   fetchVarianceById: PropTypes.func.isRequired,
   varianceGuid: PropTypes.string.isRequired,
   removeDocumentFromVariance: PropTypes.func.isRequired,
+  documentCategoryOptions: CustomPropTypes.options.isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   fetchVariancesByMine: PropTypes.func.isRequired,
+  documentCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {
@@ -65,11 +67,13 @@ export class EditVarianceModal extends Component {
             mineGuid={this.props.mineGuid}
             mineName={this.props.mineName}
             inspectors={this.props.inspectors}
+            documentCategoryOptions={this.props.documentCategoryOptions}
             variance={this.props.variance}
             varianceStatusOptions={this.props.varianceStatusOptions}
             initialValues={this.props.variance}
             removeDocument={this.handleRemoveDocument}
             complianceCodesHash={this.props.complianceCodesHash}
+            documentCategoryOptionsHash={this.props.documentCategoryOptionsHash}
           />
         </LoadingWrapper>
       </div>

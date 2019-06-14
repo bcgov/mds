@@ -12,6 +12,7 @@ const propTypes = {
   removeDocument: PropTypes.func,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   isViewOnly: PropTypes.bool,
+  documentCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {
@@ -42,6 +43,12 @@ export const VarianceDetails = (props) => (
         <p className="field-title">Description</p>
         <p>{props.variance.note || Strings.EMPTY_FIELD}</p>
       </div>
+      {props.isViewOnly && (
+        <div className="inline-flex padding-small">
+          <p className="field-title">Affected parties have been notified</p>
+          <p>{props.variance.parties_notified_ind ? "Yes" : "No"}</p>
+        </div>
+      )}
     </div>
     <br />
     <h5>documents</h5>
@@ -49,6 +56,7 @@ export const VarianceDetails = (props) => (
       documents={props.variance.documents}
       removeDocument={props.removeDocument}
       isViewOnly={props.isViewOnly}
+      documentCategoryOptionsHash={props.documentCategoryOptionsHash}
     />
   </div>
 );

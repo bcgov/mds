@@ -207,7 +207,8 @@ MINE_INCIDENT_STATUS_CDOE_MODEL = api.model("Mine Incident Status Codes",
 
 VARIANCE_DOCUMENT_MODEL = api.inherit(
     'VarianceDocumentModel', MINE_DOCUMENT_MODEL, {
-        'created_at': fields.Date
+        'created_at': fields.Date,
+        'variance_document_category_code': fields.String
     })
 
 VARIANCE_MODEL = api.model(
@@ -219,6 +220,7 @@ VARIANCE_MODEL = api.model(
         'applicant_guid': fields.String,
         'inspector_party_guid': fields.String,
         'note': fields.String,
+        'parties_notified_ind': fields.Boolean,
         'issue_date': fields.Date,
         'received_date': fields.Date,
         'expiry_date': fields.Date,

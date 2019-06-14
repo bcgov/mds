@@ -8,6 +8,7 @@ from app.extensions import api
 
 from ...mine.models.mine import Mine
 from ....documents.mines.models.mine_document import MineDocument
+from ....documents.variances.models.variance import VarianceDocumentXref
 from ....utils.access_decorators import (requires_any_of, MINE_CREATE,
                                          MINESPACE_PROPONENT)
 from ....utils.resources_mixins import UserMixin, ErrorMixin
@@ -59,6 +60,7 @@ class MineVarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         # Arguments required by MineDocument
         parser.add_argument('document_name', type=str, required=True)
         parser.add_argument('document_manager_guid', type=str, required=True)
+        parser.add_argument('variance_document_category_code', type=str, required=True)
 
         variance = Variance.find_by_variance_guid(variance_guid)
 
@@ -78,7 +80,15 @@ class MineVarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         if not mine_doc:
             raise BadRequest('Unable to register uploaded file as document')
 
-        variance.mine_documents.append(mine_doc)
+        # Associate Variance & MineDocument to create Variance Document
+        # Add fields specific to Variance Documents
+        mine_doc.save()
+        variance_doc = VarianceDocumentXref(
+            mine_document_guid=mine_doc.mine_document_guid,
+            variance_id=variance.variance_id,
+            variance_document_category_code=data.get('variance_document_category_code'))
+
+        variance.documents.append(variance_doc)
         variance.save()
         return variance
 

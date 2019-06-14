@@ -5,11 +5,13 @@ import CustomPropTypes from "@/customPropTypes";
 import { formatDate } from "@/utils/helpers";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 import * as Strings from "@/constants/strings";
+import LinkButton from "@/components/common/LinkButton";
 
 const propTypes = {
   documents: PropTypes.arrayOf(CustomPropTypes.mineDocument),
   removeDocument: PropTypes.func,
   isViewOnly: PropTypes.bool.isRequired,
+  documentCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {
@@ -21,7 +23,11 @@ export class DocumentTable extends Component {
   transformRowData = (documents) =>
     documents.map((document) => ({
       key: document.mine_document_guid,
+      guid: document.document_manager_guid,
       name: document.document_name,
+      category: document.variance_document_category_code
+        ? this.props.documentCategoryOptionsHash[document.variance_document_category_code]
+        : Strings.EMPTY_FIELD,
       created_at: formatDate(document.created_at) || Strings.EMPTY_FIELD,
     }));
 
@@ -32,20 +38,19 @@ export class DocumentTable extends Component {
         dataIndex: "name",
         render: (text, record) => (
           <div title="File name">
-            <div>
-              <a
-                role="link"
-                onClick={() => downloadFileFromDocumentManager(record.key, text)}
-                // Accessibility: Event listener
-                onKeyPress={() => downloadFileFromDocumentManager(record.key, text)}
-                // Accessibility: Focusable element
-                tabIndex="0"
-              >
-                {text}
-              </a>
-            </div>
+            <LinkButton
+              key={record.key}
+              onClick={() => downloadFileFromDocumentManager(record.guid)}
+            >
+              {text}
+            </LinkButton>
           </div>
         ),
+      },
+      {
+        title: "Category",
+        dataIndex: "category",
+        render: (text) => <div title="Upload date">{text}</div>,
       },
       {
         title: "Upload date",

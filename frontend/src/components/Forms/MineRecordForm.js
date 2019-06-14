@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { Field, reduxForm, FieldArray, formValueSelector } from "redux-form";
-import { Form, Button, Col, Row, Popconfirm, Icon, Collapse, notification, Tag } from "antd";
+import { Form, Button, Col, Row, Popconfirm, Icon, Collapse, notification, Tag, Radio } from "antd";
 import { difference, map, isEmpty, uniq } from "lodash";
 import * as FORM from "@/constants/forms";
 import * as Strings from "@/constants/strings";
@@ -37,7 +37,6 @@ const propTypes = {
   change: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired,
   title: PropTypes.string,
-  mineStatus: PropTypes.arrayOf(PropTypes.string),
   mineStatusDropDownOptions: CustomPropTypes.options.isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
   mineTenureTypes: CustomPropTypes.options.isRequired,
@@ -49,24 +48,31 @@ const propTypes = {
   conditionalCommodityOptions: PropTypes.objectOf(CustomPropTypes.options).isRequired,
   currentMineTypes: PropTypes.arrayOf(CustomPropTypes.mineTypes),
   submitting: PropTypes.bool.isRequired,
+  isNewRecord: PropTypes.bool,
 };
 
 const defaultProps = {
   title: "",
   currentMineTypes: [],
   mine_types: [],
-  mineStatus: [],
+  isNewRecord: false,
 };
 
 export class MineRecordForm extends Component {
   state = {
     activeKey: [],
     usedTenureTypes: [],
+    showStatusDate: false,
   };
 
   componentDidMount() {
     const existingMineTypes = map(this.props.currentMineTypes, "mine_tenure_type_code");
     this.setState({ usedTenureTypes: existingMineTypes });
+
+    if (this.props.isNewRecord) {
+      const date = new Date();
+      this.props.change("status_date", date);
+    }
   }
 
   /**
@@ -111,14 +117,6 @@ export class MineRecordForm extends Component {
         "mine_types",
         nextProps.mine_types.slice(0, nextProps.mine_types.length - 1).concat(defaultValue)
       );
-    }
-
-    // If the status has been changed, the status date should set to todays date,
-    const statusChanged =
-      nextProps.mineStatus !== null && nextProps.mineStatus !== this.props.mineStatus;
-    if (statusChanged) {
-      const date = new Date();
-      this.props.change("status_date", date);
     }
   }
 
@@ -174,6 +172,15 @@ export class MineRecordForm extends Component {
       </div>
     </div>
   );
+
+  toggleStatusDate = () =>
+    this.setState((prevState) => ({ showStatusDate: !prevState.showStatusDate }));
+
+  // When the status changes, set the status date to current date.
+  onStatusChange = () => {
+    const date = new Date();
+    this.props.change("status_date", date);
+  };
 
   createExistingPanelHeader = (mineTenureCode) => (
     <div className="inline-flex between">
@@ -330,27 +337,43 @@ export class MineRecordForm extends Component {
                 options={this.props.mineStatusDropDownOptions}
                 component={renderConfig.CASCADER}
                 validate={[required]}
+                onChange={this.onStatusChange}
               />
             </Form.Item>
           </Col>
         </Row>
-
         <Row gutter={16}>
           <Col>
-            <Form.Item label="Date of Status Change">
-              <p className="p-light">
-                The date will default to todays date, unless otherwise specified.
-              </p>
-              <Field
-                id="status_date"
-                name="status_date"
-                placeholder="yyyy-mm-dd"
-                component={renderConfig.DATE}
-                validate={[dateNotInFuture]}
-              />
+            <Form.Item label="Is this a historic mine status?">
+              <Radio.Group
+                onChange={this.toggleStatusDate}
+                value={this.state.showStatusDate}
+                defaultValue={this.state.showStatusDate}
+              >
+                <Radio value>Yes</Radio>
+                <Radio value={false}>No</Radio>
+              </Radio.Group>
             </Form.Item>
           </Col>
         </Row>
+        {this.state.showStatusDate && (
+          <Row gutter={16}>
+            <Col>
+              <Form.Item label="Date of Status Change" className="padding-large">
+                <p className="p-light">
+                  The date will default to todays date, unless otherwise specified.
+                </p>
+                <Field
+                  id="status_date"
+                  name="status_date"
+                  placeholder="yyyy-mm-dd"
+                  component={renderConfig.DATE}
+                  validate={[dateNotInFuture, required]}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+        )}
         <Row gutter={16}>
           <Col span={24}>
             <Form.Item>
