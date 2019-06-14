@@ -28,6 +28,7 @@ import {
   fetchMineIncidentFollowActionOptions,
   fetchMineIncidentDeterminationOptions,
   setOptionsLoaded,
+  fetchVarianceDocumentCategoryOptions,
   fetchVarianceStatusOptions,
 } from "@/actionCreators/staticContentActionCreator";
 import {
@@ -52,6 +53,8 @@ import {
   getMultiSelectComplianceCodes,
   getDropdownVarianceStatusOptions,
   getVarianceStatusOptionsHash,
+  getDropdownVarianceDocumentCategoryOptions,
+  getVarianceDocumentCategoryOptionsHash,
   getOptionsLoaded,
 } from "@/selectors/staticContentSelectors";
 import { getMineComplianceInfo } from "@/selectors/complianceSelectors";
@@ -95,6 +98,7 @@ const propTypes = {
   fetchSubscribedMinesByUser: PropTypes.func.isRequired,
   subscribe: PropTypes.func.isRequired,
   unSubscribe: PropTypes.func.isRequired,
+  getDropdownVarianceDocumentCategoryOptions: PropTypes.func.isRequired,
   createVariance: PropTypes.func.isRequired,
   createTailingsStorageFacility: PropTypes.func.isRequired,
   fetchStatusOptions: PropTypes.func.isRequired,
@@ -117,6 +121,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   varianceStatusOptions: CustomPropTypes.options.isRequired,
   updateVariance: PropTypes.func.isRequired,
+  varianceDocumentCategoryOptions: CustomPropTypes.options.isRequired,
   varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   fetchVarianceStatusOptions: PropTypes.func.isRequired,
 };
@@ -158,6 +163,7 @@ export class MineDashboard extends Component {
       this.props.fetchApplicationStatusOptions();
       this.props.fetchMineIncidentFollowActionOptions();
       this.props.fetchMineIncidentDeterminationOptions();
+      this.props.fetchVarianceDocumentCategoryOptions();
       this.props.setOptionsLoaded();
     }
     this.props.fetchMineComplianceCodes();
@@ -369,6 +375,10 @@ export class MineDashboard extends Component {
                         mine={mine}
                         inspectors={this.props.inspectors}
                         createVariance={this.props.createVariance}
+                        varianceDocumentCategoryOptions={this.props.varianceDocumentCategoryOptions}
+                        varianceDocumentCategoryOptionsHash={
+                          this.props.varianceDocumentCategoryOptionsHash
+                        }
                         addDocumentToVariance={this.props.addDocumentToVariance}
                         openModal={this.props.openModal}
                         closeModal={this.props.closeModal}
@@ -441,7 +451,9 @@ const mapStateToProps = (state) => ({
   varianceStatusOptions: getDropdownVarianceStatusOptions(state),
   varianceStatusOptionsHash: getVarianceStatusOptionsHash(state),
   inspectorsHash: getInspectorsHash(state),
+  varianceDocumentCategoryOptions: getDropdownVarianceDocumentCategoryOptions(state),
   userRoles: getUserAccessData(state),
+  varianceDocumentCategoryOptionsHash: getVarianceDocumentCategoryOptionsHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -471,6 +483,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchPermits,
       createVariance,
       addDocumentToVariance,
+      fetchVarianceDocumentCategoryOptions,
       fetchVariancesByMine,
       fetchMineComplianceCodes,
       fetchInspectors,

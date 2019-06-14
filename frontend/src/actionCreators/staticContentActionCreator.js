@@ -164,3 +164,14 @@ export const fetchVarianceStatusOptions = () => (dispatch) => {
     })
     .catch(() => dispatch(error(reducerTypes.GET_VARIANCE_STATUS_OPTIONS)));
 };
+
+export const fetchVarianceDocumentCategoryOptions = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_VARIANCE_DOCUMENT_CATEGORY_OPTIONS));
+  return CustomAxios()
+    .get(`${ENVIRONMENT.apiUrl + API.VARIANCE_DOCUMENT_CATEGORY_OPTIONS}`, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_VARIANCE_DOCUMENT_CATEGORY_OPTIONS));
+      dispatch(staticContentActions.storeVarianceDocumentCategoryOptions(response.data));
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_VARIANCE_DOCUMENT_CATEGORY_OPTIONS)));
+};

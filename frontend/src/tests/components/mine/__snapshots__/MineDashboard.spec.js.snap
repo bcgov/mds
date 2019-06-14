@@ -153,6 +153,13 @@ ShallowWrapper {
         ],
       }
     }
+    fetchVarianceDocumentCategoryOptions={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
     fetchVarianceStatusOptions={
       [MockFunction] {
         "calls": Array [
@@ -731,6 +738,22 @@ ShallowWrapper {
         "admin",
         "uma_authorization",
         "mds-mine-admin",
+      ]
+    }
+    varianceDocumentCategoryOptions={
+      Array [
+        Object {
+          "label": "Request Document",
+          "value": "REQ",
+        },
+        Object {
+          "label": "Recommendation Document",
+          "value": "REC",
+        },
+        Object {
+          "label": "Decision Document",
+          "value": "DEC",
+        },
       ]
     }
     varianceStatusOptions={

@@ -76,8 +76,7 @@ export const addDocumentToVariance = ({ mineGuid, varianceGuid }, payload) => (d
   return CustomAxios()
     .put(
       ENVIRONMENT.apiUrl + API.VARIANCE_DOCUMENTS(mineGuid, varianceGuid),
-      // TODO: Remove hardcoded value when fully-integrated with form inputs
-      { ...payload, variance_document_category_code: "REQ" },
+      payload,
       createRequestHeader()
     )
     .then((response) => {
