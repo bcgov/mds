@@ -121,6 +121,14 @@
       "value": "1"
     },
     {
+      "name": "UWSGI_PROCESSES",
+      "value": "1"
+    },
+    {
+      "name": "UWSGI_THREADS",
+      "value": "1"
+    },
+    {
       "name": "MDS_ELASTIC_SECRET",
       "required": false,
       "value": "template.mds-elastic-secret"
@@ -408,6 +416,14 @@
                   {
                     "name": "FLASK_RUN_HOST",
                     "value": "0.0.0.0"
+                  },
+                  {
+                    "name": "UWSGI_PROCESSES",
+                    "value": "${{UWSGI_PROCESSES}}"
+                  },
+                  {
+                    "name": "UWSGI_THREADS",
+                    "value": "${{UWSGI_THREADS}}"
                   },
                   {
                     "name": "CACHE_REDIS_HOST",
