@@ -4,7 +4,7 @@ pipeline {
         disableResume()
     }
     stages {
-        stage('Verify-Checksum') {
+        stage('Verify-Files') {
             agent { label 'master' }
             steps {
                 echo "Aborting all running jobs ..."
@@ -18,8 +18,8 @@ pipeline {
                     for (def file : files) {
                         currentFilename = file.path
                         fileContent = readTrusted currentFilename
-                        writeFile file: 'currentFile', text: fileContent
-                        sh "cmp ${currentFilename} currentFile"
+                        writeFile file: 'current_file', text: fileContent
+                        sh "cmp ${currentFilename} current_file"
                     }
                 }
             }
