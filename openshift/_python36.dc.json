@@ -192,7 +192,7 @@
       "apiVersion": "v1",
       "kind": "PersistentVolumeClaim",
       "metadata": {
-        "name": "mds-document-storage${SUFFIX}",
+        "name": "mds-document-block-storage${SUFFIX}",
         "annotations": {
           "volume.beta.kubernetes.io/storage-class": "gluster-block",
           "volume.beta.kubernetes.io/storage-provisioner": "kubernetes.io/glusterfs"
@@ -638,7 +638,7 @@
               {
                 "name": "mds-document-storage-data",
                 "persistentVolumeClaim": {
-                  "claimName": "mds-document-storage${SUFFIX}"
+                  "claimName": "mds-document-block-storage${SUFFIX}"
                 }
               }
             ]

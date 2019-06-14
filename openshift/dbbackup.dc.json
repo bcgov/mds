@@ -9,7 +9,7 @@
       "kind": "PersistentVolumeClaim",
       "apiVersion": "v1",
       "metadata": {
-        "name": "mds-database-backup${SUFFIX}",
+        "name": "mds-database-backup-nfs${SUFFIX}",
         "annotations": {
           "volume.beta.kubernetes.io/storage-class": "nfs-backup"
         }
@@ -85,7 +85,7 @@
               {
                 "name": "mds-database-backup-data",
                 "persistentVolumeClaim": {
-                  "claimName": "mds-database-backup${SUFFIX}"
+                  "claimName": "mds-database-backup-nfs${SUFFIX}"
                 }
               }
             ],
