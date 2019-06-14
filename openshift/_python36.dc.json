@@ -239,12 +239,12 @@
           },
           "resources": {
             "limits": {
-              "cpu": "250m",
-              "memory": "750Mi"
+              "cpu": "100m",
+              "memory": "512Mi"
             },
             "requests": {
-              "cpu": "200m",
-              "memory": "500Mi"
+              "cpu": "50m",
+              "memory": "256Mi"
             }
           },
           "activeDeadlineSeconds": 21600
@@ -621,12 +621,12 @@
                 ],
                 "resources": {
                   "limits": {
-                    "cpu": "150m",
-                    "memory": "512Mi"
+                    "cpu": "20m",
+                    "memory": "128Mi"
                   },
                   "requests": {
-                    "cpu": "70m",
-                    "memory": "384Mi"
+                    "cpu": "10m",
+                    "memory": "64Mi"
                   }
                 }
               }

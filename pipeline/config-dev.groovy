@@ -252,7 +252,7 @@ environments {
                 }
                 python {
                     cpu_request = "10m"
-                    cpu_limit = "50m"
+                    cpu_limit = "20m"
                     memory_request = "256Mi"
                     memory_limit = "512Mi"
                     replica_min = 1
@@ -260,15 +260,15 @@ environments {
                 }
                 python_lite {
                     cpu_request = "10m"
-                    cpu_limit = "50m"
+                    cpu_limit = "20m"
                     memory_request = "256Mi"
                     memory_limit = "384Mi"
                     replica_min = 1
                     replica_max = 1
                 }
                 postgres {
-                    cpu_request = "10m"
-                    cpu_limit = "50m"
+                    cpu_request = "50m"
+                    cpu_limit = "100m"
                     memory_request = "256Mi"
                     memory_limit = "384Mi"
                 }
