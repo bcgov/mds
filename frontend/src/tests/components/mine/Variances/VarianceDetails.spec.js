@@ -13,6 +13,7 @@ const setupProps = () => {
   props.variance = MOCK.VARIANCES.records;
   props.complianceCodesHash = MOCK.HSRCM_HASH;
   props.mineName = "mockMineName";
+  props.documentCategoryOptionsHash = MOCK.VARIANCE_DOCUMENT_CATEGORY_OPTIONS_HASH;
   props.isViewOnly = false;
 };
 

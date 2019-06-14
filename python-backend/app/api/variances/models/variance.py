@@ -36,6 +36,7 @@ class Variance(AuditMixin, Base):
         server_default=FetchedValue())
     inspector_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
     note = db.Column(db.String, nullable=False, server_default=FetchedValue())
+    parties_notified_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     issue_date = db.Column(db.DateTime)
     received_date = db.Column(db.DateTime, nullable=False)
     expiry_date = db.Column(db.DateTime)
@@ -59,6 +60,7 @@ class Variance(AuditMixin, Base):
             variance_application_status_code=None,
             inspector_party_guid=None,
             note=None,
+            parties_notified_ind=None,
             issue_date=None,
             expiry_date=None,
             add_to_session=True):
@@ -69,6 +71,7 @@ class Variance(AuditMixin, Base):
             applicant_guid=applicant_guid,
             inspector_party_guid=inspector_party_guid,
             note=note,
+            parties_notified_ind=parties_notified_ind,
             issue_date=issue_date,
             received_date=received_date,
             expiry_date=expiry_date)
