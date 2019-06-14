@@ -165,8 +165,6 @@ app {
                             'CPU_LIMIT':"${vars.resources.python.cpu_limit}",
                             'MEMORY_REQUEST':"${vars.resources.python.memory_request}",
                             'MEMORY_LIMIT':"${vars.resources.python.memory_limit}",
-                            'UWSGI_PROCESSES':"${vars.resources.python.uwsgi_processes}",
-                            'UWSGI_THREADS':"${vars.resources.python.uwsgi_threads}",
                             'REPLICA_MIN':"${vars.resources.python.replica_min}",
                             'REPLICA_MAX':"${vars.resources.python.replica_max}",
                             'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
@@ -253,17 +251,15 @@ environments {
                     replica_max = 1
                 }
                 python {
-                    cpu_request = "10m"
-                    cpu_limit = "50m"
+                    cpu_request = "50m"
+                    cpu_limit = "100m"
                     memory_request = "256Mi"
                     memory_limit = "512Mi"
-                    uwsgi_threads = 4
-                    uwsgi_processes = 1
                     replica_min = 1
                     replica_max = 1
                 }
                 python_lite {
-                    cpu_request = "10m"
+                    cpu_request = "25m"
                     cpu_limit = "50m"
                     memory_request = "256Mi"
                     memory_limit = "384Mi"
@@ -274,7 +270,7 @@ environments {
                     cpu_request = "50m"
                     cpu_limit = "100m"
                     memory_request = "256Mi"
-                    memory_limit = "384Mi"
+                    memory_limit = "512Mi"
                 }
                 redis {
                     cpu_request = "5m"
