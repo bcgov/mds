@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { Table, Popconfirm } from "antd";
+import { Table, Popconfirm, Tooltip } from "antd";
 import { uniqBy } from "lodash";
 import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
@@ -145,9 +145,11 @@ export class SubscriptionTable extends Component {
             cancelText="No"
             onConfirm={(event) => this.props.handleUnSubscribe(event, record.key, record.mineName)}
           >
-            <button type="button">
-              <img alt="document" src={UNSUBSCRIBE} />
-            </button>
+            <Tooltip title="Unsubscribe" placement="right">
+              <button type="button">
+                <img alt="document" src={UNSUBSCRIBE} />
+              </button>
+            </Tooltip>
           </Popconfirm>
         ),
       },

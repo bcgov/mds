@@ -105,11 +105,11 @@ export const removeDocumentFromVariance = (mineGuid, varianceGuid, mineDocumentG
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const fetchVariances = () => (dispatch) => {
+export const fetchVariances = (payload) => (dispatch) => {
   dispatch(request(reducerTypes.GET_VARIANCES));
   dispatch(showLoading());
   return CustomAxios(Strings.ERROR)
-    .get(ENVIRONMENT.apiUrl + API.VARIANCES, createRequestHeader())
+    .get(ENVIRONMENT.apiUrl + API.VARIANCES(payload), createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_VARIANCES));
       dispatch(varianceActions.storeVariances(response.data));
