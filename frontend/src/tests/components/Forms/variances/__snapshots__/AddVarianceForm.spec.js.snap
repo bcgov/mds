@@ -17,6 +17,29 @@ ShallowWrapper {
         },
       ]
     }
+    documentCategoryOptions={
+      Array [
+        Object {
+          "label": "Request Document",
+          "value": "REQ",
+        },
+        Object {
+          "label": "Recommendation Document",
+          "value": "REC",
+        },
+        Object {
+          "label": "Decision Document",
+          "value": "DEC",
+        },
+      ]
+    }
+    documentCategoryOptionsHash={
+      Object {
+        "DEC": "Decision Document",
+        "REC": "Recommendation Document",
+        "REQ": "Request Document",
+      }
+    }
     handleSubmit={
       [MockFunction] {
         "calls": Array [
@@ -157,10 +180,40 @@ ShallowWrapper {
         <h5>
           upload files
         </h5>,
-        <p>
-           Please upload all the required documents here for the variance application
+        <p
+          className="p-light"
+        >
+          All documents uploaded will be associated with the category selected, if you would like to add a different category of documents please submit and edit the variance.
         </p>,
         <br />,
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            data={
+              Array [
+                Object {
+                  "label": "Request Document",
+                  "value": "REQ",
+                },
+                Object {
+                  "label": "Recommendation Document",
+                  "value": "REC",
+                },
+                Object {
+                  "label": "Decision Document",
+                  "value": "DEC",
+                },
+              ]
+            }
+            id="variance_document_category_code"
+            label="Document Category"
+            name="variance_document_category_code"
+            placeholder="Please select category"
+            validate={Array []}
+          />
+        </FormItem>,
         <FormItem
           hasFeedback={false}
         >
@@ -171,6 +224,17 @@ ShallowWrapper {
             name="VarianceDocumentFileUpload"
             onFileLoad={[Function]}
             onRemoveFile={[Function]}
+          />
+        </FormItem>,
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            id="parties_notified_ind"
+            label="Affected parties have been notified about this Variance request and decision"
+            name="parties_notified_ind"
+            type="checkbox"
           />
         </FormItem>,
         <div
@@ -492,10 +556,11 @@ ShallowWrapper {
         "key": undefined,
         "nodeType": "host",
         "props": Object {
-          "children": " Please upload all the required documents here for the variance application",
+          "children": "All documents uploaded will be associated with the category selected, if you would like to add a different category of documents please submit and edit the variance.",
+          "className": "p-light",
         },
         "ref": null,
-        "rendered": " Please upload all the required documents here for the variance application",
+        "rendered": "All documents uploaded will be associated with the category selected, if you would like to add a different category of documents please submit and edit the variance.",
         "type": "p",
       },
       Object {
@@ -506,6 +571,70 @@ ShallowWrapper {
         "ref": null,
         "rendered": null,
         "type": "br",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "children": <Field
+            component={[Function]}
+            data={
+              Array [
+                Object {
+                  "label": "Request Document",
+                  "value": "REQ",
+                },
+                Object {
+                  "label": "Recommendation Document",
+                  "value": "REC",
+                },
+                Object {
+                  "label": "Decision Document",
+                  "value": "DEC",
+                },
+              ]
+            }
+            id="variance_document_category_code"
+            label="Document Category"
+            name="variance_document_category_code"
+            placeholder="Please select category"
+            validate={Array []}
+          />,
+          "hasFeedback": false,
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "component": [Function],
+            "data": Array [
+              Object {
+                "label": "Request Document",
+                "value": "REQ",
+              },
+              Object {
+                "label": "Recommendation Document",
+                "value": "REC",
+              },
+              Object {
+                "label": "Decision Document",
+                "value": "DEC",
+              },
+            ],
+            "id": "variance_document_category_code",
+            "label": "Document Category",
+            "name": "variance_document_category_code",
+            "placeholder": "Please select category",
+            "validate": Array [],
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+        "type": [Function],
       },
       Object {
         "instance": null,
@@ -534,6 +663,38 @@ ShallowWrapper {
             "name": "VarianceDocumentFileUpload",
             "onFileLoad": [Function],
             "onRemoveFile": [Function],
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "children": <Field
+            component={[Function]}
+            id="parties_notified_ind"
+            label="Affected parties have been notified about this Variance request and decision"
+            name="parties_notified_ind"
+            type="checkbox"
+          />,
+          "hasFeedback": false,
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "component": [Function],
+            "id": "parties_notified_ind",
+            "label": "Affected parties have been notified about this Variance request and decision",
+            "name": "parties_notified_ind",
+            "type": "checkbox",
           },
           "ref": null,
           "rendered": null,
@@ -761,10 +922,40 @@ ShallowWrapper {
           <h5>
             upload files
           </h5>,
-          <p>
-             Please upload all the required documents here for the variance application
+          <p
+            className="p-light"
+          >
+            All documents uploaded will be associated with the category selected, if you would like to add a different category of documents please submit and edit the variance.
           </p>,
           <br />,
+          <FormItem
+            hasFeedback={false}
+          >
+            <Field
+              component={[Function]}
+              data={
+                Array [
+                  Object {
+                    "label": "Request Document",
+                    "value": "REQ",
+                  },
+                  Object {
+                    "label": "Recommendation Document",
+                    "value": "REC",
+                  },
+                  Object {
+                    "label": "Decision Document",
+                    "value": "DEC",
+                  },
+                ]
+              }
+              id="variance_document_category_code"
+              label="Document Category"
+              name="variance_document_category_code"
+              placeholder="Please select category"
+              validate={Array []}
+            />
+          </FormItem>,
           <FormItem
             hasFeedback={false}
           >
@@ -775,6 +966,17 @@ ShallowWrapper {
               name="VarianceDocumentFileUpload"
               onFileLoad={[Function]}
               onRemoveFile={[Function]}
+            />
+          </FormItem>,
+          <FormItem
+            hasFeedback={false}
+          >
+            <Field
+              component={[Function]}
+              id="parties_notified_ind"
+              label="Affected parties have been notified about this Variance request and decision"
+              name="parties_notified_ind"
+              type="checkbox"
             />
           </FormItem>,
           <div
@@ -1096,10 +1298,11 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "host",
           "props": Object {
-            "children": " Please upload all the required documents here for the variance application",
+            "children": "All documents uploaded will be associated with the category selected, if you would like to add a different category of documents please submit and edit the variance.",
+            "className": "p-light",
           },
           "ref": null,
-          "rendered": " Please upload all the required documents here for the variance application",
+          "rendered": "All documents uploaded will be associated with the category selected, if you would like to add a different category of documents please submit and edit the variance.",
           "type": "p",
         },
         Object {
@@ -1110,6 +1313,70 @@ ShallowWrapper {
           "ref": null,
           "rendered": null,
           "type": "br",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": <Field
+              component={[Function]}
+              data={
+                Array [
+                  Object {
+                    "label": "Request Document",
+                    "value": "REQ",
+                  },
+                  Object {
+                    "label": "Recommendation Document",
+                    "value": "REC",
+                  },
+                  Object {
+                    "label": "Decision Document",
+                    "value": "DEC",
+                  },
+                ]
+              }
+              id="variance_document_category_code"
+              label="Document Category"
+              name="variance_document_category_code"
+              placeholder="Please select category"
+              validate={Array []}
+            />,
+            "hasFeedback": false,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "component": [Function],
+              "data": Array [
+                Object {
+                  "label": "Request Document",
+                  "value": "REQ",
+                },
+                Object {
+                  "label": "Recommendation Document",
+                  "value": "REC",
+                },
+                Object {
+                  "label": "Decision Document",
+                  "value": "DEC",
+                },
+              ],
+              "id": "variance_document_category_code",
+              "label": "Document Category",
+              "name": "variance_document_category_code",
+              "placeholder": "Please select category",
+              "validate": Array [],
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+          "type": [Function],
         },
         Object {
           "instance": null,
@@ -1138,6 +1405,38 @@ ShallowWrapper {
               "name": "VarianceDocumentFileUpload",
               "onFileLoad": [Function],
               "onRemoveFile": [Function],
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": <Field
+              component={[Function]}
+              id="parties_notified_ind"
+              label="Affected parties have been notified about this Variance request and decision"
+              name="parties_notified_ind"
+              type="checkbox"
+            />,
+            "hasFeedback": false,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "component": [Function],
+              "id": "parties_notified_ind",
+              "label": "Affected parties have been notified about this Variance request and decision",
+              "name": "parties_notified_ind",
+              "type": "checkbox",
             },
             "ref": null,
             "rendered": null,
