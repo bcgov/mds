@@ -60,6 +60,7 @@ ShallowWrapper {
             },
           ]
         }
+        documentCategoryOptions={undefined}
         inspectors={
           Object {
             "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
@@ -93,6 +94,7 @@ ShallowWrapper {
             "value": 306,
           },
         ],
+        "documentCategoryOptions": undefined,
         "inspectors": Object {
           "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
             "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
@@ -132,6 +134,7 @@ ShallowWrapper {
               },
             ]
           }
+          documentCategoryOptions={undefined}
           inspectors={
             Object {
               "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
@@ -165,6 +168,7 @@ ShallowWrapper {
               "value": 306,
             },
           ],
+          "documentCategoryOptions": undefined,
           "inspectors": Object {
             "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
               "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
