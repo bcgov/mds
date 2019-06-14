@@ -235,48 +235,48 @@ environments {
             }
             resources {
                 node {
-                    cpu_request = "50m"
-                    cpu_limit = "100m"
-                    memory_request = "256Mi"
-                    memory_limit = "384Mi"
+                    cpu_request = "5m"
+                    cpu_limit = "10m"
+                    memory_request = "64Mi"
+                    memory_limit = "128Mi"
                     replica_min = 1
                     replica_max = 1
                 }
                 nginx {
-                    cpu_request = "50m"
-                    cpu_limit = "100m"
-                    memory_request = "128Mi"
-                    memory_limit = "256Mi"
+                    cpu_request = "10m"
+                    cpu_limit = "20m"
+                    memory_request = "64Mi"
+                    memory_limit = "128Mi"
                     replica_min = 1
                     replica_max = 1
                 }
                 python {
-                    cpu_request = "50m"
-                    cpu_limit = "150m"
+                    cpu_request = "10m"
+                    cpu_limit = "20m"
                     memory_request = "256Mi"
                     memory_limit = "512Mi"
                     replica_min = 1
                     replica_max = 1
                 }
                 python_lite {
-                    cpu_request = "50m"
-                    cpu_limit = "150m"
+                    cpu_request = "10m"
+                    cpu_limit = "20m"
                     memory_request = "256Mi"
-                    memory_limit = "512Mi"
+                    memory_limit = "384Mi"
                     replica_min = 1
                     replica_max = 1
                 }
                 postgres {
-                    cpu_request = "50m"
-                    cpu_limit = "100m"
-                    memory_request = "384Mi"
-                    memory_limit = "768Mi"
+                    cpu_request = "10m"
+                    cpu_limit = "20m"
+                    memory_request = "256Mi"
+                    memory_limit = "384Mi"
                 }
                 redis {
-                    cpu_request = "20m"
-                    cpu_limit = "50m"
-                    memory_request = "128Mi"
-                    memory_limit = "256Mi"
+                    cpu_request = "5m"
+                    cpu_limit = "10m"
+                    memory_request = "64Mi"
+                    memory_limit = "128Mi"
                 }
             }
             deployment {
