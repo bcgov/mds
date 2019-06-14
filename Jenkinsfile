@@ -4,13 +4,29 @@ pipeline {
         disableResume()
     }
     stages {
-        stage('Build') {
+        stage('Verify-Files') {
             agent { label 'master' }
             steps {
                 echo "Aborting all running jobs ..."
                 script {
+                    // Kill any running jobs
                     abortAllPreviousBuildInProgress(currentBuild)
+
+                    // Grab any files ending in .gradle or .groovy
+                    // Verify they match the Trusted version
+                    files = findFiles(glob: 'pipeline/**/*.gr*')
+                    for (def file : files) {
+                        currentFilename = file.path
+                        fileContent = readTrusted currentFilename
+                        writeFile file: 'current_file', text: fileContent
+                        sh "cmp ${currentFilename} current_file"
+                    }
                 }
+            }
+        }
+        stage('Build') {
+            agent { label 'master' }
+            steps {
                 echo "Building ..."
                 sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-build -Pargs.--config=pipeline/config-build.groovy -Pargs.--pr=${CHANGE_ID}'
             }
