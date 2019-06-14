@@ -165,6 +165,8 @@ app {
                             'CPU_LIMIT':"${vars.resources.python.cpu_limit}",
                             'MEMORY_REQUEST':"${vars.resources.python.memory_request}",
                             'MEMORY_LIMIT':"${vars.resources.python.memory_limit}",
+                            'UWSGI_PROCESSES':"${vars.resources.python.uwsgi_processes}",
+                            'UWSGI_THREADS':"${vars.resources.python.uwsgi_threads}",
                             'REPLICA_MIN':"${vars.resources.python.replica_min}",
                             'REPLICA_MAX':"${vars.resources.python.replica_max}",
                             'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
