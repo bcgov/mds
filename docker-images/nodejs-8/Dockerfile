@@ -19,7 +19,6 @@ COPY package-lock.json ${APP_ROOT}/src
 
 # Install latest npm
 RUN source ${APP_ROOT}/etc/scl_enable && npm install --prefix /tmp npm
-ENV PATH="/tmp/node_modules/.bin:${PATH}"
 
 # Install dependencies
-RUN source ${APP_ROOT}/etc/scl_enable && cd ${APP_ROOT}/src && npm set progress=false && npm update npm && npm ci
+RUN source ${APP_ROOT}/etc/scl_enable && cd ${APP_ROOT}/src && npm set progress=false && /tmp/node_modules/.bin/npm ci
