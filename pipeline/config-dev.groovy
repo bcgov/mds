@@ -281,8 +281,8 @@ environments {
                     memory_limit = "512Mi"
                 }
                 redis {
-                    cpu_request = "5m"
-                    cpu_limit = "10m"
+                    cpu_request = "10m"
+                    cpu_limit = "20m"
                     memory_request = "64Mi"
                     memory_limit = "128Mi"
                 }
