@@ -38,7 +38,7 @@ task('cd-build', type: JavaExec) {
     description 'Run Build Groovy script'
 
     // Set main property to name of Groovy script class.
-    main = 'Build-hack'
+    main = 'Build'
 
     // Set classpath for running the Groovy script.
     classpath = sourceSets.main.runtimeClasspath
