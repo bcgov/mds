@@ -13,7 +13,13 @@ RUN curl -sLo /tmp/sonar-scanner-cli.zip https://dl.bintray.com/sonarsource/Sona
     rm /tmp/sonar-scanner-cli.zip && \
     chmod -R 755 ${APP_ROOT}/sonar-scanner-cli
 
-# Install project dependencies
+# Copy project dependencies
 COPY package.json ${APP_ROOT}/src
 COPY package-lock.json ${APP_ROOT}/src
+
+# Install latest npm
+RUN source ${APP_ROOT}/etc/scl_enable && npm install --prefix /tmp npm
+ENV PATH="/tmp/node_modules/.bin:${PATH}"
+
+# Install dependencies
 RUN source ${APP_ROOT}/etc/scl_enable && cd ${APP_ROOT}/src && npm set progress=false && npm update npm && npm ci
