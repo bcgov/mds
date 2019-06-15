@@ -113,6 +113,14 @@
       "value": "768Mi"
     },
     {
+      "name": "UWSGI_PROCESSES",
+      "value": "2"
+    },
+    {
+      "name": "UWSGI_THREADS",
+      "value": "4"
+    },
+    {
       "name": "REPLICA_MIN",
       "value": "1"
     },
@@ -411,11 +419,11 @@
                   },
                   {
                     "name": "UWSGI_PROCESSES",
-                    "value": "1"
+                    "value": "${UWSGI_PROCESSES}"
                   },
                   {
                     "name": "UWSGI_THREADS",
-                    "value": "2"
+                    "value": "${UWSGI_THREADS}"
                   },
                   {
                     "name": "CACHE_REDIS_HOST",

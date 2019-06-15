@@ -70,6 +70,14 @@
       "value": "768Mi"
     },
     {
+      "name": "UWSGI_PROCESSES",
+      "value": "2"
+    },
+    {
+      "name": "UWSGI_THREADS",
+      "value": "4"
+    },
+    {
       "name": "REPLICA_MIN",
       "value": "1"
     },
@@ -285,6 +293,14 @@
                   {
                     "name": "NRIS_DB_PORT",
                     "value": "1521"
+                  },
+                  {
+                    "name": "UWSGI_PROCESSES",
+                    "value": "${UWSGI_PROCESSES}"
+                  },
+                  {
+                    "name": "UWSGI_THREADS",
+                    "value": "${UWSGI_THREADS}"
                   },
                   {
                     "name": "ELASTIC_ENABLED",
