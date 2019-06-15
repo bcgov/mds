@@ -17,7 +17,7 @@ RUN curl -sLo /tmp/sonar-scanner-cli.zip https://dl.bintray.com/sonarsource/Sona
 COPY package.json ${APP_ROOT}/src
 COPY package-lock.json ${APP_ROOT}/src
 
-# Install latest npm
+# Install latest npm to /tmp
 RUN source ${APP_ROOT}/etc/scl_enable && npm install --prefix /tmp npm
 
 # Install dependencies
