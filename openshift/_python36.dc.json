@@ -410,6 +410,14 @@
                     "value": "0.0.0.0"
                   },
                   {
+                    "name": "UWSGI_PROCESSES",
+                    "value": "1"
+                  },
+                  {
+                    "name": "UWSGI_THREADS",
+                    "value": "2"
+                  },
+                  {
                     "name": "CACHE_REDIS_HOST",
                     "value": "${CACHE_REDIS_HOST}"
                   },
