@@ -179,6 +179,8 @@ app {
                             'CPU_LIMIT':"${vars.resources.python.cpu_limit}",
                             'MEMORY_REQUEST':"${vars.resources.python.memory_request}",
                             'MEMORY_LIMIT':"${vars.resources.python.memory_limit}",
+                            'UWSGI_THREADS':"${vars.resources.python.uwsgi_threads}",
+                            'UWSGI_PROCESSES':"${vars.resources.python.uwsgi_processes}",
                             'REPLICA_MIN':"${vars.resources.python.replica_min}",
                             'REPLICA_MAX':"${vars.resources.python.replica_max}",
                             'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
@@ -207,6 +209,8 @@ app {
                             'CPU_LIMIT':"${vars.resources.python_lite.cpu_limit}",
                             'MEMORY_REQUEST':"${vars.resources.python_lite.memory_request}",
                             'MEMORY_LIMIT':"${vars.resources.python_lite.memory_limit}",
+                            'UWSGI_THREADS':"${vars.resources.python_lite.uwsgi_threads}",
+                            'UWSGI_PROCESSES':"${vars.resources.python_lite.uwsgi_processes}",
                             'REPLICA_MIN':"${vars.resources.python_lite.replica_min}",
                             'REPLICA_MAX':"${vars.resources.python_lite.replica_max}",
                             'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
@@ -301,6 +305,8 @@ environments {
                     cpu_limit = "400m"
                     memory_request = "1.5Gi"
                     memory_limit = "3Gi"
+                    uwsgi_threads = 4
+                    uwsgi_processes = 2
                     replica_min = 2
                     replica_max = 4
                 }
@@ -309,6 +315,8 @@ environments {
                     cpu_limit = "200m"
                     memory_request = "512Mi"
                     memory_limit = "1Gi"
+                    uwsgi_threads = 4
+                    uwsgi_processes = 2
                     replica_min = 1
                     replica_max = 1
                 }
