@@ -165,6 +165,8 @@ app {
                             'CPU_LIMIT':"${vars.resources.python.cpu_limit}",
                             'MEMORY_REQUEST':"${vars.resources.python.memory_request}",
                             'MEMORY_LIMIT':"${vars.resources.python.memory_limit}",
+                            'UWSGI_THREADS':"${vars.resources.python.uwsgi_threads}",
+                            'UWSGI_PROCESSES':"${vars.resources.python.uwsgi_processes}",
                             'REPLICA_MIN':"${vars.resources.python.replica_min}",
                             'REPLICA_MAX':"${vars.resources.python.replica_max}",
                             'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
@@ -195,6 +197,8 @@ app {
                             'MEMORY_LIMIT':"${vars.resources.python_lite.memory_limit}",
                             'REPLICA_MIN':"${vars.resources.python_lite.replica_min}",
                             'REPLICA_MAX':"${vars.resources.python_lite.replica_max}",
+                            'UWSGI_THREADS':"${vars.resources.python_lite.uwsgi_threads}",
+                            'UWSGI_PROCESSES':"${vars.resources.python_lite.uwsgi_processes}",
                             'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
                             'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId_core}",
                             'APPLICATION_DOMAIN': "${vars.modules.'mds-nris-backend'.HOST}",
@@ -265,6 +269,8 @@ environments {
                     cpu_limit = "50m"
                     memory_request = "256Mi"
                     memory_limit = "384Mi"
+                    uwsgi_threads = 2
+                    uwsgi_processes = 1
                     replica_min = 1
                     replica_max = 1
                 }
