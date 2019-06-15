@@ -255,6 +255,8 @@ environments {
                     cpu_limit = "100m"
                     memory_request = "256Mi"
                     memory_limit = "512Mi"
+                    uwsgi_threads = 2
+                    uwsgi_processes = 1
                     replica_min = 1
                     replica_max = 1
                 }
