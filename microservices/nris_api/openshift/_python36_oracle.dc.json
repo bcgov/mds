@@ -166,16 +166,6 @@
             "maxUnavailable": 0,
             "timeoutSeconds": 1200
           },
-          "resources": {
-            "limits": {
-              "cpu": "250m",
-              "memory": "750Mi"
-            },
-            "requests": {
-              "cpu": "200m",
-              "memory": "500Mi"
-            }
-          },
           "activeDeadlineSeconds": 21600
         },
         "triggers": [
