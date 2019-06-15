@@ -140,7 +140,7 @@ environments {
 def env = System.getenv()
 baseUrl = env['BASEURL']
 if (!baseUrl) {
-	baseUrl = "https://minesdigitalservices-dev.pathfinder.gov.bc.ca/799/"
+	baseUrl = "http://localhost:3000/"
 }
 
 
@@ -155,7 +155,7 @@ reportOnTestFailureOnly = false //true
 //If unspecified, the values of 5 for timeout and 0.1 for retryInterval.
 waiting {
     timeout = 60
-    retryInterval = 1
+    retryInterval = 2
 }
 //always wait for the content using the default wait configuration
 atCheckWaiting = true
