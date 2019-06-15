@@ -4,7 +4,7 @@ FROM "__FROM_IMAGE_STREAM_DEFINED_IN_TEMPLATE__"
 USER 0
 RUN yum install -y nasm build-base libtool libpng-dev autoconf automake
 RUN source ${APP_ROOT}/etc/scl_enable && npm set progress=false && npm i npm@latest
-RUN chown -R 1001:1001 /opt/app-root/src/.config
+RUN chown -R 1001:1001 /opt/app-root/src/.config /opt/app-root/src/.npmrc
 USER 1001
 
 # Install sonar-scanner
