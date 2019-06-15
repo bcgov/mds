@@ -92,7 +92,8 @@ if ! mountpoint $NPM_TMP; then
     rm -rf $NPM_TMP/npm-*
 fi
 
-# Remove cache created by package installs
+# Remove package installs
+echo "---> Removing node_modules"
 rm -rf node_modules/
 
 # Just install express deps
