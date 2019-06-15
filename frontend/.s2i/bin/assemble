@@ -93,7 +93,11 @@ if ! mountpoint $NPM_TMP; then
 fi
 
 # Remove cache created by package installs
-rm -rf node_modules/.cache/
+rm -rf node_modules/
+
+# Just install express deps
+npm set progress=false
+npm install express express-cache-controller dotenv
 
 
 # Fix source directory permissions
