@@ -14,7 +14,7 @@ class Tab_Permit extends Module {
 
         // Permit Tab objects
         newPermitButton (wait:true) {$("button", text: "Add a New Permit")}
-        newPermitForm (wait:true) { module Form_CreatePermit }
+        newPermitForm { module Form_CreatePermit }
         permitRow (wait:true) {$("tr").has("div", title: "Permit No.",text: PERMIT_NUMBER)}
         permitTitle (wait:true) {$("div", title: "Permit No.",text: PERMIT_NUMBER)}
         addEditButton (wait:true) {$("button").has("div", text: "Add/Edit")}
