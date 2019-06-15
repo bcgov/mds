@@ -1,6 +1,6 @@
 package modules
 
-import geb.Module 
+import geb.Module
 import utils.*
 
 class Tab_Permit extends Module {
@@ -14,11 +14,11 @@ class Tab_Permit extends Module {
 
         // Permit Tab objects
         newPermitButton (wait:true) {$("button", text: "Add a New Permit")}
-        newPermitForm { module Form_CreatePermit }
+        newPermitForm (wait:true) { module Form_CreatePermit }
         permitRow (wait:true) {$("tr").has("div", title: "Permit No.",text: PERMIT_NUMBER)}
         permitTitle (wait:true) {$("div", title: "Permit No.",text: PERMIT_NUMBER)}
         addEditButton (wait:true) {$("button").has("div", text: "Add/Edit")}
-        
+
         hoverDropdown (wait:true) {$("ul", role:"menu").has("button", text: "Edit permit status")}
         editPermitStatusButton (wait:true) {$("button", text: "Edit permit status")}
         addAmendmentButton (wait:true) {$("button", text: "Add permit amendment")}
@@ -36,9 +36,8 @@ class Tab_Permit extends Module {
         downloadTestFileLink (wait:true) {$("a", text: Const.TEST_FILE_NAME)}
     }
 
-    
-    
+
+
 }
 
- 
-        
+
