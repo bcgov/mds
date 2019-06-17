@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { getFormValues, destroy } from "redux-form";
+import { getFormValues } from "redux-form";
 import { Steps, Button, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import AddIncidentReportingForm from "@/components/Forms/incidents/AddIncidentReportingForm";
@@ -17,7 +17,7 @@ const { Step } = Steps;
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
-  destroy: PropTypes.func.isRequired,
+  afterClose: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   incidentDeterminationOptions: CustomPropTypes.options.isRequired,
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
@@ -26,7 +26,6 @@ const propTypes = {
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   inspectors: CustomPropTypes.options.isRequired,
   addIncidentFormValues: PropTypes.objectOf(PropTypes.any),
-  // resetForm: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -151,12 +150,12 @@ export class AddIncidentModal extends Component {
       ...this.props.addIncidentFormValues,
     });
     // TODO: Catch error
-    this.props.destroy();
+    this.close();
   };
 
-  cancel = () => {
-    this.props.destroy(FORM.MINE_INCIDENT);
+  close = () => {
     this.props.closeModal();
+    this.props.afterClose();
   };
 
   next = () => this.setState((prevState) => ({ current: prevState.current + 1 }));
@@ -185,7 +184,7 @@ export class AddIncidentModal extends Component {
                 title="Are you sure you want to cancel?"
                 okText="Yes"
                 cancelText="No"
-                onConfirm={this.cancel}
+                onConfirm={this.close}
               >
                 <Button type="secondary" className="full-mobile">
                   Cancel
@@ -205,14 +204,7 @@ const mapStateToProps = (state) => ({
   addIncidentFormValues: getFormValues(FORM.MINE_INCIDENT)(state) || {},
 });
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      destroy,
-      // resetForm: (form) => dispatch(reset(form)),
-    },
-    dispatch
-  );
+const mapDispatchToProps = (dispatch) => bindActionCreators({}, dispatch);
 AddIncidentModal.propTypes = propTypes;
 AddIncidentModal.defaultProps = defaultProps;
 
