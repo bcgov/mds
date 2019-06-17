@@ -113,7 +113,6 @@ class  PermitSpec extends GebReportingSpec {
         interact {
             moveToElement(permitTab.amalgamatePermitButton) 
         }
-
         permitTab.amalgamatePermitButton.click()
         newPermitForm.amalgamatePermit()
         waitFor(){permitTab.permitRow.children().has(text:"Add/Edit")}

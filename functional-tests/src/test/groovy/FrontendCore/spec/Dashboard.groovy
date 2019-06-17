@@ -73,7 +73,7 @@ class  DashboardSpec extends GebReportingSpec {
     def "Scenario: User can view a mine"(){
         def viewMineName = firstMineName
 
-        given: "I am on the Dashboard Page"
+        given: "I am on the Dashboard Page after searching '!!MINE'"
         def SearchedDashboard = new Dashboard(url: "dashboard/mines?search=%21%21MINE")
         to SearchedDashboard
 
