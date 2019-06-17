@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { getFormValues, reset } from "redux-form";
+import { getFormValues, destroy } from "redux-form";
 import { Steps, Button, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import AddIncidentReportingForm from "@/components/Forms/incidents/AddIncidentReportingForm";
@@ -17,6 +17,7 @@ const { Step } = Steps;
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
+  destroy: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   incidentDeterminationOptions: CustomPropTypes.options.isRequired,
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
@@ -24,41 +25,36 @@ const propTypes = {
   doSubparagraphOptions: CustomPropTypes.options.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   inspectors: CustomPropTypes.options.isRequired,
-  addReportingFormValues: PropTypes.objectOf(PropTypes.any),
-  addDetailFormValues: PropTypes.objectOf(PropTypes.any),
-  addFollowUpFormValues: PropTypes.objectOf(PropTypes.any),
-  resetForm: PropTypes.func.isRequired,
+  addIncidentFormValues: PropTypes.objectOf(PropTypes.any),
+  // resetForm: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
-  addReportingFormValues: {},
-  addDetailFormValues: {},
-  addFollowUpFormValues: {},
+  addIncidentFormValues: {},
 };
 
-const invalidReportingPayload = (addReportingFormValues) =>
-  addReportingFormValues.reported_timestamp === undefined ||
-  addReportingFormValues.reported_by_name === undefined ||
-  addReportingFormValues.reported_to_inspector_party_guid === undefined ||
-  addReportingFormValues.responsible_inspector_party_guid === undefined;
+const invalidReportingPayload = (values) =>
+  values.reported_timestamp === undefined ||
+  values.reported_by_name === undefined ||
+  values.reported_to_inspector_party_guid === undefined ||
+  values.responsible_inspector_party_guid === undefined;
 
-const invalidDetailPayload = (addDetailFormValues) =>
-  addDetailFormValues.determination_inspector_party_guid === undefined ||
+const invalidDetailPayload = (values) =>
+  values.determination_inspector_party_guid === undefined ||
   // If DO, need subparagraphs
-  (addDetailFormValues.determination_type_code === "DO" &&
-    addDetailFormValues.DoSubparagraphs &&
-    addDetailFormValues.DoSubparagraphs.length === 0) ||
+  (values.determination_type_code === "DO" &&
+    values.DoSubparagraphs &&
+    values.DoSubparagraphs.length === 0) ||
   // If NDO, need incident status
-  (addDetailFormValues.determination_type_code === "NDO" &&
-    addDetailFormValues.status_code === undefined) ||
-  addDetailFormValues.determination_type_code === undefined ||
-  addDetailFormValues.incident_description === undefined ||
-  addDetailFormValues.emergency_services_called === undefined ||
-  addDetailFormValues.incident_timestamp === undefined;
+  (values.determination_type_code === "NDO" && values.status_code === undefined) ||
+  values.determination_type_code === undefined ||
+  values.incident_description === undefined ||
+  values.emergency_services_called === undefined ||
+  values.incident_timestamp === undefined;
 
-const invalidFollowUpPayload = (addFollowUpFormValues) =>
-  addFollowUpFormValues.status_code === undefined ||
-  addFollowUpFormValues.mine_incident_followup_investigation_type === undefined;
+const invalidFollowUpPayload = (values) =>
+  values.status_code === undefined ||
+  values.mine_incident_followup_investigation_type === undefined;
 
 const StepForms = (props, next, prev, handleIncidentSubmit) => [
   {
@@ -72,7 +68,7 @@ const StepForms = (props, next, prev, handleIncidentSubmit) => [
         type="tertiary"
         className="full-mobile"
         onClick={() => next()}
-        disabled={invalidReportingPayload(props.addReportingFormValues)}
+        disabled={invalidReportingPayload(props.addIncidentFormValues)}
       >
         Next
       </Button>
@@ -94,13 +90,13 @@ const StepForms = (props, next, prev, handleIncidentSubmit) => [
         <Button id="step-back" type="tertiary" className="full-mobile" onClick={() => prev()}>
           Back
         </Button>
-        {props.addDetailFormValues.determination_type_code !== "NDO" && (
+        {props.addIncidentFormValues.determination_type_code !== "NDO" && (
           <Button
             id="step2-next"
             type="tertiary"
             className="full-mobile"
             onClick={() => next()}
-            disabled={invalidDetailPayload(props.addDetailFormValues)}
+            disabled={invalidDetailPayload(props.addIncidentFormValues)}
           >
             Next
           </Button>
@@ -109,10 +105,10 @@ const StepForms = (props, next, prev, handleIncidentSubmit) => [
           type="primary"
           className="full-mobile"
           onClick={(event) => handleIncidentSubmit(event, false)}
-          disabled={invalidDetailPayload(props.addDetailFormValues)}
+          disabled={invalidDetailPayload(props.addIncidentFormValues)}
         >
           Save&nbsp;
-          {props.addDetailFormValues.determination_type_code !== "NDO" && (
+          {props.addIncidentFormValues.determination_type_code !== "NDO" && (
             <span>initial&nbsp;</span>
           )}
           incident
@@ -128,7 +124,7 @@ const StepForms = (props, next, prev, handleIncidentSubmit) => [
         incidentDeterminationOptions={props.incidentDeterminationOptions}
         followupActionOptions={props.followupActionOptions}
         incidentStatusCodeOptions={props.incidentStatusCodeOptions}
-        hasFatalities={props.addDetailFormValues.number_of_fatalities > 0}
+        hasFatalities={props.addIncidentFormValues.number_of_fatalities > 0}
       />
     ),
     buttons: [
@@ -139,7 +135,7 @@ const StepForms = (props, next, prev, handleIncidentSubmit) => [
         type="primary"
         className="full-mobile"
         onClick={(event) => handleIncidentSubmit(event, false)}
-        disabled={invalidFollowUpPayload(props.addFollowUpFormValues)}
+        disabled={invalidFollowUpPayload(props.addIncidentFormValues)}
       >
         Submit
       </Button>,
@@ -150,21 +146,16 @@ const StepForms = (props, next, prev, handleIncidentSubmit) => [
 export class AddIncidentModal extends Component {
   state = { current: 0 };
 
-  handleIncidentSubmit = () =>
+  handleIncidentSubmit = () => {
     this.props.onSubmit({
-      ...this.props.addReportingFormValues,
-      ...this.props.addDetailFormValues,
-      ...this.props.addFollowUpFormValues,
+      ...this.props.addIncidentFormValues,
     });
-
-  resetForms = () => {
-    this.props.resetForm(FORM.ADD_INCIDENT_REPORTING);
-    this.props.resetForm(FORM.ADD_INCIDENT_DETAIL);
-    this.props.resetForm(FORM.ADD_INCIDENT_FOLLOWUP);
+    // TODO: Catch error
+    this.props.destroy();
   };
 
   cancel = () => {
-    this.resetForms();
+    this.props.destroy(FORM.MINE_INCIDENT);
     this.props.closeModal();
   };
 
@@ -211,15 +202,14 @@ export class AddIncidentModal extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  addReportingFormValues: getFormValues(FORM.ADD_INCIDENT_REPORTING)(state) || {},
-  addDetailFormValues: getFormValues(FORM.ADD_INCIDENT_DETAIL)(state) || {},
-  addFollowUpFormValues: getFormValues(FORM.ADD_INCIDENT_FOLLOWUP)(state) || {},
+  addIncidentFormValues: getFormValues(FORM.MINE_INCIDENT)(state) || {},
 });
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      resetForm: (form) => dispatch(reset(form)),
+      destroy,
+      // resetForm: (form) => dispatch(reset(form)),
     },
     dispatch
   );
