@@ -115,7 +115,7 @@ export class CustomHomePage extends Component {
       props: {
         onSubmit: this.handleUpdateVariance,
         title: this.props.complianceCodesHash[variance.compliance_article_id],
-        mineGuid: "huh",
+        mineGuid: variance.mine_guid,
         mineName: variance.mine_guid,
         varianceGuid: variance.variance_guid,
         documentCategoryOptions: this.props.varianceDocumentCategoryOptions,
