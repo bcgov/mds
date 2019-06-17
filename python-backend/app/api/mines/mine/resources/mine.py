@@ -230,9 +230,7 @@ class MineListResource(Resource, UserMixin):
                 status_filter_term_array)
             status_subreason_filter = MineStatusXref.mine_operation_status_sub_reason_code.in_(
                 status_filter_term_array)
-
             all_status_filter = status_filter | status_reason_filter | status_subreason_filter
-
             status_query = Mine.query \
                 .join(MineStatus) \
                 .join(MineStatusXref) \
