@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
-import { Field, reduxForm } from "redux-form";
+import { Field, reduxForm, change } from "redux-form";
+import { remove } from "lodash";
 import { Form, Col, Row } from "antd";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
+import FileUpload from "@/components/common/FileUpload";
 
 import { required, maxLength, number, dateNotInFuture } from "@/utils/Validate";
 
@@ -14,6 +16,11 @@ const propTypes = {
   doSubparagraphOptions: CustomPropTypes.options.isRequired,
   inspectors: CustomPropTypes.options.isRequired,
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
+  change: PropTypes.func,
+};
+
+const defaultProps = {
+  change,
 };
 
 class AddIncidentDetailForm extends Component {
@@ -22,8 +29,19 @@ class AddIncidentDetailForm extends Component {
 
     this.state = {
       doDetermination: props.initialValues.determination_type_code,
+      uploadedFiles: [],
     };
   }
+
+  onFileLoad = (fileName, document_manager_guid) => {
+    this.state.uploadedFiles.push({ fileName, document_manager_guid });
+    this.props.change("uploadedFiles", this.state.uploadedFiles);
+  };
+
+  onRemoveFile = (fileItem) => {
+    remove(this.state.uploadedFiles, { document_manager_guid: fileItem.serverId });
+    this.props.change("uploadedFiles", this.state.uploadedFiles);
+  };
 
   onDoDeterminationChange = (chars, value) => {
     this.setState({
@@ -125,7 +143,16 @@ class AddIncidentDetailForm extends Component {
                   />
                 </Form.Item>
                 <h4>Initial Notification Documents</h4>
-                <p>Insert document section here</p>
+
+                <Form.Item>
+                  <Field
+                    id="InitialIncidentFileUpload"
+                    name="InitialIncidentFileUpload"
+                    onFileLoad={this.onFileLoad}
+                    onRemoveFile={this.onRemoveFile}
+                    component={FileUpload}
+                  />
+                </Form.Item>
               </span>
             ) : null}
 
@@ -150,6 +177,7 @@ class AddIncidentDetailForm extends Component {
 }
 
 AddIncidentDetailForm.propTypes = propTypes;
+AddIncidentDetailForm.defaultProps = defaultProps;
 
 export default reduxForm({
   form: FORM.MINE_INCIDENT,

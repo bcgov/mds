@@ -5,7 +5,8 @@
 
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm, FieldArray } from "redux-form";
+import { Field, reduxForm, FieldArray, change } from "redux-form";
+import { remove } from "lodash";
 import { Form, Col, Row, Icon } from "antd";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
@@ -18,6 +19,11 @@ const propTypes = {
   followupActionOptions: CustomPropTypes.options.isRequired,
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
   hasFatalities: PropTypes.bool.isRequired,
+  change: PropTypes.func,
+};
+
+const defaultProps = {
+  change,
 };
 
 const renderRecommendations = ({ fields }) => [
@@ -46,6 +52,16 @@ export class AddIncidentFollowUpForm extends Component {
       this.props.initialValues.mine_incident_followup_investigation_type = "MIU";
     }
   }
+
+  onFileLoad = (fileName, document_manager_guid) => {
+    this.state.uploadedFiles.push({ fileName, document_manager_guid });
+    this.props.change("uploadedFiles", this.state.uploadedFiles);
+  };
+
+  onRemoveFile = (fileItem) => {
+    remove(this.state.uploadedFiles, { document_manager_guid: fileItem.serverId });
+    this.props.change("uploadedFiles", this.state.uploadedFiles);
+  };
 
   onFollowUpChange = (chars, value) => {
     this.setState({
@@ -115,7 +131,7 @@ export class AddIncidentFollowUpForm extends Component {
                 />
               </Form.Item>
 
-              {/* TODO: <h4>Final Investigation Report Documents</h4> */}
+              <h4>Final Investigation Report Documents</h4>
             </Col>
           </Row>
         </Form>
@@ -125,6 +141,7 @@ export class AddIncidentFollowUpForm extends Component {
 }
 
 AddIncidentFollowUpForm.propTypes = propTypes;
+AddIncidentFollowUpForm.defaultProps = defaultProps;
 
 export default reduxForm({
   form: FORM.MINE_INCIDENT,
