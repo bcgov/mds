@@ -51,5 +51,6 @@ export const MAJOR_MINE = "Major mine";
 export const REGIONAL_MINE = "Regional mine";
 
 export const VARIANCE_APPLICATION_CODE = "REV";
+export const VARIANCE_DECISION_CODE = "RFD";
 export const VARIANCE_APPROVED_CODE = "APP";
 export const VARIANCE_DENIED_CODE = "DEN";

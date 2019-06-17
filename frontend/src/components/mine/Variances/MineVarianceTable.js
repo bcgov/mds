@@ -43,7 +43,8 @@ export class MineVarianceTable extends Component {
     }
   };
 
-  handleConditionalEdit = (code) => code === Strings.VARIANCE_APPLICATION_CODE;
+  handleConditionalEdit = (code) =>
+    code === Strings.VARIANCE_APPLICATION_CODE || code === Strings.VARIANCE_DECISION_CODE;
 
   transformRowData = (variances, codeHash, statusHash) =>
     variances.map((variance) => ({

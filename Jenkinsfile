@@ -12,14 +12,11 @@ pipeline {
                     // Kill any running jobs
                     abortAllPreviousBuildInProgress(currentBuild)
 
-                    // Grab any files ending in .gradle or .groovy
-                    // Verify they match the Trusted version
-                    files = findFiles(glob: 'pipeline/**/*.gr*')
+                    // Grab any files under the pipeline directory
+                    // Verify they match the trusted version
+                    files = findFiles(glob: 'pipeline/**')
                     for (def file : files) {
-                        currentFilename = file.path
-                        fileContent = readTrusted currentFilename
-                        writeFile file: 'current_file', text: fileContent
-                        sh "cmp ${currentFilename} current_file"
+                        readTrusted file.path
                     }
                 }
             }
