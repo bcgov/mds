@@ -4,6 +4,8 @@ import uuid
 
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import validates
+from sqlalchemy.ext.associationproxy import association_proxy
+
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 
@@ -25,6 +27,13 @@ class PermitAmendment(AuditMixin, Base):
         db.String(3), db.ForeignKey('permit_amendment_type_code.permit_amendment_type_code'))
     description = db.Column(db.String, nullable=True)
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
+
+    permit_amendment_status = db.relationship('PermitAmendmentStatusCode')
+    permit_amendment_status_description = association_proxy('permit_amendment_status',
+                                                            'description')
+    permit_guid = association_proxy('permit', 'permit_guid')
+    permit_amendment_type = db.relationship('PermitAmendmentTypeCode')
+    permit_amendment_type_description = association_proxy('permit_amendment_type', 'description')
 
     def json(self):
         return {
@@ -57,14 +66,13 @@ class PermitAmendment(AuditMixin, Base):
                description=None,
                permit_amendment_status_code='ACT',
                add_to_session=True):
-        new_pa = cls(
-            permit_id=permit.permit_id,
-            received_date=received_date,
-            issue_date=issue_date,
-            authorization_end_date=authorization_end_date,
-            permit_amendment_type_code=permit_amendment_type_code,
-            permit_amendment_status_code=permit_amendment_status_code,
-            description=description)
+        new_pa = cls(permit_id=permit.permit_id,
+                     received_date=received_date,
+                     issue_date=issue_date,
+                     authorization_end_date=authorization_end_date,
+                     permit_amendment_type_code=permit_amendment_type_code,
+                     permit_amendment_status_code=permit_amendment_status_code,
+                     description=description)
         permit.permit_amendments.append(new_pa)
         if add_to_session:
             new_pa.save(commit=False)
