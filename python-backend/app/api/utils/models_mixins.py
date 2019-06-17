@@ -47,7 +47,7 @@ class Base(db.Model):
     # Set default query_class on base class.
     query_class = UserBoundQuery
 
-    def save(self, commit=True):
+    def save(self, commit=True, raw_exception=False):
         db.session.add(self)
         if commit:
             try:
@@ -58,7 +58,10 @@ class Base(db.Model):
                 current_app.logger.error(
                     f'When trying to save {self} an exception was thrown by the database {e}')
                 db.session.rollback()
-                raise InternalServerError(f'Could not save {self.__class__.__name__}')
+                if raw_exception:
+                    raise e
+                else:
+                    raise InternalServerError(f'Could not save {self.__class__.__name__}')
 
 
 class AuditMixin(object):

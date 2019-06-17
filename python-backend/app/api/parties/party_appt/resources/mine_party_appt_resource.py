@@ -83,12 +83,12 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
             #TODO move db foreign key constraint when services get separated
             pass
         try:
-            new_mpa.save()
+            new_mpa.save(raw_exception=True)
         except alch_exceptions.IntegrityError as e:
             if "daterange_excl" in str(e):
                 mpa_type_name = MinePartyAppointmentType.find_by_mine_party_appt_type_code(
                     data.get('mine_party_appt_type_code')).description
-                raise BadRequest(f'Error: Date ranges for {mpa_type_name} must not overlap')
+                raise BadRequest(f'Date ranges for {mpa_type_name} must not overlap')
         return new_mpa.json()
 
     @api.doc(
@@ -114,11 +114,11 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
             else:
                 setattr(mpa, key, value)
         try:
-            mpa.save()
+            mpa.save(raw_exception=True)
         except alch_exceptions.IntegrityError as e:
             if "daterange_excl" in str(e):
                 mpa_type_name = mpa.mine_party_appt_type.description
-                raise BadRequest(f'Error: Date ranges for {mpa_type_name} must not overlap.')
+                raise BadRequest(f'Date ranges for {mpa_type_name} must not overlap.')
 
         return mpa.json()
 
