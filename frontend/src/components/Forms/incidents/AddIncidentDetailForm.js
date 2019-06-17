@@ -5,7 +5,6 @@ import { Field, reduxForm } from "redux-form";
 import { Form, Col, Row } from "antd";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
-import { resetForm } from "@/utils/helpers";
 
 import { required, maxLength, number, dateNotInFuture } from "@/utils/Validate";
 
@@ -153,8 +152,8 @@ class AddIncidentDetailForm extends Component {
 AddIncidentDetailForm.propTypes = propTypes;
 
 export default reduxForm({
-  form: FORM.ADD_INCIDENT_DETAIL,
+  form: FORM.MINE_INCIDENT,
   destroyOnUnmount: false,
-  onSubmitSuccess: resetForm(FORM.ADD_INCIDENT_DETAIL),
-  enableReinitialize: true,
+  touchOnBlur: false,
+  forceUnregisterOnUnmount: true,
 })(AddIncidentDetailForm);

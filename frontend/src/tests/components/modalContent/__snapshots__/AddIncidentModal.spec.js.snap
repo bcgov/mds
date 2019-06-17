@@ -5,7 +5,7 @@ ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <AddIncidentModal
     addDetailFormValues={Object {}}
-    addFollowUpFormValues={Object {}}
+    addIncidentFormValues={Object {}}
     addReportingFormValues={Object {}}
     closeModal={[MockFunction]}
     doSubparagraphOptions={Object {}}
