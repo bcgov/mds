@@ -230,11 +230,13 @@ class MineListResource(Resource, UserMixin):
                 status_filter_term_array)
             status_subreason_filter = MineStatusXref.mine_operation_status_sub_reason_code.in_(
                 status_filter_term_array)
+
             all_status_filter = status_filter | status_reason_filter | status_subreason_filter
+
             status_query = Mine.query \
                 .join(MineStatus) \
                 .join(MineStatusXref) \
-                .filter(all_status_filter)
+                .filter(all_status_filter, MineStatus.active_ind == True)
             mines_query = mines_query.intersect(status_query)
         deleted_filter = [{'field': 'deleted_ind', 'op': '==', 'value': 'False'}]
         mines_query = apply_filters(mines_query, deleted_filter)
