@@ -38,13 +38,12 @@ ShallowWrapper {
             >
               <Field
                 component={[Function]}
-                id="followup_inspection_date"
-                label="Inspection date"
-                name="followup_inspection_date"
-                placeholder="Please select date and time"
+                id="followup_inspection"
+                label="Was there a follow-up inspection?"
+                name="followup_inspection"
+                onChange={[Function]}
                 validate={
                   Array [
-                    [Function],
                     [Function],
                   ]
                 }
@@ -105,13 +104,12 @@ ShallowWrapper {
             >
               <Field
                 component={[Function]}
-                id="followup_inspection_date"
-                label="Inspection date"
-                name="followup_inspection_date"
-                placeholder="Please select date and time"
+                id="followup_inspection"
+                label="Was there a follow-up inspection?"
+                name="followup_inspection"
+                onChange={[Function]}
                 validate={
                   Array [
-                    [Function],
                     [Function],
                   ]
                 }
@@ -172,13 +170,12 @@ ShallowWrapper {
             >
               <Field
                 component={[Function]}
-                id="followup_inspection_date"
-                label="Inspection date"
-                name="followup_inspection_date"
-                placeholder="Please select date and time"
+                id="followup_inspection"
+                label="Was there a follow-up inspection?"
+                name="followup_inspection"
+                onChange={[Function]}
                 validate={
                   Array [
-                    [Function],
                     [Function],
                   ]
                 }
@@ -235,18 +232,18 @@ ShallowWrapper {
               >
                 <Field
                   component={[Function]}
-                  id="followup_inspection_date"
-                  label="Inspection date"
-                  name="followup_inspection_date"
-                  placeholder="Please select date and time"
+                  id="followup_inspection"
+                  label="Was there a follow-up inspection?"
+                  name="followup_inspection"
+                  onChange={[Function]}
                   validate={
                     Array [
-                      [Function],
                       [Function],
                     ]
                   }
                 />
               </FormItem>,
+              undefined,
               <FormItem
                 hasFeedback={false}
               >
@@ -302,13 +299,12 @@ ShallowWrapper {
               "props": Object {
                 "children": <Field
                   component={[Function]}
-                  id="followup_inspection_date"
-                  label="Inspection date"
-                  name="followup_inspection_date"
-                  placeholder="Please select date and time"
+                  id="followup_inspection"
+                  label="Was there a follow-up inspection?"
+                  name="followup_inspection"
+                  onChange={[Function]}
                   validate={
                     Array [
-                      [Function],
                       [Function],
                     ]
                   }
@@ -322,12 +318,11 @@ ShallowWrapper {
                 "nodeType": "class",
                 "props": Object {
                   "component": [Function],
-                  "id": "followup_inspection_date",
-                  "label": "Inspection date",
-                  "name": "followup_inspection_date",
-                  "placeholder": "Please select date and time",
+                  "id": "followup_inspection",
+                  "label": "Was there a follow-up inspection?",
+                  "name": "followup_inspection",
+                  "onChange": [Function],
                   "validate": Array [
-                    [Function],
                     [Function],
                   ],
                 },
@@ -337,6 +332,7 @@ ShallowWrapper {
               },
               "type": [Function],
             },
+            undefined,
             Object {
               "instance": null,
               "key": undefined,
@@ -457,13 +453,12 @@ ShallowWrapper {
               >
                 <Field
                   component={[Function]}
-                  id="followup_inspection_date"
-                  label="Inspection date"
-                  name="followup_inspection_date"
-                  placeholder="Please select date and time"
+                  id="followup_inspection"
+                  label="Was there a follow-up inspection?"
+                  name="followup_inspection"
+                  onChange={[Function]}
                   validate={
                     Array [
-                      [Function],
                       [Function],
                     ]
                   }
@@ -524,13 +519,12 @@ ShallowWrapper {
               >
                 <Field
                   component={[Function]}
-                  id="followup_inspection_date"
-                  label="Inspection date"
-                  name="followup_inspection_date"
-                  placeholder="Please select date and time"
+                  id="followup_inspection"
+                  label="Was there a follow-up inspection?"
+                  name="followup_inspection"
+                  onChange={[Function]}
                   validate={
                     Array [
-                      [Function],
                       [Function],
                     ]
                   }
@@ -591,13 +585,12 @@ ShallowWrapper {
               >
                 <Field
                   component={[Function]}
-                  id="followup_inspection_date"
-                  label="Inspection date"
-                  name="followup_inspection_date"
-                  placeholder="Please select date and time"
+                  id="followup_inspection"
+                  label="Was there a follow-up inspection?"
+                  name="followup_inspection"
+                  onChange={[Function]}
                   validate={
                     Array [
-                      [Function],
                       [Function],
                     ]
                   }
@@ -654,18 +647,18 @@ ShallowWrapper {
                 >
                   <Field
                     component={[Function]}
-                    id="followup_inspection_date"
-                    label="Inspection date"
-                    name="followup_inspection_date"
-                    placeholder="Please select date and time"
+                    id="followup_inspection"
+                    label="Was there a follow-up inspection?"
+                    name="followup_inspection"
+                    onChange={[Function]}
                     validate={
                       Array [
-                        [Function],
                         [Function],
                       ]
                     }
                   />
                 </FormItem>,
+                undefined,
                 <FormItem
                   hasFeedback={false}
                 >
@@ -721,13 +714,12 @@ ShallowWrapper {
                 "props": Object {
                   "children": <Field
                     component={[Function]}
-                    id="followup_inspection_date"
-                    label="Inspection date"
-                    name="followup_inspection_date"
-                    placeholder="Please select date and time"
+                    id="followup_inspection"
+                    label="Was there a follow-up inspection?"
+                    name="followup_inspection"
+                    onChange={[Function]}
                     validate={
                       Array [
-                        [Function],
                         [Function],
                       ]
                     }
@@ -741,12 +733,11 @@ ShallowWrapper {
                   "nodeType": "class",
                   "props": Object {
                     "component": [Function],
-                    "id": "followup_inspection_date",
-                    "label": "Inspection date",
-                    "name": "followup_inspection_date",
-                    "placeholder": "Please select date and time",
+                    "id": "followup_inspection",
+                    "label": "Was there a follow-up inspection?",
+                    "name": "followup_inspection",
+                    "onChange": [Function],
                     "validate": Array [
-                      [Function],
                       [Function],
                     ],
                   },
@@ -756,6 +747,7 @@ ShallowWrapper {
                 },
                 "type": [Function],
               },
+              undefined,
               Object {
                 "instance": null,
                 "key": undefined,

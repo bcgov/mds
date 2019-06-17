@@ -25,9 +25,8 @@ class Party(AuditMixin, Base):
     phone_ext = db.Column(db.String, nullable=True)
     email = db.Column(db.String, nullable=True)
     effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    expiry_date = db.Column(db.DateTime,
-                            nullable=False,
-                            default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
+    expiry_date = db.Column(
+        db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
     party_type_code = db.Column(db.String, db.ForeignKey('party_type_code.party_type_code'))
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
@@ -44,14 +43,11 @@ class Party(AuditMixin, Base):
         return self.first_name + ' ' + self.party_name if self.first_name else self.party_name
 
     @hybrid_property
-    def business_roles(self):
+    def business_roles_codes(self):
         return [
-            x.party_business_role for x in self.business_role_appts
-            if (not x.expiry_date or x.expiry_date > datetime.utcnow())
+            x.party_business_role_code for x in self.business_role_appts
+            if (not x.end_date or x.end_date > datetime.utcnow())
         ]
-
-    def hasBusinessRole(self, role):
-        return [x for x in self.business_roles if x.party_business_role_code == role] == []
 
     @name.expression
     def name(cls):

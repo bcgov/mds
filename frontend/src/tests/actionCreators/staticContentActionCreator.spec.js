@@ -11,6 +11,7 @@ import {
   fetchApplicationStatusOptions,
   fetchMineComplianceCodes,
   fetchVarianceStatusOptions,
+  fetchVarianceDocumentCategoryOptions,
 } from "@/actionCreators/staticContentActionCreator";
 import * as genericActions from "@/actions/genericActions";
 import * as API from "@/constants/API";
@@ -239,6 +240,27 @@ describe("`fetchVarianceStatusOptions` action creator", () => {
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
     return fetchVarianceStatusOptions()(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(2);
+    });
+  });
+});
+
+describe("`fetchVarianceDocumentCategoryOptions` action creator", () => {
+  const url = ENVIRONMENT.apiUrl + API.VARIANCE_DOCUMENT_CATEGORY_OPTIONS;
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onGet(url).reply(200, mockResponse);
+    return fetchVarianceDocumentCategoryOptions()(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(3);
+    });
+  });
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
+    return fetchVarianceDocumentCategoryOptions()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);

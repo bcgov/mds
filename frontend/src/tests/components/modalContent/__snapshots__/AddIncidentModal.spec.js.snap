@@ -384,8 +384,6 @@ ShallowWrapper {
                 >
                   Next
                 </Button>,
-                false,
-                false,
               ],
               "className": "right center-mobile",
             },
@@ -459,8 +457,6 @@ ShallowWrapper {
                 "rendered": "Next",
                 "type": [Function],
               },
-              false,
-              false,
             ],
             "type": "div",
           },
@@ -830,8 +826,6 @@ ShallowWrapper {
                   >
                     Next
                   </Button>,
-                  false,
-                  false,
                 ],
                 "className": "right center-mobile",
               },
@@ -905,8 +899,6 @@ ShallowWrapper {
                   "rendered": "Next",
                   "type": [Function],
                 },
-                false,
-                false,
               ],
               "type": "div",
             },

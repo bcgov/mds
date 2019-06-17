@@ -11,6 +11,7 @@ import {
   storeApplicationStatusOptions,
   storeComplianceCodes,
   storeVarianceStatusOptions,
+  storeVarianceDocumentCategoryOptions,
 } from "@/actions/staticContentActions";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
@@ -29,7 +30,9 @@ const baseExpectedValue = {
   optionsLoaded: false,
   incidentFollowupActionOptions: [],
   incidentDeterminationOptions: [],
+  incidentStatusCodeOptions: [],
   varianceStatusOptions: [],
+  varianceDocumentCategoryOptions: [],
 };
 
 // Creates deep copy of javascript object instead of setting a reference
@@ -131,6 +134,16 @@ describe("staticContentReducer", () => {
     const result = staticContentReducer(
       undefined,
       storeVarianceStatusOptions(MOCK.VARIANCE_STATUS_OPTIONS)
+    );
+    expect(result).toEqual(expectedValue);
+  });
+
+  it("receives STORE_VARIANCE_DOCUMENT_CATEGORY_OPTIONS", () => {
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.varianceDocumentCategoryOptions = MOCK.VARIANCE_DOCUMENT_CATEGORY_OPTIONS.records;
+    const result = staticContentReducer(
+      undefined,
+      storeVarianceDocumentCategoryOptions(MOCK.VARIANCE_DOCUMENT_CATEGORY_OPTIONS)
     );
     expect(result).toEqual(expectedValue);
   });

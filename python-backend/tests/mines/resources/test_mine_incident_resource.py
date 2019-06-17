@@ -34,6 +34,7 @@ def test_post_mine_incidents_happy(test_client, db_session, auth_headers):
     data = {
         'determination_type_code': 'NDO',
         'incident_timestamp': now_time_string,
+        'reported_timestamp': now_time_string,
         'incident_description': "Someone got a paper cut",
     }
 
@@ -65,6 +66,7 @@ def test_post_mine_incidents_dangerous_occurrence_happy(test_client, db_session,
     data = {
         'determination_type_code': 'DO',
         'incident_timestamp': now_time_string,
+        'reported_timestamp': now_time_string,
         'incident_description': "Someone got a really bad paper cut",
         'dangerous_occurrence_subparagraph_ids': do_ids
     }

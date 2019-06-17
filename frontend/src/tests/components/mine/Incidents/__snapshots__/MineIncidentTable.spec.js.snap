@@ -87,7 +87,7 @@ ShallowWrapper {
                 "display_order": 20,
                 "mine_incident_followup_type_code": "NOA",
               },
-              "handleEditModal": [MockFunction],
+              "handleEditMineIncident": [MockFunction],
               "incident": Object {
                 "closing_report_summary": "Parent south person form evidence receive tree wide memory but medical car himself benefit key really series sea enter money prove if lawyer seven ready religious shake.",
                 "followup_inspection_no": "721814",
@@ -174,7 +174,7 @@ ShallowWrapper {
               "display_order": 20,
               "mine_incident_followup_type_code": "NOA",
             },
-            "handleEditModal": [MockFunction],
+            "handleEditMineIncident": [MockFunction],
             "incident": Object {
               "closing_report_summary": "Parent south person form evidence receive tree wide memory but medical car himself benefit key really series sea enter money prove if lawyer seven ready religious shake.",
               "followup_inspection_no": "721814",
@@ -265,7 +265,7 @@ ShallowWrapper {
                   "display_order": 20,
                   "mine_incident_followup_type_code": "NOA",
                 },
-                "handleEditModal": [MockFunction],
+                "handleEditMineIncident": [MockFunction],
                 "incident": Object {
                   "closing_report_summary": "Parent south person form evidence receive tree wide memory but medical car himself benefit key really series sea enter money prove if lawyer seven ready religious shake.",
                   "followup_inspection_no": "721814",
@@ -352,7 +352,7 @@ ShallowWrapper {
                 "display_order": 20,
                 "mine_incident_followup_type_code": "NOA",
               },
-              "handleEditModal": [MockFunction],
+              "handleEditMineIncident": [MockFunction],
               "incident": Object {
                 "closing_report_summary": "Parent south person form evidence receive tree wide memory but medical car himself benefit key really series sea enter money prove if lawyer seven ready religious shake.",
                 "followup_inspection_no": "721814",

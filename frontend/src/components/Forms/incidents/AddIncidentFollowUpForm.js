@@ -12,6 +12,7 @@ import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
 import { required, dateNotInFuture } from "@/utils/Validate";
 import LinkButton from "@/components/common/LinkButton";
+import { resetForm } from "@/utils/helpers";
 
 const propTypes = {
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -39,10 +40,19 @@ const renderRecommendations = ({ fields }) => [
 
 export class AddIncidentFollowUpForm extends Component {
   componentWillMount() {
+    this.state = {
+      hasFollowUp: this.props.initialValues.determination_type_code,
+    };
     if (this.props.hasFatalities) {
       this.props.initialValues.mine_incident_followup_investigation_type = "MIU";
     }
   }
+
+  onFollowUpChange = (chars, value) => {
+    this.setState({
+      hasFollowUp: value,
+    });
+  };
 
   render() {
     return (
@@ -55,12 +65,25 @@ export class AddIncidentFollowUpForm extends Component {
               {!this.props.hasFatalities && (
                 <Form.Item>
                   <Field
+                    id="followup_inspection"
+                    name="followup_inspection"
+                    label="Was there a follow-up inspection?"
+                    component={renderConfig.RADIO}
+                    validate={[required]}
+                    onChange={this.onFollowUpChange}
+                  />
+                </Form.Item>
+              )}
+
+              {this.state.hasFollowUp && (
+                <Form.Item>
+                  <Field
                     id="followup_inspection_date"
                     name="followup_inspection_date"
-                    label="Inspection date"
+                    label="Follow-up inspection date"
                     placeholder="Please select date and time"
                     component={renderConfig.DATE}
-                    validate={[required, dateNotInFuture]}
+                    validate={[dateNotInFuture]}
                   />
                 </Form.Item>
               )}
@@ -107,4 +130,6 @@ AddIncidentFollowUpForm.propTypes = propTypes;
 export default reduxForm({
   form: FORM.ADD_INCIDENT_FOLLOWUP,
   destroyOnUnmount: false,
+  onSubmitSuccess: resetForm(FORM.ADD_INCIDENT_FOLLOWUP),
+  enableReinitialize: true,
 })(AddIncidentFollowUpForm);

@@ -332,6 +332,7 @@ export class Dashboard extends Component {
         handleDelete,
         onSubmit,
         title,
+        isNewRecord: true,
       },
       content: modalConfig.MINE_RECORD,
     });

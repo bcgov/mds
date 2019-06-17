@@ -4,10 +4,9 @@ import { Field, reduxForm } from "redux-form";
 import { Form, Col, Row } from "antd";
 import * as FORM from "@/constants/forms";
 import { required, email, number, phoneNumber, maxLength, dateNotInFuture } from "@/utils/Validate";
-import { normalizePhone } from "@/utils/helpers";
+import { resetForm, normalizePhone } from "@/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
-// import { resetForm } from "@/utils/helpers";
 
 const propTypes = {
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -20,10 +19,7 @@ export const AddIncidentReportingForm = (props) => (
       <Row gutter={48}>
         <Col>
           {props.initialValues.mine_incident_id_year && (
-            <h4>
-              Ministry Incident No. : {props.initialValues.mine_incident_id_year}-
-              {props.initialValues.mine_incident_report_no}
-            </h4>
+            <h4>{`Ministry Incident No. :  ${props.initialValues.mine_incident_report_no}`}</h4>
           )}
           <Form.Item>
             <Field
@@ -52,7 +48,7 @@ export const AddIncidentReportingForm = (props) => (
             <Field
               id="reported_by_name"
               name="reported_by_name"
-              label="Reported by"
+              label="Reported by*"
               placeholder="Provide name of reporter"
               component={renderConfig.FIELD}
               validate={[required]}
@@ -93,7 +89,7 @@ export const AddIncidentReportingForm = (props) => (
             <Field
               id="reported_timestamp"
               name="reported_timestamp"
-              label="Reported Date and Time"
+              label="Reported Date and Time*"
               placeholder="Please select date and time"
               component={renderConfig.DATE}
               showTime
@@ -111,4 +107,7 @@ AddIncidentReportingForm.propTypes = propTypes;
 export default reduxForm({
   form: FORM.ADD_INCIDENT_REPORTING,
   destroyOnUnmount: false,
+  touchOnBlur: false,
+  onSubmitSuccess: resetForm(FORM.ADD_INCIDENT_REPORTING),
+  enableReinitialize: true,
 })(AddIncidentReportingForm);
