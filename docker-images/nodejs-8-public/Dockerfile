@@ -18,7 +18,7 @@ COPY package.json ${APP_ROOT}/src
 COPY package-lock.json ${APP_ROOT}/src
 
 # Install latest npm to /tmp
-RUN source ${APP_ROOT}/etc/scl_enable && npm install --prefix /tmp npm
+RUN source ${APP_ROOT}/etc/scl_enable && npm install --prefix /tmp npm@6.9.0
 
 # Install dependencies
 RUN source ${APP_ROOT}/etc/scl_enable && cd ${APP_ROOT}/src && npm set progress=false && /tmp/node_modules/.bin/npm ci
