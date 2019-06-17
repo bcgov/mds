@@ -172,6 +172,7 @@ export class MineDashboard extends Component {
     this.props.fetchMineComplianceCodes();
     this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
     this.props.fetchSubscribedMinesByUser();
+    this.props.fetchVarianceDocumentCategoryOptions();
     this.props.fetchVarianceStatusOptions();
     this.props.fetchInspectors();
     if (activeTab) {
