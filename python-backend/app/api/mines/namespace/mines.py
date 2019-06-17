@@ -23,6 +23,7 @@ from ..incidents.resources.mine_incidents import MineIncidentListResource, MineI
 from ..incidents.resources.mine_incident_status_codes import MineIncidentStatusCodeResource
 from ..incidents.resources.mine_incident_followup_types import MineIncidentFollowupTypeResource
 from ..incidents.resources.mine_incident_determination_types import MineIncidentDeterminationTypeResource
+from ..incidents.resources.mine_incident_document import MineIncidentDocumentListResource, MineIncidentDocumentResource
 
 api = Namespace('mines', description='Mine related operations')
 
@@ -69,3 +70,10 @@ api.add_resource(MineIncidentResource, '/incidents/<string:mine_incident_guid>')
 api.add_resource(MineIncidentFollowupTypeResource, '/incidents/followup-types')
 api.add_resource(MineIncidentDeterminationTypeResource, '/incidents/determination-types')
 api.add_resource(MineIncidentStatusCodeResource, '/incidents/status-codes')
+
+api.add_resource(
+    MineIncidentDocumentResource,
+    '/<string:mine_guid>/incidents/<string:mine_incident_guid>/documents/<string:mine_document_guid>'
+)
+api.add_resource(MineIncidentDocumentListResource,
+                 '/<string:mine_guid>/incidents/<string:mine_incident_guid>/documents')
