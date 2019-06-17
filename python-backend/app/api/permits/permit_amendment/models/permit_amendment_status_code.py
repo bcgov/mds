@@ -17,14 +17,6 @@ class PermitAmendmentStatusCode(AuditMixin, Base):
     display_order = db.Column(db.Integer, nullable=False)
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
-    def json(self):
-        return {
-            'permit_amendment_status_code': self.permit_amendment_status_code,
-            'description': self.description,
-            'display_order': str(self.display_order),
-            'active_ind': str(self.active_ind),
-        }
-
     @classmethod
     def find_by_permit_amendment_status_code(cls, _id):
         return cls.query.filter_by(permit_amendment_status_code=_id).first()

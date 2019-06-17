@@ -35,27 +35,6 @@ class PermitAmendment(AuditMixin, Base):
     permit_amendment_type = db.relationship('PermitAmendmentTypeCode')
     permit_amendment_type_description = association_proxy('permit_amendment_type', 'description')
 
-    def json(self):
-        return {
-            'permit_amendment_guid':
-            str(self.permit_amendment_guid),
-            'permit_guid':
-            str(self.permit.permit_guid),
-            'permit_amendment_status_code':
-            self.permit_amendment_status_code,
-            'permit_amendment_type_code':
-            self.permit_amendment_type_code,
-            'received_date':
-            self.received_date.isoformat() if self.received_date else None,
-            'issue_date':
-            self.issue_date.isoformat() if self.issue_date else None,
-            'authorization_end_date':
-            self.authorization_end_date.isoformat() if self.authorization_end_date else None,
-            'description':
-            self.description,
-            'related_documents': [x.json() for x in self.documents]
-        }
-
     @classmethod
     def create(cls,
                permit,

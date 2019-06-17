@@ -29,18 +29,6 @@ class PermitAmendmentDocument(AuditMixin, Base):
 
     mine_name = association_proxy('permit_amendment', 'permit.mine.mine_name')
 
-    def json(self):
-        return {
-            'mine_guid':
-            str(self.mine_guid),
-            'document_guid':
-            str(self.permit_amendment_document_guid),
-            'document_name':
-            self.document_name,
-            'document_manager_guid':
-            str(self.document_manager_guid) if self.document_manager_guid else None
-        }
-
     @classmethod
     def find_by_permit_amendment_guid(cls, _guid):
         return cls.query.filter_by(permit_amendment_document_guid=_guid).first()

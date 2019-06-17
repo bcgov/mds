@@ -76,7 +76,7 @@ const staticContentReducer = (state = initialState, action) => {
     case actionTypes.STORE_PERMIT_STATUS_OPTIONS:
       return {
         ...state,
-        permitStatusCodes: action.payload,
+        permitStatusCodes: action.payload.records,
       };
     case actionTypes.STORE_APPLICATION_STATUS_OPTIONS:
       return {
