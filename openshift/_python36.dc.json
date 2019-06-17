@@ -506,7 +506,7 @@
                 "volumeMounts": [
                   {
                     "mountPath": "/opt/app-root/src/document_uploads",
-                    "name": "mds-document-storage-data"
+                    "name": "mds-document-block-storage-data"
                   }
                 ],
                 "imagePullPolicy": "IfNotPresent"
@@ -636,7 +636,7 @@
             "securityContext": {},
             "volumes": [
               {
-                "name": "mds-document-storage-data",
+                "name": "mds-document-block-storage-data",
                 "persistentVolumeClaim": {
                   "claimName": "mds-document-block-storage${SUFFIX}"
                 }
