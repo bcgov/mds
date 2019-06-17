@@ -209,10 +209,10 @@ describe("Validate class", () => {
       expect(validateIncidentDate(reportedDate)(value)).toEqual(undefined);
     });
 
-    it("returns an error message if `value` is before or on `incidentDate`", () => {
+    it("returns an error message if `value` is before or exactly `incidentDate`", () => {
       const reportedDate = new Date("August 7, 2018 05:00:00");
       const value = new Date("August 7, 2018 04:00:00");
-      expect(validateIncidentDate(value)(value)).toEqual(undefined);
+      expect(validateIncidentDate(value)(value)).toBeTruthy();
       expect(validateIncidentDate(reportedDate)(value)).toBeTruthy();
     });
   });
