@@ -411,11 +411,11 @@ export const fetchMineIncidents = (mine_guid) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const updateMineIncident = (mineIncidentGuid, payload) => (dispatch) => {
+export const updateMineIncident = (mineGuid, mineIncidentGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_MINE_INCIDENT));
   return CustomAxios()
     .put(
-      `${ENVIRONMENT.apiUrl}${API.MINE_INCIDENT(mineIncidentGuid)}`,
+      `${ENVIRONMENT.apiUrl}${API.MINE_INCIDENT(mineGuid, mineIncidentGuid)}`,
       payload,
       createRequestHeader()
     )
