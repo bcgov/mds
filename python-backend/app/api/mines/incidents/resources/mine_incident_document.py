@@ -59,10 +59,11 @@ class MineIncidentDocumentListResource(Resource, UserMixin):
 
 class MineIncidentDocumentResource(Resource, UserMixin):
     @requires_role_mine_create
-    def put(self, mine_guid, mine_incident_guid):
+    def put(self, mine_guid, mine_incident_guid, mine_document_guid):
         parser = CustomReqparser()
         parser.add_argument('filename', type=str, required=True)
         parser.add_argument('document_manager_guid', type=str, required=True)
+        parser.add_argument('mine_incident_document_type', type=str, required=True)
 
         mine_incident = MineIncident.find_by_mine_incident_guid(mine_incident_guid)
         mine = Mine.find_by_mine_guid(mine_guid)
@@ -75,6 +76,7 @@ class MineIncidentDocumentResource(Resource, UserMixin):
         data = self.parser.parse_args()
         document_manager_guid = data.get('document_manager_guid')
         file_name = data.get('filename')
+        mine_incident_document_type = data.get('mine_incident_document_type')
 
         mine_doc = MineDocument(
             mine_guid=mine.mine_guid,
@@ -88,7 +90,8 @@ class MineIncidentDocumentResource(Resource, UserMixin):
         mine_incident_doc = MineIncidentDocumentXref(
             mine_document_guid=mine_doc.mine_document_guid,
             mine_incident_id=mine_incident.mine_incident_id,
-            variance_document_category_code='FIN')  # hardcoded for now
+            variance_document_category_code=mine_incident_document_type
+            if mine_incident_document_type else 'INI')
 
         mine_incident.documents.append(mine_incident_doc)
         mine_incident.save()
@@ -96,7 +99,7 @@ class MineIncidentDocumentResource(Resource, UserMixin):
         return mine_incident
 
     @requires_role_mine_create
-    def delete(self, mine_guid, mine_incident_guid, document_guid):
+    def delete(self, mine_guid, mine_incident_guid, mine_document_guid):
         if not document_guid:
             raise BadRequest('must provide document_guid to be unlinked')
 
