@@ -26,6 +26,7 @@ const propTypes = {
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   inspectors: CustomPropTypes.options.isRequired,
   addIncidentFormValues: PropTypes.objectOf(PropTypes.any),
+  mineGuid: PropTypes.string.isRequired,
 };
 
 const defaultProps = {
@@ -77,6 +78,7 @@ const StepForms = (props, next, prev, handleIncidentSubmit) => [
     title: "Add Details",
     content: (
       <AddIncidentDetailForm
+        mineGuid={props.mineGuid}
         initialValues={props.initialValues}
         doSubparagraphOptions={props.doSubparagraphOptions}
         incidentDeterminationOptions={props.incidentDeterminationOptions}
@@ -119,6 +121,7 @@ const StepForms = (props, next, prev, handleIncidentSubmit) => [
     title: "Follow Up",
     content: (
       <AddIncidentFollowUpForm
+        mineGuid={props.mineGuid}
         initialValues={props.initialValues}
         incidentDeterminationOptions={props.incidentDeterminationOptions}
         followupActionOptions={props.followupActionOptions}

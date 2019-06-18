@@ -13,6 +13,8 @@ import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
 import { required, dateNotInFuture } from "@/utils/Validate";
 import LinkButton from "@/components/common/LinkButton";
+import FileUpload from "@/components/common/FileUpload";
+import { MINE_INCIDENT_DOCUMENT } from "@/constants/API";
 
 const propTypes = {
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -20,6 +22,7 @@ const propTypes = {
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
   hasFatalities: PropTypes.bool.isRequired,
   change: PropTypes.func,
+  mineGuid: PropTypes.string.isRequired,
 };
 
 const defaultProps = {
@@ -132,6 +135,16 @@ export class AddIncidentFollowUpForm extends Component {
               </Form.Item>
 
               <h4>Final Investigation Report Documents</h4>
+              <Form.Item>
+                <Field
+                  id="InitialIncidentFileUpload"
+                  name="InitialIncidentFileUpload"
+                  onFileLoad={this.onFileLoad}
+                  onRemoveFile={this.onRemoveFile}
+                  uploadUrl={MINE_INCIDENT_DOCUMENT(this.props.mineGuid)}
+                  component={FileUpload}
+                />
+              </Form.Item>
             </Col>
           </Row>
         </Form>

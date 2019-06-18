@@ -7,6 +7,7 @@ import { Form, Col, Row } from "antd";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import FileUpload from "@/components/common/FileUpload";
+import { MINE_INCIDENT_DOCUMENT } from "@/constants/API";
 
 import { required, maxLength, number, dateNotInFuture } from "@/utils/Validate";
 
@@ -17,6 +18,7 @@ const propTypes = {
   inspectors: CustomPropTypes.options.isRequired,
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
   change: PropTypes.func,
+  mineGuid: PropTypes.string.isRequired,
 };
 
 const defaultProps = {
@@ -151,6 +153,7 @@ class AddIncidentDetailForm extends Component {
                     onFileLoad={this.onFileLoad}
                     onRemoveFile={this.onRemoveFile}
                     component={FileUpload}
+                    uploadUrl={MINE_INCIDENT_DOCUMENT(this.props.mineGuid)}
                   />
                 </Form.Item>
               </span>

@@ -235,26 +235,26 @@ environments {
             }
             resources {
                 node {
-                    cpu_request = "50m"
-                    cpu_limit = "100m"
+                    cpu_request = "100m"
+                    cpu_limit = "200m"
                     memory_request = "256Mi"
                     memory_limit = "384Mi"
                     replica_min = 1
                     replica_max = 1
                 }
                 nginx {
-                    cpu_request = "50m"
-                    cpu_limit = "100m"
+                    cpu_request = "100m"
+                    cpu_limit = "200m"
                     memory_request = "128Mi"
                     memory_limit = "256Mi"
                     replica_min = 1
                     replica_max = 1
                 }
                 python {
-                    cpu_request = "50m"
-                    cpu_limit = "150m"
+                    cpu_request = "100m"
+                    cpu_limit = "300m"
                     memory_request = "256Mi"
-                    memory_limit = "512Mi"
+                    memory_limit = "1024Mi"
                     replica_min = 1
                     replica_max = 1
                 }
@@ -267,10 +267,10 @@ environments {
                     replica_max = 1
                 }
                 postgres {
-                    cpu_request = "50m"
-                    cpu_limit = "100m"
+                    cpu_request = "100m"
+                    cpu_limit = "200m"
                     memory_request = "384Mi"
-                    memory_limit = "768Mi"
+                    memory_limit = "1024Mi"
                 }
                 redis {
                     cpu_request = "20m"
