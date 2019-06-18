@@ -73,8 +73,8 @@ export class AddIncidentFollowUpForm extends Component {
               )}
               <Form.Item>
                 <Field
-                  id="mine_incident_followup_investigation_type"
-                  name="mine_incident_followup_investigation_type"
+                  id="followup_investigation_type_code"
+                  name="followup_investigation_type_code"
                   label="Was it escalated to EMPR investigation?*"
                   placeholder="Please choose one"
                   component={renderConfig.SELECT}

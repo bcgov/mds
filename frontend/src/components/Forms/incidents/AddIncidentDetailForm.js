@@ -13,7 +13,11 @@ const propTypes = {
   doSubparagraphOptions: CustomPropTypes.options.isRequired,
   inspectors: CustomPropTypes.options.isRequired,
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
-  doDetermination: PropTypes.string.isRequired,
+  doDetermination: PropTypes.string,
+};
+
+const defaultProps = {
+  doDetermination: "PEN",
 };
 
 class AddIncidentDetailForm extends Component {
@@ -135,6 +139,7 @@ class AddIncidentDetailForm extends Component {
 }
 
 AddIncidentDetailForm.propTypes = propTypes;
+AddIncidentDetailForm.defaultProps = defaultProps;
 
 export default reduxForm({
   form: FORM.MINE_INCIDENT,

@@ -59,10 +59,7 @@ export class MineIncidents extends Component {
   }
 
   handleAddMineIncident = (values) => {
-    // console.log("Add Incident Values", JSON.stringify(values));
-
     this.props.createMineIncident(this.props.mine.mine_guid, values).then(() => {
-      // console.log("Done");
       this.props.closeModal();
       this.props.fetchMineIncidents(this.props.mine.mine_guid);
     });
@@ -84,11 +81,16 @@ export class MineIncidents extends Component {
   openMineIncidentModal = (
     event,
     onSubmit,
+    newIncident,
     existingIncident = { dangerous_occurrence_subparagraph_ids: [] }
   ) => {
     event.preventDefault();
+    const title = newIncident
+      ? ModalContent.ADD_INCIDENT(this.props.mine.mine_name)
+      : ModalContent.EDIT_INCIDENT(this.props.mine.mine_name);
     this.props.openModal({
       props: {
+        newIncident,
         initialValues: {
           ...existingIncident,
           dangerous_occurrence_subparagraph_ids: existingIncident.dangerous_occurrence_subparagraph_ids.map(
@@ -97,7 +99,7 @@ export class MineIncidents extends Component {
         },
         onSubmit,
         afterClose: this.handleCancelMineIncident,
-        title: ModalContent.ADD_INCIDENT(this.props.mine.mine_name),
+        title,
         mineGuid: this.props.mine.mine_guid,
         followupActionOptions: this.props.followupActionsOptions,
         incidentDeterminationOptions: this.props.incidentDeterminationOptions,
@@ -117,7 +119,9 @@ export class MineIncidents extends Component {
         <div className="inline-flex flex-end">
           <AuthorizationWrapper permission={Permission.CREATE}>
             <AddButton
-              onClick={(event) => this.openMineIncidentModal(event, this.handleAddMineIncident)}
+              onClick={(event) =>
+                this.openMineIncidentModal(event, this.handleAddMineIncident, true)
+              }
             >
               Record a Mine Incident
             </AddButton>
