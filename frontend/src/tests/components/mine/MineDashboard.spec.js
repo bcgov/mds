@@ -13,6 +13,7 @@ const setupDispatchProps = () => {
   dispatchProps.subscribe = jest.fn();
   dispatchProps.unSubscribe = jest.fn();
   dispatchProps.createVariance = jest.fn();
+  dispatchProps.fetchVarianceDocumentCategoryOptions = jest.fn();
   dispatchProps.fetchMineComplianceCodes = jest.fn();
   dispatchProps.fetchVariancesByMine = jest.fn();
   dispatchProps.fetchStatusOptions = jest.fn();
@@ -49,6 +50,7 @@ const setupReducerProps = () => {
   reducerProps.coreUsers = MOCK.CORE_USERS.results;
   reducerProps.varianceStatusOptions = MOCK.VARIANCE_DROPDOWN_STATUS_OPTIONS;
   reducerProps.varianceStatusOptionsHash = MOCK.VARIANCE_STATUS_OPTIONS_HASH;
+  reducerProps.varianceDocumentCategoryOptions = MOCK.VARIANCE_DOCUMENT_CATEGORY_OPTIONS_DROPDOWN;
   reducerProps.userRoles = MOCK.USER_ACCESS_DATA;
 };
 
