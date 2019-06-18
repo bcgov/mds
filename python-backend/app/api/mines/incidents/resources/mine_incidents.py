@@ -3,7 +3,7 @@ from flask import request, current_app
 from datetime import datetime
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
-from app.extensions import api
+from app.extensions import api, db
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.access_decorators import requires_role_mine_view, requires_role_mine_create
 
@@ -132,7 +132,6 @@ class MineIncidentListResource(Resource, UserMixin):
             incident.dangerous_occurrence_subparagraphs.append(sub)
 
         uploaded_files = data.get('uploaded_files')
-        current_app.logger.debug(uploaded_files)
         if uploaded_files is not None:
             for new_file in uploaded_files:
                 mine_doc = MineDocument(
@@ -201,6 +200,7 @@ class MineIncidentResource(Resource, UserMixin):
     parser.add_argument('status_code', type=str, location='json', store_missing=False)
     parser.add_argument(
         'dangerous_occurrence_subparagraph_ids', type=list, location='json', store_missing=False)
+    parser.add_argument('uploaded_files', type=list, location='json', store_missing=False)
 
     @api.marshal_with(MINE_INCIDENT_MODEL, code=200)
     @requires_role_mine_view
@@ -247,6 +247,35 @@ class MineIncidentResource(Resource, UserMixin):
                     'One of the provided compliance articles is not a sub-paragraph of section 1.7.3 (dangerous occurrences)'
                 )
             incident.dangerous_occurrence_subparagraphs.append(sub)
+
+        uploaded_files = data.get('uploaded_files')
+        if uploaded_files is not None:
+            for new_file in uploaded_files:
+                if not any(doc.document_manager_guid == new_file['document_manager_guid']
+                           for doc in incident.documents):
+                    mine_doc = MineDocument(
+                        mine_guid=mine_guid,
+                        document_name=new_file['file_name'],
+                        document_manager_guid=new_file['document_manager_guid'])
+
+                    if not mine_doc:
+                        raise BadRequest('Unable to register uploaded file as document')
+
+                    mine_doc.save()
+                    mine_incident_doc = MineIncidentDocumentXref(
+                        mine_document_guid=mine_doc.mine_document_guid,
+                        mine_incident_id=incident.mine_incident_id,
+                        mine_incident_document_type_code=new_file['document_type']
+                        if new_file['document_type'] else 'INI')
+
+                    incident.documents.append(mine_incident_doc)
+
+            for doc in incident.documents:
+                if not any(new_file['document_manager_guid'] == doc.document_manager_guid
+                           for new_file in uploaded_files):
+                    incident.documents.remove(doc)
+                    db.session.delete(doc)
+                    db.session.commit()
 
         try:
             incident.save()
