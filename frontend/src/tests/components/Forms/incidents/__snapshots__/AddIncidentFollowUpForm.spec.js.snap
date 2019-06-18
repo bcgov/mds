@@ -41,7 +41,7 @@ ShallowWrapper {
                 id="followup_inspection"
                 label="Was there a follow-up inspection?"
                 name="followup_inspection"
-                onChange={[Function]}
+                onChange={undefined}
                 validate={
                   Array [
                     [Function],
@@ -107,7 +107,7 @@ ShallowWrapper {
                 id="followup_inspection"
                 label="Was there a follow-up inspection?"
                 name="followup_inspection"
-                onChange={[Function]}
+                onChange={undefined}
                 validate={
                   Array [
                     [Function],
@@ -173,7 +173,7 @@ ShallowWrapper {
                 id="followup_inspection"
                 label="Was there a follow-up inspection?"
                 name="followup_inspection"
-                onChange={[Function]}
+                onChange={undefined}
                 validate={
                   Array [
                     [Function],
@@ -235,7 +235,7 @@ ShallowWrapper {
                   id="followup_inspection"
                   label="Was there a follow-up inspection?"
                   name="followup_inspection"
-                  onChange={[Function]}
+                  onChange={undefined}
                   validate={
                     Array [
                       [Function],
@@ -302,7 +302,7 @@ ShallowWrapper {
                   id="followup_inspection"
                   label="Was there a follow-up inspection?"
                   name="followup_inspection"
-                  onChange={[Function]}
+                  onChange={undefined}
                   validate={
                     Array [
                       [Function],
@@ -321,7 +321,7 @@ ShallowWrapper {
                   "id": "followup_inspection",
                   "label": "Was there a follow-up inspection?",
                   "name": "followup_inspection",
-                  "onChange": [Function],
+                  "onChange": undefined,
                   "validate": Array [
                     [Function],
                   ],
@@ -456,7 +456,7 @@ ShallowWrapper {
                   id="followup_inspection"
                   label="Was there a follow-up inspection?"
                   name="followup_inspection"
-                  onChange={[Function]}
+                  onChange={undefined}
                   validate={
                     Array [
                       [Function],
@@ -522,7 +522,7 @@ ShallowWrapper {
                   id="followup_inspection"
                   label="Was there a follow-up inspection?"
                   name="followup_inspection"
-                  onChange={[Function]}
+                  onChange={undefined}
                   validate={
                     Array [
                       [Function],
@@ -588,7 +588,7 @@ ShallowWrapper {
                   id="followup_inspection"
                   label="Was there a follow-up inspection?"
                   name="followup_inspection"
-                  onChange={[Function]}
+                  onChange={undefined}
                   validate={
                     Array [
                       [Function],
@@ -650,7 +650,7 @@ ShallowWrapper {
                     id="followup_inspection"
                     label="Was there a follow-up inspection?"
                     name="followup_inspection"
-                    onChange={[Function]}
+                    onChange={undefined}
                     validate={
                       Array [
                         [Function],
@@ -717,7 +717,7 @@ ShallowWrapper {
                     id="followup_inspection"
                     label="Was there a follow-up inspection?"
                     name="followup_inspection"
-                    onChange={[Function]}
+                    onChange={undefined}
                     validate={
                       Array [
                         [Function],
@@ -736,7 +736,7 @@ ShallowWrapper {
                     "id": "followup_inspection",
                     "label": "Was there a follow-up inspection?",
                     "name": "followup_inspection",
-                    "onChange": [Function],
+                    "onChange": undefined,
                     "validate": Array [
                       [Function],
                     ],
