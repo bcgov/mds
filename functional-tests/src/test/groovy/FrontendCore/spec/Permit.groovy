@@ -105,7 +105,6 @@ class  PermitSpec extends GebReportingSpec {
         assert permitTab.amendmentDescriptions.children()[0].text()== Const.PERMIT_DESCRIPTION
     }
     
-    // TODO: Fix this test so we no longer get unclicable/ out of bounds errors
     def "User can amalgamate a permit"(){
         when: "The user amalgamates a permit."
         
