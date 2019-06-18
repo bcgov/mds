@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Table, Button, Icon } from "antd";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import {
@@ -16,6 +17,7 @@ import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 import * as Strings from "@/constants/strings";
 import { COLOR } from "@/constants/styles";
 import LinkButton from "@/components/common/LinkButton";
+import * as router from "@/constants/routes";
 
 const { errorRed } = COLOR;
 
@@ -25,6 +27,7 @@ const propTypes = {
   varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   openViewVarianceModal: PropTypes.func,
   isApplication: PropTypes.bool,
+  isDashboardView: PropTypes.bool,
   openEditVarianceModal: PropTypes.func,
 };
 
@@ -32,11 +35,12 @@ const defaultProps = {
   openEditVarianceModal: () => {},
   openViewVarianceModal: () => {},
   isApplication: false,
+  isDashboardView: false,
 };
 
 const errorStyle = (isOverdue) => (isOverdue ? { color: errorRed } : {});
 
-const hideColumn = (isApplication) => (isApplication ? "column-hide" : "");
+const hideColumn = (condition) => (condition ? "column-hide" : "");
 
 export class MineVarianceTable extends Component {
   handleOpenModal = (event, isEditable, variance) => {
@@ -55,6 +59,8 @@ export class MineVarianceTable extends Component {
     variances.map((variance) => ({
       key: variance.variance_guid,
       variance,
+      mineName: variance.mine_name || null,
+      mineGuid: variance.mine_guid || null,
       status: statusHash[variance.variance_application_status_code],
       isEditable: this.handleConditionalEdit(variance.variance_application_status_code),
       compliance_article_id: codeHash[variance.compliance_article_id] || Strings.EMPTY_FIELD,
@@ -85,6 +91,20 @@ export class MineVarianceTable extends Component {
         render: (text, record) => (
           <div title="Code Section" style={errorStyle(record.isOverdue)}>
             {text}
+          </div>
+        ),
+      },
+      {
+        title: "Mine Name",
+        dataIndex: "mineName",
+        className: hideColumn(!this.props.isDashboardView),
+        render: (text, record) => (
+          <div
+            title="Mine Name"
+            style={errorStyle(record.isOverdue)}
+            className={hideColumn(!this.props.isDashboardView)}
+          >
+            <Link to={router.MINE_SUMMARY.dynamicRoute(record.mineGuid)}>{text}</Link>
           </div>
         ),
       },

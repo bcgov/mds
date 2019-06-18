@@ -19,14 +19,10 @@ import {
   getMineTenureTypesHash,
   getCommodityOptionHash,
   getHSRCMComplianceCodesHash,
-  getDropdownVarianceStatusOptions,
-  getDropdownVarianceDocumentCategoryOptions,
-  getVarianceDocumentCategoryOptionsHash,
 } from "@/selectors/staticContentSelectors";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import { getSubscribedMines } from "@/selectors/mineSelectors";
-import { getDropdownInspectors } from "@/selectors/partiesSelectors";
 import { fetchSubscribedMinesByUser, unSubscribe } from "@/actionCreators/mineActionCreator";
 import {
   fetchVariances,
@@ -35,7 +31,7 @@ import {
 } from "@/actionCreators/varianceActionCreator";
 import { getVariances, getVariancePageData } from "@/selectors/varianceSelectors";
 import { SubscriptionTable } from "./SubscriptionTable";
-import { VarianceTables } from "@/components/dashboard/customHomePage/VarianceTables";
+import { VarianceTable } from "@/components/dashboard/customHomePage/VarianceTable";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import * as Strings from "@/constants/strings";
 import { fetchInspectors } from "@/actionCreators/partiesActionCreator";
@@ -67,10 +63,6 @@ const propTypes = {
   variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
   variancePageData: CustomPropTypes.variancePageData.isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  // inspectors: CustomPropTypes.options.isRequired,
-  // varianceDocumentCategoryOptions: CustomPropTypes.options.isRequired,
-  // varianceDocumentCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  // varianceStatusOptions: CustomPropTypes.options.isRequired,
 };
 
 export class CustomHomePage extends Component {
@@ -82,7 +74,7 @@ export class CustomHomePage extends Component {
         Strings.VARIANCE_DECISION_CODE,
       ],
       page: Strings.DEFAULT_PAGE,
-      per_page: 10,
+      per_page: 5,
     },
   };
 
@@ -109,7 +101,7 @@ export class CustomHomePage extends Component {
 
   handleVariancePageChange = (page, per_page) => {
     this.setState({ variancesLoaded: false });
-    const params = { page, per_page, ...this.state.params };
+    const params = { ...this.state.params, page, per_page };
     return this.props.fetchVariances(params).then(() => {
       this.setState({ variancesLoaded: true, params });
     });
@@ -171,7 +163,7 @@ export class CustomHomePage extends Component {
         </div>
         <div className="landing-page__content">
           <LoadingWrapper condition={this.state.variancesLoaded}>
-            <VarianceTables
+            <VarianceTable
               variances={this.props.variances}
               pageData={this.props.variancePageData}
               handlePageChange={this.handleVariancePageChange}
@@ -202,10 +194,6 @@ const mapStateToProps = (state) => ({
   variancePageData: getVariancePageData(state),
   variances: getVariances(state),
   complianceCodesHash: getHSRCMComplianceCodesHash(state),
-  inspectors: getDropdownInspectors(state),
-  varianceDocumentCategoryOptions: getDropdownVarianceDocumentCategoryOptions(state),
-  varianceDocumentCategoryOptionsHash: getVarianceDocumentCategoryOptionsHash(state),
-  varianceStatusOptions: getDropdownVarianceStatusOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
