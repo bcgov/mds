@@ -42,7 +42,7 @@ ShallowWrapper {
                 id="followup_inspection"
                 label="Was there a follow-up inspection?"
                 name="followup_inspection"
-                onChange={[Function]}
+                onChange={undefined}
                 validate={
                   Array [
                     [Function],
@@ -56,9 +56,9 @@ ShallowWrapper {
               <Field
                 component={[Function]}
                 data={undefined}
-                id="mine_incident_followup_investigation_type"
+                id="followup_investigation_type_code"
                 label="Was it escalated to EMPR investigation?*"
-                name="mine_incident_followup_investigation_type"
+                name="followup_investigation_type_code"
                 placeholder="Please choose one"
                 validate={
                   Array [
@@ -123,7 +123,7 @@ ShallowWrapper {
                 id="followup_inspection"
                 label="Was there a follow-up inspection?"
                 name="followup_inspection"
-                onChange={[Function]}
+                onChange={undefined}
                 validate={
                   Array [
                     [Function],
@@ -137,9 +137,9 @@ ShallowWrapper {
               <Field
                 component={[Function]}
                 data={undefined}
-                id="mine_incident_followup_investigation_type"
+                id="followup_investigation_type_code"
                 label="Was it escalated to EMPR investigation?*"
-                name="mine_incident_followup_investigation_type"
+                name="followup_investigation_type_code"
                 placeholder="Please choose one"
                 validate={
                   Array [
@@ -204,7 +204,7 @@ ShallowWrapper {
                 id="followup_inspection"
                 label="Was there a follow-up inspection?"
                 name="followup_inspection"
-                onChange={[Function]}
+                onChange={undefined}
                 validate={
                   Array [
                     [Function],
@@ -218,9 +218,9 @@ ShallowWrapper {
               <Field
                 component={[Function]}
                 data={undefined}
-                id="mine_incident_followup_investigation_type"
+                id="followup_investigation_type_code"
                 label="Was it escalated to EMPR investigation?*"
-                name="mine_incident_followup_investigation_type"
+                name="followup_investigation_type_code"
                 placeholder="Please choose one"
                 validate={
                   Array [
@@ -281,7 +281,7 @@ ShallowWrapper {
                   id="followup_inspection"
                   label="Was there a follow-up inspection?"
                   name="followup_inspection"
-                  onChange={[Function]}
+                  onChange={undefined}
                   validate={
                     Array [
                       [Function],
@@ -296,9 +296,9 @@ ShallowWrapper {
                 <Field
                   component={[Function]}
                   data={undefined}
-                  id="mine_incident_followup_investigation_type"
+                  id="followup_investigation_type_code"
                   label="Was it escalated to EMPR investigation?*"
-                  name="mine_incident_followup_investigation_type"
+                  name="followup_investigation_type_code"
                   placeholder="Please choose one"
                   validate={
                     Array [
@@ -363,7 +363,7 @@ ShallowWrapper {
                   id="followup_inspection"
                   label="Was there a follow-up inspection?"
                   name="followup_inspection"
-                  onChange={[Function]}
+                  onChange={undefined}
                   validate={
                     Array [
                       [Function],
@@ -382,7 +382,7 @@ ShallowWrapper {
                   "id": "followup_inspection",
                   "label": "Was there a follow-up inspection?",
                   "name": "followup_inspection",
-                  "onChange": [Function],
+                  "onChange": undefined,
                   "validate": Array [
                     [Function],
                   ],
@@ -402,9 +402,9 @@ ShallowWrapper {
                 "children": <Field
                   component={[Function]}
                   data={undefined}
-                  id="mine_incident_followup_investigation_type"
+                  id="followup_investigation_type_code"
                   label="Was it escalated to EMPR investigation?*"
-                  name="mine_incident_followup_investigation_type"
+                  name="followup_investigation_type_code"
                   placeholder="Please choose one"
                   validate={
                     Array [
@@ -422,9 +422,9 @@ ShallowWrapper {
                 "props": Object {
                   "component": [Function],
                   "data": undefined,
-                  "id": "mine_incident_followup_investigation_type",
+                  "id": "followup_investigation_type_code",
                   "label": "Was it escalated to EMPR investigation?*",
-                  "name": "mine_incident_followup_investigation_type",
+                  "name": "followup_investigation_type_code",
                   "placeholder": "Please choose one",
                   "validate": Array [
                     [Function],
@@ -562,7 +562,7 @@ ShallowWrapper {
                   id="followup_inspection"
                   label="Was there a follow-up inspection?"
                   name="followup_inspection"
-                  onChange={[Function]}
+                  onChange={undefined}
                   validate={
                     Array [
                       [Function],
@@ -576,9 +576,9 @@ ShallowWrapper {
                 <Field
                   component={[Function]}
                   data={undefined}
-                  id="mine_incident_followup_investigation_type"
+                  id="followup_investigation_type_code"
                   label="Was it escalated to EMPR investigation?*"
-                  name="mine_incident_followup_investigation_type"
+                  name="followup_investigation_type_code"
                   placeholder="Please choose one"
                   validate={
                     Array [
@@ -643,7 +643,7 @@ ShallowWrapper {
                   id="followup_inspection"
                   label="Was there a follow-up inspection?"
                   name="followup_inspection"
-                  onChange={[Function]}
+                  onChange={undefined}
                   validate={
                     Array [
                       [Function],
@@ -657,9 +657,9 @@ ShallowWrapper {
                 <Field
                   component={[Function]}
                   data={undefined}
-                  id="mine_incident_followup_investigation_type"
+                  id="followup_investigation_type_code"
                   label="Was it escalated to EMPR investigation?*"
-                  name="mine_incident_followup_investigation_type"
+                  name="followup_investigation_type_code"
                   placeholder="Please choose one"
                   validate={
                     Array [
@@ -724,7 +724,7 @@ ShallowWrapper {
                   id="followup_inspection"
                   label="Was there a follow-up inspection?"
                   name="followup_inspection"
-                  onChange={[Function]}
+                  onChange={undefined}
                   validate={
                     Array [
                       [Function],
@@ -738,9 +738,9 @@ ShallowWrapper {
                 <Field
                   component={[Function]}
                   data={undefined}
-                  id="mine_incident_followup_investigation_type"
+                  id="followup_investigation_type_code"
                   label="Was it escalated to EMPR investigation?*"
-                  name="mine_incident_followup_investigation_type"
+                  name="followup_investigation_type_code"
                   placeholder="Please choose one"
                   validate={
                     Array [
@@ -801,7 +801,7 @@ ShallowWrapper {
                     id="followup_inspection"
                     label="Was there a follow-up inspection?"
                     name="followup_inspection"
-                    onChange={[Function]}
+                    onChange={undefined}
                     validate={
                       Array [
                         [Function],
@@ -816,9 +816,9 @@ ShallowWrapper {
                   <Field
                     component={[Function]}
                     data={undefined}
-                    id="mine_incident_followup_investigation_type"
+                    id="followup_investigation_type_code"
                     label="Was it escalated to EMPR investigation?*"
-                    name="mine_incident_followup_investigation_type"
+                    name="followup_investigation_type_code"
                     placeholder="Please choose one"
                     validate={
                       Array [
@@ -883,7 +883,7 @@ ShallowWrapper {
                     id="followup_inspection"
                     label="Was there a follow-up inspection?"
                     name="followup_inspection"
-                    onChange={[Function]}
+                    onChange={undefined}
                     validate={
                       Array [
                         [Function],
@@ -902,7 +902,7 @@ ShallowWrapper {
                     "id": "followup_inspection",
                     "label": "Was there a follow-up inspection?",
                     "name": "followup_inspection",
-                    "onChange": [Function],
+                    "onChange": undefined,
                     "validate": Array [
                       [Function],
                     ],
@@ -922,9 +922,9 @@ ShallowWrapper {
                   "children": <Field
                     component={[Function]}
                     data={undefined}
-                    id="mine_incident_followup_investigation_type"
+                    id="followup_investigation_type_code"
                     label="Was it escalated to EMPR investigation?*"
-                    name="mine_incident_followup_investigation_type"
+                    name="followup_investigation_type_code"
                     placeholder="Please choose one"
                     validate={
                       Array [
@@ -942,9 +942,9 @@ ShallowWrapper {
                   "props": Object {
                     "component": [Function],
                     "data": undefined,
-                    "id": "mine_incident_followup_investigation_type",
+                    "id": "followup_investigation_type_code",
                     "label": "Was it escalated to EMPR investigation?*",
-                    "name": "mine_incident_followup_investigation_type",
+                    "name": "followup_investigation_type_code",
                     "placeholder": "Please choose one",
                     "validate": Array [
                       [Function],

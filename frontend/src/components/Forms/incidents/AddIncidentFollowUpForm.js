@@ -17,12 +17,12 @@ import FileUpload from "@/components/common/FileUpload";
 import { MINE_INCIDENT_DOCUMENT } from "@/constants/API";
 
 const propTypes = {
-  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   followupActionOptions: CustomPropTypes.options.isRequired,
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
   hasFatalities: PropTypes.bool.isRequired,
   change: PropTypes.func,
   mineGuid: PropTypes.string.isRequired,
+  hasFollowUp: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -47,15 +47,6 @@ const renderRecommendations = ({ fields }) => [
 ];
 
 export class AddIncidentFollowUpForm extends Component {
-  componentWillMount() {
-    this.state = {
-      hasFollowUp: this.props.initialValues.determination_type_code,
-    };
-    if (this.props.hasFatalities) {
-      this.props.initialValues.mine_incident_followup_investigation_type = "MIU";
-    }
-  }
-
   onFileLoad = (fileName, document_manager_guid) => {
     this.state.uploadedFiles.push({ fileName, document_manager_guid });
     this.props.change("uploadedFiles", this.state.uploadedFiles);
@@ -64,12 +55,6 @@ export class AddIncidentFollowUpForm extends Component {
   onRemoveFile = (fileItem) => {
     remove(this.state.uploadedFiles, { document_manager_guid: fileItem.serverId });
     this.props.change("uploadedFiles", this.state.uploadedFiles);
-  };
-
-  onFollowUpChange = (chars, value) => {
-    this.setState({
-      hasFollowUp: value,
-    });
   };
 
   render() {
@@ -93,7 +78,7 @@ export class AddIncidentFollowUpForm extends Component {
                 </Form.Item>
               )}
 
-              {this.state.hasFollowUp && (
+              {this.props.hasFollowUp && (
                 <Form.Item>
                   <Field
                     id="followup_inspection_date"
@@ -107,8 +92,8 @@ export class AddIncidentFollowUpForm extends Component {
               )}
               <Form.Item>
                 <Field
-                  id="mine_incident_followup_investigation_type"
-                  name="mine_incident_followup_investigation_type"
+                  id="followup_investigation_type_code"
+                  name="followup_investigation_type_code"
                   label="Was it escalated to EMPR investigation?*"
                   placeholder="Please choose one"
                   component={renderConfig.SELECT}

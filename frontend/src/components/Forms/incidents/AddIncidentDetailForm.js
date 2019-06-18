@@ -12,16 +12,17 @@ import { MINE_INCIDENT_DOCUMENT } from "@/constants/API";
 import { required, maxLength, number, dateNotInFuture } from "@/utils/Validate";
 
 const propTypes = {
-  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   incidentDeterminationOptions: CustomPropTypes.options.isRequired,
   doSubparagraphOptions: CustomPropTypes.options.isRequired,
   inspectors: CustomPropTypes.options.isRequired,
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
   change: PropTypes.func,
   mineGuid: PropTypes.string.isRequired,
+  doDetermination: PropTypes.string,
 };
 
 const defaultProps = {
+  doDetermination: "PEN",
   change,
 };
 
@@ -30,7 +31,6 @@ class AddIncidentDetailForm extends Component {
     super(props);
 
     this.state = {
-      doDetermination: props.initialValues.determination_type_code,
       uploadedFiles: [],
     };
   }
@@ -43,12 +43,6 @@ class AddIncidentDetailForm extends Component {
   onRemoveFile = (fileItem) => {
     remove(this.state.uploadedFiles, { document_manager_guid: fileItem.serverId });
     this.props.change("uploadedFiles", this.state.uploadedFiles);
-  };
-
-  onDoDeterminationChange = (chars, value) => {
-    this.setState({
-      doDetermination: value,
-    });
   };
 
   validateDoSubparagraphs = (value) =>
@@ -117,7 +111,6 @@ class AddIncidentDetailForm extends Component {
                 label="Inspector's Determination*"
                 component={renderConfig.SELECT}
                 data={this.props.incidentDeterminationOptions}
-                onChange={this.onDoDeterminationChange}
                 validate={[required]}
               />
             </Form.Item>
@@ -131,7 +124,7 @@ class AddIncidentDetailForm extends Component {
               />
             </Form.Item>
 
-            {this.state.doDetermination === "DO" ? (
+            {this.props.doDetermination === "DO" ? (
               <span>
                 <Form.Item>
                   <Field
@@ -159,7 +152,7 @@ class AddIncidentDetailForm extends Component {
               </span>
             ) : null}
 
-            {this.state.doDetermination === "NDO" ? (
+            {this.props.doDetermination === "NDO" ? (
               <span>
                 <Form.Item>
                   <Field

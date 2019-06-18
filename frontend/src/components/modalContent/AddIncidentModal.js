@@ -16,6 +16,7 @@ import CustomPropTypes from "@/customPropTypes";
 const { Step } = Steps;
 
 const propTypes = {
+  newIncident: PropTypes.bool.isRequired,
   onSubmit: PropTypes.func.isRequired,
   afterClose: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
@@ -34,27 +35,31 @@ const defaultProps = {
 };
 
 const invalidReportingPayload = (values) =>
-  values.reported_timestamp === undefined ||
-  values.reported_by_name === undefined ||
-  values.reported_to_inspector_party_guid === undefined ||
-  values.responsible_inspector_party_guid === undefined;
+  values.reported_timestamp ||
+  values.reported_by_name ||
+  values.reported_to_inspector_party_guid ||
+  values.responsible_inspector_party_guid;
 
 const invalidDetailPayload = (values) =>
-  values.determination_inspector_party_guid === undefined ||
+  values.determination_inspector_party_guid ||
   // If DO, need subparagraphs
   (values.determination_type_code === "DO" &&
     values.DoSubparagraphs &&
     values.DoSubparagraphs.length === 0) ||
   // If NDO, need incident status
-  (values.determination_type_code === "NDO" && values.status_code === undefined) ||
-  values.determination_type_code === undefined ||
-  values.incident_description === undefined ||
-  values.emergency_services_called === undefined ||
-  values.incident_timestamp === undefined;
+  (values.determination_type_code === "NDO" && values.status_code) ||
+  values.determination_type_code ||
+  values.incident_description ||
+  values.emergency_services_called ||
+  values.incident_timestamp;
 
 const invalidFollowUpPayload = (values) =>
-  values.status_code === undefined ||
-  values.mine_incident_followup_investigation_type === undefined;
+  values.status_code || values.followup_investigation_type_code;
+
+const actionVerb = (newIncident) => {
+  if (newIncident) return <span>Save&nbsp;</span>;
+  return <span>Edit&nbsp;</span>;
+};
 
 const StepForms = (props, next, prev, handleIncidentSubmit) => [
   {
@@ -84,6 +89,7 @@ const StepForms = (props, next, prev, handleIncidentSubmit) => [
         incidentDeterminationOptions={props.incidentDeterminationOptions}
         incidentStatusCodeOptions={props.incidentStatusCodeOptions}
         inspectors={props.inspectors}
+        doDetermination={props.addIncidentFormValues.determination_type_code}
       />
     ),
     buttons: (
@@ -108,11 +114,11 @@ const StepForms = (props, next, prev, handleIncidentSubmit) => [
           onClick={(event) => handleIncidentSubmit(event, false)}
           disabled={invalidDetailPayload(props.addIncidentFormValues)}
         >
-          Save&nbsp;
+          {actionVerb(props.newIncident)}
           {props.addIncidentFormValues.determination_type_code !== "NDO" && (
-            <span>initial&nbsp;</span>
+            <span>Initial&nbsp;</span>
           )}
-          incident
+          Incident
         </Button>
       </span>
     ),
@@ -126,7 +132,8 @@ const StepForms = (props, next, prev, handleIncidentSubmit) => [
         incidentDeterminationOptions={props.incidentDeterminationOptions}
         followupActionOptions={props.followupActionOptions}
         incidentStatusCodeOptions={props.incidentStatusCodeOptions}
-        hasFatalities={props.addIncidentFormValues.number_of_fatalities > 0}
+        hasFatalities={props.addIncidentFormValues.number_of_fatalities > 0 || false}
+        hasFollowUp={props.addIncidentFormValues.followup_inspection || false}
       />
     ),
     buttons: [
@@ -139,7 +146,8 @@ const StepForms = (props, next, prev, handleIncidentSubmit) => [
         onClick={(event) => handleIncidentSubmit(event, false)}
         disabled={invalidFollowUpPayload(props.addIncidentFormValues)}
       >
-        Submit
+        {actionVerb(props.newIncident)}
+        Incident
       </Button>,
     ],
   },

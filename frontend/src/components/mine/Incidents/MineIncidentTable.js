@@ -101,7 +101,12 @@ const columns = [
             size="small"
             ghost
             onClick={(event) =>
-              record.openMineIncidentModal(event, record.handleEditMineIncident, record.incident)
+              record.openMineIncidentModal(
+                event,
+                record.handleEditMineIncident,
+                false,
+                record.incident
+              )
             }
           >
             <img src={BRAND_PENCIL} alt="Edit Incident" />
@@ -120,10 +125,12 @@ const transformRowData = (incidents, actions, handleEditMineIncident, openMineIn
       mine_incident_report_no: incident.mine_incident_report_no,
       incident_timestamp: formatDate(incident.incident_timestamp),
       reported_timestamp: formatDate(incident.reported_timestamp),
-      reported_by: incident.reported_by,
+      reported_by: incident.reported_by_name,
       docs: incident.documents,
       followup_action: actions.find(
-        (x) => x.mine_incident_followup_type_code === incident.followup_type_code
+        (x) =>
+          x.mine_incident_followup_investigation_type_code ===
+          incident.followup_investigation_type_code
       ),
       handleEditMineIncident,
       openMineIncidentModal,
