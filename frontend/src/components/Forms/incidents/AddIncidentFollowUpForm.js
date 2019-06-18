@@ -14,10 +14,10 @@ import { required, dateNotInFuture } from "@/utils/Validate";
 import LinkButton from "@/components/common/LinkButton";
 
 const propTypes = {
-  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   followupActionOptions: CustomPropTypes.options.isRequired,
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
   hasFatalities: PropTypes.bool.isRequired,
+  hasFollowUp: PropTypes.bool.isRequired,
 };
 
 const renderRecommendations = ({ fields }) => [
@@ -38,21 +38,6 @@ const renderRecommendations = ({ fields }) => [
 ];
 
 export class AddIncidentFollowUpForm extends Component {
-  componentWillMount() {
-    this.state = {
-      hasFollowUp: this.props.initialValues.determination_type_code,
-    };
-    if (this.props.hasFatalities) {
-      this.props.initialValues.mine_incident_followup_investigation_type = "MIU";
-    }
-  }
-
-  onFollowUpChange = (chars, value) => {
-    this.setState({
-      hasFollowUp: value,
-    });
-  };
-
   render() {
     return (
       <div>
@@ -74,7 +59,7 @@ export class AddIncidentFollowUpForm extends Component {
                 </Form.Item>
               )}
 
-              {this.state.hasFollowUp && (
+              {this.props.hasFollowUp && (
                 <Form.Item>
                   <Field
                     id="followup_inspection_date"

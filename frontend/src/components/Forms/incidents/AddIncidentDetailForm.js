@@ -9,28 +9,14 @@ import { renderConfig } from "@/components/common/config";
 import { required, maxLength, number, dateNotInFuture } from "@/utils/Validate";
 
 const propTypes = {
-  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   incidentDeterminationOptions: CustomPropTypes.options.isRequired,
   doSubparagraphOptions: CustomPropTypes.options.isRequired,
   inspectors: CustomPropTypes.options.isRequired,
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
+  doDetermination: PropTypes.string.isRequired,
 };
 
 class AddIncidentDetailForm extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      doDetermination: props.initialValues.determination_type_code,
-    };
-  }
-
-  onDoDeterminationChange = (chars, value) => {
-    this.setState({
-      doDetermination: value,
-    });
-  };
-
   validateDoSubparagraphs = (value) =>
     value.length === 0 ? "This is a required field" : undefined;
 
@@ -97,7 +83,6 @@ class AddIncidentDetailForm extends Component {
                 label="Inspector's Determination*"
                 component={renderConfig.SELECT}
                 data={this.props.incidentDeterminationOptions}
-                onChange={this.onDoDeterminationChange}
                 validate={[required]}
               />
             </Form.Item>
@@ -111,7 +96,7 @@ class AddIncidentDetailForm extends Component {
               />
             </Form.Item>
 
-            {this.state.doDetermination === "DO" ? (
+            {this.props.doDetermination === "DO" ? (
               <span>
                 <Form.Item>
                   <Field
@@ -129,7 +114,7 @@ class AddIncidentDetailForm extends Component {
               </span>
             ) : null}
 
-            {this.state.doDetermination === "NDO" ? (
+            {this.props.doDetermination === "NDO" ? (
               <span>
                 <Form.Item>
                   <Field

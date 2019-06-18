@@ -59,21 +59,25 @@ export class MineIncidents extends Component {
   }
 
   handleAddMineIncident = (values) => {
+    // console.log("Add Incident Values", JSON.stringify(values));
+
     this.props.createMineIncident(this.props.mine.mine_guid, values).then(() => {
+      // console.log("Done");
       this.props.closeModal();
       this.props.fetchMineIncidents(this.props.mine.mine_guid);
     });
   };
 
   handleEditMineIncident = (values) => {
+    // console.log("Edit Incident Values", JSON.stringify(values));
     this.props.updateMineIncident(values.mine_incident_guid, values).then(() => {
+      // console.log("Done");
       this.props.closeModal();
       this.props.fetchMineIncidents(this.props.mine.mine_guid);
     });
   };
 
   handleCancelMineIncident = () => {
-    console.log("CANCEL");
     this.props.destroy(FORM.MINE_INCIDENT);
   };
 

@@ -77,11 +77,11 @@ const StepForms = (props, next, prev, handleIncidentSubmit) => [
     title: "Add Details",
     content: (
       <AddIncidentDetailForm
-        initialValues={props.initialValues}
         doSubparagraphOptions={props.doSubparagraphOptions}
         incidentDeterminationOptions={props.incidentDeterminationOptions}
         incidentStatusCodeOptions={props.incidentStatusCodeOptions}
         inspectors={props.inspectors}
+        doDetermination={props.addIncidentFormValues.determination_type_code}
       />
     ),
     buttons: (
@@ -119,11 +119,11 @@ const StepForms = (props, next, prev, handleIncidentSubmit) => [
     title: "Follow Up",
     content: (
       <AddIncidentFollowUpForm
-        initialValues={props.initialValues}
         incidentDeterminationOptions={props.incidentDeterminationOptions}
         followupActionOptions={props.followupActionOptions}
         incidentStatusCodeOptions={props.incidentStatusCodeOptions}
         hasFatalities={props.addIncidentFormValues.number_of_fatalities > 0}
+        hasFollowUp={props.addIncidentFormValues.followup_inspection}
       />
     ),
     buttons: [
