@@ -5,8 +5,6 @@ from sqlalchemy.exc import DBAPIError
 from app.extensions import db
 from .include.user_info import User
 
-from app.api.utils.custom_errors import SQLAlchemyErrorWrapper
-
 
 class UserBoundQuery(db.Query):
     _user_bound = True
@@ -55,7 +53,7 @@ class Base(db.Model):
                 db.session.commit()
             except DBAPIError as e:
                 db.session.rollback()
-                SQLAlchemyErrorWrapper(e)
+                raise e
 
 
 class AuditMixin(object):
