@@ -69,7 +69,7 @@ class  Contacts extends GebReportingSpec {
 
         then: "I should get a successful message"
         successfulToastMessage != null
-        def FilteredContacts = new ContactsPage(url: "dashboard/contacts?page=1&per_page=25&search="+ Const.CONTACT_FIRST_NAME)
+        def FilteredContacts = new ContactsPage(url: "dashboard/contacts?page=1&per_page=25&first_name="+ Const.CONTACT_FIRST_NAME)
         to FilteredContacts
         contactTableNameOne != null
     }

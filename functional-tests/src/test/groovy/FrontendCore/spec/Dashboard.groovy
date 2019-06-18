@@ -36,7 +36,6 @@ class  DashboardSpec extends GebReportingSpec {
 
         and: "I type in valid mine profile"
         createMineForm.createMineRecord(input)
-        println "Scenario: "+scenario
         waitFor {toastMessage!= null }
 
         then: "I should see the successful message"
@@ -59,7 +58,6 @@ class  DashboardSpec extends GebReportingSpec {
 
         and: "I type in valid mine profile"
         createMineForm.createMineRecord(input)
-        println "Scenario: "+scenario
         waitFor {toastMessage!= null }
 
         then: "I should see the successful message"
@@ -72,8 +70,6 @@ class  DashboardSpec extends GebReportingSpec {
 
     def "Scenario: User can view a mine"(){
         def SearchedDashboard = new Dashboard(url: "dashboard/mines?page=1&per_page=25&search=MINETEST")
-
-        
 
         given: "I am on the Dashboard Page after searching '!!MINE'"
         to SearchedDashboard
@@ -89,8 +85,6 @@ class  DashboardSpec extends GebReportingSpec {
         then:"I can view the page"
         at MineProfilePage
         assert mineName == viewMineName
-        println mineName
-
     }
 
     // def "Scenario: User can search for a specific mine "(){
