@@ -71,17 +71,20 @@ class  DashboardSpec extends GebReportingSpec {
     }
 
     def "Scenario: User can view a mine"(){
-        def viewMineName = firstMineName
+        def SearchedDashboard = new Dashboard(url: "dashboard/mines?page=1&per_page=25&search=MINETEST")
+
+        
 
         given: "I am on the Dashboard Page after searching '!!MINE'"
-        def SearchedDashboard = new Dashboard(url: "dashboard/mines?page=1&per_page=25&search=MINETEST")
         to SearchedDashboard
+        def viewMineName = SearchedDashboard.firstMineName
+        def link = SearchedDashboard.viewLink
 
         when: "page is loaded"
         at SearchedDashboard
-        sleep(10000)
+        // sleep(10000)
         and: "I click to view the first mine"
-        waitFor() { viewLink.click() }
+        waitFor() { link.click() }
 
         then:"I can view the page"
         at MineProfilePage

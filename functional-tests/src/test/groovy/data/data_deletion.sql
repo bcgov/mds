@@ -37,6 +37,9 @@ BEGIN
         FROM mine_expected_document
     );
     DELETE FROM mine_expected_document WHERE create_user LIKE IDIR_USER;
+    DELETE FROM variance_document_xref WHERE mine_document_guid = ANY (
+        SELECT mine_document_guid FROM mine_document WHERE create_user LIKE IDIR_USER
+    );
     DELETE FROM mine_document WHERE create_user LIKE IDIR_USER;
 
     DELETE FROM mine_type_detail_xref 
@@ -47,6 +50,11 @@ BEGIN
         WHERE create_user LIKE IDIR_USER
     ));
     DELETE FROM mine_type 
+    WHERE mine_guid = ANY (
+        SELECT mine_guid FROM mine
+        WHERE create_user LIKE IDIR_USER
+    );
+    DELETE FROM variance 
     WHERE mine_guid = ANY (
         SELECT mine_guid FROM mine
         WHERE create_user LIKE IDIR_USER
