@@ -4,7 +4,7 @@ import { Field, reduxForm } from "redux-form";
 import { Form, Col, Row } from "antd";
 import * as FORM from "@/constants/forms";
 import { required, email, number, phoneNumber, maxLength, dateNotInFuture } from "@/utils/Validate";
-import { resetForm, normalizePhone } from "@/utils/helpers";
+import { normalizePhone } from "@/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
 
@@ -105,9 +105,8 @@ export const AddIncidentReportingForm = (props) => (
 AddIncidentReportingForm.propTypes = propTypes;
 
 export default reduxForm({
-  form: FORM.ADD_INCIDENT_REPORTING,
+  form: FORM.MINE_INCIDENT,
   destroyOnUnmount: false,
+  forceUnregisterOnUnmount: true,
   touchOnBlur: false,
-  onSubmitSuccess: resetForm(FORM.ADD_INCIDENT_REPORTING),
-  enableReinitialize: true,
 })(AddIncidentReportingForm);

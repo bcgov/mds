@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { destroy } from "redux-form";
+import * as FORM from "@/constants/forms";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
@@ -40,6 +42,7 @@ const propTypes = {
   inspectors: CustomPropTypes.options.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+  destroy: PropTypes.func.isRequired,
   fetchMineIncidents: PropTypes.func.isRequired,
   createMineIncident: PropTypes.func.isRequired,
   updateMineIncident: PropTypes.func.isRequired,
@@ -63,10 +66,16 @@ export class MineIncidents extends Component {
   };
 
   handleEditMineIncident = (values) => {
-    this.props.updateMineIncident(values.mine_incident_guid, values).then(() => {
-      this.props.closeModal();
-      this.props.fetchMineIncidents(this.props.mine.mine_guid);
-    });
+    this.props
+      .updateMineIncident(this.props.mine.mine_guid, values.mine_incident_guid, values)
+      .then(() => {
+        this.props.closeModal();
+        this.props.fetchMineIncidents(this.props.mine.mine_guid);
+      });
+  };
+
+  handleCancelMineIncident = () => {
+    this.props.destroy(FORM.MINE_INCIDENT);
   };
 
   openMineIncidentModal = (
@@ -84,6 +93,7 @@ export class MineIncidents extends Component {
           ),
         },
         onSubmit,
+        afterClose: this.handleCancelMineIncident,
         title: ModalContent.ADD_INCIDENT(this.props.mine.mine_name),
         mineGuid: this.props.mine.mine_guid,
         followupActionOptions: this.props.followupActionsOptions,
@@ -136,6 +146,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineIncidents,
       createMineIncident,
       updateMineIncident,
+      destroy,
     },
     dispatch
   );
