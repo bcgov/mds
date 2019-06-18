@@ -27,15 +27,17 @@ def _compliance_article_is_do_subparagraph(ca):
 class MineIncidentListResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
     # required
-    parser.add_argument('incident_timestamp',
-                        type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None,
-                        location='json',
-                        required=True)
+    parser.add_argument(
+        'incident_timestamp',
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None,
+        location='json',
+        required=True)
     parser.add_argument('incident_description', type=str, location='json', required=True)
-    parser.add_argument('reported_timestamp',
-                        type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None,
-                        required=True,
-                        location='json')
+    parser.add_argument(
+        'reported_timestamp',
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None,
+        required=True,
+        location='json')
     parser.add_argument('reported_by_name', type=str, location='json')
     parser.add_argument('reported_by_email', type=str, location='json')
     parser.add_argument('reported_by_phone_no', type=str, location='json')
@@ -49,10 +51,11 @@ class MineIncidentListResource(Resource, UserMixin):
     parser.add_argument('determination_type_code', type=str, location='json')
     parser.add_argument('followup_investigation_type_code', type=str, location='json')
     parser.add_argument('followup_inspection', type=inputs.boolean, location='json')
-    parser.add_argument('followup_inspection_date',
-                        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
-                        store_missing=False,
-                        location='json')
+    parser.add_argument(
+        'followup_inspection_date',
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        store_missing=False,
+        location='json')
     parser.add_argument('status_code', type=str, location='json')
     parser.add_argument('dangerous_occurrence_subparagraph_ids', type=list, location='json')
     parser.add_argument('uploaded_files', type=list, location='json', store_missing=False)
@@ -129,6 +132,7 @@ class MineIncidentListResource(Resource, UserMixin):
             incident.dangerous_occurrence_subparagraphs.append(sub)
 
         uploaded_files = data.get('uploaded_files')
+        current_app.logger.debug(uploaded_files)
         if uploaded_files is not None:
             for new_file in uploaded_files:
                 mine_doc = MineDocument(
@@ -159,51 +163,44 @@ class MineIncidentListResource(Resource, UserMixin):
 class MineIncidentResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
     # required
-    parser.add_argument('incident_timestamp',
-                        type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None,
-                        location='json',
-                        store_missing=False)
-    parser.add_argument('incident_description', type=str, location='json',
-                        store_missing=False)
-    parser.add_argument('reported_timestamp',
-                        type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None,
-                        store_missing=False,
-                        location='json')
-    parser.add_argument('reported_by_name', type=str, location='json',
-                        store_missing=False)
-    parser.add_argument('reported_by_email', type=str, location='json',
-                        store_missing=False)
-    parser.add_argument('reported_by_phone_no', type=str, location='json',
-                        store_missing=False)
-    parser.add_argument('reported_by_phone_ext', type=str, location='json',
-                        store_missing=False)
-    parser.add_argument('emergency_services_called', type=inputs.boolean, location='json',
-                        store_missing=False)
-    parser.add_argument('number_of_injuries', type=int, location='json',
-                        store_missing=False)
-    parser.add_argument('number_of_fatalities', type=int, location='json',
-                        store_missing=False)
-    parser.add_argument('reported_to_inspector_party_guid', type=str, location='json',
-                        store_missing=False)
-    parser.add_argument('responsible_inspector_party_guid', type=str, location='json',
-                        store_missing=False)
-    parser.add_argument('determination_inspector_party_guid', type=str, location='json',
-                        store_missing=False)
-    parser.add_argument('determination_type_code', type=str, location='json',
-                        store_missing=False)
-    parser.add_argument('followup_investigation_type_code', type=str, location='json',
-                        store_missing=False)
-    parser.add_argument('followup_inspection', type=inputs.boolean, location='json',
-                        store_missing=False)
-    parser.add_argument('followup_inspection_date',
-                        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
-                        store_missing=False,
-                        location='json')
-    parser.add_argument('status_code', type=str, location='json',
-                        store_missing=False)
-    parser.add_argument('dangerous_occurrence_subparagraph_ids', type=list, location='json',
-                        store_missing=False)
-
+    parser.add_argument(
+        'incident_timestamp',
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None,
+        location='json',
+        store_missing=False)
+    parser.add_argument('incident_description', type=str, location='json', store_missing=False)
+    parser.add_argument(
+        'reported_timestamp',
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None,
+        store_missing=False,
+        location='json')
+    parser.add_argument('reported_by_name', type=str, location='json', store_missing=False)
+    parser.add_argument('reported_by_email', type=str, location='json', store_missing=False)
+    parser.add_argument('reported_by_phone_no', type=str, location='json', store_missing=False)
+    parser.add_argument('reported_by_phone_ext', type=str, location='json', store_missing=False)
+    parser.add_argument(
+        'emergency_services_called', type=inputs.boolean, location='json', store_missing=False)
+    parser.add_argument('number_of_injuries', type=int, location='json', store_missing=False)
+    parser.add_argument('number_of_fatalities', type=int, location='json', store_missing=False)
+    parser.add_argument(
+        'reported_to_inspector_party_guid', type=str, location='json', store_missing=False)
+    parser.add_argument(
+        'responsible_inspector_party_guid', type=str, location='json', store_missing=False)
+    parser.add_argument(
+        'determination_inspector_party_guid', type=str, location='json', store_missing=False)
+    parser.add_argument('determination_type_code', type=str, location='json', store_missing=False)
+    parser.add_argument(
+        'followup_investigation_type_code', type=str, location='json', store_missing=False)
+    parser.add_argument(
+        'followup_inspection', type=inputs.boolean, location='json', store_missing=False)
+    parser.add_argument(
+        'followup_inspection_date',
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        store_missing=False,
+        location='json')
+    parser.add_argument('status_code', type=str, location='json', store_missing=False)
+    parser.add_argument(
+        'dangerous_occurrence_subparagraph_ids', type=list, location='json', store_missing=False)
 
     @api.marshal_with(MINE_INCIDENT_MODEL, code=200)
     @requires_role_mine_view

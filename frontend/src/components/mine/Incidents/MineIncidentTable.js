@@ -5,9 +5,11 @@ import { Table, Button } from "antd";
 import { BRAND_PENCIL } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
+import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 import CustomPropTypes from "@/customPropTypes";
 import NullScreen from "@/components/common/NullScreen";
 import { formatDate } from "@/utils/helpers";
+import LinkButton from "@/components/common/LinkButton";
 
 const propTypes = {
   incidents: PropTypes.arrayOf(CustomPropTypes.incident).isRequired,
@@ -35,6 +37,56 @@ const columns = [
     render: (action, record) => (
       <div title="followup_action">
         {action ? action.description : record.incident.followup_type_code}
+      </div>
+    ),
+  },
+  {
+    title: "Initial Report Documents",
+    dataIndex: "initialDocuments",
+    width: 200,
+    render: (text, record) => (
+      <div title="Initial Report Documents">
+        {record.docs.length === 0 ? (
+          <span>--</span>
+        ) : (
+          record.docs
+            .filter((file) => file.mine_incident_document_type_code === "INI")
+            .map((file) => (
+              <div key={file.mine_document_guid}>
+                <LinkButton
+                  key={file.mine_document_guid}
+                  onClick={() => downloadFileFromDocumentManager(file.document_manager_guid)}
+                >
+                  {file.document_name}
+                </LinkButton>
+              </div>
+            ))
+        )}
+      </div>
+    ),
+  },
+  {
+    title: "Final Report Documents",
+    dataIndex: "finalDocuments",
+    width: 200,
+    render: (text, record) => (
+      <div title="Final Report Documents">
+        {record.docs.length === 0 ? (
+          <span>--</span>
+        ) : (
+          record.docs
+            .filter((file) => file.mine_incident_document_type_code === "FIN")
+            .map((file) => (
+              <div key={file.mine_document_guid}>
+                <LinkButton
+                  key={file.mine_document_guid}
+                  onClick={() => downloadFileFromDocumentManager(file.document_manager_guid)}
+                >
+                  {file.document_name}
+                </LinkButton>
+              </div>
+            ))
+        )}
       </div>
     ),
   },
@@ -69,6 +121,7 @@ const transformRowData = (incidents, actions, handleEditMineIncident, openMineIn
       incident_timestamp: formatDate(incident.incident_timestamp),
       reported_timestamp: formatDate(incident.reported_timestamp),
       reported_by: incident.reported_by,
+      docs: incident.documents,
       followup_action: actions.find(
         (x) => x.mine_incident_followup_type_code === incident.followup_type_code
       ),

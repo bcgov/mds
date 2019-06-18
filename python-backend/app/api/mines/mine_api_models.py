@@ -162,6 +162,8 @@ MINE_LIST_MODEL = api.model(
 
 MINE_INCIDENT_DOCUMENT_MODEL = api.model(
     'Mine Incident Document', {
+        'mine_document_guid': fields.String,
+        'document_manager_guid': fields.String,
         'document_name': fields.String,
         'mine_incident_document_type_code': fields.String
 
