@@ -125,7 +125,6 @@ def register_routes(app):
                 _add_sqlalchemy_error_handlers(subclass)
 
     _add_sqlalchemy_error_handlers(SQLAlchemyError)
-    _add_sqlalchemy_error_handlers(DBAPIError)
 
 
     @api.errorhandler(Exception)
