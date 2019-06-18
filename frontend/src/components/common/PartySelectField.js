@@ -111,13 +111,12 @@ export class PartySelectField extends Component {
         );
       }
 
-      this.setState((prevState) => {
+      this.setState(() => {
         const newPartyDataSource = transformData(
           createItemIdsArray(filteredParties, "party_guid"),
           createItemMap(filteredParties, "party_guid"),
           this.props.allowAddingParties &&
-            renderAddPartyFooter(this.showAddPartyForm, this.props.partyLabel),
-          prevState.selectedOption.label
+            renderAddPartyFooter(this.showAddPartyForm, this.props.partyLabel)
         );
         return { partyDataSource: newPartyDataSource };
       });
