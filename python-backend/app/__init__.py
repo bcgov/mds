@@ -97,6 +97,7 @@ def register_routes(app):
 
     @api.errorhandler(AuthError)
     def jwt_oidc_auth_error_handler(error):
+        current_app.logger.error(str(error))
         return {
             'status': getattr(error, 'status_code', 401),
             'message': str(error),
@@ -104,6 +105,7 @@ def register_routes(app):
 
     @api.errorhandler(AssertionError)
     def assertion_error_handler(error):
+        current_app.logger.error(str(error))
         return {
             'status': getattr(error, 'code', 400),
             'message': str(error),
@@ -113,7 +115,6 @@ def register_routes(app):
     def default_error_handler(error):
         if getattr(error, 'code', 500) == 500:
             current_app.logger.error(str(error))
-
         return {
             'status': getattr(error, 'code', 500),
             'message': str(error),
