@@ -24,7 +24,7 @@ from ....utils.url import get_document_manager_svc_url
 
 
 class MineIncidentDocumentListResource(Resource, UserMixin):
-    @api.doc(params={})
+    @api.doc(description='Request a document_manager_guid for uploading a document')
     @requires_role_mine_create
     def post(self, mine_guid):
         metadata = self._parse_request_metadata()
