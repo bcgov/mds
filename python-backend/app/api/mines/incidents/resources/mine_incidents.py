@@ -11,6 +11,7 @@ from app.api.mines.mine.models.mine import Mine
 from app.api.parties.party.models.party import Party
 from app.api.documents.incidents.models.mine_incident import MineIncidentDocumentXref
 from app.api.documents.mines.models.mine_document import MineDocument
+from app.api.mines.incidents.models.mine_incident_document_type_code import MineIncidentTypeCode
 from ..models.mine_incident import MineIncident
 from app.api.mines.compliance.models.compliance_article import ComplianceArticle
 from ...mine_api_models import MINE_INCIDENT_MODEL
@@ -131,24 +132,24 @@ class MineIncidentListResource(Resource, UserMixin):
             incident.dangerous_occurrence_subparagraphs.append(sub)
 
         uploaded_files = data.get('uploaded_files')
+        if uploaded_files is not None:
+            for new_file in uploaded_files:
+                mine_doc = MineDocument(
+                    mine_guid=mine.mine_guid,
+                    document_name=new_file['file_name'],
+                    document_manager_guid=new_file['document_manager_guid'])
 
-        for new_file in uploaded_files:
-            mine_doc = MineDocument(
-                mine_guid=mine.mine_guid,
-                document_name=new_file['fileName'],
-                document_manager_guid=new_file['document_manager_guid'])
+                if not mine_doc:
+                    raise BadRequest('Unable to register uploaded file as document')
 
-            if not mine_doc:
-                raise BadRequest('Unable to register uploaded file as document')
+                mine_doc.save()
+                mine_incident_doc = MineIncidentDocumentXref(
+                    mine_document_guid=mine_doc.mine_document_guid,
+                    mine_incident_id=incident.mine_incident_id,
+                    mine_incident_document_type_code=new_file['document_type']
+                    if new_file['document_type'] else 'INI')
 
-            mine_doc.save()
-            mine_incident_doc = MineIncidentDocumentXref(
-                mine_document_guid=mine_doc.mine_document_guid,
-                mine_incident_id=incident.mine_incident_id,
-                variance_document_category_code=new_file['document_type']
-                if new_file['document_type'] else 'INI')
-
-            incident.documents.append(mine_incident_doc)
+                incident.documents.append(mine_incident_doc)
 
         try:
             incident.save()

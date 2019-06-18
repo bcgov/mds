@@ -1,10 +1,10 @@
 CREATE TABLE IF NOT EXISTS mine_incident_document_type_code (
-    mine_incident_document_type_code varchar(3)   PRIMARY KEY                       ,
-    description                      varchar(50)                                    ,
-    active_ind                       boolean DEFAULT true                   NOT NULL,
-    create_user                      character varying(60)                  NOT NULL,
-    create_timestamp                 timestamp with time zone DEFAULT now() NOT NULL,
-    update_user                      character varying(60)                  NOT NULL,
+    mine_incident_document_type_code varchar(3)                             PRIMARY KEY,
+    description                      varchar(50)                                       ,
+    active_ind                       boolean DEFAULT true                   NOT NULL   ,
+    create_user                      character varying(60)                  NOT NULL   ,
+    create_timestamp                 timestamp with time zone DEFAULT now() NOT NULL   ,
+    update_user                      character varying(60)                  NOT NULL   ,
     update_timestamp                 timestamp with time zone DEFAULT now() NOT NULL
 );
 
