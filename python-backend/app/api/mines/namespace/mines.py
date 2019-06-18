@@ -64,7 +64,7 @@ api.add_resource(
     '/<string:mine_guid>/variances/<string:variance_guid>/documents/<string:mine_document_guid>')
 
 api.add_resource(MineIncidentListResource, '/<string:mine_guid>/incidents')
-api.add_resource(MineIncidentResource, '/incidents/<string:mine_incident_guid>')
+api.add_resource(MineIncidentResource, '/<string:mine_guid>/incidents/<string:mine_incident_guid>')
 
 api.add_resource(MineIncidentFollowupTypeResource, '/incidents/followup-types')
 api.add_resource(MineIncidentDeterminationTypeResource, '/incidents/determination-types')
