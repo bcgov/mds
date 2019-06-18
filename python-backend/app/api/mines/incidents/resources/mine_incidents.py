@@ -205,7 +205,6 @@ class MineIncidentResource(Resource, UserMixin):
                     'Dangerous occurrences require one or more cited sections of HSRC code 1.7.3')
 
         for key, value in data.items():
-            current_app.logger.debug(f'{key}={value}')
             if key == 'dangerous_occurrence_subparagraph_ids':
                 continue
             if key in [
@@ -214,7 +213,6 @@ class MineIncidentResource(Resource, UserMixin):
             ]:
                 tmp_party = Party.query.filter_by(party_guid=value).first()
                 if tmp_party and 'INS' in tmp_party.business_roles_codes:
-                    current_app.logger.debug(f'assigning inspector<{value}> to role {key}')
                     setattr(incident, key, data.get(key))
             else:
                 setattr(incident, key, value)
