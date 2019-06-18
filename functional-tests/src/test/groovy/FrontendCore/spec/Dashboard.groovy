@@ -82,7 +82,7 @@ class  DashboardSpec extends GebReportingSpec {
 
         when: "page is loaded"
         at SearchedDashboard
-        // sleep(10000)
+
         and: "I click to view the first mine"
         waitFor() { link.click() }
 
