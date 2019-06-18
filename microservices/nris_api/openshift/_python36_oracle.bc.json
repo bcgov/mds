@@ -64,7 +64,7 @@
             },
             "importPolicy": {},
             "referencePolicy": {
-              "type": "Source"
+              "type": "Local"
             }
           }
         ]
