@@ -15,7 +15,7 @@ from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.permits.response_models import PERMIT_MODEL
 
 
-class PermitListResource(Resource):
+class PermitListResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument('permit_no',
                         type=str,
@@ -44,15 +44,14 @@ class PermitListResource(Resource):
                         location='json',
                         help='Status of the permit being added.')
     parser.add_argument('description', type=str, location='json', help='Permit description')
-    parser.add_argument('uploadedFiles', type=list, location='json')
+    parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
 
     @api.doc(params={'mine_guid': 'mine_guid to filter on'})
     @requires_role_mine_view
     @api.marshal_with(PERMIT_MODEL, envelope='records', code=200)
     def get(self):
         if request.args.get('mine_guid'):
-            permits = Permit.find_by_mine_guid(request.args.get('mine_guid'))
-            result = [p.json() for p in permits]
+            result = Permit.find_by_mine_guid(request.args.get('mine_guid'))
         else:
             return Permit.query.all()
 
@@ -61,7 +60,7 @@ class PermitListResource(Resource):
     @api.doc(params={'permit_guid': 'Permit guid.'})
     @requires_role_mine_create
     @api.marshal_with(PERMIT_MODEL, code=201)
-    def post(self, permit_guid):
+    def post(self):
         data = self.parser.parse_args()
 
         mine = Mine.find_by_mine_guid(data.get('mine_guid'))
