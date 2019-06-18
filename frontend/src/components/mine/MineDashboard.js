@@ -166,12 +166,12 @@ export class MineDashboard extends Component {
       this.props.fetchMineIncidentFollowActionOptions();
       this.props.fetchMineIncidentDeterminationOptions();
       this.props.fetchMineIncidentStatusCodeOptions();
-      this.props.fetchVarianceDocumentCategoryOptions();
       this.props.setOptionsLoaded();
     }
     this.props.fetchMineComplianceCodes();
     this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
     this.props.fetchSubscribedMinesByUser();
+    this.props.fetchVarianceDocumentCategoryOptions();
     this.props.fetchVarianceStatusOptions();
     this.props.fetchInspectors();
     if (activeTab) {
