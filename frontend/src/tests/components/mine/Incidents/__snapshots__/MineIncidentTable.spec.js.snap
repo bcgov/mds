@@ -72,6 +72,18 @@ ShallowWrapper {
               "title": "EMPR Action",
             },
             Object {
+              "dataIndex": "initialDocuments",
+              "render": [Function],
+              "title": "Initial Report Documents",
+              "width": 200,
+            },
+            Object {
+              "dataIndex": "finalDocuments",
+              "render": [Function],
+              "title": "Final Report Documents",
+              "width": 200,
+            },
+            Object {
               "dataIndex": "handleEditModal",
               "render": [Function],
               "title": "",
@@ -81,6 +93,7 @@ ShallowWrapper {
         dataSource={
           Array [
             Object {
+              "docs": undefined,
               "followup_action": Object {
                 "active_ind": true,
                 "description": "No Action",
@@ -161,6 +174,18 @@ ShallowWrapper {
             "title": "EMPR Action",
           },
           Object {
+            "dataIndex": "initialDocuments",
+            "render": [Function],
+            "title": "Initial Report Documents",
+            "width": 200,
+          },
+          Object {
+            "dataIndex": "finalDocuments",
+            "render": [Function],
+            "title": "Final Report Documents",
+            "width": 200,
+          },
+          Object {
             "dataIndex": "handleEditModal",
             "render": [Function],
             "title": "",
@@ -168,6 +193,7 @@ ShallowWrapper {
         ],
         "dataSource": Array [
           Object {
+            "docs": undefined,
             "followup_action": Object {
               "active_ind": true,
               "description": "No Action",
@@ -250,6 +276,18 @@ ShallowWrapper {
                 "title": "EMPR Action",
               },
               Object {
+                "dataIndex": "initialDocuments",
+                "render": [Function],
+                "title": "Initial Report Documents",
+                "width": 200,
+              },
+              Object {
+                "dataIndex": "finalDocuments",
+                "render": [Function],
+                "title": "Final Report Documents",
+                "width": 200,
+              },
+              Object {
                 "dataIndex": "handleEditModal",
                 "render": [Function],
                 "title": "",
@@ -259,6 +297,7 @@ ShallowWrapper {
           dataSource={
             Array [
               Object {
+                "docs": undefined,
                 "followup_action": Object {
                   "active_ind": true,
                   "description": "No Action",
@@ -339,6 +378,18 @@ ShallowWrapper {
               "title": "EMPR Action",
             },
             Object {
+              "dataIndex": "initialDocuments",
+              "render": [Function],
+              "title": "Initial Report Documents",
+              "width": 200,
+            },
+            Object {
+              "dataIndex": "finalDocuments",
+              "render": [Function],
+              "title": "Final Report Documents",
+              "width": 200,
+            },
+            Object {
               "dataIndex": "handleEditModal",
               "render": [Function],
               "title": "",
@@ -346,6 +397,7 @@ ShallowWrapper {
           ],
           "dataSource": Array [
             Object {
+              "docs": undefined,
               "followup_action": Object {
                 "active_ind": true,
                 "description": "No Action",
