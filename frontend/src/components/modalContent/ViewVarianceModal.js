@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import { Button } from "antd";
 import * as Strings from "@/constants/strings";
-import { ELLIPSE, RED_ELLIPSE } from "@/constants/assets";
 import { VarianceDetails } from "../mine/Variances/VarianceDetails";
 
 const propTypes = {
@@ -30,28 +29,12 @@ export const ViewVarianceModal = (props) => {
         </div>
         <div className="flex-tablet">
           <p className="field-title">Application Status</p>
-          <div className="inline-flex--inline">
-            <img
-              className="padding-small--right icon-sm--img"
-              src={isApproved ? ELLIPSE : RED_ELLIPSE}
-              alt="status"
-            />
-            <p>
-              {props.varianceStatusOptionsHash[props.variance.variance_application_status_code]}
-            </p>
-          </div>
+          <p>{props.varianceStatusOptionsHash[props.variance.variance_application_status_code]}</p>
         </div>
         {isApproved && (
           <div className="flex-tablet">
             <p className="field-title">Approval Status</p>
-            <div className="inline-flex--inline">
-              <img
-                className="padding-small--right icon-sm--img"
-                src={isOverdue ? RED_ELLIPSE : ELLIPSE}
-                alt="status"
-              />
-              <p>{isOverdue ? "Expired" : "Active"}</p>
-            </div>
+            <p>{isOverdue ? "Expired" : "Active"}</p>
           </div>
         )}
       </div>
