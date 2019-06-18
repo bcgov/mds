@@ -1,10 +1,11 @@
 from datetime import datetime
 from flask import current_app
-from werkzeug.exceptions import InternalServerError
-from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.exc import DBAPIError
 
 from app.extensions import db
 from .include.user_info import User
+
+from app.api.utils.custom_errors import SQLAlchemyErrorWrapper
 
 
 class UserBoundQuery(db.Query):
@@ -52,13 +53,9 @@ class Base(db.Model):
         if commit:
             try:
                 db.session.commit()
-            # This is done in this way because flask global error handlers cannot catch SQLAlchemy exceptions. More research needs to be done to know
-            # if they can be caught and if not then a better strategy on when to actually catch the SQLAlchemy exceptions and let them pass should be used.
-            except SQLAlchemyError as e:
-                current_app.logger.error(
-                    f'When trying to save {self} an exception was thrown by the database {e}')
+            except DBAPIError as e:
                 db.session.rollback()
-                raise InternalServerError(f'Could not save {self.__class__.__name__}')
+                SQLAlchemyErrorWrapper(e)
 
 
 class AuditMixin(object):
