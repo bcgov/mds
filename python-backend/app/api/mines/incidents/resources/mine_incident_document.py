@@ -100,11 +100,11 @@ class MineIncidentDocumentResource(Resource, UserMixin):
 
     @requires_role_mine_create
     def delete(self, mine_guid, mine_incident_guid, mine_document_guid):
-        if not document_guid:
+        if not mine_document_guid:
             raise BadRequest('must provide document_guid to be unlinked')
 
         mine_incident = MineIncident.find_by_mine_incident_guid(mine_incident_guid)
-        mine_document = MineDocument.find_by_mine_document_guid(document_guid)
+        mine_document = MineDocument.find_by_mine_document_guid(mine_document_guid)
 
         if mine_incident is None or mine_document is None:
             raise NotFound('Either the Expected Document or the Mine Document was not found')

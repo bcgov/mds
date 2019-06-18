@@ -20,9 +20,9 @@ class MineIncidentDocumentXref(Base):
         nullable=False)
     mine_document = db.relationship('MineDocument', lazy='joined')
 
-    # mine_guid = association_proxy('mine_document', 'mine_guid')
-    # document_manager_guid = association_proxy('mine_document', 'document_manager_guid')
-    # document_name = association_proxy('mine_document', 'document_name')
+    mine_guid = association_proxy('mine_document', 'mine_guid')
+    document_manager_guid = association_proxy('mine_document', 'document_manager_guid')
+    document_name = association_proxy('mine_document', 'document_name')
 
     def __repr__(self):
         return '<MineIncidentDocumentXref %r>' % self.mine_incident_document_xref_guid
