@@ -234,7 +234,7 @@ class MineListResource(Resource, UserMixin):
             status_query = Mine.query \
                 .join(MineStatus) \
                 .join(MineStatusXref) \
-                .filter(all_status_filter)
+                .filter(all_status_filter, MineStatus.active_ind == True)
             mines_query = mines_query.intersect(status_query)
         deleted_filter = [{'field': 'deleted_ind', 'op': '==', 'value': 'False'}]
         mines_query = apply_filters(mines_query, deleted_filter)
