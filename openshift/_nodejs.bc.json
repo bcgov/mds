@@ -75,11 +75,11 @@
         },
         "tags": [
           {
-            "name": "8.1-41",
+            "name": "latest",
             "annotations": null,
             "from": {
               "kind": "DockerImage",
-              "name": "registry.access.redhat.com/rhscl/nodejs-8-rhel7:1-41"
+              "name": "registry.access.redhat.com/rhscl/nodejs-8-rhel7:latest"
             },
             "importPolicy": {},
             "referencePolicy": {
@@ -156,7 +156,7 @@
           "dockerStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "name": "rhscl-nodejs-8-rhel7:8.1-41"
+              "name": "rhscl-nodejs-8-rhel7:latest"
             }
           }
         },
