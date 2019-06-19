@@ -114,6 +114,6 @@ AddIncidentFollowUpForm.propTypes = propTypes;
 export default reduxForm({
   form: FORM.MINE_INCIDENT,
   destroyOnUnmount: false,
-  touchOnBlur: false,
+  touchOnBlur: true,
   forceUnregisterOnUnmount: true,
 })(AddIncidentFollowUpForm);

@@ -34,10 +34,12 @@ const defaultProps = {
 };
 
 const invalidReportingPayload = (values) =>
-  values.reported_timestamp ||
-  values.reported_by_name ||
-  values.reported_to_inspector_party_guid ||
-  values.responsible_inspector_party_guid;
+  !(
+    values.reported_timestamp &&
+    values.reported_by_name &&
+    values.reported_to_inspector_party_guid &&
+    values.responsible_inspector_party_guid
+  );
 
 const invalidDetailPayload = (values) =>
   values.determination_inspector_party_guid ||
