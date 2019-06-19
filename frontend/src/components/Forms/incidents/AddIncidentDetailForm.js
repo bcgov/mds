@@ -41,7 +41,7 @@ class AddIncidentDetailForm extends Component {
               <Field
                 id="incident_timestamp"
                 name="incident_timestamp"
-                label="Incident Date and Time"
+                label="Incident Date and Time*"
                 placeholder="Please select date and time"
                 component={renderConfig.DATE}
                 showTime
@@ -73,7 +73,6 @@ class AddIncidentDetailForm extends Component {
                 label="Were emergency services called?*"
                 placeholder="Please choose one"
                 component={renderConfig.RADIO}
-                data={[{ id: "yes", label: "Yes" }, { id: "no", label: "No" }]}
                 validate={[required]}
               />
             </Form.Item>

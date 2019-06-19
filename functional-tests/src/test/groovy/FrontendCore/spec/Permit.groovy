@@ -39,8 +39,11 @@ class  PermitSpec extends GebReportingSpec {
     }
 
     def "User can edit the status of a permit"(){
-        when: "I hover over the the add/edit button."
+        when: "I hover over the the add/edit button."        
         moveToFooterAndHoverOnEdit()
+        interact {
+            moveToElement(permitTab.editPermitStatusButton) 
+        }
         permitTab.editPermitStatusButton.click()
 
         and: "I change the status of the permit to closed."
@@ -89,6 +92,9 @@ class  PermitSpec extends GebReportingSpec {
         when: "A user opens the Add Permit Amendment Modal"
         permitTab.permitRow.children().has(text:"Add/Edit").click()
         moveToFooterAndHoverOnEdit()
+        interact {
+            moveToElement(permitTab.addAmendmentButton) 
+        }
         permitTab.addAmendmentButton.click()
 
         and: "Completes all the fields"
@@ -99,23 +105,26 @@ class  PermitSpec extends GebReportingSpec {
         assert permitTab.amendmentDescriptions.children()[0].text()== Const.PERMIT_DESCRIPTION
     }
     
-    // TODO: Fix this test so we no longer get unclicable/ out of bounds errors
-    // def "User can amalgamate a permit"(){
-    //     when: "The user amalgamates a permit."
-    //     moveToFooterAndHoverOnEdit()
-    //     permitTab.amalgamatePermitButton.click()
-    //     newPermitForm.amalgamatePermit()
-    //     waitFor(){permitTab.permitRow.children().has(text:"Add/Edit")}
+    def "User can amalgamate a permit"(){
+        when: "The user amalgamates a permit."
+        
+        moveToFooterAndHoverOnEdit()
+        interact {
+            moveToElement(permitTab.amalgamatePermitButton) 
+        }
+        permitTab.amalgamatePermitButton.click()
+        newPermitForm.amalgamatePermit()
+        waitFor(){permitTab.permitRow.children().has(text:"Add/Edit")}
 
-    //     and: "The user hovers over the Add/Edit button."
-    //     moveToFooterAndHoverOnEdit()
-    //     waitFor() {permitTab.hoverDropdown}
+        and: "The user hovers over the Add/Edit button."
+        moveToFooterAndHoverOnEdit()
+        waitFor() {permitTab.hoverDropdown}
 
-    //     then: "There is no 'amalgamate' option in the Add/Edit dropdown."
-    //     assert permitTab.hoverDropdown.children().has(text:"Add permit amendment").isDisplayed()
-    //     assert !permitTab.hoverDropdown.children().has(text:"Amalgamate permit").isDisplayed()
+        then: "There is no 'amalgamate' option in the Add/Edit dropdown."
+        assert permitTab.hoverDropdown.children().has(text:"Add permit amendment").isDisplayed()
+        assert !permitTab.hoverDropdown.children().has(text:"Amalgamate permit").isDisplayed()
 
-    // }
+    }
 
     def moveToFooterAndHoverOnEdit() {
         interact {
