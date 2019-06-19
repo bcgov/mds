@@ -180,7 +180,7 @@ export class AddIncidentModal extends Component {
   handleIncidentSubmit = () => {
     this.props.onSubmit({
       ...this.props.addIncidentFormValues,
-      uploaded_files: this.state.uploadedFiles,
+      updated_documents: this.state.uploadedFiles,
     });
     // TODO: Catch error
     this.close();

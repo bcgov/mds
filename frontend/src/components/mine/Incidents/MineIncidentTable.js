@@ -119,7 +119,6 @@ const columns = [
 
 const transformRowData = (incidents, actions, handleEditMineIncident, openMineIncidentModal) =>
   incidents
-    .sort((i) => i.mine_incident_report_no)
     .map((incident) => ({
       key: incident.incident_id,
       mine_incident_report_no: incident.mine_incident_report_no,
@@ -135,7 +134,8 @@ const transformRowData = (incidents, actions, handleEditMineIncident, openMineIn
       handleEditMineIncident,
       openMineIncidentModal,
       incident,
-    }));
+    }))
+    .sort((a, b) => (a.mine_incident_report_no > b.mine_incident_report_no ? -1 : 1));
 
 export const MineIncidentTable = (props) => (
   <div>

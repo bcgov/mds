@@ -58,7 +58,7 @@ class MineIncidentListResource(Resource, UserMixin):
         location='json')
     parser.add_argument('status_code', type=str, location='json')
     parser.add_argument('dangerous_occurrence_subparagraph_ids', type=list, location='json')
-    parser.add_argument('uploaded_files', type=list, location='json', store_missing=False)
+    parser.add_argument('updated_documents', type=list, location='json', store_missing=False)
 
     @api.marshal_with(MINE_INCIDENT_MODEL, envelope='mine_incidents', code=200, as_list=True)
     @api.doc(description='returns the incidents for a given mine.')
@@ -131,13 +131,13 @@ class MineIncidentListResource(Resource, UserMixin):
                 )
             incident.dangerous_occurrence_subparagraphs.append(sub)
 
-        uploaded_files = data.get('uploaded_files')
-        if uploaded_files is not None:
-            for new_file in uploaded_files:
+        updated_documents = data.get('updated_documents')
+        if updated_documents is not None:
+            for updated_file in updated_documents:
                 mine_doc = MineDocument(
                     mine_guid=mine.mine_guid,
-                    document_name=new_file['document_name'],
-                    document_manager_guid=new_file['document_manager_guid'])
+                    document_name=updated_file['document_name'],
+                    document_manager_guid=updated_file['document_manager_guid'])
 
                 if not mine_doc:
                     raise BadRequest('Unable to register uploaded file as document')
@@ -146,8 +146,8 @@ class MineIncidentListResource(Resource, UserMixin):
                 mine_incident_doc = MineIncidentDocumentXref(
                     mine_document_guid=mine_doc.mine_document_guid,
                     mine_incident_id=incident.mine_incident_id,
-                    mine_incident_document_type_code=new_file['mine_incident_document_type_code']
-                    if new_file['mine_incident_document_type_code'] else 'INI')
+                    mine_incident_document_type_code=updated_file['mine_incident_document_type_code']
+                    if updated_file['mine_incident_document_type_code'] else 'INI')
 
                 incident.documents.append(mine_incident_doc)
 
@@ -200,7 +200,7 @@ class MineIncidentResource(Resource, UserMixin):
     parser.add_argument('status_code', type=str, location='json', store_missing=False)
     parser.add_argument(
         'dangerous_occurrence_subparagraph_ids', type=list, location='json', store_missing=False)
-    parser.add_argument('uploaded_files', type=list, location='json', store_missing=False)
+    parser.add_argument('updated_documents', type=list, location='json', store_missing=False)
 
     @api.marshal_with(MINE_INCIDENT_MODEL, code=200)
     @requires_role_mine_view
@@ -248,15 +248,15 @@ class MineIncidentResource(Resource, UserMixin):
                 )
             incident.dangerous_occurrence_subparagraphs.append(sub)
 
-        uploaded_files = data.get('uploaded_files')
-        if uploaded_files is not None:
-            for new_file in uploaded_files:
-                if not any(doc.document_manager_guid == new_file['document_manager_guid']
+        updated_documents = data.get('updated_documents')
+        if updated_documents is not None:
+            for updated_document in updated_documents:
+                if not any(doc.document_manager_guid == updated_document['document_manager_guid']
                            for doc in incident.documents):
                     mine_doc = MineDocument(
                         mine_guid=mine_guid,
-                        document_name=new_file['document_name'],
-                        document_manager_guid=new_file['document_manager_guid'])
+                        document_name=updated_document['document_name'],
+                        document_manager_guid=updated_document['document_manager_guid'])
 
                     if not mine_doc:
                         raise BadRequest('Unable to register uploaded file as document')
@@ -265,15 +265,15 @@ class MineIncidentResource(Resource, UserMixin):
                     mine_incident_doc = MineIncidentDocumentXref(
                         mine_document_guid=mine_doc.mine_document_guid,
                         mine_incident_id=incident.mine_incident_id,
-                        mine_incident_document_type_code=new_file['mine_incident_document_type_code']
-                        if new_file['mine_incident_document_type_code'] else 'INI')
+                        mine_incident_document_type_code=updated_document['mine_incident_document_type_code']
+                        if updated_document['mine_incident_document_type_code'] else 'INI')
 
                     incident.documents.append(mine_incident_doc)
                     mine_incident_doc.save()
 
             for doc in incident.documents:
-                if not any(new_file['document_manager_guid'] == str(doc.document_manager_guid)
-                           for new_file in uploaded_files):
+                if not any(updated_document['document_manager_guid'] == str(doc.document_manager_guid)
+                           for updated_document in updated_documents):
                     incident.documents.remove(doc)
                     db.session.delete(doc)
                     db.session.commit()
