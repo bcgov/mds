@@ -12,8 +12,8 @@ import dataObjects.MineProfileData
 @Title("MDS-Dashboard Page")
 @Stepwise
 class  DashboardSpec extends GebReportingSpec {
-    static NAME_GOOD = "Mine-Test ABC"
-    static NAME_GOOD_TWO = "Mine-Test DEF"
+    static NAME_GOOD = "!!!Mine-Test ABC"
+    static NAME_GOOD_TWO = "!!!Mine-Test DEF"
     static STATUS    = "Closed / Orphaned / Long Term Maintenance"
     static LAGTITUTE = "52.6565"
     static LONGTITUE = "124.2342"
@@ -36,7 +36,6 @@ class  DashboardSpec extends GebReportingSpec {
 
         and: "I type in valid mine profile"
         createMineForm.createMineRecord(input)
-        println "Scenario: "+scenario
         waitFor {toastMessage!= null }
 
         then: "I should see the successful message"
@@ -59,7 +58,6 @@ class  DashboardSpec extends GebReportingSpec {
 
         and: "I type in valid mine profile"
         createMineForm.createMineRecord(input)
-        println "Scenario: "+scenario
         waitFor {toastMessage!= null }
 
         then: "I should see the successful message"
@@ -71,22 +69,22 @@ class  DashboardSpec extends GebReportingSpec {
     }
 
     def "Scenario: User can view a mine"(){
-        def viewMineName = firstMineName
+        def SearchedDashboard = new Dashboard(url: "dashboard/mines?page=1&per_page=25&search="+Const.MINE_NAME)
 
-        given: "I am on the Dashboard Page"
-        to Dashboard
+        given: "I am on the Dashboard Page after searching '!!MINE'"
+        to SearchedDashboard
+        def viewMineName = SearchedDashboard.firstMineName
+        def link = SearchedDashboard.viewLink
 
         when: "page is loaded"
-        at Dashboard
+        at SearchedDashboard
 
         and: "I click to view the first mine"
-        waitFor() { viewLink.click() }
+        waitFor() { link.click() }
 
         then:"I can view the page"
         at MineProfilePage
         assert mineName == viewMineName
-        println mineName
-
     }
 
     // def "Scenario: User can search for a specific mine "(){
