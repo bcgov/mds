@@ -56,18 +56,35 @@ ShallowWrapper {
           Array [
             Object {
               "dataIndex": "mine_incident_report_no",
+              "sorter": [Function],
               "title": "Incident Report No.",
             },
             Object {
               "dataIndex": "incident_timestamp",
+              "sorter": [Function],
               "title": "Incident Time",
             },
             Object {
               "dataIndex": "reported_by",
+              "filters": Array [
+                Object {
+                  "text": undefined,
+                  "value": undefined,
+                },
+              ],
+              "onFilter": [Function],
+              "sorter": [Function],
               "title": "Reported By",
             },
             Object {
               "dataIndex": "followup_action",
+              "filters": Array [
+                Object {
+                  "text": undefined,
+                  "value": undefined,
+                },
+              ],
+              "onFilter": [Function],
               "render": [Function],
               "title": "EMPR Action",
             },
@@ -145,18 +162,35 @@ ShallowWrapper {
         "columns": Array [
           Object {
             "dataIndex": "mine_incident_report_no",
+            "sorter": [Function],
             "title": "Incident Report No.",
           },
           Object {
             "dataIndex": "incident_timestamp",
+            "sorter": [Function],
             "title": "Incident Time",
           },
           Object {
             "dataIndex": "reported_by",
+            "filters": Array [
+              Object {
+                "text": undefined,
+                "value": undefined,
+              },
+            ],
+            "onFilter": [Function],
+            "sorter": [Function],
             "title": "Reported By",
           },
           Object {
             "dataIndex": "followup_action",
+            "filters": Array [
+              Object {
+                "text": undefined,
+                "value": undefined,
+              },
+            ],
+            "onFilter": [Function],
             "render": [Function],
             "title": "EMPR Action",
           },
@@ -234,18 +268,35 @@ ShallowWrapper {
             Array [
               Object {
                 "dataIndex": "mine_incident_report_no",
+                "sorter": [Function],
                 "title": "Incident Report No.",
               },
               Object {
                 "dataIndex": "incident_timestamp",
+                "sorter": [Function],
                 "title": "Incident Time",
               },
               Object {
                 "dataIndex": "reported_by",
+                "filters": Array [
+                  Object {
+                    "text": undefined,
+                    "value": undefined,
+                  },
+                ],
+                "onFilter": [Function],
+                "sorter": [Function],
                 "title": "Reported By",
               },
               Object {
                 "dataIndex": "followup_action",
+                "filters": Array [
+                  Object {
+                    "text": undefined,
+                    "value": undefined,
+                  },
+                ],
+                "onFilter": [Function],
                 "render": [Function],
                 "title": "EMPR Action",
               },
@@ -323,18 +374,35 @@ ShallowWrapper {
           "columns": Array [
             Object {
               "dataIndex": "mine_incident_report_no",
+              "sorter": [Function],
               "title": "Incident Report No.",
             },
             Object {
               "dataIndex": "incident_timestamp",
+              "sorter": [Function],
               "title": "Incident Time",
             },
             Object {
               "dataIndex": "reported_by",
+              "filters": Array [
+                Object {
+                  "text": undefined,
+                  "value": undefined,
+                },
+              ],
+              "onFilter": [Function],
+              "sorter": [Function],
               "title": "Reported By",
             },
             Object {
               "dataIndex": "followup_action",
+              "filters": Array [
+                Object {
+                  "text": undefined,
+                  "value": undefined,
+                },
+              ],
+              "onFilter": [Function],
               "render": [Function],
               "title": "EMPR Action",
             },
