@@ -24,33 +24,32 @@ def clean_up(table, column):
         return etl.cutout(table, column)
 
 
-# mine_table = etl.fromcsv('mines.csv')
-# print(mine_table)
-
 table = src_table
 print('TOTAL SOURCE ROWS = ' + str(etl.nrows(table)))
 print('SOURCE HEADERS = ' + str(etl.header(table)))
 
-table = etl.cutout(table, 'rcv_nm')
-table = etl.cutout(table, 'insp_cd')
-table = etl.cutout(table, 'ins_ind')
-table = etl.cutout(table, 'geo_ind')
+if CLEAN_UP:
+    table = clean_up(table, 'rcv_nm')
+    table = clean_up(table, 'insp_cd')
+    table = clean_up(table, 'ins_ind')
+    table = clean_up(table, 'geo_ind')
+    table = clean_up(table, 'cid')
 
-print('TRIMMED HEADERS = ' + str(etl.header(table)))
+    print('TRIMMED HEADERS = ' + str(etl.header(table)))
+
 table = etl.select(table, 'occ_dt', lambda x: x > datetime(2000, 1, 1))
 print('ROWS POST YR 2000 = ' + str(etl.nrows(table)))
 
-######
-print('CONVERT AND RENAME rep_nm to reported_by_name')
-table = etl.addfield(table, 'reported_by_name', lambda x: x['rep_nm'])
-table = clean_up(table, 'rep_nm')
+mine_table = etl.fromcsv('mines.csv', encoding='utf-8')
+mine_table = etl.convert(mine_table, 'mine_no', lambda x: str(int(x)))
+table = etl.convert(table, 'mine_no', lambda x: str(int(x)))
+
+table = etl.leftjoin(table, mine_table, key='mine_no')
+table = clean_up(table, 'mine_no')
+print('mine_guid=None  ' + str(etl.valuecount(table, 'mine_guid', None)))
 
 ######
-print('CONVERT AND RENAME descript to incident_description')
-table = etl.addfield(table, 'incident_description', lambda x: x['descript'])
-table = clean_up(table, 'descript')
-######
-print('CONVERT AND RENAME descript1 to incident_description')
+print('CONVERT AND RENAME descript1 to mine_incident_recommendation')
 table = etl.addfield(table, 'mine_incident_recommendation', lambda x: x['descript1'])
 table = clean_up(table, 'descript1')
 
@@ -68,6 +67,16 @@ print(etl.valuecounter(table, 'status_code'))
 table = clean_up(table, 'sta_cd')
 
 ######
+print('CONVERT AND RENAME rep_nm to reported_by_name')
+table = etl.addfield(table, 'reported_by_name', lambda x: x['rep_nm'])
+table = clean_up(table, 'rep_nm')
+
+######
+print('CONVERT AND RENAME descript to incident_description')
+table = etl.addfield(table, 'incident_description', lambda x: x['descript'])
+table = clean_up(table, 'descript')
+
+######
 print('COMBINING occ_dt and occ_tm into incident_timestamp')
 table = etl.convert(table, 'occ_tm', timeparser('%H:%M'))
 table = etl.addfield(
@@ -77,6 +86,10 @@ debug(table, ['occ_dt', 'occ_tm', 'incident_timestamp'])
 table = clean_up(table, 'occ_dt')
 table = clean_up(table, 'occ_tm')
 
+#####
+print("CREATING mine_incident_id_year from incident_timestamp")
+table = etl.addfield(table, 'mine_incident_id_year', lambda x: x['incident_timestamp'].year)
+print(etl.valuecounter(table, 'mine_incident_id_year'))
 ######
 print('COMBINING rep_dt and rep_tm into reported_timestamp')
 table = etl.convert(table, 'rep_tm', timeparser('%H:%M'))
@@ -87,39 +100,61 @@ debug(table, ['rep_dt', 'rep_tm', 'reported_timestamp'])
 table = clean_up(table, 'rep_dt')
 table = clean_up(table, 'rep_tm')
 
-#######
+####### Number of fatalities
+fatalities_table = etl.fromcsv('do_fatalities.csv', encoding='utf-8')
+fatalities_table = etl.convert(fatalities_table, 'min_acc_no', str)
+table = etl.leftjoin(table, fatalities_table, key='min_acc_no')
+table = etl.addfield(table, 'number_of_fatalities', lambda x: 1 if x['fat_chk'] else 0)
+table = etl.cutout(table, 'fat_chk')
+print('fatalities>0  ' + str(etl.valuecount(table, 'number_of_fatalities', 1)))
+
+####### Number of Injuries
+injuries_table = etl.fromcsv('do_injuries.csv', encoding='utf-8')
+injuries_table = etl.cutout(injuries_table, 'occ_typ')
+
+injuries_table = etl.convert(injuries_table, 'min_acc_no', str)
+injuries_table = etl.convert(injuries_table, 'val', lambda x: int(x.strip()) if x.strip() else 0)
+table = etl.leftjoin(table, injuries_table, key='min_acc_no')
+
+table = etl.addfield(table, 'number_of_injuries', lambda x: x['val'] or 0)
+print(etl.valuecounter(table, 'val'))
+print(etl.valuecounter(table, 'number_of_injuries'))
+
+####### FOLLOWUP_INSPECTION
 print('CREATING followup_inspection_date from insp_dt')
 table = etl.addfield(table, 'followup_inspection_date', lambda x: x['insp_dt'])
 
-####
 print('CREATING followup_inspection from insp_dt is None')
 table = etl.addfield(table, 'followup_inspection', lambda x: x['insp_dt'] is not None)
 print(etl.valuecount(table, 'insp_dt', None))
 print(etl.valuecounter(table, 'followup_inspection'))
-table = clean_up(table, 'insp_dt')
 
+print('CREATING followup_investigation_type_code = HUK')
+table = etl.addfield(table, 'followup_investigation_type_code', 'HUK')
+table = clean_up(table, 'insp_dt')
 ####
 print('CONVERTING occ_ind to determination_type_code')
 table = etl.addfield(table,
                      'determination_type_code', lambda x: 'DO' if x['occ_ind'] == 'Y' else 'NDO')
-debug(table, ['occ_ind', 'determination_type_code'])
-table = clean_up(table, 'occ_ind')
 
+print(etl.valuecounter(table, 'occ_ind'))
+print(etl.valuecounter(table, 'determination_type_code'))
+table = clean_up(table, 'occ_ind')
 #### NO SOURCE
 print('CREATING emergency_services_called = null')
 table = etl.addfield(table, 'emergency_services_called', False)
 
-print('CREATING AUDIT COLUMNS WITH VALUES')
+print('CREATING create_user = MMS_DO_IMPORT')
 table = etl.addfield(table, 'create_user', 'MMS_DO_IMPORT')
 
-#print(etl.valuecounter(table, 'occ_typ'))
+print('RENAMING mine_acc_no to mine_incident_no')
+table = etl.rename(table, 'mine_acc_no', 'mine_incident_no')
 
-#RENAME SOURCE COLUMNS WE WANT TO KEEP
+#RENAME SOURCE COLUMNS WE MIGHT WANT TO KEEP
 table = etl.rename(table, 'recp_cd', 'mms_recp_cd')
-table = etl.rename(table, 'cid', 'mms_cid')
 table = etl.rename(table, 'min_acc_no', 'mms_min_acc_no')
-table = etl.rename(table, 'mine_acc_no', 'mms_mine_acc_no')
 #### COLUMNS WITH NO INITIAL VALUE
+
 # reported_by_phone_no
 # reported_by_phone_ext
 # reported_by_email
