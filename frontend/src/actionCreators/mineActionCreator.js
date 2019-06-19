@@ -402,7 +402,6 @@ export const fetchMineIncidents = (mine_guid) => (dispatch) => {
   return CustomAxios()
     .get(`${ENVIRONMENT.apiUrl}${API.MINE_INCIDENTS(mine_guid)}`, createRequestHeader())
     .then((response) => {
-      // console.log("FetchMinesResponse", JSON.stringify(response.data.mine_incidents));
       dispatch(success(reducerTypes.GET_MINE_INCIDENTS));
       dispatch(mineActions.storeMineIncidents(response.data));
       return response;

@@ -66,7 +66,6 @@ class AddIncidentDetailForm extends Component {
                 label="Were emergency services called?*"
                 placeholder="Please choose one"
                 component={renderConfig.RADIO}
-                data={[{ id: "yes", label: "Yes" }, { id: "no", label: "No" }]}
                 validate={[required]}
               />
             </Form.Item>
