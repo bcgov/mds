@@ -880,6 +880,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                 FROM ETL_PERMIT
                 INNER JOIN ETL_MINE ON
                     ETL_PERMIT.mine_guid = ETL_MINE.mine_guid
+                -- WHERE ETL_PERMIT.mine_party_appt_guid not in (SELECT mine_party_appt_guid from mine_party_appt)
                 RETURNING 1
             )
             SELECT count(*) FROM inserted_rows INTO insert_row;
