@@ -73,7 +73,7 @@
             "generation": 1,
             "importPolicy": {},
             "referencePolicy": {
-              "type": "Source"
+              "type": "Local"
             }
           }
         ]
