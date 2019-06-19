@@ -2,6 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Table, Button } from "antd";
 
+import _ from "lodash";
+
 import { BRAND_PENCIL } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
@@ -16,18 +18,32 @@ const propTypes = {
   openMineIncidentModal: PropTypes.func.isRequired,
 };
 
-const columns = [
+const columns = (props) => [
   {
     title: "Incident Report No.",
     dataIndex: "mine_incident_report_no",
+    sorter: (a, b) => a.mine_incident_report_no.localeCompare(b.mine_incident_report_no),
   },
   {
     title: "Incident Time",
     dataIndex: "incident_timestamp",
+    sorter: (a, b) => new Date(a.incident_timestamp) > new Date(b.incident_timestamp),
   },
   {
     title: "Reported By",
     dataIndex: "reported_by",
+    sorter: (a, b) => a.reported_by.localeCompare(b.reported_by),
+    onFilter: (value, record) => record.incident.reported_by_name === value,
+    filters: _.reduce(
+      props.incidents,
+      (reporterList, incident) => {
+        if (!reporterList.map((x) => x.value).includes(incident.reported_by_name)) {
+          reporterList.push({ value: incident.reported_by_name, text: incident.reported_by_name });
+        }
+        return reporterList;
+      },
+      []
+    ),
   },
   {
     title: "EMPR Action",
@@ -37,6 +53,11 @@ const columns = [
         {action ? action.description : record.incident.followup_type_code}
       </div>
     ),
+    onFilter: (value, record) => record.incident.followup_investigation_type_code === value,
+    filters: props.followupActions.map((action) => ({
+      value: action.mine_incident_followup_investigation_type_code,
+      text: action.mine_incident_followup_investigation_type_code,
+    })),
   },
   {
     title: "",
@@ -89,7 +110,7 @@ export const MineIncidentTable = (props) => (
     <Table
       align="left"
       pagination={false}
-      columns={columns}
+      columns={columns(props)}
       locale={{ emptyText: <NullScreen type="incidents" /> }}
       dataSource={transformRowData(
         props.incidents,
