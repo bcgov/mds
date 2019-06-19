@@ -29,10 +29,11 @@ const propTypes = {
   inspectors: CustomPropTypes.options.isRequired,
   addIncidentFormValues: PropTypes.objectOf(PropTypes.any),
   mineGuid: PropTypes.string.isRequired,
-  change: PropTypes.func.isRequired,
+  change: PropTypes.func,
 };
 
 const defaultProps = {
+  change,
   addIncidentFormValues: {},
 };
 
@@ -169,7 +170,12 @@ const StepForms = (props, next, prev, handleIncidentSubmit, onFileLoad, onRemove
 ];
 
 export class AddIncidentModal extends Component {
-  state = { current: 0, uploadedFiles: [...this.props.initialValues.documents] };
+  state = {
+    current: 0,
+    uploadedFiles: this.props.initialValues.documents
+      ? [...this.props.initialValues.documents]
+      : [],
+  };
 
   handleIncidentSubmit = () => {
     this.props.onSubmit({
