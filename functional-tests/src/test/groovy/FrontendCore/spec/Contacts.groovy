@@ -65,7 +65,7 @@ class  Contacts extends GebReportingSpec {
         and: "I fill out the create contacts forms."
         createContactForm.createContactFormOne(input1)
         createContactForm.createContactFormTwo(input2)
-        waitFor {toastMessage != null}       
+        waitFor {toastMessage != null}
 
         then: "I should get a successful message"
         successfulToastMessage != null
