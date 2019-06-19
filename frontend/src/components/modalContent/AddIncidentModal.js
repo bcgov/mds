@@ -45,11 +45,12 @@ const invalidDetailPayload = (values) =>
   !(
     values.determination_inspector_party_guid &&
     // If DO, need subparagraphs
-    (values.determination_type_code === "DO" &&
+    ((values.determination_type_code === "DO" &&
       values.DoSubparagraphs &&
-      values.DoSubparagraphs.length === 0) &&
-    // If NDO, need incident status
-    (values.determination_type_code === "NDO" && values.status_code) &&
+      values.DoSubparagraphs.length !== 0) ||
+      // If NDO, need incident status
+      (values.determination_type_code === "NDO" && values.status_code) ||
+      values.determination_type_code === "PEN") &&
     values.determination_type_code &&
     values.incident_description &&
     values.emergency_services_called &&
