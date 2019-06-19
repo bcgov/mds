@@ -85,7 +85,15 @@ export class ViewPartyRelationships extends Component {
     });
   };
 
-  openAddPartyRelationshipModal = (value, onSubmit, handleChange, onPartySubmit, title, mine) => {
+  openAddPartyRelationshipModal = ({
+    value,
+    partyRelationships,
+    onSubmit,
+    handleChange,
+    onPartySubmit,
+    title,
+    mine,
+  }) => {
     if (!this.props.partyRelationshipTypesList) return;
 
     if (
@@ -109,6 +117,7 @@ export class ViewPartyRelationships extends Component {
         handleChange,
         onPartySubmit,
         title: `${title}: ${value.description}`,
+        partyRelationships,
         partyRelationshipType: value,
         mine,
       },
@@ -230,14 +239,15 @@ export class ViewPartyRelationships extends Component {
                   this.setState({
                     selectedPartyRelationshipType: value.mine_party_appt_type_code,
                   });
-                  this.openAddPartyRelationshipModal(
+                  this.openAddPartyRelationshipModal({
                     value,
-                    this.onSubmitAddPartyRelationship,
-                    this.props.handleChange,
-                    this.onPartySubmit,
-                    ModalContent.ADD_CONTACT,
-                    this.props.mine
-                  );
+                    partyRelationships: this.props.partyRelationships,
+                    onSubmit: this.onSubmitAddPartyRelationship,
+                    handleChange: this.props.handleChange,
+                    onPartySubmit: this.onPartySubmit,
+                    title: ModalContent.ADD_CONTACT,
+                    mine: this.props.mine,
+                  });
                 }}
               >
                 {`${value.description}`}
