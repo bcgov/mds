@@ -52,8 +52,6 @@ class Base(db.Model):
             try:
                 db.session.commit()
             except SQLAlchemyError as e:
-                current_app.logger.error(
-                    f'When trying to save {self} an exception was thrown by the database {e}')
                 db.session.rollback()
                 raise e
 

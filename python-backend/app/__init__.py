@@ -112,6 +112,7 @@ def register_routes(app):
 
     # Recursively add handler to every SQLAlchemy Error
     def sqlalchemy_error_handler(error):
+        current_app.logger.error(str(error))
         return {
             'status': getattr(error, 'status_code', 400),
             'message': str('Invalid request. Cannot save record.'),
