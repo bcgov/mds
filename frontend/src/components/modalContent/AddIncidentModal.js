@@ -42,21 +42,9 @@ const invalidReportingPayload = (values) =>
     values.responsible_inspector_party_guid
   );
 
-const invalidDetailPayload = (values) =>
-  values.determination_inspector_party_guid ||
-  // If DO, need subparagraphs
-  (values.determination_type_code === "DO" &&
-    values.DoSubparagraphs &&
-    values.DoSubparagraphs.length === 0) ||
-  // If NDO, need incident status
-  (values.determination_type_code === "NDO" && values.status_code) ||
-  values.determination_type_code ||
-  values.incident_description ||
-  values.emergency_services_called ||
-  values.incident_timestamp;
+const invalidDetailPayload = () => false;
 
-const invalidFollowUpPayload = (values) =>
-  values.status_code || values.followup_investigation_type_code;
+const invalidFollowUpPayload = () => false;
 
 const actionVerb = (newIncident) => {
   if (newIncident) return <span>Save&nbsp;</span>;
