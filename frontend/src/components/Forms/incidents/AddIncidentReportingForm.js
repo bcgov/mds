@@ -108,5 +108,5 @@ export default reduxForm({
   form: FORM.MINE_INCIDENT,
   destroyOnUnmount: false,
   forceUnregisterOnUnmount: true,
-  touchOnBlur: false,
+  touchOnBlur: true,
 })(AddIncidentReportingForm);
