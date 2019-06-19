@@ -34,7 +34,7 @@ class AddIncidentDetailForm extends Component {
               <Field
                 id="incident_timestamp"
                 name="incident_timestamp"
-                label="Incident Date and Time"
+                label="Incident Date and Time*"
                 placeholder="Please select date and time"
                 component={renderConfig.DATE}
                 showTime

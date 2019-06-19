@@ -44,17 +44,16 @@ const invalidReportingPayload = (values) =>
 const invalidDetailPayload = (values) =>
   !(
     values.determination_inspector_party_guid &&
+    values.incident_description &&
+    values.emergency_services_called !== undefined &&
+    values.incident_timestamp &&
+    values.determination_type_code &&
     // If DO, need subparagraphs
     ((values.determination_type_code === "DO" &&
-      values.DoSubparagraphs &&
-      values.DoSubparagraphs.length !== 0) ||
-      // If NDO, need incident status
+      values.dangerous_occurrence_subparagraph_ids &&
+      values.dangerous_occurrence_subparagraph_ids.length !== 0) ||
       (values.determination_type_code === "NDO" && values.status_code) ||
-      values.determination_type_code === "PEN") &&
-    values.determination_type_code &&
-    values.incident_description &&
-    values.emergency_services_called &&
-    values.incident_timestamp
+      values.determination_type_code === "PEN")
   );
 
 const invalidFollowUpPayload = (values) =>

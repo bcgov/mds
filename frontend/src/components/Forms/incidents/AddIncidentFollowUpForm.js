@@ -99,8 +99,6 @@ export class AddIncidentFollowUpForm extends Component {
                   data={this.props.incidentStatusCodeOptions}
                 />
               </Form.Item>
-
-              {/* TODO: <h4>Final Investigation Report Documents</h4> */}
             </Col>
           </Row>
         </Form>
