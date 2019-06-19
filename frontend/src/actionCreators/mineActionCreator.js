@@ -390,6 +390,10 @@ export const createMineIncident = (mine_guid, payload) => (dispatch) => {
   return CustomAxios()
     .post(`${ENVIRONMENT.apiUrl}${API.MINE_INCIDENTS(mine_guid)}`, payload, createRequestHeader())
     .then((response) => {
+      notification.success({
+        message: "Successfully created incident.",
+        duration: 10,
+      });
       dispatch(success(reducerTypes.CREATE_MINE_INCIDENT));
       return response;
     })
@@ -419,6 +423,10 @@ export const updateMineIncident = (mineGuid, mineIncidentGuid, payload) => (disp
       createRequestHeader()
     )
     .then((response) => {
+      notification.success({
+        message: "Successfully updated incident.",
+        duration: 10,
+      });
       dispatch(success(reducerTypes.UPDATE_MINE_INCIDENT));
       return response;
     })
