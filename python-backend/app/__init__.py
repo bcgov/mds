@@ -6,7 +6,7 @@ from flask import Flask, current_app
 from flask_cors import CORS
 from flask_restplus import Resource, apidoc
 from flask_compress import Compress
-from sqlalchemy.exc import SQLAlchemyError, DBAPIError
+from sqlalchemy.exc import SQLAlchemyError
 
 from flask_jwt_oidc.exceptions import AuthError
 

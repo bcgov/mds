@@ -1,6 +1,6 @@
 from datetime import datetime
 from flask import current_app
-from sqlalchemy.exc import DBAPIError
+from sqlalchemy.exc import SQLAlchemyError
 
 from app.extensions import db
 from .include.user_info import User
@@ -51,7 +51,9 @@ class Base(db.Model):
         if commit:
             try:
                 db.session.commit()
-            except DBAPIError as e:
+            except SQLAlchemyError as e:
+                current_app.logger.error(
+                    f'When trying to save {self} an exception was thrown by the database {e}')
                 db.session.rollback()
                 raise e
 
