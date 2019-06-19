@@ -5,8 +5,7 @@
 
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm, FieldArray, change } from "redux-form";
-import { remove } from "lodash";
+import { Field, reduxForm, FieldArray } from "redux-form";
 import { Form, Col, Row, Icon } from "antd";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
@@ -20,13 +19,11 @@ const propTypes = {
   followupActionOptions: CustomPropTypes.options.isRequired,
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
   hasFatalities: PropTypes.bool.isRequired,
-  change: PropTypes.func,
   mineGuid: PropTypes.string.isRequired,
   hasFollowUp: PropTypes.bool.isRequired,
-};
-
-const defaultProps = {
-  change,
+  uploadedFiles: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  onFileLoad: PropTypes.func.isRequired,
+  onRemoveFile: PropTypes.func.isRequired,
 };
 
 const renderRecommendations = ({ fields }) => [
@@ -47,16 +44,6 @@ const renderRecommendations = ({ fields }) => [
 ];
 
 export class AddIncidentFollowUpForm extends Component {
-  onFileLoad = (fileName, document_manager_guid) => {
-    this.state.uploadedFiles.push({ fileName, document_manager_guid });
-    this.props.change("uploadedFiles", this.state.uploadedFiles);
-  };
-
-  onRemoveFile = (fileItem) => {
-    remove(this.state.uploadedFiles, { document_manager_guid: fileItem.serverId });
-    this.props.change("uploadedFiles", this.state.uploadedFiles);
-  };
-
   render() {
     return (
       <div>
@@ -124,8 +111,10 @@ export class AddIncidentFollowUpForm extends Component {
                 <Field
                   id="InitialIncidentFileUpload"
                   name="InitialIncidentFileUpload"
-                  onFileLoad={this.onFileLoad}
-                  onRemoveFile={this.onRemoveFile}
+                  onFileLoad={(document_name, document_manager_guid) =>
+                    this.props.onFileLoad(document_name, document_manager_guid, "FIN")
+                  }
+                  onRemoveFile={this.props.onRemoveFile}
                   uploadUrl={MINE_INCIDENT_DOCUMENT(this.props.mineGuid)}
                   component={FileUpload}
                 />
@@ -139,7 +128,6 @@ export class AddIncidentFollowUpForm extends Component {
 }
 
 AddIncidentFollowUpForm.propTypes = propTypes;
-AddIncidentFollowUpForm.defaultProps = defaultProps;
 
 export default reduxForm({
   form: FORM.MINE_INCIDENT,

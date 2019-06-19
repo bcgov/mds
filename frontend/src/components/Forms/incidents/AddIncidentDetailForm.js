@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
-import { Field, reduxForm, change } from "redux-form";
+import { Field, reduxForm } from "redux-form";
 import { remove } from "lodash";
 import { Form, Col, Row } from "antd";
 import * as FORM from "@/constants/forms";
@@ -16,35 +16,18 @@ const propTypes = {
   doSubparagraphOptions: CustomPropTypes.options.isRequired,
   inspectors: CustomPropTypes.options.isRequired,
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
-  change: PropTypes.func,
   mineGuid: PropTypes.string.isRequired,
   doDetermination: PropTypes.string,
+  uploadedFiles: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  onFileLoad: PropTypes.func.isRequired,
+  onRemoveFile: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
   doDetermination: "PEN",
-  change,
 };
 
 class AddIncidentDetailForm extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      uploadedFiles: [],
-    };
-  }
-
-  onFileLoad = (fileName, document_manager_guid) => {
-    this.state.uploadedFiles.push({ fileName, document_manager_guid });
-    this.props.change("uploadedFiles", this.state.uploadedFiles);
-  };
-
-  onRemoveFile = (fileItem) => {
-    remove(this.state.uploadedFiles, { document_manager_guid: fileItem.serverId });
-    this.props.change("uploadedFiles", this.state.uploadedFiles);
-  };
-
   validateDoSubparagraphs = (value) =>
     value.length === 0 ? "This is a required field" : undefined;
 
@@ -143,8 +126,10 @@ class AddIncidentDetailForm extends Component {
                   <Field
                     id="InitialIncidentFileUpload"
                     name="InitialIncidentFileUpload"
-                    onFileLoad={this.onFileLoad}
-                    onRemoveFile={this.onRemoveFile}
+                    onFileLoad={(document_name, document_manager_guid) =>
+                      this.props.onFileLoad(document_name, document_manager_guid, "INI")
+                    }
+                    onRemoveFile={this.props.onRemoveFile}
                     component={FileUpload}
                     uploadUrl={MINE_INCIDENT_DOCUMENT(this.props.mineGuid)}
                   />
@@ -173,7 +158,6 @@ class AddIncidentDetailForm extends Component {
 }
 
 AddIncidentDetailForm.propTypes = propTypes;
-AddIncidentDetailForm.defaultProps = defaultProps;
 
 export default reduxForm({
   form: FORM.MINE_INCIDENT,

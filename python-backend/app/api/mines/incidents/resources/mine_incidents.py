@@ -136,7 +136,7 @@ class MineIncidentListResource(Resource, UserMixin):
             for new_file in uploaded_files:
                 mine_doc = MineDocument(
                     mine_guid=mine.mine_guid,
-                    document_name=new_file['file_name'],
+                    document_name=new_file['document_name'],
                     document_manager_guid=new_file['document_manager_guid'])
 
                 if not mine_doc:
@@ -146,8 +146,8 @@ class MineIncidentListResource(Resource, UserMixin):
                 mine_incident_doc = MineIncidentDocumentXref(
                     mine_document_guid=mine_doc.mine_document_guid,
                     mine_incident_id=incident.mine_incident_id,
-                    mine_incident_document_type_code=new_file['document_type']
-                    if new_file['document_type'] else 'INI')
+                    mine_incident_document_type_code=new_file['mine_incident_document_type_code']
+                    if new_file['mine_incident_document_type_code'] else 'INI')
 
                 incident.documents.append(mine_incident_doc)
 
@@ -255,7 +255,7 @@ class MineIncidentResource(Resource, UserMixin):
                            for doc in incident.documents):
                     mine_doc = MineDocument(
                         mine_guid=mine_guid,
-                        document_name=new_file['file_name'],
+                        document_name=new_file['document_name'],
                         document_manager_guid=new_file['document_manager_guid'])
 
                     if not mine_doc:
@@ -265,13 +265,14 @@ class MineIncidentResource(Resource, UserMixin):
                     mine_incident_doc = MineIncidentDocumentXref(
                         mine_document_guid=mine_doc.mine_document_guid,
                         mine_incident_id=incident.mine_incident_id,
-                        mine_incident_document_type_code=new_file['document_type']
-                        if new_file['document_type'] else 'INI')
+                        mine_incident_document_type_code=new_file['mine_incident_document_type_code']
+                        if new_file['mine_incident_document_type_code'] else 'INI')
 
                     incident.documents.append(mine_incident_doc)
+                    mine_incident_doc.save()
 
             for doc in incident.documents:
-                if not any(new_file['document_manager_guid'] == doc.document_manager_guid
+                if not any(new_file['document_manager_guid'] == str(doc.document_manager_guid)
                            for new_file in uploaded_files):
                     incident.documents.remove(doc)
                     db.session.delete(doc)

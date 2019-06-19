@@ -4,7 +4,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { getFormValues } from "redux-form";
+import { getFormValues, change } from "redux-form";
+import { remove } from "lodash";
 import { Steps, Button, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import AddIncidentReportingForm from "@/components/Forms/incidents/AddIncidentReportingForm";
@@ -28,6 +29,7 @@ const propTypes = {
   inspectors: CustomPropTypes.options.isRequired,
   addIncidentFormValues: PropTypes.objectOf(PropTypes.any),
   mineGuid: PropTypes.string.isRequired,
+  change: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -51,11 +53,16 @@ const actionVerb = (newIncident) => {
   return <span>Edit&nbsp;</span>;
 };
 
-const StepForms = (props, next, prev, handleIncidentSubmit) => [
+const StepForms = (props, next, prev, handleIncidentSubmit, onFileLoad, onRemoveFile) => [
   {
     title: "Initial Report",
     content: (
-      <AddIncidentReportingForm initialValues={props.initialValues} inspectors={props.inspectors} />
+      <AddIncidentReportingForm
+        initialValues={props.initialValues}
+        inspectors={props.inspectors}
+        onFileLoad={onFileLoad}
+        onRemoveFile={onRemoveFile}
+      />
     ),
     buttons: (
       <Button
@@ -80,6 +87,8 @@ const StepForms = (props, next, prev, handleIncidentSubmit) => [
         incidentStatusCodeOptions={props.incidentStatusCodeOptions}
         inspectors={props.inspectors}
         doDetermination={props.addIncidentFormValues.determination_type_code}
+        onFileLoad={onFileLoad}
+        onRemoveFile={onRemoveFile}
       />
     ),
     buttons: (
@@ -124,6 +133,8 @@ const StepForms = (props, next, prev, handleIncidentSubmit) => [
         incidentStatusCodeOptions={props.incidentStatusCodeOptions}
         hasFatalities={props.addIncidentFormValues.number_of_fatalities > 0 || false}
         hasFollowUp={props.addIncidentFormValues.followup_inspection || false}
+        onFileLoad={onFileLoad}
+        onRemoveFile={onRemoveFile}
       />
     ),
     buttons: [
@@ -144,11 +155,12 @@ const StepForms = (props, next, prev, handleIncidentSubmit) => [
 ];
 
 export class AddIncidentModal extends Component {
-  state = { current: 0 };
+  state = { current: 0, uploadedFiles: [...this.props.initialValues.documents] };
 
   handleIncidentSubmit = () => {
     this.props.onSubmit({
       ...this.props.addIncidentFormValues,
+      uploaded_files: this.state.uploadedFiles,
     });
     // TODO: Catch error
     this.close();
@@ -163,8 +175,29 @@ export class AddIncidentModal extends Component {
 
   prev = () => this.setState((prevState) => ({ current: prevState.current - 1 }));
 
+  onFileLoad = (document_name, document_manager_guid, mine_incident_document_type_code) => {
+    this.state.uploadedFiles.push({
+      document_name,
+      document_manager_guid,
+      mine_incident_document_type_code,
+    });
+    this.props.change("uploadedFiles", this.state.uploadedFiles);
+  };
+
+  onRemoveFile = (fileItem) => {
+    remove(this.state.uploadedFiles, { document_manager_guid: fileItem.serverId });
+    this.props.change("uploadedFiles", this.state.uploadedFiles);
+  };
+
   render = () => {
-    const Forms = StepForms(this.props, this.next, this.prev, this.handleIncidentSubmit);
+    const Forms = StepForms(
+      this.props,
+      this.next,
+      this.prev,
+      this.handleIncidentSubmit,
+      this.onFileLoad,
+      this.onRemoveFile
+    );
 
     return (
       <div>
