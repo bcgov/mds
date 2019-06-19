@@ -146,6 +146,7 @@ export class ViewPartyRelationships extends Component {
             ({ value }) => value === partyRelationship.mine_party_appt_type_code
           ).label
         }: ${partyRelationship.party.name}`,
+        partyRelationships: this.props.partyRelationships,
         partyRelationship: JSON.parse(JSON.stringify(partyRelationship)),
         mine,
       },

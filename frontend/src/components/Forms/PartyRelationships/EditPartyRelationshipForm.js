@@ -1,5 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
+import moment from "moment";
+import { isEmpty } from "lodash";
 import { Field, reduxForm } from "redux-form";
 import { renderConfig } from "@/components/common/config";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
@@ -12,6 +14,9 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
+  // Prop is used indirectly. Linting is unable to detect it
+  // eslint-disable-next-line react/no-unused-prop-types
+  partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship).isRequired,
   partyRelationship: CustomPropTypes.partyRelationship.isRequired,
   mine: CustomPropTypes.mine,
   submitting: PropTypes.bool.isRequired,
@@ -21,13 +26,58 @@ const defaultProps = {
   mine: {},
 };
 
-const validate = (values) => {
+const checkDatesForOverlap = (values, props) => {
+  const existingAppointments = props.partyRelationships.filter(
+    ({ mine_party_appt_type_code }) =>
+      mine_party_appt_type_code === props.partyRelationship.mine_party_appt_type_code
+  );
+  const newAppt = { start_date: null, end_date: null, ...values };
+
+  // Sort all appointments into ascending order by start_date
+  const toDate = (dateString) => moment(dateString, "YYYY-MM-DD").toDate();
+  const allAppointments = [...existingAppointments, newAppt].sort((a, b) =>
+    toDate(a.start_date) > toDate(b.start_date) ? 1 : -1
+  );
+
+  const errorMessages = {};
+  for (let i = 0; i < allAppointments.length - 1; i += 1) {
+    const current = allAppointments[i];
+    const next = allAppointments[i + 1];
+
+    const conflictingParty =
+      current.party_guid !== newAppt.party_guid ? current.party.name : next.party.name;
+    const conflictingField = current.party_guid === newAppt.party_guid ? "end_date" : "start_date";
+    const msg = `Assignment conflicts with existing ${
+      props.partyRelationship.description
+    }: ${conflictingParty}`;
+
+    if (
+      current.end_date >= next.start_date ||
+      // null indicates infinitely into the past/future
+      current.end_date === null ||
+      next.start_date === null
+    ) {
+      errorMessages[conflictingField] = msg;
+    }
+  }
+
+  return errorMessages;
+};
+
+const validate = (values, props) => {
   const errors = {};
   if (values.start_date && values.end_date) {
     if (Date.parse(values.start_date) >= Date.parse(values.end_date)) {
       errors.end_date = "Must be after start date.";
     }
   }
+
+  if (isEmpty(errors)) {
+    const { start_date, end_date } = checkDatesForOverlap(values, props);
+    errors.start_date = start_date;
+    errors.end_date = end_date;
+  }
+
   return errors;
 };
 
