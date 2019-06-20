@@ -16,6 +16,7 @@ const propTypes = {
   data: CustomPropTypes.options,
   disabled: PropTypes.bool,
   onSelect: PropTypes.func,
+  doNotPinDropdown: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -25,6 +26,7 @@ const defaultProps = {
   disabled: false,
   meta: {},
   onSelect: () => {},
+  doNotPinDropdown: false,
 };
 
 const RenderSelect = (props) => (
@@ -41,7 +43,7 @@ const RenderSelect = (props) => (
   >
     <Select
       disabled={props.disabled}
-      getPopupContainer={() => document.getElementById(props.id)}
+      getPopupContainer={props.doNotPinDropdown ? null : () => document.getElementById(props.id)}
       showSearch
       placeholder={props.placeholder}
       optionFilterProp="children"
