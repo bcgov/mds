@@ -393,13 +393,15 @@ INSERT INTO mine_incident_followup_investigation_type
 	mine_incident_followup_investigation_type_code,
 	description,
 	display_order,
+    active_ind,
 	create_user,
 	update_user
 	)
 VALUES
-	('MIU', 'Yes - MIU Investigation', 10, 'system-mds', 'system-mds'),
-	('INS', 'Yes - Inspector Investigation', 20, 'system-mds', 'system-mds'),
-	('NO', 'No', 30, 'system-mds', 'system-mds')
+	('MIU', 'Yes - MIU Investigation', 10, 'T', 'system-mds', 'system-mds'),
+	('INS', 'Yes - Inspector Investigation', 20, 'T', 'system-mds', 'system-mds'),
+	('NO', 'No', 30, 'T', 'system-mds', 'system-mds'),
+    ('HUK', 'Historical - Unknown', 40, 'F', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 
