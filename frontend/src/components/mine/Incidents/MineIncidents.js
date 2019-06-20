@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { destroy } from "redux-form";
+import * as FORM from "@/constants/forms";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
@@ -19,7 +21,8 @@ import {
   getIncidentFollowupActionOptions,
   getDropdownIncidentFollowupActionOptions,
   getDangerousOccurrenceSubparagraphOptions,
-  getDropdownIncidentDeterminationOptions
+  getDropdownIncidentDeterminationOptions,
+  getDropdownIncidentStatusCodeOptions,
 } from "@/selectors/staticContentSelectors";
 
 import MineIncidentTable from "./MineIncidentTable";
@@ -32,11 +35,14 @@ const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   mineIncidents: PropTypes.arrayOf(CustomPropTypes.incident),
   followupActions: PropTypes.arrayOf(CustomPropTypes.incidentFollowupType),
-  followupActionsDropdown: PropTypes.arrayOf(CustomPropTypes.dropdownListItem),
+  followupActionsOptions: CustomPropTypes.options.isRequired,
   incidentDeterminationOptions: CustomPropTypes.options.isRequired,
+  incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
   doSubparagraphOptions: CustomPropTypes.options.isRequired,
+  inspectors: CustomPropTypes.options.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+  destroy: PropTypes.func.isRequired,
   fetchMineIncidents: PropTypes.func.isRequired,
   createMineIncident: PropTypes.func.isRequired,
   updateMineIncident: PropTypes.func.isRequired,
@@ -45,7 +51,6 @@ const propTypes = {
 const defaultProps = {
   mineIncidents: [],
   followupActions: [],
-  followupActionsDropdown: [],
 };
 
 export class MineIncidents extends Component {
@@ -61,20 +66,31 @@ export class MineIncidents extends Component {
   };
 
   handleEditMineIncident = (values) => {
-    this.props.updateMineIncident(values.mine_incident_guid, values).then(() => {
-      this.props.closeModal();
-      this.props.fetchMineIncidents(this.props.mine.mine_guid);
-    });
+    this.props
+      .updateMineIncident(this.props.mine.mine_guid, values.mine_incident_guid, values)
+      .then(() => {
+        this.props.closeModal();
+        this.props.fetchMineIncidents(this.props.mine.mine_guid);
+      });
+  };
+
+  handleCancelMineIncident = () => {
+    this.props.destroy(FORM.MINE_INCIDENT);
   };
 
   openMineIncidentModal = (
     event,
     onSubmit,
+    newIncident,
     existingIncident = { dangerous_occurrence_subparagraph_ids: [] }
   ) => {
     event.preventDefault();
+    const title = newIncident
+      ? ModalContent.ADD_INCIDENT(this.props.mine.mine_name)
+      : ModalContent.EDIT_INCIDENT(this.props.mine.mine_name);
     this.props.openModal({
       props: {
+        newIncident,
         initialValues: {
           ...existingIncident,
           dangerous_occurrence_subparagraph_ids: existingIncident.dangerous_occurrence_subparagraph_ids.map(
@@ -82,11 +98,15 @@ export class MineIncidents extends Component {
           ),
         },
         onSubmit,
-        title: ModalContent.ADD_INCIDENT(this.props.mine.mine_name),
+        afterClose: this.handleCancelMineIncident,
+        title,
         mineGuid: this.props.mine.mine_guid,
-        followupActionOptions: this.props.followupActionsDropdown,
-        incidentDeterminationOptions : this.props.incidentDeterminationOptions,
+        followupActionOptions: this.props.followupActionsOptions,
+        incidentDeterminationOptions: this.props.incidentDeterminationOptions,
+        incidentStatusCodeOptions: this.props.incidentStatusCodeOptions,
         doSubparagraphOptions: this.props.doSubparagraphOptions,
+        inspectors: this.props.inspectors,
+        clearOnSubmit: true,
       },
       widthSize: "50vw",
       content: modalConfig.MINE_INCIDENT,
@@ -99,7 +119,9 @@ export class MineIncidents extends Component {
         <div className="inline-flex flex-end">
           <AuthorizationWrapper permission={Permission.CREATE}>
             <AddButton
-              onClick={(event) => this.openMineIncidentModal(event, this.handleAddMineIncident)}
+              onClick={(event) =>
+                this.openMineIncidentModal(event, this.handleAddMineIncident, true)
+              }
             >
               Record a Mine Incident
             </AddButton>
@@ -119,8 +141,9 @@ export class MineIncidents extends Component {
 const mapStateToProps = (state) => ({
   mineIncidents: getMineIncidents(state),
   followupActions: getIncidentFollowupActionOptions(state),
-  followupActionsDropdown: getDropdownIncidentFollowupActionOptions(state),
-  incidentDeterminationOptions : getDropdownIncidentDeterminationOptions(state),
+  followupActionsOptions: getDropdownIncidentFollowupActionOptions(state),
+  incidentDeterminationOptions: getDropdownIncidentDeterminationOptions(state),
+  incidentStatusCodeOptions: getDropdownIncidentStatusCodeOptions(state),
   doSubparagraphOptions: getDangerousOccurrenceSubparagraphOptions(state),
 });
 
@@ -130,6 +153,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineIncidents,
       createMineIncident,
       updateMineIncident,
+      destroy,
     },
     dispatch
   );

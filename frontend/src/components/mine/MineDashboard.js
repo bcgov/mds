@@ -27,6 +27,7 @@ import {
   fetchMineComplianceCodes,
   fetchMineIncidentFollowActionOptions,
   fetchMineIncidentDeterminationOptions,
+  fetchMineIncidentStatusCodeOptions,
   setOptionsLoaded,
   fetchVarianceDocumentCategoryOptions,
   fetchVarianceStatusOptions,
@@ -117,6 +118,7 @@ const propTypes = {
   fetchApplications: PropTypes.func.isRequired,
   fetchMineIncidentFollowActionOptions: PropTypes.func.isRequired,
   fetchMineIncidentDeterminationOptions: PropTypes.func.isRequired,
+  fetchMineIncidentStatusCodeOptions: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   varianceStatusOptions: CustomPropTypes.options.isRequired,
@@ -163,6 +165,7 @@ export class MineDashboard extends Component {
       this.props.fetchApplicationStatusOptions();
       this.props.fetchMineIncidentFollowActionOptions();
       this.props.fetchMineIncidentDeterminationOptions();
+      this.props.fetchMineIncidentStatusCodeOptions();
       this.props.setOptionsLoaded();
     }
     this.props.fetchMineComplianceCodes();
@@ -417,6 +420,7 @@ export class MineDashboard extends Component {
                     <div className="tab__content">
                       <MineIncidents
                         mine={mine}
+                        inspectors={this.props.inspectors}
                         openModal={this.props.openModal}
                         closeModal={this.props.closeModal}
                       />
@@ -490,6 +494,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchInspectors,
       fetchMineIncidentFollowActionOptions,
       fetchMineIncidentDeterminationOptions,
+      fetchMineIncidentStatusCodeOptions,
       fetchVarianceStatusOptions,
       updateVariance,
     },
