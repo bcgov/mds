@@ -300,8 +300,8 @@ environments {
                     cpu_limit = "400m"
                     memory_request = "1.5Gi"
                     memory_limit = "3Gi"
-                    uwsgi_threads = 4
-                    uwsgi_processes = 2
+                    uwsgi_threads = 2
+                    uwsgi_processes = 4
                     replica_min = 2
                     replica_max = 4
                 }
@@ -310,8 +310,8 @@ environments {
                     cpu_limit = "200m"
                     memory_request = "512Mi"
                     memory_limit = "1Gi"
-                    uwsgi_threads = 4
-                    uwsgi_processes = 2
+                    uwsgi_threads = 2
+                    uwsgi_processes = 4
                     replica_min = 1
                     replica_max = 1
                 }
