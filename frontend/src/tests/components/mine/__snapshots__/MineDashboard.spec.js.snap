@@ -164,7 +164,6 @@ ShallowWrapper {
       [MockFunction] {
         "calls": Array [
           Array [],
-          Array [],
         ],
       }
     }

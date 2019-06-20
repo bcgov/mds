@@ -4,9 +4,9 @@ exports[`AddIncidentFollowUpForm renders properly 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <AddIncidentFollowUpForm
-    change={[Function]}
     handleSubmit={[MockFunction]}
     initialValues={Object {}}
+    uploadedFiles={Array []}
   />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
@@ -94,7 +94,6 @@ ShallowWrapper {
                 id="InitialIncidentFileUpload"
                 name="InitialIncidentFileUpload"
                 onFileLoad={[Function]}
-                onRemoveFile={[Function]}
                 uploadUrl="/mines/undefined/incidents/documents"
               />
             </FormItem>
@@ -175,7 +174,6 @@ ShallowWrapper {
                 id="InitialIncidentFileUpload"
                 name="InitialIncidentFileUpload"
                 onFileLoad={[Function]}
-                onRemoveFile={[Function]}
                 uploadUrl="/mines/undefined/incidents/documents"
               />
             </FormItem>
@@ -256,7 +254,6 @@ ShallowWrapper {
                 id="InitialIncidentFileUpload"
                 name="InitialIncidentFileUpload"
                 onFileLoad={[Function]}
-                onRemoveFile={[Function]}
                 uploadUrl="/mines/undefined/incidents/documents"
               />
             </FormItem>
@@ -326,6 +323,7 @@ ShallowWrapper {
               <h4>
                 Final Investigation Report Documents
               </h4>,
+              false,
               <FormItem
                 hasFeedback={false}
               >
@@ -334,7 +332,6 @@ ShallowWrapper {
                   id="InitialIncidentFileUpload"
                   name="InitialIncidentFileUpload"
                   onFileLoad={[Function]}
-                  onRemoveFile={[Function]}
                   uploadUrl="/mines/undefined/incidents/documents"
                 />
               </FormItem>,
@@ -492,6 +489,7 @@ ShallowWrapper {
               "rendered": "Final Investigation Report Documents",
               "type": "h4",
             },
+            false,
             Object {
               "instance": null,
               "key": undefined,
@@ -502,7 +500,6 @@ ShallowWrapper {
                   id="InitialIncidentFileUpload"
                   name="InitialIncidentFileUpload"
                   onFileLoad={[Function]}
-                  onRemoveFile={[Function]}
                   uploadUrl="/mines/undefined/incidents/documents"
                 />,
                 "hasFeedback": false,
@@ -517,7 +514,6 @@ ShallowWrapper {
                   "id": "InitialIncidentFileUpload",
                   "name": "InitialIncidentFileUpload",
                   "onFileLoad": [Function],
-                  "onRemoveFile": [Function],
                   "uploadUrl": "/mines/undefined/incidents/documents",
                 },
                 "ref": null,
@@ -614,7 +610,6 @@ ShallowWrapper {
                   id="InitialIncidentFileUpload"
                   name="InitialIncidentFileUpload"
                   onFileLoad={[Function]}
-                  onRemoveFile={[Function]}
                   uploadUrl="/mines/undefined/incidents/documents"
                 />
               </FormItem>
@@ -695,7 +690,6 @@ ShallowWrapper {
                   id="InitialIncidentFileUpload"
                   name="InitialIncidentFileUpload"
                   onFileLoad={[Function]}
-                  onRemoveFile={[Function]}
                   uploadUrl="/mines/undefined/incidents/documents"
                 />
               </FormItem>
@@ -776,7 +770,6 @@ ShallowWrapper {
                   id="InitialIncidentFileUpload"
                   name="InitialIncidentFileUpload"
                   onFileLoad={[Function]}
-                  onRemoveFile={[Function]}
                   uploadUrl="/mines/undefined/incidents/documents"
                 />
               </FormItem>
@@ -846,6 +839,7 @@ ShallowWrapper {
                 <h4>
                   Final Investigation Report Documents
                 </h4>,
+                false,
                 <FormItem
                   hasFeedback={false}
                 >
@@ -854,7 +848,6 @@ ShallowWrapper {
                     id="InitialIncidentFileUpload"
                     name="InitialIncidentFileUpload"
                     onFileLoad={[Function]}
-                    onRemoveFile={[Function]}
                     uploadUrl="/mines/undefined/incidents/documents"
                   />
                 </FormItem>,
@@ -1012,6 +1005,7 @@ ShallowWrapper {
                 "rendered": "Final Investigation Report Documents",
                 "type": "h4",
               },
+              false,
               Object {
                 "instance": null,
                 "key": undefined,
@@ -1022,7 +1016,6 @@ ShallowWrapper {
                     id="InitialIncidentFileUpload"
                     name="InitialIncidentFileUpload"
                     onFileLoad={[Function]}
-                    onRemoveFile={[Function]}
                     uploadUrl="/mines/undefined/incidents/documents"
                   />,
                   "hasFeedback": false,
@@ -1037,7 +1030,6 @@ ShallowWrapper {
                     "id": "InitialIncidentFileUpload",
                     "name": "InitialIncidentFileUpload",
                     "onFileLoad": [Function],
-                    "onRemoveFile": [Function],
                     "uploadUrl": "/mines/undefined/incidents/documents",
                   },
                   "ref": null,
