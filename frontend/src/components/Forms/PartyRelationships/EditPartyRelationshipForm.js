@@ -28,22 +28,17 @@ const defaultProps = {
   mine: {},
 };
 
-const checkDatesForOverlap = (values, props) => {
-  // TODO: extract everything with/after toDate into separate function
-  const existingAppointments = props.partyRelationships.filter(
-    ({ mine_party_appt_type_code, mine_party_appt_guid }) =>
-      mine_party_appt_type_code === values.mine_party_appt_type_code &&
-      mine_party_appt_guid !== values.mine_party_appt_guid
-  );
-
-  // Sort all appointments into ascending order by start_date
+// existingAppointments : PropTypes.arrayOf(CustomPropTypes.partyRelationship)
+// newAppt : {start_date : String, end_date : String, party_guid : String}
+// apptType : CustomPropTypes.partyRelationshipType
+const validateDateRanges = (existingAppointments, newAppt, apptType) => {
   const errorMessages = {};
   if (existingAppointments.length === 0) {
     return errorMessages;
   }
 
   const toDate = (dateString) => moment(dateString, "YYYY-MM-DD").toDate();
-  const allAppointments = [...existingAppointments, values].sort((a, b) =>
+  const allAppointments = [...existingAppointments, newAppt].sort((a, b) =>
     toDate(a.start_date) > toDate(b.start_date) ? 1 : -1
   );
 
@@ -52,13 +47,11 @@ const checkDatesForOverlap = (values, props) => {
     const next = allAppointments[i + 1];
 
     const conflictingParty =
-      current.party_guid !== values.party_guid ? current.party.name : next.party.name;
-    const conflictingField = current.party_guid === values.party_guid ? "end_date" : "start_date";
-    const msg = `Assignment conflicts with existing ${
-      props.partyRelationshipType.description
-    }: ${conflictingParty}`;
+      current.party_guid !== newAppt.party_guid ? current.party.name : next.party.name;
+    const conflictingField = current.party_guid === newAppt.party_guid ? "end_date" : "start_date";
+    const msg = `Assignment conflicts with existing ${apptType}: ${conflictingParty}`;
     const infiniteStartEnd =
-      existingAppointments.length > 0 && !values.start_date && !values.end_date;
+      existingAppointments.length > 0 && !newAppt.start_date && !newAppt.end_date;
 
     if (
       current.end_date >= next.start_date ||
@@ -72,6 +65,16 @@ const checkDatesForOverlap = (values, props) => {
   }
 
   return errorMessages;
+};
+
+const checkDatesForOverlap = (values, props) => {
+  const existingAppointments = props.partyRelationships.filter(
+    ({ mine_party_appt_type_code, mine_party_appt_guid }) =>
+      mine_party_appt_type_code === values.mine_party_appt_type_code &&
+      mine_party_appt_guid !== values.mine_party_appt_guid
+  );
+
+  return validateDateRanges(existingAppointments, values, props.partyRelationshipType.description);
 };
 
 const validate = (values, props) => {
