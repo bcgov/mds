@@ -42,12 +42,16 @@ class MineIncidentListResource(Resource, UserMixin):
     parser.add_argument('reported_by_email', type=str, location='json')
     parser.add_argument('reported_by_phone_no', type=str, location='json')
     parser.add_argument('reported_by_phone_ext', type=str, location='json')
-    parser.add_argument('emergency_services_called', type=inputs.boolean, location='json')
+    parser.add_argument('emergency_services_called',
+                        type=inputs.boolean, location='json')
     parser.add_argument('number_of_injuries', type=int, location='json')
     parser.add_argument('number_of_fatalities', type=int, location='json')
-    parser.add_argument('reported_to_inspector_party_guid', type=str, location='json')
-    parser.add_argument('responsible_inspector_party_guid', type=str, location='json')
-    parser.add_argument('determination_inspector_party_guid', type=str, location='json')
+    parser.add_argument('reported_to_inspector_party_guid',
+                        type=str, location='json')
+    parser.add_argument('responsible_inspector_party_guid',
+                        type=str, location='json')
+    parser.add_argument('determination_inspector_party_guid',
+                        type=str, location='json')
     parser.add_argument('determination_type_code', type=str, location='json')
     parser.add_argument('followup_investigation_type_code', type=str, location='json')
     parser.add_argument('followup_inspection', type=inputs.boolean, location='json')
@@ -98,13 +102,17 @@ class MineIncidentListResource(Resource, UserMixin):
         )
 
         incident.reported_by_email = data.get('reported_by_email')
-        incident.reported_by_phone_no = data.get('reported_by_phone_no')  # string
-        incident.reported_by_phone_ext = data.get('reported_by_phone_ext')  # string
+        incident.reported_by_phone_no = data.get(
+            'reported_by_phone_no')  # string
+        incident.reported_by_phone_ext = data.get(
+            'reported_by_phone_ext')  # string
         incident.number_of_fatalities = data.get('number_of_fatalities')  # int
         incident.number_of_injuries = data.get('number_of_injuries')  # int
-        incident.emergency_services_called = data.get('emergency_services_called')  # bool
+        incident.emergency_services_called = data.get(
+            'emergency_services_called')  # bool
         incident.followup_inspection = data.get('followup_inspection')  # bool
-        incident.followup_inspection_date = data.get('followup_inspection_date')
+        incident.followup_inspection_date = data.get(
+            'followup_inspection_date')
 
         # lookup and validated inspector party relationships
         tmp_party = Party.query.filter_by(
@@ -121,7 +129,8 @@ class MineIncidentListResource(Resource, UserMixin):
             incident.determination_inspector_party_guid = tmp_party.party_guid
 
         incident.determination_type_code = data.get('determination_type_code')
-        incident.followup_investigation_type_code = data.get('followup_investigation_type_code')
+        incident.followup_investigation_type_code = data.get(
+            'followup_investigation_type_code')
 
         for id in do_sub_codes:
             sub = ComplianceArticle.find_by_compliance_article_id(id)
@@ -235,7 +244,7 @@ class MineIncidentResource(Resource, UserMixin):
             ]:
                 tmp_party = Party.query.filter_by(party_guid=value).first()
                 if tmp_party and 'INS' in tmp_party.business_roles_codes:
-                    setattr(incident, key, data.get(key))
+                    setattr(incident, key, value)
             else:
                 setattr(incident, key, value)
 
