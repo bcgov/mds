@@ -148,6 +148,10 @@ export class ViewPartyRelationships extends Component {
         }: ${partyRelationship.party.name}`,
         partyRelationships: this.props.partyRelationships,
         partyRelationship: JSON.parse(JSON.stringify(partyRelationship)),
+        partyRelationshipType: this.props.partyRelationshipTypes.find(
+          ({ mine_party_appt_type_code }) =>
+            mine_party_appt_type_code === partyRelationship.mine_party_appt_type_code
+        ),
         mine,
       },
       content: modalConfig.EDIT_PARTY_RELATIONSHIP,
