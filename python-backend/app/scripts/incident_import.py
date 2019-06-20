@@ -93,8 +93,6 @@ print(etl.valuecounter(table, 'mine_incident_id_year'))
 ######
 print('COMBINING rep_dt and rep_tm into reported_timestamp')
 table = etl.convert(table, 'rep_tm', timeparser('%H:%M'))
-print(etl.valuecounter(table, 'rep_tm'))
-
 table = etl.addfield(
     table, 'reported_timestamp', lambda x: datetime.combine(x['rep_dt'], x['rep_tm'] or time(0, 0)))
 
@@ -144,13 +142,13 @@ print(etl.valuecounter(table, 'determination_type_code'))
 table = clean_up(table, 'occ_ind')
 #### NO SOURCE
 print('CREATING emergency_services_called = null')
-table = etl.addfield(table, 'emergency_services_called', False)
+table = etl.addfield(table, 'emergency_services_called', Nonecd )
+
+print('RENAMING mine_acc_no to mine_incident_no')
+table = etl.rename(table, 'mine_acc_no', 'proponent_incident_no')
 
 print('CREATING create_user = MMS_DO_IMPORT')
 table = etl.addfield(table, 'create_user', 'MMS_DO_IMPORT')
-
-print('RENAMING mine_acc_no to mine_incident_no')
-table = etl.rename(table, 'mine_acc_no', 'mine_incident_no')
 
 #RENAME SOURCE COLUMNS WE MIGHT WANT TO KEEP
 table = etl.rename(table, 'recp_cd', 'mms_recp_cd')
@@ -161,4 +159,4 @@ table = etl.rename(table, 'min_acc_no', 'mms_min_acc_no')
 # reported_by_phone_ext
 # reported_by_email
 
-print(etl.header(table))
+print(etl.cutout(etl.cutout(table, 'incident_description'), 'mine_incident_recommendation'))
