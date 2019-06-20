@@ -20,6 +20,7 @@ const propTypes = {
 export const VarianceTable = (props) => (
   <div className="tab__content">
     <h4>Variances In-Review</h4>
+    <br />
     <MineVarianceTable
       variances={props.variances}
       isApplication

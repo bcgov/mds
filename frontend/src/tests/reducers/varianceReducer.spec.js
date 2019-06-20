@@ -5,6 +5,7 @@ import * as MOCK from "@/tests/mocks/dataMocks";
 const baseExpectedValue = {
   variances: [],
   variance: {},
+  variancePageData: {},
 };
 
 // Creates deep copy of javascript object instead of setting a reference
@@ -17,9 +18,10 @@ describe("varianceReducer", () => {
     expect(result).toEqual(expectedValue);
   });
 
-  it("receives STORE_STATUS_OPTIONS", () => {
+  it("receives STORE_VARIANCES", () => {
     const expectedValue = getBaseExpectedValue();
     expectedValue.variances = MOCK.VARIANCES.records;
+    expectedValue.variancePageData = MOCK.VARIANCES;
     const result = varianceReducer(undefined, storeVariances(MOCK.VARIANCES));
     expect(result).toEqual(expectedValue);
   });

@@ -47,7 +47,6 @@ const setupReducerProps = () => {
   reducerProps.mineDisturbanceOptions = MOCK.DISTURBANCE_OPTIONS;
   reducerProps.mineTenureTypes = MOCK.TENURE_TYPES;
   reducerProps.mineTenureHash = MOCK.TENURE_HASH;
-  reducerProps.coreUsers = MOCK.CORE_USERS.results;
   reducerProps.varianceStatusOptions = MOCK.VARIANCE_DROPDOWN_STATUS_OPTIONS;
   reducerProps.varianceStatusOptionsHash = MOCK.VARIANCE_STATUS_OPTIONS_HASH;
   reducerProps.varianceDocumentCategoryOptions = MOCK.VARIANCE_DOCUMENT_CATEGORY_OPTIONS_DROPDOWN;

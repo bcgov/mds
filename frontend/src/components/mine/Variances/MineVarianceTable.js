@@ -9,6 +9,7 @@ import {
   getVarianceStatusOptionsHash,
   getHSRCMComplianceCodesHash,
 } from "@/selectors/staticContentSelectors";
+import { getInspectorsHash } from "@/selectors/partiesSelectors";
 import * as Permission from "@/constants/permissions";
 import { RED_CLOCK, EDIT_OUTLINE } from "@/constants/assets";
 import NullScreen from "@/components/common/NullScreen";
@@ -25,6 +26,7 @@ const propTypes = {
   variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  inspectorsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   openViewVarianceModal: PropTypes.func,
   isApplication: PropTypes.bool,
   isDashboardView: PropTypes.bool,
@@ -70,6 +72,8 @@ export class MineVarianceTable extends Component {
       note: variance.note,
       received_date: formatDate(variance.received_date) || Strings.EMPTY_FIELD,
       isOverdue: variance.expiry_date && Date.parse(variance.expiry_date) < new Date(),
+      leadInspector:
+        this.props.inspectorsHash[variance.inspector_party_guid] || Strings.EMPTY_FIELD,
       documents: variance.documents,
     }));
 
@@ -109,6 +113,20 @@ export class MineVarianceTable extends Component {
         ),
       },
       {
+        title: "Lead Inspector",
+        dataIndex: "leadInspector",
+        className: hideColumn(!this.props.isDashboardView),
+        render: (text, record) => (
+          <div
+            title="Mine Name"
+            style={errorStyle(record.isOverdue)}
+            className={hideColumn(!this.props.isDashboardView)}
+          >
+            {text}
+          </div>
+        ),
+      },
+      {
         title: "Submission Date",
         dataIndex: "received_date",
         className: hideColumn(!this.props.isApplication),
@@ -118,6 +136,7 @@ export class MineVarianceTable extends Component {
           </div>
         ),
         sorter: (a, b) => (a.received_date > b.received_date ? -1 : 1),
+        defaultSortOrder: "ascend",
       },
       {
         title: "Application  Status",
@@ -163,7 +182,7 @@ export class MineVarianceTable extends Component {
           </div>
         ),
         sorter: (a, b) => ((a.expiry_date || 0) > (b.expiry_date || 0) ? -1 : 1),
-        defaultSortOrder: "descend",
+        defaultSortOrder: "ascend",
       },
       {
         title: "Approval Status",
@@ -254,6 +273,7 @@ MineVarianceTable.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   complianceCodesHash: getHSRCMComplianceCodesHash(state),
+  inspectorsHash: getInspectorsHash(state),
   varianceStatusOptionsHash: getVarianceStatusOptionsHash(state),
 });
 

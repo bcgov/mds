@@ -109,6 +109,7 @@ ShallowWrapper {
         <h4>
           Subscribed Mines
         </h4>,
+        <br />,
         <Table
           align="left"
           bordered={false}
@@ -252,6 +253,15 @@ ShallowWrapper {
       Object {
         "instance": null,
         "key": undefined,
+        "nodeType": "host",
+        "props": Object {},
+        "ref": null,
+        "rendered": null,
+        "type": "br",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
         "nodeType": "class",
         "props": Object {
           "align": "left",
@@ -386,6 +396,7 @@ ShallowWrapper {
           <h4>
             Subscribed Mines
           </h4>,
+          <br />,
           <Table
             align="left"
             bordered={false}
@@ -525,6 +536,15 @@ ShallowWrapper {
           "ref": null,
           "rendered": "Subscribed Mines",
           "type": "h4",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {},
+          "ref": null,
+          "rendered": null,
+          "type": "br",
         },
         Object {
           "instance": null,

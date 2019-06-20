@@ -188,7 +188,7 @@ describe("`removeDocumentFromVariance` action creator", () => {
 });
 
 describe("`fetchVariances` action creator", () => {
-  const url = ENVIRONMENT.apiUrl + API.VARIANCES;
+  const url = ENVIRONMENT.apiUrl + API.VARIANCES();
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
 

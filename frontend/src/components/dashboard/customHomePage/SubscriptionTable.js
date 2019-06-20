@@ -157,6 +157,7 @@ export class SubscriptionTable extends Component {
     return (
       <div className="tab__content">
         <h4>Subscribed Mines</h4>
+        <br />
         <Table
           align="left"
           pagination={false}

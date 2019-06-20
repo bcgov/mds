@@ -1,6 +1,7 @@
 from flask_restplus import Resource
 from flask import request
 from sqlalchemy_filters import apply_pagination, apply_filters
+from sqlalchemy import desc
 
 from app.extensions import api
 
@@ -55,7 +56,7 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             status_filter_values = application_status.split(',')
 
         filtered_query = apply_filters(
-            Variance.query,
+            Variance.query.order_by(desc(Variance.received_date)),
             [{
                 'field': 'variance_application_status_code',
                 'op': 'in',
