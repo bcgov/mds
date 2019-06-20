@@ -203,10 +203,16 @@ describe("Validate class", () => {
   });
 
   describe("`validateDateRanges` function", () => {
+    const randomString = () => String(Math.round(Math.random() * 999999999999));
+
     it("returns `{}` if there are no existing appts with which to conflict", () => {
       const existingAppointments = [];
-      const newAppt = { start_date: "2019-06-19", end_date: "2019-06-20", party_guid: "abc1234" };
-      const apptType = "Mine Manager";
+      const newAppt = {
+        start_date: "2019-06-19",
+        end_date: "2019-06-20",
+        party_guid: randomString(),
+      };
+      const apptType = randomString();
       expect(validateDateRanges(existingAppointments, newAppt, apptType)).toEqual({});
     });
 
@@ -215,16 +221,16 @@ describe("Validate class", () => {
         {
           start_date: "2019-06-13",
           end_date: "2019-06-15",
-          party_guid: "abc1234",
+          party_guid: randomString(),
           party: { name: "Bob" },
         },
       ];
       const newAppt = {
         start_date: "2019-06-19",
         end_date: "2019-06-20",
-        party_guid: "abc1235",
+        party_guid: randomString(),
       };
-      const apptType = "Mine Manager";
+      const apptType = randomString();
       expect(validateDateRanges(existingAppointments, newAppt, apptType)).toEqual({});
     });
 
@@ -233,16 +239,16 @@ describe("Validate class", () => {
         {
           start_date: "2019-06-13",
           end_date: "2019-06-15",
-          party_guid: "abc1234",
+          party_guid: randomString(),
           party: { name: "Bob" },
         },
       ];
       const newAppt = {
         start_date: "2019-06-10",
         end_date: "2019-06-12",
-        party_guid: "abc1235",
+        party_guid: randomString(),
       };
-      const apptType = "Mine Manager";
+      const apptType = randomString();
       expect(validateDateRanges(existingAppointments, newAppt, apptType)).toEqual({});
     });
 
@@ -251,22 +257,22 @@ describe("Validate class", () => {
         {
           start_date: "2019-06-13",
           end_date: "2019-06-15",
-          party_guid: "abc1234",
+          party_guid: randomString(),
           party: { name: "Bob" },
         },
         {
           start_date: "2019-06-20",
           end_date: "2019-06-25",
-          party_guid: "abc1234",
+          party_guid: randomString(),
           party: { name: "Bob" },
         },
       ];
       const newAppt = {
         start_date: "2019-06-16",
         end_date: "2019-06-19",
-        party_guid: "abc1235",
+        party_guid: randomString(),
       };
-      const apptType = "Mine Manager";
+      const apptType = randomString();
       expect(validateDateRanges(existingAppointments, newAppt, apptType)).toEqual({});
     });
 
@@ -276,18 +282,19 @@ describe("Validate class", () => {
         {
           start_date: "2019-06-18",
           end_date: "2019-06-20",
-          party_guid: "abc1234",
+          party_guid: randomString(),
           party: { name: existingName },
         },
       ];
       const newAppt = {
         start_date: "2019-06-20",
         end_date: "2019-06-25",
-        party_guid: "abc1235",
+        party_guid: randomString(),
       };
-      const apptType = "Mine Manager";
+      const apptType = randomString();
       const errors = validateDateRanges(existingAppointments, newAppt, apptType);
       expect(errors.start_date).not.toBeUndefined();
+      expect(errors.start_date).toContain(apptType);
       expect(errors.start_date).toContain(existingName);
       expect(errors.end_date).toBeUndefined();
     });
@@ -298,19 +305,20 @@ describe("Validate class", () => {
         {
           start_date: "2019-06-18",
           end_date: "2019-06-20",
-          party_guid: "abc1234",
+          party_guid: randomString(),
           party: { name: existingName },
         },
       ];
       const newAppt = {
         start_date: "2019-06-01",
         end_date: "2019-06-18",
-        party_guid: "abc1235",
+        party_guid: randomString(),
       };
-      const apptType = "Mine Manager";
+      const apptType = randomString();
       const errors = validateDateRanges(existingAppointments, newAppt, apptType);
       expect(errors.start_date).toBeUndefined();
       expect(errors.end_date).not.toBeUndefined();
+      expect(errors.end_date).toContain(apptType);
       expect(errors.end_date).toContain(existingName);
     });
 
@@ -321,26 +329,28 @@ describe("Validate class", () => {
         {
           start_date: "2019-06-01",
           end_date: "2019-06-08",
-          party_guid: "abc1234",
+          party_guid: randomString(),
           party: { name: existingName },
         },
         {
           start_date: "2019-06-18",
           end_date: "2019-06-20",
-          party_guid: "abc1234",
+          party_guid: randomString(),
           party: { name: existingName2 },
         },
       ];
       const newAppt = {
         start_date: "2019-06-05",
         end_date: "2019-06-19",
-        party_guid: "abc1235",
+        party_guid: randomString(),
       };
-      const apptType = "Mine Manager";
+      const apptType = randomString();
       const errors = validateDateRanges(existingAppointments, newAppt, apptType);
       expect(errors.start_date).not.toBeUndefined();
+      expect(errors.start_date).toContain(apptType);
       expect(errors.start_date).toContain(existingName);
       expect(errors.end_date).not.toBeUndefined();
+      expect(errors.end_date).toContain(apptType);
       expect(errors.end_date).toContain(existingName2);
     });
 
@@ -350,19 +360,20 @@ describe("Validate class", () => {
         {
           start_date: "2019-06-18",
           end_date: "2019-06-20",
-          party_guid: "abc1234",
+          party_guid: randomString(),
           party: { name: existingName },
         },
       ];
       const newAppt = {
         start_date: "",
         end_date: "2019-06-19",
-        party_guid: "abc1235",
+        party_guid: randomString(),
       };
-      const apptType = "Mine Manager";
+      const apptType = randomString();
       const errors = validateDateRanges(existingAppointments, newAppt, apptType);
       expect(errors.start_date).toBeUndefined();
       expect(errors.end_date).not.toBeUndefined();
+      expect(errors.end_date).toContain(apptType);
       expect(errors.end_date).toContain(existingName);
     });
 
@@ -372,18 +383,19 @@ describe("Validate class", () => {
         {
           start_date: "2019-06-18",
           end_date: "2019-06-20",
-          party_guid: "abc1234",
+          party_guid: randomString(),
           party: { name: existingName },
         },
       ];
       const newAppt = {
         start_date: "2019-06-19",
         end_date: "",
-        party_guid: "abc1235",
+        party_guid: randomString(),
       };
-      const apptType = "Mine Manager";
+      const apptType = randomString();
       const errors = validateDateRanges(existingAppointments, newAppt, apptType);
       expect(errors.start_date).not.toBeUndefined();
+      expect(errors.start_date).toContain(apptType);
       expect(errors.start_date).toContain(existingName);
       expect(errors.end_date).toBeUndefined();
     });
@@ -395,27 +407,31 @@ describe("Validate class", () => {
         {
           start_date: "2019-06-01",
           end_date: "2019-06-08",
-          party_guid: "abc1234",
+          party_guid: randomString(),
           party: { name: existingName },
         },
         {
           start_date: "2019-06-18",
           end_date: "2019-06-20",
-          party_guid: "abc1234",
+          party_guid: randomString(),
           party: { name: existingName2 },
         },
       ];
       const newAppt = {
         start_date: "",
         end_date: "",
-        party_guid: "abc1235",
+        party_guid: randomString(),
       };
-      const apptType = "Mine Manager";
+      const apptType = randomString();
       const errors = validateDateRanges(existingAppointments, newAppt, apptType);
       expect(errors.start_date).not.toBeUndefined();
+      expect(errors.start_date).toContain(apptType);
       expect(errors.start_date).toContain(existingName);
+      expect(errors.start_date).toContain(apptType);
       expect(errors.end_date).not.toBeUndefined();
+      expect(errors.end_date).toContain(apptType);
       expect(errors.end_date).toContain(existingName);
+      expect(errors.end_date).toContain(apptType);
     });
   });
 });
