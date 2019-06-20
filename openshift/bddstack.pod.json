@@ -115,11 +115,11 @@
             ],
             "resources": {
               "limits": {
-                "cpu": "1.5",
-                "memory": "3Gi"
+                "cpu": "2",
+                "memory": "2Gi"
               },
               "requests": {
-                "cpu": "500m",
+                "cpu": "1",
                 "memory": "1Gi"
               }
             },

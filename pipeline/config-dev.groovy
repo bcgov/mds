@@ -259,8 +259,8 @@ environments {
                     cpu_limit = "100m"
                     memory_request = "256Mi"
                     memory_limit = "512Mi"
-                    uwsgi_threads = 4
-                    uwsgi_processes = 1
+                    uwsgi_threads = 2
+                    uwsgi_processes = 2
                     replica_min = 1
                     replica_max = 1
                 }
@@ -283,8 +283,8 @@ environments {
                 redis {
                     cpu_request = "10m"
                     cpu_limit = "20m"
-                    memory_request = "64Mi"
-                    memory_limit = "128Mi"
+                    memory_request = "32Mi"
+                    memory_limit = "64Mi"
                 }
             }
             deployment {
