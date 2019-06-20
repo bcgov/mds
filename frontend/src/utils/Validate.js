@@ -103,11 +103,14 @@ export const validateDateRanges = (existingAppointments, newAppt, apptType) => {
     return errorMessages;
   }
 
+  // Sort all appointments by ascending start_date for easier comparison
   const toDate = (dateString) => moment(dateString, "YYYY-MM-DD").toDate();
   const allAppointments = [...existingAppointments, newAppt].sort((a, b) =>
     toDate(a.start_date) > toDate(b.start_date) ? 1 : -1
   );
 
+  // Stop checking for overlap on the second-last date in the list, as the last
+  // one has no potential conflicts
   for (let i = 0; i < allAppointments.length - 1; i += 1) {
     const current = allAppointments[i];
     const next = allAppointments[i + 1];
@@ -116,13 +119,17 @@ export const validateDateRanges = (existingAppointments, newAppt, apptType) => {
       current.party_guid !== newAppt.party_guid ? current.party.name : next.party.name;
     const conflictingField = current.party_guid === newAppt.party_guid ? "end_date" : "start_date";
     const msg = `Assignment conflicts with existing ${apptType}: ${conflictingParty}`;
+
+    // Any existing appts will conflict with an infinite start & end
     const infiniteStartEnd =
       existingAppointments.length > 0 && !newAppt.start_date && !newAppt.end_date;
 
+    // Check if current ends after the next start_date
     if (
       current.end_date >= next.start_date ||
-      // null indicates infinitely into the past/future
+      // current never ends
       current.end_date === null ||
+      // next started at the beginning of time
       next.start_date === null ||
       infiniteStartEnd
     ) {
