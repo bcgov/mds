@@ -61,7 +61,7 @@ def test_post_mine_type_duplicate(test_client, db_session, auth_headers):
     post_resp2 = test_client.post(
         '/mines/mine-types', json=test_data, headers=auth_headers['full_auth_header'])
     post_data2 = json.loads(post_resp2.data.decode())
-    assert post_resp2.status_code == 500
+    assert post_resp2.status_code == 400
 
 
 # DELETE

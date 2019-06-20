@@ -6,6 +6,7 @@ from flask import Flask, current_app
 from flask_cors import CORS
 from flask_restplus import Resource, apidoc
 from flask_compress import Compress
+from sqlalchemy.exc import SQLAlchemyError
 
 from flask_jwt_oidc.exceptions import AuthError
 
@@ -97,6 +98,7 @@ def register_routes(app):
 
     @api.errorhandler(AuthError)
     def jwt_oidc_auth_error_handler(error):
+        current_app.logger.error(str(error))
         return {
             'status': getattr(error, 'status_code', 401),
             'message': str(error),
@@ -104,16 +106,34 @@ def register_routes(app):
 
     @api.errorhandler(AssertionError)
     def assertion_error_handler(error):
+        current_app.logger.error(str(error))
         return {
             'status': getattr(error, 'code', 400),
             'message': str(error),
         }, getattr(error, 'code', 400)
 
+    # Recursively add handler to every SQLAlchemy Error
+    def sqlalchemy_error_handler(error):
+        current_app.logger.error(str(error))
+        return {
+            'status': getattr(error, 'status_code', 400),
+            'message': str('Invalid request. Cannot save record.'),
+        }, getattr(error, 'status_code', 400)
+
+    def _add_sqlalchemy_error_handlers(classname):
+        for subclass in classname.__subclasses__():
+            (api.errorhandler(subclass))(sqlalchemy_error_handler)
+
+            if len(subclass.__subclasses__()) != 0:
+                _add_sqlalchemy_error_handlers(subclass)
+
+    _add_sqlalchemy_error_handlers(SQLAlchemyError)
+
+
     @api.errorhandler(Exception)
     def default_error_handler(error):
         if getattr(error, 'code', 500) == 500:
             current_app.logger.error(str(error))
-
         return {
             'status': getattr(error, 'code', 500),
             'message': str(error),
