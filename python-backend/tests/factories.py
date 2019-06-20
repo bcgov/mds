@@ -354,12 +354,10 @@ class MineIncidentFactory(BaseFactory):
     incident_timestamp = factory.Faker('past_datetime')
     incident_description = factory.Faker('sentence', nb_words=20, variable_nb_words=True)
     reported_timestamp = factory.Faker('past_datetime')
-    reported_by = factory.Faker('name')
-    reported_by_role = factory.Faker('job')
+    reported_by_name = factory.Faker('name')
     determination_type_code = factory.LazyFunction(RandomIncidentDeterminationTypeCode)
-    followup_type_code = 'NOA'
-    followup_inspection_no = factory.Faker('numerify', text='######')  #nullable???
-    closing_report_summary = factory.Faker('sentence', nb_words=20, variable_nb_words=True)
+    status_code = factory.LazyFunction(RandomIncidentStatusCode)
+    followup_investigation_type_code = 'NO'
     dangerous_occurrence_subparagraphs = factory.LazyAttribute(
         lambda o: SampleDangerousOccurrenceSubparagraphs(o.do_subparagraph_count)
         if o.determination_type_code == 'DO' else [])
