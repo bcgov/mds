@@ -255,8 +255,8 @@ environments {
                     replica_max = 1
                 }
                 python {
-                    cpu_request = "50m"
-                    cpu_limit = "100m"
+                    cpu_request = "25m"
+                    cpu_limit = "75m"
                     memory_request = "256Mi"
                     memory_limit = "512Mi"
                     uwsgi_threads = 2
@@ -267,8 +267,8 @@ environments {
                 python_lite {
                     cpu_request = "25m"
                     cpu_limit = "50m"
-                    memory_request = "256Mi"
-                    memory_limit = "384Mi"
+                    memory_request = "128Mi"
+                    memory_limit = "256Mi"
                     uwsgi_threads = 2
                     uwsgi_processes = 1
                     replica_min = 1

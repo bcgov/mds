@@ -122,8 +122,7 @@
                 "cpu": "1",
                 "memory": "1Gi"
               }
-            },
-            "imagePullPolicy": "IfNotPresent"
+            }
           }
         ],
         "restartPolicy": "Never",

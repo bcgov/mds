@@ -92,7 +92,7 @@
             "from": {
               "kind": "ImageStreamTag",
               "namespace": "bcgov",
-              "name": "jenkins-slave-bddstack:v1-stable"
+              "name": "jenkins-slave-bddstack:v1-latest"
             }
           }
         },
@@ -104,12 +104,12 @@
         },
         "resources": {
           "limits": {
-            "cpu": "1.5",
-            "memory": "4Gi"
-          },
-          "requests": {
             "cpu": "500m",
             "memory": "2Gi"
+          },
+          "requests": {
+            "cpu": "250m",
+            "memory": "1Gi"
           }
         },
         "nodeSelector": null
