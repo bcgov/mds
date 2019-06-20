@@ -218,11 +218,11 @@ export class AddIncidentModal extends Component {
 
   onRemoveFile = (file) => {
     this.setState((prevState) => ({
-        uploadedFiles: reject(
-          prevState.uploadedFiles,
-          (uploadedFile) => file.document_manager_guid === uploadedFile.document_manager_guid
-        ),
-      }));
+      uploadedFiles: reject(
+        prevState.uploadedFiles,
+        (uploadedFile) => file.document_manager_guid === uploadedFile.document_manager_guid
+      ),
+    }));
   };
 
   render = () => {

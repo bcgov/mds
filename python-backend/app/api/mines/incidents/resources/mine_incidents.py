@@ -42,16 +42,12 @@ class MineIncidentListResource(Resource, UserMixin):
     parser.add_argument('reported_by_email', type=str, location='json')
     parser.add_argument('reported_by_phone_no', type=str, location='json')
     parser.add_argument('reported_by_phone_ext', type=str, location='json')
-    parser.add_argument('emergency_services_called',
-                        type=inputs.boolean, location='json')
+    parser.add_argument('emergency_services_called', type=inputs.boolean, location='json')
     parser.add_argument('number_of_injuries', type=int, location='json')
     parser.add_argument('number_of_fatalities', type=int, location='json')
-    parser.add_argument('reported_to_inspector_party_guid',
-                        type=str, location='json')
-    parser.add_argument('responsible_inspector_party_guid',
-                        type=str, location='json')
-    parser.add_argument('determination_inspector_party_guid',
-                        type=str, location='json')
+    parser.add_argument('reported_to_inspector_party_guid', type=str, location='json')
+    parser.add_argument('responsible_inspector_party_guid', type=str, location='json')
+    parser.add_argument('determination_inspector_party_guid', type=str, location='json')
     parser.add_argument('determination_type_code', type=str, location='json')
     parser.add_argument('followup_investigation_type_code', type=str, location='json')
     parser.add_argument('followup_inspection', type=inputs.boolean, location='json')
@@ -102,17 +98,13 @@ class MineIncidentListResource(Resource, UserMixin):
         )
 
         incident.reported_by_email = data.get('reported_by_email')
-        incident.reported_by_phone_no = data.get(
-            'reported_by_phone_no')  # string
-        incident.reported_by_phone_ext = data.get(
-            'reported_by_phone_ext')  # string
+        incident.reported_by_phone_no = data.get('reported_by_phone_no')  # string
+        incident.reported_by_phone_ext = data.get('reported_by_phone_ext')  # string
         incident.number_of_fatalities = data.get('number_of_fatalities')  # int
         incident.number_of_injuries = data.get('number_of_injuries')  # int
-        incident.emergency_services_called = data.get(
-            'emergency_services_called')  # bool
+        incident.emergency_services_called = data.get('emergency_services_called')  # bool
         incident.followup_inspection = data.get('followup_inspection')  # bool
-        incident.followup_inspection_date = data.get(
-            'followup_inspection_date')
+        incident.followup_inspection_date = data.get('followup_inspection_date')
 
         # lookup and validated inspector party relationships
         tmp_party = Party.query.filter_by(
@@ -129,8 +121,7 @@ class MineIncidentListResource(Resource, UserMixin):
             incident.determination_inspector_party_guid = tmp_party.party_guid
 
         incident.determination_type_code = data.get('determination_type_code')
-        incident.followup_investigation_type_code = data.get(
-            'followup_investigation_type_code')
+        incident.followup_investigation_type_code = data.get('followup_investigation_type_code')
 
         for id in do_sub_codes:
             sub = ComplianceArticle.find_by_compliance_article_id(id)
@@ -260,8 +251,9 @@ class MineIncidentResource(Resource, UserMixin):
         updated_documents = data.get('updated_documents')
         if updated_documents is not None:
             for updated_document in updated_documents:
-                if not any(str(doc.document_manager_guid) == updated_document['document_manager_guid']
-                           for doc in incident.documents):
+                if not any(
+                        str(doc.document_manager_guid) == updated_document['document_manager_guid']
+                        for doc in incident.documents):
                     mine_doc = MineDocument(
                         mine_guid=mine_guid,
                         document_name=updated_document['document_name'],
@@ -274,15 +266,17 @@ class MineIncidentResource(Resource, UserMixin):
                     mine_incident_doc = MineIncidentDocumentXref(
                         mine_document_guid=mine_doc.mine_document_guid,
                         mine_incident_id=incident.mine_incident_id,
-                        mine_incident_document_type_code=updated_document['mine_incident_document_type_code']
+                        mine_incident_document_type_code=updated_document[
+                            'mine_incident_document_type_code']
                         if updated_document['mine_incident_document_type_code'] else 'INI')
 
                     incident.documents.append(mine_incident_doc)
                     mine_incident_doc.save()
 
             for doc in incident.documents:
-                if not any(updated_document['document_manager_guid'] == str(doc.document_manager_guid)
-                           for updated_document in updated_documents):
+                if not any(
+                        updated_document['document_manager_guid'] == str(doc.document_manager_guid)
+                        for updated_document in updated_documents):
                     incident.documents.remove(doc)
                     db.session.delete(doc)
                     db.session.commit()
