@@ -142,7 +142,7 @@ print(etl.valuecounter(table, 'determination_type_code'))
 table = clean_up(table, 'occ_ind')
 #### NO SOURCE
 print('CREATING emergency_services_called = null')
-table = etl.addfield(table, 'emergency_services_called', Nonecd )
+table = etl.addfield(table, 'emergency_services_called', None)
 
 print('RENAMING mine_acc_no to mine_incident_no')
 table = etl.rename(table, 'mine_acc_no', 'proponent_incident_no')
