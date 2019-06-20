@@ -4,6 +4,7 @@ import RenderAutoSizeField from "./RenderAutoSizeField";
 import RenderCascader from "./RenderCascader";
 import RenderDate from "./RenderDate";
 import RenderField from "./RenderField";
+import RenderScrollField from "./RenderScrollField";
 import RenderLargeSelect from "./RenderLargeSelect";
 import RenderSelect from "./RenderSelect";
 import RenderMultiSelect from "./RenderMultiSelect";
@@ -18,6 +19,7 @@ export const renderConfig = {
   CASCADER: RenderCascader,
   DATE: RenderDate,
   FIELD: RenderField,
+  SCROLL_FIELD: RenderScrollField,
   SELECT: RenderSelect,
   LARGE_SELECT: RenderLargeSelect,
   MULTI_SELECT: RenderMultiSelect,

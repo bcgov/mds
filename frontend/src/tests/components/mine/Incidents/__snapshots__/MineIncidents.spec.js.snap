@@ -25,7 +25,6 @@ ShallowWrapper {
         },
       ]
     }
-    followupActionsDropdown={Array []}
     mine={
       Object {
         "mine_expected_documents": Array [

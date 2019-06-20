@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Form, Input } from "antd";
 
 /**
- * @constant  RenderAutoSizeField - Ant Design `Input` autosize component for redux-form. (useful for notes/description)
+ * @constant  RenderScrollField - Ant Design `TextArea` component for redux-form. (useful for notes/description)
  */
 
 const propTypes = {
@@ -12,15 +12,17 @@ const propTypes = {
   label: PropTypes.string,
   placeholder: PropTypes.string,
   meta: PropTypes.objectOf(PropTypes.any).isRequired,
+  rows: PropTypes.number,
 };
 
 const defaultProps = {
   placeholder: "",
   label: "",
+  rows: 5,
 };
 
 const { TextArea } = Input;
-const RenderAutoSizeField = (props) => (
+const RenderScrollField = (props) => (
   <Form.Item
     label={props.label}
     placeholder={props.placeholder}
@@ -33,11 +35,11 @@ const RenderAutoSizeField = (props) => (
         (props.meta.warning && <span>{props.meta.warning}</span>))
     }
   >
-    <TextArea id={props.id} {...props.input} autosize placeholder={props.placeholder} />
+    <TextArea id={props.id} {...props.input} rows={props.rows} placeholder={props.placeholder} />
   </Form.Item>
 );
 
-RenderAutoSizeField.propTypes = propTypes;
-RenderAutoSizeField.defaultProps = defaultProps;
+RenderScrollField.propTypes = propTypes;
+RenderScrollField.defaultProps = defaultProps;
 
-export default RenderAutoSizeField;
+export default RenderScrollField;

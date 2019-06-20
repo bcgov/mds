@@ -9,6 +9,7 @@ import {
   phoneNumber,
   email,
   validateStartDate,
+  validateIncidentDate,
 } from "@/utils/Validate";
 
 describe("Validate class", () => {
@@ -198,6 +199,21 @@ describe("Validate class", () => {
       const value = new Date("August 3, 2014");
       expect(validateStartDate(value)(value)).toBeTruthy();
       expect(validateStartDate(previousStartDate)(value)).toBeTruthy();
+    });
+  });
+
+  describe("`validateIncidentDate` function", () => {
+    it("returns `undefined` if `value` after `reportedDate`", () => {
+      const reportedDate = new Date("August 7, 2018 03:24:00");
+      const value = new Date("August 7, 2018 04:24:00");
+      expect(validateIncidentDate(reportedDate)(value)).toEqual(undefined);
+    });
+
+    it("returns an error message if `value` is before or exactly `incidentDate`", () => {
+      const reportedDate = new Date("August 7, 2018 05:00:00");
+      const value = new Date("August 7, 2018 04:00:00");
+      expect(validateIncidentDate(value)(value)).toBeTruthy();
+      expect(validateIncidentDate(reportedDate)(value)).toBeTruthy();
     });
   });
 });
