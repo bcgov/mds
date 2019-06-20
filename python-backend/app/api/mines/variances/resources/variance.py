@@ -94,8 +94,7 @@ class MineVarianceResource(Resource, UserMixin, ErrorMixin):
             inspector = Party.find_by_party_guid(inspector_party_guid)
             if not inspector:
                 raise BadRequest('Unable to find new inspector.')
-            business_roles = PartyBusinessRoleAppointment.find_by_party_guid(inspector_party_guid)
-            if not [x for x in business_roles if x.party_business_role_code == 'INS']:
+            if not 'INS' in inspector.business_roles_codes:
                 raise BadRequest('Party is not an inspector.')
 
             variance.inspector_party_guid = inspector_party_guid

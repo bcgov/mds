@@ -33,6 +33,7 @@ ShallowWrapper {
       "children": <TextArea
         autosize={true}
         id={1}
+        placeholder=""
       />,
       "hasFeedback": false,
       "help": false,
@@ -48,6 +49,7 @@ ShallowWrapper {
       "props": Object {
         "autosize": true,
         "id": 1,
+        "placeholder": "",
       },
       "ref": null,
       "rendered": null,
@@ -64,6 +66,7 @@ ShallowWrapper {
         "children": <TextArea
           autosize={true}
           id={1}
+          placeholder=""
         />,
         "hasFeedback": false,
         "help": false,
@@ -79,6 +82,7 @@ ShallowWrapper {
         "props": Object {
           "autosize": true,
           "id": 1,
+          "placeholder": "",
         },
         "ref": null,
         "rendered": null,
