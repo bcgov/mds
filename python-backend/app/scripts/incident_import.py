@@ -2,7 +2,7 @@ import psycopg2
 import uuid
 import petl as etl
 from petl import timeparser
-from datetime import datetime, time
+from datetime import datetime, time, timedelta
 connection = psycopg2.connect(host='localhost',
                               port=5432,
                               user='mds',
@@ -84,7 +84,8 @@ table = clean_up(table, 'descript')
 print('COMBINING occ_dt and occ_tm into incident_timestamp')
 table = etl.convert(table, 'occ_tm', timeparser('%H:%M'))
 table = etl.addfield(
-    table, 'incident_timestamp', lambda x: datetime.combine(x['occ_dt'], x['occ_tm'] or time(0, 0)))
+    table, 'incident_timestamp', lambda x: datetime.combine(x['occ_dt'], (x['occ_tm'] or time(0, 0))
+                                                            ) + timedelta(hours=8))
 
 debug(table, ['occ_dt', 'occ_tm', 'incident_timestamp'])
 table = clean_up(table, 'occ_dt')
@@ -99,7 +100,8 @@ print(etl.valuecounter(table, 'mine_incident_id_year'))
 print('COMBINING rep_dt and rep_tm into reported_timestamp')
 table = etl.convert(table, 'rep_tm', timeparser('%H:%M'))
 table = etl.addfield(
-    table, 'reported_timestamp', lambda x: datetime.combine(x['rep_dt'], x['rep_tm'] or time(0, 0)))
+    table, 'reported_timestamp', lambda x: datetime.combine(x['rep_dt'], (x['rep_tm'] or time(0, 0))
+                                                            ) + timedelta(hours=8))
 
 debug(table, ['rep_dt', 'rep_tm', 'reported_timestamp'])
 table = clean_up(table, 'rep_dt')
@@ -130,7 +132,8 @@ print(etl.valuecounter(table, 'number_of_injuries'))
 table = clean_up(table, 'val')
 ####### FOLLOWUP_INSPECTION
 print('CREATING followup_inspection_date from insp_dt')
-table = etl.addfield(table, 'followup_inspection_date', lambda x: x['insp_dt'])
+table = etl.addfield(table, 'followup_inspection_date', lambda x: (x['insp_dt'] + timedelta(hours=8)
+                                                                   ) if x['insp_dt'] else None)
 
 print('CREATING followup_inspection from insp_dt is None')
 table = etl.addfield(table, 'followup_inspection', lambda x: x['insp_dt'] is not None)
@@ -179,5 +182,6 @@ recommendation_table = etl.select(recommendation_table, 'recommendation', lambda
 recommendation_table = etl.addfield(recommendation_table, 'create_user', 'MMS_DO_IMPORT')
 recommendation_table = etl.addfield(recommendation_table, 'update_user', 'MMS_DO_IMPORT')
 
+connection.cursor().execute('TRUNCATE TABLE public.mine_incident_recommendation;')
 etl.todb(table, connection, 'mine_incident')
 etl.todb(recommendation_table, connection, 'mine_incident_recommendation', dialect='postgresql')
