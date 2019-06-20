@@ -34,7 +34,7 @@ if CLEAN_UP:
     table = clean_up(table, 'ins_ind')
     table = clean_up(table, 'geo_ind')
     table = clean_up(table, 'cid')
-
+    table = clean_up(table, 'occ_typ')
     print('TRIMMED HEADERS = ' + str(etl.header(table)))
 
 table = etl.select(table, 'occ_dt', lambda x: x > datetime(2000, 1, 1))
@@ -93,6 +93,8 @@ print(etl.valuecounter(table, 'mine_incident_id_year'))
 ######
 print('COMBINING rep_dt and rep_tm into reported_timestamp')
 table = etl.convert(table, 'rep_tm', timeparser('%H:%M'))
+print(etl.valuecounter(table, 'rep_tm'))
+
 table = etl.addfield(
     table, 'reported_timestamp', lambda x: datetime.combine(x['rep_dt'], x['rep_tm'] or time(0, 0)))
 
@@ -119,7 +121,7 @@ table = etl.leftjoin(table, injuries_table, key='min_acc_no')
 table = etl.addfield(table, 'number_of_injuries', lambda x: x['val'] or 0)
 print(etl.valuecounter(table, 'val'))
 print(etl.valuecounter(table, 'number_of_injuries'))
-
+table = clean_up(table, 'val')
 ####### FOLLOWUP_INSPECTION
 print('CREATING followup_inspection_date from insp_dt')
 table = etl.addfield(table, 'followup_inspection_date', lambda x: x['insp_dt'])

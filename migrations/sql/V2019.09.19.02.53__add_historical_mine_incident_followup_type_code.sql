@@ -12,3 +12,7 @@ INSERT INTO mine_incident_followup_investigation_type
 VALUES
 ('HUK', 'Historical - Unknown', 40, 'F', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
+
+ALTER TABLE mine_incident ADD COLUMN mms_min_acc_no character varying(9); 
+ALTER TABLE mine_incident ADD COLUMN mms_recp_cd character varying(3);
+ALTER TABLE mine_incident ADD COLUMN proponent_incident_no character varying(20);
