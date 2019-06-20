@@ -260,7 +260,7 @@ class MineIncidentResource(Resource, UserMixin):
         updated_documents = data.get('updated_documents')
         if updated_documents is not None:
             for updated_document in updated_documents:
-                if not any(doc.document_manager_guid == updated_document['document_manager_guid']
+                if not any(str(doc.document_manager_guid) == updated_document['document_manager_guid']
                            for doc in incident.documents):
                     mine_doc = MineDocument(
                         mine_guid=mine_guid,

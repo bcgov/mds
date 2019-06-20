@@ -14,6 +14,7 @@ import { required, dateNotInFuture } from "@/utils/Validate";
 import LinkButton from "@/components/common/LinkButton";
 import FileUpload from "@/components/common/FileUpload";
 import { MINE_INCIDENT_DOCUMENT } from "@/constants/API";
+import { IncidentsUploadedFilesList } from "@/components/Forms/incidents/IncidentsUploadedFilesList";
 
 const propTypes = {
   followupActionOptions: CustomPropTypes.options.isRequired,
@@ -107,6 +108,17 @@ export class AddIncidentFollowUpForm extends Component {
               </Form.Item>
 
               <h4>Final Investigation Report Documents</h4>
+              {this.props.uploadedFiles.length > 0 && (
+                <Form.Item label="Attached files" style={{ paddingBottom: "10px" }}>
+                  <Field
+                    id="initial_documents"
+                    name="initial_documents"
+                    component={IncidentsUploadedFilesList}
+                    files={this.props.uploadedFiles}
+                    onRemoveFile={this.props.onRemoveFile}
+                  />
+                </Form.Item>
+              )}
               <Form.Item>
                 <Field
                   id="InitialIncidentFileUpload"
@@ -114,7 +126,6 @@ export class AddIncidentFollowUpForm extends Component {
                   onFileLoad={(document_name, document_manager_guid) =>
                     this.props.onFileLoad(document_name, document_manager_guid, "FIN")
                   }
-                  onRemoveFile={this.props.onRemoveFile}
                   uploadUrl={MINE_INCIDENT_DOCUMENT(this.props.mineGuid)}
                   component={FileUpload}
                 />

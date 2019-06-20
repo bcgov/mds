@@ -4,8 +4,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { getFormValues, change } from "redux-form";
-import { remove } from "lodash";
+import { getFormValues } from "redux-form";
+import { concat, reject } from "lodash";
 import { Steps, Button, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import AddIncidentReportingForm from "@/components/Forms/incidents/AddIncidentReportingForm";
@@ -29,11 +29,9 @@ const propTypes = {
   inspectors: CustomPropTypes.options.isRequired,
   addIncidentFormValues: PropTypes.objectOf(PropTypes.any),
   mineGuid: PropTypes.string.isRequired,
-  change: PropTypes.func,
 };
 
 const defaultProps = {
-  change,
   addIncidentFormValues: {},
 };
 
@@ -68,7 +66,15 @@ const actionVerb = (newIncident) => {
   return <span>Edit&nbsp;</span>;
 };
 
-const StepForms = (props, next, prev, handleIncidentSubmit, onFileLoad, onRemoveFile) => [
+const StepForms = (
+  props,
+  next,
+  prev,
+  handleIncidentSubmit,
+  uploadedFiles,
+  onFileLoad,
+  onRemoveFile
+) => [
   {
     title: "Initial Report",
     content: (
@@ -102,6 +108,9 @@ const StepForms = (props, next, prev, handleIncidentSubmit, onFileLoad, onRemove
         incidentStatusCodeOptions={props.incidentStatusCodeOptions}
         inspectors={props.inspectors}
         doDetermination={props.addIncidentFormValues.determination_type_code}
+        uploadedFiles={uploadedFiles.filter(
+          (file) => file.mine_incident_document_type_code === "INI"
+        )}
         onFileLoad={onFileLoad}
         onRemoveFile={onRemoveFile}
       />
@@ -148,6 +157,9 @@ const StepForms = (props, next, prev, handleIncidentSubmit, onFileLoad, onRemove
         incidentStatusCodeOptions={props.incidentStatusCodeOptions}
         hasFatalities={props.addIncidentFormValues.number_of_fatalities > 0 || false}
         hasFollowUp={props.addIncidentFormValues.followup_inspection || false}
+        uploadedFiles={uploadedFiles.filter(
+          (file) => file.mine_incident_document_type_code === "FIN"
+        )}
         onFileLoad={onFileLoad}
         onRemoveFile={onRemoveFile}
       />
@@ -195,18 +207,22 @@ export class AddIncidentModal extends Component {
 
   prev = () => this.setState((prevState) => ({ current: prevState.current - 1 }));
 
-  onFileLoad = (document_name, document_manager_guid, mine_incident_document_type_code) => {
-    this.state.uploadedFiles.push({
-      document_name,
-      document_manager_guid,
-      mine_incident_document_type_code,
-    });
-    this.props.change("uploadedFiles", this.state.uploadedFiles);
-  };
+  onFileLoad = (document_name, document_manager_guid, mine_incident_document_type_code) =>
+    this.setState((prevState) => ({
+      uploadedFiles: concat(prevState.uploadedFiles, {
+        document_name,
+        document_manager_guid,
+        mine_incident_document_type_code,
+      }),
+    }));
 
-  onRemoveFile = (fileItem) => {
-    remove(this.state.uploadedFiles, { document_manager_guid: fileItem.serverId });
-    this.props.change("uploadedFiles", this.state.uploadedFiles);
+  onRemoveFile = (file) => {
+    this.setState((prevState) => ({
+        uploadedFiles: reject(
+          prevState.uploadedFiles,
+          (uploadedFile) => file.document_manager_guid === uploadedFile.document_manager_guid
+        ),
+      }));
   };
 
   render = () => {
@@ -215,6 +231,7 @@ export class AddIncidentModal extends Component {
       this.next,
       this.prev,
       this.handleIncidentSubmit,
+      this.state.uploadedFiles,
       this.onFileLoad,
       this.onRemoveFile
     );

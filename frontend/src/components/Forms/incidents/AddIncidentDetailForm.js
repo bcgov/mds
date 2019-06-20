@@ -2,12 +2,12 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import { Field, reduxForm } from "redux-form";
-import { remove } from "lodash";
 import { Form, Col, Row } from "antd";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import FileUpload from "@/components/common/FileUpload";
 import { MINE_INCIDENT_DOCUMENT } from "@/constants/API";
+import { IncidentsUploadedFilesList } from "@/components/Forms/incidents/IncidentsUploadedFilesList";
 
 import { required, maxLength, number, dateNotInFuture } from "@/utils/Validate";
 
@@ -120,7 +120,17 @@ class AddIncidentDetailForm extends Component {
                   />
                 </Form.Item>
                 <h4>Initial Notification Documents</h4>
-
+                {this.props.uploadedFiles.length > 0 && (
+                  <Form.Item label="Attached files" style={{ paddingBottom: "10px" }}>
+                    <Field
+                      id="initial_documents"
+                      name="initial_documents"
+                      component={IncidentsUploadedFilesList}
+                      files={this.props.uploadedFiles}
+                      onRemoveFile={this.props.onRemoveFile}
+                    />
+                  </Form.Item>
+                )}
                 <Form.Item>
                   <Field
                     id="InitialIncidentFileUpload"
@@ -128,7 +138,6 @@ class AddIncidentDetailForm extends Component {
                     onFileLoad={(document_name, document_manager_guid) =>
                       this.props.onFileLoad(document_name, document_manager_guid, "INI")
                     }
-                    onRemoveFile={this.props.onRemoveFile}
                     component={FileUpload}
                     uploadUrl={MINE_INCIDENT_DOCUMENT(this.props.mineGuid)}
                   />
@@ -157,6 +166,7 @@ class AddIncidentDetailForm extends Component {
 }
 
 AddIncidentDetailForm.propTypes = propTypes;
+AddIncidentDetailForm.defaultProps = defaultProps;
 
 export default reduxForm({
   form: FORM.MINE_INCIDENT,
