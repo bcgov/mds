@@ -1,4 +1,5 @@
 import psycopg2
+import uuid
 import petl as etl
 from petl import timeparser
 from datetime import datetime, time
@@ -28,9 +29,10 @@ table = src_table
 print('TOTAL SOURCE ROWS = ' + str(etl.nrows(table)))
 print('SOURCE HEADERS = ' + str(etl.header(table)))
 
+#UNUSED COLUMNS
 if CLEAN_UP:
     table = clean_up(table, 'rcv_nm')
-    table = clean_up(table, 'insp_cd')
+    table = clean_up(table, 'recp_cd')
     table = clean_up(table, 'ins_ind')
     table = clean_up(table, 'geo_ind')
     table = clean_up(table, 'cid')
@@ -41,16 +43,20 @@ table = etl.select(table, 'occ_dt', lambda x: x > datetime(2000, 1, 1))
 print('ROWS POST YR 2000 = ' + str(etl.nrows(table)))
 
 mine_table = etl.fromcsv('mines.csv', encoding='utf-8')
+
+##handle leading 0's
 mine_table = etl.convert(mine_table, 'mine_no', lambda x: str(int(x)))
 table = etl.convert(table, 'mine_no', lambda x: str(int(x)))
 
+#MAP mine_no to mine_guid
 table = etl.leftjoin(table, mine_table, key='mine_no')
 table = clean_up(table, 'mine_no')
+#make sure this is 0
 print('mine_guid=None  ' + str(etl.valuecount(table, 'mine_guid', None)))
 
 ######
-print('CONVERT AND RENAME descript1 to mine_incident_recommendation')
-table = etl.addfield(table, 'mine_incident_recommendation', lambda x: x['descript1'])
+print('CONVERT AND RENAME descript1 to recommendation')
+table = etl.addfield(table, 'recommendation', lambda x: x['descript1'])
 table = clean_up(table, 'descript1')
 
 ######
@@ -62,8 +68,6 @@ table = etl.convert(table, 'status_code', 'replace', 'P', 'PRE')
 
 print(etl.valuecounter(table, 'sta_cd'))
 print(etl.valuecounter(table, 'status_code'))
-#debug(table, ['sta_cd', 'status_code'])
-
 table = clean_up(table, 'sta_cd')
 
 ######
@@ -90,6 +94,7 @@ table = clean_up(table, 'occ_tm')
 print("CREATING mine_incident_id_year from incident_timestamp")
 table = etl.addfield(table, 'mine_incident_id_year', lambda x: x['incident_timestamp'].year)
 print(etl.valuecounter(table, 'mine_incident_id_year'))
+
 ######
 print('COMBINING rep_dt and rep_tm into reported_timestamp')
 table = etl.convert(table, 'rep_tm', timeparser('%H:%M'))
@@ -101,14 +106,17 @@ table = clean_up(table, 'rep_dt')
 table = clean_up(table, 'rep_tm')
 
 ####### Number of fatalities
+
+print('JOINING number_of_fatalities from mms.mssoccd checkbox')
 fatalities_table = etl.fromcsv('do_fatalities.csv', encoding='utf-8')
 fatalities_table = etl.convert(fatalities_table, 'min_acc_no', str)
 table = etl.leftjoin(table, fatalities_table, key='min_acc_no')
-table = etl.addfield(table, 'number_of_fatalities', lambda x: 1 if x['fat_chk'] else 0)
-table = etl.cutout(table, 'fat_chk')
+table = etl.addfield(table, 'number_of_fatalities', lambda x: 1 if x['chk'] else 0)
+table = etl.cutout(table, 'chk')
 print('fatalities>0  ' + str(etl.valuecount(table, 'number_of_fatalities', 1)))
 
 ####### Number of Injuries
+print('JOINING number_of_injuries from mms.mssoccd occ_typ D02 textbox')
 injuries_table = etl.fromcsv('do_injuries.csv', encoding='utf-8')
 injuries_table = etl.cutout(injuries_table, 'occ_typ')
 
@@ -140,6 +148,7 @@ table = etl.addfield(table,
 print(etl.valuecounter(table, 'occ_ind'))
 print(etl.valuecounter(table, 'determination_type_code'))
 table = clean_up(table, 'occ_ind')
+
 #### NO SOURCE
 print('CREATING emergency_services_called = null')
 table = etl.addfield(table, 'emergency_services_called', None)
@@ -149,14 +158,26 @@ table = etl.rename(table, 'mine_acc_no', 'proponent_incident_no')
 
 print('CREATING create_user = MMS_DO_IMPORT')
 table = etl.addfield(table, 'create_user', 'MMS_DO_IMPORT')
+table = etl.addfield(table, 'update_user', 'MMS_DO_IMPORT')
 
-#RENAME SOURCE COLUMNS WE MIGHT WANT TO KEEP
-table = etl.rename(table, 'recp_cd', 'mms_recp_cd')
+#RENAME SOURCE COLUMNS WE WANT TO PRESERVE
+table = etl.rename(table, 'insp_cd', 'mms_insp_cd')
 table = etl.rename(table, 'min_acc_no', 'mms_min_acc_no')
 #### COLUMNS WITH NO INITIAL VALUE
-
 # reported_by_phone_no
 # reported_by_phone_ext
 # reported_by_email
 
-print(etl.cutout(etl.cutout(table, 'incident_description'), 'mine_incident_recommendation'))
+table = etl.addrownumbers(table, field='mine_incident_id')
+table = etl.sort(table, 'incident_timestamp', reverse=True)
+#sample without body fields.
+
+#print(etl.cutout(etl.cutout(table, 'incident_description'), 'recommendation'))
+
+table, recommendation_table = etl.unjoin(table, 'recommendation', key='mine_incident_id')
+recommendation_table = etl.select(recommendation_table, 'recommendation', lambda x: x is not None)
+recommendation_table = etl.addfield(recommendation_table, 'create_user', 'MMS_DO_IMPORT')
+recommendation_table = etl.addfield(recommendation_table, 'update_user', 'MMS_DO_IMPORT')
+
+etl.todb(table, connection, 'mine_incident')
+etl.todb(recommendation_table, connection, 'mine_incident_recommendation', dialect='postgresql')
