@@ -1,4 +1,6 @@
 import { memoize } from "lodash";
+import moment from "moment";
+
 /**
  * Utility class for validating inputs using redux forms
  */
@@ -91,3 +93,42 @@ export const validateStartDate = memoize((previousStartDate) => (value) =>
 
 export const dateNotInFuture = (value) =>
   value && new Date(value) >= new Date() ? "Date can not be in the future" : undefined;
+
+// existingAppointments : PropTypes.arrayOf(CustomPropTypes.partyRelationship)
+// newAppt : {start_date : String, end_date : String, party_guid : String}
+// apptType : CustomPropTypes.partyRelationshipType
+export const validateDateRanges = (existingAppointments, newAppt, apptType) => {
+  const errorMessages = {};
+  if (existingAppointments.length === 0) {
+    return errorMessages;
+  }
+
+  const toDate = (dateString) => moment(dateString, "YYYY-MM-DD").toDate();
+  const allAppointments = [...existingAppointments, newAppt].sort((a, b) =>
+    toDate(a.start_date) > toDate(b.start_date) ? 1 : -1
+  );
+
+  for (let i = 0; i < allAppointments.length - 1; i += 1) {
+    const current = allAppointments[i];
+    const next = allAppointments[i + 1];
+
+    const conflictingParty =
+      current.party_guid !== newAppt.party_guid ? current.party.name : next.party.name;
+    const conflictingField = current.party_guid === newAppt.party_guid ? "end_date" : "start_date";
+    const msg = `Assignment conflicts with existing ${apptType}: ${conflictingParty}`;
+    const infiniteStartEnd =
+      existingAppointments.length > 0 && !newAppt.start_date && !newAppt.end_date;
+
+    if (
+      current.end_date >= next.start_date ||
+      // null indicates infinitely into the past/future
+      current.end_date === null ||
+      next.start_date === null ||
+      infiniteStartEnd
+    ) {
+      errorMessages[conflictingField] = msg;
+    }
+  }
+
+  return errorMessages;
+};

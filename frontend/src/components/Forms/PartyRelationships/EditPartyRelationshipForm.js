@@ -1,12 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
-import moment from "moment";
 import { isEmpty } from "lodash";
 import { Field, reduxForm } from "redux-form";
 import { renderConfig } from "@/components/common/config";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import { resetForm } from "@/utils/helpers";
+import { validateDateRanges } from "@/utils/Validate";
 import EngineerOfRecordOptions from "@/components/Forms/PartyRelationships/EngineerOfRecordOptions";
 import CustomPropTypes from "@/customPropTypes";
 
@@ -26,45 +26,6 @@ const propTypes = {
 
 const defaultProps = {
   mine: {},
-};
-
-// existingAppointments : PropTypes.arrayOf(CustomPropTypes.partyRelationship)
-// newAppt : {start_date : String, end_date : String, party_guid : String}
-// apptType : CustomPropTypes.partyRelationshipType
-const validateDateRanges = (existingAppointments, newAppt, apptType) => {
-  const errorMessages = {};
-  if (existingAppointments.length === 0) {
-    return errorMessages;
-  }
-
-  const toDate = (dateString) => moment(dateString, "YYYY-MM-DD").toDate();
-  const allAppointments = [...existingAppointments, newAppt].sort((a, b) =>
-    toDate(a.start_date) > toDate(b.start_date) ? 1 : -1
-  );
-
-  for (let i = 0; i < allAppointments.length - 1; i += 1) {
-    const current = allAppointments[i];
-    const next = allAppointments[i + 1];
-
-    const conflictingParty =
-      current.party_guid !== newAppt.party_guid ? current.party.name : next.party.name;
-    const conflictingField = current.party_guid === newAppt.party_guid ? "end_date" : "start_date";
-    const msg = `Assignment conflicts with existing ${apptType}: ${conflictingParty}`;
-    const infiniteStartEnd =
-      existingAppointments.length > 0 && !newAppt.start_date && !newAppt.end_date;
-
-    if (
-      current.end_date >= next.start_date ||
-      // null indicates infinitely into the past/future
-      current.end_date === null ||
-      next.start_date === null ||
-      infiniteStartEnd
-    ) {
-      errorMessages[conflictingField] = msg;
-    }
-  }
-
-  return errorMessages;
 };
 
 const checkDatesForOverlap = (values, props) => {

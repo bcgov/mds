@@ -1,13 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
-import moment from "moment";
 import { isEmpty } from "lodash";
 import { Field, reduxForm } from "redux-form";
 import { renderConfig } from "@/components/common/config";
 import PartySelectField from "@/components/common/PartySelectField";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
-import { required } from "@/utils/Validate";
+import { required, validateDateRanges } from "@/utils/Validate";
 import { EngineerOfRecordOptions } from "@/components/Forms/PartyRelationships/EngineerOfRecordOptions";
 import { PermitteeOptions } from "@/components/Forms/PartyRelationships/PermitteeOptions";
 import CustomPropTypes from "@/customPropTypes";
@@ -35,35 +34,7 @@ const checkDatesForOverlap = (values, props) => {
   );
   const newAppt = { start_date: null, end_date: null, ...values };
 
-  // Sort all appointments into ascending order by start_date
-  const toDate = (dateString) => moment(dateString, "YYYY-MM-DD").toDate();
-  const allAppointments = [...existingAppointments, newAppt].sort((a, b) =>
-    toDate(a.start_date) > toDate(b.start_date) ? 1 : -1
-  );
-
-  const errorMessages = {};
-  for (let i = 0; i < allAppointments.length - 1; i += 1) {
-    const current = allAppointments[i];
-    const next = allAppointments[i + 1];
-
-    const conflictingParty =
-      current.party_guid !== newAppt.party_guid ? current.party.name : next.party.name;
-    const conflictingField = current.party_guid === newAppt.party_guid ? "end_date" : "start_date";
-    const msg = `Assignment conflicts with existing ${
-      props.partyRelationshipType.description
-    }: ${conflictingParty}`;
-
-    if (
-      current.end_date >= next.start_date ||
-      // null indicates infinitely into the past/future
-      current.end_date === null ||
-      next.start_date === null
-    ) {
-      errorMessages[conflictingField] = msg;
-    }
-  }
-
-  return errorMessages;
+  return validateDateRanges(existingAppointments, newAppt, props.partyRelationshipType.description);
 };
 
 const validate = (values, props) => {
