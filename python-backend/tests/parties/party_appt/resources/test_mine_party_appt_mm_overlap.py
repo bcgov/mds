@@ -71,7 +71,7 @@ def test_post_mine_manager_overlap_one_day_start(test_client, db_session, auth_h
     post_resp = test_client.post(
         '/parties/mines', data=test_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
-    assert post_resp.status_code == 500, post_resp.response
+    assert post_resp.status_code == 400, post_resp.response
 
 
 def test_post_mine_manager_overlap_one_day_end(test_client, db_session, auth_headers, setup_info):
@@ -85,7 +85,7 @@ def test_post_mine_manager_overlap_one_day_end(test_client, db_session, auth_hea
     post_resp = test_client.post(
         '/parties/mines', data=test_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
-    assert post_resp.status_code == 500, post_resp.response
+    assert post_resp.status_code == 400, post_resp.response
 
 
 #PUT
@@ -131,7 +131,7 @@ def test_put_mine_manager_overlap_one_day_start(test_client, db_session, auth_he
         data=test_data,
         headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
-    assert put_resp.status_code == 500, put_resp.response
+    assert put_resp.status_code == 400, put_resp.response
 
 
 def test_put_mine_manager_overlap_one_day_end(test_client, db_session, auth_headers, setup_info):
@@ -144,4 +144,4 @@ def test_put_mine_manager_overlap_one_day_end(test_client, db_session, auth_head
         data=test_data,
         headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
-    assert put_resp.status_code == 500, put_resp.response
+    assert put_resp.status_code == 400, put_resp.response
