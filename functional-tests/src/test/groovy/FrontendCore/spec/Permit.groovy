@@ -39,19 +39,20 @@ class  PermitSpec extends GebReportingSpec {
     }
 
     def "User can edit the status of a permit"(){
-        when: "I hover over the the add/edit button."        
+        when: "I hover over the the add/edit button."
         moveToFooterAndHoverOnEdit()
         interact {
-            moveToElement(permitTab.editPermitStatusButton) 
+            moveToElement(permitTab.editPermitStatusButton)
         }
+        waitFor() {permitTab.editPermitStatusButton}
         permitTab.editPermitStatusButton.click()
 
         and: "I change the status of the permit to closed."
         permitTab.editPermitFormStatusDropdown.click()
         permitTab.closedDropdownOption.click()
         permitTab.submitEditPermitStatus.click()
-        waitFor() {permitTab.permitRow.children().has(title: "Status").text() != "Open"} 
-    
+        waitFor() {permitTab.permitRow.children().has(title: "Status").text() != "Open"}
+
         then: "The permit status has changed to closed"
         permitTab.permitRow.children().has(title: "Status").text() == "Closed"
     }
@@ -60,7 +61,7 @@ class  PermitSpec extends GebReportingSpec {
         when: "I open the edit initial permit modal."
         permitTab.permitRow.children().has(text:"Add/Edit").click()
         permitTab.openFileModalButton.click()
-        
+
         and: "Upload a test file to the permit."
         def uploadedFile = dir.newFile(Const.TEST_FILE_NAME) << Const.TEST_FILE_CONTENT
         permitTab.uploadField = uploadedFile.absolutePath
@@ -92,25 +93,27 @@ class  PermitSpec extends GebReportingSpec {
         when: "A user opens the Add Permit Amendment Modal"
         permitTab.permitRow.children().has(text:"Add/Edit").click()
         moveToFooterAndHoverOnEdit()
+        waitFor() {permitTab.addAmendmentButton}
         interact {
-            moveToElement(permitTab.addAmendmentButton) 
+            moveToElement(permitTab.addAmendmentButton)
         }
         permitTab.addAmendmentButton.click()
 
         and: "Completes all the fields"
-        newPermitForm.completePermitAmendment() 
+        newPermitForm.completePermitAmendment()
         permitTab.amendmentDescriptionSpecific
-       
+
         then: "An Amendment is added to the permit in question"
         assert permitTab.amendmentDescriptions.children()[0].text()== Const.PERMIT_DESCRIPTION
     }
-    
+
     def "User can amalgamate a permit"(){
         when: "The user amalgamates a permit."
-        
+
         moveToFooterAndHoverOnEdit()
+        waitFor() {permitTab.amalgamatePermitButton}
         interact {
-            moveToElement(permitTab.amalgamatePermitButton) 
+            moveToElement(permitTab.amalgamatePermitButton)
         }
         permitTab.amalgamatePermitButton.click()
         newPermitForm.amalgamatePermit()
@@ -130,7 +133,7 @@ class  PermitSpec extends GebReportingSpec {
         interact {
             moveToElement(footer)
             footer.click()
-            moveToElement(permitTab.permitRow.children().has(text:"Add/Edit")) 
+            moveToElement(permitTab.permitRow.children().has(text:"Add/Edit"))
         }
     }
 
