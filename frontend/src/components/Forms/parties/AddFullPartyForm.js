@@ -26,13 +26,13 @@ export const AddFullPartyForm = (props) => (
             </Radio.Group>
           </div>
           <Row gutter={16}>
-            <Col md={12} sm={12} xs={24}>
+            <Col md={12} xs={24}>
               <h5>Basic Details</h5>
             </Col>
           </Row>
           {props.isPerson && (
             <Row gutter={16}>
-              <Col md={12} sm={12} xs={24}>
+              <Col md={12} xs={24}>
                 <Form.Item>
                   <Field
                     id="first_name"
@@ -43,7 +43,7 @@ export const AddFullPartyForm = (props) => (
                   />
                 </Form.Item>
               </Col>
-              <Col md={12} sm={12} xs={24}>
+              <Col md={12} xs={24}>
                 <Form.Item>
                   <Field
                     id="party_name"
@@ -113,7 +113,7 @@ export const AddFullPartyForm = (props) => (
         </Col>
         <Col md={12} sm={24} style={{ marginTop: "80px" }}>
           <Row gutter={16}>
-            <Col md={12} sm={12} xs={24}>
+            <Col md={12} xs={24}>
               <h5>Address</h5>
             </Col>
           </Row>
@@ -164,7 +164,7 @@ export const AddFullPartyForm = (props) => (
             </Col>
           </Row>
           <Row gutter={16}>
-            <Col md={12} sm={12} xs={24}>
+            <Col md={12} xs={24}>
               <Form.Item>
                 <Field
                   id="city"
@@ -175,7 +175,7 @@ export const AddFullPartyForm = (props) => (
                 />
               </Form.Item>
             </Col>
-            <Col md={12} sm={12} xs={24}>
+            <Col md={12} xs={24}>
               <Form.Item>
                 <Field
                   id="post_code"
