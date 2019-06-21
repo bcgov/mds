@@ -52,7 +52,9 @@ table = etl.convert(table, 'mine_no', lambda x: str(int(x)))
 table = etl.leftjoin(table, mine_table, key='mine_no')
 table = clean_up(table, 'mine_no')
 #make sure this is 0
-print('mine_guid=None  ' + str(etl.valuecount(table, 'mine_guid', None)))
+if etl.valuecount(table, 'mine_guid', None)[0] > 0:
+    print('mine_guid, mine_no pair missing from mines.csv')
+    exit(1)
 
 ######
 print('CONVERT AND RENAME descript1 to recommendation')
