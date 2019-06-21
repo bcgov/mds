@@ -60,7 +60,7 @@
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
-        "name": "ubi8-nodejs-10",
+        "name": "rhel8-nodejs-10",
         "creationTimestamp": null,
         "annotations": {
           "description": "Nodejs Base Image"
@@ -79,7 +79,7 @@
             "annotations": null,
             "from": {
               "kind": "DockerImage",
-              "name": "registry.access.redhat.com/ubi8/nodejs-10:latest"
+              "name": "registry.access.redhat.com/rhel8/nodejs-10:latest"
             },
             "importPolicy": {},
             "referencePolicy": {
@@ -156,7 +156,7 @@
           "dockerStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "name": "ubi8-nodejs-10:latest"
+              "name": "rhel8-nodejs-10:latest"
             }
           }
         },
