@@ -30,6 +30,7 @@ export const EngineerOfRecordOptions = (props) => {
             name="related_guid"
             label="TSF *"
             placeholder="Select a TSF"
+            doNotPinDropdown
             component={renderConfig.SELECT}
             data={tsfDropdown}
             validate={[required]}
