@@ -239,24 +239,24 @@ environments {
             }
             resources {
                 node {
-                    cpu_request = "10m"
-                    cpu_limit = "20m"
+                    cpu_request = "5m"
+                    cpu_limit = "10m"
                     memory_request = "64Mi"
-                    memory_limit = "128Mi"
+                    memory_limit = "160Mi"
                     replica_min = 1
                     replica_max = 1
                 }
                 nginx {
-                    cpu_request = "10m"
-                    cpu_limit = "20m"
+                    cpu_request = "5m"
+                    cpu_limit = "10m"
                     memory_request = "64Mi"
-                    memory_limit = "128Mi"
+                    memory_limit = "96Mi"
                     replica_min = 1
                     replica_max = 1
                 }
                 python {
-                    cpu_request = "25m"
-                    cpu_limit = "75m"
+                    cpu_request = "30m"
+                    cpu_limit = "60m"
                     memory_request = "256Mi"
                     memory_limit = "512Mi"
                     uwsgi_threads = 2
@@ -265,10 +265,10 @@ environments {
                     replica_max = 1
                 }
                 python_lite {
-                    cpu_request = "25m"
-                    cpu_limit = "50m"
+                    cpu_request = "20m"
+                    cpu_limit = "40m"
                     memory_request = "128Mi"
-                    memory_limit = "256Mi"
+                    memory_limit = "192Mi"
                     uwsgi_threads = 2
                     uwsgi_processes = 1
                     replica_min = 1
@@ -283,8 +283,8 @@ environments {
                 redis {
                     cpu_request = "10m"
                     cpu_limit = "20m"
-                    memory_request = "32Mi"
-                    memory_limit = "64Mi"
+                    memory_request = "16Mi"
+                    memory_limit = "32Mi"
                 }
             }
             deployment {
