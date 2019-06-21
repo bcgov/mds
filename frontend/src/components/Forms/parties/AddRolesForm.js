@@ -60,15 +60,16 @@ export const AddRolesForm = (props) => (
           <Collapse.Panel header={panelHeader(props.removeField, roleNumber)} key={roleNumber}>
             <Row gutter={16}>
               <Col span={12}>
-                <Field
-                  label="Role *"
-                  id={`mine_party_appt_type_code-${roleNumber}`}
-                  name={`mine_party_appt_type_code-${roleNumber}`}
-                  placeholder="Search for Mine"
-                  component={renderConfig.SELECT}
-                  data={simpleRelationships(props.partyRelationshipTypesList)}
-                  validate={[required]}
-                />
+                <Form.Item label="Role *">
+                  <Field
+                    id={`mine_party_appt_type_code-${roleNumber}`}
+                    name={`mine_party_appt_type_code-${roleNumber}`}
+                    component={renderConfig.SELECT}
+                    doNotPinDropdown
+                    data={simpleRelationships(props.partyRelationshipTypesList)}
+                    validate={[required]}
+                  />
+                </Form.Item>
               </Col>
               <Col span={12}>
                 <Form.Item label="Mine *">
