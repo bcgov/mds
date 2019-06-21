@@ -239,24 +239,24 @@ environments {
             }
             resources {
                 node {
-                    cpu_request = "5m"
-                    cpu_limit = "10m"
+                    cpu_request = "10m"
+                    cpu_limit = "20m"
                     memory_request = "64Mi"
                     memory_limit = "160Mi"
                     replica_min = 1
                     replica_max = 1
                 }
                 nginx {
-                    cpu_request = "5m"
-                    cpu_limit = "10m"
+                    cpu_request = "10m"
+                    cpu_limit = "20m"
                     memory_request = "64Mi"
                     memory_limit = "96Mi"
                     replica_min = 1
                     replica_max = 1
                 }
                 python {
-                    cpu_request = "30m"
-                    cpu_limit = "60m"
+                    cpu_request = "25m"
+                    cpu_limit = "70m"
                     memory_request = "256Mi"
                     memory_limit = "512Mi"
                     uwsgi_threads = 2
@@ -268,7 +268,7 @@ environments {
                     cpu_request = "25m"
                     cpu_limit = "50m"
                     memory_request = "128Mi"
-                    memory_limit = "192Mi"
+                    memory_limit = "256Mi"
                     uwsgi_threads = 2
                     uwsgi_processes = 1
                     replica_min = 1
