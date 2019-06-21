@@ -129,6 +129,10 @@ export const validateDateRanges = (existingAppointments, newAppt, apptType) => {
     // Any existing appts will conflict with an infinite start & end
     const infiniteStartEnd =
       existingAppointments.length > 0 && !newAppt.start_date && !newAppt.end_date;
+    if (infiniteStartEnd) {
+      errorMessages.start_date = msg;
+      errorMessages.end_date = msg;
+    }
 
     // Check if current ends after the next start_date
     if (
@@ -136,8 +140,7 @@ export const validateDateRanges = (existingAppointments, newAppt, apptType) => {
       // current never ends
       current.end_date === null ||
       // next started at the beginning of time
-      next.start_date === null ||
-      infiniteStartEnd
+      next.start_date === null
     ) {
       errorMessages[conflictingField] = msg;
     }
