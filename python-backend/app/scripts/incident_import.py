@@ -174,8 +174,8 @@ table = etl.addfield(table, 'update_user', 'MMS_DO_IMPORT')
 #RENAME SOURCE COLUMNS WE WANT TO PRESERVE
 print("RENAME insp_cd to mms_insp_cd")
 table = etl.rename(table, 'insp_cd', 'mms_insp_cd')
-print("RENAME min_acc_no to mms_min_acc_no")
-table = etl.rename(table, 'min_acc_no', 'mms_min_acc_no')
+print("RENAME min_acc_no to mine_incident_no")
+table = etl.rename(table, 'min_acc_no', 'mine_incident_no')
 
 #force id column SQL will reset the sequence
 table = etl.addrownumbers(table, field='mine_incident_id')
@@ -183,7 +183,8 @@ table = etl.sort(table, 'incident_timestamp', reverse=True)
 
 print('UNJOIN Recommendations into separate table')
 table, recommendation_table = etl.unjoin(table, 'recommendation', key='mine_incident_id')
-recommendation_table = etl.select(recommendation_table, 'recommendation', lambda x: x is not None)
+recommendation_table = etl.select(recommendation_table,
+                                  'recommendation', lambda x: x is not None and not x.isspace())
 recommendation_table = etl.addfield(recommendation_table, 'create_user', 'MMS_DO_IMPORT')
 recommendation_table = etl.addfield(recommendation_table, 'update_user', 'MMS_DO_IMPORT')
 

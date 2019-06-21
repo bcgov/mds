@@ -11,6 +11,6 @@ VALUES
 ('HUK', 'Historical - Unknown', 40, 'F', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
-ALTER TABLE mine_incident ADD COLUMN mms_min_acc_no character varying(9); 
+ALTER TABLE mine_incident ADD COLUMN mine_incident_no character varying(10); 
 ALTER TABLE mine_incident ADD COLUMN mms_insp_cd character varying(3);
 ALTER TABLE mine_incident ADD COLUMN proponent_incident_no character varying(20);
