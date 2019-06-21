@@ -65,7 +65,6 @@ table = etl.addfield(table, 'status_code', lambda x: x['sta_cd'])
 table = etl.convert(table, 'status_code', 'replace', 'O', 'F')
 table = etl.convert(table, 'status_code', 'replace', 'F', 'FIN')
 table = etl.convert(table, 'status_code', 'replace', 'P', 'PRE')
-
 print(etl.valuecounter(table, 'sta_cd'))
 print(etl.valuecounter(table, 'status_code'))
 table = clean_up(table, 'sta_cd')
@@ -102,44 +101,52 @@ table = etl.convert(table, 'rep_tm', timeparser('%H:%M'))
 table = etl.addfield(
     table, 'reported_timestamp', lambda x: datetime.combine(x['rep_dt'], (x['rep_tm'] or time(0, 0))
                                                             ) + timedelta(hours=8))
-
 debug(table, ['rep_dt', 'rep_tm', 'reported_timestamp'])
 table = clean_up(table, 'rep_dt')
 table = clean_up(table, 'rep_tm')
 
 ####### Number of fatalities
-
 print('JOINING number_of_fatalities from mms.mssoccd checkbox')
 fatalities_table = etl.fromcsv('do_fatalities.csv', encoding='utf-8')
 fatalities_table = etl.convert(fatalities_table, 'min_acc_no', str)
 table = etl.leftjoin(table, fatalities_table, key='min_acc_no')
-table = etl.addfield(table, 'number_of_fatalities', lambda x: 1 if x['chk'] else 0)
+table = etl.addfield(
+    table, 'number_of_fatalities', lambda x: 1 if x['chk'] else 0)  #this is a boolean in src
 table = etl.cutout(table, 'chk')
-print('fatalities>0  ' + str(etl.valuecount(table, 'number_of_fatalities', 1)))
+print('\t# OF INCIDENTS WITH FATALITIES ' +
+      str(etl.valuecount(table, 'number_of_fatalities', 1)[0]))
 
 ####### Number of Injuries
 print('JOINING number_of_injuries from mms.mssoccd occ_typ D02 textbox')
 injuries_table = etl.fromcsv('do_injuries.csv', encoding='utf-8')
 injuries_table = etl.cutout(injuries_table, 'occ_typ')
-
 injuries_table = etl.convert(injuries_table, 'min_acc_no', str)
 injuries_table = etl.convert(injuries_table, 'val', lambda x: int(x.strip()) if x.strip() else 0)
 table = etl.leftjoin(table, injuries_table, key='min_acc_no')
-
 table = etl.addfield(table, 'number_of_injuries', lambda x: x['val'] or 0)
-print(etl.valuecounter(table, 'val'))
-print(etl.valuecounter(table, 'number_of_injuries'))
+
+num_val_zero_or_none = etl.valuecount(table, 'val', 0)[0] + etl.valuecount(table, 'val', None)[0]
+num_num_of_injuries_zero = etl.valuecount(table, 'number_of_injuries', 0)[0]
+if num_val_zero_or_none != num_num_of_injuries_zero:
+    print('number_of_injuries integer conversion error' + str(num_val_zero_or_none) + '!=' +
+          str(num_num_of_injuries_zero))
+    exit(1)
 table = clean_up(table, 'val')
 ####### FOLLOWUP_INSPECTION
 print('CREATING followup_inspection_date from insp_dt')
 table = etl.addfield(table, 'followup_inspection_date', lambda x: (x['insp_dt'] + timedelta(hours=8)
                                                                    ) if x['insp_dt'] else None)
-
+######
 print('CREATING followup_inspection from insp_dt is None')
 table = etl.addfield(table, 'followup_inspection', lambda x: x['insp_dt'] is not None)
-print(etl.valuecount(table, 'insp_dt', None))
-print(etl.valuecounter(table, 'followup_inspection'))
+num_insp_dt_null = etl.valuecount(table, 'insp_dt', None)[0]
+num_followup_insp_false = etl.valuecount(table, 'followup_inspection', False)[0]
+if num_insp_dt_null != num_followup_insp_false:
+    print('followup_inspection boolean conversion error' + str(num_insp_dt_null) + '!=' +
+          str(num_followup_insp_false))
+    exit(1)
 
+######
 print('CREATING followup_investigation_type_code = HUK')
 table = etl.addfield(table, 'followup_investigation_type_code', 'HUK')
 table = clean_up(table, 'insp_dt')
@@ -147,7 +154,6 @@ table = clean_up(table, 'insp_dt')
 print('CONVERTING occ_ind to determination_type_code')
 table = etl.addfield(table,
                      'determination_type_code', lambda x: 'DO' if x['occ_ind'] == 'Y' else 'NDO')
-
 print(etl.valuecounter(table, 'occ_ind'))
 print(etl.valuecounter(table, 'determination_type_code'))
 table = clean_up(table, 'occ_ind')
@@ -164,24 +170,26 @@ table = etl.addfield(table, 'create_user', 'MMS_DO_IMPORT')
 table = etl.addfield(table, 'update_user', 'MMS_DO_IMPORT')
 
 #RENAME SOURCE COLUMNS WE WANT TO PRESERVE
+print("RENAME insp_cd to mms_insp_cd")
 table = etl.rename(table, 'insp_cd', 'mms_insp_cd')
+print("RENAME min_acc_no to mms_min_acc_no")
 table = etl.rename(table, 'min_acc_no', 'mms_min_acc_no')
-#### COLUMNS WITH NO INITIAL VALUE
-# reported_by_phone_no
-# reported_by_phone_ext
-# reported_by_email
 
+#force id column SQL will reset the sequence
 table = etl.addrownumbers(table, field='mine_incident_id')
 table = etl.sort(table, 'incident_timestamp', reverse=True)
-#sample without body fields.
 
-#print(etl.cutout(etl.cutout(table, 'incident_description'), 'recommendation'))
-
+print('UNJOIN Recommendations into separate table')
 table, recommendation_table = etl.unjoin(table, 'recommendation', key='mine_incident_id')
 recommendation_table = etl.select(recommendation_table, 'recommendation', lambda x: x is not None)
 recommendation_table = etl.addfield(recommendation_table, 'create_user', 'MMS_DO_IMPORT')
 recommendation_table = etl.addfield(recommendation_table, 'update_user', 'MMS_DO_IMPORT')
 
+print("TRUNCATE public.mine_incident_recommendation")
 connection.cursor().execute('TRUNCATE TABLE public.mine_incident_recommendation;')
+
+print("TRUNCATE AND LOAD public.mine_incident")
 etl.todb(table, connection, 'mine_incident')
+
+print("TRUNCATE AND LOAD public.mine_incident_recommendation")
 etl.todb(recommendation_table, connection, 'mine_incident_recommendation', dialect='postgresql')
