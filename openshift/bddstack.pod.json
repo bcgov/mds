@@ -64,6 +64,7 @@
               "-c",
               "cd /home/jenkins/bdd-tests && ./run_tests.sh"
             ],
+            "imagePullPolicy": "Always",
             "env": [
               {
                 "name": "BASEURL",
