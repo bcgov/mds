@@ -21,6 +21,7 @@ export const PermitteeOptions = (props) => {
             name="related_guid"
             label="Permit *"
             placeholder="Select a Permit"
+            doNotPinDropdown
             component={renderConfig.SELECT}
             data={permitDropdown}
             validate={[required]}
