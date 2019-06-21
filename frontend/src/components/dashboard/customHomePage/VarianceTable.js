@@ -8,6 +8,7 @@ import MineVarianceTable from "@/components/mine/Variances/MineVarianceTable";
  * @class VarianceTables
  */
 const propTypes = {
+  handleFilterChange: PropTypes.func.isRequired,
   variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
   openModal: PropTypes.func.isRequired,
   handlePageChange: PropTypes.func.isRequired,
@@ -19,9 +20,10 @@ const propTypes = {
 
 export const VarianceTable = (props) => (
   <div className="tab__content">
-    <h4>Variances In-Review</h4>
+    <h4>Variances</h4>
     <br />
     <MineVarianceTable
+      handleFilterChange={props.handleFilterChange}
       variances={props.variances}
       isApplication
       isDashboardView

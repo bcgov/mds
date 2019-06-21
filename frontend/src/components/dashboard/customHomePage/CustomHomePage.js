@@ -155,6 +155,18 @@ export class CustomHomePage extends Component {
     });
   };
 
+  handleFilterChange = (pagination, filters) => {
+    const { status } = filters;
+    console.log(status);
+    const statusParam = status.length >= 1 ? { variance_application_status_code: status } : "";
+    console.log(filters);
+    this.setState({ variancesLoaded: false });
+    const params = { ...this.state.params, ...statusParam };
+    return this.props.fetchVariances(params).then(() => {
+      this.setState({ variancesLoaded: true, params });
+    });
+  };
+
   render() {
     return (
       <div className="landing-page">
@@ -164,6 +176,7 @@ export class CustomHomePage extends Component {
         <div className="landing-page__content">
           <LoadingWrapper condition={this.state.variancesLoaded}>
             <VarianceTable
+              handleFilterChange={this.handleFilterChange}
               variances={this.props.variances}
               pageData={this.props.variancePageData}
               handlePageChange={this.handleVariancePageChange}

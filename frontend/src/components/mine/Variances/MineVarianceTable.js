@@ -23,6 +23,7 @@ import * as router from "@/constants/routes";
 const { errorRed } = COLOR;
 
 const propTypes = {
+  handleFilterChange: PropTypes.func.isRequired,
   variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -142,6 +143,17 @@ export class MineVarianceTable extends Component {
         title: "Application  Status",
         dataIndex: "status",
         className: hideColumn(!this.props.isApplication),
+        filters: this.props.isDashboardView && [
+          { text: "View All", value: " " },
+          { text: "In Review", value: "REV" },
+          { text: "Ready for Decision", value: "RFD" },
+          { text: "Approved", value: "APP" },
+          { text: "Denied", value: "DEN" },
+          {
+            text: "Not Applicable",
+            value: "NAP",
+          },
+        ],
         render: (text, record) => (
           <div
             className={hideColumn(!this.props.isApplication)}
@@ -247,6 +259,7 @@ export class MineVarianceTable extends Component {
     return (
       <div>
         <Table
+          onChange={this.props.isDashboardView ? this.props.handleFilterChange : null}
           align="left"
           pagination={false}
           columns={columns}
