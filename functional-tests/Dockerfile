@@ -2,9 +2,6 @@ FROM "__FROM_IMAGE_STREAM_DEFINED_IN_TEMPLATE__"
 
 USER root
 
-# Install latest firefox
-RUN yum -y install firefox; yum clean all
-
 # For firefoxHeadLessTests
 RUN dbus-uuidgen > /var/lib/dbus/machine-id
 
