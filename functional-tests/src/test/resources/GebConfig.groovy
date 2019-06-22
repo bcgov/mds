@@ -101,7 +101,7 @@ environments {
 			options.addPreference("browser.download.useDownloadDir", true);
 			options.addArguments("--width=1920")
 			options.addArguments("--height=1080")
-			options.addArguments("-headless")
+			options.addArguments("--headless")
 			new FirefoxDriver(options);
 
 		}
