@@ -81,7 +81,7 @@ class  PermitSpec extends GebReportingSpec {
         downloadTestFileLink.click()
         def file = new File(Const.DOWNLOAD_PATH+'/'+Const.TEST_FILE_NAME)
         // allow time for the file to be created in the DOWNLOAD_PATH
-        waitFor(){file.exists()}
+        waitFor(){ file.exists() && file.length() }
         String lineString = file.getText('UTF-8')
         file.delete()
 
@@ -124,8 +124,8 @@ class  PermitSpec extends GebReportingSpec {
         waitFor() {permitTab.hoverDropdown}
 
         then: "There is no 'amalgamate' option in the Add/Edit dropdown."
-        assert permitTab.hoverDropdown.children().has(text:"Add permit amendment").isDisplayed()
-        assert !permitTab.hoverDropdown.children().has(text:"Amalgamate permit").isDisplayed()
+        assert permitTab.hoverDropdown.children().has(text:"Add permit amendment").displayed
+        assert !permitTab.hoverDropdown.children().has(text:"Amalgamate permit").displayed
 
     }
 
