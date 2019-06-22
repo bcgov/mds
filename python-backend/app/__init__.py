@@ -55,10 +55,12 @@ def register_extensions(app):
     apidoc.apidoc.static_url_path = '{}/swaggerui'.format(Config.BASE_PATH)
     api.init_app(app)
 
+    if app.config['ELASTIC_ENABLED'] == '1':
+        apm.init_app(app)
+
     cache.init_app(app)
     db.init_app(app)
     jwt.init_app(app)
-    apm.init_app(app) if app.config['ELASTIC_ENABLED'] == '1' else None
     sched.init_app(app)
 
     CORS(app)
