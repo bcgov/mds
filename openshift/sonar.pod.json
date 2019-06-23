@@ -46,6 +46,22 @@
       "name": "NRIS_TOKEN_URL",
       "required": false,
       "value": "https://api.nrs.gov.bc.ca/oauth2/v1/oauth/token"
+    },
+    {
+      "name": "CPU_LIMIT",
+      "value": "500m"
+    },
+    {
+      "name": "MEMORY_LIMIT",
+      "value": "1Gi"
+    },
+    {
+      "name": "CPU_REQUEST",
+      "value": "200m"
+    },
+    {
+      "name": "MEMORY_REQUEST",
+      "value": "500Mi"
     }
   ],
   "objects": [
@@ -65,12 +81,12 @@
             "command": ["container-entrypoint", "bash", "-c", "./run_tests.sh"],
             "resources": {
               "limits": {
-                "cpu": "1",
-                "memory": "1Gi"
+                "cpu": "${CPU_LIMIT}",
+                "memory": "${MEMORY_LIMIT}"
               },
               "requests": {
-                "cpu": "500m",
-                "memory": "512Mi"
+                "cpu": "${CPU_REQUEST}",
+                "memory": "${MEMORY_REQUEST}"
               }
             },
             "env": [
