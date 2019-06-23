@@ -61,7 +61,7 @@
     },
     {
       "name": "MEMORY_REQUEST",
-      "value": "500Mi"
+      "value": "512Mi"
     }
   ],
   "objects": [
