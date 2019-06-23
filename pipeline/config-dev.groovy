@@ -250,7 +250,7 @@ environments {
                     cpu_request = "10m"
                     cpu_limit = "20m"
                     memory_request = "64Mi"
-                    memory_limit = "96Mi"
+                    memory_limit = "104Mi"
                     replica_min = 1
                     replica_max = 1
                 }
@@ -298,7 +298,7 @@ environments {
                 node_env = "development"
                 map_portal_id = "e926583cd0114cd19ebc591f344e30dc"
                 elastic_enabled_core = 0
-                elastic_enabled_nris = 1
+                elastic_enabled_nris = 0
                 elastic_service_name = "MDS Dev"
                 elastic_service_name_nris = "NRIS API Dev"
             }
