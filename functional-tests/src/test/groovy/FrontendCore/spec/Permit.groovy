@@ -44,8 +44,7 @@ class  PermitSpec extends GebReportingSpec {
         interact {
             moveToElement(permitTab.editPermitStatusButton)
         }
-        waitFor() {permitTab.editPermitStatusButton}
-        permitTab.editPermitStatusButton.click()
+        waitFor() { permitTab.editPermitStatusButton.click() }
 
         and: "I change the status of the permit to closed."
         permitTab.editPermitFormStatusDropdown.click()
