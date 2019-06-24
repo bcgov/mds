@@ -24,10 +24,8 @@ const propTypes = {
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   varianceDocumentCategoryOptions: CustomPropTypes.options.isRequired,
-  varianceDocumentCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   updateVariance: PropTypes.func.isRequired,
   varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  inspectorsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export class MineVariance extends Component {
@@ -112,10 +110,6 @@ export class MineVariance extends Component {
         variance,
         title: this.props.complianceCodesHash[variance.compliance_article_id],
         mineName: this.props.mine.mine_name,
-        varianceStatusOptionsHash: this.props.varianceStatusOptionsHash,
-        complianceCodesHash: this.props.complianceCodesHash,
-        documentCategoryOptionsHash: this.props.varianceDocumentCategoryOptionsHash,
-        inspectorsHash: this.props.inspectorsHash,
       },
       content: modalConfig.VIEW_VARIANCE,
       isViewOnly: true,

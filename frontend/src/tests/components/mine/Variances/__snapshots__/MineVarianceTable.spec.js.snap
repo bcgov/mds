@@ -103,6 +103,7 @@ ShallowWrapper {
             Object {
               "className": "column-hide",
               "dataIndex": "status",
+              "filters": false,
               "render": [Function],
               "sorter": [Function],
               "title": "Application  Status",
@@ -159,8 +160,8 @@ ShallowWrapper {
               "issue_date": "Mar 01 2019",
               "key": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
               "leadInspector": "N/A",
-              "mineGuid": null,
-              "mineName": null,
+              "mineGuid": undefined,
+              "mineName": "N/A",
               "note": "notesss",
               "received_date": "Mar 01 2019",
               "status": undefined,
@@ -193,6 +194,7 @@ ShallowWrapper {
             />,
           }
         }
+        onChange={null}
         pagination={false}
         rowKey="key"
         showHeader={true}
@@ -250,6 +252,7 @@ ShallowWrapper {
           Object {
             "className": "column-hide",
             "dataIndex": "status",
+            "filters": false,
             "render": [Function],
             "sorter": [Function],
             "title": "Application  Status",
@@ -304,8 +307,8 @@ ShallowWrapper {
             "issue_date": "Mar 01 2019",
             "key": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
             "leadInspector": "N/A",
-            "mineGuid": null,
-            "mineName": null,
+            "mineGuid": undefined,
+            "mineName": "N/A",
             "note": "notesss",
             "received_date": "Mar 01 2019",
             "status": undefined,
@@ -335,6 +338,7 @@ ShallowWrapper {
             type="approved-variances"
           />,
         },
+        "onChange": null,
         "pagination": false,
         "rowKey": "key",
         "showHeader": true,
@@ -397,6 +401,7 @@ ShallowWrapper {
               Object {
                 "className": "column-hide",
                 "dataIndex": "status",
+                "filters": false,
                 "render": [Function],
                 "sorter": [Function],
                 "title": "Application  Status",
@@ -453,8 +458,8 @@ ShallowWrapper {
                 "issue_date": "Mar 01 2019",
                 "key": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
                 "leadInspector": "N/A",
-                "mineGuid": null,
-                "mineName": null,
+                "mineGuid": undefined,
+                "mineName": "N/A",
                 "note": "notesss",
                 "received_date": "Mar 01 2019",
                 "status": undefined,
@@ -487,6 +492,7 @@ ShallowWrapper {
               />,
             }
           }
+          onChange={null}
           pagination={false}
           rowKey="key"
           showHeader={true}
@@ -544,6 +550,7 @@ ShallowWrapper {
             Object {
               "className": "column-hide",
               "dataIndex": "status",
+              "filters": false,
               "render": [Function],
               "sorter": [Function],
               "title": "Application  Status",
@@ -598,8 +605,8 @@ ShallowWrapper {
               "issue_date": "Mar 01 2019",
               "key": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
               "leadInspector": "N/A",
-              "mineGuid": null,
-              "mineName": null,
+              "mineGuid": undefined,
+              "mineName": "N/A",
               "note": "notesss",
               "received_date": "Mar 01 2019",
               "status": undefined,
@@ -629,6 +636,7 @@ ShallowWrapper {
               type="approved-variances"
             />,
           },
+          "onChange": null,
           "pagination": false,
           "rowKey": "key",
           "showHeader": true,

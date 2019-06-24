@@ -10,12 +10,14 @@ import MineVarianceTable from "@/components/mine/Variances/MineVarianceTable";
 const propTypes = {
   handleFilterChange: PropTypes.func.isRequired,
   variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
-  openModal: PropTypes.func.isRequired,
+  openEditVarianceModal: PropTypes.func.isRequired,
+  openViewVarianceModal: PropTypes.func.isRequired,
   handlePageChange: PropTypes.func.isRequired,
   params: PropTypes.objectOf(
     PropTypes.oneOfType[(PropTypes.string, PropTypes.number, PropTypes.arrayOf(PropTypes.string))]
   ).isRequired,
   pageData: CustomPropTypes.variancePageData.isRequired,
+  filterVarianceStatusOptions: CustomPropTypes.filterOptions.isRequired,
 };
 
 export const VarianceTable = (props) => (
@@ -23,11 +25,14 @@ export const VarianceTable = (props) => (
     <h4>Variances</h4>
     <br />
     <MineVarianceTable
+      params={props.params}
+      filterVarianceStatusOptions={props.filterVarianceStatusOptions}
       handleFilterChange={props.handleFilterChange}
       variances={props.variances}
       isApplication
       isDashboardView
-      openEditVarianceModal={props.openModal}
+      openEditVarianceModal={props.openEditVarianceModal}
+      openViewVarianceModal={props.openViewVarianceModal}
     />
     <div className="center">
       <ResponsivePagination

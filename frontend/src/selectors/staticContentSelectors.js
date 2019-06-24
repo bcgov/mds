@@ -190,6 +190,16 @@ export const getDropdownVarianceStatusOptions = createSelector(
   (options) => createDropDownList(options, "description", "variance_application_status_code")
 );
 
+// Ant design filter options expects the keys to be value/text vs the dropdown which expects value/label
+export const getFilterVarianceStatusOptions = createSelector(
+  [getVarianceStatusOptions],
+  (options) =>
+    options.map(({ description, variance_application_status_code }) => ({
+      value: variance_application_status_code,
+      text: description,
+    }))
+);
+
 export const getVarianceStatusOptionsHash = createSelector(
   [getDropdownVarianceStatusOptions],
   createLabelHash

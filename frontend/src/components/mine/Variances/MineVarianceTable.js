@@ -32,6 +32,9 @@ const propTypes = {
   isApplication: PropTypes.bool,
   isDashboardView: PropTypes.bool,
   openEditVarianceModal: PropTypes.func,
+  filterVarianceStatusOptions: CustomPropTypes.filterOptions,
+  params: PropTypes.shape({ variance_application_status_code: PropTypes.arrayOf(PropTypes.string) })
+    .isRequired,
 };
 
 const defaultProps = {
@@ -39,6 +42,7 @@ const defaultProps = {
   openViewVarianceModal: () => {},
   isApplication: false,
   isDashboardView: false,
+  filterVarianceStatusOptions: [],
 };
 
 const errorStyle = (isOverdue) => (isOverdue ? { color: errorRed } : {});
@@ -62,8 +66,8 @@ export class MineVarianceTable extends Component {
     variances.map((variance) => ({
       key: variance.variance_guid,
       variance,
-      mineName: variance.mine_name || null,
-      mineGuid: variance.mine_guid || null,
+      mineName: variance.mine_name || Strings.EMPTY_FIELD,
+      mineGuid: variance.mine_guid,
       status: statusHash[variance.variance_application_status_code],
       isEditable: this.handleConditionalEdit(variance.variance_application_status_code),
       compliance_article_id: codeHash[variance.compliance_article_id] || Strings.EMPTY_FIELD,
@@ -140,20 +144,12 @@ export class MineVarianceTable extends Component {
         defaultSortOrder: "ascend",
       },
       {
-        title: "Application  Status",
+        title: "Application Status",
         dataIndex: "status",
+        width: 200,
         className: hideColumn(!this.props.isApplication),
-        filters: this.props.isDashboardView && [
-          { text: "View All", value: " " },
-          { text: "In Review", value: "REV" },
-          { text: "Ready for Decision", value: "RFD" },
-          { text: "Approved", value: "APP" },
-          { text: "Denied", value: "DEN" },
-          {
-            text: "Not Applicable",
-            value: "NAP",
-          },
-        ],
+        filteredValue: this.props.params.variance_application_status_code,
+        filters: this.props.isDashboardView && this.props.filterVarianceStatusOptions,
         render: (text, record) => (
           <div
             className={hideColumn(!this.props.isApplication)}

@@ -19,6 +19,7 @@ import {
   getMineTenureTypesHash,
   getCommodityOptionHash,
   getHSRCMComplianceCodesHash,
+  getFilterVarianceStatusOptions,
 } from "@/selectors/staticContentSelectors";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
@@ -63,16 +64,14 @@ const propTypes = {
   variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
   variancePageData: CustomPropTypes.variancePageData.isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  filterVarianceStatusOptions: CustomPropTypes.filterOptions.isRequired,
 };
 
 export class CustomHomePage extends Component {
   state = {
     variancesLoaded: false,
     params: {
-      variance_application_status_code: [
-        Strings.VARIANCE_APPLICATION_CODE,
-        Strings.VARIANCE_DECISION_CODE,
-      ],
+      variance_application_status_code: [],
       page: Strings.DEFAULT_PAGE,
       per_page: 5,
     },
@@ -155,13 +154,22 @@ export class CustomHomePage extends Component {
     });
   };
 
+  openViewVarianceModal = (variance) => {
+    this.props.openModal({
+      props: {
+        variance,
+        title: this.props.complianceCodesHash[variance.compliance_article_id],
+        mineName: variance.mine_name,
+      },
+      content: modalConfig.VIEW_VARIANCE,
+      isViewOnly: true,
+    });
+  };
+
   handleFilterChange = (pagination, filters) => {
     const { status } = filters;
-    console.log(status);
-    const statusParam = status.length >= 1 ? { variance_application_status_code: status } : "";
-    console.log(filters);
     this.setState({ variancesLoaded: false });
-    const params = { ...this.state.params, ...statusParam };
+    const params = { ...this.state.params, variance_application_status_code: [...status], page: 1 };
     return this.props.fetchVariances(params).then(() => {
       this.setState({ variancesLoaded: true, params });
     });
@@ -176,12 +184,15 @@ export class CustomHomePage extends Component {
         <div className="landing-page__content">
           <LoadingWrapper condition={this.state.variancesLoaded}>
             <VarianceTable
+              filterVarianceStatusOptions={this.props.filterVarianceStatusOptions}
+              isApplication={this.state.isApplication}
               handleFilterChange={this.handleFilterChange}
               variances={this.props.variances}
               pageData={this.props.variancePageData}
               handlePageChange={this.handleVariancePageChange}
               params={this.state.params}
-              openModal={this.openEditVarianceModal}
+              openEditVarianceModal={this.openEditVarianceModal}
+              openViewVarianceModal={this.openViewVarianceModal}
             />
           </LoadingWrapper>
           <SubscriptionTable
@@ -207,6 +218,7 @@ const mapStateToProps = (state) => ({
   variancePageData: getVariancePageData(state),
   variances: getVariances(state),
   complianceCodesHash: getHSRCMComplianceCodesHash(state),
+  filterVarianceStatusOptions: getFilterVarianceStatusOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

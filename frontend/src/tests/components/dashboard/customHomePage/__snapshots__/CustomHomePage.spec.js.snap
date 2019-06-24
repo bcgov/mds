@@ -196,8 +196,10 @@ ShallowWrapper {
             condition={false}
           >
             <VarianceTable
+              handleFilterChange={[Function]}
               handlePageChange={[Function]}
-              openModal={[Function]}
+              openEditVarianceModal={[Function]}
+              openViewVarianceModal={[Function]}
               pageData={undefined}
               params={
                 Object {
@@ -341,8 +343,10 @@ ShallowWrapper {
               condition={false}
             >
               <VarianceTable
+                handleFilterChange={[Function]}
                 handlePageChange={[Function]}
-                openModal={[Function]}
+                openEditVarianceModal={[Function]}
+                openViewVarianceModal={[Function]}
                 pageData={undefined}
                 params={
                   Object {
@@ -457,8 +461,10 @@ ShallowWrapper {
             "nodeType": "function",
             "props": Object {
               "children": <VarianceTable
+                handleFilterChange={[Function]}
                 handlePageChange={[Function]}
-                openModal={[Function]}
+                openEditVarianceModal={[Function]}
+                openViewVarianceModal={[Function]}
                 pageData={undefined}
                 params={
                   Object {
@@ -480,8 +486,10 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "function",
               "props": Object {
+                "handleFilterChange": [Function],
                 "handlePageChange": [Function],
-                "openModal": [Function],
+                "openEditVarianceModal": [Function],
+                "openViewVarianceModal": [Function],
                 "pageData": undefined,
                 "params": Object {
                   "page": "1",
@@ -615,8 +623,10 @@ ShallowWrapper {
               condition={false}
             >
               <VarianceTable
+                handleFilterChange={[Function]}
                 handlePageChange={[Function]}
-                openModal={[Function]}
+                openEditVarianceModal={[Function]}
+                openViewVarianceModal={[Function]}
                 pageData={undefined}
                 params={
                   Object {
@@ -760,8 +770,10 @@ ShallowWrapper {
                 condition={false}
               >
                 <VarianceTable
+                  handleFilterChange={[Function]}
                   handlePageChange={[Function]}
-                  openModal={[Function]}
+                  openEditVarianceModal={[Function]}
+                  openViewVarianceModal={[Function]}
                   pageData={undefined}
                   params={
                     Object {
@@ -876,8 +888,10 @@ ShallowWrapper {
               "nodeType": "function",
               "props": Object {
                 "children": <VarianceTable
+                  handleFilterChange={[Function]}
                   handlePageChange={[Function]}
-                  openModal={[Function]}
+                  openEditVarianceModal={[Function]}
+                  openViewVarianceModal={[Function]}
                   pageData={undefined}
                   params={
                     Object {
@@ -899,8 +913,10 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "function",
                 "props": Object {
+                  "handleFilterChange": [Function],
                   "handlePageChange": [Function],
-                  "openModal": [Function],
+                  "openEditVarianceModal": [Function],
+                  "openViewVarianceModal": [Function],
                   "pageData": undefined,
                   "params": Object {
                     "page": "1",
