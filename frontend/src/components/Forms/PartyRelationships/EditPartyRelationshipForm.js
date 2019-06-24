@@ -1,10 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { isEmpty } from "lodash";
 import { Field, reduxForm } from "redux-form";
 import { renderConfig } from "@/components/common/config";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import { resetForm } from "@/utils/helpers";
+import { validateDateRanges } from "@/utils/Validate";
 import EngineerOfRecordOptions from "@/components/Forms/PartyRelationships/EngineerOfRecordOptions";
 import CustomPropTypes from "@/customPropTypes";
 
@@ -12,6 +14,11 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
+  // Props are used indirectly. Linting is unable to detect it
+  // eslint-disable-next-line react/no-unused-prop-types
+  partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship).isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
+  partyRelationshipType: CustomPropTypes.partyRelationshipType.isRequired,
   partyRelationship: CustomPropTypes.partyRelationship.isRequired,
   mine: CustomPropTypes.mine,
   submitting: PropTypes.bool.isRequired,
@@ -21,13 +28,30 @@ const defaultProps = {
   mine: {},
 };
 
-const validate = (values) => {
+const checkDatesForOverlap = (values, props) => {
+  const existingAppointments = props.partyRelationships.filter(
+    ({ mine_party_appt_type_code, mine_party_appt_guid }) =>
+      mine_party_appt_type_code === values.mine_party_appt_type_code &&
+      mine_party_appt_guid !== values.mine_party_appt_guid
+  );
+
+  return validateDateRanges(existingAppointments, values, props.partyRelationshipType.description);
+};
+
+const validate = (values, props) => {
   const errors = {};
   if (values.start_date && values.end_date) {
     if (Date.parse(values.start_date) >= Date.parse(values.end_date)) {
       errors.end_date = "Must be after start date.";
     }
   }
+
+  if (isEmpty(errors)) {
+    const { start_date, end_date } = checkDatesForOverlap(values, props);
+    errors.start_date = start_date;
+    errors.end_date = end_date;
+  }
+
   return errors;
 };
 

@@ -11,6 +11,7 @@ ShallowWrapper {
       ]
     }
     disabled={false}
+    doNotPinDropdown={false}
     id="1"
     input=""
     label=""
