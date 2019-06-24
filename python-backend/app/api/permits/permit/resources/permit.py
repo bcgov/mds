@@ -10,7 +10,7 @@ from ....mines.mine.models.mine import Mine
 from app.api.parties.party.models.party import Party
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.extensions import api, db
-from app.api.utils.access_decorators import requires_role_mine_view, requires_role_edit_permit
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
 from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 
 
@@ -55,7 +55,7 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
                         location='json', store_missing=False)
 
     @api.doc(params={'permit_guid': 'Permit guid.'})
-    @requires_role_mine_view
+    @requires_role_view_all
     def get(self, permit_guid=None):
 
         if permit_guid:

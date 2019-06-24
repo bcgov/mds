@@ -14,7 +14,7 @@ from ...response_models import PARTY, PAGINATED_PARTY_LIST
 
 from ....constants import PARTY_STATUS_CODE
 from app.extensions import api
-from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create, requires_any_of, MINE_VIEW, MINESPACE_PROPONENT
+from ....utils.access_decorators import requires_role_view_all, requires_role_mine_create, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
 
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.utils.custom_reqparser import CustomReqparser
@@ -87,7 +87,7 @@ class PartyListResource(Resource, UserMixin, ErrorMixin):
             'sort_dir': 'enum[asc, desc] Default: asc',
             'business_role': 'A business role or roles to filter on'
         })
-    @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
+    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     @api.marshal_with(PAGINATED_PARTY_LIST, code=200)
     def get(self):
         paginated_parties, pagination_details = self.apply_filter_and_search(request.args)

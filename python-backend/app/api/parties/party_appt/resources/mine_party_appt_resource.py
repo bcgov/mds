@@ -10,7 +10,7 @@ from app.extensions import api
 from ..models.mine_party_appt import MinePartyAppointment
 from ..models.mine_party_appt_type import MinePartyAppointmentType
 from ....constants import PARTY_STATUS_CODE
-from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create
+from ....utils.access_decorators import requires_role_view_all, requires_role_mine_create
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 
@@ -35,7 +35,7 @@ class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
         store_missing=False)
 
     @api.doc(params={'mine_party_appt_guid': 'mine party appointment serial id'})
-    @requires_role_mine_view
+    @requires_role_view_all
     def get(self, mine_party_appt_guid=None):
         relationships = request.args.get('relationships')
         relationships = relationships.split(',') if relationships else []

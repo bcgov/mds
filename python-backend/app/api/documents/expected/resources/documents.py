@@ -9,7 +9,7 @@ from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
 from ..models.mine_expected_document import MineExpectedDocument
 from app.extensions import api
-from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create, requires_any_of, MINE_VIEW, MINE_CREATE, MINESPACE_PROPONENT
+from ....utils.access_decorators import requires_role_view_all, requires_role_mine_create, requires_any_of, VIEW_ALL, MINE_CREATE, MINESPACE_PROPONENT
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
@@ -28,7 +28,7 @@ class ExpectedDocumentResource(Resource, UserMixin, ErrorMixin):
             'exp_doc_guid':
             'Required: Mine number or guid. returns list of expected documents for the mine'
         })
-    @requires_role_mine_view
+    @requires_role_view_all
     def get(self, exp_doc_guid=None):
         if exp_doc_guid is None:
             return self.create_error_payload(404, 'Must provide a expected document guid.'), 404

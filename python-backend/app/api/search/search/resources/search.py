@@ -4,14 +4,14 @@ from flask_restplus import Resource
 from flask import request, current_app
 
 from app.extensions import db, api
-from app.api.utils.access_decorators import requires_role_mine_view, requires_role_mine_create
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_create
 from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.utils.search import search_targets, append_result, execute_search, SearchResult
 from app.api.search.search_api_models import SEARCH_RESULT_RETURN_MODEL
 
 
 class SearchOptionsResource(Resource, UserMixin):
-    @requires_role_mine_view
+    @requires_role_view_all
     def get(self):
         options = []
         for type, type_config in search_targets.items():
@@ -21,7 +21,7 @@ class SearchOptionsResource(Resource, UserMixin):
 
 
 class SearchResource(Resource, UserMixin):
-    @requires_role_mine_view
+    @requires_role_view_all
     @api.marshal_with(SEARCH_RESULT_RETURN_MODEL, 200)
     def get(self):
         search_results = []

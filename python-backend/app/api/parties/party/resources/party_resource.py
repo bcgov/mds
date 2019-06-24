@@ -9,7 +9,7 @@ from ..models.party import Party
 from ..models.address import Address
 from ...response_models import PARTY
 from ...party_appt.models.mine_party_appt import MinePartyAppointment
-from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create, requires_role_mine_admin, requires_role_edit_party
+from ....utils.access_decorators import requires_role_view_all, requires_role_mine_create, requires_role_mine_admin, requires_role_edit_party
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 
@@ -94,7 +94,7 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
         description='Fetch a party by guid', params={
             'party_guid': 'guid of the party to fetch',
         })
-    @requires_role_mine_view
+    @requires_role_view_all
     @api.marshal_with(PARTY, code=200)
     def get(self, party_guid):
         party = Party.find_by_party_guid(party_guid)

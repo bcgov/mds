@@ -4,7 +4,7 @@ from app.api.utils.access_decorators import *
 
 
 class DummyResource(Resource):
-    @requires_role_mine_view
+    @requires_role_view_all
     def get(self):
         return "example view method"
 
@@ -16,7 +16,7 @@ class DummyResource(Resource):
     def delete(self):
         return "example delete method"
 
-    @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
+    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def put(self):
         return "example put method"
 

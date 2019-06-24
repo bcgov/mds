@@ -9,7 +9,7 @@ from app.extensions import api, db
 
 from ...mine.models.mine import Mine
 from ....documents.mines.models.mine_document import MineDocument
-from ....utils.access_decorators import (requires_any_of, MINE_VIEW, MINE_CREATE, EDIT_VARIANCE
+from ....utils.access_decorators import (requires_any_of, VIEW_ALL, MINE_CREATE, EDIT_VARIANCE
                                          MINESPACE_PROPONENT)
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.utils.custom_reqparser import CustomReqparser
@@ -64,7 +64,7 @@ class MineVarianceResource(Resource, UserMixin, ErrorMixin):
             'mine_guid': 'GUID of the mine to which the variance is associated',
             'variance_guid': 'GUID of the variance to fetch'
         })
-    @requires_any_of([MINE_VIEW, EDIT_VARIANCE])
+    @requires_any_of([VIEW_ALL, EDIT_VARIANCE])
     @api.marshal_with(VARIANCE_MODEL, code=200)
     def get(self, mine_guid, variance_guid):
         variance = Variance.find_by_mine_guid_and_variance_guid(

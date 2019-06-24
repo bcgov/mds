@@ -6,7 +6,7 @@ from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 from app.extensions import api
 from ..models.core_user import CoreUser
 from app.api.utils.resources_mixins import UserMixin
-from app.api.utils.access_decorators import requires_role_mine_view, requires_role_mine_create
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_create
 
 idir_user_detail_model = api.model(
     'idir_user_detail', {
@@ -32,7 +32,7 @@ class CoreUserListResource(Resource, UserMixin):
     @api.doc(
         description='Returns a list of all core users.',
         params={'idir_username': 'An IDIR username to return users for.'})
-    @requires_role_mine_view
+    @requires_role_view_all
     def get(self):
         idir_username = request.args.get('idir_username', None, type=str)
 
@@ -59,7 +59,7 @@ class CoreUserResource(Resource, UserMixin):
 
     @api.marshal_with(core_user_model, code=200)
     @api.doc(description='Returns a single Core user based on its user guid.')
-    @requires_role_mine_view
+    @requires_role_view_all
     def get(self, core_user_guid):
         core_user = CoreUser.find_by_core_user_guid(core_user_guid)
         if not core_user:

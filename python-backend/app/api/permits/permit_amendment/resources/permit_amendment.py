@@ -9,7 +9,7 @@ from ..models.permit_amendment_document import PermitAmendmentDocument
 from app.api.parties.party.models.party import Party
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.extensions import api
-from ....utils.access_decorators import requires_role_mine_view, requires_role_edit_permit, requires_role_mine_admin
+from ....utils.access_decorators import requires_role_view_all, requires_role_edit_permit, requires_role_mine_admin
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
@@ -49,7 +49,7 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
         'permit_amendment_guid': 'Permit amendment guid.',
         'permit_guid': 'Permit GUID'
     })
-    @requires_role_mine_view
+    @requires_role_view_all
     def get(self, permit_guid=None, permit_amendment_guid=None):
         result = []
 

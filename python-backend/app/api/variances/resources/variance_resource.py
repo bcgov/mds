@@ -7,7 +7,7 @@ from app.extensions import api
 from ..models.variance import Variance
 from ..models.variance_application_status_code import VarianceApplicationStatusCode
 from ..response_models import PAGINATED_VARIANCE_LIST
-from ...utils.access_decorators import requires_any_of, MINE_VIEW
+from ...utils.access_decorators import requires_any_of, VIEW_ALL
 from ...utils.resources_mixins import UserMixin, ErrorMixin
 
 PAGE_DEFAULT = 1
@@ -23,7 +23,7 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             'variance_application_status_code':
             'Comma-separated list of code statuses to include in results. Default: All status codes.',
         })
-    @requires_any_of([MINE_VIEW])
+    @requires_any_of([VIEW_ALL])
     @api.marshal_with(PAGINATED_VARIANCE_LIST, code=200)
     def get(self):
         records, pagination_details = self._apply_filters_and_pagination(

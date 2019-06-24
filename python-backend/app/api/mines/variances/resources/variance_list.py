@@ -2,7 +2,7 @@ from app.extensions import api
 from flask_restplus import Resource, fields
 from werkzeug.exceptions import BadRequest, NotFound
 
-from ....utils.access_decorators import requires_any_of, MINE_VIEW, EDIT_VARIANCE, MINESPACE_PROPONENT
+from ....utils.access_decorators import requires_any_of, VIEW_ALL, EDIT_VARIANCE, MINESPACE_PROPONENT
 from ...mine.models.mine import Mine
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.utils.custom_reqparser import CustomReqparser
@@ -61,7 +61,7 @@ class MineVarianceListResource(Resource, UserMixin, ErrorMixin):
     @api.doc(
         description='Get a list of all variances for a given mine.',
         params={'mine_guid': 'guid of the mine for which to fetch variances'})
-    @requires_any_of([MINE_VIEW, EDIT_VARIANCE])
+    @requires_any_of([VIEW_ALL, EDIT_VARIANCE])
     @api.marshal_with(VARIANCE_MODEL, code=200, envelope='records')
     def get(self, mine_guid):
         variances = Variance.find_by_mine_guid(mine_guid)
