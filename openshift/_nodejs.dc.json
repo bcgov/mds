@@ -81,15 +81,15 @@
     },
     {
       "name": "KEYCLOAK_ROLE_ADMIN",
-      "value": "mds-mine-admin"
+      "value": "core_admin"
     },
     {
       "name": "KEYCLOAK_ROLE_CREATE",
-      "value": "mds-mine-create"
+      "value": "core_edit_mine"
     },
     {
       "name": "KEYCLOAK_ROLE_VIEW",
-      "value": "mds-mine-view"
+      "value": "core_view_all"
     },
     {
       "name": "API_URL",

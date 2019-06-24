@@ -1047,13 +1047,13 @@ export const PERMITS = [
 ];
 
 export const USER_ACCESS_DATA = [
-  "mds-mine-view",
+  "core_view_all",
   "idir",
-  "mds-mine-create",
+  "core_edit_mine",
   "offline_access",
   "admin",
   "uma_authorization",
-  "mds-mine-admin",
+  "core_admin",
 ];
 
 export const DISTURBANCE_OPTIONS = {

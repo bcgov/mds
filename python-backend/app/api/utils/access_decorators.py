@@ -1,10 +1,11 @@
 from functools import wraps
 from app.extensions import jwt
 
-MINE_VIEW = "mds-mine-view"
-MINE_CREATE = "mds-mine-create"
-MINE_ADMIN = "mds-mine-admin"
-MINESPACE_PROPONENT = "minespace-proponent"
+MINE_VIEW = "core_view_all"
+MINE_CREATE = "core_edit_mine"
+MINE_ADMIN = "core_admin"
+MINESPACE_PROPONENT = "mds_minespace_proponents"
+
 
 def requires_role_mine_view(func):
     return _inner_wrapper(func, MINE_VIEW)
