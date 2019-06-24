@@ -5,14 +5,14 @@ import { USERS } from "@/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
 
 const mockState = {
-  coreUsers: Mock.CORE_USERS.results,
+  coreUsers: Mock.INSPECTORS.results,
 };
 
 describe("userSelectors", () => {
   const { coreUsers } = mockState;
 
   it("`getCoreUsers` calls `userReducer.getCoreUsers`", () => {
-    const storeAction = storeCoreUserList(Mock.CORE_USERS);
+    const storeAction = storeCoreUserList(Mock.INSPECTORS);
     const storeState = userReducer({}, storeAction);
     const localMockState = {
       [USERS]: storeState,
@@ -21,20 +21,20 @@ describe("userSelectors", () => {
   });
 
   it("`getDropdownCoreUsers` calls `userReducer.getCoreUsers`", () => {
-    const storeAction = storeCoreUserList(Mock.CORE_USERS);
+    const storeAction = storeCoreUserList(Mock.INSPECTORS);
     const storeState = userReducer({}, storeAction);
     const localMockState = {
       [USERS]: storeState,
     };
-    expect(getDropdownCoreUsers(localMockState)).toEqual(Mock.CORE_USERS_DROPDOWN);
+    expect(getDropdownCoreUsers(localMockState)).toEqual(Mock.INSPECTORS_DROPDOWN);
   });
 
   it("`getCoreUsersHash` calls `userReducer.getCoreUsers`", () => {
-    const storeAction = storeCoreUserList(Mock.CORE_USERS);
+    const storeAction = storeCoreUserList(Mock.INSPECTORS);
     const storeState = userReducer({}, storeAction);
     const localMockState = {
       [USERS]: storeState,
     };
-    expect(getCoreUsersHash(localMockState)).toEqual(Mock.CORE_USERS_HASH);
+    expect(getCoreUsersHash(localMockState)).toEqual(Mock.INSPECTORS_HASH);
   });
 });

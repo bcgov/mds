@@ -14,4 +14,12 @@ export const variance = shape({
   documents: PropTypes.arrayOf(mineDocument),
 });
 
+export const variancePageData = shape({
+  records: PropTypes.arrayOf(variance).isRequired,
+  current_page: PropTypes.number.isRequired,
+  items_per_page: PropTypes.number.isRequired,
+  total: PropTypes.number.isRequired,
+  total_pages: PropTypes.number.isRequired,
+});
+
 export default variance;
