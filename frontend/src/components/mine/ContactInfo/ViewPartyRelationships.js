@@ -185,9 +185,13 @@ export class ViewPartyRelationships extends Component {
   };
 
   renderInactiveRelationships = (partyRelationships) => {
+    // The end date is stored without a time, to ensure it displays on it's last valid day it is compared to
+    // the date and time yesterday
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
     const activeRelationships = partyRelationships.filter(
       (x) =>
-        (!x.end_date || Date.parse(x.end_date) >= new Date()) &&
+        (!x.end_date || Date.parse(x.end_date) > yesterday) &&
         (!x.start_date || Date.parse(x.start_date) <= new Date())
     );
     const inactiveRelationships = partyRelationships.filter(
@@ -300,10 +304,14 @@ export class ViewPartyRelationships extends Component {
   };
 
   renderPartyRelationshipGroup = (partyRelationships, group) => {
+    // The end date is stored without a time, to ensure it displays on it's last valid day it is compared to
+    // the date and time yesterday
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
     const filteredPartyRelationships = partyRelationships
       .filter(
         (x) =>
-          (!x.end_date || Date.parse(x.end_date) >= new Date()) &&
+          (!x.end_date || Date.parse(x.end_date) > yesterday) &&
           (!x.start_date || Date.parse(x.start_date) <= new Date())
       )
       .filter((partyRelationship) => partyRelationship.mine_party_appt_type_code !== "PMT")
@@ -314,7 +322,7 @@ export class ViewPartyRelationships extends Component {
               partyRelationships
                 .filter(
                   (x) =>
-                    (!x.end_date || Date.parse(x.end_date) >= new Date()) &&
+                    (!x.end_date || Date.parse(x.end_date) > yesterday) &&
                     (!x.start_date || Date.parse(x.start_date) <= new Date())
                 )
                 .filter(
@@ -398,7 +406,6 @@ export class ViewPartyRelationships extends Component {
     const partyRelationshipGroupingLevels = [
       ...uniq(this.props.partyRelationshipTypes.map(({ grouping_level }) => grouping_level)),
     ];
-
     return (
       <div>
         <div className="inline-flex between">
