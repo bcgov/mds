@@ -17,7 +17,6 @@ const setupProps = () => {
   props.submitting = false;
   props.complianceCodes = MOCK.DROPDOWN_HSRCM_CODES;
   props.documentCategoryOptions = MOCK.VARIANCE_DOCUMENT_CATEGORY_OPTIONS_DROPDOWN;
-  props.documentCategoryOptionsHash = MOCK.VARIANCE_DOCUMENT_CATEGORY_OPTIONS_HASH;
   props.inspectors = MOCK.PARTY.parties;
 };
 

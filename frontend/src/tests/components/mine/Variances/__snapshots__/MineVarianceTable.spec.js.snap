@@ -10,10 +10,23 @@ ShallowWrapper {
         "306": "2.3.8 - Flammable Waste Storage",
       }
     }
+    filterVarianceStatusOptions={Array []}
+    handleFilterChange={[Function]}
+    inspectorsHash={
+      Object {
+        "51b3a499-a474-4d52-be99-5c5123d7501c": "BLAH",
+      }
+    }
     isApplication={false}
+    isDashboardView={false}
     openEditVarianceModal={[MockFunction]}
     openModal={[MockFunction]}
     openViewVarianceModal={[MockFunction]}
+    params={
+      Object {
+        "variance_application_status_code": Array [],
+      }
+    }
     varianceStatusOptionsHash={
       Object {
         "APP": "Approved",
@@ -76,7 +89,20 @@ ShallowWrapper {
             },
             Object {
               "className": "column-hide",
+              "dataIndex": "mineName",
+              "render": [Function],
+              "title": "Mine Name",
+            },
+            Object {
+              "className": "column-hide",
+              "dataIndex": "leadInspector",
+              "render": [Function],
+              "title": "Lead Inspector",
+            },
+            Object {
+              "className": "column-hide",
               "dataIndex": "received_date",
+              "defaultSortOrder": "ascend",
               "render": [Function],
               "sorter": [Function],
               "title": "Submission Date",
@@ -84,9 +110,12 @@ ShallowWrapper {
             Object {
               "className": "column-hide",
               "dataIndex": "status",
+              "filteredValue": Array [],
+              "filters": false,
               "render": [Function],
               "sorter": [Function],
-              "title": "Application  Status",
+              "title": "Application Status",
+              "width": 200,
             },
             Object {
               "className": "",
@@ -98,7 +127,7 @@ ShallowWrapper {
             Object {
               "className": "",
               "dataIndex": "expiry_date",
-              "defaultSortOrder": "descend",
+              "defaultSortOrder": "ascend",
               "render": [Function],
               "sorter": [Function],
               "title": "Expiry Date",
@@ -139,6 +168,9 @@ ShallowWrapper {
               "isOverdue": true,
               "issue_date": "Mar 01 2019",
               "key": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+              "leadInspector": "N/A",
+              "mineGuid": undefined,
+              "mineName": "N/A",
               "note": "notesss",
               "received_date": "Mar 01 2019",
               "status": undefined,
@@ -171,6 +203,7 @@ ShallowWrapper {
             />,
           }
         }
+        onChange={null}
         pagination={false}
         rowKey="key"
         showHeader={true}
@@ -207,7 +240,20 @@ ShallowWrapper {
           },
           Object {
             "className": "column-hide",
+            "dataIndex": "mineName",
+            "render": [Function],
+            "title": "Mine Name",
+          },
+          Object {
+            "className": "column-hide",
+            "dataIndex": "leadInspector",
+            "render": [Function],
+            "title": "Lead Inspector",
+          },
+          Object {
+            "className": "column-hide",
             "dataIndex": "received_date",
+            "defaultSortOrder": "ascend",
             "render": [Function],
             "sorter": [Function],
             "title": "Submission Date",
@@ -215,9 +261,12 @@ ShallowWrapper {
           Object {
             "className": "column-hide",
             "dataIndex": "status",
+            "filteredValue": Array [],
+            "filters": false,
             "render": [Function],
             "sorter": [Function],
-            "title": "Application  Status",
+            "title": "Application Status",
+            "width": 200,
           },
           Object {
             "className": "",
@@ -229,7 +278,7 @@ ShallowWrapper {
           Object {
             "className": "",
             "dataIndex": "expiry_date",
-            "defaultSortOrder": "descend",
+            "defaultSortOrder": "ascend",
             "render": [Function],
             "sorter": [Function],
             "title": "Expiry Date",
@@ -268,6 +317,9 @@ ShallowWrapper {
             "isOverdue": true,
             "issue_date": "Mar 01 2019",
             "key": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+            "leadInspector": "N/A",
+            "mineGuid": undefined,
+            "mineName": "N/A",
             "note": "notesss",
             "received_date": "Mar 01 2019",
             "status": undefined,
@@ -297,6 +349,7 @@ ShallowWrapper {
             type="approved-variances"
           />,
         },
+        "onChange": null,
         "pagination": false,
         "rowKey": "key",
         "showHeader": true,
@@ -338,7 +391,20 @@ ShallowWrapper {
               },
               Object {
                 "className": "column-hide",
+                "dataIndex": "mineName",
+                "render": [Function],
+                "title": "Mine Name",
+              },
+              Object {
+                "className": "column-hide",
+                "dataIndex": "leadInspector",
+                "render": [Function],
+                "title": "Lead Inspector",
+              },
+              Object {
+                "className": "column-hide",
                 "dataIndex": "received_date",
+                "defaultSortOrder": "ascend",
                 "render": [Function],
                 "sorter": [Function],
                 "title": "Submission Date",
@@ -346,9 +412,12 @@ ShallowWrapper {
               Object {
                 "className": "column-hide",
                 "dataIndex": "status",
+                "filteredValue": Array [],
+                "filters": false,
                 "render": [Function],
                 "sorter": [Function],
-                "title": "Application  Status",
+                "title": "Application Status",
+                "width": 200,
               },
               Object {
                 "className": "",
@@ -360,7 +429,7 @@ ShallowWrapper {
               Object {
                 "className": "",
                 "dataIndex": "expiry_date",
-                "defaultSortOrder": "descend",
+                "defaultSortOrder": "ascend",
                 "render": [Function],
                 "sorter": [Function],
                 "title": "Expiry Date",
@@ -401,6 +470,9 @@ ShallowWrapper {
                 "isOverdue": true,
                 "issue_date": "Mar 01 2019",
                 "key": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+                "leadInspector": "N/A",
+                "mineGuid": undefined,
+                "mineName": "N/A",
                 "note": "notesss",
                 "received_date": "Mar 01 2019",
                 "status": undefined,
@@ -433,6 +505,7 @@ ShallowWrapper {
               />,
             }
           }
+          onChange={null}
           pagination={false}
           rowKey="key"
           showHeader={true}
@@ -469,7 +542,20 @@ ShallowWrapper {
             },
             Object {
               "className": "column-hide",
+              "dataIndex": "mineName",
+              "render": [Function],
+              "title": "Mine Name",
+            },
+            Object {
+              "className": "column-hide",
+              "dataIndex": "leadInspector",
+              "render": [Function],
+              "title": "Lead Inspector",
+            },
+            Object {
+              "className": "column-hide",
               "dataIndex": "received_date",
+              "defaultSortOrder": "ascend",
               "render": [Function],
               "sorter": [Function],
               "title": "Submission Date",
@@ -477,9 +563,12 @@ ShallowWrapper {
             Object {
               "className": "column-hide",
               "dataIndex": "status",
+              "filteredValue": Array [],
+              "filters": false,
               "render": [Function],
               "sorter": [Function],
-              "title": "Application  Status",
+              "title": "Application Status",
+              "width": 200,
             },
             Object {
               "className": "",
@@ -491,7 +580,7 @@ ShallowWrapper {
             Object {
               "className": "",
               "dataIndex": "expiry_date",
-              "defaultSortOrder": "descend",
+              "defaultSortOrder": "ascend",
               "render": [Function],
               "sorter": [Function],
               "title": "Expiry Date",
@@ -530,6 +619,9 @@ ShallowWrapper {
               "isOverdue": true,
               "issue_date": "Mar 01 2019",
               "key": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+              "leadInspector": "N/A",
+              "mineGuid": undefined,
+              "mineName": "N/A",
               "note": "notesss",
               "received_date": "Mar 01 2019",
               "status": undefined,
@@ -559,6 +651,7 @@ ShallowWrapper {
               type="approved-variances"
             />,
           },
+          "onChange": null,
           "pagination": false,
           "rowKey": "key",
           "showHeader": true,

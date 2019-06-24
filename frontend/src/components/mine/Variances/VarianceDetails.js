@@ -39,6 +39,18 @@ export const VarianceDetails = (props) => (
         <p className="field-title">Submission date</p>
         <p>{formatDate(props.variance.received_date) || Strings.EMPTY_FIELD}</p>
       </div>
+      {props.isViewOnly && (
+        <div>
+          <div className="inline-flex padding-small">
+            <p className="field-title">Issue date</p>
+            <p>{formatDate(props.variance.issue_date) || Strings.EMPTY_FIELD}</p>
+          </div>
+          <div className="inline-flex padding-small">
+            <p className="field-title">Expiry date</p>
+            <p>{formatDate(props.variance.expiry_date) || Strings.EMPTY_FIELD}</p>
+          </div>
+        </div>
+      )}
       <div className="inline-flex padding-small">
         <p className="field-title">Description</p>
         <p>{props.variance.note || Strings.EMPTY_FIELD}</p>
