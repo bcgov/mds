@@ -143,7 +143,8 @@ export class MineVarianceTable extends Component {
             {text}
           </div>
         ),
-        sorter: (a, b) => (a.received_date > b.received_date ? -1 : 1),
+        sorter:
+          !this.props.isDashboardView && ((a, b) => (a.received_date > b.received_date ? -1 : 1)),
         defaultSortOrder: "ascend",
       },
       {
@@ -162,7 +163,7 @@ export class MineVarianceTable extends Component {
             {text}
           </div>
         ),
-        sorter: (a, b) => (a.status > b.status ? -1 : 1),
+        sorter: !this.props.isDashboardView && ((a, b) => (a.status > b.status ? -1 : 1)),
       },
       {
         title: "Issue Date",
