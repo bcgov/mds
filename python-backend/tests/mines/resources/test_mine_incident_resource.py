@@ -1,4 +1,5 @@
-import pytest, json
+import pytest
+import json
 from datetime import datetime, timedelta
 from app.extensions import db
 from app.api.mines.incidents.models.mine_incident import MineIncident
@@ -14,15 +15,18 @@ def test_get_mine_incidents_by_mine_guid(test_client, db_session, auth_headers):
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200
     assert len(get_data['mine_incidents']) > 0
-    assert all(i['mine_guid'] == str(test_mine_guid) for i in get_data['mine_incidents'])
+    assert all(i['mine_guid'] == str(test_mine_guid)
+               for i in get_data['mine_incidents'])
 
 
 def test_get_mine_incidents_by_guid(test_client, db_session, auth_headers):
-    test_guid = MineFactory().mine_incidents[0].mine_incident_guid
+    test_mine = MineFactory()
+    test_guid = test_mine.mine_incidents[0].mine_incident_guid
+
     get_resp = test_client.get(
-        f'/mines/incidents/{test_guid}', headers=auth_headers['full_auth_header'])
-    get_data = json.loads(get_resp.data.decode())
+        f'/mines/{test_mine.mine_guid}/incidents/{test_guid}', headers=auth_headers['full_auth_header'])
     assert get_resp.status_code == 200
+    get_data = json.loads(get_resp.data.decode())
     assert get_data['mine_incident_guid'] == str(test_guid)
 
 
@@ -34,6 +38,7 @@ def test_post_mine_incidents_happy(test_client, db_session, auth_headers):
     data = {
         'determination_type_code': 'NDO',
         'incident_timestamp': now_time_string,
+        'reported_timestamp': now_time_string,
         'incident_description': "Someone got a paper cut",
     }
 
@@ -46,8 +51,8 @@ def test_post_mine_incidents_happy(test_client, db_session, auth_headers):
     assert post_data['determination_type_code'] == data['determination_type_code']
     assert post_data['incident_timestamp'] == now_time_string
 
-    #datetime.fromisoformat is in python 3.7
-    #assert datetime.fromisoformat(post_data['incident_timestamp']) == datetime.strptime(
+    # datetime.fromisoformat is in python 3.7
+    # assert datetime.fromisoformat(post_data['incident_timestamp']) == datetime.strptime(
     #    data['incident_timestamp'], '%Y-%m-%d %H:%M')
     assert post_data['incident_description'] == data['incident_description']
 
@@ -65,6 +70,7 @@ def test_post_mine_incidents_dangerous_occurrence_happy(test_client, db_session,
     data = {
         'determination_type_code': 'DO',
         'incident_timestamp': now_time_string,
+        'reported_timestamp': now_time_string,
         'incident_description': "Someone got a really bad paper cut",
         'dangerous_occurrence_subparagraph_ids': do_ids
     }
@@ -100,9 +106,11 @@ def test_post_mine_incidents_dangerous_occurrence_no_subs(test_client, db_sessio
 
 # PUT
 def test_put_mine_incidents_happy(test_client, db_session, auth_headers):
-    test_guid = MineFactory().mine_incidents[0].mine_incident_guid
+    test_mine = MineFactory()
+    test_guid = test_mine.mine_incidents[0].mine_incident_guid
 
-    new_time_string = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d %H:%M")
+    new_time_string = (datetime.now() - timedelta(days=1)
+                       ).strftime("%Y-%m-%d %H:%M")
     data = {
         'determination_type_code': 'NDO',
         'incident_timestamp': new_time_string,
@@ -110,7 +118,7 @@ def test_put_mine_incidents_happy(test_client, db_session, auth_headers):
     }
 
     put_resp = test_client.put(
-        f'/mines/incidents/{test_guid}', json=data, headers=auth_headers['full_auth_header'])
+        f'/mines/{test_mine.mine_guid}/incidents/{test_guid}', json=data, headers=auth_headers['full_auth_header'])
     assert put_resp.status_code == 200, put_resp.response
 
     put_data = json.loads(put_resp.data.decode())
@@ -120,7 +128,8 @@ def test_put_mine_incidents_happy(test_client, db_session, auth_headers):
 
 
 def test_put_mine_incidents_dangerous_occurrence_happy(test_client, db_session, auth_headers):
-    existing_incident_guid = MineFactory().mine_incidents[0].mine_incident_guid
+    test_mine = MineFactory()
+    existing_incident_guid = test_mine.mine_incidents[0].mine_incident_guid
 
     do_subparagraph_count = 2
     do_ids = [
@@ -128,7 +137,8 @@ def test_put_mine_incidents_dangerous_occurrence_happy(test_client, db_session, 
         for sub in SampleDangerousOccurrenceSubparagraphs(do_subparagraph_count)
     ]
 
-    new_time_string = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d %H:%M")
+    new_time_string = (datetime.now() - timedelta(days=1)
+                       ).strftime("%Y-%m-%d %H:%M")
     data = {
         'determination_type_code': 'DO',
         'incident_timestamp': new_time_string,
@@ -137,7 +147,7 @@ def test_put_mine_incidents_dangerous_occurrence_happy(test_client, db_session, 
     }
 
     put_resp = test_client.put(
-        f'/mines/incidents/{existing_incident_guid}',
+        f'/mines/{test_mine.mine_guid}/incidents/{existing_incident_guid}',
         json=data,
         headers=auth_headers['full_auth_header'])
     assert put_resp.status_code == 200, put_resp.response
@@ -151,9 +161,11 @@ def test_put_mine_incidents_dangerous_occurrence_happy(test_client, db_session, 
 
 
 def test_put_mine_incidents_dangerous_occurrence_no_subs(test_client, db_session, auth_headers):
-    existing_incident_guid = MineFactory().mine_incidents[0].mine_incident_guid
+    test_mine = MineFactory()
+    existing_incident_guid = test_mine.mine_incidents[0].mine_incident_guid
 
-    new_time_string = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d %H:%M")
+    new_time_string = (datetime.now() - timedelta(days=1)
+                       ).strftime("%Y-%m-%d %H:%M")
     data = {
         'determination_type_code': 'DO',
         'incident_timestamp': new_time_string,
@@ -162,7 +174,7 @@ def test_put_mine_incidents_dangerous_occurrence_no_subs(test_client, db_session
     }
 
     put_resp = test_client.put(
-        f'/mines/incidents/{existing_incident_guid}',
+        f'/mines/{test_mine.mine_guid}/incidents/{existing_incident_guid}',
         json=data,
         headers=auth_headers['full_auth_header'])
     assert put_resp.status_code == 400, put_resp.response

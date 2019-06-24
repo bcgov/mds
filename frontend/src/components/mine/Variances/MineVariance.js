@@ -23,14 +23,14 @@ const propTypes = {
   inspectors: CustomPropTypes.options.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  varianceStatusOptions: CustomPropTypes.options.isRequired,
+  varianceDocumentCategoryOptions: CustomPropTypes.options.isRequired,
   updateVariance: PropTypes.func.isRequired,
   varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  inspectorsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export class MineVariance extends Component {
   handleAddVariances = (files, isApplication) => (values) => {
+    const { variance_document_category_code } = values;
     const variance_application_status_code = isApplication
       ? Strings.VARIANCE_APPLICATION_CODE
       : Strings.VARIANCE_APPROVED_CODE;
@@ -48,6 +48,7 @@ export class MineVariance extends Component {
               {
                 document_manager_guid,
                 document_name,
+                variance_document_category_code,
               }
             )
           )
@@ -60,6 +61,7 @@ export class MineVariance extends Component {
   handleUpdateVariance = (files, variance, isApproved) => (values) => {
     // if the application isApproved, set issue_date to today and set expiry_date 5 years from today,
     // unless the user sets a custom expiry.
+    const { variance_document_category_code } = values;
     const issue_date = isApproved ? moment().format("YYYY-MM-DD") : null;
     let expiry_date;
     if (isApproved) {
@@ -79,6 +81,7 @@ export class MineVariance extends Component {
             {
               document_manager_guid,
               document_name,
+              variance_document_category_code,
             }
           )
         )
@@ -96,9 +99,6 @@ export class MineVariance extends Component {
         mineGuid: this.props.mine.mine_guid,
         mineName: this.props.mine.mine_name,
         varianceGuid: variance.variance_guid,
-        inspectors: this.props.inspectors,
-        complianceCodesHash: this.props.complianceCodesHash,
-        varianceStatusOptions: this.props.varianceStatusOptions,
       },
       content: modalConfig.EDIT_VARIANCE,
     });
@@ -110,9 +110,6 @@ export class MineVariance extends Component {
         variance,
         title: this.props.complianceCodesHash[variance.compliance_article_id],
         mineName: this.props.mine.mine_name,
-        varianceStatusOptionsHash: this.props.varianceStatusOptionsHash,
-        complianceCodesHash: this.props.complianceCodesHash,
-        inspectorsHash: this.props.inspectorsHash,
       },
       content: modalConfig.VIEW_VARIANCE,
       isViewOnly: true,
@@ -127,6 +124,7 @@ export class MineVariance extends Component {
         title: ModalContent.ADD_VARIANCE(this.props.mine.mine_name),
         mineGuid: this.props.mine.mine_guid,
         complianceCodes: this.props.complianceCodes,
+        documentCategoryOptions: this.props.varianceDocumentCategoryOptions,
         inspectors: this.props.inspectors,
       },
       content: modalConfig.ADD_VARIANCE,

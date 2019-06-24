@@ -111,13 +111,12 @@ export class PartySelectField extends Component {
         );
       }
 
-      this.setState((prevState) => {
+      this.setState(() => {
         const newPartyDataSource = transformData(
           createItemIdsArray(filteredParties, "party_guid"),
           createItemMap(filteredParties, "party_guid"),
           this.props.allowAddingParties &&
-            renderAddPartyFooter(this.showAddPartyForm, this.props.partyLabel),
-          prevState.selectedOption.label
+            renderAddPartyFooter(this.showAddPartyForm, this.props.partyLabel)
         );
         return { partyDataSource: newPartyDataSource };
       });
@@ -150,7 +149,7 @@ export class PartySelectField extends Component {
   validOption = (value) =>
     this.state.partyDataSource.find((opt) => opt.key === value)
       ? undefined
-      : `"Invalid ${this.props.partyLabel}`;
+      : `Invalid ${this.props.partyLabel}`;
 
   render = () => (
     <Field

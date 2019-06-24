@@ -11,7 +11,6 @@ from app.extensions import db
 from werkzeug.exceptions import BadRequest
 
 from .party_address import PartyAddressXref
-from .address import Address
 from ....utils.models_mixins import AuditMixin, Base
 from ....constants import PARTY_STATUS_CODE
 
@@ -37,9 +36,18 @@ class Party(AuditMixin, Base):
     postnominal_letters = db.Column(db.String, nullable=True)
     idir_username = db.Column(db.String, nullable=True)
 
+    business_role_appts = db.relationship('PartyBusinessRoleAppointment', lazy='select')
+
     @hybrid_property
     def name(self):
         return self.first_name + ' ' + self.party_name if self.first_name else self.party_name
+
+    @hybrid_property
+    def business_roles_codes(self):
+        return [
+            x.party_business_role_code for x in self.business_role_appts
+            if (not x.end_date or x.end_date > datetime.utcnow())
+        ]
 
     @name.expression
     def name(cls):

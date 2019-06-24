@@ -1,10 +1,12 @@
 from flask_restplus import Resource
 from flask import request
-from sqlalchemy_filters import apply_pagination
+from sqlalchemy_filters import apply_pagination, apply_filters
+from sqlalchemy import desc
 
 from app.extensions import api
 
 from ..models.variance import Variance
+from ..models.variance_application_status_code import VarianceApplicationStatusCode
 from ..response_models import PAGINATED_VARIANCE_LIST
 from ...utils.access_decorators import requires_any_of, MINE_VIEW
 from ...utils.resources_mixins import UserMixin, ErrorMixin
@@ -15,25 +17,50 @@ PER_PAGE_DEFAULT = 25
 
 class VarianceResource(Resource, UserMixin, ErrorMixin):
     @api.doc(
-        description='Get a list of variances.',
+        description='Get a list of variances. Order: received_date DESC',
         params={
             'page': f'The page number of paginated records to return. Default: {PAGE_DEFAULT}',
-            'per_page': f'The number of records to return per page. Default: {PER_PAGE_DEFAULT}'
+            'per_page': f'The number of records to return per page. Default: {PER_PAGE_DEFAULT}',
+            'variance_application_status_code':
+            'Comma-separated list of code statuses to include in results. Default: All status codes.',
         })
     @requires_any_of([MINE_VIEW])
     @api.marshal_with(PAGINATED_VARIANCE_LIST, code=200)
     def get(self):
-        paginated_variances, pagination_details = apply_pagination(
-            Variance.query, request.args.get('page', PAGE_DEFAULT, type=int),
-            request.args.get('per_page', PER_PAGE_DEFAULT, type=int))
+        records, pagination_details = self._apply_filters_and_pagination(
+            page_number=request.args.get('page', PAGE_DEFAULT, type=int),
+            page_size=request.args.get('per_page', PER_PAGE_DEFAULT, type=int),
+            application_status=request.args.get('variance_application_status_code', type=str))
 
-        if not paginated_variances:
+        if not records:
             raise BadRequest('Unable to fetch variances.')
 
         return {
-            'records': paginated_variances.all(),
+            'records': records.all(),
             'current_page': pagination_details.page_number,
             'total_pages': pagination_details.num_pages,
             'items_per_page': pagination_details.page_size,
             'total': pagination_details.total_results,
         }
+
+
+    def _apply_filters_and_pagination(self,
+                                      page_number=PAGE_DEFAULT,
+                                      page_size=PER_PAGE_DEFAULT,
+                                      application_status=None):
+        status_filter_values = list(map(
+            lambda x: x.variance_application_status_code,
+            VarianceApplicationStatusCode.active()))
+
+        if application_status is not None:
+            status_filter_values = application_status.split(',')
+
+        filtered_query = apply_filters(
+            Variance.query.order_by(desc(Variance.received_date)),
+            [{
+                'field': 'variance_application_status_code',
+                'op': 'in',
+                'value': status_filter_values
+            }])
+
+        return apply_pagination(filtered_query, page_number, page_size)

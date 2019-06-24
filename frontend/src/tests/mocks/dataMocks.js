@@ -1460,6 +1460,10 @@ export const VARIANCES = {
       ],
     },
   ],
+  current_page: 1,
+  items_per_page: 5,
+  total: 25,
+  total_pages: 5,
 };
 
 export const VARIANCE = {
@@ -1542,7 +1546,7 @@ export const APPLICATION_LIST = {
   ],
 };
 
-export const CORE_USERS = {
+export const INSPECTORS = {
   results: [
     {
       core_user_guid: "51b3a499-a474-4d52-be99-5c5123d7501c",
@@ -1560,11 +1564,11 @@ export const CORE_USERS = {
   ],
 };
 
-export const CORE_USERS_DROPDOWN = [
+export const INSPECTORS_DROPDOWN = [
   { value: "51b3a499-a474-4d52-be99-5c5123d7501c", label: "BLAH" },
 ];
 
-export const CORE_USERS_HASH = {
+export const INSPECTORS_HASH = {
   "51b3a499-a474-4d52-be99-5c5123d7501c": "BLAH",
 };
 
@@ -2394,4 +2398,42 @@ export const VARIANCE_STATUS_OPTIONS_HASH = {
   NAP: "Not Applicable",
   APP: "Approved",
   DEN: "Denied",
+};
+
+export const VARIANCE_DOCUMENT_CATEGORY_OPTIONS = {
+  records: [
+    {
+      variance_document_category_code: "REQ",
+      description: "Request",
+    },
+    {
+      variance_document_category_code: "REC",
+      description: "Recommendation",
+    },
+    {
+      variance_document_category_code: "DEC",
+      description: "Decision",
+    },
+  ],
+};
+
+export const VARIANCE_DOCUMENT_CATEGORY_OPTIONS_DROPDOWN = [
+  {
+    value: "REQ",
+    label: "Request Document",
+  },
+  {
+    value: "REC",
+    label: "Recommendation Document",
+  },
+  {
+    value: "DEC",
+    label: "Decision Document",
+  },
+];
+
+export const VARIANCE_DOCUMENT_CATEGORY_OPTIONS_HASH = {
+  REQ: "Request Document",
+  REC: "Recommendation Document",
+  DEC: "Decision Document",
 };

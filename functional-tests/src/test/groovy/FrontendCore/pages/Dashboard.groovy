@@ -2,6 +2,7 @@ package pages
 
 import geb.Page
 import modules.*
+import utils.*
 
 class Dashboard extends Page {
     static at = { waitFor() {!loadingScreen.displayed}}
@@ -22,8 +23,8 @@ class Dashboard extends Page {
         createMineButton_Dashboard (wait: true) {$("button").has("span", text:"Create Mine Record")}
 
         //Dashboard
-        viewLink (wait:true) {$("a", text: contains("MINETEST"))}
-        firstMineName (wait:true) {$("a", text: contains("MINETEST")).text()}
+        viewLink (wait:true) {$("a", text: contains(Const.MINE_NAME))}
+        firstMineName (wait:true) {$("a", text: contains(Const.MINE_NAME)).text()}
 
         //search
         searchBox (wait:true){$("input", id:"search")}

@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { MineSubscriptionTable } from "@/components/dashboard/customHomePage/MineSubscriptionTable";
+import { SubscriptionTable } from "@/components/dashboard/customHomePage/SubscriptionTable";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const dispatchProps = {};
@@ -22,9 +22,9 @@ beforeEach(() => {
   setupReducerProps();
 });
 
-describe("MineSubscriptionTable", () => {
+describe("SubscriptionTable", () => {
   it("renders properly", () => {
-    const component = shallow(<MineSubscriptionTable {...dispatchProps} {...reducerProps} />);
+    const component = shallow(<SubscriptionTable {...dispatchProps} {...reducerProps} />);
     expect(component).toMatchSnapshot();
   });
 });

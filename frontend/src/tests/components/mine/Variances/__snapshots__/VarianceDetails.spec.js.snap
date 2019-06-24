@@ -10,6 +10,13 @@ ShallowWrapper {
         "306": "2.3.8 - Flammable Waste Storage",
       }
     }
+    documentCategoryOptionsHash={
+      Object {
+        "DEC": "Decision Document",
+        "REC": "Recommendation Document",
+        "REQ": "Request Document",
+      }
+    }
     isViewOnly={false}
     mineName="mockMineName"
     removeDocument={[MockFunction]}
@@ -107,6 +114,13 @@ ShallowWrapper {
           documents
         </h5>,
         <DocumentTable
+          documentCategoryOptionsHash={
+            Object {
+              "DEC": "Decision Document",
+              "REC": "Recommendation Document",
+              "REQ": "Request Document",
+            }
+          }
           documents={Array []}
           isViewOnly={false}
           removeDocument={[MockFunction]}
@@ -158,6 +172,7 @@ ShallowWrapper {
                 N/A
               </p>
             </div>,
+            false,
             <div
               className="inline-flex padding-small"
             >
@@ -170,6 +185,7 @@ ShallowWrapper {
                 N/A
               </p>
             </div>,
+            false,
           ],
           "className": "content--light-grey padding-small",
         },
@@ -317,6 +333,7 @@ ShallowWrapper {
             ],
             "type": "div",
           },
+          false,
           Object {
             "instance": null,
             "key": undefined,
@@ -362,6 +379,7 @@ ShallowWrapper {
             ],
             "type": "div",
           },
+          false,
         ],
         "type": "div",
       },
@@ -390,6 +408,11 @@ ShallowWrapper {
         "key": undefined,
         "nodeType": "class",
         "props": Object {
+          "documentCategoryOptionsHash": Object {
+            "DEC": "Decision Document",
+            "REC": "Recommendation Document",
+            "REQ": "Request Document",
+          },
           "documents": Array [],
           "isViewOnly": false,
           "removeDocument": [MockFunction],
@@ -466,6 +489,13 @@ ShallowWrapper {
             documents
           </h5>,
           <DocumentTable
+            documentCategoryOptionsHash={
+              Object {
+                "DEC": "Decision Document",
+                "REC": "Recommendation Document",
+                "REQ": "Request Document",
+              }
+            }
             documents={Array []}
             isViewOnly={false}
             removeDocument={[MockFunction]}
@@ -517,6 +547,7 @@ ShallowWrapper {
                   N/A
                 </p>
               </div>,
+              false,
               <div
                 className="inline-flex padding-small"
               >
@@ -529,6 +560,7 @@ ShallowWrapper {
                   N/A
                 </p>
               </div>,
+              false,
             ],
             "className": "content--light-grey padding-small",
           },
@@ -676,6 +708,7 @@ ShallowWrapper {
               ],
               "type": "div",
             },
+            false,
             Object {
               "instance": null,
               "key": undefined,
@@ -721,6 +754,7 @@ ShallowWrapper {
               ],
               "type": "div",
             },
+            false,
           ],
           "type": "div",
         },
@@ -749,6 +783,11 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "class",
           "props": Object {
+            "documentCategoryOptionsHash": Object {
+              "DEC": "Decision Document",
+              "REC": "Recommendation Document",
+              "REQ": "Request Document",
+            },
             "documents": Array [],
             "isViewOnly": false,
             "removeDocument": [MockFunction],

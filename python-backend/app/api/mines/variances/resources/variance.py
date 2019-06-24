@@ -49,6 +49,11 @@ class MineVarianceResource(Resource, UserMixin, ErrorMixin):
         store_missing=False,
         help='A note to include on the variance. Limited to 300 characters.')
     parser.add_argument(
+        'parties_notified_ind',
+        type=bool,
+        store_missing=False,
+        help='Indicates if the relevant parties have been notified of variance request and decision.')
+    parser.add_argument(
         'issue_date', store_missing=False, help='The date on which the variance was issued.')
     parser.add_argument(
         'expiry_date', store_missing=False, help='The date on which the variance expires.')
@@ -89,8 +94,7 @@ class MineVarianceResource(Resource, UserMixin, ErrorMixin):
             inspector = Party.find_by_party_guid(inspector_party_guid)
             if not inspector:
                 raise BadRequest('Unable to find new inspector.')
-            business_roles = PartyBusinessRoleAppointment.find_by_party_guid(inspector_party_guid)
-            if not [x for x in business_roles if x.party_business_role_code == 'INS']:
+            if not 'INS' in inspector.business_roles_codes:
                 raise BadRequest('Party is not an inspector.')
 
             variance.inspector_party_guid = inspector_party_guid

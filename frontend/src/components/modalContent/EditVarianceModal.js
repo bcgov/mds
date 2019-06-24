@@ -4,6 +4,15 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import CustomPropTypes from "@/customPropTypes";
 import EditVarianceForm from "@/components/Forms/variances/EditVarianceForm";
+import { getDropdownInspectors } from "@/selectors/partiesSelectors";
+import {
+  getDropdownHSRCMComplianceCodes,
+  getHSRCMComplianceCodesHash,
+  getDropdownVarianceStatusOptions,
+  getVarianceStatusOptionsHash,
+  getDropdownVarianceDocumentCategoryOptions,
+  getVarianceDocumentCategoryOptionsHash,
+} from "@/selectors/staticContentSelectors";
 import {
   fetchVarianceById,
   removeDocumentFromVariance,
@@ -23,8 +32,10 @@ const propTypes = {
   fetchVarianceById: PropTypes.func.isRequired,
   varianceGuid: PropTypes.string.isRequired,
   removeDocumentFromVariance: PropTypes.func.isRequired,
+  documentCategoryOptions: CustomPropTypes.options.isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   fetchVariancesByMine: PropTypes.func.isRequired,
+  documentCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {
@@ -51,10 +62,6 @@ export class EditVarianceModal extends Component {
       });
   };
 
-  componentDidUnmount() {
-    this.setState({ isLoaded: false });
-  }
-
   render() {
     return (
       <div>
@@ -65,11 +72,13 @@ export class EditVarianceModal extends Component {
             mineGuid={this.props.mineGuid}
             mineName={this.props.mineName}
             inspectors={this.props.inspectors}
+            documentCategoryOptions={this.props.documentCategoryOptions}
             variance={this.props.variance}
             varianceStatusOptions={this.props.varianceStatusOptions}
             initialValues={this.props.variance}
             removeDocument={this.handleRemoveDocument}
             complianceCodesHash={this.props.complianceCodesHash}
+            documentCategoryOptionsHash={this.props.documentCategoryOptionsHash}
           />
         </LoadingWrapper>
       </div>
@@ -79,6 +88,13 @@ export class EditVarianceModal extends Component {
 
 const mapStateToProps = (state) => ({
   variance: getVariance(state),
+  varianceStatusOptions: getDropdownVarianceStatusOptions(state),
+  inspectors: getDropdownInspectors(state),
+  complianceCodesHash: getHSRCMComplianceCodesHash(state),
+  documentCategoryOptions: getDropdownVarianceDocumentCategoryOptions(state),
+  documentCategoryOptionsHash: getVarianceDocumentCategoryOptionsHash(state),
+  varianceStatusOptionsHash: getVarianceStatusOptionsHash(state),
+  complianceCodes: getDropdownHSRCMComplianceCodes(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

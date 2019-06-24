@@ -1,7 +1,7 @@
 DO $$
 DECLARE
 
-    MINE_GUID uuid = '9C1B63B6-CCFB-48B0-BE85-3CB3C5D1A276';
+    MINE_GUID uuid = '4afafc66-d294-4765-b5c8-8eb77630cb56';
     PARTY_GUID1 uuid = 'f1e7a6e3-01ab-4926-9007-31db0267f589';
     PARTY_GUID2 uuid = '8d2878de-c20e-40a9-ad5f-e17730167125';
     PERMIT_GUID1 uuid = 'b38e1908-c147-4a87-bfb6-1fef9217ec6f';
@@ -10,14 +10,14 @@ DECLARE
     IDIR_USER varchar = 'bdd-test-create';
 
     MINE_NO varchar = 'BLAH0000';
-    MINE_NAME varchar = 'MINETEST';
+    MINE_NAME varchar = '!!MINETEST';
     MINE_LAT numeric = '52.1'     ;
     MINE_LONG numeric = '-125'  ;
     MINE_NOTE varchar = 'This is a test record';
     
-    MINE_GUID_2 uuid = '38b7573b-a5fa-441b-ae98-6b663357f8bc';
+    MINE_GUID_2 uuid = '3877d66a-44c1-4685-a679-5d1473fae9de';
     MINE_NO_2 varchar = 'BLAH0002';
-    MINE_NAME_2 varchar = 'MINE2TEST';
+    MINE_NAME_2 varchar = '!!MINE2TEST';
     MINE_LAT_2 numeric = '53.2'     ;
     MINE_LONG_2 numeric = '-126.2'  ;
     MINE_NOTE_2 varchar = 'This is a test record for contacts test';
@@ -77,24 +77,13 @@ BEGIN
         (DEFAULT, MINE_GUID_2, MINE_LAT_2, MINE_LONG_2, DEFAULT, DEFAULT, IDIR_USER, DEFAULT, IDIR_USER, DEFAULT);
 
 
-    -- add permit permittee
+    -- add permit permittee and other parties
     INSERT INTO party
     VALUES
         (PARTY_GUID3, FIRST_NAME3, SUR_NAME3, PHONE3, EXT3, EMAIL3, EFFECTIVE_DATE3, DEFAULT, IDIR_USER, DEFAULT, IDIR_USER, DEFAULT, MIDDLE_NAME, 'PER'),
         (PARTY_GUID4, FIRST_NAME4, SUR_NAME4, PHONE4, EXT4, EMAIL4, EFFECTIVE_DATE4, DEFAULT, IDIR_USER, DEFAULT, IDIR_USER, DEFAULT, MIDDLE_NAME, 'PER'),
         (PARTY_GUID1, FIRST_NAME, SUR_NAME, PHONE, EXT, EMAIL, EFFECTIVE_DATE, DEFAULT, IDIR_USER, DEFAULT, IDIR_USER, DEFAULT, MIDDLE_NAME, 'PER'),
         (PARTY_GUID2, NULL      , SUR_NAME, PHONE, EXT, EMAIL, EFFECTIVE_DATE, DEFAULT, IDIR_USER, DEFAULT, IDIR_USER, DEFAULT, MIDDLE_NAME, 'ORG');
-
-    INSERT INTO permit
-    VALUES
-        (PERMIT_GUID1, MINE_GUID, PERMIT_NO1, 'C', IDIR_USER, DEFAULT, IDIR_USER, DEFAULT, DEFAULT),
-        (PERMIT_GUID2, MINE_GUID, PERMIT_NO2, 'O', IDIR_USER, DEFAULT, IDIR_USER, DEFAULT, DEFAULT);
-
-    INSERT INTO mine_party_appt
-        (mine_guid, party_guid, mine_party_appt_type_code, permit_guid, create_user, update_user)
-    VALUES
-        (MINE_GUID, PARTY_GUID1, 'PMT', PERMIT_GUID1, IDIR_USER, IDIR_USER),
-        (MINE_GUID, PARTY_GUID2, 'PMT', PERMIT_GUID1, IDIR_USER, IDIR_USER);
 
 END
 $$;

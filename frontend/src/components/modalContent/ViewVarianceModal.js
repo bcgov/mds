@@ -1,10 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import CustomPropTypes from "@/customPropTypes";
 import { Button } from "antd";
 import * as Strings from "@/constants/strings";
-import { ELLIPSE, RED_ELLIPSE } from "@/constants/assets";
 import { VarianceDetails } from "../mine/Variances/VarianceDetails";
+import { getInspectorsHash } from "@/selectors/partiesSelectors";
+import {
+  getVarianceStatusOptionsHash,
+  getHSRCMComplianceCodesHash,
+  getVarianceDocumentCategoryOptionsHash,
+} from "@/selectors/staticContentSelectors";
 
 const propTypes = {
   closeModal: PropTypes.func.isRequired,
@@ -13,6 +19,7 @@ const propTypes = {
   varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   inspectorsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  documentCategoryOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export const ViewVarianceModal = (props) => {
@@ -29,28 +36,12 @@ export const ViewVarianceModal = (props) => {
         </div>
         <div className="flex-tablet">
           <p className="field-title">Application Status</p>
-          <div className="inline-flex--inline">
-            <img
-              className="padding-small--right icon-sm--img"
-              src={isApproved ? ELLIPSE : RED_ELLIPSE}
-              alt="status"
-            />
-            <p>
-              {props.varianceStatusOptionsHash[props.variance.variance_application_status_code]}
-            </p>
-          </div>
+          <p>{props.varianceStatusOptionsHash[props.variance.variance_application_status_code]}</p>
         </div>
         {isApproved && (
           <div className="flex-tablet">
             <p className="field-title">Approval Status</p>
-            <div className="inline-flex--inline">
-              <img
-                className="padding-small--right icon-sm--img"
-                src={isOverdue ? RED_ELLIPSE : ELLIPSE}
-                alt="status"
-              />
-              <p>{isOverdue ? "Expired" : "Active"}</p>
-            </div>
+            <p>{isOverdue ? "Expired" : "Active"}</p>
           </div>
         )}
       </div>
@@ -61,6 +52,7 @@ export const ViewVarianceModal = (props) => {
         mineName={props.mineName}
         isViewOnly
         complianceCodesHash={props.complianceCodesHash}
+        documentCategoryOptionsHash={props.documentCategoryOptionsHash}
       />
       <div className="right center-mobile">
         <Button className="full-mobile" type="secondary" onClick={props.closeModal}>
@@ -73,4 +65,11 @@ export const ViewVarianceModal = (props) => {
 
 ViewVarianceModal.propTypes = propTypes;
 
-export default ViewVarianceModal;
+const mapStateToProps = (state) => ({
+  varianceStatusOptionsHash: getVarianceStatusOptionsHash(state),
+  complianceCodesHash: getHSRCMComplianceCodesHash(state),
+  inspectorsHash: getInspectorsHash(state),
+  documentCategoryOptionsHash: getVarianceDocumentCategoryOptionsHash(state),
+});
+
+export default connect(mapStateToProps)(ViewVarianceModal);

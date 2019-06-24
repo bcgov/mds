@@ -135,6 +135,7 @@ class MineLocationFactory(BaseFactory):
     latitude = factory.Faker('latitude')  # or factory.fuzzy.FuzzyFloat(49, 60) for ~ inside BC
     longitude = factory.Faker('longitude')  # or factory.fuzzy.FuzzyFloat(-132, -114.7) for ~ BC
     geom = factory.LazyAttribute(lambda o: 'SRID=3005;POINT(%f %f)' % (o.longitude, o.latitude))
+    mine_location_description = factory.Faker('sentence', nb_words=8, variable_nb_words=True)
     effective_date = TODAY
     expiry_date = TODAY
     mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
@@ -233,6 +234,7 @@ class VarianceFactory(BaseFactory):
     compliance_article_id = factory.LazyFunction(RandomComplianceArticleId)
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     note = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
+    parties_notified_ind = factory.Faker('boolean', chance_of_getting_true=50)
     received_date = TODAY
     documents = []
 
@@ -261,6 +263,7 @@ class VarianceDocumentFactory(BaseFactory):
     variance_document_xref_guid = GUID
     mine_document_guid = factory.SelfAttribute('mine_document.mine_document_guid')
     variance_id = factory.SelfAttribute('variance.variance_id')
+    variance_document_category_code = factory.LazyFunction(RandomVarianceDocumentCategoryCode)
 
 
 def RandomPermitNumber():
@@ -351,12 +354,10 @@ class MineIncidentFactory(BaseFactory):
     incident_timestamp = factory.Faker('past_datetime')
     incident_description = factory.Faker('sentence', nb_words=20, variable_nb_words=True)
     reported_timestamp = factory.Faker('past_datetime')
-    reported_by = factory.Faker('name')
-    reported_by_role = factory.Faker('job')
+    reported_by_name = factory.Faker('name')
     determination_type_code = factory.LazyFunction(RandomIncidentDeterminationTypeCode)
-    followup_type_code = 'NOA'
-    followup_inspection_no = factory.Faker('numerify', text='######')  #nullable???
-    closing_report_summary = factory.Faker('sentence', nb_words=20, variable_nb_words=True)
+    status_code = factory.LazyFunction(RandomIncidentStatusCode)
+    followup_investigation_type_code = 'NO'
     dangerous_occurrence_subparagraphs = factory.LazyAttribute(
         lambda o: SampleDangerousOccurrenceSubparagraphs(o.do_subparagraph_count)
         if o.determination_type_code == 'DO' else [])

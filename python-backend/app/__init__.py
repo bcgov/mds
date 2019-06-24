@@ -6,6 +6,7 @@ from flask import Flask, current_app
 from flask_cors import CORS
 from flask_restplus import Resource, apidoc
 from flask_compress import Compress
+from sqlalchemy.exc import SQLAlchemyError
 
 from flask_jwt_oidc.exceptions import AuthError
 
@@ -17,6 +18,7 @@ from app.api.documents.namespace.documents import api as document_api
 from app.api.document_manager.namespace.document_manager import api as document_manager_api
 from app.api.users.namespace.users import api as users_api
 from app.api.search.namespace.search import api as search_api
+from app.api.reporting.namespace.reporting import api as reporting_api
 from app.api.variances.namespace.variances import api as variances_api
 
 from app.commands import register_commands
@@ -53,10 +55,12 @@ def register_extensions(app):
     apidoc.apidoc.static_url_path = '{}/swaggerui'.format(Config.BASE_PATH)
     api.init_app(app)
 
+    if app.config['ELASTIC_ENABLED'] == '1':
+        apm.init_app(app)
+
     cache.init_app(app)
     db.init_app(app)
     jwt.init_app(app)
-    apm.init_app(app) if app.config['ELASTIC_ENABLED'] == '1' else None
     sched.init_app(app)
 
     CORS(app)
@@ -86,6 +90,7 @@ def register_routes(app):
     api.add_namespace(applications_api)
     api.add_namespace(search_api)
     api.add_namespace(variances_api)
+    api.add_namespace(reporting_api)
 
     # Healthcheck endpoint
     @api.route('/health')
@@ -95,6 +100,7 @@ def register_routes(app):
 
     @api.errorhandler(AuthError)
     def jwt_oidc_auth_error_handler(error):
+        current_app.logger.error(str(error))
         return {
             'status': getattr(error, 'status_code', 401),
             'message': str(error),
@@ -102,16 +108,34 @@ def register_routes(app):
 
     @api.errorhandler(AssertionError)
     def assertion_error_handler(error):
+        current_app.logger.error(str(error))
         return {
             'status': getattr(error, 'code', 400),
             'message': str(error),
         }, getattr(error, 'code', 400)
 
+    # Recursively add handler to every SQLAlchemy Error
+    def sqlalchemy_error_handler(error):
+        current_app.logger.error(str(error))
+        return {
+            'status': getattr(error, 'status_code', 400),
+            'message': str('Invalid request. Cannot save record.'),
+        }, getattr(error, 'status_code', 400)
+
+    def _add_sqlalchemy_error_handlers(classname):
+        for subclass in classname.__subclasses__():
+            (api.errorhandler(subclass))(sqlalchemy_error_handler)
+
+            if len(subclass.__subclasses__()) != 0:
+                _add_sqlalchemy_error_handlers(subclass)
+
+    _add_sqlalchemy_error_handlers(SQLAlchemyError)
+
+
     @api.errorhandler(Exception)
     def default_error_handler(error):
         if getattr(error, 'code', 500) == 500:
             current_app.logger.error(str(error))
-
         return {
             'status': getattr(error, 'code', 500),
             'message': str(error),

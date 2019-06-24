@@ -7,6 +7,7 @@ const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   mineGuid: PropTypes.string.isRequired,
+  documentCategoryOptions: CustomPropTypes.options.isRequired,
   complianceCodes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   inspectors: CustomPropTypes.options.isRequired,
 };
@@ -17,6 +18,7 @@ export const AddVarianceModal = (props) => (
       onSubmit={props.onSubmit}
       closeModal={props.closeModal}
       mineGuid={props.mineGuid}
+      documentCategoryOptions={props.documentCategoryOptions}
       complianceCodes={props.complianceCodes}
       inspectors={props.inspectors}
     />

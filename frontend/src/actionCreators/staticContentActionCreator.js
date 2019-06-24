@@ -128,6 +128,17 @@ export const fetchMineIncidentDeterminationOptions = () => (dispatch) => {
     .catch(() => dispatch(error(reducerTypes.GET_MINE_INCIDENT_DETERMINATION_OPTIONS)));
 };
 
+export const fetchMineIncidentStatusCodeOptions = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_MINE_INCIDENT_STATUS_CODE_OPTIONS));
+  return CustomAxios()
+    .get(ENVIRONMENT.apiUrl + API.MINE_INCIDENT_STATUS_CODES, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_MINE_INCIDENT_STATUS_CODE_OPTIONS));
+      dispatch(staticContentActions.storeMineIncidentStatusCodeOptions(response.data));
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_MINE_INCIDENT_STATUS_CODE_OPTIONS)));
+};
+
 export const setOptionsLoaded = () => (dispatch) => {
   dispatch(staticContentActions.loadedOptions(true));
 };
@@ -163,4 +174,15 @@ export const fetchVarianceStatusOptions = () => (dispatch) => {
       dispatch(staticContentActions.storeVarianceStatusOptions(response.data));
     })
     .catch(() => dispatch(error(reducerTypes.GET_VARIANCE_STATUS_OPTIONS)));
+};
+
+export const fetchVarianceDocumentCategoryOptions = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_VARIANCE_DOCUMENT_CATEGORY_OPTIONS));
+  return CustomAxios()
+    .get(`${ENVIRONMENT.apiUrl + API.VARIANCE_DOCUMENT_CATEGORY_OPTIONS}`, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_VARIANCE_DOCUMENT_CATEGORY_OPTIONS));
+      dispatch(staticContentActions.storeVarianceDocumentCategoryOptions(response.data));
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_VARIANCE_DOCUMENT_CATEGORY_OPTIONS)));
 };

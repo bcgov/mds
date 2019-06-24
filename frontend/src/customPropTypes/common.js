@@ -5,7 +5,13 @@ export const dropdownListItem = shape({
   label: PropTypes.string.isRequired,
 });
 
+export const filterListItem = shape({
+  value: oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  text: PropTypes.string.isRequired,
+});
+
 export const options = arrayOf(dropdownListItem);
+export const filterOptions = arrayOf(filterListItem);
 
 export const formMeta = shape({
   touched: PropTypes.bool,

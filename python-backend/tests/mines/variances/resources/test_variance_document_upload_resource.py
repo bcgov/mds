@@ -1,5 +1,6 @@
 import json
 
+from tests.status_code_gen import RandomVarianceDocumentCategoryCode
 from tests.factories import (
     VarianceFactory,
     MineFactory,
@@ -16,7 +17,8 @@ def test_put_file(test_client, db_session, auth_headers):
     document_count = len(variance.documents)
     data = {
         'document_manager_guid': str(new_doc.document_guid),
-        'document_name': 'my_document.pdf'
+        'document_name': 'my_document.pdf',
+        'variance_document_category_code': RandomVarianceDocumentCategoryCode()
     }
 
     put_resp = test_client.put(

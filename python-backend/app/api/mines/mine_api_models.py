@@ -15,6 +15,11 @@ class Date(fields.Raw):
 BASIC_MINE_LOCATION_MODEL = api.model('BasicMineLocation', {
     'latitude': fields.String,
     'longitude': fields.String,
+    'utm_easting': fields.String,
+    'utm_northing': fields.String,
+    'utm_zone_number': fields.String,
+    'utm_zone_letter': fields.String,
+    'mine_location_description': fields.String,
 })
 
 BASIC_MINE_LIST = api.model(
@@ -22,7 +27,7 @@ BASIC_MINE_LIST = api.model(
         'mine_guid': fields.String,
         'mine_name': fields.String,
         'mine_no': fields.String,
-        'mine_location': fields.Nested(BASIC_MINE_LOCATION_MODEL)
+        'mine_location': fields.Nested(BASIC_MINE_LOCATION_MODEL),
     })
 
 MINE_TENURE_TYPE_CODE_MODEL = api.model('MineTenureTypeCode', {
@@ -36,6 +41,11 @@ MINE_LOCATION_MODEL = api.model(
         'mine_guid': fields.String,
         'latitude': fields.Fixed(description='fixed precision decimal.', decimals=7),
         'longitude': fields.Fixed(description='fixed precision decimal.', decimals=7),
+        'utm_easting': fields.String,
+        'utm_northing': fields.String,
+        'utm_zone_number': fields.String,
+        'utm_zone_letter': fields.String,
+        'mine_location_description': fields.String,
     })
 
 MINE_DOCUMENT_MODEL = api.model(
@@ -50,6 +60,7 @@ PERMIT_MODEL = api.model('MinePermit', {
     'permit_guid': fields.String,
     'permit_no': fields.String,
     'permit_status_code': fields.String,
+    'permit_status_code_description': fields.String,
 })
 
 EXPECTED_DOCUMENT_STATUS_MODEL = api.model('ExpectedDocumentStatus', {
@@ -149,6 +160,16 @@ MINE_LIST_MODEL = api.model(
         'total': fields.Integer,
     })
 
+MINE_INCIDENT_DOCUMENT_MODEL = api.model(
+    'Mine Incident Document', {
+        'mine_document_guid': fields.String,
+        'document_manager_guid': fields.String,
+        'document_name': fields.String,
+        'mine_incident_document_type_code': fields.String
+
+    }
+)
+
 MINE_INCIDENT_MODEL = api.model(
     'Mine Incident', {
         'mine_incident_guid': fields.String,
@@ -158,19 +179,30 @@ MINE_INCIDENT_MODEL = api.model(
         'incident_timestamp': DateTime,
         'incident_description': fields.String,
         'reported_timestamp': DateTime,
-        'reported_by': fields.String,
-        'reported_by_role': fields.String,
+        'reported_by_name': fields.String,
+        'reported_by_email': fields.String,
+        'reported_by_phone_no': fields.String,
+        'reported_by_phone_ext': fields.String,
+        'emergency_services_called': fields.Boolean, 
+        'number_of_injuries': fields.Integer,
+        'number_of_fatalities': fields.Integer,
+        'reported_to_inspector_party_guid':  fields.String,
+        'responsible_inspector_party_guid':  fields.String,
         'determination_type_code': fields.String,
-        'followup_type_code': fields.String,
-        'dangerous_occurrence_subparagraph_ids': fields.List(fields.Integer)
+        'status_code': fields.String,
+        'followup_investigation_type_code': fields.String,
+        'followup_inspection': fields.Boolean,
+        'followup_inspection_date': DateTime,
+        'determination_inspector_party_guid': fields.String,
+        'dangerous_occurrence_subparagraph_ids': fields.List(fields.Integer),
+        'documents': fields.List(fields.Nested(MINE_INCIDENT_DOCUMENT_MODEL))
     })
 
-MINE_INCIDENT_FOLLOWUP_TYPE_MODEL = api.model(
-    'Mine Incident Followup Type', {
-        'mine_incident_followup_type_code': fields.String,
+MINE_INCIDENT_FOLLOWUP_INVESTIGATION_TYPE_MODEL = api.model(
+    'Mine Incident Followup Investigation Type', {
+        'mine_incident_followup_investigation_type_code': fields.String,
         'description': fields.String,
         'display_order': fields.Integer,
-        'active_ind': fields.Boolean
     })
 
 MINE_INCIDENT_DETERMINATION_TYPE_MODEL = api.model(
@@ -181,9 +213,13 @@ MINE_INCIDENT_DETERMINATION_TYPE_MODEL = api.model(
         'active_ind': fields.Boolean
     })
 
+MINE_INCIDENT_STATUS_CDOE_MODEL = api.model("Mine Incident Status Codes",
+ {'mine_incident_status_code': fields.String, 'description': fields.String, 'display_order': fields.Integer})
+
 VARIANCE_DOCUMENT_MODEL = api.inherit(
     'VarianceDocumentModel', MINE_DOCUMENT_MODEL, {
-        'created_at': fields.Date
+        'created_at': fields.Date,
+        'variance_document_category_code': fields.String
     })
 
 VARIANCE_MODEL = api.model(
@@ -195,6 +231,7 @@ VARIANCE_MODEL = api.model(
         'applicant_guid': fields.String,
         'inspector_party_guid': fields.String,
         'note': fields.String,
+        'parties_notified_ind': fields.Boolean,
         'issue_date': fields.Date,
         'received_date': fields.Date,
         'expiry_date': fields.Date,
