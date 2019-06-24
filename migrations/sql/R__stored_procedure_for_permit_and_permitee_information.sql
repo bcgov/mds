@@ -588,7 +588,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
             insert_amendment_row integer;
             total_amendment_row  integer;
         BEGIN
-            RAISE NOTICE '.. Step 2 of 4: Update permit info';
+            RAISE NOTICE '.. Step 2 of 4: Update permit info in MDS';
             SELECT count(*) FROM permit INTO old_row;
             SELECT count(*) FROM permit_amendment INTO old_amendment_row;
 
@@ -607,6 +607,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                 permit.permit_guid = etl.permit_guid
 				AND
 				issue_date = (select max(issue_date) from ETL_PERMIT where etl.permit_no = ETL_PERMIT.permit_no)
+                AND ((permit.permit_status_code != etl.permit_status_code) AND permit.update_user = 'mms_migration')
             RETURNING 1
             )
             SELECT COUNT(*) FROM updated_rows INTO update_row;
@@ -773,6 +774,15 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                 party_type_code  = etl.party_type
             FROM ETL_PERMIT etl
             WHERE party.party_guid = etl.party_guid
+            AND ((
+                party.first_name != etl.first_name
+                OR party.party_name != etl.party_name
+                OR party.phone_no != etl.phone_no
+                OR party.email != etl.email
+                OR party.effective_date != etl.effective_date
+                OR party.party_type_code != etl.party_type
+            )
+            AND party.update_user = 'mms_migration')
             RETURNING 1
             )
             SELECT COUNT(*) FROM updated_rows INTO update_row;
