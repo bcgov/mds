@@ -160,6 +160,16 @@ MINE_LIST_MODEL = api.model(
         'total': fields.Integer,
     })
 
+MINE_INCIDENT_DOCUMENT_MODEL = api.model(
+    'Mine Incident Document', {
+        'mine_document_guid': fields.String,
+        'document_manager_guid': fields.String,
+        'document_name': fields.String,
+        'mine_incident_document_type_code': fields.String
+
+    }
+)
+
 MINE_INCIDENT_MODEL = api.model(
     'Mine Incident', {
         'mine_incident_guid': fields.String,
@@ -184,7 +194,8 @@ MINE_INCIDENT_MODEL = api.model(
         'followup_inspection': fields.Boolean,
         'followup_inspection_date': DateTime,
         'determination_inspector_party_guid': fields.String,
-        'dangerous_occurrence_subparagraph_ids': fields.List(fields.Integer)
+        'dangerous_occurrence_subparagraph_ids': fields.List(fields.Integer),
+        'documents': fields.List(fields.Nested(MINE_INCIDENT_DOCUMENT_MODEL))
     })
 
 MINE_INCIDENT_FOLLOWUP_INVESTIGATION_TYPE_MODEL = api.model(

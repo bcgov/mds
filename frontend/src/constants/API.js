@@ -85,6 +85,8 @@ export const CORE_USER = "/users/core";
 export const MINE_INCIDENTS = (mine_guid) => `/mines/${mine_guid}/incidents`;
 export const MINE_INCIDENT = (mineGuid, mine_incident_guid) =>
   `/mines/${mineGuid}/incidents/${mine_incident_guid}`;
+export const MINE_INCIDENT_DOCUMENT = (mineGuid) => `/mines/${mineGuid}/incidents/documents`;
+
 export const MINE_INCIDENT_FOLLOWUP_ACTIONS = `/mines/incidents/followup-types`;
 export const MINE_INCIDENT_DETERMINATION_TYPES = `/mines/incidents/determination-types`;
 export const MINE_INCIDENT_STATUS_CODES = `/mines/incidents/status-codes`;
