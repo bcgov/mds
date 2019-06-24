@@ -71,9 +71,14 @@ ShallowWrapper {
             <Row
               gutter={16}
             >
-              <h5>
-                Basic Details
-              </h5>
+              <Col
+                md={12}
+                xs={24}
+              >
+                <h5>
+                  Basic Details
+                </h5>
+              </Col>
             </Row>
             <Row
               gutter={16}
@@ -181,9 +186,14 @@ ShallowWrapper {
             <Row
               gutter={16}
             >
-              <h5>
-                Address
-              </h5>
+              <Col
+                md={12}
+                xs={24}
+              >
+                <h5>
+                  Address
+                </h5>
+              </Col>
             </Row>
             <Row
               gutter={16}
@@ -271,7 +281,6 @@ ShallowWrapper {
             >
               <Col
                 md={12}
-                sm={12}
                 xs={24}
               >
                 <FormItem
@@ -292,7 +301,6 @@ ShallowWrapper {
               </Col>
               <Col
                 md={12}
-                sm={12}
                 xs={24}
               >
                 <FormItem
@@ -358,9 +366,14 @@ ShallowWrapper {
             <Row
               gutter={16}
             >
-              <h5>
-                Basic Details
-              </h5>
+              <Col
+                md={12}
+                xs={24}
+              >
+                <h5>
+                  Basic Details
+                </h5>
+              </Col>
             </Row>
             <Row
               gutter={16}
@@ -468,9 +481,14 @@ ShallowWrapper {
             <Row
               gutter={16}
             >
-              <h5>
-                Address
-              </h5>
+              <Col
+                md={12}
+                xs={24}
+              >
+                <h5>
+                  Address
+                </h5>
+              </Col>
             </Row>
             <Row
               gutter={16}
@@ -558,7 +576,6 @@ ShallowWrapper {
             >
               <Col
                 md={12}
-                sm={12}
                 xs={24}
               >
                 <FormItem
@@ -579,7 +596,6 @@ ShallowWrapper {
               </Col>
               <Col
                 md={12}
-                sm={12}
                 xs={24}
               >
                 <FormItem
@@ -646,9 +662,14 @@ ShallowWrapper {
               <Row
                 gutter={16}
               >
-                <h5>
-                  Basic Details
-                </h5>
+                <Col
+                  md={12}
+                  xs={24}
+                >
+                  <h5>
+                    Basic Details
+                  </h5>
+                </Col>
               </Row>
               <Row
                 gutter={16}
@@ -756,9 +777,14 @@ ShallowWrapper {
               <Row
                 gutter={16}
               >
-                <h5>
-                  Address
-                </h5>
+                <Col
+                  md={12}
+                  xs={24}
+                >
+                  <h5>
+                    Address
+                  </h5>
+                </Col>
               </Row>
               <Row
                 gutter={16}
@@ -846,7 +872,6 @@ ShallowWrapper {
               >
                 <Col
                   md={12}
-                  sm={12}
                   xs={24}
                 >
                   <FormItem
@@ -867,7 +892,6 @@ ShallowWrapper {
                 </Col>
                 <Col
                   md={12}
-                  sm={12}
                   xs={24}
                 >
                   <FormItem
@@ -927,9 +951,14 @@ ShallowWrapper {
                 <Row
                   gutter={16}
                 >
-                  <h5>
-                    Basic Details
-                  </h5>
+                  <Col
+                    md={12}
+                    xs={24}
+                  >
+                    <h5>
+                      Basic Details
+                    </h5>
+                  </Col>
                 </Row>,
                 false,
                 <Row
@@ -1117,22 +1146,41 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "children": <h5>
-                    Basic Details
-                  </h5>,
+                  "children": <Col
+                    md={12}
+                    xs={24}
+                  >
+                    <h5>
+                      Basic Details
+                    </h5>
+                  </Col>,
                   "gutter": 16,
                 },
                 "ref": null,
                 "rendered": Object {
                   "instance": null,
                   "key": undefined,
-                  "nodeType": "host",
+                  "nodeType": "class",
                   "props": Object {
-                    "children": "Basic Details",
+                    "children": <h5>
+                      Basic Details
+                    </h5>,
+                    "md": 12,
+                    "xs": 24,
                   },
                   "ref": null,
-                  "rendered": "Basic Details",
-                  "type": "h5",
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "Basic Details",
+                    },
+                    "ref": null,
+                    "rendered": "Basic Details",
+                    "type": "h5",
+                  },
+                  "type": [Function],
                 },
                 "type": [Function],
               },
@@ -1531,9 +1579,14 @@ ShallowWrapper {
                 <Row
                   gutter={16}
                 >
-                  <h5>
-                    Address
-                  </h5>
+                  <Col
+                    md={12}
+                    xs={24}
+                  >
+                    <h5>
+                      Address
+                    </h5>
+                  </Col>
                 </Row>,
                 <Row
                   gutter={16}
@@ -1621,7 +1674,6 @@ ShallowWrapper {
                 >
                   <Col
                     md={12}
-                    sm={12}
                     xs={24}
                   >
                     <FormItem
@@ -1642,7 +1694,6 @@ ShallowWrapper {
                   </Col>
                   <Col
                     md={12}
-                    sm={12}
                     xs={24}
                   >
                     <FormItem
@@ -1679,22 +1730,41 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "children": <h5>
-                    Address
-                  </h5>,
+                  "children": <Col
+                    md={12}
+                    xs={24}
+                  >
+                    <h5>
+                      Address
+                    </h5>
+                  </Col>,
                   "gutter": 16,
                 },
                 "ref": null,
                 "rendered": Object {
                   "instance": null,
                   "key": undefined,
-                  "nodeType": "host",
+                  "nodeType": "class",
                   "props": Object {
-                    "children": "Address",
+                    "children": <h5>
+                      Address
+                    </h5>,
+                    "md": 12,
+                    "xs": 24,
                   },
                   "ref": null,
-                  "rendered": "Address",
-                  "type": "h5",
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "Address",
+                    },
+                    "ref": null,
+                    "rendered": "Address",
+                    "type": "h5",
+                  },
+                  "type": [Function],
                 },
                 "type": [Function],
               },
@@ -2054,7 +2124,6 @@ ShallowWrapper {
                   "children": Array [
                     <Col
                       md={12}
-                      sm={12}
                       xs={24}
                     >
                       <FormItem
@@ -2075,7 +2144,6 @@ ShallowWrapper {
                     </Col>,
                     <Col
                       md={12}
-                      sm={12}
                       xs={24}
                     >
                       <FormItem
@@ -2123,7 +2191,6 @@ ShallowWrapper {
                         />
                       </FormItem>,
                       "md": 12,
-                      "sm": 12,
                       "xs": 24,
                     },
                     "ref": null,
@@ -2191,7 +2258,6 @@ ShallowWrapper {
                         />
                       </FormItem>,
                       "md": 12,
-                      "sm": 12,
                       "xs": 24,
                     },
                     "ref": null,
@@ -2299,9 +2365,14 @@ ShallowWrapper {
               <Row
                 gutter={16}
               >
-                <h5>
-                  Basic Details
-                </h5>
+                <Col
+                  md={12}
+                  xs={24}
+                >
+                  <h5>
+                    Basic Details
+                  </h5>
+                </Col>
               </Row>
               <Row
                 gutter={16}
@@ -2409,9 +2480,14 @@ ShallowWrapper {
               <Row
                 gutter={16}
               >
-                <h5>
-                  Address
-                </h5>
+                <Col
+                  md={12}
+                  xs={24}
+                >
+                  <h5>
+                    Address
+                  </h5>
+                </Col>
               </Row>
               <Row
                 gutter={16}
@@ -2499,7 +2575,6 @@ ShallowWrapper {
               >
                 <Col
                   md={12}
-                  sm={12}
                   xs={24}
                 >
                   <FormItem
@@ -2520,7 +2595,6 @@ ShallowWrapper {
                 </Col>
                 <Col
                   md={12}
-                  sm={12}
                   xs={24}
                 >
                   <FormItem
@@ -2586,9 +2660,14 @@ ShallowWrapper {
               <Row
                 gutter={16}
               >
-                <h5>
-                  Basic Details
-                </h5>
+                <Col
+                  md={12}
+                  xs={24}
+                >
+                  <h5>
+                    Basic Details
+                  </h5>
+                </Col>
               </Row>
               <Row
                 gutter={16}
@@ -2696,9 +2775,14 @@ ShallowWrapper {
               <Row
                 gutter={16}
               >
-                <h5>
-                  Address
-                </h5>
+                <Col
+                  md={12}
+                  xs={24}
+                >
+                  <h5>
+                    Address
+                  </h5>
+                </Col>
               </Row>
               <Row
                 gutter={16}
@@ -2786,7 +2870,6 @@ ShallowWrapper {
               >
                 <Col
                   md={12}
-                  sm={12}
                   xs={24}
                 >
                   <FormItem
@@ -2807,7 +2890,6 @@ ShallowWrapper {
                 </Col>
                 <Col
                   md={12}
-                  sm={12}
                   xs={24}
                 >
                   <FormItem
@@ -2874,9 +2956,14 @@ ShallowWrapper {
                 <Row
                   gutter={16}
                 >
-                  <h5>
-                    Basic Details
-                  </h5>
+                  <Col
+                    md={12}
+                    xs={24}
+                  >
+                    <h5>
+                      Basic Details
+                    </h5>
+                  </Col>
                 </Row>
                 <Row
                   gutter={16}
@@ -2984,9 +3071,14 @@ ShallowWrapper {
                 <Row
                   gutter={16}
                 >
-                  <h5>
-                    Address
-                  </h5>
+                  <Col
+                    md={12}
+                    xs={24}
+                  >
+                    <h5>
+                      Address
+                    </h5>
+                  </Col>
                 </Row>
                 <Row
                   gutter={16}
@@ -3074,7 +3166,6 @@ ShallowWrapper {
                 >
                   <Col
                     md={12}
-                    sm={12}
                     xs={24}
                   >
                     <FormItem
@@ -3095,7 +3186,6 @@ ShallowWrapper {
                   </Col>
                   <Col
                     md={12}
-                    sm={12}
                     xs={24}
                   >
                     <FormItem
@@ -3155,9 +3245,14 @@ ShallowWrapper {
                   <Row
                     gutter={16}
                   >
-                    <h5>
-                      Basic Details
-                    </h5>
+                    <Col
+                      md={12}
+                      xs={24}
+                    >
+                      <h5>
+                        Basic Details
+                      </h5>
+                    </Col>
                   </Row>,
                   false,
                   <Row
@@ -3345,22 +3440,41 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "class",
                   "props": Object {
-                    "children": <h5>
-                      Basic Details
-                    </h5>,
+                    "children": <Col
+                      md={12}
+                      xs={24}
+                    >
+                      <h5>
+                        Basic Details
+                      </h5>
+                    </Col>,
                     "gutter": 16,
                   },
                   "ref": null,
                   "rendered": Object {
                     "instance": null,
                     "key": undefined,
-                    "nodeType": "host",
+                    "nodeType": "class",
                     "props": Object {
-                      "children": "Basic Details",
+                      "children": <h5>
+                        Basic Details
+                      </h5>,
+                      "md": 12,
+                      "xs": 24,
                     },
                     "ref": null,
-                    "rendered": "Basic Details",
-                    "type": "h5",
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": "Basic Details",
+                      },
+                      "ref": null,
+                      "rendered": "Basic Details",
+                      "type": "h5",
+                    },
+                    "type": [Function],
                   },
                   "type": [Function],
                 },
@@ -3759,9 +3873,14 @@ ShallowWrapper {
                   <Row
                     gutter={16}
                   >
-                    <h5>
-                      Address
-                    </h5>
+                    <Col
+                      md={12}
+                      xs={24}
+                    >
+                      <h5>
+                        Address
+                      </h5>
+                    </Col>
                   </Row>,
                   <Row
                     gutter={16}
@@ -3849,7 +3968,6 @@ ShallowWrapper {
                   >
                     <Col
                       md={12}
-                      sm={12}
                       xs={24}
                     >
                       <FormItem
@@ -3870,7 +3988,6 @@ ShallowWrapper {
                     </Col>
                     <Col
                       md={12}
-                      sm={12}
                       xs={24}
                     >
                       <FormItem
@@ -3907,22 +4024,41 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "class",
                   "props": Object {
-                    "children": <h5>
-                      Address
-                    </h5>,
+                    "children": <Col
+                      md={12}
+                      xs={24}
+                    >
+                      <h5>
+                        Address
+                      </h5>
+                    </Col>,
                     "gutter": 16,
                   },
                   "ref": null,
                   "rendered": Object {
                     "instance": null,
                     "key": undefined,
-                    "nodeType": "host",
+                    "nodeType": "class",
                     "props": Object {
-                      "children": "Address",
+                      "children": <h5>
+                        Address
+                      </h5>,
+                      "md": 12,
+                      "xs": 24,
                     },
                     "ref": null,
-                    "rendered": "Address",
-                    "type": "h5",
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": "Address",
+                      },
+                      "ref": null,
+                      "rendered": "Address",
+                      "type": "h5",
+                    },
+                    "type": [Function],
                   },
                   "type": [Function],
                 },
@@ -4282,7 +4418,6 @@ ShallowWrapper {
                     "children": Array [
                       <Col
                         md={12}
-                        sm={12}
                         xs={24}
                       >
                         <FormItem
@@ -4303,7 +4438,6 @@ ShallowWrapper {
                       </Col>,
                       <Col
                         md={12}
-                        sm={12}
                         xs={24}
                       >
                         <FormItem
@@ -4351,7 +4485,6 @@ ShallowWrapper {
                           />
                         </FormItem>,
                         "md": 12,
-                        "sm": 12,
                         "xs": 24,
                       },
                       "ref": null,
@@ -4419,7 +4552,6 @@ ShallowWrapper {
                           />
                         </FormItem>,
                         "md": 12,
-                        "sm": 12,
                         "xs": 24,
                       },
                       "ref": null,

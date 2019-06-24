@@ -5,7 +5,7 @@ import modules.*
 import utils.Const
 
 class MineProfilePage extends Page {
-    static at = { waitFor() {activeTab == "Summary" }  }
+    static at = { waitFor() {activeTab == "Summary" } }
     static url = "dashboard/${Const.MINE_GUID}/summary"
     static content = {
         //General
