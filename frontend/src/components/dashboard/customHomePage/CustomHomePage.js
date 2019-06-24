@@ -102,7 +102,10 @@ export class CustomHomePage extends Component {
     this.setState({ variancesLoaded: false });
     const params = { ...this.state.params, page, per_page };
     return this.props.fetchVariances(params).then(() => {
-      this.setState({ variancesLoaded: true, params });
+      this.setState({
+        variancesLoaded: true,
+        params,
+      });
     });
   };
 
@@ -175,7 +178,10 @@ export class CustomHomePage extends Component {
       page: 1,
     };
     return this.props.fetchVariances(params).then(() => {
-      this.setState({ variancesLoaded: true, params });
+      this.setState({
+        variancesLoaded: true,
+        params,
+      });
     });
   };
 

@@ -23,7 +23,7 @@ import * as router from "@/constants/routes";
 const { errorRed } = COLOR;
 
 const propTypes = {
-  handleFilterChange: PropTypes.func.isRequired,
+  handleFilterChange: PropTypes.func,
   variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -33,15 +33,18 @@ const propTypes = {
   isDashboardView: PropTypes.bool,
   openEditVarianceModal: PropTypes.func,
   filterVarianceStatusOptions: CustomPropTypes.filterOptions,
-  params: PropTypes.shape({ variance_application_status_code: PropTypes.arrayOf(PropTypes.string) })
-    .isRequired,
+  params: PropTypes.shape({
+    variance_application_status_code: PropTypes.arrayOf(PropTypes.string),
+  }),
 };
 
 const defaultProps = {
+  handleFilterChange: () => {},
   openEditVarianceModal: () => {},
   openViewVarianceModal: () => {},
   isApplication: false,
   isDashboardView: false,
+  params: {},
   filterVarianceStatusOptions: [],
 };
 
