@@ -1,17 +1,13 @@
 #! /bin/bash
 set -exv -o pipefail
 
-# Chrome Tests
-#./gradlew chromeTest -DchromeTest.single=CustomJUnitSpecRunner
-#./gradlew chromeHeadlessTest -DchromeHeadlessTest.single=CustomJUnitSpecRunner
+# NOTE: FIREFOX HEADLESS IS THE ONLY BROWSER WHERE THE UPLOAD DOWNLOAD TEST CAN BE COMPLETED
 
-###FIREFOX HEADLESS IS THE ONLY BROWSER WHERE THE UPLOAD DOWNLOAD TEST CAN BE COMPLETED
-
-# Config needed for firefoxHeadlessTest
+# Config needed for firefoxest
 # For more info: https://github.com/BCDevOps/BDDStack/wiki/Running-firefoxHeadlessTest-in-CentOS
 Xvfb :1 -screen 0 1920x1080x24 &
 export DISPLAY=:1
 
-###Run both Core and MineSpace tests
+### Run both Core and MineSpace tests
 ./gradlew firefoxHeadlessTest -DfirefoxHeadlessTest.single=CustomJUnitSpecRunner
 ./gradlew firefoxHeadlessTest -DfirefoxHeadlessTest.single=CustomJUnitPublicSpecRunner

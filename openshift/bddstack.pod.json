@@ -64,6 +64,7 @@
               "-c",
               "cd /home/jenkins/bdd-tests && ./run_tests.sh"
             ],
+            "imagePullPolicy": "Always",
             "env": [
               {
                 "name": "BASEURL",
@@ -119,18 +120,16 @@
                 "memory": "3Gi"
               },
               "requests": {
-                "cpu": "500m",
+                "cpu": "1",
                 "memory": "1Gi"
               }
-            },
-            "imagePullPolicy": "IfNotPresent"
+            }
           }
         ],
         "restartPolicy": "Never",
         "activeDeadlineSeconds": 3600,
         "dnsPolicy": "ClusterFirst"
-      },
-      "status": {}
+      }
     }
   ]
 }
