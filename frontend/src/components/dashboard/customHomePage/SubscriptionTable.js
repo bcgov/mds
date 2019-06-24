@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { Table, Popconfirm } from "antd";
+import { Table, Popconfirm, Tooltip } from "antd";
 import { uniqBy } from "lodash";
 import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
@@ -10,7 +10,7 @@ import CustomPropTypes from "@/customPropTypes";
 import { UNSUBSCRIBE } from "@/constants/assets";
 
 /**
- * @class MineSubscriptionTable is a user specific table of mines they have subscribed to with the ability to unsubscribe
+ * @class SubscriptionTable is a user specific table of mines they have subscribed to with the ability to unsubscribe
  *
  */
 
@@ -22,7 +22,7 @@ const propTypes = {
   mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
-export class MineSubscriptionTable extends Component {
+export class SubscriptionTable extends Component {
   transformRowData = (mines, mineRegionHash, mineTenureHash, mineCommodityHash) =>
     mines.map((mine) => ({
       key: mine.mine_guid,
@@ -145,9 +145,11 @@ export class MineSubscriptionTable extends Component {
             cancelText="No"
             onConfirm={(event) => this.props.handleUnSubscribe(event, record.key, record.mineName)}
           >
-            <button type="button">
-              <img alt="document" src={UNSUBSCRIBE} />
-            </button>
+            <Tooltip title="Unsubscribe" placement="right">
+              <button type="button">
+                <img alt="document" src={UNSUBSCRIBE} />
+              </button>
+            </Tooltip>
           </Popconfirm>
         ),
       },
@@ -155,6 +157,7 @@ export class MineSubscriptionTable extends Component {
     return (
       <div className="tab__content">
         <h4>Subscribed Mines</h4>
+        <br />
         <Table
           align="left"
           pagination={false}
@@ -172,6 +175,6 @@ export class MineSubscriptionTable extends Component {
   }
 }
 
-MineSubscriptionTable.propTypes = propTypes;
+SubscriptionTable.propTypes = propTypes;
 
-export default MineSubscriptionTable;
+export default SubscriptionTable;

@@ -172,6 +172,7 @@ ShallowWrapper {
                 N/A
               </p>
             </div>,
+            false,
             <div
               className="inline-flex padding-small"
             >
@@ -332,6 +333,7 @@ ShallowWrapper {
             ],
             "type": "div",
           },
+          false,
           Object {
             "instance": null,
             "key": undefined,
@@ -545,6 +547,7 @@ ShallowWrapper {
                   N/A
                 </p>
               </div>,
+              false,
               <div
                 className="inline-flex padding-small"
               >
@@ -705,6 +708,7 @@ ShallowWrapper {
               ],
               "type": "div",
             },
+            false,
             Object {
               "instance": null,
               "key": undefined,

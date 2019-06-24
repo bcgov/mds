@@ -1460,6 +1460,10 @@ export const VARIANCES = {
       ],
     },
   ],
+  current_page: 1,
+  items_per_page: 5,
+  total: 25,
+  total_pages: 5,
 };
 
 export const VARIANCE = {
@@ -1542,7 +1546,7 @@ export const APPLICATION_LIST = {
   ],
 };
 
-export const CORE_USERS = {
+export const INSPECTORS = {
   results: [
     {
       core_user_guid: "51b3a499-a474-4d52-be99-5c5123d7501c",
@@ -1560,11 +1564,11 @@ export const CORE_USERS = {
   ],
 };
 
-export const CORE_USERS_DROPDOWN = [
+export const INSPECTORS_DROPDOWN = [
   { value: "51b3a499-a474-4d52-be99-5c5123d7501c", label: "BLAH" },
 ];
 
-export const CORE_USERS_HASH = {
+export const INSPECTORS_HASH = {
   "51b3a499-a474-4d52-be99-5c5123d7501c": "BLAH",
 };
 
