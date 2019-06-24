@@ -4,7 +4,6 @@ USER root
 
 # For firefoxHeadLessTests
 RUN dbus-uuidgen > /var/lib/dbus/machine-id
-RUN yum install -y firefox; yum clean all
 
 # Copy over the code
 RUN mkdir /home/jenkins/bdd-tests
