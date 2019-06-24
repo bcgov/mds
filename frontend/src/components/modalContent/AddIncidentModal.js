@@ -78,12 +78,7 @@ const StepForms = (
   {
     title: "Initial Report",
     content: (
-      <AddIncidentReportingForm
-        initialValues={props.initialValues}
-        inspectors={props.inspectors}
-        onFileLoad={onFileLoad}
-        onRemoveFile={onRemoveFile}
-      />
+      <AddIncidentReportingForm initialValues={props.initialValues} inspectors={props.inspectors} />
     ),
     buttons: (
       <Button

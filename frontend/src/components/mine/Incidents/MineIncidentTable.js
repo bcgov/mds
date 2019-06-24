@@ -20,6 +20,20 @@ const propTypes = {
   openMineIncidentModal: PropTypes.func.isRequired,
 };
 
+const renderDownloadLinks = (files, mine_incident_document_type_code) =>
+  files
+    .filter((file) => file.mine_incident_document_type_code === mine_incident_document_type_code)
+    .map((file) => (
+      <div key={file.mine_document_guid}>
+        <LinkButton
+          key={file.mine_document_guid}
+          onClick={() => downloadFileFromDocumentManager(file.document_manager_guid)}
+        >
+          {file.document_name}
+        </LinkButton>
+      </div>
+    ));
+
 const columns = (props) => [
   {
     title: "Incident Report No.",
@@ -67,22 +81,7 @@ const columns = (props) => [
     width: 200,
     render: (text, record) => (
       <div title="Initial Report Documents">
-        {record.docs.length === 0 ? (
-          <span>--</span>
-        ) : (
-          record.docs
-            .filter((file) => file.mine_incident_document_type_code === "INI")
-            .map((file) => (
-              <div key={file.mine_document_guid}>
-                <LinkButton
-                  key={file.mine_document_guid}
-                  onClick={() => downloadFileFromDocumentManager(file.document_manager_guid)}
-                >
-                  {file.document_name}
-                </LinkButton>
-              </div>
-            ))
-        )}
+        {record.docs.length === 0 ? <span>--</span> : renderDownloadLinks(record.docs, "INI")}
       </div>
     ),
   },
@@ -92,22 +91,7 @@ const columns = (props) => [
     width: 200,
     render: (text, record) => (
       <div title="Final Report Documents">
-        {record.docs.length === 0 ? (
-          <span>--</span>
-        ) : (
-          record.docs
-            .filter((file) => file.mine_incident_document_type_code === "FIN")
-            .map((file) => (
-              <div key={file.mine_document_guid}>
-                <LinkButton
-                  key={file.mine_document_guid}
-                  onClick={() => downloadFileFromDocumentManager(file.document_manager_guid)}
-                >
-                  {file.document_name}
-                </LinkButton>
-              </div>
-            ))
-        )}
+        {record.docs.length === 0 ? <span>--</span> : renderDownloadLinks(record.docs, "FIN")}
       </div>
     ),
   },
