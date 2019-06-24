@@ -405,19 +405,16 @@ export class MineDashboard extends Component {
                     </div>
                   </TabPane>
                 )}
-                {/* can't wrap a TabPane in the authWrapper without interfering with the Tabs behaviour */}
-                {isDevOrTest && (
-                  <TabPane tab="Incidents" key="incidents">
-                    <div className="tab__content">
-                      <MineIncidents
-                        mine={mine}
-                        inspectors={this.props.inspectors}
-                        openModal={this.props.openModal}
-                        closeModal={this.props.closeModal}
-                      />
-                    </div>
-                  </TabPane>
-                )}
+                <TabPane tab="Incidents" key="incidents">
+                  <div className="tab__content">
+                    <MineIncidents
+                      mine={mine}
+                      inspectors={this.props.inspectors}
+                      openModal={this.props.openModal}
+                      closeModal={this.props.closeModal}
+                    />
+                  </div>
+                </TabPane>
               </Tabs>
             </div>
           </div>
