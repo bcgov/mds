@@ -84,8 +84,6 @@ import Loading from "@/components/common/Loading";
 import { formatParamStringToArray } from "@/utils/helpers";
 import { detectProdEnvironment } from "@/utils/environmentUtils";
 import { getUserAccessData } from "@/selectors/authenticationSelectors";
-import { USER_ROLES } from "@/constants/environment";
-import * as Permission from "@/constants/permissions";
 
 /**
  * @class MineDashboard.js is an individual mines dashboard, gets Mine data from redux and passes into children.
@@ -302,9 +300,6 @@ export class MineDashboard extends Component {
     const { id } = this.props.match.params;
     const mine = this.props.mines[id];
     const isDevOrTest = !detectProdEnvironment();
-    // temporary check, cannot wrap tabs in an AuthWrapper
-    const isAdmin = this.props.userRoles.includes(USER_ROLES[Permission.ADMIN]);
-    const showVariances = isDevOrTest || isAdmin;
     if (!mine) {
       return <Loading />;
     }
@@ -371,34 +366,31 @@ export class MineDashboard extends Component {
                     />
                   </div>
                 </TabPane>
-                {/* can't wrap a TabPane in the authWrapper without interfering with the Tabs behaviour */}
-                {showVariances && (
-                  <TabPane tab="Variance" key="variance">
-                    <div className="tab__content">
-                      <MineVariance
-                        mine={mine}
-                        inspectors={this.props.inspectors}
-                        createVariance={this.props.createVariance}
-                        varianceDocumentCategoryOptions={this.props.varianceDocumentCategoryOptions}
-                        varianceDocumentCategoryOptionsHash={
-                          this.props.varianceDocumentCategoryOptionsHash
-                        }
-                        addDocumentToVariance={this.props.addDocumentToVariance}
-                        openModal={this.props.openModal}
-                        closeModal={this.props.closeModal}
-                        fetchVariancesByMine={this.props.fetchVariancesByMine}
-                        varianceApplications={this.props.varianceApplications}
-                        approvedVariances={this.props.approvedVariances}
-                        complianceCodes={this.props.complianceCodes}
-                        complianceCodesHash={this.props.complianceCodesHash}
-                        varianceStatusOptions={this.props.varianceStatusOptions}
-                        updateVariance={this.props.updateVariance}
-                        varianceStatusOptionsHash={this.props.varianceStatusOptionsHash}
-                        inspectorsHash={this.props.inspectorsHash}
-                      />
-                    </div>
-                  </TabPane>
-                )}
+                <TabPane tab="Variance" key="variance">
+                  <div className="tab__content">
+                    <MineVariance
+                      mine={mine}
+                      inspectors={this.props.inspectors}
+                      createVariance={this.props.createVariance}
+                      varianceDocumentCategoryOptions={this.props.varianceDocumentCategoryOptions}
+                      varianceDocumentCategoryOptionsHash={
+                        this.props.varianceDocumentCategoryOptionsHash
+                      }
+                      addDocumentToVariance={this.props.addDocumentToVariance}
+                      openModal={this.props.openModal}
+                      closeModal={this.props.closeModal}
+                      fetchVariancesByMine={this.props.fetchVariancesByMine}
+                      varianceApplications={this.props.varianceApplications}
+                      approvedVariances={this.props.approvedVariances}
+                      complianceCodes={this.props.complianceCodes}
+                      complianceCodesHash={this.props.complianceCodesHash}
+                      varianceStatusOptions={this.props.varianceStatusOptions}
+                      updateVariance={this.props.updateVariance}
+                      varianceStatusOptionsHash={this.props.varianceStatusOptionsHash}
+                      inspectorsHash={this.props.inspectorsHash}
+                    />
+                  </div>
+                </TabPane>
                 {/* TODO: Unhide for July release */
                 false && (
                   <TabPane tab="Tenure" key="tenure">
