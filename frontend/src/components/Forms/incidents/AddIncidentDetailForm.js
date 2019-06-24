@@ -5,6 +5,9 @@ import { Field, reduxForm } from "redux-form";
 import { Form, Col, Row } from "antd";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
+import FileUpload from "@/components/common/FileUpload";
+import { MINE_INCIDENT_DOCUMENT } from "@/constants/API";
+import { IncidentsUploadedFilesList } from "@/components/Forms/incidents/IncidentsUploadedFilesList";
 
 import { required, maxLength, number, dateNotInFuture } from "@/utils/Validate";
 
@@ -13,7 +16,11 @@ const propTypes = {
   doSubparagraphOptions: CustomPropTypes.options.isRequired,
   inspectors: CustomPropTypes.options.isRequired,
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
+  mineGuid: PropTypes.string.isRequired,
   doDetermination: PropTypes.string,
+  uploadedFiles: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  onFileLoad: PropTypes.func.isRequired,
+  onRemoveFile: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -113,7 +120,28 @@ class AddIncidentDetailForm extends Component {
                   />
                 </Form.Item>
                 <h4>Initial Notification Documents</h4>
-                <p>Insert document section here</p>
+                {this.props.uploadedFiles.length > 0 && (
+                  <Form.Item label="Attached files" style={{ paddingBottom: "10px" }}>
+                    <Field
+                      id="initial_documents"
+                      name="initial_documents"
+                      component={IncidentsUploadedFilesList}
+                      files={this.props.uploadedFiles}
+                      onRemoveFile={this.props.onRemoveFile}
+                    />
+                  </Form.Item>
+                )}
+                <Form.Item>
+                  <Field
+                    id="InitialIncidentFileUpload"
+                    name="InitialIncidentFileUpload"
+                    onFileLoad={(document_name, document_manager_guid) =>
+                      this.props.onFileLoad(document_name, document_manager_guid, "INI")
+                    }
+                    component={FileUpload}
+                    uploadUrl={MINE_INCIDENT_DOCUMENT(this.props.mineGuid)}
+                  />
+                </Form.Item>
               </span>
             ) : null}
 

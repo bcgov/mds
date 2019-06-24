@@ -12,12 +12,19 @@ import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
 import { required, dateNotInFuture } from "@/utils/Validate";
 import LinkButton from "@/components/common/LinkButton";
+import FileUpload from "@/components/common/FileUpload";
+import { MINE_INCIDENT_DOCUMENT } from "@/constants/API";
+import { IncidentsUploadedFilesList } from "@/components/Forms/incidents/IncidentsUploadedFilesList";
 
 const propTypes = {
   followupActionOptions: CustomPropTypes.options.isRequired,
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
   hasFatalities: PropTypes.bool.isRequired,
+  mineGuid: PropTypes.string.isRequired,
   hasFollowUp: PropTypes.bool.isRequired,
+  uploadedFiles: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  onFileLoad: PropTypes.func.isRequired,
+  onRemoveFile: PropTypes.func.isRequired,
 };
 
 const renderRecommendations = ({ fields }) => [
@@ -97,6 +104,30 @@ export class AddIncidentFollowUpForm extends Component {
                   label="Incident status?*"
                   component={renderConfig.SELECT}
                   data={this.props.incidentStatusCodeOptions}
+                />
+              </Form.Item>
+
+              <h4>Final Investigation Report Documents</h4>
+              {this.props.uploadedFiles.length > 0 && (
+                <Form.Item label="Attached files" style={{ paddingBottom: "10px" }}>
+                  <Field
+                    id="initial_documents"
+                    name="initial_documents"
+                    component={IncidentsUploadedFilesList}
+                    files={this.props.uploadedFiles}
+                    onRemoveFile={this.props.onRemoveFile}
+                  />
+                </Form.Item>
+              )}
+              <Form.Item>
+                <Field
+                  id="InitialIncidentFileUpload"
+                  name="InitialIncidentFileUpload"
+                  onFileLoad={(document_name, document_manager_guid) =>
+                    this.props.onFileLoad(document_name, document_manager_guid, "FIN")
+                  }
+                  uploadUrl={MINE_INCIDENT_DOCUMENT(this.props.mineGuid)}
+                  component={FileUpload}
                 />
               </Form.Item>
             </Col>
