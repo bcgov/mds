@@ -15,7 +15,7 @@ from ..models.permit_amendment import PermitAmendment
 from ..models.permit_amendment_document import PermitAmendmentDocument
 
 from app.extensions import api, db
-from ....utils.access_decorators import requires_role_mine_create
+from ....utils.access_decorators import requires_role_edit_permit
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from ....utils.url import get_document_manager_svc_url
 
@@ -25,14 +25,14 @@ class PermitAmendmentDocumentResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument('document_manager_guid', type=str, store_missing=False)
     parser.add_argument('filename', type=str, store_missing=False)
     parser.add_argument('mine_guid', type=str, store_missing=False)
-    #permit_guid, it could be in the request and we don't want to disallow it, but it is not used.
+    # permit_guid, it could be in the request and we don't want to disallow it, but it is not used.
 
     @api.doc(
         params={
             'permit_amendment_guid':
             'Required: The guid of the permit amendment that this upload will be attached to.'
         })
-    @requires_role_mine_create
+    @requires_role_edit_permit
     def post(self, permit_guid=None, document_guid=None):
         metadata = self._parse_request_metadata()
         if not metadata or not metadata.get('filename'):
@@ -42,7 +42,7 @@ class PermitAmendmentDocumentResource(Resource, UserMixin, ErrorMixin):
         mine_guid = request.args.get('mine_guid')
 
         try:
-            #check formatting
+            # check formatting
             uuid.UUID(mine_guid)
             valid_guid = True
         except:
@@ -68,12 +68,14 @@ class PermitAmendmentDocumentResource(Resource, UserMixin, ErrorMixin):
             cookies=request.cookies,
         )
 
-        response = Response(resp.content, resp.status_code, resp.raw.headers.items())
+        response = Response(resp.content, resp.status_code,
+                            resp.raw.headers.items())
         return response
 
-    @requires_role_mine_create
+    @requires_role_edit_permit
     def put(self, permit_amendment_guid, document_guid=None, permit_guid=None):
-        permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
+        permit_amendment = PermitAmendment.find_by_permit_amendment_guid(
+            permit_amendment_guid)
         if not permit_amendment:
             return self.create_error_payload(404, 'Permit amendment not found'), 404
 
@@ -98,13 +100,15 @@ class PermitAmendmentDocumentResource(Resource, UserMixin, ErrorMixin):
 
         return permit_amendment.json()
 
-    @requires_role_mine_create
+    @requires_role_edit_permit
     def delete(self, permit_amendment_guid, document_guid=None, permit_guid=None):
         if not document_guid:
             return self.create_error_payload(400, 'must provide document_guid to be unlinked'), 400
 
-        permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
-        permit_amendment_doc = PermitAmendmentDocument.find_by_permit_amendment_guid(document_guid)
+        permit_amendment = PermitAmendment.find_by_permit_amendment_guid(
+            permit_amendment_guid)
+        permit_amendment_doc = PermitAmendmentDocument.find_by_permit_amendment_guid(
+            document_guid)
 
         if permit_amendment is None or permit_amendment_doc is None:
             return self.create_error_payload(

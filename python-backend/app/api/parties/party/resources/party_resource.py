@@ -9,7 +9,7 @@ from ..models.party import Party
 from ..models.address import Address
 from ...response_models import PARTY
 from ...party_appt.models.mine_party_appt import MinePartyAppointment
-from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create, requires_role_mine_admin
+from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create, requires_role_mine_admin, requires_role_edit_party
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 
@@ -36,8 +36,10 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
         type=str,
         help='The extension of the phone number. Ex: 1234',
         store_missing=False)
-    parser.add_argument('email', type=str, help='The email of the party.', store_missing=False)
-    parser.add_argument('email', type=str, help='The email of the party.', store_missing=False)
+    parser.add_argument('email', type=str,
+                        help='The email of the party.', store_missing=False)
+    parser.add_argument('email', type=str,
+                        help='The email of the party.', store_missing=False)
     parser.add_argument(
         'party_type_code', type=str, help='The type of the party. Ex: PER', store_missing=False)
     parser.add_argument(
@@ -104,7 +106,7 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
     @api.expect(parser)
     @api.doc(
         description='Update a party by guid', params={'party_guid': 'guid of the party to update.'})
-    @requires_role_mine_create
+    @requires_role_edit_party
     @api.marshal_with(PARTY, code=200)
     def put(self, party_guid):
         data = PartyResource.parser.parse_args()
@@ -135,7 +137,7 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
 
     @api.doc(
         description='Delete a party by guid', params={'party_guid': 'guid of the party to delete.'})
-    @requires_role_mine_admin
+    @requires_role_edit_party
     def delete(self, party_guid):
         if party_guid is None:
             return self.create_error_payload(404, 'Must provide a party guid.'), 404
@@ -146,7 +148,8 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
         if party is None:
             return self.create_error_payload(404, 'Party guid with "{party_guid}" not found.'), 404
 
-        mine_party_appts = MinePartyAppointment.find_all_by_mine_party_appt_guid(party_guid)
+        mine_party_appts = MinePartyAppointment.find_all_by_mine_party_appt_guid(
+            party_guid)
         for mine_party_appt in mine_party_appts:
             mine_party_appt.deleted_ind = True
             mine_party_appt.save()

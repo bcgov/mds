@@ -9,7 +9,7 @@ from ..models.permit_amendment_document import PermitAmendmentDocument
 from app.api.parties.party.models.party import Party
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.extensions import api
-from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create, requires_role_mine_admin
+from ....utils.access_decorators import requires_role_mine_view, requires_role_edit_permit, requires_role_mine_admin
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
@@ -40,8 +40,10 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
         'permit_amendment_type_code', type=str, location='json', store_missing=False)
     parser.add_argument(
         'permit_amendment_status_code', type=str, location='json', store_missing=False)
-    parser.add_argument('description', type=str, location='json', store_missing=False)
-    parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
+    parser.add_argument('description', type=str,
+                        location='json', store_missing=False)
+    parser.add_argument('uploadedFiles', type=list,
+                        location='json', store_missing=False)
 
     @api.doc(params={
         'permit_amendment_guid': 'Permit amendment guid.',
@@ -52,7 +54,8 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
         result = []
 
         if permit_amendment_guid:
-            permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
+            permit_amendment = PermitAmendment.find_by_permit_amendment_guid(
+                permit_amendment_guid)
             if not permit_amendment:
                 raise NotFound("Permit Amendment not found.")
             result = permit_amendment.json()
@@ -61,7 +64,8 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
             permit = Permit.find_by_permit_guid(permit_guid)
             if not permit:
                 raise BadRequest("Permit not found")
-            permit_amendments = PermitAmendment.find_by_permit_id(permit.permit_id)
+            permit_amendments = PermitAmendment.find_by_permit_id(
+                permit.permit_id)
             result = [x.json() for x in permit_amendments]
 
         else:
@@ -72,7 +76,7 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
         'permit_amendment_guid': 'Permit amendment guid.',
         'permit_guid': 'Permit GUID'
     })
-    @requires_role_mine_create
+    @requires_role_edit_permit
     def post(self, permit_guid=None, permit_amendment_guid=None):
         if not permit_guid:
             return self.create_error_payload(400, 'Permit_guid must be provided'), 400
@@ -89,7 +93,8 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
         received_date = data.get('received_date')
         issue_date = data.get('issue_date')
         authorization_end_date = data.get('authorization_end_date')
-        permit_amendment_type_code = data.get('permit_amendment_type_code', 'AMD')
+        permit_amendment_type_code = data.get(
+            'permit_amendment_type_code', 'AMD')
         description = data.get('description')
         uploadedFiles = data.get('uploadedFiles', [])
 
@@ -111,7 +116,8 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
 
         if not party_is_active_permittee:
             new_permittee = MinePartyAppointment.create(permit.mine_guid,
-                                                        data.get('permittee_party_guid'), 'PMT',
+                                                        data.get(
+                                                            'permittee_party_guid'), 'PMT',
                                                         datetime.utcnow(), None,
                                                         self.get_user_info(), permit_guid, True)
             new_permittee.save()
@@ -141,12 +147,13 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
         'permit_amendment_guid': 'Permit amendment guid.',
         'permit_guid': 'Permit GUID'
     })
-    @requires_role_mine_create
+    @requires_role_edit_permit
     def put(self, permit_guid=None, permit_amendment_guid=None):
 
         if not permit_amendment_guid:
             return self.create_error_payload(400, 'permit_amendment_id must be provided'), 400
-        pa = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
+        pa = PermitAmendment.find_by_permit_amendment_guid(
+            permit_amendment_guid)
         if not pa:
             return self.create_error_payload(404, 'permit amendment not found'), 404
 
@@ -177,7 +184,8 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
     def delete(self, permit_guid=None, permit_amendment_guid=None):
         if not permit_amendment_guid:
             return self.create_error_payload(400, 'permit_amendment_id must be provided'), 400
-        pa = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
+        pa = PermitAmendment.find_by_permit_amendment_guid(
+            permit_amendment_guid)
         if not pa:
             return self.create_error_payload(404, 'permit amendment not found'), 404
 

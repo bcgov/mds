@@ -5,7 +5,7 @@ from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
 from app.extensions import api
 from app.api.utils.resources_mixins import UserMixin
-from app.api.utils.access_decorators import requires_role_mine_view, requires_role_mine_create
+from app.api.utils.access_decorators import requires_role_mine_view, requires_role_edit_do
 
 from app.api.mines.mine.models.mine import Mine
 from app.api.parties.party.models.party import Party
@@ -76,7 +76,7 @@ class MineIncidentListResource(Resource, UserMixin):
     @api.expect(MINE_INCIDENT_MODEL)
     @api.doc(description='creates a new incident for the mine')
     @api.marshal_with(MINE_INCIDENT_MODEL, code=201)
-    @requires_role_mine_create
+    @requires_role_edit_do
     def post(self, mine_guid):
         mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:
@@ -208,7 +208,7 @@ class MineIncidentResource(Resource, UserMixin):
 
     @api.expect(parser)
     @api.marshal_with(MINE_INCIDENT_MODEL, code=200)
-    @requires_role_mine_create
+    @requires_role_edit_do
     def put(self, mine_guid, mine_incident_guid):
         incident = MineIncident.find_by_mine_incident_guid(mine_incident_guid)
         if not incident or str(incident.mine_guid) != mine_guid:

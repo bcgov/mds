@@ -10,7 +10,7 @@ from ....mines.mine.models.mine import Mine
 from app.api.parties.party.models.party import Party
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.extensions import api, db
-from app.api.utils.access_decorators import requires_role_mine_view, requires_role_mine_create
+from app.api.utils.access_decorators import requires_role_mine_view, requires_role_edit_permit
 from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 
 
@@ -19,7 +19,8 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument(
         'permit_no', type=str, help='Number of the permit being added.', location='json')
-    parser.add_argument('mine_guid', type=str, help='GUID of the mine.', location='json')
+    parser.add_argument('mine_guid', type=str,
+                        help='GUID of the mine.', location='json')
     parser.add_argument(
         'permittee_party_guid',
         type=str,
@@ -50,7 +51,8 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
         help='Status of the permit being added.')
     parser.add_argument(
         'description', type=str, location='json', help='Permit description', store_missing=False)
-    parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
+    parser.add_argument('uploadedFiles', type=list,
+                        location='json', store_missing=False)
 
     @api.doc(params={'permit_guid': 'Permit guid.'})
     @requires_role_mine_view
@@ -77,7 +79,7 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
         return result
 
     @api.doc(params={'permit_guid': 'Permit guid.'})
-    @requires_role_mine_create
+    @requires_role_edit_permit
     def post(self, permit_guid=None):
         if permit_guid:
             raise BadRequest("unexepected permit_guid")
@@ -86,7 +88,8 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
 
         mine = Mine.find_by_mine_guid(data.get('mine_guid'))
         if not mine:
-            raise NotFound('There was no mine found with the provided mine_guid.')
+            raise NotFound(
+                'There was no mine found with the provided mine_guid.')
 
         party = Party.find_by_party_guid(data.get('permittee_party_guid'))
         if not party:
@@ -122,14 +125,15 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
         db.session.commit()
 
         permittee = MinePartyAppointment.create(
-            mine.mine_guid, data.get('permittee_party_guid'), 'PMT', datetime.utcnow(), None,
+            mine.mine_guid, data.get(
+                'permittee_party_guid'), 'PMT', datetime.utcnow(), None,
             self.get_user_info(), permit.permit_guid, True)
         db.session.commit()
 
         return permit.json()
 
     @api.doc(params={'permit_guid': 'Permit guid.'})
-    @requires_role_mine_create
+    @requires_role_edit_permit
     def put(self, permit_guid=None):
         if not permit_guid:
             raise BadRequest('Permit guid was not provided.')
