@@ -1,4 +1,4 @@
-import { getMineVariances, getVariance } from "@/selectors/varianceSelectors";
+import { getVariances, getVariance } from "@/selectors/varianceSelectors";
 import varianceReducer from "@/reducers/varianceReducer";
 import { storeVariances, storeVariance } from "@/actions/varianceActions";
 import { VARIANCES } from "@/constants/reducerTypes";
@@ -12,13 +12,13 @@ const mockState = {
 describe("varianceSelectors", () => {
   const { mineVariances, variance } = mockState;
 
-  it("`getMineVariances` calls `varianceReducer.getMineVariances`", () => {
+  it("`getVariances` calls `varianceReducer.getVariances`", () => {
     const storeAction = storeVariances(Mock.VARIANCES);
     const storeState = varianceReducer({}, storeAction);
     const localMockState = {
       [VARIANCES]: storeState,
     };
-    expect(getMineVariances(localMockState)).toEqual(mineVariances);
+    expect(getVariances(localMockState)).toEqual(mineVariances);
   });
 
   it("`getVariance` calls `varianceReducer.getVariance`", () => {
