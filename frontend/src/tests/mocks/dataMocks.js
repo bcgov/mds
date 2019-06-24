@@ -1049,7 +1049,7 @@ export const PERMITS = [
 export const USER_ACCESS_DATA = [
   "core_view_all",
   "idir",
-  "core_edit_mine",
+  "core_edit_mines",
   "offline_access",
   "admin",
   "uma_authorization",

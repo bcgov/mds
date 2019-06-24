@@ -398,7 +398,7 @@ ShallowWrapper {
             <div>
               <Connect(AuthorizationWrapper)
                 isMajorMine={undefined}
-                permission="role_create"
+                permission="role_edit_mines"
               >
                 <Dropdown
                   className="full-height full-mobile"
@@ -826,7 +826,7 @@ ShallowWrapper {
               <div>
                 <Connect(AuthorizationWrapper)
                   isMajorMine={undefined}
-                  permission="role_create"
+                  permission="role_edit_mines"
                 >
                   <Dropdown
                     className="full-height full-mobile"
@@ -1137,7 +1137,7 @@ ShallowWrapper {
                 <div>
                   <Connect(AuthorizationWrapper)
                     isMajorMine={undefined}
-                    permission="role_create"
+                    permission="role_edit_mines"
                   >
                     <Dropdown
                       className="full-height full-mobile"
@@ -1351,7 +1351,7 @@ ShallowWrapper {
                     undefined,
                     <Connect(AuthorizationWrapper)
                       isMajorMine={undefined}
-                      permission="role_create"
+                      permission="role_edit_mines"
                     >
                       <Dropdown
                         className="full-height full-mobile"
@@ -1723,7 +1723,7 @@ ShallowWrapper {
                         </Button>
                       </Dropdown>,
                       "isMajorMine": undefined,
-                      "permission": "role_create",
+                      "permission": "role_edit_mines",
                     },
                     "ref": null,
                     "rendered": Object {
@@ -2852,7 +2852,7 @@ ShallowWrapper {
               <div>
                 <Connect(AuthorizationWrapper)
                   isMajorMine={undefined}
-                  permission="role_create"
+                  permission="role_edit_mines"
                 >
                   <Dropdown
                     className="full-height full-mobile"
@@ -3280,7 +3280,7 @@ ShallowWrapper {
                 <div>
                   <Connect(AuthorizationWrapper)
                     isMajorMine={undefined}
-                    permission="role_create"
+                    permission="role_edit_mines"
                   >
                     <Dropdown
                       className="full-height full-mobile"
@@ -3591,7 +3591,7 @@ ShallowWrapper {
                   <div>
                     <Connect(AuthorizationWrapper)
                       isMajorMine={undefined}
-                      permission="role_create"
+                      permission="role_edit_mines"
                     >
                       <Dropdown
                         className="full-height full-mobile"
@@ -3805,7 +3805,7 @@ ShallowWrapper {
                       undefined,
                       <Connect(AuthorizationWrapper)
                         isMajorMine={undefined}
-                        permission="role_create"
+                        permission="role_edit_mines"
                       >
                         <Dropdown
                           className="full-height full-mobile"
@@ -4177,7 +4177,7 @@ ShallowWrapper {
                           </Button>
                         </Dropdown>,
                         "isMajorMine": undefined,
-                        "permission": "role_create",
+                        "permission": "role_edit_mines",
                       },
                       "ref": null,
                       "rendered": Object {
