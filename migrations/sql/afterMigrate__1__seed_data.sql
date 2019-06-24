@@ -431,3 +431,15 @@ VALUES
     ('APP', 'Approved', 'system-mds', 'system-mds'),
     ('DEN', 'Denied', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
+
+INSERT INTO mine_incident_document_type_code (
+    mine_incident_document_type_code,
+    description,
+    active_ind,
+    create_user,
+    update_user
+)
+VALUES
+    ('FIN', 'Final Document', TRUE, 'system-mds', 'system-mds'),
+    ('INI', 'Initial Document', TRUE,  'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;

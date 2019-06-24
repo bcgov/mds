@@ -11,6 +11,7 @@ const setupDispatchProps = () => {
 
 const setupProps = () => {
   props.initialValues = {};
+  props.uploadedFiles = [];
 };
 
 beforeEach(() => {

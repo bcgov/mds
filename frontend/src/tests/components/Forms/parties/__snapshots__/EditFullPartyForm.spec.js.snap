@@ -53,7 +53,6 @@ ShallowWrapper {
             >
               <Col
                 md={12}
-                sm={12}
                 xs={24}
               >
                 <h5>
@@ -164,7 +163,6 @@ ShallowWrapper {
             >
               <Col
                 md={12}
-                sm={12}
                 xs={24}
               >
                 <h5>
@@ -263,7 +261,6 @@ ShallowWrapper {
             >
               <Col
                 md={12}
-                sm={12}
                 xs={24}
               >
                 <FormItem
@@ -284,7 +281,6 @@ ShallowWrapper {
               </Col>
               <Col
                 md={12}
-                sm={12}
                 xs={24}
               >
                 <FormItem
@@ -371,7 +367,6 @@ ShallowWrapper {
               >
                 <Col
                   md={12}
-                  sm={12}
                   xs={24}
                 >
                   <h5>
@@ -482,7 +477,6 @@ ShallowWrapper {
               >
                 <Col
                   md={12}
-                  sm={12}
                   xs={24}
                 >
                   <h5>
@@ -581,7 +575,6 @@ ShallowWrapper {
               >
                 <Col
                   md={12}
-                  sm={12}
                   xs={24}
                 >
                   <FormItem
@@ -602,7 +595,6 @@ ShallowWrapper {
                 </Col>
                 <Col
                   md={12}
-                  sm={12}
                   xs={24}
                 >
                   <FormItem
@@ -691,7 +683,6 @@ ShallowWrapper {
                 >
                   <Col
                     md={12}
-                    sm={12}
                     xs={24}
                   >
                     <h5>
@@ -802,7 +793,6 @@ ShallowWrapper {
                 >
                   <Col
                     md={12}
-                    sm={12}
                     xs={24}
                   >
                     <h5>
@@ -901,7 +891,6 @@ ShallowWrapper {
                 >
                   <Col
                     md={12}
-                    sm={12}
                     xs={24}
                   >
                     <FormItem
@@ -922,7 +911,6 @@ ShallowWrapper {
                   </Col>
                   <Col
                     md={12}
-                    sm={12}
                     xs={24}
                   >
                     <FormItem
@@ -962,7 +950,6 @@ ShallowWrapper {
                   >
                     <Col
                       md={12}
-                      sm={12}
                       xs={24}
                     >
                       <h5>
@@ -1078,7 +1065,6 @@ ShallowWrapper {
                   "props": Object {
                     "children": <Col
                       md={12}
-                      sm={12}
                       xs={24}
                     >
                       <h5>
@@ -1097,7 +1083,6 @@ ShallowWrapper {
                         Basic Details
                       </h5>,
                       "md": 12,
-                      "sm": 12,
                       "xs": 24,
                     },
                     "ref": null,
@@ -1513,7 +1498,6 @@ ShallowWrapper {
                   >
                     <Col
                       md={12}
-                      sm={12}
                       xs={24}
                     >
                       <h5>
@@ -1612,7 +1596,6 @@ ShallowWrapper {
                   >
                     <Col
                       md={12}
-                      sm={12}
                       xs={24}
                     >
                       <FormItem
@@ -1633,7 +1616,6 @@ ShallowWrapper {
                     </Col>
                     <Col
                       md={12}
-                      sm={12}
                       xs={24}
                     >
                       <FormItem
@@ -1669,7 +1651,6 @@ ShallowWrapper {
                   "props": Object {
                     "children": <Col
                       md={12}
-                      sm={12}
                       xs={24}
                     >
                       <h5>
@@ -1688,7 +1669,6 @@ ShallowWrapper {
                         Address
                       </h5>,
                       "md": 12,
-                      "sm": 12,
                       "xs": 24,
                     },
                     "ref": null,
@@ -2083,7 +2063,6 @@ ShallowWrapper {
                     "children": Array [
                       <Col
                         md={12}
-                        sm={12}
                         xs={24}
                       >
                         <FormItem
@@ -2104,7 +2083,6 @@ ShallowWrapper {
                       </Col>,
                       <Col
                         md={12}
-                        sm={12}
                         xs={24}
                       >
                         <FormItem
@@ -2152,7 +2130,6 @@ ShallowWrapper {
                           />
                         </FormItem>,
                         "md": 12,
-                        "sm": 12,
                         "xs": 24,
                       },
                       "ref": null,
@@ -2220,7 +2197,6 @@ ShallowWrapper {
                           />
                         </FormItem>,
                         "md": 12,
-                        "sm": 12,
                         "xs": 24,
                       },
                       "ref": null,
@@ -2422,7 +2398,6 @@ ShallowWrapper {
               >
                 <Col
                   md={12}
-                  sm={12}
                   xs={24}
                 >
                   <h5>
@@ -2533,7 +2508,6 @@ ShallowWrapper {
               >
                 <Col
                   md={12}
-                  sm={12}
                   xs={24}
                 >
                   <h5>
@@ -2632,7 +2606,6 @@ ShallowWrapper {
               >
                 <Col
                   md={12}
-                  sm={12}
                   xs={24}
                 >
                   <FormItem
@@ -2653,7 +2626,6 @@ ShallowWrapper {
                 </Col>
                 <Col
                   md={12}
-                  sm={12}
                   xs={24}
                 >
                   <FormItem
@@ -2740,7 +2712,6 @@ ShallowWrapper {
                 >
                   <Col
                     md={12}
-                    sm={12}
                     xs={24}
                   >
                     <h5>
@@ -2851,7 +2822,6 @@ ShallowWrapper {
                 >
                   <Col
                     md={12}
-                    sm={12}
                     xs={24}
                   >
                     <h5>
@@ -2950,7 +2920,6 @@ ShallowWrapper {
                 >
                   <Col
                     md={12}
-                    sm={12}
                     xs={24}
                   >
                     <FormItem
@@ -2971,7 +2940,6 @@ ShallowWrapper {
                   </Col>
                   <Col
                     md={12}
-                    sm={12}
                     xs={24}
                   >
                     <FormItem
@@ -3060,7 +3028,6 @@ ShallowWrapper {
                   >
                     <Col
                       md={12}
-                      sm={12}
                       xs={24}
                     >
                       <h5>
@@ -3171,7 +3138,6 @@ ShallowWrapper {
                   >
                     <Col
                       md={12}
-                      sm={12}
                       xs={24}
                     >
                       <h5>
@@ -3270,7 +3236,6 @@ ShallowWrapper {
                   >
                     <Col
                       md={12}
-                      sm={12}
                       xs={24}
                     >
                       <FormItem
@@ -3291,7 +3256,6 @@ ShallowWrapper {
                     </Col>
                     <Col
                       md={12}
-                      sm={12}
                       xs={24}
                     >
                       <FormItem
@@ -3331,7 +3295,6 @@ ShallowWrapper {
                     >
                       <Col
                         md={12}
-                        sm={12}
                         xs={24}
                       >
                         <h5>
@@ -3447,7 +3410,6 @@ ShallowWrapper {
                     "props": Object {
                       "children": <Col
                         md={12}
-                        sm={12}
                         xs={24}
                       >
                         <h5>
@@ -3466,7 +3428,6 @@ ShallowWrapper {
                           Basic Details
                         </h5>,
                         "md": 12,
-                        "sm": 12,
                         "xs": 24,
                       },
                       "ref": null,
@@ -3882,7 +3843,6 @@ ShallowWrapper {
                     >
                       <Col
                         md={12}
-                        sm={12}
                         xs={24}
                       >
                         <h5>
@@ -3981,7 +3941,6 @@ ShallowWrapper {
                     >
                       <Col
                         md={12}
-                        sm={12}
                         xs={24}
                       >
                         <FormItem
@@ -4002,7 +3961,6 @@ ShallowWrapper {
                       </Col>
                       <Col
                         md={12}
-                        sm={12}
                         xs={24}
                       >
                         <FormItem
@@ -4038,7 +3996,6 @@ ShallowWrapper {
                     "props": Object {
                       "children": <Col
                         md={12}
-                        sm={12}
                         xs={24}
                       >
                         <h5>
@@ -4057,7 +4014,6 @@ ShallowWrapper {
                           Address
                         </h5>,
                         "md": 12,
-                        "sm": 12,
                         "xs": 24,
                       },
                       "ref": null,
@@ -4452,7 +4408,6 @@ ShallowWrapper {
                       "children": Array [
                         <Col
                           md={12}
-                          sm={12}
                           xs={24}
                         >
                           <FormItem
@@ -4473,7 +4428,6 @@ ShallowWrapper {
                         </Col>,
                         <Col
                           md={12}
-                          sm={12}
                           xs={24}
                         >
                           <FormItem
@@ -4521,7 +4475,6 @@ ShallowWrapper {
                             />
                           </FormItem>,
                           "md": 12,
-                          "sm": 12,
                           "xs": 24,
                         },
                         "ref": null,
@@ -4589,7 +4542,6 @@ ShallowWrapper {
                             />
                           </FormItem>,
                           "md": 12,
-                          "sm": 12,
                           "xs": 24,
                         },
                         "ref": null,

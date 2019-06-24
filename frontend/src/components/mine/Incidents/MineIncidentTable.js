@@ -7,9 +7,11 @@ import _ from "lodash";
 import { BRAND_PENCIL } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
+import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 import CustomPropTypes from "@/customPropTypes";
 import NullScreen from "@/components/common/NullScreen";
 import { formatDate } from "@/utils/helpers";
+import LinkButton from "@/components/common/LinkButton";
 
 const propTypes = {
   incidents: PropTypes.arrayOf(CustomPropTypes.incident).isRequired,
@@ -17,6 +19,20 @@ const propTypes = {
   handleEditMineIncident: PropTypes.func.isRequired,
   openMineIncidentModal: PropTypes.func.isRequired,
 };
+
+const renderDownloadLinks = (files, mine_incident_document_type_code) =>
+  files
+    .filter((file) => file.mine_incident_document_type_code === mine_incident_document_type_code)
+    .map((file) => (
+      <div key={file.mine_document_guid}>
+        <LinkButton
+          key={file.mine_document_guid}
+          onClick={() => downloadFileFromDocumentManager(file.document_manager_guid)}
+        >
+          {file.document_name}
+        </LinkButton>
+      </div>
+    ));
 
 const columns = (props) => [
   {
@@ -60,6 +76,26 @@ const columns = (props) => [
     })),
   },
   {
+    title: "Initial Report Documents",
+    dataIndex: "initialDocuments",
+    width: 200,
+    render: (text, record) => (
+      <div title="Initial Report Documents">
+        {record.docs.length === 0 ? <span>--</span> : renderDownloadLinks(record.docs, "INI")}
+      </div>
+    ),
+  },
+  {
+    title: "Final Report Documents",
+    dataIndex: "finalDocuments",
+    width: 200,
+    render: (text, record) => (
+      <div title="Final Report Documents">
+        {record.docs.length === 0 ? <span>--</span> : renderDownloadLinks(record.docs, "FIN")}
+      </div>
+    ),
+  },
+  {
     title: "",
     dataIndex: "handleEditModal",
     render: (text, record) => (
@@ -88,13 +124,13 @@ const columns = (props) => [
 
 const transformRowData = (incidents, actions, handleEditMineIncident, openMineIncidentModal) =>
   incidents
-    .sort((i) => i.mine_incident_report_no)
     .map((incident) => ({
       key: incident.incident_id,
       mine_incident_report_no: incident.mine_incident_report_no,
       incident_timestamp: formatDate(incident.incident_timestamp),
       reported_timestamp: formatDate(incident.reported_timestamp),
       reported_by: incident.reported_by_name,
+      docs: incident.documents,
       followup_action: actions.find(
         (x) =>
           x.mine_incident_followup_investigation_type_code ===
@@ -103,7 +139,8 @@ const transformRowData = (incidents, actions, handleEditMineIncident, openMineIn
       handleEditMineIncident,
       openMineIncidentModal,
       incident,
-    }));
+    }))
+    .sort((a, b) => (a.mine_incident_report_no > b.mine_incident_report_no ? -1 : 1));
 
 export const MineIncidentTable = (props) => (
   <div>

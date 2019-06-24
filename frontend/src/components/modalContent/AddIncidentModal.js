@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { getFormValues } from "redux-form";
+import { concat, reject } from "lodash";
 import { Steps, Button, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import AddIncidentReportingForm from "@/components/Forms/incidents/AddIncidentReportingForm";
@@ -27,6 +28,7 @@ const propTypes = {
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   inspectors: CustomPropTypes.options.isRequired,
   addIncidentFormValues: PropTypes.objectOf(PropTypes.any),
+  mineGuid: PropTypes.string.isRequired,
 };
 
 const defaultProps = {
@@ -64,7 +66,15 @@ const actionVerb = (newIncident) => {
   return <span>Edit&nbsp;</span>;
 };
 
-const StepForms = (props, next, prev, handleIncidentSubmit) => [
+const StepForms = (
+  props,
+  next,
+  prev,
+  handleIncidentSubmit,
+  uploadedFiles,
+  onFileLoad,
+  onRemoveFile
+) => [
   {
     title: "Initial Report",
     content: (
@@ -86,11 +96,18 @@ const StepForms = (props, next, prev, handleIncidentSubmit) => [
     title: "Add Details",
     content: (
       <AddIncidentDetailForm
+        mineGuid={props.mineGuid}
+        initialValues={props.initialValues}
         doSubparagraphOptions={props.doSubparagraphOptions}
         incidentDeterminationOptions={props.incidentDeterminationOptions}
         incidentStatusCodeOptions={props.incidentStatusCodeOptions}
         inspectors={props.inspectors}
         doDetermination={props.addIncidentFormValues.determination_type_code}
+        uploadedFiles={uploadedFiles.filter(
+          (file) => file.mine_incident_document_type_code === "INI"
+        )}
+        onFileLoad={onFileLoad}
+        onRemoveFile={onRemoveFile}
       />
     ),
     buttons: (
@@ -128,11 +145,18 @@ const StepForms = (props, next, prev, handleIncidentSubmit) => [
     title: "Follow Up",
     content: (
       <AddIncidentFollowUpForm
+        mineGuid={props.mineGuid}
+        initialValues={props.initialValues}
         incidentDeterminationOptions={props.incidentDeterminationOptions}
         followupActionOptions={props.followupActionOptions}
         incidentStatusCodeOptions={props.incidentStatusCodeOptions}
         hasFatalities={props.addIncidentFormValues.number_of_fatalities > 0 || false}
         hasFollowUp={props.addIncidentFormValues.followup_inspection || false}
+        uploadedFiles={uploadedFiles.filter(
+          (file) => file.mine_incident_document_type_code === "FIN"
+        )}
+        onFileLoad={onFileLoad}
+        onRemoveFile={onRemoveFile}
       />
     ),
     buttons: [
@@ -153,11 +177,17 @@ const StepForms = (props, next, prev, handleIncidentSubmit) => [
 ];
 
 export class AddIncidentModal extends Component {
-  state = { current: 0 };
+  state = {
+    current: 0,
+    uploadedFiles: this.props.initialValues.documents
+      ? [...this.props.initialValues.documents]
+      : [],
+  };
 
   handleIncidentSubmit = () => {
     this.props.onSubmit({
       ...this.props.addIncidentFormValues,
+      updated_documents: this.state.uploadedFiles,
     });
     // TODO: Catch error
     this.close();
@@ -172,8 +202,34 @@ export class AddIncidentModal extends Component {
 
   prev = () => this.setState((prevState) => ({ current: prevState.current - 1 }));
 
+  onFileLoad = (document_name, document_manager_guid, mine_incident_document_type_code) =>
+    this.setState((prevState) => ({
+      uploadedFiles: concat(prevState.uploadedFiles, {
+        document_name,
+        document_manager_guid,
+        mine_incident_document_type_code,
+      }),
+    }));
+
+  onRemoveFile = (file) => {
+    this.setState((prevState) => ({
+      uploadedFiles: reject(
+        prevState.uploadedFiles,
+        (uploadedFile) => file.document_manager_guid === uploadedFile.document_manager_guid
+      ),
+    }));
+  };
+
   render = () => {
-    const Forms = StepForms(this.props, this.next, this.prev, this.handleIncidentSubmit);
+    const Forms = StepForms(
+      this.props,
+      this.next,
+      this.prev,
+      this.handleIncidentSubmit,
+      this.state.uploadedFiles,
+      this.onFileLoad,
+      this.onRemoveFile
+    );
 
     return (
       <div>
