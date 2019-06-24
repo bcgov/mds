@@ -165,6 +165,8 @@ app {
                             'CPU_LIMIT':"${vars.resources.python.cpu_limit}",
                             'MEMORY_REQUEST':"${vars.resources.python.memory_request}",
                             'MEMORY_LIMIT':"${vars.resources.python.memory_limit}",
+                            'UWSGI_THREADS':"${vars.resources.python.uwsgi_threads}",
+                            'UWSGI_PROCESSES':"${vars.resources.python.uwsgi_processes}",
                             'REPLICA_MIN':"${vars.resources.python.replica_min}",
                             'REPLICA_MAX':"${vars.resources.python.replica_max}",
                             'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
@@ -175,7 +177,7 @@ app {
                             'DB_NRIS_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}-nris",
                             'REDIS_CONFIG_NAME': "mds-redis${vars.deployment.suffix}",
                             'CACHE_REDIS_HOST': "mds-redis${vars.deployment.suffix}",
-                            'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled}",
+                            'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled_core}",
                             'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name}",
                             'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
@@ -193,6 +195,8 @@ app {
                             'CPU_LIMIT':"${vars.resources.python_lite.cpu_limit}",
                             'MEMORY_REQUEST':"${vars.resources.python_lite.memory_request}",
                             'MEMORY_LIMIT':"${vars.resources.python_lite.memory_limit}",
+                            'UWSGI_THREADS':"${vars.resources.python_lite.uwsgi_threads}",
+                            'UWSGI_PROCESSES':"${vars.resources.python_lite.uwsgi_processes}",
                             'REPLICA_MIN':"${vars.resources.python_lite.replica_min}",
                             'REPLICA_MAX':"${vars.resources.python_lite.replica_max}",
                             'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
@@ -203,7 +207,7 @@ app {
                             'REDIS_CONFIG_NAME': "mds-redis${vars.deployment.suffix}",
                             'CACHE_REDIS_HOST': "mds-redis${vars.deployment.suffix}",
                             'DB_HOST': "mds-postgresql${vars.deployment.suffix}",
-                            'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled}",
+                            'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled_nris}",
                             'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name_nris}",
                             'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
@@ -296,6 +300,8 @@ environments {
                     cpu_limit = "400m"
                     memory_request = "1.5Gi"
                     memory_limit = "3Gi"
+                    uwsgi_threads = 2
+                    uwsgi_processes = 4
                     replica_min = 2
                     replica_max = 4
                 }
@@ -304,6 +310,8 @@ environments {
                     cpu_limit = "200m"
                     memory_request = "512Mi"
                     memory_limit = "1Gi"
+                    uwsgi_threads = 2
+                    uwsgi_processes = 4
                     replica_min = 1
                     replica_max = 1
                 }
@@ -342,7 +350,8 @@ environments {
                 application_suffix = "-pr-${vars.git.changeId}"
                 node_env = "test"
                 map_portal_id = "e926583cd0114cd19ebc591f344e30dc"
-                elastic_enabled = 1
+                elastic_enabled_core = 1
+                elastic_enabled_nris = 1
                 elastic_service_name = "MDS Test"
                 elastic_service_name_nris = "NRIS API Test"
             }

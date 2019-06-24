@@ -46,7 +46,7 @@ class Tailings extends GebReportingSpec {
 
         when: "User clicks on the tailings tab"
         tailingsTab.tabSelect.click()
-        
+
         then: "the reports are visible"
         assert tailingsTab.document0Name != null
     }
@@ -72,16 +72,16 @@ class Tailings extends GebReportingSpec {
         tailingsTab.tabSelect.click()
 
         and: "User opens a file in the folder specified in GebConfig"
-        tailingsTab.downloadLink[0].click()
+        waitFor() { tailingsTab.downloadLink[0].click() }
         print(Const.DOWNLOAD_PATH+'/'+Const.TEST_FILE_NAME)
         def file = new File(Const.DOWNLOAD_PATH+'/'+Const.TEST_FILE_NAME)
         // allow time for the file to be created in the DOWNLOAD_PATH
-        waitFor(){file.exists()}
+        waitFor(){ file.exists() && file.length() }
         String lineString = file.getText('UTF-8')
         file.delete()
         then: "The doc upload complete message is shown"
         assert lineString == Const.TEST_FILE_CONTENT
     }
 
-    
+
 }

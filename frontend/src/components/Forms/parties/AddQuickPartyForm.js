@@ -18,7 +18,7 @@ export const AddQuickPartyForm = (props) => (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       {props.isPerson && (
         <Row gutter={16}>
-          <Col md={12} sm={12} xs={24}>
+          <Col md={12} xs={24}>
             <Form.Item>
               <Field
                 id="first_name"
@@ -29,7 +29,7 @@ export const AddQuickPartyForm = (props) => (
               />
             </Form.Item>
           </Col>
-          <Col md={12} sm={12} xs={24}>
+          <Col md={12} xs={24}>
             <Form.Item>
               <Field
                 id="party_name"
