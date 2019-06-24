@@ -35,7 +35,7 @@ class  PermitSpec extends GebReportingSpec {
         permitTab.newPermitButton.click()
         newPermitForm.completePermitForm()
         then: "A permit with the correct ID is present in the permits tab"
-        waitfor() { permitTab.permitTitle }
+        waitFor() { permitTab.permitTitle }
         permitTab.permitTitle.text() == PERMIT_NUMBER
     }
 
