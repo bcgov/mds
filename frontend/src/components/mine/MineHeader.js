@@ -102,6 +102,7 @@ export class MineHeader extends Component {
     this.props.setMineVerifiedStatus(this.props.mine.mine_guid, { healthy: true }).then(() => {
       this.props.fetchMineRecordById(this.props.mine.mine_guid);
       this.props.fetchMineVerifiedStatuses(`idir\\${this.props.userInfo.preferred_username}`);
+      this.handleMenuClick();
     });
   };
 
@@ -110,6 +111,7 @@ export class MineHeader extends Component {
     this.props.setMineVerifiedStatus(this.props.mine.mine_guid, { healthy: false }).then(() => {
       this.props.fetchMineRecordById(this.props.mine.mine_guid);
       this.props.fetchMineVerifiedStatuses(`idir\\${this.props.userInfo.preferred_username}`);
+      this.handleMenuClick();
     });
   };
 
@@ -157,46 +159,50 @@ export class MineHeader extends Component {
 
   render() {
     const menu = (
-      <Menu onClick={this.handleMenuClick}>
+      <Menu>
         <AuthorizationWrapper
           permission={Permission.CREATE}
           isMajorMine={this.props.mine.major_mine_ind}
         >
-          <div className="custom-menu-item">
-            <button
-              type="button"
-              className="full"
-              onClick={(event) =>
-                this.openModal(
-                  event,
-                  this.handleUpdateMineRecord,
-                  this.handleDeleteMineType,
-                  ModalContent.UPDATE_MINE_RECORD,
-                  this.props.mine
-                )
-              }
-            >
-              <img alt="pencil" className="padding-small" src={BRAND_PENCIL} />
-              {ModalContent.UPDATE_MINE_RECORD}
-            </button>
-          </div>
+          <Menu.Item onClick={this.handleMenuClick}>
+            <div className="custom-menu-item">
+              <button
+                type="button"
+                className="full"
+                onClick={(event) =>
+                  this.openModal(
+                    event,
+                    this.handleUpdateMineRecord,
+                    this.handleDeleteMineType,
+                    ModalContent.UPDATE_MINE_RECORD,
+                    this.props.mine
+                  )
+                }
+              >
+                <img alt="pencil" className="padding-small" src={BRAND_PENCIL} />
+                {ModalContent.UPDATE_MINE_RECORD}
+              </button>
+            </div>
+          </Menu.Item>
         </AuthorizationWrapper>
         <AuthorizationWrapper
           permission={Permission.CREATE}
           isMajorMine={this.props.mine.major_mine_ind}
         >
-          <div className="custom-menu-item">
-            <button
-              type="button"
-              className="full"
-              onClick={(event) =>
-                this.openTailingsModal(event, this.handleAddTailings, ModalContent.ADD_TAILINGS)
-              }
-            >
-              <img alt="document" className="padding-small" src={BRAND_DOCUMENT} />
-              {ModalContent.ADD_TAILINGS}
-            </button>
-          </div>
+          <Menu.Item onClick={this.handleMenuClick}>
+            <div className="custom-menu-item">
+              <button
+                type="button"
+                className="full"
+                onClick={(event) =>
+                  this.openTailingsModal(event, this.handleAddTailings, ModalContent.ADD_TAILINGS)
+                }
+              >
+                <img alt="document" className="padding-small" src={BRAND_DOCUMENT} />
+                {ModalContent.ADD_TAILINGS}
+              </button>
+            </div>
+          </Menu.Item>
         </AuthorizationWrapper>
         {this.props.subscribed ? (
           <div className="custom-menu-item">
