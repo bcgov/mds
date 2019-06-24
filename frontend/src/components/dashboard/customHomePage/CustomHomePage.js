@@ -169,7 +169,11 @@ export class CustomHomePage extends Component {
   handleFilterChange = (pagination, filters) => {
     const { status } = filters;
     this.setState({ variancesLoaded: false });
-    const params = { ...this.state.params, variance_application_status_code: [...status], page: 1 };
+    const params = {
+      ...this.state.params,
+      variance_application_status_code: status,
+      page: 1,
+    };
     return this.props.fetchVariances(params).then(() => {
       this.setState({ variancesLoaded: true, params });
     });

@@ -71,6 +71,8 @@ export const CORE_DASHBOARD = `/reporting/core-dashboard`;
 export const COMPLIANCE_CODES = "/mines/compliance/codes";
 export const MINE_VARIANCES = (mineGuid) => `/mines/${mineGuid}/variances`;
 export const VARIANCES = (params) =>
+  // const { variance_application_status_code } = params;
+  // const formatCodes = variance_application_status_code.join(",");
   params ? `/variances?${queryString.stringify(params)}` : "/variances";
 export const VARIANCE = (mineGuid, varianceGuid) => `/mines/${mineGuid}/variances/${varianceGuid}`;
 export const VARIANCE_DOCUMENTS = (mineGuid, varianceGuid) =>
