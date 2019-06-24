@@ -2,8 +2,9 @@ import * as actionTypes from "@/constants/actionTypes";
 import { VARIANCES } from "@/constants/reducerTypes";
 
 const initialState = {
-  mineVariances: [],
+  variances: [],
   variance: {},
+  variancePageData: {},
 };
 
 const varianceReducer = (state = initialState, action) => {
@@ -11,7 +12,8 @@ const varianceReducer = (state = initialState, action) => {
     case actionTypes.STORE_VARIANCES:
       return {
         ...state,
-        mineVariances: action.payload.records,
+        variances: action.payload.records,
+        variancePageData: action.payload,
       };
     case actionTypes.STORE_VARIANCE:
       return {
@@ -23,7 +25,8 @@ const varianceReducer = (state = initialState, action) => {
   }
 };
 
-export const getMineVariances = (state) => state[VARIANCES].mineVariances;
+export const getVariances = (state) => state[VARIANCES].variances;
 export const getVariance = (state) => state[VARIANCES].variance;
+export const getVariancePageData = (state) => state[VARIANCES].variancePageData;
 
 export default varianceReducer;

@@ -1,6 +1,7 @@
 from flask_restplus import Resource
 from flask import request
 from sqlalchemy_filters import apply_pagination, apply_filters
+from sqlalchemy import desc
 
 from app.extensions import api
 
@@ -16,7 +17,7 @@ PER_PAGE_DEFAULT = 25
 
 class VarianceResource(Resource, UserMixin, ErrorMixin):
     @api.doc(
-        description='Get a list of variances.',
+        description='Get a list of variances. Order: received_date DESC',
         params={
             'page': f'The page number of paginated records to return. Default: {PAGE_DEFAULT}',
             'per_page': f'The number of records to return per page. Default: {PER_PAGE_DEFAULT}',
@@ -55,7 +56,7 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             status_filter_values = application_status.split(',')
 
         filtered_query = apply_filters(
-            Variance.query,
+            Variance.query.order_by(desc(Variance.received_date)),
             [{
                 'field': 'variance_application_status_code',
                 'op': 'in',

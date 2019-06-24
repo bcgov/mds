@@ -1,9 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import CustomPropTypes from "@/customPropTypes";
 import { Button } from "antd";
 import * as Strings from "@/constants/strings";
 import { VarianceDetails } from "../mine/Variances/VarianceDetails";
+import { getInspectorsHash } from "@/selectors/partiesSelectors";
+import {
+  getVarianceStatusOptionsHash,
+  getHSRCMComplianceCodesHash,
+  getVarianceDocumentCategoryOptionsHash,
+} from "@/selectors/staticContentSelectors";
 
 const propTypes = {
   closeModal: PropTypes.func.isRequired,
@@ -58,4 +65,11 @@ export const ViewVarianceModal = (props) => {
 
 ViewVarianceModal.propTypes = propTypes;
 
-export default ViewVarianceModal;
+const mapStateToProps = (state) => ({
+  varianceStatusOptionsHash: getVarianceStatusOptionsHash(state),
+  complianceCodesHash: getHSRCMComplianceCodesHash(state),
+  inspectorsHash: getInspectorsHash(state),
+  documentCategoryOptionsHash: getVarianceDocumentCategoryOptionsHash(state),
+});
+
+export default connect(mapStateToProps)(ViewVarianceModal);
