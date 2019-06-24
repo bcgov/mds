@@ -18,6 +18,7 @@ export const {
   getComplianceCodes,
   getIncidentFollowupActionOptions,
   getIncidentDeterminationOptions,
+  getIncidentStatusCodeOptions,
   getVarianceStatusOptions,
   getVarianceDocumentCategoryOptions,
 } = staticContentReducer;
@@ -110,12 +111,18 @@ export const getDropdownApplicationStatusOptions = createSelector(
 
 export const getDropdownIncidentFollowupActionOptions = createSelector(
   [getIncidentFollowupActionOptions],
-  (options) => createDropDownList(options, "description", "mine_incident_followup_type_code")
+  (options) =>
+    createDropDownList(options, "description", "mine_incident_followup_investigation_type_code")
 );
 
 export const getDropdownIncidentDeterminationOptions = createSelector(
   [getIncidentDeterminationOptions],
   (options) => createDropDownList(options, "description", "mine_incident_determination_type_code")
+);
+
+export const getDropdownIncidentStatusCodeOptions = createSelector(
+  [getIncidentStatusCodeOptions],
+  (options) => createDropDownList(options, "description", "mine_incident_status_code")
 );
 
 const formatComplianceCodeValueOrLabel = (code, showDescription) => {

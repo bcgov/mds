@@ -20,6 +20,7 @@ from ..variances.resources.variance_list import MineVarianceListResource
 from ..variances.resources.variance_document_upload import MineVarianceDocumentUploadResource
 from ..variances.resources.variance_uploaded_documents import MineVarianceUploadedDocumentsResource
 from ..incidents.resources.mine_incidents import MineIncidentListResource, MineIncidentResource
+from ..incidents.resources.mine_incident_status_codes import MineIncidentStatusCodeResource
 from ..incidents.resources.mine_incident_followup_types import MineIncidentFollowupTypeResource
 from ..incidents.resources.mine_incident_determination_types import MineIncidentDeterminationTypeResource
 
@@ -63,7 +64,8 @@ api.add_resource(
     '/<string:mine_guid>/variances/<string:variance_guid>/documents/<string:mine_document_guid>')
 
 api.add_resource(MineIncidentListResource, '/<string:mine_guid>/incidents')
-api.add_resource(MineIncidentResource, '/incidents/<string:mine_incident_guid>')
+api.add_resource(MineIncidentResource, '/<string:mine_guid>/incidents/<string:mine_incident_guid>')
 
 api.add_resource(MineIncidentFollowupTypeResource, '/incidents/followup-types')
 api.add_resource(MineIncidentDeterminationTypeResource, '/incidents/determination-types')
+api.add_resource(MineIncidentStatusCodeResource, '/incidents/status-codes')

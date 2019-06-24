@@ -14,7 +14,7 @@ const propTypes = {
   placeholder: PropTypes.string,
   onChange: PropTypes.func,
   meta: PropTypes.objectOf(PropTypes.any).isRequired,
-  showTime: PropTypes.boolean,
+  showTime: PropTypes.bool,
 };
 
 const defaultProps = {

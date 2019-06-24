@@ -149,7 +149,7 @@ export class PartySelectField extends Component {
   validOption = (value) =>
     this.state.partyDataSource.find((opt) => opt.key === value)
       ? undefined
-      : `"Invalid ${this.props.partyLabel}`;
+      : `Invalid ${this.props.partyLabel}`;
 
   render = () => (
     <Field
