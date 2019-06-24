@@ -188,12 +188,18 @@ describe("`removeDocumentFromVariance` action creator", () => {
 });
 
 describe("`fetchVariances` action creator", () => {
-  const url = ENVIRONMENT.apiUrl + API.VARIANCES();
+  const params = {
+    variance_application_status_code: [],
+    page: 1,
+    per_page: 5,
+  };
+
+  const url = ENVIRONMENT.apiUrl + API.VARIANCES(params);
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
 
     mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchVariances()(dispatch).then(() => {
+    return fetchVariances(params)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(5);
@@ -202,7 +208,7 @@ describe("`fetchVariances` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
-    return fetchVariances()(dispatch).then(() => {
+    return fetchVariances(params)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

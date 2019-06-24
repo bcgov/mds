@@ -11,6 +11,7 @@ ShallowWrapper {
       }
     }
     filterVarianceStatusOptions={Array []}
+    handleFilterChange={[Function]}
     inspectorsHash={
       Object {
         "51b3a499-a474-4d52-be99-5c5123d7501c": "BLAH",
