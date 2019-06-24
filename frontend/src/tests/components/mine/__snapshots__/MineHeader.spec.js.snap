@@ -402,58 +402,64 @@ ShallowWrapper {
                 mouseLeaveDelay={0.1}
                 onVisibleChange={[Function]}
                 overlay={
-                  <Menu
-                    onClick={[Function]}
-                  >
+                  <Menu>
                     <Connect(AuthorizationWrapper)
                       isMajorMine={undefined}
                       permission="role_create"
                     >
-                      <div
-                        className="custom-menu-item"
+                      <MenuItem
+                        onClick={[Function]}
                       >
-                        <button
-                          className="full"
-                          onClick={[Function]}
-                          type="button"
+                        <div
+                          className="custom-menu-item"
                         >
-                          <img
-                            alt="pencil"
-                            className="padding-small"
-                            src={
-                              Object {
-                                "process": [Function],
+                          <button
+                            className="full"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            <img
+                              alt="pencil"
+                              className="padding-small"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
                               }
-                            }
-                          />
-                          Update Mine Record
-                        </button>
-                      </div>
+                            />
+                            Update Mine Record
+                          </button>
+                        </div>
+                      </MenuItem>
                     </Connect(AuthorizationWrapper)>
                     <Connect(AuthorizationWrapper)
                       isMajorMine={undefined}
                       permission="role_create"
                     >
-                      <div
-                        className="custom-menu-item"
+                      <MenuItem
+                        onClick={[Function]}
                       >
-                        <button
-                          className="full"
-                          onClick={[Function]}
-                          type="button"
+                        <div
+                          className="custom-menu-item"
                         >
-                          <img
-                            alt="document"
-                            className="padding-small"
-                            src={
-                              Object {
-                                "process": [Function],
+                          <button
+                            className="full"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            <img
+                              alt="document"
+                              className="padding-small"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
                               }
-                            }
-                          />
-                          + Add TSF
-                        </button>
-                      </div>
+                            />
+                            + Add TSF
+                          </button>
+                        </div>
+                      </MenuItem>
                     </Connect(AuthorizationWrapper)>
                     <div
                       className="custom-menu-item"
@@ -835,58 +841,64 @@ ShallowWrapper {
                   mouseLeaveDelay={0.1}
                   onVisibleChange={[Function]}
                   overlay={
-                    <Menu
-                      onClick={[Function]}
-                    >
+                    <Menu>
                       <Connect(AuthorizationWrapper)
                         isMajorMine={undefined}
                         permission="role_create"
                       >
-                        <div
-                          className="custom-menu-item"
+                        <MenuItem
+                          onClick={[Function]}
                         >
-                          <button
-                            className="full"
-                            onClick={[Function]}
-                            type="button"
+                          <div
+                            className="custom-menu-item"
                           >
-                            <img
-                              alt="pencil"
-                              className="padding-small"
-                              src={
-                                Object {
-                                  "process": [Function],
+                            <button
+                              className="full"
+                              onClick={[Function]}
+                              type="button"
+                            >
+                              <img
+                                alt="pencil"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
                                 }
-                              }
-                            />
-                            Update Mine Record
-                          </button>
-                        </div>
+                              />
+                              Update Mine Record
+                            </button>
+                          </div>
+                        </MenuItem>
                       </Connect(AuthorizationWrapper)>
                       <Connect(AuthorizationWrapper)
                         isMajorMine={undefined}
                         permission="role_create"
                       >
-                        <div
-                          className="custom-menu-item"
+                        <MenuItem
+                          onClick={[Function]}
                         >
-                          <button
-                            className="full"
-                            onClick={[Function]}
-                            type="button"
+                          <div
+                            className="custom-menu-item"
                           >
-                            <img
-                              alt="document"
-                              className="padding-small"
-                              src={
-                                Object {
-                                  "process": [Function],
+                            <button
+                              className="full"
+                              onClick={[Function]}
+                              type="button"
+                            >
+                              <img
+                                alt="document"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
                                 }
-                              }
-                            />
-                            + Add TSF
-                          </button>
-                        </div>
+                              />
+                              + Add TSF
+                            </button>
+                          </div>
+                        </MenuItem>
                       </Connect(AuthorizationWrapper)>
                       <div
                         className="custom-menu-item"
@@ -1151,58 +1163,64 @@ ShallowWrapper {
                     mouseLeaveDelay={0.1}
                     onVisibleChange={[Function]}
                     overlay={
-                      <Menu
-                        onClick={[Function]}
-                      >
+                      <Menu>
                         <Connect(AuthorizationWrapper)
                           isMajorMine={undefined}
                           permission="role_create"
                         >
-                          <div
-                            className="custom-menu-item"
+                          <MenuItem
+                            onClick={[Function]}
                           >
-                            <button
-                              className="full"
-                              onClick={[Function]}
-                              type="button"
+                            <div
+                              className="custom-menu-item"
                             >
-                              <img
-                                alt="pencil"
-                                className="padding-small"
-                                src={
-                                  Object {
-                                    "process": [Function],
+                              <button
+                                className="full"
+                                onClick={[Function]}
+                                type="button"
+                              >
+                                <img
+                                  alt="pencil"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
                                   }
-                                }
-                              />
-                              Update Mine Record
-                            </button>
-                          </div>
+                                />
+                                Update Mine Record
+                              </button>
+                            </div>
+                          </MenuItem>
                         </Connect(AuthorizationWrapper)>
                         <Connect(AuthorizationWrapper)
                           isMajorMine={undefined}
                           permission="role_create"
                         >
-                          <div
-                            className="custom-menu-item"
+                          <MenuItem
+                            onClick={[Function]}
                           >
-                            <button
-                              className="full"
-                              onClick={[Function]}
-                              type="button"
+                            <div
+                              className="custom-menu-item"
                             >
-                              <img
-                                alt="document"
-                                className="padding-small"
-                                src={
-                                  Object {
-                                    "process": [Function],
+                              <button
+                                className="full"
+                                onClick={[Function]}
+                                type="button"
+                              >
+                                <img
+                                  alt="document"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
                                   }
-                                }
-                              />
-                              + Add TSF
-                            </button>
-                          </div>
+                                />
+                                + Add TSF
+                              </button>
+                            </div>
+                          </MenuItem>
                         </Connect(AuthorizationWrapper)>
                         <div
                           className="custom-menu-item"
@@ -1370,58 +1388,64 @@ ShallowWrapper {
                       mouseLeaveDelay={0.1}
                       onVisibleChange={[Function]}
                       overlay={
-                        <Menu
-                          onClick={[Function]}
-                        >
+                        <Menu>
                           <Connect(AuthorizationWrapper)
                             isMajorMine={undefined}
                             permission="role_create"
                           >
-                            <div
-                              className="custom-menu-item"
+                            <MenuItem
+                              onClick={[Function]}
                             >
-                              <button
-                                className="full"
-                                onClick={[Function]}
-                                type="button"
+                              <div
+                                className="custom-menu-item"
                               >
-                                <img
-                                  alt="pencil"
-                                  className="padding-small"
-                                  src={
-                                    Object {
-                                      "process": [Function],
+                                <button
+                                  className="full"
+                                  onClick={[Function]}
+                                  type="button"
+                                >
+                                  <img
+                                    alt="pencil"
+                                    className="padding-small"
+                                    src={
+                                      Object {
+                                        "process": [Function],
+                                      }
                                     }
-                                  }
-                                />
-                                Update Mine Record
-                              </button>
-                            </div>
+                                  />
+                                  Update Mine Record
+                                </button>
+                              </div>
+                            </MenuItem>
                           </Connect(AuthorizationWrapper)>
                           <Connect(AuthorizationWrapper)
                             isMajorMine={undefined}
                             permission="role_create"
                           >
-                            <div
-                              className="custom-menu-item"
+                            <MenuItem
+                              onClick={[Function]}
                             >
-                              <button
-                                className="full"
-                                onClick={[Function]}
-                                type="button"
+                              <div
+                                className="custom-menu-item"
                               >
-                                <img
-                                  alt="document"
-                                  className="padding-small"
-                                  src={
-                                    Object {
-                                      "process": [Function],
+                                <button
+                                  className="full"
+                                  onClick={[Function]}
+                                  type="button"
+                                >
+                                  <img
+                                    alt="document"
+                                    className="padding-small"
+                                    src={
+                                      Object {
+                                        "process": [Function],
+                                      }
                                     }
-                                  }
-                                />
-                                + Add TSF
-                              </button>
-                            </div>
+                                  />
+                                  + Add TSF
+                                </button>
+                              </div>
+                            </MenuItem>
                           </Connect(AuthorizationWrapper)>
                           <div
                             className="custom-menu-item"
@@ -1589,58 +1613,64 @@ ShallowWrapper {
                       "mouseEnterDelay": 0.15,
                       "mouseLeaveDelay": 0.1,
                       "onVisibleChange": [Function],
-                      "overlay": <Menu
-                        onClick={[Function]}
-                      >
+                      "overlay": <Menu>
                         <Connect(AuthorizationWrapper)
                           isMajorMine={undefined}
                           permission="role_create"
                         >
-                          <div
-                            className="custom-menu-item"
+                          <MenuItem
+                            onClick={[Function]}
                           >
-                            <button
-                              className="full"
-                              onClick={[Function]}
-                              type="button"
+                            <div
+                              className="custom-menu-item"
                             >
-                              <img
-                                alt="pencil"
-                                className="padding-small"
-                                src={
-                                  Object {
-                                    "process": [Function],
+                              <button
+                                className="full"
+                                onClick={[Function]}
+                                type="button"
+                              >
+                                <img
+                                  alt="pencil"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
                                   }
-                                }
-                              />
-                              Update Mine Record
-                            </button>
-                          </div>
+                                />
+                                Update Mine Record
+                              </button>
+                            </div>
+                          </MenuItem>
                         </Connect(AuthorizationWrapper)>
                         <Connect(AuthorizationWrapper)
                           isMajorMine={undefined}
                           permission="role_create"
                         >
-                          <div
-                            className="custom-menu-item"
+                          <MenuItem
+                            onClick={[Function]}
                           >
-                            <button
-                              className="full"
-                              onClick={[Function]}
-                              type="button"
+                            <div
+                              className="custom-menu-item"
                             >
-                              <img
-                                alt="document"
-                                className="padding-small"
-                                src={
-                                  Object {
-                                    "process": [Function],
+                              <button
+                                className="full"
+                                onClick={[Function]}
+                                type="button"
+                              >
+                                <img
+                                  alt="document"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
                                   }
-                                }
-                              />
-                              + Add TSF
-                            </button>
-                          </div>
+                                />
+                                + Add TSF
+                              </button>
+                            </div>
+                          </MenuItem>
                         </Connect(AuthorizationWrapper)>
                         <div
                           className="custom-menu-item"
@@ -2696,58 +2726,64 @@ ShallowWrapper {
                   mouseLeaveDelay={0.1}
                   onVisibleChange={[Function]}
                   overlay={
-                    <Menu
-                      onClick={[Function]}
-                    >
+                    <Menu>
                       <Connect(AuthorizationWrapper)
                         isMajorMine={undefined}
                         permission="role_create"
                       >
-                        <div
-                          className="custom-menu-item"
+                        <MenuItem
+                          onClick={[Function]}
                         >
-                          <button
-                            className="full"
-                            onClick={[Function]}
-                            type="button"
+                          <div
+                            className="custom-menu-item"
                           >
-                            <img
-                              alt="pencil"
-                              className="padding-small"
-                              src={
-                                Object {
-                                  "process": [Function],
+                            <button
+                              className="full"
+                              onClick={[Function]}
+                              type="button"
+                            >
+                              <img
+                                alt="pencil"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
                                 }
-                              }
-                            />
-                            Update Mine Record
-                          </button>
-                        </div>
+                              />
+                              Update Mine Record
+                            </button>
+                          </div>
+                        </MenuItem>
                       </Connect(AuthorizationWrapper)>
                       <Connect(AuthorizationWrapper)
                         isMajorMine={undefined}
                         permission="role_create"
                       >
-                        <div
-                          className="custom-menu-item"
+                        <MenuItem
+                          onClick={[Function]}
                         >
-                          <button
-                            className="full"
-                            onClick={[Function]}
-                            type="button"
+                          <div
+                            className="custom-menu-item"
                           >
-                            <img
-                              alt="document"
-                              className="padding-small"
-                              src={
-                                Object {
-                                  "process": [Function],
+                            <button
+                              className="full"
+                              onClick={[Function]}
+                              type="button"
+                            >
+                              <img
+                                alt="document"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
                                 }
-                              }
-                            />
-                            + Add TSF
-                          </button>
-                        </div>
+                              />
+                              + Add TSF
+                            </button>
+                          </div>
+                        </MenuItem>
                       </Connect(AuthorizationWrapper)>
                       <div
                         className="custom-menu-item"
@@ -3129,58 +3165,64 @@ ShallowWrapper {
                     mouseLeaveDelay={0.1}
                     onVisibleChange={[Function]}
                     overlay={
-                      <Menu
-                        onClick={[Function]}
-                      >
+                      <Menu>
                         <Connect(AuthorizationWrapper)
                           isMajorMine={undefined}
                           permission="role_create"
                         >
-                          <div
-                            className="custom-menu-item"
+                          <MenuItem
+                            onClick={[Function]}
                           >
-                            <button
-                              className="full"
-                              onClick={[Function]}
-                              type="button"
+                            <div
+                              className="custom-menu-item"
                             >
-                              <img
-                                alt="pencil"
-                                className="padding-small"
-                                src={
-                                  Object {
-                                    "process": [Function],
+                              <button
+                                className="full"
+                                onClick={[Function]}
+                                type="button"
+                              >
+                                <img
+                                  alt="pencil"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
                                   }
-                                }
-                              />
-                              Update Mine Record
-                            </button>
-                          </div>
+                                />
+                                Update Mine Record
+                              </button>
+                            </div>
+                          </MenuItem>
                         </Connect(AuthorizationWrapper)>
                         <Connect(AuthorizationWrapper)
                           isMajorMine={undefined}
                           permission="role_create"
                         >
-                          <div
-                            className="custom-menu-item"
+                          <MenuItem
+                            onClick={[Function]}
                           >
-                            <button
-                              className="full"
-                              onClick={[Function]}
-                              type="button"
+                            <div
+                              className="custom-menu-item"
                             >
-                              <img
-                                alt="document"
-                                className="padding-small"
-                                src={
-                                  Object {
-                                    "process": [Function],
+                              <button
+                                className="full"
+                                onClick={[Function]}
+                                type="button"
+                              >
+                                <img
+                                  alt="document"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
                                   }
-                                }
-                              />
-                              + Add TSF
-                            </button>
-                          </div>
+                                />
+                                + Add TSF
+                              </button>
+                            </div>
+                          </MenuItem>
                         </Connect(AuthorizationWrapper)>
                         <div
                           className="custom-menu-item"
@@ -3445,58 +3487,64 @@ ShallowWrapper {
                       mouseLeaveDelay={0.1}
                       onVisibleChange={[Function]}
                       overlay={
-                        <Menu
-                          onClick={[Function]}
-                        >
+                        <Menu>
                           <Connect(AuthorizationWrapper)
                             isMajorMine={undefined}
                             permission="role_create"
                           >
-                            <div
-                              className="custom-menu-item"
+                            <MenuItem
+                              onClick={[Function]}
                             >
-                              <button
-                                className="full"
-                                onClick={[Function]}
-                                type="button"
+                              <div
+                                className="custom-menu-item"
                               >
-                                <img
-                                  alt="pencil"
-                                  className="padding-small"
-                                  src={
-                                    Object {
-                                      "process": [Function],
+                                <button
+                                  className="full"
+                                  onClick={[Function]}
+                                  type="button"
+                                >
+                                  <img
+                                    alt="pencil"
+                                    className="padding-small"
+                                    src={
+                                      Object {
+                                        "process": [Function],
+                                      }
                                     }
-                                  }
-                                />
-                                Update Mine Record
-                              </button>
-                            </div>
+                                  />
+                                  Update Mine Record
+                                </button>
+                              </div>
+                            </MenuItem>
                           </Connect(AuthorizationWrapper)>
                           <Connect(AuthorizationWrapper)
                             isMajorMine={undefined}
                             permission="role_create"
                           >
-                            <div
-                              className="custom-menu-item"
+                            <MenuItem
+                              onClick={[Function]}
                             >
-                              <button
-                                className="full"
-                                onClick={[Function]}
-                                type="button"
+                              <div
+                                className="custom-menu-item"
                               >
-                                <img
-                                  alt="document"
-                                  className="padding-small"
-                                  src={
-                                    Object {
-                                      "process": [Function],
+                                <button
+                                  className="full"
+                                  onClick={[Function]}
+                                  type="button"
+                                >
+                                  <img
+                                    alt="document"
+                                    className="padding-small"
+                                    src={
+                                      Object {
+                                        "process": [Function],
+                                      }
                                     }
-                                  }
-                                />
-                                + Add TSF
-                              </button>
-                            </div>
+                                  />
+                                  + Add TSF
+                                </button>
+                              </div>
+                            </MenuItem>
                           </Connect(AuthorizationWrapper)>
                           <div
                             className="custom-menu-item"
@@ -3664,58 +3712,64 @@ ShallowWrapper {
                         mouseLeaveDelay={0.1}
                         onVisibleChange={[Function]}
                         overlay={
-                          <Menu
-                            onClick={[Function]}
-                          >
+                          <Menu>
                             <Connect(AuthorizationWrapper)
                               isMajorMine={undefined}
                               permission="role_create"
                             >
-                              <div
-                                className="custom-menu-item"
+                              <MenuItem
+                                onClick={[Function]}
                               >
-                                <button
-                                  className="full"
-                                  onClick={[Function]}
-                                  type="button"
+                                <div
+                                  className="custom-menu-item"
                                 >
-                                  <img
-                                    alt="pencil"
-                                    className="padding-small"
-                                    src={
-                                      Object {
-                                        "process": [Function],
+                                  <button
+                                    className="full"
+                                    onClick={[Function]}
+                                    type="button"
+                                  >
+                                    <img
+                                      alt="pencil"
+                                      className="padding-small"
+                                      src={
+                                        Object {
+                                          "process": [Function],
+                                        }
                                       }
-                                    }
-                                  />
-                                  Update Mine Record
-                                </button>
-                              </div>
+                                    />
+                                    Update Mine Record
+                                  </button>
+                                </div>
+                              </MenuItem>
                             </Connect(AuthorizationWrapper)>
                             <Connect(AuthorizationWrapper)
                               isMajorMine={undefined}
                               permission="role_create"
                             >
-                              <div
-                                className="custom-menu-item"
+                              <MenuItem
+                                onClick={[Function]}
                               >
-                                <button
-                                  className="full"
-                                  onClick={[Function]}
-                                  type="button"
+                                <div
+                                  className="custom-menu-item"
                                 >
-                                  <img
-                                    alt="document"
-                                    className="padding-small"
-                                    src={
-                                      Object {
-                                        "process": [Function],
+                                  <button
+                                    className="full"
+                                    onClick={[Function]}
+                                    type="button"
+                                  >
+                                    <img
+                                      alt="document"
+                                      className="padding-small"
+                                      src={
+                                        Object {
+                                          "process": [Function],
+                                        }
                                       }
-                                    }
-                                  />
-                                  + Add TSF
-                                </button>
-                              </div>
+                                    />
+                                    + Add TSF
+                                  </button>
+                                </div>
+                              </MenuItem>
                             </Connect(AuthorizationWrapper)>
                             <div
                               className="custom-menu-item"
@@ -3883,58 +3937,64 @@ ShallowWrapper {
                         "mouseEnterDelay": 0.15,
                         "mouseLeaveDelay": 0.1,
                         "onVisibleChange": [Function],
-                        "overlay": <Menu
-                          onClick={[Function]}
-                        >
+                        "overlay": <Menu>
                           <Connect(AuthorizationWrapper)
                             isMajorMine={undefined}
                             permission="role_create"
                           >
-                            <div
-                              className="custom-menu-item"
+                            <MenuItem
+                              onClick={[Function]}
                             >
-                              <button
-                                className="full"
-                                onClick={[Function]}
-                                type="button"
+                              <div
+                                className="custom-menu-item"
                               >
-                                <img
-                                  alt="pencil"
-                                  className="padding-small"
-                                  src={
-                                    Object {
-                                      "process": [Function],
+                                <button
+                                  className="full"
+                                  onClick={[Function]}
+                                  type="button"
+                                >
+                                  <img
+                                    alt="pencil"
+                                    className="padding-small"
+                                    src={
+                                      Object {
+                                        "process": [Function],
+                                      }
                                     }
-                                  }
-                                />
-                                Update Mine Record
-                              </button>
-                            </div>
+                                  />
+                                  Update Mine Record
+                                </button>
+                              </div>
+                            </MenuItem>
                           </Connect(AuthorizationWrapper)>
                           <Connect(AuthorizationWrapper)
                             isMajorMine={undefined}
                             permission="role_create"
                           >
-                            <div
-                              className="custom-menu-item"
+                            <MenuItem
+                              onClick={[Function]}
                             >
-                              <button
-                                className="full"
-                                onClick={[Function]}
-                                type="button"
+                              <div
+                                className="custom-menu-item"
                               >
-                                <img
-                                  alt="document"
-                                  className="padding-small"
-                                  src={
-                                    Object {
-                                      "process": [Function],
+                                <button
+                                  className="full"
+                                  onClick={[Function]}
+                                  type="button"
+                                >
+                                  <img
+                                    alt="document"
+                                    className="padding-small"
+                                    src={
+                                      Object {
+                                        "process": [Function],
+                                      }
                                     }
-                                  }
-                                />
-                                + Add TSF
-                              </button>
-                            </div>
+                                  />
+                                  + Add TSF
+                                </button>
+                              </div>
+                            </MenuItem>
                           </Connect(AuthorizationWrapper)>
                           <div
                             className="custom-menu-item"
