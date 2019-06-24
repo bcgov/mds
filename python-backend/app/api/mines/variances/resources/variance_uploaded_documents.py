@@ -14,7 +14,7 @@ from app.api.variances.models.variance import Variance
 
 class MineVarianceUploadedDocumentsResource(Resource, UserMixin, ErrorMixin):
     @api.doc(description='Delete a document from a variance.')
-    @requires_any_of([EDIT_VARIANCE])
+    @requires_any_of([EDIT_VARIANCE, MINESPACE_PROPONENT])
     def delete(self, mine_guid, variance_guid, mine_document_guid):
         variance = Variance.find_by_mine_guid_and_variance_guid(
             mine_guid, variance_guid)
