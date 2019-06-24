@@ -10,6 +10,7 @@ ShallowWrapper {
         "306": "2.3.8 - Flammable Waste Storage",
       }
     }
+    filterVarianceStatusOptions={Array []}
     inspectorsHash={
       Object {
         "51b3a499-a474-4d52-be99-5c5123d7501c": "BLAH",
@@ -20,6 +21,11 @@ ShallowWrapper {
     openEditVarianceModal={[MockFunction]}
     openModal={[MockFunction]}
     openViewVarianceModal={[MockFunction]}
+    params={
+      Object {
+        "variance_application_status_code": Array [],
+      }
+    }
     varianceStatusOptionsHash={
       Object {
         "APP": "Approved",
@@ -103,10 +109,12 @@ ShallowWrapper {
             Object {
               "className": "column-hide",
               "dataIndex": "status",
+              "filteredValue": Array [],
               "filters": false,
               "render": [Function],
               "sorter": [Function],
-              "title": "Application  Status",
+              "title": "Application Status",
+              "width": 200,
             },
             Object {
               "className": "",
@@ -252,10 +260,12 @@ ShallowWrapper {
           Object {
             "className": "column-hide",
             "dataIndex": "status",
+            "filteredValue": Array [],
             "filters": false,
             "render": [Function],
             "sorter": [Function],
-            "title": "Application  Status",
+            "title": "Application Status",
+            "width": 200,
           },
           Object {
             "className": "",
@@ -401,10 +411,12 @@ ShallowWrapper {
               Object {
                 "className": "column-hide",
                 "dataIndex": "status",
+                "filteredValue": Array [],
                 "filters": false,
                 "render": [Function],
                 "sorter": [Function],
-                "title": "Application  Status",
+                "title": "Application Status",
+                "width": 200,
               },
               Object {
                 "className": "",
@@ -550,10 +562,12 @@ ShallowWrapper {
             Object {
               "className": "column-hide",
               "dataIndex": "status",
+              "filteredValue": Array [],
               "filters": false,
               "render": [Function],
               "sorter": [Function],
-              "title": "Application  Status",
+              "title": "Application Status",
+              "width": 200,
             },
             Object {
               "className": "",

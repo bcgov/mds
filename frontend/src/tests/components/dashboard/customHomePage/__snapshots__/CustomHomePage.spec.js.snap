@@ -69,10 +69,7 @@ ShallowWrapper {
             Object {
               "page": "1",
               "per_page": 5,
-              "variance_application_status_code": Array [
-                "REV",
-                "RFD",
-              ],
+              "variance_application_status_code": Array [],
             },
           ],
         ],
@@ -196,8 +193,10 @@ ShallowWrapper {
             condition={false}
           >
             <VarianceTable
+              filterVarianceStatusOptions={undefined}
               handleFilterChange={[Function]}
               handlePageChange={[Function]}
+              isApplication={undefined}
               openEditVarianceModal={[Function]}
               openViewVarianceModal={[Function]}
               pageData={undefined}
@@ -205,10 +204,7 @@ ShallowWrapper {
                 Object {
                   "page": "1",
                   "per_page": 5,
-                  "variance_application_status_code": Array [
-                    "REV",
-                    "RFD",
-                  ],
+                  "variance_application_status_code": Array [],
                 }
               }
               variances={undefined}
@@ -343,8 +339,10 @@ ShallowWrapper {
               condition={false}
             >
               <VarianceTable
+                filterVarianceStatusOptions={undefined}
                 handleFilterChange={[Function]}
                 handlePageChange={[Function]}
+                isApplication={undefined}
                 openEditVarianceModal={[Function]}
                 openViewVarianceModal={[Function]}
                 pageData={undefined}
@@ -352,10 +350,7 @@ ShallowWrapper {
                   Object {
                     "page": "1",
                     "per_page": 5,
-                    "variance_application_status_code": Array [
-                      "REV",
-                      "RFD",
-                    ],
+                    "variance_application_status_code": Array [],
                   }
                 }
                 variances={undefined}
@@ -461,8 +456,10 @@ ShallowWrapper {
             "nodeType": "function",
             "props": Object {
               "children": <VarianceTable
+                filterVarianceStatusOptions={undefined}
                 handleFilterChange={[Function]}
                 handlePageChange={[Function]}
+                isApplication={undefined}
                 openEditVarianceModal={[Function]}
                 openViewVarianceModal={[Function]}
                 pageData={undefined}
@@ -470,10 +467,7 @@ ShallowWrapper {
                   Object {
                     "page": "1",
                     "per_page": 5,
-                    "variance_application_status_code": Array [
-                      "REV",
-                      "RFD",
-                    ],
+                    "variance_application_status_code": Array [],
                   }
                 }
                 variances={undefined}
@@ -486,18 +480,17 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "function",
               "props": Object {
+                "filterVarianceStatusOptions": undefined,
                 "handleFilterChange": [Function],
                 "handlePageChange": [Function],
+                "isApplication": undefined,
                 "openEditVarianceModal": [Function],
                 "openViewVarianceModal": [Function],
                 "pageData": undefined,
                 "params": Object {
                   "page": "1",
                   "per_page": 5,
-                  "variance_application_status_code": Array [
-                    "REV",
-                    "RFD",
-                  ],
+                  "variance_application_status_code": Array [],
                 },
                 "variances": undefined,
               },
@@ -623,8 +616,10 @@ ShallowWrapper {
               condition={false}
             >
               <VarianceTable
+                filterVarianceStatusOptions={undefined}
                 handleFilterChange={[Function]}
                 handlePageChange={[Function]}
+                isApplication={undefined}
                 openEditVarianceModal={[Function]}
                 openViewVarianceModal={[Function]}
                 pageData={undefined}
@@ -632,10 +627,7 @@ ShallowWrapper {
                   Object {
                     "page": "1",
                     "per_page": 5,
-                    "variance_application_status_code": Array [
-                      "REV",
-                      "RFD",
-                    ],
+                    "variance_application_status_code": Array [],
                   }
                 }
                 variances={undefined}
@@ -770,8 +762,10 @@ ShallowWrapper {
                 condition={false}
               >
                 <VarianceTable
+                  filterVarianceStatusOptions={undefined}
                   handleFilterChange={[Function]}
                   handlePageChange={[Function]}
+                  isApplication={undefined}
                   openEditVarianceModal={[Function]}
                   openViewVarianceModal={[Function]}
                   pageData={undefined}
@@ -779,10 +773,7 @@ ShallowWrapper {
                     Object {
                       "page": "1",
                       "per_page": 5,
-                      "variance_application_status_code": Array [
-                        "REV",
-                        "RFD",
-                      ],
+                      "variance_application_status_code": Array [],
                     }
                   }
                   variances={undefined}
@@ -888,8 +879,10 @@ ShallowWrapper {
               "nodeType": "function",
               "props": Object {
                 "children": <VarianceTable
+                  filterVarianceStatusOptions={undefined}
                   handleFilterChange={[Function]}
                   handlePageChange={[Function]}
+                  isApplication={undefined}
                   openEditVarianceModal={[Function]}
                   openViewVarianceModal={[Function]}
                   pageData={undefined}
@@ -897,10 +890,7 @@ ShallowWrapper {
                     Object {
                       "page": "1",
                       "per_page": 5,
-                      "variance_application_status_code": Array [
-                        "REV",
-                        "RFD",
-                      ],
+                      "variance_application_status_code": Array [],
                     }
                   }
                   variances={undefined}
@@ -913,18 +903,17 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "function",
                 "props": Object {
+                  "filterVarianceStatusOptions": undefined,
                   "handleFilterChange": [Function],
                   "handlePageChange": [Function],
+                  "isApplication": undefined,
                   "openEditVarianceModal": [Function],
                   "openViewVarianceModal": [Function],
                   "pageData": undefined,
                   "params": Object {
                     "page": "1",
                     "per_page": 5,
-                    "variance_application_status_code": Array [
-                      "REV",
-                      "RFD",
-                    ],
+                    "variance_application_status_code": Array [],
                   },
                   "variances": undefined,
                 },

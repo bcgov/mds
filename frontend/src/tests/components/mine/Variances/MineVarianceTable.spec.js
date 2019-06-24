@@ -18,6 +18,9 @@ const setupProps = () => {
   props.varianceStatusOptionsHash = MOCK.VARIANCE_STATUS_OPTIONS_HASH;
   props.inspectorsHash = MOCK.INSPECTORS_HASH;
   props.isApplication = false;
+  props.params = {
+    variance_application_status_code: [],
+  };
 };
 
 beforeEach(() => {
