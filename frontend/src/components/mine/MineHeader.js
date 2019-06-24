@@ -305,10 +305,6 @@ export class MineHeader extends Component {
                   <img src={SUBSCRIBE} alt="SUBSCRIBE" />
                 </Tooltip>
               )}
-              {/* <AuthorizationWrapper
-                permission={Permission.CREATE}
-                isMajorMine={this.props.mine.major_mine_ind}
-              > */}
               <Dropdown
                 className="full-height full-mobile"
                 overlay={menu}
@@ -323,7 +319,6 @@ export class MineHeader extends Component {
                   </div>
                 </Button>
               </Dropdown>
-              {/* </AuthorizationWrapper> */}
             </div>
           </div>
           <Divider className="custom-large-divider" />
