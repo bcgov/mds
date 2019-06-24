@@ -2,12 +2,13 @@ from functools import wraps
 from app.extensions import jwt
 
 VIEW_ALL = "core_view_all"
-MINE_CREATE = "core_edit_mine"
+MINE_CREATE = "core_edit_mines"
 MINE_ADMIN = "core_admin"
-EDIT_PARTY = "core_edit_party"
-EDIT_PERMIT = "core_edit_permit"
+EDIT_PARTY = "core_edit_parties"
+EDIT_PERMIT = "core_edit_permits"
+CLOSE_PERMIT = "core_close_permits"
 EDIT_DO = "core_edit_do"
-EDIT_VARIANCE = "core_edit_variance"
+EDIT_VARIANCE = "core_edit_variances"
 MINESPACE_PROPONENT = "mds_minespace_proponents"
 
 
@@ -24,7 +25,7 @@ def requires_role_mine_admin(func):
 
 
 def requires_role_edit_party(func):
-    return _inner_wrapper(func, VIEW_ALL)
+    return _inner_wrapper(func, EDIT_PARTY)
 
 
 def requires_role_edit_permit(func):
@@ -33,6 +34,10 @@ def requires_role_edit_permit(func):
 
 def requires_role_edit_do(func):
     return _inner_wrapper(func, EDIT_DO)
+
+
+def requires_role_close_permit(func):
+    return _inner_wrapper(func, CLOSE_PERMIT)
 
 
 def requires_any_of(roles):
