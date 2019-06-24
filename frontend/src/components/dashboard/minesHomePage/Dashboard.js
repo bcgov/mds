@@ -451,7 +451,7 @@ export class Dashboard extends Component {
               <p>To find a mine summary, search in the list or map section below.</p>
             </div>
             <div>
-              <AuthorizationWrapper permission={Permission.ADMIN}>
+              <AuthorizationWrapper permission={Permission.EDIT_MINES}>
                 <AddButton
                   onClick={(event) =>
                     this.openModal(event, this.handleSubmit, ModalContent.CREATE_MINE_RECORD)

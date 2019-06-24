@@ -162,7 +162,10 @@ const columns = [
         </Menu>
       );
       return (
-        <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.major_mine_ind}>
+        <AuthorizationWrapper
+          permission={Permission.EDIT_PERMITS}
+          isMajorMine={text.major_mine_ind}
+        >
           <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
             <Button type="secondary" className="permit-table-button">
               <div className="padding-small">
@@ -230,7 +233,7 @@ const childColumns = [
     key: "amendmentEdit",
     align: "right",
     render: (text, record) => (
-      <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.major_mine_ind}>
+      <AuthorizationWrapper permission={Permission.EDIT_PERMITS} isMajorMine={text.major_mine_ind}>
         <Button
           className="permit-table-button"
           type="ghost"

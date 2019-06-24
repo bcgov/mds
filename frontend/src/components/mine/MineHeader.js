@@ -300,7 +300,7 @@ export class MineHeader extends Component {
                 </Tooltip>
               )}
               <AuthorizationWrapper
-                permission={Permission.CREATE}
+                permission={Permission.EDIT_MINES}
                 isMajorMine={this.props.mine.major_mine_ind}
               >
                 <Dropdown

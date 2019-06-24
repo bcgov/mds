@@ -7,9 +7,6 @@ export const DEFAULT_ENVIRONMENT = {
   keycloak_clientId: "mines-application-local",
   keycloak_idpHint: "test",
   keycloak_url: "https://sso-test.pathfinder.gov.bc.ca/auth",
-  keycloak_role_admin: "core_admin",
-  keycloak_role_create: "core_edit_mine",
-  keycloak_role_view: "core_view_all",
 };
 
 export const ENVIRONMENT = {
@@ -30,7 +27,12 @@ export const KEYCLOAK = {
 };
 
 export const USER_ROLES = {
-  role_admin: "core_admin",
-  role_create: "core_edit_mine",
   role_view: "core_view_all",
+  role_admin: "core_admin",
+  role_edit_mines: "core_edit_mines",
+  role_edit_parties: "core_edit_parties",
+  role_edit_permits: "core_edit_permits",
+  role_edit_do: "core_edit_do",
+  role_edit_variances: "core_edit_variances",
+  role_close_permits: "core_close_permits",
 };

@@ -415,7 +415,7 @@ export class ViewPartyRelationships extends Component {
               />
             </Popconfirm>
             <AuthorizationWrapper
-              permission={Permission.CREATE}
+              permission={Permission.EDIT_PARTIES}
               isMajorMine={this.props.mine.major_mine_ind}
             >
               <Dropdown

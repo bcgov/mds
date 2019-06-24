@@ -80,18 +80,6 @@
       "value": "idir"
     },
     {
-      "name": "KEYCLOAK_ROLE_ADMIN",
-      "value": "core_admin"
-    },
-    {
-      "name": "KEYCLOAK_ROLE_CREATE",
-      "value": "core_edit_mine"
-    },
-    {
-      "name": "KEYCLOAK_ROLE_VIEW",
-      "value": "core_view_all"
-    },
-    {
       "name": "API_URL",
       "displayName": "API Url",
       "description": "URL for the backend API",
@@ -249,18 +237,6 @@
                   {
                     "name": "KEYCLOAK_IDP_HINT",
                     "value": "${KEYCLOAK_IDP_HINT}"
-                  },
-                  {
-                    "name": "KEYCLOAK_ROLE_ADMIN",
-                    "value": "${KEYCLOAK_ROLE_ADMIN}"
-                  },
-                  {
-                    "name": "KEYCLOAK_ROLE_CREATE",
-                    "value": "${KEYCLOAK_ROLE_CREATE}"
-                  },
-                  {
-                    "name": "KEYCLOAK_ROLE_VIEW",
-                    "value": "${KEYCLOAK_ROLE_VIEW}"
                   },
                   {
                     "name": "SITEMINDER_URL",
