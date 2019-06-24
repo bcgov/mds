@@ -29,7 +29,7 @@ class  Contacts extends GebReportingSpec {
         to Dashboard
 
         when: "I click on the contact page link."
-        contactPageButton.click()
+        waitFor() { contactPageButton.click() }
 
         then: "I am on the contact tab"
         at ContactsPage
