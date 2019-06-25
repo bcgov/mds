@@ -13,7 +13,7 @@ export const incident = shape({
   followup_type_code: PropTypes.string,
   followup_inspection_no: PropTypes.string,
   closing_report_summary: PropTypes.string,
-  mms_insp_cd: PropTypes.string,
+  mms_inspector_initials: PropTypes.string,
 });
 
 export const incidentFollowupType = shape({
