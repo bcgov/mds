@@ -88,6 +88,18 @@
                 }
               },
               {
+                "name": "SCREEN_WIDTH",
+                "value": "1920"
+              },
+              {
+                "name": "SCREEN_HEIGHT",
+                "value": "1080"
+              },
+              {
+                "name": "SCREEN_DEPTH",
+                "value": "24"
+              },
+              {
                 "name": "DB_HOST",
                 "value": "${DB_CONFIG_NAME}"
               },
