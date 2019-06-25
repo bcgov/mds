@@ -70,8 +70,15 @@ const renderSummaryTSF = (tsf, partyRelationships) => (
   </Col>
 );
 
+// Since end date is stored at yyyy-mm-dd, comparing current Date() to
+// the the start of the next day ensures appointments ending today are displayed.
+const getTomorrow = (end_date) => {
+  const dayAfterEndDate = new Date(end_date);
+  return dayAfterEndDate.setDate(dayAfterEndDate.getDate() + 1);
+};
+
 const isActive = (pr) =>
-  (!pr.end_date || Date.parse(pr.end_date) >= new Date()) &&
+  (!pr.end_date || getTomorrow(pr.end_date) > new Date()) &&
   (!pr.start_date || Date.parse(pr.start_date) <= new Date());
 
 const activePermitteesByPermit = (pr, permit) =>

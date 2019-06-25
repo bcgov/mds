@@ -184,14 +184,17 @@ export class ViewPartyRelationships extends Component {
     });
   };
 
+  // Since end date is stored at yyyy-mm-dd, comparing current Date() to
+  // the the start of the next day ensures appointments ending today are displayed.
+  getTomorrow = (end_date) => {
+    const dayAfterEndDate = new Date(end_date);
+    return dayAfterEndDate.setDate(dayAfterEndDate.getDate() + 1);
+  };
+
   renderInactiveRelationships = (partyRelationships) => {
-    // The end date is stored without a time, to ensure it displays on it's last valid day it is compared to
-    // the date and time yesterday
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
     const activeRelationships = partyRelationships.filter(
       (x) =>
-        (!x.end_date || Date.parse(x.end_date) > yesterday) &&
+        (!x.end_date || this.getTomorrow(x.end_date) > new Date()) &&
         (!x.start_date || Date.parse(x.start_date) <= new Date())
     );
     const inactiveRelationships = partyRelationships.filter(
@@ -304,14 +307,10 @@ export class ViewPartyRelationships extends Component {
   };
 
   renderPartyRelationshipGroup = (partyRelationships, group) => {
-    // The end date is stored without a time, to ensure it displays on it's last valid day it is compared to
-    // the date and time yesterday
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
     const filteredPartyRelationships = partyRelationships
       .filter(
         (x) =>
-          (!x.end_date || Date.parse(x.end_date) > yesterday) &&
+          (!x.end_date || this.getTomorrow(x.end_date) > new Date()) &&
           (!x.start_date || Date.parse(x.start_date) <= new Date())
       )
       .filter((partyRelationship) => partyRelationship.mine_party_appt_type_code !== "PMT")
@@ -322,7 +321,7 @@ export class ViewPartyRelationships extends Component {
               partyRelationships
                 .filter(
                   (x) =>
-                    (!x.end_date || Date.parse(x.end_date) > yesterday) &&
+                    (!x.end_date || this.getTomorrow(x.end_date) > new Date()) &&
                     (!x.start_date || Date.parse(x.start_date) <= new Date())
                 )
                 .filter(

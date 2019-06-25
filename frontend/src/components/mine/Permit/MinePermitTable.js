@@ -252,8 +252,21 @@ const getPermittees = (partyRelationships, permit) =>
     ["desc"]
   );
 
-const getPermitteeName = (permittees) =>
-  permittees[0] ? permittees[0].party.name : Strings.EMPTY_FIELD;
+// Since end date is stored at yyyy-mm-dd, comparing current Date() to
+// the the start of the next day ensures appointments ending today are displayed.
+const getTomorrow = (end_date) => {
+  const dayAfterEndDate = new Date(end_date);
+  return dayAfterEndDate.setDate(dayAfterEndDate.getDate() + 1);
+};
+
+const isActive = (permittee) =>
+  (!permittee.end_date || getTomorrow(permittee.end_date) > new Date()) &&
+  (!permittee.start_date || Date.parse(permittee.start_date) <= new Date());
+
+const getPermitteeName = (permittees) => {
+  const activePermittee = permittees.filter(isActive);
+  return activePermittee[0] ? activePermittee[0].party.name : Strings.EMPTY_FIELD;
+};
 
 const transformRowData = (
   permit,
