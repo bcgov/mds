@@ -64,11 +64,10 @@ def register_commands(app):
             for _ in range(int(num)):
                 mine = MineFactory()
                 eor = MinePartyAppointmentFactory(mine=mine, mine_party_appt_type_code='EOR')
-                mine_manager = MinePartyAppointmentFactory(mine=mine,
-                                                           mine_party_appt_type_code='MMG')
-                permitee = MinePartyAppointmentFactory(mine=mine,
-                                                       mine_party_appt_type_code='PMT',
-                                                       party__company=True)
+                mine_manager = MinePartyAppointmentFactory(
+                    mine=mine, mine_party_appt_type_code='MMG')
+                permitee = MinePartyAppointmentFactory(
+                    mine=mine, mine_party_appt_type_code='PMT', party__company=True)
             try:
                 db.session.commit()
                 print(f'Created {num} random mines with related data.')
@@ -76,11 +75,11 @@ def register_commands(app):
                 db.session.rollback()
                 raise
 
-    if app.config.get('ENVIRONMENT_NAME') in ['test', 'prod']:
+    # if app.config.get('ENVIRONMENT_NAME') in ['test', 'prod']:
 
-        @sched.app.cli.command()
-        def _run_etl():
-            with sched.app.app_context():
-                print('starting the ETL.')
-                ETL_jobs._run_ETL()
-                print('Completed running the ETL.')
+    @sched.app.cli.command()
+    def _run_etl():
+        with sched.app.app_context():
+            print('starting the ETL.')
+            ETL_jobs._run_ETL()
+            print('Completed running the ETL.')

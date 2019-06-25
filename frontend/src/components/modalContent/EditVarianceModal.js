@@ -4,6 +4,15 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import CustomPropTypes from "@/customPropTypes";
 import EditVarianceForm from "@/components/Forms/variances/EditVarianceForm";
+import { getDropdownInspectors } from "@/selectors/partiesSelectors";
+import {
+  getDropdownHSRCMComplianceCodes,
+  getHSRCMComplianceCodesHash,
+  getDropdownVarianceStatusOptions,
+  getVarianceStatusOptionsHash,
+  getDropdownVarianceDocumentCategoryOptions,
+  getVarianceDocumentCategoryOptionsHash,
+} from "@/selectors/staticContentSelectors";
 import {
   fetchVarianceById,
   removeDocumentFromVariance,
@@ -53,10 +62,6 @@ export class EditVarianceModal extends Component {
       });
   };
 
-  componentDidUnmount() {
-    this.setState({ isLoaded: false });
-  }
-
   render() {
     return (
       <div>
@@ -83,6 +88,13 @@ export class EditVarianceModal extends Component {
 
 const mapStateToProps = (state) => ({
   variance: getVariance(state),
+  varianceStatusOptions: getDropdownVarianceStatusOptions(state),
+  inspectors: getDropdownInspectors(state),
+  complianceCodesHash: getHSRCMComplianceCodesHash(state),
+  documentCategoryOptions: getDropdownVarianceDocumentCategoryOptions(state),
+  documentCategoryOptionsHash: getVarianceDocumentCategoryOptionsHash(state),
+  varianceStatusOptionsHash: getVarianceStatusOptionsHash(state),
+  complianceCodes: getDropdownHSRCMComplianceCodes(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

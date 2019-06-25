@@ -45,6 +45,10 @@ class Variance(AuditMixin, Base):
     mine_documents = db.relationship(
         'MineDocument', lazy='joined', secondary='variance_document_xref')
     inspector = db.relationship('Party', lazy='joined', foreign_keys=[inspector_party_guid])
+    mine = db.relationship('Mine', lazy='joined')
+
+    mine_name = association_proxy('mine', 'mine_name')
+
 
     def __repr__(self):
         return '<Variance %r>' % self.variance_id

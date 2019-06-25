@@ -81,6 +81,20 @@ span.ant-table-column-sorter {
   right: 4px;
   top: 35%;
 }
+// Table filters
+.ant-table-thead > tr > th .anticon-filter,
+.ant-table-thead > tr > th .ant-table-filter-icon {
+  position: absolute;
+  right: 20px;
+
+  & svg {
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    margin-top: 0;
+    margin-left: -0.4375rem;
+  }
+}
 
 // Centered Pagination
 $pagination-width-1: 112px;

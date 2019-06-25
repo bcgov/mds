@@ -18,8 +18,8 @@ describe("userReducer", () => {
 
   it("receives STORE_CORE_USERS", () => {
     const expectedValue = getBaseExpectedValue();
-    expectedValue.coreUsers = MOCK.CORE_USERS.results;
-    const result = userReducer(undefined, storeCoreUserList(MOCK.CORE_USERS));
+    expectedValue.coreUsers = MOCK.INSPECTORS.results;
+    const result = userReducer(undefined, storeCoreUserList(MOCK.INSPECTORS));
     expect(result).toEqual(expectedValue);
   });
 });

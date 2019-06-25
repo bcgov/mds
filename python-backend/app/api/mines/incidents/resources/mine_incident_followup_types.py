@@ -19,4 +19,4 @@ class MineIncidentFollowupTypeResource(Resource, UserMixin):
     @api.doc(description='returns the possible EMPR followup action for mine incidents')
     @requires_role_mine_view
     def get(self):
-        return MineIncidentFollowupInvestigationType.get_active()
+        return MineIncidentFollowupInvestigationType.query.all()
