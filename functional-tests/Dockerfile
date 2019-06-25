@@ -7,7 +7,7 @@ USER root
 # Fix permissions
 COPY .contrib/ /usr/local/bin
 
-RUN chown -R 1001:0 /opt/selenium && \
+RUN chown -R :users /opt/selenium && \
     /usr/local/bin/fix-permissions /opt/selenium && \
     /usr/local/bin/fix-permissions $HOME
 
