@@ -201,24 +201,22 @@ export class NavBar extends Component {
               </Col>
             </Row>
           </AuthorizationWrapper>
-          <AuthorizationWrapper inTesting>
-            <Row>
-              <Col span={24}>
-                <Link to={router.CUSTOM_HOME_PAGE.route}>
-                  <Button
-                    id={
-                      includes(this.props.activeButton, router.CUSTOM_HOME_PAGE.route)
-                        ? "active-menu-btn"
-                        : ""
-                    }
-                    className="menu--hamburger__btn--link"
-                  >
-                    My Dashboard
-                  </Button>
-                </Link>
-              </Col>
-            </Row>
-          </AuthorizationWrapper>
+          <Row>
+            <Col span={24}>
+              <Link to={router.CUSTOM_HOME_PAGE.route}>
+                <Button
+                  id={
+                    includes(this.props.activeButton, router.CUSTOM_HOME_PAGE.route)
+                      ? "active-menu-btn"
+                      : ""
+                  }
+                  className="menu--hamburger__btn--link"
+                >
+                  My Dashboard
+                </Button>
+              </Link>
+            </Col>
+          </Row>
           <Row>
             <Col span={24}>
               <Link to={router.LOGOUT.route}>
@@ -240,14 +238,12 @@ export class NavBar extends Component {
 
   menu = () => (
     <Menu id="menu__dropdown">
-      <AuthorizationWrapper inTesting>
-        <div className="custom-menu-item">
-          <Link to={router.CUSTOM_HOME_PAGE.route}>
-            <button type="button">My Dashboard</button>
-          </Link>
-        </div>
-      </AuthorizationWrapper>
       <Menu.Item key="1">
+        <Link to={router.CUSTOM_HOME_PAGE.route}>
+          <button type="button">My Dashboard</button>
+        </Link>
+      </Menu.Item>
+      <Menu.Item key="2">
         <Link to={router.LOGOUT.route}>
           <button type="button">Log Out</button>
         </Link>
