@@ -21,6 +21,13 @@ export const AddIncidentReportingForm = (props) => (
           {props.initialValues.mine_incident_id_year && (
             <h4>{`Ministry Incident No. :  ${props.initialValues.mine_incident_report_no}`}</h4>
           )}
+          {props.initialValues.mms_insp_cd ? (
+            <span style={{ float: "right" }}>
+              {`MMS Inspector Initials: ${props.initialValues.mms_insp_cd}`}
+            </span>
+          ) : (
+            ""
+          )}
           <Form.Item>
             <Field
               id="reported_to_inspector_party_guid"

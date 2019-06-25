@@ -30,6 +30,7 @@ ShallowWrapper {
           gutter={48}
         >
           <Col>
+            
             <FormItem
               hasFeedback={false}
             >
@@ -166,6 +167,7 @@ ShallowWrapper {
           gutter={48}
         >
           <Col>
+            
             <FormItem
               hasFeedback={false}
             >
@@ -302,6 +304,7 @@ ShallowWrapper {
         "nodeType": "class",
         "props": Object {
           "children": <Col>
+            
             <FormItem
               hasFeedback={false}
             >
@@ -435,6 +438,7 @@ ShallowWrapper {
           "props": Object {
             "children": Array [
               undefined,
+              "",
               <FormItem
                 hasFeedback={false}
               >
@@ -562,6 +566,7 @@ ShallowWrapper {
           "ref": null,
           "rendered": Array [
             undefined,
+            "",
             Object {
               "instance": null,
               "key": undefined,
@@ -892,6 +897,7 @@ ShallowWrapper {
             gutter={48}
           >
             <Col>
+              
               <FormItem
                 hasFeedback={false}
               >
@@ -1028,6 +1034,7 @@ ShallowWrapper {
             gutter={48}
           >
             <Col>
+              
               <FormItem
                 hasFeedback={false}
               >
@@ -1164,6 +1171,7 @@ ShallowWrapper {
           "nodeType": "class",
           "props": Object {
             "children": <Col>
+              
               <FormItem
                 hasFeedback={false}
               >
@@ -1297,6 +1305,7 @@ ShallowWrapper {
             "props": Object {
               "children": Array [
                 undefined,
+                "",
                 <FormItem
                   hasFeedback={false}
                 >
@@ -1424,6 +1433,7 @@ ShallowWrapper {
             "ref": null,
             "rendered": Array [
               undefined,
+              "",
               Object {
                 "instance": null,
                 "key": undefined,
