@@ -642,7 +642,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                     SELECT permit_guid
                     FROM permit
                 )
-				AND issue_date = (select max(issue_date) from ETL_PERMIT where etl.permit_no = ETL_PERMIT.permit_no)
+				AND issue_date = (select max(issue_date) from ETL_PERMIT where etl.permit_no = ETL_PERMIT.permit_no and etl.mine_guid = ETL_PERMIT.mine_guid)
             ), inserted_rows AS (
                 INSERT INTO permit (
                     permit_guid         ,
@@ -901,6 +901,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                 FROM ETL_PERMIT
                 INNER JOIN ETL_MINE ON
                     ETL_PERMIT.mine_guid = ETL_MINE.mine_guid
+				WHERE ETL_PERMIT.permit_guid IS NOT NULL
                 RETURNING 1
             )
             SELECT count(*) FROM inserted_rows INTO insert_row;
