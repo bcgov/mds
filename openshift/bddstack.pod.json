@@ -62,7 +62,7 @@
             "command": [
               "/bin/bash",
               "-c",
-              "cd /home/jenkins/bdd-tests && ./run_tests.sh"
+              "cd /opt/selenium/bdd-tests && ./run_tests.sh"
             ],
             "imagePullPolicy": "Always",
             "env": [

@@ -17,4 +17,6 @@ USER 1001
 RUN mkdir /opt/selenium/bdd-tests
 COPY . /opt/selenium/bdd-tests/
 
+RUN cd /opt/selenium/bdd-tests/ && ./gradlew -m
+
 WORKDIR $HOME
