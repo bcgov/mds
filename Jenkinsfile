@@ -35,13 +35,6 @@ pipeline {
                 sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-deploy -Pargs.--config=pipeline/config-dev.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=dev'
             }
         }
-        stage('Unit Tests and SonarQube Reporting (DEV)') {
-            agent { label 'master' }
-            steps {
-                echo "Running unit tests and reporting them to SonarQube ..."
-                sh 'unset JAVA_OPTS; pipeline/gradlew --no-build-cache --console=plain --no-daemon -b pipeline/build.gradle cd-unit-test -Pargs.--config=pipeline/config-dev.groovy -Pargs.--pr=${CHANGE_ID} -Pargs.--env=dev -Pargs.--branch=${CHANGE_BRANCH}'
-            }
-        }
         stage('Functional Test (DEV)') {
             agent { label 'master' }
             steps {
