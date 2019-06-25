@@ -104,8 +104,14 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                     WHEN mms_new.mine_typ = ANY('{Q,CM,SG}'::text[]) THEN 'BCL'
                     ELSE NULL
                 END,
-                mms_new.lat_dec    ,
-                mms_new.lon_dec    ,
+                CASE
+                    WHEN mms_new.lat_dec <> 0 AND mms_new.lon_dec <> 0 THEN mms_new.lat_dec
+                    ELSE NULL
+                END,
+                CASE
+                    WHEN mms_new.lat_dec <> 0 AND mms_new.lon_dec <> 0 THEN mms_new.lon_dec
+                    ELSE NULL
+                END,
                 (mms_new.min_lnk = 'Y' AND mms_new.min_lnk IS NOT NULL),
             CASE WHEN lower(mms_new.mine_nm) LIKE '%delete%' OR lower(mms_new.mine_nm) LIKE '%deleted%' OR lower(mms_new.mine_nm) LIKE '%reuse%' THEN TRUE ELSE FALSE END
             FROM mms_new
@@ -114,6 +120,13 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
             RAISE NOTICE '....# of new mine records found in MMS: %', (new_row-old_row);
             RAISE NOTICE '....Total mine records in ETL_MINE: %.', new_row;
         END;
+
+        -- MDS-1789: Convert all existing 0 lat/lon values in ETL_MINE to NULL
+        UPDATE ETL_MINE
+        SET latitude  = NULL,
+            longitude = NULL
+        WHERE
+            latitude = 0 OR longitude = 0;
 
         DECLARE
             old_row         integer;
