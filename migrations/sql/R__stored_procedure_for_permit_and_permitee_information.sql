@@ -773,6 +773,14 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                 party_type_code  = etl.party_type
             FROM ETL_PERMIT etl
             WHERE party.party_guid = etl.party_guid
+            AND (
+                party.first_name != etl.first_name
+                OR party.party_name != etl.party_name
+                OR party.phone_no != etl.phone_no
+                OR party.email != etl.email
+                OR party.effective_date != etl.effective_date
+                OR party.party_type_code != etl.party_type
+            )
             RETURNING 1
             )
             SELECT COUNT(*) FROM updated_rows INTO update_row;
