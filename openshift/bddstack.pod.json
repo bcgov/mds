@@ -55,6 +55,12 @@
         }
       },
       "spec": {
+        "volumes": [
+          {
+            "name": "dshm",
+            "emptyDir": {}
+          }
+        ],
         "containers": [
           {
             "name": "bdd-test",
@@ -123,7 +129,13 @@
                 "cpu": "1",
                 "memory": "1Gi"
               }
-            }
+            },
+            "volumeMounts": [
+              {
+                "mountPath": "/dev/shm",
+                "name": "dshm"
+              }
+            ]
           }
         ],
         "restartPolicy": "Never",
