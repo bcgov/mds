@@ -1,5 +1,6 @@
 import React from "react";
 import { Table, Menu, Dropdown, Button, Icon, Tooltip } from "antd";
+import moment from "moment";
 import NullScreen from "@/components/common/NullScreen";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Strings from "@/constants/strings";
@@ -254,13 +255,8 @@ const getPermittees = (partyRelationships, permit) =>
 
 // Since end date is stored at yyyy-mm-dd, comparing current Date() to
 // the the start of the next day ensures appointments ending today are displayed.
-const getTomorrow = (end_date) => {
-  const dayAfterEndDate = new Date(end_date);
-  return dayAfterEndDate.setDate(dayAfterEndDate.getDate() + 1);
-};
-
 const isActive = (permittee) =>
-  (!permittee.end_date || getTomorrow(permittee.end_date) > new Date()) &&
+  (!permittee.end_date || moment(permittee.end_date).add(1, "days") > new Date()) &&
   (!permittee.start_date || Date.parse(permittee.start_date) <= new Date());
 
 const getPermitteeName = (permittees) => {
