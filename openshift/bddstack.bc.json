@@ -41,6 +41,36 @@
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
+        "name": "selenium-firefox",
+        "creationTimestamp": null,
+        "labels": {
+          "shared": "true"
+        }
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        },
+        "tags": [
+          {
+            "name": "latest",
+            "annotations": null,
+            "from": {
+              "kind": "DockerImage",
+              "name": "selenium/standalone-firefox:latest"
+            },
+            "importPolicy": {},
+            "referencePolicy": {
+              "type": "Local"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
         "name": "${NAME}",
         "creationTimestamp": null,
         "labels": {
@@ -91,8 +121,7 @@
           "dockerStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "namespace": "bcgov",
-              "name": "jenkins-slave-bddstack:v1-latest"
+              "name": "selenium-firefox:latest"
             }
           }
         },
