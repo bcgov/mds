@@ -11,6 +11,7 @@ USER root
 # Download gradle to allow running as daemon and cache artifacts
 RUN mkdir /opt/gradle
 WORKDIR /opt/gradle
+
 RUN wget -q https://services.gradle.org/distributions/gradle-4.10.3-bin.zip
 RUN unzip -d /opt/gradle gradle-4.10.3-bin.zip
 ENV PATH=$PATH:/opt/gradle/gradle-4.10.3/bin
