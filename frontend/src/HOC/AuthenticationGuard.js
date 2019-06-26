@@ -45,9 +45,7 @@ export const AuthenticationGuard = (WrappedComponent) => {
           idpHint: KEYCLOAK.idpHint,
         })
         .success(() => {
-          keycloak
-            .loadUserProfile()
-            .success((userProfile) => this.props.authenticateUser(userProfile));
+          keycloak.loadUserInfo().success((userInfo) => this.props.authenticateUser(userInfo));
           localStorage.setItem("jwt", keycloak.token);
           console.log("Token", JSON.stringify(keycloak.token));
           this.props.storeUserAccessData(keycloak.realmAccess.roles);
