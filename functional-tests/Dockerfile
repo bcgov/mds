@@ -20,7 +20,7 @@ ENV PATH=$PATH:/opt/gradle/gradle-4.10.3/bin
 RUN mkdir $BDD_TEST_HOME/
 COPY . $BDD_TEST_HOME/
 
-RUN cd $BDD_TEST_HOME && ./gradlew -m
+RUN cd $BDD_TEST_HOME && gradle -m
 
 # Fix permissions
 RUN chmod -R 777 $APP_HOME
