@@ -2,6 +2,9 @@ import axios from "axios";
 import { notification } from "antd";
 import * as String from "@/constants/strings";
 
+const promiseFinally = require("promise.prototype.finally");
+promiseFinally.shim();
+
 const UNAUTHORIZED = 401;
 const MAINTENANCE = 503;
 
