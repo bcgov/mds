@@ -48,6 +48,7 @@ class MineIncidentListResource(Resource, UserMixin):
     parser.add_argument('reported_to_inspector_party_guid', type=str, location='json')
     parser.add_argument('responsible_inspector_party_guid', type=str, location='json')
     parser.add_argument('determination_inspector_party_guid', type=str, location='json')
+    parser.add_argument('proponent_incident_no', type=str, location='json')
     parser.add_argument('determination_type_code', type=str, location='json')
     parser.add_argument('followup_investigation_type_code', type=str, location='json')
     parser.add_argument('followup_inspection', type=inputs.boolean, location='json')
@@ -187,6 +188,7 @@ class MineIncidentResource(Resource, UserMixin):
         'responsible_inspector_party_guid', type=str, location='json', store_missing=False)
     parser.add_argument(
         'determination_inspector_party_guid', type=str, location='json', store_missing=False)
+    parser.add_argument('proponent_incident_no', type=str, location='json', store_missing=False)
     parser.add_argument('determination_type_code', type=str, location='json', store_missing=False)
     parser.add_argument(
         'followup_investigation_type_code', type=str, location='json', store_missing=False)

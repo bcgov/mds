@@ -30,6 +30,7 @@ ShallowWrapper {
           gutter={48}
         >
           <Col>
+            
             <FormItem
               hasFeedback={false}
             >
@@ -83,41 +84,55 @@ ShallowWrapper {
                 }
               />
             </FormItem>
-            <FormItem
-              hasFeedback={false}
+            <Row
+              gutter={16}
             >
-              <Field
-                component={[Function]}
-                id="reported_by_phone_no"
-                label="Phone number"
-                name="reported_by_phone_no"
-                normalize={[Function]}
-                placeholder="xxx-xxx-xxxx"
-                validate={
-                  Array [
-                    [Function],
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="reported_by_phone_ext"
-                label="Phone extension"
-                name="reported_by_phone_ext"
-                placeholder=""
-                validate={
-                  Array [
-                    [Function],
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
+              <Col
+                md={12}
+                xs={24}
+              >
+                <FormItem
+                  hasFeedback={false}
+                >
+                  <Field
+                    component={[Function]}
+                    id="reported_by_phone_no"
+                    label="Phone number"
+                    name="reported_by_phone_no"
+                    normalize={[Function]}
+                    placeholder="xxx-xxx-xxxx"
+                    validate={
+                      Array [
+                        [Function],
+                        [Function],
+                      ]
+                    }
+                  />
+                </FormItem>
+              </Col>
+              <Col
+                md={12}
+                xs={24}
+              >
+                <FormItem
+                  hasFeedback={false}
+                >
+                  <Field
+                    component={[Function]}
+                    id="reported_by_phone_ext"
+                    label="Phone extension"
+                    name="reported_by_phone_ext"
+                    placeholder=""
+                    validate={
+                      Array [
+                        [Function],
+                        [Function],
+                      ]
+                    }
+                  />
+                </FormItem>
+              </Col>
+            </Row>
             <FormItem
               hasFeedback={false}
             >
@@ -166,6 +181,7 @@ ShallowWrapper {
           gutter={48}
         >
           <Col>
+            
             <FormItem
               hasFeedback={false}
             >
@@ -219,41 +235,55 @@ ShallowWrapper {
                 }
               />
             </FormItem>
-            <FormItem
-              hasFeedback={false}
+            <Row
+              gutter={16}
             >
-              <Field
-                component={[Function]}
-                id="reported_by_phone_no"
-                label="Phone number"
-                name="reported_by_phone_no"
-                normalize={[Function]}
-                placeholder="xxx-xxx-xxxx"
-                validate={
-                  Array [
-                    [Function],
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="reported_by_phone_ext"
-                label="Phone extension"
-                name="reported_by_phone_ext"
-                placeholder=""
-                validate={
-                  Array [
-                    [Function],
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
+              <Col
+                md={12}
+                xs={24}
+              >
+                <FormItem
+                  hasFeedback={false}
+                >
+                  <Field
+                    component={[Function]}
+                    id="reported_by_phone_no"
+                    label="Phone number"
+                    name="reported_by_phone_no"
+                    normalize={[Function]}
+                    placeholder="xxx-xxx-xxxx"
+                    validate={
+                      Array [
+                        [Function],
+                        [Function],
+                      ]
+                    }
+                  />
+                </FormItem>
+              </Col>
+              <Col
+                md={12}
+                xs={24}
+              >
+                <FormItem
+                  hasFeedback={false}
+                >
+                  <Field
+                    component={[Function]}
+                    id="reported_by_phone_ext"
+                    label="Phone extension"
+                    name="reported_by_phone_ext"
+                    placeholder=""
+                    validate={
+                      Array [
+                        [Function],
+                        [Function],
+                      ]
+                    }
+                  />
+                </FormItem>
+              </Col>
+            </Row>
             <FormItem
               hasFeedback={false}
             >
@@ -302,6 +332,7 @@ ShallowWrapper {
         "nodeType": "class",
         "props": Object {
           "children": <Col>
+            
             <FormItem
               hasFeedback={false}
             >
@@ -355,41 +386,55 @@ ShallowWrapper {
                 }
               />
             </FormItem>
-            <FormItem
-              hasFeedback={false}
+            <Row
+              gutter={16}
             >
-              <Field
-                component={[Function]}
-                id="reported_by_phone_no"
-                label="Phone number"
-                name="reported_by_phone_no"
-                normalize={[Function]}
-                placeholder="xxx-xxx-xxxx"
-                validate={
-                  Array [
-                    [Function],
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
-            <FormItem
-              hasFeedback={false}
-            >
-              <Field
-                component={[Function]}
-                id="reported_by_phone_ext"
-                label="Phone extension"
-                name="reported_by_phone_ext"
-                placeholder=""
-                validate={
-                  Array [
-                    [Function],
-                    [Function],
-                  ]
-                }
-              />
-            </FormItem>
+              <Col
+                md={12}
+                xs={24}
+              >
+                <FormItem
+                  hasFeedback={false}
+                >
+                  <Field
+                    component={[Function]}
+                    id="reported_by_phone_no"
+                    label="Phone number"
+                    name="reported_by_phone_no"
+                    normalize={[Function]}
+                    placeholder="xxx-xxx-xxxx"
+                    validate={
+                      Array [
+                        [Function],
+                        [Function],
+                      ]
+                    }
+                  />
+                </FormItem>
+              </Col>
+              <Col
+                md={12}
+                xs={24}
+              >
+                <FormItem
+                  hasFeedback={false}
+                >
+                  <Field
+                    component={[Function]}
+                    id="reported_by_phone_ext"
+                    label="Phone extension"
+                    name="reported_by_phone_ext"
+                    placeholder=""
+                    validate={
+                      Array [
+                        [Function],
+                        [Function],
+                      ]
+                    }
+                  />
+                </FormItem>
+              </Col>
+            </Row>
             <FormItem
               hasFeedback={false}
             >
@@ -435,6 +480,7 @@ ShallowWrapper {
           "props": Object {
             "children": Array [
               undefined,
+              "",
               <FormItem
                 hasFeedback={false}
               >
@@ -488,41 +534,55 @@ ShallowWrapper {
                   }
                 />
               </FormItem>,
-              <FormItem
-                hasFeedback={false}
+              <Row
+                gutter={16}
               >
-                <Field
-                  component={[Function]}
-                  id="reported_by_phone_no"
-                  label="Phone number"
-                  name="reported_by_phone_no"
-                  normalize={[Function]}
-                  placeholder="xxx-xxx-xxxx"
-                  validate={
-                    Array [
-                      [Function],
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>,
-              <FormItem
-                hasFeedback={false}
-              >
-                <Field
-                  component={[Function]}
-                  id="reported_by_phone_ext"
-                  label="Phone extension"
-                  name="reported_by_phone_ext"
-                  placeholder=""
-                  validate={
-                    Array [
-                      [Function],
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>,
+                <Col
+                  md={12}
+                  xs={24}
+                >
+                  <FormItem
+                    hasFeedback={false}
+                  >
+                    <Field
+                      component={[Function]}
+                      id="reported_by_phone_no"
+                      label="Phone number"
+                      name="reported_by_phone_no"
+                      normalize={[Function]}
+                      placeholder="xxx-xxx-xxxx"
+                      validate={
+                        Array [
+                          [Function],
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>
+                </Col>
+                <Col
+                  md={12}
+                  xs={24}
+                >
+                  <FormItem
+                    hasFeedback={false}
+                  >
+                    <Field
+                      component={[Function]}
+                      id="reported_by_phone_ext"
+                      label="Phone extension"
+                      name="reported_by_phone_ext"
+                      placeholder=""
+                      validate={
+                        Array [
+                          [Function],
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>
+                </Col>
+              </Row>,
               <FormItem
                 hasFeedback={false}
               >
@@ -562,6 +622,7 @@ ShallowWrapper {
           "ref": null,
           "rendered": Array [
             undefined,
+            "",
             Object {
               "instance": null,
               "key": undefined,
@@ -702,85 +763,201 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "children": <Field
-                  component={[Function]}
-                  id="reported_by_phone_no"
-                  label="Phone number"
-                  name="reported_by_phone_no"
-                  normalize={[Function]}
-                  placeholder="xxx-xxx-xxxx"
-                  validate={
-                    Array [
-                      [Function],
-                      [Function],
-                    ]
-                  }
-                />,
-                "hasFeedback": false,
+                "children": Array [
+                  <Col
+                    md={12}
+                    xs={24}
+                  >
+                    <FormItem
+                      hasFeedback={false}
+                    >
+                      <Field
+                        component={[Function]}
+                        id="reported_by_phone_no"
+                        label="Phone number"
+                        name="reported_by_phone_no"
+                        normalize={[Function]}
+                        placeholder="xxx-xxx-xxxx"
+                        validate={
+                          Array [
+                            [Function],
+                            [Function],
+                          ]
+                        }
+                      />
+                    </FormItem>
+                  </Col>,
+                  <Col
+                    md={12}
+                    xs={24}
+                  >
+                    <FormItem
+                      hasFeedback={false}
+                    >
+                      <Field
+                        component={[Function]}
+                        id="reported_by_phone_ext"
+                        label="Phone extension"
+                        name="reported_by_phone_ext"
+                        placeholder=""
+                        validate={
+                          Array [
+                            [Function],
+                            [Function],
+                          ]
+                        }
+                      />
+                    </FormItem>
+                  </Col>,
+                ],
+                "gutter": 16,
               },
               "ref": null,
-              "rendered": Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "component": [Function],
-                  "id": "reported_by_phone_no",
-                  "label": "Phone number",
-                  "name": "reported_by_phone_no",
-                  "normalize": [Function],
-                  "placeholder": "xxx-xxx-xxxx",
-                  "validate": Array [
-                    [Function],
-                    [Function],
-                  ],
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <FormItem
+                      hasFeedback={false}
+                    >
+                      <Field
+                        component={[Function]}
+                        id="reported_by_phone_no"
+                        label="Phone number"
+                        name="reported_by_phone_no"
+                        normalize={[Function]}
+                        placeholder="xxx-xxx-xxxx"
+                        validate={
+                          Array [
+                            [Function],
+                            [Function],
+                          ]
+                        }
+                      />
+                    </FormItem>,
+                    "md": 12,
+                    "xs": 24,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <Field
+                        component={[Function]}
+                        id="reported_by_phone_no"
+                        label="Phone number"
+                        name="reported_by_phone_no"
+                        normalize={[Function]}
+                        placeholder="xxx-xxx-xxxx"
+                        validate={
+                          Array [
+                            [Function],
+                            [Function],
+                          ]
+                        }
+                      />,
+                      "hasFeedback": false,
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "component": [Function],
+                        "id": "reported_by_phone_no",
+                        "label": "Phone number",
+                        "name": "reported_by_phone_no",
+                        "normalize": [Function],
+                        "placeholder": "xxx-xxx-xxxx",
+                        "validate": Array [
+                          [Function],
+                          [Function],
+                        ],
+                      },
+                      "ref": null,
+                      "rendered": null,
+                      "type": [Function],
+                    },
+                    "type": [Function],
+                  },
+                  "type": [Function],
                 },
-                "ref": null,
-                "rendered": null,
-                "type": [Function],
-              },
-              "type": [Function],
-            },
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "children": <Field
-                  component={[Function]}
-                  id="reported_by_phone_ext"
-                  label="Phone extension"
-                  name="reported_by_phone_ext"
-                  placeholder=""
-                  validate={
-                    Array [
-                      [Function],
-                      [Function],
-                    ]
-                  }
-                />,
-                "hasFeedback": false,
-              },
-              "ref": null,
-              "rendered": Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "component": [Function],
-                  "id": "reported_by_phone_ext",
-                  "label": "Phone extension",
-                  "name": "reported_by_phone_ext",
-                  "placeholder": "",
-                  "validate": Array [
-                    [Function],
-                    [Function],
-                  ],
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <FormItem
+                      hasFeedback={false}
+                    >
+                      <Field
+                        component={[Function]}
+                        id="reported_by_phone_ext"
+                        label="Phone extension"
+                        name="reported_by_phone_ext"
+                        placeholder=""
+                        validate={
+                          Array [
+                            [Function],
+                            [Function],
+                          ]
+                        }
+                      />
+                    </FormItem>,
+                    "md": 12,
+                    "xs": 24,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <Field
+                        component={[Function]}
+                        id="reported_by_phone_ext"
+                        label="Phone extension"
+                        name="reported_by_phone_ext"
+                        placeholder=""
+                        validate={
+                          Array [
+                            [Function],
+                            [Function],
+                          ]
+                        }
+                      />,
+                      "hasFeedback": false,
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "component": [Function],
+                        "id": "reported_by_phone_ext",
+                        "label": "Phone extension",
+                        "name": "reported_by_phone_ext",
+                        "placeholder": "",
+                        "validate": Array [
+                          [Function],
+                          [Function],
+                        ],
+                      },
+                      "ref": null,
+                      "rendered": null,
+                      "type": [Function],
+                    },
+                    "type": [Function],
+                  },
+                  "type": [Function],
                 },
-                "ref": null,
-                "rendered": null,
-                "type": [Function],
-              },
+              ],
               "type": [Function],
             },
             Object {
@@ -892,6 +1069,7 @@ ShallowWrapper {
             gutter={48}
           >
             <Col>
+              
               <FormItem
                 hasFeedback={false}
               >
@@ -945,41 +1123,55 @@ ShallowWrapper {
                   }
                 />
               </FormItem>
-              <FormItem
-                hasFeedback={false}
+              <Row
+                gutter={16}
               >
-                <Field
-                  component={[Function]}
-                  id="reported_by_phone_no"
-                  label="Phone number"
-                  name="reported_by_phone_no"
-                  normalize={[Function]}
-                  placeholder="xxx-xxx-xxxx"
-                  validate={
-                    Array [
-                      [Function],
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-              <FormItem
-                hasFeedback={false}
-              >
-                <Field
-                  component={[Function]}
-                  id="reported_by_phone_ext"
-                  label="Phone extension"
-                  name="reported_by_phone_ext"
-                  placeholder=""
-                  validate={
-                    Array [
-                      [Function],
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
+                <Col
+                  md={12}
+                  xs={24}
+                >
+                  <FormItem
+                    hasFeedback={false}
+                  >
+                    <Field
+                      component={[Function]}
+                      id="reported_by_phone_no"
+                      label="Phone number"
+                      name="reported_by_phone_no"
+                      normalize={[Function]}
+                      placeholder="xxx-xxx-xxxx"
+                      validate={
+                        Array [
+                          [Function],
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>
+                </Col>
+                <Col
+                  md={12}
+                  xs={24}
+                >
+                  <FormItem
+                    hasFeedback={false}
+                  >
+                    <Field
+                      component={[Function]}
+                      id="reported_by_phone_ext"
+                      label="Phone extension"
+                      name="reported_by_phone_ext"
+                      placeholder=""
+                      validate={
+                        Array [
+                          [Function],
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>
+                </Col>
+              </Row>
               <FormItem
                 hasFeedback={false}
               >
@@ -1028,6 +1220,7 @@ ShallowWrapper {
             gutter={48}
           >
             <Col>
+              
               <FormItem
                 hasFeedback={false}
               >
@@ -1081,41 +1274,55 @@ ShallowWrapper {
                   }
                 />
               </FormItem>
-              <FormItem
-                hasFeedback={false}
+              <Row
+                gutter={16}
               >
-                <Field
-                  component={[Function]}
-                  id="reported_by_phone_no"
-                  label="Phone number"
-                  name="reported_by_phone_no"
-                  normalize={[Function]}
-                  placeholder="xxx-xxx-xxxx"
-                  validate={
-                    Array [
-                      [Function],
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-              <FormItem
-                hasFeedback={false}
-              >
-                <Field
-                  component={[Function]}
-                  id="reported_by_phone_ext"
-                  label="Phone extension"
-                  name="reported_by_phone_ext"
-                  placeholder=""
-                  validate={
-                    Array [
-                      [Function],
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
+                <Col
+                  md={12}
+                  xs={24}
+                >
+                  <FormItem
+                    hasFeedback={false}
+                  >
+                    <Field
+                      component={[Function]}
+                      id="reported_by_phone_no"
+                      label="Phone number"
+                      name="reported_by_phone_no"
+                      normalize={[Function]}
+                      placeholder="xxx-xxx-xxxx"
+                      validate={
+                        Array [
+                          [Function],
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>
+                </Col>
+                <Col
+                  md={12}
+                  xs={24}
+                >
+                  <FormItem
+                    hasFeedback={false}
+                  >
+                    <Field
+                      component={[Function]}
+                      id="reported_by_phone_ext"
+                      label="Phone extension"
+                      name="reported_by_phone_ext"
+                      placeholder=""
+                      validate={
+                        Array [
+                          [Function],
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>
+                </Col>
+              </Row>
               <FormItem
                 hasFeedback={false}
               >
@@ -1164,6 +1371,7 @@ ShallowWrapper {
           "nodeType": "class",
           "props": Object {
             "children": <Col>
+              
               <FormItem
                 hasFeedback={false}
               >
@@ -1217,41 +1425,55 @@ ShallowWrapper {
                   }
                 />
               </FormItem>
-              <FormItem
-                hasFeedback={false}
+              <Row
+                gutter={16}
               >
-                <Field
-                  component={[Function]}
-                  id="reported_by_phone_no"
-                  label="Phone number"
-                  name="reported_by_phone_no"
-                  normalize={[Function]}
-                  placeholder="xxx-xxx-xxxx"
-                  validate={
-                    Array [
-                      [Function],
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
-              <FormItem
-                hasFeedback={false}
-              >
-                <Field
-                  component={[Function]}
-                  id="reported_by_phone_ext"
-                  label="Phone extension"
-                  name="reported_by_phone_ext"
-                  placeholder=""
-                  validate={
-                    Array [
-                      [Function],
-                      [Function],
-                    ]
-                  }
-                />
-              </FormItem>
+                <Col
+                  md={12}
+                  xs={24}
+                >
+                  <FormItem
+                    hasFeedback={false}
+                  >
+                    <Field
+                      component={[Function]}
+                      id="reported_by_phone_no"
+                      label="Phone number"
+                      name="reported_by_phone_no"
+                      normalize={[Function]}
+                      placeholder="xxx-xxx-xxxx"
+                      validate={
+                        Array [
+                          [Function],
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>
+                </Col>
+                <Col
+                  md={12}
+                  xs={24}
+                >
+                  <FormItem
+                    hasFeedback={false}
+                  >
+                    <Field
+                      component={[Function]}
+                      id="reported_by_phone_ext"
+                      label="Phone extension"
+                      name="reported_by_phone_ext"
+                      placeholder=""
+                      validate={
+                        Array [
+                          [Function],
+                          [Function],
+                        ]
+                      }
+                    />
+                  </FormItem>
+                </Col>
+              </Row>
               <FormItem
                 hasFeedback={false}
               >
@@ -1297,6 +1519,7 @@ ShallowWrapper {
             "props": Object {
               "children": Array [
                 undefined,
+                "",
                 <FormItem
                   hasFeedback={false}
                 >
@@ -1350,41 +1573,55 @@ ShallowWrapper {
                     }
                   />
                 </FormItem>,
-                <FormItem
-                  hasFeedback={false}
+                <Row
+                  gutter={16}
                 >
-                  <Field
-                    component={[Function]}
-                    id="reported_by_phone_no"
-                    label="Phone number"
-                    name="reported_by_phone_no"
-                    normalize={[Function]}
-                    placeholder="xxx-xxx-xxxx"
-                    validate={
-                      Array [
-                        [Function],
-                        [Function],
-                      ]
-                    }
-                  />
-                </FormItem>,
-                <FormItem
-                  hasFeedback={false}
-                >
-                  <Field
-                    component={[Function]}
-                    id="reported_by_phone_ext"
-                    label="Phone extension"
-                    name="reported_by_phone_ext"
-                    placeholder=""
-                    validate={
-                      Array [
-                        [Function],
-                        [Function],
-                      ]
-                    }
-                  />
-                </FormItem>,
+                  <Col
+                    md={12}
+                    xs={24}
+                  >
+                    <FormItem
+                      hasFeedback={false}
+                    >
+                      <Field
+                        component={[Function]}
+                        id="reported_by_phone_no"
+                        label="Phone number"
+                        name="reported_by_phone_no"
+                        normalize={[Function]}
+                        placeholder="xxx-xxx-xxxx"
+                        validate={
+                          Array [
+                            [Function],
+                            [Function],
+                          ]
+                        }
+                      />
+                    </FormItem>
+                  </Col>
+                  <Col
+                    md={12}
+                    xs={24}
+                  >
+                    <FormItem
+                      hasFeedback={false}
+                    >
+                      <Field
+                        component={[Function]}
+                        id="reported_by_phone_ext"
+                        label="Phone extension"
+                        name="reported_by_phone_ext"
+                        placeholder=""
+                        validate={
+                          Array [
+                            [Function],
+                            [Function],
+                          ]
+                        }
+                      />
+                    </FormItem>
+                  </Col>
+                </Row>,
                 <FormItem
                   hasFeedback={false}
                 >
@@ -1424,6 +1661,7 @@ ShallowWrapper {
             "ref": null,
             "rendered": Array [
               undefined,
+              "",
               Object {
                 "instance": null,
                 "key": undefined,
@@ -1564,85 +1802,201 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "children": <Field
-                    component={[Function]}
-                    id="reported_by_phone_no"
-                    label="Phone number"
-                    name="reported_by_phone_no"
-                    normalize={[Function]}
-                    placeholder="xxx-xxx-xxxx"
-                    validate={
-                      Array [
-                        [Function],
-                        [Function],
-                      ]
-                    }
-                  />,
-                  "hasFeedback": false,
+                  "children": Array [
+                    <Col
+                      md={12}
+                      xs={24}
+                    >
+                      <FormItem
+                        hasFeedback={false}
+                      >
+                        <Field
+                          component={[Function]}
+                          id="reported_by_phone_no"
+                          label="Phone number"
+                          name="reported_by_phone_no"
+                          normalize={[Function]}
+                          placeholder="xxx-xxx-xxxx"
+                          validate={
+                            Array [
+                              [Function],
+                              [Function],
+                            ]
+                          }
+                        />
+                      </FormItem>
+                    </Col>,
+                    <Col
+                      md={12}
+                      xs={24}
+                    >
+                      <FormItem
+                        hasFeedback={false}
+                      >
+                        <Field
+                          component={[Function]}
+                          id="reported_by_phone_ext"
+                          label="Phone extension"
+                          name="reported_by_phone_ext"
+                          placeholder=""
+                          validate={
+                            Array [
+                              [Function],
+                              [Function],
+                            ]
+                          }
+                        />
+                      </FormItem>
+                    </Col>,
+                  ],
+                  "gutter": 16,
                 },
                 "ref": null,
-                "rendered": Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "component": [Function],
-                    "id": "reported_by_phone_no",
-                    "label": "Phone number",
-                    "name": "reported_by_phone_no",
-                    "normalize": [Function],
-                    "placeholder": "xxx-xxx-xxxx",
-                    "validate": Array [
-                      [Function],
-                      [Function],
-                    ],
+                "rendered": Array [
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <FormItem
+                        hasFeedback={false}
+                      >
+                        <Field
+                          component={[Function]}
+                          id="reported_by_phone_no"
+                          label="Phone number"
+                          name="reported_by_phone_no"
+                          normalize={[Function]}
+                          placeholder="xxx-xxx-xxxx"
+                          validate={
+                            Array [
+                              [Function],
+                              [Function],
+                            ]
+                          }
+                        />
+                      </FormItem>,
+                      "md": 12,
+                      "xs": 24,
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <Field
+                          component={[Function]}
+                          id="reported_by_phone_no"
+                          label="Phone number"
+                          name="reported_by_phone_no"
+                          normalize={[Function]}
+                          placeholder="xxx-xxx-xxxx"
+                          validate={
+                            Array [
+                              [Function],
+                              [Function],
+                            ]
+                          }
+                        />,
+                        "hasFeedback": false,
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "component": [Function],
+                          "id": "reported_by_phone_no",
+                          "label": "Phone number",
+                          "name": "reported_by_phone_no",
+                          "normalize": [Function],
+                          "placeholder": "xxx-xxx-xxxx",
+                          "validate": Array [
+                            [Function],
+                            [Function],
+                          ],
+                        },
+                        "ref": null,
+                        "rendered": null,
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                    "type": [Function],
                   },
-                  "ref": null,
-                  "rendered": null,
-                  "type": [Function],
-                },
-                "type": [Function],
-              },
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "children": <Field
-                    component={[Function]}
-                    id="reported_by_phone_ext"
-                    label="Phone extension"
-                    name="reported_by_phone_ext"
-                    placeholder=""
-                    validate={
-                      Array [
-                        [Function],
-                        [Function],
-                      ]
-                    }
-                  />,
-                  "hasFeedback": false,
-                },
-                "ref": null,
-                "rendered": Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "component": [Function],
-                    "id": "reported_by_phone_ext",
-                    "label": "Phone extension",
-                    "name": "reported_by_phone_ext",
-                    "placeholder": "",
-                    "validate": Array [
-                      [Function],
-                      [Function],
-                    ],
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <FormItem
+                        hasFeedback={false}
+                      >
+                        <Field
+                          component={[Function]}
+                          id="reported_by_phone_ext"
+                          label="Phone extension"
+                          name="reported_by_phone_ext"
+                          placeholder=""
+                          validate={
+                            Array [
+                              [Function],
+                              [Function],
+                            ]
+                          }
+                        />
+                      </FormItem>,
+                      "md": 12,
+                      "xs": 24,
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <Field
+                          component={[Function]}
+                          id="reported_by_phone_ext"
+                          label="Phone extension"
+                          name="reported_by_phone_ext"
+                          placeholder=""
+                          validate={
+                            Array [
+                              [Function],
+                              [Function],
+                            ]
+                          }
+                        />,
+                        "hasFeedback": false,
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "component": [Function],
+                          "id": "reported_by_phone_ext",
+                          "label": "Phone extension",
+                          "name": "reported_by_phone_ext",
+                          "placeholder": "",
+                          "validate": Array [
+                            [Function],
+                            [Function],
+                          ],
+                        },
+                        "ref": null,
+                        "rendered": null,
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                    "type": [Function],
                   },
-                  "ref": null,
-                  "rendered": null,
-                  "type": [Function],
-                },
+                ],
                 "type": [Function],
               },
               Object {
