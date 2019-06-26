@@ -50,6 +50,15 @@ class AddIncidentDetailForm extends Component {
             </Form.Item>
             <Form.Item>
               <Field
+                id="proponent_incident_no"
+                name="proponent_incident_no"
+                label="Proponent Incident Number"
+                component={renderConfig.FIELD}
+                validate={[maxLength(20)]}
+              />
+            </Form.Item>
+            <Form.Item>
+              <Field
                 id="number_of_fatalities"
                 name="number_of_fatalities"
                 label="Number of Fatalities:"
@@ -95,16 +104,18 @@ class AddIncidentDetailForm extends Component {
                 validate={[required]}
               />
             </Form.Item>
-            <Form.Item>
-              <Field
-                id="determination_inspector_party_guid"
-                name="determination_inspector_party_guid"
-                label="Who made the determination?*"
-                component={renderConfig.SELECT}
-                data={this.props.inspectors}
-              />
-            </Form.Item>
-
+            {this.props.doDetermination !== "PEN" ? (
+              <Form.Item>
+                <Field
+                  id="determination_inspector_party_guid"
+                  name="determination_inspector_party_guid"
+                  label="Who made the determination?*"
+                  component={renderConfig.SELECT}
+                  data={this.props.inspectors}
+                  validate={[required]}
+                />
+              </Form.Item>
+            ) : null}
             {this.props.doDetermination === "DO" ? (
               <span>
                 <Form.Item>

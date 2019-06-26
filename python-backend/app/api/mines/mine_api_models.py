@@ -195,6 +195,8 @@ MINE_INCIDENT_MODEL = api.model(
         'followup_inspection_date': DateTime,
         'determination_inspector_party_guid': fields.String,
         'dangerous_occurrence_subparagraph_ids': fields.List(fields.Integer),
+        'proponent_incident_no': fields.String,
+        'mine_incident_no': fields.String,
         'documents': fields.List(fields.Nested(MINE_INCIDENT_DOCUMENT_MODEL))
     })
 
