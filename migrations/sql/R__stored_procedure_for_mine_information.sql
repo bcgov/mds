@@ -37,8 +37,14 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
             RAISE NOTICE '.. Update existing records with latest MMS data';
             UPDATE ETL_MINE
             SET mine_name      = mms.mmsmin.mine_nm,
-                latitude       = mms.mmsmin.lat_dec,
-                longitude      = mms.mmsmin.lon_dec,
+                latitude       = CASE
+                                   WHEN mms_new.lat_dec <> 0 AND mms_new.lon_dec <> 0 THEN mms_new.lat_dec
+                                   ELSE NULL
+                                 END,
+                longitude      = CASE
+                                   WHEN mms_new.lat_dec <> 0 AND mms_new.lon_dec <> 0 THEN mms_new.lon_dec
+                                   ELSE NULL
+                                 END,
                 major_mine_ind = (mms.mmsmin.min_lnk = 'Y' AND mms.mmsmin.min_lnk IS NOT NULL),
                 mine_region    = CASE mms.mmsmin.reg_cd
                                     WHEN '1' THEN 'SW'
@@ -246,8 +252,8 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
             FROM mms.mmsnow, mms.mmspmt
             WHERE
                 mms.mmsnow.cid = mms.mmspmt.cid
-                AND lat_dec IS NOT NULL
-                AND lon_dec IS NOT NULL;
+                AND lat_dec <> 0
+                AND lon_dec <> 0;
 
             -- Update existing ETL_LOCATION records
             WITH pmt_now_preferred AS (
@@ -262,6 +268,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                 WHERE
                     permit_no != ''
                     AND substring(permit_no, 1, 2) NOT IN ('CX', 'MX')
+                    AND (lat_dec <> 0 AND lon_dec <> 0)
             )
             UPDATE ETL_LOCATION
             SET mine_guid = ETL_MINE.mine_guid,
@@ -296,6 +303,8 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                         SELECT lat_dec
                         FROM mms.mmsnow
                         WHERE mine_no = ETL_MINE.mine_no
+                              AND
+                              (lat_dec <> 0 AND lon_dec <> 0)
                         ORDER BY upd_no DESC
                         LIMIT 1
                     ),
