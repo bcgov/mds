@@ -116,11 +116,14 @@ class  PermitSpec extends GebReportingSpec {
             moveToElement(permitTab.amalgamatePermitButton)
         }
         permitTab.amalgamatePermitButton.click()
+
         newPermitForm.amalgamatePermit()
         waitFor(){permitTab.permitRow.children().has(text:"Add/Edit")}
 
         and: "The user hovers over the Add/Edit button."
-        moveToFooterAndHoverOnEdit()
+        interact {
+            moveToFooterAndHoverOnEdit()
+        }
         waitFor() {permitTab.hoverDropdown}
 
         then: "There is no 'amalgamate' option in the Add/Edit dropdown."
