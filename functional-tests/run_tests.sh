@@ -9,5 +9,5 @@ Xvfb :1 -screen 0 1920x1080x24 &
 export DISPLAY=:1
 
 ### Run both Core and MineSpace tests
-gradle firefoxHeadlessTest -DfirefoxHeadlessTest.single=CustomJUnitSpecRunner
-gradle firefoxHeadlessTest -DfirefoxHeadlessTest.single=CustomJUnitPublicSpecRunner
+./gradlew firefoxHeadlessTest -DfirefoxHeadlessTest.single=CustomJUnitSpecRunner
+./gradlew firefoxHeadlessTest -DfirefoxHeadlessTest.single=CustomJUnitPublicSpecRunner
