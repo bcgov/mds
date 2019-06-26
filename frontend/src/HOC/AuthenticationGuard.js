@@ -40,14 +40,12 @@ export const AuthenticationGuard = (WrappedComponent) => {
       // Initialize client
       const keycloak = Keycloak(KEYCLOAK);
       await keycloak.init();
-
       // Prompt for login using IDIR if not authenticated
       if (!keycloak.authenticated) {
         await keycloak.login({
           idpHint: KEYCLOAK.idpHint,
         });
       }
-
       // Fetch user info and roles and store them in local storage
       const userInfo = await keycloak.loadUserInfo();
       localStorage.setItem("jwt", keycloak.token);

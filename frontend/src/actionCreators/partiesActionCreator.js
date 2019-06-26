@@ -174,34 +174,6 @@ export const deleteParty = (party_guid) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const downloadMineManagerHistory = (mineNo, { window, document }) =>
-  CustomAxios("")({
-    method: "GET",
-    url: `${ENVIRONMENT.apiUrl + API.MINE_MANAGER_HISTORY(mineNo)}`,
-    responseType: "blob",
-    ...createRequestHeader(),
-  })
-    .then((response) => {
-      notification.success({ message: "Successfully downloaded history", duration: 10 });
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", `mine_${mineNo}_manager_history.csv`);
-      document.body.appendChild(link);
-      link.click();
-      return response;
-    })
-    .catch(({ response }) => {
-      let message = "Download failed";
-      if (response.status === 422) {
-        message = "No Mine Number provided";
-      }
-      if (response.status === 404) {
-        message = "No Mine Manager history found";
-      }
-      notification.error({ message, duration: 10 });
-    });
-
 export const setAddPartyFormState = (addPartyFormState) => (dispatch) => {
   dispatch(partyActions.storeAddPartyFormState(addPartyFormState));
   return addPartyFormState;
