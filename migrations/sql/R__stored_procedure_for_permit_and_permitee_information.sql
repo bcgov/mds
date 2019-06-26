@@ -474,8 +474,8 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
             INNER JOIN permittee_wContact permittee_info ON
                 permittee_info.permit_cid = permit_info.permit_cid
             WHERE permit_info.permit_no not in (
-                select permit_no from permit p 
-                join mine m on p.mine_guid=m.mine_guid 
+                select permit_no from permit p
+                join mine m on p.mine_guid=m.mine_guid
                 where m.major_mine_ind = true
                 );
 
@@ -588,7 +588,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
             insert_amendment_row integer;
             total_amendment_row  integer;
         BEGIN
-            RAISE NOTICE '.. Step 2 of 4: Update permit info';
+            RAISE NOTICE '.. Step 2 of 4: Update permit info in MDS';
             SELECT count(*) FROM permit INTO old_row;
             SELECT count(*) FROM permit_amendment INTO old_amendment_row;
 
@@ -702,7 +702,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
 				  ETL_PERMIT
 				ON
 				  ETL_PERMIT.permit_no = original_permits.permit_no AND
-				  ETL_PERMIT.mine_guid = original_permits.mine_guid AND 
+				  ETL_PERMIT.mine_guid = original_permits.mine_guid AND
 				  ETL_PERMIT.issue_date = original_permits.min_issue_date
 			), inserted_rows AS (
                 INSERT INTO permit_amendment (
@@ -773,6 +773,14 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                 party_type_code  = etl.party_type
             FROM ETL_PERMIT etl
             WHERE party.party_guid = etl.party_guid
+            AND (
+                party.first_name != etl.first_name
+                OR party.party_name != etl.party_name
+                OR party.phone_no != etl.phone_no
+                OR party.email != etl.email
+                OR party.effective_date != etl.effective_date
+                OR party.party_type_code != etl.party_type
+            )
             RETURNING 1
             )
             SELECT COUNT(*) FROM updated_rows INTO update_row;
@@ -857,7 +865,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                     mine_guid IN (
                         SELECT mine_guid
                         FROM ETL_MINE
-                        WHERE major_mine_ind = 'f' 
+                        WHERE major_mine_ind = 'f'
                         AND mine_guid in (select mine_guid from ETL_PERMIT)
                     )
                 RETURNING 1
