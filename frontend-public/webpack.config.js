@@ -32,6 +32,7 @@ const BUILD_FILE_NAMES = {
 
 const PATH_ALIASES = {
   "@": PATHS.src,
+  "react-dom": "@hot-loader/react-dom",
   // Put your aliases here
 };
 
@@ -116,7 +117,7 @@ const prodConfig = merge([
       filename: BUILD_FILE_NAMES.bundle,
     },
   },
-  parts.clean(PATHS.build),
+  parts.clean(),
   parts.hardSourceWebPackPlugin(),
   parts.extractCSS({
     filename: BUILD_FILE_NAMES.css,
