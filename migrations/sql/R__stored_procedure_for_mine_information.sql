@@ -328,6 +328,8 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                         SELECT lon_dec
                         FROM mms.mmsnow
                         WHERE mine_no = ETL_MINE.mine_no
+                              AND
+                              (lat_dec <> 0 AND lon_dec <> 0)
                         ORDER BY upd_no DESC
                         LIMIT 1
                     ),
