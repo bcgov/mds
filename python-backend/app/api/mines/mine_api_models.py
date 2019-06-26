@@ -160,6 +160,16 @@ MINE_LIST_MODEL = api.model(
         'total': fields.Integer,
     })
 
+MINE_INCIDENT_DOCUMENT_MODEL = api.model(
+    'Mine Incident Document', {
+        'mine_document_guid': fields.String,
+        'document_manager_guid': fields.String,
+        'document_name': fields.String,
+        'mine_incident_document_type_code': fields.String
+
+    }
+)
+
 MINE_INCIDENT_MODEL = api.model(
     'Mine Incident', {
         'mine_incident_guid': fields.String,
@@ -169,19 +179,31 @@ MINE_INCIDENT_MODEL = api.model(
         'incident_timestamp': DateTime,
         'incident_description': fields.String,
         'reported_timestamp': DateTime,
-        'reported_by': fields.String,
-        'reported_by_role': fields.String,
+        'reported_by_name': fields.String,
+        'reported_by_email': fields.String,
+        'reported_by_phone_no': fields.String,
+        'reported_by_phone_ext': fields.String,
+        'emergency_services_called': fields.Boolean, 
+        'number_of_injuries': fields.Integer,
+        'number_of_fatalities': fields.Integer,
+        'reported_to_inspector_party_guid':  fields.String,
+        'responsible_inspector_party_guid':  fields.String,
         'determination_type_code': fields.String,
-        'followup_type_code': fields.String,
-        'dangerous_occurrence_subparagraph_ids': fields.List(fields.Integer)
+        'status_code': fields.String,
+        'followup_investigation_type_code': fields.String,
+        'followup_inspection': fields.Boolean,
+        'followup_inspection_date': DateTime,
+        'determination_inspector_party_guid': fields.String,
+        'mms_inspector_initials' : fields.String(attribute='mms_insp_cd'), 
+        'dangerous_occurrence_subparagraph_ids': fields.List(fields.Integer),
+        'documents': fields.List(fields.Nested(MINE_INCIDENT_DOCUMENT_MODEL))
     })
 
-MINE_INCIDENT_FOLLOWUP_TYPE_MODEL = api.model(
-    'Mine Incident Followup Type', {
-        'mine_incident_followup_type_code': fields.String,
+MINE_INCIDENT_FOLLOWUP_INVESTIGATION_TYPE_MODEL = api.model(
+    'Mine Incident Followup Investigation Type', {
+        'mine_incident_followup_investigation_type_code': fields.String,
         'description': fields.String,
         'display_order': fields.Integer,
-        'active_ind': fields.Boolean
     })
 
 MINE_INCIDENT_DETERMINATION_TYPE_MODEL = api.model(
@@ -191,6 +213,9 @@ MINE_INCIDENT_DETERMINATION_TYPE_MODEL = api.model(
         'display_order': fields.Integer,
         'active_ind': fields.Boolean
     })
+
+MINE_INCIDENT_STATUS_CDOE_MODEL = api.model("Mine Incident Status Codes",
+ {'mine_incident_status_code': fields.String, 'description': fields.String, 'display_order': fields.Integer})
 
 VARIANCE_DOCUMENT_MODEL = api.inherit(
     'VarianceDocumentModel', MINE_DOCUMENT_MODEL, {

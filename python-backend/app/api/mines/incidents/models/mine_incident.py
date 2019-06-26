@@ -6,20 +6,23 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 from ....utils.models_mixins import AuditMixin, Base
-from .mine_incident_followup_type import MineIncidentFollowupType
+from .mine_incident_followup_investigation_type import MineIncidentFollowupInvestigationType
 from app.api.mines.incidents.models.mine_incident_determination_type import MineIncidentDeterminationType
 from app.api.mines.compliance.models.compliance_article import ComplianceArticle
 from app.api.mines.incidents.models.mine_incident_do_subparagraph import MineIncidentDoSubparagraph
+from app.api.mines.incidents.models.mine_incident_recommendation import MineIncidentRecommendation
 
 
 class MineIncident(AuditMixin, Base):
     __tablename__ = 'mine_incident'
 
     mine_incident_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
-    mine_incident_id_year = db.Column(
-        db.Integer, nullable=False, default=datetime.datetime.now().year)
-    mine_incident_guid = db.Column(
-        UUID(as_uuid=True), nullable=False, server_default=FetchedValue())
+    mine_incident_id_year = db.Column(db.Integer,
+                                      nullable=False,
+                                      default=datetime.datetime.now().year)
+    mine_incident_guid = db.Column(UUID(as_uuid=True),
+                                   nullable=False,
+                                   server_default=FetchedValue())
 
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
 
@@ -27,27 +30,60 @@ class MineIncident(AuditMixin, Base):
     incident_description = db.Column(db.String, nullable=False)
 
     reported_timestamp = db.Column(db.DateTime)
-    reported_by = db.Column(db.String)
-    reported_by_role = db.Column(db.String)
+    reported_by_name = db.Column(db.String)
+    reported_by_email = db.Column(db.String)
+    reported_by_phone_no = db.Column(db.String)
+    reported_by_phone_ext = db.Column(db.String)
+
+    number_of_fatalities = db.Column(db.Integer)
+    number_of_injuries = db.Column(db.Integer)
+    emergency_services_called = db.Column(db.Boolean)
+    followup_inspection = db.Column(db.Boolean)
+    followup_inspection_date = db.Column(db.DateTime)
+
+    mms_insp_cd = db.Column(db.String)
+
+    reported_to_inspector_party_guid = db.Column(UUID(as_uuid=True),
+                                                 db.ForeignKey('party.party_guid'),
+                                                 nullable=False)
+    responsible_inspector_party_guid = db.Column(UUID(as_uuid=True),
+                                                 db.ForeignKey('party.party_guid'),
+                                                 nullable=False)
+    determination_inspector_party_guid = db.Column(UUID(as_uuid=True),
+                                                   db.ForeignKey('party.party_guid'),
+                                                   nullable=False)
 
     determination_type_code = db.Column(
         db.String,
         db.ForeignKey('mine_incident_determination_type.mine_incident_determination_type_code'))
-    followup_type_code = db.Column(
-        db.String, db.ForeignKey('mine_incident_followup_type.mine_incident_followup_type_code'))
-    followup_inspection_no = db.Column(db.String)
 
-    closing_report_summary = db.Column(db.String)
+    status_code = db.Column(db.String,
+                            db.ForeignKey('mine_incident_status_code.mine_incident_status_code'))
 
-    determination_type = db.relationship(
-        'MineIncidentDeterminationType', backref='mine_incidents', lazy='joined', uselist=False)
-    dangerous_occurrence_subparagraphs = db.relationship(
-        'ComplianceArticle',
-        backref='mine_incidents',
-        lazy='joined',
-        secondary='mine_incident_do_subparagraph')
-    followup_type = db.relationship(
-        'MineIncidentFollowupType', backref='mine_incidents', lazy='joined', uselist=False)
+    followup_investigation_type_code = db.Column(
+        db.String,
+        db.ForeignKey(
+            'mine_incident_followup_investigation_type.mine_incident_followup_investigation_type_code'
+        ))
+
+    determination_type = db.relationship('MineIncidentDeterminationType',
+                                         backref='mine_incidents',
+                                         lazy='joined',
+                                         uselist=False)
+    dangerous_occurrence_subparagraphs = db.relationship('ComplianceArticle',
+                                                         backref='mine_incidents',
+                                                         lazy='joined',
+                                                         secondary='mine_incident_do_subparagraph')
+    followup_investigation_type = db.relationship('MineIncidentFollowupInvestigationType',
+                                                  backref='mine_incidents',
+                                                  lazy='joined',
+                                                  uselist=False)
+
+    recommendations = db.relationship('MineIncidentRecommendation', lazy='selectin')
+    documents = db.relationship('MineIncidentDocumentXref', lazy='joined')
+    incident_documents = db.relationship('MineDocument',
+                                         lazy='joined',
+                                         secondary='mine_incident_document_xref')
 
     @hybrid_property
     def mine_incident_report_no(self):
@@ -70,22 +106,18 @@ class MineIncident(AuditMixin, Base):
                mine,
                incident_timestamp,
                incident_description,
-               determination_type_code='PEN',
-               followup_type_code='UND',
-               followup_inspection_no=None,
+               determination_type_code=None,
+               followup_investigation_type_code=None,
                reported_timestamp=None,
-               reported_by=None,
-               reported_by_role=None,
+               reported_by_name=None,
                add_to_session=True):
         mine_incident = cls(
             incident_timestamp=incident_timestamp,
             incident_description=incident_description,
             reported_timestamp=reported_timestamp,
-            reported_by=reported_by,
-            reported_by_role=reported_by_role,
+            reported_by_name=reported_by_name,
             determination_type_code=determination_type_code,
-            followup_type_code=followup_type_code,
-            followup_inspection_no=followup_inspection_no,
+            followup_investigation_type_code=followup_investigation_type_code,
         )
         mine.mine_incidents.append(mine_incident)
         if add_to_session:
@@ -116,13 +148,13 @@ class MineIncident(AuditMixin, Base):
     @validates('incident_timestamp')
     def validate_incident_timestamp(self, key, incident_timestamp):
         if incident_timestamp:
-            if incident_timestamp > datetime.datetime.now():
+            if incident_timestamp > datetime.datetime.utcnow():
                 raise AssertionError('incident_timestamp must not be in the future')
         return incident_timestamp
 
     @validates('reported_timestamp')
     def validate_reported_timestamp(self, key, reported_timestamp):
         if reported_timestamp:
-            if reported_timestamp > datetime.datetime.now():
+            if reported_timestamp > datetime.datetime.utcnow():
                 raise AssertionError('reported_timestamp must not be in the future')
         return reported_timestamp

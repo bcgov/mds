@@ -8,8 +8,14 @@ const propTypes = {
   handleChange: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
+  partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   partyRelationship: CustomPropTypes.partyRelationship.isRequired,
+  partyRelationshipType: CustomPropTypes.partyRelationshipType.isRequired,
   mine: CustomPropTypes.mine.isRequired,
+};
+
+const defaultProps = {
+  partyRelationships: [],
 };
 
 const EditPartyRelationshipModal = (props) => {
@@ -23,5 +29,6 @@ const EditPartyRelationshipModal = (props) => {
 };
 
 EditPartyRelationshipModal.propTypes = propTypes;
+EditPartyRelationshipModal.defaultProps = defaultProps;
 
 export default EditPartyRelationshipModal;

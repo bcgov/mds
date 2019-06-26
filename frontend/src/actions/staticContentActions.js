@@ -70,6 +70,11 @@ export const storeMineIncidentDeterminationOptions = (payload) => ({
   payload,
 });
 
+export const storeMineIncidentStatusCodeOptions = (payload) => ({
+  type: ActionTypes.STORE_MINE_INCIDENT_STATUS_CODE_OPTIONS,
+  payload,
+});
+
 export const storeVarianceStatusOptions = (payload) => ({
   type: ActionTypes.STORE_VARIANCE_STATUS_OPTIONS,
   payload,

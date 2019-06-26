@@ -27,6 +27,7 @@ import {
   fetchMineComplianceCodes,
   fetchMineIncidentFollowActionOptions,
   fetchMineIncidentDeterminationOptions,
+  fetchMineIncidentStatusCodeOptions,
   setOptionsLoaded,
   fetchVarianceDocumentCategoryOptions,
   fetchVarianceStatusOptions,
@@ -83,8 +84,6 @@ import Loading from "@/components/common/Loading";
 import { formatParamStringToArray } from "@/utils/helpers";
 import { detectProdEnvironment } from "@/utils/environmentUtils";
 import { getUserAccessData } from "@/selectors/authenticationSelectors";
-import { USER_ROLES } from "@/constants/environment";
-import * as Permission from "@/constants/permissions";
 
 /**
  * @class MineDashboard.js is an individual mines dashboard, gets Mine data from redux and passes into children.
@@ -117,6 +116,7 @@ const propTypes = {
   fetchApplications: PropTypes.func.isRequired,
   fetchMineIncidentFollowActionOptions: PropTypes.func.isRequired,
   fetchMineIncidentDeterminationOptions: PropTypes.func.isRequired,
+  fetchMineIncidentStatusCodeOptions: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   varianceStatusOptions: CustomPropTypes.options.isRequired,
@@ -163,6 +163,7 @@ export class MineDashboard extends Component {
       this.props.fetchApplicationStatusOptions();
       this.props.fetchMineIncidentFollowActionOptions();
       this.props.fetchMineIncidentDeterminationOptions();
+      this.props.fetchMineIncidentStatusCodeOptions();
       this.props.setOptionsLoaded();
     }
     this.props.fetchMineComplianceCodes();
@@ -283,7 +284,6 @@ export class MineDashboard extends Component {
       this.props.fetchPermits({ mine_guid: this.props.mines[id].mine_guid });
       this.props.fetchVariancesByMine({ mineGuid: id });
       this.setState({ isLoaded: true });
-      this.props.fetchVariancesByMine({ mineGuid: id });
       this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
       this.props.fetchApplications({ mine_guid: id });
       this.props.fetchMineComplianceInfo(this.props.mines[id].mine_no, true).then((data) => {
@@ -299,9 +299,6 @@ export class MineDashboard extends Component {
     const { id } = this.props.match.params;
     const mine = this.props.mines[id];
     const isDevOrTest = !detectProdEnvironment();
-    // temporary check, cannot wrap tabs in an AuthWrapper
-    const isAdmin = this.props.userRoles.includes(USER_ROLES[Permission.ADMIN]);
-    const showVariances = isDevOrTest || isAdmin;
     if (!mine) {
       return <Loading />;
     }
@@ -368,34 +365,31 @@ export class MineDashboard extends Component {
                     />
                   </div>
                 </TabPane>
-                {/* can't wrap a TabPane in the authWrapper without interfering with the Tabs behaviour */}
-                {showVariances && (
-                  <TabPane tab="Variance" key="variance">
-                    <div className="tab__content">
-                      <MineVariance
-                        mine={mine}
-                        inspectors={this.props.inspectors}
-                        createVariance={this.props.createVariance}
-                        varianceDocumentCategoryOptions={this.props.varianceDocumentCategoryOptions}
-                        varianceDocumentCategoryOptionsHash={
-                          this.props.varianceDocumentCategoryOptionsHash
-                        }
-                        addDocumentToVariance={this.props.addDocumentToVariance}
-                        openModal={this.props.openModal}
-                        closeModal={this.props.closeModal}
-                        fetchVariancesByMine={this.props.fetchVariancesByMine}
-                        varianceApplications={this.props.varianceApplications}
-                        approvedVariances={this.props.approvedVariances}
-                        complianceCodes={this.props.complianceCodes}
-                        complianceCodesHash={this.props.complianceCodesHash}
-                        varianceStatusOptions={this.props.varianceStatusOptions}
-                        updateVariance={this.props.updateVariance}
-                        varianceStatusOptionsHash={this.props.varianceStatusOptionsHash}
-                        inspectorsHash={this.props.inspectorsHash}
-                      />
-                    </div>
-                  </TabPane>
-                )}
+                <TabPane tab="Variance" key="variance">
+                  <div className="tab__content">
+                    <MineVariance
+                      mine={mine}
+                      inspectors={this.props.inspectors}
+                      createVariance={this.props.createVariance}
+                      varianceDocumentCategoryOptions={this.props.varianceDocumentCategoryOptions}
+                      varianceDocumentCategoryOptionsHash={
+                        this.props.varianceDocumentCategoryOptionsHash
+                      }
+                      addDocumentToVariance={this.props.addDocumentToVariance}
+                      openModal={this.props.openModal}
+                      closeModal={this.props.closeModal}
+                      fetchVariancesByMine={this.props.fetchVariancesByMine}
+                      varianceApplications={this.props.varianceApplications}
+                      approvedVariances={this.props.approvedVariances}
+                      complianceCodes={this.props.complianceCodes}
+                      complianceCodesHash={this.props.complianceCodesHash}
+                      varianceStatusOptions={this.props.varianceStatusOptions}
+                      updateVariance={this.props.updateVariance}
+                      varianceStatusOptionsHash={this.props.varianceStatusOptionsHash}
+                      inspectorsHash={this.props.inspectorsHash}
+                    />
+                  </div>
+                </TabPane>
                 {/* TODO: Unhide for July release */
                 false && (
                   <TabPane tab="Tenure" key="tenure">
@@ -411,18 +405,16 @@ export class MineDashboard extends Component {
                     </div>
                   </TabPane>
                 )}
-                {/* can't wrap a TabPane in the authWrapper without interfering with the Tabs behaviour */}
-                {isDevOrTest && (
-                  <TabPane tab="Incidents" key="incidents">
-                    <div className="tab__content">
-                      <MineIncidents
-                        mine={mine}
-                        openModal={this.props.openModal}
-                        closeModal={this.props.closeModal}
-                      />
-                    </div>
-                  </TabPane>
-                )}
+                <TabPane tab="Incidents" key="incidents">
+                  <div className="tab__content">
+                    <MineIncidents
+                      mine={mine}
+                      inspectors={this.props.inspectors}
+                      openModal={this.props.openModal}
+                      closeModal={this.props.closeModal}
+                    />
+                  </div>
+                </TabPane>
               </Tabs>
             </div>
           </div>
@@ -490,6 +482,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchInspectors,
       fetchMineIncidentFollowActionOptions,
       fetchMineIncidentDeterminationOptions,
+      fetchMineIncidentStatusCodeOptions,
       fetchVarianceStatusOptions,
       updateVariance,
     },

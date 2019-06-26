@@ -9,8 +9,7 @@ from app.extensions import api
 from ...mine.models.mine import Mine
 from ....documents.mines.models.mine_document import MineDocument
 from ....documents.variances.models.variance import VarianceDocumentXref
-from ....utils.access_decorators import (requires_any_of, MINE_CREATE,
-                                         MINESPACE_PROPONENT)
+from ....utils.access_decorators import (requires_any_of, MINE_CREATE, MINESPACE_PROPONENT)
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.mines.mine_api_models import VARIANCE_MODEL
@@ -45,7 +44,6 @@ class MineVarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
 
         response = Response(str(resp.content), resp.status_code, resp.raw.headers.items())
         return response
-
 
     @api.doc(
         description='Associate an uploaded file with a variance.',

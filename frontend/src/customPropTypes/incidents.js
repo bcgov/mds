@@ -13,13 +13,13 @@ export const incident = shape({
   followup_type_code: PropTypes.string,
   followup_inspection_no: PropTypes.string,
   closing_report_summary: PropTypes.string,
+  mms_inspector_initials: PropTypes.string,
 });
 
 export const incidentFollowupType = shape({
-  mine_incident_followup_type_code: PropTypes.string.isRequired,
+  mine_incident_followup_investigation_type_code: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   display_order: PropTypes.number.isRequired,
-  active_ind: PropTypes.bool.isRequired,
 });
 
 export default incident;

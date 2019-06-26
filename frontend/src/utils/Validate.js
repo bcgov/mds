@@ -1,4 +1,6 @@
 import { memoize } from "lodash";
+import moment from "moment";
+
 /**
  * Utility class for validating inputs using redux forms
  */
@@ -7,7 +9,7 @@ class Validator {
 
   CAN_POSTAL_CODE_REGEX = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/;
 
-  EMAIL_REGEX = /^[a-zA-Z0-9`'’._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
+  EMAIL_REGEX = /^[a-zA-Z0-9`'’._%+-]+@[a-zA-Z0-9.-]+$/;
 
   PHONE_REGEX = /^[0-9]{3}-[0-9]{3}-[0-9]{4}$/i;
 
@@ -91,3 +93,58 @@ export const validateStartDate = memoize((previousStartDate) => (value) =>
 
 export const dateNotInFuture = (value) =>
   value && new Date(value) >= new Date() ? "Date can not be in the future" : undefined;
+
+export const validateIncidentDate = memoize((reportedDate) => (value) =>
+  value <= reportedDate
+    ? "Incident date and time cannot occur before reporting occurence."
+    : undefined
+);
+
+// existingAppointments : PropTypes.arrayOf(CustomPropTypes.partyRelationship)
+// newAppt : {start_date : String, end_date : String, party_guid : String}
+// apptType : CustomPropTypes.partyRelationshipType
+export const validateDateRanges = (existingAppointments, newAppt, apptType) => {
+  const errorMessages = {};
+  if (existingAppointments.length === 0) {
+    return errorMessages;
+  }
+
+  // Sort all appointments by ascending start_date for easier comparison
+  const toDate = (dateString) => moment(dateString, "YYYY-MM-DD").toDate();
+  const allAppointments = [...existingAppointments, newAppt].sort((a, b) =>
+    toDate(a.start_date) > toDate(b.start_date) ? 1 : -1
+  );
+
+  // Stop checking for overlap on the second-last date in the list, as the last
+  // one has no potential conflicts
+  for (let i = 0; i < allAppointments.length - 1; i += 1) {
+    const current = allAppointments[i];
+    const next = allAppointments[i + 1];
+
+    const conflictingParty =
+      current.party_guid !== newAppt.party_guid ? current.party.name : next.party.name;
+    const conflictingField = current.party_guid === newAppt.party_guid ? "end_date" : "start_date";
+    const msg = `Assignment conflicts with existing ${apptType}: ${conflictingParty}`;
+
+    // Any existing appts will conflict with an infinite start & end
+    const infiniteStartEnd =
+      existingAppointments.length > 0 && !newAppt.start_date && !newAppt.end_date;
+    if (infiniteStartEnd) {
+      errorMessages.start_date = msg;
+      errorMessages.end_date = msg;
+    }
+
+    // Check if current ends after the next start_date
+    if (
+      current.end_date >= next.start_date ||
+      // current never ends
+      current.end_date === null ||
+      // next started at the beginning of time
+      next.start_date === null
+    ) {
+      errorMessages[conflictingField] = msg;
+    }
+  }
+
+  return errorMessages;
+};

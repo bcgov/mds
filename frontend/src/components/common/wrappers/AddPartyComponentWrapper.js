@@ -13,23 +13,15 @@ import { getAddPartyFormState } from "@/selectors/partiesSelectors";
 import LinkButton from "../LinkButton";
 
 const propTypes = {
-  childProps: PropTypes.objectOf(PropTypes.string),
+  childProps: PropTypes.objectOf(PropTypes.any),
   content: PropTypes.func,
   clearOnSubmit: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
   createParty: PropTypes.func.isRequired,
   setAddPartyFormState: PropTypes.func.isRequired,
   // addPartyFormState is selected from the partiesReducer
-  addPartyFormState: PropTypes.objectOf(
-    PropTypes.shape({
-      showingAddPartyForm: PropTypes.bool,
-      // Does the form allow adding new persons
-      person: PropTypes.bool,
-      // Does the form allow adding new organizations
-      organization: PropTypes.bool,
-      partyLabel: PropTypes.string,
-    })
-  ).isRequired,
+  addPartyFormState: PropTypes.objectOf(PropTypes.any).isRequired,
+  initialValues: PropTypes.objectOf(PropTypes.any),
 };
 
 const defaultProps = {
@@ -37,6 +29,7 @@ const defaultProps = {
     title: "",
   },
   content: () => {},
+  initialValues: {},
 };
 
 const defaultAddPartyFormState = {

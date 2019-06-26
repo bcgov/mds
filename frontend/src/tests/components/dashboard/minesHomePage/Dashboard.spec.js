@@ -23,6 +23,7 @@ const setupDispatchProps = () => {
   dispatchProps.fetchApplicationStatusOptions = jest.fn();
   dispatchProps.fetchMineIncidentDeterminationOptions = jest.fn();
   dispatchProps.fetchMineIncidentFollowActionOptions = jest.fn();
+  dispatchProps.fetchMineIncidentStatusCodeOptions = jest.fn();
   dispatchProps.setOptionsLoaded = jest.fn();
 };
 

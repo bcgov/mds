@@ -9,6 +9,7 @@ const dispatchProps = {};
 const setupProps = () => {
   props.isViewOnly = true;
   props.documents = MOCK.VARIANCE.documents;
+  props.documentCategoryOptionsHash = MOCK.VARIANCE_DOCUMENT_CATEGORY_OPTIONS_HASH;
 };
 
 const setupDispatchProps = () => {

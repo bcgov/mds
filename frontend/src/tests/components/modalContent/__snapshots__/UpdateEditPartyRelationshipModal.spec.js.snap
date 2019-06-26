@@ -8,6 +8,7 @@ ShallowWrapper {
     handlePartySubmit={[MockFunction]}
     onSubmit={[MockFunction]}
     partyRelationship={undefined}
+    partyRelationships={Array []}
   />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
@@ -28,6 +29,7 @@ ShallowWrapper {
         initialValues={undefined}
         onSubmit={[MockFunction]}
         partyRelationship={undefined}
+        partyRelationships={Array []}
       />,
     },
     "ref": null,
@@ -41,6 +43,7 @@ ShallowWrapper {
         "initialValues": undefined,
         "onSubmit": [MockFunction],
         "partyRelationship": undefined,
+        "partyRelationships": Array [],
       },
       "ref": null,
       "rendered": null,
@@ -60,6 +63,7 @@ ShallowWrapper {
           initialValues={undefined}
           onSubmit={[MockFunction]}
           partyRelationship={undefined}
+          partyRelationships={Array []}
         />,
       },
       "ref": null,
@@ -73,6 +77,7 @@ ShallowWrapper {
           "initialValues": undefined,
           "onSubmit": [MockFunction],
           "partyRelationship": undefined,
+          "partyRelationships": Array [],
         },
         "ref": null,
         "rendered": null,

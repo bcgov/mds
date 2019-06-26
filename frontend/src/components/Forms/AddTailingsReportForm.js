@@ -24,6 +24,7 @@ export const AddTailingsReportForm = (props) => (
         label="TSF Required Reports"
         placeholder="Please select a required report"
         data={props.mineTSFRequiredReportsDropDown}
+        doNotPinDropdown
         component={renderConfig.SELECT}
         validate={[required]}
       />

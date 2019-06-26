@@ -1,7 +1,7 @@
 DO $$
 DECLARE
 
-    MINE_GUID uuid = '9C1B63B6-CCFB-48B0-BE85-3CB3C5D1A276';
+    MINE_GUID uuid = '4afafc66-d294-4765-b5c8-8eb77630cb56';
     PARTY_GUID1 uuid = 'f1e7a6e3-01ab-4926-9007-31db0267f589';
     PARTY_GUID2 uuid = '8d2878de-c20e-40a9-ad5f-e17730167125';
     PERMIT_GUID1 uuid = 'b38e1908-c147-4a87-bfb6-1fef9217ec6f';
@@ -10,14 +10,14 @@ DECLARE
     IDIR_USER varchar = 'bdd-test-create';
 
     MINE_NO varchar = 'BLAH0000';
-    MINE_NAME varchar = 'MINETEST';
+    MINE_NAME varchar = '!!MINETEST';
     MINE_LAT numeric = '52.1'     ;
     MINE_LONG numeric = '-125'  ;
     MINE_NOTE varchar = 'This is a test record';
     
-    MINE_GUID_2 uuid = '38b7573b-a5fa-441b-ae98-6b663357f8bc';
+    MINE_GUID_2 uuid = '3877d66a-44c1-4685-a679-5d1473fae9de';
     MINE_NO_2 varchar = 'BLAH0002';
-    MINE_NAME_2 varchar = 'MINE2TEST';
+    MINE_NAME_2 varchar = '!!MINE2TEST';
     MINE_LAT_2 numeric = '53.2'     ;
     MINE_LONG_2 numeric = '-126.2'  ;
     MINE_NOTE_2 varchar = 'This is a test record for contacts test';

@@ -6,6 +6,7 @@ import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
 import { withRouter } from "react-router-dom";
 import { Row, Col, Menu, Popconfirm, Divider, Dropdown } from "antd";
+import moment from "moment";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
 import * as Permission from "@/constants/permissions";
@@ -85,7 +86,15 @@ export class ViewPartyRelationships extends Component {
     });
   };
 
-  openAddPartyRelationshipModal = (value, onSubmit, handleChange, onPartySubmit, title, mine) => {
+  openAddPartyRelationshipModal = ({
+    value,
+    partyRelationships,
+    onSubmit,
+    handleChange,
+    onPartySubmit,
+    title,
+    mine,
+  }) => {
     if (!this.props.partyRelationshipTypesList) return;
 
     if (
@@ -109,6 +118,7 @@ export class ViewPartyRelationships extends Component {
         handleChange,
         onPartySubmit,
         title: `${title}: ${value.description}`,
+        partyRelationships,
         partyRelationshipType: value,
         mine,
       },
@@ -137,7 +147,12 @@ export class ViewPartyRelationships extends Component {
             ({ value }) => value === partyRelationship.mine_party_appt_type_code
           ).label
         }: ${partyRelationship.party.name}`,
+        partyRelationships: this.props.partyRelationships,
         partyRelationship: JSON.parse(JSON.stringify(partyRelationship)),
+        partyRelationshipType: this.props.partyRelationshipTypes.find(
+          ({ mine_party_appt_type_code }) =>
+            mine_party_appt_type_code === partyRelationship.mine_party_appt_type_code
+        ),
         mine,
       },
       content: modalConfig.EDIT_PARTY_RELATIONSHIP,
@@ -170,10 +185,12 @@ export class ViewPartyRelationships extends Component {
     });
   };
 
+  // Since end date is stored at yyyy-mm-dd, comparing current Date() to
+  // the the start of the next day ensures appointments ending today are displayed.
   renderInactiveRelationships = (partyRelationships) => {
     const activeRelationships = partyRelationships.filter(
       (x) =>
-        (!x.end_date || Date.parse(x.end_date) >= new Date()) &&
+        (!x.end_date || moment(x.end_date).add(1, "days") > new Date()) &&
         (!x.start_date || Date.parse(x.start_date) <= new Date())
     );
     const inactiveRelationships = partyRelationships.filter(
@@ -230,14 +247,15 @@ export class ViewPartyRelationships extends Component {
                   this.setState({
                     selectedPartyRelationshipType: value.mine_party_appt_type_code,
                   });
-                  this.openAddPartyRelationshipModal(
+                  this.openAddPartyRelationshipModal({
                     value,
-                    this.onSubmitAddPartyRelationship,
-                    this.props.handleChange,
-                    this.onPartySubmit,
-                    ModalContent.ADD_CONTACT,
-                    this.props.mine
-                  );
+                    partyRelationships: this.props.partyRelationships,
+                    onSubmit: this.onSubmitAddPartyRelationship,
+                    handleChange: this.props.handleChange,
+                    onPartySubmit: this.onPartySubmit,
+                    title: ModalContent.ADD_CONTACT,
+                    mine: this.props.mine,
+                  });
                 }}
               >
                 {`${value.description}`}
@@ -288,7 +306,7 @@ export class ViewPartyRelationships extends Component {
     const filteredPartyRelationships = partyRelationships
       .filter(
         (x) =>
-          (!x.end_date || Date.parse(x.end_date) >= new Date()) &&
+          (!x.end_date || moment(x.end_date).add(1, "days") > new Date()) &&
           (!x.start_date || Date.parse(x.start_date) <= new Date())
       )
       .filter((partyRelationship) => partyRelationship.mine_party_appt_type_code !== "PMT")
@@ -299,7 +317,7 @@ export class ViewPartyRelationships extends Component {
               partyRelationships
                 .filter(
                   (x) =>
-                    (!x.end_date || Date.parse(x.end_date) >= new Date()) &&
+                    (!x.end_date || moment(x.end_date).add(1, "days") > new Date()) &&
                     (!x.start_date || Date.parse(x.start_date) <= new Date())
                 )
                 .filter(
@@ -383,7 +401,6 @@ export class ViewPartyRelationships extends Component {
     const partyRelationshipGroupingLevels = [
       ...uniq(this.props.partyRelationshipTypes.map(({ grouping_level }) => grouping_level)),
     ];
-
     return (
       <div>
         <div className="inline-flex between">

@@ -18,6 +18,7 @@ export const {
   getComplianceCodes,
   getIncidentFollowupActionOptions,
   getIncidentDeterminationOptions,
+  getIncidentStatusCodeOptions,
   getVarianceStatusOptions,
   getVarianceDocumentCategoryOptions,
 } = staticContentReducer;
@@ -110,12 +111,18 @@ export const getDropdownApplicationStatusOptions = createSelector(
 
 export const getDropdownIncidentFollowupActionOptions = createSelector(
   [getIncidentFollowupActionOptions],
-  (options) => createDropDownList(options, "description", "mine_incident_followup_type_code")
+  (options) =>
+    createDropDownList(options, "description", "mine_incident_followup_investigation_type_code")
 );
 
 export const getDropdownIncidentDeterminationOptions = createSelector(
   [getIncidentDeterminationOptions],
   (options) => createDropDownList(options, "description", "mine_incident_determination_type_code")
+);
+
+export const getDropdownIncidentStatusCodeOptions = createSelector(
+  [getIncidentStatusCodeOptions],
+  (options) => createDropDownList(options, "description", "mine_incident_status_code")
 );
 
 const formatComplianceCodeValueOrLabel = (code, showDescription) => {
@@ -188,6 +195,16 @@ export const getMultiSelectComplianceCodes = createSelector(
 export const getDropdownVarianceStatusOptions = createSelector(
   [getVarianceStatusOptions],
   (options) => createDropDownList(options, "description", "variance_application_status_code")
+);
+
+// Ant design filter options expects the keys to be value/text vs the dropdown which expects value/label
+export const getFilterVarianceStatusOptions = createSelector(
+  [getVarianceStatusOptions],
+  (options) =>
+    options.map(({ description, variance_application_status_code }) => ({
+      value: variance_application_status_code,
+      text: description,
+    }))
 );
 
 export const getVarianceStatusOptionsHash = createSelector(

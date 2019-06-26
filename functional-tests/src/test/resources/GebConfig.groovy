@@ -70,7 +70,7 @@ environments {
 			profile.setPreference("browser.download.manager.showAlertOnComplete", false);
 			profile.setPreference("browser.download.manager.closeWhenDone", false);
 			profile.setPreference("browser.download.panel.shown", false);
-			
+
 			//This forbid open with was found by visiting about:config
 			options.addPreference("browser.download.forbid_open_with", true);
 			options.addPreference("browser.helperApps.neverAsk.saveToDisk", "application/vnd.oasis.opendocument.text")
@@ -90,10 +90,10 @@ environments {
 			profile.setPreference("browser.download.manager.showAlertOnComplete", false);
 			profile.setPreference("browser.download.manager.closeWhenDone", false);
 			profile.setPreference("browser.download.panel.shown", false);
-			
+
 			//To find the settings that need to be modified, visit the about:config firefox url
 			options.addPreference("browser.download.forbid_open_with", true);
-			//In order to allow auto saving of files the user must specify the specific MIME types in a comma separated 
+			//In order to allow auto saving of files the user must specify the specific MIME types in a comma separated
 			//string. (Cannot set all to true)
 			options.addPreference("browser.helperApps.neverAsk.saveToDisk", "application/vnd.oasis.opendocument.text")
 			options.setProfile(profile);
@@ -101,7 +101,7 @@ environments {
 			options.addPreference("browser.download.useDownloadDir", true);
 			options.addArguments("--width=1920")
 			options.addArguments("--height=1080")
-			options.addArguments("-headless")
+			options.addArguments("--headless")
 			new FirefoxDriver(options);
 
 		}
@@ -154,7 +154,7 @@ reportOnTestFailureOnly = false //true
 //in seconds
 //If unspecified, the values of 5 for timeout and 0.1 for retryInterval.
 waiting {
-    timeout = 30
+    timeout = 120
     retryInterval = 1
 }
 //always wait for the content using the default wait configuration

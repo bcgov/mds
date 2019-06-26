@@ -472,7 +472,12 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                 END AS new_permittee
             FROM permit_info
             INNER JOIN permittee_wContact permittee_info ON
-                permittee_info.permit_cid = permit_info.permit_cid;
+                permittee_info.permit_cid = permit_info.permit_cid
+            WHERE permit_info.permit_no not in (
+                select permit_no from permit p
+                join mine m on p.mine_guid=m.mine_guid
+                where m.major_mine_ind = true
+                );
 
 
             -- Update existing records
@@ -583,7 +588,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
             insert_amendment_row integer;
             total_amendment_row  integer;
         BEGIN
-            RAISE NOTICE '.. Step 2 of 4: Update permit info';
+            RAISE NOTICE '.. Step 2 of 4: Update permit info in MDS';
             SELECT count(*) FROM permit INTO old_row;
             SELECT count(*) FROM permit_amendment INTO old_amendment_row;
 
@@ -637,7 +642,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                     SELECT permit_guid
                     FROM permit
                 )
-				AND issue_date = (select max(issue_date) from ETL_PERMIT where etl.permit_no = ETL_PERMIT.permit_no)
+				AND issue_date = (select max(issue_date) from ETL_PERMIT where etl.permit_no = ETL_PERMIT.permit_no and etl.mine_guid = ETL_PERMIT.mine_guid)
             ), inserted_rows AS (
                 INSERT INTO permit (
                     permit_guid         ,
@@ -683,9 +688,26 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                     SELECT permit_amendment_guid
                     FROM permit_amendment
                 )
-            ), inserted_rows AS (
+            ), original_permits AS (
+				SELECT
+				  permit_amendment_guid
+				FROM
+				  (SELECT
+					 permit_no, mine_guid, MIN(issue_date) AS min_issue_date
+				   FROM
+					 ETL_PERMIT
+				   GROUP BY
+					 permit_no, mine_guid) AS original_permits
+				INNER JOIN
+				  ETL_PERMIT
+				ON
+				  ETL_PERMIT.permit_no = original_permits.permit_no AND
+				  ETL_PERMIT.mine_guid = original_permits.mine_guid AND
+				  ETL_PERMIT.issue_date = original_permits.min_issue_date
+			), inserted_rows AS (
                 INSERT INTO permit_amendment (
                     permit_id              			,
+                    permit_amendment_guid           ,
                     received_date          			,
                     issue_date             			,
                     authorization_end_date 			,
@@ -698,10 +720,11 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                 )
                 SELECT
                     permit.permit_id				         	,
+                    new_permit_amendment.permit_amendment_guid  ,
                     new_permit_amendment.received_date       	,
                     new_permit_amendment.issue_date          	,
                     new_permit_amendment.authorization_end_date	,
-                    'AMD'									  	,
+					CASE WHEN original_permits.permit_amendment_guid IS NOT NULL THEN 'OGP' ELSE 'AMD' END,
 					'ACT'										,
                     'mms_migration'                				,
                     now()                          				,
@@ -710,6 +733,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                 FROM new_permit_amendment
                 INNER JOIN permit ON
                     new_permit_amendment.permit_guid = permit.permit_guid
+				LEFT JOIN original_permits ON new_permit_amendment.permit_amendment_guid = original_permits.permit_amendment_guid
                 RETURNING 1
             )
             SELECT COUNT(*) FROM inserted_rows INTO insert_amendment_row;
@@ -749,6 +773,14 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                 party_type_code  = etl.party_type
             FROM ETL_PERMIT etl
             WHERE party.party_guid = etl.party_guid
+            AND (
+                party.first_name != etl.first_name
+                OR party.party_name != etl.party_name
+                OR party.phone_no != etl.phone_no
+                OR party.email != etl.email
+                OR party.effective_date != etl.effective_date
+                OR party.party_type_code != etl.party_type
+            )
             RETURNING 1
             )
             SELECT COUNT(*) FROM updated_rows INTO update_row;
@@ -827,18 +859,15 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                 DELETE FROM mine_party_appt
                 WHERE
                     -- Only records known to ETL_PERMIT
-                    CONCAT(mine_guid, party_guid, permit_guid) IN (
-                        SELECT CONCAT(mine_guid, party_guid, permit_guid)
-                        FROM ETL_PERMIT
-                    )
+                    mine_party_appt_type_code = 'PMT'
                     -- Only on mines in ETL process
                     AND
                     mine_guid IN (
                         SELECT mine_guid
                         FROM ETL_MINE
+                        WHERE major_mine_ind = 'f'
+                        AND mine_guid in (select mine_guid from ETL_PERMIT)
                     )
-                    -- Only permit records
-                    AND permit_guid IS NOT NULL
                 RETURNING 1
             )
             SELECT COUNT(*) FROM deleted_rows INTO delete_row;
@@ -880,6 +909,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                 FROM ETL_PERMIT
                 INNER JOIN ETL_MINE ON
                     ETL_PERMIT.mine_guid = ETL_MINE.mine_guid
+				WHERE ETL_PERMIT.permit_guid IS NOT NULL
                 RETURNING 1
             )
             SELECT count(*) FROM inserted_rows INTO insert_row;
