@@ -179,8 +179,8 @@ describe("Validate class", () => {
     });
 
     it("returns `Invalid email address` if `value` is not a valid email address", () => {
-      const valueOne = "test@test.testtest";
-      const valueTwo = "test@test";
+      const valueOne = "@test.testtest";
+      const valueTwo = "test@";
       const valueThree = "test";
       expect(email(valueOne)).toEqual("Invalid email address");
       expect(email(valueTwo)).toEqual("Invalid email address");
