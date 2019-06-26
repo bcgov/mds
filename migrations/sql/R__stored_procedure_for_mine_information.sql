@@ -38,11 +38,11 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
             UPDATE ETL_MINE
             SET mine_name      = mms.mmsmin.mine_nm,
                 latitude       = CASE
-                                   WHEN mms_new.lat_dec <> 0 AND mms_new.lon_dec <> 0 THEN mms_new.lat_dec
+                                   WHEN mms.mmsmin.lat_dec <> 0 AND mms.mmsmin.lon_dec <> 0 THEN mms.mmsmin.lat_dec
                                    ELSE NULL
                                  END,
                 longitude      = CASE
-                                   WHEN mms_new.lat_dec <> 0 AND mms_new.lon_dec <> 0 THEN mms_new.lon_dec
+                                   WHEN mms.mmsmin.lat_dec <> 0 AND mms.mmsmin.lon_dec <> 0 THEN mms.mmsmin.lon_dec
                                    ELSE NULL
                                  END,
                 major_mine_ind = (mms.mmsmin.min_lnk = 'Y' AND mms.mmsmin.min_lnk IS NOT NULL),
