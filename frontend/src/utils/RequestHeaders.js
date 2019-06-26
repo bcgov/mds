@@ -6,7 +6,7 @@
 // eslint-disable-next-line import/prefer-default-export
 export const createRequestHeader = () => ({
   headers: {
-    "Access-Control-Allow-Origin": "*,Api-Key",
+    "Access-Control-Allow-Origin": "*",
     Authorization: `Bearer ${localStorage.getItem("jwt")}`,
   },
 });

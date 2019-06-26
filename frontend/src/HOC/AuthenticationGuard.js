@@ -39,19 +39,20 @@ export const AuthenticationGuard = (WrappedComponent) => {
     async keycloakInit() {
       // Initialize client
       const keycloak = Keycloak(KEYCLOAK);
-      await keycloak.init();
-      // Prompt for login using IDIR if not authenticated
-      if (!keycloak.authenticated) {
-        await keycloak.login({
+      await keycloak
+        .init({
+          onLoad: "login-required",
           idpHint: KEYCLOAK.idpHint,
+        })
+        .success(() => {
+          keycloak
+            .loadUserProfile()
+            .success((userProfile) => this.props.authenticateUser(userProfile));
+          localStorage.setItem("jwt", keycloak.token);
+          console.log("Token", JSON.stringify(keycloak.token));
+          this.props.storeUserAccessData(keycloak.realmAccess.roles);
+          this.props.storeKeycloakData(keycloak);
         });
-      }
-      // Fetch user info and roles and store them in local storage
-      const userInfo = await keycloak.loadUserInfo();
-      localStorage.setItem("jwt", keycloak.token);
-      this.props.storeUserAccessData(keycloak.realmAccess.roles);
-      this.props.storeKeycloakData(keycloak);
-      this.props.authenticateUser(userInfo);
     }
 
     render() {
