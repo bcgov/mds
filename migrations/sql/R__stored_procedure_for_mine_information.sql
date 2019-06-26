@@ -133,7 +133,10 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                 update_user      = 'mms_migration'        ,
                 update_timestamp = now()
             FROM ETL_MINE
-            WHERE ETL_MINE.mine_guid = mine.mine_guid;
+            WHERE ETL_MINE.mine_guid = mine.mine_guid
+            AND (ETL_MINE.mine_name != mine.mine_name
+                OR ETL_MINE.mine_region != mine.mine_region
+                OR ETL_MINE.major_mine_ind != mine.major_mine_ind);
             SELECT count(*) FROM mine, ETL_MINE WHERE ETL_MINE.mine_guid = mine.mine_guid INTO update_row;
             RAISE NOTICE '....# of mine records in MDS: %', old_row;
             RAISE NOTICE '....# of mine records updated in MDS: %', update_row;
@@ -482,6 +485,9 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                     ON ETL_LOCATION.mine_guid = ETL_MINE.mine_guid
                 WHERE
                     ETL_LOCATION.mine_guid = mine_location.mine_guid
+                AND (ETL_LOCATION.latitude != mine_location.latitude
+                    OR ETL_LOCATION.longitude != mine_location.longitude
+                    OR ETL_LOCATION.mine_location_description != mine_location.mine_location_description)
                 RETURNING 1
             )
             SELECT count(*) FROM updated_rows INTO update_row;
