@@ -37,8 +37,14 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
             RAISE NOTICE '.. Update existing records with latest MMS data';
             UPDATE ETL_MINE
             SET mine_name      = mms.mmsmin.mine_nm,
-                latitude       = mms.mmsmin.lat_dec,
-                longitude      = mms.mmsmin.lon_dec,
+                latitude       = CASE
+                                   WHEN mms.mmsmin.lat_dec <> 0 AND mms.mmsmin.lon_dec <> 0 THEN mms.mmsmin.lat_dec
+                                   ELSE NULL
+                                 END,
+                longitude      = CASE
+                                   WHEN mms.mmsmin.lat_dec <> 0 AND mms.mmsmin.lon_dec <> 0 THEN mms.mmsmin.lon_dec
+                                   ELSE NULL
+                                 END,
                 major_mine_ind = (mms.mmsmin.min_lnk = 'Y' AND mms.mmsmin.min_lnk IS NOT NULL),
                 mine_region    = CASE mms.mmsmin.reg_cd
                                     WHEN '1' THEN 'SW'
@@ -104,8 +110,14 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                     WHEN mms_new.mine_typ = ANY('{Q,CM,SG}'::text[]) THEN 'BCL'
                     ELSE NULL
                 END,
-                mms_new.lat_dec    ,
-                mms_new.lon_dec    ,
+                CASE
+                    WHEN mms_new.lat_dec <> 0 AND mms_new.lon_dec <> 0 THEN mms_new.lat_dec
+                    ELSE NULL
+                END,
+                CASE
+                    WHEN mms_new.lat_dec <> 0 AND mms_new.lon_dec <> 0 THEN mms_new.lon_dec
+                    ELSE NULL
+                END,
                 (mms_new.min_lnk = 'Y' AND mms_new.min_lnk IS NOT NULL),
             CASE WHEN lower(mms_new.mine_nm) LIKE '%delete%' OR lower(mms_new.mine_nm) LIKE '%deleted%' OR lower(mms_new.mine_nm) LIKE '%reuse%' THEN TRUE ELSE FALSE END
             FROM mms_new
@@ -133,7 +145,10 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                 update_user      = 'mms_migration'        ,
                 update_timestamp = now()
             FROM ETL_MINE
-            WHERE ETL_MINE.mine_guid = mine.mine_guid;
+            WHERE ETL_MINE.mine_guid = mine.mine_guid
+            AND (ETL_MINE.mine_name != mine.mine_name
+                OR ETL_MINE.mine_region != mine.mine_region
+                OR ETL_MINE.major_mine_ind != mine.major_mine_ind);
             SELECT count(*) FROM mine, ETL_MINE WHERE ETL_MINE.mine_guid = mine.mine_guid INTO update_row;
             RAISE NOTICE '....# of mine records in MDS: %', old_row;
             RAISE NOTICE '....# of mine records updated in MDS: %', update_row;
@@ -232,8 +247,8 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
             FROM mms.mmsnow, mms.mmspmt
             WHERE
                 mms.mmsnow.cid = mms.mmspmt.cid
-                AND lat_dec IS NOT NULL
-                AND lon_dec IS NOT NULL;
+                AND lat_dec <> 0
+                AND lon_dec <> 0;
 
             -- Update existing ETL_LOCATION records
             WITH pmt_now_preferred AS (
@@ -248,6 +263,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                 WHERE
                     permit_no != ''
                     AND substring(permit_no, 1, 2) NOT IN ('CX', 'MX')
+                    AND (lat_dec <> 0 AND lon_dec <> 0)
             )
             UPDATE ETL_LOCATION
             SET mine_guid = ETL_MINE.mine_guid,
@@ -282,6 +298,8 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                         SELECT lat_dec
                         FROM mms.mmsnow
                         WHERE mine_no = ETL_MINE.mine_no
+                              AND
+                              (lat_dec <> 0 AND lon_dec <> 0)
                         ORDER BY upd_no DESC
                         LIMIT 1
                     ),
@@ -482,6 +500,9 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                     ON ETL_LOCATION.mine_guid = ETL_MINE.mine_guid
                 WHERE
                     ETL_LOCATION.mine_guid = mine_location.mine_guid
+                AND (ETL_LOCATION.latitude != mine_location.latitude
+                    OR ETL_LOCATION.longitude != mine_location.longitude
+                    OR ETL_LOCATION.mine_location_description != mine_location.mine_location_description)
                 RETURNING 1
             )
             SELECT count(*) FROM updated_rows INTO update_row;
