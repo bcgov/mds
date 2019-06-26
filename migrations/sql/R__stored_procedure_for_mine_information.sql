@@ -382,6 +382,8 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                 WHERE
                     permit_no != ''
                     AND substring(permit_no, 1, 2) NOT IN ('CX', 'MX')
+                    AND (lat_dec <> 0 AND lon_dec <> 0)
+
             )
             INSERT INTO ETL_LOCATION(
                 mine_guid           ,
@@ -422,6 +424,8 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                         SELECT lat_dec
                         FROM mms.mmsnow
                         WHERE mine_no = new.mine_no
+                              AND
+                              (lat_dec <> 0 AND lon_dec <> 0)
                         ORDER BY upd_no DESC
                         LIMIT 1
                     ),
@@ -450,6 +454,8 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                         SELECT lon_dec
                         FROM mms.mmsnow
                         WHERE mine_no = new.mine_no
+                              AND
+                              (lat_dec <> 0 AND lon_dec <> 0)
                         ORDER BY upd_no DESC
                         LIMIT 1
                     ),
