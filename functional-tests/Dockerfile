@@ -1,21 +1,20 @@
 FROM "__FROM_IMAGE_STREAM_DEFINED_IN_TEMPLATE__"
 
-USER root
-
-# For firefoxHeadLessTests
-RUN dbus-uuidgen > /var/lib/dbus/machine-id
-
-# Copy over the code
-RUN mkdir /home/jenkins/bdd-tests
-COPY . /home/jenkins/bdd-tests/
-RUN chmod -R 777 /home/jenkins/bdd-tests
-
-USER 1001
-RUN cd /home/jenkins/bdd-tests && ./gradlew -m
+# Declare environment variables for Gradle and BDD Tests
+ENV HOME=/home/seluser
+ENV APP_HOME=/opt
+ENV BDD_TEST_HOME=/opt/selenium/bdd-tests
+ENV GRADLE_USER_HOME=/opt/selenium/bdd-tests/gradle_home
 
 USER root
+
+# Copy over the test code and run a gradle build to cache runtime dependencies
+RUN mkdir $BDD_TEST_HOME/
+COPY . $BDD_TEST_HOME/
+
+RUN cd $BDD_TEST_HOME && ./gradlew -m
 
 # Fix permissions
-RUN chmod -R 777 /home/jenkins/bdd-tests
+RUN chmod -R 777 $BDD_TEST_HOME
 
-USER 1001
+WORKDIR $HOME
