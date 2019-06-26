@@ -17,32 +17,33 @@ from app.api.permits.response_models import PERMIT_MODEL
 
 class PermitListResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
-    parser.add_argument('permit_no',
-                        type=str,
-                        help='Number of the permit being added.',
-                        location='json')
+    parser.add_argument(
+        'permit_no', type=str, help='Number of the permit being added.', location='json')
     parser.add_argument('mine_guid', type=str, help='GUID of the mine.', location='json')
-    parser.add_argument('permittee_party_guid',
-                        type=str,
-                        help='GUID of the party that is the permittee for this permit.',
-                        location='json')
-    parser.add_argument('permit_status_code',
-                        type=str,
-                        location='json',
-                        help='Status of the permit being added.')
-    parser.add_argument('received_date',
-                        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
-                        location='json')
-    parser.add_argument('issue_date',
-                        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
-                        location='json')
-    parser.add_argument('authorization_end_date',
-                        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
-                        location='json')
-    parser.add_argument('permit_amendment_status_code',
-                        type=str,
-                        location='json',
-                        help='Status of the permit being added.')
+    parser.add_argument(
+        'permittee_party_guid',
+        type=str,
+        help='GUID of the party that is the permittee for this permit.',
+        location='json')
+    parser.add_argument(
+        'permit_status_code', type=str, location='json', help='Status of the permit being added.')
+    parser.add_argument(
+        'received_date',
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        location='json')
+    parser.add_argument(
+        'issue_date',
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        location='json')
+    parser.add_argument(
+        'authorization_end_date',
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        location='json')
+    parser.add_argument(
+        'permit_amendment_status_code',
+        type=str,
+        location='json',
+        help='Status of the permit being added.')
     parser.add_argument('description', type=str, location='json', help='Permit description')
     parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
 
@@ -51,11 +52,11 @@ class PermitListResource(Resource, UserMixin):
     @api.marshal_with(PERMIT_MODEL, envelope='records', code=200)
     def get(self):
         if request.args.get('mine_guid'):
-            result = Permit.find_by_mine_guid(request.args.get('mine_guid'))
+            results = Permit.find_by_mine_guid(request.args.get('mine_guid'))
         else:
-            return Permit.query.all()
+            results = Permit.query.all()
 
-        return result
+        return results
 
     @api.doc(params={'permit_guid': 'Permit guid.'})
     @requires_role_mine_create
@@ -80,12 +81,13 @@ class PermitListResource(Resource, UserMixin):
         permit = Permit.create(mine.mine_guid, data.get('permit_no'),
                                data.get('permit_status_code'))
 
-        amendment = PermitAmendment.create(permit,
-                                           data.get('received_date'),
-                                           data.get('issue_date'),
-                                           data.get('authorization_end_date'),
-                                           'OGP',
-                                           description='Initial permit issued.')
+        amendment = PermitAmendment.create(
+            permit,
+            data.get('received_date'),
+            data.get('issue_date'),
+            data.get('authorization_end_date'),
+            'OGP',
+            description='Initial permit issued.')
 
         db.session.add(permit)
         db.session.add(amendment)
@@ -96,13 +98,12 @@ class PermitListResource(Resource, UserMixin):
                 document_manager_guid=newFile['document_manager_guid'],
                 mine_guid=permit.mine_guid,
             )
-            amendment.documents.append(new_pa_doc)
+            amendment.related_documents.append(new_pa_doc)
         db.session.commit()
 
-        permittee = MinePartyAppointment.create(mine.mine_guid,
-                                                data.get('permittee_party_guid'), 'PMT',
-                                                datetime.utcnow(), None, self.get_user_info(),
-                                                permit.permit_guid, True)
+        permittee = MinePartyAppointment.create(
+            mine.mine_guid, data.get('permittee_party_guid'), 'PMT', datetime.utcnow(), None,
+            self.get_user_info(), permit.permit_guid, True)
         db.session.commit()
 
         return permit
@@ -110,43 +111,44 @@ class PermitListResource(Resource, UserMixin):
 
 class PermitResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser(trim=True)
-    parser.add_argument('permit_no',
-                        type=str,
-                        help='Number of the permit being added.',
-                        location='json')
+    parser.add_argument(
+        'permit_no', type=str, help='Number of the permit being added.', location='json')
     parser.add_argument('mine_guid', type=str, help='GUID of the mine.', location='json')
-    parser.add_argument('permittee_party_guid',
-                        type=str,
-                        help='GUID of the party that is the permittee for this permit.',
-                        location='json',
-                        store_missing=False)
-    parser.add_argument('permit_status_code',
-                        type=str,
-                        location='json',
-                        help='Status of the permit being added.',
-                        store_missing=False)
-    parser.add_argument('received_date',
-                        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
-                        location='json',
-                        store_missing=False)
-    parser.add_argument('issue_date',
-                        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
-                        location='json',
-                        store_missing=False)
-    parser.add_argument('authorization_end_date',
-                        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
-                        location='json',
-                        store_missing=False)
-    parser.add_argument('permit_amendment_status_code',
-                        type=str,
-                        location='json',
-                        help='Status of the permit being added.',
-                        store_missing=False)
-    parser.add_argument('description',
-                        type=str,
-                        location='json',
-                        help='Permit description',
-                        store_missing=False)
+    parser.add_argument(
+        'permittee_party_guid',
+        type=str,
+        help='GUID of the party that is the permittee for this permit.',
+        location='json',
+        store_missing=False)
+    parser.add_argument(
+        'permit_status_code',
+        type=str,
+        location='json',
+        help='Status of the permit being added.',
+        store_missing=False)
+    parser.add_argument(
+        'received_date',
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        location='json',
+        store_missing=False)
+    parser.add_argument(
+        'issue_date',
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        location='json',
+        store_missing=False)
+    parser.add_argument(
+        'authorization_end_date',
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        location='json',
+        store_missing=False)
+    parser.add_argument(
+        'permit_amendment_status_code',
+        type=str,
+        location='json',
+        help='Status of the permit being added.',
+        store_missing=False)
+    parser.add_argument(
+        'description', type=str, location='json', help='Permit description', store_missing=False)
     parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
 
     @api.doc(params={'permit_guid': 'Permit guid.'})

@@ -143,12 +143,12 @@ export class MinePermitInfo extends Component {
           mine_guid: permit.mine_guid,
           permit_guid: permit.permit_guid,
           permit_amendment_type_code: type,
-          amendments: permit.amendments,
+          amendments: permit.permit_amendments,
         },
         onSubmit,
         title,
         mine_guid: permit.mine_guid,
-        amendments: permit.amendments,
+        amendments: permit.permit_amendments,
       },
       widthSize: "50vw",
       content: modalConfig.PERMIT_AMENDMENT,
@@ -161,7 +161,7 @@ export class MinePermitInfo extends Component {
       props: {
         initialValues: {
           ...permit_amendment,
-          amendments: permit.amendments,
+          amendments: permit.permit_amendments,
         },
         onSubmit: this.handleEditPermitAmendment,
         title:
