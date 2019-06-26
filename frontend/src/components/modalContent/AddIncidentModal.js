@@ -45,16 +45,17 @@ const invalidReportingPayload = (values) =>
 
 const invalidDetailPayload = (values) =>
   !(
-    values.determination_inspector_party_guid &&
-    values.incident_description &&
-    values.emergency_services_called !== undefined &&
     values.incident_timestamp &&
+    values.incident_description &&
     values.determination_type_code &&
     // If DO, need subparagraphs
     ((values.determination_type_code === "DO" &&
+      values.determination_inspector_party_guid &&
       values.dangerous_occurrence_subparagraph_ids &&
       values.dangerous_occurrence_subparagraph_ids.length !== 0) ||
-      (values.determination_type_code === "NDO" && values.status_code) ||
+      (values.determination_type_code === "NDO" &&
+        values.status_code &&
+        values.determination_inspector_party_guid) ||
       values.determination_type_code === "PEN")
   );
 
