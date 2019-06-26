@@ -122,6 +122,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
         END;
 
         -- MDS-1789: Convert all existing 0 lat/lon values in ETL_MINE to NULL
+        -- TODO: Remove after initial run
         UPDATE ETL_MINE
         SET latitude  = NULL,
             longitude = NULL
@@ -501,6 +502,14 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
             RAISE NOTICE '....# of mine_location records in MDS: %', old_row;
             RAISE NOTICE '....# of mine_location records updated in MDS: %', update_row;
 
+            -- MDS-1789: Convert all existing 0 lat/lon values in ETL_LOCATION to NULL
+            -- TODO: Remove after initial run
+            UPDATE ETL_LOCATION
+            SET latitude  = NULL,
+                longitude = NULL
+            WHERE
+                latitude = 0 OR longitude = 0;
+
             RAISE NOTICE '.. Insert new ETL_LOCATION records into mine_location';
             WITH new_record AS (
                 SELECT *
@@ -542,6 +551,14 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
             RAISE NOTICE '....# of new mine_location records loaded into MDS: %.', (new_row-old_row);
             RAISE NOTICE '....Total mine records with location info in the MDS: %.', new_row;
         END;
+
+        -- MDS-1789: Convert all existing 0 lat/lon values in mine_location to NULL
+        -- TODO: Remove after initial run
+        UPDATE ETL_LOCATION
+        SET latitude  = NULL,
+            longitude = NULL
+        WHERE
+            latitude = 0 OR longitude = 0;
 
         DECLARE
             old_row    integer;
