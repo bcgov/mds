@@ -194,6 +194,7 @@ MINE_INCIDENT_MODEL = api.model(
         'followup_inspection': fields.Boolean,
         'followup_inspection_date': DateTime,
         'determination_inspector_party_guid': fields.String,
+        'mms_inspector_initials' : fields.String(attribute='mms_insp_cd'), 
         'dangerous_occurrence_subparagraph_ids': fields.List(fields.Integer),
         'proponent_incident_no': fields.String,
         'mine_incident_no': fields.String,
