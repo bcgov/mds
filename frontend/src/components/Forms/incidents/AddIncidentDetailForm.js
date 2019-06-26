@@ -57,24 +57,30 @@ class AddIncidentDetailForm extends Component {
                 validate={[maxLength(20)]}
               />
             </Form.Item>
-            <Form.Item>
-              <Field
-                id="number_of_fatalities"
-                name="number_of_fatalities"
-                label="Number of Fatalities:"
-                component={renderConfig.FIELD}
-                validate={[number, maxLength(10)]}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Field
-                id="number_of_injuries"
-                name="number_of_injuries"
-                label="Number of Injuries:"
-                component={renderConfig.FIELD}
-                validate={[number, maxLength(10)]}
-              />
-            </Form.Item>
+            <Row gutter={16}>
+              <Col md={12} xs={24}>
+                <Form.Item>
+                  <Field
+                    id="number_of_injuries"
+                    name="number_of_injuries"
+                    label="Number of Injuries:"
+                    component={renderConfig.FIELD}
+                    validate={[number, maxLength(10)]}
+                  />
+                </Form.Item>
+              </Col>
+              <Col md={12} xs={24}>
+                <Form.Item>
+                  <Field
+                    id="number_of_fatalities"
+                    name="number_of_fatalities"
+                    label="Number of Fatalities:"
+                    component={renderConfig.FIELD}
+                    validate={[number, maxLength(10)]}
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
             <Form.Item>
               <Field
                 id="emergency_services_called"
