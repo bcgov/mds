@@ -6,6 +6,7 @@ import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
 import { withRouter } from "react-router-dom";
 import { Row, Col, Menu, Popconfirm, Divider, Dropdown } from "antd";
+import moment from "moment";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
 import * as Permission from "@/constants/permissions";
@@ -184,10 +185,12 @@ export class ViewPartyRelationships extends Component {
     });
   };
 
+  // Since end date is stored at yyyy-mm-dd, comparing current Date() to
+  // the the start of the next day ensures appointments ending today are displayed.
   renderInactiveRelationships = (partyRelationships) => {
     const activeRelationships = partyRelationships.filter(
       (x) =>
-        (!x.end_date || Date.parse(x.end_date) >= new Date()) &&
+        (!x.end_date || moment(x.end_date).add(1, "days") > new Date()) &&
         (!x.start_date || Date.parse(x.start_date) <= new Date())
     );
     const inactiveRelationships = partyRelationships.filter(
@@ -303,7 +306,7 @@ export class ViewPartyRelationships extends Component {
     const filteredPartyRelationships = partyRelationships
       .filter(
         (x) =>
-          (!x.end_date || Date.parse(x.end_date) >= new Date()) &&
+          (!x.end_date || moment(x.end_date).add(1, "days") > new Date()) &&
           (!x.start_date || Date.parse(x.start_date) <= new Date())
       )
       .filter((partyRelationship) => partyRelationship.mine_party_appt_type_code !== "PMT")
@@ -314,7 +317,7 @@ export class ViewPartyRelationships extends Component {
               partyRelationships
                 .filter(
                   (x) =>
-                    (!x.end_date || Date.parse(x.end_date) >= new Date()) &&
+                    (!x.end_date || moment(x.end_date).add(1, "days") > new Date()) &&
                     (!x.start_date || Date.parse(x.start_date) <= new Date())
                 )
                 .filter(
@@ -398,7 +401,6 @@ export class ViewPartyRelationships extends Component {
     const partyRelationshipGroupingLevels = [
       ...uniq(this.props.partyRelationshipTypes.map(({ grouping_level }) => grouping_level)),
     ];
-
     return (
       <div>
         <div className="inline-flex between">
