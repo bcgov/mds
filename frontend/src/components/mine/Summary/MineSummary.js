@@ -1,5 +1,6 @@
 import React from "react";
 import { Row, Col, Divider, Card } from "antd";
+import moment from "moment";
 import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
 import PropTypes from "prop-types";
@@ -70,8 +71,10 @@ const renderSummaryTSF = (tsf, partyRelationships) => (
   </Col>
 );
 
+// Since end date is stored at yyyy-mm-dd, comparing current Date() to
+// the the start of the next day ensures appointments ending today are displayed.
 const isActive = (pr) =>
-  (!pr.end_date || Date.parse(pr.end_date) >= new Date()) &&
+  (!pr.end_date || moment(pr.end_date).add(1, "days") > new Date()) &&
   (!pr.start_date || Date.parse(pr.start_date) <= new Date());
 
 const activePermitteesByPermit = (pr, permit) =>

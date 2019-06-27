@@ -40,7 +40,7 @@ const checkDatesForOverlap = (values, props) => {
 const validate = (values, props) => {
   const errors = {};
   if (values.start_date && values.end_date) {
-    if (Date.parse(values.start_date) >= Date.parse(values.end_date)) {
+    if (Date.parse(values.start_date) > Date.parse(values.end_date)) {
       errors.end_date = "Must be after start date.";
     }
   }
