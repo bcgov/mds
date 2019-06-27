@@ -70,11 +70,14 @@ environments {
 			profile.setPreference("browser.download.manager.showAlertOnComplete", false);
 			profile.setPreference("browser.download.manager.closeWhenDone", false);
 			profile.setPreference("browser.download.panel.shown", false);
+            profile.setPreference("browser.cache.use_new_backend", 1);
+            profile.setPreference("browser.cache.disk.metadata_memory_limit", 51200);
+            profile.setPreference("network.http.max-connections", 1500);
+            options.setProfile(profile);
 
 			//This forbid open with was found by visiting about:config
 			options.addPreference("browser.download.forbid_open_with", true);
 			options.addPreference("browser.helperApps.neverAsk.saveToDisk", "application/vnd.oasis.opendocument.text")
-			options.setProfile(profile);
 			options.addPreference("browser.download.dir", Const.DOWNLOAD_PATH);
 			options.addPreference("browser.download.useDownloadDir", true);
 			new FirefoxDriver(options);

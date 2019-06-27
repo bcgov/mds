@@ -26,7 +26,6 @@ class  DashboardSpec extends GebReportingSpec {
         Thread.sleep(5)
     }
 
-
     def "Scenario: User is able to create a mine record "(){
         given: "I go to the Dashboard Page"
         to Dashboard
