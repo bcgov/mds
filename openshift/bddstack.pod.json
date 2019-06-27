@@ -100,10 +100,6 @@
                 "value": "24"
               },
               {
-                "name": "START_XVFB",
-                "value": "true"
-              },
-              {
                 "name": "DB_HOST",
                 "value": "${DB_CONFIG_NAME}"
               },

@@ -9,5 +9,5 @@ set -exv -o pipefail
 #export DISPLAY=:1
 
 ### Run both Core and MineSpace tests
-./gradlew firefoxTest -DfirefoxTest.single=CustomJUnitSpecRunner
-./gradlew firefoxTest -DfirefoxTest.single=CustomJUnitPublicSpecRunner
+./gradlew firefoxHeadlessTest -DfirefoxHeadlessTest.single=CustomJUnitSpecRunner
+./gradlew firefoxHeadlessTest -DfirefoxHeadlessTest.single=CustomJUnitPublicSpecRunner
