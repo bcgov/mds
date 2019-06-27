@@ -30,6 +30,10 @@ class  PermitSpec extends GebReportingSpec {
         permitTab.tabSelect.click()
     }
 
+    def setupSpec() {
+        Thread.sleep(5)
+    }
+
     def "User can create a permit"(){
         when: "I click on the new permit"
         permitTab.newPermitButton.click()
@@ -37,7 +41,6 @@ class  PermitSpec extends GebReportingSpec {
         then: "A permit with the correct ID is present in the permits tab"
         waitFor() { permitTab.permitTitle }
         permitTab.permitTitle.text() == PERMIT_NUMBER
-        sleep(5)
     }
 
     def "User can edit the status of a permit"(){
@@ -72,7 +75,6 @@ class  PermitSpec extends GebReportingSpec {
 
         then: "The file is attached to the permit."
         downloadTestFileLink.text() == Const.TEST_FILE_NAME
-        sleep(10)
     }
 
     def "User can download a doc from a permit"(){
@@ -107,7 +109,6 @@ class  PermitSpec extends GebReportingSpec {
 
         then: "An Amendment is added to the permit in question"
         assert permitTab.amendmentDescriptions.children()[0].text()== Const.PERMIT_DESCRIPTION
-        sleep(10)
     }
 
     // TODO: Stabilize the test

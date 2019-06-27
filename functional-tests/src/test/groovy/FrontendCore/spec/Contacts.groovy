@@ -23,6 +23,9 @@ class  Contacts extends GebReportingSpec {
                 CONTACT_EMAIL, CONTACT_PHONE_NUMBER,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
     static input2 = new MineContactDataTwo(Const.MINE_ROLE_2,Const.MINE_NAME_2)
 
+    def setupSpec() {
+        Thread.sleep(5)
+    }
 
     def "Scenario: User can navigate to the contacts page."(){
         given: "I am on the homepage"
@@ -49,7 +52,6 @@ class  Contacts extends GebReportingSpec {
 
         then: "I should get single person with that name."
         contactTableContent.text()startsWith( CONTACT_FULL_NAME_2)
-        sleep(10)
 
     }
 
@@ -73,7 +75,6 @@ class  Contacts extends GebReportingSpec {
         def FilteredContacts = new ContactsPage(url: "dashboard/contacts?page=1&per_page=25&first_name="+ Const.CONTACT_FIRST_NAME)
         to FilteredContacts
         contactTableNameOne != null
-        sleep(30)
     }
 
 }

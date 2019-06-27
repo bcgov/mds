@@ -12,6 +12,10 @@ import utils.*
 @Stepwise
 class  SummarySpec extends GebReportingSpec {
 
+    def setupSpec() {
+        Thread.sleep(5)
+    }
+
     def "Scenario: User can view the mine profile"(){
         when: "I go to the mine profile page for BLAH0000(the test record)"
         to MineProfilePage
@@ -19,7 +23,6 @@ class  SummarySpec extends GebReportingSpec {
         then: "I should see profile of the Mine"
         assert mineNumber == Const.MINE_NUMBER
         assert mineName == Const.MINE_NAME
-        sleep(10)
     }
 }
 

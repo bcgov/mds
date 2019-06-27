@@ -13,6 +13,10 @@ import dataObjects.MineProfileData
 @Stepwise
 class  MapNavigationSpec extends GebReportingSpec {
 
+    def setupSpec() {
+        Thread.sleep(5)
+    }
+
     def "Scenario: User is able to navigate to main map."(){
         given: "I go to the Dashboard Page"
         to Dashboard
@@ -31,7 +35,7 @@ class  MapNavigationSpec extends GebReportingSpec {
 
         then: "The user should navigate to the mine profile"
         at MineProfilePage
-        sleep(10)
+
     }
 
 }

@@ -17,6 +17,10 @@ class  Tenure extends GebReportingSpec {
         tenureTab.tabSelect.click()
     }
 
+    def setupSpec() {
+        Thread.sleep(5)
+    }
+
     def "Scenario: User can add tenure number"(){
         when: "User open the update tenure form and add a new tenure number"
         tenureTab.addTenure(Const.TENURE)

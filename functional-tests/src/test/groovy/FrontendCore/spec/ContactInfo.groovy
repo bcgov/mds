@@ -12,6 +12,10 @@ import utils.*
 @Stepwise
 class  ContactInfoSpec extends GebReportingSpec {
 
+    def setupSpec() {
+        Thread.sleep(5)
+    }
+
     def "Scenario: User can create new mine manager and update mine manager information"(){
         given: "I go to mine profile"
         to MineProfilePage

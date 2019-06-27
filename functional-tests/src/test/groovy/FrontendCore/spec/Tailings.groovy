@@ -29,6 +29,10 @@ class Tailings extends GebReportingSpec {
         to MineProfilePage
     }
 
+    def setupSpec() {
+        Thread.sleep(5)
+    }
+
     def "Scenario: User adds TSF to a mine"(){
         when: "User clicks the 'Add a TSF' button on the summary page and adds a TSF"
         createTSFDropdown.click()
@@ -49,7 +53,6 @@ class Tailings extends GebReportingSpec {
 
         then: "the reports are visible"
         assert tailingsTab.document0Name != null
-        sleep(5)
     }
 
     //TODO: THIS TEST ONLY WORKS IN CHROME AND FIREFOX-HEADLESS.  WORK IN GebConfig to fix other browsers
@@ -64,7 +67,6 @@ class Tailings extends GebReportingSpec {
 
         then: "The doc upload complete message is shown"
         assert tailingsTab.uploadCompleteMessage != null
-        sleep(5)
 
     }
 
