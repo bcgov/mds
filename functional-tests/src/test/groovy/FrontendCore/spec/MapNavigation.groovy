@@ -21,17 +21,17 @@ class  MapNavigationSpec extends GebReportingSpec {
         at Dashboard
         mapTabSelect.mapTab.click()
         waitFor() {mapPin[0] }
-        interact { 
+        interact {
             moveToElement(mapPin[0])
             click(mapPin[0])
         }
-        
+
         //TODO: VERIFY CONTENT OF POP UP MODAL
         viewMineButton.click()
 
         then: "The user should navigate to the mine profile"
         at MineProfilePage
-        
+        sleep(10)
     }
 
 }

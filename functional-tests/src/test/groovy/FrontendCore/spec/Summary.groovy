@@ -19,6 +19,7 @@ class  SummarySpec extends GebReportingSpec {
         then: "I should see profile of the Mine"
         assert mineNumber == Const.MINE_NUMBER
         assert mineName == Const.MINE_NAME
+        sleep(10)
     }
 }
 

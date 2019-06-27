@@ -154,8 +154,8 @@ reportOnTestFailureOnly = false //true
 //in seconds
 //If unspecified, the values of 5 for timeout and 0.1 for retryInterval.
 waiting {
-    timeout = 600
-    retryInterval = 2
+    timeout = 120
+    retryInterval = 1
 }
 //always wait for the content using the default wait configuration
 atCheckWaiting = true

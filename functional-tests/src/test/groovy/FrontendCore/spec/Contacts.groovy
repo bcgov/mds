@@ -49,6 +49,7 @@ class  Contacts extends GebReportingSpec {
 
         then: "I should get single person with that name."
         contactTableContent.text()startsWith( CONTACT_FULL_NAME_2)
+        sleep(10)
 
     }
 
@@ -72,6 +73,7 @@ class  Contacts extends GebReportingSpec {
         def FilteredContacts = new ContactsPage(url: "dashboard/contacts?page=1&per_page=25&first_name="+ Const.CONTACT_FIRST_NAME)
         to FilteredContacts
         contactTableNameOne != null
+        sleep(30)
     }
 
 }

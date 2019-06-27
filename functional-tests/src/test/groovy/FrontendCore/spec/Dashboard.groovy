@@ -44,6 +44,7 @@ class  DashboardSpec extends GebReportingSpec {
         where:
         scenario                            | input
         "Giving only mine name and status"  |new MineProfileData (NAME_GOOD,STATUS,NULL,NULL,NULL)
+        sleep(10)
     }
 
     def "Scenario: User is able to create a mine record with fullmine info "(){
@@ -85,6 +86,7 @@ class  DashboardSpec extends GebReportingSpec {
         then:"I can view the page"
         at MineProfilePage
         assert mineName == viewMineName
+        sleep(10)
     }
 
     // def "Scenario: User can search for a specific mine "(){
