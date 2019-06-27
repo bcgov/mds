@@ -1,3 +1,193 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`NavBar renders properly 1`] = `ShallowWrapper {}`;
+exports[`NavBar renders properly 1`] = `
+<div>
+  <div
+    className="menu"
+  >
+    <Link
+      to="/dashboard/mines/?page=1&per_page=25"
+    >
+      <img
+        alt="Home"
+        className="menu__img"
+        src={
+          Object {
+            "process": [Function],
+          }
+        }
+      />
+    </Link>
+    <Connect(withRouter(SearchBar)) />
+    <MediaQueryContextConsumer
+      maxWidth={768}
+    >
+      <Button
+        block={false}
+        className="menu__btn"
+        ghost={true}
+        htmlType="button"
+        loading={false}
+        onClick={[MockFunction]}
+        style={
+          Object {
+            "padding": 0,
+          }
+        }
+        type="button"
+      >
+        <img
+          alt="menu"
+          className="img-lg"
+          src={
+            Object {
+              "process": [Function],
+            }
+          }
+        />
+      </Button>
+    </MediaQueryContextConsumer>
+    <MediaQueryContextConsumer
+      minWidth={769}
+    >
+      <div
+        className="inline-flex"
+      >
+        <Dropdown
+          mouseEnterDelay={0.15}
+          mouseLeaveDelay={0.1}
+          overlay={[Function]}
+          placement="bottomLeft"
+        >
+          <button
+            className="menu__btn"
+            id=""
+            type="button"
+          >
+            <span
+              className="padding-small--right"
+            >
+              Provincial Reporting
+            </span>
+            <Icon
+              type="down"
+            />
+          </button>
+        </Dropdown>
+        <Link
+          to="/dashboard/mines/?page=1&per_page=25"
+        >
+          <Button
+            block={false}
+            className="menu__btn--link"
+            ghost={false}
+            htmlType="button"
+            id=""
+            loading={false}
+          >
+            Mines
+          </Button>
+        </Link>
+        <Link
+          to="/dashboard/contacts/?page=1&per_page=25"
+        >
+          <Button
+            block={false}
+            className="menu__btn--link"
+            ghost={false}
+            htmlType="button"
+            id=""
+            loading={false}
+          >
+            Contacts
+          </Button>
+        </Link>
+        <Connect(AuthorizationWrapper)
+          permission="role_admin"
+        >
+          <Link
+            to="/admin/dashboard"
+          >
+            <Button
+              block={false}
+              className="menu__btn--link"
+              ghost={false}
+              htmlType="button"
+              id=""
+              loading={false}
+            >
+              Admin
+            </Button>
+          </Link>
+        </Connect(AuthorizationWrapper)>
+        <Dropdown
+          mouseEnterDelay={0.15}
+          mouseLeaveDelay={0.1}
+          overlay={[Function]}
+          placement="bottomLeft"
+        >
+          <button
+            className="menu__btn"
+            type="button"
+          >
+            <Icon
+              className="padding-small--right icon-sm"
+              type="user"
+            />
+            <span
+              className="padding-small--right"
+            />
+            <Icon
+              type="down"
+            />
+          </button>
+        </Dropdown>
+        <Connect(AuthorizationWrapper)
+          inTesting={true}
+        >
+          <Dropdown
+            disabled={true}
+            mouseEnterDelay={0.15}
+            mouseLeaveDelay={0.1}
+            overlay={
+              <Menu>
+                <MenuItemGroup
+                  disabled={true}
+                  title="Please re-verify the following mines:"
+                />
+              </Menu>
+            }
+            placement="bottomLeft"
+          >
+            <button
+              className="menu__btn"
+              type="button"
+            >
+              <img
+                alt="GoodMines"
+                className="padding-small--right icon-sm vertical-align-sm"
+                src={
+                  Object {
+                    "process": [Function],
+                  }
+                }
+                width="25"
+              />
+              <span
+                className="padding-small--right"
+              >
+                0
+              </span>
+            </button>
+          </Dropdown>
+        </Connect(AuthorizationWrapper)>
+      </div>
+    </MediaQueryContextConsumer>
+  </div>
+  <MediaQueryContextConsumer
+    maxWidth={768}
+  >
+    <div />
+  </MediaQueryContextConsumer>
+</div>
+`;

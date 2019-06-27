@@ -1,3 +1,89 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`EditPartyRelationshipForm renders properly 1`] = `ShallowWrapper {}`;
+exports[`EditPartyRelationshipForm renders properly 1`] = `
+<Form
+  colon={true}
+  hideRequiredMark={false}
+  layout="vertical"
+  onSubmit={[MockFunction]}
+>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      xs={24}
+    >
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="start_date"
+          label="Start Date"
+          name="start_date"
+          placeholder="yyyy-mm-dd"
+        />
+      </FormItem>
+    </Col>
+    <Col
+      md={12}
+      xs={24}
+    >
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="end_date"
+          label="End Date"
+          name="end_date"
+          placeholder="yyyy-mm-dd"
+        />
+      </FormItem>
+    </Col>
+  </Row>
+  <EngineerOfRecordOptions
+    mine={Object {}}
+  />
+  <div
+    className="right center-mobile"
+  >
+    <Popconfirm
+      cancelText="No"
+      icon={
+        <Icon
+          theme="filled"
+          type="exclamation-circle"
+        />
+      }
+      okText="Yes"
+      okType="primary"
+      placement="topRight"
+      title="Are you sure you want to cancel?"
+      transitionName="zoom-big"
+      trigger="click"
+    >
+      <Button
+        block={false}
+        className="full-mobile"
+        ghost={false}
+        htmlType="button"
+        loading={false}
+        type="secondary"
+      >
+        Cancel
+      </Button>
+    </Popconfirm>
+    <Button
+      block={false}
+      className="full-mobile"
+      disabled={false}
+      ghost={false}
+      htmlType="submit"
+      loading={false}
+      type="primary"
+    />
+  </div>
+</Form>
+`;

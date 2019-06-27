@@ -1,3 +1,38 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Routes  renders properly 1`] = `ShallowWrapper {}`;
+exports[`Routes  renders properly 1`] = `
+<div>
+  <Switch>
+    <RedirectRoute
+      exact={true}
+      path="/"
+      redirectTo="/dashboard/mines/?page=1&per_page=25"
+    />
+    <Route
+      component={
+        Object {
+          "$$typeof": Symbol(react.memo),
+          "WrappedComponent": [Function],
+          "compare": null,
+          "displayName": "Connect(Logout)",
+          "type": [Function],
+        }
+      }
+      exact={true}
+      path="/logout-confirmed/"
+    />
+    <Route
+      component={
+        Object {
+          "$$typeof": Symbol(react.memo),
+          "WrappedComponent": [Function],
+          "compare": null,
+          "displayName": "Connect(authenticationGuard)",
+          "type": [Function],
+        }
+      }
+      path="/"
+    />
+  </Switch>
+</div>
+`;

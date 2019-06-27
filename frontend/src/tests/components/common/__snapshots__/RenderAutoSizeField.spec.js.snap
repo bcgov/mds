@@ -1,3 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`RenderAutoSizeField renders properly 1`] = `ShallowWrapper {}`;
+exports[`RenderAutoSizeField renders properly 1`] = `
+<FormItem
+  hasFeedback={false}
+  help={false}
+  label=""
+  placeholder=""
+  validateStatus=""
+>
+  <TextArea
+    autosize={true}
+    id={1}
+    placeholder=""
+  />
+</FormItem>
+`;

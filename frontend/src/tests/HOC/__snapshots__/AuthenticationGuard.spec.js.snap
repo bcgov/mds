@@ -1,3 +1,22 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AuthenticationGuard should render the \`WrappedComponent\` if \`isAuthenticated\` && \`userAccessData === role_view\` 1`] = `ShallowWrapper {}`;
+exports[`AuthenticationGuard should render the \`WrappedComponent\` if \`isAuthenticated\` && \`userAccessData === role_view\` 1`] = `
+<Component
+  authenticateUser={[MockFunction]}
+  isAuthenticated={true}
+  keycloak={true}
+  storeKeycloakData={[MockFunction]}
+  storeUserAccessData={[MockFunction]}
+  userAccessData={
+    Array [
+      "mds-mine-view",
+      "idir",
+      "mds-mine-create",
+      "offline_access",
+      "admin",
+      "uma_authorization",
+      "mds-mine-admin",
+    ]
+  }
+/>
+`;

@@ -1,3 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`RenderCascader renders properly 1`] = `ShallowWrapper {}`;
+exports[`RenderCascader renders properly 1`] = `
+<FormItem
+  hasFeedback={false}
+  help={false}
+  validateStatus=""
+>
+  <Cascader
+    allowClear={true}
+    disabled={false}
+    expandTrigger="hover"
+    id={1}
+    options={Array []}
+    placeholder=""
+    popupPlacement="bottomLeft"
+    transitionName="slide-up"
+  />
+</FormItem>
+`;

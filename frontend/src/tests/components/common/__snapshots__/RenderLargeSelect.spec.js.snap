@@ -1,3 +1,59 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`RenderLargeSelect renders properly 1`] = `ShallowWrapper {}`;
+exports[`RenderLargeSelect renders properly 1`] = `
+<FormItem
+  hasFeedback={false}
+  help={false}
+  label=""
+  validateStatus=""
+>
+  <AutoComplete
+    backfill={true}
+    choiceTransitionName="zoom"
+    dataSource={Array []}
+    defaultActiveFirstOption={false}
+    dropdownMatchSelectWidth={true}
+    filterOption={[Function]}
+    id="parties"
+    notFoundContent="Not Found"
+    onChange={
+      [MockFunction] {
+        "calls": Array [
+          Array [
+            "1",
+          ],
+        ],
+        "results": Array [
+          Object {
+            "type": "return",
+            "value": undefined,
+          },
+        ],
+      }
+    }
+    onSearch={[Function]}
+    onSelect={[Function]}
+    optionLabelProp="children"
+    placeholder=""
+    showSearch={false}
+    style={
+      Object {
+        "width": "100%",
+      }
+    }
+    transitionName="slide-up"
+    value="1"
+  >
+    <Input
+      disabled={false}
+      suffix={
+        <Icon
+          className="certain-category-icon"
+          type="search"
+        />
+      }
+      type="text"
+    />
+  </AutoComplete>
+</FormItem>
+`;

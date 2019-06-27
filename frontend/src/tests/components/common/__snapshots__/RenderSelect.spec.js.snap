@@ -1,3 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`RenderSelect renders properly 1`] = `ShallowWrapper {}`;
+exports[`RenderSelect renders properly 1`] = `
+<FormItem
+  hasFeedback={false}
+  help={false}
+  label=""
+  validateStatus=""
+>
+  <Select
+    choiceTransitionName="zoom"
+    disabled={false}
+    filterOption={[Function]}
+    getPopupContainer={[Function]}
+    id="1"
+    onSelect={[Function]}
+    optionFilterProp="children"
+    placeholder=""
+    showSearch={true}
+    transitionName="slide-up"
+  >
+    <Option />
+    <Option />
+  </Select>
+</FormItem>
+`;

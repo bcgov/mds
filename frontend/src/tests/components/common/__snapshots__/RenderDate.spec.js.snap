@@ -1,3 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`RenderDate renders properly 1`] = `ShallowWrapper {}`;
+exports[`RenderDate renders properly 1`] = `
+<FormItem
+  hasFeedback={false}
+  help={false}
+  label=""
+  validateStatus=""
+>
+  <PickerWrapper
+    format={false}
+    id={1}
+    locale={Object {}}
+    onChange={[Function]}
+    onOk={[Function]}
+    onOpenChange={[Function]}
+    placeholder="yyyy-mm-dd"
+    popupStyle={Object {}}
+    showTime={false}
+    style={false}
+    transitionName="slide-up"
+    value={null}
+  />
+</FormItem>
+`;

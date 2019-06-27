@@ -1,3 +1,50 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ResponsivePagination renders properly 1`] = `ShallowWrapper {}`;
+exports[`ResponsivePagination renders properly 1`] = `
+<div>
+  <MediaQueryContextConsumer
+    maxWidth={500}
+  >
+    <Pagination
+      current={1}
+      defaultCurrent={1}
+      onChange={[MockFunction]}
+      onShowSizeChange={[MockFunction]}
+      pageSize={25}
+      pageSizeOptions={
+        Array [
+          "25",
+          "50",
+          "75",
+          "100",
+        ]
+      }
+      showSizeChanger={true}
+      size="small"
+      total={1000}
+    />
+  </MediaQueryContextConsumer>
+  <MediaQueryContextConsumer
+    minWidth={501}
+  >
+    <Pagination
+      current={1}
+      defaultCurrent={1}
+      onChange={[MockFunction]}
+      onShowSizeChange={[MockFunction]}
+      pageSize={25}
+      pageSizeOptions={
+        Array [
+          "25",
+          "50",
+          "75",
+          "100",
+        ]
+      }
+      showSizeChanger={true}
+      showTotal={[Function]}
+      total={1000}
+    />
+  </MediaQueryContextConsumer>
+</div>
+`;

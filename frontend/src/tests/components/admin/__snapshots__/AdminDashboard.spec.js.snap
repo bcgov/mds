@@ -1,3 +1,89 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AdminDashboard renders properly 1`] = `ShallowWrapper {}`;
+exports[`AdminDashboard renders properly 1`] = `
+<div
+  className="landing-page"
+>
+  <div
+    className="landing-page__header"
+  >
+    <Row
+      gutter={0}
+    >
+      <Col
+        lg={12}
+        md={14}
+        sm={22}
+      >
+        <h1>
+          Admin View
+        </h1>
+      </Col>
+    </Row>
+  </div>
+  <div
+    className="landing-page__content"
+  >
+    <Tabs
+      activeKey="verifiedMines"
+      animated={
+        Object {
+          "inkBar": true,
+          "tabPane": false,
+        }
+      }
+      defaultActiveKey="summary"
+      hideAdd={false}
+      onChange={[Function]}
+      size="large"
+      tabPosition="top"
+    >
+      <TabPane
+        key="verifiedMines"
+        placeholder={null}
+        tab="Verified Mines"
+      >
+        <div
+          className="tab__content"
+        >
+          <div>
+            <h4>
+              0
+               Verified Mines
+            </h4>
+            <div />
+          </div>
+        </div>
+      </TabPane>
+      <TabPane
+        key="unverifiedMines"
+        placeholder={null}
+        tab="Mines to be Checked"
+      >
+        <div
+          className="tab__content"
+        >
+          <div>
+            <h4>
+              0
+               Mines Needing Re-Verification
+            </h4>
+            <div />
+          </div>
+        </div>
+      </TabPane>
+      <TabPane
+        key="managerMinespaceUsers"
+        placeholder={null}
+        tab="Manage Minespace Users"
+      >
+        <div
+          className="tab__content"
+        >
+          <Connect(MinespaceUserManagement) />
+        </div>
+      </TabPane>
+    </Tabs>
+  </div>
+</div>
+`;

@@ -1,3 +1,93 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AddIncidentModal renders properly 1`] = `ShallowWrapper {}`;
+exports[`AddIncidentModal renders properly 1`] = `
+<div>
+  <div>
+    <div>
+      <Steps
+        current={0}
+      >
+        <Step
+          key="Initial Report"
+          title="Initial Report"
+        />
+        <Step
+          key="Add Details"
+          title="Add Details"
+        />
+        <Step
+          key="Follow Up"
+          title="Follow Up"
+        />
+      </Steps>
+      <br />
+      <div>
+        <ReduxForm
+          destroyOnUnmount={false}
+          enableReinitialize={false}
+          forceUnregisterOnUnmount={true}
+          form="MINE_INCIDENT"
+          getFormState={[Function]}
+          initialValues={Object {}}
+          inspectors={Object {}}
+          keepDirtyOnReinitialize={false}
+          persistentSubmitErrors={false}
+          pure={true}
+          shouldAsyncValidate={[Function]}
+          shouldError={[Function]}
+          shouldValidate={[Function]}
+          shouldWarn={[Function]}
+          submitAsSideEffect={false}
+          touchOnBlur={true}
+          touchOnChange={false}
+          updateUnregisteredFields={false}
+        />
+      </div>
+      <div
+        className="right center-mobile"
+      >
+        <Popconfirm
+          cancelText="No"
+          icon={
+            <Icon
+              theme="filled"
+              type="exclamation-circle"
+            />
+          }
+          okText="Yes"
+          okType="primary"
+          onConfirm={[Function]}
+          placement="top"
+          title="Are you sure you want to cancel?"
+          transitionName="zoom-big"
+          trigger="click"
+        >
+          <Button
+            block={false}
+            className="full-mobile"
+            ghost={false}
+            htmlType="button"
+            loading={false}
+            type="secondary"
+          >
+            Cancel
+          </Button>
+        </Popconfirm>
+        <Button
+          block={false}
+          className="full-mobile"
+          disabled={true}
+          ghost={false}
+          htmlType="button"
+          id="step1-next"
+          loading={false}
+          onClick={[Function]}
+          type="tertiary"
+        >
+          Next
+        </Button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

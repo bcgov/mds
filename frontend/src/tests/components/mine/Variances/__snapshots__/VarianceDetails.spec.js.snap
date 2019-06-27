@@ -1,3 +1,75 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`VarianceDetails renders properly 1`] = `ShallowWrapper {}`;
+exports[`VarianceDetails renders properly 1`] = `
+<div>
+  <div
+    className="content--light-grey padding-small"
+  >
+    <div
+      className="inline-flex padding-small"
+    >
+      <p
+        className="field-title"
+      >
+        Mine
+      </p>
+      <p>
+         
+        mockMineName
+      </p>
+    </div>
+    <div
+      className="inline-flex padding-small"
+    >
+      <p
+        className="field-title"
+      >
+        Part of Code
+      </p>
+      <p>
+        N/A
+      </p>
+    </div>
+    <div
+      className="inline-flex padding-small"
+    >
+      <p
+        className="field-title"
+      >
+        Submission date
+      </p>
+      <p>
+        N/A
+      </p>
+    </div>
+    <div
+      className="inline-flex padding-small"
+    >
+      <p
+        className="field-title"
+      >
+        Description
+      </p>
+      <p>
+        N/A
+      </p>
+    </div>
+  </div>
+  <br />
+  <h5>
+    documents
+  </h5>
+  <DocumentTable
+    documentCategoryOptionsHash={
+      Object {
+        "DEC": "Decision Document",
+        "REC": "Recommendation Document",
+        "REQ": "Request Document",
+      }
+    }
+    documents={Array []}
+    isViewOnly={false}
+    removeDocument={[MockFunction]}
+  />
+</div>
+`;

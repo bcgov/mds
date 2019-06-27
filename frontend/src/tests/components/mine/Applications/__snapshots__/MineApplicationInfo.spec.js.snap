@@ -1,3 +1,45 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MineApplicationInfo renders properly 1`] = `ShallowWrapper {}`;
+exports[`MineApplicationInfo renders properly 1`] = `
+Array [
+  <div>
+    <div
+      className="inline-flex between"
+    >
+      <div />
+      <div
+        className="inline-flex between"
+      >
+        <Connect(AuthorizationWrapper)
+          permission="role_create"
+        >
+          <Button
+            block={false}
+            ghost={false}
+            htmlType="button"
+            loading={false}
+            onClick={[Function]}
+            type="primary"
+          >
+            <Icon
+              style={
+                Object {
+                  "fontSize": "18px",
+                }
+              }
+              theme="outlined"
+              type="plus"
+            />
+            Add a New Application
+          </Button>
+        </Connect(AuthorizationWrapper)>
+      </div>
+    </div>
+  </div>,
+  <br />,
+  <Connect(MineApplicationTable)
+    applications={Array []}
+    openEditApplicationModal={[Function]}
+  />,
+]
+`;

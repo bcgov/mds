@@ -1,3 +1,68 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ModalWrapper renders properly 1`] = `ShallowWrapper {}`;
+exports[`ModalWrapper renders properly 1`] = `
+<Modal
+  closable={false}
+  confirmLoading={false}
+  footer={null}
+  maskTransitionName="fade"
+  okType="primary"
+  title="mockTitle"
+  transitionName="zoom"
+  visible={false}
+  width={520}
+>
+  <Popconfirm
+    cancelText="No"
+    icon={
+      <Icon
+        theme="filled"
+        type="exclamation-circle"
+      />
+    }
+    okText="Yes"
+    okType="primary"
+    onConfirm={[Function]}
+    placement="bottomRight"
+    title="Are you sure you want to cancel?"
+    transitionName="zoom-big"
+    trigger="click"
+  >
+    <Button
+      block={false}
+      className="modal__close"
+      ghost={true}
+      htmlType="button"
+      loading={false}
+    >
+      <Icon
+        type="close"
+      />
+    </Button>
+  </Popconfirm>
+  <Connect(LoadingBar)
+    scope="modal"
+    style={
+      Object {
+        "backgroundColor": "#5e46a1",
+        "height": "8px",
+        "left": 0,
+        "position": "absolute",
+        "top": "50px",
+        "width": "100%",
+        "zIndex": 100,
+      }
+    }
+  />
+  <Connect(AddPartyComponentWrapper)
+    childProps={
+      Object {
+        "title": "mockTitle",
+      }
+    }
+    clearOnSubmit={false}
+    closeModal={[MockFunction]}
+    content={[MockFunction]}
+  />
+</Modal>
+`;

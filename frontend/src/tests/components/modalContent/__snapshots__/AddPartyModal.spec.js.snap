@@ -1,3 +1,85 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AddPartyModal renders properly 1`] = `ShallowWrapper {}`;
+exports[`AddPartyModal renders properly 1`] = `
+<div>
+  <div>
+    <Steps
+      current={0}
+    >
+      <Step
+        key="Basic Information"
+        title="Basic Information"
+      />
+      <Step
+        key="Role"
+        title="Role"
+      />
+    </Steps>
+    <div>
+      <ReduxForm
+        destroyOnUnmount={false}
+        enableReinitialize={false}
+        forceUnregisterOnUnmount={false}
+        form="ADD_FULL_PARTY"
+        getFormState={[Function]}
+        isPerson={true}
+        keepDirtyOnReinitialize={false}
+        persistentSubmitErrors={false}
+        pure={true}
+        shouldAsyncValidate={[Function]}
+        shouldError={[Function]}
+        shouldValidate={[Function]}
+        shouldWarn={[Function]}
+        submitAsSideEffect={false}
+        togglePartyChange={[Function]}
+        touchOnBlur={true}
+        touchOnChange={false}
+        updateUnregisteredFields={false}
+      />
+    </div>
+    <div
+      className="right center-mobile"
+    >
+      <Popconfirm
+        cancelText="No"
+        icon={
+          <Icon
+            theme="filled"
+            type="exclamation-circle"
+          />
+        }
+        okText="Yes"
+        okType="primary"
+        onConfirm={[Function]}
+        placement="top"
+        title="Are you sure you want to cancel?"
+        transitionName="zoom-big"
+        trigger="click"
+      >
+        <Button
+          block={false}
+          className="full-mobile"
+          ghost={false}
+          htmlType="button"
+          loading={false}
+          type="secondary"
+        >
+          Cancel
+        </Button>
+      </Popconfirm>
+      <Button
+        block={false}
+        className="full-mobile"
+        disabled={true}
+        ghost={false}
+        htmlType="button"
+        loading={false}
+        onClick={[Function]}
+        type="primary"
+      >
+        Next
+      </Button>
+    </div>
+  </div>
+</div>
+`;

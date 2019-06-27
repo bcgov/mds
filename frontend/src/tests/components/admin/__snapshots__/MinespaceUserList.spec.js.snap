@@ -1,3 +1,59 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MinespaceUserList renders properly 1`] = `ShallowWrapper {}`;
+exports[`MinespaceUserList renders properly 1`] = `
+<div>
+  <Table
+    align="center"
+    bordered={false}
+    childrenColumnName="children"
+    className=""
+    columns={
+      Array [
+        Object {
+          "dataIndex": "email",
+          "title": "User Email",
+          "width": 400,
+        },
+        Object {
+          "dataIndex": "mineNames",
+          "render": [Function],
+          "title": "Mines",
+          "width": 300,
+        },
+        Object {
+          "dataIndex": "delete",
+          "render": [Function],
+          "title": "",
+          "width": 50,
+        },
+      ]
+    }
+    dataSource={Array []}
+    indentSize={20}
+    loading={false}
+    locale={
+      Object {
+        "emptyText": <NullScreen
+          type="no-results"
+        />,
+      }
+    }
+    pagination={false}
+    rowKey="key"
+    scroll={
+      Object {
+        "x": 1500,
+      }
+    }
+    showHeader={true}
+    size="default"
+    sortDirections={
+      Array [
+        "ascend",
+        "descend",
+      ]
+    }
+    useFixedHeader={false}
+  />
+</div>
+`;

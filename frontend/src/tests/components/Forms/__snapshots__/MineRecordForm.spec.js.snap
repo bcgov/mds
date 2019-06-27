@@ -1,3 +1,276 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MineRecordForm renders properly 1`] = `ShallowWrapper {}`;
+exports[`MineRecordForm renders properly 1`] = `
+<Form
+  colon={true}
+  hideRequiredMark={false}
+  layout="vertical"
+  onSubmit={[MockFunction]}
+>
+  <Row
+    gutter={16}
+  >
+    <Col>
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="mine_name"
+          label="Mine Name *"
+          name="mine_name"
+          validate={
+            Array [
+              [Function],
+              [Function],
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col>
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="mine_status"
+          label="Mine Status *"
+          name="mine_status"
+          onChange={[Function]}
+          placeholder="Please select status"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col>
+      <FormItem
+        hasFeedback={false}
+        label="Is this a historic mine status?"
+      >
+        <RadioGroup
+          buttonStyle="outline"
+          defaultValue={false}
+          disabled={false}
+          onChange={[Function]}
+          value={false}
+        >
+          <Radio
+            type="radio"
+            value={true}
+          >
+            Yes
+          </Radio>
+          <Radio
+            type="radio"
+            value={false}
+          >
+            No
+          </Radio>
+        </RadioGroup>
+      </FormItem>
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      span={24}
+    >
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          data={
+            Array [
+              Object {
+                "label": "South West",
+                "value": "SW",
+              },
+              Object {
+                "label": "South Central",
+                "value": "SC",
+              },
+              Object {
+                "label": "North West",
+                "value": "NW",
+              },
+              Object {
+                "label": "North East",
+                "value": "NE",
+              },
+              Object {
+                "label": "South East",
+                "value": "SE",
+              },
+            ]
+          }
+          id="mine_region"
+          label="Mine Region *"
+          name="mine_region"
+          placeholder="Select a Region"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      xs={24}
+    >
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="latitude"
+          label="Latitude"
+          name="latitude"
+          validate={
+            Array [
+              [Function],
+              [Function],
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+    </Col>
+    <Col
+      md={12}
+      xs={24}
+    >
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="longitude"
+          label="Longitude"
+          name="longitude"
+          validate={
+            Array [
+              [Function],
+              [Function],
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+    </Col>
+  </Row>
+  <FormItem
+    hasFeedback={false}
+    label="Mine Type"
+  />
+  <FieldArray
+    component={[Function]}
+    name="mine_types"
+  />
+  <Row
+    gutter={16}
+  >
+    <Col>
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="mine_note"
+          label="Notes"
+          name="mine_note"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col>
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="major_mine_ind"
+          label="Major Mine"
+          name="major_mine_ind"
+          type="checkbox"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+    </Col>
+  </Row>
+  <div
+    className="right center-mobile"
+  >
+    <Popconfirm
+      cancelText="No"
+      icon={
+        <Icon
+          theme="filled"
+          type="exclamation-circle"
+        />
+      }
+      okText="Yes"
+      okType="primary"
+      onConfirm={[MockFunction]}
+      placement="topRight"
+      title="Are you sure you want to cancel?"
+      transitionName="zoom-big"
+      trigger="click"
+    >
+      <Button
+        block={false}
+        className="full-mobile"
+        ghost={false}
+        htmlType="button"
+        loading={false}
+      >
+        Cancel
+      </Button>
+    </Popconfirm>
+    <Button
+      block={false}
+      className="full-mobile"
+      disabled={false}
+      ghost={false}
+      htmlType="submit"
+      loading={false}
+      type="primary"
+    >
+      mockTitle
+    </Button>
+  </div>
+</Form>
+`;

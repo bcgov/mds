@@ -1,3 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Address renders properly 1`] = `ShallowWrapper {}`;
+exports[`Address renders properly 1`] = `
+<div>
+  <div
+    className="inline-flex"
+  >
+    <div>
+      <Icon
+        className="icon-sm"
+        type="contacts"
+      />
+    </div>
+    <p>
+      <span
+        key="N/A"
+      >
+        N/A
+      </span>
+    </p>
+  </div>
+</div>
+`;

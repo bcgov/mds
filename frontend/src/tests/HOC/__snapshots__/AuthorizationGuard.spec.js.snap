@@ -1,3 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AuthorizationGuard should render the \`WrappedComponent\` if \`userRoles === role_create || role_admin\` 1`] = `ShallowWrapper {}`;
+exports[`AuthorizationGuard should render the \`WrappedComponent\` if \`userRoles === role_create || role_admin\` 1`] = `
+<Component
+  keycloak={Object {}}
+  logoutUser={[MockFunction]}
+  mapStateToProps={[MockFunction]}
+  userRoles={
+    Array [
+      "mds-mine-view",
+      "idir",
+      "mds-mine-create",
+      "offline_access",
+      "admin",
+      "uma_authorization",
+      "mds-mine-admin",
+    ]
+  }
+/>
+`;

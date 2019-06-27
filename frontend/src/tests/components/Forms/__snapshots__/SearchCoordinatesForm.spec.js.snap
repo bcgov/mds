@@ -1,3 +1,63 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SearchCoordinatesForm renders properly 1`] = `ShallowWrapper {}`;
+exports[`SearchCoordinatesForm renders properly 1`] = `
+<Form
+  colon={true}
+  hideRequiredMark={false}
+  layout="vertical"
+  onSubmit={[MockFunction]}
+>
+  <FormItem
+    hasFeedback={false}
+  >
+    <Field
+      component={[Function]}
+      id="latitude"
+      name="latitude"
+      placeholder="Latitude"
+      validate={
+        Array [
+          [Function],
+          [Function],
+          [Function],
+          [Function],
+        ]
+      }
+    />
+  </FormItem>
+  <FormItem
+    hasFeedback={false}
+  >
+    <Field
+      component={[Function]}
+      id="longitude"
+      name="longitude"
+      placeholder="Longitude"
+      validate={
+        Array [
+          [Function],
+          [Function],
+          [Function],
+          [Function],
+        ]
+      }
+    />
+  </FormItem>
+  <div
+    className="right center-mobile"
+  >
+    <Button
+      block={false}
+      className="full-mobile"
+      ghost={false}
+      htmlType="submit"
+      loading={false}
+      type="primary"
+    >
+      <Icon
+        type="search"
+      />
+    </Button>
+  </div>
+</Form>
+`;

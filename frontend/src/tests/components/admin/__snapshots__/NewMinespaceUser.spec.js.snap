@@ -1,3 +1,52 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`NewMinespaceUser renders properly 1`] = `ShallowWrapper {}`;
+exports[`NewMinespaceUser renders properly 1`] = `
+<div>
+  <h3>
+    Add BCEID User
+  </h3>
+  <ReduxForm
+    destroyOnUnmount={true}
+    enableReinitialize={false}
+    forceUnregisterOnUnmount={false}
+    form="ADD_MINESPACE_USER"
+    getFormState={[Function]}
+    handleChange={[Function]}
+    handleSearch={[Function]}
+    initialValues={
+      Object {
+        "proponent_mine_access": Array [],
+      }
+    }
+    keepDirtyOnReinitialize={false}
+    mines={
+      Array [
+        Object {
+          "label": "New Mine-BLAH6194",
+          "value": "New Mine~fc72863d-83e8-46ba-90f9-87b0ed78823f",
+        },
+        Object {
+          "label": "Mine Two-BLAH0502",
+          "value": "Mine Two~89a65274-581d-4862-8630-99f5f7687089",
+        },
+        Object {
+          "label": "Legit Mine-BLAH6734",
+          "value": "Legit Mine~75692b61-7ab9-406b-b1f5-8c9b857404ac",
+        },
+      ]
+    }
+    onSubmit={[Function]}
+    onSubmitSuccess={[Function]}
+    persistentSubmitErrors={false}
+    pure={true}
+    shouldAsyncValidate={[Function]}
+    shouldError={[Function]}
+    shouldValidate={[Function]}
+    shouldWarn={[Function]}
+    submitAsSideEffect={false}
+    touchOnBlur={false}
+    touchOnChange={false}
+    updateUnregisteredFields={false}
+  />
+</div>
+`;

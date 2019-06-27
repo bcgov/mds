@@ -1,3 +1,53 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AddVarianceModal renders properly 1`] = `ShallowWrapper {}`;
+exports[`AddVarianceModal renders properly 1`] = `
+<div>
+  <ReduxForm
+    change={[Function]}
+    closeModal={[MockFunction]}
+    complianceCodes={
+      Array [
+        Object {
+          "label": "2.3.7 - Spills",
+          "value": 305,
+        },
+        Object {
+          "label": "2.3.8 - Flammable Waste Storage",
+          "value": 306,
+        },
+      ]
+    }
+    destroyOnUnmount={true}
+    enableReinitialize={false}
+    forceUnregisterOnUnmount={false}
+    form="ADD_VARIANCE"
+    getFormState={[Function]}
+    inspectors={
+      Object {
+        "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
+          "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+          "name": "mock name",
+        },
+        "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
+          "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+          "name": "mock Two",
+        },
+      }
+    }
+    keepDirtyOnReinitialize={false}
+    mineGuid="48593"
+    onSubmit={[MockFunction]}
+    onSubmitSuccess={[Function]}
+    persistentSubmitErrors={false}
+    pure={true}
+    shouldAsyncValidate={[Function]}
+    shouldError={[Function]}
+    shouldValidate={[Function]}
+    shouldWarn={[Function]}
+    submitAsSideEffect={false}
+    touchOnBlur={false}
+    touchOnChange={false}
+    updateUnregisteredFields={false}
+  />
+</div>
+`;

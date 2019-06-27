@@ -1,3 +1,30 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`EditPartyRelationshipModal renders properly 1`] = `ShallowWrapper {}`;
+exports[`EditPartyRelationshipModal renders properly 1`] = `
+<div>
+  <ReduxForm
+    destroyOnUnmount={true}
+    enableReinitialize={false}
+    forceUnregisterOnUnmount={false}
+    form="EDIT_PARTY_RELATIONSHIP"
+    getFormState={[Function]}
+    handleChange={[MockFunction]}
+    handlePartySubmit={[MockFunction]}
+    keepDirtyOnReinitialize={false}
+    onSubmit={[MockFunction]}
+    onSubmitSuccess={[Function]}
+    partyRelationships={Array []}
+    persistentSubmitErrors={false}
+    pure={true}
+    shouldAsyncValidate={[Function]}
+    shouldError={[Function]}
+    shouldValidate={[Function]}
+    shouldWarn={[Function]}
+    submitAsSideEffect={false}
+    touchOnBlur={false}
+    touchOnChange={false}
+    updateUnregisteredFields={false}
+    validate={[Function]}
+  />
+</div>
+`;

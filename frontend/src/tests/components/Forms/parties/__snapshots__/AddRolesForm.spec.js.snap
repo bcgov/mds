@@ -1,3 +1,48 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AddFullPartyForm renders properly 1`] = `ShallowWrapper {}`;
+exports[`AddFullPartyForm renders properly 1`] = `
+<div>
+  <Form
+    colon={true}
+    hideRequiredMark={false}
+    layout="horizontal"
+    onSubmit={[Function]}
+  >
+    <Collapse
+      accordion={true}
+      activeKey={
+        Array [
+          undefined,
+        ]
+      }
+      bordered={true}
+      expandIconPosition="left"
+      openAnimation={
+        Object {
+          "appear": [Function],
+          "enter": [Function],
+          "leave": [Function],
+        }
+      }
+    />
+    <Button
+      block={false}
+      className="btn--dropdown"
+      ghost={false}
+      htmlType="button"
+      loading={false}
+      onClick={[Function]}
+    >
+      <Icon
+        style={
+          Object {
+            "color": "#6b6363",
+          }
+        }
+        type="plus"
+      />
+      Add Role
+    </Button>
+  </Form>
+</div>
+`;

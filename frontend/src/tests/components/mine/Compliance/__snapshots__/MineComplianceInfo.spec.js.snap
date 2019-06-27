@@ -1,3 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MineComplianceInfo renders properly 1`] = `ShallowWrapper {}`;
+exports[`MineComplianceInfo renders properly 1`] = `
+<div>
+  <div>
+    <div>
+      <NullScreen
+        type="compliance"
+      />
+    </div>
+  </div>
+</div>
+`;

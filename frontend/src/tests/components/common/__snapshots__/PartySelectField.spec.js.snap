@@ -1,3 +1,30 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`PartySelectField renders properly 1`] = `ShallowWrapper {}`;
+exports[`PartySelectField renders properly 1`] = `
+<Field
+  allowAddingParties={false}
+  component={[Function]}
+  dataSource={Array []}
+  fetchSearchResults={[MockFunction]}
+  handleSearch={[Function]}
+  handleSelect={[Function]}
+  id="party_guid"
+  label="Name*"
+  name="party_guid"
+  organization={false}
+  partyLabel="contact"
+  person={false}
+  searchResults={Array []}
+  selectedOption={
+    Object {
+      "key": "",
+      "label": "",
+    }
+  }
+  validate={
+    Array [
+      [Function],
+    ]
+  }
+/>
+`;

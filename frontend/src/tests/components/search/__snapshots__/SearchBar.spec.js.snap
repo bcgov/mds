@@ -1,3 +1,82 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SearchBar renders properly 1`] = `ShallowWrapper {}`;
+exports[`SearchBar renders properly 1`] = `
+<Col
+  id="searchBox"
+  lg={6}
+  md={4}
+  style={
+    Object {
+      "marginBottom": "auto",
+      "marginLeft": "auto",
+      "marginTop": "auto",
+      "paddingRight": "20px",
+    }
+  }
+  xl={8}
+>
+  <Dropdown
+    getPopupContainer={[Function]}
+    mouseEnterDelay={0.15}
+    mouseLeaveDelay={0.1}
+    overlay={
+      <Card>
+        <SearchBarDropdown
+          history={
+            Object {
+              "location": Object {},
+              "push": [MockFunction],
+            }
+          }
+          searchBarResults={
+            Object {
+              "search_results": Array [
+                Object {
+                  "result": Object {
+                    "id": "aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d",
+                    "value": "Abbott Inc",
+                  },
+                  "score": 375,
+                  "type": "mine",
+                },
+                Object {
+                  "result": Object {
+                    "id": "5a993f02-1006-4a07-a448-f4064294de11",
+                    "value": "Abbott PLC",
+                  },
+                  "score": 375,
+                  "type": "mine",
+                },
+              ],
+              "search_terms": Array [
+                "Abb",
+              ],
+            }
+          }
+          searchTerm=""
+          searchTermHistory={Array []}
+        />
+      </Card>
+    }
+    placement="bottomLeft"
+    trigger={
+      Array [
+        "",
+      ]
+    }
+    visible={false}
+  >
+    <Search
+      enterButton={false}
+      onBlur={[Function]}
+      onChange={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onSearch={[Function]}
+      placeholder="Search"
+      size="large"
+      value=""
+    />
+  </Dropdown>
+</Col>
+`;

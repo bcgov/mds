@@ -1,3 +1,82 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AddIncidentFollowUpForm renders properly 1`] = `ShallowWrapper {}`;
+exports[`AddIncidentFollowUpForm renders properly 1`] = `
+<div>
+  <Form
+    colon={true}
+    hideRequiredMark={false}
+    layout="vertical"
+    onSubmit={[Function]}
+  >
+    <Row
+      gutter={48}
+    >
+      <Col>
+        <h4>
+          Follow-up Information
+        </h4>
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            id="followup_inspection"
+            label="Was there a follow-up inspection?"
+            name="followup_inspection"
+            validate={
+              Array [
+                [Function],
+              ]
+            }
+          />
+        </FormItem>
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            id="followup_investigation_type_code"
+            label="Was it escalated to EMPR investigation?*"
+            name="followup_investigation_type_code"
+            placeholder="Please choose one"
+            validate={
+              Array [
+                [Function],
+              ]
+            }
+          />
+        </FormItem>
+        <FieldArray
+          component={[Function]}
+          id="recommendations"
+          name="recommendations"
+        />
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            id="status_code"
+            label="Incident status?*"
+            name="status_code"
+          />
+        </FormItem>
+        <h4>
+          Final Investigation Report Documents
+        </h4>
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            id="InitialIncidentFileUpload"
+            name="InitialIncidentFileUpload"
+            onFileLoad={[Function]}
+            uploadUrl="/mines/undefined/incidents/documents"
+          />
+        </FormItem>
+      </Col>
+    </Row>
+  </Form>
+</div>
+`;

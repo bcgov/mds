@@ -1,3 +1,51 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`FilePicker renders properly 1`] = `ShallowWrapper {}`;
+exports[`FilePicker renders properly 1`] = `
+<div>
+  <div
+    className="center"
+  >
+    <FormItem
+      hasFeedback={false}
+    >
+      <RadioGroup
+        buttonStyle="outline"
+        defaultValue={true}
+        disabled={false}
+        onChange={[Function]}
+        size="large"
+      >
+        <RadioButton
+          value={true}
+        >
+          Upload new file(s)
+        </RadioButton>
+        <RadioButton
+          value={false}
+        >
+          Attach existing file(s)
+        </RadioButton>
+      </RadioGroup>
+    </FormItem>
+  </div>
+  <FormItem
+    hasFeedback={false}
+  >
+    <Field
+      component={[Function]}
+      existingFilesDropdown={
+        Array [
+          Object {
+            "label": "file",
+            "value": "GUID",
+          },
+        ]
+      }
+      id="fileUpload"
+      name="fileUpload"
+      onSelectExisting={[MockFunction]}
+      uploadUrl="localhost:9999"
+    />
+  </FormItem>
+</div>
+`;

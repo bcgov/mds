@@ -1,3 +1,37 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MinePermitInfo renders properly 1`] = `ShallowWrapper {}`;
+exports[`MinePermitInfo renders properly 1`] = `
+Array [
+  <div>
+    <div
+      className="inline-flex between"
+    >
+      <div />
+      <div
+        className="inline-flex between"
+      >
+        <Connect(AuthorizationWrapper)
+          permission="role_create"
+        >
+          <AddButton
+            onClick={[Function]}
+          >
+            Add a New Permit
+          </AddButton>
+        </Connect(AuthorizationWrapper)>
+      </div>
+    </div>
+  </div>,
+  <br />,
+  <Connect(MinePermitTable)
+    expandedRowKeys={Array []}
+    onExpand={[Function]}
+    openAddAmalgamatedPermitModal={[Function]}
+    openAddPermitAmendmentModal={[Function]}
+    openEditAmendmentModal={[Function]}
+    openEditPermitModal={[Function]}
+    partyRelationships={Array []}
+    permits={Array []}
+  />,
+]
+`;

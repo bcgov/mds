@@ -1,3 +1,142 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AddQuickPartyForm renders properly 1`] = `ShallowWrapper {}`;
+exports[`AddQuickPartyForm renders properly 1`] = `
+<div>
+  <Form
+    colon={true}
+    hideRequiredMark={false}
+    layout="vertical"
+    onSubmit={[MockFunction]}
+  >
+    <Row
+      gutter={16}
+    >
+      <Col
+        md={12}
+        xs={24}
+      >
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            id="first_name"
+            label="First Name*"
+            name="first_name"
+            validate={
+              Array [
+                [Function],
+              ]
+            }
+          />
+        </FormItem>
+      </Col>
+      <Col
+        md={12}
+        xs={24}
+      >
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            id="party_name"
+            label="Surname*"
+            name="party_name"
+            validate={
+              Array [
+                [Function],
+              ]
+            }
+          />
+        </FormItem>
+      </Col>
+    </Row>
+    <Row
+      gutter={16}
+    >
+      <Col
+        span={24}
+      >
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            id="email"
+            label="Email"
+            name="email"
+            validate={
+              Array [
+                [Function],
+              ]
+            }
+          />
+        </FormItem>
+      </Col>
+    </Row>
+    <Row
+      gutter={16}
+    >
+      <Col
+        span={18}
+      >
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            id="phone_no"
+            label="Phone Number*"
+            name="phone_no"
+            normalize={[Function]}
+            placeholder="e.g. xxx-xxx-xxxx"
+            validate={
+              Array [
+                [Function],
+                [Function],
+                [Function],
+              ]
+            }
+          />
+        </FormItem>
+      </Col>
+      <Col
+        span={6}
+      >
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            id="phone_ext"
+            label="Ext"
+            name="phone_ext"
+            validate={
+              Array [
+                [Function],
+                [Function],
+              ]
+            }
+          />
+        </FormItem>
+      </Col>
+    </Row>
+    <div
+      className="right center-mobile"
+    >
+      <Button
+        block={false}
+        className="full-mobile"
+        disabled={false}
+        ghost={false}
+        htmlType="submit"
+        loading={false}
+        type="primary"
+      >
+        Create Personnel
+      </Button>
+    </div>
+  </Form>
+</div>
+`;

@@ -1,3 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`RenderField renders properly 1`] = `ShallowWrapper {}`;
+exports[`RenderField renders properly 1`] = `
+<FormItem
+  hasFeedback={false}
+  help={false}
+  label=""
+  validateStatus=""
+>
+  <div
+    className="inline-flex"
+  >
+    <Input
+      disabled={false}
+      id={1}
+      placeholder=""
+      type="text"
+    />
+  </div>
+</FormItem>
+`;

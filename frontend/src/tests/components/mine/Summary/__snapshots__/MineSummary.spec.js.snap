@@ -1,3 +1,325 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MineSummary renders properly 1`] = `ShallowWrapper {}`;
+exports[`MineSummary renders properly 1`] = `
+<div>
+  <Row
+    gutter={16}
+    justify="center"
+    type="flex"
+  >
+    <Col
+      span={18}
+    >
+      <Row
+        gutter={16}
+      >
+        <Col
+          span={24}
+        >
+          <h4>
+            PERMITS
+          </h4>
+          <Divider />
+        </Col>
+      </Row>
+      <Row
+        gutter={16}
+        type="flex"
+      >
+        <Col
+          key="1628847c-060b-45f2-990f-815877174801"
+          lg={8}
+          md={12}
+          sm={24}
+          xl={6}
+          xxl={4}
+        >
+           
+          <PermitCard
+            PartyRelationships={Array []}
+            permit={
+              Object {
+                "amendments": Array [
+                  Object {
+                    "authorization_end_date": null,
+                    "description": "Initial permit issued.",
+                    "issue_date": "2019-04-01",
+                    "permit_amendment_guid": "822310fd-3a2c-44a9-a9ce-dee81acc9585",
+                    "permit_amendment_status_code": "ACT",
+                    "permit_amendment_type_code": "OGP",
+                    "permit_guid": "71d00d45-9fda-45d3-a4b0-59a7ceb6518e",
+                    "received_date": null,
+                    "related_documents": Array [
+                      Object {
+                        "document_guid": "31204ba5-5207-4fb5-b6c3-d47e55a0971c",
+                        "document_manager_guid": "64caef0e-060d-4875-a470-6c225b242723",
+                        "document_name": "Adams_amendment_1.pdf",
+                        "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+                      },
+                    ],
+                  },
+                ],
+                "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+                "permit_guid": "1628847c-060b-45f2-990f-815877174801",
+                "permit_id": "283",
+                "permit_no": "C-12345",
+                "permit_status_code": "O",
+              }
+            }
+          />
+        </Col>
+      </Row>
+      <Row
+        gutter={16}
+      >
+        <Col
+          span={24}
+        >
+          <div
+            className="right"
+          >
+            <Link
+              to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/permit?"
+            >
+              See All Permits
+            </Link>
+          </div>
+        </Col>
+      </Row>
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+    justify="center"
+    type="flex"
+  >
+    <Col
+      span={18}
+    >
+      <Row
+        gutter={16}
+      >
+        <Col
+          span={24}
+        >
+          <h4>
+            COMPLIANCE
+          </h4>
+          <Divider />
+        </Col>
+      </Row>
+      <Row
+        gutter={16}
+      >
+        <Col
+          lg={8}
+          xs={24}
+        >
+          <Card
+            bordered={false}
+            className="compliance-card"
+            title={
+              <Row
+                align="middle"
+                gutter={0}
+                justify="center"
+                type="flex"
+              >
+                <div
+                  className="center"
+                >
+                  <span
+                    className="info-display"
+                  >
+                    Loading...
+                  </span>
+                </div>
+              </Row>
+            }
+          >
+            <div
+              className="center"
+            >
+              <h4>
+                Last Inspection Date
+              </h4>
+            </div>
+          </Card>
+        </Col>
+        <Col
+          lg={8}
+          xs={12}
+        >
+          <Card
+            bordered={false}
+            className="compliance-card"
+            title={
+              <Row
+                align="middle"
+                gutter={0}
+                justify="center"
+                type="flex"
+              >
+                <img
+                  alt="Open Orders"
+                  src={
+                    Object {
+                      "process": [Function],
+                    }
+                  }
+                  style={
+                    Object {
+                      "height": 40,
+                      "paddingRight": 5,
+                    }
+                  }
+                />
+                 
+                <span
+                  className="info-display"
+                >
+                  Loading...
+                </span>
+              </Row>
+            }
+          >
+            <div
+              className="center"
+            >
+              <h4>
+                Open Orders
+              </h4>
+            </div>
+          </Card>
+        </Col>
+        <Col
+          lg={8}
+          xs={12}
+        >
+          <Card
+            bordered={false}
+            className="compliance-card"
+            title={
+              <Row
+                align="middle"
+                gutter={0}
+                justify="center"
+                type="flex"
+              >
+                <img
+                  alt="Overdue Orders"
+                  src={
+                    Object {
+                      "process": [Function],
+                    }
+                  }
+                  style={
+                    Object {
+                      "height": 40,
+                      "paddingRight": 5,
+                    }
+                  }
+                />
+                 
+                <span
+                  className="info-display"
+                >
+                  Loading...
+                </span>
+              </Row>
+            }
+          >
+            <div
+              className="center"
+            >
+              <h4>
+                Overdue Orders
+              </h4>
+            </div>
+          </Card>
+        </Col>
+      </Row>
+      <Row
+        gutter={16}
+      >
+        <Col
+          span={24}
+        >
+          <div
+            className="right"
+          >
+            <Link
+              to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/compliance?"
+            >
+              See All Compliance
+            </Link>
+          </div>
+        </Col>
+      </Row>
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+    justify="center"
+    type="flex"
+  >
+    <Col
+      span={18}
+    >
+      <Row
+        gutter={16}
+      >
+        <Col
+          span={24}
+        >
+          <h4>
+            TAILINGS STORAGE FACILTIES
+          </h4>
+          <Divider />
+        </Col>
+      </Row>
+      <Row
+        gutter={16}
+      >
+        <Col
+          key="e2629897-053e-4218-9299-479375e47f78"
+          lg={8}
+          md={12}
+          sm={24}
+          xl={6}
+          xxl={4}
+        >
+           
+          <TSFCard
+            PartyRelationships={Array []}
+            tailingsStorageFacility={
+              Object {
+                "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
+                "mine_tailings_storage_facility_name": "MockTSF",
+              }
+            }
+          />
+        </Col>
+      </Row>
+      <Row
+        gutter={16}
+      >
+        <Col
+          span={24}
+        >
+          <div
+            className="right"
+          >
+            <Link
+              to="/dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/tailings?"
+            >
+              See Tailings Storage Facilities
+            </Link>
+          </div>
+        </Col>
+      </Row>
+    </Col>
+  </Row>
+</div>
+`;

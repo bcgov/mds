@@ -1,3 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Logout renders properly 1`] = `ShallowWrapper {}`;
+exports[`Logout renders properly 1`] = `
+<div
+  className="logout-screen"
+>
+  <img
+    alt="mine_img"
+    src={
+      Object {
+        "process": [Function],
+      }
+    }
+  />
+  <p>
+    If you would like to return to CORE, please log in below
+  </p>
+  <Link
+    to="/dashboard/mines"
+  >
+    <Button
+      block={false}
+      className="full-mobile"
+      ghost={false}
+      htmlType="button"
+      loading={false}
+      type="primary"
+    >
+      Log In
+    </Button>
+  </Link>
+</div>
+`;

@@ -1,3 +1,36 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SearchBarDropdown renders properly 1`] = `ShallowWrapper {}`;
+exports[`SearchBarDropdown renders properly 1`] = `
+<Menu
+  onClick={[Function]}
+  onMouseDown={[Function]}
+  selectable={false}
+>
+  <MenuItem
+    key="/dashboard/aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d/summary"
+  >
+    <p>
+      Abbott Inc
+    </p>
+  </MenuItem>
+  <MenuItem
+    key="/dashboard/5a993f02-1006-4a07-a448-f4064294de11/summary"
+  >
+    <p>
+      Abbott PLC
+    </p>
+  </MenuItem>
+  <Divider
+    className=""
+    disabled={true}
+    style={Object {}}
+  />
+  <MenuItem
+    key="/search?q=Abb"
+  >
+    <h6>
+      See all results for "Abb"
+    </h6>
+  </MenuItem>
+</Menu>
+`;

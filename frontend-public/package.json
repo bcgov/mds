@@ -22,6 +22,7 @@
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
     "pm2": "^3.5.1",
+    "promise.prototype.finally": "^3.1.0",
     "prop-types": "^15.7.2",
     "query-string": "^6.8.1",
     "react": "^16.8.6",
@@ -59,6 +60,7 @@
     "css-loader": "^3.0.0",
     "cssnano": "^4.1.10",
     "enzyme": "^3.10.0",
+    "enzyme-to-json": "^3.3.5",
     "eslint": "^6.0.1",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^6.0.0",
@@ -139,7 +141,10 @@
       "^@/(.*)$": "<rootDir>/src/$1",
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/assetsTransformer.js",
       "\\.(css|less)$": "<rootDir>/src/assetsTransformer.js"
-    }
+    },
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ]
   },
   "jestSonar": {
     "reportPath": "reports",

@@ -1,3 +1,118 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DashboardRoutes  renders properly 1`] = `ShallowWrapper {}`;
+exports[`DashboardRoutes  renders properly 1`] = `
+<Switch>
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(CustomHomePage)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/home/"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(Dashboard)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/dashboard/mines"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(ContactHomePage)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/dashboard/contacts"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(PartyProfile)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/dashboard/:id/profile"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(MineDashboard)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/dashboard/:id/:activeTab"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(RelationshipProfile)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/dashboard/:id/history/:typeCode"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(Connect(authorizationGuard))",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/admin/dashboard"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(SearchResults)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/search"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
+    path="/dashboard/reporting"
+  />
+  <Route
+    component={[Function]}
+  />
+</Switch>
+`;

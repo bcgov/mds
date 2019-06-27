@@ -1,3 +1,61 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Home renders properly 1`] = `ShallowWrapper {}`;
+exports[`Home renders properly 1`] = `
+<Adapter
+  className="layout"
+>
+  <div
+    className="header"
+  >
+    <Connect(NavBar)
+      activeButton=" "
+      isMenuOpen={false}
+      toggleHamburgerMenu={[Function]}
+    />
+    <Connect(LoadingBar)
+      style={
+        Object {
+          "backgroundColor": "#5e46a1",
+          "height": "8px",
+          "position": "fixed",
+          "top": 53,
+          "width": "100%",
+          "zIndex": 1000,
+        }
+      }
+    />
+  </div>
+  <MediaQueryContextConsumer
+    maxWidth={500}
+  >
+    <WarningBanner
+      onClose={[Function]}
+      type="mobile"
+    />
+  </MediaQueryContextConsumer>
+  <Adapter
+    className="content"
+  >
+    <DashboardRoutes />
+    <BackTop
+      visibilityHeight={400}
+    >
+      <Button
+        block={false}
+        ghost={false}
+        htmlType="button"
+        loading={false}
+        type="primary"
+      >
+        <Icon
+          theme="outlined"
+          type="arrow-up"
+        />
+      </Button>
+    </BackTop>
+  </Adapter>
+  <div
+    className="footer"
+  />
+</Adapter>
+`;
