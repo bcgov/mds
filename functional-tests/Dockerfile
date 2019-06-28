@@ -12,8 +12,6 @@ USER root
 RUN mkdir $BDD_TEST_HOME/
 COPY . $BDD_TEST_HOME/
 
-RUN cd $BDD_TEST_HOME && ./gradlew -m
-
 # Fix permissions
 RUN chmod -R 777 $BDD_TEST_HOME
 

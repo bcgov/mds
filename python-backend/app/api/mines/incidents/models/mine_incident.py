@@ -53,6 +53,9 @@ class MineIncident(AuditMixin, Base):
                                                    db.ForeignKey('party.party_guid'),
                                                    nullable=False)
 
+    proponent_incident_no = db.Column(db.String)
+    mine_incident_no = db.Column(db.String)
+
     determination_type_code = db.Column(
         db.String,
         db.ForeignKey('mine_incident_determination_type.mine_incident_determination_type_code'))

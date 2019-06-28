@@ -61,27 +61,33 @@ export const AddIncidentReportingForm = (props) => (
               validate={[required]}
             />
           </Form.Item>
-          <Form.Item>
-            <Field
-              id="reported_by_phone_no"
-              name="reported_by_phone_no"
-              label="Phone number"
-              placeholder="xxx-xxx-xxxx"
-              component={renderConfig.FIELD}
-              validate={[phoneNumber, maxLength(12)]}
-              normalize={normalizePhone}
-            />
-          </Form.Item>
-          <Form.Item>
-            <Field
-              id="reported_by_phone_ext"
-              name="reported_by_phone_ext"
-              label="Phone extension"
-              placeholder=""
-              component={renderConfig.FIELD}
-              validate={[number, maxLength(4)]}
-            />
-          </Form.Item>
+          <Row gutter={16}>
+            <Col md={12} xs={24}>
+              <Form.Item>
+                <Field
+                  id="reported_by_phone_no"
+                  name="reported_by_phone_no"
+                  label="Phone number"
+                  placeholder="xxx-xxx-xxxx"
+                  component={renderConfig.FIELD}
+                  validate={[phoneNumber, maxLength(12)]}
+                  normalize={normalizePhone}
+                />
+              </Form.Item>
+            </Col>
+            <Col md={12} xs={24}>
+              <Form.Item>
+                <Field
+                  id="reported_by_phone_ext"
+                  name="reported_by_phone_ext"
+                  label="Phone extension"
+                  placeholder=""
+                  component={renderConfig.FIELD}
+                  validate={[number, maxLength(4)]}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
           <Form.Item>
             <Field
               id="reported_by_email"
