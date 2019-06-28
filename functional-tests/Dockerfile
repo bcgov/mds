@@ -6,9 +6,7 @@ ENV APP_HOME=/opt
 ENV BDD_TEST_HOME=/opt/selenium/bdd-tests
 ENV GRADLE_USER_HOME=/opt/selenium/bdd-tests/gradle_home
 
-USER root
-
-# Copy over the test code and run a gradle build to cache runtime dependencies
+# Copy over the test code
 RUN mkdir $BDD_TEST_HOME/
 COPY . $BDD_TEST_HOME/
 
