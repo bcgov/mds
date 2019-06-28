@@ -11,9 +11,9 @@ from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointme
 from app.extensions import api
 from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create, requires_role_mine_admin
 from ....utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.permits.response_models import PERMIT_AMENDMENT_MODEL
 
-
-class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
+class PermitAmendmentListResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
 
     parser.add_argument(
@@ -43,45 +43,22 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument('description', type=str, location='json', store_missing=False)
     parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
 
-    @api.doc(params={
-        'permit_amendment_guid': 'Permit amendment guid.',
-        'permit_guid': 'Permit GUID'
-    })
-    @requires_role_mine_view
-    def get(self, permit_guid=None, permit_amendment_guid=None):
-        result = []
-
-        if permit_amendment_guid:
-            permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
-            if not permit_amendment:
-                raise NotFound("Permit Amendment not found.")
-            result = permit_amendment.json()
-
-        elif permit_guid:
-            permit = Permit.find_by_permit_guid(permit_guid)
-            if not permit:
-                raise BadRequest("Permit not found")
-            permit_amendments = PermitAmendment.find_by_permit_id(permit.permit_id)
-            result = [x.json() for x in permit_amendments]
-
-        else:
-            raise BadRequest("Provide a permit_amendment_guid or permit_guid")
-        return result
 
     @api.doc(params={
         'permit_amendment_guid': 'Permit amendment guid.',
         'permit_guid': 'Permit GUID'
     })
     @requires_role_mine_create
+    @api.marshal_with(PERMIT_AMENDMENT_MODEL, code=201)
     def post(self, permit_guid=None, permit_amendment_guid=None):
         if not permit_guid:
-            return self.create_error_payload(400, 'Permit_guid must be provided'), 400
+            raise NotFound('Permit_guid must be provided.')
         if permit_amendment_guid:
-            return self.create_error_payload(400, 'unexpected permit_amendement_id'), 400
+            raise BadRequest('Unexpected permit_amendement_guid.')
 
         permit = Permit.find_by_permit_guid(permit_guid)
         if not permit:
-            return self.create_error_payload(404, 'permit does not exist'), 404
+            raise NotFound('Permit does not exist.')
 
         data = self.parser.parse_args()
         current_app.logger.info(f'creating permit_amendment with >> {data}')
@@ -116,39 +93,79 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
                                                         self.get_user_info(), permit_guid, True)
             new_permittee.save()
 
-        try:
-            new_pa = PermitAmendment.create(
-                permit,
-                received_date,
-                issue_date,
-                authorization_end_date,
-                permit_amendment_type_code,
-                description=description)
+        new_pa = PermitAmendment.create(
+            permit,
+            received_date,
+            issue_date,
+            authorization_end_date,
+            permit_amendment_type_code,
+            description=description)
 
-            for newFile in uploadedFiles:
-                new_pa_doc = PermitAmendmentDocument(
-                    document_name=newFile['fileName'],
-                    document_manager_guid=newFile['document_manager_guid'],
-                    mine_guid=permit.mine_guid,
-                )
-                new_pa.documents.append(new_pa_doc)
-            new_pa.save()
-        except Exception as e:
-            return self.create_error_payload(500, 'Error: {}'.format(e)), 500
-        return new_pa.json()
+        for newFile in uploadedFiles:
+            new_pa_doc = PermitAmendmentDocument(
+                document_name=newFile['fileName'],
+                document_manager_guid=newFile['document_manager_guid'],
+                mine_guid=permit.mine_guid,
+            )
+            new_pa.documents.append(new_pa_doc)
+        new_pa.save()
+        return new_pa
+
+
+class PermitAmendmentResource(Resource, UserMixin):
+    parser = reqparse.RequestParser(trim=True)
+
+    parser.add_argument(
+        'permittee_party_guid',
+        type=str,
+        help='GUID of the party that is the permittee for this permit.',
+        location='json')
+    parser.add_argument(
+        'received_date',
+        location='json',
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        store_missing=False)
+    parser.add_argument(
+        'issue_date',
+        location='json',
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        store_missing=False)
+    parser.add_argument(
+        'authorization_end_date',
+        location='json',
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        store_missing=False)
+    parser.add_argument(
+        'permit_amendment_type_code', type=str, location='json', store_missing=False)
+    parser.add_argument(
+        'permit_amendment_status_code', type=str, location='json', store_missing=False)
+    parser.add_argument('description', type=str, location='json', store_missing=False)
+    parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
+
+
+    @api.doc(params={'permit_amendment_guid': 'Permit amendment guid.'})
+    @requires_role_mine_view
+    @api.marshal_with(PERMIT_AMENDMENT_MODEL, code=200)
+    def get(self, permit_amendment_guid):
+        permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
+        if not permit_amendment:
+                raise NotFound("Permit Amendment not found.")
+        return permit_amendment
+
 
     @api.doc(params={
         'permit_amendment_guid': 'Permit amendment guid.',
         'permit_guid': 'Permit GUID'
     })
     @requires_role_mine_create
+    @api.marshal_with(PERMIT_AMENDMENT_MODEL, code=200)
     def put(self, permit_guid=None, permit_amendment_guid=None):
 
         if not permit_amendment_guid:
-            return self.create_error_payload(400, 'permit_amendment_id must be provided'), 400
+            raise BadRequest('permit_amendment_guid must be provided.')
         pa = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
         if not pa:
-            return self.create_error_payload(404, 'permit amendment not found'), 404
+            raise NotFound("Permit Amendment not found.")
 
         data = self.parser.parse_args()
         current_app.logger.info(f'updating {pa} with >> {data}')
@@ -161,13 +178,13 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
                         document_manager_guid=newFile['document_manager_guid'],
                         mine_guid=pa.permit.mine_guid,
                     )
-                    pa.documents.append(new_pa_doc)
+                    pa.related_documents.append(new_pa_doc)
             else:
                 setattr(pa, key, value)
 
         pa.save()
 
-        return pa.json()
+        return pa
 
     @api.doc(params={
         'permit_amendment_guid': 'Permit amendment guid.',
@@ -183,8 +200,5 @@ class PermitAmendmentResource(Resource, UserMixin, ErrorMixin):
 
         pa.deleted_ind = True
 
-        try:
-            pa.save()
-        except Exception as e:
-            return self.create_error_payload(500, 'Error: {}'.format(e)), 500
+        pa.save()
         return ('', 204)
