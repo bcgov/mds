@@ -3,7 +3,7 @@
 exports[`NewMinespaceUser renders properly 1`] = `
 <div>
   <h3>
-    Add BCEID User
+    Add BCeID User
   </h3>
   <ReduxForm
     destroyOnUnmount={true}
