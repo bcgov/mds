@@ -31,7 +31,7 @@ class Tailings extends GebReportingSpec {
 
     def "Scenario: User adds TSF to a mine"(){
         when: "User clicks the 'Add a TSF' button on the summary page and adds a TSF"
-        waitFor() { createTSFDropdown.click() }
+        createTSFDropdown.click()
         createTSFDropdownButton.click()
         tailingsTab.addTailingsForm.addTailings(Const.TSF_NAME)
 
@@ -73,7 +73,7 @@ class Tailings extends GebReportingSpec {
 
         and: "User opens a file in the folder specified in GebConfig"
         waitFor() { tailingsTab.downloadLink[0].click() }
-        print(Const.DOWNLOAD_PATH+'/'+Const.TEST_FILE_NAME)
+
         def file = new File(Const.DOWNLOAD_PATH+'/'+Const.TEST_FILE_NAME)
         // allow time for the file to be created in the DOWNLOAD_PATH
         waitFor(){ file.exists() && file.length() }
