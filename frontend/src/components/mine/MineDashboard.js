@@ -74,6 +74,7 @@ import MineTailingsInfo from "@/components/mine/Tailings/MineTailingsInfo";
 import MineSummary from "@/components/mine/Summary/MineSummary";
 import MineVariance from "@/components/mine/Variances/MineVariance";
 import MineIncidents from "@/components/mine/Incidents/MineIncidents";
+import MineReportInfo from "@/components/mine/Reports/MineReportInfo";
 import MineHeader from "@/components/mine/MineHeader";
 import * as router from "@/constants/routes";
 import MineContactInfo from "@/components/mine/ContactInfo/MineContactInfo";
@@ -410,6 +411,16 @@ export class MineDashboard extends Component {
                     <MineIncidents
                       mine={mine}
                       inspectors={this.props.inspectors}
+                      openModal={this.props.openModal}
+                      closeModal={this.props.closeModal}
+                    />
+                  </div>
+                </TabPane>
+                <TabPane tab="Reports" key="reports">
+                  <div className="tab__content">
+                    <MineReportInfo
+                      mine={mine}
+                      mine_reports={this.props.inspectors}
                       openModal={this.props.openModal}
                       closeModal={this.props.closeModal}
                     />
