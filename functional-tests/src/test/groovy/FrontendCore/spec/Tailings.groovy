@@ -31,7 +31,7 @@ class Tailings extends GebReportingSpec {
 
     def "Scenario: User adds TSF to a mine"(){
         when: "User clicks the 'Add a TSF' button on the summary page and adds a TSF"
-        createTSFDropdown.click()
+        waitFor() { createTSFDropdown.click() }
         createTSFDropdownButton.click()
         tailingsTab.addTailingsForm.addTailings(Const.TSF_NAME)
 
