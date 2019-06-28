@@ -221,7 +221,17 @@ exports.setEnvironmentVariable = (dotenv = {}) => ({
 });
 
 exports.hardSourceWebPackPlugin = () => ({
-  plugins: [new HardSourceWebpackPlugin()],
+  plugins: [
+    new HardSourceWebpackPlugin(),
+    new HardSourceWebpackPlugin.ParallelModulePlugin({
+      fork: (fork, compiler, webpackBin) =>
+        fork(webpackBin(), ["--config", __filename], {
+          silent: true,
+        }),
+      numWorkers: () => Math.min(require("os").cpus().length, 4),
+      minModules: 10,
+    }),
+  ],
 });
 
 exports.clean = () => ({
