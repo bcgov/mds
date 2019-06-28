@@ -114,6 +114,8 @@ pipeline {
                     """
                 }
             }
+            // Notify success to GitHub before doing cleanup
+            githubNotify description: 'Pipeline executed successfully',  status: 'SUCCESS'
         }
         stage('Acceptance') {
             agent { label 'master' }
