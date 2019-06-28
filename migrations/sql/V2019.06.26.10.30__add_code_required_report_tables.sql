@@ -8,6 +8,9 @@ CREATE TABLE mine_report_due_date_type (
     update_timestamp                  timestamp with time zone DEFAULT now()  NOT NULL
 );
 
+COMMENT ON TABLE mine_report_due_date_type is 'Types of due dates available for mine reports.';
+ALTER TABLE mine_report_due_date_type OWNER TO mds;
+
 CREATE TABLE mine_report_submission_status_code (
     mine_report_submission_status_code  character varying(3)   PRIMARY KEY DEFAULT 'MIA',
     description                         character varying(100)                  NOT NULL,
@@ -18,6 +21,9 @@ CREATE TABLE mine_report_submission_status_code (
     update_user                         character varying(60)                   NOT NULL,
     update_timestamp                    timestamp with time zone DEFAULT now()  NOT NULL
 );
+
+COMMENT ON TABLE mine_report_submission_status_code is 'All the possible available status codes for mine reports.';
+ALTER TABLE mine_report_submission_status_code OWNER TO mds;
 
 CREATE TABLE IF NOT EXISTS mine_report_definition (
     mine_report_definition_id            serial                                  PRIMARY KEY, 
@@ -36,6 +42,9 @@ CREATE TABLE IF NOT EXISTS mine_report_definition (
     FOREIGN KEY (compliance_article_id) REFERENCES compliance_article(compliance_article_id) DEFERRABLE INITIALLY DEFERRED,
     FOREIGN KEY (mine_report_due_date_type) REFERENCES mine_report_due_date_type(mine_report_due_date_type) DEFERRABLE INITIALLY DEFERRED
 );
+
+COMMENT ON TABLE mine_report_definition is 'Definitions of code required reports, due dates and articles of the code that apply to them.';
+ALTER TABLE mine_report_definition OWNER TO mds;
 
 CREATE TABLE IF NOT EXISTS mine_report
 (
@@ -58,7 +67,8 @@ CREATE TABLE IF NOT EXISTS mine_report
 
 );
 
-COMMENT ON TABLE party_business_role_appt is 'Assignment of business roles to parties.';
+COMMENT ON TABLE mine_report is 'A code required report for a specific mine or permit on a mine.';
+ALTER TABLE mine_report OWNER TO mds;
 
 CREATE TABLE IF NOT EXISTS mine_report_submission (
     mine_report_submission_id             serial                                  NOT NULL PRIMARY KEY,
@@ -76,6 +86,9 @@ CREATE TABLE IF NOT EXISTS mine_report_submission (
     FOREIGN KEY (mine_report_submission_status_code) REFERENCES mine_report_submission_status_code(mine_report_submission_status_code) DEFERRABLE INITIALLY DEFERRED
 );
 
+COMMENT ON TABLE mine_report_submission is 'A file submission for a code required report.';
+ALTER TABLE mine_report_submission OWNER TO mds;
+
 CREATE TABLE IF NOT EXISTS mine_report_document_xref
 (
     mine_report_document_xref_guid uuid    DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
@@ -85,6 +98,9 @@ CREATE TABLE IF NOT EXISTS mine_report_document_xref
     FOREIGN KEY (mine_document_guid) REFERENCES mine_document(mine_document_guid) DEFERRABLE INITIALLY DEFERRED,
     FOREIGN KEY (mine_report_submission_id) REFERENCES mine_report_submission(mine_report_submission_id) DEFERRABLE INITIALLY DEFERRED
 );
+
+COMMENT ON TABLE mine_report_document_xref is 'Links a mine document to report submission.';
+ALTER TABLE mine_report_document_xref OWNER TO mds;
 
 CREATE TABLE IF NOT EXISTS mine_report_comment (
     mine_report_comment_id           serial                                  NOT NULL PRIMARY KEY,
@@ -106,6 +122,9 @@ CREATE TABLE IF NOT EXISTS mine_report_comment (
     FOREIGN KEY (minespace_user_id) REFERENCES minespace_user(user_id) DEFERRABLE INITIALLY DEFERRED
 );
 
+COMMENT ON TABLE mine_report_comment is 'A comment on a report or report submission from a proponent or core user.';
+ALTER TABLE mine_report_comment OWNER TO mds;
+
 CREATE TABLE mine_report_category (
     mine_report_category    character varying(3)                     PRIMARY KEY,
     description              character varying(100)                  NOT NULL   ,
@@ -117,6 +136,9 @@ CREATE TABLE mine_report_category (
     update_timestamp         timestamp with time zone DEFAULT now()  NOT NULL
 );
 
+COMMENT ON TABLE mine_report_category is 'Categories available for mine reports..';
+ALTER TABLE mine_report_category OWNER TO mds;
+
 CREATE TABLE IF NOT EXISTS mine_report_category_xref (
 
     mine_report_category_xref_guid  uuid DEFAULT gen_random_uuid()    NOT NULL PRIMARY KEY,
@@ -126,4 +148,7 @@ CREATE TABLE IF NOT EXISTS mine_report_category_xref (
     FOREIGN KEY (mine_report_category) REFERENCES mine_report_category(mine_report_category) DEFERRABLE INITIALLY DEFERRED,
     FOREIGN KEY (mine_report_definition_id) REFERENCES mine_report_definition(mine_report_definition_id) DEFERRABLE INITIALLY DEFERRED
 );
+
+COMMENT ON TABLE mine_report_category_xref is 'Links a mine report defenition to the mine report categories that apply to it.';
+ALTER TABLE mine_report_category_xref OWNER TO mds;
 
