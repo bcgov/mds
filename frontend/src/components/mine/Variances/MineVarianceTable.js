@@ -17,7 +17,6 @@ import { formatDate } from "@/utils/helpers";
 import { getDownloadLink } from "@/utils/actionlessNetworkCalls";
 import * as Strings from "@/constants/strings";
 import { COLOR } from "@/constants/styles";
-import LinkButton from "@/components/common/LinkButton";
 import * as router from "@/constants/routes";
 
 const { errorRed } = COLOR;
@@ -57,13 +56,22 @@ export class MineVarianceTable extends Component {
     downloadLinks: {},
   };
 
+  prepareDownloadLinks = () => {
+    this.props.variances.forEach(({ documents }) => documents.forEach(this.prepareDownloadLink));
+  };
+
   prepareDownloadLink = async (file) => {
+    if (this.state.downloadLinks[file.document_manager_guid]) {
+      return;
+    }
+
     const url = await getDownloadLink(file.document_manager_guid);
-    this.setState({
+    this.setState(({ downloadLinks }) => ({
       downloadLinks: {
         [file.document_manager_guid]: url,
+        ...downloadLinks,
       },
-    });
+    }));
   };
 
   handleOpenModal = (event, isEditable, variance) => {
@@ -99,6 +107,7 @@ export class MineVarianceTable extends Component {
     }));
 
   render() {
+    this.prepareDownloadLinks();
     const columns = [
       {
         title: "",
@@ -231,21 +240,14 @@ export class MineVarianceTable extends Component {
             {record.documents.length > 0
               ? record.documents.map((file) => (
                   <div key={file.mine_document_guid}>
-                    <LinkButton
+                    <a
                       key={file.mine_document_guid}
-                      onClick={() => this.prepareDownloadLink(file)}
+                      href={this.state.downloadLinks[file.document_manager_guid]}
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
                       {file.document_name}
-                    </LinkButton>
-                    {this.state.downloadLinks[file.document_manager_guid] && (
-                      <a
-                        href={this.state.downloadLinks[file.document_manager_guid]}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Open in Preview
-                      </a>
-                    )}
+                    </a>
                   </div>
                 ))
               : Strings.EMPTY_FIELD}
