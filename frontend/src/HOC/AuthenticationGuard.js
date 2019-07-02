@@ -22,9 +22,9 @@ const propTypes = {
   authenticateUser: PropTypes.func.isRequired,
   storeUserAccessData: PropTypes.func.isRequired,
   storeKeycloakData: PropTypes.func.isRequired,
-  keycloak: PropTypes.obectOf(PropTypes.any).isRequired,
+  keycloak: PropTypes.objectOf(PropTypes.any).isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
-  userAccessData: PropTypes.objectOf(PropTypes.any).isRequired,
+  userAccessData: PropTypes.objectOf(PropTypes.array).isRequired,
 };
 
 /**
