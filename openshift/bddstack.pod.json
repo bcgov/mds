@@ -100,6 +100,14 @@
                 "value": "24"
               },
               {
+                "name": "START_XVFB",
+                "value": "false"
+              },
+              {
+                "name": "GRADLE_USER_HOME",
+                "value": "/opt/selenium/bdd-tests/gradle_home"
+              },
+              {
                 "name": "DB_HOST",
                 "value": "${DB_CONFIG_NAME}"
               },
