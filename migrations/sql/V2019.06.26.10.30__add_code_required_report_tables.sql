@@ -12,7 +12,7 @@ COMMENT ON TABLE mine_report_due_date_type is 'Types of due dates available for 
 ALTER TABLE mine_report_due_date_type OWNER TO mds;
 
 CREATE TABLE mine_report_submission_status_code (
-    mine_report_submission_status_code  character varying(3)   PRIMARY KEY DEFAULT 'MIA',
+    mine_report_submission_status_code  character varying(3)                 PRIMARY KEY,
     description                         character varying(100)                  NOT NULL,
     display_order                       smallint                                        ,
     active_ind                          boolean DEFAULT true                    NOT NULL,
@@ -28,7 +28,7 @@ ALTER TABLE mine_report_submission_status_code OWNER TO mds;
 CREATE TABLE IF NOT EXISTS mine_report_definition (
     mine_report_definition_id            serial                                  PRIMARY KEY, 
     mine_report_definition_guid          uuid                                    NOT NULL   ,
-    name                                 varchar(50)                             NOT NULL   ,
+    report_name                          varchar(50)                             NOT NULL   ,
     description                          varchar(300)                            NOT NULL   ,
     compliance_article_id                integer                                 NOT NULL   ,
     due_date_period_months               integer                                 NOT NULL   ,
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS mine_report
     mine_guid                    uuid                                     NOT NULL            ,
     permit_id                    integer                                                      ,
     due_date                     timestamp                                NOT NULL            ,
-    submission_year              integer                                                      ,
+    submission_year              smallint                                                     ,
     deleted_ind                  boolean DEFAULT false                    NOT NULL            ,
     create_user                  character varying(60)                    NOT NULL            ,
     create_timestamp             timestamp with time zone DEFAULT now()   NOT NULL            ,
@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS mine_report
 
 );
 
-COMMENT ON TABLE mine_report is 'A code required report for a specific mine or permit on a mine.';
+COMMENT ON TABLE mine_report is 'A report which a mine is required to submit as outlined by the HSRC code or a permit condition on the mine.';
 ALTER TABLE mine_report OWNER TO mds;
 
 CREATE TABLE IF NOT EXISTS mine_report_submission (
@@ -76,7 +76,6 @@ CREATE TABLE IF NOT EXISTS mine_report_submission (
     mine_report_id                        integer                                 NOT NULL            ,
     received_date                         timestamp                                                   ,
     mine_report_submission_status_code    varchar(3)                              NOT NULL            ,
-    active_ind                            boolean DEFAULT true                    NOT NULL            ,
     create_user                           character varying(60)                   NOT NULL            ,
     create_timestamp                      timestamp with time zone DEFAULT now()  NOT NULL            ,
     update_user                           character varying(60)                   NOT NULL            ,
@@ -107,10 +106,10 @@ CREATE TABLE IF NOT EXISTS mine_report_comment (
     mine_report_comment_guid         uuid                                    NOT NULL            ,
     mine_report_id                   integer                                 NOT NULL            ,
     mine_report_submission_id        integer                                                     ,
-    comment                          varchar(300)                            NOT NULL            ,
+    report_comment                   varchar(300)                            NOT NULL            ,
     minespace_user_id                integer                                                     ,
     core_user_id                     integer                                                     ,
-    comment_visibility               boolean                                 NOT NULL            ,
+    comment_visibility_ind           boolean DEFAULT                         NOT NULL            ,
     create_user                      character varying(60)                   NOT NULL            ,
     create_timestamp                 timestamp with time zone DEFAULT now()  NOT NULL            ,
     update_user                      character varying(60)                   NOT NULL            ,
@@ -123,6 +122,14 @@ CREATE TABLE IF NOT EXISTS mine_report_comment (
 );
 
 COMMENT ON TABLE mine_report_comment is 'A comment on a report or report submission from a proponent or core user.';
+ALTER TABLE mine_report_comment 
+ADD CONSTRAINT minespace_user_id_and_core_user_id_mutually_exclusive
+CHECK (
+(minespace_user_id IS NULL AND core_user_id IS NOT NULL)
+OR
+(minespace_user_id IS NOT NULL AND core_user_id IS NULL)
+);
+
 ALTER TABLE mine_report_comment OWNER TO mds;
 
 CREATE TABLE mine_report_category (
@@ -136,7 +143,7 @@ CREATE TABLE mine_report_category (
     update_timestamp         timestamp with time zone DEFAULT now()  NOT NULL
 );
 
-COMMENT ON TABLE mine_report_category is 'Categories available for mine reports..';
+COMMENT ON TABLE mine_report_category is 'Categories available for mine reports';
 ALTER TABLE mine_report_category OWNER TO mds;
 
 CREATE TABLE IF NOT EXISTS mine_report_category_xref (
