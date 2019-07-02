@@ -5,10 +5,12 @@
   "private": true,
   "homepage": "${BASE_PATH}/",
   "dependencies": {
+    "@babel/runtime-corejs3": "^7.4.5",
     "@hot-loader/react-dom": "^16.8.6",
     "antd": "^3.19.8",
     "axios": "^0.19.0",
     "axios-mock-adapter": "^1.16.0",
+    "core-js": "^3.1.4",
     "dotenv": "^8.0.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
@@ -45,6 +47,7 @@
     "redux-logger": "^3.0.6",
     "redux-mock-store": "^1.5.3",
     "redux-thunk": "^2.3.0",
+    "regenerator-runtime": "^0.13.2",
     "reselect": "^4.0.0",
     "string-similarity": "^3.0.0",
     "tus-js-client": "^1.7.1"
@@ -110,10 +113,10 @@
   },
   "scripts": {
     "serve": "cross-env HOST=0.0.0.0 PORT=3000 webpack-dev-server --hot --env development",
-    "build": "webpack --env production",
+    "build": "webpack --env development --display-optimization-bailout",
     "build-serve": "npm run build && npm run start",
     "start": "npx pm2 start server.js --no-daemon",
-    "ci-test": "CI=true jest --env=jsdom --testResultsProcessor=jest-sonar-reporter --runInBand --coverage",
+    "ci-test": "cross-env CI=true jest --env=jsdom --testResultsProcessor=jest-sonar-reporter --runInBand --coverage",
     "lint": "eslint",
     "format:check": "prettier --config .prettierrc.json",
     "format:check-all": "prettier --config .prettierrc.json src/*.js && prettier --config .prettierrc.json src/**/*.js && prettier --config .prettierrc.json src/**/**/*.js",
