@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import { Field, reduxForm } from "redux-form";
-import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
 import RenderSelect from "@/components/common/RenderSelect";
 import UploadedFilesList from "@/components/common/UploadedFilesList";
@@ -25,15 +24,6 @@ export const EditTailingsReportForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
     <Row gutter={16}>
       <Col>
-        <Form.Item>
-          <Field
-            id="tsf_report_name"
-            name="tsf_report_name"
-            label="Report Name"
-            component={RenderField}
-            validate={[required]}
-          />
-        </Form.Item>
         <Form.Item>
           <Field
             id="tsf_report_due_date"
