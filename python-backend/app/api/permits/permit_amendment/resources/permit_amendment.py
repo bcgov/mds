@@ -13,6 +13,7 @@ from ....utils.access_decorators import requires_role_mine_view, requires_role_m
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.permits.response_models import PERMIT_AMENDMENT_MODEL
 
+
 class PermitAmendmentListResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
 
@@ -43,7 +44,6 @@ class PermitAmendmentListResource(Resource, UserMixin):
     parser.add_argument('description', type=str, location='json', store_missing=False)
     parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
 
-
     @api.doc(params={
         'permit_amendment_guid': 'Permit amendment guid.',
         'permit_guid': 'Permit GUID'
@@ -62,13 +62,6 @@ class PermitAmendmentListResource(Resource, UserMixin):
 
         data = self.parser.parse_args()
         current_app.logger.info(f'creating permit_amendment with >> {data}')
-
-        received_date = data.get('received_date')
-        issue_date = data.get('issue_date')
-        authorization_end_date = data.get('authorization_end_date')
-        permit_amendment_type_code = data.get('permit_amendment_type_code', 'AMD')
-        description = data.get('description')
-        uploadedFiles = data.get('uploadedFiles', [])
 
         party = Party.find_by_party_guid(data.get('permittee_party_guid'))
         if not party:
@@ -95,19 +88,20 @@ class PermitAmendmentListResource(Resource, UserMixin):
 
         new_pa = PermitAmendment.create(
             permit,
-            received_date,
-            issue_date,
-            authorization_end_date,
-            permit_amendment_type_code,
-            description=description)
+            data.get('received_date'),
+            data.get('issue_date'),
+            data.get('authorization_end_date'),
+            data.get('permit_amendment_type_code', 'AMD'),
+            description=data.get('description'))
 
+        uploadedFiles = data.get('uploadedFiles', [])
         for newFile in uploadedFiles:
             new_pa_doc = PermitAmendmentDocument(
                 document_name=newFile['fileName'],
                 document_manager_guid=newFile['document_manager_guid'],
                 mine_guid=permit.mine_guid,
             )
-            new_pa.documents.append(new_pa_doc)
+            new_pa.related_documents.append(new_pa_doc)
         new_pa.save()
         return new_pa
 
@@ -142,16 +136,14 @@ class PermitAmendmentResource(Resource, UserMixin):
     parser.add_argument('description', type=str, location='json', store_missing=False)
     parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
 
-
     @api.doc(params={'permit_amendment_guid': 'Permit amendment guid.'})
     @requires_role_mine_view
     @api.marshal_with(PERMIT_AMENDMENT_MODEL, code=200)
     def get(self, permit_amendment_guid):
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
         if not permit_amendment:
-                raise NotFound("Permit Amendment not found.")
+            raise NotFound("Permit Amendment not found.")
         return permit_amendment
-
 
     @api.doc(params={
         'permit_amendment_guid': 'Permit amendment guid.',

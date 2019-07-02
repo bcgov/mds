@@ -71,12 +71,12 @@ export const createPermitAmendment = (permitGuid, payload) => (dispatch) => {
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const updatePermitAmendment = (permitAmdendmentGuid, payload) => (dispatch) => {
+export const updatePermitAmendment = (permitGuid, permitAmdendmentGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_PERMIT_AMENDMENT));
   dispatch(showLoading());
   return CustomAxios()
     .put(
-      `${ENVIRONMENT.apiUrl}${API.PERMITAMENDMENT(permitAmdendmentGuid)}`,
+      `${ENVIRONMENT.apiUrl}${API.PERMITAMENDMENT(permitGuid, permitAmdendmentGuid)}`,
       payload,
       createRequestHeader()
     )
@@ -92,12 +92,18 @@ export const updatePermitAmendment = (permitAmdendmentGuid, payload) => (dispatc
     .finally(() => dispatch(hideLoading()));
 };
 
-export const removePermitAmendmentDocument = (permitAmdendmentGuid, documentGuid) => (dispatch) => {
+export const removePermitAmendmentDocument = (permitGuid, permitAmdendmentGuid, documentGuid) => (
+  dispatch
+) => {
   dispatch(request(reducerTypes.UPDATE_PERMIT_AMENDMENT_DOCUMENT));
   dispatch(showLoading());
   return CustomAxios()
     .delete(
-      `${ENVIRONMENT.apiUrl}${API.PERMITAMENDMENTDOCUMENT(permitAmdendmentGuid, documentGuid)}`,
+      `${ENVIRONMENT.apiUrl}${API.PERMITAMENDMENTDOCUMENT(
+        permitGuid,
+        permitAmdendmentGuid,
+        documentGuid
+      )}`,
       createRequestHeader()
     )
     .then((response) => {

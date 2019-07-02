@@ -29,7 +29,7 @@ export const PermitAmendmentUploadedFilesList = (props) => (
               onConfirm={() => {
                 props.handleRemovePermitAmendmentDocument(
                   props.relatedDocuments,
-                  file.document_guid
+                  file.document_manager_guid
                 );
               }}
             >

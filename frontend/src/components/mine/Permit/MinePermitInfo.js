@@ -169,6 +169,7 @@ export class MinePermitInfo extends Component {
             ? `Edit initial permit for ${permit.permit_no}`
             : `Edit permit amendment for ${permit.permit_no}`,
         mine_guid: permit.mine_guid,
+        permit_guid: permit.permit_guid,
         handleRemovePermitAmendmentDocument: this.handleRemovePermitAmendmentDocument,
       },
       widthSize: "50vw",
@@ -197,7 +198,7 @@ export class MinePermitInfo extends Component {
 
   handleEditPermitAmendment = (values) =>
     this.props
-      .updatePermitAmendment(values.permit_amendment_guid, values)
+      .updatePermitAmendment(values.permit_guid, values.permit_amendment_guid, values)
       .then(this.closePermitModal);
 
   handleAddPermitAmendment = (values) => {
@@ -215,10 +216,12 @@ export class MinePermitInfo extends Component {
       .then(this.closePermitModal);
   };
 
-  handleRemovePermitAmendmentDocument = (permitAmdendmentGuid, documentGuid) =>
-    this.props.removePermitAmendmentDocument(permitAmdendmentGuid, documentGuid).then(() => {
-      this.props.fetchPermits({ mine_guid: this.props.mine.mine_guid });
-    });
+  handleRemovePermitAmendmentDocument = (permitGuid, permitAmdendmentGuid, documentGuid) =>
+    this.props
+      .removePermitAmendmentDocument(permitGuid, permitAmdendmentGuid, documentGuid)
+      .then(() => {
+        this.props.fetchPermits({ mine_guid: this.props.mine.mine_guid });
+      });
 
   onExpand = (expanded, record) =>
     this.setState((prevState) => {

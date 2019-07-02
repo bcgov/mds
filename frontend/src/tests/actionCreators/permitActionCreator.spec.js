@@ -130,29 +130,34 @@ describe("`createPermitAmendment` action creator", () => {
 });
 
 describe("`updatePermitAmendment` action creator", () => {
+  const permitGuid = "123432";
   const permitAmdendmentGuid = "12345-6789";
   const issue_date = "2001-01-01";
   const description = "Test description";
 
-  const url = `${ENVIRONMENT.apiUrl}${API.PERMITAMENDMENT(permitAmdendmentGuid)}`;
+  const url = `${ENVIRONMENT.apiUrl}${API.PERMITAMENDMENT(permitGuid, permitAmdendmentGuid)}`;
   const mockPayload = { issue_date, description };
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPut(url, mockPayload).reply(200, mockResponse);
-    return updatePermitAmendment(permitAmdendmentGuid, mockPayload)(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(4);
-    });
+    return updatePermitAmendment(permitGuid, permitAmdendmentGuid, mockPayload)(dispatch).then(
+      () => {
+        expect(requestSpy).toHaveBeenCalledTimes(1);
+        expect(successSpy).toHaveBeenCalledTimes(1);
+        expect(dispatch).toHaveBeenCalledTimes(4);
+      }
+    );
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPut(url).reply(400, MOCK.ERROR);
-    return updatePermitAmendment(permitAmdendmentGuid, mockPayload)(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(4);
-    });
+    return updatePermitAmendment(permitGuid, permitAmdendmentGuid, mockPayload)(dispatch).then(
+      () => {
+        expect(requestSpy).toHaveBeenCalledTimes(1);
+        expect(errorSpy).toHaveBeenCalledTimes(1);
+        expect(dispatch).toHaveBeenCalledTimes(4);
+      }
+    );
   });
 });
 
