@@ -131,6 +131,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
             old_row         integer;
             new_row         integer;
             update_row      integer;
+            delete_row      integer;
         BEGIN
             RAISE NOTICE '.. Step 2 of 5: Update mine in MDS';
             SELECT count(*) FROM mine into old_row;
@@ -555,8 +556,18 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                 now()
             FROM new_record new;
             SELECT count(*) FROM mine_location into new_row;
+
+            -- Remove invalid rows that were updated or inserted
+            WITH deleted_rows AS (
+                DELETE FROM mine_location
+                WHERE latitude IS NULL OR longitude IS NULL
+                RETURNING 1
+            )
+            SELECT COUNT(*) FROM deleted_rows INTO delete_row;
+
             RAISE NOTICE '....# of new mine_location records loaded into MDS: %.', (new_row-old_row);
-            RAISE NOTICE '....Total mine records with location info in the MDS: %.', new_row;
+            RAISE NOTICE '....# of mine_location records removed from MDS: %.', (delete_row);
+            RAISE NOTICE '....Total mine records with location info in the MDS: %.', (new_row-delete_row);
         END;
 
         DECLARE
