@@ -73,7 +73,7 @@ class Tailings extends GebReportingSpec {
 
         and: "User opens a file in the folder specified in GebConfig"
         waitFor() { tailingsTab.downloadLink[0].click() }
-        print(Const.DOWNLOAD_PATH+'/'+Const.TEST_FILE_NAME)
+
         def file = new File(Const.DOWNLOAD_PATH+'/'+Const.TEST_FILE_NAME)
         // allow time for the file to be created in the DOWNLOAD_PATH
         waitFor(){ file.exists() && file.length() }
