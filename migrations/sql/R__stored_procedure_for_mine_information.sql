@@ -131,7 +131,6 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
             old_row         integer;
             new_row         integer;
             update_row      integer;
-            delete_row      integer;
         BEGIN
             RAISE NOTICE '.. Step 2 of 5: Update mine in MDS';
             SELECT count(*) FROM mine into old_row;
@@ -490,6 +489,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
             old_row         integer;
             new_row         integer;
             update_row      integer;
+            delete_row      integer;
         BEGIN
             RAISE NOTICE '.. Step 4 of 5: Update mine_location in MDS';
             SELECT count(*) FROM mine_location into old_row;
