@@ -183,7 +183,7 @@ ShallowWrapper {
                 </button>
               </Dropdown>
               <Connect(AuthorizationWrapper)
-                inTesting={true}
+                permission="role_admin"
               >
                 <Dropdown
                   disabled={true}
@@ -384,7 +384,7 @@ ShallowWrapper {
                   </button>
                 </Dropdown>
                 <Connect(AuthorizationWrapper)
-                  inTesting={true}
+                  permission="role_admin"
                 >
                   <Dropdown
                     disabled={true}
@@ -652,7 +652,7 @@ ShallowWrapper {
                   </button>
                 </Dropdown>
                 <Connect(AuthorizationWrapper)
-                  inTesting={true}
+                  permission="role_admin"
                 >
                   <Dropdown
                     disabled={true}
@@ -794,7 +794,7 @@ ShallowWrapper {
                     </button>
                   </Dropdown>,
                   <Connect(AuthorizationWrapper)
-                    inTesting={true}
+                    permission="role_admin"
                   >
                     <Dropdown
                       disabled={true}
@@ -1178,7 +1178,7 @@ ShallowWrapper {
                         </span>
                       </button>
                     </Dropdown>,
-                    "inTesting": true,
+                    "permission": "role_admin",
                   },
                   "ref": null,
                   "rendered": Object {
@@ -1470,7 +1470,7 @@ ShallowWrapper {
                   </button>
                 </Dropdown>
                 <Connect(AuthorizationWrapper)
-                  inTesting={true}
+                  permission="role_admin"
                 >
                   <Dropdown
                     disabled={true}
@@ -1671,7 +1671,7 @@ ShallowWrapper {
                     </button>
                   </Dropdown>
                   <Connect(AuthorizationWrapper)
-                    inTesting={true}
+                    permission="role_admin"
                   >
                     <Dropdown
                       disabled={true}
@@ -1939,7 +1939,7 @@ ShallowWrapper {
                     </button>
                   </Dropdown>
                   <Connect(AuthorizationWrapper)
-                    inTesting={true}
+                    permission="role_admin"
                   >
                     <Dropdown
                       disabled={true}
@@ -2081,7 +2081,7 @@ ShallowWrapper {
                       </button>
                     </Dropdown>,
                     <Connect(AuthorizationWrapper)
-                      inTesting={true}
+                      permission="role_admin"
                     >
                       <Dropdown
                         disabled={true}
@@ -2465,7 +2465,7 @@ ShallowWrapper {
                           </span>
                         </button>
                       </Dropdown>,
-                      "inTesting": true,
+                      "permission": "role_admin",
                     },
                     "ref": null,
                     "rendered": Object {
