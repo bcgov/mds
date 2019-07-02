@@ -109,7 +109,7 @@ export class NavBar extends Component {
           <Icon type="down" />
         </button>
       </Dropdown>
-      <AuthorizationWrapper inTesting>
+      <AuthorizationWrapper permission={Permission.ADMIN}>
         <Dropdown
           overlay={this.unverifiedMinesMenu()}
           placement="bottomLeft"
