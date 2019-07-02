@@ -173,8 +173,7 @@ class DocumentManagerResource(Resource):
 
         return send_file(
             filename_or_fp=doc.full_storage_path,
-            attachment_filename=doc.file_display_name,
-            as_attachment=True)
+            attachment_filename=doc.file_display_name)
 
     def options(self, document_guid):
         response = make_response('', 200)

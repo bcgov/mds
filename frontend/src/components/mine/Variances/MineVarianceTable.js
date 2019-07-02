@@ -14,7 +14,7 @@ import * as Permission from "@/constants/permissions";
 import { RED_CLOCK, EDIT_OUTLINE } from "@/constants/assets";
 import NullScreen from "@/components/common/NullScreen";
 import { formatDate } from "@/utils/helpers";
-import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
+import { getDownloadLink } from "@/utils/actionlessNetworkCalls";
 import * as Strings from "@/constants/strings";
 import { COLOR } from "@/constants/styles";
 import LinkButton from "@/components/common/LinkButton";
@@ -53,6 +53,19 @@ const errorStyle = (isOverdue) => (isOverdue ? { color: errorRed } : {});
 const hideColumn = (condition) => (condition ? "column-hide" : "");
 
 export class MineVarianceTable extends Component {
+  state = {
+    downloadLinks: {},
+  };
+
+  prepareDownloadLink = async (file) => {
+    const url = await getDownloadLink(file.document_manager_guid);
+    this.setState({
+      downloadLinks: {
+        [file.document_manager_guid]: url,
+      },
+    });
+  };
+
   handleOpenModal = (event, isEditable, variance) => {
     event.preventDefault();
     if (isEditable) {
@@ -220,10 +233,19 @@ export class MineVarianceTable extends Component {
                   <div key={file.mine_document_guid}>
                     <LinkButton
                       key={file.mine_document_guid}
-                      onClick={() => downloadFileFromDocumentManager(file.document_manager_guid)}
+                      onClick={() => this.prepareDownloadLink(file)}
                     >
                       {file.document_name}
                     </LinkButton>
+                    {this.state.downloadLinks[file.document_manager_guid] && (
+                      <a
+                        href={this.state.downloadLinks[file.document_manager_guid]}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Open in Preview
+                      </a>
+                    )}
                   </div>
                 ))
               : Strings.EMPTY_FIELD}
