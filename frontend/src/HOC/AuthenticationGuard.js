@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import Keycloak from "keycloak-js";
 import hoistNonReactStatics from "hoist-non-react-statics";
 import {
@@ -17,6 +18,15 @@ import Loading from "@/components/common/Loading";
 import { KEYCLOAK, USER_ROLES } from "@/constants/environment";
 import NullScreen from "@/components/common/NullScreen";
 
+const propTypes = {
+  authenticateUser: PropTypes.func.isRequired,
+  storeUserAccessData: PropTypes.func.isRequired,
+  storeKeycloakData: PropTypes.func.isRequired,
+  keycloak: PropTypes.obectOf(PropTypes.any).isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
+  userAccessData: PropTypes.objectOf(PropTypes.any).isRequired,
+};
+
 /**
  * @constant authenticationGuard - a Higher Order Component Thats checks for user authorization and returns the App component if the user is Authenticated.
  */
@@ -31,15 +41,16 @@ export const AuthenticationGuard = (WrappedComponent) => {
    * and changing state.
    *
    */
+
   class authenticationGuard extends Component {
     componentDidMount() {
       this.keycloakInit();
     }
 
-    async keycloakInit() {
+    keycloakInit() {
       // Initialize client
       const keycloak = Keycloak(KEYCLOAK);
-      await keycloak
+      keycloak
         .init({
           onLoad: "login-required",
           idpHint: KEYCLOAK.idpHint,
@@ -47,7 +58,6 @@ export const AuthenticationGuard = (WrappedComponent) => {
         .success(() => {
           keycloak.loadUserInfo().success((userInfo) => this.props.authenticateUser(userInfo));
           localStorage.setItem("jwt", keycloak.token);
-          console.log("Token", JSON.stringify(keycloak.token));
           this.props.storeUserAccessData(keycloak.realmAccess.roles);
           this.props.storeKeycloakData(keycloak);
         });
@@ -72,6 +82,8 @@ export const AuthenticationGuard = (WrappedComponent) => {
       return <Loading />;
     }
   }
+
+  authenticationGuard.propTypes = propTypes;
 
   hoistNonReactStatics(authenticationGuard, WrappedComponent);
 
