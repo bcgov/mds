@@ -97,7 +97,7 @@ exports[`MineHeader renders dispatchProperly 1`] = `
                 </button>
               </div>
               <Memo(ConnectFunction)
-                inTesting={true}
+                permission="role_admin"
               >
                 <div
                   className="custom-menu-item"
@@ -136,10 +136,6 @@ exports[`MineHeader renders dispatchProperly 1`] = `
                     </button>
                   </Popconfirm>
                 </div>
-              </Memo(ConnectFunction)>
-              <Memo(ConnectFunction)
-                inTesting={true}
-              >
                 <div
                   className="custom-menu-item"
                 >
