@@ -141,6 +141,14 @@
                     "value": "0"
                   },
                   {
+                    "name": "DATABASE_SERVICE_NAME",
+                    "value": "${DATABASE_SERVICE_NAME}"
+                  },
+                  {
+                    "name": "POSTGRESQL_DATABASE",
+                    "value": "mds"
+                  },
+                  {
                     "name": "POSTGRESQL_USER",
                     "valueFrom": {
                       "secretKeyRef": {
@@ -184,7 +192,7 @@
                   },
                   {
                     "name": "mds-db-backup-config-volume",
-                    "mountPath": "/backup.conf"
+                    "mountPath": "/"
                   }
                 ]
               }
