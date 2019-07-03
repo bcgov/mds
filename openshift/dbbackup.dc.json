@@ -9,7 +9,7 @@
       "kind": "PersistentVolumeClaim",
       "apiVersion": "v1",
       "metadata": {
-        "name": "mds-db-backup-verify${SUFFIX}"
+        "name": "mds-db-backup-verification${SUFFIX}"
       },
       "spec": {
         "storageClassName": "gluster-block",
