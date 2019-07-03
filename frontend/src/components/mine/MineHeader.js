@@ -228,7 +228,7 @@ export class MineHeader extends Component {
           </div>
         )}
 
-        <AuthorizationWrapper inTesting>
+        <AuthorizationWrapper permission={Permission.ADMIN}>
           {this.props.mine.verified_status.healthy_ind !== true && (
             <div className="custom-menu-item">
               <Popconfirm
@@ -250,8 +250,6 @@ export class MineHeader extends Component {
               </Popconfirm>
             </div>
           )}
-        </AuthorizationWrapper>
-        <AuthorizationWrapper inTesting>
           {this.props.mine.verified_status.healthy_ind !== false && (
             <div className="custom-menu-item">
               <Popconfirm
