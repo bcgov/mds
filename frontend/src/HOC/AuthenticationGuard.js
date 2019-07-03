@@ -47,10 +47,10 @@ export const AuthenticationGuard = (WrappedComponent) => {
       this.keycloakInit();
     }
 
-    keycloakInit() {
+    async keycloakInit() {
       // Initialize client
       const keycloak = Keycloak(KEYCLOAK);
-      keycloak
+      await keycloak
         .init({
           onLoad: "login-required",
           idpHint: KEYCLOAK.idpHint,
