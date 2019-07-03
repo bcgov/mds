@@ -159,6 +159,10 @@
                     }
                   },
                   {
+                    "name": "DATABASE_SERVER_TIMEOUT",
+                    "value": "120"
+                  },
+                  {
                     "name": "ENVIRONMENT_NAME",
                     "value": "${ENVIRONMENT_NAME}"
                   },

@@ -224,8 +224,8 @@ app {
                             'DATABASE_SERVICE_NAME':"mds-postgresql${vars.deployment.suffix}",
                             'CPU_REQUEST':"100m",
                             'CPU_LIMIT':"150m",
-                            'MEMORY_REQUEST':"256Mi",
-                            'MEMORY_LIMIT':"512Mi",
+                            'MEMORY_REQUEST':"512Mi",
+                            'MEMORY_LIMIT':"1Gi",
                             'PERSISTENT_VOLUME_SIZE':"1"
                     ]
                 ]
