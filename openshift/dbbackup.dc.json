@@ -28,7 +28,7 @@
         "name": "mds-db-backup-config${SUFFIX}"
       },
       "data": {
-        "backup.conf": "${DATABASE_SERVICE_NAME}/mds\n*/10 * * * * default /backup.sh -s -v all\n"
+        "backup.conf": "${DATABASE_SERVICE_NAME}/mds\n*/10 * * * * default cd / && ./backup.sh -s -v all\n"
       }
     },
     {
@@ -165,6 +165,10 @@
                   {
                     "name": "ENVIRONMENT_NAME",
                     "value": "${ENVIRONMENT_NAME}"
+                  },
+                  {
+                    "name": "ENVIRONMENT_FRIENDLY_NAME",
+                    "value": "${ENVIRONMENT_FRIENDLY_NAME}"
                   }
                 ],
                 "resources": {
@@ -234,7 +238,11 @@
       "displayName": "Environment Name (Environment Id)",
       "description": "The name or Id of the environment.  This variable is used by the webhook integration to identify the environment in which the backup notifications originate.",
       "required": false,
-      "value": "prod"
+      "value": "production"
+    },
+    {
+      "name": "ENVIRONMENT_FRIENDLY_NAME",
+      "value": "MDS Production"
     },
     {
       "name": "VERIFICATION_VOLUME_SIZE",
