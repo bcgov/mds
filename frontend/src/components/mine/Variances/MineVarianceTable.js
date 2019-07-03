@@ -14,9 +14,10 @@ import * as Permission from "@/constants/permissions";
 import { RED_CLOCK, EDIT_OUTLINE } from "@/constants/assets";
 import NullScreen from "@/components/common/NullScreen";
 import { formatDate } from "@/utils/helpers";
-import { getDownloadLink } from "@/utils/actionlessNetworkCalls";
+import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 import * as Strings from "@/constants/strings";
 import { COLOR } from "@/constants/styles";
+import LinkButton from "@/components/common/LinkButton";
 import * as router from "@/constants/routes";
 
 const { errorRed } = COLOR;
@@ -52,28 +53,6 @@ const errorStyle = (isOverdue) => (isOverdue ? { color: errorRed } : {});
 const hideColumn = (condition) => (condition ? "column-hide" : "");
 
 export class MineVarianceTable extends Component {
-  state = {
-    downloadLinks: {},
-  };
-
-  prepareDownloadLinks = () => {
-    this.props.variances.forEach(({ documents }) => documents.forEach(this.prepareDownloadLink));
-  };
-
-  prepareDownloadLink = async (file) => {
-    if (this.state.downloadLinks[file.document_manager_guid]) {
-      return;
-    }
-
-    const url = await getDownloadLink(file.document_manager_guid);
-    this.setState(({ downloadLinks }) => ({
-      downloadLinks: {
-        [file.document_manager_guid]: url,
-        ...downloadLinks,
-      },
-    }));
-  };
-
   handleOpenModal = (event, isEditable, variance) => {
     event.preventDefault();
     if (isEditable) {
@@ -107,7 +86,6 @@ export class MineVarianceTable extends Component {
     }));
 
   render() {
-    this.prepareDownloadLinks();
     const columns = [
       {
         title: "",
@@ -240,14 +218,12 @@ export class MineVarianceTable extends Component {
             {record.documents.length > 0
               ? record.documents.map((file) => (
                   <div key={file.mine_document_guid}>
-                    <a
+                    <LinkButton
                       key={file.mine_document_guid}
-                      href={this.state.downloadLinks[file.document_manager_guid]}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      onClick={() => downloadFileFromDocumentManager(file.document_manager_guid)}
                     >
                       {file.document_name}
-                    </a>
+                    </LinkButton>
                   </div>
                 ))
               : Strings.EMPTY_FIELD}
