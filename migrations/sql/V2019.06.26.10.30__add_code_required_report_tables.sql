@@ -154,7 +154,7 @@ CREATE TABLE IF NOT EXISTS mine_report_category_xref (
     FOREIGN KEY (mine_report_definition_id) REFERENCES mine_report_definition(mine_report_definition_id) DEFERRABLE INITIALLY DEFERRED
 );
 
-COMMENT ON TABLE mine_report_category_xref is 'Links a mine report defenition to the mine report categories that apply to it.';
+COMMENT ON TABLE mine_report_category_xref is 'Links a mine report defenition to the mine report categories that apply to it (ie. Geotechnical, Helath and Safety, ...).';
 ALTER TABLE mine_report_category_xref OWNER TO mds;
 
 CREATE TABLE IF NOT EXISTS mine_report_definition_compliance_article_xref (
