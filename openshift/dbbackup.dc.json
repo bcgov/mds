@@ -160,7 +160,7 @@
                   },
                   {
                     "name": "DATABASE_SERVER_TIMEOUT",
-                    "value": "120"
+                    "value": "600"
                   },
                   {
                     "name": "ENVIRONMENT_NAME",
