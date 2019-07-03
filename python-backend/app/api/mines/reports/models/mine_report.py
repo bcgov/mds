@@ -1,3 +1,4 @@
+import uuid
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.associationproxy import association_proxy
@@ -24,8 +25,34 @@ class MineReport(Base):
         return '<MineReport %r>' % self.mine_report_guid
 
     @classmethod
+    def create(cls,
+               mine_report_definition,
+               mine_guid,
+               submission_year,
+               permit_id=None,
+               due_date=None,
+               add_to_session=True):
+        mine_report = cls(
+            mine_report_guid=uuid.uuid4,
+            mine_report_definition_id=mine_report_definition.mine_report_definition_id,
+            mine_guid=mine_guid,
+            submission_year=submission_year,
+            permit_id=permit_id,
+            due_date=due_date)
+        if add_to_session:
+            mine_report.save(commit=False)
+        return mine_report
+
+    @classmethod
     def find_by_mine_guid(cls, _id):
         try:
             return cls.find_by(mine_guid=_id)
+        except ValueError:
+            return None
+
+    @classmethod
+    def find_by_mine_report_guid(cls, _id):
+        try:
+            return cls.find_by(mine_report_guid=_id)
         except ValueError:
             return None
