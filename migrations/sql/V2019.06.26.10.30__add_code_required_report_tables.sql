@@ -27,7 +27,7 @@ ALTER TABLE mine_report_submission_status_code OWNER TO mds;
 
 CREATE TABLE IF NOT EXISTS mine_report_definition (
     mine_report_definition_id            serial                                  PRIMARY KEY, 
-    mine_report_definition_guid          uuid                                    NOT NULL   ,
+    mine_report_definition_guid          uuid UNIQUE                             NOT NULL   ,
     report_name                          varchar(50)                             NOT NULL   ,
     description                          varchar(300)                            NOT NULL   ,
     due_date_period_months               integer                                 NOT NULL   ,
@@ -47,7 +47,7 @@ ALTER TABLE mine_report_definition OWNER TO mds;
 CREATE TABLE IF NOT EXISTS mine_report
 (
     mine_report_id               serial                                   NOT NULL PRIMARY KEY,
-    mine_report_guid             uuid                                     NOT NULL            ,
+    mine_report_guid             uuid UNIQUE                              NOT NULL            ,
     mine_report_definition_id    integer                                  NOT NULL            ,
     mine_guid                    uuid                                     NOT NULL            ,
     permit_id                    integer                                                      ,
@@ -70,7 +70,7 @@ ALTER TABLE mine_report OWNER TO mds;
 
 CREATE TABLE IF NOT EXISTS mine_report_submission (
     mine_report_submission_id             serial                                  NOT NULL PRIMARY KEY,
-    mine_report_submission_guid           uuid                                    NOT NULL            ,
+    mine_report_submission_guid           uuid UNIQUE                             NOT NULL            ,
     mine_report_id                        integer                                 NOT NULL            ,
     received_date                         timestamp                                                   ,
     mine_report_submission_status_code    varchar(3)                              NOT NULL            ,
@@ -101,13 +101,13 @@ ALTER TABLE mine_report_document_xref OWNER TO mds;
 
 CREATE TABLE IF NOT EXISTS mine_report_comment (
     mine_report_comment_id           serial                                  NOT NULL PRIMARY KEY,
-    mine_report_comment_guid         uuid                                    NOT NULL            ,
+    mine_report_comment_guid         uuid UNIQUE                             NOT NULL            ,
     mine_report_id                   integer                                 NOT NULL            ,
     mine_report_submission_id        integer                                                     ,
     report_comment                   varchar(300)                            NOT NULL            ,
     minespace_user_id                integer                                                     ,
     core_user_id                     integer                                                     ,
-    comment_visibility_ind           boolean DEFAULT                         NOT NULL            ,
+    comment_visibility_ind           boolean DEFAULT true                    NOT NULL            ,
     create_user                      character varying(60)                   NOT NULL            ,
     create_timestamp                 timestamp with time zone DEFAULT now()  NOT NULL            ,
     update_user                      character varying(60)                   NOT NULL            ,
@@ -131,7 +131,7 @@ OR
 ALTER TABLE mine_report_comment OWNER TO mds;
 
 CREATE TABLE mine_report_category (
-    mine_report_category    character varying(3)                     PRIMARY KEY,
+    mine_report_category     character varying(3)                    PRIMARY KEY,
     description              character varying(100)                  NOT NULL   ,
     display_order            smallint                                NOT NULL   ,
     active_ind               boolean DEFAULT true                    NOT NULL   ,
@@ -164,7 +164,7 @@ CREATE TABLE IF NOT EXISTS mine_report_definition_compliance_article_xref (
     compliance_article_id                                integer                           NOT NULL            ,
 
     FOREIGN KEY (compliance_article_id) REFERENCES compliance_article(compliance_article_id) DEFERRABLE INITIALLY DEFERRED,
-    FOREIGN KEY (mine_report_definition_id) REFERENCES mine_report_definition(mine_report_definition_id) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY (mine_report_definition_id) REFERENCES mine_report_definition(mine_report_definition_id) DEFERRABLE INITIALLY DEFERRED
 );
 
 COMMENT ON TABLE mine_report_category_xref is 'Links a mine report defenition to the compliance articles that it satisfies.';
