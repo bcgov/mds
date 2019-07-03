@@ -420,7 +420,6 @@ export class MineDashboard extends Component {
                   <div className="tab__content">
                     <MineReportInfo
                       mine={mine}
-                      mine_reports={this.props.inspectors}
                       openModal={this.props.openModal}
                       closeModal={this.props.closeModal}
                     />
