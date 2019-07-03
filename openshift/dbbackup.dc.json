@@ -141,10 +141,6 @@
                     "value": "0"
                   },
                   {
-                    "name": "BACKUP_PERIOD",
-                    "value": "1d"
-                  },
-                  {
                     "name": "POSTGRESQL_USER",
                     "valueFrom": {
                       "secretKeyRef": {
