@@ -30,7 +30,6 @@ CREATE TABLE IF NOT EXISTS mine_report_definition (
     mine_report_definition_guid          uuid                                    NOT NULL   ,
     report_name                          varchar(50)                             NOT NULL   ,
     description                          varchar(300)                            NOT NULL   ,
-    compliance_article_id                integer                                 NOT NULL   ,
     due_date_period_months               integer                                 NOT NULL   ,
     mine_report_due_date_type            character varying(3)                    NOT NULL   ,
     active_ind                           boolean DEFAULT true                    NOT NULL   ,
@@ -39,7 +38,6 @@ CREATE TABLE IF NOT EXISTS mine_report_definition (
     update_user                          character varying(60)                   NOT NULL   ,
     update_timestamp                     timestamp with time zone DEFAULT now()  NOT NULL   ,
 
-    FOREIGN KEY (compliance_article_id) REFERENCES compliance_article(compliance_article_id) DEFERRABLE INITIALLY DEFERRED,
     FOREIGN KEY (mine_report_due_date_type) REFERENCES mine_report_due_date_type(mine_report_due_date_type) DEFERRABLE INITIALLY DEFERRED
 );
 
@@ -156,6 +154,19 @@ CREATE TABLE IF NOT EXISTS mine_report_category_xref (
     FOREIGN KEY (mine_report_definition_id) REFERENCES mine_report_definition(mine_report_definition_id) DEFERRABLE INITIALLY DEFERRED
 );
 
-COMMENT ON TABLE mine_report_category_xref is 'Links a mine report defenition to the mine report categories that apply to it.';
+COMMENT ON TABLE mine_report_category_xref is 'Links a mine report defenition to the mine report categories that apply to it (ie. Geotechnical, Helath and Safety, ...).';
 ALTER TABLE mine_report_category_xref OWNER TO mds;
+
+CREATE TABLE IF NOT EXISTS mine_report_definition_compliance_article_xref (
+
+    mine_report_definition_compliance_article_xref_guid  uuid DEFAULT gen_random_uuid()    NOT NULL PRIMARY KEY,
+    mine_report_definition_id                            integer                           NOT NULL            ,
+    compliance_article_id                                integer                           NOT NULL            ,
+
+    FOREIGN KEY (compliance_article_id) REFERENCES compliance_article(compliance_article_id) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY (mine_report_definition_id) REFERENCES mine_report_definition(mine_report_definition_id) DEFERRABLE INITIALLY DEFERRED,
+);
+
+COMMENT ON TABLE mine_report_category_xref is 'Links a mine report defenition to the compliance articles that it satisfies.';
+ALTER TABLE mine_report_definition_compliance_article_xref OWNER TO mds;
 
