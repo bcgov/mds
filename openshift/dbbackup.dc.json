@@ -93,7 +93,7 @@
               {
                 "name": "mds-db-backup-data",
                 "persistentVolumeClaim": {
-                  "claimName": "bk-empr-mds-dev-rziu7r9a88e7"
+                  "claimName": "${NFS_VOLUME_IDENTIFIER}"
                 }
               },
               {
@@ -224,11 +224,17 @@
       "value": "postgresql"
     },
     {
+      "name": "NFS_VOLUME_IDENTIFIER",
+      "description": "Generated identifier of the NFS volume",
+      "required": true,
+      "value": "bk-empr-mds-dev-rziu7r9a88e7"
+    },
+    {
       "name": "ENVIRONMENT_NAME",
       "displayName": "Environment Name (Environment Id)",
       "description": "The name or Id of the environment.  This variable is used by the webhook integration to identify the environment in which the backup notifications originate.",
       "required": false,
-      "value": "dev"
+      "value": "prod"
     },
     {
       "name": "VERIFICATION_VOLUME_SIZE",
@@ -239,19 +245,19 @@
     },
     {
       "name": "CPU_REQUEST",
-      "value": "0"
+      "value": "20m"
     },
     {
       "name": "CPU_LIMIT",
-      "value": "0"
+      "value": "100m"
     },
     {
       "name": "MEMORY_REQUEST",
-      "value": "0Mi"
+      "value": "128Mi"
     },
     {
       "name": "MEMORY_LIMIT",
-      "value": "0Mi"
+      "value": "256Mi"
     }
   ]
 }
