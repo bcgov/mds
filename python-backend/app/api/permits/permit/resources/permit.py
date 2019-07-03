@@ -109,7 +109,7 @@ class PermitListResource(Resource, UserMixin):
         return permit
 
 
-class PermitResource(Resource, UserMixin, ErrorMixin):
+class PermitResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument(
         'permit_no', type=str, help='Number of the permit being added.', location='json')
@@ -153,8 +153,9 @@ class PermitResource(Resource, UserMixin, ErrorMixin):
 
     @api.doc(params={'permit_guid': 'Permit guid.'})
     @requires_role_mine_view
-    def get(self, permit_guid_or_no):
-        permit = Permit.find_by_permit_guid_or_no(permit_guid_or_no)
+    @api.marshal_with(PERMIT_MODEL, code=200)
+    def get(self, permit_guid):
+        permit = Permit.find_by_permit_guid_or_no(permit_guid)
         if not permit:
             raise NotFound('Permit not found.')
         return permit

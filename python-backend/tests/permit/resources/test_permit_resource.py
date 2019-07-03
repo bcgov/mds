@@ -27,16 +27,6 @@ def test_get_permit(test_client, db_session, auth_headers):
     assert get_resp.status_code == 200
 
 
-def test_get_with_permit_no(test_client, db_session, auth_headers):
-    permit_no = PermitFactory().permit_no
-
-    get_resp = test_client.get(
-        f'/permits?permit_no={permit_no}', headers=auth_headers['full_auth_header'])
-    get_data = json.loads(get_resp.data.decode())
-    assert get_resp.status_code == 200
-    assert get_data.get('permit_no') == permit_no
-
-
 #Create
 def test_post_permit(test_client, db_session, auth_headers):
     mine = MineFactory()
@@ -100,7 +90,7 @@ def test_post_with_permit_guid(test_client, db_session, auth_headers):
     }
     post_resp = test_client.post(
         f'/permits/{permit_guid}', headers=auth_headers['full_auth_header'], data=data)
-    assert post_resp.status_code == 400
+    assert post_resp.status_code == 405
 
 
 #Put

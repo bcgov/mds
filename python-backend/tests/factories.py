@@ -312,7 +312,7 @@ class PermitAmendmentFactory(BaseFactory):
     permit_amendment_status_code = 'ACT'
     permit_amendment_type_code = 'AMD'
     description = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
-    documents = []
+    related_documents = []
 
 
 class PermitAmendmentDocumentFactory(BaseFactory):

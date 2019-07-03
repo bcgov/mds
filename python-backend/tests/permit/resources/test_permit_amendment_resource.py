@@ -10,33 +10,24 @@ from tests.factories import PermitFactory, PermitAmendmentFactory, PartyFactory
 
 # GET
 def test_get_permit_amendment_by_guid(test_client, db_session, auth_headers):
-    pa_guid = PermitAmendmentFactory().permit_amendment_guid
+    pa = PermitAmendmentFactory()
 
     get_resp = test_client.get(
-        f'/permits/amendments/{pa_guid}', headers=auth_headers['full_auth_header'])
+        f'/permits/{pa.permit_guid}/amendments/{pa.permit_amendment_guid}',
+        headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200, get_resp.response
-    assert get_data['permit_amendment_guid'] == str(pa_guid)
+    assert get_data['permit_amendment_guid'] == str(pa.permit_amendment_guid)
 
 
 def test_get_permit_amendment_not_found(test_client, db_session, auth_headers):
+    pa = PermitAmendmentFactory()
     get_resp = test_client.get(
-        '/permits/amendments/' + str(uuid.uuid4()), headers=auth_headers['full_auth_header'])
+        f'/permits/{pa.permit_guid}/amendments/' + str(uuid.uuid4()),
+        headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 404
     assert get_data['message'] is not None
-
-
-def test_get_permit_amendment_by_permit(test_client, db_session, auth_headers):
-    batch_size = 3
-    permit_guid = PermitFactory(permit_amendments=batch_size).permit_guid
-
-    get_resp = test_client.get(
-        f'/permits/{permit_guid}/amendments', headers=auth_headers['full_auth_header'])
-    get_data = json.loads(get_resp.data.decode())
-    assert get_resp.status_code == 200
-    assert len(get_data) == batch_size
-    assert all(pa['permit_guid'] == str(permit_guid) for pa in get_data), str(get_data)
 
 
 # #POST
@@ -112,7 +103,7 @@ def test_put_permit_amendment(test_client, db_session, auth_headers):
 
     data = {'permit_amendment_type_code': 'AMD', 'permit_amendment_status_code': 'RMT'}
     put_resp = test_client.put(
-        f'/permits/amendments/{amendment.permit_amendment_guid}',
+        f'/permits/{permit.permit_guid}/amendments/{amendment.permit_amendment_guid}',
         json=data,
         headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
@@ -128,24 +119,27 @@ def test_put_permit_amendment(test_client, db_session, auth_headers):
 
 #DELETE
 def test_delete_permit_amendment(test_client, db_session, auth_headers):
-    am_guid = PermitAmendmentFactory().permit_amendment_guid
+    am = PermitAmendmentFactory()
 
     del_resp = test_client.delete(
-        f'/permits/amendments/{am_guid}', headers=auth_headers['full_auth_header'])
-    assert del_resp.status_code == 204, del_resp
-    assert PermitAmendment.find_by_permit_amendment_guid(str(am_guid)) is None
+        f'/permits/{am.permit_guid}/amendments/{am.permit_amendment_guid}',
+        headers=auth_headers['full_auth_header'])
+    assert del_resp.status_code == 200, del_resp
+    assert PermitAmendment.find_by_permit_amendment_guid(str(am.permit_amendment_guid)) is None
 
 
 def test_delete_twice_permit_amendment(test_client, db_session, auth_headers):
-    am_guid = PermitAmendmentFactory().permit_amendment_guid
+    am = PermitAmendmentFactory()
 
     del_resp = test_client.delete(
-        f'/permits/amendments/{am_guid}', headers=auth_headers['full_auth_header'])
-    assert del_resp.status_code == 204, del_resp
+        f'/permits/{am.permit_guid}/amendments/{am.permit_amendment_guid}',
+        headers=auth_headers['full_auth_header'])
+    assert del_resp.status_code == 200, del_resp
 
     #try again
     del_resp = test_client.delete(
-        f'/permits/amendments/{am_guid}', headers=auth_headers['full_auth_header'])
+        f'/permits/{am.permit_guid}/amendments/{am.permit_amendment_guid}',
+        headers=auth_headers['full_auth_header'])
     assert del_resp.status_code == 404, del_resp
 
 

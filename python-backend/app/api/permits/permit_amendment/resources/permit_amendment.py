@@ -139,7 +139,7 @@ class PermitAmendmentResource(Resource, UserMixin):
     @api.doc(params={'permit_amendment_guid': 'Permit amendment guid.'})
     @requires_role_mine_view
     @api.marshal_with(PERMIT_AMENDMENT_MODEL, code=200)
-    def get(self, permit_amendment_guid):
+    def get(self, permit_guid=None, permit_amendment_guid=None):
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
         if not permit_amendment:
             raise NotFound("Permit Amendment not found.")
@@ -183,14 +183,15 @@ class PermitAmendmentResource(Resource, UserMixin):
         'permit_guid': 'Permit GUID'
     })
     @requires_role_mine_admin
+    @api.response(204, 'Successfully deleted.')
     def delete(self, permit_guid=None, permit_amendment_guid=None):
         if not permit_amendment_guid:
-            return self.create_error_payload(400, 'permit_amendment_id must be provided'), 400
+            raise BadRequest('permit_amendment_guid must be provided.')
         pa = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
         if not pa:
-            return self.create_error_payload(404, 'permit amendment not found'), 404
+            raise NotFound("Permit Amendment not found.")
 
         pa.deleted_ind = True
 
         pa.save()
-        return ('', 204)
+        return

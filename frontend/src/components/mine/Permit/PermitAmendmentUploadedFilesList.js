@@ -12,7 +12,10 @@ const propTypes = {
 export const PermitAmendmentUploadedFilesList = (props) => (
   <div>
     {props.relatedDocuments.map((file) => (
-      <div className="padding-small margin-small lightest-grey-bg" key={file.mine_document_guid}>
+      <div
+        className="padding-small margin-small lightest-grey-bg"
+        key={file.permit_amendment_document_guid}
+      >
         <Row className="padding-small">
           <Col span={21}>
             <p className="uploaded-file left">{file.document_name}</p>
@@ -29,7 +32,7 @@ export const PermitAmendmentUploadedFilesList = (props) => (
               onConfirm={() => {
                 props.handleRemovePermitAmendmentDocument(
                   props.relatedDocuments,
-                  file.document_manager_guid
+                  file.permit_amendment_document_guid
                 );
               }}
             >

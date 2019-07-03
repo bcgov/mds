@@ -25,6 +25,8 @@ from app.api.permits.response_models import PERMIT_AMENDMENT_DOCUMENT_MODEL
 class PermitAmendmentDocumentListResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument('mine_guid', type=str, store_missing=False)
+    parser.add_argument('document_manager_guid', type=str, store_missing=False)
+    parser.add_argument('filename', type=str, store_missing=False)
 
     @api.doc(
         params={'mine_guid': 'Required: The guid of the mine this upload will be attached to.'})
@@ -85,16 +87,9 @@ class PermitAmendmentDocumentListResource(Resource, UserMixin):
 
         return metadata
 
-
-class PermitAmendmentDocumentResource(Resource, UserMixin):
-    parser = reqparse.RequestParser(trim=True)
-    parser.add_argument('document_manager_guid', type=str, store_missing=False)
-    parser.add_argument('filename', type=str, store_missing=False)
-    parser.add_argument('mine_guid', type=str, store_missing=False)
-
     @api.marshal_with(PERMIT_AMENDMENT_DOCUMENT_MODEL, code=201)
     @requires_role_mine_create
-    def put(self, permit_amendment_guid, document_manager_guid=None, permit_guid=None):
+    def put(self, permit_amendment_guid, permit_amendment_document_guid=None, permit_guid=None):
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
         if not permit_amendment:
             raise NotFound('Permit amendment not found.')
@@ -118,15 +113,17 @@ class PermitAmendmentDocumentResource(Resource, UserMixin):
 
         return new_pa_doc
 
+
+class PermitAmendmentDocumentResource(Resource, UserMixin):
     @requires_role_mine_create
-    @api.response(204, 'Document deleted.')
-    def delete(self, permit_amendment_guid, document_manager_guid=None, permit_guid=None):
-        if not document_manager_guid:
-            raise BadRequest('Must provide document_manager_guid to be unlinked.')
+    @api.response(204, 'Successfully deleted.')
+    def delete(self, permit_amendment_guid, permit_amendment_document_guid=None, permit_guid=None):
+        if not permit_amendment_document_guid:
+            raise BadRequest('Must provide permit_amendment_document_guid to be unlinked.')
 
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
-        permit_amendment_doc = PermitAmendmentDocument.find_by_document_manager_guid(
-            document_manager_guid)
+        permit_amendment_doc = PermitAmendmentDocument.find_by_permit_amendment_document_guid(
+            permit_amendment_document_guid)
 
         if permit_amendment is None:
             raise NotFound('The permit amendment was not found.')

@@ -72,7 +72,7 @@ export class PermitAmendmentForm extends Component {
       documentGuid
     );
     const newRelatedDocuments = relatedDocuments.filter(
-      (doc) => doc.document_manager_guid !== documentGuid
+      (doc) => doc.permit_amendment_document_guid !== documentGuid
     );
     this.setState({ relatedDocuments: newRelatedDocuments });
     this.shouldShowUploadFiles(newRelatedDocuments);
