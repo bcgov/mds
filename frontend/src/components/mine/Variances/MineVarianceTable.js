@@ -220,7 +220,7 @@ export class MineVarianceTable extends Component {
                   <div key={file.mine_document_guid}>
                     <LinkButton
                       key={file.mine_document_guid}
-                      onClick={() => downloadFileFromDocumentManager(file.document_manager_guid)}
+                      onClick={() => downloadFileFromDocumentManager(file)}
                     >
                       {file.document_name}
                     </LinkButton>
