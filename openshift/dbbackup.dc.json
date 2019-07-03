@@ -28,7 +28,7 @@
         "name": "mds-db-backup-config${SUFFIX}"
       },
       "data": {
-        "backup.conf": "${DATABASE_SERVICE_NAME}/mds\n*/10 * * * * default ./backup.sh -s -v all\n"
+        "backup.conf": "${DATABASE_SERVICE_NAME}/mds\n*/10 * * * * default ./backup.sh -s\n*/15 * * * * default ./backup.sh -s -v all\n"
       }
     },
     {
@@ -125,10 +125,6 @@
                     "value": "rolling"
                   },
                   {
-                    "name": "BACKUP_CONF",
-                    "value": "/backup-config/backup.conf"
-                  },
-                  {
                     "name": "BACKUP_DIR",
                     "value": "/backups/"
                   },
@@ -192,7 +188,8 @@
                   },
                   {
                     "name": "mds-db-backup-config-volume",
-                    "mountPath": "/backup-config"
+                    "mountPath": "/backup.conf",
+                    "subPath": "backup.conf"
                   }
                 ]
               }

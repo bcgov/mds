@@ -74,6 +74,7 @@ app {
                             'SUFFIX': "${vars.deployment.suffix}",
                             'VERSION':"${app.deployment.version}",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
+                            'ENVIRONMENT_FRIENDLY_NAME':"MDS Production",
                             'DATABASE_SERVICE_NAME':"mds-postgresql${vars.deployment.suffix}",
                             'NFS_VOLUME_IDENTIFIER':"bk-empr-mds-prod-x7ux0bwhqnsa",
                             'CPU_REQUEST':"${vars.resources.backup.cpu_request}",
