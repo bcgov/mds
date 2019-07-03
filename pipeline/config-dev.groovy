@@ -213,6 +213,21 @@ app {
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/nris_api",
                     ]
+                ],
+                [
+                    'file':'openshift/dbbackup.dc.json',
+                    'params':[
+                            'NAME':"mds-database-backup",
+                            'SUFFIX': "${vars.deployment.suffix}",
+                            'VERSION':"${app.deployment.version}",
+                            'ENVIRONMENT_NAME':"${app.deployment.env.name}",
+                            'DATABASE_SERVICE_NAME':"mds-postgresql${vars.deployment.suffix}",
+                            'CPU_REQUEST':"100m",
+                            'CPU_LIMIT':"150m",
+                            'MEMORY_REQUEST':"256Mi",
+                            'MEMORY_LIMIT':"512Mi",
+                            'PERSISTENT_VOLUME_SIZE':"1"
+                    ]
                 ]
         ]
     }
