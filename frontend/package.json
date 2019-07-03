@@ -5,6 +5,7 @@
   "private": true,
   "homepage": "${BASE_PATH}/",
   "dependencies": {
+    "@babel/runtime": "^7.4.5",
     "@babel/runtime-corejs3": "^7.4.5",
     "@hot-loader/react-dom": "^16.8.6",
     "antd": "^3.19.8",
@@ -28,7 +29,7 @@
     "moment": "^2.24.0",
     "promise.prototype.finally": "^3.1.0",
     "prop-types": "^15.7.2",
-    "query-string": "^6.8.1",
+    "query-string": "^5.1.1",
     "react": "^16.8.6",
     "react-arcgis": "^3.3.3",
     "react-dom": "^16.8.6",
@@ -113,7 +114,7 @@
   },
   "scripts": {
     "serve": "cross-env HOST=0.0.0.0 PORT=3000 webpack-dev-server --hot --env development",
-    "build": "webpack --env development --display-optimization-bailout",
+    "build": "webpack --env production",
     "build-serve": "npm run build && npm run start",
     "start": "npx pm2 start server.js --no-daemon",
     "ci-test": "cross-env CI=true jest --env=jsdom --testResultsProcessor=jest-sonar-reporter --runInBand --coverage",
