@@ -188,7 +188,7 @@
                   },
                   {
                     "name": "mds-db-backup-config-volume",
-                    "mountPath": "/backup-config/backup.conf"
+                    "mountPath": "/backup-config"
                   }
                 ]
               }
