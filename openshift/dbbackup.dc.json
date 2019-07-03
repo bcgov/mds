@@ -157,7 +157,7 @@
                     "valueFrom": {
                       "secretKeyRef": {
                         "name": "${DATABASE_SERVICE_NAME}",
-                        "key": "database-user"
+                        "key": "database-admin-user"
                       }
                     }
                   },
