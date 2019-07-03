@@ -9,23 +9,7 @@
       "kind": "PersistentVolumeClaim",
       "apiVersion": "v1",
       "metadata": {
-        "name": "bk-empr-mds-dev-rziu7r9a88e7"
-      },
-      "spec": {
-        "storageClassName": "nfs-backup",
-        "accessModes": ["ReadWriteOnce"],
-        "resources": {
-          "requests": {
-            "storage": "${BACKUP_VOLUME_SIZE}"
-          }
-        }
-      }
-    },
-    {
-      "kind": "PersistentVolumeClaim",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "mds-db-backup-verification${SUFFIX}"
+        "name": "mds-db-backup-verify${SUFFIX}"
       },
       "spec": {
         "storageClassName": "gluster-block",
@@ -44,7 +28,7 @@
         "name": "mds-db-backup-config${SUFFIX}"
       },
       "data": {
-        "config": "${DATABASE_SERVICE_NAME}/mds\n0 2 * * * default ./backup.sh -s -v all"
+        "backup.conf": "${DATABASE_SERVICE_NAME}/mds\n0 2 * * * default ./backup.sh -s -v all"
       }
     },
     {
@@ -255,7 +239,7 @@
       "value": "dev"
     },
     {
-      "name": "BACKUP_VOLUME_SIZE",
+      "name": "VERIFICATION_VOLUME_SIZE",
       "displayName": "Persistent Volume Size",
       "description": "The size of the persistent volume , e.g. 512Mi, 1Gi, 2Gi.",
       "required": true,
