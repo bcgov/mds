@@ -222,10 +222,10 @@ app {
                             'VERSION':"${app.deployment.version}",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'DATABASE_SERVICE_NAME':"mds-postgresql${vars.deployment.suffix}",
-                            'CPU_REQUEST':"100m",
-                            'CPU_LIMIT':"150m",
-                            'MEMORY_REQUEST':"512Mi",
-                            'MEMORY_LIMIT':"1Gi",
+                            'CPU_REQUEST':"0",
+                            'CPU_LIMIT':"0",
+                            'MEMORY_REQUEST':"0",
+                            'MEMORY_LIMIT':"0",
                             'PERSISTENT_VOLUME_SIZE':"1"
                     ]
                 ]

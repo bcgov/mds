@@ -28,7 +28,7 @@
         "name": "mds-db-backup-config${SUFFIX}"
       },
       "data": {
-        "backup.conf": "${DATABASE_SERVICE_NAME}/mds\n0 2 * * * default ./backup.sh -s\n30 2 * * * default ./backup.sh -s -v all\n"
+        "backup.conf": "${DATABASE_SERVICE_NAME}/mds\n*/10 * * * * default ./backup.sh -s\n*/15 * * * * default ./backup.sh -s -v all\n"
       }
     },
     {
