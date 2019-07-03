@@ -23,6 +23,10 @@ class MineReportDefinition(Base):
     active_ind = db.Column(db.Boolean, server_default=FetchedValue(), nullable=False)
     categories = db.relationship(
         'MineReportCategory', lazy='selectin', secondary='mine_report_category_xref')
+    compliance_articles = db.relationship(
+        'ComplianceArticle',
+        lazy='selectin',
+        secondary='mine_report_definition_compliance_article_xref')
 
     def __repr__(self):
         return '<MineReportDefinition %r>' % self.mine_report_definition_guid
