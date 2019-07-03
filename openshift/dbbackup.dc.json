@@ -109,7 +109,7 @@
                   "items": [
                     {
                       "key": "backup.conf",
-                      "path": "/backup-config/backup.conf"
+                      "path": "backup.conf"
                     }
                   ]
                 }
