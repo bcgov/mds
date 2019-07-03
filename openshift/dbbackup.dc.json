@@ -109,7 +109,7 @@
                   "items": [
                     {
                       "key": "backup.conf",
-                      "path": "backup.conf"
+                      "path": "/backup-config/backup.conf"
                     }
                   ]
                 }
@@ -125,28 +125,24 @@
                     "value": "rolling"
                   },
                   {
+                    "name": "BACKUP_CONF",
+                    "value": "/backup-config/backup.conf"
+                  },
+                  {
                     "name": "BACKUP_DIR",
                     "value": "/backups/"
                   },
                   {
                     "name": "DAILY_BACKUPS",
-                    "value": "6"
+                    "value": "5"
                   },
                   {
                     "name": "WEEKLY_BACKUPS",
-                    "value": "0"
+                    "value": "1"
                   },
                   {
                     "name": "MONTHLY_BACKUPS",
-                    "value": "0"
-                  },
-                  {
-                    "name": "DATABASE_SERVICE_NAME",
-                    "value": "${DATABASE_SERVICE_NAME}"
-                  },
-                  {
-                    "name": "POSTGRESQL_DATABASE",
-                    "value": "mds"
+                    "value": "1"
                   },
                   {
                     "name": "POSTGRESQL_USER",
@@ -192,7 +188,7 @@
                   },
                   {
                     "name": "mds-db-backup-config-volume",
-                    "mountPath": "backup.conf"
+                    "mountPath": "/backup-config/backup.conf"
                   }
                 ]
               }
