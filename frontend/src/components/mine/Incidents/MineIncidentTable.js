@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Table, Button, Icon } from "antd";
+import moment from "moment";
 import _ from "lodash";
 import { BRAND_PENCIL } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -42,7 +43,7 @@ const columns = (props) => [
   {
     title: "Incident Time",
     dataIndex: "incident_timestamp",
-    sorter: (a, b) => new Date(a.incident_timestamp) > new Date(b.incident_timestamp),
+    sorter: (a, b) => moment(a.incident_timestamp) > moment(b.incident_timestamp),
   },
   {
     title: "Reported By",

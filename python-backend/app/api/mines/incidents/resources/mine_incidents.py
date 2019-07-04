@@ -14,6 +14,7 @@ from app.api.documents.mines.models.mine_document import MineDocument
 from app.api.mines.incidents.models.mine_incident_document_type_code import MineIncidentTypeCode
 from ..models.mine_incident import MineIncident
 from app.api.mines.compliance.models.compliance_article import ComplianceArticle
+from app.api.mines.incidents.models.mine_incident_recommendation import MineIncidentRecommendation
 from ...mine_api_models import MINE_INCIDENT_MODEL
 
 
@@ -60,6 +61,7 @@ class MineIncidentListResource(Resource, UserMixin):
     parser.add_argument('status_code', type=str, location='json')
     parser.add_argument('dangerous_occurrence_subparagraph_ids', type=list, location='json')
     parser.add_argument('updated_documents', type=list, location='json', store_missing=False)
+    parser.add_argument('recommendations', type=list, location='json', store_missing=False)
 
     @api.marshal_with(MINE_INCIDENT_MODEL, envelope='mine_incidents', code=200, as_list=True)
     @api.doc(description='returns the incidents for a given mine.')
@@ -81,6 +83,7 @@ class MineIncidentListResource(Resource, UserMixin):
 
         data = self.parser.parse_args()
 
+
         do_sub_codes = []
         if data['determination_type_code'] == 'DO':
             do_sub_codes = data['dangerous_occurrence_subparagraph_ids']
@@ -97,6 +100,7 @@ class MineIncidentListResource(Resource, UserMixin):
             reported_timestamp=data['reported_timestamp'],
             reported_by_name=data['reported_by_name'],
         )
+
 
         incident.reported_by_email = data.get('reported_by_email')
         incident.reported_by_phone_no = data.get('reported_by_phone_no')  # string
@@ -157,6 +161,11 @@ class MineIncidentListResource(Resource, UserMixin):
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')
 
+        for recommendation in data.get('recommendations'):
+            new_recommendation = MineIncidentRecommendation.create(
+                recommendation['recommendation'], mine_incident_id=incident.mine_incident_id)
+            new_recommendation.save()
+
         return incident, 201
 
 
@@ -203,6 +212,7 @@ class MineIncidentResource(Resource, UserMixin):
     parser.add_argument(
         'dangerous_occurrence_subparagraph_ids', type=list, location='json', store_missing=False)
     parser.add_argument('updated_documents', type=list, location='json', store_missing=False)
+    parser.add_argument('recommendations', type=list, location='json', store_missing=False)
 
     @api.marshal_with(MINE_INCIDENT_MODEL, code=200)
     @requires_role_mine_view
@@ -221,6 +231,11 @@ class MineIncidentResource(Resource, UserMixin):
             raise NotFound("Mine Incident not found")
 
         data = self.parser.parse_args()
+
+        # for recommendation in data.get('recommendations'):
+        #     new_recommendation = MineIncidentRecommendation.create(recommendation['recommendation'])
+        #     new_recommendation.save()
+
         do_sub_codes = []
         if data['determination_type_code'] == 'DO':
             do_sub_codes = data['dangerous_occurrence_subparagraph_ids']

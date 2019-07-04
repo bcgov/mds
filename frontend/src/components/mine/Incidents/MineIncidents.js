@@ -82,7 +82,6 @@ export class MineIncidents extends Component {
         title,
         incident,
       },
-      widthSize: "50vw",
       isViewOnly: true,
       content: modalConfig.VIEW_MINE_INCIDENT,
     });

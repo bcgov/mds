@@ -120,6 +120,11 @@ export const getDropdownIncidentDeterminationOptions = createSelector(
   (options) => createDropDownList(options, "description", "mine_incident_determination_type_code")
 );
 
+export const getIncidentDeterminationHash = createSelector(
+  [getDropdownIncidentDeterminationOptions],
+  createLabelHash
+);
+
 export const getDropdownIncidentStatusCodeOptions = createSelector(
   [getIncidentStatusCodeOptions],
   (options) => createDropDownList(options, "description", "mine_incident_status_code")
