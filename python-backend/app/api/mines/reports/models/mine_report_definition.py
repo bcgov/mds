@@ -35,3 +35,10 @@ class MineReportDefinition(Base):
             return cls.find_by(mine_report_definition_id=_id)
         except ValueError:
             return None
+
+    @classmethod
+    def get_active(cls):
+        try:
+            return cls.find_by(active_ind=True)
+        except ValueError:
+            return None
