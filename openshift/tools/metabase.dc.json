@@ -93,6 +93,23 @@
       }
     },
     {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}-postgres",
+        "creationTimestamp": null,
+        "labels": {
+          "shared": "true"
+        }
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        },
+        "tags": []
+      }
+    },
+    {
       "kind": "DeploymentConfig",
       "apiVersion": "v1",
       "metadata": {
@@ -100,7 +117,7 @@
       },
       "spec": {
         "strategy": {
-          "type": "Rolling",
+          "type": "Recreate",
           "maxSurge": "50%",
           "maxUnavailable": 0
         },
@@ -116,6 +133,17 @@
               "from": {
                 "kind": "ImageStreamTag",
                 "name": "${NAME}:${VERSION}"
+              }
+            }
+          },
+          {
+            "type": "ImageChange",
+            "imageChangeParams": {
+              "automatic": true,
+              "containerNames": ["${NAME}-postgres"],
+              "from": {
+                "kind": "ImageStreamTag",
+                "name": "${NAME}-postgres:${VERSION}"
               }
             }
           }
@@ -141,11 +169,6 @@
                     "containerPort": 3000,
                     "protocol": "TCP"
                   }
-                ],
-                "command": [
-                  "bash",
-                  "-c",
-                  "cd /app && if [[ $ENVIRONMENT_NAME == 'dev' ]]; then tail -f /dev/null; else java -jar metabase.jar; fi"
                 ],
                 "env": [
                   {
@@ -192,6 +215,45 @@
                   "limits": {
                     "cpu": "${CPU_LIMIT}",
                     "memory": "${MEMORY_LIMIT}"
+                  }
+                },
+                "terminationMessagePath": "/dev/termination-log",
+                "imagePullPolicy": "IfNotPresent",
+                "capabilities": {}
+              },
+              {
+                "name": "${NAME}-postgres",
+                "image": " ",
+                "ports": [
+                  {
+                    "containerPort": 5432,
+                    "protocol": "TCP"
+                  }
+                ],
+                "env": [
+                  {
+                    "name": "MB_PASSWORD_COMPLEXITY",
+                    "value": "strong"
+                  },
+                  {
+                    "name": "MB_ENCRYPTION_SECRET_KEY",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${METABASE_SECRET_NAME}",
+                        "key": "database-password"
+                      }
+                    }
+                  }
+                ],
+                "volumeMounts": [],
+                "resources": {
+                  "requests": {
+                    "cpu": "200m",
+                    "memory": "256Mi"
+                  },
+                  "limits": {
+                    "cpu": "400m",
+                    "memory": "512Mi"
                   }
                 },
                 "terminationMessagePath": "/dev/termination-log",

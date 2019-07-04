@@ -40,6 +40,40 @@
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
+        "name": "${NAME}-postgres",
+        "creationTimestamp": null,
+        "labels": {
+          "shared": "true"
+        },
+        "annotations": {
+          "template.alpha.openshift.io/wait-for-ready": "true"
+        }
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        },
+        "tags": [
+          {
+            "name": "${SUFFIX}",
+            "annotations": null,
+            "from": {
+              "kind": "DockerImage",
+              "name": "registry.redhat.io/rhel8/postgresql-96:1-28"
+            },
+            "generation": 1,
+            "importPolicy": {},
+            "referencePolicy": {
+              "type": "Local"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
         "name": "${NAME}",
         "creationTimestamp": null,
         "labels": {
