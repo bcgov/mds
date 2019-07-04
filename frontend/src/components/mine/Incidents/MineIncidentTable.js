@@ -1,9 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Table, Button } from "antd";
-
+import { Table, Button, Icon } from "antd";
 import _ from "lodash";
-
 import { BRAND_PENCIL } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
@@ -18,6 +16,7 @@ const propTypes = {
   followupActions: PropTypes.arrayOf(CustomPropTypes.incidentFollowupType).isRequired,
   handleEditMineIncident: PropTypes.func.isRequired,
   openMineIncidentModal: PropTypes.func.isRequired,
+  openViewMineIncidentModal: PropTypes.func.isRequired,
 };
 
 const renderDownloadLinks = (files, mine_incident_document_type_code) =>
@@ -117,12 +116,26 @@ const columns = (props) => [
             <img src={BRAND_PENCIL} alt="Edit Incident" />
           </Button>
         </AuthorizationWrapper>
+        <Button
+          type="primary"
+          size="small"
+          ghost
+          onClick={(event) => record.openViewMineIncidentModal(event, record.incident)}
+        >
+          <Icon type="eye" className="icon-sm" />
+        </Button>
       </div>
     ),
   },
 ];
 
-const transformRowData = (incidents, actions, handleEditMineIncident, openMineIncidentModal) =>
+const transformRowData = (
+  incidents,
+  actions,
+  handleEditMineIncident,
+  openMineIncidentModal,
+  openViewMineIncidentModal
+) =>
   incidents
     .map((incident) => ({
       key: incident.incident_id,
@@ -138,6 +151,7 @@ const transformRowData = (incidents, actions, handleEditMineIncident, openMineIn
       ),
       handleEditMineIncident,
       openMineIncidentModal,
+      openViewMineIncidentModal,
       incident,
     }))
     .sort((a, b) => (a.mine_incident_report_no > b.mine_incident_report_no ? -1 : 1));
@@ -153,7 +167,8 @@ export const MineIncidentTable = (props) => (
         props.incidents,
         props.followupActions,
         props.handleEditMineIncident,
-        props.openMineIncidentModal
+        props.openMineIncidentModal,
+        props.openViewMineIncidentModal
       )}
     />
   </div>

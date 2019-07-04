@@ -74,6 +74,20 @@ export class MineIncidents extends Component {
       });
   };
 
+  openViewMineIncidentModal = (event, incident) => {
+    event.preventDefault();
+    const title = `${this.props.mine.mine_name} - Incident No. ${incident.mine_incident_report_no}`;
+    this.props.openModal({
+      props: {
+        title,
+        incident,
+      },
+      widthSize: "50vw",
+      isViewOnly: true,
+      content: modalConfig.VIEW_MINE_INCIDENT,
+    });
+  };
+
   handleCancelMineIncident = () => {
     this.props.destroy(FORM.MINE_INCIDENT);
   };
@@ -132,6 +146,7 @@ export class MineIncidents extends Component {
           followupActions={this.props.followupActions}
           openMineIncidentModal={this.openMineIncidentModal}
           handleEditMineIncident={this.handleEditMineIncident}
+          openViewMineIncidentModal={this.openViewMineIncidentModal}
         />
       </div>
     );
