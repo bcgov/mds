@@ -1,13 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
-import CustomPropTypes from "@/customPropTypes";
 import { Field, reduxForm } from "redux-form";
-import RenderField from "@/components/common/RenderField";
+import { Form, Button, Col, Row, Popconfirm } from "antd";
+import CustomPropTypes from "@/customPropTypes";
 import RenderDate from "@/components/common/RenderDate";
 import RenderSelect from "@/components/common/RenderSelect";
 import UploadedFilesList from "@/components/common/UploadedFilesList";
 import MineTailingsFilePicker from "@/components/mine/Tailings/MineTailingsFilePicker";
-import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import { required } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
@@ -25,15 +24,6 @@ export const EditTailingsReportForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
     <Row gutter={16}>
       <Col>
-        <Form.Item>
-          <Field
-            id="tsf_report_name"
-            name="tsf_report_name"
-            label="Report Name"
-            component={RenderField}
-            validate={[required]}
-          />
-        </Form.Item>
         <Form.Item>
           <Field
             id="tsf_report_due_date"

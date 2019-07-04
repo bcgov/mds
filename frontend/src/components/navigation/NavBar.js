@@ -4,9 +4,9 @@ import { Icon, Dropdown, Menu, Button, Row, Col } from "antd";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import CustomPropTypes from "@/customPropTypes";
 import MediaQuery from "react-responsive";
 import { includes } from "lodash";
+import CustomPropTypes from "@/customPropTypes";
 import { getUserInfo } from "@/selectors/authenticationSelectors";
 import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
@@ -109,7 +109,7 @@ export class NavBar extends Component {
           <Icon type="down" />
         </button>
       </Dropdown>
-      <AuthorizationWrapper inTesting>
+      <AuthorizationWrapper permission={Permission.ADMIN}>
         <Dropdown
           overlay={this.unverifiedMinesMenu()}
           placement="bottomLeft"
