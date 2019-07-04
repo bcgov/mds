@@ -16,8 +16,7 @@ class Permit(AuditMixin, Base):
     permit_no = db.Column(db.String(16), nullable=False)
     permit_status_code = db.Column(
         db.String(2), db.ForeignKey('permit_status_code.permit_status_code'))
-    permit_status_code_relationship = db.relationship(
-        'PermitStatusCode', foreign_keys=[permit_status_code], lazy='select')
+    permit_status_code_relationship = db.relationship('PermitStatusCode', lazy='select')
     permit_amendments = db.relationship(
         'PermitAmendment',
         backref='permit',
@@ -27,16 +26,13 @@ class Permit(AuditMixin, Base):
         lazy='select')
 
     mine_party_appointment = db.relationship('MinePartyAppointment', lazy='select', uselist=False)
-    permit_status_code_description = association_proxy('permit_status_code', 'description')
+    permit_status_code_description = association_proxy('permit_status_code_relationship',
+                                                       'description')
     permitee = association_proxy('mine_party_appointment', 'party.name')
     mine_name = association_proxy('mine', 'mine_name')
 
     def __repr__(self):
         return '<Permit %r>' % self.permit_guid
-
-    @hybrid_property
-    def permit_status_code_description(self):
-        return self.permit_status_code_relationship.description
 
     @classmethod
     def find_by_permit_guid(cls, _id):
