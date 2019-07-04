@@ -163,11 +163,11 @@
     }
   },
   "lint-staged": {
-    "frontend/src/*.{js,css,json,md}": [
+    "*.{js,css,json,md}": [
       "npm run format:write",
       "git add"
     ],
-    "frontend/src/*.js": [
+    "*.js": [
       "eslint --fix",
       "git add"
     ]
@@ -175,7 +175,7 @@
   "lint-prepush": {
     "base": "develop",
     "tasks": {
-      "frontend/src/*.js": [
+      "*.js": [
         "jest --env=jsdom --runInBand --findRelatedTests"
       ]
     }

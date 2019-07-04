@@ -140,8 +140,8 @@ const columns = [
   },
 ];
 
-const transformRowData = (mines, mineIds, mineRegionHash, mineTenureHash, mineCommodityHash) => {
-  const result = mineIds.map((id) => ({
+const transformRowData = (mines, mineIds, mineRegionHash, mineTenureHash, mineCommodityHash) =>
+  mineIds.map((id) => ({
     key: id,
     emptyField: Strings.EMPTY_FIELD,
     mineName: mines[id].mine_name ? mines[id].mine_name : Strings.EMPTY_FIELD,
@@ -160,9 +160,6 @@ const transformRowData = (mines, mineIds, mineRegionHash, mineTenureHash, mineCo
       : Strings.EMPTY_FIELD,
     verified_status: mines[id].verified_status,
   }));
-  console.log("test");
-  return result;
-};
 
 const handleTableChange = (updateMineList) => (pagination, filters, sorter) => {
   const params = isEmpty(sorter)
