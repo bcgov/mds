@@ -22,7 +22,7 @@ CREATE TABLE mine_report_submission_status_code (
     update_timestamp                    timestamp with time zone DEFAULT now()  NOT NULL
 );
 
-COMMENT ON TABLE mine_report_submission_status_code is 'All the possible available status codes for mine reports.';
+COMMENT ON TABLE mine_report_submission_status_code is 'All the possible and available status codes for mine reports.';
 ALTER TABLE mine_report_submission_status_code OWNER TO mds;
 
 CREATE TABLE IF NOT EXISTS mine_report_definition (
@@ -52,6 +52,7 @@ CREATE TABLE IF NOT EXISTS mine_report
     mine_guid                    uuid                                     NOT NULL            ,
     permit_id                    integer                                                      ,
     due_date                     timestamp                                NOT NULL            ,
+    received_date                timestamp                                                    ,
     submission_year              smallint                                                     ,
     deleted_ind                  boolean DEFAULT false                    NOT NULL            ,
     create_user                  character varying(60)                    NOT NULL            ,
@@ -72,8 +73,8 @@ CREATE TABLE IF NOT EXISTS mine_report_submission (
     mine_report_submission_id             serial                                  NOT NULL PRIMARY KEY,
     mine_report_submission_guid           uuid UNIQUE                             NOT NULL            ,
     mine_report_id                        integer                                 NOT NULL            ,
-    received_date                         timestamp                                                   ,
     mine_report_submission_status_code    varchar(3)                              NOT NULL            ,
+    submission_date                       timestamp                                                   ,
     create_user                           character varying(60)                   NOT NULL            ,
     create_timestamp                      timestamp with time zone DEFAULT now()  NOT NULL            ,
     update_user                           character varying(60)                   NOT NULL            ,
