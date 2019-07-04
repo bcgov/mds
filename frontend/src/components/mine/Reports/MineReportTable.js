@@ -69,7 +69,7 @@ const transformRowData = (report, openEditReportModal) => ({
   due_date: report.due_date,
   submission_year: report.submission_year,
   openEditReportModal,
-  //documents: report.submissions.sort((a, b) => (a.received_date < b.received_date ? 1 : -1))[0]
+  // documents: report.submissions.sort((a, b) => (a.received_date < b.received_date ? 1 : -1))[0]
   //  .documents,
 });
 
