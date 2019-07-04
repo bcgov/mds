@@ -66,14 +66,13 @@
         "ports": [
           {
             "name": "postgresql",
-            "nodePort": 0,
             "port": 5432,
             "protocol": "TCP",
             "targetPort": 5432
           }
         ],
         "selector": {
-          "name": "${NAME_DATABASE}${SUFFIX}"
+          "name": "${NAME}${SUFFIX}"
         },
         "sessionAffinity": "None",
         "type": "ClusterIP"
