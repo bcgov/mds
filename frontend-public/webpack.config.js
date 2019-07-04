@@ -32,7 +32,6 @@ const BUILD_FILE_NAMES = {
 
 const PATH_ALIASES = {
   "@": PATHS.src,
-  "react-dom": "@hot-loader/react-dom",
   // Put your aliases here
 };
 
@@ -57,7 +56,7 @@ const commonConfig = merge([
       main: PATHS.entry,
     },
     plugins: [
-      new webpack.optimize.ModuleConcatenationPlugin(),
+      // new webpack.optimize.ModuleConcatenationPlugin(),
       new HtmlWebpackPlugin({
         template: PATHS.template,
       }),
@@ -70,7 +69,7 @@ const commonConfig = merge([
       },
     ],
     resolve: {
-      alias: PATH_ALIASES,
+      alias: { ...PATH_ALIASES, "react-dom": "@hot-loader/react-dom" },
     },
   },
   parts.setEnvironmentVariable(envFile),
