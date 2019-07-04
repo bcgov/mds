@@ -1,7 +1,7 @@
 from sqlalchemy.orm import validates
 from app.extensions import db
 
-from ....utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import AuditMixin, Base
 
 
 class PermitStatusCode(AuditMixin, Base):
@@ -13,24 +13,14 @@ class PermitStatusCode(AuditMixin, Base):
     def __repr__(self):
         return '<Permit %r>' % self.permit_guid
 
-    def json(self):
-        return {
-            'permit_status_code': self.permit_status_code,
-            'description': self.description,
-            'display_order': str(self.display_order)
-        }
-
     @classmethod
     def find_by_permit_status_code(cls, _id):
         return cls.query.filter_by(permit_status_code=_id).first()
 
     @classmethod
-    def create_mine_permit_status_code(cls, code, description, display_order, add_to_session=True):
-        permit_status_code = cls(
-            permit_status_code=code, description=description, display_order=display_order)
-        if add_to_session:
-            permit_status_code.save(commit=False)
-        return permit_status_code
+    def active_options(cls):
+        return cls.query.all()
+        #TODO put active ind on this table
 
     @validates('permit_status_code')
     def validate_permit_status_code(self, key, permit_status_code):

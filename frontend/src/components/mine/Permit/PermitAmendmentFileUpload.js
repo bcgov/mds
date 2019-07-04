@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Field } from "redux-form";
 import { Form } from "antd";
-import { PERMIT } from "@/constants/API";
+import { PERMITS } from "@/constants/API";
 import FileUpload from "@/components/common/FileUpload";
 import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
 
@@ -19,7 +19,7 @@ export const PermitAmendmentFileUpload = (props) => (
       id="fileUpload"
       name="fileUpload"
       component={FileUpload}
-      uploadUrl={`${PERMIT()}/amendments/documents?mine_guid=${props.mineGuid}`}
+      uploadUrl={`${PERMITS(props.mineGuid)}/amendments/documents`}
       acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL }}
       onFileLoad={props.onFileLoad}
       onRemoveFile={props.onRemoveFile}
