@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Table, Button, Icon } from "antd";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import moment from "moment";
 import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import {
@@ -144,7 +145,8 @@ export class MineVarianceTable extends Component {
           </div>
         ),
         sorter:
-          !this.props.isDashboardView && ((a, b) => (a.received_date > b.received_date ? -1 : 1)),
+          !this.props.isDashboardView &&
+          ((a, b) => (moment(a.received_date) > moment(b.received_date) ? -1 : 1)),
         defaultSortOrder: "ascend",
       },
       {
@@ -178,7 +180,7 @@ export class MineVarianceTable extends Component {
             {text}
           </div>
         ),
-        sorter: (a, b) => (a.issue_date > b.issue_date ? -1 : 1),
+        sorter: (a, b) => (moment(a.issue_date) > moment(b.issue_date) ? -1 : 1),
       },
       {
         title: "Expiry Date",
@@ -193,7 +195,7 @@ export class MineVarianceTable extends Component {
             {text}
           </div>
         ),
-        sorter: (a, b) => ((a.expiry_date || 0) > (b.expiry_date || 0) ? -1 : 1),
+        sorter: (a, b) => (moment(a.expiry_date || 0) > moment(b.expiry_date || 0) ? -1 : 1),
         defaultSortOrder: "ascend",
       },
       {
