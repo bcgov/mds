@@ -154,21 +154,6 @@ app {
                             'API_SERVICE_URL': "${vars.modules.'mds-python-backend'.HOST}",
                     ]
                 ],
-                                [
-                    'file':'openshift/tools/metabase.dc.json',
-                    'params':[
-                            'NAME':"metabase",
-                            'VERSION':"${app.deployment.version}",
-                            'SUFFIX': "${vars.deployment.suffix}",
-                            'METABASE_PVC_SIZE':"2Gi",
-                            'ENVIRONMENT_NAME':"${app.deployment.env.name}",
-                            'APPLICATION_DOMAIN': "${vars.modules.'metabase'.HOST}",
-                            'CPU_REQUEST':"100m",
-                            'CPU_LIMIT':"300m",
-                            'MEMORY_REQUEST':"512Mi",
-                            'MEMORY_LIMIT':"1Gi"
-                    ]
-                ],
                 [
                     'file':'openshift/_python36.dc.json',
                     'params':[
@@ -342,9 +327,6 @@ environments {
                 }
                 'mds-redis' {
                     HOST = "http://mds-redis${vars.deployment.suffix}"
-                }
-                'metabase' {
-                    HOST = "mds-metabase-${vars.deployment.suffix}.pathfinder.gov.bc.ca"
                 }
             }
         }

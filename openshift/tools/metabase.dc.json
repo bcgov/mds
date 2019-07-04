@@ -208,10 +208,6 @@
                     "value": "0.0.0.0"
                   },
                   {
-                    "name": "MB_DB_FILE",
-                    "value": "/app/data/metabase.db"
-                  },
-                  {
                     "name": "MB_DB_TYPE",
                     "value": "postgres"
                   },
@@ -254,7 +250,6 @@
                     }
                   }
                 ],
-                "volumeMounts": [],
                 "resources": {
                   "requests": {
                     "cpu": "${CPU_REQUEST}",
@@ -333,12 +328,12 @@
                 ],
                 "resources": {
                   "requests": {
-                    "cpu": "200m",
-                    "memory": "256Mi"
+                    "cpu": "${DB_CPU_REQUEST}",
+                    "memory": "${DB_MEMORY_REQUEST}"
                   },
                   "limits": {
-                    "cpu": "400m",
-                    "memory": "512Mi"
+                    "cpu": "${DB_CPU_LIMIT}",
+                    "memory": "${DB_MEMORY_LIMIT}"
                   }
                 },
                 "terminationMessagePath": "/dev/termination-log",
@@ -376,7 +371,23 @@
     },
     {
       "name": "MEMORY_REQUEST",
-      "value": "1.5Gi"
+      "value": "1Gi"
+    },
+    {
+      "name": "DB_CPU_LIMIT",
+      "value": "100m"
+    },
+    {
+      "name": "DB_MEMORY_LIMIT",
+      "value": "1Gi"
+    },
+    {
+      "name": "DB_CPU_REQUEST",
+      "value": "50m"
+    },
+    {
+      "name": "DB_MEMORY_REQUEST",
+      "value": "512Mi"
     },
     {
       "name": "ENVIRONMENT_NAME",
