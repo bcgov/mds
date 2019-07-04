@@ -55,7 +55,7 @@
         },
         "tags": [
           {
-            "name": "${SUFFIX}",
+            "name": "${VERSION}",
             "annotations": null,
             "from": {
               "kind": "DockerImage",
