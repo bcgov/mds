@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Table, Button } from "antd";
-
+import moment from "moment";
 import _ from "lodash";
 
 import { BRAND_PENCIL } from "@/constants/assets";
@@ -27,7 +27,7 @@ const renderDownloadLinks = (files, mine_incident_document_type_code) =>
       <div key={file.mine_document_guid}>
         <LinkButton
           key={file.mine_document_guid}
-          onClick={() => downloadFileFromDocumentManager(file.document_manager_guid)}
+          onClick={() => downloadFileFromDocumentManager(file)}
         >
           {file.document_name}
         </LinkButton>
@@ -43,7 +43,7 @@ const columns = (props) => [
   {
     title: "Incident Time",
     dataIndex: "incident_timestamp",
-    sorter: (a, b) => new Date(a.incident_timestamp) > new Date(b.incident_timestamp),
+    sorter: (a, b) => moment(a.incident_timestamp) > moment(b.incident_timestamp),
   },
   {
     title: "Reported By",
