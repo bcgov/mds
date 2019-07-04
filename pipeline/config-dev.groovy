@@ -163,10 +163,10 @@ app {
                             'METABASE_PVC_SIZE':"2Gi",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'APPLICATION_DOMAIN': "${vars.modules.'metabase'.HOST}",
-                            'CPU_REQUEST':"50m",
-                            'CPU_LIMIT':"100m",
-                            'MEMORY_REQUEST':"256Mi",
-                            'MEMORY_LIMIT':"512Mi"
+                            'CPU_REQUEST':"100m",
+                            'CPU_LIMIT':"300m",
+                            'MEMORY_REQUEST':"512Mi",
+                            'MEMORY_LIMIT':"1Gi"
                     ]
                 ],
                 [

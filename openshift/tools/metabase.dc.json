@@ -214,7 +214,32 @@
                   },
                   {
                     "name": "MB_DB_TYPE",
-                    "value": "h2"
+                    "value": "postgres"
+                  },
+                  {
+                    "name": "MB_DB_DBNAME",
+                    "value": "metabase"
+                  },
+                  {
+                    "name": "MB_DB_PORT",
+                    "value": "5432"
+                  },
+                  {
+                    "name": "MB_DB_USER",
+                    "value": "metabase"
+                  },
+                  {
+                    "name": "MB_DB_PASS",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${METABASE_SECRET_NAME}",
+                        "key": "postgres-password"
+                      }
+                    }
+                  },
+                  {
+                    "name": "MB_DB_HOST",
+                    "value": "${NAME_DATABASE}${SUFFIX}"
                   },
                   {
                     "name": "ENVIRONMENT_NAME",
