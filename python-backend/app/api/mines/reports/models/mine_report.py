@@ -15,6 +15,7 @@ class MineReport(Base):
         db.Integer, db.ForeignKey('mine_report_definition.mine_report_definition_id'))
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     permit_id = db.Column(db.Integer, db.ForeignKey('permit.permit_id'))
+    received_date = db.Column(db.DateTime)
     due_date = db.Column(db.DateTime, nullable=False)
     submission_year = db.Column(db.Integer)
     deleted_ind = db.Column(db.Boolean, server_default=FetchedValue(), nullable=False)
