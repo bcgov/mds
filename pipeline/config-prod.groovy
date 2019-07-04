@@ -74,12 +74,14 @@ app {
                             'SUFFIX': "${vars.deployment.suffix}",
                             'VERSION':"${app.deployment.version}",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
+                            'ENVIRONMENT_FRIENDLY_NAME':"MDS Production",
                             'DATABASE_SERVICE_NAME':"mds-postgresql${vars.deployment.suffix}",
+                            'NFS_VOLUME_IDENTIFIER':"bk-empr-mds-prod-x7ux0bwhqnsa",
                             'CPU_REQUEST':"${vars.resources.backup.cpu_request}",
                             'CPU_LIMIT':"${vars.resources.backup.cpu_limit}",
                             'MEMORY_REQUEST':"${vars.resources.backup.memory_request}",
                             'MEMORY_LIMIT':"${vars.resources.backup.memory_limit}",
-                            'PERSISTENT_VOLUME_SIZE':"${vars.BACKUP_PVC_SIZE}"
+                            'VERIFICATION_VOLUME_SIZE':"${vars.BACKUP_VERIFICATION_PVC_SIZE}"
                     ]
                 ],
                 [
@@ -277,7 +279,7 @@ environments {
         vars {
             DB_PVC_SIZE = '50Gi'
             DOCUMENT_PVC_SIZE = '50Gi'
-            BACKUP_PVC_SIZE = '50Gi'
+            BACKUP_VERIFICATION_PVC_SIZE = '10Gi'
             LOG_PVC_SIZE = '5Gi'
             METABASE_PVC_SIZE = '10Gi'
             git {
@@ -333,10 +335,10 @@ environments {
                     memory_limit = "2Gi"
                 }
                 backup {
-                    cpu_request = "100m"
-                    cpu_limit = "450m"
-                    memory_request = "1Gi"
-                    memory_limit = "2Gi"
+                    cpu_request = "0"
+                    cpu_limit = "0"
+                    memory_request = "0"
+                    memory_limit = "0"
                 }
                 metabase {
                     cpu_request = "500m"
