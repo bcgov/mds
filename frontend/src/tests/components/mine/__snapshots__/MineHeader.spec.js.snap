@@ -482,7 +482,7 @@ ShallowWrapper {
                       </button>
                     </div>
                     <Connect(AuthorizationWrapper)
-                      inTesting={true}
+                      permission="role_admin"
                     >
                       <div
                         className="custom-menu-item"
@@ -521,10 +521,6 @@ ShallowWrapper {
                           </button>
                         </Popconfirm>
                       </div>
-                    </Connect(AuthorizationWrapper)>
-                    <Connect(AuthorizationWrapper)
-                      inTesting={true}
-                    >
                       <div
                         className="custom-menu-item"
                       >
@@ -921,7 +917,7 @@ ShallowWrapper {
                         </button>
                       </div>
                       <Connect(AuthorizationWrapper)
-                        inTesting={true}
+                        permission="role_admin"
                       >
                         <div
                           className="custom-menu-item"
@@ -960,10 +956,6 @@ ShallowWrapper {
                             </button>
                           </Popconfirm>
                         </div>
-                      </Connect(AuthorizationWrapper)>
-                      <Connect(AuthorizationWrapper)
-                        inTesting={true}
-                      >
                         <div
                           className="custom-menu-item"
                         >
@@ -1243,7 +1235,7 @@ ShallowWrapper {
                           </button>
                         </div>
                         <Connect(AuthorizationWrapper)
-                          inTesting={true}
+                          permission="role_admin"
                         >
                           <div
                             className="custom-menu-item"
@@ -1282,10 +1274,6 @@ ShallowWrapper {
                               </button>
                             </Popconfirm>
                           </div>
-                        </Connect(AuthorizationWrapper)>
-                        <Connect(AuthorizationWrapper)
-                          inTesting={true}
-                        >
                           <div
                             className="custom-menu-item"
                           >
@@ -1468,7 +1456,7 @@ ShallowWrapper {
                             </button>
                           </div>
                           <Connect(AuthorizationWrapper)
-                            inTesting={true}
+                            permission="role_admin"
                           >
                             <div
                               className="custom-menu-item"
@@ -1507,10 +1495,6 @@ ShallowWrapper {
                                 </button>
                               </Popconfirm>
                             </div>
-                          </Connect(AuthorizationWrapper)>
-                          <Connect(AuthorizationWrapper)
-                            inTesting={true}
-                          >
                             <div
                               className="custom-menu-item"
                             >
@@ -1693,7 +1677,7 @@ ShallowWrapper {
                           </button>
                         </div>
                         <Connect(AuthorizationWrapper)
-                          inTesting={true}
+                          permission="role_admin"
                         >
                           <div
                             className="custom-menu-item"
@@ -1732,10 +1716,6 @@ ShallowWrapper {
                               </button>
                             </Popconfirm>
                           </div>
-                        </Connect(AuthorizationWrapper)>
-                        <Connect(AuthorizationWrapper)
-                          inTesting={true}
-                        >
                           <div
                             className="custom-menu-item"
                           >
@@ -2806,7 +2786,7 @@ ShallowWrapper {
                         </button>
                       </div>
                       <Connect(AuthorizationWrapper)
-                        inTesting={true}
+                        permission="role_admin"
                       >
                         <div
                           className="custom-menu-item"
@@ -2845,10 +2825,6 @@ ShallowWrapper {
                             </button>
                           </Popconfirm>
                         </div>
-                      </Connect(AuthorizationWrapper)>
-                      <Connect(AuthorizationWrapper)
-                        inTesting={true}
-                      >
                         <div
                           className="custom-menu-item"
                         >
@@ -3245,7 +3221,7 @@ ShallowWrapper {
                           </button>
                         </div>
                         <Connect(AuthorizationWrapper)
-                          inTesting={true}
+                          permission="role_admin"
                         >
                           <div
                             className="custom-menu-item"
@@ -3284,10 +3260,6 @@ ShallowWrapper {
                               </button>
                             </Popconfirm>
                           </div>
-                        </Connect(AuthorizationWrapper)>
-                        <Connect(AuthorizationWrapper)
-                          inTesting={true}
-                        >
                           <div
                             className="custom-menu-item"
                           >
@@ -3567,7 +3539,7 @@ ShallowWrapper {
                             </button>
                           </div>
                           <Connect(AuthorizationWrapper)
-                            inTesting={true}
+                            permission="role_admin"
                           >
                             <div
                               className="custom-menu-item"
@@ -3606,10 +3578,6 @@ ShallowWrapper {
                                 </button>
                               </Popconfirm>
                             </div>
-                          </Connect(AuthorizationWrapper)>
-                          <Connect(AuthorizationWrapper)
-                            inTesting={true}
-                          >
                             <div
                               className="custom-menu-item"
                             >
@@ -3792,7 +3760,7 @@ ShallowWrapper {
                               </button>
                             </div>
                             <Connect(AuthorizationWrapper)
-                              inTesting={true}
+                              permission="role_admin"
                             >
                               <div
                                 className="custom-menu-item"
@@ -3831,10 +3799,6 @@ ShallowWrapper {
                                   </button>
                                 </Popconfirm>
                               </div>
-                            </Connect(AuthorizationWrapper)>
-                            <Connect(AuthorizationWrapper)
-                              inTesting={true}
-                            >
                               <div
                                 className="custom-menu-item"
                               >
@@ -4017,7 +3981,7 @@ ShallowWrapper {
                             </button>
                           </div>
                           <Connect(AuthorizationWrapper)
-                            inTesting={true}
+                            permission="role_admin"
                           >
                             <div
                               className="custom-menu-item"
@@ -4056,10 +4020,6 @@ ShallowWrapper {
                                 </button>
                               </Popconfirm>
                             </div>
-                          </Connect(AuthorizationWrapper)>
-                          <Connect(AuthorizationWrapper)
-                            inTesting={true}
-                          >
                             <div
                               className="custom-menu-item"
                             >
