@@ -29,9 +29,9 @@ from app.api.parties.party_appt.resources.mine_party_appt_resource import MinePa
 from app.api.parties.party_appt.resources.mine_party_appt_type_resource import MinePartyApptTypeResource
 from app.api.parties.party.resources.party_resource import PartyResource
 from app.api.parties.party.resources.party_list_resource import PartyListResource
-from app.api.permits.permit.resources.permit import PermitResource, PermitListResource
-from app.api.permits.permit_amendment.resources.permit_amendment import PermitAmendmentResource, PermitAmendmentListResource
-from app.api.permits.permit_amendment.resources.permit_amendment_document import PermitAmendmentDocumentResource, PermitAmendmentDocumentListResource
+from app.api.mines.permits.permit.resources.permit import PermitResource, PermitListResource
+from app.api.mines.permits.permit_amendment.resources.permit_amendment import PermitAmendmentResource, PermitAmendmentListResource
+from app.api.mines.permits.permit_amendment.resources.permit_amendment_document import PermitAmendmentDocumentResource, PermitAmendmentDocumentListResource
 from app.api.users.minespace.resources.minespace_user import MinespaceUserResource
 from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserMineResource
 from app.api.search.search.resources.search import SearchResource, SearchOptionsResource

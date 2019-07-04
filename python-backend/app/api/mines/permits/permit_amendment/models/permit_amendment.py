@@ -10,7 +10,7 @@ from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 
 from . import permit_amendment_status_code, permit_amendment_type_code
-from ....utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import AuditMixin, Base
 
 
 class PermitAmendment(AuditMixin, Base):
@@ -32,6 +32,7 @@ class PermitAmendment(AuditMixin, Base):
     permit_amendment_status_description = association_proxy('permit_amendment_status',
                                                             'description')
     permit_guid = association_proxy('permit', 'permit_guid')
+    mine_guid = association_proxy('permit', 'mine_guid')
     permit_amendment_type = db.relationship('PermitAmendmentTypeCode')
     permit_amendment_type_description = association_proxy('permit_amendment_type', 'description')
 

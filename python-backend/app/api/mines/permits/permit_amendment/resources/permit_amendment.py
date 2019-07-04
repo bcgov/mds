@@ -3,15 +3,15 @@ from flask_restplus import Resource, reqparse
 from flask import current_app
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
-from ...permit.models.permit import Permit
-from ..models.permit_amendment import PermitAmendment
-from ..models.permit_amendment_document import PermitAmendmentDocument
+from app.api.mines.permits.permit.models.permit import Permit
+from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
+from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from app.api.parties.party.models.party import Party
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.extensions import api
-from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create, requires_role_mine_admin
-from ....utils.resources_mixins import UserMixin, ErrorMixin
-from app.api.permits.response_models import PERMIT_AMENDMENT_MODEL
+from app.api.utils.access_decorators import requires_role_mine_view, requires_role_mine_create, requires_role_mine_admin
+from app.api.utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.mines.permits.response_models import PERMIT_AMENDMENT_MODEL
 
 
 class PermitAmendmentListResource(Resource, UserMixin):
@@ -50,15 +50,16 @@ class PermitAmendmentListResource(Resource, UserMixin):
     })
     @requires_role_mine_create
     @api.marshal_with(PERMIT_AMENDMENT_MODEL, code=201)
-    def post(self, permit_guid=None, permit_amendment_guid=None):
-        if not permit_guid:
-            raise NotFound('Permit_guid must be provided.')
+    def post(self, mine_guid, permit_guid, permit_amendment_guid=None):
         if permit_amendment_guid:
             raise BadRequest('Unexpected permit_amendement_guid.')
 
         permit = Permit.find_by_permit_guid(permit_guid)
         if not permit:
             raise NotFound('Permit does not exist.')
+
+        if not str(permit.mine_guid) == mine_guid:
+            raise BadRequest('Permits mine_guid and provided mine_guid mismatch.')
 
         data = self.parser.parse_args()
         current_app.logger.info(f'creating permit_amendment with >> {data}')
@@ -139,10 +140,12 @@ class PermitAmendmentResource(Resource, UserMixin):
     @api.doc(params={'permit_amendment_guid': 'Permit amendment guid.'})
     @requires_role_mine_view
     @api.marshal_with(PERMIT_AMENDMENT_MODEL, code=200)
-    def get(self, permit_guid=None, permit_amendment_guid=None):
+    def get(self, mine_guid, permit_guid, permit_amendment_guid):
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
         if not permit_amendment:
             raise NotFound("Permit Amendment not found.")
+        if not str(permit_amendment.mine_guid) == mine_guid:
+            raise BadRequest('Permits mine_guid and supplied mine_guid mismatch.')
         return permit_amendment
 
     @api.doc(params={
@@ -151,16 +154,15 @@ class PermitAmendmentResource(Resource, UserMixin):
     })
     @requires_role_mine_create
     @api.marshal_with(PERMIT_AMENDMENT_MODEL, code=200)
-    def put(self, permit_guid=None, permit_amendment_guid=None):
-
-        if not permit_amendment_guid:
-            raise BadRequest('permit_amendment_guid must be provided.')
-        pa = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
-        if not pa:
+    def put(self, mine_guid, permit_guid, permit_amendment_guid):
+        permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
+        if not permit_amendment:
             raise NotFound("Permit Amendment not found.")
+        if not str(permit_amendment.mine_guid) == mine_guid:
+            raise BadRequest('Permits mine_guid and supplied mine_guid mismatch.')
 
         data = self.parser.parse_args()
-        current_app.logger.info(f'updating {pa} with >> {data}')
+        current_app.logger.info(f'updating {permit_amendment} with >> {data}')
 
         for key, value in data.items():
             if key == 'uploadedFiles':
@@ -168,15 +170,15 @@ class PermitAmendmentResource(Resource, UserMixin):
                     new_pa_doc = PermitAmendmentDocument(
                         document_name=newFile['fileName'],
                         document_manager_guid=newFile['document_manager_guid'],
-                        mine_guid=pa.permit.mine_guid,
+                        mine_guid=permit_amendment.mine_guid,
                     )
-                    pa.related_documents.append(new_pa_doc)
+                    permit_amendment.related_documents.append(new_pa_doc)
             else:
-                setattr(pa, key, value)
+                setattr(permit_amendment, key, value)
 
-        pa.save()
+        permit_amendment.save()
 
-        return pa
+        return permit_amendment
 
     @api.doc(params={
         'permit_amendment_guid': 'Permit amendment guid.',
@@ -184,14 +186,14 @@ class PermitAmendmentResource(Resource, UserMixin):
     })
     @requires_role_mine_admin
     @api.response(204, 'Successfully deleted.')
-    def delete(self, permit_guid=None, permit_amendment_guid=None):
-        if not permit_amendment_guid:
-            raise BadRequest('permit_amendment_guid must be provided.')
-        pa = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
-        if not pa:
+    def delete(self, mine_guid, permit_guid, permit_amendment_guid):
+        permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
+        if not permit_amendment:
             raise NotFound("Permit Amendment not found.")
+        if not str(permit_amendment.mine_guid) == mine_guid:
+            raise BadRequest('Permits mine_guid and supplied mine_guid mismatch.')
 
-        pa.deleted_ind = True
+        permit_amendment.deleted_ind = True
 
-        pa.save()
+        permit_amendment.save()
         return

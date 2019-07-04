@@ -3,23 +3,22 @@ from datetime import datetime
 from flask import current_app, request
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
-from ..models.permit import Permit
-from ...permit_amendment.models.permit_amendment import PermitAmendment
-from ...permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
-from ....mines.mine.models.mine import Mine
+from app.api.mines.permits.permit.models.permit import Permit
+from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
+from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
+from app.api.mines.mine.models.mine import Mine
 from app.api.parties.party.models.party import Party
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.extensions import api, db
 from app.api.utils.access_decorators import requires_role_mine_view, requires_role_mine_create
 from app.api.utils.resources_mixins import UserMixin, ErrorMixin
-from app.api.permits.response_models import PERMIT_MODEL
+from app.api.mines.permits.response_models import PERMIT_MODEL
 
 
 class PermitListResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument(
         'permit_no', type=str, help='Number of the permit being added.', location='json')
-    parser.add_argument('mine_guid', type=str, help='GUID of the mine.', location='json')
     parser.add_argument(
         'permittee_party_guid',
         type=str,
@@ -50,21 +49,17 @@ class PermitListResource(Resource, UserMixin):
     @api.doc(params={'mine_guid': 'mine_guid to filter on'})
     @requires_role_mine_view
     @api.marshal_with(PERMIT_MODEL, envelope='records', code=200)
-    def get(self):
-        if request.args.get('mine_guid'):
-            results = Permit.find_by_mine_guid(request.args.get('mine_guid'))
-        else:
-            results = Permit.query.all()
-
+    def get(self, mine_guid):
+        results = Permit.find_by_mine_guid(mine_guid)
         return results
 
     @api.doc(params={'permit_guid': 'Permit guid.'})
     @requires_role_mine_create
     @api.marshal_with(PERMIT_MODEL, code=201)
-    def post(self):
+    def post(self, mine_guid):
         data = self.parser.parse_args()
 
-        mine = Mine.find_by_mine_guid(data.get('mine_guid'))
+        mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:
             raise NotFound('There was no mine found with the provided mine_guid.')
 
@@ -113,7 +108,6 @@ class PermitResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument(
         'permit_no', type=str, help='Number of the permit being added.', location='json')
-    parser.add_argument('mine_guid', type=str, help='GUID of the mine.', location='json')
     parser.add_argument(
         'permittee_party_guid',
         type=str,
@@ -154,19 +148,24 @@ class PermitResource(Resource, UserMixin):
     @api.doc(params={'permit_guid': 'Permit guid.'})
     @requires_role_mine_view
     @api.marshal_with(PERMIT_MODEL, code=200)
-    def get(self, permit_guid):
+    def get(self, permit_guid, mine_guid):
         permit = Permit.find_by_permit_guid_or_no(permit_guid)
         if not permit:
             raise NotFound('Permit not found.')
+        if not str(permit.mine_guid) == mine_guid:
+            raise BadRequest('Permit and mine_guid mismatch.')
         return permit
 
     @api.doc(params={'permit_guid': 'Permit guid.'})
     @requires_role_mine_create
     @api.marshal_with(PERMIT_MODEL, code=200)
-    def put(self, permit_guid):
+    def put(self, permit_guid, mine_guid):
         permit = Permit.find_by_permit_guid(permit_guid)
         if not permit:
             raise NotFound('Permit not found.')
+
+        if not str(permit.mine_guid) == mine_guid:
+            raise BadRequest('Permit and mine_guid mismatch.')
 
         data = self.parser.parse_args()
         for key, value in data.items():

@@ -47,13 +47,14 @@ export const MINE_VERIFIED_STATUSES = (params = {}) =>
 export const MINE_VERIFIED_STATUS = (mine_guid) => `/mines/${mine_guid}/verified-status`;
 
 // Permits
-export const PERMIT = (params) =>
-  params ? `/permits?${queryString.stringify(params)}` : "/permits";
-export const PERMITAMENDMENTS = (permitGuid) => `/permits/${permitGuid}/amendments`;
-export const PERMITAMENDMENT = (permitGuid, permitAmendmentGuid) =>
-  `/permits/${permitGuid}/amendments/${permitAmendmentGuid}`;
-export const PERMITAMENDMENTDOCUMENT = (permitGuid, permitAmendmentGuid, documentGuid) =>
-  `/permits/${permitGuid}/amendments/${permitAmendmentGuid}/documents/${documentGuid}`;
+export const PERMITSTATUSCODES = () => `/mines/permits/status-codes`;
+export const PERMITS = (mineGuid) => `/mines/${mineGuid}/permits`;
+export const PERMITAMENDMENTS = (mineGuid, permitGuid) =>
+  `/mines/${mineGuid}/permits/${permitGuid}/amendments`;
+export const PERMITAMENDMENT = (mineGuid, permitGuid, permitAmendmentGuid) =>
+  `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}`;
+export const PERMITAMENDMENTDOCUMENT = (mineGuid, permitGuid, permitAmendmentGuid, documentGuid) =>
+  `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}/documents/${documentGuid}`;
 
 export const APPLICATIONS = "/applications";
 

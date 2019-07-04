@@ -11,15 +11,15 @@ from werkzeug.datastructures import FileStorage
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 from sqlalchemy.exc import DBAPIError
 
-from ..models.permit_amendment import PermitAmendment
-from ..models.permit_amendment_document import PermitAmendmentDocument
+from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
+from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 
 from app.extensions import api, db
-from ....utils.access_decorators import requires_role_mine_create
-from ....utils.resources_mixins import UserMixin
-from ....utils.url import get_document_manager_svc_url
+from app.api.utils.access_decorators import requires_role_mine_create
+from app.api.utils.resources_mixins import UserMixin
+from app.api.utils.url import get_document_manager_svc_url
 
-from app.api.permits.response_models import PERMIT_AMENDMENT_DOCUMENT_MODEL
+from app.api.mines.permits.response_models import PERMIT_AMENDMENT_DOCUMENT_MODEL
 
 
 class PermitAmendmentDocumentListResource(Resource, UserMixin):
@@ -28,16 +28,11 @@ class PermitAmendmentDocumentListResource(Resource, UserMixin):
     parser.add_argument('document_manager_guid', type=str, store_missing=False)
     parser.add_argument('filename', type=str, store_missing=False)
 
-    @api.doc(
-        params={'mine_guid': 'Required: The guid of the mine this upload will be attached to.'})
     @requires_role_mine_create
-    def post(self):
+    def post(self, mine_guid):
         metadata = self._parse_request_metadata()
         if not metadata or not metadata.get('filename'):
             raise BadRequest('Filename not found in request metadata header.')
-
-        data = self.parser.parse_args()
-        mine_guid = data.get('mine_guid')
 
         try:
             #check formatting
@@ -89,10 +84,14 @@ class PermitAmendmentDocumentListResource(Resource, UserMixin):
 
     @api.marshal_with(PERMIT_AMENDMENT_DOCUMENT_MODEL, code=201)
     @requires_role_mine_create
-    def put(self, permit_amendment_guid, permit_amendment_document_guid=None, permit_guid=None):
+    def put(self, mine_guid, permit_amendment_guid, permit_guid, permit_amendment_document_guid=None):
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
         if not permit_amendment:
             raise NotFound('Permit amendment not found.')
+        if not str(permit_amendment.permit_guid) == permit_guid:
+            raise BadRequest('Amendment and permit permit_guid mismatch.')
+        if not str(permit_amendment.mine_guid) == mine_guid:
+            raise BadRequest('Permits mine_guid and supplied mine_guid mismatch.')
 
         data = self.parser.parse_args()
         if data.get('document_manager_guid'):
@@ -117,10 +116,7 @@ class PermitAmendmentDocumentListResource(Resource, UserMixin):
 class PermitAmendmentDocumentResource(Resource, UserMixin):
     @requires_role_mine_create
     @api.response(204, 'Successfully deleted.')
-    def delete(self, permit_amendment_guid, permit_amendment_document_guid=None, permit_guid=None):
-        if not permit_amendment_document_guid:
-            raise BadRequest('Must provide permit_amendment_document_guid to be unlinked.')
-
+    def delete(self, mine_guid, permit_guid, permit_amendment_guid, permit_amendment_document_guid):
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
         permit_amendment_doc = PermitAmendmentDocument.find_by_permit_amendment_document_guid(
             permit_amendment_document_guid)
@@ -130,6 +126,12 @@ class PermitAmendmentDocumentResource(Resource, UserMixin):
 
         if permit_amendment_doc is None:
             raise NotFound('The amendments attached document was not found.')
+
+        if not str(permit_amendment.permit_guid) == permit_guid:
+            raise BadRequest('Amendment and permit permit_guid mismatch.')
+
+        if not str(permit_amendment.mine_guid) == mine_guid:
+            raise BadRequest('Permits mine_guid and supplied mine_guid mismatch.')
 
         permit_amendment.related_documents.remove(permit_amendment_doc)
         permit_amendment.save()

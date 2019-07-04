@@ -1,8 +1,8 @@
 import json, pytest, uuid
 from datetime import datetime, timedelta
 
-from app.api.permits.permit_amendment.models.permit_amendment import PermitAmendment
-from app.api.permits.permit.models.permit import Permit
+from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
+from app.api.mines.permits.permit.models.permit import Permit
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 
 from tests.factories import PermitFactory, PermitAmendmentFactory, PartyFactory
@@ -10,20 +10,21 @@ from tests.factories import PermitFactory, PermitAmendmentFactory, PartyFactory
 
 # GET
 def test_get_permit_amendment_by_guid(test_client, db_session, auth_headers):
-    pa = PermitAmendmentFactory()
+    permit_amendment = PermitAmendmentFactory()
 
     get_resp = test_client.get(
-        f'/permits/{pa.permit_guid}/amendments/{pa.permit_amendment_guid}',
+        f'/mines/{permit_amendment.mine_guid}/permits/{permit_amendment.permit_guid}/amendments/{permit_amendment.permit_amendment_guid}',
         headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200, get_resp.response
-    assert get_data['permit_amendment_guid'] == str(pa.permit_amendment_guid)
+    assert get_data['permit_amendment_guid'] == str(permit_amendment.permit_amendment_guid)
 
 
 def test_get_permit_amendment_not_found(test_client, db_session, auth_headers):
-    pa = PermitAmendmentFactory()
+    permit_amendment = PermitAmendmentFactory()
     get_resp = test_client.get(
-        f'/permits/{pa.permit_guid}/amendments/' + str(uuid.uuid4()),
+        f'/mines/{permit_amendment.mine_guid}/permits/{permit_amendment.permit_guid}/amendments/' +
+        str(uuid.uuid4()),
         headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 404
@@ -34,10 +35,12 @@ def test_get_permit_amendment_not_found(test_client, db_session, auth_headers):
 @pytest.mark.skip(
     reason='Failing due to null derefrence, line 133 in permit_amendment => "issue_date.date()"')
 def test_post_permit_amendment_no_params(test_client, db_session, auth_headers):
-    permit_guid = PermitFactory().permit_guid
+    permit = PermitFactory()
+    permit_guid = permit.permit_guid
 
     post_resp = test_client.post(
-        f'/permits/{permit_guid}/amendments', headers=auth_headers['full_auth_header'])
+        f'/mines/{permit.mine_guid}/permits/{permit_guid}/amendments',
+        headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
     assert post_resp.status_code == 200, post_resp.response
     assert post_data['permit_guid'] == str(permit_guid), str(post_data)
@@ -50,7 +53,8 @@ def test_post_permit_amendment_no_params(test_client, db_session, auth_headers):
 
 
 def test_post_permit_amendment_with_date_params(test_client, db_session, auth_headers):
-    permit_guid = PermitFactory().permit_guid
+    permit = PermitFactory()
+    permit_guid = permit.permit_guid
     party_guid = PartyFactory(company=True).party_guid
 
     data = {
@@ -61,7 +65,9 @@ def test_post_permit_amendment_with_date_params(test_client, db_session, auth_he
     }
 
     post_resp = test_client.post(
-        f'/permits/{permit_guid}/amendments', json=data, headers=auth_headers['full_auth_header'])
+        f'/mines/{permit.mine_guid}/permits/{permit_guid}/amendments',
+        json=data,
+        headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
 
     permittees = MinePartyAppointment.find_by_permit_guid(permit_guid)
@@ -103,7 +109,7 @@ def test_put_permit_amendment(test_client, db_session, auth_headers):
 
     data = {'permit_amendment_type_code': 'AMD', 'permit_amendment_status_code': 'RMT'}
     put_resp = test_client.put(
-        f'/permits/{permit.permit_guid}/amendments/{amendment.permit_amendment_guid}',
+        f'/mines/{permit.mine_guid}/permits/{permit.permit_guid}/amendments/{amendment.permit_amendment_guid}',
         json=data,
         headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
@@ -119,26 +125,27 @@ def test_put_permit_amendment(test_client, db_session, auth_headers):
 
 #DELETE
 def test_delete_permit_amendment(test_client, db_session, auth_headers):
-    am = PermitAmendmentFactory()
+    permit_amendment = PermitAmendmentFactory()
 
     del_resp = test_client.delete(
-        f'/permits/{am.permit_guid}/amendments/{am.permit_amendment_guid}',
+        f'/mines/{permit_amendment.mine_guid}/permits/{permit_amendment.permit_guid}/amendments/{permit_amendment.permit_amendment_guid}',
         headers=auth_headers['full_auth_header'])
     assert del_resp.status_code == 200, del_resp
-    assert PermitAmendment.find_by_permit_amendment_guid(str(am.permit_amendment_guid)) is None
+    assert PermitAmendment.find_by_permit_amendment_guid(
+        str(permit_amendment.permit_amendment_guid)) is None
 
 
 def test_delete_twice_permit_amendment(test_client, db_session, auth_headers):
-    am = PermitAmendmentFactory()
+    permit_amendment = PermitAmendmentFactory()
 
     del_resp = test_client.delete(
-        f'/permits/{am.permit_guid}/amendments/{am.permit_amendment_guid}',
+        f'/mines/{permit_amendment.mine_guid}/permits/{permit_amendment.permit_guid}/amendments/{permit_amendment.permit_amendment_guid}',
         headers=auth_headers['full_auth_header'])
     assert del_resp.status_code == 200, del_resp
 
     #try again
     del_resp = test_client.delete(
-        f'/permits/{am.permit_guid}/amendments/{am.permit_amendment_guid}',
+        f'/mines/{permit_amendment.mine_guid}/permits/{permit_amendment.permit_guid}/amendments/{permit_amendment.permit_amendment_guid}',
         headers=auth_headers['full_auth_header'])
     assert del_resp.status_code == 404, del_resp
 
