@@ -344,7 +344,7 @@ environments {
                     HOST = "http://mds-redis${vars.deployment.suffix}"
                 }
                 'metabase' {
-                    HOST = "mds-metabase-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    HOST = "mds-metabase-${vars.deployment.suffix}.pathfinder.gov.bc.ca"
                 }
             }
         }
