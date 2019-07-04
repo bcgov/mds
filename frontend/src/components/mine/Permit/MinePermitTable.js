@@ -41,10 +41,7 @@ const defaultProps = {
 };
 
 const renderDocumentLink = (file, text) => (
-  <LinkButton
-    key={file.mine_document_guid}
-    onClick={() => downloadFileFromDocumentManager(file.document_manager_guid)}
-  >
+  <LinkButton key={file.mine_document_guid} onClick={() => downloadFileFromDocumentManager(file)}>
     {text}
   </LinkButton>
 );
