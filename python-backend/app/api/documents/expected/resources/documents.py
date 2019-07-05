@@ -9,7 +9,7 @@ from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
 from ..models.mine_expected_document import MineExpectedDocument
 from app.extensions import api
-from ....utils.access_decorators import requires_role_view_all, requires_role_mine_create, requires_any_of, VIEW_ALL, MINE_CREATE, MINESPACE_PROPONENT
+from ....utils.access_decorators import requires_role_view_all, requires_role_mine_edit, requires_any_of, VIEW_ALL, MINE_EDIT, MINESPACE_PROPONENT
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
@@ -38,7 +38,7 @@ class ExpectedDocumentResource(Resource, UserMixin, ErrorMixin):
         return {'expected_document': mine_exp_doc.json()}
 
     @api.doc(params={'exp_doc_guid': 'Required: Mine number or guid. Updates expected document'})
-    @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
+    @requires_any_of([MINE_EDIT, MINESPACE_PROPONENT])
     def put(self, exp_doc_guid=None):
         if exp_doc_guid is None:
             raise BadRequest('Must provide a expected document guid.')
@@ -56,7 +56,7 @@ class ExpectedDocumentResource(Resource, UserMixin, ErrorMixin):
         return {'expected_document': exp_doc.json()}
 
     @api.doc(params={'exp_doc_guid': 'Required: Mine number or guid. Deletes expected document.'})
-    @requires_role_mine_create
+    @requires_role_mine_edit
     def delete(self, exp_doc_guid=None):
         if exp_doc_guid is None:
             return self.create_error_payload(404, 'Must provide a expected document guid.'), 404

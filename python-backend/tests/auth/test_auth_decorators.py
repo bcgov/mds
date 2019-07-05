@@ -10,7 +10,7 @@ class DummyResource(Resource):
     def get(self):
         return "example view method"
 
-    @requires_role_mine_create
+    @requires_role_mine_edit
     def post(self):
         return "example create method"
 

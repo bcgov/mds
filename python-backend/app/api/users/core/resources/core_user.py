@@ -6,7 +6,7 @@ from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 from app.extensions import api
 from ..models.core_user import CoreUser
 from app.api.utils.resources_mixins import UserMixin
-from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_create
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_edit
 
 idir_user_detail_model = api.model(
     'idir_user_detail', {
@@ -74,7 +74,7 @@ class CoreUserResource(Resource, UserMixin):
             404: 'Bad request.',
         })
     @api.marshal_with(core_user_model, code=200)
-    @requires_role_mine_create
+    @requires_role_mine_edit
     def put(self, core_user_guid):
         core_user = CoreUser.find_by_core_user_guid(core_user_guid)
 

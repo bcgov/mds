@@ -7,7 +7,7 @@ from flask_restplus import Resource, reqparse
 from app.extensions import api, db
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
-from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_create
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_edit
 from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.utils.url import get_documents_svc_url
 
@@ -38,7 +38,7 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
 
     @api.doc(description='Creates a new tailing storage facility for the given mine')
     @api.marshal_with(MINE_TSF_MODEL, code=200)
-    @requires_role_mine_create
+    @requires_role_mine_edit
     def post(self, mine_guid):
         mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:

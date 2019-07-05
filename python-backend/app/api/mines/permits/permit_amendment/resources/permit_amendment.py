@@ -9,7 +9,7 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment_document imp
 from app.api.parties.party.models.party import Party
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.extensions import api
-from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_create, requires_role_mine_admin
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_edit, requires_role_mine_admin
 from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.mines.permits.response_models import PERMIT_AMENDMENT_MODEL
 
@@ -160,7 +160,7 @@ class PermitAmendmentResource(Resource, UserMixin):
         'permit_amendment_guid': 'Permit amendment guid.',
         'permit_guid': 'Permit GUID'
     })
-    @requires_role_mine_create
+    @requires_role_mine_edit
     @api.marshal_with(PERMIT_AMENDMENT_MODEL, code=200)
     def put(self, mine_guid, permit_guid, permit_amendment_guid):
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(

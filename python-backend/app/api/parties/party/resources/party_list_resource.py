@@ -14,7 +14,7 @@ from ...response_models import PARTY, PAGINATED_PARTY_LIST
 
 from ....constants import PARTY_STATUS_CODE
 from app.extensions import api
-from ....utils.access_decorators import requires_role_view_all, requires_role_mine_create, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
+from ....utils.access_decorators import requires_role_view_all, requires_role_mine_edit, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
 
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.utils.custom_reqparser import CustomReqparser
@@ -104,7 +104,7 @@ class PartyListResource(Resource, UserMixin, ErrorMixin):
 
     @api.expect(parser)
     @api.doc(description='Create a party.')
-    @requires_role_mine_create
+    @requires_role_mine_edit
     @api.marshal_with(PARTY, code=200)
     def post(self, party_guid=None):
         if party_guid:

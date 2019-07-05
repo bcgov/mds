@@ -7,7 +7,7 @@ from app.extensions import api
 from ..models.application import Application
 from ...mines.mine.models.mine import Mine
 from app.api.utils.resources_mixins import UserMixin
-from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_create
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_edit
 
 application_model = api.model(
     'Application', {
@@ -76,7 +76,7 @@ class ApplicationListResource(Resource, UserMixin):
             404: 'Bad request.',
         })
     @api.marshal_with(application_model, code=201)
-    @requires_role_mine_create
+    @requires_role_mine_edit
     def post(self):
 
         data = self.parser.parse_args()
@@ -138,7 +138,7 @@ class ApplicationResource(Resource, UserMixin):
             404: 'Bad request.',
         })
     @api.marshal_with(application_model, code=200)
-    @requires_role_mine_create
+    @requires_role_mine_edit
     def put(self, application_guid):
 
         application = Application.find_by_application_guid(application_guid)

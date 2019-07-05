@@ -7,7 +7,7 @@ from flask_restplus import Resource, reqparse
 
 from ..models.document_manager import DocumentManager
 from app.extensions import api, cache
-from ...utils.access_decorators import requires_any_of, MINE_CREATE, VIEW_ALL, MINESPACE_PROPONENT
+from ...utils.access_decorators import requires_any_of, MINE_EDIT, VIEW_ALL, MINESPACE_PROPONENT
 from app.api.constants import FILE_UPLOAD_SIZE, FILE_UPLOAD_OFFSET, FILE_UPLOAD_PATH, DOWNLOAD_TOKEN, TIMEOUT_24_HOURS, TUS_API_VERSION, TUS_API_SUPPORTED_VERSIONS, FORBIDDEN_FILETYPES
 
 
@@ -25,7 +25,7 @@ class DocumentManagerResource(Resource):
     parser.add_argument(
         'filename', type=str, required=True, help='File name + extension of the document.')
 
-    @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
+    @requires_any_of([MINE_EDIT, MINESPACE_PROPONENT])
     def post(self):
         if request.headers.get('Tus-Resumable') is None:
             raise BadRequest('Received file upload for unsupported file transfer protocol')
@@ -87,7 +87,7 @@ class DocumentManagerResource(Resource):
         response.autocorrect_location_header = False
         return response
 
-    @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
+    @requires_any_of([MINE_EDIT, MINESPACE_PROPONENT])
     def patch(self, document_guid=None):
         if document_guid is None:
             raise BadRequest('Must specify document GUID in PATCH')
@@ -140,7 +140,7 @@ class DocumentManagerResource(Resource):
             'Access-Control-Expose-Headers'] = "Tus-Resumable,Tus-Version,Upload-Offset"
         return response
 
-    @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
+    @requires_any_of([MINE_EDIT, MINESPACE_PROPONENT])
     def head(self, document_guid):
         if document_guid is None:
             raise BadRequest('Must specify document GUID in HEAD')

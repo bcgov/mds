@@ -18,7 +18,7 @@ from ..models.mineral_tenure_xref import MineralTenureXref
 from ...location.models.mine_location import MineLocation
 from ....utils.random import generate_mine_no
 from app.extensions import api, cache, db
-from ....utils.access_decorators import requires_role_mine_create, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
+from ....utils.access_decorators import requires_role_mine_edit, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from ....constants import MINE_MAP_CACHE
 from app.api.mines.mine_api_models import MINE_LIST_MODEL, MINE_MODEL
@@ -125,7 +125,7 @@ class MineListResource(Resource, UserMixin):
     @api.expect(parser)
     @api.doc(description='Creates a new mine.')
     @api.marshal_with(MINE_MODEL, code=201)
-    @requires_role_mine_create
+    @requires_role_mine_edit
     def post(self):
         data = self.parser.parse_args()
         lat = data.get('latitude')
@@ -331,7 +331,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
     @api.expect(parser)
     @api.marshal_with(MINE_MODEL, code=200)
     @api.doc(description='Updates the specified mine.')
-    @requires_role_mine_create
+    @requires_role_mine_edit
     def put(self, mine_no_or_guid):
         mine = Mine.find_by_mine_no_or_guid(mine_no_or_guid)
         if not mine:

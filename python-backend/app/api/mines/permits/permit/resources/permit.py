@@ -10,7 +10,7 @@ from app.api.mines.mine.models.mine import Mine
 from app.api.parties.party.models.party import Party
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.extensions import api, db
-from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_create
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_edit
 from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.mines.permits.response_models import PERMIT_MODEL
 
@@ -56,7 +56,7 @@ class PermitListResource(Resource, UserMixin):
         return results
 
     @api.doc(params={'permit_guid': 'Permit guid.'})
-    @requires_role_mine_create
+    @requires_role_mine_edit
     @api.marshal_with(PERMIT_MODEL, code=201)
     def post(self, mine_guid):
         data = self.parser.parse_args()
@@ -162,7 +162,7 @@ class PermitResource(Resource, UserMixin):
         return permit
 
     @api.doc(params={'permit_guid': 'Permit guid.'})
-    @requires_role_mine_create
+    @requires_role_mine_edit
     @api.marshal_with(PERMIT_MODEL, code=200)
     def put(self, permit_guid, mine_guid):
         permit = Permit.find_by_permit_guid(permit_guid)

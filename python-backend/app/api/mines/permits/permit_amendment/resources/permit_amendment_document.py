@@ -15,7 +15,7 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment import Permi
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 
 from app.extensions import api, db
-from app.api.utils.access_decorators import requires_role_mine_create
+from app.api.utils.access_decorators import requires_role_mine_edit
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.url import get_document_manager_svc_url
 
@@ -28,7 +28,7 @@ class PermitAmendmentDocumentListResource(Resource, UserMixin):
     parser.add_argument('document_manager_guid', type=str, store_missing=False)
     parser.add_argument('filename', type=str, store_missing=False)
 
-    @requires_role_mine_create
+    @requires_role_mine_edit
     def post(self, mine_guid):
         metadata = self._parse_request_metadata()
         if not metadata or not metadata.get('filename'):
@@ -83,7 +83,7 @@ class PermitAmendmentDocumentListResource(Resource, UserMixin):
         return metadata
 
     @api.marshal_with(PERMIT_AMENDMENT_DOCUMENT_MODEL, code=201)
-    @requires_role_mine_create
+    @requires_role_mine_edit
     def put(self, mine_guid, permit_amendment_guid, permit_guid, permit_amendment_document_guid=None):
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
         if not permit_amendment:
@@ -114,7 +114,7 @@ class PermitAmendmentDocumentListResource(Resource, UserMixin):
 
 
 class PermitAmendmentDocumentResource(Resource, UserMixin):
-    @requires_role_mine_create
+    @requires_role_mine_edit
     @api.response(204, 'Successfully deleted.')
     def delete(self, mine_guid, permit_guid, permit_amendment_guid, permit_amendment_document_guid):
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)

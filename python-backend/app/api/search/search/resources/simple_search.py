@@ -4,7 +4,7 @@ from flask_restplus import Resource
 from flask import request, current_app
 
 from app.extensions import db, api
-from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_create
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_edit
 from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.utils.search import simple_search_targets, append_result, execute_search, SearchResult
 from app.api.search.search_api_models import SIMPLE_SEARCH_RESULT_RETURN_MODEL

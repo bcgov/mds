@@ -19,14 +19,14 @@ from app.api.mines.mine_api_models import MINE_INCIDENT_MODEL
 
 from app.extensions import api, db
 from app.api.utils.custom_reqparser import CustomReqparser
-from ....utils.access_decorators import requires_role_mine_create
+from ....utils.access_decorators import requires_role_mine_edit
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from ....utils.url import get_document_manager_svc_url
 
 
 class MineIncidentDocumentListResource(Resource, UserMixin):
     @api.doc(description='Request a document_manager_guid for uploading a document')
-    @requires_role_mine_create
+    @requires_role_mine_edit
     def post(self, mine_guid):
         metadata = self._parse_request_metadata()
         if not metadata or not metadata.get('filename'):
@@ -79,7 +79,7 @@ class MineIncidentDocumentListResource(Resource, UserMixin):
 class MineIncidentDocumentResource(Resource, UserMixin):
     @api.doc(description='Adds a Document to an already existing Mine incident.')
     @api.marshal_with(MINE_INCIDENT_MODEL, 201)
-    @requires_role_mine_create
+    @requires_role_mine_edit
     def put(self, mine_guid, mine_incident_guid, mine_document_guid):
         parser = CustomReqparser()
         parser.add_argument('filename', type=str, required=True)
@@ -120,7 +120,7 @@ class MineIncidentDocumentResource(Resource, UserMixin):
         return mine_incident
 
     @api.doc(description='Dissociate a document from a Mine Incident.')
-    @requires_role_mine_create
+    @requires_role_mine_edit
     def delete(self, mine_guid, mine_incident_guid, mine_document_guid):
         if not mine_document_guid:
             raise BadRequest('must provide document_guid to be unlinked')

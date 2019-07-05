@@ -9,7 +9,7 @@ from ..models.party import Party
 from ..models.address import Address
 from ...response_models import PARTY
 from ...party_appt.models.mine_party_appt import MinePartyAppointment
-from ....utils.access_decorators import requires_role_view_all, requires_role_mine_create, requires_role_mine_admin, requires_role_edit_party
+from ....utils.access_decorators import requires_role_view_all, requires_role_mine_edit, requires_role_mine_admin, requires_role_edit_party
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 
