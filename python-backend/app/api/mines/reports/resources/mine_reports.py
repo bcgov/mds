@@ -34,7 +34,7 @@ class MineReportListResource(Resource, UserMixin):
 
     parser.add_argument('permit_guid', type=str, location='json')
 
-    @api.marshal_with(MINE_REPORT_MODEL, envelope='mine_reports', code=200, as_list=True)
+    @api.marshal_with(MINE_REPORT_MODEL, envelope='records', code=200, as_list=True)
     @api.doc(description='returns the reports for a given mine.')
     @requires_role_mine_view
     def get(self, mine_guid):

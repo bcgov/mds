@@ -18,7 +18,7 @@ def test_get_all_reports_for_mine(test_client, db_session, auth_headers):
     get_resp = test_client.get(
         f'/mines/{mine.mine_guid}/reports', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
-    assert len(get_data['mine_reports']) == THREE_REPORTS
+    assert len(get_data['records']) == THREE_REPORTS
     assert get_resp.status_code == 200
 
 
