@@ -11,6 +11,9 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import { connect } from "react-redux";
 import { BRAND_PENCIL, EDIT, EDIT_OUTLINE, CARAT } from "@/constants/assets";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
+import { COLOR } from "@/constants/styles";
+
+const { errorRed } = COLOR;
 
 /**
  * @class  MinePermitInfo - contains all permit information
@@ -22,24 +25,49 @@ const propTypes = {
 };
 
 const defaultProps = {
-  reports: [{ report_guid: 1, report_name: "report_name" }],
+  reports: [
+    {
+      report_guid: 1,
+      report_name: "Cool Report",
+      due_date: "2019-07-05",
+      submission_year: 2019,
+    },
+  ],
 };
 
 const columns = [
   {
+    title: "Year",
+    dataIndex: "submission_year",
+    key: "submission_year",
+    sorter: (a, b) => a.submission_year > b.submission_year,
+    render: (text, record) => (
+      <div title="Year" style={record.isOverdue ? { color: errorRed } : {}}>
+        {record.submission_year}
+      </div>
+    ),
+  },
+  {
     title: "Report Name",
     dataIndex: "report_name",
     key: "report_name",
+    sorter: (a, b) => a.report_name.localeCompare(b.report_name),
+    render: (text, record) => (
+      <div title="Report Name" style={record.isOverdue ? { color: errorRed } : {}}>
+        {record.report_name}
+      </div>
+    ),
   },
   {
-    title: "Due Date",
+    title: "Due",
     dataIndex: "due_date",
     key: "due_date",
-  },
-  {
-    title: "Submission Year",
-    dataIndex: "submission_year",
-    key: "submission_year",
+    sorter: (a, b) => moment(a.due_date) > moment(b.due_date),
+    render: (text, record) => (
+      <div title="Due" style={record.isOverdue ? { color: errorRed } : {}}>
+        {formatDate(record.due_date) || Strings.EMPTY_FIELD}
+      </div>
+    ),
   },
   {
     title: "",

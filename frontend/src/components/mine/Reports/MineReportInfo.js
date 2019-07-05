@@ -69,6 +69,7 @@ export class MineReportInfo extends Component {
         initialValues: report,
         onSubmit: this.handleEditReport,
         title: `Edit report for ${this.props.mine.mine_name}`,
+        hsrcDefinedReportsDropDown: this.props.hsrcDefinedReportsDropDown,
       },
       content: modalConfig.EDIT_REPORT,
     });
