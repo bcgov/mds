@@ -25,6 +25,7 @@ from ..incidents.resources.mine_incident_followup_types import MineIncidentFollo
 from ..incidents.resources.mine_incident_determination_types import MineIncidentDeterminationTypeResource
 from ..incidents.resources.mine_incident_document import MineIncidentDocumentListResource, MineIncidentDocumentResource
 from app.api.mines.reports.resources.mine_reports import MineReportListResource, MineReportResource
+from app.api.mines.reports.resources.mine_report_definition import MineReportDefinitionListResource
 from app.api.mines.permits.permit.resources.permit import PermitResource, PermitListResource
 from app.api.mines.permits.permit.resources.permit_status_code import PermitStatusCodeResource
 from app.api.mines.permits.permit_amendment.resources.permit_amendment import PermitAmendmentResource, PermitAmendmentListResource
@@ -86,6 +87,7 @@ api.add_resource(MineIncidentDocumentListResource, '/<string:mine_guid>/incident
 
 api.add_resource(MineReportListResource, '/<string:mine_guid>/reports')
 api.add_resource(MineReportResource, '/<string:mine_guid>/reports/<string:mine_report_guid>')
+api.add_resource(MineReportDefinitionListResource, '/reports/definitions')
 
 api.add_resource(PermitResource, '/<string:mine_guid>/permits/<string:permit_guid>')
 api.add_resource(PermitListResource, '/<string:mine_guid>/permits')
