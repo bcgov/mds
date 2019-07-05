@@ -161,10 +161,11 @@ class MineIncidentListResource(Resource, UserMixin):
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')
 
-        for recommendation in data.get('recommendations'):
-            new_recommendation = MineIncidentRecommendation.create(
-                recommendation['recommendation'], mine_incident_id=incident.mine_incident_id)
-            new_recommendation.save()
+        if data.get('recommendations') is not None:
+            for recommendation in data.get('recommendations'):
+                new_recommendation = MineIncidentRecommendation.create(
+                    recommendation['recommendation'], mine_incident_id=incident.mine_incident_id)
+                new_recommendation.save()
 
         return incident, 201
 

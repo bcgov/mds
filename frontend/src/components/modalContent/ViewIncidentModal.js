@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import CustomPropTypes from "@/customPropTypes";
-import { Button } from "antd";
+import { Button, Tag } from "antd";
 import * as Strings from "@/constants/strings";
 import DocumentTable from "@/components/common/DocumentTable";
 import { getInspectorsHash } from "@/selectors/partiesSelectors";
@@ -11,6 +11,7 @@ import {
   getHSRCMComplianceCodesHash,
   getIncidentDeterminationHash,
 } from "@/selectors/staticContentSelectors";
+import { formatTime, formatDate } from "@/utils/helpers";
 
 const propTypes = {
   closeModal: PropTypes.func.isRequired,
@@ -54,12 +55,12 @@ export class ViewVarianceModal extends Component {
           </div>
           <div className="inline-flex padding-small">
             <p className="field-title">Date reported</p>
-            <p>{Strings.EMPTY_FIELD}</p>
+            <p>{formatDate(this.props.incident.reported_timestamp) || Strings.EMPTY_FIELD}</p>
           </div>
 
           <div className="inline-flex padding-small">
             <p className="field-title">Time reported</p>
-            <p>{Strings.EMPTY_FIELD}</p>
+            <p>{formatTime(this.props.incident.reported_timestamp) || Strings.EMPTY_FIELD}</p>
           </div>
         </div>
         <br />
@@ -73,11 +74,11 @@ export class ViewVarianceModal extends Component {
       <div className="content--light-grey padding-small">
         <div className="inline-flex padding-small">
           <p className="field-title">Incident date</p>
-          <p> {Strings.EMPTY_FIELD}</p>
+          <p>{formatDate(this.props.incident.incident_timestamp) || Strings.EMPTY_FIELD}</p>
         </div>
         <div className="inline-flex padding-small">
           <p className="field-title">Incident time</p>
-          <p>{Strings.EMPTY_FIELD}</p>
+          <p>{formatTime(this.props.incident.incident_timestamp) || Strings.EMPTY_FIELD}</p>
         </div>
         <div className="inline-flex padding-small">
           <p className="field-title">Number of fatalities</p>
@@ -114,7 +115,7 @@ export class ViewVarianceModal extends Component {
             {this.props.incident.dangerous_occurrence_subparagraph_ids.length >= 1 ? (
               <div className="block">
                 {this.props.incident.dangerous_occurrence_subparagraph_ids.map((code) => (
-                  <p>{this.props.complianceCodesHash[code]}</p>
+                  <Tag>{this.props.complianceCodesHash[code]}</Tag>
                 ))}
               </div>
             ) : (
@@ -160,10 +161,10 @@ export class ViewVarianceModal extends Component {
         </div>
         <div className="padding-small">
           <p className="field-title">Mine managers recommendations</p>
-          {this.props.incident.dangerous_occurrence_subparagraph_ids.length >= 1 ? (
+          {this.props.incident.recommendations.length >= 1 ? (
             <div className="block">
-              {this.props.incident.dangerous_occurrence_subparagraph_ids.map((code) => (
-                <p>{this.props.complianceCodesHash[code]}</p>
+              {this.props.incident.recommendations.map(({ recommendation }) => (
+                <p>{recommendation}</p>
               ))}
             </div>
           ) : (

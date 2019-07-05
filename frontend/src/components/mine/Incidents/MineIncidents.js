@@ -59,10 +59,18 @@ export class MineIncidents extends Component {
   }
 
   handleAddMineIncident = (values) => {
-    this.props.createMineIncident(this.props.mine.mine_guid, values).then(() => {
-      this.props.closeModal();
-      this.props.fetchMineIncidents(this.props.mine.mine_guid);
-    });
+    // set default fatalities & injuries to 0 if not set by user
+    const { number_of_fatalities = 0, number_of_injuries = 0 } = values;
+    this.props
+      .createMineIncident(this.props.mine.mine_guid, {
+        number_of_fatalities,
+        number_of_injuries,
+        ...values,
+      })
+      .then(() => {
+        this.props.closeModal();
+        this.props.fetchMineIncidents(this.props.mine.mine_guid);
+      });
   };
 
   handleEditMineIncident = (values) => {
