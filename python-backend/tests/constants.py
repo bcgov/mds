@@ -29,7 +29,7 @@ FULL_AUTH_CLAIMS = {
     "email": "test-email",
     "given_name": "test-given-name",
     "realm_access": {
-        "roles": ["core_view_all", "core_edit_mine", "core_admin", "idir"]
+        "roles": ["core_view_all", "core_edit_mines", "core_admin", "core_abandoned_mines", "core_close_permits", "core_edit_all", "core_edit_do", "core_edit_investigations", "core_edit_parties", "core_edit_permits", "core_edit_securities", "core_edit_variances", "core_environmental_reports", "core_geospatial", "idir"]
     }
 }
 
@@ -58,7 +58,7 @@ CREATE_ONLY_AUTH_CLAIMS = {
     "typ": "Bearer",
     "username": "test-user",
     "realm_access": {
-        "roles": ["core_edit_mine", "idir"]
+        "roles": ["core_edit_mines", "idir"]
     }
 }
 

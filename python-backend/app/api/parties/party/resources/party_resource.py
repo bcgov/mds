@@ -137,7 +137,7 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
 
     @api.doc(
         description='Delete a party by guid', params={'party_guid': 'guid of the party to delete.'})
-    @requires_role_edit_party
+    @requires_role_mine_admin
     def delete(self, party_guid):
         if party_guid is None:
             return self.create_error_payload(404, 'Must provide a party guid.'), 404

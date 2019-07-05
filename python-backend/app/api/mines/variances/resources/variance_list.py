@@ -61,7 +61,7 @@ class MineVarianceListResource(Resource, UserMixin, ErrorMixin):
     @api.doc(
         description='Get a list of all variances for a given mine.',
         params={'mine_guid': 'guid of the mine for which to fetch variances'})
-    @requires_any_of([VIEW_ALL, EDIT_VARIANCE, MINESPACE_PROPONENT])
+    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     @api.marshal_with(VARIANCE_MODEL, code=200, envelope='records')
     def get(self, mine_guid):
         variances = Variance.find_by_mine_guid(mine_guid)

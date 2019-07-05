@@ -14,7 +14,7 @@ from ...response_models import PARTY, PAGINATED_PARTY_LIST
 
 from ....constants import PARTY_STATUS_CODE
 from app.extensions import api
-from ....utils.access_decorators import requires_role_view_all, requires_role_mine_edit, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
+from ....utils.access_decorators import requires_role_view_all, requires_role_edit_party, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
 
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.utils.custom_reqparser import CustomReqparser
@@ -32,14 +32,16 @@ class PartyListResource(Resource, UserMixin, ErrorMixin):
         type=str,
         help='Party type. Person (PER) or Organization (ORG).',
         required=True)
-    parser.add_argument('name_search', type=str, help='Name or partial name of the party.')
+    parser.add_argument('name_search', type=str,
+                        help='Name or partial name of the party.')
     parser.add_argument(
         'phone_no', type=str, help='The phone number of the party. Ex: 123-123-1234', required=True)
     parser.add_argument(
         'last_name', type=str, help='Last name of the party, if the party is a person.')
     parser.add_argument(
         'first_name', type=str, help='First name of the party, if the party is a person.')
-    parser.add_argument('phone_ext', type=str, help='The extension of the phone number. Ex: 1234')
+    parser.add_argument('phone_ext', type=str,
+                        help='The extension of the phone number. Ex: 1234')
     parser.add_argument('email', type=str, help='The email of the party.')
     parser.add_argument(
         'suite_no',
@@ -90,7 +92,8 @@ class PartyListResource(Resource, UserMixin, ErrorMixin):
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     @api.marshal_with(PAGINATED_PARTY_LIST, code=200)
     def get(self):
-        paginated_parties, pagination_details = self.apply_filter_and_search(request.args)
+        paginated_parties, pagination_details = self.apply_filter_and_search(
+            request.args)
         if not paginated_parties:
             raise BadRequest('Unable to fetch parties')
 
@@ -104,7 +107,7 @@ class PartyListResource(Resource, UserMixin, ErrorMixin):
 
     @api.expect(parser)
     @api.doc(description='Create a party.')
-    @requires_role_mine_edit
+    @requires_role_edit_party
     @api.marshal_with(PARTY, code=200)
     def post(self, party_guid=None):
         if party_guid:
@@ -164,30 +167,40 @@ class PartyListResource(Resource, UserMixin, ErrorMixin):
 
         conditions = [Party.deleted_ind == False]
         if first_name_filter_term:
-            conditions.append(Party.first_name.ilike('%{}%'.format(first_name_filter_term)))
+            conditions.append(Party.first_name.ilike(
+                '%{}%'.format(first_name_filter_term)))
         if last_name_filter_term:
-            conditions.append(Party.party_name.ilike('%{}%'.format(last_name_filter_term)))
+            conditions.append(Party.party_name.ilike(
+                '%{}%'.format(last_name_filter_term)))
         if party_name_filter_term:
-            conditions.append(Party.party_name.ilike('%{}%'.format(party_name_filter_term)))
+            conditions.append(Party.party_name.ilike(
+                '%{}%'.format(party_name_filter_term)))
         if email_filter_term:
-            conditions.append(Party.email.ilike('%{}%'.format(email_filter_term)))
+            conditions.append(Party.email.ilike(
+                '%{}%'.format(email_filter_term)))
         if type_filter_term:
             conditions.append(Party.party_type_code.like(type_filter_term))
         if phone_filter_term:
-            conditions.append(Party.phone_no.ilike('%{}%'.format(phone_filter_term)))
+            conditions.append(Party.phone_no.ilike(
+                '%{}%'.format(phone_filter_term)))
         if role_filter_term == "NONE":
             conditions.append(Party.mine_party_appt == None)
         if name_search_filter_term:
             name_search_conditions = []
             for name_part in name_search_filter_term.strip().split(" "):
-                name_search_conditions.append(Party.first_name.ilike('%{}%'.format(name_part)))
-                name_search_conditions.append(Party.party_name.ilike('%{}%'.format(name_part)))
+                name_search_conditions.append(
+                    Party.first_name.ilike('%{}%'.format(name_part)))
+                name_search_conditions.append(
+                    Party.party_name.ilike('%{}%'.format(name_part)))
             conditions.append(or_(*name_search_conditions))
         contact_query = Party.query.filter(and_(*conditions))
         if role_filter_term and not role_filter_term == "NONE":
-            role_filter = MinePartyAppointment.mine_party_appt_type_code.like(role_filter_term)
-            role_query = Party.query.join(MinePartyAppointment).filter(role_filter)
-            contact_query = contact_query.intersect(role_query) if contact_query else role_query
+            role_filter = MinePartyAppointment.mine_party_appt_type_code.like(
+                role_filter_term)
+            role_query = Party.query.join(
+                MinePartyAppointment).filter(role_filter)
+            contact_query = contact_query.intersect(
+                role_query) if contact_query else role_query
         if business_roles and len(business_roles) > 0:
             business_role_filter = PartyBusinessRoleAppointment.party_business_role_code.in_(
                 business_roles)
@@ -198,6 +211,7 @@ class PartyListResource(Resource, UserMixin, ErrorMixin):
 
         # Apply sorting
         if sort_model and sort_field and sort_dir:
-            sort_criteria = [{'model': sort_model, 'field': sort_field, 'direction': sort_dir}]
+            sort_criteria = [{'model': sort_model,
+                              'field': sort_field, 'direction': sort_dir}]
             contact_query = apply_sort(contact_query, sort_criteria)
         return apply_pagination(contact_query, page, items_per_page)
