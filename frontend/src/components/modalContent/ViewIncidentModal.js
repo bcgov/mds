@@ -3,13 +3,16 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import CustomPropTypes from "@/customPropTypes";
-import { Button, Tag } from "antd";
+import { Button, Tag, Table } from "antd";
 import * as Strings from "@/constants/strings";
-import DocumentTable from "@/components/common/DocumentTable";
+import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 import { getInspectorsHash } from "@/selectors/partiesSelectors";
+import LinkButton from "@/components/common/LinkButton";
 import {
   getHSRCMComplianceCodesHash,
   getIncidentDeterminationHash,
+  getIncidentFollowupActionHash,
+  getIncidentStatusCodeHash,
 } from "@/selectors/staticContentSelectors";
 import { formatTime, formatDate } from "@/utils/helpers";
 
@@ -22,9 +25,7 @@ export class ViewVarianceModal extends Component {
   state = { recommendationsExpanded: false };
 
   toggleRecommendations = () => {
-    this.setState((prevState) => {
-      recommendationsExpanded: !prevState.recommendationsExpanded;
-    });
+    this.setState((prevState) => ({ recommendationsExpanded: !prevState.recommendationsExpanded }));
   };
 
   renderInitialDetails = () => {
@@ -92,7 +93,6 @@ export class ViewVarianceModal extends Component {
           <p className="field-title">Number of fatalities</p>
           <p>{this.props.incident.number_of_fatalities}</p>
         </div>
-
         <div>
           <div className="inline-flex padding-small">
             <p className="field-title">Number of injuries</p>
@@ -143,13 +143,24 @@ export class ViewVarianceModal extends Component {
     </div>
   );
 
-  renderInitialDocuments = () => (
-    <div>
-      <h5>Initial Report Documents</h5>
-      <DocumentTable documents={this.props.incident.documents} isViewOnly />
-      <br />
-    </div>
-  );
+  renderInitialDocuments = () => {
+    const initialDocuments = this.props.incident.documents.filter(
+      ({ mine_incident_document_type_code }) => mine_incident_document_type_code === "INI"
+    );
+    return (
+      <div>
+        <h5>Initial Report Documents</h5>
+        <Table
+          align="left"
+          pagination={false}
+          columns={this.columns()}
+          locale={{ emptyText: "This incident does not contain any initial documents" }}
+          dataSource={this.transformRowData(initialDocuments)}
+        />
+        <br />
+      </div>
+    );
+  };
 
   renderFollowUpInformation = () => (
     <div>
@@ -160,23 +171,29 @@ export class ViewVarianceModal extends Component {
           <p> {this.props.incident.followup_inspection ? "Yes" : "No"}</p>
         </div>
         <div className="inline-flex padding-small">
-          <p className="field-title">Incident time</p>
-          <p>{Strings.EMPTY_FIELD}</p>
+          <p className="field-title">Follow-up inspection date</p>
+          <p>{formatDate(this.props.incident.followup_inspection_date) || Strings.EMPTY_FIELD}</p>
         </div>
         <div className="inline-flex padding-small">
           <p className="field-title">Was it escilated to EMPR Investigation?</p>
-          <p>{Strings.EMPTY_FIELD}</p>
+          <p>
+            {this.props.incidentFollowupActionHash[
+              this.props.incident.followup_investigation_type_code
+            ] || Strings.EMPTY_FIELD}
+          </p>
         </div>
         <div className="padding-small">
           <p className="field-title">Mine managers recommendations</p>
           {this.props.incident.recommendations.length >= 1 ? (
-            <div className={this.state.recommendationsExpanded ? "block" : "collapsed-container"}>
-              {this.props.incident.recommendations.map(({ recommendation }) => (
-                <div>
-                  <p>{recommendation}</p>
-                  <br />
-                </div>
-              ))}
+            <div>
+              <div className={this.state.recommendationsExpanded ? "block" : "collapsed-container"}>
+                {this.props.incident.recommendations.map(({ recommendation }) => (
+                  <p>- {recommendation}</p>
+                ))}
+              </div>
+              <Button className="btn--expand" onClick={() => this.toggleRecommendations()}>
+                {this.state.recommendationsExpanded ? "see less" : "... see more"}
+              </Button>
             </div>
           ) : (
             <p>{Strings.EMPTY_FIELD}</p>
@@ -185,7 +202,10 @@ export class ViewVarianceModal extends Component {
         <div>
           <div className="inline-flex padding-small">
             <p className="field-title">Incident Status</p>
-            <p>{Strings.EMPTY_FIELD}</p>
+            <p>
+              {this.props.incidentStatusCodeHash[this.props.incident.status_code] ||
+                Strings.EMPTY_FIELD}
+            </p>
           </div>
         </div>
       </div>
@@ -193,13 +213,45 @@ export class ViewVarianceModal extends Component {
     </div>
   );
 
-  renderFinalDocuments = () => (
-    <div>
-      <h5>Final Investigation Report Documents</h5>
-      <DocumentTable documents={this.props.incident.documents} isViewOnly />
-      <br />
-    </div>
-  );
+  renderFinalDocuments = () => {
+    const finalDocuments = this.props.incident.documents.filter(
+      ({ mine_incident_document_type_code }) => mine_incident_document_type_code === "FIN"
+    );
+    return (
+      <div>
+        <h5>Final Investigation Report Documents</h5>
+        <Table
+          align="left"
+          pagination={false}
+          columns={this.columns()}
+          locale={{ emptyText: "This incident does not contain any final documents" }}
+          dataSource={this.transformRowData(finalDocuments)}
+        />
+        <br />
+      </div>
+    );
+  };
+
+  transformRowData = (documents) =>
+    documents.map((document) => ({
+      key: document.mine_document_guid,
+      document_manager_guid: document.document_manager_guid,
+      name: document.document_name,
+    }));
+
+  columns = () => [
+    {
+      title: "File name",
+      dataIndex: "name",
+      render: (text, record) => (
+        <div title="File name">
+          <LinkButton key={record.key} onClick={() => downloadFileFromDocumentManager(record)}>
+            {text}
+          </LinkButton>
+        </div>
+      ),
+    },
+  ];
 
   render() {
     console.log(this.props.incident);
@@ -226,6 +278,8 @@ const mapStateToProps = (state) => ({
   complianceCodesHash: getHSRCMComplianceCodesHash(state),
   incidentDeterminationHash: getIncidentDeterminationHash(state),
   inspectorsHash: getInspectorsHash(state),
+  incidentFollowupActionHash: getIncidentFollowupActionHash(state),
+  incidentStatusCodeHash: getIncidentStatusCodeHash(state),
 });
 
 export default connect(mapStateToProps)(ViewVarianceModal);
