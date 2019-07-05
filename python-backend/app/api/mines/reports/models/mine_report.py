@@ -56,6 +56,7 @@ class MineReport(Base, AuditMixin):
     @classmethod
     def find_by_mine_report_guid(cls, _id):
         try:
+            uuid.UUID(_id, version=4)
             return cls.query.filter_by(mine_report_guid=_id).first()
         except ValueError:
             return None

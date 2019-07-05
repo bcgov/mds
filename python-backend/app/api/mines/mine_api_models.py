@@ -283,5 +283,6 @@ MINE_REPORT_MODEL = api.model(
         'due_date':fields.Date,
         'received_date': fields.Date,
         'submission_year':fields.Integer,
+        'permit_id':fields.Integer,
         'mine_report_submissions':fields.List(fields.Nested(MINE_REPORT_SUBMISSION_MODEL))
 })
