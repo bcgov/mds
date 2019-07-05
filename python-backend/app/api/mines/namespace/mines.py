@@ -24,7 +24,7 @@ from ..incidents.resources.mine_incident_status_codes import MineIncidentStatusC
 from ..incidents.resources.mine_incident_followup_types import MineIncidentFollowupTypeResource
 from ..incidents.resources.mine_incident_determination_types import MineIncidentDeterminationTypeResource
 from ..incidents.resources.mine_incident_document import MineIncidentDocumentListResource, MineIncidentDocumentResource
-from app.api.mines.reports.models.mine_report import MineReportListResource, MineReportResource
+from app.api.mines.reports.resources.mine_reports import MineReportListResource, MineReportResource
 from app.api.mines.permits.permit.resources.permit import PermitResource, PermitListResource
 from app.api.mines.permits.permit.resources.permit_status_code import PermitStatusCodeResource
 from app.api.mines.permits.permit_amendment.resources.permit_amendment import PermitAmendmentResource, PermitAmendmentListResource

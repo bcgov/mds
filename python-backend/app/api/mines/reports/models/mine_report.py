@@ -3,11 +3,11 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from app.api.utils.models_mixins import Base
+from app.api.utils.models_mixins import Base, AuditMixin
 from app.extensions import db
 
 
-class MineReport(Base):
+class MineReport(Base, AuditMixin):
     __tablename__ = "mine_report"
     mine_report_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     mine_report_guid = db.Column(UUID(as_uuid=True))
@@ -45,15 +45,16 @@ class MineReport(Base):
         return mine_report
 
     @classmethod
-    def find_by_mine_guid(cls, _id):
+    def find_all_by_mine_guid(cls, _id):
         try:
-            return cls.find_by(mine_guid=_id)
+            uuid.UUID(_id, version=4)
+            return cls.query.filter_by(mine_guid=_id).all()
         except ValueError:
             return None
 
     @classmethod
     def find_by_mine_report_guid(cls, _id):
         try:
-            return cls.find_by(mine_report_guid=_id)
+            return cls.query.filter_by(mine_report_guid=_id).first()
         except ValueError:
             return None

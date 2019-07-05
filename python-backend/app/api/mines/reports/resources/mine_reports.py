@@ -9,9 +9,16 @@ from app.api.utils.access_decorators import requires_role_mine_view, requires_ro
 
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.reports.models.mine_report import MineReport
-from app.api.mines
+from app.api.mines.reports.models.mine_report_submission import MineReportSubmission
+from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
+from app.api.mines.reports.models.mine_report_category_xref import MineReportCategoryXref
+from app.api.documents.reports.models.mine_report import MineReportDocumentXref
 from app.api.documents.mines.models.mine_document import MineDocument
+from app.api.mines.reports.models.mine_report_submission_status_code import MineReportSubmissionStatusCode
+from app.api.mines.reports.models.mine_report_category import MineReportCategory
+from app.api.mines.reports.models.mine_report_due_date_type import MineReportDueDateType
+from app.api.mines.reports.models.mine_report_definition_compliance_article_xref import MineReportDefinitionComplianceArticleXref
 from app.api.utils.custom_reqparser import CustomReqparser
 from ...mine_api_models import MINE_REPORT_MODEL
 
@@ -23,13 +30,13 @@ class MineReportListResource(Resource, UserMixin):
     parser.add_argument('submission_year', type=str, location='json', required=True)
     parser.add_argument('mine_report_definition_id', type=str, location='json', required=True)
 
-    parser.add_argument('permit_id', type=str, location='json')
+    parser.add_argument('permit_guid', type=str, location='json')
 
     @api.marshal_with(MINE_REPORT_MODEL, envelope='mine_reports', code=200, as_list=True)
     @api.doc(description='returns the reports for a given mine.')
     @requires_role_mine_view
     def get(self, mine_guid):
-        mine_reports = MineReport.find_by_mine_guid(mine_guid)
+        mine_reports = MineReport.find_all_by_mine_guid(mine_guid)
         if not mine_reports:
             raise BadRequest("Unable to fetch reports for that mine.")
         return mine_reports
@@ -47,17 +54,18 @@ class MineReportListResource(Resource, UserMixin):
 
         mine_report_definition = MineReportDefinition.find_by_mine_report_definition_id(
             data['mine_report_definition_id'])
-        permit = Permit
+        permit = Permit.find_by_permit_guid_or_no(data['permit_guid'])
         if mine_report_definition is None:
             raise BadRequest('A report must be selected from the list.')
 
-        if 
+        if permit and permit.mine_guid != mine.mine_guid:
+            raise BadRequest('The permit must be associated with the selected mine.')
 
         mine_report = MineReport.create(
             mine_report_definition_id=mine_report_definition.mine_report_definition_id,
             mine_guid=mine.mine_guid,
             submission_year=data['submission_year'],
-            permit_id=data['permit_id'])
+            permit_id=permit.permit_id if permit else None)
 
         try:
             mine_report.save()

@@ -3,11 +3,11 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from app.api.utils.models_mixins import Base
+from app.api.utils.models_mixins import Base, AuditMixin
 from app.extensions import db
 
 
-class MineReportSubmissionStatusCode(Base):
+class MineReportSubmissionStatusCode(Base, AuditMixin):
     __tablename__ = "mine_report_submission_status_code"
     mine_report_submission_status_code = db.Column(db.String, primary_key=True)
     description = db.Column(UUID(as_uuid=True))
