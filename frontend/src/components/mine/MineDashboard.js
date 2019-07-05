@@ -83,7 +83,6 @@ import MinePermitInfo from "@/components/mine/Permit/MinePermitInfo";
 import MineApplicationInfo from "@/components/mine/Applications/MineApplicationInfo";
 import Loading from "@/components/common/Loading";
 import { formatParamStringToArray } from "@/utils/helpers";
-import { detectProdEnvironment } from "@/utils/environmentUtils";
 import { getUserAccessData } from "@/selectors/authenticationSelectors";
 
 /**
@@ -299,7 +298,6 @@ export class MineDashboard extends Component {
   render() {
     const { id } = this.props.match.params;
     const mine = this.props.mines[id];
-    const isDevOrTest = !detectProdEnvironment();
     if (!mine) {
       return <Loading />;
     }

@@ -24,13 +24,13 @@ from ..incidents.resources.mine_incident_status_codes import MineIncidentStatusC
 from ..incidents.resources.mine_incident_followup_types import MineIncidentFollowupTypeResource
 from ..incidents.resources.mine_incident_determination_types import MineIncidentDeterminationTypeResource
 from ..incidents.resources.mine_incident_document import MineIncidentDocumentListResource, MineIncidentDocumentResource
+from app.api.mines.reports.resources.mine_reports import MineReportListResource, MineReportResource
 from app.api.mines.permits.permit.resources.permit import PermitResource, PermitListResource
 from app.api.mines.permits.permit.resources.permit_status_code import PermitStatusCodeResource
 from app.api.mines.permits.permit_amendment.resources.permit_amendment import PermitAmendmentResource, PermitAmendmentListResource
 from app.api.mines.permits.permit_amendment.resources.permit_amendment_document import PermitAmendmentDocumentListResource, PermitAmendmentDocumentResource
 
 from flask_restplus import Namespace
-
 
 api = Namespace('mines', description='Mine related operations')
 
@@ -84,13 +84,18 @@ api.add_resource(
 )
 api.add_resource(MineIncidentDocumentListResource, '/<string:mine_guid>/incidents/documents')
 
+api.add_resource(MineReportListResource, '/<string:mine_guid>/reports')
+api.add_resource(MineReportResource, '/<string:mine_guid>/reports/<string:mine_report_guid>')
+
 api.add_resource(PermitResource, '/<string:mine_guid>/permits/<string:permit_guid>')
 api.add_resource(PermitListResource, '/<string:mine_guid>/permits')
 api.add_resource(PermitStatusCodeResource, '/permits/status-codes')
 
-api.add_resource(PermitAmendmentListResource, '/<string:mine_guid>/permits/<string:permit_guid>/amendments')
-api.add_resource(PermitAmendmentResource,
-                 '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>')
+api.add_resource(PermitAmendmentListResource,
+                 '/<string:mine_guid>/permits/<string:permit_guid>/amendments')
+api.add_resource(
+    PermitAmendmentResource,
+    '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>')
 
 api.add_resource(
     PermitAmendmentDocumentListResource,
