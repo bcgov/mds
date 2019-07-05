@@ -1,3 +1,4 @@
+import uuid
 from flask_restplus import Resource, reqparse, fields, inputs
 from flask import request, current_app
 from datetime import datetime
@@ -29,10 +30,11 @@ class MineReportListResource(Resource, UserMixin):
     # required
     parser.add_argument('submission_year', type=str, location='json', required=True)
     parser.add_argument('mine_report_definition_id', type=str, location='json', required=True)
+    parser.add_argument('due_date', type=str, location='json', required=True)
 
     parser.add_argument('permit_guid', type=str, location='json')
 
-    @api.marshal_with(MINE_REPORT_MODEL, envelope='mine_reports', code=200, as_list=True)
+    @api.marshal_with(MINE_REPORT_MODEL, envelope='records', code=200, as_list=True)
     @api.doc(description='returns the reports for a given mine.')
     @requires_role_mine_view
     def get(self, mine_guid):
@@ -60,10 +62,12 @@ class MineReportListResource(Resource, UserMixin):
 
         if permit and permit.mine_guid != mine.mine_guid:
             raise BadRequest('The permit must be associated with the selected mine.')
-
+        mine_report_guid = uuid.uuid4()
         mine_report = MineReport.create(
+            mine_report_guid=mine_report_guid,
             mine_report_definition_id=mine_report_definition.mine_report_definition_id,
             mine_guid=mine.mine_guid,
+            due_date=data['due_date'],
             submission_year=data['submission_year'],
             permit_id=permit.permit_id if permit else None)
 

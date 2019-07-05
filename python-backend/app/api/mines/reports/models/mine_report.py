@@ -27,19 +27,20 @@ class MineReport(Base, AuditMixin):
 
     @classmethod
     def create(cls,
-               mine_report_definition,
+               mine_report_guid,
+               mine_report_definition_id,
                mine_guid,
+               due_date,
                submission_year,
                permit_id=None,
-               due_date=None,
                add_to_session=True):
         mine_report = cls(
-            mine_report_guid=uuid.uuid4,
-            mine_report_definition_id=mine_report_definition.mine_report_definition_id,
+            mine_report_guid=mine_report_guid,
+            mine_report_definition_id=mine_report_definition_id,
             mine_guid=mine_guid,
+            due_date=due_date,
             submission_year=submission_year,
-            permit_id=permit_id,
-            due_date=due_date)
+            permit_id=permit_id)
         if add_to_session:
             mine_report.save(commit=False)
         return mine_report
@@ -55,6 +56,7 @@ class MineReport(Base, AuditMixin):
     @classmethod
     def find_by_mine_report_guid(cls, _id):
         try:
+            uuid.UUID(_id, version=4)
             return cls.query.filter_by(mine_report_guid=_id).first()
         except ValueError:
             return None
