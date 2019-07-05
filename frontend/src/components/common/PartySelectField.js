@@ -97,8 +97,11 @@ export class PartySelectField extends Component {
   };
 
   componentWillReceiveProps = (nextProps) => {
+    const lastCreatedPartyUpdated = this.props.lastCreatedParty !== nextProps.lastCreatedParty;
+    const searchResultsUpdated = this.props.searchResults !== nextProps.searchResults;
+
     // If new search results have been returned, transform the results and store them in component state.
-    if (this.props.searchResults !== nextProps.searchResults) {
+    if (searchResultsUpdated || lastCreatedPartyUpdated) {
       let filteredParties = nextProps.searchResults.party.map((sr) => sr.result);
 
       if (this.props.organization && !this.props.person) {
@@ -111,6 +114,11 @@ export class PartySelectField extends Component {
         );
       }
 
+      // If a new party was just added, add that party to the list of search results.
+      if (lastCreatedPartyUpdated) {
+        filteredParties.push(nextProps.lastCreatedParty);
+      }
+
       this.setState(() => {
         const newPartyDataSource = transformData(
           createItemIdsArray(filteredParties, "party_guid"),
@@ -120,16 +128,16 @@ export class PartySelectField extends Component {
         );
         return { partyDataSource: newPartyDataSource };
       });
+    }
 
-      // If a new party was just added, detect this and set the selected party to the newly created party.
-      if (this.props.lastCreatedParty !== nextProps.lastCreatedParty) {
-        this.setState({
-          selectedOption: {
-            key: nextProps.lastCreatedParty.party_guid,
-            label: nextProps.lastCreatedParty.name,
-          },
-        });
-      }
+    // If a new party was just added, detect this and set the selected party to the newly created party.
+    if (lastCreatedPartyUpdated) {
+      this.setState({
+        selectedOption: {
+          key: nextProps.lastCreatedParty.party_guid,
+          label: nextProps.lastCreatedParty.name,
+        },
+      });
     }
   };
 

@@ -27,7 +27,7 @@ const renderDownloadLinks = (files, mine_incident_document_type_code) =>
       <div key={file.mine_document_guid}>
         <LinkButton
           key={file.mine_document_guid}
-          onClick={() => downloadFileFromDocumentManager(file.document_manager_guid)}
+          onClick={() => downloadFileFromDocumentManager(file)}
         >
           {file.document_name}
         </LinkButton>
