@@ -9,6 +9,7 @@ from app.api.utils.access_decorators import requires_role_mine_view, requires_ro
 
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.reports.models.mine_report import MineReport
+from app.api.mines
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
 from app.api.documents.mines.models.mine_document import MineDocument
 from app.api.utils.custom_reqparser import CustomReqparser
@@ -46,9 +47,11 @@ class MineReportListResource(Resource, UserMixin):
 
         mine_report_definition = MineReportDefinition.find_by_mine_report_definition_id(
             data['mine_report_definition_id'])
-
+        permit = Permit
         if mine_report_definition is None:
             raise BadRequest('A report must be selected from the list.')
+
+        if 
 
         mine_report = MineReport.create(
             mine_report_definition_id=mine_report_definition.mine_report_definition_id,

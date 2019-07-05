@@ -443,3 +443,19 @@ VALUES
     ('FIN', 'Final Document', TRUE, 'system-mds', 'system-mds'),
     ('INI', 'Initial Document', TRUE,  'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
+
+INSERT INTO mine_report_submission_status_code
+    (
+    mine_report_submission_status_code,
+    description,
+    display_order,
+    create_user,
+    update_user
+    )
+VALUES
+    ('MIA', 'Not Received', 10, 'f-mds', 'system-mds'),
+    ('PRE', 'Received / Pending Review', 20, 'system-mds', 'system-mds'),
+    ('RIP', 'Review In Progress', 30, 'system-mds', 'system-mds'),
+    ('ACC', 'Accepted', 40, 'system-mds', 'system-mds'),
+    ('REJ', 'Rejected / Waiting On Update', 50, 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;

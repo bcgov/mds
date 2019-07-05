@@ -3,38 +3,35 @@ import uuid
 import pytest
 
 from tests.factories import MineFactory, MineReportFactory, PermitFactory, PermitAmendmentFactory, PartyFactory
+TEN_REPORTS = 10
+ONE_REPORT = 1
 
 
 # GET
-def test_get_permit_not_found(test_client, db_session, auth_headers):
-    get_resp = test_client.get(f'/permits/{uuid.uuid4()}', headers=auth_headers['full_auth_header'])
+def test_get_all_reports_for_mine(test_client, db_session, auth_headers):
+    mine = MineFactory(mine_reports=TEN_REPORTS)
+    get_resp = test_client.get(
+        f'/mine/{mine.mine_guid}/reports', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
-    assert 'not found' in get_data['message']
-    assert get_resp.status_code == 404
-
-
-def test_get_permit(test_client, db_session, auth_headers):
-    permit_guid = PermitFactory().permit_guid
-
-    get_resp = test_client.get(f'/permits/{permit_guid}', headers=auth_headers['full_auth_header'])
-    get_data = json.loads(get_resp.data.decode())
-    assert get_data['permit_guid'] == str(permit_guid)
+    assert len(get_data) == TEN_REPORTS
     assert get_resp.status_code == 200
 
 
-def test_get_with_permit_no(test_client, db_session, auth_headers):
-    permit_no = PermitFactory().permit_no
+def test_get_a_report_for_a_mine(test_client, db_session, auth_headers):
+    mine = MineFactory(mine_reports=ONE_REPORT)
+    mine_report = mine.mine_reports[0]
 
     get_resp = test_client.get(
-        f'/permits?permit_no={permit_no}', headers=auth_headers['full_auth_header'])
+        f'/mine/{mine.mine_guid}/reports/{mine_report.mine_report_guid}',
+        headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
+    assert get_data['mine_report_guid'] == str(mine_report.mine_report_guid)
     assert get_resp.status_code == 200
-    assert get_data.get('permit_no') == permit_no
 
 
 #Create
-def test_post_permit(test_client, db_session, auth_headers):
-    mine = MineFactory()
+def test_post_mine_report(test_client, db_session, auth_headers):
+    mine = MineFactory(mine_reports=ONE_REPORT)
     party_guid = PartyFactory(company=True).party_guid
 
     no_of_permits = len(mine.mine_permit)

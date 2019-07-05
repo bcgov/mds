@@ -271,7 +271,7 @@ MINE_STATUS_CODE_MODEL = api.model(
 MINE_REPORT_SUBMISSION_MODEL= api.model(
     'MineReportSubmission', {
         'mine_report_submission_guid': fields.String,
-        'received_date': fields.Date,
+        'submission_date': fields.Date,
         'mine_report_submission_status_code': fields.String,
         'documents': fields.List(fields.Nested(MINE_DOCUMENT_MODEL))
     }
@@ -281,6 +281,7 @@ MINE_REPORT_MODEL = api.model(
     'MineReportModel', {
         'mine_report_guid':fields.String,
         'due_date':fields.Date,
+        'received_date': fields.Date,
         'submission_year':fields.Integer,
         'mine_report_submissions':fields.List(fields.Nested(MINE_REPORT_SUBMISSION_MODEL))
 })
