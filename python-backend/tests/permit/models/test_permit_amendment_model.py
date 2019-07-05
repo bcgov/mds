@@ -3,7 +3,7 @@ import uuid
 
 import pytest
 
-from app.api.permits.permit_amendment.models.permit_amendment import PermitAmendment
+from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from tests.factories import PermitFactory
 
 

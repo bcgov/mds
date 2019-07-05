@@ -8,7 +8,7 @@ from app.api.documents.required.models.required_documents import RequiredDocumen
 from app.api.mines.incidents.models.mine_incident_determination_type import MineIncidentDeterminationType
 from app.api.mines.incidents.models.mine_incident_status_code import MineIncidentStatusCode
 from app.api.mines.region.models.region import MineRegionCode
-from app.api.permits.permit.models.permit_status_code import PermitStatusCode
+from app.api.mines.permits.permit.models.permit_status_code import PermitStatusCode
 from app.api.mines.mine.models.mine_tenure_type_code import MineTenureTypeCode
 from app.api.mines.mine.models.mine_commodity_code import MineCommodityCode
 from app.api.mines.mine.models.mine_disturbance_code import MineDisturbanceCode

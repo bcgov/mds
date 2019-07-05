@@ -2,7 +2,7 @@ from datetime import datetime
 import uuid
 import pytest
 
-from app.api.permits.permit.models.permit import Permit
+from app.api.mines.permits.permit.models.permit import Permit
 from tests.factories import PermitFactory, MineFactory
 
 
