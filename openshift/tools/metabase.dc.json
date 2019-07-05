@@ -55,16 +55,44 @@
     },
     {
       "apiVersion": "v1",
+      "kind": "Service",
+      "metadata": {
+        "annotations": {
+          "template.openshift.io/expose-uri": "postgres://{.spec.clusterIP}:{.spec.ports[?(.name==\"postgresql\")].port}"
+        },
+        "name": "${NAME_DATABASE}${SUFFIX}"
+      },
+      "spec": {
+        "ports": [
+          {
+            "name": "postgresql",
+            "port": 5432,
+            "protocol": "TCP",
+            "targetPort": 5432
+          }
+        ],
+        "selector": {
+          "name": "${NAME}${SUFFIX}"
+        },
+        "sessionAffinity": "None",
+        "type": "ClusterIP"
+      },
+      "status": {
+        "loadBalancer": {}
+      }
+    },
+    {
+      "apiVersion": "v1",
       "kind": "PersistentVolumeClaim",
       "metadata": {
-        "name": "${NAME}${SUFFIX}",
+        "name": "${NAME_DATABASE}${SUFFIX}",
         "annotations": {
-          "volume.beta.kubernetes.io/storage-class": "gluster-file",
+          "volume.beta.kubernetes.io/storage-class": "gluster-block",
           "volume.beta.kubernetes.io/storage-provisioner": "kubernetes.io/glusterfs"
         }
       },
       "spec": {
-        "accessModes": ["ReadWriteMany"],
+        "accessModes": ["ReadWriteOnce"],
         "resources": {
           "requests": {
             "storage": "${METABASE_PVC_SIZE}"
@@ -93,6 +121,23 @@
       }
     },
     {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME_DATABASE}",
+        "creationTimestamp": null,
+        "labels": {
+          "shared": "true"
+        }
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        },
+        "tags": []
+      }
+    },
+    {
       "kind": "DeploymentConfig",
       "apiVersion": "v1",
       "metadata": {
@@ -100,7 +145,7 @@
       },
       "spec": {
         "strategy": {
-          "type": "Rolling",
+          "type": "Recreate",
           "maxSurge": "50%",
           "maxUnavailable": 0
         },
@@ -116,6 +161,17 @@
               "from": {
                 "kind": "ImageStreamTag",
                 "name": "${NAME}:${VERSION}"
+              }
+            }
+          },
+          {
+            "type": "ImageChange",
+            "imageChangeParams": {
+              "automatic": true,
+              "containerNames": ["${NAME_DATABASE}"],
+              "from": {
+                "kind": "ImageStreamTag",
+                "name": "${NAME_DATABASE}:${VERSION}"
               }
             }
           }
@@ -142,11 +198,6 @@
                     "protocol": "TCP"
                   }
                 ],
-                "command": [
-                  "bash",
-                  "-c",
-                  "cd /app && if [[ $ENVIRONMENT_NAME == 'dev' ]]; then tail -f /dev/null; else java -jar metabase.jar; fi"
-                ],
                 "env": [
                   {
                     "name": "MB_PASSWORD_COMPLEXITY",
@@ -157,12 +208,33 @@
                     "value": "0.0.0.0"
                   },
                   {
-                    "name": "MB_DB_FILE",
-                    "value": "/app/data/metabase.db"
+                    "name": "MB_DB_TYPE",
+                    "value": "postgres"
                   },
                   {
-                    "name": "MB_DB_TYPE",
-                    "value": "h2"
+                    "name": "MB_DB_DBNAME",
+                    "value": "metabase"
+                  },
+                  {
+                    "name": "MB_DB_PORT",
+                    "value": "5432"
+                  },
+                  {
+                    "name": "MB_DB_USER",
+                    "value": "metabase"
+                  },
+                  {
+                    "name": "MB_DB_PASS",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${METABASE_SECRET_NAME}",
+                        "key": "postgres-password"
+                      }
+                    }
+                  },
+                  {
+                    "name": "MB_DB_HOST",
+                    "value": "${NAME_DATABASE}${SUFFIX}"
                   },
                   {
                     "name": "ENVIRONMENT_NAME",
@@ -178,12 +250,6 @@
                     }
                   }
                 ],
-                "volumeMounts": [
-                  {
-                    "mountPath": "/app/data",
-                    "name": "${NAME}${SUFFIX}-data"
-                  }
-                ],
                 "resources": {
                   "requests": {
                     "cpu": "${CPU_REQUEST}",
@@ -197,13 +263,89 @@
                 "terminationMessagePath": "/dev/termination-log",
                 "imagePullPolicy": "IfNotPresent",
                 "capabilities": {}
+              },
+              {
+                "name": "${NAME_DATABASE}",
+                "image": " ",
+                "ports": [
+                  {
+                    "containerPort": 5432,
+                    "protocol": "TCP"
+                  }
+                ],
+                "env": [
+                  {
+                    "name": "POSTGRESQL_USER",
+                    "value": "metabase"
+                  },
+                  {
+                    "name": "POSTGRESQL_DATABASE",
+                    "value": "metabase"
+                  },
+                  {
+                    "name": "POSTGRESQL_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${METABASE_SECRET_NAME}",
+                        "key": "postgres-password"
+                      }
+                    }
+                  },
+                  {
+                    "name": "POSTGRESQL_ADMIN_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${METABASE_SECRET_NAME}",
+                        "key": "postgres-admin-password"
+                      }
+                    }
+                  }
+                ],
+                "readinessProbe": {
+                  "exec": {
+                    "command": [
+                      "/bin/sh",
+                      "-i",
+                      "-c",
+                      "psql -h 127.0.0.1 -U $POSTGRESQL_USER -q -d $POSTGRESQL_DATABASE -c 'SELECT 1'"
+                    ]
+                  },
+                  "initialDelaySeconds": 20,
+                  "timeoutSeconds": 15
+                },
+                "livenessProbe": {
+                  "initialDelaySeconds": 30,
+                  "tcpSocket": {
+                    "port": 5432
+                  },
+                  "timeoutSeconds": 10
+                },
+                "volumeMounts": [
+                  {
+                    "mountPath": "/var/lib/pgsql/data",
+                    "name": "${NAME_DATABASE}${SUFFIX}-data"
+                  }
+                ],
+                "resources": {
+                  "requests": {
+                    "cpu": "${DB_CPU_REQUEST}",
+                    "memory": "${DB_MEMORY_REQUEST}"
+                  },
+                  "limits": {
+                    "cpu": "${DB_CPU_LIMIT}",
+                    "memory": "${DB_MEMORY_LIMIT}"
+                  }
+                },
+                "terminationMessagePath": "/dev/termination-log",
+                "imagePullPolicy": "IfNotPresent",
+                "capabilities": {}
               }
             ],
             "volumes": [
               {
-                "name": "${NAME}${SUFFIX}-data",
+                "name": "${NAME_DATABASE}${SUFFIX}-data",
                 "persistentVolumeClaim": {
-                  "claimName": "${NAME}${SUFFIX}"
+                  "claimName": "${NAME_DATABASE}${SUFFIX}"
                 }
               }
             ],
@@ -229,7 +371,23 @@
     },
     {
       "name": "MEMORY_REQUEST",
-      "value": "1.5Gi"
+      "value": "1Gi"
+    },
+    {
+      "name": "DB_CPU_LIMIT",
+      "value": "100m"
+    },
+    {
+      "name": "DB_MEMORY_LIMIT",
+      "value": "1Gi"
+    },
+    {
+      "name": "DB_CPU_REQUEST",
+      "value": "50m"
+    },
+    {
+      "name": "DB_MEMORY_REQUEST",
+      "value": "512Mi"
     },
     {
       "name": "ENVIRONMENT_NAME",
@@ -239,7 +397,12 @@
       "name": "NAME",
       "displayName": "Object names",
       "description": "The name of the OpenShift objects.",
-      "value": "redis",
+      "value": "metabase",
+      "required": true
+    },
+    {
+      "name": "NAME_DATABASE",
+      "value": "metabase-postgres",
       "required": true
     },
     {

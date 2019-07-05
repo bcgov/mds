@@ -23,7 +23,7 @@ export class DocumentTable extends Component {
   transformRowData = (documents) =>
     documents.map((document) => ({
       key: document.mine_document_guid,
-      guid: document.document_manager_guid,
+      document_manager_guid: document.document_manager_guid,
       name: document.document_name,
       category: document.variance_document_category_code
         ? this.props.documentCategoryOptionsHash[document.variance_document_category_code]
@@ -38,10 +38,7 @@ export class DocumentTable extends Component {
         dataIndex: "name",
         render: (text, record) => (
           <div title="File name">
-            <LinkButton
-              key={record.key}
-              onClick={() => downloadFileFromDocumentManager(record.guid)}
-            >
+            <LinkButton key={record.key} onClick={() => downloadFileFromDocumentManager(record)}>
               {text}
             </LinkButton>
           </div>
