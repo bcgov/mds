@@ -32,7 +32,6 @@ def test_get_a_report_for_a_mine(test_client, db_session, auth_headers):
 #Create
 def test_post_mine_report(test_client, db_session, auth_headers):
     mine = MineFactory(mine_reports=ONE_REPORT)
-    party_guid = PartyFactory(company=True).party_guid
 
     no_of_permits = len(mine.mine_permit)
 
