@@ -282,7 +282,7 @@ export class MineDashboard extends Component {
   loadMineData(id) {
     this.props.fetchMineRecordById(id).then(() => {
       this.props.fetchApplications({ mine_guid: this.props.mines[id].mine_guid });
-      this.props.fetchPermits({ mine_guid: this.props.mines[id].mine_guid });
+      this.props.fetchPermits(this.props.mines[id].mine_guid);
       this.props.fetchVariancesByMine({ mineGuid: id });
       this.setState({ isLoaded: true });
       this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });

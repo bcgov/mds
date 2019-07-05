@@ -29,9 +29,9 @@ from app.api.parties.party_appt.resources.mine_party_appt_resource import MinePa
 from app.api.parties.party_appt.resources.mine_party_appt_type_resource import MinePartyApptTypeResource
 from app.api.parties.party.resources.party_resource import PartyResource
 from app.api.parties.party.resources.party_list_resource import PartyListResource
-from app.api.permits.permit.resources.permit import PermitResource
-from app.api.permits.permit_amendment.resources.permit_amendment import PermitAmendmentResource
-from app.api.permits.permit_amendment.resources.permit_amendment_document import PermitAmendmentDocumentResource
+from app.api.mines.permits.permit.resources.permit import PermitResource, PermitListResource
+from app.api.mines.permits.permit_amendment.resources.permit_amendment import PermitAmendmentResource, PermitAmendmentListResource
+from app.api.mines.permits.permit_amendment.resources.permit_amendment_document import PermitAmendmentDocumentResource, PermitAmendmentDocumentListResource
 from app.api.users.minespace.resources.minespace_user import MinespaceUserResource
 from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserMineResource
 from app.api.search.search.resources.search import SearchResource, SearchOptionsResource
@@ -91,12 +91,12 @@ from app.api.search.search.resources.simple_search import SimpleSearchResource
      (PartyResource, "get", [MINE_VIEW]),
      (PartyResource, "put", [MINE_CREATE]),
      (PartyResource, "delete", [MINE_ADMIN]),
-     (PermitResource, "get", [MINE_VIEW]), (PermitResource, "post", [MINE_CREATE]),
-     (PermitResource, "put", [MINE_CREATE]), (PermitAmendmentResource, "post", [MINE_CREATE]),
+     (PermitResource, "get", [MINE_VIEW]), (PermitListResource, "post", [MINE_CREATE]),
+     (PermitResource, "put", [MINE_CREATE]), (PermitAmendmentListResource, "post", [MINE_CREATE]),
      (PermitAmendmentResource, "put", [MINE_CREATE]),
      (PermitAmendmentResource, "delete", [MINE_ADMIN]),
-     (PermitAmendmentDocumentResource, "post", [MINE_CREATE]),
-     (PermitAmendmentDocumentResource, "put", [MINE_CREATE]),
+     (PermitAmendmentDocumentListResource, "post", [MINE_CREATE]),
+     (PermitAmendmentDocumentListResource, "put", [MINE_CREATE]),
      (PermitAmendmentDocumentResource, "delete", [MINE_CREATE]),
      (RequiredDocumentResource, "get", [MINE_VIEW]),
      (RequiredDocumentResource, "get", [MINE_VIEW]),

@@ -20,7 +20,7 @@ class  Tenure extends GebReportingSpec {
     def "Scenario: User can add tenure number"(){
         when: "User open the update tenure form and add a new tenure number"
         tenureTab.addTenure(Const.TENURE)
-        waitFor {toastMessage!= null }
+        waitFor { toastMessage!= null }
 
         and: "see successful message"
         toastMessage == "Successfully updated: ${Const.MINE_NAME}"
