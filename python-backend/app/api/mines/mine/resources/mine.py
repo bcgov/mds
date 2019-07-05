@@ -18,9 +18,9 @@ from ..models.mineral_tenure_xref import MineralTenureXref
 from ...location.models.mine_location import MineLocation
 from ....utils.random import generate_mine_no
 from app.extensions import api, cache, db
-from ....utils.access_decorators import requires_role_mine_create, requires_any_of, MINE_VIEW, MINESPACE_PROPONENT
-from ....utils.resources_mixins import UserMixin, ErrorMixin
-from ....constants import MINE_MAP_CACHE
+from app.api.utils.access_decorators import requires_role_mine_create, requires_any_of, MINE_VIEW, MINESPACE_PROPONENT
+from app.api.utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.constants import MINE_MAP_CACHE
 from app.api.mines.mine_api_models import MINE_LIST_MODEL, MINE_MODEL
 # FIXME: Model import from outside of its namespace
 # This breaks micro-service architecture and is done
@@ -387,7 +387,8 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             mine.mine_location = MineLocation(
                 latitude=data['latitude'], longitude=data['longitude'])
             mine.save()
-            cache.delete(MINE_MAP_CACHE)
+
+        cache.delete(MINE_MAP_CACHE)
         # Status validation
         _mine_status_processor(data.get('mine_status'), data.get('status_date'), mine)
         return mine
