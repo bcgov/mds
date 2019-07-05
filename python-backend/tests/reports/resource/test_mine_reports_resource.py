@@ -49,7 +49,8 @@ def test_post_mine_report(test_client, db_session, auth_headers):
     data = {
         'mine_report_definition_id': str(new_report_definition.mine_report_definition_id),
         'submission_year': '2019',
-        'permit_no': None
+        'permit_no': None,
+        'due_date': '2019-07-05 20:27:45.11929+00',
     }
     post_resp = test_client.post(
         f'/mines/{mine.mine_guid}/reports', headers=auth_headers['full_auth_header'], json=data)

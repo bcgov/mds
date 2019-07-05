@@ -32,13 +32,13 @@ class MineReportDefinition(Base, AuditMixin):
     @classmethod
     def find_by_mine_report_definition_id(cls, _id):
         try:
-            return cls.query.filter_by(mine_report_definition_id=_id)
+            return cls.query.filter_by(mine_report_definition_id=_id).first()
         except ValueError:
             return None
 
     @classmethod
     def get_active(cls):
         try:
-            return cls.query.filter_by(active_ind=True)
+            return cls.query.filter_by(active_ind=True).all()
         except ValueError:
             return None
