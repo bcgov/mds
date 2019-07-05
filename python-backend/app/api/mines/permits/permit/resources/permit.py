@@ -10,7 +10,7 @@ from app.api.mines.mine.models.mine import Mine
 from app.api.parties.party.models.party import Party
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.extensions import api, db
-from app.api.utils.access_decorators import requires_role_mine_view, requires_role_mine_create
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_create
 from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.mines.permits.response_models import PERMIT_MODEL
 
@@ -43,11 +43,13 @@ class PermitListResource(Resource, UserMixin):
         type=str,
         location='json',
         help='Status of the permit being added.')
-    parser.add_argument('description', type=str, location='json', help='Permit description')
-    parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
+    parser.add_argument('description', type=str,
+                        location='json', help='Permit description')
+    parser.add_argument('uploadedFiles', type=list,
+                        location='json', store_missing=False)
 
     @api.doc(params={'mine_guid': 'mine_guid to filter on'})
-    @requires_role_mine_view
+    @requires_role_view_all
     @api.marshal_with(PERMIT_MODEL, envelope='records', code=200)
     def get(self, mine_guid):
         results = Permit.find_by_mine_guid(mine_guid)
@@ -61,7 +63,8 @@ class PermitListResource(Resource, UserMixin):
 
         mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:
-            raise NotFound('There was no mine found with the provided mine_guid.')
+            raise NotFound(
+                'There was no mine found with the provided mine_guid.')
 
         party = Party.find_by_party_guid(data.get('permittee_party_guid'))
         if not party:
@@ -97,7 +100,8 @@ class PermitListResource(Resource, UserMixin):
         db.session.commit()
 
         permittee = MinePartyAppointment.create(
-            mine.mine_guid, data.get('permittee_party_guid'), 'PMT', datetime.utcnow(), None,
+            mine.mine_guid, data.get(
+                'permittee_party_guid'), 'PMT', datetime.utcnow(), None,
             self.get_user_info(), permit.permit_guid, True)
         db.session.commit()
 
@@ -143,10 +147,11 @@ class PermitResource(Resource, UserMixin):
         store_missing=False)
     parser.add_argument(
         'description', type=str, location='json', help='Permit description', store_missing=False)
-    parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
+    parser.add_argument('uploadedFiles', type=list,
+                        location='json', store_missing=False)
 
     @api.doc(params={'permit_guid': 'Permit guid.'})
-    @requires_role_mine_view
+    @requires_role_view_all
     @api.marshal_with(PERMIT_MODEL, code=200)
     def get(self, permit_guid, mine_guid):
         permit = Permit.find_by_permit_guid_or_no(permit_guid)
