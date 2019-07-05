@@ -309,25 +309,20 @@ export class MineHeader extends Component {
                   <img src={SUBSCRIBE} alt="SUBSCRIBE" />
                 </Tooltip>
               )}
-              <AuthorizationWrapper
-                permission={Permission.EDIT_MINES}
-                isMajorMine={this.props.mine.major_mine_ind}
+              <Dropdown
+                className="full-height full-mobile"
+                overlay={menu}
+                placement="bottomLeft"
+                onVisibleChange={this.handleVisibleChange}
+                visible={this.state.menuVisible}
               >
-                <Dropdown
-                  className="full-height full-mobile"
-                  overlay={menu}
-                  placement="bottomLeft"
-                  onVisibleChange={this.handleVisibleChange}
-                  visible={this.state.menuVisible}
-                >
-                  <Button type="primary">
-                    <div className="padding-small">
-                      <img className="padding-small--right" src={EDIT} alt="Add/Edit" />
-                      Add/Edit
-                    </div>
-                  </Button>
-                </Dropdown>
-              </AuthorizationWrapper>
+                <Button type="primary">
+                  <div className="padding-small">
+                    <img className="padding-small--right" src={EDIT} alt="Add/Edit" />
+                    Add/Edit
+                  </div>
+                </Button>
+              </Dropdown>
             </div>
           </div>
           <Divider className="custom-large-divider" />
