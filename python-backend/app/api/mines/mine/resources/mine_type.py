@@ -44,7 +44,7 @@ class MineTypeListResource(Resource, UserMixin):
 
 class MineTypeResource(Resource, UserMixin):
     @api.doc(description='Deletes the mine type provided.')
-    @api.response(204, 'Successfully Deleted')
+    @api.response(204, 'Successfully deleted.')
     @requires_role_mine_create
     def delete(self, mine_type_guid):
 

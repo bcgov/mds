@@ -10,7 +10,7 @@ const permitReducer = (state = initialState, action) => {
     case actionTypes.STORE_PERMITS:
       return {
         ...state,
-        permits: action.payload,
+        permits: action.payload.records,
       };
     default:
       return state;
