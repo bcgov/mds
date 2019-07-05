@@ -170,6 +170,7 @@ ShallowWrapper {
             ]
           }
           openMineIncidentModal={[Function]}
+          openViewMineIncidentModal={[Function]}
         />,
       ],
     },
@@ -252,6 +253,7 @@ ShallowWrapper {
             },
           ],
           "openMineIncidentModal": [Function],
+          "openViewMineIncidentModal": [Function],
         },
         "ref": null,
         "rendered": null,
@@ -311,6 +313,7 @@ ShallowWrapper {
               ]
             }
             openMineIncidentModal={[Function]}
+            openViewMineIncidentModal={[Function]}
           />,
         ],
       },
@@ -393,6 +396,7 @@ ShallowWrapper {
               },
             ],
             "openMineIncidentModal": [Function],
+            "openViewMineIncidentModal": [Function],
           },
           "ref": null,
           "rendered": null,
