@@ -233,10 +233,6 @@ class MineIncidentResource(Resource, UserMixin):
 
         data = self.parser.parse_args()
 
-        # for recommendation in data.get('recommendations'):
-        #     new_recommendation = MineIncidentRecommendation.create(recommendation['recommendation'])
-        #     new_recommendation.save()
-
         do_sub_codes = []
         if data['determination_type_code'] == 'DO':
             do_sub_codes = data['dangerous_occurrence_subparagraph_ids']
