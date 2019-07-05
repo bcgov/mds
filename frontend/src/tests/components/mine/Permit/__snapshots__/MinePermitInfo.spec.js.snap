@@ -9,9 +9,7 @@ ShallowWrapper {
       [MockFunction] {
         "calls": Array [
           Array [
-            Object {
-              "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-            },
+            "18133c75-49ad-4101-85f3-a43e35ae989a",
           ],
         ],
       }
