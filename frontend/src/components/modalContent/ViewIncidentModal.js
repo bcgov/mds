@@ -19,6 +19,14 @@ const propTypes = {
 };
 
 export class ViewVarianceModal extends Component {
+  state = { recommendationsExpanded: false };
+
+  toggleRecommendations = () => {
+    this.setState((prevState) => {
+      recommendationsExpanded: !prevState.recommendationsExpanded;
+    });
+  };
+
   renderInitialDetails = () => {
     const formattedPhoneNo = this.props.incident.reported_by_phone_ext
       ? `${this.props.incident.reported_by_phone_no} ext: ${
@@ -82,13 +90,13 @@ export class ViewVarianceModal extends Component {
         </div>
         <div className="inline-flex padding-small">
           <p className="field-title">Number of fatalities</p>
-          <p>{this.props.incident.number_of_fatalities || Strings.EMPTY_FIELD}</p>
+          <p>{this.props.incident.number_of_fatalities}</p>
         </div>
 
         <div>
           <div className="inline-flex padding-small">
             <p className="field-title">Number of injuries</p>
-            <p>{this.props.incident.number_of_injuries || Strings.EMPTY_FIELD}</p>
+            <p>{this.props.incident.number_of_injuries}</p>
           </div>
           <div className="inline-flex padding-small">
             <p className="field-title">Were emergency services called?</p>
@@ -162,9 +170,12 @@ export class ViewVarianceModal extends Component {
         <div className="padding-small">
           <p className="field-title">Mine managers recommendations</p>
           {this.props.incident.recommendations.length >= 1 ? (
-            <div className="block">
+            <div className={this.state.recommendationsExpanded ? "block" : "collapsed-container"}>
               {this.props.incident.recommendations.map(({ recommendation }) => (
-                <p>{recommendation}</p>
+                <div>
+                  <p>{recommendation}</p>
+                  <br />
+                </div>
               ))}
             </div>
           ) : (
@@ -185,7 +196,7 @@ export class ViewVarianceModal extends Component {
   renderFinalDocuments = () => (
     <div>
       <h5>Final Investigation Report Documents</h5>
-      <DocumentTable documents={[]} isViewOnly />
+      <DocumentTable documents={this.props.incident.documents} isViewOnly />
       <br />
     </div>
   );
