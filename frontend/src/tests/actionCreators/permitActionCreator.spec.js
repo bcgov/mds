@@ -31,12 +31,12 @@ describe("`createPermit` action creator", () => {
   const permit_no = "MX-12315";
   const mine_guid = "12345-6789";
   const permit_status_code = "O";
-  const url = ENVIRONMENT.apiUrl + API.PERMIT();
-  const mockPayload = { mine_guid, permit_no, permit_status_code };
+  const url = ENVIRONMENT.apiUrl + API.PERMITS(mine_guid);
+  const mockPayload = { permit_no, permit_status_code };
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPost(url, mockPayload).reply(200, mockResponse);
-    return createPermit(mockPayload)(dispatch).then(() => {
+    return createPermit(mine_guid, mockPayload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -45,7 +45,7 @@ describe("`createPermit` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPost(url).reply(400, MOCK.ERROR);
-    return createPermit({})(dispatch).then(() => {
+    return createPermit(mine_guid)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -54,11 +54,12 @@ describe("`createPermit` action creator", () => {
 });
 
 describe("`fetchPermits` action creator", () => {
-  const url = ENVIRONMENT.apiUrl + API.PERMIT({});
+  const mine_guid = "12345-6789";
+  const url = ENVIRONMENT.apiUrl + API.PERMITS(mine_guid);
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchPermits()(dispatch).then(() => {
+    return fetchPermits(mine_guid)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(5);
@@ -67,7 +68,7 @@ describe("`fetchPermits` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
-    return fetchPermits()(dispatch).then(() => {
+    return fetchPermits(mine_guid)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -76,8 +77,9 @@ describe("`fetchPermits` action creator", () => {
 });
 
 describe("`updatePermit` action creator", () => {
+  const mine_guid = "12345-6789";
   const permit_guid = "12345-6789";
-  const url = `${ENVIRONMENT.apiUrl}${API.PERMIT()}/${permit_guid}`;
+  const url = `${ENVIRONMENT.apiUrl}${API.PERMITS(mine_guid)}/${permit_guid}`;
 
   const permit_status_code = "C";
   const description = "test description";
@@ -86,7 +88,7 @@ describe("`updatePermit` action creator", () => {
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPut(url, mockPayload).reply(200, mockResponse);
-    return updatePermit(permit_guid, mockPayload)(dispatch).then(() => {
+    return updatePermit(mine_guid, permit_guid, mockPayload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -95,7 +97,7 @@ describe("`updatePermit` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPut(url).reply(400, MOCK.ERROR);
-    return updatePermit(permit_guid, mockPayload)(dispatch).then(() => {
+    return updatePermit(mine_guid, permit_guid, mockPayload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -104,15 +106,16 @@ describe("`updatePermit` action creator", () => {
 });
 
 describe("`createPermitAmendment` action creator", () => {
+  const mine_guid = "12345-6789";
   const permit_guid = "12345-6789";
-  const url = `${ENVIRONMENT.apiUrl}${API.PERMITAMENDMENTS(permit_guid)}`;
+  const url = `${ENVIRONMENT.apiUrl}${API.PERMITAMENDMENTS(mine_guid, permit_guid)}`;
 
   const issue_date = "2001-01-01";
   const mockPayload = { issue_date };
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPost(url, mockPayload).reply(200, mockResponse);
-    return createPermitAmendment(permit_guid, mockPayload)(dispatch).then(() => {
+    return createPermitAmendment(mine_guid, permit_guid, mockPayload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -121,7 +124,7 @@ describe("`createPermitAmendment` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPost(url).reply(400, MOCK.ERROR);
-    return createPermitAmendment(permit_guid, mockPayload)(dispatch).then(() => {
+    return createPermitAmendment(mine_guid, permit_guid, mockPayload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -130,16 +133,24 @@ describe("`createPermitAmendment` action creator", () => {
 });
 
 describe("`updatePermitAmendment` action creator", () => {
+  const mineGuid = "12345-6789";
+  const permitGuid = "123432";
   const permitAmdendmentGuid = "12345-6789";
   const issue_date = "2001-01-01";
   const description = "Test description";
 
-  const url = `${ENVIRONMENT.apiUrl}${API.PERMITAMENDMENT(permitAmdendmentGuid)}`;
+  const url = `${ENVIRONMENT.apiUrl}${API.PERMITAMENDMENT(
+    mineGuid,
+    permitGuid,
+    permitAmdendmentGuid
+  )}`;
   const mockPayload = { issue_date, description };
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPut(url, mockPayload).reply(200, mockResponse);
-    return updatePermitAmendment(permitAmdendmentGuid, mockPayload)(dispatch).then(() => {
+    return updatePermitAmendment(mineGuid, permitGuid, permitAmdendmentGuid, mockPayload)(
+      dispatch
+    ).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -148,7 +159,9 @@ describe("`updatePermitAmendment` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPut(url).reply(400, MOCK.ERROR);
-    return updatePermitAmendment(permitAmdendmentGuid, mockPayload)(dispatch).then(() => {
+    return updatePermitAmendment(mineGuid, permitGuid, permitAmdendmentGuid, mockPayload)(
+      dispatch
+    ).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -157,17 +170,23 @@ describe("`updatePermitAmendment` action creator", () => {
 });
 
 describe("`removePermitAmendmentDocument` action creator", () => {
+  const mineGuid = "12345-6789";
+  const permitGuid = "12345-6789";
   const permitAmdendmentGuid = "12345-6789";
   const documentGuid = "98765-4321";
 
   const url = `${ENVIRONMENT.apiUrl}${API.PERMITAMENDMENTDOCUMENT(
+    mineGuid,
+    permitGuid,
     permitAmdendmentGuid,
     documentGuid
   )}`;
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onDelete(url).reply(200, mockResponse);
-    return removePermitAmendmentDocument(permitAmdendmentGuid, documentGuid)(dispatch).then(() => {
+    return removePermitAmendmentDocument(mineGuid, permitGuid, permitAmdendmentGuid, documentGuid)(
+      dispatch
+    ).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -176,7 +195,9 @@ describe("`removePermitAmendmentDocument` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onDelete(url).reply(400, MOCK.ERROR);
-    return removePermitAmendmentDocument(permitAmdendmentGuid, documentGuid)(dispatch).then(() => {
+    return removePermitAmendmentDocument(mineGuid, permitGuid, permitAmdendmentGuid, documentGuid)(
+      dispatch
+    ).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
