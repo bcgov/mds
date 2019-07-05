@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -19,6 +18,11 @@ import { formatTime, formatDate } from "@/utils/helpers";
 const propTypes = {
   closeModal: PropTypes.func.isRequired,
   incident: CustomPropTypes.incident.isRequired,
+  incidentStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  inspectorsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  incidentDeterminationHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  incidentFollowupActionHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export class ViewVarianceModal extends Component {
@@ -185,7 +189,7 @@ export class ViewVarianceModal extends Component {
         <div className="padding-small">
           <p className="field-title">Mine managers recommendations</p>
           {this.props.incident.recommendations.length >= 1 ? (
-            <div>
+            <div className="inline-flex">
               <div className={this.state.recommendationsExpanded ? "block" : "collapsed-container"}>
                 {this.props.incident.recommendations.map(({ recommendation }) => (
                   <p>- {recommendation}</p>
@@ -254,7 +258,6 @@ export class ViewVarianceModal extends Component {
   ];
 
   render() {
-    console.log(this.props.incident);
     return (
       <div>
         {this.renderInitialDetails()}
