@@ -171,10 +171,11 @@ class DocumentManagerResource(Resource):
         if not doc:
             raise NotFound('Could not find the document corresponding to the token')
 
+        not_pdf = '.pdf' not in doc.file_display_name.lower()
         return send_file(
             filename_or_fp=doc.full_storage_path,
             attachment_filename=doc.file_display_name,
-            as_attachment=True)
+            as_attachment=not_pdf)
 
     def options(self, document_guid):
         response = make_response('', 200)
