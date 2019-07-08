@@ -224,7 +224,7 @@ app {
                             'ENVIRONMENT_FRIENDLY_NAME':"BC Mines Digital Services (DEV)",
                             'DATABASE_SERVICE_NAME':"mds-postgresql${vars.deployment.suffix}",
                             'NFS_VOLUME_IDENTIFIER':"bk-empr-mds-dev-rziu7r9a88e7",
-                            'VERIFICATION_VOLUME_SIZE':"${vars.BACKUP_VERIFICATION_PVC_SIZE}"
+                            'VERIFICATION_VOLUME_SIZE':"1Gi"
                     ]
                 ]
         ]
