@@ -3,9 +3,9 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import { Menu, Divider, Button, Dropdown, Tag, Popover, Popconfirm, Tooltip } from "antd";
 import MineHeaderMap from "@/components/maps/MineHeaderMap";
 
-import { Menu, Divider, Button, Dropdown, Tag, Popover, Popconfirm, Tooltip } from "antd";
 import {
   ELLIPSE,
   BRAND_PENCIL,
@@ -161,7 +161,7 @@ export class MineHeader extends Component {
     const menu = (
       <Menu>
         <AuthorizationWrapper
-          permission={Permission.CREATE}
+          permission={Permission.EDIT_MINES}
           isMajorMine={this.props.mine.major_mine_ind}
         >
           <Menu.Item onClick={this.handleMenuClick}>
@@ -186,7 +186,7 @@ export class MineHeader extends Component {
           </Menu.Item>
         </AuthorizationWrapper>
         <AuthorizationWrapper
-          permission={Permission.CREATE}
+          permission={Permission.EDIT_MINES}
           isMajorMine={this.props.mine.major_mine_ind}
         >
           <Menu.Item onClick={this.handleMenuClick}>

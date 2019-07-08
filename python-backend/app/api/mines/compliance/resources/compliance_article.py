@@ -1,6 +1,6 @@
 from flask_restplus import Resource, fields
 from app.extensions import api
-from ....utils.access_decorators import (requires_any_of, MINE_VIEW, MINESPACE_PROPONENT)
+from ....utils.access_decorators import (requires_any_of, VIEW_ALL, MINESPACE_PROPONENT)
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from ..models.compliance_article import ComplianceArticle
 from ..response_models import COMPLIANCE_ARTICLE_MODEL
@@ -10,8 +10,8 @@ class ComplianceArticleResource(Resource, UserMixin, ErrorMixin):
     @api.doc(
         description=
         'This endpoint returns a list of all possible compliance codes and their descriptions.')
-    @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
-    @api.marshal_with(COMPLIANCE_ARTICLE_MODEL, code=200, envelope='records')
+    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
+    @api.marshal_with(compliance_article_model, code=200, envelope='records')
     def get(self):
         records = ComplianceArticle.query.all()
         if records is None:

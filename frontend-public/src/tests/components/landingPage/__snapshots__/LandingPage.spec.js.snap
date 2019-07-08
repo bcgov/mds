@@ -25,21 +25,11 @@ ShallowWrapper {
              Welcome to MineSpace, an online portal for BC mines
           </h1>
           <p>
-            The Mines Digital Service (MDS) is a digital product being iteratively developed and designed to hold mine related data that is user-friendly, trustworthy and reliable. The product will eventually replace the existing internal Mine Management System used by the Ministry and be used to surface information to the
-             
-            <a
-              className="underline"
-              href="http://mines.nrs.gov.bc.ca/"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              BC Mine Information website
-            </a>
-            . The MDS project was started in July to help inspectors manage the mines they work with by replacing existing legacy systems and adding new functionality.
+            The Mines Digital Service (MDS) is a digital product being iteratively developed and designed to hold mine-related data that is user-friendly, trustworthy and reliable. The product will eventually replace the existing internal Mine Management System used by the Ministry and be used to surface information to the BC Mine Information website. The MDS project was started in July 2018 to help inspectors manage the mines they work with by replacing existing legacy systems and adding new functionality.
           </p>
           <br />
           <p>
-            MineSpace is a pilot project as a part of the MDS digital product. MineSpace will be the portal through which mines can interact with the Ministry. In time, mines will be able to submit documentation to the ministry, as well as check the status of reporting requirements, and documentation that they have submitted to the ministry for review. The pilot project will run in the spring of 2019 with full integration in early 2020.
+            MineSpace is a piece of the Mines Digital Services Product that provides a link between the mine proponent and the Ministry. It is the online portal through which mines can interact with the Ministry by submitting reports and information as required by the Health, Safety, and Reclamation Code. MineSpace will enable mines to check the status of their reporting requirements and see the documentation that they have submitted to the Ministry for review. The portal is live and is expanding throughout 2019.
           </p>
         </div>,
         <Divider
@@ -57,78 +47,61 @@ ShallowWrapper {
             className="flex-3"
           >
             <h1
-              className="large-margin-bot"
+              className="medium-margin-bot"
             >
-              Participate in the pilot project
+              Reporting templates
             </h1>
+            <p>
+              The Ministry is developing online templates to facilitate the submission of compliance information for Health and Safety, Geotechnical, Reclamation, and Geoscience. These templates will address Ministry requirements for Variance Applications, Incident Reporting, and the Tailings Storage Facility (TSF) Registry.
+            </p>
+            <br />
             <h2
               className="medium-margin-bot"
             >
-              Requirements
+              Tailings storage facilities and dams registry
             </h2>
             <p>
-              You can participate if you:
+              Register of Tailings Storage Facilities and Dams (HSRC, 2016. 10.4.3). The registry should contain all tailings and water retaining structures on site, regardless of whether they are classified as dams or if they are currently operating or dormant structures.
             </p>
-            <ul
-              className="indent-list-padding"
+            <p
+              style={
+                Object {
+                  "borderLeft": "4px solid #A09595",
+                  "color": "#6B6363",
+                  "margin": "1em 0",
+                  "paddingLeft": ".8em",
+                }
+              }
             >
-              <li>
-                are a BC mine with a tailings storage facility
-              </li>
-              <li>
-                will be submitting code-required reports for 2018
-              </li>
-              <li>
-                have a valid Business BCeID for your company
-              </li>
-              <li>
-                 contact the MDS team at mds@gov.bc.ca
-              </li>
-            </ul>
-            <h2
-              className="medium-margin-bot"
-            >
-              Steps
-            </h2>
-            <ol
-              className="list-padding-left"
-            >
-              <li>
-                If you have a valid Business BCeID, add all of the employees and delegates who will be accessing the system to your account.
-              </li>
-              <li>
-                Send an email to mds@gov.bc.ca with the following information:
-                <ul
-                  className="embeded-list-padding"
+              The Register of Tailing Storage Facilities and Dams document will be available for download from here in the near future. Please check back later for more information.
+            </p>
+            <p>
+              <strong>
+                Please submit completed registry spreadsheets to
+                 
+                <a
+                  mailto="PERMRECL@gov.bc.ca"
                 >
-                  <li>
-                    name of each employee or delegate you have added
-                  </li>
-                  <li>
-                    BCeID email address of each employee or delegate
-                  </li>
-                  <li>
-                    name and number of the mine(s) for which the employee or delegate will be submitting info
-                  </li>
-                </ul>
-              </li>
-              <li>
-                Wait for an email confirming that your employees/delegates have been added to MineSpace.
-              </li>
-              <li>
-                Log in to the system.
-              </li>
-              <li>
-                If you run into any issues before or during the submission process, please contact us.
-              </li>
-            </ol>
+                  PERMRECL@gov.bc.ca
+                </a>
+                .
+              </strong>
+            </p>
             <h1
               className="large-margin-top medium-margin-bot"
             >
-              Prepare for next year’s submission period
+              2019 pilot project
             </h1>
             <p>
-              The pilot represents an initial step in mines interacting with Ministry through an online portal. We will require all mines to submit their required reporting through MineSpace starting in 2020, including variance requests, dangerous occurrence reports, and compliance information. To use this system you will need to get a business BCeID, and verify your existing credentials if you have not already already done so. This process can take time and it is best to begin ahead of time.
+              In March 2019, 6 mines were asked to participate in a pilot project to demonstrate how document submission would work in MineSpace. The pilot focused on the 2018 TSF annual reporting period and asked mines to submit required TSF reports through the MineSpace portal. During the pilot, an additional 26 mines were recruited by word of mouth and chose to participate. Following the pilot project, feedback from the participating mines showed that document submission through MineSpace was a success. It resulted in a total of 32 mines voluntarily logging into MineSpace and submitting 120 required TSF reports. The submitted TSF reports were then instantly made available for Ministry staff to review - making it easier for both mines and Ministry staff to track document submission status.
+            </p>
+            <h1
+              className="large-margin-top medium-margin-bot"
+            >
+              Prepare for next year's submission period
+            </h1>
+            <p>
+              The pilot represents an initial step in mines interacting with Ministry through an online portal. We will require all mines to submit their required reporting through MineSpace starting in 2020, including variance requests, dangerous occurrence reports, and compliance information. To use this system you will need to get a business BCeID, and verify your existing credentials if you have not already already done so. This process can take time and it is best to begin as soon as possible.
             </p>
           </div>
           <div
@@ -198,21 +171,11 @@ ShallowWrapper {
                Welcome to MineSpace, an online portal for BC mines
             </h1>,
             <p>
-              The Mines Digital Service (MDS) is a digital product being iteratively developed and designed to hold mine related data that is user-friendly, trustworthy and reliable. The product will eventually replace the existing internal Mine Management System used by the Ministry and be used to surface information to the
-               
-              <a
-                className="underline"
-                href="http://mines.nrs.gov.bc.ca/"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                BC Mine Information website
-              </a>
-              . The MDS project was started in July to help inspectors manage the mines they work with by replacing existing legacy systems and adding new functionality.
+              The Mines Digital Service (MDS) is a digital product being iteratively developed and designed to hold mine-related data that is user-friendly, trustworthy and reliable. The product will eventually replace the existing internal Mine Management System used by the Ministry and be used to surface information to the BC Mine Information website. The MDS project was started in July 2018 to help inspectors manage the mines they work with by replacing existing legacy systems and adding new functionality.
             </p>,
             <br />,
             <p>
-              MineSpace is a pilot project as a part of the MDS digital product. MineSpace will be the portal through which mines can interact with the Ministry. In time, mines will be able to submit documentation to the ministry, as well as check the status of reporting requirements, and documentation that they have submitted to the ministry for review. The pilot project will run in the spring of 2019 with full integration in early 2020.
+              MineSpace is a piece of the Mines Digital Services Product that provides a link between the mine proponent and the Ministry. It is the online portal through which mines can interact with the Ministry by submitting reports and information as required by the Health, Safety, and Reclamation Code. MineSpace will enable mines to check the status of their reporting requirements and see the documentation that they have submitted to the Ministry for review. The portal is live and is expanding throughout 2019.
             </p>,
           ],
         },
@@ -235,41 +198,10 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "host",
             "props": Object {
-              "children": Array [
-                "The Mines Digital Service (MDS) is a digital product being iteratively developed and designed to hold mine related data that is user-friendly, trustworthy and reliable. The product will eventually replace the existing internal Mine Management System used by the Ministry and be used to surface information to the",
-                " ",
-                <a
-                  className="underline"
-                  href="http://mines.nrs.gov.bc.ca/"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  BC Mine Information website
-                </a>,
-                ". The MDS project was started in July to help inspectors manage the mines they work with by replacing existing legacy systems and adding new functionality.",
-              ],
+              "children": "The Mines Digital Service (MDS) is a digital product being iteratively developed and designed to hold mine-related data that is user-friendly, trustworthy and reliable. The product will eventually replace the existing internal Mine Management System used by the Ministry and be used to surface information to the BC Mine Information website. The MDS project was started in July 2018 to help inspectors manage the mines they work with by replacing existing legacy systems and adding new functionality.",
             },
             "ref": null,
-            "rendered": Array [
-              "The Mines Digital Service (MDS) is a digital product being iteratively developed and designed to hold mine related data that is user-friendly, trustworthy and reliable. The product will eventually replace the existing internal Mine Management System used by the Ministry and be used to surface information to the",
-              " ",
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "host",
-                "props": Object {
-                  "children": "BC Mine Information website",
-                  "className": "underline",
-                  "href": "http://mines.nrs.gov.bc.ca/",
-                  "rel": "noopener noreferrer",
-                  "target": "_blank",
-                },
-                "ref": null,
-                "rendered": "BC Mine Information website",
-                "type": "a",
-              },
-              ". The MDS project was started in July to help inspectors manage the mines they work with by replacing existing legacy systems and adding new functionality.",
-            ],
+            "rendered": "The Mines Digital Service (MDS) is a digital product being iteratively developed and designed to hold mine-related data that is user-friendly, trustworthy and reliable. The product will eventually replace the existing internal Mine Management System used by the Ministry and be used to surface information to the BC Mine Information website. The MDS project was started in July 2018 to help inspectors manage the mines they work with by replacing existing legacy systems and adding new functionality.",
             "type": "p",
           },
           Object {
@@ -286,10 +218,10 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "host",
             "props": Object {
-              "children": "MineSpace is a pilot project as a part of the MDS digital product. MineSpace will be the portal through which mines can interact with the Ministry. In time, mines will be able to submit documentation to the ministry, as well as check the status of reporting requirements, and documentation that they have submitted to the ministry for review. The pilot project will run in the spring of 2019 with full integration in early 2020.",
+              "children": "MineSpace is a piece of the Mines Digital Services Product that provides a link between the mine proponent and the Ministry. It is the online portal through which mines can interact with the Ministry by submitting reports and information as required by the Health, Safety, and Reclamation Code. MineSpace will enable mines to check the status of their reporting requirements and see the documentation that they have submitted to the Ministry for review. The portal is live and is expanding throughout 2019.",
             },
             "ref": null,
-            "rendered": "MineSpace is a pilot project as a part of the MDS digital product. MineSpace will be the portal through which mines can interact with the Ministry. In time, mines will be able to submit documentation to the ministry, as well as check the status of reporting requirements, and documentation that they have submitted to the ministry for review. The pilot project will run in the spring of 2019 with full integration in early 2020.",
+            "rendered": "MineSpace is a piece of the Mines Digital Services Product that provides a link between the mine proponent and the Ministry. It is the online portal through which mines can interact with the Ministry by submitting reports and information as required by the Health, Safety, and Reclamation Code. MineSpace will enable mines to check the status of their reporting requirements and see the documentation that they have submitted to the Ministry for review. The portal is live and is expanding throughout 2019.",
             "type": "p",
           },
         ],
@@ -319,78 +251,61 @@ ShallowWrapper {
               className="flex-3"
             >
               <h1
-                className="large-margin-bot"
+                className="medium-margin-bot"
               >
-                Participate in the pilot project
+                Reporting templates
               </h1>
+              <p>
+                The Ministry is developing online templates to facilitate the submission of compliance information for Health and Safety, Geotechnical, Reclamation, and Geoscience. These templates will address Ministry requirements for Variance Applications, Incident Reporting, and the Tailings Storage Facility (TSF) Registry.
+              </p>
+              <br />
               <h2
                 className="medium-margin-bot"
               >
-                Requirements
+                Tailings storage facilities and dams registry
               </h2>
               <p>
-                You can participate if you:
+                Register of Tailings Storage Facilities and Dams (HSRC, 2016. 10.4.3). The registry should contain all tailings and water retaining structures on site, regardless of whether they are classified as dams or if they are currently operating or dormant structures.
               </p>
-              <ul
-                className="indent-list-padding"
+              <p
+                style={
+                  Object {
+                    "borderLeft": "4px solid #A09595",
+                    "color": "#6B6363",
+                    "margin": "1em 0",
+                    "paddingLeft": ".8em",
+                  }
+                }
               >
-                <li>
-                  are a BC mine with a tailings storage facility
-                </li>
-                <li>
-                  will be submitting code-required reports for 2018
-                </li>
-                <li>
-                  have a valid Business BCeID for your company
-                </li>
-                <li>
-                   contact the MDS team at mds@gov.bc.ca
-                </li>
-              </ul>
-              <h2
-                className="medium-margin-bot"
-              >
-                Steps
-              </h2>
-              <ol
-                className="list-padding-left"
-              >
-                <li>
-                  If you have a valid Business BCeID, add all of the employees and delegates who will be accessing the system to your account.
-                </li>
-                <li>
-                  Send an email to mds@gov.bc.ca with the following information:
-                  <ul
-                    className="embeded-list-padding"
+                The Register of Tailing Storage Facilities and Dams document will be available for download from here in the near future. Please check back later for more information.
+              </p>
+              <p>
+                <strong>
+                  Please submit completed registry spreadsheets to
+                   
+                  <a
+                    mailto="PERMRECL@gov.bc.ca"
                   >
-                    <li>
-                      name of each employee or delegate you have added
-                    </li>
-                    <li>
-                      BCeID email address of each employee or delegate
-                    </li>
-                    <li>
-                      name and number of the mine(s) for which the employee or delegate will be submitting info
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  Wait for an email confirming that your employees/delegates have been added to MineSpace.
-                </li>
-                <li>
-                  Log in to the system.
-                </li>
-                <li>
-                  If you run into any issues before or during the submission process, please contact us.
-                </li>
-              </ol>
+                    PERMRECL@gov.bc.ca
+                  </a>
+                  .
+                </strong>
+              </p>
               <h1
                 className="large-margin-top medium-margin-bot"
               >
-                Prepare for next year’s submission period
+                2019 pilot project
               </h1>
               <p>
-                The pilot represents an initial step in mines interacting with Ministry through an online portal. We will require all mines to submit their required reporting through MineSpace starting in 2020, including variance requests, dangerous occurrence reports, and compliance information. To use this system you will need to get a business BCeID, and verify your existing credentials if you have not already already done so. This process can take time and it is best to begin ahead of time.
+                In March 2019, 6 mines were asked to participate in a pilot project to demonstrate how document submission would work in MineSpace. The pilot focused on the 2018 TSF annual reporting period and asked mines to submit required TSF reports through the MineSpace portal. During the pilot, an additional 26 mines were recruited by word of mouth and chose to participate. Following the pilot project, feedback from the participating mines showed that document submission through MineSpace was a success. It resulted in a total of 32 mines voluntarily logging into MineSpace and submitting 120 required TSF reports. The submitted TSF reports were then instantly made available for Ministry staff to review - making it easier for both mines and Ministry staff to track document submission status.
+              </p>
+              <h1
+                className="large-margin-top medium-margin-bot"
+              >
+                Prepare for next year's submission period
+              </h1>
+              <p>
+                The pilot represents an initial step in mines interacting with Ministry through an online portal. We will require all mines to submit their required reporting through MineSpace starting in 2020, including variance requests, dangerous occurrence reports, and compliance information. To use this system you will need to get a business BCeID, and verify your existing credentials if you have not already already done so. This process can take time and it is best to begin as soon as possible.
               </p>
             </div>,
             <div
@@ -455,78 +370,61 @@ ShallowWrapper {
             "props": Object {
               "children": Array [
                 <h1
-                  className="large-margin-bot"
+                  className="medium-margin-bot"
                 >
-                  Participate in the pilot project
+                  Reporting templates
                 </h1>,
+                <p>
+                  The Ministry is developing online templates to facilitate the submission of compliance information for Health and Safety, Geotechnical, Reclamation, and Geoscience. These templates will address Ministry requirements for Variance Applications, Incident Reporting, and the Tailings Storage Facility (TSF) Registry.
+                </p>,
+                <br />,
                 <h2
                   className="medium-margin-bot"
                 >
-                  Requirements
+                  Tailings storage facilities and dams registry
                 </h2>,
                 <p>
-                  You can participate if you:
+                  Register of Tailings Storage Facilities and Dams (HSRC, 2016. 10.4.3). The registry should contain all tailings and water retaining structures on site, regardless of whether they are classified as dams or if they are currently operating or dormant structures.
                 </p>,
-                <ul
-                  className="indent-list-padding"
+                <p
+                  style={
+                    Object {
+                      "borderLeft": "4px solid #A09595",
+                      "color": "#6B6363",
+                      "margin": "1em 0",
+                      "paddingLeft": ".8em",
+                    }
+                  }
                 >
-                  <li>
-                    are a BC mine with a tailings storage facility
-                  </li>
-                  <li>
-                    will be submitting code-required reports for 2018
-                  </li>
-                  <li>
-                    have a valid Business BCeID for your company
-                  </li>
-                  <li>
-                     contact the MDS team at mds@gov.bc.ca
-                  </li>
-                </ul>,
-                <h2
-                  className="medium-margin-bot"
-                >
-                  Steps
-                </h2>,
-                <ol
-                  className="list-padding-left"
-                >
-                  <li>
-                    If you have a valid Business BCeID, add all of the employees and delegates who will be accessing the system to your account.
-                  </li>
-                  <li>
-                    Send an email to mds@gov.bc.ca with the following information:
-                    <ul
-                      className="embeded-list-padding"
+                  The Register of Tailing Storage Facilities and Dams document will be available for download from here in the near future. Please check back later for more information.
+                </p>,
+                <p>
+                  <strong>
+                    Please submit completed registry spreadsheets to
+                     
+                    <a
+                      mailto="PERMRECL@gov.bc.ca"
                     >
-                      <li>
-                        name of each employee or delegate you have added
-                      </li>
-                      <li>
-                        BCeID email address of each employee or delegate
-                      </li>
-                      <li>
-                        name and number of the mine(s) for which the employee or delegate will be submitting info
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    Wait for an email confirming that your employees/delegates have been added to MineSpace.
-                  </li>
-                  <li>
-                    Log in to the system.
-                  </li>
-                  <li>
-                    If you run into any issues before or during the submission process, please contact us.
-                  </li>
-                </ol>,
+                      PERMRECL@gov.bc.ca
+                    </a>
+                    .
+                  </strong>
+                </p>,
                 <h1
                   className="large-margin-top medium-margin-bot"
                 >
-                  Prepare for next year’s submission period
+                  2019 pilot project
                 </h1>,
                 <p>
-                  The pilot represents an initial step in mines interacting with Ministry through an online portal. We will require all mines to submit their required reporting through MineSpace starting in 2020, including variance requests, dangerous occurrence reports, and compliance information. To use this system you will need to get a business BCeID, and verify your existing credentials if you have not already already done so. This process can take time and it is best to begin ahead of time.
+                  In March 2019, 6 mines were asked to participate in a pilot project to demonstrate how document submission would work in MineSpace. The pilot focused on the 2018 TSF annual reporting period and asked mines to submit required TSF reports through the MineSpace portal. During the pilot, an additional 26 mines were recruited by word of mouth and chose to participate. Following the pilot project, feedback from the participating mines showed that document submission through MineSpace was a success. It resulted in a total of 32 mines voluntarily logging into MineSpace and submitting 120 required TSF reports. The submitted TSF reports were then instantly made available for Ministry staff to review - making it easier for both mines and Ministry staff to track document submission status.
+                </p>,
+                <h1
+                  className="large-margin-top medium-margin-bot"
+                >
+                  Prepare for next year's submission period
+                </h1>,
+                <p>
+                  The pilot represents an initial step in mines interacting with Ministry through an online portal. We will require all mines to submit their required reporting through MineSpace starting in 2020, including variance requests, dangerous occurrence reports, and compliance information. To use this system you will need to get a business BCeID, and verify your existing credentials if you have not already already done so. This process can take time and it is best to begin as soon as possible.
                 </p>,
               ],
               "className": "flex-3",
@@ -538,11 +436,11 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "host",
                 "props": Object {
-                  "children": "Participate in the pilot project",
-                  "className": "large-margin-bot",
+                  "children": "Reporting templates",
+                  "className": "medium-margin-bot",
                 },
                 "ref": null,
-                "rendered": "Participate in the pilot project",
+                "rendered": "Reporting templates",
                 "type": "h1",
               },
               Object {
@@ -550,11 +448,31 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "host",
                 "props": Object {
-                  "children": "Requirements",
+                  "children": "The Ministry is developing online templates to facilitate the submission of compliance information for Health and Safety, Geotechnical, Reclamation, and Geoscience. These templates will address Ministry requirements for Variance Applications, Incident Reporting, and the Tailings Storage Facility (TSF) Registry.",
+                },
+                "ref": null,
+                "rendered": "The Ministry is developing online templates to facilitate the submission of compliance information for Health and Safety, Geotechnical, Reclamation, and Geoscience. These templates will address Ministry requirements for Variance Applications, Incident Reporting, and the Tailings Storage Facility (TSF) Registry.",
+                "type": "p",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {},
+                "ref": null,
+                "rendered": null,
+                "type": "br",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": "Tailings storage facilities and dams registry",
                   "className": "medium-margin-bot",
                 },
                 "ref": null,
-                "rendered": "Requirements",
+                "rendered": "Tailings storage facilities and dams registry",
                 "type": "h2",
               },
               Object {
@@ -562,10 +480,10 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "host",
                 "props": Object {
-                  "children": "You can participate if you:",
+                  "children": "Register of Tailings Storage Facilities and Dams (HSRC, 2016. 10.4.3). The registry should contain all tailings and water retaining structures on site, regardless of whether they are classified as dams or if they are currently operating or dormant structures.",
                 },
                 "ref": null,
-                "rendered": "You can participate if you:",
+                "rendered": "Register of Tailings Storage Facilities and Dams (HSRC, 2016. 10.4.3). The registry should contain all tailings and water retaining structures on site, regardless of whether they are classified as dams or if they are currently operating or dormant structures.",
                 "type": "p",
               },
               Object {
@@ -573,263 +491,83 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "host",
                 "props": Object {
-                  "children": Array [
-                    <li>
-                      are a BC mine with a tailings storage facility
-                    </li>,
-                    <li>
-                      will be submitting code-required reports for 2018
-                    </li>,
-                    <li>
-                      have a valid Business BCeID for your company
-                    </li>,
-                    <li>
-                       contact the MDS team at mds@gov.bc.ca
-                    </li>,
-                  ],
-                  "className": "indent-list-padding",
+                  "children": "The Register of Tailing Storage Facilities and Dams document will be available for download from here in the near future. Please check back later for more information.",
+                  "style": Object {
+                    "borderLeft": "4px solid #A09595",
+                    "color": "#6B6363",
+                    "margin": "1em 0",
+                    "paddingLeft": ".8em",
+                  },
                 },
                 "ref": null,
-                "rendered": Array [
-                  Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "host",
-                    "props": Object {
-                      "children": "are a BC mine with a tailings storage facility",
-                    },
-                    "ref": null,
-                    "rendered": "are a BC mine with a tailings storage facility",
-                    "type": "li",
-                  },
-                  Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "host",
-                    "props": Object {
-                      "children": "will be submitting code-required reports for 2018",
-                    },
-                    "ref": null,
-                    "rendered": "will be submitting code-required reports for 2018",
-                    "type": "li",
-                  },
-                  Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "host",
-                    "props": Object {
-                      "children": "have a valid Business BCeID for your company",
-                    },
-                    "ref": null,
-                    "rendered": "have a valid Business BCeID for your company",
-                    "type": "li",
-                  },
-                  Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "host",
-                    "props": Object {
-                      "children": " contact the MDS team at mds@gov.bc.ca",
-                    },
-                    "ref": null,
-                    "rendered": " contact the MDS team at mds@gov.bc.ca",
-                    "type": "li",
-                  },
-                ],
-                "type": "ul",
+                "rendered": "The Register of Tailing Storage Facilities and Dams document will be available for download from here in the near future. Please check back later for more information.",
+                "type": "p",
               },
               Object {
                 "instance": null,
                 "key": undefined,
                 "nodeType": "host",
                 "props": Object {
-                  "children": "Steps",
-                  "className": "medium-margin-bot",
+                  "children": <strong>
+                    Please submit completed registry spreadsheets to
+                     
+                    <a
+                      mailto="PERMRECL@gov.bc.ca"
+                    >
+                      PERMRECL@gov.bc.ca
+                    </a>
+                    .
+                  </strong>,
                 },
                 "ref": null,
-                "rendered": "Steps",
-                "type": "h2",
-              },
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "host",
-                "props": Object {
-                  "children": Array [
-                    <li>
-                      If you have a valid Business BCeID, add all of the employees and delegates who will be accessing the system to your account.
-                    </li>,
-                    <li>
-                      Send an email to mds@gov.bc.ca with the following information:
-                      <ul
-                        className="embeded-list-padding"
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": Array [
+                      "Please submit completed registry spreadsheets to",
+                      " ",
+                      <a
+                        mailto="PERMRECL@gov.bc.ca"
                       >
-                        <li>
-                          name of each employee or delegate you have added
-                        </li>
-                        <li>
-                          BCeID email address of each employee or delegate
-                        </li>
-                        <li>
-                          name and number of the mine(s) for which the employee or delegate will be submitting info
-                        </li>
-                      </ul>
-                    </li>,
-                    <li>
-                      Wait for an email confirming that your employees/delegates have been added to MineSpace.
-                    </li>,
-                    <li>
-                      Log in to the system.
-                    </li>,
-                    <li>
-                      If you run into any issues before or during the submission process, please contact us.
-                    </li>,
-                  ],
-                  "className": "list-padding-left",
-                },
-                "ref": null,
-                "rendered": Array [
-                  Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "host",
-                    "props": Object {
-                      "children": "If you have a valid Business BCeID, add all of the employees and delegates who will be accessing the system to your account.",
-                    },
-                    "ref": null,
-                    "rendered": "If you have a valid Business BCeID, add all of the employees and delegates who will be accessing the system to your account.",
-                    "type": "li",
-                  },
-                  Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "host",
-                    "props": Object {
-                      "children": Array [
-                        "Send an email to mds@gov.bc.ca with the following information:",
-                        <ul
-                          className="embeded-list-padding"
-                        >
-                          <li>
-                            name of each employee or delegate you have added
-                          </li>
-                          <li>
-                            BCeID email address of each employee or delegate
-                          </li>
-                          <li>
-                            name and number of the mine(s) for which the employee or delegate will be submitting info
-                          </li>
-                        </ul>,
-                      ],
-                    },
-                    "ref": null,
-                    "rendered": Array [
-                      "Send an email to mds@gov.bc.ca with the following information:",
-                      Object {
-                        "instance": null,
-                        "key": undefined,
-                        "nodeType": "host",
-                        "props": Object {
-                          "children": Array [
-                            <li>
-                              name of each employee or delegate you have added
-                            </li>,
-                            <li>
-                              BCeID email address of each employee or delegate
-                            </li>,
-                            <li>
-                              name and number of the mine(s) for which the employee or delegate will be submitting info
-                            </li>,
-                          ],
-                          "className": "embeded-list-padding",
-                        },
-                        "ref": null,
-                        "rendered": Array [
-                          Object {
-                            "instance": null,
-                            "key": undefined,
-                            "nodeType": "host",
-                            "props": Object {
-                              "children": "name of each employee or delegate you have added",
-                            },
-                            "ref": null,
-                            "rendered": "name of each employee or delegate you have added",
-                            "type": "li",
-                          },
-                          Object {
-                            "instance": null,
-                            "key": undefined,
-                            "nodeType": "host",
-                            "props": Object {
-                              "children": "BCeID email address of each employee or delegate",
-                            },
-                            "ref": null,
-                            "rendered": "BCeID email address of each employee or delegate",
-                            "type": "li",
-                          },
-                          Object {
-                            "instance": null,
-                            "key": undefined,
-                            "nodeType": "host",
-                            "props": Object {
-                              "children": "name and number of the mine(s) for which the employee or delegate will be submitting info",
-                            },
-                            "ref": null,
-                            "rendered": "name and number of the mine(s) for which the employee or delegate will be submitting info",
-                            "type": "li",
-                          },
-                        ],
-                        "type": "ul",
-                      },
+                        PERMRECL@gov.bc.ca
+                      </a>,
+                      ".",
                     ],
-                    "type": "li",
                   },
-                  Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "host",
-                    "props": Object {
-                      "children": "Wait for an email confirming that your employees/delegates have been added to MineSpace.",
+                  "ref": null,
+                  "rendered": Array [
+                    "Please submit completed registry spreadsheets to",
+                    " ",
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": "PERMRECL@gov.bc.ca",
+                        "mailto": "PERMRECL@gov.bc.ca",
+                      },
+                      "ref": null,
+                      "rendered": "PERMRECL@gov.bc.ca",
+                      "type": "a",
                     },
-                    "ref": null,
-                    "rendered": "Wait for an email confirming that your employees/delegates have been added to MineSpace.",
-                    "type": "li",
-                  },
-                  Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "host",
-                    "props": Object {
-                      "children": "Log in to the system.",
-                    },
-                    "ref": null,
-                    "rendered": "Log in to the system.",
-                    "type": "li",
-                  },
-                  Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "host",
-                    "props": Object {
-                      "children": "If you run into any issues before or during the submission process, please contact us.",
-                    },
-                    "ref": null,
-                    "rendered": "If you run into any issues before or during the submission process, please contact us.",
-                    "type": "li",
-                  },
-                ],
-                "type": "ol",
+                    ".",
+                  ],
+                  "type": "strong",
+                },
+                "type": "p",
               },
               Object {
                 "instance": null,
                 "key": undefined,
                 "nodeType": "host",
                 "props": Object {
-                  "children": "Prepare for next year’s submission period",
+                  "children": "2019 pilot project",
                   "className": "large-margin-top medium-margin-bot",
                 },
                 "ref": null,
-                "rendered": "Prepare for next year’s submission period",
+                "rendered": "2019 pilot project",
                 "type": "h1",
               },
               Object {
@@ -837,10 +575,33 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "host",
                 "props": Object {
-                  "children": "The pilot represents an initial step in mines interacting with Ministry through an online portal. We will require all mines to submit their required reporting through MineSpace starting in 2020, including variance requests, dangerous occurrence reports, and compliance information. To use this system you will need to get a business BCeID, and verify your existing credentials if you have not already already done so. This process can take time and it is best to begin ahead of time.",
+                  "children": "In March 2019, 6 mines were asked to participate in a pilot project to demonstrate how document submission would work in MineSpace. The pilot focused on the 2018 TSF annual reporting period and asked mines to submit required TSF reports through the MineSpace portal. During the pilot, an additional 26 mines were recruited by word of mouth and chose to participate. Following the pilot project, feedback from the participating mines showed that document submission through MineSpace was a success. It resulted in a total of 32 mines voluntarily logging into MineSpace and submitting 120 required TSF reports. The submitted TSF reports were then instantly made available for Ministry staff to review - making it easier for both mines and Ministry staff to track document submission status.",
                 },
                 "ref": null,
-                "rendered": "The pilot represents an initial step in mines interacting with Ministry through an online portal. We will require all mines to submit their required reporting through MineSpace starting in 2020, including variance requests, dangerous occurrence reports, and compliance information. To use this system you will need to get a business BCeID, and verify your existing credentials if you have not already already done so. This process can take time and it is best to begin ahead of time.",
+                "rendered": "In March 2019, 6 mines were asked to participate in a pilot project to demonstrate how document submission would work in MineSpace. The pilot focused on the 2018 TSF annual reporting period and asked mines to submit required TSF reports through the MineSpace portal. During the pilot, an additional 26 mines were recruited by word of mouth and chose to participate. Following the pilot project, feedback from the participating mines showed that document submission through MineSpace was a success. It resulted in a total of 32 mines voluntarily logging into MineSpace and submitting 120 required TSF reports. The submitted TSF reports were then instantly made available for Ministry staff to review - making it easier for both mines and Ministry staff to track document submission status.",
+                "type": "p",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": "Prepare for next year's submission period",
+                  "className": "large-margin-top medium-margin-bot",
+                },
+                "ref": null,
+                "rendered": "Prepare for next year's submission period",
+                "type": "h1",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": "The pilot represents an initial step in mines interacting with Ministry through an online portal. We will require all mines to submit their required reporting through MineSpace starting in 2020, including variance requests, dangerous occurrence reports, and compliance information. To use this system you will need to get a business BCeID, and verify your existing credentials if you have not already already done so. This process can take time and it is best to begin as soon as possible.",
+                },
+                "ref": null,
+                "rendered": "The pilot represents an initial step in mines interacting with Ministry through an online portal. We will require all mines to submit their required reporting through MineSpace starting in 2020, including variance requests, dangerous occurrence reports, and compliance information. To use this system you will need to get a business BCeID, and verify your existing credentials if you have not already already done so. This process can take time and it is best to begin as soon as possible.",
                 "type": "p",
               },
             ],
@@ -1168,21 +929,11 @@ ShallowWrapper {
                Welcome to MineSpace, an online portal for BC mines
             </h1>
             <p>
-              The Mines Digital Service (MDS) is a digital product being iteratively developed and designed to hold mine related data that is user-friendly, trustworthy and reliable. The product will eventually replace the existing internal Mine Management System used by the Ministry and be used to surface information to the
-               
-              <a
-                className="underline"
-                href="http://mines.nrs.gov.bc.ca/"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                BC Mine Information website
-              </a>
-              . The MDS project was started in July to help inspectors manage the mines they work with by replacing existing legacy systems and adding new functionality.
+              The Mines Digital Service (MDS) is a digital product being iteratively developed and designed to hold mine-related data that is user-friendly, trustworthy and reliable. The product will eventually replace the existing internal Mine Management System used by the Ministry and be used to surface information to the BC Mine Information website. The MDS project was started in July 2018 to help inspectors manage the mines they work with by replacing existing legacy systems and adding new functionality.
             </p>
             <br />
             <p>
-              MineSpace is a pilot project as a part of the MDS digital product. MineSpace will be the portal through which mines can interact with the Ministry. In time, mines will be able to submit documentation to the ministry, as well as check the status of reporting requirements, and documentation that they have submitted to the ministry for review. The pilot project will run in the spring of 2019 with full integration in early 2020.
+              MineSpace is a piece of the Mines Digital Services Product that provides a link between the mine proponent and the Ministry. It is the online portal through which mines can interact with the Ministry by submitting reports and information as required by the Health, Safety, and Reclamation Code. MineSpace will enable mines to check the status of their reporting requirements and see the documentation that they have submitted to the Ministry for review. The portal is live and is expanding throughout 2019.
             </p>
           </div>,
           <Divider
@@ -1200,78 +951,61 @@ ShallowWrapper {
               className="flex-3"
             >
               <h1
-                className="large-margin-bot"
+                className="medium-margin-bot"
               >
-                Participate in the pilot project
+                Reporting templates
               </h1>
+              <p>
+                The Ministry is developing online templates to facilitate the submission of compliance information for Health and Safety, Geotechnical, Reclamation, and Geoscience. These templates will address Ministry requirements for Variance Applications, Incident Reporting, and the Tailings Storage Facility (TSF) Registry.
+              </p>
+              <br />
               <h2
                 className="medium-margin-bot"
               >
-                Requirements
+                Tailings storage facilities and dams registry
               </h2>
               <p>
-                You can participate if you:
+                Register of Tailings Storage Facilities and Dams (HSRC, 2016. 10.4.3). The registry should contain all tailings and water retaining structures on site, regardless of whether they are classified as dams or if they are currently operating or dormant structures.
               </p>
-              <ul
-                className="indent-list-padding"
+              <p
+                style={
+                  Object {
+                    "borderLeft": "4px solid #A09595",
+                    "color": "#6B6363",
+                    "margin": "1em 0",
+                    "paddingLeft": ".8em",
+                  }
+                }
               >
-                <li>
-                  are a BC mine with a tailings storage facility
-                </li>
-                <li>
-                  will be submitting code-required reports for 2018
-                </li>
-                <li>
-                  have a valid Business BCeID for your company
-                </li>
-                <li>
-                   contact the MDS team at mds@gov.bc.ca
-                </li>
-              </ul>
-              <h2
-                className="medium-margin-bot"
-              >
-                Steps
-              </h2>
-              <ol
-                className="list-padding-left"
-              >
-                <li>
-                  If you have a valid Business BCeID, add all of the employees and delegates who will be accessing the system to your account.
-                </li>
-                <li>
-                  Send an email to mds@gov.bc.ca with the following information:
-                  <ul
-                    className="embeded-list-padding"
+                The Register of Tailing Storage Facilities and Dams document will be available for download from here in the near future. Please check back later for more information.
+              </p>
+              <p>
+                <strong>
+                  Please submit completed registry spreadsheets to
+                   
+                  <a
+                    mailto="PERMRECL@gov.bc.ca"
                   >
-                    <li>
-                      name of each employee or delegate you have added
-                    </li>
-                    <li>
-                      BCeID email address of each employee or delegate
-                    </li>
-                    <li>
-                      name and number of the mine(s) for which the employee or delegate will be submitting info
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  Wait for an email confirming that your employees/delegates have been added to MineSpace.
-                </li>
-                <li>
-                  Log in to the system.
-                </li>
-                <li>
-                  If you run into any issues before or during the submission process, please contact us.
-                </li>
-              </ol>
+                    PERMRECL@gov.bc.ca
+                  </a>
+                  .
+                </strong>
+              </p>
               <h1
                 className="large-margin-top medium-margin-bot"
               >
-                Prepare for next year’s submission period
+                2019 pilot project
               </h1>
               <p>
-                The pilot represents an initial step in mines interacting with Ministry through an online portal. We will require all mines to submit their required reporting through MineSpace starting in 2020, including variance requests, dangerous occurrence reports, and compliance information. To use this system you will need to get a business BCeID, and verify your existing credentials if you have not already already done so. This process can take time and it is best to begin ahead of time.
+                In March 2019, 6 mines were asked to participate in a pilot project to demonstrate how document submission would work in MineSpace. The pilot focused on the 2018 TSF annual reporting period and asked mines to submit required TSF reports through the MineSpace portal. During the pilot, an additional 26 mines were recruited by word of mouth and chose to participate. Following the pilot project, feedback from the participating mines showed that document submission through MineSpace was a success. It resulted in a total of 32 mines voluntarily logging into MineSpace and submitting 120 required TSF reports. The submitted TSF reports were then instantly made available for Ministry staff to review - making it easier for both mines and Ministry staff to track document submission status.
+              </p>
+              <h1
+                className="large-margin-top medium-margin-bot"
+              >
+                Prepare for next year's submission period
+              </h1>
+              <p>
+                The pilot represents an initial step in mines interacting with Ministry through an online portal. We will require all mines to submit their required reporting through MineSpace starting in 2020, including variance requests, dangerous occurrence reports, and compliance information. To use this system you will need to get a business BCeID, and verify your existing credentials if you have not already already done so. This process can take time and it is best to begin as soon as possible.
               </p>
             </div>
             <div
@@ -1341,21 +1075,11 @@ ShallowWrapper {
                  Welcome to MineSpace, an online portal for BC mines
               </h1>,
               <p>
-                The Mines Digital Service (MDS) is a digital product being iteratively developed and designed to hold mine related data that is user-friendly, trustworthy and reliable. The product will eventually replace the existing internal Mine Management System used by the Ministry and be used to surface information to the
-                 
-                <a
-                  className="underline"
-                  href="http://mines.nrs.gov.bc.ca/"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  BC Mine Information website
-                </a>
-                . The MDS project was started in July to help inspectors manage the mines they work with by replacing existing legacy systems and adding new functionality.
+                The Mines Digital Service (MDS) is a digital product being iteratively developed and designed to hold mine-related data that is user-friendly, trustworthy and reliable. The product will eventually replace the existing internal Mine Management System used by the Ministry and be used to surface information to the BC Mine Information website. The MDS project was started in July 2018 to help inspectors manage the mines they work with by replacing existing legacy systems and adding new functionality.
               </p>,
               <br />,
               <p>
-                MineSpace is a pilot project as a part of the MDS digital product. MineSpace will be the portal through which mines can interact with the Ministry. In time, mines will be able to submit documentation to the ministry, as well as check the status of reporting requirements, and documentation that they have submitted to the ministry for review. The pilot project will run in the spring of 2019 with full integration in early 2020.
+                MineSpace is a piece of the Mines Digital Services Product that provides a link between the mine proponent and the Ministry. It is the online portal through which mines can interact with the Ministry by submitting reports and information as required by the Health, Safety, and Reclamation Code. MineSpace will enable mines to check the status of their reporting requirements and see the documentation that they have submitted to the Ministry for review. The portal is live and is expanding throughout 2019.
               </p>,
             ],
           },
@@ -1378,41 +1102,10 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "host",
               "props": Object {
-                "children": Array [
-                  "The Mines Digital Service (MDS) is a digital product being iteratively developed and designed to hold mine related data that is user-friendly, trustworthy and reliable. The product will eventually replace the existing internal Mine Management System used by the Ministry and be used to surface information to the",
-                  " ",
-                  <a
-                    className="underline"
-                    href="http://mines.nrs.gov.bc.ca/"
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    BC Mine Information website
-                  </a>,
-                  ". The MDS project was started in July to help inspectors manage the mines they work with by replacing existing legacy systems and adding new functionality.",
-                ],
+                "children": "The Mines Digital Service (MDS) is a digital product being iteratively developed and designed to hold mine-related data that is user-friendly, trustworthy and reliable. The product will eventually replace the existing internal Mine Management System used by the Ministry and be used to surface information to the BC Mine Information website. The MDS project was started in July 2018 to help inspectors manage the mines they work with by replacing existing legacy systems and adding new functionality.",
               },
               "ref": null,
-              "rendered": Array [
-                "The Mines Digital Service (MDS) is a digital product being iteratively developed and designed to hold mine related data that is user-friendly, trustworthy and reliable. The product will eventually replace the existing internal Mine Management System used by the Ministry and be used to surface information to the",
-                " ",
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "host",
-                  "props": Object {
-                    "children": "BC Mine Information website",
-                    "className": "underline",
-                    "href": "http://mines.nrs.gov.bc.ca/",
-                    "rel": "noopener noreferrer",
-                    "target": "_blank",
-                  },
-                  "ref": null,
-                  "rendered": "BC Mine Information website",
-                  "type": "a",
-                },
-                ". The MDS project was started in July to help inspectors manage the mines they work with by replacing existing legacy systems and adding new functionality.",
-              ],
+              "rendered": "The Mines Digital Service (MDS) is a digital product being iteratively developed and designed to hold mine-related data that is user-friendly, trustworthy and reliable. The product will eventually replace the existing internal Mine Management System used by the Ministry and be used to surface information to the BC Mine Information website. The MDS project was started in July 2018 to help inspectors manage the mines they work with by replacing existing legacy systems and adding new functionality.",
               "type": "p",
             },
             Object {
@@ -1429,10 +1122,10 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "host",
               "props": Object {
-                "children": "MineSpace is a pilot project as a part of the MDS digital product. MineSpace will be the portal through which mines can interact with the Ministry. In time, mines will be able to submit documentation to the ministry, as well as check the status of reporting requirements, and documentation that they have submitted to the ministry for review. The pilot project will run in the spring of 2019 with full integration in early 2020.",
+                "children": "MineSpace is a piece of the Mines Digital Services Product that provides a link between the mine proponent and the Ministry. It is the online portal through which mines can interact with the Ministry by submitting reports and information as required by the Health, Safety, and Reclamation Code. MineSpace will enable mines to check the status of their reporting requirements and see the documentation that they have submitted to the Ministry for review. The portal is live and is expanding throughout 2019.",
               },
               "ref": null,
-              "rendered": "MineSpace is a pilot project as a part of the MDS digital product. MineSpace will be the portal through which mines can interact with the Ministry. In time, mines will be able to submit documentation to the ministry, as well as check the status of reporting requirements, and documentation that they have submitted to the ministry for review. The pilot project will run in the spring of 2019 with full integration in early 2020.",
+              "rendered": "MineSpace is a piece of the Mines Digital Services Product that provides a link between the mine proponent and the Ministry. It is the online portal through which mines can interact with the Ministry by submitting reports and information as required by the Health, Safety, and Reclamation Code. MineSpace will enable mines to check the status of their reporting requirements and see the documentation that they have submitted to the Ministry for review. The portal is live and is expanding throughout 2019.",
               "type": "p",
             },
           ],
@@ -1462,78 +1155,61 @@ ShallowWrapper {
                 className="flex-3"
               >
                 <h1
-                  className="large-margin-bot"
+                  className="medium-margin-bot"
                 >
-                  Participate in the pilot project
+                  Reporting templates
                 </h1>
+                <p>
+                  The Ministry is developing online templates to facilitate the submission of compliance information for Health and Safety, Geotechnical, Reclamation, and Geoscience. These templates will address Ministry requirements for Variance Applications, Incident Reporting, and the Tailings Storage Facility (TSF) Registry.
+                </p>
+                <br />
                 <h2
                   className="medium-margin-bot"
                 >
-                  Requirements
+                  Tailings storage facilities and dams registry
                 </h2>
                 <p>
-                  You can participate if you:
+                  Register of Tailings Storage Facilities and Dams (HSRC, 2016. 10.4.3). The registry should contain all tailings and water retaining structures on site, regardless of whether they are classified as dams or if they are currently operating or dormant structures.
                 </p>
-                <ul
-                  className="indent-list-padding"
+                <p
+                  style={
+                    Object {
+                      "borderLeft": "4px solid #A09595",
+                      "color": "#6B6363",
+                      "margin": "1em 0",
+                      "paddingLeft": ".8em",
+                    }
+                  }
                 >
-                  <li>
-                    are a BC mine with a tailings storage facility
-                  </li>
-                  <li>
-                    will be submitting code-required reports for 2018
-                  </li>
-                  <li>
-                    have a valid Business BCeID for your company
-                  </li>
-                  <li>
-                     contact the MDS team at mds@gov.bc.ca
-                  </li>
-                </ul>
-                <h2
-                  className="medium-margin-bot"
-                >
-                  Steps
-                </h2>
-                <ol
-                  className="list-padding-left"
-                >
-                  <li>
-                    If you have a valid Business BCeID, add all of the employees and delegates who will be accessing the system to your account.
-                  </li>
-                  <li>
-                    Send an email to mds@gov.bc.ca with the following information:
-                    <ul
-                      className="embeded-list-padding"
+                  The Register of Tailing Storage Facilities and Dams document will be available for download from here in the near future. Please check back later for more information.
+                </p>
+                <p>
+                  <strong>
+                    Please submit completed registry spreadsheets to
+                     
+                    <a
+                      mailto="PERMRECL@gov.bc.ca"
                     >
-                      <li>
-                        name of each employee or delegate you have added
-                      </li>
-                      <li>
-                        BCeID email address of each employee or delegate
-                      </li>
-                      <li>
-                        name and number of the mine(s) for which the employee or delegate will be submitting info
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    Wait for an email confirming that your employees/delegates have been added to MineSpace.
-                  </li>
-                  <li>
-                    Log in to the system.
-                  </li>
-                  <li>
-                    If you run into any issues before or during the submission process, please contact us.
-                  </li>
-                </ol>
+                      PERMRECL@gov.bc.ca
+                    </a>
+                    .
+                  </strong>
+                </p>
                 <h1
                   className="large-margin-top medium-margin-bot"
                 >
-                  Prepare for next year’s submission period
+                  2019 pilot project
                 </h1>
                 <p>
-                  The pilot represents an initial step in mines interacting with Ministry through an online portal. We will require all mines to submit their required reporting through MineSpace starting in 2020, including variance requests, dangerous occurrence reports, and compliance information. To use this system you will need to get a business BCeID, and verify your existing credentials if you have not already already done so. This process can take time and it is best to begin ahead of time.
+                  In March 2019, 6 mines were asked to participate in a pilot project to demonstrate how document submission would work in MineSpace. The pilot focused on the 2018 TSF annual reporting period and asked mines to submit required TSF reports through the MineSpace portal. During the pilot, an additional 26 mines were recruited by word of mouth and chose to participate. Following the pilot project, feedback from the participating mines showed that document submission through MineSpace was a success. It resulted in a total of 32 mines voluntarily logging into MineSpace and submitting 120 required TSF reports. The submitted TSF reports were then instantly made available for Ministry staff to review - making it easier for both mines and Ministry staff to track document submission status.
+                </p>
+                <h1
+                  className="large-margin-top medium-margin-bot"
+                >
+                  Prepare for next year's submission period
+                </h1>
+                <p>
+                  The pilot represents an initial step in mines interacting with Ministry through an online portal. We will require all mines to submit their required reporting through MineSpace starting in 2020, including variance requests, dangerous occurrence reports, and compliance information. To use this system you will need to get a business BCeID, and verify your existing credentials if you have not already already done so. This process can take time and it is best to begin as soon as possible.
                 </p>
               </div>,
               <div
@@ -1598,78 +1274,61 @@ ShallowWrapper {
               "props": Object {
                 "children": Array [
                   <h1
-                    className="large-margin-bot"
+                    className="medium-margin-bot"
                   >
-                    Participate in the pilot project
+                    Reporting templates
                   </h1>,
+                  <p>
+                    The Ministry is developing online templates to facilitate the submission of compliance information for Health and Safety, Geotechnical, Reclamation, and Geoscience. These templates will address Ministry requirements for Variance Applications, Incident Reporting, and the Tailings Storage Facility (TSF) Registry.
+                  </p>,
+                  <br />,
                   <h2
                     className="medium-margin-bot"
                   >
-                    Requirements
+                    Tailings storage facilities and dams registry
                   </h2>,
                   <p>
-                    You can participate if you:
+                    Register of Tailings Storage Facilities and Dams (HSRC, 2016. 10.4.3). The registry should contain all tailings and water retaining structures on site, regardless of whether they are classified as dams or if they are currently operating or dormant structures.
                   </p>,
-                  <ul
-                    className="indent-list-padding"
+                  <p
+                    style={
+                      Object {
+                        "borderLeft": "4px solid #A09595",
+                        "color": "#6B6363",
+                        "margin": "1em 0",
+                        "paddingLeft": ".8em",
+                      }
+                    }
                   >
-                    <li>
-                      are a BC mine with a tailings storage facility
-                    </li>
-                    <li>
-                      will be submitting code-required reports for 2018
-                    </li>
-                    <li>
-                      have a valid Business BCeID for your company
-                    </li>
-                    <li>
-                       contact the MDS team at mds@gov.bc.ca
-                    </li>
-                  </ul>,
-                  <h2
-                    className="medium-margin-bot"
-                  >
-                    Steps
-                  </h2>,
-                  <ol
-                    className="list-padding-left"
-                  >
-                    <li>
-                      If you have a valid Business BCeID, add all of the employees and delegates who will be accessing the system to your account.
-                    </li>
-                    <li>
-                      Send an email to mds@gov.bc.ca with the following information:
-                      <ul
-                        className="embeded-list-padding"
+                    The Register of Tailing Storage Facilities and Dams document will be available for download from here in the near future. Please check back later for more information.
+                  </p>,
+                  <p>
+                    <strong>
+                      Please submit completed registry spreadsheets to
+                       
+                      <a
+                        mailto="PERMRECL@gov.bc.ca"
                       >
-                        <li>
-                          name of each employee or delegate you have added
-                        </li>
-                        <li>
-                          BCeID email address of each employee or delegate
-                        </li>
-                        <li>
-                          name and number of the mine(s) for which the employee or delegate will be submitting info
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      Wait for an email confirming that your employees/delegates have been added to MineSpace.
-                    </li>
-                    <li>
-                      Log in to the system.
-                    </li>
-                    <li>
-                      If you run into any issues before or during the submission process, please contact us.
-                    </li>
-                  </ol>,
+                        PERMRECL@gov.bc.ca
+                      </a>
+                      .
+                    </strong>
+                  </p>,
                   <h1
                     className="large-margin-top medium-margin-bot"
                   >
-                    Prepare for next year’s submission period
+                    2019 pilot project
                   </h1>,
                   <p>
-                    The pilot represents an initial step in mines interacting with Ministry through an online portal. We will require all mines to submit their required reporting through MineSpace starting in 2020, including variance requests, dangerous occurrence reports, and compliance information. To use this system you will need to get a business BCeID, and verify your existing credentials if you have not already already done so. This process can take time and it is best to begin ahead of time.
+                    In March 2019, 6 mines were asked to participate in a pilot project to demonstrate how document submission would work in MineSpace. The pilot focused on the 2018 TSF annual reporting period and asked mines to submit required TSF reports through the MineSpace portal. During the pilot, an additional 26 mines were recruited by word of mouth and chose to participate. Following the pilot project, feedback from the participating mines showed that document submission through MineSpace was a success. It resulted in a total of 32 mines voluntarily logging into MineSpace and submitting 120 required TSF reports. The submitted TSF reports were then instantly made available for Ministry staff to review - making it easier for both mines and Ministry staff to track document submission status.
+                  </p>,
+                  <h1
+                    className="large-margin-top medium-margin-bot"
+                  >
+                    Prepare for next year's submission period
+                  </h1>,
+                  <p>
+                    The pilot represents an initial step in mines interacting with Ministry through an online portal. We will require all mines to submit their required reporting through MineSpace starting in 2020, including variance requests, dangerous occurrence reports, and compliance information. To use this system you will need to get a business BCeID, and verify your existing credentials if you have not already already done so. This process can take time and it is best to begin as soon as possible.
                   </p>,
                 ],
                 "className": "flex-3",
@@ -1681,11 +1340,11 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "host",
                   "props": Object {
-                    "children": "Participate in the pilot project",
-                    "className": "large-margin-bot",
+                    "children": "Reporting templates",
+                    "className": "medium-margin-bot",
                   },
                   "ref": null,
-                  "rendered": "Participate in the pilot project",
+                  "rendered": "Reporting templates",
                   "type": "h1",
                 },
                 Object {
@@ -1693,11 +1352,31 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "host",
                   "props": Object {
-                    "children": "Requirements",
+                    "children": "The Ministry is developing online templates to facilitate the submission of compliance information for Health and Safety, Geotechnical, Reclamation, and Geoscience. These templates will address Ministry requirements for Variance Applications, Incident Reporting, and the Tailings Storage Facility (TSF) Registry.",
+                  },
+                  "ref": null,
+                  "rendered": "The Ministry is developing online templates to facilitate the submission of compliance information for Health and Safety, Geotechnical, Reclamation, and Geoscience. These templates will address Ministry requirements for Variance Applications, Incident Reporting, and the Tailings Storage Facility (TSF) Registry.",
+                  "type": "p",
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {},
+                  "ref": null,
+                  "rendered": null,
+                  "type": "br",
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "Tailings storage facilities and dams registry",
                     "className": "medium-margin-bot",
                   },
                   "ref": null,
-                  "rendered": "Requirements",
+                  "rendered": "Tailings storage facilities and dams registry",
                   "type": "h2",
                 },
                 Object {
@@ -1705,10 +1384,10 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "host",
                   "props": Object {
-                    "children": "You can participate if you:",
+                    "children": "Register of Tailings Storage Facilities and Dams (HSRC, 2016. 10.4.3). The registry should contain all tailings and water retaining structures on site, regardless of whether they are classified as dams or if they are currently operating or dormant structures.",
                   },
                   "ref": null,
-                  "rendered": "You can participate if you:",
+                  "rendered": "Register of Tailings Storage Facilities and Dams (HSRC, 2016. 10.4.3). The registry should contain all tailings and water retaining structures on site, regardless of whether they are classified as dams or if they are currently operating or dormant structures.",
                   "type": "p",
                 },
                 Object {
@@ -1716,263 +1395,83 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "host",
                   "props": Object {
-                    "children": Array [
-                      <li>
-                        are a BC mine with a tailings storage facility
-                      </li>,
-                      <li>
-                        will be submitting code-required reports for 2018
-                      </li>,
-                      <li>
-                        have a valid Business BCeID for your company
-                      </li>,
-                      <li>
-                         contact the MDS team at mds@gov.bc.ca
-                      </li>,
-                    ],
-                    "className": "indent-list-padding",
+                    "children": "The Register of Tailing Storage Facilities and Dams document will be available for download from here in the near future. Please check back later for more information.",
+                    "style": Object {
+                      "borderLeft": "4px solid #A09595",
+                      "color": "#6B6363",
+                      "margin": "1em 0",
+                      "paddingLeft": ".8em",
+                    },
                   },
                   "ref": null,
-                  "rendered": Array [
-                    Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "host",
-                      "props": Object {
-                        "children": "are a BC mine with a tailings storage facility",
-                      },
-                      "ref": null,
-                      "rendered": "are a BC mine with a tailings storage facility",
-                      "type": "li",
-                    },
-                    Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "host",
-                      "props": Object {
-                        "children": "will be submitting code-required reports for 2018",
-                      },
-                      "ref": null,
-                      "rendered": "will be submitting code-required reports for 2018",
-                      "type": "li",
-                    },
-                    Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "host",
-                      "props": Object {
-                        "children": "have a valid Business BCeID for your company",
-                      },
-                      "ref": null,
-                      "rendered": "have a valid Business BCeID for your company",
-                      "type": "li",
-                    },
-                    Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "host",
-                      "props": Object {
-                        "children": " contact the MDS team at mds@gov.bc.ca",
-                      },
-                      "ref": null,
-                      "rendered": " contact the MDS team at mds@gov.bc.ca",
-                      "type": "li",
-                    },
-                  ],
-                  "type": "ul",
+                  "rendered": "The Register of Tailing Storage Facilities and Dams document will be available for download from here in the near future. Please check back later for more information.",
+                  "type": "p",
                 },
                 Object {
                   "instance": null,
                   "key": undefined,
                   "nodeType": "host",
                   "props": Object {
-                    "children": "Steps",
-                    "className": "medium-margin-bot",
+                    "children": <strong>
+                      Please submit completed registry spreadsheets to
+                       
+                      <a
+                        mailto="PERMRECL@gov.bc.ca"
+                      >
+                        PERMRECL@gov.bc.ca
+                      </a>
+                      .
+                    </strong>,
                   },
                   "ref": null,
-                  "rendered": "Steps",
-                  "type": "h2",
-                },
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "host",
-                  "props": Object {
-                    "children": Array [
-                      <li>
-                        If you have a valid Business BCeID, add all of the employees and delegates who will be accessing the system to your account.
-                      </li>,
-                      <li>
-                        Send an email to mds@gov.bc.ca with the following information:
-                        <ul
-                          className="embeded-list-padding"
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": Array [
+                        "Please submit completed registry spreadsheets to",
+                        " ",
+                        <a
+                          mailto="PERMRECL@gov.bc.ca"
                         >
-                          <li>
-                            name of each employee or delegate you have added
-                          </li>
-                          <li>
-                            BCeID email address of each employee or delegate
-                          </li>
-                          <li>
-                            name and number of the mine(s) for which the employee or delegate will be submitting info
-                          </li>
-                        </ul>
-                      </li>,
-                      <li>
-                        Wait for an email confirming that your employees/delegates have been added to MineSpace.
-                      </li>,
-                      <li>
-                        Log in to the system.
-                      </li>,
-                      <li>
-                        If you run into any issues before or during the submission process, please contact us.
-                      </li>,
-                    ],
-                    "className": "list-padding-left",
-                  },
-                  "ref": null,
-                  "rendered": Array [
-                    Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "host",
-                      "props": Object {
-                        "children": "If you have a valid Business BCeID, add all of the employees and delegates who will be accessing the system to your account.",
-                      },
-                      "ref": null,
-                      "rendered": "If you have a valid Business BCeID, add all of the employees and delegates who will be accessing the system to your account.",
-                      "type": "li",
-                    },
-                    Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "host",
-                      "props": Object {
-                        "children": Array [
-                          "Send an email to mds@gov.bc.ca with the following information:",
-                          <ul
-                            className="embeded-list-padding"
-                          >
-                            <li>
-                              name of each employee or delegate you have added
-                            </li>
-                            <li>
-                              BCeID email address of each employee or delegate
-                            </li>
-                            <li>
-                              name and number of the mine(s) for which the employee or delegate will be submitting info
-                            </li>
-                          </ul>,
-                        ],
-                      },
-                      "ref": null,
-                      "rendered": Array [
-                        "Send an email to mds@gov.bc.ca with the following information:",
-                        Object {
-                          "instance": null,
-                          "key": undefined,
-                          "nodeType": "host",
-                          "props": Object {
-                            "children": Array [
-                              <li>
-                                name of each employee or delegate you have added
-                              </li>,
-                              <li>
-                                BCeID email address of each employee or delegate
-                              </li>,
-                              <li>
-                                name and number of the mine(s) for which the employee or delegate will be submitting info
-                              </li>,
-                            ],
-                            "className": "embeded-list-padding",
-                          },
-                          "ref": null,
-                          "rendered": Array [
-                            Object {
-                              "instance": null,
-                              "key": undefined,
-                              "nodeType": "host",
-                              "props": Object {
-                                "children": "name of each employee or delegate you have added",
-                              },
-                              "ref": null,
-                              "rendered": "name of each employee or delegate you have added",
-                              "type": "li",
-                            },
-                            Object {
-                              "instance": null,
-                              "key": undefined,
-                              "nodeType": "host",
-                              "props": Object {
-                                "children": "BCeID email address of each employee or delegate",
-                              },
-                              "ref": null,
-                              "rendered": "BCeID email address of each employee or delegate",
-                              "type": "li",
-                            },
-                            Object {
-                              "instance": null,
-                              "key": undefined,
-                              "nodeType": "host",
-                              "props": Object {
-                                "children": "name and number of the mine(s) for which the employee or delegate will be submitting info",
-                              },
-                              "ref": null,
-                              "rendered": "name and number of the mine(s) for which the employee or delegate will be submitting info",
-                              "type": "li",
-                            },
-                          ],
-                          "type": "ul",
-                        },
+                          PERMRECL@gov.bc.ca
+                        </a>,
+                        ".",
                       ],
-                      "type": "li",
                     },
-                    Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "host",
-                      "props": Object {
-                        "children": "Wait for an email confirming that your employees/delegates have been added to MineSpace.",
+                    "ref": null,
+                    "rendered": Array [
+                      "Please submit completed registry spreadsheets to",
+                      " ",
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": "PERMRECL@gov.bc.ca",
+                          "mailto": "PERMRECL@gov.bc.ca",
+                        },
+                        "ref": null,
+                        "rendered": "PERMRECL@gov.bc.ca",
+                        "type": "a",
                       },
-                      "ref": null,
-                      "rendered": "Wait for an email confirming that your employees/delegates have been added to MineSpace.",
-                      "type": "li",
-                    },
-                    Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "host",
-                      "props": Object {
-                        "children": "Log in to the system.",
-                      },
-                      "ref": null,
-                      "rendered": "Log in to the system.",
-                      "type": "li",
-                    },
-                    Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "host",
-                      "props": Object {
-                        "children": "If you run into any issues before or during the submission process, please contact us.",
-                      },
-                      "ref": null,
-                      "rendered": "If you run into any issues before or during the submission process, please contact us.",
-                      "type": "li",
-                    },
-                  ],
-                  "type": "ol",
+                      ".",
+                    ],
+                    "type": "strong",
+                  },
+                  "type": "p",
                 },
                 Object {
                   "instance": null,
                   "key": undefined,
                   "nodeType": "host",
                   "props": Object {
-                    "children": "Prepare for next year’s submission period",
+                    "children": "2019 pilot project",
                     "className": "large-margin-top medium-margin-bot",
                   },
                   "ref": null,
-                  "rendered": "Prepare for next year’s submission period",
+                  "rendered": "2019 pilot project",
                   "type": "h1",
                 },
                 Object {
@@ -1980,10 +1479,33 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "host",
                   "props": Object {
-                    "children": "The pilot represents an initial step in mines interacting with Ministry through an online portal. We will require all mines to submit their required reporting through MineSpace starting in 2020, including variance requests, dangerous occurrence reports, and compliance information. To use this system you will need to get a business BCeID, and verify your existing credentials if you have not already already done so. This process can take time and it is best to begin ahead of time.",
+                    "children": "In March 2019, 6 mines were asked to participate in a pilot project to demonstrate how document submission would work in MineSpace. The pilot focused on the 2018 TSF annual reporting period and asked mines to submit required TSF reports through the MineSpace portal. During the pilot, an additional 26 mines were recruited by word of mouth and chose to participate. Following the pilot project, feedback from the participating mines showed that document submission through MineSpace was a success. It resulted in a total of 32 mines voluntarily logging into MineSpace and submitting 120 required TSF reports. The submitted TSF reports were then instantly made available for Ministry staff to review - making it easier for both mines and Ministry staff to track document submission status.",
                   },
                   "ref": null,
-                  "rendered": "The pilot represents an initial step in mines interacting with Ministry through an online portal. We will require all mines to submit their required reporting through MineSpace starting in 2020, including variance requests, dangerous occurrence reports, and compliance information. To use this system you will need to get a business BCeID, and verify your existing credentials if you have not already already done so. This process can take time and it is best to begin ahead of time.",
+                  "rendered": "In March 2019, 6 mines were asked to participate in a pilot project to demonstrate how document submission would work in MineSpace. The pilot focused on the 2018 TSF annual reporting period and asked mines to submit required TSF reports through the MineSpace portal. During the pilot, an additional 26 mines were recruited by word of mouth and chose to participate. Following the pilot project, feedback from the participating mines showed that document submission through MineSpace was a success. It resulted in a total of 32 mines voluntarily logging into MineSpace and submitting 120 required TSF reports. The submitted TSF reports were then instantly made available for Ministry staff to review - making it easier for both mines and Ministry staff to track document submission status.",
+                  "type": "p",
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "Prepare for next year's submission period",
+                    "className": "large-margin-top medium-margin-bot",
+                  },
+                  "ref": null,
+                  "rendered": "Prepare for next year's submission period",
+                  "type": "h1",
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "The pilot represents an initial step in mines interacting with Ministry through an online portal. We will require all mines to submit their required reporting through MineSpace starting in 2020, including variance requests, dangerous occurrence reports, and compliance information. To use this system you will need to get a business BCeID, and verify your existing credentials if you have not already already done so. This process can take time and it is best to begin as soon as possible.",
+                  },
+                  "ref": null,
+                  "rendered": "The pilot represents an initial step in mines interacting with Ministry through an online portal. We will require all mines to submit their required reporting through MineSpace starting in 2020, including variance requests, dangerous occurrence reports, and compliance information. To use this system you will need to get a business BCeID, and verify your existing credentials if you have not already already done so. This process can take time and it is best to begin as soon as possible.",
                   "type": "p",
                 },
               ],
