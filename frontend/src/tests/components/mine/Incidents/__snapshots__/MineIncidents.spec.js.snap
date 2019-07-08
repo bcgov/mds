@@ -6,6 +6,7 @@ ShallowWrapper {
   Symbol(enzyme.__unrendered__): <MineIncidents
     closeModal={[MockFunction]}
     createMineIncident={[MockFunction]}
+    destroy={[MockFunction]}
     fetchMineIncidents={
       [MockFunction] {
         "calls": Array [
@@ -111,6 +112,7 @@ ShallowWrapper {
       ]
     }
     openModal={[MockFunction]}
+    updateMineIncident={[MockFunction]}
   />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
@@ -130,7 +132,7 @@ ShallowWrapper {
           className="inline-flex flex-end"
         >
           <Connect(AuthorizationWrapper)
-            permission="role_create"
+            permission="role_edit_do"
           >
             <AddButton
               onClick={[Function]}
@@ -170,6 +172,7 @@ ShallowWrapper {
             ]
           }
           openMineIncidentModal={[Function]}
+          openViewMineIncidentModal={[Function]}
         />,
       ],
     },
@@ -181,7 +184,7 @@ ShallowWrapper {
         "nodeType": "host",
         "props": Object {
           "children": <Connect(AuthorizationWrapper)
-            permission="role_create"
+            permission="role_edit_do"
           >
             <AddButton
               onClick={[Function]}
@@ -202,7 +205,7 @@ ShallowWrapper {
             >
               Record a Mine Incident
             </AddButton>,
-            "permission": "role_create",
+            "permission": "role_edit_do",
           },
           "ref": null,
           "rendered": Object {
@@ -252,6 +255,7 @@ ShallowWrapper {
             },
           ],
           "openMineIncidentModal": [Function],
+          "openViewMineIncidentModal": [Function],
         },
         "ref": null,
         "rendered": null,
@@ -271,7 +275,7 @@ ShallowWrapper {
             className="inline-flex flex-end"
           >
             <Connect(AuthorizationWrapper)
-              permission="role_create"
+              permission="role_edit_do"
             >
               <AddButton
                 onClick={[Function]}
@@ -311,6 +315,7 @@ ShallowWrapper {
               ]
             }
             openMineIncidentModal={[Function]}
+            openViewMineIncidentModal={[Function]}
           />,
         ],
       },
@@ -322,7 +327,7 @@ ShallowWrapper {
           "nodeType": "host",
           "props": Object {
             "children": <Connect(AuthorizationWrapper)
-              permission="role_create"
+              permission="role_edit_do"
             >
               <AddButton
                 onClick={[Function]}
@@ -343,7 +348,7 @@ ShallowWrapper {
               >
                 Record a Mine Incident
               </AddButton>,
-              "permission": "role_create",
+              "permission": "role_edit_do",
             },
             "ref": null,
             "rendered": Object {
@@ -393,6 +398,7 @@ ShallowWrapper {
               },
             ],
             "openMineIncidentModal": [Function],
+            "openViewMineIncidentModal": [Function],
           },
           "ref": null,
           "rendered": null,

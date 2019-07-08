@@ -2,13 +2,13 @@ from flask import request
 from flask_restplus import Resource
 from ..models.required_documents import RequiredDocument
 from app.extensions import api
-from ....utils.access_decorators import requires_role_mine_view
+from ....utils.access_decorators import requires_role_view_all
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class RequiredDocumentResource(Resource, UserMixin, ErrorMixin):
     @api.doc(params={'req_doc_guid': 'Required Document guid.'})
-    @requires_role_mine_view
+    @requires_role_view_all
     def get(self, req_doc_guid=None):
         result = []
         if req_doc_guid:

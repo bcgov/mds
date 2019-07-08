@@ -6,7 +6,7 @@ from ..models.mine_expected_document import MineExpectedDocument
 from ..models.document_status import ExpectedDocumentStatus
 
 from app.extensions import api, db
-from ....utils.access_decorators import requires_role_mine_view, requires_role_mine_create
+from ....utils.access_decorators import requires_role_view_all, requires_role_mine_edit
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
@@ -23,7 +23,7 @@ class ExpectedMineDocumentResource(Resource, UserMixin, ErrorMixin):
         'mine_guid':
         'Optional: Mine number or guid. returns list of expected documents for the mine'
     })
-    @requires_role_mine_view
+    @requires_role_view_all
     def get(self, mine_guid=None):
         if mine_guid == None:
             return self.create_error_payload(401, 'Must provide a mine id.')
@@ -39,7 +39,7 @@ class ExpectedMineDocumentResource(Resource, UserMixin, ErrorMixin):
             'mine_guid':
             'Required: Mine number or guid. creates expected documents from payload for mine_guid'
         })
-    @requires_role_mine_create
+    @requires_role_mine_edit
     def post(self, mine_guid):
         data = self.parser.parse_args()
         doc_list = data['documents']

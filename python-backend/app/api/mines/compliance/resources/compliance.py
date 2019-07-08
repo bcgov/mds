@@ -5,7 +5,7 @@ from flask import request, current_app
 from werkzeug.exceptions import BadRequest, NotFound
 
 from app.extensions import api
-from ....utils.access_decorators import requires_role_mine_view
+from ....utils.access_decorators import requires_role_view_all
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from ....constants import NRIS_COMPLIANCE_DATA, TIMEOUT_60_MINUTES
 from app.api.services import NRIS_API_service
@@ -58,7 +58,7 @@ MINE_COMPLIANCE_RESPONSE_MODEL = api.model(
 
 class MineComplianceSummaryResource(Resource, UserMixin, ErrorMixin):
     @api.marshal_with(MINE_COMPLIANCE_RESPONSE_MODEL, code=200)
-    @requires_role_mine_view
+    @requires_role_view_all
     def get(self, mine_no):
         mine = Mine.find_by_mine_no_or_guid(mine_no)
         if not mine:
