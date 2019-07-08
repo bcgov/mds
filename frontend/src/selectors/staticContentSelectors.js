@@ -115,14 +115,29 @@ export const getDropdownIncidentFollowupActionOptions = createSelector(
     createDropDownList(options, "description", "mine_incident_followup_investigation_type_code")
 );
 
+export const getIncidentFollowupActionHash = createSelector(
+  [getDropdownIncidentFollowupActionOptions],
+  createLabelHash
+);
+
 export const getDropdownIncidentDeterminationOptions = createSelector(
   [getIncidentDeterminationOptions],
   (options) => createDropDownList(options, "description", "mine_incident_determination_type_code")
 );
 
+export const getIncidentDeterminationHash = createSelector(
+  [getDropdownIncidentDeterminationOptions],
+  createLabelHash
+);
+
 export const getDropdownIncidentStatusCodeOptions = createSelector(
   [getIncidentStatusCodeOptions],
   (options) => createDropDownList(options, "description", "mine_incident_status_code")
+);
+
+export const getIncidentStatusCodeHash = createSelector(
+  [getDropdownIncidentStatusCodeOptions],
+  createLabelHash
 );
 
 const formatComplianceCodeValueOrLabel = (code, showDescription) => {
