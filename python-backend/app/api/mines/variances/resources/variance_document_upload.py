@@ -9,7 +9,8 @@ from app.extensions import api
 from ...mine.models.mine import Mine
 from ....documents.mines.models.mine_document import MineDocument
 from ....documents.variances.models.variance import VarianceDocumentXref
-from ....utils.access_decorators import (requires_any_of, MINE_CREATE, MINESPACE_PROPONENT)
+from ....utils.access_decorators import (requires_any_of, EDIT_VARIANCE,
+                                         MINESPACE_PROPONENT)
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.mines.mine_api_models import VARIANCE_MODEL
@@ -18,7 +19,7 @@ from app.api.variances.models.variance import Variance
 
 class MineVarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
     @api.doc(description='Request a document_manager_guid for uploading a document')
-    @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
+    @requires_any_of([EDIT_VARIANCE, MINESPACE_PROPONENT])
     def post(self, mine_guid, variance_guid):
         metadata = self._parse_request_metadata()
         if not metadata or not metadata.get('filename'):
@@ -42,7 +43,8 @@ class MineVarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             cookies=request.cookies,
         )
 
-        response = Response(str(resp.content), resp.status_code, resp.raw.headers.items())
+        response = Response(str(resp.content),
+                            resp.status_code, resp.raw.headers.items())
         return response
 
     @api.doc(
@@ -52,13 +54,14 @@ class MineVarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             'variance_guid': 'GUID for the variance to which the document should be associated'
         })
     @api.marshal_with(VARIANCE_MODEL, code=200)
-    @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
+    @requires_any_of([EDIT_VARIANCE, MINESPACE_PROPONENT])
     def put(self, mine_guid, variance_guid):
         parser = CustomReqparser()
         # Arguments required by MineDocument
         parser.add_argument('document_name', type=str, required=True)
         parser.add_argument('document_manager_guid', type=str, required=True)
-        parser.add_argument('variance_document_category_code', type=str, required=True)
+        parser.add_argument('variance_document_category_code',
+                            type=str, required=True)
 
         variance = Variance.find_by_variance_guid(variance_guid)
 

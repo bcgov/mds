@@ -5,7 +5,7 @@ from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
 from app.extensions import api, db
 from app.api.utils.resources_mixins import UserMixin
-from app.api.utils.access_decorators import requires_role_mine_view, requires_role_mine_create
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_do
 
 from app.api.mines.mine.models.mine import Mine
 from app.api.parties.party.models.party import Party
@@ -14,6 +14,7 @@ from app.api.documents.mines.models.mine_document import MineDocument
 from app.api.mines.incidents.models.mine_incident_document_type_code import MineIncidentTypeCode
 from ..models.mine_incident import MineIncident
 from app.api.mines.compliance.models.compliance_article import ComplianceArticle
+from app.api.mines.incidents.models.mine_incident_recommendation import MineIncidentRecommendation
 from ...mine_api_models import MINE_INCIDENT_MODEL
 
 
@@ -60,10 +61,11 @@ class MineIncidentListResource(Resource, UserMixin):
     parser.add_argument('status_code', type=str, location='json')
     parser.add_argument('dangerous_occurrence_subparagraph_ids', type=list, location='json')
     parser.add_argument('updated_documents', type=list, location='json', store_missing=False)
+    parser.add_argument('recommendations', type=list, location='json', store_missing=False)
 
     @api.marshal_with(MINE_INCIDENT_MODEL, envelope='mine_incidents', code=200, as_list=True)
     @api.doc(description='returns the incidents for a given mine.')
-    @requires_role_mine_view
+    @requires_role_view_all
     def get(self, mine_guid):
         mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:
@@ -73,13 +75,14 @@ class MineIncidentListResource(Resource, UserMixin):
     @api.expect(MINE_INCIDENT_MODEL)
     @api.doc(description='creates a new incident for the mine')
     @api.marshal_with(MINE_INCIDENT_MODEL, code=201)
-    @requires_role_mine_create
+    @requires_role_edit_do
     def post(self, mine_guid):
         mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:
             raise NotFound('Mine not found')
 
         data = self.parser.parse_args()
+
 
         do_sub_codes = []
         if data['determination_type_code'] == 'DO':
@@ -97,6 +100,7 @@ class MineIncidentListResource(Resource, UserMixin):
             reported_timestamp=data['reported_timestamp'],
             reported_by_name=data['reported_by_name'],
         )
+
 
         incident.reported_by_email = data.get('reported_by_email')
         incident.reported_by_phone_no = data.get('reported_by_phone_no')  # string
@@ -157,6 +161,12 @@ class MineIncidentListResource(Resource, UserMixin):
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')
 
+        if data.get('recommendations') is not None:
+            for recommendation in data.get('recommendations'):
+                new_recommendation = MineIncidentRecommendation.create(
+                    recommendation['recommendation'], mine_incident_id=incident.mine_incident_id)
+                new_recommendation.save()
+
         return incident, 201
 
 
@@ -203,9 +213,10 @@ class MineIncidentResource(Resource, UserMixin):
     parser.add_argument(
         'dangerous_occurrence_subparagraph_ids', type=list, location='json', store_missing=False)
     parser.add_argument('updated_documents', type=list, location='json', store_missing=False)
+    parser.add_argument('recommendations', type=list, location='json', store_missing=False)
 
     @api.marshal_with(MINE_INCIDENT_MODEL, code=200)
-    @requires_role_mine_view
+    @requires_role_view_all
     def get(self, mine_guid, mine_incident_guid):
         incident = MineIncident.find_by_mine_incident_guid(mine_incident_guid)
         if not incident:
@@ -214,13 +225,14 @@ class MineIncidentResource(Resource, UserMixin):
 
     @api.expect(parser)
     @api.marshal_with(MINE_INCIDENT_MODEL, code=200)
-    @requires_role_mine_create
+    @requires_role_edit_do
     def put(self, mine_guid, mine_incident_guid):
         incident = MineIncident.find_by_mine_incident_guid(mine_incident_guid)
         if not incident or str(incident.mine_guid) != mine_guid:
             raise NotFound("Mine Incident not found")
 
         data = self.parser.parse_args()
+
         do_sub_codes = []
         if data['determination_type_code'] == 'DO':
             do_sub_codes = data['dangerous_occurrence_subparagraph_ids']

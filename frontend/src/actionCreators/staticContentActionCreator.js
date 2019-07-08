@@ -87,7 +87,7 @@ export const fetchExpectedDocumentStatusOptions = () => (dispatch) => {
 export const fetchPermitStatusOptions = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_PERMIT_STATUS_OPTIONS));
   return CustomAxios()
-    .get(`${ENVIRONMENT.apiUrl}${API.PERMIT()}/status-codes`, createRequestHeader())
+    .get(`${ENVIRONMENT.apiUrl}${API.PERMITSTATUSCODES()}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_PERMIT_STATUS_OPTIONS));
       dispatch(staticContentActions.storePermitStatusOptions(response.data));

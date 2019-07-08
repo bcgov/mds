@@ -161,7 +161,7 @@ export class MineHeader extends Component {
     const menu = (
       <Menu>
         <AuthorizationWrapper
-          permission={Permission.CREATE}
+          permission={Permission.EDIT_MINES}
           isMajorMine={this.props.mine.major_mine_ind}
         >
           <Menu.Item onClick={this.handleMenuClick}>
@@ -186,7 +186,7 @@ export class MineHeader extends Component {
           </Menu.Item>
         </AuthorizationWrapper>
         <AuthorizationWrapper
-          permission={Permission.CREATE}
+          permission={Permission.EDIT_MINES}
           isMajorMine={this.props.mine.major_mine_ind}
         >
           <Menu.Item onClick={this.handleMenuClick}>

@@ -41,21 +41,18 @@ const defaultProps = {
 };
 
 const renderDocumentLink = (file, text) => (
-  <LinkButton
-    key={file.mine_document_guid}
-    onClick={() => downloadFileFromDocumentManager(file.document_manager_guid)}
-  >
+  <LinkButton key={file.mine_document_guid} onClick={() => downloadFileFromDocumentManager(file)}>
     {text}
   </LinkButton>
 );
 
 const renderPermitNo = (permit) => {
   const permitNoShouldLinkToDocument =
-    permit.amendments[0] &&
-    permit.amendments[0].permit_amendment_type_code === amalgamtedPermit &&
-    permit.amendments[0].related_documents[0];
+    permit.permit_amendments[0] &&
+    permit.permit_amendments[0].permit_amendment_type_code === amalgamtedPermit &&
+    permit.permit_amendments[0].related_documents[0];
   return permitNoShouldLinkToDocument
-    ? renderDocumentLink(permit.amendments[0].related_documents[0], permit.permit_no)
+    ? renderDocumentLink(permit.permit_amendments[0].related_documents[0], permit.permit_no)
     : permit.permit_no;
 };
 
@@ -163,7 +160,10 @@ const columns = [
         </Menu>
       );
       return (
-        <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.major_mine_ind}>
+        <AuthorizationWrapper
+          permission={Permission.EDIT_PERMITS}
+          isMajorMine={text.major_mine_ind}
+        >
           <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
             <Button type="secondary" className="permit-table-button">
               <div className="padding-small">
@@ -231,7 +231,7 @@ const childColumns = [
     key: "amendmentEdit",
     align: "right",
     render: (text, record) => (
-      <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.major_mine_ind}>
+      <AuthorizationWrapper permission={Permission.EDIT_PERMITS} isMajorMine={text.major_mine_ind}>
         <Button
           className="permit-table-button"
           type="ghost"
@@ -273,12 +273,12 @@ const transformRowData = (
   openAddAmalgamatedPermitModal,
   permitStatusOptions
 ) => {
-  const latestAmendment = permit.amendments[0];
-  const firstAmendment = permit.amendments[permit.amendments.length - 1];
+  const latestAmendment = permit.permit_amendments[0];
+  const firstAmendment = permit.permit_amendments[permit.permit_amendments.length - 1];
 
   const permittees = getPermittees(partyRelationships, permit);
   const permitteeName = partyRelationships.length === 0 ? "" : getPermitteeName(permittees);
-  const hasAmalgamated = permit.amendments.find(
+  const hasAmalgamated = permit.permit_amendments.find(
     (pa) => pa.permit_amendment_type_code === amalgamtedPermit
   );
 
@@ -291,7 +291,7 @@ const transformRowData = (
     authorizationEndDate:
       (latestAmendment && formatDate(latestAmendment.authorization_end_date)) ||
       Strings.EMPTY_FIELD,
-    amendments: permit.amendments,
+    permit_amendments: permit.permit_amendments,
     status: permit.permit_status_code,
     addEditButton: {
       major_mine_ind,
@@ -350,11 +350,11 @@ export const RenderPermitTableExpandIcon = (rowProps) => (
 
 export const MinePermitTable = (props) => {
   const amendmentHistory = (permit) => {
-    const childRowData = permit.amendments.map((amendment, index) =>
+    const childRowData = permit.permit_amendments.map((amendment, index) =>
       transformChildRowData(
         amendment,
         permit,
-        permit.amendments.length - index,
+        permit.permit_amendments.length - index,
         props.major_mine_ind,
         props.openEditAmendmentModal
       )

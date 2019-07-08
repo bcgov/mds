@@ -222,7 +222,7 @@ export class MineVarianceTable extends Component {
                   <div key={file.mine_document_guid}>
                     <LinkButton
                       key={file.mine_document_guid}
-                      onClick={() => downloadFileFromDocumentManager(file.document_manager_guid)}
+                      onClick={() => downloadFileFromDocumentManager(file)}
                     >
                       {file.document_name}
                     </LinkButton>
@@ -237,7 +237,7 @@ export class MineVarianceTable extends Component {
         dataIndex: "variance",
         render: (text, record) => (
           <div title="" align="right">
-            <AuthorizationWrapper permission={Permission.CREATE}>
+            <AuthorizationWrapper permission={Permission.EDIT_VARIANCES}>
               <Button
                 type="primary"
                 size="small"

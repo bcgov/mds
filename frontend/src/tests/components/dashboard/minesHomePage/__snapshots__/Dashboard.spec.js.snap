@@ -25,6 +25,7 @@ exports[`Dashboard renders properly 1`] = `
           <AddButton
             onClick={[Function]}
           >
+<<<<<<< HEAD
             Create Mine Record
           </AddButton>
         </Connect(AuthorizationWrapper)>
@@ -37,4 +38,452 @@ exports[`Dashboard renders properly 1`] = `
     <Loading />
   </div>
 </div>
+=======
+            <div>
+              <h1>
+                Mine Lookup
+              </h1>
+              <p>
+                To find a mine summary, search in the list or map section below.
+              </p>
+            </div>
+            <div>
+              <Connect(AuthorizationWrapper)
+                permission="role_edit_mines"
+              >
+                <AddButton
+                  onClick={[Function]}
+                >
+                  Create Mine Record
+                </AddButton>
+              </Connect(AuthorizationWrapper)>
+            </div>
+          </div>
+        </div>,
+        <div
+          className="landing-page__content"
+        >
+          <Loading />
+        </div>,
+      ],
+      "className": "landing-page",
+    },
+    "ref": null,
+    "rendered": Array [
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": <div
+            className="inline-flex between center-mobile center-mobile"
+          >
+            <div>
+              <h1>
+                Mine Lookup
+              </h1>
+              <p>
+                To find a mine summary, search in the list or map section below.
+              </p>
+            </div>
+            <div>
+              <Connect(AuthorizationWrapper)
+                permission="role_edit_mines"
+              >
+                <AddButton
+                  onClick={[Function]}
+                >
+                  Create Mine Record
+                </AddButton>
+              </Connect(AuthorizationWrapper)>
+            </div>
+          </div>,
+          "className": "landing-page__header",
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": Array [
+              <div>
+                <h1>
+                  Mine Lookup
+                </h1>
+                <p>
+                  To find a mine summary, search in the list or map section below.
+                </p>
+              </div>,
+              <div>
+                <Connect(AuthorizationWrapper)
+                  permission="role_edit_mines"
+                >
+                  <AddButton
+                    onClick={[Function]}
+                  >
+                    Create Mine Record
+                  </AddButton>
+                </Connect(AuthorizationWrapper)>
+              </div>,
+            ],
+            "className": "inline-flex between center-mobile center-mobile",
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": Array [
+                  <h1>
+                    Mine Lookup
+                  </h1>,
+                  <p>
+                    To find a mine summary, search in the list or map section below.
+                  </p>,
+                ],
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "Mine Lookup",
+                  },
+                  "ref": null,
+                  "rendered": "Mine Lookup",
+                  "type": "h1",
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "To find a mine summary, search in the list or map section below.",
+                  },
+                  "ref": null,
+                  "rendered": "To find a mine summary, search in the list or map section below.",
+                  "type": "p",
+                },
+              ],
+              "type": "div",
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": <Connect(AuthorizationWrapper)
+                  permission="role_edit_mines"
+                >
+                  <AddButton
+                    onClick={[Function]}
+                  >
+                    Create Mine Record
+                  </AddButton>
+                </Connect(AuthorizationWrapper)>,
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": <AddButton
+                    onClick={[Function]}
+                  >
+                    Create Mine Record
+                  </AddButton>,
+                  "permission": "role_edit_mines",
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "function",
+                  "props": Object {
+                    "children": "Create Mine Record",
+                    "onClick": [Function],
+                  },
+                  "ref": null,
+                  "rendered": "Create Mine Record",
+                  "type": [Function],
+                },
+                "type": [Function],
+              },
+              "type": "div",
+            },
+          ],
+          "type": "div",
+        },
+        "type": "div",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": <Loading />,
+          "className": "landing-page__content",
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "function",
+          "props": Object {},
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+        "type": "div",
+      },
+    ],
+    "type": "div",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": Array [
+          <div
+            className="landing-page__header"
+          >
+            <div
+              className="inline-flex between center-mobile center-mobile"
+            >
+              <div>
+                <h1>
+                  Mine Lookup
+                </h1>
+                <p>
+                  To find a mine summary, search in the list or map section below.
+                </p>
+              </div>
+              <div>
+                <Connect(AuthorizationWrapper)
+                  permission="role_edit_mines"
+                >
+                  <AddButton
+                    onClick={[Function]}
+                  >
+                    Create Mine Record
+                  </AddButton>
+                </Connect(AuthorizationWrapper)>
+              </div>
+            </div>
+          </div>,
+          <div
+            className="landing-page__content"
+          >
+            <Loading />
+          </div>,
+        ],
+        "className": "landing-page",
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": <div
+              className="inline-flex between center-mobile center-mobile"
+            >
+              <div>
+                <h1>
+                  Mine Lookup
+                </h1>
+                <p>
+                  To find a mine summary, search in the list or map section below.
+                </p>
+              </div>
+              <div>
+                <Connect(AuthorizationWrapper)
+                  permission="role_edit_mines"
+                >
+                  <AddButton
+                    onClick={[Function]}
+                  >
+                    Create Mine Record
+                  </AddButton>
+                </Connect(AuthorizationWrapper)>
+              </div>
+            </div>,
+            "className": "landing-page__header",
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": Array [
+                <div>
+                  <h1>
+                    Mine Lookup
+                  </h1>
+                  <p>
+                    To find a mine summary, search in the list or map section below.
+                  </p>
+                </div>,
+                <div>
+                  <Connect(AuthorizationWrapper)
+                    permission="role_edit_mines"
+                  >
+                    <AddButton
+                      onClick={[Function]}
+                    >
+                      Create Mine Record
+                    </AddButton>
+                  </Connect(AuthorizationWrapper)>
+                </div>,
+              ],
+              "className": "inline-flex between center-mobile center-mobile",
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": Array [
+                    <h1>
+                      Mine Lookup
+                    </h1>,
+                    <p>
+                      To find a mine summary, search in the list or map section below.
+                    </p>,
+                  ],
+                },
+                "ref": null,
+                "rendered": Array [
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "Mine Lookup",
+                    },
+                    "ref": null,
+                    "rendered": "Mine Lookup",
+                    "type": "h1",
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "To find a mine summary, search in the list or map section below.",
+                    },
+                    "ref": null,
+                    "rendered": "To find a mine summary, search in the list or map section below.",
+                    "type": "p",
+                  },
+                ],
+                "type": "div",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": <Connect(AuthorizationWrapper)
+                    permission="role_edit_mines"
+                  >
+                    <AddButton
+                      onClick={[Function]}
+                    >
+                      Create Mine Record
+                    </AddButton>
+                  </Connect(AuthorizationWrapper)>,
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <AddButton
+                      onClick={[Function]}
+                    >
+                      Create Mine Record
+                    </AddButton>,
+                    "permission": "role_edit_mines",
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "function",
+                    "props": Object {
+                      "children": "Create Mine Record",
+                      "onClick": [Function],
+                    },
+                    "ref": null,
+                    "rendered": "Create Mine Record",
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
+                "type": "div",
+              },
+            ],
+            "type": "div",
+          },
+          "type": "div",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": <Loading />,
+            "className": "landing-page__content",
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "function",
+            "props": Object {},
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+          "type": "div",
+        },
+      ],
+      "type": "div",
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+    "attachTo": undefined,
+    "hydrateIn": undefined,
+  },
+}
+>>>>>>> develop
 `;

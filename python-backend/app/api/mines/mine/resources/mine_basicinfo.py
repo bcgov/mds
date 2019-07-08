@@ -22,7 +22,7 @@ class MineBasicInfoResource(Resource, UserMixin, ErrorMixin):
     @api.expect(parser)
     @api.marshal_with(MINES_MODEL, code=200)
     @api.doc(description='Returns a list of basic mine info.')
-    @jwt.requires_roles(["mds-mine-view"])
+    @jwt.requires_roles(["core_view_all"])
     def post(self):
 
         data = self.parser.parse_args()
