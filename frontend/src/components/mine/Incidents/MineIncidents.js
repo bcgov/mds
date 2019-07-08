@@ -137,7 +137,7 @@ export class MineIncidents extends Component {
     return (
       <div>
         <div className="inline-flex flex-end">
-          <AuthorizationWrapper permission={Permission.CREATE}>
+          <AuthorizationWrapper permission={Permission.EDIT_DO}>
             <AddButton
               onClick={(event) =>
                 this.openMineIncidentModal(event, this.handleAddMineIncident, true)

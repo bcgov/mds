@@ -11,13 +11,13 @@ ShallowWrapper {
     storeUserAccessData={[MockFunction]}
     userAccessData={
       Array [
-        "mds-mine-view",
+        "core_view_all",
         "idir",
-        "mds-mine-create",
+        "core_edit_mines",
         "offline_access",
         "admin",
         "uma_authorization",
-        "mds-mine-admin",
+        "core_admin",
       ]
     }
   />,
@@ -40,13 +40,13 @@ ShallowWrapper {
       "storeKeycloakData": [MockFunction],
       "storeUserAccessData": [MockFunction],
       "userAccessData": Array [
-        "mds-mine-view",
+        "core_view_all",
         "idir",
-        "mds-mine-create",
+        "core_edit_mines",
         "offline_access",
         "admin",
         "uma_authorization",
-        "mds-mine-admin",
+        "core_admin",
       ],
     },
     "ref": null,
@@ -65,13 +65,13 @@ ShallowWrapper {
         "storeKeycloakData": [MockFunction],
         "storeUserAccessData": [MockFunction],
         "userAccessData": Array [
-          "mds-mine-view",
+          "core_view_all",
           "idir",
-          "mds-mine-create",
+          "core_edit_mines",
           "offline_access",
           "admin",
           "uma_authorization",
-          "mds-mine-admin",
+          "core_admin",
         ],
       },
       "ref": null,

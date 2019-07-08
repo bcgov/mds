@@ -100,7 +100,7 @@ const columns = (props) => [
     dataIndex: "handleEditModal",
     render: (text, record) => (
       <div title="" align="right">
-        <AuthorizationWrapper permission={Permission.CREATE}>
+        <AuthorizationWrapper permission={Permission.EDIT_DO}>
           <Button
             type="primary"
             size="small"
