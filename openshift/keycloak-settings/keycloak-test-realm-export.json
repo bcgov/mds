@@ -271,6 +271,7 @@
         "composite": true,
         "composites": {
           "realm": [
+            "core_edit_parties",
             "core_edit_variances",
             "core_edit_do",
             "core_environmental_reports",
@@ -289,6 +290,7 @@
         "composite": true,
         "composites": {
           "realm": [
+            "core_edit_parties",
             "core_edit_variances",
             "core_edit_do",
             "core_environmental_reports",
