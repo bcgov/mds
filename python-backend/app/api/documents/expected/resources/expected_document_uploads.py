@@ -18,7 +18,7 @@ from ...expected.models.mine_expected_document_xref import MineExpectedDocumentX
 from ...mines.models.mine_document import MineDocument
 
 from app.extensions import api, db
-from ....utils.access_decorators import requires_any_of, MINE_CREATE, MINESPACE_PROPONENT
+from ....utils.access_decorators import requires_any_of, MINE_EDIT, MINESPACE_PROPONENT
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
@@ -33,7 +33,7 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             'expected_document_guid':
             'Required: The guid of the expected document that this upload will be satisfying.'
         })
-    @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
+    @requires_any_of([MINE_EDIT, MINESPACE_PROPONENT])
     def post(self, expected_document_guid):
         if not expected_document_guid:
             return self.create_error_payload(400, 'Expected Document GUID is required'), 400
@@ -65,7 +65,7 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         response = Response(resp.content, resp.status_code, resp.raw.headers.items())
         return response
 
-    @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
+    @requires_any_of([MINE_EDIT, MINESPACE_PROPONENT])
     def put(self, expected_document_guid):
         if not expected_document_guid:
             return self.create_error_payload(400, 'Expected Document GUID is required'), 400
@@ -102,7 +102,7 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
 
         return expected_document.json()
 
-    @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
+    @requires_any_of([MINE_EDIT, MINESPACE_PROPONENT])
     def delete(self, expected_document_guid=None, mine_document_guid=None):
         if expected_document_guid is None or mine_document_guid is None:
             return self.create_error_payload(

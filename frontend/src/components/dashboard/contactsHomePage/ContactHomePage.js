@@ -193,7 +193,7 @@ export class ContactHomePage extends Component {
               <h1>Contact Lookup</h1>
               <p>To find a contact profile, search in the list section below.</p>
             </div>
-            <AuthorizationWrapper permission={Permission.CREATE}>
+            <AuthorizationWrapper permission={Permission.EDIT_PARTIES}>
               <AddButton
                 onClick={(event) =>
                   this.openAddContactModal(

@@ -68,7 +68,7 @@ const columns = [
     key: "applicationEdit",
     align: "right",
     render: (text, record) => (
-      <AuthorizationWrapper permission={Permission.CREATE} isMajorMine={text.isMajorMine}>
+      <AuthorizationWrapper permission={Permission.EDIT_PERMITS} isMajorMine={text.isMajorMine}>
         <Button
           className="permit-table-button"
           type="ghost"
