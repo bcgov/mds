@@ -36,6 +36,7 @@ from app.api.users.minespace.resources.minespace_user import MinespaceUserResour
 from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserMineResource
 from app.api.search.search.resources.search import SearchResource, SearchOptionsResource
 from app.api.search.search.resources.simple_search import SimpleSearchResource
+from app.api.mines.reports.resources.mine_reports import MineReportResource, MineReportListResource
 
 
 @pytest.mark.parametrize(
@@ -55,7 +56,7 @@ from app.api.search.search.resources.simple_search import SimpleSearchResource
      (ExpectedDocumentUploadResource, "delete", [MINE_CREATE, MINESPACE_PROPONENT]),
      (ExpectedMineDocumentResource, "get", [MINE_VIEW]),
      (ExpectedMineDocumentResource, "post", [MINE_CREATE]),
-     (MineCommodityCodeResource, "get", [MINE_VIEW]), 
+     (MineCommodityCodeResource, "get", [MINE_VIEW]),
      (MineComplianceSummaryResource, "get", [MINE_VIEW]),
      (MineDisturbanceCodeResource, "get", [MINE_VIEW]),
      (MineDocumentResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]),
@@ -67,10 +68,14 @@ from app.api.search.search.resources.simple_search import SimpleSearchResource
      (MinePartyApptResource, "post", [MINE_CREATE]),
      (MinePartyApptResource, "put", [MINE_CREATE]),
      (MinePartyApptResource, "delete", [MINE_CREATE]),
-     (MinePartyApptTypeResource, "get", [MINE_VIEW]),
+     (MinePartyApptTypeResource, "get", [MINE_VIEW]), 
      (MineRegionResource, "get", [MINE_VIEW]),
-     (MineResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]),
+     (MineResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]), 
      (MineResource, "put", [MINE_CREATE]),
+     (MineReportResource, "get", [MINE_VIEW]), 
+     (MineReportResource, "put", [MINE_CREATE]),
+     (MineReportListResource, "get", [MINE_VIEW]), 
+     (MineReportListResource, "post", [MINE_CREATE]),
      (MineStatusResource, "get", [MINE_VIEW]),
      (MineTailingsStorageFacilityListResource, "get", [MINE_VIEW]),
      (MineTailingsStorageFacilityListResource, "post", [MINE_CREATE]),
@@ -91,20 +96,22 @@ from app.api.search.search.resources.simple_search import SimpleSearchResource
      (PartyResource, "get", [MINE_VIEW]),
      (PartyResource, "put", [MINE_CREATE]),
      (PartyResource, "delete", [MINE_ADMIN]),
-     (PermitResource, "get", [MINE_VIEW]), (PermitListResource, "post", [MINE_CREATE]),
-     (PermitResource, "put", [MINE_CREATE]), (PermitAmendmentListResource, "post", [MINE_CREATE]),
+     (PermitResource, "get", [MINE_VIEW]), 
+     (PermitListResource, "post", [MINE_CREATE]),
+     (PermitResource, "put", [MINE_CREATE]), 
+     (PermitAmendmentListResource, "post", [MINE_CREATE]),
      (PermitAmendmentResource, "put", [MINE_CREATE]),
      (PermitAmendmentResource, "delete", [MINE_ADMIN]),
      (PermitAmendmentDocumentListResource, "post", [MINE_CREATE]),
      (PermitAmendmentDocumentListResource, "put", [MINE_CREATE]),
      (PermitAmendmentDocumentResource, "delete", [MINE_CREATE]),
+     (RequiredDocumentResource, "get", [MINE_VIEW]), 
      (RequiredDocumentResource, "get", [MINE_VIEW]),
-     (RequiredDocumentResource, "get", [MINE_VIEW]),
-     (SearchResource, "get", [MINE_VIEW]),
+     (SearchResource, "get", [MINE_VIEW]), 
      (SearchOptionsResource, "get", [MINE_VIEW]),
-     (SimpleSearchResource, "get", [MINE_VIEW]),
+     (SimpleSearchResource, "get", [MINE_VIEW]), 
      (MinespaceUserResource, 'get', [MINE_ADMIN]),
-     (MinespaceUserResource, 'post', [MINE_ADMIN]),
+     (MinespaceUserResource, 'post', [MINE_ADMIN]), 
      (MinespaceUserResource, 'delete', [MINE_ADMIN]),
      (MinespaceUserMineResource, 'post', [MINE_ADMIN]),
      (MinespaceUserMineResource, 'delete', [MINE_ADMIN])])

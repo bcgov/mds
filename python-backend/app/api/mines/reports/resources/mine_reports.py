@@ -34,13 +34,11 @@ class MineReportListResource(Resource, UserMixin):
 
     parser.add_argument('permit_guid', type=str, location='json')
 
-    @api.marshal_with(MINE_REPORT_MODEL, envelope='records', code=200, as_list=True)
+    @api.marshal_with(MINE_REPORT_MODEL, envelope='records', code=200)
     @api.doc(description='returns the reports for a given mine.')
     @requires_role_mine_view
     def get(self, mine_guid):
         mine_reports = MineReport.find_all_by_mine_guid(mine_guid)
-        if not mine_reports:
-            raise BadRequest("Unable to fetch reports for that mine.")
         return mine_reports
 
     @api.expect(MINE_REPORT_MODEL)
