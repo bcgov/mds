@@ -59,13 +59,12 @@ export class MineIncidents extends Component {
   }
 
   handleAddMineIncident = (values) => {
-    // set default fatalities & injuries to 0 if not set by user
-    const { number_of_fatalities = 0, number_of_injuries = 0 } = values;
+    const { number_of_fatalities = 0, number_of_injuries = 0, ...otherValues } = values;
     this.props
       .createMineIncident(this.props.mine.mine_guid, {
         number_of_fatalities,
         number_of_injuries,
-        ...values,
+        ...otherValues,
       })
       .then(() => {
         this.props.closeModal();

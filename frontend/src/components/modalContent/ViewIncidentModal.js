@@ -25,7 +25,13 @@ const propTypes = {
   incidentFollowupActionHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
-export class ViewVarianceModal extends Component {
+const DANGEROUS_OCCURRENCE = "DO";
+const INCIDENT_DOCUMENT_TYPES = {
+  initial: "INI",
+  final: "FIN",
+};
+
+export class ViewIncidentModal extends Component {
   state = { recommendationsExpanded: false };
 
   toggleRecommendations = () => {
@@ -119,7 +125,7 @@ export class ViewVarianceModal extends Component {
               Strings.EMPTY_FIELD}
           </p>
         </div>
-        {this.props.incident.determination_type_code === Strings.DANGEROUS_OCCURRENCE && (
+        {this.props.incident.determination_type_code === DANGEROUS_OCCURRENCE && (
           <div className="padding-small">
             <p className="field-title">
               Which section(s) of the code applies to this dangerous occurrence?
@@ -149,7 +155,8 @@ export class ViewVarianceModal extends Component {
 
   renderInitialDocuments = () => {
     const initialDocuments = this.props.incident.documents.filter(
-      ({ mine_incident_document_type_code }) => mine_incident_document_type_code === "INI"
+      ({ mine_incident_document_type_code }) =>
+        mine_incident_document_type_code === INCIDENT_DOCUMENT_TYPES.initial
     );
     return (
       <div>
@@ -219,7 +226,8 @@ export class ViewVarianceModal extends Component {
 
   renderFinalDocuments = () => {
     const finalDocuments = this.props.incident.documents.filter(
-      ({ mine_incident_document_type_code }) => mine_incident_document_type_code === "FIN"
+      ({ mine_incident_document_type_code }) =>
+        mine_incident_document_type_code === INCIDENT_DOCUMENT_TYPES.final
     );
     return (
       <div>
@@ -258,6 +266,7 @@ export class ViewVarianceModal extends Component {
   ];
 
   render() {
+    console.log(this.props.incidentStatusCodeHash);
     return (
       <div>
         {this.renderInitialDetails()}
@@ -275,7 +284,7 @@ export class ViewVarianceModal extends Component {
   }
 }
 
-ViewVarianceModal.propTypes = propTypes;
+ViewIncidentModal.propTypes = propTypes;
 
 const mapStateToProps = (state) => ({
   complianceCodesHash: getHSRCMComplianceCodesHash(state),
@@ -285,4 +294,4 @@ const mapStateToProps = (state) => ({
   incidentStatusCodeHash: getIncidentStatusCodeHash(state),
 });
 
-export default connect(mapStateToProps)(ViewVarianceModal);
+export default connect(mapStateToProps)(ViewIncidentModal);
