@@ -1,9 +1,4 @@
-import uuid
 import pytest
-from datetime import datetime, timedelta
-from sqlalchemy import create_engine
-
-from flask import Flask
 
 from app import create_app
 from app.config import TestConfig, EtlTestConfig
@@ -105,6 +100,10 @@ def db_local(app_local, request):
     request.addfinalizer(teardown)
     return db
 
+# NOTE: It looks likely that the only difference between this session and
+# db_session is the app instance that is associated with the db (app vs
+# app_local). Check for potential reuse of existing code & validate that this
+# new code actually does something new
 @pytest.fixture(scope='function')
 def session(db_local, request):
     """Creates a new database session for a test."""
