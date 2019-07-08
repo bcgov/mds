@@ -129,7 +129,7 @@ ShallowWrapper {
         >
           <Connect(AuthorizationWrapper)
             isMajorMine={undefined}
-            permission="role_create"
+            permission="role_edit_mines"
           >
             <Button
               block={false}
@@ -181,7 +181,7 @@ ShallowWrapper {
           >
             <Connect(AuthorizationWrapper)
               isMajorMine={undefined}
-              permission="role_create"
+              permission="role_edit_mines"
             >
               <Button
                 block={false}
@@ -359,7 +359,7 @@ ShallowWrapper {
           "props": Object {
             "children": <Connect(AuthorizationWrapper)
               isMajorMine={undefined}
-              permission="role_create"
+              permission="role_edit_mines"
             >
               <Button
                 block={false}
@@ -391,7 +391,7 @@ ShallowWrapper {
                 Add Tenure Number
               </Button>,
               "isMajorMine": undefined,
-              "permission": "role_create",
+              "permission": "role_edit_mines",
             },
             "ref": null,
             "rendered": Object {
@@ -456,7 +456,7 @@ ShallowWrapper {
           >
             <Connect(AuthorizationWrapper)
               isMajorMine={undefined}
-              permission="role_create"
+              permission="role_edit_mines"
             >
               <Button
                 block={false}
@@ -508,7 +508,7 @@ ShallowWrapper {
             >
               <Connect(AuthorizationWrapper)
                 isMajorMine={undefined}
-                permission="role_create"
+                permission="role_edit_mines"
               >
                 <Button
                   block={false}
@@ -686,7 +686,7 @@ ShallowWrapper {
             "props": Object {
               "children": <Connect(AuthorizationWrapper)
                 isMajorMine={undefined}
-                permission="role_create"
+                permission="role_edit_mines"
               >
                 <Button
                   block={false}
@@ -718,7 +718,7 @@ ShallowWrapper {
                   Add Tenure Number
                 </Button>,
                 "isMajorMine": undefined,
-                "permission": "role_create",
+                "permission": "role_edit_mines",
               },
               "ref": null,
               "rendered": Object {

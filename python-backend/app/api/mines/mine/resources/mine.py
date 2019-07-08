@@ -18,7 +18,7 @@ from ..models.mineral_tenure_xref import MineralTenureXref
 from ...location.models.mine_location import MineLocation
 from ....utils.random import generate_mine_no
 from app.extensions import api, cache, db
-from ....utils.access_decorators import requires_role_mine_create, requires_any_of, MINE_VIEW, MINESPACE_PROPONENT
+from ....utils.access_decorators import requires_role_mine_edit, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from ....constants import MINE_MAP_CACHE
 from app.api.mines.mine_api_models import MINE_LIST_MODEL, MINE_MODEL
@@ -109,7 +109,7 @@ class MineListResource(Resource, UserMixin):
         },
         description='Returns a list of filtered mines.')
     @api.marshal_with(MINE_LIST_MODEL, code=200)
-    @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
+    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def get(self):
 
         paginated_mine_query, pagination_details = self.apply_filter_and_search(request.args)
@@ -125,7 +125,7 @@ class MineListResource(Resource, UserMixin):
     @api.expect(parser)
     @api.doc(description='Creates a new mine.')
     @api.marshal_with(MINE_MODEL, code=201)
-    @requires_role_mine_create
+    @requires_role_mine_edit
     def post(self):
         data = self.parser.parse_args()
         lat = data.get('latitude')
@@ -319,7 +319,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
 
     @api.doc(description='Returns the specific mine from the mine_guid or mine_no provided.')
     @api.marshal_with(MINE_MODEL, code=200)
-    @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
+    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def get(self, mine_no_or_guid):
 
         mine = Mine.find_by_mine_no_or_guid(mine_no_or_guid)
@@ -331,7 +331,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
     @api.expect(parser)
     @api.marshal_with(MINE_MODEL, code=200)
     @api.doc(description='Updates the specified mine.')
-    @requires_role_mine_create
+    @requires_role_mine_edit
     def put(self, mine_no_or_guid):
         mine = Mine.find_by_mine_no_or_guid(mine_no_or_guid)
         if not mine:
@@ -399,7 +399,7 @@ class MineListSearch(Resource):
             'name': 'Search term in mine name.',
             'term': 'Search term in mine name, mine number, and permit.'
         })
-    @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
+    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def get(self):
         name_search = request.args.get('name')
         search_term = request.args.get('term')

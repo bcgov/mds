@@ -252,7 +252,7 @@ export class MinePermitInfo extends Component {
           <div />
           <div className="inline-flex between">
             <AuthorizationWrapper
-              permission={Permission.CREATE}
+              permission={Permission.EDIT_PERMITS}
               isMajorMine={this.props.mine.major_mine_ind}
             >
               <AddButton
