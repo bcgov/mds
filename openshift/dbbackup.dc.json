@@ -239,7 +239,6 @@
     },
     {
       "name": "WEBHOOK_SECRET_NAME",
-      "required": true,
       "value": "template.mds-rocket-chat-integrations"
     },
     {
