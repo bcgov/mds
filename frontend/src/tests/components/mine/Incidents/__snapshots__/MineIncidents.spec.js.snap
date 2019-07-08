@@ -130,7 +130,7 @@ ShallowWrapper {
           className="inline-flex flex-end"
         >
           <Connect(AuthorizationWrapper)
-            permission="role_create"
+            permission="role_edit_do"
           >
             <AddButton
               onClick={[Function]}
@@ -181,7 +181,7 @@ ShallowWrapper {
         "nodeType": "host",
         "props": Object {
           "children": <Connect(AuthorizationWrapper)
-            permission="role_create"
+            permission="role_edit_do"
           >
             <AddButton
               onClick={[Function]}
@@ -202,7 +202,7 @@ ShallowWrapper {
             >
               Record a Mine Incident
             </AddButton>,
-            "permission": "role_create",
+            "permission": "role_edit_do",
           },
           "ref": null,
           "rendered": Object {
@@ -271,7 +271,7 @@ ShallowWrapper {
             className="inline-flex flex-end"
           >
             <Connect(AuthorizationWrapper)
-              permission="role_create"
+              permission="role_edit_do"
             >
               <AddButton
                 onClick={[Function]}
@@ -322,7 +322,7 @@ ShallowWrapper {
           "nodeType": "host",
           "props": Object {
             "children": <Connect(AuthorizationWrapper)
-              permission="role_create"
+              permission="role_edit_do"
             >
               <AddButton
                 onClick={[Function]}
@@ -343,7 +343,7 @@ ShallowWrapper {
               >
                 Record a Mine Incident
               </AddButton>,
-              "permission": "role_create",
+              "permission": "role_edit_do",
             },
             "ref": null,
             "rendered": Object {

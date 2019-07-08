@@ -721,13 +721,13 @@ ShallowWrapper {
     updateVariance={[MockFunction]}
     userRoles={
       Array [
-        "mds-mine-view",
+        "core_view_all",
         "idir",
-        "mds-mine-create",
+        "core_edit_mines",
         "offline_access",
         "admin",
         "uma_authorization",
-        "mds-mine-admin",
+        "core_admin",
       ]
     }
     varianceDocumentCategoryOptions={

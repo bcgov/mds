@@ -119,7 +119,7 @@ const columns = [
     render: (text, record) => (
       <div title="" align="right">
         <AuthorizationWrapper
-          permission={Permission.CREATE}
+          permission={Permission.EDIT_MINES}
           isMajorMine={record.mine.major_mine_ind}
         >
           <div className="inline-flex">
