@@ -1,16 +1,13 @@
-import axios from "axios";
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
 import { request, success, error } from "@/actions/genericActions";
 import * as reducerTypes from "@/constants/reducerTypes";
-import * as mineActions from "@/actions/mineActions";
-import * as String from "@/constants/strings";
+import * as mineReportActions from "@/actions/mineReportActions";
 import * as API from "@/constants/API";
 import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
 import CustomAxios from "@/customAxios";
 
-// MineIncidents
 export const createMineReport = (mineGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_MINE_REPORT));
   return CustomAxios()
@@ -33,7 +30,7 @@ export const fetchMineReports = (mineGuid) => (dispatch) => {
     .get(`${ENVIRONMENT.apiUrl}${API.MINE_REPORTS(mineGuid)}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_REPORTS));
-      dispatch(mineActions.storeMineIncidents(response.data));
+      dispatch(mineReportActions.storeMineReports(response.data));
       return response;
     })
     .catch(() => dispatch(error(reducerTypes.GET_MINE_REPORTS)))

@@ -9,6 +9,7 @@ export const {
   getMineTenureTypeOptions,
   getMineCommodityOptions,
   getMineDisturbanceOptions,
+  getMineReportDefinitionOptions,
   getExpectedDocumentStatusOptions,
   getMineTSFRequiredReports,
   getOptionsLoaded,
@@ -271,4 +272,9 @@ export const getDropdownVarianceDocumentCategoryOptions = createSelector(
 export const getVarianceDocumentCategoryOptionsHash = createSelector(
   [getDropdownVarianceDocumentCategoryOptions],
   createLabelHash
+);
+
+export const getDropdownMineReportDefinitionOptions = createSelector(
+  [getMineReportDefinitionOptions],
+  (options) => createDropDownList(options, "description", "mine_report_definition_guid")
 );

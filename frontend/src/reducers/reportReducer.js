@@ -2,7 +2,7 @@ import * as actionTypes from "@/constants/actionTypes";
 import { REPORTS } from "@/constants/reducerTypes";
 
 const initialState = {
-  reports: [],
+  mineReports: [],
 };
 
 const reportReducer = (state = initialState, action) => {
@@ -10,13 +10,13 @@ const reportReducer = (state = initialState, action) => {
     case actionTypes.STORE_MINE_REPORTS:
       return {
         ...state,
-        reports: action.payload,
+        mineReports: action.payload.records,
       };
     default:
       return state;
   }
 };
 
-export const getMineReports = (state) => state[REPORTS].reports;
+export const getMineReports = (state) => state[REPORTS].mineReports;
 
 export default reportReducer;

@@ -14,39 +14,39 @@ import AddButton from "@/components/common/AddButton";
 import MineReportTable from "@/components/mine/Reports/MineReportTable";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
-import { Button } from "antd/lib/radio";
-import { getMineReports } from "../../../reducers/reportReducer";
+import { getMineReports } from "@/selectors/reportSelectors";
+
 /**
  * @class  MinePermitInfo - contains all permit information
  */
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
-  reports: PropTypes.arrayOf(CustomPropTypes.mineReport),
+  mineReports: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  // mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport),
   fetchMineReports: PropTypes.func.isRequired,
   updateMineReport: PropTypes.func.isRequired,
   createMineReport: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  hsrcDefinedReportsDropDown: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
-};
-
-const defaultProps = {
-  hsrcDefinedReportsDropDown: [{ value: 1, label: "help" }],
-  reports: [],
 };
 
 export class MineReportInfo extends Component {
+  componentWillMount = () => {
+    this.props.fetchMineReports();
+  };
+
   handleEditReport = (values) => {
     this.props
       .updateMineReport(this.props.mine.mine_guid, values.report_guid, values)
       .then(() => this.props.closeModal());
   };
 
-  handleAddReport = (values) =>
+  handleAddReport = (values) => {
     this.props
       .createMineReport(this.props.mine.mine_guid, values)
       .then(() => this.props.closeModal());
+  };
 
   openAddReportModal = (event) => {
     event.preventDefault();
@@ -54,8 +54,8 @@ export class MineReportInfo extends Component {
       props: {
         onSubmit: this.handleAddReport,
         title: `Add report for ${this.props.mine.mine_name}`,
-        mine_guid: this.props.mine.mine_guid,
-        hsrcDefinedReportsDropDown: this.props.hsrcDefinedReportsDropDown,
+        mineGuid: this.props.mine.mine_guid,
+        dropdownMineReportDefinitions: this.props.mineReportDefinitions,
       },
       content: modalConfig.ADD_REPORT,
     });
@@ -69,7 +69,7 @@ export class MineReportInfo extends Component {
         initialValues: report,
         onSubmit: this.handleEditReport,
         title: `Edit report for ${this.props.mine.mine_name}`,
-        hsrcDefinedReportsDropDown: this.props.hsrcDefinedReportsDropDown,
+        dropdownMineReportDefinitions: this.props.mineReportDefinitions,
       },
       content: modalConfig.EDIT_REPORT,
     });
@@ -94,14 +94,17 @@ export class MineReportInfo extends Component {
             Add a Report
           </AddButton>
         </AuthorizationWrapper>
-        <MineReportTable openEditReportModal={this.openEditReportModal} />
+        <MineReportTable
+          openEditReportModal={this.openEditReportModal}
+          mineReports={this.props.mineReports}
+        />
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  reports: getMineReports(state),
+  mineReports: getMineReports(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -115,7 +118,6 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 MineReportInfo.propTypes = propTypes;
-MineReportInfo.defaultProps = defaultProps;
 
 export default connect(
   mapStateToProps,

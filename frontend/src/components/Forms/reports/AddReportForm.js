@@ -1,25 +1,24 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { remove } from "lodash";
 import PropTypes from "prop-types";
-import { Field, reduxForm, change, formValueSelector } from "redux-form";
+import { Field, reduxForm } from "redux-form";
 import { renderConfig } from "@/components/common/config";
-import PartySelectField from "@/components/common/PartySelectField";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
-import { required, dateNotInFuture, maxLength } from "@/utils/Validate";
+import { required } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
-import { getDropdownPermitStatusOptions } from "@/selectors/staticContentSelectors";
+import { getDropdownMineReportDefinitionOptions } from "@/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  hsrcDefinedReportsDropDown: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   title: PropTypes.string.isRequired,
-  submitting: PropTypes.bool.isRequired,
-  mine_guid: PropTypes.string.isRequired,
+  mineGuid: PropTypes.string.isRequired,
+  dropdownMineReportDefinitionOptions: PropTypes.arrayOf(
+    PropTypes.objectOf(CustomPropTypes.dropdownListItem)
+  ).isRequired,
 };
 
 const defaultProps = {};
@@ -28,17 +27,6 @@ export class AddReportForm extends Component {
   state = {
     uploadedFiles: [],
   };
-
-  // // File upload handlers
-  // onFileLoad = (fileName, document_manager_guid) => {
-  //   this.state.uploadedFiles.push({ fileName, document_manager_guid });
-  //   this.props.change("uploadedFiles", this.state.uploadedFiles);
-  // };
-
-  // onRemoveFile = (fileItem) => {
-  //   remove(this.state.uploadedFiles, { document_manager_guid: fileItem.serverId });
-  //   this.props.change("uploadedFiles", this.state.uploadedFiles);
-  // };
 
   render() {
     return (
@@ -51,7 +39,7 @@ export class AddReportForm extends Component {
                 name="report_definition_guid"
                 label="Code Defined Reports"
                 placeholder="Please select a report"
-                data={this.props.hsrcDefinedReportsDropDown}
+                data={this.props.dropdownMineReportDefinitionOptions}
                 doNotPinDropdown
                 component={renderConfig.SELECT}
                 validate={[required]}
@@ -71,12 +59,7 @@ export class AddReportForm extends Component {
               Cancel
             </Button>
           </Popconfirm>
-          <Button
-            className="full-mobile"
-            type="primary"
-            htmlType="submit"
-            disabled={this.props.submitting}
-          >
+          <Button className="full-mobile" type="primary" htmlType="submit">
             {this.props.title}
           </Button>
         </div>
@@ -90,7 +73,7 @@ AddReportForm.defaultProps = defaultProps;
 
 export default compose(
   connect((state) => ({
-    permitStatusOptions: getDropdownPermitStatusOptions(state),
+    dropdownMineReportDefinitionOptions: getDropdownMineReportDefinitionOptions(state),
   })),
   reduxForm({
     form: FORM.ADD_REPORT,

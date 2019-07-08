@@ -4,16 +4,15 @@ import AddReportForm from "@/components/Forms/reports/AddReportForm";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
-  title: PropTypes.string,
+  title: PropTypes.string.isRequired,
+  mineGuid: PropTypes.string.isRequired,
 };
 
-const defaultProps = {
-  title: "",
-};
+const defaultProps = {};
 
 export const AddReportModal = (props) => (
   <div>
-    <AddReportForm {...props} />
+    <AddReportForm onSubmit={props.onSubmit} title={props.title} mineGuid={props.mineGuid} />
   </div>
 );
 

@@ -20,20 +20,12 @@ const { errorRed } = COLOR;
  */
 
 const propTypes = {
-  reports: PropTypes.arrayOf(CustomPropTypes.mineReport),
+  // mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport),
+  mineReports: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   openEditReportModal: PropTypes.func.isRequired,
 };
 
-const defaultProps = {
-  reports: [
-    {
-      report_guid: 1,
-      report_name: "Cool Report",
-      due_date: "2019-07-05",
-      submission_year: 2019,
-    },
-  ],
-};
+const defaultProps = {};
 
 const columns = [
   {
@@ -107,7 +99,7 @@ export const MineReportTable = (props) => (
     pagination={false}
     columns={columns}
     locale={{ emptyText: <NullScreen type="reports" /> }}
-    dataSource={props.reports.map((r) => transformRowData(r, props.openEditReportModal))}
+    dataSource={props.mineReports.map((r) => transformRowData(r, props.openEditReportModal))}
   />
 );
 
