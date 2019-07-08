@@ -213,19 +213,6 @@ app {
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/nris_api",
                     ]
-                ],
-                [
-                    'file':'openshift/dbbackup.dc.json',
-                    'params':[
-                            'NAME':"mds-database-backup",
-                            'SUFFIX': "${vars.deployment.suffix}",
-                            'VERSION':"${app.deployment.version}",
-                            'ENVIRONMENT_NAME':"${vars.deployment.namespace}",
-                            'ENVIRONMENT_FRIENDLY_NAME':"BC Mines Digital Services (DEV)",
-                            'DATABASE_SERVICE_NAME':"mds-postgresql${vars.deployment.suffix}",
-                            'NFS_VOLUME_IDENTIFIER':"bk-empr-mds-dev-rziu7r9a88e7",
-                            'VERIFICATION_VOLUME_SIZE':"1Gi"
-                    ]
                 ]
         ]
     }
