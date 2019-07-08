@@ -229,6 +229,7 @@ app {
                     'file':'openshift/tools/metabase.dc.json',
                     'params':[
                             'NAME':"metabase",
+                            'NAME_DATABASE':"metabase-postgres",
                             'VERSION':"${app.deployment.version}",
                             'SUFFIX': "${vars.deployment.suffix}",
                             'METABASE_PVC_SIZE':"${vars.METABASE_PVC_SIZE}",
@@ -237,7 +238,11 @@ app {
                             'CPU_REQUEST':"${vars.resources.metabase.cpu_request}",
                             'CPU_LIMIT':"${vars.resources.metabase.cpu_limit}",
                             'MEMORY_REQUEST':"${vars.resources.metabase.memory_request}",
-                            'MEMORY_LIMIT':"${vars.resources.metabase.memory_limit}"
+                            'MEMORY_LIMIT':"${vars.resources.metabase.memory_limit}",
+                            'DB_CPU_REQUEST':"${vars.resources.metabase.db_cpu_request}",
+                            'DB_CPU_LIMIT':"${vars.resources.metabase.db_cpu_limit}",
+                            'DB_MEMORY_REQUEST':"${vars.resources.metabase.db_memory_request}",
+                            'DB_MEMORY_LIMIT':"${vars.resources.metabase.db_memory_limit}"
                     ]
                 ],
                 [
@@ -264,7 +269,7 @@ environments {
             DB_PVC_SIZE = '10Gi'
             DOCUMENT_PVC_SIZE = '5Gi'
             LOG_PVC_SIZE = '1Gi'
-            METABASE_PVC_SIZE = '5Gi'
+            METABASE_PVC_SIZE = '10Gi'
             git {
                 changeId = "${opt.'pr'}"
             }
@@ -328,10 +333,14 @@ environments {
                     memory_limit = "2Gi"
                 }
                 metabase {
-                    cpu_request = "200m"
-                    cpu_limit = "500m"
+                    cpu_request = "100m"
+                    cpu_limit = "200m"
                     memory_request = "1Gi"
                     memory_limit = "2Gi"
+                    db_cpu_request = "100m"
+                    db_cpu_limit = "200m"
+                    db_memory_request = "512Mi"
+                    db_memory_limit = "1Gi"
                 }
                 logstash {
                     cpu_request = "100m"

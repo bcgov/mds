@@ -28,9 +28,7 @@ export const DocumentResultsTable = (props) => {
           <Col span={24}>
             <LinkButton
               key={record.mine_document_guid || record.permit_amendment_document_guid}
-              onClick={() =>
-                downloadFileFromDocumentManager(record.document_manager_guid, record.document_name)
-              }
+              onClick={() => downloadFileFromDocumentManager(record)}
             >
               <Highlight search={props.highlightRegex}>{record.document_name}</Highlight>
             </LinkButton>

@@ -25,7 +25,7 @@ from app.api.mines.mine_api_models import MINE_LIST_MODEL, MINE_MODEL
 # FIXME: Model import from outside of its namespace
 # This breaks micro-service architecture and is done
 # for search performance until search can be refactored
-from ....permits.permit.models.permit import Permit
+from app.api.mines.permits.permit.models.permit import Permit
 
 
 class MineListResource(Resource, UserMixin):

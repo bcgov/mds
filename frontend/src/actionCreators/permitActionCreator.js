@@ -9,11 +9,11 @@ import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
 import CustomAxios from "@/customAxios";
 
-export const createPermit = (payload) => (dispatch) => {
+export const createPermit = (mineGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_PERMIT));
   dispatch(showLoading("modal"));
   return CustomAxios()
-    .post(ENVIRONMENT.apiUrl + API.PERMIT(), payload, createRequestHeader())
+    .post(ENVIRONMENT.apiUrl + API.PERMITS(mineGuid), payload, createRequestHeader())
     .then((response) => {
       notification.success({ message: "Successfully created a new permit", duration: 10 });
       dispatch(success(reducerTypes.CREATE_PERMIT));
@@ -23,11 +23,11 @@ export const createPermit = (payload) => (dispatch) => {
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const fetchPermits = (params = {}) => (dispatch) => {
+export const fetchPermits = (mineGuid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_PERMITS));
   dispatch(showLoading("modal"));
   return CustomAxios(String.ERROR)
-    .get(ENVIRONMENT.apiUrl + API.PERMIT(params), createRequestHeader())
+    .get(ENVIRONMENT.apiUrl + API.PERMITS(mineGuid), createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_PERMITS));
       dispatch(permitActions.storePermits(response.data));
@@ -36,11 +36,15 @@ export const fetchPermits = (params = {}) => (dispatch) => {
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const updatePermit = (permit_guid, payload) => (dispatch) => {
+export const updatePermit = (mineGuid, permitGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_PERMIT));
   dispatch(showLoading());
   return CustomAxios()
-    .put(`${ENVIRONMENT.apiUrl}${API.PERMIT()}/${permit_guid}`, payload, createRequestHeader())
+    .put(
+      `${ENVIRONMENT.apiUrl}${API.PERMITS(mineGuid)}/${permitGuid}`,
+      payload,
+      createRequestHeader()
+    )
     .then((response) => {
       notification.success({
         message: `Successfully updated permit`,
@@ -53,12 +57,12 @@ export const updatePermit = (permit_guid, payload) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const createPermitAmendment = (permitGuid, payload) => (dispatch) => {
+export const createPermitAmendment = (mineGuid, permitGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_PERMIT_AMENDMENT));
   dispatch(showLoading("modal"));
   return CustomAxios()
     .post(
-      `${ENVIRONMENT.apiUrl}${API.PERMITAMENDMENTS(permitGuid)}`,
+      `${ENVIRONMENT.apiUrl}${API.PERMITAMENDMENTS(mineGuid, permitGuid)}`,
       payload,
       createRequestHeader()
     )
@@ -71,12 +75,14 @@ export const createPermitAmendment = (permitGuid, payload) => (dispatch) => {
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const updatePermitAmendment = (permitAmdendmentGuid, payload) => (dispatch) => {
+export const updatePermitAmendment = (mineGuid, permitGuid, permitAmdendmentGuid, payload) => (
+  dispatch
+) => {
   dispatch(request(reducerTypes.UPDATE_PERMIT_AMENDMENT));
   dispatch(showLoading());
   return CustomAxios()
     .put(
-      `${ENVIRONMENT.apiUrl}${API.PERMITAMENDMENT(permitAmdendmentGuid)}`,
+      `${ENVIRONMENT.apiUrl}${API.PERMITAMENDMENT(mineGuid, permitGuid, permitAmdendmentGuid)}`,
       payload,
       createRequestHeader()
     )
@@ -92,12 +98,22 @@ export const updatePermitAmendment = (permitAmdendmentGuid, payload) => (dispatc
     .finally(() => dispatch(hideLoading()));
 };
 
-export const removePermitAmendmentDocument = (permitAmdendmentGuid, documentGuid) => (dispatch) => {
+export const removePermitAmendmentDocument = (
+  mineGuid,
+  permitGuid,
+  permitAmdendmentGuid,
+  documentGuid
+) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_PERMIT_AMENDMENT_DOCUMENT));
   dispatch(showLoading());
   return CustomAxios()
     .delete(
-      `${ENVIRONMENT.apiUrl}${API.PERMITAMENDMENTDOCUMENT(permitAmdendmentGuid, documentGuid)}`,
+      `${ENVIRONMENT.apiUrl}${API.PERMITAMENDMENTDOCUMENT(
+        mineGuid,
+        permitGuid,
+        permitAmdendmentGuid,
+        documentGuid
+      )}`,
       createRequestHeader()
     )
     .then((response) => {

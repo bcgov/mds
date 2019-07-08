@@ -90,19 +90,22 @@ environments {
 			profile.setPreference("browser.download.manager.showAlertOnComplete", false);
 			profile.setPreference("browser.download.manager.closeWhenDone", false);
 			profile.setPreference("browser.download.panel.shown", false);
+            options.setProfile(profile);
 
 			//To find the settings that need to be modified, visit the about:config firefox url
 			options.addPreference("browser.download.forbid_open_with", true);
 			//In order to allow auto saving of files the user must specify the specific MIME types in a comma separated
 			//string. (Cannot set all to true)
-			options.addPreference("browser.helperApps.neverAsk.saveToDisk", "application/vnd.oasis.opendocument.text")
-			options.setProfile(profile);
+			options.addPreference("browser.helperApps.neverAsk.saveToDisk", "application/vnd.oasis.opendocument.text");
 			options.addPreference("browser.download.dir", Const.DOWNLOAD_PATH);
 			options.addPreference("browser.download.useDownloadDir", true);
-			options.addArguments("--width=1920")
-			options.addArguments("--height=1080")
-			options.addArguments("--headless")
-			new FirefoxDriver(options);
+			options.addArguments("--width=1920");
+			options.addArguments("--height=1080");
+			options.addArguments("--headless");
+
+            FirefoxDriver firefoxDriver = new FirefoxDriver(options);
+            firefoxDriver.manage().window().maximize();
+            firefoxDriver;
 
 		}
 	}
