@@ -19,14 +19,14 @@ from app.api.mines.mine_api_models import MINE_INCIDENT_MODEL
 
 from app.extensions import api, db
 from app.api.utils.custom_reqparser import CustomReqparser
-from ....utils.access_decorators import requires_role_mine_edit
+from ....utils.access_decorators import requires_role_edit_do
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from ....utils.url import get_document_manager_svc_url
 
 
 class MineIncidentDocumentListResource(Resource, UserMixin):
     @api.doc(description='Request a document_manager_guid for uploading a document')
-    @requires_role_mine_edit
+    @requires_role_edit_do
     def post(self, mine_guid):
         metadata = self._parse_request_metadata()
         if not metadata or not metadata.get('filename'):
@@ -54,7 +54,8 @@ class MineIncidentDocumentListResource(Resource, UserMixin):
             cookies=request.cookies,
         )
 
-        response = Response(resp.content, resp.status_code, resp.raw.headers.items())
+        response = Response(resp.content, resp.status_code,
+                            resp.raw.headers.items())
         return response
 
     def _parse_upload_folders(self, mine_guid):
@@ -79,14 +80,16 @@ class MineIncidentDocumentListResource(Resource, UserMixin):
 class MineIncidentDocumentResource(Resource, UserMixin):
     @api.doc(description='Adds a Document to an already existing Mine incident.')
     @api.marshal_with(MINE_INCIDENT_MODEL, 201)
-    @requires_role_mine_edit
+    @requires_role_edit_do
     def put(self, mine_guid, mine_incident_guid, mine_document_guid):
         parser = CustomReqparser()
         parser.add_argument('filename', type=str, required=True)
         parser.add_argument('document_manager_guid', type=str, required=True)
-        parser.add_argument('mine_incident_document_type', type=str, required=True)
+        parser.add_argument('mine_incident_document_type',
+                            type=str, required=True)
 
-        mine_incident = MineIncident.find_by_mine_incident_guid(mine_incident_guid)
+        mine_incident = MineIncident.find_by_mine_incident_guid(
+            mine_incident_guid)
         mine = Mine.find_by_mine_guid(mine_guid)
 
         if not mine_incident:
@@ -120,16 +123,19 @@ class MineIncidentDocumentResource(Resource, UserMixin):
         return mine_incident
 
     @api.doc(description='Dissociate a document from a Mine Incident.')
-    @requires_role_mine_edit
+    @requires_role_edit_do
     def delete(self, mine_guid, mine_incident_guid, mine_document_guid):
         if not mine_document_guid:
             raise BadRequest('must provide document_guid to be unlinked')
 
-        mine_incident = MineIncident.find_by_mine_incident_guid(mine_incident_guid)
-        mine_document = MineDocument.find_by_mine_document_guid(mine_document_guid)
+        mine_incident = MineIncident.find_by_mine_incident_guid(
+            mine_incident_guid)
+        mine_document = MineDocument.find_by_mine_document_guid(
+            mine_document_guid)
 
         if mine_incident is None or mine_document is None:
-            raise NotFound('Either the Expected Document or the Mine Document was not found')
+            raise NotFound(
+                'Either the Expected Document or the Mine Document was not found')
 
         mine_incident.documents.remove(mine_document)
         mine_incident.save()
