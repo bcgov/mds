@@ -92,7 +92,6 @@ def db_session(test_client):
 @pytest.fixture(scope='session')
 def app_local(request):
     """Session-wide test `Flask` application."""
-
     _app = create_app(EtlTestConfig)
 
     # Establish an application context before running the tests.
