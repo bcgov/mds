@@ -1,7 +1,8 @@
 from decimal import Decimal
 import uuid
 from datetime import datetime
-
+import threading
+import time
 from flask import request, current_app
 from flask_restplus import Resource, reqparse, inputs
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
@@ -388,9 +389,14 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 latitude=data['latitude'], longitude=data['longitude'])
             mine.save()
 
-        cache.delete(MINE_MAP_CACHE)
+        # cache.delete(MINE_MAP_CACHE)
+        # # start_task()
+        # current_app.logger.info(start_task())
         # Status validation
         _mine_status_processor(data.get('mine_status'), data.get('status_date'), mine)
+        cache.delete(MINE_MAP_CACHE)
+        start_task()
+        current_app.logger.info("%%%%%%%%%%%%%%%%%%%%%%%%About to return request!")
         return mine
 
 
@@ -479,3 +485,28 @@ def _throw_error_if_mine_exists(mine_name):
         mines_with_name = mines_name_query.all()
         if len(mines_with_name) > 0:
             raise BadRequest(f'Mine No: {mines_with_name[0].mine_no} already has that name.')
+
+
+def start_task():
+    app = current_app
+
+    def do_work(app):
+        # do something that takes a long time
+        app.logger.info("%%%%%%%%%%%%%%%%%%%%%%%%work started!")
+        # print("%%%%%%%%%%%%%%%%%%%%%%%%work started!")
+        # MineMapResource.fill_map_cache()
+        with app.app_context():
+            app.logger.info("%%%%%%%%%%%%%%%%%%%%%%%%Context Called!")
+            # print("%%%%%%%%%%%%%%%%%%%%%%%%%context called!")
+
+            # test_blah()
+        # import time
+        time.sleep(10)
+        app.logger.info("%%%%%%%%%%%%%%%%%%%%%%%%work done!")
+        # print("%%%%%%%%%%%%%%%%%%%%%%%%%work done!")
+
+    thread = threading.Thread(target=do_work(app))
+    thread.daemon = True
+    thread.start()
+    app.logger.info("%%%%%%%%%%%%%%%%%%%%%%%%thread start ended?")
+    # return 'Cache update started.'
