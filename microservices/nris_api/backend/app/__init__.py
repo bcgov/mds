@@ -46,7 +46,7 @@ def register_extensions(app):
     apidoc.static_url_path = f'{Config.BASE_PATH}/swaggerui'
     api.init_app(app)
 
-    if app.config['ELASTIC_ENABLED'] == '1':
+    if app.config.get('ELASTIC_ENABLED') == '1':
         apm.init_app(app)
 
     cache.init_app(app)
@@ -62,7 +62,7 @@ def register_extensions(app):
 
 
 def register_scheduled_jobs(app):
-    if app.config['ENVIRONMENT_NAME'] in [
+    if app.config.get('ENVIRONMENT_NAME') in [
             'test', 'prod'
     ] and (not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == 'true'):
         sched.start()
