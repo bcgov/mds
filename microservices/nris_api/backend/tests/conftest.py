@@ -3,10 +3,11 @@ import pytest
 from datetime import datetime, timedelta
 from sqlalchemy import create_engine
 
+from flask import Flask
+
 from app import create_app
-from app.config import TestConfig
+from app.config import TestConfig, EtlTestConfig
 from app.extensions import db, jwt as _jwt
-from app.extensions import db as _db
 
 from tests.constants import *
 from tests.factories import FACTORY_LIST
@@ -86,15 +87,13 @@ def db_session(test_client):
     conn.close()
 
 
-# NOTE: Dis mine
+# FIXME: These names are horrible and temporary
+# Fixtures for running an in-memory mocked db session
 @pytest.fixture(scope='session')
 def app_local(request):
     """Session-wide test `Flask` application."""
-    settings_override = {
-        'TESTING': True,
-        'SQLALCHEMY_DATABASE_URI': 'sqlite:///:memory:'
-    }
-    _app = create_app(settings_override)
+
+    _app = create_app(EtlTestConfig)
 
     # Establish an application context before running the tests.
     ctx = _app.app_context()
@@ -109,31 +108,26 @@ def app_local(request):
 @pytest.fixture(scope='session')
 def db_local(app_local, request):
     """Session-wide test database."""
-    engine = create_engine('sqlite:///:memory:')
-
-    # if os.path.exists(TESTDB_PATH):
-        # os.unlink(TESTDB_PATH)
 
     def teardown():
-        _db.drop_all()
-        # os.unlink(TESTDB_PATH)
+        db.drop_all()
 
-    _db.app = app_local
-    _db.create_all()
+    db.app = app_local
+    db.create_all()
 
     request.addfinalizer(teardown)
-    return _db
+    return db
 
 @pytest.fixture(scope='function')
 def session(db_local, request):
     """Creates a new database session for a test."""
-    connection = db.engine.connect()
+    connection = db_local.engine.connect()
     transaction = connection.begin()
 
     options = dict(bind=connection, binds={})
-    session = db.create_scoped_session(options=options)
+    session = db_local.create_scoped_session(options=options)
 
-    db.session = session
+    db_local.session = session
 
     def teardown():
         transaction.rollback()

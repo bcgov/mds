@@ -57,6 +57,12 @@ class Config(object):
         return (jwt_dict['realm_access']['roles'])
 
 
+class EtlTestConfig(Config):
+    TESTING = os.environ.get('TESTING', True)
+    DB_URL = 'sqlite:///:memory:'
+    SQLALCHEMY_DATABASE_URI = DB_URL
+
+
 class TestConfig(Config):
     TESTING = os.environ.get('TESTING', True)
 
