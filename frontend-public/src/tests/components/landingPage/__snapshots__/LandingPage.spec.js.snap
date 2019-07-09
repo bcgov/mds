@@ -75,7 +75,7 @@ ShallowWrapper {
                 <Icon
                   type="download"
                 />
-                 Register of Tailings Storage Facilities and Dams (XLSX, 1.4 MB)
+                 Register of Tailings Storage Facilities and Dams (XLSM, 1.0 MB)
               </a>
               <br />
               <a
@@ -88,7 +88,7 @@ ShallowWrapper {
                 <Icon
                   type="download"
                 />
-                 Register of Tailings Storage Facilities and Dams - User Guide (XLSX, 1.4 MB)
+                 User Guide - Register of Tailings Storage Facilities and Dams (PDF, 0.6 MB)
               </a>
             </p>
             <br />
@@ -296,7 +296,7 @@ ShallowWrapper {
                   <Icon
                     type="download"
                   />
-                   Register of Tailings Storage Facilities and Dams (XLSX, 1.4 MB)
+                   Register of Tailings Storage Facilities and Dams (XLSM, 1.0 MB)
                 </a>
                 <br />
                 <a
@@ -309,7 +309,7 @@ ShallowWrapper {
                   <Icon
                     type="download"
                   />
-                   Register of Tailings Storage Facilities and Dams - User Guide (XLSX, 1.4 MB)
+                   User Guide - Register of Tailings Storage Facilities and Dams (PDF, 0.6 MB)
                 </a>
               </p>
               <br />
@@ -432,7 +432,7 @@ ShallowWrapper {
                     <Icon
                       type="download"
                     />
-                     Register of Tailings Storage Facilities and Dams (XLSX, 1.4 MB)
+                     Register of Tailings Storage Facilities and Dams (XLSM, 1.0 MB)
                   </a>
                   <br />
                   <a
@@ -445,7 +445,7 @@ ShallowWrapper {
                     <Icon
                       type="download"
                     />
-                     Register of Tailings Storage Facilities and Dams - User Guide (XLSX, 1.4 MB)
+                     User Guide - Register of Tailings Storage Facilities and Dams (PDF, 0.6 MB)
                   </a>
                 </p>,
                 <br />,
@@ -562,7 +562,7 @@ ShallowWrapper {
                       <Icon
                         type="download"
                       />
-                       Register of Tailings Storage Facilities and Dams (XLSX, 1.4 MB)
+                       Register of Tailings Storage Facilities and Dams (XLSM, 1.0 MB)
                     </a>,
                     <br />,
                     <a
@@ -575,7 +575,7 @@ ShallowWrapper {
                       <Icon
                         type="download"
                       />
-                       Register of Tailings Storage Facilities and Dams - User Guide (XLSX, 1.4 MB)
+                       User Guide - Register of Tailings Storage Facilities and Dams (PDF, 0.6 MB)
                     </a>,
                   ],
                 },
@@ -590,7 +590,7 @@ ShallowWrapper {
                         <Icon
                           type="download"
                         />,
-                        " Register of Tailings Storage Facilities and Dams (XLSX, 1.4 MB)",
+                        " Register of Tailings Storage Facilities and Dams (XLSM, 1.0 MB)",
                       ],
                       "href": Object {
                         "process": [Function],
@@ -609,7 +609,7 @@ ShallowWrapper {
                         "rendered": null,
                         "type": [Function],
                       },
-                      " Register of Tailings Storage Facilities and Dams (XLSX, 1.4 MB)",
+                      " Register of Tailings Storage Facilities and Dams (XLSM, 1.0 MB)",
                     ],
                     "type": "a",
                   },
@@ -631,7 +631,7 @@ ShallowWrapper {
                         <Icon
                           type="download"
                         />,
-                        " Register of Tailings Storage Facilities and Dams - User Guide (XLSX, 1.4 MB)",
+                        " User Guide - Register of Tailings Storage Facilities and Dams (PDF, 0.6 MB)",
                       ],
                       "href": Object {
                         "process": [Function],
@@ -650,7 +650,7 @@ ShallowWrapper {
                         "rendered": null,
                         "type": [Function],
                       },
-                      " Register of Tailings Storage Facilities and Dams - User Guide (XLSX, 1.4 MB)",
+                      " User Guide - Register of Tailings Storage Facilities and Dams (PDF, 0.6 MB)",
                     ],
                     "type": "a",
                   },
@@ -1142,7 +1142,7 @@ ShallowWrapper {
                   <Icon
                     type="download"
                   />
-                   Register of Tailings Storage Facilities and Dams (XLSX, 1.4 MB)
+                   Register of Tailings Storage Facilities and Dams (XLSM, 1.0 MB)
                 </a>
                 <br />
                 <a
@@ -1155,7 +1155,7 @@ ShallowWrapper {
                   <Icon
                     type="download"
                   />
-                   Register of Tailings Storage Facilities and Dams - User Guide (XLSX, 1.4 MB)
+                   User Guide - Register of Tailings Storage Facilities and Dams (PDF, 0.6 MB)
                 </a>
               </p>
               <br />
@@ -1363,7 +1363,7 @@ ShallowWrapper {
                     <Icon
                       type="download"
                     />
-                     Register of Tailings Storage Facilities and Dams (XLSX, 1.4 MB)
+                     Register of Tailings Storage Facilities and Dams (XLSM, 1.0 MB)
                   </a>
                   <br />
                   <a
@@ -1376,7 +1376,7 @@ ShallowWrapper {
                     <Icon
                       type="download"
                     />
-                     Register of Tailings Storage Facilities and Dams - User Guide (XLSX, 1.4 MB)
+                     User Guide - Register of Tailings Storage Facilities and Dams (PDF, 0.6 MB)
                   </a>
                 </p>
                 <br />
@@ -1499,7 +1499,7 @@ ShallowWrapper {
                       <Icon
                         type="download"
                       />
-                       Register of Tailings Storage Facilities and Dams (XLSX, 1.4 MB)
+                       Register of Tailings Storage Facilities and Dams (XLSM, 1.0 MB)
                     </a>
                     <br />
                     <a
@@ -1512,7 +1512,7 @@ ShallowWrapper {
                       <Icon
                         type="download"
                       />
-                       Register of Tailings Storage Facilities and Dams - User Guide (XLSX, 1.4 MB)
+                       User Guide - Register of Tailings Storage Facilities and Dams (PDF, 0.6 MB)
                     </a>
                   </p>,
                   <br />,
@@ -1629,7 +1629,7 @@ ShallowWrapper {
                         <Icon
                           type="download"
                         />
-                         Register of Tailings Storage Facilities and Dams (XLSX, 1.4 MB)
+                         Register of Tailings Storage Facilities and Dams (XLSM, 1.0 MB)
                       </a>,
                       <br />,
                       <a
@@ -1642,7 +1642,7 @@ ShallowWrapper {
                         <Icon
                           type="download"
                         />
-                         Register of Tailings Storage Facilities and Dams - User Guide (XLSX, 1.4 MB)
+                         User Guide - Register of Tailings Storage Facilities and Dams (PDF, 0.6 MB)
                       </a>,
                     ],
                   },
@@ -1657,7 +1657,7 @@ ShallowWrapper {
                           <Icon
                             type="download"
                           />,
-                          " Register of Tailings Storage Facilities and Dams (XLSX, 1.4 MB)",
+                          " Register of Tailings Storage Facilities and Dams (XLSM, 1.0 MB)",
                         ],
                         "href": Object {
                           "process": [Function],
@@ -1676,7 +1676,7 @@ ShallowWrapper {
                           "rendered": null,
                           "type": [Function],
                         },
-                        " Register of Tailings Storage Facilities and Dams (XLSX, 1.4 MB)",
+                        " Register of Tailings Storage Facilities and Dams (XLSM, 1.0 MB)",
                       ],
                       "type": "a",
                     },
@@ -1698,7 +1698,7 @@ ShallowWrapper {
                           <Icon
                             type="download"
                           />,
-                          " Register of Tailings Storage Facilities and Dams - User Guide (XLSX, 1.4 MB)",
+                          " User Guide - Register of Tailings Storage Facilities and Dams (PDF, 0.6 MB)",
                         ],
                         "href": Object {
                           "process": [Function],
@@ -1717,7 +1717,7 @@ ShallowWrapper {
                           "rendered": null,
                           "type": [Function],
                         },
-                        " Register of Tailings Storage Facilities and Dams - User Guide (XLSX, 1.4 MB)",
+                        " User Guide - Register of Tailings Storage Facilities and Dams (PDF, 0.6 MB)",
                       ],
                       "type": "a",
                     },
