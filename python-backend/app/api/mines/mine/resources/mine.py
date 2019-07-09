@@ -403,6 +403,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
     def call_rebuild_map_cache(self):
         app = current_app._get_current_object()
         environ = request.environ
+
         def do_work():
             with app.request_context(environ):
                 mineMapResource = MineMapResource()
