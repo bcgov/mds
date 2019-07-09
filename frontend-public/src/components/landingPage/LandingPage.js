@@ -48,12 +48,12 @@ export const LandingPage = () => (
         <br />
         <p>
           <a href={TAILINGS_DOCUMENT}>
-            <Icon type="download" /> Register of Tailings Storage Facilities and Dams (XLSX, 1.4 MB)
+            <Icon type="download" /> Register of Tailings Storage Facilities and Dams (XLSM, 1.0 MB)
           </a>
           <br />
           <a href={USER_GUIDE}>
-            <Icon type="download" /> Register of Tailings Storage Facilities and Dams - User Guide
-            (XLSX, 1.4 MB)
+            <Icon type="download" /> User Guide - Register of Tailings Storage Facilities and Dams
+            (PDF, 0.6 MB)
           </a>
         </p>
         <br />
