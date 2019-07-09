@@ -171,6 +171,27 @@ body {
   }
 }
 
+.btn--expand {
+  background: none;
+  color: $hover-blue;
+  align-self: flex-end;
+  margin: 0;
+  height: 100%;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+
+  &:hover,
+  &:active,
+  &:focus {
+    color: $hover-blue;
+    background: none;
+    border: none;
+    padding: 0;
+  }
+}
+
 .btn--middle {
   display: inline-flex;
   align-items: center;
@@ -295,4 +316,9 @@ body {
       }
     }
   }
+}
+
+.collapsed-container {
+  height: 50px;
+  overflow: hidden;
 }

@@ -199,7 +199,7 @@ export class PartyProfile extends Component {
                     </Popconfirm>
                   </AuthorizationWrapper>
                 </AuthorizationWrapper>
-                <AuthorizationWrapper permission={Permission.CREATE}>
+                <AuthorizationWrapper permission={Permission.EDIT_PARTIES}>
                   <Button
                     type="primary"
                     onClick={(event) =>

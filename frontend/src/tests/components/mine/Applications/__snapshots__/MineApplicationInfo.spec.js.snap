@@ -98,7 +98,7 @@ ShallowWrapper {
         >
           <Connect(AuthorizationWrapper)
             isMajorMine={undefined}
-            permission="role_create"
+            permission="role_edit_permits"
           >
             <Button
               block={false}
@@ -136,7 +136,7 @@ ShallowWrapper {
           >
             <Connect(AuthorizationWrapper)
               isMajorMine={undefined}
-              permission="role_create"
+              permission="role_edit_permits"
             >
               <Button
                 block={false}
@@ -180,7 +180,7 @@ ShallowWrapper {
           "props": Object {
             "children": <Connect(AuthorizationWrapper)
               isMajorMine={undefined}
-              permission="role_create"
+              permission="role_edit_permits"
             >
               <Button
                 block={false}
@@ -230,7 +230,7 @@ ShallowWrapper {
                 Add a New Application
               </Button>,
               "isMajorMine": undefined,
-              "permission": "role_create",
+              "permission": "role_edit_permits",
             },
             "ref": null,
             "rendered": Object {
@@ -302,7 +302,7 @@ ShallowWrapper {
           >
             <Connect(AuthorizationWrapper)
               isMajorMine={undefined}
-              permission="role_create"
+              permission="role_edit_permits"
             >
               <Button
                 block={false}
@@ -340,7 +340,7 @@ ShallowWrapper {
             >
               <Connect(AuthorizationWrapper)
                 isMajorMine={undefined}
-                permission="role_create"
+                permission="role_edit_permits"
               >
                 <Button
                   block={false}
@@ -384,7 +384,7 @@ ShallowWrapper {
             "props": Object {
               "children": <Connect(AuthorizationWrapper)
                 isMajorMine={undefined}
-                permission="role_create"
+                permission="role_edit_permits"
               >
                 <Button
                   block={false}
@@ -434,7 +434,7 @@ ShallowWrapper {
                   Add a New Application
                 </Button>,
                 "isMajorMine": undefined,
-                "permission": "role_create",
+                "permission": "role_edit_permits",
               },
               "ref": null,
               "rendered": Object {

@@ -237,7 +237,7 @@ export class MineVarianceTable extends Component {
         dataIndex: "variance",
         render: (text, record) => (
           <div title="" align="right">
-            <AuthorizationWrapper permission={Permission.CREATE}>
+            <AuthorizationWrapper permission={Permission.EDIT_VARIANCES}>
               <Button
                 type="primary"
                 size="small"

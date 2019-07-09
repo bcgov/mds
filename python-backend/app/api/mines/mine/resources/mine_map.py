@@ -20,7 +20,7 @@ from app.api.constants import MINE_MAP_CACHE, TIMEOUT_12_HOURS
 class MineMapResource(Resource, UserMixin):
     @api.doc(description='Returns a list of mines with reduced information.')
     @api.response(200, 'Returns a list of mines with reduced information.', model=BASIC_MINE_LIST)
-    @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
+    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def get(self):
         # Below caches the mine map response object in redis with a timeout.
         # Generating and jsonifying the map data takes 4-7 seconds with 50,000 points,

@@ -1,12 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
-import CustomPropTypes from "@/customPropTypes";
 import { Field, reduxForm } from "redux-form";
+import { Form, Button, Col, Row, Popconfirm } from "antd";
+import CustomPropTypes from "@/customPropTypes";
 import RenderDate from "@/components/common/RenderDate";
 import RenderSelect from "@/components/common/RenderSelect";
 import UploadedFilesList from "@/components/common/UploadedFilesList";
 import MineTailingsFilePicker from "@/components/mine/Tailings/MineTailingsFilePicker";
-import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import { required } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
