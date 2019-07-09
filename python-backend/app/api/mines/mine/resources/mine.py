@@ -21,9 +21,9 @@ from ..models.mineral_tenure_xref import MineralTenureXref
 from ...location.models.mine_location import MineLocation
 from ....utils.random import generate_mine_no
 from app.extensions import api, cache, db
-from app.api.utils.access_decorators import requires_role_mine_create, requires_any_of, MINE_VIEW, MINESPACE_PROPONENT
-from app.api.utils.resources_mixins import UserMixin, ErrorMixin
-from app.api.constants import MINE_MAP_CACHE, TIMEOUT_12_HOURS
+from ....utils.access_decorators import requires_role_mine_edit, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
+from ....utils.resources_mixins import UserMixin, ErrorMixin
+from ....constants import MINE_MAP_CACHE
 
 from app.api.mines.mine_api_models import MINE_LIST_MODEL, MINE_MODEL
 
