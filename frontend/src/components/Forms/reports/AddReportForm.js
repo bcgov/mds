@@ -35,13 +35,32 @@ export class AddReportForm extends Component {
           <Col md={12} sm={24} className="border--right--layout">
             <Form.Item>
               <Field
-                id="report_definition_guid"
-                name="report_definition_guid"
+                id="mine_report_definition_guid"
+                name="mine_report_definition_guid"
                 label="Code Defined Reports"
                 placeholder="Please select a report"
                 data={this.props.dropdownMineReportDefinitionOptions}
                 doNotPinDropdown
                 component={renderConfig.SELECT}
+                validate={[required]}
+              />
+            </Form.Item>
+            <Form.Item>
+              <Field
+                id="submission_year"
+                name="submission_year"
+                label="Submission Year"
+                placeholder="Please enter a year"
+                component={renderConfig.FIELD}
+                validate={[required]}
+              />
+            </Form.Item>
+            <Form.Item>
+              <Field
+                id="due_date"
+                name="due_date"
+                label="Due Date"
+                component={renderConfig.DATE}
                 validate={[required]}
               />
             </Form.Item>

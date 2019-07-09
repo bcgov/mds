@@ -29,9 +29,12 @@ class MineReportListResource(Resource, UserMixin):
 
     # required
     parser.add_argument('submission_year', type=str, location='json', required=True)
-    parser.add_argument('mine_report_definition_id', type=str, location='json', required=True)
-    parser.add_argument('due_date', type=str, location='json', required=True)
-
+    parser.add_argument('mine_report_definition_guid', type=str, location='json', required=True)
+    parser.add_argument(
+        'due_date',
+        location='json',
+        required=True,
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
     parser.add_argument('permit_guid', type=str, location='json')
 
     @api.marshal_with(MINE_REPORT_MODEL, envelope='records', code=200)
@@ -52,8 +55,8 @@ class MineReportListResource(Resource, UserMixin):
 
         data = self.parser.parse_args()
 
-        mine_report_definition = MineReportDefinition.find_by_mine_report_definition_id(
-            data['mine_report_definition_id'])
+        mine_report_definition = MineReportDefinition.find_by_mine_report_definition_guid(
+            data['mine_report_definition_guid'])
         permit = Permit.find_by_permit_guid_or_no(data['permit_guid'])
         if mine_report_definition is None:
             raise BadRequest('A report must be selected from the list.')

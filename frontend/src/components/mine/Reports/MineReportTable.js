@@ -1,16 +1,10 @@
 import React from "react";
-import { Table, Menu, Dropdown, Button, Icon, Tooltip } from "antd";
+import { Table } from "antd";
 import NullScreen from "@/components/common/NullScreen";
 import * as Strings from "@/constants/strings";
-import * as Permission from "@/constants/permissions";
-import CustomPropTypes from "@/customPropTypes";
+import moment from "moment";
 import { formatDate } from "@/utils/helpers";
-import { orderBy } from "lodash";
 import PropTypes from "prop-types";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import { connect } from "react-redux";
-import { BRAND_PENCIL, EDIT, EDIT_OUTLINE, CARAT } from "@/constants/assets";
-import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 import { COLOR } from "@/constants/styles";
 
 const { errorRed } = COLOR;
@@ -32,7 +26,7 @@ const columns = [
     title: "Year",
     dataIndex: "submission_year",
     key: "submission_year",
-    sorter: (a, b) => a.submission_year > b.submission_year,
+    sorter: (a, b) => (a.submission_year > b.submission_year ? -1 : 1),
     render: (text, record) => (
       <div title="Year" style={record.isOverdue ? { color: errorRed } : {}}>
         {record.submission_year}
@@ -54,30 +48,11 @@ const columns = [
     title: "Due",
     dataIndex: "due_date",
     key: "due_date",
-    sorter: (a, b) => moment(a.due_date) > moment(b.due_date),
+    sorter: (a, b) => (moment(a.due_date) > moment(b.due_date) ? -1 : 1),
     render: (text, record) => (
       <div title="Due" style={record.isOverdue ? { color: errorRed } : {}}>
         {formatDate(record.due_date) || Strings.EMPTY_FIELD}
       </div>
-    ),
-  },
-  {
-    title: "",
-    dataIndex: "report",
-    key: "report",
-    align: "right",
-    render: (text, record) => (
-      <AuthorizationWrapper permission={Permission.CREATE}>
-        <Button
-          className="permit-table-button"
-          type="ghost"
-          onClick={(event) => record.openEditReportModal(event, text.report_name)}
-        >
-          <div>
-            <img className="padding-small--right icon-svg-filter" src={EDIT_OUTLINE} alt="Edit" />
-          </div>
-        </Button>
-      </AuthorizationWrapper>
     ),
   },
 ];

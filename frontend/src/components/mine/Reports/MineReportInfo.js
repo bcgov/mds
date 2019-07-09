@@ -33,19 +33,21 @@ const propTypes = {
 
 export class MineReportInfo extends Component {
   componentWillMount = () => {
-    this.props.fetchMineReports();
+    this.props.fetchMineReports(this.props.mine.mine_guid);
   };
 
   handleEditReport = (values) => {
     this.props
       .updateMineReport(this.props.mine.mine_guid, values.report_guid, values)
-      .then(() => this.props.closeModal());
+      .then(() => this.props.closeModal())
+      .then(() => this.props.fetchMineReports(this.props.mine.mine_guid));
   };
 
   handleAddReport = (values) => {
     this.props
       .createMineReport(this.props.mine.mine_guid, values)
-      .then(() => this.props.closeModal());
+      .then(() => this.props.closeModal())
+      .then(() => this.props.fetchMineReports(this.props.mine.mine_guid));
   };
 
   openAddReportModal = (event) => {
@@ -55,7 +57,6 @@ export class MineReportInfo extends Component {
         onSubmit: this.handleAddReport,
         title: `Add report for ${this.props.mine.mine_name}`,
         mineGuid: this.props.mine.mine_guid,
-        dropdownMineReportDefinitions: this.props.mineReportDefinitions,
       },
       content: modalConfig.ADD_REPORT,
     });
@@ -69,7 +70,6 @@ export class MineReportInfo extends Component {
         initialValues: report,
         onSubmit: this.handleEditReport,
         title: `Edit report for ${this.props.mine.mine_name}`,
-        dropdownMineReportDefinitions: this.props.mineReportDefinitions,
       },
       content: modalConfig.EDIT_REPORT,
     });
@@ -78,22 +78,24 @@ export class MineReportInfo extends Component {
   render() {
     return (
       <div>
-        <AuthorizationWrapper
-          permission={Permission.CREATE}
-          isMajorMine={this.props.mine.major_mine_ind}
-        >
-          <AddButton
-            onClick={(event) =>
-              this.openAddReportModal(
-                event,
-                this.handleAddReport,
-                `${ModalContent.ADD_REPORT} to ${this.props.mine.mine_name}`
-              )
-            }
+        <div className="inline-flex flex-end">
+          <AuthorizationWrapper
+            permission={Permission.CREATE}
+            isMajorMine={this.props.mine.major_mine_ind}
           >
-            Add a Report
-          </AddButton>
-        </AuthorizationWrapper>
+            <AddButton
+              onClick={(event) =>
+                this.openAddReportModal(
+                  event,
+                  this.handleAddReport,
+                  `${ModalContent.ADD_REPORT} to ${this.props.mine.mine_name}`
+                )
+              }
+            >
+              Add a Report
+            </AddButton>
+          </AuthorizationWrapper>
+        </div>
         <MineReportTable
           openEditReportModal={this.openEditReportModal}
           mineReports={this.props.mineReports}
