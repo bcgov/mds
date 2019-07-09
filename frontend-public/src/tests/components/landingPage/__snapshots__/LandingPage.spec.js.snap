@@ -63,18 +63,27 @@ ShallowWrapper {
             <p>
               Register of Tailings Storage Facilities and Dams (HSRC, 2016. 10.4.3). The registry should contain all tailings and water retaining structures on site, regardless of whether they are classified as dams or if they are currently operating or dormant structures.
             </p>
-            <p
-              style={
-                Object {
-                  "borderLeft": "4px solid #A09595",
-                  "color": "#6B6363",
-                  "margin": "1em 0",
-                  "paddingLeft": ".8em",
-                }
-              }
-            >
-              The Register of Tailing Storage Facilities and Dams document will be available for download from here in the near future. Please check back later for more information.
+            <br />
+            <p>
+              <a
+                href="/assets/downloads/Register of Tailings Storage Facilities and Dams.xlsm"
+              >
+                <Icon
+                  type="download"
+                />
+                 Register of Tailings Storage Facilities and Dams (XLSX, 1.4 MB)
+              </a>
+              <br />
+              <a
+                href="/assets/downloads/User Guide - Register of Tailings Storage Facilities and Dams.pdf"
+              >
+                <Icon
+                  type="download"
+                />
+                 Register of Tailings Storage Facilities and Dams - User Guide (XLSX, 1.4 MB)
+              </a>
             </p>
+            <br />
             <p>
               <strong>
                 Please submit completed registry spreadsheets to
@@ -84,7 +93,7 @@ ShallowWrapper {
                 >
                   PERMRECL@gov.bc.ca
                 </a>
-                .
+                . You may also submit them via MineSpace if you have signed up (instructions below).
               </strong>
             </p>
             <h1
@@ -267,18 +276,27 @@ ShallowWrapper {
               <p>
                 Register of Tailings Storage Facilities and Dams (HSRC, 2016. 10.4.3). The registry should contain all tailings and water retaining structures on site, regardless of whether they are classified as dams or if they are currently operating or dormant structures.
               </p>
-              <p
-                style={
-                  Object {
-                    "borderLeft": "4px solid #A09595",
-                    "color": "#6B6363",
-                    "margin": "1em 0",
-                    "paddingLeft": ".8em",
-                  }
-                }
-              >
-                The Register of Tailing Storage Facilities and Dams document will be available for download from here in the near future. Please check back later for more information.
+              <br />
+              <p>
+                <a
+                  href="/assets/downloads/Register of Tailings Storage Facilities and Dams.xlsm"
+                >
+                  <Icon
+                    type="download"
+                  />
+                   Register of Tailings Storage Facilities and Dams (XLSX, 1.4 MB)
+                </a>
+                <br />
+                <a
+                  href="/assets/downloads/User Guide - Register of Tailings Storage Facilities and Dams.pdf"
+                >
+                  <Icon
+                    type="download"
+                  />
+                   Register of Tailings Storage Facilities and Dams - User Guide (XLSX, 1.4 MB)
+                </a>
               </p>
+              <br />
               <p>
                 <strong>
                   Please submit completed registry spreadsheets to
@@ -288,7 +306,7 @@ ShallowWrapper {
                   >
                     PERMRECL@gov.bc.ca
                   </a>
-                  .
+                  . You may also submit them via MineSpace if you have signed up (instructions below).
                 </strong>
               </p>
               <h1
@@ -386,18 +404,27 @@ ShallowWrapper {
                 <p>
                   Register of Tailings Storage Facilities and Dams (HSRC, 2016. 10.4.3). The registry should contain all tailings and water retaining structures on site, regardless of whether they are classified as dams or if they are currently operating or dormant structures.
                 </p>,
-                <p
-                  style={
-                    Object {
-                      "borderLeft": "4px solid #A09595",
-                      "color": "#6B6363",
-                      "margin": "1em 0",
-                      "paddingLeft": ".8em",
-                    }
-                  }
-                >
-                  The Register of Tailing Storage Facilities and Dams document will be available for download from here in the near future. Please check back later for more information.
+                <br />,
+                <p>
+                  <a
+                    href="/assets/downloads/Register of Tailings Storage Facilities and Dams.xlsm"
+                  >
+                    <Icon
+                      type="download"
+                    />
+                     Register of Tailings Storage Facilities and Dams (XLSX, 1.4 MB)
+                  </a>
+                  <br />
+                  <a
+                    href="/assets/downloads/User Guide - Register of Tailings Storage Facilities and Dams.pdf"
+                  >
+                    <Icon
+                      type="download"
+                    />
+                     Register of Tailings Storage Facilities and Dams - User Guide (XLSX, 1.4 MB)
+                  </a>
                 </p>,
+                <br />,
                 <p>
                   <strong>
                     Please submit completed registry spreadsheets to
@@ -407,7 +434,7 @@ ShallowWrapper {
                     >
                       PERMRECL@gov.bc.ca
                     </a>
-                    .
+                    . You may also submit them via MineSpace if you have signed up (instructions below).
                   </strong>
                 </p>,
                 <h1
@@ -490,18 +517,118 @@ ShallowWrapper {
                 "instance": null,
                 "key": undefined,
                 "nodeType": "host",
+                "props": Object {},
+                "ref": null,
+                "rendered": null,
+                "type": "br",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
                 "props": Object {
-                  "children": "The Register of Tailing Storage Facilities and Dams document will be available for download from here in the near future. Please check back later for more information.",
-                  "style": Object {
-                    "borderLeft": "4px solid #A09595",
-                    "color": "#6B6363",
-                    "margin": "1em 0",
-                    "paddingLeft": ".8em",
-                  },
+                  "children": Array [
+                    <a
+                      href="/assets/downloads/Register of Tailings Storage Facilities and Dams.xlsm"
+                    >
+                      <Icon
+                        type="download"
+                      />
+                       Register of Tailings Storage Facilities and Dams (XLSX, 1.4 MB)
+                    </a>,
+                    <br />,
+                    <a
+                      href="/assets/downloads/User Guide - Register of Tailings Storage Facilities and Dams.pdf"
+                    >
+                      <Icon
+                        type="download"
+                      />
+                       Register of Tailings Storage Facilities and Dams - User Guide (XLSX, 1.4 MB)
+                    </a>,
+                  ],
                 },
                 "ref": null,
-                "rendered": "The Register of Tailing Storage Facilities and Dams document will be available for download from here in the near future. Please check back later for more information.",
+                "rendered": Array [
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": Array [
+                        <Icon
+                          type="download"
+                        />,
+                        " Register of Tailings Storage Facilities and Dams (XLSX, 1.4 MB)",
+                      ],
+                      "href": "/assets/downloads/Register of Tailings Storage Facilities and Dams.xlsm",
+                    },
+                    "ref": null,
+                    "rendered": Array [
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "function",
+                        "props": Object {
+                          "type": "download",
+                        },
+                        "ref": null,
+                        "rendered": null,
+                        "type": [Function],
+                      },
+                      " Register of Tailings Storage Facilities and Dams (XLSX, 1.4 MB)",
+                    ],
+                    "type": "a",
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {},
+                    "ref": null,
+                    "rendered": null,
+                    "type": "br",
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": Array [
+                        <Icon
+                          type="download"
+                        />,
+                        " Register of Tailings Storage Facilities and Dams - User Guide (XLSX, 1.4 MB)",
+                      ],
+                      "href": "/assets/downloads/User Guide - Register of Tailings Storage Facilities and Dams.pdf",
+                    },
+                    "ref": null,
+                    "rendered": Array [
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "function",
+                        "props": Object {
+                          "type": "download",
+                        },
+                        "ref": null,
+                        "rendered": null,
+                        "type": [Function],
+                      },
+                      " Register of Tailings Storage Facilities and Dams - User Guide (XLSX, 1.4 MB)",
+                    ],
+                    "type": "a",
+                  },
+                ],
                 "type": "p",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {},
+                "ref": null,
+                "rendered": null,
+                "type": "br",
               },
               Object {
                 "instance": null,
@@ -516,7 +643,7 @@ ShallowWrapper {
                     >
                       PERMRECL@gov.bc.ca
                     </a>
-                    .
+                    . You may also submit them via MineSpace if you have signed up (instructions below).
                   </strong>,
                 },
                 "ref": null,
@@ -533,7 +660,7 @@ ShallowWrapper {
                       >
                         PERMRECL@gov.bc.ca
                       </a>,
-                      ".",
+                      ". You may also submit them via MineSpace if you have signed up (instructions below).",
                     ],
                   },
                   "ref": null,
@@ -552,7 +679,7 @@ ShallowWrapper {
                       "rendered": "PERMRECL@gov.bc.ca",
                       "type": "a",
                     },
-                    ".",
+                    ". You may also submit them via MineSpace if you have signed up (instructions below).",
                   ],
                   "type": "strong",
                 },
@@ -967,18 +1094,27 @@ ShallowWrapper {
               <p>
                 Register of Tailings Storage Facilities and Dams (HSRC, 2016. 10.4.3). The registry should contain all tailings and water retaining structures on site, regardless of whether they are classified as dams or if they are currently operating or dormant structures.
               </p>
-              <p
-                style={
-                  Object {
-                    "borderLeft": "4px solid #A09595",
-                    "color": "#6B6363",
-                    "margin": "1em 0",
-                    "paddingLeft": ".8em",
-                  }
-                }
-              >
-                The Register of Tailing Storage Facilities and Dams document will be available for download from here in the near future. Please check back later for more information.
+              <br />
+              <p>
+                <a
+                  href="/assets/downloads/Register of Tailings Storage Facilities and Dams.xlsm"
+                >
+                  <Icon
+                    type="download"
+                  />
+                   Register of Tailings Storage Facilities and Dams (XLSX, 1.4 MB)
+                </a>
+                <br />
+                <a
+                  href="/assets/downloads/User Guide - Register of Tailings Storage Facilities and Dams.pdf"
+                >
+                  <Icon
+                    type="download"
+                  />
+                   Register of Tailings Storage Facilities and Dams - User Guide (XLSX, 1.4 MB)
+                </a>
               </p>
+              <br />
               <p>
                 <strong>
                   Please submit completed registry spreadsheets to
@@ -988,7 +1124,7 @@ ShallowWrapper {
                   >
                     PERMRECL@gov.bc.ca
                   </a>
-                  .
+                  . You may also submit them via MineSpace if you have signed up (instructions below).
                 </strong>
               </p>
               <h1
@@ -1171,18 +1307,27 @@ ShallowWrapper {
                 <p>
                   Register of Tailings Storage Facilities and Dams (HSRC, 2016. 10.4.3). The registry should contain all tailings and water retaining structures on site, regardless of whether they are classified as dams or if they are currently operating or dormant structures.
                 </p>
-                <p
-                  style={
-                    Object {
-                      "borderLeft": "4px solid #A09595",
-                      "color": "#6B6363",
-                      "margin": "1em 0",
-                      "paddingLeft": ".8em",
-                    }
-                  }
-                >
-                  The Register of Tailing Storage Facilities and Dams document will be available for download from here in the near future. Please check back later for more information.
+                <br />
+                <p>
+                  <a
+                    href="/assets/downloads/Register of Tailings Storage Facilities and Dams.xlsm"
+                  >
+                    <Icon
+                      type="download"
+                    />
+                     Register of Tailings Storage Facilities and Dams (XLSX, 1.4 MB)
+                  </a>
+                  <br />
+                  <a
+                    href="/assets/downloads/User Guide - Register of Tailings Storage Facilities and Dams.pdf"
+                  >
+                    <Icon
+                      type="download"
+                    />
+                     Register of Tailings Storage Facilities and Dams - User Guide (XLSX, 1.4 MB)
+                  </a>
                 </p>
+                <br />
                 <p>
                   <strong>
                     Please submit completed registry spreadsheets to
@@ -1192,7 +1337,7 @@ ShallowWrapper {
                     >
                       PERMRECL@gov.bc.ca
                     </a>
-                    .
+                    . You may also submit them via MineSpace if you have signed up (instructions below).
                   </strong>
                 </p>
                 <h1
@@ -1290,18 +1435,27 @@ ShallowWrapper {
                   <p>
                     Register of Tailings Storage Facilities and Dams (HSRC, 2016. 10.4.3). The registry should contain all tailings and water retaining structures on site, regardless of whether they are classified as dams or if they are currently operating or dormant structures.
                   </p>,
-                  <p
-                    style={
-                      Object {
-                        "borderLeft": "4px solid #A09595",
-                        "color": "#6B6363",
-                        "margin": "1em 0",
-                        "paddingLeft": ".8em",
-                      }
-                    }
-                  >
-                    The Register of Tailing Storage Facilities and Dams document will be available for download from here in the near future. Please check back later for more information.
+                  <br />,
+                  <p>
+                    <a
+                      href="/assets/downloads/Register of Tailings Storage Facilities and Dams.xlsm"
+                    >
+                      <Icon
+                        type="download"
+                      />
+                       Register of Tailings Storage Facilities and Dams (XLSX, 1.4 MB)
+                    </a>
+                    <br />
+                    <a
+                      href="/assets/downloads/User Guide - Register of Tailings Storage Facilities and Dams.pdf"
+                    >
+                      <Icon
+                        type="download"
+                      />
+                       Register of Tailings Storage Facilities and Dams - User Guide (XLSX, 1.4 MB)
+                    </a>
                   </p>,
+                  <br />,
                   <p>
                     <strong>
                       Please submit completed registry spreadsheets to
@@ -1311,7 +1465,7 @@ ShallowWrapper {
                       >
                         PERMRECL@gov.bc.ca
                       </a>
-                      .
+                      . You may also submit them via MineSpace if you have signed up (instructions below).
                     </strong>
                   </p>,
                   <h1
@@ -1394,18 +1548,118 @@ ShallowWrapper {
                   "instance": null,
                   "key": undefined,
                   "nodeType": "host",
+                  "props": Object {},
+                  "ref": null,
+                  "rendered": null,
+                  "type": "br",
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
                   "props": Object {
-                    "children": "The Register of Tailing Storage Facilities and Dams document will be available for download from here in the near future. Please check back later for more information.",
-                    "style": Object {
-                      "borderLeft": "4px solid #A09595",
-                      "color": "#6B6363",
-                      "margin": "1em 0",
-                      "paddingLeft": ".8em",
-                    },
+                    "children": Array [
+                      <a
+                        href="/assets/downloads/Register of Tailings Storage Facilities and Dams.xlsm"
+                      >
+                        <Icon
+                          type="download"
+                        />
+                         Register of Tailings Storage Facilities and Dams (XLSX, 1.4 MB)
+                      </a>,
+                      <br />,
+                      <a
+                        href="/assets/downloads/User Guide - Register of Tailings Storage Facilities and Dams.pdf"
+                      >
+                        <Icon
+                          type="download"
+                        />
+                         Register of Tailings Storage Facilities and Dams - User Guide (XLSX, 1.4 MB)
+                      </a>,
+                    ],
                   },
                   "ref": null,
-                  "rendered": "The Register of Tailing Storage Facilities and Dams document will be available for download from here in the near future. Please check back later for more information.",
+                  "rendered": Array [
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": Array [
+                          <Icon
+                            type="download"
+                          />,
+                          " Register of Tailings Storage Facilities and Dams (XLSX, 1.4 MB)",
+                        ],
+                        "href": "/assets/downloads/Register of Tailings Storage Facilities and Dams.xlsm",
+                      },
+                      "ref": null,
+                      "rendered": Array [
+                        Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "function",
+                          "props": Object {
+                            "type": "download",
+                          },
+                          "ref": null,
+                          "rendered": null,
+                          "type": [Function],
+                        },
+                        " Register of Tailings Storage Facilities and Dams (XLSX, 1.4 MB)",
+                      ],
+                      "type": "a",
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {},
+                      "ref": null,
+                      "rendered": null,
+                      "type": "br",
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": Array [
+                          <Icon
+                            type="download"
+                          />,
+                          " Register of Tailings Storage Facilities and Dams - User Guide (XLSX, 1.4 MB)",
+                        ],
+                        "href": "/assets/downloads/User Guide - Register of Tailings Storage Facilities and Dams.pdf",
+                      },
+                      "ref": null,
+                      "rendered": Array [
+                        Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "function",
+                          "props": Object {
+                            "type": "download",
+                          },
+                          "ref": null,
+                          "rendered": null,
+                          "type": [Function],
+                        },
+                        " Register of Tailings Storage Facilities and Dams - User Guide (XLSX, 1.4 MB)",
+                      ],
+                      "type": "a",
+                    },
+                  ],
                   "type": "p",
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {},
+                  "ref": null,
+                  "rendered": null,
+                  "type": "br",
                 },
                 Object {
                   "instance": null,
@@ -1420,7 +1674,7 @@ ShallowWrapper {
                       >
                         PERMRECL@gov.bc.ca
                       </a>
-                      .
+                      . You may also submit them via MineSpace if you have signed up (instructions below).
                     </strong>,
                   },
                   "ref": null,
@@ -1437,7 +1691,7 @@ ShallowWrapper {
                         >
                           PERMRECL@gov.bc.ca
                         </a>,
-                        ".",
+                        ". You may also submit them via MineSpace if you have signed up (instructions below).",
                       ],
                     },
                     "ref": null,
@@ -1456,7 +1710,7 @@ ShallowWrapper {
                         "rendered": "PERMRECL@gov.bc.ca",
                         "type": "a",
                       },
-                      ".",
+                      ". You may also submit them via MineSpace if you have signed up (instructions below).",
                     ],
                     "type": "strong",
                   },
