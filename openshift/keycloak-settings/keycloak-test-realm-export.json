@@ -37,14 +37,385 @@
   "roles": {
     "realm": [
       {
-        "id": "c1135467-6a19-4efd-ab5b-72917f947d37",
-        "name": "mds-mine-create",
-        "description": "CRUD access for the MDS-application",
+        "id": "cf5ad623-6020-4dc3-af70-28eb602ce36f",
+        "name": "mds_compliance_enforcement",
+        "description": "Composite role access for Compliance and Enforcement group",
         "scopeParamRequired": false,
         "composite": true,
         "composites": {
           "realm": [
-            "mds-mine-view"
+            "core_edit_variances",
+            "core_edit_investigations",
+            "core_edit_do"
+          ]
+        },
+        "clientRole": false,
+        "containerId": "mds"
+      },
+      {
+        "id": "39fb84cf-af82-4490-a19e-5460efa7731d",
+        "name": "mds_executive",
+        "description": "Composite role access for Executive group",
+        "scopeParamRequired": false,
+        "composite": false,
+        "clientRole": false,
+        "containerId": "mds"
+      },
+      {
+        "id": "a0538cd6-39b4-4c75-b919-edb6207fd3a6",
+        "name": "idir",
+        "description": "IDIR Users",
+        "scopeParamRequired": false,
+        "composite": false,
+        "clientRole": false,
+        "containerId": "mds"
+      },
+      {
+        "id": "ca83ecfe-e9a2-437a-959e-9b08536d8860",
+        "name": "core_edit_investigations",
+        "description": "Create and edit investigations within the Core application",
+        "scopeParamRequired": false,
+        "composite": false,
+        "clientRole": false,
+        "containerId": "mds"
+      },
+      {
+        "id": "7af4d489-2cda-45f4-a6f8-231cfd000f03",
+        "name": "mds_health_safety",
+        "description": "Composite role access for Health and Safety group",
+        "scopeParamRequired": false,
+        "composite": true,
+        "composites": {
+          "realm": ["core_edit_variances", "core_edit_do"]
+        },
+        "clientRole": false,
+        "containerId": "mds"
+      },
+      {
+        "id": "2bbeb0d2-8f6b-4de8-a423-8e01243efb15",
+        "name": "core_edit_permits",
+        "description": "Create and edit permits within the Core application",
+        "scopeParamRequired": false,
+        "composite": false,
+        "clientRole": false,
+        "containerId": "mds"
+      },
+      {
+        "id": "84077aa2-c5b2-4860-8ae6-769d50d2c3e8",
+        "name": "core_environmental_reports",
+        "description": "Create and edit environmental reports within the Core application",
+        "scopeParamRequired": false,
+        "composite": false,
+        "clientRole": false,
+        "containerId": "mds"
+      },
+      {
+        "id": "978c2ce1-59aa-45be-905f-9e8277071493",
+        "name": "mds_users",
+        "description": "Users who have access to the Core application, assigned by IDIR identity provider mapping",
+        "scopeParamRequired": false,
+        "composite": true,
+        "composites": {
+          "realm": ["core_view_all"]
+        },
+        "clientRole": false,
+        "containerId": "mds"
+      },
+      {
+        "id": "06f73f5c-e347-4153-b48c-99d4756a44f1",
+        "name": "core_edit_parties",
+        "description": "Create and edit parties/contacts within the Core application",
+        "scopeParamRequired": false,
+        "composite": false,
+        "clientRole": false,
+        "containerId": "mds"
+      },
+      {
+        "id": "8eecf696-1199-4c6b-a5b5-4560fe710419",
+        "name": "offline_access",
+        "description": "${role_offline-access}",
+        "scopeParamRequired": true,
+        "composite": false,
+        "clientRole": false,
+        "containerId": "mds"
+      },
+      {
+        "id": "8611bb53-831d-4187-970f-54e39e344ed9",
+        "name": "core_edit_securities",
+        "description": "Create and edit securities within the Core application",
+        "scopeParamRequired": false,
+        "composite": false,
+        "clientRole": false,
+        "containerId": "mds"
+      },
+      {
+        "id": "3f3befef-fb68-4994-9e99-59f49e506d8f",
+        "name": "core_close_permits",
+        "description": "Close a permit within Core",
+        "scopeParamRequired": false,
+        "composite": false,
+        "clientRole": false,
+        "containerId": "mds"
+      },
+      {
+        "id": "d74278cc-9128-4a71-b2b5-4a348f7fc12e",
+        "name": "mds_abandoned_mines",
+        "description": "Composite role access for Abandoned Mines group",
+        "scopeParamRequired": false,
+        "composite": true,
+        "composites": {
+          "realm": ["core_abandoned_mines", "core_environmental_reports"]
+        },
+        "clientRole": false,
+        "containerId": "mds"
+      },
+      {
+        "id": "34ef2806-b3ac-4341-9cdb-906d4a591d4f",
+        "name": "mds_securities",
+        "description": "Composite role access for Securities group",
+        "scopeParamRequired": false,
+        "composite": true,
+        "composites": {
+          "realm": ["core_edit_securities", "core_close_permits"]
+        },
+        "clientRole": false,
+        "containerId": "mds"
+      },
+      {
+        "id": "d7084483-1c09-4070-9c01-ef4138ba732b",
+        "name": "core_edit_all",
+        "description": "Edit capabilities within the Core application",
+        "scopeParamRequired": false,
+        "composite": false,
+        "clientRole": false,
+        "containerId": "mds"
+      },
+      {
+        "id": "15fba897-30ab-4350-9bdc-a184c5517b3f",
+        "name": "mds_application_admins",
+        "description": "Composite role access for Core Application Admins group",
+        "scopeParamRequired": false,
+        "composite": true,
+        "composites": {
+          "realm": [
+            "core_edit_parties",
+            "core_edit_securities",
+            "core_edit_variances",
+            "core_edit_all",
+            "core_edit_mines",
+            "core_edit_do",
+            "core_environmental_reports",
+            "core_edit_permits",
+            "core_admin"
+          ]
+        },
+        "clientRole": false,
+        "containerId": "mds"
+      },
+      {
+        "id": "1b928cc0-0e88-498c-9551-dadacbc8b229",
+        "name": "mds_administrative_users",
+        "description": "Composite role access for Administrative Users group",
+        "scopeParamRequired": false,
+        "composite": true,
+        "composites": {
+          "realm": ["core_edit_parties", "core_edit_mines"]
+        },
+        "clientRole": false,
+        "containerId": "mds"
+      },
+      {
+        "id": "95655c68-65d2-4ce7-9d12-db17734b1bfd",
+        "name": "mds_chief_inspector",
+        "description": "Composite role access for Chief Inspector group",
+        "scopeParamRequired": false,
+        "composite": true,
+        "composites": {
+          "realm": ["core_edit_variances", "core_edit_do"]
+        },
+        "clientRole": false,
+        "containerId": "mds"
+      },
+      {
+        "id": "001b64a0-3c8e-4c43-a6c0-180cf70e0e10",
+        "name": "core_abandoned_mines",
+        "description": "Ability to manage abandoned mine information within Core",
+        "scopeParamRequired": false,
+        "composite": false,
+        "clientRole": false,
+        "containerId": "mds"
+      },
+      {
+        "id": "b69939e7-2140-417a-a06e-e24c67230d4c",
+        "name": "minespace-proponent",
+        "description": "BCeID role for proponent minespace users.",
+        "scopeParamRequired": false,
+        "composite": false,
+        "clientRole": false,
+        "containerId": "mds"
+      },
+      {
+        "id": "23a72f18-8509-48ab-a1bb-480ab3493eb6",
+        "name": "core_view_all",
+        "description": "View level access to all Core application elements",
+        "scopeParamRequired": false,
+        "composite": false,
+        "clientRole": false,
+        "containerId": "mds"
+      },
+      {
+        "id": "86005522-177d-48e1-9aca-890cfbe4ec8f",
+        "name": "mds_major_mines",
+        "description": "Composite role access for Major Mines Permitting group",
+        "scopeParamRequired": false,
+        "composite": true,
+        "composites": {
+          "realm": [
+            "core_edit_parties",
+            "core_edit_variances",
+            "core_edit_do",
+            "core_environmental_reports",
+            "core_geospatial",
+            "core_edit_permits"
+          ]
+        },
+        "clientRole": false,
+        "containerId": "mds"
+      },
+      {
+        "id": "cd25e603-f25e-4492-98cd-0b869bf2b0dd",
+        "name": "mds_regional_mines",
+        "description": "Composite role access for Regional Mines Permitting group",
+        "scopeParamRequired": false,
+        "composite": true,
+        "composites": {
+          "realm": [
+            "core_edit_parties",
+            "core_edit_variances",
+            "core_edit_do",
+            "core_environmental_reports",
+            "core_geospatial",
+            "core_edit_permits"
+          ]
+        },
+        "clientRole": false,
+        "containerId": "mds"
+      },
+      {
+        "id": "a927cf9b-ccf1-41a7-bf07-7da4dc74cae6",
+        "name": "mds-nris-view",
+        "description": "DEPRECATED:  Users with this role have the ability to view NRIS API Data",
+        "scopeParamRequired": false,
+        "composite": false,
+        "clientRole": false,
+        "containerId": "mds"
+      },
+      {
+        "id": "b5a953ec-9881-45bf-ae65-86684370082c",
+        "name": "core_edit_variances",
+        "description": "Create and edit variances within the Core application",
+        "scopeParamRequired": false,
+        "composite": false,
+        "clientRole": false,
+        "containerId": "mds"
+      },
+      {
+        "id": "c8bb1974-f097-4852-a576-8d74dc36f9cd",
+        "name": "core_edit_mines",
+        "description": "Create and edit mines within the Core application",
+        "scopeParamRequired": false,
+        "composite": false,
+        "clientRole": false,
+        "containerId": "mds"
+      },
+      {
+        "id": "f7a0d54a-1f49-4643-99a9-da5d686d677c",
+        "name": "core_edit_do",
+        "description": "Edit dangerous occurences within the Core application",
+        "scopeParamRequired": false,
+        "composite": false,
+        "clientRole": false,
+        "containerId": "mds"
+      },
+      {
+        "id": "50dcee36-ec8b-46ef-a69c-f14ae6baec7a",
+        "name": "mds_geospatial",
+        "description": "Composite role access for Geospatial Group",
+        "scopeParamRequired": false,
+        "composite": true,
+        "composites": {
+          "realm": ["core_geospatial"]
+        },
+        "clientRole": false,
+        "containerId": "mds"
+      },
+      {
+        "id": "3caa64ca-45c6-4a1b-9b54-204a8297b868",
+        "name": "mds_minespace_proponents",
+        "description": "Users who have access to the Minespace application, assigned by the BCeID identity provider mapping",
+        "scopeParamRequired": false,
+        "composite": true,
+        "composites": {
+          "realm": ["core_edit_variances"]
+        },
+        "clientRole": false,
+        "containerId": "mds"
+      },
+      {
+        "id": "f895b249-428d-426a-9a9b-7b136c3f0f01",
+        "name": "mds_data_cleanup",
+        "description": "Composite role access for Data Clean-up Team group",
+        "scopeParamRequired": false,
+        "composite": true,
+        "composites": {
+          "realm": ["core_edit_parties", "core_edit_mines", "core_edit_permits"]
+        },
+        "clientRole": false,
+        "containerId": "mds"
+      },
+      {
+        "id": "acca43b1-1dc5-47ee-bf1d-5866b3a66ba4",
+        "name": "mds-mine-view",
+        "description": "DEPRECATED:  Only READ access to add MDS resources",
+        "scopeParamRequired": false,
+        "composite": true,
+        "composites": {
+          "realm": ["mds-nris-view", "mds_users"]
+        },
+        "clientRole": false,
+        "containerId": "mds"
+      },
+      {
+        "id": "a20f81c7-e4c1-443f-b050-84bc90098e5e",
+        "name": "core_admin",
+        "description": "Administrative capabilities within the Core application",
+        "scopeParamRequired": false,
+        "composite": false,
+        "clientRole": false,
+        "containerId": "mds"
+      },
+      {
+        "id": "b55071e2-5959-4894-8de2-609e50365a04",
+        "name": "core_geospatial",
+        "description": "Create and edit geospatial data within the Core application",
+        "scopeParamRequired": false,
+        "composite": false,
+        "clientRole": false,
+        "containerId": "mds"
+      },
+      {
+        "id": "c1135467-6a19-4efd-ab5b-72917f947d37",
+        "name": "mds-mine-create",
+        "description": "DEPRECATED:  CRUD access for the MDS-application",
+        "scopeParamRequired": false,
+        "composite": true,
+        "composites": {
+          "realm": [
+            "mds_major_mines",
+            "mds_regional_mines",
+            "mds-mine-view",
+            "mds_users",
+            "mds_administrative_users"
           ]
         },
         "clientRole": false,
@@ -57,10 +428,7 @@
         "scopeParamRequired": false,
         "composite": true,
         "composites": {
-          "realm": [
-            "offline_access",
-            "uma_authorization"
-          ],
+          "realm": ["offline_access", "uma_authorization"],
           "client": {
             "realm-management": [
               "view-users",
@@ -83,34 +451,20 @@
               "manage-authorization",
               "manage-identity-providers"
             ],
-            "account": [
-              "view-profile",
-              "manage-account"
-            ]
+            "account": ["view-profile", "manage-account"]
           }
         },
         "clientRole": false,
         "containerId": "mds"
       },
       {
-        "id": "a0538cd6-39b4-4c75-b919-edb6207fd3a6",
-        "name": "idir",
-        "description": "IDIR Users",
-        "scopeParamRequired": false,
-        "composite": false,
-        "clientRole": false,
-        "containerId": "mds"
-      },
-      {
         "id": "268ec862-f3c8-49d9-a91d-446cb81683e6",
         "name": "mds-mine-admin",
-        "description": "Administrator Role for MDS application.",
+        "description": "DEPRECATED: Administrator Role for MDS application.",
         "scopeParamRequired": false,
         "composite": true,
         "composites": {
-          "realm": [
-            "mds-mine-create"
-          ]
+          "realm": ["mds_application_admins", "mds-mine-create", "mds_users"]
         },
         "clientRole": false,
         "containerId": "mds"
@@ -119,33 +473,6 @@
         "id": "56a5662f-d0af-442b-b4ce-0db62492cada",
         "name": "uma_authorization",
         "description": "${role_uma_authorization}",
-        "scopeParamRequired": false,
-        "composite": false,
-        "clientRole": false,
-        "containerId": "mds"
-      },
-      {
-        "id": "acca43b1-1dc5-47ee-bf1d-5866b3a66ba4",
-        "name": "mds-mine-view",
-        "description": "Only READ access to add MDS resources",
-        "scopeParamRequired": false,
-        "composite": false,
-        "clientRole": false,
-        "containerId": "mds"
-      },
-      {
-        "id": "8eecf696-1199-4c6b-a5b5-4560fe710419",
-        "name": "offline_access",
-        "description": "${role_offline-access}",
-        "scopeParamRequired": true,
-        "composite": false,
-        "clientRole": false,
-        "containerId": "mds"
-      },
-      {
-        "id": "b69939e7-2140-417a-a06e-e24c67230d4c",
-        "name": "minespace-proponent",
-        "description": "BCeID role for proponent minespace users.",
         "scopeParamRequired": false,
         "composite": false,
         "clientRole": false,
@@ -162,10 +489,7 @@
           "composite": true,
           "composites": {
             "client": {
-              "realm-management": [
-                "query-users",
-                "query-groups"
-              ]
+              "realm-management": ["query-users", "query-groups"]
             }
           },
           "clientRole": true,
@@ -248,9 +572,7 @@
           "composite": true,
           "composites": {
             "client": {
-              "realm-management": [
-                "query-clients"
-              ]
+              "realm-management": ["query-clients"]
             }
           },
           "clientRole": true,
@@ -371,7 +693,16 @@
       "security-admin-console": [],
       "mines-application-local": [],
       "admin-cli": [],
-      "mds-nris-client": [],
+      "mds-nris-client": [
+        {
+          "id": "eaacb4f0-a972-4e3c-8774-441f9cc04d25",
+          "name": "uma_protection",
+          "scopeParamRequired": false,
+          "composite": false,
+          "clientRole": true,
+          "containerId": "4c996ba4-e603-4146-8380-21f210a91369"
+        }
+      ],
       "broker": [
         {
           "id": "817b7f20-5e45-4edf-b82a-81cd7f3d833d",
@@ -412,9 +743,7 @@
           "composite": true,
           "composites": {
             "client": {
-              "account": [
-                "manage-account-links"
-              ]
+              "account": ["manage-account-links"]
             }
           },
           "clientRole": true,
@@ -434,13 +763,119 @@
   },
   "groups": [
     {
+      "id": "973af3b4-9975-4ebc-9148-1d377887cafb",
+      "name": "Abandoned Mines",
+      "path": "/Abandoned Mines",
+      "attributes": {},
+      "realmRoles": ["mds_abandoned_mines", "mds_users"],
+      "clientRoles": {},
+      "subGroups": []
+    },
+    {
+      "id": "99fbe03d-5de0-49c1-a56b-6e2de75034ec",
+      "name": "Administrative Users",
+      "path": "/Administrative Users",
+      "attributes": {},
+      "realmRoles": ["mds_users", "mds_administrative_users"],
+      "clientRoles": {},
+      "subGroups": []
+    },
+    {
+      "id": "9c370b2f-8239-4885-bd23-59ea4635271f",
+      "name": "Chief Inspector",
+      "path": "/Chief Inspector",
+      "attributes": {},
+      "realmRoles": ["mds_users", "mds_chief_inspector"],
+      "clientRoles": {},
+      "subGroups": []
+    },
+    {
+      "id": "83ec8e03-3624-48fb-bcba-4e3625f9c70c",
+      "name": "Compliance and Enforcement",
+      "path": "/Compliance and Enforcement",
+      "attributes": {},
+      "realmRoles": ["mds_compliance_enforcement", "mds_users"],
+      "clientRoles": {},
+      "subGroups": []
+    },
+    {
+      "id": "573ab0c2-2eee-467c-a318-cd3350690964",
+      "name": "Core Application Admins",
+      "path": "/Core Application Admins",
+      "attributes": {},
+      "realmRoles": ["mds_application_admins"],
+      "clientRoles": {},
+      "subGroups": []
+    },
+    {
+      "id": "a443ee38-b671-4ecd-8cd6-bc0d9442541c",
+      "name": "Data Cleanup Team",
+      "path": "/Data Cleanup Team",
+      "attributes": {},
+      "realmRoles": ["mds_users", "mds_data_cleanup"],
+      "clientRoles": {},
+      "subGroups": []
+    },
+    {
+      "id": "ac442851-b5a4-46f4-8ff0-97fc85631ff6",
+      "name": "Executive",
+      "path": "/Executive",
+      "attributes": {},
+      "realmRoles": ["mds_executive", "mds_users"],
+      "clientRoles": {},
+      "subGroups": []
+    },
+    {
+      "id": "f33ececb-2263-422d-a598-9dd9d0671a26",
+      "name": "Geospatial",
+      "path": "/Geospatial",
+      "attributes": {},
+      "realmRoles": ["mds_geospatial", "mds_users"],
+      "clientRoles": {},
+      "subGroups": []
+    },
+    {
+      "id": "49fb49da-1cc5-40c4-9eae-8aba057664c9",
+      "name": "Health and Safety",
+      "path": "/Health and Safety",
+      "attributes": {},
+      "realmRoles": ["mds_health_safety", "mds_users"],
+      "clientRoles": {},
+      "subGroups": []
+    },
+    {
+      "id": "4781a7fd-2df4-4cca-abee-fd433c5c9e04",
+      "name": "Major Mines Permitting",
+      "path": "/Major Mines Permitting",
+      "attributes": {},
+      "realmRoles": ["mds_major_mines", "mds_users"],
+      "clientRoles": {},
+      "subGroups": []
+    },
+    {
+      "id": "911c985e-dbff-45dd-845d-ed4aa91ca4fc",
+      "name": "Regional Mines Permitting",
+      "path": "/Regional Mines Permitting",
+      "attributes": {},
+      "realmRoles": ["mds_regional_mines", "mds_users"],
+      "clientRoles": {},
+      "subGroups": []
+    },
+    {
+      "id": "8afd42f7-27f6-461d-9e72-77f9a4c4a2ee",
+      "name": "Securities",
+      "path": "/Securities",
+      "attributes": {},
+      "realmRoles": ["mds_securities", "mds_users"],
+      "clientRoles": {},
+      "subGroups": []
+    },
+    {
       "id": "8a014c95-1525-4e43-9e2f-7ed6ab9447e0",
       "name": "core-admin",
       "path": "/core-admin",
       "attributes": {},
-      "realmRoles": [
-        "mds-mine-admin"
-      ],
+      "realmRoles": ["mds-mine-admin"],
       "clientRoles": {},
       "subGroups": []
     },
@@ -449,13 +884,9 @@
       "name": "data-clean-up",
       "path": "/data-clean-up",
       "attributes": {
-        "test": [
-          "also-test"
-        ]
+        "test": ["also-test"]
       },
-      "realmRoles": [
-        "mds-mine-admin"
-      ],
+      "realmRoles": ["mds-mine-admin"],
       "clientRoles": {},
       "subGroups": []
     },
@@ -464,9 +895,7 @@
       "name": "major-mines-team",
       "path": "/major-mines-team",
       "attributes": {},
-      "realmRoles": [
-        "mds-mine-create"
-      ],
+      "realmRoles": ["mds-mine-create"],
       "clientRoles": {},
       "subGroups": []
     },
@@ -475,9 +904,7 @@
       "name": "mds-realm-admin",
       "path": "/mds-realm-admin",
       "attributes": {},
-      "realmRoles": [
-        "admin"
-      ],
+      "realmRoles": ["admin"],
       "clientRoles": {},
       "subGroups": []
     },
@@ -486,45 +913,31 @@
       "name": "regional-mines-team",
       "path": "/regional-mines-team",
       "attributes": {},
-      "realmRoles": [
-        "mds-mine-view"
-      ],
+      "realmRoles": ["mds-mine-view"],
       "clientRoles": {},
       "subGroups": []
     }
   ],
-  "defaultRoles": [
-    "offline_access",
-    "uma_authorization"
-  ],
-  "requiredCredentials": [
-    "password"
-  ],
+  "defaultRoles": ["offline_access", "uma_authorization"],
+  "requiredCredentials": ["password"],
   "otpPolicyType": "totp",
   "otpPolicyAlgorithm": "HmacSHA1",
   "otpPolicyInitialCounter": 0,
   "otpPolicyDigits": 6,
   "otpPolicyLookAheadWindow": 1,
   "otpPolicyPeriod": 30,
-  "otpSupportedApplications": [
-    "FreeOTP",
-    "Google Authenticator"
-  ],
+  "otpSupportedApplications": ["FreeOTP", "Google Authenticator"],
   "scopeMappings": [
     {
       "clientTemplate": "External API Client",
-      "roles": [
-        "mds-mine-create"
-      ]
+      "roles": ["mds-mine-create"]
     }
   ],
   "clientScopeMappings": {
     "account": [
       {
         "clientTemplate": "External API Client",
-        "roles": [
-          "view-profile"
-        ]
+        "roles": ["view-profile"]
       }
     ]
   },
@@ -657,18 +1070,14 @@
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
-      "redirectUris": [
-        "http://localhost:3000/*"
-      ],
-      "webOrigins": [
-        "http://localhost:3000"
-      ],
+      "redirectUris": ["http://localhost:3000/*", "https://localhost:3000/*"],
+      "webOrigins": ["https://localhost:3000", "http://localhost:3000"],
       "notBefore": 0,
       "bearerOnly": false,
       "consentRequired": false,
       "standardFlowEnabled": true,
       "implicitFlowEnabled": false,
-      "directAccessGrantsEnabled": false,
+      "directAccessGrantsEnabled": true,
       "serviceAccountsEnabled": false,
       "publicClient": true,
       "frontchannelLogout": false,
@@ -790,12 +1199,8 @@
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
-      "redirectUris": [
-        "http://localhost:3020/*"
-      ],
-      "webOrigins": [
-        "http://localhost:3020"
-      ],
+      "redirectUris": ["http://localhost:3020/*"],
+      "webOrigins": ["http://localhost:3020"],
       "notBefore": 0,
       "bearerOnly": false,
       "consentRequired": false,
@@ -939,9 +1344,7 @@
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
-      "redirectUris": [
-        "/auth/admin/mds/console/*"
-      ],
+      "redirectUris": ["/auth/admin/mds/console/*"],
       "webOrigins": [],
       "notBefore": 0,
       "bearerOnly": false,
@@ -1074,12 +1477,8 @@
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
-      "redirectUris": [
-        "https://minespace-dev.pathfinder.gov.bc.ca/*"
-      ],
-      "webOrigins": [
-        "https://minespace-dev.pathfinder.gov.bc.ca"
-      ],
+      "redirectUris": ["https://minespace-dev.pathfinder.gov.bc.ca/*"],
+      "webOrigins": ["https://minespace-dev.pathfinder.gov.bc.ca"],
       "notBefore": 0,
       "bearerOnly": false,
       "consentRequired": false,
@@ -1271,11 +1670,11 @@
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
       "redirectUris": [
-        "https://minesdigitalservices-test.pathfinder.gov.bc.ca/*",
-        "https://minesdigitalservices-test-demo.pathfinder.gov.bc.ca/*"
+        "https://minesdigitalservices-test-ux.pathfinder.gov.bc.ca/*",
+        "https://minesdigitalservices-test.pathfinder.gov.bc.ca/*"
       ],
       "webOrigins": [
-        "https://minesdigitalservices-test-demo.pathfinder.gov.bc.ca",
+        "https://minesdigitalservices-test-ux.pathfinder.gov.bc.ca",
         "https://minesdigitalservices-test.pathfinder.gov.bc.ca"
       ],
       "notBefore": 0,
@@ -1531,9 +1930,74 @@
       "authorizationSettings": {
         "allowRemoteResourceManagement": false,
         "policyEnforcementMode": "ENFORCING",
-        "resources": [],
-        "policies": [],
+        "resources": [
+          {
+            "name": "role.resource.b69939e7-2140-417a-a06e-e24c67230d4c",
+            "type": "Role",
+            "scopes": [
+              {
+                "name": "map-role-composite"
+              },
+              {
+                "name": "map-role-client-scope"
+              },
+              {
+                "name": "map-role"
+              }
+            ]
+          }
+        ],
+        "policies": [
+          {
+            "name": "map-role.permission.b69939e7-2140-417a-a06e-e24c67230d4c",
+            "type": "scope",
+            "logic": "POSITIVE",
+            "decisionStrategy": "AFFIRMATIVE",
+            "config": {
+              "resources": "[\"role.resource.b69939e7-2140-417a-a06e-e24c67230d4c\"]",
+              "scopes": "[\"map-role\"]"
+            }
+          },
+          {
+            "name": "map-role-client-scope.permission.b69939e7-2140-417a-a06e-e24c67230d4c",
+            "type": "scope",
+            "logic": "POSITIVE",
+            "decisionStrategy": "AFFIRMATIVE",
+            "config": {
+              "resources": "[\"role.resource.b69939e7-2140-417a-a06e-e24c67230d4c\"]",
+              "scopes": "[\"map-role-client-scope\"]"
+            }
+          },
+          {
+            "name": "map-role-composite.permission.b69939e7-2140-417a-a06e-e24c67230d4c",
+            "type": "scope",
+            "logic": "POSITIVE",
+            "decisionStrategy": "AFFIRMATIVE",
+            "config": {
+              "resources": "[\"role.resource.b69939e7-2140-417a-a06e-e24c67230d4c\"]",
+              "scopes": "[\"map-role-composite\"]"
+            }
+          }
+        ],
         "scopes": [
+          {
+            "name": "manage-membership"
+          },
+          {
+            "name": "view-members"
+          },
+          {
+            "name": "manage-members"
+          },
+          {
+            "name": "manage-group-membership"
+          },
+          {
+            "name": "user-impersonated"
+          },
+          {
+            "name": "impersonate"
+          },
           {
             "name": "configure"
           },
@@ -1580,15 +2044,13 @@
       "redirectUris": [
         "https://minesdigitalservices-dev.pathfinder.gov.bc.ca/*"
       ],
-      "webOrigins": [
-        "https://minesdigitalservices-dev.pathfinder.gov.bc.ca"
-      ],
+      "webOrigins": ["https://minesdigitalservices-dev.pathfinder.gov.bc.ca"],
       "notBefore": 0,
       "bearerOnly": false,
       "consentRequired": false,
       "standardFlowEnabled": true,
       "implicitFlowEnabled": false,
-      "directAccessGrantsEnabled": false,
+      "directAccessGrantsEnabled": true,
       "serviceAccountsEnabled": false,
       "publicClient": true,
       "frontchannelLogout": false,
@@ -1705,18 +2167,21 @@
     {
       "id": "4c996ba4-e603-4146-8380-21f210a91369",
       "clientId": "mds-nris-client",
+      "rootUrl": "https://minesdigitalservices-dev.pathfinder.gov.bc.ca/",
       "surrogateAuthRequired": false,
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
-      "redirectUris": [],
+      "redirectUris": [
+        "https://minesdigitalservices-dev.pathfinder.gov.bc.ca/*"
+      ],
       "webOrigins": [],
       "notBefore": 0,
       "bearerOnly": false,
       "consentRequired": false,
       "standardFlowEnabled": false,
-      "implicitFlowEnabled": false,
-      "directAccessGrantsEnabled": false,
+      "implicitFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
       "serviceAccountsEnabled": true,
       "publicClient": false,
       "frontchannelLogout": false,
@@ -1797,13 +2262,8 @@
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
-      "defaultRoles": [
-        "view-profile",
-        "manage-account"
-      ],
-      "redirectUris": [
-        "/auth/realms/mds/account/*"
-      ],
+      "defaultRoles": ["view-profile", "manage-account"],
+      "redirectUris": ["/auth/realms/mds/account/*"],
       "webOrigins": [],
       "notBefore": 0,
       "bearerOnly": false,
@@ -2038,12 +2498,12 @@
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
       "redirectUris": [
-        "https://minespace-test.pathfinder.gov.bc.ca/*",
-        "https://minespace-test-demo.pathfinder.gov.bc.ca/*"
+        "https://minespace-test-ux.pathfinder.gov.bc.ca/*",
+        "https://minespace-test.pathfinder.gov.bc.ca/*"
       ],
       "webOrigins": [
         "https://minespace-test.pathfinder.gov.bc.ca",
-        "https://minespace-test-demo.pathfinder.gov.bc.ca"
+        "https://minespace-test-ux.pathfinder.gov.bc.ca"
       ],
       "notBefore": 0,
       "bearerOnly": false,
@@ -2233,6 +2693,19 @@
           }
         },
         {
+          "id": "a87ec265-2188-4be7-a4b2-b02b129f5dfb",
+          "name": "Set audience to mines-application-test",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-hardcoded-claim-mapper",
+          "consentRequired": false,
+          "config": {
+            "access.token.claim": "true",
+            "claim.name": "aud",
+            "jsonType.label": "String",
+            "claim.value": "mines-application-test"
+          }
+        },
+        {
           "id": "3dcc5c48-26d1-4729-8a10-24d28510bd56",
           "name": "username",
           "protocol": "openid-connect",
@@ -2246,19 +2719,6 @@
             "access.token.claim": "true",
             "claim.name": "preferred_username",
             "jsonType.label": "String"
-          }
-        },
-        {
-          "id": "a87ec265-2188-4be7-a4b2-b02b129f5dfb",
-          "name": "Set audience to mines-application-test",
-          "protocol": "openid-connect",
-          "protocolMapper": "oidc-hardcoded-claim-mapper",
-          "consentRequired": false,
-          "config": {
-            "access.token.claim": "true",
-            "claim.name": "aud",
-            "jsonType.label": "String",
-            "claim.value": "mines-application-test"
           }
         },
         {
@@ -2298,10 +2758,72 @@
   },
   "loginTheme": "bcgov-with-login-form",
   "eventsEnabled": false,
-  "eventsListeners": [
-    "jboss-logging"
+  "eventsExpiration": 7200,
+  "eventsListeners": ["jboss-logging"],
+  "enabledEventTypes": [
+    "SEND_RESET_PASSWORD",
+    "UPDATE_TOTP",
+    "REMOVE_TOTP",
+    "REVOKE_GRANT",
+    "LOGIN_ERROR",
+    "CLIENT_LOGIN",
+    "RESET_PASSWORD_ERROR",
+    "IMPERSONATE_ERROR",
+    "CODE_TO_TOKEN_ERROR",
+    "CUSTOM_REQUIRED_ACTION",
+    "RESTART_AUTHENTICATION",
+    "UPDATE_PROFILE_ERROR",
+    "IMPERSONATE",
+    "LOGIN",
+    "UPDATE_PASSWORD_ERROR",
+    "CLIENT_INITIATED_ACCOUNT_LINKING",
+    "TOKEN_EXCHANGE",
+    "REGISTER",
+    "LOGOUT",
+    "CLIENT_REGISTER",
+    "IDENTITY_PROVIDER_LINK_ACCOUNT",
+    "UPDATE_PASSWORD",
+    "FEDERATED_IDENTITY_LINK_ERROR",
+    "CLIENT_DELETE",
+    "IDENTITY_PROVIDER_FIRST_LOGIN",
+    "VERIFY_EMAIL",
+    "CLIENT_DELETE_ERROR",
+    "CLIENT_LOGIN_ERROR",
+    "RESTART_AUTHENTICATION_ERROR",
+    "REMOVE_FEDERATED_IDENTITY_ERROR",
+    "EXECUTE_ACTIONS",
+    "TOKEN_EXCHANGE_ERROR",
+    "SEND_IDENTITY_PROVIDER_LINK_ERROR",
+    "EXECUTE_ACTION_TOKEN_ERROR",
+    "SEND_VERIFY_EMAIL",
+    "EXECUTE_ACTIONS_ERROR",
+    "REMOVE_FEDERATED_IDENTITY",
+    "IDENTITY_PROVIDER_POST_LOGIN",
+    "IDENTITY_PROVIDER_LINK_ACCOUNT_ERROR",
+    "UPDATE_EMAIL",
+    "REGISTER_ERROR",
+    "REVOKE_GRANT_ERROR",
+    "LOGOUT_ERROR",
+    "UPDATE_EMAIL_ERROR",
+    "EXECUTE_ACTION_TOKEN",
+    "CLIENT_UPDATE_ERROR",
+    "UPDATE_PROFILE",
+    "FEDERATED_IDENTITY_LINK",
+    "CLIENT_REGISTER_ERROR",
+    "SEND_VERIFY_EMAIL_ERROR",
+    "SEND_IDENTITY_PROVIDER_LINK",
+    "RESET_PASSWORD",
+    "CLIENT_INITIATED_ACCOUNT_LINKING_ERROR",
+    "REMOVE_TOTP_ERROR",
+    "VERIFY_EMAIL_ERROR",
+    "SEND_RESET_PASSWORD_ERROR",
+    "CLIENT_UPDATE",
+    "IDENTITY_PROVIDER_POST_LOGIN_ERROR",
+    "CUSTOM_REQUIRED_ACTION_ERROR",
+    "UPDATE_TOTP_ERROR",
+    "CODE_TO_TOKEN",
+    "IDENTITY_PROVIDER_FIRST_LOGIN_ERROR"
   ],
-  "enabledEventTypes": [],
   "adminEventsEnabled": false,
   "adminEventsDetailsEnabled": false,
   "identityProviders": [
@@ -2405,6 +2927,15 @@
       }
     },
     {
+      "id": "c9466fdb-6e74-4d70-a401-58f0769a6382",
+      "name": "nris_map",
+      "identityProviderAlias": "idir",
+      "identityProviderMapper": "oidc-hardcoded-role-idp-mapper",
+      "config": {
+        "role": "mds-nris-view"
+      }
+    },
+    {
       "id": "ac05e818-1ae2-49dd-981a-7eabeeb69e90",
       "name": "username",
       "identityProviderAlias": "bceid",
@@ -2424,12 +2955,30 @@
       }
     },
     {
+      "id": "ebbfa3eb-7f2c-4d85-b31d-55fdf25a5b4c",
+      "name": "MDS basic user access",
+      "identityProviderAlias": "idir",
+      "identityProviderMapper": "oidc-hardcoded-role-idp-mapper",
+      "config": {
+        "role": "mds_users"
+      }
+    },
+    {
       "id": "7085bc40-5506-4336-9de5-324e5c4b51a4",
       "name": "idir_role_map",
       "identityProviderAlias": "idir",
       "identityProviderMapper": "oidc-hardcoded-role-idp-mapper",
       "config": {
         "role": "idir"
+      }
+    },
+    {
+      "id": "482b92e2-5adb-4a97-8830-f9961e3cac2b",
+      "name": "Minespace Proponent Access",
+      "identityProviderAlias": "bceid",
+      "identityProviderMapper": "oidc-hardcoded-role-idp-mapper",
+      "config": {
+        "role": "mds_minespace_proponents"
       }
     },
     {
@@ -2469,12 +3018,8 @@
         "subType": "anonymous",
         "subComponents": {},
         "config": {
-          "host-sending-registration-request-must-match": [
-            "true"
-          ],
-          "client-uris-must-match": [
-            "true"
-          ]
+          "host-sending-registration-request-must-match": ["true"],
+          "client-uris-must-match": ["true"]
         }
       },
       {
@@ -2492,9 +3037,7 @@
         "subType": "anonymous",
         "subComponents": {},
         "config": {
-          "max-clients": [
-            "200"
-          ]
+          "max-clients": ["200"]
         }
       },
       {
@@ -2514,9 +3057,7 @@
             "oidc-address-mapper",
             "oidc-full-name-mapper"
           ],
-          "consent-required-for-all-mappers": [
-            "true"
-          ]
+          "consent-required-for-all-mappers": ["true"]
         }
       },
       {
@@ -2544,9 +3085,7 @@
             "saml-role-list-mapper",
             "saml-user-attribute-mapper"
           ],
-          "consent-required-for-all-mappers": [
-            "true"
-          ]
+          "consent-required-for-all-mappers": ["true"]
         }
       },
       {
@@ -2565,9 +3104,7 @@
         "providerId": "hmac-generated",
         "subComponents": {},
         "config": {
-          "priority": [
-            "100"
-          ]
+          "priority": ["100"]
         }
       },
       {
@@ -2576,9 +3113,7 @@
         "providerId": "rsa-generated",
         "subComponents": {},
         "config": {
-          "priority": [
-            "100"
-          ]
+          "priority": ["100"]
         }
       },
       {
@@ -2587,17 +3122,13 @@
         "providerId": "aes-generated",
         "subComponents": {},
         "config": {
-          "priority": [
-            "100"
-          ]
+          "priority": ["100"]
         }
       }
     ]
   },
   "internationalizationEnabled": false,
-  "supportedLocales": [
-    ""
-  ],
+  "supportedLocales": [""],
   "authenticationFlows": [
     {
       "id": "b236a7bd-cd94-4600-80b7-72cab676f525",
