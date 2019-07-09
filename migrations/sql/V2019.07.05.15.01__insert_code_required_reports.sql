@@ -4,7 +4,8 @@ INSERT INTO public.mine_report_category
 VALUES 
 	('H&S', 'Health and Safety', 10, true, 'system-mds', now(), 'system-mds', now()),
 	('GSE', 'GeoScience and Environmental', 20, true, 'system-mds', now(), 'system-mds', now()),
-	('GTC', 'Geotechnical', 30, true, 'system-mds', now(), 'system-mds', now())
+	('GTC', 'Geotechnical', 30, true, 'system-mds', now(), 'system-mds', now()),
+	('OTH', 'Other', 40, true, 'system-mds', now(), 'system-mds', now())
 on conflict do nothing;
 
 INSERT INTO public.mine_report_due_date_type
@@ -18,14 +19,10 @@ on conflict do nothing;
 
 
 ALTER TABLE public.mine_report_definition ALTER COLUMN due_date_period_months DROP NOT NULL;
-ALTER TABLE public.mine_report_definition ALTER COLUMN mine_report_due_date_type DROP NOT NULL;
 ALTER TABLE public.mine_report_definition ALTER COLUMN mine_report_definition_guid set DEFAULT gen_random_uuid();
 ALTER TABLE public.mine_report_definition ALTER COLUMN report_name TYPE character varying(100);
 
-
-
-DROP TABLE tmp_report_definition_compliance;
-
+DROP TABLE IF EXISTS tmp_report_definition_compliance;
 CREATE TEMPORARY TABLE tmp_report_definition_compliance(
 	tmp_id serial primary key, 
 	mrd_id integer, 
@@ -71,8 +68,7 @@ VALUES
 	('Summary of TSF or Dam Safety Recommendations','REG',12, 'HSRCM','10','4','4'),
 	('Performance of high risk dumps','REG',12, 'HSRCM','10','4','4'),
 	('Mine Plan Update','REG',60, 'HSRCM','10','4','5'),
-	('DSR','REG',60, 'HSRCM','10','4','5'),
-	('TSF, WSF or Dam As-built Report','REG',null, 'HSRCM','10','4','5'),
+	('Dam Safety Report','REG',60, 'HSRCM','10','4','5'),
 	('As-Built reports','REG',60, 'HSRCM','10','4','5'),
 	('TSF, WSF or Dam As-built Report','REG',null, 'HSRCM','10','5','1'),
 	('OMS Manual','PMT',null, 'HSRCM','10','5','2'),
@@ -90,13 +86,13 @@ VALUES
 	('Tailings Management System','REQ',null, 'HSRCM','10','4','2'),
 	('TSF Risk Assessment','REQ',null, 'HSRCM','10','4','2'),
 	('TSF and Dam Registry','REQ',null, 'HSRCM','10','4','3'),
-	('TSF and Dam Registry Updates',null,null, 'HSRCM','10','4','4'),
+	('TSF and Dam Registry Updates','REQ',null, 'HSRCM','10','4','4'),
 	('Term Extension (request?)','EVT',null, 'MA','10','6',''),
 	('Acquisition of a Mine (new operator/permittee)','EVT',null, 'MA','11','1',''),
 	('Engineering Report','EVT',null, 'MA','18',' ',''),
 	('DO Investigation Report','EVT',null, '','','',''),
 	('ITRB Qualifications','PMT',null, '','','',''),
-	('Work Under Notice of Deemed Authorization ','PMT',null, '','','',''),
+	('Work Under Notice of Deemed Authorization','PMT',null, '','','',''),
 	('Health and Safety Program','REQ',null, '','','',''),
 	('Annual Pit Slope Report','REG',null, '','','',''),
 	('Annual Dump Report','REG',null, '','','',''),
@@ -112,22 +108,6 @@ VALUES
 	('Mine Emergency Response Plan','REG',null, '','','','')
 ON CONFLICT DO NOTHING;
 
-UPDATE tmp_report_definition_compliance tmp_dr set compliance_article_id = (
-	SELECT compliance_article_id from compliance_article ca where ca.section = tmp_dr.compliance_section AND ca.sub_section = tmp_dr.compliance_sub_section AND ca.paragraph = tmp_dr.compliance_paragraph
-	LIMIT 1
-);
-
-
-UPDATE tmp_report_definition_compliance tmp_dr set mrd_id = (
-	SELECT mine_report_definition_id from mine_report_definition mrd where tmp_dr.report_name = mrd.report_name
-	LIMIT 1
-);
-
-
 INSERT INTO public.mine_report_definition
 (report_name, description, due_date_period_months, mine_report_due_date_type, active_ind, create_user, create_timestamp, update_user, update_timestamp)
 select report_name, '', due_date_period, due_date_type, 'true', 'system-mds', now(), 'system-mds', now() from tmp_report_definition_compliance;
-
-INSERT INTO public.mine_report_definition_compliance_article_xref
-(mine_report_definition_id,compliance_article_id)
-select mrd_id, compliance_article_id from tmp_report_definition_compliance where compliance_article_id is not null;
