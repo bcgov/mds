@@ -5,7 +5,7 @@ from werkzeug.exceptions import BadRequest, NotFound
 from app.extensions import api
 from app.api.utils.include.user_info import User
 from ....utils.resources_mixins import UserMixin, ErrorMixin
-from ....utils.access_decorators import (requires_any_of, MINE_VIEW)
+from ....utils.access_decorators import (requires_any_of, VIEW_ALL)
 from ..models.subscription import Subscription
 from ...mine.models.mine import Mine
 from ...mine_api_models import MINES_MODEL
@@ -18,7 +18,7 @@ MINE_GUID_MODEL = api.model('mine_guid', {
 
 class MineSubscriptionListResource(Resource, UserMixin, ErrorMixin):
     @api.doc(description='Get a list of all mines subscribed to by a user.')
-    @requires_any_of([MINE_VIEW])
+    @requires_any_of([VIEW_ALL])
     @api.marshal_with(MINES_MODEL, code=200, envelope='mines')
     def get(self):
         user_name = User().get_user_username()
@@ -34,7 +34,7 @@ class MineSubscriptionResource(Resource, UserMixin, ErrorMixin):
     @api.doc(
         description='Adds a mine to the subscriptions of the user that sends the request',
         params={'mine_guid': 'Mine guid.'})
-    @requires_any_of([MINE_VIEW])
+    @requires_any_of([VIEW_ALL])
     @api.marshal_with(MINE_GUID_MODEL, code=200)
     def post(self, mine_guid):
         if Subscription.find_subscription_for_current_user_by_id(mine_guid):
@@ -46,7 +46,7 @@ class MineSubscriptionResource(Resource, UserMixin, ErrorMixin):
     @api.doc(
         description='Removes a mine from the subscriptions of the user that sends the request',
         params={'mine_guid': 'Mine guid.'})
-    @requires_any_of([MINE_VIEW])
+    @requires_any_of([VIEW_ALL])
     def delete(self, mine_guid):
         subscription_to_delete = Subscription.find_subscription_for_current_user_by_id(mine_guid)
         if not subscription_to_delete:

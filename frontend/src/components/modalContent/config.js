@@ -18,6 +18,7 @@ import EditVarianceModal from "./EditVarianceModal";
 import AddIncidentModal from "./AddIncidentModal";
 import AddReportModal from "./AddReportModal";
 // import EditReportModal from "./EditReportModal";
+import ViewIncidentModal from "./ViewIncidentModal";
 
 // This file is anticipated to have multiple exports
 // eslint-disable-next-line import/prefer-default-export
@@ -42,4 +43,5 @@ export const modalConfig = {
   MINE_INCIDENT: AddIncidentModal,
   ADD_REPORT: AddReportModal,
   //  EDIT_REPORT:
+  VIEW_MINE_INCIDENT: ViewIncidentModal,
 };

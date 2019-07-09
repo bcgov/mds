@@ -172,6 +172,12 @@ MINE_INCIDENT_DOCUMENT_MODEL = api.model(
     }
 )
 
+MINE_INCIDENT_RECOMMENDATION_MODEL = api.model(
+    'Mine Incident Recommendation', {
+        'recommendation': fields.String,
+    }
+)
+
 MINE_INCIDENT_MODEL = api.model(
     'Mine Incident', {
         'mine_incident_guid': fields.String,
@@ -200,7 +206,8 @@ MINE_INCIDENT_MODEL = api.model(
         'dangerous_occurrence_subparagraph_ids': fields.List(fields.Integer),
         'proponent_incident_no': fields.String,
         'mine_incident_no': fields.String,
-        'documents': fields.List(fields.Nested(MINE_INCIDENT_DOCUMENT_MODEL))
+        'documents': fields.List(fields.Nested(MINE_INCIDENT_DOCUMENT_MODEL)), 
+        'recommendations': fields.List(fields.Nested(MINE_INCIDENT_RECOMMENDATION_MODEL))
     })
 
 MINE_INCIDENT_FOLLOWUP_INVESTIGATION_TYPE_MODEL = api.model(

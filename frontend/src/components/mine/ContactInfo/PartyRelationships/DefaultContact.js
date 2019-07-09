@@ -25,7 +25,7 @@ const propTypes = {
 
 const defaultProps = {
   partyRelationshipSubTitle: "",
-  editPermission: Permission.CREATE,
+  editPermission: Permission.EDIT_PARTIES,
 };
 
 export const DefaultContact = (props) => (

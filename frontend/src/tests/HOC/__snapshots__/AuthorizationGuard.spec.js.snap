@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AuthorizationGuard should render the \`WrappedComponent\` if \`userRoles === role_create || role_admin\` 1`] = `
+exports[`AuthorizationGuard should render the \`WrappedComponent\` if \`userRoles === role_edit_mines || role_admin\` 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <authorizationGuard
@@ -9,13 +9,13 @@ ShallowWrapper {
     mapStateToProps={[MockFunction]}
     userRoles={
       Array [
-        "mds-mine-view",
+        "core_view_all",
         "idir",
-        "mds-mine-create",
+        "core_edit_mines",
         "offline_access",
         "admin",
         "uma_authorization",
-        "mds-mine-admin",
+        "core_admin",
       ]
     }
   />,
@@ -36,13 +36,13 @@ ShallowWrapper {
       "logoutUser": [MockFunction],
       "mapStateToProps": [MockFunction],
       "userRoles": Array [
-        "mds-mine-view",
+        "core_view_all",
         "idir",
-        "mds-mine-create",
+        "core_edit_mines",
         "offline_access",
         "admin",
         "uma_authorization",
-        "mds-mine-admin",
+        "core_admin",
       ],
     },
     "ref": null,
@@ -59,13 +59,13 @@ ShallowWrapper {
         "logoutUser": [MockFunction],
         "mapStateToProps": [MockFunction],
         "userRoles": Array [
-          "mds-mine-view",
+          "core_view_all",
           "idir",
-          "mds-mine-create",
+          "core_edit_mines",
           "offline_access",
           "admin",
           "uma_authorization",
-          "mds-mine-admin",
+          "core_admin",
         ],
       },
       "ref": null,

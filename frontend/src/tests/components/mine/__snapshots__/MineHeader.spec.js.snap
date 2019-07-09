@@ -405,7 +405,7 @@ ShallowWrapper {
                   <Menu>
                     <Connect(AuthorizationWrapper)
                       isMajorMine={undefined}
-                      permission="role_create"
+                      permission="role_edit_mines"
                     >
                       <MenuItem
                         onClick={[Function]}
@@ -434,7 +434,7 @@ ShallowWrapper {
                     </Connect(AuthorizationWrapper)>
                     <Connect(AuthorizationWrapper)
                       isMajorMine={undefined}
-                      permission="role_create"
+                      permission="role_edit_mines"
                     >
                       <MenuItem
                         onClick={[Function]}
@@ -840,7 +840,7 @@ ShallowWrapper {
                     <Menu>
                       <Connect(AuthorizationWrapper)
                         isMajorMine={undefined}
-                        permission="role_create"
+                        permission="role_edit_mines"
                       >
                         <MenuItem
                           onClick={[Function]}
@@ -869,7 +869,7 @@ ShallowWrapper {
                       </Connect(AuthorizationWrapper)>
                       <Connect(AuthorizationWrapper)
                         isMajorMine={undefined}
-                        permission="role_create"
+                        permission="role_edit_mines"
                       >
                         <MenuItem
                           onClick={[Function]}
@@ -1158,7 +1158,7 @@ ShallowWrapper {
                       <Menu>
                         <Connect(AuthorizationWrapper)
                           isMajorMine={undefined}
-                          permission="role_create"
+                          permission="role_edit_mines"
                         >
                           <MenuItem
                             onClick={[Function]}
@@ -1187,7 +1187,7 @@ ShallowWrapper {
                         </Connect(AuthorizationWrapper)>
                         <Connect(AuthorizationWrapper)
                           isMajorMine={undefined}
-                          permission="role_create"
+                          permission="role_edit_mines"
                         >
                           <MenuItem
                             onClick={[Function]}
@@ -1379,7 +1379,7 @@ ShallowWrapper {
                         <Menu>
                           <Connect(AuthorizationWrapper)
                             isMajorMine={undefined}
-                            permission="role_create"
+                            permission="role_edit_mines"
                           >
                             <MenuItem
                               onClick={[Function]}
@@ -1408,7 +1408,7 @@ ShallowWrapper {
                           </Connect(AuthorizationWrapper)>
                           <Connect(AuthorizationWrapper)
                             isMajorMine={undefined}
-                            permission="role_create"
+                            permission="role_edit_mines"
                           >
                             <MenuItem
                               onClick={[Function]}
@@ -1600,7 +1600,7 @@ ShallowWrapper {
                       "overlay": <Menu>
                         <Connect(AuthorizationWrapper)
                           isMajorMine={undefined}
-                          permission="role_create"
+                          permission="role_edit_mines"
                         >
                           <MenuItem
                             onClick={[Function]}
@@ -1629,7 +1629,7 @@ ShallowWrapper {
                         </Connect(AuthorizationWrapper)>
                         <Connect(AuthorizationWrapper)
                           isMajorMine={undefined}
-                          permission="role_create"
+                          permission="role_edit_mines"
                         >
                           <MenuItem
                             onClick={[Function]}
@@ -2709,7 +2709,7 @@ ShallowWrapper {
                     <Menu>
                       <Connect(AuthorizationWrapper)
                         isMajorMine={undefined}
-                        permission="role_create"
+                        permission="role_edit_mines"
                       >
                         <MenuItem
                           onClick={[Function]}
@@ -2738,7 +2738,7 @@ ShallowWrapper {
                       </Connect(AuthorizationWrapper)>
                       <Connect(AuthorizationWrapper)
                         isMajorMine={undefined}
-                        permission="role_create"
+                        permission="role_edit_mines"
                       >
                         <MenuItem
                           onClick={[Function]}
@@ -3144,7 +3144,7 @@ ShallowWrapper {
                       <Menu>
                         <Connect(AuthorizationWrapper)
                           isMajorMine={undefined}
-                          permission="role_create"
+                          permission="role_edit_mines"
                         >
                           <MenuItem
                             onClick={[Function]}
@@ -3173,7 +3173,7 @@ ShallowWrapper {
                         </Connect(AuthorizationWrapper)>
                         <Connect(AuthorizationWrapper)
                           isMajorMine={undefined}
-                          permission="role_create"
+                          permission="role_edit_mines"
                         >
                           <MenuItem
                             onClick={[Function]}
@@ -3462,7 +3462,7 @@ ShallowWrapper {
                         <Menu>
                           <Connect(AuthorizationWrapper)
                             isMajorMine={undefined}
-                            permission="role_create"
+                            permission="role_edit_mines"
                           >
                             <MenuItem
                               onClick={[Function]}
@@ -3491,7 +3491,7 @@ ShallowWrapper {
                           </Connect(AuthorizationWrapper)>
                           <Connect(AuthorizationWrapper)
                             isMajorMine={undefined}
-                            permission="role_create"
+                            permission="role_edit_mines"
                           >
                             <MenuItem
                               onClick={[Function]}
@@ -3683,7 +3683,7 @@ ShallowWrapper {
                           <Menu>
                             <Connect(AuthorizationWrapper)
                               isMajorMine={undefined}
-                              permission="role_create"
+                              permission="role_edit_mines"
                             >
                               <MenuItem
                                 onClick={[Function]}
@@ -3712,7 +3712,7 @@ ShallowWrapper {
                             </Connect(AuthorizationWrapper)>
                             <Connect(AuthorizationWrapper)
                               isMajorMine={undefined}
-                              permission="role_create"
+                              permission="role_edit_mines"
                             >
                               <MenuItem
                                 onClick={[Function]}
@@ -3904,7 +3904,7 @@ ShallowWrapper {
                         "overlay": <Menu>
                           <Connect(AuthorizationWrapper)
                             isMajorMine={undefined}
-                            permission="role_create"
+                            permission="role_edit_mines"
                           >
                             <MenuItem
                               onClick={[Function]}
@@ -3933,7 +3933,7 @@ ShallowWrapper {
                           </Connect(AuthorizationWrapper)>
                           <Connect(AuthorizationWrapper)
                             isMajorMine={undefined}
-                            permission="role_create"
+                            permission="role_edit_mines"
                           >
                             <MenuItem
                               onClick={[Function]}
