@@ -31,7 +31,7 @@ VALUES
 	('Terrain Incident Report','EVT',null, 'HSRCM','9','7','1'),
 	('ARD Surface Material Request','PMT',null, 'HSRCM','9','10','1'),
 	('Cessation of Exploration Reclamation Report','EVT',null, 'HSRCM','9','13','1'),
-	('ML/ARD Management Plan','REG',null, 'HSRCM','10','1','3'),
+	('Permit Application: ML/ARD Management Plan','REG',null, 'HSRCM','10','1','3'),
 	('Duty to Report Safety Issue at TSF','EVT',null, 'HSRCM','10','1','6'),
 	('Breach and Inundation Study/Failure Runout Assessment','REQ',null, 'HSRCM','10','1','11'),
 	('ML/ARD Management Plan','REG',null, 'HSRCM','10','1','16'),
@@ -43,10 +43,10 @@ VALUES
 	('Annual DSI','REG',12, 'HSRCM','10','4','4'),
 	('ITRB Activities Report','REG',12, 'HSRCM','10','4','4'),
 	('Summary of TSF or Dam Safety Recommendations','REG',12, 'HSRCM','10','4','4'),
-	('Performance of high risk dumps','REG',12, 'HSRCM','10','4','4'),
+	('Performance of High Risk Dumps','REG',12, 'HSRCM','10','4','4'),
 	('Mine Plan Update','REG',60, 'HSRCM','10','4','5'),
-	('Dam Safety Report','REG',60, 'HSRCM','10','4','5'),
-	('As-Built reports','REG',60, 'HSRCM','10','4','5'),
+	('Dam Safety Review','REG',60, 'HSRCM','10','4','5'),
+	('As-built Reports','REG',60, 'HSRCM','10','4','5'),
 	('TSF, WSF or Dam As-built Report','REG',null, 'HSRCM','10','5','1'),
 	('OMS Manual','PMT',null, 'HSRCM','10','5','2'),
 	('Materials Inventory Report','EVT',null, 'HSRCM','10','5','7'),
@@ -54,36 +54,26 @@ VALUES
 	('Closure of TSF or Dam Report','PMT',null, 'HSRCM','10','6','7'),
 	('TSF Closure OMS','PMT',null, 'HSRCM','10','6','8'),
 	('Closure Management Manual','REG',null, 'HSRCM','10','6','9'),
-	('Appeal to CIM Report','EVT',null, 'MA','33','1',''),
-	('Workplace Monitoring Program','REQ',null, '',' ',' ',''),
-	('Report of Test','REQ',null, 'HSRCM','3','13','4'),
+	('Appeal to CIM Report','EVT',null, 'MA','33','1',null),
+	('Workplace Monitoring Program','REQ',null, 'HSRCM','2','1','3'),
+	('Report of Emergency Warning System Test','REQ',null, 'HSRCM','3','13','4'),
 	('Maintenance Record','REQ',null, 'HSRCM','4','4','15'),
 	('Water Management Plan','PMT',null, 'HSRCM','10','1','3'),
-	('Annual reconciliation of water balance and water management plans','REQ',null, 'HSRCM','10','4','1'),
+	('Annual Reconciliation of Water Balance and Water Management Plans','REQ',null, 'HSRCM','10','4','1'),
 	('Tailings Management System','REQ',null, 'HSRCM','10','4','2'),
 	('TSF Risk Assessment','REQ',null, 'HSRCM','10','4','2'),
 	('TSF and Dam Registry','REQ',null, 'HSRCM','10','4','3'),
 	('TSF and Dam Registry Updates','REQ',null, 'HSRCM','10','4','4'),
-	('Term Extension (request?)','EVT',null, 'MA','10','6',''),
-	('Acquisition of a Mine (new operator/permittee)','EVT',null, 'MA','11','1',''),
-	('Engineering Report','EVT',null, 'MA','18',' ',''),
-	('DO Investigation Report','EVT',null, '','','',''),
-	('ITRB Qualifications','PMT',null, '','','',''),
-	('Work Under Notice of Deemed Authorization','PMT',null, '','','',''),
-	('Health and Safety Program','REQ',null, '','','',''),
-	('Annual Pit Slope Report','REG',null, '','','',''),
-	('Annual Dump Report','REG',null, '','','',''),
-	('Advice of Geotechnical Incident Report','EVT',null, '','','',''),
-	('Dump OMS Manual','REQ',null, '','','',''),
-	('Open Pit GCMP','REQ',null, '','','',''),
-	('Compliance Report','PMT',null, '','','',''),
-	('Standard Operating Procedures or Safe Work Procedures','REQ',null, '','','',''),
-	('Nitrogen Management Plan','PMT',null, '','','',''),
-	('Corporate Name Change','EVT',null, '','','',''),
-	('Archaeological Assessment','PMT',null, '','','',''),
-	('MYAB Annual Update','REG',null, '','','',''),
-	('Mine Emergency Response Plan','REG',null, '','','','')
+	('Term Extension','EVT',null, 'MA','10','6',null),
+	('Acquisition of a Mine','EVT',null, 'MA','11','1',null),
+	('Engineering Report','EVT',null, 'MA','18',null,null),
+	('ITRB Qualifications','PMT',null, 'HSRCM','10','4','2'),
+	('Health and Safety Program','REQ',null, 'HSRCM','1','6','9'),
+	('Dump OMS Manual','REQ',null, 'HSRCM','10','5','2'),
+	('Standard Operating Procedures or Safe Work Procedures','REQ',null, 'HSRCM','3','4','2'),
+	('Mine Emergency Response Plan','REG',null, 'HSRCM','3','7','1')
 ON CONFLICT DO NOTHING;
+
 --Look up compliance_article_id
 UPDATE tmp_report_definition_compliance tmp_dr set compliance_article_id = (
 	SELECT compliance_article_id from compliance_article ca where ca.section = tmp_dr.compliance_section AND ca.sub_section = tmp_dr.compliance_sub_section AND ca.paragraph = tmp_dr.compliance_paragraph
@@ -125,7 +115,7 @@ INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_ca
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Cessation of Exploration Reclamation Report' LIMIT 1), 'H&S') ON CONFLICT DO NOTHING;
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Cessation of Exploration Reclamation Report' LIMIT 1), 'GSE') ON CONFLICT DO NOTHING;
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Cessation of Exploration Reclamation Report' LIMIT 1), 'GTC') ON CONFLICT DO NOTHING;
-INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'ML/ARD Management Plan' LIMIT 1), 'GSE') ON CONFLICT DO NOTHING;
+INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Permit Application: ML/ARD Management Plan' LIMIT 1), 'GSE') ON CONFLICT DO NOTHING;
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Duty to Report Safety Issue at TSF' LIMIT 1), 'H&S') ON CONFLICT DO NOTHING;
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Duty to Report Safety Issue at TSF' LIMIT 1), 'GTC') ON CONFLICT DO NOTHING;
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Breach and Inundation Study/Failure Runout Assessment' LIMIT 1),  'GTC') ON CONFLICT DO NOTHING;
@@ -146,13 +136,13 @@ INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_ca
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'ITRB Activities Report' LIMIT 1), 'GTC') ON CONFLICT DO NOTHING;
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Summary of TSF or Dam Safety Recommendations' LIMIT 1), 'H&S') ON CONFLICT DO NOTHING;
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Summary of TSF or Dam Safety Recommendations' LIMIT 1), 'GTC') ON CONFLICT DO NOTHING;
-INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Performance of high risk dumps' LIMIT 1), 'GTC') ON CONFLICT DO NOTHING;
+INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Performance of High Risk Dumps' LIMIT 1), 'GTC') ON CONFLICT DO NOTHING;
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Mine Plan Update' LIMIT 1), 'H&S') ON CONFLICT DO NOTHING;
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Mine Plan Update' LIMIT 1), 'GSE') ON CONFLICT DO NOTHING;
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Mine Plan Update' LIMIT 1), 'GTC') ON CONFLICT DO NOTHING;
-INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Dam Safety Report' LIMIT 1), 'H&S') ON CONFLICT DO NOTHING;
-INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Dam Safety Report' LIMIT 1), 'GTC') ON CONFLICT DO NOTHING;
-INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'As-Built reports' LIMIT 1), 'GTC') ON CONFLICT DO NOTHING;
+INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Dam Safety Review' LIMIT 1), 'H&S') ON CONFLICT DO NOTHING;
+INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Dam Safety Review' LIMIT 1), 'GTC') ON CONFLICT DO NOTHING;
+INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'As-built Reports' LIMIT 1), 'GTC') ON CONFLICT DO NOTHING;
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'TSF, WSF or Dam As-built Report' LIMIT 1), 'GTC') ON CONFLICT DO NOTHING;
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'OMS Manual' LIMIT 1), 'GTC') ON CONFLICT DO NOTHING;
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Materials Inventory Report' LIMIT 1), 'GSE') ON CONFLICT DO NOTHING;
@@ -165,35 +155,21 @@ INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_ca
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Closure Management Manual' LIMIT 1), 'GTC') ON CONFLICT DO NOTHING;
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Appeal to CIM Report' LIMIT 1), 'H&S') ON CONFLICT DO NOTHING;
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Workplace Monitoring Program' LIMIT 1), 'H&S') ON CONFLICT DO NOTHING;
-INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Report of Test' LIMIT 1), 'H&S') ON CONFLICT DO NOTHING;
+INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Report of Emergency Warning System Test' LIMIT 1), 'H&S') ON CONFLICT DO NOTHING;
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Maintenance Record' LIMIT 1), 'H&S') ON CONFLICT DO NOTHING;
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Water Management Plan' LIMIT 1), 'GSE') ON CONFLICT DO NOTHING;
-INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Annual reconciliation of water balance and water management plans' LIMIT 1), 'GSE') ON CONFLICT DO NOTHING;
+INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Annual Reconciliation of Water Balance and Water Management Plans' LIMIT 1), 'GSE') ON CONFLICT DO NOTHING;
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Tailings Management System' LIMIT 1), 'GTC') ON CONFLICT DO NOTHING;
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'TSF Risk Assessment' LIMIT 1), 'GTC') ON CONFLICT DO NOTHING;
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'TSF and Dam Registry' LIMIT 1), 'GTC') ON CONFLICT DO NOTHING;
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'TSF and Dam Registry Updates' LIMIT 1), 'GTC') ON CONFLICT DO NOTHING;
-INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Term Extension (request?)' LIMIT 1), 'OTH') ON CONFLICT DO NOTHING;
-INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Acquisition of a Mine (new operator/permittee)' LIMIT 1), 'OTH') ON CONFLICT DO NOTHING;
+INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Term Extension' LIMIT 1), 'OTH') ON CONFLICT DO NOTHING;
+INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Acquisition of a Mine' LIMIT 1), 'OTH') ON CONFLICT DO NOTHING;
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Engineering Report' LIMIT 1), 'GTC') ON CONFLICT DO NOTHING;
-INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'DO Investigation Report' LIMIT 1), 'H&S') ON CONFLICT DO NOTHING;
-INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'ITRB Qualifications' LIMIT 1), 'GTC') ON CONFLICT DO NOTHING;
-INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Work Under Notice of Deemed Authorization' LIMIT 1), 'OTH') ON CONFLICT DO NOTHING;
-INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Health and Safety Program' LIMIT 1), 'H&S') ON CONFLICT DO NOTHING;
-INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Annual Pit Slope Report' LIMIT 1),  'GTC') ON CONFLICT DO NOTHING;
-INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Annual Dump Report' LIMIT 1), 'GTC') ON CONFLICT DO NOTHING;
-INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Advice of Geotechnical Incident Report' LIMIT 1), 'GTC') ON CONFLICT DO NOTHING;
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Dump OMS Manual' LIMIT 1), 'GTC') ON CONFLICT DO NOTHING;
-INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Open Pit GCMP' LIMIT 1), 'GTC') ON CONFLICT DO NOTHING;
-INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Compliance Report' LIMIT 1), 'H&S') ON CONFLICT DO NOTHING;
+INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'ITRB Qualifications' LIMIT 1), 'GTC') ON CONFLICT DO NOTHING;
+INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Health and Safety Program' LIMIT 1), 'H&S') ON CONFLICT DO NOTHING;
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Standard Operating Procedures or Safe Work Procedures' LIMIT 1),  'H&S') ON CONFLICT DO NOTHING;
-INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Nitrogen Management Plan' LIMIT 1), 'GSE') ON CONFLICT DO NOTHING;
-INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Nitrogen Management Plan' LIMIT 1), 'GTC') ON CONFLICT DO NOTHING;
-INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Corporate Name Change' LIMIT 1), 'OTH') ON CONFLICT DO NOTHING;
-INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Archaeological Assessment' LIMIT 1), 'OTH') ON CONFLICT DO NOTHING;
-INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'MYAB Annual Update' LIMIT 1), 'H&S') ON CONFLICT DO NOTHING;
-INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'MYAB Annual Update' LIMIT 1), 'GSE') ON CONFLICT DO NOTHING;
-INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'MYAB Annual Update' LIMIT 1), 'GTC') ON CONFLICT DO NOTHING;
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Mine Emergency Response Plan' LIMIT 1),'H&S') ON CONFLICT DO NOTHING;
 
 DROP TABLE IF EXISTS tmp_report_definition_compliance;
