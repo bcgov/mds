@@ -11,6 +11,8 @@ const setupDispatchProps = () => {
   dispatchProps.closeModal = jest.fn();
   dispatchProps.fetchMineIncidents = jest.fn();
   dispatchProps.createMineIncident = jest.fn();
+  dispatchProps.updateMineIncident = jest.fn();
+  dispatchProps.destroy = jest.fn();
 };
 
 const setupReducerProps = () => {

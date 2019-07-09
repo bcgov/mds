@@ -5,7 +5,7 @@ from datetime import datetime
 from app.extensions import api
 from ..models.application_status_code import ApplicationStatusCode
 from app.api.utils.resources_mixins import UserMixin, ErrorMixin
-from app.api.utils.access_decorators import requires_role_mine_view
+from app.api.utils.access_decorators import requires_role_view_all
 
 
 class ApplicationStatusCodeResource(Resource, UserMixin, ErrorMixin):
@@ -20,7 +20,7 @@ class ApplicationStatusCodeResource(Resource, UserMixin, ErrorMixin):
         description=
         'This endpoint returns a list of all possible document status codes and thier descriptions.'
     )
-    @requires_role_mine_view
+    @requires_role_view_all
     def get(self):
         application_status_codes = ApplicationStatusCode.find_all_active_application_status_code()
         if application_status_codes:

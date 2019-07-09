@@ -636,7 +636,7 @@ ShallowWrapper {
             </div>
             <div>
               <Connect(AuthorizationWrapper)
-                permission="role_admin"
+                permission="role_edit_mines"
               >
                 <AddButton
                   onClick={[Function]}
@@ -675,7 +675,7 @@ ShallowWrapper {
             </div>
             <div>
               <Connect(AuthorizationWrapper)
-                permission="role_admin"
+                permission="role_edit_mines"
               >
                 <AddButton
                   onClick={[Function]}
@@ -704,7 +704,7 @@ ShallowWrapper {
               </div>,
               <div>
                 <Connect(AuthorizationWrapper)
-                  permission="role_admin"
+                  permission="role_edit_mines"
                 >
                   <AddButton
                     onClick={[Function]}
@@ -765,7 +765,7 @@ ShallowWrapper {
               "nodeType": "host",
               "props": Object {
                 "children": <Connect(AuthorizationWrapper)
-                  permission="role_admin"
+                  permission="role_edit_mines"
                 >
                   <AddButton
                     onClick={[Function]}
@@ -785,7 +785,7 @@ ShallowWrapper {
                   >
                     Create Mine Record
                   </AddButton>,
-                  "permission": "role_admin",
+                  "permission": "role_edit_mines",
                 },
                 "ref": null,
                 "rendered": Object {
@@ -855,7 +855,7 @@ ShallowWrapper {
               </div>
               <div>
                 <Connect(AuthorizationWrapper)
-                  permission="role_admin"
+                  permission="role_edit_mines"
                 >
                   <AddButton
                     onClick={[Function]}
@@ -894,7 +894,7 @@ ShallowWrapper {
               </div>
               <div>
                 <Connect(AuthorizationWrapper)
-                  permission="role_admin"
+                  permission="role_edit_mines"
                 >
                   <AddButton
                     onClick={[Function]}
@@ -923,7 +923,7 @@ ShallowWrapper {
                 </div>,
                 <div>
                   <Connect(AuthorizationWrapper)
-                    permission="role_admin"
+                    permission="role_edit_mines"
                   >
                     <AddButton
                       onClick={[Function]}
@@ -984,7 +984,7 @@ ShallowWrapper {
                 "nodeType": "host",
                 "props": Object {
                   "children": <Connect(AuthorizationWrapper)
-                    permission="role_admin"
+                    permission="role_edit_mines"
                   >
                     <AddButton
                       onClick={[Function]}
@@ -1004,7 +1004,7 @@ ShallowWrapper {
                     >
                       Create Mine Record
                     </AddButton>,
-                    "permission": "role_admin",
+                    "permission": "role_edit_mines",
                   },
                   "ref": null,
                   "rendered": Object {

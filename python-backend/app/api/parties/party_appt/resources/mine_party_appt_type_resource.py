@@ -9,14 +9,14 @@ from ..models.mine_party_appt import MinePartyAppointment
 from ..models.mine_party_appt_type import MinePartyAppointmentType
 from ....constants import PARTY_STATUS_CODE
 from app.extensions import api
-from ....utils.access_decorators import requires_role_mine_view
+from ....utils.access_decorators import requires_role_view_all
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class MinePartyApptTypeResource(Resource, UserMixin, ErrorMixin):
 
     @api.doc(params={'mine_party_appt_type_code': 'Mine party appointment type code to be retrieved (return all if not provided)'})
-    @requires_role_mine_view
+    @requires_role_view_all
     def get(self, mine_party_appt_type_code=None):
         if mine_party_appt_type_code is None:
             mine_party_appt_types = MinePartyAppointmentType.find_all_active()

@@ -7,7 +7,7 @@ from app.extensions import api
 from ..models.application import Application
 from ...mines.mine.models.mine import Mine
 from app.api.utils.resources_mixins import UserMixin
-from app.api.utils.access_decorators import requires_role_mine_view, requires_role_mine_create
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_edit
 
 application_model = api.model(
     'Application', {
@@ -56,7 +56,7 @@ class ApplicationListResource(Resource, UserMixin):
     @api.doc(
         description='This endpoint returns a list of all applications for a given mine.',
         params={'?mine_guid': 'A mine guid to find all applications associated with.'})
-    @requires_role_mine_view
+    @requires_role_view_all
     def get(self):
         mine_guid = request.args.get('mine_guid', None, type=str)
 
@@ -76,7 +76,7 @@ class ApplicationListResource(Resource, UserMixin):
             404: 'Bad request.',
         })
     @api.marshal_with(application_model, code=201)
-    @requires_role_mine_create
+    @requires_role_mine_edit
     def post(self):
 
         data = self.parser.parse_args()
@@ -119,7 +119,7 @@ class ApplicationResource(Resource, UserMixin):
     @api.marshal_with(application_model, envelope='applications', code=200)
     @api.doc(
         description='This endpoint returns a single application based on its application guid.')
-    @requires_role_mine_view
+    @requires_role_view_all
     def get(self, application_guid):
 
         application = Application.find_by_application_guid(application_guid)
@@ -138,7 +138,7 @@ class ApplicationResource(Resource, UserMixin):
             404: 'Bad request.',
         })
     @api.marshal_with(application_model, code=200)
-    @requires_role_mine_create
+    @requires_role_mine_edit
     def put(self, application_guid):
 
         application = Application.find_by_application_guid(application_guid)
