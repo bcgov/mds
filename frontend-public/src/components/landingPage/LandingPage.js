@@ -3,6 +3,9 @@ import { Divider, Button, Icon } from "antd";
 
 import QuestionSidebar from "@/components/common/QuestionsSidebar";
 
+import { USER_GUIDE, TAILINGS_DOCUMENT } from "@/constants/assets";
+// import tailingsFile from "./assets/downloads/Register of Tailings Storage Facilities and Dams.xlsm";
+
 export const LandingPage = () => (
   <div>
     <div>
@@ -44,11 +47,11 @@ export const LandingPage = () => (
         </p>
         <br />
         <p>
-          <a href="/assets/downloads/Register of Tailings Storage Facilities and Dams.xlsm">
+          <a href={TAILINGS_DOCUMENT}>
             <Icon type="download" /> Register of Tailings Storage Facilities and Dams (XLSX, 1.4 MB)
           </a>
           <br />
-          <a href="/assets/downloads/User Guide - Register of Tailings Storage Facilities and Dams.pdf">
+          <a href={USER_GUIDE}>
             <Icon type="download" /> Register of Tailings Storage Facilities and Dams - User Guide
             (XLSX, 1.4 MB)
           </a>
