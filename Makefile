@@ -10,7 +10,7 @@ endif
 
 local-dev: one-time-local-dev-env-setup
 restore-dev: restore-last-env
-rebuild-all-local: reset | project pause-30 create-local-keycloak-users generate-rand1000 rebuild-all-local-friendly-message
+rebuild-all-local: reset | project pause-30 create-local-keycloak-users generate-rand100 rebuild-all-local-friendly-message
 backend: backend-build | backend-run
 database: database-build | database-run
 frontend: frontend-build | frontend-run
@@ -133,9 +133,9 @@ database-dump-seed-local:
 	@echo "+\n++ Seeding locally installed database...\n+"
 	@pg_restore -U mds -d mds -c pgDump-test.pgCustom
 
-generate-rand1000:
-	@echo "+\n++ Generating 1000 random mine records in local database container...\n+"
-	@docker exec -it mds_backend bash -c "flask create_data 1000;"
+generate-rand100:
+	@echo "+\n++ Generating 100 random mine records in local database container...\n+"
+	@docker exec -it mds_backend bash -c "flask create_data 100;"
 
 generate-rand100:
 	@echo "+\n++ Generating 100 random mine records in local database container...\n+"
