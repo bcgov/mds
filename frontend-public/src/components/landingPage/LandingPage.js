@@ -4,7 +4,6 @@ import { Divider, Button, Icon } from "antd";
 import QuestionSidebar from "@/components/common/QuestionsSidebar";
 
 import { USER_GUIDE, TAILINGS_DOCUMENT } from "@/constants/assets";
-// import tailingsFile from "./assets/downloads/Register of Tailings Storage Facilities and Dams.xlsm";
 
 export const LandingPage = () => (
   <div>
