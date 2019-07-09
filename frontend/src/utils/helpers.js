@@ -46,6 +46,8 @@ export const createLabelHash = (obj) =>
 export const formatDate = (dateString) =>
   dateString && dateString !== "None" && moment(dateString, "YYYY-MM-DD").format("MMM DD YYYY");
 
+export const formatTime = (timeStamp) => timeStamp && moment(timeStamp).format("h:mm a");
+
 export const formatPostalCode = (code) => code && code.replace(/.{3}$/, " $&");
 
 export const formatTitleString = (input) =>

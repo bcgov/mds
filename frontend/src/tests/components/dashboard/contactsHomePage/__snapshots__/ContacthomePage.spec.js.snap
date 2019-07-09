@@ -245,7 +245,7 @@ ShallowWrapper {
               </p>
             </div>
             <Connect(AuthorizationWrapper)
-              permission="role_create"
+              permission="role_edit_parties"
             >
               <AddButton
                 onClick={[Function]}
@@ -417,7 +417,7 @@ ShallowWrapper {
               </p>
             </div>
             <Connect(AuthorizationWrapper)
-              permission="role_create"
+              permission="role_edit_parties"
             >
               <AddButton
                 onClick={[Function]}
@@ -444,7 +444,7 @@ ShallowWrapper {
                 </p>
               </div>,
               <Connect(AuthorizationWrapper)
-                permission="role_create"
+                permission="role_edit_parties"
               >
                 <AddButton
                   onClick={[Function]}
@@ -508,7 +508,7 @@ ShallowWrapper {
                 >
                   Add New Contact
                 </AddButton>,
-                "permission": "role_create",
+                "permission": "role_edit_parties",
               },
               "ref": null,
               "rendered": Object {
@@ -855,7 +855,7 @@ ShallowWrapper {
                 </p>
               </div>
               <Connect(AuthorizationWrapper)
-                permission="role_create"
+                permission="role_edit_parties"
               >
                 <AddButton
                   onClick={[Function]}
@@ -1027,7 +1027,7 @@ ShallowWrapper {
                 </p>
               </div>
               <Connect(AuthorizationWrapper)
-                permission="role_create"
+                permission="role_edit_parties"
               >
                 <AddButton
                   onClick={[Function]}
@@ -1054,7 +1054,7 @@ ShallowWrapper {
                   </p>
                 </div>,
                 <Connect(AuthorizationWrapper)
-                  permission="role_create"
+                  permission="role_edit_parties"
                 >
                   <AddButton
                     onClick={[Function]}
@@ -1118,7 +1118,7 @@ ShallowWrapper {
                   >
                     Add New Contact
                   </AddButton>,
-                  "permission": "role_create",
+                  "permission": "role_edit_parties",
                 },
                 "ref": null,
                 "rendered": Object {
