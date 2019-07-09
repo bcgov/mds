@@ -2,7 +2,7 @@ from decimal import Decimal
 import uuid
 from datetime import datetime
 import threading
-import time
+
 from flask import request, current_app
 from flask_restplus import Resource, reqparse, inputs
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
@@ -14,6 +14,8 @@ from ...status.models.mine_status_xref import MineStatusXref
 from ..models.mine_type import MineType
 from ..models.mine_type_detail import MineTypeDetail
 
+from .mine_map import MineMapResource
+
 from ..models.mine import Mine
 from ..models.mineral_tenure_xref import MineralTenureXref
 from ...location.models.mine_location import MineLocation
@@ -21,8 +23,9 @@ from ....utils.random import generate_mine_no
 from app.extensions import api, cache, db
 from app.api.utils.access_decorators import requires_role_mine_create, requires_any_of, MINE_VIEW, MINESPACE_PROPONENT
 from app.api.utils.resources_mixins import UserMixin, ErrorMixin
-from app.api.constants import MINE_MAP_CACHE
+from app.api.constants import MINE_MAP_CACHE, TIMEOUT_12_HOURS
 from app.api.mines.mine_api_models import MINE_LIST_MODEL, MINE_MODEL
+
 # FIXME: Model import from outside of its namespace
 # This breaks micro-service architecture and is done
 # for search performance until search can be refactored
@@ -150,6 +153,7 @@ class MineListResource(Resource, UserMixin):
         if lat and lon:
             mine.mine_location = MineLocation(latitude=lat, longitude=lon)
             cache.delete(MINE_MAP_CACHE)
+            self.call_rebuild_map_cache()
 
         mine_status = _mine_status_processor(data.get('mine_status'), data.get('status_date'), mine)
         db.session.commit()
@@ -389,15 +393,23 @@ class MineResource(Resource, UserMixin, ErrorMixin):
                 latitude=data['latitude'], longitude=data['longitude'])
             mine.save()
 
-        # cache.delete(MINE_MAP_CACHE)
-        # # start_task()
-        # current_app.logger.info(start_task())
-        # Status validation
         _mine_status_processor(data.get('mine_status'), data.get('status_date'), mine)
+
         cache.delete(MINE_MAP_CACHE)
-        start_task()
-        current_app.logger.info("%%%%%%%%%%%%%%%%%%%%%%%%About to return request!")
+        self.call_rebuild_map_cache()
+
         return mine
+
+    def call_rebuild_map_cache(self):
+        app = current_app._get_current_object()
+        environ = request.environ
+        def do_work():
+            with app.request_context(environ):
+                mineMapResource = MineMapResource()
+                mineMapResource.rebuild_map_cache()
+        thread = threading.Thread(target=do_work)
+        thread.start()
+        return
 
 
 class MineListSearch(Resource):
@@ -485,28 +497,3 @@ def _throw_error_if_mine_exists(mine_name):
         mines_with_name = mines_name_query.all()
         if len(mines_with_name) > 0:
             raise BadRequest(f'Mine No: {mines_with_name[0].mine_no} already has that name.')
-
-
-def start_task():
-    app = current_app
-
-    def do_work(app):
-        # do something that takes a long time
-        app.logger.info("%%%%%%%%%%%%%%%%%%%%%%%%work started!")
-        # print("%%%%%%%%%%%%%%%%%%%%%%%%work started!")
-        # MineMapResource.fill_map_cache()
-        with app.app_context():
-            app.logger.info("%%%%%%%%%%%%%%%%%%%%%%%%Context Called!")
-            # print("%%%%%%%%%%%%%%%%%%%%%%%%%context called!")
-
-            # test_blah()
-        # import time
-        time.sleep(10)
-        app.logger.info("%%%%%%%%%%%%%%%%%%%%%%%%work done!")
-        # print("%%%%%%%%%%%%%%%%%%%%%%%%%work done!")
-
-    thread = threading.Thread(target=do_work(app))
-    thread.daemon = True
-    thread.start()
-    app.logger.info("%%%%%%%%%%%%%%%%%%%%%%%%thread start ended?")
-    # return 'Cache update started.'
