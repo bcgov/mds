@@ -238,7 +238,7 @@ ShallowWrapper {
     mineComplianceInfo={Object {}}
     mineDisturbanceOptions={
       Object {
-        "options": Array [
+        "records": Array [
           Object {
             "description": "Surface",
             "exclusive_ind": false,
