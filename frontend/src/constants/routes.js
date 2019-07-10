@@ -10,6 +10,7 @@ import AdminDashboard from "@/components/admin/AdminDashboard";
 import ReportingDashboard from "@/components/dashboard/reporting/ReportingDashboard";
 import SearchResults from "@/components/search/SearchResults";
 import CustomHomePage from "@/components/dashboard/customHomePage/CustomHomePage";
+import MineSummary from "@/components/mine/Summary/MineSummary";
 
 export const DASHBOARD = {
   route: "/",
@@ -43,10 +44,21 @@ export const CONTACT_HOME_PAGE = {
 };
 
 export const MINE_SUMMARY = {
-  route: "/dashboard/:id/:activeTab",
-  dynamicRoute: (id, activeTab = "summary", filterParams) =>
-    `/dashboard/${id}/${activeTab}?${queryString.stringify(filterParams)}`,
+  route: "/dashboard/:id/",
+  dynamicRoute: (id, filterParams) => `/dashboard/${id}/?${queryString.stringify(filterParams)}`,
   component: MineDashboard,
+};
+
+export const MINE_CONTACTS = {
+  route: "/dashboard/:id/mine-information/contacts",
+  dynamicRoute: (id) => `/dashboard/${id}/mine-information/contacts`,
+  component: MineDashboard,
+};
+
+export const MINE_GENERAL = {
+  route: "/dashboard/:id/mine-information/general",
+  dynamicRoute: (id) => `/dashboard/${id}/mine-information/general`,
+  component: MineSummary,
 };
 
 export const PARTY_PROFILE = {

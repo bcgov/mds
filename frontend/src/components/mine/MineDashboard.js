@@ -1,3 +1,4 @@
+/* eslint-disable  */
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Tabs } from "antd";
@@ -84,6 +85,7 @@ import Loading from "@/components/common/Loading";
 import { formatParamStringToArray } from "@/utils/helpers";
 import { detectProdEnvironment } from "@/utils/environmentUtils";
 import { getUserAccessData } from "@/selectors/authenticationSelectors";
+import MineNavigation from "@/components/mine/MineNavigation";
 
 /**
  * @class MineDashboard.js is an individual mines dashboard, gets Mine data from redux and passes into children.
@@ -306,6 +308,11 @@ export class MineDashboard extends Component {
       <div>
         {this.state.isLoaded && (
           <div className="dashboard">
+            <div className="inline-flex between">
+              <h1>{mine.mine_name}</h1>
+              <div>Mine No. {mine.mine_no}</div>
+            </div>
+            <MineNavigation mine={mine} />
             <div>
               <MineHeader
                 mine={mine}
@@ -315,7 +322,7 @@ export class MineDashboard extends Component {
                 subscribed={this.props.subscribed}
               />
             </div>
-            <div className="dashboard__content">
+            {/* <div className="dashboard__content">
               <Tabs
                 activeKey={this.state.activeTab}
                 defaultActiveKey="summary"
@@ -390,7 +397,7 @@ export class MineDashboard extends Component {
                     />
                   </div>
                 </TabPane>
-                {/* TODO: Unhide for July release */
+                {
                 false && (
                   <TabPane tab="Tenure" key="tenure">
                     <div className="tab__content">
@@ -416,7 +423,7 @@ export class MineDashboard extends Component {
                   </div>
                 </TabPane>
               </Tabs>
-            </div>
+            </div> */}
           </div>
         )}
       </div>

@@ -18,6 +18,8 @@ const DashboardRoutes = () => (
     />
     <Route exact path={routes.PARTY_PROFILE.route} component={routes.PARTY_PROFILE.component} />
     <Route exact path={routes.MINE_SUMMARY.route} component={routes.MINE_SUMMARY.component} />
+    <Route exact path={routes.MINE_CONTACTS.route} component={routes.MINE_CONTACTS.component} />
+    <Route exact path={routes.MINE_GENERAL.route} component={routes.MINE_GENERAL.component} />
     <Route
       exact
       path={routes.RELATIONSHIP_PROFILE.route}
