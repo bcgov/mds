@@ -53,7 +53,6 @@ const mockState = {
 describe("staticContentSelectors", () => {
   const { mineDisturbanceOptions, mineCommodityOptions } = mockState;
   const { mineTSFRequiredReports, provinceOptions, varianceDocumentCategoryOptions } = mockState;
-  const { mineRegionOptions, mineTenureTypes } = mockState;
 
   it("`getMineStatusDropDownOptions` calls `staticContentReducer.getMineStatusDropDownOptions`", () => {
     const storeAction = storeStatusOptions(Mock.STATUS_OPTIONS);
@@ -70,7 +69,7 @@ describe("staticContentSelectors", () => {
     const localMockState = {
       [STATIC_CONTENT]: storeState,
     };
-    expect(getMineRegionOptions(localMockState)).toEqual(mineRegionOptions);
+    expect(getMineRegionOptions(localMockState)).toEqual(mockState.mineRegionOptions);
   });
 
   it("`getMineTSFRequiredReports` calls `staticContentReducer.getMineTSFRequiredReports`", () => {
@@ -98,7 +97,7 @@ describe("staticContentSelectors", () => {
     const localMockState = {
       [STATIC_CONTENT]: storeState,
     };
-    expect(getMineTenureTypeOptions(localMockState)).toEqual(mineTenureTypes);
+    expect(getMineTenureTypeOptions(localMockState)).toEqual(mockState.mineTenureTypes);
   });
 
   it("`getMineDisturbanceOptions` calls `staticContentReducer.getMineDisturbanceOptions`", () => {
