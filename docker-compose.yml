@@ -126,6 +126,25 @@ services:
     networks:
       - mds
 
+  ####################### DOCUMENT_MANAGER_BACKEND Definition #######################
+  document_manager_backend:
+    restart: always
+    container_name: document_manager_python
+    build:
+      context: microservices/document_manager/backend
+    ports:
+      - 5001:5001
+    expose:
+      - 5001
+    volumes:
+      - ./microservices/document_manager/backend/:/app/
+    depends_on:
+      - flyway
+      - redis
+    env_file: ./microservices/document_manager/backend/.env
+    networks:
+      - mds
+
 ####################### Networks Definition #######################
 networks:
   mds:

@@ -1,4 +1,3 @@
-from app.nris.utils.logger import get_logger
 from app.extensions import api
 from .config import Config
 
@@ -27,7 +26,6 @@ def register_routes(app):
 
     @api.errorhandler(Exception)
     def default_error_handler(error):
-        get_logger().error(str(error))
         return {
             'message': str(error),
         }, 500
