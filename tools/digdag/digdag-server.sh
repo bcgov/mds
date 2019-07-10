@@ -1,3 +1,6 @@
 #!/bin/bash
 
-digdag server -o digdag-server -b 0.0.0.0 -n 8080 -O digdag-logs
+# Template any required environment variables for the property file
+envsubst < digdag.properties.tmpl > digdag.properties
+
+digdag server --database digdag-server --task-log digdag-logs --config digdag.properties
