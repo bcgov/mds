@@ -1,7 +1,7 @@
 version: "2"
 
 services:
-  ####################### NRIS_BACKEND Definition #######################
+  ####################### DIGDAG Definition #######################
   mds_scheduler:
     restart: always
     container_name: mds_scheduler
@@ -19,6 +19,5 @@ services:
 networks:
   mds-scheduler:
     driver: "bridge"
-
 ####################### Volumes Definition #######################
 

@@ -4,7 +4,7 @@ FROM openjdk:8-alpine
 RUN apk add --update bash git make gettext java-cacerts
 
 # Install digdag
-RUN wget -O /opt/digdag "https://dl.digdag.io/digdag-latest"
+RUN wget -q -O /opt/digdag "https://dl.digdag.io/digdag-latest"
 RUN chmod +x /opt/digdag
 ENV PATH="/opt:$PATH"
 
