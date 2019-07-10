@@ -1,0 +1,22 @@
+version: "2"
+
+services:
+  ####################### NRIS_BACKEND Definition #######################
+  mds_scheduler:
+    restart: always
+    container_name: mds_scheduler
+    build:
+      context: ./
+    volumes:
+      - ./:/app/
+    env_file: ./.env
+    networks:
+      - mds-scheduler
+
+####################### Networks Definition #######################
+networks:
+  mds-scheduler:
+    driver: "bridge"
+
+####################### Volumes Definition #######################
+
