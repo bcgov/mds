@@ -2,7 +2,7 @@
   "kind": "Template",
   "apiVersion": "v1",
   "metadata": {
-    "name": "mds-python-oracle-bc",
+    "name": "mds-python-docman-bc",
     "creationTimestamp": null
   },
   "parameters": [
@@ -133,7 +133,7 @@
         ],
         "runPolicy": "SerialLatestOnly",
         "source": {
-          "contextDir": "docker-images/python-36-oracle",
+          "contextDir": "docker-images/python-36-docman",
           "type": "Binary"
         },
         "strategy": {
@@ -154,11 +154,11 @@
         },
         "resources": {
           "limits": {
-            "cpu": "500m",
+            "cpu": "100m",
             "memory": "2Gi"
           },
           "requests": {
-            "cpu": "250m",
+            "cpu": "200m",
             "memory": "1Gi"
           }
         },
@@ -219,11 +219,11 @@
         "resources": {
           "limits": {
             "cpu": "200m",
-            "memory": "3Gi"
+            "memory": "2Gi"
           },
           "requests": {
             "cpu": "100m",
-            "memory": "2Gi"
+            "memory": "1Gi"
           }
         },
         "nodeSelector": null
