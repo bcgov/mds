@@ -620,6 +620,15 @@
                     }
                   },
                   {
+                    "name": "DOCMAN_USER_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DB_CONFIG_NAME}",
+                        "key": "docman-user-password"
+                      }
+                    }
+                  },
+                  {
                     "name": "FLYWAY_OUT_OF_ORDER",
                     "value": "true"
                   },

@@ -2,7 +2,7 @@
   "kind": "Template",
   "apiVersion": "v1",
   "metadata": {
-    "name": "mds-python-oracle-dc",
+    "name": "mds-python-docman-dc",
     "creationTimestamp": null
   },
   "parameters": [
@@ -49,11 +49,6 @@
       "value": "/"
     },
     {
-      "name": "NRIS_ODB_CREDENTIALS",
-      "required": false,
-      "value": "template.mds-nris-odb-credentials"
-    },
-    {
       "name": "CPU_LIMIT",
       "value": "200m"
     },
@@ -79,11 +74,11 @@
     },
     {
       "name": "REPLICA_MIN",
-      "value": "1"
+      "value": "2"
     },
     {
       "name": "REPLICA_MAX",
-      "value": "1"
+      "value": "4"
     },
     {
       "name": "MDS_ELASTIC_SECRET",
@@ -96,7 +91,7 @@
     },
     {
       "name": "ELASTIC_SERVICE_NAME",
-      "value": "NRIS API Dev"
+      "value": "MDS Document Manager Dev"
     },
     {
       "name": "REDIS_CONFIG_NAME",
@@ -151,19 +146,8 @@
         "strategy": {
           "type": "Rolling",
           "rollingParams": {
-            "pre": {
-              "failurePolicy": "Retry",
-              "execNewPod": {
-                "containerName": "app",
-                "command": [
-                  "bash",
-                  "-c",
-                  "cd /opt/app-root/src && flask db upgrade"
-                ]
-              }
-            },
             "maxSurge": "50%",
-            "maxUnavailable": 0,
+            "maxUnavailable": 1,
             "timeoutSeconds": 1200
           },
           "activeDeadlineSeconds": 21600
@@ -204,7 +188,7 @@
                 "image": " ",
                 "ports": [
                   {
-                    "containerPort": 5500,
+                    "containerPort": 5001,
                     "protocol": "TCP"
                   }
                 ],
@@ -214,7 +198,7 @@
                     "valueFrom": {
                       "secretKeyRef": {
                         "name": "${DB_CONFIG_NAME}",
-                        "key": "database-nris-user"
+                        "key": "database-docman-user"
                       }
                     }
                   },
@@ -227,7 +211,7 @@
                     "valueFrom": {
                       "secretKeyRef": {
                         "name": "${DB_CONFIG_NAME}",
-                        "key": "database-nris-password"
+                        "key": "database-docman-password"
                       }
                     }
                   },
@@ -241,42 +225,6 @@
                       "secretKeyRef": {
                         "name": "${DB_CONFIG_NAME}",
                         "key": "database-name"
-                      }
-                    }
-                  },
-                  {
-                    "name": "NRIS_DB_HOSTNAME",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${NRIS_ODB_CREDENTIALS}",
-                        "key": "db-host"
-                      }
-                    }
-                  },
-                  {
-                    "name": "NRIS_DB_SERVICENAME",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${NRIS_ODB_CREDENTIALS}",
-                        "key": "db-service"
-                      }
-                    }
-                  },
-                  {
-                    "name": "NRIS_DB_USER",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${NRIS_ODB_CREDENTIALS}",
-                        "key": "db-user"
-                      }
-                    }
-                  },
-                  {
-                    "name": "NRIS_DB_PASSWORD",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${NRIS_ODB_CREDENTIALS}",
-                        "key": "db-password"
                       }
                     }
                   },
@@ -320,7 +268,7 @@
                   },
                   {
                     "name": "FLASK_RUN_PORT",
-                    "value": "5500"
+                    "value": "5001"
                   },
                   {
                     "name": "FLASK_RUN_HOST",
@@ -381,7 +329,7 @@
                 "livenessProbe": {
                   "httpGet": {
                     "path": "${BASE_PATH}/health",
-                    "port": 5500,
+                    "port": 5001,
                     "scheme": "HTTP"
                   },
                   "initialDelaySeconds": 15,
@@ -391,7 +339,7 @@
                 "readinessProbe": {
                   "httpGet": {
                     "path": "${BASE_PATH}/health",
-                    "port": 5500,
+                    "port": 5001,
                     "scheme": "HTTP"
                   }
                 },
@@ -443,8 +391,8 @@
           {
             "name": "web",
             "protocol": "TCP",
-            "port": 5500,
-            "targetPort": 5500
+            "port": 5001,
+            "targetPort": 5001
           }
         ],
         "selector": {
