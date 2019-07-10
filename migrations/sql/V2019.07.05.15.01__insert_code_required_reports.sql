@@ -17,6 +17,24 @@ VALUES
 	('EVT', 'An Event Occured', true, 'system-mds', now(), 'system-mds', now())
 on conflict do nothing;
 
+INSERT INTO compliance_article
+(
+    article_act_code,
+    section,
+    sub_section,
+    paragraph,
+    sub_paragraph,
+    description,
+    effective_date,
+    expiry_date,
+    create_user,
+    update_user,
+	long_description
+)
+VALUES
+    ('MA','10','6',NULL,NULL,'Permits - Chief Inspector Application for Revision','1970-01-01','9999-12-31','system-mds','system-mds','Permits - Chief Inspector Application for Revision'),
+    ('MA','33','1',NULL,NULL,'Appeal to the Chief Inspector','1970-01-01','9999-12-31','system-mds','system-mds','Appeal to the Chief Inspector')
+;
 
 ALTER TABLE public.mine_report_definition ALTER COLUMN due_date_period_months DROP NOT NULL;
 ALTER TABLE public.mine_report_definition ALTER COLUMN mine_report_definition_guid set DEFAULT gen_random_uuid();
@@ -34,8 +52,7 @@ CREATE TEMPORARY TABLE tmp_report_definition_compliance(
 	compliance_sub_section character varying(2),
 	compliance_paragraph character varying(2),
 	compliance_article_id integer
-);
-INSERT INTO tmp_report_definition_compliance
+);INSERT INTO tmp_report_definition_compliance
 (report_name, due_date_type, due_date_period, compliance_act, compliance_section, compliance_sub_section, compliance_paragraph)
 VALUES 
 	('OHSC Annual Report','REG',12, 'HSRCM','1','9','3'),
@@ -77,7 +94,7 @@ VALUES
 	('Closure of TSF or Dam Report','PMT',null, 'HSRCM','10','6','7'),
 	('TSF Closure OMS','PMT',null, 'HSRCM','10','6','8'),
 	('Closure Management Manual','REG',null, 'HSRCM','10','6','9'),
-	('Appeal to CIM Report','EVT',null, 'MA','33','1',null),
+	('Appeal to CIM Report','EVT',null, 'MA','33','1',''),
 	('Workplace Monitoring Program','REQ',null, 'HSRCM','2','1','3'),
 	('Report of Emergency Warning System Test','REQ',null, 'HSRCM','3','13','4'),
 	('Maintenance Record','REQ',null, 'HSRCM','4','4','15'),
@@ -87,9 +104,9 @@ VALUES
 	('TSF Risk Assessment','REQ',null, 'HSRCM','10','4','2'),
 	('TSF and Dam Registry','REQ',null, 'HSRCM','10','4','3'),
 	('TSF and Dam Registry Updates','REQ',null, 'HSRCM','10','4','4'),
-	('Term Extension','EVT',null, 'MA','10','6',null),
-	('Acquisition of a Mine','EVT',null, 'MA','11','1',null),
-	('Engineering Report','EVT',null, 'MA','18',null,null),
+	('Term Extension','EVT',null, 'MA','10','6',''),
+	('Acquisition of a Mine','EVT',null, 'MA','11','1',''),
+	('Engineering Report','EVT',null, 'MA','18','',''),
 	('ITRB Qualifications','PMT',null, 'HSRCM','10','4','2'),
 	('Health and Safety Program','REQ',null, 'HSRCM','1','6','9'),
 	('Dump OMS Manual','REQ',null, 'HSRCM','10','5','2'),

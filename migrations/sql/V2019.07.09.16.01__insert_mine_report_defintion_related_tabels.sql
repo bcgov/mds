@@ -54,7 +54,7 @@ VALUES
 	('Closure of TSF or Dam Report','PMT',null, 'HSRCM','10','6','7'),
 	('TSF Closure OMS','PMT',null, 'HSRCM','10','6','8'),
 	('Closure Management Manual','REG',null, 'HSRCM','10','6','9'),
-	('Appeal to CIM Report','EVT',null, 'MA','33','1',null),
+	('Appeal to CIM Report','EVT',null, 'MA','33','1',''),
 	('Workplace Monitoring Program','REQ',null, 'HSRCM','2','1','3'),
 	('Report of Emergency Warning System Test','REQ',null, 'HSRCM','3','13','4'),
 	('Maintenance Record','REQ',null, 'HSRCM','4','4','15'),
@@ -64,9 +64,9 @@ VALUES
 	('TSF Risk Assessment','REQ',null, 'HSRCM','10','4','2'),
 	('TSF and Dam Registry','REQ',null, 'HSRCM','10','4','3'),
 	('TSF and Dam Registry Updates','REQ',null, 'HSRCM','10','4','4'),
-	('Term Extension','EVT',null, 'MA','10','6',null),
-	('Acquisition of a Mine','EVT',null, 'MA','11','1',null),
-	('Engineering Report','EVT',null, 'MA','18',null,null),
+	('Term Extension','EVT',null, 'MA','10','6',''),
+	('Acquisition of a Mine','EVT',null, 'MA','11','1',''),
+	('Engineering Report','EVT',null, 'MA','18','',''),
 	('ITRB Qualifications','PMT',null, 'HSRCM','10','4','2'),
 	('Health and Safety Program','REQ',null, 'HSRCM','1','6','9'),
 	('Dump OMS Manual','REQ',null, 'HSRCM','10','5','2'),
@@ -76,7 +76,7 @@ ON CONFLICT DO NOTHING;
 
 --Look up compliance_article_id
 UPDATE tmp_report_definition_compliance tmp_dr set compliance_article_id = (
-	SELECT compliance_article_id from compliance_article ca where ca.section = tmp_dr.compliance_section AND ca.sub_section = tmp_dr.compliance_sub_section AND ca.paragraph = tmp_dr.compliance_paragraph
+	SELECT compliance_article_id from compliance_article ca where ca.section = tmp_dr.compliance_section AND COALESCE(ca.sub_section, '') = tmp_dr.compliance_sub_section AND COALESCE(ca.paragraph, '') = tmp_dr.compliance_paragraph
 	LIMIT 1
 );
 --Look up mine_report_definition_id
