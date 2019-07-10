@@ -1,0 +1,44 @@
+version: "2"
+
+services:
+  ####################### NRIS_BACKEND Definition #######################
+  docman_backend:
+    restart: always
+    container_name: docman_python
+    build:
+      context: backend
+    ports:
+      - 5500:5500
+    volumes:
+      - ./backend/:/app/
+    depends_on:
+      - docman_database
+    env_file: ./backend/.env
+    networks:
+      - nris
+
+  ####################### NRIS_Postgres Definition #######################
+  # Only for Local, openshift will share one db pod for all MDS services
+  docman_database:
+    restart: always
+    container_name: docman_postgres
+    build:
+      context: postgres
+      dockerfile: Dockerfile.dev
+    environment:
+      - POSTGRES_USER=mds_docman
+      - POSTGRES_PASSWORD=VsPJAuMJHu3IVMEv
+      - POSTGRES_DB=mds_docman
+    ports:
+      - "5432:5432"
+    networks:
+      - docman
+
+####################### Networks Definition #######################
+networks:
+  docman:
+    driver: "bridge"
+
+####################### Volumes Definition #######################
+volumes:
+  postgres-data:
