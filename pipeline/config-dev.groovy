@@ -213,6 +213,21 @@ app {
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/nris_api",
                     ]
+                ],
+                                [
+                    'file':'tools/openshift/digdag.dc.json',
+                    'params':[
+                            'NAME':"digdag",
+                            'VERSION':"${app.deployment.version}",
+                            'SUFFIX': "${vars.deployment.suffix}",
+                            'SCHEDULER_PVC_SIZE':"${vars.SCHEDULER_PVC_SIZE}",
+                            'ENVIRONMENT_NAME':"${app.deployment.env.name}",
+                            'APPLICATION_DOMAIN': "${vars.modules.'digdag'.HOST}",
+                            'CPU_REQUEST':"${vars.resources.digdag.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.digdag.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.digdag.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.digdag.memory_limit}"
+                    ]
                 ]
         ]
     }
@@ -224,6 +239,7 @@ environments {
             DB_PVC_SIZE = '1Gi'
             DOCUMENT_PVC_SIZE = '1Gi'
             LOG_PVC_SIZE = '1Gi'
+            SCHEDULER_PVC_SIZE = '1Gi'
             git {
                 changeId = "${opt.'pr'}"
             }
@@ -286,6 +302,12 @@ environments {
                     memory_request = "16Mi"
                     memory_limit = "32Mi"
                 }
+                digdag {
+                    cpu_request = "250m"
+                    cpu_limit = "500m"
+                    memory_request = "512Mi"
+                    memory_limit = "1Gi"
+                }
             }
             deployment {
                 env {
@@ -327,6 +349,9 @@ environments {
                 }
                 'mds-redis' {
                     HOST = "http://mds-redis${vars.deployment.suffix}"
+                }
+                'digdag' {
+                    HOST = "mds-digdag-${vars.deployment.key}${vars.deployment.suffix}.pathfinder.gov.bc.ca"
                 }
             }
         }
