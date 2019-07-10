@@ -1,6 +1,5 @@
 import * as actionTypes from "@/constants/actionTypes";
 import { STATIC_CONTENT } from "@/constants/reducerTypes";
-import { createDropDownList } from "@/utils/helpers";
 
 /**
  * @file staticContentReducer.js
@@ -37,7 +36,7 @@ const staticContentReducer = (state = initialState, action) => {
     case actionTypes.STORE_REGION_OPTIONS:
       return {
         ...state,
-        mineRegionOptions: action.payload.options,
+        mineRegionOptions: action.payload.records,
       };
     case actionTypes.STORE_TENURE_TYPES:
       return {
@@ -47,17 +46,17 @@ const staticContentReducer = (state = initialState, action) => {
     case actionTypes.STORE_DISTURBANCE_OPTIONS:
       return {
         ...state,
-        mineDisturbanceOptions: action.payload.options,
+        mineDisturbanceOptions: action.payload.records,
       };
     case actionTypes.STORE_COMMODITY_OPTIONS:
       return {
         ...state,
-        mineCommodityOptions: action.payload.options,
+        mineCommodityOptions: action.payload.records,
       };
     case actionTypes.STORE_DOCUMENT_STATUS_OPTIONS:
       return {
         ...state,
-        expectedDocumentStatusOptions: action.payload.options,
+        expectedDocumentStatusOptions: action.payload.records,
       };
     case actionTypes.STORE_MINE_TSF_REQUIRED_DOCUMENTS:
       return {
@@ -67,7 +66,7 @@ const staticContentReducer = (state = initialState, action) => {
     case actionTypes.STORE_PROVINCE_OPTIONS:
       return {
         ...state,
-        provinceOptions: action.payload.options,
+        provinceOptions: action.payload.records,
       };
     case actionTypes.OPTIONS_LOADED:
       return {
@@ -92,7 +91,7 @@ const staticContentReducer = (state = initialState, action) => {
     case actionTypes.STORE_MINE_INCIDENT_FOLLOWUP_ACTION_OPTIONS:
       return {
         ...state,
-        incidentFollowupActionOptions: action.payload.options,
+        incidentFollowupActionOptions: action.payload.records,
       };
     case actionTypes.STORE_MINE_INCIDENT_DETERMINATION_OPTIONS:
       return {
@@ -121,9 +120,7 @@ const staticContentReducer = (state = initialState, action) => {
 
 export const getMineStatusOptions = (state) => state[STATIC_CONTENT].mineStatusOptions;
 export const getMineRegionOptions = (state) => state[STATIC_CONTENT].mineRegionOptions;
-export const getMineTenureTypes = (state) => state[STATIC_CONTENT].mineTenureTypes;
-export const getMineTenureTypeOptions = (state) =>
-  createDropDownList(state[STATIC_CONTENT].mineTenureTypes, "description", "mine_tenure_type_code");
+export const getMineTenureTypeOptions = (state) => state[STATIC_CONTENT].mineTenureTypes;
 export const getMineDisturbanceOptions = (state) => state[STATIC_CONTENT].mineDisturbanceOptions;
 export const getMineCommodityOptions = (state) => state[STATIC_CONTENT].mineCommodityOptions;
 export const getExpectedDocumentStatusOptions = (state) =>

@@ -34,8 +34,8 @@ import {
   getMineTenureTypesHash,
   getCommodityOptionHash,
   getMineStatusDropDownOptions,
-  getMineRegionOptions,
-  getMineTenureTypeOptions,
+  getMineRegionDropdownOptions,
+  getMineTenureTypeDropdownOptions,
   getDropdownCommodityOptions,
   getOptionsLoaded,
 } from "@/selectors/staticContentSelectors";
@@ -134,19 +134,17 @@ export class Dashboard extends Component {
       );
     }
     this.props.fetchStatusOptions();
-    if (!this.props.optionsLoaded) {
-      this.props.fetchRegionOptions();
-      this.props.fetchMineTenureTypes();
-      this.props.fetchMineDisturbanceOptions();
-      this.props.fetchMineCommodityOptions();
-      this.props.fetchPartyRelationshipTypes();
-      this.props.fetchPermitStatusOptions();
-      this.props.fetchApplicationStatusOptions();
-      this.props.fetchMineIncidentFollowActionOptions();
-      this.props.fetchMineIncidentDeterminationOptions();
-      this.props.fetchMineIncidentStatusCodeOptions();
-      this.props.setOptionsLoaded();
-    }
+    this.props.fetchRegionOptions();
+    this.props.fetchMineTenureTypes();
+    this.props.fetchMineDisturbanceOptions();
+    this.props.fetchMineCommodityOptions();
+    this.props.fetchPartyRelationshipTypes();
+    this.props.fetchPermitStatusOptions();
+    this.props.fetchApplicationStatusOptions();
+    this.props.fetchMineIncidentFollowActionOptions();
+    this.props.fetchMineIncidentDeterminationOptions();
+    this.props.fetchMineIncidentStatusCodeOptions();
+    // this.props.setOptionsLoaded();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -477,8 +475,8 @@ const mapStateToProps = (state) => ({
   mineTenureHash: getMineTenureTypesHash(state),
   mineCommodityOptionsHash: getCommodityOptionHash(state),
   mineStatusDropDownOptions: getMineStatusDropDownOptions(state),
-  mineRegionOptions: getMineRegionOptions(state),
-  mineTenureTypes: getMineTenureTypeOptions(state),
+  mineRegionOptions: getMineRegionDropdownOptions(state),
+  mineTenureTypes: getMineTenureTypeDropdownOptions(state),
   mineCommodityOptions: getDropdownCommodityOptions(state),
   optionsLoaded: getOptionsLoaded(state),
 });

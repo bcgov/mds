@@ -20,7 +20,7 @@ const CustomAxios = ({ errorToastMessage, selector } = {}) => {
       console.log("storedValue", storedValue);
 
       if (!isEmpty(storedValue)) {
-        throw new axios.Cancel({ data: storedValue });
+        throw new axios.Cancel({ data: { records: storedValue } });
       }
     }
 
