@@ -11,13 +11,9 @@ const CustomAxios = ({ errorToastMessage, selector } = {}) => {
   const instance = axios.create();
 
   instance.interceptors.request.use((config) => {
-    console.log("config", config);
-
     if (selector !== undefined) {
       const state = store.getState();
-      console.log("state", state);
       const storedValue = selector(state);
-      console.log("storedValue", storedValue);
 
       if (!isEmpty(storedValue)) {
         throw new axios.Cancel({ data: { records: storedValue } });
@@ -31,7 +27,6 @@ const CustomAxios = ({ errorToastMessage, selector } = {}) => {
     (response) => response,
     (error) => {
       if (axios.isCancel(error)) {
-        console.log("Request cancelled", error.message);
         return Promise.resolve(error.message);
       }
 
