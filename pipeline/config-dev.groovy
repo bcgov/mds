@@ -215,7 +215,7 @@ app {
                     ]
                 ],
                                 [
-                    'file':'tools/digdag/digdag.dc.json',
+                    'file':'tools/openshift/digdag.dc.json',
                     'params':[
                             'NAME':"digdag",
                             'VERSION':"${app.deployment.version}",
@@ -303,10 +303,10 @@ environments {
                     memory_limit = "32Mi"
                 }
                 digdag {
-                    cpu_request = "500m"
-                    cpu_limit = "250m"
-                    memory_request = "1Gi"
-                    memory_limit = "512Mi"
+                    cpu_request = "250m"
+                    cpu_limit = "500m"
+                    memory_request = "512Mi"
+                    memory_limit = "1Gi"
                 }
             }
             deployment {

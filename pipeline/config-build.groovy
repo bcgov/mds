@@ -148,7 +148,7 @@ app {
                     ]
                 ],
                 [
-                    'file':'tools/digdag/digdag.bc.json',
+                    'file':'tools/openshift/digdag.bc.json',
                     'params':[
                             'NAME':"digdag",
                             'SUFFIX': "${app.build.suffix}",
