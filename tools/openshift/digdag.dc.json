@@ -148,6 +148,12 @@
                     "value": "${ENVIRONMENT_NAME}"
                   }
                 ],
+                "volumeMounts": [
+                  {
+                    "mountPath": "/app",
+                    "name": "${NAME}${SUFFIX}-data"
+                  }
+                ],
                 "resources": {
                   "requests": {
                     "cpu": "${CPU_REQUEST}",
