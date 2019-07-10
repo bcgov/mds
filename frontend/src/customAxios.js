@@ -2,7 +2,7 @@ import axios from "axios";
 import { notification } from "antd";
 import { isEmpty } from "lodash";
 import * as String from "@/constants/strings";
-import { store } from "@/index";
+import { store } from "@/App";
 
 const UNAUTHORIZED = 401;
 const MAINTENANCE = 503;
