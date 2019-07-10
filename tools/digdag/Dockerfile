@@ -11,7 +11,7 @@ RUN wget -O /opt/digdag "https://dl.digdag.io/digdag-latest"
 RUN chmod +x /opt/digdag
 
 COPY . .
-RUN chmod +x /app/digdag-server.sh
+RUN chmod +x /app/digdag-server.sh /app/wait-for-it.sh
 
 # run it
 CMD ["bash", "/app/digdag-server.sh" ]

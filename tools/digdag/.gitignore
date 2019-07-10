@@ -1,2 +1,6 @@
 .env
+.digdag
 digdag-server/
+mds-jobs/.digdag-wrapper
+mds-jobs/.digdag
+mds-jobs/*.pyc

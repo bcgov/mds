@@ -1,7 +1,7 @@
 version: "2"
 
 services:
-  ####################### NRIS_BACKEND Definition #######################
+  ####################### MDS_SCHEDULER Definition #######################
   mds_scheduler:
     restart: always
     container_name: mds_scheduler
