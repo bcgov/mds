@@ -9,4 +9,4 @@ kcadm.sh config credentials --server http://localhost:8080/auth --realm master -
 USER_ID=`kcadm.sh create users -r mds -s username=admin -i`
 kcadm.sh update users/$USER_ID -r mds -s enabled=true
 kcadm.sh set-password -r mds --username admin --new-password admin
-kcadm.sh add-roles -r mds --uusername admin --rolename core_admin
+kcadm.sh add-roles -r mds --uusername admin --rolename mds_application_admins --rolename mds-mine-admin
