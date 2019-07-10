@@ -1,7 +1,7 @@
 FROM openjdk:8-alpine
 
 # Update installation utility
-RUN apk add --update bash git make gettext java-cacerts
+RUN apk add --update bash git make curl gettext java-cacerts
 
 # Install digdag
 RUN wget -q -O /opt/digdag "https://dl.digdag.io/digdag-latest"
