@@ -15,7 +15,6 @@ const initialState = {
   expectedDocumentStatusOptions: [],
   mineTSFRequiredReports: [],
   provinceOptions: [],
-  optionsLoaded: false,
   permitStatusCodes: [],
   applicationStatusCodes: [],
   complianceCodes: [],
@@ -67,11 +66,6 @@ const staticContentReducer = (state = initialState, action) => {
       return {
         ...state,
         provinceOptions: action.payload.records,
-      };
-    case actionTypes.OPTIONS_LOADED:
-      return {
-        ...state,
-        optionsLoaded: action.payload,
       };
     case actionTypes.STORE_PERMIT_STATUS_OPTIONS:
       return {
@@ -127,7 +121,6 @@ export const getExpectedDocumentStatusOptions = (state) =>
   state[STATIC_CONTENT].expectedDocumentStatusOptions;
 export const getMineTSFRequiredReports = (state) => state[STATIC_CONTENT].mineTSFRequiredReports;
 export const getProvinceOptions = (state) => state[STATIC_CONTENT].provinceOptions;
-export const getOptionsLoaded = (state) => state[STATIC_CONTENT].optionsLoaded;
 export const getPermitStatusOptions = (state) => state[STATIC_CONTENT].permitStatusCodes;
 export const getApplicationStatusOptions = (state) => state[STATIC_CONTENT].applicationStatusCodes;
 export const getComplianceCodes = (state) => state[STATIC_CONTENT].complianceCodes;

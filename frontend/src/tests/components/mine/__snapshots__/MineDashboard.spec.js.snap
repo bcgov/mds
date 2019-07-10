@@ -708,13 +708,6 @@ ShallowWrapper {
         },
       }
     }
-    setOptionsLoaded={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
-    }
     subscribe={[MockFunction]}
     unSubscribe={[MockFunction]}
     updateMineRecord={[MockFunction]}

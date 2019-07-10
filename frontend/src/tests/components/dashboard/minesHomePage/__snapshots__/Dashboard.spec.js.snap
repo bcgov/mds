@@ -598,7 +598,6 @@ ShallowWrapper {
         "total_pages": 360,
       }
     }
-    setOptionsLoaded={[MockFunction]}
   />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],

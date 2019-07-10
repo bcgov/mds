@@ -27,7 +27,6 @@ const baseExpectedValue = {
   permitStatusCodes: [],
   applicationStatusCodes: [],
   complianceCodes: [],
-  optionsLoaded: false,
   incidentFollowupActionOptions: [],
   incidentDeterminationOptions: [],
   incidentStatusCodeOptions: [],

@@ -11,7 +11,6 @@ export const {
   getMineDisturbanceOptions,
   getExpectedDocumentStatusOptions,
   getMineTSFRequiredReports,
-  getOptionsLoaded,
   getProvinceOptions,
   getPermitStatusOptions,
   getApplicationStatusOptions,

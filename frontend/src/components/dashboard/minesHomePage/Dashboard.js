@@ -25,7 +25,6 @@ import {
   fetchMineIncidentFollowActionOptions,
   fetchMineIncidentDeterminationOptions,
   fetchMineIncidentStatusCodeOptions,
-  setOptionsLoaded,
 } from "@/actionCreators/staticContentActionCreator";
 import { fetchPartyRelationshipTypes } from "@/actionCreators/partiesActionCreator";
 import { getMines, getMineIds, getMinesPageData } from "@/selectors/mineSelectors";
@@ -37,7 +36,6 @@ import {
   getMineRegionDropdownOptions,
   getMineTenureTypeDropdownOptions,
   getDropdownCommodityOptions,
-  getOptionsLoaded,
 } from "@/selectors/staticContentSelectors";
 import MineList from "@/components/dashboard/minesHomePage/MineList";
 import MineSearch from "@/components/dashboard/minesHomePage/MineSearch";
@@ -63,7 +61,6 @@ const propTypes = {
   fetchMineRecordsForMap: PropTypes.func.isRequired,
   createMineRecord: PropTypes.func.isRequired,
   fetchStatusOptions: PropTypes.func.isRequired,
-  setOptionsLoaded: PropTypes.func.isRequired,
   fetchMineCommodityOptions: PropTypes.func.isRequired,
   fetchMineDisturbanceOptions: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
@@ -73,7 +70,6 @@ const propTypes = {
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
   mineIds: PropTypes.arrayOf(PropTypes.string).isRequired,
   pageData: CustomPropTypes.minePageData.isRequired,
-  optionsLoaded: PropTypes.bool.isRequired,
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   fetchApplicationStatusOptions: PropTypes.func.isRequired,
   fetchMineIncidentFollowActionOptions: PropTypes.func.isRequired,
@@ -144,7 +140,6 @@ export class Dashboard extends Component {
     this.props.fetchMineIncidentFollowActionOptions();
     this.props.fetchMineIncidentDeterminationOptions();
     this.props.fetchMineIncidentStatusCodeOptions();
-    // this.props.setOptionsLoaded();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -478,7 +473,6 @@ const mapStateToProps = (state) => ({
   mineRegionOptions: getMineRegionDropdownOptions(state),
   mineTenureTypes: getMineTenureTypeDropdownOptions(state),
   mineCommodityOptions: getDropdownCommodityOptions(state),
-  optionsLoaded: getOptionsLoaded(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -496,7 +490,6 @@ const mapDispatchToProps = (dispatch) =>
       fetchApplicationStatusOptions,
       openModal,
       closeModal,
-      setOptionsLoaded,
       fetchPartyRelationshipTypes,
       fetchMineIncidentFollowActionOptions,
       fetchMineIncidentDeterminationOptions,

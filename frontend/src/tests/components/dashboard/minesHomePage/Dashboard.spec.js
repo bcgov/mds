@@ -24,7 +24,6 @@ const setupDispatchProps = () => {
   dispatchProps.fetchMineIncidentDeterminationOptions = jest.fn();
   dispatchProps.fetchMineIncidentFollowActionOptions = jest.fn();
   dispatchProps.fetchMineIncidentStatusCodeOptions = jest.fn();
-  dispatchProps.setOptionsLoaded = jest.fn();
 };
 
 const setupReducerProps = () => {

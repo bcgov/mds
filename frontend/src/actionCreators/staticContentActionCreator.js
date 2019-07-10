@@ -157,11 +157,6 @@ export const fetchMineIncidentStatusCodeOptions = () => (dispatch) => {
     .catch(() => dispatch(error(reducerTypes.GET_MINE_INCIDENT_STATUS_CODE_OPTIONS)));
 };
 
-// TODO: Remove this
-export const setOptionsLoaded = () => (dispatch) => {
-  dispatch(staticContentActions.loadedOptions(true));
-};
-
 export const fetchProvinceCodes = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_PROVINCE_CODES));
   return CustomAxios({ selector: getProvinceOptions })
