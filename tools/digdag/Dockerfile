@@ -1,7 +1,7 @@
 FROM openjdk:8-alpine
 # Update installation utility
 #RUN apt-get update && apt-get upgrade -y
-#RUN apt-get install vim
+RUN apk add --update bash
 
 # Create working directory
 RUN mkdir /app
@@ -14,4 +14,4 @@ COPY . .
 RUN chmod +x /app/digdag-server.sh
 
 # run it
-CMD ["/app/digdag-server-sh" ]
+CMD ["bash", "/app/digdag-server.sh" ]
