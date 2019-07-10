@@ -20,5 +20,5 @@ cache = Cache()
 api = Api(
     prefix=f'{Config.BASE_PATH}',
     doc=f'{Config.BASE_PATH}/',
-    default='nris_api',
-    default_label='NRIS related operations')
+    default='document_manager',
+    default_label='Document storage and management')
