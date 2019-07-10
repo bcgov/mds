@@ -153,11 +153,14 @@ class MineListResource(Resource, UserMixin):
 
         if lat and lon:
             mine.mine_location = MineLocation(latitude=lat, longitude=lon)
-            cache.delete(MINE_MAP_CACHE)
-            self.call_rebuild_map_cache()
 
         mine_status = _mine_status_processor(data.get('mine_status'), data.get('status_date'), mine)
         db.session.commit()
+
+        # Clear and rebuild the cache after committing changes to db
+        if lat and lon:
+            cache.delete(MINE_MAP_CACHE)
+            self.call_rebuild_map_cache()
 
         return mine
 
@@ -401,15 +404,15 @@ class MineResource(Resource, UserMixin, ErrorMixin):
 
         return mine
 
-    def call_rebuild_map_cache(self):
+    @staticmethod
+    def call_rebuild_map_cache():
         app = current_app._get_current_object()
         environ = request.environ
 
-        def do_work():
+        def run_cache_rebuilding_thread():
             with app.request_context(environ):
-                mineMapResource = MineMapResource()
-                mineMapResource.rebuild_map_cache()
-        thread = threading.Thread(target=do_work)
+                MineMapResource.rebuild_map_cache()
+        thread = threading.Thread(target=run_cache_rebuilding_thread)
         thread.start()
         return
 

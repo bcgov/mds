@@ -47,7 +47,8 @@ class MineMapResource(Resource, UserMixin):
 
         return response
 
-    def rebuild_map_cache(self):
+    @staticmethod
+    def rebuild_map_cache():
         records = MineMapViewLocation.query.filter(MineMapViewLocation.latitude != None).all()
         last_modified = datetime.utcnow()
 
