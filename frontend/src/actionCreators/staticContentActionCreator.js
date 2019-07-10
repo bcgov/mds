@@ -6,6 +6,7 @@ import * as API from "@/constants/API";
 import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
 import CustomAxios from "@/customAxios";
+import { getMineStatusOptions } from "@/selectors/staticContentSelectors";
 
 export const fetchMineDisturbanceOptions = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_DISTURBANCE_OPTIONS));
@@ -31,7 +32,7 @@ export const fetchMineCommodityOptions = () => (dispatch) => {
 
 export const fetchStatusOptions = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_STATUS_OPTIONS));
-  return CustomAxios()
+  return CustomAxios({ selector: getMineStatusOptions })
     .get(ENVIRONMENT.apiUrl + API.MINE_STATUS, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_STATUS_OPTIONS));
@@ -53,7 +54,7 @@ export const fetchRegionOptions = () => (dispatch) => {
 
 export const fetchMineTenureTypes = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_TENURE_TYPES));
-  return CustomAxios(String.ERROR)
+  return CustomAxios({ errorToastMessage: String.ERROR })
     .get(ENVIRONMENT.apiUrl + API.MINE_TENURE_TYPES, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_TENURE_TYPES));

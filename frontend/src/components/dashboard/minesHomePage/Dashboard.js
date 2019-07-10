@@ -133,8 +133,8 @@ export class Dashboard extends Component {
         })
       );
     }
+    this.props.fetchStatusOptions();
     if (!this.props.optionsLoaded) {
-      this.props.fetchStatusOptions();
       this.props.fetchRegionOptions();
       this.props.fetchMineTenureTypes();
       this.props.fetchMineDisturbanceOptions();

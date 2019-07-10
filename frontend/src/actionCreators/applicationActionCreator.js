@@ -13,7 +13,7 @@ import CustomAxios from "@/customAxios";
 export const fetchApplications = (params = {}) => (dispatch) => {
   dispatch(request(reducerTypes.GET_APPLICATIONS));
   dispatch(showLoading("modal"));
-  return CustomAxios(String.ERROR)
+  return CustomAxios({ errorToastMessage: String.ERROR })
     .get(
       `${ENVIRONMENT.apiUrl + API.APPLICATIONS}?${queryString.stringify(params)}`,
       createRequestHeader()
