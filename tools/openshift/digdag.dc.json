@@ -150,7 +150,7 @@
                 ],
                 "volumeMounts": [
                   {
-                    "mountPath": "/app",
+                    "mountPath": "/app/digdag-server",
                     "name": "${NAME}${SUFFIX}-data"
                   }
                 ],

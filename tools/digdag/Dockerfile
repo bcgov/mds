@@ -17,4 +17,4 @@ RUN chmod +x /app/digdag-server.sh
 RUN chmod -R 777 /app
 
 # run it
-CMD ["bash", "/app/digdag-server.sh" ]
+CMD ["bash", "/app/digdag-server.sh"]
