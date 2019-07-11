@@ -1,4 +1,3 @@
-from app.nris.utils.access_decorators import NRIS_VIEW
 # Auth Constants
 TOKEN_HEADER = {"alg": "RS256", "typ": "JWT",
                 "kid": "flask-jwt-oidc-test-client"}
@@ -30,7 +29,7 @@ FULL_AUTH_CLAIMS = {
     "email": "test-email",
     "given_name": "test-given-name",
     "realm_access": {
-        "roles": [NRIS_VIEW, "idir"]
+        "roles": ["idir"]
     }
 }
 
@@ -45,6 +44,6 @@ NRIS_VIEW_ONLY_AUTH_CLAIMS = {
     "username": "test-user",
     "email": "test-email",
     "realm_access": {
-        "roles": [NRIS_VIEW, "idir"]
+        "roles": ["idir"]
     }
 }
