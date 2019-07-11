@@ -7,11 +7,23 @@ class NrisETL(object):
 
     def run_job(self):
 
-        k8s_client = config.new_client_from_config()
+        token = ""
+        with open('/var/run/secrets/kubernetes.io/serviceaccount/token', 'r') as token_file:
+            token = token_file.read()
+
+        # Create a configuration object
+        conf = client.Configuration()
+
+        # Specify the endpoint of your Kube cluster
+        conf.host = "https://pathfinder.gov.bc.ca"
+        conf.api_key = {"authorization": "Bearer " + token}
+
+        # api_client = client.ApiClient(conf)
+        k8s_client = client.CoreV1Api(conf)
         dyn_client = DynamicClient(k8s_client)
 
         v1_jobs = dyn_client.resources.get(
-            api_version='route.openshift.io/v1', kind='Job')
+            api_version='route.openshift.io/v1', namespace='empr-mds-dev', kind='Job')
 
         job = """
         apiVersion: extensions/v1beta1
