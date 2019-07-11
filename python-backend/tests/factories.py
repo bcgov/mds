@@ -9,7 +9,8 @@ import factory.fuzzy
 from app.extensions import db
 from tests.status_code_gen import *
 from app.api.applications.models.application import Application
-from app.api.document_manager.models.document_manager import DocumentManager
+# TODO: fix docman tests
+#from app.api.document_manager.models.document_manager import DocumentManager
 from app.api.documents.expected.models.mine_expected_document import MineExpectedDocument
 from app.api.documents.mines.models.mine_document import MineDocument
 from app.api.documents.variances.models.variance import VarianceDocumentXref
@@ -67,21 +68,21 @@ class ApplicationFactory(BaseFactory):
     received_date = TODAY
 
 
-class DocumentManagerFactory(BaseFactory):
-    class Meta:
-        model = DocumentManager
+# class DocumentManagerFactory(BaseFactory):
+#     class Meta:
+#         model = DocumentManager
 
-    class Params:
-        path_root = ''
+#     class Params:
+#         path_root = ''
 
-    document_guid = GUID
-    full_storage_path = factory.LazyAttribute(
-        lambda o: path.join(o.path_root, 'mine_no/category', o.file_display_name))
-    upload_started_date = TODAY
-    upload_completed_date = TODAY
-    file_display_name = factory.Faker('file_name')
-    path_display_name = factory.LazyAttribute(
-        lambda o: path.join(o.path_root, 'mine_name/category', o.file_display_name))
+#     document_guid = GUID
+#     full_storage_path = factory.LazyAttribute(
+#         lambda o: path.join(o.path_root, 'mine_no/category', o.file_display_name))
+#     upload_started_date = TODAY
+#     upload_completed_date = TODAY
+#     file_display_name = factory.Faker('file_name')
+#     path_display_name = factory.LazyAttribute(
+#         lambda o: path.join(o.path_root, 'mine_name/category', o.file_display_name))
 
 
 class MineDocumentFactory(BaseFactory):
