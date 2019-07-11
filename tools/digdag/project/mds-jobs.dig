@@ -3,6 +3,9 @@ timezone: UTC
 +setup:
   echo>: start ${session_time}
 
++python_write:
+  py>: tasks.NrisETL.hello_world
+
 +disp_current_date:
   echo>: ${moment(session_time).utc().format('YYYY-MM-DD HH:mm:ss Z')}
 
