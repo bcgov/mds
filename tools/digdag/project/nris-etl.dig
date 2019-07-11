@@ -4,7 +4,7 @@ timezone: UTC
   echo>: Starting NRIS ETL ${session_time}
 
 +python_write:
-  py>: tasks.NrisETL.hello_world
+  py>: tasks.NrisETL.run_job
 
 +teardown:
   echo>: finish ${session_time}
