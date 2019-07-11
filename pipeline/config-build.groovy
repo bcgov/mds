@@ -46,7 +46,7 @@ app {
                 [
                     'file':'microservices/document_manager/openshift/_python36_docman.bc.json',
                     'params':[
-                            'NAME':"mds-python-docman-backend",
+                            'NAME':"mds-docman-backend",
                             'SUFFIX': "${app.build.suffix}",
                             'VERSION':"${app.build.version}",
                             'SOURCE_CONTEXT_DIR': "microservices/document_manager/backend",
