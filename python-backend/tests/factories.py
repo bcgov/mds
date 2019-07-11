@@ -320,8 +320,8 @@ class PermitAmendmentDocumentFactory(BaseFactory):
     class Meta:
         model = PermitAmendmentDocument
 
-    class Params:
-        # TODO: fix 
+    # TODO: fix 
+    #class Params:
         # document_manager_obj = factory.SubFactory(
         #     DocumentManagerFactory, file_display_name=factory.SelfAttribute('..document_name'))
 
