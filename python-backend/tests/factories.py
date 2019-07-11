@@ -67,7 +67,7 @@ class ApplicationFactory(BaseFactory):
     description = factory.Faker('sentence', nb_words=8, variable_nb_words=True)
     received_date = TODAY
 
-
+# TODO: fix
 # class DocumentManagerFactory(BaseFactory):
 #     class Meta:
 #         model = DocumentManager
@@ -90,13 +90,13 @@ class MineDocumentFactory(BaseFactory):
         model = MineDocument
 
     class Params:
-        document_manager_obj = factory.SubFactory(
-            DocumentManagerFactory, file_display_name=factory.SelfAttribute('..document_name'))
+        # document_manager_obj = factory.SubFactory(
+        #     DocumentManagerFactory, file_display_name=factory.SelfAttribute('..document_name'))
         mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
 
     mine_document_guid = GUID
     mine_guid = factory.SelfAttribute('mine.mine_guid')
-    document_manager_guid = factory.SelfAttribute('document_manager_obj.document_guid')
+    document_manager_guid = GUID#factory.SelfAttribute('document_manager_obj.document_guid')
     document_name = factory.Faker('file_name')
     mine_expected_document = []
 
@@ -320,15 +320,16 @@ class PermitAmendmentDocumentFactory(BaseFactory):
     class Meta:
         model = PermitAmendmentDocument
 
-    class Params:
-        document_manager_obj = factory.SubFactory(
-            DocumentManagerFactory, file_display_name=factory.SelfAttribute('..document_name'))
+    # TODO: fix 
+    #class Params:
+        # document_manager_obj = factory.SubFactory(
+        #     DocumentManagerFactory, file_display_name=factory.SelfAttribute('..document_name'))
 
     permit_amendment_document_guid = GUID
     permit_amendment_id = factory.SelfAttribute('permit_amendment.permit_amendment_id')
     document_name = factory.Faker('file_name')
     mine_guid = factory.SelfAttribute('permit_amendment.permit.mine.mine_guid')
-    document_manager_guid = factory.SelfAttribute('document_manager_obj.document_guid')
+    document_manager_guid = GUID #factory.SelfAttribute('document_manager_obj.document_guid')
     permit_amendment = factory.SubFactory(PermitAmendmentFactory)
 
 
