@@ -36,7 +36,7 @@ export const MINE_TYPES_DETAILS = "/mines/mine-types/details";
 export const DOCUMENT_MANAGER_FILE_GET_URL = (token = {}) =>
   `/document-manager?${queryString.stringify(token)}`;
 export const DOCUMENT_MANAGER_TOKEN_GET_URL = (documentManagerGuid) =>
-  `/document-manager/${documentManagerGuid}/token`;
+  `/download-token/${documentManagerGuid}`;
 export const REMOVE_MINE_EXPECTED_DOCUMENT = (expectedDocumentGuid, mineDocumentGuid) =>
   `/documents/expected/${expectedDocumentGuid}/document/${mineDocumentGuid}`;
 export const MINESPACE_USER = "/users/minespace";
