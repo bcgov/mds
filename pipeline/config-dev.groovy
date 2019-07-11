@@ -186,7 +186,7 @@ app {
                     ]
                 ],
                 [
-                    'file':'microservices/document_manager/openshift/_python36-docman.dc.json',
+                    'file':'microservices/document_manager/openshift/_python36_docman.dc.json',
                     'params':[
                             'NAME':"mds-python-docman-backend",
                             'SUFFIX': "${vars.deployment.suffix}",
