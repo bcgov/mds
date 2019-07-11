@@ -1,3 +1,4 @@
+import pytest
 import json
 
 from tests.status_code_gen import RandomVarianceDocumentCategoryCode
