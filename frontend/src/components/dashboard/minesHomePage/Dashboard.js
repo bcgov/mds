@@ -49,6 +49,8 @@ import * as String from "@/constants/strings";
 import * as Permission from "@/constants/permissions";
 import * as ModalContent from "@/constants/modalContent";
 import AddButton from "@/components/common/AddButton";
+import RefreshButton from "@/components/common/RefreshButton";
+import { storeRegionOptions, storeTenureTypes } from "@/actions/staticContentActions";
 
 /**
  * @class Dashboard is the main landing page of the application, currently contains a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
@@ -437,6 +439,10 @@ export class Dashboard extends Component {
   render() {
     return (
       <div className="landing-page">
+        <RefreshButton
+          actions={[storeRegionOptions, storeTenureTypes]}
+          requests={[this.props.fetchRegionOptions, this.props.fetchMineTenureTypes]}
+        />
         <div className="landing-page__header">
           <div className="inline-flex between center-mobile center-mobile">
             <div>

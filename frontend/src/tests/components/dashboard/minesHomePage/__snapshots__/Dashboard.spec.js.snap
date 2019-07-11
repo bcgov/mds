@@ -613,6 +613,28 @@ ShallowWrapper {
     "nodeType": "host",
     "props": Object {
       "children": Array [
+        <RefreshButton
+          actions={
+            Array [
+              [Function],
+              [Function],
+            ]
+          }
+          requests={
+            Array [
+              [MockFunction] {
+                "calls": Array [
+                  Array [],
+                ],
+              },
+              [MockFunction] {
+                "calls": Array [
+                  Array [],
+                ],
+              },
+            ]
+          }
+        />,
         <div
           className="landing-page__header"
         >
@@ -650,6 +672,32 @@ ShallowWrapper {
     },
     "ref": null,
     "rendered": Array [
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "function",
+        "props": Object {
+          "actions": Array [
+            [Function],
+            [Function],
+          ],
+          "requests": Array [
+            [MockFunction] {
+              "calls": Array [
+                Array [],
+              ],
+            },
+            [MockFunction] {
+              "calls": Array [
+                Array [],
+              ],
+            },
+          ],
+        },
+        "ref": null,
+        "rendered": null,
+        "type": [Function],
+      },
       Object {
         "instance": null,
         "key": undefined,
@@ -832,6 +880,28 @@ ShallowWrapper {
       "nodeType": "host",
       "props": Object {
         "children": Array [
+          <RefreshButton
+            actions={
+              Array [
+                [Function],
+                [Function],
+              ]
+            }
+            requests={
+              Array [
+                [MockFunction] {
+                  "calls": Array [
+                    Array [],
+                  ],
+                },
+                [MockFunction] {
+                  "calls": Array [
+                    Array [],
+                  ],
+                },
+              ]
+            }
+          />,
           <div
             className="landing-page__header"
           >
@@ -869,6 +939,32 @@ ShallowWrapper {
       },
       "ref": null,
       "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "function",
+          "props": Object {
+            "actions": Array [
+              [Function],
+              [Function],
+            ],
+            "requests": Array [
+              [MockFunction] {
+                "calls": Array [
+                  Array [],
+                ],
+              },
+              [MockFunction] {
+                "calls": Array [
+                  Array [],
+                ],
+              },
+            ],
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
         Object {
           "instance": null,
           "key": undefined,
