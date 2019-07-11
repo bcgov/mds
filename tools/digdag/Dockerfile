@@ -19,8 +19,6 @@ RUN wget -q -O /opt/digdag "https://dl.digdag.io/digdag-latest"
 RUN chmod +x /opt/digdag
 ENV PATH="/opt:$PATH"
 
-
-
 # Create working directory
 RUN mkdir /app
 WORKDIR /app
