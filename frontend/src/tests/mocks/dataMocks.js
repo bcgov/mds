@@ -449,6 +449,8 @@ export const MINE_NAME_LIST = [
   },
 ];
 
+export const MINE_NO = "BLAH6666";
+
 export const MINESPACE_USERS = [
   {
     user_id: "1",
@@ -2545,4 +2547,11 @@ export const INCIDENT_FOLLOWUP_ACTIONS_HASH = {
   INS: "Yes - Inspector Investigation",
   NO: "No",
   HUK: "Historical - Unknown",
+};
+
+export const ADD_PARTY_FORM_STATE = {
+  showingAddPartyForm: false,
+  person: true,
+  organization: true,
+  partyLabel: "contact",
 };
