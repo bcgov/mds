@@ -1,11 +1,26 @@
 FROM openjdk:8-alpine
 
-# Update installation utility
-RUN apk add --update bash git make curl gettext java-cacerts
+# Install necessary packages
+RUN apk add --update bash git make curl wget gettext java-cacerts tar gzip ca-certificates python3
+
+ENV LANG=C.UTF-8
+
+# Install GNU libc (aka glibc) for oc
+RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
+    wget -q https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.29-r0/glibc-2.29-r0.apk &&\
+    apk add glibc-2.29-r0.apk
+
+ENV OC_VERSION=v3.11.0 \
+    OC_TAG_SHA=0cbc58b
+
+# Install openshift CLI
+RUN curl -sLo /tmp/oc.tar.gz https://github.com/openshift/origin/releases/download/${OC_VERSION}/openshift-origin-client-tools-${OC_VERSION}-${OC_TAG_SHA}-linux-64bit.tar.gz && \
+    tar xzvf /tmp/oc.tar.gz -C /tmp/ && \
+    mv /tmp/openshift-origin-client-tools-${OC_VERSION}-${OC_TAG_SHA}-linux-64bit/oc /usr/local/bin/ && \
+    rm -rf /tmp/oc.tar.gz /tmp/openshift-origin-client-tools-${OC_VERSION}-${OC_TAG_SHA}-linux-64bit
 
 # Install Python and pip3
 RUN echo "**** install Python ****" && \
-    apk add --no-cache python3 && \
     if [ ! -e /usr/bin/python ]; then ln -sf python3 /usr/bin/python ; fi && \
     \
     echo "**** install pip ****" && \
