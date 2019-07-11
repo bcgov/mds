@@ -3,9 +3,11 @@ timezone: UTC
 +setup:
   echo>: Starting NRIS ETL ${session_time}
 
++login:
+  sh>: /app/fetch_oc_token.sh && oc login https://console.pathfinder.gov.bc.ca:8443 --token=$OC_TOKEN
+
 +python_write:
   py>: tasks.NrisETL.run_job
 
 +teardown:
   echo>: finish ${session_time}
-
