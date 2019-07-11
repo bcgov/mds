@@ -613,28 +613,6 @@ ShallowWrapper {
     "nodeType": "host",
     "props": Object {
       "children": Array [
-        <RefreshButton
-          actions={
-            Array [
-              [Function],
-              [Function],
-            ]
-          }
-          requests={
-            Array [
-              [MockFunction] {
-                "calls": Array [
-                  Array [],
-                ],
-              },
-              [MockFunction] {
-                "calls": Array [
-                  Array [],
-                ],
-              },
-            ]
-          }
-        />,
         <div
           className="landing-page__header"
         >
@@ -650,6 +628,28 @@ ShallowWrapper {
               </p>
             </div>
             <div>
+              <RefreshButton
+                actions={
+                  Array [
+                    [Function],
+                    [Function],
+                  ]
+                }
+                requests={
+                  Array [
+                    [MockFunction] {
+                      "calls": Array [
+                        Array [],
+                      ],
+                    },
+                    [MockFunction] {
+                      "calls": Array [
+                        Array [],
+                      ],
+                    },
+                  ]
+                }
+              />
               <Connect(AuthorizationWrapper)
                 permission="role_edit_mines"
               >
@@ -675,32 +675,6 @@ ShallowWrapper {
       Object {
         "instance": null,
         "key": undefined,
-        "nodeType": "function",
-        "props": Object {
-          "actions": Array [
-            [Function],
-            [Function],
-          ],
-          "requests": Array [
-            [MockFunction] {
-              "calls": Array [
-                Array [],
-              ],
-            },
-            [MockFunction] {
-              "calls": Array [
-                Array [],
-              ],
-            },
-          ],
-        },
-        "ref": null,
-        "rendered": null,
-        "type": [Function],
-      },
-      Object {
-        "instance": null,
-        "key": undefined,
         "nodeType": "host",
         "props": Object {
           "children": <div
@@ -715,6 +689,28 @@ ShallowWrapper {
               </p>
             </div>
             <div>
+              <RefreshButton
+                actions={
+                  Array [
+                    [Function],
+                    [Function],
+                  ]
+                }
+                requests={
+                  Array [
+                    [MockFunction] {
+                      "calls": Array [
+                        Array [],
+                      ],
+                    },
+                    [MockFunction] {
+                      "calls": Array [
+                        Array [],
+                      ],
+                    },
+                  ]
+                }
+              />
               <Connect(AuthorizationWrapper)
                 permission="role_edit_mines"
               >
@@ -744,6 +740,28 @@ ShallowWrapper {
                 </p>
               </div>,
               <div>
+                <RefreshButton
+                  actions={
+                    Array [
+                      [Function],
+                      [Function],
+                    ]
+                  }
+                  requests={
+                    Array [
+                      [MockFunction] {
+                        "calls": Array [
+                          Array [],
+                        ],
+                      },
+                      [MockFunction] {
+                        "calls": Array [
+                          Array [],
+                        ],
+                      },
+                    ]
+                  }
+                />
                 <Connect(AuthorizationWrapper)
                   permission="role_edit_mines"
                 >
@@ -805,44 +823,96 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "host",
               "props": Object {
-                "children": <Connect(AuthorizationWrapper)
-                  permission="role_edit_mines"
-                >
-                  <AddButton
-                    onClick={[Function]}
+                "children": Array [
+                  <RefreshButton
+                    actions={
+                      Array [
+                        [Function],
+                        [Function],
+                      ]
+                    }
+                    requests={
+                      Array [
+                        [MockFunction] {
+                          "calls": Array [
+                            Array [],
+                          ],
+                        },
+                        [MockFunction] {
+                          "calls": Array [
+                            Array [],
+                          ],
+                        },
+                      ]
+                    }
+                  />,
+                  <Connect(AuthorizationWrapper)
+                    permission="role_edit_mines"
                   >
-                    Create Mine Record
-                  </AddButton>
-                </Connect(AuthorizationWrapper)>,
+                    <AddButton
+                      onClick={[Function]}
+                    >
+                      Create Mine Record
+                    </AddButton>
+                  </Connect(AuthorizationWrapper)>,
+                ],
               },
               "ref": null,
-              "rendered": Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "children": <AddButton
-                    onClick={[Function]}
-                  >
-                    Create Mine Record
-                  </AddButton>,
-                  "permission": "role_edit_mines",
-                },
-                "ref": null,
-                "rendered": Object {
+              "rendered": Array [
+                Object {
                   "instance": null,
                   "key": undefined,
                   "nodeType": "function",
                   "props": Object {
-                    "children": "Create Mine Record",
-                    "onClick": [Function],
+                    "actions": Array [
+                      [Function],
+                      [Function],
+                    ],
+                    "requests": Array [
+                      [MockFunction] {
+                        "calls": Array [
+                          Array [],
+                        ],
+                      },
+                      [MockFunction] {
+                        "calls": Array [
+                          Array [],
+                        ],
+                      },
+                    ],
                   },
                   "ref": null,
-                  "rendered": "Create Mine Record",
+                  "rendered": null,
                   "type": [Function],
                 },
-                "type": [Function],
-              },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <AddButton
+                      onClick={[Function]}
+                    >
+                      Create Mine Record
+                    </AddButton>,
+                    "permission": "role_edit_mines",
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "function",
+                    "props": Object {
+                      "children": "Create Mine Record",
+                      "onClick": [Function],
+                    },
+                    "ref": null,
+                    "rendered": "Create Mine Record",
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
+              ],
               "type": "div",
             },
           ],
@@ -880,28 +950,6 @@ ShallowWrapper {
       "nodeType": "host",
       "props": Object {
         "children": Array [
-          <RefreshButton
-            actions={
-              Array [
-                [Function],
-                [Function],
-              ]
-            }
-            requests={
-              Array [
-                [MockFunction] {
-                  "calls": Array [
-                    Array [],
-                  ],
-                },
-                [MockFunction] {
-                  "calls": Array [
-                    Array [],
-                  ],
-                },
-              ]
-            }
-          />,
           <div
             className="landing-page__header"
           >
@@ -917,6 +965,28 @@ ShallowWrapper {
                 </p>
               </div>
               <div>
+                <RefreshButton
+                  actions={
+                    Array [
+                      [Function],
+                      [Function],
+                    ]
+                  }
+                  requests={
+                    Array [
+                      [MockFunction] {
+                        "calls": Array [
+                          Array [],
+                        ],
+                      },
+                      [MockFunction] {
+                        "calls": Array [
+                          Array [],
+                        ],
+                      },
+                    ]
+                  }
+                />
                 <Connect(AuthorizationWrapper)
                   permission="role_edit_mines"
                 >
@@ -942,32 +1012,6 @@ ShallowWrapper {
         Object {
           "instance": null,
           "key": undefined,
-          "nodeType": "function",
-          "props": Object {
-            "actions": Array [
-              [Function],
-              [Function],
-            ],
-            "requests": Array [
-              [MockFunction] {
-                "calls": Array [
-                  Array [],
-                ],
-              },
-              [MockFunction] {
-                "calls": Array [
-                  Array [],
-                ],
-              },
-            ],
-          },
-          "ref": null,
-          "rendered": null,
-          "type": [Function],
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
           "nodeType": "host",
           "props": Object {
             "children": <div
@@ -982,6 +1026,28 @@ ShallowWrapper {
                 </p>
               </div>
               <div>
+                <RefreshButton
+                  actions={
+                    Array [
+                      [Function],
+                      [Function],
+                    ]
+                  }
+                  requests={
+                    Array [
+                      [MockFunction] {
+                        "calls": Array [
+                          Array [],
+                        ],
+                      },
+                      [MockFunction] {
+                        "calls": Array [
+                          Array [],
+                        ],
+                      },
+                    ]
+                  }
+                />
                 <Connect(AuthorizationWrapper)
                   permission="role_edit_mines"
                 >
@@ -1011,6 +1077,28 @@ ShallowWrapper {
                   </p>
                 </div>,
                 <div>
+                  <RefreshButton
+                    actions={
+                      Array [
+                        [Function],
+                        [Function],
+                      ]
+                    }
+                    requests={
+                      Array [
+                        [MockFunction] {
+                          "calls": Array [
+                            Array [],
+                          ],
+                        },
+                        [MockFunction] {
+                          "calls": Array [
+                            Array [],
+                          ],
+                        },
+                      ]
+                    }
+                  />
                   <Connect(AuthorizationWrapper)
                     permission="role_edit_mines"
                   >
@@ -1072,44 +1160,96 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "host",
                 "props": Object {
-                  "children": <Connect(AuthorizationWrapper)
-                    permission="role_edit_mines"
-                  >
-                    <AddButton
-                      onClick={[Function]}
+                  "children": Array [
+                    <RefreshButton
+                      actions={
+                        Array [
+                          [Function],
+                          [Function],
+                        ]
+                      }
+                      requests={
+                        Array [
+                          [MockFunction] {
+                            "calls": Array [
+                              Array [],
+                            ],
+                          },
+                          [MockFunction] {
+                            "calls": Array [
+                              Array [],
+                            ],
+                          },
+                        ]
+                      }
+                    />,
+                    <Connect(AuthorizationWrapper)
+                      permission="role_edit_mines"
                     >
-                      Create Mine Record
-                    </AddButton>
-                  </Connect(AuthorizationWrapper)>,
+                      <AddButton
+                        onClick={[Function]}
+                      >
+                        Create Mine Record
+                      </AddButton>
+                    </Connect(AuthorizationWrapper)>,
+                  ],
                 },
                 "ref": null,
-                "rendered": Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "children": <AddButton
-                      onClick={[Function]}
-                    >
-                      Create Mine Record
-                    </AddButton>,
-                    "permission": "role_edit_mines",
-                  },
-                  "ref": null,
-                  "rendered": Object {
+                "rendered": Array [
+                  Object {
                     "instance": null,
                     "key": undefined,
                     "nodeType": "function",
                     "props": Object {
-                      "children": "Create Mine Record",
-                      "onClick": [Function],
+                      "actions": Array [
+                        [Function],
+                        [Function],
+                      ],
+                      "requests": Array [
+                        [MockFunction] {
+                          "calls": Array [
+                            Array [],
+                          ],
+                        },
+                        [MockFunction] {
+                          "calls": Array [
+                            Array [],
+                          ],
+                        },
+                      ],
                     },
                     "ref": null,
-                    "rendered": "Create Mine Record",
+                    "rendered": null,
                     "type": [Function],
                   },
-                  "type": [Function],
-                },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <AddButton
+                        onClick={[Function]}
+                      >
+                        Create Mine Record
+                      </AddButton>,
+                      "permission": "role_edit_mines",
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "function",
+                      "props": Object {
+                        "children": "Create Mine Record",
+                        "onClick": [Function],
+                      },
+                      "ref": null,
+                      "rendered": "Create Mine Record",
+                      "type": [Function],
+                    },
+                    "type": [Function],
+                  },
+                ],
                 "type": "div",
               },
             ],

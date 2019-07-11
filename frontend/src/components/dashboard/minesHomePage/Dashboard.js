@@ -439,10 +439,6 @@ export class Dashboard extends Component {
   render() {
     return (
       <div className="landing-page">
-        <RefreshButton
-          actions={[storeRegionOptions, storeTenureTypes]}
-          requests={[this.props.fetchRegionOptions, this.props.fetchMineTenureTypes]}
-        />
         <div className="landing-page__header">
           <div className="inline-flex between center-mobile center-mobile">
             <div>
@@ -450,6 +446,10 @@ export class Dashboard extends Component {
               <p>To find a mine summary, search in the list or map section below.</p>
             </div>
             <div>
+              <RefreshButton
+                actions={[storeRegionOptions, storeTenureTypes]}
+                requests={[this.props.fetchRegionOptions, this.props.fetchMineTenureTypes]}
+              />
               <AuthorizationWrapper permission={Permission.EDIT_MINES}>
                 <AddButton
                   onClick={(event) =>
