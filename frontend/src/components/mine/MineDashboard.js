@@ -83,6 +83,7 @@ import { formatParamStringToArray } from "@/utils/helpers";
 import { getUserAccessData } from "@/selectors/authenticationSelectors";
 import { storeRegionOptions, storeTenureTypes } from "@/actions/staticContentActions";
 import { storeVariances } from "@/actions/varianceActions";
+import { storePermits } from "@/actions/permitActions";
 
 /**
  * @class MineDashboard.js is an individual mines dashboard, gets Mine data from redux and passes into children.
@@ -306,11 +307,17 @@ export class MineDashboard extends Component {
                 handleUnSubscribe={this.handleUnSubscribe}
                 handleSubscription={this.handleSubscription}
                 subscribed={this.props.subscribed}
-                refreshActions={[storeRegionOptions, storeTenureTypes, storeVariances]}
+                refreshActions={[
+                  storeRegionOptions,
+                  storeTenureTypes,
+                  storeVariances,
+                  storePermits,
+                ]}
                 refreshRequests={[
                   this.props.fetchRegionOptions,
                   this.props.fetchMineTenureTypes,
                   () => this.props.fetchVariancesByMine({ mineGuid: id }),
+                  () => this.props.fetchPermits(mine.mine_guid),
                 ]}
               />
             </div>
