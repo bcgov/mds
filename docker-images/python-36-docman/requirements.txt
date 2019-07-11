@@ -1,1 +1,1 @@
-../../microservices/document_manager/python-backend/requirements.txt
+../../microservice/document_manager/backend/requirements.txt
