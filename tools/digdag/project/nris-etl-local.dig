@@ -1,0 +1,16 @@
+timezone: UTC
+
+_export:
+  docker:
+    image: nris_backend
+    pull_always: true
+
++setup:
+  echo>: Starting Local NRIS ETL ${session_time}
+
++start_etl:
+  sh>: echo "hello world"
+
++teardown:
+  echo>: finish ${session_time}
+
