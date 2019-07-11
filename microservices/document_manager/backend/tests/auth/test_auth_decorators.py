@@ -1,7 +1,5 @@
 from flask_restplus import Resource, Namespace
 from app.extensions import api as app_api
-from app.nris.utils.access_decorators import *
-
 
 class DummyResource(Resource):
     @requires_role_nris_view
