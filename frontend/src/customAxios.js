@@ -7,7 +7,9 @@ import { store } from "@/App";
 const UNAUTHORIZED = 401;
 const MAINTENANCE = 503;
 
-const CustomAxios = ({ errorToastMessage, selector } = {}) => {
+const defaultEnvelope = (x) => ({ data: { records: x } });
+
+const CustomAxios = ({ errorToastMessage, selector, envelope = defaultEnvelope } = {}) => {
   const instance = axios.create();
 
   instance.interceptors.request.use((config) => {
@@ -16,7 +18,7 @@ const CustomAxios = ({ errorToastMessage, selector } = {}) => {
       const storedValue = selector(state);
 
       if (!isEmpty(storedValue)) {
-        throw new axios.Cancel({ data: { records: storedValue } });
+        throw new axios.Cancel(envelope(storedValue));
       }
     }
 

@@ -635,6 +635,11 @@ ShallowWrapper {
                     [Function],
                   ]
                 }
+                initialValue={
+                  Object {
+                    "records": Array [],
+                  }
+                }
                 requests={
                   Array [
                     [MockFunction] {
@@ -696,6 +701,11 @@ ShallowWrapper {
                     [Function],
                   ]
                 }
+                initialValue={
+                  Object {
+                    "records": Array [],
+                  }
+                }
                 requests={
                   Array [
                     [MockFunction] {
@@ -746,6 +756,11 @@ ShallowWrapper {
                       [Function],
                       [Function],
                     ]
+                  }
+                  initialValue={
+                    Object {
+                      "records": Array [],
+                    }
                   }
                   requests={
                     Array [
@@ -831,6 +846,11 @@ ShallowWrapper {
                         [Function],
                       ]
                     }
+                    initialValue={
+                      Object {
+                        "records": Array [],
+                      }
+                    }
                     requests={
                       Array [
                         [MockFunction] {
@@ -868,6 +888,9 @@ ShallowWrapper {
                       [Function],
                       [Function],
                     ],
+                    "initialValue": Object {
+                      "records": Array [],
+                    },
                     "requests": Array [
                       [MockFunction] {
                         "calls": Array [
@@ -972,6 +995,11 @@ ShallowWrapper {
                       [Function],
                     ]
                   }
+                  initialValue={
+                    Object {
+                      "records": Array [],
+                    }
+                  }
                   requests={
                     Array [
                       [MockFunction] {
@@ -1033,6 +1061,11 @@ ShallowWrapper {
                       [Function],
                     ]
                   }
+                  initialValue={
+                    Object {
+                      "records": Array [],
+                    }
+                  }
                   requests={
                     Array [
                       [MockFunction] {
@@ -1083,6 +1116,11 @@ ShallowWrapper {
                         [Function],
                         [Function],
                       ]
+                    }
+                    initialValue={
+                      Object {
+                        "records": Array [],
+                      }
                     }
                     requests={
                       Array [
@@ -1168,6 +1206,11 @@ ShallowWrapper {
                           [Function],
                         ]
                       }
+                      initialValue={
+                        Object {
+                          "records": Array [],
+                        }
+                      }
                       requests={
                         Array [
                           [MockFunction] {
@@ -1205,6 +1248,9 @@ ShallowWrapper {
                         [Function],
                         [Function],
                       ],
+                      "initialValue": Object {
+                        "records": Array [],
+                      },
                       "requests": Array [
                         [MockFunction] {
                           "calls": Array [
