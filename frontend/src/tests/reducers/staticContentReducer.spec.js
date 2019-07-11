@@ -112,7 +112,7 @@ describe("staticContentReducer", () => {
 
   it("receives STORE_APPLICATION_STATUS_OPTIONS", () => {
     const expectedValue = getBaseExpectedValue();
-    expectedValue.applicationStatusCodes = MOCK.APPLICATION_STATUS_CODE_OPTIONS;
+    expectedValue.applicationStatusCodes = MOCK.APPLICATION_STATUS_CODE_OPTIONS.records;
     const result = staticContentReducer(
       undefined,
       storeApplicationStatusOptions(MOCK.APPLICATION_STATUS_CODE_OPTIONS)

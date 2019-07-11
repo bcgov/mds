@@ -1458,10 +1458,12 @@ export const OPEN_ORDERS = [
   },
 ];
 
-export const APPLICATION_STATUS_CODE_OPTIONS = [
-  { application_status_code: "RIP", description: "In Review" },
-  { application_status_code: "APR", description: "Approved" },
-];
+export const APPLICATION_STATUS_CODE_OPTIONS = {
+  records: [
+    { application_status_code: "RIP", description: "In Review" },
+    { application_status_code: "APR", description: "Approved" },
+  ],
+};
 
 export const VARIANCES = {
   records: [
