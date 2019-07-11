@@ -150,6 +150,7 @@ app {
                             'PATH_PREFIX': "${vars.modules.'mds-nginx'.PATH}",
                             'CORE_SERVICE_URL': "${vars.modules.'mds-frontend'.HOST}",
                             'NRIS_API_SERVICE_URL': "${vars.modules.'mds-nris-backend'.HOST}",
+                            'DOCUMENT_MANAGER_SERVICE_URL': "${vars.modules.'mds-docman-backend'.HOST}",
                             'MINESPACE_SERVICE_URL': "${vars.modules.'mds-frontend-public'.HOST}",
                             'API_SERVICE_URL': "${vars.modules.'mds-python-backend'.HOST}",
                     ]
@@ -353,6 +354,10 @@ environments {
                 'mds-nris-backend' {
                     HOST = "http://mds-nris-backend${vars.deployment.suffix}:5500"
                     PATH = "/${vars.git.changeId}/nris-api"
+                }
+                'mds-docman-backend' {
+                    HOST = "http://mds-docman-backend${vars.deployment.suffix}:5001"
+                    PATH = "/${vars.git.changeId}/document-manager"
                 }
                 'mds-redis' {
                     HOST = "http://mds-redis${vars.deployment.suffix}"
