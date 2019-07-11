@@ -21,6 +21,12 @@
             "protocol": "TCP",
             "port": 8080,
             "targetPort": 8080
+          },
+          {
+            "name": "8081-tcp",
+            "protocol": "TCP",
+            "port": 8081,
+            "targetPort": 8081
           }
         ],
         "selector": {
@@ -49,6 +55,29 @@
         },
         "port": {
           "targetPort": "8080-tcp"
+        },
+        "wildcardPolicy": "None"
+      }
+    },
+    {
+      "kind": "Route",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}${SUFFIX}-admin"
+      },
+      "spec": {
+        "host": "${APPLICATION_DOMAIN}",
+        "tls": {
+          "insecureEdgeTerminationPolicy": "Redirect",
+          "termination": "edge"
+        },
+        "path": "/admin",
+        "to": {
+          "kind": "Service",
+          "name": "${NAME}${SUFFIX}"
+        },
+        "port": {
+          "targetPort": "8081-tcp"
         },
         "wildcardPolicy": "None"
       }
@@ -139,6 +168,10 @@
                 "ports": [
                   {
                     "containerPort": 8080,
+                    "protocol": "TCP"
+                  },
+                  {
+                    "containerPort": 8081,
                     "protocol": "TCP"
                   }
                 ],
