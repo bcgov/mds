@@ -215,9 +215,7 @@
               }
             ],
             "restartPolicy": "Always",
-            "dnsPolicy": "ClusterFirst",
-            "serviceAccountName": "digdag",
-            "serviceAccount": "digdag"
+            "dnsPolicy": "ClusterFirst"
           }
         }
       }
