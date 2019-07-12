@@ -179,6 +179,10 @@
                   {
                     "name": "ENVIRONMENT_NAME",
                     "value": "${ENVIRONMENT_NAME}"
+                  },
+                  {
+                    "name": "KUBECONFIG",
+                    "value": "/app/kube_config"
                   }
                 ],
                 "volumeMounts": [
@@ -211,7 +215,9 @@
               }
             ],
             "restartPolicy": "Always",
-            "dnsPolicy": "ClusterFirst"
+            "dnsPolicy": "ClusterFirst",
+            "serviceAccountName": "digdag",
+            "serviceAccount": "digdag"
           }
         }
       }
