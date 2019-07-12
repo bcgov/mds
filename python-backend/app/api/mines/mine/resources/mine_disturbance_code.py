@@ -8,4 +8,4 @@ class MineDisturbanceCodeResource(Resource, UserMixin, ErrorMixin):
     @api.doc(params={})
     @requires_role_view_all
     def get(self):
-        return { 'options': MineDisturbanceCode.all_options() }
+        return { 'records': MineDisturbanceCode.all_options() }
