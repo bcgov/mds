@@ -146,6 +146,17 @@
         "strategy": {
           "type": "Rolling",
           "rollingParams": {
+            "pre": {
+              "failurePolicy": "Retry",
+              "execNewPod": {
+                "containerName": "app",
+                "command": [
+                  "bash",
+                  "-c",
+                  "cd /opt/app-root/src && flask db upgrade"
+                ]
+              }
+            },
             "maxSurge": "50%",
             "maxUnavailable": 1,
             "timeoutSeconds": 1200
