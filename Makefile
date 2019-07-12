@@ -10,7 +10,7 @@ endif
 
 local-dev: one-time-local-dev-env-setup
 restore-dev: restore-last-env
-rebuild-all-local: reset | project pause-30 create-local-keycloak-users generate-rand1000 rebuild-all-local-friendly-message
+rebuild-all-local: reset | project pause-30 create-local-keycloak-users generate-rand100 rebuild-all-local-friendly-message
 backend: backend-build | backend-run
 database: database-build | database-run
 frontend: frontend-build | frontend-run
@@ -35,6 +35,8 @@ endif
 	@cp ./frontend/src/constants/environment.js-dev-local-keycloak ./frontend/src/constants/environment.js
 	@[ ! -f "./python-backend/.env" ] || cp ./python-backend/.env ./python-backend/.env-last-backup
 	@cp ./python-backend/.env-dev-local-keycloak ./python-backend/.env
+	@[ ! -f "./microservices/nris_api/backend/.env" ] || cp ./microservices/nris_api/backend/.env ./microservices/nris_api/backend/.env-last-backup
+	@cp ./microservices/nris_api/backend/.env-dev-local-keycloak ./microservices/nris_api/backend/.env
 else
 	@if "$(KC_HOST_ENTRY)" GTR "" (echo "hosts entry already exists") else (echo 127.0.0.1        localhost       keycloak >> C:\Windows\System32\drivers\etc\hosts)
 	@if exist .\frontend\.env copy /Y .\frontend\.env .\frontend\.env-last-backup
@@ -43,6 +45,8 @@ else
 	@copy /Y .\frontend\src\constants\environment.js-dev-local-keycloak .\frontend\src\constants\environment.js
 	@if exist .\python-backend\.env copy .\python-backend\.env .\python-backend\.env-last-backup
 	@copy /Y .\python-backend\.env-dev-local-keycloak .\python-backend\.env
+	@if exist .\microservices\nris_api/backend\.env copy .\microservices\nris_api\backend\.env .\microservices\nris_api\backend\.env-last-backup
+	@copy /Y .\microservices\nris_api\backend\.env-dev-local-keycloak .\microservices\nris_api\backend\.env
 endif
 	@echo "+"
 
@@ -72,7 +76,7 @@ rebuild-all-local-friendly-message:
 
 project-build:
 	@echo "+\n++ Performing project build ...\n+"
-	@docker-compose build --force-rm --no-cache
+	@docker-compose build --force-rm --no-cache --parallel
 
 project-run:
 	@echo "+\n++ Running project...\n+"
@@ -80,7 +84,7 @@ project-run:
 
 backend-build:
 	@echo "+\n++ Performing backend build ...\n+"
-	@docker-compose build --force-rm --no-cache backend
+	@docker-compose build --force-rm --no-cache backend --parallel
 
 backend-run:
 	@echo "+\n++ Running backend app...\n+"
@@ -96,7 +100,7 @@ cache:
 
 database-build:
 	@echo "+\n++ Performing postgres build ...\n+"
-	@docker-compose build postgres flyway
+	@docker-compose build postgres flyway --parallel
 
 database-run:
 	@echo "+\n++ Running postgres and Flyway migrations...\n+"
