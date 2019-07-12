@@ -124,11 +124,13 @@
     {
       "apiVersion": "v1",
       "kind": "ServiceAccount",
-      "name": "digdag"
+      "metadata": {
+        "annotations": {},
+        "name": "digdag"
+      }
     },
     {
       "apiVersion": "v1",
-      "groupNames": null,
       "kind": "RoleBinding",
       "metadata": {
         "name": "digdag_edit"
