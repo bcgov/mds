@@ -343,6 +343,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
     @requires_role_mine_edit
     def put(self, mine_no_or_guid):
         mine = Mine.find_by_mine_no_or_guid(mine_no_or_guid)
+        refresh_cache = False
         if not mine:
             raise NotFound("Mine not found.")
 
@@ -359,6 +360,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         if 'mine_name' in data and mine.mine_name != data['mine_name']:
             _throw_error_if_mine_exists(data['mine_name'])
             mine.mine_name = data['mine_name']
+            refresh_cache = True
         if 'mine_note' in data:
             mine.mine_note = data['mine_note']
         if 'major_mine_ind' in data:
@@ -388,19 +390,24 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             #update existing record
             if "latitude" in data:
                 mine.mine_location.latitude = data['latitude']
+                refresh_cache = True
             if "longitude" in data:
                 mine.mine_location.longitude = data['longitude']
+                refresh_cache = True
             mine.mine_location.save()
 
         elif data.get('latitude') and data.get('longitude') and not mine.mine_location:
             mine.mine_location = MineLocation(
                 latitude=data['latitude'], longitude=data['longitude'])
+            refresh_cache = True
             mine.save()
 
         _mine_status_processor(data.get('mine_status'), data.get('status_date'), mine)
 
-        cache.delete(MINE_MAP_CACHE)
-        self.call_rebuild_map_cache()
+        # If more fields are added to the map popup this refresh cache will need to be called for them as well
+        if refresh_cache:
+            cache.delete(MINE_MAP_CACHE)
+            self.call_rebuild_map_cache()
 
         return mine
 
