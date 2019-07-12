@@ -84,7 +84,7 @@ project-run:
 
 backend-build:
 	@echo "+\n++ Performing backend build ...\n+"
-	@docker-compose build --force-rm --no-cache backend --parallel
+	@docker-compose build --force-rm --no-cache --parallel backend
 
 backend-run:
 	@echo "+\n++ Running backend app...\n+"

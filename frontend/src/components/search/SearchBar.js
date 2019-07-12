@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Input, Dropdown, Card, Col } from "antd";
+import { Input, Dropdown, Card } from "antd";
 import { getSearchBarResults } from "@/selectors/searchSelectors";
 import { fetchSearchBarResults, clearSearchBarResults } from "@/actionCreators/searchActionCreator";
 import PropTypes from "prop-types";
@@ -17,6 +17,7 @@ const propTypes = {
   fetchSearchBarResults: PropTypes.func.isRequired,
   clearSearchBarResults: PropTypes.func.isRequired,
   searchBarResults: PropTypes.arrayOf(PropTypes.object).isRequired,
+  containerId: PropTypes.string.isRequired,
 };
 
 const defaultPlaceholderText = "Search";
@@ -72,18 +73,7 @@ export class SearchBar extends Component {
   };
 
   render = () => (
-    <Col
-      id="searchBox"
-      md={4}
-      lg={6}
-      xl={8}
-      style={{
-        marginLeft: "auto",
-        marginTop: "auto",
-        marginBottom: "auto",
-        paddingRight: "20px",
-      }}
-    >
+    <div id={this.props.containerId}>
       <Dropdown
         overlay={
           <Card>
@@ -95,7 +85,7 @@ export class SearchBar extends Component {
             />
           </Card>
         }
-        getPopupContainer={() => document.getElementById("searchBox")}
+        getPopupContainer={() => document.getElementById(this.props.containerId)}
         trigger={[""]}
         visible={this.state.isSelected}
       >
@@ -114,7 +104,7 @@ export class SearchBar extends Component {
           }
         />
       </Dropdown>
-    </Col>
+    </div>
   );
 }
 
