@@ -364,6 +364,7 @@ ShallowWrapper {
     }
     openModal={[MockFunction]}
     refreshActions={Array []}
+    refreshListActions={Array []}
     refreshRequests={Array []}
     transformedMineTypes={
       Object {
@@ -400,11 +401,7 @@ ShallowWrapper {
             <div>
               <RefreshButton
                 actions={Array []}
-                initialValue={
-                  Object {
-                    "records": Array [],
-                  }
-                }
+                listActions={Array []}
                 requests={Array []}
               />
               <Dropdown
@@ -844,11 +841,7 @@ ShallowWrapper {
               <div>
                 <RefreshButton
                   actions={Array []}
-                  initialValue={
-                    Object {
-                      "records": Array [],
-                    }
-                  }
+                  listActions={Array []}
                   requests={Array []}
                 />
                 <Dropdown
@@ -1171,11 +1164,7 @@ ShallowWrapper {
                 <div>
                   <RefreshButton
                     actions={Array []}
-                    initialValue={
-                      Object {
-                        "records": Array [],
-                      }
-                    }
+                    listActions={Array []}
                     requests={Array []}
                   />
                   <Dropdown
@@ -1401,11 +1390,7 @@ ShallowWrapper {
                     undefined,
                     <RefreshButton
                       actions={Array []}
-                      initialValue={
-                        Object {
-                          "records": Array [],
-                        }
-                      }
+                      listActions={Array []}
                       requests={Array []}
                     />,
                     <Dropdown
@@ -1610,9 +1595,7 @@ ShallowWrapper {
                     "nodeType": "function",
                     "props": Object {
                       "actions": Array [],
-                      "initialValue": Object {
-                        "records": Array [],
-                      },
+                      "listActions": Array [],
                       "requests": Array [],
                     },
                     "ref": null,
@@ -2755,11 +2738,7 @@ ShallowWrapper {
               <div>
                 <RefreshButton
                   actions={Array []}
-                  initialValue={
-                    Object {
-                      "records": Array [],
-                    }
-                  }
+                  listActions={Array []}
                   requests={Array []}
                 />
                 <Dropdown
@@ -3199,11 +3178,7 @@ ShallowWrapper {
                 <div>
                   <RefreshButton
                     actions={Array []}
-                    initialValue={
-                      Object {
-                        "records": Array [],
-                      }
-                    }
+                    listActions={Array []}
                     requests={Array []}
                   />
                   <Dropdown
@@ -3526,11 +3501,7 @@ ShallowWrapper {
                   <div>
                     <RefreshButton
                       actions={Array []}
-                      initialValue={
-                        Object {
-                          "records": Array [],
-                        }
-                      }
+                      listActions={Array []}
                       requests={Array []}
                     />
                     <Dropdown
@@ -3756,11 +3727,7 @@ ShallowWrapper {
                       undefined,
                       <RefreshButton
                         actions={Array []}
-                        initialValue={
-                          Object {
-                            "records": Array [],
-                          }
-                        }
+                        listActions={Array []}
                         requests={Array []}
                       />,
                       <Dropdown
@@ -3965,9 +3932,7 @@ ShallowWrapper {
                       "nodeType": "function",
                       "props": Object {
                         "actions": Array [],
-                        "initialValue": Object {
-                          "records": Array [],
-                        },
+                        "listActions": Array [],
                         "requests": Array [],
                       },
                       "ref": null,

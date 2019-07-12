@@ -56,11 +56,13 @@ const propTypes = {
   fetchMineVerifiedStatuses: PropTypes.func.isRequired,
   userInfo: PropTypes.shape({ preferred_username: PropTypes.string.isRequired }).isRequired,
   refreshActions: PropTypes.arrayOf(PropTypes.func),
+  refreshListActions: PropTypes.arrayOf(PropTypes.func),
   refreshRequests: PropTypes.arrayOf(PropTypes.func),
 };
 
 const defaultProps = {
   refreshActions: [],
+  refreshListActions: [],
   refreshRequests: [],
 };
 
@@ -319,6 +321,7 @@ export class MineHeader extends Component {
               )}
               <RefreshButton
                 actions={this.props.refreshActions}
+                listActions={this.props.refreshListActions}
                 requests={this.props.refreshRequests}
               />
               <Dropdown

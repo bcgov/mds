@@ -447,7 +447,7 @@ export class Dashboard extends Component {
             </div>
             <div>
               <RefreshButton
-                actions={[storeRegionOptions, storeTenureTypes]}
+                listActions={[storeRegionOptions, storeTenureTypes]}
                 requests={[this.props.fetchRegionOptions, this.props.fetchMineTenureTypes]}
               />
               <AuthorizationWrapper permission={Permission.EDIT_MINES}>

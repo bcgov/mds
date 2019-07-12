@@ -10,21 +10,23 @@ import { store } from "@/App";
 
 const propTypes = {
   actions: PropTypes.arrayOf(PropTypes.func),
+  listActions: PropTypes.arrayOf(PropTypes.func),
   requests: PropTypes.arrayOf(PropTypes.func),
-  // This can legitimately be anything
-  // eslint-disable-next-line react/forbid-prop-types
-  initialValue: PropTypes.any,
 };
 
 const defaultProps = {
   actions: [],
+  listActions: [],
   requests: [],
-  initialValue: { records: [] },
 };
 
-const refreshStore = (actions, requests, initialValue) => () => {
+const refreshStore = ({ actions, listActions }, requests) => () => {
   actions.forEach((action) => {
-    store.dispatch(action(initialValue));
+    store.dispatch(action({}));
+  });
+
+  listActions.forEach((action) => {
+    store.dispatch(action({ records: [] }));
   });
 
   requests.forEach((request) => request());
@@ -33,7 +35,10 @@ const refreshStore = (actions, requests, initialValue) => () => {
 const RefreshButton = (props) => (
   <Button
     type="primary"
-    onClick={refreshStore(props.actions, props.requests, props.initialValue)}
+    onClick={refreshStore(
+      { actions: props.actions, listActions: props.listActions },
+      props.requests
+    )}
     className="btn--middle"
   >
     <Icon type="sync" theme="outlined" />

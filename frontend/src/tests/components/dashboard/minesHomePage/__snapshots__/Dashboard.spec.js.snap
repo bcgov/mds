@@ -629,16 +629,12 @@ ShallowWrapper {
             </div>
             <div>
               <RefreshButton
-                actions={
+                actions={Array []}
+                listActions={
                   Array [
                     [Function],
                     [Function],
                   ]
-                }
-                initialValue={
-                  Object {
-                    "records": Array [],
-                  }
                 }
                 requests={
                   Array [
@@ -695,16 +691,12 @@ ShallowWrapper {
             </div>
             <div>
               <RefreshButton
-                actions={
+                actions={Array []}
+                listActions={
                   Array [
                     [Function],
                     [Function],
                   ]
-                }
-                initialValue={
-                  Object {
-                    "records": Array [],
-                  }
                 }
                 requests={
                   Array [
@@ -751,16 +743,12 @@ ShallowWrapper {
               </div>,
               <div>
                 <RefreshButton
-                  actions={
+                  actions={Array []}
+                  listActions={
                     Array [
                       [Function],
                       [Function],
                     ]
-                  }
-                  initialValue={
-                    Object {
-                      "records": Array [],
-                    }
                   }
                   requests={
                     Array [
@@ -840,16 +828,12 @@ ShallowWrapper {
               "props": Object {
                 "children": Array [
                   <RefreshButton
-                    actions={
+                    actions={Array []}
+                    listActions={
                       Array [
                         [Function],
                         [Function],
                       ]
-                    }
-                    initialValue={
-                      Object {
-                        "records": Array [],
-                      }
                     }
                     requests={
                       Array [
@@ -884,13 +868,11 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "function",
                   "props": Object {
-                    "actions": Array [
+                    "actions": Array [],
+                    "listActions": Array [
                       [Function],
                       [Function],
                     ],
-                    "initialValue": Object {
-                      "records": Array [],
-                    },
                     "requests": Array [
                       [MockFunction] {
                         "calls": Array [
@@ -989,16 +971,12 @@ ShallowWrapper {
               </div>
               <div>
                 <RefreshButton
-                  actions={
+                  actions={Array []}
+                  listActions={
                     Array [
                       [Function],
                       [Function],
                     ]
-                  }
-                  initialValue={
-                    Object {
-                      "records": Array [],
-                    }
                   }
                   requests={
                     Array [
@@ -1055,16 +1033,12 @@ ShallowWrapper {
               </div>
               <div>
                 <RefreshButton
-                  actions={
+                  actions={Array []}
+                  listActions={
                     Array [
                       [Function],
                       [Function],
                     ]
-                  }
-                  initialValue={
-                    Object {
-                      "records": Array [],
-                    }
                   }
                   requests={
                     Array [
@@ -1111,16 +1085,12 @@ ShallowWrapper {
                 </div>,
                 <div>
                   <RefreshButton
-                    actions={
+                    actions={Array []}
+                    listActions={
                       Array [
                         [Function],
                         [Function],
                       ]
-                    }
-                    initialValue={
-                      Object {
-                        "records": Array [],
-                      }
                     }
                     requests={
                       Array [
@@ -1200,16 +1170,12 @@ ShallowWrapper {
                 "props": Object {
                   "children": Array [
                     <RefreshButton
-                      actions={
+                      actions={Array []}
+                      listActions={
                         Array [
                           [Function],
                           [Function],
                         ]
-                      }
-                      initialValue={
-                        Object {
-                          "records": Array [],
-                        }
                       }
                       requests={
                         Array [
@@ -1244,13 +1210,11 @@ ShallowWrapper {
                     "key": undefined,
                     "nodeType": "function",
                     "props": Object {
-                      "actions": Array [
+                      "actions": Array [],
+                      "listActions": Array [
                         [Function],
                         [Function],
                       ],
-                      "initialValue": Object {
-                        "records": Array [],
-                      },
                       "requests": Array [
                         [MockFunction] {
                           "calls": Array [
