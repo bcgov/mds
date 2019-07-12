@@ -1,7 +1,6 @@
 from decimal import Decimal
 import uuid
 from datetime import datetime
-import threading
 
 from flask import request, current_app
 from flask_restplus import Resource, reqparse, inputs
@@ -160,8 +159,7 @@ class MineListResource(Resource, UserMixin):
         # Clear and rebuild the cache after committing changes to db
         if lat and lon:
             cache.delete(MINE_MAP_CACHE)
-            self.call_rebuild_map_cache()
-
+            MineMapResource.rebuild_map_cache()
         return mine
 
     def apply_filter_and_search(self, args):
@@ -407,21 +405,9 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         # If more fields are added to the map popup this refresh cache will need to be called for them as well
         if refresh_cache:
             cache.delete(MINE_MAP_CACHE)
-            self.call_rebuild_map_cache()
+            MineMapResource.rebuild_map_cache()
 
         return mine
-
-    @staticmethod
-    def call_rebuild_map_cache():
-        app = current_app._get_current_object()
-        environ = request.environ
-
-        def run_cache_rebuilding_thread():
-            with app.request_context(environ):
-                MineMapResource.rebuild_map_cache()
-        thread = threading.Thread(target=run_cache_rebuilding_thread)
-        thread.start()
-        return
 
 
 class MineListSearch(Resource):

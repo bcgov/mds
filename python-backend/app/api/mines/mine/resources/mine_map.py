@@ -1,6 +1,7 @@
 import uuid
 from datetime import datetime
 import json
+import threading
 
 from flask import request, make_response, current_app
 from flask_restplus import Resource, reqparse, inputs, fields
@@ -49,14 +50,22 @@ class MineMapResource(Resource, UserMixin):
 
     @staticmethod
     def rebuild_map_cache():
-        records = MineMapViewLocation.query.filter(MineMapViewLocation.latitude != None).all()
-        last_modified = datetime.utcnow()
+        app = current_app._get_current_object()
+        environ = request.environ
 
-        # jsonify then store in cache
-        map_result = json.dumps({
-            'mines': list((map(lambda x: x.json_for_map(), records)))
-        }, separators=(',', ':'))
+        def run_cache_rebuilding_thread():
+            with app.request_context(environ):
+                records = MineMapViewLocation.query.filter(MineMapViewLocation.latitude != None).all()
+                last_modified = datetime.utcnow()
 
-        cache.set(MINE_MAP_CACHE, map_result, timeout=TIMEOUT_12_HOURS)
-        cache.set(MINE_MAP_CACHE + '_LAST_MODIFIED', last_modified, timeout=TIMEOUT_12_HOURS)
-        return map_result
+                # jsonify then store in cache
+                map_result = json.dumps({
+                    'mines': list((map(lambda x: x.json_for_map(), records)))
+                }, separators=(',', ':'))
+
+                cache.set(MINE_MAP_CACHE, map_result, timeout=TIMEOUT_12_HOURS)
+                cache.set(MINE_MAP_CACHE + '_LAST_MODIFIED', last_modified, timeout=TIMEOUT_12_HOURS)
+                return map_result
+
+        thread = threading.Thread(target=run_cache_rebuilding_thread)
+        thread.start()
