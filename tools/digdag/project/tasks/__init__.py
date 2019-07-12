@@ -11,7 +11,7 @@ class NrisETL(object):
         config_file = os.environ.get('KUBECONFIG', '/tmp/token')
 
         # api_client = client.ApiClient(conf)
-        k8s_client = client.CoreV1Api(conf)
+        k8s_client = client.CoreV1Api(config_file)
         dyn_client = DynamicClient(k8s_client)
 
         v1_jobs = dyn_client.resources.get(
