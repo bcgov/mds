@@ -125,17 +125,24 @@ export const validateDateRanges = (existingAppointments, newAppt, apptType) => {
   newDateAppt.start_date = newDateAppt.start_date ? toDate(newDateAppt.start_date) : MIN_DATE;
   newDateAppt.end_date = newDateAppt.end_date ? toDate(newDateAppt.end_date) : MAX_DATE;
 
+  console.log("New Date", JSON.stringify(newDateAppt));
+
   // If (StartA <= EndB) and (EndA >= StartB) ; “Overlap”)
+  // Get conflicting appointments
   const conflictingAppointments = dateAppointments.filter(
     (appt) => appt.end_date >= newDateAppt.start_date && appt.start_date <= newDateAppt.end_date
   );
+
+  console.log("Conflicts", JSON.stringify(conflictingAppointments));
 
   if (conflictingAppointments.length === 0) {
     return errorMessages;
   }
 
+  // Find earliest conflicting start date appt
   const startDateConflict = conflictingAppointments.reduce(
     (conflict, potentialConflict) =>
+      newDateAppt.start_date >= potentialConflict.start_date &&
       newDateAppt.start_date <= potentialConflict.end_date &&
       (!conflict || potentialConflict.start_date < conflict.start_date)
         ? potentialConflict
@@ -143,18 +150,20 @@ export const validateDateRanges = (existingAppointments, newAppt, apptType) => {
     null
   );
 
+  console.log("Start conflict", JSON.stringify(startDateConflict));
+
+  // Find latest conflicting end date appt
   const endDateConflict = conflictingAppointments.reduce(
     (conflict, potentialConflict) =>
-      newDateAppt.end_date <= potentialConflict.start_date &&
+      newDateAppt.end_date >= potentialConflict.start_date &&
+      newDateAppt.end_date <= potentialConflict.end_date &&
       (!conflict || potentialConflict.end_date > conflict.end_date)
         ? potentialConflict
         : conflict,
     null
   );
 
-  console.log("End Conflict", JSON.stringify(endDateConflict));
-
-  console.log("Start Conflict", JSON.stringify(startDateConflict));
+  console.log("End date", JSON.stringify(endDateConflict));
 
   if (endDateConflict) errorMessages.end_date = conflictMsg(endDateConflict);
   if (startDateConflict) errorMessages.start_date = conflictMsg(startDateConflict);
