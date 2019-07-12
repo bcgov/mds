@@ -146,7 +146,7 @@ export const fetchPartyRelationships = (parms) => (dispatch) => {
 export const removePartyRelationship = (mine_party_appt_guid) => (dispatch) => {
   dispatch(request(reducerTypes.REMOVE_PARTY_RELATIONSHIP));
   dispatch(showLoading());
-  return CustomAxios(String.ERROR)
+  return CustomAxios({ errorToastMessage: String.ERROR })
     .delete(
       `${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}/${mine_party_appt_guid}`,
       createRequestHeader()
@@ -163,7 +163,7 @@ export const removePartyRelationship = (mine_party_appt_guid) => (dispatch) => {
 export const deleteParty = (party_guid) => (dispatch) => {
   dispatch(request(reducerTypes.DELETE_PARTY));
   dispatch(showLoading());
-  return CustomAxios(String.ERROR)
+  return CustomAxios({ errorToastMessage: String.ERROR })
     .delete(`${ENVIRONMENT.apiUrl + API.PARTY}/${party_guid}`, createRequestHeader())
     .then((response) => {
       notification.success({ message: "Successfully removed the party", duration: 10 });
@@ -175,7 +175,7 @@ export const deleteParty = (party_guid) => (dispatch) => {
 };
 
 export const downloadMineManagerHistory = (mineNo, { window, document }) =>
-  CustomAxios("")({
+  CustomAxios({ errorToastMessage: "" })({
     method: "GET",
     url: `${ENVIRONMENT.apiUrl + API.MINE_MANAGER_HISTORY(mineNo)}`,
     responseType: "blob",
