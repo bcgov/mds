@@ -134,7 +134,7 @@ export const validateDateRanges = (existingAppointments, newAppt, apptType) => {
     return errorMessages;
   }
 
-  let startDateConflict = conflictingAppointments.reduce(
+  const startDateConflict = conflictingAppointments.reduce(
     (conflict, potentialConflict) =>
       newDateAppt.start_date <= potentialConflict.end_date &&
       (!conflict || potentialConflict.start_date < conflict.start_date)
@@ -143,7 +143,7 @@ export const validateDateRanges = (existingAppointments, newAppt, apptType) => {
     null
   );
 
-  let endDateConflict = conflictingAppointments.reduce(
+  const endDateConflict = conflictingAppointments.reduce(
     (conflict, potentialConflict) =>
       newDateAppt.end_date <= potentialConflict.start_date &&
       (!conflict || potentialConflict.end_date > conflict.end_date)
