@@ -12,6 +12,8 @@ from flask_migrate import MigrateCommand
 from flask_jwt_oidc.exceptions import AuthError
 from sqlalchemy.exc import SQLAlchemyError
 
+from app.docman.models import *
+
 from app.commands import register_commands
 from app.routes import register_routes
 from app.extensions import api, cache, db, jwt, sched, apm, migrate

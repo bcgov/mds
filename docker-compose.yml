@@ -54,6 +54,7 @@ services:
       - FLYWAY_OUT_OF_ORDER=true
       - FLYWAY_CONNECT_RETRIES=60
       - NRIS_USER_PASSWORD=nris_pass
+      - DOCMAN_USER_PASSWORD=docman_pass
       - LOGSTASH_USER_PASSWORD=logstash_pass
       - METABASE_USER_PASSWORD=metabase_pass
     depends_on:
