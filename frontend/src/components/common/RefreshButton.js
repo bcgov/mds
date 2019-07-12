@@ -31,7 +31,11 @@ const refreshStore = (actions, requests, initialValue) => () => {
 };
 
 const RefreshButton = (props) => (
-  <Button type="primary" onClick={refreshStore(props.actions, props.requests, props.initialValue)}>
+  <Button
+    type="primary"
+    onClick={refreshStore(props.actions, props.requests, props.initialValue)}
+    className="btn--middle"
+  >
     <Icon type="sync" theme="outlined" />
   </Button>
 );
