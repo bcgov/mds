@@ -11,9 +11,6 @@ RUN npm ci
 
 COPY . .
 
-# Build the app and remove any non-production dependencies
-RUN npm run build
-
 # Run the server
 EXPOSE 3000
-CMD [ "npm", "run", "start" ]
+CMD [ "npm", "run", "serve" ]
