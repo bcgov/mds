@@ -105,46 +105,46 @@ export const validateIncidentDate = memoize((reportedDate) => (value) =>
 // apptType : CustomPropTypes.partyRelationshipType
 export const validateDateRanges = (existingAppointments, newAppt, apptType) => {
   const errorMessages = {};
+  const conflictMsg = (appt) =>
+    `Assignment conflicts with existing ${apptType}: ${appt.party_name}`;
+  const toDate = (dateString) => (dateString ? moment(dateString, "YYYY-MM-DD").toDate() : null);
+  const MAX_DATE = Date.UTC(275760, 9, 12);
+  const MIN_DATE = Date.UTC(-271821, 3, 20);
+
   if (existingAppointments.length === 0) {
     return errorMessages;
   }
 
-  // Sort all appointments by ascending start_date for easier comparison
-  const toDate = (dateString) => moment(dateString, "YYYY-MM-DD").toDate();
-  const allAppointments = [...existingAppointments, newAppt].sort((a, b) =>
-    toDate(a.start_date) > toDate(b.start_date) ? 1 : -1
+  const dateAppointments = existingAppointments.map((appt) => {
+    appt.start_date = appt.start_date ? toDate(appt.start_date) : MIN_DATE;
+    appt.end_date = appt.end_date ? toDate(appt.end_date) : MAX_DATE;
+    return appt;
+  });
+
+  const newDateAppt = Object.assign({}, newAppt);
+  newDateAppt.start_date = newDateAppt.start_date ? toDate(newDateAppt.start_date) : MIN_DATE;
+  newDateAppt.end_date = newDateAppt.end_date ? toDate(newDateAppt.end_date) : MAX_DATE;
+
+  // If ( NOT (EndA <= StartB or StartA >= EndB) ; “Overlap”)
+
+  conflictingAppointments = dateAppointments.filter(
+    (appt) => appt.end_date <= newDateAppt.start_date || appt.start_date >= newDateAppt.end_date
   );
 
-  // Stop checking for overlap on the second-last date in the list, as the last
-  // one has no potential conflicts
-  for (let i = 0; i < allAppointments.length - 1; i += 1) {
-    const current = allAppointments[i];
-    const next = allAppointments[i + 1];
+  endDateConflict = conflictingAppointments.reduce((conflict, potentialConflict) =>
+    newDateAppt.end_date <= potentialConflict.start_date &&
+    (!conflict || potentialConflict.end_date > conflict.end_date)
+      ? potentialConflict
+      : conflict
+  );
+  startDateConflict = conflictingAppointments.reduce((conflict, potentialConflict) =>
+    newDateAppt.start_date <= potentialConflict.end_date &&
+    (!conflict || potentialConflict.start_date < conflict.start_date)
+      ? potentialConflict
+      : conflict
+  );
 
-    const conflictingParty =
-      current.party_guid !== newAppt.party_guid ? current.party.name : next.party.name;
-    const conflictingField = current.party_guid === newAppt.party_guid ? "end_date" : "start_date";
-    const msg = `Assignment conflicts with existing ${apptType}: ${conflictingParty}`;
-
-    // Any existing appts will conflict with an infinite start & end
-    const infiniteStartEnd =
-      existingAppointments.length > 0 && !newAppt.start_date && !newAppt.end_date;
-    if (infiniteStartEnd) {
-      errorMessages.start_date = msg;
-      errorMessages.end_date = msg;
-    }
-
-    // Check if current ends after the next start_date
-    if (
-      current.end_date >= next.start_date ||
-      // current never ends
-      current.end_date === null ||
-      // next started at the beginning of time
-      next.start_date === null
-    ) {
-      errorMessages[conflictingField] = msg;
-    }
-  }
-
+  if (endDateConflict) errorMessages.end_date = conflictMsg(endDateConflict);
+  if (startDateConflict) errorMessages.start_date = conflictMsg(startDateConflict);
   return errorMessages;
 };
