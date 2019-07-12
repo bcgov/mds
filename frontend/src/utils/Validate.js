@@ -106,7 +106,7 @@ export const validateIncidentDate = memoize((reportedDate) => (value) =>
 export const validateDateRanges = (existingAppointments, newAppt, apptType) => {
   const errorMessages = {};
   const conflictMsg = (appt) =>
-    `Assignment conflicts with existing ${apptType}: ${appt.party_name}`;
+    `Assignment conflicts with existing ${apptType}: ${appt.party.name}`;
   const toDate = (dateString) => (dateString ? moment(dateString, "YYYY-MM-DD").toDate() : null);
   const MAX_DATE = Date.UTC(275760, 9, 12);
   const MIN_DATE = Date.UTC(-271821, 3, 20);
@@ -125,26 +125,39 @@ export const validateDateRanges = (existingAppointments, newAppt, apptType) => {
   newDateAppt.start_date = newDateAppt.start_date ? toDate(newDateAppt.start_date) : MIN_DATE;
   newDateAppt.end_date = newDateAppt.end_date ? toDate(newDateAppt.end_date) : MAX_DATE;
 
-  // If ( NOT (EndA <= StartB or StartA >= EndB) ; “Overlap”)
-
-  conflictingAppointments = dateAppointments.filter(
-    (appt) => appt.end_date <= newDateAppt.start_date || appt.start_date >= newDateAppt.end_date
+  // If (StartA <= EndB) and (EndA >= StartB) ; “Overlap”)
+  const conflictingAppointments = dateAppointments.filter(
+    (appt) => appt.end_date >= newDateAppt.start_date && appt.start_date <= newDateAppt.end_date
   );
 
-  endDateConflict = conflictingAppointments.reduce((conflict, potentialConflict) =>
-    newDateAppt.end_date <= potentialConflict.start_date &&
-    (!conflict || potentialConflict.end_date > conflict.end_date)
-      ? potentialConflict
-      : conflict
+  if (conflictingAppointments.length === 0) {
+    return errorMessages;
+  }
+
+  let startDateConflict = conflictingAppointments.reduce(
+    (conflict, potentialConflict) =>
+      newDateAppt.start_date <= potentialConflict.end_date &&
+      (!conflict || potentialConflict.start_date < conflict.start_date)
+        ? potentialConflict
+        : conflict,
+    null
   );
-  startDateConflict = conflictingAppointments.reduce((conflict, potentialConflict) =>
-    newDateAppt.start_date <= potentialConflict.end_date &&
-    (!conflict || potentialConflict.start_date < conflict.start_date)
-      ? potentialConflict
-      : conflict
+
+  let endDateConflict = conflictingAppointments.reduce(
+    (conflict, potentialConflict) =>
+      newDateAppt.end_date <= potentialConflict.start_date &&
+      (!conflict || potentialConflict.end_date > conflict.end_date)
+        ? potentialConflict
+        : conflict,
+    null
   );
+
+  console.log("End Conflict", JSON.stringify(endDateConflict));
+
+  console.log("Start Conflict", JSON.stringify(startDateConflict));
 
   if (endDateConflict) errorMessages.end_date = conflictMsg(endDateConflict);
   if (startDateConflict) errorMessages.start_date = conflictMsg(startDateConflict);
+
   return errorMessages;
 };
