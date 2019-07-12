@@ -10,8 +10,8 @@ def test_get_all_mine_disturbance_types(test_client, db_session, auth_headers):
 
     get_resp = test_client.get('/mines/disturbance-codes', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
-    options = get_data['options']
+    records = get_data['records']
     assert get_resp.status_code == 200
-    assert len(options) == len(disturbances)
-    assert all(option['mine_disturbance_code'] in disturbance_codes for option in options)
-    assert all(option['description'] in discriptions for option in options)
+    assert len(records) == len(disturbances)
+    assert all(record['mine_disturbance_code'] in disturbance_codes for record in records)
+    assert all(record['description'] in discriptions for record in records)

@@ -58,7 +58,7 @@ export class NavBar extends Component {
   );
 
   renderFullNav = () => (
-    <div className="inline-flex">
+    <div>
       <Dropdown overlay={this.reportingDropdown} placement="bottomLeft">
         <button
           id={this.ifActiveButton(router.REPORTING_DASHBOARD.route)}
@@ -268,21 +268,27 @@ export class NavBar extends Component {
           <Link to={router.HOME_PAGE.route}>
             <img alt="Home" className="menu__img" src={LOGO} />
           </Link>
-          <div style={{ marginTop: "6px" }}>
-            <SearchBar containerId="navBar" />
+          <div className="inline-flex">
+            <div style={{ marginTop: "6px" }}>
+              <SearchBar containerId="navBar" />
+            </div>
+            <MediaQuery maxWidth={979}>
+              <Button
+                ghost
+                type="button"
+                className="menu__btn"
+                style={{ padding: 0 }}
+                onClick={this.props.toggleHamburgerMenu}
+              >
+                <img
+                  alt="menu"
+                  src={!this.props.isMenuOpen ? HAMBURGER : CLOSE}
+                  className="img-lg"
+                />
+              </Button>
+            </MediaQuery>
+            <MediaQuery minWidth={980}>{this.renderFullNav()}</MediaQuery>
           </div>
-          <MediaQuery maxWidth={979}>
-            <Button
-              ghost
-              type="button"
-              className="menu__btn"
-              style={{ padding: 0 }}
-              onClick={this.props.toggleHamburgerMenu}
-            >
-              <img alt="menu" src={!this.props.isMenuOpen ? HAMBURGER : CLOSE} className="img-lg" />
-            </Button>
-          </MediaQuery>
-          <MediaQuery minWidth={980}>{this.renderFullNav()}</MediaQuery>
         </div>
         <MediaQuery maxWidth={979}>{this.renderHamburgerNav()}</MediaQuery>
       </div>

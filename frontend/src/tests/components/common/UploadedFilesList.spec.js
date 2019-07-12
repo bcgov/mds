@@ -10,7 +10,7 @@ const setupProps = () => {
   props.selectedDocId =
     MOCK.MINES.mines[MOCK.MINES.mineIds[0]].mine_expected_documents[0].exp_document_guid;
   [props.mineId] = MOCK.MINES.mineIds;
-  props.expectedDocumentStatusOptions = MOCK.EXPECTED_DOCUMENT_STATUS_OPTIONS.options;
+  props.expectedDocumentStatusOptions = MOCK.EXPECTED_DOCUMENT_STATUS_OPTIONS.records;
   props.mines = MOCK.MINES.mines;
 };
 

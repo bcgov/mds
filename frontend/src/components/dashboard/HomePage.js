@@ -13,16 +13,13 @@ export class HomePage extends Component {
     return (
       <div className="background" style={{ backgroundImage: `url(${BACKGROUND})` }}>
         <div className="search-container">
-          <div>
+          <div className="center">
             <h1>Welcome!</h1>
             <p>To begin, please search or clicks the links below.</p>
             <br />
-            {/* <div style={{ width: "200px" }} /> */}
-            <SearchBar containerId="homePage" />
-            <a style={{ textAlign: "left" }} href="mailto: mds@gov.bc.ca">
-              Have questions?
-            </a>
           </div>
+          <SearchBar containerId="homePage" />
+          <a href="mailto: mds@gov.bc.ca">Have questions?</a>
         </div>
         <div className="inline-flex justify-center">
           <div className="link-card">
