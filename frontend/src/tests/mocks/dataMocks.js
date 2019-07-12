@@ -1054,6 +1054,7 @@ export const USER_ACCESS_DATA = [
   "admin",
   "uma_authorization",
   "core_admin",
+  "core_edit_reports",
 ];
 
 export const DISTURBANCE_OPTIONS = {

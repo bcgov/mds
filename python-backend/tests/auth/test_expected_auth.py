@@ -1,5 +1,5 @@
 import pytest
-from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE
+from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, EDIT_REPORT
 
 from app.api.document_manager.resources.document_manager import DocumentManagerResource
 from app.api.document_manager.resources.download_token import DownloadTokenResource
@@ -78,9 +78,9 @@ from app.api.mines.reports.resources.mine_reports import MineReportResource, Min
      (MineResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
      (MineResource, "put", [MINE_EDIT]),
      (MineReportResource, "get", [VIEW_ALL]), 
-     (MineReportResource, "put", [MINE_EDIT]),
+     (MineReportResource, "put", [EDIT_REPORT]),
      (MineReportListResource, "get", [VIEW_ALL]), 
-     (MineReportListResource, "post", [MINE_EDIT]),
+     (MineReportListResource, "post", [EDIT_REPORT]),
      (MineStatusResource, "get", [VIEW_ALL]),
      (MineTailingsStorageFacilityListResource, "get", [VIEW_ALL]),
      (MineTailingsStorageFacilityListResource, "post", [MINE_EDIT]),
