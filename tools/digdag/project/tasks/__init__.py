@@ -45,7 +45,15 @@ spec:
 """
 
         job_data = yaml.load(job)
-        resp = v1_jobs.create(body=job_data, namespace='empr-mds-dev')
+				try:
+					resp = v1_jobs.create(body=job_data, namespace='empr-mds-dev')
+				except:
+					print("Job exists! Replace instead")
+        	resp = v1_jobs.replace(body=job_data, namespace='empr-mds-dev')
 
+				for event in v1_jobs.watch(namespace='empr-mds-dev'):
+    			print(event['object'])
+
+				print("Job finished")
         # resp is a ResourceInstance object
         print(resp.metadata)
