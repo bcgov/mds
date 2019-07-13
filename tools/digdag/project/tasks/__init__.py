@@ -33,7 +33,7 @@ spec:
       - command:
         - echo
         - IAmUp
-        image: mds-nris-backend:dev-pr-863
+        image: docker-registry.default.svc:5000/empr-mds-dev/mds-nris-backend:dev-pr-863
         imagePullPolicy: Always
         name: digdag-nris
         resources: {}
@@ -48,11 +48,13 @@ spec:
         try:
             resp = v1_jobs.create(body=job_data, namespace='empr-mds-dev')
         except:
-            print("Job exists! Replace instead")
-            resp = v1_jobs.replace(body=job_data, namespace='empr-mds-dev')
+            print("Job exists! Delete and create instead")
+            v1_jobs.delete(name='digdag-nris', namespace='empr-mds-dev')
+            resp = v1_jobs.create(body=job_data, namespace='empr-mds-dev')
 
-        for event in v1_jobs.watch(namespace='empr-mds-dev'):
-            print(event['object'])
+        # Watch hangs, comment out for now
+        # for event in v1_jobs.watch(namespace='empr-mds-dev'):
+        #    print(event['object'])
 
         print("Job finished")
         # resp is a ResourceInstance object
