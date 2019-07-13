@@ -30,9 +30,8 @@ spec:
     spec:
       containers:
       - command:
-        - ls
-        - "-la"
-        - "/app"
+        - echo
+        - IAmUp
         image: mds-nris-backend:dev-pr-863
         imagePullPolicy: Always
         name: digdag-nris
