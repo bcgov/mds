@@ -1,7 +1,8 @@
 import yaml
 import os
-from kubernetes import client, config
+from kubernetes import config
 from openshift.dynamic import DynamicClient
+
 
 class NrisETL(object):
 
@@ -19,28 +20,28 @@ class NrisETL(object):
 kind: Job
 metadata:
   labels:
-	app: digdag
+    app: digdag
   name: digdag-nris
   namespace: empr-mds-dev
 spec:
   template:
-	metadata:
-	  labels:
-		job-name: digdag-nris
-	spec:
-	  containers:
-	  - command:
-		- echo
-		- IAmUp
-		image: mds-nris-backend:dev-pr-863
-		imagePullPolicy: Always
-		name: digdag-nris
-		resources: {}
-		terminationMessagePath: "/dev/termination-log"
-		terminationMessagePolicy: File
-	  dnsPolicy: ClusterFirst
-	  restartPolicy: Never
-	  terminationGracePeriodSeconds: 30
+    metadata:
+      labels:
+        job-name: digdag-nris
+    spec:
+      containers:
+      - command:
+        - echo
+        - IAmUp
+        image: mds-nris-backend:dev-pr-863
+        imagePullPolicy: Always
+        name: digdag-nris
+        resources: {}
+        terminationMessagePath: "/dev/termination-log"
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Never
+      terminationGracePeriodSeconds: 30
 """
 
         job_data = yaml.load(job)
