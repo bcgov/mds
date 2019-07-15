@@ -13,7 +13,7 @@ from ...mine_api_models import MINE_INCIDENT_FOLLOWUP_INVESTIGATION_TYPE_MODEL
 
 class MineIncidentFollowupTypeResource(Resource, UserMixin):
     @api.marshal_with(MINE_INCIDENT_FOLLOWUP_INVESTIGATION_TYPE_MODEL,
-                      envelope='options',
+                      envelope='records',
                       code=200,
                       as_list=True)
     @api.doc(description='returns the possible EMPR followup action for mine incidents')

@@ -84,7 +84,7 @@ project-run:
 
 backend-build:
 	@echo "+\n++ Performing backend build ...\n+"
-	@docker-compose build --force-rm --no-cache backend --parallel
+	@docker-compose build --force-rm --no-cache --parallel backend
 
 backend-run:
 	@echo "+\n++ Running backend app...\n+"
@@ -100,7 +100,7 @@ cache:
 
 database-build:
 	@echo "+\n++ Performing postgres build ...\n+"
-	@docker-compose build postgres flyway --parallel
+	@docker-compose build postgres --parallel flyway
 
 database-run:
 	@echo "+\n++ Running postgres and Flyway migrations...\n+"

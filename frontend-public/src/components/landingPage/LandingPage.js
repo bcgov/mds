@@ -60,7 +60,7 @@ export const LandingPage = () => (
           <strong>
             Please submit completed registry spreadsheets to{" "}
             <a mailto="PERMRECL@gov.bc.ca">PERMRECL@gov.bc.ca</a>. You may also submit them via
-            MineSpace if you have signed up (instructions below).
+            MineSpace if you participated in the 2019 Pilot Project.
           </strong>
         </p>
 
