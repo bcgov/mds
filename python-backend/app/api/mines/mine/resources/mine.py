@@ -159,7 +159,7 @@ class MineListResource(Resource, UserMixin):
         # Clear and rebuild the cache after committing changes to db
         if lat and lon:
             cache.delete(MINE_MAP_CACHE)
-            MineMapResource.rebuild_map_cache()
+            MineMapResource.rebuild_map_cache_async()
         return mine
 
     def apply_filter_and_search(self, args):
@@ -405,7 +405,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         # If more fields are added to the map popup this refresh cache will need to be called for them as well
         if refresh_cache:
             cache.delete(MINE_MAP_CACHE)
-            MineMapResource.rebuild_map_cache()
+            MineMapResource.rebuild_map_cache_async()
 
         return mine
 
