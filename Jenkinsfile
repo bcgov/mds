@@ -103,13 +103,13 @@ pipeline {
                         git checkout master
                         git fetch
                         git merge --squash origin/develop
-                        git commit -m "Merge branch develop into master"
+                        git commit -m "${env.CHANGE_TITLE}"
                         git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/bcgov/mds.git
 
                         # Update the HEAD on develop to be the same as master
                         git checkout develop
                         git fetch
-                        git merge -s ours -m "Updating develop with master" origin/master
+                        git merge -s ours -m "${env.CHANGE_TITLE}" origin/master
                         git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/bcgov/mds.git
                     """
                 }
