@@ -21,6 +21,7 @@ ShallowWrapper {
     closeModal={[MockFunction]}
     content={[MockFunction]}
     createParty={[MockFunction]}
+    initialValues={Object {}}
     setAddPartyFormState={
       [MockFunction] {
         "calls": Array [

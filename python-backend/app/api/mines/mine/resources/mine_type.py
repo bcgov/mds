@@ -4,7 +4,7 @@ from flask_restplus import Resource, reqparse
 from werkzeug.exceptions import BadRequest, NotFound
 
 from app.extensions import api
-from ....utils.access_decorators import requires_role_mine_create
+from ....utils.access_decorators import requires_role_mine_edit
 from ....utils.resources_mixins import UserMixin
 from ..models.mine_type import MineType
 from app.api.mines.mine_api_models import MINE_TYPE_MODEL
@@ -28,7 +28,7 @@ class MineTypeListResource(Resource, UserMixin):
     @api.expect(parser)
     @api.marshal_with(MINE_TYPE_MODEL, code=201)
     @api.doc(description='Creates a mine type and associates it with a Mine.')
-    @requires_role_mine_create
+    @requires_role_mine_edit
     def post(self):
         data = self.parser.parse_args()
 
@@ -44,8 +44,8 @@ class MineTypeListResource(Resource, UserMixin):
 
 class MineTypeResource(Resource, UserMixin):
     @api.doc(description='Deletes the mine type provided.')
-    @api.response(204, 'Successfully Deleted')
-    @requires_role_mine_create
+    @api.response(204, 'Successfully deleted.')
+    @requires_role_mine_edit
     def delete(self, mine_type_guid):
 
         mine_type = MineType.find_by_guid(mine_type_guid)

@@ -30,7 +30,41 @@
             },
             "importPolicy": {},
             "referencePolicy": {
-              "type": "Source"
+              "type": "Local"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}-postgres",
+        "creationTimestamp": null,
+        "labels": {
+          "shared": "true"
+        },
+        "annotations": {
+          "template.alpha.openshift.io/wait-for-ready": "true"
+        }
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        },
+        "tags": [
+          {
+            "name": "${VERSION}",
+            "annotations": null,
+            "from": {
+              "kind": "DockerImage",
+              "name": "registry.access.redhat.com/rhscl/postgresql-96-rhel7:latest"
+            },
+            "generation": 1,
+            "importPolicy": {},
+            "referencePolicy": {
+              "type": "Local"
             }
           }
         ]

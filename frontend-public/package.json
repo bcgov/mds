@@ -21,6 +21,7 @@
     "less-loader": "^4.1.0",
     "lodash": "^4.17.11",
     "moment": "^2.23.0",
+    "pm2": "^3.5.1",
     "prop-types": "^15.6.2",
     "query-string": "^5.1.1",
     "react": "^16.3.2",
@@ -104,7 +105,7 @@
     "serve": "cross-env HOST=0.0.0.0 PORT=3020 webpack-dev-server --hot --env development",
     "build": "webpack --env production",
     "build-serve": "npm run build && npm run start",
-    "start": "node server.js",
+    "start": "npx pm2 start server.js --no-daemon",
     "ci-test": "CI=true jest --env=jsdom --testResultsProcessor=jest-sonar-reporter --updateSnapshot --runInBand --coverage",
     "lint": "eslint",
     "format:check": "prettier --config .prettierrc.json",
@@ -135,7 +136,7 @@
     ],
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1",
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/assetsTransformer.js",
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga|doc|docx|pdf|xls|xlsm)$": "<rootDir>/src/assetsTransformer.js",
       "\\.(css|less)$": "<rootDir>/src/assetsTransformer.js"
     }
   },

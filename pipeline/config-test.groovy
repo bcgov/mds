@@ -165,6 +165,8 @@ app {
                             'CPU_LIMIT':"${vars.resources.python.cpu_limit}",
                             'MEMORY_REQUEST':"${vars.resources.python.memory_request}",
                             'MEMORY_LIMIT':"${vars.resources.python.memory_limit}",
+                            'UWSGI_THREADS':"${vars.resources.python.uwsgi_threads}",
+                            'UWSGI_PROCESSES':"${vars.resources.python.uwsgi_processes}",
                             'REPLICA_MIN':"${vars.resources.python.replica_min}",
                             'REPLICA_MAX':"${vars.resources.python.replica_max}",
                             'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
@@ -175,7 +177,7 @@ app {
                             'DB_NRIS_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}-nris",
                             'REDIS_CONFIG_NAME': "mds-redis${vars.deployment.suffix}",
                             'CACHE_REDIS_HOST': "mds-redis${vars.deployment.suffix}",
-                            'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled}",
+                            'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled_core}",
                             'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name}",
                             'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
@@ -193,6 +195,8 @@ app {
                             'CPU_LIMIT':"${vars.resources.python_lite.cpu_limit}",
                             'MEMORY_REQUEST':"${vars.resources.python_lite.memory_request}",
                             'MEMORY_LIMIT':"${vars.resources.python_lite.memory_limit}",
+                            'UWSGI_THREADS':"${vars.resources.python_lite.uwsgi_threads}",
+                            'UWSGI_PROCESSES':"${vars.resources.python_lite.uwsgi_processes}",
                             'REPLICA_MIN':"${vars.resources.python_lite.replica_min}",
                             'REPLICA_MAX':"${vars.resources.python_lite.replica_max}",
                             'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
@@ -203,7 +207,7 @@ app {
                             'REDIS_CONFIG_NAME': "mds-redis${vars.deployment.suffix}",
                             'CACHE_REDIS_HOST': "mds-redis${vars.deployment.suffix}",
                             'DB_HOST': "mds-postgresql${vars.deployment.suffix}",
-                            'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled}",
+                            'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled_nris}",
                             'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name_nris}",
                             'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
@@ -225,6 +229,7 @@ app {
                     'file':'openshift/tools/metabase.dc.json',
                     'params':[
                             'NAME':"metabase",
+                            'NAME_DATABASE':"metabase-postgres",
                             'VERSION':"${app.deployment.version}",
                             'SUFFIX': "${vars.deployment.suffix}",
                             'METABASE_PVC_SIZE':"${vars.METABASE_PVC_SIZE}",
@@ -233,7 +238,11 @@ app {
                             'CPU_REQUEST':"${vars.resources.metabase.cpu_request}",
                             'CPU_LIMIT':"${vars.resources.metabase.cpu_limit}",
                             'MEMORY_REQUEST':"${vars.resources.metabase.memory_request}",
-                            'MEMORY_LIMIT':"${vars.resources.metabase.memory_limit}"
+                            'MEMORY_LIMIT':"${vars.resources.metabase.memory_limit}",
+                            'DB_CPU_REQUEST':"${vars.resources.metabase.db_cpu_request}",
+                            'DB_CPU_LIMIT':"${vars.resources.metabase.db_cpu_limit}",
+                            'DB_MEMORY_REQUEST':"${vars.resources.metabase.db_memory_request}",
+                            'DB_MEMORY_LIMIT':"${vars.resources.metabase.db_memory_limit}"
                     ]
                 ],
                 [
@@ -260,7 +269,7 @@ environments {
             DB_PVC_SIZE = '10Gi'
             DOCUMENT_PVC_SIZE = '5Gi'
             LOG_PVC_SIZE = '1Gi'
-            METABASE_PVC_SIZE = '5Gi'
+            METABASE_PVC_SIZE = '10Gi'
             git {
                 changeId = "${opt.'pr'}"
             }
@@ -296,6 +305,8 @@ environments {
                     cpu_limit = "400m"
                     memory_request = "1.5Gi"
                     memory_limit = "3Gi"
+                    uwsgi_threads = 2
+                    uwsgi_processes = 4
                     replica_min = 2
                     replica_max = 4
                 }
@@ -304,6 +315,8 @@ environments {
                     cpu_limit = "200m"
                     memory_request = "512Mi"
                     memory_limit = "1Gi"
+                    uwsgi_threads = 2
+                    uwsgi_processes = 4
                     replica_min = 1
                     replica_max = 1
                 }
@@ -320,10 +333,14 @@ environments {
                     memory_limit = "2Gi"
                 }
                 metabase {
-                    cpu_request = "200m"
-                    cpu_limit = "500m"
+                    cpu_request = "100m"
+                    cpu_limit = "200m"
                     memory_request = "1Gi"
                     memory_limit = "2Gi"
+                    db_cpu_request = "100m"
+                    db_cpu_limit = "200m"
+                    db_memory_request = "512Mi"
+                    db_memory_limit = "1Gi"
                 }
                 logstash {
                     cpu_request = "100m"
@@ -342,7 +359,8 @@ environments {
                 application_suffix = "-pr-${vars.git.changeId}"
                 node_env = "test"
                 map_portal_id = "e926583cd0114cd19ebc591f344e30dc"
-                elastic_enabled = 1
+                elastic_enabled_core = 1
+                elastic_enabled_nris = 1
                 elastic_service_name = "MDS Test"
                 elastic_service_name_nris = "NRIS API Test"
             }

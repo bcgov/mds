@@ -132,7 +132,7 @@ export const createTailingsStorageFacility = (mine_guid, payload) => (dispatch) 
 export const createMineExpectedDocument = (id, payload) => (dispatch) => {
   dispatch(request(reducerTypes.ADD_MINE_EXPECTED_DOCUMENT));
   dispatch(showLoading());
-  return CustomAxios(String.ERROR)
+  return CustomAxios({ errorToastMessage: String.ERROR })
     .post(
       `${ENVIRONMENT.apiUrl + API.ADD_MINE_EXPECTED_DOCUMENT}/${id}`,
       { documents: [payload] },
@@ -150,7 +150,7 @@ export const createMineExpectedDocument = (id, payload) => (dispatch) => {
 export const removeExpectedDocument = (exp_doc_guid) => (dispatch) => {
   dispatch(request(reducerTypes.REMOVE_EXPECTED_DOCUMENT));
   dispatch(showLoading());
-  return CustomAxios(String.ERROR)
+  return CustomAxios({ errorToastMessage: String.ERROR })
     .delete(
       `${ENVIRONMENT.apiUrl + API.REMOVE_EXPECTED_DOCUMENT}/${exp_doc_guid}`,
       createRequestHeader()
@@ -390,6 +390,10 @@ export const createMineIncident = (mine_guid, payload) => (dispatch) => {
   return CustomAxios()
     .post(`${ENVIRONMENT.apiUrl}${API.MINE_INCIDENTS(mine_guid)}`, payload, createRequestHeader())
     .then((response) => {
+      notification.success({
+        message: "Successfully created incident.",
+        duration: 10,
+      });
       dispatch(success(reducerTypes.CREATE_MINE_INCIDENT));
       return response;
     })
@@ -410,15 +414,19 @@ export const fetchMineIncidents = (mine_guid) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const updateMineIncident = (mineIncidentGuid, payload) => (dispatch) => {
+export const updateMineIncident = (mineGuid, mineIncidentGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_MINE_INCIDENT));
   return CustomAxios()
     .put(
-      `${ENVIRONMENT.apiUrl}${API.MINE_INCIDENT(mineIncidentGuid)}`,
+      `${ENVIRONMENT.apiUrl}${API.MINE_INCIDENT(mineGuid, mineIncidentGuid)}`,
       payload,
       createRequestHeader()
     )
     .then((response) => {
+      notification.success({
+        message: "Successfully updated incident.",
+        duration: 10,
+      });
       dispatch(success(reducerTypes.UPDATE_MINE_INCIDENT));
       return response;
     })

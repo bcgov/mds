@@ -9,9 +9,7 @@ ShallowWrapper {
       [MockFunction] {
         "calls": Array [
           Array [
-            Object {
-              "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-            },
+            "18133c75-49ad-4101-85f3-a43e35ae989a",
           ],
         ],
       }
@@ -108,7 +106,7 @@ ShallowWrapper {
         >
           <Connect(AuthorizationWrapper)
             isMajorMine={undefined}
-            permission="role_create"
+            permission="role_edit_permits"
           >
             <AddButton
               onClick={[Function]}
@@ -132,7 +130,7 @@ ShallowWrapper {
           >
             <Connect(AuthorizationWrapper)
               isMajorMine={undefined}
-              permission="role_create"
+              permission="role_edit_permits"
             >
               <AddButton
                 onClick={[Function]}
@@ -162,7 +160,7 @@ ShallowWrapper {
           "props": Object {
             "children": <Connect(AuthorizationWrapper)
               isMajorMine={undefined}
-              permission="role_create"
+              permission="role_edit_permits"
             >
               <AddButton
                 onClick={[Function]}
@@ -184,7 +182,7 @@ ShallowWrapper {
                 Add a New Permit
               </AddButton>,
               "isMajorMine": undefined,
-              "permission": "role_create",
+              "permission": "role_edit_permits",
             },
             "ref": null,
             "rendered": Object {
@@ -223,7 +221,7 @@ ShallowWrapper {
           >
             <Connect(AuthorizationWrapper)
               isMajorMine={undefined}
-              permission="role_create"
+              permission="role_edit_permits"
             >
               <AddButton
                 onClick={[Function]}
@@ -247,7 +245,7 @@ ShallowWrapper {
             >
               <Connect(AuthorizationWrapper)
                 isMajorMine={undefined}
-                permission="role_create"
+                permission="role_edit_permits"
               >
                 <AddButton
                   onClick={[Function]}
@@ -277,7 +275,7 @@ ShallowWrapper {
             "props": Object {
               "children": <Connect(AuthorizationWrapper)
                 isMajorMine={undefined}
-                permission="role_create"
+                permission="role_edit_permits"
               >
                 <AddButton
                   onClick={[Function]}
@@ -299,7 +297,7 @@ ShallowWrapper {
                   Add a New Permit
                 </AddButton>,
                 "isMajorMine": undefined,
-                "permission": "role_create",
+                "permission": "role_edit_permits",
               },
               "ref": null,
               "rendered": Object {

@@ -29,7 +29,7 @@ class  Contacts extends GebReportingSpec {
         to Dashboard
 
         when: "I click on the contact page link."
-        contactPageButton.click()
+        waitFor() { contactPageButton.click() }
 
         then: "I am on the contact tab"
         at ContactsPage
@@ -62,13 +62,15 @@ class  Contacts extends GebReportingSpec {
         and: "I click on the contact page link."
         waitFor() { createContactButton.click() }
 
-        and: "I fill out the first form."
+        and: "I fill out the create contacts forms."
         createContactForm.createContactFormOne(input1)
         createContactForm.createContactFormTwo(input2)
         waitFor {toastMessage != null}
 
         then: "I should get a successful message"
         successfulToastMessage != null
+        def FilteredContacts = new ContactsPage(url: "dashboard/contacts?page=1&per_page=25&first_name="+ Const.CONTACT_FIRST_NAME)
+        to FilteredContacts
         contactTableNameOne != null
     }
 

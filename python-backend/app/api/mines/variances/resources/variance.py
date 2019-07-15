@@ -9,8 +9,8 @@ from app.extensions import api, db
 
 from ...mine.models.mine import Mine
 from ....documents.mines.models.mine_document import MineDocument
-from ....utils.access_decorators import (requires_any_of, MINE_VIEW, MINE_CREATE,
-                                         MINESPACE_PROPONENT)
+from ....utils.access_decorators import (
+    requires_any_of, VIEW_ALL, MINE_EDIT, EDIT_VARIANCE, MINESPACE_PROPONENT)
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.mines.mine_api_models import VARIANCE_MODEL
@@ -64,10 +64,11 @@ class MineVarianceResource(Resource, UserMixin, ErrorMixin):
             'mine_guid': 'GUID of the mine to which the variance is associated',
             'variance_guid': 'GUID of the variance to fetch'
         })
-    @requires_any_of([MINE_VIEW, MINESPACE_PROPONENT])
+    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     @api.marshal_with(VARIANCE_MODEL, code=200)
     def get(self, mine_guid, variance_guid):
-        variance = Variance.find_by_mine_guid_and_variance_guid(mine_guid, variance_guid)
+        variance = Variance.find_by_mine_guid_and_variance_guid(
+            mine_guid, variance_guid)
 
         if variance is None:
             raise NotFound('Unable to fetch variance')
@@ -80,10 +81,11 @@ class MineVarianceResource(Resource, UserMixin, ErrorMixin):
             'mine_guid': 'GUID of the mine to which the variance is associated',
             'variance_guid': 'GUID of the variance to update'
         })
-    @requires_any_of([MINE_CREATE, MINESPACE_PROPONENT])
+    @requires_any_of([EDIT_VARIANCE, MINESPACE_PROPONENT])
     @api.marshal_with(VARIANCE_MODEL, code=200)
     def put(self, mine_guid, variance_guid):
-        variance = Variance.find_by_mine_guid_and_variance_guid(mine_guid, variance_guid)
+        variance = Variance.find_by_mine_guid_and_variance_guid(
+            mine_guid, variance_guid)
         if variance is None:
             raise NotFound('Unable to fetch variance')
 
@@ -94,8 +96,7 @@ class MineVarianceResource(Resource, UserMixin, ErrorMixin):
             inspector = Party.find_by_party_guid(inspector_party_guid)
             if not inspector:
                 raise BadRequest('Unable to find new inspector.')
-            business_roles = PartyBusinessRoleAppointment.find_by_party_guid(inspector_party_guid)
-            if not [x for x in business_roles if x.party_business_role_code == 'INS']:
+            if not 'INS' in inspector.business_roles_codes:
                 raise BadRequest('Party is not an inspector.')
 
             variance.inspector_party_guid = inspector_party_guid

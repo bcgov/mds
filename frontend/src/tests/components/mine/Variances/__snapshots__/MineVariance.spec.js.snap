@@ -196,7 +196,7 @@ ShallowWrapper {
           className="inline-flex flex-end"
         >
           <Connect(AuthorizationWrapper)
-            permission="role_create"
+            permission="role_edit_variances"
           >
             <AddButton
               onClick={[Function]}
@@ -213,7 +213,7 @@ ShallowWrapper {
             Variance Applications
           </h4>
           <br />
-          <MineVarianceTable
+          <Connect(MineVarianceTable)
             complianceCodesHash={
               Object {
                 "305": "2.3.7 - Spills",
@@ -327,14 +327,13 @@ ShallowWrapper {
             Approved Variances
           </h4>
           <br />
-          <MineVarianceTable
+          <Connect(MineVarianceTable)
             complianceCodesHash={
               Object {
                 "305": "2.3.7 - Spills",
                 "306": "2.3.8 - Flammable Waste Storage",
               }
             }
-            isApplication={false}
             mine={
               Object {
                 "mine_expected_documents": Array [
@@ -402,7 +401,6 @@ ShallowWrapper {
                 },
               }
             }
-            openEditVarianceModal={[Function]}
             openViewVarianceModal={[Function]}
             varianceStatusOptionsHash={
               Object {
@@ -445,7 +443,7 @@ ShallowWrapper {
         "nodeType": "host",
         "props": Object {
           "children": <Connect(AuthorizationWrapper)
-            permission="role_create"
+            permission="role_edit_variances"
           >
             <AddButton
               onClick={[Function]}
@@ -466,7 +464,7 @@ ShallowWrapper {
             >
               Add variance
             </AddButton>,
-            "permission": "role_create",
+            "permission": "role_edit_variances",
           },
           "ref": null,
           "rendered": Object {
@@ -498,7 +496,7 @@ ShallowWrapper {
               Variance Applications
             </h4>,
             <br />,
-            <MineVarianceTable
+            <Connect(MineVarianceTable)
               complianceCodesHash={
                 Object {
                   "305": "2.3.7 - Spills",
@@ -612,14 +610,13 @@ ShallowWrapper {
               Approved Variances
             </h4>,
             <br />,
-            <MineVarianceTable
+            <Connect(MineVarianceTable)
               complianceCodesHash={
                 Object {
                   "305": "2.3.7 - Spills",
                   "306": "2.3.8 - Flammable Waste Storage",
                 }
               }
-              isApplication={false}
               mine={
                 Object {
                   "mine_expected_documents": Array [
@@ -687,7 +684,6 @@ ShallowWrapper {
                   },
                 }
               }
-              openEditVarianceModal={[Function]}
               openViewVarianceModal={[Function]}
               varianceStatusOptionsHash={
                 Object {
@@ -899,7 +895,6 @@ ShallowWrapper {
                 "305": "2.3.7 - Spills",
                 "306": "2.3.8 - Flammable Waste Storage",
               },
-              "isApplication": false,
               "mine": Object {
                 "mine_expected_documents": Array [
                   Object {
@@ -965,7 +960,6 @@ ShallowWrapper {
                   "verifying_user": null,
                 },
               },
-              "openEditVarianceModal": [Function],
               "openViewVarianceModal": [Function],
               "varianceStatusOptionsHash": Object {
                 "APP": "Approved",
@@ -1014,7 +1008,7 @@ ShallowWrapper {
             className="inline-flex flex-end"
           >
             <Connect(AuthorizationWrapper)
-              permission="role_create"
+              permission="role_edit_variances"
             >
               <AddButton
                 onClick={[Function]}
@@ -1031,7 +1025,7 @@ ShallowWrapper {
               Variance Applications
             </h4>
             <br />
-            <MineVarianceTable
+            <Connect(MineVarianceTable)
               complianceCodesHash={
                 Object {
                   "305": "2.3.7 - Spills",
@@ -1145,14 +1139,13 @@ ShallowWrapper {
               Approved Variances
             </h4>
             <br />
-            <MineVarianceTable
+            <Connect(MineVarianceTable)
               complianceCodesHash={
                 Object {
                   "305": "2.3.7 - Spills",
                   "306": "2.3.8 - Flammable Waste Storage",
                 }
               }
-              isApplication={false}
               mine={
                 Object {
                   "mine_expected_documents": Array [
@@ -1220,7 +1213,6 @@ ShallowWrapper {
                   },
                 }
               }
-              openEditVarianceModal={[Function]}
               openViewVarianceModal={[Function]}
               varianceStatusOptionsHash={
                 Object {
@@ -1263,7 +1255,7 @@ ShallowWrapper {
           "nodeType": "host",
           "props": Object {
             "children": <Connect(AuthorizationWrapper)
-              permission="role_create"
+              permission="role_edit_variances"
             >
               <AddButton
                 onClick={[Function]}
@@ -1284,7 +1276,7 @@ ShallowWrapper {
               >
                 Add variance
               </AddButton>,
-              "permission": "role_create",
+              "permission": "role_edit_variances",
             },
             "ref": null,
             "rendered": Object {
@@ -1316,7 +1308,7 @@ ShallowWrapper {
                 Variance Applications
               </h4>,
               <br />,
-              <MineVarianceTable
+              <Connect(MineVarianceTable)
                 complianceCodesHash={
                   Object {
                     "305": "2.3.7 - Spills",
@@ -1430,14 +1422,13 @@ ShallowWrapper {
                 Approved Variances
               </h4>,
               <br />,
-              <MineVarianceTable
+              <Connect(MineVarianceTable)
                 complianceCodesHash={
                   Object {
                     "305": "2.3.7 - Spills",
                     "306": "2.3.8 - Flammable Waste Storage",
                   }
                 }
-                isApplication={false}
                 mine={
                   Object {
                     "mine_expected_documents": Array [
@@ -1505,7 +1496,6 @@ ShallowWrapper {
                     },
                   }
                 }
-                openEditVarianceModal={[Function]}
                 openViewVarianceModal={[Function]}
                 varianceStatusOptionsHash={
                   Object {
@@ -1717,7 +1707,6 @@ ShallowWrapper {
                   "305": "2.3.7 - Spills",
                   "306": "2.3.8 - Flammable Waste Storage",
                 },
-                "isApplication": false,
                 "mine": Object {
                   "mine_expected_documents": Array [
                     Object {
@@ -1783,7 +1772,6 @@ ShallowWrapper {
                     "verifying_user": null,
                   },
                 },
-                "openEditVarianceModal": [Function],
                 "openViewVarianceModal": [Function],
                 "varianceStatusOptionsHash": Object {
                   "APP": "Approved",

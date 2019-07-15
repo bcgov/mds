@@ -4,9 +4,9 @@ import { Icon, Dropdown, Menu, Button, Row, Col } from "antd";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import CustomPropTypes from "@/customPropTypes";
 import MediaQuery from "react-responsive";
 import { includes } from "lodash";
+import CustomPropTypes from "@/customPropTypes";
 import { getUserInfo } from "@/selectors/authenticationSelectors";
 import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
@@ -109,7 +109,7 @@ export class NavBar extends Component {
           <Icon type="down" />
         </button>
       </Dropdown>
-      <AuthorizationWrapper inTesting>
+      <AuthorizationWrapper permission={Permission.ADMIN}>
         <Dropdown
           overlay={this.unverifiedMinesMenu()}
           placement="bottomLeft"
@@ -201,24 +201,22 @@ export class NavBar extends Component {
               </Col>
             </Row>
           </AuthorizationWrapper>
-          <AuthorizationWrapper inTesting>
-            <Row>
-              <Col span={24}>
-                <Link to={router.CUSTOM_HOME_PAGE.route}>
-                  <Button
-                    id={
-                      includes(this.props.activeButton, router.CUSTOM_HOME_PAGE.route)
-                        ? "active-menu-btn"
-                        : ""
-                    }
-                    className="menu--hamburger__btn--link"
-                  >
-                    My Dashboard
-                  </Button>
-                </Link>
-              </Col>
-            </Row>
-          </AuthorizationWrapper>
+          <Row>
+            <Col span={24}>
+              <Link to={router.CUSTOM_HOME_PAGE.route}>
+                <Button
+                  id={
+                    includes(this.props.activeButton, router.CUSTOM_HOME_PAGE.route)
+                      ? "active-menu-btn"
+                      : ""
+                  }
+                  className="menu--hamburger__btn--link"
+                >
+                  My Dashboard
+                </Button>
+              </Link>
+            </Col>
+          </Row>
           <Row>
             <Col span={24}>
               <Link to={router.LOGOUT.route}>
@@ -240,14 +238,12 @@ export class NavBar extends Component {
 
   menu = () => (
     <Menu id="menu__dropdown">
-      <AuthorizationWrapper inTesting>
-        <div className="custom-menu-item">
-          <Link to={router.CUSTOM_HOME_PAGE.route}>
-            <button type="button">My Dashboard</button>
-          </Link>
-        </div>
-      </AuthorizationWrapper>
       <Menu.Item key="1">
+        <Link to={router.CUSTOM_HOME_PAGE.route}>
+          <button type="button">My Dashboard</button>
+        </Link>
+      </Menu.Item>
+      <Menu.Item key="2">
         <Link to={router.LOGOUT.route}>
           <button type="button">Log Out</button>
         </Link>

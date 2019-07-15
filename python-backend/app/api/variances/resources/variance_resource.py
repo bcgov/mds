@@ -1,13 +1,14 @@
 from flask_restplus import Resource
 from flask import request
 from sqlalchemy_filters import apply_pagination, apply_filters
+from sqlalchemy import desc
 
 from app.extensions import api
 
 from ..models.variance import Variance
 from ..models.variance_application_status_code import VarianceApplicationStatusCode
 from ..response_models import PAGINATED_VARIANCE_LIST
-from ...utils.access_decorators import requires_any_of, MINE_VIEW
+from ...utils.access_decorators import requires_any_of, VIEW_ALL
 from ...utils.resources_mixins import UserMixin, ErrorMixin
 
 PAGE_DEFAULT = 1
@@ -16,14 +17,14 @@ PER_PAGE_DEFAULT = 25
 
 class VarianceResource(Resource, UserMixin, ErrorMixin):
     @api.doc(
-        description='Get a list of variances.',
+        description='Get a list of variances. Order: received_date DESC',
         params={
             'page': f'The page number of paginated records to return. Default: {PAGE_DEFAULT}',
             'per_page': f'The number of records to return per page. Default: {PER_PAGE_DEFAULT}',
             'variance_application_status_code':
             'Comma-separated list of code statuses to include in results. Default: All status codes.',
         })
-    @requires_any_of([MINE_VIEW])
+    @requires_any_of([VIEW_ALL])
     @api.marshal_with(PAGINATED_VARIANCE_LIST, code=200)
     def get(self):
         records, pagination_details = self._apply_filters_and_pagination(
@@ -55,7 +56,7 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             status_filter_values = application_status.split(',')
 
         filtered_query = apply_filters(
-            Variance.query,
+            Variance.query.order_by(desc(Variance.received_date)),
             [{
                 'field': 'variance_application_status_code',
                 'op': 'in',

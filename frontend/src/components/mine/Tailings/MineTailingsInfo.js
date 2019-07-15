@@ -111,7 +111,6 @@ export class MineTailingsInfo extends Component {
 
     if (doc) {
       const initialValues = {
-        tsf_report_name: doc.exp_document_name === "None" ? null : doc.exp_document_name,
         tsf_report_due_date: doc.due_date === "None" ? null : doc.due_date,
         tsf_report_received_date: doc.received_date,
         tsf_report_status: doc.expected_document_status.exp_document_status_code,
@@ -122,7 +121,13 @@ export class MineTailingsInfo extends Component {
         "exp_document_status_code"
       );
       this.props.openModal({
-        props: { onSubmit, title, statusOptions, initialValues, selectedDocument: doc },
+        props: {
+          onSubmit,
+          title: `${title}: ${doc.exp_document_name}`,
+          statusOptions,
+          initialValues,
+          selectedDocument: doc,
+        },
         content: modalConfig.EDIT_TAILINGS_REPORT,
       });
     }
@@ -153,7 +158,7 @@ export class MineTailingsInfo extends Component {
               </div>
               <div className="inline-flex between">
                 <AuthorizationWrapper
-                  permission={Permission.CREATE}
+                  permission={Permission.EDIT_MINES}
                   isMajorMine={this.props.mine.major_mine_ind}
                 >
                   <AddButton

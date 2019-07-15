@@ -27,7 +27,7 @@ import {
   fetchMineComplianceCodes,
   fetchMineIncidentFollowActionOptions,
   fetchMineIncidentDeterminationOptions,
-  setOptionsLoaded,
+  fetchMineIncidentStatusCodeOptions,
   fetchVarianceDocumentCategoryOptions,
   fetchVarianceStatusOptions,
 } from "@/actionCreators/staticContentActionCreator";
@@ -55,7 +55,6 @@ import {
   getVarianceStatusOptionsHash,
   getDropdownVarianceDocumentCategoryOptions,
   getVarianceDocumentCategoryOptionsHash,
-  getOptionsLoaded,
 } from "@/selectors/staticContentSelectors";
 import { getMineComplianceInfo } from "@/selectors/complianceSelectors";
 import { getVarianceApplications, getApprovedVariances } from "@/selectors/varianceSelectors";
@@ -81,10 +80,11 @@ import MinePermitInfo from "@/components/mine/Permit/MinePermitInfo";
 import MineApplicationInfo from "@/components/mine/Applications/MineApplicationInfo";
 import Loading from "@/components/common/Loading";
 import { formatParamStringToArray } from "@/utils/helpers";
-import { detectProdEnvironment } from "@/utils/environmentUtils";
 import { getUserAccessData } from "@/selectors/authenticationSelectors";
-import { USER_ROLES } from "@/constants/environment";
-import * as Permission from "@/constants/permissions";
+import { storeRegionOptions, storeTenureTypes } from "@/actions/staticContentActions";
+import { storeVariances } from "@/actions/varianceActions";
+import { storePermits } from "@/actions/permitActions";
+import { storeMine } from "@/actions/mineActions";
 
 /**
  * @class MineDashboard.js is an individual mines dashboard, gets Mine data from redux and passes into children.
@@ -102,14 +102,12 @@ const propTypes = {
   createVariance: PropTypes.func.isRequired,
   createTailingsStorageFacility: PropTypes.func.isRequired,
   fetchStatusOptions: PropTypes.func.isRequired,
-  setOptionsLoaded: PropTypes.func.isRequired,
   fetchMineTenureTypes: PropTypes.func.isRequired,
   fetchMineComplianceCodes: PropTypes.func.isRequired,
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
   mineTenureHash: PropTypes.objectOf(PropTypes.string),
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
-  optionsLoaded: PropTypes.bool.isRequired,
   complianceCodes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineComplianceInfo: CustomPropTypes.mineComplianceInfo,
@@ -117,6 +115,7 @@ const propTypes = {
   fetchApplications: PropTypes.func.isRequired,
   fetchMineIncidentFollowActionOptions: PropTypes.func.isRequired,
   fetchMineIncidentDeterminationOptions: PropTypes.func.isRequired,
+  fetchMineIncidentStatusCodeOptions: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   varianceStatusOptions: CustomPropTypes.options.isRequired,
@@ -152,19 +151,17 @@ export class MineDashboard extends Component {
   componentWillMount() {
     const { id, activeTab } = this.props.match.params;
     this.loadMineData(id);
-    if (!this.props.optionsLoaded) {
-      this.props.fetchStatusOptions();
-      this.props.fetchRegionOptions();
-      this.props.fetchMineTenureTypes();
-      this.props.fetchMineDisturbanceOptions();
-      this.props.fetchMineCommodityOptions();
-      this.props.fetchPartyRelationshipTypes();
-      this.props.fetchPermitStatusOptions();
-      this.props.fetchApplicationStatusOptions();
-      this.props.fetchMineIncidentFollowActionOptions();
-      this.props.fetchMineIncidentDeterminationOptions();
-      this.props.setOptionsLoaded();
-    }
+    this.props.fetchStatusOptions();
+    this.props.fetchRegionOptions();
+    this.props.fetchMineTenureTypes();
+    this.props.fetchMineDisturbanceOptions();
+    this.props.fetchMineCommodityOptions();
+    this.props.fetchPartyRelationshipTypes();
+    this.props.fetchPermitStatusOptions();
+    this.props.fetchApplicationStatusOptions();
+    this.props.fetchMineIncidentFollowActionOptions();
+    this.props.fetchMineIncidentDeterminationOptions();
+    this.props.fetchMineIncidentStatusCodeOptions();
     this.props.fetchMineComplianceCodes();
     this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
     this.props.fetchSubscribedMinesByUser();
@@ -280,10 +277,9 @@ export class MineDashboard extends Component {
   loadMineData(id) {
     this.props.fetchMineRecordById(id).then(() => {
       this.props.fetchApplications({ mine_guid: this.props.mines[id].mine_guid });
-      this.props.fetchPermits({ mine_guid: this.props.mines[id].mine_guid });
+      this.props.fetchPermits(this.props.mines[id].mine_guid);
       this.props.fetchVariancesByMine({ mineGuid: id });
       this.setState({ isLoaded: true });
-      this.props.fetchVariancesByMine({ mineGuid: id });
       this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
       this.props.fetchApplications({ mine_guid: id });
       this.props.fetchMineComplianceInfo(this.props.mines[id].mine_no, true).then((data) => {
@@ -298,10 +294,6 @@ export class MineDashboard extends Component {
   render() {
     const { id } = this.props.match.params;
     const mine = this.props.mines[id];
-    const isDevOrTest = !detectProdEnvironment();
-    // temporary check, cannot wrap tabs in an AuthWrapper
-    const isAdmin = this.props.userRoles.includes(USER_ROLES[Permission.ADMIN]);
-    const showVariances = isDevOrTest || isAdmin;
     if (!mine) {
       return <Loading />;
     }
@@ -316,6 +308,20 @@ export class MineDashboard extends Component {
                 handleUnSubscribe={this.handleUnSubscribe}
                 handleSubscription={this.handleSubscription}
                 subscribed={this.props.subscribed}
+                refreshActions={[storeMine]}
+                refreshListActions={[
+                  storeRegionOptions,
+                  storeTenureTypes,
+                  storeVariances,
+                  storePermits,
+                ]}
+                refreshRequests={[
+                  this.props.fetchRegionOptions,
+                  this.props.fetchMineTenureTypes,
+                  () => this.props.fetchVariancesByMine({ mineGuid: id }),
+                  () => this.props.fetchPermits(mine.mine_guid),
+                  () => this.props.fetchMineRecordById(id),
+                ]}
               />
             </div>
             <div className="dashboard__content">
@@ -368,34 +374,31 @@ export class MineDashboard extends Component {
                     />
                   </div>
                 </TabPane>
-                {/* can't wrap a TabPane in the authWrapper without interfering with the Tabs behaviour */}
-                {showVariances && (
-                  <TabPane tab="Variance" key="variance">
-                    <div className="tab__content">
-                      <MineVariance
-                        mine={mine}
-                        inspectors={this.props.inspectors}
-                        createVariance={this.props.createVariance}
-                        varianceDocumentCategoryOptions={this.props.varianceDocumentCategoryOptions}
-                        varianceDocumentCategoryOptionsHash={
-                          this.props.varianceDocumentCategoryOptionsHash
-                        }
-                        addDocumentToVariance={this.props.addDocumentToVariance}
-                        openModal={this.props.openModal}
-                        closeModal={this.props.closeModal}
-                        fetchVariancesByMine={this.props.fetchVariancesByMine}
-                        varianceApplications={this.props.varianceApplications}
-                        approvedVariances={this.props.approvedVariances}
-                        complianceCodes={this.props.complianceCodes}
-                        complianceCodesHash={this.props.complianceCodesHash}
-                        varianceStatusOptions={this.props.varianceStatusOptions}
-                        updateVariance={this.props.updateVariance}
-                        varianceStatusOptionsHash={this.props.varianceStatusOptionsHash}
-                        inspectorsHash={this.props.inspectorsHash}
-                      />
-                    </div>
-                  </TabPane>
-                )}
+                <TabPane tab="Variance" key="variance">
+                  <div className="tab__content">
+                    <MineVariance
+                      mine={mine}
+                      inspectors={this.props.inspectors}
+                      createVariance={this.props.createVariance}
+                      varianceDocumentCategoryOptions={this.props.varianceDocumentCategoryOptions}
+                      varianceDocumentCategoryOptionsHash={
+                        this.props.varianceDocumentCategoryOptionsHash
+                      }
+                      addDocumentToVariance={this.props.addDocumentToVariance}
+                      openModal={this.props.openModal}
+                      closeModal={this.props.closeModal}
+                      fetchVariancesByMine={this.props.fetchVariancesByMine}
+                      varianceApplications={this.props.varianceApplications}
+                      approvedVariances={this.props.approvedVariances}
+                      complianceCodes={this.props.complianceCodes}
+                      complianceCodesHash={this.props.complianceCodesHash}
+                      varianceStatusOptions={this.props.varianceStatusOptions}
+                      updateVariance={this.props.updateVariance}
+                      varianceStatusOptionsHash={this.props.varianceStatusOptionsHash}
+                      inspectorsHash={this.props.inspectorsHash}
+                    />
+                  </div>
+                </TabPane>
                 {/* TODO: Unhide for July release */
                 false && (
                   <TabPane tab="Tenure" key="tenure">
@@ -411,18 +414,16 @@ export class MineDashboard extends Component {
                     </div>
                   </TabPane>
                 )}
-                {/* can't wrap a TabPane in the authWrapper without interfering with the Tabs behaviour */}
-                {isDevOrTest && (
-                  <TabPane tab="Incidents" key="incidents">
-                    <div className="tab__content">
-                      <MineIncidents
-                        mine={mine}
-                        openModal={this.props.openModal}
-                        closeModal={this.props.closeModal}
-                      />
-                    </div>
-                  </TabPane>
-                )}
+                <TabPane tab="Incidents" key="incidents">
+                  <div className="tab__content">
+                    <MineIncidents
+                      mine={mine}
+                      inspectors={this.props.inspectors}
+                      openModal={this.props.openModal}
+                      closeModal={this.props.closeModal}
+                    />
+                  </div>
+                </TabPane>
               </Tabs>
             </div>
           </div>
@@ -440,7 +441,6 @@ const mapStateToProps = (state) => ({
   mineDisturbanceOptionsHash: getDisturbanceOptionHash(state),
   currentMineTypes: getCurrentMineTypes(state),
   transformedMineTypes: getTransformedMineTypes(state),
-  optionsLoaded: getOptionsLoaded(state),
   subscribed: getIsUserSubscribed(state),
   approvedVariances: getApprovedVariances(state),
   varianceApplications: getVarianceApplications(state),
@@ -475,7 +475,6 @@ const mapDispatchToProps = (dispatch) =>
       fetchPartyRelationshipTypes,
       fetchPermitStatusOptions,
       fetchApplicationStatusOptions,
-      setOptionsLoaded,
       fetchMineComplianceInfo,
       fetchApplications,
       fetchSubscribedMinesByUser,
@@ -490,6 +489,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchInspectors,
       fetchMineIncidentFollowActionOptions,
       fetchMineIncidentDeterminationOptions,
+      fetchMineIncidentStatusCodeOptions,
       fetchVarianceStatusOptions,
       updateVariance,
     },

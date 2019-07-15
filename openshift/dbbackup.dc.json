@@ -9,19 +9,26 @@
       "kind": "PersistentVolumeClaim",
       "apiVersion": "v1",
       "metadata": {
-        "name": "mds-database-backup${SUFFIX}",
-        "annotations": {
-          "volume.beta.kubernetes.io/storage-class": "gluster-file",
-          "volume.beta.kubernetes.io/storage-provisioner": "kubernetes.io/glusterfs"
-        }
+        "name": "mds-db-backup-verification${SUFFIX}"
       },
       "spec": {
-        "accessModes": ["ReadWriteMany"],
+        "storageClassName": "gluster-block",
+        "accessModes": ["ReadWriteOnce"],
         "resources": {
           "requests": {
-            "storage": "${PERSISTENT_VOLUME_SIZE}"
+            "storage": "${VERIFICATION_VOLUME_SIZE}"
           }
         }
+      }
+    },
+    {
+      "kind": "ConfigMap",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "mds-db-backup-config${SUFFIX}"
+      },
+      "data": {
+        "backup.conf": "${DATABASE_SERVICE_NAME}/mds\n0 2 * * * default ./backup.sh -s\n"
       }
     },
     {
@@ -84,9 +91,27 @@
           "spec": {
             "volumes": [
               {
-                "name": "mds-database-backup-data",
+                "name": "mds-db-backup-data",
                 "persistentVolumeClaim": {
-                  "claimName": "mds-database-backup${SUFFIX}"
+                  "claimName": "${NFS_VOLUME_IDENTIFIER}"
+                }
+              },
+              {
+                "name": "mds-db-backup-verification",
+                "persistentVolumeClaim": {
+                  "claimName": "mds-db-backup-verification${SUFFIX}"
+                }
+              },
+              {
+                "name": "mds-db-backup-config-volume",
+                "configMap": {
+                  "name": "mds-db-backup-config${SUFFIX}",
+                  "items": [
+                    {
+                      "key": "backup.conf",
+                      "path": "backup.conf"
+                    }
+                  ]
                 }
               }
             ],
@@ -94,13 +119,6 @@
               {
                 "name": "backup",
                 "image": " ",
-                "ports": [],
-                "command": [
-                  "bash",
-                  "-c",
-                  "cd / && if [[ $ENVIRONMENT_NAME != 'prod' ]]; then tail -f /dev/null; else ./backup.sh; fi"
-                ],
-                "args": [],
                 "env": [
                   {
                     "name": "BACKUP_STRATEGY",
@@ -112,34 +130,22 @@
                   },
                   {
                     "name": "DAILY_BACKUPS",
-                    "value": "6"
+                    "value": "5"
                   },
                   {
                     "name": "WEEKLY_BACKUPS",
-                    "value": "0"
+                    "value": "1"
                   },
                   {
                     "name": "MONTHLY_BACKUPS",
-                    "value": "0"
-                  },
-                  {
-                    "name": "BACKUP_PERIOD",
-                    "value": "1d"
-                  },
-                  {
-                    "name": "DATABASE_SERVICE_NAME",
-                    "value": "${DATABASE_SERVICE_NAME}"
-                  },
-                  {
-                    "name": "POSTGRESQL_DATABASE",
-                    "value": "mds"
+                    "value": "1"
                   },
                   {
                     "name": "POSTGRESQL_USER",
                     "valueFrom": {
                       "secretKeyRef": {
                         "name": "${DATABASE_SERVICE_NAME}",
-                        "key": "database-user"
+                        "key": "database-admin-user"
                       }
                     }
                   },
@@ -148,13 +154,30 @@
                     "valueFrom": {
                       "secretKeyRef": {
                         "name": "${DATABASE_SERVICE_NAME}",
-                        "key": "database-password"
+                        "key": "database-admin-password"
                       }
                     }
                   },
                   {
+                    "name": "WEBHOOK_URL",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${WEBHOOK_SECRET_NAME}",
+                        "key": "mds-chatops-db-backup"
+                      }
+                    }
+                  },
+                  {
+                    "name": "DATABASE_SERVER_TIMEOUT",
+                    "value": "600"
+                  },
+                  {
                     "name": "ENVIRONMENT_NAME",
                     "value": "${ENVIRONMENT_NAME}"
+                  },
+                  {
+                    "name": "ENVIRONMENT_FRIENDLY_NAME",
+                    "value": "${ENVIRONMENT_FRIENDLY_NAME}"
                   }
                 ],
                 "resources": {
@@ -169,8 +192,17 @@
                 },
                 "volumeMounts": [
                   {
-                    "name": "mds-database-backup-data",
+                    "name": "mds-db-backup-data",
                     "mountPath": "/backups/"
+                  },
+                  {
+                    "name": "mds-db-backup-verification",
+                    "mountPath": "/var/lib/pgsql/data"
+                  },
+                  {
+                    "name": "mds-db-backup-config-volume",
+                    "mountPath": "/backup.conf",
+                    "subPath": "backup.conf"
                   }
                 ]
               }
@@ -206,14 +238,28 @@
       "value": "postgresql"
     },
     {
+      "name": "WEBHOOK_SECRET_NAME",
+      "value": "template.mds-rocket-chat-integrations"
+    },
+    {
+      "name": "NFS_VOLUME_IDENTIFIER",
+      "description": "Generated identifier of the NFS volume",
+      "required": true,
+      "value": "bk-empr-mds-dev-rziu7r9a88e7"
+    },
+    {
       "name": "ENVIRONMENT_NAME",
       "displayName": "Environment Name (Environment Id)",
       "description": "The name or Id of the environment.  This variable is used by the webhook integration to identify the environment in which the backup notifications originate.",
       "required": false,
-      "value": "dev"
+      "value": "empr-mds-dev"
     },
     {
-      "name": "PERSISTENT_VOLUME_SIZE",
+      "name": "ENVIRONMENT_FRIENDLY_NAME",
+      "value": "BC Mines Digital Services (DEV)"
+    },
+    {
+      "name": "VERIFICATION_VOLUME_SIZE",
       "displayName": "Persistent Volume Size",
       "description": "The size of the persistent volume , e.g. 512Mi, 1Gi, 2Gi.",
       "required": true,
@@ -229,11 +275,11 @@
     },
     {
       "name": "MEMORY_REQUEST",
-      "value": "0Mi"
+      "value": "0"
     },
     {
       "name": "MEMORY_LIMIT",
-      "value": "0Mi"
+      "value": "0"
     }
   ]
 }

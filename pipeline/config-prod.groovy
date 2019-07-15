@@ -73,13 +73,15 @@ app {
                             'NAME':"mds-database-backup",
                             'SUFFIX': "${vars.deployment.suffix}",
                             'VERSION':"${app.deployment.version}",
-                            'ENVIRONMENT_NAME':"${app.deployment.env.name}",
+                            'ENVIRONMENT_NAME':"${vars.deployment.namespace}",
+                            'ENVIRONMENT_FRIENDLY_NAME':"BC Mines Digital Services (PROD)",
                             'DATABASE_SERVICE_NAME':"mds-postgresql${vars.deployment.suffix}",
+                            'NFS_VOLUME_IDENTIFIER':"bk-empr-mds-prod-x7ux0bwhqnsa",
                             'CPU_REQUEST':"${vars.resources.backup.cpu_request}",
                             'CPU_LIMIT':"${vars.resources.backup.cpu_limit}",
                             'MEMORY_REQUEST':"${vars.resources.backup.memory_request}",
                             'MEMORY_LIMIT':"${vars.resources.backup.memory_limit}",
-                            'PERSISTENT_VOLUME_SIZE':"${vars.BACKUP_PVC_SIZE}"
+                            'VERIFICATION_VOLUME_SIZE':"${vars.BACKUP_VERIFICATION_PVC_SIZE}"
                     ]
                 ],
                 [
@@ -179,6 +181,8 @@ app {
                             'CPU_LIMIT':"${vars.resources.python.cpu_limit}",
                             'MEMORY_REQUEST':"${vars.resources.python.memory_request}",
                             'MEMORY_LIMIT':"${vars.resources.python.memory_limit}",
+                            'UWSGI_THREADS':"${vars.resources.python.uwsgi_threads}",
+                            'UWSGI_PROCESSES':"${vars.resources.python.uwsgi_processes}",
                             'REPLICA_MIN':"${vars.resources.python.replica_min}",
                             'REPLICA_MAX':"${vars.resources.python.replica_max}",
                             'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
@@ -189,7 +193,7 @@ app {
                             'DB_NRIS_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}-nris",
                             'REDIS_CONFIG_NAME': "mds-redis${vars.deployment.suffix}",
                             'CACHE_REDIS_HOST': "mds-redis${vars.deployment.suffix}",
-                            'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled}",
+                            'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled_core}",
                             'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name}",
                             'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
@@ -207,6 +211,8 @@ app {
                             'CPU_LIMIT':"${vars.resources.python_lite.cpu_limit}",
                             'MEMORY_REQUEST':"${vars.resources.python_lite.memory_request}",
                             'MEMORY_LIMIT':"${vars.resources.python_lite.memory_limit}",
+                            'UWSGI_THREADS':"${vars.resources.python_lite.uwsgi_threads}",
+                            'UWSGI_PROCESSES':"${vars.resources.python_lite.uwsgi_processes}",
                             'REPLICA_MIN':"${vars.resources.python_lite.replica_min}",
                             'REPLICA_MAX':"${vars.resources.python_lite.replica_max}",
                             'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
@@ -217,7 +223,7 @@ app {
                             'REDIS_CONFIG_NAME': "mds-redis${vars.deployment.suffix}",
                             'CACHE_REDIS_HOST': "mds-redis${vars.deployment.suffix}",
                             'DB_HOST': "mds-postgresql${vars.deployment.suffix}",
-                            'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled}",
+                            'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled_nris}",
                             'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name_nris}",
                             'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
@@ -239,6 +245,7 @@ app {
                     'file':'openshift/tools/metabase.dc.json',
                     'params':[
                             'NAME':"metabase",
+                            'NAME_DATABASE':"metabase-postgres",
                             'VERSION':"${app.deployment.version}",
                             'SUFFIX': "${vars.deployment.suffix}",
                             'METABASE_PVC_SIZE':"${vars.METABASE_PVC_SIZE}",
@@ -247,7 +254,11 @@ app {
                             'CPU_REQUEST':"${vars.resources.metabase.cpu_request}",
                             'CPU_LIMIT':"${vars.resources.metabase.cpu_limit}",
                             'MEMORY_REQUEST':"${vars.resources.metabase.memory_request}",
-                            'MEMORY_LIMIT':"${vars.resources.metabase.memory_limit}"
+                            'MEMORY_LIMIT':"${vars.resources.metabase.memory_limit}",
+                            'DB_CPU_REQUEST':"${vars.resources.metabase.db_cpu_request}",
+                            'DB_CPU_LIMIT':"${vars.resources.metabase.db_cpu_limit}",
+                            'DB_MEMORY_REQUEST':"${vars.resources.metabase.db_memory_request}",
+                            'DB_MEMORY_LIMIT':"${vars.resources.metabase.db_memory_limit}"
                     ]
                 ],
                 [
@@ -273,9 +284,9 @@ environments {
         vars {
             DB_PVC_SIZE = '50Gi'
             DOCUMENT_PVC_SIZE = '50Gi'
-            BACKUP_PVC_SIZE = '50Gi'
+            BACKUP_VERIFICATION_PVC_SIZE = '10Gi'
             LOG_PVC_SIZE = '5Gi'
-            METABASE_PVC_SIZE = '10Gi'
+            METABASE_PVC_SIZE = '20Gi'
             git {
                 changeId = "${opt.'pr'}"
             }
@@ -301,6 +312,8 @@ environments {
                     cpu_limit = "400m"
                     memory_request = "1.5Gi"
                     memory_limit = "3Gi"
+                    uwsgi_threads = 2
+                    uwsgi_processes = 4
                     replica_min = 2
                     replica_max = 4
                 }
@@ -309,6 +322,8 @@ environments {
                     cpu_limit = "200m"
                     memory_request = "512Mi"
                     memory_limit = "1Gi"
+                    uwsgi_threads = 2
+                    uwsgi_processes = 4
                     replica_min = 1
                     replica_max = 1
                 }
@@ -325,16 +340,20 @@ environments {
                     memory_limit = "2Gi"
                 }
                 backup {
-                    cpu_request = "100m"
-                    cpu_limit = "450m"
-                    memory_request = "1Gi"
-                    memory_limit = "2Gi"
+                    cpu_request = "0"
+                    cpu_limit = "0"
+                    memory_request = "0"
+                    memory_limit = "0"
                 }
                 metabase {
-                    cpu_request = "500m"
-                    cpu_limit = "1"
-                    memory_request = "2Gi"
-                    memory_limit = "4Gi"
+                    cpu_request = "100m"
+                    cpu_limit = "250m"
+                    memory_request = "1Gi"
+                    memory_limit = "2Gi"
+                    db_cpu_request = "100m"
+                    db_cpu_limit = "200m"
+                    db_memory_request = "1Gi"
+                    db_memory_limit = "2Gi"
                 }
                 logstash {
                     cpu_request = "50m"
@@ -363,7 +382,8 @@ environments {
                 namespace = 'empr-mds-prod'
                 node_env = "production"
                 map_portal_id = "803130a9bebb4035b3ac671aafab12d7"
-                elastic_enabled = 1
+                elastic_enabled_core = 1
+                elastic_enabled_nris = 1
                 elastic_service_name = "MDS Prod"
                 elastic_service_name_nris = "NRIS API Prod"
             }

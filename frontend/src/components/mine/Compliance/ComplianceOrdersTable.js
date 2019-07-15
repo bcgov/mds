@@ -1,6 +1,6 @@
 import React from "react";
 import { Table } from "antd";
-
+import moment from "moment";
 import { RED_CLOCK } from "@/constants/assets";
 import { formatDate } from "@/utils/helpers";
 import { COLOR } from "@/constants/styles";
@@ -91,7 +91,7 @@ const columns = [
         {formatDate(record.due_date) || "-"}
       </div>
     ),
-    sorter: (a, b) => (a.due_date > b.due_date ? -1 : 1),
+    sorter: (a, b) => (moment(a.due_date) > moment(b.due_date) ? -1 : 1),
     defaultSortOrder: "descend",
   },
 ];

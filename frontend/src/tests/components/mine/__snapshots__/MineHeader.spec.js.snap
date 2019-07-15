@@ -363,6 +363,9 @@ ShallowWrapper {
       ]
     }
     openModal={[MockFunction]}
+    refreshActions={Array []}
+    refreshListActions={Array []}
+    refreshRequests={Array []}
     transformedMineTypes={
       Object {
         "mine_commodity_code": Array [],
@@ -396,64 +399,56 @@ ShallowWrapper {
               mine3
             </h1>
             <div>
-              <Connect(AuthorizationWrapper)
-                isMajorMine={undefined}
-                permission="role_create"
-              >
-                <Dropdown
-                  className="full-height full-mobile"
-                  mouseEnterDelay={0.15}
-                  mouseLeaveDelay={0.1}
-                  onVisibleChange={[Function]}
-                  overlay={
-                    <Menu
-                      onClick={[Function]}
+              <div />
+              <Dropdown
+                className="full-height full-mobile"
+                mouseEnterDelay={0.15}
+                mouseLeaveDelay={0.1}
+                onVisibleChange={[Function]}
+                overlay={
+                  <Menu>
+                    <Connect(AuthorizationWrapper)
+                      isMajorMine={undefined}
+                      permission="role_edit_mines"
                     >
-                      <MenuItem>
-                        <button
-                          className="full"
-                          onClick={[Function]}
-                          type="button"
-                        >
-                          <img
-                            alt="pencil"
-                            className="padding-small"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
-                            }
-                          />
-                          Update Mine Record
-                        </button>
-                      </MenuItem>
-                      <MenuItem>
-                        <button
-                          className="full"
-                          onClick={[Function]}
-                          type="button"
-                        >
-                          <img
-                            alt="document"
-                            className="padding-small"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
-                            }
-                          />
-                          + Add TSF
-                        </button>
-                      </MenuItem>
-                      <Connect(AuthorizationWrapper)
-                        inTesting={true}
+                      <MenuItem
+                        onClick={[Function]}
                       >
                         <div
                           className="custom-menu-item"
                         >
                           <button
                             className="full"
-                            onClick={undefined}
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            <img
+                              alt="pencil"
+                              className="padding-small"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                            />
+                            Update Mine Record
+                          </button>
+                        </div>
+                      </MenuItem>
+                    </Connect(AuthorizationWrapper)>
+                    <Connect(AuthorizationWrapper)
+                      isMajorMine={undefined}
+                      permission="role_edit_mines"
+                    >
+                      <MenuItem
+                        onClick={[Function]}
+                      >
+                        <div
+                          className="custom-menu-item"
+                        >
+                          <button
+                            className="full"
+                            onClick={[Function]}
                             type="button"
                           >
                             <img
@@ -465,121 +460,137 @@ ShallowWrapper {
                                 }
                               }
                             />
-                            Subscribe
+                            + Add TSF
                           </button>
                         </div>
-                      </Connect(AuthorizationWrapper)>
-                      <Connect(AuthorizationWrapper)
-                        inTesting={true}
-                      >
-                        <div
-                          className="custom-menu-item"
-                        >
-                          <Popconfirm
-                            cancelText="No"
-                            icon={
-                              <Icon
-                                theme="filled"
-                                type="exclamation-circle"
-                              />
-                            }
-                            okText="Yes"
-                            okType="primary"
-                            onConfirm={[Function]}
-                            placement="left"
-                            title="Are you sure?"
-                            transitionName="zoom-big"
-                            trigger="click"
-                          >
-                            <button
-                              className="full"
-                              type="button"
-                            >
-                              <img
-                                alt="checkmark"
-                                className="padding-small"
-                                src={
-                                  Object {
-                                    "process": [Function],
-                                  }
-                                }
-                                width="30"
-                              />
-                              Verify Mine Data
-                            </button>
-                          </Popconfirm>
-                        </div>
-                      </Connect(AuthorizationWrapper)>
-                      <Connect(AuthorizationWrapper)
-                        inTesting={true}
-                      >
-                        <div
-                          className="custom-menu-item"
-                        >
-                          <Popconfirm
-                            cancelText="No"
-                            icon={
-                              <Icon
-                                theme="filled"
-                                type="exclamation-circle"
-                              />
-                            }
-                            okText="Yes"
-                            okType="primary"
-                            onConfirm={[Function]}
-                            placement="left"
-                            title="Are you sure?"
-                            transitionName="zoom-big"
-                            trigger="click"
-                          >
-                            <button
-                              className="full"
-                              type="button"
-                            >
-                              <img
-                                alt="hazard"
-                                className="padding-small"
-                                src={
-                                  Object {
-                                    "process": [Function],
-                                  }
-                                }
-                                width="30"
-                              />
-                              Mark Data for Verification
-                            </button>
-                          </Popconfirm>
-                        </div>
-                      </Connect(AuthorizationWrapper)>
-                    </Menu>
-                  }
-                  placement="bottomLeft"
-                  visible={false}
-                >
-                  <Button
-                    block={false}
-                    ghost={false}
-                    htmlType="button"
-                    loading={false}
-                    type="primary"
-                  >
+                      </MenuItem>
+                    </Connect(AuthorizationWrapper)>
                     <div
-                      className="padding-small"
+                      className="custom-menu-item"
                     >
-                      <img
-                        alt="Add/Edit"
-                        className="padding-small--right"
-                        src={
-                          Object {
-                            "process": [Function],
+                      <button
+                        className="full"
+                        onClick={undefined}
+                        type="button"
+                      >
+                        <img
+                          alt="document"
+                          className="padding-small"
+                          src={
+                            Object {
+                              "process": [Function],
+                            }
                           }
-                        }
-                      />
-                      Add/Edit
+                        />
+                        Subscribe
+                      </button>
                     </div>
-                  </Button>
-                </Dropdown>
-              </Connect(AuthorizationWrapper)>
+                    <Connect(AuthorizationWrapper)
+                      permission="role_admin"
+                    >
+                      <div
+                        className="custom-menu-item"
+                      >
+                        <Popconfirm
+                          cancelText="No"
+                          icon={
+                            <Icon
+                              theme="filled"
+                              type="exclamation-circle"
+                            />
+                          }
+                          okText="Yes"
+                          okType="primary"
+                          onConfirm={[Function]}
+                          placement="left"
+                          title="Are you sure?"
+                          transitionName="zoom-big"
+                          trigger="click"
+                        >
+                          <button
+                            className="full"
+                            type="button"
+                          >
+                            <img
+                              alt="checkmark"
+                              className="padding-small"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                              width="30"
+                            />
+                            Verify Mine Data
+                          </button>
+                        </Popconfirm>
+                      </div>
+                      <div
+                        className="custom-menu-item"
+                      >
+                        <Popconfirm
+                          cancelText="No"
+                          icon={
+                            <Icon
+                              theme="filled"
+                              type="exclamation-circle"
+                            />
+                          }
+                          okText="Yes"
+                          okType="primary"
+                          onConfirm={[Function]}
+                          placement="left"
+                          title="Are you sure?"
+                          transitionName="zoom-big"
+                          trigger="click"
+                        >
+                          <button
+                            className="full"
+                            type="button"
+                          >
+                            <img
+                              alt="hazard"
+                              className="padding-small"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                              width="30"
+                            />
+                            Mark Data for Verification
+                          </button>
+                        </Popconfirm>
+                      </div>
+                    </Connect(AuthorizationWrapper)>
+                  </Menu>
+                }
+                placement="bottomLeft"
+                visible={false}
+              >
+                <Button
+                  block={false}
+                  ghost={false}
+                  htmlType="button"
+                  loading={false}
+                  type="primary"
+                >
+                  <div
+                    className="padding-small"
+                  >
+                    <img
+                      alt="Add/Edit"
+                      className="padding-small--right"
+                      src={
+                        Object {
+                          "process": [Function],
+                        }
+                      }
+                    />
+                    Add/Edit
+                  </div>
+                </Button>
+              </Dropdown>
             </div>
           </div>
           <Divider
@@ -824,64 +835,56 @@ ShallowWrapper {
                 mine3
               </h1>
               <div>
-                <Connect(AuthorizationWrapper)
-                  isMajorMine={undefined}
-                  permission="role_create"
-                >
-                  <Dropdown
-                    className="full-height full-mobile"
-                    mouseEnterDelay={0.15}
-                    mouseLeaveDelay={0.1}
-                    onVisibleChange={[Function]}
-                    overlay={
-                      <Menu
-                        onClick={[Function]}
+                <div />
+                <Dropdown
+                  className="full-height full-mobile"
+                  mouseEnterDelay={0.15}
+                  mouseLeaveDelay={0.1}
+                  onVisibleChange={[Function]}
+                  overlay={
+                    <Menu>
+                      <Connect(AuthorizationWrapper)
+                        isMajorMine={undefined}
+                        permission="role_edit_mines"
                       >
-                        <MenuItem>
-                          <button
-                            className="full"
-                            onClick={[Function]}
-                            type="button"
-                          >
-                            <img
-                              alt="pencil"
-                              className="padding-small"
-                              src={
-                                Object {
-                                  "process": [Function],
-                                }
-                              }
-                            />
-                            Update Mine Record
-                          </button>
-                        </MenuItem>
-                        <MenuItem>
-                          <button
-                            className="full"
-                            onClick={[Function]}
-                            type="button"
-                          >
-                            <img
-                              alt="document"
-                              className="padding-small"
-                              src={
-                                Object {
-                                  "process": [Function],
-                                }
-                              }
-                            />
-                            + Add TSF
-                          </button>
-                        </MenuItem>
-                        <Connect(AuthorizationWrapper)
-                          inTesting={true}
+                        <MenuItem
+                          onClick={[Function]}
                         >
                           <div
                             className="custom-menu-item"
                           >
                             <button
                               className="full"
-                              onClick={undefined}
+                              onClick={[Function]}
+                              type="button"
+                            >
+                              <img
+                                alt="pencil"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                              />
+                              Update Mine Record
+                            </button>
+                          </div>
+                        </MenuItem>
+                      </Connect(AuthorizationWrapper)>
+                      <Connect(AuthorizationWrapper)
+                        isMajorMine={undefined}
+                        permission="role_edit_mines"
+                      >
+                        <MenuItem
+                          onClick={[Function]}
+                        >
+                          <div
+                            className="custom-menu-item"
+                          >
+                            <button
+                              className="full"
+                              onClick={[Function]}
                               type="button"
                             >
                               <img
@@ -893,121 +896,137 @@ ShallowWrapper {
                                   }
                                 }
                               />
-                              Subscribe
+                              + Add TSF
                             </button>
                           </div>
-                        </Connect(AuthorizationWrapper)>
-                        <Connect(AuthorizationWrapper)
-                          inTesting={true}
-                        >
-                          <div
-                            className="custom-menu-item"
-                          >
-                            <Popconfirm
-                              cancelText="No"
-                              icon={
-                                <Icon
-                                  theme="filled"
-                                  type="exclamation-circle"
-                                />
-                              }
-                              okText="Yes"
-                              okType="primary"
-                              onConfirm={[Function]}
-                              placement="left"
-                              title="Are you sure?"
-                              transitionName="zoom-big"
-                              trigger="click"
-                            >
-                              <button
-                                className="full"
-                                type="button"
-                              >
-                                <img
-                                  alt="checkmark"
-                                  className="padding-small"
-                                  src={
-                                    Object {
-                                      "process": [Function],
-                                    }
-                                  }
-                                  width="30"
-                                />
-                                Verify Mine Data
-                              </button>
-                            </Popconfirm>
-                          </div>
-                        </Connect(AuthorizationWrapper)>
-                        <Connect(AuthorizationWrapper)
-                          inTesting={true}
-                        >
-                          <div
-                            className="custom-menu-item"
-                          >
-                            <Popconfirm
-                              cancelText="No"
-                              icon={
-                                <Icon
-                                  theme="filled"
-                                  type="exclamation-circle"
-                                />
-                              }
-                              okText="Yes"
-                              okType="primary"
-                              onConfirm={[Function]}
-                              placement="left"
-                              title="Are you sure?"
-                              transitionName="zoom-big"
-                              trigger="click"
-                            >
-                              <button
-                                className="full"
-                                type="button"
-                              >
-                                <img
-                                  alt="hazard"
-                                  className="padding-small"
-                                  src={
-                                    Object {
-                                      "process": [Function],
-                                    }
-                                  }
-                                  width="30"
-                                />
-                                Mark Data for Verification
-                              </button>
-                            </Popconfirm>
-                          </div>
-                        </Connect(AuthorizationWrapper)>
-                      </Menu>
-                    }
-                    placement="bottomLeft"
-                    visible={false}
-                  >
-                    <Button
-                      block={false}
-                      ghost={false}
-                      htmlType="button"
-                      loading={false}
-                      type="primary"
-                    >
+                        </MenuItem>
+                      </Connect(AuthorizationWrapper)>
                       <div
-                        className="padding-small"
+                        className="custom-menu-item"
                       >
-                        <img
-                          alt="Add/Edit"
-                          className="padding-small--right"
-                          src={
-                            Object {
-                              "process": [Function],
+                        <button
+                          className="full"
+                          onClick={undefined}
+                          type="button"
+                        >
+                          <img
+                            alt="document"
+                            className="padding-small"
+                            src={
+                              Object {
+                                "process": [Function],
+                              }
                             }
-                          }
-                        />
-                        Add/Edit
+                          />
+                          Subscribe
+                        </button>
                       </div>
-                    </Button>
-                  </Dropdown>
-                </Connect(AuthorizationWrapper)>
+                      <Connect(AuthorizationWrapper)
+                        permission="role_admin"
+                      >
+                        <div
+                          className="custom-menu-item"
+                        >
+                          <Popconfirm
+                            cancelText="No"
+                            icon={
+                              <Icon
+                                theme="filled"
+                                type="exclamation-circle"
+                              />
+                            }
+                            okText="Yes"
+                            okType="primary"
+                            onConfirm={[Function]}
+                            placement="left"
+                            title="Are you sure?"
+                            transitionName="zoom-big"
+                            trigger="click"
+                          >
+                            <button
+                              className="full"
+                              type="button"
+                            >
+                              <img
+                                alt="checkmark"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                                width="30"
+                              />
+                              Verify Mine Data
+                            </button>
+                          </Popconfirm>
+                        </div>
+                        <div
+                          className="custom-menu-item"
+                        >
+                          <Popconfirm
+                            cancelText="No"
+                            icon={
+                              <Icon
+                                theme="filled"
+                                type="exclamation-circle"
+                              />
+                            }
+                            okText="Yes"
+                            okType="primary"
+                            onConfirm={[Function]}
+                            placement="left"
+                            title="Are you sure?"
+                            transitionName="zoom-big"
+                            trigger="click"
+                          >
+                            <button
+                              className="full"
+                              type="button"
+                            >
+                              <img
+                                alt="hazard"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                                width="30"
+                              />
+                              Mark Data for Verification
+                            </button>
+                          </Popconfirm>
+                        </div>
+                      </Connect(AuthorizationWrapper)>
+                    </Menu>
+                  }
+                  placement="bottomLeft"
+                  visible={false}
+                >
+                  <Button
+                    block={false}
+                    ghost={false}
+                    htmlType="button"
+                    loading={false}
+                    type="primary"
+                  >
+                    <div
+                      className="padding-small"
+                    >
+                      <img
+                        alt="Add/Edit"
+                        className="padding-small--right"
+                        src={
+                          Object {
+                            "process": [Function],
+                          }
+                        }
+                      />
+                      Add/Edit
+                    </div>
+                  </Button>
+                </Dropdown>
               </div>
             </div>,
             <Divider
@@ -1135,64 +1154,56 @@ ShallowWrapper {
                   mine3
                 </h1>,
                 <div>
-                  <Connect(AuthorizationWrapper)
-                    isMajorMine={undefined}
-                    permission="role_create"
-                  >
-                    <Dropdown
-                      className="full-height full-mobile"
-                      mouseEnterDelay={0.15}
-                      mouseLeaveDelay={0.1}
-                      onVisibleChange={[Function]}
-                      overlay={
-                        <Menu
-                          onClick={[Function]}
+                  <div />
+                  <Dropdown
+                    className="full-height full-mobile"
+                    mouseEnterDelay={0.15}
+                    mouseLeaveDelay={0.1}
+                    onVisibleChange={[Function]}
+                    overlay={
+                      <Menu>
+                        <Connect(AuthorizationWrapper)
+                          isMajorMine={undefined}
+                          permission="role_edit_mines"
                         >
-                          <MenuItem>
-                            <button
-                              className="full"
-                              onClick={[Function]}
-                              type="button"
-                            >
-                              <img
-                                alt="pencil"
-                                className="padding-small"
-                                src={
-                                  Object {
-                                    "process": [Function],
-                                  }
-                                }
-                              />
-                              Update Mine Record
-                            </button>
-                          </MenuItem>
-                          <MenuItem>
-                            <button
-                              className="full"
-                              onClick={[Function]}
-                              type="button"
-                            >
-                              <img
-                                alt="document"
-                                className="padding-small"
-                                src={
-                                  Object {
-                                    "process": [Function],
-                                  }
-                                }
-                              />
-                              + Add TSF
-                            </button>
-                          </MenuItem>
-                          <Connect(AuthorizationWrapper)
-                            inTesting={true}
+                          <MenuItem
+                            onClick={[Function]}
                           >
                             <div
                               className="custom-menu-item"
                             >
                               <button
                                 className="full"
-                                onClick={undefined}
+                                onClick={[Function]}
+                                type="button"
+                              >
+                                <img
+                                  alt="pencil"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
+                                  }
+                                />
+                                Update Mine Record
+                              </button>
+                            </div>
+                          </MenuItem>
+                        </Connect(AuthorizationWrapper)>
+                        <Connect(AuthorizationWrapper)
+                          isMajorMine={undefined}
+                          permission="role_edit_mines"
+                        >
+                          <MenuItem
+                            onClick={[Function]}
+                          >
+                            <div
+                              className="custom-menu-item"
+                            >
+                              <button
+                                className="full"
+                                onClick={[Function]}
                                 type="button"
                               >
                                 <img
@@ -1204,12 +1215,255 @@ ShallowWrapper {
                                     }
                                   }
                                 />
-                                Subscribe
+                                + Add TSF
                               </button>
                             </div>
+                          </MenuItem>
+                        </Connect(AuthorizationWrapper)>
+                        <div
+                          className="custom-menu-item"
+                        >
+                          <button
+                            className="full"
+                            onClick={undefined}
+                            type="button"
+                          >
+                            <img
+                              alt="document"
+                              className="padding-small"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                            />
+                            Subscribe
+                          </button>
+                        </div>
+                        <Connect(AuthorizationWrapper)
+                          permission="role_admin"
+                        >
+                          <div
+                            className="custom-menu-item"
+                          >
+                            <Popconfirm
+                              cancelText="No"
+                              icon={
+                                <Icon
+                                  theme="filled"
+                                  type="exclamation-circle"
+                                />
+                              }
+                              okText="Yes"
+                              okType="primary"
+                              onConfirm={[Function]}
+                              placement="left"
+                              title="Are you sure?"
+                              transitionName="zoom-big"
+                              trigger="click"
+                            >
+                              <button
+                                className="full"
+                                type="button"
+                              >
+                                <img
+                                  alt="checkmark"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
+                                  }
+                                  width="30"
+                                />
+                                Verify Mine Data
+                              </button>
+                            </Popconfirm>
+                          </div>
+                          <div
+                            className="custom-menu-item"
+                          >
+                            <Popconfirm
+                              cancelText="No"
+                              icon={
+                                <Icon
+                                  theme="filled"
+                                  type="exclamation-circle"
+                                />
+                              }
+                              okText="Yes"
+                              okType="primary"
+                              onConfirm={[Function]}
+                              placement="left"
+                              title="Are you sure?"
+                              transitionName="zoom-big"
+                              trigger="click"
+                            >
+                              <button
+                                className="full"
+                                type="button"
+                              >
+                                <img
+                                  alt="hazard"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
+                                  }
+                                  width="30"
+                                />
+                                Mark Data for Verification
+                              </button>
+                            </Popconfirm>
+                          </div>
+                        </Connect(AuthorizationWrapper)>
+                      </Menu>
+                    }
+                    placement="bottomLeft"
+                    visible={false}
+                  >
+                    <Button
+                      block={false}
+                      ghost={false}
+                      htmlType="button"
+                      loading={false}
+                      type="primary"
+                    >
+                      <div
+                        className="padding-small"
+                      >
+                        <img
+                          alt="Add/Edit"
+                          className="padding-small--right"
+                          src={
+                            Object {
+                              "process": [Function],
+                            }
+                          }
+                        />
+                        Add/Edit
+                      </div>
+                    </Button>
+                  </Dropdown>
+                </div>,
+              ],
+              "className": "inline-flex between center-mobile",
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": Array [
+                    "mine3",
+                    false,
+                  ],
+                },
+                "ref": null,
+                "rendered": Array [
+                  "mine3",
+                  false,
+                ],
+                "type": "h1",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": Array [
+                    undefined,
+                    <div />,
+                    <Dropdown
+                      className="full-height full-mobile"
+                      mouseEnterDelay={0.15}
+                      mouseLeaveDelay={0.1}
+                      onVisibleChange={[Function]}
+                      overlay={
+                        <Menu>
+                          <Connect(AuthorizationWrapper)
+                            isMajorMine={undefined}
+                            permission="role_edit_mines"
+                          >
+                            <MenuItem
+                              onClick={[Function]}
+                            >
+                              <div
+                                className="custom-menu-item"
+                              >
+                                <button
+                                  className="full"
+                                  onClick={[Function]}
+                                  type="button"
+                                >
+                                  <img
+                                    alt="pencil"
+                                    className="padding-small"
+                                    src={
+                                      Object {
+                                        "process": [Function],
+                                      }
+                                    }
+                                  />
+                                  Update Mine Record
+                                </button>
+                              </div>
+                            </MenuItem>
                           </Connect(AuthorizationWrapper)>
                           <Connect(AuthorizationWrapper)
-                            inTesting={true}
+                            isMajorMine={undefined}
+                            permission="role_edit_mines"
+                          >
+                            <MenuItem
+                              onClick={[Function]}
+                            >
+                              <div
+                                className="custom-menu-item"
+                              >
+                                <button
+                                  className="full"
+                                  onClick={[Function]}
+                                  type="button"
+                                >
+                                  <img
+                                    alt="document"
+                                    className="padding-small"
+                                    src={
+                                      Object {
+                                        "process": [Function],
+                                      }
+                                    }
+                                  />
+                                  + Add TSF
+                                </button>
+                              </div>
+                            </MenuItem>
+                          </Connect(AuthorizationWrapper)>
+                          <div
+                            className="custom-menu-item"
+                          >
+                            <button
+                              className="full"
+                              onClick={undefined}
+                              type="button"
+                            >
+                              <img
+                                alt="document"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                              />
+                              Subscribe
+                            </button>
+                          </div>
+                          <Connect(AuthorizationWrapper)
+                            permission="role_admin"
                           >
                             <div
                               className="custom-menu-item"
@@ -1248,10 +1502,6 @@ ShallowWrapper {
                                 </button>
                               </Popconfirm>
                             </div>
-                          </Connect(AuthorizationWrapper)>
-                          <Connect(AuthorizationWrapper)
-                            inTesting={true}
-                          >
                             <div
                               className="custom-menu-item"
                             >
@@ -1317,222 +1567,7 @@ ShallowWrapper {
                           Add/Edit
                         </div>
                       </Button>
-                    </Dropdown>
-                  </Connect(AuthorizationWrapper)>
-                </div>,
-              ],
-              "className": "inline-flex between center-mobile",
-            },
-            "ref": null,
-            "rendered": Array [
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "host",
-                "props": Object {
-                  "children": Array [
-                    "mine3",
-                    false,
-                  ],
-                },
-                "ref": null,
-                "rendered": Array [
-                  "mine3",
-                  false,
-                ],
-                "type": "h1",
-              },
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "host",
-                "props": Object {
-                  "children": Array [
-                    undefined,
-                    <Connect(AuthorizationWrapper)
-                      isMajorMine={undefined}
-                      permission="role_create"
-                    >
-                      <Dropdown
-                        className="full-height full-mobile"
-                        mouseEnterDelay={0.15}
-                        mouseLeaveDelay={0.1}
-                        onVisibleChange={[Function]}
-                        overlay={
-                          <Menu
-                            onClick={[Function]}
-                          >
-                            <MenuItem>
-                              <button
-                                className="full"
-                                onClick={[Function]}
-                                type="button"
-                              >
-                                <img
-                                  alt="pencil"
-                                  className="padding-small"
-                                  src={
-                                    Object {
-                                      "process": [Function],
-                                    }
-                                  }
-                                />
-                                Update Mine Record
-                              </button>
-                            </MenuItem>
-                            <MenuItem>
-                              <button
-                                className="full"
-                                onClick={[Function]}
-                                type="button"
-                              >
-                                <img
-                                  alt="document"
-                                  className="padding-small"
-                                  src={
-                                    Object {
-                                      "process": [Function],
-                                    }
-                                  }
-                                />
-                                + Add TSF
-                              </button>
-                            </MenuItem>
-                            <Connect(AuthorizationWrapper)
-                              inTesting={true}
-                            >
-                              <div
-                                className="custom-menu-item"
-                              >
-                                <button
-                                  className="full"
-                                  onClick={undefined}
-                                  type="button"
-                                >
-                                  <img
-                                    alt="document"
-                                    className="padding-small"
-                                    src={
-                                      Object {
-                                        "process": [Function],
-                                      }
-                                    }
-                                  />
-                                  Subscribe
-                                </button>
-                              </div>
-                            </Connect(AuthorizationWrapper)>
-                            <Connect(AuthorizationWrapper)
-                              inTesting={true}
-                            >
-                              <div
-                                className="custom-menu-item"
-                              >
-                                <Popconfirm
-                                  cancelText="No"
-                                  icon={
-                                    <Icon
-                                      theme="filled"
-                                      type="exclamation-circle"
-                                    />
-                                  }
-                                  okText="Yes"
-                                  okType="primary"
-                                  onConfirm={[Function]}
-                                  placement="left"
-                                  title="Are you sure?"
-                                  transitionName="zoom-big"
-                                  trigger="click"
-                                >
-                                  <button
-                                    className="full"
-                                    type="button"
-                                  >
-                                    <img
-                                      alt="checkmark"
-                                      className="padding-small"
-                                      src={
-                                        Object {
-                                          "process": [Function],
-                                        }
-                                      }
-                                      width="30"
-                                    />
-                                    Verify Mine Data
-                                  </button>
-                                </Popconfirm>
-                              </div>
-                            </Connect(AuthorizationWrapper)>
-                            <Connect(AuthorizationWrapper)
-                              inTesting={true}
-                            >
-                              <div
-                                className="custom-menu-item"
-                              >
-                                <Popconfirm
-                                  cancelText="No"
-                                  icon={
-                                    <Icon
-                                      theme="filled"
-                                      type="exclamation-circle"
-                                    />
-                                  }
-                                  okText="Yes"
-                                  okType="primary"
-                                  onConfirm={[Function]}
-                                  placement="left"
-                                  title="Are you sure?"
-                                  transitionName="zoom-big"
-                                  trigger="click"
-                                >
-                                  <button
-                                    className="full"
-                                    type="button"
-                                  >
-                                    <img
-                                      alt="hazard"
-                                      className="padding-small"
-                                      src={
-                                        Object {
-                                          "process": [Function],
-                                        }
-                                      }
-                                      width="30"
-                                    />
-                                    Mark Data for Verification
-                                  </button>
-                                </Popconfirm>
-                              </div>
-                            </Connect(AuthorizationWrapper)>
-                          </Menu>
-                        }
-                        placement="bottomLeft"
-                        visible={false}
-                      >
-                        <Button
-                          block={false}
-                          ghost={false}
-                          htmlType="button"
-                          loading={false}
-                          type="primary"
-                        >
-                          <div
-                            className="padding-small"
-                          >
-                            <img
-                              alt="Add/Edit"
-                              className="padding-small--right"
-                              src={
-                                Object {
-                                  "process": [Function],
-                                }
-                              }
-                            />
-                            Add/Edit
-                          </div>
-                        </Button>
-                      </Dropdown>
-                    </Connect(AuthorizationWrapper)>,
+                    </Dropdown>,
                   ],
                 },
                 "ref": null,
@@ -1541,18 +1576,54 @@ ShallowWrapper {
                   Object {
                     "instance": null,
                     "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {},
+                    "ref": null,
+                    "rendered": null,
+                    "type": "div",
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
                     "nodeType": "class",
                     "props": Object {
-                      "children": <Dropdown
-                        className="full-height full-mobile"
-                        mouseEnterDelay={0.15}
-                        mouseLeaveDelay={0.1}
-                        onVisibleChange={[Function]}
-                        overlay={
-                          <Menu
+                      "children": <Button
+                        block={false}
+                        ghost={false}
+                        htmlType="button"
+                        loading={false}
+                        type="primary"
+                      >
+                        <div
+                          className="padding-small"
+                        >
+                          <img
+                            alt="Add/Edit"
+                            className="padding-small--right"
+                            src={
+                              Object {
+                                "process": [Function],
+                              }
+                            }
+                          />
+                          Add/Edit
+                        </div>
+                      </Button>,
+                      "className": "full-height full-mobile",
+                      "mouseEnterDelay": 0.15,
+                      "mouseLeaveDelay": 0.1,
+                      "onVisibleChange": [Function],
+                      "overlay": <Menu>
+                        <Connect(AuthorizationWrapper)
+                          isMajorMine={undefined}
+                          permission="role_edit_mines"
+                        >
+                          <MenuItem
                             onClick={[Function]}
                           >
-                            <MenuItem>
+                            <div
+                              className="custom-menu-item"
+                            >
                               <button
                                 className="full"
                                 onClick={[Function]}
@@ -1569,8 +1640,19 @@ ShallowWrapper {
                                 />
                                 Update Mine Record
                               </button>
-                            </MenuItem>
-                            <MenuItem>
+                            </div>
+                          </MenuItem>
+                        </Connect(AuthorizationWrapper)>
+                        <Connect(AuthorizationWrapper)
+                          isMajorMine={undefined}
+                          permission="role_edit_mines"
+                        >
+                          <MenuItem
+                            onClick={[Function]}
+                          >
+                            <div
+                              className="custom-menu-item"
+                            >
                               <button
                                 className="full"
                                 onClick={[Function]}
@@ -1587,143 +1669,110 @@ ShallowWrapper {
                                 />
                                 + Add TSF
                               </button>
-                            </MenuItem>
-                            <Connect(AuthorizationWrapper)
-                              inTesting={true}
-                            >
-                              <div
-                                className="custom-menu-item"
-                              >
-                                <button
-                                  className="full"
-                                  onClick={undefined}
-                                  type="button"
-                                >
-                                  <img
-                                    alt="document"
-                                    className="padding-small"
-                                    src={
-                                      Object {
-                                        "process": [Function],
-                                      }
-                                    }
-                                  />
-                                  Subscribe
-                                </button>
-                              </div>
-                            </Connect(AuthorizationWrapper)>
-                            <Connect(AuthorizationWrapper)
-                              inTesting={true}
-                            >
-                              <div
-                                className="custom-menu-item"
-                              >
-                                <Popconfirm
-                                  cancelText="No"
-                                  icon={
-                                    <Icon
-                                      theme="filled"
-                                      type="exclamation-circle"
-                                    />
-                                  }
-                                  okText="Yes"
-                                  okType="primary"
-                                  onConfirm={[Function]}
-                                  placement="left"
-                                  title="Are you sure?"
-                                  transitionName="zoom-big"
-                                  trigger="click"
-                                >
-                                  <button
-                                    className="full"
-                                    type="button"
-                                  >
-                                    <img
-                                      alt="checkmark"
-                                      className="padding-small"
-                                      src={
-                                        Object {
-                                          "process": [Function],
-                                        }
-                                      }
-                                      width="30"
-                                    />
-                                    Verify Mine Data
-                                  </button>
-                                </Popconfirm>
-                              </div>
-                            </Connect(AuthorizationWrapper)>
-                            <Connect(AuthorizationWrapper)
-                              inTesting={true}
-                            >
-                              <div
-                                className="custom-menu-item"
-                              >
-                                <Popconfirm
-                                  cancelText="No"
-                                  icon={
-                                    <Icon
-                                      theme="filled"
-                                      type="exclamation-circle"
-                                    />
-                                  }
-                                  okText="Yes"
-                                  okType="primary"
-                                  onConfirm={[Function]}
-                                  placement="left"
-                                  title="Are you sure?"
-                                  transitionName="zoom-big"
-                                  trigger="click"
-                                >
-                                  <button
-                                    className="full"
-                                    type="button"
-                                  >
-                                    <img
-                                      alt="hazard"
-                                      className="padding-small"
-                                      src={
-                                        Object {
-                                          "process": [Function],
-                                        }
-                                      }
-                                      width="30"
-                                    />
-                                    Mark Data for Verification
-                                  </button>
-                                </Popconfirm>
-                              </div>
-                            </Connect(AuthorizationWrapper)>
-                          </Menu>
-                        }
-                        placement="bottomLeft"
-                        visible={false}
-                      >
-                        <Button
-                          block={false}
-                          ghost={false}
-                          htmlType="button"
-                          loading={false}
-                          type="primary"
+                            </div>
+                          </MenuItem>
+                        </Connect(AuthorizationWrapper)>
+                        <div
+                          className="custom-menu-item"
                         >
-                          <div
-                            className="padding-small"
+                          <button
+                            className="full"
+                            onClick={undefined}
+                            type="button"
                           >
                             <img
-                              alt="Add/Edit"
-                              className="padding-small--right"
+                              alt="document"
+                              className="padding-small"
                               src={
                                 Object {
                                   "process": [Function],
                                 }
                               }
                             />
-                            Add/Edit
+                            Subscribe
+                          </button>
+                        </div>
+                        <Connect(AuthorizationWrapper)
+                          permission="role_admin"
+                        >
+                          <div
+                            className="custom-menu-item"
+                          >
+                            <Popconfirm
+                              cancelText="No"
+                              icon={
+                                <Icon
+                                  theme="filled"
+                                  type="exclamation-circle"
+                                />
+                              }
+                              okText="Yes"
+                              okType="primary"
+                              onConfirm={[Function]}
+                              placement="left"
+                              title="Are you sure?"
+                              transitionName="zoom-big"
+                              trigger="click"
+                            >
+                              <button
+                                className="full"
+                                type="button"
+                              >
+                                <img
+                                  alt="checkmark"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
+                                  }
+                                  width="30"
+                                />
+                                Verify Mine Data
+                              </button>
+                            </Popconfirm>
                           </div>
-                        </Button>
-                      </Dropdown>,
-                      "isMajorMine": undefined,
-                      "permission": "role_create",
+                          <div
+                            className="custom-menu-item"
+                          >
+                            <Popconfirm
+                              cancelText="No"
+                              icon={
+                                <Icon
+                                  theme="filled"
+                                  type="exclamation-circle"
+                                />
+                              }
+                              okText="Yes"
+                              okType="primary"
+                              onConfirm={[Function]}
+                              placement="left"
+                              title="Are you sure?"
+                              transitionName="zoom-big"
+                              trigger="click"
+                            >
+                              <button
+                                className="full"
+                                type="button"
+                              >
+                                <img
+                                  alt="hazard"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
+                                  }
+                                  width="30"
+                                />
+                                Mark Data for Verification
+                              </button>
+                            </Popconfirm>
+                          </div>
+                        </Connect(AuthorizationWrapper)>
+                      </Menu>,
+                      "placement": "bottomLeft",
+                      "visible": false,
                     },
                     "ref": null,
                     "rendered": Object {
@@ -1731,191 +1780,33 @@ ShallowWrapper {
                       "key": undefined,
                       "nodeType": "class",
                       "props": Object {
-                        "children": <Button
-                          block={false}
-                          ghost={false}
-                          htmlType="button"
-                          loading={false}
-                          type="primary"
+                        "block": false,
+                        "children": <div
+                          className="padding-small"
                         >
-                          <div
-                            className="padding-small"
-                          >
-                            <img
-                              alt="Add/Edit"
-                              className="padding-small--right"
-                              src={
-                                Object {
-                                  "process": [Function],
-                                }
+                          <img
+                            alt="Add/Edit"
+                            className="padding-small--right"
+                            src={
+                              Object {
+                                "process": [Function],
                               }
-                            />
-                            Add/Edit
-                          </div>
-                        </Button>,
-                        "className": "full-height full-mobile",
-                        "mouseEnterDelay": 0.15,
-                        "mouseLeaveDelay": 0.1,
-                        "onVisibleChange": [Function],
-                        "overlay": <Menu
-                          onClick={[Function]}
-                        >
-                          <MenuItem>
-                            <button
-                              className="full"
-                              onClick={[Function]}
-                              type="button"
-                            >
-                              <img
-                                alt="pencil"
-                                className="padding-small"
-                                src={
-                                  Object {
-                                    "process": [Function],
-                                  }
-                                }
-                              />
-                              Update Mine Record
-                            </button>
-                          </MenuItem>
-                          <MenuItem>
-                            <button
-                              className="full"
-                              onClick={[Function]}
-                              type="button"
-                            >
-                              <img
-                                alt="document"
-                                className="padding-small"
-                                src={
-                                  Object {
-                                    "process": [Function],
-                                  }
-                                }
-                              />
-                              + Add TSF
-                            </button>
-                          </MenuItem>
-                          <Connect(AuthorizationWrapper)
-                            inTesting={true}
-                          >
-                            <div
-                              className="custom-menu-item"
-                            >
-                              <button
-                                className="full"
-                                onClick={undefined}
-                                type="button"
-                              >
-                                <img
-                                  alt="document"
-                                  className="padding-small"
-                                  src={
-                                    Object {
-                                      "process": [Function],
-                                    }
-                                  }
-                                />
-                                Subscribe
-                              </button>
-                            </div>
-                          </Connect(AuthorizationWrapper)>
-                          <Connect(AuthorizationWrapper)
-                            inTesting={true}
-                          >
-                            <div
-                              className="custom-menu-item"
-                            >
-                              <Popconfirm
-                                cancelText="No"
-                                icon={
-                                  <Icon
-                                    theme="filled"
-                                    type="exclamation-circle"
-                                  />
-                                }
-                                okText="Yes"
-                                okType="primary"
-                                onConfirm={[Function]}
-                                placement="left"
-                                title="Are you sure?"
-                                transitionName="zoom-big"
-                                trigger="click"
-                              >
-                                <button
-                                  className="full"
-                                  type="button"
-                                >
-                                  <img
-                                    alt="checkmark"
-                                    className="padding-small"
-                                    src={
-                                      Object {
-                                        "process": [Function],
-                                      }
-                                    }
-                                    width="30"
-                                  />
-                                  Verify Mine Data
-                                </button>
-                              </Popconfirm>
-                            </div>
-                          </Connect(AuthorizationWrapper)>
-                          <Connect(AuthorizationWrapper)
-                            inTesting={true}
-                          >
-                            <div
-                              className="custom-menu-item"
-                            >
-                              <Popconfirm
-                                cancelText="No"
-                                icon={
-                                  <Icon
-                                    theme="filled"
-                                    type="exclamation-circle"
-                                  />
-                                }
-                                okText="Yes"
-                                okType="primary"
-                                onConfirm={[Function]}
-                                placement="left"
-                                title="Are you sure?"
-                                transitionName="zoom-big"
-                                trigger="click"
-                              >
-                                <button
-                                  className="full"
-                                  type="button"
-                                >
-                                  <img
-                                    alt="hazard"
-                                    className="padding-small"
-                                    src={
-                                      Object {
-                                        "process": [Function],
-                                      }
-                                    }
-                                    width="30"
-                                  />
-                                  Mark Data for Verification
-                                </button>
-                              </Popconfirm>
-                            </div>
-                          </Connect(AuthorizationWrapper)>
-                        </Menu>,
-                        "placement": "bottomLeft",
-                        "visible": false,
+                            }
+                          />
+                          Add/Edit
+                        </div>,
+                        "ghost": false,
+                        "htmlType": "button",
+                        "loading": false,
+                        "type": "primary",
                       },
                       "ref": null,
                       "rendered": Object {
                         "instance": null,
                         "key": undefined,
-                        "nodeType": "class",
+                        "nodeType": "host",
                         "props": Object {
-                          "block": false,
-                          "children": <div
-                            className="padding-small"
-                          >
+                          "children": Array [
                             <img
                               alt="Add/Edit"
                               className="padding-small--right"
@@ -1924,56 +1815,31 @@ ShallowWrapper {
                                   "process": [Function],
                                 }
                               }
-                            />
-                            Add/Edit
-                          </div>,
-                          "ghost": false,
-                          "htmlType": "button",
-                          "loading": false,
-                          "type": "primary",
-                        },
-                        "ref": null,
-                        "rendered": Object {
-                          "instance": null,
-                          "key": undefined,
-                          "nodeType": "host",
-                          "props": Object {
-                            "children": Array [
-                              <img
-                                alt="Add/Edit"
-                                className="padding-small--right"
-                                src={
-                                  Object {
-                                    "process": [Function],
-                                  }
-                                }
-                              />,
-                              "Add/Edit",
-                            ],
-                            "className": "padding-small",
-                          },
-                          "ref": null,
-                          "rendered": Array [
-                            Object {
-                              "instance": null,
-                              "key": undefined,
-                              "nodeType": "host",
-                              "props": Object {
-                                "alt": "Add/Edit",
-                                "className": "padding-small--right",
-                                "src": Object {
-                                  "process": [Function],
-                                },
-                              },
-                              "ref": null,
-                              "rendered": null,
-                              "type": "img",
-                            },
+                            />,
                             "Add/Edit",
                           ],
-                          "type": "div",
+                          "className": "padding-small",
                         },
-                        "type": [Function],
+                        "ref": null,
+                        "rendered": Array [
+                          Object {
+                            "instance": null,
+                            "key": undefined,
+                            "nodeType": "host",
+                            "props": Object {
+                              "alt": "Add/Edit",
+                              "className": "padding-small--right",
+                              "src": Object {
+                                "process": [Function],
+                              },
+                            },
+                            "ref": null,
+                            "rendered": null,
+                            "type": "img",
+                          },
+                          "Add/Edit",
+                        ],
+                        "type": "div",
                       },
                       "type": [Function],
                     },
@@ -2850,64 +2716,56 @@ ShallowWrapper {
                 mine3
               </h1>
               <div>
-                <Connect(AuthorizationWrapper)
-                  isMajorMine={undefined}
-                  permission="role_create"
-                >
-                  <Dropdown
-                    className="full-height full-mobile"
-                    mouseEnterDelay={0.15}
-                    mouseLeaveDelay={0.1}
-                    onVisibleChange={[Function]}
-                    overlay={
-                      <Menu
-                        onClick={[Function]}
+                <div />
+                <Dropdown
+                  className="full-height full-mobile"
+                  mouseEnterDelay={0.15}
+                  mouseLeaveDelay={0.1}
+                  onVisibleChange={[Function]}
+                  overlay={
+                    <Menu>
+                      <Connect(AuthorizationWrapper)
+                        isMajorMine={undefined}
+                        permission="role_edit_mines"
                       >
-                        <MenuItem>
-                          <button
-                            className="full"
-                            onClick={[Function]}
-                            type="button"
-                          >
-                            <img
-                              alt="pencil"
-                              className="padding-small"
-                              src={
-                                Object {
-                                  "process": [Function],
-                                }
-                              }
-                            />
-                            Update Mine Record
-                          </button>
-                        </MenuItem>
-                        <MenuItem>
-                          <button
-                            className="full"
-                            onClick={[Function]}
-                            type="button"
-                          >
-                            <img
-                              alt="document"
-                              className="padding-small"
-                              src={
-                                Object {
-                                  "process": [Function],
-                                }
-                              }
-                            />
-                            + Add TSF
-                          </button>
-                        </MenuItem>
-                        <Connect(AuthorizationWrapper)
-                          inTesting={true}
+                        <MenuItem
+                          onClick={[Function]}
                         >
                           <div
                             className="custom-menu-item"
                           >
                             <button
                               className="full"
-                              onClick={undefined}
+                              onClick={[Function]}
+                              type="button"
+                            >
+                              <img
+                                alt="pencil"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                              />
+                              Update Mine Record
+                            </button>
+                          </div>
+                        </MenuItem>
+                      </Connect(AuthorizationWrapper)>
+                      <Connect(AuthorizationWrapper)
+                        isMajorMine={undefined}
+                        permission="role_edit_mines"
+                      >
+                        <MenuItem
+                          onClick={[Function]}
+                        >
+                          <div
+                            className="custom-menu-item"
+                          >
+                            <button
+                              className="full"
+                              onClick={[Function]}
                               type="button"
                             >
                               <img
@@ -2919,121 +2777,137 @@ ShallowWrapper {
                                   }
                                 }
                               />
-                              Subscribe
+                              + Add TSF
                             </button>
                           </div>
-                        </Connect(AuthorizationWrapper)>
-                        <Connect(AuthorizationWrapper)
-                          inTesting={true}
-                        >
-                          <div
-                            className="custom-menu-item"
-                          >
-                            <Popconfirm
-                              cancelText="No"
-                              icon={
-                                <Icon
-                                  theme="filled"
-                                  type="exclamation-circle"
-                                />
-                              }
-                              okText="Yes"
-                              okType="primary"
-                              onConfirm={[Function]}
-                              placement="left"
-                              title="Are you sure?"
-                              transitionName="zoom-big"
-                              trigger="click"
-                            >
-                              <button
-                                className="full"
-                                type="button"
-                              >
-                                <img
-                                  alt="checkmark"
-                                  className="padding-small"
-                                  src={
-                                    Object {
-                                      "process": [Function],
-                                    }
-                                  }
-                                  width="30"
-                                />
-                                Verify Mine Data
-                              </button>
-                            </Popconfirm>
-                          </div>
-                        </Connect(AuthorizationWrapper)>
-                        <Connect(AuthorizationWrapper)
-                          inTesting={true}
-                        >
-                          <div
-                            className="custom-menu-item"
-                          >
-                            <Popconfirm
-                              cancelText="No"
-                              icon={
-                                <Icon
-                                  theme="filled"
-                                  type="exclamation-circle"
-                                />
-                              }
-                              okText="Yes"
-                              okType="primary"
-                              onConfirm={[Function]}
-                              placement="left"
-                              title="Are you sure?"
-                              transitionName="zoom-big"
-                              trigger="click"
-                            >
-                              <button
-                                className="full"
-                                type="button"
-                              >
-                                <img
-                                  alt="hazard"
-                                  className="padding-small"
-                                  src={
-                                    Object {
-                                      "process": [Function],
-                                    }
-                                  }
-                                  width="30"
-                                />
-                                Mark Data for Verification
-                              </button>
-                            </Popconfirm>
-                          </div>
-                        </Connect(AuthorizationWrapper)>
-                      </Menu>
-                    }
-                    placement="bottomLeft"
-                    visible={false}
-                  >
-                    <Button
-                      block={false}
-                      ghost={false}
-                      htmlType="button"
-                      loading={false}
-                      type="primary"
-                    >
+                        </MenuItem>
+                      </Connect(AuthorizationWrapper)>
                       <div
-                        className="padding-small"
+                        className="custom-menu-item"
                       >
-                        <img
-                          alt="Add/Edit"
-                          className="padding-small--right"
-                          src={
-                            Object {
-                              "process": [Function],
+                        <button
+                          className="full"
+                          onClick={undefined}
+                          type="button"
+                        >
+                          <img
+                            alt="document"
+                            className="padding-small"
+                            src={
+                              Object {
+                                "process": [Function],
+                              }
                             }
-                          }
-                        />
-                        Add/Edit
+                          />
+                          Subscribe
+                        </button>
                       </div>
-                    </Button>
-                  </Dropdown>
-                </Connect(AuthorizationWrapper)>
+                      <Connect(AuthorizationWrapper)
+                        permission="role_admin"
+                      >
+                        <div
+                          className="custom-menu-item"
+                        >
+                          <Popconfirm
+                            cancelText="No"
+                            icon={
+                              <Icon
+                                theme="filled"
+                                type="exclamation-circle"
+                              />
+                            }
+                            okText="Yes"
+                            okType="primary"
+                            onConfirm={[Function]}
+                            placement="left"
+                            title="Are you sure?"
+                            transitionName="zoom-big"
+                            trigger="click"
+                          >
+                            <button
+                              className="full"
+                              type="button"
+                            >
+                              <img
+                                alt="checkmark"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                                width="30"
+                              />
+                              Verify Mine Data
+                            </button>
+                          </Popconfirm>
+                        </div>
+                        <div
+                          className="custom-menu-item"
+                        >
+                          <Popconfirm
+                            cancelText="No"
+                            icon={
+                              <Icon
+                                theme="filled"
+                                type="exclamation-circle"
+                              />
+                            }
+                            okText="Yes"
+                            okType="primary"
+                            onConfirm={[Function]}
+                            placement="left"
+                            title="Are you sure?"
+                            transitionName="zoom-big"
+                            trigger="click"
+                          >
+                            <button
+                              className="full"
+                              type="button"
+                            >
+                              <img
+                                alt="hazard"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                                width="30"
+                              />
+                              Mark Data for Verification
+                            </button>
+                          </Popconfirm>
+                        </div>
+                      </Connect(AuthorizationWrapper)>
+                    </Menu>
+                  }
+                  placement="bottomLeft"
+                  visible={false}
+                >
+                  <Button
+                    block={false}
+                    ghost={false}
+                    htmlType="button"
+                    loading={false}
+                    type="primary"
+                  >
+                    <div
+                      className="padding-small"
+                    >
+                      <img
+                        alt="Add/Edit"
+                        className="padding-small--right"
+                        src={
+                          Object {
+                            "process": [Function],
+                          }
+                        }
+                      />
+                      Add/Edit
+                    </div>
+                  </Button>
+                </Dropdown>
               </div>
             </div>
             <Divider
@@ -3278,64 +3152,56 @@ ShallowWrapper {
                   mine3
                 </h1>
                 <div>
-                  <Connect(AuthorizationWrapper)
-                    isMajorMine={undefined}
-                    permission="role_create"
-                  >
-                    <Dropdown
-                      className="full-height full-mobile"
-                      mouseEnterDelay={0.15}
-                      mouseLeaveDelay={0.1}
-                      onVisibleChange={[Function]}
-                      overlay={
-                        <Menu
-                          onClick={[Function]}
+                  <div />
+                  <Dropdown
+                    className="full-height full-mobile"
+                    mouseEnterDelay={0.15}
+                    mouseLeaveDelay={0.1}
+                    onVisibleChange={[Function]}
+                    overlay={
+                      <Menu>
+                        <Connect(AuthorizationWrapper)
+                          isMajorMine={undefined}
+                          permission="role_edit_mines"
                         >
-                          <MenuItem>
-                            <button
-                              className="full"
-                              onClick={[Function]}
-                              type="button"
-                            >
-                              <img
-                                alt="pencil"
-                                className="padding-small"
-                                src={
-                                  Object {
-                                    "process": [Function],
-                                  }
-                                }
-                              />
-                              Update Mine Record
-                            </button>
-                          </MenuItem>
-                          <MenuItem>
-                            <button
-                              className="full"
-                              onClick={[Function]}
-                              type="button"
-                            >
-                              <img
-                                alt="document"
-                                className="padding-small"
-                                src={
-                                  Object {
-                                    "process": [Function],
-                                  }
-                                }
-                              />
-                              + Add TSF
-                            </button>
-                          </MenuItem>
-                          <Connect(AuthorizationWrapper)
-                            inTesting={true}
+                          <MenuItem
+                            onClick={[Function]}
                           >
                             <div
                               className="custom-menu-item"
                             >
                               <button
                                 className="full"
-                                onClick={undefined}
+                                onClick={[Function]}
+                                type="button"
+                              >
+                                <img
+                                  alt="pencil"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
+                                  }
+                                />
+                                Update Mine Record
+                              </button>
+                            </div>
+                          </MenuItem>
+                        </Connect(AuthorizationWrapper)>
+                        <Connect(AuthorizationWrapper)
+                          isMajorMine={undefined}
+                          permission="role_edit_mines"
+                        >
+                          <MenuItem
+                            onClick={[Function]}
+                          >
+                            <div
+                              className="custom-menu-item"
+                            >
+                              <button
+                                className="full"
+                                onClick={[Function]}
                                 type="button"
                               >
                                 <img
@@ -3347,121 +3213,137 @@ ShallowWrapper {
                                     }
                                   }
                                 />
-                                Subscribe
+                                + Add TSF
                               </button>
                             </div>
-                          </Connect(AuthorizationWrapper)>
-                          <Connect(AuthorizationWrapper)
-                            inTesting={true}
-                          >
-                            <div
-                              className="custom-menu-item"
-                            >
-                              <Popconfirm
-                                cancelText="No"
-                                icon={
-                                  <Icon
-                                    theme="filled"
-                                    type="exclamation-circle"
-                                  />
-                                }
-                                okText="Yes"
-                                okType="primary"
-                                onConfirm={[Function]}
-                                placement="left"
-                                title="Are you sure?"
-                                transitionName="zoom-big"
-                                trigger="click"
-                              >
-                                <button
-                                  className="full"
-                                  type="button"
-                                >
-                                  <img
-                                    alt="checkmark"
-                                    className="padding-small"
-                                    src={
-                                      Object {
-                                        "process": [Function],
-                                      }
-                                    }
-                                    width="30"
-                                  />
-                                  Verify Mine Data
-                                </button>
-                              </Popconfirm>
-                            </div>
-                          </Connect(AuthorizationWrapper)>
-                          <Connect(AuthorizationWrapper)
-                            inTesting={true}
-                          >
-                            <div
-                              className="custom-menu-item"
-                            >
-                              <Popconfirm
-                                cancelText="No"
-                                icon={
-                                  <Icon
-                                    theme="filled"
-                                    type="exclamation-circle"
-                                  />
-                                }
-                                okText="Yes"
-                                okType="primary"
-                                onConfirm={[Function]}
-                                placement="left"
-                                title="Are you sure?"
-                                transitionName="zoom-big"
-                                trigger="click"
-                              >
-                                <button
-                                  className="full"
-                                  type="button"
-                                >
-                                  <img
-                                    alt="hazard"
-                                    className="padding-small"
-                                    src={
-                                      Object {
-                                        "process": [Function],
-                                      }
-                                    }
-                                    width="30"
-                                  />
-                                  Mark Data for Verification
-                                </button>
-                              </Popconfirm>
-                            </div>
-                          </Connect(AuthorizationWrapper)>
-                        </Menu>
-                      }
-                      placement="bottomLeft"
-                      visible={false}
-                    >
-                      <Button
-                        block={false}
-                        ghost={false}
-                        htmlType="button"
-                        loading={false}
-                        type="primary"
-                      >
+                          </MenuItem>
+                        </Connect(AuthorizationWrapper)>
                         <div
-                          className="padding-small"
+                          className="custom-menu-item"
                         >
-                          <img
-                            alt="Add/Edit"
-                            className="padding-small--right"
-                            src={
-                              Object {
-                                "process": [Function],
+                          <button
+                            className="full"
+                            onClick={undefined}
+                            type="button"
+                          >
+                            <img
+                              alt="document"
+                              className="padding-small"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
                               }
-                            }
-                          />
-                          Add/Edit
+                            />
+                            Subscribe
+                          </button>
                         </div>
-                      </Button>
-                    </Dropdown>
-                  </Connect(AuthorizationWrapper)>
+                        <Connect(AuthorizationWrapper)
+                          permission="role_admin"
+                        >
+                          <div
+                            className="custom-menu-item"
+                          >
+                            <Popconfirm
+                              cancelText="No"
+                              icon={
+                                <Icon
+                                  theme="filled"
+                                  type="exclamation-circle"
+                                />
+                              }
+                              okText="Yes"
+                              okType="primary"
+                              onConfirm={[Function]}
+                              placement="left"
+                              title="Are you sure?"
+                              transitionName="zoom-big"
+                              trigger="click"
+                            >
+                              <button
+                                className="full"
+                                type="button"
+                              >
+                                <img
+                                  alt="checkmark"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
+                                  }
+                                  width="30"
+                                />
+                                Verify Mine Data
+                              </button>
+                            </Popconfirm>
+                          </div>
+                          <div
+                            className="custom-menu-item"
+                          >
+                            <Popconfirm
+                              cancelText="No"
+                              icon={
+                                <Icon
+                                  theme="filled"
+                                  type="exclamation-circle"
+                                />
+                              }
+                              okText="Yes"
+                              okType="primary"
+                              onConfirm={[Function]}
+                              placement="left"
+                              title="Are you sure?"
+                              transitionName="zoom-big"
+                              trigger="click"
+                            >
+                              <button
+                                className="full"
+                                type="button"
+                              >
+                                <img
+                                  alt="hazard"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
+                                  }
+                                  width="30"
+                                />
+                                Mark Data for Verification
+                              </button>
+                            </Popconfirm>
+                          </div>
+                        </Connect(AuthorizationWrapper)>
+                      </Menu>
+                    }
+                    placement="bottomLeft"
+                    visible={false}
+                  >
+                    <Button
+                      block={false}
+                      ghost={false}
+                      htmlType="button"
+                      loading={false}
+                      type="primary"
+                    >
+                      <div
+                        className="padding-small"
+                      >
+                        <img
+                          alt="Add/Edit"
+                          className="padding-small--right"
+                          src={
+                            Object {
+                              "process": [Function],
+                            }
+                          }
+                        />
+                        Add/Edit
+                      </div>
+                    </Button>
+                  </Dropdown>
                 </div>
               </div>,
               <Divider
@@ -3589,64 +3471,56 @@ ShallowWrapper {
                     mine3
                   </h1>,
                   <div>
-                    <Connect(AuthorizationWrapper)
-                      isMajorMine={undefined}
-                      permission="role_create"
-                    >
-                      <Dropdown
-                        className="full-height full-mobile"
-                        mouseEnterDelay={0.15}
-                        mouseLeaveDelay={0.1}
-                        onVisibleChange={[Function]}
-                        overlay={
-                          <Menu
-                            onClick={[Function]}
+                    <div />
+                    <Dropdown
+                      className="full-height full-mobile"
+                      mouseEnterDelay={0.15}
+                      mouseLeaveDelay={0.1}
+                      onVisibleChange={[Function]}
+                      overlay={
+                        <Menu>
+                          <Connect(AuthorizationWrapper)
+                            isMajorMine={undefined}
+                            permission="role_edit_mines"
                           >
-                            <MenuItem>
-                              <button
-                                className="full"
-                                onClick={[Function]}
-                                type="button"
-                              >
-                                <img
-                                  alt="pencil"
-                                  className="padding-small"
-                                  src={
-                                    Object {
-                                      "process": [Function],
-                                    }
-                                  }
-                                />
-                                Update Mine Record
-                              </button>
-                            </MenuItem>
-                            <MenuItem>
-                              <button
-                                className="full"
-                                onClick={[Function]}
-                                type="button"
-                              >
-                                <img
-                                  alt="document"
-                                  className="padding-small"
-                                  src={
-                                    Object {
-                                      "process": [Function],
-                                    }
-                                  }
-                                />
-                                + Add TSF
-                              </button>
-                            </MenuItem>
-                            <Connect(AuthorizationWrapper)
-                              inTesting={true}
+                            <MenuItem
+                              onClick={[Function]}
                             >
                               <div
                                 className="custom-menu-item"
                               >
                                 <button
                                   className="full"
-                                  onClick={undefined}
+                                  onClick={[Function]}
+                                  type="button"
+                                >
+                                  <img
+                                    alt="pencil"
+                                    className="padding-small"
+                                    src={
+                                      Object {
+                                        "process": [Function],
+                                      }
+                                    }
+                                  />
+                                  Update Mine Record
+                                </button>
+                              </div>
+                            </MenuItem>
+                          </Connect(AuthorizationWrapper)>
+                          <Connect(AuthorizationWrapper)
+                            isMajorMine={undefined}
+                            permission="role_edit_mines"
+                          >
+                            <MenuItem
+                              onClick={[Function]}
+                            >
+                              <div
+                                className="custom-menu-item"
+                              >
+                                <button
+                                  className="full"
+                                  onClick={[Function]}
                                   type="button"
                                 >
                                   <img
@@ -3658,12 +3532,255 @@ ShallowWrapper {
                                       }
                                     }
                                   />
-                                  Subscribe
+                                  + Add TSF
                                 </button>
                               </div>
+                            </MenuItem>
+                          </Connect(AuthorizationWrapper)>
+                          <div
+                            className="custom-menu-item"
+                          >
+                            <button
+                              className="full"
+                              onClick={undefined}
+                              type="button"
+                            >
+                              <img
+                                alt="document"
+                                className="padding-small"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                              />
+                              Subscribe
+                            </button>
+                          </div>
+                          <Connect(AuthorizationWrapper)
+                            permission="role_admin"
+                          >
+                            <div
+                              className="custom-menu-item"
+                            >
+                              <Popconfirm
+                                cancelText="No"
+                                icon={
+                                  <Icon
+                                    theme="filled"
+                                    type="exclamation-circle"
+                                  />
+                                }
+                                okText="Yes"
+                                okType="primary"
+                                onConfirm={[Function]}
+                                placement="left"
+                                title="Are you sure?"
+                                transitionName="zoom-big"
+                                trigger="click"
+                              >
+                                <button
+                                  className="full"
+                                  type="button"
+                                >
+                                  <img
+                                    alt="checkmark"
+                                    className="padding-small"
+                                    src={
+                                      Object {
+                                        "process": [Function],
+                                      }
+                                    }
+                                    width="30"
+                                  />
+                                  Verify Mine Data
+                                </button>
+                              </Popconfirm>
+                            </div>
+                            <div
+                              className="custom-menu-item"
+                            >
+                              <Popconfirm
+                                cancelText="No"
+                                icon={
+                                  <Icon
+                                    theme="filled"
+                                    type="exclamation-circle"
+                                  />
+                                }
+                                okText="Yes"
+                                okType="primary"
+                                onConfirm={[Function]}
+                                placement="left"
+                                title="Are you sure?"
+                                transitionName="zoom-big"
+                                trigger="click"
+                              >
+                                <button
+                                  className="full"
+                                  type="button"
+                                >
+                                  <img
+                                    alt="hazard"
+                                    className="padding-small"
+                                    src={
+                                      Object {
+                                        "process": [Function],
+                                      }
+                                    }
+                                    width="30"
+                                  />
+                                  Mark Data for Verification
+                                </button>
+                              </Popconfirm>
+                            </div>
+                          </Connect(AuthorizationWrapper)>
+                        </Menu>
+                      }
+                      placement="bottomLeft"
+                      visible={false}
+                    >
+                      <Button
+                        block={false}
+                        ghost={false}
+                        htmlType="button"
+                        loading={false}
+                        type="primary"
+                      >
+                        <div
+                          className="padding-small"
+                        >
+                          <img
+                            alt="Add/Edit"
+                            className="padding-small--right"
+                            src={
+                              Object {
+                                "process": [Function],
+                              }
+                            }
+                          />
+                          Add/Edit
+                        </div>
+                      </Button>
+                    </Dropdown>
+                  </div>,
+                ],
+                "className": "inline-flex between center-mobile",
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": Array [
+                      "mine3",
+                      false,
+                    ],
+                  },
+                  "ref": null,
+                  "rendered": Array [
+                    "mine3",
+                    false,
+                  ],
+                  "type": "h1",
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": Array [
+                      undefined,
+                      <div />,
+                      <Dropdown
+                        className="full-height full-mobile"
+                        mouseEnterDelay={0.15}
+                        mouseLeaveDelay={0.1}
+                        onVisibleChange={[Function]}
+                        overlay={
+                          <Menu>
+                            <Connect(AuthorizationWrapper)
+                              isMajorMine={undefined}
+                              permission="role_edit_mines"
+                            >
+                              <MenuItem
+                                onClick={[Function]}
+                              >
+                                <div
+                                  className="custom-menu-item"
+                                >
+                                  <button
+                                    className="full"
+                                    onClick={[Function]}
+                                    type="button"
+                                  >
+                                    <img
+                                      alt="pencil"
+                                      className="padding-small"
+                                      src={
+                                        Object {
+                                          "process": [Function],
+                                        }
+                                      }
+                                    />
+                                    Update Mine Record
+                                  </button>
+                                </div>
+                              </MenuItem>
                             </Connect(AuthorizationWrapper)>
                             <Connect(AuthorizationWrapper)
-                              inTesting={true}
+                              isMajorMine={undefined}
+                              permission="role_edit_mines"
+                            >
+                              <MenuItem
+                                onClick={[Function]}
+                              >
+                                <div
+                                  className="custom-menu-item"
+                                >
+                                  <button
+                                    className="full"
+                                    onClick={[Function]}
+                                    type="button"
+                                  >
+                                    <img
+                                      alt="document"
+                                      className="padding-small"
+                                      src={
+                                        Object {
+                                          "process": [Function],
+                                        }
+                                      }
+                                    />
+                                    + Add TSF
+                                  </button>
+                                </div>
+                              </MenuItem>
+                            </Connect(AuthorizationWrapper)>
+                            <div
+                              className="custom-menu-item"
+                            >
+                              <button
+                                className="full"
+                                onClick={undefined}
+                                type="button"
+                              >
+                                <img
+                                  alt="document"
+                                  className="padding-small"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
+                                  }
+                                />
+                                Subscribe
+                              </button>
+                            </div>
+                            <Connect(AuthorizationWrapper)
+                              permission="role_admin"
                             >
                               <div
                                 className="custom-menu-item"
@@ -3702,10 +3819,6 @@ ShallowWrapper {
                                   </button>
                                 </Popconfirm>
                               </div>
-                            </Connect(AuthorizationWrapper)>
-                            <Connect(AuthorizationWrapper)
-                              inTesting={true}
-                            >
                               <div
                                 className="custom-menu-item"
                               >
@@ -3771,222 +3884,7 @@ ShallowWrapper {
                             Add/Edit
                           </div>
                         </Button>
-                      </Dropdown>
-                    </Connect(AuthorizationWrapper)>
-                  </div>,
-                ],
-                "className": "inline-flex between center-mobile",
-              },
-              "ref": null,
-              "rendered": Array [
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "host",
-                  "props": Object {
-                    "children": Array [
-                      "mine3",
-                      false,
-                    ],
-                  },
-                  "ref": null,
-                  "rendered": Array [
-                    "mine3",
-                    false,
-                  ],
-                  "type": "h1",
-                },
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "host",
-                  "props": Object {
-                    "children": Array [
-                      undefined,
-                      <Connect(AuthorizationWrapper)
-                        isMajorMine={undefined}
-                        permission="role_create"
-                      >
-                        <Dropdown
-                          className="full-height full-mobile"
-                          mouseEnterDelay={0.15}
-                          mouseLeaveDelay={0.1}
-                          onVisibleChange={[Function]}
-                          overlay={
-                            <Menu
-                              onClick={[Function]}
-                            >
-                              <MenuItem>
-                                <button
-                                  className="full"
-                                  onClick={[Function]}
-                                  type="button"
-                                >
-                                  <img
-                                    alt="pencil"
-                                    className="padding-small"
-                                    src={
-                                      Object {
-                                        "process": [Function],
-                                      }
-                                    }
-                                  />
-                                  Update Mine Record
-                                </button>
-                              </MenuItem>
-                              <MenuItem>
-                                <button
-                                  className="full"
-                                  onClick={[Function]}
-                                  type="button"
-                                >
-                                  <img
-                                    alt="document"
-                                    className="padding-small"
-                                    src={
-                                      Object {
-                                        "process": [Function],
-                                      }
-                                    }
-                                  />
-                                  + Add TSF
-                                </button>
-                              </MenuItem>
-                              <Connect(AuthorizationWrapper)
-                                inTesting={true}
-                              >
-                                <div
-                                  className="custom-menu-item"
-                                >
-                                  <button
-                                    className="full"
-                                    onClick={undefined}
-                                    type="button"
-                                  >
-                                    <img
-                                      alt="document"
-                                      className="padding-small"
-                                      src={
-                                        Object {
-                                          "process": [Function],
-                                        }
-                                      }
-                                    />
-                                    Subscribe
-                                  </button>
-                                </div>
-                              </Connect(AuthorizationWrapper)>
-                              <Connect(AuthorizationWrapper)
-                                inTesting={true}
-                              >
-                                <div
-                                  className="custom-menu-item"
-                                >
-                                  <Popconfirm
-                                    cancelText="No"
-                                    icon={
-                                      <Icon
-                                        theme="filled"
-                                        type="exclamation-circle"
-                                      />
-                                    }
-                                    okText="Yes"
-                                    okType="primary"
-                                    onConfirm={[Function]}
-                                    placement="left"
-                                    title="Are you sure?"
-                                    transitionName="zoom-big"
-                                    trigger="click"
-                                  >
-                                    <button
-                                      className="full"
-                                      type="button"
-                                    >
-                                      <img
-                                        alt="checkmark"
-                                        className="padding-small"
-                                        src={
-                                          Object {
-                                            "process": [Function],
-                                          }
-                                        }
-                                        width="30"
-                                      />
-                                      Verify Mine Data
-                                    </button>
-                                  </Popconfirm>
-                                </div>
-                              </Connect(AuthorizationWrapper)>
-                              <Connect(AuthorizationWrapper)
-                                inTesting={true}
-                              >
-                                <div
-                                  className="custom-menu-item"
-                                >
-                                  <Popconfirm
-                                    cancelText="No"
-                                    icon={
-                                      <Icon
-                                        theme="filled"
-                                        type="exclamation-circle"
-                                      />
-                                    }
-                                    okText="Yes"
-                                    okType="primary"
-                                    onConfirm={[Function]}
-                                    placement="left"
-                                    title="Are you sure?"
-                                    transitionName="zoom-big"
-                                    trigger="click"
-                                  >
-                                    <button
-                                      className="full"
-                                      type="button"
-                                    >
-                                      <img
-                                        alt="hazard"
-                                        className="padding-small"
-                                        src={
-                                          Object {
-                                            "process": [Function],
-                                          }
-                                        }
-                                        width="30"
-                                      />
-                                      Mark Data for Verification
-                                    </button>
-                                  </Popconfirm>
-                                </div>
-                              </Connect(AuthorizationWrapper)>
-                            </Menu>
-                          }
-                          placement="bottomLeft"
-                          visible={false}
-                        >
-                          <Button
-                            block={false}
-                            ghost={false}
-                            htmlType="button"
-                            loading={false}
-                            type="primary"
-                          >
-                            <div
-                              className="padding-small"
-                            >
-                              <img
-                                alt="Add/Edit"
-                                className="padding-small--right"
-                                src={
-                                  Object {
-                                    "process": [Function],
-                                  }
-                                }
-                              />
-                              Add/Edit
-                            </div>
-                          </Button>
-                        </Dropdown>
-                      </Connect(AuthorizationWrapper)>,
+                      </Dropdown>,
                     ],
                   },
                   "ref": null,
@@ -3995,18 +3893,54 @@ ShallowWrapper {
                     Object {
                       "instance": null,
                       "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {},
+                      "ref": null,
+                      "rendered": null,
+                      "type": "div",
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
                       "nodeType": "class",
                       "props": Object {
-                        "children": <Dropdown
-                          className="full-height full-mobile"
-                          mouseEnterDelay={0.15}
-                          mouseLeaveDelay={0.1}
-                          onVisibleChange={[Function]}
-                          overlay={
-                            <Menu
+                        "children": <Button
+                          block={false}
+                          ghost={false}
+                          htmlType="button"
+                          loading={false}
+                          type="primary"
+                        >
+                          <div
+                            className="padding-small"
+                          >
+                            <img
+                              alt="Add/Edit"
+                              className="padding-small--right"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                            />
+                            Add/Edit
+                          </div>
+                        </Button>,
+                        "className": "full-height full-mobile",
+                        "mouseEnterDelay": 0.15,
+                        "mouseLeaveDelay": 0.1,
+                        "onVisibleChange": [Function],
+                        "overlay": <Menu>
+                          <Connect(AuthorizationWrapper)
+                            isMajorMine={undefined}
+                            permission="role_edit_mines"
+                          >
+                            <MenuItem
                               onClick={[Function]}
                             >
-                              <MenuItem>
+                              <div
+                                className="custom-menu-item"
+                              >
                                 <button
                                   className="full"
                                   onClick={[Function]}
@@ -4023,8 +3957,19 @@ ShallowWrapper {
                                   />
                                   Update Mine Record
                                 </button>
-                              </MenuItem>
-                              <MenuItem>
+                              </div>
+                            </MenuItem>
+                          </Connect(AuthorizationWrapper)>
+                          <Connect(AuthorizationWrapper)
+                            isMajorMine={undefined}
+                            permission="role_edit_mines"
+                          >
+                            <MenuItem
+                              onClick={[Function]}
+                            >
+                              <div
+                                className="custom-menu-item"
+                              >
                                 <button
                                   className="full"
                                   onClick={[Function]}
@@ -4041,143 +3986,110 @@ ShallowWrapper {
                                   />
                                   + Add TSF
                                 </button>
-                              </MenuItem>
-                              <Connect(AuthorizationWrapper)
-                                inTesting={true}
-                              >
-                                <div
-                                  className="custom-menu-item"
-                                >
-                                  <button
-                                    className="full"
-                                    onClick={undefined}
-                                    type="button"
-                                  >
-                                    <img
-                                      alt="document"
-                                      className="padding-small"
-                                      src={
-                                        Object {
-                                          "process": [Function],
-                                        }
-                                      }
-                                    />
-                                    Subscribe
-                                  </button>
-                                </div>
-                              </Connect(AuthorizationWrapper)>
-                              <Connect(AuthorizationWrapper)
-                                inTesting={true}
-                              >
-                                <div
-                                  className="custom-menu-item"
-                                >
-                                  <Popconfirm
-                                    cancelText="No"
-                                    icon={
-                                      <Icon
-                                        theme="filled"
-                                        type="exclamation-circle"
-                                      />
-                                    }
-                                    okText="Yes"
-                                    okType="primary"
-                                    onConfirm={[Function]}
-                                    placement="left"
-                                    title="Are you sure?"
-                                    transitionName="zoom-big"
-                                    trigger="click"
-                                  >
-                                    <button
-                                      className="full"
-                                      type="button"
-                                    >
-                                      <img
-                                        alt="checkmark"
-                                        className="padding-small"
-                                        src={
-                                          Object {
-                                            "process": [Function],
-                                          }
-                                        }
-                                        width="30"
-                                      />
-                                      Verify Mine Data
-                                    </button>
-                                  </Popconfirm>
-                                </div>
-                              </Connect(AuthorizationWrapper)>
-                              <Connect(AuthorizationWrapper)
-                                inTesting={true}
-                              >
-                                <div
-                                  className="custom-menu-item"
-                                >
-                                  <Popconfirm
-                                    cancelText="No"
-                                    icon={
-                                      <Icon
-                                        theme="filled"
-                                        type="exclamation-circle"
-                                      />
-                                    }
-                                    okText="Yes"
-                                    okType="primary"
-                                    onConfirm={[Function]}
-                                    placement="left"
-                                    title="Are you sure?"
-                                    transitionName="zoom-big"
-                                    trigger="click"
-                                  >
-                                    <button
-                                      className="full"
-                                      type="button"
-                                    >
-                                      <img
-                                        alt="hazard"
-                                        className="padding-small"
-                                        src={
-                                          Object {
-                                            "process": [Function],
-                                          }
-                                        }
-                                        width="30"
-                                      />
-                                      Mark Data for Verification
-                                    </button>
-                                  </Popconfirm>
-                                </div>
-                              </Connect(AuthorizationWrapper)>
-                            </Menu>
-                          }
-                          placement="bottomLeft"
-                          visible={false}
-                        >
-                          <Button
-                            block={false}
-                            ghost={false}
-                            htmlType="button"
-                            loading={false}
-                            type="primary"
+                              </div>
+                            </MenuItem>
+                          </Connect(AuthorizationWrapper)>
+                          <div
+                            className="custom-menu-item"
                           >
-                            <div
-                              className="padding-small"
+                            <button
+                              className="full"
+                              onClick={undefined}
+                              type="button"
                             >
                               <img
-                                alt="Add/Edit"
-                                className="padding-small--right"
+                                alt="document"
+                                className="padding-small"
                                 src={
                                   Object {
                                     "process": [Function],
                                   }
                                 }
                               />
-                              Add/Edit
+                              Subscribe
+                            </button>
+                          </div>
+                          <Connect(AuthorizationWrapper)
+                            permission="role_admin"
+                          >
+                            <div
+                              className="custom-menu-item"
+                            >
+                              <Popconfirm
+                                cancelText="No"
+                                icon={
+                                  <Icon
+                                    theme="filled"
+                                    type="exclamation-circle"
+                                  />
+                                }
+                                okText="Yes"
+                                okType="primary"
+                                onConfirm={[Function]}
+                                placement="left"
+                                title="Are you sure?"
+                                transitionName="zoom-big"
+                                trigger="click"
+                              >
+                                <button
+                                  className="full"
+                                  type="button"
+                                >
+                                  <img
+                                    alt="checkmark"
+                                    className="padding-small"
+                                    src={
+                                      Object {
+                                        "process": [Function],
+                                      }
+                                    }
+                                    width="30"
+                                  />
+                                  Verify Mine Data
+                                </button>
+                              </Popconfirm>
                             </div>
-                          </Button>
-                        </Dropdown>,
-                        "isMajorMine": undefined,
-                        "permission": "role_create",
+                            <div
+                              className="custom-menu-item"
+                            >
+                              <Popconfirm
+                                cancelText="No"
+                                icon={
+                                  <Icon
+                                    theme="filled"
+                                    type="exclamation-circle"
+                                  />
+                                }
+                                okText="Yes"
+                                okType="primary"
+                                onConfirm={[Function]}
+                                placement="left"
+                                title="Are you sure?"
+                                transitionName="zoom-big"
+                                trigger="click"
+                              >
+                                <button
+                                  className="full"
+                                  type="button"
+                                >
+                                  <img
+                                    alt="hazard"
+                                    className="padding-small"
+                                    src={
+                                      Object {
+                                        "process": [Function],
+                                      }
+                                    }
+                                    width="30"
+                                  />
+                                  Mark Data for Verification
+                                </button>
+                              </Popconfirm>
+                            </div>
+                          </Connect(AuthorizationWrapper)>
+                        </Menu>,
+                        "placement": "bottomLeft",
+                        "visible": false,
                       },
                       "ref": null,
                       "rendered": Object {
@@ -4185,191 +4097,33 @@ ShallowWrapper {
                         "key": undefined,
                         "nodeType": "class",
                         "props": Object {
-                          "children": <Button
-                            block={false}
-                            ghost={false}
-                            htmlType="button"
-                            loading={false}
-                            type="primary"
+                          "block": false,
+                          "children": <div
+                            className="padding-small"
                           >
-                            <div
-                              className="padding-small"
-                            >
-                              <img
-                                alt="Add/Edit"
-                                className="padding-small--right"
-                                src={
-                                  Object {
-                                    "process": [Function],
-                                  }
+                            <img
+                              alt="Add/Edit"
+                              className="padding-small--right"
+                              src={
+                                Object {
+                                  "process": [Function],
                                 }
-                              />
-                              Add/Edit
-                            </div>
-                          </Button>,
-                          "className": "full-height full-mobile",
-                          "mouseEnterDelay": 0.15,
-                          "mouseLeaveDelay": 0.1,
-                          "onVisibleChange": [Function],
-                          "overlay": <Menu
-                            onClick={[Function]}
-                          >
-                            <MenuItem>
-                              <button
-                                className="full"
-                                onClick={[Function]}
-                                type="button"
-                              >
-                                <img
-                                  alt="pencil"
-                                  className="padding-small"
-                                  src={
-                                    Object {
-                                      "process": [Function],
-                                    }
-                                  }
-                                />
-                                Update Mine Record
-                              </button>
-                            </MenuItem>
-                            <MenuItem>
-                              <button
-                                className="full"
-                                onClick={[Function]}
-                                type="button"
-                              >
-                                <img
-                                  alt="document"
-                                  className="padding-small"
-                                  src={
-                                    Object {
-                                      "process": [Function],
-                                    }
-                                  }
-                                />
-                                + Add TSF
-                              </button>
-                            </MenuItem>
-                            <Connect(AuthorizationWrapper)
-                              inTesting={true}
-                            >
-                              <div
-                                className="custom-menu-item"
-                              >
-                                <button
-                                  className="full"
-                                  onClick={undefined}
-                                  type="button"
-                                >
-                                  <img
-                                    alt="document"
-                                    className="padding-small"
-                                    src={
-                                      Object {
-                                        "process": [Function],
-                                      }
-                                    }
-                                  />
-                                  Subscribe
-                                </button>
-                              </div>
-                            </Connect(AuthorizationWrapper)>
-                            <Connect(AuthorizationWrapper)
-                              inTesting={true}
-                            >
-                              <div
-                                className="custom-menu-item"
-                              >
-                                <Popconfirm
-                                  cancelText="No"
-                                  icon={
-                                    <Icon
-                                      theme="filled"
-                                      type="exclamation-circle"
-                                    />
-                                  }
-                                  okText="Yes"
-                                  okType="primary"
-                                  onConfirm={[Function]}
-                                  placement="left"
-                                  title="Are you sure?"
-                                  transitionName="zoom-big"
-                                  trigger="click"
-                                >
-                                  <button
-                                    className="full"
-                                    type="button"
-                                  >
-                                    <img
-                                      alt="checkmark"
-                                      className="padding-small"
-                                      src={
-                                        Object {
-                                          "process": [Function],
-                                        }
-                                      }
-                                      width="30"
-                                    />
-                                    Verify Mine Data
-                                  </button>
-                                </Popconfirm>
-                              </div>
-                            </Connect(AuthorizationWrapper)>
-                            <Connect(AuthorizationWrapper)
-                              inTesting={true}
-                            >
-                              <div
-                                className="custom-menu-item"
-                              >
-                                <Popconfirm
-                                  cancelText="No"
-                                  icon={
-                                    <Icon
-                                      theme="filled"
-                                      type="exclamation-circle"
-                                    />
-                                  }
-                                  okText="Yes"
-                                  okType="primary"
-                                  onConfirm={[Function]}
-                                  placement="left"
-                                  title="Are you sure?"
-                                  transitionName="zoom-big"
-                                  trigger="click"
-                                >
-                                  <button
-                                    className="full"
-                                    type="button"
-                                  >
-                                    <img
-                                      alt="hazard"
-                                      className="padding-small"
-                                      src={
-                                        Object {
-                                          "process": [Function],
-                                        }
-                                      }
-                                      width="30"
-                                    />
-                                    Mark Data for Verification
-                                  </button>
-                                </Popconfirm>
-                              </div>
-                            </Connect(AuthorizationWrapper)>
-                          </Menu>,
-                          "placement": "bottomLeft",
-                          "visible": false,
+                              }
+                            />
+                            Add/Edit
+                          </div>,
+                          "ghost": false,
+                          "htmlType": "button",
+                          "loading": false,
+                          "type": "primary",
                         },
                         "ref": null,
                         "rendered": Object {
                           "instance": null,
                           "key": undefined,
-                          "nodeType": "class",
+                          "nodeType": "host",
                           "props": Object {
-                            "block": false,
-                            "children": <div
-                              className="padding-small"
-                            >
+                            "children": Array [
                               <img
                                 alt="Add/Edit"
                                 className="padding-small--right"
@@ -4378,56 +4132,31 @@ ShallowWrapper {
                                     "process": [Function],
                                   }
                                 }
-                              />
-                              Add/Edit
-                            </div>,
-                            "ghost": false,
-                            "htmlType": "button",
-                            "loading": false,
-                            "type": "primary",
-                          },
-                          "ref": null,
-                          "rendered": Object {
-                            "instance": null,
-                            "key": undefined,
-                            "nodeType": "host",
-                            "props": Object {
-                              "children": Array [
-                                <img
-                                  alt="Add/Edit"
-                                  className="padding-small--right"
-                                  src={
-                                    Object {
-                                      "process": [Function],
-                                    }
-                                  }
-                                />,
-                                "Add/Edit",
-                              ],
-                              "className": "padding-small",
-                            },
-                            "ref": null,
-                            "rendered": Array [
-                              Object {
-                                "instance": null,
-                                "key": undefined,
-                                "nodeType": "host",
-                                "props": Object {
-                                  "alt": "Add/Edit",
-                                  "className": "padding-small--right",
-                                  "src": Object {
-                                    "process": [Function],
-                                  },
-                                },
-                                "ref": null,
-                                "rendered": null,
-                                "type": "img",
-                              },
+                              />,
                               "Add/Edit",
                             ],
-                            "type": "div",
+                            "className": "padding-small",
                           },
-                          "type": [Function],
+                          "ref": null,
+                          "rendered": Array [
+                            Object {
+                              "instance": null,
+                              "key": undefined,
+                              "nodeType": "host",
+                              "props": Object {
+                                "alt": "Add/Edit",
+                                "className": "padding-small--right",
+                                "src": Object {
+                                  "process": [Function],
+                                },
+                              },
+                              "ref": null,
+                              "rendered": null,
+                              "type": "img",
+                            },
+                            "Add/Edit",
+                          ],
+                          "type": "div",
                         },
                         "type": [Function],
                       },

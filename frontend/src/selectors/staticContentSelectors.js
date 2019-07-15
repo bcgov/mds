@@ -11,13 +11,13 @@ export const {
   getMineDisturbanceOptions,
   getExpectedDocumentStatusOptions,
   getMineTSFRequiredReports,
-  getOptionsLoaded,
   getProvinceOptions,
   getPermitStatusOptions,
   getApplicationStatusOptions,
   getComplianceCodes,
   getIncidentFollowupActionOptions,
   getIncidentDeterminationOptions,
+  getIncidentStatusCodeOptions,
   getVarianceStatusOptions,
   getVarianceDocumentCategoryOptions,
 } = staticContentReducer;
@@ -29,12 +29,23 @@ export const getCurrentComplianceCodes = createSelector(
     codes.filter((code) => code.expiry_date === null || new Date(code.expiry_date) > new Date())
 );
 
-export const getMineTenureTypesHash = createSelector(
+export const getMineTenureTypeDropdownOptions = createSelector(
   [getMineTenureTypeOptions],
+  (options) => createDropDownList(options, "description", "mine_tenure_type_code")
+);
+
+export const getMineTenureTypesHash = createSelector(
+  [getMineTenureTypeDropdownOptions],
   createLabelHash
 );
-export const getMineRegionHash = createSelector(
+
+export const getMineRegionDropdownOptions = createSelector(
   [getMineRegionOptions],
+  (options) => createDropDownList(options, "description", "mine_region_code")
+);
+
+export const getMineRegionHash = createSelector(
+  [getMineRegionDropdownOptions],
   createLabelHash
 );
 
@@ -43,12 +54,12 @@ const createConditionalMineDetails = (key) => (options, tenureTypes) => {
   tenureTypes.forEach((type) => {
     const valueArr = [];
     options.forEach((option) => {
-      if (option.mine_tenure_type_codes.includes(type.value)) {
+      if (option.mine_tenure_type_codes.includes(type.mine_tenure_type_code)) {
         valueArr.push({
           label: option.description,
           value: option[key],
         });
-        newArr[type.value] = valueArr;
+        newArr[type.mine_tenure_type_code] = valueArr;
       }
     });
   });
@@ -110,12 +121,33 @@ export const getDropdownApplicationStatusOptions = createSelector(
 
 export const getDropdownIncidentFollowupActionOptions = createSelector(
   [getIncidentFollowupActionOptions],
-  (options) => createDropDownList(options, "description", "mine_incident_followup_type_code")
+  (options) =>
+    createDropDownList(options, "description", "mine_incident_followup_investigation_type_code")
+);
+
+export const getIncidentFollowupActionHash = createSelector(
+  [getDropdownIncidentFollowupActionOptions],
+  createLabelHash
 );
 
 export const getDropdownIncidentDeterminationOptions = createSelector(
   [getIncidentDeterminationOptions],
   (options) => createDropDownList(options, "description", "mine_incident_determination_type_code")
+);
+
+export const getIncidentDeterminationHash = createSelector(
+  [getDropdownIncidentDeterminationOptions],
+  createLabelHash
+);
+
+export const getDropdownIncidentStatusCodeOptions = createSelector(
+  [getIncidentStatusCodeOptions],
+  (options) => createDropDownList(options, "description", "mine_incident_status_code")
+);
+
+export const getIncidentStatusCodeHash = createSelector(
+  [getDropdownIncidentStatusCodeOptions],
+  createLabelHash
 );
 
 const formatComplianceCodeValueOrLabel = (code, showDescription) => {
@@ -188,6 +220,16 @@ export const getMultiSelectComplianceCodes = createSelector(
 export const getDropdownVarianceStatusOptions = createSelector(
   [getVarianceStatusOptions],
   (options) => createDropDownList(options, "description", "variance_application_status_code")
+);
+
+// Ant design filter options expects the keys to be value/text vs the dropdown which expects value/label
+export const getFilterVarianceStatusOptions = createSelector(
+  [getVarianceStatusOptions],
+  (options) =>
+    options.map(({ description, variance_application_status_code }) => ({
+      value: variance_application_status_code,
+      text: description,
+    }))
 );
 
 export const getVarianceStatusOptionsHash = createSelector(

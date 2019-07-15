@@ -365,6 +365,11 @@ CREATE OR REPLACE FUNCTION transfer_mine_manager_information() RETURNS void AS $
                 party_type_code  = 'PER'
             FROM ETL_MANAGER etl
             WHERE party.party_guid = etl.party_guid
+            AND (party.first_name != etl.first_name
+                OR party.party_name != etl.surname
+                OR party.phone_no != etl.phone_no
+                OR party.email != etl.email
+                OR party.effective_date != etl.effective_date)
             RETURNING 1
             )
             SELECT COUNT(*) FROM updated_rows INTO update_row;

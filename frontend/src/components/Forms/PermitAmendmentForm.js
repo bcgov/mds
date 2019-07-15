@@ -21,6 +21,7 @@ const propTypes = {
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
   mine_guid: PropTypes.string.isRequired,
+  permit_guid: PropTypes.string.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any),
   change: PropTypes.func,
 };
@@ -66,11 +67,12 @@ export class PermitAmendmentForm extends Component {
 
   handleRemovePermitAmendmentDocument = (relatedDocuments, documentGuid) => {
     this.props.handleRemovePermitAmendmentDocument(
+      this.props.permit_guid,
       this.props.initialValues.permit_amendment_guid,
       documentGuid
     );
     const newRelatedDocuments = relatedDocuments.filter(
-      (doc) => doc.document_guid !== documentGuid
+      (doc) => doc.permit_amendment_document_guid !== documentGuid
     );
     this.setState({ relatedDocuments: newRelatedDocuments });
     this.shouldShowUploadFiles(newRelatedDocuments);

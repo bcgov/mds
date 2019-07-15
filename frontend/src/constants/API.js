@@ -47,15 +47,14 @@ export const MINE_VERIFIED_STATUSES = (params = {}) =>
 export const MINE_VERIFIED_STATUS = (mine_guid) => `/mines/${mine_guid}/verified-status`;
 
 // Permits
-export const PERMIT = (params) =>
-  params ? `/permits?${queryString.stringify(params)}` : "/permits";
-export const PERMITAMENDMENTS = (permitGuid) => `${PERMIT()}/${permitGuid}/amendments`;
-export const PERMITAMENDMENT = (permitAmendmentGuid) =>
-  `${PERMIT()}/amendments/${permitAmendmentGuid}`;
-export const PERMITAMENDMENTDOCUMENT = (permitAmendmentGuid, DocumentGuid) =>
-  `${PERMITAMENDMENT(permitAmendmentGuid)}/documents/${DocumentGuid}`;
-export const PERMITAMENDMENTDOCUMENTS = (permitAmendmentGuid) =>
-  `${PERMIT()}/amendments/${permitAmendmentGuid}/documents`;
+export const PERMITSTATUSCODES = () => `/mines/permits/status-codes`;
+export const PERMITS = (mineGuid) => `/mines/${mineGuid}/permits`;
+export const PERMITAMENDMENTS = (mineGuid, permitGuid) =>
+  `/mines/${mineGuid}/permits/${permitGuid}/amendments`;
+export const PERMITAMENDMENT = (mineGuid, permitGuid, permitAmendmentGuid) =>
+  `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}`;
+export const PERMITAMENDMENTDOCUMENT = (mineGuid, permitGuid, permitAmendmentGuid, documentGuid) =>
+  `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}/documents/${documentGuid}`;
 
 export const APPLICATIONS = "/applications";
 
@@ -69,7 +68,20 @@ export const CORE_DASHBOARD = `/reporting/core-dashboard`;
 
 // Variances
 export const COMPLIANCE_CODES = "/mines/compliance/codes";
-export const VARIANCES = (mineGuid) => `/mines/${mineGuid}/variances`;
+export const MINE_VARIANCES = (mineGuid) => `/mines/${mineGuid}/variances`;
+export const VARIANCES = (params) => {
+  const { variance_application_status_code = [], ...otherParams } = params;
+  const formattedCodes =
+    variance_application_status_code.length >= 1
+      ? { variance_application_status_code: variance_application_status_code.join(",") }
+      : {};
+  return params
+    ? `/variances?${queryString.stringify({
+        ...formattedCodes,
+        ...otherParams,
+      })}`
+    : "/variances";
+};
 export const VARIANCE = (mineGuid, varianceGuid) => `/mines/${mineGuid}/variances/${varianceGuid}`;
 export const VARIANCE_DOCUMENTS = (mineGuid, varianceGuid) =>
   `/mines/${mineGuid}/variances/${varianceGuid}/documents`;
@@ -83,6 +95,10 @@ export const CORE_USER = "/users/core";
 
 // Incidents
 export const MINE_INCIDENTS = (mine_guid) => `/mines/${mine_guid}/incidents`;
-export const MINE_INCIDENT = (mine_incident_guid) => `/mines/incidents/${mine_incident_guid}`;
+export const MINE_INCIDENT = (mineGuid, mine_incident_guid) =>
+  `/mines/${mineGuid}/incidents/${mine_incident_guid}`;
+export const MINE_INCIDENT_DOCUMENT = (mineGuid) => `/mines/${mineGuid}/incidents/documents`;
+
 export const MINE_INCIDENT_FOLLOWUP_ACTIONS = `/mines/incidents/followup-types`;
 export const MINE_INCIDENT_DETERMINATION_TYPES = `/mines/incidents/determination-types`;
+export const MINE_INCIDENT_STATUS_CODES = `/mines/incidents/status-codes`;

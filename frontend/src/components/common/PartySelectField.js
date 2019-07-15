@@ -97,8 +97,11 @@ export class PartySelectField extends Component {
   };
 
   componentWillReceiveProps = (nextProps) => {
+    const lastCreatedPartyUpdated = this.props.lastCreatedParty !== nextProps.lastCreatedParty;
+    const searchResultsUpdated = this.props.searchResults !== nextProps.searchResults;
+
     // If new search results have been returned, transform the results and store them in component state.
-    if (this.props.searchResults !== nextProps.searchResults) {
+    if (searchResultsUpdated || lastCreatedPartyUpdated) {
       let filteredParties = nextProps.searchResults.party.map((sr) => sr.result);
 
       if (this.props.organization && !this.props.person) {
@@ -111,26 +114,30 @@ export class PartySelectField extends Component {
         );
       }
 
-      this.setState((prevState) => {
+      // If a new party was just added, add that party to the list of search results.
+      if (lastCreatedPartyUpdated) {
+        filteredParties.push(nextProps.lastCreatedParty);
+      }
+
+      this.setState(() => {
         const newPartyDataSource = transformData(
           createItemIdsArray(filteredParties, "party_guid"),
           createItemMap(filteredParties, "party_guid"),
           this.props.allowAddingParties &&
-            renderAddPartyFooter(this.showAddPartyForm, this.props.partyLabel),
-          prevState.selectedOption.label
+            renderAddPartyFooter(this.showAddPartyForm, this.props.partyLabel)
         );
         return { partyDataSource: newPartyDataSource };
       });
+    }
 
-      // If a new party was just added, detect this and set the selected party to the newly created party.
-      if (this.props.lastCreatedParty !== nextProps.lastCreatedParty) {
-        this.setState({
-          selectedOption: {
-            key: nextProps.lastCreatedParty.party_guid,
-            label: nextProps.lastCreatedParty.name,
-          },
-        });
-      }
+    // If a new party was just added, detect this and set the selected party to the newly created party.
+    if (lastCreatedPartyUpdated) {
+      this.setState({
+        selectedOption: {
+          key: nextProps.lastCreatedParty.party_guid,
+          label: nextProps.lastCreatedParty.name,
+        },
+      });
     }
   };
 
@@ -150,7 +157,7 @@ export class PartySelectField extends Component {
   validOption = (value) =>
     this.state.partyDataSource.find((opt) => opt.key === value)
       ? undefined
-      : `"Invalid ${this.props.partyLabel}`;
+      : `Invalid ${this.props.partyLabel}`;
 
   render = () => (
     <Field

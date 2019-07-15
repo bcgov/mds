@@ -388,20 +388,22 @@ VALUES
 ON CONFLICT DO NOTHING;
 
 
-INSERT INTO mine_incident_followup_type
-(
-    mine_incident_followup_type_code ,
-    description             ,
-    display_order           ,
-    create_user             ,
-    update_user
-)
+INSERT INTO mine_incident_followup_investigation_type
+	(
+	mine_incident_followup_investigation_type_code,
+	description,
+	display_order,
+    active_ind,
+	create_user,
+	update_user
+	)
 VALUES
-    ('UND', 'Undecided', 10, 'system-mds', 'system-mds'),
-    ('NOA', 'No Action', 20, 'system-mds', 'system-mds'),
-    ('ISP', 'Inspection', 30, 'system-mds', 'system-mds'),
-    ('INV', 'Investigation', 40, 'system-mds', 'system-mds')
+	('MIU', 'Yes - MIU Investigation', 10, 'T', 'system-mds', 'system-mds'),
+	('INS', 'Yes - Inspector Investigation', 20, 'T', 'system-mds', 'system-mds'),
+	('NO', 'No', 30, 'T', 'system-mds', 'system-mds'),
+    ('HUK', 'Historical - Unknown', 40, 'F', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
+
 
 INSERT INTO mine_incident_determination_type
 (
@@ -428,4 +430,16 @@ VALUES
     ('NAP', 'Not Applicable', 'system-mds', 'system-mds'),
     ('APP', 'Approved', 'system-mds', 'system-mds'),
     ('DEN', 'Denied', 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO mine_incident_document_type_code (
+    mine_incident_document_type_code,
+    description,
+    active_ind,
+    create_user,
+    update_user
+)
+VALUES
+    ('FIN', 'Final Document', TRUE, 'system-mds', 'system-mds'),
+    ('INI', 'Initial Document', TRUE,  'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;

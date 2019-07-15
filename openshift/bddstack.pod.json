@@ -62,8 +62,9 @@
             "command": [
               "/bin/bash",
               "-c",
-              "cd /home/jenkins/bdd-tests && ./run_tests.sh"
+              "cd /opt/selenium/bdd-tests && ./run_tests.sh"
             ],
+            "imagePullPolicy": "Always",
             "env": [
               {
                 "name": "BASEURL",
@@ -85,6 +86,26 @@
                     "key": "bdd-test-create"
                   }
                 }
+              },
+              {
+                "name": "SCREEN_WIDTH",
+                "value": "1920"
+              },
+              {
+                "name": "SCREEN_HEIGHT",
+                "value": "1080"
+              },
+              {
+                "name": "SCREEN_DEPTH",
+                "value": "24"
+              },
+              {
+                "name": "START_XVFB",
+                "value": "false"
+              },
+              {
+                "name": "GRADLE_USER_HOME",
+                "value": "/opt/selenium/bdd-tests/gradle_home"
               },
               {
                 "name": "DB_HOST",
@@ -115,22 +136,20 @@
             ],
             "resources": {
               "limits": {
-                "cpu": "1.5",
+                "cpu": "1.2",
                 "memory": "3Gi"
               },
               "requests": {
-                "cpu": "500m",
+                "cpu": "1",
                 "memory": "1Gi"
               }
-            },
-            "imagePullPolicy": "IfNotPresent"
+            }
           }
         ],
         "restartPolicy": "Never",
         "activeDeadlineSeconds": 3600,
         "dnsPolicy": "ClusterFirst"
-      },
-      "status": {}
+      }
     }
   ]
 }

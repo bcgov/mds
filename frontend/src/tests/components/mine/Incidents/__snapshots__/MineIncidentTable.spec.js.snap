@@ -34,6 +34,7 @@ ShallowWrapper {
       ]
     }
     openMineIncidentModal={[MockFunction]}
+    openViewMineIncidentModal={[MockFunction]}
   />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
@@ -56,20 +57,49 @@ ShallowWrapper {
           Array [
             Object {
               "dataIndex": "mine_incident_report_no",
+              "sorter": [Function],
               "title": "Incident Report No.",
             },
             Object {
               "dataIndex": "incident_timestamp",
+              "sorter": [Function],
               "title": "Incident Time",
             },
             Object {
               "dataIndex": "reported_by",
+              "filters": Array [
+                Object {
+                  "text": undefined,
+                  "value": undefined,
+                },
+              ],
+              "onFilter": [Function],
+              "sorter": [Function],
               "title": "Reported By",
             },
             Object {
               "dataIndex": "followup_action",
+              "filters": Array [
+                Object {
+                  "text": undefined,
+                  "value": undefined,
+                },
+              ],
+              "onFilter": [Function],
               "render": [Function],
               "title": "EMPR Action",
+            },
+            Object {
+              "dataIndex": "initialDocuments",
+              "render": [Function],
+              "title": "Initial Report Documents",
+              "width": 200,
+            },
+            Object {
+              "dataIndex": "finalDocuments",
+              "render": [Function],
+              "title": "Final Report Documents",
+              "width": 200,
             },
             Object {
               "dataIndex": "handleEditModal",
@@ -81,13 +111,14 @@ ShallowWrapper {
         dataSource={
           Array [
             Object {
+              "docs": undefined,
               "followup_action": Object {
                 "active_ind": true,
                 "description": "No Action",
                 "display_order": 20,
                 "mine_incident_followup_type_code": "NOA",
               },
-              "handleEditModal": [MockFunction],
+              "handleEditMineIncident": [MockFunction],
               "incident": Object {
                 "closing_report_summary": "Parent south person form evidence receive tree wide memory but medical car himself benefit key really series sea enter money prove if lawyer seven ready religious shake.",
                 "followup_inspection_no": "721814",
@@ -106,7 +137,8 @@ ShallowWrapper {
               "key": undefined,
               "mine_incident_report_no": "2019-70",
               "openMineIncidentModal": [MockFunction],
-              "reported_by": "Robert Bell",
+              "openViewMineIncidentModal": [MockFunction],
+              "reported_by": undefined,
               "reported_timestamp": "Mar 17 2019",
             },
           ]
@@ -145,20 +177,49 @@ ShallowWrapper {
         "columns": Array [
           Object {
             "dataIndex": "mine_incident_report_no",
+            "sorter": [Function],
             "title": "Incident Report No.",
           },
           Object {
             "dataIndex": "incident_timestamp",
+            "sorter": [Function],
             "title": "Incident Time",
           },
           Object {
             "dataIndex": "reported_by",
+            "filters": Array [
+              Object {
+                "text": undefined,
+                "value": undefined,
+              },
+            ],
+            "onFilter": [Function],
+            "sorter": [Function],
             "title": "Reported By",
           },
           Object {
             "dataIndex": "followup_action",
+            "filters": Array [
+              Object {
+                "text": undefined,
+                "value": undefined,
+              },
+            ],
+            "onFilter": [Function],
             "render": [Function],
             "title": "EMPR Action",
+          },
+          Object {
+            "dataIndex": "initialDocuments",
+            "render": [Function],
+            "title": "Initial Report Documents",
+            "width": 200,
+          },
+          Object {
+            "dataIndex": "finalDocuments",
+            "render": [Function],
+            "title": "Final Report Documents",
+            "width": 200,
           },
           Object {
             "dataIndex": "handleEditModal",
@@ -168,13 +229,14 @@ ShallowWrapper {
         ],
         "dataSource": Array [
           Object {
+            "docs": undefined,
             "followup_action": Object {
               "active_ind": true,
               "description": "No Action",
               "display_order": 20,
               "mine_incident_followup_type_code": "NOA",
             },
-            "handleEditModal": [MockFunction],
+            "handleEditMineIncident": [MockFunction],
             "incident": Object {
               "closing_report_summary": "Parent south person form evidence receive tree wide memory but medical car himself benefit key really series sea enter money prove if lawyer seven ready religious shake.",
               "followup_inspection_no": "721814",
@@ -193,7 +255,8 @@ ShallowWrapper {
             "key": undefined,
             "mine_incident_report_no": "2019-70",
             "openMineIncidentModal": [MockFunction],
-            "reported_by": "Robert Bell",
+            "openViewMineIncidentModal": [MockFunction],
+            "reported_by": undefined,
             "reported_timestamp": "Mar 17 2019",
           },
         ],
@@ -234,20 +297,49 @@ ShallowWrapper {
             Array [
               Object {
                 "dataIndex": "mine_incident_report_no",
+                "sorter": [Function],
                 "title": "Incident Report No.",
               },
               Object {
                 "dataIndex": "incident_timestamp",
+                "sorter": [Function],
                 "title": "Incident Time",
               },
               Object {
                 "dataIndex": "reported_by",
+                "filters": Array [
+                  Object {
+                    "text": undefined,
+                    "value": undefined,
+                  },
+                ],
+                "onFilter": [Function],
+                "sorter": [Function],
                 "title": "Reported By",
               },
               Object {
                 "dataIndex": "followup_action",
+                "filters": Array [
+                  Object {
+                    "text": undefined,
+                    "value": undefined,
+                  },
+                ],
+                "onFilter": [Function],
                 "render": [Function],
                 "title": "EMPR Action",
+              },
+              Object {
+                "dataIndex": "initialDocuments",
+                "render": [Function],
+                "title": "Initial Report Documents",
+                "width": 200,
+              },
+              Object {
+                "dataIndex": "finalDocuments",
+                "render": [Function],
+                "title": "Final Report Documents",
+                "width": 200,
               },
               Object {
                 "dataIndex": "handleEditModal",
@@ -259,13 +351,14 @@ ShallowWrapper {
           dataSource={
             Array [
               Object {
+                "docs": undefined,
                 "followup_action": Object {
                   "active_ind": true,
                   "description": "No Action",
                   "display_order": 20,
                   "mine_incident_followup_type_code": "NOA",
                 },
-                "handleEditModal": [MockFunction],
+                "handleEditMineIncident": [MockFunction],
                 "incident": Object {
                   "closing_report_summary": "Parent south person form evidence receive tree wide memory but medical car himself benefit key really series sea enter money prove if lawyer seven ready religious shake.",
                   "followup_inspection_no": "721814",
@@ -284,7 +377,8 @@ ShallowWrapper {
                 "key": undefined,
                 "mine_incident_report_no": "2019-70",
                 "openMineIncidentModal": [MockFunction],
-                "reported_by": "Robert Bell",
+                "openViewMineIncidentModal": [MockFunction],
+                "reported_by": undefined,
                 "reported_timestamp": "Mar 17 2019",
               },
             ]
@@ -323,20 +417,49 @@ ShallowWrapper {
           "columns": Array [
             Object {
               "dataIndex": "mine_incident_report_no",
+              "sorter": [Function],
               "title": "Incident Report No.",
             },
             Object {
               "dataIndex": "incident_timestamp",
+              "sorter": [Function],
               "title": "Incident Time",
             },
             Object {
               "dataIndex": "reported_by",
+              "filters": Array [
+                Object {
+                  "text": undefined,
+                  "value": undefined,
+                },
+              ],
+              "onFilter": [Function],
+              "sorter": [Function],
               "title": "Reported By",
             },
             Object {
               "dataIndex": "followup_action",
+              "filters": Array [
+                Object {
+                  "text": undefined,
+                  "value": undefined,
+                },
+              ],
+              "onFilter": [Function],
               "render": [Function],
               "title": "EMPR Action",
+            },
+            Object {
+              "dataIndex": "initialDocuments",
+              "render": [Function],
+              "title": "Initial Report Documents",
+              "width": 200,
+            },
+            Object {
+              "dataIndex": "finalDocuments",
+              "render": [Function],
+              "title": "Final Report Documents",
+              "width": 200,
             },
             Object {
               "dataIndex": "handleEditModal",
@@ -346,13 +469,14 @@ ShallowWrapper {
           ],
           "dataSource": Array [
             Object {
+              "docs": undefined,
               "followup_action": Object {
                 "active_ind": true,
                 "description": "No Action",
                 "display_order": 20,
                 "mine_incident_followup_type_code": "NOA",
               },
-              "handleEditModal": [MockFunction],
+              "handleEditMineIncident": [MockFunction],
               "incident": Object {
                 "closing_report_summary": "Parent south person form evidence receive tree wide memory but medical car himself benefit key really series sea enter money prove if lawyer seven ready religious shake.",
                 "followup_inspection_no": "721814",
@@ -371,7 +495,8 @@ ShallowWrapper {
               "key": undefined,
               "mine_incident_report_no": "2019-70",
               "openMineIncidentModal": [MockFunction],
-              "reported_by": "Robert Bell",
+              "openViewMineIncidentModal": [MockFunction],
+              "reported_by": undefined,
               "reported_timestamp": "Mar 17 2019",
             },
           ],

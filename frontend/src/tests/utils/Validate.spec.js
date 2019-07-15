@@ -9,6 +9,8 @@ import {
   phoneNumber,
   email,
   validateStartDate,
+  validateDateRanges,
+  validateIncidentDate,
 } from "@/utils/Validate";
 
 describe("Validate class", () => {
@@ -177,8 +179,8 @@ describe("Validate class", () => {
     });
 
     it("returns `Invalid email address` if `value` is not a valid email address", () => {
-      const valueOne = "test@test.testtest";
-      const valueTwo = "test@test";
+      const valueOne = "@test.testtest";
+      const valueTwo = "test@";
       const valueThree = "test";
       expect(email(valueOne)).toEqual("Invalid email address");
       expect(email(valueTwo)).toEqual("Invalid email address");
@@ -198,6 +200,254 @@ describe("Validate class", () => {
       const value = new Date("August 3, 2014");
       expect(validateStartDate(value)(value)).toBeTruthy();
       expect(validateStartDate(previousStartDate)(value)).toBeTruthy();
+    });
+  });
+
+  describe("`validateIncidentDate` function", () => {
+    it("returns `undefined` if `value` after `reportedDate`", () => {
+      const reportedDate = new Date("August 7, 2018 03:24:00");
+      const value = new Date("August 7, 2018 04:24:00");
+      expect(validateIncidentDate(reportedDate)(value)).toEqual(undefined);
+    });
+
+    it("returns an error message if `value` is before or exactly `incidentDate`", () => {
+      const reportedDate = new Date("August 7, 2018 05:00:00");
+      const value = new Date("August 7, 2018 04:00:00");
+      expect(validateIncidentDate(value)(value)).toBeTruthy();
+      expect(validateIncidentDate(reportedDate)(value)).toBeTruthy();
+    });
+  });
+
+  describe("`validateDateRanges` function", () => {
+    const randomString = () => String(Math.round(Math.random() * 999999999999));
+
+    it("returns `{}` if there are no existing appts with which to conflict", () => {
+      const existingAppointments = [];
+      const newAppt = {
+        start_date: "2019-06-19",
+        end_date: "2019-06-20",
+        party_guid: randomString(),
+      };
+      const apptType = randomString();
+      expect(validateDateRanges(existingAppointments, newAppt, apptType)).toEqual({});
+    });
+
+    it("returns `{}` if the new appt starts after the last existing appointment ends", () => {
+      const existingAppointments = [
+        {
+          start_date: "2019-06-13",
+          end_date: "2019-06-15",
+          party_guid: randomString(),
+          party: { name: "Bob" },
+        },
+      ];
+      const newAppt = {
+        start_date: "2019-06-19",
+        end_date: "2019-06-20",
+        party_guid: randomString(),
+      };
+      const apptType = randomString();
+      expect(validateDateRanges(existingAppointments, newAppt, apptType)).toEqual({});
+    });
+
+    it("returns `{}` if the new appt ends before the first existing appointment starts", () => {
+      const existingAppointments = [
+        {
+          start_date: "2019-06-13",
+          end_date: "2019-06-15",
+          party_guid: randomString(),
+          party: { name: "Bob" },
+        },
+      ];
+      const newAppt = {
+        start_date: "2019-06-10",
+        end_date: "2019-06-12",
+        party_guid: randomString(),
+      };
+      const apptType = randomString();
+      expect(validateDateRanges(existingAppointments, newAppt, apptType)).toEqual({});
+    });
+
+    it("returns `{}` if the new appt starts after an existing appointment ends and ends before the next existing appointment starts", () => {
+      const existingAppointments = [
+        {
+          start_date: "2019-06-13",
+          end_date: "2019-06-15",
+          party_guid: randomString(),
+          party: { name: "Bob" },
+        },
+        {
+          start_date: "2019-06-20",
+          end_date: "2019-06-25",
+          party_guid: randomString(),
+          party: { name: "Bob" },
+        },
+      ];
+      const newAppt = {
+        start_date: "2019-06-16",
+        end_date: "2019-06-19",
+        party_guid: randomString(),
+      };
+      const apptType = randomString();
+      expect(validateDateRanges(existingAppointments, newAppt, apptType)).toEqual({});
+    });
+
+    it("returns a start_date error if the new appt starts before the last existing appointment ends", () => {
+      const existingName = "Bob";
+      const existingAppointments = [
+        {
+          start_date: "2019-06-18",
+          end_date: "2019-06-20",
+          party_guid: randomString(),
+          party: { name: existingName },
+        },
+      ];
+      const newAppt = {
+        start_date: "2019-06-20",
+        end_date: "2019-06-25",
+        party_guid: randomString(),
+      };
+      const apptType = randomString();
+      const errors = validateDateRanges(existingAppointments, newAppt, apptType);
+      expect(errors.start_date).not.toBeUndefined();
+      expect(errors.start_date).toContain(apptType);
+      expect(errors.start_date).toContain(existingName);
+      expect(errors.end_date).toBeUndefined();
+    });
+
+    it("returns an end_date error if the new appt ends after the first existing appointment starts", () => {
+      const existingName = "Bob";
+      const existingAppointments = [
+        {
+          start_date: "2019-06-18",
+          end_date: "2019-06-20",
+          party_guid: randomString(),
+          party: { name: existingName },
+        },
+      ];
+      const newAppt = {
+        start_date: "2019-06-01",
+        end_date: "2019-06-18",
+        party_guid: randomString(),
+      };
+      const apptType = randomString();
+      const errors = validateDateRanges(existingAppointments, newAppt, apptType);
+      expect(errors.start_date).toBeUndefined();
+      expect(errors.end_date).not.toBeUndefined();
+      expect(errors.end_date).toContain(apptType);
+      expect(errors.end_date).toContain(existingName);
+    });
+
+    it("returns a start_date and an end_date error if both dates conflict with existing appointments", () => {
+      const existingName = "Bob";
+      const existingName2 = "Billy";
+      const existingAppointments = [
+        {
+          start_date: "2019-06-01",
+          end_date: "2019-06-08",
+          party_guid: randomString(),
+          party: { name: existingName },
+        },
+        {
+          start_date: "2019-06-18",
+          end_date: "2019-06-20",
+          party_guid: randomString(),
+          party: { name: existingName2 },
+        },
+      ];
+      const newAppt = {
+        start_date: "2019-06-05",
+        end_date: "2019-06-19",
+        party_guid: randomString(),
+      };
+      const apptType = randomString();
+      const errors = validateDateRanges(existingAppointments, newAppt, apptType);
+      expect(errors.start_date).not.toBeUndefined();
+      expect(errors.start_date).toContain(apptType);
+      expect(errors.start_date).toContain(existingName);
+      expect(errors.end_date).not.toBeUndefined();
+      expect(errors.end_date).toContain(apptType);
+      expect(errors.end_date).toContain(existingName2);
+    });
+
+    it("returns a start_date error if the start_date is empty and the end_date is after an existing appointment's start_date", () => {
+      const existingName = "Bob";
+      const existingAppointments = [
+        {
+          start_date: "2019-06-18",
+          end_date: "2019-06-20",
+          party_guid: randomString(),
+          party: { name: existingName },
+        },
+      ];
+      const newAppt = {
+        start_date: "",
+        end_date: "2019-06-19",
+        party_guid: randomString(),
+      };
+      const apptType = randomString();
+      const errors = validateDateRanges(existingAppointments, newAppt, apptType);
+      expect(errors.start_date).not.toBeUndefined();
+      expect(errors.start_date).toContain(apptType);
+      expect(errors.start_date).toContain(existingName);
+      expect(errors.end_date).toBeUndefined();
+    });
+
+    it("returns a start_date error if the end_date is empty and the start_date is before an existing appointment's end_date", () => {
+      const existingName = "Bob";
+      const existingAppointments = [
+        {
+          start_date: "2019-06-18",
+          end_date: "2019-06-20",
+          party_guid: randomString(),
+          party: { name: existingName },
+        },
+      ];
+      const newAppt = {
+        start_date: "2019-06-19",
+        end_date: "",
+        party_guid: randomString(),
+      };
+      const apptType = randomString();
+      const errors = validateDateRanges(existingAppointments, newAppt, apptType);
+      expect(errors.start_date).not.toBeUndefined();
+      expect(errors.start_date).toContain(apptType);
+      expect(errors.start_date).toContain(existingName);
+      expect(errors.end_date).toBeUndefined();
+    });
+
+    it("returns a start_date and an end_date error if both dates are empty and there is an existing appointment. The conflict is with the last existing appointment", () => {
+      const existingName = "Bob";
+      const existingName2 = "Billy";
+      const existingAppointments = [
+        {
+          start_date: "2019-06-01",
+          end_date: "2019-06-08",
+          party_guid: randomString(),
+          party: { name: existingName },
+        },
+        {
+          start_date: "2019-06-18",
+          end_date: "2019-06-20",
+          party_guid: randomString(),
+          party: { name: existingName2 },
+        },
+      ];
+      const newAppt = {
+        start_date: "",
+        end_date: "",
+        party_guid: randomString(),
+      };
+      const apptType = randomString();
+      const errors = validateDateRanges(existingAppointments, newAppt, apptType);
+      expect(errors.start_date).not.toBeUndefined();
+      expect(errors.start_date).toContain(apptType);
+      expect(errors.start_date).toContain(existingName2);
+      expect(errors.start_date).toContain(apptType);
+      expect(errors.end_date).not.toBeUndefined();
+      expect(errors.end_date).toContain(apptType);
+      expect(errors.end_date).toContain(existingName2);
+      expect(errors.end_date).toContain(apptType);
     });
   });
 });

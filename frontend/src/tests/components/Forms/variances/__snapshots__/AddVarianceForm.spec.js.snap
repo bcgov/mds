@@ -33,13 +33,6 @@ ShallowWrapper {
         },
       ]
     }
-    documentCategoryOptionsHash={
-      Object {
-        "DEC": "Decision Document",
-        "REC": "Recommendation Document",
-        "REQ": "Request Document",
-      }
-    }
     handleSubmit={
       [MockFunction] {
         "calls": Array [

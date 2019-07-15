@@ -3,9 +3,9 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import { Menu, Divider, Button, Dropdown, Tag, Popover, Popconfirm, Tooltip } from "antd";
 import MineHeaderMap from "@/components/maps/MineHeaderMap";
 
-import { Menu, Divider, Button, Dropdown, Tag, Popover, Popconfirm, Tooltip } from "antd";
 import {
   ELLIPSE,
   BRAND_PENCIL,
@@ -31,6 +31,7 @@ import {
   fetchMineVerifiedStatuses,
 } from "@/actionCreators/mineActionCreator";
 import { formatDate } from "@/utils/helpers";
+import RefreshButton from "@/components/common/RefreshButton";
 
 /**
  * @class MineHeader.js contains header section of MineDashboard before the tabs. Including map, mineName, mineNumber.
@@ -54,6 +55,15 @@ const propTypes = {
   transformedMineTypes: CustomPropTypes.transformedMineTypes.isRequired,
   fetchMineVerifiedStatuses: PropTypes.func.isRequired,
   userInfo: PropTypes.shape({ preferred_username: PropTypes.string.isRequired }).isRequired,
+  refreshActions: PropTypes.arrayOf(PropTypes.func),
+  refreshListActions: PropTypes.arrayOf(PropTypes.func),
+  refreshRequests: PropTypes.arrayOf(PropTypes.func),
+};
+
+const defaultProps = {
+  refreshActions: [],
+  refreshListActions: [],
+  refreshRequests: [],
 };
 
 export class MineHeader extends Component {
@@ -102,6 +112,7 @@ export class MineHeader extends Component {
     this.props.setMineVerifiedStatus(this.props.mine.mine_guid, { healthy: true }).then(() => {
       this.props.fetchMineRecordById(this.props.mine.mine_guid);
       this.props.fetchMineVerifiedStatuses(`idir\\${this.props.userInfo.preferred_username}`);
+      this.handleMenuClick();
     });
   };
 
@@ -110,6 +121,7 @@ export class MineHeader extends Component {
     this.props.setMineVerifiedStatus(this.props.mine.mine_guid, { healthy: false }).then(() => {
       this.props.fetchMineRecordById(this.props.mine.mine_guid);
       this.props.fetchMineVerifiedStatuses(`idir\\${this.props.userInfo.preferred_username}`);
+      this.handleMenuClick();
     });
   };
 
@@ -157,66 +169,76 @@ export class MineHeader extends Component {
 
   render() {
     const menu = (
-      <Menu onClick={this.handleMenuClick}>
-        <Menu.Item key="0">
-          <button
-            type="button"
-            className="full"
-            onClick={(event) =>
-              this.openModal(
-                event,
-                this.handleUpdateMineRecord,
-                this.handleDeleteMineType,
-                ModalContent.UPDATE_MINE_RECORD,
-                this.props.mine
-              )
-            }
-          >
-            <img alt="pencil" className="padding-small" src={BRAND_PENCIL} />
-            {ModalContent.UPDATE_MINE_RECORD}
-          </button>
-        </Menu.Item>
-        <Menu.Item key="1">
-          <button
-            type="button"
-            className="full"
-            onClick={(event) =>
-              this.openTailingsModal(event, this.handleAddTailings, ModalContent.ADD_TAILINGS)
-            }
-          >
-            <img alt="document" className="padding-small" src={BRAND_DOCUMENT} />
-            {ModalContent.ADD_TAILINGS}
-          </button>
-        </Menu.Item>
-        {this.props.subscribed ? (
-          <AuthorizationWrapper inTesting>
+      <Menu>
+        <AuthorizationWrapper
+          permission={Permission.EDIT_MINES}
+          isMajorMine={this.props.mine.major_mine_ind}
+        >
+          <Menu.Item onClick={this.handleMenuClick}>
             <div className="custom-menu-item">
-              <Popconfirm
-                placement="left"
-                title="Are you sure you want to unsubscribe?"
-                onConfirm={this.props.handleUnSubscribe}
-                okText="Yes"
-                cancelText="No"
+              <button
+                type="button"
+                className="full"
+                onClick={(event) =>
+                  this.openModal(
+                    event,
+                    this.handleUpdateMineRecord,
+                    this.handleDeleteMineType,
+                    ModalContent.UPDATE_MINE_RECORD,
+                    this.props.mine
+                  )
+                }
               >
-                <button type="button" className="full">
-                  <img alt="document" className="padding-small" src={UNSUBSCRIBE} />
-                  Unsubscribe
-                </button>
-              </Popconfirm>
-            </div>
-          </AuthorizationWrapper>
-        ) : (
-          <AuthorizationWrapper inTesting>
-            <div className="custom-menu-item">
-              <button type="button" className="full" onClick={this.props.handleSubscription}>
-                <img alt="document" className="padding-small" src={SUBSCRIBE} />
-                Subscribe
+                <img alt="pencil" className="padding-small" src={BRAND_PENCIL} />
+                {ModalContent.UPDATE_MINE_RECORD}
               </button>
             </div>
-          </AuthorizationWrapper>
+          </Menu.Item>
+        </AuthorizationWrapper>
+        <AuthorizationWrapper
+          permission={Permission.EDIT_MINES}
+          isMajorMine={this.props.mine.major_mine_ind}
+        >
+          <Menu.Item onClick={this.handleMenuClick}>
+            <div className="custom-menu-item">
+              <button
+                type="button"
+                className="full"
+                onClick={(event) =>
+                  this.openTailingsModal(event, this.handleAddTailings, ModalContent.ADD_TAILINGS)
+                }
+              >
+                <img alt="document" className="padding-small" src={BRAND_DOCUMENT} />
+                {ModalContent.ADD_TAILINGS}
+              </button>
+            </div>
+          </Menu.Item>
+        </AuthorizationWrapper>
+        {this.props.subscribed ? (
+          <div className="custom-menu-item">
+            <Popconfirm
+              placement="left"
+              title="Are you sure you want to unsubscribe?"
+              onConfirm={this.props.handleUnSubscribe}
+              okText="Yes"
+              cancelText="No"
+            >
+              <button type="button" className="full">
+                <img alt="document" className="padding-small" src={UNSUBSCRIBE} />
+                Unsubscribe
+              </button>
+            </Popconfirm>
+          </div>
+        ) : (
+          <div className="custom-menu-item">
+            <button type="button" className="full" onClick={this.props.handleSubscription}>
+              <img alt="document" className="padding-small" src={SUBSCRIBE} />
+              Subscribe
+            </button>
+          </div>
         )}
 
-        <AuthorizationWrapper inTesting>
+        <AuthorizationWrapper permission={Permission.ADMIN}>
           {this.props.mine.verified_status.healthy_ind !== true && (
             <div className="custom-menu-item">
               <Popconfirm
@@ -238,8 +260,6 @@ export class MineHeader extends Component {
               </Popconfirm>
             </div>
           )}
-        </AuthorizationWrapper>
-        <AuthorizationWrapper inTesting>
           {this.props.mine.verified_status.healthy_ind !== false && (
             <div className="custom-menu-item">
               <Popconfirm
@@ -299,25 +319,30 @@ export class MineHeader extends Component {
                   <img src={SUBSCRIBE} alt="SUBSCRIBE" />
                 </Tooltip>
               )}
-              <AuthorizationWrapper
-                permission={Permission.CREATE}
-                isMajorMine={this.props.mine.major_mine_ind}
+              {// TODO: Unhide when new nav is done
+              true ? (
+                <div />
+              ) : (
+                <RefreshButton
+                  actions={this.props.refreshActions}
+                  listActions={this.props.refreshListActions}
+                  requests={this.props.refreshRequests}
+                />
+              )}
+              <Dropdown
+                className="full-height full-mobile"
+                overlay={menu}
+                placement="bottomLeft"
+                onVisibleChange={this.handleVisibleChange}
+                visible={this.state.menuVisible}
               >
-                <Dropdown
-                  className="full-height full-mobile"
-                  overlay={menu}
-                  placement="bottomLeft"
-                  onVisibleChange={this.handleVisibleChange}
-                  visible={this.state.menuVisible}
-                >
-                  <Button type="primary">
-                    <div className="padding-small">
-                      <img className="padding-small--right" src={EDIT} alt="Add/Edit" />
-                      Add/Edit
-                    </div>
-                  </Button>
-                </Dropdown>
-              </AuthorizationWrapper>
+                <Button type="primary">
+                  <div className="padding-small">
+                    <img className="padding-small--right" src={EDIT} alt="Add/Edit" />
+                    Add/Edit
+                  </div>
+                </Button>
+              </Dropdown>
             </div>
           </div>
           <Divider className="custom-large-divider" />
@@ -492,6 +517,7 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 MineHeader.propTypes = propTypes;
+MineHeader.defaultProps = defaultProps;
 
 export default connect(
   mapStateToProps,

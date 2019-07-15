@@ -1,5 +1,5 @@
 import pytest
-from app.api.utils.access_decorators import MINE_VIEW, MINE_CREATE, MINE_ADMIN, MINESPACE_PROPONENT
+from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE
 
 from app.api.document_manager.resources.document_manager import DocumentManagerResource
 from app.api.document_manager.resources.download_token import DownloadTokenResource
@@ -29,9 +29,9 @@ from app.api.parties.party_appt.resources.mine_party_appt_resource import MinePa
 from app.api.parties.party_appt.resources.mine_party_appt_type_resource import MinePartyApptTypeResource
 from app.api.parties.party.resources.party_resource import PartyResource
 from app.api.parties.party.resources.party_list_resource import PartyListResource
-from app.api.permits.permit.resources.permit import PermitResource
-from app.api.permits.permit_amendment.resources.permit_amendment import PermitAmendmentResource
-from app.api.permits.permit_amendment.resources.permit_amendment_document import PermitAmendmentDocumentResource
+from app.api.mines.permits.permit.resources.permit import PermitResource, PermitListResource
+from app.api.mines.permits.permit_amendment.resources.permit_amendment import PermitAmendmentResource, PermitAmendmentListResource
+from app.api.mines.permits.permit_amendment.resources.permit_amendment_document import PermitAmendmentDocumentResource, PermitAmendmentDocumentListResource
 from app.api.users.minespace.resources.minespace_user import MinespaceUserResource
 from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserMineResource
 from app.api.search.search.resources.search import SearchResource, SearchOptionsResource
@@ -40,69 +40,79 @@ from app.api.search.search.resources.simple_search import SimpleSearchResource
 
 @pytest.mark.parametrize(
     "resource,method,expected_roles",
-    [(ComplianceArticleResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]),
+    [(ComplianceArticleResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
      (DocumentManagerResource, "get", []),
-     (DocumentManagerResource, "post", [MINE_CREATE, MINESPACE_PROPONENT]),
-     (DocumentManagerResource, "patch", [MINE_CREATE, MINESPACE_PROPONENT]),
-     (DocumentManagerResource, "head", [MINE_CREATE, MINESPACE_PROPONENT]),
-     (DownloadTokenResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]),
-     (ExpectedDocumentStatusResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]),
-     (ExpectedDocumentResource, "get", [MINE_VIEW]),
-     (ExpectedDocumentResource, "put", [MINE_CREATE, MINESPACE_PROPONENT]),
-     (ExpectedDocumentResource, "delete", [MINE_CREATE]),
-     (ExpectedDocumentUploadResource, "post", [MINE_CREATE, MINESPACE_PROPONENT]),
-     (ExpectedDocumentUploadResource, "put", [MINE_CREATE, MINESPACE_PROPONENT]),
-     (ExpectedDocumentUploadResource, "delete", [MINE_CREATE, MINESPACE_PROPONENT]),
-     (ExpectedMineDocumentResource, "get", [MINE_VIEW]),
-     (ExpectedMineDocumentResource, "post", [MINE_CREATE]),
-     (MineCommodityCodeResource, "get", [MINE_VIEW]), 
-     (MineComplianceSummaryResource, "get", [MINE_VIEW]),
-     (MineDisturbanceCodeResource, "get", [MINE_VIEW]),
-     (MineDocumentResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]),
-     (MineListResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]),
-     (MineListResource, "post", [MINE_CREATE]),
-     (MineListSearch, "get", [MINE_VIEW, MINESPACE_PROPONENT]),
-     (MineMapResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]),
-     (MinePartyApptResource, "get", [MINE_VIEW]),
-     (MinePartyApptResource, "post", [MINE_CREATE]),
-     (MinePartyApptResource, "put", [MINE_CREATE]),
-     (MinePartyApptResource, "delete", [MINE_CREATE]),
-     (MinePartyApptTypeResource, "get", [MINE_VIEW]),
-     (MineRegionResource, "get", [MINE_VIEW]),
-     (MineResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]),
-     (MineResource, "put", [MINE_CREATE]),
-     (MineStatusResource, "get", [MINE_VIEW]),
-     (MineTailingsStorageFacilityListResource, "get", [MINE_VIEW]),
-     (MineTailingsStorageFacilityListResource, "post", [MINE_CREATE]),
-     (MineTenureTypeCodeResource, "get", [MINE_VIEW]),
-     (MineTypeDetailResource, "post", [MINE_CREATE]),
-     (MineTypeDetailResource, "delete", [MINE_CREATE]),
-     (MineTypeListResource, "post", [MINE_CREATE]),
-     (MineTypeResource, "delete", [MINE_CREATE]),
-     (MineVarianceDocumentUploadResource, "post", [MINE_CREATE, MINESPACE_PROPONENT]),
-     (MineVarianceDocumentUploadResource, "put", [MINE_CREATE, MINESPACE_PROPONENT]),
-     (MineVarianceUploadedDocumentsResource, "delete", [MINE_CREATE, MINESPACE_PROPONENT]),
-     (MineVarianceListResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]),
-     (MineVarianceListResource, "post", [MINE_CREATE, MINESPACE_PROPONENT]),
-     (MineVarianceResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]),
-     (MineVarianceResource, "put", [MINE_CREATE, MINESPACE_PROPONENT]),
-     (PartyListResource, "get", [MINE_VIEW, MINESPACE_PROPONENT]),
-     (PartyListResource, "post", [MINE_CREATE]),
-     (PartyResource, "get", [MINE_VIEW]),
-     (PartyResource, "put", [MINE_CREATE]),
+     (DocumentManagerResource, "post", [
+      MINE_EDIT, EDIT_PARTY, EDIT_PERMIT, EDIT_VARIANCE, EDIT_DO, MINESPACE_PROPONENT]),
+     (DocumentManagerResource, "patch", [
+      MINE_EDIT, EDIT_PARTY, EDIT_PERMIT, EDIT_VARIANCE, EDIT_DO, MINESPACE_PROPONENT]),
+     (DocumentManagerResource, "head", [
+      MINE_EDIT, EDIT_PARTY, EDIT_PERMIT, EDIT_VARIANCE, EDIT_DO, MINESPACE_PROPONENT]),
+     (DownloadTokenResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
+     (ExpectedDocumentStatusResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
+     (ExpectedDocumentResource, "get", [VIEW_ALL]),
+     (ExpectedDocumentResource, "put", [MINE_EDIT, MINESPACE_PROPONENT]),
+     (ExpectedDocumentResource, "delete", [MINE_EDIT]),
+     (ExpectedDocumentUploadResource, "post",
+      [MINE_EDIT, MINESPACE_PROPONENT]),
+     (ExpectedDocumentUploadResource, "put", [MINE_EDIT, MINESPACE_PROPONENT]),
+     (ExpectedDocumentUploadResource, "delete",
+      [MINE_EDIT, MINESPACE_PROPONENT]),
+     (ExpectedMineDocumentResource, "get", [VIEW_ALL]),
+     (ExpectedMineDocumentResource, "post", [MINE_EDIT]),
+     (MineCommodityCodeResource, "get", [VIEW_ALL]),
+     (MineComplianceSummaryResource, "get", [VIEW_ALL]),
+     (MineDisturbanceCodeResource, "get", [VIEW_ALL]),
+     (MineDocumentResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
+     (MineListResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
+     (MineListResource, "post", [MINE_EDIT]),
+     (MineListSearch, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
+     (MineMapResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
+     (MinePartyApptResource, "get", [VIEW_ALL]),
+     (MinePartyApptResource, "post", [MINE_EDIT]),
+     (MinePartyApptResource, "put", [MINE_EDIT]),
+     (MinePartyApptResource, "delete", [MINE_EDIT]),
+     (MinePartyApptTypeResource, "get", [VIEW_ALL]),
+     (MineRegionResource, "get", [VIEW_ALL]),
+     (MineResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
+     (MineResource, "put", [MINE_EDIT]),
+     (MineStatusResource, "get", [VIEW_ALL]),
+     (MineTailingsStorageFacilityListResource, "get", [VIEW_ALL]),
+     (MineTailingsStorageFacilityListResource, "post", [MINE_EDIT]),
+     (MineTenureTypeCodeResource, "get", [VIEW_ALL]),
+     (MineTypeDetailResource, "post", [MINE_EDIT]),
+     (MineTypeDetailResource, "delete", [MINE_EDIT]),
+     (MineTypeListResource, "post", [MINE_EDIT]),
+     (MineTypeResource, "delete", [MINE_EDIT]),
+     (MineVarianceDocumentUploadResource,
+      "post", [EDIT_VARIANCE, MINESPACE_PROPONENT]),
+     (MineVarianceDocumentUploadResource,
+      "put", [EDIT_VARIANCE, MINESPACE_PROPONENT]),
+     (MineVarianceUploadedDocumentsResource,
+      "delete", [EDIT_VARIANCE, MINESPACE_PROPONENT]),
+     (MineVarianceListResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
+     (MineVarianceListResource, "post", [EDIT_VARIANCE, MINESPACE_PROPONENT]),
+     (MineVarianceResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
+     (MineVarianceResource, "put", [EDIT_VARIANCE, MINESPACE_PROPONENT]),
+     (PartyListResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
+     (PartyListResource, "post", [EDIT_PARTY]),
+     (PartyResource, "get", [VIEW_ALL]),
+     (PartyResource, "put", [EDIT_PARTY]),
      (PartyResource, "delete", [MINE_ADMIN]),
-     (PermitResource, "get", [MINE_VIEW]), (PermitResource, "post", [MINE_CREATE]),
-     (PermitResource, "put", [MINE_CREATE]), (PermitAmendmentResource, "post", [MINE_CREATE]),
-     (PermitAmendmentResource, "put", [MINE_CREATE]),
+     (PermitResource, "get", [VIEW_ALL]
+      ), (PermitListResource, "post", [EDIT_PERMIT]),
+     (PermitResource, "put", [EDIT_PERMIT]),
+     (PermitAmendmentListResource, "post", [EDIT_PERMIT]),
+     (PermitAmendmentResource, "put", [EDIT_PERMIT]),
      (PermitAmendmentResource, "delete", [MINE_ADMIN]),
-     (PermitAmendmentDocumentResource, "post", [MINE_CREATE]),
-     (PermitAmendmentDocumentResource, "put", [MINE_CREATE]),
-     (PermitAmendmentDocumentResource, "delete", [MINE_CREATE]),
-     (RequiredDocumentResource, "get", [MINE_VIEW]),
-     (RequiredDocumentResource, "get", [MINE_VIEW]),
-     (SearchResource, "get", [MINE_VIEW]),
-     (SearchOptionsResource, "get", [MINE_VIEW]),
-     (SimpleSearchResource, "get", [MINE_VIEW]),
+     (PermitAmendmentDocumentListResource, "post", [EDIT_PERMIT]),
+     (PermitAmendmentDocumentListResource, "put", [EDIT_PERMIT]),
+     (PermitAmendmentDocumentResource, "delete", [EDIT_PERMIT]),
+     (RequiredDocumentResource, "get", [VIEW_ALL]),
+     (RequiredDocumentResource, "get", [VIEW_ALL]),
+     (SearchResource, "get", [VIEW_ALL]),
+     (SearchOptionsResource, "get", [VIEW_ALL]),
+     (SimpleSearchResource, "get", [VIEW_ALL]),
      (MinespaceUserResource, 'get', [MINE_ADMIN]),
      (MinespaceUserResource, 'post', [MINE_ADMIN]),
      (MinespaceUserResource, 'delete', [MINE_ADMIN]),
@@ -110,7 +120,8 @@ from app.api.search.search.resources.simple_search import SimpleSearchResource
      (MinespaceUserMineResource, 'delete', [MINE_ADMIN])])
 def test_endpoint_auth(resource, method, expected_roles):
     endpoint = getattr(resource, method, None)
-    assert endpoint != None, '{0} does not have a {1} method.'.format(resource, method.upper())
+    assert endpoint != None, '{0} does not have a {1} method.'.format(
+        resource, method.upper())
 
     assigned_roles = getattr(endpoint, "required_roles", [])
     assert set(expected_roles) == set(

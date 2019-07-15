@@ -102,7 +102,7 @@ const columns = [
             <div key={file.mine_document_guid}>
               <LinkButton
                 key={file.mine_document_guid}
-                onClick={() => downloadFileFromDocumentManager(file.document_manager_guid)}
+                onClick={() => downloadFileFromDocumentManager(file)}
               >
                 {file.document_name}
               </LinkButton>
@@ -119,7 +119,7 @@ const columns = [
     render: (text, record) => (
       <div title="" align="right">
         <AuthorizationWrapper
-          permission={Permission.CREATE}
+          permission={Permission.EDIT_MINES}
           isMajorMine={record.mine.major_mine_ind}
         >
           <div className="inline-flex">

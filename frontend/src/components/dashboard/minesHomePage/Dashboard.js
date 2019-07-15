@@ -24,7 +24,7 @@ import {
   fetchApplicationStatusOptions,
   fetchMineIncidentFollowActionOptions,
   fetchMineIncidentDeterminationOptions,
-  setOptionsLoaded,
+  fetchMineIncidentStatusCodeOptions,
 } from "@/actionCreators/staticContentActionCreator";
 import { fetchPartyRelationshipTypes } from "@/actionCreators/partiesActionCreator";
 import { getMines, getMineIds, getMinesPageData } from "@/selectors/mineSelectors";
@@ -33,10 +33,9 @@ import {
   getMineTenureTypesHash,
   getCommodityOptionHash,
   getMineStatusDropDownOptions,
-  getMineRegionOptions,
-  getMineTenureTypeOptions,
+  getMineRegionDropdownOptions,
+  getMineTenureTypeDropdownOptions,
   getDropdownCommodityOptions,
-  getOptionsLoaded,
 } from "@/selectors/staticContentSelectors";
 import MineList from "@/components/dashboard/minesHomePage/MineList";
 import MineSearch from "@/components/dashboard/minesHomePage/MineSearch";
@@ -50,6 +49,8 @@ import * as String from "@/constants/strings";
 import * as Permission from "@/constants/permissions";
 import * as ModalContent from "@/constants/modalContent";
 import AddButton from "@/components/common/AddButton";
+import RefreshButton from "@/components/common/RefreshButton";
+import { storeRegionOptions, storeTenureTypes } from "@/actions/staticContentActions";
 
 /**
  * @class Dashboard is the main landing page of the application, currently contains a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
@@ -62,7 +63,6 @@ const propTypes = {
   fetchMineRecordsForMap: PropTypes.func.isRequired,
   createMineRecord: PropTypes.func.isRequired,
   fetchStatusOptions: PropTypes.func.isRequired,
-  setOptionsLoaded: PropTypes.func.isRequired,
   fetchMineCommodityOptions: PropTypes.func.isRequired,
   fetchMineDisturbanceOptions: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
@@ -72,11 +72,11 @@ const propTypes = {
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
   mineIds: PropTypes.arrayOf(PropTypes.string).isRequired,
   pageData: CustomPropTypes.minePageData.isRequired,
-  optionsLoaded: PropTypes.bool.isRequired,
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   fetchApplicationStatusOptions: PropTypes.func.isRequired,
   fetchMineIncidentFollowActionOptions: PropTypes.func.isRequired,
   fetchMineIncidentDeterminationOptions: PropTypes.func.isRequired,
+  fetchMineIncidentStatusCodeOptions: PropTypes.func.isRequired,
 };
 
 const joinOrRemove = (param, key) => (isEmpty(param) ? {} : { [key]: param.join(",") });
@@ -131,19 +131,17 @@ export class Dashboard extends Component {
         })
       );
     }
-    if (!this.props.optionsLoaded) {
-      this.props.fetchStatusOptions();
-      this.props.fetchRegionOptions();
-      this.props.fetchMineTenureTypes();
-      this.props.fetchMineDisturbanceOptions();
-      this.props.fetchMineCommodityOptions();
-      this.props.fetchPartyRelationshipTypes();
-      this.props.fetchPermitStatusOptions();
-      this.props.fetchApplicationStatusOptions();
-      this.props.fetchMineIncidentFollowActionOptions();
-      this.props.fetchMineIncidentDeterminationOptions();
-      this.props.setOptionsLoaded();
-    }
+    this.props.fetchStatusOptions();
+    this.props.fetchRegionOptions();
+    this.props.fetchMineTenureTypes();
+    this.props.fetchMineDisturbanceOptions();
+    this.props.fetchMineCommodityOptions();
+    this.props.fetchPartyRelationshipTypes();
+    this.props.fetchPermitStatusOptions();
+    this.props.fetchApplicationStatusOptions();
+    this.props.fetchMineIncidentFollowActionOptions();
+    this.props.fetchMineIncidentDeterminationOptions();
+    this.props.fetchMineIncidentStatusCodeOptions();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -448,7 +446,11 @@ export class Dashboard extends Component {
               <p>To find a mine summary, search in the list or map section below.</p>
             </div>
             <div>
-              <AuthorizationWrapper permission={Permission.ADMIN}>
+              <RefreshButton
+                listActions={[storeRegionOptions, storeTenureTypes]}
+                requests={[this.props.fetchRegionOptions, this.props.fetchMineTenureTypes]}
+              />
+              <AuthorizationWrapper permission={Permission.EDIT_MINES}>
                 <AddButton
                   onClick={(event) =>
                     this.openModal(event, this.handleSubmit, ModalContent.CREATE_MINE_RECORD)
@@ -474,10 +476,9 @@ const mapStateToProps = (state) => ({
   mineTenureHash: getMineTenureTypesHash(state),
   mineCommodityOptionsHash: getCommodityOptionHash(state),
   mineStatusDropDownOptions: getMineStatusDropDownOptions(state),
-  mineRegionOptions: getMineRegionOptions(state),
-  mineTenureTypes: getMineTenureTypeOptions(state),
+  mineRegionOptions: getMineRegionDropdownOptions(state),
+  mineTenureTypes: getMineTenureTypeDropdownOptions(state),
   mineCommodityOptions: getDropdownCommodityOptions(state),
-  optionsLoaded: getOptionsLoaded(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -495,10 +496,10 @@ const mapDispatchToProps = (dispatch) =>
       fetchApplicationStatusOptions,
       openModal,
       closeModal,
-      setOptionsLoaded,
       fetchPartyRelationshipTypes,
       fetchMineIncidentFollowActionOptions,
       fetchMineIncidentDeterminationOptions,
+      fetchMineIncidentStatusCodeOptions,
     },
     dispatch
   );

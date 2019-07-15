@@ -35,11 +35,6 @@ export const storeMineTSFRequiredDocuments = (payload) => ({
   payload,
 });
 
-export const loadedOptions = (payload) => ({
-  type: ActionTypes.OPTIONS_LOADED,
-  payload,
-});
-
 export const storeProvinceCodes = (payload) => ({
   type: ActionTypes.STORE_PROVINCE_OPTIONS,
   payload,
@@ -67,6 +62,11 @@ export const storeMineIncidentFollowActionOptions = (payload) => ({
 
 export const storeMineIncidentDeterminationOptions = (payload) => ({
   type: ActionTypes.STORE_MINE_INCIDENT_DETERMINATION_OPTIONS,
+  payload,
+});
+
+export const storeMineIncidentStatusCodeOptions = (payload) => ({
+  type: ActionTypes.STORE_MINE_INCIDENT_STATUS_CODE_OPTIONS,
   payload,
 });
 
