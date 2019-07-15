@@ -105,11 +105,9 @@ export const validateIncidentDate = memoize((reportedDate) => (value) =>
 // apptType : CustomPropTypes.partyRelationshipType
 export const validateDateRanges = (existingAppointments, newAppt, apptType) => {
   const errorMessages = {};
-  const conflictMsg = (appt) =>
-    `Assignment conflicts with existing ${apptType}: ${appt.party.name}`;
   const toDate = (dateString) => (dateString ? moment(dateString, "YYYY-MM-DD").toDate() : null);
-  const MAX_DATE = Date.UTC(275760, 9, 12);
-  const MIN_DATE = Date.UTC(-271821, 3, 20);
+  const MAX_DATE = new Date(8640000000000000);
+  const MIN_DATE = new Date(-8640000000000000);
 
   if (existingAppointments.length === 0) {
     return errorMessages;
@@ -125,48 +123,18 @@ export const validateDateRanges = (existingAppointments, newAppt, apptType) => {
   newDateAppt.start_date = newDateAppt.start_date ? toDate(newDateAppt.start_date) : MIN_DATE;
   newDateAppt.end_date = newDateAppt.end_date ? toDate(newDateAppt.end_date) : MAX_DATE;
 
-  console.log("New Date", JSON.stringify(newDateAppt));
-
-  // If (StartA <= EndB) and (EndA >= StartB) ; “Overlap”)
-  // Get conflicting appointments
+  // If (NewApptEnd >= ApptStart) and (NewApptStart <= ApptEnd) ; “Overlap”)
   const conflictingAppointments = dateAppointments.filter(
-    (appt) => appt.end_date >= newDateAppt.start_date && appt.start_date <= newDateAppt.end_date
+    (appt) => newDateAppt.end_date >= appt.start_date && newDateAppt.start_date <= appt.end_date
   );
 
-  console.log("Conflicts", JSON.stringify(conflictingAppointments));
-
-  if (conflictingAppointments.length === 0) {
-    return errorMessages;
+  if (conflictingAppointments.length > 0) {
+    const conflictMsg = `Assignment conflicts with existing ${apptType}s: ${conflictingAppointments
+      .map((appt) => appt.party.name)
+      .join()}`;
+    errorMessages.start_date = conflictMsg;
+    errorMessages.end_date = conflictMsg;
   }
-
-  // Find earliest conflicting start date appt
-  const startDateConflict = conflictingAppointments.reduce(
-    (conflict, potentialConflict) =>
-      newDateAppt.start_date >= potentialConflict.start_date &&
-      newDateAppt.start_date <= potentialConflict.end_date &&
-      (!conflict || potentialConflict.start_date < conflict.start_date)
-        ? potentialConflict
-        : conflict,
-    null
-  );
-
-  console.log("Start conflict", JSON.stringify(startDateConflict));
-
-  // Find latest conflicting end date appt
-  const endDateConflict = conflictingAppointments.reduce(
-    (conflict, potentialConflict) =>
-      newDateAppt.end_date >= potentialConflict.start_date &&
-      newDateAppt.end_date <= potentialConflict.end_date &&
-      (!conflict || potentialConflict.end_date > conflict.end_date)
-        ? potentialConflict
-        : conflict,
-    null
-  );
-
-  console.log("End date", JSON.stringify(endDateConflict));
-
-  if (endDateConflict) errorMessages.end_date = conflictMsg(endDateConflict);
-  if (startDateConflict) errorMessages.start_date = conflictMsg(startDateConflict);
 
   return errorMessages;
 };
