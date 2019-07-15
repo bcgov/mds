@@ -225,15 +225,6 @@
                         "key": "admin-user-password"
                       }
                     }
-                  },
-                  {
-                    "name": "DIGDAG_ENCRYPTION_KEY",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${DIGDAG_SECRET_NAME}",
-                        "key": "database-encryption-key"
-                      }
-                    }
                   }
                 ],
                 "volumeMounts": [
