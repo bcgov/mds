@@ -14,6 +14,7 @@ exports[`MineHeader renders dispatchProperly 1`] = `
         mine3
       </h1>
       <div>
+        <div />
         <Dropdown
           className="full-height full-mobile"
           mouseEnterDelay={0.15}

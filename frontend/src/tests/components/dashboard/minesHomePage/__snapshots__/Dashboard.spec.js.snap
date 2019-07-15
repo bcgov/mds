@@ -19,6 +19,41 @@ exports[`Dashboard renders properly 1`] = `
         </p>
       </div>
       <div>
+        <RefreshButton
+          actions={Array []}
+          listActions={
+            Array [
+              [Function],
+              [Function],
+            ]
+          }
+          requests={
+            Array [
+              [MockFunction] {
+                "calls": Array [
+                  Array [],
+                ],
+                "results": Array [
+                  Object {
+                    "type": "return",
+                    "value": undefined,
+                  },
+                ],
+              },
+              [MockFunction] {
+                "calls": Array [
+                  Array [],
+                ],
+                "results": Array [
+                  Object {
+                    "type": "return",
+                    "value": undefined,
+                  },
+                ],
+              },
+            ]
+          }
+        />
         <Connect(AuthorizationWrapper)
           permission="role_edit_mines"
         >
