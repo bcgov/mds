@@ -9,7 +9,7 @@ VALUES
 on conflict do nothing;
 
 INSERT INTO public.mine_report_due_date_type
-(mine_report_due_date_type, description, active_ind, create_user, create_timestamp, update_user, update_timestamp)
+(mine_report_due_date_type, description, active_ind, create_user, update_user)
 VALUES
 	('FIS', 'Reports due on fiscal year end.', true, 'system-mds', 'system-mds'),
 	('ANV', 'Reports due on an aniversary of operation, permit, etc...', true, 'system-mds', 'system-mds'),
