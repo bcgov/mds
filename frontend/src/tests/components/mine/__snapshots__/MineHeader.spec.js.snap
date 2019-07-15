@@ -399,11 +399,7 @@ ShallowWrapper {
               mine3
             </h1>
             <div>
-              <RefreshButton
-                actions={Array []}
-                listActions={Array []}
-                requests={Array []}
-              />
+              <div />
               <Dropdown
                 className="full-height full-mobile"
                 mouseEnterDelay={0.15}
@@ -839,11 +835,7 @@ ShallowWrapper {
                 mine3
               </h1>
               <div>
-                <RefreshButton
-                  actions={Array []}
-                  listActions={Array []}
-                  requests={Array []}
-                />
+                <div />
                 <Dropdown
                   className="full-height full-mobile"
                   mouseEnterDelay={0.15}
@@ -1162,11 +1154,7 @@ ShallowWrapper {
                   mine3
                 </h1>,
                 <div>
-                  <RefreshButton
-                    actions={Array []}
-                    listActions={Array []}
-                    requests={Array []}
-                  />
+                  <div />
                   <Dropdown
                     className="full-height full-mobile"
                     mouseEnterDelay={0.15}
@@ -1388,11 +1376,7 @@ ShallowWrapper {
                 "props": Object {
                   "children": Array [
                     undefined,
-                    <RefreshButton
-                      actions={Array []}
-                      listActions={Array []}
-                      requests={Array []}
-                    />,
+                    <div />,
                     <Dropdown
                       className="full-height full-mobile"
                       mouseEnterDelay={0.15}
@@ -1592,15 +1576,11 @@ ShallowWrapper {
                   Object {
                     "instance": null,
                     "key": undefined,
-                    "nodeType": "function",
-                    "props": Object {
-                      "actions": Array [],
-                      "listActions": Array [],
-                      "requests": Array [],
-                    },
+                    "nodeType": "host",
+                    "props": Object {},
                     "ref": null,
                     "rendered": null,
-                    "type": [Function],
+                    "type": "div",
                   },
                   Object {
                     "instance": null,
@@ -2736,11 +2716,7 @@ ShallowWrapper {
                 mine3
               </h1>
               <div>
-                <RefreshButton
-                  actions={Array []}
-                  listActions={Array []}
-                  requests={Array []}
-                />
+                <div />
                 <Dropdown
                   className="full-height full-mobile"
                   mouseEnterDelay={0.15}
@@ -3176,11 +3152,7 @@ ShallowWrapper {
                   mine3
                 </h1>
                 <div>
-                  <RefreshButton
-                    actions={Array []}
-                    listActions={Array []}
-                    requests={Array []}
-                  />
+                  <div />
                   <Dropdown
                     className="full-height full-mobile"
                     mouseEnterDelay={0.15}
@@ -3499,11 +3471,7 @@ ShallowWrapper {
                     mine3
                   </h1>,
                   <div>
-                    <RefreshButton
-                      actions={Array []}
-                      listActions={Array []}
-                      requests={Array []}
-                    />
+                    <div />
                     <Dropdown
                       className="full-height full-mobile"
                       mouseEnterDelay={0.15}
@@ -3725,11 +3693,7 @@ ShallowWrapper {
                   "props": Object {
                     "children": Array [
                       undefined,
-                      <RefreshButton
-                        actions={Array []}
-                        listActions={Array []}
-                        requests={Array []}
-                      />,
+                      <div />,
                       <Dropdown
                         className="full-height full-mobile"
                         mouseEnterDelay={0.15}
@@ -3929,15 +3893,11 @@ ShallowWrapper {
                     Object {
                       "instance": null,
                       "key": undefined,
-                      "nodeType": "function",
-                      "props": Object {
-                        "actions": Array [],
-                        "listActions": Array [],
-                        "requests": Array [],
-                      },
+                      "nodeType": "host",
+                      "props": Object {},
                       "ref": null,
                       "rendered": null,
-                      "type": [Function],
+                      "type": "div",
                     },
                     Object {
                       "instance": null,
