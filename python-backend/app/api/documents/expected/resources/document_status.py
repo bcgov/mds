@@ -17,6 +17,6 @@ class ExpectedDocumentStatusResource(Resource, UserMixin, ErrorMixin):
     def get(self):
         mine_exp_docs_status = ExpectedDocumentStatus.find_all_document_status()
         return {
-            'options':
+            'records':
             list(map(lambda x: x.json(), mine_exp_docs_status) if mine_exp_docs_status else [])
         }

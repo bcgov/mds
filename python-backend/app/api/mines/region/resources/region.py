@@ -1,4 +1,4 @@
-from flask_restplus import Resource 
+from flask_restplus import Resource
 from app.extensions import api
 from ....utils.access_decorators import requires_role_view_all
 from ....utils.resources_mixins import UserMixin, ErrorMixin
@@ -8,4 +8,4 @@ class MineRegionResource(Resource, UserMixin, ErrorMixin):
     @api.doc(params={'mine_region_guid': 'Mine region guid.'})
     @requires_role_view_all
     def get(self, mine_region_guid=None):
-        return {'options': MINE_REGION_OPTIONS}
+        return {'records': MINE_REGION_OPTIONS}
