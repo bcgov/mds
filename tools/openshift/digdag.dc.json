@@ -207,6 +207,33 @@
                   {
                     "name": "KUBECONFIG",
                     "value": "/app/kube_config"
+                  },
+                  {
+                    "name": "DIGDAG_USER_NAME",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DIGDAG_SECRET_NAME}",
+                        "key": "admin-user-name"
+                      }
+                    }
+                  },
+                  {
+                    "name": "DIGDAG_USER_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DIGDAG_SECRET_NAME}",
+                        "key": "admin-user-password"
+                      }
+                    }
+                  },
+                  {
+                    "name": "DIGDAG_ENCRYPTION_KEY",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DIGDAG_SECRET_NAME}",
+                        "key": "database-encryption-key"
+                      }
+                    }
                   }
                 ],
                 "volumeMounts": [
@@ -274,6 +301,10 @@
       "description": "The name of the OpenShift objects.",
       "value": "digdag",
       "required": true
+    },
+    {
+      "name": "DIGDAG_SECRET_NAME",
+      "value": "template.mds-digdag-secret"
     },
     {
       "name": "APPLICATION_DOMAIN",

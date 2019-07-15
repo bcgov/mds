@@ -1,5 +1,6 @@
 .env
 .digdag
+digdag.properties
 digdag-server/
 project/.digdag-wrapper
 project/.digdag
