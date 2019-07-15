@@ -11,11 +11,11 @@ on conflict do nothing;
 INSERT INTO public.mine_report_due_date_type
 (mine_report_due_date_type, description, active_ind, create_user, create_timestamp, update_user, update_timestamp)
 VALUES
-	--FIS, Fiscal Year
-	--ANV, Aniversary
-	('AVA', 'Available on Request', true, 'system-mds', now(), 'system-mds', now()),
-	('PMT', 'Permit Requirement', true, 'system-mds', now(), 'system-mds', now()),
-	('EVT', 'An Event Occured', true, 'system-mds', now(), 'system-mds', now())
+	('FIS', 'Reports due on fiscal year end.', true, 'system-mds', 'system-mds'),
+	('ANV', 'Reports due on an aniversary of operation, permit, etc...', true, 'system-mds', 'system-mds'),
+	('AVA', 'Reports that are available on Request', true, 'system-mds', 'system-mds'),
+	('PMT', 'Reports that are indicated via Permit Requirements', true, 'system-mds', 'system-mds'),
+	('EVT', 'Reports that are related to an event that occured', true, 'system-mds', 'system-mds')
 on conflict do nothing;
 
 INSERT INTO compliance_article
