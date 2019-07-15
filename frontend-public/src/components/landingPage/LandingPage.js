@@ -3,12 +3,7 @@ import { Divider, Button, Icon } from "antd";
 
 import QuestionSidebar from "@/components/common/QuestionsSidebar";
 
-var blockquoteStyle = {
-  margin: "1em 0",
-  paddingLeft: ".8em",
-  color: "#6B6363",
-  borderLeft: "4px solid #A09595",
-};
+import { USER_GUIDE, TAILINGS_DOCUMENT } from "@/constants/assets";
 
 export const LandingPage = () => (
   <div>
@@ -49,24 +44,23 @@ export const LandingPage = () => (
           contain all tailings and water retaining structures on site, regardless of whether they
           are classified as dams or if they are currently operating or dormant structures.
         </p>
-        <p style={blockquoteStyle}>
-          The Register of Tailing Storage Facilities and Dams document will be available for
-          download from here in the near future. Please check back later for more information.
-        </p>
-        {/* TODO: Latest tailings
+        <br />
         <p>
-          <a href="">
-            <Icon type="download" /> Register of Tailings Storage Facilities and Dams(XLSX,
-            FILESIZE)
+          <a href={TAILINGS_DOCUMENT}>
+            <Icon type="download" /> Register of Tailings Storage Facilities and Dams (XLSM, 1.0 MB)
+          </a>
+          <br />
+          <a href={USER_GUIDE}>
+            <Icon type="download" /> User Guide - Register of Tailings Storage Facilities and Dams
+            (PDF, 0.6 MB)
           </a>
         </p>
         <br />
-         */}
-
         <p>
           <strong>
             Please submit completed registry spreadsheets to{" "}
-            <a mailto="PERMRECL@gov.bc.ca">PERMRECL@gov.bc.ca</a>.
+            <a mailto="PERMRECL@gov.bc.ca">PERMRECL@gov.bc.ca</a>. You may also submit them via
+            MineSpace if you participated in the 2019 Pilot Project.
           </strong>
         </p>
 

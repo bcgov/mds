@@ -28,7 +28,6 @@ import {
   fetchMineIncidentFollowActionOptions,
   fetchMineIncidentDeterminationOptions,
   fetchMineIncidentStatusCodeOptions,
-  setOptionsLoaded,
   fetchVarianceDocumentCategoryOptions,
   fetchVarianceStatusOptions,
 } from "@/actionCreators/staticContentActionCreator";
@@ -56,7 +55,6 @@ import {
   getVarianceStatusOptionsHash,
   getDropdownVarianceDocumentCategoryOptions,
   getVarianceDocumentCategoryOptionsHash,
-  getOptionsLoaded,
 } from "@/selectors/staticContentSelectors";
 import { getMineComplianceInfo } from "@/selectors/complianceSelectors";
 import { getVarianceApplications, getApprovedVariances } from "@/selectors/varianceSelectors";
@@ -82,8 +80,11 @@ import MinePermitInfo from "@/components/mine/Permit/MinePermitInfo";
 import MineApplicationInfo from "@/components/mine/Applications/MineApplicationInfo";
 import Loading from "@/components/common/Loading";
 import { formatParamStringToArray } from "@/utils/helpers";
-import { detectProdEnvironment } from "@/utils/environmentUtils";
 import { getUserAccessData } from "@/selectors/authenticationSelectors";
+import { storeRegionOptions, storeTenureTypes } from "@/actions/staticContentActions";
+import { storeVariances } from "@/actions/varianceActions";
+import { storePermits } from "@/actions/permitActions";
+import { storeMine } from "@/actions/mineActions";
 
 /**
  * @class MineDashboard.js is an individual mines dashboard, gets Mine data from redux and passes into children.
@@ -101,14 +102,12 @@ const propTypes = {
   createVariance: PropTypes.func.isRequired,
   createTailingsStorageFacility: PropTypes.func.isRequired,
   fetchStatusOptions: PropTypes.func.isRequired,
-  setOptionsLoaded: PropTypes.func.isRequired,
   fetchMineTenureTypes: PropTypes.func.isRequired,
   fetchMineComplianceCodes: PropTypes.func.isRequired,
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
   mineTenureHash: PropTypes.objectOf(PropTypes.string),
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
-  optionsLoaded: PropTypes.bool.isRequired,
   complianceCodes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineComplianceInfo: CustomPropTypes.mineComplianceInfo,
@@ -152,20 +151,17 @@ export class MineDashboard extends Component {
   componentWillMount() {
     const { id, activeTab } = this.props.match.params;
     this.loadMineData(id);
-    if (!this.props.optionsLoaded) {
-      this.props.fetchStatusOptions();
-      this.props.fetchRegionOptions();
-      this.props.fetchMineTenureTypes();
-      this.props.fetchMineDisturbanceOptions();
-      this.props.fetchMineCommodityOptions();
-      this.props.fetchPartyRelationshipTypes();
-      this.props.fetchPermitStatusOptions();
-      this.props.fetchApplicationStatusOptions();
-      this.props.fetchMineIncidentFollowActionOptions();
-      this.props.fetchMineIncidentDeterminationOptions();
-      this.props.fetchMineIncidentStatusCodeOptions();
-      this.props.setOptionsLoaded();
-    }
+    this.props.fetchStatusOptions();
+    this.props.fetchRegionOptions();
+    this.props.fetchMineTenureTypes();
+    this.props.fetchMineDisturbanceOptions();
+    this.props.fetchMineCommodityOptions();
+    this.props.fetchPartyRelationshipTypes();
+    this.props.fetchPermitStatusOptions();
+    this.props.fetchApplicationStatusOptions();
+    this.props.fetchMineIncidentFollowActionOptions();
+    this.props.fetchMineIncidentDeterminationOptions();
+    this.props.fetchMineIncidentStatusCodeOptions();
     this.props.fetchMineComplianceCodes();
     this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
     this.props.fetchSubscribedMinesByUser();
@@ -298,7 +294,6 @@ export class MineDashboard extends Component {
   render() {
     const { id } = this.props.match.params;
     const mine = this.props.mines[id];
-    const isDevOrTest = !detectProdEnvironment();
     if (!mine) {
       return <Loading />;
     }
@@ -313,6 +308,20 @@ export class MineDashboard extends Component {
                 handleUnSubscribe={this.handleUnSubscribe}
                 handleSubscription={this.handleSubscription}
                 subscribed={this.props.subscribed}
+                refreshActions={[storeMine]}
+                refreshListActions={[
+                  storeRegionOptions,
+                  storeTenureTypes,
+                  storeVariances,
+                  storePermits,
+                ]}
+                refreshRequests={[
+                  this.props.fetchRegionOptions,
+                  this.props.fetchMineTenureTypes,
+                  () => this.props.fetchVariancesByMine({ mineGuid: id }),
+                  () => this.props.fetchPermits(mine.mine_guid),
+                  () => this.props.fetchMineRecordById(id),
+                ]}
               />
             </div>
             <div className="dashboard__content">
@@ -432,7 +441,6 @@ const mapStateToProps = (state) => ({
   mineDisturbanceOptionsHash: getDisturbanceOptionHash(state),
   currentMineTypes: getCurrentMineTypes(state),
   transformedMineTypes: getTransformedMineTypes(state),
-  optionsLoaded: getOptionsLoaded(state),
   subscribed: getIsUserSubscribed(state),
   approvedVariances: getApprovedVariances(state),
   varianceApplications: getVarianceApplications(state),
@@ -467,7 +475,6 @@ const mapDispatchToProps = (dispatch) =>
       fetchPartyRelationshipTypes,
       fetchPermitStatusOptions,
       fetchApplicationStatusOptions,
-      setOptionsLoaded,
       fetchMineComplianceInfo,
       fetchApplications,
       fetchSubscribedMinesByUser,
