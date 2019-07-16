@@ -1,15 +1,25 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import SearchBar from "@/components/search/SearchBar";
-import { BACKGROUND } from "@/constants/assets";
+import { BACKGROUND, HSRC_PDF } from "@/constants/assets";
+import { fetchDashboard164, fetchDashboard165 } from "@/actionCreators/reportingActionCreator";
 
 const propTypes = {
   location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
 };
 
 export class HomePage extends Component {
+  state = { graph_urls: [] };
+
+  async componentDidMount() {
+    const graph_urls = await Promise.all([fetchDashboard164(), fetchDashboard165()]);
+    this.setState({ graph_urls });
+  }
+
   render() {
+    const iframeUrlOne = `${this.state.graph_urls[0]}#bordered=true&titled=false`;
+    const iframeUrlTwo = `${this.state.graph_urls[1]}#bordered=true&titled=false`;
+
     return (
       <div className="background" style={{ backgroundImage: `url(${BACKGROUND})` }}>
         <div className="search-container">
@@ -18,10 +28,20 @@ export class HomePage extends Component {
             <p>To begin, please search or clicks the links below.</p>
             <br />
           </div>
-          <SearchBar containerId="homePage" />
+          <SearchBar />
           <a href="mailto: mds@gov.bc.ca">Have questions?</a>
         </div>
-        <div className="inline-flex justify-center">
+        {this.state.graph_urls.length === 2 && (
+          <div className="inline-flex justify-center block-mobile">
+            <div className="metabase-card">
+              <iframe title="metabaseDashboard" src={iframeUrlOne} width="100%" height="100%" />
+            </div>
+            <div className="metabase-card">
+              <iframe title="metabaseDashboard" src={iframeUrlTwo} width="100%" height="100%" />
+            </div>
+          </div>
+        )}
+        <div className="inline-flex justify-center block-mobile">
           <div className="link-card">
             <ul>
               <li className="uppercase violet">External Links</li>
@@ -84,7 +104,7 @@ export class HomePage extends Component {
               <li>
                 <p>
                   <a
-                    href="https://a100.gov.bc.ca/int/cvis/nris/nris.html?fromRoleSelect=true#/dashboard"
+                    href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/further-information/reports-publications/chief-inspector-s-annual-reports"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -95,7 +115,7 @@ export class HomePage extends Component {
               <li>
                 <p>
                   <a
-                    href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/further-information/reports-publications/chief-inspector-s-annual-reports"
+                    href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/further-information/directives-alerts-incident-information/chief-inspector-directives"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -105,23 +125,8 @@ export class HomePage extends Component {
               </li>
               <li>
                 <p>
-                  <a
-                    href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/mineral-titles/mineral-placer-titles/mineraltitlesonline"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <a href={HSRC_PDF} target="_blank" rel="noopener noreferrer">
                     HSRC
-                  </a>
-                </p>
-              </li>
-              <li>
-                <p>
-                  <a
-                    href="https://a100.gov.bc.ca/int/cvis/nris/nris.html?fromRoleSelect=true#/dashboard"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Training Materials
                   </a>
                 </p>
               </li>

@@ -23,3 +23,32 @@ class CoreDashboardResource(Resource, UserMixin):
 
         dashboard_url = current_app.config['METABASE_SITE_URL'] + "/embed/dashboard/" + token.decode("utf8")
         return { 'dashboard_url': dashboard_url }
+
+class LandingPageGraphOneResource(Resource, UserMixin):
+    @requires_role_view_all
+    def get(self):
+        payload = {
+          "resource": {"dashboard": 164},
+          "params": {
+
+          }
+        }
+        token = jwt.encode(payload, current_app.config['METABASE_EMBEDDING_SECRET_KEY'], algorithm="HS256")
+
+        dashboard_url = current_app.config['METABASE_SITE_URL'] + "/embed/dashboard/" + token.decode("utf8")
+        return { 'dashboard_url': dashboard_url }
+
+class LandingPageGraphTwoResource(Resource, UserMixin):
+    @requires_role_view_all
+    def get(self):
+        payload = {
+          "resource": {"dashboard": 165},
+          "params": {
+
+          }
+        }
+        token = jwt.encode(payload, current_app.config['METABASE_EMBEDDING_SECRET_KEY'], algorithm="HS256")
+
+        dashboard_url = current_app.config['METABASE_SITE_URL'] + "/embed/dashboard/" + token.decode("utf8")
+        return { 'dashboard_url': dashboard_url }
+

@@ -1,6 +1,7 @@
 .background {
-  background-color: $violet;
+  background-size: cover;
   height: 100vh;
+  overflow: scroll;
 }
 
 .link-card {
@@ -19,6 +20,23 @@
     padding: 10px;
     border-top: 1px solid $light-grey;
     list-style: none;
+  }
+
+  @include mobile {
+    width: 90vw;
+  }
+}
+
+.metabase-card {
+  margin: 20px;
+  background-color: white;
+  width: 30vw;
+  height: inherit;
+  border-top: 6px solid $violet;
+  border-radius: 5px;
+
+  @include mobile {
+    width: 90vw;
   }
 }
 

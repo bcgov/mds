@@ -39,3 +39,5 @@ export { default as SUBSCRIBE } from "../assets/images/subscribe.svg";
 export { default as UNSUBSCRIBE } from "../assets/images/unsubscribe.svg";
 export { default as YELLOW_HAZARD } from "../assets/images/Hazard.svg";
 export { default as BACKGROUND } from "../assets/images/Background.svg";
+
+export { default as HSRC_PDF } from "../assets/downloads/HSRC.pdf";

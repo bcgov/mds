@@ -72,40 +72,44 @@ export class SearchBar extends Component {
     });
   };
 
-  render = () => (
-    <div id={this.props.containerId}>
-      <Dropdown
-        overlay={
-          <Card>
-            <SearchBarDropdown
-              history={this.props.history}
-              searchTerm={this.state.searchTerm}
-              searchTermHistory={this.state.searchTermHistory}
-              searchBarResults={this.props.searchBarResults}
-            />
-          </Card>
-        }
-        getPopupContainer={() => document.getElementById(this.props.containerId)}
-        trigger={[""]}
-        visible={this.state.isSelected}
-      >
-        <Search
-          size="large"
-          value={this.state.searchTerm}
-          placeholder={this.state.isSelected ? selectedPlaceholderText : defaultPlaceholderText}
-          onSearch={(searchTerm) => this.search(searchTerm)}
-          onChange={this.changeSearchTerm}
-          onClick={this.clearSearchBar}
-          onFocus={this.clearSearchBar}
-          onBlur={() =>
-            this.setState({
-              isSelected: false,
-            })
+  render() {
+    // The default behaviour will fix the dropdown to the parent, except in the navBar where the user can scroll beyond the searchBox.
+    const id = this.props.containerId === "navBar" ? "navBar" : "";
+    return (
+      <div id={id}>
+        <Dropdown
+          overlay={
+            <Card>
+              <SearchBarDropdown
+                history={this.props.history}
+                searchTerm={this.state.searchTerm}
+                searchTermHistory={this.state.searchTermHistory}
+                searchBarResults={this.props.searchBarResults}
+              />
+            </Card>
           }
-        />
-      </Dropdown>
-    </div>
-  );
+          getPopupContainer={id ? () => document.getElementById(this.props.containerId) : ""}
+          trigger={[""]}
+          visible={this.state.isSelected}
+        >
+          <Search
+            size="large"
+            value={this.state.searchTerm}
+            placeholder={this.state.isSelected ? selectedPlaceholderText : defaultPlaceholderText}
+            onSearch={(searchTerm) => this.search(searchTerm)}
+            onChange={this.changeSearchTerm}
+            onClick={this.clearSearchBar}
+            onFocus={this.clearSearchBar}
+            onBlur={() =>
+              this.setState({
+                isSelected: false,
+              })
+            }
+          />
+        </Dropdown>
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = (state) => ({
