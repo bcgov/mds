@@ -33,7 +33,7 @@ class MineMapResource(Resource, UserMixin):
         map_result = cache.get(MINE_MAP_CACHE)
         last_modified = cache.get(MINE_MAP_CACHE + '_LAST_MODIFIED')
         if not map_result:
-            map_result = MineMapResource.rebuild_map_cache()
+            map_result = MineMapResource.rebuild_and_return_map_cache()
 
         # It's more efficient to store the json to avoid re-initializing all of the objects
         # and jsonifying on every request, so a flask response is returned to prevent
@@ -55,13 +55,13 @@ class MineMapResource(Resource, UserMixin):
 
         def run_cache_rebuilding_thread():
             with app.request_context(environ):
-                return MineMapResource.rebuild_map_cache()
+                return MineMapResource.rebuild_and_return_map_cache()
 
         thread = threading.Thread(target=run_cache_rebuilding_thread)
         thread.start()
 
     @staticmethod
-    def rebuild_map_cache():
+    def rebuild_and_return_map_cache():
         records = MineMapViewLocation.query.filter(MineMapViewLocation.latitude != None).all()
         last_modified = datetime.utcnow()
 
