@@ -402,7 +402,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
 
         _mine_status_processor(data.get('mine_status'), data.get('status_date'), mine)
 
-        # If more fields are added to the map popup this refresh cache will need to be called for them as well
+        # refresh cache will need to be called for all supported fields, should more be added in the future
         if refresh_cache:
             cache.delete(MINE_MAP_CACHE)
             MineMapResource.rebuild_map_cache_async()
