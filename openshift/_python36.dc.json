@@ -155,7 +155,7 @@
     {
       "name": "NRIS_API_URL",
       "required": true
-    }
+    },
     {
       "name": "DOCUMENT_MANAGER_URL",
       "required": true
