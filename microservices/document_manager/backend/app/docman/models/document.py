@@ -10,7 +10,7 @@ from ...utils.models_mixins import AuditMixin, Base
 
 class Document(AuditMixin, Base):
     __tablename__ = 'document'
-    document_manager_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
+    document_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     document_guid = db.Column(UUID(as_uuid=True), nullable=False)
     full_storage_path = db.Column(db.String(150), nullable=False)
     upload_started_date = db.Column(db.DateTime, nullable=False)
@@ -19,7 +19,7 @@ class Document(AuditMixin, Base):
     path_display_name = db.Column(db.String(150), nullable=False)
 
     def __repr__(self):
-        return '<Document %r>' % self.document_manager_id
+        return '<Document %r>' % self.document_id
 
     def json(self):
         return {
