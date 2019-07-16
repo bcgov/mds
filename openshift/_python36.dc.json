@@ -156,6 +156,10 @@
       "name": "NRIS_API_URL",
       "required": true
     }
+    {
+      "name": "DOCUMENT_MANAGER_URL",
+      "required": true
+    }
   ],
   "objects": [
     {
@@ -456,7 +460,7 @@
                   },
                   {
                     "name": "DOCUMENT_MANAGER_URL",
-                    "value": "${API_URL}"
+                    "value": "${DOCUMENT_MANAGER_URL}"
                   },
                   {
                     "name": "UPLOADED_DOCUMENT_DEST",
