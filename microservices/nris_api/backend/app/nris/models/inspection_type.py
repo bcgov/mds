@@ -10,11 +10,6 @@ class InspectionType(Base):
     inspection_type_code = db.Column(db.String(32), nullable=False)
     inspection_type_description = db.Column(db.String(256))
 
-    def __init__(self, id, code, desc):
-        self.inspection_type_id = id
-        self.inspection_type_code = code
-        self.inspection_type_description = desc
-
     def __repr__(self):
         return f'<InspectionType inspection_type_code={self.inspection_type_code} inspection_type_description={self.inspection_type_description}>'
 

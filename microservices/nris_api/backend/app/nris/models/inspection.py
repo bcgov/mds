@@ -9,6 +9,14 @@ from app.nris.models.inspection_status import InspectionStatus
 from app.nris.models.inspected_location import INSPECTED_LOCATION_RESPONSE_MODEL
 from app.nris.models.document import DOCUMENT_RESPONSE_MODEL
 
+class MyDateTime(db.TypeDecorator):
+    impl = db.DateTime
+
+    def process_bind_param(self, value, dialect):
+        if type(value) is str:
+            return datetime.strptime(value[:10], '%Y-%m-%d')
+        return value
+
 INSPECTION_RESPONSE_MODEL = api.model(
     'inspection', {
         'external_id': fields.Integer,
@@ -33,9 +41,9 @@ class Inspection(Base):
     __tablename__ = "inspection"
     inspection_id = db.Column(db.Integer, primary_key=True)
     external_id = db.Column(db.Integer)
-    inspection_date = db.Column(db.DateTime)
-    completed_date = db.Column(db.DateTime)
-    inspection_report_sent_date = db.Column(db.DateTime)
+    inspection_date = db.Column(MyDateTime)
+    completed_date = db.Column(MyDateTime)
+    inspection_report_sent_date = db.Column(MyDateTime)
     inspection_status_id = db.Column(db.Integer,
                                      db.ForeignKey('inspection_status.inspection_status_id'))
     inspection_status = db.relationship("InspectionStatus")

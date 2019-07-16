@@ -9,6 +9,14 @@ from app.nris.models.document import DOCUMENT_RESPONSE_MODEL
 from app.nris.models.noncompliance_legislation import NONCOMPLIANCE_LEGISLATION_RESPONSE_MODEL
 from app.nris.models.noncompliance_permit import NONCOMPLIANCE_RESPONSE_MODEL
 
+class MyDateTime(db.TypeDecorator):
+    impl = db.DateTime
+
+    def process_bind_param(self, value, dialect):
+        if type(value) is str:
+            return datetime.strptime(value[:10], '%Y-%m-%d')
+        return value
+
 STOP_DETAILS_RESPONSE_MODEL = api.model(
     'order_stop_detail', {
         'detail':
@@ -51,8 +59,8 @@ class OrderStopDetail(Base):
     stop_status = db.Column(db.String(64))
     observation = db.Column(db.String())
     response = db.Column(db.String())
-    response_received = db.Column(db.DateTime)
-    completion_date = db.Column(db.DateTime)
+    response_received = db.Column(MyDateTime)
+    completion_date = db.Column(MyDateTime)
     noncompliance_legislations = db.relationship("NonComplianceLegislation", lazy='joined')
     noncompliance_permits = db.relationship("NonCompliancePermit", lazy='joined')
     authority_act = db.Column(db.String(64))

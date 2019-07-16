@@ -5,6 +5,15 @@ from sqlalchemy.orm import validates
 from sqlalchemy.ext.associationproxy import association_proxy
 from app.nris.utils.base_model import Base
 
+class MyDateTime(db.TypeDecorator):
+    impl = db.DateTime
+
+    def process_bind_param(self, value, dialect):
+        if type(value) is str:
+            return datetime.strptime(value[:10], '%Y-%m-%d')
+        return value
+
+
 NONCOMPLIANCE_LEGISLATION_RESPONSE_MODEL = api.model(
     'noncompliance_legislation', {
         'estimated_incident_date': fields.DateTime,
@@ -20,7 +29,7 @@ class NonComplianceLegislation(Base):
     noncompliance_legislation_id = db.Column(db.Integer, primary_key=True)
     order_stop_detail_id = db.Column(db.Integer,
                                      db.ForeignKey('order_stop_detail.order_stop_detail_id'))
-    estimated_incident_date = db.Column(db.DateTime)
+    estimated_incident_date = db.Column(MyDateTime)
     noncompliant_description = db.Column(db.String(256))
     parent_act_id = db.Column(db.Integer, db.ForeignKey('legislation_act.legislation_act_id'))
     legislation_act_section_id = db.Column(

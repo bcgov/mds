@@ -7,6 +7,14 @@ from app.nris.utils.base_model import Base
 
 from app.nris.models.document_type import DocumentType
 
+class MyDateTime(db.TypeDecorator):
+    impl = db.DateTime
+
+    def process_bind_param(self, value, dialect):
+        if type(value) is str:
+            return datetime.strptime(value[:10], '%Y-%m-%d')
+        return value
+
 DOCUMENT_RESPONSE_MODEL = api.model(
     'document', {
         'external_id': fields.Integer,
@@ -21,7 +29,7 @@ class Document(Base):
     __tablename__ = "document"
     document_id = db.Column(db.Integer, primary_key=True)
     external_id = db.Column(db.Integer)
-    document_date = db.Column(db.DateTime)
+    document_date = db.Column(MyDateTime)
     document_type_id = db.Column(
         db.Integer, db.ForeignKey('document_type.document_type_id'))
     document_type_rel = db.relationship("DocumentType", lazy='selectin')
