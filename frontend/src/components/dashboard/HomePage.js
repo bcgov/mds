@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import SearchBar from "@/components/search/SearchBar";
 import { BACKGROUND, HSRC_PDF } from "@/constants/assets";
-import { fetchDashboard164, fetchDashboard165 } from "@/actionCreators/reportingActionCreator";
+import { fetchLandingPageDashboard } from "@/actionCreators/reportingActionCreator";
 
 const propTypes = {
   location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
@@ -12,20 +12,22 @@ export class HomePage extends Component {
   state = { graph_urls: [] };
 
   async componentDidMount() {
-    const graph_urls = await Promise.all([fetchDashboard164(), fetchDashboard165()]);
+    const graph_urls = await Promise.all([
+      fetchLandingPageDashboard("164"),
+      fetchLandingPageDashboard("165"),
+    ]);
     this.setState({ graph_urls });
   }
 
   render() {
     const iframeUrlOne = `${this.state.graph_urls[0]}#bordered=true&titled=false`;
     const iframeUrlTwo = `${this.state.graph_urls[1]}#bordered=true&titled=false`;
-
     return (
       <div className="background" style={{ backgroundImage: `url(${BACKGROUND})` }}>
         <div className="search-container">
           <div className="center">
             <h1>Welcome!</h1>
-            <p>To begin, please search or clicks the links below</p>
+            <p>To begin, please search or click the links below</p>
             <br />
           </div>
           <SearchBar />

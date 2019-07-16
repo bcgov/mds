@@ -17,7 +17,11 @@ const propTypes = {
   fetchSearchBarResults: PropTypes.func.isRequired,
   clearSearchBarResults: PropTypes.func.isRequired,
   searchBarResults: PropTypes.arrayOf(PropTypes.object).isRequired,
-  containerId: PropTypes.string.isRequired,
+  containerId: PropTypes.string,
+};
+
+const defaultProps = {
+  containerId: "",
 };
 
 const defaultPlaceholderText = "Search";
@@ -73,10 +77,8 @@ export class SearchBar extends Component {
   };
 
   render() {
-    // The default behaviour will fix the dropdown to the parent (searchBox), except in the navBar where the user can scroll beyond the searchBox.
-    const id = this.props.containerId === "navBar" ? "navBar" : "";
     return (
-      <div id={id}>
+      <div id={this.props.containerId}>
         <Dropdown
           overlay={
             <Card>
@@ -88,7 +90,9 @@ export class SearchBar extends Component {
               />
             </Card>
           }
-          getPopupContainer={id ? () => document.getElementById(this.props.containerId) : ""}
+          getPopupContainer={
+            this.props.containerId ? () => document.getElementById(this.props.containerId) : ""
+          }
           trigger={[""]}
           visible={this.state.isSelected}
         >
@@ -126,6 +130,7 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 SearchBar.propTypes = propTypes;
+SearchBar.defaultProps = defaultProps;
 
 export default connect(
   mapStateToProps,

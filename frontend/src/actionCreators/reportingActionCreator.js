@@ -14,18 +14,9 @@ export const fetchCoreDashboard = () =>
     })
     .catch(() => error(Strings.ERROR));
 
-export const fetchDashboard164 = () =>
+export const fetchLandingPageDashboard = (dashboardId) =>
   CustomAxios({ errorToastMessage: "Unable to fetch dashboard." })
-    .get(`${ENVIRONMENT.apiUrl + API.DASHBOARD_164}`, createRequestHeader())
-    .then((response) => {
-      const { dashboard_url } = response.data || {};
-      return dashboard_url;
-    })
-    .catch(() => error(Strings.ERROR));
-
-export const fetchDashboard165 = () =>
-  CustomAxios({ errorToastMessage: "Unable to fetch dashboard." })
-    .get(`${ENVIRONMENT.apiUrl + API.DASHBOARD_165}`, createRequestHeader())
+    .get(`${ENVIRONMENT.apiUrl + API.DASHBOARD(dashboardId)}`, createRequestHeader())
     .then((response) => {
       const { dashboard_url } = response.data || {};
       return dashboard_url;

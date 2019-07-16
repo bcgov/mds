@@ -65,8 +65,7 @@ export const SIMPLE_SEARCH = "/search/simple";
 
 // Reporting
 export const CORE_DASHBOARD = `/reporting/core-dashboard`;
-export const DASHBOARD_164 = `/reporting/dashboard-164`;
-export const DASHBOARD_165 = `/reporting/dashboard-165`;
+export const DASHBOARD = (dashboardId) => `/reporting/dashboard-${dashboardId}`;
 
 // Variances
 export const COMPLIANCE_CODES = "/mines/compliance/codes";
