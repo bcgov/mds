@@ -70,10 +70,9 @@ def db_session(test_client):
     conn.close()
 
 
-# FIXME: These names are horrible and temporary
-# Fixtures for running an in-memory mocked db session
+# Fixtures for running an in-memory mocked sqlite db session
 @pytest.fixture(scope='session')
-def app_local(request):
+def sqlite_app(request):
     """Session-wide test `Flask` application."""
     _app = create_app(EtlTestConfig)
 
@@ -88,32 +87,28 @@ def app_local(request):
     return _app
 
 @pytest.fixture(scope='session')
-def db_local(app_local, request):
+def sqlite_db(sqlite_app, request):
     """Session-wide test database."""
 
     def teardown():
         db.drop_all()
 
-    db.app = app_local
+    db.app = sqlite_app
     db.create_all()
 
     request.addfinalizer(teardown)
     return db
 
-# NOTE: It looks likely that the only difference between this session and
-# db_session is the app instance that is associated with the db (app vs
-# app_local). Check for potential reuse of existing code & validate that this
-# new code actually does something new
 @pytest.fixture(scope='function')
-def session(db_local, request):
+def sqlite_session(sqlite_db, request):
     """Creates a new database session for a test."""
-    connection = db_local.engine.connect()
+    connection = sqlite_db.engine.connect()
     transaction = connection.begin()
 
     options = dict(bind=connection, binds={})
-    session = db_local.create_scoped_session(options=options)
+    session = sqlite_db.create_scoped_session(options=options)
 
-    db_local.session = session
+    sqlite_db.session = session
 
     def teardown():
         transaction.rollback()
