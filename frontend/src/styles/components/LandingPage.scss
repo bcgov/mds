@@ -32,10 +32,6 @@
   background-color: white;
   border-top: 6px solid $violet;
   border-radius: 5px;
-
-  @include mobile {
-    width: 90vw;
-  }
 }
 
 .search-container {

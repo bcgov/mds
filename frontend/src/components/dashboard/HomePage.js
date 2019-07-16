@@ -25,10 +25,11 @@ export class HomePage extends Component {
         <div className="search-container">
           <div className="center">
             <h1>Welcome!</h1>
-            <p>To begin, please search or clicks the links below.</p>
+            <p>To begin, please search or clicks the links below</p>
             <br />
           </div>
           <SearchBar />
+          <br />
           <a href="mailto: mds@gov.bc.ca">Have questions?</a>
         </div>
         {this.state.graph_urls.length === 2 && (
