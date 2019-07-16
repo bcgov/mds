@@ -12,7 +12,7 @@ from ...utils.access_decorators import requires_any_of, MINE_EDIT, VIEW_ALL, MIN
 from app.constants import FILE_UPLOAD_SIZE, FILE_UPLOAD_OFFSET, FILE_UPLOAD_PATH, DOWNLOAD_TOKEN, TIMEOUT_24_HOURS, TUS_API_VERSION, TUS_API_SUPPORTED_VERSIONS, FORBIDDEN_FILETYPES
 
 
-@api.route('/')
+@api.route('/documents')
 class DocumentManagerListResource(Resource):
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument('folder',
@@ -112,7 +112,7 @@ class DocumentManagerListResource(Resource):
                          as_attachment=not_pdf)
 
 
-@api.route(f'/<string:document_guid>')
+@api.route(f'/documents/<string:document_guid>')
 class DocumentManagerListResource(Resource):
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument('folder',

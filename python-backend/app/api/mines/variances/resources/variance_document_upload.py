@@ -36,8 +36,8 @@ class MineVarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             'pretty_folder': f'mines/{mine.mine_no}/variances',
             'filename': document_name
         }
-        document_manager_URL = f'{current_app.config["DOCUMENT_MANAGER_URL"]}/document-manager'
-
+        document_manager_URL = f'{current_app.config["DOCUMENT_MANAGER_URL"]}/documents'
+        current_app.logger.debug('doc_man_url = ' + document_manager_URL)
         resp = requests.post(
             url=document_manager_URL,
             headers={key: value
