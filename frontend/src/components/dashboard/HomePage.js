@@ -34,10 +34,10 @@ export class HomePage extends Component {
         {this.state.graph_urls.length === 2 && (
           <div className="inline-flex justify-center block-mobile">
             <div className="metabase-card">
-              <iframe title="metabaseDashboard" src={iframeUrlOne} width="100%" height="100%" />
+              <iframe title="metabaseDashboard" src={iframeUrlOne} width="400" height="300" />
             </div>
             <div className="metabase-card">
-              <iframe title="metabaseDashboard" src={iframeUrlTwo} width="100%" height="100%" />
+              <iframe title="metabaseDashboard" src={iframeUrlTwo} width="400" height="300" />
             </div>
           </div>
         )}

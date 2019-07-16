@@ -30,8 +30,6 @@
 .metabase-card {
   margin: 20px;
   background-color: white;
-  width: 30vw;
-  height: inherit;
   border-top: 6px solid $violet;
   border-radius: 5px;
 
@@ -44,7 +42,7 @@
   width: 50vw;
   height: 300px;
   position: relative;
-  top: 80px;
+  top: 60px;
   margin: 0 auto;
   @include mobile {
     top: 0;

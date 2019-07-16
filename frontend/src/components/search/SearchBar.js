@@ -73,7 +73,7 @@ export class SearchBar extends Component {
   };
 
   render() {
-    // The default behaviour will fix the dropdown to the parent, except in the navBar where the user can scroll beyond the searchBox.
+    // The default behaviour will fix the dropdown to the parent (searchBox), except in the navBar where the user can scroll beyond the searchBox.
     const id = this.props.containerId === "navBar" ? "navBar" : "";
     return (
       <div id={id}>
