@@ -1,6 +1,7 @@
 .env
 .digdag
 digdag.properties
+gatekeeper.conf
 digdag-server/
 project/.digdag-wrapper
 project/.digdag

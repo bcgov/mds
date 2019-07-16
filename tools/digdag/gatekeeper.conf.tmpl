@@ -1,0 +1,12 @@
+client-id: ${KEYCLOAK_CLIENT_ID}
+discovery-url: ${KEYCLOAK_DISCOVERY_URL}
+enable-default-deny: true
+listen: 127.0.0.1:8080
+upstream-url: ${KEYCLOAK_UPSTREAM_URL}
+redirection-url: ${KEYCLOAK_REDIRECT_URL}
+skip-upstream-tls-verify: true
+secure-cookie: false
+resources:
+- uri: /*
+  roles:
+  - ${KEYCLOAK_ADMIN_ROLE}
