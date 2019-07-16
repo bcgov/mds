@@ -48,7 +48,7 @@ class MineVarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
 
         if resp.status_code != 200:
             raise InternalServerError("Error, connection to Document Manager failed. " +
-                                      resp.content)
+                                      str(resp.content))
 
         response = Response(str(resp.content), resp.status_code, resp.raw.headers.items())
         return response
