@@ -319,11 +319,16 @@ export class MineHeader extends Component {
                   <img src={SUBSCRIBE} alt="SUBSCRIBE" />
                 </Tooltip>
               )}
-              <RefreshButton
-                actions={this.props.refreshActions}
-                listActions={this.props.refreshListActions}
-                requests={this.props.refreshRequests}
-              />
+              {// TODO: Unhide when new nav is done
+              true ? (
+                <div />
+              ) : (
+                <RefreshButton
+                  actions={this.props.refreshActions}
+                  listActions={this.props.refreshListActions}
+                  requests={this.props.refreshRequests}
+                />
+              )}
               <Dropdown
                 className="full-height full-mobile"
                 overlay={menu}
