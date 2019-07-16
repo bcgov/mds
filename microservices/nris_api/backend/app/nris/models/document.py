@@ -6,14 +6,7 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from app.nris.utils.base_model import Base
 
 from app.nris.models.document_type import DocumentType
-
-class MyDateTime(db.TypeDecorator):
-    impl = db.DateTime
-
-    def process_bind_param(self, value, dialect):
-        if type(value) is str:
-            return datetime.strptime(value[:10], '%Y-%m-%d')
-        return value
+from app.nris.custom_types.sl_date_time import MyDateTime
 
 DOCUMENT_RESPONSE_MODEL = api.model(
     'document', {

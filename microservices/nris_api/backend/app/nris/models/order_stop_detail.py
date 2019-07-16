@@ -5,17 +5,10 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from app.nris.utils.base_model import Base
 from flask_restplus import fields
 
+from app.nris.custom_types.sl_date_time import MyDateTime
 from app.nris.models.document import DOCUMENT_RESPONSE_MODEL
 from app.nris.models.noncompliance_legislation import NONCOMPLIANCE_LEGISLATION_RESPONSE_MODEL
 from app.nris.models.noncompliance_permit import NONCOMPLIANCE_RESPONSE_MODEL
-
-class MyDateTime(db.TypeDecorator):
-    impl = db.DateTime
-
-    def process_bind_param(self, value, dialect):
-        if type(value) is str:
-            return datetime.strptime(value[:10], '%Y-%m-%d')
-        return value
 
 STOP_DETAILS_RESPONSE_MODEL = api.model(
     'order_stop_detail', {
