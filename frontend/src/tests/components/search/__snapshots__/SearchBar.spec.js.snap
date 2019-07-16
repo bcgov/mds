@@ -5,6 +5,7 @@ ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <SearchBar
     clearSearchBarResults={[MockFunction]}
+    containerId=""
     fetchSearchBarResults={[MockFunction]}
     fetchSearchResults={[MockFunction]}
     history={
