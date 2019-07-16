@@ -1,6 +1,6 @@
 import base64
 import requests
-from werkzeug.exceptions import BadRequest, NotFound
+from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
 from flask import request, current_app, Response
 from flask_restplus import Resource
