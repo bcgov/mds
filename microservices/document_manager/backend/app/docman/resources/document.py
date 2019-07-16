@@ -6,14 +6,14 @@ from werkzeug.exceptions import BadRequest, NotFound, Conflict, RequestEntityToo
 from flask import request, current_app, send_file, make_response, jsonify
 from flask_restplus import Resource, reqparse
 
-from ..models.document_manager import DocumentManager
+from ..models.document import Document
 from app.extensions import api, cache
 from ...utils.access_decorators import requires_any_of, MINE_EDIT, VIEW_ALL, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE
 from app.constants import FILE_UPLOAD_SIZE, FILE_UPLOAD_OFFSET, FILE_UPLOAD_PATH, DOWNLOAD_TOKEN, TIMEOUT_24_HOURS, TUS_API_VERSION, TUS_API_SUPPORTED_VERSIONS, FORBIDDEN_FILETYPES
 
 
 @api.route('/documents')
-class DocumentManagerListResource(Resource):
+class DocumentListResource(Resource):
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument('folder',
                         type=str,
@@ -74,7 +74,7 @@ class DocumentManagerListResource(Resource):
         cache.set(FILE_UPLOAD_OFFSET(document_guid), 0, TIMEOUT_24_HOURS)
         cache.set(FILE_UPLOAD_PATH(document_guid), file_path, TIMEOUT_24_HOURS)
 
-        document_info = DocumentManager(
+        document_info = Document(
             document_guid=document_guid,
             full_storage_path=file_path,
             upload_started_date=datetime.utcnow(),
@@ -87,7 +87,7 @@ class DocumentManagerListResource(Resource):
         response.headers['Tus-Resumable'] = TUS_API_VERSION
         response.headers['Tus-Version'] = TUS_API_SUPPORTED_VERSIONS
         response.headers[
-            'Location'] = f'{current_app.config["DOCUMENT_MANAGER_URL"]}/document-manager/{document_guid}'
+            'Location'] = f'{current_app.config["DOCUMENT_MANAGER_URL"]}/documents/{document_guid}'
         response.headers['Upload-Offset'] = 0
         response.headers[
             'Access-Control-Expose-Headers'] = "Tus-Resumable,Tus-Version,Location,Upload-Offset"
@@ -102,7 +102,7 @@ class DocumentManagerListResource(Resource):
         if not doc_guid:
             raise BadRequest('Valid token requred for download')
 
-        doc = DocumentManager.query.unbound_unsafe().filter_by(document_guid=doc_guid).first()
+        doc = Document.query.unbound_unsafe().filter_by(document_guid=doc_guid).first()
         if not doc:
             raise NotFound('Could not find the document corresponding to the token')
 
@@ -113,7 +113,7 @@ class DocumentManagerListResource(Resource):
 
 
 @api.route(f'/documents/<string:document_guid>')
-class DocumentManagerListResource(Resource):
+class DocumentListResource(Resource):
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument('folder',
                         type=str,
@@ -163,7 +163,7 @@ class DocumentManagerListResource(Resource):
 
         if new_offset == file_size:
             # File transfer complete.
-            doc = DocumentManager.find_by_document_manager_guid(document_guid)
+            doc = Document.find_by_document_guid(document_guid)
             doc.upload_completed_date = datetime.utcnow()
             doc.save()
 

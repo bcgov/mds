@@ -20,8 +20,8 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
     JWT_OIDC_WELL_KNOWN_CONFIG = os.environ.get(
-    'JWT_OIDC_WELL_KNOWN_CONFIG',
-    'https://localhost:8080/auth/realms/mds/.well-known/openid-configuration')
+        'JWT_OIDC_WELL_KNOWN_CONFIG',
+        'https://localhost:8080/auth/realms/mds/.well-known/openid-configuration')
     JWT_OIDC_AUDIENCE = os.environ.get('JWT_OIDC_AUDIENCE', 'mds')
     JWT_OIDC_ALGORITHMS = os.environ.get('JWT_OIDC_ALGORITHMS', 'RS256')
 
@@ -29,8 +29,7 @@ class Config(object):
     ELASTIC_ENABLED = os.environ.get('ELASTIC_ENABLED', '0')
     ELASTIC_SERVICE_NAME = os.environ.get('ELASTIC_SERVICE_NAME', 'Local-Dev')
     ELASTIC_SECRET_TOKEN = os.environ.get('ELASTIC_SECRET_TOKEN', None)
-    ELASTIC_SERVER_URL = os.environ.get(
-        'ELASTIC_SERVER_URL', 'http://localhost:8200')
+    ELASTIC_SERVER_URL = os.environ.get('ELASTIC_SERVER_URL', 'http://localhost:8200')
     ELASTIC_DEBUG = os.environ.get('ELASTIC_DEBUG', True)
     ELASTIC_APM = {
         'SERVICE_NAME': ELASTIC_SERVICE_NAME,
@@ -46,6 +45,9 @@ class Config(object):
     CACHE_REDIS_PASS = os.environ.get('CACHE_REDIS_PASS', 'redis-password')
     CACHE_REDIS_URL = 'redis://:{0}@{1}:{2}'.format(CACHE_REDIS_PASS, CACHE_REDIS_HOST,
                                                     CACHE_REDIS_PORT)
+
+    UPLOADED_DOCUMENT_DEST = os.environ.get('UPLOADED_DOCUMENT_DEST', '/app/document_uploads')
+    MAX_CONTENT_LENGTH = 400 * 1024 * 1024
 
     def JWT_ROLE_CALLBACK(jwt_dict):
         return (jwt_dict['realm_access']['roles'])
