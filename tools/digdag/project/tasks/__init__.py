@@ -14,9 +14,9 @@ class NrisETL(object):
         k8s_client = config.new_client_from_config(kube_config)
         dyn_client = DynamicClient(k8s_client)
 
-        v1_jobs = dyn_client.resources.get(api_version='v1', kind='Job')
+        v1_pod = dyn_client.resources.get(api_version='v1', kind='Pod')
 
-        job = """
+        pod_def = """
         {
   "apiVersion": "v1",
   "kind": "Pod",
@@ -42,18 +42,16 @@ class NrisETL(object):
 }
         """
 
-        job_data = job
         try:
-            resp = v1_jobs.create(body=job_data, namespace='empr-mds-dev')
-        except:
-            print("Job exists! Delete and create instead")
-            v1_jobs.delete(name='digdag-nris', namespace='empr-mds-dev')
-            resp = v1_jobs.create(body=job_data, namespace='empr-mds-dev')
+            resp = v1_pod.create(body=pod_def, namespace='empr-mds-dev')
+        except Exception as e:
+            resp = e
+            print(e)
 
         # Watch hangs, comment out for now
         # for event in v1_jobs.watch(namespace='empr-mds-dev'):
         #    print(event['object'])
 
-        print("Job finished")
+        print("Pod finished")
         # resp is a ResourceInstance object
         print(resp.metadata)
