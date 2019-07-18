@@ -29,6 +29,10 @@ def register_commands(app):
         etl_nris_data()
         print("NRIS ETL complete")
 
+    @app.cli.command()
+    def test_cli_command():
+        print("Flask commands working")
+
     @sched.app.cli.command()
     def run_nris_etl_job():
         with sched.app.app_context():

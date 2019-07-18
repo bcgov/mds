@@ -17,34 +17,32 @@ class NrisETL(object):
         v1_jobs = dyn_client.resources.get(api_version='v1', kind='Job')
 
         job = """
-kind: Job
-metadata:
-  labels:
-    app: digdag
-  name: digdag-nris
-  namespace: empr-mds-dev
-spec:
-  template:
-    metadata:
-      labels:
-        job-name: digdag-nris
-    spec:
-      containers:
-      - command:
-        - echo
-        - IAmUp
-        image: docker-registry.default.svc:5000/empr-mds-dev/mds-nris-backend:dev-pr-863
-        imagePullPolicy: Always
-        name: digdag-nris
-        resources: {}
-        terminationMessagePath: "/dev/termination-log"
-        terminationMessagePolicy: File
-      dnsPolicy: ClusterFirst
-      restartPolicy: Never
-      terminationGracePeriodSeconds: 30
-"""
+        {
+  "apiVersion": "v1",
+  "kind": "Pod",
+  "metadata": {
+    "labels": {
+      "app-name": "mds",
+      "app": "mds-pr-863"
+    },
+    "name": "mds-digdag-pr-863",
+    "namespace": "empr-mds-dev"
+  },
+  "spec": {
+    "containers": [
+      {
+        "command": ["flask", "test_cli_command"],
+        "image": "docker-registry.default.svc:5000/empr-mds-dev/mds-nris-backend:dev-pr-863",
+        "imagePullPolicy": "Always",
+        "name": "mds-digdag-pr-863"
+      }
+    ],
+    "dnsPolicy": "ClusterFirst"
+  }
+}
+        """
 
-        job_data = yaml.load(job)
+        job_data = job
         try:
             resp = v1_jobs.create(body=job_data, namespace='empr-mds-dev')
         except:
