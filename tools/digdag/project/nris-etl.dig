@@ -3,8 +3,11 @@ timezone: UTC
 +setup:
   echo>: Starting NRIS ETL ${session_time}
 
++get_token:
+  sh>: if [ -f /var/run/secrets/kubernetes.io/serviceaccount/token ]; then export OC_TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token); fi
+
 +login:
-  sh>: oc login https://console.pathfinder.gov.bc.ca:8443 --token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+  sh>: oc login https://console.pathfinder.gov.bc.ca:8443 --token=$OC_TOKEN
 
 +python_write:
   py>: tasks.NrisETL.run_job
