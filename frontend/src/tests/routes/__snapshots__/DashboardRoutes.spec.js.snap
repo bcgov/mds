@@ -21,6 +21,11 @@ ShallowWrapper {
         <Route
           component={[Function]}
           exact={true}
+          path="/my-dashboard/"
+        />,
+        <Route
+          component={[Function]}
+          exact={true}
           path="/home/"
         />,
         <Route
@@ -70,6 +75,19 @@ ShallowWrapper {
     },
     "ref": null,
     "rendered": Array [
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "component": [Function],
+          "exact": true,
+          "path": "/my-dashboard/",
+        },
+        "ref": null,
+        "rendered": null,
+        "type": [Function],
+      },
       Object {
         "instance": null,
         "key": undefined,
@@ -211,6 +229,11 @@ ShallowWrapper {
           <Route
             component={[Function]}
             exact={true}
+            path="/my-dashboard/"
+          />,
+          <Route
+            component={[Function]}
+            exact={true}
             path="/home/"
           />,
           <Route
@@ -260,6 +283,19 @@ ShallowWrapper {
       },
       "ref": null,
       "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "component": [Function],
+            "exact": true,
+            "path": "/my-dashboard/",
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
         Object {
           "instance": null,
           "key": undefined,
