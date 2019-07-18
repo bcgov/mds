@@ -21,12 +21,6 @@
             "protocol": "TCP",
             "port": 8080,
             "targetPort": 8080
-          },
-          {
-            "name": "8081-tcp",
-            "protocol": "TCP",
-            "port": 8081,
-            "targetPort": 8081
           }
         ],
         "selector": {
@@ -55,29 +49,6 @@
         },
         "port": {
           "targetPort": "8080-tcp"
-        },
-        "wildcardPolicy": "None"
-      }
-    },
-    {
-      "kind": "Route",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "${NAME}${SUFFIX}-admin"
-      },
-      "spec": {
-        "host": "app-${APPLICATION_DOMAIN}",
-        "tls": {
-          "insecureEdgeTerminationPolicy": "Redirect",
-          "termination": "edge"
-        },
-        "path": "/",
-        "to": {
-          "kind": "Service",
-          "name": "${NAME}${SUFFIX}"
-        },
-        "port": {
-          "targetPort": "8081-tcp"
         },
         "wildcardPolicy": "None"
       }
@@ -207,24 +178,6 @@
                   {
                     "name": "KUBECONFIG",
                     "value": "/app/kube_config"
-                  },
-                  {
-                    "name": "DIGDAG_USER_NAME",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${DIGDAG_SECRET_NAME}",
-                        "key": "admin-user-name"
-                      }
-                    }
-                  },
-                  {
-                    "name": "DIGDAG_USER_PASSWORD",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${DIGDAG_SECRET_NAME}",
-                        "key": "admin-user-password"
-                      }
-                    }
                   },
                   {
                     "name": "KEYCLOAK_CLIENT_SECRET",

@@ -11,6 +11,11 @@ redirection-url: ${KEYCLOAK_REDIRECT_URL}
 skip-upstream-tls-verify: true
 secure-cookie: false
 resources:
+- uri: /api/*
+  methods:
+  - GET
+  - PUT
+  white-listed: true
 - uri: /*
   roles:
   - ${KEYCLOAK_ADMIN_ROLE}
