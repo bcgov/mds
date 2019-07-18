@@ -14,6 +14,10 @@ resources:
 - uri: /api/*
   methods:
   - GET
+  white-listed: true
+- uri: /api/attempts/*
+  methods:
+  - POST
   - PUT
   white-listed: true
 - uri: /*
