@@ -7,7 +7,7 @@ import CustomAxios from "@/customAxios";
 
 // This file is anticipated to have multiple exports
 // eslint-disable-next-line import/prefer-default-export
-export const fetchLandingPageDashboard = (dashboardId) =>
+export const fetchMetabaseDashboard = (dashboardId) =>
   CustomAxios({ errorToastMessage: "Unable to fetch dashboard." })
     .get(`${ENVIRONMENT.apiUrl + API.DASHBOARD(dashboardId)}`, createRequestHeader())
     .then((response) => {

@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { fetchLandingPageDashboard } from "@/actionCreators/reportingActionCreator";
+import { fetchMetabaseDashboard } from "@/actionCreators/reportingActionCreator";
 
 export class ReportingDashboard extends Component {
   state = {};
 
   async componentDidMount() {
-    const dashboard_url = await fetchLandingPageDashboard("136");
+    const dashboard_url = await fetchMetabaseDashboard("136");
     this.setState({ dashboard_url });
   }
 
@@ -18,7 +18,6 @@ export class ReportingDashboard extends Component {
         frameBorder="0"
         width="100%"
         height="2700px"
-        allowTransparency
       />
     ) : (
       <div />
