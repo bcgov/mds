@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { fetchCoreDashboard } from "@/actionCreators/reportingActionCreator";
+import { fetchLandingPageDashboard } from "@/actionCreators/reportingActionCreator";
 
 export class ReportingDashboard extends Component {
   state = {};
 
   async componentDidMount() {
-    const dashboard_url = await fetchCoreDashboard();
+    const dashboard_url = await fetchLandingPageDashboard("136");
     this.setState({ dashboard_url });
   }
 

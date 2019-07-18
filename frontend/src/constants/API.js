@@ -64,7 +64,6 @@ export const SEARCH_OPTIONS = "/search/options";
 export const SIMPLE_SEARCH = "/search/simple";
 
 // Reporting
-export const CORE_DASHBOARD = `/reporting/core-dashboard`;
 export const DASHBOARD = (dashboardId) => `/reporting/dashboard-${dashboardId}`;
 
 // Variances
