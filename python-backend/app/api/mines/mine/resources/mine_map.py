@@ -1,6 +1,7 @@
 import uuid
 from datetime import datetime
 import json
+import threading
 
 from flask import request, make_response, current_app
 from flask_restplus import Resource, reqparse, inputs, fields
@@ -32,16 +33,7 @@ class MineMapResource(Resource, UserMixin):
         map_result = cache.get(MINE_MAP_CACHE)
         last_modified = cache.get(MINE_MAP_CACHE + '_LAST_MODIFIED')
         if not map_result:
-            records = MineMapViewLocation.query.filter(MineMapViewLocation.latitude != None).all()
-            last_modified = datetime.utcnow()
-
-            # jsonify then store in cache
-            map_result = json.dumps({
-                'mines': list((map(lambda x: x.json_for_map(), records)))
-            }, separators=(',', ':'))
-
-            cache.set(MINE_MAP_CACHE, map_result, timeout=TIMEOUT_12_HOURS)
-            cache.set(MINE_MAP_CACHE + '_LAST_MODIFIED', last_modified, timeout=TIMEOUT_12_HOURS)
+            map_result = MineMapResource.rebuild_and_return_map_cache()
 
         # It's more efficient to store the json to avoid re-initializing all of the objects
         # and jsonifying on every request, so a flask response is returned to prevent
@@ -55,3 +47,29 @@ class MineMapResource(Resource, UserMixin):
         response.make_conditional(request)
 
         return response
+
+    @staticmethod
+    def rebuild_map_cache_async():
+        app = current_app._get_current_object()
+        environ = request.environ
+
+        def run_cache_rebuilding_thread():
+            with app.request_context(environ):
+                return MineMapResource.rebuild_and_return_map_cache()
+
+        thread = threading.Thread(target=run_cache_rebuilding_thread)
+        thread.start()
+
+    @staticmethod
+    def rebuild_and_return_map_cache():
+        records = MineMapViewLocation.query.filter(MineMapViewLocation.latitude != None).all()
+        last_modified = datetime.utcnow()
+
+        # jsonify then store in cache
+        map_result = json.dumps({
+            'mines': list((map(lambda x: x.json_for_map(), records)))
+        }, separators=(',', ':'))
+
+        cache.set(MINE_MAP_CACHE, map_result, timeout=TIMEOUT_12_HOURS)
+        cache.set(MINE_MAP_CACHE + '_LAST_MODIFIED', last_modified, timeout=TIMEOUT_12_HOURS)
+        return map_result
