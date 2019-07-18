@@ -1,6 +1,7 @@
 import * as partiesReducer from "@/reducers/partiesReducer";
 import { createSelector } from "reselect";
 import { createLabelHash } from "@/utils/helpers";
+import moment from "moment";
 
 export const {
   getParties,
@@ -28,7 +29,19 @@ export const getPartyRelationshipTypeHash = createSelector(
 
 export const getDropdownInspectors = createSelector(
   [getInspectors],
-  (parties) => parties.map((party) => ({ value: party.party_guid, label: party.name }))
+  (parties) => {
+    const activeInspectors = parties
+      .filter((inspector) => moment(inspector.expiry_date) >= moment())
+      .map((inspector) => ({ value: inspector.party_guid, label: inspector.name }));
+    const inactiveInspectors = parties
+      .filter((inspector) => moment(inspector.expiry_date) < moment())
+      .map((inspector) => ({ value: inspector.party_guid, label: inspector.name }));
+    return [
+      { groupName: "Active", opt: activeInspectors },
+      { groupName: "Inactive", opt: inactiveInspectors },
+    ];
+  }
+  // parties.map((party) => ({ label: party.expiry_date > CURRENT_DATE ? "Active" : "Inactive", opt: }))
 );
 
 export const getInspectorsHash = createSelector(
