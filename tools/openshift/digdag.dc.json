@@ -227,6 +227,15 @@
                     }
                   },
                   {
+                    "name": "KEYCLOAK_CLIENT_SECRET",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DIGDAG_SECRET_NAME}",
+                        "key": "keycloak-client-secret"
+                      }
+                    }
+                  },
+                  {
                     "name": "KEYCLOAK_DISCOVERY_URL",
                     "value": "https://sso-test.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
                   },
