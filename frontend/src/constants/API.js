@@ -64,7 +64,7 @@ export const SEARCH_OPTIONS = "/search/options";
 export const SIMPLE_SEARCH = "/search/simple";
 
 // Reporting
-export const DASHBOARD = (dashboardId) => `/reporting/dashboard-${dashboardId}`;
+export const DASHBOARD = (dashboardId) => `/reporting/dashboard/${dashboardId}`;
 
 // Variances
 export const COMPLIANCE_CODES = "/mines/compliance/codes";
