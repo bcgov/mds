@@ -5,7 +5,6 @@ timezone: UTC
 
 +login:
   sh>: oc login https://console.pathfinder.gov.bc.ca:8443 --token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
-  #sh>: /app/fetch_oc_token.sh && oc login https://console.pathfinder.gov.bc.ca:8443 --token=$OC_TOKEN
 
 +python_write:
   py>: tasks.NrisETL.run_job

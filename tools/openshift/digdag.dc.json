@@ -66,12 +66,12 @@
         "name": "${NAME}${SUFFIX}-admin"
       },
       "spec": {
-        "host": "${APPLICATION_DOMAIN}",
+        "host": "app-${APPLICATION_DOMAIN}",
         "tls": {
           "insecureEdgeTerminationPolicy": "Redirect",
           "termination": "edge"
         },
-        "path": "/admin",
+        "path": "/",
         "to": {
           "kind": "Service",
           "name": "${NAME}${SUFFIX}"
@@ -225,6 +225,26 @@
                         "key": "admin-user-password"
                       }
                     }
+                  },
+                  {
+                    "name": "KEYCLOAK_DISCOVERY_URL",
+                    "value": "https://sso-test.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
+                  },
+                  {
+                    "name": "KEYCLOAK_CLIENT_ID",
+                    "value": "central-scheduler"
+                  },
+                  {
+                    "name": "KEYCLOAK_ADMIN_ROLE",
+                    "value": "digdag_admin"
+                  },
+                  {
+                    "name": "KEYCLOAK_UPSTREAM_URL",
+                    "value": "http://localhost:8081"
+                  },
+                  {
+                    "name": "KEYCLOAK_REDIRECT_URL",
+                    "value": "https://${APPLICATION_DOMAIN}"
                   }
                 ],
                 "volumeMounts": [
