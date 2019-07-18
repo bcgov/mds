@@ -8,7 +8,7 @@ import CustomAxios from "@/customAxios";
 // Maintain consistent action creator export pattern
 // eslint-disable-next-line import/prefer-default-export
 export const fetchCoreDashboard = () =>
-  CustomAxios("Unable to fetch dashboard.")
+  CustomAxios({ errorToastMessage: "Unable to fetch dashboard." })
     .get(`${ENVIRONMENT.apiUrl + API.CORE_DASHBOARD}`, createRequestHeader())
     .then((response) => {
       const { dashboard_url } = response.data || {};

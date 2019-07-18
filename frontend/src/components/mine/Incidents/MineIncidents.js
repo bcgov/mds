@@ -59,10 +59,17 @@ export class MineIncidents extends Component {
   }
 
   handleAddMineIncident = (values) => {
-    this.props.createMineIncident(this.props.mine.mine_guid, values).then(() => {
-      this.props.closeModal();
-      this.props.fetchMineIncidents(this.props.mine.mine_guid);
-    });
+    const { number_of_fatalities = 0, number_of_injuries = 0, ...otherValues } = values;
+    this.props
+      .createMineIncident(this.props.mine.mine_guid, {
+        number_of_fatalities,
+        number_of_injuries,
+        ...otherValues,
+      })
+      .then(() => {
+        this.props.closeModal();
+        this.props.fetchMineIncidents(this.props.mine.mine_guid);
+      });
   };
 
   handleEditMineIncident = (values) => {
@@ -72,6 +79,19 @@ export class MineIncidents extends Component {
         this.props.closeModal();
         this.props.fetchMineIncidents(this.props.mine.mine_guid);
       });
+  };
+
+  openViewMineIncidentModal = (event, incident) => {
+    event.preventDefault();
+    const title = `${this.props.mine.mine_name} - Incident No. ${incident.mine_incident_report_no}`;
+    this.props.openModal({
+      props: {
+        title,
+        incident,
+      },
+      isViewOnly: true,
+      content: modalConfig.VIEW_MINE_INCIDENT,
+    });
   };
 
   handleCancelMineIncident = () => {
@@ -132,6 +152,7 @@ export class MineIncidents extends Component {
           followupActions={this.props.followupActions}
           openMineIncidentModal={this.openMineIncidentModal}
           handleEditMineIncident={this.handleEditMineIncident}
+          openViewMineIncidentModal={this.openViewMineIncidentModal}
         />
       </div>
     );

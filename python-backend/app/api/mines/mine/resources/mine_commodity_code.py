@@ -8,4 +8,4 @@ class MineCommodityCodeResource(Resource, UserMixin, ErrorMixin):
     @api.doc(params={})
     @requires_role_view_all
     def get(self):
-        return { 'options': MineCommodityCode.all_options() }
+        return { 'records': MineCommodityCode.all_options() }

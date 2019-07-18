@@ -15,7 +15,7 @@ class ApplicationStatusCodeResource(Resource, UserMixin, ErrorMixin):
         'description': fields.String,
     })
 
-    @api.marshal_with(application_status_code_model, code=200)
+    @api.marshal_with(application_status_code_model, envelope='records', code=200)
     @api.doc(
         description=
         'This endpoint returns a list of all possible document status codes and thier descriptions.'

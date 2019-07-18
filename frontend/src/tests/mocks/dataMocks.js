@@ -890,29 +890,52 @@ export const a = [
 ];
 
 export const REGION_OPTIONS = {
-  options: [
+  records: [
     {
-      value: "SW",
-      label: "South West",
+      mine_region_code: "SW",
+      description: "South West",
     },
     {
-      value: "SC",
-      label: "South Central",
+      mine_region_code: "SC",
+      description: "South Central",
     },
     {
-      value: "NW",
-      label: "North West",
+      mine_region_code: "NW",
+      description: "North West",
     },
     {
-      value: "NE",
-      label: "North East",
+      mine_region_code: "NE",
+      description: "North East",
     },
     {
-      value: "SE",
-      label: "South East",
+      mine_region_code: "SE",
+      description: "South East",
     },
   ],
 };
+
+export const REGION_DROPDOWN_OPTIONS = [
+  {
+    value: "SW",
+    label: "South West",
+  },
+  {
+    value: "SC",
+    label: "South Central",
+  },
+  {
+    value: "NW",
+    label: "North West",
+  },
+  {
+    value: "NE",
+    label: "North East",
+  },
+  {
+    value: "SE",
+    label: "South East",
+  },
+];
 
 export const REGION_HASH = {
   SW: "South West",
@@ -922,7 +945,7 @@ export const REGION_HASH = {
   SE: "South East",
 };
 
-export const TENURE_TYPES = [
+export const TENURE_TYPES_DROPDOWN_OPTIONS = [
   { value: "COL", label: "Coal" },
   { value: "MIN", label: "Mineral" },
   { value: "PLR", label: "Placer" },
@@ -972,7 +995,7 @@ export const PERMITTEE = {
 };
 
 export const EXPECTED_DOCUMENT_STATUS_OPTIONS = {
-  options: [
+  records: [
     { exp_document_status_code: "MIA", description: "Not Received" },
     { exp_document_status_code: "PRE", description: "Received / Pending Review" },
     { exp_document_status_code: "RIP", description: "Review In Progress" },
@@ -1057,7 +1080,7 @@ export const USER_ACCESS_DATA = [
 ];
 
 export const DISTURBANCE_OPTIONS = {
-  options: [
+  records: [
     {
       description: "Surface",
       exclusive_ind: false,
@@ -1093,7 +1116,7 @@ export const DISTURBANCE_OPTIONS_HASH = {
 };
 
 export const COMMODITY_OPTIONS = {
-  options: [
+  records: [
     {
       description: "Thermal Coal",
       exclusive_ind: true,
@@ -1142,7 +1165,7 @@ export const DROPDOWN_PROVINCE_OPTIONS = [
 ];
 
 export const PROVINCE_OPTIONS = {
-  options: [
+  records: [
     { description: "British Columbia", display_order: 10, sub_division_code: "BC" },
     { description: "Alberta", display_order: 10, sub_division_code: "AB" },
   ],
@@ -1435,10 +1458,12 @@ export const OPEN_ORDERS = [
   },
 ];
 
-export const APPLICATION_STATUS_CODE_OPTIONS = [
-  { application_status_code: "RIP", description: "In Review" },
-  { application_status_code: "APR", description: "Approved" },
-];
+export const APPLICATION_STATUS_CODE_OPTIONS = {
+  records: [
+    { application_status_code: "RIP", description: "In Review" },
+    { application_status_code: "APR", description: "Approved" },
+  ],
+};
 
 export const VARIANCES = {
   records: [
@@ -1570,6 +1595,44 @@ export const INSPECTORS_DROPDOWN = [
 
 export const INSPECTORS_HASH = {
   "51b3a499-a474-4d52-be99-5c5123d7501c": "BLAH",
+};
+
+export const INCIDENT = {
+  dangerous_occurrence_subparagraph_ids: [1747],
+  determination_inspector_party_guid: "c002cc91-555a-4edd-9a9c-fcfee8357b00",
+  determination_type_code: "DO",
+  documents: [
+    {
+      document_manager_guid: "7b41c10c-4974-428d-a38a-ee3e8c4cee5a",
+      document_name: "Amazing_PDF.pdf",
+      mine_document_guid: "75855dd1-1f51-4fc1-835f-2dd99ea96f90",
+      mine_incident_document_type_code: "INI",
+    },
+  ],
+  emergency_services_called: false,
+  followup_inspection: false,
+  followup_inspection_date: null,
+  followup_investigation_type_code: "NO",
+  incident_description: "sHDJGFJAS",
+  incident_timestamp: "2019-07-04 14:05",
+  mine_guid: "59e73109-48f7-4ad2-977c-3005b5bff010",
+  mine_incident_guid: "036787af-51d0-4d9c-8f31-f6dc7e5b3cb3",
+  mine_incident_id_year: 2019,
+  mine_incident_no: null,
+  mine_incident_report_no: "2019-48",
+  mms_inspector_initials: null,
+  number_of_fatalities: 0,
+  number_of_injuries: 0,
+  proponent_incident_no: "",
+  recommendations: [],
+  reported_by_email: "jake.doe@gmail.com",
+  reported_by_name: "Jake Doe",
+  reported_by_phone_ext: null,
+  reported_by_phone_no: "250-360-9494",
+  reported_timestamp: "2019-07-04 14:05",
+  reported_to_inspector_party_guid: "c002cc91-555a-4edd-9a9c-fcfee8357b00",
+  responsible_inspector_party_guid: "eda69201-b283-44ed-92b9-bcbcb5b83e69",
+  status_code: "FIN",
 };
 
 export const INCIDENTS = {
@@ -2436,4 +2499,75 @@ export const VARIANCE_DOCUMENT_CATEGORY_OPTIONS_HASH = {
   REQ: "Request Document",
   REC: "Recommendation Document",
   DEC: "Decision Document",
+};
+
+export const INCIDENT_STATUS_OPTIONS = [
+  { description: "Preliminary", display_order: 10, mine_incident_status_code: "PRE" },
+  {
+    description: "Final",
+    display_order: 20,
+    mine_incident_status_code: "FIN",
+  },
+];
+
+export const INCIDENT_STATUS_OPTIONS_HASH = {
+  PRE: "Preliminary",
+  FIN: "Final",
+};
+
+export const INCIDENT_DETERMINATION = [
+  {
+    active_ind: true,
+    description: "Pending determination",
+    display_order: 10,
+    mine_incident_determination_type_code: "PEN",
+  },
+  {
+    active_ind: true,
+    description: "This was a dangerous occurrence",
+    display_order: 20,
+    mine_incident_determination_type_code: "DO",
+  },
+  {
+    active_ind: true,
+    description: "This was not a dangerous occurrence",
+    display_order: 30,
+    mine_incident_determination_type_code: "NDO",
+  },
+];
+
+export const INCIDENT_DETERMINATION_HASH = {
+  PEN: "Pending determination",
+  DO: "This was a dangerous occurrence",
+  NDO: "This was not a dangerous occurrence",
+};
+
+export const INCIDENT_FOLLOWUP_ACTIONS = [
+  {
+    description: "Yes - MIU Investigation",
+    display_order: 10,
+    mine_incident_followup_investigation_type_code: "MIU",
+  },
+  {
+    description: "Yes - Inspector Investigation",
+    display_order: 20,
+    mine_incident_followup_investigation_type_code: "INS",
+  },
+  {
+    description: "No",
+    display_order: 30,
+    mine_incident_followup_investigation_type_code: "NO",
+  },
+  {
+    description: "Historical - Unknown",
+    display_order: 40,
+    mine_incident_followup_investigation_type_code: "HUK",
+  },
+];
+
+export const INCIDENT_FOLLOWUP_ACTIONS_HASH = {
+  MIU: "Yes - MIU Investigation",
+  INS: "Yes - Inspector Investigation",
+  NO: "No",
+  HUK: "Historical - Unknown",
 };
