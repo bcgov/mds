@@ -20,7 +20,7 @@ class NrisETL(object):
 
         v1_pod = dyn_client.resources.get(api_version='v1', kind='Pod')
 
-        with open('/app/project/templates/pod.json') as pod_file:
+        with open('templates/pod.json') as pod_file:
             pod_json_template = json.load(pod_file)
 
         def template_values(json_data):
