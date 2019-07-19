@@ -8,7 +8,7 @@ class NrisETL(object):
 
     def run_job(self):
 
-        kube_config = os.getenv('KUBECONFIG', '/app/kube_config')
+        kube_config = os.getenv('KUBECONFIG', '/root/.kube/config')
 
         # api_client = client.ApiClient(conf)
         k8s_client = config.new_client_from_config(kube_config)
