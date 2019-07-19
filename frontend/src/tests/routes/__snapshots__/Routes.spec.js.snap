@@ -21,7 +21,7 @@ ShallowWrapper {
         <RedirectRoute
           exact={true}
           path="/"
-          redirectTo="/dashboard/mines/?page=1&per_page=25"
+          redirectTo="/home/"
         />
         <Route
           component={[Function]}
@@ -44,7 +44,7 @@ ShallowWrapper {
           <RedirectRoute
             exact={true}
             path="/"
-            redirectTo="/dashboard/mines/?page=1&per_page=25"
+            redirectTo="/home/"
           />,
           <Route
             component={[Function]}
@@ -66,7 +66,7 @@ ShallowWrapper {
           "props": Object {
             "exact": true,
             "path": "/",
-            "redirectTo": "/dashboard/mines/?page=1&per_page=25",
+            "redirectTo": "/home/",
           },
           "ref": null,
           "rendered": null,
@@ -112,7 +112,7 @@ ShallowWrapper {
           <RedirectRoute
             exact={true}
             path="/"
-            redirectTo="/dashboard/mines/?page=1&per_page=25"
+            redirectTo="/home/"
           />
           <Route
             component={[Function]}
@@ -135,7 +135,7 @@ ShallowWrapper {
             <RedirectRoute
               exact={true}
               path="/"
-              redirectTo="/dashboard/mines/?page=1&per_page=25"
+              redirectTo="/home/"
             />,
             <Route
               component={[Function]}
@@ -157,7 +157,7 @@ ShallowWrapper {
             "props": Object {
               "exact": true,
               "path": "/",
-              "redirectTo": "/dashboard/mines/?page=1&per_page=25",
+              "redirectTo": "/home/",
             },
             "ref": null,
             "rendered": null,

@@ -164,6 +164,22 @@ exports.loadImages = ({
   },
 });
 
+exports.loadFiles = ({ include, exclude } = {}) => ({
+  module: {
+    rules: [
+      {
+        test: /\.(xls?m|pdf|doc?x)$/,
+        include,
+        exclude,
+        loader: "file-loader",
+        options: {
+          name: "[path][name].[ext]",
+        },
+      },
+    ],
+  },
+});
+
 exports.loadFonts = ({ include, exclude, options } = {}) => ({
   module: {
     rules: [
