@@ -5,15 +5,12 @@ timezone: UTC
 
 +get_token:
   sh>: scripts/fetch_oc_token.sh
-  echo>: Openshift token grabbed
 
 +login:
   sh>: oc login https://console.pathfinder.gov.bc.ca:8443 --token=$OC_TOKEN
-  echo>: Openshift login successful
 
 +python_write:
   py>: tasks.NrisETL.run_job
-  echo>: ETL job success
 
 +teardown:
   echo>: finish ${session_time}
