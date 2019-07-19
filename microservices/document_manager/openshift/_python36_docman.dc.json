@@ -49,6 +49,10 @@
       "value": "/"
     },
     {
+      "name": "API_URL",
+      "required": true
+    },
+    {
       "name": "CPU_LIMIT",
       "value": "200m"
     },
