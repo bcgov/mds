@@ -18,6 +18,7 @@
         "name": "${NAME}"
       }
     ],
-    "dnsPolicy": "ClusterFirst"
+    "dnsPolicy": "ClusterFirst",
+    "restartPolicy": "OnFailure"
   }
 }

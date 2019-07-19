@@ -51,8 +51,8 @@ def register_extensions(app):
 
     try:
         jwt.init_app(app)
-    except:
-        print("Can't Initialize keycloak library")
+    except Exception as error:
+        current_app.logger.error("Failed to initialize JWT library: " + str(error))
 
     cache.init_app(app)
     db.init_app(app)

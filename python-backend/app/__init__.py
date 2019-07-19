@@ -57,9 +57,13 @@ def register_extensions(app):
     if app.config['ELASTIC_ENABLED'] == '1':
         apm.init_app(app)
 
+    try:
+        jwt.init_app(app)
+    except Exception as error:
+        current_app.logger.error("Failed to initialize JWT library: " + str(error))
+
     cache.init_app(app)
     db.init_app(app)
-    jwt.init_app(app)
     sched.init_app(app)
 
     CORS(app)

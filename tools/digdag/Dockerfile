@@ -44,13 +44,14 @@ RUN wget -q -O /tmp/gatekeeper.tar.gz https://downloads.jboss.org/keycloak/6.0.1
 RUN mkdir /app
 WORKDIR /app
 
-# Install the requirements
+# Install the python requirements
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Copy rest of the source
 COPY . .
 RUN chmod +x /app/digdag-init.sh
 RUN chmod -R 777 /app
 
-# run it
+# Set the script to execute on container start
 CMD ["bash", "/app/digdag-init.sh"]
