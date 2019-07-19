@@ -12,7 +12,7 @@
   "spec": {
     "containers": [
       {
-        "command": [${COMMAND}],
+        "command": [],
         "image": "${IMAGE_PATH}:${IMAGE_TAG}",
         "imagePullPolicy": "Always",
         "name": "${NAME}"

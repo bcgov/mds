@@ -16,42 +16,27 @@ class NrisETL(object):
 
         v1_pod = dyn_client.resources.get(api_version='v1', kind='Pod')
 
-        pod_def = """
-        {
-  "apiVersion": "v1",
-  "kind": "Pod",
-  "metadata": {
-    "labels": {
-      "app-name": "mds",
-      "app": "mds-pr-863"
-    },
-    "name": "mds-digdag-pr-863",
-    "namespace": "empr-mds-dev"
-  },
-  "spec": {
-    "containers": [
-      {
-        "command": ["flask", "test_cli_command"],
-        "image": "docker-registry.default.svc:5000/empr-mds-dev/mds-nris-backend:dev-pr-863",
-        "imagePullPolicy": "Always",
-        "name": "mds-digdag-pr-863"
-      }
-    ],
-    "dnsPolicy": "ClusterFirst"
-  }
-}
-        """
+        with open('/app/project/templates/pod.json') as pod_file:
+            pod_json_template = json.load(pod_file)
 
-        json_data = json.loads(pod_def)
+        def template_values(json_data):
+            json_data['metadata']['labels']['app'] = 'digdag-mds-pr-853'
+            json_data['metadata']['name'] = 'digdag-mds-pr-853'
+            json_data['spec']['containers'][0]['command'] = ["flask","test_cli_command"]
+            json_data['spec']['containers'][0]['name'] = 'digdag-mds-pr-853'
+            json_data['spec']['containers'][0]['image'] = 'docker-registry.default.svc:5000/empr-mds-dev/mds-nris-backend:dev-pr-863'
+            return json_data
+
+        pod_json_data = template_values(pod_json_template)
+
         try:
-            resp = v1_pod.create(body=json_data, namespace='empr-mds-dev')
+            resp = v1_pod.create(body=pod_json_data, namespace='empr-mds-dev')
         except Exception as e:
             resp = e
             print(e)
 
-        # Watch hangs, comment out for now
-        # for event in v1_jobs.watch(namespace='empr-mds-dev'):
-        #    print(event['object'])
+        for event in v1_pod.watch(namespace='empr-mds-dev', name='digdag-mds-pr-853'):
+           print(event['object'])
 
         print("Pod finished")
         # resp is a ResourceInstance object
