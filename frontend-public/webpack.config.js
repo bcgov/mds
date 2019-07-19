@@ -160,6 +160,7 @@ const prodConfig = merge([
     discardComments: {
       removeAll: true,
     },
+    zindex: false,
     safe: true,
   }),
   parts.extractManifest(),
