@@ -58,7 +58,7 @@ export class NavBar extends Component {
   );
 
   renderFullNav = () => (
-    <div className="inline-flex">
+    <div>
       <Dropdown overlay={this.reportingDropdown} placement="bottomLeft">
         <button
           id={this.ifActiveButton(router.REPORTING_DASHBOARD.route)}
@@ -265,29 +265,32 @@ export class NavBar extends Component {
     return (
       <div>
         <div className="menu">
-          <Link
-            to={router.MINE_HOME_PAGE.dynamicRoute({
-              page: Strings.DEFAULT_PAGE,
-              per_page: Strings.DEFAULT_PER_PAGE,
-            })}
-          >
+          <Link to={router.HOME_PAGE.route}>
             <img alt="Home" className="menu__img" src={LOGO} />
           </Link>
-          <SearchBar />
-          <MediaQuery maxWidth={768}>
-            <Button
-              ghost
-              type="button"
-              className="menu__btn"
-              style={{ padding: 0 }}
-              onClick={this.props.toggleHamburgerMenu}
-            >
-              <img alt="menu" src={!this.props.isMenuOpen ? HAMBURGER : CLOSE} className="img-lg" />
-            </Button>
-          </MediaQuery>
-          <MediaQuery minWidth={769}>{this.renderFullNav()}</MediaQuery>
+          <div className="inline-flex">
+            <div style={{ marginTop: "6px" }}>
+              <SearchBar containerId="navBar" />
+            </div>
+            <MediaQuery maxWidth={979}>
+              <Button
+                ghost
+                type="button"
+                className="menu__btn"
+                style={{ padding: 0 }}
+                onClick={this.props.toggleHamburgerMenu}
+              >
+                <img
+                  alt="menu"
+                  src={!this.props.isMenuOpen ? HAMBURGER : CLOSE}
+                  className="img-lg"
+                />
+              </Button>
+            </MediaQuery>
+            <MediaQuery minWidth={980}>{this.renderFullNav()}</MediaQuery>
+          </div>
         </div>
-        <MediaQuery maxWidth={768}>{this.renderHamburgerNav()}</MediaQuery>
+        <MediaQuery maxWidth={979}>{this.renderHamburgerNav()}</MediaQuery>
       </div>
     );
   }

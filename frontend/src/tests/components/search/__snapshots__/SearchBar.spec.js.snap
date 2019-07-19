@@ -5,6 +5,7 @@ ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <SearchBar
     clearSearchBarResults={[MockFunction]}
+    containerId=""
     fetchSearchBarResults={[MockFunction]}
     fetchSearchResults={[MockFunction]}
     history={
@@ -50,10 +51,10 @@ ShallowWrapper {
   Symbol(enzyme.__node__): Object {
     "instance": null,
     "key": undefined,
-    "nodeType": "class",
+    "nodeType": "host",
     "props": Object {
       "children": <Dropdown
-        getPopupContainer={[Function]}
+        getPopupContainer=""
         mouseEnterDelay={0.15}
         mouseLeaveDelay={0.1}
         overlay={
@@ -115,16 +116,7 @@ ShallowWrapper {
           value=""
         />
       </Dropdown>,
-      "id": "searchBox",
-      "lg": 6,
-      "md": 4,
-      "style": Object {
-        "marginBottom": "auto",
-        "marginLeft": "auto",
-        "marginTop": "auto",
-        "paddingRight": "20px",
-      },
-      "xl": 8,
+      "id": "",
     },
     "ref": null,
     "rendered": Object {
@@ -143,7 +135,7 @@ ShallowWrapper {
           size="large"
           value=""
         />,
-        "getPopupContainer": [Function],
+        "getPopupContainer": "",
         "mouseEnterDelay": 0.15,
         "mouseLeaveDelay": 0.1,
         "overlay": <Card>
@@ -211,16 +203,16 @@ ShallowWrapper {
       },
       "type": [Function],
     },
-    "type": [Function],
+    "type": "div",
   },
   Symbol(enzyme.__nodes__): Array [
     Object {
       "instance": null,
       "key": undefined,
-      "nodeType": "class",
+      "nodeType": "host",
       "props": Object {
         "children": <Dropdown
-          getPopupContainer={[Function]}
+          getPopupContainer=""
           mouseEnterDelay={0.15}
           mouseLeaveDelay={0.1}
           overlay={
@@ -282,16 +274,7 @@ ShallowWrapper {
             value=""
           />
         </Dropdown>,
-        "id": "searchBox",
-        "lg": 6,
-        "md": 4,
-        "style": Object {
-          "marginBottom": "auto",
-          "marginLeft": "auto",
-          "marginTop": "auto",
-          "paddingRight": "20px",
-        },
-        "xl": 8,
+        "id": "",
       },
       "ref": null,
       "rendered": Object {
@@ -310,7 +293,7 @@ ShallowWrapper {
             size="large"
             value=""
           />,
-          "getPopupContainer": [Function],
+          "getPopupContainer": "",
           "mouseEnterDelay": 0.15,
           "mouseLeaveDelay": 0.1,
           "overlay": <Card>
@@ -378,7 +361,7 @@ ShallowWrapper {
         },
         "type": [Function],
       },
-      "type": [Function],
+      "type": "div",
     },
   ],
   Symbol(enzyme.__options__): Object {
