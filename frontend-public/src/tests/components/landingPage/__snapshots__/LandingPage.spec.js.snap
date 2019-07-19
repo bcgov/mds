@@ -191,7 +191,7 @@ exports[`LandingPage renders properly 1`] = `
                 >
                   PERMRECL@gov.bc.ca
                 </a>
-                . You may also submit them via MineSpace if you have signed up (instructions below).
+                . You may also submit them via MineSpace if you participated in the 2019 Pilot Project.
               </strong>
             </p>
             <h1
@@ -393,7 +393,7 @@ exports[`LandingPage renders properly 1`] = `
                   >
                     PERMRECL@gov.bc.ca
                   </a>
-                  . You may also submit them via MineSpace if you have signed up (instructions below).
+                  . You may also submit them via MineSpace if you participated in the 2019 Pilot Project.
                 </strong>
               </p>
               <h1
@@ -529,7 +529,7 @@ exports[`LandingPage renders properly 1`] = `
                     >
                       PERMRECL@gov.bc.ca
                     </a>
-                    . You may also submit them via MineSpace if you have signed up (instructions below).
+                    . You may also submit them via MineSpace if you participated in the 2019 Pilot Project.
                   </strong>
                 </p>,
                 <h1
@@ -750,7 +750,7 @@ exports[`LandingPage renders properly 1`] = `
                     >
                       PERMRECL@gov.bc.ca
                     </a>
-                    . You may also submit them via MineSpace if you have signed up (instructions below).
+                    . You may also submit them via MineSpace if you participated in the 2019 Pilot Project.
                   </strong>,
                 },
                 "ref": null,
@@ -767,7 +767,7 @@ exports[`LandingPage renders properly 1`] = `
                       >
                         PERMRECL@gov.bc.ca
                       </a>,
-                      ". You may also submit them via MineSpace if you have signed up (instructions below).",
+                      ". You may also submit them via MineSpace if you participated in the 2019 Pilot Project.",
                     ],
                   },
                   "ref": null,
@@ -786,7 +786,7 @@ exports[`LandingPage renders properly 1`] = `
                       "rendered": "PERMRECL@gov.bc.ca",
                       "type": "a",
                     },
-                    ". You may also submit them via MineSpace if you have signed up (instructions below).",
+                    ". You may also submit them via MineSpace if you participated in the 2019 Pilot Project.",
                   ],
                   "type": "strong",
                 },
@@ -1239,7 +1239,7 @@ exports[`LandingPage renders properly 1`] = `
                   >
                     PERMRECL@gov.bc.ca
                   </a>
-                  . You may also submit them via MineSpace if you have signed up (instructions below).
+                  . You may also submit them via MineSpace if you participated in the 2019 Pilot Project.
                 </strong>
               </p>
               <h1
@@ -1460,7 +1460,7 @@ exports[`LandingPage renders properly 1`] = `
                     >
                       PERMRECL@gov.bc.ca
                     </a>
-                    . You may also submit them via MineSpace if you have signed up (instructions below).
+                    . You may also submit them via MineSpace if you participated in the 2019 Pilot Project.
                   </strong>
                 </p>
                 <h1
@@ -1596,7 +1596,7 @@ exports[`LandingPage renders properly 1`] = `
                       >
                         PERMRECL@gov.bc.ca
                       </a>
-                      . You may also submit them via MineSpace if you have signed up (instructions below).
+                      . You may also submit them via MineSpace if you participated in the 2019 Pilot Project.
                     </strong>
                   </p>,
                   <h1
@@ -1817,7 +1817,7 @@ exports[`LandingPage renders properly 1`] = `
                       >
                         PERMRECL@gov.bc.ca
                       </a>
-                      . You may also submit them via MineSpace if you have signed up (instructions below).
+                      . You may also submit them via MineSpace if you participated in the 2019 Pilot Project.
                     </strong>,
                   },
                   "ref": null,
@@ -1834,7 +1834,7 @@ exports[`LandingPage renders properly 1`] = `
                         >
                           PERMRECL@gov.bc.ca
                         </a>,
-                        ". You may also submit them via MineSpace if you have signed up (instructions below).",
+                        ". You may also submit them via MineSpace if you participated in the 2019 Pilot Project.",
                       ],
                     },
                     "ref": null,
@@ -1853,7 +1853,7 @@ exports[`LandingPage renders properly 1`] = `
                         "rendered": "PERMRECL@gov.bc.ca",
                         "type": "a",
                       },
-                      ". You may also submit them via MineSpace if you have signed up (instructions below).",
+                      ". You may also submit them via MineSpace if you participated in the 2019 Pilot Project.",
                     ],
                     "type": "strong",
                   },
