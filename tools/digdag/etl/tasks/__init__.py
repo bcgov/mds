@@ -26,7 +26,7 @@ class NrisETL(object):
         def template_values(json_data):
             json_data['metadata']['labels']['app'] = app_name
             json_data['metadata']['name'] = app_name
-            json_data['spec']['containers'][0]['command'] = ["flask","test_cli_command"]
+            json_data['spec']['containers'][0]['command'] = ["flask","test-cli-command"]
             json_data['spec']['containers'][0]['name'] = app_name
             json_data['spec']['containers'][0]['image'] = f"docker-registry.default.svc:5000/{namespace}/mds-nris-backend:{image_tag}"
             return json_data
