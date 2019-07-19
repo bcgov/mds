@@ -176,6 +176,18 @@
                     "value": "${ENVIRONMENT_NAME}"
                   },
                   {
+                    "name": "IMAGE_TAG",
+                    "value": "${VERSION}"
+                  },
+                  {
+                    "name": "NAMESPACE",
+                    "value": "${NAMESPACE}"
+                  },
+                  {
+                    "name": "SUFFIX",
+                    "value": "${SUFFIX}"
+                  },
+                  {
                     "name": "KUBECONFIG",
                     "value": "/app/kube_config"
                   },
@@ -292,6 +304,10 @@
     {
       "name": "VERSION",
       "required": true
+    },
+    {
+      "name": "NAMESPACE",
+      "value": "empr-mds-dev"
     },
     {
       "name": "SCHEDULER_PVC_SIZE",

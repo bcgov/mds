@@ -9,6 +9,10 @@ class NrisETL(object):
     def run_job(self):
 
         kube_config = os.getenv('KUBECONFIG', '/root/.kube/config')
+        namespace = os.getenv('NAMESPACE', 'empr-mds-dev')
+        image_tag = os.getenv('IMAGE_TAG', 'dev-pr-863')
+        suffix = os.getenv('SUFFIX', '-pr-863')
+        app_name = "digdag-mds" + suffix
 
         # api_client = client.ApiClient(conf)
         k8s_client = config.new_client_from_config(kube_config)
@@ -20,11 +24,11 @@ class NrisETL(object):
             pod_json_template = json.load(pod_file)
 
         def template_values(json_data):
-            json_data['metadata']['labels']['app'] = 'digdag-mds-pr-853'
-            json_data['metadata']['name'] = 'digdag-mds-pr-853'
+            json_data['metadata']['labels']['app'] = app_name
+            json_data['metadata']['name'] = app_name
             json_data['spec']['containers'][0]['command'] = ["flask","test_cli_command"]
-            json_data['spec']['containers'][0]['name'] = 'digdag-mds-pr-853'
-            json_data['spec']['containers'][0]['image'] = 'docker-registry.default.svc:5000/empr-mds-dev/mds-nris-backend:dev-pr-863'
+            json_data['spec']['containers'][0]['name'] = app_name
+            json_data['spec']['containers'][0]['image'] = f"docker-registry.default.svc:5000/{namespace}/mds-nris-backend:{image_tag}"
             return json_data
 
         pod_json_data = template_values(pod_json_template)
@@ -35,7 +39,7 @@ class NrisETL(object):
             resp = e
             print(e)
 
-        for event in v1_pod.watch(namespace='empr-mds-dev', name='digdag-mds-pr-853'):
+        for event in v1_pod.watch(namespace='empr-mds-dev', name=app_name):
            print(event['object'])
 
         print("Pod finished")
