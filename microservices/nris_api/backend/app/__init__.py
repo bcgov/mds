@@ -49,9 +49,13 @@ def register_extensions(app):
     if app.config['ELASTIC_ENABLED'] == '1':
         apm.init_app(app)
 
+    try:
+        jwt.init_app(app)
+    except:
+        print("Can't Initialize keycloak library")
+
     cache.init_app(app)
     db.init_app(app)
-    jwt.init_app(app)
     migrate.init_app(app, db)
     sched.init_app(app)
 
