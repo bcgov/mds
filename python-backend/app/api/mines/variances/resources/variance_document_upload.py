@@ -46,7 +46,7 @@ class MineVarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             cookies=request.cookies,
         )
 
-        if resp.status_code != 200:
+        if resp.status_code != 201:
             raise InternalServerError("Error, connection to Document Manager failed. " +
                                       str(resp.content))
 
