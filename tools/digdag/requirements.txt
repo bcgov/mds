@@ -1,5 +1,1 @@
 openshift==0.9.0
-kubernetes==9.0.0
-python-string-utils
-ruamel.yaml
-six
