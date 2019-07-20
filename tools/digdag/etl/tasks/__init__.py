@@ -1,7 +1,6 @@
 import json
 import os
 import time
-import logging
 from kubernetes import config
 from openshift.dynamic import DynamicClient
 
@@ -44,11 +43,13 @@ class NrisETL(object):
             # Then create it
             v1_pod.create(body=pod_json_data, namespace=namespace)
 
-
-        for e in v1_pod.watch(resource_version=0, label_selector=f'app={app_name}', namespace=namespace, timeout=100):
-            logging.info(e['object'].metadata)
-            logging.info(e['object'].status)
+        # Wait for pod to be created
+        time.sleep(5)
+        for e in v1_pod.watch(label_selector=f'app={app_name}', namespace=namespace):
+            print(e['object'].metadata)
+            print(e['object'].status)
             if e['object'].status.phase == 'Succeeded':
+                print("Pod finished Successfully")
                 break
 
-        print("Pod finished")
+        print("Job finished")
