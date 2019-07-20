@@ -1,5 +1,6 @@
 import json
 import os
+import time
 from kubernetes import config
 from openshift.dynamic import DynamicClient
 
@@ -34,14 +35,16 @@ class NrisETL(object):
         pod_json_data = template_values(pod_json_template)
 
         try:
-            resp = v1_pod.create(body=pod_json_data, namespace='empr-mds-dev')
+            v1_pod.create(body=pod_json_data, namespace=namespace)
         except Exception as e:
-            resp = e
-            print(e)
+            v1_pod.delete(name=app_name, namespace=namespace)
+            # Wait for pod to disappear
+            time.sleep(5)
+            # Then create it
+            v1_pod.create(body=pod_json_data, namespace=namespace)
 
-        for event in v1_pod.watch(namespace='empr-mds-dev', name=app_name):
+
+        for event in v1_pod.watch(namespace=namespace, name=app_name):
            print(event['object'])
 
         print("Pod finished")
-        # resp is a ResourceInstance object
-        print(resp.metadata)
