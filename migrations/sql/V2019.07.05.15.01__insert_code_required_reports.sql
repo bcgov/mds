@@ -111,7 +111,8 @@ VALUES
 	('Health and Safety Program','AVA',null, 'HSRCM','1','6','9'),
 	('Dump OMS Manual','AVA',null, 'HSRCM','10','5','2'),
 	('Standard Operating Procedures or Safe Work Procedures','AVA',null, 'HSRCM','3','4','2'),
-	('Mine Emergency Response Plan','FIS',null, 'HSRCM','3','7','1')
+	('Mine Emergency Response Plan','FIS',null, 'HSRCM','3','7','1'),
+	('Musculoskeletal Disorder Prevention Program', 'AVA', null, 'HSRCM', '1','6','9')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO public.mine_report_definition

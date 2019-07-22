@@ -70,7 +70,8 @@ VALUES
 	('Health and Safety Program','AVA',null, 'HSRCM','1','6','9'),
 	('Dump OMS Manual','AVA',null, 'HSRCM','10','5','2'),
 	('Standard Operating Procedures or Safe Work Procedures','AVA',null, 'HSRCM','3','4','2'),
-	('Mine Emergency Response Plan','FIS',null, 'HSRCM','3','7','1')
+	('Mine Emergency Response Plan','FIS',null, 'HSRCM','3','7','1'),
+	('Musculoskeletal Disorder Prevention Program', 'AVA', null, 'HSRCM', '1','6','9')
 ON CONFLICT DO NOTHING;
 
 --Look up compliance_article_id
@@ -169,5 +170,5 @@ INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_ca
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Health and Safety Program' LIMIT 1), 'H&S') ON CONFLICT DO NOTHING;
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Standard Operating Procedures or Safe Work Procedures' LIMIT 1),  'H&S') ON CONFLICT DO NOTHING;
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Mine Emergency Response Plan' LIMIT 1),'H&S') ON CONFLICT DO NOTHING;
-
+INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id from mine_report_definition x where report_name = 'Musculoskeletal Disorder Prevention Program' LIMIT 1),'H&S') ON CONFLICT DO NOTHING;
 DROP TABLE IF EXISTS tmp_report_definition_compliance;
