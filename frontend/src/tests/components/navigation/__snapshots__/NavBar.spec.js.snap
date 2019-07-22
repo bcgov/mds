@@ -41,7 +41,7 @@ ShallowWrapper {
         >
           <Link
             replace={false}
-            to="/dashboard/mines/?page=1&per_page=25"
+            to="/home/"
           >
             <img
               alt="Home"
@@ -53,100 +53,78 @@ ShallowWrapper {
               }
             />
           </Link>
-          <Connect(withRouter(SearchBar)) />
-          <MediaQuery
-            maxWidth={768}
-            values={Object {}}
-          >
-            <Button
-              block={false}
-              className="menu__btn"
-              ghost={true}
-              htmlType="button"
-              loading={false}
-              onClick={[MockFunction]}
-              style={
-                Object {
-                  "padding": 0,
-                }
-              }
-              type="button"
-            >
-              <img
-                alt="menu"
-                className="img-lg"
-                src={
-                  Object {
-                    "process": [Function],
-                  }
-                }
-              />
-            </Button>
-          </MediaQuery>
-          <MediaQuery
-            minWidth={769}
-            values={Object {}}
+          <div
+            className="inline-flex"
           >
             <div
-              className="inline-flex"
+              style={
+                Object {
+                  "marginTop": "6px",
+                }
+              }
             >
-              <Dropdown
-                mouseEnterDelay={0.15}
-                mouseLeaveDelay={0.1}
-                overlay={[Function]}
-                placement="bottomLeft"
+              <Connect(withRouter(SearchBar))
+                containerId="navBar"
+              />
+            </div>
+            <MediaQuery
+              maxWidth={979}
+              values={Object {}}
+            >
+              <Button
+                block={false}
+                className="menu__btn"
+                ghost={true}
+                htmlType="button"
+                loading={false}
+                onClick={[MockFunction]}
+                style={
+                  Object {
+                    "padding": 0,
+                  }
+                }
+                type="button"
               >
-                <button
-                  className="menu__btn"
-                  id=""
-                  type="button"
+                <img
+                  alt="menu"
+                  className="img-lg"
+                  src={
+                    Object {
+                      "process": [Function],
+                    }
+                  }
+                />
+              </Button>
+            </MediaQuery>
+            <MediaQuery
+              minWidth={980}
+              values={Object {}}
+            >
+              <div>
+                <Dropdown
+                  mouseEnterDelay={0.15}
+                  mouseLeaveDelay={0.1}
+                  overlay={[Function]}
+                  placement="bottomLeft"
                 >
-                  <span
-                    className="padding-small--right"
+                  <button
+                    className="menu__btn"
+                    id=""
+                    type="button"
                   >
-                    Provincial Reporting
-                  </span>
-                  <Icon
-                    type="down"
-                  />
-                </button>
-              </Dropdown>
-              <Link
-                replace={false}
-                to="/dashboard/mines/?page=1&per_page=25"
-              >
-                <Button
-                  block={false}
-                  className="menu__btn--link"
-                  ghost={false}
-                  htmlType="button"
-                  id=""
-                  loading={false}
-                >
-                  Mines
-                </Button>
-              </Link>
-              <Link
-                replace={false}
-                to="/dashboard/contacts/?page=1&per_page=25"
-              >
-                <Button
-                  block={false}
-                  className="menu__btn--link"
-                  ghost={false}
-                  htmlType="button"
-                  id=""
-                  loading={false}
-                >
-                  Contacts
-                </Button>
-              </Link>
-              <Connect(AuthorizationWrapper)
-                permission="role_admin"
-              >
+                    <span
+                      className="padding-small--right"
+                    >
+                      Provincial Reporting
+                    </span>
+                    <Icon
+                      type="down"
+                    />
+                  </button>
+                </Dropdown>
                 <Link
                   replace={false}
-                  to="/admin/dashboard"
+                  to="/dashboard/mines/?page=1&per_page=25"
                 >
                   <Button
                     block={false}
@@ -156,76 +134,110 @@ ShallowWrapper {
                     id=""
                     loading={false}
                   >
-                    Admin
+                    Mines
                   </Button>
                 </Link>
-              </Connect(AuthorizationWrapper)>
-              <Dropdown
-                mouseEnterDelay={0.15}
-                mouseLeaveDelay={0.1}
-                overlay={[Function]}
-                placement="bottomLeft"
-              >
-                <button
-                  className="menu__btn"
-                  type="button"
+                <Link
+                  replace={false}
+                  to="/dashboard/contacts/?page=1&per_page=25"
                 >
-                  <Icon
-                    className="padding-small--right icon-sm"
-                    type="user"
-                  />
-                  <span
-                    className="padding-small--right"
-                  />
-                  <Icon
-                    type="down"
-                  />
-                </button>
-              </Dropdown>
-              <Connect(AuthorizationWrapper)
-                permission="role_admin"
-              >
+                  <Button
+                    block={false}
+                    className="menu__btn--link"
+                    ghost={false}
+                    htmlType="button"
+                    id=""
+                    loading={false}
+                  >
+                    Contacts
+                  </Button>
+                </Link>
+                <Connect(AuthorizationWrapper)
+                  permission="role_admin"
+                >
+                  <Link
+                    replace={false}
+                    to="/admin/dashboard"
+                  >
+                    <Button
+                      block={false}
+                      className="menu__btn--link"
+                      ghost={false}
+                      htmlType="button"
+                      id=""
+                      loading={false}
+                    >
+                      Admin
+                    </Button>
+                  </Link>
+                </Connect(AuthorizationWrapper)>
                 <Dropdown
-                  disabled={true}
                   mouseEnterDelay={0.15}
                   mouseLeaveDelay={0.1}
-                  overlay={
-                    <Menu>
-                      <MenuItemGroup
-                        disabled={true}
-                        title="Please re-verify the following mines:"
-                      />
-                    </Menu>
-                  }
+                  overlay={[Function]}
                   placement="bottomLeft"
                 >
                   <button
                     className="menu__btn"
                     type="button"
                   >
-                    <img
-                      alt="GoodMines"
-                      className="padding-small--right icon-sm vertical-align-sm"
-                      src={
-                        Object {
-                          "process": [Function],
-                        }
-                      }
-                      width="25"
+                    <Icon
+                      className="padding-small--right icon-sm"
+                      type="user"
                     />
                     <span
                       className="padding-small--right"
-                    >
-                      0
-                    </span>
+                    />
+                    <Icon
+                      type="down"
+                    />
                   </button>
                 </Dropdown>
-              </Connect(AuthorizationWrapper)>
-            </div>
-          </MediaQuery>
+                <Connect(AuthorizationWrapper)
+                  permission="role_admin"
+                >
+                  <Dropdown
+                    disabled={true}
+                    mouseEnterDelay={0.15}
+                    mouseLeaveDelay={0.1}
+                    overlay={
+                      <Menu>
+                        <MenuItemGroup
+                          disabled={true}
+                          title="Please re-verify the following mines:"
+                        />
+                      </Menu>
+                    }
+                    placement="bottomLeft"
+                  >
+                    <button
+                      className="menu__btn"
+                      type="button"
+                    >
+                      <img
+                        alt="GoodMines"
+                        className="padding-small--right icon-sm vertical-align-sm"
+                        src={
+                          Object {
+                            "process": [Function],
+                          }
+                        }
+                        width="25"
+                      />
+                      <span
+                        className="padding-small--right"
+                      >
+                        0
+                      </span>
+                    </button>
+                  </Dropdown>
+                </Connect(AuthorizationWrapper)>
+              </div>
+            </MediaQuery>
+          </div>
         </div>,
         <MediaQuery
-          maxWidth={768}
+          maxWidth={979}
           values={Object {}}
         >
           <div />
@@ -242,7 +254,7 @@ ShallowWrapper {
           "children": Array [
             <Link
               replace={false}
-              to="/dashboard/mines/?page=1&per_page=25"
+              to="/home/"
             >
               <img
                 alt="Home"
@@ -254,1296 +266,22 @@ ShallowWrapper {
                 }
               />
             </Link>,
-            <Connect(withRouter(SearchBar)) />,
-            <MediaQuery
-              maxWidth={768}
-              values={Object {}}
-            >
-              <Button
-                block={false}
-                className="menu__btn"
-                ghost={true}
-                htmlType="button"
-                loading={false}
-                onClick={[MockFunction]}
-                style={
-                  Object {
-                    "padding": 0,
-                  }
-                }
-                type="button"
-              >
-                <img
-                  alt="menu"
-                  className="img-lg"
-                  src={
-                    Object {
-                      "process": [Function],
-                    }
-                  }
-                />
-              </Button>
-            </MediaQuery>,
-            <MediaQuery
-              minWidth={769}
-              values={Object {}}
+            <div
+              className="inline-flex"
             >
               <div
-                className="inline-flex"
-              >
-                <Dropdown
-                  mouseEnterDelay={0.15}
-                  mouseLeaveDelay={0.1}
-                  overlay={[Function]}
-                  placement="bottomLeft"
-                >
-                  <button
-                    className="menu__btn"
-                    id=""
-                    type="button"
-                  >
-                    <span
-                      className="padding-small--right"
-                    >
-                      Provincial Reporting
-                    </span>
-                    <Icon
-                      type="down"
-                    />
-                  </button>
-                </Dropdown>
-                <Link
-                  replace={false}
-                  to="/dashboard/mines/?page=1&per_page=25"
-                >
-                  <Button
-                    block={false}
-                    className="menu__btn--link"
-                    ghost={false}
-                    htmlType="button"
-                    id=""
-                    loading={false}
-                  >
-                    Mines
-                  </Button>
-                </Link>
-                <Link
-                  replace={false}
-                  to="/dashboard/contacts/?page=1&per_page=25"
-                >
-                  <Button
-                    block={false}
-                    className="menu__btn--link"
-                    ghost={false}
-                    htmlType="button"
-                    id=""
-                    loading={false}
-                  >
-                    Contacts
-                  </Button>
-                </Link>
-                <Connect(AuthorizationWrapper)
-                  permission="role_admin"
-                >
-                  <Link
-                    replace={false}
-                    to="/admin/dashboard"
-                  >
-                    <Button
-                      block={false}
-                      className="menu__btn--link"
-                      ghost={false}
-                      htmlType="button"
-                      id=""
-                      loading={false}
-                    >
-                      Admin
-                    </Button>
-                  </Link>
-                </Connect(AuthorizationWrapper)>
-                <Dropdown
-                  mouseEnterDelay={0.15}
-                  mouseLeaveDelay={0.1}
-                  overlay={[Function]}
-                  placement="bottomLeft"
-                >
-                  <button
-                    className="menu__btn"
-                    type="button"
-                  >
-                    <Icon
-                      className="padding-small--right icon-sm"
-                      type="user"
-                    />
-                    <span
-                      className="padding-small--right"
-                    />
-                    <Icon
-                      type="down"
-                    />
-                  </button>
-                </Dropdown>
-                <Connect(AuthorizationWrapper)
-                  permission="role_admin"
-                >
-                  <Dropdown
-                    disabled={true}
-                    mouseEnterDelay={0.15}
-                    mouseLeaveDelay={0.1}
-                    overlay={
-                      <Menu>
-                        <MenuItemGroup
-                          disabled={true}
-                          title="Please re-verify the following mines:"
-                        />
-                      </Menu>
-                    }
-                    placement="bottomLeft"
-                  >
-                    <button
-                      className="menu__btn"
-                      type="button"
-                    >
-                      <img
-                        alt="GoodMines"
-                        className="padding-small--right icon-sm vertical-align-sm"
-                        src={
-                          Object {
-                            "process": [Function],
-                          }
-                        }
-                        width="25"
-                      />
-                      <span
-                        className="padding-small--right"
-                      >
-                        0
-                      </span>
-                    </button>
-                  </Dropdown>
-                </Connect(AuthorizationWrapper)>
-              </div>
-            </MediaQuery>,
-          ],
-          "className": "menu",
-        },
-        "ref": null,
-        "rendered": Array [
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
-            "props": Object {
-              "children": <img
-                alt="Home"
-                className="menu__img"
-                src={
-                  Object {
-                    "process": [Function],
-                  }
-                }
-              />,
-              "replace": false,
-              "to": "/dashboard/mines/?page=1&per_page=25",
-            },
-            "ref": null,
-            "rendered": Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "host",
-              "props": Object {
-                "alt": "Home",
-                "className": "menu__img",
-                "src": Object {
-                  "process": [Function],
-                },
-              },
-              "ref": null,
-              "rendered": null,
-              "type": "img",
-            },
-            "type": [Function],
-          },
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
-            "props": Object {},
-            "ref": null,
-            "rendered": null,
-            "type": [Function],
-          },
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
-            "props": Object {
-              "children": <Button
-                block={false}
-                className="menu__btn"
-                ghost={true}
-                htmlType="button"
-                loading={false}
-                onClick={[MockFunction]}
                 style={
                   Object {
-                    "padding": 0,
+                    "marginTop": "6px",
                   }
                 }
-                type="button"
               >
-                <img
-                  alt="menu"
-                  className="img-lg"
-                  src={
-                    Object {
-                      "process": [Function],
-                    }
-                  }
+                <Connect(withRouter(SearchBar))
+                  containerId="navBar"
                 />
-              </Button>,
-              "maxWidth": 768,
-              "values": Object {},
-            },
-            "ref": null,
-            "rendered": Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "block": false,
-                "children": <img
-                  alt="menu"
-                  className="img-lg"
-                  src={
-                    Object {
-                      "process": [Function],
-                    }
-                  }
-                />,
-                "className": "menu__btn",
-                "ghost": true,
-                "htmlType": "button",
-                "loading": false,
-                "onClick": [MockFunction],
-                "style": Object {
-                  "padding": 0,
-                },
-                "type": "button",
-              },
-              "ref": null,
-              "rendered": Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "host",
-                "props": Object {
-                  "alt": "menu",
-                  "className": "img-lg",
-                  "src": Object {
-                    "process": [Function],
-                  },
-                },
-                "ref": null,
-                "rendered": null,
-                "type": "img",
-              },
-              "type": [Function],
-            },
-            "type": [Function],
-          },
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
-            "props": Object {
-              "children": <div
-                className="inline-flex"
-              >
-                <Dropdown
-                  mouseEnterDelay={0.15}
-                  mouseLeaveDelay={0.1}
-                  overlay={[Function]}
-                  placement="bottomLeft"
-                >
-                  <button
-                    className="menu__btn"
-                    id=""
-                    type="button"
-                  >
-                    <span
-                      className="padding-small--right"
-                    >
-                      Provincial Reporting
-                    </span>
-                    <Icon
-                      type="down"
-                    />
-                  </button>
-                </Dropdown>
-                <Link
-                  replace={false}
-                  to="/dashboard/mines/?page=1&per_page=25"
-                >
-                  <Button
-                    block={false}
-                    className="menu__btn--link"
-                    ghost={false}
-                    htmlType="button"
-                    id=""
-                    loading={false}
-                  >
-                    Mines
-                  </Button>
-                </Link>
-                <Link
-                  replace={false}
-                  to="/dashboard/contacts/?page=1&per_page=25"
-                >
-                  <Button
-                    block={false}
-                    className="menu__btn--link"
-                    ghost={false}
-                    htmlType="button"
-                    id=""
-                    loading={false}
-                  >
-                    Contacts
-                  </Button>
-                </Link>
-                <Connect(AuthorizationWrapper)
-                  permission="role_admin"
-                >
-                  <Link
-                    replace={false}
-                    to="/admin/dashboard"
-                  >
-                    <Button
-                      block={false}
-                      className="menu__btn--link"
-                      ghost={false}
-                      htmlType="button"
-                      id=""
-                      loading={false}
-                    >
-                      Admin
-                    </Button>
-                  </Link>
-                </Connect(AuthorizationWrapper)>
-                <Dropdown
-                  mouseEnterDelay={0.15}
-                  mouseLeaveDelay={0.1}
-                  overlay={[Function]}
-                  placement="bottomLeft"
-                >
-                  <button
-                    className="menu__btn"
-                    type="button"
-                  >
-                    <Icon
-                      className="padding-small--right icon-sm"
-                      type="user"
-                    />
-                    <span
-                      className="padding-small--right"
-                    />
-                    <Icon
-                      type="down"
-                    />
-                  </button>
-                </Dropdown>
-                <Connect(AuthorizationWrapper)
-                  permission="role_admin"
-                >
-                  <Dropdown
-                    disabled={true}
-                    mouseEnterDelay={0.15}
-                    mouseLeaveDelay={0.1}
-                    overlay={
-                      <Menu>
-                        <MenuItemGroup
-                          disabled={true}
-                          title="Please re-verify the following mines:"
-                        />
-                      </Menu>
-                    }
-                    placement="bottomLeft"
-                  >
-                    <button
-                      className="menu__btn"
-                      type="button"
-                    >
-                      <img
-                        alt="GoodMines"
-                        className="padding-small--right icon-sm vertical-align-sm"
-                        src={
-                          Object {
-                            "process": [Function],
-                          }
-                        }
-                        width="25"
-                      />
-                      <span
-                        className="padding-small--right"
-                      >
-                        0
-                      </span>
-                    </button>
-                  </Dropdown>
-                </Connect(AuthorizationWrapper)>
-              </div>,
-              "minWidth": 769,
-              "values": Object {},
-            },
-            "ref": null,
-            "rendered": Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "host",
-              "props": Object {
-                "children": Array [
-                  <Dropdown
-                    mouseEnterDelay={0.15}
-                    mouseLeaveDelay={0.1}
-                    overlay={[Function]}
-                    placement="bottomLeft"
-                  >
-                    <button
-                      className="menu__btn"
-                      id=""
-                      type="button"
-                    >
-                      <span
-                        className="padding-small--right"
-                      >
-                        Provincial Reporting
-                      </span>
-                      <Icon
-                        type="down"
-                      />
-                    </button>
-                  </Dropdown>,
-                  <Link
-                    replace={false}
-                    to="/dashboard/mines/?page=1&per_page=25"
-                  >
-                    <Button
-                      block={false}
-                      className="menu__btn--link"
-                      ghost={false}
-                      htmlType="button"
-                      id=""
-                      loading={false}
-                    >
-                      Mines
-                    </Button>
-                  </Link>,
-                  <Link
-                    replace={false}
-                    to="/dashboard/contacts/?page=1&per_page=25"
-                  >
-                    <Button
-                      block={false}
-                      className="menu__btn--link"
-                      ghost={false}
-                      htmlType="button"
-                      id=""
-                      loading={false}
-                    >
-                      Contacts
-                    </Button>
-                  </Link>,
-                  <Connect(AuthorizationWrapper)
-                    permission="role_admin"
-                  >
-                    <Link
-                      replace={false}
-                      to="/admin/dashboard"
-                    >
-                      <Button
-                        block={false}
-                        className="menu__btn--link"
-                        ghost={false}
-                        htmlType="button"
-                        id=""
-                        loading={false}
-                      >
-                        Admin
-                      </Button>
-                    </Link>
-                  </Connect(AuthorizationWrapper)>,
-                  <Dropdown
-                    mouseEnterDelay={0.15}
-                    mouseLeaveDelay={0.1}
-                    overlay={[Function]}
-                    placement="bottomLeft"
-                  >
-                    <button
-                      className="menu__btn"
-                      type="button"
-                    >
-                      <Icon
-                        className="padding-small--right icon-sm"
-                        type="user"
-                      />
-                      <span
-                        className="padding-small--right"
-                      />
-                      <Icon
-                        type="down"
-                      />
-                    </button>
-                  </Dropdown>,
-                  <Connect(AuthorizationWrapper)
-                    permission="role_admin"
-                  >
-                    <Dropdown
-                      disabled={true}
-                      mouseEnterDelay={0.15}
-                      mouseLeaveDelay={0.1}
-                      overlay={
-                        <Menu>
-                          <MenuItemGroup
-                            disabled={true}
-                            title="Please re-verify the following mines:"
-                          />
-                        </Menu>
-                      }
-                      placement="bottomLeft"
-                    >
-                      <button
-                        className="menu__btn"
-                        type="button"
-                      >
-                        <img
-                          alt="GoodMines"
-                          className="padding-small--right icon-sm vertical-align-sm"
-                          src={
-                            Object {
-                              "process": [Function],
-                            }
-                          }
-                          width="25"
-                        />
-                        <span
-                          className="padding-small--right"
-                        >
-                          0
-                        </span>
-                      </button>
-                    </Dropdown>
-                  </Connect(AuthorizationWrapper)>,
-                ],
-                "className": "inline-flex",
-              },
-              "ref": null,
-              "rendered": Array [
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "children": <button
-                      className="menu__btn"
-                      id=""
-                      type="button"
-                    >
-                      <span
-                        className="padding-small--right"
-                      >
-                        Provincial Reporting
-                      </span>
-                      <Icon
-                        type="down"
-                      />
-                    </button>,
-                    "mouseEnterDelay": 0.15,
-                    "mouseLeaveDelay": 0.1,
-                    "overlay": [Function],
-                    "placement": "bottomLeft",
-                  },
-                  "ref": null,
-                  "rendered": Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "host",
-                    "props": Object {
-                      "children": Array [
-                        <span
-                          className="padding-small--right"
-                        >
-                          Provincial Reporting
-                        </span>,
-                        <Icon
-                          type="down"
-                        />,
-                      ],
-                      "className": "menu__btn",
-                      "id": "",
-                      "type": "button",
-                    },
-                    "ref": null,
-                    "rendered": Array [
-                      Object {
-                        "instance": null,
-                        "key": undefined,
-                        "nodeType": "host",
-                        "props": Object {
-                          "children": "Provincial Reporting",
-                          "className": "padding-small--right",
-                        },
-                        "ref": null,
-                        "rendered": "Provincial Reporting",
-                        "type": "span",
-                      },
-                      Object {
-                        "instance": null,
-                        "key": undefined,
-                        "nodeType": "function",
-                        "props": Object {
-                          "type": "down",
-                        },
-                        "ref": null,
-                        "rendered": null,
-                        "type": [Function],
-                      },
-                    ],
-                    "type": "button",
-                  },
-                  "type": [Function],
-                },
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "children": <Button
-                      block={false}
-                      className="menu__btn--link"
-                      ghost={false}
-                      htmlType="button"
-                      id=""
-                      loading={false}
-                    >
-                      Mines
-                    </Button>,
-                    "replace": false,
-                    "to": "/dashboard/mines/?page=1&per_page=25",
-                  },
-                  "ref": null,
-                  "rendered": Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "class",
-                    "props": Object {
-                      "block": false,
-                      "children": "Mines",
-                      "className": "menu__btn--link",
-                      "ghost": false,
-                      "htmlType": "button",
-                      "id": "",
-                      "loading": false,
-                    },
-                    "ref": null,
-                    "rendered": "Mines",
-                    "type": [Function],
-                  },
-                  "type": [Function],
-                },
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "children": <Button
-                      block={false}
-                      className="menu__btn--link"
-                      ghost={false}
-                      htmlType="button"
-                      id=""
-                      loading={false}
-                    >
-                      Contacts
-                    </Button>,
-                    "replace": false,
-                    "to": "/dashboard/contacts/?page=1&per_page=25",
-                  },
-                  "ref": null,
-                  "rendered": Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "class",
-                    "props": Object {
-                      "block": false,
-                      "children": "Contacts",
-                      "className": "menu__btn--link",
-                      "ghost": false,
-                      "htmlType": "button",
-                      "id": "",
-                      "loading": false,
-                    },
-                    "ref": null,
-                    "rendered": "Contacts",
-                    "type": [Function],
-                  },
-                  "type": [Function],
-                },
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "children": <Link
-                      replace={false}
-                      to="/admin/dashboard"
-                    >
-                      <Button
-                        block={false}
-                        className="menu__btn--link"
-                        ghost={false}
-                        htmlType="button"
-                        id=""
-                        loading={false}
-                      >
-                        Admin
-                      </Button>
-                    </Link>,
-                    "permission": "role_admin",
-                  },
-                  "ref": null,
-                  "rendered": Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "class",
-                    "props": Object {
-                      "children": <Button
-                        block={false}
-                        className="menu__btn--link"
-                        ghost={false}
-                        htmlType="button"
-                        id=""
-                        loading={false}
-                      >
-                        Admin
-                      </Button>,
-                      "replace": false,
-                      "to": "/admin/dashboard",
-                    },
-                    "ref": null,
-                    "rendered": Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "class",
-                      "props": Object {
-                        "block": false,
-                        "children": "Admin",
-                        "className": "menu__btn--link",
-                        "ghost": false,
-                        "htmlType": "button",
-                        "id": "",
-                        "loading": false,
-                      },
-                      "ref": null,
-                      "rendered": "Admin",
-                      "type": [Function],
-                    },
-                    "type": [Function],
-                  },
-                  "type": [Function],
-                },
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "children": <button
-                      className="menu__btn"
-                      type="button"
-                    >
-                      <Icon
-                        className="padding-small--right icon-sm"
-                        type="user"
-                      />
-                      <span
-                        className="padding-small--right"
-                      />
-                      <Icon
-                        type="down"
-                      />
-                    </button>,
-                    "mouseEnterDelay": 0.15,
-                    "mouseLeaveDelay": 0.1,
-                    "overlay": [Function],
-                    "placement": "bottomLeft",
-                  },
-                  "ref": null,
-                  "rendered": Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "host",
-                    "props": Object {
-                      "children": Array [
-                        <Icon
-                          className="padding-small--right icon-sm"
-                          type="user"
-                        />,
-                        <span
-                          className="padding-small--right"
-                        />,
-                        <Icon
-                          type="down"
-                        />,
-                      ],
-                      "className": "menu__btn",
-                      "type": "button",
-                    },
-                    "ref": null,
-                    "rendered": Array [
-                      Object {
-                        "instance": null,
-                        "key": undefined,
-                        "nodeType": "function",
-                        "props": Object {
-                          "className": "padding-small--right icon-sm",
-                          "type": "user",
-                        },
-                        "ref": null,
-                        "rendered": null,
-                        "type": [Function],
-                      },
-                      Object {
-                        "instance": null,
-                        "key": undefined,
-                        "nodeType": "host",
-                        "props": Object {
-                          "children": undefined,
-                          "className": "padding-small--right",
-                        },
-                        "ref": null,
-                        "rendered": null,
-                        "type": "span",
-                      },
-                      Object {
-                        "instance": null,
-                        "key": undefined,
-                        "nodeType": "function",
-                        "props": Object {
-                          "type": "down",
-                        },
-                        "ref": null,
-                        "rendered": null,
-                        "type": [Function],
-                      },
-                    ],
-                    "type": "button",
-                  },
-                  "type": [Function],
-                },
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "class",
-                  "props": Object {
-                    "children": <Dropdown
-                      disabled={true}
-                      mouseEnterDelay={0.15}
-                      mouseLeaveDelay={0.1}
-                      overlay={
-                        <Menu>
-                          <MenuItemGroup
-                            disabled={true}
-                            title="Please re-verify the following mines:"
-                          />
-                        </Menu>
-                      }
-                      placement="bottomLeft"
-                    >
-                      <button
-                        className="menu__btn"
-                        type="button"
-                      >
-                        <img
-                          alt="GoodMines"
-                          className="padding-small--right icon-sm vertical-align-sm"
-                          src={
-                            Object {
-                              "process": [Function],
-                            }
-                          }
-                          width="25"
-                        />
-                        <span
-                          className="padding-small--right"
-                        >
-                          0
-                        </span>
-                      </button>
-                    </Dropdown>,
-                    "permission": "role_admin",
-                  },
-                  "ref": null,
-                  "rendered": Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "class",
-                    "props": Object {
-                      "children": <button
-                        className="menu__btn"
-                        type="button"
-                      >
-                        <img
-                          alt="GoodMines"
-                          className="padding-small--right icon-sm vertical-align-sm"
-                          src={
-                            Object {
-                              "process": [Function],
-                            }
-                          }
-                          width="25"
-                        />
-                        <span
-                          className="padding-small--right"
-                        >
-                          0
-                        </span>
-                      </button>,
-                      "disabled": true,
-                      "mouseEnterDelay": 0.15,
-                      "mouseLeaveDelay": 0.1,
-                      "overlay": <Menu>
-                        <MenuItemGroup
-                          disabled={true}
-                          title="Please re-verify the following mines:"
-                        />
-                      </Menu>,
-                      "placement": "bottomLeft",
-                    },
-                    "ref": null,
-                    "rendered": Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "host",
-                      "props": Object {
-                        "children": Array [
-                          <img
-                            alt="GoodMines"
-                            className="padding-small--right icon-sm vertical-align-sm"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
-                            }
-                            width="25"
-                          />,
-                          <span
-                            className="padding-small--right"
-                          >
-                            0
-                          </span>,
-                          false,
-                        ],
-                        "className": "menu__btn",
-                        "type": "button",
-                      },
-                      "ref": null,
-                      "rendered": Array [
-                        Object {
-                          "instance": null,
-                          "key": undefined,
-                          "nodeType": "host",
-                          "props": Object {
-                            "alt": "GoodMines",
-                            "className": "padding-small--right icon-sm vertical-align-sm",
-                            "src": Object {
-                              "process": [Function],
-                            },
-                            "width": "25",
-                          },
-                          "ref": null,
-                          "rendered": null,
-                          "type": "img",
-                        },
-                        Object {
-                          "instance": null,
-                          "key": undefined,
-                          "nodeType": "host",
-                          "props": Object {
-                            "children": 0,
-                            "className": "padding-small--right",
-                          },
-                          "ref": null,
-                          "rendered": 0,
-                          "type": "span",
-                        },
-                        false,
-                      ],
-                      "type": "button",
-                    },
-                    "type": [Function],
-                  },
-                  "type": [Function],
-                },
-              ],
-              "type": "div",
-            },
-            "type": [Function],
-          },
-        ],
-        "type": "div",
-      },
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "children": <div />,
-          "maxWidth": 768,
-          "values": Object {},
-        },
-        "ref": null,
-        "rendered": Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "host",
-          "props": Object {
-            "children": false,
-          },
-          "ref": null,
-          "rendered": false,
-          "type": "div",
-        },
-        "type": [Function],
-      },
-    ],
-    "type": "div",
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "host",
-      "props": Object {
-        "children": Array [
-          <div
-            className="menu"
-          >
-            <Link
-              replace={false}
-              to="/dashboard/mines/?page=1&per_page=25"
-            >
-              <img
-                alt="Home"
-                className="menu__img"
-                src={
-                  Object {
-                    "process": [Function],
-                  }
-                }
-              />
-            </Link>
-            <Connect(withRouter(SearchBar)) />
-            <MediaQuery
-              maxWidth={768}
-              values={Object {}}
-            >
-              <Button
-                block={false}
-                className="menu__btn"
-                ghost={true}
-                htmlType="button"
-                loading={false}
-                onClick={[MockFunction]}
-                style={
-                  Object {
-                    "padding": 0,
-                  }
-                }
-                type="button"
-              >
-                <img
-                  alt="menu"
-                  className="img-lg"
-                  src={
-                    Object {
-                      "process": [Function],
-                    }
-                  }
-                />
-              </Button>
-            </MediaQuery>
-            <MediaQuery
-              minWidth={769}
-              values={Object {}}
-            >
-              <div
-                className="inline-flex"
-              >
-                <Dropdown
-                  mouseEnterDelay={0.15}
-                  mouseLeaveDelay={0.1}
-                  overlay={[Function]}
-                  placement="bottomLeft"
-                >
-                  <button
-                    className="menu__btn"
-                    id=""
-                    type="button"
-                  >
-                    <span
-                      className="padding-small--right"
-                    >
-                      Provincial Reporting
-                    </span>
-                    <Icon
-                      type="down"
-                    />
-                  </button>
-                </Dropdown>
-                <Link
-                  replace={false}
-                  to="/dashboard/mines/?page=1&per_page=25"
-                >
-                  <Button
-                    block={false}
-                    className="menu__btn--link"
-                    ghost={false}
-                    htmlType="button"
-                    id=""
-                    loading={false}
-                  >
-                    Mines
-                  </Button>
-                </Link>
-                <Link
-                  replace={false}
-                  to="/dashboard/contacts/?page=1&per_page=25"
-                >
-                  <Button
-                    block={false}
-                    className="menu__btn--link"
-                    ghost={false}
-                    htmlType="button"
-                    id=""
-                    loading={false}
-                  >
-                    Contacts
-                  </Button>
-                </Link>
-                <Connect(AuthorizationWrapper)
-                  permission="role_admin"
-                >
-                  <Link
-                    replace={false}
-                    to="/admin/dashboard"
-                  >
-                    <Button
-                      block={false}
-                      className="menu__btn--link"
-                      ghost={false}
-                      htmlType="button"
-                      id=""
-                      loading={false}
-                    >
-                      Admin
-                    </Button>
-                  </Link>
-                </Connect(AuthorizationWrapper)>
-                <Dropdown
-                  mouseEnterDelay={0.15}
-                  mouseLeaveDelay={0.1}
-                  overlay={[Function]}
-                  placement="bottomLeft"
-                >
-                  <button
-                    className="menu__btn"
-                    type="button"
-                  >
-                    <Icon
-                      className="padding-small--right icon-sm"
-                      type="user"
-                    />
-                    <span
-                      className="padding-small--right"
-                    />
-                    <Icon
-                      type="down"
-                    />
-                  </button>
-                </Dropdown>
-                <Connect(AuthorizationWrapper)
-                  permission="role_admin"
-                >
-                  <Dropdown
-                    disabled={true}
-                    mouseEnterDelay={0.15}
-                    mouseLeaveDelay={0.1}
-                    overlay={
-                      <Menu>
-                        <MenuItemGroup
-                          disabled={true}
-                          title="Please re-verify the following mines:"
-                        />
-                      </Menu>
-                    }
-                    placement="bottomLeft"
-                  >
-                    <button
-                      className="menu__btn"
-                      type="button"
-                    >
-                      <img
-                        alt="GoodMines"
-                        className="padding-small--right icon-sm vertical-align-sm"
-                        src={
-                          Object {
-                            "process": [Function],
-                          }
-                        }
-                        width="25"
-                      />
-                      <span
-                        className="padding-small--right"
-                      >
-                        0
-                      </span>
-                    </button>
-                  </Dropdown>
-                </Connect(AuthorizationWrapper)>
               </div>
-            </MediaQuery>
-          </div>,
-          <MediaQuery
-            maxWidth={768}
-            values={Object {}}
-          >
-            <div />
-          </MediaQuery>,
-        ],
-      },
-      "ref": null,
-      "rendered": Array [
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "host",
-          "props": Object {
-            "children": Array [
-              <Link
-                replace={false}
-                to="/dashboard/mines/?page=1&per_page=25"
-              >
-                <img
-                  alt="Home"
-                  className="menu__img"
-                  src={
-                    Object {
-                      "process": [Function],
-                    }
-                  }
-                />
-              </Link>,
-              <Connect(withRouter(SearchBar)) />,
               <MediaQuery
-                maxWidth={768}
+                maxWidth={979}
                 values={Object {}}
               >
                 <Button
@@ -1570,14 +308,12 @@ ShallowWrapper {
                     }
                   />
                 </Button>
-              </MediaQuery>,
+              </MediaQuery>
               <MediaQuery
-                minWidth={769}
+                minWidth={980}
                 values={Object {}}
               >
-                <div
-                  className="inline-flex"
-                >
+                <div>
                   <Dropdown
                     mouseEnterDelay={0.15}
                     mouseLeaveDelay={0.1}
@@ -1710,62 +446,1149 @@ ShallowWrapper {
                     </Dropdown>
                   </Connect(AuthorizationWrapper)>
                 </div>
-              </MediaQuery>,
-            ],
-            "className": "menu",
-          },
-          "ref": null,
-          "rendered": Array [
-            Object {
+              </MediaQuery>
+            </div>,
+          ],
+          "className": "menu",
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": <img
+                alt="Home"
+                className="menu__img"
+                src={
+                  Object {
+                    "process": [Function],
+                  }
+                }
+              />,
+              "replace": false,
+              "to": "/home/",
+            },
+            "ref": null,
+            "rendered": Object {
               "instance": null,
               "key": undefined,
-              "nodeType": "class",
+              "nodeType": "host",
               "props": Object {
-                "children": <img
-                  alt="Home"
-                  className="menu__img"
-                  src={
-                    Object {
-                      "process": [Function],
-                    }
-                  }
-                />,
-                "replace": false,
-                "to": "/dashboard/mines/?page=1&per_page=25",
+                "alt": "Home",
+                "className": "menu__img",
+                "src": Object {
+                  "process": [Function],
+                },
               },
               "ref": null,
-              "rendered": Object {
+              "rendered": null,
+              "type": "img",
+            },
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": Array [
+                <div
+                  style={
+                    Object {
+                      "marginTop": "6px",
+                    }
+                  }
+                >
+                  <Connect(withRouter(SearchBar))
+                    containerId="navBar"
+                  />
+                </div>,
+                <MediaQuery
+                  maxWidth={979}
+                  values={Object {}}
+                >
+                  <Button
+                    block={false}
+                    className="menu__btn"
+                    ghost={true}
+                    htmlType="button"
+                    loading={false}
+                    onClick={[MockFunction]}
+                    style={
+                      Object {
+                        "padding": 0,
+                      }
+                    }
+                    type="button"
+                  >
+                    <img
+                      alt="menu"
+                      className="img-lg"
+                      src={
+                        Object {
+                          "process": [Function],
+                        }
+                      }
+                    />
+                  </Button>
+                </MediaQuery>,
+                <MediaQuery
+                  minWidth={980}
+                  values={Object {}}
+                >
+                  <div>
+                    <Dropdown
+                      mouseEnterDelay={0.15}
+                      mouseLeaveDelay={0.1}
+                      overlay={[Function]}
+                      placement="bottomLeft"
+                    >
+                      <button
+                        className="menu__btn"
+                        id=""
+                        type="button"
+                      >
+                        <span
+                          className="padding-small--right"
+                        >
+                          Provincial Reporting
+                        </span>
+                        <Icon
+                          type="down"
+                        />
+                      </button>
+                    </Dropdown>
+                    <Link
+                      replace={false}
+                      to="/dashboard/mines/?page=1&per_page=25"
+                    >
+                      <Button
+                        block={false}
+                        className="menu__btn--link"
+                        ghost={false}
+                        htmlType="button"
+                        id=""
+                        loading={false}
+                      >
+                        Mines
+                      </Button>
+                    </Link>
+                    <Link
+                      replace={false}
+                      to="/dashboard/contacts/?page=1&per_page=25"
+                    >
+                      <Button
+                        block={false}
+                        className="menu__btn--link"
+                        ghost={false}
+                        htmlType="button"
+                        id=""
+                        loading={false}
+                      >
+                        Contacts
+                      </Button>
+                    </Link>
+                    <Connect(AuthorizationWrapper)
+                      permission="role_admin"
+                    >
+                      <Link
+                        replace={false}
+                        to="/admin/dashboard"
+                      >
+                        <Button
+                          block={false}
+                          className="menu__btn--link"
+                          ghost={false}
+                          htmlType="button"
+                          id=""
+                          loading={false}
+                        >
+                          Admin
+                        </Button>
+                      </Link>
+                    </Connect(AuthorizationWrapper)>
+                    <Dropdown
+                      mouseEnterDelay={0.15}
+                      mouseLeaveDelay={0.1}
+                      overlay={[Function]}
+                      placement="bottomLeft"
+                    >
+                      <button
+                        className="menu__btn"
+                        type="button"
+                      >
+                        <Icon
+                          className="padding-small--right icon-sm"
+                          type="user"
+                        />
+                        <span
+                          className="padding-small--right"
+                        />
+                        <Icon
+                          type="down"
+                        />
+                      </button>
+                    </Dropdown>
+                    <Connect(AuthorizationWrapper)
+                      permission="role_admin"
+                    >
+                      <Dropdown
+                        disabled={true}
+                        mouseEnterDelay={0.15}
+                        mouseLeaveDelay={0.1}
+                        overlay={
+                          <Menu>
+                            <MenuItemGroup
+                              disabled={true}
+                              title="Please re-verify the following mines:"
+                            />
+                          </Menu>
+                        }
+                        placement="bottomLeft"
+                      >
+                        <button
+                          className="menu__btn"
+                          type="button"
+                        >
+                          <img
+                            alt="GoodMines"
+                            className="padding-small--right icon-sm vertical-align-sm"
+                            src={
+                              Object {
+                                "process": [Function],
+                              }
+                            }
+                            width="25"
+                          />
+                          <span
+                            className="padding-small--right"
+                          >
+                            0
+                          </span>
+                        </button>
+                      </Dropdown>
+                    </Connect(AuthorizationWrapper)>
+                  </div>
+                </MediaQuery>,
+              ],
+              "className": "inline-flex",
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
                 "instance": null,
                 "key": undefined,
                 "nodeType": "host",
                 "props": Object {
-                  "alt": "Home",
-                  "className": "menu__img",
-                  "src": Object {
-                    "process": [Function],
+                  "children": <Connect(withRouter(SearchBar))
+                    containerId="navBar"
+                  />,
+                  "style": Object {
+                    "marginTop": "6px",
                   },
                 },
                 "ref": null,
-                "rendered": null,
-                "type": "img",
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "containerId": "navBar",
+                  },
+                  "ref": null,
+                  "rendered": null,
+                  "type": [Function],
+                },
+                "type": "div",
               },
-              "type": [Function],
-            },
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {},
-              "ref": null,
-              "rendered": null,
-              "type": [Function],
-            },
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "children": <Button
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": <Button
+                    block={false}
+                    className="menu__btn"
+                    ghost={true}
+                    htmlType="button"
+                    loading={false}
+                    onClick={[MockFunction]}
+                    style={
+                      Object {
+                        "padding": 0,
+                      }
+                    }
+                    type="button"
+                  >
+                    <img
+                      alt="menu"
+                      className="img-lg"
+                      src={
+                        Object {
+                          "process": [Function],
+                        }
+                      }
+                    />
+                  </Button>,
+                  "maxWidth": 979,
+                  "values": Object {},
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "block": false,
+                    "children": <img
+                      alt="menu"
+                      className="img-lg"
+                      src={
+                        Object {
+                          "process": [Function],
+                        }
+                      }
+                    />,
+                    "className": "menu__btn",
+                    "ghost": true,
+                    "htmlType": "button",
+                    "loading": false,
+                    "onClick": [MockFunction],
+                    "style": Object {
+                      "padding": 0,
+                    },
+                    "type": "button",
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "alt": "menu",
+                      "className": "img-lg",
+                      "src": Object {
+                        "process": [Function],
+                      },
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": "img",
+                  },
+                  "type": [Function],
+                },
+                "type": [Function],
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": <div>
+                    <Dropdown
+                      mouseEnterDelay={0.15}
+                      mouseLeaveDelay={0.1}
+                      overlay={[Function]}
+                      placement="bottomLeft"
+                    >
+                      <button
+                        className="menu__btn"
+                        id=""
+                        type="button"
+                      >
+                        <span
+                          className="padding-small--right"
+                        >
+                          Provincial Reporting
+                        </span>
+                        <Icon
+                          type="down"
+                        />
+                      </button>
+                    </Dropdown>
+                    <Link
+                      replace={false}
+                      to="/dashboard/mines/?page=1&per_page=25"
+                    >
+                      <Button
+                        block={false}
+                        className="menu__btn--link"
+                        ghost={false}
+                        htmlType="button"
+                        id=""
+                        loading={false}
+                      >
+                        Mines
+                      </Button>
+                    </Link>
+                    <Link
+                      replace={false}
+                      to="/dashboard/contacts/?page=1&per_page=25"
+                    >
+                      <Button
+                        block={false}
+                        className="menu__btn--link"
+                        ghost={false}
+                        htmlType="button"
+                        id=""
+                        loading={false}
+                      >
+                        Contacts
+                      </Button>
+                    </Link>
+                    <Connect(AuthorizationWrapper)
+                      permission="role_admin"
+                    >
+                      <Link
+                        replace={false}
+                        to="/admin/dashboard"
+                      >
+                        <Button
+                          block={false}
+                          className="menu__btn--link"
+                          ghost={false}
+                          htmlType="button"
+                          id=""
+                          loading={false}
+                        >
+                          Admin
+                        </Button>
+                      </Link>
+                    </Connect(AuthorizationWrapper)>
+                    <Dropdown
+                      mouseEnterDelay={0.15}
+                      mouseLeaveDelay={0.1}
+                      overlay={[Function]}
+                      placement="bottomLeft"
+                    >
+                      <button
+                        className="menu__btn"
+                        type="button"
+                      >
+                        <Icon
+                          className="padding-small--right icon-sm"
+                          type="user"
+                        />
+                        <span
+                          className="padding-small--right"
+                        />
+                        <Icon
+                          type="down"
+                        />
+                      </button>
+                    </Dropdown>
+                    <Connect(AuthorizationWrapper)
+                      permission="role_admin"
+                    >
+                      <Dropdown
+                        disabled={true}
+                        mouseEnterDelay={0.15}
+                        mouseLeaveDelay={0.1}
+                        overlay={
+                          <Menu>
+                            <MenuItemGroup
+                              disabled={true}
+                              title="Please re-verify the following mines:"
+                            />
+                          </Menu>
+                        }
+                        placement="bottomLeft"
+                      >
+                        <button
+                          className="menu__btn"
+                          type="button"
+                        >
+                          <img
+                            alt="GoodMines"
+                            className="padding-small--right icon-sm vertical-align-sm"
+                            src={
+                              Object {
+                                "process": [Function],
+                              }
+                            }
+                            width="25"
+                          />
+                          <span
+                            className="padding-small--right"
+                          >
+                            0
+                          </span>
+                        </button>
+                      </Dropdown>
+                    </Connect(AuthorizationWrapper)>
+                  </div>,
+                  "minWidth": 980,
+                  "values": Object {},
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": Array [
+                      <Dropdown
+                        mouseEnterDelay={0.15}
+                        mouseLeaveDelay={0.1}
+                        overlay={[Function]}
+                        placement="bottomLeft"
+                      >
+                        <button
+                          className="menu__btn"
+                          id=""
+                          type="button"
+                        >
+                          <span
+                            className="padding-small--right"
+                          >
+                            Provincial Reporting
+                          </span>
+                          <Icon
+                            type="down"
+                          />
+                        </button>
+                      </Dropdown>,
+                      <Link
+                        replace={false}
+                        to="/dashboard/mines/?page=1&per_page=25"
+                      >
+                        <Button
+                          block={false}
+                          className="menu__btn--link"
+                          ghost={false}
+                          htmlType="button"
+                          id=""
+                          loading={false}
+                        >
+                          Mines
+                        </Button>
+                      </Link>,
+                      <Link
+                        replace={false}
+                        to="/dashboard/contacts/?page=1&per_page=25"
+                      >
+                        <Button
+                          block={false}
+                          className="menu__btn--link"
+                          ghost={false}
+                          htmlType="button"
+                          id=""
+                          loading={false}
+                        >
+                          Contacts
+                        </Button>
+                      </Link>,
+                      <Connect(AuthorizationWrapper)
+                        permission="role_admin"
+                      >
+                        <Link
+                          replace={false}
+                          to="/admin/dashboard"
+                        >
+                          <Button
+                            block={false}
+                            className="menu__btn--link"
+                            ghost={false}
+                            htmlType="button"
+                            id=""
+                            loading={false}
+                          >
+                            Admin
+                          </Button>
+                        </Link>
+                      </Connect(AuthorizationWrapper)>,
+                      <Dropdown
+                        mouseEnterDelay={0.15}
+                        mouseLeaveDelay={0.1}
+                        overlay={[Function]}
+                        placement="bottomLeft"
+                      >
+                        <button
+                          className="menu__btn"
+                          type="button"
+                        >
+                          <Icon
+                            className="padding-small--right icon-sm"
+                            type="user"
+                          />
+                          <span
+                            className="padding-small--right"
+                          />
+                          <Icon
+                            type="down"
+                          />
+                        </button>
+                      </Dropdown>,
+                      <Connect(AuthorizationWrapper)
+                        permission="role_admin"
+                      >
+                        <Dropdown
+                          disabled={true}
+                          mouseEnterDelay={0.15}
+                          mouseLeaveDelay={0.1}
+                          overlay={
+                            <Menu>
+                              <MenuItemGroup
+                                disabled={true}
+                                title="Please re-verify the following mines:"
+                              />
+                            </Menu>
+                          }
+                          placement="bottomLeft"
+                        >
+                          <button
+                            className="menu__btn"
+                            type="button"
+                          >
+                            <img
+                              alt="GoodMines"
+                              className="padding-small--right icon-sm vertical-align-sm"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                              width="25"
+                            />
+                            <span
+                              className="padding-small--right"
+                            >
+                              0
+                            </span>
+                          </button>
+                        </Dropdown>
+                      </Connect(AuthorizationWrapper)>,
+                    ],
+                  },
+                  "ref": null,
+                  "rendered": Array [
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <button
+                          className="menu__btn"
+                          id=""
+                          type="button"
+                        >
+                          <span
+                            className="padding-small--right"
+                          >
+                            Provincial Reporting
+                          </span>
+                          <Icon
+                            type="down"
+                          />
+                        </button>,
+                        "mouseEnterDelay": 0.15,
+                        "mouseLeaveDelay": 0.1,
+                        "overlay": [Function],
+                        "placement": "bottomLeft",
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": Array [
+                            <span
+                              className="padding-small--right"
+                            >
+                              Provincial Reporting
+                            </span>,
+                            <Icon
+                              type="down"
+                            />,
+                          ],
+                          "className": "menu__btn",
+                          "id": "",
+                          "type": "button",
+                        },
+                        "ref": null,
+                        "rendered": Array [
+                          Object {
+                            "instance": null,
+                            "key": undefined,
+                            "nodeType": "host",
+                            "props": Object {
+                              "children": "Provincial Reporting",
+                              "className": "padding-small--right",
+                            },
+                            "ref": null,
+                            "rendered": "Provincial Reporting",
+                            "type": "span",
+                          },
+                          Object {
+                            "instance": null,
+                            "key": undefined,
+                            "nodeType": "function",
+                            "props": Object {
+                              "type": "down",
+                            },
+                            "ref": null,
+                            "rendered": null,
+                            "type": [Function],
+                          },
+                        ],
+                        "type": "button",
+                      },
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <Button
+                          block={false}
+                          className="menu__btn--link"
+                          ghost={false}
+                          htmlType="button"
+                          id=""
+                          loading={false}
+                        >
+                          Mines
+                        </Button>,
+                        "replace": false,
+                        "to": "/dashboard/mines/?page=1&per_page=25",
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "block": false,
+                          "children": "Mines",
+                          "className": "menu__btn--link",
+                          "ghost": false,
+                          "htmlType": "button",
+                          "id": "",
+                          "loading": false,
+                        },
+                        "ref": null,
+                        "rendered": "Mines",
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <Button
+                          block={false}
+                          className="menu__btn--link"
+                          ghost={false}
+                          htmlType="button"
+                          id=""
+                          loading={false}
+                        >
+                          Contacts
+                        </Button>,
+                        "replace": false,
+                        "to": "/dashboard/contacts/?page=1&per_page=25",
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "block": false,
+                          "children": "Contacts",
+                          "className": "menu__btn--link",
+                          "ghost": false,
+                          "htmlType": "button",
+                          "id": "",
+                          "loading": false,
+                        },
+                        "ref": null,
+                        "rendered": "Contacts",
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <Link
+                          replace={false}
+                          to="/admin/dashboard"
+                        >
+                          <Button
+                            block={false}
+                            className="menu__btn--link"
+                            ghost={false}
+                            htmlType="button"
+                            id=""
+                            loading={false}
+                          >
+                            Admin
+                          </Button>
+                        </Link>,
+                        "permission": "role_admin",
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "children": <Button
+                            block={false}
+                            className="menu__btn--link"
+                            ghost={false}
+                            htmlType="button"
+                            id=""
+                            loading={false}
+                          >
+                            Admin
+                          </Button>,
+                          "replace": false,
+                          "to": "/admin/dashboard",
+                        },
+                        "ref": null,
+                        "rendered": Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "class",
+                          "props": Object {
+                            "block": false,
+                            "children": "Admin",
+                            "className": "menu__btn--link",
+                            "ghost": false,
+                            "htmlType": "button",
+                            "id": "",
+                            "loading": false,
+                          },
+                          "ref": null,
+                          "rendered": "Admin",
+                          "type": [Function],
+                        },
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <button
+                          className="menu__btn"
+                          type="button"
+                        >
+                          <Icon
+                            className="padding-small--right icon-sm"
+                            type="user"
+                          />
+                          <span
+                            className="padding-small--right"
+                          />
+                          <Icon
+                            type="down"
+                          />
+                        </button>,
+                        "mouseEnterDelay": 0.15,
+                        "mouseLeaveDelay": 0.1,
+                        "overlay": [Function],
+                        "placement": "bottomLeft",
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": Array [
+                            <Icon
+                              className="padding-small--right icon-sm"
+                              type="user"
+                            />,
+                            <span
+                              className="padding-small--right"
+                            />,
+                            <Icon
+                              type="down"
+                            />,
+                          ],
+                          "className": "menu__btn",
+                          "type": "button",
+                        },
+                        "ref": null,
+                        "rendered": Array [
+                          Object {
+                            "instance": null,
+                            "key": undefined,
+                            "nodeType": "function",
+                            "props": Object {
+                              "className": "padding-small--right icon-sm",
+                              "type": "user",
+                            },
+                            "ref": null,
+                            "rendered": null,
+                            "type": [Function],
+                          },
+                          Object {
+                            "instance": null,
+                            "key": undefined,
+                            "nodeType": "host",
+                            "props": Object {
+                              "children": undefined,
+                              "className": "padding-small--right",
+                            },
+                            "ref": null,
+                            "rendered": null,
+                            "type": "span",
+                          },
+                          Object {
+                            "instance": null,
+                            "key": undefined,
+                            "nodeType": "function",
+                            "props": Object {
+                              "type": "down",
+                            },
+                            "ref": null,
+                            "rendered": null,
+                            "type": [Function],
+                          },
+                        ],
+                        "type": "button",
+                      },
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": <Dropdown
+                          disabled={true}
+                          mouseEnterDelay={0.15}
+                          mouseLeaveDelay={0.1}
+                          overlay={
+                            <Menu>
+                              <MenuItemGroup
+                                disabled={true}
+                                title="Please re-verify the following mines:"
+                              />
+                            </Menu>
+                          }
+                          placement="bottomLeft"
+                        >
+                          <button
+                            className="menu__btn"
+                            type="button"
+                          >
+                            <img
+                              alt="GoodMines"
+                              className="padding-small--right icon-sm vertical-align-sm"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                              width="25"
+                            />
+                            <span
+                              className="padding-small--right"
+                            >
+                              0
+                            </span>
+                          </button>
+                        </Dropdown>,
+                        "permission": "role_admin",
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "children": <button
+                            className="menu__btn"
+                            type="button"
+                          >
+                            <img
+                              alt="GoodMines"
+                              className="padding-small--right icon-sm vertical-align-sm"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                              width="25"
+                            />
+                            <span
+                              className="padding-small--right"
+                            >
+                              0
+                            </span>
+                          </button>,
+                          "disabled": true,
+                          "mouseEnterDelay": 0.15,
+                          "mouseLeaveDelay": 0.1,
+                          "overlay": <Menu>
+                            <MenuItemGroup
+                              disabled={true}
+                              title="Please re-verify the following mines:"
+                            />
+                          </Menu>,
+                          "placement": "bottomLeft",
+                        },
+                        "ref": null,
+                        "rendered": Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "host",
+                          "props": Object {
+                            "children": Array [
+                              <img
+                                alt="GoodMines"
+                                className="padding-small--right icon-sm vertical-align-sm"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                                width="25"
+                              />,
+                              <span
+                                className="padding-small--right"
+                              >
+                                0
+                              </span>,
+                              false,
+                            ],
+                            "className": "menu__btn",
+                            "type": "button",
+                          },
+                          "ref": null,
+                          "rendered": Array [
+                            Object {
+                              "instance": null,
+                              "key": undefined,
+                              "nodeType": "host",
+                              "props": Object {
+                                "alt": "GoodMines",
+                                "className": "padding-small--right icon-sm vertical-align-sm",
+                                "src": Object {
+                                  "process": [Function],
+                                },
+                                "width": "25",
+                              },
+                              "ref": null,
+                              "rendered": null,
+                              "type": "img",
+                            },
+                            Object {
+                              "instance": null,
+                              "key": undefined,
+                              "nodeType": "host",
+                              "props": Object {
+                                "children": 0,
+                                "className": "padding-small--right",
+                              },
+                              "ref": null,
+                              "rendered": 0,
+                              "type": "span",
+                            },
+                            false,
+                          ],
+                          "type": "button",
+                        },
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                  ],
+                  "type": "div",
+                },
+                "type": [Function],
+              },
+            ],
+            "type": "div",
+          },
+        ],
+        "type": "div",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "children": <div />,
+          "maxWidth": 979,
+          "values": Object {},
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": false,
+          },
+          "ref": null,
+          "rendered": false,
+          "type": "div",
+        },
+        "type": [Function],
+      },
+    ],
+    "type": "div",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": Array [
+          <div
+            className="menu"
+          >
+            <Link
+              replace={false}
+              to="/home/"
+            >
+              <img
+                alt="Home"
+                className="menu__img"
+                src={
+                  Object {
+                    "process": [Function],
+                  }
+                }
+              />
+            </Link>
+            <div
+              className="inline-flex"
+            >
+              <div
+                style={
+                  Object {
+                    "marginTop": "6px",
+                  }
+                }
+              >
+                <Connect(withRouter(SearchBar))
+                  containerId="navBar"
+                />
+              </div>
+              <MediaQuery
+                maxWidth={979}
+                values={Object {}}
+              >
+                <Button
                   block={false}
                   className="menu__btn"
                   ghost={true}
@@ -1788,64 +1611,13 @@ ShallowWrapper {
                       }
                     }
                   />
-                </Button>,
-                "maxWidth": 768,
-                "values": Object {},
-              },
-              "ref": null,
-              "rendered": Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "block": false,
-                  "children": <img
-                    alt="menu"
-                    className="img-lg"
-                    src={
-                      Object {
-                        "process": [Function],
-                      }
-                    }
-                  />,
-                  "className": "menu__btn",
-                  "ghost": true,
-                  "htmlType": "button",
-                  "loading": false,
-                  "onClick": [MockFunction],
-                  "style": Object {
-                    "padding": 0,
-                  },
-                  "type": "button",
-                },
-                "ref": null,
-                "rendered": Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "host",
-                  "props": Object {
-                    "alt": "menu",
-                    "className": "img-lg",
-                    "src": Object {
-                      "process": [Function],
-                    },
-                  },
-                  "ref": null,
-                  "rendered": null,
-                  "type": "img",
-                },
-                "type": [Function],
-              },
-              "type": [Function],
-            },
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "children": <div
-                  className="inline-flex"
-                >
+                </Button>
+              </MediaQuery>
+              <MediaQuery
+                minWidth={980}
+                values={Object {}}
+              >
+                <div>
                   <Dropdown
                     mouseEnterDelay={0.15}
                     mouseLeaveDelay={0.1}
@@ -1977,17 +1749,88 @@ ShallowWrapper {
                       </button>
                     </Dropdown>
                   </Connect(AuthorizationWrapper)>
-                </div>,
-                "minWidth": 769,
-                "values": Object {},
-              },
-              "ref": null,
-              "rendered": Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "host",
-                "props": Object {
-                  "children": Array [
+                </div>
+              </MediaQuery>
+            </div>
+          </div>,
+          <MediaQuery
+            maxWidth={979}
+            values={Object {}}
+          >
+            <div />
+          </MediaQuery>,
+        ],
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": Array [
+              <Link
+                replace={false}
+                to="/home/"
+              >
+                <img
+                  alt="Home"
+                  className="menu__img"
+                  src={
+                    Object {
+                      "process": [Function],
+                    }
+                  }
+                />
+              </Link>,
+              <div
+                className="inline-flex"
+              >
+                <div
+                  style={
+                    Object {
+                      "marginTop": "6px",
+                    }
+                  }
+                >
+                  <Connect(withRouter(SearchBar))
+                    containerId="navBar"
+                  />
+                </div>
+                <MediaQuery
+                  maxWidth={979}
+                  values={Object {}}
+                >
+                  <Button
+                    block={false}
+                    className="menu__btn"
+                    ghost={true}
+                    htmlType="button"
+                    loading={false}
+                    onClick={[MockFunction]}
+                    style={
+                      Object {
+                        "padding": 0,
+                      }
+                    }
+                    type="button"
+                  >
+                    <img
+                      alt="menu"
+                      className="img-lg"
+                      src={
+                        Object {
+                          "process": [Function],
+                        }
+                      }
+                    />
+                  </Button>
+                </MediaQuery>
+                <MediaQuery
+                  minWidth={980}
+                  values={Object {}}
+                >
+                  <div>
                     <Dropdown
                       mouseEnterDelay={0.15}
                       mouseLeaveDelay={0.1}
@@ -2008,7 +1851,7 @@ ShallowWrapper {
                           type="down"
                         />
                       </button>
-                    </Dropdown>,
+                    </Dropdown>
                     <Link
                       replace={false}
                       to="/dashboard/mines/?page=1&per_page=25"
@@ -2023,7 +1866,7 @@ ShallowWrapper {
                       >
                         Mines
                       </Button>
-                    </Link>,
+                    </Link>
                     <Link
                       replace={false}
                       to="/dashboard/contacts/?page=1&per_page=25"
@@ -2038,7 +1881,7 @@ ShallowWrapper {
                       >
                         Contacts
                       </Button>
-                    </Link>,
+                    </Link>
                     <Connect(AuthorizationWrapper)
                       permission="role_admin"
                     >
@@ -2057,7 +1900,7 @@ ShallowWrapper {
                           Admin
                         </Button>
                       </Link>
-                    </Connect(AuthorizationWrapper)>,
+                    </Connect(AuthorizationWrapper)>
                     <Dropdown
                       mouseEnterDelay={0.15}
                       mouseLeaveDelay={0.1}
@@ -2079,7 +1922,7 @@ ShallowWrapper {
                           type="down"
                         />
                       </button>
-                    </Dropdown>,
+                    </Dropdown>
                     <Connect(AuthorizationWrapper)
                       permission="role_admin"
                     >
@@ -2118,170 +1961,125 @@ ShallowWrapper {
                           </span>
                         </button>
                       </Dropdown>
-                    </Connect(AuthorizationWrapper)>,
-                  ],
-                  "className": "inline-flex",
+                    </Connect(AuthorizationWrapper)>
+                  </div>
+                </MediaQuery>
+              </div>,
+            ],
+            "className": "menu",
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": <img
+                  alt="Home"
+                  className="menu__img"
+                  src={
+                    Object {
+                      "process": [Function],
+                    }
+                  }
+                />,
+                "replace": false,
+                "to": "/home/",
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "alt": "Home",
+                  "className": "menu__img",
+                  "src": Object {
+                    "process": [Function],
+                  },
                 },
                 "ref": null,
-                "rendered": Array [
-                  Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "class",
-                    "props": Object {
-                      "children": <button
-                        className="menu__btn"
-                        id=""
-                        type="button"
+                "rendered": null,
+                "type": "img",
+              },
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": Array [
+                  <div
+                    style={
+                      Object {
+                        "marginTop": "6px",
+                      }
+                    }
+                  >
+                    <Connect(withRouter(SearchBar))
+                      containerId="navBar"
+                    />
+                  </div>,
+                  <MediaQuery
+                    maxWidth={979}
+                    values={Object {}}
+                  >
+                    <Button
+                      block={false}
+                      className="menu__btn"
+                      ghost={true}
+                      htmlType="button"
+                      loading={false}
+                      onClick={[MockFunction]}
+                      style={
+                        Object {
+                          "padding": 0,
+                        }
+                      }
+                      type="button"
+                    >
+                      <img
+                        alt="menu"
+                        className="img-lg"
+                        src={
+                          Object {
+                            "process": [Function],
+                          }
+                        }
+                      />
+                    </Button>
+                  </MediaQuery>,
+                  <MediaQuery
+                    minWidth={980}
+                    values={Object {}}
+                  >
+                    <div>
+                      <Dropdown
+                        mouseEnterDelay={0.15}
+                        mouseLeaveDelay={0.1}
+                        overlay={[Function]}
+                        placement="bottomLeft"
                       >
-                        <span
-                          className="padding-small--right"
+                        <button
+                          className="menu__btn"
+                          id=""
+                          type="button"
                         >
-                          Provincial Reporting
-                        </span>
-                        <Icon
-                          type="down"
-                        />
-                      </button>,
-                      "mouseEnterDelay": 0.15,
-                      "mouseLeaveDelay": 0.1,
-                      "overlay": [Function],
-                      "placement": "bottomLeft",
-                    },
-                    "ref": null,
-                    "rendered": Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "host",
-                      "props": Object {
-                        "children": Array [
                           <span
                             className="padding-small--right"
                           >
                             Provincial Reporting
-                          </span>,
+                          </span>
                           <Icon
                             type="down"
-                          />,
-                        ],
-                        "className": "menu__btn",
-                        "id": "",
-                        "type": "button",
-                      },
-                      "ref": null,
-                      "rendered": Array [
-                        Object {
-                          "instance": null,
-                          "key": undefined,
-                          "nodeType": "host",
-                          "props": Object {
-                            "children": "Provincial Reporting",
-                            "className": "padding-small--right",
-                          },
-                          "ref": null,
-                          "rendered": "Provincial Reporting",
-                          "type": "span",
-                        },
-                        Object {
-                          "instance": null,
-                          "key": undefined,
-                          "nodeType": "function",
-                          "props": Object {
-                            "type": "down",
-                          },
-                          "ref": null,
-                          "rendered": null,
-                          "type": [Function],
-                        },
-                      ],
-                      "type": "button",
-                    },
-                    "type": [Function],
-                  },
-                  Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "class",
-                    "props": Object {
-                      "children": <Button
-                        block={false}
-                        className="menu__btn--link"
-                        ghost={false}
-                        htmlType="button"
-                        id=""
-                        loading={false}
-                      >
-                        Mines
-                      </Button>,
-                      "replace": false,
-                      "to": "/dashboard/mines/?page=1&per_page=25",
-                    },
-                    "ref": null,
-                    "rendered": Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "class",
-                      "props": Object {
-                        "block": false,
-                        "children": "Mines",
-                        "className": "menu__btn--link",
-                        "ghost": false,
-                        "htmlType": "button",
-                        "id": "",
-                        "loading": false,
-                      },
-                      "ref": null,
-                      "rendered": "Mines",
-                      "type": [Function],
-                    },
-                    "type": [Function],
-                  },
-                  Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "class",
-                    "props": Object {
-                      "children": <Button
-                        block={false}
-                        className="menu__btn--link"
-                        ghost={false}
-                        htmlType="button"
-                        id=""
-                        loading={false}
-                      >
-                        Contacts
-                      </Button>,
-                      "replace": false,
-                      "to": "/dashboard/contacts/?page=1&per_page=25",
-                    },
-                    "ref": null,
-                    "rendered": Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "class",
-                      "props": Object {
-                        "block": false,
-                        "children": "Contacts",
-                        "className": "menu__btn--link",
-                        "ghost": false,
-                        "htmlType": "button",
-                        "id": "",
-                        "loading": false,
-                      },
-                      "ref": null,
-                      "rendered": "Contacts",
-                      "type": [Function],
-                    },
-                    "type": [Function],
-                  },
-                  Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "class",
-                    "props": Object {
-                      "children": <Link
+                          />
+                        </button>
+                      </Dropdown>
+                      <Link
                         replace={false}
-                        to="/admin/dashboard"
+                        to="/dashboard/mines/?page=1&per_page=25"
                       >
                         <Button
                           block={false}
@@ -2291,18 +2089,14 @@ ShallowWrapper {
                           id=""
                           loading={false}
                         >
-                          Admin
+                          Mines
                         </Button>
-                      </Link>,
-                      "permission": "role_admin",
-                    },
-                    "ref": null,
-                    "rendered": Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "class",
-                      "props": Object {
-                        "children": <Button
+                      </Link>
+                      <Link
+                        replace={false}
+                        to="/dashboard/contacts/?page=1&per_page=25"
+                      >
+                        <Button
                           block={false}
                           className="menu__btn--link"
                           ghost={false}
@@ -2310,207 +2104,71 @@ ShallowWrapper {
                           id=""
                           loading={false}
                         >
-                          Admin
-                        </Button>,
-                        "replace": false,
-                        "to": "/admin/dashboard",
-                      },
-                      "ref": null,
-                      "rendered": Object {
-                        "instance": null,
-                        "key": undefined,
-                        "nodeType": "class",
-                        "props": Object {
-                          "block": false,
-                          "children": "Admin",
-                          "className": "menu__btn--link",
-                          "ghost": false,
-                          "htmlType": "button",
-                          "id": "",
-                          "loading": false,
-                        },
-                        "ref": null,
-                        "rendered": "Admin",
-                        "type": [Function],
-                      },
-                      "type": [Function],
-                    },
-                    "type": [Function],
-                  },
-                  Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "class",
-                    "props": Object {
-                      "children": <button
-                        className="menu__btn"
-                        type="button"
+                          Contacts
+                        </Button>
+                      </Link>
+                      <Connect(AuthorizationWrapper)
+                        permission="role_admin"
                       >
-                        <Icon
-                          className="padding-small--right icon-sm"
-                          type="user"
-                        />
-                        <span
-                          className="padding-small--right"
-                        />
-                        <Icon
-                          type="down"
-                        />
-                      </button>,
-                      "mouseEnterDelay": 0.15,
-                      "mouseLeaveDelay": 0.1,
-                      "overlay": [Function],
-                      "placement": "bottomLeft",
-                    },
-                    "ref": null,
-                    "rendered": Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "host",
-                      "props": Object {
-                        "children": Array [
-                          <Icon
-                            className="padding-small--right icon-sm"
-                            type="user"
-                          />,
-                          <span
-                            className="padding-small--right"
-                          />,
-                          <Icon
-                            type="down"
-                          />,
-                        ],
-                        "className": "menu__btn",
-                        "type": "button",
-                      },
-                      "ref": null,
-                      "rendered": Array [
-                        Object {
-                          "instance": null,
-                          "key": undefined,
-                          "nodeType": "function",
-                          "props": Object {
-                            "className": "padding-small--right icon-sm",
-                            "type": "user",
-                          },
-                          "ref": null,
-                          "rendered": null,
-                          "type": [Function],
-                        },
-                        Object {
-                          "instance": null,
-                          "key": undefined,
-                          "nodeType": "host",
-                          "props": Object {
-                            "children": undefined,
-                            "className": "padding-small--right",
-                          },
-                          "ref": null,
-                          "rendered": null,
-                          "type": "span",
-                        },
-                        Object {
-                          "instance": null,
-                          "key": undefined,
-                          "nodeType": "function",
-                          "props": Object {
-                            "type": "down",
-                          },
-                          "ref": null,
-                          "rendered": null,
-                          "type": [Function],
-                        },
-                      ],
-                      "type": "button",
-                    },
-                    "type": [Function],
-                  },
-                  Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "class",
-                    "props": Object {
-                      "children": <Dropdown
-                        disabled={true}
+                        <Link
+                          replace={false}
+                          to="/admin/dashboard"
+                        >
+                          <Button
+                            block={false}
+                            className="menu__btn--link"
+                            ghost={false}
+                            htmlType="button"
+                            id=""
+                            loading={false}
+                          >
+                            Admin
+                          </Button>
+                        </Link>
+                      </Connect(AuthorizationWrapper)>
+                      <Dropdown
                         mouseEnterDelay={0.15}
                         mouseLeaveDelay={0.1}
-                        overlay={
-                          <Menu>
-                            <MenuItemGroup
-                              disabled={true}
-                              title="Please re-verify the following mines:"
-                            />
-                          </Menu>
-                        }
+                        overlay={[Function]}
                         placement="bottomLeft"
                       >
                         <button
                           className="menu__btn"
                           type="button"
                         >
-                          <img
-                            alt="GoodMines"
-                            className="padding-small--right icon-sm vertical-align-sm"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
-                            }
-                            width="25"
+                          <Icon
+                            className="padding-small--right icon-sm"
+                            type="user"
                           />
                           <span
                             className="padding-small--right"
-                          >
-                            0
-                          </span>
+                          />
+                          <Icon
+                            type="down"
+                          />
                         </button>
-                      </Dropdown>,
-                      "permission": "role_admin",
-                    },
-                    "ref": null,
-                    "rendered": Object {
-                      "instance": null,
-                      "key": undefined,
-                      "nodeType": "class",
-                      "props": Object {
-                        "children": <button
-                          className="menu__btn"
-                          type="button"
+                      </Dropdown>
+                      <Connect(AuthorizationWrapper)
+                        permission="role_admin"
+                      >
+                        <Dropdown
+                          disabled={true}
+                          mouseEnterDelay={0.15}
+                          mouseLeaveDelay={0.1}
+                          overlay={
+                            <Menu>
+                              <MenuItemGroup
+                                disabled={true}
+                                title="Please re-verify the following mines:"
+                              />
+                            </Menu>
+                          }
+                          placement="bottomLeft"
                         >
-                          <img
-                            alt="GoodMines"
-                            className="padding-small--right icon-sm vertical-align-sm"
-                            src={
-                              Object {
-                                "process": [Function],
-                              }
-                            }
-                            width="25"
-                          />
-                          <span
-                            className="padding-small--right"
+                          <button
+                            className="menu__btn"
+                            type="button"
                           >
-                            0
-                          </span>
-                        </button>,
-                        "disabled": true,
-                        "mouseEnterDelay": 0.15,
-                        "mouseLeaveDelay": 0.1,
-                        "overlay": <Menu>
-                          <MenuItemGroup
-                            disabled={true}
-                            title="Please re-verify the following mines:"
-                          />
-                        </Menu>,
-                        "placement": "bottomLeft",
-                      },
-                      "ref": null,
-                      "rendered": Object {
-                        "instance": null,
-                        "key": undefined,
-                        "nodeType": "host",
-                        "props": Object {
-                          "children": Array [
                             <img
                               alt="GoodMines"
                               className="padding-small--right icon-sm vertical-align-sm"
@@ -2520,59 +2178,861 @@ ShallowWrapper {
                                 }
                               }
                               width="25"
-                            />,
+                            />
                             <span
                               className="padding-small--right"
                             >
                               0
-                            </span>,
-                            false,
-                          ],
-                          "className": "menu__btn",
-                          "type": "button",
-                        },
-                        "ref": null,
-                        "rendered": Array [
+                            </span>
+                          </button>
+                        </Dropdown>
+                      </Connect(AuthorizationWrapper)>
+                    </div>
+                  </MediaQuery>,
+                ],
+                "className": "inline-flex",
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": <Connect(withRouter(SearchBar))
+                      containerId="navBar"
+                    />,
+                    "style": Object {
+                      "marginTop": "6px",
+                    },
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "containerId": "navBar",
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  "type": "div",
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <Button
+                      block={false}
+                      className="menu__btn"
+                      ghost={true}
+                      htmlType="button"
+                      loading={false}
+                      onClick={[MockFunction]}
+                      style={
+                        Object {
+                          "padding": 0,
+                        }
+                      }
+                      type="button"
+                    >
+                      <img
+                        alt="menu"
+                        className="img-lg"
+                        src={
                           Object {
-                            "instance": null,
-                            "key": undefined,
-                            "nodeType": "host",
-                            "props": Object {
-                              "alt": "GoodMines",
-                              "className": "padding-small--right icon-sm vertical-align-sm",
-                              "src": Object {
-                                "process": [Function],
-                              },
-                              "width": "25",
-                            },
-                            "ref": null,
-                            "rendered": null,
-                            "type": "img",
-                          },
+                            "process": [Function],
+                          }
+                        }
+                      />
+                    </Button>,
+                    "maxWidth": 979,
+                    "values": Object {},
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "block": false,
+                      "children": <img
+                        alt="menu"
+                        className="img-lg"
+                        src={
                           Object {
-                            "instance": null,
-                            "key": undefined,
-                            "nodeType": "host",
-                            "props": Object {
-                              "children": 0,
-                              "className": "padding-small--right",
-                            },
-                            "ref": null,
-                            "rendered": 0,
-                            "type": "span",
-                          },
-                          false,
-                        ],
-                        "type": "button",
+                            "process": [Function],
+                          }
+                        }
+                      />,
+                      "className": "menu__btn",
+                      "ghost": true,
+                      "htmlType": "button",
+                      "loading": false,
+                      "onClick": [MockFunction],
+                      "style": Object {
+                        "padding": 0,
                       },
-                      "type": [Function],
+                      "type": "button",
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "alt": "menu",
+                        "className": "img-lg",
+                        "src": Object {
+                          "process": [Function],
+                        },
+                      },
+                      "ref": null,
+                      "rendered": null,
+                      "type": "img",
                     },
                     "type": [Function],
                   },
-                ],
-                "type": "div",
-              },
-              "type": [Function],
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <div>
+                      <Dropdown
+                        mouseEnterDelay={0.15}
+                        mouseLeaveDelay={0.1}
+                        overlay={[Function]}
+                        placement="bottomLeft"
+                      >
+                        <button
+                          className="menu__btn"
+                          id=""
+                          type="button"
+                        >
+                          <span
+                            className="padding-small--right"
+                          >
+                            Provincial Reporting
+                          </span>
+                          <Icon
+                            type="down"
+                          />
+                        </button>
+                      </Dropdown>
+                      <Link
+                        replace={false}
+                        to="/dashboard/mines/?page=1&per_page=25"
+                      >
+                        <Button
+                          block={false}
+                          className="menu__btn--link"
+                          ghost={false}
+                          htmlType="button"
+                          id=""
+                          loading={false}
+                        >
+                          Mines
+                        </Button>
+                      </Link>
+                      <Link
+                        replace={false}
+                        to="/dashboard/contacts/?page=1&per_page=25"
+                      >
+                        <Button
+                          block={false}
+                          className="menu__btn--link"
+                          ghost={false}
+                          htmlType="button"
+                          id=""
+                          loading={false}
+                        >
+                          Contacts
+                        </Button>
+                      </Link>
+                      <Connect(AuthorizationWrapper)
+                        permission="role_admin"
+                      >
+                        <Link
+                          replace={false}
+                          to="/admin/dashboard"
+                        >
+                          <Button
+                            block={false}
+                            className="menu__btn--link"
+                            ghost={false}
+                            htmlType="button"
+                            id=""
+                            loading={false}
+                          >
+                            Admin
+                          </Button>
+                        </Link>
+                      </Connect(AuthorizationWrapper)>
+                      <Dropdown
+                        mouseEnterDelay={0.15}
+                        mouseLeaveDelay={0.1}
+                        overlay={[Function]}
+                        placement="bottomLeft"
+                      >
+                        <button
+                          className="menu__btn"
+                          type="button"
+                        >
+                          <Icon
+                            className="padding-small--right icon-sm"
+                            type="user"
+                          />
+                          <span
+                            className="padding-small--right"
+                          />
+                          <Icon
+                            type="down"
+                          />
+                        </button>
+                      </Dropdown>
+                      <Connect(AuthorizationWrapper)
+                        permission="role_admin"
+                      >
+                        <Dropdown
+                          disabled={true}
+                          mouseEnterDelay={0.15}
+                          mouseLeaveDelay={0.1}
+                          overlay={
+                            <Menu>
+                              <MenuItemGroup
+                                disabled={true}
+                                title="Please re-verify the following mines:"
+                              />
+                            </Menu>
+                          }
+                          placement="bottomLeft"
+                        >
+                          <button
+                            className="menu__btn"
+                            type="button"
+                          >
+                            <img
+                              alt="GoodMines"
+                              className="padding-small--right icon-sm vertical-align-sm"
+                              src={
+                                Object {
+                                  "process": [Function],
+                                }
+                              }
+                              width="25"
+                            />
+                            <span
+                              className="padding-small--right"
+                            >
+                              0
+                            </span>
+                          </button>
+                        </Dropdown>
+                      </Connect(AuthorizationWrapper)>
+                    </div>,
+                    "minWidth": 980,
+                    "values": Object {},
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": Array [
+                        <Dropdown
+                          mouseEnterDelay={0.15}
+                          mouseLeaveDelay={0.1}
+                          overlay={[Function]}
+                          placement="bottomLeft"
+                        >
+                          <button
+                            className="menu__btn"
+                            id=""
+                            type="button"
+                          >
+                            <span
+                              className="padding-small--right"
+                            >
+                              Provincial Reporting
+                            </span>
+                            <Icon
+                              type="down"
+                            />
+                          </button>
+                        </Dropdown>,
+                        <Link
+                          replace={false}
+                          to="/dashboard/mines/?page=1&per_page=25"
+                        >
+                          <Button
+                            block={false}
+                            className="menu__btn--link"
+                            ghost={false}
+                            htmlType="button"
+                            id=""
+                            loading={false}
+                          >
+                            Mines
+                          </Button>
+                        </Link>,
+                        <Link
+                          replace={false}
+                          to="/dashboard/contacts/?page=1&per_page=25"
+                        >
+                          <Button
+                            block={false}
+                            className="menu__btn--link"
+                            ghost={false}
+                            htmlType="button"
+                            id=""
+                            loading={false}
+                          >
+                            Contacts
+                          </Button>
+                        </Link>,
+                        <Connect(AuthorizationWrapper)
+                          permission="role_admin"
+                        >
+                          <Link
+                            replace={false}
+                            to="/admin/dashboard"
+                          >
+                            <Button
+                              block={false}
+                              className="menu__btn--link"
+                              ghost={false}
+                              htmlType="button"
+                              id=""
+                              loading={false}
+                            >
+                              Admin
+                            </Button>
+                          </Link>
+                        </Connect(AuthorizationWrapper)>,
+                        <Dropdown
+                          mouseEnterDelay={0.15}
+                          mouseLeaveDelay={0.1}
+                          overlay={[Function]}
+                          placement="bottomLeft"
+                        >
+                          <button
+                            className="menu__btn"
+                            type="button"
+                          >
+                            <Icon
+                              className="padding-small--right icon-sm"
+                              type="user"
+                            />
+                            <span
+                              className="padding-small--right"
+                            />
+                            <Icon
+                              type="down"
+                            />
+                          </button>
+                        </Dropdown>,
+                        <Connect(AuthorizationWrapper)
+                          permission="role_admin"
+                        >
+                          <Dropdown
+                            disabled={true}
+                            mouseEnterDelay={0.15}
+                            mouseLeaveDelay={0.1}
+                            overlay={
+                              <Menu>
+                                <MenuItemGroup
+                                  disabled={true}
+                                  title="Please re-verify the following mines:"
+                                />
+                              </Menu>
+                            }
+                            placement="bottomLeft"
+                          >
+                            <button
+                              className="menu__btn"
+                              type="button"
+                            >
+                              <img
+                                alt="GoodMines"
+                                className="padding-small--right icon-sm vertical-align-sm"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                                width="25"
+                              />
+                              <span
+                                className="padding-small--right"
+                              >
+                                0
+                              </span>
+                            </button>
+                          </Dropdown>
+                        </Connect(AuthorizationWrapper)>,
+                      ],
+                    },
+                    "ref": null,
+                    "rendered": Array [
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "children": <button
+                            className="menu__btn"
+                            id=""
+                            type="button"
+                          >
+                            <span
+                              className="padding-small--right"
+                            >
+                              Provincial Reporting
+                            </span>
+                            <Icon
+                              type="down"
+                            />
+                          </button>,
+                          "mouseEnterDelay": 0.15,
+                          "mouseLeaveDelay": 0.1,
+                          "overlay": [Function],
+                          "placement": "bottomLeft",
+                        },
+                        "ref": null,
+                        "rendered": Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "host",
+                          "props": Object {
+                            "children": Array [
+                              <span
+                                className="padding-small--right"
+                              >
+                                Provincial Reporting
+                              </span>,
+                              <Icon
+                                type="down"
+                              />,
+                            ],
+                            "className": "menu__btn",
+                            "id": "",
+                            "type": "button",
+                          },
+                          "ref": null,
+                          "rendered": Array [
+                            Object {
+                              "instance": null,
+                              "key": undefined,
+                              "nodeType": "host",
+                              "props": Object {
+                                "children": "Provincial Reporting",
+                                "className": "padding-small--right",
+                              },
+                              "ref": null,
+                              "rendered": "Provincial Reporting",
+                              "type": "span",
+                            },
+                            Object {
+                              "instance": null,
+                              "key": undefined,
+                              "nodeType": "function",
+                              "props": Object {
+                                "type": "down",
+                              },
+                              "ref": null,
+                              "rendered": null,
+                              "type": [Function],
+                            },
+                          ],
+                          "type": "button",
+                        },
+                        "type": [Function],
+                      },
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "children": <Button
+                            block={false}
+                            className="menu__btn--link"
+                            ghost={false}
+                            htmlType="button"
+                            id=""
+                            loading={false}
+                          >
+                            Mines
+                          </Button>,
+                          "replace": false,
+                          "to": "/dashboard/mines/?page=1&per_page=25",
+                        },
+                        "ref": null,
+                        "rendered": Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "class",
+                          "props": Object {
+                            "block": false,
+                            "children": "Mines",
+                            "className": "menu__btn--link",
+                            "ghost": false,
+                            "htmlType": "button",
+                            "id": "",
+                            "loading": false,
+                          },
+                          "ref": null,
+                          "rendered": "Mines",
+                          "type": [Function],
+                        },
+                        "type": [Function],
+                      },
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "children": <Button
+                            block={false}
+                            className="menu__btn--link"
+                            ghost={false}
+                            htmlType="button"
+                            id=""
+                            loading={false}
+                          >
+                            Contacts
+                          </Button>,
+                          "replace": false,
+                          "to": "/dashboard/contacts/?page=1&per_page=25",
+                        },
+                        "ref": null,
+                        "rendered": Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "class",
+                          "props": Object {
+                            "block": false,
+                            "children": "Contacts",
+                            "className": "menu__btn--link",
+                            "ghost": false,
+                            "htmlType": "button",
+                            "id": "",
+                            "loading": false,
+                          },
+                          "ref": null,
+                          "rendered": "Contacts",
+                          "type": [Function],
+                        },
+                        "type": [Function],
+                      },
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "children": <Link
+                            replace={false}
+                            to="/admin/dashboard"
+                          >
+                            <Button
+                              block={false}
+                              className="menu__btn--link"
+                              ghost={false}
+                              htmlType="button"
+                              id=""
+                              loading={false}
+                            >
+                              Admin
+                            </Button>
+                          </Link>,
+                          "permission": "role_admin",
+                        },
+                        "ref": null,
+                        "rendered": Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "class",
+                          "props": Object {
+                            "children": <Button
+                              block={false}
+                              className="menu__btn--link"
+                              ghost={false}
+                              htmlType="button"
+                              id=""
+                              loading={false}
+                            >
+                              Admin
+                            </Button>,
+                            "replace": false,
+                            "to": "/admin/dashboard",
+                          },
+                          "ref": null,
+                          "rendered": Object {
+                            "instance": null,
+                            "key": undefined,
+                            "nodeType": "class",
+                            "props": Object {
+                              "block": false,
+                              "children": "Admin",
+                              "className": "menu__btn--link",
+                              "ghost": false,
+                              "htmlType": "button",
+                              "id": "",
+                              "loading": false,
+                            },
+                            "ref": null,
+                            "rendered": "Admin",
+                            "type": [Function],
+                          },
+                          "type": [Function],
+                        },
+                        "type": [Function],
+                      },
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "children": <button
+                            className="menu__btn"
+                            type="button"
+                          >
+                            <Icon
+                              className="padding-small--right icon-sm"
+                              type="user"
+                            />
+                            <span
+                              className="padding-small--right"
+                            />
+                            <Icon
+                              type="down"
+                            />
+                          </button>,
+                          "mouseEnterDelay": 0.15,
+                          "mouseLeaveDelay": 0.1,
+                          "overlay": [Function],
+                          "placement": "bottomLeft",
+                        },
+                        "ref": null,
+                        "rendered": Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "host",
+                          "props": Object {
+                            "children": Array [
+                              <Icon
+                                className="padding-small--right icon-sm"
+                                type="user"
+                              />,
+                              <span
+                                className="padding-small--right"
+                              />,
+                              <Icon
+                                type="down"
+                              />,
+                            ],
+                            "className": "menu__btn",
+                            "type": "button",
+                          },
+                          "ref": null,
+                          "rendered": Array [
+                            Object {
+                              "instance": null,
+                              "key": undefined,
+                              "nodeType": "function",
+                              "props": Object {
+                                "className": "padding-small--right icon-sm",
+                                "type": "user",
+                              },
+                              "ref": null,
+                              "rendered": null,
+                              "type": [Function],
+                            },
+                            Object {
+                              "instance": null,
+                              "key": undefined,
+                              "nodeType": "host",
+                              "props": Object {
+                                "children": undefined,
+                                "className": "padding-small--right",
+                              },
+                              "ref": null,
+                              "rendered": null,
+                              "type": "span",
+                            },
+                            Object {
+                              "instance": null,
+                              "key": undefined,
+                              "nodeType": "function",
+                              "props": Object {
+                                "type": "down",
+                              },
+                              "ref": null,
+                              "rendered": null,
+                              "type": [Function],
+                            },
+                          ],
+                          "type": "button",
+                        },
+                        "type": [Function],
+                      },
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "children": <Dropdown
+                            disabled={true}
+                            mouseEnterDelay={0.15}
+                            mouseLeaveDelay={0.1}
+                            overlay={
+                              <Menu>
+                                <MenuItemGroup
+                                  disabled={true}
+                                  title="Please re-verify the following mines:"
+                                />
+                              </Menu>
+                            }
+                            placement="bottomLeft"
+                          >
+                            <button
+                              className="menu__btn"
+                              type="button"
+                            >
+                              <img
+                                alt="GoodMines"
+                                className="padding-small--right icon-sm vertical-align-sm"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                                width="25"
+                              />
+                              <span
+                                className="padding-small--right"
+                              >
+                                0
+                              </span>
+                            </button>
+                          </Dropdown>,
+                          "permission": "role_admin",
+                        },
+                        "ref": null,
+                        "rendered": Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "class",
+                          "props": Object {
+                            "children": <button
+                              className="menu__btn"
+                              type="button"
+                            >
+                              <img
+                                alt="GoodMines"
+                                className="padding-small--right icon-sm vertical-align-sm"
+                                src={
+                                  Object {
+                                    "process": [Function],
+                                  }
+                                }
+                                width="25"
+                              />
+                              <span
+                                className="padding-small--right"
+                              >
+                                0
+                              </span>
+                            </button>,
+                            "disabled": true,
+                            "mouseEnterDelay": 0.15,
+                            "mouseLeaveDelay": 0.1,
+                            "overlay": <Menu>
+                              <MenuItemGroup
+                                disabled={true}
+                                title="Please re-verify the following mines:"
+                              />
+                            </Menu>,
+                            "placement": "bottomLeft",
+                          },
+                          "ref": null,
+                          "rendered": Object {
+                            "instance": null,
+                            "key": undefined,
+                            "nodeType": "host",
+                            "props": Object {
+                              "children": Array [
+                                <img
+                                  alt="GoodMines"
+                                  className="padding-small--right icon-sm vertical-align-sm"
+                                  src={
+                                    Object {
+                                      "process": [Function],
+                                    }
+                                  }
+                                  width="25"
+                                />,
+                                <span
+                                  className="padding-small--right"
+                                >
+                                  0
+                                </span>,
+                                false,
+                              ],
+                              "className": "menu__btn",
+                              "type": "button",
+                            },
+                            "ref": null,
+                            "rendered": Array [
+                              Object {
+                                "instance": null,
+                                "key": undefined,
+                                "nodeType": "host",
+                                "props": Object {
+                                  "alt": "GoodMines",
+                                  "className": "padding-small--right icon-sm vertical-align-sm",
+                                  "src": Object {
+                                    "process": [Function],
+                                  },
+                                  "width": "25",
+                                },
+                                "ref": null,
+                                "rendered": null,
+                                "type": "img",
+                              },
+                              Object {
+                                "instance": null,
+                                "key": undefined,
+                                "nodeType": "host",
+                                "props": Object {
+                                  "children": 0,
+                                  "className": "padding-small--right",
+                                },
+                                "ref": null,
+                                "rendered": 0,
+                                "type": "span",
+                              },
+                              false,
+                            ],
+                            "type": "button",
+                          },
+                          "type": [Function],
+                        },
+                        "type": [Function],
+                      },
+                    ],
+                    "type": "div",
+                  },
+                  "type": [Function],
+                },
+              ],
+              "type": "div",
             },
           ],
           "type": "div",
@@ -2583,7 +3043,7 @@ ShallowWrapper {
           "nodeType": "class",
           "props": Object {
             "children": <div />,
-            "maxWidth": 768,
+            "maxWidth": 979,
             "values": Object {},
           },
           "ref": null,
