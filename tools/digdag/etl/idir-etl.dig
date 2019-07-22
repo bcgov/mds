@@ -1,16 +1,16 @@
 timezone: UTC
 
 schedule:
-  daily>: 2:00:00   # daily at 7 PM PDT
+  daily>: 1:00:00   # daily at 6 PM PDT
 
 +setup:
-  echo>: Starting MMS ETL ${session_time}
+  echo>: Starting IDIR ETL ${session_time}
 
 +login:
   sh>: oc login https://console.pathfinder.gov.bc.ca:8443 --token=$OC_TOKEN
 
 +run_etl_job:
-  py>: tasks.mms_etl.run_job
+  py>: tasks.idir_users_etl.run_job
 
 +teardown:
   echo>: finish ${session_time}
