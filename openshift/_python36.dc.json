@@ -59,11 +59,6 @@
       "value": "/"
     },
     {
-      "name": "UPLOADED_DOCUMENT_DEST",
-      "required": false,
-      "value": "/opt/app-root/src/document_uploads"
-    },
-    {
       "name": "MDS_NRIS_API_SECRET",
       "required": false,
       "value": "template.mds-nris-secret"
@@ -461,10 +456,6 @@
                   {
                     "name": "DOCUMENT_MANAGER_URL",
                     "value": "${DOCUMENT_MANAGER_URL}"
-                  },
-                  {
-                    "name": "UPLOADED_DOCUMENT_DEST",
-                    "value": "${UPLOADED_DOCUMENT_DEST}"
                   },
                   {
                     "name": "ENVIRONMENT_NAME",
