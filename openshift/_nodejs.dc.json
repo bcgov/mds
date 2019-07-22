@@ -86,6 +86,12 @@
       "value": "http://localhost:3000"
     },
     {
+      "name": "DOCUMENT_MANAGER_URL",
+      "displayName": "Document Manager Url",
+      "description": "URL for the document manager",
+      "value": "http://localhost:5001"
+    },
+    {
       "name": "MAP_PORTAL_ID",
       "value": "e926583cd0114cd19ebc591f344e30dc"
     },
@@ -205,6 +211,10 @@
                   {
                     "name": "API_URL",
                     "value": "${API_URL}"
+                  },
+                  {
+                    "name": "DOCUMENT_MANAGER_URL",
+                    "value": "${DOCUMENT_MANAGER_URL}"
                   },
                   {
                     "name": "MAP_PORTAL_ID",
