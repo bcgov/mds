@@ -168,12 +168,12 @@ def test_post_mine_major_true(test_client, db_session, auth_headers):
     post_resp = test_client.post(
         '/mines', json=test_mine_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
-    assert post_resp.status_code == 200
     assert post_data['mine_name'] == test_mine_data['mine_name']
     assert post_data['mine_location']['latitude'] == test_mine_data['latitude']
     assert post_data['mine_location']['longitude'] == test_mine_data['longitude']
     assert post_data['mine_note'] == test_mine_data['mine_note']
     assert post_data['major_mine_ind'] == True
+    assert post_resp.status_code == 200
 
 
 def test_post_mine_major_false(test_client, db_session, auth_headers):
@@ -189,12 +189,12 @@ def test_post_mine_major_false(test_client, db_session, auth_headers):
     post_resp = test_client.post(
         '/mines', json=test_mine_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
-    assert post_resp.status_code == 200
     assert post_data['mine_name'] == test_mine_data['mine_name']
     assert post_data['mine_location']['latitude'] == test_mine_data['latitude']
     assert post_data['mine_location']['longitude'] == test_mine_data['longitude']
     assert post_data['mine_note'] == test_mine_data['mine_note']
     assert post_data['major_mine_ind'] == False
+    assert post_resp.status_code == 200
 
 
 def test_post_mine_mine_status(test_client, db_session, auth_headers):
@@ -209,12 +209,12 @@ def test_post_mine_mine_status(test_client, db_session, auth_headers):
     post_resp = test_client.post(
         '/mines', json=test_mine_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
-    assert post_resp.status_code == 200
     assert post_data['mine_name'] == test_mine_data['mine_name']
     assert post_data['mine_location']['latitude'] == test_mine_data['latitude']
     assert post_data['mine_location']['longitude'] == test_mine_data['longitude']
     assert post_data['mine_note'] == test_mine_data['mine_note']
     assert post_data['mine_region'] == test_mine_data['mine_region']
+    assert post_resp.status_code == 200
 
 
 #PUT

@@ -12,17 +12,6 @@ class Date(fields.Raw):
         return value.strftime("%Y-%m-%d") if value else None
 
 
-MINE_LOCATION_MODEL = api.model(
-    'MineLocation', {
-        'latitude': fields.Fixed(description='fixed precision decimal.', decimals=7),
-        'longitude': fields.Fixed(description='fixed precision decimal.', decimals=7),
-        'utm_easting': fields.String,
-        'utm_northing': fields.String,
-        'utm_zone_number': fields.String,
-        'utm_zone_letter': fields.String,
-        'mine_location_description': fields.String,
-    })
-
 BASIC_MINE_LOCATION_MODEL = api.model('BasicMineLocation', {
     'latitude': fields.String,
     'longitude': fields.String,
@@ -45,6 +34,17 @@ MINE_TENURE_TYPE_CODE_MODEL = api.model('MineTenureTypeCode', {
     'mine_tenure_type_code': fields.String,
     'description': fields.String,
 })
+
+MINE_LOCATION_MODEL = api.model(
+    'MineLocation', {
+        'latitude': fields.Fixed(description='fixed precision decimal.', decimals=7),
+        'longitude': fields.Fixed(description='fixed precision decimal.', decimals=7),
+        'utm_easting': fields.String,
+        'utm_northing': fields.String,
+        'utm_zone_number': fields.String,
+        'utm_zone_letter': fields.String,
+        'mine_location_description': fields.String,
+    })
 
 MINE_DOCUMENT_MODEL = api.model(
     'MineDocument', {
@@ -140,7 +140,7 @@ MINES_MODEL = api.model(
         'mine_status': fields.List(fields.Nested(STATUS_MODEL)),
         'mine_tailings_storage_facilities': fields.List(fields.Nested(MINE_TSF_MODEL)),
         'mine_type': fields.List(fields.Nested(MINE_TYPE_MODEL)),
-        'verified_status': fields.Nested(MINE_VERIFIED_MODEL),
+        'verified_status': fields.Nested(MINE_VERIFIED_MODEL)
     })
 
 MINE_MODEL = api.inherit(
