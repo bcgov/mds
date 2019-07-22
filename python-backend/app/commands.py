@@ -16,9 +16,6 @@ from tests.factories import MineFactory, MinePartyAppointmentFactory
 
 
 def register_commands(app):
-    @app.cli.command()
-    def test_cli_command():
-        print("Flask commands working")
 
     @app.cli.command()
     def import_idir():
@@ -78,8 +75,6 @@ def register_commands(app):
             except DBAPIError:
                 db.session.rollback()
                 raise
-
-    # if app.config.get('ENVIRONMENT_NAME') in ['test', 'prod']:
 
     @sched.app.cli.command()
     def _run_etl():

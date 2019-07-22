@@ -34,7 +34,7 @@ def create_app(config_object=None):
     register_extensions(app)
     register_routes(app)
     register_commands(app)
-    register_scheduled_jobs(app)
+    #register_scheduled_jobs(app)
 
     return app
 

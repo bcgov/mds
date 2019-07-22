@@ -30,7 +30,7 @@ def run_job():
         json_data['metadata']['labels']['app'] = job_pod_name
         json_data['metadata']['labels']['name'] = job_pod_name
         json_data['metadata']['name'] = job_pod_name
-        json_data['spec']['containers'][0]['command'] = ["flask","test_cli_command"]
+        json_data['spec']['containers'][0]['command'] = ["flask","_run_etl"]
         json_data['spec']['containers'][0]['name'] = job_pod_name
         json_data['spec']['containers'][0]['image'] = f"docker-registry.default.svc:5000/{namespace}/mds-python-backend:{image_tag}"
 
@@ -54,6 +54,8 @@ def run_job():
 
     # Wait for pod to be created
     time.sleep(10)
+
+    # Watch the pod status and exit the job with success or raise exception
     for e in v1_pod.watch(label_selector=job_pod_label, namespace=namespace):
         print("******** Pod Status ********")
         print(e['object'].status)

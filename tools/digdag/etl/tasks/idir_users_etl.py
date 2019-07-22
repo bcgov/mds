@@ -13,10 +13,10 @@ def run_job():
     image_tag = os.getenv('IMAGE_TAG', 'dev-pr-863')
     suffix = os.getenv('SUFFIX', '-pr-863')
 
-    job_pod_name = "digdag-nris-job" + suffix
-    api_pod_name = "mds-nris-backend" + suffix
-    job_pod_label = "name=digdag-nris-job" + suffix
-    api_pod_label = "name=mds-nris-backend" + suffix
+    job_pod_name = "digdag-idir-job" + suffix
+    api_pod_name = "mds-python-backend" + suffix
+    job_pod_label = "name=digdag-idir-job" + suffix
+    api_pod_label = "name=mds-python-backend" + suffix
 
     k8s_client = config.new_client_from_config(kube_config)
     dyn_client = DynamicClient(k8s_client)
@@ -30,9 +30,9 @@ def run_job():
         json_data['metadata']['labels']['app'] = job_pod_name
         json_data['metadata']['labels']['name'] = job_pod_name
         json_data['metadata']['name'] = job_pod_name
-        json_data['spec']['containers'][0]['command'] = ["flask","run-nris-etl-job"]
+        json_data['spec']['containers'][0]['command'] = ["flask","import_idir"]
         json_data['spec']['containers'][0]['name'] = job_pod_name
-        json_data['spec']['containers'][0]['image'] = f"docker-registry.default.svc:5000/{namespace}/mds-nris-backend:{image_tag}"
+        json_data['spec']['containers'][0]['image'] = f"docker-registry.default.svc:5000/{namespace}/mds-python-backend:{image_tag}"
 
         # Update env from existing pod
         current_running_pod = v1_pod.get(label_selector=api_pod_label, namespace=namespace)

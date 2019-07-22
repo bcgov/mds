@@ -84,7 +84,7 @@ project-run:
 
 backend-build:
 	@echo "+\n++ Performing backend build ...\n+"
-	@docker-compose build --force-rm --no-cache backend --parallel
+	@docker-compose build --force-rm --no-cache --parallel backend
 
 backend-run:
 	@echo "+\n++ Running backend app...\n+"
@@ -100,7 +100,7 @@ cache:
 
 database-build:
 	@echo "+\n++ Performing postgres build ...\n+"
-	@docker-compose build postgres flyway --parallel
+	@docker-compose build --parallel postgres flyway
 
 database-run:
 	@echo "+\n++ Running postgres and Flyway migrations...\n+"
@@ -132,10 +132,6 @@ database-dump-seed:
 database-dump-seed-local:
 	@echo "+\n++ Seeding locally installed database...\n+"
 	@pg_restore -U mds -d mds -c pgDump-test.pgCustom
-
-generate-rand100:
-	@echo "+\n++ Generating 100 random mine records in local database container...\n+"
-	@docker exec -it mds_backend bash -c "flask create_data 100;"
 
 generate-rand100:
 	@echo "+\n++ Generating 100 random mine records in local database container...\n+"
