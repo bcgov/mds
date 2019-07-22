@@ -55,7 +55,7 @@ export class HomePage extends Component {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    NRIS
+                    Inspections (NRIS)
                   </a>
                 </p>
               </li>
@@ -77,14 +77,14 @@ export class HomePage extends Component {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    MTO
+                    Mineral Titles Online (MTO)
                   </a>
                 </p>
               </li>
               <li>
                 <p>
                   <a href="https://mines.nrs.gov.bc.ca/" target="_blank" rel="noopener noreferrer">
-                    MMTI
+                    Public Transparency Website (MMTI)
                   </a>
                 </p>
               </li>
