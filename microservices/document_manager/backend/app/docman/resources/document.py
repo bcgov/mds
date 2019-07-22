@@ -102,7 +102,7 @@ class DocumentListResource(Resource):
         if not doc_guid:
             raise BadRequest('Valid token requred for download')
 
-        doc = Document.query.unbound_unsafe().filter_by(document_guid=doc_guid).first()
+        doc = Document.query.filter_by(document_guid=doc_guid).first()
         if not doc:
             raise NotFound('Could not find the document corresponding to the token')
 
