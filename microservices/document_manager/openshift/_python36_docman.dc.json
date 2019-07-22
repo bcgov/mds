@@ -141,6 +141,25 @@
       }
     },
     {
+      "apiVersion": "v1",
+      "kind": "PersistentVolumeClaim",
+      "metadata": {
+        "name": "mds-document-storage${SUFFIX}",
+        "annotations": {
+          "volume.beta.kubernetes.io/storage-class": "gluster-file",
+          "volume.beta.kubernetes.io/storage-provisioner": "kubernetes.io/glusterfs"
+        }
+      },
+      "spec": {
+        "accessModes": ["ReadWriteMany"],
+        "resources": {
+          "requests": {
+            "storage": "${DOCUMENT_CAPACITY}"
+          }
+        }
+      }
+    },
+    {
       "kind": "DeploymentConfig",
       "apiVersion": "v1",
       "metadata": {
@@ -376,7 +395,15 @@
             ],
             "restartPolicy": "Always",
             "dnsPolicy": "ClusterFirst",
-            "securityContext": {}
+            "securityContext": {},
+            "volumes": [
+              {
+                "name": "mds-document-storage-data",
+                "persistentVolumeClaim": {
+                  "claimName": "mds-document-storage${SUFFIX}"
+                }
+              }
+            ]
           }
         }
       }
