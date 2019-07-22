@@ -1,13 +1,13 @@
 timezone: UTC
 
 +setup:
-  echo>: Starting NRIS ETL ${session_time}
+  echo>: Starting MMS ETL ${session_time}
 
 +login:
   sh>: oc login https://console.pathfinder.gov.bc.ca:8443 --token=$OC_TOKEN
 
 +run_etl_job:
-  py>: tasks.nris_etl.run_job
+  py>: tasks.mms_etl.run_job
 
 +teardown:
   echo>: finish ${session_time}

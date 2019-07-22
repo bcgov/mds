@@ -13,12 +13,13 @@
     "containers": [
       {
         "command": [],
+        "env": [],
         "image": "${IMAGE_PATH}:${IMAGE_TAG}",
         "imagePullPolicy": "Always",
         "name": "${NAME}"
       }
     ],
     "dnsPolicy": "ClusterFirst",
-    "restartPolicy": "OnFailure"
+    "restartPolicy": "Never"
   }
 }

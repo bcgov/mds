@@ -17,6 +17,10 @@ from tests.factories import MineFactory, MinePartyAppointmentFactory
 
 def register_commands(app):
     @app.cli.command()
+    def test_cli_command():
+        print("Flask commands working")
+
+    @app.cli.command()
     def import_idir():
         from app.scheduled_jobs.IDIR_jobs import _import_empr_idir_users
         _import_empr_idir_users()
