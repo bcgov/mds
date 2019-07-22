@@ -107,7 +107,7 @@ export class HomePage extends Component {
               <li>
                 <p>
                   <a href={HSRC_PDF} target="_blank" rel="noopener noreferrer">
-                    HSRC
+                    Health, Safety and Reclamation Code
                   </a>
                 </p>
               </li>
