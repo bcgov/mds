@@ -60,12 +60,6 @@ class TestConfig(Config):
     DB_URL = f"postgres://{Config.DB_USER}:{Config.DB_PASS}@{Config.DB_HOST}:{Config.DB_PORT}/{DB_NAME}"
     SQLALCHEMY_DATABASE_URI = DB_URL
 
-    NRIS_DB_USER = os.environ.get('NRIS_DB_USER', 'localhost')
-    NRIS_DB_PASSWORD = os.environ.get('NRIS_DB_PASSWORD', 'localhost')
-    NRIS_DB_PORT = os.environ.get('NRIS_DB_PORT', 'localhost')
-    NRIS_DB_SERVICENAME = os.environ.get('NRIS_DB_SERVICENAME', 'localhost')
-    NRIS_DB_HOSTNAME = os.environ.get('NRIS_DB_HOSTNAME', 'localhost')
-
     JWT_OIDC_TEST_MODE = True
     JWT_OIDC_TEST_AUDIENCE = "test_audience"
     JWT_OIDC_TEST_CLIENT_SECRET = "test_secret"
