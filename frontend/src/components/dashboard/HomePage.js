@@ -66,7 +66,7 @@ export class HomePage extends Component {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    IMAP
+                    iMapBC
                   </a>
                 </p>
               </li>
