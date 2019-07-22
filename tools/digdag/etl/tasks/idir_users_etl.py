@@ -32,7 +32,7 @@ def run_job():
         json_data['metadata']['name'] = job_pod_name
         json_data['spec']['containers'][0]['command'] = ["flask","import_idir"]
         json_data['spec']['containers'][0]['name'] = job_pod_name
-        json_data['spec']['containers'][0]['image'] = f"docker-registry.default.svc:5000/{namespace}/mds-python-backend:{image_tag}"
+        json_data['spec']['containers'][0]['image'] = f"docker-registry.default.svc:5000/{namespace}/mds-nris-backend:{image_tag}"
 
         # Update env from existing pod
         current_running_pod = v1_pod.get(label_selector=api_pod_label, namespace=namespace)
