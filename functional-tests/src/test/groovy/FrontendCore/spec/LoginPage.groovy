@@ -19,11 +19,11 @@ class  LoginPageSpec extends GebReportingSpec {
         when: "Page loaded"
         at LoginPage
         and: "I input username and password"
-        // print "Testing Login....."
+        
         IDIRusername = Const.IDIR_USERNAME
         IDIRpassword = Const.IDIR_PASSWORD
         IDIRloginButton.click()
-        // print "Testing Login....."
+        
         then: "I am on the Dashboard page"
         at Dashboard
     }
