@@ -151,12 +151,16 @@ class MineListResource(Resource, UserMixin):
 
 
         mine_status = _mine_status_processor(data.get('mine_status'), data.get('status_date'), mine)
+
         mine.save()
 
         # Clear and rebuild the cache after committing changes to db
         if lat and lon:
             cache.delete(MINE_MAP_CACHE)
             MineMapResource.rebuild_map_cache_async()
+
+        # generate & set hybrid_properties to include in response payload
+        mine.init_on_load()
         return mine
 
     def apply_filter_and_search(self, args):

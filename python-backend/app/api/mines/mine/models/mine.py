@@ -96,13 +96,6 @@ class Mine(AuditMixin, Base):
 
     @hybrid_property
     def mine_location(self):
-        # FIXME: This should defer to init_on_load directly
-        if self.latitude and self.longitude:
-            try:
-                self.utm_values = utm.from_latlon(self.latitude, self.longitude)
-            except utm.error.OutOfRangeError:
-                self.utm_values = ()
-
         return {
             'latitude': self.latitude,
             'longitude': self.longitude,
