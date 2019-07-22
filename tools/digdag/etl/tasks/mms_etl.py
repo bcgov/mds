@@ -30,7 +30,7 @@ def run_job():
         json_data['metadata']['labels']['app'] = job_pod_name
         json_data['metadata']['labels']['name'] = job_pod_name
         json_data['metadata']['name'] = job_pod_name
-        json_data['spec']['containers'][0]['command'] = ["flask","test-cli-command"]
+        json_data['spec']['containers'][0]['command'] = ["flask","test_cli_command"]
         json_data['spec']['containers'][0]['name'] = job_pod_name
         json_data['spec']['containers'][0]['image'] = f"docker-registry.default.svc:5000/{namespace}/mds-python-backend:{image_tag}"
 
