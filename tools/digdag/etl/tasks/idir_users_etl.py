@@ -59,6 +59,7 @@ def run_job():
     for e in v1_pod.watch(label_selector=job_pod_label, namespace=namespace):
         print("******** Pod Status ********")
         print(e['object'].status)
+
         current_state = e['object'].status.containerStatuses[0].state
         if 'terminated' in current_state.keys():
             if current_state['terminated']['exitCode'] == 0:
@@ -66,5 +67,10 @@ def run_job():
             else:
                 raise Exception('Pod exited with an error, refer to logs')
             break
+        elif 'error' in current_state.keys():
+            raise Exception('Pod exited with an error, refer to logs')
+        else:
+            print("******** Pod Running ********")
+
 
     print("Job finished")
