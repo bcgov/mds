@@ -13,6 +13,8 @@ from ...status.models.mine_status_xref import MineStatusXref
 from ..models.mine_type import MineType
 from ..models.mine_type_detail import MineTypeDetail
 
+from .mine_map import MineMapResource
+
 from ..models.mine import Mine
 from ..models.mineral_tenure_xref import MineralTenureXref
 from ...location.models.mine_location import MineLocation
@@ -21,7 +23,9 @@ from app.extensions import api, cache, db
 from ....utils.access_decorators import requires_role_mine_edit, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from ....constants import MINE_MAP_CACHE
+
 from app.api.mines.mine_api_models import MINE_LIST_MODEL, MINE_MODEL
+
 # FIXME: Model import from outside of its namespace
 # This breaks micro-service architecture and is done
 # for search performance until search can be refactored
@@ -148,11 +152,14 @@ class MineListResource(Resource, UserMixin):
 
         if lat and lon:
             mine.mine_location = MineLocation(latitude=lat, longitude=lon)
-            cache.delete(MINE_MAP_CACHE)
 
         mine_status = _mine_status_processor(data.get('mine_status'), data.get('status_date'), mine)
         db.session.commit()
 
+        # Clear and rebuild the cache after committing changes to db
+        if lat and lon:
+            cache.delete(MINE_MAP_CACHE)
+            MineMapResource.rebuild_map_cache_async()
         return mine
 
     def apply_filter_and_search(self, args):
@@ -334,6 +341,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
     @requires_role_mine_edit
     def put(self, mine_no_or_guid):
         mine = Mine.find_by_mine_no_or_guid(mine_no_or_guid)
+        refresh_cache = False
         if not mine:
             raise NotFound("Mine not found.")
 
@@ -350,6 +358,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         if 'mine_name' in data and mine.mine_name != data['mine_name']:
             _throw_error_if_mine_exists(data['mine_name'])
             mine.mine_name = data['mine_name']
+            refresh_cache = True
         if 'mine_note' in data:
             mine.mine_note = data['mine_note']
         if 'major_mine_ind' in data:
@@ -379,17 +388,25 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             #update existing record
             if "latitude" in data:
                 mine.mine_location.latitude = data['latitude']
+                refresh_cache = True
             if "longitude" in data:
                 mine.mine_location.longitude = data['longitude']
+                refresh_cache = True
             mine.mine_location.save()
 
         elif data.get('latitude') and data.get('longitude') and not mine.mine_location:
             mine.mine_location = MineLocation(
                 latitude=data['latitude'], longitude=data['longitude'])
+            refresh_cache = True
             mine.save()
-            cache.delete(MINE_MAP_CACHE)
-        # Status validation
+
         _mine_status_processor(data.get('mine_status'), data.get('status_date'), mine)
+
+        # refresh cache will need to be called for all supported fields, should more be added in the future
+        if refresh_cache:
+            cache.delete(MINE_MAP_CACHE)
+            MineMapResource.rebuild_map_cache_async()
+
         return mine
 
 

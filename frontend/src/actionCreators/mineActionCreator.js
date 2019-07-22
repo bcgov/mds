@@ -132,7 +132,7 @@ export const createTailingsStorageFacility = (mine_guid, payload) => (dispatch) 
 export const createMineExpectedDocument = (id, payload) => (dispatch) => {
   dispatch(request(reducerTypes.ADD_MINE_EXPECTED_DOCUMENT));
   dispatch(showLoading());
-  return CustomAxios(String.ERROR)
+  return CustomAxios({ errorToastMessage: String.ERROR })
     .post(
       `${ENVIRONMENT.apiUrl + API.ADD_MINE_EXPECTED_DOCUMENT}/${id}`,
       { documents: [payload] },
@@ -150,7 +150,7 @@ export const createMineExpectedDocument = (id, payload) => (dispatch) => {
 export const removeExpectedDocument = (exp_doc_guid) => (dispatch) => {
   dispatch(request(reducerTypes.REMOVE_EXPECTED_DOCUMENT));
   dispatch(showLoading());
-  return CustomAxios(String.ERROR)
+  return CustomAxios({ errorToastMessage: String.ERROR })
     .delete(
       `${ENVIRONMENT.apiUrl + API.REMOVE_EXPECTED_DOCUMENT}/${exp_doc_guid}`,
       createRequestHeader()

@@ -5,10 +5,10 @@ export const storeMineList = (payload) => ({
   payload,
 });
 
-export const storeMine = (payload, id) => ({
+export const storeMine = (payload) => ({
   type: ActionTypes.STORE_MINE,
   payload,
-  id,
+  id: payload.mine_guid || payload.mineGuid || payload.mine_no || payload.mineNo,
 });
 
 export const storeMineNameList = (payload) => ({
