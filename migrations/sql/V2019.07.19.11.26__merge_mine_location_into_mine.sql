@@ -14,17 +14,5 @@ UPDATE mine
 FROM mine_location
 WHERE mine.mine_guid = mine_location.mine_guid;
 
--- Update the view to reference mine
-DROP VIEW IF EXISTS mine_map_view;
-
-CREATE VIEW mine_map_view AS
- SELECT
-    mine_guid,
-    latitude ,
-    longitude,
-    mine_no  ,
-    mine_name
-   FROM mine;
-
 -- Destroy mine_location
 DROP TABLE IF EXISTS mine_location CASCADE;

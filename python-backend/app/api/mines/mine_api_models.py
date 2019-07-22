@@ -35,19 +35,6 @@ MINE_TENURE_TYPE_CODE_MODEL = api.model('MineTenureTypeCode', {
     'description': fields.String,
 })
 
-MINE_LOCATION_MODEL = api.model(
-    'MineLocation', {
-        'mine_location_guid': fields.String,
-        'mine_guid': fields.String,
-        'latitude': fields.Fixed(description='fixed precision decimal.', decimals=7),
-        'longitude': fields.Fixed(description='fixed precision decimal.', decimals=7),
-        'utm_easting': fields.String,
-        'utm_northing': fields.String,
-        'utm_zone_number': fields.String,
-        'utm_zone_letter': fields.String,
-        'mine_location_description': fields.String,
-    })
-
 MINE_DOCUMENT_MODEL = api.model(
     'MineDocument', {
         'mine_document_guid': fields.String,
@@ -142,12 +129,18 @@ MINES_MODEL = api.model(
         'mine_status': fields.List(fields.Nested(STATUS_MODEL)),
         'mine_tailings_storage_facilities': fields.List(fields.Nested(MINE_TSF_MODEL)),
         'mine_type': fields.List(fields.Nested(MINE_TYPE_MODEL)),
-        'verified_status': fields.Nested(MINE_VERIFIED_MODEL)
+        'verified_status': fields.Nested(MINE_VERIFIED_MODEL),
+        'latitude': fields.Fixed(description='fixed precision decimal.', decimals=7),
+        'longitude': fields.Fixed(description='fixed precision decimal.', decimals=7),
+        'utm_easting': fields.String,
+        'utm_northing': fields.String,
+        'utm_zone_number': fields.String,
+        'utm_zone_letter': fields.String,
+        'mine_location_description': fields.String,
     })
 
 MINE_MODEL = api.inherit(
     'Mine', MINES_MODEL, {
-        'mine_location': fields.Nested(MINE_LOCATION_MODEL),
         'mine_expected_documents': fields.List(fields.Nested(MINE_EXPECTED_DOCUMENT_MODEL)),
     })
 
@@ -189,7 +182,7 @@ MINE_INCIDENT_MODEL = api.model(
         'reported_by_email': fields.String,
         'reported_by_phone_no': fields.String,
         'reported_by_phone_ext': fields.String,
-        'emergency_services_called': fields.Boolean, 
+        'emergency_services_called': fields.Boolean,
         'number_of_injuries': fields.Integer,
         'number_of_fatalities': fields.Integer,
         'reported_to_inspector_party_guid':  fields.String,
@@ -200,11 +193,11 @@ MINE_INCIDENT_MODEL = api.model(
         'followup_inspection': fields.Boolean,
         'followup_inspection_date': DateTime,
         'determination_inspector_party_guid': fields.String,
-        'mms_inspector_initials' : fields.String(attribute='mms_insp_cd'), 
+        'mms_inspector_initials' : fields.String(attribute='mms_insp_cd'),
         'dangerous_occurrence_subparagraph_ids': fields.List(fields.Integer),
         'proponent_incident_no': fields.String,
         'mine_incident_no': fields.String,
-        'documents': fields.List(fields.Nested(MINE_INCIDENT_DOCUMENT_MODEL)), 
+        'documents': fields.List(fields.Nested(MINE_INCIDENT_DOCUMENT_MODEL)),
         'recommendations': fields.List(fields.Nested(MINE_INCIDENT_RECOMMENDATION_MODEL))
     })
 

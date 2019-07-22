@@ -1,8 +1,12 @@
 import uuid
+import utm
 
 from sqlalchemy.orm import validates
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
+from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.orm import reconstructor
+from geoalchemy2 import Geometry
 from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
 # FIXME: Model import from outside of its namespace
@@ -27,10 +31,13 @@ class Mine(AuditMixin, Base):
     mine_region = db.Column(db.String(2), db.ForeignKey('mine_region_code.mine_region_code'))
     ohsc_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     union_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
+    latitude = db.Column(db.Numeric(9, 7))
+    longitude = db.Column(db.Numeric(11, 7))
+    geom = db.Column(Geometry('POINT', 3005))
+    mine_location_description = db.Column(db.String)
     # Relationships
 
     #Almost always used and 1:1, so these are joined
-    mine_location = db.relationship('MineLocation', backref='mine', uselist=False, lazy='joined')
     mine_status = db.relationship(
         'MineStatus', backref='mine', order_by='desc(MineStatus.update_timestamp)', lazy='joined')
     mine_tailings_storage_facilities = db.relationship(
@@ -62,6 +69,30 @@ class Mine(AuditMixin, Base):
 
     def __repr__(self):
         return '<Mine %r>' % self.mine_guid
+
+    @reconstructor
+    def init_on_load(self):
+        if self.latitude and self.longitude:
+            try:
+                self.utm_values = utm.from_latlon(self.latitude, self.longitude)
+            except utm.error.OutOfRangeError:
+                self.utm_values = ()
+
+    @hybrid_property
+    def utm_easting(self):
+        return self.utm_values[0] if self.utm_values else None
+
+    @hybrid_property
+    def utm_northing(self):
+        return self.utm_values[1] if self.utm_values else None
+
+    @hybrid_property
+    def utm_zone_number(self):
+        return self.utm_values[2] if self.utm_values else None
+
+    @hybrid_property
+    def utm_zone_letter(self):
+        return self.utm_values[3] if self.utm_values else None
 
     def json(self):
         return {

@@ -13,7 +13,6 @@ from app.api.document_manager.models.document_manager import DocumentManager
 from app.api.documents.expected.models.mine_expected_document import MineExpectedDocument
 from app.api.documents.mines.models.mine_document import MineDocument
 from app.api.documents.variances.models.variance import VarianceDocumentXref
-from app.api.mines.location.models.mine_location import MineLocation
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.mine.models.mine_type import MineType
 from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
@@ -125,20 +124,6 @@ class MineExpectedDocumentFactory(BaseFactory):
 
         MineDocumentFactory.create_batch(
             size=extracted, mine_expected_document=[obj], mine=obj.mine, **kwargs)
-
-
-class MineLocationFactory(BaseFactory):
-    class Meta:
-        model = MineLocation
-
-    mine_location_guid = GUID
-    latitude = factory.Faker('latitude')  # or factory.fuzzy.FuzzyFloat(49, 60) for ~ inside BC
-    longitude = factory.Faker('longitude')  # or factory.fuzzy.FuzzyFloat(-132, -114.7) for ~ BC
-    geom = factory.LazyAttribute(lambda o: 'SRID=3005;POINT(%f %f)' % (o.longitude, o.latitude))
-    mine_location_description = factory.Faker('sentence', nb_words=8, variable_nb_words=True)
-    effective_date = TODAY
-    expiry_date = TODAY
-    mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
 
 
 class MineStatusFactory(BaseFactory):
@@ -508,9 +493,12 @@ class MineFactory(BaseFactory):
     mine_region = factory.LazyFunction(RandomMineRegionCode)
     ohsc_ind = factory.Faker('boolean', chance_of_getting_true=50)
     union_ind = factory.Faker('boolean', chance_of_getting_true=50)
-    mine_location = factory.RelatedFactory(MineLocationFactory, 'mine')
     mine_type = factory.RelatedFactory(MineTypeFactory, 'mine')
     verified_status = factory.RelatedFactory(MineVerifiedStatusFactory, 'mine')
+    latitude = factory.Faker('latitude')  # or factory.fuzzy.FuzzyFloat(49, 60) for ~ inside BC
+    longitude = factory.Faker('longitude')  # or factory.fuzzy.FuzzyFloat(-132, -114.7) for ~ BC
+    geom = factory.LazyAttribute(lambda o: 'SRID=3005;POINT(%f %f)' % (o.longitude, o.latitude))
+    mine_location_description = factory.Faker('sentence', nb_words=8, variable_nb_words=True)
     mine_status = factory.RelatedFactory(MineStatusFactory, 'mine')
     mine_tailings_storage_facilities = []
     mine_permit = []
