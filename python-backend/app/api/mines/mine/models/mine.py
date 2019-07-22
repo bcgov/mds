@@ -94,6 +94,18 @@ class Mine(AuditMixin, Base):
     def utm_zone_letter(self):
         return self.utm_values[3] if self.utm_values else None
 
+    @hybrid_property
+    def mine_location(self):
+        return {
+            'latitude': self.latitude,
+            'longitude': self.longitude,
+            'utm_easting': self.utm_easting,
+            'utm_northing': self.utm_northing,
+            'utm_zone_number': self.utm_zone_number,
+            'utm_zone_letter': self.utm_zone_letter,
+            'mine_location_description': self.mine_location_description
+        }
+
     def json(self):
         return {
             'mine_guid':
