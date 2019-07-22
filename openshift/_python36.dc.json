@@ -507,12 +507,6 @@
                 },
                 "terminationMessagePath": "/dev/termination-log",
                 "terminationMessagePolicy": "File",
-                "volumeMounts": [
-                  {
-                    "mountPath": "/opt/app-root/src/document_uploads",
-                    "name": "mds-document-storage-data"
-                  }
-                ],
                 "imagePullPolicy": "IfNotPresent"
               },
               {
