@@ -6,7 +6,7 @@ from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
 from app.extensions import api, db
 from app.api.utils.resources_mixins import UserMixin
-from app.api.utils.access_decorators import (requires_any_of, VIEW_ALL)
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_report
 
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.reports.models.mine_report import MineReport
@@ -39,16 +39,15 @@ class MineReportListResource(Resource, UserMixin):
 
     @api.marshal_with(MINE_REPORT_MODEL, envelope='records', code=200)
     @api.doc(description='returns the reports for a given mine.')
-    @requires_any_of([VIEW_ALL])
+    @requires_role_view_all
     def get(self, mine_guid):
         mine_reports = MineReport.find_all_by_mine_guid(mine_guid)
-        return mine_reports if mine_reports else []
+        return mine_reports
 
     @api.expect(MINE_REPORT_MODEL)
     @api.doc(description='creates a new report for the mine')
     @api.marshal_with(MINE_REPORT_MODEL, code=201)
-    #@requires_role_mine_create
-    @requires_any_of([VIEW_ALL])
+    @requires_role_edit_report
     def post(self, mine_guid):
         mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:
@@ -88,7 +87,7 @@ class MineReportResource(Resource, UserMixin):
     parser.add_argument('due_date', type=str, location='json', store_missing=False)
 
     @api.marshal_with(MINE_REPORT_MODEL, code=200)
-    @requires_any_of([VIEW_ALL])
+    @requires_role_view_all
     def get(self, mine_guid, mine_report_guid):
         mine_report = MineReport.find_by_mine_report_guid(mine_report_guid)
         if not mine_report:
@@ -97,8 +96,7 @@ class MineReportResource(Resource, UserMixin):
 
     @api.expect(parser)
     @api.marshal_with(MINE_REPORT_MODEL, code=200)
-    #@requires_role_mine_create
-    @requires_any_of([VIEW_ALL])
+    @requires_role_edit_report
     def put(self, mine_guid, mine_report_guid):
         mine_report = MineReport.find_by_mine_report_guid(mine_report_guid)
         if not mine_report or str(mine_report.mine_guid) != mine_guid:
