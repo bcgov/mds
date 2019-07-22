@@ -44,7 +44,7 @@ class MineIncidentDocumentListResource(Resource, UserMixin):
             'filename': metadata.get('filename')
         }
 
-        document_manager_URL = f'{current_app.config["DOCUMENT_MANAGER_URL"]}/document-manager'
+        document_manager_URL = f'{current_app.config["DOCUMENT_MANAGER_URL"]}/documents'
 
         resp = requests.post(
             url=document_manager_URL,
@@ -54,8 +54,7 @@ class MineIncidentDocumentListResource(Resource, UserMixin):
             cookies=request.cookies,
         )
 
-        response = Response(resp.content, resp.status_code,
-                            resp.raw.headers.items())
+        response = Response(resp.content, resp.status_code, resp.raw.headers.items())
         return response
 
     def _parse_upload_folders(self, mine_guid):
@@ -85,11 +84,9 @@ class MineIncidentDocumentResource(Resource, UserMixin):
         parser = CustomReqparser()
         parser.add_argument('filename', type=str, required=True)
         parser.add_argument('document_manager_guid', type=str, required=True)
-        parser.add_argument('mine_incident_document_type',
-                            type=str, required=True)
+        parser.add_argument('mine_incident_document_type', type=str, required=True)
 
-        mine_incident = MineIncident.find_by_mine_incident_guid(
-            mine_incident_guid)
+        mine_incident = MineIncident.find_by_mine_incident_guid(mine_incident_guid)
         mine = Mine.find_by_mine_guid(mine_guid)
 
         if not mine_incident:
@@ -102,10 +99,9 @@ class MineIncidentDocumentResource(Resource, UserMixin):
         file_name = data.get('filename')
         mine_incident_document_type = data.get('mine_incident_document_type')
 
-        mine_doc = MineDocument(
-            mine_guid=mine.mine_guid,
-            document_name=file_name,
-            document_manager_guid=document_manager_guid)
+        mine_doc = MineDocument(mine_guid=mine.mine_guid,
+                                document_name=file_name,
+                                document_manager_guid=document_manager_guid)
 
         if not mine_doc:
             raise BadRequest('Unable to register uploaded file as document')
@@ -128,14 +124,11 @@ class MineIncidentDocumentResource(Resource, UserMixin):
         if not mine_document_guid:
             raise BadRequest('must provide document_guid to be unlinked')
 
-        mine_incident = MineIncident.find_by_mine_incident_guid(
-            mine_incident_guid)
-        mine_document = MineDocument.find_by_mine_document_guid(
-            mine_document_guid)
+        mine_incident = MineIncident.find_by_mine_incident_guid(mine_incident_guid)
+        mine_document = MineDocument.find_by_mine_document_guid(mine_document_guid)
 
         if mine_incident is None or mine_document is None:
-            raise NotFound(
-                'Either the Expected Document or the Mine Document was not found')
+            raise NotFound('Either the Expected Document or the Mine Document was not found')
 
         mine_incident.documents.remove(mine_document)
         mine_incident.save()

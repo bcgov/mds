@@ -51,7 +51,7 @@ class PermitAmendmentDocumentListResource(Resource, UserMixin):
             'filename': metadata.get('filename')
         }
 
-        document_manager_URL = f'{current_app.config["DOCUMENT_MANAGER_URL"]}/document-manager'
+        document_manager_URL = f'{current_app.config["DOCUMENT_MANAGER_URL"]}/documents'
 
         resp = requests.post(
             url=document_manager_URL,
@@ -61,8 +61,7 @@ class PermitAmendmentDocumentListResource(Resource, UserMixin):
             cookies=request.cookies,
         )
 
-        response = Response(resp.content, resp.status_code,
-                            resp.raw.headers.items())
+        response = Response(resp.content, resp.status_code, resp.raw.headers.items())
         return response
 
     def _parse_upload_folders(self, mine_guid):
@@ -85,16 +84,18 @@ class PermitAmendmentDocumentListResource(Resource, UserMixin):
 
     @api.marshal_with(PERMIT_AMENDMENT_DOCUMENT_MODEL, code=201)
     @requires_role_edit_permit
-    def put(self, mine_guid, permit_amendment_guid, permit_guid, permit_amendment_document_guid=None):
-        permit_amendment = PermitAmendment.find_by_permit_amendment_guid(
-            permit_amendment_guid)
+    def put(self,
+            mine_guid,
+            permit_amendment_guid,
+            permit_guid,
+            permit_amendment_document_guid=None):
+        permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
         if not permit_amendment:
             raise NotFound('Permit amendment not found.')
         if not str(permit_amendment.permit_guid) == permit_guid:
             raise BadRequest('Amendment and permit permit_guid mismatch.')
         if not str(permit_amendment.mine_guid) == mine_guid:
-            raise BadRequest(
-                'Permits mine_guid and supplied mine_guid mismatch.')
+            raise BadRequest('Permits mine_guid and supplied mine_guid mismatch.')
 
         data = self.parser.parse_args()
         if data.get('document_manager_guid'):
@@ -111,8 +112,7 @@ class PermitAmendmentDocumentListResource(Resource, UserMixin):
             permit_amendment.related_documents.append(new_pa_doc)
             permit_amendment.save()
         else:
-            raise BadRequest(
-                'Must provide the doc manager guid for the newly uploaded file.')
+            raise BadRequest('Must provide the doc manager guid for the newly uploaded file.')
 
         return new_pa_doc
 
@@ -121,8 +121,7 @@ class PermitAmendmentDocumentResource(Resource, UserMixin):
     @requires_role_edit_permit
     @api.response(204, 'Successfully deleted.')
     def delete(self, mine_guid, permit_guid, permit_amendment_guid, permit_amendment_document_guid):
-        permit_amendment = PermitAmendment.find_by_permit_amendment_guid(
-            permit_amendment_guid)
+        permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
         permit_amendment_doc = PermitAmendmentDocument.find_by_permit_amendment_document_guid(
             permit_amendment_document_guid)
 
@@ -136,8 +135,7 @@ class PermitAmendmentDocumentResource(Resource, UserMixin):
             raise BadRequest('Amendment and permit permit_guid mismatch.')
 
         if not str(permit_amendment.mine_guid) == mine_guid:
-            raise BadRequest(
-                'Permits mine_guid and supplied mine_guid mismatch.')
+            raise BadRequest('Permits mine_guid and supplied mine_guid mismatch.')
 
         permit_amendment.related_documents.remove(permit_amendment_doc)
         permit_amendment.save()

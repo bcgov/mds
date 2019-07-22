@@ -52,7 +52,7 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             'pretty_folder': pretty_folder,
             'filename': metadata.get('filename')
         }
-        document_manager_URL = f'{current_app.config["DOCUMENT_MANAGER_URL"]}/document-manager'
+        document_manager_URL = f'{current_app.config["DOCUMENT_MANAGER_URL"]}/documents'
 
         resp = requests.post(
             url=document_manager_URL,
@@ -89,10 +89,9 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
                 return self.create_error_payload(400,
                                                  'Must supply filename for new file upload'), 400
 
-            mine_doc = MineDocument(
-                mine_guid=expected_document.mine_guid,
-                document_manager_guid=data.get('document_manager_guid'),
-                document_name=filename)
+            mine_doc = MineDocument(mine_guid=expected_document.mine_guid,
+                                    document_manager_guid=data.get('document_manager_guid'),
+                                    document_name=filename)
 
             expected_document.related_documents.append(mine_doc)
             db.session.commit()
