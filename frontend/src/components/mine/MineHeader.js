@@ -31,6 +31,7 @@ import {
   fetchMineVerifiedStatuses,
 } from "@/actionCreators/mineActionCreator";
 import { formatDate } from "@/utils/helpers";
+import RefreshButton from "@/components/common/RefreshButton";
 
 /**
  * @class MineHeader.js contains header section of MineDashboard before the tabs. Including map, mineName, mineNumber.
@@ -54,6 +55,15 @@ const propTypes = {
   transformedMineTypes: CustomPropTypes.transformedMineTypes.isRequired,
   fetchMineVerifiedStatuses: PropTypes.func.isRequired,
   userInfo: PropTypes.shape({ preferred_username: PropTypes.string.isRequired }).isRequired,
+  refreshActions: PropTypes.arrayOf(PropTypes.func),
+  refreshListActions: PropTypes.arrayOf(PropTypes.func),
+  refreshRequests: PropTypes.arrayOf(PropTypes.func),
+};
+
+const defaultProps = {
+  refreshActions: [],
+  refreshListActions: [],
+  refreshRequests: [],
 };
 
 export class MineHeader extends Component {
@@ -309,6 +319,16 @@ export class MineHeader extends Component {
                   <img src={SUBSCRIBE} alt="SUBSCRIBE" />
                 </Tooltip>
               )}
+              {// TODO: Unhide when new nav is done
+              true ? (
+                <div />
+              ) : (
+                <RefreshButton
+                  actions={this.props.refreshActions}
+                  listActions={this.props.refreshListActions}
+                  requests={this.props.refreshRequests}
+                />
+              )}
               <Dropdown
                 className="full-height full-mobile"
                 overlay={menu}
@@ -497,6 +517,7 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 MineHeader.propTypes = propTypes;
+MineHeader.defaultProps = defaultProps;
 
 export default connect(
   mapStateToProps,
