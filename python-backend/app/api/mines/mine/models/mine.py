@@ -96,6 +96,13 @@ class Mine(AuditMixin, Base):
 
     @hybrid_property
     def mine_location(self):
+        # FIXME: This should defer to init_on_load directly
+        if self.latitude and self.longitude:
+            try:
+                self.utm_values = utm.from_latlon(self.latitude, self.longitude)
+            except utm.error.OutOfRangeError:
+                self.utm_values = ()
+
         return {
             'latitude': self.latitude,
             'longitude': self.longitude,
@@ -104,88 +111,6 @@ class Mine(AuditMixin, Base):
             'utm_zone_number': self.utm_zone_number,
             'utm_zone_letter': self.utm_zone_letter,
             'mine_location_description': self.mine_location_description
-        }
-
-    def json(self):
-        return {
-            'mine_guid':
-            str(self.mine_guid),
-            'mine_name':
-            self.mine_name,
-            'mine_no':
-            self.mine_no,
-            'mine_note':
-            self.mine_note,
-            'major_mine_ind':
-            self.major_mine_ind,
-            'region_code':
-            self.mine_region,
-            'mineral_tenure_xref': [item.json() for item in self.mineral_tenure_xref],
-            'mine_location':
-            self.mine_location.json() if self.mine_location else None,
-            #Exploration permits must, always, and exclusively have an X as the second character, and we would like this to be returned last:
-            'mine_permit': [item.json() for item in self.mine_permit if item.permit_no.lower()[1] != 'x'] + [item.json() for item in self.mine_permit if item.permit_no.lower()[1] == 'x'],
-            'mine_status': [item.json() for item in self.mine_status],
-            'mine_tailings_storage_facility':
-            [item.json() for item in self.mine_tailings_storage_facilities],
-            'mine_expected_documents': [item.json() for item in self.mine_expected_documents],
-            'mine_type': [item.json() for item in self.active(self.mine_type)],
-            'verified_status': self.verified_status.json() if self.verified_status else None,
-        }
-
-    def json_for_list(self):
-        return {
-            'mine_guid':
-            str(self.mine_guid),
-            'mine_name':
-            self.mine_name,
-            'mine_no':
-            self.mine_no,
-            'mine_note':
-            self.mine_note,
-            'major_mine_ind':
-            self.major_mine_ind,
-            'region_code':
-            self.mine_region,
-            'mine_permit': [item.json_for_list() for item in self.mine_permit],
-            'mine_status': [item.json() for item in self.mine_status],
-            'mine_tailings_storage_facility':
-            [item.json() for item in self.mine_tailings_storage_facilities],
-            'mine_type': [item.json() for item in self.active(self.mine_type)],
-            'verified_status': self.verified_status.json() if self.verified_status else None,
-        }
-
-    def json_for_map(self):
-        return {
-            'mine_guid': str(self.mine_guid),
-            'mine_name': self.mine_name,
-            'mine_no': self.mine_no,
-            'mine_note': self.mine_note,
-            'major_mine_ind': self.major_mine_ind,
-            'region_code': self.mine_region,
-            'mine_location': self.mine_location.json() if self.mine_location else None
-        }
-
-    def json_by_name(self):
-        return {'mine_guid': str(self.mine_guid), 'mine_name': self.mine_name, 'mine_no': self.mine_no}
-
-    def json_by_location(self):
-        #this will get cleaned up when mine_location and mine are merged
-        result = {'mine_guid': str(self.mine_guid)}
-        if self.mine_location:
-            result['latitude'] = str(
-                self.mine_location.latitude) if self.mine_location.latitude else ''
-            result['longitude'] = str(
-                self.mine_location.longitude) if self.mine_location.longitude else ''
-        else:
-            result['latitude'] = ''
-            result['longitude'] = ''
-        return result
-
-    def json_by_permit(self):
-        return {
-            'mine_guid': str(self.mine_guid),
-            'mine_permit': [item.json() for item in self.mine_permit]
         }
 
     @staticmethod

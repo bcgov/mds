@@ -145,16 +145,13 @@ class MineListResource(Resource, UserMixin):
             major_mine_ind=data.get('major_mine_ind'),
             mine_region=data.get('mine_region'),
             ohsc_ind=data.get('ohsc_ind'),
-            union_ind=data.get('union_ind'))
+            union_ind=data.get('union_ind'),
+            latitude=lat,
+            longitude=lon)
 
-        db.session.add(mine)
-
-        if lat and lon:
-            mine.latitude = lat
-            mine.longitude = lon
 
         mine_status = _mine_status_processor(data.get('mine_status'), data.get('status_date'), mine)
-        db.session.commit()
+        mine.save()
 
         # Clear and rebuild the cache after committing changes to db
         if lat and lon:
