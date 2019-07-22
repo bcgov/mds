@@ -10,7 +10,7 @@ UPDATE mine
     SET latitude                  = mine_location.latitude,
         longitude                 = mine_location.longitude,
         mine_location_description = mine_location.mine_location_description,
-        geom = mine_location.geom
+        geom                      = mine_location.geom
 FROM mine_location
 WHERE mine.mine_guid = mine_location.mine_guid;
 

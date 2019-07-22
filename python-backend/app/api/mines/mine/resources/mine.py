@@ -149,9 +149,7 @@ class MineListResource(Resource, UserMixin):
             latitude=lat,
             longitude=lon)
 
-
         mine_status = _mine_status_processor(data.get('mine_status'), data.get('status_date'), mine)
-
         mine.save()
 
         # Clear and rebuild the cache after committing changes to db

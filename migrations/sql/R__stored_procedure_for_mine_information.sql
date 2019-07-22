@@ -492,7 +492,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
             RAISE NOTICE '.. Step 4 of 5: Update mine location in MDS';
             SELECT count(*) FROM mine into old_row;
 
-            -- Update data mine with data from ETL_LOCATION
+            -- Update mine with data from ETL_LOCATION
             RAISE NOTICE '.. Update existing records with latest MMS data';
             WITH updated_rows AS (
                 UPDATE mine
