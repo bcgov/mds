@@ -83,6 +83,9 @@ const commonConfig = merge([
       name: BUILD_FILE_NAMES.assets,
     },
   }),
+  parts.loadFiles({
+    include: path.join(PATHS.src, "assets", "downloads"),
+  }),
 ]);
 
 const devConfig = merge([
