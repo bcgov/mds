@@ -230,7 +230,7 @@ app {
                             'REPLICA_MIN':"${vars.resources.python_lite.replica_min}",
                             'REPLICA_MAX':"${vars.resources.python_lite.replica_max}",
                             'UWSGI_THREADS':"${vars.resources.python_lite.uwsgi_threads}",
-                            'USGI_PROCESSES':"${vars.resources.python_lite.uwsgi_processes}",
+                            'UWSGI_PROCESSES':"${vars.resources.python_lite.uwsgi_processes}",
                             'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
                             'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId_core}",
                             'APPLICATION_DOMAIN': "${vars.modules.'mds-nris-backend'.HOST}",
