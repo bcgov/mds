@@ -22,7 +22,7 @@ class POD():
         self.env_pod_name = self.env_pod + self.suffix
         self.job_pod_label = f"name={self.job_pod_name}"
         self.env_pod_label = f"name={self.env_pod_name}"
-        self.image = f"docker-registry.default.svc:5000/{self.namespace}/{self.env_pod_name}:{self.image_tag}"
+        self.image = f"docker-registry.default.svc:5000/{self.namespace}/{self.env_pod}:{self.image_tag}"
 
         k8s_client = config.new_client_from_config(self.kube_config)
         dyn_client = DynamicClient(k8s_client)
