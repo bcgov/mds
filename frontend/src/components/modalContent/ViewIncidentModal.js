@@ -266,7 +266,6 @@ export class ViewIncidentModal extends Component {
   ];
 
   render() {
-    console.log(this.props.incidentStatusCodeHash);
     return (
       <div>
         {this.renderInitialDetails()}

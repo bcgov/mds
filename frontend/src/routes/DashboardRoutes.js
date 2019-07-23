@@ -1,10 +1,12 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
+import RedirectRoute from "./routeWrappers/RedirectRoute";
 import * as routes from "@/constants/routes";
 import PageNotFound from "@/components/common/PageNotFound";
 
 const DashboardRoutes = () => (
   <Switch>
+    <Route exact path={routes.HOME_PAGE.route} component={routes.HOME_PAGE.component} />
     <Route
       exact
       path={routes.CUSTOM_HOME_PAGE.route}
@@ -16,10 +18,10 @@ const DashboardRoutes = () => (
       path={routes.CONTACT_HOME_PAGE.route}
       component={routes.CONTACT_HOME_PAGE.component}
     />
-    <Route exact path={routes.PARTY_PROFILE.route} component={routes.PARTY_PROFILE.component} />
+    <RedirectRoute exact path={routes.MINE_SUMMARY.route} redirectTo={routes.MINE_GENERAL.route} />
     <Route exact path={routes.MINE_SUMMARY.route} component={routes.MINE_SUMMARY.component} />
-    <Route exact path={routes.MINE_CONTACTS.route} component={routes.MINE_CONTACTS.component} />
-    <Route exact path={routes.MINE_GENERAL.route} component={routes.MINE_GENERAL.component} />
+
+    <Route exact path={routes.PARTY_PROFILE.route} component={routes.PARTY_PROFILE.component} />
     <Route
       exact
       path={routes.RELATIONSHIP_PROFILE.route}

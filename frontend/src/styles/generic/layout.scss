@@ -29,6 +29,18 @@ body {
   text-align: center;
 }
 
+.horizontal-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.violet {
+  color: $violet;
+}
+
 .right {
   text-align: right;
 }

@@ -19,6 +19,7 @@ import { TSFCard } from "@/components/mine/Tailings/MineTSFCard";
 import { formatDate } from "@/utils/helpers";
 import { DOC, OVERDUEDOC } from "@/constants/assets";
 import { getPermits } from "@/reducers/permitReducer";
+
 /**
  * @class MineSummary.js contains all content located under the 'Summary' tab on the MineDashboard.
  */
@@ -96,12 +97,18 @@ export class MineSummary extends Component {
     }
     return (
       <div>
+        <Row gutter={16}>
+          <Col span={24}>
+            <h4>Mine Details</h4>
+            <Divider />
+          </Col>
+        </Row>
         {this.props.partyRelationships && this.props.partyRelationships.length > 0 && (
           <Row gutter={16} type="flex" justify="center">
             <Col span={18}>
               <Row gutter={16}>
                 <Col span={24}>
-                  <h4>MAIN CONTACTS</h4>
+                  <h4>Main Contacts</h4>
                   <Divider />
                 </Col>
               </Row>

@@ -11,14 +11,19 @@ import ReportingDashboard from "@/components/dashboard/reporting/ReportingDashbo
 import SearchResults from "@/components/search/SearchResults";
 import CustomHomePage from "@/components/dashboard/customHomePage/CustomHomePage";
 import MineSummary from "@/components/mine/Summary/MineSummary";
+import HomePage from "@/components/dashboard/HomePage";
 
 export const DASHBOARD = {
   route: "/",
   component: Home,
 };
 
-export const CUSTOM_HOME_PAGE = {
+export const HOME_PAGE = {
   route: "/home/",
+  component: HomePage,
+};
+export const CUSTOM_HOME_PAGE = {
+  route: "/my-dashboard/",
   component: CustomHomePage,
 };
 
@@ -45,7 +50,7 @@ export const CONTACT_HOME_PAGE = {
 
 export const MINE_SUMMARY = {
   route: "/dashboard/:id/",
-  dynamicRoute: (id, filterParams) => `/dashboard/${id}/?${queryString.stringify(filterParams)}`,
+  dynamicRoute: (id) => `/dashboard/${id}/`,
   component: MineDashboard,
 };
 
