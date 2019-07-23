@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { fetchMetabaseDashboard } from "@/actionCreators/reportingActionCreator";
+import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
+import * as Permission from "@/constants/permissions";
 
 export class ExecutiveReportingDashboard extends Component {
   state = {};
@@ -29,5 +31,4 @@ export class ExecutiveReportingDashboard extends Component {
     );
   }
 }
-
-export default ExecutiveReportingDashboard;
+export default AuthorizationGuard(Permission.EXECUTIVE)(ExecutiveReportingDashboard);
