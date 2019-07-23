@@ -113,7 +113,7 @@ class DocumentListResource(Resource):
 
 
 @api.route(f'/documents/<string:document_guid>')
-class DocumentListResource(Resource):
+class DocumentResource(Resource):
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument('folder',
                         type=str,
