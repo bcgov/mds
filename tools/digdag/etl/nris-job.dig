@@ -1,7 +1,7 @@
 timezone: UTC
 
 schedule:
-  daily>: 3:00:00   # daily at 8 PM PDT
+  daily>: 11:00:00   # daily at 8 PM PDT
 
 +setup:
   echo>: Starting NRIS ETL ${session_time}
