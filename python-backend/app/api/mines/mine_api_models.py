@@ -37,8 +37,6 @@ MINE_TENURE_TYPE_CODE_MODEL = api.model('MineTenureTypeCode', {
 
 MINE_LOCATION_MODEL = api.model(
     'MineLocation', {
-        'mine_location_guid': fields.String,
-        'mine_guid': fields.String,
         'latitude': fields.Fixed(description='fixed precision decimal.', decimals=7),
         'longitude': fields.Fixed(description='fixed precision decimal.', decimals=7),
         'utm_easting': fields.String,
