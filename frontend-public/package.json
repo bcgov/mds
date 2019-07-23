@@ -5,8 +5,8 @@
   "private": true,
   "homepage": "${BASE_PATH}/",
   "dependencies": {
-    "@babel/runtime": "^7.5.0",
-    "@babel/runtime-corejs3": "^7.5.0",
+    "@babel/runtime": "^7.4.5",
+    "@babel/runtime-corejs3": "^7.4.5",
     "@hot-loader/react-dom": "^16.8.6",
     "antd": "^3.19.8",
     "axios": "^0.19.0",
