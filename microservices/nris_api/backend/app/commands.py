@@ -1,5 +1,3 @@
-from app.extensions import db
-from app.nris.models.nris_raw_data import NRISRawData
 from app.nris.etl.nris_etl import import_nris_xml, etl_nris_data, clean_nris_etl_data, clean_nris_xml_import
 
 
@@ -30,5 +28,5 @@ def register_commands(app):
 
     @app.cli.command()
     def run_nris_etl_job():
-        from app.nris.scheduled_jobs.nris_jobs import _run_nris_etl
-        _run_nris_etl()
+        from app.nris.scheduled_jobs.nris_jobs import run_nris_etl
+        run_nris_etl()

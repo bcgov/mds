@@ -1,17 +1,8 @@
-import sys
-import json
-import os
-import logging
-
-from flask import Flask, current_app
+from flask import Flask
 from flask_cors import CORS
-from flask_restplus import Resource
+
 from flask_restplus.apidoc import apidoc
 from flask_compress import Compress
-from flask_migrate import MigrateCommand
-
-from flask_jwt_oidc.exceptions import AuthError
-from sqlalchemy.exc import SQLAlchemyError
 
 from app.commands import register_commands
 from app.routes import register_routes

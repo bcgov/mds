@@ -318,16 +318,13 @@ MINE_REGION_OPTIONS = [
 ]
 
 #Cache prefixes
-NRIS_MMLIST_JOB = "processed_list"
 NRIS_MAJOR_MINE_LIST = "major_mine_list"
-NRIS_JOB_PREFIX = "nris_sched_job_"
 NRIS_TOKEN = 'nris:token'
 def NRIS_COMPLIANCE_DATA(mine_no): return f'mine:{mine_no}:api-compliance-data'
 def FILE_UPLOAD_SIZE(document_guid): return f'document-manager:{document_guid}:file-size'
 def FILE_UPLOAD_OFFSET(document_guid): return f'document-manager:{document_guid}:offset'
 def FILE_UPLOAD_PATH(document_guid): return f'document-manager:{document_guid}:file-path'
 def DOWNLOAD_TOKEN(token_guid): return f'document-manager:download-token:{token_guid}'
-ETL = 'etl-jobs:running'
 
 #Cache Timeouts
 TIMEOUT_5_MINUTES = 300

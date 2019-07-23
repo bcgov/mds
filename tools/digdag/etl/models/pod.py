@@ -7,16 +7,27 @@ from openshift.dynamic.exceptions import ConflictError
 
 
 class POD():
+    """
+    Helper class to create a pod template and spin up an openshift pod.
+    Currently only supports single container pods. Refer to templates/pod.json
+    for the base template used.
+
+    :param pod_name: Name of the pod to be created
+    :param env_pod: Name of the pod to fetch environment vars and base image from
+    :param command: Command to run on pod startup
+    :param env_container_id: Container ID of the env_pod, usually 0 for single container pods
+    """
 
     kube_config = os.getenv('KUBECONFIG', '/root/.kube/config')
     namespace = os.getenv('NAMESPACE', 'empr-mds-dev')
-    image_tag = os.getenv('IMAGE_TAG', 'dev-pr-863')
-    suffix = os.getenv('SUFFIX', '-pr-863')
+    image_tag = os.getenv('IMAGE_TAG', 'dev-pr-NUM')
+    suffix = os.getenv('SUFFIX', '-pr-NUM')
 
-    def __init__(self, pod_name, env_pod, command):
+    def __init__(self, pod_name, env_pod, command, env_container_id=0):
         self.pod_name = pod_name if pod_name else "digdag-mds-job"
         self.env_pod = env_pod if env_pod else "digdag-mds-job"
         self.command = command if command else ["flask", "test-cli-command"]
+        self.env_container_id = env_container_id
 
         self.job_pod_name = self.pod_name + self.suffix
         self.env_pod_name = self.env_pod + self.suffix
@@ -30,6 +41,9 @@ class POD():
         self.v1_pod = dyn_client.resources.get(api_version='v1', kind='Pod')
 
     def get_pod_template(self):
+        """
+        Returns a JSON object representing an Pod template
+        """
         json_data = {}
         with open('templates/pod.json') as pod_file:
             json_data = json.load(pod_file)
@@ -43,21 +57,27 @@ class POD():
 
         # Update env from existing pod
         current_running_pod = self.v1_pod.get(label_selector=self.env_pod_label, namespace=self.namespace)
-        json_data['spec']['containers'][0]['env'] = current_running_pod.to_dict()['items'][0]['spec']['containers'][0]['env']
+        env_dict = current_running_pod.to_dict()['items'][0]['spec']['containers'][self.env_container_id]['env'] if current_running_pod else []
+        json_data['spec']['containers'][0]['env'] = env_dict
 
         return json_data
 
     def create_pod(self, pod_template=None):
+        """
+        Creates a pod given a JSON template and waits for it to finish running.
+        Returns the created pod resource object.
+        """
         pod_template = pod_template if pod_template else self.get_pod_template()
+        result = None
         try:
-            self.v1_pod.create(body=pod_template, namespace=self.namespace)
+            result = self.v1_pod.create(body=pod_template, namespace=self.namespace)
         except ConflictError as e:
             print("Pod exists, recreating")
             self.v1_pod.delete(name=self.job_pod_name, namespace=self.namespace)
             # Wait for pod to disappear, it can take a while if running
             time.sleep(60)
             # Then create it
-            self.v1_pod.create(body=pod_template, namespace=self.namespace)
+            result = self.v1_pod.create(body=pod_template, namespace=self.namespace)
 
         # Wait for pod to be created
         time.sleep(10)
@@ -78,3 +98,6 @@ class POD():
                 raise Exception('Pod exited with an error, refer to logs')
             else:
                 print("******** Pod Running ********")
+
+        return result
+

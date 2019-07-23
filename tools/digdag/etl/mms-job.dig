@@ -1,7 +1,7 @@
-timezone: UTC
+timezone: America/Vancouver
 
 schedule:
-  daily>: 10:00:00   # daily at 7 PM PDT
+  daily>: 21:00:00   # daily at 9 PM PDT/PST
 
 +setup:
   echo>: Starting MMS ETL ${session_time}

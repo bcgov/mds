@@ -1,7 +1,7 @@
-timezone: UTC
+timezone: America/Vancouver
 
 schedule:
-  daily>: 9:00:00   # daily at 7 AM UTC -> Change to after hours pdt
+  daily>: 19:30:00   # daily at 7:30 PM PDT/PST
 
 +setup:
   echo>: Starting IDIR ETL ${session_time}

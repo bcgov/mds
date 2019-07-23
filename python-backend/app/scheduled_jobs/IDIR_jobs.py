@@ -1,4 +1,3 @@
-from app.extensions import db
 from app.api.services.idir_service import IdirService
 
 from app.api.utils.apm import register_apm
@@ -10,8 +9,9 @@ from app.api.users.core.models.core_user import CoreUser
 from app.api.users.core.models.idir_user_detail import IdirUserDetail
 from app.api.users.core.models.idir_membership import IdirMembership
 
+
 @register_apm
-def _import_empr_idir_users():
+def import_empr_idir_users():
     User._test_mode = True
     idir_membership_groups = [x.idir_membership_name for x in IdirMembership.query.all()]
     users = IdirService.get_empr_users_from_idir(idir_membership_groups)
@@ -58,5 +58,5 @@ def _import_empr_idir_users():
             #update existing user
 
     current_app.logger.info(
-        f"_import_empr_idir_users: Users Created={new_count}, Users Updated={existing_count}"
+        f"import_empr_idir_users: Users Created={new_count}, Users Updated={existing_count}"
     )
