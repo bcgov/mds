@@ -152,6 +152,7 @@ class AddIncidentDetailForm extends Component {
                     id="InitialIncidentFileUpload"
                     name="InitialIncidentFileUpload"
                     onFileLoad={(document_name, document_manager_guid) =>
+                      // TODO: Replace string with constant
                       this.props.onFileLoad(document_name, document_manager_guid, "INI")
                     }
                     component={FileUpload}

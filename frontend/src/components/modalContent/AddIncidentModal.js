@@ -105,6 +105,7 @@ const StepForms = (
         inspectors={props.inspectors}
         doDetermination={props.addIncidentFormValues.determination_type_code}
         uploadedFiles={uploadedFiles.filter(
+          // TODO: Replace magic string with constant
           (file) => file.mine_incident_document_type_code === "INI"
         )}
         onFileLoad={onFileLoad}
