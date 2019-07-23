@@ -17,7 +17,8 @@ def test_download_file_happy_path(test_client, db_session, auth_headers, tmp_pat
     with open(file_path, "w") as f:
         f.write(test_data)
 
-    #mock cache get and serve file
+    token_guid = uuid.uuid4()
+    #retieve file with token
     with mock.patch.object(cache, 'get') as mock_cache_get:
         mock_cache_get.return_value = document.document_guid
 
