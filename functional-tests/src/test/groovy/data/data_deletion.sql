@@ -26,7 +26,6 @@ BEGIN
         WHERE create_user LIKE IDIR_USER
     );
     DELETE FROM party WHERE create_user LIKE IDIR_USER;
-    DELETE FROM mine_location WHERE create_user LIKE IDIR_USER;
     DELETE FROM mine_status_xref WHERE create_user LIKE IDIR_USER;
     DELETE FROM mineral_tenure_xref WHERE create_user LIKE IDIR_USER;
     DELETE FROM mine_status WHERE create_user LIKE IDIR_USER;
@@ -51,19 +50,19 @@ BEGIN
     );
     DELETE FROM mine_document WHERE create_user LIKE IDIR_USER;
 
-    DELETE FROM mine_type_detail_xref 
+    DELETE FROM mine_type_detail_xref
     WHERE mine_type_guid = ANY (
-        SELECT mine_type_guid FROM mine_type 
+        SELECT mine_type_guid FROM mine_type
         WHERE mine_guid = ANY (
         SELECT mine_guid FROM mine
         WHERE create_user LIKE IDIR_USER
     ));
-    DELETE FROM mine_type 
+    DELETE FROM mine_type
     WHERE mine_guid = ANY (
         SELECT mine_guid FROM mine
         WHERE create_user LIKE IDIR_USER
     );
-    DELETE FROM variance 
+    DELETE FROM variance
     WHERE mine_guid = ANY (
         SELECT mine_guid FROM mine
         WHERE create_user LIKE IDIR_USER

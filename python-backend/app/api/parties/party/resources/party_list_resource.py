@@ -123,18 +123,21 @@ class PartyListResource(Resource, UserMixin, ErrorMixin):
             first_name=data.get('first_name'),
             phone_ext=data.get('phone_ext'))
 
-        address = Address.create(
-            suite_no=data.get('suite_no'),
-            address_line_1=data.get('address_line_1'),
-            address_line_2=data.get('address_line_2'),
-            city=data.get('city'),
-            sub_division_code=data.get('sub_division_code'),
-            post_code=data.get('post_code'))
-
         if not party:
             raise InternalServerError('Error: Failed to create party')
 
-        party.address.append(address)
+        # If no address data is provided do not create an address.
+        if (data.get('suite_no') or data.get('address_line_1') or data.get('address_line_2') or data.get('city') or
+                data.get('sub_division_code') or data.get('post_code')):
+            address = Address.create(
+                suite_no=data.get('suite_no'),
+                address_line_1=data.get('address_line_1'),
+                address_line_2=data.get('address_line_2'),
+                city=data.get('city'),
+                sub_division_code=data.get('sub_division_code'),
+                post_code=data.get('post_code'))
+            party.address.append(address)
+
         party.save()
         return party
 
