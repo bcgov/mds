@@ -7,6 +7,31 @@ import factory
 import factory.fuzzy
 
 from app.extensions import db
+from tests.status_code_gen import *
+from app.api.applications.models.application import Application
+from app.api.document_manager.models.document_manager import DocumentManager
+from app.api.documents.expected.models.mine_expected_document import MineExpectedDocument
+from app.api.documents.mines.models.mine_document import MineDocument
+from app.api.documents.variances.models.variance import VarianceDocumentXref
+from app.api.mines.location.models.mine_location import MineLocation
+from app.api.mines.mine.models.mine import Mine
+from app.api.mines.mine.models.mine_type import MineType
+from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
+from app.api.mines.mine.models.mine_verified_status import MineVerifiedStatus
+from app.api.mines.incidents.models.mine_incident import MineIncident
+from app.api.mines.status.models.mine_status import MineStatus
+from app.api.mines.subscription.models.subscription import Subscription
+from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
+from app.api.parties.party.models.party import Party
+from app.api.parties.party.models.address import Address
+from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
+from app.api.mines.permits.permit.models.permit import Permit
+from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
+from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
+from app.api.users.core.models.core_user import CoreUser, IdirUserDetail
+from app.api.users.minespace.models.minespace_user import MinespaceUser
+from app.api.variances.models.variance import Variance
+from app.api.parties.party_appt.models.party_business_role_appt import PartyBusinessRoleAppointment
 
 GUID = factory.LazyFunction(uuid.uuid4)
 TODAY = factory.LazyFunction(datetime.now)
