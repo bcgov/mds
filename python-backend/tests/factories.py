@@ -9,7 +9,6 @@ import factory.fuzzy
 from app.extensions import db
 from tests.status_code_gen import *
 from app.api.applications.models.application import Application
-from app.api.document_manager.models.document_manager import DocumentManager
 from app.api.documents.expected.models.mine_expected_document import MineExpectedDocument
 from app.api.documents.mines.models.mine_document import MineDocument
 from app.api.documents.variances.models.variance import VarianceDocumentXref
@@ -72,8 +71,6 @@ class MineDocumentFactory(BaseFactory):
         model = MineDocument
 
     class Params:
-        # document_manager_obj = factory.SubFactory(
-        #     DocumentManagerFactory, file_display_name=factory.SelfAttribute('..document_name'))
         mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
 
     mine_document_guid = GUID
@@ -298,11 +295,6 @@ class PermitAmendmentFactory(BaseFactory):
 class PermitAmendmentDocumentFactory(BaseFactory):
     class Meta:
         model = PermitAmendmentDocument
-
-    # TODO: fix
-    #class Params:
-    # document_manager_obj = factory.SubFactory(
-    #     DocumentManagerFactory, file_display_name=factory.SelfAttribute('..document_name'))
 
     permit_amendment_document_guid = GUID
     permit_amendment_id = factory.SelfAttribute('permit_amendment.permit_amendment_id')
