@@ -11,7 +11,7 @@ from ...mine_api_models import MINE_INCIDENT_MODEL
 
 from app.api.documents.incidents.models.mine_incident import MineIncidentDocumentXref
 from app.api.documents.mines.models.mine_document import MineDocument
-from app.api.incidents.models.mine_incident_document_type_code import MineIncidentTypeCode
+from app.api.incidents.models.mine_incident_document_type_code import MineIncidentDocumentTypeCode
 from app.api.incidents.models.mine_incident import MineIncident
 from app.api.incidents.models.mine_incident_recommendation import MineIncidentRecommendation
 from app.api.mines.compliance.models.compliance_article import ComplianceArticle
@@ -78,6 +78,7 @@ class MineIncidentListResource(Resource, UserMixin):
     @api.marshal_with(MINE_INCIDENT_MODEL, code=201)
     @requires_role_edit_do
     def post(self, mine_guid):
+        # TODO: Confirm that all fields are actually passed & applied here
         mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:
             raise NotFound('Mine not found')
@@ -104,13 +105,14 @@ class MineIncidentListResource(Resource, UserMixin):
 
 
         incident.reported_by_email = data.get('reported_by_email')
-        incident.reported_by_phone_no = data.get('reported_by_phone_no')  # string
-        incident.reported_by_phone_ext = data.get('reported_by_phone_ext')  # string
-        incident.number_of_fatalities = data.get('number_of_fatalities')  # int
-        incident.number_of_injuries = data.get('number_of_injuries')  # int
-        incident.emergency_services_called = data.get('emergency_services_called')  # bool
-        incident.followup_inspection = data.get('followup_inspection')  # bool
+        incident.reported_by_phone_no = data.get('reported_by_phone_no')
+        incident.reported_by_phone_ext = data.get('reported_by_phone_ext')
+        incident.number_of_fatalities = data.get('number_of_fatalities')
+        incident.number_of_injuries = data.get('number_of_injuries')
+        incident.emergency_services_called = data.get('emergency_services_called')
+        incident.followup_inspection = data.get('followup_inspection')
         incident.followup_inspection_date = data.get('followup_inspection_date')
+        incident.status_code = data.get('status_code')
 
         # lookup and validated inspector party relationships
         tmp_party = Party.query.filter_by(
@@ -228,6 +230,7 @@ class MineIncidentResource(Resource, UserMixin):
     @api.marshal_with(MINE_INCIDENT_MODEL, code=200)
     @requires_role_edit_do
     def put(self, mine_guid, mine_incident_guid):
+        # TODO: Confirm that all fields are actually passed & applied here
         incident = MineIncident.find_by_mine_incident_guid(mine_incident_guid)
         if not incident or str(incident.mine_guid) != mine_guid:
             raise NotFound("Mine Incident not found")
