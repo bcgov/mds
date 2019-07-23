@@ -2,7 +2,7 @@
   "kind": "Template",
   "apiVersion": "v1",
   "metadata": {
-    "name": "Digdag - Role"
+    "name": "digdag-role"
   },
   "objects": [
     {
@@ -56,7 +56,7 @@
       "groupNames": null,
       "kind": "RoleBinding",
       "metadata": {
-        "name": "jenkins_edit",
+        "name": "digdag_edit",
         "namespace": "empr-mds-test"
       },
       "roleRef": {
@@ -65,7 +65,7 @@
       "subjects": [
         {
           "kind": "ServiceAccount",
-          "name": "jenkins",
+          "name": "digdag",
           "namespace": "empr-mds-test"
         }
       ]
@@ -75,7 +75,7 @@
       "groupNames": null,
       "kind": "RoleBinding",
       "metadata": {
-        "name": "jenkins_edit",
+        "name": "digdag_edit",
         "namespace": "empr-mds-prod"
       },
       "roleRef": {
@@ -84,7 +84,7 @@
       "subjects": [
         {
           "kind": "ServiceAccount",
-          "name": "jenkins",
+          "name": "digdag",
           "namespace": "empr-mds-prod"
         }
       ]
