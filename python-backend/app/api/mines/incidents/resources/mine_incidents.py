@@ -78,7 +78,6 @@ class MineIncidentListResource(Resource, UserMixin):
     @api.marshal_with(MINE_INCIDENT_MODEL, code=201)
     @requires_role_edit_do
     def post(self, mine_guid):
-        # TODO: Confirm that all fields are actually passed & applied here
         mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:
             raise NotFound('Mine not found')
@@ -103,7 +102,6 @@ class MineIncidentListResource(Resource, UserMixin):
             reported_by_name=data['reported_by_name'],
         )
 
-
         incident.reported_by_email = data.get('reported_by_email')
         incident.reported_by_phone_no = data.get('reported_by_phone_no')
         incident.reported_by_phone_ext = data.get('reported_by_phone_ext')
@@ -113,6 +111,7 @@ class MineIncidentListResource(Resource, UserMixin):
         incident.followup_inspection = data.get('followup_inspection')
         incident.followup_inspection_date = data.get('followup_inspection_date')
         incident.status_code = data.get('status_code')
+        incident.proponent_incident_no = data.get('proponent_incident_no')
 
         # lookup and validated inspector party relationships
         tmp_party = Party.query.filter_by(
@@ -299,8 +298,5 @@ class MineIncidentResource(Resource, UserMixin):
                     db.session.delete(doc)
                     db.session.commit()
 
-        try:
-            incident.save()
-        except Exception as e:
-            raise InternalServerError(f'Error when saving: {e}')
+        incident.save()
         return incident
