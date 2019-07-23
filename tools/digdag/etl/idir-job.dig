@@ -10,7 +10,7 @@ schedule:
   sh>: oc login https://console.pathfinder.gov.bc.ca:8443 --token=$OC_TOKEN
 
 +run_etl_job:
-  py>: tasks.idir_users_etl.run_job
+  py>: tasks.idir_users_import.run_job
 
 +teardown:
   echo>: finish ${session_time}
