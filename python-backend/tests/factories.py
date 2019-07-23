@@ -7,7 +7,6 @@ import factory
 import factory.fuzzy
 
 from app.extensions import db
-from app.docman.models.document import Document
 
 GUID = factory.LazyFunction(uuid.uuid4)
 TODAY = factory.LazyFunction(datetime.now)
