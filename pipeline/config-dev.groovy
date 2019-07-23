@@ -214,7 +214,7 @@ app {
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/nris_api",
                     ]
                 ],
-                                [
+                [
                     'file':'tools/openshift/digdag.dc.json',
                     'params':[
                             'NAME':"digdag",

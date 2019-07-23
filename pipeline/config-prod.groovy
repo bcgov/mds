@@ -274,6 +274,21 @@ app {
                             'MEMORY_REQUEST':"${vars.resources.logstash.memory_request}",
                             'MEMORY_LIMIT':"${vars.resources.logstash.memory_limit}"
                     ]
+                ],
+                [
+                    'file':'tools/openshift/digdag.dc.json',
+                    'params':[
+                            'NAME':"digdag",
+                            'VERSION':"${app.deployment.version}",
+                            'SUFFIX': "${vars.deployment.suffix}",
+                            'SCHEDULER_PVC_SIZE':"${vars.SCHEDULER_PVC_SIZE}",
+                            'ENVIRONMENT_NAME':"${app.deployment.env.name}",
+                            'APPLICATION_DOMAIN': "${vars.modules.'digdag'.HOST}",
+                            'CPU_REQUEST':"${vars.resources.digdag.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.digdag.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.digdag.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.digdag.memory_limit}"
+                    ]
                 ]
         ]
     }
@@ -287,6 +302,7 @@ environments {
             BACKUP_VERIFICATION_PVC_SIZE = '10Gi'
             LOG_PVC_SIZE = '5Gi'
             METABASE_PVC_SIZE = '20Gi'
+            SCHEDULER_PVC_SIZE = '20Gi'
             git {
                 changeId = "${opt.'pr'}"
             }
@@ -361,6 +377,12 @@ environments {
                     memory_request = "1Gi"
                     memory_limit = "2Gi"
                 }
+                digdag {
+                    cpu_request = "150m"
+                    cpu_limit = "300m"
+                    memory_request = "512Mi"
+                    memory_limit = "1Gi"
+                }
             }
             keycloak {
                 clientId_core = "mines-application-prod"
@@ -418,6 +440,9 @@ environments {
                 }
                 'metabase' {
                     HOST = "mds-metabase-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                }
+                'digdag' {
+                    HOST = "mds-digdag-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                 }
             }
         }
