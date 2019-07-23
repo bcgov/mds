@@ -5,11 +5,11 @@ import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
 import CustomAxios from "@/customAxios";
 
-// Maintain consistent action creator export pattern
+// This file is anticipated to have multiple exports
 // eslint-disable-next-line import/prefer-default-export
-export const fetchCoreDashboard = () =>
+export const fetchMetabaseDashboard = (dashboardId) =>
   CustomAxios({ errorToastMessage: "Unable to fetch dashboard." })
-    .get(`${ENVIRONMENT.apiUrl + API.CORE_DASHBOARD}`, createRequestHeader())
+    .get(`${ENVIRONMENT.apiUrl + API.DASHBOARD(dashboardId)}`, createRequestHeader())
     .then((response) => {
       const { dashboard_url } = response.data || {};
       return dashboard_url;
