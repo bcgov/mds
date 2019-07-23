@@ -253,7 +253,7 @@ app {
                             'REDIS_CONFIG_NAME': "mds-redis${vars.deployment.suffix}",
                             'CACHE_REDIS_HOST': "mds-redis${vars.deployment.suffix}",
                             'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled_core}",
-                            'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name}",
+                            'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name_docman}",
                             'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/document-manager",
@@ -415,6 +415,7 @@ environments {
                 elastic_enabled_nris = 1
                 elastic_service_name = "MDS Prod"
                 elastic_service_name_nris = "NRIS API Prod"
+                elastic_service_name_docman = 'DocMan Prod'
             }
             modules {
                 'mds-frontend' {
