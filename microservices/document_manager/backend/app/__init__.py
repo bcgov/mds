@@ -17,7 +17,7 @@ from app.docman.resources import *
 
 from app.commands import register_commands
 from app.routes import register_routes
-from app.extensions import api, cache, db, jwt, sched, apm, migrate
+from app.extensions import api, cache, db, jwt, apm, migrate
 
 from .config import Config
 
@@ -50,7 +50,6 @@ def register_extensions(app):
     db.init_app(app)
     jwt.init_app(app)
     migrate.init_app(app, db)
-    sched.init_app(app)
 
     CORS(app)
     Compress(app)

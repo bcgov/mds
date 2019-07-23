@@ -1,4 +1,4 @@
-# NRIS API
+# Document Manager API
 
 The project uses a Python 3.6 runtime environment and [Flask REST-plus](https://flask-restplus.readthedocs.io/en/stable/) framework for the API.
 
@@ -12,12 +12,9 @@ The application directory is structured as follows:
 
 ```
 |-- app
-    |-- api
-        |-- NAMESPACE_MODULE_NAME
-            |-- Namespace (Contains api namespace)
-            |-- MODULE_NAME
-                |-- Models (Contains all the database model definition used by SQLAlchemy)
-                |-- Resources (Contains all the routes and views to handle incoming requests)
+    |-- docman
+        |-- models
+        |-- resources
     |-- utils (Contains utility shared across modules)
 |-- tests (Unit/Integration tests for the application)
 |-- app.sh (Shell script used by the python OpenShift s2i image to run the application)

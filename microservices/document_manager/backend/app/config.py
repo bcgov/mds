@@ -1,7 +1,5 @@
 import os
 
-from dotenv import load_dotenv, find_dotenv
-
 
 class Config(object):
     # Environment config
