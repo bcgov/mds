@@ -258,6 +258,12 @@ export class NavBar extends Component {
           <button type="button">Dashboard</button>
         </Link>
       </div>
+      <div className="custom-menu-item">
+        {/* add wrapping for executive permissions!!!! */}
+        <Link to={router.EXECUTIVE_REPORTING_DASHBOARD.route}>
+          <button type="button">Executive Dashboard</button>
+        </Link>
+      </div>
     </Menu>
   );
 
