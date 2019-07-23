@@ -1,5 +1,6 @@
 import uuid
 from datetime import datetime
+from os import path
 from sqlalchemy.orm.scoping import scoped_session
 
 import factory
