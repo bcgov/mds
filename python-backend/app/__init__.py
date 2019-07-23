@@ -24,9 +24,6 @@ from app.commands import register_commands
 from app.config import Config
 from app.extensions import db, jwt, api, cache, sched, apm
 
-from app.scheduled_jobs.ETL_jobs import _schedule_ETL_jobs
-from app.scheduled_jobs.IDIR_jobs import _schedule_IDIR_jobs
-
 
 def create_app(test_config=None):
     """Create and configure an instance of the Flask application."""
@@ -42,7 +39,6 @@ def create_app(test_config=None):
     register_extensions(app)
     register_routes(app)
     register_commands(app)
-    #register_scheduled_jobs(app)
 
     return app
 
@@ -70,15 +66,6 @@ def register_extensions(app):
     Compress(app)
 
     return None
-
-
-def register_scheduled_jobs(app):
-    if app.config.get('ENVIRONMENT_NAME') in ['test', 'prod']:
-        if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == 'true':
-            sched.start()
-            _schedule_IDIR_jobs(app)
-            _schedule_ETL_jobs(app)
-
 
 def register_routes(app):
     # Set URL rules for resources
