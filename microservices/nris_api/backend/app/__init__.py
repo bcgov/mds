@@ -1,6 +1,7 @@
 import sys
 import json
 import os
+import logging
 
 from flask import Flask, current_app
 from flask_cors import CORS
@@ -25,6 +26,7 @@ from .config import Config
 def create_app(config_object=None):
     """Create and configure an instance of the Flask application."""
     app = Flask(__name__)
+    add_stdout_handler_to_logger()
 
     config = config_object if config_object else Config
     app.config.from_object(config)
@@ -60,3 +62,13 @@ def register_extensions(app):
     Compress(app)
 
     return None
+
+def add_stdout_handler_to_logger():
+    root = logging.getLogger()
+    root.setLevel(logging.DEBUG)
+
+    handler = logging.StreamHandler(sys.stdout)
+    handler.setLevel(logging.DEBUG)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    handler.setFormatter(formatter)
+    root.addHandler(handler)

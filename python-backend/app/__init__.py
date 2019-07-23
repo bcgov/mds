@@ -1,6 +1,7 @@
 import sys
 import json
 import os
+import logging
 
 from flask import Flask, current_app
 from flask_cors import CORS
@@ -28,6 +29,7 @@ from app.extensions import db, jwt, api, cache, sched, apm
 def create_app(test_config=None):
     """Create and configure an instance of the Flask application."""
     app = Flask(__name__)
+    add_stdout_handler_to_logger()
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
@@ -129,3 +131,13 @@ def register_routes(app):
             'status': getattr(error, 'code', 500),
             'message': str(error),
         }, getattr(error, 'code', 500)
+
+def add_stdout_handler_to_logger():
+    root = logging.getLogger()
+    root.setLevel(logging.DEBUG)
+
+    handler = logging.StreamHandler(sys.stdout)
+    handler.setLevel(logging.DEBUG)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    handler.setFormatter(formatter)
+    root.addHandler(handler)
