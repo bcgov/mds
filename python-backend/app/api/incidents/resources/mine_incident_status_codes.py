@@ -3,8 +3,8 @@ from flask_restplus import Resource, fields
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_view_all
 
-from ..models.mine_incident_status_code import MineIncidentStatusCode
-from ...mine_api_models import MINE_INCIDENT_STATUS_CDOE_MODEL
+from app.api.incidents.response_models import MINE_INCIDENT_STATUS_CDOE_MODEL
+from app.api.incidents.models.mine_incident_status_code import MineIncidentStatusCode
 
 
 class MineIncidentStatusCodeResource(Resource):

@@ -7,15 +7,16 @@ from app.extensions import api, db
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_do
 
-from app.api.mines.mine.models.mine import Mine
-from app.api.parties.party.models.party import Party
+from ...mine_api_models import MINE_INCIDENT_MODEL
+
 from app.api.documents.incidents.models.mine_incident import MineIncidentDocumentXref
 from app.api.documents.mines.models.mine_document import MineDocument
-from app.api.mines.incidents.models.mine_incident_document_type_code import MineIncidentTypeCode
-from ..models.mine_incident import MineIncident
+from app.api.incidents.models.mine_incident_document_type_code import MineIncidentTypeCode
+from app.api.incidents.models.mine_incident import MineIncident
+from app.api.incidents.models.mine_incident_recommendation import MineIncidentRecommendation
 from app.api.mines.compliance.models.compliance_article import ComplianceArticle
-from app.api.mines.incidents.models.mine_incident_recommendation import MineIncidentRecommendation
-from ...mine_api_models import MINE_INCIDENT_MODEL
+from app.api.mines.mine.models.mine import Mine
+from app.api.parties.party.models.party import Party
 
 
 def _compliance_article_is_do_subparagraph(ca):

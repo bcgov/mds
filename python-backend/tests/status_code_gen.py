@@ -5,8 +5,8 @@ from app.api.applications.models.application_status_code import ApplicationStatu
 from app.api.constants import COMMODITY_CODES_CONFIG, DISTURBANCE_CODES_CONFIG
 from app.api.documents.expected.models.document_status import ExpectedDocumentStatus
 from app.api.documents.required.models.required_documents import RequiredDocument
-from app.api.mines.incidents.models.mine_incident_determination_type import MineIncidentDeterminationType
-from app.api.mines.incidents.models.mine_incident_status_code import MineIncidentStatusCode
+from app.api.incidents.models.mine_incident_determination_type import MineIncidentDeterminationType
+from app.api.incidents.models.mine_incident_status_code import MineIncidentStatusCode
 from app.api.mines.region.models.region import MineRegionCode
 from app.api.mines.permits.permit.models.permit_status_code import PermitStatusCode
 from app.api.mines.mine.models.mine_tenure_type_code import MineTenureTypeCode

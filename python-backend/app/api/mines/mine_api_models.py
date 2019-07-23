@@ -189,7 +189,7 @@ MINE_INCIDENT_MODEL = api.model(
         'reported_by_email': fields.String,
         'reported_by_phone_no': fields.String,
         'reported_by_phone_ext': fields.String,
-        'emergency_services_called': fields.Boolean, 
+        'emergency_services_called': fields.Boolean,
         'number_of_injuries': fields.Integer,
         'number_of_fatalities': fields.Integer,
         'reported_to_inspector_party_guid':  fields.String,
@@ -200,31 +200,13 @@ MINE_INCIDENT_MODEL = api.model(
         'followup_inspection': fields.Boolean,
         'followup_inspection_date': DateTime,
         'determination_inspector_party_guid': fields.String,
-        'mms_inspector_initials' : fields.String(attribute='mms_insp_cd'), 
+        'mms_inspector_initials' : fields.String(attribute='mms_insp_cd'),
         'dangerous_occurrence_subparagraph_ids': fields.List(fields.Integer),
         'proponent_incident_no': fields.String,
         'mine_incident_no': fields.String,
-        'documents': fields.List(fields.Nested(MINE_INCIDENT_DOCUMENT_MODEL)), 
+        'documents': fields.List(fields.Nested(MINE_INCIDENT_DOCUMENT_MODEL)),
         'recommendations': fields.List(fields.Nested(MINE_INCIDENT_RECOMMENDATION_MODEL))
     })
-
-MINE_INCIDENT_FOLLOWUP_INVESTIGATION_TYPE_MODEL = api.model(
-    'Mine Incident Followup Investigation Type', {
-        'mine_incident_followup_investigation_type_code': fields.String,
-        'description': fields.String,
-        'display_order': fields.Integer,
-    })
-
-MINE_INCIDENT_DETERMINATION_TYPE_MODEL = api.model(
-    'Mine Incident Determination Type', {
-        'mine_incident_determination_type_code': fields.String,
-        'description': fields.String,
-        'display_order': fields.Integer,
-        'active_ind': fields.Boolean
-    })
-
-MINE_INCIDENT_STATUS_CDOE_MODEL = api.model("Mine Incident Status Codes",
- {'mine_incident_status_code': fields.String, 'description': fields.String, 'display_order': fields.Integer})
 
 VARIANCE_DOCUMENT_MODEL = api.inherit(
     'VarianceDocumentModel', MINE_DOCUMENT_MODEL, {
