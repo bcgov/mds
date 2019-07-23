@@ -10,18 +10,13 @@ from app.utils.include.user_info import User
 from tests.constants import *
 from tests.factories import FACTORY_LIST
 
-from flask_migrate import upgrade
-# def migrate(app):
-#     with flask_migrate.upgrade() as up:
-#         a.init_app(app)
-#         with app.app_context():
-#             a.upgrade
+from flask_migrate import upgrade, command
 
 
 @pytest.fixture(scope="session")
 def app(request):
     app = create_app(TestConfig)
-    upgrade()
+    db.create_all()
     return app
 
 
