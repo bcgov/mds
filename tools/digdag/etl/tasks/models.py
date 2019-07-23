@@ -63,7 +63,7 @@ class POD():
         time.sleep(10)
 
         # Watch the pod status and exit the job with success or raise exception
-        for e in self.v1_pod.watch(label_selector=job_pod_label, namespace=namespace):
+        for e in self.v1_pod.watch(label_selector=self.job_pod_label, namespace=self.namespace):
             print("******** Pod Status ********")
             print(e['object'].status)
 
