@@ -47,8 +47,8 @@ def run_job():
     except ConflictError as e:
         print("Pod exists, recreating")
         v1_pod.delete(name=job_pod_name, namespace=namespace)
-        # Wait for pod to disappear
-        time.sleep(30)
+        # Wait for pod to disappear, it can take a while if running
+        time.sleep(60)
         # Then create it
         v1_pod.create(body=pod_json_data, namespace=namespace)
 

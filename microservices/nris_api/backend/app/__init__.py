@@ -65,6 +65,7 @@ def register_extensions(app):
 
 def add_stdout_handler_to_logger():
     root = logging.getLogger()
+    root.setLevel(logging.INFO)
 
     handler = logging.StreamHandler(sys.stdout)
     handler.setLevel(logging.INFO)
