@@ -15,7 +15,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from app.commands import register_commands
 from app.routes import register_routes
-from app.extensions import api, cache, db, jwt, sched, apm, migrate
+from app.extensions import api, cache, db, jwt, apm, migrate
 
 from app.nris.models import *
 from app.nris.resources import *
@@ -26,7 +26,6 @@ from .config import Config
 def create_app(config_object=None):
     """Create and configure an instance of the Flask application."""
     app = Flask(__name__)
-    add_stdout_handler_to_logger()
 
     config = config_object if config_object else Config
     app.config.from_object(config)
@@ -56,19 +55,8 @@ def register_extensions(app):
     cache.init_app(app)
     db.init_app(app)
     migrate.init_app(app, db)
-    sched.init_app(app)
 
     CORS(app)
     Compress(app)
 
     return None
-
-def add_stdout_handler_to_logger():
-    root = logging.getLogger()
-    root.setLevel(logging.INFO)
-
-    handler = logging.StreamHandler(sys.stdout)
-    handler.setLevel(logging.INFO)
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    handler.setFormatter(formatter)
-    root.addHandler(handler)

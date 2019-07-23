@@ -23,13 +23,12 @@ from app.api.variances.namespace.variances import api as variances_api
 
 from app.commands import register_commands
 from app.config import Config
-from app.extensions import db, jwt, api, cache, sched, apm
+from app.extensions import db, jwt, api, cache, apm
 
 
 def create_app(test_config=None):
     """Create and configure an instance of the Flask application."""
     app = Flask(__name__)
-    add_stdout_handler_to_logger()
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
@@ -62,7 +61,6 @@ def register_extensions(app):
 
     cache.init_app(app)
     db.init_app(app)
-    sched.init_app(app)
 
     CORS(app)
     Compress(app)
@@ -131,13 +129,3 @@ def register_routes(app):
             'status': getattr(error, 'code', 500),
             'message': str(error),
         }, getattr(error, 'code', 500)
-
-def add_stdout_handler_to_logger():
-    root = logging.getLogger()
-    root.setLevel(logging.INFO)
-
-    handler = logging.StreamHandler(sys.stdout)
-    handler.setLevel(logging.INFO)
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    handler.setFormatter(formatter)
-    root.addHandler(handler)

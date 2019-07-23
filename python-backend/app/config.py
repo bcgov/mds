@@ -82,9 +82,6 @@ class Config(object):
         'DEBUG': ELASTIC_DEBUG
     }
 
-    # Flask-Scheduler config
-    SCHEDULER_API_ENABLED = False
-
 
 class TestConfig(Config):
     # The following configs are for testing purposes and all variables and keys are generated using dummy data.

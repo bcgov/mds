@@ -1,4 +1,4 @@
-from app.extensions import sched, db
+from app.extensions import db
 from app.api.services.idir_service import IdirService
 
 from app.api.utils.apm import register_apm
