@@ -26,8 +26,8 @@ import {
   getDisturbanceOptionHash,
   getCommodityOptionHash,
   getMineStatusDropDownOptions,
-  getMineRegionOptions,
-  getMineTenureTypeOptions,
+  getMineRegionDropdownOptions,
+  getMineTenureTypeDropdownOptions,
   getMineTenureTypesHash,
 } from "@/selectors/staticContentSelectors";
 
@@ -474,11 +474,11 @@ export default compose(
   connect((state) => ({
     currentMineTypes: getCurrentMineTypes(state),
     mineStatusDropDownOptions: getMineStatusDropDownOptions(state),
-    mineRegionOptions: getMineRegionOptions(state),
+    mineRegionOptions: getMineRegionDropdownOptions(state),
     mineTenureHash: getMineTenureTypesHash(state),
     mineCommodityOptionsHash: getCommodityOptionHash(state),
     mineDisturbanceOptionsHash: getDisturbanceOptionHash(state),
-    mineTenureTypes: getMineTenureTypeOptions(state),
+    mineTenureTypes: getMineTenureTypeDropdownOptions(state),
     conditionalCommodityOptions: getConditionalCommodityOptions(state),
     conditionalDisturbanceOptions: getConditionalDisturbanceOptionsHash(state),
     mineStatus: selector(state, "mine_status"),

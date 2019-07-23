@@ -39,8 +39,8 @@ export const createDropDownList = (array, labelField, valueField) =>
   array.map((item) => ({ value: item[valueField], label: item[labelField] }));
 
 // Function to create a hash given an array of values and labels
-export const createLabelHash = (obj) =>
-  obj.reduce((map, { value, label }) => ({ [value]: label, ...map }), {});
+export const createLabelHash = (arr) =>
+  arr.reduce((map, { value, label }) => ({ [value]: label, ...map }), {});
 
 // Function to format an API date string to human readable
 export const formatDate = (dateString) =>

@@ -296,24 +296,24 @@ MINE_OPERATION_STATUS_SUB_REASON = {
 #Region Code
 MINE_REGION_OPTIONS = [
     {
-        'value': 'SW',
-        'label': 'South West'
+        'mine_region_code': 'SW',
+        'description': 'South West'
     },
     {
-        'value': 'SC',
-        'label': 'South Central'
+        'mine_region_code': 'SC',
+        'description': 'South Central'
     },
      {
-        'value': 'NW',
-        'label': 'North West'
+        'mine_region_code': 'NW',
+        'description': 'North West'
     },
     {
-        'value': 'NE',
-        'label': 'North East'
+        'mine_region_code': 'NE',
+        'description': 'North East'
     },
     {
-        'value': 'SE',
-        'label': 'South East'
+        'mine_region_code': 'SE',
+        'description': 'South East'
     }
 ]
 
