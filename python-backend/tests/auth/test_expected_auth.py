@@ -1,7 +1,7 @@
 import pytest
 from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE
 
-from app.api.document_token.resources.download_token import DownloadTokenResource
+from app.api.download_token.resources.download_token import DownloadTokenResource
 from app.api.documents.expected.resources.document_status import ExpectedDocumentStatusResource
 from app.api.documents.expected.resources.documents import ExpectedDocumentResource
 from app.api.documents.expected.resources.expected_document_uploads import ExpectedDocumentUploadResource
