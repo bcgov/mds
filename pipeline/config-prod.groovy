@@ -340,8 +340,8 @@ environments {
                     memory_limit = "1Gi"
                     uwsgi_threads = 2
                     uwsgi_processes = 4
-                    replica_min = 1
-                    replica_max = 1
+                    replica_min = 2
+                    replica_max = 4
                 }
                 postgres {
                     cpu_request = "200m"
