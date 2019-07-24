@@ -41,7 +41,7 @@ def test_put_new_file(test_client, db_session, auth_headers):
     expected_doc = MineExpectedDocumentFactory()
     document_count = len(expected_doc.related_documents)
 
-    data = {'document_manager_guid': uuid.uuid4(), 'filename': 'new_file.pdf'}
+    data = {'document_manager_guid': str(uuid.uuid4()), 'filename': 'new_file.pdf'}
     post_resp = test_client.put(f'/documents/expected/{expected_doc.exp_document_guid}/document',
                                 headers=auth_headers['full_auth_header'],
                                 json=data)

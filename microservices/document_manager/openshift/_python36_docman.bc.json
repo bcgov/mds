@@ -120,8 +120,6 @@
       },
       "spec": {
         "completionDeadlineSeconds": 1440,
-        "successfulBuildsHistoryLimit": 3,
-        "failedBuildsHistoryLimit": 3,
         "triggers": [
           {
             "type": "ImageChange",
