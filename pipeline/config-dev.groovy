@@ -239,10 +239,10 @@ environments {
             }
             resources {
                 node {
-                    cpu_request = "10m"
-                    cpu_limit = "20m"
-                    memory_request = "64Mi"
-                    memory_limit = "160Mi"
+                    cpu_request = "100m"
+                    cpu_limit = "200m"
+                    memory_request = "128Mi"
+                    memory_limit = "256Mi"
                     replica_min = 1
                     replica_max = 1
                 }
