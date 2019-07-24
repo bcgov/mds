@@ -1,6 +1,7 @@
 # Functional Test Automation
 
-This project automates a selection of functional tests on multiple browsers using Geb integrated with Spock and Gradle. It helps to efficiently check if the addition of new features or bug fixes has broke any previously developed features.
+This project automates a selection of functional tests on multiple browsers using Geb integrated with Spock and Gradle. It helps to efficiently check if the addition of new features or bug fixes has broke any previously developed features. The test strategy for this project is discussed on the mds confluence page:
+https://apps.nrs.gov.bc.ca/int/confluence/pages/viewpage.action?pageId=39651197
 
 ## Tools
 
@@ -52,7 +53,7 @@ Only on windows:
 
 Only on MacOS:
 
-    ./gradlew safariTest -DsafariTest.single=CustomJUnitSpecRunner
+    DEPRECATED ./gradlew safariTest -DsafariTest.single=CustomJUnitSpecRunner DEPRECATED
 
 ## Run tests in project root
 
