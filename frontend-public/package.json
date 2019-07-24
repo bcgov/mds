@@ -112,7 +112,7 @@
     "serve": "cross-env HOST=0.0.0.0 PORT=3020 webpack-dev-server --hot --env development",
     "build": "webpack --env production",
     "build-serve": "npm run build && npm run start",
-    "start": "npm run serve",
+    "start": "npx pm2 start server.js --no-daemon",
     "ci-test": "CI=true jest --env=jsdom --testResultsProcessor=jest-sonar-reporter --runInBand --coverage",
     "lint": "eslint",
     "format:check": "prettier --config .prettierrc.json",

@@ -22,7 +22,6 @@ const postCSSLoader = {
 exports.devServer = ({ host, port } = {}) => ({
   devServer: {
     historyApiFallback: true,
-    disableHostCheck: true,
     stats: "errors-only",
     host,
     port,
