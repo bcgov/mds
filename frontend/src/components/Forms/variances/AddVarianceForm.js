@@ -18,7 +18,7 @@ const propTypes = {
   submitting: PropTypes.bool.isRequired,
   documentCategoryOptions: CustomPropTypes.options.isRequired,
   mineGuid: PropTypes.string.isRequired,
-  inspectors: CustomPropTypes.options.isRequired,
+  inspectors: CustomPropTypes.groupOptions.isRequired,
   complianceCodes: CustomPropTypes.options.isRequired,
 };
 
@@ -114,7 +114,7 @@ export class AddVarianceForm extends Component {
                 id="inspector_party_guid"
                 name="inspector_party_guid"
                 label="Lead inspectors IDIR*"
-                component={renderConfig.SELECT}
+                component={renderConfig.GROUPED_SELECT}
                 validate={[required]}
                 data={this.props.inspectors}
               />
