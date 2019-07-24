@@ -8,7 +8,6 @@ from tests.factories import (VarianceFactory, MineFactory, MineDocumentFactory,
 
 
 # PUT
-@pytest.mark.skip(reason='docman microservice not complete')
 def test_put_file(test_client, db_session, auth_headers):
     mine = MineFactory()
     variance = VarianceFactory(mine=mine)
