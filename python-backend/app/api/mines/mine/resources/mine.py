@@ -17,7 +17,6 @@ from .mine_map import MineMapResource
 
 from ..models.mine import Mine
 from ..models.mineral_tenure_xref import MineralTenureXref
-from ...location.models.mine_location import MineLocation
 from ....utils.random import generate_mine_no
 from app.extensions import api, cache, db
 from ....utils.access_decorators import requires_role_mine_edit, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
@@ -146,20 +145,20 @@ class MineListResource(Resource, UserMixin):
             major_mine_ind=data.get('major_mine_ind'),
             mine_region=data.get('mine_region'),
             ohsc_ind=data.get('ohsc_ind'),
-            union_ind=data.get('union_ind'))
-
-        db.session.add(mine)
-
-        if lat and lon:
-            mine.mine_location = MineLocation(latitude=lat, longitude=lon)
+            union_ind=data.get('union_ind'),
+            latitude=lat,
+            longitude=lon)
 
         mine_status = _mine_status_processor(data.get('mine_status'), data.get('status_date'), mine)
-        db.session.commit()
+        mine.save()
 
         # Clear and rebuild the cache after committing changes to db
         if lat and lon:
             cache.delete(MINE_MAP_CACHE)
             MineMapResource.rebuild_map_cache_async()
+
+        # generate & set hybrid_properties to include in response payload
+        mine.init_on_load()
         return mine
 
     def apply_filter_and_search(self, args):
@@ -369,6 +368,10 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             mine.ohsc_ind = data['ohsc_ind']
         if 'union_ind' in data:
             mine.union_ind = data['union_ind']
+        if 'latitude' in data and 'longitude' in data:
+            mine.latitude = data['latitude']
+            mine.longitude = data['longitude']
+            refresh_cache = True
         mine.save()
 
         # Tenure validation
@@ -384,21 +387,6 @@ class MineResource(Resource, UserMixin, ErrorMixin):
 
             tenure.save()
 
-        if mine.mine_location:
-            #update existing record
-            if "latitude" in data:
-                mine.mine_location.latitude = data['latitude']
-                refresh_cache = True
-            if "longitude" in data:
-                mine.mine_location.longitude = data['longitude']
-                refresh_cache = True
-            mine.mine_location.save()
-
-        elif data.get('latitude') and data.get('longitude') and not mine.mine_location:
-            mine.mine_location = MineLocation(
-                latitude=data['latitude'], longitude=data['longitude'])
-            refresh_cache = True
-            mine.save()
 
         _mine_status_processor(data.get('mine_status'), data.get('status_date'), mine)
 
@@ -430,9 +418,9 @@ class MineListSearch(Resource):
                     'mine_guid': str(x.mine_guid),
                     'mine_name': x.mine_name,
                     'mine_no': x.mine_no,
-                    'latitude': str(x.mine_location.latitude) if x.mine_location else '',
-                    'longitude': str(x.mine_location.longitude) if x.mine_location else '',
-                    'mine_location_description': x.mine_location.mine_location_description if x.mine_location else '',
+                    'latitude': str(x.latitude) if x.latitude else '',
+                    'longitude': str(x.longitude) if x.longitude else '',
+                    'mine_location_description': x.mine_location_description if x.mine_location_description else '',
                     },
                 mines))
         return {'mines': result}
