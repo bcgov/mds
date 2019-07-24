@@ -1,14 +1,10 @@
 import pytest
 import json
+import uuid
 
 from tests.status_code_gen import RandomVarianceDocumentCategoryCode
-from tests.factories import (
-    VarianceFactory,
-    MineFactory,
-    MineDocumentFactory,
-    # TODO: fix docman tests
-    #DocumentManagerFactory,
-    VarianceDocumentFactory)
+from tests.factories import (VarianceFactory, MineFactory, MineDocumentFactory,
+                             VarianceDocumentFactory)
 
 
 # PUT
@@ -16,10 +12,9 @@ from tests.factories import (
 def test_put_file(test_client, db_session, auth_headers):
     mine = MineFactory()
     variance = VarianceFactory(mine=mine)
-    new_doc = DocumentManagerFactory()
     document_count = len(variance.documents)
     data = {
-        'document_manager_guid': str(new_doc.document_guid),
+        'document_manager_guid': uuid.uuid4(),
         'document_name': 'my_document.pdf',
         'variance_document_category_code': RandomVarianceDocumentCategoryCode()
     }

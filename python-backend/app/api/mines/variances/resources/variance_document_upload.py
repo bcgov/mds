@@ -24,10 +24,6 @@ class MineVarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         if not metadata or not metadata.get('filename'):
             raise BadRequest('Filename not found in request metadata header')
 
-        # variance = Variance.find_by_variance_guid(variance_guid)
-        # if not variance:
-        #     raise NotFound('Variance Not Found.')
-
         # Save file
         mine = Mine.find_by_mine_guid(mine_guid)
         document_name = metadata.get('filename')
@@ -37,7 +33,6 @@ class MineVarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             'filename': document_name
         }
         document_manager_URL = f'{current_app.config["DOCUMENT_MANAGER_URL"]}/documents'
-        current_app.logger.debug('doc_man_url = ' + document_manager_URL)
         resp = requests.post(
             url=document_manager_URL,
             headers={key: value
