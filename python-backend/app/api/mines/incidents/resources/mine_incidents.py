@@ -56,6 +56,7 @@ class MineIncidentListResource(Resource, UserMixin):
     parser.add_argument('followup_inspection', type=inputs.boolean, location='json')
     parser.add_argument(
         'followup_inspection_date',
+        # FIXME: Does this date parse even work right now?
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
         store_missing=False,
         location='json')
@@ -163,10 +164,14 @@ class MineIncidentListResource(Resource, UserMixin):
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')
 
-        if data.get('recommendations') is not None:
-            for recommendation in data.get('recommendations'):
+        recommendations = data.get('recommendations')
+        if recommendations is not None:
+            for recommendation in recommendations:
+                rec_string = recommendation.get('recommendation')
+                if rec_string is None:
+                    continue
                 new_recommendation = MineIncidentRecommendation.create(
-                    recommendation['recommendation'], mine_incident_id=incident.mine_incident_id)
+                    rec_string,mine_incident_id=incident.mine_incident_id)
                 new_recommendation.save()
 
         return incident, 201
@@ -208,7 +213,7 @@ class MineIncidentResource(Resource, UserMixin):
         'followup_inspection', type=inputs.boolean, location='json', store_missing=False)
     parser.add_argument(
         'followup_inspection_date',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None,
         store_missing=False,
         location='json')
     parser.add_argument('status_code', type=str, location='json', store_missing=False)
@@ -244,7 +249,7 @@ class MineIncidentResource(Resource, UserMixin):
                     'Dangerous occurrences require one or more cited sections of HSRC code 1.7.3')
 
         for key, value in data.items():
-            if key == 'dangerous_occurrence_subparagraph_ids':
+            if key in ['dangerous_occurrence_subparagraph_ids', 'recommendations']:
                 continue
             if key in [
                     'reported_to_inspector_party_guid', 'responsible_inspector_party_guid',
@@ -255,6 +260,10 @@ class MineIncidentResource(Resource, UserMixin):
                     setattr(incident, key, value)
             else:
                 setattr(incident, key, value)
+
+        recommendations = data.get('recommendations')
+        if recommendations is not None:
+            self._handle_recommendations(incident, recommendations)
 
         incident.dangerous_occurrence_subparagraphs = []
         for id in do_sub_codes:
@@ -300,3 +309,31 @@ class MineIncidentResource(Resource, UserMixin):
 
         incident.save()
         return incident
+
+    @classmethod
+    def _handle_recommendations(cls, incident, recommendations):
+        for payload in recommendations:
+            edited_rec_guid = payload.get('mine_incident_recommendation_guid')
+            rec_string = payload.get('recommendation')
+            if rec_string is None or rec_string == '':
+                if payload.get('mine_incident_recommendation_guid') is not None:
+                    # Remove existing empty recommendations
+                    rec = MineIncidentRecommendation.find_by_mine_incident_recommendation_guid(
+                        edited_rec_guid)
+                    rec.soft_delete()
+
+                # Skip new empty recommendations
+                continue
+
+            # Update recommendations
+            if edited_rec_guid is not None:
+                rec = MineIncidentRecommendation.find_by_mine_incident_recommendation_guid(edited_rec_guid)
+                if rec is not None:
+                    rec.recommendation = rec_string
+                    rec.save()
+                    continue
+
+            # Create new_recommendations
+            new_recommendation = MineIncidentRecommendation.create(
+                payload['recommendation'], mine_incident_id=incident.mine_incident_id)
+            new_recommendation.save()

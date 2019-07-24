@@ -117,7 +117,9 @@ const StepForms = (
         <Button id="step-back" type="tertiary" className="full-mobile" onClick={() => prev()}>
           Back
         </Button>
-        {props.addIncidentFormValues.determination_type_code !== "NDO" && (
+        {// TODO: Replace this magic string with constant. Determination types
+        // should be available in Store via API responses
+        props.addIncidentFormValues.determination_type_code !== "NDO" && (
           <Button
             id="step2-next"
             type="tertiary"

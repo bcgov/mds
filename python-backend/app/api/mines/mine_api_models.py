@@ -171,6 +171,7 @@ MINE_INCIDENT_DOCUMENT_MODEL = api.model(
 MINE_INCIDENT_RECOMMENDATION_MODEL = api.model(
     'Mine Incident Recommendation', {
         'recommendation': fields.String,
+        'mine_incident_recommendation_guid': fields.String
     }
 )
 
