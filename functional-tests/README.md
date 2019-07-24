@@ -80,3 +80,8 @@ delete dependancies before proceeding.
 
 If you've never managed to run the functional tests locally before, make certain your .env file matches the .env example.
 You will need to get the password from openshift secrets.
+
+- data clean up fails with an error like `org.postgresql.util.PSQLException: FATAL: role "mds" does not exist`:
+
+You may be running postgress locally for a different project. Make certain to stop that process, then run `make database`
+in the project route.
