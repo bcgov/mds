@@ -55,7 +55,7 @@ export class HomePage extends Component {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    NRIS
+                    Inspections (NRIS)
                   </a>
                 </p>
               </li>
@@ -66,7 +66,7 @@ export class HomePage extends Component {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    IMAP
+                    iMapBC
                   </a>
                 </p>
               </li>
@@ -77,14 +77,14 @@ export class HomePage extends Component {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    MTO
+                    Mineral Titles Online (MTO)
                   </a>
                 </p>
               </li>
               <li>
                 <p>
                   <a href="https://mines.nrs.gov.bc.ca/" target="_blank" rel="noopener noreferrer">
-                    MMTI
+                    Public Transparency Website (MMTI)
                   </a>
                 </p>
               </li>
@@ -106,6 +106,13 @@ export class HomePage extends Component {
               <li className="uppercase violet">Documents</li>
               <li>
                 <p>
+                  <a href={HSRC_PDF} target="_blank" rel="noopener noreferrer">
+                    Health, Safety and Reclamation Code
+                  </a>
+                </p>
+              </li>
+              <li>
+                <p>
                   <a
                     href="https://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/further-information/reports-publications/chief-inspector-s-annual-reports"
                     target="_blank"
@@ -122,14 +129,7 @@ export class HomePage extends Component {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Ci Directives
-                  </a>
-                </p>
-              </li>
-              <li>
-                <p>
-                  <a href={HSRC_PDF} target="_blank" rel="noopener noreferrer">
-                    HSRC
+                    Chief Inspectors Directives
                   </a>
                 </p>
               </li>
