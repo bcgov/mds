@@ -10,16 +10,7 @@ def test_get_mines(test_client, db_session, auth_headers):
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200
     assert get_data['mines'][0]['mine_guid'] == str(mine_guid)
-
-
-def test_get_mines_with_map_true(test_client, db_session, auth_headers):
-    mine_guid = MineFactory().mine_guid
-
-    get_resp = test_client.get('/mines?map=true', headers=auth_headers['full_auth_header'])
-    get_data = json.loads(get_resp.data.decode())
-    assert get_resp.status_code == 200
-    assert get_data['mines'][0]['mine_guid'] == str(mine_guid)
-
+    
 
 def test_get_mines_empty(test_client, db_session, auth_headers):
     MineFactory()
