@@ -38,7 +38,8 @@ describe("AdvancedContactSearch resets properly", () => {
   it("resets the stat to a person when handleReset is called", () => {
     const component = shallow(<AdvancedContactSearchForm {...dispatchProps} {...props} />);
     const instance = component.instance();
-    instance.handleContactTypeChange("ORG");
+    const testString = "test String";
+    instance.handleContactTypeChange(testString, "ORG");
     expect(component.state("contactType")).toBe("ORG");
     instance.handleReset();
     expect(component.state("contactType")).toBe("PER");
