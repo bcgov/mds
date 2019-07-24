@@ -18,4 +18,4 @@ COPY package.json ${APP_ROOT}/src
 COPY package-lock.json ${APP_ROOT}/src
 
 # Install dependencies
-RUN source ${APP_ROOT}/etc/scl_enable && cd ${APP_ROOT}/src && npm set progress=false && npm ci
+RUN cd ${APP_ROOT}/src && npm set progress=false && npm ci
