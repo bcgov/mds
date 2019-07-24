@@ -4,7 +4,7 @@ import { Form, Select } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 
 /**
- * @constant RenderSelect - Ant Design `Select` component for redux-form - used for small data sets that (< 100);
+ * @constant RenderGroupedSelect - Ant Design `Select` component for redux-form - used for data sets that require grouping.
  * There is a bug when the data sets are large enough to cause the dropdown to scroll, and the field is in a modal.
  * In the case where the modal cannot scroll, it is better to pass in the prop doNotPinDropdown.  It allows the
  * dropdown to render properly
@@ -50,12 +50,10 @@ const RenderGroupedSelect = (props) => (
       showSearch
       placeholder={props.placeholder}
       optionFilterProp="children"
-      filterOption={(input, option) => {
-        if (typeof option.props.children !== "string") {
-          return false;
-        }
-        return option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
-      }}
+      filterOption={(input, option) =>
+        typeof option.props.children === "string" &&
+        option.props.children.toLowerCase().includes(input.toLowerCase())
+      }
       id={props.id}
       {...props.input}
       onSelect={props.onSelect}

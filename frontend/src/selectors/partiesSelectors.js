@@ -41,7 +41,6 @@ export const getDropdownInspectors = createSelector(
       { groupName: "Inactive", opt: inactiveInspectors },
     ];
   }
-  // parties.map((party) => ({ label: party.expiry_date > CURRENT_DATE ? "Active" : "Inactive", opt: }))
 );
 
 export const getInspectorsHash = createSelector(
