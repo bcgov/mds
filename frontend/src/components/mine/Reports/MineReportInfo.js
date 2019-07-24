@@ -80,7 +80,7 @@ export class MineReportInfo extends Component {
       <div>
         <div className="inline-flex flex-end">
           <AuthorizationWrapper
-            permission={Permission.IN_DEVELOPMENT}
+            permission={Permission.EDIT_REPORTS}
             isMajorMine={this.props.mine.major_mine_ind}
           >
             <AddButton

@@ -1,7 +1,11 @@
 import * as varianceReducer from "@/reducers/varianceReducer";
 import { createSelector } from "reselect";
 import * as Strings from "@/constants/strings";
-import { createLabelHash, createDropDownList } from "@/utils/helpers";
+import {
+  createLabelHash,
+  createDropDownList,
+  formatComplianceCodeValueOrLabel,
+} from "@/utils/helpers";
 
 export const {
   getMineVariances,
@@ -34,16 +38,6 @@ export const getCurrentComplianceCodes = createSelector(
   (codes) =>
     codes.filter((code) => code.expiry_date === null || new Date(code.expiry_date) > new Date())
 );
-
-const formatComplianceCodeValueOrLabel = (code, showDescription) => {
-  const { section, sub_section, paragraph, sub_paragraph, description } = code;
-  const formattedSubSection = sub_section ? `.${sub_section}` : "";
-  const formattedParagraph = paragraph ? `.${paragraph}` : "";
-  const formattedSubParagraph = sub_paragraph !== null ? `.${sub_paragraph}` : "";
-  const formattedDescription = showDescription ? ` - ${description}` : "";
-
-  return `${section}${formattedSubSection}${formattedParagraph}${formattedSubParagraph}${formattedDescription}`;
-};
 
 export const getDropdownHSRCMComplianceCodes = createSelector(
   [getCurrentComplianceCodes],

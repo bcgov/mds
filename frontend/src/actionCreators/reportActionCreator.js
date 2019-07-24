@@ -14,7 +14,7 @@ export const createMineReport = (mineGuid, payload) => (dispatch) => {
     .post(`${ENVIRONMENT.apiUrl}${API.MINE_REPORTS(mineGuid)}`, payload, createRequestHeader())
     .then((response) => {
       notification.success({
-        message: "Successfully created incident.",
+        message: "Successfully created report.",
         duration: 10,
       });
       dispatch(success(reducerTypes.CREATE_MINE_REPORT));
