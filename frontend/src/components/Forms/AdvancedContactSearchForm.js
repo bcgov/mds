@@ -37,7 +37,7 @@ export class AdvancedContactSearchForm extends Component {
     this.props.handleSearch({}, true);
   };
 
-  handleContactTypeChange = (value) => {
+  handleContactTypeChange = (chars, value) => {
     this.setState({ contactType: value });
     // Set the first,last, and party names to null
     this.props.handleNameFieldReset();
