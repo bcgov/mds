@@ -26,7 +26,7 @@ const propTypes = {
   followupActionOptions: CustomPropTypes.options.isRequired,
   doSubparagraphOptions: CustomPropTypes.options.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
-  inspectors: CustomPropTypes.options.isRequired,
+  inspectors: CustomPropTypes.groupOptions.isRequired,
   addIncidentFormValues: PropTypes.objectOf(PropTypes.any),
   mineGuid: PropTypes.string.isRequired,
 };

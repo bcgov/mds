@@ -21,7 +21,7 @@ const propTypes = {
   submitting: PropTypes.bool.isRequired,
   mineGuid: PropTypes.string.isRequired,
   mineName: PropTypes.string.isRequired,
-  inspectors: CustomPropTypes.options.isRequired,
+  inspectors: CustomPropTypes.groupOptions.isRequired,
   variance: CustomPropTypes.variance.isRequired,
   varianceStatusOptions: CustomPropTypes.options.isRequired,
   documentCategoryOptions: CustomPropTypes.options.isRequired,
@@ -92,7 +92,7 @@ export class EditVarianceForm extends Component {
               <Field
                 id="inspector_party_guid"
                 name="inspector_party_guid"
-                component={renderConfig.SELECT}
+                component={renderConfig.GROUPED_SELECT}
                 validate={this.state.isApprovedOrDenied ? [inspectorRequired] : []}
                 data={this.props.inspectors}
               />
