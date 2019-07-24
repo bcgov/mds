@@ -10,7 +10,7 @@ import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
-  inspectors: CustomPropTypes.options.isRequired,
+  inspectors: CustomPropTypes.groupOptions.isRequired,
 };
 
 export const AddIncidentReportingForm = (props) => (
@@ -34,7 +34,7 @@ export const AddIncidentReportingForm = (props) => (
               name="reported_to_inspector_party_guid"
               label="Incident reported to*:"
               placeholder="Start typing inspector name"
-              component={renderConfig.SELECT}
+              component={renderConfig.GROUPED_SELECT}
               validate={[required]}
               data={props.inspectors}
             />
@@ -44,7 +44,7 @@ export const AddIncidentReportingForm = (props) => (
               id="responsible_inspector_party_guid"
               name="responsible_inspector_party_guid"
               label="Inspector responsible:*"
-              component={renderConfig.SELECT}
+              component={renderConfig.GROUPED_SELECT}
               placeholder="Start typing inspector name"
               validate={[required]}
               data={props.inspectors}

@@ -26,7 +26,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   mineGuid: PropTypes.string.isRequired,
   mineName: PropTypes.string.isRequired,
-  inspectors: CustomPropTypes.options.isRequired,
+  inspectors: CustomPropTypes.groupOptions.isRequired,
   variance: CustomPropTypes.variance,
   varianceStatusOptions: CustomPropTypes.options.isRequired,
   fetchVarianceById: PropTypes.func.isRequired,
