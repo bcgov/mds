@@ -18,6 +18,7 @@ ShallowWrapper {
         "admin",
         "uma_authorization",
         "core_admin",
+        "core_edit_reports",
       ]
     }
   />,
@@ -47,6 +48,7 @@ ShallowWrapper {
         "admin",
         "uma_authorization",
         "core_admin",
+        "core_edit_reports",
       ],
     },
     "ref": null,
@@ -72,6 +74,7 @@ ShallowWrapper {
           "admin",
           "uma_authorization",
           "core_admin",
+          "core_edit_reports",
         ],
       },
       "ref": null,

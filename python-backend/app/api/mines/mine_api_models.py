@@ -1,6 +1,8 @@
 from app.extensions import api
 from flask_restplus import fields
 
+from app.api.mines.compliance.response_models import COMPLIANCE_ARTICLE_MODEL
+
 
 class DateTime(fields.Raw):
     def format(self, value):
@@ -272,3 +274,42 @@ MINE_STATUS_CODE_MODEL = api.model(
             'mine_operation_status_sub_reason':fields.Nested(MINE_OPERATION_STATUS_SUB_REASON_CODE_MODEL),
             'description': fields.String(),
     })
+
+MINE_REPORT_SUBMISSION_MODEL= api.model(
+    'MineReportSubmission', {
+        'mine_report_submission_guid': fields.String,
+        'submission_date': fields.Date,
+        'mine_report_submission_status_code': fields.String,
+        'documents': fields.List(fields.Nested(MINE_DOCUMENT_MODEL))
+    }
+)
+
+MINE_REPORT_MODEL = api.model(
+    'MineReportModel', {
+        'mine_report_guid':fields.String,
+        'due_date':fields.Date,
+        'received_date': fields.Date,
+        'submission_year':fields.Integer,
+        'permit_id':fields.Integer,
+        'mine_report_submissions':fields.List(fields.Nested(MINE_REPORT_SUBMISSION_MODEL))
+})
+
+MINE_REPORT_DEFINITION_CATEGORIES = api.model(
+    'MineReportDefinitionCategoriesModel', {
+        'mine_report_category':fields.String(),
+        'description':fields.String()
+    }
+)
+
+MINE_REPORT_DEFINITION_MODEL = api.model(
+    'MineReportDefinition', {
+        'mine_report_definition_id':fields.Integer,
+        'mine_report_definition_guid':fields.String,
+        'report_name':fields.String,
+        'description':fields.String,
+        'due_date_period_months':fields.Integer,
+        'mine_report_due_date_type':fields.String,
+        'categories':fields.List(fields.Nested(MINE_REPORT_DEFINITION_CATEGORIES)),
+        'compliance_articles':fields.List(fields.Nested(COMPLIANCE_ARTICLE_MODEL)),
+    }
+)
