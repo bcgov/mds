@@ -892,29 +892,52 @@ export const a = [
 ];
 
 export const REGION_OPTIONS = {
-  options: [
+  records: [
     {
-      value: "SW",
-      label: "South West",
+      mine_region_code: "SW",
+      description: "South West",
     },
     {
-      value: "SC",
-      label: "South Central",
+      mine_region_code: "SC",
+      description: "South Central",
     },
     {
-      value: "NW",
-      label: "North West",
+      mine_region_code: "NW",
+      description: "North West",
     },
     {
-      value: "NE",
-      label: "North East",
+      mine_region_code: "NE",
+      description: "North East",
     },
     {
-      value: "SE",
-      label: "South East",
+      mine_region_code: "SE",
+      description: "South East",
     },
   ],
 };
+
+export const REGION_DROPDOWN_OPTIONS = [
+  {
+    value: "SW",
+    label: "South West",
+  },
+  {
+    value: "SC",
+    label: "South Central",
+  },
+  {
+    value: "NW",
+    label: "North West",
+  },
+  {
+    value: "NE",
+    label: "North East",
+  },
+  {
+    value: "SE",
+    label: "South East",
+  },
+];
 
 export const REGION_HASH = {
   SW: "South West",
@@ -924,7 +947,7 @@ export const REGION_HASH = {
   SE: "South East",
 };
 
-export const TENURE_TYPES = [
+export const TENURE_TYPES_DROPDOWN_OPTIONS = [
   { value: "COL", label: "Coal" },
   { value: "MIN", label: "Mineral" },
   { value: "PLR", label: "Placer" },
@@ -974,7 +997,7 @@ export const PERMITTEE = {
 };
 
 export const EXPECTED_DOCUMENT_STATUS_OPTIONS = {
-  options: [
+  records: [
     { exp_document_status_code: "MIA", description: "Not Received" },
     { exp_document_status_code: "PRE", description: "Received / Pending Review" },
     { exp_document_status_code: "RIP", description: "Review In Progress" },
@@ -1059,7 +1082,7 @@ export const USER_ACCESS_DATA = [
 ];
 
 export const DISTURBANCE_OPTIONS = {
-  options: [
+  records: [
     {
       description: "Surface",
       exclusive_ind: false,
@@ -1095,7 +1118,7 @@ export const DISTURBANCE_OPTIONS_HASH = {
 };
 
 export const COMMODITY_OPTIONS = {
-  options: [
+  records: [
     {
       description: "Thermal Coal",
       exclusive_ind: true,
@@ -1144,7 +1167,7 @@ export const DROPDOWN_PROVINCE_OPTIONS = [
 ];
 
 export const PROVINCE_OPTIONS = {
-  options: [
+  records: [
     { description: "British Columbia", display_order: 10, sub_division_code: "BC" },
     { description: "Alberta", display_order: 10, sub_division_code: "AB" },
   ],
@@ -1437,10 +1460,12 @@ export const OPEN_ORDERS = [
   },
 ];
 
-export const APPLICATION_STATUS_CODE_OPTIONS = [
-  { application_status_code: "RIP", description: "In Review" },
-  { application_status_code: "APR", description: "Approved" },
-];
+export const APPLICATION_STATUS_CODE_OPTIONS = {
+  records: [
+    { application_status_code: "RIP", description: "In Review" },
+    { application_status_code: "APR", description: "Approved" },
+  ],
+};
 
 export const VARIANCES = {
   records: [

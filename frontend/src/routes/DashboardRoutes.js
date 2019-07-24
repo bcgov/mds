@@ -10,6 +10,7 @@ const DashboardRoutes = () => (
       path={routes.CUSTOM_HOME_PAGE.route}
       component={routes.CUSTOM_HOME_PAGE.component}
     />
+    <Route exact path={routes.HOME_PAGE.route} component={routes.HOME_PAGE.component} />
     <Route exact path={routes.MINE_HOME_PAGE.route} component={routes.MINE_HOME_PAGE.component} />
     <Route
       exact
