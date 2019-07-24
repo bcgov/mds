@@ -39,23 +39,6 @@ class PermitAmendmentDocumentListResource(Resource, UserMixin):
         return DocumentManagerService().initializeFileUploadWithDocumentManager(
             request, mine, 'permits')
 
-    def _parse_upload_folders(self, mine_guid):
-        folder = f'mines/{str(mine_guid)}/permits'
-        pretty_folder = f'mines/{mine_guid}/permits'
-
-        return folder, pretty_folder
-
-    def _parse_request_metadata(self):
-        request_metadata = request.headers.get("Upload-Metadata")
-        metadata = {}
-        if not request_metadata:
-            return metadata
-
-        for key_value in request_metadata.split(","):
-            (key, value) = key_value.split(" ")
-            metadata[key] = base64.b64decode(value).decode("utf-8")
-
-        return metadata
 
     @api.marshal_with(PERMIT_AMENDMENT_DOCUMENT_MODEL, code=201)
     @requires_role_edit_permit
