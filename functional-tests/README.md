@@ -22,9 +22,9 @@ A build tool to build the groovy project and manage its dependencies.
 - `gradle.properties` : Environment properties used in the Gradle build
 - `gradlew(.bat)` : Gradle runner executable
 - `src/test/groovy/resources` : Configuration for Geb
-- `src/test/groovy/spec` : Specification for test cases/scenarios
+- `src/test/groovy/<Project Name>/spec` : Specification for test cases/scenarios
 - `src/test/groovy/data` : SQL to create/delete test data directly from the DB
-- `src/test/groovy/modules` and `src/test/pages` : Definition of modules/pages in the app
+- `src/test/groovy/<Project Name>/modules` and `src/test/<Project Name>/pages` : Definition of modules/pages in the app
 - `src/test/groovy/utils` : Constants being used in the test script
 
 ## Environment Setup
@@ -34,13 +34,14 @@ Follow the `.env-example` template to create an `.env` file under `/functional-t
 ## Run tests with Gradle
 
 The following commands will launch the tests with the individual browsers.
+They must be run in the functional test directory.
 The minespace-frontend tests are run by replacing CustomJUnitSpecRunner with CustomJUnitPublicSpecRunner
 
 The core frontend tests here will be run with the following commands
 ./gradlew chromeTest -DchromeTest.single=CustomJUnitSpecRunner
-./gradlew chromeHeadlessTest -DchromeHeadlessTest.single=CustomJUnitSpecRunner //Will run in pipeline as well, download tsf test will fail
+./gradlew chromeHeadlessTest -DchromeHeadlessTest.single=CustomJUnitSpecRunner //Can run in pipeline as well, however download tsf test will fail
 ./gradlew firefoxTest -DfirefoxTest.single=CustomJUnitSpecRunner
-./gradlew firefoxHeadlessTest -DfirefoxHeadlessTest.single=CustomJUnitSpecRunner //Will run in pipeline as well
+./gradlew firefoxHeadlessTest -DfirefoxHeadlessTest.single=CustomJUnitSpecRunner //Can run in pipeline
 
 - Replace `./gradlew` with `gradlew.bat` in the above examples if you're on Windows.
 
@@ -52,6 +53,15 @@ Only on windows:
 Only on MacOS:
 
     ./gradlew safariTest -DsafariTest.single=CustomJUnitSpecRunner
+
+## Run tests in project root
+
+The tests can also be run from the projects root using the command 'make test'
+
+## Modifying tests that run in the pipeline
+
+The shell script controlling how the tests in the pipeline are run is run_test.sh. If new products need to be added to the
+GEB testing process this is where they are added.
 
 ## Test Report
 
