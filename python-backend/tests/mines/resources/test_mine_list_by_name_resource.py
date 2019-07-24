@@ -12,9 +12,9 @@ def test_get_mines_by_list(test_client, db_session, auth_headers):
         'mine_guid': str(mine.mine_guid),
         'mine_name': mine.mine_name,
         'mine_no': mine.mine_no,
-        'latitude': str(mine.mine_location.latitude),
-        'longitude': str(mine.mine_location.longitude),
-        'mine_location_description': mine.mine_location.mine_location_description,
+        'latitude': str(mine.latitude),
+        'longitude': str(mine.longitude),
+        'mine_location_description': mine.mine_location_description,
     }
     assert get_resp.status_code == 200
     assert get_data['mines'][0] == context
@@ -30,9 +30,9 @@ def test_get_mines_by_list_search_by_name(test_client, db_session, auth_headers)
         'mine_guid': str(mine.mine_guid),
         'mine_name': mine.mine_name,
         'mine_no': mine.mine_no,
-        'latitude': str(mine.mine_location.latitude),
-        'longitude': str(mine.mine_location.longitude),
-        'mine_location_description': mine.mine_location.mine_location_description,
+        'latitude': str(mine.latitude),
+        'longitude': str(mine.longitude),
+        'mine_location_description': mine.mine_location_description,
     }
     assert get_resp.status_code == 200
     assert get_data['mines'][0] == context
@@ -48,9 +48,9 @@ def test_get_mines_by_list_search_term_name(test_client, db_session, auth_header
         'mine_guid': str(mine.mine_guid),
         'mine_name': mine.mine_name,
         'mine_no': mine.mine_no,
-        'latitude': str(mine.mine_location.latitude),
-        'longitude': str(mine.mine_location.longitude),
-        'mine_location_description': mine.mine_location.mine_location_description,
+        'latitude': str(mine.latitude),
+        'longitude': str(mine.longitude),
+        'mine_location_description': mine.mine_location_description,
     }
     assert get_resp.status_code == 200
     assert get_data['mines'][0] == context
@@ -66,9 +66,9 @@ def test_get_mines_by_list_search_by_mine_no(test_client, db_session, auth_heade
         'mine_guid': str(mine.mine_guid),
         'mine_name': mine.mine_name,
         'mine_no': mine.mine_no,
-        'latitude': str(mine.mine_location.latitude),
-        'longitude': str(mine.mine_location.longitude),
-        'mine_location_description': mine.mine_location.mine_location_description,
+        'latitude': str(mine.latitude),
+        'longitude': str(mine.longitude),
+        'mine_location_description': mine.mine_location_description,
     }
     assert get_resp.status_code == 200
     assert get_data['mines'][0] == context
@@ -85,9 +85,9 @@ def test_get_mines_by_list_search_by_permit_no(test_client, db_session, auth_hea
         'mine_guid': str(mine.mine_guid),
         'mine_name': mine.mine_name,
         'mine_no': mine.mine_no,
-        'latitude': str(mine.mine_location.latitude),
-        'longitude': str(mine.mine_location.longitude),
-        'mine_location_description': mine.mine_location.mine_location_description,
+        'latitude': str(mine.latitude),
+        'longitude': str(mine.longitude),
+        'mine_location_description': mine.mine_location_description,
     }
     assert get_resp.status_code == 200
     assert get_data['mines'][0] == context

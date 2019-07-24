@@ -1,12 +1,13 @@
+import uuid
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from app.api.utils.models_mixins import Base
+from app.api.utils.models_mixins import Base, AuditMixin
 from app.extensions import db
 
 
-class MineReport(Base):
+class MineReport(Base, AuditMixin):
     __tablename__ = "mine_report"
     mine_report_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     mine_report_guid = db.Column(UUID(as_uuid=True))
@@ -23,3 +24,39 @@ class MineReport(Base):
 
     def __repr__(self):
         return '<MineReport %r>' % self.mine_report_guid
+
+    @classmethod
+    def create(cls,
+               mine_report_guid,
+               mine_report_definition_id,
+               mine_guid,
+               due_date,
+               submission_year,
+               permit_id=None,
+               add_to_session=True):
+        mine_report = cls(
+            mine_report_guid=mine_report_guid,
+            mine_report_definition_id=mine_report_definition_id,
+            mine_guid=mine_guid,
+            due_date=due_date,
+            submission_year=submission_year,
+            permit_id=permit_id)
+        if add_to_session:
+            mine_report.save(commit=False)
+        return mine_report
+
+    @classmethod
+    def find_all_by_mine_guid(cls, _id):
+        try:
+            uuid.UUID(_id, version=4)
+            return cls.query.filter_by(mine_guid=_id).all()
+        except ValueError:
+            return None
+
+    @classmethod
+    def find_by_mine_report_guid(cls, _id):
+        try:
+            uuid.UUID(_id, version=4)
+            return cls.query.filter_by(mine_report_guid=_id).first()
+        except ValueError:
+            return None

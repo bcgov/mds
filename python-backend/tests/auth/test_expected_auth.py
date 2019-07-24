@@ -1,5 +1,5 @@
 import pytest
-from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE
+from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, EDIT_REPORT
 
 from app.api.download_token.resources.download_token import DownloadTokenResource
 from app.api.documents.expected.resources.document_status import ExpectedDocumentStatusResource
@@ -35,6 +35,7 @@ from app.api.users.minespace.resources.minespace_user import MinespaceUserResour
 from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserMineResource
 from app.api.search.search.resources.search import SearchResource, SearchOptionsResource
 from app.api.search.search.resources.simple_search import SimpleSearchResource
+from app.api.mines.reports.resources.mine_reports import MineReportResource, MineReportListResource
 
 
 @pytest.mark.parametrize(
@@ -68,6 +69,10 @@ from app.api.search.search.resources.simple_search import SimpleSearchResource
      (MineRegionResource, "get", [VIEW_ALL]),
      (MineResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
      (MineResource, "put", [MINE_EDIT]),
+     (MineReportResource, "get", [VIEW_ALL]), 
+     (MineReportResource, "put", [EDIT_REPORT]),
+     (MineReportListResource, "get", [VIEW_ALL]), 
+     (MineReportListResource, "post", [EDIT_REPORT]),
      (MineStatusResource, "get", [VIEW_ALL]),
      (MineTailingsStorageFacilityListResource, "get", [VIEW_ALL]),
      (MineTailingsStorageFacilityListResource, "post", [MINE_EDIT]),
@@ -106,7 +111,7 @@ from app.api.search.search.resources.simple_search import SimpleSearchResource
      (SearchOptionsResource, "get", [VIEW_ALL]),
      (SimpleSearchResource, "get", [VIEW_ALL]),
      (MinespaceUserResource, 'get', [MINE_ADMIN]),
-     (MinespaceUserResource, 'post', [MINE_ADMIN]),
+     (MinespaceUserResource, 'post', [MINE_ADMIN]), 
      (MinespaceUserResource, 'delete', [MINE_ADMIN]),
      (MinespaceUserMineResource, 'post', [MINE_ADMIN]),
      (MinespaceUserMineResource, 'delete', [MINE_ADMIN])])
