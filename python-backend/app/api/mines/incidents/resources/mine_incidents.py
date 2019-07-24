@@ -56,7 +56,6 @@ class MineIncidentListResource(Resource, UserMixin):
     parser.add_argument('followup_inspection', type=inputs.boolean, location='json')
     parser.add_argument(
         'followup_inspection_date',
-        # FIXME: Does this date parse even work right now?
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
         store_missing=False,
         location='json')
@@ -213,7 +212,7 @@ class MineIncidentResource(Resource, UserMixin):
         'followup_inspection', type=inputs.boolean, location='json', store_missing=False)
     parser.add_argument(
         'followup_inspection_date',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None,
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
         store_missing=False,
         location='json')
     parser.add_argument('status_code', type=str, location='json', store_missing=False)
@@ -234,7 +233,6 @@ class MineIncidentResource(Resource, UserMixin):
     @api.marshal_with(MINE_INCIDENT_MODEL, code=200)
     @requires_role_edit_do
     def put(self, mine_guid, mine_incident_guid):
-        # TODO: Confirm that all fields are actually passed & applied here
         incident = MineIncident.find_by_mine_incident_guid(mine_incident_guid)
         if not incident or str(incident.mine_guid) != mine_guid:
             raise NotFound("Mine Incident not found")
