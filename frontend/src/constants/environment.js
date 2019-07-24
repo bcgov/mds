@@ -34,6 +34,7 @@ export const USER_ROLES = {
   role_edit_mines: "core_edit_mines",
   role_edit_parties: "core_edit_parties",
   role_edit_permits: "core_edit_permits",
+  role_edit_reports: "core_edit_reports",
   role_edit_do: "core_edit_do",
   role_edit_variances: "core_edit_variances",
   role_close_permits: "core_close_permits",

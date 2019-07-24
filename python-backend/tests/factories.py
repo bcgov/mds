@@ -30,6 +30,7 @@ from app.api.users.core.models.core_user import CoreUser, IdirUserDetail
 from app.api.users.minespace.models.minespace_user import MinespaceUser
 from app.api.variances.models.variance import Variance
 from app.api.parties.party_appt.models.party_business_role_appt import PartyBusinessRoleAppointment
+from app.api.mines.reports.models.mine_report import MineReport
 
 GUID = factory.LazyFunction(uuid.uuid4)
 TODAY = factory.LazyFunction(datetime.now)
@@ -321,6 +322,16 @@ class MineIncidentFactory(BaseFactory):
         if o.determination_type_code == 'DO' else [])
 
 
+class MineReportFactory(BaseFactory):
+    class Meta:
+        model = MineReport
+
+    mine_report_guid = GUID
+    mine_report_definition_id = factory.LazyFunction(RandomMineReportDefinition)
+    due_date = factory.Faker('future_datetime', end_date='+30d')
+    submission_year = factory.fuzzy.FuzzyInteger(2020, 3000)
+
+
 class AddressFactory(BaseFactory):
     class Meta:
         model = Address
@@ -530,3 +541,13 @@ class MineFactory(BaseFactory):
             extracted = 1
 
         VarianceFactory.create_batch(size=extracted, mine=obj, **kwargs)
+
+    @factory.post_generation
+    def mine_reports(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        MineReportFactory.create_batch(size=extracted, mine_guid=obj.mine_guid, **kwargs)
