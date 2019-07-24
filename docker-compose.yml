@@ -117,8 +117,6 @@ services:
       context: microservices/nris_api/backend
     ports:
       - 5500:5500
-    expose:
-      - 5500
     volumes:
       - ./microservices/nris_api/backend/:/app/
     depends_on:
@@ -136,8 +134,6 @@ services:
       context: microservices/document_manager/backend
     ports:
       - 5001:5001
-    expose:
-      - 5001
     volumes:
       - ./microservices/document_manager/backend/:/app/
     depends_on:

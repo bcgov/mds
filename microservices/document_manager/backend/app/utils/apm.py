@@ -1,4 +1,3 @@
-from app.extensions import sched
 from elasticapm import Client
 from flask import current_app
 
