@@ -100,7 +100,7 @@ cache:
 
 database-build:
 	@echo "+\n++ Performing postgres build ...\n+"
-	@docker-compose build postgres --parallel flyway
+	@docker-compose build --parallel postgres flyway
 
 database-run:
 	@echo "+\n++ Running postgres and Flyway migrations...\n+"

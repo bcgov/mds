@@ -53,7 +53,7 @@ Only on windows:
 
 Only on MacOS:
 
-    DEPRECATED ./gradlew safariTest -DsafariTest.single=CustomJUnitSpecRunner DEPRECATED
+    DEPRECATED ./gradlew safariTest -DsafariTest.single=CustomJUnitSpecRunner
 
 ## Run tests in project root
 
@@ -67,3 +67,16 @@ GEB testing process this is where they are added.
 ## Test Report
 
 Report can be found under `/functional-tests/build/reports/tests`
+
+## Common Problems
+
+- Data clean up FAILS:
+
+This often occurs when a new table is added to the database and the clean up script attempts to delete a linked table. Often
+running the test on a clean database will work. Though sometimes the data_deletion.sql script will have to be modified to
+delete dependancies before proceeding.
+
+- The login test fails locally:
+
+If you've never managed to run the functional tests locally before, make certain your .env file matches the .env example.
+You will need to get the password from openshift secrets.
