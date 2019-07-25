@@ -35,7 +35,7 @@ class MineIncidentDocumentListResource(Resource, UserMixin):
         if not mine:
             raise NotFound('Mine not found.')
 
-        return DocumentManagerService().initializeFileUploadWithDocumentManager(
+        return DocumentManagerService.initializeFileUploadWithDocumentManager(
             request, mine, 'incidents')
 
 

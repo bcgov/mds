@@ -42,7 +42,7 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         if not expected_document:
             return self.create_error_payload(404, 'Expected Document not found'), 404
 
-        return DocumentManagerService().initializeFileUploadWithDocumentManager(
+        return DocumentManagerService.initializeFileUploadWithDocumentManager(
             request, expected_document.mine, 'tailings')
 
     @requires_any_of([MINE_EDIT, MINESPACE_PROPONENT])

@@ -10,12 +10,13 @@ ALLOWED_DOCUMENT_CATEGORIES = ['tailings', 'permits', 'variances', 'incidents']
 class DocumentManagerService():
     document_manager_url = f'{Config.DOCUMENT_MANAGER_URL}/document-manager'
 
-    def initializeFileUploadWithDocumentManager(self, request, mine, document_category):
-        metadata = self._parse_request_metadata(request)
+    @classmethod
+    def initializeFileUploadWithDocumentManager(cls, request, mine, document_category):
+        metadata = cls._parse_request_metadata(request)
         if not metadata or not metadata.get('filename'):
             raise Exception('Request metadata missing filename')
 
-        folder, pretty_folder = self._parse_upload_folders(mine, document_category)
+        folder, pretty_folder = cls._parse_upload_folders(mine, document_category)
         data = {
             'folder': folder,
             'pretty_folder': pretty_folder,
@@ -23,7 +24,7 @@ class DocumentManagerService():
         }
 
         resp = requests.post(
-            url=self.document_manager_url,
+            url=cls.document_manager_url,
             headers={key: value
                      for (key, value) in request.headers if key != 'Host'},
             data=data,
@@ -32,7 +33,8 @@ class DocumentManagerService():
 
         return Response(str(resp.content), resp.status_code, resp.raw.headers.items())
 
-    def _parse_upload_folders(self, mine, document_category):
+    @classmethod
+    def _parse_upload_folders(cls, mine, document_category):
         if document_category not in ALLOWED_DOCUMENT_CATEGORIES:
             raise Exception(
                 f'CONFIGURATION ERROR: Document Manager Folder \'{document_category}\' not allowed, must be one of {ALLOWED_DOCUMENT_CATEGORIES}.'
@@ -43,7 +45,8 @@ class DocumentManagerService():
 
         return folder, pretty_folder
 
-    def _parse_request_metadata(self, request):
+    @classmethod
+    def _parse_request_metadata(cls, request):
         request_metadata = request.headers.get("Upload-Metadata")
         metadata = {}
         if not request_metadata:
