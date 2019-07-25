@@ -1,6 +1,7 @@
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
-from ....utils.models_mixins import AuditMixin, Base
+
+from app.api.utils.models_mixins import AuditMixin, Base
 
 
 class MineIncidentDeterminationType(AuditMixin, Base):
@@ -12,4 +13,4 @@ class MineIncidentDeterminationType(AuditMixin, Base):
 
     @classmethod
     def get_active(cls):
-        return cls.query.filter_by(active_ind=True).all()
+        return cls.query.filter_by(active_ind=True).order_by(cls.display_order).all()
