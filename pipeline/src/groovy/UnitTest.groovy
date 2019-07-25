@@ -50,17 +50,24 @@ def frontEndPublicDeploymentConfigs = ocGet(['is','-l', "app-name=${config.app.n
 def backEndDeploymentConfigs = ocGet(['is','-l', "app-name=${config.app.name},image-stream.name=mds-python-backend", "--namespace=${namespace}"])
 def nrisBackendDeploymentConfigs = ocGet(['is','-l', "app-name=${config.app.name},image-stream.name=mds-nris-backend", "--namespace=${namespace}"])
 
+print "*******  INFO BLOCK *******"
+print appLabel
+print namespace
+print config
+print "*******  INFO BLOCK END *******"
+
+print "*******  INFO BLOCK *******"
 print frontEndDeploymentConfigs
 print frontEndPublicDeploymentConfigs
 print backEndDeploymentConfigs
 print nrisBackendDeploymentConfigs
-
+print "*******  INFO BLOCK END *******"
 // Run frontend tests, needs more resources than normal
 def cpuLimit = 1.5
 def memoryLimit = 1.5
 frontEndDeploymentConfigs.items.each {Map object ->
     Map isTag = ocGet(["istag/${object.metadata.name}:${appLabel}", "--namespace=${namespace}"])
-    OpenShiftHelper._exec(["bash", '-c', "oc process -f openshift/sonar.pod.json -l 'app=mds-${appLabel},sonar=${config.app.build.id}-${object.metadata.name}' -p 'NAME=sonar-${config.app.build.id}-${object.metadata.name}' -p 'IMAGE=${isTag.image.dockerImageReference}' -p 'DB_CONFIG_NAME=${dbConfig}' -p 'GIT_BRANCH=${branch}' -p 'MEMORY_LIMIT=0' -p 'CPU_LIMIT=0' --namespace=${object.metadata.namespace} |  oc replace -f - --namespace=${object.metadata.namespace} --force=true"], new StringBuffer(), new StringBuffer())
+    OpenShiftHelper._exec(["bash", '-c', "oc process -f openshift/sonar.pod.json -l 'app=mds-${appLabel},sonar=${config.app.build.id}-${object.metadata.name}' -p 'NAME=sonar-${config.app.build.id}-${object.metadata.name}' -p 'IMAGE=${isTag.image.dockerImageReference}' -p 'DB_CONFIG_NAME=${dbConfig}' -p 'GIT_BRANCH=${branch}' --namespace=${object.metadata.namespace} |  oc replace -f - --namespace=${object.metadata.namespace} --force=true"], new StringBuffer(), new StringBuffer())
 }
 
 // Run public frontend tests
