@@ -25,7 +25,7 @@ class MineVarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         if not mine:
             raise NotFound('Mine not found.')
 
-        return DocumentManagerService().initializeFileUploadWithDocumentManager(
+        return DocumentManagerService.initializeFileUploadWithDocumentManager(
             request, mine, 'variances')
 
     @api.doc(description='Associate an uploaded file with a variance.',

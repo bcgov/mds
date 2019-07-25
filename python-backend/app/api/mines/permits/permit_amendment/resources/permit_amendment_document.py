@@ -36,9 +36,8 @@ class PermitAmendmentDocumentListResource(Resource, UserMixin):
         if not mine:
             raise NotFound('Mine not found.')
 
-        return DocumentManagerService().initializeFileUploadWithDocumentManager(
+        return DocumentManagerService.initializeFileUploadWithDocumentManager(
             request, mine, 'permits')
-
 
     @api.marshal_with(PERMIT_AMENDMENT_DOCUMENT_MODEL, code=201)
     @requires_role_edit_permit

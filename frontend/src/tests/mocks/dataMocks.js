@@ -449,6 +449,8 @@ export const MINE_NAME_LIST = [
   },
 ];
 
+export const MINE_NO = "BLAH6666";
+
 export const MINESPACE_USERS = [
   {
     user_id: "1",
@@ -1421,7 +1423,7 @@ export const PARTY_RELATIONSHIP_TYPE_HASH = {
 };
 
 export const MINEDOCUMENTS = {
-  mine_documents: [
+  records: [
     {
       active_ind: "True",
       document_manager_guid: "4c7d88d6-e78d-48cf-a860-89b6a1e8903b",
@@ -2559,4 +2561,11 @@ export const INCIDENT_FOLLOWUP_ACTIONS_HASH = {
   INS: "Yes - Inspector Investigation",
   NO: "No",
   HUK: "Historical - Unknown",
+};
+
+export const ADD_PARTY_FORM_STATE = {
+  showingAddPartyForm: false,
+  person: true,
+  organization: true,
+  partyLabel: "contact",
 };
