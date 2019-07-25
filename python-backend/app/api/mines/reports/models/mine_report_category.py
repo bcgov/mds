@@ -2,11 +2,11 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from app.api.utils.models_mixins import Base
+from app.api.utils.models_mixins import Base, AuditMixin
 from app.extensions import db
 
 
-class MineReportCategory(Base):
+class MineReportCategory(Base, AuditMixin):
     __tablename__ = 'mine_report_category'
     mine_report_category = db.Column(db.String(3), primary_key=True)
     description = db.Column(db.String(100), nullable=False)

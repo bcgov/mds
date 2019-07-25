@@ -443,3 +443,40 @@ VALUES
     ('FIN', 'Final Document', TRUE, 'system-mds', 'system-mds'),
     ('INI', 'Initial Document', TRUE,  'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
+
+INSERT INTO mine_report_submission_status_code
+    (
+    mine_report_submission_status_code,
+    description,
+    display_order,
+    create_user,
+    update_user
+    )
+VALUES
+    ('MIA', 'Not Received', 10, 'f-mds', 'system-mds'),
+    ('PRE', 'Received / Pending Review', 20, 'system-mds', 'system-mds'),
+    ('RIP', 'Review In Progress', 30, 'system-mds', 'system-mds'),
+    ('ACC', 'Accepted', 40, 'system-mds', 'system-mds'),
+    ('REJ', 'Rejected / Waiting On Update', 50, 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
+
+INSERT INTO public.mine_report_category
+(mine_report_category, description, display_order, active_ind, create_user, create_timestamp, update_user, update_timestamp)
+VALUES 
+	('H&S', 'Health and Safety', 10, true, 'system-mds', now(), 'system-mds', now()),
+	('GSE', 'GeoScience and Environmental', 20, true, 'system-mds', now(), 'system-mds', now()),
+	('GTC', 'Geotechnical', 30, true, 'system-mds', now(), 'system-mds', now()),
+	('OTH', 'Other', 40, true, 'system-mds', now(), 'system-mds', now())
+on conflict do nothing;
+
+
+INSERT INTO public.mine_report_due_date_type
+(mine_report_due_date_type, description, active_ind, create_user, update_user)
+VALUES
+	('FIS', 'Reports due on fiscal year end.', true, 'system-mds', 'system-mds'),
+	('ANV', 'Reports due on an aniversary of operation, permit, etc...', true, 'system-mds', 'system-mds'),
+	('AVA', 'Reports that are available on Request', true, 'system-mds', 'system-mds'),
+	('PMT', 'Reports that are indicated via Permit Requirements', true, 'system-mds', 'system-mds'),
+	('EVT', 'Reports that are related to an event that occured', true, 'system-mds', 'system-mds')
+on conflict do nothing;
