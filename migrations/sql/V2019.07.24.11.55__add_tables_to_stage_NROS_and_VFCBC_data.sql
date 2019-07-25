@@ -10,8 +10,20 @@ BEGIN
 END
 $$;
 
+CREATE TABLE now.application_start_stop (
+    MESSAGEID integer PRIMARY KEY,
+    NRSOSAPPLICATIONID character varying(50),
+    SUBMITTEDDATE date,
+    RECEIVEDDATE date,
+    NOWNUMBER character varying(50),
+    STARTWORKDATE date,
+    ENDWORKDATE date,
+    PROCESSED character varying(1) DEFAULT 'N' ,
+    PROCESSEDDATE date
+);
+
 CREATE TABLE now.client (
-    CLIENTID NUMBER(9,0) PRIMARY KEY,
+    CLIENTID integer PRIMARY KEY,
     "TYPE" character varying(30),
     ORG_LEGALNAME character varying(250),
     ORG_DOINGBUSINESSAS character varying(150),
@@ -37,14 +49,14 @@ CREATE TABLE now.client (
 );
 
 CREATE TABLE now.application_nda (
-    MESSAGEID numeric(9,0) PRIMARY KEY,
-    TRACKINGNUMBER numeric(9,0),
+    MESSAGEID integer PRIMARY KEY,
+    TRACKINGNUMBER integer,
     APPLICATIONTYPE character varying(100),
     STATUS character varying(60),
     SUBMITTEDDATE date,
     RECEIVEDDATE date,
-    APPLICANTCLIENTID numeric(9,0),
-    SUBMITTERCLIENTID numeric(9,0),
+    APPLICANTCLIENTID integer,
+    SUBMITTERCLIENTID integer,
     TYPEDEEMEDAUTHORIZATION character varying(50),
     PERMITNUMBER character varying(50),
     MINENUMBER character varying(50),
@@ -53,9 +65,9 @@ CREATE TABLE now.application_nda (
     PLANACTIVITIESIPSURVEY character varying(3),
     PROPOSEDSTARTDATE date,
     PROPOSEDENDDATE date,
-    TOTALLINEKILOMETERS NUMBER,
+    TOTALLINEKILOMETERS integer,
     DESCPLANNEDACTIVITIES character varying(4000),
-    PROPOSEDNEWENDDATE DATE,
+    PROPOSEDNEWENDDATE date,
     REASONFOREXTENSION character varying(4000),
     ANYOTHERINFORMATION character varying(4000),
     VFCBCAPPLICATIONURL character varying(4000),
@@ -68,30 +80,22 @@ CREATE TABLE now.application_nda (
     FOREIGN KEY (SUBMITTERCLIENTID) REFERENCES now.client(CLIENTID) DEFERRABLE INITIALLY DEFERRED
 );
 
-CREATE TABLE now.application_start_stop (
-    MESSAGEID numeric(9,0) PRIMARY KEY,
-    NRSOSAPPLICATIONID character varying(50),
-    SUBMITTEDDATE date,
-    RECEIVEDDATE date,
-    NOWNUMBER character varying(50),
-    STARTWORKDATE date,
-    ENDWORKDATE date,
-    PROCESSED character varying(1) DEFAULT 'N' ,
-    PROCESSEDDATE date
-
-    FOREIGN KEY (APPLICANTCLIENTID) REFERENCES now.client(CLIENTID) DEFERRABLE INITIALLY DEFERRED,
-    FOREIGN KEY (SUBMITTERCLIENTID) REFERENCES now.client(CLIENTID) DEFERRABLE INITIALLY DEFERRED
+CREATE TABLE now.equipment(
+    EQUIPMENTID integer PRIMARY KEY,
+	"TYPE" character varying(4000),
+	SIZECAPACITY character varying(4000),
+	QUANTITY integer
 );
 
 CREATE TABLE now.application (
-    MESSAGEID numeric(9,0) PRIMARY KEY,
-    TRACKINGNUMBER numeric(9,0),
+    MESSAGEID integer PRIMARY KEY,
+    TRACKINGNUMBER integer,
     APPLICATIONTYPE character varying(100),
     STATUS character varying(60),
     SUBMITTEDDATE date,
     RECEIVEDDATE date,
-    APPLICANTCLIENTID numeric(9,0),
-    SUBMITTERCLIENTID numeric(9,0),
+    APPLICANTCLIENTID integer,
+    SUBMITTERCLIENTID integer,
     NOTICEOFWORKTYPE character varying(300),
     TYPEOFPERMIT character varying(300),
     TYPEOFAPPLICATION character varying(300),
@@ -124,7 +128,7 @@ CREATE TABLE now.application (
     STGEDISTURBEDAREA numeric(14,2),
     STGETIMBERVOLUME numeric(14,2),
     FUELLUBSTOREONSITE character varying(3),
-    FUELLUBSTORED numeric(14,0),
+    FUELLUBSTORED integer,
     FUELLUBSTOREMETHODBULK character varying(3),
     FUELLUBSTOREMETHODBARREL character varying(3),
     CBSFRECLAMATION character varying(4000),
@@ -141,9 +145,9 @@ CREATE TABLE now.application (
     SURFACEBULKSAMPLERECLSEPHANDL character varying(4000),
     SURFACEBULKSAMPLERECLDRAINMITI character varying(4000),
     SURFACEBULKSAMPLERECLCOST numeric(14,2),
-    UNDEREXPTOTALORE numeric(14,0),
+    UNDEREXPTOTALORE integer,
     UNDEREXPTOTALOREUNITS character varying(20),
-    UNDEREXPTOTALWASTE numeric(14,0),
+    UNDEREXPTOTALWASTE integer,
     UNDEREXPTOTALWASTEUNITS character varying(20),
     UNDEREXPRECLAMATION character varying(4000),
     UNDEREXPRECLAMATIONCOST numeric(14,2),
@@ -161,9 +165,9 @@ CREATE TABLE now.application (
     SANDGRVQRYOFFICIALCOMMPLAN character varying(4000),
     SANDGRVQRYLANDUSEZONING character varying(4000),
     SANDGRVQRYENDLANDUSE character varying(4000),
-    SANDGRVQRYTOTALMINERES numeric(14,0),
+    SANDGRVQRYTOTALMINERES integer,
     SANDGRVQRYTOTALMINERESUNITS character varying(20),
-    SANDGRVQRYANNUALEXTREST numeric(14,0),
+    SANDGRVQRYANNUALEXTREST integer,
     SANDGRVQRYANNUALEXTRESTUNITS character varying(20),
     SANDGRVQRYRECLAMATION character varying(4000),
     SANDGRVQRYRECLAMATIONBACKFILL character varying(4000),
@@ -174,13 +178,13 @@ CREATE TABLE now.application (
     SANDGRVQRYGRDWTRTESTWELLS character varying(3),
     SANDGRVQRYGRDWTROTHER character varying(4000),
     SANDGRVQRYGRDWTRMEASPROTECT character varying(4000),
-    SANDGRVQRYIMPACTDISTRES numeric(14,0),
-    SANDGRVQRYIMPACTDISTWATER numeric(14,0),
+    SANDGRVQRYIMPACTDISTRES integer,
+    SANDGRVQRYIMPACTDISTWATER integer,
     SANDGRVQRYIMPACTNOISE character varying(4000),
     SANDGRVQRYIMPACTPRVTACCESS character varying(4000),
     SANDGRVQRYIMPACTPREVTDUST character varying(4000),
     SANDGRVQRYIMPACTMINVISUAL character varying(4000),
-    CUTLINESEXPLGRIDTOTALLINEKMS numeric(14,0),
+    CUTLINESEXPLGRIDTOTALLINEKMS integer,
     CUTLINESEXPLGRIDTIMBERVOLUME numeric(14,2),
     CUTLINESRECLAMATION character varying(4000),
     CUTLINESRECLAMATIONCOST numeric(14,2),
@@ -226,7 +230,8 @@ CREATE TABLE now.application (
 );
 
 CREATE TABLE now.contact (
-    MESSAGEID numeric(9,0) PRIMARY KEY,
+    ID serial PRIMARY KEY,
+    MESSAGEID integer,
     "TYPE" character varying(30),
     ORG_LEGALNAME character varying(250),
     ORG_DOINGBUSINESSAS character varying(150),
@@ -252,12 +257,110 @@ CREATE TABLE now.contact (
     MAILINGADDRESSPROVSTATE character varying(200),
     MAILINGADDRESSCOUNTRY character varying(50),
     MAILINGADDRESSPOSTALZIP character varying(10),
-    SEQ_NO numeric(3,0)
 
-    FOREIGN KEY (APPLICANTCLIENTID) REFERENCES now.client(CLIENTID) DEFERRABLE INITIALLY DEFERRED,
-    FOREIGN KEY (SUBMITTERCLIENTID) REFERENCES now.client(CLIENTID) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 );
 
+CREATE TABLE now.document (
+    ID serial PRIMARY KEY,
+    MESSAGEID integer,
+	DOCUMENTURL character varying(4000),
+	FILENAME character varying(4000),
+	DOCUMENTTYPE character varying(4000),
+	DESCRIPTION character varying(4000),
+
+    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+);
+
+CREATE TABLE now.document_nda (
+    ID serial PRIMARY KEY,
+    MESSAGEID integer,
+	DOCUMENTURL character varying(4000),
+	FILENAME character varying(4000),
+	DOCUMENTTYPE character varying(4000),
+	DESCRIPTION character varying(4000),
+
+    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+);
+
+CREATE TABLE now.document_nda (
+    ID serial PRIMARY KEY,
+    MESSAGEID integer,
+	DOCUMENTURL character varying(4000),
+	FILENAME character varying(4000),
+	DOCUMENTTYPE character varying(4000),
+	DESCRIPTION character varying(4000),
+
+    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+);
+
+CREATE TABLE now.placer_activity (
+    PLACERACTIVITYID NUMBER(9,0) PRIMARY KEY,
+	"TYPE" VARCHAR2(4000),
+	QUANTITY NUMBER(3,0),
+	"DEPTH" NUMBER(14,0),
+	"LENGTH" NUMBER(6,0),
+	WIDTH NUMBER(6,0),
+	DISTURBEDAREA NUMBER(14,2),
+	TIMBERVOLUME NUMBER(14,2),
+);
+
+CREATE TABLE now.existing_placer_activity_xref (
+    MESSAGEID NUMBER(9,0),
+	PLACERACTIVITYID NUMBER(9,0),
+
+    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY () REFERENCES now.() DEFERRABLE INITIALLY DEFERRED
+);
+
+CREATE TABLE now.existing_settling_pond_xref (
+    MESSAGEID NUMBER(9,0),
+	SETTLINGPONDID NUMBER(9,0),
+
+    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY () REFERENCES now.() DEFERRABLE INITIALLY DEFERRED
+);
+
+CREATE TABLE now.mech_trenching_equip_xref (
+    MESSAGEID NUMBER(9,0),
+	EQUIPMENTID NUMBER(9,0),
+
+    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY () REFERENCES now.() DEFERRABLE INITIALLY DEFERRED
+);
+
+CREATE TABLE now.exp_access_activity (
+    ID serial PRIMARY KEY,
+    MESSAGEID NUMBER(9,0),
+	"TYPE" VARCHAR2(4000),
+	"LENGTH" NUMBER(14,2),
+	DISTURBEDAREA NUMBER(14,2),
+	TIMBERVOLUME NUMBER(14,2),
+
+    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+);
+
+CREATE TABLE now.exp_surface_drill_activity (
+    ID serial PRIMARY KEY,
+    MESSAGEID NUMBER(9,0),
+	"TYPE" VARCHAR2(4000),
+	NUMBEROFSITES NUMBER(14,0),
+	DISTURBEDAREA NUMBER(14,2),
+	TIMBERVOLUME NUMBER(14,2),
+
+    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+);
+
+CREATE TABLE now.mech_trenching_activity (
+    ID serial PRIMARY KEY,
+    MESSAGEID NUMBER(9,0),
+	"TYPE" VARCHAR2(4000),
+	NUMBEROFSITES NUMBER(14,0),
+	DISTURBEDAREA NUMBER(14,2),
+	TIMBERVOLUME NUMBER(14,2),
+
+    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+);
 
     mine_report_due_date_type         character varying(3)                    PRIMARY KEY,
     description                       character varying(60)                   NOT NULL   ,
