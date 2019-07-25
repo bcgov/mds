@@ -72,7 +72,7 @@ export class AddIncidentFollowUpForm extends Component {
                     id="followup_inspection_date"
                     name="followup_inspection_date"
                     label="Follow-up inspection date"
-                    placeholder="Please select date and time"
+                    placeholder="Please select date"
                     component={renderConfig.DATE}
                     validate={[dateNotInFuture]}
                   />
