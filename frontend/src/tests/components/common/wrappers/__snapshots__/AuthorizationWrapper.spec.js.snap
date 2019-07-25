@@ -1,8 +1,31 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AuthorizationWrapper renders properly 1`] = `
+<<<<<<< HEAD
 <span>
   <span>
+=======
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <AuthorizationWrapper
+    inDevelopment={false}
+    inTesting={false}
+    isMajorMine={true}
+    permission="role_admin"
+    userRoles={
+      Array [
+        "core_view_all",
+        "idir",
+        "core_edit_mines",
+        "offline_access",
+        "admin",
+        "uma_authorization",
+        "core_admin",
+        "core_edit_reports",
+      ]
+    }
+  >
+>>>>>>> b99f6b3f08eae9ea069d499d8305dc5380f1218a
     <div>
       helo
     </div>
