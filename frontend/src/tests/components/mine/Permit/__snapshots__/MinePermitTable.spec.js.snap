@@ -1,312 +1,82 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MinePermitTable renders properly 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <MinePermitTable
-    mine={
+<Table
+  align="left"
+  bordered={false}
+  childrenColumnName="children"
+  className="nested-table"
+  columns={
+    Array [
       Object {
-        "mine_expected_documents": Array [
-          Object {
-            "date_created": "2018-11-19",
-            "due_date": "",
-            "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
-            "exp_document_name": "OMS Manual",
-            "expected_document_status": Object {
-              "description": "Not Received",
-              "exp_document_status_code": "MIA",
-            },
-            "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-            "related_documents": Array [],
-            "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-          },
-        ],
-        "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-        "mine_location": Object {
-          "latitude": null,
-          "longitude": null,
-        },
-        "mine_name": "mine3",
-        "mine_no": "BLAH9091",
-        "mine_permit": Array [],
-        "mine_region": "NE",
-        "mine_status": Object {
-          "effective_date": "2018-10-16",
-          "expiry_date": null,
-          "status_labels": Array [
-            "Closed",
-            "Care & Maintenance",
-          ],
-          "statusvalue": Array [
-            "CLD",
-            "CM",
-          ],
-        },
-        "mine_tailings_storage_facilities": Array [
-          Object {
-            "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-            "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
-            "mine_tailings_storage_facility_name": "MockTSF",
-          },
-        ],
-        "mine_type": Array [
-          Object {
-            "mine_tenure_type_code": "PLR",
-          },
-          Object {
-            "mine_tenure_type_code": "MIN",
-          },
-        ],
-        "mineral_tenure_xref": Array [
-          Object {
-            "tenure_number_id": "1234567",
-          },
-        ],
-        "verified_status": Object {
-          "healthy_ind": null,
-          "mine_guid": null,
-          "mine_name": null,
-          "verifying_timestamp": null,
-          "verifying_user": null,
-        },
-      }
-    }
-    partyRelationships={
-      Array [
-        Object {
-          "end_date": "2019-01-03",
-          "mine_guid": "db059bf5-14aa-4b98-af67-9c1e635a6120",
-          "mine_party_appt_guid": "17dbf02d-a3ba-40dd-8347-36cd04b7a49b",
-          "mine_party_appt_type_code": "PMT",
-          "party": Object {
-            "effective_date": "2019-01-02",
-            "email": "test@test.test",
-            "expiry_date": null,
-            "name": "test company 2 ",
-            "party_guid": "43f513af-1142-443b-a1e6-f14ef857f4ea",
-            "party_name": "test company 2 ",
-            "party_type_code": "ORG",
-            "phone_ext": null,
-            "phone_no": "123-123-1234",
-          },
-          "party_guid": "43f513af-1142-443b-a1e6-f14ef857f4ea",
-          "related_guid": "97b59b9c-8576-47cb-9a04-d7d0340730d5",
-          "start_date": "2019-01-01",
-        },
-        Object {
-          "end_date": "2019-01-03",
-          "mine_guid": "db059bf5-14aa-4b98-af67-9c1e635a6120",
-          "mine_party_appt_guid": "43f513af-1142-443b-a1e6-f14ef857f4ea",
-          "mine_party_appt_type_code": "MMG",
-          "party": Object {
-            "effective_date": "2019-01-02",
-            "email": "test@test.test",
-            "expiry_date": null,
-            "name": "test dude 1 ",
-            "party_guid": "97b59b9c-8576-47cb-9a04-d7d0340730d5",
-            "party_name": "test dude 1 ",
-            "party_type_code": "PER",
-            "phone_ext": null,
-            "phone_no": "123-123-1234",
-          },
-          "party_guid": "17dbf02d-a3ba-40dd-8347-36cd04b7a49b",
-          "related_guid": "43f513af-1142-443b-a1e6-f14ef857f4ea",
-          "start_date": "2019-01-01",
-        },
-      ]
-    }
-    permits={Array []}
-  />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateError": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "class",
-    "props": Object {
-      "align": "left",
-      "bordered": false,
-      "className": "nested-table",
-      "columns": Array [
-        Object {
-          "dataIndex": "permitNo",
-          "key": "permitNo",
-          "render": [Function],
-          "title": "Permit No.",
-        },
-        Object {
-          "dataIndex": "status",
-          "key": "status",
-          "render": [Function],
-          "title": "Status",
-        },
-        Object {
-          "dataIndex": "permittee",
-          "key": "permittee",
-          "render": [Function],
-          "title": "Permittee",
-        },
-        Object {
-          "dataIndex": "authorizationEndDate",
-          "key": "authorizationEndDate",
-          "render": [Function],
-          "title": "Authorization End Date",
-        },
-        Object {
-          "dataIndex": "firstIssued",
-          "key": "firstIssued",
-          "render": [Function],
-          "title": "First Issued",
-        },
-        Object {
-          "dataIndex": "lastAmended",
-          "key": "lastAmended",
-          "render": [Function],
-          "title": "Last Amended",
-        },
-        Object {
-          "align": "right",
-          "dataIndex": "addEditButton",
-          "key": "addEditButton",
-          "render": [Function],
-          "title": "",
-        },
-      ],
-      "dataSource": Array [],
-      "expandIcon": [Function],
-      "expandRowByClick": true,
-      "expandedRowKeys": undefined,
-      "expandedRowRender": [Function],
-      "indentSize": 20,
-      "loading": false,
-      "locale": Object {
-        "emptyText": <NullScreen
-          type="permit"
-        />,
+        "dataIndex": "permitNo",
+        "key": "permitNo",
+        "render": [Function],
+        "title": "Permit No.",
       },
-      "onExpand": undefined,
-      "pagination": false,
-      "rowClassName": [Function],
-      "rowKey": "key",
-      "showHeader": true,
-      "size": "default",
-      "sortDirections": Array [
-        "ascend",
-        "descend",
-      ],
-      "useFixedHeader": false,
-    },
-    "ref": null,
-    "rendered": null,
-    "type": [Function],
-  },
-  Symbol(enzyme.__nodes__): Array [
+      Object {
+        "dataIndex": "status",
+        "key": "status",
+        "render": [Function],
+        "title": "Status",
+      },
+      Object {
+        "dataIndex": "permittee",
+        "key": "permittee",
+        "render": [Function],
+        "title": "Permittee",
+      },
+      Object {
+        "dataIndex": "authorizationEndDate",
+        "key": "authorizationEndDate",
+        "render": [Function],
+        "title": "Authorization End Date",
+      },
+      Object {
+        "dataIndex": "firstIssued",
+        "key": "firstIssued",
+        "render": [Function],
+        "title": "First Issued",
+      },
+      Object {
+        "dataIndex": "lastAmended",
+        "key": "lastAmended",
+        "render": [Function],
+        "title": "Last Amended",
+      },
+      Object {
+        "align": "right",
+        "dataIndex": "addEditButton",
+        "key": "addEditButton",
+        "render": [Function],
+        "title": "",
+      },
+    ]
+  }
+  dataSource={Array []}
+  expandIcon={[Function]}
+  expandRowByClick={true}
+  expandedRowRender={[Function]}
+  indentSize={20}
+  loading={false}
+  locale={
     Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "class",
-      "props": Object {
-        "align": "left",
-        "bordered": false,
-        "className": "nested-table",
-        "columns": Array [
-          Object {
-            "dataIndex": "permitNo",
-            "key": "permitNo",
-            "render": [Function],
-            "title": "Permit No.",
-          },
-          Object {
-            "dataIndex": "status",
-            "key": "status",
-            "render": [Function],
-            "title": "Status",
-          },
-          Object {
-            "dataIndex": "permittee",
-            "key": "permittee",
-            "render": [Function],
-            "title": "Permittee",
-          },
-          Object {
-            "dataIndex": "authorizationEndDate",
-            "key": "authorizationEndDate",
-            "render": [Function],
-            "title": "Authorization End Date",
-          },
-          Object {
-            "dataIndex": "firstIssued",
-            "key": "firstIssued",
-            "render": [Function],
-            "title": "First Issued",
-          },
-          Object {
-            "dataIndex": "lastAmended",
-            "key": "lastAmended",
-            "render": [Function],
-            "title": "Last Amended",
-          },
-          Object {
-            "align": "right",
-            "dataIndex": "addEditButton",
-            "key": "addEditButton",
-            "render": [Function],
-            "title": "",
-          },
-        ],
-        "dataSource": Array [],
-        "expandIcon": [Function],
-        "expandRowByClick": true,
-        "expandedRowKeys": undefined,
-        "expandedRowRender": [Function],
-        "indentSize": 20,
-        "loading": false,
-        "locale": Object {
-          "emptyText": <NullScreen
-            type="permit"
-          />,
-        },
-        "onExpand": undefined,
-        "pagination": false,
-        "rowClassName": [Function],
-        "rowKey": "key",
-        "showHeader": true,
-        "size": "default",
-        "sortDirections": Array [
-          "ascend",
-          "descend",
-        ],
-        "useFixedHeader": false,
-      },
-      "ref": null,
-      "rendered": null,
-      "type": [Function],
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getDerivedStateFromProps": true,
-          "getSnapshotBeforeUpdate": true,
-          "setState": Object {
-            "skipsComponentDidUpdateOnNullish": true,
-          },
-        },
-      },
-    },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
-  },
-}
+      "emptyText": <NullScreen
+        type="permit"
+      />,
+    }
+  }
+  pagination={false}
+  rowClassName={[Function]}
+  rowKey="key"
+  showHeader={true}
+  size="default"
+  sortDirections={
+    Array [
+      "ascend",
+      "descend",
+    ]
+  }
+  useFixedHeader={false}
+/>
 `;

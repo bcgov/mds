@@ -132,7 +132,7 @@ export const fetchMineIncidentFollowActionOptions = () => (dispatch) => {
       dispatch(success(reducerTypes.GET_MINE_INCIDENT_FOLLOWUP_ACTION_OPTIONS));
       dispatch(staticContentActions.storeMineIncidentFollowActionOptions(response.data));
     })
-    .catch(() => dispatch(error(reducerTypes.GET_MINE_INCIDENT_FOLLOW_ACTION_OPTIONS)));
+    .catch(() => dispatch(error(reducerTypes.GET_MINE_INCIDENT_FOLLOWUP_ACTION_OPTIONS)));
 };
 
 export const fetchMineIncidentDeterminationOptions = () => (dispatch) => {
