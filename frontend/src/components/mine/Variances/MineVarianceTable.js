@@ -54,15 +54,6 @@ const errorStyle = (isOverdue) => (isOverdue ? { color: errorRed } : {});
 const hideColumn = (condition) => (condition ? "column-hide" : "");
 
 export class MineVarianceTable extends Component {
-  handleOpenModal = (event, isEditModal, variance) => {
-    event.preventDefault();
-    if (isEditModal) {
-      this.props.openEditVarianceModal(variance);
-    } else {
-      this.props.openViewVarianceModal(variance);
-    }
-  };
-
   transformRowData = (variances, codeHash, statusHash) =>
     variances.map((variance) => ({
       key: variance.variance_guid,
@@ -238,10 +229,7 @@ export class MineVarianceTable extends Component {
                 type="primary"
                 size="small"
                 ghost
-                onClick={
-                  () => this.props.openEditVarianceModal(record.variance)
-                  // (event) => this.handleOpenModal(event, true, record.variance, record.isOverdue)
-                }
+                onClick={() => this.props.openEditVarianceModal(record.variance)}
               >
                 <img src={EDIT_OUTLINE} alt="Edit" className="icon-svg-filter" />
               </Button>
@@ -258,10 +246,7 @@ export class MineVarianceTable extends Component {
               type="primary"
               size="small"
               ghost
-              onClick={
-                () => this.props.openViewVarianceModal(record.variance)
-                // (event) =>  this.handleOpenModal(event, false, record.variance, record.isOverdue)
-              }
+              onClick={() => this.props.openViewVarianceModal(record.variance)}
             >
               <Icon type="eye" alt="View" className="icon-sm" />
             </Button>
