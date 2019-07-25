@@ -401,6 +401,7 @@ ShallowWrapper {
                 },
               }
             }
+            openEditVarianceModal={[Function]}
             openViewVarianceModal={[Function]}
             varianceStatusOptionsHash={
               Object {
@@ -684,6 +685,7 @@ ShallowWrapper {
                   },
                 }
               }
+              openEditVarianceModal={[Function]}
               openViewVarianceModal={[Function]}
               varianceStatusOptionsHash={
                 Object {
@@ -960,6 +962,7 @@ ShallowWrapper {
                   "verifying_user": null,
                 },
               },
+              "openEditVarianceModal": [Function],
               "openViewVarianceModal": [Function],
               "varianceStatusOptionsHash": Object {
                 "APP": "Approved",
@@ -1213,6 +1216,7 @@ ShallowWrapper {
                   },
                 }
               }
+              openEditVarianceModal={[Function]}
               openViewVarianceModal={[Function]}
               varianceStatusOptionsHash={
                 Object {
@@ -1496,6 +1500,7 @@ ShallowWrapper {
                     },
                   }
                 }
+                openEditVarianceModal={[Function]}
                 openViewVarianceModal={[Function]}
                 varianceStatusOptionsHash={
                   Object {
@@ -1772,6 +1777,7 @@ ShallowWrapper {
                     "verifying_user": null,
                   },
                 },
+                "openEditVarianceModal": [Function],
                 "openViewVarianceModal": [Function],
                 "varianceStatusOptionsHash": Object {
                   "APP": "Approved",
