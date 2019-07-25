@@ -10,6 +10,7 @@ from ....utils.resources_mixins import UserMixin, ErrorMixin
 from ....constants import NRIS_COMPLIANCE_DATA, TIMEOUT_60_MINUTES
 from app.api.services import NRIS_API_service
 from app.extensions import cache
+from ..response_models import MINE_COMPLIANCE_RESPONSE_MODEL
 
 from app.api.mines.mine.models.mine import Mine
 
@@ -22,38 +23,6 @@ class DateTime(fields.Raw):
 class Date(fields.Raw):
     def format(self, value):
         return value.strftime("%Y-%m-%d") if value else None
-
-
-ORDER_MODEL = api.model(
-    'MineComplianceOrder', {
-        "order_no": fields.String,
-        "violation": fields.String,
-        "report_no": fields.Integer,
-        "inspector": fields.String,
-        "due_date": fields.Date,
-        "order_status": fields.String,
-        "overdue": fields.Boolean,
-    })
-
-COMPLAINCE_AGGREGATION_MODEL = api.model(
-    'MineComplianceStats', {
-        'num_inspections': fields.Integer,
-        'num_advisories': fields.Integer,
-        'num_warnings': fields.Integer,
-        'num_requests': fields.Integer,
-    })
-
-MINE_COMPLIANCE_RESPONSE_MODEL = api.model(
-    'MineComplianceData', {
-        'last_inspection': fields.DateTime,
-        'last_inspector': fields.String,
-        'num_open_orders': fields.Integer,
-        'num_overdue_orders': fields.Integer,
-        'all_time': fields.Nested(COMPLAINCE_AGGREGATION_MODEL),
-        'last_12_months': fields.Nested(COMPLAINCE_AGGREGATION_MODEL),
-        'current_fiscal': fields.Nested(COMPLAINCE_AGGREGATION_MODEL),
-        'orders': fields.List(fields.Nested(ORDER_MODEL)),
-    })
 
 
 class MineComplianceSummaryResource(Resource, UserMixin, ErrorMixin):
