@@ -49,19 +49,19 @@
     },
     {
       "name": "CPU_LIMIT",
-      "value": "500m"
+      "value": "0"
     },
     {
       "name": "MEMORY_LIMIT",
-      "value": "1Gi"
+      "value": "0"
     },
     {
       "name": "CPU_REQUEST",
-      "value": "200m"
+      "value": "0"
     },
     {
       "name": "MEMORY_REQUEST",
-      "value": "512Mi"
+      "value": "0"
     }
   ],
   "objects": [
