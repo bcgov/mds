@@ -50,6 +50,10 @@ def frontEndPublicDeploymentConfigs = ocGet(['is','-l', "app-name=${config.app.n
 def backEndDeploymentConfigs = ocGet(['is','-l', "app-name=${config.app.name},image-stream.name=mds-python-backend", "--namespace=${namespace}"])
 def nrisBackendDeploymentConfigs = ocGet(['is','-l', "app-name=${config.app.name},image-stream.name=mds-nris-backend", "--namespace=${namespace}"])
 
+print frontEndDeploymentConfigs
+print frontEndPublicDeploymentConfigs
+print backEndDeploymentConfigs
+print nrisBackendDeploymentConfigs
 
 // Run frontend tests, needs more resources than normal
 def cpuLimit = 1.5
