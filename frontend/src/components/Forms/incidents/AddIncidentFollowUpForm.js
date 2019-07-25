@@ -20,6 +20,7 @@ const propTypes = {
   followupActionOptions: CustomPropTypes.options.isRequired,
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
   hasFatalities: PropTypes.bool.isRequired,
+  determinationTypeCode: PropTypes.string.isRequired,
   mineGuid: PropTypes.string.isRequired,
   hasFollowUp: PropTypes.bool.isRequired,
   uploadedFiles: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
@@ -60,8 +61,8 @@ export class AddIncidentFollowUpForm extends Component {
                     name="followup_inspection"
                     label="Was there a follow-up inspection?"
                     component={renderConfig.RADIO}
-                    validate={[required]}
                     onChange={this.onFollowUpChange}
+                    validate={[required]}
                   />
                 </Form.Item>
               )}
@@ -74,7 +75,14 @@ export class AddIncidentFollowUpForm extends Component {
                     label="Follow-up inspection date"
                     placeholder="Please select date"
                     component={renderConfig.DATE}
-                    validate={[dateNotInFuture]}
+                    validate={[
+                      dateNotInFuture,
+                      () =>
+                        // TODO: Use constant
+                        this.props.determinationTypeCode === "PEN" && this.props.hasFollowUp
+                          ? "Warning: It's uncommon for an inspection to occur if a determination has not been made"
+                          : undefined,
+                    ]}
                   />
                 </Form.Item>
               )}
