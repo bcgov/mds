@@ -272,6 +272,7 @@ export class MineDashboard extends Component {
     const mine = this.props.mines[id];
     this.props.subscribe(mine.mine_guid, mine.mine_name).then(() => {
       this.props.fetchSubscribedMinesByUser();
+      this.handleMenuClick();
     });
   };
 
@@ -280,12 +281,12 @@ export class MineDashboard extends Component {
     const mine = this.props.mines[id];
     this.props.unSubscribe(mine.mine_guid, mine.mine_name).then(() => {
       this.props.fetchSubscribedMinesByUser();
+      this.handleMenuClick();
     });
   };
 
   // added some extra logic to the dropdown, to handle closing the menu after popconfirm is clicked.
   // The combination of popconfirm, and the AuthWrapper interferes with the dropdowns default behaviour.
-
   handleVisibleChange = (flag) => {
     this.setState({ menuVisible: flag });
   };
@@ -405,7 +406,7 @@ export class MineDashboard extends Component {
           <div>
             <div className="tab__content">
               <div className="inline-flex block-mobile between">
-                <div className="inline-flex horizontal-center">
+                <div className="inline-flex horizontal-center block-tablet">
                   <h1 className="padding-large--right">{mine.mine_name}</h1>
                   {mine.verified_status.healthy_ind !== null && (
                     <img
@@ -430,7 +431,6 @@ export class MineDashboard extends Component {
                   <div>Mine No. {mine.mine_no}</div>
                 </div>
                 <Dropdown
-                  className="full-height"
                   overlay={menu}
                   placement="bottomLeft"
                   onVisibleChange={this.handleVisibleChange}
