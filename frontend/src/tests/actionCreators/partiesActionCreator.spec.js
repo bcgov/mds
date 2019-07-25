@@ -4,6 +4,8 @@ import {
   createParty,
   fetchParties,
   fetchPartyById,
+  fetchInspectors,
+  setAddPartyFormState,
   updateParty,
   deleteParty,
 } from "@/actionCreators/partiesActionCreator";
@@ -153,6 +155,36 @@ describe("`fetchPartyById` action creator", () => {
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url).reply(400, MOCK.ERROR);
     return fetchPartyById(mockPayload)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`setAddPartyFormState` action creator", () => {
+  const mockAddPartyFormState = MOCK.ADD_PARTY_FORM_STATE;
+  it("dispatched storeAddPartyFormState", () => {
+    setAddPartyFormState(mockAddPartyFormState)(dispatch);
+    expect(dispatch).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("`fetchInspectors` action creator", () => {
+  const url = `${ENVIRONMENT.apiUrl +
+    API.PARTIES_LIST_QUERY({ per_page: "all", business_role: "INS" })}`;
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onGet(url).reply(200, mockResponse);
+    return fetchInspectors()(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(5);
+    });
+  });
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onGet(url).reply(400, MOCK.ERROR);
+    return fetchInspectors()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
