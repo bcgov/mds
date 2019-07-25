@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AddPartyRelationshipForm renders properly 1`] = `
+exports[`PermitAmendmentForm renders properly 1`] = `
 <Form
   colon={true}
   hideRequiredMark={false}
@@ -8,19 +8,52 @@ exports[`AddPartyRelationshipForm renders properly 1`] = `
   onSubmit={[MockFunction]}
 >
   <Row
-    gutter={16}
+    gutter={48}
   >
     <Col
-      md={24}
-      xs={24}
+      md={12}
+      sm={24}
     >
       <FormItem
         hasFeedback={false}
       >
         <Connect(PartySelectField)
           allowAddingParties={true}
-          id="party_guid"
-          name="party_guid"
+          id="permittee_party_guid"
+          label="Permittee*"
+          name="permittee_party_guid"
+          partyLabel="permittee"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="issue_date"
+          label="Issue date*"
+          name="issue_date"
+          validate={
+            Array [
+              [Function],
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="description"
+          label="Description"
+          name="description"
           validate={
             Array [
               [Function],
@@ -29,46 +62,34 @@ exports[`AddPartyRelationshipForm renders properly 1`] = `
         />
       </FormItem>
     </Col>
-  </Row>
-  <Row
-    gutter={16}
-  >
     <Col
+      className="border--left--layout"
       md={12}
-      xs={24}
+      sm={24}
     >
       <FormItem
         hasFeedback={false}
+        label="Upload files"
       >
         <Field
+          allowMultiple={true}
           component={[Function]}
-          id="start_date"
-          label="Start Date"
-          name="start_date"
-          placeholder="yyyy-mm-dd"
-        />
-      </FormItem>
-    </Col>
-    <Col
-      md={12}
-      xs={24}
-    >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="end_date"
-          label="End Date"
-          name="end_date"
-          placeholder="yyyy-mm-dd"
+          id="PermitDocumentFileUpload"
+          mineGuid=""
+          name="PermitDocumentFileUpload"
+          onFileLoad={[Function]}
+          onRemoveFile={[Function]}
         />
       </FormItem>
     </Col>
   </Row>
-  <div />
   <div
     className="right center-mobile"
+    style={
+      Object {
+        "paddingTop": "14px",
+      }
+    }
   >
     <Popconfirm
       cancelText="No"
@@ -81,6 +102,7 @@ exports[`AddPartyRelationshipForm renders properly 1`] = `
       }
       okText="Yes"
       okType="primary"
+      onConfirm={[MockFunction]}
       placement="topRight"
       title="Are you sure you want to cancel?"
       transitionName="zoom-big"
@@ -105,7 +127,9 @@ exports[`AddPartyRelationshipForm renders properly 1`] = `
       htmlType="submit"
       loading={false}
       type="primary"
-    />
+    >
+      mockTitle
+    </Button>
   </div>
 </Form>
 `;
