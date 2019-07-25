@@ -75,7 +75,7 @@ class MineDocumentFactory(BaseFactory):
 
     mine_document_guid = GUID
     mine_guid = factory.SelfAttribute('mine.mine_guid')
-    document_manager_guid = GUID  #factory.SelfAttribute('document_manager_obj.document_guid')
+    document_manager_guid = GUID 
     document_name = factory.Faker('file_name')
     mine_expected_document = []
 
@@ -286,7 +286,7 @@ class PermitAmendmentDocumentFactory(BaseFactory):
     permit_amendment_id = factory.SelfAttribute('permit_amendment.permit_amendment_id')
     document_name = factory.Faker('file_name')
     mine_guid = factory.SelfAttribute('permit_amendment.permit.mine.mine_guid')
-    document_manager_guid = GUID  #factory.SelfAttribute('document_manager_obj.document_guid')
+    document_manager_guid = GUID 
     permit_amendment = factory.SubFactory(PermitAmendmentFactory)
 
 
