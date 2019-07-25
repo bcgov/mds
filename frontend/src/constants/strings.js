@@ -34,6 +34,7 @@ export const CONTACT_ADMIN = [
   " to request access",
 ];
 export const EMPTY_FIELD = "N/A";
+export const EMPTY = "";
 
 // default coordinates for center of BC
 export const DEFAULT_LAT = 53.7267;

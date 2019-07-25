@@ -1,1467 +1,183 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ContactHomePage renders properly 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <ContactHomePage
-    closeModal={[MockFunction]}
-    fetchParties={
-      [MockFunction] {
-        "calls": Array [
-          Array [
-            Object {
-              "relationships": "mine_party_appt",
-            },
-          ],
-          Array [
-            Object {
-              "page": "1",
-              "per_page": "25",
-              "relationships": "mine_party_appt",
-            },
-          ],
-        ],
-      }
-    }
-    fetchPartyRelationshipTypes={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
-    }
-    fetchProvinceCodes={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
-      }
-    }
-    history={
-      Object {
-        "location": Object {},
-        "push": [MockFunction],
-      }
-    }
-    location={
-      Object {
-        "search": " ",
-      }
-    }
-    openModal={[MockFunction]}
-    pageData={
-      Object {
-        "current_page": 1,
-        "has_next": true,
-        "has_prev": false,
-        "items_per_page": 25,
-        "mines": Array [],
-        "next_num": 2,
-        "prev_num": null,
-        "total": 9000,
-        "total_pages": 360,
-      }
-    }
-    parties={
-      Object {
-        "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
-          "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-          "name": "mock name",
-        },
-        "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
-          "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
-          "name": "mock Two",
-        },
-      }
-    }
-    partyRelationshipTypesList={
-      Array [
-        Object {
-          "active_ind": "True",
-          "description": "Mine Manager",
-          "display_order": "1",
-          "grouping_level": "3",
-          "mine_party_appt_type_code": "MMG",
-          "organization": "False",
-          "person": "True",
-        },
-        Object {
-          "active_ind": "True",
-          "description": "Permitee",
-          "display_order": "2",
-          "grouping_level": "3",
-          "mine_party_appt_type_code": "PMT",
-          "organization": "True",
-          "person": "True",
-        },
-        Object {
-          "active_ind": "True",
-          "description": "Mine Operator",
-          "display_order": "3",
-          "grouping_level": "3",
-          "mine_party_appt_type_code": "MOR",
-          "organization": "False",
-          "person": "True",
-        },
-        Object {
-          "active_ind": "True",
-          "description": "Mine Owner",
-          "display_order": "4",
-          "grouping_level": "3",
-          "mine_party_appt_type_code": "MOW",
-          "organization": "False",
-          "person": "True",
-        },
-        Object {
-          "active_ind": "True",
-          "description": "Engineer Of Record",
-          "display_order": "5",
-          "grouping_level": "2",
-          "mine_party_appt_type_code": "EOR",
-          "organization": "False",
-          "person": "True",
-        },
-        Object {
-          "active_ind": "True",
-          "description": "Environmental Specialist",
-          "display_order": "6",
-          "grouping_level": "2",
-          "mine_party_appt_type_code": "EVS",
-          "organization": "False",
-          "person": "True",
-        },
-        Object {
-          "active_ind": "True",
-          "description": "Exploration Mine Manager",
-          "display_order": "7",
-          "grouping_level": "2",
-          "mine_party_appt_type_code": "EMM",
-          "organization": "False",
-          "person": "True",
-        },
-        Object {
-          "active_ind": "True",
-          "description": "Supervisor",
-          "display_order": "8",
-          "grouping_level": "1",
-          "mine_party_appt_type_code": "SVR",
-          "organization": "False",
-          "person": "True",
-        },
-        Object {
-          "active_ind": "True",
-          "description": "Shift Boss",
-          "display_order": "9",
-          "grouping_level": "1",
-          "mine_party_appt_type_code": "SHB",
-          "organization": "False",
-          "person": "True",
-        },
-        Object {
-          "active_ind": "True",
-          "description": "Fire Boss",
-          "display_order": "10",
-          "grouping_level": "1",
-          "mine_party_appt_type_code": "FRB",
-          "organization": "False",
-          "person": "True",
-        },
-        Object {
-          "active_ind": "True",
-          "description": "Blaster",
-          "display_order": "11",
-          "grouping_level": "1",
-          "mine_party_appt_type_code": "BLA",
-          "organization": "False",
-          "person": "True",
-        },
-        Object {
-          "active_ind": "True",
-          "description": "Mine Rescue Contact",
-          "display_order": "12",
-          "grouping_level": "1",
-          "mine_party_appt_type_code": "MRC",
-          "organization": "False",
-          "person": "True",
-        },
-      ]
-    }
-    provinceOptions={
-      Array [
-        Object {
-          "label": "BC",
-          "value": "BC",
-        },
-        Object {
-          "label": "AB",
-          "value": "AB",
-        },
-      ]
-    }
-    relationshipTypeHash={
-      Object {
-        "BLA": "Blaster",
-        "EMM": "Exploration Mine Manager",
-        "EOR": "Engineer Of Record",
-        "EVS": "Environmental Specialist",
-        "FRB": "Fire Boss",
-        "MMG": "Mine Manager",
-        "MOR": "Mine Operator",
-        "MOW": "Mine Owner",
-        "MRC": "Mine Rescue Contact",
-        "PMT": "Permittee",
-        "SHB": "Shift Boss",
-        "SVR": "Supervisor",
-        "TQP": "TSF Qualified Person",
-      }
-    }
-  />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateError": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "host",
-    "props": Object {
-      "children": Array [
-        <div
-          className="landing-page__header"
+<div
+  className="landing-page"
+>
+  <div
+    className="landing-page__header"
+  >
+    <div
+      className="inline-flex between center-mobile"
+    >
+      <div>
+        <h1>
+          Contact Lookup
+        </h1>
+        <p>
+          To find a contact profile, search in the list section below.
+        </p>
+      </div>
+      <Connect(AuthorizationWrapper)
+        permission="role_edit_parties"
+      >
+        <AddButton
+          onClick={[Function]}
         >
-          <div
-            className="inline-flex between center-mobile"
-          >
-            <div>
-              <h1>
-                Contact Lookup
-              </h1>
-              <p>
-                To find a contact profile, search in the list section below.
-              </p>
-            </div>
-            <Connect(AuthorizationWrapper)
-              permission="role_edit_parties"
-            >
-              <AddButton
-                onClick={[Function]}
-              >
-                Add New Contact
-              </AddButton>
-            </Connect(AuthorizationWrapper)>
-          </div>
-        </div>,
-        <div
-          className="landing-page__content"
-        >
-          <ContactSearch
-            fetchParties={
-              [MockFunction] {
-                "calls": Array [
-                  Array [
-                    Object {
-                      "relationships": "mine_party_appt",
-                    },
-                  ],
-                  Array [
-                    Object {
-                      "page": "1",
-                      "per_page": "25",
-                      "relationships": "mine_party_appt",
-                    },
-                  ],
-                ],
-              }
-            }
-            handleNameFieldReset={[Function]}
-            handleSearch={[Function]}
-            initialValues={Object {}}
-            partyRelationshipTypesList={
-              Array [
-                Object {
-                  "active_ind": "True",
-                  "description": "Mine Manager",
-                  "display_order": "1",
-                  "grouping_level": "3",
-                  "mine_party_appt_type_code": "MMG",
-                  "organization": "False",
-                  "person": "True",
-                },
-                Object {
-                  "active_ind": "True",
-                  "description": "Permitee",
-                  "display_order": "2",
-                  "grouping_level": "3",
-                  "mine_party_appt_type_code": "PMT",
-                  "organization": "True",
-                  "person": "True",
-                },
-                Object {
-                  "active_ind": "True",
-                  "description": "Mine Operator",
-                  "display_order": "3",
-                  "grouping_level": "3",
-                  "mine_party_appt_type_code": "MOR",
-                  "organization": "False",
-                  "person": "True",
-                },
-                Object {
-                  "active_ind": "True",
-                  "description": "Mine Owner",
-                  "display_order": "4",
-                  "grouping_level": "3",
-                  "mine_party_appt_type_code": "MOW",
-                  "organization": "False",
-                  "person": "True",
-                },
-                Object {
-                  "active_ind": "True",
-                  "description": "Engineer Of Record",
-                  "display_order": "5",
-                  "grouping_level": "2",
-                  "mine_party_appt_type_code": "EOR",
-                  "organization": "False",
-                  "person": "True",
-                },
-                Object {
-                  "active_ind": "True",
-                  "description": "Environmental Specialist",
-                  "display_order": "6",
-                  "grouping_level": "2",
-                  "mine_party_appt_type_code": "EVS",
-                  "organization": "False",
-                  "person": "True",
-                },
-                Object {
-                  "active_ind": "True",
-                  "description": "Exploration Mine Manager",
-                  "display_order": "7",
-                  "grouping_level": "2",
-                  "mine_party_appt_type_code": "EMM",
-                  "organization": "False",
-                  "person": "True",
-                },
-                Object {
-                  "active_ind": "True",
-                  "description": "Supervisor",
-                  "display_order": "8",
-                  "grouping_level": "1",
-                  "mine_party_appt_type_code": "SVR",
-                  "organization": "False",
-                  "person": "True",
-                },
-                Object {
-                  "active_ind": "True",
-                  "description": "Shift Boss",
-                  "display_order": "9",
-                  "grouping_level": "1",
-                  "mine_party_appt_type_code": "SHB",
-                  "organization": "False",
-                  "person": "True",
-                },
-                Object {
-                  "active_ind": "True",
-                  "description": "Fire Boss",
-                  "display_order": "10",
-                  "grouping_level": "1",
-                  "mine_party_appt_type_code": "FRB",
-                  "organization": "False",
-                  "person": "True",
-                },
-                Object {
-                  "active_ind": "True",
-                  "description": "Blaster",
-                  "display_order": "11",
-                  "grouping_level": "1",
-                  "mine_party_appt_type_code": "BLA",
-                  "organization": "False",
-                  "person": "True",
-                },
-                Object {
-                  "active_ind": "True",
-                  "description": "Mine Rescue Contact",
-                  "display_order": "12",
-                  "grouping_level": "1",
-                  "mine_party_appt_type_code": "MRC",
-                  "organization": "False",
-                  "person": "True",
-                },
-              ]
-            }
-          />
-          <Loading />
-        </div>,
-      ],
-      "className": "landing-page",
-    },
-    "ref": null,
-    "rendered": Array [
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "host",
-        "props": Object {
-          "children": <div
-            className="inline-flex between center-mobile"
-          >
-            <div>
-              <h1>
-                Contact Lookup
-              </h1>
-              <p>
-                To find a contact profile, search in the list section below.
-              </p>
-            </div>
-            <Connect(AuthorizationWrapper)
-              permission="role_edit_parties"
-            >
-              <AddButton
-                onClick={[Function]}
-              >
-                Add New Contact
-              </AddButton>
-            </Connect(AuthorizationWrapper)>
-          </div>,
-          "className": "landing-page__header",
-        },
-        "ref": null,
-        "rendered": Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "host",
-          "props": Object {
-            "children": Array [
-              <div>
-                <h1>
-                  Contact Lookup
-                </h1>
-                <p>
-                  To find a contact profile, search in the list section below.
-                </p>
-              </div>,
-              <Connect(AuthorizationWrapper)
-                permission="role_edit_parties"
-              >
-                <AddButton
-                  onClick={[Function]}
-                >
-                  Add New Contact
-                </AddButton>
-              </Connect(AuthorizationWrapper)>,
-            ],
-            "className": "inline-flex between center-mobile",
-          },
-          "ref": null,
-          "rendered": Array [
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "host",
-              "props": Object {
-                "children": Array [
-                  <h1>
-                    Contact Lookup
-                  </h1>,
-                  <p>
-                    To find a contact profile, search in the list section below.
-                  </p>,
-                ],
-              },
-              "ref": null,
-              "rendered": Array [
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "host",
-                  "props": Object {
-                    "children": "Contact Lookup",
-                  },
-                  "ref": null,
-                  "rendered": "Contact Lookup",
-                  "type": "h1",
-                },
-                Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "host",
-                  "props": Object {
-                    "children": "To find a contact profile, search in the list section below.",
-                  },
-                  "ref": null,
-                  "rendered": "To find a contact profile, search in the list section below.",
-                  "type": "p",
-                },
-              ],
-              "type": "div",
-            },
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "children": <AddButton
-                  onClick={[Function]}
-                >
-                  Add New Contact
-                </AddButton>,
-                "permission": "role_edit_parties",
-              },
-              "ref": null,
-              "rendered": Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "function",
-                "props": Object {
-                  "children": "Add New Contact",
-                  "onClick": [Function],
-                },
-                "ref": null,
-                "rendered": "Add New Contact",
-                "type": [Function],
-              },
-              "type": [Function],
-            },
-          ],
-          "type": "div",
-        },
-        "type": "div",
-      },
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "host",
-        "props": Object {
-          "children": Array [
-            <ContactSearch
-              fetchParties={
-                [MockFunction] {
-                  "calls": Array [
-                    Array [
-                      Object {
-                        "relationships": "mine_party_appt",
-                      },
-                    ],
-                    Array [
-                      Object {
-                        "page": "1",
-                        "per_page": "25",
-                        "relationships": "mine_party_appt",
-                      },
-                    ],
-                  ],
-                }
-              }
-              handleNameFieldReset={[Function]}
-              handleSearch={[Function]}
-              initialValues={Object {}}
-              partyRelationshipTypesList={
-                Array [
-                  Object {
-                    "active_ind": "True",
-                    "description": "Mine Manager",
-                    "display_order": "1",
-                    "grouping_level": "3",
-                    "mine_party_appt_type_code": "MMG",
-                    "organization": "False",
-                    "person": "True",
-                  },
-                  Object {
-                    "active_ind": "True",
-                    "description": "Permitee",
-                    "display_order": "2",
-                    "grouping_level": "3",
-                    "mine_party_appt_type_code": "PMT",
-                    "organization": "True",
-                    "person": "True",
-                  },
-                  Object {
-                    "active_ind": "True",
-                    "description": "Mine Operator",
-                    "display_order": "3",
-                    "grouping_level": "3",
-                    "mine_party_appt_type_code": "MOR",
-                    "organization": "False",
-                    "person": "True",
-                  },
-                  Object {
-                    "active_ind": "True",
-                    "description": "Mine Owner",
-                    "display_order": "4",
-                    "grouping_level": "3",
-                    "mine_party_appt_type_code": "MOW",
-                    "organization": "False",
-                    "person": "True",
-                  },
-                  Object {
-                    "active_ind": "True",
-                    "description": "Engineer Of Record",
-                    "display_order": "5",
-                    "grouping_level": "2",
-                    "mine_party_appt_type_code": "EOR",
-                    "organization": "False",
-                    "person": "True",
-                  },
-                  Object {
-                    "active_ind": "True",
-                    "description": "Environmental Specialist",
-                    "display_order": "6",
-                    "grouping_level": "2",
-                    "mine_party_appt_type_code": "EVS",
-                    "organization": "False",
-                    "person": "True",
-                  },
-                  Object {
-                    "active_ind": "True",
-                    "description": "Exploration Mine Manager",
-                    "display_order": "7",
-                    "grouping_level": "2",
-                    "mine_party_appt_type_code": "EMM",
-                    "organization": "False",
-                    "person": "True",
-                  },
-                  Object {
-                    "active_ind": "True",
-                    "description": "Supervisor",
-                    "display_order": "8",
-                    "grouping_level": "1",
-                    "mine_party_appt_type_code": "SVR",
-                    "organization": "False",
-                    "person": "True",
-                  },
-                  Object {
-                    "active_ind": "True",
-                    "description": "Shift Boss",
-                    "display_order": "9",
-                    "grouping_level": "1",
-                    "mine_party_appt_type_code": "SHB",
-                    "organization": "False",
-                    "person": "True",
-                  },
-                  Object {
-                    "active_ind": "True",
-                    "description": "Fire Boss",
-                    "display_order": "10",
-                    "grouping_level": "1",
-                    "mine_party_appt_type_code": "FRB",
-                    "organization": "False",
-                    "person": "True",
-                  },
-                  Object {
-                    "active_ind": "True",
-                    "description": "Blaster",
-                    "display_order": "11",
-                    "grouping_level": "1",
-                    "mine_party_appt_type_code": "BLA",
-                    "organization": "False",
-                    "person": "True",
-                  },
-                  Object {
-                    "active_ind": "True",
-                    "description": "Mine Rescue Contact",
-                    "display_order": "12",
-                    "grouping_level": "1",
-                    "mine_party_appt_type_code": "MRC",
-                    "organization": "False",
-                    "person": "True",
-                  },
-                ]
-              }
-            />,
-            false,
-            <Loading />,
-          ],
-          "className": "landing-page__content",
-        },
-        "ref": null,
-        "rendered": Array [
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
-            "props": Object {
-              "fetchParties": [MockFunction] {
-                "calls": Array [
-                  Array [
-                    Object {
-                      "relationships": "mine_party_appt",
-                    },
-                  ],
-                  Array [
-                    Object {
-                      "page": "1",
-                      "per_page": "25",
-                      "relationships": "mine_party_appt",
-                    },
-                  ],
-                ],
-              },
-              "handleNameFieldReset": [Function],
-              "handleSearch": [Function],
-              "initialValues": Object {},
-              "partyRelationshipTypesList": Array [
-                Object {
-                  "active_ind": "True",
-                  "description": "Mine Manager",
-                  "display_order": "1",
-                  "grouping_level": "3",
-                  "mine_party_appt_type_code": "MMG",
-                  "organization": "False",
-                  "person": "True",
-                },
-                Object {
-                  "active_ind": "True",
-                  "description": "Permitee",
-                  "display_order": "2",
-                  "grouping_level": "3",
-                  "mine_party_appt_type_code": "PMT",
-                  "organization": "True",
-                  "person": "True",
-                },
-                Object {
-                  "active_ind": "True",
-                  "description": "Mine Operator",
-                  "display_order": "3",
-                  "grouping_level": "3",
-                  "mine_party_appt_type_code": "MOR",
-                  "organization": "False",
-                  "person": "True",
-                },
-                Object {
-                  "active_ind": "True",
-                  "description": "Mine Owner",
-                  "display_order": "4",
-                  "grouping_level": "3",
-                  "mine_party_appt_type_code": "MOW",
-                  "organization": "False",
-                  "person": "True",
-                },
-                Object {
-                  "active_ind": "True",
-                  "description": "Engineer Of Record",
-                  "display_order": "5",
-                  "grouping_level": "2",
-                  "mine_party_appt_type_code": "EOR",
-                  "organization": "False",
-                  "person": "True",
-                },
-                Object {
-                  "active_ind": "True",
-                  "description": "Environmental Specialist",
-                  "display_order": "6",
-                  "grouping_level": "2",
-                  "mine_party_appt_type_code": "EVS",
-                  "organization": "False",
-                  "person": "True",
-                },
-                Object {
-                  "active_ind": "True",
-                  "description": "Exploration Mine Manager",
-                  "display_order": "7",
-                  "grouping_level": "2",
-                  "mine_party_appt_type_code": "EMM",
-                  "organization": "False",
-                  "person": "True",
-                },
-                Object {
-                  "active_ind": "True",
-                  "description": "Supervisor",
-                  "display_order": "8",
-                  "grouping_level": "1",
-                  "mine_party_appt_type_code": "SVR",
-                  "organization": "False",
-                  "person": "True",
-                },
-                Object {
-                  "active_ind": "True",
-                  "description": "Shift Boss",
-                  "display_order": "9",
-                  "grouping_level": "1",
-                  "mine_party_appt_type_code": "SHB",
-                  "organization": "False",
-                  "person": "True",
-                },
-                Object {
-                  "active_ind": "True",
-                  "description": "Fire Boss",
-                  "display_order": "10",
-                  "grouping_level": "1",
-                  "mine_party_appt_type_code": "FRB",
-                  "organization": "False",
-                  "person": "True",
-                },
-                Object {
-                  "active_ind": "True",
-                  "description": "Blaster",
-                  "display_order": "11",
-                  "grouping_level": "1",
-                  "mine_party_appt_type_code": "BLA",
-                  "organization": "False",
-                  "person": "True",
-                },
-                Object {
-                  "active_ind": "True",
-                  "description": "Mine Rescue Contact",
-                  "display_order": "12",
-                  "grouping_level": "1",
-                  "mine_party_appt_type_code": "MRC",
-                  "organization": "False",
-                  "person": "True",
-                },
-              ],
-            },
-            "ref": null,
-            "rendered": null,
-            "type": [Function],
-          },
-          false,
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "function",
-            "props": Object {},
-            "ref": null,
-            "rendered": null,
-            "type": [Function],
-          },
-        ],
-        "type": "div",
-      },
-    ],
-    "type": "div",
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "host",
-      "props": Object {
-        "children": Array [
-          <div
-            className="landing-page__header"
-          >
-            <div
-              className="inline-flex between center-mobile"
-            >
-              <div>
-                <h1>
-                  Contact Lookup
-                </h1>
-                <p>
-                  To find a contact profile, search in the list section below.
-                </p>
-              </div>
-              <Connect(AuthorizationWrapper)
-                permission="role_edit_parties"
-              >
-                <AddButton
-                  onClick={[Function]}
-                >
-                  Add New Contact
-                </AddButton>
-              </Connect(AuthorizationWrapper)>
-            </div>
-          </div>,
-          <div
-            className="landing-page__content"
-          >
-            <ContactSearch
-              fetchParties={
-                [MockFunction] {
-                  "calls": Array [
-                    Array [
-                      Object {
-                        "relationships": "mine_party_appt",
-                      },
-                    ],
-                    Array [
-                      Object {
-                        "page": "1",
-                        "per_page": "25",
-                        "relationships": "mine_party_appt",
-                      },
-                    ],
-                  ],
-                }
-              }
-              handleNameFieldReset={[Function]}
-              handleSearch={[Function]}
-              initialValues={Object {}}
-              partyRelationshipTypesList={
-                Array [
-                  Object {
-                    "active_ind": "True",
-                    "description": "Mine Manager",
-                    "display_order": "1",
-                    "grouping_level": "3",
-                    "mine_party_appt_type_code": "MMG",
-                    "organization": "False",
-                    "person": "True",
-                  },
-                  Object {
-                    "active_ind": "True",
-                    "description": "Permitee",
-                    "display_order": "2",
-                    "grouping_level": "3",
-                    "mine_party_appt_type_code": "PMT",
-                    "organization": "True",
-                    "person": "True",
-                  },
-                  Object {
-                    "active_ind": "True",
-                    "description": "Mine Operator",
-                    "display_order": "3",
-                    "grouping_level": "3",
-                    "mine_party_appt_type_code": "MOR",
-                    "organization": "False",
-                    "person": "True",
-                  },
-                  Object {
-                    "active_ind": "True",
-                    "description": "Mine Owner",
-                    "display_order": "4",
-                    "grouping_level": "3",
-                    "mine_party_appt_type_code": "MOW",
-                    "organization": "False",
-                    "person": "True",
-                  },
-                  Object {
-                    "active_ind": "True",
-                    "description": "Engineer Of Record",
-                    "display_order": "5",
-                    "grouping_level": "2",
-                    "mine_party_appt_type_code": "EOR",
-                    "organization": "False",
-                    "person": "True",
-                  },
-                  Object {
-                    "active_ind": "True",
-                    "description": "Environmental Specialist",
-                    "display_order": "6",
-                    "grouping_level": "2",
-                    "mine_party_appt_type_code": "EVS",
-                    "organization": "False",
-                    "person": "True",
-                  },
-                  Object {
-                    "active_ind": "True",
-                    "description": "Exploration Mine Manager",
-                    "display_order": "7",
-                    "grouping_level": "2",
-                    "mine_party_appt_type_code": "EMM",
-                    "organization": "False",
-                    "person": "True",
-                  },
-                  Object {
-                    "active_ind": "True",
-                    "description": "Supervisor",
-                    "display_order": "8",
-                    "grouping_level": "1",
-                    "mine_party_appt_type_code": "SVR",
-                    "organization": "False",
-                    "person": "True",
-                  },
-                  Object {
-                    "active_ind": "True",
-                    "description": "Shift Boss",
-                    "display_order": "9",
-                    "grouping_level": "1",
-                    "mine_party_appt_type_code": "SHB",
-                    "organization": "False",
-                    "person": "True",
-                  },
-                  Object {
-                    "active_ind": "True",
-                    "description": "Fire Boss",
-                    "display_order": "10",
-                    "grouping_level": "1",
-                    "mine_party_appt_type_code": "FRB",
-                    "organization": "False",
-                    "person": "True",
-                  },
-                  Object {
-                    "active_ind": "True",
-                    "description": "Blaster",
-                    "display_order": "11",
-                    "grouping_level": "1",
-                    "mine_party_appt_type_code": "BLA",
-                    "organization": "False",
-                    "person": "True",
-                  },
-                  Object {
-                    "active_ind": "True",
-                    "description": "Mine Rescue Contact",
-                    "display_order": "12",
-                    "grouping_level": "1",
-                    "mine_party_appt_type_code": "MRC",
-                    "organization": "False",
-                    "person": "True",
-                  },
-                ]
-              }
-            />
-            <Loading />
-          </div>,
-        ],
-        "className": "landing-page",
-      },
-      "ref": null,
-      "rendered": Array [
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "host",
-          "props": Object {
-            "children": <div
-              className="inline-flex between center-mobile"
-            >
-              <div>
-                <h1>
-                  Contact Lookup
-                </h1>
-                <p>
-                  To find a contact profile, search in the list section below.
-                </p>
-              </div>
-              <Connect(AuthorizationWrapper)
-                permission="role_edit_parties"
-              >
-                <AddButton
-                  onClick={[Function]}
-                >
-                  Add New Contact
-                </AddButton>
-              </Connect(AuthorizationWrapper)>
-            </div>,
-            "className": "landing-page__header",
-          },
-          "ref": null,
-          "rendered": Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "host",
-            "props": Object {
-              "children": Array [
-                <div>
-                  <h1>
-                    Contact Lookup
-                  </h1>
-                  <p>
-                    To find a contact profile, search in the list section below.
-                  </p>
-                </div>,
-                <Connect(AuthorizationWrapper)
-                  permission="role_edit_parties"
-                >
-                  <AddButton
-                    onClick={[Function]}
-                  >
-                    Add New Contact
-                  </AddButton>
-                </Connect(AuthorizationWrapper)>,
-              ],
-              "className": "inline-flex between center-mobile",
-            },
-            "ref": null,
-            "rendered": Array [
+          Add New Contact
+        </AddButton>
+      </Connect(AuthorizationWrapper)>
+    </div>
+  </div>
+  <div
+    className="landing-page__content"
+  >
+    <ContactSearch
+      fetchParties={
+        [MockFunction] {
+          "calls": Array [
+            Array [
               Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "host",
-                "props": Object {
-                  "children": Array [
-                    <h1>
-                      Contact Lookup
-                    </h1>,
-                    <p>
-                      To find a contact profile, search in the list section below.
-                    </p>,
-                  ],
-                },
-                "ref": null,
-                "rendered": Array [
-                  Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "host",
-                    "props": Object {
-                      "children": "Contact Lookup",
-                    },
-                    "ref": null,
-                    "rendered": "Contact Lookup",
-                    "type": "h1",
-                  },
-                  Object {
-                    "instance": null,
-                    "key": undefined,
-                    "nodeType": "host",
-                    "props": Object {
-                      "children": "To find a contact profile, search in the list section below.",
-                    },
-                    "ref": null,
-                    "rendered": "To find a contact profile, search in the list section below.",
-                    "type": "p",
-                  },
-                ],
-                "type": "div",
+                "relationships": "mine_party_appt",
               },
+            ],
+            Array [
               Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "children": <AddButton
-                    onClick={[Function]}
-                  >
-                    Add New Contact
-                  </AddButton>,
-                  "permission": "role_edit_parties",
-                },
-                "ref": null,
-                "rendered": Object {
-                  "instance": null,
-                  "key": undefined,
-                  "nodeType": "function",
-                  "props": Object {
-                    "children": "Add New Contact",
-                    "onClick": [Function],
-                  },
-                  "ref": null,
-                  "rendered": "Add New Contact",
-                  "type": [Function],
-                },
-                "type": [Function],
+                "page": "1",
+                "per_page": "25",
+                "relationships": "mine_party_appt",
               },
             ],
-            "type": "div",
-          },
-          "type": "div",
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "host",
-          "props": Object {
-            "children": Array [
-              <ContactSearch
-                fetchParties={
-                  [MockFunction] {
-                    "calls": Array [
-                      Array [
-                        Object {
-                          "relationships": "mine_party_appt",
-                        },
-                      ],
-                      Array [
-                        Object {
-                          "page": "1",
-                          "per_page": "25",
-                          "relationships": "mine_party_appt",
-                        },
-                      ],
-                    ],
-                  }
-                }
-                handleNameFieldReset={[Function]}
-                handleSearch={[Function]}
-                initialValues={Object {}}
-                partyRelationshipTypesList={
-                  Array [
-                    Object {
-                      "active_ind": "True",
-                      "description": "Mine Manager",
-                      "display_order": "1",
-                      "grouping_level": "3",
-                      "mine_party_appt_type_code": "MMG",
-                      "organization": "False",
-                      "person": "True",
-                    },
-                    Object {
-                      "active_ind": "True",
-                      "description": "Permitee",
-                      "display_order": "2",
-                      "grouping_level": "3",
-                      "mine_party_appt_type_code": "PMT",
-                      "organization": "True",
-                      "person": "True",
-                    },
-                    Object {
-                      "active_ind": "True",
-                      "description": "Mine Operator",
-                      "display_order": "3",
-                      "grouping_level": "3",
-                      "mine_party_appt_type_code": "MOR",
-                      "organization": "False",
-                      "person": "True",
-                    },
-                    Object {
-                      "active_ind": "True",
-                      "description": "Mine Owner",
-                      "display_order": "4",
-                      "grouping_level": "3",
-                      "mine_party_appt_type_code": "MOW",
-                      "organization": "False",
-                      "person": "True",
-                    },
-                    Object {
-                      "active_ind": "True",
-                      "description": "Engineer Of Record",
-                      "display_order": "5",
-                      "grouping_level": "2",
-                      "mine_party_appt_type_code": "EOR",
-                      "organization": "False",
-                      "person": "True",
-                    },
-                    Object {
-                      "active_ind": "True",
-                      "description": "Environmental Specialist",
-                      "display_order": "6",
-                      "grouping_level": "2",
-                      "mine_party_appt_type_code": "EVS",
-                      "organization": "False",
-                      "person": "True",
-                    },
-                    Object {
-                      "active_ind": "True",
-                      "description": "Exploration Mine Manager",
-                      "display_order": "7",
-                      "grouping_level": "2",
-                      "mine_party_appt_type_code": "EMM",
-                      "organization": "False",
-                      "person": "True",
-                    },
-                    Object {
-                      "active_ind": "True",
-                      "description": "Supervisor",
-                      "display_order": "8",
-                      "grouping_level": "1",
-                      "mine_party_appt_type_code": "SVR",
-                      "organization": "False",
-                      "person": "True",
-                    },
-                    Object {
-                      "active_ind": "True",
-                      "description": "Shift Boss",
-                      "display_order": "9",
-                      "grouping_level": "1",
-                      "mine_party_appt_type_code": "SHB",
-                      "organization": "False",
-                      "person": "True",
-                    },
-                    Object {
-                      "active_ind": "True",
-                      "description": "Fire Boss",
-                      "display_order": "10",
-                      "grouping_level": "1",
-                      "mine_party_appt_type_code": "FRB",
-                      "organization": "False",
-                      "person": "True",
-                    },
-                    Object {
-                      "active_ind": "True",
-                      "description": "Blaster",
-                      "display_order": "11",
-                      "grouping_level": "1",
-                      "mine_party_appt_type_code": "BLA",
-                      "organization": "False",
-                      "person": "True",
-                    },
-                    Object {
-                      "active_ind": "True",
-                      "description": "Mine Rescue Contact",
-                      "display_order": "12",
-                      "grouping_level": "1",
-                      "mine_party_appt_type_code": "MRC",
-                      "organization": "False",
-                      "person": "True",
-                    },
-                  ]
-                }
-              />,
-              false,
-              <Loading />,
-            ],
-            "className": "landing-page__content",
-          },
-          "ref": null,
-          "rendered": Array [
+          ],
+          "results": Array [
             Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "fetchParties": [MockFunction] {
-                  "calls": Array [
-                    Array [
-                      Object {
-                        "relationships": "mine_party_appt",
-                      },
-                    ],
-                    Array [
-                      Object {
-                        "page": "1",
-                        "per_page": "25",
-                        "relationships": "mine_party_appt",
-                      },
-                    ],
-                  ],
-                },
-                "handleNameFieldReset": [Function],
-                "handleSearch": [Function],
-                "initialValues": Object {},
-                "partyRelationshipTypesList": Array [
-                  Object {
-                    "active_ind": "True",
-                    "description": "Mine Manager",
-                    "display_order": "1",
-                    "grouping_level": "3",
-                    "mine_party_appt_type_code": "MMG",
-                    "organization": "False",
-                    "person": "True",
-                  },
-                  Object {
-                    "active_ind": "True",
-                    "description": "Permitee",
-                    "display_order": "2",
-                    "grouping_level": "3",
-                    "mine_party_appt_type_code": "PMT",
-                    "organization": "True",
-                    "person": "True",
-                  },
-                  Object {
-                    "active_ind": "True",
-                    "description": "Mine Operator",
-                    "display_order": "3",
-                    "grouping_level": "3",
-                    "mine_party_appt_type_code": "MOR",
-                    "organization": "False",
-                    "person": "True",
-                  },
-                  Object {
-                    "active_ind": "True",
-                    "description": "Mine Owner",
-                    "display_order": "4",
-                    "grouping_level": "3",
-                    "mine_party_appt_type_code": "MOW",
-                    "organization": "False",
-                    "person": "True",
-                  },
-                  Object {
-                    "active_ind": "True",
-                    "description": "Engineer Of Record",
-                    "display_order": "5",
-                    "grouping_level": "2",
-                    "mine_party_appt_type_code": "EOR",
-                    "organization": "False",
-                    "person": "True",
-                  },
-                  Object {
-                    "active_ind": "True",
-                    "description": "Environmental Specialist",
-                    "display_order": "6",
-                    "grouping_level": "2",
-                    "mine_party_appt_type_code": "EVS",
-                    "organization": "False",
-                    "person": "True",
-                  },
-                  Object {
-                    "active_ind": "True",
-                    "description": "Exploration Mine Manager",
-                    "display_order": "7",
-                    "grouping_level": "2",
-                    "mine_party_appt_type_code": "EMM",
-                    "organization": "False",
-                    "person": "True",
-                  },
-                  Object {
-                    "active_ind": "True",
-                    "description": "Supervisor",
-                    "display_order": "8",
-                    "grouping_level": "1",
-                    "mine_party_appt_type_code": "SVR",
-                    "organization": "False",
-                    "person": "True",
-                  },
-                  Object {
-                    "active_ind": "True",
-                    "description": "Shift Boss",
-                    "display_order": "9",
-                    "grouping_level": "1",
-                    "mine_party_appt_type_code": "SHB",
-                    "organization": "False",
-                    "person": "True",
-                  },
-                  Object {
-                    "active_ind": "True",
-                    "description": "Fire Boss",
-                    "display_order": "10",
-                    "grouping_level": "1",
-                    "mine_party_appt_type_code": "FRB",
-                    "organization": "False",
-                    "person": "True",
-                  },
-                  Object {
-                    "active_ind": "True",
-                    "description": "Blaster",
-                    "display_order": "11",
-                    "grouping_level": "1",
-                    "mine_party_appt_type_code": "BLA",
-                    "organization": "False",
-                    "person": "True",
-                  },
-                  Object {
-                    "active_ind": "True",
-                    "description": "Mine Rescue Contact",
-                    "display_order": "12",
-                    "grouping_level": "1",
-                    "mine_party_appt_type_code": "MRC",
-                    "organization": "False",
-                    "person": "True",
-                  },
-                ],
-              },
-              "ref": null,
-              "rendered": null,
-              "type": [Function],
+              "type": "return",
+              "value": Promise {},
             },
-            false,
             Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "function",
-              "props": Object {},
-              "ref": null,
-              "rendered": null,
-              "type": [Function],
+              "type": "return",
+              "value": Promise {},
             },
           ],
-          "type": "div",
-        },
-      ],
-      "type": "div",
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
+        }
+      }
+      handleNameFieldReset={[Function]}
+      handleSearch={[Function]}
+      initialValues={Object {}}
+      partyRelationshipTypesList={
+        Array [
+          Object {
+            "active_ind": "True",
+            "description": "Mine Manager",
+            "display_order": "1",
+            "grouping_level": "3",
+            "mine_party_appt_type_code": "MMG",
+            "organization": "False",
+            "person": "True",
           },
-          "getDerivedStateFromProps": true,
-          "getSnapshotBeforeUpdate": true,
-          "setState": Object {
-            "skipsComponentDidUpdateOnNullish": true,
+          Object {
+            "active_ind": "True",
+            "description": "Permitee",
+            "display_order": "2",
+            "grouping_level": "3",
+            "mine_party_appt_type_code": "PMT",
+            "organization": "True",
+            "person": "True",
           },
-        },
-      },
-    },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
-  },
-}
+          Object {
+            "active_ind": "True",
+            "description": "Mine Operator",
+            "display_order": "3",
+            "grouping_level": "3",
+            "mine_party_appt_type_code": "MOR",
+            "organization": "False",
+            "person": "True",
+          },
+          Object {
+            "active_ind": "True",
+            "description": "Mine Owner",
+            "display_order": "4",
+            "grouping_level": "3",
+            "mine_party_appt_type_code": "MOW",
+            "organization": "False",
+            "person": "True",
+          },
+          Object {
+            "active_ind": "True",
+            "description": "Engineer Of Record",
+            "display_order": "5",
+            "grouping_level": "2",
+            "mine_party_appt_type_code": "EOR",
+            "organization": "False",
+            "person": "True",
+          },
+          Object {
+            "active_ind": "True",
+            "description": "Environmental Specialist",
+            "display_order": "6",
+            "grouping_level": "2",
+            "mine_party_appt_type_code": "EVS",
+            "organization": "False",
+            "person": "True",
+          },
+          Object {
+            "active_ind": "True",
+            "description": "Exploration Mine Manager",
+            "display_order": "7",
+            "grouping_level": "2",
+            "mine_party_appt_type_code": "EMM",
+            "organization": "False",
+            "person": "True",
+          },
+          Object {
+            "active_ind": "True",
+            "description": "Supervisor",
+            "display_order": "8",
+            "grouping_level": "1",
+            "mine_party_appt_type_code": "SVR",
+            "organization": "False",
+            "person": "True",
+          },
+          Object {
+            "active_ind": "True",
+            "description": "Shift Boss",
+            "display_order": "9",
+            "grouping_level": "1",
+            "mine_party_appt_type_code": "SHB",
+            "organization": "False",
+            "person": "True",
+          },
+          Object {
+            "active_ind": "True",
+            "description": "Fire Boss",
+            "display_order": "10",
+            "grouping_level": "1",
+            "mine_party_appt_type_code": "FRB",
+            "organization": "False",
+            "person": "True",
+          },
+          Object {
+            "active_ind": "True",
+            "description": "Blaster",
+            "display_order": "11",
+            "grouping_level": "1",
+            "mine_party_appt_type_code": "BLA",
+            "organization": "False",
+            "person": "True",
+          },
+          Object {
+            "active_ind": "True",
+            "description": "Mine Rescue Contact",
+            "display_order": "12",
+            "grouping_level": "1",
+            "mine_party_appt_type_code": "MRC",
+            "organization": "False",
+            "person": "True",
+          },
+        ]
+      }
+    />
+    <Loading />
+  </div>
+</div>
 `;
