@@ -11,7 +11,7 @@ from werkzeug.datastructures import FileStorage
 from werkzeug.exceptions import BadRequest, NotFound
 from sqlalchemy.exc import DBAPIError
 
-from app.api.mines.incidents.models.mine_incident import MineIncident
+from app.api.incidents.models.mine_incident import MineIncident
 from app.api.mines.mine.models.mine import Mine
 from app.api.documents.mines.models.mine_document import MineDocument
 from app.api.documents.incidents.models.mine_incident import MineIncidentDocumentXref

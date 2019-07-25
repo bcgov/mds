@@ -3,8 +3,8 @@ from flask_restplus import Resource
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_view_all
 
-from ..models.mine_incident_determination_type import MineIncidentDeterminationType
-from ...mine_api_models import MINE_INCIDENT_DETERMINATION_TYPE_MODEL
+from app.api.incidents.response_models import MINE_INCIDENT_DETERMINATION_TYPE_MODEL
+from app.api.incidents.models.mine_incident_determination_type import MineIncidentDeterminationType
 
 
 class MineIncidentDeterminationTypeResource(Resource):
