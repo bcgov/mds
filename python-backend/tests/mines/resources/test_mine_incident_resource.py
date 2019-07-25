@@ -2,7 +2,7 @@ import pytest
 import json
 from datetime import datetime, timedelta
 from app.extensions import db
-from app.api.mines.incidents.models.mine_incident import MineIncident
+from app.api.incidents.models.mine_incident import MineIncident
 from tests.factories import MineFactory
 from tests.status_code_gen import SampleDangerousOccurrenceSubparagraphs
 

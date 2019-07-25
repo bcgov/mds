@@ -5,12 +5,14 @@ from sqlalchemy.orm import validates
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
-from ....utils.models_mixins import AuditMixin, Base
+
 from .mine_incident_followup_investigation_type import MineIncidentFollowupInvestigationType
-from app.api.mines.incidents.models.mine_incident_determination_type import MineIncidentDeterminationType
+
+from app.api.utils.models_mixins import AuditMixin, Base
+from app.api.incidents.models.mine_incident_determination_type import MineIncidentDeterminationType
+from app.api.incidents.models.mine_incident_do_subparagraph import MineIncidentDoSubparagraph
+from app.api.incidents.models.mine_incident_recommendation import MineIncidentRecommendation
 from app.api.mines.compliance.models.compliance_article import ComplianceArticle
-from app.api.mines.incidents.models.mine_incident_do_subparagraph import MineIncidentDoSubparagraph
-from app.api.mines.incidents.models.mine_incident_recommendation import MineIncidentRecommendation
 
 
 class MineIncident(AuditMixin, Base):
@@ -82,11 +84,15 @@ class MineIncident(AuditMixin, Base):
                                                   lazy='joined',
                                                   uselist=False)
 
-    recommendations = db.relationship('MineIncidentRecommendation', lazy='selectin')
+    _recommendations = db.relationship('MineIncidentRecommendation', lazy='dynamic')
     documents = db.relationship('MineIncidentDocumentXref', lazy='joined')
     incident_documents = db.relationship('MineDocument',
                                          lazy='joined',
                                          secondary='mine_incident_document_xref')
+
+    @hybrid_property
+    def recommendations(self):
+        return self._recommendations.filter_by(deleted_ind=False).all()
 
     @hybrid_property
     def mine_incident_report_no(self):

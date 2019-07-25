@@ -19,9 +19,7 @@ ShallowWrapper {
     followupActions={
       Array [
         Object {
-          "active_ind": true,
           "description": "No Action",
-          "display_order": 20,
           "mine_incident_followup_type_code": "NOA",
         },
       ]
@@ -145,9 +143,7 @@ ShallowWrapper {
           followupActions={
             Array [
               Object {
-                "active_ind": true,
                 "description": "No Action",
-                "display_order": 20,
                 "mine_incident_followup_type_code": "NOA",
               },
             ]
@@ -231,9 +227,7 @@ ShallowWrapper {
         "props": Object {
           "followupActions": Array [
             Object {
-              "active_ind": true,
               "description": "No Action",
-              "display_order": 20,
               "mine_incident_followup_type_code": "NOA",
             },
           ],
@@ -288,9 +282,7 @@ ShallowWrapper {
             followupActions={
               Array [
                 Object {
-                  "active_ind": true,
                   "description": "No Action",
-                  "display_order": 20,
                   "mine_incident_followup_type_code": "NOA",
                 },
               ]
@@ -374,9 +366,7 @@ ShallowWrapper {
           "props": Object {
             "followupActions": Array [
               Object {
-                "active_ind": true,
                 "description": "No Action",
-                "display_order": 20,
                 "mine_incident_followup_type_code": "NOA",
               },
             ],
