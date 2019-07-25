@@ -32,9 +32,9 @@ export class AdvancedContactSearchForm extends Component {
   };
 
   handleReset = () => {
+    this.setState({ contactType: "PER" });
     this.props.reset();
     this.props.handleSearch({}, true);
-    this.setState({ contactType: "PER" });
   };
 
   handleContactTypeChange = (chars, value) => {

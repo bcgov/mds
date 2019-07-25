@@ -9,7 +9,7 @@ const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   documentCategoryOptions: CustomPropTypes.options.isRequired,
   complianceCodes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
-  inspectors: CustomPropTypes.options.isRequired,
+  inspectors: CustomPropTypes.groupOptions.isRequired,
 };
 
 export const AddVarianceModal = (props) => (
