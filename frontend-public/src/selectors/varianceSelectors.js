@@ -46,6 +46,16 @@ export const getDropdownHSRCMComplianceCodes = createSelector(
       })
 );
 
+export const formatComplianceCodeValueOrLabel = (code, showDescription) => {
+  const { section, sub_section, paragraph, sub_paragraph, description } = code;
+  const formattedSubSection = sub_section ? `.${sub_section}` : "";
+  const formattedParagraph = paragraph ? `.${paragraph}` : "";
+  const formattedSubParagraph = sub_paragraph !== null ? `.${sub_paragraph}` : "";
+  const formattedDescription = showDescription ? ` - ${description}` : "";
+
+  return `${section}${formattedSubSection}${formattedParagraph}${formattedSubParagraph}${formattedDescription}`;
+};
+
 export const getHSRCMComplianceCodesHash = createSelector(
   [getCurrentComplianceCodes],
   (codes) =>
@@ -59,16 +69,6 @@ export const getHSRCMComplianceCodesHash = createSelector(
         };
       }, {})
 );
-
-export const formatComplianceCodeValueOrLabel = (code, showDescription) => {
-  const { section, sub_section, paragraph, sub_paragraph, description } = code;
-  const formattedSubSection = sub_section ? `.${sub_section}` : "";
-  const formattedParagraph = paragraph ? `.${paragraph}` : "";
-  const formattedSubParagraph = sub_paragraph !== null ? `.${sub_paragraph}` : "";
-  const formattedDescription = showDescription ? ` - ${description}` : "";
-
-  return `${section}${formattedSubSection}${formattedParagraph}${formattedSubParagraph}${formattedDescription}`;
-};
 
 export const getDropdownVarianceStatusOptions = createSelector(
   [getVarianceStatusOptions],
