@@ -13,7 +13,7 @@ def register_commands(app):
 
     @app.cli.command()
     def import_idir():
-        from app.scheduled_jobs.IDIR_jobs import import_empr_idir_users
+        from app.cli_jobs.IDIR_jobs import import_empr_idir_users
         import_empr_idir_users()
 
     @app.cli.command()
@@ -72,5 +72,5 @@ def register_commands(app):
 
     @app.cli.command()
     def run_etl():
-        from app.scheduled_jobs import ETL_jobs
+        from app.cli_jobs import ETL_jobs
         ETL_jobs.run_ETL()

@@ -28,5 +28,5 @@ def register_commands(app):
 
     @app.cli.command()
     def run_nris_etl_job():
-        from app.nris.scheduled_jobs.nris_jobs import run_nris_etl
+        from app.nris.cli_jobs.nris_jobs import run_nris_etl
         run_nris_etl()

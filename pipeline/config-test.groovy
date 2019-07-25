@@ -264,9 +264,11 @@ app {
                     'params':[
                             'NAME':"digdag",
                             'VERSION':"${app.deployment.version}",
+                            'NAMESPACE':"${vars.deployment.namespace}",
                             'SUFFIX': "${vars.deployment.suffix}",
                             'SCHEDULER_PVC_SIZE':"${vars.SCHEDULER_PVC_SIZE}",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
+                            'KEYCLOAK_DISCOVERY_URL':"${vars.keycloak.known_config_url}",
                             'APPLICATION_DOMAIN': "${vars.modules.'digdag'.HOST}",
                             'CPU_REQUEST':"${vars.resources.digdag.cpu_request}",
                             'CPU_LIMIT':"${vars.resources.digdag.cpu_limit}",

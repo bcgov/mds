@@ -210,7 +210,7 @@
                   },
                   {
                     "name": "KEYCLOAK_DISCOVERY_URL",
-                    "value": "https://sso-test.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
+                    "value": "${KEYCLOAK_DISCOVERY_URL}"
                   },
                   {
                     "name": "KEYCLOAK_CLIENT_ID",
@@ -316,6 +316,10 @@
     {
       "name": "NAMESPACE",
       "value": "empr-mds-dev"
+    },
+    {
+      "name": "KEYCLOAK_DISCOVERY_URL",
+      "value": "https://sso-test.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
     },
     {
       "name": "SCHEDULER_PVC_SIZE",
