@@ -14,7 +14,7 @@ import { required, maxLength, number, dateNotInFuture } from "@/utils/Validate";
 const propTypes = {
   incidentDeterminationOptions: CustomPropTypes.options.isRequired,
   doSubparagraphOptions: CustomPropTypes.options.isRequired,
-  inspectors: CustomPropTypes.options.isRequired,
+  inspectors: CustomPropTypes.groupOptions.isRequired,
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
   mineGuid: PropTypes.string.isRequired,
   doDetermination: PropTypes.string,
@@ -116,7 +116,7 @@ class AddIncidentDetailForm extends Component {
                   id="determination_inspector_party_guid"
                   name="determination_inspector_party_guid"
                   label="Who made the determination?*"
-                  component={renderConfig.SELECT}
+                  component={renderConfig.GROUPED_SELECT}
                   data={this.props.inspectors}
                   validate={[required]}
                 />
@@ -152,6 +152,7 @@ class AddIncidentDetailForm extends Component {
                     id="InitialIncidentFileUpload"
                     name="InitialIncidentFileUpload"
                     onFileLoad={(document_name, document_manager_guid) =>
+                      // TODO: Replace string with constant
                       this.props.onFileLoad(document_name, document_manager_guid, "INI")
                     }
                     component={FileUpload}

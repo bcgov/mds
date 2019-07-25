@@ -1,6 +1,8 @@
 from app.extensions import api
 from flask_restplus import fields
 
+from app.api.mines.compliance.response_models import COMPLIANCE_ARTICLE_MODEL
+
 
 class DateTime(fields.Raw):
     def format(self, value):
@@ -37,8 +39,6 @@ MINE_TENURE_TYPE_CODE_MODEL = api.model('MineTenureTypeCode', {
 
 MINE_LOCATION_MODEL = api.model(
     'MineLocation', {
-        'mine_location_guid': fields.String,
-        'mine_guid': fields.String,
         'latitude': fields.Fixed(description='fixed precision decimal.', decimals=7),
         'longitude': fields.Fixed(description='fixed precision decimal.', decimals=7),
         'utm_easting': fields.String,
@@ -173,6 +173,7 @@ MINE_INCIDENT_DOCUMENT_MODEL = api.model(
 MINE_INCIDENT_RECOMMENDATION_MODEL = api.model(
     'Mine Incident Recommendation', {
         'recommendation': fields.String,
+        'mine_incident_recommendation_guid': fields.String
     }
 )
 
@@ -189,7 +190,7 @@ MINE_INCIDENT_MODEL = api.model(
         'reported_by_email': fields.String,
         'reported_by_phone_no': fields.String,
         'reported_by_phone_ext': fields.String,
-        'emergency_services_called': fields.Boolean, 
+        'emergency_services_called': fields.Boolean,
         'number_of_injuries': fields.Integer,
         'number_of_fatalities': fields.Integer,
         'reported_to_inspector_party_guid':  fields.String,
@@ -200,31 +201,13 @@ MINE_INCIDENT_MODEL = api.model(
         'followup_inspection': fields.Boolean,
         'followup_inspection_date': DateTime,
         'determination_inspector_party_guid': fields.String,
-        'mms_inspector_initials' : fields.String(attribute='mms_insp_cd'), 
+        'mms_inspector_initials' : fields.String(attribute='mms_insp_cd'),
         'dangerous_occurrence_subparagraph_ids': fields.List(fields.Integer),
         'proponent_incident_no': fields.String,
         'mine_incident_no': fields.String,
-        'documents': fields.List(fields.Nested(MINE_INCIDENT_DOCUMENT_MODEL)), 
+        'documents': fields.List(fields.Nested(MINE_INCIDENT_DOCUMENT_MODEL)),
         'recommendations': fields.List(fields.Nested(MINE_INCIDENT_RECOMMENDATION_MODEL))
     })
-
-MINE_INCIDENT_FOLLOWUP_INVESTIGATION_TYPE_MODEL = api.model(
-    'Mine Incident Followup Investigation Type', {
-        'mine_incident_followup_investigation_type_code': fields.String,
-        'description': fields.String,
-        'display_order': fields.Integer,
-    })
-
-MINE_INCIDENT_DETERMINATION_TYPE_MODEL = api.model(
-    'Mine Incident Determination Type', {
-        'mine_incident_determination_type_code': fields.String,
-        'description': fields.String,
-        'display_order': fields.Integer,
-        'active_ind': fields.Boolean
-    })
-
-MINE_INCIDENT_STATUS_CDOE_MODEL = api.model("Mine Incident Status Codes",
- {'mine_incident_status_code': fields.String, 'description': fields.String, 'display_order': fields.Integer})
 
 VARIANCE_DOCUMENT_MODEL = api.inherit(
     'VarianceDocumentModel', MINE_DOCUMENT_MODEL, {
@@ -274,3 +257,42 @@ MINE_STATUS_CODE_MODEL = api.model(
             'mine_operation_status_sub_reason':fields.Nested(MINE_OPERATION_STATUS_SUB_REASON_CODE_MODEL),
             'description': fields.String(),
     })
+
+MINE_REPORT_SUBMISSION_MODEL= api.model(
+    'MineReportSubmission', {
+        'mine_report_submission_guid': fields.String,
+        'submission_date': fields.Date,
+        'mine_report_submission_status_code': fields.String,
+        'documents': fields.List(fields.Nested(MINE_DOCUMENT_MODEL))
+    }
+)
+
+MINE_REPORT_MODEL = api.model(
+    'MineReportModel', {
+        'mine_report_guid':fields.String,
+        'due_date':fields.Date,
+        'received_date': fields.Date,
+        'submission_year':fields.Integer,
+        'permit_id':fields.Integer,
+        'mine_report_submissions':fields.List(fields.Nested(MINE_REPORT_SUBMISSION_MODEL))
+})
+
+MINE_REPORT_DEFINITION_CATEGORIES = api.model(
+    'MineReportDefinitionCategoriesModel', {
+        'mine_report_category':fields.String(),
+        'description':fields.String()
+    }
+)
+
+MINE_REPORT_DEFINITION_MODEL = api.model(
+    'MineReportDefinition', {
+        'mine_report_definition_id':fields.Integer,
+        'mine_report_definition_guid':fields.String,
+        'report_name':fields.String,
+        'description':fields.String,
+        'due_date_period_months':fields.Integer,
+        'mine_report_due_date_type':fields.String,
+        'categories':fields.List(fields.Nested(MINE_REPORT_DEFINITION_CATEGORIES)),
+        'compliance_articles':fields.List(fields.Nested(COMPLIANCE_ARTICLE_MODEL)),
+    }
+)

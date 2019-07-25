@@ -13,12 +13,11 @@ from app.api.document_manager.models.document_manager import DocumentManager
 from app.api.documents.expected.models.mine_expected_document import MineExpectedDocument
 from app.api.documents.mines.models.mine_document import MineDocument
 from app.api.documents.variances.models.variance import VarianceDocumentXref
-from app.api.mines.location.models.mine_location import MineLocation
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.mine.models.mine_type import MineType
 from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
 from app.api.mines.mine.models.mine_verified_status import MineVerifiedStatus
-from app.api.mines.incidents.models.mine_incident import MineIncident
+from app.api.incidents.models.mine_incident import MineIncident
 from app.api.mines.status.models.mine_status import MineStatus
 from app.api.mines.subscription.models.subscription import Subscription
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
@@ -32,6 +31,7 @@ from app.api.users.core.models.core_user import CoreUser, IdirUserDetail
 from app.api.users.minespace.models.minespace_user import MinespaceUser
 from app.api.variances.models.variance import Variance
 from app.api.parties.party_appt.models.party_business_role_appt import PartyBusinessRoleAppointment
+from app.api.mines.reports.models.mine_report import MineReport
 
 GUID = factory.LazyFunction(uuid.uuid4)
 TODAY = factory.LazyFunction(datetime.now)
@@ -125,20 +125,6 @@ class MineExpectedDocumentFactory(BaseFactory):
 
         MineDocumentFactory.create_batch(
             size=extracted, mine_expected_document=[obj], mine=obj.mine, **kwargs)
-
-
-class MineLocationFactory(BaseFactory):
-    class Meta:
-        model = MineLocation
-
-    mine_location_guid = GUID
-    latitude = factory.Faker('latitude')  # or factory.fuzzy.FuzzyFloat(49, 60) for ~ inside BC
-    longitude = factory.Faker('longitude')  # or factory.fuzzy.FuzzyFloat(-132, -114.7) for ~ BC
-    geom = factory.LazyAttribute(lambda o: 'SRID=3005;POINT(%f %f)' % (o.longitude, o.latitude))
-    mine_location_description = factory.Faker('sentence', nb_words=8, variable_nb_words=True)
-    effective_date = TODAY
-    expiry_date = TODAY
-    mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
 
 
 class MineStatusFactory(BaseFactory):
@@ -363,6 +349,16 @@ class MineIncidentFactory(BaseFactory):
         if o.determination_type_code == 'DO' else [])
 
 
+class MineReportFactory(BaseFactory):
+    class Meta:
+        model = MineReport
+
+    mine_report_guid = GUID
+    mine_report_definition_id = factory.LazyFunction(RandomMineReportDefinition)
+    due_date = factory.Faker('future_datetime', end_date='+30d')
+    submission_year = factory.fuzzy.FuzzyInteger(2020, 3000)
+
+
 class AddressFactory(BaseFactory):
     class Meta:
         model = Address
@@ -489,7 +485,10 @@ class MineFactory(BaseFactory):
             mine_no=None,
             mine_note=None,
             mine_region='NE',
-            mine_location=None,
+            latitude=None,
+            longitude=None,
+            geom=None,
+            mine_location_description=None,
             mine_type=None,
             verified_status=None,
             mine_status=None,
@@ -508,9 +507,12 @@ class MineFactory(BaseFactory):
     mine_region = factory.LazyFunction(RandomMineRegionCode)
     ohsc_ind = factory.Faker('boolean', chance_of_getting_true=50)
     union_ind = factory.Faker('boolean', chance_of_getting_true=50)
-    mine_location = factory.RelatedFactory(MineLocationFactory, 'mine')
     mine_type = factory.RelatedFactory(MineTypeFactory, 'mine')
     verified_status = factory.RelatedFactory(MineVerifiedStatusFactory, 'mine')
+    latitude = factory.Faker('latitude')  # or factory.fuzzy.FuzzyFloat(49, 60) for ~ inside BC
+    longitude = factory.Faker('longitude')  # or factory.fuzzy.FuzzyFloat(-132, -114.7) for ~ BC
+    geom = factory.LazyAttribute(lambda o: 'SRID=3005;POINT(%f %f)' % (o.longitude, o.latitude))
+    mine_location_description = factory.Faker('sentence', nb_words=8, variable_nb_words=True)
     mine_status = factory.RelatedFactory(MineStatusFactory, 'mine')
     mine_tailings_storage_facilities = []
     mine_permit = []
@@ -567,3 +569,13 @@ class MineFactory(BaseFactory):
             extracted = 1
 
         VarianceFactory.create_batch(size=extracted, mine=obj, **kwargs)
+
+    @factory.post_generation
+    def mine_reports(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        MineReportFactory.create_batch(size=extracted, mine_guid=obj.mine_guid, **kwargs)
