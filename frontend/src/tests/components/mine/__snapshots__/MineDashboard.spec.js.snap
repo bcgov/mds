@@ -88,6 +88,13 @@ ShallowWrapper {
         ],
       }
     }
+    fetchMineReportDefinitionOptions={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+      }
+    }
     fetchMineTenureTypes={
       [MockFunction] {
         "calls": Array [

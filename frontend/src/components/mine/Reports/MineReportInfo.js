@@ -17,7 +17,7 @@ import { modalConfig } from "@/components/modalContent/config";
 import { getMineReports } from "@/selectors/reportSelectors";
 
 /**
- * @class  MinePermitInfo - contains all permit information
+ * @class  MineReportInfo - contains all permit information
  */
 
 const propTypes = {
