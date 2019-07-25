@@ -25,6 +25,8 @@ const propTypes = {
   incidentFollowupActionHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
+// FIXME: Replace these hardcoded values with values pulled from the API (via
+// the Store). These should be mapped to ReduxForm values selected by the user
 const DANGEROUS_OCCURRENCE = "DO";
 const INCIDENT_DOCUMENT_TYPES = {
   initial: "INI",
@@ -227,6 +229,7 @@ export class ViewIncidentModal extends Component {
   renderFinalDocuments = () => {
     const finalDocuments = this.props.incident.documents.filter(
       ({ mine_incident_document_type_code }) =>
+        // FIXME: Example: mine_incident_document_type_code === this.state.mine_incident_document_type_code
         mine_incident_document_type_code === INCIDENT_DOCUMENT_TYPES.final
     );
     return (
