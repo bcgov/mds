@@ -2,8 +2,9 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from ....utils.models_mixins import Base
+from app.api.utils.models_mixins import Base
 from app.extensions import db
+
 
 class VarianceDocumentXref(Base):
     __tablename__ = "variance_document_xref"
@@ -15,9 +16,10 @@ class VarianceDocumentXref(Base):
     variance_id = db.Column(db.Integer,
                             db.ForeignKey('variance.variance_id'),
                             server_default=FetchedValue())
-    variance_document_category_code = db.Column(db.String,
-                                                db.ForeignKey('variance_document_category_code.variance_document_category_code'),
-                                                nullable=False)
+    variance_document_category_code = db.Column(
+        db.String,
+        db.ForeignKey('variance_document_category_code.variance_document_category_code'),
+        nullable=False)
     created_at = db.Column(db.DateTime, server_default=FetchedValue())
 
     mine_document = db.relationship('MineDocument', lazy='joined')

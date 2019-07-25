@@ -12,7 +12,6 @@ from app.api.applications.models.application import Application
 from app.api.document_manager.models.document_manager import DocumentManager
 from app.api.documents.expected.models.mine_expected_document import MineExpectedDocument
 from app.api.documents.mines.models.mine_document import MineDocument
-from app.api.documents.variances.models.variance import VarianceDocumentXref
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.mine.models.mine_type import MineType
 from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
@@ -30,6 +29,7 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment_document imp
 from app.api.users.core.models.core_user import CoreUser, IdirUserDetail
 from app.api.users.minespace.models.minespace_user import MinespaceUser
 from app.api.variances.models.variance import Variance
+from app.api.variances.models.variance_document_xref import VarianceDocumentXref
 from app.api.parties.party_appt.models.party_business_role_appt import PartyBusinessRoleAppointment
 from app.api.mines.reports.models.mine_report import MineReport
 
@@ -75,13 +75,13 @@ class DocumentManagerFactory(BaseFactory):
         path_root = ''
 
     document_guid = GUID
-    full_storage_path = factory.LazyAttribute(
-        lambda o: path.join(o.path_root, 'mine_no/category', o.file_display_name))
+    full_storage_path = factory.LazyAttribute(lambda o: path.join(o.path_root, 'mine_no/category', o
+                                                                  .file_display_name))
     upload_started_date = TODAY
     upload_completed_date = TODAY
     file_display_name = factory.Faker('file_name')
-    path_display_name = factory.LazyAttribute(
-        lambda o: path.join(o.path_root, 'mine_name/category', o.file_display_name))
+    path_display_name = factory.LazyAttribute(lambda o: path.join(o.path_root, 'mine_name/category',
+                                                                  o.file_display_name))
 
 
 class MineDocumentFactory(BaseFactory):
@@ -123,8 +123,10 @@ class MineExpectedDocumentFactory(BaseFactory):
         if not isinstance(extracted, int):
             extracted = 1
 
-        MineDocumentFactory.create_batch(
-            size=extracted, mine_expected_document=[obj], mine=obj.mine, **kwargs)
+        MineDocumentFactory.create_batch(size=extracted,
+                                         mine_expected_document=[obj],
+                                         mine=obj.mine,
+                                         **kwargs)
 
 
 class MineStatusFactory(BaseFactory):
@@ -142,12 +144,10 @@ class MineTypeDetailFactory(BaseFactory):
 
     class Params:
         tenure = 'MIN'
-        commodity = factory.Trait(
-            mine_commodity_code=factory.LazyAttribute(
-                lambda o: SampleMineCommodityCodes(o.tenure, 1)[0]))
-        disturbance = factory.Trait(
-            mine_disturbance_code=factory.LazyAttribute(
-                lambda o: SampleMineDisturbanceCodes(o.tenure, 1)[0]))
+        commodity = factory.Trait(mine_commodity_code=factory.LazyAttribute(
+            lambda o: SampleMineCommodityCodes(o.tenure, 1)[0]))
+        disturbance = factory.Trait(mine_disturbance_code=factory.LazyAttribute(
+            lambda o: SampleMineDisturbanceCodes(o.tenure, 1)[0]))
 
     mine_type_detail_xref_guid = GUID
     mine_commodity_code = None
@@ -176,18 +176,16 @@ class MineTypeFactory(BaseFactory):
         disturbances = SampleMineDisturbanceCodes(obj.mine_tenure_type_code, disturbances)
 
         for commodity in commodities:
-            MineTypeDetailFactory(
-                mine_type_guid=obj.mine_type_guid,
-                tenure=obj.mine_tenure_type_code,
-                mine_commodity_code=commodity,
-                **kwargs)
+            MineTypeDetailFactory(mine_type_guid=obj.mine_type_guid,
+                                  tenure=obj.mine_tenure_type_code,
+                                  mine_commodity_code=commodity,
+                                  **kwargs)
 
         for disturbance in disturbances:
-            MineTypeDetailFactory(
-                mine_type_guid=obj.mine_type_guid,
-                tenure=obj.mine_tenure_type_code,
-                mine_disturbance_code=disturbance,
-                **kwargs)
+            MineTypeDetailFactory(mine_type_guid=obj.mine_type_guid,
+                                  tenure=obj.mine_tenure_type_code,
+                                  mine_disturbance_code=disturbance,
+                                  **kwargs)
 
 
 class MineTailingsStorageFacilityFactory(BaseFactory):
@@ -206,14 +204,12 @@ class VarianceFactory(BaseFactory):
     class Params:
         mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
         inspector = factory.SubFactory('tests.factories.PartyBusinessRoleFactory')
-        approved = factory.Trait(
-            variance_application_status_code='APP',
-            issue_date=TODAY,
-            expiry_date=TODAY,
-            inspector_party_guid=factory.SelfAttribute('inspector.party_guid'))
-        denied = factory.Trait(
-            variance_application_status_code='DEN',
-            inspector_party_guid=factory.SelfAttribute('inspector.party_guid'))
+        approved = factory.Trait(variance_application_status_code='APP',
+                                 issue_date=TODAY,
+                                 expiry_date=TODAY,
+                                 inspector_party_guid=factory.SelfAttribute('inspector.party_guid'))
+        denied = factory.Trait(variance_application_status_code='DEN',
+                               inspector_party_guid=factory.SelfAttribute('inspector.party_guid'))
         not_applicable = factory.Trait(variance_application_status_code='NAP')
 
     variance_guid = GUID
@@ -232,8 +228,10 @@ class VarianceFactory(BaseFactory):
         if not isinstance(extracted, int):
             extracted = 1
 
-        VarianceDocumentFactory.create_batch(
-            size=extracted, variance=obj, mine_document__mine=None, **kwargs)
+        VarianceDocumentFactory.create_batch(size=extracted,
+                                             variance=obj,
+                                             mine_document__mine=None,
+                                             **kwargs)
 
 
 class VarianceDocumentFactory(BaseFactory):
@@ -241,9 +239,8 @@ class VarianceDocumentFactory(BaseFactory):
         model = VarianceDocumentXref
 
     class Params:
-        mine_document = factory.SubFactory(
-            'tests.factories.MineDocumentFactory',
-            mine_guid=factory.SelfAttribute('..variance.mine_guid'))
+        mine_document = factory.SubFactory('tests.factories.MineDocumentFactory',
+                                           mine_guid=factory.SelfAttribute('..variance.mine_guid'))
         variance = factory.SubFactory('tests.factories.VarianceFactory')
 
     variance_document_xref_guid = GUID
@@ -427,11 +424,10 @@ class MinePartyAppointmentFactory(BaseFactory):
     processed_on = TODAY
 
     mine_tailings_storage_facility_guid = factory.LazyAttribute(
-        lambda o: o.mine.mine_tailings_storage_facilities[0].mine_tailings_storage_facility_guid if o.mine_party_appt_type_code == 'EOR' else None
-    )
-    permit_guid = factory.LazyAttribute(
-        lambda o: o.mine.mine_permit[0].permit_guid if o.mine_party_appt_type_code == 'PMT' else None
-    )
+        lambda o: o.mine.mine_tailings_storage_facilities[0].mine_tailings_storage_facility_guid
+        if o.mine_party_appt_type_code == 'EOR' else None)
+    permit_guid = factory.LazyAttribute(lambda o: o.mine.mine_permit[0].permit_guid
+                                        if o.mine_party_appt_type_code == 'PMT' else None)
 
 
 class CoreUserFactory(BaseFactory):

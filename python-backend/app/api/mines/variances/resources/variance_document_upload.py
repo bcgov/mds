@@ -7,12 +7,12 @@ from app.extensions import api
 
 from ...mine.models.mine import Mine
 from ....documents.mines.models.mine_document import MineDocument
-from ....documents.variances.models.variance import VarianceDocumentXref
 from ....utils.access_decorators import (requires_any_of, EDIT_VARIANCE, MINESPACE_PROPONENT)
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.mines.mine_api_models import VARIANCE_MODEL
 from app.api.variances.models.variance import Variance
+from app.api.variances.models.variance import VarianceDocumentXref
 
 from app.api.services.document_manager_service import DocumentManagerService
 
