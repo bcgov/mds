@@ -1,12 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`PermitResultsTable renders properly 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <PermitResultsTable
-    header="Permits"
-    highlightRegex={/\\.\\*/}
-    searchResults={
+<div>
+  <h2>
+    Permits
+  </h2>
+  <Divider />
+  <Table
+    align="left"
+    bordered={false}
+    childrenColumnName="children"
+    className="nested-table padding-large--bottom"
+    columns={
+      Array [
+        Object {
+          "dataIndex": "permit_guid",
+          "key": "permit_guid",
+          "render": [Function],
+          "title": "Permit Guid",
+        },
+      ]
+    }
+    dataSource={
       Array [
         Object {
           "mine_guid": "5bf528d0-9e5a-421e-92c5-7e088374dad5",
@@ -52,413 +67,20 @@ ShallowWrapper {
         },
       ]
     }
-  />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateError": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "host",
-    "props": Object {
-      "children": Array [
-        <h2>
-          Permits
-        </h2>,
-        <Divider />,
-        <Table
-          align="left"
-          bordered={false}
-          className="nested-table padding-large--bottom"
-          columns={
-            Array [
-              Object {
-                "dataIndex": "permit_guid",
-                "key": "permit_guid",
-                "render": [Function],
-                "title": "Permit Guid",
-              },
-            ]
-          }
-          dataSource={
-            Array [
-              Object {
-                "mine_guid": "5bf528d0-9e5a-421e-92c5-7e088374dad5",
-                "mine_name": "Wheeler Inc",
-                "permit_guid": "9df4593a-4b58-4cee-8c3a-1cad5df7d3f6",
-                "permit_no": "CX-803",
-                "permitee": "Carl Taylor, Goodwin and Wade",
-              },
-              Object {
-                "mine_guid": "d5aeba94-6d58-4617-b71e-b16a145de86e",
-                "mine_name": "Reese, Brown and Diaz",
-                "permit_guid": "b066a984-55fc-47aa-8ecf-fb3bf33ec2bb",
-                "permit_no": "CX-7230",
-                "permitee": "Traci Franklin-Baker",
-              },
-              Object {
-                "mine_guid": "af9b3e68-981e-42cb-9931-34f37d006378",
-                "mine_name": "Mcgrath and Sons",
-                "permit_guid": "88280bbd-18ab-483d-94d4-94e3063622f1",
-                "permit_no": "CX-4926",
-                "permitee": "Paul Parker, Mckee and Wilson",
-              },
-              Object {
-                "mine_guid": "5392aef5-9a7b-4a94-98cd-66582fe423cb",
-                "mine_name": "Brown-Wheeler",
-                "permit_guid": "38e01cc1-bc49-430b-9453-1df508b98e64",
-                "permit_no": "CX-9917",
-                "permitee": "Nathaniel Harris-Randolph",
-              },
-              Object {
-                "mine_guid": "74b668b3-0bce-4886-a93f-25fb59783ed3",
-                "mine_name": "Williams-Baird",
-                "permit_guid": "db1cbe69-1f13-4be3-a874-0093af1e6a49",
-                "permit_no": "CX-7566",
-                "permitee": "Jeffery Jones, Benson and Frazier",
-              },
-              Object {
-                "mine_guid": "25003e54-314e-492e-b858-5af18381c6d3",
-                "mine_name": "Harmon and Sons",
-                "permit_guid": "ab74c658-891f-4a56-9604-fa4ba694ae73",
-                "permit_no": "CX-63820",
-                "permitee": "Denise Arroyo-Moran",
-              },
-            ]
-          }
-          indentSize={20}
-          loading={false}
-          locale={Object {}}
-          pagination={false}
-          rowKey="key"
-          showHeader={false}
-          size="default"
-          sortDirections={
-            Array [
-              "ascend",
-              "descend",
-            ]
-          }
-          useFixedHeader={false}
-        />,
-      ],
-    },
-    "ref": null,
-    "rendered": Array [
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "host",
-        "props": Object {
-          "children": "Permits",
-        },
-        "ref": null,
-        "rendered": "Permits",
-        "type": "h2",
-      },
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "function",
-        "props": Object {},
-        "ref": null,
-        "rendered": null,
-        "type": [Function],
-      },
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "align": "left",
-          "bordered": false,
-          "className": "nested-table padding-large--bottom",
-          "columns": Array [
-            Object {
-              "dataIndex": "permit_guid",
-              "key": "permit_guid",
-              "render": [Function],
-              "title": "Permit Guid",
-            },
-          ],
-          "dataSource": Array [
-            Object {
-              "mine_guid": "5bf528d0-9e5a-421e-92c5-7e088374dad5",
-              "mine_name": "Wheeler Inc",
-              "permit_guid": "9df4593a-4b58-4cee-8c3a-1cad5df7d3f6",
-              "permit_no": "CX-803",
-              "permitee": "Carl Taylor, Goodwin and Wade",
-            },
-            Object {
-              "mine_guid": "d5aeba94-6d58-4617-b71e-b16a145de86e",
-              "mine_name": "Reese, Brown and Diaz",
-              "permit_guid": "b066a984-55fc-47aa-8ecf-fb3bf33ec2bb",
-              "permit_no": "CX-7230",
-              "permitee": "Traci Franklin-Baker",
-            },
-            Object {
-              "mine_guid": "af9b3e68-981e-42cb-9931-34f37d006378",
-              "mine_name": "Mcgrath and Sons",
-              "permit_guid": "88280bbd-18ab-483d-94d4-94e3063622f1",
-              "permit_no": "CX-4926",
-              "permitee": "Paul Parker, Mckee and Wilson",
-            },
-            Object {
-              "mine_guid": "5392aef5-9a7b-4a94-98cd-66582fe423cb",
-              "mine_name": "Brown-Wheeler",
-              "permit_guid": "38e01cc1-bc49-430b-9453-1df508b98e64",
-              "permit_no": "CX-9917",
-              "permitee": "Nathaniel Harris-Randolph",
-            },
-            Object {
-              "mine_guid": "74b668b3-0bce-4886-a93f-25fb59783ed3",
-              "mine_name": "Williams-Baird",
-              "permit_guid": "db1cbe69-1f13-4be3-a874-0093af1e6a49",
-              "permit_no": "CX-7566",
-              "permitee": "Jeffery Jones, Benson and Frazier",
-            },
-            Object {
-              "mine_guid": "25003e54-314e-492e-b858-5af18381c6d3",
-              "mine_name": "Harmon and Sons",
-              "permit_guid": "ab74c658-891f-4a56-9604-fa4ba694ae73",
-              "permit_no": "CX-63820",
-              "permitee": "Denise Arroyo-Moran",
-            },
-          ],
-          "indentSize": 20,
-          "loading": false,
-          "locale": Object {},
-          "pagination": false,
-          "rowKey": "key",
-          "showHeader": false,
-          "size": "default",
-          "sortDirections": Array [
-            "ascend",
-            "descend",
-          ],
-          "useFixedHeader": false,
-        },
-        "ref": null,
-        "rendered": null,
-        "type": [Function],
-      },
-    ],
-    "type": "div",
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "host",
-      "props": Object {
-        "children": Array [
-          <h2>
-            Permits
-          </h2>,
-          <Divider />,
-          <Table
-            align="left"
-            bordered={false}
-            className="nested-table padding-large--bottom"
-            columns={
-              Array [
-                Object {
-                  "dataIndex": "permit_guid",
-                  "key": "permit_guid",
-                  "render": [Function],
-                  "title": "Permit Guid",
-                },
-              ]
-            }
-            dataSource={
-              Array [
-                Object {
-                  "mine_guid": "5bf528d0-9e5a-421e-92c5-7e088374dad5",
-                  "mine_name": "Wheeler Inc",
-                  "permit_guid": "9df4593a-4b58-4cee-8c3a-1cad5df7d3f6",
-                  "permit_no": "CX-803",
-                  "permitee": "Carl Taylor, Goodwin and Wade",
-                },
-                Object {
-                  "mine_guid": "d5aeba94-6d58-4617-b71e-b16a145de86e",
-                  "mine_name": "Reese, Brown and Diaz",
-                  "permit_guid": "b066a984-55fc-47aa-8ecf-fb3bf33ec2bb",
-                  "permit_no": "CX-7230",
-                  "permitee": "Traci Franklin-Baker",
-                },
-                Object {
-                  "mine_guid": "af9b3e68-981e-42cb-9931-34f37d006378",
-                  "mine_name": "Mcgrath and Sons",
-                  "permit_guid": "88280bbd-18ab-483d-94d4-94e3063622f1",
-                  "permit_no": "CX-4926",
-                  "permitee": "Paul Parker, Mckee and Wilson",
-                },
-                Object {
-                  "mine_guid": "5392aef5-9a7b-4a94-98cd-66582fe423cb",
-                  "mine_name": "Brown-Wheeler",
-                  "permit_guid": "38e01cc1-bc49-430b-9453-1df508b98e64",
-                  "permit_no": "CX-9917",
-                  "permitee": "Nathaniel Harris-Randolph",
-                },
-                Object {
-                  "mine_guid": "74b668b3-0bce-4886-a93f-25fb59783ed3",
-                  "mine_name": "Williams-Baird",
-                  "permit_guid": "db1cbe69-1f13-4be3-a874-0093af1e6a49",
-                  "permit_no": "CX-7566",
-                  "permitee": "Jeffery Jones, Benson and Frazier",
-                },
-                Object {
-                  "mine_guid": "25003e54-314e-492e-b858-5af18381c6d3",
-                  "mine_name": "Harmon and Sons",
-                  "permit_guid": "ab74c658-891f-4a56-9604-fa4ba694ae73",
-                  "permit_no": "CX-63820",
-                  "permitee": "Denise Arroyo-Moran",
-                },
-              ]
-            }
-            indentSize={20}
-            loading={false}
-            locale={Object {}}
-            pagination={false}
-            rowKey="key"
-            showHeader={false}
-            size="default"
-            sortDirections={
-              Array [
-                "ascend",
-                "descend",
-              ]
-            }
-            useFixedHeader={false}
-          />,
-        ],
-      },
-      "ref": null,
-      "rendered": Array [
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "host",
-          "props": Object {
-            "children": "Permits",
-          },
-          "ref": null,
-          "rendered": "Permits",
-          "type": "h2",
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "function",
-          "props": Object {},
-          "ref": null,
-          "rendered": null,
-          "type": [Function],
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "align": "left",
-            "bordered": false,
-            "className": "nested-table padding-large--bottom",
-            "columns": Array [
-              Object {
-                "dataIndex": "permit_guid",
-                "key": "permit_guid",
-                "render": [Function],
-                "title": "Permit Guid",
-              },
-            ],
-            "dataSource": Array [
-              Object {
-                "mine_guid": "5bf528d0-9e5a-421e-92c5-7e088374dad5",
-                "mine_name": "Wheeler Inc",
-                "permit_guid": "9df4593a-4b58-4cee-8c3a-1cad5df7d3f6",
-                "permit_no": "CX-803",
-                "permitee": "Carl Taylor, Goodwin and Wade",
-              },
-              Object {
-                "mine_guid": "d5aeba94-6d58-4617-b71e-b16a145de86e",
-                "mine_name": "Reese, Brown and Diaz",
-                "permit_guid": "b066a984-55fc-47aa-8ecf-fb3bf33ec2bb",
-                "permit_no": "CX-7230",
-                "permitee": "Traci Franklin-Baker",
-              },
-              Object {
-                "mine_guid": "af9b3e68-981e-42cb-9931-34f37d006378",
-                "mine_name": "Mcgrath and Sons",
-                "permit_guid": "88280bbd-18ab-483d-94d4-94e3063622f1",
-                "permit_no": "CX-4926",
-                "permitee": "Paul Parker, Mckee and Wilson",
-              },
-              Object {
-                "mine_guid": "5392aef5-9a7b-4a94-98cd-66582fe423cb",
-                "mine_name": "Brown-Wheeler",
-                "permit_guid": "38e01cc1-bc49-430b-9453-1df508b98e64",
-                "permit_no": "CX-9917",
-                "permitee": "Nathaniel Harris-Randolph",
-              },
-              Object {
-                "mine_guid": "74b668b3-0bce-4886-a93f-25fb59783ed3",
-                "mine_name": "Williams-Baird",
-                "permit_guid": "db1cbe69-1f13-4be3-a874-0093af1e6a49",
-                "permit_no": "CX-7566",
-                "permitee": "Jeffery Jones, Benson and Frazier",
-              },
-              Object {
-                "mine_guid": "25003e54-314e-492e-b858-5af18381c6d3",
-                "mine_name": "Harmon and Sons",
-                "permit_guid": "ab74c658-891f-4a56-9604-fa4ba694ae73",
-                "permit_no": "CX-63820",
-                "permitee": "Denise Arroyo-Moran",
-              },
-            ],
-            "indentSize": 20,
-            "loading": false,
-            "locale": Object {},
-            "pagination": false,
-            "rowKey": "key",
-            "showHeader": false,
-            "size": "default",
-            "sortDirections": Array [
-              "ascend",
-              "descend",
-            ],
-            "useFixedHeader": false,
-          },
-          "ref": null,
-          "rendered": null,
-          "type": [Function],
-        },
-      ],
-      "type": "div",
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getDerivedStateFromProps": true,
-          "getSnapshotBeforeUpdate": true,
-          "setState": Object {
-            "skipsComponentDidUpdateOnNullish": true,
-          },
-        },
-      },
-    },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
-  },
-}
+    indentSize={20}
+    loading={false}
+    locale={Object {}}
+    pagination={false}
+    rowKey="key"
+    showHeader={false}
+    size="default"
+    sortDirections={
+      Array [
+        "ascend",
+        "descend",
+      ]
+    }
+    useFixedHeader={false}
+  />
+</div>
 `;

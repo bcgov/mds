@@ -3,7 +3,7 @@
  */
 import React from "react";
 import Lottie from "react-lottie";
-import * as loader from "@/assets/loader.json";
+import loader from "@/assets/loader.json";
 
 const Loading = () => {
   const defaultOptions = {

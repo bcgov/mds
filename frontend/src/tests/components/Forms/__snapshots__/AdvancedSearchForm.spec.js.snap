@@ -1,556 +1,67 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AdvancedMineSearchForm renders properly 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <AdvancedMineSearchForm
-    handleSubmit={[MockFunction]}
-    searchValue=""
-  />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateError": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "class",
-    "props": Object {
-      "children": Array [
-        <Row
-          gutter={6}
-        >
-          <Col
-            md={24}
-            xs={24}
-          >
-            <Field
-              component={[Function]}
-              defaultValue={undefined}
-              id="search"
-              name="search"
-              placeholder="Search for a mine using name, ID, or permit number"
-            />
-          </Col>
-        </Row>,
-        undefined,
-        <div
-          className="left center-mobile"
-        >
-          <Button
-            block={false}
-            className="btn--dropdown"
-            ghost={false}
-            htmlType="button"
-            loading={false}
-            onClick={undefined}
-          >
-            Expand Filters
-            <Icon
-              type="down"
-            />
-          </Button>
-        </div>,
-        <div
-          className="right center-mobile"
-        >
-          <Button
-            block={false}
-            className="full-mobile"
-            ghost={false}
-            htmlType="reset"
-            loading={false}
-            type="secondary"
-          >
-            Clear Filters
-          </Button>
-          <Button
-            block={false}
-            className="full-mobile"
-            ghost={false}
-            htmlType="submit"
-            loading={false}
-            type="primary"
-          >
-            Apply Filters
-          </Button>
-        </div>,
-      ],
-      "colon": true,
-      "hideRequiredMark": false,
-      "layout": "vertical",
-      "onReset": [Function],
-      "onSubmit": [MockFunction],
-    },
-    "ref": null,
-    "rendered": Array [
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "children": <Col
-            md={24}
-            xs={24}
-          >
-            <Field
-              component={[Function]}
-              defaultValue={undefined}
-              id="search"
-              name="search"
-              placeholder="Search for a mine using name, ID, or permit number"
-            />
-          </Col>,
-          "gutter": 6,
-        },
-        "ref": null,
-        "rendered": Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "children": <Field
-              component={[Function]}
-              defaultValue={undefined}
-              id="search"
-              name="search"
-              placeholder="Search for a mine using name, ID, or permit number"
-            />,
-            "md": 24,
-            "xs": 24,
-          },
-          "ref": null,
-          "rendered": Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
-            "props": Object {
-              "component": [Function],
-              "defaultValue": undefined,
-              "id": "search",
-              "name": "search",
-              "placeholder": "Search for a mine using name, ID, or permit number",
-            },
-            "ref": null,
-            "rendered": null,
-            "type": [Function],
-          },
-          "type": [Function],
-        },
-        "type": [Function],
-      },
-      undefined,
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "host",
-        "props": Object {
-          "children": <Button
-            block={false}
-            className="btn--dropdown"
-            ghost={false}
-            htmlType="button"
-            loading={false}
-            onClick={undefined}
-          >
-            Expand Filters
-            <Icon
-              type="down"
-            />
-          </Button>,
-          "className": "left center-mobile",
-        },
-        "ref": null,
-        "rendered": Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "block": false,
-            "children": Array [
-              "Expand Filters",
-              <Icon
-                type="down"
-              />,
-            ],
-            "className": "btn--dropdown",
-            "ghost": false,
-            "htmlType": "button",
-            "loading": false,
-            "onClick": undefined,
-          },
-          "ref": null,
-          "rendered": Array [
-            "Expand Filters",
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "function",
-              "props": Object {
-                "type": "down",
-              },
-              "ref": null,
-              "rendered": null,
-              "type": [Function],
-            },
-          ],
-          "type": [Function],
-        },
-        "type": "div",
-      },
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "host",
-        "props": Object {
-          "children": Array [
-            <Button
-              block={false}
-              className="full-mobile"
-              ghost={false}
-              htmlType="reset"
-              loading={false}
-              type="secondary"
-            >
-              Clear Filters
-            </Button>,
-            <Button
-              block={false}
-              className="full-mobile"
-              ghost={false}
-              htmlType="submit"
-              loading={false}
-              type="primary"
-            >
-              Apply Filters
-            </Button>,
-          ],
-          "className": "right center-mobile",
-        },
-        "ref": null,
-        "rendered": Array [
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
-            "props": Object {
-              "block": false,
-              "children": "Clear Filters",
-              "className": "full-mobile",
-              "ghost": false,
-              "htmlType": "reset",
-              "loading": false,
-              "type": "secondary",
-            },
-            "ref": null,
-            "rendered": "Clear Filters",
-            "type": [Function],
-          },
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
-            "props": Object {
-              "block": false,
-              "children": "Apply Filters",
-              "className": "full-mobile",
-              "ghost": false,
-              "htmlType": "submit",
-              "loading": false,
-              "type": "primary",
-            },
-            "ref": null,
-            "rendered": "Apply Filters",
-            "type": [Function],
-          },
-        ],
-        "type": "div",
-      },
-    ],
-    "type": [Function],
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "class",
-      "props": Object {
-        "children": Array [
-          <Row
-            gutter={6}
-          >
-            <Col
-              md={24}
-              xs={24}
-            >
-              <Field
-                component={[Function]}
-                defaultValue={undefined}
-                id="search"
-                name="search"
-                placeholder="Search for a mine using name, ID, or permit number"
-              />
-            </Col>
-          </Row>,
-          undefined,
-          <div
-            className="left center-mobile"
-          >
-            <Button
-              block={false}
-              className="btn--dropdown"
-              ghost={false}
-              htmlType="button"
-              loading={false}
-              onClick={undefined}
-            >
-              Expand Filters
-              <Icon
-                type="down"
-              />
-            </Button>
-          </div>,
-          <div
-            className="right center-mobile"
-          >
-            <Button
-              block={false}
-              className="full-mobile"
-              ghost={false}
-              htmlType="reset"
-              loading={false}
-              type="secondary"
-            >
-              Clear Filters
-            </Button>
-            <Button
-              block={false}
-              className="full-mobile"
-              ghost={false}
-              htmlType="submit"
-              loading={false}
-              type="primary"
-            >
-              Apply Filters
-            </Button>
-          </div>,
-        ],
-        "colon": true,
-        "hideRequiredMark": false,
-        "layout": "vertical",
-        "onReset": [Function],
-        "onSubmit": [MockFunction],
-      },
-      "ref": null,
-      "rendered": Array [
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "children": <Col
-              md={24}
-              xs={24}
-            >
-              <Field
-                component={[Function]}
-                defaultValue={undefined}
-                id="search"
-                name="search"
-                placeholder="Search for a mine using name, ID, or permit number"
-              />
-            </Col>,
-            "gutter": 6,
-          },
-          "ref": null,
-          "rendered": Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
-            "props": Object {
-              "children": <Field
-                component={[Function]}
-                defaultValue={undefined}
-                id="search"
-                name="search"
-                placeholder="Search for a mine using name, ID, or permit number"
-              />,
-              "md": 24,
-              "xs": 24,
-            },
-            "ref": null,
-            "rendered": Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "component": [Function],
-                "defaultValue": undefined,
-                "id": "search",
-                "name": "search",
-                "placeholder": "Search for a mine using name, ID, or permit number",
-              },
-              "ref": null,
-              "rendered": null,
-              "type": [Function],
-            },
-            "type": [Function],
-          },
-          "type": [Function],
-        },
-        undefined,
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "host",
-          "props": Object {
-            "children": <Button
-              block={false}
-              className="btn--dropdown"
-              ghost={false}
-              htmlType="button"
-              loading={false}
-              onClick={undefined}
-            >
-              Expand Filters
-              <Icon
-                type="down"
-              />
-            </Button>,
-            "className": "left center-mobile",
-          },
-          "ref": null,
-          "rendered": Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
-            "props": Object {
-              "block": false,
-              "children": Array [
-                "Expand Filters",
-                <Icon
-                  type="down"
-                />,
-              ],
-              "className": "btn--dropdown",
-              "ghost": false,
-              "htmlType": "button",
-              "loading": false,
-              "onClick": undefined,
-            },
-            "ref": null,
-            "rendered": Array [
-              "Expand Filters",
-              Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "function",
-                "props": Object {
-                  "type": "down",
-                },
-                "ref": null,
-                "rendered": null,
-                "type": [Function],
-              },
-            ],
-            "type": [Function],
-          },
-          "type": "div",
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "host",
-          "props": Object {
-            "children": Array [
-              <Button
-                block={false}
-                className="full-mobile"
-                ghost={false}
-                htmlType="reset"
-                loading={false}
-                type="secondary"
-              >
-                Clear Filters
-              </Button>,
-              <Button
-                block={false}
-                className="full-mobile"
-                ghost={false}
-                htmlType="submit"
-                loading={false}
-                type="primary"
-              >
-                Apply Filters
-              </Button>,
-            ],
-            "className": "right center-mobile",
-          },
-          "ref": null,
-          "rendered": Array [
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "block": false,
-                "children": "Clear Filters",
-                "className": "full-mobile",
-                "ghost": false,
-                "htmlType": "reset",
-                "loading": false,
-                "type": "secondary",
-              },
-              "ref": null,
-              "rendered": "Clear Filters",
-              "type": [Function],
-            },
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "block": false,
-                "children": "Apply Filters",
-                "className": "full-mobile",
-                "ghost": false,
-                "htmlType": "submit",
-                "loading": false,
-                "type": "primary",
-              },
-              "ref": null,
-              "rendered": "Apply Filters",
-              "type": [Function],
-            },
-          ],
-          "type": "div",
-        },
-      ],
-      "type": [Function],
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getDerivedStateFromProps": true,
-          "getSnapshotBeforeUpdate": true,
-          "setState": Object {
-            "skipsComponentDidUpdateOnNullish": true,
-          },
-        },
-      },
-    },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
-  },
-}
+<Form
+  colon={true}
+  hideRequiredMark={false}
+  layout="vertical"
+  onReset={[Function]}
+  onSubmit={[MockFunction]}
+>
+  <Row
+    gutter={6}
+  >
+    <Col
+      md={24}
+      xs={24}
+    >
+      <Field
+        component={[Function]}
+        id="search"
+        name="search"
+        placeholder="Search for a mine using name, ID, or permit number"
+      />
+    </Col>
+  </Row>
+  <div
+    className="left center-mobile"
+  >
+    <Button
+      block={false}
+      className="btn--dropdown"
+      ghost={false}
+      htmlType="button"
+      loading={false}
+    >
+      Expand Filters
+      <Icon
+        type="down"
+      />
+    </Button>
+  </div>
+  <div
+    className="right center-mobile"
+  >
+    <Button
+      block={false}
+      className="full-mobile"
+      ghost={false}
+      htmlType="reset"
+      loading={false}
+      type="secondary"
+    >
+      Clear Filters
+    </Button>
+    <Button
+      block={false}
+      className="full-mobile"
+      ghost={false}
+      htmlType="submit"
+      loading={false}
+      type="primary"
+    >
+      Apply Filters
+    </Button>
+  </div>
+</Form>
 `;
