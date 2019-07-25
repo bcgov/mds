@@ -92,7 +92,7 @@ app {
                             'BASE_PATH': "/${app.git.changeId}",
                             'VERSION':"${app.build.version}",
                             'SOURCE_CONTEXT_DIR': "frontend",
-                            'DOCKER_IMAGE_DIRECTORY': "docker-images/nodejs-8",
+                            'DOCKER_IMAGE_DIRECTORY': "docker-images/nodejs-10",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}",
                             'NODE_ENV': "production"
                         ]
@@ -106,7 +106,7 @@ app {
                             'BASE_PATH': "/${app.git.changeId}",
                             'VERSION':"${app.build.version}",
                             'SOURCE_CONTEXT_DIR': "frontend-public",
-                            'DOCKER_IMAGE_DIRECTORY': "docker-images/nodejs-8-public",
+                            'DOCKER_IMAGE_DIRECTORY': "docker-images/nodejs-10-public",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}",
                             'NODE_ENV': "production"
                         ]

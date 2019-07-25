@@ -19,6 +19,7 @@ from app.api.users.namespace.users import api as users_api
 from app.api.search.namespace.search import api as search_api
 from app.api.reporting.namespace.reporting import api as reporting_api
 from app.api.variances.namespace.variances import api as variances_api
+from app.api.incidents.namespace.incidents import api as incidents_api
 
 from app.commands import register_commands
 from app.config import Config
@@ -88,6 +89,7 @@ def register_routes(app):
     api.add_namespace(applications_api)
     api.add_namespace(search_api)
     api.add_namespace(variances_api)
+    api.add_namespace(incidents_api)
     api.add_namespace(reporting_api)
 
     # Healthcheck endpoint
