@@ -147,7 +147,6 @@ export class MineDashboard extends Component {
     this.loadMineData(id);
     this.props.fetchStatusOptions();
     this.props.fetchRegionOptions();
-
     this.props.fetchMineTenureTypes();
     this.props.fetchMineDisturbanceOptions();
     this.props.fetchMineCommodityOptions();
@@ -332,7 +331,7 @@ export class MineDashboard extends Component {
             >
               <button type="button" className="full">
                 <img alt="document" className="padding-small" src={UNSUBSCRIBE} />
-                Unsubscribe
+                Unsubscribe from mine
               </button>
             </Popconfirm>
           </div>
@@ -340,13 +339,13 @@ export class MineDashboard extends Component {
           <div className="custom-menu-item">
             <button type="button" className="full" onClick={this.handleSubscription}>
               <img alt="document" className="padding-small" src={SUBSCRIBE} />
-              Subscribe
+              Subscribe to mine
             </button>
           </div>
         )}
         <div className="custom-menu-item">
-          {/* TO-Do: Update refresh button styling to fit dropdown */}
           <RefreshButton
+            isNestedButton
             actions={[storeMine]}
             listActions={[storeRegionOptions, storeTenureTypes, storeVariances, storePermits]}
             requests={[
@@ -375,7 +374,7 @@ export class MineDashboard extends Component {
                     src={SUCCESS_CHECKMARK}
                     width="30"
                   />
-                  Verify Mine Data
+                  Verify mine data
                 </button>
               </Popconfirm>
             </div>
@@ -391,7 +390,7 @@ export class MineDashboard extends Component {
               >
                 <button type="button" className="full">
                   <img alt="hazard" className="padding-small" src={YELLOW_HAZARD} width="30" />
-                  Mark Data for Verification
+                  Re-verify mine data
                 </button>
               </Popconfirm>
             </div>
@@ -408,12 +407,6 @@ export class MineDashboard extends Component {
               <div className="inline-flex block-mobile between">
                 <div className="inline-flex horizontal-center">
                   <h1 className="padding-large--right">{mine.mine_name}</h1>
-                  <div>Mine No. {mine.mine_no}</div>
-                  {this.props.subscribed && (
-                    <Tooltip title="Subscribed" placement="top" mouseEnterDelay={1}>
-                      <img src={SUBSCRIBE} alt="SUBSCRIBE" />
-                    </Tooltip>
-                  )}
                   {mine.verified_status.healthy_ind !== null && (
                     <img
                       alt=""
@@ -426,9 +419,15 @@ export class MineDashboard extends Component {
                             } on ${formatDate(mine.verified_status.verifying_timestamp)}`
                           : "Please double-check this mine's data and re-verify"
                       }
-                      width="45"
+                      width="30"
                     />
                   )}
+                  {this.props.subscribed && (
+                    <Tooltip title="Subscribed" placement="top" mouseEnterDelay={1}>
+                      <img src={SUBSCRIBE} alt="SUBSCRIBE" />
+                    </Tooltip>
+                  )}
+                  <div>Mine No. {mine.mine_no}</div>
                 </div>
                 <Dropdown
                   className="full-height"
