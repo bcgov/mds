@@ -1,18 +1,21 @@
-/* eslint-disable  */
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import * as route from "@/constants/routes";
 import { Menu } from "antd";
+import * as route from "@/constants/routes";
+import CustomPropTypes from "@/customPropTypes";
 
 const { SubMenu } = Menu;
 
+const propTypes = {
+  mine: CustomPropTypes.mine.isRequired,
+};
+
 export class MineNavigation extends Component {
   state = {
-    current: "mail",
+    current: "General",
   };
 
   handleClick = (e) => {
-    console.log("click ", e);
     this.setState({
       current: e.key,
     });
@@ -26,13 +29,23 @@ export class MineNavigation extends Component {
             <Menu.Item key="General">
               <Link to={route.MINE_GENERAL.dynamicRoute(this.props.mine.mine_guid)}>General</Link>
             </Menu.Item>
-            <Menu.Item key="Contacts">Contacts</Menu.Item>
+            <Menu.Item key="Contacts">
+              <Link to={route.MINE_CONTACTS.dynamicRoute(this.props.mine.mine_guid)}>Contacts</Link>
+            </Menu.Item>
           </Menu>
         </SubMenu>
         <SubMenu title={<span className="submenu-title-wrapper">Permits & Approvals</span>}>
           <Menu>
-            <Menu.Item key="Permit Applications">Permit Applications</Menu.Item>
-            <Menu.Item key="Permits">Permits</Menu.Item>
+            {this.props.mine.major_mine_ind && (
+              <Menu.Item key="Permit Applications">
+                <Link to={route.MINE_PERMIT_APPLICATIONS.dynamicRoute(this.props.mine.mine_guid)}>
+                  Permit Applications
+                </Link>
+              </Menu.Item>
+            )}
+            <Menu.Item key="Permits">
+              <Link to={route.MINE_PERMITS.dynamicRoute(this.props.mine.mine_guid)}>Permits</Link>
+            </Menu.Item>
             <Menu.Item key="Variances">Variances</Menu.Item>
           </Menu>
         </SubMenu>
@@ -51,5 +64,7 @@ export class MineNavigation extends Component {
     );
   }
 }
+
+MineNavigation.propTypes = propTypes;
 
 export default MineNavigation;

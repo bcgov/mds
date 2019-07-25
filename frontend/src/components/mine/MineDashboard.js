@@ -1,13 +1,14 @@
 /* eslint-disable  */
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Tabs } from "antd";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import queryString from "query-string";
 import { isEmpty } from "lodash";
 import { openModal, closeModal } from "@/actions/modalActions";
 import { fetchPermits } from "@/actionCreators/permitActionCreator";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import * as Permission from "@/constants/permissions";
 import {
   fetchMineRecordById,
   updateMineRecord,
@@ -16,6 +17,8 @@ import {
   fetchSubscribedMinesByUser,
   unSubscribe,
   subscribe,
+  setMineVerifiedStatus,
+  fetchMineVerifiedStatuses,
 } from "@/actionCreators/mineActionCreator";
 import {
   fetchStatusOptions,
@@ -68,41 +71,32 @@ import {
 import { fetchApplications } from "@/actionCreators/applicationActionCreator";
 import { fetchMineComplianceInfo } from "@/actionCreators/complianceActionCreator";
 import CustomPropTypes from "@/customPropTypes";
-import MineTenureInfo from "@/components/mine/Tenure/MineTenureInfo";
-import MineTailingsInfo from "@/components/mine/Tailings/MineTailingsInfo";
-import MineSummary from "@/components/mine/Summary/MineSummary";
-import MineVariance from "@/components/mine/Variances/MineVariance";
-import MineIncidents from "@/components/mine/Incidents/MineIncidents";
-import MineHeader from "@/components/mine/MineHeader";
 import * as router from "@/constants/routes";
-import MineContactInfo from "@/components/mine/ContactInfo/MineContactInfo";
-import MineComplianceInfo from "@/components/mine/Compliance/MineComplianceInfo";
-import MinePermitInfo from "@/components/mine/Permit/MinePermitInfo";
-import MineApplicationInfo from "@/components/mine/Applications/MineApplicationInfo";
 import Loading from "@/components/common/Loading";
-import { formatParamStringToArray } from "@/utils/helpers";
+import { formatParamStringToArray, formatDate } from "@/utils/helpers";
 import { getUserAccessData } from "@/selectors/authenticationSelectors";
+import { Menu, Icon, Button, Dropdown, Popconfirm, Tooltip, Tabs } from "antd";
 import MineNavigation from "@/components/mine/MineNavigation";
 import { storeRegionOptions, storeTenureTypes } from "@/actions/staticContentActions";
 import { storeVariances } from "@/actions/varianceActions";
 import { storePermits } from "@/actions/permitActions";
 import { storeMine } from "@/actions/mineActions";
 import MineDashboardRoutes from "@/routes/MineDashboardRoutes";
+import { SUBSCRIBE, UNSUBSCRIBE, YELLOW_HAZARD, SUCCESS_CHECKMARK } from "@/constants/assets";
+import RefreshButton from "@/components/common/RefreshButton";
 /**
  * @class MineDashboard.js is an individual mines dashboard, gets Mine data from redux and passes into children.
  */
-const { TabPane } = Tabs;
 
 const propTypes = {
+  match: CustomPropTypes.match.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchPermits: PropTypes.func.isRequired,
-  updateMineRecord: PropTypes.func.isRequired,
   fetchSubscribedMinesByUser: PropTypes.func.isRequired,
   subscribe: PropTypes.func.isRequired,
   unSubscribe: PropTypes.func.isRequired,
   getDropdownVarianceDocumentCategoryOptions: PropTypes.func.isRequired,
   createVariance: PropTypes.func.isRequired,
-  createTailingsStorageFacility: PropTypes.func.isRequired,
   fetchStatusOptions: PropTypes.func.isRequired,
   fetchMineTenureTypes: PropTypes.func.isRequired,
   fetchMineComplianceCodes: PropTypes.func.isRequired,
@@ -118,8 +112,6 @@ const propTypes = {
   fetchMineIncidentFollowActionOptions: PropTypes.func.isRequired,
   fetchMineIncidentDeterminationOptions: PropTypes.func.isRequired,
   fetchMineIncidentStatusCodeOptions: PropTypes.func.isRequired,
-  openModal: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
   varianceStatusOptions: CustomPropTypes.options.isRequired,
   updateVariance: PropTypes.func.isRequired,
   varianceDocumentCategoryOptions: CustomPropTypes.options.isRequired,
@@ -143,7 +135,7 @@ const initialSearchValues = {
 
 export class MineDashboard extends Component {
   state = {
-    activeTab: "summary",
+    menuVisible: false,
     isLoaded: false,
     complianceInfoLoading: true,
     complianceFilterParams: initialSearchValues,
@@ -155,6 +147,7 @@ export class MineDashboard extends Component {
     this.loadMineData(id);
     this.props.fetchStatusOptions();
     this.props.fetchRegionOptions();
+
     this.props.fetchMineTenureTypes();
     this.props.fetchMineDisturbanceOptions();
     this.props.fetchMineCommodityOptions();
@@ -253,27 +246,53 @@ export class MineDashboard extends Component {
     }
   };
 
+  handleVerifyMineData = (e) => {
+    const { id } = this.props.match.params;
+    const mine = this.props.mines[id];
+    e.stopPropagation();
+    this.props.setMineVerifiedStatus(mine.mine_guid, { healthy: true }).then(() => {
+      this.props.fetchMineRecordById(mine.mine_guid);
+      this.props.fetchMineVerifiedStatuses(`idir\\${this.props.userInfo.preferred_username}`);
+      this.handleMenuClick();
+    });
+  };
+
+  handleUnverifyMineData = (e) => {
+    const { id } = this.props.match.params;
+    const mine = this.props.mines[id];
+    e.stopPropagation();
+    this.props.setMineVerifiedStatus(mine.mine_guid, { healthy: false }).then(() => {
+      this.props.fetchMineRecordById(mine.mine_guid);
+      this.props.fetchMineVerifiedStatuses(`idir\\${this.props.userInfo.preferred_username}`);
+      this.handleMenuClick();
+    });
+  };
+
   handleSubscription = () => {
     const { id } = this.props.match.params;
-    const mineName = this.props.mines[id].mine_name;
-    this.props.subscribe(id, mineName).then(() => {
+    const mine = this.props.mines[id];
+    this.props.subscribe(mine.mine_guid, mine.mine_name).then(() => {
       this.props.fetchSubscribedMinesByUser();
     });
   };
 
   handleUnSubscribe = () => {
     const { id } = this.props.match.params;
-    const mineName = this.props.mines[id].mine_name;
-    this.props.unSubscribe(id, mineName).then(() => {
+    const mine = this.props.mines[id];
+    this.props.unSubscribe(mine.mine_guid, mine.mine_name).then(() => {
       this.props.fetchSubscribedMinesByUser();
     });
   };
 
-  handleChange = (activeTab) => {
-    this.setState({ activeTab });
-    this.props.history.push(
-      router.MINE_SUMMARY.dynamicRoute(this.props.match.params.id, activeTab)
-    );
+  // added some extra logic to the dropdown, to handle closing the menu after popconfirm is clicked.
+  // The combination of popconfirm, and the AuthWrapper interferes with the dropdowns default behaviour.
+
+  handleVisibleChange = (flag) => {
+    this.setState({ menuVisible: flag });
+  };
+
+  handleMenuClick = () => {
+    this.setState({ menuVisible: false });
   };
 
   loadMineData(id) {
@@ -299,67 +318,137 @@ export class MineDashboard extends Component {
     if (!mine) {
       return <Loading />;
     }
+
+    const menu = (
+      <Menu>
+        {this.props.subscribed ? (
+          <div className="custom-menu-item">
+            <Popconfirm
+              placement="left"
+              title="Are you sure you want to unsubscribe?"
+              onConfirm={this.handleUnSubscribe}
+              okText="Yes"
+              cancelText="No"
+            >
+              <button type="button" className="full">
+                <img alt="document" className="padding-small" src={UNSUBSCRIBE} />
+                Unsubscribe
+              </button>
+            </Popconfirm>
+          </div>
+        ) : (
+          <div className="custom-menu-item">
+            <button type="button" className="full" onClick={this.handleSubscription}>
+              <img alt="document" className="padding-small" src={SUBSCRIBE} />
+              Subscribe
+            </button>
+          </div>
+        )}
+        <div className="custom-menu-item">
+          {/* TO-Do: Update refresh button styling to fit dropdown */}
+          <RefreshButton
+            actions={[storeMine]}
+            listActions={[storeRegionOptions, storeTenureTypes, storeVariances, storePermits]}
+            requests={[
+              this.props.fetchRegionOptions,
+              this.props.fetchMineTenureTypes,
+              () => this.props.fetchVariancesByMine({ mineGuid: id }),
+              () => this.props.fetchPermits(mine.mine_guid),
+              () => this.props.fetchMineRecordById(id),
+            ]}
+          />
+        </div>
+        <AuthorizationWrapper permission={Permission.ADMIN}>
+          {mine.verified_status.healthy_ind !== true && (
+            <div className="custom-menu-item">
+              <Popconfirm
+                placement="left"
+                title="Are you sure?"
+                onConfirm={this.handleVerifyMineData}
+                okText="Yes"
+                cancelText="No"
+              >
+                <button type="button" className="full">
+                  <img
+                    alt="checkmark"
+                    className="padding-small"
+                    src={SUCCESS_CHECKMARK}
+                    width="30"
+                  />
+                  Verify Mine Data
+                </button>
+              </Popconfirm>
+            </div>
+          )}
+          {mine.verified_status.healthy_ind !== false && (
+            <div className="custom-menu-item">
+              <Popconfirm
+                placement="left"
+                title="Are you sure?"
+                onConfirm={this.handleUnverifyMineData}
+                okText="Yes"
+                cancelText="No"
+              >
+                <button type="button" className="full">
+                  <img alt="hazard" className="padding-small" src={YELLOW_HAZARD} width="30" />
+                  Mark Data for Verification
+                </button>
+              </Popconfirm>
+            </div>
+          )}
+        </AuthorizationWrapper>
+      </Menu>
+    );
+
     return (
       <div>
         {this.state.isLoaded && (
           <div>
-            <div className="inline-flex horizontal-center block-mobile">
-              <h1 className="padding-large--right">{mine.mine_name}</h1>
-              <div>Mine No. {mine.mine_no}</div>
+            <div className="tab__content">
+              <div className="inline-flex block-mobile between">
+                <div className="inline-flex horizontal-center">
+                  <h1 className="padding-large--right">{mine.mine_name}</h1>
+                  <div>Mine No. {mine.mine_no}</div>
+                  {this.props.subscribed && (
+                    <Tooltip title="Subscribed" placement="top" mouseEnterDelay={1}>
+                      <img src={SUBSCRIBE} alt="SUBSCRIBE" />
+                    </Tooltip>
+                  )}
+                  {mine.verified_status.healthy_ind !== null && (
+                    <img
+                      alt=""
+                      className="padding-small"
+                      src={mine.verified_status.healthy_ind ? SUCCESS_CHECKMARK : YELLOW_HAZARD}
+                      title={
+                        mine.verified_status.healthy_ind
+                          ? `Mine data verified by ${
+                              mine.verified_status.verifying_user
+                            } on ${formatDate(mine.verified_status.verifying_timestamp)}`
+                          : "Please double-check this mine's data and re-verify"
+                      }
+                      width="45"
+                    />
+                  )}
+                </div>
+                <Dropdown
+                  className="full-height"
+                  overlay={menu}
+                  placement="bottomLeft"
+                  onVisibleChange={this.handleVisibleChange}
+                  visible={this.state.menuVisible}
+                >
+                  <Button type="secondary">
+                    Options
+                    <Icon type="down" />
+                  </Button>
+                </Dropdown>
+              </div>
             </div>
             <MineNavigation mine={mine} />
             <MineDashboardRoutes />
-            {/* <div>
-              <MineHeader
-                mine={mine}
-                {...this.props}
-                handleUnSubscribe={this.handleUnSubscribe}
-                handleSubscription={this.handleSubscription}
-                subscribed={this.props.subscribed}
-                refreshActions={[storeMine]}
-                refreshListActions={[
-                  storeRegionOptions,
-                  storeTenureTypes,
-                  storeVariances,
-                  storePermits,
-                ]}
-                refreshRequests={[
-                  this.props.fetchRegionOptions,
-                  this.props.fetchMineTenureTypes,
-                  () => this.props.fetchVariancesByMine({ mineGuid: id }),
-                  () => this.props.fetchPermits(mine.mine_guid),
-                  () => this.props.fetchMineRecordById(id),
-                ]}
-              /> */}
-            {/* </div> */}
+
+            {/* TO DO: REMOVING AS I COMPLETE THE NEW VIEW */}
             {/* <div className="dashboard__content">
-              <Tabs
-                activeKey={this.state.activeTab}
-                defaultActiveKey="summary"
-                onChange={this.handleChange}
-                size="large"
-                animated={{ inkBar: true, tabPane: false }}
-              >
-                <TabPane tab="Summary" key="summary">
-                  <div className="tab__content">
-                    <MineSummary
-                      mine={mine}
-                      mineComplianceInfo={this.props.mineComplianceInfo}
-                      complianceInfoLoading={this.state.complianceInfoLoading}
-                    />
-                  </div>
-                </TabPane>
-                {mine.major_mine_ind && (
-                  <TabPane tab="Applications" key="applications">
-                    <div className="tab__content">
-                      <MineApplicationInfo
-                        mine={mine}
-                        openModal={this.props.openModal}
-                        closeModal={this.props.closeModal}
-                      />
-                    </div>
-                  </TabPane>
-                )}
                 <TabPane tab="Permit" key="permit">
                   <div className="tab__content">
                     <MinePermitInfo mine={mine} {...this.props} />
@@ -500,6 +589,8 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineIncidentStatusCodeOptions,
       fetchVarianceStatusOptions,
       updateVariance,
+      setMineVerifiedStatus,
+      fetchMineVerifiedStatuses,
     },
     dispatch
   );

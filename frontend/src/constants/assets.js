@@ -2,8 +2,6 @@
 export { default as LOGO } from "../assets/images/Logo.svg";
 export { default as LOGO_PURPLE } from "../assets/images/Logo-purple.svg";
 export { default as PROFILE } from "../assets/images/Profile.svg";
-export { default as ELLIPSE } from "../assets/images/Ellipse.svg";
-export { default as RED_ELLIPSE } from "../assets/images/Ellipse-red.svg";
 export { default as MINER } from "../assets/images/Miner.svg";
 export { default as NO_MINE } from "../assets/images/NoMine.svg";
 export { default as MINER_TWO } from "../assets/images/Miner-2.svg";

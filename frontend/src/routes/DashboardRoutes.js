@@ -1,6 +1,5 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
-import RedirectRoute from "./routeWrappers/RedirectRoute";
+import { Route, Switch, Redirect } from "react-router-dom";
 import * as routes from "@/constants/routes";
 import PageNotFound from "@/components/common/PageNotFound";
 
@@ -18,8 +17,12 @@ const DashboardRoutes = () => (
       path={routes.CONTACT_HOME_PAGE.route}
       component={routes.CONTACT_HOME_PAGE.component}
     />
-    <RedirectRoute exact path={routes.MINE_SUMMARY.route} redirectTo={routes.MINE_GENERAL.route} />
-    <Route exact path={routes.MINE_SUMMARY.route} component={routes.MINE_SUMMARY.component} />
+    <Route
+      exact
+      path={routes.MINE_SUMMARY.route}
+      render={({ match }) => <Redirect to={routes.MINE_GENERAL.dynamicRoute(match.params.id)} />}
+    />
+    <Route path={routes.MINE_SUMMARY.route} component={routes.MINE_SUMMARY.component} />
 
     <Route exact path={routes.PARTY_PROFILE.route} component={routes.PARTY_PROFILE.component} />
     <Route

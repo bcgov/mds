@@ -1,4 +1,3 @@
-/* eslint-disable  */
 import React, { Component } from "react";
 import { Row, Col, Divider, Card } from "antd";
 import moment from "moment";
@@ -9,23 +8,23 @@ import { Contact } from "@/components/mine/ContactInfo/PartyRelationships/Contac
 import { getPartyRelationshipTypes, getPartyRelationships } from "@/selectors/partiesSelectors";
 import { getMineComplianceInfo } from "@/selectors/complianceSelectors";
 import { getMines } from "@/selectors/mineSelectors";
-
 import { connect } from "react-redux";
 import * as String from "@/constants/strings";
 import { Link } from "react-router-dom";
 import * as router from "@/constants/routes";
 import { PermitCard } from "@/components/mine/Permit/MinePermitCard";
 import { TSFCard } from "@/components/mine/Tailings/MineTSFCard";
-import { formatDate } from "@/utils/helpers";
 import { DOC, OVERDUEDOC } from "@/constants/assets";
 import { getPermits } from "@/reducers/permitReducer";
+import MineHeader from "@/components/mine/MineHeader";
 
 /**
  * @class MineSummary.js contains all content located under the 'Summary' tab on the MineDashboard.
  */
 
 const propTypes = {
-  mine: CustomPropTypes.mine.isRequired,
+  match: CustomPropTypes.match.isRequired,
+  mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
   partyRelationshipTypes: PropTypes.arrayOf(CustomPropTypes.partyRelationshipType),
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   mineComplianceInfo: CustomPropTypes.mineComplianceInfo,
@@ -62,14 +61,12 @@ const renderPartyRelationship = (mine, partyRelationship, partyRelationshipTypes
 
 const renderSummaryPermit = (permit, partyRelationships) => (
   <Col sm={24} md={12} lg={8} xl={6} xxl={4} key={permit.permit_guid}>
-    {" "}
     <PermitCard permit={permit} PartyRelationships={partyRelationships} />
   </Col>
 );
 
 const renderSummaryTSF = (tsf, partyRelationships) => (
   <Col sm={24} md={12} lg={8} xl={6} xxl={4} key={tsf.mine_tailings_storage_facility_guid}>
-    {" "}
     <TSFCard tailingsStorageFacility={tsf} PartyRelationships={partyRelationships} />
   </Col>
 );
@@ -96,202 +93,186 @@ export class MineSummary extends Component {
       return <NullScreen type="generic" />;
     }
     return (
-      <div>
-        <Row gutter={16}>
-          <Col span={24}>
-            <h4>Mine Details</h4>
-            <Divider />
-          </Col>
-        </Row>
+      <div className="tab__content">
+        <MineHeader mine={mine} {...this.props} />
+        <br />
         {this.props.partyRelationships && this.props.partyRelationships.length > 0 && (
-          <Row gutter={16} type="flex" justify="center">
-            <Col span={18}>
-              <Row gutter={16}>
-                <Col span={24}>
-                  <h4>Main Contacts</h4>
-                  <Divider />
-                </Col>
-              </Row>
-              <Row gutter={16} type="flex">
-                {this.props.partyRelationships
-                  .filter((pr) => pr.mine_party_appt_type_code === "MMG" && isActive(pr))
-                  .map((partyRelationship) =>
-                    renderPartyRelationship(
-                      this.props.mine,
-                      partyRelationship,
-                      this.props.partyRelationshipTypes
-                    )
-                  )}
-                {this.props.minePermits.map((permit) => {
-                  const latestPermittee = this.props.partyRelationships
-                    .filter((pr) => activePermitteesByPermit(pr, permit))
-                    .sort((a, b) => new Date(b.start_date) - new Date(a.start_date))[0];
-                  return (
-                    latestPermittee &&
-                    renderPartyRelationship(
-                      mine,
-                      latestPermittee,
-                      this.props.partyRelationshipTypes
-                    )
-                  );
-                })}
-              </Row>
-              <Row gutter={16}>
-                <Col span={24}>
-                  <div className="right">
-                    <Link to={router.MINE_SUMMARY.dynamicRoute(mine.mine_guid, "contacts")}>
-                      See All Contacts
-                    </Link>
-                  </div>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
+          <div>
+            <Row>
+              <Col span={24}>
+                <h4>Main Contacts</h4>
+                <Divider />
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              {this.props.partyRelationships
+                .filter((pr) => pr.mine_party_appt_type_code === "MMG" && isActive(pr))
+                .map((partyRelationship) =>
+                  renderPartyRelationship(
+                    this.props.mine,
+                    partyRelationship,
+                    this.props.partyRelationshipTypes
+                  )
+                )}
+              {this.props.minePermits.map((permit) => {
+                const latestPermittee = this.props.partyRelationships
+                  .filter((pr) => activePermitteesByPermit(pr, permit))
+                  .sort((a, b) => new Date(b.start_date) - new Date(a.start_date))[0];
+                return (
+                  latestPermittee &&
+                  renderPartyRelationship(mine, latestPermittee, this.props.partyRelationshipTypes)
+                );
+              })}
+            </Row>
+            <Row>
+              <Col span={24}>
+                <div className="right">
+                  <Link to={router.MINE_SUMMARY.dynamicRoute(mine.mine_guid, "contacts")}>
+                    See All Contacts
+                  </Link>
+                </div>
+              </Col>
+            </Row>
+          </div>
         )}
         {this.props.minePermits && this.props.minePermits.length > 0 && (
-          <Row gutter={16} type="flex" justify="center">
-            <Col span={18}>
-              <Row gutter={16}>
-                <Col span={24}>
-                  <h4>PERMITS</h4>
-                  <Divider />
-                </Col>
-              </Row>
-              <Row gutter={16} type="flex">
-                {this.props.minePermits.map((permit) =>
-                  renderSummaryPermit(permit, this.props.partyRelationships.filter(isActive))
-                )}
-              </Row>
-              <Row gutter={16}>
-                <Col span={24}>
-                  <div className="right">
-                    <Link to={router.MINE_SUMMARY.dynamicRoute(mine.mine_guid, "permit")}>
-                      See All Permits
-                    </Link>
-                  </div>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
+          <div>
+            <Row>
+              <Col span={24}>
+                <h4>Permits</h4>
+                <Divider />
+              </Col>
+            </Row>
+            <Row gutter={16} type="flex">
+              {this.props.minePermits.map((permit) =>
+                renderSummaryPermit(permit, this.props.partyRelationships.filter(isActive))
+              )}
+            </Row>
+            <Row>
+              <Col span={24}>
+                <div className="right">
+                  <Link to={router.MINE_SUMMARY.dynamicRoute(mine.mine_guid, "permit")}>
+                    See All Permits
+                  </Link>
+                </div>
+              </Col>
+            </Row>
+          </div>
         )}
         {this.props.mineComplianceInfo && (
-          <Row gutter={16} type="flex" justify="center">
-            <Col span={18}>
-              <Row gutter={16}>
-                <Col span={24}>
-                  <h4>COMPLIANCE</h4>
-                  <Divider />
-                </Col>
-              </Row>
-              <Row gutter={16}>
-                <Col lg={8} xs={24}>
-                  <Card
-                    className="compliance-card"
-                    title={
-                      <Row type="flex" justify="center" align="middle">
-                        <div className="center">
-                          <span className="info-display">
-                            {/* {this,.props.complianceInfoLoading
+          <div>
+            <Row gutter={16}>
+              <Col span={24}>
+                <h4>Compliance</h4>
+                <Divider />
+              </Col>
+            </Row>
+            <Row>
+              <Col lg={8} xs={24}>
+                <Card
+                  className="compliance-card"
+                  title={
+                    <Row type="flex" justify="center" align="middle">
+                      <div className="center">
+                        <span className="info-display">
+                          {/* {this.props.complianceInfoLoading
                               ? String.LOADING
                               : formatDate(this.props.mineComplianceInfo.last_inspection) ||
                                 String.NO_NRIS_INSPECTIONS} */}
-                          </span>
-                        </div>
-                      </Row>
-                    }
-                    bordered={false}
-                  >
-                    <div className="center">
-                      <h4>Last Inspection Date</h4>
-                    </div>
-                  </Card>
-                </Col>
-                <Col lg={8} xs={12}>
-                  <Card
-                    className="compliance-card"
-                    title={
-                      <Row type="flex" justify="center" align="middle">
-                        <img alt="Open Orders" src={DOC} style={{ height: 40, paddingRight: 5 }} />
-                        &nbsp;
-                        <span className="info-display">
-                          {this.props.complianceInfoLoading
-                            ? String.LOADING
-                            : this.props.mineComplianceInfo.num_open_orders}
                         </span>
-                      </Row>
-                    }
-                    bordered={false}
-                  >
-                    <div className="center">
-                      <h4>Open Orders</h4>
-                    </div>
-                  </Card>
-                </Col>
-                <Col lg={8} xs={12}>
-                  <Card
-                    className="compliance-card"
-                    title={
-                      <Row type="flex" justify="center" align="middle">
-                        <img
-                          alt="Overdue Orders"
-                          src={OVERDUEDOC}
-                          style={{ height: 40, paddingRight: 5 }}
-                        />
-                        &nbsp;
-                        <span className="info-display">
-                          {this.props.complianceInfoLoading
-                            ? String.LOADING
-                            : this.props.mineComplianceInfo.num_overdue_orders}
-                        </span>
-                      </Row>
-                    }
-                    bordered={false}
-                  >
-                    <div className="center">
-                      <h4>Overdue Orders</h4>
-                    </div>
-                  </Card>
-                </Col>
-              </Row>
-
-              <Row gutter={16}>
-                <Col span={24}>
-                  <div className="right">
-                    <Link to={router.MINE_SUMMARY.dynamicRoute(mine.mine_guid, "compliance")}>
-                      See All Compliance
-                    </Link>
+                      </div>
+                    </Row>
+                  }
+                  bordered={false}
+                >
+                  <div className="center">
+                    <h4>Last Inspection Date</h4>
                   </div>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
+                </Card>
+              </Col>
+              <Col lg={8} xs={12}>
+                <Card
+                  className="compliance-card"
+                  title={
+                    <Row type="flex" justify="center" align="middle">
+                      <img alt="Open Orders" src={DOC} style={{ height: 40, paddingRight: 5 }} />
+                      &nbsp;
+                      <span className="info-display">
+                        {this.props.complianceInfoLoading
+                          ? String.LOADING
+                          : this.props.mineComplianceInfo.num_open_orders}
+                      </span>
+                    </Row>
+                  }
+                  bordered={false}
+                >
+                  <div className="center">
+                    <h4>Open Orders</h4>
+                  </div>
+                </Card>
+              </Col>
+              <Col lg={8} xs={12}>
+                <Card
+                  className="compliance-card"
+                  title={
+                    <Row type="flex" justify="center" align="middle">
+                      <img
+                        alt="Overdue Orders"
+                        src={OVERDUEDOC}
+                        style={{ height: 40, paddingRight: 5 }}
+                      />
+                      &nbsp;
+                      <span className="info-display">
+                        {this.props.complianceInfoLoading
+                          ? String.LOADING
+                          : this.props.mineComplianceInfo.num_overdue_orders}
+                      </span>
+                    </Row>
+                  }
+                  bordered={false}
+                >
+                  <div className="center">
+                    <h4>Overdue Orders</h4>
+                  </div>
+                </Card>
+              </Col>
+            </Row>
+
+            <Row>
+              <Col span={24}>
+                <div className="right">
+                  <Link to={router.MINE_SUMMARY.dynamicRoute(mine.mine_guid, "compliance")}>
+                    See All Compliance
+                  </Link>
+                </div>
+              </Col>
+            </Row>
+          </div>
         )}
         {mine.mine_tailings_storage_facilities && mine.mine_tailings_storage_facilities.length > 0 && (
-          <Row gutter={16} type="flex" justify="center">
-            <Col span={18}>
-              <Row gutter={16}>
-                <Col span={24}>
-                  <h4>TAILINGS STORAGE FACILTIES</h4>
-                  <Divider />
-                </Col>
-              </Row>
-              <Row gutter={16}>
-                {mine.mine_tailings_storage_facilities.map((tsf) =>
-                  renderSummaryTSF(tsf, this.props.partyRelationships.filter(isActive))
-                )}
-              </Row>
+          <div>
+            <Row gutter={16}>
+              <Col span={24}>
+                <h4>Tailings Storage Facilities</h4>
+                <Divider />
+              </Col>
+            </Row>
+            <Row>
+              {mine.mine_tailings_storage_facilities.map((tsf) =>
+                renderSummaryTSF(tsf, this.props.partyRelationships.filter(isActive))
+              )}
+            </Row>
 
-              <Row gutter={16}>
-                <Col span={24}>
-                  <div className="right">
-                    <Link to={router.MINE_SUMMARY.dynamicRoute(mine.mine_guid, "tailings")}>
-                      See Tailings Storage Facilities
-                    </Link>
-                  </div>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
+            <Row>
+              <Col span={24}>
+                <div className="right">
+                  <Link to={router.MINE_SUMMARY.dynamicRoute(mine.mine_guid, "tailings")}>
+                    See All Tailings Storage Facilities
+                  </Link>
+                </div>
+              </Col>
+            </Row>
+          </div>
         )}
       </div>
     );

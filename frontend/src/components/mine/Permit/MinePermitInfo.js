@@ -1,3 +1,4 @@
+/* eslint-disable  */
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -20,6 +21,7 @@ import MinePermitTable from "@/components/mine/Permit/MinePermitTable";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
 import { getPermits } from "../../../reducers/permitReducer";
+import { getMines } from "@/selectors/mineSelectors";
 /**
  * @class  MinePermitInfo - contains all permit information
  */
@@ -28,6 +30,7 @@ const amalgamtedPermit = "ALG";
 const originalPermit = "OGP";
 
 const propTypes = {
+  match: CustomPropTypes.match.isRequired,
   mine: CustomPropTypes.mine.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit),
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
@@ -52,7 +55,8 @@ export class MinePermitInfo extends Component {
   state = { expandedRowKeys: [], modifiedPermits: false, modifiedPermitGuid: null };
 
   componentWillMount = () => {
-    this.props.fetchPermits(this.props.mine.mine_guid);
+    const { id } = this.props.match.params;
+    this.props.fetchPermits(id);
   };
 
   componentWillReceiveProps = (nextProps) => {
@@ -119,7 +123,7 @@ export class MinePermitInfo extends Component {
   // Permit Handlers
 
   handleAddPermit = (values) => {
-    const payload = {  ...values };
+    const payload = { ...values };
 
     payload.permit_no = `${values.permit_type}${values.permit_activity_type || ""}-${
       values.permit_no
@@ -131,7 +135,9 @@ export class MinePermitInfo extends Component {
   };
 
   handleEditPermit = (values) =>
-    this.props.updatePermit(this.props.mine.mine_guid, values.permit_guid, values).then(this.closePermitModal);
+    this.props
+      .updatePermit(this.props.mine.mine_guid, values.permit_guid, values)
+      .then(this.closePermitModal);
 
   // Amendment Modals
 
@@ -198,12 +204,19 @@ export class MinePermitInfo extends Component {
 
   handleEditPermitAmendment = (values) =>
     this.props
-      .updatePermitAmendment(this.props.mine.mine_guid, values.permit_guid, values.permit_amendment_guid, values)
+      .updatePermitAmendment(
+        this.props.mine.mine_guid,
+        values.permit_guid,
+        values.permit_amendment_guid,
+        values
+      )
       .then(this.closePermitModal);
 
   handleAddPermitAmendment = (values) => {
     this.setState({ modifiedPermits: true, modifiedPermitGuid: values.permit_guid });
-    return this.props.createPermitAmendment(this.props.mine.mine_guid, values.permit_guid, values).then(this.closePermitModal);
+    return this.props
+      .createPermitAmendment(this.props.mine.mine_guid, values.permit_guid, values)
+      .then(this.closePermitModal);
   };
 
   handleAddAmalgamatedPermit = (values) => {
@@ -218,7 +231,12 @@ export class MinePermitInfo extends Component {
 
   handleRemovePermitAmendmentDocument = (permitGuid, permitAmdendmentGuid, documentGuid) =>
     this.props
-      .removePermitAmendmentDocument(this.props.mine.mine_guid, permitGuid, permitAmdendmentGuid, documentGuid)
+      .removePermitAmendmentDocument(
+        this.props.mine.mine_guid,
+        permitGuid,
+        permitAmdendmentGuid,
+        documentGuid
+      )
       .then(() => {
         this.props.fetchPermits(this.props.mine.mine_guid);
       });
@@ -232,6 +250,8 @@ export class MinePermitInfo extends Component {
     });
 
   render() {
+    const { id } = this.props.match.params;
+    const mine = this.props.mines[id];
     return [
       <div>
         <div className="inline-flex between">
@@ -261,7 +281,7 @@ export class MinePermitInfo extends Component {
         <MinePermitTable
           permits={this.props.permits}
           partyRelationships={this.props.partyRelationships}
-          major_mine_ind={this.props.mine.major_mine_ind}
+          major_mine_ind={mine.major_mine_ind}
           openEditPermitModal={this.openEditPermitModal}
           openEditAmendmentModal={this.openEditAmendmentModal}
           openAddPermitAmendmentModal={this.openAddPermitAmendmentModal}
@@ -276,6 +296,7 @@ export class MinePermitInfo extends Component {
 
 const mapStateToProps = (state) => ({
   permits: getPermits(state),
+  mines: getMines(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

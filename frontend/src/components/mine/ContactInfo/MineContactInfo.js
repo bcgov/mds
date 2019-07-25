@@ -7,6 +7,7 @@ import ViewPartyRelationships from "./ViewPartyRelationships";
 import { openModal, closeModal } from "@/actions/modalActions";
 import { createParty, fetchParties } from "@/actionCreators/partiesActionCreator";
 import { fetchMineRecordById } from "@/actionCreators/mineActionCreator";
+import { getMines } from "@/selectors/mineSelectors";
 import CustomPropTypes from "@/customPropTypes";
 
 /**
@@ -19,7 +20,7 @@ const propTypes = {
   fetchParties: PropTypes.func.isRequired,
   createParty: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
-  mine: CustomPropTypes.mine.isRequired,
+  mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
 };
 
 export class MineContactInfo extends Component {
@@ -37,15 +38,24 @@ export class MineContactInfo extends Component {
   };
 
   render() {
+    const { id } = this.props.match.params;
+    const mine = this.props.mines[id];
     return (
-      <div>
-        <ViewPartyRelationships {...this.props} handleChange={this.handleChangeDebounced} />
+      <div className="tab__content">
+        <ViewPartyRelationships
+          mine={mine}
+          {...this.props}
+          handleChange={this.handleChangeDebounced}
+        />
       </div>
     );
   }
 }
 
 MineContactInfo.propTypes = propTypes;
+const mapStateToProps = (state) => ({
+  mines: getMines(state),
+});
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
@@ -60,6 +70,6 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(MineContactInfo);
