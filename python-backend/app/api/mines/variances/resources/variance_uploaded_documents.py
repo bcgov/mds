@@ -4,7 +4,7 @@ from flask_restplus import Resource
 from app.extensions import api
 
 from ...mine.models.mine import Mine
-from ....documents.mines.models.mine_document import MineDocument
+from app.api.mines.documents.mines.models.mine_document import MineDocument
 from ....utils.access_decorators import (requires_any_of, EDIT_VARIANCE,
                                          MINESPACE_PROPONENT)
 from ....utils.resources_mixins import UserMixin, ErrorMixin

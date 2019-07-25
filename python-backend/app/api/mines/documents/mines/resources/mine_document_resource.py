@@ -10,8 +10,8 @@ from ..models.mine_document import MineDocument
 
 from app.extensions import api
 from app.api.mines.mine.models.mine import Mine
-from ....utils.access_decorators import requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
-from ....utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.utils.access_decorators import requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
+from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 
 MINE_DOCUMENT_MODEL = api.model(
     'MineDocument', {

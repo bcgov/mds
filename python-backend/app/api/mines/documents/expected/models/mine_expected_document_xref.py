@@ -10,7 +10,7 @@ from app.extensions import db
 from sqlalchemy.inspection import inspect
 from ...required.models.required_documents import RequiredDocument
 
-from ....utils.models_mixins import Base
+from app.api.utils.models_mixins import Base
 
 
 class MineExpectedDocumentXref(Base):

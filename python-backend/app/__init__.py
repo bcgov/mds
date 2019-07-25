@@ -13,7 +13,7 @@ from flask_jwt_oidc.exceptions import AuthError
 from app.api.parties.namespace.parties import api as parties_api
 from app.api.applications.namespace.applications import api as applications_api
 from app.api.mines.namespace.mines import api as mines_api
-from app.api.documents.namespace.documents import api as document_api
+from app.api.mines.documents.namespace.documents import api as document_api
 from app.api.document_manager.namespace.document_manager import api as document_manager_api
 from app.api.users.namespace.users import api as users_api
 from app.api.search.namespace.search import api as search_api

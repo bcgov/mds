@@ -10,8 +10,8 @@ from app.extensions import db
 from tests.status_code_gen import *
 from app.api.applications.models.application import Application
 from app.api.document_manager.models.document_manager import DocumentManager
-from app.api.documents.expected.models.mine_expected_document import MineExpectedDocument
-from app.api.documents.mines.models.mine_document import MineDocument
+from app.api.mines.documents.expected.models.mine_expected_document import MineExpectedDocument
+from app.api.mines.documents.mines.models.mine_document import MineDocument
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.mine.models.mine_type import MineType
 from app.api.mines.mine.models.mine_type_detail import MineTypeDetail

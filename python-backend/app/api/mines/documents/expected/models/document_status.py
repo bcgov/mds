@@ -8,12 +8,14 @@ from sqlalchemy.orm import validates
 from app.extensions import db
 from sqlalchemy.inspection import inspect
 
-from ....utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import AuditMixin, Base
 
 
 class ExpectedDocumentStatus(AuditMixin, Base):
     __tablename__ = 'mine_expected_document_status_code'
-    exp_document_status_code = db.Column(db.String(3), primary_key=True, server_default=FetchedValue())
+    exp_document_status_code = db.Column(db.String(3),
+                                         primary_key=True,
+                                         server_default=FetchedValue())
     description = db.Column(db.String(100), nullable=False)
     display_order = db.Column(db.Integer, nullable=False)
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())

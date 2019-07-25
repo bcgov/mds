@@ -2,8 +2,8 @@ from flask import request
 from flask_restplus import Resource
 from ..models.required_documents import RequiredDocument
 from app.extensions import api
-from ....utils.access_decorators import requires_role_view_all
-from ....utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.utils.access_decorators import requires_role_view_all
+from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class RequiredDocumentResource(Resource, UserMixin, ErrorMixin):

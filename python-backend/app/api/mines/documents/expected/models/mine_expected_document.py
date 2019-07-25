@@ -9,7 +9,7 @@ from sqlalchemy.orm import validates
 from app.extensions import db
 from sqlalchemy.inspection import inspect
 
-from ....utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import AuditMixin, Base
 
 
 class MineExpectedDocument(AuditMixin, Base):

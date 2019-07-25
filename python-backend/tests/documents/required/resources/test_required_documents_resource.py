@@ -2,7 +2,7 @@ import json
 from tests.factories import MineFactory
 from tests.status_code_gen import RandomRequiredDocument
 
-from app.api.documents.required.models.required_documents import RequiredDocument
+from app.api.mines.documents.required.models.required_documents import RequiredDocument
 
 
 # GET

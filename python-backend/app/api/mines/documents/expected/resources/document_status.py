@@ -8,8 +8,8 @@ from flask_restplus import Resource, reqparse
 from ..models.document_status import ExpectedDocumentStatus
 
 from app.extensions import api
-from ....utils.access_decorators import requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
-from ....utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.utils.access_decorators import requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
+from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class ExpectedDocumentStatusResource(Resource, UserMixin, ErrorMixin):

@@ -11,16 +11,16 @@ from werkzeug import exceptions
 from sqlalchemy.exc import DBAPIError
 
 from ..models.mine_expected_document import MineExpectedDocument
-from ....mines.mine.models.mine import Mine
 from ...expected.models.mine_expected_document import MineExpectedDocument
 from ...expected.models.mine_expected_document_xref import MineExpectedDocumentXref
-from ...mines.models.mine_document import MineDocument
+from app.api.mines.mine.models.mine import Mine
+from app.api.mines.documents.mines.models.mine_document import MineDocument
 
 from app.api.services.document_manager_service import DocumentManagerService
 
 from app.extensions import api, db
-from ....utils.access_decorators import requires_any_of, MINE_EDIT, MINESPACE_PROPONENT
-from ....utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.utils.access_decorators import requires_any_of, MINE_EDIT, MINESPACE_PROPONENT
+from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):

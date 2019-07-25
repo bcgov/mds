@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
-from app.api.documents.expected.models.mine_expected_document import MineExpectedDocument
+from app.api.mines.documents.expected.models.mine_expected_document import MineExpectedDocument
 from tests.factories import MineFactory, MineExpectedDocumentFactory
 
 BATCH_SIZE = 5

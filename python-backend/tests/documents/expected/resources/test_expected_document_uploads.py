@@ -3,8 +3,8 @@ import pytest
 import uuid
 from datetime import datetime
 
-from app.api.documents.mines.models.mine_document import MineDocument
-from app.api.documents.expected.models.mine_expected_document import MineExpectedDocument
+from app.api.mines.documents.mines.models.mine_document import MineDocument
+from app.api.mines.documents.expected.models.mine_expected_document import MineExpectedDocument
 
 from tests.factories import DocumentManagerFactory, MineExpectedDocumentFactory, MineDocumentFactory
 

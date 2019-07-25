@@ -10,7 +10,7 @@ from app.extensions import db
 from ..models.required_document_categories import RequiredDocumentCategory
 from ..models.required_document_due_date_type import RequiredDocumentDueDateType
 from ..models.required_document_sub_categories import RequiredDocumentSubCategory
-from ....utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import AuditMixin, Base
 
 
 class RequiredDocument(AuditMixin, Base):

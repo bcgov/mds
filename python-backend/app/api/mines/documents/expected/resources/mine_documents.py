@@ -6,8 +6,8 @@ from ..models.mine_expected_document import MineExpectedDocument
 from ..models.document_status import ExpectedDocumentStatus
 
 from app.extensions import api, db
-from ....utils.access_decorators import requires_role_view_all, requires_role_mine_edit
-from ....utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_edit
+from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class ExpectedMineDocumentResource(Resource, UserMixin, ErrorMixin):

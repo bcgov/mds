@@ -7,16 +7,16 @@ from sqlalchemy.schema import FetchedValue
 from sqlalchemy.orm import validates
 from app.extensions import db
 
-from ....utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import Base
 
 
-class RequiredDocumentCategory(Base):
-    __tablename__ = 'mine_required_document_category'
-    req_document_category = db.Column(db.String(3), primary_key=True)
+class RequiredDocumentSubCategory(Base):
+    __tablename__ = 'required_document_sub_category'
+    req_document_sub_category_code = db.Column(db.String, primary_key=True)
     description = db.Column(db.String)
 
     def json(self):
         return {
-            'req_document_category': self.req_document_category,
+            'req_document_sub_category': self.req_document_sub_category_code,
             'description': self.description,
         }

@@ -8,7 +8,7 @@ from flask_restplus import Resource, fields
 from app.extensions import api, db
 
 from ...mine.models.mine import Mine
-from ....documents.mines.models.mine_document import MineDocument
+from app.api.mines.documents.mines.models.mine_document import MineDocument
 from ....utils.access_decorators import (
     requires_any_of, VIEW_ALL, MINE_EDIT, EDIT_VARIANCE, MINESPACE_PROPONENT)
 from ....utils.resources_mixins import UserMixin, ErrorMixin

@@ -1,7 +1,7 @@
 from flask_restplus import Resource, fields
 from app.extensions import api
-from ....utils.access_decorators import (requires_any_of, VIEW_ALL, MINESPACE_PROPONENT)
-from ....utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.utils.access_decorators import (requires_any_of, VIEW_ALL, MINESPACE_PROPONENT)
+from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 from ..models.compliance_article import ComplianceArticle
 from ..response_models import COMPLIANCE_ARTICLE_MODEL
 
