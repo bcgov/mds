@@ -1,166 +1,66 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MineApplicationTable renders properly 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <MineApplicationTable
-    applications={Array []}
-    major_mine_ind={undefined}
-  />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateError": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "class",
-    "props": Object {
-      "align": "left",
-      "bordered": false,
-      "className": "nested-table",
-      "columns": Array [
-        Object {
-          "dataIndex": "applicationNo",
-          "key": "applicationNo",
-          "render": [Function],
-          "title": "Application No.",
-        },
-        Object {
-          "dataIndex": "status",
-          "key": "status",
-          "render": [Function],
-          "title": "Status",
-        },
-        Object {
-          "dataIndex": "receivedDate",
-          "key": "receivedDate",
-          "render": [Function],
-          "title": "Received Date",
-        },
-        Object {
-          "dataIndex": "description",
-          "key": "description",
-          "render": [Function],
-          "title": "Description",
-        },
-        Object {
-          "align": "right",
-          "dataIndex": "applicationEdit",
-          "key": "applicationEdit",
-          "render": [Function],
-          "title": "",
-        },
-      ],
-      "dataSource": Array [],
-      "indentSize": 20,
-      "loading": false,
-      "locale": Object {
-        "emptyText": <NullScreen
-          type="applications"
-        />,
+<Table
+  align="left"
+  bordered={false}
+  childrenColumnName="children"
+  className="nested-table"
+  columns={
+    Array [
+      Object {
+        "dataIndex": "applicationNo",
+        "key": "applicationNo",
+        "render": [Function],
+        "title": "Application No.",
       },
-      "pagination": false,
-      "rowKey": "key",
-      "showHeader": true,
-      "size": "default",
-      "sortDirections": Array [
-        "ascend",
-        "descend",
-      ],
-      "useFixedHeader": false,
-    },
-    "ref": null,
-    "rendered": null,
-    "type": [Function],
-  },
-  Symbol(enzyme.__nodes__): Array [
+      Object {
+        "dataIndex": "status",
+        "key": "status",
+        "render": [Function],
+        "title": "Status",
+      },
+      Object {
+        "dataIndex": "receivedDate",
+        "key": "receivedDate",
+        "render": [Function],
+        "title": "Received Date",
+      },
+      Object {
+        "dataIndex": "description",
+        "key": "description",
+        "render": [Function],
+        "title": "Description",
+      },
+      Object {
+        "align": "right",
+        "dataIndex": "applicationEdit",
+        "key": "applicationEdit",
+        "render": [Function],
+        "title": "",
+      },
+    ]
+  }
+  dataSource={Array []}
+  indentSize={20}
+  loading={false}
+  locale={
     Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "class",
-      "props": Object {
-        "align": "left",
-        "bordered": false,
-        "className": "nested-table",
-        "columns": Array [
-          Object {
-            "dataIndex": "applicationNo",
-            "key": "applicationNo",
-            "render": [Function],
-            "title": "Application No.",
-          },
-          Object {
-            "dataIndex": "status",
-            "key": "status",
-            "render": [Function],
-            "title": "Status",
-          },
-          Object {
-            "dataIndex": "receivedDate",
-            "key": "receivedDate",
-            "render": [Function],
-            "title": "Received Date",
-          },
-          Object {
-            "dataIndex": "description",
-            "key": "description",
-            "render": [Function],
-            "title": "Description",
-          },
-          Object {
-            "align": "right",
-            "dataIndex": "applicationEdit",
-            "key": "applicationEdit",
-            "render": [Function],
-            "title": "",
-          },
-        ],
-        "dataSource": Array [],
-        "indentSize": 20,
-        "loading": false,
-        "locale": Object {
-          "emptyText": <NullScreen
-            type="applications"
-          />,
-        },
-        "pagination": false,
-        "rowKey": "key",
-        "showHeader": true,
-        "size": "default",
-        "sortDirections": Array [
-          "ascend",
-          "descend",
-        ],
-        "useFixedHeader": false,
-      },
-      "ref": null,
-      "rendered": null,
-      "type": [Function],
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getDerivedStateFromProps": true,
-          "getSnapshotBeforeUpdate": true,
-          "setState": Object {
-            "skipsComponentDidUpdateOnNullish": true,
-          },
-        },
-      },
-    },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
-  },
-}
+      "emptyText": <NullScreen
+        type="applications"
+      />,
+    }
+  }
+  pagination={false}
+  rowKey="key"
+  showHeader={true}
+  size="default"
+  sortDirections={
+    Array [
+      "ascend",
+      "descend",
+    ]
+  }
+  useFixedHeader={false}
+/>
 `;

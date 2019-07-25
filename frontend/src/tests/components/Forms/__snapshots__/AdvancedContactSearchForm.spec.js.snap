@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AdvancedMineSearchForm renders properly 1`] = `
+exports[`AdvancedContactSearch form renders properly 1`] = `
 <Form
   colon={true}
   hideRequiredMark={false}
@@ -12,14 +12,42 @@ exports[`AdvancedMineSearchForm renders properly 1`] = `
     gutter={6}
   >
     <Col
-      md={24}
-      xs={24}
+      md={6}
+      xs={6}
     >
       <Field
         component={[Function]}
-        id="search"
-        name="search"
-        placeholder="Search for a mine using name, ID, or permit number"
+        data={
+          Object {
+            "label": "Person",
+            "value": "PER",
+          }
+        }
+        id="type"
+        name="type"
+        onChange={[Function]}
+      />
+    </Col>
+    <Col
+      md={9}
+      xs={9}
+    >
+      <Field
+        component={[Function]}
+        id="first_name"
+        name="first_name"
+        placeholder="First Name"
+      />
+    </Col>
+    <Col
+      md={9}
+      xs={9}
+    >
+      <Field
+        component={[Function]}
+        id="last_name"
+        name="last_name"
+        placeholder="Surname"
       />
     </Col>
   </Row>
@@ -32,6 +60,7 @@ exports[`AdvancedMineSearchForm renders properly 1`] = `
       ghost={false}
       htmlType="button"
       loading={false}
+      onClick={[MockFunction]}
     >
       Expand Filters
       <Icon

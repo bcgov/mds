@@ -18,6 +18,7 @@ import {
   unSubscribe,
   fetchMineVerifiedStatuses,
   createMineIncident,
+  updateMineIncident,
   fetchMineIncidents,
 } from "@/actionCreators/mineActionCreator";
 import * as genericActions from "@/actions/genericActions";
@@ -490,6 +491,34 @@ describe("`fetchMineIncidents` action creator", () => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`updateMineIncident` action creator", () => {
+  const mineGuid = "12345-6789";
+  const mineIncidentGUID = "9876-54321";
+  const url = `${ENVIRONMENT.apiUrl}${API.MINE_INCIDENT(mineGuid, mineIncidentGUID)}`;
+  const mockPayload = {
+    incident_timestamp: "2001-01-01 12:12",
+    incident_description: "bad things happened",
+  };
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onPut(url, mockPayload).reply(200, mockResponse);
+    return updateMineIncident(mineGuid, mineIncidentGUID, mockPayload)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPut(url).reply(400, MOCK.ERROR);
+    return updateMineIncident(mineGuid, mineIncidentGUID, mockPayload)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(2);
     });
   });
 });
