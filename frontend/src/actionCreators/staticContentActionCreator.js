@@ -127,7 +127,7 @@ export const fetchApplicationStatusOptions = () => (dispatch) => {
 export const fetchMineIncidentFollowActionOptions = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_INCIDENT_FOLLOWUP_ACTION_OPTIONS));
   return CustomAxios({ selector: getIncidentFollowupActionOptions })
-    .get(ENVIRONMENT.apiUrl + API.MINE_INCIDENT_FOLLOWUP_ACTIONS, createRequestHeader())
+    .get(ENVIRONMENT.apiUrl + API.INCIDENT_FOLLOWUP_ACTIONS, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_INCIDENT_FOLLOWUP_ACTION_OPTIONS));
       dispatch(staticContentActions.storeMineIncidentFollowActionOptions(response.data));
@@ -138,7 +138,7 @@ export const fetchMineIncidentFollowActionOptions = () => (dispatch) => {
 export const fetchMineIncidentDeterminationOptions = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_INCIDENT_DETERMINATION_OPTIONS));
   return CustomAxios({ selector: getIncidentDeterminationOptions })
-    .get(ENVIRONMENT.apiUrl + API.MINE_INCIDENT_DETERMINATION_TYPES, createRequestHeader())
+    .get(ENVIRONMENT.apiUrl + API.INCIDENT_DETERMINATION_TYPES, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_INCIDENT_DETERMINATION_OPTIONS));
       dispatch(staticContentActions.storeMineIncidentDeterminationOptions(response.data));
@@ -149,7 +149,7 @@ export const fetchMineIncidentDeterminationOptions = () => (dispatch) => {
 export const fetchMineIncidentStatusCodeOptions = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_INCIDENT_STATUS_CODE_OPTIONS));
   return CustomAxios({ selector: getIncidentStatusCodeOptions })
-    .get(ENVIRONMENT.apiUrl + API.MINE_INCIDENT_STATUS_CODES, createRequestHeader())
+    .get(ENVIRONMENT.apiUrl + API.INCIDENT_STATUS_CODES, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_INCIDENT_STATUS_CODE_OPTIONS));
       dispatch(staticContentActions.storeMineIncidentStatusCodeOptions(response.data));
