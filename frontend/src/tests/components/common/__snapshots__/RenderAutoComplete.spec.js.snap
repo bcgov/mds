@@ -48,7 +48,6 @@ exports[`RenderAutoComplete renders properly 1`] = `
 >
   <Input
     autoComplete="off"
-    disabled={false}
     id="search"
     suffix={
       <Icon

@@ -22,7 +22,6 @@ exports[`AddFullPartyForm renders properly 1`] = `
           <RadioGroup
             buttonStyle="outline"
             defaultValue={true}
-            disabled={false}
             onChange={[MockFunction]}
             size="large"
           >

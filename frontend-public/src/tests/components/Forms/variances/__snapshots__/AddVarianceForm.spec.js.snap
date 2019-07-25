@@ -77,6 +77,7 @@ exports[`AddVarianceForm renders properly 1`] = `
   >
     <Popconfirm
       cancelText="No"
+      disabled={false}
       icon={
         <Icon
           theme="filled"

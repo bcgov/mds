@@ -105,6 +105,7 @@ exports[`MineHeader renders dispatchProperly 1`] = `
                 >
                   <Popconfirm
                     cancelText="No"
+                    disabled={false}
                     icon={
                       <Icon
                         theme="filled"
@@ -142,6 +143,7 @@ exports[`MineHeader renders dispatchProperly 1`] = `
                 >
                   <Popconfirm
                     cancelText="No"
+                    disabled={false}
                     icon={
                       <Icon
                         theme="filled"

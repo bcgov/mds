@@ -64,7 +64,6 @@ exports[`MineRecordForm renders properly 1`] = `
         <RadioGroup
           buttonStyle="outline"
           defaultValue={false}
-          disabled={false}
           onChange={[Function]}
           value={false}
         >
@@ -236,6 +235,7 @@ exports[`MineRecordForm renders properly 1`] = `
   >
     <Popconfirm
       cancelText="No"
+      disabled={false}
       icon={
         <Icon
           theme="filled"
