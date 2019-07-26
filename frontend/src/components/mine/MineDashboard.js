@@ -87,6 +87,7 @@ import { storeRegionOptions, storeTenureTypes } from "@/actions/staticContentAct
 import { storeVariances } from "@/actions/varianceActions";
 import { storePermits } from "@/actions/permitActions";
 import { storeMine } from "@/actions/mineActions";
+import { detectProdEnvironment } from "@/utils/environmentUtils";
 
 /**
  * @class MineDashboard.js is an individual mines dashboard, gets Mine data from redux and passes into children.
@@ -427,15 +428,17 @@ export class MineDashboard extends Component {
                     />
                   </div>
                 </TabPane>
-                <TabPane tab="Reports" key="reports">
-                  <div className="tab__content">
-                    <MineReportInfo
-                      mine={mine}
-                      openModal={this.props.openModal}
-                      closeModal={this.props.closeModal}
-                    />
-                  </div>
-                </TabPane>
+                {!detectProdEnvironment() && (
+                  <TabPane tab="Reports" key="reports">
+                    <div className="tab__content">
+                      <MineReportInfo
+                        mine={mine}
+                        openModal={this.props.openModal}
+                        closeModal={this.props.closeModal}
+                      />
+                    </div>
+                  </TabPane>
+                )}
               </Tabs>
             </div>
           </div>
