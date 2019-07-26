@@ -1,16 +1,16 @@
 import React, { Component } from "react";
 import { Row, Col, Divider, Card } from "antd";
 import moment from "moment";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
-import PropTypes from "prop-types";
 import { Contact } from "@/components/mine/ContactInfo/PartyRelationships/Contact";
 import { getPartyRelationshipTypes, getPartyRelationships } from "@/selectors/partiesSelectors";
 import { getMineComplianceInfo } from "@/selectors/complianceSelectors";
 import { getMines } from "@/selectors/mineSelectors";
-import { connect } from "react-redux";
 import * as String from "@/constants/strings";
-import { Link } from "react-router-dom";
 import * as router from "@/constants/routes";
 import { PermitCard } from "@/components/mine/Permit/MinePermitCard";
 import { TSFCard } from "@/components/mine/Tailings/MineTSFCard";
@@ -109,7 +109,7 @@ export class MineSummary extends Component {
                 .filter((pr) => pr.mine_party_appt_type_code === "MMG" && isActive(pr))
                 .map((partyRelationship) =>
                   renderPartyRelationship(
-                    this.props.mine,
+                    mine,
                     partyRelationship,
                     this.props.partyRelationshipTypes
                   )

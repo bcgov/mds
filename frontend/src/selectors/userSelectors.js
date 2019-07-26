@@ -1,5 +1,5 @@
-import * as userReducer from "@/reducers/userReducer";
 import { createSelector } from "reselect";
+import * as userReducer from "@/reducers/userReducer";
 import { createLabelHash } from "@/utils/helpers";
 
 export const { getCoreUsers } = userReducer;

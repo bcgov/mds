@@ -1,5 +1,5 @@
-import * as varianceReducer from "@/reducers/varianceReducer";
 import { createSelector } from "reselect";
+import * as varianceReducer from "@/reducers/varianceReducer";
 import * as Strings from "@/constants/strings";
 
 export const { getVariances, getVariance, getVariancePageData } = varianceReducer;

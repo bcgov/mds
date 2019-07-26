@@ -74,7 +74,6 @@ export class MinePermitInfo extends Component {
           ? [prevState.modifiedPermitGuid]
           : nextPermits.filter((key) => currentPermits.indexOf(key) === -1),
         modifiedPermitGuid: null,
-        addedPermit: false,
       }));
     }
   };
