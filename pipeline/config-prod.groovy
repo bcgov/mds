@@ -305,6 +305,23 @@ app {
                             'MEMORY_REQUEST':"${vars.resources.logstash.memory_request}",
                             'MEMORY_LIMIT':"${vars.resources.logstash.memory_limit}"
                     ]
+                ],
+                [
+                    'file':'tools/openshift/digdag.dc.json',
+                    'params':[
+                            'NAME':"digdag",
+                            'VERSION':"${app.deployment.version}",
+                            'NAMESPACE':"${vars.deployment.namespace}",
+                            'SUFFIX': "${vars.deployment.suffix}",
+                            'SCHEDULER_PVC_SIZE':"${vars.SCHEDULER_PVC_SIZE}",
+                            'ENVIRONMENT_NAME':"${app.deployment.env.name}",
+                            'KEYCLOAK_DISCOVERY_URL':"${vars.keycloak.known_config_url}",
+                            'APPLICATION_DOMAIN': "${vars.modules.'digdag'.HOST}",
+                            'CPU_REQUEST':"${vars.resources.digdag.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.digdag.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.digdag.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.digdag.memory_limit}"
+                    ]
                 ]
         ]
     }
@@ -318,6 +335,7 @@ environments {
             BACKUP_VERIFICATION_PVC_SIZE = '10Gi'
             LOG_PVC_SIZE = '5Gi'
             METABASE_PVC_SIZE = '20Gi'
+            SCHEDULER_PVC_SIZE = '20Gi'
             git {
                 changeId = "${opt.'pr'}"
             }
@@ -355,8 +373,8 @@ environments {
                     memory_limit = "1Gi"
                     uwsgi_threads = 2
                     uwsgi_processes = 4
-                    replica_min = 1
-                    replica_max = 1
+                    replica_min = 2
+                    replica_max = 4
                 }
                 postgres {
                     cpu_request = "200m"
@@ -391,6 +409,12 @@ environments {
                     cpu_limit = "400m"
                     memory_request = "1Gi"
                     memory_limit = "2Gi"
+                }
+                digdag {
+                    cpu_request = "150m"
+                    cpu_limit = "300m"
+                    memory_request = "512Mi"
+                    memory_limit = "1Gi"
                 }
             }
             keycloak {
@@ -454,6 +478,9 @@ environments {
                 }
                 'metabase' {
                     HOST = "mds-metabase-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                }
+                'digdag' {
+                    HOST = "mds-digdag-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                 }
             }
         }

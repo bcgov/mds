@@ -1,25 +1,20 @@
-import random
 import click
-import names
 
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from sqlalchemy.exc import DBAPIError
 from multiprocessing.dummy import Pool as ThreadPool
 
-from app import auth
 from app.api.utils.include.user_info import User
-from app.api.utils.random import generate_mine_no, generate_mine_name, random_geo, random_key_gen, random_date, random_region, random_mine_category
-from app.extensions import db, sched
-from app.scheduled_jobs import ETL_jobs
+from app.extensions import db
 
 from tests.factories import MineFactory, MinePartyAppointmentFactory
 
 
 def register_commands(app):
+
     @app.cli.command()
     def import_idir():
-        from app.scheduled_jobs.IDIR_jobs import _import_empr_idir_users
-        _import_empr_idir_users()
+        from app.cli_jobs.IDIR_jobs import import_empr_idir_users
+        import_empr_idir_users()
 
     @app.cli.command()
     def test_nris_api():
@@ -75,11 +70,7 @@ def register_commands(app):
                 db.session.rollback()
                 raise
 
-    # if app.config.get('ENVIRONMENT_NAME') in ['test', 'prod']:
-
-    @sched.app.cli.command()
-    def _run_etl():
-        with sched.app.app_context():
-            print('starting the ETL.')
-            ETL_jobs._run_ETL()
-            print('Completed running the ETL.')
+    @app.cli.command()
+    def run_etl():
+        from app.cli_jobs import ETL_jobs
+        ETL_jobs.run_ETL()
