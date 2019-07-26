@@ -1,243 +1,66 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`RenderAutoComplete renders properly 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <RenderAutoComplete
-    data={
-      Array [
-        Object {
-          "latitude": "51.4961750",
-          "longitude": "-119.6963833",
-          "mine_guid": "fc72863d-83e8-46ba-90f9-87b0ed78823f",
-          "mine_name": "New Mine",
-          "mine_no": "BLAH6194",
-        },
-        Object {
-          "latitude": "51.4961750",
-          "longitude": "-119.6963833",
-          "mine_guid": "89a65274-581d-4862-8630-99f5f7687089",
-          "mine_name": "Mine Two",
-          "mine_no": "BLAH0502",
-        },
-        Object {
-          "latitude": "51.4961750",
-          "longitude": "-119.6963833",
-          "mine_guid": "75692b61-7ab9-406b-b1f5-8c9b857404ac",
-          "mine_name": "Legit Mine",
-          "mine_no": "BLAH6734",
-        },
-      ]
-    }
-    handleChange={[MockFunction]}
-    handleSelect={[MockFunction]}
-    iconColor="#5e46a1"
-    placeholder=""
-  />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateError": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "class",
-    "props": Object {
-      "allowClear": true,
-      "backfill": true,
-      "children": <Input
-        autoComplete="off"
-        disabled={false}
-        id="search"
-        suffix={
-          <Icon
-            className="icon-sm"
-            style={
-              Object {
-                "color": "#5e46a1",
-              }
-            }
-            type="search"
-          />
-        }
-        type="text"
-      />,
-      "choiceTransitionName": "zoom",
-      "dataSource": Array [
-        Object {
-          "latitude": "51.4961750",
-          "longitude": "-119.6963833",
-          "mine_guid": "fc72863d-83e8-46ba-90f9-87b0ed78823f",
-          "mine_name": "New Mine",
-          "mine_no": "BLAH6194",
-        },
-        Object {
-          "latitude": "51.4961750",
-          "longitude": "-119.6963833",
-          "mine_guid": "89a65274-581d-4862-8630-99f5f7687089",
-          "mine_name": "Mine Two",
-          "mine_no": "BLAH0502",
-        },
-        Object {
-          "latitude": "51.4961750",
-          "longitude": "-119.6963833",
-          "mine_guid": "75692b61-7ab9-406b-b1f5-8c9b857404ac",
-          "mine_name": "Legit Mine",
-          "mine_no": "BLAH6734",
-        },
-      ],
-      "defaultActiveFirstOption": false,
-      "dropdownMatchSelectWidth": true,
-      "filterOption": [Function],
-      "notFoundContent": "Not Found",
-      "onChange": [MockFunction],
-      "onSelect": [MockFunction],
-      "optionLabelProp": "children",
-      "placeholder": "",
-      "showSearch": false,
-      "style": Object {
-        "width": "100%",
+<AutoComplete
+  allowClear={true}
+  backfill={true}
+  choiceTransitionName="zoom"
+  dataSource={
+    Array [
+      Object {
+        "latitude": "51.4961750",
+        "longitude": "-119.6963833",
+        "mine_guid": "fc72863d-83e8-46ba-90f9-87b0ed78823f",
+        "mine_name": "New Mine",
+        "mine_no": "BLAH6194",
       },
-      "transitionName": "slide-up",
-    },
-    "ref": null,
-    "rendered": Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "class",
-      "props": Object {
-        "autoComplete": "off",
-        "disabled": false,
-        "id": "search",
-        "suffix": <Icon
-          className="icon-sm"
-          style={
-            Object {
-              "color": "#5e46a1",
-            }
-          }
-          type="search"
-        />,
-        "type": "text",
+      Object {
+        "latitude": "51.4961750",
+        "longitude": "-119.6963833",
+        "mine_guid": "89a65274-581d-4862-8630-99f5f7687089",
+        "mine_name": "Mine Two",
+        "mine_no": "BLAH0502",
       },
-      "ref": null,
-      "rendered": null,
-      "type": [Function],
-    },
-    "type": [Function],
-  },
-  Symbol(enzyme.__nodes__): Array [
+      Object {
+        "latitude": "51.4961750",
+        "longitude": "-119.6963833",
+        "mine_guid": "75692b61-7ab9-406b-b1f5-8c9b857404ac",
+        "mine_name": "Legit Mine",
+        "mine_no": "BLAH6734",
+      },
+    ]
+  }
+  defaultActiveFirstOption={false}
+  dropdownMatchSelectWidth={true}
+  filterOption={[Function]}
+  notFoundContent="Not Found"
+  onChange={[MockFunction]}
+  onSelect={[MockFunction]}
+  optionLabelProp="children"
+  placeholder=""
+  showSearch={false}
+  style={
     Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "class",
-      "props": Object {
-        "allowClear": true,
-        "backfill": true,
-        "children": <Input
-          autoComplete="off"
-          disabled={false}
-          id="search"
-          suffix={
-            <Icon
-              className="icon-sm"
-              style={
-                Object {
-                  "color": "#5e46a1",
-                }
-              }
-              type="search"
-            />
+      "width": "100%",
+    }
+  }
+  transitionName="slide-up"
+>
+  <Input
+    autoComplete="off"
+    id="search"
+    suffix={
+      <Icon
+        className="icon-sm"
+        style={
+          Object {
+            "color": "#5e46a1",
           }
-          type="text"
-        />,
-        "choiceTransitionName": "zoom",
-        "dataSource": Array [
-          Object {
-            "latitude": "51.4961750",
-            "longitude": "-119.6963833",
-            "mine_guid": "fc72863d-83e8-46ba-90f9-87b0ed78823f",
-            "mine_name": "New Mine",
-            "mine_no": "BLAH6194",
-          },
-          Object {
-            "latitude": "51.4961750",
-            "longitude": "-119.6963833",
-            "mine_guid": "89a65274-581d-4862-8630-99f5f7687089",
-            "mine_name": "Mine Two",
-            "mine_no": "BLAH0502",
-          },
-          Object {
-            "latitude": "51.4961750",
-            "longitude": "-119.6963833",
-            "mine_guid": "75692b61-7ab9-406b-b1f5-8c9b857404ac",
-            "mine_name": "Legit Mine",
-            "mine_no": "BLAH6734",
-          },
-        ],
-        "defaultActiveFirstOption": false,
-        "dropdownMatchSelectWidth": true,
-        "filterOption": [Function],
-        "notFoundContent": "Not Found",
-        "onChange": [MockFunction],
-        "onSelect": [MockFunction],
-        "optionLabelProp": "children",
-        "placeholder": "",
-        "showSearch": false,
-        "style": Object {
-          "width": "100%",
-        },
-        "transitionName": "slide-up",
-      },
-      "ref": null,
-      "rendered": Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "autoComplete": "off",
-          "disabled": false,
-          "id": "search",
-          "suffix": <Icon
-            className="icon-sm"
-            style={
-              Object {
-                "color": "#5e46a1",
-              }
-            }
-            type="search"
-          />,
-          "type": "text",
-        },
-        "ref": null,
-        "rendered": null,
-        "type": [Function],
-      },
-      "type": [Function],
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getDerivedStateFromProps": true,
-          "getSnapshotBeforeUpdate": true,
-          "setState": Object {
-            "skipsComponentDidUpdateOnNullish": true,
-          },
-        },
-      },
-    },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
-  },
-}
+        }
+        type="search"
+      />
+    }
+    type="text"
+  />
+</AutoComplete>
 `;

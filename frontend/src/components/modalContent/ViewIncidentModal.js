@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import CustomPropTypes from "@/customPropTypes";
 import { Button, Tag, Table } from "antd";
+import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 import { getInspectorsHash } from "@/selectors/partiesSelectors";
@@ -42,9 +42,7 @@ export class ViewIncidentModal extends Component {
 
   renderInitialDetails = () => {
     const formattedPhoneNo = this.props.incident.reported_by_phone_ext
-      ? `${this.props.incident.reported_by_phone_no} ext: ${
-          this.props.incident.reported_by_phone_ext
-        }`
+      ? `${this.props.incident.reported_by_phone_no} ext: ${this.props.incident.reported_by_phone_ext}`
       : this.props.incident.reported_by_phone_no;
     return (
       <div>
