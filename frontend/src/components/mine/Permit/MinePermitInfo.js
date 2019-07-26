@@ -31,7 +31,7 @@ const amalgamtedPermit = "ALG";
 const originalPermit = "OGP";
 
 const propTypes = {
-  mine: CustomPropTypes.mine.isRequired,
+  mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
   mineGuid: PropTypes.string.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit),
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),

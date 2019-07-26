@@ -7,7 +7,7 @@ import ViewPartyRelationships from "./ViewPartyRelationships";
 import { openModal, closeModal } from "@/actions/modalActions";
 import { createParty, fetchParties } from "@/actionCreators/partiesActionCreator";
 import { fetchMineRecordById } from "@/actionCreators/mineActionCreator";
-import { getMines } from "@/selectors/mineSelectors";
+import { getMines, getMineGuid } from "@/selectors/mineSelectors";
 import CustomPropTypes from "@/customPropTypes";
 
 /**
@@ -15,12 +15,13 @@ import CustomPropTypes from "@/customPropTypes";
  */
 
 const propTypes = {
+  mineGuid: PropTypes.string.isRequired,
   closeModal: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   fetchParties: PropTypes.func.isRequired,
   createParty: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
-  mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
+  mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
 };
 
 export class MineContactInfo extends Component {
@@ -38,8 +39,7 @@ export class MineContactInfo extends Component {
   };
 
   render() {
-    const { id } = this.props.match.params;
-    const mine = this.props.mines[id];
+    const mine = this.props.mines[this.props.mineGuid];
     return (
       <div className="tab__content">
         <ViewPartyRelationships
@@ -55,6 +55,7 @@ export class MineContactInfo extends Component {
 MineContactInfo.propTypes = propTypes;
 const mapStateToProps = (state) => ({
   mines: getMines(state),
+  mineGuid: getMineGuid(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

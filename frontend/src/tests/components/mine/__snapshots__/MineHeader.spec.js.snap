@@ -8,250 +8,95 @@ exports[`MineHeader renders dispatchProperly 1`] = `
     className="dashboard__header--card__content"
   >
     <div
-      className="inline-flex between center-mobile"
+      className="inline-flex between horizontal-center"
     >
-      <h1>
-        mine3
-      </h1>
+      <h4>
+        Mine Details
+      </h4>
       <div>
-        <div />
-        <Dropdown
-          className="full-height full-mobile"
-          mouseEnterDelay={0.15}
-          mouseLeaveDelay={0.1}
-          onVisibleChange={[Function]}
-          overlay={
-            <Menu>
-              <Memo(ConnectFunction)
-                permission="role_edit_mines"
-              >
-                <MenuItem
-                  onClick={[Function]}
-                >
-                  <div
-                    className="custom-menu-item"
-                  >
-                    <button
-                      className="full"
-                      onClick={[Function]}
-                      type="button"
-                    >
-                      <img
-                        alt="pencil"
-                        className="padding-small"
-                        src={
-                          Object {
-                            "process": [Function],
-                          }
-                        }
-                      />
-                      Update Mine Record
-                    </button>
-                  </div>
-                </MenuItem>
-              </Memo(ConnectFunction)>
-              <Memo(ConnectFunction)
-                permission="role_edit_mines"
-              >
-                <MenuItem
-                  onClick={[Function]}
-                >
-                  <div
-                    className="custom-menu-item"
-                  >
-                    <button
-                      className="full"
-                      onClick={[Function]}
-                      type="button"
-                    >
-                      <img
-                        alt="document"
-                        className="padding-small"
-                        src={
-                          Object {
-                            "process": [Function],
-                          }
-                        }
-                      />
-                      + Add TSF
-                    </button>
-                  </div>
-                </MenuItem>
-              </Memo(ConnectFunction)>
-              <div
-                className="custom-menu-item"
-              >
-                <button
-                  className="full"
-                  type="button"
-                >
-                  <img
-                    alt="document"
-                    className="padding-small"
-                    src={
-                      Object {
-                        "process": [Function],
-                      }
-                    }
-                  />
-                  Subscribe
-                </button>
-              </div>
-              <Memo(ConnectFunction)
-                permission="role_admin"
-              >
-                <div
-                  className="custom-menu-item"
-                >
-                  <Popconfirm
-                    cancelText="No"
-                    disabled={false}
-                    icon={
-                      <Icon
-                        theme="filled"
-                        type="exclamation-circle"
-                      />
-                    }
-                    okText="Yes"
-                    okType="primary"
-                    onConfirm={[Function]}
-                    placement="left"
-                    title="Are you sure?"
-                    transitionName="zoom-big"
-                    trigger="click"
-                  >
-                    <button
-                      className="full"
-                      type="button"
-                    >
-                      <img
-                        alt="checkmark"
-                        className="padding-small"
-                        src={
-                          Object {
-                            "process": [Function],
-                          }
-                        }
-                        width="30"
-                      />
-                      Verify Mine Data
-                    </button>
-                  </Popconfirm>
-                </div>
-                <div
-                  className="custom-menu-item"
-                >
-                  <Popconfirm
-                    cancelText="No"
-                    disabled={false}
-                    icon={
-                      <Icon
-                        theme="filled"
-                        type="exclamation-circle"
-                      />
-                    }
-                    okText="Yes"
-                    okType="primary"
-                    onConfirm={[Function]}
-                    placement="left"
-                    title="Are you sure?"
-                    transitionName="zoom-big"
-                    trigger="click"
-                  >
-                    <button
-                      className="full"
-                      type="button"
-                    >
-                      <img
-                        alt="hazard"
-                        className="padding-small"
-                        src={
-                          Object {
-                            "process": [Function],
-                          }
-                        }
-                        width="30"
-                      />
-                      Mark Data for Verification
-                    </button>
-                  </Popconfirm>
-                </div>
-              </Memo(ConnectFunction)>
-            </Menu>
-          }
-          placement="bottomLeft"
-          visible={false}
+        <Connect(AuthorizationWrapper)
+          isMajorMine={true}
+          permission="role_edit_mines"
         >
-          <Button
-            block={false}
-            ghost={false}
-            htmlType="button"
-            loading={false}
-            type="primary"
+          <Dropdown
+            className="full-height"
+            mouseEnterDelay={0.15}
+            mouseLeaveDelay={0.1}
+            overlay={
+              <Menu>
+                <MenuItem>
+                  <button
+                    className="full"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    <img
+                      alt="pencil"
+                      className="padding-small"
+                      src={
+                        Object {
+                          "process": [Function],
+                        }
+                      }
+                    />
+                    Update Mine Record
+                  </button>
+                </MenuItem>
+                <MenuItem>
+                  <button
+                    className="full"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    <img
+                      alt="document"
+                      className="padding-small"
+                      src={
+                        Object {
+                          "process": [Function],
+                        }
+                      }
+                    />
+                    + Add TSF
+                  </button>
+                </MenuItem>
+              </Menu>
+            }
+            placement="bottomLeft"
           >
-            <div
-              className="padding-small"
+            <Button
+              block={false}
+              ghost={false}
+              htmlType="button"
+              loading={false}
+              type="primary"
             >
-              <img
-                alt="Add/Edit"
-                className="padding-small--right"
-                src={
-                  Object {
-                    "process": [Function],
+              <div
+                className="padding-small"
+              >
+                <img
+                  alt="Add/Edit"
+                  className="padding-small--right"
+                  src={
+                    Object {
+                      "process": [Function],
+                    }
                   }
-                }
-              />
-              Add/Edit
-            </div>
-          </Button>
-        </Dropdown>
+                />
+                Add/Edit
+              </div>
+            </Button>
+          </Dropdown>
+        </Connect(AuthorizationWrapper)>
       </div>
     </div>
     <Divider
-      className="custom-large-divider"
+      style={
+        Object {
+          "margin": "0",
+        }
+      }
     />
-    <div
-      className="inline-flex between block-mobile"
-    >
-      <div
-        className="inline-flex padding-small"
-      >
-        <p
-          className="field-title"
-        >
-          Mine No. 
-        </p>
-        <p>
-           
-          BLAH9091
-           
-        </p>
-      </div>
-      <div
-        className="inline-flex padding-small"
-      >
-        <p
-          className="field-title"
-        >
-          Mine Class 
-        </p>
-        <p>
-          Regional mine
-        </p>
-      </div>
-      <div
-        className="inline-flex padding-small"
-      >
-        <p
-          className="field-title"
-        >
-          TSF
-        </p>
-        <p>
-          1
-        </p>
-      </div>
-    </div>
     <div
       className="inline-flex padding-small"
     >
@@ -262,6 +107,18 @@ exports[`MineHeader renders dispatchProperly 1`] = `
       </p>
       <p>
         N/A
+      </p>
+    </div>
+    <div
+      className="inline-flex padding-small"
+    >
+      <p
+        className="field-title"
+      >
+        Mine Class 
+      </p>
+      <p>
+        Major mine
       </p>
     </div>
     <div
@@ -303,6 +160,18 @@ exports[`MineHeader renders dispatchProperly 1`] = `
       </p>
     </div>
     <div
+      className="inline-flex padding-small"
+    >
+      <p
+        className="field-title"
+      >
+        TSF
+      </p>
+      <p>
+        1
+      </p>
+    </div>
+    <div
       className="inline-flex padding-small wrap"
     >
       <p
@@ -325,6 +194,7 @@ exports[`MineHeader renders dispatchProperly 1`] = `
       long={null}
       mine={
         Object {
+          "major_mine_ind": true,
           "mine_expected_documents": Array [
             Object {
               "date_created": "2018-11-19",

@@ -15,7 +15,9 @@ const setupDispatchProps = () => {
 };
 
 const setupReducerProps = () => {
-  reducerProps.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
+  reducerProps.match = { params: { id: "18133c75-49ad-4101-85f3-a43e35ae989a" } };
+  reducerProps.mineGuid = "18133c75-49ad-4101-85f3-a43e35ae989a";
+  reducerProps.mines = MOCK.MINES.mines;
   reducerProps.permittees = MOCK.PERMITTEE.permittees;
   reducerProps.permitteeIds = MOCK.PERMITTEE.permitteeIds;
 };

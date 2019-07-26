@@ -12,7 +12,9 @@ const setupDispatchProps = () => {
 };
 
 const setupProps = () => {
-  props.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
+  props.mineGuid = "18145c75-49ad-0101-85f3-a43e45ae989a";
+  props.match = { params: { id: "18145c75-49ad-0101-85f3-a43e45ae989a" } };
+  props.mines = MOCK.MINES.mines;
 };
 
 beforeEach(() => {
@@ -22,6 +24,7 @@ beforeEach(() => {
 
 describe("MinePermitInfo", () => {
   it("renders properly", () => {
+    console.log(props);
     const component = shallow(<MinePermitInfo {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });

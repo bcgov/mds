@@ -9,6 +9,8 @@ const dispatchProps = {};
 const setupDispatchProps = () => {
   dispatchProps.updateMineRecord = jest.fn();
   dispatchProps.fetchMineRecordById = jest.fn();
+  dispatchProps.removeMineType = jest.fn();
+  dispatchProps.createTailingsStorageFacility = jest.fn();
   dispatchProps.closeModal = jest.fn();
   dispatchProps.openModal = jest.fn();
 };
