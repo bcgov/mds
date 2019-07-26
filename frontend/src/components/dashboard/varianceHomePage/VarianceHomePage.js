@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import moment from "moment";
+import PropTypes from "prop-types";
 import {
   fetchRegionOptions,
   fetchMineTenureTypes,
@@ -18,8 +19,8 @@ import {
   getCommodityOptionHash,
   getHSRCMComplianceCodesHash,
   getFilterVarianceStatusOptions,
+  getMultiSelectComplianceCodes,
 } from "@/selectors/staticContentSelectors";
-import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import {
   fetchVariances,
@@ -167,6 +168,8 @@ export class CustomHomePage extends Component {
   };
 
   render() {
+    // console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%");
+    // console.log(this.props.multiSelectComplianceCodes);
     return (
       <div className="landing-page">
         <div className="landing-page__header">
@@ -177,6 +180,8 @@ export class CustomHomePage extends Component {
             handleNameFieldReset={this.handleNameFieldReset}
             initialValues={this.state.params}
             handleSearch={this.handleSearch}
+            // eslint-disable-next-line react/prop-types
+            complianceCodes={this.props.multiSelectComplianceCodes}
           />
           <LoadingWrapper condition={this.state.variancesLoaded}>
             <VarianceTable
@@ -206,6 +211,7 @@ const mapStateToProps = (state) => ({
   variancePageData: getVariancePageData(state),
   variances: getVariances(state),
   complianceCodesHash: getHSRCMComplianceCodesHash(state),
+  multiSelectComplianceCodes: getMultiSelectComplianceCodes(state),
   filterVarianceStatusOptions: getFilterVarianceStatusOptions(state),
 });
 

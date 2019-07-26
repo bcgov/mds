@@ -18,9 +18,22 @@ const defaultProps = {
   initialValues: {},
 };
 
+// const checkAdvancedSearch = ({ status, region, tenure, commodity, tsf, major }) =>
+//   tsf || major || some([status, region, tenure, commodity], negate(isEmpty));
+
 // eslint-disable-next-line react/prefer-stateless-function
 export class VarianceSearch extends Component {
+  state = {
+    isAdvanceSearch: false,
+  };
+
+  toggleAdvancedSearch = () => {
+    this.setState((prevState) => ({ isAdvanceSearch: !prevState.isAdvanceSearch }));
+  };
+
   render() {
+    // console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%");
+    // console.log(this.props.complianceCodes);
     return (
       <div>
         <Row>
@@ -30,8 +43,8 @@ export class VarianceSearch extends Component {
                 handleNameFieldReset={this.props.handleNameFieldReset}
                 onSubmit={this.props.handleSearch}
                 handleSearch={this.props.handleSearch}
-                // toggleAdvancedSearch={this.toggleAdvancedSearch}
-                // isAdvanceSearch={this.state.isAdvanceSearch}
+                toggleAdvancedSearch={this.toggleAdvancedSearch}
+                isAdvanceSearch={this.state.isAdvanceSearch}
                 // partyTypeOptions={[
                 //   { value: "PER", label: "Person" },
                 //   { value: "ORG", label: "Organization" },
@@ -42,6 +55,8 @@ export class VarianceSearch extends Component {
                 //   ...this.props.partyRelationshipTypesList,
                 // ]}
                 initialValues={this.props.initialValues}
+                // eslint-disable-next-line react/prop-types
+                complianceCodes={this.props.complianceCodes}
               />
             </span>
           </Col>

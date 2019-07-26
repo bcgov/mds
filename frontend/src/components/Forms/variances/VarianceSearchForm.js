@@ -1,27 +1,28 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form, Button, Col, Row } from "antd";
+import { Form, Button, Col, Row, Icon } from "antd";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 // import { phoneNumber, maxLength } from "@/utils/Validate";
-// import CustomPropTypes from "@/customPropTypes";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   handleSearch: PropTypes.func.isRequired,
   // handleNameFieldReset: PropTypes.func.isRequired,
-  // toggleAdvancedSearch: PropTypes.func.isRequired,
+  toggleAdvancedSearch: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
   // partyTypeOptions: CustomPropTypes.options.isRequired,
   // relationshipTypes: CustomPropTypes.options.isRequired,
   // initialValues: PropTypes.objectOf(PropTypes.string).isRequired,
-  // isAdvanceSearch: PropTypes.bool,
+  isAdvanceSearch: PropTypes.bool,
+  complianceCodes: CustomPropTypes.options.isRequired,
 };
 
-// const defaultProps = {
-//   isAdvanceSearch: false,
-// };
+const defaultProps = {
+  isAdvanceSearch: false,
+};
 
 export class VarianceSearchForm extends Component {
   // state = {
@@ -29,7 +30,6 @@ export class VarianceSearchForm extends Component {
   // };
 
   handleReset = () => {
-    // this.setState({ contactType: "PER" });
     this.props.reset();
     this.props.handleSearch({}, true);
   };
@@ -41,10 +41,12 @@ export class VarianceSearchForm extends Component {
   // };
 
   render() {
+    console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%");
+    console.log(this.props.complianceCodes);
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit} onReset={this.handleReset}>
         <Row gutter={6}>
-          <Col md={18} xs={18}>
+          <Col md={24} xs={24}>
             <Field
               id="party_name"
               name="party_name"
@@ -53,43 +55,59 @@ export class VarianceSearchForm extends Component {
             />
           </Col>
         </Row>
-        {/* {this.props.isAdvanceSearch && (
+        {this.props.isAdvanceSearch && (
           <div>
             <Row gutter={6}>
-              <Col md={8} xs={24}>
+              <Col md={24} xs={24}>
                 <Field
-                  id="email"
-                  name="email"
-                  placeholder="Contact Email"
-                  component={renderConfig.FIELD}
-                />
-              </Col>
-              <Col md={8} xs={24}>
-                <Field
-                  id="phone_no"
-                  name="phone_no"
-                  placeholder="Phone Number"
-                  component={renderConfig.FIELD}
-                  validate={[phoneNumber, maxLength(12)]}
-                />
-              </Col>
-              <Col md={8} xs={24}>
-                <Field
-                  id="role"
-                  name="role"
-                  component={renderConfig.SELECT}
-                  data={this.props.relationshipTypes}
+                  id="compilance_code"
+                  name="compilance_code"
+                  placeholder="Select Compliance Code"
+                  component={renderConfig.MULTI_SELECT}
+                  data={this.props.complianceCodes}
                 />
               </Col>
             </Row>
           </div>
-        )} */}
-        {/* <div className="left center-mobile">
+        )}
+
+        {/* // <div>
+          //   <Row gutter={6}>
+          //     <Col md={8} xs={24}>
+          //       <Field 
+          //         id="email"
+          //         name="email"
+          //         placeholder="Contact Email"
+          //         component={renderConfig.FIELD}
+          //       />
+          //     </Col>
+          //     <Col md={8} xs={24}>
+          //       <Field
+          //         id="phone_no"
+          //         name="phone_no"
+          //         placeholder="Phone Number"
+          //         component={renderConfig.FIELD}
+          //         validate={[phoneNumber, maxLength(12)]}
+          //       />
+          //     </Col>
+          //     <Col md={8} xs={24}>
+          //       <Field
+          //         id="role"
+          //         name="role"
+          //         component={renderConfig.SELECT}
+          //         data={this.props.relationshipTypes}
+          //       />
+          //     </Col>
+          //   </Row>
+          // </div>
+        */}
+        <div className="left center-mobile">
           <Button className="btn--dropdown" onClick={this.props.toggleAdvancedSearch}>
             {this.props.isAdvanceSearch ? "Collapse Filters" : "Expand Filters"}
             <Icon type={this.props.isAdvanceSearch ? "up" : "down"} />
           </Button>
-        </div> */}
+        </div>
+
         <div className="right center-mobile">
           <Button className="full-mobile" type="secondary" htmlType="reset">
             Clear Filters
@@ -104,7 +122,7 @@ export class VarianceSearchForm extends Component {
 }
 
 VarianceSearchForm.propTypes = propTypes;
-// VarianceSearchForm.defaultProps = defaultProps;
+VarianceSearchForm.defaultProps = defaultProps;
 
 export default reduxForm({
   form: FORM.CONTACT_ADVANCED_SEARCH,
