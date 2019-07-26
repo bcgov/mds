@@ -17,9 +17,9 @@ const downloadFileFromDocumentManager = ({ document_manager_guid, document_name 
     .then((response) => {
       const token = { token: response.data.token_guid };
       if (document_name.toLowerCase().includes(".pdf")) {
-        window.open(`${ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_FILE_GET_URL(token)}`, "_blank");
+        window.open(`${ENVIRONMENT.docManUrl + DOCUMENT_MANAGER_FILE_GET_URL(token)}`, "_blank");
       } else {
-        window.location = `${ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_FILE_GET_URL(token)}`;
+        window.location = `${ENVIRONMENT.docManUrl + DOCUMENT_MANAGER_FILE_GET_URL(token)}`;
       }
     });
 };

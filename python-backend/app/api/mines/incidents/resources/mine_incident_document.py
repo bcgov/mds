@@ -24,6 +24,8 @@ from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 
 from app.api.services.document_manager_service import DocumentManagerService
 
+from app.api.services.document_manager_service import DocumentManagerService
+
 
 class MineIncidentDocumentListResource(Resource, UserMixin):
     @api.doc(description='Request a document_manager_guid for uploading a document')

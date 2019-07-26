@@ -9,7 +9,6 @@ import factory.fuzzy
 from app.extensions import db
 from tests.status_code_gen import *
 from app.api.applications.models.application import Application
-from app.api.document_manager.models.document_manager import DocumentManager
 from app.api.mines.documents.expected.models.mine_expected_document import MineExpectedDocument
 from app.api.mines.documents.mines.models.mine_document import MineDocument
 from app.api.mines.mine.models.mine import Mine
@@ -67,35 +66,16 @@ class ApplicationFactory(BaseFactory):
     received_date = TODAY
 
 
-class DocumentManagerFactory(BaseFactory):
-    class Meta:
-        model = DocumentManager
-
-    class Params:
-        path_root = ''
-
-    document_guid = GUID
-    full_storage_path = factory.LazyAttribute(lambda o: path.join(o.path_root, 'mine_no/category', o
-                                                                  .file_display_name))
-    upload_started_date = TODAY
-    upload_completed_date = TODAY
-    file_display_name = factory.Faker('file_name')
-    path_display_name = factory.LazyAttribute(lambda o: path.join(o.path_root, 'mine_name/category',
-                                                                  o.file_display_name))
-
-
 class MineDocumentFactory(BaseFactory):
     class Meta:
         model = MineDocument
 
     class Params:
-        document_manager_obj = factory.SubFactory(
-            DocumentManagerFactory, file_display_name=factory.SelfAttribute('..document_name'))
         mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
 
     mine_document_guid = GUID
     mine_guid = factory.SelfAttribute('mine.mine_guid')
-    document_manager_guid = factory.SelfAttribute('document_manager_obj.document_guid')
+    document_manager_guid = GUID 
     document_name = factory.Faker('file_name')
     mine_expected_document = []
 
@@ -302,15 +282,11 @@ class PermitAmendmentDocumentFactory(BaseFactory):
     class Meta:
         model = PermitAmendmentDocument
 
-    class Params:
-        document_manager_obj = factory.SubFactory(
-            DocumentManagerFactory, file_display_name=factory.SelfAttribute('..document_name'))
-
     permit_amendment_document_guid = GUID
     permit_amendment_id = factory.SelfAttribute('permit_amendment.permit_amendment_id')
     document_name = factory.Faker('file_name')
     mine_guid = factory.SelfAttribute('permit_amendment.permit.mine.mine_guid')
-    document_manager_guid = factory.SelfAttribute('document_manager_obj.document_guid')
+    document_manager_guid = GUID 
     permit_amendment = factory.SubFactory(PermitAmendmentFactory)
 
 

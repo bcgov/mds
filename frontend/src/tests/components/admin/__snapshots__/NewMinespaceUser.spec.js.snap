@@ -1,223 +1,52 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`NewMinespaceUser renders properly 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <NewMinespaceUser
-    createMinespaceUser={[MockFunction]}
-    fetchMineNameList={
-      [MockFunction] {
-        "calls": Array [
-          Array [],
-        ],
+<div>
+  <h3>
+    Add BCeID User
+  </h3>
+  <ReduxForm
+    destroyOnUnmount={true}
+    enableReinitialize={false}
+    forceUnregisterOnUnmount={false}
+    form="ADD_MINESPACE_USER"
+    getFormState={[Function]}
+    handleChange={[Function]}
+    handleSearch={[Function]}
+    initialValues={
+      Object {
+        "proponent_mine_access": Array [],
       }
     }
-    fetchMinespaceUsers={[MockFunction]}
+    keepDirtyOnReinitialize={false}
     mines={
       Array [
         Object {
-          "latitude": "51.4961750",
-          "longitude": "-119.6963833",
-          "mine_guid": "fc72863d-83e8-46ba-90f9-87b0ed78823f",
-          "mine_name": "New Mine",
-          "mine_no": "BLAH6194",
+          "label": "New Mine-BLAH6194",
+          "value": "New Mine~fc72863d-83e8-46ba-90f9-87b0ed78823f",
         },
         Object {
-          "latitude": "51.4961750",
-          "longitude": "-119.6963833",
-          "mine_guid": "89a65274-581d-4862-8630-99f5f7687089",
-          "mine_name": "Mine Two",
-          "mine_no": "BLAH0502",
+          "label": "Mine Two-BLAH0502",
+          "value": "Mine Two~89a65274-581d-4862-8630-99f5f7687089",
         },
         Object {
-          "latitude": "51.4961750",
-          "longitude": "-119.6963833",
-          "mine_guid": "75692b61-7ab9-406b-b1f5-8c9b857404ac",
-          "mine_name": "Legit Mine",
-          "mine_no": "BLAH6734",
+          "label": "Legit Mine-BLAH6734",
+          "value": "Legit Mine~75692b61-7ab9-406b-b1f5-8c9b857404ac",
         },
       ]
     }
-    refreshData={[Function]}
-  />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateError": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "host",
-    "props": Object {
-      "children": Array [
-        <h3>
-          Add BCEID User
-        </h3>,
-        <ReduxForm
-          handleChange={[Function]}
-          handleSearch={[Function]}
-          mines={
-            Array [
-              Object {
-                "label": "New Mine-BLAH6194",
-                "value": "New Mine~fc72863d-83e8-46ba-90f9-87b0ed78823f",
-              },
-              Object {
-                "label": "Mine Two-BLAH0502",
-                "value": "Mine Two~89a65274-581d-4862-8630-99f5f7687089",
-              },
-              Object {
-                "label": "Legit Mine-BLAH6734",
-                "value": "Legit Mine~75692b61-7ab9-406b-b1f5-8c9b857404ac",
-              },
-            ]
-          }
-          onSubmit={[Function]}
-        />,
-      ],
-    },
-    "ref": null,
-    "rendered": Array [
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "host",
-        "props": Object {
-          "children": "Add BCEID User",
-        },
-        "ref": null,
-        "rendered": "Add BCEID User",
-        "type": "h3",
-      },
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "handleChange": [Function],
-          "handleSearch": [Function],
-          "mines": Array [
-            Object {
-              "label": "New Mine-BLAH6194",
-              "value": "New Mine~fc72863d-83e8-46ba-90f9-87b0ed78823f",
-            },
-            Object {
-              "label": "Mine Two-BLAH0502",
-              "value": "Mine Two~89a65274-581d-4862-8630-99f5f7687089",
-            },
-            Object {
-              "label": "Legit Mine-BLAH6734",
-              "value": "Legit Mine~75692b61-7ab9-406b-b1f5-8c9b857404ac",
-            },
-          ],
-          "onSubmit": [Function],
-        },
-        "ref": null,
-        "rendered": null,
-        "type": [Function],
-      },
-    ],
-    "type": "div",
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "host",
-      "props": Object {
-        "children": Array [
-          <h3>
-            Add BCEID User
-          </h3>,
-          <ReduxForm
-            handleChange={[Function]}
-            handleSearch={[Function]}
-            mines={
-              Array [
-                Object {
-                  "label": "New Mine-BLAH6194",
-                  "value": "New Mine~fc72863d-83e8-46ba-90f9-87b0ed78823f",
-                },
-                Object {
-                  "label": "Mine Two-BLAH0502",
-                  "value": "Mine Two~89a65274-581d-4862-8630-99f5f7687089",
-                },
-                Object {
-                  "label": "Legit Mine-BLAH6734",
-                  "value": "Legit Mine~75692b61-7ab9-406b-b1f5-8c9b857404ac",
-                },
-              ]
-            }
-            onSubmit={[Function]}
-          />,
-        ],
-      },
-      "ref": null,
-      "rendered": Array [
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "host",
-          "props": Object {
-            "children": "Add BCEID User",
-          },
-          "ref": null,
-          "rendered": "Add BCEID User",
-          "type": "h3",
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "handleChange": [Function],
-            "handleSearch": [Function],
-            "mines": Array [
-              Object {
-                "label": "New Mine-BLAH6194",
-                "value": "New Mine~fc72863d-83e8-46ba-90f9-87b0ed78823f",
-              },
-              Object {
-                "label": "Mine Two-BLAH0502",
-                "value": "Mine Two~89a65274-581d-4862-8630-99f5f7687089",
-              },
-              Object {
-                "label": "Legit Mine-BLAH6734",
-                "value": "Legit Mine~75692b61-7ab9-406b-b1f5-8c9b857404ac",
-              },
-            ],
-            "onSubmit": [Function],
-          },
-          "ref": null,
-          "rendered": null,
-          "type": [Function],
-        },
-      ],
-      "type": "div",
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getDerivedStateFromProps": true,
-          "getSnapshotBeforeUpdate": true,
-          "setState": Object {
-            "skipsComponentDidUpdateOnNullish": true,
-          },
-        },
-      },
-    },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
-  },
-}
+    onSubmit={[Function]}
+    onSubmitSuccess={[Function]}
+    persistentSubmitErrors={false}
+    pure={true}
+    shouldAsyncValidate={[Function]}
+    shouldError={[Function]}
+    shouldValidate={[Function]}
+    shouldWarn={[Function]}
+    submitAsSideEffect={false}
+    touchOnBlur={false}
+    touchOnChange={false}
+    updateUnregisteredFields={false}
+  />
+</div>
 `;

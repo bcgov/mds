@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { Menu, Dropdown, Button, Icon, Divider } from "antd";
-import * as route from "@/constants/routes";
 import MediaQuery from "react-responsive";
 import PropTypes from "prop-types";
+import * as route from "@/constants/routes";
 import * as ENV from "@/constants/environment";
 import { signOutFromSiteMinder } from "@/utils/authenticationHelpers";
 import { isAuthenticated, getUserInfo } from "@/selectors/authenticationSelectors";
@@ -58,9 +58,7 @@ export class Authentication extends Component {
     if (!this.props.isAuthenticated) {
       return (
         <a
-          href={`${ENV.KEYCLOAK.loginURL}${ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${
-            ENV.KEYCLOAK.idpHint
-          }`}
+          href={`${ENV.KEYCLOAK.loginURL}${ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${ENV.KEYCLOAK.idpHint}`}
         >
           <Button type="tertiary" className="login-btn">
             Log in

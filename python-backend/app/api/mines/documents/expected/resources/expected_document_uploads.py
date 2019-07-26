@@ -18,6 +18,8 @@ from app.api.mines.documents.mines.models.mine_document import MineDocument
 
 from app.api.services.document_manager_service import DocumentManagerService
 
+from app.api.services.document_manager_service import DocumentManagerService
+
 from app.extensions import api, db
 from app.api.utils.access_decorators import requires_any_of, MINE_EDIT, MINESPACE_PROPONENT
 from app.api.utils.resources_mixins import UserMixin, ErrorMixin
