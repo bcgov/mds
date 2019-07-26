@@ -1,5 +1,5 @@
-import { ENVIRONMENT, DEFAULT_ENVIRONMENT, KEYCLOAK } from "@/constants/environment";
 import axios from "axios";
+import { ENVIRONMENT, DEFAULT_ENVIRONMENT, KEYCLOAK } from "@/constants/environment";
 
 export default function fetchEnv() {
   return axios
@@ -15,6 +15,7 @@ export default function fetchEnv() {
     .catch(() => DEFAULT_ENVIRONMENT)
     .then((env) => {
       ENVIRONMENT.apiUrl = env.apiUrl;
+      ENVIRONMENT.docManUrl = env.docManUrl;
       ENVIRONMENT.mapPortalId = env.mapPortalId;
       KEYCLOAK.clientId = env.keycloak_clientId;
       KEYCLOAK.resource = env.keycloak_resource;
