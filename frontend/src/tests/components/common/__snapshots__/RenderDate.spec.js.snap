@@ -1,149 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`RenderDate renders properly 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <RenderDate
+<FormItem
+  hasFeedback={false}
+  help={false}
+  label=""
+  validateStatus=""
+>
+  <PickerWrapper
+    format={false}
     id={1}
-    input=""
-    label=""
-    meta={
-      Object {
-        "error": false,
-        "touched": false,
-        "warning": false,
-      }
-    }
-    onChange={[MockFunction]}
+    locale={Object {}}
+    onChange={[Function]}
+    onOk={[Function]}
+    onOpenChange={[Function]}
     placeholder="yyyy-mm-dd"
+    popupStyle={Object {}}
     showTime={false}
-  />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateError": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "class",
-    "props": Object {
-      "children": <PickerWrapper
-        format={false}
-        id={1}
-        locale={Object {}}
-        onChange={[Function]}
-        onOk={[Function]}
-        onOpenChange={[Function]}
-        placeholder="yyyy-mm-dd"
-        popupStyle={Object {}}
-        showTime={false}
-        style={false}
-        transitionName="slide-up"
-        value={null}
-      />,
-      "hasFeedback": false,
-      "help": false,
-      "label": "",
-      "validateStatus": "",
-    },
-    "ref": null,
-    "rendered": Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "class",
-      "props": Object {
-        "format": false,
-        "id": 1,
-        "locale": Object {},
-        "onChange": [Function],
-        "onOk": [Function],
-        "onOpenChange": [Function],
-        "placeholder": "yyyy-mm-dd",
-        "popupStyle": Object {},
-        "showTime": false,
-        "style": false,
-        "transitionName": "slide-up",
-        "value": null,
-      },
-      "ref": null,
-      "rendered": null,
-      "type": [Function],
-    },
-    "type": [Function],
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "class",
-      "props": Object {
-        "children": <PickerWrapper
-          format={false}
-          id={1}
-          locale={Object {}}
-          onChange={[Function]}
-          onOk={[Function]}
-          onOpenChange={[Function]}
-          placeholder="yyyy-mm-dd"
-          popupStyle={Object {}}
-          showTime={false}
-          style={false}
-          transitionName="slide-up"
-          value={null}
-        />,
-        "hasFeedback": false,
-        "help": false,
-        "label": "",
-        "validateStatus": "",
-      },
-      "ref": null,
-      "rendered": Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "format": false,
-          "id": 1,
-          "locale": Object {},
-          "onChange": [Function],
-          "onOk": [Function],
-          "onOpenChange": [Function],
-          "placeholder": "yyyy-mm-dd",
-          "popupStyle": Object {},
-          "showTime": false,
-          "style": false,
-          "transitionName": "slide-up",
-          "value": null,
-        },
-        "ref": null,
-        "rendered": null,
-        "type": [Function],
-      },
-      "type": [Function],
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getDerivedStateFromProps": true,
-          "getSnapshotBeforeUpdate": true,
-          "setState": Object {
-            "skipsComponentDidUpdateOnNullish": true,
-          },
-        },
-      },
-    },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
-  },
-}
+    style={false}
+    transitionName="slide-up"
+    value={null}
+  />
+</FormItem>
 `;

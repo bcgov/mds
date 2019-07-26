@@ -1,108 +1,30 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`PartySelectField renders properly 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <PartySelectField
-    allowAddingParties={false}
-    fetchSearchResults={[MockFunction]}
-    id="party_guid"
-    label="Name*"
-    name="party_guid"
-    organization={false}
-    partyLabel="contact"
-    person={false}
-    searchResults={Array []}
-    validate={Array []}
-  />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateError": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "class",
-    "props": Object {
-      "allowAddingParties": false,
-      "component": [Function],
-      "dataSource": Array [],
-      "fetchSearchResults": [MockFunction],
-      "handleSearch": [Function],
-      "handleSelect": [Function],
-      "id": "party_guid",
-      "label": "Name*",
-      "name": "party_guid",
-      "organization": false,
-      "partyLabel": "contact",
-      "person": false,
-      "searchResults": Array [],
-      "selectedOption": Object {
-        "key": "",
-        "label": "",
-      },
-      "validate": Array [
-        [Function],
-      ],
-    },
-    "ref": null,
-    "rendered": null,
-    "type": [Function],
-  },
-  Symbol(enzyme.__nodes__): Array [
+<Field
+  allowAddingParties={false}
+  component={[Function]}
+  dataSource={Array []}
+  fetchSearchResults={[MockFunction]}
+  handleSearch={[Function]}
+  handleSelect={[Function]}
+  id="party_guid"
+  label="Name*"
+  name="party_guid"
+  organization={false}
+  partyLabel="contact"
+  person={false}
+  searchResults={Array []}
+  selectedOption={
     Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "class",
-      "props": Object {
-        "allowAddingParties": false,
-        "component": [Function],
-        "dataSource": Array [],
-        "fetchSearchResults": [MockFunction],
-        "handleSearch": [Function],
-        "handleSelect": [Function],
-        "id": "party_guid",
-        "label": "Name*",
-        "name": "party_guid",
-        "organization": false,
-        "partyLabel": "contact",
-        "person": false,
-        "searchResults": Array [],
-        "selectedOption": Object {
-          "key": "",
-          "label": "",
-        },
-        "validate": Array [
-          [Function],
-        ],
-      },
-      "ref": null,
-      "rendered": null,
-      "type": [Function],
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getDerivedStateFromProps": true,
-          "getSnapshotBeforeUpdate": true,
-          "setState": Object {
-            "skipsComponentDidUpdateOnNullish": true,
-          },
-        },
-      },
-    },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
-  },
-}
+      "key": "",
+      "label": "",
+    }
+  }
+  validate={
+    Array [
+      [Function],
+    ]
+  }
+/>
 `;

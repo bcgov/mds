@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import CustomPropTypes from "@/customPropTypes";
 import { Field, reduxForm } from "redux-form";
 import { Form, Col, Row } from "antd";
+import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import FileUpload from "@/components/common/FileUpload";
