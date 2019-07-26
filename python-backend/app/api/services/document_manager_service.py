@@ -8,7 +8,7 @@ ALLOWED_DOCUMENT_CATEGORIES = ['tailings', 'permits', 'variances', 'incidents']
 
 
 class DocumentManagerService():
-    document_manager_url = f'{Config.DOCUMENT_MANAGER_URL}/document-manager'
+    document_manager_url = f'{Config.DOCUMENT_MANAGER_URL}/documents'
 
     @classmethod
     def initializeFileUploadWithDocumentManager(cls, request, mine, document_category):
