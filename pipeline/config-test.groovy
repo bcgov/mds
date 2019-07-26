@@ -183,6 +183,7 @@ app {
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api",
                             'NRIS_API_URL': "${vars.modules.'mds-nris-backend'.HOST}${vars.modules.'mds-nris-backend'.PATH}",
+                            'DOCUMENT_MANAGER_URL': "${vars.modules.'mds-docman-backend'.HOST}${vars.modules.'mds-docman-backend'.PATH}",
                     ]
                 ],
                 [
@@ -415,6 +416,10 @@ environments {
                 'mds-nris-backend' {
                     HOST = "http://mds-nris-backend${vars.deployment.suffix}:5500"
                     PATH = "/nris-api"
+                }
+                'mds-docman-backend' {
+                    HOST = "http://mds-docman-backend${vars.deployment.suffix}:5001"
+                    PATH = "/document-manager"
                 }
                 'mds-redis' {
                     HOST = "http://mds-redis${vars.deployment.suffix}"
