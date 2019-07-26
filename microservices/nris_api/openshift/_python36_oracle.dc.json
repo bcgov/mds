@@ -360,10 +360,6 @@
                     "value": "${API_URL}"
                   },
                   {
-                    "name": "UPLOADED_DOCUMENT_DEST",
-                    "value": "${UPLOADED_DOCUMENT_DEST}"
-                  },
-                  {
                     "name": "ENVIRONMENT_NAME",
                     "value": "${ENVIRONMENT_NAME}"
                   }
