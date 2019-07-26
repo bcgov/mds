@@ -102,3 +102,4 @@ export const MINE_INCIDENT_DOCUMENT = (mineGuid) => `/mines/${mineGuid}/incident
 export const INCIDENT_FOLLOWUP_ACTIONS = `/incidents/followup-types`;
 export const INCIDENT_DETERMINATION_TYPES = `/incidents/determination-types`;
 export const INCIDENT_STATUS_CODES = `/incidents/status-codes`;
+export const INCIDENT_DOCUMENT_TYPE = `/incidents/document-types`;

@@ -22,6 +22,7 @@ import {
   fetchMineCommodityOptions,
   fetchPermitStatusOptions,
   fetchApplicationStatusOptions,
+  fetchIncidentDocumentTypeOptions,
   fetchMineIncidentFollowActionOptions,
   fetchMineIncidentDeterminationOptions,
   fetchMineIncidentStatusCodeOptions,
@@ -65,6 +66,10 @@ const propTypes = {
   fetchStatusOptions: PropTypes.func.isRequired,
   fetchMineCommodityOptions: PropTypes.func.isRequired,
   fetchMineDisturbanceOptions: PropTypes.func.isRequired,
+  fetchIncidentDocumentTypeOptions: PropTypes.func.isRequired,
+  fetchRegionOptions: PropTypes.func.isRequired,
+  fetchPermitStatusOptions: PropTypes.func.isRequired,
+  fetchMineTenureTypes: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
@@ -139,6 +144,8 @@ export class Dashboard extends Component {
     this.props.fetchPartyRelationshipTypes();
     this.props.fetchPermitStatusOptions();
     this.props.fetchApplicationStatusOptions();
+    // TODO: Move this to the component(s) that need it for performance benefit
+    this.props.fetchIncidentDocumentTypeOptions();
     this.props.fetchMineIncidentFollowActionOptions();
     this.props.fetchMineIncidentDeterminationOptions();
     this.props.fetchMineIncidentStatusCodeOptions();
@@ -497,6 +504,7 @@ const mapDispatchToProps = (dispatch) =>
       openModal,
       closeModal,
       fetchPartyRelationshipTypes,
+      fetchIncidentDocumentTypeOptions,
       fetchMineIncidentFollowActionOptions,
       fetchMineIncidentDeterminationOptions,
       fetchMineIncidentStatusCodeOptions,
