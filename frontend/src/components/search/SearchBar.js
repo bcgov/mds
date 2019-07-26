@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Input, Dropdown, Card } from "antd";
-import { getSearchBarResults } from "@/selectors/searchSelectors";
-import { fetchSearchBarResults, clearSearchBarResults } from "@/actionCreators/searchActionCreator";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
+import { throttle } from "lodash";
+import { getSearchBarResults } from "@/selectors/searchSelectors";
+import { fetchSearchBarResults, clearSearchBarResults } from "@/actionCreators/searchActionCreator";
 import * as router from "@/constants/routes";
 import { SearchBarDropdown } from "@/components/search/SearchBarDropdown";
-import { throttle } from "lodash";
 
 const { Search } = Input;
 

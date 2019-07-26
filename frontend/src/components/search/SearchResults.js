@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 import { Row, Col, Icon } from "antd";
+import { Link } from "react-router-dom";
+import { sumBy, map, mapValues, keyBy } from "lodash";
 import { getSearchResults, getSearchTerms } from "@/selectors/searchSelectors";
 import { MineResultsTable } from "@/components/search/MineResultsTable";
 import { PermitResultsTable } from "@/components/search/PermitResultsTable";
@@ -13,9 +15,7 @@ import { getPartyRelationshipTypeHash } from "@/selectors/partiesSelectors";
 import { fetchPartyRelationshipTypes } from "@/actionCreators/partiesActionCreator";
 import { fetchSearchOptions, fetchSearchResults } from "@/actionCreators/searchActionCreator";
 import Loading from "@/components/common/Loading";
-import { Link } from "react-router-dom";
 import * as router from "@/constants/routes";
-import { sumBy, map, mapValues, keyBy } from "lodash";
 import { getSearchOptions } from "../../reducers/searchReducer";
 
 const propTypes = {

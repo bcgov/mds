@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import moment from "moment";
+import PropTypes from "prop-types";
 import {
   fetchRegionOptions,
   fetchMineTenureTypes,
@@ -19,7 +20,6 @@ import {
   getHSRCMComplianceCodesHash,
   getFilterVarianceStatusOptions,
 } from "@/selectors/staticContentSelectors";
-import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import { getSubscribedMines } from "@/selectors/mineSelectors";
 import { fetchSubscribedMinesByUser, unSubscribe } from "@/actionCreators/mineActionCreator";
