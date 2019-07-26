@@ -1,0 +1,16 @@
+timezone: America/Vancouver
+
+schedule:
+  daily>: 19:30:00   # daily at 7:30 PM PDT/PST
+
++setup:
+  echo>: Starting IDIR ETL ${session_time}
+
++login:
+  sh>: oc login https://console.pathfinder.gov.bc.ca:8443 --token=$OC_TOKEN
+
++run_etl_job:
+  py>: tasks.idir_users_import.run_job
+
++teardown:
+  echo>: finish ${session_time}
