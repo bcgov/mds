@@ -1,7 +1,7 @@
-import * as partiesReducer from "@/reducers/partiesReducer";
 import { createSelector } from "reselect";
-import { createLabelHash } from "@/utils/helpers";
 import moment from "moment";
+import * as partiesReducer from "@/reducers/partiesReducer";
+import { createLabelHash } from "@/utils/helpers";
 
 export const {
   getParties,

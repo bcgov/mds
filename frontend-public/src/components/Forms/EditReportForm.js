@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import CustomPropTypes from "@/customPropTypes";
 import { Field, reduxForm } from "redux-form";
 import { Form, Button, Col, Row } from "antd";
+import CustomPropTypes from "@/customPropTypes";
 import UploadedFilesList from "@/components/common/UploadedFilesList";
 import MineFilePicker from "@/components/dashboard/mine/reports/MineFilePicker";
 import * as FORM from "@/constants/forms";
