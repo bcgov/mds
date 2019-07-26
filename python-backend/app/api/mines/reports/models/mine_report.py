@@ -34,6 +34,7 @@ class MineReport(Base, AuditMixin):
                mine_report_definition_id,
                mine_guid,
                due_date,
+               received_date,
                submission_year,
                permit_id=None,
                add_to_session=True):
@@ -42,6 +43,7 @@ class MineReport(Base, AuditMixin):
             mine_report_definition_id=mine_report_definition_id,
             mine_guid=mine_guid,
             due_date=due_date,
+            received_date=received_date,
             submission_year=submission_year,
             permit_id=permit_id)
         if add_to_session:

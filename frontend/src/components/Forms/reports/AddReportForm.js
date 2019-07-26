@@ -4,8 +4,8 @@ import { compose } from "redux";
 import PropTypes from "prop-types";
 import { flatMap, uniqBy } from "lodash";
 import { Field, reduxForm, formValueSelector } from "redux-form";
-import { renderConfig } from "@/components/common/config";
 import { Form, Button, Col, Row, Popconfirm, List } from "antd";
+import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import { required } from "@/utils/Validate";
 import { resetForm, createDropDownList, formatComplianceCodeValueOrLabel } from "@/utils/helpers";
@@ -19,7 +19,6 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  mineGuid: PropTypes.string.isRequired,
 
   mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   dropdownMineReportCategoryOptions: PropTypes.arrayOf(
@@ -36,7 +35,6 @@ const defaultProps = {};
 
 export class AddReportForm extends Component {
   state = {
-    uploadedFiles: [],
     mineReportDefinitionOptionsFiltered: [],
     dropdownMineReportDefinitionOptionsFiltered: [],
     selectedMineReportComplianceArticles: [],
@@ -164,7 +162,6 @@ export class AddReportForm extends Component {
                 label="Received Date"
                 placeholder=""
                 component={renderConfig.DATE}
-                validate={[required]}
               />
             </Form.Item>
           </Col>

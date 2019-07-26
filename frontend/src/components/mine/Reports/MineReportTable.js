@@ -1,10 +1,10 @@
 import React from "react";
 import { Table } from "antd";
+import moment from "moment";
+import PropTypes from "prop-types";
 import NullScreen from "@/components/common/NullScreen";
 import * as Strings from "@/constants/strings";
-import moment from "moment";
 import { formatDate } from "@/utils/helpers";
-import PropTypes from "prop-types";
 import { COLOR } from "@/constants/styles";
 
 const { errorRed } = COLOR;
@@ -23,17 +23,6 @@ const defaultProps = {};
 
 const columns = [
   {
-    title: "Year",
-    dataIndex: "submission_year",
-    key: "submission_year",
-    sorter: (a, b) => (a.submission_year > b.submission_year ? -1 : 1),
-    render: (text, record) => (
-      <div title="Year" style={record.isOverdue ? { color: errorRed } : {}}>
-        {record.submission_year}
-      </div>
-    ),
-  },
-  {
     title: "Report Name",
     dataIndex: "report_name",
     key: "report_name",
@@ -41,6 +30,17 @@ const columns = [
     render: (text, record) => (
       <div title="Report Name" style={record.isOverdue ? { color: errorRed } : {}}>
         {record.report_name}
+      </div>
+    ),
+  },
+  {
+    title: "Compliance Year/Period",
+    dataIndex: "submission_year",
+    key: "submission_year",
+    sorter: (a, b) => (a.submission_year > b.submission_year ? -1 : 1),
+    render: (text, record) => (
+      <div title="Year" style={record.isOverdue ? { color: errorRed } : {}}>
+        {record.submission_year}
       </div>
     ),
   },
@@ -55,6 +55,17 @@ const columns = [
       </div>
     ),
   },
+  {
+    title: "Received",
+    dataIndex: "received_date",
+    key: "received_date",
+    sorter: (a, b) => (moment(a.received_date) > moment(b.received_date) ? -1 : 1),
+    render: (text, record) => (
+      <div title="Received" style={record.isOverdue ? { color: errorRed } : {}}>
+        {formatDate(record.received_date) || Strings.EMPTY_FIELD}
+      </div>
+    ),
+  },
 ];
 
 const transformRowData = (report, openEditReportModal) => ({
@@ -62,10 +73,9 @@ const transformRowData = (report, openEditReportModal) => ({
   report,
   report_name: report.report_name,
   due_date: report.due_date,
+  received_date: report.received_date,
   submission_year: report.submission_year,
   openEditReportModal,
-  // documents: report.submissions.sort((a, b) => (a.received_date < b.received_date ? 1 : -1))[0]
-  //  .documents,
 });
 
 export const MineReportTable = (props) => (
