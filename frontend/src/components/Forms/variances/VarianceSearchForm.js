@@ -5,17 +5,17 @@ import { Form, Button, Col, Row } from "antd";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 // import { phoneNumber, maxLength } from "@/utils/Validate";
-import CustomPropTypes from "@/customPropTypes";
+// import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   handleSearch: PropTypes.func.isRequired,
-  handleNameFieldReset: PropTypes.func.isRequired,
+  // handleNameFieldReset: PropTypes.func.isRequired,
   // toggleAdvancedSearch: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
-  partyTypeOptions: CustomPropTypes.options.isRequired,
+  // partyTypeOptions: CustomPropTypes.options.isRequired,
   // relationshipTypes: CustomPropTypes.options.isRequired,
-  initialValues: PropTypes.objectOf(PropTypes.string).isRequired,
+  // initialValues: PropTypes.objectOf(PropTypes.string).isRequired,
   // isAdvanceSearch: PropTypes.bool,
 };
 
@@ -23,69 +23,35 @@ const propTypes = {
 //   isAdvanceSearch: false,
 // };
 
-const isPerson = (type) => type === "PER";
-const isOrg = (type) => type === "ORG";
-
 export class VarianceSearchForm extends Component {
-  state = {
-    contactType: this.props.initialValues.type,
-  };
+  // state = {
+  //   contactType: this.props.initialValues.type,
+  // };
 
   handleReset = () => {
-    this.setState({ contactType: "PER" });
+    // this.setState({ contactType: "PER" });
     this.props.reset();
     this.props.handleSearch({}, true);
   };
 
-  handleContactTypeChange = (chars, value) => {
-    this.setState({ contactType: value });
-    // Set the first,last, and party names to null
-    this.props.handleNameFieldReset();
-  };
+  // handleContactTypeChange = (chars, value) => {
+  //   // this.setState({ contactType: value });
+  //   // Set the first,last, and party names to null
+  //   this.props.handleNameFieldReset();
+  // };
 
   render() {
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit} onReset={this.handleReset}>
         <Row gutter={6}>
-          <Col md={6} xs={6}>
+          <Col md={18} xs={18}>
             <Field
-              id="type"
-              name="type"
-              component={renderConfig.SELECT}
-              data={this.props.partyTypeOptions}
-              onChange={this.handleContactTypeChange}
+              id="party_name"
+              name="party_name"
+              component={renderConfig.FIELD}
+              placeholder="Organization Name"
             />
           </Col>
-          {isOrg(this.state.contactType) && (
-            <Col md={18} xs={18}>
-              <Field
-                id="party_name"
-                name="party_name"
-                component={renderConfig.FIELD}
-                placeholder="Organization Name"
-              />
-            </Col>
-          )}
-          {isPerson(this.state.contactType) && (
-            <Col md={9} xs={9}>
-              <Field
-                id="first_name"
-                name="first_name"
-                component={renderConfig.FIELD}
-                placeholder="First Name"
-              />
-            </Col>
-          )}
-          {isPerson(this.state.contactType) && (
-            <Col md={9} xs={9}>
-              <Field
-                id="last_name"
-                name="last_name"
-                component={renderConfig.FIELD}
-                placeholder="Surname"
-              />
-            </Col>
-          )}
         </Row>
         {/* {this.props.isAdvanceSearch && (
           <div>
