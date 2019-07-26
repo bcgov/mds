@@ -178,6 +178,18 @@ export class NavBar extends Component {
                 </Link>
               </Col>
             </Row>
+            <Row>
+              <Col span={24}>
+                <Link to={router.VARIANCE_DASHBOARD.route}>
+                  <Button
+                    id={this.ifActiveButton(router.REPORTING_DASHBOARD.route)}
+                    className="menu--hamburger__btn--link"
+                  >
+                    Browse Dashboard
+                  </Button>
+                </Link>
+              </Col>
+            </Row>
           </span>
           <AuthorizationWrapper permission={Permission.ADMIN}>
             <Row>
@@ -283,6 +295,11 @@ export class NavBar extends Component {
           </Link>
         </div>
       </AuthorizationWrapper>
+      <div className="custom-menu-item">
+        <Link to={router.VARIANCE_DASHBOARD.route}>
+          <button type="button">Browse Variance</button>
+        </Link>
+      </div>
     </Menu>
   );
 

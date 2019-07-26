@@ -5,7 +5,7 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import CustomPropTypes from "@/customPropTypes";
 import * as ModalContent from "@/constants/modalContent";
 import * as Permission from "@/constants/permissions";
-import { BRAND_PENCIL, RED_CLOCK } from "@/constants/assets";
+import { EDIT_OUTLINE, RED_CLOCK } from "@/constants/assets";
 import { formatDate } from "@/utils/helpers";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 import * as String from "@/constants/strings";
@@ -136,7 +136,7 @@ const columns = [
                 )
               }
             >
-              <img src={BRAND_PENCIL} alt="Edit TSF Report" />
+              <img src={EDIT_OUTLINE} alt="Edit TSF Report" />
             </Button>
             <Popconfirm
               placement="topLeft"

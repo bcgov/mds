@@ -234,14 +234,6 @@ export class MineVarianceTable extends Component {
                 <img src={EDIT_OUTLINE} alt="Edit" className="icon-svg-filter" />
               </Button>
             </AuthorizationWrapper>
-          </div>
-        ),
-      },
-      {
-        title: "",
-        dataIndex: "variance",
-        render: (text, record) => (
-          <div title="" align="right">
             <Button
               type="primary"
               size="small"

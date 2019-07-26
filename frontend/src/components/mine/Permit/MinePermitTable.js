@@ -12,7 +12,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getPartyRelationships } from "@/selectors/partiesSelectors";
 import { getDropdownPermitStatusOptions } from "@/selectors/staticContentSelectors";
-import { BRAND_PENCIL, EDIT, EDIT_OUTLINE, CARAT } from "@/constants/assets";
+import { EDIT_OUTLINE, EDIT, BRAND_PENCIL, CARAT } from "@/constants/assets";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 import LinkButton from "@/components/common/LinkButton";
 
