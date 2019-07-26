@@ -23,57 +23,20 @@ from ....utils.access_decorators import requires_role_edit_do
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from ....utils.url import get_document_manager_svc_url
 
+from app.api.services.document_manager_service import DocumentManagerService
+
 
 class MineIncidentDocumentListResource(Resource, UserMixin):
     @api.doc(description='Request a document_manager_guid for uploading a document')
     @requires_role_edit_do
     def post(self, mine_guid):
-        metadata = self._parse_request_metadata()
-        if not metadata or not metadata.get('filename'):
-            raise BadRequest('Filename not found in request metadata header')
-
         mine = Mine.find_by_mine_guid(mine_guid)
 
         if not mine:
             raise NotFound('Mine not found.')
 
-        folder, pretty_folder = self._parse_upload_folders(mine.mine_guid)
-        data = {
-            'folder': folder,
-            'pretty_folder': pretty_folder,
-            'filename': metadata.get('filename')
-        }
-
-        document_manager_URL = f'{current_app.config["DOCUMENT_MANAGER_URL"]}/documents'
-
-        resp = requests.post(
-            url=document_manager_URL,
-            headers={key: value
-                     for (key, value) in request.headers if key != 'Host'},
-            data=data,
-            cookies=request.cookies,
-        )
-
-        response = Response(resp.content, resp.status_code, resp.raw.headers.items())
-        return response
-
-    def _parse_upload_folders(self, mine_guid):
-        folder = f'mines/{str(mine_guid)}/incidents'
-        pretty_folder = f'mines/{mine_guid}/incidents'
-
-        return folder, pretty_folder
-
-    def _parse_request_metadata(self):
-        request_metadata = request.headers.get("Upload-Metadata")
-        metadata = {}
-        if not request_metadata:
-            return metadata
-
-        for key_value in request_metadata.split(","):
-            (key, value) = key_value.split(" ")
-            metadata[key] = base64.b64decode(value).decode("utf-8")
-
-        return metadata
+        return DocumentManagerService.initializeFileUploadWithDocumentManager(
+            request, mine, 'incidents')
 
 
 class MineIncidentDocumentResource(Resource, UserMixin):

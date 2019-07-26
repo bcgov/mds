@@ -1,8 +1,7 @@
-import base64
 import requests
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
-from flask import request, current_app, Response
+from flask import request, current_app
 from flask_restplus import Resource
 from app.extensions import api
 
@@ -15,38 +14,19 @@ from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.mines.mine_api_models import VARIANCE_MODEL
 from app.api.variances.models.variance import Variance
 
+from app.api.services.document_manager_service import DocumentManagerService
+
 
 class MineVarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
     @api.doc(description='Request a document_manager_guid for uploading a document')
     @requires_any_of([EDIT_VARIANCE, MINESPACE_PROPONENT])
     def post(self, mine_guid, variance_guid):
-        metadata = self._parse_request_metadata()
-        if not metadata or not metadata.get('filename'):
-            raise BadRequest('Filename not found in request metadata header')
-
-        # Save file
         mine = Mine.find_by_mine_guid(mine_guid)
-        document_name = metadata.get('filename')
-        data = {
-            'folder': f'mines/{mine.mine_guid}/variances',
-            'pretty_folder': f'mines/{mine.mine_no}/variances',
-            'filename': document_name
-        }
-        document_manager_URL = f'{current_app.config["DOCUMENT_MANAGER_URL"]}/documents'
-        resp = requests.post(
-            url=document_manager_URL,
-            headers={key: value
-                     for (key, value) in request.headers if key != 'Host'},
-            data=data,
-            cookies=request.cookies,
-        )
+        if not mine:
+            raise NotFound('Mine not found.')
 
-        if resp.status_code != 201:
-            raise InternalServerError("Error, connection to Document Manager failed. " +
-                                      str(resp.content))
-
-        response = Response(str(resp.content), resp.status_code, resp.raw.headers.items())
-        return response
+        return DocumentManagerService.initializeFileUploadWithDocumentManager(
+            request, mine, 'variances')
 
     @api.doc(description='Associate an uploaded file with a variance.',
              params={
@@ -90,15 +70,3 @@ class MineVarianceDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         variance.documents.append(variance_doc)
         variance.save()
         return variance
-
-    def _parse_request_metadata(self):
-        request_metadata = request.headers.get("Upload-Metadata")
-        metadata = {}
-        if not request_metadata:
-            return metadata
-
-        for key_value in request_metadata.split(","):
-            (key, value) = key_value.split(" ")
-            metadata[key] = base64.b64decode(value).decode("utf-8")
-
-        return metadata
