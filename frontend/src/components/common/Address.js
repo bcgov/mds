@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import * as Strings from "@/constants/strings";
 import { Icon } from "antd";
+import * as Strings from "@/constants/strings";
 import { formatPostalCode } from "@/utils/helpers";
 
 const propTypes = {

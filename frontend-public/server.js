@@ -33,6 +33,7 @@ app.get(`${BASE_PATH}/env`, (req, res) => {
   res.json({
     backend: "mds-python-backend",
     apiUrl: process.env.API_URL,
+    docManUrl: process.env.DOCUMENT_MANAGER_URL,
     keycloak_resource: process.env.KEYCLOAK_RESOURCE,
     keycloak_clientId: process.env.KEYCLOAK_CLIENT_ID,
     keycloak_idpHint: process.env.KEYCLOAK_IDP_HINT,
