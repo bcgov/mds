@@ -49,7 +49,7 @@
     },
     {
       "name": "CPU_LIMIT",
-      "value": "750m"
+      "value": "1.5"
     },
     {
       "name": "MEMORY_LIMIT",
