@@ -1,8 +1,7 @@
 import pytest
 from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, EDIT_REPORT
 
-from app.api.document_manager.resources.document_manager import DocumentManagerResource
-from app.api.document_manager.resources.download_token import DownloadTokenResource
+from app.api.download_token.resources.download_token import DownloadTokenResource
 from app.api.documents.expected.resources.document_status import ExpectedDocumentStatusResource
 from app.api.documents.expected.resources.documents import ExpectedDocumentResource
 from app.api.documents.expected.resources.expected_document_uploads import ExpectedDocumentUploadResource
@@ -42,13 +41,6 @@ from app.api.mines.reports.resources.mine_reports import MineReportResource, Min
 @pytest.mark.parametrize(
     "resource,method,expected_roles",
     [(ComplianceArticleResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
-     (DocumentManagerResource, "get", []),
-     (DocumentManagerResource, "post", [
-      MINE_EDIT, EDIT_PARTY, EDIT_PERMIT, EDIT_VARIANCE, EDIT_DO, MINESPACE_PROPONENT]),
-     (DocumentManagerResource, "patch", [
-      MINE_EDIT, EDIT_PARTY, EDIT_PERMIT, EDIT_VARIANCE, EDIT_DO, MINESPACE_PROPONENT]),
-     (DocumentManagerResource, "head", [
-      MINE_EDIT, EDIT_PARTY, EDIT_PERMIT, EDIT_VARIANCE, EDIT_DO, MINESPACE_PROPONENT]),
      (DownloadTokenResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
      (ExpectedDocumentStatusResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
      (ExpectedDocumentResource, "get", [VIEW_ALL]),

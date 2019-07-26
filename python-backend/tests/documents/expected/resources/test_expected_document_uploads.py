@@ -6,14 +6,13 @@ from datetime import datetime
 from app.api.documents.mines.models.mine_document import MineDocument
 from app.api.documents.expected.models.mine_expected_document import MineExpectedDocument
 
-from tests.factories import DocumentManagerFactory, MineExpectedDocumentFactory, MineDocumentFactory
+from tests.factories import MineExpectedDocumentFactory, MineDocumentFactory
 
 
 def test_file_upload_with_no_file_or_guid(test_client, db_session, auth_headers):
-    post_resp = test_client.post(
-        f'/documents/expected/{str(uuid.uuid4())}/document',
-        headers=auth_headers['full_auth_header'],
-        json={})
+    post_resp = test_client.post(f'/documents/expected/{str(uuid.uuid4())}/document',
+                                 headers=auth_headers['full_auth_header'],
+                                 json={})
 
     post_data = json.loads(post_resp.data.decode())
 
@@ -27,10 +26,9 @@ def test_put_existing_file(test_client, db_session, auth_headers):
     document_count = len(expected_doc.related_documents)
 
     data = {'mine_document_guid': existing_mine_doc.mine_document_guid}
-    post_resp = test_client.put(
-        f'/documents/expected/{expected_doc.exp_document_guid}/document',
-        headers=auth_headers['full_auth_header'],
-        json=data)
+    post_resp = test_client.put(f'/documents/expected/{expected_doc.exp_document_guid}/document',
+                                headers=auth_headers['full_auth_header'],
+                                json=data)
     post_data = json.loads(post_resp.data.decode())
     assert post_resp.status_code == 200
     assert len(post_data['related_documents']) == document_count + 1
@@ -41,23 +39,17 @@ def test_put_existing_file(test_client, db_session, auth_headers):
 
 def test_put_new_file(test_client, db_session, auth_headers):
     expected_doc = MineExpectedDocumentFactory()
-    new_doc = DocumentManagerFactory()
     document_count = len(expected_doc.related_documents)
 
-    data = {
-        'document_manager_guid': str(new_doc.document_guid),
-        'filename': new_doc.file_display_name
-    }
-    post_resp = test_client.put(
-        f'/documents/expected/{expected_doc.exp_document_guid}/document',
-        headers=auth_headers['full_auth_header'],
-        json=data)
+    data = {'document_manager_guid': str(uuid.uuid4()), 'filename': 'new_file.pdf'}
+    post_resp = test_client.put(f'/documents/expected/{expected_doc.exp_document_guid}/document',
+                                headers=auth_headers['full_auth_header'],
+                                json=data)
     post_data = json.loads(post_resp.data.decode())
     assert post_resp.status_code == 200
     assert len(post_data['related_documents']) == document_count + 1
-    assert any(
-        str(new_doc.document_guid) == rel_doc['document_manager_guid']
-        for rel_doc in post_data['related_documents'])
+    assert any(data['document_manager_guid'] == rel_doc['document_manager_guid']
+               for rel_doc in post_data['related_documents'])
 
 
 def test_happy_path_file_removal(test_client, db_session, auth_headers):
