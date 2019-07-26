@@ -51,13 +51,12 @@ export class MineNavigation extends Component {
         </SubMenu>
         <SubMenu title={<span className="submenu-title-wrapper">Oversight</span>}>
           <Menu>
-            <Menu.Item key="setting:1">Incidents & Investigations</Menu.Item>
-            <Menu.Item key="setting:2">Variances</Menu.Item>
+            <Menu.Item key="Incidents">Incidents & Investigations</Menu.Item>
           </Menu>
         </SubMenu>
         <SubMenu title={<span className="submenu-title-wrapper">Reports</span>}>
           <Menu>
-            <Menu.Item key="setting:1">Tailings</Menu.Item>
+            <Menu.Item key="Tailings">Tailings</Menu.Item>
           </Menu>
         </SubMenu>
       </Menu>
