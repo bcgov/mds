@@ -12,8 +12,11 @@ envsubst < gatekeeper.conf.tmpl > gatekeeper.conf
 # Run digdag server in the background
 digdag server --database digdag-server --task-log digdag-logs --config digdag.properties &
 
-# Wait for server to start and create projects
+# Wait for server to start properly
 ./wait-for-it.sh 0.0.0.0:8081 -- echo "Digdag Server running"
+# Wait for migrations to run before pushing new project details
+sleep 30
+# Update the projects
 digdag push etl-tasks --project etl -r "$(date +%Y-%m-%dT%H:%M:%S%z)" --endpoint 0.0.0.0:8081
 
 # Run keycloak-gatekeeper for authenticated reverse proxy
