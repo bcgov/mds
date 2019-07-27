@@ -13,7 +13,7 @@ envsubst < gatekeeper.conf.tmpl > gatekeeper.conf
 digdag server --database digdag-server --task-log digdag-logs --config digdag.properties &
 
 # Wait for server to start properly
-./wait-for-it.sh 0.0.0.0:8081 -- echo "Digdag Server running"
+./wait-for-it.sh -t 120 0.0.0.0:8081 -- echo "Digdag Server running"
 # Wait for migrations to run before pushing new project details
 sleep 30
 # Update the projects
