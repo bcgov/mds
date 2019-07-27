@@ -51,6 +51,7 @@ class POD():
         json_data['metadata']['labels']['app'] = self.job_pod_name
         json_data['metadata']['labels']['name'] = self.job_pod_name
         json_data['metadata']['name'] = self.job_pod_name
+        json_data['metadata']['namespace'] = self.namespace
         json_data['spec']['containers'][0]['command'] = self.command
         json_data['spec']['containers'][0]['name'] = self.job_pod_name
         json_data['spec']['containers'][0]['image'] = self.image
