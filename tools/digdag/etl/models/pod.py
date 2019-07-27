@@ -80,8 +80,8 @@ class POD():
             # Then create it
             result = self.v1_pod.create(body=pod_template, namespace=self.namespace)
 
-        # Wait for pod to be created
-        time.sleep(10)
+        # Wait for pod to be created before polling it for status
+        time.sleep(30)
 
         # Watch the pod status and exit the job with success or raise exception
         for e in self.v1_pod.watch(label_selector=self.job_pod_label, namespace=self.namespace):
