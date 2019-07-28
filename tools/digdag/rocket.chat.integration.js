@@ -6,7 +6,7 @@ class Script {
     let data = request.content;
     let attachmentColor = `#36A64F`;
 
-    let isError = data.status === `ERROR`;
+    let isError = data.status === `FAIL`;
     let isRunning = data.status === `RUNNING`;
     if (isError) {
       attachmentColor = `#A63636`;

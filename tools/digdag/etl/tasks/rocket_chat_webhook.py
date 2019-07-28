@@ -24,9 +24,9 @@ def send(job_name="", status="UNDEFINED"):
     data['status'] = status
     data['namespace'] = namespace
     data['message'] = f'''
-    Task status: {status} :{emoji[status]}:
-    Task name: {job_name}
-    Task namespace: {namespace}
+    Job status: {status} :{emoji[status]}:
+    Job name: {job_name}
+    Job namespace: {namespace}
     '''
 
     # Send webhook
