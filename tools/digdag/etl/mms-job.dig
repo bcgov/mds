@@ -11,7 +11,7 @@ _export:
 
 +notify_start:
   py>: tasks.rocket_chat_webhook.send
-  task_name: ${job_name}
+  job_name: ${job_name}
   status: RUNNING
 
 +login:
@@ -29,10 +29,10 @@ _export:
 
 +notify_end:
   py>: tasks.rocket_chat_webhook.send
-  task_name: ${job_name}
+  job_name: ${job_name}
   status: SUCCESS
 
 _error:
   py>: tasks.rocket_chat_webhook.send
-  task_name: ${job_name}
+  job_name: ${job_name}
   status: FAIL
