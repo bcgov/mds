@@ -19,13 +19,13 @@ emoji =	{
 }
 
 
-def send(task_name="", status="UNDEFINED"):
+def send(job_name="", status="UNDEFINED"):
     # Format message
     data['status'] = status
     data['namespace'] = namespace
     data['message'] = f'''
     Task status: {status} :{emoji[status]}:
-    Task name: {task_name}
+    Task name: {job_name}
     Task namespace: {namespace}
     '''
 
