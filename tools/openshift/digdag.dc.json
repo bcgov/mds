@@ -177,6 +177,15 @@
                     }
                   },
                   {
+                    "name": "WEBHOOK_URL",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${WEBHOOK_SECRET_NAME}",
+                        "key": "mds-chatops-scheduler"
+                      }
+                    }
+                  },
+                  {
                     "name": "KUBERNETES_MASTER",
                     "value": "https://kubernetes.default:443"
                   },
@@ -274,6 +283,10 @@
     {
       "name": "DIGDAG_SECRET_NAME",
       "value": "template.mds-digdag-secret"
+    },
+    {
+      "name": "WEBHOOK_SECRET_NAME",
+      "value": "template.mds-rocket-chat-integrations"
     },
     {
       "name": "APPLICATION_DOMAIN",
