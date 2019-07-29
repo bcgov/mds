@@ -1,0 +1,318 @@
+{
+  "kind": "Template",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "mds-digdag-dc"
+  },
+  "objects": [
+    {
+      "kind": "Service",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}${SUFFIX}",
+        "annotations": {
+          "description": "Exposes and load balances the application pods"
+        }
+      },
+      "spec": {
+        "ports": [
+          {
+            "name": "8080-tcp",
+            "protocol": "TCP",
+            "port": 8080,
+            "targetPort": 8080
+          }
+        ],
+        "selector": {
+          "name": "${NAME}${SUFFIX}"
+        },
+        "type": "ClusterIP",
+        "sessionAffinity": "None"
+      }
+    },
+    {
+      "kind": "Route",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}${SUFFIX}"
+      },
+      "spec": {
+        "host": "${APPLICATION_DOMAIN}",
+        "tls": {
+          "insecureEdgeTerminationPolicy": "Redirect",
+          "termination": "edge"
+        },
+        "path": "/",
+        "to": {
+          "kind": "Service",
+          "name": "${NAME}${SUFFIX}"
+        },
+        "port": {
+          "targetPort": "8080-tcp"
+        },
+        "wildcardPolicy": "None"
+      }
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "PersistentVolumeClaim",
+      "metadata": {
+        "name": "${NAME}${SUFFIX}",
+        "annotations": {
+          "volume.beta.kubernetes.io/storage-class": "gluster-block",
+          "volume.beta.kubernetes.io/storage-provisioner": "kubernetes.io/glusterfs"
+        }
+      },
+      "spec": {
+        "accessModes": ["ReadWriteOnce"],
+        "resources": {
+          "requests": {
+            "storage": "${SCHEDULER_PVC_SIZE}"
+          }
+        }
+      }
+    },
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}",
+        "creationTimestamp": null,
+        "labels": {
+          "shared": "true"
+        },
+        "annotations": {
+          "description": "Keeps track of changes in the application image"
+        }
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        },
+        "tags": []
+      }
+    },
+    {
+      "kind": "DeploymentConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}${SUFFIX}"
+      },
+      "spec": {
+        "strategy": {
+          "type": "Recreate",
+          "maxSurge": "50%",
+          "maxUnavailable": 0
+        },
+        "triggers": [
+          {
+            "type": "ConfigChange"
+          },
+          {
+            "type": "ImageChange",
+            "imageChangeParams": {
+              "automatic": true,
+              "containerNames": ["${NAME}"],
+              "from": {
+                "kind": "ImageStreamTag",
+                "name": "${NAME}:${VERSION}"
+              }
+            }
+          }
+        ],
+        "replicas": 1,
+        "selector": {
+          "name": "${NAME}${SUFFIX}"
+        },
+        "template": {
+          "metadata": {
+            "name": "${NAME}${SUFFIX}",
+            "labels": {
+              "name": "${NAME}${SUFFIX}"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "name": "${NAME}",
+                "image": " ",
+                "ports": [
+                  {
+                    "containerPort": 8080,
+                    "protocol": "TCP"
+                  },
+                  {
+                    "containerPort": 8081,
+                    "protocol": "TCP"
+                  }
+                ],
+                "env": [
+                  {
+                    "name": "ENVIRONMENT_NAME",
+                    "value": "${ENVIRONMENT_NAME}"
+                  },
+                  {
+                    "name": "IMAGE_TAG",
+                    "value": "${VERSION}"
+                  },
+                  {
+                    "name": "NAMESPACE",
+                    "value": "${NAMESPACE}"
+                  },
+                  {
+                    "name": "SUFFIX",
+                    "value": "${SUFFIX}"
+                  },
+                  {
+                    "name": "KUBECONFIG",
+                    "value": "/app/kube_config"
+                  },
+                  {
+                    "name": "KEYCLOAK_CLIENT_SECRET",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DIGDAG_SECRET_NAME}",
+                        "key": "keycloak-client-secret"
+                      }
+                    }
+                  },
+                  {
+                    "name": "WEBHOOK_URL",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${WEBHOOK_SECRET_NAME}",
+                        "key": "mds-chatops-scheduler"
+                      }
+                    }
+                  },
+                  {
+                    "name": "KUBERNETES_MASTER",
+                    "value": "https://kubernetes.default:443"
+                  },
+                  {
+                    "name": "KUBERNETES_TRUST_CERTIFICATES",
+                    "value": "true"
+                  },
+                  {
+                    "name": "KEYCLOAK_DISCOVERY_URL",
+                    "value": "${KEYCLOAK_DISCOVERY_URL}"
+                  },
+                  {
+                    "name": "KEYCLOAK_CLIENT_ID",
+                    "value": "central-scheduler"
+                  },
+                  {
+                    "name": "KEYCLOAK_ADMIN_ROLE",
+                    "value": "digdag_admin"
+                  },
+                  {
+                    "name": "KEYCLOAK_UPSTREAM_URL",
+                    "value": "http://localhost:8081"
+                  },
+                  {
+                    "name": "KEYCLOAK_REDIRECT_URL",
+                    "value": "https://${APPLICATION_DOMAIN}"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "mountPath": "/app/digdag-server",
+                    "name": "${NAME}${SUFFIX}-data"
+                  }
+                ],
+                "resources": {
+                  "requests": {
+                    "cpu": "${CPU_REQUEST}",
+                    "memory": "${MEMORY_REQUEST}"
+                  },
+                  "limits": {
+                    "cpu": "${CPU_LIMIT}",
+                    "memory": "${MEMORY_LIMIT}"
+                  }
+                },
+                "terminationMessagePath": "/dev/termination-log",
+                "imagePullPolicy": "IfNotPresent",
+                "capabilities": {}
+              }
+            ],
+            "volumes": [
+              {
+                "name": "${NAME}${SUFFIX}-data",
+                "persistentVolumeClaim": {
+                  "claimName": "${NAME}${SUFFIX}"
+                }
+              }
+            ],
+            "restartPolicy": "Always",
+            "dnsPolicy": "ClusterFirst",
+            "serviceAccountName": "digdag",
+            "serviceAccount": "digdag"
+          }
+        }
+      }
+    }
+  ],
+  "parameters": [
+    {
+      "name": "CPU_LIMIT",
+      "value": "500m"
+    },
+    {
+      "name": "MEMORY_LIMIT",
+      "value": "2Gi"
+    },
+    {
+      "name": "CPU_REQUEST",
+      "value": "200m"
+    },
+    {
+      "name": "MEMORY_REQUEST",
+      "value": "1Gi"
+    },
+    {
+      "name": "ENVIRONMENT_NAME",
+      "value": "dev"
+    },
+    {
+      "name": "NAME",
+      "displayName": "Object names",
+      "description": "The name of the OpenShift objects.",
+      "value": "digdag",
+      "required": true
+    },
+    {
+      "name": "DIGDAG_SECRET_NAME",
+      "value": "template.mds-digdag-secret"
+    },
+    {
+      "name": "WEBHOOK_SECRET_NAME",
+      "value": "template.mds-rocket-chat-integrations"
+    },
+    {
+      "name": "APPLICATION_DOMAIN",
+      "required": true
+    },
+    {
+      "name": "SUFFIX",
+      "displayName": "Name Suffix",
+      "description": "A suffix appended to all objects",
+      "required": true
+    },
+    {
+      "name": "VERSION",
+      "required": true
+    },
+    {
+      "name": "NAMESPACE",
+      "value": "empr-mds-dev"
+    },
+    {
+      "name": "KEYCLOAK_DISCOVERY_URL",
+      "value": "https://sso-test.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
+    },
+    {
+      "name": "SCHEDULER_PVC_SIZE",
+      "required": true
+    }
+  ]
+}
