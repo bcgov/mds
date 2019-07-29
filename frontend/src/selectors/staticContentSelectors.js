@@ -1,6 +1,6 @@
 import { chain } from "lodash";
-import * as staticContentReducer from "@/reducers/staticContentReducer";
 import { createSelector } from "reselect";
+import * as staticContentReducer from "@/reducers/staticContentReducer";
 import { createLabelHash, createDropDownList } from "@/utils/helpers";
 
 export const {

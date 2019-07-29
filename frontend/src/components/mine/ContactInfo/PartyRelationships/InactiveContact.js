@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Icon, Card, Button } from "antd";
-import * as router from "@/constants/routes";
 import { Redirect } from "react-router-dom";
+import * as router from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {

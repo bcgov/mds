@@ -1,9 +1,9 @@
 import React from "react";
 import { Table } from "antd";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
-import { Link } from "react-router-dom";
 import NullScreen from "@/components/common/NullScreen";
 import { formatDate } from "@/utils/helpers";
 
