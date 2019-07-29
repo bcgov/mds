@@ -1,0 +1,20 @@
+timezone: America/Vancouver
+
+schedule:
+  daily>: 20:00:00   # daily at 8 PM PDT/PST
+
++setup:
+  echo>: Starting NRIS ETL ${session_time}
+
++login:
+  sh>: oc login https://console.pathfinder.gov.bc.ca:8443 --token=$OC_TOKEN
+
++run_etl_job:
+  _retry:
+    limit: 3
+    interval: 20
+    interval_type: exponential
+  py>: tasks.nris_data_import.run_job
+
++teardown:
+  echo>: finish ${session_time}

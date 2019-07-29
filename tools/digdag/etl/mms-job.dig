@@ -1,0 +1,20 @@
+timezone: America/Vancouver
+
+schedule:
+  daily>: 21:00:00   # daily at 9 PM PDT/PST
+
++setup:
+  echo>: Starting MMS ETL ${session_time}
+
++login:
+  sh>: oc login https://console.pathfinder.gov.bc.ca:8443 --token=$OC_TOKEN
+
++run_etl_job:
+  _retry:
+    limit: 3
+    interval: 20
+    interval_type: exponential
+  py>: tasks.mms_data_import.run_job
+
++teardown:
+  echo>: finish ${session_time}
