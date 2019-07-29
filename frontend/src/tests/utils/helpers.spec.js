@@ -33,7 +33,7 @@ describe("helpers class", () => {
     });
 
     it("null is before a value", () => {
-      expect(codeSorter("1.11.45 - lorem", null)).toEqual(true);
+      expect(codeSorter("1.11.45 - lorem", null)).toEqual(false);
     });
   });
 });
