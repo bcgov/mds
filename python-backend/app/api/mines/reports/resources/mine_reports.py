@@ -40,7 +40,6 @@ class MineReportListResource(Resource, UserMixin):
     parser.add_argument(
         'received_date',
         location='json',
-        store_missing=False,
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
 
     @api.marshal_with(MINE_REPORT_MODEL, envelope='records', code=200)
