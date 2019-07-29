@@ -270,6 +270,7 @@ MINE_REPORT_SUBMISSION_MODEL= api.model(
 MINE_REPORT_MODEL = api.model(
     'MineReportModel', {
         'mine_report_guid':fields.String,
+        'report_name':fields.String,
         'due_date':fields.Date,
         'received_date': fields.Date,
         'submission_year':fields.Integer,
