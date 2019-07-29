@@ -21,7 +21,7 @@ export const mineExpectedDocument = shape({
   exp_document_description: PropTypes.string,
   related_documents: arrayOf(mineDocument),
   received_date: PropTypes.string,
-  exp_document_status: mineExpectedDocumentStatus.isRequired,
+  expected_document_status: mineExpectedDocumentStatus.isRequired,
   due_date: PropTypes.string,
   hsrc_code: PropTypes.string,
 });
