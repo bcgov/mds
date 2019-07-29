@@ -97,7 +97,9 @@ export const getFiscalYear = () => {
 export const formatParamStringToArray = (param) => (param ? param.split(",").filter((x) => x) : []);
 
 // This method sorts codes of the for '#.#.# - Lorem Ipsum'
-// Todo check what happens if a code has () in it
+// where the numbe of numbers is variable and the text is optional
+// TODO: In order to sort incidents this will need to be modified to deal with
+// parentheses
 export const compareCodes = (a, b) => {
   const a_number = a.split(" - ", 1)[0];
   const b_number = b.split(" - ", 1)[0];
