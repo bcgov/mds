@@ -51,6 +51,7 @@ class POD():
         json_data['metadata']['labels']['app'] = self.job_pod_name
         json_data['metadata']['labels']['name'] = self.job_pod_name
         json_data['metadata']['name'] = self.job_pod_name
+        json_data['metadata']['namespace'] = self.namespace
         json_data['spec']['containers'][0]['command'] = self.command
         json_data['spec']['containers'][0]['name'] = self.job_pod_name
         json_data['spec']['containers'][0]['image'] = self.image
@@ -79,8 +80,8 @@ class POD():
             # Then create it
             result = self.v1_pod.create(body=pod_template, namespace=self.namespace)
 
-        # Wait for pod to be created
-        time.sleep(10)
+        # Wait for pod to be created before polling it for status
+        time.sleep(30)
 
         # Watch the pod status and exit the job with success or raise exception
         for e in self.v1_pod.watch(label_selector=self.job_pod_label, namespace=self.namespace):
