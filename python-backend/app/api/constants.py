@@ -318,13 +318,10 @@ MINE_REGION_OPTIONS = [
 ]
 
 #Cache prefixes
-NRIS_MMLIST_JOB = "processed_list"
 NRIS_MAJOR_MINE_LIST = "major_mine_list"
-NRIS_JOB_PREFIX = "nris_sched_job_"
 NRIS_TOKEN = 'nris:token'
 def NRIS_COMPLIANCE_DATA(mine_no): return f'mine:{mine_no}:api-compliance-data'
 def DOWNLOAD_TOKEN(token_guid): return f'document-manager:download-token:{token_guid}'
-ETL = 'etl-jobs:running'
 
 #Cache Timeouts
 TIMEOUT_5_MINUTES = 300
