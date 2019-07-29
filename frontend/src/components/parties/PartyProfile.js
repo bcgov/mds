@@ -134,7 +134,7 @@ export class PartyProfile extends Component {
         dataIndex: "mineName",
         render: (text, record) => (
           <div title="Mine Name">
-            <Link to={router.MINE_SUMMARY.dynamicRoute(record.mineGuid, "contacts")}>{text}</Link>
+            <Link to={router.MINE_CONTACTS.dynamicRoute(record.mineGuid)}>{text}</Link>
           </div>
         ),
       },

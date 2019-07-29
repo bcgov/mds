@@ -46,12 +46,16 @@ export class MineNavigation extends Component {
             <Menu.Item key="Permits">
               <Link to={route.MINE_PERMITS.dynamicRoute(this.props.mine.mine_guid)}>Permits</Link>
             </Menu.Item>
-            <Menu.Item key="Variances">Variances</Menu.Item>
+            <Menu.Item key="Variances">
+              <Link to={route.MINE_VARIANCES.dynamicRoute(this.props.mine.mine_guid)}>
+                Variances
+              </Link>
+            </Menu.Item>
           </Menu>
         </SubMenu>
         <SubMenu title={<span className="submenu-title-wrapper">Oversight</span>}>
           <Menu>
-            <Menu.Item key="Incidents">Compliance</Menu.Item>
+            <Menu.Item key="Incidents">Inspections & Audits</Menu.Item>
           </Menu>
           <Menu>
             <Menu.Item key="Incidents">Incidents & Investigations</Menu.Item>

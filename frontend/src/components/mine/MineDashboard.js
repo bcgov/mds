@@ -143,7 +143,7 @@ export class MineDashboard extends Component {
   };
 
   componentWillMount() {
-    const { id, activeTab } = this.props.match.params;
+    const { id } = this.props.match.params;
     this.loadMineData(id);
     this.props.fetchStatusOptions();
     this.props.fetchRegionOptions();
@@ -162,16 +162,10 @@ export class MineDashboard extends Component {
     this.props.fetchVarianceDocumentCategoryOptions();
     this.props.fetchVarianceStatusOptions();
     this.props.fetchInspectors();
-    if (activeTab) {
-      this.setState({ activeTab });
-    }
   }
 
   componentWillReceiveProps(nextProps) {
-    const { id, activeTab } = nextProps.match.params;
-    if (activeTab !== this.props.activeTab) {
-      this.setState({ activeTab });
-    }
+    const { id } = nextProps.match.params;
     if (this.props.match.params.id !== nextProps.match.params.id) {
       this.loadMineData(id);
     }
@@ -224,23 +218,14 @@ export class MineDashboard extends Component {
 
   handleComplianceFilter = (values) => {
     if (isEmpty(values)) {
-      this.props.history.push(
-        router.MINE_SUMMARY.dynamicRoute(
-          this.props.match.params.id,
-          this.props.match.params.activeTab
-        )
-      );
+      this.props.history.push(router.MINE_SUMMARY.dynamicRoute(this.props.match.params.id));
     } else {
       const { violation, ...rest } = values;
       this.props.history.push(
-        router.MINE_SUMMARY.dynamicRoute(
-          this.props.match.params.id,
-          this.props.match.params.activeTab,
-          {
-            violation: violation && violation.join(","),
-            ...rest,
-          }
-        )
+        router.MINE_SUMMARY.dynamicRoute(this.props.match.params.id, {
+          violation: violation && violation.join(","),
+          ...rest,
+        })
       );
     }
   };
