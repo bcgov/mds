@@ -14,7 +14,7 @@ import { getInspectorsHash } from "@/selectors/partiesSelectors";
 import * as Permission from "@/constants/permissions";
 import { RED_CLOCK, EDIT_OUTLINE } from "@/constants/assets";
 import NullScreen from "@/components/common/NullScreen";
-import { formatDate, compareCodes } from "@/utils/helpers";
+import { formatDate, codeSorter } from "@/utils/helpers";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 import * as Strings from "@/constants/strings";
 import { COLOR } from "@/constants/styles";
@@ -37,20 +37,6 @@ const propTypes = {
   params: PropTypes.shape({
     variance_application_status_code: PropTypes.arrayOf(PropTypes.string),
   }),
-};
-
-const codeSorter = (code_one, code_two) => {
-  // if a code is null it set before one that is not in sort order.
-  if (!code_one) {
-    return true;
-  }
-  if (!code_two) {
-    return false;
-  }
-  if (compareCodes(code_one, code_two) < 0) {
-    return true;
-  }
-  return false;
 };
 
 const defaultProps = {
@@ -120,7 +106,9 @@ export class MineVarianceTable extends Component {
             {text}
           </div>
         ),
-        sorter: (a, b) => (codeSorter(a.compliance_article_id, b.compliance_article_id) ? -1 : 1),
+        sorter:
+          !this.props.isDashboardView &&
+          ((a, b) => (codeSorter(a.compliance_article_id, b.compliance_article_id) ? -1 : 1)),
       },
       {
         title: "Mine Name",

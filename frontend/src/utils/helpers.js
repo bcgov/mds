@@ -117,3 +117,17 @@ export const compareCodes = (a, b) => {
   }
   return a_array.length < b_array.length ? -1 : 1;
 };
+
+export const codeSorter = (code_one, code_two) => {
+  // if a code is null it set before one that is not in sort order.
+  if (!code_one) {
+    return true;
+  }
+  if (!code_two) {
+    return false;
+  }
+  if (compareCodes(code_one, code_two) < 0) {
+    return true;
+  }
+  return false;
+};
