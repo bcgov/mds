@@ -3,8 +3,16 @@ timezone: America/Vancouver
 schedule:
   daily>: 20:00:00   # daily at 8 PM PDT/PST
 
+_export:
+  job_name: NRIS ETL
+
 +setup:
-  echo>: Starting NRIS ETL ${session_time}
+  echo>: Starting ${job_name} ${session_time}
+
++notify_start:
+  py>: tasks.rocket_chat_webhook.send
+  job_name: ${job_name}
+  status: RUNNING
 
 +login:
   sh>: oc login https://console.pathfinder.gov.bc.ca:8443 --token=$OC_TOKEN
@@ -18,3 +26,13 @@ schedule:
 
 +teardown:
   echo>: finish ${session_time}
+
++notify_end:
+  py>: tasks.rocket_chat_webhook.send
+  job_name: ${job_name}
+  status: SUCCESS
+
+_error:
+  py>: tasks.rocket_chat_webhook.send
+  job_name: ${job_name}
+  status: FAIL
