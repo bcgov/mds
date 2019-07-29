@@ -47,6 +47,12 @@ const renderRecommendations = ({ fields }) => [
 ];
 
 export class AddIncidentFollowUpForm extends Component {
+  uncommonBehaviourWarning = () =>
+    this.props.determinationTypeCode === Strings.INCIDENT_DETERMINATION_TYPES.pending &&
+    this.props.hasFollowUp
+      ? "Warning: It's uncommon for an inspection to occur if a determination has not been made"
+      : undefined;
+
   render() {
     return (
       <div>
@@ -76,14 +82,7 @@ export class AddIncidentFollowUpForm extends Component {
                     label="Follow-up inspection date"
                     placeholder="Please select date"
                     component={renderConfig.DATE}
-                    validate={[
-                      dateNotInFuture,
-                      () =>
-                        this.props.determinationTypeCode ===
-                          Strings.INCIDENT_DETERMINATION_TYPES.pending && this.props.hasFollowUp
-                          ? "Warning: It's uncommon for an inspection to occur if a determination has not been made"
-                          : undefined,
-                    ]}
+                    validate={[dateNotInFuture, this.uncommonBehaviourWarning]}
                   />
                 </Form.Item>
               )}
