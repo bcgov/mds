@@ -23,6 +23,8 @@ class MineReport(Base, AuditMixin):
 
     mine_report_submissions = db.relationship('MineReportSubmission', lazy='joined')
 
+    mine_report_definition_guid = association_proxy('mine_report_definition',
+                                                    'mine_report_definition_guid')
     report_name = association_proxy('mine_report_definition', 'report_name')
 
     def __repr__(self):
