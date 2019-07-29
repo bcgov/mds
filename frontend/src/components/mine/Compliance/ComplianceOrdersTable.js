@@ -2,7 +2,7 @@ import React from "react";
 import { Table } from "antd";
 import moment from "moment";
 import { RED_CLOCK } from "@/constants/assets";
-import { formatDate } from "@/utils/helpers";
+import { formatDate, compareCodes } from "@/utils/helpers";
 import { COLOR } from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";
 import NullScreen from "@/components/common/NullScreen";
@@ -17,6 +17,20 @@ const errorStyle = (isOverdue) => (isOverdue ? { color: errorRed } : {});
 
 const defaultProps = {
   filteredOrders: [],
+};
+
+const codeSorter = (code_one, code_two) => {
+  // if a code is null it set before one that is not in sort order.
+  if (!code_one) {
+    return true;
+  }
+  if (!code_two) {
+    return false;
+  }
+  if (compareCodes(code_one, code_two) < 0) {
+    return true;
+  }
+  return false;
 };
 
 const columns = [
@@ -51,7 +65,7 @@ const columns = [
         {record.violation || "-"}
       </div>
     ),
-    sorter: (a, b) => (a.violation > b.violation ? -1 : 1),
+    sorter: (a, b) => (codeSorter(a.violation, b.violation) ? -1 : 1),
   },
   {
     title: "Report #",

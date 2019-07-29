@@ -95,3 +95,23 @@ export const getFiscalYear = () => {
 };
 
 export const formatParamStringToArray = (param) => (param ? param.split(",").filter((x) => x) : []);
+
+// This method sorts codes of the for '#.#.# - Lorem Ipsum'
+// Todo check what happens if a code has () in it
+export const compareCodes = (a, b) => {
+  const a_number = a.split(" - ", 1)[0];
+  const b_number = b.split(" - ", 1)[0];
+  const a_array = a_number.split(".");
+  const b_array = b_number.split(".");
+  const k = Math.min(a_array.length, b_array.length);
+  for (let i = 0; i < k; i += 1) {
+    a_array[i] = parseInt(a_array[i], 10);
+    b_array[i] = parseInt(b_array[i], 10);
+    if (a_array[i] > b_array[i]) return 1;
+    if (a_array[i] < b_array[i]) return -1;
+  }
+  if (a_array.length === b_array.length) {
+    return 0;
+  }
+  return a_array.length < b_array.length ? -1 : 1;
+};
