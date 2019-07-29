@@ -18,6 +18,13 @@ GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA nris TO nris;
 GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA nris TO nris;
 
 /**
+Allow Document Manager user to CRUD anything on the docman schema
+**/
+GRANT ALL PRIVILEGES ON SCHEMA docman TO docman;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA docman TO docman;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA docman TO docman;
+
+/**
 Allow logstash user to READ anything on the mds schema
 **/
 GRANT USAGE ON SCHEMA public TO logstash;

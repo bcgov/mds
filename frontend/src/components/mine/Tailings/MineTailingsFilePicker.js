@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import CustomPropTypes from "@/customPropTypes";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import CustomPropTypes from "@/customPropTypes";
 import { getMineDocuments } from "@/selectors/mineSelectors";
 import {
   fetchMineDocuments,

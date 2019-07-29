@@ -1,14 +1,64 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ComplianceOrdersTable renders properly 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <ComplianceOrdersTable
-    filteredOrders={
+<div>
+  <Table
+    align="left"
+    bordered={false}
+    childrenColumnName="children"
+    className="center-pagination page-count-1"
+    columns={
+      Array [
+        Object {
+          "dataIndex": "overdue",
+          "render": [Function],
+          "title": "",
+        },
+        Object {
+          "dataIndex": "order_no",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Order #",
+        },
+        Object {
+          "dataIndex": "violation",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Violation",
+        },
+        Object {
+          "dataIndex": "report_no",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Report #",
+        },
+        Object {
+          "dataIndex": "inspector",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Inspector Name",
+        },
+        Object {
+          "dataIndex": "status",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Order Status",
+        },
+        Object {
+          "dataIndex": "due_date",
+          "defaultSortOrder": "descend",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Due Date",
+        },
+      ]
+    }
+    dataSource={
       Array [
         Object {
           "due_date": "2019-01-31",
           "inspector": "George",
+          "key": "2",
           "order_no": "2",
           "overdue": true,
           "report_no": "report3",
@@ -17,6 +67,7 @@ ShallowWrapper {
         Object {
           "due_date": "2019-02-28",
           "inspector": "Paul",
+          "key": "1",
           "order_no": "1",
           "overdue": false,
           "report_no": "report2",
@@ -25,6 +76,7 @@ ShallowWrapper {
         Object {
           "due_date": "2019-02-02",
           "inspector": "Paul",
+          "key": "7",
           "order_no": "7",
           "overdue": true,
           "report_no": "report1",
@@ -32,464 +84,26 @@ ShallowWrapper {
         },
       ]
     }
-    handlePageChange={[Function]}
-    maxOrderList={10}
-    minOrderList={0}
-  />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateError": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "host",
-    "props": Object {
-      "children": <Table
-        align="left"
-        bordered={false}
-        className="center-pagination page-count-1"
-        columns={
-          Array [
-            Object {
-              "dataIndex": "overdue",
-              "render": [Function],
-              "title": "",
-            },
-            Object {
-              "dataIndex": "order_no",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "Order #",
-            },
-            Object {
-              "dataIndex": "violation",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "Violation",
-            },
-            Object {
-              "dataIndex": "report_no",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "Report #",
-            },
-            Object {
-              "dataIndex": "inspector",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "Inspector Name",
-            },
-            Object {
-              "dataIndex": "status",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "Order Status",
-            },
-            Object {
-              "dataIndex": "due_date",
-              "defaultSortOrder": "descend",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "Due Date",
-            },
-          ]
-        }
-        dataSource={
-          Array [
-            Object {
-              "due_date": "2019-01-31",
-              "inspector": "George",
-              "key": "2",
-              "order_no": "2",
-              "overdue": true,
-              "report_no": "report3",
-              "violation": "Mine isn't good enough",
-            },
-            Object {
-              "due_date": "2019-02-28",
-              "inspector": "Paul",
-              "key": "1",
-              "order_no": "1",
-              "overdue": false,
-              "report_no": "report2",
-              "violation": "Wearing purple hats",
-            },
-            Object {
-              "due_date": "2019-02-02",
-              "inspector": "Paul",
-              "key": "7",
-              "order_no": "7",
-              "overdue": true,
-              "report_no": "report1",
-              "violation": "Looks dangerous",
-            },
-          ]
-        }
-        indentSize={20}
-        loading={false}
-        locale={
-          Object {
-            "emptyText": <NullScreen
-              type="no-results"
-            />,
-          }
-        }
-        pagination={true}
-        rowKey="key"
-        showHeader={true}
-        size="default"
-        sortDirections={
-          Array [
-            "ascend",
-            "descend",
-          ]
-        }
-        useFixedHeader={false}
-      />,
-    },
-    "ref": null,
-    "rendered": Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "class",
-      "props": Object {
-        "align": "left",
-        "bordered": false,
-        "className": "center-pagination page-count-1",
-        "columns": Array [
-          Object {
-            "dataIndex": "overdue",
-            "render": [Function],
-            "title": "",
-          },
-          Object {
-            "dataIndex": "order_no",
-            "render": [Function],
-            "sorter": [Function],
-            "title": "Order #",
-          },
-          Object {
-            "dataIndex": "violation",
-            "render": [Function],
-            "sorter": [Function],
-            "title": "Violation",
-          },
-          Object {
-            "dataIndex": "report_no",
-            "render": [Function],
-            "sorter": [Function],
-            "title": "Report #",
-          },
-          Object {
-            "dataIndex": "inspector",
-            "render": [Function],
-            "sorter": [Function],
-            "title": "Inspector Name",
-          },
-          Object {
-            "dataIndex": "status",
-            "render": [Function],
-            "sorter": [Function],
-            "title": "Order Status",
-          },
-          Object {
-            "dataIndex": "due_date",
-            "defaultSortOrder": "descend",
-            "render": [Function],
-            "sorter": [Function],
-            "title": "Due Date",
-          },
-        ],
-        "dataSource": Array [
-          Object {
-            "due_date": "2019-01-31",
-            "inspector": "George",
-            "key": "2",
-            "order_no": "2",
-            "overdue": true,
-            "report_no": "report3",
-            "violation": "Mine isn't good enough",
-          },
-          Object {
-            "due_date": "2019-02-28",
-            "inspector": "Paul",
-            "key": "1",
-            "order_no": "1",
-            "overdue": false,
-            "report_no": "report2",
-            "violation": "Wearing purple hats",
-          },
-          Object {
-            "due_date": "2019-02-02",
-            "inspector": "Paul",
-            "key": "7",
-            "order_no": "7",
-            "overdue": true,
-            "report_no": "report1",
-            "violation": "Looks dangerous",
-          },
-        ],
-        "indentSize": 20,
-        "loading": false,
-        "locale": Object {
-          "emptyText": <NullScreen
-            type="no-results"
-          />,
-        },
-        "pagination": true,
-        "rowKey": "key",
-        "showHeader": true,
-        "size": "default",
-        "sortDirections": Array [
-          "ascend",
-          "descend",
-        ],
-        "useFixedHeader": false,
-      },
-      "ref": null,
-      "rendered": null,
-      "type": [Function],
-    },
-    "type": "div",
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "host",
-      "props": Object {
-        "children": <Table
-          align="left"
-          bordered={false}
-          className="center-pagination page-count-1"
-          columns={
-            Array [
-              Object {
-                "dataIndex": "overdue",
-                "render": [Function],
-                "title": "",
-              },
-              Object {
-                "dataIndex": "order_no",
-                "render": [Function],
-                "sorter": [Function],
-                "title": "Order #",
-              },
-              Object {
-                "dataIndex": "violation",
-                "render": [Function],
-                "sorter": [Function],
-                "title": "Violation",
-              },
-              Object {
-                "dataIndex": "report_no",
-                "render": [Function],
-                "sorter": [Function],
-                "title": "Report #",
-              },
-              Object {
-                "dataIndex": "inspector",
-                "render": [Function],
-                "sorter": [Function],
-                "title": "Inspector Name",
-              },
-              Object {
-                "dataIndex": "status",
-                "render": [Function],
-                "sorter": [Function],
-                "title": "Order Status",
-              },
-              Object {
-                "dataIndex": "due_date",
-                "defaultSortOrder": "descend",
-                "render": [Function],
-                "sorter": [Function],
-                "title": "Due Date",
-              },
-            ]
-          }
-          dataSource={
-            Array [
-              Object {
-                "due_date": "2019-01-31",
-                "inspector": "George",
-                "key": "2",
-                "order_no": "2",
-                "overdue": true,
-                "report_no": "report3",
-                "violation": "Mine isn't good enough",
-              },
-              Object {
-                "due_date": "2019-02-28",
-                "inspector": "Paul",
-                "key": "1",
-                "order_no": "1",
-                "overdue": false,
-                "report_no": "report2",
-                "violation": "Wearing purple hats",
-              },
-              Object {
-                "due_date": "2019-02-02",
-                "inspector": "Paul",
-                "key": "7",
-                "order_no": "7",
-                "overdue": true,
-                "report_no": "report1",
-                "violation": "Looks dangerous",
-              },
-            ]
-          }
-          indentSize={20}
-          loading={false}
-          locale={
-            Object {
-              "emptyText": <NullScreen
-                type="no-results"
-              />,
-            }
-          }
-          pagination={true}
-          rowKey="key"
-          showHeader={true}
-          size="default"
-          sortDirections={
-            Array [
-              "ascend",
-              "descend",
-            ]
-          }
-          useFixedHeader={false}
+    indentSize={20}
+    loading={false}
+    locale={
+      Object {
+        "emptyText": <NullScreen
+          type="no-results"
         />,
-      },
-      "ref": null,
-      "rendered": Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "align": "left",
-          "bordered": false,
-          "className": "center-pagination page-count-1",
-          "columns": Array [
-            Object {
-              "dataIndex": "overdue",
-              "render": [Function],
-              "title": "",
-            },
-            Object {
-              "dataIndex": "order_no",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "Order #",
-            },
-            Object {
-              "dataIndex": "violation",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "Violation",
-            },
-            Object {
-              "dataIndex": "report_no",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "Report #",
-            },
-            Object {
-              "dataIndex": "inspector",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "Inspector Name",
-            },
-            Object {
-              "dataIndex": "status",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "Order Status",
-            },
-            Object {
-              "dataIndex": "due_date",
-              "defaultSortOrder": "descend",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "Due Date",
-            },
-          ],
-          "dataSource": Array [
-            Object {
-              "due_date": "2019-01-31",
-              "inspector": "George",
-              "key": "2",
-              "order_no": "2",
-              "overdue": true,
-              "report_no": "report3",
-              "violation": "Mine isn't good enough",
-            },
-            Object {
-              "due_date": "2019-02-28",
-              "inspector": "Paul",
-              "key": "1",
-              "order_no": "1",
-              "overdue": false,
-              "report_no": "report2",
-              "violation": "Wearing purple hats",
-            },
-            Object {
-              "due_date": "2019-02-02",
-              "inspector": "Paul",
-              "key": "7",
-              "order_no": "7",
-              "overdue": true,
-              "report_no": "report1",
-              "violation": "Looks dangerous",
-            },
-          ],
-          "indentSize": 20,
-          "loading": false,
-          "locale": Object {
-            "emptyText": <NullScreen
-              type="no-results"
-            />,
-          },
-          "pagination": true,
-          "rowKey": "key",
-          "showHeader": true,
-          "size": "default",
-          "sortDirections": Array [
-            "ascend",
-            "descend",
-          ],
-          "useFixedHeader": false,
-        },
-        "ref": null,
-        "rendered": null,
-        "type": [Function],
-      },
-      "type": "div",
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getDerivedStateFromProps": true,
-          "getSnapshotBeforeUpdate": true,
-          "setState": Object {
-            "skipsComponentDidUpdateOnNullish": true,
-          },
-        },
-      },
-    },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
-  },
-}
+      }
+    }
+    pagination={true}
+    rowKey="key"
+    showHeader={true}
+    size="default"
+    sortDirections={
+      Array [
+        "ascend",
+        "descend",
+      ]
+    }
+    useFixedHeader={false}
+  />
+</div>
 `;
