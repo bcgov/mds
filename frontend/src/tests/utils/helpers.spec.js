@@ -29,11 +29,11 @@ describe("helpers class", () => {
     });
 
     it("null is before a value", () => {
-      expect(compareCodes(null, "1.11.8")).toEqual(true);
+      expect(codeSorter(null, "1.11.8")).toEqual(true);
     });
 
     it("null is before a value", () => {
-      expect(compareCodes("1.11.45 - lorem", null)).toEqual(true);
+      expect(codeSorter("1.11.45 - lorem", null)).toEqual(true);
     });
   });
 });
