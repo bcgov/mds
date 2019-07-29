@@ -16,6 +16,9 @@ import MineContactInfo from "@/components/mine/ContactInfo/MineContactInfo";
 import MineApplicationInfo from "@/components/mine/Applications/MineApplicationInfo";
 import MinePermitInfo from "@/components/mine/Permit/MinePermitInfo";
 import MineVariance from "@/components/mine/Variances/MineVariance";
+import MineComplianceInfo from "@/components/mine/Compliance/MineComplianceInfo";
+import MineIncidents from "@/components/mine/Incidents/MineIncidents";
+import MineTailingsInfo from "@/components/mine/Tailings/MineTailingsInfo";
 import HomePage from "@/components/dashboard/HomePage";
 
 export const DASHBOARD = {
@@ -88,6 +91,24 @@ export const MINE_VARIANCES = {
   route: "/mine-dashboard/:id/permits-and-approvals/variances",
   dynamicRoute: (id) => `/mine-dashboard/${id}/permits-and-approvals/variances`,
   component: MineVariance,
+};
+
+export const MINE_INCIDENTS = {
+  route: "/mine-dashboard/:id/oversight/incidents-and-investigations",
+  dynamicRoute: (id) => `/mine-dashboard/${id}/oversight/incidents-and-investigations`,
+  component: MineIncidents,
+};
+
+export const MINE_INSPECTIONS = {
+  route: "/mine-dashboard/:id/oversight/inspections-and-audits",
+  dynamicRoute: (id) => `/mine-dashboard/${id}/oversight/inspections-and-audits`,
+  component: MineComplianceInfo,
+};
+
+export const MINE_TAILINGS = {
+  route: "/mine-dashboard/:id/reports/tailings",
+  dynamicRoute: (id) => `/mine-dashboard/${id}/reports/tailings`,
+  component: MineTailingsInfo,
 };
 
 export const PARTY_PROFILE = {

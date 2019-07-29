@@ -15,13 +15,13 @@ import CustomPropTypes from "@/customPropTypes";
  */
 
 const propTypes = {
+  mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
   mineGuid: PropTypes.string.isRequired,
   closeModal: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   fetchParties: PropTypes.func.isRequired,
   createParty: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
-  mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
 };
 
 export class MineContactInfo extends Component {

@@ -4,6 +4,7 @@ import moment from "moment";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { formatDate } from "@/utils/helpers";
 import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
 import { Contact } from "@/components/mine/ContactInfo/PartyRelationships/Contact";
@@ -28,7 +29,6 @@ const propTypes = {
   partyRelationshipTypes: PropTypes.arrayOf(CustomPropTypes.partyRelationshipType),
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   mineComplianceInfo: CustomPropTypes.mineComplianceInfo,
-  complianceInfoLoading: PropTypes.bool,
   minePermits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
 };
 
@@ -36,7 +36,6 @@ const defaultProps = {
   partyRelationshipTypes: [],
   partyRelationships: [],
   mineComplianceInfo: {},
-  complianceInfoLoading: true,
 };
 
 const renderPartyRelationship = (mine, partyRelationship, partyRelationshipTypes) => {
@@ -165,7 +164,7 @@ export class MineSummary extends Component {
                 <Divider />
               </Col>
             </Row>
-            <Row>
+            <Row gutter={16}>
               <Col lg={8} xs={24}>
                 <Card
                   className="compliance-card"
@@ -173,10 +172,8 @@ export class MineSummary extends Component {
                     <Row type="flex" justify="center" align="middle">
                       <div className="center">
                         <span className="info-display">
-                          {/* {this.props.complianceInfoLoading
-                              ? String.LOADING
-                              : formatDate(this.props.mineComplianceInfo.last_inspection) ||
-                                String.NO_NRIS_INSPECTIONS} */}
+                          {formatDate(this.props.mineComplianceInfo.last_inspection) ||
+                            String.NO_NRIS_INSPECTIONS}
                         </span>
                       </div>
                     </Row>
@@ -194,11 +191,8 @@ export class MineSummary extends Component {
                   title={
                     <Row type="flex" justify="center" align="middle">
                       <img alt="Open Orders" src={DOC} style={{ height: 40, paddingRight: 5 }} />
-                      &nbsp;
                       <span className="info-display">
-                        {this.props.complianceInfoLoading
-                          ? String.LOADING
-                          : this.props.mineComplianceInfo.num_open_orders}
+                        {this.props.mineComplianceInfo.num_open_orders}
                       </span>
                     </Row>
                   }
@@ -219,11 +213,8 @@ export class MineSummary extends Component {
                         src={OVERDUEDOC}
                         style={{ height: 40, paddingRight: 5 }}
                       />
-                      &nbsp;
                       <span className="info-display">
-                        {this.props.complianceInfoLoading
-                          ? String.LOADING
-                          : this.props.mineComplianceInfo.num_overdue_orders}
+                        {this.props.mineComplianceInfo.num_overdue_orders}
                       </span>
                     </Row>
                   }
