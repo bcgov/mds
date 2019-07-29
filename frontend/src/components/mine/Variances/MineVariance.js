@@ -150,6 +150,7 @@ export class MineVariance extends Component {
         <h4 className="uppercase">Approved Variances</h4>
         <br />
         <MineVarianceTable
+          openEditVarianceModal={this.openEditVarianceModal}
           openViewVarianceModal={this.openViewVarianceModal}
           variances={this.props.approvedVariances}
           complianceCodesHash={this.props.complianceCodesHash}
