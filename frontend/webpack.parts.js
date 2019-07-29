@@ -1,12 +1,13 @@
 /* eslint-disable */
 const webpack = require("webpack");
 const autoprefixer = require("autoprefixer");
-const cssnano = require("cssnano")({ zindex: false });
+const cssnano = require("cssnano");
 
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
-const UglifyWebpackPlugin = require("uglifyjs-webpack-plugin");
-const CleanWebpackPlugin = require("clean-webpack-plugin");
+// const UglifyWebpackPlugin = require("uglifyjs-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 const ManifestPlugin = require("webpack-manifest-plugin");
@@ -204,10 +205,10 @@ exports.bundleOptimization = ({ options } = {}) => ({
   optimization: {
     splitChunks: options,
     minimizer: [
-      new UglifyWebpackPlugin({
+      new TerserPlugin({
         cache: true,
         parallel: true,
-        uglifyOptions: {
+        terserOptions: {
           compress: false,
         },
       }),
@@ -239,8 +240,8 @@ exports.hardSourceWebPackPlugin = () => ({
   plugins: [new HardSourceWebpackPlugin()],
 });
 
-exports.clean = (path) => ({
-  plugins: [new CleanWebpackPlugin([path])],
+exports.clean = () => ({
+  plugins: [new CleanWebpackPlugin()],
 });
 
 exports.copy = (from, to) => ({

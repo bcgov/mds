@@ -1,4 +1,5 @@
 CREATE SCHEMA IF NOT EXISTS nris;
+CREATE SCHEMA IF NOT EXISTS docman;
 
 -- Create NRIS User if it doesn't exist
 DO
@@ -26,6 +27,16 @@ $$
 BEGIN
     IF NOT EXISTS(select from pg_catalog.pg_roles where rolname= 'metabase') THEN
         CREATE USER metabase with PASSWORD '$METABASE_USER_PASSWORD';
+    END IF;
+END
+$$;
+
+-- Create Document Manager User if it doesn't exist
+DO
+$$
+BEGIN
+    IF NOT EXISTS(select from pg_catalog.pg_roles where rolname='docman') THEN
+        CREATE USER docman with PASSWORD '$DOCMAN_USER_PASSWORD';
     END IF;
 END
 $$;

@@ -44,6 +44,16 @@ app {
                     ]
                 ],
                 [
+                    'file':'microservices/document_manager/openshift/_python36_docman.bc.json',
+                    'params':[
+                            'NAME':"mds-docman-backend",
+                            'SUFFIX': "${app.build.suffix}",
+                            'VERSION':"${app.build.version}",
+                            'SOURCE_CONTEXT_DIR': "microservices/document_manager/backend",
+                            'SOURCE_REPOSITORY_URL': "${app.git.uri}"
+                    ]
+                ],
+                [
                     'file':'microservices/nris_api/openshift/_python36_oracle.bc.json',
                     'params':[
                             'NAME':"mds-nris-backend",
@@ -82,7 +92,7 @@ app {
                             'BASE_PATH': "/${app.git.changeId}",
                             'VERSION':"${app.build.version}",
                             'SOURCE_CONTEXT_DIR': "frontend",
-                            'DOCKER_IMAGE_DIRECTORY': "docker-images/nodejs-8",
+                            'DOCKER_IMAGE_DIRECTORY': "docker-images/nodejs-10",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}",
                             'NODE_ENV': "production"
                         ]
@@ -96,7 +106,7 @@ app {
                             'BASE_PATH': "/${app.git.changeId}",
                             'VERSION':"${app.build.version}",
                             'SOURCE_CONTEXT_DIR': "frontend-public",
-                            'DOCKER_IMAGE_DIRECTORY': "docker-images/nodejs-8-public",
+                            'DOCKER_IMAGE_DIRECTORY': "docker-images/nodejs-10-public",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}",
                             'NODE_ENV': "production"
                         ]
@@ -144,6 +154,16 @@ app {
                             'SUFFIX': "${app.build.suffix}",
                             'VERSION':"${app.build.version}",
                             'SOURCE_CONTEXT_DIR': "docker-images/metabase",
+                            'SOURCE_REPOSITORY_URL': "${app.git.uri}"
+                    ]
+                ],
+                [
+                    'file':'tools/openshift/digdag.bc.json',
+                    'params':[
+                            'NAME':"digdag",
+                            'SUFFIX': "${app.build.suffix}",
+                            'VERSION':"${app.build.version}",
+                            'SOURCE_CONTEXT_DIR': "tools/digdag",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}"
                     ]
                 ],

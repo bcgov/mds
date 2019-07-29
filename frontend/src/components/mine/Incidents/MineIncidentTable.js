@@ -79,6 +79,7 @@ const columns = (props) => [
     title: "Initial Report Documents",
     dataIndex: "initialDocuments",
     width: 200,
+    // TODO: Replace magic string with constant
     render: (text, record) => (
       <div title="Initial Report Documents">
         {record.docs.length === 0 ? <span>--</span> : renderDownloadLinks(record.docs, "INI")}

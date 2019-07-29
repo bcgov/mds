@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import CustomPropTypes from "@/customPropTypes";
 import { Field, reduxForm } from "redux-form";
 import { Form, Col, Row } from "antd";
+import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import FileUpload from "@/components/common/FileUpload";
@@ -152,6 +152,7 @@ class AddIncidentDetailForm extends Component {
                     id="InitialIncidentFileUpload"
                     name="InitialIncidentFileUpload"
                     onFileLoad={(document_name, document_manager_guid) =>
+                      // TODO: Replace string with constant
                       this.props.onFileLoad(document_name, document_manager_guid, "INI")
                     }
                     component={FileUpload}

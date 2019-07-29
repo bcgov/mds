@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import CustomPropTypes from "@/customPropTypes";
 import { Button, Tag, Table } from "antd";
+import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 import { getInspectorsHash } from "@/selectors/partiesSelectors";
@@ -25,6 +25,8 @@ const propTypes = {
   incidentFollowupActionHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
+// FIXME: Replace these hardcoded values with values pulled from the API (via
+// the Store). These should be mapped to ReduxForm values selected by the user
 const DANGEROUS_OCCURRENCE = "DO";
 const INCIDENT_DOCUMENT_TYPES = {
   initial: "INI",
@@ -40,9 +42,7 @@ export class ViewIncidentModal extends Component {
 
   renderInitialDetails = () => {
     const formattedPhoneNo = this.props.incident.reported_by_phone_ext
-      ? `${this.props.incident.reported_by_phone_no} ext: ${
-          this.props.incident.reported_by_phone_ext
-        }`
+      ? `${this.props.incident.reported_by_phone_no} ext: ${this.props.incident.reported_by_phone_ext}`
       : this.props.incident.reported_by_phone_no;
     return (
       <div>
@@ -227,6 +227,7 @@ export class ViewIncidentModal extends Component {
   renderFinalDocuments = () => {
     const finalDocuments = this.props.incident.documents.filter(
       ({ mine_incident_document_type_code }) =>
+        // FIXME: Example: mine_incident_document_type_code === this.state.mine_incident_document_type_code
         mine_incident_document_type_code === INCIDENT_DOCUMENT_TYPES.final
     );
     return (

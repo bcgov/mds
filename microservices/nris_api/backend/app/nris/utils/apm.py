@@ -1,4 +1,3 @@
-from app.extensions import sched
 from elasticapm import Client
 from flask import current_app
 
@@ -6,7 +5,7 @@ from flask import current_app
 def register_apm(name=None):
     """This decorator wraps a passed function with a call to the app's registered Elastic APM instance
 
-    :param object: Function to be wrapped and decorator parameters by calling 
+    :param object: Function to be wrapped and decorator parameters by calling
     :type object: object
     :raises e: Client connection exception.
     :return: Wrapped function
@@ -15,11 +14,7 @@ def register_apm(name=None):
 
     def wrap(func):
         def wrapped_f(*args, **kwargs):
-            client = None
-            if current_app:
-                client = Client(current_app.config['ELASTIC_APM'])
-            elif sched.app:
-                client = Client(sched.app.app_context().app.config['ELASTIC_APM'])
+            client = Client(current_app.config['ELASTIC_APM'])
 
             _name = name if name is not None else func.__name__
 

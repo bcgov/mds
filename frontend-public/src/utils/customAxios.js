@@ -5,6 +5,11 @@ import * as Strings from "@/constants/strings";
 const UNAUTHORIZED = 401;
 const MAINTENANCE = 503;
 
+// https://stackoverflow.com/questions/39696007/axios-with-promise-prototype-finally-doesnt-work
+const promiseFinally = require("promise.prototype.finally");
+
+promiseFinally.shim();
+
 const CustomAxios = (errorToastMessage) => {
   const instance = axios.create();
   instance.interceptors.response.use(

@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { remove } from "lodash";
 import { Field, reduxForm, change } from "redux-form";
+import { Form, Button, Col, Row, Popconfirm } from "antd";
 import { renderConfig } from "@/components/common/config";
 import PartySelectField from "@/components/common/PartySelectField";
-import { Form, Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import { required, maxLength, dateNotInFuture } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";
@@ -33,7 +33,7 @@ const defaultProps = {
 
 const validateBusinessRules = (values) => {
   const errors = {};
-  if (values.permit_amendment_type_code !== originalPermit) {
+  if (values.amendments && values.permit_amendment_type_code !== originalPermit) {
     const originalPermitAmendment = values.amendments.filter(
       (x) => x.permit_amendment_type_code === originalPermit
     )[0];
