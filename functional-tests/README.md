@@ -52,10 +52,6 @@ Only on windows:
     gradlew.bat edgeTest -DedgeTest.single=CustomJUnitSpecRunner
     gradlew.bat ieTest -DieTest.single=CustomJUnitSpecRunner
 
-Only on MacOS:
-//TODO: these are currently broken, most likely problem is that the GebConfig.groovy is out of date
-./gradlew safariTest -DsafariTest.single=CustomJUnitSpecRunner
-
 ## Run tests in project's root
 
 The firefox (non headless) tests can also be run from the projects root using the command 'make test'
