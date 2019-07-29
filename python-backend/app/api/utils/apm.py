@@ -16,10 +16,9 @@ def register_apm(func):
         result = None
 
         config = current_app.config['ELASTIC_APM']
-        apm_enabled = current_app.config['ELASTIC_ENABLED']
-
-        client = Client(config)
-        if client and apm_enabled:
+        apm_enabled = str(current_app.config['ELASTIC_ENABLED']) == '1'
+        if apm_enabled:
+            client = Client(config)
             client.begin_transaction('registered_funcs')
             try:
                 result = func(*args, **kwargs)
@@ -29,7 +28,6 @@ def register_apm(func):
                 client.end_transaction(f'{func.__name__} - error')
                 raise e
         else:
-            print(f'Running <{func.__name__}> without APM')
             result = func(*args, **kwargs)
         return result
 
