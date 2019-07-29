@@ -15,6 +15,7 @@ import LinkButton from "@/components/common/LinkButton";
 import FileUpload from "@/components/common/FileUpload";
 import { MINE_INCIDENT_DOCUMENT } from "@/constants/API";
 import { IncidentsUploadedFilesList } from "@/components/Forms/incidents/IncidentsUploadedFilesList";
+import * as Strings from "@/constants/strings";
 
 const propTypes = {
   followupActionOptions: CustomPropTypes.options.isRequired,
@@ -78,8 +79,8 @@ export class AddIncidentFollowUpForm extends Component {
                     validate={[
                       dateNotInFuture,
                       () =>
-                        // TODO: Use constant
-                        this.props.determinationTypeCode === "PEN" && this.props.hasFollowUp
+                        this.props.determinationTypeCode ===
+                          Strings.INCIDENT_DETERMINATION_TYPES.pending && this.props.hasFollowUp
                           ? "Warning: It's uncommon for an inspection to occur if a determination has not been made"
                           : undefined,
                     ]}
@@ -132,7 +133,11 @@ export class AddIncidentFollowUpForm extends Component {
                   id="InitialIncidentFileUpload"
                   name="InitialIncidentFileUpload"
                   onFileLoad={(document_name, document_manager_guid) =>
-                    this.props.onFileLoad(document_name, document_manager_guid, "FIN")
+                    this.props.onFileLoad(
+                      document_name,
+                      document_manager_guid,
+                      Strings.INCIDENT_DOCUMENT_TYPES.final
+                    )
                   }
                   uploadUrl={MINE_INCIDENT_DOCUMENT(this.props.mineGuid)}
                   component={FileUpload}

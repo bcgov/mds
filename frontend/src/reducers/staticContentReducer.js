@@ -130,7 +130,7 @@ export const getPermitStatusOptions = (state) => state[STATIC_CONTENT].permitSta
 export const getApplicationStatusOptions = (state) => state[STATIC_CONTENT].applicationStatusCodes;
 export const getComplianceCodes = (state) => state[STATIC_CONTENT].complianceCodes;
 export const getIncidentDocumentTypeOptions = (state) =>
-  state[STATIC_CONTENT].getIncidentDocumentTypeOptions;
+  state[STATIC_CONTENT].incidentDocumentTypeOptions;
 export const getIncidentFollowupActionOptions = (state) =>
   state[STATIC_CONTENT].incidentFollowupActionOptions;
 export const getIncidentDeterminationOptions = (state) =>

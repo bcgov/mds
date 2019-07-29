@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { destroy } from "redux-form";
-import * as FORM from "@/constants/forms";
 import PropTypes from "prop-types";
+import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
 import * as ModalContent from "@/constants/modalContent";
@@ -18,17 +18,26 @@ import {
 } from "@/actionCreators/mineActionCreator";
 import { getMineIncidents } from "@/selectors/mineSelectors";
 import {
-  getIncidentFollowupActionOptions,
   getDropdownIncidentFollowupActionOptions,
   getDangerousOccurrenceSubparagraphOptions,
   getDropdownIncidentDeterminationOptions,
   getDropdownIncidentStatusCodeOptions,
+  getIncidentDocumentTypeOptions,
+  getIncidentFollowupActionOptions,
+  getIncidentDeterminationOptions,
+  getIncidentStatusCodeOptions,
 } from "@/selectors/staticContentSelectors";
 
 import MineIncidentTable from "./MineIncidentTable";
+import {
+  fetchIncidentDocumentTypeOptions,
+  fetchMineIncidentFollowActionOptions,
+  fetchMineIncidentDeterminationOptions,
+  fetchMineIncidentStatusCodeOptions,
+} from "@/actionCreators/staticContentActionCreator";
 
 /**
- * @class  MineTailingsInfo - all tenure information related to the mine.
+ * @class  MineIncidents - all incident information related to the mine.
  */
 
 const propTypes = {
@@ -46,6 +55,10 @@ const propTypes = {
   fetchMineIncidents: PropTypes.func.isRequired,
   createMineIncident: PropTypes.func.isRequired,
   updateMineIncident: PropTypes.func.isRequired,
+  fetchIncidentDocumentTypeOptions: PropTypes.func.isRequired,
+  fetchMineIncidentFollowActionOptions: PropTypes.func.isRequired,
+  fetchMineIncidentDeterminationOptions: PropTypes.func.isRequired,
+  fetchMineIncidentStatusCodeOptions: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -56,6 +69,10 @@ const defaultProps = {
 export class MineIncidents extends Component {
   componentDidMount() {
     this.props.fetchMineIncidents(this.props.mine.mine_guid);
+    this.props.fetchIncidentDocumentTypeOptions();
+    this.props.fetchMineIncidentFollowActionOptions();
+    this.props.fetchMineIncidentDeterminationOptions();
+    this.props.fetchMineIncidentStatusCodeOptions();
   }
 
   handleAddMineIncident = (values) => {
@@ -166,14 +183,25 @@ const mapStateToProps = (state) => ({
   incidentDeterminationOptions: getDropdownIncidentDeterminationOptions(state),
   incidentStatusCodeOptions: getDropdownIncidentStatusCodeOptions(state),
   doSubparagraphOptions: getDangerousOccurrenceSubparagraphOptions(state),
+
+  // TODO: Are these needed for anything in this component?
+  // Looks like they're not. Copy this boilerplate to wherever it's needed.
+  incidentDocumentTypes: getIncidentDocumentTypeOptions(state),
+  incidentDeterminations: getIncidentDeterminationOptions(state),
+  incidentStatusCodes: getIncidentStatusCodeOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchMineIncidents,
+      fetchIncidentDocumentTypeOptions,
+      fetchMineIncidentFollowActionOptions,
+      fetchMineIncidentDeterminationOptions,
+      fetchMineIncidentStatusCodeOptions,
       createMineIncident,
       updateMineIncident,
+
       destroy,
     },
     dispatch

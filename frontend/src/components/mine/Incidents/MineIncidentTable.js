@@ -11,6 +11,7 @@ import CustomPropTypes from "@/customPropTypes";
 import NullScreen from "@/components/common/NullScreen";
 import { formatDate } from "@/utils/helpers";
 import LinkButton from "@/components/common/LinkButton";
+import * as Strings from "@/constants/strings";
 
 const propTypes = {
   incidents: PropTypes.arrayOf(CustomPropTypes.incident).isRequired,
@@ -79,10 +80,13 @@ const columns = (props) => [
     title: "Initial Report Documents",
     dataIndex: "initialDocuments",
     width: 200,
-    // TODO: Replace magic string with constant
     render: (text, record) => (
       <div title="Initial Report Documents">
-        {record.docs.length === 0 ? <span>--</span> : renderDownloadLinks(record.docs, "INI")}
+        {record.docs.length === 0 ? (
+          <span>--</span>
+        ) : (
+          renderDownloadLinks(record.docs, Strings.INCIDENT_DOCUMENT_TYPES.initial)
+        )}
       </div>
     ),
   },
@@ -92,7 +96,11 @@ const columns = (props) => [
     width: 200,
     render: (text, record) => (
       <div title="Final Report Documents">
-        {record.docs.length === 0 ? <span>--</span> : renderDownloadLinks(record.docs, "FIN")}
+        {record.docs.length === 0 ? (
+          <span>--</span>
+        ) : (
+          renderDownloadLinks(record.docs, Strings.INCIDENT_DOCUMENT_TYPES.final)
+        )}
       </div>
     ),
   },
@@ -158,23 +166,25 @@ const transformRowData = (
     }))
     .sort((a, b) => (a.mine_incident_report_no > b.mine_incident_report_no ? -1 : 1));
 
-export const MineIncidentTable = (props) => (
-  <div>
-    <Table
-      align="left"
-      pagination={false}
-      columns={columns(props)}
-      locale={{ emptyText: <NullScreen type="incidents" /> }}
-      dataSource={transformRowData(
-        props.incidents,
-        props.followupActions,
-        props.handleEditMineIncident,
-        props.openMineIncidentModal,
-        props.openViewMineIncidentModal
-      )}
-    />
-  </div>
-);
+export const MineIncidentTable = (props) => {
+  return (
+    <div>
+      <Table
+        align="left"
+        pagination={false}
+        columns={columns(props)}
+        locale={{ emptyText: <NullScreen type="incidents" /> }}
+        dataSource={transformRowData(
+          props.incidents,
+          props.followupActions,
+          props.handleEditMineIncident,
+          props.openMineIncidentModal,
+          props.openViewMineIncidentModal
+        )}
+      />
+    </div>
+  );
+};
 
 MineIncidentTable.propTypes = propTypes;
 
