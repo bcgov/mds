@@ -22,10 +22,7 @@ import {
   getDangerousOccurrenceSubparagraphOptions,
   getDropdownIncidentDeterminationOptions,
   getDropdownIncidentStatusCodeOptions,
-  getIncidentDocumentTypeOptions,
   getIncidentFollowupActionOptions,
-  getIncidentDeterminationOptions,
-  getIncidentStatusCodeOptions,
 } from "@/selectors/staticContentSelectors";
 
 import MineIncidentTable from "./MineIncidentTable";
@@ -183,12 +180,6 @@ const mapStateToProps = (state) => ({
   incidentDeterminationOptions: getDropdownIncidentDeterminationOptions(state),
   incidentStatusCodeOptions: getDropdownIncidentStatusCodeOptions(state),
   doSubparagraphOptions: getDangerousOccurrenceSubparagraphOptions(state),
-
-  // TODO: Are these needed for anything in this component?
-  // Looks like they're not. Copy this boilerplate to wherever it's needed.
-  incidentDocumentTypes: getIncidentDocumentTypeOptions(state),
-  incidentDeterminations: getIncidentDeterminationOptions(state),
-  incidentStatusCodes: getIncidentStatusCodeOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -201,7 +192,6 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineIncidentStatusCodeOptions,
       createMineIncident,
       updateMineIncident,
-
       destroy,
     },
     dispatch

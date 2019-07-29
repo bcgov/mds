@@ -58,7 +58,7 @@ export const VARIANCE_DENIED_CODE = "DEN";
 
 export const INCIDENT_DOCUMENT_TYPES = {
   initial: "INI",
-  finial: "FIN",
+  final: "FIN",
 };
 
 export const INCIDENT_DETERMINATION_TYPES = {

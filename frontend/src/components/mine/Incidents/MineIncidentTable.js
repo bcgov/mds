@@ -166,25 +166,23 @@ const transformRowData = (
     }))
     .sort((a, b) => (a.mine_incident_report_no > b.mine_incident_report_no ? -1 : 1));
 
-export const MineIncidentTable = (props) => {
-  return (
-    <div>
-      <Table
-        align="left"
-        pagination={false}
-        columns={columns(props)}
-        locale={{ emptyText: <NullScreen type="incidents" /> }}
-        dataSource={transformRowData(
-          props.incidents,
-          props.followupActions,
-          props.handleEditMineIncident,
-          props.openMineIncidentModal,
-          props.openViewMineIncidentModal
-        )}
-      />
-    </div>
-  );
-};
+export const MineIncidentTable = (props) => (
+  <div>
+    <Table
+      align="left"
+      pagination={false}
+      columns={columns(props)}
+      locale={{ emptyText: <NullScreen type="incidents" /> }}
+      dataSource={transformRowData(
+        props.incidents,
+        props.followupActions,
+        props.handleEditMineIncident,
+        props.openMineIncidentModal,
+        props.openViewMineIncidentModal
+      )}
+    />
+  </div>
+);
 
 MineIncidentTable.propTypes = propTypes;
 
