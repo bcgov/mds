@@ -54,18 +54,6 @@ const errorStyle = (isOverdue) => (isOverdue ? { color: errorRed } : {});
 const hideColumn = (condition) => (condition ? "column-hide" : "");
 
 export class MineVarianceTable extends Component {
-  handleOpenModal = (event, isEditable, variance) => {
-    event.preventDefault();
-    if (isEditable) {
-      this.props.openEditVarianceModal(variance);
-    } else {
-      this.props.openViewVarianceModal(variance);
-    }
-  };
-
-  handleConditionalEdit = (code) =>
-    code === Strings.VARIANCE_APPLICATION_CODE || code === Strings.VARIANCE_DECISION_CODE;
-
   transformRowData = (variances, codeHash, statusHash) =>
     variances.map((variance) => ({
       key: variance.variance_guid,
@@ -73,7 +61,6 @@ export class MineVarianceTable extends Component {
       mineName: variance.mine_name || Strings.EMPTY_FIELD,
       mineGuid: variance.mine_guid,
       status: statusHash[variance.variance_application_status_code],
-      isEditable: this.handleConditionalEdit(variance.variance_application_status_code),
       compliance_article_id: codeHash[variance.compliance_article_id] || Strings.EMPTY_FIELD,
       expiry_date:
         (variance.expiry_date && formatDate(variance.expiry_date)) || Strings.EMPTY_FIELD,
@@ -242,17 +229,27 @@ export class MineVarianceTable extends Component {
                 type="primary"
                 size="small"
                 ghost
-                onClick={(event) =>
-                  this.handleOpenModal(event, record.isEditable, record.variance, record.isOverdue)
-                }
+                onClick={() => this.props.openEditVarianceModal(record.variance)}
               >
-                {record.isEditable ? (
-                  <img src={EDIT_OUTLINE} alt="Edit/View" className="icon-svg-filter" />
-                ) : (
-                  <Icon type="eye" className="icon-sm" />
-                )}
+                <img src={EDIT_OUTLINE} alt="Edit" className="icon-svg-filter" />
               </Button>
             </AuthorizationWrapper>
+          </div>
+        ),
+      },
+      {
+        title: "",
+        dataIndex: "variance",
+        render: (text, record) => (
+          <div title="" align="right">
+            <Button
+              type="primary"
+              size="small"
+              ghost
+              onClick={() => this.props.openViewVarianceModal(record.variance)}
+            >
+              <Icon type="eye" alt="View" className="icon-sm" />
+            </Button>
           </div>
         ),
       },
