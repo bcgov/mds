@@ -110,11 +110,6 @@ exports[`AddReportForm renders properly 1`] = `
           label="Received Date"
           name="received_date"
           placeholder=""
-          validate={
-            Array [
-              [Function],
-            ]
-          }
         />
       </FormItem>
     </Col>

@@ -9,13 +9,6 @@ exports[`MineReportTable renders properly 1`] = `
   columns={
     Array [
       Object {
-        "dataIndex": "submission_year",
-        "key": "submission_year",
-        "render": [Function],
-        "sorter": [Function],
-        "title": "Year",
-      },
-      Object {
         "dataIndex": "report_name",
         "key": "report_name",
         "render": [Function],
@@ -23,11 +16,25 @@ exports[`MineReportTable renders properly 1`] = `
         "title": "Report Name",
       },
       Object {
+        "dataIndex": "submission_year",
+        "key": "submission_year",
+        "render": [Function],
+        "sorter": [Function],
+        "title": "Compliance Year/Period",
+      },
+      Object {
         "dataIndex": "due_date",
         "key": "due_date",
         "render": [Function],
         "sorter": [Function],
         "title": "Due",
+      },
+      Object {
+        "dataIndex": "received_date",
+        "key": "received_date",
+        "render": [Function],
+        "sorter": [Function],
+        "title": "Received",
       },
     ]
   }
