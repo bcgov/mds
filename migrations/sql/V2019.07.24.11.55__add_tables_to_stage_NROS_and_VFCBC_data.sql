@@ -1,15 +1,5 @@
 CREATE SCHEMA IF NOT EXISTS now;
 
--- Create NRIS User if it doesn't exist
-DO
-$$
-BEGIN
-    IF NOT EXISTS(select from pg_catalog.pg_roles where rolname= 'now') THEN
-        CREATE USER now with PASSWORD '$NRIS_USER_PASSWORD';
-    END IF;
-END
-$$;
-
 CREATE TABLE now.application_start_stop (
     MESSAGEID integer PRIMARY KEY,
     NRSOSAPPLICATIONID character varying(50),
@@ -18,13 +8,13 @@ CREATE TABLE now.application_start_stop (
     NOWNUMBER character varying(50),
     STARTWORKDATE date,
     ENDWORKDATE date,
-    PROCESSED character varying(1) DEFAULT 'N' ,
+    PROCESSED character varying(1),
     PROCESSEDDATE date
 );
 
 CREATE TABLE now.client (
     CLIENTID integer PRIMARY KEY,
-    "TYPE" character varying(30),
+    TYPE character varying(30),
     ORG_LEGALNAME character varying(250),
     ORG_DOINGBUSINESSAS character varying(150),
     IND_FIRSTNAME character varying(60),
@@ -72,7 +62,7 @@ CREATE TABLE now.application_nda (
     ANYOTHERINFORMATION character varying(4000),
     VFCBCAPPLICATIONURL character varying(4000),
     MESSAGECREATEDDATE date,
-    PROCESSED character varying(1) DEFAULT 'N' ,
+    PROCESSED character varying(1),
     PROCESSEDDATE date,
     NRSOSAPPLICATIONID character varying(50),
 
@@ -82,7 +72,7 @@ CREATE TABLE now.application_nda (
 
 CREATE TABLE now.equipment(
     EQUIPMENTID integer PRIMARY KEY,
-	"TYPE" character varying(4000),
+	TYPE character varying(4000),
 	SIZECAPACITY character varying(4000),
 	QUANTITY integer
 );
@@ -212,7 +202,7 @@ CREATE TABLE now.application (
     ANYOTHERINFORMATION character varying(4000),
     VFCBCAPPLICATIONURL character varying(4000),
     MESSAGECREATEDDATE date,
-    PROCESSED character varying(1) DEFAULT 'N' ,
+    PROCESSED character varying(1),
     PROCESSEDDATE date,
     CUTLINESEXPLGRIDDISTURBEDAREA numeric(14,2),
     PONDSRECYCLED character varying(3),
@@ -232,7 +222,7 @@ CREATE TABLE now.application (
 CREATE TABLE now.contact (
     ID serial PRIMARY KEY,
     MESSAGEID integer,
-    "TYPE" character varying(30),
+    TYPE character varying(30),
     ORG_LEGALNAME character varying(250),
     ORG_DOINGBUSINESSAS character varying(150),
     IND_FIRSTNAME character varying(60),
@@ -261,6 +251,42 @@ CREATE TABLE now.contact (
     FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 );
 
+CREATE TABLE now.settling_pond (
+    SETTLINGPONDID integer PRIMARY KEY,
+	PONDID character varying(4000),
+	WATERSOURCE character varying(4000),
+	WIDTH integer,
+	LENGTH integer,
+	DEPTH integer,
+	CONSTRUCTIONMETHOD character varying(4000),
+	DISTURBEDAREA numeric(14,2),
+	TIMBERVOLUME numeric(14,2)
+);
+
+CREATE TABLE now.status_update (
+    ID serial PRIMARY KEY,
+    BUSINESSAREANUMBER character varying(50),
+	STATUS character varying(60),
+	STATUSUPDATEDATE DATE,
+	PROCESSED character varying(1),
+	PROCESSEDDATE DATE,
+	REQUESTSTATUS character varying(20),
+	REQUESTMESSAGE character varying(4000),
+	SEQNUM integer,
+	STATUSREASON character varying(4000),
+	APPLICATIONTYPE character varying(100)
+);
+
+CREATE TABLE now.surface_bulk_sample_activity (
+    ID serial PRIMARY KEY,
+    MESSAGEID integer,
+	TYPE character varying(4000),
+	DISTURBEDAREA numeric(14,2),
+	TIMBERVOLUME numeric(14,2),
+
+    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+);
+
 CREATE TABLE now.document (
     ID serial PRIMARY KEY,
     MESSAGEID integer,
@@ -283,7 +309,7 @@ CREATE TABLE now.document_nda (
     FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 );
 
-CREATE TABLE now.document_nda (
+CREATE TABLE now.document_start_stop (
     ID serial PRIMARY KEY,
     MESSAGEID integer,
 	DOCUMENTURL character varying(4000),
@@ -291,82 +317,178 @@ CREATE TABLE now.document_nda (
 	DOCUMENTTYPE character varying(4000),
 	DESCRIPTION character varying(4000),
 
-    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (MESSAGEID) REFERENCES now.application_start_stop(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 );
 
 CREATE TABLE now.placer_activity (
-    PLACERACTIVITYID NUMBER(9,0) PRIMARY KEY,
-	"TYPE" VARCHAR2(4000),
-	QUANTITY NUMBER(3,0),
-	"DEPTH" NUMBER(14,0),
-	"LENGTH" NUMBER(6,0),
-	WIDTH NUMBER(6,0),
-	DISTURBEDAREA NUMBER(14,2),
-	TIMBERVOLUME NUMBER(14,2),
+    PLACERACTIVITYID integer PRIMARY KEY,
+	TYPE character varying(4000),
+	QUANTITY integer,
+	DEPTH integer,
+	LENGTH integer,
+	WIDTH integer,
+	DISTURBEDAREA numeric(14,2),
+	TIMBERVOLUME numeric(14,2)
+);
+
+CREATE TABLE now.sand_grv_qry_activity (
+    ID serial PRIMARY KEY,
+	MESSAGEID integer,
+	TYPE character varying(4000),
+	DISTURBEDAREA numeric(14,2),
+	TIMBERVOLUME numeric(14,2),
+
+    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+);
+
+CREATE TABLE now.under_exp_new_activity (
+    ID serial PRIMARY KEY,
+	MESSAGEID integer,
+	TYPE character varying(4000),
+	INCLINE numeric(14,1),
+	INCLINEUNITS character varying(20),
+	QUANTITY integer,
+	LENGTH numeric(14,1),
+	WIDTH numeric(14,1),
+	HEIGHT numeric(14,1),
+	SEQ_NO integer,
+
+    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+);
+
+CREATE TABLE now.under_exp_rehab_activity (
+    ID serial PRIMARY KEY,
+	MESSAGEID integer,
+	TYPE character varying(4000),
+	INCLINE numeric(14,1),
+	INCLINEUNITS character varying(20),
+	QUANTITY integer,
+	LENGTH numeric(14,1),
+	WIDTH numeric(14,1),
+	HEIGHT numeric(14,1),
+	SEQ_NO integer,
+
+    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+);
+
+CREATE TABLE now.under_exp_surface_activity (
+    ID serial PRIMARY KEY,
+	MESSAGEID integer,
+	TYPE character varying(4000),
+	QUANTITY integer,
+	DISTURBEDAREA numeric(14,2),
+	TIMBERVOLUME numeric(14,2),
+
+    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+);
+
+CREATE TABLE now.water_source_activity (
+    ID serial PRIMARY KEY,
+	MESSAGEID integer,
+	SOURCEWATERSUPPLY character varying(4000),
+	TYPE character varying(4000),
+	USEOFWATER character varying(4000),
+	ESTIMATERATEWATER numeric(14,2),
+	PUMPSIZEINWATER numeric(14,2),
+	LOCATIONWATERINTAKE character varying(4000),
+	SEQ_NO integer,
+
+    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 );
 
 CREATE TABLE now.existing_placer_activity_xref (
-    MESSAGEID NUMBER(9,0),
-	PLACERACTIVITYID NUMBER(9,0),
+    MESSAGEID integer,
+	PLACERACTIVITYID integer,
 
     FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED,
-    FOREIGN KEY () REFERENCES now.() DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (PLACERACTIVITYID) REFERENCES now.placer_activity(PLACERACTIVITYID) DEFERRABLE INITIALLY DEFERRED
 );
 
 CREATE TABLE now.existing_settling_pond_xref (
-    MESSAGEID NUMBER(9,0),
-	SETTLINGPONDID NUMBER(9,0),
+    MESSAGEID integer,
+	SETTLINGPONDID integer,
 
     FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED,
-    FOREIGN KEY () REFERENCES now.() DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (SETTLINGPONDID) REFERENCES now.settling_pond(SETTLINGPONDID) DEFERRABLE INITIALLY DEFERRED
 );
 
 CREATE TABLE now.mech_trenching_equip_xref (
-    MESSAGEID NUMBER(9,0),
-	EQUIPMENTID NUMBER(9,0),
+    MESSAGEID integer,
+	EQUIPMENTID integer,
 
     FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED,
-    FOREIGN KEY () REFERENCES now.() DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (EQUIPMENTID) REFERENCES now.equipment(EQUIPMENTID) DEFERRABLE INITIALLY DEFERRED
+);
+
+CREATE TABLE now.surface_bulk_sample_equip_xref (
+	MESSAGEID integer,
+	EQUIPMENTID integer,
+
+    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY (EQUIPMENTID) REFERENCES now.equipment(EQUIPMENTID) DEFERRABLE INITIALLY DEFERRED
+);
+
+CREATE TABLE now.sand_grv_qry_equip_xref (
+	MESSAGEID integer,
+	EQUIPMENTID integer,
+
+    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY (EQUIPMENTID) REFERENCES now.equipment(EQUIPMENTID) DEFERRABLE INITIALLY DEFERRED
+);
+
+CREATE TABLE now.placer_equip_xref (
+    MESSAGEID integer,
+	EQUIPMENTID integer,
+
+    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY (EQUIPMENTID) REFERENCES now.equipment(EQUIPMENTID) DEFERRABLE INITIALLY DEFERRED
+);
+
+CREATE TABLE now.proposed_placer_activity_xref (
+    MESSAGEID integer,
+	PLACERACTIVITYID integer,
+
+    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY (PLACERACTIVITYID) REFERENCES now.placer_activity(PLACERACTIVITYID) DEFERRABLE INITIALLY DEFERRED
+);
+
+CREATE TABLE now.proposed_settling_pond_xref (
+    MESSAGEID integer,
+	SETTLINGPONDID integer,
+
+    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY (SETTLINGPONDID) REFERENCES now.settling_pond(SETTLINGPONDID) DEFERRABLE INITIALLY DEFERRED
 );
 
 CREATE TABLE now.exp_access_activity (
     ID serial PRIMARY KEY,
-    MESSAGEID NUMBER(9,0),
-	"TYPE" VARCHAR2(4000),
-	"LENGTH" NUMBER(14,2),
-	DISTURBEDAREA NUMBER(14,2),
-	TIMBERVOLUME NUMBER(14,2),
+    MESSAGEID integer,
+	TYPE character varying(4000),
+	LENGTH numeric(14,2),
+	DISTURBEDAREA numeric(14,2),
+	TIMBERVOLUME numeric(14,2),
 
     FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 );
 
 CREATE TABLE now.exp_surface_drill_activity (
     ID serial PRIMARY KEY,
-    MESSAGEID NUMBER(9,0),
-	"TYPE" VARCHAR2(4000),
-	NUMBEROFSITES NUMBER(14,0),
-	DISTURBEDAREA NUMBER(14,2),
-	TIMBERVOLUME NUMBER(14,2),
+    MESSAGEID integer,
+	TYPE character varying(4000),
+	NUMBEROFSITES integer,
+	DISTURBEDAREA numeric(14,2),
+	TIMBERVOLUME numeric(14,2),
 
     FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 );
 
 CREATE TABLE now.mech_trenching_activity (
     ID serial PRIMARY KEY,
-    MESSAGEID NUMBER(9,0),
-	"TYPE" VARCHAR2(4000),
-	NUMBEROFSITES NUMBER(14,0),
-	DISTURBEDAREA NUMBER(14,2),
-	TIMBERVOLUME NUMBER(14,2),
+    MESSAGEID integer,
+	TYPE character varying(4000),
+	NUMBEROFSITES integer,
+	DISTURBEDAREA numeric(14,2),
+	TIMBERVOLUME numeric(14,2),
 
     FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
-);
-
-    mine_report_due_date_type         character varying(3)                    PRIMARY KEY,
-    description                       character varying(60)                   NOT NULL   ,
-    active_ind                        boolean DEFAULT true                    NOT NULL   ,
-    create_user                       character varying(60)                   NOT NULL   ,
-    create_timestamp                  timestamp with time zone DEFAULT now()  NOT NULL   ,
-    update_user                       character varying(60)                   NOT NULL   ,
-    update_timestamp                  timestamp with time zone DEFAULT now()  NOT NULL
 );
