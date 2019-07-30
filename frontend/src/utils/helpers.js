@@ -97,37 +97,44 @@ export const getFiscalYear = () => {
 export const formatParamStringToArray = (param) => (param ? param.split(",").filter((x) => x) : []);
 
 // This method sorts codes of the for '#.#.# - Lorem Ipsum'
-// where the number of numbers is variable and the text is optional
+// where the number of integers is variable and the text is optional
 // TODO: In order to sort incidents this will need to be modified to deal with
 // parentheses
 export const compareCodes = (a, b) => {
-  const a_number = a.split(" - ", 1)[0];
-  const b_number = b.split(" - ", 1)[0];
-  const a_array = a_number.split(".");
-  const b_array = b_number.split(".");
-  const k = Math.min(a_array.length, b_array.length);
-  for (let i = 0; i < k; i += 1) {
-    a_array[i] = parseInt(a_array[i], 10);
-    b_array[i] = parseInt(b_array[i], 10);
-    if (a_array[i] > b_array[i]) return 1;
-    if (a_array[i] < b_array[i]) return -1;
+  // Returns the first match that is non-null.
+  const regexParse = (input) =>
+    input.match(/(?<first>[0-9]+)\.(?<second>[0-9]+)\.(?<third>[0-9]+)/) ||
+    input.match(/(?<first>[0-9]+)\.(?<second>[0-9]+)/) ||
+    input.match(/(?<first>[0-9]+)/);
+  const aCodes = regexParse(a);
+  const bCodes = regexParse(b);
+  if (!aCodes) return -1;
+  if (!bCodes) return 1;
+  let aInt;
+  let bInt;
+  const k = Math.min(aCodes.length, bCodes.length);
+  // Compares then non-null parts of two strings of potentially different lengths e.g 1.11 and 1.4.12
+  for (let i = 1; i < k; i += 1) {
+    aInt = parseInt(aCodes[i], 10);
+    bInt = parseInt(bCodes[i], 10);
+    if (aInt > bInt) return 1;
+    if (aInt < bInt) return -1;
   }
-  if (a_array.length === b_array.length) {
+  // If the previous loop did not return anything and the codes are the same length then they are the same code.
+  if (aCodes.length === bCodes.length) {
     return 0;
   }
-  return a_array.length < b_array.length ? -1 : 1;
+  // The shorter of two codes with otherwise matching numbers is ordered first e.g 1.11 is before 1.11.12
+  return aCodes.length < bCodes.length ? -1 : 1;
 };
 
-export const codeSorter = (code_one, code_two) => {
+export const codeSorter = (codeOne, codeTwo) => {
   // if a code is null it set before one that is not in sort order.
-  if (!code_one) {
+  if (!codeOne) {
     return true;
   }
-  if (!code_two) {
+  if (!codeTwo) {
     return false;
   }
-  if (compareCodes(code_one, code_two) < 0) {
-    return true;
-  }
-  return false;
+  return compareCodes(codeOne, codeTwo) < 0;
 };
