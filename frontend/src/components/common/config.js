@@ -3,6 +3,7 @@ import RenderAutocomplete from "./RenderAutoComplete";
 import RenderAutoSizeField from "./RenderAutoSizeField";
 import RenderCascader from "./RenderCascader";
 import RenderDate from "./RenderDate";
+import RenderYear from "./RenderYear";
 import RenderField from "./RenderField";
 import RenderScrollField from "./RenderScrollField";
 import RenderLargeSelect from "./RenderLargeSelect";
@@ -19,6 +20,7 @@ export const renderConfig = {
   AUTO_SIZE_FIELD: RenderAutoSizeField,
   CASCADER: RenderCascader,
   DATE: RenderDate,
+  YEAR: RenderYear,
   FIELD: RenderField,
   SCROLL_FIELD: RenderScrollField,
   SELECT: RenderSelect,

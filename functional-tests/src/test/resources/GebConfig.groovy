@@ -10,7 +10,6 @@ import org.openqa.selenium.chrome.ChromeOptions
 import org.openqa.selenium.firefox.*
 import org.openqa.selenium.ie.InternetExplorerDriver
 import org.openqa.selenium.edge.EdgeDriver
-import org.openqa.selenium.safari.SafariDriver
 import org.openqa.selenium.remote.DesiredCapabilities
 import utils.Const
 
@@ -126,12 +125,6 @@ environments {
 	// See: https://github.com/SeleniumHQ/selenium/wiki
 	edge {
 		driver = { new EdgeDriver() }
-	}
-
-	// run via “./gradlew safariTest”
-	// See: https://github.com/SeleniumHQ/selenium/wiki
-	safari {
-		driver = { new SafariDriver() }
 	}
 }
 

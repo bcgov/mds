@@ -79,3 +79,8 @@ export const storeVarianceDocumentCategoryOptions = (payload) => ({
   type: ActionTypes.STORE_VARIANCE_DOCUMENT_CATEGORY_OPTIONS,
   payload,
 });
+
+export const storeMineReportDefinitionOptions = (payload) => ({
+  type: ActionTypes.STORE_MINE_REPORT_DEFINITION_OPTIONS,
+  payload,
+});
