@@ -81,6 +81,11 @@ exports[`MineVarianceTable renders properly 1`] = `
           "render": [Function],
           "title": "",
         },
+        Object {
+          "dataIndex": "variance",
+          "render": [Function],
+          "title": "",
+        },
       ]
     }
     dataSource={
@@ -97,7 +102,6 @@ exports[`MineVarianceTable renders properly 1`] = `
             },
           ],
           "expiry_date": "Mar 30 2019",
-          "isEditable": false,
           "isOverdue": true,
           "issue_date": "Mar 01 2019",
           "key": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
