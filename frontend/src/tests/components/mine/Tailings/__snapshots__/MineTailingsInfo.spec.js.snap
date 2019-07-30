@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MineTailingsInfo renders properly 1`] = `
-<div>
+<div
+  className="tab__content"
+>
   <Row
     gutter={16}
     key="e2629897-053e-4218-9299-479375e47f78"

@@ -230,7 +230,7 @@ export class MineSummary extends Component {
             <Row>
               <Col span={24}>
                 <div className="right">
-                  <Link to={router.MINE_SUMMARY.dynamicRoute(mine.mine_guid, "compliance")}>
+                  <Link to={router.MINE_INSPECTIONS.dynamicRoute(mine.mine_guid)}>
                     See All Compliance
                   </Link>
                 </div>
@@ -255,7 +255,7 @@ export class MineSummary extends Component {
             <Row>
               <Col span={24}>
                 <div className="right">
-                  <Link to={router.MINE_SUMMARY.dynamicRoute(mine.mine_guid, "tailings")}>
+                  <Link to={router.MINE_TAILINGS.dynamicRoute(mine.mine_guid)}>
                     See All Tailings Storage Facilities
                   </Link>
                 </div>

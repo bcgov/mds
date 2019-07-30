@@ -48,7 +48,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
   />
   <Route
     exact={true}
-    path="/dashboard/:id/"
+    path="/mine-dashboard/:id/"
     render={[Function]}
   />
   <Route
@@ -61,7 +61,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "type": [Function],
       }
     }
-    path="/dashboard/:id/"
+    path="/mine-dashboard/:id/"
   />
   <Route
     component={
@@ -131,7 +131,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
-    path="/dashboard/execreporting"
+    path="/dashboard/executive-reporting"
   />
   <Route
     component={[Function]}

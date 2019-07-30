@@ -124,23 +124,11 @@ const defaultProps = {
   mineComplianceInfo: {},
 };
 
-// const initialSearchValues = {
-//   order_no: "",
-//   report_no: "",
-//   due_date: "",
-//   inspector: "",
-//   violation: [],
-//   order_status: "",
-// };
-
 export class MineDashboard extends Component {
   state = {
     menuVisible: false,
     isLoaded: false,
     activeNavButton: "mine-information",
-    // complianceInfoLoading: true,
-    // complianceFilterParams: initialSearchValues,
-    // filteredOrders: [],
   };
 
   componentWillMount() {
@@ -394,6 +382,7 @@ export class MineDashboard extends Component {
               <div className="inline-flex block-mobile between">
                 <div className="inline-flex horizontal-center block-tablet">
                   <h1 className="padding-large--right">{mine.mine_name}</h1>
+                  <div>Mine No. {mine.mine_no}</div>
                   {mine.verified_status.healthy_ind !== null && (
                     <img
                       alt=""
@@ -414,7 +403,6 @@ export class MineDashboard extends Component {
                       <img src={SUBSCRIBE} alt="SUBSCRIBE" />
                     </Tooltip>
                   )}
-                  <div>Mine No. {mine.mine_no}</div>
                 </div>
                 <Dropdown
                   overlay={menu}

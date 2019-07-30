@@ -16,7 +16,8 @@ const setupDispatchProps = () => {
 };
 
 const setupReducerProps = () => {
-  reducerProps.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
+  reducerProps.mines = MOCK.MINES.mines;
+  [reducerProps.mineGuid] = MOCK.MINES.mineIds;
   reducerProps.varianceApplications = MOCK.VARIANCES.records;
   reducerProps.approvedVariances = MOCK.VARIANCES.records;
   reducerProps.complianceCodesHash = MOCK.HSRCM_HASH;
@@ -24,6 +25,8 @@ const setupReducerProps = () => {
   reducerProps.coreUsers = MOCK.PARTY.parties;
   reducerProps.varianceStatusOptions = MOCK.VARIANCE_DROPDOWN_STATUS_OPTIONS;
   reducerProps.varianceStatusOptionsHash = MOCK.VARIANCE_STATUS_OPTIONS_HASH;
+  reducerProps.inspectors = MOCK.INSPECTORS.results;
+  reducerProps.varianceDocumentCategoryOptions = {};
 };
 
 beforeEach(() => {

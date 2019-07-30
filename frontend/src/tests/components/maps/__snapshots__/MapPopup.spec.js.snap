@@ -45,7 +45,7 @@ exports[`MapPopup renders properly 1`] = `
     context={Object {}}
   >
     <Link
-      to="/dashboard/undefined/"
+      to="/mine-dashboard/undefined/"
     >
       <div
         className="mineMapPopUpButton"

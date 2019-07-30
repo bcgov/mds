@@ -7,14 +7,14 @@ exports[`SearchBarDropdown renders properly 1`] = `
   selectable={false}
 >
   <MenuItem
-    key="/dashboard/aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d/summary"
+    key="/mine-dashboard/aa3cb08a-ee1b-4dc9-8bf6-f54eb7484d4d/mine-information/general"
   >
     <p>
       Abbott Inc
     </p>
   </MenuItem>
   <MenuItem
-    key="/dashboard/5a993f02-1006-4a07-a448-f4064294de11/summary"
+    key="/mine-dashboard/5a993f02-1006-4a07-a448-f4064294de11/mine-information/general"
   >
     <p>
       Abbott PLC

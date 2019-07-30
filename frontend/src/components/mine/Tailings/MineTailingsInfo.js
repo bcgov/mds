@@ -12,6 +12,7 @@ import {
   createMineExpectedDocument,
   removeExpectedDocument,
   updateExpectedDocument,
+  fetchMineRecordById,
 } from "@/actionCreators/mineActionCreator";
 import {
   fetchExpectedDocumentStatusOptions,
@@ -212,6 +213,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineTailingsRequiredDocuments,
       removeExpectedDocument,
       createMineExpectedDocument,
+      fetchMineRecordById,
       openModal,
       closeModal,
     },

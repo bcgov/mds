@@ -7,8 +7,8 @@ const props = {};
 const dispatchProps = {};
 
 const setupProps = () => {
-  props.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
-  props.match = {};
+  props.mines = MOCK.MINES.mines;
+  [props.mineGuid] = MOCK.MINES.mineIds;
   props.expectedDocumentStatusOptions = MOCK.EXPECTED_DOCUMENT_STATUS_OPTIONS.records;
   props.mineTSFRequiredReports = MOCK.MINE_TSF_REQUIRED_REPORTS;
 };
@@ -20,6 +20,9 @@ const setupDispatchProps = () => {
   dispatchProps.closeModal = jest.fn();
   dispatchProps.fetchExpectedDocumentStatusOptions = jest.fn();
   dispatchProps.fetchMineTailingsRequiredDocuments = jest.fn();
+  dispatchProps.updateExpectedDocument = jest.fn();
+  dispatchProps.removeExpectedDocument = jest.fn();
+  dispatchProps.createMineExpectedDocument = jest.fn();
 };
 
 beforeEach(() => {
