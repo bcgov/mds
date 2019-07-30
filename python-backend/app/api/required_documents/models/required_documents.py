@@ -29,18 +29,6 @@ class RequiredDocument(AuditMixin, Base):
     hsrc_code = db.Column(db.String)
     db.relationship('RequiredDocumentDueDateType', backref='req_document_guid', lazy='joined')
 
-    def json(self):
-        return {
-            'req_document_guid': str(self.req_document_guid),
-            'req_document_name': self.req_document_name,
-            'req_document_category': self.req_document_category,
-            'req_document_sub_category_code': self.req_document_sub_category_code,
-            'req_document_due_date_type': self.req_document_due_date_type,
-            'req_document_due_date_period_months': self.req_document_due_date_period_months,
-            'hsrc_code': self.hsrc_code,
-            'description': self.description,
-        }
-
     @classmethod
     def find_by_req_doc_guid(cls, _id):
         try:
