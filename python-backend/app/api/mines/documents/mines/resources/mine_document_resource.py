@@ -15,7 +15,7 @@ from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.mines.mine_api_models import MINE_DOCUMENT_MODEL
 
 
-class MineDocumentResource(Resource, UserMixin, ErrorMixin):
+class MineDocumentListResource(Resource, UserMixin, ErrorMixin):
     @api.doc(description='Returns list of documents associated with mines')
     @api.marshal_with(MINE_DOCUMENT_MODEL, code=200, envelope='records')
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
