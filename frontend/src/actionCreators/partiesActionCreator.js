@@ -1,5 +1,6 @@
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
+import queryString from "query-string";
 import { request, success, error } from "@/actions/genericActions";
 import * as reducerTypes from "@/constants/reducerTypes";
 import * as partyActions from "@/actions/partyActions";
@@ -7,7 +8,6 @@ import * as String from "@/constants/strings";
 import * as API from "@/constants/API";
 import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
-import queryString from "query-string";
 import CustomAxios from "@/customAxios";
 
 export const createParty = (payload) => (dispatch) => {

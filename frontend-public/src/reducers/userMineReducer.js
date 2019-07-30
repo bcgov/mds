@@ -27,7 +27,7 @@ const userMineReducer = (state = initialState, action) => {
     case actionTypes.STORE_MINE_DOCUMENTS:
       return {
         ...state,
-        mineDocuments: action.payload.mine_documents,
+        mineDocuments: action.payload.records,
       };
     case actionTypes.CLEAR:
       return {

@@ -1,0 +1,25 @@
+{
+  "apiVersion": "v1",
+  "kind": "Pod",
+  "metadata": {
+    "labels": {
+      "app-name": "mds",
+      "app": "${APP_LABEL}"
+    },
+    "name": "${NAME}",
+    "namespace": "${NAMESPACE}"
+  },
+  "spec": {
+    "containers": [
+      {
+        "command": [],
+        "env": [],
+        "image": "${IMAGE_PATH}:${IMAGE_TAG}",
+        "imagePullPolicy": "Always",
+        "name": "${NAME}"
+      }
+    ],
+    "dnsPolicy": "ClusterFirst",
+    "restartPolicy": "Never"
+  }
+}
