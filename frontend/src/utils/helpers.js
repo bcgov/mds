@@ -117,8 +117,8 @@ export const compareCodes = (a, b) => {
   const k = Math.min(aCodes.length, bCodes.length);
   // Compares then non-null parts of two strings of potentially different lengths (e.g 1.11 and 1.4.12)
   for (let i = 1; i < k; i += 1) {
-    const aInt = parseInt(aCodes[i], 10);
-    const bInt = parseInt(bCodes[i], 10);
+    const aInt = Number(aCodes[i]);
+    const bInt = Number(bCodes[i]);
     if (aInt > bInt) {
       return 1;
     }
@@ -145,4 +145,14 @@ export const codeSorter = (codeOne, codeTwo) => {
     return false;
   }
   return compareCodes(codeOne, codeTwo) < 0;
+};
+
+export const formatComplianceCodeValueOrLabel = (code, showDescription) => {
+  const { section, sub_section, paragraph, sub_paragraph, description } = code;
+  const formattedSubSection = sub_section ? `.${sub_section}` : "";
+  const formattedParagraph = paragraph ? `.${paragraph}` : "";
+  const formattedSubParagraph = sub_paragraph !== null ? `.${sub_paragraph}` : "";
+  const formattedDescription = showDescription ? ` - ${description}` : "";
+
+  return `${section}${formattedSubSection}${formattedParagraph}${formattedSubParagraph}${formattedDescription}`;
 };
