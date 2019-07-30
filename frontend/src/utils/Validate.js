@@ -114,10 +114,10 @@ export const validateDateRanges = (existingAppointments, newAppt, apptType) => {
   }
 
   const dateAppointments = existingAppointments.map((appt) => {
-    const tempAppt = appt;
-    tempAppt.start_date = appt.start_date ? toDate(appt.start_date) : MIN_DATE;
-    tempAppt.end_date = appt.end_date ? toDate(appt.end_date) : MAX_DATE;
-    return tempAppt;
+    const appointment = appt;
+    appointment.start_date = appt.start_date ? toDate(appt.start_date) : MIN_DATE;
+    appointment.end_date = appt.end_date ? toDate(appt.end_date) : MAX_DATE;
+    return appointment;
   });
 
   const newDateAppt = Object.assign({}, newAppt);

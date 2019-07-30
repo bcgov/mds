@@ -27,7 +27,9 @@ def register_routes(app):
 
     @api.errorhandler(Exception)
     def default_error_handler(error):
-        get_logger().error(str(error))
+        if getattr(error, 'code', 500) == 500:
+            current_app.logger.error(str(error))
         return {
+            'status': getattr(error, 'code', 500),
             'message': str(error),
-        }, 500
+        }, getattr(error, 'code', 500)

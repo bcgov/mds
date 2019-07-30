@@ -44,6 +44,16 @@ app {
                     ]
                 ],
                 [
+                    'file':'microservices/document_manager/openshift/_python36_docman.bc.json',
+                    'params':[
+                            'NAME':"mds-docman-backend",
+                            'SUFFIX': "${app.build.suffix}",
+                            'VERSION':"${app.build.version}",
+                            'SOURCE_CONTEXT_DIR': "microservices/document_manager/backend",
+                            'SOURCE_REPOSITORY_URL': "${app.git.uri}"
+                    ]
+                ],
+                [
                     'file':'microservices/nris_api/openshift/_python36_oracle.bc.json',
                     'params':[
                             'NAME':"mds-nris-backend",
@@ -144,6 +154,16 @@ app {
                             'SUFFIX': "${app.build.suffix}",
                             'VERSION':"${app.build.version}",
                             'SOURCE_CONTEXT_DIR': "docker-images/metabase",
+                            'SOURCE_REPOSITORY_URL': "${app.git.uri}"
+                    ]
+                ],
+                [
+                    'file':'tools/openshift/digdag.bc.json',
+                    'params':[
+                            'NAME':"digdag",
+                            'SUFFIX': "${app.build.suffix}",
+                            'VERSION':"${app.build.version}",
+                            'SOURCE_CONTEXT_DIR': "tools/digdag",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}"
                     ]
                 ],

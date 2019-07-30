@@ -1,15 +1,15 @@
 import React from "react";
 import { Table, Menu, Dropdown, Button, Icon, Tooltip } from "antd";
 import moment from "moment";
+import { orderBy } from "lodash";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import NullScreen from "@/components/common/NullScreen";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Strings from "@/constants/strings";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import { formatDate } from "@/utils/helpers";
-import { orderBy } from "lodash";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
 import { getPartyRelationships } from "@/selectors/partiesSelectors";
 import { getDropdownPermitStatusOptions } from "@/selectors/staticContentSelectors";
 import { EDIT_OUTLINE, EDIT, BRAND_PENCIL, CARAT } from "@/constants/assets";

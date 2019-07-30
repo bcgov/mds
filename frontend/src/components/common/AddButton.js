@@ -1,11 +1,18 @@
 import React from "react";
 import { Icon, Button } from "antd";
+import PropTypes from "prop-types";
 
 /**
  * @constant AddButton  - Globally styled add button
  */
 
-const propTypes = {};
+const propTypes = {
+  children: PropTypes.shape({}),
+};
+
+const defaultProps = {
+  children: {},
+};
 
 const AddButton = (props) => (
   <Button type="primary" className="full-mobile btn--middle" {...props}>
@@ -15,5 +22,6 @@ const AddButton = (props) => (
 );
 
 AddButton.propTypes = propTypes;
+AddButton.defaultProps = defaultProps;
 
 export default AddButton;

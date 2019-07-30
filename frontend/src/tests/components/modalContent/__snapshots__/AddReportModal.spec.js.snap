@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AddReportModal renders properly 1`] = `
+<div>
+  <Connect(ReduxForm)
+    onSubmit={[MockFunction]}
+    title="mockTitle"
+  />
+</div>
+`;

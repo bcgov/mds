@@ -34,9 +34,9 @@ export const MINE_TENURE_TYPES = "/mines/mine-tenure-type-codes";
 export const MINE_TYPES = "/mines/mine-types";
 export const MINE_TYPES_DETAILS = "/mines/mine-types/details";
 export const DOCUMENT_MANAGER_FILE_GET_URL = (token = {}) =>
-  `/document-manager?${queryString.stringify(token)}`;
+  `/documents?${queryString.stringify(token)}`;
 export const DOCUMENT_MANAGER_TOKEN_GET_URL = (documentManagerGuid) =>
-  `/document-manager/${documentManagerGuid}/token`;
+  `/download-token/${documentManagerGuid}`;
 export const REMOVE_MINE_EXPECTED_DOCUMENT = (expectedDocumentGuid, mineDocumentGuid) =>
   `/documents/expected/${expectedDocumentGuid}/document/${mineDocumentGuid}`;
 export const MINESPACE_USER = "/users/minespace";
@@ -102,3 +102,9 @@ export const MINE_INCIDENT_DOCUMENT = (mineGuid) => `/mines/${mineGuid}/incident
 export const INCIDENT_FOLLOWUP_ACTIONS = `/incidents/followup-types`;
 export const INCIDENT_DETERMINATION_TYPES = `/incidents/determination-types`;
 export const INCIDENT_STATUS_CODES = `/incidents/status-codes`;
+
+// report
+export const MINE_REPORT_DEFINITIONS = () => `/mines/reports/definitions`;
+export const MINE_REPORTS = (mine_guid) => `/mines/${mine_guid}/reports`;
+export const MINE_REPORT = (mine_guid, mine_report_guid) =>
+  `/mines/${mine_guid}/reports/${mine_report_guid}`;

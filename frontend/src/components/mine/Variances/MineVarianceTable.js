@@ -245,6 +245,22 @@ export class MineVarianceTable extends Component {
           </div>
         ),
       },
+      {
+        title: "",
+        dataIndex: "variance",
+        render: (text, record) => (
+          <div title="" align="right">
+            <Button
+              type="primary"
+              size="small"
+              ghost
+              onClick={() => this.props.openViewVarianceModal(record.variance)}
+            >
+              <Icon type="eye" alt="View" className="icon-sm" />
+            </Button>
+          </div>
+        ),
+      },
     ];
 
     return (
