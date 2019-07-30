@@ -13,6 +13,7 @@ def test_get_mine_documents_by_mine_guid(test_client, db_session, auth_headers):
 
     get_resp = test_client.get(f'/mines/{mine.mine_guid}/documents/',
                                headers=auth_headers['full_auth_header'])
+    assert get_resp.status_code == 200, get_resp.response
+
     get_data = json.loads(get_resp.data.decode())
-    assert get_resp.status_code == 200
     assert len(get_data['records']) == mine_documents_count

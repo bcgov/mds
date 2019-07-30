@@ -48,7 +48,7 @@ api.add_resource(MineStatusResource, '/status/<string:mine_status_guid>')
 api.add_resource(MineStatusListResource, '/status')
 api.add_resource(MineRegionResource, '/region', '/region/<string:mine_region_guid>')
 api.add_resource(MineTailingsStorageFacilityListResource, '/<string:mine_guid>/tailings')
-api.add_resource(MineDocumentResource, '<string:mine_guid>/documents')
+api.add_resource(MineDocumentResource, '/<string:mine_guid>/documents')
 
 api.add_resource(MineComplianceSummaryResource, '/<string:mine_no>/compliance/summary')
 api.add_resource(ComplianceArticleResource, '/compliance/codes')
