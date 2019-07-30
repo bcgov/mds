@@ -35,7 +35,7 @@ export const getCurrentComplianceCodes = createSelector(
     codes.filter((code) => code.expiry_date === null || new Date(code.expiry_date) > new Date())
 );
 
-const formatComplianceCodeValueOrLabel = (code, showDescription) => {
+export const formatComplianceCodeValueOrLabel = (code, showDescription) => {
   const { section, sub_section, paragraph, sub_paragraph, description } = code;
   const formattedSubSection = sub_section ? `.${sub_section}` : "";
   const formattedParagraph = paragraph ? `.${paragraph}` : "";
