@@ -3,7 +3,7 @@ from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MIN
 
 from app.api.download_token.resources.download_token import DownloadTokenResource
 from app.api.mines.documents.expected.resources.document_status import ExpectedDocumentStatusResource
-from app.api.mines.documents.expected.resources.documents import ExpectedDocumentResource
+from app.api.mines.documents.expected.resources.expected_documents import ExpectedDocumentResource
 from app.api.mines.documents.expected.resources.expected_document_uploads import ExpectedDocumentUploadResource
 from app.api.mines.documents.expected.resources.mine_documents import ExpectedMineDocumentResource
 from app.api.mines.documents.mines.resources.mine_document_resource import MineDocumentResource

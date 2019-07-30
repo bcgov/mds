@@ -28,9 +28,11 @@ from app.api.mines.permits.permit.resources.permit_status_code import PermitStat
 from app.api.mines.permits.permit_amendment.resources.permit_amendment import PermitAmendmentResource, PermitAmendmentListResource
 from app.api.mines.permits.permit_amendment.resources.permit_amendment_document import PermitAmendmentDocumentListResource, PermitAmendmentDocumentResource
 
-from ..documents.namespace.documents import api as MineDocumentNamespace
-
-from flask_restplus import Namespace
+from ..documents.expected.resources.mine_documents import ExpectedMineDocumentResource
+from ..documents.expected.resources.expected_documents import ExpectedDocumentResource, ExpectedDocumentListResource
+from ..documents.expected.resources.document_status import ExpectedDocumentStatusResource
+from ..documents.expected.resources.expected_document_uploads import ExpectedDocumentUploadResource
+from ..documents.mines.resources.mine_document_resource import MineDocumentResource
 
 api = Namespace('mines', description='Mine related operations')
 
@@ -103,3 +105,17 @@ api.add_resource(
     PermitAmendmentDocumentResource,
     '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>/documents/<string:permit_amendment_document_guid>',
 )
+
+api.add_resource(ExpectedMineDocumentResource,
+                 '/<string:mine_guid>/documents/expected/<string:exp_doc_guid>')
+
+api.add_resource(ExpectedDocumentListResource, '/<string:mine_guid>/expected')
+api.add_resource(ExpectedDocumentResource, '/<string:mine_guid>/expected/<string:exp_doc_guid>')
+
+api.add_resource(ExpectedDocumentStatusResource, '/expected/status', '/expected/status')
+
+api.add_resource(ExpectedDocumentUploadResource,
+                 '/expected/<string:expected_document_guid>/document',
+                 '/expected/<string:expected_document_guid>/document/<string:mine_document_guid>')
+
+api.add_resource(MineDocumentResource, '/mines/<string:mine_guid>')

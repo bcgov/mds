@@ -56,17 +56,7 @@ class MineExpectedDocument(AuditMixin, Base):
 
     def json(self):
         return {
-            'exp_document_guid': str(self.exp_document_guid),
-            'req_document_guid': str(self.req_document_guid),
-            'mine_guid': str(self.mine_guid),
-            'exp_document_name': str(self.exp_document_name),
-            'exp_document_description': str(self.exp_document_description),
-            'due_date': str(self.due_date),
-            'received_date': str(self.received_date) if self.received_date else None,
-            'exp_document_status_code': self.exp_document_status_code,
-            'exp_document_status': self.expected_document_status.json(),
-            'hsrc_code': self.hsrc_code,
-            'related_documents': [x.json() for x in self.related_documents]
+
         }
 
     @classmethod
