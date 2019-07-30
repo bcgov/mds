@@ -9,6 +9,7 @@ from flask_jwt_oidc.exceptions import AuthError
 from app.api.parties.namespace.parties import api as parties_api
 from app.api.applications.namespace.applications import api as applications_api
 from app.api.mines.namespace.mines import api as mines_api
+from app.api.required_documents.namespace.required_documents import api as required_documents_api
 from app.api.download_token.namespace.download_token import api as download_token_api
 from app.api.users.namespace.users import api as users_api
 from app.api.search.namespace.search import api as search_api
@@ -69,6 +70,7 @@ def register_routes(app):
 
     api.add_namespace(mines_api)
     api.add_namespace(parties_api)
+    api.add_namespace(required_documents_api)
     api.add_namespace(download_token_api)
     api.add_namespace(users_api)
     api.add_namespace(applications_api)
