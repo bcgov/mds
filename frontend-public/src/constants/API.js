@@ -5,7 +5,7 @@ export const MINE = "/mines";
 export const USER_MINE_INFO = "/mines/search";
 
 export const DOCUMENT_STATUS = "/documents/expected/status";
-export const MINE_DOCUMENTS = "/documents/mines";
+export const MINE_DOCUMENTS = (mine_guid) => `/mines/${mine_guid}/documents`;
 export const UPLOAD_MINE_EXPECTED_DOCUMENT_FILE = (expectedDocumentGuid) =>
   `/documents/expected/${expectedDocumentGuid}/document`;
 export const EXPECTED_DOCUMENT = "/documents/expected";
