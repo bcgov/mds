@@ -39,6 +39,7 @@ class ExpectedMineDocumentResource(Resource, UserMixin, ErrorMixin):
             'Required: Mine number or guid. creates expected documents from payload for mine_guid'
         })
     @requires_role_mine_edit
+    @api.marshal_with(MINE_EXPECTED_DOCUMENT_MODEL, code=200, envelope='expected_mine_documents')
     def post(self, mine_guid):
         data = self.parser.parse_args()
         doc_list = data['documents']
@@ -62,6 +63,5 @@ class ExpectedMineDocumentResource(Resource, UserMixin, ErrorMixin):
             db.session.commit()
         except Exception as e:
             db.session.rollback()
-            return self.create_error_payload(
-                500, "Error creating expected document, none were created"), 500
-        return {'expected_mine_documents': list(map(lambda x: x.json(), mine_new_docs))}
+            raise InternalServerError("Error creating expected document, none were created")
+        return mine_new_docs
