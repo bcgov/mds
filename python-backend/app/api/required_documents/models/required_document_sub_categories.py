@@ -14,9 +14,3 @@ class RequiredDocumentSubCategory(Base):
     __tablename__ = 'required_document_sub_category'
     req_document_sub_category_code = db.Column(db.String, primary_key=True)
     description = db.Column(db.String)
-
-    def json(self):
-        return {
-            'req_document_sub_category': self.req_document_sub_category_code,
-            'description': self.description,
-        }
