@@ -2,7 +2,7 @@ from elasticapm import Client
 from flask import current_app
 
 
-def register_apm(func):
+def register_apm(name=None):
     """This function wraps a passed function with a call to the app's registered Elastic APM instance
 
     :param func: Function to be wrapped by calling 
@@ -13,7 +13,7 @@ def register_apm(func):
     """
 
     def wrap(func):
-        def wrapper(*args, **kwargs):
+        def wrapped_f(*args, **kwargs):
             config = None
             result = None
             if current_app:
@@ -43,6 +43,6 @@ def register_apm(func):
                 result = func(*args, **kwargs)
             return result
 
-        return wrapper
+        return wrapped_f
 
     return wrap
