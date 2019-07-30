@@ -105,19 +105,3 @@ api.add_resource(
     PermitAmendmentDocumentResource,
     '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>/documents/<string:permit_amendment_document_guid>',
 )
-
-api.add_resource(ExpectedMineDocumentResource,
-                 '/<string:mine_guid>/documents/expected/<string:exp_doc_guid>')
-
-api.add_resource(ExpectedDocumentListResource, '/<string:mine_guid>/expected')
-api.add_resource(ExpectedDocumentResource, '/<string:mine_guid>/expected/<string:exp_doc_guid>')
-
-api.add_resource(ExpectedDocumentStatusResource, '/expected/status', '/expected/status')
-
-api.add_resource(
-    ExpectedDocumentUploadResource,
-    '<string:mine_guid>/documents/expected/<string:expected_document_guid>/document',
-    '<string:mine_guid>/documents/expected/<string:expected_document_guid>/document/<string:mine_document_guid>'
-)
-
-api.add_resource(MineDocumentResource, '/mines/<string:mine_guid>')
