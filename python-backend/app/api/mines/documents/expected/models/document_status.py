@@ -23,12 +23,6 @@ class ExpectedDocumentStatus(AuditMixin, Base):
     def __repr__(self):
         return '<ExpectedDocumentStatus %r>' % self.exp_document_status_code
 
-    def json(self):
-        return {
-            'exp_document_status_code': self.exp_document_status_code,
-            'description': self.description,
-        }
-
     @classmethod
     def find_by_expected_document_status(cls, code):
         return cls.query.filter_by(exp_document_status_code=code).first()

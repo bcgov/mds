@@ -17,7 +17,7 @@ def test_file_upload_with_no_file_or_guid(test_client, db_session, auth_headers)
     post_data = json.loads(post_resp.data.decode())
 
     assert post_resp.status_code == 404
-    assert post_data['error']['message'] is not None
+    assert post_data['message'] is not None
 
 
 def test_put_existing_file(test_client, db_session, auth_headers):
@@ -75,7 +75,7 @@ def test_remove_file_no_doc_guid(test_client, db_session, auth_headers):
     post_data = json.loads(post_resp.data.decode())
 
     assert post_resp.status_code == 400
-    assert post_data['error']['message'] is not None
+    assert post_data['message'] is not None
 
 
 def test_remove_file_no_doc(test_client, db_session, auth_headers):
@@ -88,7 +88,7 @@ def test_remove_file_no_doc(test_client, db_session, auth_headers):
     post_data = json.loads(post_resp.data.decode())
 
     assert post_resp.status_code == 404
-    assert post_data['error']['message'] is not None
+    assert post_data['message'] is not None
 
 
 def test_remove_file_no_exp_doc(test_client, db_session, auth_headers):
@@ -101,4 +101,4 @@ def test_remove_file_no_exp_doc(test_client, db_session, auth_headers):
     post_data = json.loads(post_resp.data.decode())
 
     assert post_resp.status_code == 404
-    assert post_data['error']['message'] is not None
+    assert post_data['message'] is not None
