@@ -32,7 +32,7 @@ def test_del_expected_document_by_guid(test_client, db_session, auth_headers):
 
     del_resp = test_client.delete('/documents/expected/' + str(exp_doc_guid),
                                   headers=auth_headers['full_auth_header'])
-    assert del_resp.status_code == 200
+    assert del_resp.status_code == 204
 
     get_resp = test_client.get('/documents/expected/' + str(exp_doc_guid),
                                headers=auth_headers['full_auth_header'])
