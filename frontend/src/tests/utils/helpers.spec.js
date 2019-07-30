@@ -17,6 +17,10 @@ describe("helpers class", () => {
     it("1.11.45 - lorem is after 1.11.8 - ipsun", () => {
       expect(compareCodes("1.11.45 - lorem", "1.11.8 - ipsun")).toEqual(1);
     });
+
+    it("1.2.3.(11) is after 1.2.3.(9)", () => {
+      expect(compareCodes("1.2.3.(11) - lorem", "1.2.3.(9) - other")).toEqual(1);
+    });
   });
 
   describe("`codeSorter` function", () => {
@@ -34,6 +38,10 @@ describe("helpers class", () => {
 
     it("null is before a value", () => {
       expect(codeSorter("1.11.45 - lorem", null)).toEqual(false);
+    });
+
+    it("1.2.3.(11) is after 1.2.3.(9)", () => {
+      expect(codeSorter("1.2.3.(11) - lorem", "1.2.3.(9) - other")).toEqual(false);
     });
   });
 });
