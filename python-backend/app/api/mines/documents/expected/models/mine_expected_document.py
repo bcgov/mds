@@ -15,11 +15,13 @@ from app.api.utils.models_mixins import AuditMixin, Base
 class MineExpectedDocument(AuditMixin, Base):
     __tablename__ = 'mine_expected_document'
 
-    exp_document_guid = db.Column(
-        UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
+    exp_document_guid = db.Column(UUID(as_uuid=True),
+                                  primary_key=True,
+                                  server_default=FetchedValue())
     # Foreign Key Columns
-    req_document_guid = db.Column(
-        UUID(as_uuid=True), db.ForeignKey('mds_required_document.req_document_guid'), nullable=True)
+    req_document_guid = db.Column(UUID(as_uuid=True),
+                                  db.ForeignKey('mds_required_document.req_document_guid'),
+                                  nullable=True)
 
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
 
@@ -38,26 +40,19 @@ class MineExpectedDocument(AuditMixin, Base):
     hsrc_code = db.Column(db.String)
 
     #relationships
-    required_document = db.relationship(
-        'RequiredDocument',
-        backref='exp_document_guid',
-        uselist=False,
-        order_by='desc(RequiredDocument.req_document_name)',
-        lazy='joined',
-        load_on_pending=True)
-    expected_document_status = db.relationship(
-        'ExpectedDocumentStatus',
-        backref='exp_documents',
-        uselist=False,
-        lazy='joined',
-        load_on_pending=True)
+    required_document = db.relationship('RequiredDocument',
+                                        backref='exp_document_guid',
+                                        uselist=False,
+                                        order_by='desc(RequiredDocument.req_document_name)',
+                                        lazy='joined',
+                                        load_on_pending=True)
+    expected_document_status = db.relationship('ExpectedDocumentStatus',
+                                               backref='exp_documents',
+                                               uselist=False,
+                                               lazy='joined',
+                                               load_on_pending=True)
 
     related_documents = db.relationship("MineDocument", secondary='mine_expected_document_xref')
-
-    def json(self):
-        return {
-
-        }
 
     @classmethod
     def find_by_exp_document_guid(cls, exp_document_guid):
