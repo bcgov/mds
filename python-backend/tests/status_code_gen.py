@@ -90,12 +90,12 @@ def RandomComplianceArticleId():
 
 def RandomIncidentDeterminationTypeCode():
     return random.choice([
-        x.mine_incident_determination_type_code for x in MineIncidentDeterminationType.get_active()
+        x.mine_incident_determination_type_code for x in MineIncidentDeterminationType.active()
     ])
 
 
 def RandomIncidentStatusCode():
-    return random.choice([x.mine_incident_status_code for x in MineIncidentStatusCode.get_active()])
+    return random.choice([x.mine_incident_status_code for x in MineIncidentStatusCode.active()])
 
 
 def RandomMineReportDefinition():

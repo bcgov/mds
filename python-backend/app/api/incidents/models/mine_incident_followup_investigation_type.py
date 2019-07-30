@@ -17,5 +17,5 @@ class MineIncidentFollowupInvestigationType(AuditMixin, Base):
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     @classmethod
-    def get_active(cls):
+    def active(cls):
         return cls.query.filter_by(active_ind=True).order_by(cls.display_order).all()
