@@ -12,15 +12,7 @@ from app.extensions import api
 from app.api.mines.mine.models.mine import Mine
 from app.api.utils.access_decorators import requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
 from app.api.utils.resources_mixins import UserMixin, ErrorMixin
-
-MINE_DOCUMENT_MODEL = api.model(
-    'MineDocument', {
-        'mine_document_guid': fields.String,
-        'mine_guid': fields.String,
-        'document_manager_guid': fields.String,
-        'document_name': fields.String,
-        'active_ind': fields.String,
-    })
+from app.api.mines.mine_api_models import MINE_DOCUMENT_MODEL
 
 
 class MineDocumentResource(Resource, UserMixin, ErrorMixin):

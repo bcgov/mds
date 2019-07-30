@@ -13,21 +13,7 @@ from app.extensions import api
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_edit, requires_any_of, VIEW_ALL, MINE_EDIT, MINESPACE_PROPONENT
 from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 
-EXPECTED_MINE_DOCUMENT_MODEL = api.model(
-    'ExpectedMineDocument',
-    {
-        'exp_document_guid': fields.String,
-        'req_document_guid': fields.String,
-        'mine_guid': fields.String,
-        'exp_document_name': fields.String,
-        'exp_document_description': fields.String,
-        'due_date': fields.String,
-        'received_date': fields.String,
-        'exp_document_status_code': fields.String,
-        #'exp_document_status': fields.Nested(),
-        'hsrc_code': fields.String  #,
-        #'related_documents': fields.List(fields.Nested())
-    })
+from app.api.mines.mine_api_models import MINE_EXPECTED_DOCUMENT_MODEL
 
 
 class ExpectedDocumentListResource(Resource, UserMixin, ErrorMixin):
@@ -40,7 +26,7 @@ class ExpectedDocumentListResource(Resource, UserMixin, ErrorMixin):
     parser.add_argument('exp_document_status_code', type=str)
     parser.add_argument('hsrc_code', type=str)
 
-    @api.marshal_with(EXPECTED_MINE_DOCUMENT_MODEL, code=200, envelope='records')
+    @api.marshal_with(MINE_EXPECTED_DOCUMENT_MODEL, code=200, envelope='records')
     def get(self, mine_guid):
         mine = Mine.find_by_mine_guid(mine_guid)
         if not Mine:
@@ -64,7 +50,7 @@ class ExpectedDocumentResource(Resource, UserMixin, ErrorMixin):
             'Required: Mine number or guid. returns list of expected documents for the mine'
         })
     @requires_role_view_all
-    @api.marshal_with(EXPECTED_MINE_DOCUMENT_MODEL, code=200)
+    @api.marshal_with(MINE_EXPECTED_DOCUMENT_MODEL, code=200)
     def get(self, mine_guid, exp_doc_guid):
         mine_exp_doc = MineExpectedDocument.find_by_exp_document_guid(exp_doc_guid)
         if mine_exp_doc is None:
@@ -73,7 +59,7 @@ class ExpectedDocumentResource(Resource, UserMixin, ErrorMixin):
 
     @api.doc(params={'exp_doc_guid': 'Required: Mine number or guid. Updates expected document'})
     @requires_any_of([MINE_EDIT, MINESPACE_PROPONENT])
-    @api.marshal_with(EXPECTED_MINE_DOCUMENT_MODEL, code=200)
+    @api.marshal_with(MINE_EXPECTED_DOCUMENT_MODEL, code=200)
     def put(self, mine_guid, exp_doc_guid):
         exp_doc = MineExpectedDocument.find_by_exp_document_guid(exp_doc_guid)
         if exp_doc is None:
