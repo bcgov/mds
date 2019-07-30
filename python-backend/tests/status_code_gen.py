@@ -99,7 +99,7 @@ def RandomIncidentStatusCode():
 
 
 def RandomMineReportDefinition():
-    return random.choice([x.mine_report_definition_id for x in MineReportDefinition.get_active()])
+    return random.choice([x.mine_report_definition_id for x in MineReportDefinition.active()])
 
 
 def RandomVarianceDocumentCategoryCode():
