@@ -9,7 +9,7 @@ from ..expected.resources.expected_document_uploads import ExpectedDocumentUploa
 api = Namespace('documents/expected',
                 description='MDS records of documents, expected documents, and required documents')
 
-api.add_resource(ExpectedMineDocumentResource, '/mines', '/mines/<string:mine_guid>')
+api.add_resource(ExpectedMineDocumentResource, '/mines/<string:mine_guid>')
 api.add_resource(ExpectedDocumentListResource, '/')
 api.add_resource(ExpectedDocumentResource, '/<string:exp_doc_guid>')
 

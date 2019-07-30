@@ -84,7 +84,7 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             return self.create_error_payload(
                 400, 'Must specify either Mine Document GIUD or Docuemnt Manager GUID'), 400
 
-        return expected_document.json()
+        return expected_document
 
     @requires_any_of([MINE_EDIT, MINESPACE_PROPONENT])
     def delete(self, expected_document_guid=None, mine_document_guid=None):

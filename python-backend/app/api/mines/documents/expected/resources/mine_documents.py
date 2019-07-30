@@ -5,9 +5,13 @@ from app.api.required_documents.models.required_documents import RequiredDocumen
 from ..models.mine_expected_document import MineExpectedDocument
 from ..models.document_status import ExpectedDocumentStatus
 
+from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
+
 from app.extensions import api, db
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_edit
 from app.api.utils.resources_mixins import UserMixin, ErrorMixin
+
+from app.api.mines.mine_api_models import MINE_EXPECTED_DOCUMENT_MODEL
 
 
 class ExpectedMineDocumentResource(Resource, UserMixin, ErrorMixin):
@@ -23,14 +27,10 @@ class ExpectedMineDocumentResource(Resource, UserMixin, ErrorMixin):
         'Optional: Mine number or guid. returns list of expected documents for the mine'
     })
     @requires_role_view_all
+    @api.marshal_with(MINE_EXPECTED_DOCUMENT_MODEL, code=200, envelope='expected_mine_documents')
     def get(self, mine_guid=None):
-        if mine_guid == None:
-            return self.create_error_payload(401, 'Must provide a mine id.')
         mine_exp_docs = MineExpectedDocument.find_by_mine_guid(mine_guid)
-        return {
-            'expected_mine_documents':
-            list(map(lambda x: x.json(), mine_exp_docs) if mine_exp_docs else [])
-        }
+        return mine_exp_docs
 
     @api.expect(parser)
     @api.doc(
