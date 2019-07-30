@@ -15,5 +15,4 @@ COPY . .
 
 # Run the server
 EXPOSE 5001
-RUN flask db upgrade
 CMD [ "flask", "run"]
