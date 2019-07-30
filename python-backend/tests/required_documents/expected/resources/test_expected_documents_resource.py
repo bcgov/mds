@@ -12,7 +12,7 @@ def test_get_expected_document_by_guid(test_client, db_session, auth_headers):
     assert get_resp.status_code == 200, get_resp.response
 
     get_data = json.loads(get_resp.data.decode())
-    assert get_data['expected_document']['exp_document_guid'] == str(exp_doc_guid)
+    assert get_data['exp_document_guid'] == str(exp_doc_guid)
 
 
 def test_put_expected_document_by_guid(test_client, db_session, auth_headers):
@@ -23,8 +23,8 @@ def test_put_expected_document_by_guid(test_client, db_session, auth_headers):
                                headers=auth_headers['full_auth_header'])
     put_data = json.loads(put_resp.data.decode())
     assert put_resp.status_code == 200
-    assert put_data['expected_document']['exp_document_name'] == 'updatedocumentname'
-    assert put_data['expected_document']['exp_document_guid'] == str(exp_doc_guid)
+    assert put_data['exp_document_name'] == 'updatedocumentname'
+    assert put_data['exp_document_guid'] == str(exp_doc_guid)
 
 
 def test_del_expected_document_by_guid(test_client, db_session, auth_headers):
@@ -32,10 +32,8 @@ def test_del_expected_document_by_guid(test_client, db_session, auth_headers):
 
     del_resp = test_client.delete('/documents/expected/' + str(exp_doc_guid),
                                   headers=auth_headers['full_auth_header'])
-    del_data = json.loads(del_resp.data.decode())
     assert del_resp.status_code == 200
 
     get_resp = test_client.get('/documents/expected/' + str(exp_doc_guid),
                                headers=auth_headers['full_auth_header'])
-    get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 404
