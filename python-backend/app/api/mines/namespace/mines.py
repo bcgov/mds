@@ -28,6 +28,8 @@ from app.api.mines.permits.permit.resources.permit_status_code import PermitStat
 from app.api.mines.permits.permit_amendment.resources.permit_amendment import PermitAmendmentResource, PermitAmendmentListResource
 from app.api.mines.permits.permit_amendment.resources.permit_amendment_document import PermitAmendmentDocumentListResource, PermitAmendmentDocumentResource
 
+from ..documents.namespace.documents import api as MineDocumentNamespace
+
 from flask_restplus import Namespace
 
 api = Namespace('mines', description='Mine related operations')

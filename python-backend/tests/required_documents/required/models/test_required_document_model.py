@@ -1,5 +1,5 @@
 from tests.status_code_gen import RandomRequiredDocument
-from app.api.mines.documents.required.models.required_documents import RequiredDocument
+from app.api.required_documents.models.required_documents import RequiredDocument
 
 
 # RequiredDocument Class Methods
