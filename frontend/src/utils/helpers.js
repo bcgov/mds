@@ -96,6 +96,57 @@ export const getFiscalYear = () => {
 
 export const formatParamStringToArray = (param) => (param ? param.split(",").filter((x) => x) : []);
 
+// This method sorts codes of the for '#.#.# - Lorem Ipsum'
+// where the number of integers is variable and the text is optional
+// TODO: In order to sort incidents this will need to be modified to deal with
+// parentheses
+export const compareCodes = (a, b) => {
+  // Returns the first match that is non-null.
+  const regexParse = (input) =>
+    input.match(/([0-9]+)\.([0-9]+)\.([0-9]+)/) ||
+    input.match(/([0-9]+)\.([0-9]+)/) ||
+    input.match(/([0-9]+)/);
+  const aCodes = regexParse(a);
+  const bCodes = regexParse(b);
+  if (!aCodes) {
+    return -1;
+  }
+  if (!bCodes) {
+    return 1;
+  }
+  const k = Math.min(aCodes.length, bCodes.length);
+  // Compares the non-null parts of two strings of potentially different lengths (e.g 1.11 and 1.4.12)
+  for (let i = 1; i < k; i += 1) {
+    const aInt = Number(aCodes[i]);
+    const bInt = Number(bCodes[i]);
+    if (aInt > bInt) {
+      return 1;
+    }
+    if (aInt < bInt) {
+      return -1;
+    }
+  }
+  // This line is only reached if all non-null code sections match (e.g 1.11 and 1.11.4)
+  // if both codes have the same length then they must be the same code.
+  if (aCodes.length === bCodes.length) {
+    return 0;
+  }
+  // The shorter of two codes with otherwise matching numbers is sorted before the longer one.
+  // since we sort null before non-null (e.g 1.11 is before 1.11.12)
+  return aCodes.length < bCodes.length ? -1 : 1;
+};
+
+export const codeSorter = (codeOne, codeTwo) => {
+  // Null codes are sorted before non-null codes
+  if (!codeOne) {
+    return true;
+  }
+  if (!codeTwo) {
+    return false;
+  }
+  return compareCodes(codeOne, codeTwo) < 0;
+};
+
 export const formatComplianceCodeValueOrLabel = (code, showDescription) => {
   const { section, sub_section, paragraph, sub_paragraph, description } = code;
   const formattedSubSection = sub_section ? `.${sub_section}` : "";
