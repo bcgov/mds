@@ -103,6 +103,7 @@ export const formatParamStringToArray = (param) => (param ? param.split(",").fil
 export const compareCodes = (a, b) => {
   // Returns the first match that is non-null.
   const regexParse = (input) =>
+    input.match(/([0-9]+)\.([0-9]+)\.([0-9]+)\.\(([0-9]+)/) ||
     input.match(/([0-9]+)\.([0-9]+)\.([0-9]+)/) ||
     input.match(/([0-9]+)\.([0-9]+)/) ||
     input.match(/([0-9]+)/);
