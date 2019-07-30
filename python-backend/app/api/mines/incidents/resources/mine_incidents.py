@@ -64,7 +64,7 @@ class MineIncidentListResource(Resource, UserMixin):
     parser.add_argument('updated_documents', type=list, location='json', store_missing=False)
     parser.add_argument('recommendations', type=list, location='json', store_missing=False)
 
-    @api.marshal_with(MINE_INCIDENT_MODEL, envelope='mine_incidents', code=200, as_list=True)
+    @api.marshal_with(MINE_INCIDENT_MODEL, envelope='records', code=200)
     @api.doc(description='returns the incidents for a given mine.')
     @requires_role_view_all
     def get(self, mine_guid):
