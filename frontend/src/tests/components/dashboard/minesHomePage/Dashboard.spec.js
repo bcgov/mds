@@ -21,9 +21,6 @@ const setupDispatchProps = () => {
   dispatchProps.fetchPartyRelationshipTypes = jest.fn();
   dispatchProps.fetchPermitStatusOptions = jest.fn();
   dispatchProps.fetchApplicationStatusOptions = jest.fn();
-  dispatchProps.fetchMineIncidentDeterminationOptions = jest.fn();
-  dispatchProps.fetchMineIncidentFollowActionOptions = jest.fn();
-  dispatchProps.fetchMineIncidentStatusCodeOptions = jest.fn();
 };
 
 const setupReducerProps = () => {

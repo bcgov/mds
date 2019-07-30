@@ -1,7 +1,7 @@
-import { createSelector } from "reselect";
-import moment from "moment";
 import * as partiesReducer from "@/reducers/partiesReducer";
+import { createSelector } from "reselect";
 import { createLabelHash } from "@/utils/helpers";
+import moment from "moment";
 
 export const {
   getParties,
@@ -14,6 +14,7 @@ export const {
   getAddPartyFormState,
   getLastCreatedParty,
   getInspectors,
+  getInspectorsList,
 } = partiesReducer;
 
 export const getSummaryPartyRelationships = createSelector(
@@ -46,6 +47,6 @@ export const getDropdownInspectors = createSelector(
 );
 
 export const getInspectorsHash = createSelector(
-  [getDropdownInspectors],
+  [getInspectorsList],
   createLabelHash
 );
