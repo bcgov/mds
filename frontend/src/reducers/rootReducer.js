@@ -16,6 +16,7 @@ import applicationReducer from "@/reducers/applicationReducer";
 import searchReducer from "@/reducers/searchReducer";
 import varianceReducer from "@/reducers/varianceReducer";
 import userReducer from "@/reducers/userReducer";
+import reportReducer from "@/reducers/reportReducer";
 
 export const reducerObject = {
   form: formReducer,
@@ -31,6 +32,7 @@ export const reducerObject = {
   [reducerTypes.MINESPACE]: minespaceReducer,
   [reducerTypes.SEARCH]: searchReducer,
   [reducerTypes.VARIANCES]: varianceReducer,
+  [reducerTypes.REPORTS]: reportReducer,
   [reducerTypes.USERS]: userReducer,
   [reducerTypes.CREATE_PARTY]: createReducer(networkReducer, reducerTypes.CREATE_PARTY),
   [reducerTypes.UPDATE_PARTY]: createReducer(networkReducer, reducerTypes.UPDATE_PARTY),

@@ -23,6 +23,7 @@ const initialState = {
   incidentStatusCodeOptions: [],
   varianceStatusOptions: [],
   varianceDocumentCategoryOptions: [],
+  mineReportDefinitionOptions: [],
 };
 
 const staticContentReducer = (state = initialState, action) => {
@@ -107,6 +108,11 @@ const staticContentReducer = (state = initialState, action) => {
         ...state,
         varianceDocumentCategoryOptions: action.payload.records,
       };
+    case actionTypes.STORE_MINE_REPORT_DEFINITION_OPTIONS:
+      return {
+        ...state,
+        mineReportDefinitionOptions: action.payload.records,
+      };
     default:
       return state;
   }
@@ -133,5 +139,7 @@ export const getIncidentStatusCodeOptions = (state) =>
 export const getVarianceStatusOptions = (state) => state[STATIC_CONTENT].varianceStatusOptions;
 export const getVarianceDocumentCategoryOptions = (state) =>
   state[STATIC_CONTENT].varianceDocumentCategoryOptions;
+export const getMineReportDefinitionOptions = (state) =>
+  state[STATIC_CONTENT].mineReportDefinitionOptions;
 
 export default staticContentReducer;

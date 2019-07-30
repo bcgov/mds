@@ -32,6 +32,7 @@ const baseExpectedValue = {
   incidentStatusCodeOptions: [],
   varianceStatusOptions: [],
   varianceDocumentCategoryOptions: [],
+  mineReportDefinitionOptions: [],
 };
 
 // Creates deep copy of javascript object instead of setting a reference
