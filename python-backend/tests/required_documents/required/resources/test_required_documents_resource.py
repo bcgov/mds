@@ -1,4 +1,4 @@
-import json
+import json, pytest
 from tests.factories import MineFactory
 from tests.status_code_gen import RandomRequiredDocument
 

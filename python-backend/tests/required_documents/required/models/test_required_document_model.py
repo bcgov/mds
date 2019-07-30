@@ -1,3 +1,4 @@
+import pytest
 from tests.status_code_gen import RandomRequiredDocument
 from app.api.required_documents.models.required_documents import RequiredDocument
 
