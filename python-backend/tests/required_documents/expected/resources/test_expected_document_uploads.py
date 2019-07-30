@@ -63,8 +63,7 @@ def test_happy_path_file_removal(test_client, db_session, auth_headers):
 
     post_data = json.loads(post_resp.data.decode())
 
-    assert post_resp.status_code == 200
-    assert post_data['message'] is not None
+    assert post_resp.status_code == 204
     assert mine_document not in expected_document.related_documents
 
 

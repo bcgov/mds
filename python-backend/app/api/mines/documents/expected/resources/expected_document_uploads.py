@@ -24,6 +24,8 @@ from app.extensions import api, db
 from app.api.utils.access_decorators import requires_any_of, MINE_EDIT, MINESPACE_PROPONENT
 from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 
+from app.api.mines.mine_api_models import MINE_EXPECTED_DOCUMENT_MODEL
+
 
 class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
     parser = reqparse.RequestParser(trim=True)
@@ -48,6 +50,7 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
             request, expected_document.mine, 'tailings')
 
     @requires_any_of([MINE_EDIT, MINESPACE_PROPONENT])
+    @api.marshal_with(MINE_EXPECTED_DOCUMENT_MODEL, code=200)
     def put(self, expected_document_guid):
         if not expected_document_guid:
             return self.create_error_payload(400, 'Expected Document GUID is required'), 400
@@ -99,4 +102,4 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         expected_document.related_documents.remove(mine_document)
         expected_document.save()
 
-        return {'status': 200, 'message': 'The document was removed succesfully'}
+        return '', 204
