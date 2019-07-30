@@ -9,8 +9,9 @@ def test_get_expected_document_by_guid(test_client, db_session, auth_headers):
 
     get_resp = test_client.get('/documents/expected/' + str(exp_doc_guid),
                                headers=auth_headers['full_auth_header'])
+    assert get_resp.status_code == 200, get_resp.response
+
     get_data = json.loads(get_resp.data.decode())
-    assert get_resp.status_code == 200
     assert get_data['expected_document']['exp_document_guid'] == str(exp_doc_guid)
 
 

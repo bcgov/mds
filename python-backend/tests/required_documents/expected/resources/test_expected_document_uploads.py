@@ -61,9 +61,7 @@ def test_happy_path_file_removal(test_client, db_session, auth_headers):
         f'/documents/expected/{expected_document.exp_document_guid}/document/{mine_document.mine_document_guid}',
         headers=auth_headers['full_auth_header'])
 
-    post_data = json.loads(post_resp.data.decode())
-
-    assert post_resp.status_code == 204
+    assert post_resp.status_code == 204, post_resp.response
     assert mine_document not in expected_document.related_documents
 
 

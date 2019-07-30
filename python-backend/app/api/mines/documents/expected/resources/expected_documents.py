@@ -51,7 +51,7 @@ class ExpectedDocumentResource(Resource, UserMixin, ErrorMixin):
         })
     @requires_role_view_all
     @api.marshal_with(MINE_EXPECTED_DOCUMENT_MODEL, code=200)
-    def get(self, mine_guid, exp_doc_guid):
+    def get(self, exp_doc_guid):
         mine_exp_doc = MineExpectedDocument.find_by_exp_document_guid(exp_doc_guid)
         if mine_exp_doc is None:
             raise NotFound('Expected document not found')
@@ -60,7 +60,7 @@ class ExpectedDocumentResource(Resource, UserMixin, ErrorMixin):
     @api.doc(params={'exp_doc_guid': 'Required: Mine number or guid. Updates expected document'})
     @requires_any_of([MINE_EDIT, MINESPACE_PROPONENT])
     @api.marshal_with(MINE_EXPECTED_DOCUMENT_MODEL, code=200)
-    def put(self, mine_guid, exp_doc_guid):
+    def put(self, exp_doc_guid):
         exp_doc = MineExpectedDocument.find_by_exp_document_guid(exp_doc_guid)
         if exp_doc is None:
             raise NotFound(f'expected_document with guid "{exp_doc_guid}" not found')
@@ -76,7 +76,7 @@ class ExpectedDocumentResource(Resource, UserMixin, ErrorMixin):
     @api.doc(params={'exp_doc_guid': 'Required: Mine number or guid. Deletes expected document.'},
              code=204)
     @requires_role_mine_edit
-    def delete(self, mine_guid, exp_doc_guid):
+    def delete(self, exp_doc_guid):
         exp_doc = MineExpectedDocument.find_by_exp_document_guid(exp_doc_guid)
         if not exp_doc:
             raise NotFound(f'expected_document with guid "{exp_doc_guid}" not found')
