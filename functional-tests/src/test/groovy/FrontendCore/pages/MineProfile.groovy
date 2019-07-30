@@ -19,7 +19,6 @@ class MineProfilePage extends Page {
 
 
         //TabPanel
-        tenureTab (wait:true) {module Tab_Tenure}
         permitTab (wait:true) {module Tab_Permit}
         contactInfoTab (wait:true) {module Tab_Contact}
         tailingsTab (wait:true) {module Tab_Tailings}
