@@ -6,6 +6,7 @@ from app.api.required_documents.models.required_documents import RequiredDocumen
 
 
 # GET
+@pytest.mark.skip(reason='This functionality is not currently hooked up or in use.')
 def test_get_all_required_documents(test_client, db_session, auth_headers):
     get_resp = test_client.get('/required-documents', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
@@ -13,6 +14,7 @@ def test_get_all_required_documents(test_client, db_session, auth_headers):
     assert len(get_data['required_documents']) == len(RequiredDocument.query.all())
 
 
+@pytest.mark.skip(reason='This functionality is not currently hooked up or in use.')
 def test_get_required_document_by_guid(test_client, db_session, auth_headers):
     req_guid = RandomRequiredDocument().req_document_guid
 
@@ -23,6 +25,7 @@ def test_get_required_document_by_guid(test_client, db_session, auth_headers):
     assert get_data['req_document_guid'] == str(req_guid)
 
 
+@pytest.mark.skip(reason='This functionality is not currently hooked up or in use.')
 def test_get_all_required_documents_by_category(test_client, db_session, auth_headers):
     cat = 'TSF'
 
@@ -35,6 +38,7 @@ def test_get_all_required_documents_by_category(test_client, db_session, auth_he
     assert all(rd['req_document_category'] == cat for rd in get_data['required_documents'])
 
 
+@pytest.mark.skip(reason='This functionality is not currently hooked up or in use.')
 def test_get_all_required_documents_by_category_and_sub_category(test_client, db_session,
                                                                  auth_headers):
     cat = 'TSF'

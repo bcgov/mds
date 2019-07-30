@@ -3,6 +3,7 @@ from tests.factories import MineFactory, MineExpectedDocumentFactory
 
 
 # GET
+@pytest.mark.skip(reason='This functionality is not currently hooked up or in use.')
 def test_get_mine_documents_by_mine_guid(test_client, db_session, auth_headers):
     mine_documents_count = 5
     mine = MineFactory(minimal=True)
