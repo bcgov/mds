@@ -10,15 +10,13 @@ from tests.factories import MineExpectedDocumentFactory, MineDocumentFactory, Mi
 
 
 def test_file_upload_with_no_file_or_guid(test_client, db_session, auth_headers):
-    mine = MineFactory()
-    post_resp = test_client.post(
-        f'/mines/{mine.mine_guid}/documents/expected/{str(uuid.uuid4())}/document',
-        headers=auth_headers['full_auth_header'],
-        json={})
-
-    assert post_resp.status_code == 404, post_resp.response
+    post_resp = test_client.post(f'/documents/expected/{str(uuid.uuid4())}/document',
+                                 headers=auth_headers['full_auth_header'],
+                                 json={})
 
     post_data = json.loads(post_resp.data.decode())
+
+    assert post_resp.status_code == 404
     assert post_data['error']['message'] is not None
 
 
