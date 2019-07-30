@@ -17,8 +17,8 @@ from app.api.mines.mine_api_models import MINE_DOCUMENT_MODEL
 
 class MineDocumentListResource(Resource, UserMixin, ErrorMixin):
     @api.doc(description='Returns list of documents associated with mines')
-    @api.marshal_with(MINE_DOCUMENT_MODEL, code=200, envelope='records')
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
+    @api.marshal_with(MINE_DOCUMENT_MODEL, code=200, envelope='records')
     def get(self, mine_guid):
         mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:

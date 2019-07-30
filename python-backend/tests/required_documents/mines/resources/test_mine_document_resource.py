@@ -4,16 +4,12 @@ from tests.factories import MineFactory, MineExpectedDocumentFactory
 
 # GET
 def test_get_mine_documents_by_mine_guid(test_client, db_session, auth_headers):
-    mine_documents_count = 5
-    mine = MineFactory(minimal=True)
+    mine_documents_count = 4
+    mine = MineFactory(mine_expected_documents=mine_documents_count)
 
-    exp_doc = MineExpectedDocumentFactory.create_batch(size=1,
-                                                       mine=mine,
-                                                       related_documents=mine_documents_count)
-
-    get_resp = test_client.get(f'/mines/{mine.mine_guid}/documents/',
+    get_resp = test_client.get(f'/mines/{mine.mine_guid}/documents',
                                headers=auth_headers['full_auth_header'])
-    assert get_resp.status_code == 200, get_resp.response
+    assert get_resp.status_code == 200
 
     get_data = json.loads(get_resp.data.decode())
-    assert len(get_data['records']) == mine_documents_count
+    assert len(get_data['records']) == mine_documents_count + 1
