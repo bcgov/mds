@@ -21,7 +21,7 @@ const setupDispatchProps = () => {
 
 const setupReducerProps = () => {
   reducerProps.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
-  reducerProps.mineIncidents = MOCK.INCIDENTS.mine_incidents;
+  reducerProps.mineIncidents = MOCK.INCIDENTS.records;
   reducerProps.followupActions = MOCK.FOLLOWUP_ACTIONS;
 };
 
