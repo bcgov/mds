@@ -115,7 +115,7 @@ export const compareCodes = (a, b) => {
     return 1;
   }
   const k = Math.min(aCodes.length, bCodes.length);
-  // Compares then non-null parts of two strings of potentially different lengths (e.g 1.11 and 1.4.12)
+  // Compares the non-null parts of two strings of potentially different lengths (e.g 1.11 and 1.4.12)
   for (let i = 1; i < k; i += 1) {
     const aInt = Number(aCodes[i]);
     const bInt = Number(bCodes[i]);
