@@ -200,3 +200,15 @@ export const fetchVarianceDocumentCategoryOptions = () => (dispatch) => {
     })
     .catch(() => dispatch(error(reducerTypes.GET_VARIANCE_DOCUMENT_CATEGORY_OPTIONS)));
 };
+
+export const fetchMineReportDefinitionOptions = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_MINE_REPORT_DEFINITION_OPTIONS));
+  return CustomAxios()
+    .get(`${ENVIRONMENT.apiUrl}${API.MINE_REPORT_DEFINITIONS()}`, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_MINE_REPORT_DEFINITION_OPTIONS));
+      dispatch(staticContentActions.storeMineReportDefinitionOptions(response.data));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_MINE_REPORT_DEFINITION_OPTIONS)));
+};
