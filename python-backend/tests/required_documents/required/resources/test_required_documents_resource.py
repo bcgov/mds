@@ -10,7 +10,7 @@ def test_get_all_required_documents(test_client, db_session, auth_headers):
     get_resp = test_client.get('/required-documents', headers=auth_headers['full_auth_header'])
     assert get_resp.status_code == 200
     get_data = json.loads(get_resp.data.decode())
-    assert len(get_data['required_documents']) == len(RequiredDocument.query.all())
+    assert len(get_data['records']) == len(RequiredDocument.query.all())
 
 
 def test_get_required_document_by_guid(test_client, db_session, auth_headers):
@@ -30,7 +30,7 @@ def test_get_all_required_documents_by_category(test_client, db_session, auth_he
                                headers=auth_headers['full_auth_header'])
     assert get_resp.status_code == 200
     get_data = json.loads(get_resp.data.decode())
-    assert len(get_data['required_documents']) == len(
+    assert len(get_data['records']) == len(
         RequiredDocument.query.filter_by(req_document_category=cat).all())
     assert all(rd['req_document_category'] == cat for rd in get_data['required_documents'])
 
@@ -44,7 +44,7 @@ def test_get_all_required_documents_by_category_and_sub_category(test_client, db
                                headers=auth_headers['full_auth_header'])
     assert get_resp.status_code == 200
     get_data = json.loads(get_resp.data.decode())
-    assert len(get_data['required_documents']) == len(
+    assert len(get_data['records']) == len(
         RequiredDocument.query.filter_by(req_document_category=cat,
                                          req_document_sub_category_code=sub_cat).all())
     assert get_data['required_documents'][0]['req_document_category'] == cat

@@ -22,7 +22,7 @@ REQUIRED_DOCUMENT_MODEL = api.model(
 class RequiredDocumentListResource(Resource, UserMixin, ErrorMixin):
     @api.doc(params={'req_doc_guid': 'Required Document guid.'})
     @requires_role_view_all
-    @api.marshal_with(REQUIRED_DOCUMENT_MODEL, code=200, envelope='required_documents')
+    @api.marshal_with(REQUIRED_DOCUMENT_MODEL, code=200, envelope='records')
     def get(self):
         search_category = request.args.get('category')
         search_sub_category = request.args.get('sub_category')
