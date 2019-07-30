@@ -39,6 +39,7 @@ class RequiredDocumentListResource(Resource, UserMixin, ErrorMixin):
 class RequiredDocumentResource(Resource, UserMixin, ErrorMixin):
     @api.doc(params={'req_doc_guid': 'Required Document guid.'})
     @requires_role_view_all
+    @api.marshal_with(REQUIRED_DOCUMENT_MODEL, code=200, envelope='required_documents')
     def get(self, req_doc_guid):
         req_doc = RequiredDocument.find_by_req_doc_guid(req_doc_guid)
         if not req_doc:
