@@ -88,7 +88,7 @@ class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
         mine_document = MineDocument.find_by_mine_document_guid(mine_document_guid)
 
         if expected_document is None or mine_document is None:
-            raise BadRequest('Either the Expected Document or the Mine Document was not found')
+            raise NotFound('Either the Expected Document or the Mine Document was not found')
 
         expected_document.related_documents.remove(mine_document)
         expected_document.save()
