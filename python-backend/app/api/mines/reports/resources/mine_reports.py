@@ -29,10 +29,18 @@ class MineReportListResource(Resource, UserMixin):
 
     # required
     parser.add_argument('submission_year', type=str, location='json', required=True)
-    parser.add_argument('mine_report_definition_id', type=str, location='json', required=True)
-    parser.add_argument('due_date', type=str, location='json', required=True)
+    parser.add_argument('mine_report_definition_guid', type=str, location='json', required=True)
+    parser.add_argument(
+        'due_date',
+        location='json',
+        required=True,
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
 
     parser.add_argument('permit_guid', type=str, location='json')
+    parser.add_argument(
+        'received_date',
+        location='json',
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
 
     @api.marshal_with(MINE_REPORT_MODEL, envelope='records', code=200)
     @api.doc(description='returns the reports for a given mine.')
@@ -52,8 +60,8 @@ class MineReportListResource(Resource, UserMixin):
 
         data = self.parser.parse_args()
 
-        mine_report_definition = MineReportDefinition.find_by_mine_report_definition_id(
-            data['mine_report_definition_id'])
+        mine_report_definition = MineReportDefinition.find_by_mine_report_definition_guid(
+            data['mine_report_definition_guid'])
         permit = Permit.find_by_permit_guid_or_no(data['permit_guid'])
         if mine_report_definition is None:
             raise BadRequest('A report must be selected from the list.')
@@ -66,6 +74,7 @@ class MineReportListResource(Resource, UserMixin):
             mine_report_definition_id=mine_report_definition.mine_report_definition_id,
             mine_guid=mine.mine_guid,
             due_date=data['due_date'],
+            received_date=data['received_date'],
             submission_year=data['submission_year'],
             permit_id=permit.permit_id if permit else None)
 
@@ -82,6 +91,11 @@ class MineReportResource(Resource, UserMixin):
     # required
 
     parser.add_argument('due_date', type=str, location='json', store_missing=False)
+    parser.add_argument(
+        'received_date',
+        location='json',
+        store_missing=False,
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
 
     @api.marshal_with(MINE_REPORT_MODEL, code=200)
     @requires_role_view_all
@@ -101,9 +115,13 @@ class MineReportResource(Resource, UserMixin):
 
         data = self.parser.parse_args()
         due_date = data.get('due_date')
+        received_date = data.get('received_date')
 
         if due_date:
             mine_report.due_date = due_date
+
+        if received_date:
+            mine_report.received_date = received_date
 
         try:
             mine_report.save()

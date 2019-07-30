@@ -35,6 +35,7 @@ import {
   fetchMineIncidentStatusCodeOptions,
   fetchVarianceDocumentCategoryOptions,
   fetchVarianceStatusOptions,
+  fetchMineReportDefinitionOptions,
 } from "@/actionCreators/staticContentActionCreator";
 import {
   getMines,
@@ -72,6 +73,13 @@ import {
 import { fetchApplications } from "@/actionCreators/applicationActionCreator";
 import { fetchMineComplianceInfo } from "@/actionCreators/complianceActionCreator";
 import CustomPropTypes from "@/customPropTypes";
+import MineTenureInfo from "@/components/mine/Tenure/MineTenureInfo";
+import MineTailingsInfo from "@/components/mine/Tailings/MineTailingsInfo";
+import MineSummary from "@/components/mine/Summary/MineSummary";
+import MineVariance from "@/components/mine/Variances/MineVariance";
+import MineIncidents from "@/components/mine/Incidents/MineIncidents";
+import MineReportInfo from "@/components/mine/Reports/MineReportInfo";
+import MineHeader from "@/components/mine/MineHeader";
 import * as router from "@/constants/routes";
 import Loading from "@/components/common/Loading";
 import { formatDate } from "@/utils/helpers";
@@ -84,6 +92,8 @@ import { storeMine } from "@/actions/mineActions";
 import MineDashboardRoutes from "@/routes/MineDashboardRoutes";
 import { SUBSCRIBE, UNSUBSCRIBE, YELLOW_HAZARD, SUCCESS_CHECKMARK } from "@/constants/assets";
 import RefreshButton from "@/components/common/RefreshButton";
+import { detectProdEnvironment } from "@/utils/environmentUtils";
+
 /**
  * @class MineDashboard.js is an individual mines dashboard, gets Mine data from redux and passes into children.
  */
@@ -149,6 +159,7 @@ export class MineDashboard extends Component {
     this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
     this.props.fetchSubscribedMinesByUser();
     this.props.fetchVarianceDocumentCategoryOptions();
+    this.props.fetchMineReportDefinitionOptions();
     this.props.fetchVarianceStatusOptions();
     this.props.fetchInspectors();
   }
@@ -476,6 +487,17 @@ export class MineDashboard extends Component {
                     />
                   </div>
                 </TabPane>
+                {!detectProdEnvironment() && (
+                  <TabPane tab="Reports" key="reports">
+                    <div className="tab__content">
+                      <MineReportInfo
+                        mine={mine}
+                        openModal={this.props.openModal}
+                        closeModal={this.props.closeModal}
+                      />
+                    </div>
+                  </TabPane>
+                )}
               </Tabs>
             </div> */}
           </div>
@@ -534,6 +556,7 @@ const mapDispatchToProps = (dispatch) =>
       subscribe,
       fetchPermits,
       fetchVarianceDocumentCategoryOptions,
+      fetchMineReportDefinitionOptions,
       fetchVariancesByMine,
       fetchMineComplianceCodes,
       fetchInspectors,
