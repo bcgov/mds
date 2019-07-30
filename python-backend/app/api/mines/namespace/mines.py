@@ -10,6 +10,7 @@ from ..mine.resources.mine_commodity_code import MineCommodityCodeResource
 from ..status.resources.status import MineStatusResource, MineStatusListResource
 from ..region.resources.region import MineRegionResource
 from ..tailings.resources.tailings import MineTailingsStorageFacilityListResource
+from ..documents.mines.resources.mine_document_resource import MineDocumentResource
 from ..compliance.resources.compliance import MineComplianceSummaryResource
 from ..compliance.resources.compliance_article import ComplianceArticleResource
 from ..mine.resources.mine_basicinfo import MineBasicInfoResource
@@ -32,7 +33,6 @@ from ..documents.expected.resources.mine_documents import ExpectedMineDocumentRe
 from ..documents.expected.resources.expected_documents import ExpectedDocumentResource, ExpectedDocumentListResource
 from ..documents.expected.resources.document_status import ExpectedDocumentStatusResource
 from ..documents.expected.resources.expected_document_uploads import ExpectedDocumentUploadResource
-from ..documents.mines.resources.mine_document_resource import MineDocumentResource
 
 api = Namespace('mines', description='Mine related operations')
 
@@ -47,8 +47,8 @@ api.add_resource(MineCommodityCodeResource, '/commodity-codes')
 api.add_resource(MineStatusResource, '/status/<string:mine_status_guid>')
 api.add_resource(MineStatusListResource, '/status')
 api.add_resource(MineRegionResource, '/region', '/region/<string:mine_region_guid>')
-
 api.add_resource(MineTailingsStorageFacilityListResource, '/<string:mine_guid>/tailings')
+api.add_resource(MineDocumentResource, '<string:mine_guid>/documents')
 
 api.add_resource(MineComplianceSummaryResource, '/<string:mine_no>/compliance/summary')
 api.add_resource(ComplianceArticleResource, '/compliance/codes')

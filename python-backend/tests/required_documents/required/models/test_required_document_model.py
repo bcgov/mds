@@ -4,7 +4,6 @@ from app.api.required_documents.models.required_documents import RequiredDocumen
 
 
 # RequiredDocument Class Methods
-@pytest.mark.skip(reason='This functionality is not currently hooked up or in use.')
 def test_required_documents_find_by_req_doc_guid(db_session, auth_headers):
     req = RandomRequiredDocument()
 
@@ -12,7 +11,6 @@ def test_required_documents_find_by_req_doc_guid(db_session, auth_headers):
     assert required_document == req
 
 
-@pytest.mark.skip(reason='This functionality is not currently hooked up or in use.')
 def test_required_documents_find_by_req_doc_category(db_session, auth_headers):
     required_documents = RequiredDocument.find_by_req_doc_category('TSF')
     assert len(required_documents) > 0
