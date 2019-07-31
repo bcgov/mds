@@ -71,6 +71,7 @@ export class MineVarianceTable extends Component {
       leadInspector:
         this.props.inspectorsHash[variance.inspector_party_guid] || Strings.EMPTY_FIELD,
       documents: variance.documents,
+      varianceNumber: variance.variance_no,
     }));
 
   render() {
@@ -82,6 +83,15 @@ export class MineVarianceTable extends Component {
         render: (isOverdue) => (
           <div title="">
             {isOverdue ? <img className="padding-small" src={RED_CLOCK} alt="expired" /> : ""}
+          </div>
+        ),
+      },
+      {
+        title: "Variance Number",
+        dataIndex: "varianceNumber",
+        render: (text, record) => (
+          <div title="Variance Number" style={errorStyle(record.isOverdue)}>
+            {text}
           </div>
         ),
       },
