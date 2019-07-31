@@ -213,6 +213,7 @@ exports[`MineVariance renders properly 1`] = `
           },
         }
       }
+      openEditVarianceModal={[Function]}
       openViewVarianceModal={[Function]}
       varianceStatusOptionsHash={
         Object {

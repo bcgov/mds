@@ -1,4 +1,4 @@
-import { chain } from "lodash";
+import { chain, flatMap, uniqBy } from "lodash";
 import { createSelector } from "reselect";
 import * as staticContentReducer from "@/reducers/staticContentReducer";
 import { createLabelHash, createDropDownList } from "@/utils/helpers";
@@ -9,12 +9,14 @@ export const {
   getMineTenureTypeOptions,
   getMineCommodityOptions,
   getMineDisturbanceOptions,
+  getMineReportDefinitionOptions,
   getExpectedDocumentStatusOptions,
   getMineTSFRequiredReports,
   getProvinceOptions,
   getPermitStatusOptions,
   getApplicationStatusOptions,
   getComplianceCodes,
+  getIncidentDocumentTypeOptions,
   getIncidentFollowupActionOptions,
   getIncidentDeterminationOptions,
   getIncidentStatusCodeOptions,
@@ -117,6 +119,11 @@ export const getDropdownPermitStatusOptions = createSelector(
 export const getDropdownApplicationStatusOptions = createSelector(
   [getApplicationStatusOptions],
   (options) => createDropDownList(options, "description", "application_status_code")
+);
+
+export const getDropdownIncidentDocumentTypeOptions = createSelector(
+  [getIncidentDocumentTypeOptions],
+  (options) => createDropDownList(options, "description", "mine_incident_document_type_code")
 );
 
 export const getDropdownIncidentFollowupActionOptions = createSelector(
@@ -296,4 +303,19 @@ export const getDropdownVarianceDocumentCategoryOptions = createSelector(
 export const getVarianceDocumentCategoryOptionsHash = createSelector(
   [getDropdownVarianceDocumentCategoryOptions],
   createLabelHash
+);
+
+export const getDropdownMineReportDefinitionOptions = createSelector(
+  [getMineReportDefinitionOptions],
+  (options) => createDropDownList(options, "report_name", "mine_report_definition_guid")
+);
+
+export const getDropdownMineReportCategoryOptions = createSelector(
+  [getMineReportDefinitionOptions],
+  (options) =>
+    createDropDownList(
+      uniqBy(flatMap(options, "categories"), "mine_report_category"),
+      "description",
+      "mine_report_category"
+    )
 );

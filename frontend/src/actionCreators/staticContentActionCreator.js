@@ -18,6 +18,7 @@ import {
   getPermitStatusOptions,
   getApplicationStatusOptions,
   getComplianceCodes,
+  getIncidentDocumentTypeOptions,
   getIncidentFollowupActionOptions,
   getIncidentDeterminationOptions,
   getIncidentStatusCodeOptions,
@@ -124,6 +125,17 @@ export const fetchApplicationStatusOptions = () => (dispatch) => {
     .catch(() => dispatch(error(reducerTypes.GET_APPLICATION_STATUS_OPTIONS)));
 };
 
+export const fetchIncidentDocumentTypeOptions = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_INCIDENT_DOCUMENT_TYPE_OPTIONS));
+  return CustomAxios({ selector: getIncidentDocumentTypeOptions })
+    .get(ENVIRONMENT.apiUrl + API.INCIDENT_DOCUMENT_TYPE, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_INCIDENT_DOCUMENT_TYPE_OPTIONS));
+      dispatch(staticContentActions.storeIncidentDocumentTypeOptions(response.data));
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_INCIDENT_DOCUMENT_TYPE_OPTIONS)));
+};
+
 export const fetchMineIncidentFollowActionOptions = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_INCIDENT_FOLLOWUP_ACTION_OPTIONS));
   return CustomAxios({ selector: getIncidentFollowupActionOptions })
@@ -199,4 +211,16 @@ export const fetchVarianceDocumentCategoryOptions = () => (dispatch) => {
       dispatch(staticContentActions.storeVarianceDocumentCategoryOptions(response.data));
     })
     .catch(() => dispatch(error(reducerTypes.GET_VARIANCE_DOCUMENT_CATEGORY_OPTIONS)));
+};
+
+export const fetchMineReportDefinitionOptions = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_MINE_REPORT_DEFINITION_OPTIONS));
+  return CustomAxios()
+    .get(`${ENVIRONMENT.apiUrl}${API.MINE_REPORT_DEFINITIONS()}`, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_MINE_REPORT_DEFINITION_OPTIONS));
+      dispatch(staticContentActions.storeMineReportDefinitionOptions(response.data));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_MINE_REPORT_DEFINITION_OPTIONS)));
 };
