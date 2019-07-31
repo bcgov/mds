@@ -16,6 +16,7 @@ exports[`MineReportInfo renders properly 1`] = `
     </Connect(AuthorizationWrapper)>
   </div>
   <MineReportTable
+    handleEditReport={[Function]}
     openEditReportModal={[Function]}
   />
 </div>

@@ -12,12 +12,13 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   mineGuid: PropTypes.string.isRequired,
-  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
+  initialValues: PropTypes.objectOf(PropTypes.any),
   addReportFormValues: PropTypes.objectOf(PropTypes.any),
 };
 
 const defaultProps = {
   addReportFormValues: {},
+  initialValues: {},
 };
 
 export class AddReportModal extends Component {
@@ -70,6 +71,7 @@ export class AddReportModal extends Component {
           onFileLoad={this.onFileLoad}
           onRemoveFile={this.onRemoveFile}
           handleReportSubmit={this.handleReportSubmit}
+          initialValues={this.props.initialValues}
         />
       </div>
     );

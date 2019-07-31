@@ -37,7 +37,7 @@ export class MineReportInfo extends Component {
 
   handleEditReport = (values) => {
     this.props
-      .updateMineReport(this.props.mine.mine_guid, values.report_guid, values)
+      .updateMineReport(this.props.mine.mine_guid, values.mine_report_guid, values)
       .then(() => this.props.closeModal())
       .then(() => this.props.fetchMineReports(this.props.mine.mine_guid));
   };
@@ -61,16 +61,15 @@ export class MineReportInfo extends Component {
     });
   };
 
-  openEditReportModal = (event, report) => {
+  openEditReportModal = (event, onSubmit, report) => {
     event.preventDefault();
-
     this.props.openModal({
       props: {
         initialValues: report,
-        onSubmit: this.handleEditReport,
+        onSubmit,
         title: `Edit report for ${this.props.mine.mine_name}`,
       },
-      content: modalConfig.EDIT_REPORT,
+      content: modalConfig.ADD_REPORT,
     });
   };
 
@@ -97,6 +96,7 @@ export class MineReportInfo extends Component {
         </div>
         <MineReportTable
           openEditReportModal={this.openEditReportModal}
+          handleEditReport={this.handleEditReport}
           mineReports={this.props.mineReports}
         />
       </div>

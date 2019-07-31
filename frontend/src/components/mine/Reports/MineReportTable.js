@@ -1,11 +1,14 @@
 import React from "react";
-import { Table } from "antd";
+import { Table, Button } from "antd";
 import moment from "moment";
 import PropTypes from "prop-types";
 import NullScreen from "@/components/common/NullScreen";
 import * as Strings from "@/constants/strings";
 import { formatDate } from "@/utils/helpers";
 import { COLOR } from "@/constants/styles";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import * as Permission from "@/constants/permissions";
+import { BRAND_PENCIL } from "@/constants/assets";
 
 const { errorRed } = COLOR;
 
@@ -17,6 +20,7 @@ const propTypes = {
   // mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport),
   mineReports: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   openEditReportModal: PropTypes.func.isRequired,
+  handleEditReport: PropTypes.func.isRequired,
 };
 
 const defaultProps = {};
@@ -66,9 +70,29 @@ const columns = [
       </div>
     ),
   },
+  {
+    title: "",
+    dataIndex: "openEditReportModal",
+    render: (text, record) => (
+      <div title="" align="right">
+        <AuthorizationWrapper permission={Permission.EDIT_REPORTS}>
+          <Button
+            type="primary"
+            size="small"
+            ghost
+            onClick={(event) =>
+              record.openEditReportModal(event, record.handleEditReport, record.report)
+            }
+          >
+            <img src={BRAND_PENCIL} alt="Edit Report" />
+          </Button>
+        </AuthorizationWrapper>
+      </div>
+    ),
+  },
 ];
 
-const transformRowData = (report, openEditReportModal) => ({
+const transformRowData = (report, openEditReportModal, handleEditReport) => ({
   key: report.report_guid,
   report,
   report_name: report.report_name,
@@ -76,6 +100,7 @@ const transformRowData = (report, openEditReportModal) => ({
   received_date: report.received_date,
   submission_year: report.submission_year,
   openEditReportModal,
+  handleEditReport,
 });
 
 export const MineReportTable = (props) => (
@@ -84,7 +109,9 @@ export const MineReportTable = (props) => (
     pagination={false}
     columns={columns}
     locale={{ emptyText: <NullScreen type="reports" /> }}
-    dataSource={props.mineReports.map((r) => transformRowData(r, props.openEditReportModal))}
+    dataSource={props.mineReports.map((r) =>
+      transformRowData(r, props.openEditReportModal, props.handleEditReport)
+    )}
   />
 );
 

@@ -31,30 +31,43 @@ const propTypes = {
   dropdownMineReportCategoryOptions: PropTypes.arrayOf(
     PropTypes.objectOf(CustomPropTypes.dropdownListItem)
   ).isRequired,
-
+  initialValues: PropTypes.objectOf(PropTypes.any),
   selectedMineReportCategory: PropTypes.string.isRequired,
   selectedMineReportDefinition: PropTypes.string.isRequired,
 };
 
 const selector = formValueSelector(FORM.ADD_REPORT);
 
-const defaultProps = {};
+const defaultProps = { initialValues: {} };
 
 export class AddReportForm extends Component {
   state = {
+    existingReport: Boolean(!this.props.initialValues.mine_report_definition_guid),
     mineReportDefinitionOptionsFiltered: [],
     dropdownMineReportDefinitionOptionsFiltered: [],
     selectedMineReportComplianceArticles: [],
   };
 
+  componentDidMount = () => {
+    if (this.props.initialValues.mine_report_definition_guid) {
+      this.updateMineReportOptions(this.props.mineReportDefinitionOptions);
+
+      this.updateSelectedMineReportComplianceArticles(
+        this.props.initialValues.mine_report_definition_guid
+      );
+    }
+  };
+
   updateMineReportOptions = (mineReportDefinitionOptions, selectedMineReportCategory) => {
-    const mineReportDefinitionOptionsFiltered =
-      mineReportDefinitionOptions &&
-      mineReportDefinitionOptions.filter(
+    let mineReportDefinitionOptionsFiltered = mineReportDefinitionOptions;
+
+    if (selectedMineReportCategory) {
+      mineReportDefinitionOptionsFiltered = mineReportDefinitionOptions.filter(
         (rd) =>
           rd.categories.filter((c) => c.mine_report_category === selectedMineReportCategory)
             .length > 0
       );
+    }
 
     const dropdownMineReportDefinitionOptionsFiltered = createDropDownList(
       mineReportDefinitionOptionsFiltered,
@@ -100,18 +113,20 @@ export class AddReportForm extends Component {
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
         <Row gutter={16}>
           <Col>
-            <Form.Item>
-              <Field
-                id="mine_report_category"
-                name="mine_report_category"
-                label="Report Type*"
-                placeholder="Select"
-                data={this.props.dropdownMineReportCategoryOptions}
-                doNotPinDropdown
-                component={renderConfig.SELECT}
-                validate={[required]}
-              />
-            </Form.Item>
+            {!this.props.initialValues.mine_report_definition_guid && (
+              <Form.Item>
+                <Field
+                  id="mine_report_category"
+                  name="mine_report_category"
+                  label="Report Type*"
+                  placeholder="Select"
+                  data={this.props.dropdownMineReportCategoryOptions}
+                  doNotPinDropdown
+                  component={renderConfig.SELECT}
+                  validate={[required]}
+                />
+              </Form.Item>
+            )}
             <Form.Item>
               <Field
                 id="mine_report_definition_guid"
@@ -150,6 +165,7 @@ export class AddReportForm extends Component {
                 placeholder=""
                 component={renderConfig.YEAR}
                 validate={[required]}
+                props={{ disabled: !this.state.existingReport }}
               />
             </Form.Item>
             <Form.Item>
