@@ -14,7 +14,7 @@ const setupDispatchProps = () => {
 
 const setupProps = () => {
   props.followupActions = MOCK.FOLLOWUP_ACTIONS;
-  props.incidents = MOCK.INCIDENTS.mine_incidents;
+  props.incidents = MOCK.INCIDENTS.records;
 };
 
 beforeEach(() => {

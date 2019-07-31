@@ -14,7 +14,7 @@ import { getInspectorsHash } from "@/selectors/partiesSelectors";
 import * as Permission from "@/constants/permissions";
 import { RED_CLOCK, EDIT_OUTLINE } from "@/constants/assets";
 import NullScreen from "@/components/common/NullScreen";
-import { formatDate, codeSorter } from "@/utils/helpers";
+import { formatDate, compareCodes } from "@/utils/helpers";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 import * as Strings from "@/constants/strings";
 import { COLOR } from "@/constants/styles";
@@ -95,7 +95,7 @@ export class MineVarianceTable extends Component {
         ),
         sorter:
           !this.props.isDashboardView &&
-          ((a, b) => (codeSorter(a.compliance_article_id, b.compliance_article_id) ? -1 : 1)),
+          ((a, b) => compareCodes(a.compliance_article_id, b.compliance_article_id)),
       },
       {
         title: "Mine Name",

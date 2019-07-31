@@ -4,7 +4,7 @@ import queryString from "query-string";
 import { request, success, error } from "@/actions/genericActions";
 import * as reducerTypes from "@/constants/reducerTypes";
 import * as partyActions from "@/actions/partyActions";
-import * as String from "@/constants/strings";
+import * as Strings from "@/constants/strings";
 import * as API from "@/constants/API";
 import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
@@ -146,7 +146,7 @@ export const fetchPartyRelationships = (parms) => (dispatch) => {
 export const removePartyRelationship = (mine_party_appt_guid) => (dispatch) => {
   dispatch(request(reducerTypes.REMOVE_PARTY_RELATIONSHIP));
   dispatch(showLoading());
-  return CustomAxios({ errorToastMessage: String.ERROR })
+  return CustomAxios({ errorToastMessage: Strings.ERROR })
     .delete(
       `${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}/${mine_party_appt_guid}`,
       createRequestHeader()
@@ -163,7 +163,7 @@ export const removePartyRelationship = (mine_party_appt_guid) => (dispatch) => {
 export const deleteParty = (party_guid) => (dispatch) => {
   dispatch(request(reducerTypes.DELETE_PARTY));
   dispatch(showLoading());
-  return CustomAxios({ errorToastMessage: String.ERROR })
+  return CustomAxios({ errorToastMessage: Strings.ERROR })
     .delete(`${ENVIRONMENT.apiUrl + API.PARTY}/${party_guid}`, createRequestHeader())
     .then((response) => {
       notification.success({ message: "Successfully removed the party", duration: 10 });
@@ -184,7 +184,11 @@ export const fetchInspectors = () => (dispatch) => {
   dispatch(showLoading("modal"));
   return CustomAxios()
     .get(
-      ENVIRONMENT.apiUrl + API.PARTIES_LIST_QUERY({ per_page: "all", business_role: "INS" }),
+      ENVIRONMENT.apiUrl +
+        API.PARTIES_LIST_QUERY({
+          per_page: "all",
+          business_role: Strings.INCIDENT_FOLLOWUP_ACTIONS.inspector,
+        }),
       createRequestHeader()
     )
     .then((response) => {
