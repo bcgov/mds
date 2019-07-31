@@ -35,6 +35,16 @@ export const getCurrentComplianceCodes = createSelector(
     codes.filter((code) => code.expiry_date === null || new Date(code.expiry_date) > new Date())
 );
 
+export const formatComplianceCodeValueOrLabel = (code, showDescription) => {
+  const { section, sub_section, paragraph, sub_paragraph, description } = code;
+  const formattedSubSection = sub_section ? `.${sub_section}` : "";
+  const formattedParagraph = paragraph ? `.${paragraph}` : "";
+  const formattedSubParagraph = sub_paragraph !== null ? `.${sub_paragraph}` : "";
+  const formattedDescription = showDescription ? ` - ${description}` : "";
+
+  return `${section}${formattedSubSection}${formattedParagraph}${formattedSubParagraph}${formattedDescription}`;
+};
+
 export const getDropdownHSRCMComplianceCodes = createSelector(
   [getCurrentComplianceCodes],
   (codes) =>
@@ -45,16 +55,6 @@ export const getDropdownHSRCMComplianceCodes = createSelector(
         return { value: code.compliance_article_id, label: composedLabel };
       })
 );
-
-export const formatComplianceCodeValueOrLabel = (code, showDescription) => {
-  const { section, sub_section, paragraph, sub_paragraph, description } = code;
-  const formattedSubSection = sub_section ? `.${sub_section}` : "";
-  const formattedParagraph = paragraph ? `.${paragraph}` : "";
-  const formattedSubParagraph = sub_paragraph !== null ? `.${sub_paragraph}` : "";
-  const formattedDescription = showDescription ? ` - ${description}` : "";
-
-  return `${section}${formattedSubSection}${formattedParagraph}${formattedSubParagraph}${formattedDescription}`;
-};
 
 export const getHSRCMComplianceCodesHash = createSelector(
   [getCurrentComplianceCodes],

@@ -162,9 +162,6 @@ export class MineDashboard extends Component {
     this.props.fetchPartyRelationshipTypes();
     this.props.fetchPermitStatusOptions();
     this.props.fetchApplicationStatusOptions();
-    this.props.fetchMineIncidentFollowActionOptions();
-    this.props.fetchMineIncidentDeterminationOptions();
-    this.props.fetchMineIncidentStatusCodeOptions();
     this.props.fetchMineComplianceCodes();
     this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
     this.props.fetchSubscribedMinesByUser();

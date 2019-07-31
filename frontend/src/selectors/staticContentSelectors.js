@@ -16,6 +16,7 @@ export const {
   getPermitStatusOptions,
   getApplicationStatusOptions,
   getComplianceCodes,
+  getIncidentDocumentTypeOptions,
   getIncidentFollowupActionOptions,
   getIncidentDeterminationOptions,
   getIncidentStatusCodeOptions,
@@ -118,6 +119,11 @@ export const getDropdownPermitStatusOptions = createSelector(
 export const getDropdownApplicationStatusOptions = createSelector(
   [getApplicationStatusOptions],
   (options) => createDropDownList(options, "description", "application_status_code")
+);
+
+export const getDropdownIncidentDocumentTypeOptions = createSelector(
+  [getIncidentDocumentTypeOptions],
+  (options) => createDropDownList(options, "description", "mine_incident_document_type_code")
 );
 
 export const getDropdownIncidentFollowupActionOptions = createSelector(

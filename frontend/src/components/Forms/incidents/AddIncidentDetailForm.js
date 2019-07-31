@@ -8,6 +8,7 @@ import { renderConfig } from "@/components/common/config";
 import FileUpload from "@/components/common/FileUpload";
 import { MINE_INCIDENT_DOCUMENT } from "@/constants/API";
 import { IncidentsUploadedFilesList } from "@/components/Forms/incidents/IncidentsUploadedFilesList";
+import * as Strings from "@/constants/strings";
 
 import { required, maxLength, number, dateNotInFuture } from "@/utils/Validate";
 
@@ -24,7 +25,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  doDetermination: "PEN",
+  doDetermination: Strings.INCIDENT_DETERMINATION_TYPES.pending,
 };
 
 class AddIncidentDetailForm extends Component {
@@ -110,7 +111,7 @@ class AddIncidentDetailForm extends Component {
                 validate={[required]}
               />
             </Form.Item>
-            {this.props.doDetermination !== "PEN" ? (
+            {this.props.doDetermination !== Strings.INCIDENT_DETERMINATION_TYPES.pending ? (
               <Form.Item>
                 <Field
                   id="determination_inspector_party_guid"
@@ -122,7 +123,8 @@ class AddIncidentDetailForm extends Component {
                 />
               </Form.Item>
             ) : null}
-            {this.props.doDetermination === "DO" ? (
+            {this.props.doDetermination ===
+            Strings.INCIDENT_DETERMINATION_TYPES.dangerousOccurance ? (
               <span>
                 <Form.Item>
                   <Field
@@ -152,8 +154,11 @@ class AddIncidentDetailForm extends Component {
                     id="InitialIncidentFileUpload"
                     name="InitialIncidentFileUpload"
                     onFileLoad={(document_name, document_manager_guid) =>
-                      // TODO: Replace string with constant
-                      this.props.onFileLoad(document_name, document_manager_guid, "INI")
+                      this.props.onFileLoad(
+                        document_name,
+                        document_manager_guid,
+                        Strings.INCIDENT_DOCUMENT_TYPES.initial
+                      )
                     }
                     component={FileUpload}
                     uploadUrl={MINE_INCIDENT_DOCUMENT(this.props.mineGuid)}
@@ -162,7 +167,8 @@ class AddIncidentDetailForm extends Component {
               </span>
             ) : null}
 
-            {this.props.doDetermination === "NDO" ? (
+            {this.props.doDetermination ===
+            Strings.INCIDENT_DETERMINATION_TYPES.notADangerousOccurance ? (
               <span>
                 <Form.Item>
                   <Field

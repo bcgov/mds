@@ -90,10 +90,14 @@ class MineIncidentDocumentResource(Resource, UserMixin):
         mine_incident = MineIncident.find_by_mine_incident_guid(mine_incident_guid)
         mine_document = MineDocument.find_by_mine_document_guid(mine_document_guid)
 
-        if mine_incident is None or mine_document is None:
-            raise NotFound('Either the Expected Document or the Mine Document was not found')
+        if mine_incident is None:
+            raise NotFound('Mine Incident not found.')
+        if mine_document is None:
+            raise NotFound('Mine Document not found.')
+        if mine_document not in mine_incident.mine_documents:
+            raise NotFound('Mine document not found on incident.')
 
-        mine_incident.documents.remove(mine_document)
+        mine_incident.mine_documents.remove(mine_document)
         mine_incident.save()
 
         return ('', 204)

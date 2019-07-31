@@ -82,5 +82,7 @@ export const getPartyPageData = (state) => state[PARTIES].partyPageData;
 export const getAddPartyFormState = (state) => state[PARTIES].addPartyFormState;
 export const getLastCreatedParty = (state) => state[PARTIES].lastCreatedParty;
 export const getInspectors = (state) => state[PARTIES].inspectors;
+export const getInspectorsList = (state) =>
+  createDropDownList(state[PARTIES].inspectors, "name", "party_guid");
 
 export default partiesReducer;

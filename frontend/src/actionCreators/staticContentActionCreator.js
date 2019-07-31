@@ -18,6 +18,7 @@ import {
   getPermitStatusOptions,
   getApplicationStatusOptions,
   getComplianceCodes,
+  getIncidentDocumentTypeOptions,
   getIncidentFollowupActionOptions,
   getIncidentDeterminationOptions,
   getIncidentStatusCodeOptions,
@@ -122,6 +123,17 @@ export const fetchApplicationStatusOptions = () => (dispatch) => {
       dispatch(staticContentActions.storeApplicationStatusOptions(response.data));
     })
     .catch(() => dispatch(error(reducerTypes.GET_APPLICATION_STATUS_OPTIONS)));
+};
+
+export const fetchIncidentDocumentTypeOptions = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_INCIDENT_DOCUMENT_TYPE_OPTIONS));
+  return CustomAxios({ selector: getIncidentDocumentTypeOptions })
+    .get(ENVIRONMENT.apiUrl + API.INCIDENT_DOCUMENT_TYPE, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_INCIDENT_DOCUMENT_TYPE_OPTIONS));
+      dispatch(staticContentActions.storeIncidentDocumentTypeOptions(response.data));
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_INCIDENT_DOCUMENT_TYPE_OPTIONS)));
 };
 
 export const fetchMineIncidentFollowActionOptions = () => (dispatch) => {
