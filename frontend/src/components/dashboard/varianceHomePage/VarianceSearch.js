@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Row, Col } from "antd";
 import PropTypes from "prop-types";
 import VarianceSearchForm from "@/components/Forms/variances/VarianceSearchForm";
-// import CustomPropTypes from "@/customPropTypes";
+import CustomPropTypes from "@/customPropTypes";
 
 /**
  * @class VarianceSearch supports searching for a filtered list of variances.
@@ -12,6 +12,7 @@ const propTypes = {
   handleNameFieldReset: PropTypes.func.isRequired,
   // partyRelationshipTypesList: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   initialValues: PropTypes.objectOf(PropTypes.string),
+  mineRegionOptions: CustomPropTypes.options.isRequired,
 };
 
 const defaultProps = {
@@ -57,6 +58,7 @@ export class VarianceSearch extends Component {
                 initialValues={this.props.initialValues}
                 // eslint-disable-next-line react/prop-types
                 complianceCodes={this.props.complianceCodes}
+                mineRegionOptions={this.props.mineRegionOptions}
               />
             </span>
           </Col>

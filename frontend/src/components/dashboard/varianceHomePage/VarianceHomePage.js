@@ -19,7 +19,8 @@ import {
   getCommodityOptionHash,
   getHSRCMComplianceCodesHash,
   getFilterVarianceStatusOptions,
-  getMultiSelectComplianceCodes,
+  getDropdownHSRCMComplianceCodes,
+  getMineRegionDropdownOptions,
 } from "@/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import {
@@ -54,6 +55,7 @@ const propTypes = {
   variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
   variancePageData: CustomPropTypes.variancePageData.isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineRegionOptions: CustomPropTypes.options.isRequired,
   filterVarianceStatusOptions: CustomPropTypes.filterOptions.isRequired,
 };
 
@@ -168,8 +170,8 @@ export class CustomHomePage extends Component {
   };
 
   render() {
-    // console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%");
-    // console.log(this.props.multiSelectComplianceCodes);
+    // console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    // console.log(this.props.getDropdownHSRCMComplianceCodes);
     return (
       <div className="landing-page">
         <div className="landing-page__header">
@@ -180,8 +182,9 @@ export class CustomHomePage extends Component {
             handleNameFieldReset={this.handleNameFieldReset}
             initialValues={this.state.params}
             handleSearch={this.handleSearch}
+            mineRegionOptions={this.props.mineRegionOptions}
             // eslint-disable-next-line react/prop-types
-            complianceCodes={this.props.multiSelectComplianceCodes}
+            complianceCodes={this.props.getDropdownHSRCMComplianceCodes}
           />
           <LoadingWrapper condition={this.state.variancesLoaded}>
             <VarianceTable
@@ -211,7 +214,8 @@ const mapStateToProps = (state) => ({
   variancePageData: getVariancePageData(state),
   variances: getVariances(state),
   complianceCodesHash: getHSRCMComplianceCodesHash(state),
-  multiSelectComplianceCodes: getMultiSelectComplianceCodes(state),
+  getDropdownHSRCMComplianceCodes: getDropdownHSRCMComplianceCodes(state),
+  mineRegionOptions: getMineRegionDropdownOptions(state),
   filterVarianceStatusOptions: getFilterVarianceStatusOptions(state),
 });
 

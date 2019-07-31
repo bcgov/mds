@@ -18,10 +18,26 @@ const propTypes = {
   // initialValues: PropTypes.objectOf(PropTypes.string).isRequired,
   isAdvanceSearch: PropTypes.bool,
   complianceCodes: CustomPropTypes.options.isRequired,
+  mineRegionOptions: CustomPropTypes.options.isRequired,
 };
 
 const defaultProps = {
   isAdvanceSearch: false,
+};
+
+const validate = (values) => {
+  const errors = {};
+  if (values.issue_date_min && values.issue_date_max) {
+    if (Date.parse(values.issue_date_min) > Date.parse(values.issue_date_max)) {
+      errors.issue_date_max = "Must be after issue date.";
+    }
+  }
+  if (values.expiry_date_min && values.expiry_date_max) {
+    if (Date.parse(values.expiry_date_min) > Date.parse(values.expiry_date_max)) {
+      errors.issue_date_max = "Must be after expiry date.";
+    }
+  }
+  return errors;
 };
 
 export class VarianceSearchForm extends Component {
@@ -41,8 +57,8 @@ export class VarianceSearchForm extends Component {
   // };
 
   render() {
-    console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%");
-    console.log(this.props.complianceCodes);
+    // console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%");
+    // console.log(this.props.complianceCodes);
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit} onReset={this.handleReset}>
         <Row gutter={6}>
@@ -65,6 +81,71 @@ export class VarianceSearchForm extends Component {
                   placeholder="Select Compliance Code"
                   component={renderConfig.MULTI_SELECT}
                   data={this.props.complianceCodes}
+                />
+              </Col>
+            </Row>
+            {/* date range issue data */}
+            {/* date range expiry data */}
+            <Row gutter={6}>
+              <Col md={12} xs={24}>
+                <Field
+                  id="issue_date_min"
+                  name="issue_date_min"
+                  placeholder="Select Min Issue Date"
+                  component={renderConfig.DATE}
+                  // validate={}
+                />
+              </Col>
+              <Col md={12} xs={24}>
+                <Field
+                  id="issue_date_max"
+                  name="issue_date_max"
+                  placeholder="Select Max Issue Date"
+                  component={renderConfig.DATE}
+                  // validate={}
+                />
+              </Col>
+            </Row>
+            <Row gutter={6}>
+              <Col md={12} xs={24}>
+                <Field
+                  id="expiry_date_min"
+                  name="expiry_date_min"
+                  placeholder="Select Min Expiry Date"
+                  component={renderConfig.DATE}
+                  // validate={}
+                />
+              </Col>
+              <Col md={12} xs={24}>
+                <Field
+                  id="expiry_date_max"
+                  name="expiry_date_max"
+                  placeholder="Select Max Expiry Date"
+                  component={renderConfig.DATE}
+                  // validate={}
+                />
+              </Col>
+            </Row>
+            <Row gutter={6}>
+              <Col md={12} xs={24}>
+                <Field
+                  id="major"
+                  name="major"
+                  component={renderConfig.SELECT}
+                  data={[
+                    { value: "", label: "Major and Regional Mines" },
+                    { value: "true", label: "Major Mine" },
+                    { value: "false", label: "Regional Mine" },
+                  ]}
+                />
+              </Col>
+              <Col md={12} xs={24}>
+                <Field
+                  id="region"
+                  name="region"
+                  placeholder="Select Mine Region"
+                  component={renderConfig.MULTI_SELECT}
+                  data={this.props.mineRegionOptions}
                 />
               </Col>
             </Row>
@@ -125,6 +206,7 @@ VarianceSearchForm.propTypes = propTypes;
 VarianceSearchForm.defaultProps = defaultProps;
 
 export default reduxForm({
-  form: FORM.CONTACT_ADVANCED_SEARCH,
+  form: FORM.VARIANCE_ADVANCED_SEARCH,
+  validate,
   touchOnBlur: false,
 })(VarianceSearchForm);
