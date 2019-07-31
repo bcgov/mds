@@ -33,8 +33,8 @@ const mockState = {
   mineGuid: false,
   subscribedMines: Mock.SUBSCRIBED_MINES.mines,
   mineBasicInfoList: Mock.MINE_BASIC_INFO,
-  mineDocuments: Mock.MINEDOCUMENTS.mine_documents,
-  mineIncidents: Mock.INCIDENTS.mine_incidents,
+  mineDocuments: Mock.MINEDOCUMENTS.records,
+  mineIncidents: Mock.INCIDENTS.records,
 };
 
 describe("mineSelectors", () => {

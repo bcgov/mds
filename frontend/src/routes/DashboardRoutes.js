@@ -10,6 +10,7 @@ const DashboardRoutes = () => (
       path={routes.CUSTOM_HOME_PAGE.route}
       component={routes.CUSTOM_HOME_PAGE.component}
     />
+    <Route exact path={routes.HOME_PAGE.route} component={routes.HOME_PAGE.component} />
     <Route exact path={routes.MINE_HOME_PAGE.route} component={routes.MINE_HOME_PAGE.component} />
     <Route
       exact
@@ -29,6 +30,11 @@ const DashboardRoutes = () => (
       exact
       path={routes.REPORTING_DASHBOARD.route}
       component={routes.REPORTING_DASHBOARD.component}
+    />
+    <Route
+      exact
+      path={routes.EXECUTIVE_REPORTING_DASHBOARD.route}
+      component={routes.EXECUTIVE_REPORTING_DASHBOARD.component}
     />
     <Route component={PageNotFound} />
   </Switch>

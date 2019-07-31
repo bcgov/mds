@@ -49,20 +49,13 @@ def frontEndDeploymentConfigs = ocGet(['is','-l', "app-name=${config.app.name},i
 def frontEndPublicDeploymentConfigs = ocGet(['is','-l', "app-name=${config.app.name},image-stream.name=${frontendPublicIsName}", "--namespace=${namespace}"])
 def backEndDeploymentConfigs = ocGet(['is','-l', "app-name=${config.app.name},image-stream.name=mds-python-backend", "--namespace=${namespace}"])
 def nrisBackendDeploymentConfigs = ocGet(['is','-l', "app-name=${config.app.name},image-stream.name=mds-nris-backend", "--namespace=${namespace}"])
+def docmanBackendDeploymentConfigs = ocGet(['is','-l', "app-name=${config.app.name},image-stream.name=mds-docman-backend", "--namespace=${namespace}"])
 
 
-// Run frontend tests, needs more resources than normal
-def cpuLimit = 1.5
-def memoryLimit = 1.5
+// Run frontend tests
 frontEndDeploymentConfigs.items.each {Map object ->
     Map isTag = ocGet(["istag/${object.metadata.name}:${appLabel}", "--namespace=${namespace}"])
-    OpenShiftHelper._exec(["bash", '-c', "oc process -f openshift/sonar.pod.json -l 'app=mds-${appLabel},sonar=${config.app.build.id}-${object.metadata.name}' -p 'NAME=sonar-${config.app.build.id}-${object.metadata.name}' -p 'IMAGE=${isTag.image.dockerImageReference}' -p 'DB_CONFIG_NAME=${dbConfig}' -p 'GIT_BRANCH=${branch}' -p 'MEMORY_LIMIT=${memoryLimit}' -p 'CPU_LIMIT=${cpuLimit}' --namespace=${object.metadata.namespace} |  oc replace -f - --namespace=${object.metadata.namespace} --force=true"], new StringBuffer(), new StringBuffer())
-}
-
-// Run public frontend tests
-frontEndPublicDeploymentConfigs.items.each {Map object ->
-    Map isTag = ocGet(["istag/${object.metadata.name}:${appLabel}", "--namespace=${namespace}"])
-    OpenShiftHelper._exec(["bash", '-c', "oc process -f openshift/sonar.pod.json -l 'app=mds-${appLabel},sonar=${config.app.build.id}-${object.metadata.name}' -p 'NAME=sonar-${config.app.build.id}-${object.metadata.name}' -p 'IMAGE=${isTag.image.dockerImageReference}' -p 'DB_CONFIG_NAME=${dbConfig}' -p 'GIT_BRANCH=${branch}' --namespace=${object.metadata.namespace} |  oc replace -f - --namespace=${object.metadata.namespace} --force=true"], new StringBuffer(), new StringBuffer())
+    OpenShiftHelper._exec(["bash", '-c', "oc process -f openshift/sonar.pod.json -l 'app=mds-${appLabel},sonar=${config.app.build.id}-${object.metadata.name}' -p 'NAME=sonar-${config.app.build.id}-${object.metadata.name}' -p 'IMAGE=${isTag.image.dockerImageReference}' -p 'DB_CONFIG_NAME=${dbConfig}' -p 'GIT_BRANCH=${branch}' -p 'CPU_LIMIT=1500m' --namespace=${object.metadata.namespace} |  oc replace -f - --namespace=${object.metadata.namespace} --force=true"], new StringBuffer(), new StringBuffer())
 }
 
 // Run backend tests
@@ -71,12 +64,23 @@ backEndDeploymentConfigs.items.each {Map object ->
     OpenShiftHelper._exec(["bash", '-c', "oc process -f openshift/sonar.pod.json -l 'app=mds-${appLabel},sonar=${config.app.build.id}-${object.metadata.name}' -p 'NAME=sonar-${config.app.build.id}-${object.metadata.name}' -p 'IMAGE=${isTag.image.dockerImageReference}' -p 'DB_CONFIG_NAME=${dbConfig}' -p 'GIT_BRANCH=${branch}' --namespace=${object.metadata.namespace} |  oc replace -f - --namespace=${object.metadata.namespace} --force=true"], new StringBuffer(), new StringBuffer())
 }
 
+// Run public frontend tests
+frontEndPublicDeploymentConfigs.items.each {Map object ->
+    Map isTag = ocGet(["istag/${object.metadata.name}:${appLabel}", "--namespace=${namespace}"])
+    OpenShiftHelper._exec(["bash", '-c', "oc process -f openshift/sonar.pod.json -l 'app=mds-${appLabel},sonar=${config.app.build.id}-${object.metadata.name}' -p 'NAME=sonar-${config.app.build.id}-${object.metadata.name}' -p 'IMAGE=${isTag.image.dockerImageReference}' -p 'DB_CONFIG_NAME=${dbConfig}' -p 'GIT_BRANCH=${branch}' -p 'CPU_LIMIT=1000m' --namespace=${object.metadata.namespace} |  oc replace -f - --namespace=${object.metadata.namespace} --force=true"], new StringBuffer(), new StringBuffer())
+}
+
 // Run nris api tests
 nrisBackendDeploymentConfigs.items.each {Map object ->
     Map isTag = ocGet(["istag/${object.metadata.name}:${appLabel}", "--namespace=${namespace}"])
     OpenShiftHelper._exec(["bash", '-c', "oc process -f openshift/sonar.pod.json -l 'app=mds-${appLabel},sonar=${config.app.build.id}-${object.metadata.name}' -p 'NAME=sonar-${config.app.build.id}-${object.metadata.name}' -p 'IMAGE=${isTag.image.dockerImageReference}' -p 'DB_CONFIG_NAME=${dbConfig}' -p 'GIT_BRANCH=${branch}' --namespace=${object.metadata.namespace} |  oc replace -f - --namespace=${object.metadata.namespace} --force=true"], new StringBuffer(), new StringBuffer())
 }
 
+// Run nris api tests
+docmanBackendDeploymentConfigs.items.each {Map object ->
+    Map isTag = ocGet(["istag/${object.metadata.name}:${appLabel}", "--namespace=${namespace}"])
+    OpenShiftHelper._exec(["bash", '-c', "oc process -f openshift/sonar.pod.json -l 'app=mds-${appLabel},sonar=${config.app.build.id}-${object.metadata.name}' -p 'NAME=sonar-${config.app.build.id}-${object.metadata.name}' -p 'IMAGE=${isTag.image.dockerImageReference}' -p 'DB_CONFIG_NAME=${dbConfig}' -p 'GIT_BRANCH=${branch}' --namespace=${object.metadata.namespace} |  oc replace -f - --namespace=${object.metadata.namespace} --force=true"], new StringBuffer(), new StringBuffer())
+}
 
 
 if (!OpenShiftHelper.waitForPodsToComplete(['pods','-l', "app=mds-${appLabel},sonar", "--namespace=${namespace}"])){

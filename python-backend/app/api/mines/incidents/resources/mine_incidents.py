@@ -7,15 +7,16 @@ from app.extensions import api, db
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_do
 
-from app.api.mines.mine.models.mine import Mine
-from app.api.parties.party.models.party import Party
+from ...mine_api_models import MINE_INCIDENT_MODEL
+
 from app.api.documents.incidents.models.mine_incident import MineIncidentDocumentXref
 from app.api.documents.mines.models.mine_document import MineDocument
-from app.api.mines.incidents.models.mine_incident_document_type_code import MineIncidentTypeCode
-from ..models.mine_incident import MineIncident
+from app.api.incidents.models.mine_incident_document_type_code import MineIncidentDocumentTypeCode
+from app.api.incidents.models.mine_incident import MineIncident
+from app.api.incidents.models.mine_incident_recommendation import MineIncidentRecommendation
 from app.api.mines.compliance.models.compliance_article import ComplianceArticle
-from app.api.mines.incidents.models.mine_incident_recommendation import MineIncidentRecommendation
-from ...mine_api_models import MINE_INCIDENT_MODEL
+from app.api.mines.mine.models.mine import Mine
+from app.api.parties.party.models.party import Party
 
 
 def _compliance_article_is_do_subparagraph(ca):
@@ -63,7 +64,7 @@ class MineIncidentListResource(Resource, UserMixin):
     parser.add_argument('updated_documents', type=list, location='json', store_missing=False)
     parser.add_argument('recommendations', type=list, location='json', store_missing=False)
 
-    @api.marshal_with(MINE_INCIDENT_MODEL, envelope='mine_incidents', code=200, as_list=True)
+    @api.marshal_with(MINE_INCIDENT_MODEL, envelope='records', code=200)
     @api.doc(description='returns the incidents for a given mine.')
     @requires_role_view_all
     def get(self, mine_guid):
@@ -101,15 +102,16 @@ class MineIncidentListResource(Resource, UserMixin):
             reported_by_name=data['reported_by_name'],
         )
 
-
         incident.reported_by_email = data.get('reported_by_email')
-        incident.reported_by_phone_no = data.get('reported_by_phone_no')  # string
-        incident.reported_by_phone_ext = data.get('reported_by_phone_ext')  # string
-        incident.number_of_fatalities = data.get('number_of_fatalities')  # int
-        incident.number_of_injuries = data.get('number_of_injuries')  # int
-        incident.emergency_services_called = data.get('emergency_services_called')  # bool
-        incident.followup_inspection = data.get('followup_inspection')  # bool
+        incident.reported_by_phone_no = data.get('reported_by_phone_no')
+        incident.reported_by_phone_ext = data.get('reported_by_phone_ext')
+        incident.number_of_fatalities = data.get('number_of_fatalities')
+        incident.number_of_injuries = data.get('number_of_injuries')
+        incident.emergency_services_called = data.get('emergency_services_called')
+        incident.followup_inspection = data.get('followup_inspection')
         incident.followup_inspection_date = data.get('followup_inspection_date')
+        incident.status_code = data.get('status_code')
+        incident.proponent_incident_no = data.get('proponent_incident_no')
 
         # lookup and validated inspector party relationships
         tmp_party = Party.query.filter_by(
@@ -161,10 +163,14 @@ class MineIncidentListResource(Resource, UserMixin):
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')
 
-        if data.get('recommendations') is not None:
-            for recommendation in data.get('recommendations'):
+        recommendations = data.get('recommendations')
+        if recommendations is not None:
+            for recommendation in recommendations:
+                rec_string = recommendation.get('recommendation')
+                if rec_string is None:
+                    continue
                 new_recommendation = MineIncidentRecommendation.create(
-                    recommendation['recommendation'], mine_incident_id=incident.mine_incident_id)
+                    rec_string,mine_incident_id=incident.mine_incident_id)
                 new_recommendation.save()
 
         return incident, 201
@@ -241,7 +247,7 @@ class MineIncidentResource(Resource, UserMixin):
                     'Dangerous occurrences require one or more cited sections of HSRC code 1.7.3')
 
         for key, value in data.items():
-            if key == 'dangerous_occurrence_subparagraph_ids':
+            if key in ['dangerous_occurrence_subparagraph_ids', 'recommendations']:
                 continue
             if key in [
                     'reported_to_inspector_party_guid', 'responsible_inspector_party_guid',
@@ -252,6 +258,10 @@ class MineIncidentResource(Resource, UserMixin):
                     setattr(incident, key, value)
             else:
                 setattr(incident, key, value)
+
+        recommendations = data.get('recommendations')
+        if recommendations is not None:
+            self._handle_recommendations(incident, recommendations)
 
         incident.dangerous_occurrence_subparagraphs = []
         for id in do_sub_codes:
@@ -295,8 +305,34 @@ class MineIncidentResource(Resource, UserMixin):
                     db.session.delete(doc)
                     db.session.commit()
 
-        try:
-            incident.save()
-        except Exception as e:
-            raise InternalServerError(f'Error when saving: {e}')
+        incident.save()
         return incident
+
+    @classmethod
+    def _handle_recommendations(cls, incident, recommendations):
+        for recommendation in recommendations:
+            edited_rec_guid = recommendation.get('mine_incident_recommendation_guid')
+            rec_string = recommendation.get('recommendation')
+            if rec_string is None or rec_string == '':
+                if recommendation.get('mine_incident_recommendation_guid') is not None:
+                    # Remove existing empty recommendations
+                    rec = MineIncidentRecommendation.find_by_mine_incident_recommendation_guid(
+                        edited_rec_guid)
+                    rec.deleted_ind = True
+                    rec.save()
+
+                # Skip new empty recommendations
+                continue
+
+            # Update recommendations
+            if edited_rec_guid is not None:
+                rec = MineIncidentRecommendation.find_by_mine_incident_recommendation_guid(edited_rec_guid)
+                if rec is not None:
+                    rec.recommendation = rec_string
+                    rec.save()
+                    continue
+
+            # Create new_recommendations
+            new_recommendation = MineIncidentRecommendation.create(
+                recommendation['recommendation'], mine_incident_id=incident.mine_incident_id)
+            new_recommendation.save()

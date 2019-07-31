@@ -8,16 +8,22 @@ import PartyProfile from "@/components/parties/PartyProfile";
 import RelationshipProfile from "@/components/parties/RelationshipProfile";
 import AdminDashboard from "@/components/admin/AdminDashboard";
 import ReportingDashboard from "@/components/dashboard/reporting/ReportingDashboard";
+import ExecutiveReportingDashboard from "@/components/dashboard/reporting/ExecutiveReportingDashboard";
 import SearchResults from "@/components/search/SearchResults";
 import CustomHomePage from "@/components/dashboard/customHomePage/CustomHomePage";
+import HomePage from "@/components/dashboard/HomePage";
 
 export const DASHBOARD = {
   route: "/",
   component: Home,
 };
 
-export const CUSTOM_HOME_PAGE = {
+export const HOME_PAGE = {
   route: "/home/",
+  component: HomePage,
+};
+export const CUSTOM_HOME_PAGE = {
+  route: "/my-dashboard/",
   component: CustomHomePage,
 };
 
@@ -64,6 +70,11 @@ export const RELATIONSHIP_PROFILE = {
 export const REPORTING_DASHBOARD = {
   route: "/dashboard/reporting",
   component: ReportingDashboard,
+};
+
+export const EXECUTIVE_REPORTING_DASHBOARD = {
+  route: "/dashboard/execreporting",
+  component: ExecutiveReportingDashboard,
 };
 
 export const ADMIN_DASHBOARD = {

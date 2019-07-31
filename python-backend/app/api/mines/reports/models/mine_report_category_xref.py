@@ -13,7 +13,7 @@ class MineReportCategoryXref(Base):
     mine_report_definition_id = db.Column(
         db.Integer, db.ForeignKey('mine_report_definition.mine_report_definition_id'))
     mine_report_category = db.Column(db.Integer,
-                                     db.ForeignKey('mine_report_category.mine_report_category_id'))
+                                     db.ForeignKey('mine_report_category.mine_report_category'))
 
     def __repr__(self):
         return '<mine_report_category_xref %r>' % self.mine_report_category_xref_guid

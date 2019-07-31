@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { flatMap, uniq } from "lodash";
-import NewMinespaceUser from "@/components/admin/NewMinespaceUser";
-import MinespaceUserList from "@/components/admin/MinespaceUserList";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import MinespaceUserList from "@/components/admin/MinespaceUserList";
+import NewMinespaceUser from "@/components/admin/NewMinespaceUser";
 import CustomPropTypes from "@/customPropTypes";
 import { getMineNames } from "@/selectors/mineSelectors";
 import { getMinespaceUsers } from "@/selectors/minespaceSelector";

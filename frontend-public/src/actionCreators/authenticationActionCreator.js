@@ -1,9 +1,9 @@
 import axios from "axios";
 import { notification } from "antd";
+import queryString from "query-string";
 import { request, success, error } from "@/actions/genericActions";
 import * as reducerTypes from "@/constants/reducerTypes";
 import * as authenticationActions from "@/actions/authenticationActions";
-import queryString from "query-string";
 import * as ENV from "@/constants/environment";
 
 export const unAuthenticateUser = (toastMessage) => (dispatch) => {

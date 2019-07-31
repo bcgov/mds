@@ -58,7 +58,7 @@ export class NavBar extends Component {
   );
 
   renderFullNav = () => (
-    <div className="inline-flex">
+    <div>
       <Dropdown overlay={this.reportingDropdown} placement="bottomLeft">
         <button
           id={this.ifActiveButton(router.REPORTING_DASHBOARD.route)}
@@ -190,12 +190,30 @@ export class NavBar extends Component {
                     Admin
                   </Button>
                 </Link>
-                <Link to={router.REPORTING_DASHBOARD.route}>
+              </Col>
+            </Row>
+          </AuthorizationWrapper>
+          <Row>
+            <Col span={24}>
+              <Link to={router.REPORTING_DASHBOARD.route}>
+                <Button
+                  id={this.ifActiveButton(router.REPORTING_DASHBOARD.route)}
+                  className="menu--hamburger__btn--link"
+                >
+                  Reporting Dashboard
+                </Button>
+              </Link>
+            </Col>
+          </Row>
+          <AuthorizationWrapper permission={Permission.EXECUTIVE}>
+            <Row>
+              <Col span={24}>
+                <Link to={router.EXECUTIVE_REPORTING_DASHBOARD.route}>
                   <Button
-                    id={this.ifActiveButton(router.REPORTING_DASHBOARD.route)}
+                    id={this.ifActiveButton(router.EXECUTIVE_REPORTING_DASHBOARD.route)}
                     className="menu--hamburger__btn--link"
                   >
-                    Reporting Dashboard
+                    Executive Dashboard
                   </Button>
                 </Link>
               </Col>
@@ -258,6 +276,13 @@ export class NavBar extends Component {
           <button type="button">Dashboard</button>
         </Link>
       </div>
+      <AuthorizationWrapper permission={Permission.EXECUTIVE}>
+        <div className="custom-menu-item">
+          <Link to={router.EXECUTIVE_REPORTING_DASHBOARD.route}>
+            <button type="button">Executive Dashboard</button>
+          </Link>
+        </div>
+      </AuthorizationWrapper>
     </Menu>
   );
 
@@ -265,29 +290,32 @@ export class NavBar extends Component {
     return (
       <div>
         <div className="menu">
-          <Link
-            to={router.MINE_HOME_PAGE.dynamicRoute({
-              page: Strings.DEFAULT_PAGE,
-              per_page: Strings.DEFAULT_PER_PAGE,
-            })}
-          >
+          <Link to={router.HOME_PAGE.route}>
             <img alt="Home" className="menu__img" src={LOGO} />
           </Link>
-          <SearchBar />
-          <MediaQuery maxWidth={768}>
-            <Button
-              ghost
-              type="button"
-              className="menu__btn"
-              style={{ padding: 0 }}
-              onClick={this.props.toggleHamburgerMenu}
-            >
-              <img alt="menu" src={!this.props.isMenuOpen ? HAMBURGER : CLOSE} className="img-lg" />
-            </Button>
-          </MediaQuery>
-          <MediaQuery minWidth={769}>{this.renderFullNav()}</MediaQuery>
+          <div className="inline-flex">
+            <div style={{ marginTop: "6px" }}>
+              <SearchBar containerId="navBar" />
+            </div>
+            <MediaQuery maxWidth={979}>
+              <Button
+                ghost
+                type="button"
+                className="menu__btn"
+                style={{ padding: 0 }}
+                onClick={this.props.toggleHamburgerMenu}
+              >
+                <img
+                  alt="menu"
+                  src={!this.props.isMenuOpen ? HAMBURGER : CLOSE}
+                  className="img-lg"
+                />
+              </Button>
+            </MediaQuery>
+            <MediaQuery minWidth={980}>{this.renderFullNav()}</MediaQuery>
+          </div>
         </div>
-        <MediaQuery maxWidth={768}>{this.renderHamburgerNav()}</MediaQuery>
+        <MediaQuery maxWidth={979}>{this.renderHamburgerNav()}</MediaQuery>
       </div>
     );
   }

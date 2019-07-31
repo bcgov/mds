@@ -34,6 +34,7 @@ export const CONTACT_ADMIN = [
   " to request access",
 ];
 export const EMPTY_FIELD = "N/A";
+export const EMPTY = "";
 
 // default coordinates for center of BC
 export const DEFAULT_LAT = 53.7267;
@@ -54,3 +55,21 @@ export const VARIANCE_APPLICATION_CODE = "REV";
 export const VARIANCE_DECISION_CODE = "RFD";
 export const VARIANCE_APPROVED_CODE = "APP";
 export const VARIANCE_DENIED_CODE = "DEN";
+
+export const INCIDENT_DOCUMENT_TYPES = {
+  initial: "INI",
+  final: "FIN",
+};
+
+export const INCIDENT_DETERMINATION_TYPES = {
+  pending: "PEN",
+  notADangerousOccurance: "NDO",
+  dangerousOccurance: "DO",
+};
+
+export const INCIDENT_FOLLOWUP_ACTIONS = {
+  miu: "MIU",
+  inspector: "INS",
+  none: "NO",
+  unknown: "HUK",
+};

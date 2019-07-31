@@ -20,7 +20,7 @@ const propTypes = {
   complianceCodes: CustomPropTypes.options.isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   fetchVariancesByMine: PropTypes.func.isRequired,
-  inspectors: CustomPropTypes.options.isRequired,
+  inspectors: CustomPropTypes.groupOptions.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   varianceDocumentCategoryOptions: CustomPropTypes.options.isRequired,
@@ -150,6 +150,7 @@ export class MineVariance extends Component {
         <h4 className="uppercase">Approved Variances</h4>
         <br />
         <MineVarianceTable
+          openEditVarianceModal={this.openEditVarianceModal}
           openViewVarianceModal={this.openViewVarianceModal}
           variances={this.props.approvedVariances}
           complianceCodesHash={this.props.complianceCodesHash}

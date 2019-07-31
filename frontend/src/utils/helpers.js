@@ -39,8 +39,8 @@ export const createDropDownList = (array, labelField, valueField) =>
   array.map((item) => ({ value: item[valueField], label: item[labelField] }));
 
 // Function to create a hash given an array of values and labels
-export const createLabelHash = (obj) =>
-  obj.reduce((map, { value, label }) => ({ [value]: label, ...map }), {});
+export const createLabelHash = (arr) =>
+  arr.reduce((map, { value, label }) => ({ [value]: label, ...map }), {});
 
 // Function to format an API date string to human readable
 export const formatDate = (dateString) =>
@@ -95,3 +95,13 @@ export const getFiscalYear = () => {
 };
 
 export const formatParamStringToArray = (param) => (param ? param.split(",").filter((x) => x) : []);
+
+export const formatComplianceCodeValueOrLabel = (code, showDescription) => {
+  const { section, sub_section, paragraph, sub_paragraph, description } = code;
+  const formattedSubSection = sub_section ? `.${sub_section}` : "";
+  const formattedParagraph = paragraph ? `.${paragraph}` : "";
+  const formattedSubParagraph = sub_paragraph !== null ? `.${sub_paragraph}` : "";
+  const formattedDescription = showDescription ? ` - ${description}` : "";
+
+  return `${section}${formattedSubSection}${formattedParagraph}${formattedSubParagraph}${formattedDescription}`;
+};

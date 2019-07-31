@@ -13,7 +13,7 @@ import CustomAxios from "@/customAxios";
 export const fetchApplications = (params = {}) => (dispatch) => {
   dispatch(request(reducerTypes.GET_APPLICATIONS));
   dispatch(showLoading("modal"));
-  return CustomAxios(String.ERROR)
+  return CustomAxios({ errorToastMessage: String.ERROR })
     .get(
       `${ENVIRONMENT.apiUrl + API.APPLICATIONS}?${queryString.stringify(params)}`,
       createRequestHeader()
@@ -48,15 +48,15 @@ export const updateApplication = (application_guid, payload) => (dispatch) => {
 };
 
 export const createApplication = (payload) => (dispatch) => {
-  dispatch(request(reducerTypes.CREATE_APPLICAION));
+  dispatch(request(reducerTypes.CREATE_APPLICATION));
   dispatch(showLoading("modal"));
   return CustomAxios()
     .post(`${ENVIRONMENT.apiUrl + API.APPLICATIONS}`, payload, createRequestHeader())
     .then((response) => {
       notification.success({ message: "Successfully created a new application", duration: 10 });
-      dispatch(success(reducerTypes.CREATE_APPLICAION));
+      dispatch(success(reducerTypes.CREATE_APPLICATION));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.CREATE_APPLICAION)))
+    .catch(() => dispatch(error(reducerTypes.CREATE_APPLICATION)))
     .finally(() => dispatch(hideLoading("modal")));
 };

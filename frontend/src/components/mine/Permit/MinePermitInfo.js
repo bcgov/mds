@@ -69,7 +69,6 @@ export class MinePermitInfo extends Component {
           ? [prevState.modifiedPermitGuid]
           : nextPermits.filter((key) => currentPermits.indexOf(key) === -1),
         modifiedPermitGuid: null,
-        addedPermit: false,
       }));
     }
   };
@@ -119,7 +118,7 @@ export class MinePermitInfo extends Component {
   // Permit Handlers
 
   handleAddPermit = (values) => {
-    const payload = {  ...values };
+    const payload = { ...values };
 
     payload.permit_no = `${values.permit_type}${values.permit_activity_type || ""}-${
       values.permit_no
@@ -131,7 +130,9 @@ export class MinePermitInfo extends Component {
   };
 
   handleEditPermit = (values) =>
-    this.props.updatePermit(this.props.mine.mine_guid, values.permit_guid, values).then(this.closePermitModal);
+    this.props
+      .updatePermit(this.props.mine.mine_guid, values.permit_guid, values)
+      .then(this.closePermitModal);
 
   // Amendment Modals
 
@@ -198,12 +199,19 @@ export class MinePermitInfo extends Component {
 
   handleEditPermitAmendment = (values) =>
     this.props
-      .updatePermitAmendment(this.props.mine.mine_guid, values.permit_guid, values.permit_amendment_guid, values)
+      .updatePermitAmendment(
+        this.props.mine.mine_guid,
+        values.permit_guid,
+        values.permit_amendment_guid,
+        values
+      )
       .then(this.closePermitModal);
 
   handleAddPermitAmendment = (values) => {
     this.setState({ modifiedPermits: true, modifiedPermitGuid: values.permit_guid });
-    return this.props.createPermitAmendment(this.props.mine.mine_guid, values.permit_guid, values).then(this.closePermitModal);
+    return this.props
+      .createPermitAmendment(this.props.mine.mine_guid, values.permit_guid, values)
+      .then(this.closePermitModal);
   };
 
   handleAddAmalgamatedPermit = (values) => {
@@ -218,7 +226,12 @@ export class MinePermitInfo extends Component {
 
   handleRemovePermitAmendmentDocument = (permitGuid, permitAmdendmentGuid, documentGuid) =>
     this.props
-      .removePermitAmendmentDocument(this.props.mine.mine_guid, permitGuid, permitAmdendmentGuid, documentGuid)
+      .removePermitAmendmentDocument(
+        this.props.mine.mine_guid,
+        permitGuid,
+        permitAmdendmentGuid,
+        documentGuid
+      )
       .then(() => {
         this.props.fetchPermits(this.props.mine.mine_guid);
       });

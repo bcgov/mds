@@ -1,13 +1,13 @@
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
+import queryString from "query-string";
 import { request, success, error } from "@/actions/genericActions";
 import * as reducerTypes from "@/constants/reducerTypes";
 import * as partyActions from "@/actions/partyActions";
-import * as String from "@/constants/strings";
+import * as Strings from "@/constants/strings";
 import * as API from "@/constants/API";
 import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
-import queryString from "query-string";
 import CustomAxios from "@/customAxios";
 
 export const createParty = (payload) => (dispatch) => {
@@ -146,7 +146,7 @@ export const fetchPartyRelationships = (parms) => (dispatch) => {
 export const removePartyRelationship = (mine_party_appt_guid) => (dispatch) => {
   dispatch(request(reducerTypes.REMOVE_PARTY_RELATIONSHIP));
   dispatch(showLoading());
-  return CustomAxios(String.ERROR)
+  return CustomAxios({ errorToastMessage: Strings.ERROR })
     .delete(
       `${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}/${mine_party_appt_guid}`,
       createRequestHeader()
@@ -163,7 +163,7 @@ export const removePartyRelationship = (mine_party_appt_guid) => (dispatch) => {
 export const deleteParty = (party_guid) => (dispatch) => {
   dispatch(request(reducerTypes.DELETE_PARTY));
   dispatch(showLoading());
-  return CustomAxios(String.ERROR)
+  return CustomAxios({ errorToastMessage: Strings.ERROR })
     .delete(`${ENVIRONMENT.apiUrl + API.PARTY}/${party_guid}`, createRequestHeader())
     .then((response) => {
       notification.success({ message: "Successfully removed the party", duration: 10 });
@@ -173,34 +173,6 @@ export const deleteParty = (party_guid) => (dispatch) => {
     .catch(() => dispatch(error(reducerTypes.DELETE_PARTY)))
     .finally(() => dispatch(hideLoading()));
 };
-
-export const downloadMineManagerHistory = (mineNo, { window, document }) =>
-  CustomAxios("")({
-    method: "GET",
-    url: `${ENVIRONMENT.apiUrl + API.MINE_MANAGER_HISTORY(mineNo)}`,
-    responseType: "blob",
-    ...createRequestHeader(),
-  })
-    .then((response) => {
-      notification.success({ message: "Successfully downloaded history", duration: 10 });
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", `mine_${mineNo}_manager_history.csv`);
-      document.body.appendChild(link);
-      link.click();
-      return response;
-    })
-    .catch(({ response }) => {
-      let message = "Download failed";
-      if (response.status === 422) {
-        message = "No Mine Number provided";
-      }
-      if (response.status === 404) {
-        message = "No Mine Manager history found";
-      }
-      notification.error({ message, duration: 10 });
-    });
 
 export const setAddPartyFormState = (addPartyFormState) => (dispatch) => {
   dispatch(partyActions.storeAddPartyFormState(addPartyFormState));
@@ -212,7 +184,11 @@ export const fetchInspectors = () => (dispatch) => {
   dispatch(showLoading("modal"));
   return CustomAxios()
     .get(
-      ENVIRONMENT.apiUrl + API.PARTIES_LIST_QUERY({ per_page: "all", business_role: "INS" }),
+      ENVIRONMENT.apiUrl +
+        API.PARTIES_LIST_QUERY({
+          per_page: "all",
+          business_role: Strings.INCIDENT_FOLLOWUP_ACTIONS.inspector,
+        }),
       createRequestHeader()
     )
     .then((response) => {
