@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Button } from "antd";
+import { Table, Icon, Popconfirm, Button } from "antd";
 import moment from "moment";
 import PropTypes from "prop-types";
 import NullScreen from "@/components/common/NullScreen";
@@ -8,7 +8,8 @@ import { formatDate } from "@/utils/helpers";
 import { COLOR } from "@/constants/styles";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
-import { BRAND_PENCIL } from "@/constants/assets";
+import CustomPropTypes from "@/customPropTypes";
+import { MineReportActions } from "@/components/mine/Reports/MineReportActions";
 
 const { errorRed } = COLOR;
 
@@ -17,10 +18,10 @@ const { errorRed } = COLOR;
  */
 
 const propTypes = {
-  // mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport),
-  mineReports: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  mineReports: PropTypes.arrayOf(PropTypes.objectOf(CustomPropTypes.mineReport)).isRequired,
   openEditReportModal: PropTypes.func.isRequired,
   handleEditReport: PropTypes.func.isRequired,
+  handleRemoveReport: PropTypes.func.isRequired,
 };
 
 const defaultProps = {};
@@ -72,27 +73,25 @@ const columns = [
   },
   {
     title: "",
-    dataIndex: "openEditReportModal",
-    render: (text, record) => (
-      <div title="" align="right">
-        <AuthorizationWrapper permission={Permission.EDIT_REPORTS}>
-          <Button
-            type="primary"
-            size="small"
-            ghost
-            onClick={(event) =>
-              record.openEditReportModal(event, record.handleEditReport, record.report)
-            }
-          >
-            <img src={BRAND_PENCIL} alt="Edit Report" />
-          </Button>
-        </AuthorizationWrapper>
-      </div>
-    ),
+    dataIndex: "record",
+    render: (text, record) => {
+      return (
+        <div title="" align="right">
+          <AuthorizationWrapper permission={Permission.EDIT_REPORTS}>
+            <MineReportActions
+              mineReport={record.report}
+              openEditReportModal={record.openEditReportModal}
+              handleEditReport={record.handleEditReport}
+              handleRemoveReport={record.handleRemoveReport}
+            />
+          </AuthorizationWrapper>
+        </div>
+      );
+    },
   },
 ];
 
-const transformRowData = (report, openEditReportModal, handleEditReport) => ({
+const transformRowData = (report, openEditReportModal, handleEditReport, handleRemoveReport) => ({
   key: report.report_guid,
   report,
   report_name: report.report_name,
@@ -101,6 +100,7 @@ const transformRowData = (report, openEditReportModal, handleEditReport) => ({
   submission_year: report.submission_year,
   openEditReportModal,
   handleEditReport,
+  handleRemoveReport,
 });
 
 export const MineReportTable = (props) => (
@@ -110,7 +110,12 @@ export const MineReportTable = (props) => (
     columns={columns}
     locale={{ emptyText: <NullScreen type="reports" /> }}
     dataSource={props.mineReports.map((r) =>
-      transformRowData(r, props.openEditReportModal, props.handleEditReport)
+      transformRowData(
+        r,
+        props.openEditReportModal,
+        props.handleEditReport,
+        props.handleRemoveReport
+      )
     )}
   />
 );

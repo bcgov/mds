@@ -17,6 +17,7 @@ exports[`MineReportInfo renders properly 1`] = `
   </div>
   <MineReportTable
     handleEditReport={[Function]}
+    handleRemoveReport={[Function]}
     openEditReportModal={[Function]}
   />
 </div>

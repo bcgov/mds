@@ -8,6 +8,24 @@ import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
 import CustomAxios from "@/customAxios";
 
+export const deleteMineReport = (mineGuid, mineReportGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.DELETE_MINE_REPORT));
+  return CustomAxios()
+    .delete(
+      `${ENVIRONMENT.apiUrl}${API.MINE_REPORT(mineGuid, mineReportGuid)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: "Successfully removed the report.",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.DELETE_MINE_REPORT));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.DELETE_MINE_REPORT)));
+};
+
 export const createMineReport = (mineGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_MINE_REPORT));
   return CustomAxios()
