@@ -32,7 +32,7 @@ def test_get_all_required_documents_by_category(test_client, db_session, auth_he
     get_data = json.loads(get_resp.data.decode())
     assert len(get_data['records']) == len(
         RequiredDocument.query.filter_by(req_document_category=cat).all())
-    assert all(rd['req_document_category'] == cat for rd in get_data['required_documents'])
+    assert all(rd['req_document_category'] == cat for rd in get_data['records'])
 
 
 def test_get_all_required_documents_by_category_and_sub_category(test_client, db_session,
@@ -47,5 +47,5 @@ def test_get_all_required_documents_by_category_and_sub_category(test_client, db
     assert len(get_data['records']) == len(
         RequiredDocument.query.filter_by(req_document_category=cat,
                                          req_document_sub_category_code=sub_cat).all())
-    assert get_data['required_documents'][0]['req_document_category'] == cat
-    assert get_data['required_documents'][0]['req_document_sub_category_code'] == sub_cat
+    assert get_data['records'][0]['req_document_category'] == cat
+    assert get_data['records'][0]['req_document_sub_category_code'] == sub_cat
