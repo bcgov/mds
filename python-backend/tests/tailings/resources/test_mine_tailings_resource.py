@@ -30,7 +30,8 @@ def test_post_mine_tailings_storage_facility_by_mine_guid(test_client, db_sessio
 def test_post_first_mine_tailings_storage_facility_by_mine_guid(test_client, db_session,
                                                                 auth_headers):
     mine = MineFactory(minimal=True)
-
+    assert len(mine.mine_tailings_storage_facilities) == 0
+    
     post_resp = test_client.post(f'/mines/{mine.mine_guid}/tailings',
                                  data={'mine_tailings_storage_facility_name': 'a name'},
                                  headers=auth_headers['full_auth_header'])
