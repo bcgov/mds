@@ -16,6 +16,11 @@ exports[`MineVarianceTable renders properly 1`] = `
           "width": 10,
         },
         Object {
+          "dataIndex": "varianceNumber",
+          "render": [Function],
+          "title": "Variance Number",
+        },
+        Object {
           "dataIndex": "compliance_article_id",
           "render": [Function],
           "title": "Code Section",
@@ -127,7 +132,9 @@ exports[`MineVarianceTable renders properly 1`] = `
             "note": "notesss",
             "received_date": "2019-03-01",
             "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+            "variance_no": 1,
           },
+          "varianceNumber": 1,
         },
       ]
     }

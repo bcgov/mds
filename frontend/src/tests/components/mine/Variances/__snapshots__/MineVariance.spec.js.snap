@@ -126,6 +126,7 @@ exports[`MineVariance renders properly 1`] = `
             "note": "notesss",
             "received_date": "2019-03-01",
             "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+            "variance_no": 1,
           },
         ]
       }
@@ -239,6 +240,7 @@ exports[`MineVariance renders properly 1`] = `
             "note": "notesss",
             "received_date": "2019-03-01",
             "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+            "variance_no": 1,
           },
         ]
       }
