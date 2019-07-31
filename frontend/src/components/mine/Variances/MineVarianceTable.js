@@ -71,7 +71,7 @@ export class MineVarianceTable extends Component {
       leadInspector:
         this.props.inspectorsHash[variance.inspector_party_guid] || Strings.EMPTY_FIELD,
       documents: variance.documents,
-      varianceNumber: variance.variance_no,
+      varianceNumber: variance.variance_no || Strings.EMPTY_FIELD,
     }));
 
   render() {

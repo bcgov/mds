@@ -14,16 +14,16 @@ CREATE SEQUENCE variance_no_seq
 
 ALTER TABLE variance_no_seq OWNER TO mds;
 ALTER SEQUENCE variance_no_seq OWNED BY variance.variance_no;
-ALTER TABLE ONLY variance ALTER COLUMN variance_no SET DEFAULT nextval('variance_no_seq'::regclass);
 
 UPDATE variance
 SET variance_no = nextval('variance_no_seq')
 WHERE variance_id IN (
     SELECT variance_id
     FROM variance
+    -- All historical variances were added before June 26th
+    WHERE create_timestamp >= '2019-06-26'::date
     ORDER BY create_timestamp ASC
 )
 AND variance_no IS NULL;
 
-ALTER TABLE variance
-ALTER COLUMN variance_no SET NOT NULL;
+ALTER TABLE ONLY variance ALTER COLUMN variance_no SET DEFAULT nextval('variance_no_seq'::regclass);
