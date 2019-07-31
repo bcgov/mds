@@ -16,6 +16,7 @@ const setupProps = () => {
   props.submitting = false;
   props.permitStatusOptions = [];
   props.mine_guid = "";
+  props.initialValues = { mine_report_definition_guid: "" };
 };
 
 beforeEach(() => {

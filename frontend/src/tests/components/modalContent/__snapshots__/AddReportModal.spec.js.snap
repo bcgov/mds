@@ -3,6 +3,7 @@
 exports[`AddReportModal renders properly 1`] = `
 <div>
   <Connect(ReduxForm)
+    initialValues={Object {}}
     onSubmit={[MockFunction]}
     title="mockTitle"
   />
