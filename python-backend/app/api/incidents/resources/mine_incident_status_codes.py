@@ -12,4 +12,4 @@ class MineIncidentStatusCodeResource(Resource):
     @api.doc(description='Returns the possible incident status codes')
     @requires_role_view_all
     def get(self):
-        return MineIncidentStatusCode.get_active()
+        return MineIncidentStatusCode.active()

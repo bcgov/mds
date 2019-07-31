@@ -12,4 +12,4 @@ class MineIncidentDeterminationTypeResource(Resource):
     @api.doc(description='Returns the possible EMPR inspector determination types for dangerous occurrences')
     @requires_role_view_all
     def get(self):
-        return MineIncidentDeterminationType.get_active()
+        return MineIncidentDeterminationType.active()
