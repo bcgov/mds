@@ -17,7 +17,7 @@ class MineReportSubmission(Base, AuditMixin):
         db.ForeignKey('mine_report_submission_status_code.mine_report_submission_status_code'))
     submission_date = db.Column(db.DateTime)
     documents = db.relationship(
-        'MineDocument', lazy='selectin', secondary='mine_report_document_xref')
+        'MineDocument', lazy='joined', secondary='mine_report_document_xref')
 
     def __repr__(self):
         return '<MineReportSubmission %r>' % self.mine_report_submission_guid

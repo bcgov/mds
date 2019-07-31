@@ -21,6 +21,7 @@ from ..variances.resources.variance_document_upload import MineVarianceDocumentU
 from ..variances.resources.variance_uploaded_documents import MineVarianceUploadedDocumentsResource
 from ..incidents.resources.mine_incidents import MineIncidentListResource, MineIncidentResource
 from ..incidents.resources.mine_incident_document import MineIncidentDocumentListResource, MineIncidentDocumentResource
+from app.api.mines.reports.resources.mine_report_document import MineReportDocumentListResource
 from app.api.mines.reports.resources.mine_reports import MineReportListResource, MineReportResource
 from app.api.mines.reports.resources.mine_report_definition import MineReportDefinitionListResource
 from app.api.mines.permits.permit.resources.permit import PermitResource, PermitListResource
@@ -81,6 +82,11 @@ api.add_resource(MineIncidentDocumentListResource, '/<string:mine_guid>/incident
 api.add_resource(MineReportListResource, '/<string:mine_guid>/reports')
 api.add_resource(MineReportResource, '/<string:mine_guid>/reports/<string:mine_report_guid>')
 api.add_resource(MineReportDefinitionListResource, '/reports/definitions')
+
+api.add_resource(
+    MineReportDocumentListResource,
+    '/<string:mine_guid>/reports/documents',
+)
 
 api.add_resource(PermitResource, '/<string:mine_guid>/permits/<string:permit_guid>')
 api.add_resource(PermitListResource, '/<string:mine_guid>/permits')

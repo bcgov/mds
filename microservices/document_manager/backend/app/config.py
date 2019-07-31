@@ -43,7 +43,7 @@ class Config(object):
     CACHE_REDIS_PASS = os.environ.get('CACHE_REDIS_PASS', 'redis-password')
     CACHE_REDIS_URL = 'redis://:{0}@{1}:{2}'.format(CACHE_REDIS_PASS, CACHE_REDIS_HOST,
                                                     CACHE_REDIS_PORT)
-    DOCUMENT_MANAGER_URL = os.environ.get('DOCUMENT_MANAGER_URL', 'https://localhost:5001')
+    DOCUMENT_MANAGER_URL = os.environ.get('DOCUMENT_MANAGER_URL', 'http://localhost:5001')
     UPLOADED_DOCUMENT_DEST = os.environ.get('UPLOADED_DOCUMENT_DEST', '/app/document_uploads')
     MAX_CONTENT_LENGTH = 400 * 1024 * 1024
 
@@ -67,13 +67,18 @@ class TestConfig(Config):
     # Dummy Private Keys for testing purposes, can replace these keys with any other generated key.
     JWT_OIDC_TEST_KEYS = {
         "keys": [{
-            "kid": "flask-jwt-oidc-test-client",
-            "kty": "RSA",
-            "alg": "RS256",
-            "use": "sig",
+            "kid":
+            "flask-jwt-oidc-test-client",
+            "kty":
+            "RSA",
+            "alg":
+            "RS256",
+            "use":
+            "sig",
             "n":
             "AN-fWcpCyE5KPzHDjigLaSUVZI0uYrcGcc40InVtl-rQRDmAh-C2W8H4_Hxhr5VLc6crsJ2LiJTV_E72S03pzpOOaaYV6-TzAjCou2GYJIXev7f6Hh512PuG5wyxda_TlBSsI-gvphRTPsKCnPutrbiukCYrnPuWxX5_cES9eStR",
-            "e": "AQAB"
+            "e":
+            "AQAB"
         }]
     }
     # Dummy Private Keys for testing purposes.

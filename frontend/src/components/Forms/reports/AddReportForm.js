@@ -9,17 +9,24 @@ import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import { required } from "@/utils/Validate";
 import { resetForm, createDropDownList, formatComplianceCodeValueOrLabel } from "@/utils/helpers";
+import { ReportsUploadedFilesList } from "@/components/Forms/reports/ReportsUploadedFilesList";
+import { MINE_REPORT_DOCUMENT } from "@/constants/API";
 import {
   getDropdownMineReportCategoryOptions,
   getMineReportDefinitionOptions,
 } from "@/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
+import FileUpload from "@/components/common/FileUpload";
 
 const propTypes = {
+  mineGuid: PropTypes.string.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-
+  onFileLoad: PropTypes.func.isRequired,
+  onRemoveFile: PropTypes.func.isRequired,
+  uploadedFiles: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  handleReportSubmit: PropTypes.func.isRequired,
   mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   dropdownMineReportCategoryOptions: PropTypes.arrayOf(
     PropTypes.objectOf(CustomPropTypes.dropdownListItem)
@@ -164,6 +171,29 @@ export class AddReportForm extends Component {
                 component={renderConfig.DATE}
               />
             </Form.Item>
+            {this.props.uploadedFiles.length > 0 && (
+              <Form.Item label="Attached files" style={{ paddingBottom: "10px" }}>
+                <Field
+                  id="report_documents"
+                  name="report_documents"
+                  component={ReportsUploadedFilesList}
+                  files={this.props.uploadedFiles}
+                  onRemoveFile={this.props.onRemoveFile}
+                />
+              </Form.Item>
+            )}
+            <Form.Item>
+              <Field
+                id="ReportFileUpload"
+                name="ReportFileUpload"
+                label="Upload Files"
+                onFileLoad={(document_name, document_manager_guid) =>
+                  this.props.onFileLoad(document_name, document_manager_guid)
+                }
+                uploadUrl={MINE_REPORT_DOCUMENT(this.props.mineGuid)}
+                component={FileUpload}
+              />
+            </Form.Item>
           </Col>
         </Row>
         <div className="right center-mobile">
@@ -178,7 +208,12 @@ export class AddReportForm extends Component {
               Cancel
             </Button>
           </Popconfirm>
-          <Button className="full-mobile" type="primary" htmlType="submit">
+          <Button
+            className="full-mobile"
+            type="primary"
+            htmlType="submit"
+            onClick={(event) => this.props.handleReportSubmit(event, false)}
+          >
             {this.props.title}
           </Button>
         </div>
