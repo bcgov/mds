@@ -16,7 +16,6 @@ import utils.DataCleanup
         SummarySpec.class,
         PermitSpec.class,
         ContactInfoSpec.class,
-        // Tenure.class, TODO: Enable when re-enabling Tenure tab
         Tailings.class,
         Contacts.class,
         // MapNavigationSpec.class,//TODO: UNCOMEMENT WHEN MDS-1924 IS DONE

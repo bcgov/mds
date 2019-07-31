@@ -1639,7 +1639,7 @@ export const INCIDENT = {
 };
 
 export const INCIDENTS = {
-  mine_incidents: [
+  records: [
     {
       mine_incident_guid: "dc101155-de3e-4f37-8303-eb6a6d2d5866",
       mine_incident_report_no: "2019-70",

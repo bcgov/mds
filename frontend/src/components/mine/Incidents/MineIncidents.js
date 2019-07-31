@@ -18,17 +18,23 @@ import {
 } from "@/actionCreators/mineActionCreator";
 import { getMineIncidents } from "@/selectors/mineSelectors";
 import {
-  getIncidentFollowupActionOptions,
   getDropdownIncidentFollowupActionOptions,
   getDangerousOccurrenceSubparagraphOptions,
   getDropdownIncidentDeterminationOptions,
   getDropdownIncidentStatusCodeOptions,
+  getIncidentFollowupActionOptions,
 } from "@/selectors/staticContentSelectors";
 
 import MineIncidentTable from "./MineIncidentTable";
+import {
+  fetchIncidentDocumentTypeOptions,
+  fetchMineIncidentFollowActionOptions,
+  fetchMineIncidentDeterminationOptions,
+  fetchMineIncidentStatusCodeOptions,
+} from "@/actionCreators/staticContentActionCreator";
 
 /**
- * @class  MineTailingsInfo - all tenure information related to the mine.
+ * @class  MineIncidents - all incident information related to the mine.
  */
 
 const propTypes = {
@@ -46,6 +52,10 @@ const propTypes = {
   fetchMineIncidents: PropTypes.func.isRequired,
   createMineIncident: PropTypes.func.isRequired,
   updateMineIncident: PropTypes.func.isRequired,
+  fetchIncidentDocumentTypeOptions: PropTypes.func.isRequired,
+  fetchMineIncidentFollowActionOptions: PropTypes.func.isRequired,
+  fetchMineIncidentDeterminationOptions: PropTypes.func.isRequired,
+  fetchMineIncidentStatusCodeOptions: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -56,6 +66,10 @@ const defaultProps = {
 export class MineIncidents extends Component {
   componentDidMount() {
     this.props.fetchMineIncidents(this.props.mine.mine_guid);
+    this.props.fetchIncidentDocumentTypeOptions();
+    this.props.fetchMineIncidentFollowActionOptions();
+    this.props.fetchMineIncidentDeterminationOptions();
+    this.props.fetchMineIncidentStatusCodeOptions();
   }
 
   handleAddMineIncident = (values) => {
@@ -172,6 +186,10 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchMineIncidents,
+      fetchIncidentDocumentTypeOptions,
+      fetchMineIncidentFollowActionOptions,
+      fetchMineIncidentDeterminationOptions,
+      fetchMineIncidentStatusCodeOptions,
       createMineIncident,
       updateMineIncident,
       destroy,

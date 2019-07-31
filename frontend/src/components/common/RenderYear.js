@@ -17,7 +17,6 @@ const propTypes = {
 };
 
 const defaultProps = {
-  showTime: false,
   placeholder: "yyyy-mm-dd",
   onChange: () => {},
 };

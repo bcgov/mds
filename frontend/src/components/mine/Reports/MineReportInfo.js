@@ -22,8 +22,7 @@ import { getMineReports } from "@/selectors/reportSelectors";
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
-  mineReports: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
-  // mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport),
+  mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
   fetchMineReports: PropTypes.func.isRequired,
   updateMineReport: PropTypes.func.isRequired,
   createMineReport: PropTypes.func.isRequired,

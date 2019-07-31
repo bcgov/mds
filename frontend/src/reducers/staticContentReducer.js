@@ -83,6 +83,11 @@ const staticContentReducer = (state = initialState, action) => {
         ...state,
         complianceCodes: action.payload.records,
       };
+    case actionTypes.STORE_INCIDENT_DOCUMENT_TYPE_OPTIONS:
+      return {
+        ...state,
+        incidentDocumentTypeOptions: action.payload.records,
+      };
     case actionTypes.STORE_MINE_INCIDENT_FOLLOWUP_ACTION_OPTIONS:
       return {
         ...state,
@@ -130,6 +135,8 @@ export const getProvinceOptions = (state) => state[STATIC_CONTENT].provinceOptio
 export const getPermitStatusOptions = (state) => state[STATIC_CONTENT].permitStatusCodes;
 export const getApplicationStatusOptions = (state) => state[STATIC_CONTENT].applicationStatusCodes;
 export const getComplianceCodes = (state) => state[STATIC_CONTENT].complianceCodes;
+export const getIncidentDocumentTypeOptions = (state) =>
+  state[STATIC_CONTENT].incidentDocumentTypeOptions;
 export const getIncidentFollowupActionOptions = (state) =>
   state[STATIC_CONTENT].incidentFollowupActionOptions;
 export const getIncidentDeterminationOptions = (state) =>
