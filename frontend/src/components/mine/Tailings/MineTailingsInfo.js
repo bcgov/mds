@@ -12,6 +12,7 @@ import {
   createMineExpectedDocument,
   removeExpectedDocument,
   updateExpectedDocument,
+  fetchMineRecordById,
 } from "@/actionCreators/mineActionCreator";
 import {
   fetchExpectedDocumentStatusOptions,
@@ -24,13 +25,16 @@ import {
 import { createDropDownList } from "@/utils/helpers";
 import MineTailingsTable from "@/components/mine/Tailings/MineTailingsTable";
 import AddButton from "@/components/common/AddButton";
+import { getMines, getMineGuid } from "@/selectors/mineSelectors";
+import { openModal, closeModal } from "@/actions/modalActions";
 
 /**
  * @class  MineTailingsInfo - all tenure information related to the mine.
  */
 
 const propTypes = {
-  mine: CustomPropTypes.mine.isRequired,
+  mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
+  mineGuid: PropTypes.string.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
@@ -61,10 +65,10 @@ export class MineTailingsInfo extends Component {
       req_document_guid: requiredReport.req_document_guid,
     };
     return this.props
-      .createMineExpectedDocument(this.props.mine.mine_guid, newRequiredReport)
+      .createMineExpectedDocument(this.props.mineGuid, newRequiredReport)
       .then(() => {
         this.props.closeModal();
-        this.props.fetchMineRecordById(this.props.mine.mine_guid);
+        this.props.fetchMineRecordById(this.props.mineGuid);
       });
   };
 
@@ -79,14 +83,14 @@ export class MineTailingsInfo extends Component {
       .updateExpectedDocument(updatedDocument.exp_document_guid, updatedDocument)
       .then(() => {
         this.props.closeModal();
-        this.props.fetchMineRecordById(this.props.mine.mine_guid);
+        this.props.fetchMineRecordById(this.props.mineGuid);
       });
   };
 
   removeReport = (event, exp_doc_guid) => {
     event.preventDefault();
     this.props.removeExpectedDocument(exp_doc_guid).then(() => {
-      this.props.fetchMineRecordById(this.props.mine.mine_guid);
+      this.props.fetchMineRecordById(this.props.mineGuid);
     });
   };
 
@@ -134,9 +138,10 @@ export class MineTailingsInfo extends Component {
   };
 
   render() {
+    const mine = this.props.mines[this.props.mineGuid];
     return (
-      <div>
-        {this.props.mine.mine_tailings_storage_facilities.map((facility) => (
+      <div className="tab__content">
+        {mine.mine_tailings_storage_facilities.map((facility) => (
           <Row
             key={facility.mine_tailings_storage_facility_guid}
             gutter={16}
@@ -159,7 +164,7 @@ export class MineTailingsInfo extends Component {
               <div className="inline-flex between">
                 <AuthorizationWrapper
                   permission={Permission.EDIT_MINES}
-                  isMajorMine={this.props.mine.major_mine_ind}
+                  isMajorMine={mine.major_mine_ind}
                 >
                   <AddButton
                     onClick={(event) =>
@@ -179,7 +184,7 @@ export class MineTailingsInfo extends Component {
           </div>
           <br />
           <MineTailingsTable
-            mine={this.props.mine}
+            mine={mine}
             openAddReportModal={this.openAddReportModal}
             handleAddReportSubmit={this.handleAddReportSubmit}
             mineTSFRequiredReports={this.props.mineTSFRequiredReports}
@@ -194,6 +199,8 @@ export class MineTailingsInfo extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  mines: getMines(state),
+  mineGuid: getMineGuid(state),
   expectedDocumentStatusOptions: getExpectedDocumentStatusOptions(state),
   mineTSFRequiredReports: getMineTSFRequiredReports(state),
 });
@@ -206,6 +213,9 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineTailingsRequiredDocuments,
       removeExpectedDocument,
       createMineExpectedDocument,
+      fetchMineRecordById,
+      openModal,
+      closeModal,
     },
     dispatch
   );

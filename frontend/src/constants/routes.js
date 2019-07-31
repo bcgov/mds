@@ -15,6 +15,11 @@ import MineSummary from "@/components/mine/Summary/MineSummary";
 import MineContactInfo from "@/components/mine/ContactInfo/MineContactInfo";
 import MineApplicationInfo from "@/components/mine/Applications/MineApplicationInfo";
 import MinePermitInfo from "@/components/mine/Permit/MinePermitInfo";
+import MineVariance from "@/components/mine/Variances/MineVariance";
+import MineComplianceInfo from "@/components/mine/Compliance/MineComplianceInfo";
+import MineIncidents from "@/components/mine/Incidents/MineIncidents";
+import MineTailingsInfo from "@/components/mine/Tailings/MineTailingsInfo";
+import MineReportInfo from "@/components/mine/Reports/MineReportInfo";
 import HomePage from "@/components/dashboard/HomePage";
 
 export const DASHBOARD = {
@@ -54,33 +59,63 @@ export const CONTACT_HOME_PAGE = {
 
 // Mine Dashboard Routes
 export const MINE_SUMMARY = {
-  route: "/dashboard/:id/",
-  dynamicRoute: (id) => `/dashboard/${id}/`,
+  route: "/mine-dashboard/:id/",
+  dynamicRoute: (id) => `/mine-dashboard/${id}/`,
   component: MineDashboard,
 };
 
 export const MINE_CONTACTS = {
-  route: "/dashboard/:id/mine-information/contacts",
-  dynamicRoute: (id) => `/dashboard/${id}/mine-information/contacts`,
+  route: "/mine-dashboard/:id/mine-information/contacts",
+  dynamicRoute: (id) => `/mine-dashboard/${id}/mine-information/contacts`,
   component: MineContactInfo,
 };
 
 export const MINE_GENERAL = {
-  route: "/dashboard/:id/mine-information/general",
-  dynamicRoute: (id) => `/dashboard/${id}/mine-information/general`,
+  route: "/mine-dashboard/:id/mine-information/general",
+  dynamicRoute: (id) => `/mine-dashboard/${id}/mine-information/general`,
   component: MineSummary,
 };
 
 export const MINE_PERMIT_APPLICATIONS = {
-  route: "/dashboard/:id/permits-and-approvals/permit-applications",
-  dynamicRoute: (id) => `/dashboard/${id}/permits-and-approvals/permit-applications`,
+  route: "/mine-dashboard/:id/permits-and-approvals/permit-applications",
+  dynamicRoute: (id) => `/mine-dashboard/${id}/permits-and-approvals/permit-applications`,
   component: MineApplicationInfo,
 };
 
 export const MINE_PERMITS = {
-  route: "/dashboard/:id/permits-and-approvals/permits",
-  dynamicRoute: (id) => `/dashboard/${id}/permits-and-approvals/permits`,
+  route: "/mine-dashboard/:id/permits-and-approvals/permits",
+  dynamicRoute: (id) => `/mine-dashboard/${id}/permits-and-approvals/permits`,
   component: MinePermitInfo,
+};
+
+export const MINE_VARIANCES = {
+  route: "/mine-dashboard/:id/permits-and-approvals/variances",
+  dynamicRoute: (id) => `/mine-dashboard/${id}/permits-and-approvals/variances`,
+  component: MineVariance,
+};
+
+export const MINE_INCIDENTS = {
+  route: "/mine-dashboard/:id/oversight/incidents-and-investigations",
+  dynamicRoute: (id) => `/mine-dashboard/${id}/oversight/incidents-and-investigations`,
+  component: MineIncidents,
+};
+
+export const MINE_INSPECTIONS = {
+  route: "/mine-dashboard/:id/oversight/inspections-and-audits",
+  dynamicRoute: (id) => `/mine-dashboard/${id}/oversight/inspections-and-audits`,
+  component: MineComplianceInfo,
+};
+
+export const MINE_REPORTS = {
+  route: "/mine-dashboard/:id/reports/code-required-reports",
+  dynamicRoute: (id) => `/mine-dashboard/${id}/reports/code-required-reports`,
+  component: MineReportInfo,
+};
+
+export const MINE_TAILINGS = {
+  route: "/mine-dashboard/:id/reports/tailings",
+  dynamicRoute: (id) => `/mine-dashboard/${id}/reports/tailings`,
+  component: MineTailingsInfo,
 };
 
 export const PARTY_PROFILE = {
@@ -101,7 +136,7 @@ export const REPORTING_DASHBOARD = {
 };
 
 export const EXECUTIVE_REPORTING_DASHBOARD = {
-  route: "/dashboard/execreporting",
+  route: "/dashboard/executive-reporting",
   component: ExecutiveReportingDashboard,
 };
 

@@ -1,10 +1,11 @@
-/* eslint-disable  */
+/* eslint-disable */
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import queryString from "query-string";
 import { isEmpty } from "lodash";
+import { Menu, Icon, Button, Dropdown, Popconfirm, Tooltip, Tabs } from "antd";
 import { openModal, closeModal } from "@/actions/modalActions";
 import { fetchPermits } from "@/actionCreators/permitActionCreator";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -81,9 +82,8 @@ import MineReportInfo from "@/components/mine/Reports/MineReportInfo";
 import MineHeader from "@/components/mine/MineHeader";
 import * as router from "@/constants/routes";
 import Loading from "@/components/common/Loading";
-import { formatParamStringToArray, formatDate } from "@/utils/helpers";
+import { formatDate } from "@/utils/helpers";
 import { getUserAccessData } from "@/selectors/authenticationSelectors";
-import { Menu, Icon, Button, Dropdown, Popconfirm, Tooltip, Tabs } from "antd";
 import MineNavigation from "@/components/mine/MineNavigation";
 import { storeRegionOptions, storeTenureTypes } from "@/actions/staticContentActions";
 import { storeVariances } from "@/actions/varianceActions";
@@ -134,26 +134,15 @@ const defaultProps = {
   mineComplianceInfo: {},
 };
 
-const initialSearchValues = {
-  order_no: "",
-  report_no: "",
-  due_date: "",
-  inspector: "",
-  violation: [],
-  order_status: "",
-};
-
 export class MineDashboard extends Component {
   state = {
     menuVisible: false,
     isLoaded: false,
-    complianceInfoLoading: true,
-    complianceFilterParams: initialSearchValues,
-    filteredOrders: [],
+    activeNavButton: "mine-information",
   };
 
   componentWillMount() {
-    const { id, activeTab } = this.props.match.params;
+    const { id } = this.props.match.params;
     this.loadMineData(id);
     this.props.fetchStatusOptions();
     this.props.fetchRegionOptions();
@@ -170,88 +159,73 @@ export class MineDashboard extends Component {
     this.props.fetchMineReportDefinitionOptions();
     this.props.fetchVarianceStatusOptions();
     this.props.fetchInspectors();
-    if (activeTab) {
-      this.setState({ activeTab });
-    }
   }
 
   componentWillReceiveProps(nextProps) {
-    const { id, activeTab } = nextProps.match.params;
-    if (activeTab !== this.props.activeTab) {
-      this.setState({ activeTab });
-    }
+    const { id } = nextProps.match.params;
     if (this.props.match.params.id !== nextProps.match.params.id) {
       this.loadMineData(id);
     }
-    const locationChanged = nextProps.location !== this.props.location;
-    if (locationChanged && !this.state.complianceInfoLoading) {
-      const correctParams = nextProps.location.search
-        ? nextProps.location.search
-        : queryString.stringify(initialSearchValues);
-      this.renderDataFromURL(correctParams);
-    }
+    // const locationChanged = nextProps.location !== this.props.location;
+    // if (locationChanged && !this.state.complianceInfoLoading) {
+    //   const correctParams = nextProps.location.search
+    //     ? nextProps.location.search
+    //     : queryString.stringify(initialSearchValues);
+    //   this.renderDataFromURL(correctParams);
+    // }
   }
 
-  componentWillUnmount() {
-    this.setState({ complianceFilterParams: initialSearchValues });
-  }
+  // componentWillUnmount() {
+  //   this.setState({ complianceFilterParams: initialSearchValues });
+  // }
 
-  renderDataFromURL = (params) => {
-    const { violation, ...remainingParams } = queryString.parse(params);
-    const formattedParams = {
-      violation: formatParamStringToArray(violation),
-      ...remainingParams,
-    };
+  // renderDataFromURL = (params) => {
+  //   const { violation, ...remainingParams } = queryString.parse(params);
+  //   const formattedParams = {
+  //     violation: formatParamStringToArray(violation),
+  //     ...remainingParams,
+  //   };
 
-    const orders =
-      this.props.mineComplianceInfo && this.props.mineComplianceInfo.orders
-        ? this.props.mineComplianceInfo.orders
-        : [];
-    const filteredOrders = orders.filter((order) => this.handleFiltering(order, formattedParams));
+  //   const orders =
+  //     this.props.mineComplianceInfo && this.props.mineComplianceInfo.orders
+  //       ? this.props.mineComplianceInfo.orders
+  //       : [];
+  //   const filteredOrders = orders.filter((order) => this.handleFiltering(order, formattedParams));
 
-    this.setState({
-      filteredOrders,
-      complianceFilterParams: formattedParams,
-    });
-  };
+  //   this.setState({
+  //     filteredOrders,
+  //     complianceFilterParams: formattedParams,
+  //   });
+  // };
 
-  handleFiltering = (order, params) => {
-    // convert string to boolean before passing it into a filter check
-    const order_status =
-      params.order_status === "" || order.order_status.includes(params.order_status);
-    const inspector =
-      params.inspector === "" ||
-      order.inspector.toLowerCase().includes(params.inspector.toLowerCase());
-    const date = params.due_date === "" || order.due_date.includes(params.due_date);
-    const orderNo = params.order_no === "" || order.order_no.includes(params.order_no);
-    const reportNoString = order.report_no.toString();
-    const reportNo = params.report_no === "" || reportNoString.includes(params.report_no);
-    const violation = params.violation.length === 0 || params.violation.includes(order.violation);
-    return order_status && inspector && date && orderNo && reportNo && violation;
-  };
+  // handleFiltering = (order, params) => {
+  //   // convert string to boolean before passing it into a filter check
+  //   const order_status =
+  //     params.order_status === "" || order.order_status.includes(params.order_status);
+  //   const inspector =
+  //     params.inspector === "" ||
+  //     order.inspector.toLowerCase().includes(params.inspector.toLowerCase());
+  //   const date = params.due_date === "" || order.due_date.includes(params.due_date);
+  //   const orderNo = params.order_no === "" || order.order_no.includes(params.order_no);
+  //   const reportNoString = order.report_no.toString();
+  //   const reportNo = params.report_no === "" || reportNoString.includes(params.report_no);
+  //   const violation = params.violation.length === 0 || params.violation.includes(order.violation);
+  //   return order_status && inspector && date && orderNo && reportNo && violation;
+  // };
 
-  handleComplianceFilter = (values) => {
-    if (isEmpty(values)) {
-      this.props.history.push(
-        router.MINE_SUMMARY.dynamicRoute(
-          this.props.match.params.id,
-          this.props.match.params.activeTab
-        )
-      );
-    } else {
-      const { violation, ...rest } = values;
-      this.props.history.push(
-        router.MINE_SUMMARY.dynamicRoute(
-          this.props.match.params.id,
-          this.props.match.params.activeTab,
-          {
-            violation: violation && violation.join(","),
-            ...rest,
-          }
-        )
-      );
-    }
-  };
+  // handleComplianceFilter = (values) => {
+  //   if (isEmpty(values)) {
+  //     this.props.history.push(router.MINE_SUMMARY.dynamicRoute(this.props.match.params.id));
+  //   } else {
+  //     const { violation, ...rest } = values;
+  //     this.props.history.push(
+  //       router.MINE_SUMMARY.dynamicRoute(this.props.match.params.id, {
+  //         violation: violation && violation.join(","),
+  //         ...rest,
+  //       })
+  //     );
+  //   }
+  // };
 
   handleVerifyMineData = (e) => {
     const { id } = this.props.match.params;
@@ -416,6 +390,7 @@ export class MineDashboard extends Component {
               <div className="inline-flex block-mobile between">
                 <div className="inline-flex horizontal-center block-tablet">
                   <h1 className="padding-large--right">{mine.mine_name}</h1>
+                  <div>Mine No. {mine.mine_no}</div>
                   {mine.verified_status.healthy_ind !== null && (
                     <img
                       alt=""
@@ -436,7 +411,6 @@ export class MineDashboard extends Component {
                       <img src={SUBSCRIBE} alt="SUBSCRIBE" />
                     </Tooltip>
                   )}
-                  <div>Mine No. {mine.mine_no}</div>
                 </div>
                 <Dropdown
                   overlay={menu}
@@ -451,7 +425,7 @@ export class MineDashboard extends Component {
                 </Dropdown>
               </div>
             </div>
-            <MineNavigation mine={mine} />
+            <MineNavigation mine={mine} activeButton={this.state.activeButton} />
             <MineDashboardRoutes />
 
             {/* TO DO: REMOVING AS I COMPLETE THE NEW VIEW */}
@@ -481,25 +455,7 @@ export class MineDashboard extends Component {
                 <TabPane tab="Variance" key="variance">
                   <div className="tab__content">
                     <MineVariance
-                      mine={mine}
-                      inspectors={this.props.inspectors}
-                      createVariance={this.props.createVariance}
-                      varianceDocumentCategoryOptions={this.props.varianceDocumentCategoryOptions}
-                      varianceDocumentCategoryOptionsHash={
-                        this.props.varianceDocumentCategoryOptionsHash
-                      }
-                      addDocumentToVariance={this.props.addDocumentToVariance}
-                      openModal={this.props.openModal}
-                      closeModal={this.props.closeModal}
-                      fetchVariancesByMine={this.props.fetchVariancesByMine}
-                      varianceApplications={this.props.varianceApplications}
-                      approvedVariances={this.props.approvedVariances}
-                      complianceCodes={this.props.complianceCodes}
-                      complianceCodesHash={this.props.complianceCodesHash}
-                      varianceStatusOptions={this.props.varianceStatusOptions}
-                      updateVariance={this.props.updateVariance}
-                      varianceStatusOptionsHash={this.props.varianceStatusOptionsHash}
-                      inspectorsHash={this.props.inspectorsHash}
+                     
                     />
                   </div>
                 </TabPane>
@@ -557,19 +513,19 @@ const mapStateToProps = (state) => ({
   currentMineTypes: getCurrentMineTypes(state),
   transformedMineTypes: getTransformedMineTypes(state),
   subscribed: getIsUserSubscribed(state),
-  approvedVariances: getApprovedVariances(state),
-  varianceApplications: getVarianceApplications(state),
-  complianceCodes: getDropdownHSRCMComplianceCodes(state),
-  multiSelectComplianceCodes: getMultiSelectComplianceCodes(state),
-  complianceCodesHash: getHSRCMComplianceCodesHash(state),
-  mineComplianceInfo: getMineComplianceInfo(state),
-  inspectors: getDropdownInspectors(state),
-  varianceStatusOptions: getDropdownVarianceStatusOptions(state),
-  varianceStatusOptionsHash: getVarianceStatusOptionsHash(state),
-  inspectorsHash: getInspectorsHash(state),
-  varianceDocumentCategoryOptions: getDropdownVarianceDocumentCategoryOptions(state),
+  // approvedVariances: getApprovedVariances(state),
+  // varianceApplications: getVarianceApplications(state),
+  // complianceCodes: getDropdownHSRCMComplianceCodes(state),
+  // multiSelectComplianceCodes: getMultiSelectComplianceCodes(state),
+  // complianceCodesHash: getHSRCMComplianceCodesHash(state),
+  // mineComplianceInfo: getMineComplianceInfo(state),
+  // inspectors: getDropdownInspectors(state),
+  // varianceStatusOptions: getDropdownVarianceStatusOptions(state),
+  // varianceStatusOptionsHash: getVarianceStatusOptionsHash(state),
+  // inspectorsHash: getInspectorsHash(state),
   userRoles: getUserAccessData(state),
-  varianceDocumentCategoryOptionsHash: getVarianceDocumentCategoryOptionsHash(state),
+  // varianceDocumentCategoryOptions: getDropdownVarianceDocumentCategoryOptions(state),
+  // varianceDocumentCategoryOptionsHash: getVarianceDocumentCategoryOptionsHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -596,8 +552,6 @@ const mapDispatchToProps = (dispatch) =>
       unSubscribe,
       subscribe,
       fetchPermits,
-      createVariance,
-      addDocumentToVariance,
       fetchVarianceDocumentCategoryOptions,
       fetchMineReportDefinitionOptions,
       fetchVariancesByMine,
@@ -607,7 +561,6 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineIncidentDeterminationOptions,
       fetchMineIncidentStatusCodeOptions,
       fetchVarianceStatusOptions,
-      updateVariance,
       setMineVerifiedStatus,
       fetchMineVerifiedStatuses,
     },
