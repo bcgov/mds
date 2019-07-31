@@ -15,11 +15,13 @@ import LinkButton from "@/components/common/LinkButton";
 import FileUpload from "@/components/common/FileUpload";
 import { MINE_INCIDENT_DOCUMENT } from "@/constants/API";
 import { IncidentsUploadedFilesList } from "@/components/Forms/incidents/IncidentsUploadedFilesList";
+import * as Strings from "@/constants/strings";
 
 const propTypes = {
   followupActionOptions: CustomPropTypes.options.isRequired,
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
   hasFatalities: PropTypes.bool.isRequired,
+  determinationTypeCode: PropTypes.string.isRequired,
   mineGuid: PropTypes.string.isRequired,
   hasFollowUp: PropTypes.bool.isRequired,
   uploadedFiles: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
@@ -45,6 +47,12 @@ const renderRecommendations = ({ fields }) => [
 ];
 
 export class AddIncidentFollowUpForm extends Component {
+  uncommonBehaviourWarning = () =>
+    this.props.determinationTypeCode === Strings.INCIDENT_DETERMINATION_TYPES.pending &&
+    this.props.hasFollowUp
+      ? "Warning: It's uncommon for an inspection to occur if a determination has not been made"
+      : undefined;
+
   render() {
     return (
       <div>
@@ -60,8 +68,8 @@ export class AddIncidentFollowUpForm extends Component {
                     name="followup_inspection"
                     label="Was there a follow-up inspection?"
                     component={renderConfig.RADIO}
-                    validate={[required]}
                     onChange={this.onFollowUpChange}
+                    validate={[required]}
                   />
                 </Form.Item>
               )}
@@ -72,9 +80,9 @@ export class AddIncidentFollowUpForm extends Component {
                     id="followup_inspection_date"
                     name="followup_inspection_date"
                     label="Follow-up inspection date"
-                    placeholder="Please select date and time"
+                    placeholder="Please select date"
                     component={renderConfig.DATE}
-                    validate={[dateNotInFuture]}
+                    validate={[dateNotInFuture, this.uncommonBehaviourWarning]}
                   />
                 </Form.Item>
               )}
@@ -124,7 +132,11 @@ export class AddIncidentFollowUpForm extends Component {
                   id="InitialIncidentFileUpload"
                   name="InitialIncidentFileUpload"
                   onFileLoad={(document_name, document_manager_guid) =>
-                    this.props.onFileLoad(document_name, document_manager_guid, "FIN")
+                    this.props.onFileLoad(
+                      document_name,
+                      document_manager_guid,
+                      Strings.INCIDENT_DOCUMENT_TYPES.final
+                    )
                   }
                   uploadUrl={MINE_INCIDENT_DOCUMENT(this.props.mineGuid)}
                   component={FileUpload}
