@@ -76,18 +76,22 @@ export class MineNavigation extends Component {
             </Menu.Item>
           </Menu>
         </SubMenu>
-        {/* TO DO: Move this condition to wrap Menu.Item Tailings when this dropdown has more options */}
-        {this.props.mine.mine_tailings_storage_facilities.length > 0 && (
-          <SubMenu title="Reports">
-            <Menu>
+        <SubMenu title="Reports">
+          <Menu>
+            <Menu.Item key="Reports">
+              <Link to={routes.MINE_REPORTS.dynamicRoute(this.props.mine.mine_guid)}>
+                Code Required Reports
+              </Link>
+            </Menu.Item>
+            {this.props.mine.mine_tailings_storage_facilities.length > 0 && (
               <Menu.Item key="Tailings">
                 <Link to={routes.MINE_TAILINGS.dynamicRoute(this.props.mine.mine_guid)}>
                   Tailings
                 </Link>
               </Menu.Item>
-            </Menu>
-          </SubMenu>
-        )}
+            )}
+          </Menu>
+        </SubMenu>
       </Menu>
     );
   }

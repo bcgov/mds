@@ -19,6 +19,7 @@ import MineVariance from "@/components/mine/Variances/MineVariance";
 import MineComplianceInfo from "@/components/mine/Compliance/MineComplianceInfo";
 import MineIncidents from "@/components/mine/Incidents/MineIncidents";
 import MineTailingsInfo from "@/components/mine/Tailings/MineTailingsInfo";
+import MineReportInfo from "@/components/mine/Reports/MineReportInfo";
 import HomePage from "@/components/dashboard/HomePage";
 
 export const DASHBOARD = {
@@ -103,6 +104,12 @@ export const MINE_INSPECTIONS = {
   route: "/mine-dashboard/:id/oversight/inspections-and-audits",
   dynamicRoute: (id) => `/mine-dashboard/${id}/oversight/inspections-and-audits`,
   component: MineComplianceInfo,
+};
+
+export const MINE_REPORTS = {
+  route: "/mine-dashboard/:id/reports/code-required-reports",
+  dynamicRoute: (id) => `/mine-dashboard/${id}/reports/code-required-reports`,
+  component: MineReportInfo,
 };
 
 export const MINE_TAILINGS = {
