@@ -13,7 +13,5 @@ __pycache__
 .vscode
 *.pgCustom
 *.sw*
-python-backend/document_uploads/
 *last-backup
 venv*
-

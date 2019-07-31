@@ -11,3 +11,4 @@ postgres-data/
 .coverage
 coverage.xml
 npm-debug.log
+document_uploads
