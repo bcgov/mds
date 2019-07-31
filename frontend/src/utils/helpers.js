@@ -98,9 +98,14 @@ export const formatParamStringToArray = (param) => (param ? param.split(",").fil
 
 // This method sorts codes of the for '#.#.# - Lorem Ipsum'
 // where the number of integers is variable and the text is optional
-// TODO: In order to sort incidents this will need to be modified to deal with
-// parentheses
 export const compareCodes = (a, b) => {
+  // Null codes are sorted before non-null codes
+  if (!a) {
+    return 1;
+  }
+  if (!b) {
+    return -1;
+  }
   // Returns the first match that is non-null.
   const regexParse = (input) =>
     input.match(/([0-9]+)\.([0-9]+)\.([0-9]+)\.\(([0-9]+)/) ||
@@ -133,19 +138,8 @@ export const compareCodes = (a, b) => {
     return 0;
   }
   // The shorter of two codes with otherwise matching numbers is sorted before the longer one.
-  // since we sort null before non-null (e.g 1.11 is before 1.11.12)
+  // since null is sorted before non-null (e.g 1.11 is before 1.11.12)
   return aCodes.length < bCodes.length ? -1 : 1;
-};
-
-export const codeSorter = (codeOne, codeTwo) => {
-  // Null codes are sorted before non-null codes
-  if (!codeOne) {
-    return true;
-  }
-  if (!codeTwo) {
-    return false;
-  }
-  return compareCodes(codeOne, codeTwo) < 0;
 };
 
 export const formatComplianceCodeValueOrLabel = (code, showDescription) => {

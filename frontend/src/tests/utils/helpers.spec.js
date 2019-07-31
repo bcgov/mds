@@ -1,4 +1,4 @@
-import { compareCodes, codeSorter } from "@/utils/helpers";
+import { compareCodes } from "@/utils/helpers";
 
 describe("helpers class", () => {
   describe("`compareCodes` function", () => {
@@ -21,27 +21,13 @@ describe("helpers class", () => {
     it("1.2.3.(11) is after 1.2.3.(9)", () => {
       expect(compareCodes("1.2.3.(11) - lorem", "1.2.3.(9) - other")).toEqual(1);
     });
-  });
 
-  describe("`codeSorter` function", () => {
-    it("11 is after 9", () => {
-      expect(codeSorter("11", "9")).toEqual(false);
-    });
-
-    it("11 is after 9", () => {
-      expect(codeSorter("9", "11")).toEqual(true);
+    it("null is before a value", () => {
+      expect(compareCodes(null, "1.11.8")).toEqual(1);
     });
 
     it("null is before a value", () => {
-      expect(codeSorter(null, "1.11.8")).toEqual(true);
-    });
-
-    it("null is before a value", () => {
-      expect(codeSorter("1.11.45 - lorem", null)).toEqual(false);
-    });
-
-    it("1.2.3.(11) is after 1.2.3.(9)", () => {
-      expect(codeSorter("1.2.3.(11) - lorem", "1.2.3.(9) - other")).toEqual(false);
+      expect(compareCodes("1.11.45 - lorem", null)).toEqual(-1);
     });
   });
 });
