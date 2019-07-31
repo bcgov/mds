@@ -55,6 +55,11 @@ export const storeComplianceCodes = (payload) => ({
   payload,
 });
 
+export const storeIncidentDocumentTypeOptions = (payload) => ({
+  type: ActionTypes.STORE_INCIDENT_DOCUMENT_TYPE_OPTIONS,
+  payload,
+});
+
 export const storeMineIncidentFollowActionOptions = (payload) => ({
   type: ActionTypes.STORE_MINE_INCIDENT_FOLLOWUP_ACTION_OPTIONS,
   payload,
@@ -77,5 +82,10 @@ export const storeVarianceStatusOptions = (payload) => ({
 
 export const storeVarianceDocumentCategoryOptions = (payload) => ({
   type: ActionTypes.STORE_VARIANCE_DOCUMENT_CATEGORY_OPTIONS,
+  payload,
+});
+
+export const storeMineReportDefinitionOptions = (payload) => ({
+  type: ActionTypes.STORE_MINE_REPORT_DEFINITION_OPTIONS,
   payload,
 });

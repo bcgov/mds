@@ -39,18 +39,19 @@ def test_post_mine_report(test_client, db_session, auth_headers):
     mine = MineFactory(mine_reports=ONE_REPORT)
     mine_report = mine.mine_reports[0]
 
-    mine_report_definition = MineReportDefinition.get_active()
+    mine_report_definition = MineReportDefinition.active()
 
     num_reports = len(mine.mine_reports)
     new_report_definition = [
         x for x in mine_report_definition
-        if x.mine_report_definition_id != mine_report.mine_report_definition_id
+        if x.mine_report_definition_guid != mine_report.mine_report_definition_guid
     ][0]
     data = {
-        'mine_report_definition_id': str(new_report_definition.mine_report_definition_id),
+        'mine_report_definition_guid': str(new_report_definition.mine_report_definition_guid),
         'submission_year': '2019',
+        'due_date': '2019-07-05',
         'permit_guid': None,
-        'due_date': '2019-07-05 20:27:45.11929+00',
+        'received_date': None,
     }
     post_resp = test_client.post(
         f'/mines/{mine.mine_guid}/reports', headers=auth_headers['full_auth_header'], json=data)
@@ -77,10 +78,11 @@ def test_post_mine_report_bad_mine_guid(test_client, db_session, auth_headers):
 def test_post_mine_report_no_report_definition(test_client, db_session, auth_headers):
     mine = MineFactory(mine_reports=ONE_REPORT)
     data = {
-        'mine_report_definition_id': None,
+        'mine_report_definition_guid': None,
         'submission_year': '2019',
+        'due_date': '2019-07-05',
         'permit_guid': None,
-        'due_date': '2019-07-05 20:27:45.11929+00',
+        'received_date': None,
     }
     post_resp = test_client.post(
         f'/mines/{mine.mine_guid}/reports', headers=auth_headers['full_auth_header'], json=data)
@@ -88,13 +90,21 @@ def test_post_mine_report_no_report_definition(test_client, db_session, auth_hea
 
 
 def test_post_mine_report_with_permit(test_client, db_session, auth_headers):
-    mine = MineFactory(mine_reports=0)
+    mine = MineFactory(mine_reports=ONE_REPORT)
+    mine_report = mine.mine_reports[0]
+
+    mine_report_definition = MineReportDefinition.active()
+    new_report_definition = [
+        x for x in mine_report_definition
+        if x.mine_report_definition_guid != mine_report.mine_report_definition_guid
+    ][0]
 
     data = {
-        'mine_report_definition_id': 1,
+        'mine_report_definition_guid': new_report_definition.mine_report_definition_guid,
         'submission_year': '2019',
+        'due_date': '2019-07-05',
         'permit_guid': mine.mine_permit[0].permit_guid,
-        'due_date': '2019-07-05 20:27:45.11929+00',
+        'received_date': None,
     }
     post_resp = test_client.post(
         f'/mines/{mine.mine_guid}/reports', headers=auth_headers['full_auth_header'], json=data)
@@ -108,7 +118,7 @@ def test_post_mine_report_with_bad_permit_guid(test_client, db_session, auth_hea
     mine2 = MineFactory(mine_reports=ONE_REPORT)
 
     data = {
-        'mine_report_definition_id': 1,
+        'mine_report_definition_guid': 1,
         'submission_year': '2019',
         'permit_guid': mine2.mine_permit[0].permit_guid,
         'due_date': '2019-07-05 20:27:45.11929+00',
