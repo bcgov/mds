@@ -44,7 +44,7 @@ class MineReportDefinition(Base, AuditMixin):
             return None
 
     @classmethod
-    def get_active(cls):
+    def active(cls):
         try:
             return cls.query.filter_by(active_ind=True).all()
         except ValueError:
