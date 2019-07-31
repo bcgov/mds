@@ -7,9 +7,10 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   mineGuid: PropTypes.string.isRequired,
+  initialValues: PropTypes.objectOf(PropTypes.any),
 };
 
-const defaultProps = {};
+const defaultProps = { initialValues: {} };
 
 export const AddReportModal = (props) => (
   <div>
@@ -18,6 +19,7 @@ export const AddReportModal = (props) => (
       closeModal={props.closeModal}
       title={props.title}
       mineGuid={props.mineGuid}
+      initialValues={props.initialValues}
     />
   </div>
 );
