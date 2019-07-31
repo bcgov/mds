@@ -19,6 +19,7 @@ class TestGetMineVariance:
         get_data = json.loads(get_resp.data.decode())
         assert get_resp.status_code == 200
         assert get_data['variance_guid'] == str(variance.variance_guid)
+        assert get_data['variance_no'] == variance.variance_no
 
 
     def test_get_variance_invalid_variance_guid(self, test_client, db_session, auth_headers):

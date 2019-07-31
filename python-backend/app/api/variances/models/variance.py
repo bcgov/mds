@@ -22,6 +22,7 @@ class Variance(AuditMixin, Base):
     __tablename__ = "variance"
     variance_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     variance_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
+    variance_no = db.Column(db.Integer, nullable=False, server_default=FetchedValue())
     compliance_article_id = db.Column(
         db.Integer,
         db.ForeignKey('compliance_article.compliance_article_id'),
