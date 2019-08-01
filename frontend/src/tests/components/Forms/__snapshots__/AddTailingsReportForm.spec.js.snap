@@ -1,521 +1,71 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AddTailingsReportForm renders properly 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <AddTailingsReportForm
-    closeModal={[MockFunction]}
-    handleSubmit={[MockFunction]}
-    mineTSFRequiredReports={Array []}
-    submitting={false}
-    title="mockTitle"
-  />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateError": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "class",
-    "props": Object {
-      "children": Array [
-        <FormItem
-          hasFeedback={false}
-        >
-          <Field
-            component={[Function]}
-            data={undefined}
-            doNotPinDropdown={true}
-            id="req_document_guid"
-            label="TSF Required Reports"
-            name="req_document_guid"
-            placeholder="Please select a required report"
-            validate={
-              Array [
-                [Function],
-              ]
-            }
-          />
-        </FormItem>,
-        <div
-          className="right center-mobile"
-        >
-          <Popconfirm
-            cancelText="No"
-            icon={
-              <Icon
-                theme="filled"
-                type="exclamation-circle"
-              />
-            }
-            okText="Yes"
-            okType="primary"
-            onConfirm={[MockFunction]}
-            placement="topRight"
-            title="Are you sure you want to cancel?"
-            transitionName="zoom-big"
-            trigger="click"
-          >
-            <Button
-              block={false}
-              className="full-mobile"
-              ghost={false}
-              htmlType="button"
-              loading={false}
-              type="secondary"
-            >
-              Cancel
-            </Button>
-          </Popconfirm>
-          <Button
-            block={false}
-            className="full-mobile"
-            disabled={false}
-            ghost={false}
-            htmlType="submit"
-            loading={false}
-            type="primary"
-          >
-            mockTitle
-          </Button>
-        </div>,
-      ],
-      "colon": true,
-      "hideRequiredMark": false,
-      "layout": "vertical",
-      "onSubmit": [MockFunction],
-    },
-    "ref": null,
-    "rendered": Array [
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "children": <Field
-            component={[Function]}
-            data={undefined}
-            doNotPinDropdown={true}
-            id="req_document_guid"
-            label="TSF Required Reports"
-            name="req_document_guid"
-            placeholder="Please select a required report"
-            validate={
-              Array [
-                [Function],
-              ]
-            }
-          />,
-          "hasFeedback": false,
-        },
-        "ref": null,
-        "rendered": Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "component": [Function],
-            "data": undefined,
-            "doNotPinDropdown": true,
-            "id": "req_document_guid",
-            "label": "TSF Required Reports",
-            "name": "req_document_guid",
-            "placeholder": "Please select a required report",
-            "validate": Array [
-              [Function],
-            ],
-          },
-          "ref": null,
-          "rendered": null,
-          "type": [Function],
-        },
-        "type": [Function],
-      },
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "host",
-        "props": Object {
-          "children": Array [
-            <Popconfirm
-              cancelText="No"
-              icon={
-                <Icon
-                  theme="filled"
-                  type="exclamation-circle"
-                />
-              }
-              okText="Yes"
-              okType="primary"
-              onConfirm={[MockFunction]}
-              placement="topRight"
-              title="Are you sure you want to cancel?"
-              transitionName="zoom-big"
-              trigger="click"
-            >
-              <Button
-                block={false}
-                className="full-mobile"
-                ghost={false}
-                htmlType="button"
-                loading={false}
-                type="secondary"
-              >
-                Cancel
-              </Button>
-            </Popconfirm>,
-            <Button
-              block={false}
-              className="full-mobile"
-              disabled={false}
-              ghost={false}
-              htmlType="submit"
-              loading={false}
-              type="primary"
-            >
-              mockTitle
-            </Button>,
-          ],
-          "className": "right center-mobile",
-        },
-        "ref": null,
-        "rendered": Array [
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
-            "props": Object {
-              "cancelText": "No",
-              "children": <Button
-                block={false}
-                className="full-mobile"
-                ghost={false}
-                htmlType="button"
-                loading={false}
-                type="secondary"
-              >
-                Cancel
-              </Button>,
-              "icon": <Icon
-                theme="filled"
-                type="exclamation-circle"
-              />,
-              "okText": "Yes",
-              "okType": "primary",
-              "onConfirm": [MockFunction],
-              "placement": "topRight",
-              "title": "Are you sure you want to cancel?",
-              "transitionName": "zoom-big",
-              "trigger": "click",
-            },
-            "ref": null,
-            "rendered": Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "block": false,
-                "children": "Cancel",
-                "className": "full-mobile",
-                "ghost": false,
-                "htmlType": "button",
-                "loading": false,
-                "type": "secondary",
-              },
-              "ref": null,
-              "rendered": "Cancel",
-              "type": [Function],
-            },
-            "type": [Function],
-          },
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
-            "props": Object {
-              "block": false,
-              "children": "mockTitle",
-              "className": "full-mobile",
-              "disabled": false,
-              "ghost": false,
-              "htmlType": "submit",
-              "loading": false,
-              "type": "primary",
-            },
-            "ref": null,
-            "rendered": "mockTitle",
-            "type": [Function],
-          },
-        ],
-        "type": "div",
-      },
-    ],
-    "type": [Function],
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "class",
-      "props": Object {
-        "children": Array [
-          <FormItem
-            hasFeedback={false}
-          >
-            <Field
-              component={[Function]}
-              data={undefined}
-              doNotPinDropdown={true}
-              id="req_document_guid"
-              label="TSF Required Reports"
-              name="req_document_guid"
-              placeholder="Please select a required report"
-              validate={
-                Array [
-                  [Function],
-                ]
-              }
-            />
-          </FormItem>,
-          <div
-            className="right center-mobile"
-          >
-            <Popconfirm
-              cancelText="No"
-              icon={
-                <Icon
-                  theme="filled"
-                  type="exclamation-circle"
-                />
-              }
-              okText="Yes"
-              okType="primary"
-              onConfirm={[MockFunction]}
-              placement="topRight"
-              title="Are you sure you want to cancel?"
-              transitionName="zoom-big"
-              trigger="click"
-            >
-              <Button
-                block={false}
-                className="full-mobile"
-                ghost={false}
-                htmlType="button"
-                loading={false}
-                type="secondary"
-              >
-                Cancel
-              </Button>
-            </Popconfirm>
-            <Button
-              block={false}
-              className="full-mobile"
-              disabled={false}
-              ghost={false}
-              htmlType="submit"
-              loading={false}
-              type="primary"
-            >
-              mockTitle
-            </Button>
-          </div>,
-        ],
-        "colon": true,
-        "hideRequiredMark": false,
-        "layout": "vertical",
-        "onSubmit": [MockFunction],
-      },
-      "ref": null,
-      "rendered": Array [
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "children": <Field
-              component={[Function]}
-              data={undefined}
-              doNotPinDropdown={true}
-              id="req_document_guid"
-              label="TSF Required Reports"
-              name="req_document_guid"
-              placeholder="Please select a required report"
-              validate={
-                Array [
-                  [Function],
-                ]
-              }
-            />,
-            "hasFeedback": false,
-          },
-          "ref": null,
-          "rendered": Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
-            "props": Object {
-              "component": [Function],
-              "data": undefined,
-              "doNotPinDropdown": true,
-              "id": "req_document_guid",
-              "label": "TSF Required Reports",
-              "name": "req_document_guid",
-              "placeholder": "Please select a required report",
-              "validate": Array [
-                [Function],
-              ],
-            },
-            "ref": null,
-            "rendered": null,
-            "type": [Function],
-          },
-          "type": [Function],
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "host",
-          "props": Object {
-            "children": Array [
-              <Popconfirm
-                cancelText="No"
-                icon={
-                  <Icon
-                    theme="filled"
-                    type="exclamation-circle"
-                  />
-                }
-                okText="Yes"
-                okType="primary"
-                onConfirm={[MockFunction]}
-                placement="topRight"
-                title="Are you sure you want to cancel?"
-                transitionName="zoom-big"
-                trigger="click"
-              >
-                <Button
-                  block={false}
-                  className="full-mobile"
-                  ghost={false}
-                  htmlType="button"
-                  loading={false}
-                  type="secondary"
-                >
-                  Cancel
-                </Button>
-              </Popconfirm>,
-              <Button
-                block={false}
-                className="full-mobile"
-                disabled={false}
-                ghost={false}
-                htmlType="submit"
-                loading={false}
-                type="primary"
-              >
-                mockTitle
-              </Button>,
-            ],
-            "className": "right center-mobile",
-          },
-          "ref": null,
-          "rendered": Array [
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "cancelText": "No",
-                "children": <Button
-                  block={false}
-                  className="full-mobile"
-                  ghost={false}
-                  htmlType="button"
-                  loading={false}
-                  type="secondary"
-                >
-                  Cancel
-                </Button>,
-                "icon": <Icon
-                  theme="filled"
-                  type="exclamation-circle"
-                />,
-                "okText": "Yes",
-                "okType": "primary",
-                "onConfirm": [MockFunction],
-                "placement": "topRight",
-                "title": "Are you sure you want to cancel?",
-                "transitionName": "zoom-big",
-                "trigger": "click",
-              },
-              "ref": null,
-              "rendered": Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "block": false,
-                  "children": "Cancel",
-                  "className": "full-mobile",
-                  "ghost": false,
-                  "htmlType": "button",
-                  "loading": false,
-                  "type": "secondary",
-                },
-                "ref": null,
-                "rendered": "Cancel",
-                "type": [Function],
-              },
-              "type": [Function],
-            },
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "block": false,
-                "children": "mockTitle",
-                "className": "full-mobile",
-                "disabled": false,
-                "ghost": false,
-                "htmlType": "submit",
-                "loading": false,
-                "type": "primary",
-              },
-              "ref": null,
-              "rendered": "mockTitle",
-              "type": [Function],
-            },
-          ],
-          "type": "div",
-        },
-      ],
-      "type": [Function],
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getDerivedStateFromProps": true,
-          "getSnapshotBeforeUpdate": true,
-          "setState": Object {
-            "skipsComponentDidUpdateOnNullish": true,
-          },
-        },
-      },
-    },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
-  },
-}
+<Form
+  colon={true}
+  hideRequiredMark={false}
+  layout="vertical"
+  onSubmit={[MockFunction]}
+>
+  <FormItem
+    hasFeedback={false}
+  >
+    <Field
+      component={[Function]}
+      doNotPinDropdown={true}
+      id="req_document_guid"
+      label="TSF Required Reports"
+      name="req_document_guid"
+      placeholder="Please select a required report"
+      validate={
+        Array [
+          [Function],
+        ]
+      }
+    />
+  </FormItem>
+  <div
+    className="right center-mobile"
+  >
+    <Popconfirm
+      cancelText="No"
+      disabled={false}
+      icon={
+        <Icon
+          theme="filled"
+          type="exclamation-circle"
+        />
+      }
+      okText="Yes"
+      okType="primary"
+      onConfirm={[MockFunction]}
+      placement="topRight"
+      title="Are you sure you want to cancel?"
+      transitionName="zoom-big"
+      trigger="click"
+    >
+      <Button
+        block={false}
+        className="full-mobile"
+        ghost={false}
+        htmlType="button"
+        loading={false}
+        type="secondary"
+      >
+        Cancel
+      </Button>
+    </Popconfirm>
+    <Button
+      block={false}
+      className="full-mobile"
+      disabled={false}
+      ghost={false}
+      htmlType="submit"
+      loading={false}
+      type="primary"
+    >
+      mockTitle
+    </Button>
+  </div>
+</Form>
 `;

@@ -173,6 +173,7 @@ MINE_INCIDENT_DOCUMENT_MODEL = api.model(
 MINE_INCIDENT_RECOMMENDATION_MODEL = api.model(
     'Mine Incident Recommendation', {
         'recommendation': fields.String,
+        'mine_incident_recommendation_guid': fields.String
     }
 )
 
@@ -198,7 +199,7 @@ MINE_INCIDENT_MODEL = api.model(
         'status_code': fields.String,
         'followup_investigation_type_code': fields.String,
         'followup_inspection': fields.Boolean,
-        'followup_inspection_date': DateTime,
+        'followup_inspection_date': fields.Date,
         'determination_inspector_party_guid': fields.String,
         'mms_inspector_initials' : fields.String(attribute='mms_insp_cd'),
         'dangerous_occurrence_subparagraph_ids': fields.List(fields.Integer),
@@ -207,24 +208,6 @@ MINE_INCIDENT_MODEL = api.model(
         'documents': fields.List(fields.Nested(MINE_INCIDENT_DOCUMENT_MODEL)),
         'recommendations': fields.List(fields.Nested(MINE_INCIDENT_RECOMMENDATION_MODEL))
     })
-
-MINE_INCIDENT_FOLLOWUP_INVESTIGATION_TYPE_MODEL = api.model(
-    'Mine Incident Followup Investigation Type', {
-        'mine_incident_followup_investigation_type_code': fields.String,
-        'description': fields.String,
-        'display_order': fields.Integer,
-    })
-
-MINE_INCIDENT_DETERMINATION_TYPE_MODEL = api.model(
-    'Mine Incident Determination Type', {
-        'mine_incident_determination_type_code': fields.String,
-        'description': fields.String,
-        'display_order': fields.Integer,
-        'active_ind': fields.Boolean
-    })
-
-MINE_INCIDENT_STATUS_CDOE_MODEL = api.model("Mine Incident Status Codes",
- {'mine_incident_status_code': fields.String, 'description': fields.String, 'display_order': fields.Integer})
 
 VARIANCE_DOCUMENT_MODEL = api.inherit(
     'VarianceDocumentModel', MINE_DOCUMENT_MODEL, {
@@ -235,6 +218,7 @@ VARIANCE_DOCUMENT_MODEL = api.inherit(
 VARIANCE_MODEL = api.model(
     'Variance', {
         'variance_guid': fields.String,
+        'variance_no': fields.Integer,
         'mine_guid': fields.String,
         'compliance_article_id': fields.Integer,
         'variance_application_status_code': fields.String,
@@ -287,6 +271,7 @@ MINE_REPORT_SUBMISSION_MODEL= api.model(
 MINE_REPORT_MODEL = api.model(
     'MineReportModel', {
         'mine_report_guid':fields.String,
+        'report_name':fields.String,
         'due_date':fields.Date,
         'received_date': fields.Date,
         'submission_year':fields.Integer,

@@ -1,6 +1,7 @@
 // environment config variables for test/dev/prod
 export const DEFAULT_ENVIRONMENT = {
   apiUrl: "http://localhost:5000",
+  docManUrl: "http://localhost:5001",
   keycloak_resource: "mines-application-local",
   keycloak_clientId: "minespace-local",
   keycloak_idpHint: "local",
@@ -10,6 +11,7 @@ export const DEFAULT_ENVIRONMENT = {
 
 export const ENVIRONMENT = {
   apiUrl: "<API_URL>",
+  docManUrl: "<DOCUMENT_MANAGER_URL>",
 };
 
 export const KEYCLOAK = {

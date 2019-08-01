@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import CustomPropTypes from "@/customPropTypes";
 import { Button } from "antd";
+import CustomPropTypes from "@/customPropTypes";
 import { VarianceDetails } from "@/components/dashboard/mine/variances/VarianceDetails";
 
 const propTypes = {

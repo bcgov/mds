@@ -1,11 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AddVarianceForm renders properly 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <AddVarianceForm
-    closeModal={[MockFunction]}
-    complianceCodes={
+<Form
+  colon={true}
+  hideRequiredMark={false}
+  layout="vertical"
+  onSubmit={[Function]}
+>
+  <Field
+    component={[Function]}
+    data={
       Array [
         Object {
           "article_act_code": "HSRCM",
@@ -31,757 +35,85 @@ ShallowWrapper {
         },
       ]
     }
-    handleSubmit={
-      [MockFunction] {
-        "calls": Array [
-          Array [
-            undefined,
-          ],
-        ],
-      }
+    id="compliance_article_id"
+    label="Part of Code*"
+    name="compliance_article_id"
+    placeholder="Select a part of the code"
+    validate={
+      Array [
+        [Function],
+      ]
     }
-    mineGuid="1738472"
-    onSubmit={
-      [MockFunction] {
-        "calls": Array [
-          Array [
-            Object {},
-          ],
-        ],
-      }
+  />
+  <Field
+    component={[Function]}
+    id="note"
+    label="Description"
+    name="note"
+    validate={
+      Array [
+        [Function],
+      ]
     }
-    submitting={false}
-  />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateError": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "class",
-    "props": Object {
-      "children": Array [
-        <Field
-          component={[Function]}
-          data={
-            Array [
-              Object {
-                "article_act_code": "HSRCM",
-                "compliance_article_id": 305,
-                "description": "Spills",
-                "effective_date": "1970-01-01",
-                "expiry_date": "9999-12-31",
-                "paragraph": "7",
-                "section": "2",
-                "sub_paragraph": null,
-                "sub_section": "3",
-              },
-              Object {
-                "article_act_code": "HSRCM",
-                "compliance_article_id": 306,
-                "description": "Flammable Waste Storage",
-                "effective_date": "1970-01-01",
-                "expiry_date": "9999-12-31",
-                "paragraph": "8",
-                "section": "2",
-                "sub_paragraph": null,
-                "sub_section": "3",
-              },
-            ]
-          }
-          id="compliance_article_id"
-          label="Part of Code*"
-          name="compliance_article_id"
-          placeholder="Select a part of the code"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />,
-        <Field
-          component={[Function]}
-          id="note"
-          label="Description"
-          name="note"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />,
-        <FormItem
-          colon={true}
-          hasFeedback={false}
-          label="Attached Files"
-        >
-          <p>
-            Please upload all the required documents here for the variance application
-          </p>
-          <Field
-            component={[Function]}
-            id="uploadedFiles"
-            mineGuid="1738472"
-            name="uploadedFiles"
-            onFileLoad={[Function]}
-            onRemoveFile={[Function]}
-          />
-        </FormItem>,
-        <div
-          className="right center-mobile"
-        >
-          <Popconfirm
-            cancelText="No"
-            icon={
-              <Icon
-                theme="filled"
-                type="exclamation-circle"
-              />
-            }
-            okText="Yes"
-            okType="primary"
-            onConfirm={[MockFunction]}
-            placement="topRight"
-            title="Are you sure you want to cancel?"
-            transitionName="zoom-big"
-            trigger="click"
-          >
-            <Button
-              block={false}
-              className="full-mobile"
-              ghost={false}
-              loading={false}
-              type="secondary"
-            >
-              Cancel
-            </Button>
-          </Popconfirm>
-          <Button
-            block={false}
-            className="full-mobile"
-            disabled={false}
-            ghost={false}
-            htmlType="submit"
-            loading={false}
-            type="primary"
-          >
-            Submit
-          </Button>
-        </div>,
-      ],
-      "hideRequiredMark": false,
-      "layout": "vertical",
-      "onSubmit": [Function],
-    },
-    "ref": null,
-    "rendered": Array [
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "component": [Function],
-          "data": Array [
-            Object {
-              "article_act_code": "HSRCM",
-              "compliance_article_id": 305,
-              "description": "Spills",
-              "effective_date": "1970-01-01",
-              "expiry_date": "9999-12-31",
-              "paragraph": "7",
-              "section": "2",
-              "sub_paragraph": null,
-              "sub_section": "3",
-            },
-            Object {
-              "article_act_code": "HSRCM",
-              "compliance_article_id": 306,
-              "description": "Flammable Waste Storage",
-              "effective_date": "1970-01-01",
-              "expiry_date": "9999-12-31",
-              "paragraph": "8",
-              "section": "2",
-              "sub_paragraph": null,
-              "sub_section": "3",
-            },
-          ],
-          "id": "compliance_article_id",
-          "label": "Part of Code*",
-          "name": "compliance_article_id",
-          "placeholder": "Select a part of the code",
-          "validate": Array [
-            [Function],
-          ],
-        },
-        "ref": null,
-        "rendered": null,
-        "type": [Function],
-      },
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "component": [Function],
-          "id": "note",
-          "label": "Description",
-          "name": "note",
-          "validate": Array [
-            [Function],
-          ],
-        },
-        "ref": null,
-        "rendered": null,
-        "type": [Function],
-      },
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "children": Array [
-            <p>
-              Please upload all the required documents here for the variance application
-            </p>,
-            <Field
-              component={[Function]}
-              id="uploadedFiles"
-              mineGuid="1738472"
-              name="uploadedFiles"
-              onFileLoad={[Function]}
-              onRemoveFile={[Function]}
-            />,
-          ],
-          "colon": true,
-          "hasFeedback": false,
-          "label": "Attached Files",
-        },
-        "ref": null,
-        "rendered": Array [
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "host",
-            "props": Object {
-              "children": "Please upload all the required documents here for the variance application",
-            },
-            "ref": null,
-            "rendered": "Please upload all the required documents here for the variance application",
-            "type": "p",
-          },
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
-            "props": Object {
-              "component": [Function],
-              "id": "uploadedFiles",
-              "mineGuid": "1738472",
-              "name": "uploadedFiles",
-              "onFileLoad": [Function],
-              "onRemoveFile": [Function],
-            },
-            "ref": null,
-            "rendered": null,
-            "type": [Function],
-          },
-        ],
-        "type": [Function],
-      },
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "host",
-        "props": Object {
-          "children": Array [
-            <Popconfirm
-              cancelText="No"
-              icon={
-                <Icon
-                  theme="filled"
-                  type="exclamation-circle"
-                />
-              }
-              okText="Yes"
-              okType="primary"
-              onConfirm={[MockFunction]}
-              placement="topRight"
-              title="Are you sure you want to cancel?"
-              transitionName="zoom-big"
-              trigger="click"
-            >
-              <Button
-                block={false}
-                className="full-mobile"
-                ghost={false}
-                loading={false}
-                type="secondary"
-              >
-                Cancel
-              </Button>
-            </Popconfirm>,
-            <Button
-              block={false}
-              className="full-mobile"
-              disabled={false}
-              ghost={false}
-              htmlType="submit"
-              loading={false}
-              type="primary"
-            >
-              Submit
-            </Button>,
-          ],
-          "className": "right center-mobile",
-        },
-        "ref": null,
-        "rendered": Array [
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
-            "props": Object {
-              "cancelText": "No",
-              "children": <Button
-                block={false}
-                className="full-mobile"
-                ghost={false}
-                loading={false}
-                type="secondary"
-              >
-                Cancel
-              </Button>,
-              "icon": <Icon
-                theme="filled"
-                type="exclamation-circle"
-              />,
-              "okText": "Yes",
-              "okType": "primary",
-              "onConfirm": [MockFunction],
-              "placement": "topRight",
-              "title": "Are you sure you want to cancel?",
-              "transitionName": "zoom-big",
-              "trigger": "click",
-            },
-            "ref": null,
-            "rendered": Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "block": false,
-                "children": "Cancel",
-                "className": "full-mobile",
-                "ghost": false,
-                "loading": false,
-                "type": "secondary",
-              },
-              "ref": null,
-              "rendered": "Cancel",
-              "type": [Function],
-            },
-            "type": [Function],
-          },
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
-            "props": Object {
-              "block": false,
-              "children": "Submit",
-              "className": "full-mobile",
-              "disabled": false,
-              "ghost": false,
-              "htmlType": "submit",
-              "loading": false,
-              "type": "primary",
-            },
-            "ref": null,
-            "rendered": "Submit",
-            "type": [Function],
-          },
-        ],
-        "type": "div",
-      },
-    ],
-    "type": [Function],
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "class",
-      "props": Object {
-        "children": Array [
-          <Field
-            component={[Function]}
-            data={
-              Array [
-                Object {
-                  "article_act_code": "HSRCM",
-                  "compliance_article_id": 305,
-                  "description": "Spills",
-                  "effective_date": "1970-01-01",
-                  "expiry_date": "9999-12-31",
-                  "paragraph": "7",
-                  "section": "2",
-                  "sub_paragraph": null,
-                  "sub_section": "3",
-                },
-                Object {
-                  "article_act_code": "HSRCM",
-                  "compliance_article_id": 306,
-                  "description": "Flammable Waste Storage",
-                  "effective_date": "1970-01-01",
-                  "expiry_date": "9999-12-31",
-                  "paragraph": "8",
-                  "section": "2",
-                  "sub_paragraph": null,
-                  "sub_section": "3",
-                },
-              ]
-            }
-            id="compliance_article_id"
-            label="Part of Code*"
-            name="compliance_article_id"
-            placeholder="Select a part of the code"
-            validate={
-              Array [
-                [Function],
-              ]
-            }
-          />,
-          <Field
-            component={[Function]}
-            id="note"
-            label="Description"
-            name="note"
-            validate={
-              Array [
-                [Function],
-              ]
-            }
-          />,
-          <FormItem
-            colon={true}
-            hasFeedback={false}
-            label="Attached Files"
-          >
-            <p>
-              Please upload all the required documents here for the variance application
-            </p>
-            <Field
-              component={[Function]}
-              id="uploadedFiles"
-              mineGuid="1738472"
-              name="uploadedFiles"
-              onFileLoad={[Function]}
-              onRemoveFile={[Function]}
-            />
-          </FormItem>,
-          <div
-            className="right center-mobile"
-          >
-            <Popconfirm
-              cancelText="No"
-              icon={
-                <Icon
-                  theme="filled"
-                  type="exclamation-circle"
-                />
-              }
-              okText="Yes"
-              okType="primary"
-              onConfirm={[MockFunction]}
-              placement="topRight"
-              title="Are you sure you want to cancel?"
-              transitionName="zoom-big"
-              trigger="click"
-            >
-              <Button
-                block={false}
-                className="full-mobile"
-                ghost={false}
-                loading={false}
-                type="secondary"
-              >
-                Cancel
-              </Button>
-            </Popconfirm>
-            <Button
-              block={false}
-              className="full-mobile"
-              disabled={false}
-              ghost={false}
-              htmlType="submit"
-              loading={false}
-              type="primary"
-            >
-              Submit
-            </Button>
-          </div>,
-        ],
-        "hideRequiredMark": false,
-        "layout": "vertical",
-        "onSubmit": [Function],
-      },
-      "ref": null,
-      "rendered": Array [
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "component": [Function],
-            "data": Array [
-              Object {
-                "article_act_code": "HSRCM",
-                "compliance_article_id": 305,
-                "description": "Spills",
-                "effective_date": "1970-01-01",
-                "expiry_date": "9999-12-31",
-                "paragraph": "7",
-                "section": "2",
-                "sub_paragraph": null,
-                "sub_section": "3",
-              },
-              Object {
-                "article_act_code": "HSRCM",
-                "compliance_article_id": 306,
-                "description": "Flammable Waste Storage",
-                "effective_date": "1970-01-01",
-                "expiry_date": "9999-12-31",
-                "paragraph": "8",
-                "section": "2",
-                "sub_paragraph": null,
-                "sub_section": "3",
-              },
-            ],
-            "id": "compliance_article_id",
-            "label": "Part of Code*",
-            "name": "compliance_article_id",
-            "placeholder": "Select a part of the code",
-            "validate": Array [
-              [Function],
-            ],
-          },
-          "ref": null,
-          "rendered": null,
-          "type": [Function],
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "component": [Function],
-            "id": "note",
-            "label": "Description",
-            "name": "note",
-            "validate": Array [
-              [Function],
-            ],
-          },
-          "ref": null,
-          "rendered": null,
-          "type": [Function],
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "children": Array [
-              <p>
-                Please upload all the required documents here for the variance application
-              </p>,
-              <Field
-                component={[Function]}
-                id="uploadedFiles"
-                mineGuid="1738472"
-                name="uploadedFiles"
-                onFileLoad={[Function]}
-                onRemoveFile={[Function]}
-              />,
-            ],
-            "colon": true,
-            "hasFeedback": false,
-            "label": "Attached Files",
-          },
-          "ref": null,
-          "rendered": Array [
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "host",
-              "props": Object {
-                "children": "Please upload all the required documents here for the variance application",
-              },
-              "ref": null,
-              "rendered": "Please upload all the required documents here for the variance application",
-              "type": "p",
-            },
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "component": [Function],
-                "id": "uploadedFiles",
-                "mineGuid": "1738472",
-                "name": "uploadedFiles",
-                "onFileLoad": [Function],
-                "onRemoveFile": [Function],
-              },
-              "ref": null,
-              "rendered": null,
-              "type": [Function],
-            },
-          ],
-          "type": [Function],
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "host",
-          "props": Object {
-            "children": Array [
-              <Popconfirm
-                cancelText="No"
-                icon={
-                  <Icon
-                    theme="filled"
-                    type="exclamation-circle"
-                  />
-                }
-                okText="Yes"
-                okType="primary"
-                onConfirm={[MockFunction]}
-                placement="topRight"
-                title="Are you sure you want to cancel?"
-                transitionName="zoom-big"
-                trigger="click"
-              >
-                <Button
-                  block={false}
-                  className="full-mobile"
-                  ghost={false}
-                  loading={false}
-                  type="secondary"
-                >
-                  Cancel
-                </Button>
-              </Popconfirm>,
-              <Button
-                block={false}
-                className="full-mobile"
-                disabled={false}
-                ghost={false}
-                htmlType="submit"
-                loading={false}
-                type="primary"
-              >
-                Submit
-              </Button>,
-            ],
-            "className": "right center-mobile",
-          },
-          "ref": null,
-          "rendered": Array [
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "cancelText": "No",
-                "children": <Button
-                  block={false}
-                  className="full-mobile"
-                  ghost={false}
-                  loading={false}
-                  type="secondary"
-                >
-                  Cancel
-                </Button>,
-                "icon": <Icon
-                  theme="filled"
-                  type="exclamation-circle"
-                />,
-                "okText": "Yes",
-                "okType": "primary",
-                "onConfirm": [MockFunction],
-                "placement": "topRight",
-                "title": "Are you sure you want to cancel?",
-                "transitionName": "zoom-big",
-                "trigger": "click",
-              },
-              "ref": null,
-              "rendered": Object {
-                "instance": null,
-                "key": undefined,
-                "nodeType": "class",
-                "props": Object {
-                  "block": false,
-                  "children": "Cancel",
-                  "className": "full-mobile",
-                  "ghost": false,
-                  "loading": false,
-                  "type": "secondary",
-                },
-                "ref": null,
-                "rendered": "Cancel",
-                "type": [Function],
-              },
-              "type": [Function],
-            },
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "block": false,
-                "children": "Submit",
-                "className": "full-mobile",
-                "disabled": false,
-                "ghost": false,
-                "htmlType": "submit",
-                "loading": false,
-                "type": "primary",
-              },
-              "ref": null,
-              "rendered": "Submit",
-              "type": [Function],
-            },
-          ],
-          "type": "div",
-        },
-      ],
-      "type": [Function],
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getDerivedStateFromProps": true,
-          "getSnapshotBeforeUpdate": true,
-          "setState": Object {
-            "skipsComponentDidUpdateOnNullish": true,
-          },
-        },
-      },
-    },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
-  },
-}
+  />
+  <FormItem
+    hasFeedback={false}
+    label="Attached Files"
+  >
+    <p>
+      Please upload all the required documents here for the variance application
+    </p>
+    <Field
+      component={[Function]}
+      id="uploadedFiles"
+      mineGuid="1738472"
+      name="uploadedFiles"
+      onFileLoad={[Function]}
+      onRemoveFile={[Function]}
+    />
+  </FormItem>
+  <div
+    className="right center-mobile"
+  >
+    <Popconfirm
+      cancelText="No"
+      disabled={false}
+      icon={
+        <Icon
+          theme="filled"
+          type="exclamation-circle"
+        />
+      }
+      okText="Yes"
+      okType="primary"
+      onConfirm={[MockFunction]}
+      placement="topRight"
+      title="Are you sure you want to cancel?"
+      transitionName="zoom-big"
+      trigger="click"
+    >
+      <Button
+        block={false}
+        className="full-mobile"
+        ghost={false}
+        htmlType="button"
+        loading={false}
+        type="secondary"
+      >
+        Cancel
+      </Button>
+    </Popconfirm>
+    <Button
+      block={false}
+      className="full-mobile"
+      disabled={false}
+      ghost={false}
+      htmlType="submit"
+      loading={false}
+      type="primary"
+    >
+      Submit
+    </Button>
+  </div>
+</Form>
 `;

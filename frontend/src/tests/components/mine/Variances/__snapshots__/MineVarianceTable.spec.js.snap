@@ -1,44 +1,102 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MineVarianceTable renders properly 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <MineVarianceTable
-    complianceCodesHash={
-      Object {
-        "305": "2.3.7 - Spills",
-        "306": "2.3.8 - Flammable Waste Storage",
-      }
-    }
-    filterVarianceStatusOptions={Array []}
-    handleFilterChange={[Function]}
-    inspectorsHash={
-      Object {
-        "51b3a499-a474-4d52-be99-5c5123d7501c": "BLAH",
-      }
-    }
-    isApplication={false}
-    isDashboardView={false}
-    openEditVarianceModal={[MockFunction]}
-    openModal={[MockFunction]}
-    openViewVarianceModal={[MockFunction]}
-    params={
-      Object {
-        "variance_application_status_code": Array [],
-      }
-    }
-    varianceStatusOptionsHash={
-      Object {
-        "APP": "Approved",
-        "DEN": "Denied",
-        "NAP": "Not Applicable",
-        "REV": "In Review",
-      }
-    }
-    variances={
+<div>
+  <Table
+    align="left"
+    bordered={false}
+    childrenColumnName="children"
+    className=""
+    columns={
       Array [
         Object {
-          "compliance_article_id": 1,
+          "dataIndex": "isOverdue",
+          "render": [Function],
+          "title": "",
+          "width": 10,
+        },
+        Object {
+          "dataIndex": "varianceNumber",
+          "render": [Function],
+          "title": "Variance Number",
+        },
+        Object {
+          "dataIndex": "compliance_article_id",
+          "render": [Function],
+          "title": "Code Section",
+        },
+        Object {
+          "className": "column-hide",
+          "dataIndex": "mineName",
+          "render": [Function],
+          "title": "Mine Name",
+        },
+        Object {
+          "className": "column-hide",
+          "dataIndex": "leadInspector",
+          "render": [Function],
+          "title": "Lead Inspector",
+        },
+        Object {
+          "className": "column-hide",
+          "dataIndex": "received_date",
+          "defaultSortOrder": "ascend",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Submission Date",
+        },
+        Object {
+          "className": "column-hide",
+          "dataIndex": "status",
+          "filteredValue": Array [],
+          "filters": false,
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Application Status",
+          "width": 200,
+        },
+        Object {
+          "className": "",
+          "dataIndex": "issue_date",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Issue Date",
+        },
+        Object {
+          "className": "",
+          "dataIndex": "expiry_date",
+          "defaultSortOrder": "ascend",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Expiry Date",
+        },
+        Object {
+          "className": "",
+          "dataIndex": "",
+          "render": [Function],
+          "title": "Approval Status",
+        },
+        Object {
+          "dataIndex": "documents",
+          "render": [Function],
+          "title": "Documents",
+        },
+        Object {
+          "dataIndex": "variance",
+          "render": [Function],
+          "title": "",
+        },
+        Object {
+          "dataIndex": "variance",
+          "render": [Function],
+          "title": "",
+        },
+      ]
+    }
+    dataSource={
+      Array [
+        Object {
+          "compliance_article_id": "N/A",
           "documents": Array [
             Object {
               "created_at": "2019-05-02",
@@ -48,261 +106,18 @@ ShallowWrapper {
               "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
             },
           ],
-          "expiry_date": "2019-03-30",
-          "issue_date": "2019-03-01",
+          "expiry_date": "Mar 30 2019",
+          "isOverdue": true,
+          "issue_date": "Mar 01 2019",
+          "key": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+          "leadInspector": "N/A",
+          "mineGuid": undefined,
+          "mineName": "N/A",
           "note": "notesss",
-          "received_date": "2019-03-01",
-          "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
-        },
-      ]
-    }
-  />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateError": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "host",
-    "props": Object {
-      "children": <Table
-        align="left"
-        bordered={false}
-        className=""
-        columns={
-          Array [
-            Object {
-              "dataIndex": "isOverdue",
-              "render": [Function],
-              "title": "",
-              "width": 10,
-            },
-            Object {
-              "dataIndex": "compliance_article_id",
-              "render": [Function],
-              "title": "Code Section",
-            },
-            Object {
-              "className": "column-hide",
-              "dataIndex": "mineName",
-              "render": [Function],
-              "title": "Mine Name",
-            },
-            Object {
-              "className": "column-hide",
-              "dataIndex": "leadInspector",
-              "render": [Function],
-              "title": "Lead Inspector",
-            },
-            Object {
-              "className": "column-hide",
-              "dataIndex": "received_date",
-              "defaultSortOrder": "ascend",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "Submission Date",
-            },
-            Object {
-              "className": "column-hide",
-              "dataIndex": "status",
-              "filteredValue": Array [],
-              "filters": false,
-              "render": [Function],
-              "sorter": [Function],
-              "title": "Application Status",
-              "width": 200,
-            },
-            Object {
-              "className": "",
-              "dataIndex": "issue_date",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "Issue Date",
-            },
-            Object {
-              "className": "",
-              "dataIndex": "expiry_date",
-              "defaultSortOrder": "ascend",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "Expiry Date",
-            },
-            Object {
-              "className": "",
-              "dataIndex": "",
-              "render": [Function],
-              "title": "Approval Status",
-            },
-            Object {
-              "dataIndex": "documents",
-              "render": [Function],
-              "title": "Documents",
-            },
-            Object {
-              "dataIndex": "variance",
-              "render": [Function],
-              "title": "",
-            },
-          ]
-        }
-        dataSource={
-          Array [
-            Object {
-              "compliance_article_id": "N/A",
-              "documents": Array [
-                Object {
-                  "created_at": "2019-05-02",
-                  "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
-                  "document_name": "test.pdf",
-                  "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
-                  "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
-                },
-              ],
-              "expiry_date": "Mar 30 2019",
-              "isEditable": false,
-              "isOverdue": true,
-              "issue_date": "Mar 01 2019",
-              "key": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
-              "leadInspector": "N/A",
-              "mineGuid": undefined,
-              "mineName": "N/A",
-              "note": "notesss",
-              "received_date": "Mar 01 2019",
-              "status": undefined,
-              "variance": Object {
-                "compliance_article_id": 1,
-                "documents": Array [
-                  Object {
-                    "created_at": "2019-05-02",
-                    "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
-                    "document_name": "test.pdf",
-                    "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
-                    "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
-                  },
-                ],
-                "expiry_date": "2019-03-30",
-                "issue_date": "2019-03-01",
-                "note": "notesss",
-                "received_date": "2019-03-01",
-                "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
-              },
-            },
-          ]
-        }
-        indentSize={20}
-        loading={false}
-        locale={
-          Object {
-            "emptyText": <NullScreen
-              type="approved-variances"
-            />,
-          }
-        }
-        onChange={null}
-        pagination={false}
-        rowKey="key"
-        showHeader={true}
-        size="default"
-        sortDirections={
-          Array [
-            "ascend",
-            "descend",
-          ]
-        }
-        useFixedHeader={false}
-      />,
-    },
-    "ref": null,
-    "rendered": Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "class",
-      "props": Object {
-        "align": "left",
-        "bordered": false,
-        "className": "",
-        "columns": Array [
-          Object {
-            "dataIndex": "isOverdue",
-            "render": [Function],
-            "title": "",
-            "width": 10,
-          },
-          Object {
-            "dataIndex": "compliance_article_id",
-            "render": [Function],
-            "title": "Code Section",
-          },
-          Object {
-            "className": "column-hide",
-            "dataIndex": "mineName",
-            "render": [Function],
-            "title": "Mine Name",
-          },
-          Object {
-            "className": "column-hide",
-            "dataIndex": "leadInspector",
-            "render": [Function],
-            "title": "Lead Inspector",
-          },
-          Object {
-            "className": "column-hide",
-            "dataIndex": "received_date",
-            "defaultSortOrder": "ascend",
-            "render": [Function],
-            "sorter": [Function],
-            "title": "Submission Date",
-          },
-          Object {
-            "className": "column-hide",
-            "dataIndex": "status",
-            "filteredValue": Array [],
-            "filters": false,
-            "render": [Function],
-            "sorter": [Function],
-            "title": "Application Status",
-            "width": 200,
-          },
-          Object {
-            "className": "",
-            "dataIndex": "issue_date",
-            "render": [Function],
-            "sorter": [Function],
-            "title": "Issue Date",
-          },
-          Object {
-            "className": "",
-            "dataIndex": "expiry_date",
-            "defaultSortOrder": "ascend",
-            "render": [Function],
-            "sorter": [Function],
-            "title": "Expiry Date",
-          },
-          Object {
-            "className": "",
-            "dataIndex": "",
-            "render": [Function],
-            "title": "Approval Status",
-          },
-          Object {
-            "dataIndex": "documents",
-            "render": [Function],
-            "title": "Documents",
-          },
-          Object {
-            "dataIndex": "variance",
-            "render": [Function],
-            "title": "",
-          },
-        ],
-        "dataSource": Array [
-          Object {
-            "compliance_article_id": "N/A",
+          "received_date": "Mar 01 2019",
+          "status": undefined,
+          "variance": Object {
+            "compliance_article_id": 1,
             "documents": Array [
               Object {
                 "created_at": "2019-05-02",
@@ -312,381 +127,38 @@ ShallowWrapper {
                 "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
               },
             ],
-            "expiry_date": "Mar 30 2019",
-            "isEditable": false,
-            "isOverdue": true,
-            "issue_date": "Mar 01 2019",
-            "key": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
-            "leadInspector": "N/A",
-            "mineGuid": undefined,
-            "mineName": "N/A",
+            "expiry_date": "2019-03-30",
+            "issue_date": "2019-03-01",
             "note": "notesss",
-            "received_date": "Mar 01 2019",
-            "status": undefined,
-            "variance": Object {
-              "compliance_article_id": 1,
-              "documents": Array [
-                Object {
-                  "created_at": "2019-05-02",
-                  "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
-                  "document_name": "test.pdf",
-                  "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
-                  "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
-                },
-              ],
-              "expiry_date": "2019-03-30",
-              "issue_date": "2019-03-01",
-              "note": "notesss",
-              "received_date": "2019-03-01",
-              "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
-            },
+            "received_date": "2019-03-01",
+            "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+            "variance_no": 1,
           },
-        ],
-        "indentSize": 20,
-        "loading": false,
-        "locale": Object {
-          "emptyText": <NullScreen
-            type="approved-variances"
-          />,
+          "varianceNumber": 1,
         },
-        "onChange": null,
-        "pagination": false,
-        "rowKey": "key",
-        "showHeader": true,
-        "size": "default",
-        "sortDirections": Array [
-          "ascend",
-          "descend",
-        ],
-        "useFixedHeader": false,
-      },
-      "ref": null,
-      "rendered": null,
-      "type": [Function],
-    },
-    "type": "div",
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "host",
-      "props": Object {
-        "children": <Table
-          align="left"
-          bordered={false}
-          className=""
-          columns={
-            Array [
-              Object {
-                "dataIndex": "isOverdue",
-                "render": [Function],
-                "title": "",
-                "width": 10,
-              },
-              Object {
-                "dataIndex": "compliance_article_id",
-                "render": [Function],
-                "title": "Code Section",
-              },
-              Object {
-                "className": "column-hide",
-                "dataIndex": "mineName",
-                "render": [Function],
-                "title": "Mine Name",
-              },
-              Object {
-                "className": "column-hide",
-                "dataIndex": "leadInspector",
-                "render": [Function],
-                "title": "Lead Inspector",
-              },
-              Object {
-                "className": "column-hide",
-                "dataIndex": "received_date",
-                "defaultSortOrder": "ascend",
-                "render": [Function],
-                "sorter": [Function],
-                "title": "Submission Date",
-              },
-              Object {
-                "className": "column-hide",
-                "dataIndex": "status",
-                "filteredValue": Array [],
-                "filters": false,
-                "render": [Function],
-                "sorter": [Function],
-                "title": "Application Status",
-                "width": 200,
-              },
-              Object {
-                "className": "",
-                "dataIndex": "issue_date",
-                "render": [Function],
-                "sorter": [Function],
-                "title": "Issue Date",
-              },
-              Object {
-                "className": "",
-                "dataIndex": "expiry_date",
-                "defaultSortOrder": "ascend",
-                "render": [Function],
-                "sorter": [Function],
-                "title": "Expiry Date",
-              },
-              Object {
-                "className": "",
-                "dataIndex": "",
-                "render": [Function],
-                "title": "Approval Status",
-              },
-              Object {
-                "dataIndex": "documents",
-                "render": [Function],
-                "title": "Documents",
-              },
-              Object {
-                "dataIndex": "variance",
-                "render": [Function],
-                "title": "",
-              },
-            ]
-          }
-          dataSource={
-            Array [
-              Object {
-                "compliance_article_id": "N/A",
-                "documents": Array [
-                  Object {
-                    "created_at": "2019-05-02",
-                    "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
-                    "document_name": "test.pdf",
-                    "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
-                    "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
-                  },
-                ],
-                "expiry_date": "Mar 30 2019",
-                "isEditable": false,
-                "isOverdue": true,
-                "issue_date": "Mar 01 2019",
-                "key": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
-                "leadInspector": "N/A",
-                "mineGuid": undefined,
-                "mineName": "N/A",
-                "note": "notesss",
-                "received_date": "Mar 01 2019",
-                "status": undefined,
-                "variance": Object {
-                  "compliance_article_id": 1,
-                  "documents": Array [
-                    Object {
-                      "created_at": "2019-05-02",
-                      "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
-                      "document_name": "test.pdf",
-                      "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
-                      "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
-                    },
-                  ],
-                  "expiry_date": "2019-03-30",
-                  "issue_date": "2019-03-01",
-                  "note": "notesss",
-                  "received_date": "2019-03-01",
-                  "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
-                },
-              },
-            ]
-          }
-          indentSize={20}
-          loading={false}
-          locale={
-            Object {
-              "emptyText": <NullScreen
-                type="approved-variances"
-              />,
-            }
-          }
-          onChange={null}
-          pagination={false}
-          rowKey="key"
-          showHeader={true}
-          size="default"
-          sortDirections={
-            Array [
-              "ascend",
-              "descend",
-            ]
-          }
-          useFixedHeader={false}
+      ]
+    }
+    indentSize={20}
+    loading={false}
+    locale={
+      Object {
+        "emptyText": <NullScreen
+          type="approved-variances"
         />,
-      },
-      "ref": null,
-      "rendered": Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "align": "left",
-          "bordered": false,
-          "className": "",
-          "columns": Array [
-            Object {
-              "dataIndex": "isOverdue",
-              "render": [Function],
-              "title": "",
-              "width": 10,
-            },
-            Object {
-              "dataIndex": "compliance_article_id",
-              "render": [Function],
-              "title": "Code Section",
-            },
-            Object {
-              "className": "column-hide",
-              "dataIndex": "mineName",
-              "render": [Function],
-              "title": "Mine Name",
-            },
-            Object {
-              "className": "column-hide",
-              "dataIndex": "leadInspector",
-              "render": [Function],
-              "title": "Lead Inspector",
-            },
-            Object {
-              "className": "column-hide",
-              "dataIndex": "received_date",
-              "defaultSortOrder": "ascend",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "Submission Date",
-            },
-            Object {
-              "className": "column-hide",
-              "dataIndex": "status",
-              "filteredValue": Array [],
-              "filters": false,
-              "render": [Function],
-              "sorter": [Function],
-              "title": "Application Status",
-              "width": 200,
-            },
-            Object {
-              "className": "",
-              "dataIndex": "issue_date",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "Issue Date",
-            },
-            Object {
-              "className": "",
-              "dataIndex": "expiry_date",
-              "defaultSortOrder": "ascend",
-              "render": [Function],
-              "sorter": [Function],
-              "title": "Expiry Date",
-            },
-            Object {
-              "className": "",
-              "dataIndex": "",
-              "render": [Function],
-              "title": "Approval Status",
-            },
-            Object {
-              "dataIndex": "documents",
-              "render": [Function],
-              "title": "Documents",
-            },
-            Object {
-              "dataIndex": "variance",
-              "render": [Function],
-              "title": "",
-            },
-          ],
-          "dataSource": Array [
-            Object {
-              "compliance_article_id": "N/A",
-              "documents": Array [
-                Object {
-                  "created_at": "2019-05-02",
-                  "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
-                  "document_name": "test.pdf",
-                  "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
-                  "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
-                },
-              ],
-              "expiry_date": "Mar 30 2019",
-              "isEditable": false,
-              "isOverdue": true,
-              "issue_date": "Mar 01 2019",
-              "key": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
-              "leadInspector": "N/A",
-              "mineGuid": undefined,
-              "mineName": "N/A",
-              "note": "notesss",
-              "received_date": "Mar 01 2019",
-              "status": undefined,
-              "variance": Object {
-                "compliance_article_id": 1,
-                "documents": Array [
-                  Object {
-                    "created_at": "2019-05-02",
-                    "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
-                    "document_name": "test.pdf",
-                    "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
-                    "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
-                  },
-                ],
-                "expiry_date": "2019-03-30",
-                "issue_date": "2019-03-01",
-                "note": "notesss",
-                "received_date": "2019-03-01",
-                "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
-              },
-            },
-          ],
-          "indentSize": 20,
-          "loading": false,
-          "locale": Object {
-            "emptyText": <NullScreen
-              type="approved-variances"
-            />,
-          },
-          "onChange": null,
-          "pagination": false,
-          "rowKey": "key",
-          "showHeader": true,
-          "size": "default",
-          "sortDirections": Array [
-            "ascend",
-            "descend",
-          ],
-          "useFixedHeader": false,
-        },
-        "ref": null,
-        "rendered": null,
-        "type": [Function],
-      },
-      "type": "div",
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getDerivedStateFromProps": true,
-          "getSnapshotBeforeUpdate": true,
-          "setState": Object {
-            "skipsComponentDidUpdateOnNullish": true,
-          },
-        },
-      },
-    },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
-  },
-}
+      }
+    }
+    onChange={null}
+    pagination={false}
+    rowKey="key"
+    showHeader={true}
+    size="default"
+    sortDirections={
+      Array [
+        "ascend",
+        "descend",
+      ]
+    }
+    useFixedHeader={false}
+  />
+</div>
 `;

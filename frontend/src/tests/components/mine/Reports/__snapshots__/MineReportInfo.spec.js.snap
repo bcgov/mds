@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MineReportInfo renders properly 1`] = `
+<div>
+  <div
+    className="inline-flex flex-end"
+  >
+    <Connect(AuthorizationWrapper)
+      permission="role_edit_reports"
+    >
+      <AddButton
+        onClick={[Function]}
+      >
+        Add a Report
+      </AddButton>
+    </Connect(AuthorizationWrapper)>
+  </div>
+  <MineReportTable
+    openEditReportModal={[Function]}
+  />
+</div>
+`;

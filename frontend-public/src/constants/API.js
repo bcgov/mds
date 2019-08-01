@@ -13,9 +13,9 @@ export const REMOVE_MINE_EXPECTED_DOCUMENT = (expectedDocumentGuid, mineDocument
   `/documents/expected/${expectedDocumentGuid}/document/${mineDocumentGuid}`;
 
 export const DOCUMENT_MANAGER_FILE_GET_URL = (token = {}) =>
-  `/document-manager?${queryString.stringify(token)}`;
+  `/documents?${queryString.stringify(token)}`;
 export const DOCUMENT_MANAGER_TOKEN_GET_URL = (documentManagerGuid) =>
-  `/document-manager/${documentManagerGuid}/token`;
+  `/download-token/${documentManagerGuid}`;
 
 // variances
 export const COMPLIANCE_CODES = "/mines/compliance/codes";

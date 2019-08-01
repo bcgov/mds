@@ -31,6 +31,11 @@ const DashboardRoutes = () => (
       path={routes.REPORTING_DASHBOARD.route}
       component={routes.REPORTING_DASHBOARD.component}
     />
+    <Route
+      exact
+      path={routes.EXECUTIVE_REPORTING_DASHBOARD.route}
+      component={routes.EXECUTIVE_REPORTING_DASHBOARD.component}
+    />
     <Route component={PageNotFound} />
   </Switch>
 );

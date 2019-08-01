@@ -1,3 +1,4 @@
+/* eslint-disable */
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
@@ -56,7 +57,7 @@ const commonConfig = merge([
       main: PATHS.entry,
     },
     plugins: [
-      new webpack.optimize.ModuleConcatenationPlugin(),
+      // new webpack.optimize.ModuleConcatenationPlugin(),
       new HtmlWebpackPlugin({
         template: PATHS.template,
       }),
@@ -69,7 +70,7 @@ const commonConfig = merge([
       },
     ],
     resolve: {
-      alias: PATH_ALIASES,
+      alias: { ...PATH_ALIASES, "react-dom": "@hot-loader/react-dom" },
     },
   },
   parts.setEnvironmentVariable(envFile),
@@ -119,7 +120,7 @@ const prodConfig = merge([
       filename: BUILD_FILE_NAMES.bundle,
     },
   },
-  parts.clean(PATHS.build),
+  parts.clean(),
   parts.hardSourceWebPackPlugin(),
   parts.extractCSS({
     filename: BUILD_FILE_NAMES.css,
@@ -160,6 +161,7 @@ const prodConfig = merge([
     discardComments: {
       removeAll: true,
     },
+    zindex: false,
     safe: true,
   }),
   parts.extractManifest(),

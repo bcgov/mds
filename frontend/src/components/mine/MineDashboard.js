@@ -30,6 +30,7 @@ import {
   fetchMineIncidentStatusCodeOptions,
   fetchVarianceDocumentCategoryOptions,
   fetchVarianceStatusOptions,
+  fetchMineReportDefinitionOptions,
 } from "@/actionCreators/staticContentActionCreator";
 import {
   getMines,
@@ -72,6 +73,7 @@ import MineTailingsInfo from "@/components/mine/Tailings/MineTailingsInfo";
 import MineSummary from "@/components/mine/Summary/MineSummary";
 import MineVariance from "@/components/mine/Variances/MineVariance";
 import MineIncidents from "@/components/mine/Incidents/MineIncidents";
+import MineReportInfo from "@/components/mine/Reports/MineReportInfo";
 import MineHeader from "@/components/mine/MineHeader";
 import * as router from "@/constants/routes";
 import MineContactInfo from "@/components/mine/ContactInfo/MineContactInfo";
@@ -85,6 +87,7 @@ import { storeRegionOptions, storeTenureTypes } from "@/actions/staticContentAct
 import { storeVariances } from "@/actions/varianceActions";
 import { storePermits } from "@/actions/permitActions";
 import { storeMine } from "@/actions/mineActions";
+import { detectProdEnvironment } from "@/utils/environmentUtils";
 
 /**
  * @class MineDashboard.js is an individual mines dashboard, gets Mine data from redux and passes into children.
@@ -159,13 +162,11 @@ export class MineDashboard extends Component {
     this.props.fetchPartyRelationshipTypes();
     this.props.fetchPermitStatusOptions();
     this.props.fetchApplicationStatusOptions();
-    this.props.fetchMineIncidentFollowActionOptions();
-    this.props.fetchMineIncidentDeterminationOptions();
-    this.props.fetchMineIncidentStatusCodeOptions();
     this.props.fetchMineComplianceCodes();
     this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
     this.props.fetchSubscribedMinesByUser();
     this.props.fetchVarianceDocumentCategoryOptions();
+    this.props.fetchMineReportDefinitionOptions();
     this.props.fetchVarianceStatusOptions();
     this.props.fetchInspectors();
     if (activeTab) {
@@ -424,6 +425,17 @@ export class MineDashboard extends Component {
                     />
                   </div>
                 </TabPane>
+                {!detectProdEnvironment() && (
+                  <TabPane tab="Reports" key="reports">
+                    <div className="tab__content">
+                      <MineReportInfo
+                        mine={mine}
+                        openModal={this.props.openModal}
+                        closeModal={this.props.closeModal}
+                      />
+                    </div>
+                  </TabPane>
+                )}
               </Tabs>
             </div>
           </div>
@@ -484,6 +496,7 @@ const mapDispatchToProps = (dispatch) =>
       createVariance,
       addDocumentToVariance,
       fetchVarianceDocumentCategoryOptions,
+      fetchMineReportDefinitionOptions,
       fetchVariancesByMine,
       fetchMineComplianceCodes,
       fetchInspectors,

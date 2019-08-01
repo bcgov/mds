@@ -4,6 +4,11 @@ import { isEmpty } from "lodash";
 import * as String from "@/constants/strings";
 import { store } from "@/App";
 
+// https://stackoverflow.com/questions/39696007/axios-with-promise-prototype-finally-doesnt-work
+const promiseFinally = require("promise.prototype.finally");
+
+promiseFinally.shim();
+
 const UNAUTHORIZED = 401;
 const MAINTENANCE = 503;
 

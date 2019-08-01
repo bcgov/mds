@@ -1,8 +1,4 @@
-import sys
-import json
-import os
-
-from flask import Flask, current_app
+from flask import Flask
 from flask_cors import CORS
 from flask_restplus import Resource, apidoc
 from flask_compress import Compress
@@ -14,18 +10,16 @@ from app.api.parties.namespace.parties import api as parties_api
 from app.api.applications.namespace.applications import api as applications_api
 from app.api.mines.namespace.mines import api as mines_api
 from app.api.documents.namespace.documents import api as document_api
-from app.api.document_manager.namespace.document_manager import api as document_manager_api
+from app.api.download_token.namespace.download_token import api as download_token_api
 from app.api.users.namespace.users import api as users_api
 from app.api.search.namespace.search import api as search_api
 from app.api.reporting.namespace.reporting import api as reporting_api
 from app.api.variances.namespace.variances import api as variances_api
+from app.api.incidents.namespace.incidents import api as incidents_api
 
 from app.commands import register_commands
 from app.config import Config
-from app.extensions import db, jwt, api, cache, sched, apm
-
-from app.scheduled_jobs.ETL_jobs import _schedule_ETL_jobs
-from app.scheduled_jobs.IDIR_jobs import _schedule_IDIR_jobs
+from app.extensions import db, jwt, api, cache, apm
 
 
 def create_app(test_config=None):
@@ -42,7 +36,6 @@ def create_app(test_config=None):
     register_extensions(app)
     register_routes(app)
     register_commands(app)
-    register_scheduled_jobs(app)
 
     return app
 
@@ -56,24 +49,21 @@ def register_extensions(app):
 
     if app.config['ELASTIC_ENABLED'] == '1':
         apm.init_app(app)
+    else:
+        app.logger.debug('ELASTIC_ENABLED: FALSE, set ELASTIC_ENABLED=1 to enable')
+
+    try:
+        jwt.init_app(app)
+    except Exception as error:
+        app.logger.error("Failed to initialize JWT library: " + str(error))
 
     cache.init_app(app)
     db.init_app(app)
-    jwt.init_app(app)
-    sched.init_app(app)
 
     CORS(app)
     Compress(app)
 
     return None
-
-
-def register_scheduled_jobs(app):
-    if app.config.get('ENVIRONMENT_NAME') in ['test', 'prod']:
-        if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == 'true':
-            sched.start()
-            _schedule_IDIR_jobs(app)
-            _schedule_ETL_jobs(app)
 
 
 def register_routes(app):
@@ -83,11 +73,12 @@ def register_routes(app):
     api.add_namespace(mines_api)
     api.add_namespace(parties_api)
     api.add_namespace(document_api)
-    api.add_namespace(document_manager_api)
+    api.add_namespace(download_token_api)
     api.add_namespace(users_api)
     api.add_namespace(applications_api)
     api.add_namespace(search_api)
     api.add_namespace(variances_api)
+    api.add_namespace(incidents_api)
     api.add_namespace(reporting_api)
 
     # Healthcheck endpoint
@@ -98,7 +89,7 @@ def register_routes(app):
 
     @api.errorhandler(AuthError)
     def jwt_oidc_auth_error_handler(error):
-        current_app.logger.error(str(error))
+        app.logger.error(str(error))
         return {
             'status': getattr(error, 'status_code', 401),
             'message': str(error),
@@ -106,7 +97,7 @@ def register_routes(app):
 
     @api.errorhandler(AssertionError)
     def assertion_error_handler(error):
-        current_app.logger.error(str(error))
+        app.logger.error(str(error))
         return {
             'status': getattr(error, 'code', 400),
             'message': str(error),
@@ -114,7 +105,7 @@ def register_routes(app):
 
     # Recursively add handler to every SQLAlchemy Error
     def sqlalchemy_error_handler(error):
-        current_app.logger.error(str(error))
+        app.logger.error(str(error))
         return {
             'status': getattr(error, 'status_code', 400),
             'message': str('Invalid request. Cannot save record.'),
@@ -129,11 +120,10 @@ def register_routes(app):
 
     _add_sqlalchemy_error_handlers(SQLAlchemyError)
 
-
     @api.errorhandler(Exception)
     def default_error_handler(error):
         if getattr(error, 'code', 500) == 500:
-            current_app.logger.error(str(error))
+            app.logger.error(str(error))
         return {
             'status': getattr(error, 'code', 500),
             'message': str(error),

@@ -9,3 +9,4 @@ export const CLOSE_PERMITS = "role_close_permits";
 export const DEVELOPER = "role_developer";
 export const IN_DEVELOPMENT = "inDevelopment";
 export const IN_TESTING = "inTesting";
+export const EXECUTIVE = "role_executive_view";

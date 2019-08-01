@@ -449,6 +449,8 @@ export const MINE_NAME_LIST = [
   },
 ];
 
+export const MINE_NO = "BLAH6666";
+
 export const MINESPACE_USERS = [
   {
     user_id: "1",
@@ -1421,7 +1423,7 @@ export const PARTY_RELATIONSHIP_TYPE_HASH = {
 };
 
 export const MINEDOCUMENTS = {
-  mine_documents: [
+  records: [
     {
       active_ind: "True",
       document_manager_guid: "4c7d88d6-e78d-48cf-a860-89b6a1e8903b",
@@ -1470,6 +1472,7 @@ export const VARIANCES = {
   records: [
     {
       variance_guid: "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+      variance_no: 1,
       compliance_article_id: 1,
       expiry_date: "2019-03-30",
       issue_date: "2019-03-01",
@@ -1494,6 +1497,7 @@ export const VARIANCES = {
 
 export const VARIANCE = {
   variance_guid: "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+  variance_no: 1,
   compliance_article_id: 1,
   expiry_date: "2019-03-30",
   issue_date: "2019-03-01",
@@ -1637,7 +1641,7 @@ export const INCIDENT = {
 };
 
 export const INCIDENTS = {
-  mine_incidents: [
+  records: [
     {
       mine_incident_guid: "dc101155-de3e-4f37-8303-eb6a6d2d5866",
       mine_incident_report_no: "2019-70",
@@ -1661,8 +1665,6 @@ export const FOLLOWUP_ACTIONS = [
   {
     mine_incident_followup_type_code: "NOA",
     description: "No Action",
-    display_order: 20,
-    active_ind: true,
   },
 ];
 
@@ -2503,10 +2505,9 @@ export const VARIANCE_DOCUMENT_CATEGORY_OPTIONS_HASH = {
 };
 
 export const INCIDENT_STATUS_OPTIONS = [
-  { description: "Preliminary", display_order: 10, mine_incident_status_code: "PRE" },
+  { description: "Preliminary", mine_incident_status_code: "PRE" },
   {
     description: "Final",
-    display_order: 20,
     mine_incident_status_code: "FIN",
   },
 ];
@@ -2518,21 +2519,16 @@ export const INCIDENT_STATUS_OPTIONS_HASH = {
 
 export const INCIDENT_DETERMINATION = [
   {
-    active_ind: true,
     description: "Pending determination",
-    display_order: 10,
     mine_incident_determination_type_code: "PEN",
   },
   {
     active_ind: true,
     description: "This was a dangerous occurrence",
-    display_order: 20,
     mine_incident_determination_type_code: "DO",
   },
   {
-    active_ind: true,
     description: "This was not a dangerous occurrence",
-    display_order: 30,
     mine_incident_determination_type_code: "NDO",
   },
 ];
@@ -2546,22 +2542,18 @@ export const INCIDENT_DETERMINATION_HASH = {
 export const INCIDENT_FOLLOWUP_ACTIONS = [
   {
     description: "Yes - MIU Investigation",
-    display_order: 10,
     mine_incident_followup_investigation_type_code: "MIU",
   },
   {
     description: "Yes - Inspector Investigation",
-    display_order: 20,
     mine_incident_followup_investigation_type_code: "INS",
   },
   {
     description: "No",
-    display_order: 30,
     mine_incident_followup_investigation_type_code: "NO",
   },
   {
     description: "Historical - Unknown",
-    display_order: 40,
     mine_incident_followup_investigation_type_code: "HUK",
   },
 ];
@@ -2571,4 +2563,11 @@ export const INCIDENT_FOLLOWUP_ACTIONS_HASH = {
   INS: "Yes - Inspector Investigation",
   NO: "No",
   HUK: "Historical - Unknown",
+};
+
+export const ADD_PARTY_FORM_STATE = {
+  showingAddPartyForm: false,
+  person: true,
+  organization: true,
+  partyLabel: "contact",
 };

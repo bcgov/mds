@@ -38,8 +38,10 @@ class Mine(AuditMixin, Base):
     # Relationships
 
     #Almost always used and 1:1, so these are joined
-    mine_status = db.relationship(
-        'MineStatus', backref='mine', order_by='desc(MineStatus.update_timestamp)', lazy='joined')
+    mine_status = db.relationship('MineStatus',
+                                  backref='mine',
+                                  order_by='desc(MineStatus.update_timestamp)',
+                                  lazy='joined')
     mine_tailings_storage_facilities = db.relationship(
         'MineTailingsStorageFacility',
         backref='mine',
@@ -47,15 +49,25 @@ class Mine(AuditMixin, Base):
         lazy='joined')
 
     #Almost always used, but faster to use selectin to load related data
-    mine_permit = db.relationship(
-        'Permit', backref='mine', order_by='desc(Permit.create_timestamp)', lazy='selectin')
+    mine_permit = db.relationship('Permit',
+                                  backref='mine',
+                                  order_by='desc(Permit.create_timestamp)',
+                                  lazy='selectin')
     mine_type = db.relationship(
-        'MineType', backref='mine', order_by='desc(MineType.update_timestamp)',
+        'MineType',
+        backref='mine',
+        order_by='desc(MineType.update_timestamp)',
         primaryjoin="and_(MineType.mine_guid == Mine.mine_guid, MineType.active_ind==True)",
         lazy='selectin')
 
     #Not always desired, set to lazy load using select
     mineral_tenure_xref = db.relationship('MineralTenureXref', backref='mine', lazy='select')
+    mine_documents = db.relationship(
+        'MineDocument',
+        backref='mine',
+        primaryjoin="and_(MineDocument.mine_guid == Mine.mine_guid, MineDocument.active_ind==True)",
+        lazy='select')
+
     mine_expected_documents = db.relationship(
         'MineExpectedDocument',
         primaryjoin=
@@ -63,10 +75,9 @@ class Mine(AuditMixin, Base):
         backref='mine',
         order_by='desc(MineExpectedDocument.due_date)',
         lazy='select')
+
     mine_party_appt = db.relationship('MinePartyAppointment', backref="mine", lazy='select')
-
     mine_incidents = db.relationship('MineIncident', backref="mine", lazy='select')
-
     mine_reports = db.relationship('MineReport', backref="mine", lazy='select')
 
     def __repr__(self):
@@ -170,14 +181,13 @@ class Mine(AuditMixin, Base):
                     add_to_session=True,
                     ohsc_ind=None,
                     union_ind=None):
-        mine = cls(
-            mine_guid=uuid.uuid4(),
-            mine_no=mine_no,
-            mine_name=mine_name,
-            major_mine_ind=mine_category,
-            mine_region=mine_region,
-            ohsc_ind=ohsc_ind,
-            union_ind=union_ind)
+        mine = cls(mine_guid=uuid.uuid4(),
+                   mine_no=mine_no,
+                   mine_name=mine_name,
+                   major_mine_ind=mine_category,
+                   mine_region=mine_region,
+                   ohsc_ind=ohsc_ind,
+                   union_ind=union_ind)
         if add_to_session:
             mine.save(commit=False)
         return mine

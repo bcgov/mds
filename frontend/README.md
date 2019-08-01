@@ -1,6 +1,6 @@
 # Frontend application
 
-The project uses a [Node.js (v8)](https://nodejs.org/en/) runtime environment and [React.js](https://reactjs.org/) library for the frontend.
+The project uses a [Node.js (v10)](https://nodejs.org/en/) runtime environment and [React.js](https://reactjs.org/) library for the frontend.
 
 ## Module and Library dependencies
 

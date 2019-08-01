@@ -190,12 +190,30 @@ export class NavBar extends Component {
                     Admin
                   </Button>
                 </Link>
-                <Link to={router.REPORTING_DASHBOARD.route}>
+              </Col>
+            </Row>
+          </AuthorizationWrapper>
+          <Row>
+            <Col span={24}>
+              <Link to={router.REPORTING_DASHBOARD.route}>
+                <Button
+                  id={this.ifActiveButton(router.REPORTING_DASHBOARD.route)}
+                  className="menu--hamburger__btn--link"
+                >
+                  Reporting Dashboard
+                </Button>
+              </Link>
+            </Col>
+          </Row>
+          <AuthorizationWrapper permission={Permission.EXECUTIVE}>
+            <Row>
+              <Col span={24}>
+                <Link to={router.EXECUTIVE_REPORTING_DASHBOARD.route}>
                   <Button
-                    id={this.ifActiveButton(router.REPORTING_DASHBOARD.route)}
+                    id={this.ifActiveButton(router.EXECUTIVE_REPORTING_DASHBOARD.route)}
                     className="menu--hamburger__btn--link"
                   >
-                    Reporting Dashboard
+                    Executive Dashboard
                   </Button>
                 </Link>
               </Col>
@@ -258,6 +276,13 @@ export class NavBar extends Component {
           <button type="button">Dashboard</button>
         </Link>
       </div>
+      <AuthorizationWrapper permission={Permission.EXECUTIVE}>
+        <div className="custom-menu-item">
+          <Link to={router.EXECUTIVE_REPORTING_DASHBOARD.route}>
+            <button type="button">Executive Dashboard</button>
+          </Link>
+        </div>
+      </AuthorizationWrapper>
     </Menu>
   );
 

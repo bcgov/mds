@@ -2,7 +2,7 @@ import pytest
 import json
 from datetime import datetime, timedelta
 from app.extensions import db
-from app.api.mines.incidents.models.mine_incident import MineIncident
+from app.api.incidents.models.mine_incident import MineIncident
 from tests.factories import MineFactory
 from tests.status_code_gen import SampleDangerousOccurrenceSubparagraphs
 
@@ -14,9 +14,9 @@ def test_get_mine_incidents_by_mine_guid(test_client, db_session, auth_headers):
         f'/mines/{test_mine_guid}/incidents', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert get_resp.status_code == 200
-    assert len(get_data['mine_incidents']) > 0
+    assert len(get_data['records']) > 0
     assert all(i['mine_guid'] == str(test_mine_guid)
-               for i in get_data['mine_incidents'])
+               for i in get_data['records'])
 
 
 def test_get_mine_incidents_by_guid(test_client, db_session, auth_headers):

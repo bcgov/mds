@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import RenderField from "@/components/common/RenderField";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
+import RenderField from "@/components/common/RenderField";
 import * as FORM from "@/constants/forms";
 import { required } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";

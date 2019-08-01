@@ -292,7 +292,7 @@ describe("Validate class", () => {
       expect(validateDateRanges(existingAppointments, newAppt, apptType)).toEqual({});
     });
 
-    it("returns a start_date error if the new appt starts before the last existing appointment ends", () => {
+    it("returns errors if the new appt starts before the last existing appointment ends", () => {
       const existingName = "Bob";
       const existingAppointments = [
         {
@@ -312,10 +312,12 @@ describe("Validate class", () => {
       expect(errors.start_date).not.toBeUndefined();
       expect(errors.start_date).toContain(apptType);
       expect(errors.start_date).toContain(existingName);
-      expect(errors.end_date).toBeUndefined();
+      expect(errors.end_date).not.toBeUndefined();
+      expect(errors.end_date).toContain(apptType);
+      expect(errors.end_date).toContain(existingName);
     });
 
-    it("returns an end_date error if the new appt ends after the first existing appointment starts", () => {
+    it("returns errors if the new appt ends after the first existing appointment starts", () => {
       const existingName = "Bob";
       const existingAppointments = [
         {
@@ -332,13 +334,15 @@ describe("Validate class", () => {
       };
       const apptType = randomString();
       const errors = validateDateRanges(existingAppointments, newAppt, apptType);
-      expect(errors.start_date).toBeUndefined();
+      expect(errors.start_date).not.toBeUndefined();
+      expect(errors.start_date).toContain(apptType);
+      expect(errors.start_date).toContain(existingName);
       expect(errors.end_date).not.toBeUndefined();
       expect(errors.end_date).toContain(apptType);
       expect(errors.end_date).toContain(existingName);
     });
 
-    it("returns a start_date and an end_date error if both dates conflict with existing appointments", () => {
+    it("returns multiple conflicts with existing appointments", () => {
       const existingName = "Bob";
       const existingName2 = "Billy";
       const existingAppointments = [
@@ -365,8 +369,10 @@ describe("Validate class", () => {
       expect(errors.start_date).not.toBeUndefined();
       expect(errors.start_date).toContain(apptType);
       expect(errors.start_date).toContain(existingName);
+      expect(errors.start_date).toContain(existingName2);
       expect(errors.end_date).not.toBeUndefined();
       expect(errors.end_date).toContain(apptType);
+      expect(errors.end_date).toContain(existingName);
       expect(errors.end_date).toContain(existingName2);
     });
 
@@ -390,7 +396,9 @@ describe("Validate class", () => {
       expect(errors.start_date).not.toBeUndefined();
       expect(errors.start_date).toContain(apptType);
       expect(errors.start_date).toContain(existingName);
-      expect(errors.end_date).toBeUndefined();
+      expect(errors.end_date).not.toBeUndefined();
+      expect(errors.end_date).toContain(apptType);
+      expect(errors.end_date).toContain(existingName);
     });
 
     it("returns a start_date error if the end_date is empty and the start_date is before an existing appointment's end_date", () => {
@@ -413,10 +421,12 @@ describe("Validate class", () => {
       expect(errors.start_date).not.toBeUndefined();
       expect(errors.start_date).toContain(apptType);
       expect(errors.start_date).toContain(existingName);
-      expect(errors.end_date).toBeUndefined();
+      expect(errors.start_date).not.toBeUndefined();
+      expect(errors.start_date).toContain(apptType);
+      expect(errors.start_date).toContain(existingName);
     });
 
-    it("returns a start_date and an end_date error if both dates are empty and there is an existing appointment. The conflict is with the last existing appointment", () => {
+    it("returns a start_date and an end_date error if both dates are empty and there is an existing appointment.", () => {
       const existingName = "Bob";
       const existingName2 = "Billy";
       const existingAppointments = [
@@ -442,10 +452,12 @@ describe("Validate class", () => {
       const errors = validateDateRanges(existingAppointments, newAppt, apptType);
       expect(errors.start_date).not.toBeUndefined();
       expect(errors.start_date).toContain(apptType);
+      expect(errors.start_date).toContain(existingName);
       expect(errors.start_date).toContain(existingName2);
       expect(errors.start_date).toContain(apptType);
       expect(errors.end_date).not.toBeUndefined();
       expect(errors.end_date).toContain(apptType);
+      expect(errors.end_date).toContain(existingName);
       expect(errors.end_date).toContain(existingName2);
       expect(errors.end_date).toContain(apptType);
     });

@@ -14,6 +14,7 @@ export const {
   getAddPartyFormState,
   getLastCreatedParty,
   getInspectors,
+  getInspectorsList,
 } = partiesReducer;
 
 export const getSummaryPartyRelationships = createSelector(
@@ -31,7 +32,9 @@ export const getDropdownInspectors = createSelector(
   [getInspectors],
   (parties) => {
     const activeInspectors = parties
-      .filter((inspector) => moment(inspector.expiry_date) >= moment())
+      .filter(
+        (inspector) => moment(inspector.expiry_date) >= moment() || inspector.expiry_date === null
+      )
       .map((inspector) => ({ value: inspector.party_guid, label: inspector.name }));
     const inactiveInspectors = parties
       .filter((inspector) => moment(inspector.expiry_date) < moment())
@@ -44,6 +47,6 @@ export const getDropdownInspectors = createSelector(
 );
 
 export const getInspectorsHash = createSelector(
-  [getDropdownInspectors],
+  [getInspectorsList],
   createLabelHash
 );

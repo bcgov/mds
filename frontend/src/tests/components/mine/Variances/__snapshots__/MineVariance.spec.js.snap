@@ -1,1833 +1,250 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MineVariance renders properly 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <MineVariance
-    addDocumentToVariance={[MockFunction]}
-    approvedVariances={
-      Array [
+<div>
+  <div
+    className="inline-flex flex-end"
+  >
+    <Connect(AuthorizationWrapper)
+      permission="role_edit_variances"
+    >
+      <AddButton
+        onClick={[Function]}
+      >
+        Add variance
+      </AddButton>
+    </Connect(AuthorizationWrapper)>
+  </div>
+  <div>
+    <br />
+    <h4
+      className="uppercase"
+    >
+      Variance Applications
+    </h4>
+    <br />
+    <Connect(MineVarianceTable)
+      complianceCodesHash={
         Object {
-          "compliance_article_id": 1,
-          "documents": Array [
+          "305": "2.3.7 - Spills",
+          "306": "2.3.8 - Flammable Waste Storage",
+        }
+      }
+      isApplication={true}
+      mine={
+        Object {
+          "mine_expected_documents": Array [
             Object {
-              "created_at": "2019-05-02",
-              "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
-              "document_name": "test.pdf",
-              "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
-              "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
+              "date_created": "2018-11-19",
+              "due_date": "",
+              "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
+              "exp_document_name": "OMS Manual",
+              "expected_document_status": Object {
+                "description": "Not Received",
+                "exp_document_status_code": "MIA",
+              },
+              "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+              "related_documents": Array [],
+              "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
             },
           ],
-          "expiry_date": "2019-03-30",
-          "issue_date": "2019-03-01",
-          "note": "notesss",
-          "received_date": "2019-03-01",
-          "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
-        },
-      ]
-    }
-    closeModal={[MockFunction]}
-    complianceCodes={
-      Array [
-        Object {
-          "label": "2.3.7 - Spills",
-          "value": 305,
-        },
-        Object {
-          "label": "2.3.8 - Flammable Waste Storage",
-          "value": 306,
-        },
-      ]
-    }
-    complianceCodesHash={
-      Object {
-        "305": "2.3.7 - Spills",
-        "306": "2.3.8 - Flammable Waste Storage",
-      }
-    }
-    coreUsers={
-      Object {
-        "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
-          "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-          "name": "mock name",
-        },
-        "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
-          "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
-          "name": "mock Two",
-        },
-      }
-    }
-    createVariance={[MockFunction]}
-    fetchVariancesByMine={[MockFunction]}
-    mine={
-      Object {
-        "mine_expected_documents": Array [
-          Object {
-            "date_created": "2018-11-19",
-            "due_date": "",
-            "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
-            "exp_document_name": "OMS Manual",
-            "expected_document_status": Object {
-              "description": "Not Received",
-              "exp_document_status_code": "MIA",
-            },
-            "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-            "related_documents": Array [],
-            "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
+          "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+          "mine_location": Object {
+            "latitude": null,
+            "longitude": null,
           },
-        ],
-        "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-        "mine_location": Object {
-          "latitude": null,
-          "longitude": null,
-        },
-        "mine_name": "mine3",
-        "mine_no": "BLAH9091",
-        "mine_permit": Array [],
-        "mine_region": "NE",
-        "mine_status": Object {
-          "effective_date": "2018-10-16",
-          "expiry_date": null,
-          "status_labels": Array [
-            "Closed",
-            "Care & Maintenance",
-          ],
-          "statusvalue": Array [
-            "CLD",
-            "CM",
-          ],
-        },
-        "mine_tailings_storage_facilities": Array [
-          Object {
-            "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-            "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
-            "mine_tailings_storage_facility_name": "MockTSF",
-          },
-        ],
-        "mine_type": Array [
-          Object {
-            "mine_tenure_type_code": "PLR",
-          },
-          Object {
-            "mine_tenure_type_code": "MIN",
-          },
-        ],
-        "mineral_tenure_xref": Array [
-          Object {
-            "tenure_number_id": "1234567",
-          },
-        ],
-        "verified_status": Object {
-          "healthy_ind": null,
-          "mine_guid": null,
-          "mine_name": null,
-          "verifying_timestamp": null,
-          "verifying_user": null,
-        },
-      }
-    }
-    openModal={[MockFunction]}
-    updateVariance={[MockFunction]}
-    varianceApplications={
-      Array [
-        Object {
-          "compliance_article_id": 1,
-          "documents": Array [
-            Object {
-              "created_at": "2019-05-02",
-              "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
-              "document_name": "test.pdf",
-              "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
-              "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
-            },
-          ],
-          "expiry_date": "2019-03-30",
-          "issue_date": "2019-03-01",
-          "note": "notesss",
-          "received_date": "2019-03-01",
-          "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
-        },
-      ]
-    }
-    varianceStatusOptions={
-      Array [
-        Object {
-          "label": "In Review",
-          "value": "REV",
-        },
-        Object {
-          "label": "Not Applicable",
-          "value": "NAP",
-        },
-        Object {
-          "label": "Approved",
-          "value": "APP",
-        },
-        Object {
-          "label": "Denied",
-          "value": "DEN",
-        },
-      ]
-    }
-    varianceStatusOptionsHash={
-      Object {
-        "APP": "Approved",
-        "DEN": "Denied",
-        "NAP": "Not Applicable",
-        "REV": "In Review",
-      }
-    }
-  />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateError": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "host",
-    "props": Object {
-      "children": Array [
-        <div
-          className="inline-flex flex-end"
-        >
-          <Connect(AuthorizationWrapper)
-            permission="role_edit_variances"
-          >
-            <AddButton
-              onClick={[Function]}
-            >
-              Add variance
-            </AddButton>
-          </Connect(AuthorizationWrapper)>
-        </div>,
-        <div>
-          <br />
-          <h4
-            className="uppercase"
-          >
-            Variance Applications
-          </h4>
-          <br />
-          <Connect(MineVarianceTable)
-            complianceCodesHash={
-              Object {
-                "305": "2.3.7 - Spills",
-                "306": "2.3.8 - Flammable Waste Storage",
-              }
-            }
-            isApplication={true}
-            mine={
-              Object {
-                "mine_expected_documents": Array [
-                  Object {
-                    "date_created": "2018-11-19",
-                    "due_date": "",
-                    "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
-                    "exp_document_name": "OMS Manual",
-                    "expected_document_status": Object {
-                      "description": "Not Received",
-                      "exp_document_status_code": "MIA",
-                    },
-                    "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                    "related_documents": Array [],
-                    "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-                  },
-                ],
-                "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                "mine_location": Object {
-                  "latitude": null,
-                  "longitude": null,
-                },
-                "mine_name": "mine3",
-                "mine_no": "BLAH9091",
-                "mine_permit": Array [],
-                "mine_region": "NE",
-                "mine_status": Object {
-                  "effective_date": "2018-10-16",
-                  "expiry_date": null,
-                  "status_labels": Array [
-                    "Closed",
-                    "Care & Maintenance",
-                  ],
-                  "statusvalue": Array [
-                    "CLD",
-                    "CM",
-                  ],
-                },
-                "mine_tailings_storage_facilities": Array [
-                  Object {
-                    "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                    "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
-                    "mine_tailings_storage_facility_name": "MockTSF",
-                  },
-                ],
-                "mine_type": Array [
-                  Object {
-                    "mine_tenure_type_code": "PLR",
-                  },
-                  Object {
-                    "mine_tenure_type_code": "MIN",
-                  },
-                ],
-                "mineral_tenure_xref": Array [
-                  Object {
-                    "tenure_number_id": "1234567",
-                  },
-                ],
-                "verified_status": Object {
-                  "healthy_ind": null,
-                  "mine_guid": null,
-                  "mine_name": null,
-                  "verifying_timestamp": null,
-                  "verifying_user": null,
-                },
-              }
-            }
-            openEditVarianceModal={[Function]}
-            openViewVarianceModal={[Function]}
-            varianceStatusOptionsHash={
-              Object {
-                "APP": "Approved",
-                "DEN": "Denied",
-                "NAP": "Not Applicable",
-                "REV": "In Review",
-              }
-            }
-            variances={
-              Array [
-                Object {
-                  "compliance_article_id": 1,
-                  "documents": Array [
-                    Object {
-                      "created_at": "2019-05-02",
-                      "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
-                      "document_name": "test.pdf",
-                      "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
-                      "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
-                    },
-                  ],
-                  "expiry_date": "2019-03-30",
-                  "issue_date": "2019-03-01",
-                  "note": "notesss",
-                  "received_date": "2019-03-01",
-                  "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
-                },
-              ]
-            }
-          />
-          <br />
-          <h4
-            className="uppercase"
-          >
-            Approved Variances
-          </h4>
-          <br />
-          <Connect(MineVarianceTable)
-            complianceCodesHash={
-              Object {
-                "305": "2.3.7 - Spills",
-                "306": "2.3.8 - Flammable Waste Storage",
-              }
-            }
-            mine={
-              Object {
-                "mine_expected_documents": Array [
-                  Object {
-                    "date_created": "2018-11-19",
-                    "due_date": "",
-                    "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
-                    "exp_document_name": "OMS Manual",
-                    "expected_document_status": Object {
-                      "description": "Not Received",
-                      "exp_document_status_code": "MIA",
-                    },
-                    "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                    "related_documents": Array [],
-                    "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-                  },
-                ],
-                "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                "mine_location": Object {
-                  "latitude": null,
-                  "longitude": null,
-                },
-                "mine_name": "mine3",
-                "mine_no": "BLAH9091",
-                "mine_permit": Array [],
-                "mine_region": "NE",
-                "mine_status": Object {
-                  "effective_date": "2018-10-16",
-                  "expiry_date": null,
-                  "status_labels": Array [
-                    "Closed",
-                    "Care & Maintenance",
-                  ],
-                  "statusvalue": Array [
-                    "CLD",
-                    "CM",
-                  ],
-                },
-                "mine_tailings_storage_facilities": Array [
-                  Object {
-                    "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                    "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
-                    "mine_tailings_storage_facility_name": "MockTSF",
-                  },
-                ],
-                "mine_type": Array [
-                  Object {
-                    "mine_tenure_type_code": "PLR",
-                  },
-                  Object {
-                    "mine_tenure_type_code": "MIN",
-                  },
-                ],
-                "mineral_tenure_xref": Array [
-                  Object {
-                    "tenure_number_id": "1234567",
-                  },
-                ],
-                "verified_status": Object {
-                  "healthy_ind": null,
-                  "mine_guid": null,
-                  "mine_name": null,
-                  "verifying_timestamp": null,
-                  "verifying_user": null,
-                },
-              }
-            }
-            openViewVarianceModal={[Function]}
-            varianceStatusOptionsHash={
-              Object {
-                "APP": "Approved",
-                "DEN": "Denied",
-                "NAP": "Not Applicable",
-                "REV": "In Review",
-              }
-            }
-            variances={
-              Array [
-                Object {
-                  "compliance_article_id": 1,
-                  "documents": Array [
-                    Object {
-                      "created_at": "2019-05-02",
-                      "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
-                      "document_name": "test.pdf",
-                      "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
-                      "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
-                    },
-                  ],
-                  "expiry_date": "2019-03-30",
-                  "issue_date": "2019-03-01",
-                  "note": "notesss",
-                  "received_date": "2019-03-01",
-                  "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
-                },
-              ]
-            }
-          />
-        </div>,
-      ],
-    },
-    "ref": null,
-    "rendered": Array [
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "host",
-        "props": Object {
-          "children": <Connect(AuthorizationWrapper)
-            permission="role_edit_variances"
-          >
-            <AddButton
-              onClick={[Function]}
-            >
-              Add variance
-            </AddButton>
-          </Connect(AuthorizationWrapper)>,
-          "className": "inline-flex flex-end",
-        },
-        "ref": null,
-        "rendered": Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "children": <AddButton
-              onClick={[Function]}
-            >
-              Add variance
-            </AddButton>,
-            "permission": "role_edit_variances",
-          },
-          "ref": null,
-          "rendered": Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "function",
-            "props": Object {
-              "children": "Add variance",
-              "onClick": [Function],
-            },
-            "ref": null,
-            "rendered": "Add variance",
-            "type": [Function],
-          },
-          "type": [Function],
-        },
-        "type": "div",
-      },
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "host",
-        "props": Object {
-          "children": Array [
-            <br />,
-            <h4
-              className="uppercase"
-            >
-              Variance Applications
-            </h4>,
-            <br />,
-            <Connect(MineVarianceTable)
-              complianceCodesHash={
-                Object {
-                  "305": "2.3.7 - Spills",
-                  "306": "2.3.8 - Flammable Waste Storage",
-                }
-              }
-              isApplication={true}
-              mine={
-                Object {
-                  "mine_expected_documents": Array [
-                    Object {
-                      "date_created": "2018-11-19",
-                      "due_date": "",
-                      "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
-                      "exp_document_name": "OMS Manual",
-                      "expected_document_status": Object {
-                        "description": "Not Received",
-                        "exp_document_status_code": "MIA",
-                      },
-                      "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                      "related_documents": Array [],
-                      "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-                    },
-                  ],
-                  "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                  "mine_location": Object {
-                    "latitude": null,
-                    "longitude": null,
-                  },
-                  "mine_name": "mine3",
-                  "mine_no": "BLAH9091",
-                  "mine_permit": Array [],
-                  "mine_region": "NE",
-                  "mine_status": Object {
-                    "effective_date": "2018-10-16",
-                    "expiry_date": null,
-                    "status_labels": Array [
-                      "Closed",
-                      "Care & Maintenance",
-                    ],
-                    "statusvalue": Array [
-                      "CLD",
-                      "CM",
-                    ],
-                  },
-                  "mine_tailings_storage_facilities": Array [
-                    Object {
-                      "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                      "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
-                      "mine_tailings_storage_facility_name": "MockTSF",
-                    },
-                  ],
-                  "mine_type": Array [
-                    Object {
-                      "mine_tenure_type_code": "PLR",
-                    },
-                    Object {
-                      "mine_tenure_type_code": "MIN",
-                    },
-                  ],
-                  "mineral_tenure_xref": Array [
-                    Object {
-                      "tenure_number_id": "1234567",
-                    },
-                  ],
-                  "verified_status": Object {
-                    "healthy_ind": null,
-                    "mine_guid": null,
-                    "mine_name": null,
-                    "verifying_timestamp": null,
-                    "verifying_user": null,
-                  },
-                }
-              }
-              openEditVarianceModal={[Function]}
-              openViewVarianceModal={[Function]}
-              varianceStatusOptionsHash={
-                Object {
-                  "APP": "Approved",
-                  "DEN": "Denied",
-                  "NAP": "Not Applicable",
-                  "REV": "In Review",
-                }
-              }
-              variances={
-                Array [
-                  Object {
-                    "compliance_article_id": 1,
-                    "documents": Array [
-                      Object {
-                        "created_at": "2019-05-02",
-                        "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
-                        "document_name": "test.pdf",
-                        "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
-                        "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
-                      },
-                    ],
-                    "expiry_date": "2019-03-30",
-                    "issue_date": "2019-03-01",
-                    "note": "notesss",
-                    "received_date": "2019-03-01",
-                    "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
-                  },
-                ]
-              }
-            />,
-            <br />,
-            <h4
-              className="uppercase"
-            >
-              Approved Variances
-            </h4>,
-            <br />,
-            <Connect(MineVarianceTable)
-              complianceCodesHash={
-                Object {
-                  "305": "2.3.7 - Spills",
-                  "306": "2.3.8 - Flammable Waste Storage",
-                }
-              }
-              mine={
-                Object {
-                  "mine_expected_documents": Array [
-                    Object {
-                      "date_created": "2018-11-19",
-                      "due_date": "",
-                      "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
-                      "exp_document_name": "OMS Manual",
-                      "expected_document_status": Object {
-                        "description": "Not Received",
-                        "exp_document_status_code": "MIA",
-                      },
-                      "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                      "related_documents": Array [],
-                      "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-                    },
-                  ],
-                  "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                  "mine_location": Object {
-                    "latitude": null,
-                    "longitude": null,
-                  },
-                  "mine_name": "mine3",
-                  "mine_no": "BLAH9091",
-                  "mine_permit": Array [],
-                  "mine_region": "NE",
-                  "mine_status": Object {
-                    "effective_date": "2018-10-16",
-                    "expiry_date": null,
-                    "status_labels": Array [
-                      "Closed",
-                      "Care & Maintenance",
-                    ],
-                    "statusvalue": Array [
-                      "CLD",
-                      "CM",
-                    ],
-                  },
-                  "mine_tailings_storage_facilities": Array [
-                    Object {
-                      "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                      "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
-                      "mine_tailings_storage_facility_name": "MockTSF",
-                    },
-                  ],
-                  "mine_type": Array [
-                    Object {
-                      "mine_tenure_type_code": "PLR",
-                    },
-                    Object {
-                      "mine_tenure_type_code": "MIN",
-                    },
-                  ],
-                  "mineral_tenure_xref": Array [
-                    Object {
-                      "tenure_number_id": "1234567",
-                    },
-                  ],
-                  "verified_status": Object {
-                    "healthy_ind": null,
-                    "mine_guid": null,
-                    "mine_name": null,
-                    "verifying_timestamp": null,
-                    "verifying_user": null,
-                  },
-                }
-              }
-              openViewVarianceModal={[Function]}
-              varianceStatusOptionsHash={
-                Object {
-                  "APP": "Approved",
-                  "DEN": "Denied",
-                  "NAP": "Not Applicable",
-                  "REV": "In Review",
-                }
-              }
-              variances={
-                Array [
-                  Object {
-                    "compliance_article_id": 1,
-                    "documents": Array [
-                      Object {
-                        "created_at": "2019-05-02",
-                        "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
-                        "document_name": "test.pdf",
-                        "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
-                        "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
-                      },
-                    ],
-                    "expiry_date": "2019-03-30",
-                    "issue_date": "2019-03-01",
-                    "note": "notesss",
-                    "received_date": "2019-03-01",
-                    "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
-                  },
-                ]
-              }
-            />,
-          ],
-        },
-        "ref": null,
-        "rendered": Array [
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "host",
-            "props": Object {},
-            "ref": null,
-            "rendered": null,
-            "type": "br",
-          },
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "host",
-            "props": Object {
-              "children": "Variance Applications",
-              "className": "uppercase",
-            },
-            "ref": null,
-            "rendered": "Variance Applications",
-            "type": "h4",
-          },
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "host",
-            "props": Object {},
-            "ref": null,
-            "rendered": null,
-            "type": "br",
-          },
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
-            "props": Object {
-              "complianceCodesHash": Object {
-                "305": "2.3.7 - Spills",
-                "306": "2.3.8 - Flammable Waste Storage",
-              },
-              "isApplication": true,
-              "mine": Object {
-                "mine_expected_documents": Array [
-                  Object {
-                    "date_created": "2018-11-19",
-                    "due_date": "",
-                    "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
-                    "exp_document_name": "OMS Manual",
-                    "expected_document_status": Object {
-                      "description": "Not Received",
-                      "exp_document_status_code": "MIA",
-                    },
-                    "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                    "related_documents": Array [],
-                    "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-                  },
-                ],
-                "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                "mine_location": Object {
-                  "latitude": null,
-                  "longitude": null,
-                },
-                "mine_name": "mine3",
-                "mine_no": "BLAH9091",
-                "mine_permit": Array [],
-                "mine_region": "NE",
-                "mine_status": Object {
-                  "effective_date": "2018-10-16",
-                  "expiry_date": null,
-                  "status_labels": Array [
-                    "Closed",
-                    "Care & Maintenance",
-                  ],
-                  "statusvalue": Array [
-                    "CLD",
-                    "CM",
-                  ],
-                },
-                "mine_tailings_storage_facilities": Array [
-                  Object {
-                    "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                    "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
-                    "mine_tailings_storage_facility_name": "MockTSF",
-                  },
-                ],
-                "mine_type": Array [
-                  Object {
-                    "mine_tenure_type_code": "PLR",
-                  },
-                  Object {
-                    "mine_tenure_type_code": "MIN",
-                  },
-                ],
-                "mineral_tenure_xref": Array [
-                  Object {
-                    "tenure_number_id": "1234567",
-                  },
-                ],
-                "verified_status": Object {
-                  "healthy_ind": null,
-                  "mine_guid": null,
-                  "mine_name": null,
-                  "verifying_timestamp": null,
-                  "verifying_user": null,
-                },
-              },
-              "openEditVarianceModal": [Function],
-              "openViewVarianceModal": [Function],
-              "varianceStatusOptionsHash": Object {
-                "APP": "Approved",
-                "DEN": "Denied",
-                "NAP": "Not Applicable",
-                "REV": "In Review",
-              },
-              "variances": Array [
-                Object {
-                  "compliance_article_id": 1,
-                  "documents": Array [
-                    Object {
-                      "created_at": "2019-05-02",
-                      "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
-                      "document_name": "test.pdf",
-                      "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
-                      "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
-                    },
-                  ],
-                  "expiry_date": "2019-03-30",
-                  "issue_date": "2019-03-01",
-                  "note": "notesss",
-                  "received_date": "2019-03-01",
-                  "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
-                },
-              ],
-            },
-            "ref": null,
-            "rendered": null,
-            "type": [Function],
-          },
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "host",
-            "props": Object {},
-            "ref": null,
-            "rendered": null,
-            "type": "br",
-          },
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "host",
-            "props": Object {
-              "children": "Approved Variances",
-              "className": "uppercase",
-            },
-            "ref": null,
-            "rendered": "Approved Variances",
-            "type": "h4",
-          },
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "host",
-            "props": Object {},
-            "ref": null,
-            "rendered": null,
-            "type": "br",
-          },
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
-            "props": Object {
-              "complianceCodesHash": Object {
-                "305": "2.3.7 - Spills",
-                "306": "2.3.8 - Flammable Waste Storage",
-              },
-              "mine": Object {
-                "mine_expected_documents": Array [
-                  Object {
-                    "date_created": "2018-11-19",
-                    "due_date": "",
-                    "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
-                    "exp_document_name": "OMS Manual",
-                    "expected_document_status": Object {
-                      "description": "Not Received",
-                      "exp_document_status_code": "MIA",
-                    },
-                    "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                    "related_documents": Array [],
-                    "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-                  },
-                ],
-                "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                "mine_location": Object {
-                  "latitude": null,
-                  "longitude": null,
-                },
-                "mine_name": "mine3",
-                "mine_no": "BLAH9091",
-                "mine_permit": Array [],
-                "mine_region": "NE",
-                "mine_status": Object {
-                  "effective_date": "2018-10-16",
-                  "expiry_date": null,
-                  "status_labels": Array [
-                    "Closed",
-                    "Care & Maintenance",
-                  ],
-                  "statusvalue": Array [
-                    "CLD",
-                    "CM",
-                  ],
-                },
-                "mine_tailings_storage_facilities": Array [
-                  Object {
-                    "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                    "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
-                    "mine_tailings_storage_facility_name": "MockTSF",
-                  },
-                ],
-                "mine_type": Array [
-                  Object {
-                    "mine_tenure_type_code": "PLR",
-                  },
-                  Object {
-                    "mine_tenure_type_code": "MIN",
-                  },
-                ],
-                "mineral_tenure_xref": Array [
-                  Object {
-                    "tenure_number_id": "1234567",
-                  },
-                ],
-                "verified_status": Object {
-                  "healthy_ind": null,
-                  "mine_guid": null,
-                  "mine_name": null,
-                  "verifying_timestamp": null,
-                  "verifying_user": null,
-                },
-              },
-              "openViewVarianceModal": [Function],
-              "varianceStatusOptionsHash": Object {
-                "APP": "Approved",
-                "DEN": "Denied",
-                "NAP": "Not Applicable",
-                "REV": "In Review",
-              },
-              "variances": Array [
-                Object {
-                  "compliance_article_id": 1,
-                  "documents": Array [
-                    Object {
-                      "created_at": "2019-05-02",
-                      "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
-                      "document_name": "test.pdf",
-                      "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
-                      "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
-                    },
-                  ],
-                  "expiry_date": "2019-03-30",
-                  "issue_date": "2019-03-01",
-                  "note": "notesss",
-                  "received_date": "2019-03-01",
-                  "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
-                },
-              ],
-            },
-            "ref": null,
-            "rendered": null,
-            "type": [Function],
-          },
-        ],
-        "type": "div",
-      },
-    ],
-    "type": "div",
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "host",
-      "props": Object {
-        "children": Array [
-          <div
-            className="inline-flex flex-end"
-          >
-            <Connect(AuthorizationWrapper)
-              permission="role_edit_variances"
-            >
-              <AddButton
-                onClick={[Function]}
-              >
-                Add variance
-              </AddButton>
-            </Connect(AuthorizationWrapper)>
-          </div>,
-          <div>
-            <br />
-            <h4
-              className="uppercase"
-            >
-              Variance Applications
-            </h4>
-            <br />
-            <Connect(MineVarianceTable)
-              complianceCodesHash={
-                Object {
-                  "305": "2.3.7 - Spills",
-                  "306": "2.3.8 - Flammable Waste Storage",
-                }
-              }
-              isApplication={true}
-              mine={
-                Object {
-                  "mine_expected_documents": Array [
-                    Object {
-                      "date_created": "2018-11-19",
-                      "due_date": "",
-                      "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
-                      "exp_document_name": "OMS Manual",
-                      "expected_document_status": Object {
-                        "description": "Not Received",
-                        "exp_document_status_code": "MIA",
-                      },
-                      "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                      "related_documents": Array [],
-                      "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-                    },
-                  ],
-                  "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                  "mine_location": Object {
-                    "latitude": null,
-                    "longitude": null,
-                  },
-                  "mine_name": "mine3",
-                  "mine_no": "BLAH9091",
-                  "mine_permit": Array [],
-                  "mine_region": "NE",
-                  "mine_status": Object {
-                    "effective_date": "2018-10-16",
-                    "expiry_date": null,
-                    "status_labels": Array [
-                      "Closed",
-                      "Care & Maintenance",
-                    ],
-                    "statusvalue": Array [
-                      "CLD",
-                      "CM",
-                    ],
-                  },
-                  "mine_tailings_storage_facilities": Array [
-                    Object {
-                      "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                      "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
-                      "mine_tailings_storage_facility_name": "MockTSF",
-                    },
-                  ],
-                  "mine_type": Array [
-                    Object {
-                      "mine_tenure_type_code": "PLR",
-                    },
-                    Object {
-                      "mine_tenure_type_code": "MIN",
-                    },
-                  ],
-                  "mineral_tenure_xref": Array [
-                    Object {
-                      "tenure_number_id": "1234567",
-                    },
-                  ],
-                  "verified_status": Object {
-                    "healthy_ind": null,
-                    "mine_guid": null,
-                    "mine_name": null,
-                    "verifying_timestamp": null,
-                    "verifying_user": null,
-                  },
-                }
-              }
-              openEditVarianceModal={[Function]}
-              openViewVarianceModal={[Function]}
-              varianceStatusOptionsHash={
-                Object {
-                  "APP": "Approved",
-                  "DEN": "Denied",
-                  "NAP": "Not Applicable",
-                  "REV": "In Review",
-                }
-              }
-              variances={
-                Array [
-                  Object {
-                    "compliance_article_id": 1,
-                    "documents": Array [
-                      Object {
-                        "created_at": "2019-05-02",
-                        "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
-                        "document_name": "test.pdf",
-                        "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
-                        "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
-                      },
-                    ],
-                    "expiry_date": "2019-03-30",
-                    "issue_date": "2019-03-01",
-                    "note": "notesss",
-                    "received_date": "2019-03-01",
-                    "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
-                  },
-                ]
-              }
-            />
-            <br />
-            <h4
-              className="uppercase"
-            >
-              Approved Variances
-            </h4>
-            <br />
-            <Connect(MineVarianceTable)
-              complianceCodesHash={
-                Object {
-                  "305": "2.3.7 - Spills",
-                  "306": "2.3.8 - Flammable Waste Storage",
-                }
-              }
-              mine={
-                Object {
-                  "mine_expected_documents": Array [
-                    Object {
-                      "date_created": "2018-11-19",
-                      "due_date": "",
-                      "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
-                      "exp_document_name": "OMS Manual",
-                      "expected_document_status": Object {
-                        "description": "Not Received",
-                        "exp_document_status_code": "MIA",
-                      },
-                      "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                      "related_documents": Array [],
-                      "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-                    },
-                  ],
-                  "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                  "mine_location": Object {
-                    "latitude": null,
-                    "longitude": null,
-                  },
-                  "mine_name": "mine3",
-                  "mine_no": "BLAH9091",
-                  "mine_permit": Array [],
-                  "mine_region": "NE",
-                  "mine_status": Object {
-                    "effective_date": "2018-10-16",
-                    "expiry_date": null,
-                    "status_labels": Array [
-                      "Closed",
-                      "Care & Maintenance",
-                    ],
-                    "statusvalue": Array [
-                      "CLD",
-                      "CM",
-                    ],
-                  },
-                  "mine_tailings_storage_facilities": Array [
-                    Object {
-                      "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                      "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
-                      "mine_tailings_storage_facility_name": "MockTSF",
-                    },
-                  ],
-                  "mine_type": Array [
-                    Object {
-                      "mine_tenure_type_code": "PLR",
-                    },
-                    Object {
-                      "mine_tenure_type_code": "MIN",
-                    },
-                  ],
-                  "mineral_tenure_xref": Array [
-                    Object {
-                      "tenure_number_id": "1234567",
-                    },
-                  ],
-                  "verified_status": Object {
-                    "healthy_ind": null,
-                    "mine_guid": null,
-                    "mine_name": null,
-                    "verifying_timestamp": null,
-                    "verifying_user": null,
-                  },
-                }
-              }
-              openViewVarianceModal={[Function]}
-              varianceStatusOptionsHash={
-                Object {
-                  "APP": "Approved",
-                  "DEN": "Denied",
-                  "NAP": "Not Applicable",
-                  "REV": "In Review",
-                }
-              }
-              variances={
-                Array [
-                  Object {
-                    "compliance_article_id": 1,
-                    "documents": Array [
-                      Object {
-                        "created_at": "2019-05-02",
-                        "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
-                        "document_name": "test.pdf",
-                        "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
-                        "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
-                      },
-                    ],
-                    "expiry_date": "2019-03-30",
-                    "issue_date": "2019-03-01",
-                    "note": "notesss",
-                    "received_date": "2019-03-01",
-                    "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
-                  },
-                ]
-              }
-            />
-          </div>,
-        ],
-      },
-      "ref": null,
-      "rendered": Array [
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "host",
-          "props": Object {
-            "children": <Connect(AuthorizationWrapper)
-              permission="role_edit_variances"
-            >
-              <AddButton
-                onClick={[Function]}
-              >
-                Add variance
-              </AddButton>
-            </Connect(AuthorizationWrapper)>,
-            "className": "inline-flex flex-end",
-          },
-          "ref": null,
-          "rendered": Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
-            "props": Object {
-              "children": <AddButton
-                onClick={[Function]}
-              >
-                Add variance
-              </AddButton>,
-              "permission": "role_edit_variances",
-            },
-            "ref": null,
-            "rendered": Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "function",
-              "props": Object {
-                "children": "Add variance",
-                "onClick": [Function],
-              },
-              "ref": null,
-              "rendered": "Add variance",
-              "type": [Function],
-            },
-            "type": [Function],
-          },
-          "type": "div",
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "host",
-          "props": Object {
-            "children": Array [
-              <br />,
-              <h4
-                className="uppercase"
-              >
-                Variance Applications
-              </h4>,
-              <br />,
-              <Connect(MineVarianceTable)
-                complianceCodesHash={
-                  Object {
-                    "305": "2.3.7 - Spills",
-                    "306": "2.3.8 - Flammable Waste Storage",
-                  }
-                }
-                isApplication={true}
-                mine={
-                  Object {
-                    "mine_expected_documents": Array [
-                      Object {
-                        "date_created": "2018-11-19",
-                        "due_date": "",
-                        "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
-                        "exp_document_name": "OMS Manual",
-                        "expected_document_status": Object {
-                          "description": "Not Received",
-                          "exp_document_status_code": "MIA",
-                        },
-                        "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                        "related_documents": Array [],
-                        "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-                      },
-                    ],
-                    "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                    "mine_location": Object {
-                      "latitude": null,
-                      "longitude": null,
-                    },
-                    "mine_name": "mine3",
-                    "mine_no": "BLAH9091",
-                    "mine_permit": Array [],
-                    "mine_region": "NE",
-                    "mine_status": Object {
-                      "effective_date": "2018-10-16",
-                      "expiry_date": null,
-                      "status_labels": Array [
-                        "Closed",
-                        "Care & Maintenance",
-                      ],
-                      "statusvalue": Array [
-                        "CLD",
-                        "CM",
-                      ],
-                    },
-                    "mine_tailings_storage_facilities": Array [
-                      Object {
-                        "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                        "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
-                        "mine_tailings_storage_facility_name": "MockTSF",
-                      },
-                    ],
-                    "mine_type": Array [
-                      Object {
-                        "mine_tenure_type_code": "PLR",
-                      },
-                      Object {
-                        "mine_tenure_type_code": "MIN",
-                      },
-                    ],
-                    "mineral_tenure_xref": Array [
-                      Object {
-                        "tenure_number_id": "1234567",
-                      },
-                    ],
-                    "verified_status": Object {
-                      "healthy_ind": null,
-                      "mine_guid": null,
-                      "mine_name": null,
-                      "verifying_timestamp": null,
-                      "verifying_user": null,
-                    },
-                  }
-                }
-                openEditVarianceModal={[Function]}
-                openViewVarianceModal={[Function]}
-                varianceStatusOptionsHash={
-                  Object {
-                    "APP": "Approved",
-                    "DEN": "Denied",
-                    "NAP": "Not Applicable",
-                    "REV": "In Review",
-                  }
-                }
-                variances={
-                  Array [
-                    Object {
-                      "compliance_article_id": 1,
-                      "documents": Array [
-                        Object {
-                          "created_at": "2019-05-02",
-                          "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
-                          "document_name": "test.pdf",
-                          "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
-                          "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
-                        },
-                      ],
-                      "expiry_date": "2019-03-30",
-                      "issue_date": "2019-03-01",
-                      "note": "notesss",
-                      "received_date": "2019-03-01",
-                      "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
-                    },
-                  ]
-                }
-              />,
-              <br />,
-              <h4
-                className="uppercase"
-              >
-                Approved Variances
-              </h4>,
-              <br />,
-              <Connect(MineVarianceTable)
-                complianceCodesHash={
-                  Object {
-                    "305": "2.3.7 - Spills",
-                    "306": "2.3.8 - Flammable Waste Storage",
-                  }
-                }
-                mine={
-                  Object {
-                    "mine_expected_documents": Array [
-                      Object {
-                        "date_created": "2018-11-19",
-                        "due_date": "",
-                        "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
-                        "exp_document_name": "OMS Manual",
-                        "expected_document_status": Object {
-                          "description": "Not Received",
-                          "exp_document_status_code": "MIA",
-                        },
-                        "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                        "related_documents": Array [],
-                        "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-                      },
-                    ],
-                    "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                    "mine_location": Object {
-                      "latitude": null,
-                      "longitude": null,
-                    },
-                    "mine_name": "mine3",
-                    "mine_no": "BLAH9091",
-                    "mine_permit": Array [],
-                    "mine_region": "NE",
-                    "mine_status": Object {
-                      "effective_date": "2018-10-16",
-                      "expiry_date": null,
-                      "status_labels": Array [
-                        "Closed",
-                        "Care & Maintenance",
-                      ],
-                      "statusvalue": Array [
-                        "CLD",
-                        "CM",
-                      ],
-                    },
-                    "mine_tailings_storage_facilities": Array [
-                      Object {
-                        "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                        "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
-                        "mine_tailings_storage_facility_name": "MockTSF",
-                      },
-                    ],
-                    "mine_type": Array [
-                      Object {
-                        "mine_tenure_type_code": "PLR",
-                      },
-                      Object {
-                        "mine_tenure_type_code": "MIN",
-                      },
-                    ],
-                    "mineral_tenure_xref": Array [
-                      Object {
-                        "tenure_number_id": "1234567",
-                      },
-                    ],
-                    "verified_status": Object {
-                      "healthy_ind": null,
-                      "mine_guid": null,
-                      "mine_name": null,
-                      "verifying_timestamp": null,
-                      "verifying_user": null,
-                    },
-                  }
-                }
-                openViewVarianceModal={[Function]}
-                varianceStatusOptionsHash={
-                  Object {
-                    "APP": "Approved",
-                    "DEN": "Denied",
-                    "NAP": "Not Applicable",
-                    "REV": "In Review",
-                  }
-                }
-                variances={
-                  Array [
-                    Object {
-                      "compliance_article_id": 1,
-                      "documents": Array [
-                        Object {
-                          "created_at": "2019-05-02",
-                          "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
-                          "document_name": "test.pdf",
-                          "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
-                          "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
-                        },
-                      ],
-                      "expiry_date": "2019-03-30",
-                      "issue_date": "2019-03-01",
-                      "note": "notesss",
-                      "received_date": "2019-03-01",
-                      "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
-                    },
-                  ]
-                }
-              />,
+          "mine_name": "mine3",
+          "mine_no": "BLAH9091",
+          "mine_permit": Array [],
+          "mine_region": "NE",
+          "mine_status": Object {
+            "effective_date": "2018-10-16",
+            "expiry_date": null,
+            "status_labels": Array [
+              "Closed",
+              "Care & Maintenance",
+            ],
+            "statusvalue": Array [
+              "CLD",
+              "CM",
             ],
           },
-          "ref": null,
-          "rendered": Array [
+          "mine_tailings_storage_facilities": Array [
             Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "host",
-              "props": Object {},
-              "ref": null,
-              "rendered": null,
-              "type": "br",
-            },
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "host",
-              "props": Object {
-                "children": "Variance Applications",
-                "className": "uppercase",
-              },
-              "ref": null,
-              "rendered": "Variance Applications",
-              "type": "h4",
-            },
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "host",
-              "props": Object {},
-              "ref": null,
-              "rendered": null,
-              "type": "br",
-            },
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "complianceCodesHash": Object {
-                  "305": "2.3.7 - Spills",
-                  "306": "2.3.8 - Flammable Waste Storage",
-                },
-                "isApplication": true,
-                "mine": Object {
-                  "mine_expected_documents": Array [
-                    Object {
-                      "date_created": "2018-11-19",
-                      "due_date": "",
-                      "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
-                      "exp_document_name": "OMS Manual",
-                      "expected_document_status": Object {
-                        "description": "Not Received",
-                        "exp_document_status_code": "MIA",
-                      },
-                      "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                      "related_documents": Array [],
-                      "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-                    },
-                  ],
-                  "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                  "mine_location": Object {
-                    "latitude": null,
-                    "longitude": null,
-                  },
-                  "mine_name": "mine3",
-                  "mine_no": "BLAH9091",
-                  "mine_permit": Array [],
-                  "mine_region": "NE",
-                  "mine_status": Object {
-                    "effective_date": "2018-10-16",
-                    "expiry_date": null,
-                    "status_labels": Array [
-                      "Closed",
-                      "Care & Maintenance",
-                    ],
-                    "statusvalue": Array [
-                      "CLD",
-                      "CM",
-                    ],
-                  },
-                  "mine_tailings_storage_facilities": Array [
-                    Object {
-                      "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                      "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
-                      "mine_tailings_storage_facility_name": "MockTSF",
-                    },
-                  ],
-                  "mine_type": Array [
-                    Object {
-                      "mine_tenure_type_code": "PLR",
-                    },
-                    Object {
-                      "mine_tenure_type_code": "MIN",
-                    },
-                  ],
-                  "mineral_tenure_xref": Array [
-                    Object {
-                      "tenure_number_id": "1234567",
-                    },
-                  ],
-                  "verified_status": Object {
-                    "healthy_ind": null,
-                    "mine_guid": null,
-                    "mine_name": null,
-                    "verifying_timestamp": null,
-                    "verifying_user": null,
-                  },
-                },
-                "openEditVarianceModal": [Function],
-                "openViewVarianceModal": [Function],
-                "varianceStatusOptionsHash": Object {
-                  "APP": "Approved",
-                  "DEN": "Denied",
-                  "NAP": "Not Applicable",
-                  "REV": "In Review",
-                },
-                "variances": Array [
-                  Object {
-                    "compliance_article_id": 1,
-                    "documents": Array [
-                      Object {
-                        "created_at": "2019-05-02",
-                        "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
-                        "document_name": "test.pdf",
-                        "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
-                        "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
-                      },
-                    ],
-                    "expiry_date": "2019-03-30",
-                    "issue_date": "2019-03-01",
-                    "note": "notesss",
-                    "received_date": "2019-03-01",
-                    "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
-                  },
-                ],
-              },
-              "ref": null,
-              "rendered": null,
-              "type": [Function],
-            },
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "host",
-              "props": Object {},
-              "ref": null,
-              "rendered": null,
-              "type": "br",
-            },
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "host",
-              "props": Object {
-                "children": "Approved Variances",
-                "className": "uppercase",
-              },
-              "ref": null,
-              "rendered": "Approved Variances",
-              "type": "h4",
-            },
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "host",
-              "props": Object {},
-              "ref": null,
-              "rendered": null,
-              "type": "br",
-            },
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "complianceCodesHash": Object {
-                  "305": "2.3.7 - Spills",
-                  "306": "2.3.8 - Flammable Waste Storage",
-                },
-                "mine": Object {
-                  "mine_expected_documents": Array [
-                    Object {
-                      "date_created": "2018-11-19",
-                      "due_date": "",
-                      "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
-                      "exp_document_name": "OMS Manual",
-                      "expected_document_status": Object {
-                        "description": "Not Received",
-                        "exp_document_status_code": "MIA",
-                      },
-                      "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                      "related_documents": Array [],
-                      "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-                    },
-                  ],
-                  "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                  "mine_location": Object {
-                    "latitude": null,
-                    "longitude": null,
-                  },
-                  "mine_name": "mine3",
-                  "mine_no": "BLAH9091",
-                  "mine_permit": Array [],
-                  "mine_region": "NE",
-                  "mine_status": Object {
-                    "effective_date": "2018-10-16",
-                    "expiry_date": null,
-                    "status_labels": Array [
-                      "Closed",
-                      "Care & Maintenance",
-                    ],
-                    "statusvalue": Array [
-                      "CLD",
-                      "CM",
-                    ],
-                  },
-                  "mine_tailings_storage_facilities": Array [
-                    Object {
-                      "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                      "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
-                      "mine_tailings_storage_facility_name": "MockTSF",
-                    },
-                  ],
-                  "mine_type": Array [
-                    Object {
-                      "mine_tenure_type_code": "PLR",
-                    },
-                    Object {
-                      "mine_tenure_type_code": "MIN",
-                    },
-                  ],
-                  "mineral_tenure_xref": Array [
-                    Object {
-                      "tenure_number_id": "1234567",
-                    },
-                  ],
-                  "verified_status": Object {
-                    "healthy_ind": null,
-                    "mine_guid": null,
-                    "mine_name": null,
-                    "verifying_timestamp": null,
-                    "verifying_user": null,
-                  },
-                },
-                "openViewVarianceModal": [Function],
-                "varianceStatusOptionsHash": Object {
-                  "APP": "Approved",
-                  "DEN": "Denied",
-                  "NAP": "Not Applicable",
-                  "REV": "In Review",
-                },
-                "variances": Array [
-                  Object {
-                    "compliance_article_id": 1,
-                    "documents": Array [
-                      Object {
-                        "created_at": "2019-05-02",
-                        "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
-                        "document_name": "test.pdf",
-                        "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
-                        "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
-                      },
-                    ],
-                    "expiry_date": "2019-03-30",
-                    "issue_date": "2019-03-01",
-                    "note": "notesss",
-                    "received_date": "2019-03-01",
-                    "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
-                  },
-                ],
-              },
-              "ref": null,
-              "rendered": null,
-              "type": [Function],
+              "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+              "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
+              "mine_tailings_storage_facility_name": "MockTSF",
             },
           ],
-          "type": "div",
-        },
-      ],
-      "type": "div",
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
+          "mine_type": Array [
+            Object {
+              "mine_tenure_type_code": "PLR",
+            },
+            Object {
+              "mine_tenure_type_code": "MIN",
+            },
+          ],
+          "mineral_tenure_xref": Array [
+            Object {
+              "tenure_number_id": "1234567",
+            },
+          ],
+          "verified_status": Object {
+            "healthy_ind": null,
+            "mine_guid": null,
+            "mine_name": null,
+            "verifying_timestamp": null,
+            "verifying_user": null,
           },
-          "getDerivedStateFromProps": true,
-          "getSnapshotBeforeUpdate": true,
-          "setState": Object {
-            "skipsComponentDidUpdateOnNullish": true,
+        }
+      }
+      openEditVarianceModal={[Function]}
+      openViewVarianceModal={[Function]}
+      varianceStatusOptionsHash={
+        Object {
+          "APP": "Approved",
+          "DEN": "Denied",
+          "NAP": "Not Applicable",
+          "REV": "In Review",
+        }
+      }
+      variances={
+        Array [
+          Object {
+            "compliance_article_id": 1,
+            "documents": Array [
+              Object {
+                "created_at": "2019-05-02",
+                "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
+                "document_name": "test.pdf",
+                "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
+                "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
+              },
+            ],
+            "expiry_date": "2019-03-30",
+            "issue_date": "2019-03-01",
+            "note": "notesss",
+            "received_date": "2019-03-01",
+            "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+            "variance_no": 1,
           },
-        },
-      },
-    },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
-  },
-}
+        ]
+      }
+    />
+    <br />
+    <h4
+      className="uppercase"
+    >
+      Approved Variances
+    </h4>
+    <br />
+    <Connect(MineVarianceTable)
+      complianceCodesHash={
+        Object {
+          "305": "2.3.7 - Spills",
+          "306": "2.3.8 - Flammable Waste Storage",
+        }
+      }
+      mine={
+        Object {
+          "mine_expected_documents": Array [
+            Object {
+              "date_created": "2018-11-19",
+              "due_date": "",
+              "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
+              "exp_document_name": "OMS Manual",
+              "expected_document_status": Object {
+                "description": "Not Received",
+                "exp_document_status_code": "MIA",
+              },
+              "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+              "related_documents": Array [],
+              "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
+            },
+          ],
+          "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+          "mine_location": Object {
+            "latitude": null,
+            "longitude": null,
+          },
+          "mine_name": "mine3",
+          "mine_no": "BLAH9091",
+          "mine_permit": Array [],
+          "mine_region": "NE",
+          "mine_status": Object {
+            "effective_date": "2018-10-16",
+            "expiry_date": null,
+            "status_labels": Array [
+              "Closed",
+              "Care & Maintenance",
+            ],
+            "statusvalue": Array [
+              "CLD",
+              "CM",
+            ],
+          },
+          "mine_tailings_storage_facilities": Array [
+            Object {
+              "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+              "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
+              "mine_tailings_storage_facility_name": "MockTSF",
+            },
+          ],
+          "mine_type": Array [
+            Object {
+              "mine_tenure_type_code": "PLR",
+            },
+            Object {
+              "mine_tenure_type_code": "MIN",
+            },
+          ],
+          "mineral_tenure_xref": Array [
+            Object {
+              "tenure_number_id": "1234567",
+            },
+          ],
+          "verified_status": Object {
+            "healthy_ind": null,
+            "mine_guid": null,
+            "mine_name": null,
+            "verifying_timestamp": null,
+            "verifying_user": null,
+          },
+        }
+      }
+      openEditVarianceModal={[Function]}
+      openViewVarianceModal={[Function]}
+      varianceStatusOptionsHash={
+        Object {
+          "APP": "Approved",
+          "DEN": "Denied",
+          "NAP": "Not Applicable",
+          "REV": "In Review",
+        }
+      }
+      variances={
+        Array [
+          Object {
+            "compliance_article_id": 1,
+            "documents": Array [
+              Object {
+                "created_at": "2019-05-02",
+                "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
+                "document_name": "test.pdf",
+                "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
+                "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
+              },
+            ],
+            "expiry_date": "2019-03-30",
+            "issue_date": "2019-03-01",
+            "note": "notesss",
+            "received_date": "2019-03-01",
+            "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+            "variance_no": 1,
+          },
+        ]
+      }
+    />
+  </div>
+</div>
 `;

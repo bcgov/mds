@@ -1,7 +1,7 @@
 import re
-from xml.etree.ElementTree import fromstring
+
 from flask import current_app
-from json import dumps
+
 from xml.etree import ElementTree as ET
 from app.extensions import db
 

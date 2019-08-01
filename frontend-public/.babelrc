@@ -1,12 +1,23 @@
 {
-  "presets": ["env", "react", "stage-2"],
-  "plugins": [
+  "presets": [
     [
-      "transform-runtime",
+      "@babel/preset-env",
       {
-        "regenerator": true
+        "useBuiltIns": "entry",
+        "corejs": 3,
+        "targets": { "node": "current", "ie": "8" }
       }
     ],
+    ["@babel/preset-react"]
+  ],
+  "plugins": [
+    [
+      "@babel/transform-runtime",
+      {
+        "corejs": 3
+      }
+    ],
+    ["@babel/plugin-proposal-class-properties"],
     ["react-hot-loader/babel"]
   ]
 }

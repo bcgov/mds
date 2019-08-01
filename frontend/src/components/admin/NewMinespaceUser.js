@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import AddMinespaceUser from "@/components/Forms/AddMinespaceUser";
 import PropTypes from "prop-types";
+import AddMinespaceUser from "@/components/Forms/AddMinespaceUser";
 import CustomPropTypes from "@/customPropTypes";
 import { fetchMineNameList } from "@/actionCreators/mineActionCreator";
 import { getMineNames } from "@/selectors/mineSelectors";
@@ -49,7 +49,7 @@ export class NewMinespaceUser extends Component {
   render() {
     return (
       <div>
-        <h3>Add BCEID User</h3>
+        <h3>Add BCeID User</h3>
         {this.props.mines && (
           <AddMinespaceUser
             mines={this.props.mines.map((mine) => ({

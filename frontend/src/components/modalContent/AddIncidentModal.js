@@ -11,6 +11,7 @@ import * as FORM from "@/constants/forms";
 import AddIncidentReportingForm from "@/components/Forms/incidents/AddIncidentReportingForm";
 import AddIncidentDetailForm from "@/components/Forms/incidents/AddIncidentDetailForm";
 import AddIncidentFollowUpForm from "@/components/Forms/incidents/AddIncidentFollowUpForm";
+import * as Strings from "@/constants/strings";
 
 import CustomPropTypes from "@/customPropTypes";
 
@@ -49,14 +50,15 @@ const invalidDetailPayload = (values) =>
     values.incident_description &&
     values.determination_type_code &&
     // If DO, need subparagraphs
-    ((values.determination_type_code === "DO" &&
+    ((values.determination_type_code === Strings.INCIDENT_DETERMINATION_TYPES.dangerousOccurance &&
       values.determination_inspector_party_guid &&
       values.dangerous_occurrence_subparagraph_ids &&
       values.dangerous_occurrence_subparagraph_ids.length !== 0) ||
-      (values.determination_type_code === "NDO" &&
+      (values.determination_type_code ===
+        Strings.INCIDENT_DETERMINATION_TYPES.notADangerousOccurance &&
         values.status_code &&
         values.determination_inspector_party_guid) ||
-      values.determination_type_code === "PEN")
+      values.determination_type_code === Strings.INCIDENT_DETERMINATION_TYPES.pending)
   );
 
 const invalidFollowUpPayload = (values) =>
@@ -105,7 +107,8 @@ const StepForms = (
         inspectors={props.inspectors}
         doDetermination={props.addIncidentFormValues.determination_type_code}
         uploadedFiles={uploadedFiles.filter(
-          (file) => file.mine_incident_document_type_code === "INI"
+          (file) =>
+            file.mine_incident_document_type_code === Strings.INCIDENT_DOCUMENT_TYPES.initial
         )}
         onFileLoad={onFileLoad}
         onRemoveFile={onRemoveFile}
@@ -116,7 +119,8 @@ const StepForms = (
         <Button id="step-back" type="tertiary" className="full-mobile" onClick={() => prev()}>
           Back
         </Button>
-        {props.addIncidentFormValues.determination_type_code !== "NDO" && (
+        {props.addIncidentFormValues.determination_type_code !==
+          Strings.INCIDENT_DETERMINATION_TYPES.notADangerousOccurance && (
           <Button
             id="step2-next"
             type="tertiary"
@@ -134,7 +138,8 @@ const StepForms = (
           disabled={invalidDetailPayload(props.addIncidentFormValues)}
         >
           {actionVerb(props.newIncident)}
-          {props.addIncidentFormValues.determination_type_code !== "NDO" && (
+          {props.addIncidentFormValues.determination_type_code !==
+            Strings.INCIDENT_DETERMINATION_TYPES.notADangerousOccurance && (
             <span>Initial&nbsp;</span>
           )}
           Incident
@@ -153,8 +158,9 @@ const StepForms = (
         incidentStatusCodeOptions={props.incidentStatusCodeOptions}
         hasFatalities={props.addIncidentFormValues.number_of_fatalities > 0 || false}
         hasFollowUp={props.addIncidentFormValues.followup_inspection || false}
+        determinationTypeCode={props.addIncidentFormValues.determination_type_code}
         uploadedFiles={uploadedFiles.filter(
-          (file) => file.mine_incident_document_type_code === "FIN"
+          (file) => file.mine_incident_document_type_code === Strings.INCIDENT_DOCUMENT_TYPES.final
         )}
         onFileLoad={onFileLoad}
         onRemoveFile={onRemoveFile}

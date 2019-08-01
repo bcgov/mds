@@ -18,6 +18,7 @@ import {
   getPermitStatusOptions,
   getApplicationStatusOptions,
   getComplianceCodes,
+  getIncidentDocumentTypeOptions,
   getIncidentFollowupActionOptions,
   getIncidentDeterminationOptions,
   getIncidentStatusCodeOptions,
@@ -124,21 +125,32 @@ export const fetchApplicationStatusOptions = () => (dispatch) => {
     .catch(() => dispatch(error(reducerTypes.GET_APPLICATION_STATUS_OPTIONS)));
 };
 
+export const fetchIncidentDocumentTypeOptions = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_INCIDENT_DOCUMENT_TYPE_OPTIONS));
+  return CustomAxios({ selector: getIncidentDocumentTypeOptions })
+    .get(ENVIRONMENT.apiUrl + API.INCIDENT_DOCUMENT_TYPE, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_INCIDENT_DOCUMENT_TYPE_OPTIONS));
+      dispatch(staticContentActions.storeIncidentDocumentTypeOptions(response.data));
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_INCIDENT_DOCUMENT_TYPE_OPTIONS)));
+};
+
 export const fetchMineIncidentFollowActionOptions = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_INCIDENT_FOLLOWUP_ACTION_OPTIONS));
   return CustomAxios({ selector: getIncidentFollowupActionOptions })
-    .get(ENVIRONMENT.apiUrl + API.MINE_INCIDENT_FOLLOWUP_ACTIONS, createRequestHeader())
+    .get(ENVIRONMENT.apiUrl + API.INCIDENT_FOLLOWUP_ACTIONS, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_INCIDENT_FOLLOWUP_ACTION_OPTIONS));
       dispatch(staticContentActions.storeMineIncidentFollowActionOptions(response.data));
     })
-    .catch(() => dispatch(error(reducerTypes.GET_MINE_INCIDENT_FOLLOW_ACTION_OPTIONS)));
+    .catch(() => dispatch(error(reducerTypes.GET_MINE_INCIDENT_FOLLOWUP_ACTION_OPTIONS)));
 };
 
 export const fetchMineIncidentDeterminationOptions = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_INCIDENT_DETERMINATION_OPTIONS));
   return CustomAxios({ selector: getIncidentDeterminationOptions })
-    .get(ENVIRONMENT.apiUrl + API.MINE_INCIDENT_DETERMINATION_TYPES, createRequestHeader())
+    .get(ENVIRONMENT.apiUrl + API.INCIDENT_DETERMINATION_TYPES, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_INCIDENT_DETERMINATION_OPTIONS));
       dispatch(staticContentActions.storeMineIncidentDeterminationOptions(response.data));
@@ -149,7 +161,7 @@ export const fetchMineIncidentDeterminationOptions = () => (dispatch) => {
 export const fetchMineIncidentStatusCodeOptions = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_INCIDENT_STATUS_CODE_OPTIONS));
   return CustomAxios({ selector: getIncidentStatusCodeOptions })
-    .get(ENVIRONMENT.apiUrl + API.MINE_INCIDENT_STATUS_CODES, createRequestHeader())
+    .get(ENVIRONMENT.apiUrl + API.INCIDENT_STATUS_CODES, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_INCIDENT_STATUS_CODE_OPTIONS));
       dispatch(staticContentActions.storeMineIncidentStatusCodeOptions(response.data));
@@ -199,4 +211,16 @@ export const fetchVarianceDocumentCategoryOptions = () => (dispatch) => {
       dispatch(staticContentActions.storeVarianceDocumentCategoryOptions(response.data));
     })
     .catch(() => dispatch(error(reducerTypes.GET_VARIANCE_DOCUMENT_CATEGORY_OPTIONS)));
+};
+
+export const fetchMineReportDefinitionOptions = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_MINE_REPORT_DEFINITION_OPTIONS));
+  return CustomAxios()
+    .get(`${ENVIRONMENT.apiUrl}${API.MINE_REPORT_DEFINITIONS()}`, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_MINE_REPORT_DEFINITION_OPTIONS));
+      dispatch(staticContentActions.storeMineReportDefinitionOptions(response.data));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_MINE_REPORT_DEFINITION_OPTIONS)));
 };

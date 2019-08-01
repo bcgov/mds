@@ -53,7 +53,7 @@
     },
     {
       "name": "MEMORY_LIMIT",
-      "value": "1Gi"
+      "value": "1.5Gi"
     },
     {
       "name": "CPU_REQUEST",
@@ -61,7 +61,7 @@
     },
     {
       "name": "MEMORY_REQUEST",
-      "value": "512Mi"
+      "value": "1Gi"
     }
   ],
   "objects": [
@@ -137,7 +137,7 @@
                 "value": "${GIT_BRANCH}"
               }
             ],
-            "imagePullPolicy": "IfNotPresent"
+            "imagePullPolicy": "Always"
           }
         ],
         "restartPolicy": "Never",

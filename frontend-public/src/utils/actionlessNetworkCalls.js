@@ -9,7 +9,6 @@ const downloadFileFromDocumentManager = (docManagerGuid) => {
     throw new Error("Must provide docManagerGuid");
   }
 
-  // TODO: Update url when Document Manager moves to its own microservice.
   axios
     .get(
       `${ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_TOKEN_GET_URL(docManagerGuid)}`,
@@ -17,7 +16,7 @@ const downloadFileFromDocumentManager = (docManagerGuid) => {
     )
     .then((response) => {
       const token = { token: response.data.token_guid };
-      window.location = `${ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_FILE_GET_URL(token)}`;
+      window.location = `${ENVIRONMENT.docManUrl + DOCUMENT_MANAGER_FILE_GET_URL(token)}`;
     })
     .catch((err) => {
       notification.error({

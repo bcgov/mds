@@ -136,7 +136,7 @@
             ],
             "resources": {
               "limits": {
-                "cpu": "1.2",
+                "cpu": "1.5",
                 "memory": "3Gi"
               },
               "requests": {

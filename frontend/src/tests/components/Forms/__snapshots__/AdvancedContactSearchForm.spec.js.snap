@@ -1,0 +1,96 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AdvancedContactSearch form renders properly 1`] = `
+<Form
+  colon={true}
+  hideRequiredMark={false}
+  layout="vertical"
+  onReset={[Function]}
+  onSubmit={[MockFunction]}
+>
+  <Row
+    gutter={6}
+  >
+    <Col
+      md={6}
+      xs={6}
+    >
+      <Field
+        component={[Function]}
+        data={
+          Object {
+            "label": "Person",
+            "value": "PER",
+          }
+        }
+        id="type"
+        name="type"
+        onChange={[Function]}
+      />
+    </Col>
+    <Col
+      md={9}
+      xs={9}
+    >
+      <Field
+        component={[Function]}
+        id="first_name"
+        name="first_name"
+        placeholder="First Name"
+      />
+    </Col>
+    <Col
+      md={9}
+      xs={9}
+    >
+      <Field
+        component={[Function]}
+        id="last_name"
+        name="last_name"
+        placeholder="Surname"
+      />
+    </Col>
+  </Row>
+  <div
+    className="left center-mobile"
+  >
+    <Button
+      block={false}
+      className="btn--dropdown"
+      ghost={false}
+      htmlType="button"
+      loading={false}
+      onClick={[MockFunction]}
+    >
+      Expand Filters
+      <Icon
+        type="down"
+      />
+    </Button>
+  </div>
+  <div
+    className="right center-mobile"
+  >
+    <Button
+      block={false}
+      className="full-mobile"
+      ghost={false}
+      htmlType="reset"
+      loading={false}
+      type="secondary"
+    >
+      Clear Filters
+    </Button>
+    <Button
+      block={false}
+      className="full-mobile"
+      ghost={false}
+      htmlType="submit"
+      loading={false}
+      type="primary"
+    >
+      Apply Filters
+    </Button>
+  </div>
+</Form>
+`;
