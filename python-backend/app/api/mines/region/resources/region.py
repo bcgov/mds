@@ -2,7 +2,7 @@ from flask_restplus import Resource
 from app.extensions import api
 from ....utils.access_decorators import requires_role_view_all
 from ....utils.resources_mixins import UserMixin, ErrorMixin
-from ...region.models.region import MineRegion
+from ...region.models.region import MineRegionCode
 
 MINE_REGION_OPTION = api.model('MineRegion', {
     'mine_region_code': fields.String,
