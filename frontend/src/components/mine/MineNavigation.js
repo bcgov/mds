@@ -1,13 +1,16 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { Menu } from "antd";
-import * as route from "@/constants/routes";
+import { includes } from "lodash";
+import * as routes from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 
 const { SubMenu } = Menu;
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
+  activeButton: PropTypes.string.isRequired,
 };
 
 export class MineNavigation extends Component {
@@ -21,45 +24,72 @@ export class MineNavigation extends Component {
     });
   };
 
+  ifActiveButton = (route) => (includes(this.props.activeButton, route) ? "active-menu-btn" : "");
+
   render() {
     return (
       <Menu onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal">
-        <SubMenu title={<span className="submenu-title-wrapper">Mine Information</span>}>
+        <SubMenu id={this.ifActiveButton("mine-information")} title="Mine Information">
           <Menu>
             <Menu.Item key="General">
-              <Link to={route.MINE_GENERAL.dynamicRoute(this.props.mine.mine_guid)}>General</Link>
+              <Link to={routes.MINE_GENERAL.dynamicRoute(this.props.mine.mine_guid)}>General</Link>
             </Menu.Item>
             <Menu.Item key="Contacts">
-              <Link to={route.MINE_CONTACTS.dynamicRoute(this.props.mine.mine_guid)}>Contacts</Link>
+              <Link to={routes.MINE_CONTACTS.dynamicRoute(this.props.mine.mine_guid)}>
+                Contacts
+              </Link>
             </Menu.Item>
           </Menu>
         </SubMenu>
-        <SubMenu title={<span className="submenu-title-wrapper">Permits & Approvals</span>}>
+        <SubMenu id={this.ifActiveButton("permits-and-approvals")} title="Permits & Approvals">
           <Menu>
             {this.props.mine.major_mine_ind && (
               <Menu.Item key="Permit Applications">
-                <Link to={route.MINE_PERMIT_APPLICATIONS.dynamicRoute(this.props.mine.mine_guid)}>
+                <Link to={routes.MINE_PERMIT_APPLICATIONS.dynamicRoute(this.props.mine.mine_guid)}>
                   Permit Applications
                 </Link>
               </Menu.Item>
             )}
             <Menu.Item key="Permits">
-              <Link to={route.MINE_PERMITS.dynamicRoute(this.props.mine.mine_guid)}>Permits</Link>
+              <Link to={routes.MINE_PERMITS.dynamicRoute(this.props.mine.mine_guid)}>Permits</Link>
             </Menu.Item>
-            <Menu.Item key="Variances">Variances</Menu.Item>
+            <Menu.Item key="Variances">
+              <Link to={routes.MINE_VARIANCES.dynamicRoute(this.props.mine.mine_guid)}>
+                Variances
+              </Link>
+            </Menu.Item>
           </Menu>
         </SubMenu>
-        <SubMenu title={<span className="submenu-title-wrapper">Oversight</span>}>
+        <SubMenu title="Oversight">
           <Menu>
-            <Menu.Item key="Incidents">Compliance</Menu.Item>
+            <Menu.Item key="Inspections">
+              <Link to={routes.MINE_INSPECTIONS.dynamicRoute(this.props.mine.mine_guid)}>
+                Inspections & Audits
+              </Link>
+            </Menu.Item>
           </Menu>
           <Menu>
-            <Menu.Item key="Incidents">Incidents & Investigations</Menu.Item>
+            <Menu.Item key="Incidents">
+              <Link to={routes.MINE_INCIDENTS.dynamicRoute(this.props.mine.mine_guid)}>
+                Incidents & Investigations
+              </Link>
+            </Menu.Item>
           </Menu>
         </SubMenu>
-        <SubMenu title={<span className="submenu-title-wrapper">Reports</span>}>
+        <SubMenu title="Reports">
           <Menu>
-            <Menu.Item key="Tailings">Tailings</Menu.Item>
+            <Menu.Item key="Reports">
+              <Link to={routes.MINE_REPORTS.dynamicRoute(this.props.mine.mine_guid)}>
+                Code Required Reports
+              </Link>
+            </Menu.Item>
+            {this.props.mine.mine_tailings_storage_facilities.length > 0 && (
+              <Menu.Item key="Tailings">
+                <Link to={routes.MINE_TAILINGS.dynamicRoute(this.props.mine.mine_guid)}>
+                  Tailings
+                </Link>
+              </Menu.Item>
+            )}
           </Menu>
         </SubMenu>
       </Menu>

@@ -340,7 +340,7 @@ exports[`MineSummary renders properly 1`] = `
           className="right"
         >
           <Link
-            to="/dashboard/18145c75-49ad-0101-85f3-a43e45ae989a/"
+            to="/mine-dashboard/18145c75-49ad-0101-85f3-a43e45ae989a/permits-and-approvals/permits"
           >
             See All Permits
           </Link>
@@ -362,7 +362,7 @@ exports[`MineSummary renders properly 1`] = `
       </Col>
     </Row>
     <Row
-      gutter={0}
+      gutter={16}
     >
       <Col
         lg={8}
@@ -383,7 +383,9 @@ exports[`MineSummary renders properly 1`] = `
               >
                 <span
                   className="info-display"
-                />
+                >
+                  No inspections in NRIS
+                </span>
               </div>
             </Row>
           }
@@ -425,12 +427,9 @@ exports[`MineSummary renders properly 1`] = `
                   }
                 }
               />
-               
               <span
                 className="info-display"
-              >
-                Loading...
-              </span>
+              />
             </Row>
           }
         >
@@ -471,12 +470,9 @@ exports[`MineSummary renders properly 1`] = `
                   }
                 }
               />
-               
               <span
                 className="info-display"
-              >
-                Loading...
-              </span>
+              />
             </Row>
           }
         >
@@ -500,7 +496,7 @@ exports[`MineSummary renders properly 1`] = `
           className="right"
         >
           <Link
-            to="/dashboard/18145c75-49ad-0101-85f3-a43e45ae989a/"
+            to="/mine-dashboard/18145c75-49ad-0101-85f3-a43e45ae989a/oversight/inspections-and-audits"
           >
             See All Compliance
           </Link>
@@ -554,7 +550,7 @@ exports[`MineSummary renders properly 1`] = `
           className="right"
         >
           <Link
-            to="/dashboard/18145c75-49ad-0101-85f3-a43e45ae989a/"
+            to="/mine-dashboard/18145c75-49ad-0101-85f3-a43e45ae989a/reports/tailings"
           >
             See All Tailings Storage Facilities
           </Link>
