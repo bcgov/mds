@@ -1,7 +1,7 @@
 import { chain, flatMap, uniqBy } from "lodash";
 import { createSelector } from "reselect";
 import * as staticContentReducer from "@/reducers/staticContentReducer";
-import { createLabelHash, createDropDownList } from "@/utils/helpers";
+import { createLabelHash, createDropDownList, compareCodes } from "@/utils/helpers";
 
 export const {
   getMineStatusOptions,
@@ -176,6 +176,7 @@ export const getDropdownHSRCMComplianceCodes = createSelector(
         const composedLabel = formatComplianceCodeValueOrLabel(code, true);
         return { value: code.compliance_article_id, label: composedLabel };
       })
+      .sort((a, b) => compareCodes(a.label, b.label))
 );
 
 export const getHSRCMComplianceCodesHash = createSelector(

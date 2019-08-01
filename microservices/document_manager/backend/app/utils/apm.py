@@ -2,7 +2,7 @@ from elasticapm import Client
 from flask import current_app
 
 
-def register_apm(func):
+def register_apm(name=None):
     """This function wraps a passed function with a call to the app's registered Elastic APM instance
 
     :param func: Function to be wrapped by calling 
@@ -12,29 +12,37 @@ def register_apm(func):
     :rtype: func
     """
 
-    def wrapper(*args, **kwargs):
-        config = None
-        result = None
-        if current_app:
-            config = current_app.config['ELASTIC_APM']
-            apm_enabled = current_app.config['ELASTIC_ENABLED']
-        elif sched.app:
-            config = sched.app.app_context().app.config['ELASTIC_APM']
-            apm_enabled = sched.app.app_context().app.config['ELASTIC_ENABLED']
+    def wrap(func):
+        def wrapped_f(*args, **kwargs):
+            config = None
+            result = None
+            if current_app:
+                config = current_app.config['ELASTIC_APM']
+                apm_enabled = str(current_app.config['ELASTIC_ENABLED']) == '1'
+            elif sched.app:
+                config = sched.app.app_context().app.config['ELASTIC_APM']
+                apm_enabled = str(sched.app.app_context().app.config['ELASTIC_ENABLED']) == '1'
 
-        client = Client(config)
-        if client and apm_enabled:
-            client.begin_transaction('registered_funcs')
-            try:
+            _name = name if name is not None else func.__name__
+
+            if apm_enabled:
+                client = Client(config)
+                if client:
+                    client.begin_transaction('registered_funcs')
+                    try:
+                        result = func(*args, **kwargs)
+                        client.end_transaction(f'{_name} - success')
+                    except Exception as e:
+                        client.capture_exception()
+                        client.end_transaction(f'{_name} - error')
+                        raise e
+                else:
+                    print(f'could not create ElasticAPM client... running <{_name}> without APM')
+                    result = func(*args, **kwargs)
+            else:
                 result = func(*args, **kwargs)
-                client.end_transaction(f'{func.__name__} - success')
-            except Exception as e:
-                client.capture_exception()
-                client.end_transaction(f'{func.__name__} - error')
-                raise e
-        else:
-            print(f'Running <{func.__name__}> without APM')
-            result = func(*args, **kwargs)
-        return result
+            return result
 
-    return wrapper
+        return wrapped_f
+
+    return wrap

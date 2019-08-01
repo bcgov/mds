@@ -1476,6 +1476,7 @@ export const VARIANCES = {
   records: [
     {
       variance_guid: "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+      variance_no: 1,
       compliance_article_id: 1,
       expiry_date: "2019-03-30",
       issue_date: "2019-03-01",
@@ -1500,6 +1501,7 @@ export const VARIANCES = {
 
 export const VARIANCE = {
   variance_guid: "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+  variance_no: 1,
   compliance_article_id: 1,
   expiry_date: "2019-03-30",
   issue_date: "2019-03-01",
