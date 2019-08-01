@@ -117,6 +117,18 @@ exports[`AddReportForm renders properly 1`] = `
           placeholder=""
         />
       </FormItem>
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="ReportFileUpload"
+          label="Upload Files"
+          name="ReportFileUpload"
+          onFileLoad={[Function]}
+          uploadUrl="/mines/undefined/reports/documents"
+        />
+      </FormItem>
     </Col>
   </Row>
   <div
