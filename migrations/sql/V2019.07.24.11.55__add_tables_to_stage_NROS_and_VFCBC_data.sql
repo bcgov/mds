@@ -307,7 +307,7 @@ CREATE TABLE NOW_Submissions.document_nda (
 	DOCUMENTTYPE character varying(4000),
 	DESCRIPTION character varying(4000),
 
-    FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application_nda(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 );
 
 CREATE TABLE NOW_Submissions.document_start_stop (
