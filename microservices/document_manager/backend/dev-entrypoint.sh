@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-sleep 30
+sleep 20
 flask db upgrade
 flask run
