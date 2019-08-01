@@ -1,26 +1,45 @@
-/* eslint-disable */
 import React, { Component } from "react";
+import queryString from "query-string";
+import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Divider } from "antd";
+import { isEmpty } from "lodash";
 import { OVERDUEDOC, DOC } from "@/constants/assets";
+import { formatParamStringToArray, formatDate, getFiscalYear } from "@/utils/helpers";
 import Loading from "@/components/common/Loading";
 import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
 import { getMineComplianceInfo } from "@/selectors/complianceSelectors";
-import { formatDate, getFiscalYear } from "@/utils/helpers";
+import { fetchMineComplianceInfo } from "@/actionCreators/complianceActionCreator";
+import * as routes from "@/constants/routes";
 import ComplianceOrdersTable from "@/components/mine/Compliance/ComplianceOrdersTable";
 import MineComplianceCard from "@/components/mine/Compliance/MineComplianceCard";
 import MineComplianceFilterForm from "@/components/mine/Compliance/MineComplianceFilterForm";
 import { getMultiSelectComplianceCodes } from "@/selectors/staticContentSelectors";
+import { getMines, getMineGuid } from "@/selectors/mineSelectors";
 
 /**
  * @class  MineComplianceInfo - all compliance information related to the mine.
  */
 
 const propTypes = {
+  mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
+  mineGuid: PropTypes.string.isRequired,
   mineComplianceInfo: CustomPropTypes.mineComplianceInfo,
   complianceCodes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
+  fetchMineComplianceInfo: PropTypes.func.isRequired,
+  location: PropTypes.shape({ search: PropTypes.string }).isRequired,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  match: PropTypes.shape({
+    params: {
+      id: PropTypes.string,
+    },
+  }).isRequired,
+};
+
+const defaultProps = {
+  mineComplianceInfo: {},
 };
 
 const initialSearchValues = {
@@ -34,10 +53,20 @@ const initialSearchValues = {
 
 export class MineComplianceInfo extends Component {
   state = {
-    isLoading: false,
+    isLoading: true,
     complianceFilterParams: initialSearchValues,
     filteredOrders: [],
   };
+
+  componentDidMount() {
+    const mine = this.props.mines[this.props.mineGuid];
+    this.props.fetchMineComplianceInfo(mine.mine_no, true).then((data) => {
+      this.setState({
+        isLoading: false,
+        filteredOrders: data && data.orders ? data.orders : [],
+      });
+    });
+  }
 
   componentWillReceiveProps(nextProps) {
     const locationChanged = nextProps.location !== this.props.location;
@@ -47,6 +76,10 @@ export class MineComplianceInfo extends Component {
         : queryString.stringify(initialSearchValues);
       this.renderDataFromURL(correctParams);
     }
+  }
+
+  componentWillUnmount() {
+    this.setState({ complianceFilterParams: initialSearchValues });
   }
 
   renderDataFromURL = (params) => {
@@ -85,11 +118,11 @@ export class MineComplianceInfo extends Component {
 
   handleComplianceFilter = (values) => {
     if (isEmpty(values)) {
-      this.props.history.push(router.MINE_SUMMARY.dynamicRoute(this.props.match.params.id));
+      this.props.history.push(routes.MINE_INSPECTIONS.dynamicRoute(this.props.match.params.id));
     } else {
       const { violation, ...rest } = values;
       this.props.history.push(
-        router.MINE_SUMMARY.dynamicRoute(this.props.match.params.id, {
+        routes.MINE_INSPECTIONS.dynamicRoute(this.props.match.params.id, {
           violation: violation && violation.join(","),
           ...rest,
         })
@@ -178,10 +211,24 @@ export class MineComplianceInfo extends Component {
 }
 
 MineComplianceInfo.propTypes = propTypes;
+MineComplianceInfo.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   mineComplianceInfo: getMineComplianceInfo(state),
   complianceCodes: getMultiSelectComplianceCodes(state),
+  mines: getMines(state),
+  mineGuid: getMineGuid(state),
 });
 
-export default connect(mapStateToProps)(MineComplianceInfo);
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      fetchMineComplianceInfo,
+    },
+    dispatch
+  );
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MineComplianceInfo);

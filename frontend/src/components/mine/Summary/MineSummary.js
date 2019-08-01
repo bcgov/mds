@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { formatDate } from "@/utils/helpers";
-import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
 import { Contact } from "@/components/mine/ContactInfo/PartyRelationships/Contact";
 import { getPartyRelationshipTypes, getPartyRelationships } from "@/selectors/partiesSelectors";
@@ -83,14 +82,6 @@ export class MineSummary extends Component {
   render() {
     const { id } = this.props.match.params;
     const mine = this.props.mines[id];
-    if (
-      this.props.partyRelationships.length === 0 &&
-      this.props.minePermits.length === 0 &&
-      mine.mine_tailings_storage_facilities.length === 0 &&
-      !this.props.mineComplianceInfo
-    ) {
-      return <NullScreen type="generic" />;
-    }
     return (
       <div className="tab__content">
         <MineHeader mine={mine} {...this.props} />

@@ -5,6 +5,7 @@ import { Menu } from "antd";
 import { includes } from "lodash";
 import * as routes from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
+import { detectProdEnvironment } from "@/utils/environmentUtils";
 
 const { SubMenu } = Menu;
 
@@ -27,6 +28,9 @@ export class MineNavigation extends Component {
   ifActiveButton = (route) => (includes(this.props.activeButton, route) ? "active-menu-btn" : "");
 
   render() {
+    const isProd = detectProdEnvironment();
+    const isTailingsVisible = this.props.mine.mine_tailings_storage_facilities.length > 1;
+    const isReportsVisible = !isProd || isTailingsVisible;
     return (
       <Menu onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal">
         <SubMenu id={this.ifActiveButton("mine-information")} title="Mine Information">
@@ -76,22 +80,27 @@ export class MineNavigation extends Component {
             </Menu.Item>
           </Menu>
         </SubMenu>
-        <SubMenu title="Reports">
-          <Menu>
-            <Menu.Item key="Reports">
-              <Link to={routes.MINE_REPORTS.dynamicRoute(this.props.mine.mine_guid)}>
-                Code Required Reports
-              </Link>
-            </Menu.Item>
-            {this.props.mine.mine_tailings_storage_facilities.length > 0 && (
-              <Menu.Item key="Tailings">
-                <Link to={routes.MINE_TAILINGS.dynamicRoute(this.props.mine.mine_guid)}>
-                  Tailings
-                </Link>
-              </Menu.Item>
-            )}
-          </Menu>
-        </SubMenu>
+        {/* this is to prevent the Reports dropdown from being empty - condition can be removed once CRR gets merged to prod,  */}
+        {isReportsVisible && (
+          <SubMenu title="Reports">
+            <Menu>
+              {!isProd && (
+                <Menu.Item key="Reports">
+                  <Link to={routes.MINE_REPORTS.dynamicRoute(this.props.mine.mine_guid)}>
+                    Code Required Reports
+                  </Link>
+                </Menu.Item>
+              )}
+              {isTailingsVisible && (
+                <Menu.Item key="Tailings">
+                  <Link to={routes.MINE_TAILINGS.dynamicRoute(this.props.mine.mine_guid)}>
+                    Tailings
+                  </Link>
+                </Menu.Item>
+              )}
+            </Menu>
+          </SubMenu>
+        )}
       </Menu>
     );
   }
