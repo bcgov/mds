@@ -269,13 +269,6 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         store_missing=False,
         location='json')
     parser.add_argument(
-        'tenure_number_id',
-        type=int,
-        help='Tenure number for the mine.',
-        trim=True,
-        store_missing=False,
-        location='json')
-    parser.add_argument(
         'longitude',
         type=lambda x: Decimal(x) if x else None,
         help='Longitude point for the mine.',
@@ -344,8 +337,6 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             raise NotFound("Mine not found.")
 
         data = self.parser.parse_args()
-
-        tenure = data.get('tenure_number_id')
 
         lat = data.get('latitude')
         lon = data.get('longitude')

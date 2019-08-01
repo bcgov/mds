@@ -217,56 +217,6 @@ def test_post_mine_mine_status(test_client, db_session, auth_headers):
 
 
 #PUT
-def test_put_mine_tenure_mine_not_found(test_client, db_session, auth_headers):
-    test_tenure_data = {
-        "tenure_number_id": "1234568",
-    }
-    put_resp = test_client.put(
-        f'/mines/{uuid.uuid4()}', json=test_tenure_data, headers=auth_headers['full_auth_header'])
-    put_data = json.loads(put_resp.data.decode())
-    assert put_resp.status_code == 404, put_resp.response
-    assert 'not found' in put_data['message']
-
-
-def test_put_mine_tenure_invalid_length(test_client, db_session, auth_headers):
-    mine_no = MineFactory().mine_no
-
-    test_tenure_data = {
-        "tenure_number_id": "12345688",
-    }
-    put_resp = test_client.put(
-        f'/mines/{mine_no}',  json=test_tenure_data, headers=auth_headers['full_auth_header'])
-    put_data = json.loads(put_resp.data.decode())
-    assert put_resp.status_code == 400
-    assert '6 or 7 digits' in put_data['message']
-
-
-@pytest.mark.skip(reason='This functionality is not currently hooked up or in use.')
-def test_put_mine_tenure_by_mine_no(test_client, db_session, auth_headers):
-    mine_no = MineFactory().mine_no
-
-    test_tenure_data = {
-        "tenure_number_id": "1234567",
-    }
-    put_resp = test_client.put(
-        f'/mines/{mine_no}', json=test_tenure_data, headers=auth_headers['full_auth_header'])
-    put_data = json.loads(put_resp.data.decode())
-    assert put_resp.status_code == 200
-
-
-@pytest.mark.skip(reason='This functionality is not currently hooked up or in use.')
-def test_put_mine_tenure_guid(test_client, db_session, auth_headers):
-    mine_guid = MineFactory().mine_guid
-
-    test_tenure_data = {
-        "tenure_number_id": "1234599",
-    }
-    put_resp = test_client.put(
-        f'/mines/{mine_guid}', json=test_tenure_data, headers=auth_headers['full_auth_header'])
-    put_data = json.loads(put_resp.data.decode())
-    assert put_resp.status_code == 200
-
-
 def test_put_mine_name(test_client, db_session, auth_headers):
     mine_guid = MineFactory().mine_guid
 
