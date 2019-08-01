@@ -1,0 +1,5 @@
+UPDATE mine_region set description = 'South West' where description = 'South West Region'
+UPDATE mine_region set description = 'South Central' where description = 'South Central Region'
+UPDATE mine_region set description = 'North West' where description = 'North West Region'
+UPDATE mine_region set description = 'North East' where description = 'North East Region'
+UPDATE mine_region set description = 'South East' where description = 'South East Region'
