@@ -7,6 +7,7 @@ import { Menu, Icon, Button, Dropdown, Popconfirm, Tooltip } from "antd";
 import { openModal, closeModal } from "@/actions/modalActions";
 import { fetchPermits } from "@/actionCreators/permitActionCreator";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import { getUserInfo } from "@/selectors/authenticationSelectors";
 import * as Permission from "@/constants/permissions";
 import {
   fetchMineRecordById,
@@ -47,7 +48,6 @@ import { fetchMineComplianceInfo } from "@/actionCreators/complianceActionCreato
 import CustomPropTypes from "@/customPropTypes";
 import Loading from "@/components/common/Loading";
 import { formatDate } from "@/utils/helpers";
-import { getUserAccessData } from "@/selectors/authenticationSelectors";
 import MineNavigation from "@/components/mine/MineNavigation";
 import { storeRegionOptions, storeTenureTypes } from "@/actions/staticContentActions";
 import { storeVariances } from "@/actions/varianceActions";
@@ -64,6 +64,7 @@ import RefreshButton from "@/components/common/RefreshButton";
 const propTypes = {
   match: CustomPropTypes.match.isRequired,
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
+  userInfo: PropTypes.shape({ preferred_username: PropTypes.string }),
   subscribed: PropTypes.bool.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchPermits: PropTypes.func.isRequired,
@@ -75,13 +76,26 @@ const propTypes = {
   fetchMineComplianceCodes: PropTypes.func.isRequired,
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
-  mineComplianceInfo: CustomPropTypes.mineComplianceInfo,
   fetchMineComplianceInfo: PropTypes.func.isRequired,
   fetchApplications: PropTypes.func.isRequired,
   fetchMineIncidentFollowActionOptions: PropTypes.func.isRequired,
   fetchMineIncidentDeterminationOptions: PropTypes.func.isRequired,
   fetchMineIncidentStatusCodeOptions: PropTypes.func.isRequired,
   fetchVarianceStatusOptions: PropTypes.func.isRequired,
+  fetchVariancesByMine: PropTypes.func.isRequired,
+  fetchRegionOptions: PropTypes.func.isRequired,
+  fetchMineDisturbanceOptions: PropTypes.func.isRequired,
+  fetchMineCommodityOptions: PropTypes.func.isRequired,
+  fetchPermitStatusOptions: PropTypes.func.isRequired,
+  fetchApplicationStatusOptions: PropTypes.func.isRequired,
+  fetchVarianceDocumentCategoryOptions: PropTypes.func.isRequired,
+  fetchMineReportDefinitionOptions: PropTypes.func.isRequired,
+  fetchInspectors: PropTypes.func.isRequired,
+  setMineVerifiedStatus: PropTypes.func.isRequired,
+  fetchMineVerifiedStatuses: PropTypes.func.isRequired,
+  setMineVerifiedStatus: PropTypes.func.isRequired,
+  fetchMineVerifiedStatuses: PropTypes.func.isRequired,
+  fetchVariancesByMine: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -174,10 +188,12 @@ export class MineDashboard extends Component {
 
   loadMineData(id) {
     this.props.fetchMineRecordById(id).then(() => {
-      this.props.fetchApplications({ mine_guid: this.props.mines[id].mine_guid });
-      this.props.fetchPermits(this.props.mines[id].mine_guid);
-      this.props.fetchVariancesByMine({ mineGuid: id });
+      const mine = this.props.mines[id];
+      this.props.fetchApplications({ mine_guid: mine.mine_guid });
+      this.props.fetchPermits(mine.mine_guid);
+      this.props.fetchVariancesByMine({ mineGuid: mine.mine_guid });
       this.setState({ isLoaded: true });
+      this.props.fetchMineComplianceInfo(mine.mine_no, true);
       this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
       this.props.fetchApplications({ mine_guid: id });
     });
@@ -314,7 +330,7 @@ export class MineDashboard extends Component {
                 </Dropdown>
               </div>
             </div>
-            <MineNavigation mine={mine} activeButton={this.state.activeButton} />
+            <MineNavigation mine={mine} activeButton={this.state.activeNavButton} />
             <MineDashboardRoutes />
           </div>
         )}
@@ -326,6 +342,7 @@ export class MineDashboard extends Component {
 const mapStateToProps = (state) => ({
   mines: getMines(state),
   subscribed: getIsUserSubscribed(state),
+  userInfo: getUserInfo(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
