@@ -4,12 +4,11 @@ import { Field, reduxForm } from "redux-form";
 import { Form, Button, Col, Row, Icon } from "antd";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
-// import { phoneNumber, maxLength } from "@/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
-  handleSearch: PropTypes.func.isRequired,
+  handleVarianceSearch: PropTypes.func.isRequired,
   // handleNameFieldReset: PropTypes.func.isRequired,
   toggleAdvancedSearch: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
@@ -41,33 +40,21 @@ const validate = (values) => {
 };
 
 export class VarianceSearchForm extends Component {
-  // state = {
-  //   contactType: this.props.initialValues.type,
-  // };
-
   handleReset = () => {
     this.props.reset();
-    this.props.handleSearch({}, true);
+    this.props.handleVarianceSearch({}, true);
   };
 
-  // handleContactTypeChange = (chars, value) => {
-  //   // this.setState({ contactType: value });
-  //   // Set the first,last, and party names to null
-  //   this.props.handleNameFieldReset();
-  // };
-
   render() {
-    // console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%");
-    // console.log(this.props.complianceCodes);
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit} onReset={this.handleReset}>
         <Row gutter={6}>
           <Col md={24} xs={24}>
             <Field
-              id="party_name"
-              name="party_name"
+              id="search"
+              name="search"
               component={renderConfig.FIELD}
-              placeholder="Organization Name"
+              placeholder="Search by code section, mine name, or mine number"
             />
           </Col>
         </Row>
@@ -76,16 +63,14 @@ export class VarianceSearchForm extends Component {
             <Row gutter={6}>
               <Col md={24} xs={24}>
                 <Field
-                  id="compilance_code"
-                  name="compilance_code"
+                  id="compliance_code"
+                  name="compliance_code"
                   placeholder="Select Compliance Code"
                   component={renderConfig.MULTI_SELECT}
                   data={this.props.complianceCodes}
                 />
               </Col>
             </Row>
-            {/* date range issue data */}
-            {/* date range expiry data */}
             <Row gutter={6}>
               <Col md={12} xs={24}>
                 <Field
@@ -151,37 +136,6 @@ export class VarianceSearchForm extends Component {
             </Row>
           </div>
         )}
-
-        {/* // <div>
-          //   <Row gutter={6}>
-          //     <Col md={8} xs={24}>
-          //       <Field 
-          //         id="email"
-          //         name="email"
-          //         placeholder="Contact Email"
-          //         component={renderConfig.FIELD}
-          //       />
-          //     </Col>
-          //     <Col md={8} xs={24}>
-          //       <Field
-          //         id="phone_no"
-          //         name="phone_no"
-          //         placeholder="Phone Number"
-          //         component={renderConfig.FIELD}
-          //         validate={[phoneNumber, maxLength(12)]}
-          //       />
-          //     </Col>
-          //     <Col md={8} xs={24}>
-          //       <Field
-          //         id="role"
-          //         name="role"
-          //         component={renderConfig.SELECT}
-          //         data={this.props.relationshipTypes}
-          //       />
-          //     </Col>
-          //   </Row>
-          // </div>
-        */}
         <div className="left center-mobile">
           <Button className="btn--dropdown" onClick={this.props.toggleAdvancedSearch}>
             {this.props.isAdvanceSearch ? "Collapse Filters" : "Expand Filters"}

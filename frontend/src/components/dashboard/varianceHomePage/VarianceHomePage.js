@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { debounce, isEmpty } from "lodash";
+import queryString from "query-string";
 import moment from "moment";
 import PropTypes from "prop-types";
 import {
@@ -32,6 +34,7 @@ import { getVariances, getVariancePageData } from "@/selectors/varianceSelectors
 import { VarianceTable } from "@/components/dashboard/customHomePage/VarianceTable";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import * as Strings from "@/constants/strings";
+import * as router from "@/constants/routes";
 import { fetchInspectors } from "@/actionCreators/partiesActionCreator";
 import VarianceSearch from "./VarianceSearch";
 /**
@@ -52,14 +55,55 @@ const propTypes = {
   fetchMineCommodityOptions: PropTypes.func.isRequired,
   fetchVarianceStatusOptions: PropTypes.func.isRequired,
   fetchVariances: PropTypes.func.isRequired,
+  location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
   variancePageData: CustomPropTypes.variancePageData.isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
   filterVarianceStatusOptions: CustomPropTypes.filterOptions.isRequired,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
 };
 
+const joinOrRemove = (param, key) => (isEmpty(param) ? {} : { [key]: param.join(",") });
+const formatParams = ({
+  region = [],
+  compliance_code = [],
+  // issue_date_min = [],
+  // issue_date_max = [],
+  // expiry_date_max = [],
+  // expiry_date_min = [],
+  ...remainingParams
+}) => ({
+  ...joinOrRemove(region, "region"),
+  ...joinOrRemove(compliance_code, "compliance_code"),
+  // ...joinOrRemove(issue_date_min, "issue_date_min"),
+  // ...joinOrRemove(issue_date_max, "issue_date_max"),
+  // ...joinOrRemove(expiry_date_max, "expiry_date_max"),
+  // ...joinOrRemove(expiry_date_min, "expiry_date_min"),
+  ...remainingParams,
+});
+
 export class CustomHomePage extends Component {
+  constructor(props) {
+    super(props);
+    this.handleVarianceSearchDebounced = debounce(this.handleVarianceSearch, 1000);
+    // TODO: fix this method and remove not variance page stuff
+    this.state = {
+      params: {
+        page: String.DEFAULT_PAGE,
+        per_page: String.DEFAULT_PER_PAGE,
+        major: [],
+        region: [],
+        compliance_code: [],
+        issue_date_min: [],
+        issue_date_max: [],
+        expiry_date_max: [],
+        expiry_date_min: [],
+        search: [],
+      },
+    };
+  }
+
   state = {
     variancesLoaded: false,
     params: {
@@ -69,7 +113,23 @@ export class CustomHomePage extends Component {
     },
   };
 
+  // TODO: fix this method and remove not variance page stuff
   componentDidMount() {
+    const params = this.props.location.search;
+    console.log("%%%%%%%%%Component did mount%%%%%%%");
+    console.log(params);
+    if (params) {
+      this.renderDataFromURL(params);
+      console.log(this.state);
+    } else {
+      this.props.history.push(
+        router.VARIANCE_DASHBOARD.dynamicRoute({
+          page: String.DEFAULT_PAGE,
+          per_page: String.DEFAULT_PER_PAGE,
+        })
+      );
+    }
+
     this.props.fetchVariances(this.state.params).then(() => {
       this.setState({ variancesLoaded: true });
     });
@@ -81,6 +141,62 @@ export class CustomHomePage extends Component {
     this.props.fetchVarianceStatusOptions();
     this.props.fetchVarianceDocumentCategoryOptions();
   }
+
+  componentWillUnmount() {
+    this.handleVarianceSearchDebounced.cancel();
+    this.setState({
+      params: {},
+    });
+  }
+
+  // TODO: fix this method and remove not variance page stuff
+  renderDataFromURL = (params) => {
+    const {
+      issue_date_min,
+      issue_date_max,
+      expiry_date_max,
+      expiry_date_min,
+      region,
+      compliance_code,
+      major,
+      search,
+      ...remainingParams
+    } = queryString.parse(params);
+    const format = (param) => (param ? param.split(",").filter((x) => x) : []);
+    this.setState({
+      params: {
+        issue_date_min,
+        issue_date_max,
+        expiry_date_max,
+        expiry_date_min,
+        region: format(region),
+        compliance_code: format(compliance_code),
+        major,
+        search,
+        ...remainingParams,
+      },
+    });
+  };
+
+  // TODO: fix this method and remove not variance page stuff
+  handleVarianceSearch = (searchParams, clear = false) => {
+    console.log("%%%%%%%%%%%%Search Handled%%%%%%%%%%%%%%%");
+    const formattedSearchParams = formatParams(searchParams);
+    const persistedParams = clear ? {} : formatParams(this.state.params);
+
+    this.props.history.push(
+      router.VARIANCE_DASHBOARD.dynamicRoute({
+        // Start from existing state
+        ...persistedParams,
+        // Overwrite prev params with any newly provided search params
+        ...formattedSearchParams,
+        // Reset page number
+        page: String.DEFAULT_PAGE,
+        // Retain per_page if present
+        per_page: this.state.params.per_page ? this.state.params.per_page : String.DEFAULT_PER_PAGE,
+      })
+    );
+  };
 
   handleVariancePageChange = (page, per_page) => {
     this.setState({ variancesLoaded: false });
@@ -170,8 +286,6 @@ export class CustomHomePage extends Component {
   };
 
   render() {
-    // console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-    // console.log(this.props.getDropdownHSRCMComplianceCodes);
     return (
       <div className="landing-page">
         <div className="landing-page__header">
@@ -181,7 +295,7 @@ export class CustomHomePage extends Component {
           <VarianceSearch
             handleNameFieldReset={this.handleNameFieldReset}
             initialValues={this.state.params}
-            handleSearch={this.handleSearch}
+            handleVarianceSearch={this.handleVarianceSearchDebounced}
             mineRegionOptions={this.props.mineRegionOptions}
             // eslint-disable-next-line react/prop-types
             complianceCodes={this.props.getDropdownHSRCMComplianceCodes}
@@ -194,6 +308,7 @@ export class CustomHomePage extends Component {
               variances={this.props.variances}
               pageData={this.props.variancePageData}
               handlePageChange={this.handleVariancePageChange}
+              handleVarianceSearch={this.handleVarianceSearch}
               params={this.state.params}
               openEditVarianceModal={this.openEditVarianceModal}
               openViewVarianceModal={this.openViewVarianceModal}

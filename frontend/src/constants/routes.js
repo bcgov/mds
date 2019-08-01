@@ -75,6 +75,8 @@ export const REPORTING_DASHBOARD = {
 
 export const VARIANCE_DASHBOARD = {
   route: "/dashboard/variance",
+  dynamicRoute: ({ page, per_page, ...params }) =>
+    `/dashboard/variance/?${queryString.stringify({ page, per_page, ...params }, { sort: false })}`,
   component: VarianceHomePage,
 };
 

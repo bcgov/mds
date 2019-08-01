@@ -55,23 +55,25 @@ const hideColumn = (condition) => (condition ? "column-hide" : "");
 
 export class MineVarianceTable extends Component {
   transformRowData = (variances, codeHash, statusHash) =>
-    variances.map((variance) => ({
-      key: variance.variance_guid,
-      variance,
-      mineName: variance.mine_name || Strings.EMPTY_FIELD,
-      mineGuid: variance.mine_guid,
-      status: statusHash[variance.variance_application_status_code],
-      compliance_article_id: codeHash[variance.compliance_article_id] || Strings.EMPTY_FIELD,
-      expiry_date:
-        (variance.expiry_date && formatDate(variance.expiry_date)) || Strings.EMPTY_FIELD,
-      issue_date: formatDate(variance.issue_date) || Strings.EMPTY_FIELD,
-      note: variance.note,
-      received_date: formatDate(variance.received_date) || Strings.EMPTY_FIELD,
-      isOverdue: variance.expiry_date && Date.parse(variance.expiry_date) < new Date(),
-      leadInspector:
-        this.props.inspectorsHash[variance.inspector_party_guid] || Strings.EMPTY_FIELD,
-      documents: variance.documents,
-    }));
+    variances.map((variance) => {
+      return {
+        key: variance.variance_guid,
+        variance,
+        mineName: variance.mine_name || Strings.EMPTY_FIELD,
+        mineGuid: variance.mine_guid,
+        status: statusHash[variance.variance_application_status_code],
+        compliance_article_id: codeHash[variance.compliance_article_id] || Strings.EMPTY_FIELD,
+        expiry_date:
+          (variance.expiry_date && formatDate(variance.expiry_date)) || Strings.EMPTY_FIELD,
+        issue_date: formatDate(variance.issue_date) || Strings.EMPTY_FIELD,
+        note: variance.note,
+        received_date: formatDate(variance.received_date) || Strings.EMPTY_FIELD,
+        isOverdue: variance.expiry_date && Date.parse(variance.expiry_date) < new Date(),
+        leadInspector:
+          this.props.inspectorsHash[variance.inspector_party_guid] || Strings.EMPTY_FIELD,
+        documents: variance.documents,
+      };
+    });
 
   render() {
     const columns = [
@@ -237,22 +239,6 @@ export class MineVarianceTable extends Component {
                 <img src={EDIT_OUTLINE} alt="Edit" className="icon-svg-filter" />
               </Button>
             </AuthorizationWrapper>
-            <Button
-              type="primary"
-              size="small"
-              ghost
-              onClick={() => this.props.openViewVarianceModal(record.variance)}
-            >
-              <Icon type="eye" alt="View" className="icon-sm" />
-            </Button>
-          </div>
-        ),
-      },
-      {
-        title: "",
-        dataIndex: "variance",
-        render: (text, record) => (
-          <div title="" align="right">
             <Button
               type="primary"
               size="small"

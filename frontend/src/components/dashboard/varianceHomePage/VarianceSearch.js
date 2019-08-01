@@ -8,11 +8,11 @@ import CustomPropTypes from "@/customPropTypes";
  * @class VarianceSearch supports searching for a filtered list of variances.
  */
 const propTypes = {
-  handleSearch: PropTypes.func.isRequired,
+  handleVarianceSearch: PropTypes.func.isRequired,
   handleNameFieldReset: PropTypes.func.isRequired,
-  // partyRelationshipTypesList: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   initialValues: PropTypes.objectOf(PropTypes.string),
   mineRegionOptions: CustomPropTypes.options.isRequired,
+  complianceCodes: CustomPropTypes.options.isRequired,
 };
 
 const defaultProps = {
@@ -22,7 +22,6 @@ const defaultProps = {
 // const checkAdvancedSearch = ({ status, region, tenure, commodity, tsf, major }) =>
 //   tsf || major || some([status, region, tenure, commodity], negate(isEmpty));
 
-// eslint-disable-next-line react/prefer-stateless-function
 export class VarianceSearch extends Component {
   state = {
     isAdvanceSearch: false,
@@ -33,8 +32,6 @@ export class VarianceSearch extends Component {
   };
 
   render() {
-    // console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%");
-    // console.log(this.props.complianceCodes);
     return (
       <div>
         <Row>
@@ -42,21 +39,11 @@ export class VarianceSearch extends Component {
             <span className="advanced-search__container">
               <VarianceSearchForm
                 handleNameFieldReset={this.props.handleNameFieldReset}
-                onSubmit={this.props.handleSearch}
-                handleSearch={this.props.handleSearch}
+                onSubmit={this.props.handleVarianceSearch}
+                handleVarianceSearch={this.props.handleVarianceSearch}
                 toggleAdvancedSearch={this.toggleAdvancedSearch}
                 isAdvanceSearch={this.state.isAdvanceSearch}
-                // partyTypeOptions={[
-                //   { value: "PER", label: "Person" },
-                //   { value: "ORG", label: "Organization" },
-                // ]}
-                // relationshipTypes={[
-                //   { value: "", label: "All Roles" },
-                //   { value: "NONE", label: "No Role Assigned" },
-                //   ...this.props.partyRelationshipTypesList,
-                // ]}
                 initialValues={this.props.initialValues}
-                // eslint-disable-next-line react/prop-types
                 complianceCodes={this.props.complianceCodes}
                 mineRegionOptions={this.props.mineRegionOptions}
               />
