@@ -16,7 +16,6 @@ from ..models.mine_type_detail import MineTypeDetail
 from .mine_map import MineMapResource
 
 from ..models.mine import Mine
-from ..models.mineral_tenure_xref import MineralTenureXref
 from ....utils.random import generate_mine_no
 from app.extensions import api, cache, db
 from ....utils.access_decorators import requires_role_mine_edit, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
@@ -373,20 +372,6 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             mine.longitude = data['longitude']
             refresh_cache = True
         mine.save()
-
-        # Tenure validation
-        if tenure:
-            tenure_exists = MineralTenureXref.find_by_tenure(tenure)
-            if tenure_exists:
-                if tenure_exists.mine_guid == mine.mine_guid:
-                    raise BadRequest('Error: Field tenure_id already exists for this mine.')
-            tenure = MineralTenureXref(
-                mineral_tenure_xref_guid=uuid.uuid4(),
-                mine_guid=mine.mine_guid,
-                tenure_number_id=tenure)
-
-            tenure.save()
-
 
         _mine_status_processor(data.get('mine_status'), data.get('status_date'), mine)
 
