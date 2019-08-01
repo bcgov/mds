@@ -21,11 +21,6 @@ class MineIncidentRecommendation(AuditMixin, Base):
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
 
-    def soft_delete(self):
-        self.deleted_ind = True
-        self.save()
-
-
     @classmethod
     def create(cls, recommendation, mine_incident_id, add_to_session=True):
         new_recommendation = cls(recommendation=recommendation, mine_incident_id=mine_incident_id)

@@ -199,7 +199,7 @@ MINE_INCIDENT_MODEL = api.model(
         'status_code': fields.String,
         'followup_investigation_type_code': fields.String,
         'followup_inspection': fields.Boolean,
-        'followup_inspection_date': DateTime,
+        'followup_inspection_date': fields.Date,
         'determination_inspector_party_guid': fields.String,
         'mms_inspector_initials' : fields.String(attribute='mms_insp_cd'),
         'dangerous_occurrence_subparagraph_ids': fields.List(fields.Integer),
@@ -218,6 +218,7 @@ VARIANCE_DOCUMENT_MODEL = api.inherit(
 VARIANCE_MODEL = api.model(
     'Variance', {
         'variance_guid': fields.String,
+        'variance_no': fields.Integer,
         'mine_guid': fields.String,
         'compliance_article_id': fields.Integer,
         'variance_application_status_code': fields.String,
@@ -270,6 +271,7 @@ MINE_REPORT_SUBMISSION_MODEL= api.model(
 MINE_REPORT_MODEL = api.model(
     'MineReportModel', {
         'mine_report_guid':fields.String,
+        'report_name':fields.String,
         'due_date':fields.Date,
         'received_date': fields.Date,
         'submission_year':fields.Integer,
