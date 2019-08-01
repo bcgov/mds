@@ -120,6 +120,7 @@ class MineReportResource(Resource, UserMixin):
         location='json',
         store_missing=False,
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
+    parser.add_argument('updated_documents', type=list, location='json', store_missing=False)
 
     @api.marshal_with(MINE_REPORT_MODEL, code=200)
     @requires_role_view_all
