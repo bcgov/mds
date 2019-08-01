@@ -276,31 +276,6 @@ MINE_OPERATION_STATUS_SUB_REASON = {
     }
 }
 
-
-#Region Code
-MINE_REGION_OPTIONS = [
-    {
-        'mine_region_code': 'SW',
-        'description': 'South West'
-    },
-    {
-        'mine_region_code': 'SC',
-        'description': 'South Central'
-    },
-     {
-        'mine_region_code': 'NW',
-        'description': 'North West'
-    },
-    {
-        'mine_region_code': 'NE',
-        'description': 'North East'
-    },
-    {
-        'mine_region_code': 'SE',
-        'description': 'South East'
-    }
-]
-
 #Cache prefixes
 NRIS_MAJOR_MINE_LIST = "major_mine_list"
 NRIS_TOKEN = 'nris:token'

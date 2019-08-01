@@ -4,8 +4,6 @@ from ....utils.access_decorators import requires_role_view_all
 from ....utils.resources_mixins import UserMixin, ErrorMixin
 from ...region.models.region import MineRegion
 
-from ....constants import MINE_REGION_OPTIONS
-
 MINE_REGION_OPTION = api.model('MineRegion', {
     'mine_region_code': fields.String,
     'description': fields.String
