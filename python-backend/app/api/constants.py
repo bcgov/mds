@@ -205,22 +205,6 @@ DISTURBANCE_CODES_CONFIG = {
     }
 }
 
-
-# Status Code for party_type_code
-PARTY_STATUS_CODE = {
-    'per': 'PER',
-    'org': 'ORG'
-}
-
-
-# Status Code for permit_status_code
-PERMIT_STATUS_CODE = {
-    'choices': ['O', 'C'],
-    'open': 'O',
-    'closed': 'C'
-}
-
-
 MINE_OPERATION_STATUS = {
     'abandoned': {
         'value': 'ABN',
