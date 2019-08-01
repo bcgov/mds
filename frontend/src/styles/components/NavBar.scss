@@ -1,3 +1,4 @@
+// TOP LEVEL MENU
 .menu {
   @include flex;
   position: fixed;
@@ -91,4 +92,24 @@
   background-color: $primary-btn-color;
   border: none;
   border-radius: 0;
+  border-top: 1px solid #5e46a1;
+  position: inherit;
+
+  &:hover {
+    color: $pure-white;
+  }
+}
+
+// MINE SUMMARY NAVIGATION
+
+.sub-menu {
+  a,
+  link {
+    color: $darkest-grey;
+    text-decoration: none;
+    &:hover {
+      color: $violet;
+    }
+  }
+  background-color: $light-grey;
 }

@@ -222,34 +222,10 @@
   color: $darkest-grey;
   background-color: $light-grey;
 }
-// .ant-menu-submenu-title:hover {
-//   color: $pure-white;
-//   height: 100%;
-//   background-color: $primary-btn-color;
-//   border-radius: 0;
-// }
 
-// .ant-menu-vertical {
-//   color: $darkest-grey;
-//   background-color: $light-grey;
-// }
-
-// .ant-menu-item:hover,
-// .ant-menu-item-active,
-// .ant-menu:not(.ant-menu-inline) .ant-menu-submenu-open,
-// .ant-menu-submenu-active,
-// .ant-menu-submenu-title:hover {
-//   color: $pure-white;
-//   height: 100%;
-//   background-color: $primary-btn-color;
-//   border-radius: 0;
-
-//   a,
-//   link {
-//     color: inherit !important;
-//     text-decoration: none !important;
-//   }
-// }
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+  background-color: $violet;
+}
 
 .highlight {
   padding: 0;

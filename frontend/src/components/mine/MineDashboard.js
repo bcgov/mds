@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -29,9 +28,6 @@ import {
   fetchPermitStatusOptions,
   fetchApplicationStatusOptions,
   fetchMineComplianceCodes,
-  fetchMineIncidentFollowActionOptions,
-  fetchMineIncidentDeterminationOptions,
-  fetchMineIncidentStatusCodeOptions,
   fetchVarianceDocumentCategoryOptions,
   fetchVarianceStatusOptions,
   fetchMineReportDefinitionOptions,
@@ -62,9 +58,10 @@ import RefreshButton from "@/components/common/RefreshButton";
  */
 
 const propTypes = {
+  location: PropTypes.shape({ search: PropTypes.string, pathname: PropTypes.string }).isRequired,
   match: CustomPropTypes.match.isRequired,
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
-  userInfo: PropTypes.shape({ preferred_username: PropTypes.string }),
+  userInfo: PropTypes.shape({ preferred_username: PropTypes.string }).isRequired,
   subscribed: PropTypes.bool.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchPermits: PropTypes.func.isRequired,
@@ -78,9 +75,6 @@ const propTypes = {
   fetchPartyRelationships: PropTypes.func.isRequired,
   fetchMineComplianceInfo: PropTypes.func.isRequired,
   fetchApplications: PropTypes.func.isRequired,
-  fetchMineIncidentFollowActionOptions: PropTypes.func.isRequired,
-  fetchMineIncidentDeterminationOptions: PropTypes.func.isRequired,
-  fetchMineIncidentStatusCodeOptions: PropTypes.func.isRequired,
   fetchVarianceStatusOptions: PropTypes.func.isRequired,
   fetchVariancesByMine: PropTypes.func.isRequired,
   fetchRegionOptions: PropTypes.func.isRequired,
@@ -93,13 +87,6 @@ const propTypes = {
   fetchInspectors: PropTypes.func.isRequired,
   setMineVerifiedStatus: PropTypes.func.isRequired,
   fetchMineVerifiedStatuses: PropTypes.func.isRequired,
-  setMineVerifiedStatus: PropTypes.func.isRequired,
-  fetchMineVerifiedStatuses: PropTypes.func.isRequired,
-  fetchVariancesByMine: PropTypes.func.isRequired,
-};
-
-const defaultProps = {
-  mineComplianceInfo: {},
 };
 
 export class MineDashboard extends Component {
@@ -134,7 +121,14 @@ export class MineDashboard extends Component {
     if (this.props.match.params.id !== nextProps.match.params.id) {
       this.loadMineData(id);
     }
+    if (this.props.location !== nextProps.location) {
+      this.handleActiveButton(nextProps.location.pathname);
+    }
   }
+
+  handleActiveButton = (path) => {
+    this.setState({ activeNavButton: path });
+  };
 
   handleVerifyMineData = (e) => {
     const { id } = this.props.match.params;
@@ -374,9 +368,6 @@ const mapDispatchToProps = (dispatch) =>
       fetchVariancesByMine,
       fetchMineComplianceCodes,
       fetchInspectors,
-      fetchMineIncidentFollowActionOptions,
-      fetchMineIncidentDeterminationOptions,
-      fetchMineIncidentStatusCodeOptions,
       fetchVarianceStatusOptions,
       setMineVerifiedStatus,
       fetchMineVerifiedStatuses,
@@ -385,7 +376,6 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 MineDashboard.propTypes = propTypes;
-MineDashboard.defaultProps = defaultProps;
 
 export default connect(
   mapStateToProps,
