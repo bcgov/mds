@@ -1,6 +1,6 @@
-CREATE SCHEMA IF NOT EXISTS now;
+CREATE SCHEMA IF NOT EXISTS NOW_Submissions;
 
-CREATE TABLE now.application_start_stop (
+CREATE TABLE NOW_Submissions.application_start_stop (
     MESSAGEID integer PRIMARY KEY,
     NRSOSAPPLICATIONID character varying(50),
     SUBMITTEDDATE date,
@@ -12,7 +12,7 @@ CREATE TABLE now.application_start_stop (
     PROCESSEDDATE date
 );
 
-CREATE TABLE now.client (
+CREATE TABLE NOW_Submissions.client (
     CLIENTID integer PRIMARY KEY,
     TYPE character varying(30),
     ORG_LEGALNAME character varying(250),
@@ -38,7 +38,7 @@ CREATE TABLE now.client (
     MAILINGADDRESSPOSTALZIP character varying(10)
 );
 
-CREATE TABLE now.application_nda (
+CREATE TABLE NOW_Submissions.application_nda (
     MESSAGEID integer PRIMARY KEY,
     TRACKINGNUMBER integer,
     APPLICATIONTYPE character varying(100),
@@ -66,18 +66,18 @@ CREATE TABLE now.application_nda (
     PROCESSEDDATE date,
     NRSOSAPPLICATIONID character varying(50),
 
-    FOREIGN KEY (APPLICANTCLIENTID) REFERENCES now.client(CLIENTID) DEFERRABLE INITIALLY DEFERRED,
-    FOREIGN KEY (SUBMITTERCLIENTID) REFERENCES now.client(CLIENTID) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (APPLICANTCLIENTID) REFERENCES NOW_Submissions.client(CLIENTID) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY (SUBMITTERCLIENTID) REFERENCES NOW_Submissions.client(CLIENTID) DEFERRABLE INITIALLY DEFERRED
 );
 
-CREATE TABLE now.equipment(
+CREATE TABLE NOW_Submissions.equipment(
     EQUIPMENTID integer PRIMARY KEY,
 	TYPE character varying(4000),
 	SIZECAPACITY character varying(4000),
 	QUANTITY integer
 );
 
-CREATE TABLE now.application (
+CREATE TABLE NOW_Submissions.application (
     MESSAGEID integer PRIMARY KEY,
     TRACKINGNUMBER integer,
     APPLICATIONTYPE character varying(100),
@@ -215,11 +215,11 @@ CREATE TABLE now.application (
     ISBLASTSELECT character varying(3),
     ISTIMBERSELECT character varying(3),
 
-    FOREIGN KEY (APPLICANTCLIENTID) REFERENCES now.client(CLIENTID) DEFERRABLE INITIALLY DEFERRED,
-    FOREIGN KEY (SUBMITTERCLIENTID) REFERENCES now.client(CLIENTID) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (APPLICANTCLIENTID) REFERENCES NOW_Submissions.client(CLIENTID) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY (SUBMITTERCLIENTID) REFERENCES NOW_Submissions.client(CLIENTID) DEFERRABLE INITIALLY DEFERRED
 );
 
-CREATE TABLE now.contact (
+CREATE TABLE NOW_Submissions.contact (
     ID serial PRIMARY KEY,
     MESSAGEID integer,
     TYPE character varying(30),
@@ -247,11 +247,12 @@ CREATE TABLE now.contact (
     MAILINGADDRESSPROVSTATE character varying(200),
     MAILINGADDRESSCOUNTRY character varying(50),
     MAILINGADDRESSPOSTALZIP character varying(10),
+    SEQ_NO integer,
 
-    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 );
 
-CREATE TABLE now.settling_pond (
+CREATE TABLE NOW_Submissions.settling_pond (
     SETTLINGPONDID integer PRIMARY KEY,
 	PONDID character varying(4000),
 	WATERSOURCE character varying(4000),
@@ -263,7 +264,7 @@ CREATE TABLE now.settling_pond (
 	TIMBERVOLUME numeric(14,2)
 );
 
-CREATE TABLE now.status_update (
+CREATE TABLE NOW_Submissions.status_update (
     ID serial PRIMARY KEY,
     BUSINESSAREANUMBER character varying(50),
 	STATUS character varying(60),
@@ -277,17 +278,17 @@ CREATE TABLE now.status_update (
 	APPLICATIONTYPE character varying(100)
 );
 
-CREATE TABLE now.surface_bulk_sample_activity (
+CREATE TABLE NOW_Submissions.surface_bulk_sample_activity (
     ID serial PRIMARY KEY,
     MESSAGEID integer,
 	TYPE character varying(4000),
 	DISTURBEDAREA numeric(14,2),
 	TIMBERVOLUME numeric(14,2),
 
-    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 );
 
-CREATE TABLE now.document (
+CREATE TABLE NOW_Submissions.document (
     ID serial PRIMARY KEY,
     MESSAGEID integer,
 	DOCUMENTURL character varying(4000),
@@ -295,10 +296,10 @@ CREATE TABLE now.document (
 	DOCUMENTTYPE character varying(4000),
 	DESCRIPTION character varying(4000),
 
-    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 );
 
-CREATE TABLE now.document_nda (
+CREATE TABLE NOW_Submissions.document_nda (
     ID serial PRIMARY KEY,
     MESSAGEID integer,
 	DOCUMENTURL character varying(4000),
@@ -306,10 +307,10 @@ CREATE TABLE now.document_nda (
 	DOCUMENTTYPE character varying(4000),
 	DESCRIPTION character varying(4000),
 
-    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 );
 
-CREATE TABLE now.document_start_stop (
+CREATE TABLE NOW_Submissions.document_start_stop (
     ID serial PRIMARY KEY,
     MESSAGEID integer,
 	DOCUMENTURL character varying(4000),
@@ -317,10 +318,10 @@ CREATE TABLE now.document_start_stop (
 	DOCUMENTTYPE character varying(4000),
 	DESCRIPTION character varying(4000),
 
-    FOREIGN KEY (MESSAGEID) REFERENCES now.application_start_stop(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application_start_stop(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 );
 
-CREATE TABLE now.placer_activity (
+CREATE TABLE NOW_Submissions.placer_activity (
     PLACERACTIVITYID integer PRIMARY KEY,
 	TYPE character varying(4000),
 	QUANTITY integer,
@@ -331,17 +332,17 @@ CREATE TABLE now.placer_activity (
 	TIMBERVOLUME numeric(14,2)
 );
 
-CREATE TABLE now.sand_grv_qry_activity (
+CREATE TABLE NOW_Submissions.sand_grv_qry_activity (
     ID serial PRIMARY KEY,
 	MESSAGEID integer,
 	TYPE character varying(4000),
 	DISTURBEDAREA numeric(14,2),
 	TIMBERVOLUME numeric(14,2),
 
-    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 );
 
-CREATE TABLE now.under_exp_new_activity (
+CREATE TABLE NOW_Submissions.under_exp_new_activity (
     ID serial PRIMARY KEY,
 	MESSAGEID integer,
 	TYPE character varying(4000),
@@ -353,10 +354,10 @@ CREATE TABLE now.under_exp_new_activity (
 	HEIGHT numeric(14,1),
 	SEQ_NO integer,
 
-    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 );
 
-CREATE TABLE now.under_exp_rehab_activity (
+CREATE TABLE NOW_Submissions.under_exp_rehab_activity (
     ID serial PRIMARY KEY,
 	MESSAGEID integer,
 	TYPE character varying(4000),
@@ -368,10 +369,10 @@ CREATE TABLE now.under_exp_rehab_activity (
 	HEIGHT numeric(14,1),
 	SEQ_NO integer,
 
-    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 );
 
-CREATE TABLE now.under_exp_surface_activity (
+CREATE TABLE NOW_Submissions.under_exp_surface_activity (
     ID serial PRIMARY KEY,
 	MESSAGEID integer,
 	TYPE character varying(4000),
@@ -379,10 +380,10 @@ CREATE TABLE now.under_exp_surface_activity (
 	DISTURBEDAREA numeric(14,2),
 	TIMBERVOLUME numeric(14,2),
 
-    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 );
 
-CREATE TABLE now.water_source_activity (
+CREATE TABLE NOW_Submissions.water_source_activity (
     ID serial PRIMARY KEY,
 	MESSAGEID integer,
 	SOURCEWATERSUPPLY character varying(4000),
@@ -393,74 +394,74 @@ CREATE TABLE now.water_source_activity (
 	LOCATIONWATERINTAKE character varying(4000),
 	SEQ_NO integer,
 
-    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 );
 
-CREATE TABLE now.existing_placer_activity_xref (
+CREATE TABLE NOW_Submissions.existing_placer_activity_xref (
     MESSAGEID integer,
 	PLACERACTIVITYID integer,
 
-    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED,
-    FOREIGN KEY (PLACERACTIVITYID) REFERENCES now.placer_activity(PLACERACTIVITYID) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY (PLACERACTIVITYID) REFERENCES NOW_Submissions.placer_activity(PLACERACTIVITYID) DEFERRABLE INITIALLY DEFERRED
 );
 
-CREATE TABLE now.existing_settling_pond_xref (
+CREATE TABLE NOW_Submissions.existing_settling_pond_xref (
     MESSAGEID integer,
 	SETTLINGPONDID integer,
 
-    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED,
-    FOREIGN KEY (SETTLINGPONDID) REFERENCES now.settling_pond(SETTLINGPONDID) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY (SETTLINGPONDID) REFERENCES NOW_Submissions.settling_pond(SETTLINGPONDID) DEFERRABLE INITIALLY DEFERRED
 );
 
-CREATE TABLE now.mech_trenching_equip_xref (
+CREATE TABLE NOW_Submissions.mech_trenching_equip_xref (
     MESSAGEID integer,
 	EQUIPMENTID integer,
 
-    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED,
-    FOREIGN KEY (EQUIPMENTID) REFERENCES now.equipment(EQUIPMENTID) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY (EQUIPMENTID) REFERENCES NOW_Submissions.equipment(EQUIPMENTID) DEFERRABLE INITIALLY DEFERRED
 );
 
-CREATE TABLE now.surface_bulk_sample_equip_xref (
+CREATE TABLE NOW_Submissions.surface_bulk_sample_equip_xref (
 	MESSAGEID integer,
 	EQUIPMENTID integer,
 
-    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED,
-    FOREIGN KEY (EQUIPMENTID) REFERENCES now.equipment(EQUIPMENTID) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY (EQUIPMENTID) REFERENCES NOW_Submissions.equipment(EQUIPMENTID) DEFERRABLE INITIALLY DEFERRED
 );
 
-CREATE TABLE now.sand_grv_qry_equip_xref (
+CREATE TABLE NOW_Submissions.sand_grv_qry_equip_xref (
 	MESSAGEID integer,
 	EQUIPMENTID integer,
 
-    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED,
-    FOREIGN KEY (EQUIPMENTID) REFERENCES now.equipment(EQUIPMENTID) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY (EQUIPMENTID) REFERENCES NOW_Submissions.equipment(EQUIPMENTID) DEFERRABLE INITIALLY DEFERRED
 );
 
-CREATE TABLE now.placer_equip_xref (
+CREATE TABLE NOW_Submissions.placer_equip_xref (
     MESSAGEID integer,
 	EQUIPMENTID integer,
 
-    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED,
-    FOREIGN KEY (EQUIPMENTID) REFERENCES now.equipment(EQUIPMENTID) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY (EQUIPMENTID) REFERENCES NOW_Submissions.equipment(EQUIPMENTID) DEFERRABLE INITIALLY DEFERRED
 );
 
-CREATE TABLE now.proposed_placer_activity_xref (
+CREATE TABLE NOW_Submissions.proposed_placer_activity_xref (
     MESSAGEID integer,
 	PLACERACTIVITYID integer,
 
-    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED,
-    FOREIGN KEY (PLACERACTIVITYID) REFERENCES now.placer_activity(PLACERACTIVITYID) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY (PLACERACTIVITYID) REFERENCES NOW_Submissions.placer_activity(PLACERACTIVITYID) DEFERRABLE INITIALLY DEFERRED
 );
 
-CREATE TABLE now.proposed_settling_pond_xref (
+CREATE TABLE NOW_Submissions.proposed_settling_pond_xref (
     MESSAGEID integer,
 	SETTLINGPONDID integer,
 
-    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED,
-    FOREIGN KEY (SETTLINGPONDID) REFERENCES now.settling_pond(SETTLINGPONDID) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY (SETTLINGPONDID) REFERENCES NOW_Submissions.settling_pond(SETTLINGPONDID) DEFERRABLE INITIALLY DEFERRED
 );
 
-CREATE TABLE now.exp_access_activity (
+CREATE TABLE NOW_Submissions.exp_access_activity (
     ID serial PRIMARY KEY,
     MESSAGEID integer,
 	TYPE character varying(4000),
@@ -468,10 +469,10 @@ CREATE TABLE now.exp_access_activity (
 	DISTURBEDAREA numeric(14,2),
 	TIMBERVOLUME numeric(14,2),
 
-    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 );
 
-CREATE TABLE now.exp_surface_drill_activity (
+CREATE TABLE NOW_Submissions.exp_surface_drill_activity (
     ID serial PRIMARY KEY,
     MESSAGEID integer,
 	TYPE character varying(4000),
@@ -479,10 +480,10 @@ CREATE TABLE now.exp_surface_drill_activity (
 	DISTURBEDAREA numeric(14,2),
 	TIMBERVOLUME numeric(14,2),
 
-    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 );
 
-CREATE TABLE now.mech_trenching_activity (
+CREATE TABLE NOW_Submissions.mech_trenching_activity (
     ID serial PRIMARY KEY,
     MESSAGEID integer,
 	TYPE character varying(4000),
@@ -490,5 +491,5 @@ CREATE TABLE now.mech_trenching_activity (
 	DISTURBEDAREA numeric(14,2),
 	TIMBERVOLUME numeric(14,2),
 
-    FOREIGN KEY (MESSAGEID) REFERENCES now.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 );
