@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from "react";
 import { Table, Icon, Popconfirm, Button } from "antd";
 import moment from "moment";

@@ -59,20 +59,3 @@
     }
   }
 }
-
-// .mine__status,
-// .mine_tenure {
-//   &:nth-child(1),
-//   &:nth-child(2),
-//   &:nth-child(3) {
-//     &:after {
-//       content: ",";
-//       margin-right: 4px;
-//     }
-//   }
-//   &:last-child() {
-//     &:after {
-//       content: " " !important;
-//     }
-//   }
-// }

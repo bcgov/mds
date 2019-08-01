@@ -496,7 +496,7 @@ exports[`MineSummary renders properly 1`] = `
           className="right"
         >
           <Link
-            to="/mine-dashboard/18145c75-49ad-0101-85f3-a43e45ae989a/oversight/inspections-and-audits"
+            to="/mine-dashboard/18145c75-49ad-0101-85f3-a43e45ae989a/oversight/inspections-and-audits?"
           >
             See All Compliance
           </Link>

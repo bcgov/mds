@@ -4,12 +4,6 @@ exports[`MineComplianceInfo renders properly 1`] = `
 <div
   className="tab__content"
 >
-  <div>
-    <div>
-      <NullScreen
-        type="compliance"
-      />
-    </div>
-  </div>
+  <Loading />
 </div>
 `;
