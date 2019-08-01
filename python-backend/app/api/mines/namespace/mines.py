@@ -42,7 +42,7 @@ api.add_resource(MineDisturbanceCodeResource, '/disturbance-codes')
 api.add_resource(MineCommodityCodeResource, '/commodity-codes')
 api.add_resource(MineStatusResource, '/status/<string:mine_status_guid>')
 api.add_resource(MineStatusListResource, '/status')
-api.add_resource(MineRegionResource, '/region', '/region/<string:mine_region_guid>')
+api.add_resource(MineRegionResource, '/region')
 
 api.add_resource(MineTailingsStorageFacilityListResource, '/<string:mine_guid>/tailings')
 

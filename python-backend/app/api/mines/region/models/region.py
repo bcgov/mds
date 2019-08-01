@@ -13,8 +13,9 @@ class MineRegionCode(AuditMixin, Base):
     description = db.Column(db.String(100), nullable=False)
     display_order = db.Column(db.Integer, nullable=False)
     effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    expiry_date = db.Column(
-        db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
+    expiry_date = db.Column(db.DateTime,
+                            nullable=False,
+                            default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
 
     def __repr__(self):
         return '<MineRegionCode %r>' % self.mine_region_code
@@ -29,6 +30,11 @@ class MineRegionCode(AuditMixin, Base):
     @classmethod
     def find_by_region_code(cls, _code):
         return cls.query.filter_by(mine_region_code=_code).first()
+
+    @classmethod
+    #add active_ind here when added to db
+    def get_active(cls):
+        return cls.query.all()
 
     @classmethod
     def create(cls,
