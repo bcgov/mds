@@ -1,4 +1,4 @@
-from flask_restplus import Resource
+from flask_restplus import Resource, fields
 from app.extensions import api
 from ....utils.access_decorators import requires_role_view_all
 from ....utils.resources_mixins import UserMixin, ErrorMixin
