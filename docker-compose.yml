@@ -122,6 +122,7 @@ services:
     depends_on:
       - flyway
       - redis
+    entrypoint: ./dev-entrypoint.sh
     env_file: ./microservices/nris_api/backend/.env
     networks:
       - mds
@@ -139,6 +140,7 @@ services:
     depends_on:
       - flyway
       - redis
+    entrypoint: ./dev-entrypoint.sh
     env_file: ./microservices/document_manager/backend/.env
     networks:
       - mds

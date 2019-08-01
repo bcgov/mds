@@ -29,6 +29,9 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+#set entrypoint to runable 
+RUN chmod u+x ./dev-entrypoint.sh
+
 # Run the server
 EXPOSE 5500
 CMD [ "flask", "run"]
