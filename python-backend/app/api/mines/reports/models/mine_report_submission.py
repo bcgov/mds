@@ -21,3 +21,11 @@ class MineReportSubmission(Base, AuditMixin):
 
     def __repr__(self):
         return '<MineReportSubmission %r>' % self.mine_report_submission_guid
+
+    @classmethod
+    def find_by_mine_report_guid(cls, _id):
+        try:
+            uuid.UUID(_id, version=4)
+            return cls.query.filter_by(mine_report_guid=_id).first()
+        except ValueError:
+            return None

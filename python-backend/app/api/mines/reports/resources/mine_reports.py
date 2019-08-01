@@ -41,6 +41,7 @@ class MineReportListResource(Resource, UserMixin):
         'received_date',
         location='json',
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
+    parser.add_argument('updated_documents', type=list, location='json', store_missing=False)
 
     @api.marshal_with(MINE_REPORT_MODEL, envelope='records', code=200)
     @api.doc(description='returns the reports for a given mine.')
@@ -68,6 +69,7 @@ class MineReportListResource(Resource, UserMixin):
 
         if permit and permit.mine_guid != mine.mine_guid:
             raise BadRequest('The permit must be associated with the selected mine.')
+
         mine_report_guid = uuid.uuid4()
         mine_report = MineReport.create(
             mine_report_guid=mine_report_guid,
@@ -77,6 +79,28 @@ class MineReportListResource(Resource, UserMixin):
             received_date=data['received_date'],
             submission_year=data['submission_year'],
             permit_id=permit.permit_id if permit else None)
+
+        updated_documents = data.get('updated_documents')
+        if updated_documents is not None:
+            report_submission_guid = uuid.uuid4()
+            report_submission = MineReportSubmission(
+                mine_report_submission_guid=report_submission_guid,
+                mine_report_submission_status_code='MIA',
+                submission_date=datetime.now())
+            for updated_file in updated_documents:
+                mine_doc = MineDocument(
+                    mine_guid=mine.mine_guid,
+                    document_name=updated_file['document_name'],
+                    document_manager_guid=updated_file['document_manager_guid'])
+
+                if not mine_doc:
+                    raise BadRequest('Unable to register uploaded file as document')
+
+                mine_doc.save()
+
+                report_submission.documents.append(mine_doc)
+
+            mine_report.mine_report_submissions.append(report_submission)
 
         try:
             mine_report.save()

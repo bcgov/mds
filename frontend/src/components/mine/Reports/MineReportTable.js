@@ -84,6 +84,7 @@ const columns = [
               record.openEditReportModal(event, record.handleEditReport, record.report)
             }
           >
+            {console.log(record.report)}
             <img src={BRAND_PENCIL} alt="Edit Report" />
           </Button>
         </AuthorizationWrapper>

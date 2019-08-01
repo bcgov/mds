@@ -13,6 +13,7 @@ from sqlalchemy.exc import DBAPIError
 
 from app.api.mines.mine.models.mine import Mine
 from app.api.documents.mines.models.mine_document import MineDocument
+from app.api.mines.reports.models.mine_report import MineReport
 
 from app.extensions import api, db
 from app.api.utils.custom_reqparser import CustomReqparser
@@ -36,62 +37,20 @@ class MineReportDocumentListResource(Resource, UserMixin):
             request, mine, 'reports')
 
 
-# class MineReportDocumentResource(Resource, UserMixin):
-#     @api.doc(description='Adds a Document to an already existing Mine incident.')
-#     @api.marshal_with(MINE_INCIDENT_MODEL, 201)
-#     @requires_role_edit_do
-#     def put(self, mine_guid, mine_incident_guid, mine_document_guid):
-#         parser = CustomReqparser()
-#         parser.add_argument('filename', type=str, required=True)
-#         parser.add_argument('document_manager_guid', type=str, required=True)
-#         parser.add_argument('mine_incident_document_type', type=str, required=True)
+class MineReportDocumentResource(Resource, UserMixin):
+    @api.doc(description='Dissociate a document from a Mine Report.')
+    @requires_role_edit_do
+    def delete(self, mine_guid, mine_report_guid, mine_document_guid):
+        if not mine_document_guid:
+            raise BadRequest('must provide document_guid to be unlinked')
 
-#         mine_incident = MineIncident.find_by_mine_incident_guid(mine_incident_guid)
-#         mine = Mine.find_by_mine_guid(mine_guid)
+        mine_report = MineReport.find_by_mine_report_guid(mine_report_guid)
+        mine_document = MineDocument.find_by_mine_document_guid(mine_document_guid)
 
-#         if not mine_incident:
-#             raise NotFound('Mine incident not found')
-#         if not mine:
-#             raise NotFound('Mine not found.')
+        if mine_report is None or mine_document is None:
+            raise NotFound('Either the Expected Document or the Mine Document was not found')
 
-#         data = parser.parse_args()
-#         document_manager_guid = data.get('document_manager_guid')
-#         file_name = data.get('filename')
-#         mine_incident_document_type = data.get('mine_incident_document_type')
+        mine_report.documents.remove(mine_document)
+        mine_incident.save()
 
-#         mine_doc = MineDocument(
-#             mine_guid=mine.mine_guid,
-#             document_name=file_name,
-#             document_manager_guid=document_manager_guid)
-
-#         if not mine_doc:
-#             raise BadRequest('Unable to register uploaded file as document')
-
-#         mine_doc.save()
-#         mine_incident_doc = MineIncidentDocumentXref(
-#             mine_document_guid=mine_doc.mine_document_guid,
-#             mine_incident_id=mine_incident.mine_incident_id,
-#             mine_incident_document_type_code=mine_incident_document_type
-#             if mine_incident_document_type else 'INI')
-
-#         mine_incident.documents.append(mine_incident_doc)
-#         mine_incident.save()
-
-#         return mine_incident
-
-#     @api.doc(description='Dissociate a document from a Mine Incident.')
-#     @requires_role_edit_do
-#     def delete(self, mine_guid, mine_incident_guid, mine_document_guid):
-#         if not mine_document_guid:
-#             raise BadRequest('must provide document_guid to be unlinked')
-
-#         mine_incident = MineIncident.find_by_mine_incident_guid(mine_incident_guid)
-#         mine_document = MineDocument.find_by_mine_document_guid(mine_document_guid)
-
-#         if mine_incident is None or mine_document is None:
-#             raise NotFound('Either the Expected Document or the Mine Document was not found')
-
-#         mine_incident.documents.remove(mine_document)
-#         mine_incident.save()
-
-#         return ('', 204)
+        return ('', 204)

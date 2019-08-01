@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import PropTypes from "prop-types";
-import { flatMap, uniqBy } from "lodash";
+import { flatMap, uniqBy, concat, reject } from "lodash";
 import { Field, reduxForm, formValueSelector } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm, List } from "antd";
 import { renderConfig } from "@/components/common/config";
@@ -23,10 +23,6 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  onFileLoad: PropTypes.func.isRequired,
-  onRemoveFile: PropTypes.func.isRequired,
-  uploadedFiles: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
-  handleReportSubmit: PropTypes.func.isRequired,
   mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   dropdownMineReportCategoryOptions: PropTypes.arrayOf(
     PropTypes.objectOf(CustomPropTypes.dropdownListItem)
@@ -46,6 +42,11 @@ export class AddReportForm extends Component {
     mineReportDefinitionOptionsFiltered: [],
     dropdownMineReportDefinitionOptionsFiltered: [],
     selectedMineReportComplianceArticles: [],
+    uploadedFiles:
+      this.props.initialValues.mine_report_submissions &&
+      this.props.initialValues.mine_report_submissions[0].documents.length > 0
+        ? [...this.props.initialValues.mine_report_submissions[0].documents]
+        : [],
   };
 
   componentDidMount = () => {
@@ -106,6 +107,36 @@ export class AddReportForm extends Component {
     if (nextProps.selectedMineReportDefinition !== this.props.selectedMineReportDefinition) {
       this.updateSelectedMineReportComplianceArticles(nextProps.selectedMineReportDefinition);
     }
+  };
+
+  // handleReportSubmit = () => {
+  //   this.props.onSubmit({
+  //     ...this.props.addReportFormValues,
+  //     updated_documents: this.state.uploadedFiles,
+  //   });
+  //   // TODO: Catch error
+  //   this.close();
+  // };
+
+  close = () => {
+    this.props.closeModal();
+  };
+
+  onFileLoad = (document_name, document_manager_guid) =>
+    this.setState((prevState) => ({
+      uploadedFiles: concat(prevState.uploadedFiles, {
+        document_name,
+        document_manager_guid,
+      }),
+    }));
+
+  onRemoveFile = (file) => {
+    this.setState((prevState) => ({
+      uploadedFiles: reject(
+        prevState.uploadedFiles,
+        (uploadedFile) => file.document_manager_guid === uploadedFile.document_manager_guid
+      ),
+    }));
   };
 
   render() {
@@ -187,14 +218,14 @@ export class AddReportForm extends Component {
                 component={renderConfig.DATE}
               />
             </Form.Item>
-            {this.props.uploadedFiles.length > 0 && (
+            {this.state.uploadedFiles.length > 0 && (
               <Form.Item label="Attached files" style={{ paddingBottom: "10px" }}>
                 <Field
                   id="report_documents"
                   name="report_documents"
                   component={ReportsUploadedFilesList}
-                  files={this.props.uploadedFiles}
-                  onRemoveFile={this.props.onRemoveFile}
+                  files={this.state.uploadedFiles}
+                  onRemoveFile={this.onRemoveFile}
                 />
               </Form.Item>
             )}
@@ -204,7 +235,7 @@ export class AddReportForm extends Component {
                 name="ReportFileUpload"
                 label="Upload Files"
                 onFileLoad={(document_name, document_manager_guid) =>
-                  this.props.onFileLoad(document_name, document_manager_guid)
+                  this.onFileLoad(document_name, document_manager_guid)
                 }
                 uploadUrl={MINE_REPORT_DOCUMENT(this.props.mineGuid)}
                 component={FileUpload}
@@ -224,12 +255,7 @@ export class AddReportForm extends Component {
               Cancel
             </Button>
           </Popconfirm>
-          <Button
-            className="full-mobile"
-            type="primary"
-            htmlType="submit"
-            onClick={(event) => this.props.handleReportSubmit(event, false)}
-          >
+          <Button className="full-mobile" type="primary" htmlType="submit">
             {this.props.title}
           </Button>
         </div>
