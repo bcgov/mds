@@ -10,6 +10,7 @@ import {
   fetchMineReports,
   updateMineReport,
   createMineReport,
+  deleteMineReport,
 } from "@/actionCreators/reportActionCreator";
 import AddButton from "@/components/common/AddButton";
 import MineReportTable from "@/components/mine/Reports/MineReportTable";
@@ -29,6 +30,7 @@ const propTypes = {
   fetchMineReports: PropTypes.func.isRequired,
   updateMineReport: PropTypes.func.isRequired,
   createMineReport: PropTypes.func.isRequired,
+  deleteMineReport: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
 };
@@ -49,6 +51,12 @@ export class MineReportInfo extends Component {
     this.props
       .createMineReport(this.props.mineGuid, values)
       .then(() => this.props.closeModal())
+      .then(() => this.props.fetchMineReports(this.props.mineGuid));
+  };
+
+  handleRemoveReport = (reportGuid) => {
+    this.props
+      .deleteMineReport(this.props.mineGuid, reportGuid)
       .then(() => this.props.fetchMineReports(this.props.mineGuid));
   };
 
@@ -73,7 +81,7 @@ export class MineReportInfo extends Component {
         onSubmit: this.handleEditReport,
         title: `Edit report for ${mine.mine_name}`,
       },
-      content: modalConfig.EDIT_REPORT,
+      content: modalConfig.ADD_REPORT,
     });
   };
 
@@ -97,6 +105,8 @@ export class MineReportInfo extends Component {
         </div>
         <MineReportTable
           openEditReportModal={this.openEditReportModal}
+          handleEditReport={this.handleEditReport}
+          handleRemoveReport={this.handleRemoveReport}
           mineReports={this.props.mineReports}
         />
       </div>
@@ -118,6 +128,7 @@ const mapDispatchToProps = (dispatch) =>
       createMineReport,
       openModal,
       closeModal,
+      deleteMineReport,
     },
     dispatch
   );

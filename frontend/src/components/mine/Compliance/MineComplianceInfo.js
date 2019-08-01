@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import queryString from "query-string";
 import { bindActionCreators } from "redux";
@@ -213,7 +214,6 @@ export class MineComplianceInfo extends Component {
 }
 
 MineComplianceInfo.propTypes = propTypes;
-MineComplianceInfo.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   mineComplianceInfo: getMineComplianceInfo(state),

@@ -17,6 +17,8 @@ const propTypes = {
 export class MineNavigation extends Component {
   ifActiveButton = (route) => (includes(this.props.activeButton, route) ? "active-menu-btn" : "");
 
+  ifActiveButton = (route) => (includes(this.props.activeButton, route) ? "active-menu-btn" : "");
+
   render() {
     const isProd = detectProdEnvironment();
     const isTailingsVisible = this.props.mine.mine_tailings_storage_facilities.length > 1;
