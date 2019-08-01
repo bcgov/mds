@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import PropTypes from "prop-types";
 import { flatMap, uniqBy, concat, reject } from "lodash";
-import { Field, reduxForm, formValueSelector } from "redux-form";
+import { Field, reduxForm, formValueSelector, change } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm, List } from "antd";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
@@ -119,26 +119,15 @@ export class AddReportForm extends Component {
     }
   };
 
-  // handleReportSubmit = () => {
-  //   this.props.onSubmit({
-  //     ...this.props.addReportFormValues,
-  //     updated_documents: this.state.uploadedFiles,
-  //   });
-  //   // TODO: Catch error
-  //   this.close();
-  // };
-
-  close = () => {
-    this.props.closeModal();
-  };
-
-  onFileLoad = (document_name, document_manager_guid) =>
+  onFileLoad = (document_name, document_manager_guid) => {
     this.setState((prevState) => ({
       uploadedFiles: concat(prevState.uploadedFiles, {
         document_name,
         document_manager_guid,
       }),
     }));
+    change("updated_documents", this.state.uploadedFiles);
+  };
 
   onRemoveFile = (file) => {
     this.setState((prevState) => ({
@@ -147,6 +136,7 @@ export class AddReportForm extends Component {
         (uploadedFile) => file.document_manager_guid === uploadedFile.document_manager_guid
       ),
     }));
+    change("updated_documents", this.state.uploadedFiles);
   };
 
   render() {

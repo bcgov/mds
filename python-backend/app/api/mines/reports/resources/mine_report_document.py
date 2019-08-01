@@ -35,22 +35,3 @@ class MineReportDocumentListResource(Resource, UserMixin):
 
         return DocumentManagerService.initializeFileUploadWithDocumentManager(
             request, mine, 'reports')
-
-
-class MineReportDocumentResource(Resource, UserMixin):
-    @api.doc(description='Dissociate a document from a Mine Report.')
-    @requires_role_edit_do
-    def delete(self, mine_guid, mine_report_guid, mine_document_guid):
-        if not mine_document_guid:
-            raise BadRequest('must provide document_guid to be unlinked')
-
-        mine_report = MineReport.find_by_mine_report_guid(mine_report_guid)
-        mine_document = MineDocument.find_by_mine_document_guid(mine_document_guid)
-
-        if mine_report is None or mine_document is None:
-            raise NotFound('Either the Expected Document or the Mine Document was not found')
-
-        mine_report.documents.remove(mine_document)
-        mine_incident.save()
-
-        return ('', 204)
