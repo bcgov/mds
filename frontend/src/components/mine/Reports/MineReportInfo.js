@@ -9,6 +9,7 @@ import {
   fetchMineReports,
   updateMineReport,
   createMineReport,
+  deleteMineReport,
 } from "@/actionCreators/reportActionCreator";
 import AddButton from "@/components/common/AddButton";
 import MineReportTable from "@/components/mine/Reports/MineReportTable";
@@ -26,6 +27,7 @@ const propTypes = {
   fetchMineReports: PropTypes.func.isRequired,
   updateMineReport: PropTypes.func.isRequired,
   createMineReport: PropTypes.func.isRequired,
+  deleteMineReport: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
 };
@@ -37,7 +39,7 @@ export class MineReportInfo extends Component {
 
   handleEditReport = (values) => {
     this.props
-      .updateMineReport(this.props.mine.mine_guid, values.report_guid, values)
+      .updateMineReport(this.props.mine.mine_guid, values.mine_report_guid, values)
       .then(() => this.props.closeModal())
       .then(() => this.props.fetchMineReports(this.props.mine.mine_guid));
   };
@@ -46,6 +48,12 @@ export class MineReportInfo extends Component {
     this.props
       .createMineReport(this.props.mine.mine_guid, values)
       .then(() => this.props.closeModal())
+      .then(() => this.props.fetchMineReports(this.props.mine.mine_guid));
+  };
+
+  handleRemoveReport = (reportGuid) => {
+    this.props
+      .deleteMineReport(this.props.mine.mine_guid, reportGuid)
       .then(() => this.props.fetchMineReports(this.props.mine.mine_guid));
   };
 
@@ -61,16 +69,15 @@ export class MineReportInfo extends Component {
     });
   };
 
-  openEditReportModal = (event, report) => {
+  openEditReportModal = (event, onSubmit, report) => {
     event.preventDefault();
-
     this.props.openModal({
       props: {
         initialValues: report,
-        onSubmit: this.handleEditReport,
+        onSubmit,
         title: `Edit report for ${this.props.mine.mine_name}`,
       },
-      content: modalConfig.EDIT_REPORT,
+      content: modalConfig.ADD_REPORT,
     });
   };
 
@@ -97,6 +104,8 @@ export class MineReportInfo extends Component {
         </div>
         <MineReportTable
           openEditReportModal={this.openEditReportModal}
+          handleEditReport={this.handleEditReport}
+          handleRemoveReport={this.handleRemoveReport}
           mineReports={this.props.mineReports}
         />
       </div>
@@ -114,6 +123,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineReports,
       updateMineReport,
       createMineReport,
+      deleteMineReport,
     },
     dispatch
   );

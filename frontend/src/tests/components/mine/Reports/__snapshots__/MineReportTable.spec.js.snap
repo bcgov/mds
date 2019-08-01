@@ -36,6 +36,11 @@ exports[`MineReportTable renders properly 1`] = `
         "sorter": [Function],
         "title": "Received",
       },
+      Object {
+        "dataIndex": "record",
+        "render": [Function],
+        "title": "",
+      },
     ]
   }
   dataSource={Array []}
