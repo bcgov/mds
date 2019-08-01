@@ -9,12 +9,8 @@ import CustomPropTypes from "@/customPropTypes";
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   handleVarianceSearch: PropTypes.func.isRequired,
-  // handleNameFieldReset: PropTypes.func.isRequired,
   toggleAdvancedSearch: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
-  // partyTypeOptions: CustomPropTypes.options.isRequired,
-  // relationshipTypes: CustomPropTypes.options.isRequired,
-  // initialValues: PropTypes.objectOf(PropTypes.string).isRequired,
   isAdvanceSearch: PropTypes.bool,
   complianceCodes: CustomPropTypes.options.isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,

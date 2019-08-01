@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Row, Col } from "antd";
+import { isEmpty, some, negate } from "lodash";
 import PropTypes from "prop-types";
 import VarianceSearchForm from "@/components/Forms/variances/VarianceSearchForm";
 import CustomPropTypes from "@/customPropTypes";
@@ -19,12 +20,24 @@ const defaultProps = {
   initialValues: {},
 };
 
-// const checkAdvancedSearch = ({ status, region, tenure, commodity, tsf, major }) =>
-//   tsf || major || some([status, region, tenure, commodity], negate(isEmpty));
+const checkAdvancedSearch = ({
+  region,
+  compliance_code,
+  major,
+  issue_date_min,
+  issue_date_max,
+  expiry_date_max,
+  expiry_date_min,
+}) =>
+  major ||
+  some(
+    [region, compliance_code, issue_date_min, issue_date_max, expiry_date_max, expiry_date_min],
+    negate(isEmpty)
+  );
 
 export class VarianceSearch extends Component {
   state = {
-    isAdvanceSearch: false,
+    isAdvanceSearch: checkAdvancedSearch(this.props.initialValues),
   };
 
   toggleAdvancedSearch = () => {
