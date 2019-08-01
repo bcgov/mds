@@ -24,6 +24,19 @@ exports[`VarianceDetails renders properly 1`] = `
       <p
         className="field-title"
       >
+        Variance Number
+      </p>
+      <p>
+         
+        N/A
+      </p>
+    </div>
+    <div
+      className="inline-flex padding-small"
+    >
+      <p
+        className="field-title"
+      >
         Part of Code
       </p>
       <p>

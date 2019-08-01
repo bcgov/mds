@@ -10,9 +10,7 @@ const propTypes = {
   initialValues: PropTypes.objectOf(PropTypes.any),
 };
 
-const defaultProps = {
-  initialValues: {},
-};
+const defaultProps = { initialValues: {} };
 
 export const AddReportModal = (props) => (
   <div>

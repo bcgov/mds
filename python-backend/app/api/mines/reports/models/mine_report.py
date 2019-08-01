@@ -16,6 +16,7 @@ class MineReport(Base, AuditMixin):
     mine_report_definition = db.relationship('MineReportDefinition', lazy='joined')
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     permit_id = db.Column(db.Integer, db.ForeignKey('permit.permit_id'))
+    permit = db.relationship('Permit', lazy='selectin')
     received_date = db.Column(db.DateTime)
     due_date = db.Column(db.DateTime, nullable=False)
     submission_year = db.Column(db.Integer)
@@ -30,6 +31,8 @@ class MineReport(Base, AuditMixin):
     mine_report_definition_guid = association_proxy('mine_report_definition',
                                                     'mine_report_definition_guid')
     report_name = association_proxy('mine_report_definition', 'report_name')
+    report_name = association_proxy('mine_report_definition', 'report_name')
+    permit_guid = association_proxy('permit', 'permit_guid')
 
     def __repr__(self):
         return '<MineReport %r>' % self.mine_report_guid
@@ -60,7 +63,7 @@ class MineReport(Base, AuditMixin):
     def find_all_by_mine_guid(cls, _id):
         try:
             uuid.UUID(_id, version=4)
-            return cls.query.filter_by(mine_guid=_id).all()
+            return cls.query.filter_by(mine_guid=_id).filter_by(deleted_ind=False).all()
         except ValueError:
             return None
 

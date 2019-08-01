@@ -32,7 +32,7 @@ def _get_fiscal_year():
     return current_year if current_date > fiscal_year_end else current_year - 1
 
 
-@register_apm
+@register_apm()
 def _get_NRIS_data_by_mine(auth_token, mine_no):
     current_date = datetime.utcnow()
 

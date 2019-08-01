@@ -37,7 +37,7 @@ exports[`MineReportTable renders properly 1`] = `
         "title": "Received",
       },
       Object {
-        "dataIndex": "openEditReportModal",
+        "dataIndex": "record",
         "render": [Function],
         "title": "",
       },
