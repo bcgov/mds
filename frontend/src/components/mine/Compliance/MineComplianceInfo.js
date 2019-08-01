@@ -108,7 +108,9 @@ export class MineComplianceInfo extends Component {
     const inspector =
       params.inspector === "" ||
       order.inspector.toLowerCase().includes(params.inspector.toLowerCase());
-    const date = params.due_date === "" || order.due_date.includes(params.due_date);
+    const date =
+      params.due_date === "" ||
+      (order.due_date !== null && order.due_date.includes(params.due_date));
     const orderNo = params.order_no === "" || order.order_no.includes(params.order_no);
     const reportNoString = order.report_no.toString();
     const reportNo = params.report_no === "" || reportNoString.includes(params.report_no);
