@@ -1,4 +1,3 @@
-/* eslint-disable  */
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -31,6 +30,11 @@ const amalgamtedPermit = "ALG";
 const originalPermit = "OGP";
 
 const propTypes = {
+  match: PropTypes.shape({
+    params: {
+      id: PropTypes.string,
+    },
+  }).isRequired,
   mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
   mineGuid: PropTypes.string.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit),
