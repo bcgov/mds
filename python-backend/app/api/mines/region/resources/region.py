@@ -15,4 +15,4 @@ class MineRegionResource(Resource, UserMixin, ErrorMixin):
     @api.marshal_with(MINE_REGION_OPTION, code=201, envelope='records')
     @requires_role_view_all
     def get(self):
-        return MineRegion.get_active()
+        return MineRegionCode.get_active()
