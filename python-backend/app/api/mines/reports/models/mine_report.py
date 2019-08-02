@@ -60,7 +60,7 @@ class MineReport(Base, AuditMixin):
         return mine_report
 
     @classmethod
-    def find_all_by_mine_guid(cls, _id):
+    def find_by_mine_guid(cls, _id):
         try:
             uuid.UUID(_id, version=4)
             return cls.query.filter_by(mine_guid=_id).filter_by(deleted_ind=False).all()

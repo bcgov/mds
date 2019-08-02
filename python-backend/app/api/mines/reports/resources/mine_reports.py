@@ -47,7 +47,7 @@ class MineReportListResource(Resource, UserMixin):
     @api.doc(description='returns the reports for a given mine.')
     @requires_role_view_all
     def get(self, mine_guid):
-        mine_reports = MineReport.find_all_by_mine_guid(mine_guid)
+        mine_reports = MineReport.find_by_mine_guid(mine_guid)
         return mine_reports
 
     @api.expect(MINE_REPORT_MODEL)
