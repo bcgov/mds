@@ -128,3 +128,14 @@ class MineReportResource(Resource, UserMixin):
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')
         return mine_report
+
+    @requires_role_edit_report
+    @api.response(204, 'Successfully deleted.')
+    def delete(self, mine_guid, mine_report_guid):
+        mine_report = MineReport.find_by_mine_report_guid(mine_report_guid)
+        if not mine_report or str(mine_report.mine_guid) != mine_guid:
+            raise NotFound("Mine Report not found")
+
+        mine_report.deleted_ind = True
+        mine_report.save()
+        return None, 204

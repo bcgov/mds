@@ -28,6 +28,10 @@ export const VarianceDetails = (props) => (
         <p> {props.mineName || Strings.EMPTY_FIELD}</p>
       </div>
       <div className="inline-flex padding-small">
+        <p className="field-title">Variance Number</p>
+        <p> {props.variance.variance_no || Strings.EMPTY_FIELD}</p>
+      </div>
+      <div className="inline-flex padding-small">
         <p className="field-title">Part of Code</p>
         <p>
           {props.variance.compliance_article_id

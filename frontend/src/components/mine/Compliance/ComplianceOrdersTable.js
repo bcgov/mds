@@ -2,7 +2,7 @@ import React from "react";
 import { Table } from "antd";
 import moment from "moment";
 import { RED_CLOCK } from "@/constants/assets";
-import { formatDate } from "@/utils/helpers";
+import { formatDate, compareCodes } from "@/utils/helpers";
 import { COLOR } from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";
 import NullScreen from "@/components/common/NullScreen";
@@ -51,7 +51,7 @@ const columns = [
         {record.violation || "-"}
       </div>
     ),
-    sorter: (a, b) => (a.violation > b.violation ? -1 : 1),
+    sorter: (a, b) => compareCodes(a.violation, b.violation),
   },
   {
     title: "Report #",
