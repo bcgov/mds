@@ -14,7 +14,7 @@ import { getInspectorsHash } from "@/selectors/partiesSelectors";
 import * as Permission from "@/constants/permissions";
 import { RED_CLOCK, EDIT_OUTLINE } from "@/constants/assets";
 import NullScreen from "@/components/common/NullScreen";
-import { formatDate } from "@/utils/helpers";
+import { formatDate, compareCodes } from "@/utils/helpers";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 import * as Strings from "@/constants/strings";
 import { COLOR } from "@/constants/styles";
@@ -71,6 +71,7 @@ export class MineVarianceTable extends Component {
       leadInspector:
         this.props.inspectorsHash[variance.inspector_party_guid] || Strings.EMPTY_FIELD,
       documents: variance.documents,
+      varianceNumber: variance.variance_no || Strings.EMPTY_FIELD,
     }));
 
   render() {
@@ -86,6 +87,15 @@ export class MineVarianceTable extends Component {
         ),
       },
       {
+        title: "Variance Number",
+        dataIndex: "varianceNumber",
+        render: (text, record) => (
+          <div title="Variance Number" style={errorStyle(record.isOverdue)}>
+            {text}
+          </div>
+        ),
+      },
+      {
         title: "Code Section",
         dataIndex: "compliance_article_id",
         render: (text, record) => (
@@ -93,6 +103,9 @@ export class MineVarianceTable extends Component {
             {text}
           </div>
         ),
+        sorter:
+          !this.props.isDashboardView &&
+          ((a, b) => compareCodes(a.compliance_article_id, b.compliance_article_id)),
       },
       {
         title: "Mine Name",

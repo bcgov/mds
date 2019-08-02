@@ -84,11 +84,6 @@ exports[`MineVariance renders properly 1`] = `
               "mine_tenure_type_code": "MIN",
             },
           ],
-          "mineral_tenure_xref": Array [
-            Object {
-              "tenure_number_id": "1234567",
-            },
-          ],
           "verified_status": Object {
             "healthy_ind": null,
             "mine_guid": null,
@@ -126,6 +121,7 @@ exports[`MineVariance renders properly 1`] = `
             "note": "notesss",
             "received_date": "2019-03-01",
             "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+            "variance_no": 1,
           },
         ]
       }
@@ -197,11 +193,6 @@ exports[`MineVariance renders properly 1`] = `
               "mine_tenure_type_code": "MIN",
             },
           ],
-          "mineral_tenure_xref": Array [
-            Object {
-              "tenure_number_id": "1234567",
-            },
-          ],
           "verified_status": Object {
             "healthy_ind": null,
             "mine_guid": null,
@@ -239,6 +230,7 @@ exports[`MineVariance renders properly 1`] = `
             "note": "notesss",
             "received_date": "2019-03-01",
             "variance_guid": "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+            "variance_no": 1,
           },
         ]
       }
