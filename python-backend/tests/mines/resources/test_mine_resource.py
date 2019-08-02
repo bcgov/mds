@@ -1,6 +1,5 @@
 import json, uuid, pytest
 
-from app.api.mines.mine.models.mineral_tenure_xref import MineralTenureXref
 from tests.factories import MineFactory
 
 
@@ -218,79 +217,6 @@ def test_post_mine_mine_status(test_client, db_session, auth_headers):
 
 
 #PUT
-def test_put_mine_tenure_mine_not_found(test_client, db_session, auth_headers):
-    test_tenure_data = {
-        "tenure_number_id": "1234568",
-    }
-    put_resp = test_client.put(
-        f'/mines/{uuid.uuid4()}', json=test_tenure_data, headers=auth_headers['full_auth_header'])
-    put_data = json.loads(put_resp.data.decode())
-    assert put_resp.status_code == 404, put_resp.response
-    assert 'not found' in put_data['message']
-
-
-def test_put_mine_tenure_invalid_length(test_client, db_session, auth_headers):
-    mine_no = MineFactory().mine_no
-
-    test_tenure_data = {
-        "tenure_number_id": "12345688",
-    }
-    put_resp = test_client.put(
-        f'/mines/{mine_no}',  json=test_tenure_data, headers=auth_headers['full_auth_header'])
-    put_data = json.loads(put_resp.data.decode())
-    assert put_resp.status_code == 400
-    assert '6 or 7 digits' in put_data['message']
-
-
-def test_put_mine_tenure_already_exists(test_client, db_session, auth_headers):
-    mine = MineFactory()
-    tenure_id = '666666'
-    MineralTenureXref(
-        mineral_tenure_xref_guid=uuid.uuid4(), mine_guid=mine.mine_guid,
-        tenure_number_id=tenure_id).save()
-
-    test_tenure_data = {
-        "tenure_number_id": tenure_id
-    }
-    put_resp = test_client.put(
-        f'/mines/{mine.mine_no}', json=test_tenure_data, headers=auth_headers['full_auth_header'])
-    put_data = json.loads(put_resp.data.decode())
-    assert put_resp.status_code == 400
-    assert 'already exists' in put_data['message']
-
-
-@pytest.mark.skip(reason='This functionality is not currently hooked up or in use.')
-def test_put_mine_tenure_by_mine_no(test_client, db_session, auth_headers):
-    mine_no = MineFactory().mine_no
-
-    test_tenure_data = {
-        "tenure_number_id": "1234567",
-    }
-    put_resp = test_client.put(
-        f'/mines/{mine_no}', json=test_tenure_data, headers=auth_headers['full_auth_header'])
-    put_data = json.loads(put_resp.data.decode())
-    assert put_resp.status_code == 200
-    assert test_tenure_data['tenure_number_id'] in [
-        x['tenure_number_id'] for x in put_data['mineral_tenure_xref']
-    ]
-
-
-@pytest.mark.skip(reason='This functionality is not currently hooked up or in use.')
-def test_put_mine_tenure_guid(test_client, db_session, auth_headers):
-    mine_guid = MineFactory().mine_guid
-
-    test_tenure_data = {
-        "tenure_number_id": "1234599",
-    }
-    put_resp = test_client.put(
-        f'/mines/{mine_guid}', json=test_tenure_data, headers=auth_headers['full_auth_header'])
-    put_data = json.loads(put_resp.data.decode())
-    assert put_resp.status_code == 200
-    assert test_tenure_data['tenure_number_id'] in [
-        x['tenure_number_id'] for x in put_data['mineral_tenure_xref']
-    ]
-
-
 def test_put_mine_name(test_client, db_session, auth_headers):
     mine_guid = MineFactory().mine_guid
 

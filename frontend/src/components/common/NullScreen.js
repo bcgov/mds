@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { TENURE, NO_MINE, MINER_TWO, PERMIT, GROUP_MINERS } from "@/constants/assets";
+import { NO_MINE, MINER_TWO, PERMIT, GROUP_MINERS } from "@/constants/assets";
 import * as String from "@/constants/strings";
 
 /**
@@ -26,6 +26,7 @@ const propTypes = {
     "unauthorized-page",
     "subscription",
     "incidents",
+    "reports",
   ]),
 };
 
@@ -59,13 +60,6 @@ const NullScreen = (props) => (
         <img alt="min_img" src={MINER_TWO} />
         <h3>{String.NO_DATA}</h3>
         <p>{String.ADD_PARTY}</p>
-      </div>
-    )}
-    {props.type === "tenure" && (
-      <div>
-        <img alt="mine_img" src={TENURE} />
-        <h3>{String.NO_DATA}</h3>
-        <p>{String.ADD_TENURE}</p>
       </div>
     )}
     {props.type === "permit" && (
@@ -146,6 +140,12 @@ const NullScreen = (props) => (
       <div>
         <img alt="mine_img" src={PERMIT} />
         <h3>No incidents found</h3>
+      </div>
+    )}
+    {props.type === "reports" && (
+      <div>
+        <img alt="mine_img" src={PERMIT} />
+        <h3>No reports found</h3>
       </div>
     )}
   </div>

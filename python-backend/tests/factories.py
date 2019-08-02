@@ -12,6 +12,7 @@ from app.api.applications.models.application import Application
 from app.api.documents.expected.models.mine_expected_document import MineExpectedDocument
 from app.api.documents.mines.models.mine_document import MineDocument
 from app.api.documents.variances.models.variance import VarianceDocumentXref
+from app.api.documents.incidents.models.mine_incident import MineIncidentDocumentXref
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.mine.models.mine_type import MineType
 from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
@@ -75,7 +76,7 @@ class MineDocumentFactory(BaseFactory):
 
     mine_document_guid = GUID
     mine_guid = factory.SelfAttribute('mine.mine_guid')
-    document_manager_guid = GUID 
+    document_manager_guid = GUID
     document_name = factory.Faker('file_name')
     mine_expected_document = []
 
@@ -286,7 +287,7 @@ class PermitAmendmentDocumentFactory(BaseFactory):
     permit_amendment_id = factory.SelfAttribute('permit_amendment.permit_amendment_id')
     document_name = factory.Faker('file_name')
     mine_guid = factory.SelfAttribute('permit_amendment.permit.mine.mine_guid')
-    document_manager_guid = GUID 
+    document_manager_guid = GUID
     permit_amendment = factory.SubFactory(PermitAmendmentFactory)
 
 
@@ -306,10 +307,12 @@ class MineIncidentFactory(BaseFactory):
         model = MineIncident
 
     class Params:
+        mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
         do_subparagraph_count = 2
 
     mine_incident_id_year = 2019
     mine_incident_guid = GUID
+    mine_guid = factory.SelfAttribute('mine.mine_guid')
     incident_timestamp = factory.Faker('past_datetime')
     incident_description = factory.Faker('sentence', nb_words=20, variable_nb_words=True)
     reported_timestamp = factory.Faker('past_datetime')
@@ -320,6 +323,35 @@ class MineIncidentFactory(BaseFactory):
     dangerous_occurrence_subparagraphs = factory.LazyAttribute(
         lambda o: SampleDangerousOccurrenceSubparagraphs(o.do_subparagraph_count)
         if o.determination_type_code == 'DO' else [])
+    documents = []
+
+    @factory.post_generation
+    def documents(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        MineIncidentDocumentFactory.create_batch(size=extracted,
+                                             incident=obj,
+                                             mine_document__mine=None,
+                                             **kwargs)
+
+
+class MineIncidentDocumentFactory(BaseFactory):
+    class Meta:
+        model = MineIncidentDocumentXref
+
+    class Params:
+        mine_document = factory.SubFactory('tests.factories.MineDocumentFactory',
+                                           mine_guid=factory.SelfAttribute('..incident.mine_guid'))
+        incident = factory.SubFactory('tests.factories.MineIncidentFactory')
+
+    mine_incident_document_xref_guid = GUID
+    mine_document_guid = factory.SelfAttribute('mine_document.mine_document_guid')
+    mine_incident_id = factory.SelfAttribute('incident.mine_incident_id')
+    mine_incident_document_type_code = factory.LazyFunction(RandomIncidentDocumentType)
 
 
 class MineReportFactory(BaseFactory):
@@ -530,7 +562,7 @@ class MineFactory(BaseFactory):
         if not isinstance(extracted, int):
             extracted = 1
 
-        MineIncidentFactory.create_batch(size=extracted, mine_guid=obj.mine_guid, **kwargs)
+        MineIncidentFactory.create_batch(size=extracted, mine=obj, **kwargs)
 
     @factory.post_generation
     def mine_variance(obj, create, extracted, **kwargs):

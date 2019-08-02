@@ -1,5 +1,4 @@
 import MineRecordModal from "./MineRecordModal";
-import AddTenureModal from "./AddTenureModal";
 import AddTailingsModal from "./AddTailingsModal";
 import EditTailingsReportModal from "./EditTailingsReportModal";
 import AddTailingsReportModal from "./AddTailingsReportModal";
@@ -16,13 +15,14 @@ import AddVarianceModal from "./AddVarianceModal";
 import ViewVarianceModal from "./ViewVarianceModal";
 import EditVarianceModal from "./EditVarianceModal";
 import AddIncidentModal from "./AddIncidentModal";
+import AddReportModal from "./AddReportModal";
+// import EditReportModal from "./EditReportModal";
 import ViewIncidentModal from "./ViewIncidentModal";
 
 // This file is anticipated to have multiple exports
 // eslint-disable-next-line import/prefer-default-export
 export const modalConfig = {
   MINE_RECORD: MineRecordModal,
-  ADD_TENURE: AddTenureModal,
   ADD_TAILINGS: AddTailingsModal,
   EDIT_TAILINGS_REPORT: EditTailingsReportModal,
   ADD_TAILINGS_REPORT: AddTailingsReportModal,
@@ -39,5 +39,7 @@ export const modalConfig = {
   VIEW_VARIANCE: ViewVarianceModal,
   EDIT_VARIANCE: EditVarianceModal,
   MINE_INCIDENT: AddIncidentModal,
+  ADD_REPORT: AddReportModal,
+  //  EDIT_REPORT:
   VIEW_MINE_INCIDENT: ViewIncidentModal,
 };
