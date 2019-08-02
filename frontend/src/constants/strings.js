@@ -14,7 +14,6 @@ export const NO_APPROVED_VARIANCE = "There are no approved variances";
 export const NO_VARIANCE_APPLICATIONS = "There are no pending variance applications";
 export const NO_APPLICATION = "No application information available";
 export const ADD_MINE_MANAGER = "Please add mine manager below";
-export const ADD_TENURE = "Please add tenure number below";
 export const ADD_PARTY = "Please create party below";
 export const NO_RESULTS = "No results found";
 export const NO_NRIS_INSPECTIONS = "No inspections in NRIS";
