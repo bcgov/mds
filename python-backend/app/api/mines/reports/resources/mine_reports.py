@@ -120,7 +120,7 @@ class MineReportResource(Resource, UserMixin):
         location='json',
         store_missing=False,
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
-    parser.add_argument('updated_documents', type=list, location='json', store_missing=False)
+    parser.add_argument('report_submissions', type=list, location='json', store_missing=False)
 
     @api.marshal_with(MINE_REPORT_MODEL, code=200)
     @requires_role_view_all
@@ -134,6 +134,7 @@ class MineReportResource(Resource, UserMixin):
     @api.marshal_with(MINE_REPORT_MODEL, code=200)
     @requires_role_edit_report
     def put(self, mine_guid, mine_report_guid):
+        mine = Mine.find_by_mine_guid(mine_guid)
         mine_report = MineReport.find_by_mine_report_guid(mine_report_guid)
         if not mine_report or str(mine_report.mine_guid) != mine_guid:
             raise NotFound("Mine Report not found")
@@ -147,6 +148,49 @@ class MineReportResource(Resource, UserMixin):
 
         if received_date:
             mine_report.received_date = received_date
+
+        report_submissions = data.get('report_submissions')
+        subission_iterator = iter(report_submissions)
+        new_submission = next((x for x in subission_iterator if x.new_submission == True), None)
+        if new_submission is not None:
+            new_report_submission_guid = uuid.uuid4()
+            new_report_submission = MineReportSubmission(
+                mine_report_submission_guid=new_report_submission_guid,
+                mine_report_submission_status_code='MIA',
+                submission_date=datetime.now())
+
+            last_submission_docs = mine_report.mine_report_submissions[0].documents
+
+            new_docs = [
+                x for x in new_submission.documents if not any(
+                    str(doc.document_manager_guid) == x['document_manager_guid']
+                    for doc in last_submission_docs)
+            ]
+            removed_docs = [
+                x for x in last_submission_docs
+                if not any(doc['document_manager_guid'] == str(x.document_manager_guid)
+                           for doc in new_submission.documents)
+            ]
+            for doc in removed_docs:
+                last_submission_docs.remove(doc)
+
+            if len(last_submission_docs) > 0:
+                new_report_submission.documents.extend(last_submission_docs)
+
+            for doc in new_docs:
+                mine_doc = MineDocument(
+                    mine_guid=mine.mine_guid,
+                    document_name=doc['document_name'],
+                    document_manager_guid=doc['document_manager_guid'])
+
+                if not mine_doc:
+                    raise BadRequest('Unable to register uploaded file as document')
+
+                mine_doc.save()
+
+                new_report_submission.documents.append(mine_doc)
+
+            mine_report.mine_report_submissions.append(new_report_submission)
 
         try:
             mine_report.save()
