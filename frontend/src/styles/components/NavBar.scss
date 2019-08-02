@@ -107,8 +107,12 @@
     color: $darkest-grey;
     text-decoration: none;
     &:hover {
-      color: $violet;
+      color: $pure-white;
     }
   }
   background-color: $light-grey;
+
+  li:hover {
+    background-color: $violet;
+  }
 }
