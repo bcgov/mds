@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Field } from "redux-form";
-import { Form, Divider } from "antd";
+import { Form, Divider, Button } from "antd";
 import FileUpload from "@/components/common/FileUpload";
 import { MINE_REPORT_DOCUMENT } from "@/constants/API";
 import { ReportsUploadedFilesList } from "@/components/Forms/reports/ReportsUploadedFilesList";
@@ -16,6 +16,7 @@ const propTypes = {
 
 export const ReportSubmissions = (props) => {
   const hasSubmissions = props.mineReportSubmissions.length > 0;
+  const [updateFilesClicked, setUpdateFilesClicked] = useState(0);
   return (
     <div>
       <Divider orientation="left">
@@ -32,7 +33,7 @@ export const ReportSubmissions = (props) => {
           />
         </Form.Item>
       )}
-      {!hasSubmissions && (
+      {(!hasSubmissions || updateFilesClicked) && (
         <Form.Item>
           <Field
             id="ReportFileUpload"
@@ -45,6 +46,15 @@ export const ReportSubmissions = (props) => {
             component={FileUpload}
           />
         </Form.Item>
+      )}
+      {hasSubmissions && !updateFilesClicked && (
+        <Button
+          className="full-mobile"
+          type="primary"
+          onClick={() => setUpdateFilesClicked(!updateFilesClicked)}
+        >
+          Update Files
+        </Button>
       )}
     </div>
   );
