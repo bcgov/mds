@@ -271,11 +271,12 @@ MINE_REPORT_SUBMISSION_MODEL= api.model(
 MINE_REPORT_MODEL = api.model(
     'MineReportModel', {
         'mine_report_guid':fields.String,
+        'mine_report_definition_guid':fields.String,
         'report_name':fields.String,
         'due_date':fields.Date,
         'received_date': fields.Date,
         'submission_year':fields.Integer,
-        'permit_id':fields.Integer,
+        'permit_guid':fields.String,
         'mine_report_submissions':fields.List(fields.Nested(MINE_REPORT_SUBMISSION_MODEL))
 })
 
@@ -288,7 +289,6 @@ MINE_REPORT_DEFINITION_CATEGORIES = api.model(
 
 MINE_REPORT_DEFINITION_MODEL = api.model(
     'MineReportDefinition', {
-        'mine_report_definition_id':fields.Integer,
         'mine_report_definition_guid':fields.String,
         'report_name':fields.String,
         'description':fields.String,

@@ -23,6 +23,7 @@ exports[`MineVarianceTable renders properly 1`] = `
         Object {
           "dataIndex": "compliance_article_id",
           "render": [Function],
+          "sorter": [Function],
           "title": "Code Section",
         },
         Object {
