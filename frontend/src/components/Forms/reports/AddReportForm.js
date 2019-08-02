@@ -9,14 +9,12 @@ import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import { required } from "@/utils/Validate";
 import { resetForm, createDropDownList, formatComplianceCodeValueOrLabel } from "@/utils/helpers";
-import { ReportsUploadedFilesList } from "@/components/Forms/reports/ReportsUploadedFilesList";
-import { MINE_REPORT_DOCUMENT } from "@/constants/API";
 import {
   getDropdownMineReportCategoryOptions,
   getMineReportDefinitionOptions,
 } from "@/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
-import FileUpload from "@/components/common/FileUpload";
+import { ReportSubmissions } from "@/components/Forms/reports/ReportSubmissions";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
@@ -44,6 +42,7 @@ export class AddReportForm extends Component {
     selectedMineReportComplianceArticles: [],
     uploadedFiles:
       this.props.initialValues.mine_report_submissions &&
+      this.props.initialValues.mine_report_submissions[0] &&
       this.props.initialValues.mine_report_submissions[0].documents.length > 0
         ? [...this.props.initialValues.mine_report_submissions[0].documents]
         : [],
@@ -218,29 +217,13 @@ export class AddReportForm extends Component {
                 component={renderConfig.DATE}
               />
             </Form.Item>
-            {this.state.uploadedFiles.length > 0 && (
-              <Form.Item label="Attached files" style={{ paddingBottom: "10px" }}>
-                <Field
-                  id="report_documents"
-                  name="report_documents"
-                  component={ReportsUploadedFilesList}
-                  files={this.state.uploadedFiles}
-                  onRemoveFile={this.onRemoveFile}
-                />
-              </Form.Item>
-            )}
-            <Form.Item>
-              <Field
-                id="ReportFileUpload"
-                name="ReportFileUpload"
-                label="Upload Files"
-                onFileLoad={(document_name, document_manager_guid) =>
-                  this.onFileLoad(document_name, document_manager_guid)
-                }
-                uploadUrl={MINE_REPORT_DOCUMENT(this.props.mineGuid)}
-                component={FileUpload}
-              />
-            </Form.Item>
+            <ReportSubmissions
+              mineGuid={this.props.mineGuid}
+              mineReportSubmissions={this.props.initialValues.mine_report_submissions}
+              uploadedFiles={this.state.uploadedFiles}
+              onFileLoad={this.onFileLoad}
+              onRemoveFile={this.onRemoveFile}
+            />
           </Col>
         </Row>
         <div className="right center-mobile">
