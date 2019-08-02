@@ -223,8 +223,14 @@
   background-color: $light-grey;
 }
 
+// -- SEE NavBar.css for .sub-menu - that interacts with this override
 .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
-  background-color: $violet;
+  background-color: lighten($violet, 30%);
+
+  a,
+  a:hover {
+    color: $pure-white;
+  }
 }
 
 .highlight {

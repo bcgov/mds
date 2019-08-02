@@ -94,14 +94,13 @@
   border-radius: 0;
   border-top: 1px solid #5e46a1;
   position: inherit;
-
-  &:hover {
+  // if the activeClass is on nav, change default hover color to white, else leave violet
+  .ant-menu-submenu-title:hover {
     color: $pure-white;
   }
 }
 
 // MINE SUMMARY NAVIGATION
-
 .sub-menu {
   a,
   link {
