@@ -180,6 +180,20 @@ export class NavBar extends Component {
             </Row>
             <Row>
               <Col span={24}>
+                <Dropdown overlay={this.reportingDropdown} placement="bottomLeft">
+                  <button
+                    id={this.ifActiveButton(router.REPORTING_DASHBOARD.route)}
+                    type="button"
+                    className="menu__btn"
+                  >
+                    <span className="padding-small--right">Provincial Reporting</span>
+                    <Icon type="down" />
+                  </button>
+                </Dropdown>
+              </Col>
+            </Row>
+            <Row>
+              <Col span={24}>
                 <Link to={router.VARIANCE_DASHBOARD.route}>
                   <Button
                     id={this.ifActiveButton(router.REPORTING_DASHBOARD.route)}

@@ -284,7 +284,7 @@ export class CustomHomePage extends Component {
           <h1>Browse Variances</h1>
         </div>
         <div className="landing-page__content">
-          <AuthorizationWrapper permission={Permission.IN_DEVELOPMENT}>
+          <AuthorizationWrapper permission={Permission.IN_TESTING}>
             <VarianceSearch
               handleNameFieldReset={this.handleNameFieldReset}
               initialValues={this.state.params}
