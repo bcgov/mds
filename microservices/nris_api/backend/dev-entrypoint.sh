@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-sleep 5
+sleep 10
 flask db upgrade
 
 #keep trying until success

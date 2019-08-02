@@ -19,4 +19,3 @@ RUN chmod u+x ./dev-entrypoint.sh
 
 # Run the server
 EXPOSE 5001
-CMD [ "flask", "run"]
