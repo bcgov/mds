@@ -41,7 +41,7 @@ class MineReportListResource(Resource, UserMixin):
         'received_date',
         location='json',
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
-    parser.add_argument('report_submissions', type=list, location='json', store_missing=False)
+    parser.add_argument('mine_report_submissions', type=list, location='json')
 
     @api.marshal_with(MINE_REPORT_MODEL, envelope='records', code=200)
     @api.doc(description='returns the reports for a given mine.')
@@ -80,16 +80,16 @@ class MineReportListResource(Resource, UserMixin):
             submission_year=data['submission_year'],
             permit_id=permit.permit_id if permit else None)
 
-        submissions = data.get('report_submissions')
+        submissions = data.get('mine_report_submissions')
         if submissions is not None:
             report_submission_guid = uuid.uuid4()
             submission = submissions[0]
-            if len(submission.documents) > 0:
+            if len(submission.get('documents')) > 0:
                 report_submission = MineReportSubmission(
                     mine_report_submission_guid=report_submission_guid,
                     mine_report_submission_status_code='MIA',
                     submission_date=datetime.now())
-                for submission_doc in submission.documents:
+                for submission_doc in submission.get('documents'):
                     mine_doc = MineDocument(
                         mine_guid=mine.mine_guid,
                         document_name=submission_doc['document_name'],
@@ -122,7 +122,7 @@ class MineReportResource(Resource, UserMixin):
         location='json',
         store_missing=False,
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
-    parser.add_argument('report_submissions', type=list, location='json', store_missing=False)
+    parser.add_argument('mine_report_submissions', type=list, location='json', store_missing=False)
 
     @api.marshal_with(MINE_REPORT_MODEL, code=200)
     @requires_role_view_all
@@ -151,9 +151,10 @@ class MineReportResource(Resource, UserMixin):
         if received_date:
             mine_report.received_date = received_date
 
-        report_submissions = data.get('report_submissions')
+        report_submissions = data.get('mine_report_submissions')
         subission_iterator = iter(report_submissions)
-        new_submission = next((x for x in subission_iterator if x.new_submission == True), None)
+        new_submission = next(
+            (x for x in subission_iterator if x.get('mine_report_submission_guid') is None), None)
         if new_submission is not None:
             new_report_submission_guid = uuid.uuid4()
             new_report_submission = MineReportSubmission(
@@ -162,11 +163,11 @@ class MineReportResource(Resource, UserMixin):
                 submission_date=datetime.now())
 
             # Copy the current list of documents for the report submission
-            last_submission_docs = mine_report.mine_report_submissions[0].documents
+            last_submission_docs = mine_report.mine_report_submissions[0].documents.copy()
 
             # Gets the difference between the set of documents in the new submission and the last submission
             new_docs = [
-                x for x in new_submission.documents if not any(
+                x for x in new_submission.get('documents') if not any(
                     str(doc.document_manager_guid) == x['document_manager_guid']
                     for doc in last_submission_docs)
             ]
@@ -174,7 +175,7 @@ class MineReportResource(Resource, UserMixin):
             removed_docs = [
                 x for x in last_submission_docs
                 if not any(doc['document_manager_guid'] == str(x.document_manager_guid)
-                           for doc in new_submission.documents)
+                           for doc in new_submission.get('documents'))
             ]
             # Remove the deleted documents from the existing set.
             for doc in removed_docs:
