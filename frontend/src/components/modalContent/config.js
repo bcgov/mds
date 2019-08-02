@@ -1,5 +1,4 @@
 import MineRecordModal from "./MineRecordModal";
-import AddTenureModal from "./AddTenureModal";
 import AddTailingsModal from "./AddTailingsModal";
 import EditTailingsReportModal from "./EditTailingsReportModal";
 import AddTailingsReportModal from "./AddTailingsReportModal";
@@ -24,7 +23,6 @@ import ViewIncidentModal from "./ViewIncidentModal";
 // eslint-disable-next-line import/prefer-default-export
 export const modalConfig = {
   MINE_RECORD: MineRecordModal,
-  ADD_TENURE: AddTenureModal,
   ADD_TAILINGS: AddTailingsModal,
   EDIT_TAILINGS_REPORT: EditTailingsReportModal,
   ADD_TAILINGS_REPORT: AddTailingsReportModal,

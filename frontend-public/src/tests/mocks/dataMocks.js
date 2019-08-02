@@ -16,11 +16,6 @@ export const MINE_RESPONSE = {
       mine_no: "BLAH9091",
       mine_region: "NE",
       mine_permit: [],
-      mineral_tenure_xref: [
-        {
-          tenure_number_id: "1234567",
-        },
-      ],
       mine_location: [{ longitude: null, latitude: null }],
       mine_status: {
         statusvalue: ["CLD", "CM"],
@@ -116,11 +111,6 @@ export const MINE_RESPONSE = {
           ],
         },
       ],
-      mineral_tenure_xref: [
-        {
-          tenure_number_id: "1234567",
-        },
-      ],
       mine_status: {
         statusvalue: ["CLD", "CM"],
         status_labels: ["Closed", "Care & Maintenance"],
@@ -164,11 +154,6 @@ export const MINES = {
       mine_no: "BLAH9091",
       mine_region: "NE",
       mine_permit: [],
-      mineral_tenure_xref: [
-        {
-          tenure_number_id: "1234567",
-        },
-      ],
       mine_location: { longitude: null, latitude: null },
       mine_tailings_storage_facilities: [
         {
@@ -262,11 +247,6 @@ export const MINES = {
               },
             },
           ],
-        },
-      ],
-      mineral_tenure_xref: [
-        {
-          tenure_number_id: "1234567",
         },
       ],
       mine_status: {

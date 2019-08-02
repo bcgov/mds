@@ -60,8 +60,6 @@ class Mine(AuditMixin, Base):
         primaryjoin="and_(MineType.mine_guid == Mine.mine_guid, MineType.active_ind==True)",
         lazy='selectin')
 
-    #Not always desired, set to lazy load using select
-    mineral_tenure_xref = db.relationship('MineralTenureXref', backref='mine', lazy='select')
     mine_documents = db.relationship(
         'MineDocument',
         backref='mine',
