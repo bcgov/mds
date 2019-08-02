@@ -41,7 +41,7 @@ class MineReportListResource(Resource, UserMixin):
         'received_date',
         location='json',
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
-    parser.add_argument('updated_documents', type=list, location='json', store_missing=False)
+    parser.add_argument('report_submissions', type=list, location='json', store_missing=False)
 
     @api.marshal_with(MINE_REPORT_MODEL, envelope='records', code=200)
     @api.doc(description='returns the reports for a given mine.')
@@ -80,27 +80,29 @@ class MineReportListResource(Resource, UserMixin):
             submission_year=data['submission_year'],
             permit_id=permit.permit_id if permit else None)
 
-        updated_documents = data.get('updated_documents')
-        if updated_documents is not None:
+        submissions = data.get('report_submissions')
+        if submissions is not None:
             report_submission_guid = uuid.uuid4()
-            report_submission = MineReportSubmission(
-                mine_report_submission_guid=report_submission_guid,
-                mine_report_submission_status_code='MIA',
-                submission_date=datetime.now())
-            for updated_file in updated_documents:
-                mine_doc = MineDocument(
-                    mine_guid=mine.mine_guid,
-                    document_name=updated_file['document_name'],
-                    document_manager_guid=updated_file['document_manager_guid'])
+            submission = submissions[0]
+            if len(submission.documents) > 0:
+                report_submission = MineReportSubmission(
+                    mine_report_submission_guid=report_submission_guid,
+                    mine_report_submission_status_code='MIA',
+                    submission_date=datetime.now())
+                for submission_doc in submission.documents:
+                    mine_doc = MineDocument(
+                        mine_guid=mine.mine_guid,
+                        document_name=submission_doc['document_name'],
+                        document_manager_guid=submission_doc['document_manager_guid'])
 
-                if not mine_doc:
-                    raise BadRequest('Unable to register uploaded file as document')
+                    if not mine_doc:
+                        raise BadRequest('Unable to register uploaded file as document')
 
-                mine_doc.save()
+                    mine_doc.save()
 
-                report_submission.documents.append(mine_doc)
+                    report_submission.documents.append(mine_doc)
 
-            mine_report.mine_report_submissions.append(report_submission)
+                mine_report.mine_report_submissions.append(report_submission)
 
         try:
             mine_report.save()
@@ -159,18 +161,22 @@ class MineReportResource(Resource, UserMixin):
                 mine_report_submission_status_code='MIA',
                 submission_date=datetime.now())
 
+            # Copy the current list of documents for the report submission
             last_submission_docs = mine_report.mine_report_submissions[0].documents
 
+            # Gets the difference between the set of documents in the new submission and the last submission
             new_docs = [
                 x for x in new_submission.documents if not any(
                     str(doc.document_manager_guid) == x['document_manager_guid']
                     for doc in last_submission_docs)
             ]
+            # Get the documents that were on the last submission but not part of the new submission
             removed_docs = [
                 x for x in last_submission_docs
                 if not any(doc['document_manager_guid'] == str(x.document_manager_guid)
                            for doc in new_submission.documents)
             ]
+            # Remove the deleted documents from the existing set.
             for doc in removed_docs:
                 last_submission_docs.remove(doc)
 
