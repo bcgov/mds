@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import PropTypes from "prop-types";
-import { flatMap, uniqBy, concat, reject } from "lodash";
+import { flatMap, uniqBy } from "lodash";
 import { Field, reduxForm, formValueSelector, change } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm, List } from "antd";
 import { renderConfig } from "@/components/common/config";
@@ -28,11 +28,12 @@ const propTypes = {
   initialValues: PropTypes.objectOf(PropTypes.any),
   selectedMineReportCategory: PropTypes.string.isRequired,
   selectedMineReportDefinition: PropTypes.string.isRequired,
+  change: PropTypes.func,
 };
 
 const selector = formValueSelector(FORM.ADD_REPORT);
 
-const defaultProps = { initialValues: {} };
+const defaultProps = { initialValues: {}, change };
 
 export class AddReportForm extends Component {
   state = {
@@ -40,12 +41,7 @@ export class AddReportForm extends Component {
     mineReportDefinitionOptionsFiltered: [],
     dropdownMineReportDefinitionOptionsFiltered: [],
     selectedMineReportComplianceArticles: [],
-    uploadedFiles:
-      this.props.initialValues.mine_report_submissions &&
-      this.props.initialValues.mine_report_submissions[0] &&
-      this.props.initialValues.mine_report_submissions[0].documents.length > 0
-        ? [...this.props.initialValues.mine_report_submissions[0].documents]
-        : [],
+    mineReportSubmissions: this.props.initialValues.mine_report_submissions,
   };
 
   componentDidMount = () => {
@@ -118,24 +114,9 @@ export class AddReportForm extends Component {
     }
   };
 
-  onFileLoad = (document_name, document_manager_guid) => {
-    this.setState((prevState) => ({
-      uploadedFiles: concat(prevState.uploadedFiles, {
-        document_name,
-        document_manager_guid,
-      }),
-    }));
-    change("updated_documents", this.state.uploadedFiles);
-  };
-
-  onRemoveFile = (file) => {
-    this.setState((prevState) => ({
-      uploadedFiles: reject(
-        prevState.uploadedFiles,
-        (uploadedFile) => file.document_manager_guid === uploadedFile.document_manager_guid
-      ),
-    }));
-    change("updated_documents", this.state.uploadedFiles);
+  updateMineReportSubmissions = (updatedSubmissions) => {
+    this.setState({ mineReportSubmissions: updatedSubmissions });
+    this.props.change("mine_report_submissions", this.state.mineReportSubmissions);
   };
 
   render() {
@@ -219,10 +200,8 @@ export class AddReportForm extends Component {
             </Form.Item>
             <ReportSubmissions
               mineGuid={this.props.mineGuid}
-              mineReportSubmissions={this.props.initialValues.mine_report_submissions}
-              uploadedFiles={this.state.uploadedFiles}
-              onFileLoad={this.onFileLoad}
-              onRemoveFile={this.onRemoveFile}
+              mineReportSubmissions={this.state.mineReportSubmissions}
+              updateMineReportSubmissions={this.updateMineReportSubmissions}
             />
           </Col>
         </Row>
