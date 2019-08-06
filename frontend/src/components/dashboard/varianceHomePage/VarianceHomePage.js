@@ -75,7 +75,7 @@ const formatParams = ({ region = [], compliance_code = [], ...remainingParams })
   ...remainingParams,
 });
 
-export class CustomHomePage extends Component {
+export class VarianceHomePage extends Component {
   constructor(props) {
     super(props);
     this.handleVarianceSearchDebounced = debounce(this.handleVarianceSearch, 1000);
@@ -313,7 +313,7 @@ export class CustomHomePage extends Component {
   }
 }
 
-CustomHomePage.propTypes = propTypes;
+VarianceHomePage.propTypes = propTypes;
 
 const mapStateToProps = (state) => ({
   mineRegionHash: getMineRegionHash(state),
@@ -349,4 +349,4 @@ const mapDispatchToProps = (dispatch) =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(CustomHomePage);
+)(VarianceHomePage);

@@ -14,7 +14,7 @@ const propTypes = {
   openViewVarianceModal: PropTypes.func.isRequired,
   handlePageChange: PropTypes.func.isRequired,
   params: PropTypes.objectOf(
-    PropTypes.oneOfType[(PropTypes.string, PropTypes.number, PropTypes.arrayOf(PropTypes.string))]
+    PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.arrayOf(PropTypes.string)])
   ).isRequired,
   pageData: CustomPropTypes.variancePageData.isRequired,
   filterVarianceStatusOptions: CustomPropTypes.filterOptions.isRequired,

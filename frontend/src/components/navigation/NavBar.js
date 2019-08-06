@@ -143,68 +143,43 @@ export class NavBar extends Component {
     <div>
       {this.props.isMenuOpen && (
         <div className="menu--hamburger">
-          <span>
-            <Row>
-              <Col span={24}>
-                <Link
-                  to={router.MINE_HOME_PAGE.dynamicRoute({
-                    page: Strings.DEFAULT_PAGE,
-                    per_page: Strings.DEFAULT_PER_PAGE,
-                  })}
+          {/* <span> */}
+          <Row>
+            <Col span={24}>
+              <Link
+                to={router.MINE_HOME_PAGE.dynamicRoute({
+                  page: Strings.DEFAULT_PAGE,
+                  per_page: Strings.DEFAULT_PER_PAGE,
+                })}
+              >
+                <Button
+                  id={this.ifActiveButton(router.MINE_HOME_PAGE.route)}
+                  className="menu--hamburger__btn--link"
                 >
-                  <Button
-                    id={this.ifActiveButton(router.MINE_HOME_PAGE.route)}
-                    className="menu--hamburger__btn--link"
-                  >
-                    Mines
-                  </Button>
-                </Link>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={24}>
-                <Link
-                  to={router.CONTACT_HOME_PAGE.dynamicRoute({
-                    page: Strings.DEFAULT_PAGE,
-                    per_page: Strings.DEFAULT_PER_PAGE,
-                  })}
+                  Mines
+                </Button>
+              </Link>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={24}>
+              <Link
+                to={router.CONTACT_HOME_PAGE.dynamicRoute({
+                  page: Strings.DEFAULT_PAGE,
+                  per_page: Strings.DEFAULT_PER_PAGE,
+                })}
+              >
+                <Button
+                  id={this.ifActiveButton(router.CONTACT_HOME_PAGE.route)}
+                  className="menu--hamburger__btn--link"
                 >
-                  <Button
-                    id={this.ifActiveButton(router.CONTACT_HOME_PAGE.route)}
-                    className="menu--hamburger__btn--link"
-                  >
-                    Contacts
-                  </Button>
-                </Link>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={24}>
-                <Dropdown overlay={this.reportingDropdown} placement="bottomLeft">
-                  <button
-                    id={this.ifActiveButton(router.REPORTING_DASHBOARD.route)}
-                    type="button"
-                    className="menu__btn"
-                  >
-                    <span className="padding-small--right">Provincial Reporting</span>
-                    <Icon type="down" />
-                  </button>
-                </Dropdown>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={24}>
-                <Link to={router.VARIANCE_DASHBOARD.route}>
-                  <Button
-                    id={this.ifActiveButton(router.REPORTING_DASHBOARD.route)}
-                    className="menu--hamburger__btn--link"
-                  >
-                    Browse Dashboard
-                  </Button>
-                </Link>
-              </Col>
-            </Row>
-          </span>
+                  Contacts
+                </Button>
+              </Link>
+            </Col>
+          </Row>
+
+          {/* </span> */}
           <AuthorizationWrapper permission={Permission.ADMIN}>
             <Row>
               <Col span={24}>
@@ -245,6 +220,18 @@ export class NavBar extends Component {
               </Col>
             </Row>
           </AuthorizationWrapper>
+          <Row>
+            <Col span={24}>
+              <Link to={router.VARIANCE_DASHBOARD.route}>
+                <Button
+                  id={this.ifActiveButton(router.VARIANCE_DASHBOARD.route)}
+                  className="menu--hamburger__btn--link"
+                >
+                  Browse Variances
+                </Button>
+              </Link>
+            </Col>
+          </Row>
           <Row>
             <Col span={24}>
               <Link to={router.CUSTOM_HOME_PAGE.route}>

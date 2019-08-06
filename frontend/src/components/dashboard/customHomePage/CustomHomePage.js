@@ -7,8 +7,6 @@ import {
   fetchMineTenureTypes,
   fetchMineCommodityOptions,
   fetchMineComplianceCodes,
-  fetchVarianceStatusOptions,
-  fetchVarianceDocumentCategoryOptions,
 } from "@/actionCreators/staticContentActionCreator";
 import { openModal, closeModal } from "@/actions/modalActions";
 import {
@@ -16,17 +14,10 @@ import {
   getMineTenureTypesHash,
   getCommodityOptionHash,
   getHSRCMComplianceCodesHash,
-  getFilterVarianceStatusOptions,
 } from "@/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import { getSubscribedMines } from "@/selectors/mineSelectors";
 import { fetchSubscribedMinesByUser, unSubscribe } from "@/actionCreators/mineActionCreator";
-import {
-  fetchVariances,
-  updateVariance,
-  addDocumentToVariance,
-} from "@/actionCreators/varianceActionCreator";
-import { getVariances, getVariancePageData } from "@/selectors/varianceSelectors";
 import { SubscriptionTable } from "./SubscriptionTable";
 import { fetchInspectors } from "@/actionCreators/partiesActionCreator";
 
@@ -38,12 +29,10 @@ import { fetchInspectors } from "@/actionCreators/partiesActionCreator";
 const propTypes = {
   fetchSubscribedMinesByUser: PropTypes.func.isRequired,
   fetchMineTenureTypes: PropTypes.func.isRequired,
-  fetchVarianceDocumentCategoryOptions: PropTypes.func.isRequired,
   fetchMineComplianceCodes: PropTypes.func.isRequired,
   fetchRegionOptions: PropTypes.func.isRequired,
   fetchInspectors: PropTypes.func.isRequired,
   fetchMineCommodityOptions: PropTypes.func.isRequired,
-  fetchVarianceStatusOptions: PropTypes.func.isRequired,
   unSubscribe: PropTypes.func.isRequired,
   subscribedMines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -59,8 +48,6 @@ export class CustomHomePage extends Component {
     this.props.fetchMineComplianceCodes();
     this.props.fetchRegionOptions();
     this.props.fetchMineCommodityOptions();
-    this.props.fetchVarianceStatusOptions();
-    this.props.fetchVarianceDocumentCategoryOptions();
   }
 
   handleUnSubscribe = (event, mineGuid, mineName) => {
@@ -97,10 +84,7 @@ const mapStateToProps = (state) => ({
   mineRegionHash: getMineRegionHash(state),
   mineTenureHash: getMineTenureTypesHash(state),
   mineCommodityOptionsHash: getCommodityOptionHash(state),
-  variancePageData: getVariancePageData(state),
-  variances: getVariances(state),
   complianceCodesHash: getHSRCMComplianceCodesHash(state),
-  filterVarianceStatusOptions: getFilterVarianceStatusOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -108,17 +92,12 @@ const mapDispatchToProps = (dispatch) =>
     {
       fetchSubscribedMinesByUser,
       unSubscribe,
-      fetchVariances,
-      updateVariance,
       openModal,
       closeModal,
       fetchRegionOptions,
-      addDocumentToVariance,
       fetchMineTenureTypes,
       fetchMineComplianceCodes,
       fetchMineCommodityOptions,
-      fetchVarianceStatusOptions,
-      fetchVarianceDocumentCategoryOptions,
       fetchInspectors,
     },
     dispatch
