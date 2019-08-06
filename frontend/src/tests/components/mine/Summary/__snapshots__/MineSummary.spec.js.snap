@@ -76,11 +76,6 @@ exports[`MineSummary renders properly 1`] = `
             "mine_tenure_type_code": "MIN",
           },
         ],
-        "mineral_tenure_xref": Array [
-          Object {
-            "tenure_number_id": "1234567",
-          },
-        ],
         "verified_status": Object {
           "healthy_ind": true,
           "mine_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
@@ -177,11 +172,6 @@ exports[`MineSummary renders properly 1`] = `
               "mine_tenure_type_code": "MIN",
             },
           ],
-          "mineral_tenure_xref": Array [
-            Object {
-              "tenure_number_id": "1234567",
-            },
-          ],
           "verified_status": Object {
             "healthy_ind": null,
             "mine_guid": null,
@@ -250,11 +240,6 @@ exports[`MineSummary renders properly 1`] = `
             },
             Object {
               "mine_tenure_type_code": "MIN",
-            },
-          ],
-          "mineral_tenure_xref": Array [
-            Object {
-              "tenure_number_id": "1234567",
             },
           ],
           "verified_status": Object {
