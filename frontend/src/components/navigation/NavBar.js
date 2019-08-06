@@ -143,7 +143,6 @@ export class NavBar extends Component {
     <div>
       {this.props.isMenuOpen && (
         <div className="menu--hamburger">
-          {/* <span> */}
           <Row>
             <Col span={24}>
               <Link
@@ -178,8 +177,6 @@ export class NavBar extends Component {
               </Link>
             </Col>
           </Row>
-
-          {/* </span> */}
           <AuthorizationWrapper permission={Permission.ADMIN}>
             <Row>
               <Col span={24}>
@@ -251,9 +248,9 @@ export class NavBar extends Component {
           <Row>
             <Col span={24}>
               <Link to={router.LOGOUT.route}>
-                <button type="button" className="menu--hamburger__btn--link">
+                <Button id="logout-btn" type="button" className="menu--hamburger__btn--link">
                   Log Out
-                </button>
+                </Button>
               </Link>
             </Col>
           </Row>

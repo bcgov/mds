@@ -80,9 +80,10 @@ export class VarianceHomePage extends Component {
     super(props);
     this.handleVarianceSearchDebounced = debounce(this.handleVarianceSearch, 1000);
     this.state = {
+      variancesLoaded: false,
       params: {
-        page: String.DEFAULT_PAGE,
-        per_page: String.DEFAULT_PER_PAGE,
+        page: Strings.DEFAULT_PAGE,
+        per_page: Strings.DEFAULT_PER_PAGE,
         major: "",
         region: [],
         compliance_code: [],
@@ -100,7 +101,7 @@ export class VarianceHomePage extends Component {
     params: {
       variance_application_status_code: [],
       page: Strings.DEFAULT_PAGE,
-      per_page: 5,
+      per_page: Strings.DEFAULT_PER_PAGE,
       major: "",
       region: [],
       compliance_code: [],
@@ -114,13 +115,20 @@ export class VarianceHomePage extends Component {
 
   componentDidMount() {
     const params = this.props.location.search;
+    const parsedParams = queryString.parse(params);
+    const {
+      page = this.state.params.page,
+      per_page = this.state.params.per_page,
+      type = this.state.params.type,
+    } = parsedParams;
     if (params) {
       this.renderDataFromURL(params);
     } else {
       this.props.history.push(
         router.VARIANCE_DASHBOARD.dynamicRoute({
-          page: String.DEFAULT_PAGE,
-          per_page: String.DEFAULT_PER_PAGE,
+          page,
+          per_page,
+          type,
         })
       );
     }
