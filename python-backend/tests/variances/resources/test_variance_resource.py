@@ -20,6 +20,9 @@ class TestGetVariances:
         assert all(
             str(variance.variance_guid) in map(lambda v: v['variance_guid'], get_data['records'])
             for variance in variances)
+        assert all(
+            variance.variance_no in map(lambda v: v['variance_no'], get_data['records'])
+            for variance in variances)
 
     def test_get_variances_pagination(self, test_client, db_session, auth_headers):
         """Should return paginated records"""

@@ -106,11 +106,6 @@ exports[`MineTailingsInfo renders properly 1`] = `
               "mine_tenure_type_code": "MIN",
             },
           ],
-          "mineral_tenure_xref": Array [
-            Object {
-              "tenure_number_id": "1234567",
-            },
-          ],
           "verified_status": Object {
             "healthy_ind": null,
             "mine_guid": null,

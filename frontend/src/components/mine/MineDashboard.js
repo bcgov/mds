@@ -68,7 +68,6 @@ import {
 import { fetchApplications } from "@/actionCreators/applicationActionCreator";
 import { fetchMineComplianceInfo } from "@/actionCreators/complianceActionCreator";
 import CustomPropTypes from "@/customPropTypes";
-import MineTenureInfo from "@/components/mine/Tenure/MineTenureInfo";
 import MineTailingsInfo from "@/components/mine/Tailings/MineTailingsInfo";
 import MineSummary from "@/components/mine/Summary/MineSummary";
 import MineVariance from "@/components/mine/Variances/MineVariance";
@@ -400,14 +399,6 @@ export class MineDashboard extends Component {
                     />
                   </div>
                 </TabPane>
-                {/* TODO: Unhide for July release */
-                false && (
-                  <TabPane tab="Tenure" key="tenure">
-                    <div className="tab__content">
-                      <MineTenureInfo mine={mine} {...this.props} />
-                    </div>
-                  </TabPane>
-                )}
                 {mine.mine_tailings_storage_facilities.length > 0 && (
                   <TabPane tab="Tailings" key="tailings">
                     <div className="tab__content">

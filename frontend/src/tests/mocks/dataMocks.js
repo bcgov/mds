@@ -16,11 +16,6 @@ export const MINE_RESPONSE = {
       mine_no: "BLAH9091",
       mine_region: "NE",
       mine_permit: [],
-      mineral_tenure_xref: [
-        {
-          tenure_number_id: "1234567",
-        },
-      ],
       mine_location: { longitude: null, latitude: null },
       mine_status: {
         statusvalue: ["CLD", "CM"],
@@ -72,11 +67,6 @@ export const MINE_RESPONSE = {
         {
           permit_guid: "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
           permit_no: "xfM0c0ZKEw7B",
-        },
-      ],
-      mineral_tenure_xref: [
-        {
-          tenure_number_id: "1234567",
         },
       ],
       mine_status: {
@@ -131,11 +121,6 @@ export const SUBSCRIBED_MINES = {
       mine_no: "BLAH9091",
       region_code: "NE",
       mine_permit: [],
-      mineral_tenure_xref: [
-        {
-          tenure_number_id: "1234567",
-        },
-      ],
       mine_location: { longitude: null, latitude: null },
       mine_tailings_storage_facility: [
         {
@@ -178,11 +163,6 @@ export const MINES = {
       mine_no: "BLAH9091",
       mine_region: "NE",
       mine_permit: [],
-      mineral_tenure_xref: [
-        {
-          tenure_number_id: "1234567",
-        },
-      ],
       mine_location: { longitude: null, latitude: null },
       mine_tailings_storage_facilities: [
         {
@@ -234,11 +214,6 @@ export const MINES = {
         {
           permit_guid: "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
           permit_no: "xfM0c0ZKEw7B",
-        },
-      ],
-      mineral_tenure_xref: [
-        {
-          tenure_number_id: "1234567",
         },
       ],
       mine_status: {
@@ -1472,6 +1447,7 @@ export const VARIANCES = {
   records: [
     {
       variance_guid: "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+      variance_no: 1,
       compliance_article_id: 1,
       expiry_date: "2019-03-30",
       issue_date: "2019-03-01",
@@ -1496,6 +1472,7 @@ export const VARIANCES = {
 
 export const VARIANCE = {
   variance_guid: "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+  variance_no: 1,
   compliance_article_id: 1,
   expiry_date: "2019-03-30",
   issue_date: "2019-03-01",
