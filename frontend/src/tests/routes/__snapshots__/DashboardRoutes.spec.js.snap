@@ -135,7 +135,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
-        "displayName": "Connect(CustomHomePage)",
+        "displayName": "Connect(VarianceHomePage)",
         "type": [Function],
       }
     }
