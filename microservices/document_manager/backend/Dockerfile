@@ -13,9 +13,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-#set entrypoint to ex.
-RUN chmod u+x ./dev-entrypoint.sh
-
-
 # Run the server
 EXPOSE 5001
+CMD ['flask','run']
