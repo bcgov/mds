@@ -31,4 +31,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Run the server
 EXPOSE 5500
-CMD [ "flask", "run"]
+CMD ["flask","run"]
