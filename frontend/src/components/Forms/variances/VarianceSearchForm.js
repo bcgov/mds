@@ -22,14 +22,14 @@ const defaultProps = {
 
 const validate = (values) => {
   const errors = {};
-  if (values.issue_date_min && values.issue_date_max) {
-    if (Date.parse(values.issue_date_min) > Date.parse(values.issue_date_max)) {
-      errors.issue_date_max = "Must be after issue date.";
+  if (values.issue_date_after && values.issue_date_before) {
+    if (Date.parse(values.issue_date_after) > Date.parse(values.issue_date_before)) {
+      errors.issue_date_before = "Must be after issue date.";
     }
   }
-  if (values.expiry_date_min && values.expiry_date_max) {
-    if (Date.parse(values.expiry_date_min) > Date.parse(values.expiry_date_max)) {
-      errors.issue_date_max = "Must be after expiry date.";
+  if (values.expiry_date_after && values.expiry_date_max) {
+    if (Date.parse(values.expiry_date_after) > Date.parse(values.expiry_date_max)) {
+      errors.issue_date_before = "Must be after expiry date.";
     }
   }
   return errors;
@@ -70,31 +70,28 @@ export class VarianceSearchForm extends Component {
             <Row gutter={6}>
               <Col md={12} xs={24}>
                 <Field
-                  id="issue_date_min"
-                  name="issue_date_min"
+                  id="issue_date_after"
+                  name="issue_date_after"
                   placeholder="Select Min Issue Date"
                   component={renderConfig.DATE}
-                  // validate={}
                 />
               </Col>
               <Col md={12} xs={24}>
                 <Field
-                  id="issue_date_max"
-                  name="issue_date_max"
+                  id="issue_date_before"
+                  name="issue_date_before"
                   placeholder="Select Max Issue Date"
                   component={renderConfig.DATE}
-                  // validate={}
                 />
               </Col>
             </Row>
             <Row gutter={6}>
               <Col md={12} xs={24}>
                 <Field
-                  id="expiry_date_min"
-                  name="expiry_date_min"
+                  id="expiry_date_after"
+                  name="expiry_date_after"
                   placeholder="Select Min Expiry Date"
                   component={renderConfig.DATE}
-                  // validate={}
                 />
               </Col>
               <Col md={12} xs={24}>
@@ -103,7 +100,6 @@ export class VarianceSearchForm extends Component {
                   name="expiry_date_max"
                   placeholder="Select Max Expiry Date"
                   component={renderConfig.DATE}
-                  // validate={}
                 />
               </Col>
             </Row>

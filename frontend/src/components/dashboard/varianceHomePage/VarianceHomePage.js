@@ -87,10 +87,10 @@ export class VarianceHomePage extends Component {
         major: "",
         region: [],
         compliance_code: [],
-        issue_date_min: "",
-        issue_date_max: "",
-        expiry_date_max: "",
-        expiry_date_min: "",
+        issue_date_after: "",
+        issue_date_before: "",
+        expiry_date_before: "",
+        expiry_date_after: "",
         search: "",
       },
     };
@@ -105,10 +105,10 @@ export class VarianceHomePage extends Component {
       major: "",
       region: [],
       compliance_code: [],
-      issue_date_min: "",
-      issue_date_max: "",
-      expiry_date_max: "",
-      expiry_date_min: "",
+      issue_date_after: "",
+      issue_date_before: "",
+      expiry_date_before: "",
+      expiry_date_after: "",
       search: "",
     },
   };
@@ -154,10 +154,10 @@ export class VarianceHomePage extends Component {
 
   renderDataFromURL = (params) => {
     const {
-      issue_date_min,
-      issue_date_max,
-      expiry_date_max,
-      expiry_date_min,
+      issue_date_after,
+      issue_date_before,
+      expiry_date_before,
+      expiry_date_after,
       region,
       compliance_code,
       major,
@@ -167,10 +167,10 @@ export class VarianceHomePage extends Component {
     const format = (param) => (param ? param.split(",").filter((x) => x) : []);
     this.setState({
       params: {
-        issue_date_min,
-        issue_date_max,
-        expiry_date_max,
-        expiry_date_min,
+        issue_date_after,
+        issue_date_before,
+        expiry_date_before,
+        expiry_date_after,
         region: format(region),
         compliance_code: format(compliance_code),
         major,

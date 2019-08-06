@@ -14,10 +14,10 @@ const propTypes = {
     region: PropTypes.arrayOf(PropTypes.string),
     compliance_code: PropTypes.arrayOf(PropTypes.string),
     major: PropTypes.string,
-    issue_date_min: PropTypes.string,
-    issue_date_max: PropTypes.string,
-    expiry_date_max: PropTypes.string,
-    expiry_date_min: PropTypes.string,
+    issue_date_after: PropTypes.string,
+    issue_date_before: PropTypes.string,
+    expiry_date_before: PropTypes.string,
+    expiry_date_after: PropTypes.string,
   }),
   mineRegionOptions: CustomPropTypes.options.isRequired,
   complianceCodes: CustomPropTypes.options.isRequired,
@@ -31,14 +31,21 @@ const checkAdvancedSearch = ({
   region,
   compliance_code,
   major,
-  issue_date_min,
-  issue_date_max,
-  expiry_date_max,
-  expiry_date_min,
+  issue_date_after,
+  issue_date_before,
+  expiry_date_before,
+  expiry_date_after,
 }) =>
   major ||
   some(
-    [region, compliance_code, issue_date_min, issue_date_max, expiry_date_max, expiry_date_min],
+    [
+      region,
+      compliance_code,
+      issue_date_after,
+      issue_date_before,
+      expiry_date_before,
+      expiry_date_after,
+    ],
     negate(isEmpty)
   );
 
