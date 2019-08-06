@@ -4,6 +4,12 @@ exports[`MineApplicationInfo renders properly 1`] = `
 <div
   className="tab__content"
 >
+  <div>
+    <h2>
+      Permit Applications
+    </h2>
+    <Divider />
+  </div>
   <div
     className="right"
   >

@@ -4,6 +4,12 @@ exports[`MineSummary renders properly 1`] = `
 <div
   className="tab__content"
 >
+  <div>
+    <h2>
+      General
+    </h2>
+    <Divider />
+  </div>
   <Connect(MineHeader)
     complianceInfoLoading={true}
     match={

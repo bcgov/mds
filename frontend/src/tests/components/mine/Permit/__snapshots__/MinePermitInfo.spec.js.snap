@@ -5,6 +5,12 @@ exports[`MinePermitInfo renders properly 1`] = `
   className="tab__content"
 >
   <div>
+    <h2>
+      Permits
+    </h2>
+    <Divider />
+  </div>
+  <div>
     <div
       className="inline-flex between"
     >

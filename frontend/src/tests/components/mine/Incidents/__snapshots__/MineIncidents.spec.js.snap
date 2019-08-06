@@ -4,6 +4,12 @@ exports[`MineIncidents renders properly 1`] = `
 <div
   className="tab__content"
 >
+  <div>
+    <h2>
+      Incidents and Investigation
+    </h2>
+    <Divider />
+  </div>
   <div
     className="inline-flex flex-end"
   >

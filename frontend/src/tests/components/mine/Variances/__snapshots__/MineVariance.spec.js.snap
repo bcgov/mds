@@ -4,6 +4,12 @@ exports[`MineVariance renders properly 1`] = `
 <div
   className="tab__content"
 >
+  <div>
+    <h2>
+      Variances
+    </h2>
+    <Divider />
+  </div>
   <div
     className="inline-flex flex-end"
   >

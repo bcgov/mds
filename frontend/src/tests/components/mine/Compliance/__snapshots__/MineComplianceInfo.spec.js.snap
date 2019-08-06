@@ -4,6 +4,12 @@ exports[`MineComplianceInfo renders properly 1`] = `
 <div
   className="tab__content"
 >
+  <div>
+    <h2>
+      Inspections and Audits
+    </h2>
+    <Divider />
+  </div>
   <Loading />
 </div>
 `;
