@@ -17,9 +17,8 @@ from app.api.mines.reports.models.mine_report import MineReport
 
 from app.extensions import api, db
 from app.api.utils.custom_reqparser import CustomReqparser
-from ....utils.access_decorators import requires_role_edit_do
-from ....utils.resources_mixins import UserMixin, ErrorMixin
-from ....utils.url import get_document_manager_svc_url
+from app.api.utils.access_decorators import requires_role_edit_do
+from app.api.utils.resources_mixins import UserMixin
 
 from app.api.services.document_manager_service import DocumentManagerService
 
