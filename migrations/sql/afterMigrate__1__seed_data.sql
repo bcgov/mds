@@ -114,11 +114,11 @@ INSERT INTO mine_region_code
     update_user
     )
 VALUES
-    ('SW', 'South West Region', 10, 'system-mds', 'system-mds'),
-    ('SC', 'South Central Region', 20, 'system-mds', 'system-mds'),
-    ('NW', 'North West Region', 30, 'system-mds', 'system-mds'),
-    ('NE', 'North East Region', 40, 'system-mds', 'system-mds'),
-    ('SE', 'South East Region', 50, 'system-mds', 'system-mds')
+    ('SW', 'South West', 10, 'system-mds', 'system-mds'),
+    ('SC', 'South Central', 20, 'system-mds', 'system-mds'),
+    ('NW', 'North West', 30, 'system-mds', 'system-mds'),
+    ('NE', 'North East', 40, 'system-mds', 'system-mds'),
+    ('SE', 'South East', 50, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 
