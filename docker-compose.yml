@@ -122,15 +122,29 @@ services:
     depends_on:
       - flyway
       - redis
-    entrypoint: ./dev-entrypoint.sh
+      - nris_migrate
     env_file: ./microservices/nris_api/backend/.env
     networks:
       - mds
 
+  nris_migrate:
+    restart: on-failure
+    container_name: nris_migrate
+    build:
+      context: microservices/nris_api/backend
+    volumes:
+      - ./microservices/nris_api/backend/:/app/
+    depends_on:
+      - flyway
+      - redis
+    command: flask db upgrade
+    env_file: ./microservices/nris_api/backend/.env
+    networks:
+      - mds
   ####################### DOCUMENT_MANAGER_BACKEND Definition #######################
   document_manager_backend:
     restart: always
-    container_name: document_manager_python
+    container_name: document_manager_backend
     build:
       context: microservices/document_manager/backend
     ports:
@@ -140,7 +154,22 @@ services:
     depends_on:
       - flyway
       - redis
-    entrypoint: ./dev-entrypoint.sh
+      - document_manager_migrate
+    env_file: ./microservices/document_manager/backend/.env
+    networks:
+      - mds
+
+  document_manager_migrate:
+    restart: on-failure
+    container_name: document_manager_migrate
+    build:
+      context: microservices/document_manager/backend
+    volumes:
+      - ./microservices/document_manager/backend/:/app/
+    depends_on:
+      - flyway
+      - redis
+    command: flask db upgrade
     env_file: ./microservices/document_manager/backend/.env
     networks:
       - mds
