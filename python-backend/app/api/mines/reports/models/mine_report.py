@@ -25,7 +25,7 @@ class MineReport(Base, AuditMixin):
     mine_report_submissions = db.relationship(
         'MineReportSubmission',
         lazy='joined',
-        order_by='desc(MineReportSubmission.mine_report_submission_id)',
+        order_by='asc(MineReportSubmission.mine_report_submission_id)',
     )
 
     mine_report_definition_guid = association_proxy('mine_report_definition',
