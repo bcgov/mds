@@ -3,6 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { destroy } from "redux-form";
 import PropTypes from "prop-types";
+import { Divider } from "antd";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
@@ -155,6 +156,10 @@ export class MineIncidents extends Component {
   render() {
     return (
       <div className="tab__content">
+        <div>
+          <h2>Incidents and Investigation</h2>
+          <Divider />
+        </div>
         <div className="inline-flex flex-end">
           <AuthorizationWrapper permission={Permission.EDIT_DO}>
             <AddButton

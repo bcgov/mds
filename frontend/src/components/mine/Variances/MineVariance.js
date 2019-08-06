@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { Divider } from "antd";
 import moment from "moment";
 import MineVarianceTable from "./MineVarianceTable";
 import * as ModalContent from "@/constants/modalContent";
@@ -190,6 +191,10 @@ export class MineVariance extends Component {
     const mine = this.props.mines[this.props.mineGuid];
     return (
       <div className="tab__content">
+        <div>
+          <h2>Variances</h2>
+          <Divider />
+        </div>
         <div className="inline-flex flex-end">
           <AuthorizationWrapper permission={Permission.EDIT_VARIANCES}>
             <AddButton onClick={(event) => this.openVarianceModal(event, mine)}>

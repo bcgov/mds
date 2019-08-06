@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { Divider } from "antd";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
@@ -257,6 +258,10 @@ export class MinePermitInfo extends Component {
     const mine = this.props.mines[this.props.mineGuid];
     return (
       <div className="tab__content">
+        <div>
+          <h2>Permits</h2>
+          <Divider />
+        </div>
         <div>
           <div className="inline-flex between">
             <div />

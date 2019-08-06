@@ -12,11 +12,10 @@ const { SubMenu } = Menu;
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   activeButton: PropTypes.string.isRequired,
+  openSubMenuKey: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export class MineNavigation extends Component {
-  ifActiveButton = (route) => (includes(this.props.activeButton, route) ? "active-menu-btn" : "");
-
   ifActiveButton = (route) => (includes(this.props.activeButton, route) ? "active-menu-btn" : "");
 
   render() {
@@ -24,7 +23,7 @@ export class MineNavigation extends Component {
     const isTailingsVisible = this.props.mine.mine_tailings_storage_facilities.length > 1;
     const isReportsVisible = !isProd || isTailingsVisible;
     return (
-      <Menu mode="horizontal">
+      <Menu mode="horizontal" selectedKeys={this.props.openSubMenuKey}>
         <SubMenu
           id={this.ifActiveButton("mine-information")}
           title={
@@ -35,10 +34,10 @@ export class MineNavigation extends Component {
           }
         >
           <Menu className="sub-menu">
-            <Menu.Item key="General">
+            <Menu.Item key="general">
               <Link to={routes.MINE_GENERAL.dynamicRoute(this.props.mine.mine_guid)}>General</Link>
             </Menu.Item>
-            <Menu.Item key="Contacts">
+            <Menu.Item key="contacts">
               <Link to={routes.MINE_CONTACTS.dynamicRoute(this.props.mine.mine_guid)}>
                 Contacts
               </Link>
@@ -56,16 +55,16 @@ export class MineNavigation extends Component {
         >
           <Menu className="sub-menu">
             {this.props.mine.major_mine_ind && (
-              <Menu.Item key="Permit Applications">
+              <Menu.Item key="permit-applications">
                 <Link to={routes.MINE_PERMIT_APPLICATIONS.dynamicRoute(this.props.mine.mine_guid)}>
                   Permit Applications
                 </Link>
               </Menu.Item>
             )}
-            <Menu.Item key="Permits">
+            <Menu.Item key="permits">
               <Link to={routes.MINE_PERMITS.dynamicRoute(this.props.mine.mine_guid)}>Permits</Link>
             </Menu.Item>
-            <Menu.Item key="Variances">
+            <Menu.Item key="variances">
               <Link to={routes.MINE_VARIANCES.dynamicRoute(this.props.mine.mine_guid)}>
                 Variances
               </Link>
@@ -82,12 +81,12 @@ export class MineNavigation extends Component {
           }
         >
           <Menu className="sub-menu">
-            <Menu.Item key="Inspections">
+            <Menu.Item key="inspections-and-audits">
               <Link to={routes.MINE_INSPECTIONS.dynamicRoute(this.props.mine.mine_guid)}>
                 Inspections & Audits
               </Link>
             </Menu.Item>
-            <Menu.Item key="Incidents">
+            <Menu.Item key="incidents-and-investigations">
               <Link to={routes.MINE_INCIDENTS.dynamicRoute(this.props.mine.mine_guid)}>
                 Incidents & Investigations
               </Link>
@@ -107,14 +106,14 @@ export class MineNavigation extends Component {
           >
             <Menu className="sub-menu">
               {!isProd && (
-                <Menu.Item key="Reports">
+                <Menu.Item key="code-required-reports">
                   <Link to={routes.MINE_REPORTS.dynamicRoute(this.props.mine.mine_guid)}>
                     Code Required Reports
                   </Link>
                 </Menu.Item>
               )}
               {isTailingsVisible && (
-                <Menu.Item key="Tailings">
+                <Menu.Item key="tailings">
                   <Link to={routes.MINE_TAILINGS.dynamicRoute(this.props.mine.mine_guid)}>
                     Tailings
                   </Link>

@@ -84,6 +84,10 @@ export class MineSummary extends Component {
     const mine = this.props.mines[id];
     return (
       <div className="tab__content">
+        <div>
+          <h2>General</h2>
+          <Divider />
+        </div>
         <MineHeader mine={mine} {...this.props} />
         <br />
         {this.props.partyRelationships && this.props.partyRelationships.length > 0 && (

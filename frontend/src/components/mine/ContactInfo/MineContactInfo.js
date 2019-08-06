@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { Divider } from "antd";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { debounce } from "lodash";
@@ -42,6 +43,10 @@ export class MineContactInfo extends Component {
     const mine = this.props.mines[this.props.mineGuid];
     return (
       <div className="tab__content">
+        <div>
+          <h2>Contacts</h2>
+          <Divider />
+        </div>
         <ViewPartyRelationships
           mine={mine}
           {...this.props}

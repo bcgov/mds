@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { Divider } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
 import { openModal, closeModal } from "@/actions/modalActions";
@@ -89,6 +90,10 @@ export class MineReportInfo extends Component {
     const mine = this.props.mines[this.props.mineGuid];
     return (
       <div className="tab__content">
+        <div>
+          <h2>Code Required Reports</h2>
+          <Divider />
+        </div>
         <div className="inline-flex flex-end">
           <AuthorizationWrapper
             permission={Permission.EDIT_REPORTS}
