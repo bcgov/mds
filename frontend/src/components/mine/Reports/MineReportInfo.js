@@ -76,6 +76,7 @@ export class MineReportInfo extends Component {
         initialValues: report,
         onSubmit,
         title: `Edit report for ${this.props.mine.mine_name}`,
+        mineGuid: this.props.mine.mine_guid,
       },
       content: modalConfig.ADD_REPORT,
     });

@@ -14,25 +14,26 @@ import {
   getMineReportDefinitionOptions,
 } from "@/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
+import { ReportSubmissions } from "@/components/Forms/reports/ReportSubmissions";
 
 const propTypes = {
-  change: PropTypes.func.isRequired,
+  mineGuid: PropTypes.string.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-
   mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   dropdownMineReportCategoryOptions: PropTypes.arrayOf(
     PropTypes.objectOf(CustomPropTypes.dropdownListItem)
   ).isRequired,
-
+  initialValues: PropTypes.objectOf(PropTypes.any),
   selectedMineReportCategory: PropTypes.string.isRequired,
   selectedMineReportDefinition: PropTypes.string.isRequired,
+  change: PropTypes.func,
 };
 
 const selector = formValueSelector(FORM.ADD_REPORT);
 
-const defaultProps = {};
+const defaultProps = { initialValues: {}, change };
 
 export class AddReportForm extends Component {
   state = {
@@ -40,6 +41,17 @@ export class AddReportForm extends Component {
     mineReportDefinitionOptionsFiltered: [],
     dropdownMineReportDefinitionOptionsFiltered: [],
     selectedMineReportComplianceArticles: [],
+    mineReportSubmissions: this.props.initialValues.mine_report_submissions,
+  };
+
+  componentDidMount = () => {
+    if (this.props.initialValues.mine_report_definition_guid) {
+      this.updateMineReportOptions(this.props.mineReportDefinitionOptions);
+
+      this.updateSelectedMineReportComplianceArticles(
+        this.props.initialValues.mine_report_definition_guid
+      );
+    }
   };
 
   componentDidMount = () => {
@@ -100,6 +112,11 @@ export class AddReportForm extends Component {
     if (nextProps.selectedMineReportDefinition !== this.props.selectedMineReportDefinition) {
       this.updateSelectedMineReportComplianceArticles(nextProps.selectedMineReportDefinition);
     }
+  };
+
+  updateMineReportSubmissions = (updatedSubmissions) => {
+    this.setState({ mineReportSubmissions: updatedSubmissions });
+    this.props.change("mine_report_submissions", this.state.mineReportSubmissions);
   };
 
   render() {
@@ -181,6 +198,11 @@ export class AddReportForm extends Component {
                 component={renderConfig.DATE}
               />
             </Form.Item>
+            <ReportSubmissions
+              mineGuid={this.props.mineGuid}
+              mineReportSubmissions={this.state.mineReportSubmissions}
+              updateMineReportSubmissions={this.updateMineReportSubmissions}
+            />
           </Col>
         </Row>
         <div className="right center-mobile">
@@ -215,7 +237,6 @@ export default compose(
     selectedMineReportDefinition: selector(state, "mine_report_definition_guid"),
   })),
   reduxForm({
-    change,
     form: FORM.ADD_REPORT,
     touchOnBlur: true,
     onSubmitSuccess: resetForm(FORM.ADD_REPORT),
