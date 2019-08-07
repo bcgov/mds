@@ -12,12 +12,12 @@ import utils.DataCleanup
         DataCleanup.class,
         DataInit.class,
         LoginPageSpec.class,
-        // DashboardSpec.class,
-        // SummarySpec.class,
-        // PermitSpec.class,
-        // ContactInfoSpec.class,
-        Tailings.class,
-        // Contacts.class,
+        DashboardSpec.class,
+        SummarySpec.class,
+        PermitSpec.class,
+        ContactInfoSpec.class,
+        // Tailings.class,
+        Contacts.class,
         // MapNavigationSpec.class,//TODO: UNCOMEMENT WHEN MDS-1924 IS DONE
         DataCleanup.class,
 ])
