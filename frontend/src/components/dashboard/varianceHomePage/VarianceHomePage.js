@@ -37,8 +37,6 @@ import * as Strings from "@/constants/strings";
 import * as router from "@/constants/routes";
 import { fetchInspectors } from "@/actionCreators/partiesActionCreator";
 import VarianceSearch from "./VarianceSearch";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as Permission from "@/constants/permissions";
 
 /**
  * @class Variance page is a landing page for variance searching
@@ -145,6 +143,13 @@ export class VarianceHomePage extends Component {
     this.props.fetchVarianceDocumentCategoryOptions();
   }
 
+  componentWillReceiveProps(nextProps) {
+    const locationChanged = nextProps.location !== this.props.location;
+    if (locationChanged) {
+      this.renderDataFromURL(nextProps);
+    }
+  }
+
   componentWillUnmount() {
     this.handleVarianceSearchDebounced.cancel();
     this.setState({
@@ -153,9 +158,17 @@ export class VarianceHomePage extends Component {
   }
 
   renderDataFromURL = (params) => {
-    const { region, compliance_code, major, search, ...remainingParams } = queryString.parse(
-      params
-    );
+    const {
+      region,
+      compliance_code,
+      major,
+      search,
+      issue_date_after,
+      issue_date_before,
+      expiry_date_before,
+      expiry_date_after,
+      ...remainingParams
+    } = queryString.parse(params);
     const format = (param) => (param ? param.split(",").filter((x) => x) : []);
     this.setState({
       params: {
@@ -163,26 +176,44 @@ export class VarianceHomePage extends Component {
         compliance_code: format(compliance_code),
         major,
         search,
+        issue_date_after,
+        issue_date_before,
+        expiry_date_before,
+        expiry_date_after,
         ...remainingParams,
       },
     });
+    console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+    console.log(queryString.parse(params));
+    console.log("Remaining params");
+    console.log(remainingParams);
+    console.log(this.state);
+
+    console.log(this.props);
   };
 
   handleVarianceSearch = (searchParams, clear = false) => {
     const formattedSearchParams = formatParams(searchParams);
     const persistedParams = clear ? {} : formatParams(this.state.params);
 
-    this.props.history.push(
-      router.VARIANCE_DASHBOARD.dynamicRoute({
-        // Start from existing state
-        ...persistedParams,
-        // Overwrite prev params with any newly provided search params
-        ...formattedSearchParams,
-        // Reset page number
-        page: String.DEFAULT_PAGE,
-        // Retain per_page if present
-        per_page: this.state.params.per_page ? this.state.params.per_page : String.DEFAULT_PER_PAGE,
-      })
+    const updatedParams = {
+      // Start from existing state
+      ...persistedParams,
+      // Overwrite prev params with any newly provided search params
+      ...formattedSearchParams,
+      // Reset page number
+      page: String.DEFAULT_PAGE,
+      // Retain per_page if present
+      per_page: this.state.params.per_page ? this.state.params.per_page : String.DEFAULT_PER_PAGE,
+    };
+
+    this.props.history.push(router.VARIANCE_DASHBOARD.dynamicRoute(updatedParams));
+    this.setState(
+      {
+        params: updatedParams,
+      },
+      // Fetch parties once state has been updated
+      () => this.renderDataFromURL()
     );
   };
 
@@ -280,15 +311,13 @@ export class VarianceHomePage extends Component {
           <h1>Browse Variances</h1>
         </div>
         <div className="landing-page__content">
-          <AuthorizationWrapper permission={Permission.IN_TESTING}>
-            <VarianceSearch
-              handleNameFieldReset={this.handleNameFieldReset}
-              initialValues={this.state.params}
-              handleVarianceSearch={this.handleVarianceSearchDebounced}
-              mineRegionOptions={this.props.mineRegionOptions}
-              complianceCodes={this.props.getDropdownHSRCMComplianceCodes}
-            />
-          </AuthorizationWrapper>
+          <VarianceSearch
+            handleNameFieldReset={this.handleNameFieldReset}
+            initialValues={this.state.params}
+            handleVarianceSearch={this.handleVarianceSearchDebounced}
+            mineRegionOptions={this.props.mineRegionOptions}
+            complianceCodes={this.props.getDropdownHSRCMComplianceCodes}
+          />
           <LoadingWrapper condition={this.state.variancesLoaded}>
             <VarianceTable
               filterVarianceStatusOptions={this.props.filterVarianceStatusOptions}

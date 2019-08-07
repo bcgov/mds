@@ -29,7 +29,7 @@ const validate = (values) => {
   }
   if (values.expiry_date_after && values.expiry_date_before) {
     if (Date.parse(values.expiry_date_after) > Date.parse(values.expiry_date_before)) {
-      errors.issue_date_before = "Must be after expiry date.";
+      errors.expiry_date_before = "Must be after expiry date.";
     }
   }
   return errors;
@@ -72,7 +72,7 @@ export class VarianceSearchForm extends Component {
                 <Field
                   id="issue_date_after"
                   name="issue_date_after"
-                  placeholder="Select Min Issue Date"
+                  placeholder="Select Earliest Issue Date"
                   component={renderConfig.DATE}
                 />
               </Col>
@@ -80,7 +80,7 @@ export class VarianceSearchForm extends Component {
                 <Field
                   id="issue_date_before"
                   name="issue_date_before"
-                  placeholder="Select Max Issue Date"
+                  placeholder="Select Latest Issue Date"
                   component={renderConfig.DATE}
                 />
               </Col>
@@ -90,7 +90,7 @@ export class VarianceSearchForm extends Component {
                 <Field
                   id="expiry_date_after"
                   name="expiry_date_after"
-                  placeholder="Select Min Expiry Date"
+                  placeholder="Select Earliest Expiry Date"
                   component={renderConfig.DATE}
                 />
               </Col>
@@ -98,7 +98,7 @@ export class VarianceSearchForm extends Component {
                 <Field
                   id="expiry_date_before"
                   name="expiry_date_before"
-                  placeholder="Select Max Expiry Date"
+                  placeholder="Select Latest Expiry Date"
                   component={renderConfig.DATE}
                 />
               </Col>
