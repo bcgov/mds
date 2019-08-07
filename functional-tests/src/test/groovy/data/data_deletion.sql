@@ -27,7 +27,6 @@ BEGIN
     );
     DELETE FROM party WHERE create_user LIKE IDIR_USER;
     DELETE FROM mine_status_xref WHERE create_user LIKE IDIR_USER;
-    DELETE FROM mineral_tenure_xref WHERE create_user LIKE IDIR_USER;
     DELETE FROM mine_status WHERE create_user LIKE IDIR_USER;
     DELETE FROM mine_party_appt
     WHERE mine_guid = ANY (
