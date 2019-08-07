@@ -39,13 +39,7 @@ class Tailings extends GebReportingSpec {
         // This needs to be declared after the main page since the url is a static variable
         def MineProfileTailingsPage = new MineProfilePage(url: "mine-dashboard/${Const.MINE_GUID}/reports/tailings")
         and: "The user goes to the tailings page."
-        tailingsTab
-
-        // then: "User can now see the tailings tab"
-        // assert tailingsTab.tabSelect.displayed == true
-
-        // when: "User clicks on the tailings tab"
-        // tailingsTab.tabSelect.click()
+        to MineProfileTailingsPage
 
         then: "the reports are visible"
         assert tailingsTab.document0Name != null
@@ -55,7 +49,6 @@ class Tailings extends GebReportingSpec {
     def "Scenario: User is able to upload a TSF Report"(){
         when: "User navigates to the TSF tab and clicks the upload icon"
         to MineProfileTailingsPage
-        // tailingsTab.tabSelect.click()
 
         and: "User opens modal and uploads a valid file type"
         def uploadedFile = dir.newFile(Const.TEST_FILE_NAME) << Const.TEST_FILE_CONTENT
@@ -70,7 +63,6 @@ class Tailings extends GebReportingSpec {
     //TODO: THIS TEST ONLY WORKS IN CHROME AND FIREFOX-HEADLESS.  WORK IN GebConfig to fix other browsers
     def "Scenario: User is able to download a TSF Report"() {
         when: "User navigates to the TSF tab and clicks the download icon"
-        // tailingsTab.tabSelect.click()
         to MineProfileTailingsPage
 
         and: "User opens a file in the folder specified in GebConfig"

@@ -58,7 +58,6 @@ class  PermitSpec extends GebReportingSpec {
 
         then: "The permit status has changed to closed"
         permitTab.permitRow.children().has(title: "Status").text() == "Closed"
-        MineProfilePermitPage.activeTab == "Stuff"
     }
 
     def "User can upload a doc to a permit"(){
