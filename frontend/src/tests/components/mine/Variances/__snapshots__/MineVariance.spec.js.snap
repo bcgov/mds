@@ -1,7 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MineVariance renders properly 1`] = `
-<div>
+<div
+  className="tab__content"
+>
+  <div>
+    <h2>
+      Variances
+    </h2>
+    <Divider />
+  </div>
   <div
     className="inline-flex flex-end"
   >
@@ -33,6 +41,7 @@ exports[`MineVariance renders properly 1`] = `
       isApplication={true}
       mine={
         Object {
+          "major_mine_ind": true,
           "mine_expected_documents": Array [
             Object {
               "date_created": "2018-11-19",
@@ -142,6 +151,7 @@ exports[`MineVariance renders properly 1`] = `
       }
       mine={
         Object {
+          "major_mine_ind": true,
           "mine_expected_documents": Array [
             Object {
               "date_created": "2018-11-19",
