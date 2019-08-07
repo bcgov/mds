@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Icon, Button } from "antd";
+import { Icon, Button, Divider } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import { openModal, closeModal } from "@/actions/modalActions";
 import * as Permission from "@/constants/permissions";
@@ -82,6 +82,10 @@ export class MineApplicationInfo extends Component {
     const mine = this.props.mines[this.props.mineGuid];
     return (
       <div className="tab__content">
+        <div>
+          <h2>Permit Applications</h2>
+          <Divider />
+        </div>
         <div className="right">
           <AuthorizationWrapper
             permission={Permission.EDIT_PERMITS}

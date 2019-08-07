@@ -4,6 +4,12 @@ exports[`MineReportInfo renders properly 1`] = `
 <div
   className="tab__content"
 >
+  <div>
+    <h2>
+      Code Required Reports
+    </h2>
+    <Divider />
+  </div>
   <div
     className="inline-flex flex-end"
   >

@@ -4,6 +4,12 @@ exports[`MineContactInfo renders properly 1`] = `
 <div
   className="tab__content"
 >
+  <div>
+    <h2>
+      Contacts
+    </h2>
+    <Divider />
+  </div>
   <withRouter(Connect(ViewPartyRelationships))
     closeModal={[MockFunction]}
     createParty={[MockFunction]}

@@ -144,19 +144,19 @@ export class MineComplianceInfo extends Component {
             <div className="compliance--container">
               <div className="compliance--content">
                 <MineComplianceCard
-                  title="Count of inspections (Past 12 months)"
+                  title="Inspections - Past 12 months"
                   content={this.props.mineComplianceInfo.last_12_months.num_inspections}
                 />
                 <MineComplianceCard
-                  title={`Count of inspections (Since April 1, ${fiscalYear})`}
+                  title={`Inspections - Since April 1, ${fiscalYear}`}
                   content={this.props.mineComplianceInfo.current_fiscal.num_inspections}
                 />
                 <MineComplianceCard
-                  title="Last inspection date"
+                  title="Last inspected"
                   content={formatDate(this.props.mineComplianceInfo.last_inspection)}
                 />
                 <MineComplianceCard
-                  title="IDIR of last inspector to inspect site"
+                  title="Last inspector (IDIR)"
                   content={this.props.mineComplianceInfo.last_inspector}
                 />
                 <MineComplianceCard
@@ -170,11 +170,11 @@ export class MineComplianceInfo extends Component {
                   content={this.props.mineComplianceInfo.num_overdue_orders}
                 />
                 <MineComplianceCard
-                  title="Warnings issued in the past 12 months"
+                  title="Warnings  - Past 12 months"
                   content={this.props.mineComplianceInfo.last_12_months.num_warnings}
                 />
                 <MineComplianceCard
-                  title="Advisories issued in the past 12 months"
+                  title="Advisories - Past 12 months"
                   content={this.props.mineComplianceInfo.last_12_months.num_advisories}
                 />
               </div>
@@ -207,6 +207,10 @@ export class MineComplianceInfo extends Component {
   render() {
     return (
       <div className="tab__content">
+        <div>
+          <h2>Inspections and Audits</h2>
+          <Divider />
+        </div>
         {this.state.isLoading ? <Loading /> : <div>{this.renderComplianceContent()}</div>}
       </div>
     );

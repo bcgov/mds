@@ -94,10 +94,12 @@ export class MineDashboard extends Component {
     menuVisible: false,
     isLoaded: false,
     activeNavButton: "mine-information",
+    openSubMenuKey: ["general"],
   };
 
   componentWillMount() {
     const { id } = this.props.match.params;
+    this.handleActiveButton(this.props.location.pathname);
     this.loadMineData(id);
     this.props.fetchStatusOptions();
     this.props.fetchRegionOptions();
@@ -127,7 +129,8 @@ export class MineDashboard extends Component {
   }
 
   handleActiveButton = (path) => {
-    this.setState({ activeNavButton: path });
+    const lastPath = path.split("/").pop();
+    this.setState({ activeNavButton: path, openSubMenuKey: [lastPath] });
   };
 
   handleVerifyMineData = (e) => {
@@ -324,7 +327,11 @@ export class MineDashboard extends Component {
                 </Dropdown>
               </div>
             </div>
-            <MineNavigation mine={mine} activeButton={this.state.activeNavButton} />
+            <MineNavigation
+              mine={mine}
+              activeButton={this.state.activeNavButton}
+              openSubMenuKey={this.state.openSubMenuKey}
+            />
             <MineDashboardRoutes />
           </div>
         )}

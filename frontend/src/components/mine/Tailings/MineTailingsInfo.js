@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Row, Col } from "antd";
+import { Row, Col, Divider } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -141,6 +141,10 @@ export class MineTailingsInfo extends Component {
     const mine = this.props.mines[this.props.mineGuid];
     return (
       <div className="tab__content">
+        <div>
+          <h2>Tailings</h2>
+          <Divider />
+        </div>
         {mine.mine_tailings_storage_facilities.map((facility) => (
           <Row
             key={facility.mine_tailings_storage_facility_guid}
