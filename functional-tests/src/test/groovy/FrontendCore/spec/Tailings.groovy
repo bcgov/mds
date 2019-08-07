@@ -48,6 +48,7 @@ class Tailings extends GebReportingSpec {
 
     //TODO: THIS TEST ONLY WORKS IN CHROME AND FIREFOX-HEADLESS.  WORK IN GebConfig to fix other browsers
     def "Scenario: User is able to upload a TSF Report"(){
+        def MineProfileTailingsPage = new MineProfilePage(url: "mine-dashboard/${Const.MINE_GUID}/reports/tailings")
         when: "User navigates to the TSF tab and clicks the upload icon"
         to MineProfileTailingsPage
 
@@ -63,6 +64,7 @@ class Tailings extends GebReportingSpec {
 
     //TODO: THIS TEST ONLY WORKS IN CHROME AND FIREFOX-HEADLESS.  WORK IN GebConfig to fix other browsers
     def "Scenario: User is able to download a TSF Report"() {
+        def MineProfileTailingsPage = new MineProfilePage(url: "mine-dashboard/${Const.MINE_GUID}/reports/tailings")
         when: "User navigates to the TSF tab and clicks the download icon"
         to MineProfileTailingsPage
 
