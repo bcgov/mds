@@ -13,7 +13,7 @@ import utils.DataCleanup
         DataInit.class,
         LoginPageSpec.class,
         DashboardSpec.class,
-        SummarySpec.class,
+        // SummarySpec.class,
         PermitSpec.class,
         ContactInfoSpec.class,
         // Tailings.class,
