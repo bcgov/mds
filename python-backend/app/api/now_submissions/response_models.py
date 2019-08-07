@@ -3,7 +3,8 @@ from flask_restplus import fields
 
 NOW_APPLICATION = api.model(
     'NOW Application', {
-       'messageid': fields.Integer,
+       'now_application_guid': fields.String,
+       'mine_guid': fields.String,
        'trackingnumber': fields.Integer,
        'applicationtype': fields.String,
        'status': fields.String,

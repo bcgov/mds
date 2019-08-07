@@ -9,11 +9,11 @@ from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class NOWApplicationResource(Resource, UserMixin, ErrorMixin):
-    @api.doc(description='Fetch an application by tracking number', params={})
+    @api.doc(description='Fetch an application by guid', params={})
     @requires_role_view_all
     @api.marshal_with(NOW_APPLICATION, code=200)
-    def get(self, trackingnumber):
-        application = NOWApplication.find_by_trackingnumber(trackingnumber)
+    def get(self, now_application_guid):
+        application = NOWApplication.find_by_now_application_guid(now_application_guid)
         if not application:
             raise NotFound('Application not found')
 

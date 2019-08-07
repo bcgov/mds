@@ -1,11 +1,17 @@
-from ....utils.models_mixins import Base
+import uuid
+
+from sqlalchemy.dialects.postgresql import UUID
+
 from app.extensions import db
+from app.api.utils.models_mixins import Base
 
 
 class NOWApplication(Base):
     __tablename__ = "application"
     __table_args__ = { "schema": "now_submissions" }
     messageid = db.Column(db.Integer, primary_key=True)
+    now_application_guid = db.Column(UUID(as_uuid=True), nullable=False)
+    mine_guid = db.Column(UUID(as_uuid=True))
     trackingnumber = db.Column(db.Integer)
     applicationtype = db.Column(db.String)
     status = db.Column(db.String)
@@ -147,5 +153,13 @@ class NOWApplication(Base):
         return '<NOWApplication %r>' % self.messageid
 
     @classmethod
-    def find_by_trackingnumber(cls, number):
-        return cls.query.filter_by(trackingnumber=number).first()
+    def find_by_now_application_guid(cls, guid):
+        cls.validate_guid(guid)
+        return cls.query.filter_by(now_application_guid=guid).first()
+
+    @classmethod
+    def validate_guid(cls, guid, msg='Invalid guid.'):
+        try:
+            uuid.UUID(str(guid), version=4)
+        except ValueError:
+            raise AssertionError(msg)
