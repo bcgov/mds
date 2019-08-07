@@ -12,6 +12,8 @@ CREATE TABLE NOW_Submissions.application_start_stop (
     PROCESSEDDATE date
 );
 
+ALTER TABLE NOW_Submissions.application_start_stop OWNER TO mds;
+
 CREATE TABLE NOW_Submissions.client (
     CLIENTID integer PRIMARY KEY,
     TYPE character varying(30),
@@ -37,6 +39,8 @@ CREATE TABLE NOW_Submissions.client (
     MAILINGADDRESSCOUNTRY character varying(50),
     MAILINGADDRESSPOSTALZIP character varying(10)
 );
+
+ALTER TABLE NOW_Submissions.client OWNER TO mds;
 
 CREATE TABLE NOW_Submissions.application_nda (
     MESSAGEID integer PRIMARY KEY,
@@ -70,12 +74,16 @@ CREATE TABLE NOW_Submissions.application_nda (
     FOREIGN KEY (SUBMITTERCLIENTID) REFERENCES NOW_Submissions.client(CLIENTID) DEFERRABLE INITIALLY DEFERRED
 );
 
+ALTER TABLE NOW_Submissions.application_nda OWNER TO mds;
+
 CREATE TABLE NOW_Submissions.equipment(
     EQUIPMENTID integer PRIMARY KEY,
 	TYPE character varying(4000),
 	SIZECAPACITY character varying(4000),
 	QUANTITY integer
 );
+
+ALTER TABLE NOW_Submissions.equipment OWNER TO mds;
 
 CREATE TABLE NOW_Submissions.application (
     MESSAGEID integer PRIMARY KEY,
@@ -219,6 +227,8 @@ CREATE TABLE NOW_Submissions.application (
     FOREIGN KEY (SUBMITTERCLIENTID) REFERENCES NOW_Submissions.client(CLIENTID) DEFERRABLE INITIALLY DEFERRED
 );
 
+ALTER TABLE NOW_Submissions.application OWNER TO mds;
+
 CREATE TABLE NOW_Submissions.contact (
     ID serial PRIMARY KEY,
     MESSAGEID integer,
@@ -252,6 +262,8 @@ CREATE TABLE NOW_Submissions.contact (
     FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 );
 
+ALTER TABLE NOW_Submissions.contact OWNER TO mds;
+
 CREATE TABLE NOW_Submissions.settling_pond (
     SETTLINGPONDID integer PRIMARY KEY,
 	PONDID character varying(4000),
@@ -263,6 +275,8 @@ CREATE TABLE NOW_Submissions.settling_pond (
 	DISTURBEDAREA numeric(14,2),
 	TIMBERVOLUME numeric(14,2)
 );
+
+ALTER TABLE NOW_Submissions.settling_pond OWNER TO mds;
 
 CREATE TABLE NOW_Submissions.status_update (
     ID serial PRIMARY KEY,
@@ -278,6 +292,8 @@ CREATE TABLE NOW_Submissions.status_update (
 	APPLICATIONTYPE character varying(100)
 );
 
+ALTER TABLE NOW_Submissions.status_update OWNER TO mds;
+
 CREATE TABLE NOW_Submissions.surface_bulk_sample_activity (
     ID serial PRIMARY KEY,
     MESSAGEID integer,
@@ -287,6 +303,8 @@ CREATE TABLE NOW_Submissions.surface_bulk_sample_activity (
 
     FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 );
+
+ALTER TABLE NOW_Submissions.surface_bulk_sample_activity OWNER TO mds;
 
 CREATE TABLE NOW_Submissions.document (
     ID serial PRIMARY KEY,
@@ -299,6 +317,8 @@ CREATE TABLE NOW_Submissions.document (
     FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 );
 
+ALTER TABLE NOW_Submissions.document OWNER TO mds;
+
 CREATE TABLE NOW_Submissions.document_nda (
     ID serial PRIMARY KEY,
     MESSAGEID integer,
@@ -309,6 +329,8 @@ CREATE TABLE NOW_Submissions.document_nda (
 
     FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application_nda(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 );
+
+ALTER TABLE NOW_Submissions.document_nda OWNER TO mds;
 
 CREATE TABLE NOW_Submissions.document_start_stop (
     ID serial PRIMARY KEY,
@@ -321,6 +343,8 @@ CREATE TABLE NOW_Submissions.document_start_stop (
     FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application_start_stop(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 );
 
+ALTER TABLE NOW_Submissions.document_start_stop OWNER TO mds;
+
 CREATE TABLE NOW_Submissions.placer_activity (
     PLACERACTIVITYID integer PRIMARY KEY,
 	TYPE character varying(4000),
@@ -332,6 +356,8 @@ CREATE TABLE NOW_Submissions.placer_activity (
 	TIMBERVOLUME numeric(14,2)
 );
 
+ALTER TABLE NOW_Submissions.placer_activity OWNER TO mds;
+
 CREATE TABLE NOW_Submissions.sand_grv_qry_activity (
     ID serial PRIMARY KEY,
 	MESSAGEID integer,
@@ -341,6 +367,8 @@ CREATE TABLE NOW_Submissions.sand_grv_qry_activity (
 
     FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 );
+
+ALTER TABLE NOW_Submissions.sand_grv_qry_activity OWNER TO mds;
 
 CREATE TABLE NOW_Submissions.under_exp_new_activity (
     ID serial PRIMARY KEY,
@@ -357,6 +385,8 @@ CREATE TABLE NOW_Submissions.under_exp_new_activity (
     FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 );
 
+ALTER TABLE NOW_Submissions.under_exp_new_activity OWNER TO mds;
+
 CREATE TABLE NOW_Submissions.under_exp_rehab_activity (
     ID serial PRIMARY KEY,
 	MESSAGEID integer,
@@ -372,6 +402,8 @@ CREATE TABLE NOW_Submissions.under_exp_rehab_activity (
     FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 );
 
+ALTER TABLE NOW_Submissions.under_exp_rehab_activity OWNER TO mds;
+
 CREATE TABLE NOW_Submissions.under_exp_surface_activity (
     ID serial PRIMARY KEY,
 	MESSAGEID integer,
@@ -382,6 +414,8 @@ CREATE TABLE NOW_Submissions.under_exp_surface_activity (
 
     FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 );
+
+ALTER TABLE NOW_Submissions.under_exp_surface_activity OWNER TO mds;
 
 CREATE TABLE NOW_Submissions.water_source_activity (
     ID serial PRIMARY KEY,
@@ -397,6 +431,8 @@ CREATE TABLE NOW_Submissions.water_source_activity (
     FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 );
 
+ALTER TABLE NOW_Submissions.water_source_activity OWNER TO mds;
+
 CREATE TABLE NOW_Submissions.existing_placer_activity_xref (
     MESSAGEID integer,
 	PLACERACTIVITYID integer,
@@ -404,6 +440,8 @@ CREATE TABLE NOW_Submissions.existing_placer_activity_xref (
     FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED,
     FOREIGN KEY (PLACERACTIVITYID) REFERENCES NOW_Submissions.placer_activity(PLACERACTIVITYID) DEFERRABLE INITIALLY DEFERRED
 );
+
+ALTER TABLE NOW_Submissions.existing_placer_activity_xref OWNER TO mds;
 
 CREATE TABLE NOW_Submissions.existing_settling_pond_xref (
     MESSAGEID integer,
@@ -413,6 +451,8 @@ CREATE TABLE NOW_Submissions.existing_settling_pond_xref (
     FOREIGN KEY (SETTLINGPONDID) REFERENCES NOW_Submissions.settling_pond(SETTLINGPONDID) DEFERRABLE INITIALLY DEFERRED
 );
 
+ALTER TABLE NOW_Submissions.existing_settling_pond_xref OWNER TO mds;
+
 CREATE TABLE NOW_Submissions.mech_trenching_equip_xref (
     MESSAGEID integer,
 	EQUIPMENTID integer,
@@ -420,6 +460,8 @@ CREATE TABLE NOW_Submissions.mech_trenching_equip_xref (
     FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED,
     FOREIGN KEY (EQUIPMENTID) REFERENCES NOW_Submissions.equipment(EQUIPMENTID) DEFERRABLE INITIALLY DEFERRED
 );
+
+ALTER TABLE NOW_Submissions.mech_trenching_equip_xref OWNER TO mds;
 
 CREATE TABLE NOW_Submissions.surface_bulk_sample_equip_xref (
 	MESSAGEID integer,
@@ -429,6 +471,8 @@ CREATE TABLE NOW_Submissions.surface_bulk_sample_equip_xref (
     FOREIGN KEY (EQUIPMENTID) REFERENCES NOW_Submissions.equipment(EQUIPMENTID) DEFERRABLE INITIALLY DEFERRED
 );
 
+ALTER TABLE NOW_Submissions.surface_bulk_sample_equip_xref OWNER TO mds;
+
 CREATE TABLE NOW_Submissions.sand_grv_qry_equip_xref (
 	MESSAGEID integer,
 	EQUIPMENTID integer,
@@ -436,6 +480,8 @@ CREATE TABLE NOW_Submissions.sand_grv_qry_equip_xref (
     FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED,
     FOREIGN KEY (EQUIPMENTID) REFERENCES NOW_Submissions.equipment(EQUIPMENTID) DEFERRABLE INITIALLY DEFERRED
 );
+
+ALTER TABLE NOW_Submissions.sand_grv_qry_equip_xref OWNER TO mds;
 
 CREATE TABLE NOW_Submissions.placer_equip_xref (
     MESSAGEID integer,
@@ -445,6 +491,8 @@ CREATE TABLE NOW_Submissions.placer_equip_xref (
     FOREIGN KEY (EQUIPMENTID) REFERENCES NOW_Submissions.equipment(EQUIPMENTID) DEFERRABLE INITIALLY DEFERRED
 );
 
+ALTER TABLE NOW_Submissions.placer_equip_xref OWNER TO mds;
+
 CREATE TABLE NOW_Submissions.proposed_placer_activity_xref (
     MESSAGEID integer,
 	PLACERACTIVITYID integer,
@@ -453,6 +501,8 @@ CREATE TABLE NOW_Submissions.proposed_placer_activity_xref (
     FOREIGN KEY (PLACERACTIVITYID) REFERENCES NOW_Submissions.placer_activity(PLACERACTIVITYID) DEFERRABLE INITIALLY DEFERRED
 );
 
+ALTER TABLE NOW_Submissions.proposed_placer_activity_xref OWNER TO mds;
+
 CREATE TABLE NOW_Submissions.proposed_settling_pond_xref (
     MESSAGEID integer,
 	SETTLINGPONDID integer,
@@ -460,6 +510,8 @@ CREATE TABLE NOW_Submissions.proposed_settling_pond_xref (
     FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED,
     FOREIGN KEY (SETTLINGPONDID) REFERENCES NOW_Submissions.settling_pond(SETTLINGPONDID) DEFERRABLE INITIALLY DEFERRED
 );
+
+ALTER TABLE NOW_Submissions.proposed_settling_pond_xref OWNER TO mds;
 
 CREATE TABLE NOW_Submissions.exp_access_activity (
     ID serial PRIMARY KEY,
@@ -472,6 +524,8 @@ CREATE TABLE NOW_Submissions.exp_access_activity (
     FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 );
 
+ALTER TABLE NOW_Submissions.exp_access_activity OWNER TO mds;
+
 CREATE TABLE NOW_Submissions.exp_surface_drill_activity (
     ID serial PRIMARY KEY,
     MESSAGEID integer,
@@ -483,6 +537,8 @@ CREATE TABLE NOW_Submissions.exp_surface_drill_activity (
     FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 );
 
+ALTER TABLE NOW_Submissions.exp_surface_drill_activity OWNER TO mds;
+
 CREATE TABLE NOW_Submissions.mech_trenching_activity (
     ID serial PRIMARY KEY,
     MESSAGEID integer,
@@ -493,3 +549,5 @@ CREATE TABLE NOW_Submissions.mech_trenching_activity (
 
     FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 );
+
+ALTER TABLE NOW_Submissions.mech_trenching_activity OWNER TO mds;
