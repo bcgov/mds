@@ -3,6 +3,7 @@ import Home from "@/components/Home";
 import Logout from "@/components/common/Logout";
 import Dashboard from "@/components/dashboard/minesHomePage/Dashboard";
 import ContactHomePage from "@/components/dashboard/contactsHomePage/ContactHomePage";
+import VarianceHomePage from "@/components/dashboard/varianceHomePage/VarianceHomePage";
 import MineDashboard from "@/components/mine/MineDashboard";
 import PartyProfile from "@/components/parties/PartyProfile";
 import RelationshipProfile from "@/components/parties/RelationshipProfile";
@@ -70,6 +71,13 @@ export const RELATIONSHIP_PROFILE = {
 export const REPORTING_DASHBOARD = {
   route: "/dashboard/reporting",
   component: ReportingDashboard,
+};
+
+export const VARIANCE_DASHBOARD = {
+  route: "/dashboard/variance",
+  dynamicRoute: ({ page, per_page, ...params }) =>
+    `/dashboard/variance/?${queryString.stringify({ page, per_page, ...params }, { sort: false })}`,
+  component: VarianceHomePage,
 };
 
 export const EXECUTIVE_REPORTING_DASHBOARD = {

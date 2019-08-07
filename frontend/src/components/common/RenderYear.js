@@ -24,7 +24,7 @@ const defaultProps = {
 export class RenderDate extends Component {
   state = {
     isopen: false,
-    time: this.props.input.value ? moment(this.props.input.value + "-01-01") : null,
+    time: this.props.input.value ? moment(`${this.props.input.value}-01-01`) : null,
   };
 
   handlePanelChange = (value) => {

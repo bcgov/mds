@@ -8,7 +8,6 @@ import MineHeaderMap from "@/components/maps/MineHeaderMap";
 
 import {
   ELLIPSE,
-  BRAND_PENCIL,
   RED_ELLIPSE,
   BRAND_DOCUMENT,
   EDIT,
@@ -17,6 +16,7 @@ import {
   UNSUBSCRIBE,
   YELLOW_HAZARD,
   SUCCESS_CHECKMARK,
+  EDIT_OUTLINE_VIOLET,
 } from "@/constants/assets";
 import * as route from "@/constants/routes";
 import { getUserInfo } from "@/selectors/authenticationSelectors";
@@ -189,7 +189,7 @@ export class MineHeader extends Component {
                   )
                 }
               >
-                <img alt="pencil" className="padding-small" src={BRAND_PENCIL} />
+                <img alt="pencil" className="padding-small" src={EDIT_OUTLINE_VIOLET} />
                 {ModalContent.UPDATE_MINE_RECORD}
               </button>
             </div>
