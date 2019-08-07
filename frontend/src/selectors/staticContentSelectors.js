@@ -215,6 +215,8 @@ export const getDangerousOccurrenceSubparagraphOptions = createSelector(
       })
 );
 
+// FIXME:  this seems to double count compliance codes, particularly the dangerous occurences
+// this double counting should get removed
 export const getMultiSelectComplianceCodes = createSelector(
   [getCurrentComplianceCodes],
   (codes) =>
