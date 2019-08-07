@@ -20,7 +20,7 @@ export class MineNavigation extends Component {
 
   render() {
     const isProd = detectProdEnvironment();
-    const isTailingsVisible = this.props.mine.mine_tailings_storage_facilities.length > 1;
+    const isTailingsVisible = this.props.mine.mine_tailings_storage_facilities.length >= 1;
     const isReportsVisible = !isProd || isTailingsVisible;
     return (
       <Menu mode="horizontal" selectedKeys={this.props.openSubMenuKey}>
