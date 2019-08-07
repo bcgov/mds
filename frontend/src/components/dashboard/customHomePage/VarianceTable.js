@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
 import MineVarianceTable from "@/components/mine/Variances/MineVarianceTable";
+import * as Strings from "@/constants/strings";
 
 /**
  * @class VarianceTables
@@ -14,12 +15,21 @@ const propTypes = {
   openViewVarianceModal: PropTypes.func.isRequired,
   handlePageChange: PropTypes.func.isRequired,
   params: PropTypes.objectOf(
-    PropTypes.oneOfType[(PropTypes.string, PropTypes.number, PropTypes.arrayOf(PropTypes.string))]
+    PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.arrayOf(PropTypes.string)])
   ).isRequired,
-  pageData: CustomPropTypes.variancePageData.isRequired,
+  pageData: CustomPropTypes.variancePageData,
   filterVarianceStatusOptions: CustomPropTypes.filterOptions.isRequired,
 };
 
+const defaultProps = {
+  pageData: {
+    records: [],
+    current_page: 1,
+    items_per_page: Strings.DEFAULT_PER_PAGE,
+    total: 0,
+    total_pages: 1,
+  },
+};
 export const VarianceTable = (props) => (
   <div className="tab__content">
     <h4>Variances</h4>
@@ -46,5 +56,5 @@ export const VarianceTable = (props) => (
 );
 
 VarianceTable.propTypes = propTypes;
-
+VarianceTable.defaultProps = defaultProps;
 export default VarianceTable;

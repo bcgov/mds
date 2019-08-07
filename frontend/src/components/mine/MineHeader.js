@@ -3,10 +3,10 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { openModal, closeModal } from "@/actions/modalActions";
 import { Menu, Divider, Button, Dropdown, Tag, Popover } from "antd";
+import { openModal, closeModal } from "@/actions/modalActions";
 import MineHeaderMap from "@/components/maps/MineHeaderMap";
-import { BRAND_PENCIL, BRAND_DOCUMENT, EDIT, INFO_CIRCLE } from "@/constants/assets";
+import { EDIT_OUTLINE_VIOLET, BRAND_DOCUMENT, EDIT, INFO_CIRCLE } from "@/constants/assets";
 import * as route from "@/constants/routes";
 import { getUserInfo } from "@/selectors/authenticationSelectors";
 import * as String from "@/constants/strings";
@@ -135,7 +135,7 @@ export class MineHeader extends Component {
               )
             }
           >
-            <img alt="pencil" className="padding-small" src={BRAND_PENCIL} />
+            <img alt="pencil" className="padding-small" src={EDIT_OUTLINE_VIOLET} />
             {ModalContent.UPDATE_MINE_RECORD}
           </button>
         </Menu.Item>
