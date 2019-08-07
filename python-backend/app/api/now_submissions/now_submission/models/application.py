@@ -145,3 +145,7 @@ class NOWApplication(Base):
 
     def __repr__(self):
         return '<NOWApplication %r>' % self.messageid
+
+    @classmethod
+    def find_by_trackingnumber(cls, number):
+        return cls.query.filter_by(trackingnumber=number).first()
