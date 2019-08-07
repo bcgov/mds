@@ -179,7 +179,7 @@ export class ViewIncidentModal extends Component {
           <p>{formatDate(this.props.incident.followup_inspection_date) || Strings.EMPTY_FIELD}</p>
         </div>
         <div className="inline-flex padding-small">
-          <p className="field-title">Was it escilated to EMPR Investigation?</p>
+          <p className="field-title">Was it escalated to EMPR Investigation?</p>
           <p>
             {this.props.incidentFollowupActionHash[
               this.props.incident.followup_investigation_type_code

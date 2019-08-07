@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import queryString from "query-string";
 import { bindActionCreators } from "redux";
@@ -27,7 +26,7 @@ import { getMines, getMineGuid } from "@/selectors/mineSelectors";
 const propTypes = {
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
   mineGuid: PropTypes.string.isRequired,
-  mineComplianceInfo: CustomPropTypes.mineComplianceInfo,
+  mineComplianceInfo: CustomPropTypes.mineComplianceInfo.isRequired,
   complianceCodes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   fetchMineComplianceInfo: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
@@ -37,10 +36,6 @@ const propTypes = {
       id: PropTypes.string,
     },
   }).isRequired,
-};
-
-const defaultProps = {
-  mineComplianceInfo: {},
 };
 
 const initialSearchValues = {
