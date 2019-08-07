@@ -24,6 +24,7 @@ class Tailings extends GebReportingSpec {
     URI sourceUri
     Path scriptLocation = Paths.get(sourceUri)
     def setup(){
+        def MineProfilePage = new MineProfilePage(url: "mine-dashboard/${Const.MINE_GUID}/mine-information/general")
         given: "User go to the mine profile page"
         to MineProfilePage
     }
