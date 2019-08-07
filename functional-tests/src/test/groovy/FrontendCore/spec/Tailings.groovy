@@ -24,6 +24,7 @@ class Tailings extends GebReportingSpec {
     URI sourceUri
     Path scriptLocation = Paths.get(sourceUri)
     def setup(){
+        def MineProfilePage = new MineProfilePage(url: "mine-dashboard/${Const.MINE_GUID}/mine-information/general")
         given: "User go to the mine profile page"
         to MineProfilePage
     }
@@ -47,6 +48,7 @@ class Tailings extends GebReportingSpec {
 
     //TODO: THIS TEST ONLY WORKS IN CHROME AND FIREFOX-HEADLESS.  WORK IN GebConfig to fix other browsers
     def "Scenario: User is able to upload a TSF Report"(){
+        def MineProfileTailingsPage = new MineProfilePage(url: "mine-dashboard/${Const.MINE_GUID}/reports/tailings")
         when: "User navigates to the TSF tab and clicks the upload icon"
         to MineProfileTailingsPage
 
@@ -62,6 +64,7 @@ class Tailings extends GebReportingSpec {
 
     //TODO: THIS TEST ONLY WORKS IN CHROME AND FIREFOX-HEADLESS.  WORK IN GebConfig to fix other browsers
     def "Scenario: User is able to download a TSF Report"() {
+        def MineProfileTailingsPage = new MineProfilePage(url: "mine-dashboard/${Const.MINE_GUID}/reports/tailings")
         when: "User navigates to the TSF tab and clicks the download icon"
         to MineProfileTailingsPage
 
