@@ -12,7 +12,7 @@ import CustomPropTypes from "@/customPropTypes";
 import { formatDate } from "@/utils/helpers";
 import { getPartyRelationships } from "@/selectors/partiesSelectors";
 import { getDropdownPermitStatusOptions } from "@/selectors/staticContentSelectors";
-import { EDIT_OUTLINE, EDIT, BRAND_PENCIL, CARAT } from "@/constants/assets";
+import { EDIT_OUTLINE, EDIT_OUTLINE_VIOLET, EDIT, CARAT } from "@/constants/assets";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 import LinkButton from "@/components/common/LinkButton";
 
@@ -151,7 +151,7 @@ const columns = [
               <img
                 alt="document"
                 className="padding-small"
-                src={BRAND_PENCIL}
+                src={EDIT_OUTLINE_VIOLET}
                 style={{ paddingRight: "15px" }}
               />
               Edit permit status

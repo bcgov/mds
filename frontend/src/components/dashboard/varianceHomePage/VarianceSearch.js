@@ -10,8 +10,15 @@ import CustomPropTypes from "@/customPropTypes";
  */
 const propTypes = {
   handleVarianceSearch: PropTypes.func.isRequired,
-  handleNameFieldReset: PropTypes.func.isRequired,
-  initialValues: PropTypes.objectOf(PropTypes.string),
+  initialValues: PropTypes.shape({
+    region: PropTypes.arrayOf(PropTypes.string),
+    compliance_code: PropTypes.arrayOf(PropTypes.string),
+    major: PropTypes.string,
+    issue_date_after: PropTypes.string,
+    issue_date_before: PropTypes.string,
+    expiry_date_before: PropTypes.string,
+    expiry_date_after: PropTypes.string,
+  }),
   mineRegionOptions: CustomPropTypes.options.isRequired,
   complianceCodes: CustomPropTypes.options.isRequired,
 };
@@ -24,14 +31,21 @@ const checkAdvancedSearch = ({
   region,
   compliance_code,
   major,
-  issue_date_min,
-  issue_date_max,
-  expiry_date_max,
-  expiry_date_min,
+  issue_date_after,
+  issue_date_before,
+  expiry_date_before,
+  expiry_date_after,
 }) =>
   major ||
   some(
-    [region, compliance_code, issue_date_min, issue_date_max, expiry_date_max, expiry_date_min],
+    [
+      region,
+      compliance_code,
+      issue_date_after,
+      issue_date_before,
+      expiry_date_before,
+      expiry_date_after,
+    ],
     negate(isEmpty)
   );
 
@@ -51,7 +65,6 @@ export class VarianceSearch extends Component {
           <Col md={{ span: 12, offset: 6 }} xs={{ span: 20, offset: 2 }}>
             <span className="advanced-search__container">
               <VarianceSearchForm
-                handleNameFieldReset={this.props.handleNameFieldReset}
                 onSubmit={this.props.handleVarianceSearch}
                 handleVarianceSearch={this.props.handleVarianceSearch}
                 toggleAdvancedSearch={this.toggleAdvancedSearch}

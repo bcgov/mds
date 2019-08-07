@@ -12,7 +12,7 @@ import {
 } from "@/selectors/staticContentSelectors";
 import { getInspectorsHash } from "@/selectors/partiesSelectors";
 import * as Permission from "@/constants/permissions";
-import { RED_CLOCK, EDIT_OUTLINE } from "@/constants/assets";
+import { RED_CLOCK, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import NullScreen from "@/components/common/NullScreen";
 import { formatDate, compareCodes } from "@/utils/helpers";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
@@ -244,7 +244,7 @@ export class MineVarianceTable extends Component {
                 ghost
                 onClick={() => this.props.openEditVarianceModal(record.variance)}
               >
-                <img src={EDIT_OUTLINE} alt="Edit" className="icon-svg-filter" />
+                <img src={EDIT_OUTLINE_VIOLET} alt="Edit" className="icon-svg-filter" />
               </Button>
             </AuthorizationWrapper>
             <Button

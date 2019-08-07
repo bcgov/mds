@@ -75,21 +75,22 @@ const formatParams = ({ region = [], compliance_code = [], ...remainingParams })
   ...remainingParams,
 });
 
-export class CustomHomePage extends Component {
+export class VarianceHomePage extends Component {
   constructor(props) {
     super(props);
     this.handleVarianceSearchDebounced = debounce(this.handleVarianceSearch, 1000);
     this.state = {
+      variancesLoaded: false,
       params: {
-        page: String.DEFAULT_PAGE,
-        per_page: String.DEFAULT_PER_PAGE,
+        page: Strings.DEFAULT_PAGE,
+        per_page: Strings.DEFAULT_PER_PAGE,
         major: "",
         region: [],
         compliance_code: [],
-        issue_date_min: "",
-        issue_date_max: "",
-        expiry_date_max: "",
-        expiry_date_min: "",
+        issue_date_after: "",
+        issue_date_before: "",
+        expiry_date_before: "",
+        expiry_date_after: "",
         search: "",
       },
     };
@@ -100,27 +101,34 @@ export class CustomHomePage extends Component {
     params: {
       variance_application_status_code: [],
       page: Strings.DEFAULT_PAGE,
-      per_page: 5,
+      per_page: Strings.DEFAULT_PER_PAGE,
       major: "",
       region: [],
       compliance_code: [],
-      issue_date_min: "",
-      issue_date_max: "",
-      expiry_date_max: "",
-      expiry_date_min: "",
+      issue_date_after: "",
+      issue_date_before: "",
+      expiry_date_before: "",
+      expiry_date_after: "",
       search: "",
     },
   };
 
   componentDidMount() {
     const params = this.props.location.search;
+    const parsedParams = queryString.parse(params);
+    const {
+      page = this.state.params.page,
+      per_page = this.state.params.per_page,
+      type = this.state.params.type,
+    } = parsedParams;
     if (params) {
       this.renderDataFromURL(params);
     } else {
       this.props.history.push(
         router.VARIANCE_DASHBOARD.dynamicRoute({
-          page: String.DEFAULT_PAGE,
-          per_page: String.DEFAULT_PER_PAGE,
+          page,
+          per_page,
+          type,
         })
       );
     }
@@ -145,24 +153,12 @@ export class CustomHomePage extends Component {
   }
 
   renderDataFromURL = (params) => {
-    const {
-      issue_date_min,
-      issue_date_max,
-      expiry_date_max,
-      expiry_date_min,
-      region,
-      compliance_code,
-      major,
-      search,
-      ...remainingParams
-    } = queryString.parse(params);
+    const { region, compliance_code, major, search, ...remainingParams } = queryString.parse(
+      params
+    );
     const format = (param) => (param ? param.split(",").filter((x) => x) : []);
     this.setState({
       params: {
-        issue_date_min,
-        issue_date_max,
-        expiry_date_max,
-        expiry_date_min,
         region: format(region),
         compliance_code: format(compliance_code),
         major,
@@ -284,7 +280,7 @@ export class CustomHomePage extends Component {
           <h1>Browse Variances</h1>
         </div>
         <div className="landing-page__content">
-          <AuthorizationWrapper permission={Permission.IN_DEVELOPMENT}>
+          <AuthorizationWrapper permission={Permission.IN_TESTING}>
             <VarianceSearch
               handleNameFieldReset={this.handleNameFieldReset}
               initialValues={this.state.params}
@@ -313,7 +309,7 @@ export class CustomHomePage extends Component {
   }
 }
 
-CustomHomePage.propTypes = propTypes;
+VarianceHomePage.propTypes = propTypes;
 
 const mapStateToProps = (state) => ({
   mineRegionHash: getMineRegionHash(state),
@@ -349,4 +345,4 @@ const mapDispatchToProps = (dispatch) =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(CustomHomePage);
+)(VarianceHomePage);
