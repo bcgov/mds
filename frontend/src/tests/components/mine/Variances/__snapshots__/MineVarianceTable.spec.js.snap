@@ -87,11 +87,6 @@ exports[`MineVarianceTable renders properly 1`] = `
           "render": [Function],
           "title": "",
         },
-        Object {
-          "dataIndex": "variance",
-          "render": [Function],
-          "title": "",
-        },
       ]
     }
     dataSource={

@@ -12,7 +12,6 @@ from werkzeug.exceptions import BadRequest
 
 from .party_address import PartyAddressXref
 from ....utils.models_mixins import AuditMixin, Base
-from ....constants import PARTY_STATUS_CODE
 
 
 class Party(AuditMixin, Base):
@@ -72,7 +71,7 @@ class Party(AuditMixin, Base):
             'postnominal_letters': self.postnominal_letters,
             'idir_username': self.idir_username
         }
-        if self.party_type_code == PARTY_STATUS_CODE['per']:
+        if self.party_type_code == 'PER':
             context.update({
                 'first_name': self.first_name,
             })

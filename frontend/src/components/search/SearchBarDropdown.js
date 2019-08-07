@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-
 import { Menu, Icon } from "antd";
+import * as route from "@/constants/routes";
+
 import { MINE, TEAM } from "@/constants/assets";
 
 const propTypes = {
@@ -41,9 +42,9 @@ const staticMenuItems = [
 
 const URLFor = (item) =>
   ({
-    mine: `/dashboard/${item.result.id}/summary`,
-    party: `/dashboard/${item.result.id}/profile`,
-    permit: `/dashboard/${item.result.id}/permit`,
+    mine: route.MINE_GENERAL.dynamicRoute(item.result.id),
+    party: route.PARTY_PROFILE.dynamicRoute(item.result.id),
+    permit: route.MINE_PERMITS.dynamicRoute(item.result.id),
   }[item.type]);
 
 export const SearchBarDropdown = (props) => (

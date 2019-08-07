@@ -16,6 +16,7 @@ export const MINE_RESPONSE = {
       mine_no: "BLAH9091",
       mine_region: "NE",
       mine_permit: [],
+      major_mine_ind: true,
       mine_location: { longitude: null, latitude: null },
       mine_status: {
         statusvalue: ["CLD", "CM"],
@@ -59,6 +60,7 @@ export const MINE_RESPONSE = {
       mine_name: "mine2",
       mine_no: "BLAH9091",
       mine_region: "NE",
+      major_mine_ind: true,
       mine_permit: [
         {
           permit_guid: "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
@@ -163,6 +165,7 @@ export const MINES = {
       mine_no: "BLAH9091",
       mine_region: "NE",
       mine_permit: [],
+      major_mine_ind: true,
       mine_location: { longitude: null, latitude: null },
       mine_tailings_storage_facilities: [
         {
@@ -205,6 +208,7 @@ export const MINES = {
       mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
       mine_name: "mine2",
       mine_no: "BLAH9091",
+      major_mine_ind: true,
       mine_region: "NE",
       mine_permit: [
         {

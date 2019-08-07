@@ -51,7 +51,7 @@ export class HomePage extends Component {
               <li>
                 <p>
                   <a
-                    href="https://a100.gov.bc.ca/int/cvis/nris/nris.html?fromRoleSelect=true#/dashboard"
+                    href="https://a100.gov.bc.ca/int/cvis/nris/nris.html"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
