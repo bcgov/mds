@@ -1,13 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MineComplianceInfo renders properly 1`] = `
-<div>
+<div
+  className="tab__content"
+>
   <div>
-    <div>
-      <NullScreen
-        type="compliance"
-      />
-    </div>
+    <h2>
+      Inspections and Audits
+    </h2>
+    <Divider />
   </div>
+  <Loading />
 </div>
 `;

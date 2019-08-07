@@ -5,15 +5,8 @@
 
   &__header {
     &--card {
-      @include mobile {
-        width: 100vw;
-        margin: 0;
-      }
       @include flex;
       height: 100%;
-      margin: $default-margin-xxl;
-      background-color: $pure-white;
-      box-shadow: $default-box-shadow;
 
       @include large {
         display: block;
@@ -22,8 +15,7 @@
 
       &__content {
         flex: 2;
-        margin-top: $default-margin-lg;
-        padding: $default-padding-lg;
+        padding-right: $default-padding-lg;
 
         &--status__img {
           width: 15px;
@@ -64,23 +56,6 @@
     @include mobile {
       margin-top: $default-margin-lg;
       padding: 0;
-    }
-  }
-}
-
-.mine__status,
-.mine_tenure {
-  &:nth-child(1),
-  &:nth-child(2),
-  &:nth-child(3) {
-    &:after {
-      content: ",";
-      margin-right: 4px;
-    }
-  }
-  &:last-child() {
-    &:after {
-      content: " " !important;
     }
   }
 }
