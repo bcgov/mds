@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Table, Button, Icon } from "antd";
 import moment from "moment";
 import _ from "lodash";
-import { BRAND_PENCIL } from "@/constants/assets";
+import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
@@ -123,7 +123,7 @@ const columns = (props) => [
               )
             }
           >
-            <img src={BRAND_PENCIL} alt="Edit Incident" />
+            <img src={EDIT_OUTLINE_VIOLET} alt="Edit Incident" />
           </Button>
         </AuthorizationWrapper>
         <Button
