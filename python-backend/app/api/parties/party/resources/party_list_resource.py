@@ -12,7 +12,6 @@ from ...party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.parties.party_appt.models.party_business_role_appt import PartyBusinessRoleAppointment
 from ...response_models import PARTY, PAGINATED_PARTY_LIST
 
-from ....constants import PARTY_STATUS_CODE
 from app.extensions import api
 from ....utils.access_decorators import requires_role_view_all, requires_role_edit_party, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
 
