@@ -153,24 +153,12 @@ export class VarianceHomePage extends Component {
   }
 
   renderDataFromURL = (params) => {
-    const {
-      issue_date_after,
-      issue_date_before,
-      expiry_date_before,
-      expiry_date_after,
-      region,
-      compliance_code,
-      major,
-      search,
-      ...remainingParams
-    } = queryString.parse(params);
+    const { region, compliance_code, major, search, ...remainingParams } = queryString.parse(
+      params
+    );
     const format = (param) => (param ? param.split(",").filter((x) => x) : []);
     this.setState({
       params: {
-        issue_date_after,
-        issue_date_before,
-        expiry_date_before,
-        expiry_date_after,
         region: format(region),
         compliance_code: format(compliance_code),
         major,

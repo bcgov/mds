@@ -295,7 +295,7 @@ export class NavBar extends Component {
       </AuthorizationWrapper>
       <div className="custom-menu-item">
         <Link to={router.VARIANCE_DASHBOARD.route}>
-          <button type="button">Browse Variance</button>
+          <button type="button">Browse Variances</button>
         </Link>
       </div>
     </Menu>
