@@ -11,15 +11,17 @@ import utils.*
 @Title("MDS-MineProfilePage")
 @Stepwise
 class  ContactInfoSpec extends GebReportingSpec {
+    def MineProfileContactPage = new MineProfilePage(url: "mine-dashboard/${Const.MINE_GUID}/mine-information/contacts")
+    def setup() {
+        to MineProfileContactPage
+    }
+
 
     def "Scenario: User can create new mine manager and update mine manager information"(){
-        given: "I go to mine profile"
+        when: "I go to mine contact profile page."
         to MineProfilePage
 
-        when: "I go to contact tab"
-        contactInfoTab.tabSelect.click()
-
-        then: "I am on the contact tab"
-        assert contactInfoTab.activeTab == "Contact Information"
+        then: "The add contact button is present."
+        assert contactInfoTab.addButton != null
     }
 }
