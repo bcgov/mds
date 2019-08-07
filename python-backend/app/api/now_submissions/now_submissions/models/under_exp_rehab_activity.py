@@ -6,7 +6,7 @@ class NOWUnderExpRehabActivity(Base):
     __tablename__ = "under_exp_rehab_activity"
     __table_args__ = { "schema": "now_submissions" }
     id = db.Column(db.Integer, primary_key=True)
-    messageid = db.Column(db.Integer)
+    messageid = db.Column(db.Integer, db.ForeignKey('application.messageid'))
     type = db.Column(db.String)
     incline = db.Column(db.Numeric(14,1))
     inclineunits = db.Column(db.String)
@@ -16,7 +16,6 @@ class NOWUnderExpRehabActivity(Base):
     height = db.Column(db.Numeric(14,1))
     seq_no = db.Column(db.Integer)
 
-    # FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 
     def __repr__(self):
         return '<NOWUnderExpRehabActivity %r>' % self.id

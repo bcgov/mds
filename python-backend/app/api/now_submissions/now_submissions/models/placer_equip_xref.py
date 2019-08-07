@@ -5,11 +5,9 @@ from app.extensions import db
 class NOWPlacerEquipXref(Base):
     __tablename__ = "placer_equip_xref"
     __table_args__ = { "schema": "now_submissions" }
-    messageid = db.Column(db.Integer)
-    equipmentid = db.Column(db.Integer)
+    messageid = db.Column(db.Integer, db.ForeignKey('application.messageid'))
+    equipmentid = db.Column(db.Integer, db.ForeignKey('equipment.equipmentid'))
 
-    # FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
-    # FOREIGN KEY (EQUIPMENTID) REFERENCES NOW_Submissions.equipment(EQUIPMENTID) DEFERRABLE INITIALLY DEFERRED
 
     def __repr__(self):
         return '<NOWPlacerEquipXref %r>' % self.messageid

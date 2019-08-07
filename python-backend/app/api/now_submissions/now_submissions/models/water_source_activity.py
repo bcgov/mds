@@ -6,7 +6,7 @@ class NOWWaterSourceActivity(Base):
     __tablename__ = "document_start_stop"
     __table_args__ = { "schema": "now_submissions" }
     id = db.Column(db.Integer, primary_key=True)
-    messageid = db.Column(db.Integer)
+    messageid = db.Column(db.Integer, db.ForeignKey('application.messageid'))
     sourcewatersupply = db.Column(db.String)
     type = db.Column(db.String)
     useofwater = db.Column(db.String)
@@ -15,7 +15,6 @@ class NOWWaterSourceActivity(Base):
     locationwaterintake = db.Column(db.String)
     seq_no integer
 
-    # FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 
     def __repr__(self):
         return '<NOWWaterSourceActivity %r>' % self.id

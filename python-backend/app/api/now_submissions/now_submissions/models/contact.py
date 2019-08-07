@@ -6,7 +6,7 @@ class NOWContact(Base):
     __tablename__ = "contact"
     __table_args__ = { "schema": "now_submissions" }
     id = db.Column(db.Integer, primary_key=True)
-    messageid = db.Column(db.Integer)
+    messageid = db.Column(db.Integer, db.ForeignKey('application.messageid'))
     type = db.Column(db.String)
     org_legalname = db.Column(db.String)
     org_doingbusinessas = db.Column(db.String)
@@ -34,7 +34,6 @@ class NOWContact(Base):
     mailingaddresspostalzip = db.Column(db.String)
     seq_no = db.Column(db.Integer)
 
-    # FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
 
     def __repr__(self):
         return '<NOWContact %r>' % self.id

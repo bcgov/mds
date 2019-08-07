@@ -11,8 +11,8 @@ class NOWApplication(Base):
     status = db.Column(db.String)
     submitteddate = db.Column(db.DateTime)
     receiveddate = db.Column(db.DateTime)
-    applicantclientid = db.Column(db.Integer)
-    submitterclientid = db.Column(db.Integer)
+    applicantclientid = db.Column(db.Integer, db.ForeignKey('client.clientid'))
+    submitterclientid = db.Column(db.Integer, db.ForeignKey('client.clientid'))
     noticeofworktype = db.Column(db.String)
     typeofpermit = db.Column(db.String)
     typeofapplication = db.Column(db.String)
@@ -142,8 +142,6 @@ class NOWApplication(Base):
     isblastselect = db.Column(db.String)
     istimberselect = db.Column(db.String)
 
-    # FOREIGN KEY (APPLICANTCLIENTID) REFERENCES NOW_Submissions.client(CLIENTID) DEFERRABLE INITIALLY DEFERRED,
-    # FOREIGN KEY (SUBMITTERCLIENTID) REFERENCES NOW_Submissions.client(CLIENTID) DEFERRABLE INITIALLY DEFERRED
 
     def __repr__(self):
         return '<NOWApplication %r>' % self.messageid
