@@ -12,12 +12,11 @@ import utils.DataCleanup
         DataCleanup.class,
         DataInit.class,
         LoginPageSpec.class,
-        DashboardSpec.class,
-        // commenting out the functional tests until they are updated with new navigation - follow up PR
+        // DashboardSpec.class,
         // SummarySpec.class,
         // PermitSpec.class,
         // ContactInfoSpec.class,
-        // Tailings.class,
+        Tailings.class,
         // Contacts.class,
         // MapNavigationSpec.class,//TODO: UNCOMEMENT WHEN MDS-1924 IS DONE
         DataCleanup.class,

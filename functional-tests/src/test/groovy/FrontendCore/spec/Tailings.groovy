@@ -23,7 +23,6 @@ class Tailings extends GebReportingSpec {
     @SourceURI
     URI sourceUri
     Path scriptLocation = Paths.get(sourceUri)
-
     def setup(){
         given: "User go to the mine profile page"
         to MineProfilePage
@@ -35,17 +34,18 @@ class Tailings extends GebReportingSpec {
         createTSFDropdownButton.click()
         tailingsTab.addTailingsForm.addTailings(Const.TSF_NAME)
 
-        and: "see successful message"
+        and: "The user sees a successful message"
         toastMessage == "Successfully added the TSF."
-
-        and: "Tailings tab is loaded into the page"
+        // This needs to be declared after the main page since the url is a static variable
+        def MineProfileTailingsPage = new MineProfilePage(url: "mine-dashboard/${Const.MINE_GUID}/reports/tailings")
+        and: "The user goes to the tailings page."
         tailingsTab
 
-        then: "User can now see the tailings tab"
-        assert tailingsTab.tabSelect.displayed == true
+        // then: "User can now see the tailings tab"
+        // assert tailingsTab.tabSelect.displayed == true
 
-        when: "User clicks on the tailings tab"
-        tailingsTab.tabSelect.click()
+        // when: "User clicks on the tailings tab"
+        // tailingsTab.tabSelect.click()
 
         then: "the reports are visible"
         assert tailingsTab.document0Name != null
@@ -54,7 +54,8 @@ class Tailings extends GebReportingSpec {
     //TODO: THIS TEST ONLY WORKS IN CHROME AND FIREFOX-HEADLESS.  WORK IN GebConfig to fix other browsers
     def "Scenario: User is able to upload a TSF Report"(){
         when: "User navigates to the TSF tab and clicks the upload icon"
-        tailingsTab.tabSelect.click()
+        to MineProfileTailingsPage
+        // tailingsTab.tabSelect.click()
 
         and: "User opens modal and uploads a valid file type"
         def uploadedFile = dir.newFile(Const.TEST_FILE_NAME) << Const.TEST_FILE_CONTENT
@@ -69,7 +70,8 @@ class Tailings extends GebReportingSpec {
     //TODO: THIS TEST ONLY WORKS IN CHROME AND FIREFOX-HEADLESS.  WORK IN GebConfig to fix other browsers
     def "Scenario: User is able to download a TSF Report"() {
         when: "User navigates to the TSF tab and clicks the download icon"
-        tailingsTab.tabSelect.click()
+        // tailingsTab.tabSelect.click()
+        to MineProfileTailingsPage
 
         and: "User opens a file in the folder specified in GebConfig"
         waitFor() { tailingsTab.downloadLink[0].click() }

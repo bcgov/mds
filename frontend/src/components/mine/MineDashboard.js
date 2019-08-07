@@ -289,7 +289,7 @@ export class MineDashboard extends Component {
               <div className="inline-flex block-mobile between">
                 <div className="inline-flex horizontal-center block-tablet">
                   <h1 className="padding-large--right">{mine.mine_name}</h1>
-                  <div>Mine No. {mine.mine_no}</div>
+                  <div id="mine-no">Mine No. {mine.mine_no}</div>
                   {mine.verified_status.healthy_ind !== null && (
                     <img
                       alt=""
