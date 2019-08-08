@@ -105,7 +105,7 @@ export class AddReportForm extends Component {
       this.props.change(
         "due_date",
         this.props.mineReportDefinitionOptions.find(
-          (x) => x.mine_report_definition_guid == selectedMineReportDefinition
+          (x) => x.mine_report_definition_guid === selectedMineReportDefinition
         ).default_due_date
       );
     }
