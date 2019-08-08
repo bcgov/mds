@@ -99,6 +99,13 @@ export class HomePage extends Component {
                   </a>
                 </p>
               </li>
+              <li>
+                <p>
+                  <a href="https://minfile.gov.bc.ca/" target="_blank" rel="noopener noreferrer">
+                    Mineral Inventory (MINFILE)
+                  </a>
+                </p>
+              </li>
             </ul>
           </div>
           <div className="link-card">
