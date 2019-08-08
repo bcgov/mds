@@ -38,39 +38,10 @@ class MineReportDefinition(Base, AuditMixin):
     @hybrid_property
     def default_due_date(self):
         if self.due_date_period_months:
-            return self._get_due_date_for_expected_document(datetime.utcnow(),
-                                                            self.mine_report_due_date_type,
-                                                            self.due_date_period_months)
+            return _calculate_due_date(datetime.utcnow(), self.mine_report_due_date_type,
+                                       self.due_date_period_months)
         else:
             return None
-
-    def _get_due_date_for_expected_document(self, current_date, due_date_type, period_in_months):
-        current_year = current_date.year
-        march = 3
-        day = 31
-        hour = 00
-        minute = 00
-        second = 00
-
-        if due_date_type == 'FIS':
-
-            fiscal_year_end = datetime(current_year, march, day, hour, minute, second)
-            if current_date < fiscal_year_end:  #Jan - Mar
-                tmp_date = fiscal_year_end - relativedelta(years=1)
-            else:
-                tmp_date = fiscal_year_end
-
-            due_date = tmp_date + \
-                    relativedelta(months=int(period_in_months))
-
-            return due_date
-
-        # This is only stubbed out for the future logic that will have to go here.
-        elif due_date_type == 'ANV':
-            return current_date
-
-        else:
-            return current_date
 
     @classmethod
     def find_by_mine_report_definition_id(cls, _id):
@@ -92,3 +63,32 @@ class MineReportDefinition(Base, AuditMixin):
             return cls.query.filter_by(active_ind=True).all()
         except ValueError:
             return None
+
+
+def _calculate_due_date(current_date, due_date_type, period_in_months):
+    current_year = current_date.year
+    march = 3
+    day = 31
+    hour = 00
+    minute = 00
+    second = 00
+
+    if due_date_type == 'FIS':
+
+        fiscal_year_end = datetime(current_year, march, day, hour, minute, second)
+        if current_date < fiscal_year_end:  #Jan - Mar
+            tmp_date = fiscal_year_end - relativedelta(years=1)
+        else:
+            tmp_date = fiscal_year_end
+
+        due_date = tmp_date + \
+                relativedelta(months=int(period_in_months))
+
+        return due_date
+
+    # This is only stubbed out for the future logic that will have to go here.
+    elif due_date_type == 'ANV':
+        return current_date
+
+    else:
+        return current_date
