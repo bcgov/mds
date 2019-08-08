@@ -1,9 +1,9 @@
 from app.extensions import api
 from flask_restplus import fields
 
-NOW_APPLICATION = api.model(
-    'NOW Application', {
-       'now_application_guid': fields.String,
+APPLICATION = api.model(
+    'Application', {
+       'application_guid': fields.String,
        'mine_guid': fields.String,
        'trackingnumber': fields.Integer,
        'applicationtype': fields.String,
