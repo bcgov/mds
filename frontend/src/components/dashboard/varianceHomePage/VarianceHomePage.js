@@ -66,48 +66,54 @@ const propTypes = {
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
 };
 
-const joinOrRemove = (param, key) => (isEmpty(param) ? {} : { [key]: param.join(",") });
-const formatParams = ({ region = [], compliance_code = [], ...remainingParams }) => ({
-  ...joinOrRemove(region, "region"),
-  ...joinOrRemove(compliance_code, "compliance_code"),
-  ...remainingParams,
-});
+const joinOrRemove = (param, key) =>
+  isEmpty(param) && typeof param !== "string" ? {} : { [key]: param.join(",") };
+const formatParams = ({ region = [], compliance_code = [], ...remainingParams }) => {
+  return {
+    ...joinOrRemove(region, "region"),
+    ...joinOrRemove(compliance_code, "compliance_code"),
+    ...remainingParams,
+  };
+};
 
 export class VarianceHomePage extends Component {
+  params = queryString.parse(this.props.location.search);
+
   constructor(props) {
     super(props);
     this.handleVarianceSearchDebounced = debounce(this.handleVarianceSearch, 1000);
-    this.state = {
-      variancesLoaded: false,
-      params: {
-        page: Strings.DEFAULT_PAGE,
-        per_page: Strings.DEFAULT_PER_PAGE,
-        major: "",
-        region: [],
-        compliance_code: [],
-        issue_date_after: "",
-        issue_date_before: "",
-        expiry_date_before: "",
-        expiry_date_after: "",
-        search: "",
-      },
-    };
+    // this.state = {
+    //   variancesLoaded: false,
+    //   params: {
+    //     page: Strings.DEFAULT_PAGE,
+    //     per_page: Strings.DEFAULT_PER_PAGE,
+    //     major: "",
+    //     region: [],
+    //     compliance_code: [],
+    //     issue_date_after: "",
+    //     issue_date_before: "",
+    //     expiry_date_before: "",
+    //     expiry_date_after: "",
+    //     search: "",
+    //   },
+    // };
   }
 
   state = {
     variancesLoaded: false,
     params: {
-      variance_application_status_code: [],
+      // variance_application_status_code: [],
       page: Strings.DEFAULT_PAGE,
       per_page: Strings.DEFAULT_PER_PAGE,
-      major: "",
-      region: [],
-      compliance_code: [],
-      issue_date_after: "",
-      issue_date_before: "",
-      expiry_date_before: "",
-      expiry_date_after: "",
-      search: "",
+      // major: "",
+      // region: [],
+      // compliance_code: [],
+      // issue_date_after: "",
+      // issue_date_before: "",
+      // expiry_date_before: "",
+      // expiry_date_after: "",
+      // search: "",
+      ...this.params,
     },
   };
 
@@ -120,7 +126,8 @@ export class VarianceHomePage extends Component {
       type = this.state.params.type,
     } = parsedParams;
     if (params) {
-      this.renderDataFromURL(params);
+      this.renderDataFromURL();
+      // this.renderDataFromURL(this.params);
     } else {
       this.props.history.push(
         router.VARIANCE_DASHBOARD.dynamicRoute({
@@ -163,10 +170,10 @@ export class VarianceHomePage extends Component {
       compliance_code,
       major,
       search,
-      issue_date_after,
-      issue_date_before,
-      expiry_date_before,
-      expiry_date_after,
+      // issue_date_after,
+      // issue_date_before,
+      // expiry_date_before,
+      // expiry_date_after,
       ...remainingParams
     } = queryString.parse(params);
     const format = (param) => (param ? param.split(",").filter((x) => x) : []);
@@ -176,10 +183,10 @@ export class VarianceHomePage extends Component {
         compliance_code: format(compliance_code),
         major,
         search,
-        issue_date_after,
-        issue_date_before,
-        expiry_date_before,
-        expiry_date_after,
+        // issue_date_after,
+        // issue_date_before,
+        // expiry_date_before,
+        // expiry_date_after,
         ...remainingParams,
       },
     });
@@ -187,7 +194,7 @@ export class VarianceHomePage extends Component {
     console.log(queryString.parse(params));
     console.log("Remaining params");
     console.log(remainingParams);
-    console.log(this.state);
+    // console.log(this.state);
 
     console.log(this.props);
   };
@@ -305,6 +312,9 @@ export class VarianceHomePage extends Component {
   };
 
   render() {
+    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    console.log(this.state);
+
     return (
       <div className="landing-page">
         <div className="landing-page__header">

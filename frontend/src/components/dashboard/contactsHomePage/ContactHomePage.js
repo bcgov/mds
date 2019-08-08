@@ -128,9 +128,6 @@ export class ContactHomePage extends Component {
       .then(() => {
         this.setState({ isLoaded: true });
       });
-    console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-    console.log(this.state);
-    console.log(this.props);
   };
 
   handleSearch = (searchParams = {}, clear = false) => {

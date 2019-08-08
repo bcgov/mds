@@ -23,7 +23,13 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             'per_page': f'The number of records to return per page. Default: {PER_PAGE_DEFAULT}',
             'variance_application_status_code':
             'Comma-separated list of code statuses to include in results. Default: All status codes.',
-        })
+            'compliance_code':'Comma-separated list of compliance codes to be filtered. Default: All compliance codes',
+            'major': 'boolean indicating if variance is from a major or regional mine',
+            'region': 'Comma-separated list of regions the mines associated with the variances are located in',
+            'issue_date_before': 'Latest possible issue date returned',
+            'issue_date_after': 'Earliest possible issue date returned',
+            'expiry_date_before': 'Latest possible expiry date returned',
+            'expiry_date_after': 'Earliest possible expiry date returned'})
     @requires_any_of([VIEW_ALL])
     @api.marshal_with(PAGINATED_VARIANCE_LIST, code=200)
     def get(self):
@@ -42,7 +48,6 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             'items_per_page': pagination_details.page_size,
             'total': pagination_details.total_results,
         }
-
 
     def _apply_filters_and_pagination(self,
                                       page_number=PAGE_DEFAULT,

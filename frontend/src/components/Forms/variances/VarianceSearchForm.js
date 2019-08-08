@@ -14,6 +14,7 @@ const propTypes = {
   isAdvanceSearch: PropTypes.bool,
   complianceCodes: CustomPropTypes.options.isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
+  initialValues: CustomPropTypes.varianceSearchInitialValues,
 };
 
 const defaultProps = {

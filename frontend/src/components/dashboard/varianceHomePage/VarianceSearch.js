@@ -10,15 +10,7 @@ import CustomPropTypes from "@/customPropTypes";
  */
 const propTypes = {
   handleVarianceSearch: PropTypes.func.isRequired,
-  initialValues: PropTypes.shape({
-    region: PropTypes.arrayOf(PropTypes.string),
-    compliance_code: PropTypes.arrayOf(PropTypes.string),
-    major: PropTypes.string,
-    issue_date_after: PropTypes.string,
-    issue_date_before: PropTypes.string,
-    expiry_date_before: PropTypes.string,
-    expiry_date_after: PropTypes.string,
-  }),
+  initialValues: CustomPropTypes.varianceSearchInitialValues,
   mineRegionOptions: CustomPropTypes.options.isRequired,
   complianceCodes: CustomPropTypes.options.isRequired,
 };
@@ -54,11 +46,17 @@ export class VarianceSearch extends Component {
     isAdvanceSearch: checkAdvancedSearch(this.props.initialValues),
   };
 
+  // componentWillReceiveProps(nextProps){
+  //   if (this.props.initialValues !==)
+  // }
+
   toggleAdvancedSearch = () => {
     this.setState((prevState) => ({ isAdvanceSearch: !prevState.isAdvanceSearch }));
   };
 
   render() {
+    console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+    console.log(this.props);
     return (
       <div>
         <Row>
