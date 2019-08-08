@@ -1,7 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MinePermitInfo renders properly 1`] = `
-Array [
+<div
+  className="tab__content"
+>
+  <div>
+    <h2>
+      Permits
+    </h2>
+    <Divider />
+  </div>
   <div>
     <div
       className="inline-flex between"
@@ -11,6 +19,7 @@ Array [
         className="inline-flex between"
       >
         <Connect(AuthorizationWrapper)
+          isMajorMine={true}
           permission="role_edit_permits"
         >
           <AddButton
@@ -21,10 +30,11 @@ Array [
         </Connect(AuthorizationWrapper)>
       </div>
     </div>
-  </div>,
-  <br />,
+  </div>
+  <br />
   <Connect(MinePermitTable)
     expandedRowKeys={Array []}
+    major_mine_ind={true}
     onExpand={[Function]}
     openAddAmalgamatedPermitModal={[Function]}
     openAddPermitAmendmentModal={[Function]}
@@ -32,6 +42,6 @@ Array [
     openEditPermitModal={[Function]}
     partyRelationships={Array []}
     permits={Array []}
-  />,
-]
+  />
+</div>
 `;

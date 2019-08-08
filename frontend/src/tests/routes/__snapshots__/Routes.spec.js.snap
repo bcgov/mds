@@ -14,12 +14,11 @@ exports[`Routes  renders properly 1`] = `
           "$$typeof": Symbol(react.memo),
           "WrappedComponent": [Function],
           "compare": null,
-          "displayName": "Connect(Logout)",
+          "displayName": "Connect(authenticationGuard)",
           "type": [Function],
         }
       }
-      exact={true}
-      path="/logout-confirmed/"
+      path="/"
     />
     <Route
       component={
@@ -27,11 +26,12 @@ exports[`Routes  renders properly 1`] = `
           "$$typeof": Symbol(react.memo),
           "WrappedComponent": [Function],
           "compare": null,
-          "displayName": "Connect(authenticationGuard)",
+          "displayName": "Connect(Logout)",
           "type": [Function],
         }
       }
-      path="/"
+      exact={true}
+      path="/logout-confirmed/"
     />
   </Switch>
 </div>

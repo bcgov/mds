@@ -2,18 +2,19 @@ package pages
 
 import geb.Page
 import modules.*
-import utils.Const
+import utils.*
 
 class MineProfilePage extends Page {
-    static at = { waitFor() {activeTab == "Summary" } }
-    static url = "dashboard/${Const.MINE_GUID}/summary"
+    static at = { waitFor() {mineName == Const.MINE_NAME } }
+    
+    static url = "mine-dashboard/${Const.MINE_GUID}/mine-information/general"
     static content = {
         //General
         mineName (wait:true) {$("h1",0).text()}
-        mineNumber {$("p",1).text()}
+        mineNumber {$("div",id:"mine-no").text()}
         toastMessage (wait: true) {$("div.ant-notification-notice-message").text()}
         closeToastMessage (wait:true) {$("span.ant-notification-notice-close-x")}
-        activeTab (wait:true) {$("div.ant-tabs-tab-active").text()}
+        activeTab (wait:true) {$("li",id:"active-menu-btn").text()}
         createTSFDropdown (wait:true) {$("button.ant-dropdown-trigger", text:"Add/Edit")}
         createTSFDropdownButton (wait:true) {$("button", text:"+ Add TSF")}
 
