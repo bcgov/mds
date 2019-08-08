@@ -2,7 +2,7 @@ from ....utils.models_mixins import Base
 from app.extensions import db
 
 
-class NOWDocumentNDA(Base):
+class DocumentNDA(Base):
     __tablename__ = "document_nda"
     __table_args__ = { "schema": "now_submissions" }
     id = db.Column(db.Integer, primary_key=True)
@@ -14,4 +14,4 @@ class NOWDocumentNDA(Base):
 
 
     def __repr__(self):
-        return '<NOWDocumentNDA %r>' % self.id
+        return '<DocumentNDA %r>' % self.id

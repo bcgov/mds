@@ -2,7 +2,7 @@ from ....utils.models_mixins import Base
 from app.extensions import db
 
 
-class NOWExistingSettlingPondXref(Base):
+class ExistingSettlingPondXref(Base):
     __tablename__ = "existing_settling_pond_xref"
     __table_args__ = { "schema": "now_submissions" }
     messageid = db.Column(db.Integer, db.ForeignKey('application.messageid'))
@@ -10,4 +10,4 @@ class NOWExistingSettlingPondXref(Base):
 
 
     def __repr__(self):
-        return '<NOWExistingSettlingPondXref %r>' % self.messageid
+        return '<ExistingSettlingPondXref %r>' % self.messageid

@@ -2,7 +2,7 @@ from ....utils.models_mixins import Base
 from app.extensions import db
 
 
-class NOWClient(Base):
+class Client(Base):
     __tablename__ = "client"
     __table_args__ = { "schema": "now_submissions" }
     clientid = db.Column(db.Integer, primary_key=True)
@@ -30,4 +30,4 @@ class NOWClient(Base):
     mailingaddresspostalzip = db.Column(db.String)
 
     def __repr__(self):
-        return '<NOWClient %r>' % self.clientid
+        return '<Client %r>' % self.clientid

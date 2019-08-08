@@ -2,7 +2,7 @@ from ....utils.models_mixins import Base
 from app.extensions import db
 
 
-class NOWSurfaceBulkSampleActivity(Base):
+class SurfaceBulkSampleActivity(Base):
     __tablename__ = "surface_bulk_sample_activity"
     __table_args__ = { "schema": "now_submissions" }
     id = db.Column(db.Integer, primary_key=True)
@@ -13,4 +13,4 @@ class NOWSurfaceBulkSampleActivity(Base):
 
 
     def __repr__(self):
-        return '<NOWSurfaceBulkSampleActivity %r>' % self.id
+        return '<SurfaceBulkSampleActivity %r>' % self.id

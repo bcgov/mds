@@ -2,7 +2,7 @@ from ....utils.models_mixins import Base
 from app.extensions import db
 
 
-class NOWEquipment(Base):
+class Equipment(Base):
     __tablename__ = "equipment"
     __table_args__ = { "schema": "now_submissions" }
     equipmentid = db.Column(db.Integer, primary_key=True)
@@ -11,4 +11,4 @@ class NOWEquipment(Base):
     quantity = db.Column(db.Integer)
 
     def __repr__(self):
-        return '<NOWEquipment %r>' % self.equipmentid
+        return '<Equipment %r>' % self.equipmentid
