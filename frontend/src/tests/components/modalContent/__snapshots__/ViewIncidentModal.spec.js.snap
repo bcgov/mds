@@ -296,7 +296,7 @@ exports[`ViewIncidentModal renders properly 1`] = `
         <p
           className="field-title"
         >
-          Was it escilated to EMPR Investigation?
+          Was it escalated to EMPR Investigation?
         </p>
         <p>
           No

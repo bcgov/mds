@@ -377,9 +377,7 @@ export class ViewPartyRelationships extends Component {
         okText: "Ok",
         cancelText: "Cancel",
         onConfirm: () =>
-          this.props.history.push(
-            router.MINE_SUMMARY.dynamicRoute(this.props.mine.mine_guid, "permit")
-          ),
+          this.props.history.push(router.MINE_SUMMARY.dynamicRoute(this.props.mine.mine_guid)),
       },
     }[selectedPartyRelationshipType]);
 
