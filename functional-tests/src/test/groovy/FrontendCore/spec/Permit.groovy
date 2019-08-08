@@ -24,13 +24,14 @@ class  PermitSpec extends GebReportingSpec {
     @SourceURI
     URI sourceUri
     Path scriptLocation = Paths.get(sourceUri)
-
+    def MineProfilePermitPage = new MineProfilePage(url: "mine-dashboard/${Const.MINE_GUID}/permits-and-approvals/permits")
     def setup() {
-        to MineProfilePage
-        permitTab.tabSelect.click()
+        to MineProfilePermitPage
     }
 
     def "User can create a permit"(){
+        given: "I am on the permit page"
+        to MineProfilePermitPage
         when: "I click on the new permit"
         permitTab.newPermitButton.click()
         newPermitForm.completePermitForm()
@@ -40,6 +41,8 @@ class  PermitSpec extends GebReportingSpec {
     }
 
     def "User can edit the status of a permit"(){
+        given: "I am on the permit page"
+        to MineProfilePermitPage
         when: "I hover over the the add/edit button."
         moveToFooterAndHoverOnEdit()
         interact {
@@ -58,6 +61,8 @@ class  PermitSpec extends GebReportingSpec {
     }
 
     def "User can upload a doc to a permit"(){
+        given: "I am on the permit page"
+        to MineProfilePermitPage
         when: "I open the edit initial permit modal."
         permitTab.permitRow.children().has(text:"Add/Edit").click()
         permitTab.openFileModalButton.click()
@@ -74,6 +79,8 @@ class  PermitSpec extends GebReportingSpec {
     }
 
     def "User can download a doc from a permit"(){
+        given: "I am on the permit page"
+        to MineProfilePermitPage
         when: "The user navigates to the test permit's files"
         permitTab.permitRow.children().has(text:"Add/Edit").click()
 
@@ -90,6 +97,8 @@ class  PermitSpec extends GebReportingSpec {
     }
 
     def "User can add an amendment to a permit"(){
+        given: "I am on the permit page"
+        to MineProfilePermitPage
         when: "A user opens the Add Permit Amendment Modal"
         permitTab.permitRow.children().has(text:"Add/Edit").click()
         moveToFooterAndHoverOnEdit()

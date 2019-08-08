@@ -20,9 +20,15 @@ const setupDispatchProps = () => {
 };
 
 const setupReducerProps = () => {
-  reducerProps.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
+  reducerProps.mines = MOCK.MINES.mines;
+  [reducerProps.mineGuid] = MOCK.MINES.mineIds;
   reducerProps.mineIncidents = MOCK.INCIDENTS.records;
   reducerProps.followupActions = MOCK.FOLLOWUP_ACTIONS;
+  reducerProps.inspectors = MOCK.INSPECTORS.results;
+  reducerProps.followupActionsOptions = {};
+  reducerProps.incidentDeterminationOptions = {};
+  reducerProps.incidentStatusCodeOptions = {};
+  reducerProps.doSubparagraphOptions = {};
 };
 
 beforeEach(() => {

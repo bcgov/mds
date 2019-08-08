@@ -14,6 +14,7 @@ __pycache__
 *.pgCustom
 *.sw*
 python-backend/document_uploads/
+microservices/document_manager/backend/document_uploads/
 *last-backup
 venv*
 

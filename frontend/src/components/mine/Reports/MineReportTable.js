@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from "react";
 import { Table } from "antd";
 import moment from "moment";
