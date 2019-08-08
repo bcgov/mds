@@ -8,7 +8,7 @@ from app.extensions import api, db
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_edit
-from app.api.utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.utils.resources_mixins import UserMixin
 
 from ..models.tailings import MineTailingsStorageFacility
 from app.api.required_documents.models.required_documents import RequiredDocument

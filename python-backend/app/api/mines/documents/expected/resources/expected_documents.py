@@ -11,12 +11,12 @@ from ..models.mine_expected_document import MineExpectedDocument
 from .....mines.mine.models.mine import Mine
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_edit, requires_any_of, VIEW_ALL, MINE_EDIT, MINESPACE_PROPONENT
-from app.api.utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.utils.resources_mixins import UserMixin
 
 from app.api.mines.mine_api_models import MINE_EXPECTED_DOCUMENT_MODEL
 
 
-class ExpectedDocumentListResource(Resource, UserMixin, ErrorMixin):
+class ExpectedDocumentListResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
 
     parser.add_argument('exp_document_name', type=str)
@@ -34,7 +34,7 @@ class ExpectedDocumentListResource(Resource, UserMixin, ErrorMixin):
         return mine.expected_documents
 
 
-class ExpectedDocumentResource(Resource, UserMixin, ErrorMixin):
+class ExpectedDocumentResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
 
     parser.add_argument('exp_document_name', type=str, store_missing=False)

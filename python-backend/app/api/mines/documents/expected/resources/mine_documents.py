@@ -9,12 +9,12 @@ from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
 from app.extensions import api, db
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_edit
-from app.api.utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.utils.resources_mixins import UserMixin
 
 from app.api.mines.mine_api_models import MINE_EXPECTED_DOCUMENT_MODEL
 
 
-class ExpectedMineDocumentResource(Resource, UserMixin, ErrorMixin):
+class ExpectedMineDocumentResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument('documents',
                         type=list,

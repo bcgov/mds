@@ -11,11 +11,11 @@ from ..models.mine_document import MineDocument
 from app.extensions import api
 from app.api.mines.mine.models.mine import Mine
 from app.api.utils.access_decorators import requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
-from app.api.utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.utils.resources_mixins import UserMixin
 from app.api.mines.mine_api_models import MINE_DOCUMENT_MODEL
 
 
-class MineDocumentListResource(Resource, UserMixin, ErrorMixin):
+class MineDocumentListResource(Resource, UserMixin):
     @api.doc(description='Returns list of documents associated with mines')
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     @api.marshal_with(MINE_DOCUMENT_MODEL, code=200, envelope='records')

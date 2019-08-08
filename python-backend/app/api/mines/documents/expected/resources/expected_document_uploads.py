@@ -21,12 +21,12 @@ from app.api.services.document_manager_service import DocumentManagerService
 
 from app.extensions import api, db
 from app.api.utils.access_decorators import requires_any_of, MINE_EDIT, MINESPACE_PROPONENT
-from app.api.utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.utils.resources_mixins import UserMixin
 
 from app.api.mines.mine_api_models import MINE_EXPECTED_DOCUMENT_MODEL
 
 
-class ExpectedDocumentUploadResource(Resource, UserMixin, ErrorMixin):
+class ExpectedDocumentUploadResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument('mine_document_guid', type=str, store_missing=False)
     parser.add_argument('document_manager_guid', type=str, store_missing=False)

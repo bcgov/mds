@@ -20,7 +20,7 @@ from app.api.mines.mine_api_models import MINE_INCIDENT_MODEL
 from app.extensions import api, db
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.utils.access_decorators import requires_role_edit_do
-from app.api.utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.utils.resources_mixins import UserMixin
 
 from app.api.services.document_manager_service import DocumentManagerService
 
