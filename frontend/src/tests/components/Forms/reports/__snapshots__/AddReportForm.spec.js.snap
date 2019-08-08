@@ -117,6 +117,10 @@ exports[`AddReportForm renders properly 1`] = `
           placeholder=""
         />
       </FormItem>
+      <ReportSubmissions
+        mineReportSubmissions={Array []}
+        updateMineReportSubmissions={[Function]}
+      />
     </Col>
   </Row>
   <div

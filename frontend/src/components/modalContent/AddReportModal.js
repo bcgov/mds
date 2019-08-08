@@ -26,4 +26,5 @@ export const AddReportModal = (props) => (
 
 AddReportModal.propTypes = propTypes;
 AddReportModal.defaultProps = defaultProps;
+
 export default AddReportModal;
