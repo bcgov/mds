@@ -23,8 +23,8 @@ describe("noticeOfWorkReducer", () => {
 
   it("receives STORE_NOTICE_OF_WORK_APPLICATIONS", () => {
     const expectedValue = getBaseExpectedValue();
-    expectedValue.variances = MOCK.NOTICE_OF_WORK_LIST.records;
-    expectedValue.variancePageData = MOCK.NOTICE_OF_WORK_LIST;
+    expectedValue.noticeOfWorkList = MOCK.NOTICE_OF_WORK_LIST.records;
+    expectedValue.noticeOfWorkPageData = MOCK.NOTICE_OF_WORK_LIST;
     const result = noticeOfWorkReducer(
       undefined,
       storeNoticeOfWorkApplications(MOCK.NOTICE_OF_WORK_LIST)
@@ -34,7 +34,7 @@ describe("noticeOfWorkReducer", () => {
 
   it("receives STORE_NOTICE_OF_WORK_APPLICATION", () => {
     const expectedValue = getBaseExpectedValue();
-    expectedValue.variance = MOCK.NOTICE_OF_WORK;
+    expectedValue.noticeOfWork = MOCK.NOTICE_OF_WORK;
     const result = noticeOfWorkReducer(
       undefined,
       storeNoticeOfWorkApplication(MOCK.NOTICE_OF_WORK)
