@@ -237,7 +237,7 @@ export default compose(
     selectedMineReportCategory: selector(state, "mine_report_category"),
     selectedMineReportDefinition: selector(state, "mine_report_definition_guid"),
     currentDueDate: selector(state, "due_date"),
-    formMeta: state.form.ADD_REPORT,
+    formMeta: state.form[FORM.ADD_REPORT],
   })),
   reduxForm({
     change,
