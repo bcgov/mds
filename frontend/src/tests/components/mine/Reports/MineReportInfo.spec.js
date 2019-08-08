@@ -7,8 +7,7 @@ const dispatchProps = {};
 const props = {};
 
 const setupProps = () => {
-  props.mines = MOCK.MINES.mines;
-  [props.mineGuid] = MOCK.MINES.mineIds;
+  props.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
 };
 
 const setupDispatchProps = () => {
