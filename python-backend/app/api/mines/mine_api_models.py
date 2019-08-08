@@ -198,8 +198,8 @@ MINE_INCIDENT_MODEL = api.model(
         'emergency_services_called': fields.Boolean,
         'number_of_injuries': fields.Integer,
         'number_of_fatalities': fields.Integer,
-        'reported_to_inspector_party_guid':  fields.String,
-        'responsible_inspector_party_guid':  fields.String,
+        'reported_to_inspector_party_guid': fields.String,
+        'responsible_inspector_party_guid': fields.String,
         'determination_type_code': fields.String,
         'status_code': fields.String,
         'followup_investigation_type_code': fields.String,
@@ -273,10 +273,10 @@ MINE_REPORT_COMMENT_MODEL = api.model(
         'mine_report_comment_guid': fields.String,
         'minespace_user_guid': fields.String,
         'core_user_guid': fields.String,
-        'comment': fields.String,
-        'comment_visibility': fields.Boolean,
-        'due_date': fields.Date,
-        'submission_year': fields.Integer
+        'report_comment': fields.String,
+        'create_timestamp': fields.DateTime,
+        'update_timestamp': fields.DateTime,
+        'comment_visibility_ind': fields.Boolean,
     }
 )
 

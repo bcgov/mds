@@ -20,7 +20,6 @@ from ...mine_api_models import MINE_REPORT_COMMENT_MODEL
 class MineReportCommentResource(Resource, UserMixin):
     parser = CustomReqparser()
 
-    # required
     parser.add_argument('mine_report_submission_guid',
                         type=str, location='json', required=True)
 
@@ -38,23 +37,14 @@ class MineReportCommentResource(Resource, UserMixin):
         if not mine_report_submission:
             raise NotFound('Mine report submission not found')
 
-        mine_report_id = mine_report_submission.mine_report_id
-        mine_report = MineReport.find_by_mine_report_id(mine_report_id)
-
-        if not mine_report:
-            raise InternalServerError('Error when saving: Cannot find mine report')
-
         data = self.parser.parse_args()
 
         mine_report_comment_guid = uuid.uuid4()
         mine_report_comment = MineReportComment.create(
+            mine_report_submission,
             mine_report_comment_guid=mine_report_comment_guid,
-            mine_report_id=mine_report.mine_report_id,
-            mine_report_submission_id=mine_report_submission.mine_report_submission_guid,
             comment=data['comment'],
             comment_visibility_ind=data['comment_visibility_ind'],
-            due_date=data['due_date'],
-            submission_year=data['submission_year'],
         )
 
         try:
