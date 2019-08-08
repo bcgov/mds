@@ -294,6 +294,7 @@ MINE_REPORT_DEFINITION_MODEL = api.model(
         'description':fields.String,
         'due_date_period_months':fields.Integer,
         'mine_report_due_date_type':fields.String,
+        'default_due_date':fields.Date,
         'categories':fields.List(fields.Nested(MINE_REPORT_DEFINITION_CATEGORIES)),
         'compliance_articles':fields.List(fields.Nested(COMPLIANCE_ARTICLE_MODEL)),
     }
