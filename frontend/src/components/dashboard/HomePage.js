@@ -102,7 +102,7 @@ export class HomePage extends Component {
               <li>
                 <p>
                   <a href="https://minfile.gov.bc.ca/" target="_blank" rel="noopener noreferrer">
-                    Mineral Inventory
+                    Mineral Inventory (MINFILE)
                   </a>
                 </p>
               </li>
