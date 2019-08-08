@@ -2,7 +2,7 @@ from ....utils.models_mixins import Base
 from app.extensions import db
 
 
-class NOWPlacerActivity(Base):
+class PlacerActivity(Base):
     __tablename__ = "placer_activity"
     __table_args__ = { "schema": "now_submissions" }
     placeractivityid = db.Column(db.Integer, primary_key=True)
@@ -15,4 +15,4 @@ class NOWPlacerActivity(Base):
     timbervolume = db.Column(db.Numeric(14,2))
 
     def __repr__(self):
-        return '<NOWPlacerActivity %r>' % self.placeractivityid
+        return '<PlacerActivity %r>' % self.placeractivityid

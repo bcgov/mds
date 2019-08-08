@@ -2,7 +2,7 @@ from ....utils.models_mixins import Base
 from app.extensions import db
 
 
-class NOWDocumentStartStop(Base):
+class DocumentStartStop(Base):
     __tablename__ = "document_start_stop"
     __table_args__ = { "schema": "now_submissions" }
     id = db.Column(db.Integer, primary_key=True)
@@ -14,4 +14,4 @@ class NOWDocumentStartStop(Base):
 
 
     def __repr__(self):
-        return '<NOWDocumentStartStop %r>' % self.id
+        return '<DocumentStartStop %r>' % self.id

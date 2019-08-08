@@ -2,7 +2,7 @@ from ....utils.models_mixins import Base
 from app.extensions import db
 
 
-class NOWExpAccessActivity(Base):
+class ExpAccessActivity(Base):
     __tablename__ = "exp_access_activity"
     __table_args__ = { "schema": "now_submissions" }
     id = db.Column(db.Integer, primary_key=True)
@@ -14,4 +14,4 @@ class NOWExpAccessActivity(Base):
 
 
     def __repr__(self):
-        return '<NOWExpAccessActivity %r>' % self.id
+        return '<ExpAccessActivity %r>' % self.id

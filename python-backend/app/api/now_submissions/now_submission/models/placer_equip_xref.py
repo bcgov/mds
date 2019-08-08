@@ -2,7 +2,7 @@ from ....utils.models_mixins import Base
 from app.extensions import db
 
 
-class NOWPlacerEquipXref(Base):
+class PlacerEquipXref(Base):
     __tablename__ = "placer_equip_xref"
     __table_args__ = { "schema": "now_submissions" }
     messageid = db.Column(db.Integer, db.ForeignKey('application.messageid'))
@@ -10,4 +10,4 @@ class NOWPlacerEquipXref(Base):
 
 
     def __repr__(self):
-        return '<NOWPlacerEquipXref %r>' % self.messageid
+        return '<PlacerEquipXref %r>' % self.messageid

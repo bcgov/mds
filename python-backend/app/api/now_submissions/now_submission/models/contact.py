@@ -2,7 +2,7 @@ from ....utils.models_mixins import Base
 from app.extensions import db
 
 
-class NOWContact(Base):
+class Contact(Base):
     __tablename__ = "contact"
     __table_args__ = { "schema": "now_submissions" }
     id = db.Column(db.Integer, primary_key=True)
@@ -36,4 +36,4 @@ class NOWContact(Base):
 
 
     def __repr__(self):
-        return '<NOWContact %r>' % self.id
+        return '<Contact %r>' % self.id

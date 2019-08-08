@@ -2,7 +2,7 @@ from ....utils.models_mixins import Base
 from app.extensions import db
 
 
-class NOWExpSurfaceDrillActivity(Base):
+class ExpSurfaceDrillActivity(Base):
     __tablename__ = "exp_surface_drill_activity"
     __table_args__ = { "schema": "now_submissions" }
     id = db.Column(db.Integer, primary_key=True)
@@ -14,4 +14,4 @@ class NOWExpSurfaceDrillActivity(Base):
 
 
     def __repr__(self):
-        return '<NOWExpSurfaceDrillActivity %r>' % self.id
+        return '<ExpSurfaceDrillActivity %r>' % self.id

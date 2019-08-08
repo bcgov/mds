@@ -2,7 +2,7 @@ from ....utils.models_mixins import Base
 from app.extensions import db
 
 
-class NOWApplicationNDA(Base):
+class ApplicationNDA(Base):
     __tablename__ = "application_nda"
     __table_args__ = { "schema": "now_submissions" }
     messageid = db.Column(db.Integer, primary_key=True)
@@ -34,4 +34,4 @@ class NOWApplicationNDA(Base):
 
 
     def __repr__(self):
-        return '<NOWApplicationNDA %r>' % self.messageid
+        return '<ApplicationNDA %r>' % self.messageid

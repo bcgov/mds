@@ -2,7 +2,7 @@ from ....utils.models_mixins import Base
 from app.extensions import db
 
 
-class NOWApplication(Base):
+class Application(Base):
     __tablename__ = "application"
     __table_args__ = { "schema": "now_submissions" }
     messageid = db.Column(db.Integer, primary_key=True)
@@ -144,4 +144,4 @@ class NOWApplication(Base):
 
 
     def __repr__(self):
-        return '<NOWApplication %r>' % self.messageid
+        return '<Application %r>' % self.messageid

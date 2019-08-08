@@ -2,7 +2,7 @@ from ....utils.models_mixins import Base
 from app.extensions import db
 
 
-class NOWApplicationStartStop(Base):
+class ApplicationStartStop(Base):
     __tablename__ = "application_start_stop"
     __table_args__ = { "schema": "now_submissions" }
     messageid = db.Column(db.Integer, primary_key=True)
@@ -16,4 +16,4 @@ class NOWApplicationStartStop(Base):
     processeddate = db.Column(db.DateTime)
 
     def __repr__(self):
-        return '<NOWApplicationStartStop %r>' % self.messageid
+        return '<ApplicationStartStop %r>' % self.messageid

@@ -2,7 +2,7 @@ from ....utils.models_mixins import Base
 from app.extensions import db
 
 
-class NOWSurfaceBulkSampleEquipXref(Base):
+class SurfaceBulkSampleEquipXref(Base):
     __tablename__ = "surface_bulk_sample_equip_xref"
     __table_args__ = { "schema": "now_submissions" }
     messageid = db.Column(db.Integer, db.ForeignKey('application.messageid'))
@@ -10,4 +10,4 @@ class NOWSurfaceBulkSampleEquipXref(Base):
 
 
     def __repr__(self):
-        return '<NOWSurfaceBulkSampleEquipXref %r>' % self.messageid
+        return '<SurfaceBulkSampleEquipXref %r>' % self.messageid

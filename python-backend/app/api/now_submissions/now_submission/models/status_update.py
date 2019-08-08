@@ -2,7 +2,7 @@ from ....utils.models_mixins import Base
 from app.extensions import db
 
 
-class NOWStatusUpdate(Base):
+class StatusUpdate(Base):
     __tablename__ = "status_update"
     __table_args__ = { "schema": "now_submissions" }
     id = db.Column(db.Integer, primary_key=True)
@@ -18,4 +18,4 @@ class NOWStatusUpdate(Base):
     applicationtype = db.Column(db.String)
 
     def __repr__(self):
-        return '<NOWClient %r>' % self.clientid
+        return '<Client %r>' % self.clientid

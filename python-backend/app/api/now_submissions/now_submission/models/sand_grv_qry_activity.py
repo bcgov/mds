@@ -2,7 +2,7 @@ from ....utils.models_mixins import Base
 from app.extensions import db
 
 
-class NOWSandGrvQryActivity(Base):
+class SandGrvQryActivity(Base):
     __tablename__ = "sand_grv_qry_activity"
     __table_args__ = { "schema": "now_submissions" }
     id = db.Column(db.Integer, primary_key=True)
@@ -13,4 +13,4 @@ class NOWSandGrvQryActivity(Base):
 
 
     def __repr__(self):
-        return '<NOWSandGrvQryActivity %r>' % self.id
+        return '<SandGrvQryActivity %r>' % self.id

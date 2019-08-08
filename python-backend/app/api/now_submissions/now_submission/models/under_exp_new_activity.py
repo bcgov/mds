@@ -2,7 +2,7 @@ from ....utils.models_mixins import Base
 from app.extensions import db
 
 
-class NOWUnderExpNewActivity(Base):
+class UnderExpNewActivity(Base):
     __tablename__ = "under_exp_new_activity"
     __table_args__ = { "schema": "now_submissions" }
     id = db.Column(db.Integer, primary_key=True)
@@ -18,4 +18,4 @@ class NOWUnderExpNewActivity(Base):
 
 
     def __repr__(self):
-        return '<NOWUnderExpNewActivity %r>' % self.id
+        return '<UnderExpNewActivity %r>' % self.id

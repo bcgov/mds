@@ -2,7 +2,7 @@ from ....utils.models_mixins import Base
 from app.extensions import db
 
 
-class NOWSettlingPond(Base):
+class SettlingPond(Base):
     __tablename__ = "client"
     __table_args__ = { "schema": "now_submissions" }
     settlingpondid = db.Column(db.Integer, primary_key=True)
@@ -16,4 +16,4 @@ class NOWSettlingPond(Base):
     timbervolume = db.Column(db.Numeric(14,2))
 
     def __repr__(self):
-        return '<NOWSettlingPond %r>' % self.settlingpondid
+        return '<SettlingPond %r>' % self.settlingpondid
