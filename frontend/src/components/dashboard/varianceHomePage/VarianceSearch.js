@@ -46,10 +46,6 @@ export class VarianceSearch extends Component {
     isAdvanceSearch: checkAdvancedSearch(this.props.initialValues),
   };
 
-  // componentWillReceiveProps(nextProps){
-  //   if (this.props.initialValues !==)
-  // }
-
   toggleAdvancedSearch = () => {
     this.setState((prevState) => ({ isAdvanceSearch: !prevState.isAdvanceSearch }));
   };

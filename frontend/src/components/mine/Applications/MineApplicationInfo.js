@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Icon, Button } from "antd";
+import { Icon, Button, Divider } from "antd";
 import CustomPropTypes from "@/customPropTypes";
+import { openModal, closeModal } from "@/actions/modalActions";
 import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import MineApplicationTable from "@/components/mine/Applications/MineApplicationTable";
@@ -15,13 +16,15 @@ import {
   updateApplication,
   createApplication,
 } from "@/actionCreators/applicationActionCreator";
+import { getMines, getMineGuid } from "@/selectors/mineSelectors";
 
 /**
  * @class  MineApplicationInfo - contains all application information
  */
 
 const propTypes = {
-  mine: CustomPropTypes.mine.isRequired,
+  mineGuid: PropTypes.string.isRequired,
+  mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
   applications: PropTypes.arrayOf(CustomPropTypes.application),
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
@@ -35,11 +38,9 @@ const defaultProps = {
 };
 
 export class MineApplicationInfo extends Component {
-  componentWillMount() {}
-
   closeApplicationModal = () => {
     this.props.closeModal();
-    this.props.fetchApplications({ mine_guid: this.props.mine.mine_guid });
+    this.props.fetchApplications({ mine_guid: this.props.mineGuid });
   };
 
   openAddApplicationModal = (event, title) => {
@@ -70,7 +71,7 @@ export class MineApplicationInfo extends Component {
   };
 
   handleAddApplication = (values) => {
-    const payload = { mine_guid: this.props.mine.mine_guid, ...values };
+    const payload = { mine_guid: this.props.mineGuid, ...values };
     return this.props.createApplication(payload).then(this.closeApplicationModal);
   };
 
@@ -78,43 +79,47 @@ export class MineApplicationInfo extends Component {
     this.props.updateApplication(values.application_guid, values).then(this.closeApplicationModal);
 
   render() {
-    return [
-      <div>
-        <div className="inline-flex between">
-          <div />
-          <div className="inline-flex between">
-            <AuthorizationWrapper
-              permission={Permission.EDIT_PERMITS}
-              isMajorMine={this.props.mine.major_mine_ind}
-            >
-              <Button
-                type="primary"
-                onClick={(event) =>
-                  this.openAddApplicationModal(
-                    event,
-                    `${ModalContent.ADD_APPLICATION} to ${this.props.mine.mine_name}`
-                  )
-                }
-              >
-                <Icon type="plus" theme="outlined" style={{ fontSize: "18px" }} />
-                Add a New Application
-              </Button>
-            </AuthorizationWrapper>
-          </div>
+    const mine = this.props.mines[this.props.mineGuid];
+    return (
+      <div className="tab__content">
+        <div>
+          <h2>Permit Applications</h2>
+          <Divider />
         </div>
-      </div>,
-      <br />,
-      <MineApplicationTable
-        applications={this.props.applications}
-        isMajorMine={this.props.mine.major_mine_ind}
-        openEditApplicationModal={this.openEditApplicationModal}
-      />,
-    ];
+        <div className="right">
+          <AuthorizationWrapper
+            permission={Permission.EDIT_PERMITS}
+            isMajorMine={mine.major_mine_ind}
+          >
+            <Button
+              type="primary"
+              onClick={(event) =>
+                this.openAddApplicationModal(
+                  event,
+                  `${ModalContent.ADD_APPLICATION} to ${mine.mine_name}`
+                )
+              }
+            >
+              <Icon type="plus" theme="outlined" style={{ fontSize: "18px" }} />
+              Add a New Application
+            </Button>
+          </AuthorizationWrapper>
+        </div>
+        <br />
+        <MineApplicationTable
+          applications={this.props.applications}
+          isMajorMine={mine.major_mine_ind}
+          openEditApplicationModal={this.openEditApplicationModal}
+        />
+      </div>
+    );
   }
 }
 
 const mapStateToProps = (state) => ({
   applications: getApplications(state),
+  mines: getMines(state),
+  mineGuid: getMineGuid(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -123,6 +128,8 @@ const mapDispatchToProps = (dispatch) =>
       fetchApplications,
       updateApplication,
       createApplication,
+      openModal,
+      closeModal,
     },
     dispatch
   );

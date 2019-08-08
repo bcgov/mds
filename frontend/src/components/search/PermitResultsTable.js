@@ -26,7 +26,7 @@ export const PermitResultsTable = (props) => {
       render: (text, record) => [
         <Row>
           <Col span={24}>
-            <Link to={router.MINE_SUMMARY.dynamicRoute(record.mine_guid, "permit")}>
+            <Link to={router.MINE_PERMITS.dynamicRoute(record.mine_guid)}>
               <Highlight search={props.highlightRegex}>{record.permit_no}</Highlight>
             </Link>
           </Col>
