@@ -21,6 +21,7 @@ exports[`Dashboard renders properly 1`] = `
       <div>
         <RefreshButton
           actions={Array []}
+          isNestedButton={false}
           listActions={
             Array [
               [Function],

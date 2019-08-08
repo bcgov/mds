@@ -11,6 +11,7 @@ exports[`RefreshButton renders properly 1`] = `
   type="primary"
 >
   <Icon
+    className="icon-sm"
     theme="outlined"
     type="sync"
   />

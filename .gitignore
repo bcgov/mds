@@ -13,5 +13,6 @@ __pycache__
 .vscode
 *.pgCustom
 *.sw*
+microservices/document_manager/backend/document_uploads/
 *last-backup
 venv*

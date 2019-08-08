@@ -1,8 +1,9 @@
+/* eslint-disable */
 import React from "react";
 import { Icon, Popconfirm, Button } from "antd";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
-import { BRAND_PENCIL } from "@/constants/assets";
+import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 
 const propTypes = {
   mineReport: PropTypes.objectOf(CustomPropTypes.mineReport).isRequired,
@@ -63,7 +64,7 @@ export const MineReportActions = (props) => (
         props.openEditReportModal(event, props.handleEditReport, props.mineReport)
       }
     >
-      <img src={BRAND_PENCIL} alt="Edit Report" />
+      <img src={EDIT_OUTLINE_VIOLET} alt="Edit Report" />
     </Button>
     {renderDeleteButton(props)}
   </div>

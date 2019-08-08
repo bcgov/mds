@@ -10,10 +10,14 @@ const setupDispatchProps = () => {
   dispatchProps.fetchApplications = jest.fn();
   dispatchProps.updateApplication = jest.fn();
   dispatchProps.createApplication = jest.fn();
+  dispatchProps.openModal = jest.fn();
+  dispatchProps.closeModal = jest.fn();
 };
 
 const setupProps = () => {
-  props.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
+  props.mineGuid = "18145c75-49ad-0101-85f3-a43e45ae989a";
+  props.mines = MOCK.MINES.mines;
+  props.applications = [];
 };
 
 beforeEach(() => {

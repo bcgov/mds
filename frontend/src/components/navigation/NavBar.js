@@ -143,42 +143,40 @@ export class NavBar extends Component {
     <div>
       {this.props.isMenuOpen && (
         <div className="menu--hamburger">
-          <span>
-            <Row>
-              <Col span={24}>
-                <Link
-                  to={router.MINE_HOME_PAGE.dynamicRoute({
-                    page: Strings.DEFAULT_PAGE,
-                    per_page: Strings.DEFAULT_PER_PAGE,
-                  })}
+          <Row>
+            <Col span={24}>
+              <Link
+                to={router.MINE_HOME_PAGE.dynamicRoute({
+                  page: Strings.DEFAULT_PAGE,
+                  per_page: Strings.DEFAULT_PER_PAGE,
+                })}
+              >
+                <Button
+                  id={this.ifActiveButton(router.MINE_HOME_PAGE.route)}
+                  className="menu--hamburger__btn--link"
                 >
-                  <Button
-                    id={this.ifActiveButton(router.MINE_HOME_PAGE.route)}
-                    className="menu--hamburger__btn--link"
-                  >
-                    Mines
-                  </Button>
-                </Link>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={24}>
-                <Link
-                  to={router.CONTACT_HOME_PAGE.dynamicRoute({
-                    page: Strings.DEFAULT_PAGE,
-                    per_page: Strings.DEFAULT_PER_PAGE,
-                  })}
+                  Mines
+                </Button>
+              </Link>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={24}>
+              <Link
+                to={router.CONTACT_HOME_PAGE.dynamicRoute({
+                  page: Strings.DEFAULT_PAGE,
+                  per_page: Strings.DEFAULT_PER_PAGE,
+                })}
+              >
+                <Button
+                  id={this.ifActiveButton(router.CONTACT_HOME_PAGE.route)}
+                  className="menu--hamburger__btn--link"
                 >
-                  <Button
-                    id={this.ifActiveButton(router.CONTACT_HOME_PAGE.route)}
-                    className="menu--hamburger__btn--link"
-                  >
-                    Contacts
-                  </Button>
-                </Link>
-              </Col>
-            </Row>
-          </span>
+                  Contacts
+                </Button>
+              </Link>
+            </Col>
+          </Row>
           <AuthorizationWrapper permission={Permission.ADMIN}>
             <Row>
               <Col span={24}>
@@ -221,6 +219,18 @@ export class NavBar extends Component {
           </AuthorizationWrapper>
           <Row>
             <Col span={24}>
+              <Link to={router.VARIANCE_DASHBOARD.route}>
+                <Button
+                  id={this.ifActiveButton(router.VARIANCE_DASHBOARD.route)}
+                  className="menu--hamburger__btn--link"
+                >
+                  Browse Variances
+                </Button>
+              </Link>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={24}>
               <Link to={router.CUSTOM_HOME_PAGE.route}>
                 <Button
                   id={
@@ -238,9 +248,9 @@ export class NavBar extends Component {
           <Row>
             <Col span={24}>
               <Link to={router.LOGOUT.route}>
-                <button type="button" className="menu--hamburger__btn--link">
+                <Button id="logout-btn" type="button" className="menu--hamburger__btn--link">
                   Log Out
-                </button>
+                </Button>
               </Link>
             </Col>
           </Row>
@@ -283,6 +293,11 @@ export class NavBar extends Component {
           </Link>
         </div>
       </AuthorizationWrapper>
+      <div className="custom-menu-item">
+        <Link to={router.VARIANCE_DASHBOARD.route}>
+          <button type="button">Browse Variances</button>
+        </Link>
+      </div>
     </Menu>
   );
 

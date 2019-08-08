@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Form, DatePicker } from "antd";
@@ -24,7 +25,7 @@ const defaultProps = {
 export class RenderDate extends Component {
   state = {
     isopen: false,
-    time: this.props.input.value ? moment(this.props.input.value + "-01-01") : null,
+    time: this.props.input.value ? moment(`${this.props.input.value}-01-01`) : null,
   };
 
   handlePanelChange = (value) => {
