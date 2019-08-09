@@ -110,3 +110,8 @@ export const MINE_REPORTS = (mine_guid) => `/mines/${mine_guid}/reports`;
 export const MINE_REPORT = (mine_guid, mine_report_guid) =>
   `/mines/${mine_guid}/reports/${mine_report_guid}`;
 export const MINE_REPORT_DOCUMENT = (mineGuid) => `/mines/${mineGuid}/reports/documents`;
+
+// Notice Of Work
+export const NOTICE_OF_WORK_APPLICATIONS = `/now-submissions/applications`;
+export const NOTICE_OF_WORK_APPLICATION = (applicationGuid) =>
+  `/now-submissions/applications/${applicationGuid}`;
