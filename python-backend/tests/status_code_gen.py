@@ -21,6 +21,7 @@ from app.api.parties.party_appt.models.party_business_role_code import PartyBusi
 from app.api.variances.models.variance_document_category_code import VarianceDocumentCategoryCode
 from app.api.variances.models.variance_application_status_code import VarianceApplicationStatusCode
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
+from app.api.mines.reports.models.mine_report_submission_status_code import MineReportSubmissionStatusCode
 
 
 def RandomApplicationStatusCode():
@@ -105,6 +106,10 @@ def RandomIncidentDocumentType():
 
 def RandomMineReportDefinition():
     return random.choice([x.mine_report_definition_id for x in MineReportDefinition.active()])
+
+
+def RandomMineReportSubmissionStatusCode():
+    return random.choice([x.mine_report_submission_status_code for x in MineReportSubmissionStatusCode.active()])
 
 
 def RandomVarianceDocumentCategoryCode():

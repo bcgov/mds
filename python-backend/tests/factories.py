@@ -32,6 +32,8 @@ from app.api.users.minespace.models.minespace_user import MinespaceUser
 from app.api.variances.models.variance import Variance
 from app.api.parties.party_appt.models.party_business_role_appt import PartyBusinessRoleAppointment
 from app.api.mines.reports.models.mine_report import MineReport
+from app.api.mines.reports.models.mine_report_submission import MineReportSubmission
+from app.api.mines.reports.models.mine_report_comment import MineReportComment
 
 GUID = factory.LazyFunction(uuid.uuid4)
 TODAY = factory.LazyFunction(datetime.now)
@@ -334,9 +336,9 @@ class MineIncidentFactory(BaseFactory):
             extracted = 1
 
         MineIncidentDocumentFactory.create_batch(size=extracted,
-                                             incident=obj,
-                                             mine_document__mine=None,
-                                             **kwargs)
+                                                 incident=obj,
+                                                 mine_document__mine=None,
+                                                 **kwargs)
 
 
 class MineIncidentDocumentFactory(BaseFactory):
@@ -362,6 +364,46 @@ class MineReportFactory(BaseFactory):
     mine_report_definition_id = factory.LazyFunction(RandomMineReportDefinition)
     due_date = factory.Faker('future_datetime', end_date='+30d')
     submission_year = factory.fuzzy.FuzzyInteger(2020, 3000)
+
+    @factory.post_generation
+    def mine_report_submissions(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        MineReportSubmissionFactory.create_batch(size=extracted, mine=obj, **kwargs)
+
+
+class MineReportCommentFactory(BaseFactory):
+    class Meta:
+        model = MineReportComment
+
+    mine_report_comment_guid = GUID
+    report_comment = factory.Faker('paragraph')
+    comment_visibility_ind = factory.Faker('boolean', chance_of_getting_true=50)
+
+
+class MineReportSubmissionFactory(BaseFactory):
+    class Meta:
+        model = MineReportSubmission
+
+    mine_report_submission_guid = GUID
+    mine_report_submission_status_code = factory.LazyFunction(RandomMineReportSubmissionStatus)
+    submission_date = factory.Faker('future_datetime', end_date='+30d')
+
+    @factory.post_generation
+    def comments(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        MineReportCommentFactory.create_batch(size=extracted,
+                                              submission=obj,
+                                              **kwargs)
 
 
 class AddressFactory(BaseFactory):
