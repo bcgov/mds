@@ -29,11 +29,13 @@ const propTypes = {
 
   selectedMineReportCategory: PropTypes.string.isRequired,
   selectedMineReportDefinition: PropTypes.string.isRequired,
+  currentDueDate: PropTypes.string.isRequired,
+  formMeta: PropTypes.any,
 };
 
 const selector = formValueSelector(FORM.ADD_REPORT);
 
-const defaultProps = {};
+const defaultProps = { currentDueDate: "" };
 
 export class AddReportForm extends Component {
   state = {
@@ -90,6 +92,25 @@ export class AddReportForm extends Component {
     }));
   };
 
+  updateDueDateWithDefaultDueDate = (selectedMineReportDefinition) => {
+    let formMeta = this.props.formMeta;
+    if (
+      !(
+        formMeta &&
+        formMeta.fields &&
+        formMeta.fields.due_date &&
+        formMeta.fields.due_date.touched == true
+      )
+    ) {
+      this.props.change(
+        "due_date",
+        this.props.mineReportDefinitionOptions.find(
+          (x) => x.mine_report_definition_guid === selectedMineReportDefinition
+        ).default_due_date
+      );
+    }
+  };
+
   componentWillReceiveProps = (nextProps) => {
     if (nextProps.selectedMineReportCategory !== this.props.selectedMineReportCategory) {
       this.updateMineReportOptions(
@@ -100,6 +121,7 @@ export class AddReportForm extends Component {
 
     if (nextProps.selectedMineReportDefinition !== this.props.selectedMineReportDefinition) {
       this.updateSelectedMineReportComplianceArticles(nextProps.selectedMineReportDefinition);
+      this.updateDueDateWithDefaultDueDate(nextProps.selectedMineReportDefinition);
     }
   };
 
@@ -214,6 +236,8 @@ export default compose(
     mineReportDefinitionOptions: getMineReportDefinitionOptions(state),
     selectedMineReportCategory: selector(state, "mine_report_category"),
     selectedMineReportDefinition: selector(state, "mine_report_definition_guid"),
+    currentDueDate: selector(state, "due_date"),
+    formMeta: state.form[FORM.ADD_REPORT],
   })),
   reduxForm({
     change,
