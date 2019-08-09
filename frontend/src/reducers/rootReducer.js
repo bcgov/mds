@@ -17,6 +17,7 @@ import searchReducer from "@/reducers/searchReducer";
 import varianceReducer from "@/reducers/varianceReducer";
 import userReducer from "@/reducers/userReducer";
 import reportReducer from "@/reducers/reportReducer";
+import noticeOfWorkReducer from "@/reducers/noticeOfWorkReducer";
 
 export const reducerObject = {
   form: formReducer,
@@ -34,6 +35,7 @@ export const reducerObject = {
   [reducerTypes.VARIANCES]: varianceReducer,
   [reducerTypes.REPORTS]: reportReducer,
   [reducerTypes.USERS]: userReducer,
+  [reducerTypes.NOTICE_OF_WORK]: noticeOfWorkReducer,
   [reducerTypes.CREATE_PARTY]: createReducer(networkReducer, reducerTypes.CREATE_PARTY),
   [reducerTypes.UPDATE_PARTY]: createReducer(networkReducer, reducerTypes.UPDATE_PARTY),
   [reducerTypes.GET_PARTIES]: createReducer(networkReducer, reducerTypes.GET_PARTIES),
@@ -91,6 +93,14 @@ export const reducerObject = {
   [reducerTypes.GET_VARIANCE_STATUS_OPTIONS]: createReducer(
     networkReducer,
     reducerTypes.GET_VARIANCE_STATUS_OPTIONS
+  ),
+  [reducerTypes.GET_NOTICE_OF_WORK_APPLICATIONS]: createReducer(
+    networkReducer,
+    reducerTypes.GET_NOTICE_OF_WORK_APPLICATIONS
+  ),
+  [reducerTypes.GET_NOTICE_OF_WORK_APPLICATION]: createReducer(
+    networkReducer,
+    reducerTypes.GET_NOTICE_OF_WORK_APPLICATION
   ),
 };
 
