@@ -360,7 +360,11 @@ class MineReportFactory(BaseFactory):
     class Meta:
         model = MineReport
 
+    class Params:
+        mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
+
     mine_report_guid = GUID
+    mine_guid = factory.SelfAttribute('mine.mine_guid')
     mine_report_definition_id = factory.LazyFunction(RandomMineReportDefinition)
     due_date = factory.Faker('future_datetime', end_date='+30d')
     submission_year = factory.fuzzy.FuzzyInteger(2020, 3000)
@@ -380,6 +384,9 @@ class MineReportCommentFactory(BaseFactory):
     class Meta:
         model = MineReportComment
 
+    class Params:
+        submission = factory.SubFactory('tests.factories.MineReportSubmissionFactory')
+
     mine_report_comment_guid = GUID
     report_comment = factory.Faker('paragraph')
     comment_visibility_ind = factory.Faker('boolean', chance_of_getting_true=50)
@@ -389,8 +396,13 @@ class MineReportSubmissionFactory(BaseFactory):
     class Meta:
         model = MineReportSubmission
 
+    class Params:
+        documents = factory.SubFactory('tests.factories.MineDocumentFactory',
+                                       mine_guid=factory.SelfAttribute('..report.mine_guid'))
+        report = factory.SubFactory('tests.factories.MineReportFactory')
+
     mine_report_submission_guid = GUID
-    mine_report_submission_status_code = factory.LazyFunction(RandomMineReportSubmissionStatus)
+    mine_report_submission_status_code = factory.LazyFunction(RandomMineReportSubmissionStatusCode)
     submission_date = factory.Faker('future_datetime', end_date='+30d')
 
     @factory.post_generation

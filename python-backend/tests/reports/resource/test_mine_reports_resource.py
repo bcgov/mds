@@ -68,7 +68,6 @@ def test_post_mine_report(test_client, db_session, auth_headers):
 
 
 def test_post_mine_report_bad_mine_guid(test_client, db_session, auth_headers):
-    mine = MineFactory(mine_reports=ONE_REPORT)
     data = {}
     post_resp = test_client.post(
         f'/mines/12345142342/reports', headers=auth_headers['full_auth_header'], json=data)
