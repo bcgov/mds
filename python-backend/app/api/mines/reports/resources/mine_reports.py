@@ -30,23 +30,26 @@ class MineReportListResource(Resource, UserMixin):
     # required
     parser.add_argument('submission_year', type=str, location='json', required=True)
     parser.add_argument('mine_report_definition_guid', type=str, location='json', required=True)
-    parser.add_argument(
-        'due_date',
-        location='json',
-        required=True,
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
+    parser.add_argument('due_date',
+                        location='json',
+                        required=True,
+                        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
 
     parser.add_argument('permit_guid', type=str, location='json')
-    parser.add_argument(
-        'received_date',
-        location='json',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
+    parser.add_argument('received_date',
+                        location='json',
+                        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
 
     @api.marshal_with(MINE_REPORT_MODEL, envelope='records', code=200)
     @api.doc(description='returns the reports for a given mine.')
     @requires_role_view_all
     def get(self, mine_guid):
-        mine_reports = MineReport.find_all_by_mine_guid(mine_guid)
+        mrd_category = request.args.get('mine_report_definition_category')
+        if mrd_category:
+            mine_reports = MineReport.find_by_mine_guid_with_category(mine_guid, mrd_category)
+        else:
+            mine_reports = MineReport.find_by_mine_guid(mine_guid)
+
         return mine_reports
 
     @api.expect(MINE_REPORT_MODEL)
@@ -91,11 +94,10 @@ class MineReportResource(Resource, UserMixin):
     # required
 
     parser.add_argument('due_date', type=str, location='json', store_missing=False)
-    parser.add_argument(
-        'received_date',
-        location='json',
-        store_missing=False,
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
+    parser.add_argument('received_date',
+                        location='json',
+                        store_missing=False,
+                        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
 
     @api.marshal_with(MINE_REPORT_MODEL, code=200)
     @requires_role_view_all
