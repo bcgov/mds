@@ -7,8 +7,6 @@ import CustomAxios from "@/customAxios";
 import * as noticeOfWorkActions from "@/actions/noticeOfWorkActions";
 import * as reducerTypes from "@/constants/reducerTypes";
 
-// This file is anticipated to have multiple exports
-// eslint-disable-next-line import/prefer-default-export
 export const fetchNoticeOfWorkApplication = (applicationGuid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION));
   dispatch(showLoading());
