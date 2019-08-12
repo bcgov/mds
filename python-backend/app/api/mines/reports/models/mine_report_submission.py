@@ -5,6 +5,8 @@ from sqlalchemy.schema import FetchedValue
 from app.api.utils.models_mixins import Base, AuditMixin
 from app.extensions import db
 
+from sqlalchemy.ext.associationproxy import association_proxy
+
 
 class MineReportSubmission(Base, AuditMixin):
     __tablename__ = "mine_report_submission"
@@ -23,6 +25,9 @@ class MineReportSubmission(Base, AuditMixin):
         order_by='MineReportComment.comment_datetime',
         primaryjoin="and_(MineReportComment.mine_report_submission_id == MineReportSubmission.mine_report_submission_id, MineReportComment.deleted_ind==False)",
         lazy='joined')
+    report = db.relationship('MineReport', lazy='joined')
+
+    mine_report_guid = association_proxy('report', 'mine_report_guid')
 
     def __repr__(self):
         return '<MineReportSubmission %r>' % self.mine_report_submission_guid

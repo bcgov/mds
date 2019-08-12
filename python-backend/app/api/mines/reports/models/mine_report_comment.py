@@ -4,6 +4,7 @@ from sqlalchemy.schema import FetchedValue
 from app.api.utils.models_mixins import Base, AuditMixin
 from app.extensions import db
 
+
 from app.api.utils.include.user_info import User
 from datetime import datetime
 

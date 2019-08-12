@@ -51,6 +51,8 @@ class MineReportCommentListResource(Resource, UserMixin):
             comment_visibility_ind=data['comment_visibility_ind'],
         )
 
+        current_app.logger.info(f'Creating comment {mine_report_comment}')
+
         try:
             mine_report_comment.save()
         except Exception as e:
