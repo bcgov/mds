@@ -65,6 +65,17 @@ DOCUMENT = api.model(
         'description': fields.String,
     })
 
+PLACER_ACTIVITY = api.model(
+    'PLACER_ACTIVITY', {
+        'type': fields.String,
+        'quantity': fields.Integer,
+        'depth': fields.Integer,
+        'length': fields.Integer,
+        'width': fields.Integer,
+        'disturbedarea': fields.Arbitrary,
+        'timbervolume': fields.Arbitrary,
+    })
+
 APPLICATION = api.model(
     'Application', {
         'application_guid': fields.String,
@@ -209,4 +220,5 @@ APPLICATION = api.model(
         'submitter': fields.Nested(CLIENT),
         'documents': fields.List(fields.Nested(DOCUMENT)),
         'contacts': fields.List(fields.Nested(CONTACT)),
+        'placer_activity': fields.Nested(PLACER_ACTIVITY)
     })

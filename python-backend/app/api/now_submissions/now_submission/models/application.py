@@ -8,6 +8,8 @@ from app.api.utils.models_mixins import Base
 from app.api.now_submissions.now_submission.models.client import Client
 from app.api.now_submissions.now_submission.models.contact import Contact
 from app.api.now_submissions.now_submission.models.document import Document
+from app.api.now_submissions.now_submission.models.placer_activity import PlacerActivity
+from app.api.now_submissions.now_submission.models.existing_placer_activity_xref import ExistingPlacerActivityXref
 
 
 class Application(Base):
@@ -157,6 +159,8 @@ class Application(Base):
     submitter = db.relationship('Client', lazy='joined', foreign_keys=[submitterclientid])
     contacts = db.relationship('Contact', lazy='joined')
     documents = db.relationship('Document', lazy='joined')
+    placer_activity = db.relationship(
+        'PlacerActivity', lazy='joined', secondary='now_submissions.existing_placer_activity_xref')
 
     mine_name = association_proxy('mine', 'mine_name')
 
