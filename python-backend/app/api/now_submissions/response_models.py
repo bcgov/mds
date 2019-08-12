@@ -95,6 +95,13 @@ SURFACE_BULK_SAMPLE_ACTIVITY = api.model(
         'timbervolume': fields.Arbitrary,
     })
 
+SAND_GRAVEL_QUARRY_ACTIVITY = api.model(
+    'SAND_GRAVEL_QUARRY_ACTIVITY', {
+        'type': fields.String,
+        'disturbedarea': fields.Arbitrary,
+        'timbervolume': fields.Arbitrary,
+    })
+
 APPLICATION = api.model(
     'Application', {
         'application_guid': fields.String,
@@ -244,4 +251,5 @@ APPLICATION = api.model(
         'proposed_placer_activity': fields.Nested(PLACER_ACTIVITY),
         'proposed_settling_pond': fields.Nested(SETTLING_POND),
         'surface_bulk_sample_activity': fields.List(fields.Nested(SURFACE_BULK_SAMPLE_ACTIVITY)),
+        'sand_grv_qry_activity': fields.List(fields.Nested(SAND_GRAVEL_QUARRY_ACTIVITY)),
     })

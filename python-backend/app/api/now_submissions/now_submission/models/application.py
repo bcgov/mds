@@ -9,6 +9,7 @@ from app.api.now_submissions.now_submission.models.client import Client
 from app.api.now_submissions.now_submission.models.contact import Contact
 from app.api.now_submissions.now_submission.models.document import Document
 from app.api.now_submissions.now_submission.models.placer_activity import PlacerActivity
+from app.api.now_submissions.now_submission.models.sand_grv_qry_activity import SandGrvQryActivity
 from app.api.now_submissions.now_submission.models.settling_pond import SettlingPond
 from app.api.now_submissions.now_submission.models.surface_bulk_sample_activity import SurfaceBulkSampleActivity
 
@@ -165,6 +166,7 @@ class Application(Base):
     submitter = db.relationship('Client', lazy='joined', foreign_keys=[submitterclientid])
     contacts = db.relationship('Contact', lazy='joined')
     documents = db.relationship('Document', lazy='joined')
+    sand_grv_qry_activity = db.relationship('SandGrvQryActivity', lazy='joined')
     surface_bulk_sample_activity = db.relationship('SurfaceBulkSampleActivity', lazy='joined')
 
     existing_placer_activity = db.relationship(
