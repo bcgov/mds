@@ -126,6 +126,14 @@ UNDER_EXP_REHAB_ACTIVITY = api.model(
         'seq_no': fields.Integer,
     })
 
+UNDER_EXP_SURFACE_ACTIVITY = api.model(
+    'UNDER_EXP_SURFACE_ACTIVITY', {
+        'type': fields.String,
+        'quantity': fields.Integer,
+        'disturbedarea': fields.Arbitrary,
+        'timbervolume': fields.Arbitrary,
+    })
+
 APPLICATION = api.model(
     'Application', {
         'application_guid': fields.String,
@@ -278,4 +286,5 @@ APPLICATION = api.model(
         'sand_grv_qry_activity': fields.List(fields.Nested(SAND_GRAVEL_QUARRY_ACTIVITY)),
         'under_exp_new_activity': fields.List(fields.Nested(UNDER_EXP_NEW_ACTIVITY)),
         'under_exp_rehab_activity': fields.List(fields.Nested(UNDER_EXP_REHAB_ACTIVITY)),
+        'under_exp_surface_activity': fields.List(fields.Nested(UNDER_EXP_SURFACE_ACTIVITY)),
     })
