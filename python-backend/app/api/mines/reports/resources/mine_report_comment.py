@@ -66,29 +66,21 @@ class MineReportCommentResource(Resource, UserMixin):
     @requires_role_edit_report
     def put(self, mine_guid, mine_report_guid, mine_report_submission_guid, mine_report_comment_guid=None):
 
-        mine_report_submission = MineReportSubmission.find_by_guid(
-            mine_report_submission_guid)
-
-        if not mine_report_submission:
-            raise NotFound('Mine report submission not found')
-
         data = self.parser.parse_args()
+        comment = MineReportComment.find_by_guid(mine_report_comment_guid)
+        if not comment:
+            raise NotFound('Mine Report Comment not found.')
 
-        mine_report_comment_guid = uuid.uuid4()
-
-        mine_report_comment = MineReportComment.create(
-            mine_report_submission,
-            mine_report_comment_guid=mine_report_comment_guid,
-            report_comment=data['report_comment'],
-            comment_visibility_ind=data['comment_visibility_ind'],
-        )
+        current_app.logger.info(f'Updating {comment} with {data}')
+        for key, value in data.items():
+            setattr(comment, key, value)
 
         try:
-            mine_report_comment.save()
+            comment.save()
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')
 
-        return mine_report_comment, 201
+        return comment, 201
 
     @api.doc(
         description='Delete a mine report comment by guid', params={'mine_report_comment_guid': 'guid of the comment to delete.'})
