@@ -38,6 +38,7 @@ exports[`AddReportForm renders properly 1`] = `
           id="mine_report_definition_guid"
           label="Report Name*"
           name="mine_report_definition_guid"
+          onChange={[Function]}
           placeholder="Select a category above"
           props={
             Object {
@@ -117,10 +118,6 @@ exports[`AddReportForm renders properly 1`] = `
           placeholder=""
         />
       </FormItem>
-      <ReportSubmissions
-        mineReportSubmissions={Array []}
-        updateMineReportSubmissions={[Function]}
-      />
     </Col>
   </Row>
   <div
