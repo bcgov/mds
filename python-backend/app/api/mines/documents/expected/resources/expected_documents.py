@@ -3,7 +3,7 @@ import uuid
 from datetime import datetime
 
 from flask import request
-from flask_restplus import Resource, reqparse, fields
+from flask_restplus import Resource, reqparse
 
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
