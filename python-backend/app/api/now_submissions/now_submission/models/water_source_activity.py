@@ -6,7 +6,7 @@ class WaterSourceActivity(Base):
     __tablename__ = "document_start_stop"
     __table_args__ = { "schema": "now_submissions" }
     id = db.Column(db.Integer, primary_key=True)
-    messageid = db.Column(db.Integer, db.ForeignKey('application.messageid'))
+    messageid = db.Column(db.Integer, db.ForeignKey('now_submissions.application.messageid'))
     sourcewatersupply = db.Column(db.String)
     type = db.Column(db.String)
     useofwater = db.Column(db.String)

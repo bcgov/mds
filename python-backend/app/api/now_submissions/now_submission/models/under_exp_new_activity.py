@@ -6,7 +6,7 @@ class UnderExpNewActivity(Base):
     __tablename__ = "under_exp_new_activity"
     __table_args__ = { "schema": "now_submissions" }
     id = db.Column(db.Integer, primary_key=True)
-    messageid = db.Column(db.Integer, db.ForeignKey('application.messageid'))
+    messageid = db.Column(db.Integer, db.ForeignKey('now_submissions.application.messageid'))
     type= db.Column(db.String)
     incline = db.Column(db.Numeric(14,1))
     inclineunits = db.Column(db.String)

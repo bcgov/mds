@@ -1,10 +1,20 @@
 import uuid
 
 from sqlalchemy.dialects.postgresql import UUID
-from app.api.now_submissions.now_submission.models.client import Client
+from sqlalchemy.ext.associationproxy import association_proxy
 
 from app.extensions import db
 from app.api.utils.models_mixins import Base
+from app.api.now_submissions.now_submission.models.client import Client
+from app.api.now_submissions.now_submission.models.contact import Contact
+from app.api.now_submissions.now_submission.models.document import Document
+from app.api.now_submissions.now_submission.models.placer_activity import PlacerActivity
+from app.api.now_submissions.now_submission.models.settling_pond import SettlingPond
+
+from app.api.now_submissions.now_submission.models.existing_placer_activity_xref import ExistingPlacerActivityXref
+from app.api.now_submissions.now_submission.models.existing_settling_pond_xref import ExistingSettlingPondXref
+from app.api.now_submissions.now_submission.models.proposed_placer_activity_xref import ProposedPlacerActivityXref
+from app.api.now_submissions.now_submission.models.proposed_settling_pond_xref import ProposedSettlingPondXref
 
 
 class Application(Base):
@@ -12,7 +22,7 @@ class Application(Base):
     __table_args__ = { "schema": "now_submissions" }
     messageid = db.Column(db.Integer, primary_key=True)
     application_guid = db.Column(UUID(as_uuid=True), nullable=False)
-    mine_guid = db.Column(UUID(as_uuid=True))
+    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     trackingnumber = db.Column(db.Integer)
     applicationtype = db.Column(db.String)
     status = db.Column(db.String)
@@ -148,6 +158,23 @@ class Application(Base):
     nrsosapplicationid = db.Column(db.String)
     isblastselect = db.Column(db.String)
     istimberselect = db.Column(db.String)
+
+    mine = db.relationship('Mine', lazy='joined')
+    applicant = db.relationship('Client', lazy='joined', foreign_keys=[applicantclientid])
+    submitter = db.relationship('Client', lazy='joined', foreign_keys=[submitterclientid])
+    contacts = db.relationship('Contact', lazy='joined')
+    documents = db.relationship('Document', lazy='joined')
+    existing_placer_activity = db.relationship(
+        'PlacerActivity', lazy='joined', secondary='now_submissions.existing_placer_activity_xref')
+    existing_settling_pond = db.relationship(
+        'SettlingPond', lazy='joined', secondary='now_submissions.existing_settling_pond_xref')
+    proposed_placer_activity = db.relationship(
+        'PlacerActivity', lazy='joined', secondary='now_submissions.proposed_placer_activity_xref')
+    proposed_settling_pond = db.relationship(
+        'SettlingPond', lazy='joined', secondary='now_submissions.proposed_settling_pond_xref')
+
+
+    mine_name = association_proxy('mine', 'mine_name')
 
 
     def __repr__(self):
