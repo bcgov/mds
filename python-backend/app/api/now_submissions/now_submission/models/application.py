@@ -13,6 +13,8 @@ from app.api.now_submissions.now_submission.models.settling_pond import Settling
 
 from app.api.now_submissions.now_submission.models.existing_placer_activity_xref import ExistingPlacerActivityXref
 from app.api.now_submissions.now_submission.models.existing_settling_pond_xref import ExistingSettlingPondXref
+from app.api.now_submissions.now_submission.models.proposed_placer_activity_xref import ProposedPlacerActivityXref
+from app.api.now_submissions.now_submission.models.proposed_settling_pond_xref import ProposedSettlingPondXref
 
 
 class Application(Base):
@@ -166,6 +168,10 @@ class Application(Base):
         'PlacerActivity', lazy='joined', secondary='now_submissions.existing_placer_activity_xref')
     existing_settling_pond = db.relationship(
         'SettlingPond', lazy='joined', secondary='now_submissions.existing_settling_pond_xref')
+    proposed_placer_activity = db.relationship(
+        'PlacerActivity', lazy='joined', secondary='now_submissions.proposed_placer_activity_xref')
+    proposed_settling_pond = db.relationship(
+        'SettlingPond', lazy='joined', secondary='now_submissions.proposed_settling_pond_xref')
 
 
     mine_name = association_proxy('mine', 'mine_name')

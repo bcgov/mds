@@ -234,4 +234,6 @@ APPLICATION = api.model(
         'contacts': fields.List(fields.Nested(CONTACT)),
         'existing_placer_activity': fields.Nested(PLACER_ACTIVITY),
         'existing_settling_pond': fields.Nested(SETTLING_POND),
+        'proposed_placer_activity': fields.Nested(PLACER_ACTIVITY),
+        'proposed_settling_pond': fields.Nested(SETTLING_POND),
     })
