@@ -91,9 +91,8 @@ def RandomComplianceArticleId():
 
 
 def RandomIncidentDeterminationTypeCode():
-    return random.choice([
-        x.mine_incident_determination_type_code for x in MineIncidentDeterminationType.active()
-    ])
+    return random.choice(
+        [x.mine_incident_determination_type_code for x in MineIncidentDeterminationType.active()])
 
 
 def RandomIncidentStatusCode():
@@ -101,11 +100,19 @@ def RandomIncidentStatusCode():
 
 
 def RandomIncidentDocumentType():
-    return random.choice([x.mine_incident_document_type_code for x in MineIncidentDocumentTypeCode.active()])
+    return random.choice(
+        [x.mine_incident_document_type_code for x in MineIncidentDocumentTypeCode.active()])
 
 
 def RandomMineReportDefinition():
     return random.choice([x.mine_report_definition_id for x in MineReportDefinition.active()])
+
+
+def RandomMineReportDefinitionWithDueDate():
+    return random.choice([
+        x.mine_report_definition_id for x in MineReportDefinition.active()
+        if x.due_date_period_months and x.due_date_period_months > 0
+    ])
 
 
 def RandomMineReportSubmissionStatusCode():
@@ -119,10 +126,12 @@ def RandomVarianceDocumentCategoryCode():
 
 def SampleDangerousOccurrenceSubparagraphs(num):
     return random.sample(
-        db.session.query(ComplianceArticle).filter(
-            ComplianceArticle.article_act_code == 'HSRCM', ComplianceArticle.section == '1',
-            ComplianceArticle.sub_section == '7', ComplianceArticle.paragraph == '3',
-            ComplianceArticle.sub_paragraph != None).all(), num)
+        db.session.query(ComplianceArticle).filter(ComplianceArticle.article_act_code == 'HSRCM',
+                                                   ComplianceArticle.section == '1',
+                                                   ComplianceArticle.sub_section == '7',
+                                                   ComplianceArticle.paragraph == '3',
+                                                   ComplianceArticle.sub_paragraph != None).all(),
+        num)
 
 
 def RandomVarianceApplicationStatusCode():
