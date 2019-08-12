@@ -1,10 +1,37 @@
 from app.extensions import api
 from flask_restplus import fields
 
+CLIENT = api.model(
+    'Client', {
+        'type': fields.String,
+        'org_legalname': fields.String,
+        'org_doingbusinessas': fields.String,
+        'ind_firstname': fields.String,
+        'ind_lastname': fields.String,
+        'ind_middlename': fields.String,
+        'ind_phonenumber': fields.String,
+        'dayphonenumber': fields.String,
+        'dayphonenumberext': fields.String,
+        'faxnumber': fields.String,
+        'email': fields.String,
+        'org_bcfedincorpnumber': fields.String,
+        'org_bcregnumber': fields.String,
+        'org_societynumber': fields.String,
+        'org_hstregnumber': fields.String,
+        'org_contactname': fields.String,
+        'mailingaddressline1': fields.String,
+        'mailingaddressline2': fields.String,
+        'mailingaddresscity': fields.String,
+        'mailingaddressprovstate': fields.String,
+        'mailingaddresscountry': fields.String,
+        'mailingaddresspostalzip': fields.String,
+    })
+
 APPLICATION = api.model(
     'Application', {
        'application_guid': fields.String,
        'mine_guid': fields.String,
+       'mine_name': fields.String,
        'trackingnumber': fields.Integer,
        'applicationtype': fields.String,
        'status': fields.String,
@@ -140,4 +167,6 @@ APPLICATION = api.model(
        'nrsosapplicationid': fields.String,
        'isblastselect': fields.String,
        'istimberselect': fields.String,
+       'applicant': fields.Nested(CLIENT),
+       'submitter': fields.Nested(CLIENT),
     })

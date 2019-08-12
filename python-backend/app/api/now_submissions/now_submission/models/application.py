@@ -1,9 +1,11 @@
 import uuid
 
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.ext.associationproxy import association_proxy
 
 from app.extensions import db
 from app.api.utils.models_mixins import Base
+from app.api.now_submissions.now_submission.models.client import Client
 
 
 class Application(Base):
@@ -11,7 +13,7 @@ class Application(Base):
     __table_args__ = { "schema": "now_submissions" }
     messageid = db.Column(db.Integer, primary_key=True)
     application_guid = db.Column(UUID(as_uuid=True), nullable=False)
-    mine_guid = db.Column(UUID(as_uuid=True))
+    mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     trackingnumber = db.Column(db.Integer)
     applicationtype = db.Column(db.String)
     status = db.Column(db.String)
@@ -147,6 +149,12 @@ class Application(Base):
     nrsosapplicationid = db.Column(db.String)
     isblastselect = db.Column(db.String)
     istimberselect = db.Column(db.String)
+
+    mine = db.relationship('Mine', lazy='joined')
+    applicant = db.relationship('Client', lazy='joined', foreign_keys=[applicantclientid])
+    submitter = db.relationship('Client', lazy='joined', foreign_keys=[submitterclientid])
+
+    mine_name = association_proxy('mine', 'mine_name')
 
 
     def __repr__(self):
