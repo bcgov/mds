@@ -141,3 +141,16 @@ APPLICATION = api.model(
        'isblastselect': fields.String,
        'istimberselect': fields.String,
     })
+
+
+PAGINATED_LIST = api.model(
+    'List', {
+        'current_page': fields.Integer,
+        'total_pages': fields.Integer,
+        'items_per_page': fields.Integer,
+        'total': fields.Integer,
+    })
+
+PAGINATED_APPLICATION_LIST = api.inherit('ApplicationList', PAGINATED_LIST, {
+    'records': fields.List(fields.Nested(APPLICATION)),
+})

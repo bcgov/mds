@@ -1,6 +1,7 @@
 import uuid
 
 from sqlalchemy.dialects.postgresql import UUID
+from app.api.now_submissions.now_submission.models.client import Client
 
 from app.extensions import db
 from app.api.utils.models_mixins import Base
@@ -17,8 +18,8 @@ class Application(Base):
     status = db.Column(db.String)
     submitteddate = db.Column(db.DateTime)
     receiveddate = db.Column(db.DateTime)
-    applicantclientid = db.Column(db.Integer, db.ForeignKey('client.clientid'))
-    submitterclientid = db.Column(db.Integer, db.ForeignKey('client.clientid'))
+    applicantclientid = db.Column(db.Integer, db.ForeignKey('now_submissions.client.clientid'))
+    submitterclientid = db.Column(db.Integer, db.ForeignKey('now_submissions.client.clientid'))
     noticeofworktype = db.Column(db.String)
     typeofpermit = db.Column(db.String)
     typeofapplication = db.Column(db.String)
