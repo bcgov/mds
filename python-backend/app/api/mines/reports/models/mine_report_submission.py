@@ -18,7 +18,11 @@ class MineReportSubmission(Base, AuditMixin):
     submission_date = db.Column(db.DateTime)
     documents = db.relationship(
         'MineDocument', lazy='selectin', secondary='mine_report_document_xref')
-    comments = db.relationship('MineReportComment', lazy='joined')
+    comments = db.relationship(
+        'MineReportComment',
+        order_by='MineReportComment.comment_datetime',
+        primaryjoin="and_(MineReportComment.mine_report_submission_id == MineReportSubmission.mine_report_submission_id, MineReportComment.deleted_ind==False)",
+        lazy='joined')
 
     def __repr__(self):
         return '<MineReportSubmission %r>' % self.mine_report_submission_guid

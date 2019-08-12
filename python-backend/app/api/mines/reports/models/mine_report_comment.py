@@ -18,6 +18,7 @@ class MineReportComment(Base, AuditMixin):
     core_user_id = db.Column(db.Integer, db.ForeignKey('core_user.core_user_id'))
     report_comment = db.Column(db.String, nullable=False)
     comment_visibility_ind = db.Column(db.Boolean, nullable=False)
+    deleted_ind = db.Column(db.Boolean, nullable=False, default=False)
 
     comment_user = db.Column(db.String(60), nullable=False, default=User().get_user_username)
     comment_datetime = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
@@ -44,9 +45,13 @@ class MineReportComment(Base, AuditMixin):
         return new_comment
 
     @classmethod
+    def find_by_guid(cls, _id):
+        return cls.query.filter_by(mine_report_comment_guid=_id).filter_by(deleted_ind=False).first()
+
+    @classmethod
     def find_by_report_submission_id(cls, _id):
-        return cls.query.filter_by(mine_report_submission_id=_id).all()
+        return cls.query.filter_by(mine_report_submission_id=_id).filter_by(deleted_ind=False).all()
 
     @classmethod
     def find_public_by_report_submission_id(cls, _id):
-        return cls.query.filter_by(mine_report_submission_id=_id).filter_by(comment_visibility_ind=True).all()
+        return cls.query.filter_by(mine_report_submission_id=_id).filter_by(deleted_ind=False).filter_by(comment_visibility_ind=True).all()

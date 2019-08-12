@@ -24,7 +24,7 @@ from ..incidents.resources.mine_incident_document import MineIncidentDocumentLis
 from app.api.mines.reports.resources.mine_report_document import MineReportDocumentListResource
 from app.api.mines.reports.resources.mine_reports import MineReportListResource, MineReportResource
 from app.api.mines.reports.resources.mine_report_definition import MineReportDefinitionListResource
-from app.api.mines.reports.resources.mine_report_comment import MineReportCommentResource
+from app.api.mines.reports.resources.mine_report_comment import MineReportCommentResource, MineReportCommentListResource
 from app.api.mines.permits.permit.resources.permit import PermitResource, PermitListResource
 from app.api.mines.permits.permit.resources.permit_status_code import PermitStatusCodeResource
 from app.api.mines.permits.permit_amendment.resources.permit_amendment import PermitAmendmentResource, PermitAmendmentListResource
@@ -81,7 +81,8 @@ api.add_resource(MineIncidentDocumentListResource, '/<string:mine_guid>/incident
 api.add_resource(MineReportListResource, '/<string:mine_guid>/reports')
 api.add_resource(MineReportResource, '/<string:mine_guid>/reports/<string:mine_report_guid>')
 api.add_resource(MineReportDefinitionListResource, '/reports/definitions')
-api.add_resource(MineReportCommentResource, '/<string:mine_guid>/reports/<string:mine_report_guid>/submissions/<string:mine_report_submission_guid>/comments/')
+api.add_resource(MineReportCommentListResource, '/<string:mine_guid>/reports/<string:mine_report_guid>/submissions/<string:mine_report_submission_guid>/comments')
+api.add_resource(MineReportCommentResource, '/<string:mine_guid>/reports/<string:mine_report_guid>/submissions/<string:mine_report_submission_guid>/comments/<string:mine_report_comment_guid>')
 
 api.add_resource(
     MineReportDocumentListResource,
