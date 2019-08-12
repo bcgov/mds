@@ -9,7 +9,13 @@ from app.api.now_submissions.now_submission.models.client import Client
 from app.api.now_submissions.now_submission.models.contact import Contact
 from app.api.now_submissions.now_submission.models.document import Document
 from app.api.now_submissions.now_submission.models.placer_activity import PlacerActivity
+from app.api.now_submissions.now_submission.models.sand_grv_qry_activity import SandGrvQryActivity
 from app.api.now_submissions.now_submission.models.settling_pond import SettlingPond
+from app.api.now_submissions.now_submission.models.surface_bulk_sample_activity import SurfaceBulkSampleActivity
+from app.api.now_submissions.now_submission.models.under_exp_new_activity import UnderExpNewActivity
+from app.api.now_submissions.now_submission.models.under_exp_rehab_activity import UnderExpRehabActivity
+from app.api.now_submissions.now_submission.models.under_exp_surface_activity import UnderExpSurfaceActivity
+from app.api.now_submissions.now_submission.models.water_source_activity import WaterSourceActivity
 
 from app.api.now_submissions.now_submission.models.existing_placer_activity_xref import ExistingPlacerActivityXref
 from app.api.now_submissions.now_submission.models.existing_settling_pond_xref import ExistingSettlingPondXref
@@ -164,6 +170,13 @@ class Application(Base):
     submitter = db.relationship('Client', lazy='joined', foreign_keys=[submitterclientid])
     contacts = db.relationship('Contact', lazy='joined')
     documents = db.relationship('Document', lazy='joined')
+    sand_grv_qry_activity = db.relationship('SandGrvQryActivity', lazy='joined')
+    surface_bulk_sample_activity = db.relationship('SurfaceBulkSampleActivity', lazy='joined')
+    under_exp_new_activity = db.relationship('UnderExpNewActivity', lazy='joined')
+    under_exp_rehab_activity = db.relationship('UnderExpRehabActivity', lazy='joined')
+    under_exp_surface_activity = db.relationship('UnderExpSurfaceActivity', lazy='joined')
+    water_source_activity = db.relationship('WaterSourceActivity', lazy='joined')
+
     existing_placer_activity = db.relationship(
         'PlacerActivity', lazy='joined', secondary='now_submissions.existing_placer_activity_xref')
     existing_settling_pond = db.relationship(
@@ -172,7 +185,6 @@ class Application(Base):
         'PlacerActivity', lazy='joined', secondary='now_submissions.proposed_placer_activity_xref')
     proposed_settling_pond = db.relationship(
         'SettlingPond', lazy='joined', secondary='now_submissions.proposed_settling_pond_xref')
-
 
     mine_name = association_proxy('mine', 'mine_name')
 

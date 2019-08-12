@@ -88,6 +88,63 @@ SETTLING_POND = api.model(
         'timbervolume': fields.Arbitrary,
     })
 
+SURFACE_BULK_SAMPLE_ACTIVITY = api.model(
+    'SURFACE_BULK_SAMPLE_ACTIVITY', {
+        'type': fields.String,
+        'disturbedarea': fields.Arbitrary,
+        'timbervolume': fields.Arbitrary,
+    })
+
+SAND_GRAVEL_QUARRY_ACTIVITY = api.model(
+    'SAND_GRAVEL_QUARRY_ACTIVITY', {
+        'type': fields.String,
+        'disturbedarea': fields.Arbitrary,
+        'timbervolume': fields.Arbitrary,
+    })
+
+UNDER_EXP_NEW_ACTIVITY = api.model(
+    'UNDER_EXP_NEW_ACTIVITY', {
+        'type': fields.String,
+        'incline': fields.Arbitrary,
+        'inclineunits': fields.String,
+        'quantity': fields.Integer,
+        'length': fields.Arbitrary,
+        'width': fields.Arbitrary,
+        'height': fields.Arbitrary,
+        'seq_no': fields.Integer,
+    })
+
+UNDER_EXP_REHAB_ACTIVITY = api.model(
+    'UNDER_EXP_REHAB_ACTIVITY', {
+        'type': fields.String,
+        'incline': fields.Arbitrary,
+        'inclineunits': fields.String,
+        'quantity': fields.Integer,
+        'length': fields.Arbitrary,
+        'width': fields.Arbitrary,
+        'height': fields.Arbitrary,
+        'seq_no': fields.Integer,
+    })
+
+UNDER_EXP_SURFACE_ACTIVITY = api.model(
+    'UNDER_EXP_SURFACE_ACTIVITY', {
+        'type': fields.String,
+        'quantity': fields.Integer,
+        'disturbedarea': fields.Arbitrary,
+        'timbervolume': fields.Arbitrary,
+    })
+
+WATER_SOURCE_ACTIVITY = api.model(
+    'WATER_SOURCE_ACTIVITY', {
+        'sourcewatersupply': fields.String,
+        'type': fields.String,
+        'useofwater': fields.String,
+        'estimateratewater': fields.Arbitrary,
+        'pumpsizeinwater': fields.Arbitrary,
+        'locationwaterintake': fields.String,
+        'seq_no': fields.Integer,
+    })
+
 APPLICATION = api.model(
     'Application', {
         'application_guid': fields.String,
@@ -236,6 +293,12 @@ APPLICATION = api.model(
         'existing_settling_pond': fields.Nested(SETTLING_POND),
         'proposed_placer_activity': fields.Nested(PLACER_ACTIVITY),
         'proposed_settling_pond': fields.Nested(SETTLING_POND),
+        'surface_bulk_sample_activity': fields.List(fields.Nested(SURFACE_BULK_SAMPLE_ACTIVITY)),
+        'sand_grv_qry_activity': fields.List(fields.Nested(SAND_GRAVEL_QUARRY_ACTIVITY)),
+        'under_exp_new_activity': fields.List(fields.Nested(UNDER_EXP_NEW_ACTIVITY)),
+        'under_exp_rehab_activity': fields.List(fields.Nested(UNDER_EXP_REHAB_ACTIVITY)),
+        'under_exp_surface_activity': fields.List(fields.Nested(UNDER_EXP_SURFACE_ACTIVITY)),
+        'water_source_activity': fields.List(fields.Nested(WATER_SOURCE_ACTIVITY)),
     })
 
 
