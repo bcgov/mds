@@ -142,14 +142,12 @@ class MineReportResource(Resource, UserMixin):
             raise NotFound("Mine Report not found")
 
         data = self.parser.parse_args()
-        due_date = data.get('due_date')
-        received_date = data.get('received_date')
 
-        if due_date:
-            mine_report.due_date = due_date
+        if 'due_date' in data:
+            mine_report.due_date = data['due_date']
 
-        if received_date:
-            mine_report.received_date = received_date
+        if 'received_date' in data:
+            mine_report.received_date = data['received_date']
 
         report_submissions = data.get('mine_report_submissions')
         subission_iterator = iter(report_submissions)
@@ -163,7 +161,9 @@ class MineReportResource(Resource, UserMixin):
                 submission_date=datetime.now())
 
             # Copy the current list of documents for the report submission
-            last_submission_docs = mine_report.mine_report_submissions[0].documents.copy()
+            current_app.logger.debug(mine_report.mine_report_submissions)
+            last_submission_docs = mine_report.mine_report_submissions[0].documents.copy() if len(
+                mine_report.mine_report_submissions) > 0 else []
 
             # Gets the difference between the set of documents in the new submission and the last submission
             new_docs = [
