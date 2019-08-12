@@ -104,7 +104,6 @@ export class AddReportForm extends Component {
 
   updateDueDateWithDefaultDueDate = (mineReportDefinitionGuid) => {
     let formMeta = this.props.formMeta;
-    console.log(JSON.stringify(event));
     if (
       !(
         formMeta &&
@@ -220,11 +219,11 @@ export class AddReportForm extends Component {
                 component={renderConfig.DATE}
               />
             </Form.Item>
-            {/* <ReportSubmissions
+            <ReportSubmissions
               mineGuid={this.props.mineGuid}
               mineReportSubmissions={this.state.mineReportSubmissions}
               updateMineReportSubmissions={this.updateMineReportSubmissions}
-            /> */}
+            />
           </Col>
         </Row>
         <div className="right center-mobile">
