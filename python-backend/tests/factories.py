@@ -368,6 +368,7 @@ class MineReportFactory(BaseFactory):
     mine_report_definition_id = factory.LazyFunction(RandomMineReportDefinition)
     due_date = factory.Faker('future_datetime', end_date='+30d')
     submission_year = factory.fuzzy.FuzzyInteger(2020, 3000)
+    mine_report_submissions = []
 
     @factory.post_generation
     def mine_report_submissions(obj, create, extracted, **kwargs):
@@ -377,7 +378,7 @@ class MineReportFactory(BaseFactory):
         if not isinstance(extracted, int):
             extracted = 1
 
-        MineReportSubmissionFactory.create_batch(size=extracted, mine=obj, **kwargs)
+        MineReportSubmissionFactory.create_batch(size=extracted, report=obj, **kwargs)
 
 
 class MineReportCommentFactory(BaseFactory):
@@ -387,6 +388,7 @@ class MineReportCommentFactory(BaseFactory):
     class Params:
         submission = factory.SubFactory('tests.factories.MineReportSubmissionFactory')
 
+    mine_report_submission_id = factory.SelfAttribute('submission.mine_report_submission_id')
     mine_report_comment_guid = GUID
     report_comment = factory.Faker('paragraph')
     comment_visibility_ind = factory.Faker('boolean', chance_of_getting_true=50)
@@ -397,13 +399,13 @@ class MineReportSubmissionFactory(BaseFactory):
         model = MineReportSubmission
 
     class Params:
-        documents = factory.SubFactory('tests.factories.MineDocumentFactory',
-                                       mine_guid=factory.SelfAttribute('..report.mine_guid'))
         report = factory.SubFactory('tests.factories.MineReportFactory')
 
+    mine_report_id = factory.SelfAttribute('report.mine_report_id')
     mine_report_submission_guid = GUID
     mine_report_submission_status_code = factory.LazyFunction(RandomMineReportSubmissionStatusCode)
     submission_date = factory.Faker('future_datetime', end_date='+30d')
+    comments = []
 
     @factory.post_generation
     def comments(obj, create, extracted, **kwargs):
@@ -555,6 +557,7 @@ class MineFactory(BaseFactory):
             mine_expected_documents=0,
             mine_incidents=0,
             mine_variance=0,
+            mine_reports=0
         )
 
     mine_guid = GUID
@@ -577,6 +580,7 @@ class MineFactory(BaseFactory):
     mine_expected_documents = []
     mine_incidents = []
     mine_variance = []
+    mine_reports = []
 
     @factory.post_generation
     def mine_tailings_storage_facilities(obj, create, extracted, **kwargs):
@@ -636,4 +640,4 @@ class MineFactory(BaseFactory):
         if not isinstance(extracted, int):
             extracted = 1
 
-        MineReportFactory.create_batch(size=extracted, mine_guid=obj.mine_guid, **kwargs)
+        MineReportFactory.create_batch(size=extracted, mine=obj, **kwargs)

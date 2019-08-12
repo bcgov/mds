@@ -16,7 +16,7 @@ class MineReportComment(Base, AuditMixin):
     mine_report_submission_id = db.Column(db.Integer, db.ForeignKey('mine_report_submission.mine_report_submission_id'))
     minespace_user_id = db.Column(db.Integer, db.ForeignKey('minespace_user.user_id'))
     core_user_id = db.Column(db.Integer, db.ForeignKey('core_user.core_user_id'))
-    comment = db.Column(db.String, nullable=False)
+    report_comment = db.Column(db.String, nullable=False)
     comment_visibility_ind = db.Column(db.Boolean, nullable=False)
 
     comment_user = db.Column(db.String(60), nullable=False, default=User().get_user_username)
@@ -29,15 +29,15 @@ class MineReportComment(Base, AuditMixin):
     def create(cls,
                submission,
                mine_report_comment_guid,
-               comment,
+               report_comment,
                comment_visibility_ind,
                add_to_session=True):
         new_comment = cls(
             mine_report_comment_guid=mine_report_comment_guid,
-            comment=comment,
+            report_comment=report_comment,
             comment_visibility_ind=comment_visibility_ind
         )
-        submission.submission_comments.append(new_comment)
+        submission.comments.append(new_comment)
 
         if add_to_session:
             new_comment.save(commit=False)

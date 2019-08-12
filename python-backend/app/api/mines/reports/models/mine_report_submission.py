@@ -1,6 +1,6 @@
+import uuid
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
-from sqlalchemy.ext.associationproxy import association_proxy
 
 from app.api.utils.models_mixins import Base, AuditMixin
 from app.extensions import db
@@ -28,5 +28,13 @@ class MineReportSubmission(Base, AuditMixin):
         try:
             uuid.UUID(_id, version=4)
             return cls.query.filter_by(mine_report_guid=_id).first()
+        except ValueError:
+            return None
+
+    @classmethod
+    def find_by_guid(cls, _id):
+        try:
+            uuid.UUID(_id, version=4)
+            return cls.query.filter_by(mine_report_submission_guid=_id).first()
         except ValueError:
             return None
