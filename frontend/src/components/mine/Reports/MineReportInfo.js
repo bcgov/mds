@@ -16,13 +16,16 @@ import MineReportTable from "@/components/mine/Reports/MineReportTable";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
 import { getMineReports } from "@/selectors/reportSelectors";
+import { getMines, getMineGuid } from "@/selectors/mineSelectors";
+import { openModal, closeModal } from "@/actions/modalActions";
 
 /**
  * @class  MineReportInfo - contains all permit information
  */
 
 const propTypes = {
-  mine: CustomPropTypes.mine.isRequired,
+  mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
+  mineGuid: PropTypes.string.isRequired,
   mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
   fetchMineReports: PropTypes.func.isRequired,
   updateMineReport: PropTypes.func.isRequired,
@@ -33,28 +36,37 @@ const propTypes = {
 };
 
 export class MineReportInfo extends Component {
-  componentWillMount = () => {
-    this.props.fetchMineReports(this.props.mine.mine_guid);
+  state = {
+    mine: {},
   };
+
+  componentWillMount = () => {
+    this.props.fetchMineReports(this.props.mineGuid);
+  };
+
+  componentDidMount() {
+    this.setState({ mine: this.props.mines[this.props.mineGuid] });
+    console.log(this.state.mine);
+  }
 
   handleEditReport = (values) => {
     this.props
-      .updateMineReport(this.props.mine.mine_guid, values.mine_report_guid, values)
+      .updateMineReport(this.props.mineGuid, values.mine_report_guid, values)
       .then(() => this.props.closeModal())
-      .then(() => this.props.fetchMineReports(this.props.mine.mine_guid));
+      .then(() => this.props.fetchMineReports(this.props.mineGuid));
   };
 
   handleAddReport = (values) => {
     this.props
-      .createMineReport(this.props.mine.mine_guid, values)
+      .createMineReport(this.props.mineGuid, values)
       .then(() => this.props.closeModal())
-      .then(() => this.props.fetchMineReports(this.props.mine.mine_guid));
+      .then(() => this.props.fetchMineReports(this.props.mineGuid));
   };
 
   handleRemoveReport = (reportGuid) => {
     this.props
-      .deleteMineReport(this.props.mine.mine_guid, reportGuid)
-      .then(() => this.props.fetchMineReports(this.props.mine.mine_guid));
+      .deleteMineReport(this.props.mineGuid, reportGuid)
+      .then(() => this.props.fetchMineReports(this.props.mineGuid));
   };
 
   openAddReportModal = (event) => {
@@ -62,8 +74,8 @@ export class MineReportInfo extends Component {
     this.props.openModal({
       props: {
         onSubmit: this.handleAddReport,
-        title: `Add report for ${this.props.mine.mine_name}`,
-        mineGuid: this.props.mine.mine_guid,
+        title: `Add report for ${this.state.mine.mine_name}`,
+        mineGuid: this.props.mineGuid,
       },
       content: modalConfig.ADD_REPORT,
     });
@@ -75,8 +87,8 @@ export class MineReportInfo extends Component {
       props: {
         initialValues: report,
         onSubmit,
-        title: `Edit report for ${this.props.mine.mine_name}`,
-        mineGuid: this.props.mine.mine_guid,
+        title: `Edit report for ${this.state.mine.mine_name}`,
+        mineGuid: this.props.mineGuid,
       },
       content: modalConfig.ADD_REPORT,
     });
@@ -88,14 +100,14 @@ export class MineReportInfo extends Component {
         <div className="inline-flex flex-end">
           <AuthorizationWrapper
             permission={Permission.EDIT_REPORTS}
-            isMajorMine={this.props.mine.major_mine_ind}
+            isMajorMine={this.state.mine.major_mine_ind}
           >
             <AddButton
               onClick={(event) =>
                 this.openAddReportModal(
                   event,
                   this.handleAddReport,
-                  `${ModalContent.ADD_REPORT} to ${this.props.mine.mine_name}`
+                  `${ModalContent.ADD_REPORT} to ${this.state.mine.mine_name}`
                 )
               }
             >
@@ -116,6 +128,8 @@ export class MineReportInfo extends Component {
 
 const mapStateToProps = (state) => ({
   mineReports: getMineReports(state),
+  mines: getMines(state),
+  mineGuid: getMineGuid(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -125,6 +139,8 @@ const mapDispatchToProps = (dispatch) =>
       updateMineReport,
       createMineReport,
       deleteMineReport,
+      openModal,
+      closeModal,
     },
     dispatch
   );

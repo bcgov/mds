@@ -66,9 +66,6 @@ class MineReportCommentResource(Resource, UserMixin):
     @requires_role_edit_report
     def put(self, mine_guid, mine_report_guid, mine_report_submission_guid, mine_report_comment_guid=None):
 
-        if mine_report_comment_guid:
-            raise BadRequest('Unexpected mine_report_comment_guid.')
-
         mine_report_submission = MineReportSubmission.find_by_guid(
             mine_report_submission_guid)
 

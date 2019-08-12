@@ -29,13 +29,12 @@ const propTypes = {
   initialValues: PropTypes.objectOf(PropTypes.any),
   selectedMineReportCategory: PropTypes.string.isRequired,
   selectedMineReportDefinition: PropTypes.string.isRequired,
-  currentDueDate: PropTypes.string.isRequired,
   formMeta: PropTypes.any,
 };
 
 const selector = formValueSelector(FORM.ADD_REPORT);
 
-const defaultProps = { currentDueDate: "" };
+const defaultProps = { initialValues: {} };
 
 export class AddReportForm extends Component {
   state = {
@@ -103,8 +102,9 @@ export class AddReportForm extends Component {
     }));
   };
 
-  updateDueDateWithDefaultDueDate = (selectedMineReportDefinition) => {
+  updateDueDateWithDefaultDueDate = (mineReportDefinitionGuid) => {
     let formMeta = this.props.formMeta;
+    console.log(JSON.stringify(event));
     if (
       !(
         formMeta &&
@@ -116,7 +116,7 @@ export class AddReportForm extends Component {
       this.props.change(
         "due_date",
         this.props.mineReportDefinitionOptions.find(
-          (x) => x.mine_report_definition_guid === selectedMineReportDefinition
+          (x) => x.mine_report_definition_guid === mineReportDefinitionGuid
         ).default_due_date
       );
     }
@@ -132,7 +132,6 @@ export class AddReportForm extends Component {
 
     if (nextProps.selectedMineReportDefinition !== this.props.selectedMineReportDefinition) {
       this.updateSelectedMineReportComplianceArticles(nextProps.selectedMineReportDefinition);
-      this.updateDueDateWithDefaultDueDate(nextProps.selectedMineReportDefinition);
     }
   };
 
@@ -172,6 +171,7 @@ export class AddReportForm extends Component {
                 doNotPinDropdown
                 component={renderConfig.SELECT}
                 validate={[required]}
+                onChange={this.updateDueDateWithDefaultDueDate}
                 props={{ disabled: !this.props.selectedMineReportCategory }}
               />
             </Form.Item>
@@ -220,11 +220,11 @@ export class AddReportForm extends Component {
                 component={renderConfig.DATE}
               />
             </Form.Item>
-            <ReportSubmissions
+            {/* <ReportSubmissions
               mineGuid={this.props.mineGuid}
               mineReportSubmissions={this.state.mineReportSubmissions}
               updateMineReportSubmissions={this.updateMineReportSubmissions}
-            />
+            /> */}
           </Col>
         </Row>
         <div className="right center-mobile">
@@ -257,7 +257,6 @@ export default compose(
     mineReportDefinitionOptions: getMineReportDefinitionOptions(state),
     selectedMineReportCategory: selector(state, "mine_report_category"),
     selectedMineReportDefinition: selector(state, "mine_report_definition_guid"),
-    currentDueDate: selector(state, "due_date"),
     formMeta: state.form[FORM.ADD_REPORT],
   })),
   reduxForm({
