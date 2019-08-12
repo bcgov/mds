@@ -71,9 +71,7 @@ class MineReportListResource(Resource, UserMixin):
 
         if permit and permit.mine_guid != mine.mine_guid:
             raise BadRequest('The permit must be associated with the selected mine.')
-        mine_report_guid = uuid.uuid4()
         mine_report = MineReport.create(
-            mine_report_guid=mine_report_guid,
             mine_report_definition_id=mine_report_definition.mine_report_definition_id,
             mine_guid=mine.mine_guid,
             due_date=data['due_date'],

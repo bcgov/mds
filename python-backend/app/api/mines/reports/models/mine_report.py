@@ -12,7 +12,7 @@ from app.extensions import db
 class MineReport(Base, AuditMixin):
     __tablename__ = "mine_report"
     mine_report_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
-    mine_report_guid = db.Column(UUID(as_uuid=True))
+    mine_report_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
     mine_report_definition_id = db.Column(
         db.Integer, db.ForeignKey('mine_report_definition.mine_report_definition_id'))
     mine_report_definition = db.relationship('MineReportDefinition', lazy='joined')
@@ -37,7 +37,6 @@ class MineReport(Base, AuditMixin):
 
     @classmethod
     def create(cls,
-               mine_report_guid,
                mine_report_definition_id,
                mine_guid,
                due_date,
@@ -45,8 +44,7 @@ class MineReport(Base, AuditMixin):
                submission_year,
                permit_id=None,
                add_to_session=True):
-        mine_report = cls(mine_report_guid=mine_report_guid,
-                          mine_report_definition_id=mine_report_definition_id,
+        mine_report = cls(mine_report_definition_id=mine_report_definition_id,
                           mine_guid=mine_guid,
                           due_date=due_date,
                           received_date=received_date,
