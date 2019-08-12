@@ -10,6 +10,7 @@ from app.api.now_submissions.now_submission.models.contact import Contact
 from app.api.now_submissions.now_submission.models.document import Document
 from app.api.now_submissions.now_submission.models.placer_activity import PlacerActivity
 from app.api.now_submissions.now_submission.models.settling_pond import SettlingPond
+from app.api.now_submissions.now_submission.models.surface_bulk_sample_activity import SurfaceBulkSampleActivity
 
 from app.api.now_submissions.now_submission.models.existing_placer_activity_xref import ExistingPlacerActivityXref
 from app.api.now_submissions.now_submission.models.existing_settling_pond_xref import ExistingSettlingPondXref
@@ -164,6 +165,8 @@ class Application(Base):
     submitter = db.relationship('Client', lazy='joined', foreign_keys=[submitterclientid])
     contacts = db.relationship('Contact', lazy='joined')
     documents = db.relationship('Document', lazy='joined')
+    surface_bulk_sample_activity = db.relationship('SurfaceBulkSampleActivity', lazy='joined')
+
     existing_placer_activity = db.relationship(
         'PlacerActivity', lazy='joined', secondary='now_submissions.existing_placer_activity_xref')
     existing_settling_pond = db.relationship(
@@ -172,7 +175,6 @@ class Application(Base):
         'PlacerActivity', lazy='joined', secondary='now_submissions.proposed_placer_activity_xref')
     proposed_settling_pond = db.relationship(
         'SettlingPond', lazy='joined', secondary='now_submissions.proposed_settling_pond_xref')
-
 
     mine_name = association_proxy('mine', 'mine_name')
 

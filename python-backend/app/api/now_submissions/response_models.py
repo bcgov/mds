@@ -88,6 +88,13 @@ SETTLING_POND = api.model(
         'timbervolume': fields.Arbitrary,
     })
 
+SURFACE_BULK_SAMPLE_ACTIVITY = api.model(
+    'SURFACE_BULK_SAMPLE_ACTIVITY', {
+        'type': fields.String,
+        'disturbedarea': fields.Arbitrary,
+        'timbervolume': fields.Arbitrary,
+    })
+
 APPLICATION = api.model(
     'Application', {
         'application_guid': fields.String,
@@ -236,4 +243,5 @@ APPLICATION = api.model(
         'existing_settling_pond': fields.Nested(SETTLING_POND),
         'proposed_placer_activity': fields.Nested(PLACER_ACTIVITY),
         'proposed_settling_pond': fields.Nested(SETTLING_POND),
+        'surface_bulk_sample_activity': fields.List(fields.Nested(SURFACE_BULK_SAMPLE_ACTIVITY)),
     })
