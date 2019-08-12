@@ -16,6 +16,7 @@ import {
 } from "@/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import { ReportSubmissions } from "@/components/Forms/reports/ReportSubmissions";
+import { ReportComments } from "./ReportComments";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
@@ -224,6 +225,7 @@ export class AddReportForm extends Component {
               mineReportSubmissions={this.state.mineReportSubmissions}
               updateMineReportSubmissions={this.updateMineReportSubmissions}
             />
+            <ReportComments />
           </Col>
         </Row>
         <div className="right center-mobile">

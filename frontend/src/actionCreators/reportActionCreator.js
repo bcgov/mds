@@ -127,7 +127,7 @@ export const deleteMineReportComment = (mineGuid, mineReportGuid, mineReportComm
   dispatch(request(reducerTypes.DELETE_MINE_REPORT_COMMENT));
   return CustomAxios()
     .delete(
-      `${ENVIRONMENT.apiUrl}${API.deleteMineReportComment(
+      `${ENVIRONMENT.apiUrl}${API.MINE_REPORT_COMMENT(
         mineGuid,
         mineReportGuid,
         mineReportCommentGuid
