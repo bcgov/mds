@@ -134,6 +134,17 @@ UNDER_EXP_SURFACE_ACTIVITY = api.model(
         'timbervolume': fields.Arbitrary,
     })
 
+WATER_SOURCE_ACTIVITY = api.model(
+    'WATER_SOURCE_ACTIVITY', {
+        'sourcewatersupply': fields.String,
+        'type': fields.String,
+        'useofwater': fields.String,
+        'estimateratewater': fields.Arbitrary,
+        'pumpsizeinwater': fields.Arbitrary,
+        'locationwaterintake': fields.String,
+        'seq_no': fields.Integer,
+    })
+
 APPLICATION = api.model(
     'Application', {
         'application_guid': fields.String,
@@ -287,4 +298,5 @@ APPLICATION = api.model(
         'under_exp_new_activity': fields.List(fields.Nested(UNDER_EXP_NEW_ACTIVITY)),
         'under_exp_rehab_activity': fields.List(fields.Nested(UNDER_EXP_REHAB_ACTIVITY)),
         'under_exp_surface_activity': fields.List(fields.Nested(UNDER_EXP_SURFACE_ACTIVITY)),
+        'water_source_activity': fields.List(fields.Nested(WATER_SOURCE_ACTIVITY)),
     })
