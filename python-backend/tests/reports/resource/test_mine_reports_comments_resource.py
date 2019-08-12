@@ -24,16 +24,16 @@ GUID = str(uuid.uuid4)
 # POST
 def test_post_mine_report_comment(test_client, db_session, auth_headers):
     mine_report = MineReportFactory()
-    num_comments = len(mine_report.mine_report_submissions[0].comments)
+    num_comments = len(mine_report.mine_report_submissions[-1].comments)
 
     data = {'report_comment': 'Test comment', 'comment_visibility_ind': False}
 
     post_resp = test_client.post(
-        f'/mines/{mine_report.mine_guid}/reports/{mine_report.mine_report_guid}/submissions/{mine_report.mine_report_submissions[0].mine_report_submission_guid}/comments', headers=auth_headers['full_auth_header'], json=data)
+        f'/mines/{mine_report.mine_guid}/reports/{mine_report.mine_report_guid}/comments', headers=auth_headers['full_auth_header'], json=data)
     # post_data = json.loads(post_resp.data.decode())
 
     updated_mine_report = MineReport.find_by_mine_report_guid(str(mine_report.mine_report_guid))
-    comments = updated_mine_report.mine_report_submissions[0].comments
+    comments = updated_mine_report.mine_report_submissions[-1].comments
 
     assert post_resp.status_code == 201
     assert len(comments) == num_comments + 1
@@ -44,6 +44,6 @@ def test_post_mine_report_comment_no_body(test_client, db_session, auth_headers)
     mine_report = MineReportFactory()
     data = {'comment_visibility_ind': False}
     post_resp = test_client.post(
-        f'/mines/{mine_report.mine_guid}/reports/{mine_report.mine_report_guid}/submissions/{mine_report.mine_report_submissions[0].mine_report_submission_guid}/comments', headers=auth_headers['full_auth_header'], json=data)
+        f'/mines/{mine_report.mine_guid}/reports/{mine_report.mine_report_guid}/comments', headers=auth_headers['full_auth_header'], json=data)
 
     assert post_resp.status_code == 400

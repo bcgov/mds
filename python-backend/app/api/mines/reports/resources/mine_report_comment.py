@@ -25,16 +25,17 @@ class MineReportCommentListResource(Resource, UserMixin):
     @api.doc(description='creates a new comment for the report submission')
     @api.marshal_with(MINE_REPORT_COMMENT_MODEL, code=201)
     @requires_role_edit_report
-    def post(self, mine_guid, mine_report_guid, mine_report_submission_guid, mine_report_comment_guid=None):
+    def post(self, mine_guid, mine_report_guid, mine_report_comment_guid=None):
 
         if mine_report_comment_guid:
             raise BadRequest('Unexpected mine_report_comment_guid.')
 
-        mine_report_submission = MineReportSubmission.find_by_guid(
-            mine_report_submission_guid)
+        mine_report_submission = MineReportSubmission.find_latest_by_mine_report_guid(
+            mine_report_guid)
 
         if not mine_report_submission:
             raise NotFound('Mine report submission not found')
+            # TODO: Do we want to create a submission if it doesn't exist?
 
         data = self.parser.parse_args()
 
@@ -67,7 +68,7 @@ class MineReportCommentResource(Resource, UserMixin):
     @api.doc(description='update a comment')
     @api.marshal_with(MINE_REPORT_COMMENT_MODEL, code=201)
     @requires_role_edit_report
-    def put(self, mine_guid, mine_report_guid, mine_report_submission_guid, mine_report_comment_guid=None):
+    def put(self, mine_guid, mine_report_guid, mine_report_comment_guid=None):
 
         data = self.parser.parse_args()
         comment = MineReportComment.find_by_guid(mine_report_comment_guid)
@@ -88,7 +89,7 @@ class MineReportCommentResource(Resource, UserMixin):
     @api.doc(
         description='Delete a mine report comment by guid', params={'mine_report_comment_guid': 'guid of the comment to delete.'})
     @requires_role_mine_admin
-    def delete(self, mine_guid, mine_report_guid, mine_report_submission_guid, mine_report_comment_guid):
+    def delete(self, mine_guid, mine_report_guid, mine_report_comment_guid):
         if mine_report_comment_guid is None:
             return self.create_error_payload(404, 'Must provide a mine report comment guid.'), 404
         try:

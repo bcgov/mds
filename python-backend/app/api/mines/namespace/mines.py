@@ -81,8 +81,8 @@ api.add_resource(MineIncidentDocumentListResource, '/<string:mine_guid>/incident
 api.add_resource(MineReportListResource, '/<string:mine_guid>/reports')
 api.add_resource(MineReportResource, '/<string:mine_guid>/reports/<string:mine_report_guid>')
 api.add_resource(MineReportDefinitionListResource, '/reports/definitions')
-api.add_resource(MineReportCommentListResource, '/<string:mine_guid>/reports/<string:mine_report_guid>/submissions/<string:mine_report_submission_guid>/comments')
-api.add_resource(MineReportCommentResource, '/<string:mine_guid>/reports/<string:mine_report_guid>/submissions/<string:mine_report_submission_guid>/comments/<string:mine_report_comment_guid>')
+api.add_resource(MineReportCommentListResource, '/<string:mine_guid>/reports/<string:mine_report_guid>/comments')
+api.add_resource(MineReportCommentResource, '/<string:mine_guid>/reports/<string:mine_report_guid>/comments/<string:mine_report_comment_guid>')
 
 api.add_resource(
     MineReportDocumentListResource,

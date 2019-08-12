@@ -28,10 +28,18 @@ class MineReportSubmission(Base, AuditMixin):
         return '<MineReportSubmission %r>' % self.mine_report_submission_guid
 
     @classmethod
+    def find_latest_by_mine_report_guid(cls, _id):
+        try:
+            uuid.UUID(_id, version=4)
+            return cls.query.filter_by(mine_report_guid=_id).order_by(cls.mine_report_submission_id.desc()).first()
+        except ValueError:
+            return None
+
+    @classmethod
     def find_by_mine_report_guid(cls, _id):
         try:
             uuid.UUID(_id, version=4)
-            return cls.query.filter_by(mine_report_guid=_id).first()
+            return cls.query.filter_by(mine_report_guid=_id).all()
         except ValueError:
             return None
 
