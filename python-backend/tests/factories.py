@@ -32,6 +32,7 @@ from app.api.users.minespace.models.minespace_user import MinespaceUser
 from app.api.variances.models.variance import Variance
 from app.api.parties.party_appt.models.party_business_role_appt import PartyBusinessRoleAppointment
 from app.api.mines.reports.models.mine_report import MineReport
+from app.api.now_submissions.models.application import Application as NOWApplication
 
 GUID = factory.LazyFunction(uuid.uuid4)
 TODAY = factory.LazyFunction(datetime.now)
@@ -583,3 +584,11 @@ class MineFactory(BaseFactory):
             extracted = 1
 
         MineReportFactory.create_batch(size=extracted, mine_guid=obj.mine_guid, **kwargs)
+
+
+class NOWApplicationFactory(BaseFactory):
+    class Meta:
+        model = NOWApplication
+
+    application_guid = GUID
+    messageid = factory.fuzzy.FuzzyInteger(1, 100)
