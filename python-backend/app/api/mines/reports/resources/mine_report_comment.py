@@ -38,6 +38,9 @@ class MineReportCommentListResource(Resource, UserMixin):
 
         data = self.parser.parse_args()
 
+        if not data['report_comment']:
+            raise BadRequest('Empty comment')
+
         mine_report_comment_guid = uuid.uuid4()
 
         mine_report_comment = MineReportComment.create(

@@ -40,21 +40,10 @@ def test_post_mine_report_comment(test_client, db_session, auth_headers):
     assert comments[-1].report_comment == 'Test comment'
 
 
-def test_post_mine_report_comment_no_comment(test_client, db_session, auth_headers):
+def test_post_mine_report_comment_no_body(test_client, db_session, auth_headers):
     mine_report = MineReportFactory()
     data = {'comment_visibility_ind': False}
     post_resp = test_client.post(
         f'/mines/{mine_report.mine_guid}/reports/{mine_report.mine_report_guid}/submissions/{mine_report.mine_report_submissions[0].mine_report_submission_guid}/comments', headers=auth_headers['full_auth_header'], json=data)
 
-    assert post_resp.status_code == 201
-
-
-# Delete
-# def test_delete_mine_report(test_client, db_session, auth_headers):
-#     mine = MineFactory(mine_reports=ONE_REPORT)
-
-#     data = {'due_date': '2019-10-05 20:27:45.11929+00'}
-#     delete_resp = test_client.delete(
-#         f'/mines/{mine.mine_guid}/reports/{mine.mine_reports[0].mine_report_guid}',
-#         headers=auth_headers['full_auth_header'])
-#     assert delete_resp.status_code == 204, delete_resp.response
+    assert post_resp.status_code == 400
