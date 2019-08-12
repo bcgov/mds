@@ -6,7 +6,7 @@ class DocumentStartStop(Base):
     __tablename__ = "document_start_stop"
     __table_args__ = { "schema": "now_submissions" }
     id = db.Column(db.Integer, primary_key=True)
-    messageid = db.Column(db.Integer, db.ForeignKey('application_start_stop.messageid'))
+    messageid = db.Column(db.Integer, db.ForeignKey('now_submissions.application_start_stop.messageid'))
     documenturl = db.Column(db.String)
     filename = db.Column(db.String)
     documenttype = db.Column(db.String)

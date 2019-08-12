@@ -6,7 +6,7 @@ class Document(Base):
     __tablename__ = "document"
     __table_args__ = { "schema": "now_submissions" }
     id = db.Column(db.Integer, primary_key=True)
-    messageid = db.Column(db.Integer, db.ForeignKey('application.messageid'))
+    messageid = db.Column(db.Integer, db.ForeignKey('now_submissions.application.messageid'))
     documenturl = db.Column(db.String)
     filename = db.Column(db.String)
     documenttype = db.Column(db.String)
