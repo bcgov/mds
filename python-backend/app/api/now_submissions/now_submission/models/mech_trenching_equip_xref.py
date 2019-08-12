@@ -5,8 +5,8 @@ from app.extensions import db
 class MechTrenchingEquipXref(Base):
     __tablename__ = "mech_trenching_equip_xref"
     __table_args__ = { "schema": "now_submissions" }
-    messageid = db.Column(db.Integer, db.ForeignKey('application.messageid'))
-    equipmentid = db.Column(db.Integer, db.ForeignKey('equipment.equipmentid'))
+    messageid = db.Column(db.Integer, db.ForeignKey('now_submissions.application.messageid'))
+    equipmentid = db.Column(db.Integer, db.ForeignKey('now_submissions.equipment.equipmentid'))
 
 
     def __repr__(self):
