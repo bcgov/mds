@@ -102,6 +102,18 @@ SAND_GRAVEL_QUARRY_ACTIVITY = api.model(
         'timbervolume': fields.Arbitrary,
     })
 
+UNDER_EXP_NEW_ACTIVITY = api.model(
+    'UNDER_EXP_NEW_ACTIVITY', {
+        'type': fields.String,
+        'incline': fields.Arbitrary,
+        'inclineunits': fields.String,
+        'quantity': fields.Integer,
+        'length': fields.Arbitrary,
+        'width': fields.Arbitrary,
+        'height': fields.Arbitrary,
+        'seq_no': fields.Integer,
+    })
+
 APPLICATION = api.model(
     'Application', {
         'application_guid': fields.String,
@@ -252,4 +264,5 @@ APPLICATION = api.model(
         'proposed_settling_pond': fields.Nested(SETTLING_POND),
         'surface_bulk_sample_activity': fields.List(fields.Nested(SURFACE_BULK_SAMPLE_ACTIVITY)),
         'sand_grv_qry_activity': fields.List(fields.Nested(SAND_GRAVEL_QUARRY_ACTIVITY)),
+        'under_exp_new_activity': fields.List(fields.Nested(UNDER_EXP_NEW_ACTIVITY)),
     })
