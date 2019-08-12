@@ -13,6 +13,7 @@ from app.api.now_submissions.now_submission.models.sand_grv_qry_activity import 
 from app.api.now_submissions.now_submission.models.settling_pond import SettlingPond
 from app.api.now_submissions.now_submission.models.surface_bulk_sample_activity import SurfaceBulkSampleActivity
 from app.api.now_submissions.now_submission.models.under_exp_new_activity import UnderExpNewActivity
+from app.api.now_submissions.now_submission.models.under_exp_rehab_activity import UnderExpRehabActivity
 
 from app.api.now_submissions.now_submission.models.existing_placer_activity_xref import ExistingPlacerActivityXref
 from app.api.now_submissions.now_submission.models.existing_settling_pond_xref import ExistingSettlingPondXref
@@ -170,6 +171,7 @@ class Application(Base):
     sand_grv_qry_activity = db.relationship('SandGrvQryActivity', lazy='joined')
     surface_bulk_sample_activity = db.relationship('SurfaceBulkSampleActivity', lazy='joined')
     under_exp_new_activity = db.relationship('UnderExpNewActivity', lazy='joined')
+    under_exp_rehab_activity = db.relationship('UnderExpRehabActivity', lazy='joined')
 
     existing_placer_activity = db.relationship(
         'PlacerActivity', lazy='joined', secondary='now_submissions.existing_placer_activity_xref')
