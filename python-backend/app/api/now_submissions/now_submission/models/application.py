@@ -6,6 +6,7 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from app.extensions import db
 from app.api.utils.models_mixins import Base
 from app.api.now_submissions.now_submission.models.client import Client
+from app.api.now_submissions.now_submission.models.document import Document
 
 
 class Application(Base):
@@ -153,6 +154,7 @@ class Application(Base):
     mine = db.relationship('Mine', lazy='joined')
     applicant = db.relationship('Client', lazy='joined', foreign_keys=[applicantclientid])
     submitter = db.relationship('Client', lazy='joined', foreign_keys=[submitterclientid])
+    documents = db.relationship('Document', lazy='joined')
 
     mine_name = association_proxy('mine', 'mine_name')
 

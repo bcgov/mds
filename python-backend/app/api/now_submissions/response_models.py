@@ -27,6 +27,14 @@ CLIENT = api.model(
         'mailingaddresspostalzip': fields.String,
     })
 
+DOCUMENT = api.model(
+    'DOCUMENT', {
+        'documenturl': fields.String,
+        'filename': fields.String,
+        'documenttype': fields.String,
+        'description': fields.String,
+    })
+
 APPLICATION = api.model(
     'Application', {
        'application_guid': fields.String,
@@ -169,4 +177,5 @@ APPLICATION = api.model(
        'istimberselect': fields.String,
        'applicant': fields.Nested(CLIENT),
        'submitter': fields.Nested(CLIENT),
+       'documents': fields.List(fields.Nested(DOCUMENT)),
     })
