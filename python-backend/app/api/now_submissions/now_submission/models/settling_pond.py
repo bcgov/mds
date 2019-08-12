@@ -3,7 +3,7 @@ from app.extensions import db
 
 
 class SettlingPond(Base):
-    __tablename__ = "client"
+    __tablename__ = "settling_pond"
     __table_args__ = { "schema": "now_submissions" }
     settlingpondid = db.Column(db.Integer, primary_key=True)
     pondid = db.Column(db.String)

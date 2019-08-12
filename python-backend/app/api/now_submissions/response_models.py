@@ -76,6 +76,18 @@ PLACER_ACTIVITY = api.model(
         'timbervolume': fields.Arbitrary,
     })
 
+SETTLING_POND = api.model(
+    'SETTLING_POND', {
+        'pondid': fields.String,
+        'watersource': fields.String,
+        'width': fields.Integer,
+        'length': fields.Integer,
+        'depth': fields.Integer,
+        'constructionmethod': fields.String,
+        'disturbedarea': fields.Arbitrary,
+        'timbervolume': fields.Arbitrary,
+    })
+
 APPLICATION = api.model(
     'Application', {
         'application_guid': fields.String,
@@ -220,5 +232,6 @@ APPLICATION = api.model(
         'submitter': fields.Nested(CLIENT),
         'documents': fields.List(fields.Nested(DOCUMENT)),
         'contacts': fields.List(fields.Nested(CONTACT)),
-        'placer_activity': fields.Nested(PLACER_ACTIVITY)
+        'existing_placer_activity': fields.Nested(PLACER_ACTIVITY),
+        'existing_settling_pond': fields.Nested(SETTLING_POND),
     })
