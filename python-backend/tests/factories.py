@@ -34,6 +34,7 @@ from app.api.parties.party_appt.models.party_business_role_appt import PartyBusi
 from app.api.mines.reports.models.mine_report import MineReport
 from app.api.now_submissions.models.application import Application as NOWApplication
 from app.api.now_submissions.models.client import Client as NOWClient
+from app.api.now_submissions.models.contact import Contact as NOWContact
 
 GUID = factory.LazyFunction(uuid.uuid4)
 TODAY = factory.LazyFunction(datetime.now)
@@ -601,6 +602,19 @@ class NOWApplicationFactory(BaseFactory):
     messageid = factory.fuzzy.FuzzyInteger(1, 100)
     applicantclientid = factory.SelfAttribute('applicant.clientid')
     submitterclientid = factory.SelfAttribute('submitter.clientid')
+    contacts = []
+
+    @factory.post_generation
+    def contacts(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        NOWContactFactory.create_batch(size=extracted,
+                                       application=obj,
+                                       **kwargs)
 
 
 class NOWClientFactory(BaseFactory):
@@ -608,4 +622,16 @@ class NOWClientFactory(BaseFactory):
         model = NOWClient
 
     clientid = factory.fuzzy.FuzzyInteger(1, 100)
+    type = factory.Faker('sentence', nb_words=1)
+
+
+class NOWContactFactory(BaseFactory):
+    class Meta:
+        model = NOWContact
+
+    class Params:
+        application = factory.SubFactory('tests.factories.NOWApplicationFactory')
+
+    id = factory.fuzzy.FuzzyInteger(1, 100)
+    messageid = factory.SelfAttribute('application.messageid')
     type = factory.Faker('sentence', nb_words=1)
