@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Button, Collapse, Icon } from "antd";
 import NOWGeneralInfo from "@/components/noticeOfWork/NOWGeneralInfo";
 import NOWWorkPlan from "@/components/noticeOfWork/NOWWorkPlan";
+import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 /**
  * @class NoticeOfWorkApplication - contains all information regarding to a notice of work application
  */
@@ -43,4 +44,4 @@ export class NoticeOfWorkApplication extends Component {
   }
 }
 
-export default NoticeOfWorkApplication;
+export default AuthorizationGuard("inDevelopment")(NoticeOfWorkApplication);
