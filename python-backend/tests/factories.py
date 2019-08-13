@@ -612,7 +612,7 @@ class NOWApplicationFactory(BaseFactory):
 
     application_guid = GUID
     mine_guid = factory.SelfAttribute('mine.mine_guid')
-    messageid = factory.fuzzy.FuzzyInteger(1, 100)
+    messageid = factory.Sequence(lambda n: n)
     applicantclientid = factory.SelfAttribute('applicant.clientid')
     submitterclientid = factory.SelfAttribute('submitter.clientid')
 
@@ -765,7 +765,7 @@ class NOWClientFactory(BaseFactory):
     class Meta:
         model = NOWClient
 
-    clientid = factory.fuzzy.FuzzyInteger(1, 100)
+    clientid = factory.Sequence(lambda n: n)
     type = factory.Faker('sentence', nb_words=1)
 
 
@@ -776,7 +776,7 @@ class NOWDocumentFactory(BaseFactory):
     class Params:
         application = factory.SubFactory('tests.factories.NOWApplicationFactory')
 
-    id = factory.fuzzy.FuzzyInteger(1, 100)
+    id = factory.Sequence(lambda n: n)
     messageid = factory.SelfAttribute('application.messageid')
     filename = factory.Faker('file_name')
 
@@ -788,7 +788,7 @@ class NOWContactFactory(BaseFactory):
     class Params:
         application = factory.SubFactory('tests.factories.NOWApplicationFactory')
 
-    id = factory.fuzzy.FuzzyInteger(1, 100)
+    id = factory.Sequence(lambda n: n)
     messageid = factory.SelfAttribute('application.messageid')
     type = factory.Faker('sentence', nb_words=1)
 
@@ -800,7 +800,7 @@ class NOWSandGrvQryActivityFactory(BaseFactory):
     class Params:
         application = factory.SubFactory('tests.factories.NOWApplicationFactory')
 
-    id = factory.fuzzy.FuzzyInteger(1, 100)
+    id = factory.Sequence(lambda n: n)
     messageid = factory.SelfAttribute('application.messageid')
     type = factory.Faker('sentence', nb_words=1)
 
@@ -812,7 +812,7 @@ class NOWUnderExpNewActivityFactory(BaseFactory):
     class Params:
         application = factory.SubFactory('tests.factories.NOWApplicationFactory')
 
-    id = factory.fuzzy.FuzzyInteger(1, 100)
+    id = factory.Sequence(lambda n: n)
     messageid = factory.SelfAttribute('application.messageid')
     type = factory.Faker('sentence', nb_words=1)
 
@@ -824,7 +824,7 @@ class NOWUnderExpRehabActivityFactory(BaseFactory):
     class Params:
         application = factory.SubFactory('tests.factories.NOWApplicationFactory')
 
-    id = factory.fuzzy.FuzzyInteger(1, 100)
+    id = factory.Sequence(lambda n: n)
     messageid = factory.SelfAttribute('application.messageid')
     type = factory.Faker('sentence', nb_words=1)
 
@@ -836,7 +836,7 @@ class NOWUnderExpSurfaceActivityFactory(BaseFactory):
     class Params:
         application = factory.SubFactory('tests.factories.NOWApplicationFactory')
 
-    id = factory.fuzzy.FuzzyInteger(1, 100)
+    id = factory.Sequence(lambda n: n)
     messageid = factory.SelfAttribute('application.messageid')
     type = factory.Faker('sentence', nb_words=1)
 
@@ -848,7 +848,7 @@ class NOWWaterSourceActivityFactory(BaseFactory):
     class Params:
         application = factory.SubFactory('tests.factories.NOWApplicationFactory')
 
-    id = factory.fuzzy.FuzzyInteger(1, 100)
+    id = factory.Sequence(lambda n: n)
     messageid = factory.SelfAttribute('application.messageid')
     type = factory.Faker('sentence', nb_words=1)
 
@@ -860,7 +860,7 @@ class NOWSurfaceBulkSampleActivityFactory(BaseFactory):
     class Params:
         application = factory.SubFactory('tests.factories.NOWApplicationFactory')
 
-    id = factory.fuzzy.FuzzyInteger(1, 100)
+    id = factory.Sequence(lambda n: n)
     messageid = factory.SelfAttribute('application.messageid')
     type = factory.Faker('sentence', nb_words=1)
 
@@ -881,7 +881,7 @@ class NOWPlacerActivityFactory(BaseFactory):
     class Meta:
         model = NOWPlacerActivity
 
-    placeractivityid = factory.fuzzy.FuzzyInteger(1, 100)
+    placeractivityid = factory.Sequence(lambda n: n)
     type = factory.Faker('sentence', nb_words=1)
 
 
@@ -901,7 +901,7 @@ class NOWSettlingPondFactory(BaseFactory):
     class Meta:
         model = NOWSettlingPond
 
-    settlingpondid = factory.fuzzy.FuzzyInteger(1, 100)
+    settlingpondid = factory.Sequence(lambda n: n)
     pondid = factory.Faker('sentence', nb_words=1)
 
 
