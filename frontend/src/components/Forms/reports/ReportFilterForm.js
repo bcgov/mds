@@ -100,19 +100,19 @@ export class ReportFilterForm extends Component {
                 name="complianceStartYear"
                 label="Compliance Year"
                 placeholder="Start date"
-                component={renderConfig.FIELD}
+                component={renderConfig.YEAR}
               />
             </Col>
             <Col md={3} xs={24}>
               <Field
                 id="complianceEndYear"
                 name="complianceEndYear"
-                label=" "
+                label="&nbsp;"
                 placeholder="End date"
-                component={renderConfig.FIELD}
+                component={renderConfig.YEAR}
               />
             </Col>
-            <Col md={6} xs={24}>
+            {/* <Col md={6} xs={24}>
               <Field
                 id="requestedBy"
                 name="requestedBy"
@@ -120,25 +120,25 @@ export class ReportFilterForm extends Component {
                 placeholder="Start typing an inspector name"
                 component={renderConfig.SELECT}
               />
-            </Col>
+            </Col> */}
           </Row>
           <Row gutter={6}>
-            <label>Report Due Date Range</label>
             <Col md={3} xs={24}>
               <Field
                 id="reportDueDateStart"
                 name="reportDueDateStart"
+                label="Report Due Date Range"
                 placeholder="Start date"
-                component={renderConfig.FIELD}
+                component={renderConfig.DATE}
               />
             </Col>
-            -
             <Col md={3} xs={24}>
               <Field
                 id="reportDueDateEnd"
                 name="reportDueDateEnd"
                 placeholder="End date"
-                component={renderConfig.FIELD}
+                label="&nbsp;"
+                component={renderConfig.DATE}
               />
             </Col>
           </Row>
