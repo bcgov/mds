@@ -21,6 +21,7 @@ const propTypes = {
     PropTypes.objectOf(CustomPropTypes.dropdownListItem)
   ).isRequired,
   selectedMineReportCategory: PropTypes.string.isRequired,
+  handleSubmit: propTypes.func.isRequired,
 };
 
 const defaultProps = {};
