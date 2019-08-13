@@ -56,16 +56,6 @@ export class AddReportForm extends Component {
     }
   };
 
-  componentDidMount = () => {
-    if (this.props.initialValues.mine_report_definition_guid) {
-      this.updateMineReportOptions(this.props.mineReportDefinitionOptions);
-
-      this.updateSelectedMineReportComplianceArticles(
-        this.props.initialValues.mine_report_definition_guid
-      );
-    }
-  };
-
   updateMineReportOptions = (mineReportDefinitionOptions, selectedMineReportCategory) => {
     let mineReportDefinitionOptionsFiltered = mineReportDefinitionOptions;
 
