@@ -6,7 +6,6 @@ exports[`MineReportInfo renders properly 1`] = `
     className="inline-flex flex-end"
   >
     <Connect(AuthorizationWrapper)
-      isMajorMine={true}
       permission="role_edit_reports"
     >
       <AddButton
