@@ -37,6 +37,7 @@ from app.api.now_submissions.models.client import Client as NOWClient
 from app.api.now_submissions.models.contact import Contact as NOWContact
 from app.api.now_submissions.models.placer_activity import PlacerActivity as NOWPlacerActivity
 from app.api.now_submissions.models.existing_placer_activity_xref import ExistingPlacerActivityXref as NOWExistingPlacerActivityXref
+from app.api.now_submissions.models.proposed_placer_activity_xref import ProposedPlacerActivityXref as NOWProposedPlacerActivityXref
 
 GUID = factory.LazyFunction(uuid.uuid4)
 TODAY = factory.LazyFunction(datetime.now)
@@ -631,6 +632,18 @@ class NOWApplicationFactory(BaseFactory):
                                                           application=obj,
                                                           **kwargs)
 
+    @factory.post_generation
+    def proposed_placer_activity(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        NOWProposedPlacerActivityXrefFactory.create_batch(size=extracted,
+                                                          application=obj,
+                                                          **kwargs)
+
 
 class NOWClientFactory(BaseFactory):
     class Meta:
@@ -670,3 +683,15 @@ class NOWPlacerActivityFactory(BaseFactory):
 
     placeractivityid = factory.fuzzy.FuzzyInteger(1, 100)
     type = factory.Faker('sentence', nb_words=1)
+
+
+class NOWProposedPlacerActivityXrefFactory(BaseFactory):
+    class Meta:
+        model = NOWProposedPlacerActivityXref
+
+    class Params:
+        application = factory.SubFactory('tests.factories.NOWApplicationFactory')
+        placer_activity = factory.SubFactory('tests.factories.NOWPlacerActivityFactory')
+
+    messageid = factory.SelfAttribute('application.messageid')
+    placeractivityid = factory.SelfAttribute('placer_activity.placeractivityid')
