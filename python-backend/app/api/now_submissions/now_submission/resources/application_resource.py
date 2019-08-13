@@ -59,6 +59,6 @@ class ApplicationListResource(Resource, UserMixin, ErrorMixin):
                                         page_number=PAGE_DEFAULT,
                                         page_size=PER_PAGE_DEFAULT):
 
-        filtered_query = Application.query.order_by(desc(Application.receiveddate))
+        filtered_query = Application.query.order_by(desc(Application.receiveddate)).options(joinedload(Application.mine.permit))
 
         return apply_pagination(filtered_query, page_number, page_size)
