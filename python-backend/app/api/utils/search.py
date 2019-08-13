@@ -4,7 +4,7 @@ from app.extensions import db
 from app.api.mines.mine.models.mine import Mine
 from app.api.parties.party.models.party import Party
 from app.api.mines.permits.permit.models.permit import Permit
-from app.api.documents.mines.models.mine_document import MineDocument
+from app.api.mines.documents.mines.models.mine_document import MineDocument
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 
 common_search_targets = {
