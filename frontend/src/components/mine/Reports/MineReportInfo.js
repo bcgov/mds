@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { Row } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -100,23 +101,31 @@ export class MineReportInfo extends Component {
     return (
       <div>
         <div className="inline-flex flex-end">
-          <AuthorizationWrapper
-            permission={Permission.EDIT_REPORTS}
-            isMajorMine={this.state.mine.major_mine_ind}
-          >
-            <AddButton
-              onClick={(event) =>
-                this.openAddReportModal(
-                  event,
-                  this.handleAddReport,
-                  `${ModalContent.ADD_REPORT} to ${this.state.mine.mine_name}`
-                )
-              }
+          <Row>
+            <AuthorizationWrapper
+              permission={Permission.EDIT_REPORTS}
+              isMajorMine={this.state.mine.major_mine_ind}
             >
-              Add a Report
-            </AddButton>
-          </AuthorizationWrapper>
+              <AddButton
+                onClick={(event) =>
+                  this.openAddReportModal(
+                    event,
+                    this.handleAddReport,
+                    `${ModalContent.ADD_REPORT} to ${this.state.mine.mine_name}`
+                  )
+                }
+              >
+                Add a Report
+              </AddButton>
+            </AuthorizationWrapper>
+          </Row>
         </div>
+        <div>
+          <Row>
+            <ReportFilterForm />
+          </Row>
+        </div>
+
         <MineReportTable
           openEditReportModal={this.openEditReportModal}
           handleEditReport={this.handleEditReport}

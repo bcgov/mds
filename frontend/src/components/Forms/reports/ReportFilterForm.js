@@ -3,13 +3,14 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
+import { Field, reduxForm, formValueSelector } from "redux-form";
 import { Form, Button, Col, Icon, Row } from "antd";
 import * as FORM from "@/constants/forms";
 import {
   getDropdownMineReportCategoryOptions,
   getMineReportDefinitionOptions,
 } from "@/selectors/staticContentSelectors";
+import { createDropDownList } from "@/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
 
@@ -23,6 +24,8 @@ const propTypes = {
 };
 
 const defaultProps = {};
+
+const selector = formValueSelector(FORM.FILTER_REPORTS);
 
 export class ReportFilterForm extends Component {
   state = {
