@@ -3,44 +3,25 @@ import { Divider, Col, Row, Table } from "antd";
 import * as Strings from "@/constants/strings";
 import NOWActivities from "@/components/noticeOfWork/NOWActivities";
 
-const documentColumns = [
-  {
-    title: "File name",
-    dataIndex: "name",
-    key: "name",
-  },
-  {
-    title: "Category",
-    dataIndex: "category",
-    key: "category",
-  },
-  {
-    title: "Proponent Description",
-    dataIndex: "proponentDescription",
-    key: "proponentDescription",
-  },
-];
-
-const recColumns = [
-  {
-    title: "Activity",
-    dataIndex: "activity",
-    key: "activity",
-  },
-  {
-    title: "Total Effected Area (ha)",
-    dataIndex: "efectedArea",
-    key: "efectedArea",
-  },
-  {
-    title: "Estimated Cost of Reclamation",
-    dataIndex: "cost",
-    key: "cost",
-  },
-];
-
 export class NOWWorkPlan extends Component {
   renderSummaryOfReclamation = () => {
+    const columns = [
+      {
+        title: "Activity",
+        dataIndex: "activity",
+        key: "activity",
+      },
+      {
+        title: "Total Effected Area (ha)",
+        dataIndex: "efectedArea",
+        key: "efectedArea",
+      },
+      {
+        title: "Estimated Cost of Reclamation",
+        dataIndex: "cost",
+        key: "cost",
+      },
+    ];
     return (
       <div>
         <br />
@@ -59,7 +40,7 @@ export class NOWWorkPlan extends Component {
           <Table
             align="left"
             pagination={false}
-            columns={recColumns}
+            columns={columns}
             dataSource={[]}
             locale={{ emptyText: "No data" }}
             footer={() => "Total"}
@@ -70,6 +51,24 @@ export class NOWWorkPlan extends Component {
   };
 
   renderDocuments = () => {
+    const columns = [
+      {
+        title: "File name",
+        dataIndex: "name",
+        key: "name",
+      },
+      {
+        title: "Category",
+        dataIndex: "category",
+        key: "category",
+      },
+      {
+        title: "Proponent Description",
+        dataIndex: "proponentDescription",
+        key: "proponentDescription",
+      },
+    ];
+
     return (
       <div>
         <br />
@@ -79,7 +78,7 @@ export class NOWWorkPlan extends Component {
           <Table
             align="left"
             pagination={false}
-            columns={documentColumns}
+            columns={columns}
             dataSource={[]}
             locale={{ emptyText: "There are no documents associated with this Notice of Work" }}
           />

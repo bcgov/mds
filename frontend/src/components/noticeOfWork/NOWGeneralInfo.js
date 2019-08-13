@@ -8,8 +8,8 @@ export class NOWGeneralInfo extends Component {
       <div>
         <h3>Application Information</h3>
         <Divider />
-        <div className="inline-flex between block-tablet padding-large--sides">
-          <div style={{ flex: 2 }}>
+        <Row gutter={16} className="padding-small">
+          <Col md={12} xs={24}>
             <div className="inline-flex padding-small">
               <p className="field-title">Mine Name</p>
               <p> {Strings.EMPTY_FIELD}</p>
@@ -31,7 +31,7 @@ export class NOWGeneralInfo extends Component {
               <p> {Strings.EMPTY_FIELD}</p>
             </div>
             <div className="inline-flex padding-small">
-              <p className="field-title">Mine type</p>
+              <p className="field-title">Type of Notice of Work</p>
               <p> {Strings.EMPTY_FIELD}</p>
             </div>
             <div className="inline-flex padding-small">
@@ -42,8 +42,8 @@ export class NOWGeneralInfo extends Component {
               <p className="field-title">Permit Status</p>
               <p> {Strings.EMPTY_FIELD}</p>
             </div>
-          </div>
-          <div style={{ flex: 3 }}>
+          </Col>
+          <Col md={12} xs={24}>
             <div className="inline-flex padding-small">
               <p className="field-title">Crown/Private</p>
               <p> {Strings.EMPTY_FIELD}</p>
@@ -68,8 +68,8 @@ export class NOWGeneralInfo extends Component {
               <p className="field-title">Proposed End Date</p>
               <p> {Strings.EMPTY_FIELD}</p>
             </div>
-          </div>
-        </div>
+          </Col>
+        </Row>
       </div>
     );
   };
@@ -87,14 +87,14 @@ export class NOWGeneralInfo extends Component {
                 title={
                   <div className="inline-flex between wrap">
                     <div>
-                      <h3>Permittee</h3>
+                      <h3>{Strings.EMPTY_FIELD}</h3>
                     </div>
                   </div>
                 }
                 bordered={false}
               >
                 <div>
-                  <h3>Joe Smith</h3>
+                  <h3>{Strings.EMPTY_FIELD}</h3>
                   <h6>Email Address</h6>
                   {Strings.EMPTY_FIELD}
                   <h6>Phone Number</h6>

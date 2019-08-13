@@ -24,12 +24,29 @@ const recColumns = [
 
 export class NOWActivities extends Component {
   renderAccess = () => {
+    const columns = [
+      {
+        title: "Access Type",
+        dataIndex: "accessType",
+        key: "accessType",
+      },
+      {
+        title: "Length(km)",
+        dataIndex: "length",
+        key: "length",
+      },
+      {
+        title: "Merchantable timber volume (m3)",
+        dataIndex: "volume",
+        key: "volume",
+      },
+    ];
     return (
       <div className="padding-large--sides">
         <Table
           align="left"
           pagination={false}
-          columns={recColumns}
+          columns={columns}
           dataSource={[]}
           locale={{
             emptyText: "No data",
@@ -38,7 +55,7 @@ export class NOWActivities extends Component {
         />
         <br />
         <h4>Bridges, Culverts, and Crossings</h4>
-        <Divider />
+        <Divider className="margin-10" />
         <Row gutter={16} className="padding-small">
           <Col md={12} xs={24}>
             <p className="field-title">Are you proposing any bridges, culverts, and crossings?</p>
@@ -52,7 +69,7 @@ export class NOWActivities extends Component {
         </Row>
         <br />
         <h4>Reclamation Program</h4>
-        <Divider />
+        <Divider className="margin-10" />
         <Row gutter={16} className="padding-small">
           <Col md={12} xs={24}>
             <p className="field-title">
@@ -107,15 +124,66 @@ export class NOWActivities extends Component {
   };
 
   renderCampsAndStorage = () => {
+    const campColumns = [
+      {
+        title: "Name",
+        dataIndex: "name",
+        key: "name",
+      },
+      {
+        title: "Number of People",
+        dataIndex: "numPeople",
+        key: "numPeople",
+      },
+      {
+        title: "Number of Structures",
+        dataIndex: "structures",
+        key: "structures",
+      },
+      {
+        title: "Estimated quantity of water (m3/s)",
+        dataIndex: "waterQuality",
+        key: "waterQuality",
+      },
+      {
+        title: "Disturbed Area (ha)",
+        dataIndex: "disturbedArea",
+        key: "disturbedArea",
+      },
+      {
+        title: "Merchantable timber volume (m3)",
+        dataIndex: "timberVolume",
+        key: "timberVolume",
+      },
+    ];
+
+    const buildingsColumns = [
+      {
+        title: "Name",
+        dataIndex: "name",
+        key: "name",
+      },
+      {
+        title: "Disturbed Area (ha)",
+        dataIndex: "disturbedArea",
+        key: "disturbedArea",
+      },
+      {
+        title: "Merchantable timber volume (m3)",
+        dataIndex: "timberVolume",
+        key: "timberVolume",
+      },
+    ];
+
     return (
       <div className="padding-large--sides">
         <div>
           <h4>Camps</h4>
-          <Divider />
+          <Divider className="margin-10" />
           <Table
             align="left"
             pagination={false}
-            columns={recColumns}
+            columns={campColumns}
             dataSource={[]}
             locale={{
               emptyText: "No data",
@@ -126,11 +194,11 @@ export class NOWActivities extends Component {
         </div>
         <div>
           <h4>Buildings</h4>
-          <Divider />
+          <Divider className="margin-10" />
           <Table
             align="left"
             pagination={false}
-            columns={recColumns}
+            columns={buildingsColumns}
             dataSource={[]}
             locale={{
               emptyText: "No data",
@@ -141,11 +209,11 @@ export class NOWActivities extends Component {
         </div>
         <div>
           <h4>Staging Area</h4>
-          <Divider />
+          <Divider className="margin-10" />
           <Table
             align="left"
             pagination={false}
-            columns={recColumns}
+            columns={buildingsColumns}
             dataSource={[]}
             locale={{
               emptyText: "No data",
@@ -156,7 +224,7 @@ export class NOWActivities extends Component {
         </div>
         <div>
           <h4>Fuel</h4>
-          <Divider />
+          <Divider className="margin-10" />
           <Row gutter={16} className="padding-small">
             <Col md={12} xs={24}>
               <p className="field-title">Do you propose to store fuel?</p>
@@ -184,7 +252,7 @@ export class NOWActivities extends Component {
         </div>
         <div>
           <h4>Reclamation Program</h4>
-          <Divider />
+          <Divider className="margin-10" />
           <Row gutter={16} className="padding-small">
             <Col md={12} xs={24}>
               <p className="field-title">
@@ -201,15 +269,32 @@ export class NOWActivities extends Component {
   };
 
   renderLinesAndSurvey = () => {
+    const columns = [
+      {
+        title: "Total Line (km)",
+        dataIndex: "total",
+        key: "total",
+      },
+      {
+        title: "Total Disturbed Area (ha)",
+        dataIndex: "disturbedArea",
+        key: "disturbedArea",
+      },
+      {
+        title: "Merchantable timber volume (m3)",
+        dataIndex: "timberVolume",
+        key: "timberVolume",
+      },
+    ];
     return (
       <div className="padding-large--sides">
         <div>
           <h4>Exploration Grid</h4>
-          <Divider />
+          <Divider className="margin-10" />
           <Table
             align="left"
             pagination={false}
-            columns={recColumns}
+            columns={columns}
             dataSource={[]}
             locale={{
               emptyText: "No data",
@@ -219,7 +304,7 @@ export class NOWActivities extends Component {
         </div>
         <div>
           <h4>Reclamation Program</h4>
-          <Divider />
+          <Divider className="margin-10" />
           <Row gutter={16} className="padding-small">
             <Col md={12} xs={24}>
               <p className="field-title">
@@ -236,15 +321,37 @@ export class NOWActivities extends Component {
   };
 
   renderDrilling = () => {
+    const columns = [
+      {
+        title: "Activity",
+        dataIndex: "activity",
+        key: "activity",
+      },
+      {
+        title: "Number of Sites",
+        dataIndex: "numSites",
+        key: "numSites",
+      },
+      {
+        title: "Total Disturbance Area (ha)",
+        dataIndex: "disturbedArea",
+        key: "disturbedArea",
+      },
+      {
+        title: "Merchantable timber volume (m3)",
+        dataIndex: "timberVolume",
+        key: "timberVolume",
+      },
+    ];
     return (
       <div className="padding-large--sides">
         <div>
           <h4>Drilling</h4>
-          <Divider />
+          <Divider className="margin-10" />
           <Table
             align="left"
             pagination={false}
-            columns={recColumns}
+            columns={columns}
             dataSource={[]}
             locale={{
               emptyText: "No data",
@@ -254,7 +361,7 @@ export class NOWActivities extends Component {
         </div>
         <div>
           <h4>Support of the Drilling Program</h4>
-          <Divider />
+          <Divider className="margin-10" />
           <Row gutter={16} className="padding-small">
             <Col md={12} xs={24}>
               <p className="field-title">The drilling program will be</p>
@@ -266,7 +373,7 @@ export class NOWActivities extends Component {
         </div>
         <div>
           <h4>Reclamation Program</h4>
-          <Divider />
+          <Divider className="margin-10" />
           <Row gutter={16} className="padding-small">
             <Col md={12} xs={24}>
               <p className="field-title">
@@ -283,15 +390,37 @@ export class NOWActivities extends Component {
   };
 
   renderTrenching = () => {
+    const columns = [
+      {
+        title: "Activity",
+        dataIndex: "activity",
+        key: "activity",
+      },
+      {
+        title: "Number of Sites",
+        dataIndex: "numSites",
+        key: "numSites",
+      },
+      {
+        title: "Total Disturbance Area (ha)",
+        dataIndex: "disturbedArea",
+        key: "disturbedArea",
+      },
+      {
+        title: "Merchantable timber volume (m3)",
+        dataIndex: "timberVolume",
+        key: "timberVolume",
+      },
+    ];
     return (
       <div className="padding-large--sides">
         <div>
           <h4>Trenching</h4>
-          <Divider />
+          <Divider className="margin-10" />
           <Table
             align="left"
             pagination={false}
-            columns={recColumns}
+            columns={columns}
             dataSource={[]}
             locale={{
               emptyText: "No data",
@@ -301,7 +430,7 @@ export class NOWActivities extends Component {
         </div>
         <div>
           <h4>Reclamation Program</h4>
-          <Divider />
+          <Divider className="margin-10" />
           <Row gutter={16} className="padding-small">
             <Col md={12} xs={24}>
               <p className="field-title">
@@ -328,6 +457,33 @@ export class NOWActivities extends Component {
   };
 
   renderPonds = () => {
+    const columns = [
+      {
+        title: "Pond ID",
+        dataIndex: "id",
+        key: "id",
+      },
+      {
+        title: "Width(m)",
+        dataIndex: "width",
+        key: "width",
+      },
+      {
+        title: "Length(m)",
+        dataIndex: "length",
+        key: "length",
+      },
+      {
+        title: "Disturbed Area (ha)",
+        dataIndex: "disturbedArea",
+        key: "disturbedArea",
+      },
+      {
+        title: "Merchantable timber volume (m3)",
+        dataIndex: "timberVolume",
+        key: "timberVolume",
+      },
+    ];
     return (
       <div className="padding-large--sides">
         <Row gutter={16} className="padding-small">
@@ -342,7 +498,7 @@ export class NOWActivities extends Component {
         <Table
           align="left"
           pagination={false}
-          columns={recColumns}
+          columns={columns}
           dataSource={[]}
           locale={{
             emptyText: "No data",
@@ -390,7 +546,8 @@ export class NOWActivities extends Component {
             <p> {Strings.EMPTY_FIELD}</p>
           </Col>
         </Row>
-        <h4 className="h4">Total Planned Reclamation Area</h4>
+        <h4>Total Planned Reclamation Area</h4>
+        <Divider className="margin-10" />
         <Row gutter={16} className="padding-small">
           <Col md={12} xs={24}>
             <p className="field-title">Total area of planned reclamation this year</p>
@@ -399,7 +556,8 @@ export class NOWActivities extends Component {
             <p> {Strings.EMPTY_FIELD}</p>
           </Col>
         </Row>
-        <h4 className="h4">Changes In and About a Stream</h4>
+        <h4>Changes In and About a Stream</h4>
+        <Divider className="margin-10" />
         <Row gutter={16} className="padding-small">
           <Col md={12} xs={24}>
             <p className="field-title">
@@ -413,7 +571,7 @@ export class NOWActivities extends Component {
         <br />
         <div>
           <h4>Reclamation Program</h4>
-          <Divider />
+          <Divider className="margin-10" />
           <Row gutter={16} className="padding-small">
             <Col md={12} xs={24}>
               <p className="field-title">
@@ -440,9 +598,32 @@ export class NOWActivities extends Component {
   };
 
   renderSandAndGravel = () => {
+    const columns = [
+      {
+        title: "Activity",
+        dataIndex: "activity",
+        key: "activity",
+      },
+      {
+        title: "Number of Sites",
+        dataIndex: "numSites",
+        key: "numSites",
+      },
+      {
+        title: "Total Disturbance Area (ha)",
+        dataIndex: "disturbedArea",
+        key: "disturbedArea",
+      },
+      {
+        title: "Merchantable timber volume (m3)",
+        dataIndex: "timberVolume",
+        key: "timberVolume",
+      },
+    ];
     return (
       <div className="padding-large--sides">
-        <h4 className="h4">Soil Conservation</h4>
+        <h4>Soil Conservation</h4>
+        <Divider className="margin-10" />
         <Row gutter={16} className="padding-small">
           <Col md={12} xs={24}>
             <p className="field-title">Average Depth Overburden(m)</p>
@@ -469,7 +650,8 @@ export class NOWActivities extends Component {
             <p> {Strings.EMPTY_FIELD}</p>
           </Col>
         </Row>
-        <h4 className="h4">Land Use</h4>
+        <h4>Land Use</h4>
+        <Divider className="margin-10" />
         <Row gutter={16} className="padding-small">
           <Col md={12} xs={24}>
             <p className="field-title">Is this site within the Agricultural Land Reserve?</p>
@@ -540,7 +722,7 @@ export class NOWActivities extends Component {
         <Table
           align="left"
           pagination={false}
-          columns={recColumns}
+          columns={columns}
           dataSource={[]}
           locale={{
             emptyText: "No data",
@@ -553,12 +735,34 @@ export class NOWActivities extends Component {
   };
 
   renderSurfaceBulkSample = () => {
+    const columns = [
+      {
+        title: "Activity",
+        dataIndex: "activity",
+        key: "activity",
+      },
+      {
+        title: "QTY",
+        dataIndex: "qty",
+        key: "qty",
+      },
+      {
+        title: "Total Disturbance Area (ha)",
+        dataIndex: "disturbedArea",
+        key: "disturbedArea",
+      },
+      {
+        title: "Merchantable timber volume (m3)",
+        dataIndex: "timberVolume",
+        key: "timberVolume",
+      },
+    ];
     return (
       <div className="padding-large--sides">
         <Table
           align="left"
           pagination={false}
-          columns={recColumns}
+          columns={columns}
           dataSource={[]}
           locale={{
             emptyText: "No data",
@@ -583,7 +787,7 @@ export class NOWActivities extends Component {
         </Row>
         <br />
         <h4>Reclamation Program</h4>
-        <Divider />
+        <Divider className="margin-10" />
         <Row gutter={16} className="padding-small">
           <Col md={12} xs={24}>
             <p className="field-title">
@@ -616,6 +820,61 @@ export class NOWActivities extends Component {
   };
 
   renderUnderGround = () => {
+    const underGroundGolumns = [
+      {
+        title: "Activity",
+        dataIndex: "activity",
+        key: "activity",
+      },
+      {
+        title: "Quantity",
+        dataIndex: "quantity",
+        key: "quantity",
+      },
+      {
+        title: "Incline",
+        dataIndex: "incline",
+        key: "incline",
+      },
+      {
+        title: "Units",
+        dataIndex: "units",
+        key: "units",
+      },
+      {
+        title: "Width(m)",
+        dataIndex: "width",
+        key: "width",
+      },
+      {
+        title: "Length(m)",
+        dataIndex: "length",
+        key: "length",
+      },
+    ];
+
+    const surfaceColumns = [
+      {
+        title: "Activity",
+        dataIndex: "activity",
+        key: "activity",
+      },
+      {
+        title: "Quantity",
+        dataIndex: "quantity",
+        key: "quantity",
+      },
+      {
+        title: "Disturbed Area (ha)",
+        dataIndex: "disturbedArea",
+        key: "disturbedArea",
+      },
+      {
+        title: "Merchantable timber volume (m3)",
+        dataIndex: "timberVolume",
+        key: "timberVolume",
+      },
+    ];
     return (
       <div className="padding-large--sides">
         <Row gutter={16} className="padding-small">
@@ -627,11 +886,11 @@ export class NOWActivities extends Component {
           </Col>
         </Row>
         <h4>New Underground Exploration Development</h4>
-        <Divider />
+        <Divider className="margin-10" />
         <Table
           align="left"
           pagination={false}
-          columns={recColumns}
+          columns={underGroundGolumns}
           dataSource={[]}
           locale={{
             emptyText: "No data",
@@ -655,11 +914,11 @@ export class NOWActivities extends Component {
         </Row>
         <br />
         <h4>Rehab Underground Exploration Development</h4>
-        <Divider />
+        <Divider className="margin-10" />
         <Table
           align="left"
           pagination={false}
-          columns={recColumns}
+          columns={underGroundGolumns}
           dataSource={[]}
           locale={{
             emptyText: "No data",
@@ -667,11 +926,11 @@ export class NOWActivities extends Component {
         />
         <br />
         <h4>Surface Disturbance</h4>
-        <Divider />
+        <Divider className="margin-10" />
         <Table
           align="left"
           pagination={false}
-          columns={recColumns}
+          columns={surfaceColumns}
           dataSource={[]}
           locale={{
             emptyText: "No data",
@@ -700,12 +959,34 @@ export class NOWActivities extends Component {
   };
 
   renderWaterSupply = () => {
+    const columns = [
+      {
+        title: "Surface",
+        dataIndex: "surface",
+        key: "surface",
+      },
+      {
+        title: "Activity",
+        dataIndex: "activity",
+        key: "activity",
+      },
+      {
+        title: "Water Use",
+        dataIndex: "waterUse",
+        key: "waterUse",
+      },
+      {
+        title: "Estimated Rate (m3/s)",
+        dataIndex: "estimatedRate",
+        key: "estimatedRate",
+      },
+    ];
     return (
       <div className="padding-large--sides">
         <Table
           align="left"
           pagination={false}
-          columns={recColumns}
+          columns={columns}
           dataSource={[]}
           locale={{
             emptyText: "No data",
@@ -721,7 +1002,7 @@ export class NOWActivities extends Component {
       <div>
         <br />
         <h3>Activities</h3>
-        <Divider />
+        <Divider className="margin-10" />
         <div className="padding-large--sides">
           <Collapse
             style={{
