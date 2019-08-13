@@ -986,7 +986,7 @@ export const EXPECTED_DOCUMENT_STATUS_OPTIONS = {
 };
 
 export const MINE_TSF_REQUIRED_REPORTS_RESPONSE = {
-  required_documents: [
+  records: [
     {
       req_document_guid: "05388944-afb3-4ef4-9db1-94db72f6060e",
       req_document_name: "Annual Reclamation",

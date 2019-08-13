@@ -71,8 +71,7 @@ describe("staticContentReducer", () => {
 
   it("receives STORE_MINE_TSF_REQUIRED_DOCUMENTS", () => {
     const expectedValue = getBaseExpectedValue();
-    expectedValue.mineTSFRequiredReports =
-      MOCK.MINE_TSF_REQUIRED_REPORTS_RESPONSE.required_documents;
+    expectedValue.mineTSFRequiredReports = MOCK.MINE_TSF_REQUIRED_REPORTS_RESPONSE.records;
     const result = staticContentReducer(
       undefined,
       storeMineTSFRequiredDocuments(MOCK.MINE_TSF_REQUIRED_REPORTS_RESPONSE)

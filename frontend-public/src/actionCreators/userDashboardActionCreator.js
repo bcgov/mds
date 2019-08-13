@@ -52,7 +52,7 @@ export const fetchMineDocuments = (mineGuid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_DOCUMENTS));
   dispatch(showLoading());
   return axios
-    .get(`${ENVIRONMENT.apiUrl}${API.MINE_DOCUMENTS}/${mineGuid}`, createRequestHeader())
+    .get(`${ENVIRONMENT.apiUrl}${API.MINE_DOCUMENTS(mineGuid)}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_DOCUMENTS));
       dispatch(userMineActions.storeMineDocuments(response.data));
