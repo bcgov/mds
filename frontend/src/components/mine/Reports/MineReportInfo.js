@@ -120,7 +120,10 @@ export class MineReportInfo extends Component {
             </AuthorizationWrapper>
           </Row>
         </div>
-        <div>
+        <div className="advanced-search__container">
+          <div>
+            <h2>Filter By</h2>
+          </div>
           <Row>
             <ReportFilterForm />
           </Row>

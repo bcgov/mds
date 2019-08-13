@@ -33,6 +33,10 @@ export class ReportFilterForm extends Component {
     dropdownMineReportDefinitionOptionsFiltered: [],
   };
 
+  componentDidMount = () => {
+    this.updateMineReportOptions(this.props.mineReportDefinitionOptions);
+  };
+
   updateMineReportOptions = (mineReportDefinitionOptions, selectedMineReportCategory) => {
     let mineReportDefinitionOptionsFiltered = mineReportDefinitionOptions;
 
@@ -69,7 +73,7 @@ export class ReportFilterForm extends Component {
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit} onReset={this.handleReset}>
         <div>
-          <Row gutter={6}>
+          <Row gutter={16}>
             <Col md={6} xs={24}>
               <Field
                 id="reportName"
@@ -90,20 +94,20 @@ export class ReportFilterForm extends Component {
                 data={this.props.dropdownMineReportCategoryOptions}
               />
             </Col>
-            <label>Compliance Year</label>
             <Col md={3} xs={24}>
               <Field
                 id="complianceStartYear"
                 name="complianceStartYear"
+                label="Compliance Year"
                 placeholder="Start date"
                 component={renderConfig.FIELD}
               />
             </Col>
-            -
             <Col md={3} xs={24}>
               <Field
                 id="complianceEndYear"
                 name="complianceEndYear"
+                label=" "
                 placeholder="End date"
                 component={renderConfig.FIELD}
               />
