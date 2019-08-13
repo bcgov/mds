@@ -35,6 +35,8 @@ from app.api.mines.reports.models.mine_report import MineReport
 from app.api.now_submissions.models.application import Application as NOWApplication
 from app.api.now_submissions.models.client import Client as NOWClient
 from app.api.now_submissions.models.contact import Contact as NOWContact
+from app.api.now_submissions.models.placer_activity import PlacerActivity as NOWPlacerActivity
+from app.api.now_submissions.models.existing_placer_activity_xref import ExistingPlacerActivityXref as NOWExistingPlacerActivityXref
 
 GUID = factory.LazyFunction(uuid.uuid4)
 TODAY = factory.LazyFunction(datetime.now)
@@ -603,6 +605,7 @@ class NOWApplicationFactory(BaseFactory):
     applicantclientid = factory.SelfAttribute('applicant.clientid')
     submitterclientid = factory.SelfAttribute('submitter.clientid')
     contacts = []
+    existing_placer_activity = []
 
     @factory.post_generation
     def contacts(obj, create, extracted, **kwargs):
@@ -615,6 +618,18 @@ class NOWApplicationFactory(BaseFactory):
         NOWContactFactory.create_batch(size=extracted,
                                        application=obj,
                                        **kwargs)
+
+    @factory.post_generation
+    def existing_placer_activity(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        NOWExistingPlacerActivityXrefFactory.create_batch(size=extracted,
+                                                          application=obj,
+                                                          **kwargs)
 
 
 class NOWClientFactory(BaseFactory):
@@ -634,4 +649,24 @@ class NOWContactFactory(BaseFactory):
 
     id = factory.fuzzy.FuzzyInteger(1, 100)
     messageid = factory.SelfAttribute('application.messageid')
+    type = factory.Faker('sentence', nb_words=1)
+
+
+class NOWExistingPlacerActivityXrefFactory(BaseFactory):
+    class Meta:
+        model = NOWExistingPlacerActivityXref
+
+    class Params:
+        application = factory.SubFactory('tests.factories.NOWApplicationFactory')
+        placer_activity = factory.SubFactory('tests.factories.NOWPlacerActivityFactory')
+
+    messageid = factory.SelfAttribute('application.messageid')
+    placeractivityid = factory.SelfAttribute('placer_activity.placeractivityid')
+
+
+class NOWPlacerActivityFactory(BaseFactory):
+    class Meta:
+        model = NOWPlacerActivity
+
+    placeractivityid = factory.fuzzy.FuzzyInteger(1, 100)
     type = factory.Faker('sentence', nb_words=1)
