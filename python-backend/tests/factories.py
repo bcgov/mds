@@ -39,6 +39,7 @@ from app.api.now_submissions.models.placer_activity import PlacerActivity as NOW
 from app.api.now_submissions.models.settling_pond import SettlingPond as NOWSettlingPond
 from app.api.now_submissions.models.document import Document as NOWDocument
 from app.api.now_submissions.models.sand_grv_qry_activity import SandGrvQryActivity as NOWSandGrvQryActivity
+from app.api.now_submissions.models.under_exp_new_activity import UnderExpNewActivity as NOWUnderExpNewActivity
 from app.api.now_submissions.models.surface_bulk_sample_activity import SurfaceBulkSampleActivity as NOWSurfaceBulkSampleActivity
 from app.api.now_submissions.models.existing_placer_activity_xref import ExistingPlacerActivityXref as NOWExistingPlacerActivityXref
 from app.api.now_submissions.models.proposed_placer_activity_xref import ProposedPlacerActivityXref as NOWProposedPlacerActivityXref
@@ -649,6 +650,18 @@ class NOWApplicationFactory(BaseFactory):
                                                   **kwargs)
 
     @factory.post_generation
+    def under_exp_new_activity(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        NOWUnderExpNewActivityFactory.create_batch(size=extracted,
+                                                   application=obj,
+                                                   **kwargs)
+
+    @factory.post_generation
     def existing_placer_activity(obj, create, extracted, **kwargs):
         if not create:
             return
@@ -744,6 +757,18 @@ class NOWContactFactory(BaseFactory):
 class NOWSandGrvQryActivityFactory(BaseFactory):
     class Meta:
         model = NOWSandGrvQryActivity
+
+    class Params:
+        application = factory.SubFactory('tests.factories.NOWApplicationFactory')
+
+    id = factory.fuzzy.FuzzyInteger(1, 100)
+    messageid = factory.SelfAttribute('application.messageid')
+    type = factory.Faker('sentence', nb_words=1)
+
+
+class NOWUnderExpNewActivityFactory(BaseFactory):
+    class Meta:
+        model = NOWUnderExpNewActivity
 
     class Params:
         application = factory.SubFactory('tests.factories.NOWApplicationFactory')
