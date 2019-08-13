@@ -74,6 +74,23 @@ export const updateMineReport = (mineGuid, mineReportGuid, payload) => (dispatch
     .catch(() => dispatch(error(reducerTypes.UPDATE_MINE_REPORT)));
 };
 
+export const fetchMineReportComments = (mineGuid, mineReportGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.GET_MINE_REPORT_COMMENTS));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl}${API.MINE_REPORT_COMMENTS(mineGuid, mineReportGuid)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_MINE_REPORT_COMMENTS));
+      dispatch(mineReportActions.storeMineReportComments(response.data));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_MINE_REPORT_COMMENTS)))
+    .finally(() => dispatch(hideLoading()));
+};
+
 export const createMineReportComment = (mineGuid, mineReportGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_MINE_REPORT_COMMENT));
   return CustomAxios()

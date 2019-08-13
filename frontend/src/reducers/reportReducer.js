@@ -3,6 +3,7 @@ import { REPORTS } from "@/constants/reducerTypes";
 
 const initialState = {
   mineReports: [],
+  reportComments: [],
 };
 
 const reportReducer = (state = initialState, action) => {
@@ -12,11 +13,18 @@ const reportReducer = (state = initialState, action) => {
         ...state,
         mineReports: action.payload.records,
       };
+    case actionTypes.STORE_MINE_REPORT_COMMENTS:
+      return {
+        ...state,
+        reportComments: action.payload.records,
+      };
     default:
       return state;
   }
 };
 
 export const getMineReports = (state) => state[REPORTS].mineReports;
+
+export const getMineReportComments = (state) => state[REPORTS].reportComments;
 
 export default reportReducer;

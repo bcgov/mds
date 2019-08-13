@@ -215,7 +215,7 @@ export class AddReportForm extends Component {
               mineReportSubmissions={this.state.mineReportSubmissions}
               updateMineReportSubmissions={this.updateMineReportSubmissions}
             />
-            <ReportComments />
+            <ReportComments handleSubmit={this.props.handleCommentSubmit} />
           </Col>
         </Row>
         <div className="right center-mobile">
