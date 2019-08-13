@@ -37,6 +37,7 @@ from app.api.now_submissions.models.client import Client as NOWClient
 from app.api.now_submissions.models.contact import Contact as NOWContact
 from app.api.now_submissions.models.placer_activity import PlacerActivity as NOWPlacerActivity
 from app.api.now_submissions.models.settling_pond import SettlingPond as NOWSettlingPond
+from app.api.now_submissions.models.surface_bulk_sample_activity import SurfaceBulkSampleActivity as NOWSurfaceBulkSampleActivity
 from app.api.now_submissions.models.existing_placer_activity_xref import ExistingPlacerActivityXref as NOWExistingPlacerActivityXref
 from app.api.now_submissions.models.proposed_placer_activity_xref import ProposedPlacerActivityXref as NOWProposedPlacerActivityXref
 from app.api.now_submissions.models.existing_settling_pond_xref import ExistingSettlingPondXref as NOWExistingSettlingPondXref
@@ -608,8 +609,6 @@ class NOWApplicationFactory(BaseFactory):
     messageid = factory.fuzzy.FuzzyInteger(1, 100)
     applicantclientid = factory.SelfAttribute('applicant.clientid')
     submitterclientid = factory.SelfAttribute('submitter.clientid')
-    contacts = []
-    existing_placer_activity = []
 
     @factory.post_generation
     def contacts(obj, create, extracted, **kwargs):
@@ -648,6 +647,18 @@ class NOWApplicationFactory(BaseFactory):
                                                           **kwargs)
 
     @factory.post_generation
+    def surface_bulk_sample_activity(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        NOWSurfaceBulkSampleActivityFactory.create_batch(size=extracted,
+                                                        application=obj,
+                                                        **kwargs)
+
+    @factory.post_generation
     def existing_settling_pond(obj, create, extracted, **kwargs):
         if not create:
             return
@@ -683,6 +694,18 @@ class NOWClientFactory(BaseFactory):
 class NOWContactFactory(BaseFactory):
     class Meta:
         model = NOWContact
+
+    class Params:
+        application = factory.SubFactory('tests.factories.NOWApplicationFactory')
+
+    id = factory.fuzzy.FuzzyInteger(1, 100)
+    messageid = factory.SelfAttribute('application.messageid')
+    type = factory.Faker('sentence', nb_words=1)
+
+
+class NOWSurfaceBulkSampleActivityFactory(BaseFactory):
+    class Meta:
+        model = NOWSurfaceBulkSampleActivity
 
     class Params:
         application = factory.SubFactory('tests.factories.NOWApplicationFactory')
@@ -742,6 +765,7 @@ class NOWExistingSettlingPondXrefFactory(BaseFactory):
 
     messageid = factory.SelfAttribute('application.messageid')
     settlingpondid = factory.SelfAttribute('settling_pond.settlingpondid')
+
 
 class NOWProposedSettlingPondXrefFactory(BaseFactory):
     class Meta:

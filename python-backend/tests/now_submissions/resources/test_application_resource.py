@@ -109,3 +109,14 @@ class TestGetApplicationResource:
         assert get_resp.status_code == 200
         assert get_data['proposed_settling_pond'][0]['pondid'] is not None
         assert get_data['proposed_settling_pond'][0]['pondid'] in list(map(lambda x: x.pondid, application.proposed_settling_pond))
+
+    def test_get_now_application_by_guid_surface_bulk_sample_activity(self, test_client, db_session, auth_headers):
+        """Should include the correct surface_bulk_sample_activity"""
+
+        application = NOWApplicationFactory()
+        get_resp = test_client.get(
+            f'/now-submissions/applications/{application.application_guid}', headers=auth_headers['full_auth_header'])
+        get_data = json.loads(get_resp.data.decode())
+        assert get_resp.status_code == 200
+        assert get_data['surface_bulk_sample_activity'][0]['type'] is not None
+        assert get_data['surface_bulk_sample_activity'][0]['type'] in list(map(lambda x: x.type, application.surface_bulk_sample_activity))
