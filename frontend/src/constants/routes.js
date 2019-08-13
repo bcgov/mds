@@ -161,16 +161,6 @@ export const SEARCH_RESULTS = {
   component: SearchResults,
 };
 
-// export const NOTICE_OF_WORK_APPLICATIONS = {
-//   route: "/dashboard/notice-of-work",
-//   dynamicRoute: ({ page, per_page, ...params }) =>
-//     `/dashboard/notice-of-work?${queryString.stringify(
-//       { page, per_page, ...params },
-//       { sort: false }
-//     )}`,
-//   component: COMPONENT_NAME_GOES_HERE,
-// };
-
 export const NOTICE_OF_WORK_APPLICATION = {
   route: "/dashboard/notice-of-work/application",
   dynamicRoute: (applicationGuid) => `/dashboard-notice-of-work/application/${applicationGuid}`,

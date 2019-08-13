@@ -12,8 +12,8 @@ const recColumns = [
   },
   {
     title: "Total Effected Area (ha)",
-    dataIndex: "efectedArea",
-    key: "efectedArea",
+    dataIndex: "effectedArea",
+    key: "effectedArea",
   },
   {
     title: "Estimated Cost of Reclamation",
