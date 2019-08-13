@@ -87,3 +87,25 @@ class TestGetApplicationResource:
         assert get_resp.status_code == 200
         assert get_data['proposed_placer_activity'][0]['type'] is not None
         assert get_data['proposed_placer_activity'][0]['type'] in list(map(lambda x: x.type, application.proposed_placer_activity))
+
+    def test_get_now_application_by_guid_existing_settling_pond(self, test_client, db_session, auth_headers):
+        """Should include the correct existing_settling_pond"""
+
+        application = NOWApplicationFactory()
+        get_resp = test_client.get(
+            f'/now-submissions/applications/{application.application_guid}', headers=auth_headers['full_auth_header'])
+        get_data = json.loads(get_resp.data.decode())
+        assert get_resp.status_code == 200
+        assert get_data['existing_settling_pond'][0]['pondid'] is not None
+        assert get_data['existing_settling_pond'][0]['pondid'] in list(map(lambda x: x.pondid, application.existing_settling_pond))
+
+    def test_get_now_application_by_guid_proposed_settling_pond(self, test_client, db_session, auth_headers):
+        """Should include the correct proposed_settling_pond"""
+
+        application = NOWApplicationFactory()
+        get_resp = test_client.get(
+            f'/now-submissions/applications/{application.application_guid}', headers=auth_headers['full_auth_header'])
+        get_data = json.loads(get_resp.data.decode())
+        assert get_resp.status_code == 200
+        assert get_data['proposed_settling_pond'][0]['pondid'] is not None
+        assert get_data['proposed_settling_pond'][0]['pondid'] in list(map(lambda x: x.pondid, application.proposed_settling_pond))

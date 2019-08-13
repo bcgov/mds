@@ -36,8 +36,11 @@ from app.api.now_submissions.models.application import Application as NOWApplica
 from app.api.now_submissions.models.client import Client as NOWClient
 from app.api.now_submissions.models.contact import Contact as NOWContact
 from app.api.now_submissions.models.placer_activity import PlacerActivity as NOWPlacerActivity
+from app.api.now_submissions.models.settling_pond import SettlingPond as NOWSettlingPond
 from app.api.now_submissions.models.existing_placer_activity_xref import ExistingPlacerActivityXref as NOWExistingPlacerActivityXref
 from app.api.now_submissions.models.proposed_placer_activity_xref import ProposedPlacerActivityXref as NOWProposedPlacerActivityXref
+from app.api.now_submissions.models.existing_settling_pond_xref import ExistingSettlingPondXref as NOWExistingSettlingPondXref
+from app.api.now_submissions.models.proposed_settling_pond_xref import ProposedSettlingPondXref as NOWProposedSettlingPondXref
 
 GUID = factory.LazyFunction(uuid.uuid4)
 TODAY = factory.LazyFunction(datetime.now)
@@ -644,6 +647,30 @@ class NOWApplicationFactory(BaseFactory):
                                                           application=obj,
                                                           **kwargs)
 
+    @factory.post_generation
+    def existing_settling_pond(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        NOWExistingSettlingPondXrefFactory.create_batch(size=extracted,
+                                                        application=obj,
+                                                        **kwargs)
+
+    @factory.post_generation
+    def proposed_settling_pond(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        NOWProposedSettlingPondXrefFactory.create_batch(size=extracted,
+                                                        application=obj,
+                                                        **kwargs)
+
 
 class NOWClientFactory(BaseFactory):
     class Meta:
@@ -695,3 +722,34 @@ class NOWProposedPlacerActivityXrefFactory(BaseFactory):
 
     messageid = factory.SelfAttribute('application.messageid')
     placeractivityid = factory.SelfAttribute('placer_activity.placeractivityid')
+
+
+class NOWSettlingPondFactory(BaseFactory):
+    class Meta:
+        model = NOWSettlingPond
+
+    settlingpondid = factory.fuzzy.FuzzyInteger(1, 100)
+    pondid = factory.Faker('sentence', nb_words=1)
+
+
+class NOWExistingSettlingPondXrefFactory(BaseFactory):
+    class Meta:
+        model = NOWExistingSettlingPondXref
+
+    class Params:
+        application = factory.SubFactory('tests.factories.NOWApplicationFactory')
+        settling_pond = factory.SubFactory('tests.factories.NOWSettlingPondFactory')
+
+    messageid = factory.SelfAttribute('application.messageid')
+    settlingpondid = factory.SelfAttribute('settling_pond.settlingpondid')
+
+class NOWProposedSettlingPondXrefFactory(BaseFactory):
+    class Meta:
+        model = NOWProposedSettlingPondXref
+
+    class Params:
+        application = factory.SubFactory('tests.factories.NOWApplicationFactory')
+        settling_pond = factory.SubFactory('tests.factories.NOWSettlingPondFactory')
+
+    messageid = factory.SelfAttribute('application.messageid')
+    settlingpondid = factory.SelfAttribute('settling_pond.settlingpondid')
