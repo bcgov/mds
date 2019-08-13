@@ -33,6 +33,7 @@ from app.api.variances.models.variance import Variance
 from app.api.parties.party_appt.models.party_business_role_appt import PartyBusinessRoleAppointment
 from app.api.mines.reports.models.mine_report import MineReport
 from app.api.now_submissions.models.application import Application as NOWApplication
+from app.api.now_submissions.models.client import Client as NOWClient
 
 GUID = factory.LazyFunction(uuid.uuid4)
 TODAY = factory.LazyFunction(datetime.now)
@@ -590,5 +591,21 @@ class NOWApplicationFactory(BaseFactory):
     class Meta:
         model = NOWApplication
 
+    class Params:
+        mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
+        applicant = factory.SubFactory('tests.factories.NOWClientFactory')
+        submitter = factory.SubFactory('tests.factories.NOWClientFactory')
+
     application_guid = GUID
+    mine_guid = factory.SelfAttribute('mine.mine_guid')
     messageid = factory.fuzzy.FuzzyInteger(1, 100)
+    applicantclientid = factory.SelfAttribute('applicant.clientid')
+    submitterclientid = factory.SelfAttribute('submitter.clientid')
+
+
+class NOWClientFactory(BaseFactory):
+    class Meta:
+        model = NOWClient
+
+    clientid = factory.fuzzy.FuzzyInteger(1, 100)
+    type = factory.Faker('sentence', nb_words=1)
