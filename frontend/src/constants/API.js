@@ -27,9 +27,9 @@ export const ADD_MINE_EXPECTED_DOCUMENT = "/documents/expected/mines";
 export const UPLOAD_MINE_EXPECTED_DOCUMENT_FILE = (expectedDocumentGuid) =>
   `/documents/expected/${expectedDocumentGuid}/document`;
 export const DOCUMENT_STATUS = "/documents/expected/status";
-export const MINE_DOCUMENTS = "/documents/mines";
-export const MINE_TSF_REQUIRED_DOCUMENTS = "/documents/required?category=TSF";
-export const EXPECTED_DOCUMENT = "/documents/expected";
+export const MINE_DOCUMENTS = (mine_guid) => `/mines/${mine_guid}/documents`;
+export const MINE_TSF_REQUIRED_DOCUMENTS = "/required-documents?category=TSF";
+export const EXPECTED_DOCUMENT = `/documents/expected`;
 export const MINE_TENURE_TYPES = "/mines/mine-tenure-type-codes";
 export const MINE_TYPES = "/mines/mine-types";
 export const MINE_TYPES_DETAILS = "/mines/mine-types/details";

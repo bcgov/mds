@@ -294,7 +294,7 @@ export const fetchMineDocuments = (mineGuid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_DOCUMENTS));
   dispatch(showLoading());
   return CustomAxios()
-    .get(`${ENVIRONMENT.apiUrl}${API.MINE_DOCUMENTS}/${mineGuid}`, createRequestHeader())
+    .get(`${ENVIRONMENT.apiUrl}${API.MINE_DOCUMENTS(mineGuid)}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_DOCUMENTS));
       dispatch(mineActions.storeMineDocuments(response.data));

@@ -4,7 +4,7 @@ from werkzeug.exceptions import BadRequest, NotFound
 
 from ....utils.access_decorators import requires_any_of, VIEW_ALL, EDIT_VARIANCE, MINESPACE_PROPONENT
 from ...mine.models.mine import Mine
-from ....utils.resources_mixins import UserMixin, ErrorMixin
+from ....utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.mines.mine_api_models import VARIANCE_MODEL
 from app.api.variances.models.variance import Variance
@@ -15,7 +15,7 @@ from app.api.variances.models.variance import Variance
 from app.api.parties.party.models.party import Party
 
 
-class MineVarianceListResource(Resource, UserMixin, ErrorMixin):
+class MineVarianceListResource(Resource, UserMixin):
     parser = CustomReqparser()
     parser.add_argument(
         'compliance_article_id',
