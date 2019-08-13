@@ -55,6 +55,17 @@ class TestGetApplicationResource:
         assert get_data['submitter']['type'] is not None
         assert get_data['submitter']['type'] == submitter.type
 
+    def test_get_now_application_by_guid_documents(self, test_client, db_session, auth_headers):
+        """Should include the correct documents"""
+
+        application = NOWApplicationFactory()
+        get_resp = test_client.get(
+            f'/now-submissions/applications/{application.application_guid}', headers=auth_headers['full_auth_header'])
+        get_data = json.loads(get_resp.data.decode())
+        assert get_resp.status_code == 200
+        assert get_data['documents'][0]['filename'] is not None
+        assert get_data['documents'][0]['filename'] in list(map(lambda x: x.filename, application.documents))
+
     def test_get_now_application_by_guid_contacts(self, test_client, db_session, auth_headers):
         """Should include the correct contacts"""
 

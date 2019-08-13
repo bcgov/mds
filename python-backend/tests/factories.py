@@ -37,6 +37,7 @@ from app.api.now_submissions.models.client import Client as NOWClient
 from app.api.now_submissions.models.contact import Contact as NOWContact
 from app.api.now_submissions.models.placer_activity import PlacerActivity as NOWPlacerActivity
 from app.api.now_submissions.models.settling_pond import SettlingPond as NOWSettlingPond
+from app.api.now_submissions.models.document import Document as NOWDocument
 from app.api.now_submissions.models.surface_bulk_sample_activity import SurfaceBulkSampleActivity as NOWSurfaceBulkSampleActivity
 from app.api.now_submissions.models.existing_placer_activity_xref import ExistingPlacerActivityXref as NOWExistingPlacerActivityXref
 from app.api.now_submissions.models.proposed_placer_activity_xref import ProposedPlacerActivityXref as NOWProposedPlacerActivityXref
@@ -611,6 +612,18 @@ class NOWApplicationFactory(BaseFactory):
     submitterclientid = factory.SelfAttribute('submitter.clientid')
 
     @factory.post_generation
+    def documents(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        NOWDocumentFactory.create_batch(size=extracted,
+                                        application=obj,
+                                        **kwargs)
+
+    @factory.post_generation
     def contacts(obj, create, extracted, **kwargs):
         if not create:
             return
@@ -689,6 +702,18 @@ class NOWClientFactory(BaseFactory):
 
     clientid = factory.fuzzy.FuzzyInteger(1, 100)
     type = factory.Faker('sentence', nb_words=1)
+
+
+class NOWDocumentFactory(BaseFactory):
+    class Meta:
+        model = NOWDocument
+
+    class Params:
+        application = factory.SubFactory('tests.factories.NOWApplicationFactory')
+
+    id = factory.fuzzy.FuzzyInteger(1, 100)
+    messageid = factory.SelfAttribute('application.messageid')
+    filename = factory.Faker('file_name')
 
 
 class NOWContactFactory(BaseFactory):
