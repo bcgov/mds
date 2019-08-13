@@ -1,12 +1,13 @@
 from flask_restplus import Resource
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import NotFound, BadRequest
 from flask import request
 from sqlalchemy_filters import apply_pagination, apply_filters
 from sqlalchemy import desc
 
+
 from app.extensions import api
+from app.api.mines.permits.permit.models.permit import Permit
 from app.api.now_submissions.now_submission.models.application import Application
-from app.api.now_submissions.now_submission.models.client import Client
 from app.api.now_submissions.response_models import APPLICATION, PAGINATED_APPLICATION_LIST
 from app.api.utils.access_decorators import requires_role_view_all
 from app.api.utils.resources_mixins import UserMixin, ErrorMixin
@@ -46,19 +47,21 @@ class ApplicationListResource(Resource, UserMixin, ErrorMixin):
         if not records:
             raise BadRequest('Unable to fetch applications.')
 
+        data = records.all()
+        print(data[0].__dict__)
+
         return {
-            'records': records.all(),
+            'records': data,
             'current_page': pagination_details.page_number,
             'total_pages': pagination_details.num_pages,
             'items_per_page': pagination_details.page_size,
             'total': pagination_details.total_results,
         }
 
-
     def _apply_filters_and_pagination(self,
                                         page_number=PAGE_DEFAULT,
                                         page_size=PER_PAGE_DEFAULT):
 
-        filtered_query = Application.query.order_by(desc(Application.receiveddate)).options(joinedload(Application.mine.permit))
+        filtered_query = Application.query.order_by(desc(Application.receiveddate))
 
         return apply_pagination(filtered_query, page_number, page_size)
