@@ -153,3 +153,14 @@ class TestGetApplicationResource:
         assert get_resp.status_code == 200
         assert get_data['under_exp_new_activity'][0]['type'] is not None
         assert get_data['under_exp_new_activity'][0]['type'] in list(map(lambda x: x.type, application.under_exp_new_activity))
+
+    def test_get_now_application_by_guid_under_exp_rehab_activity(self, test_client, db_session, auth_headers):
+        """Should include the correct under_exp_rehab_activity"""
+
+        application = NOWApplicationFactory()
+        get_resp = test_client.get(
+            f'/now-submissions/applications/{application.application_guid}', headers=auth_headers['full_auth_header'])
+        get_data = json.loads(get_resp.data.decode())
+        assert get_resp.status_code == 200
+        assert get_data['under_exp_rehab_activity'][0]['type'] is not None
+        assert get_data['under_exp_rehab_activity'][0]['type'] in list(map(lambda x: x.type, application.under_exp_rehab_activity))
