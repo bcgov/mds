@@ -41,7 +41,7 @@ const mockState = {
   mineRegionOptions: Mock.REGION_OPTIONS.records,
   mineTenureTypes: Mock.TENURE_TYPES_RESPONSE.records,
   expectedDocumentStatusOptions: Mock.EXPECTED_DOCUMENT_STATUS_OPTIONS.records,
-  mineTSFRequiredReports: Mock.MINE_TSF_REQUIRED_REPORTS_RESPONSE.required_documents,
+  mineTSFRequiredReports: Mock.MINE_TSF_REQUIRED_REPORTS_RESPONSE.records,
   mineDisturbanceOptions: Mock.DISTURBANCE_OPTIONS.records,
   mineCommodityOptions: Mock.COMMODITY_OPTIONS.records,
   provinceOptions: Mock.PROVINCE_OPTIONS.records,

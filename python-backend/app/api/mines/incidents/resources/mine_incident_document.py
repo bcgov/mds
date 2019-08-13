@@ -13,15 +13,16 @@ from sqlalchemy.exc import DBAPIError
 
 from app.api.incidents.models.mine_incident import MineIncident
 from app.api.mines.mine.models.mine import Mine
-from app.api.documents.mines.models.mine_document import MineDocument
-from app.api.documents.incidents.models.mine_incident import MineIncidentDocumentXref
+from app.api.mines.documents.mines.models.mine_document import MineDocument
+from app.api.mines.incidents.models.mine_incident_document_xref import MineIncidentDocumentXref
 from app.api.mines.mine_api_models import MINE_INCIDENT_MODEL
 
 from app.extensions import api, db
 from app.api.utils.custom_reqparser import CustomReqparser
-from ....utils.access_decorators import requires_role_edit_do
-from ....utils.resources_mixins import UserMixin, ErrorMixin
-from ....utils.url import get_document_manager_svc_url
+from app.api.utils.access_decorators import requires_role_edit_do
+from app.api.utils.resources_mixins import UserMixin
+
+from app.api.services.document_manager_service import DocumentManagerService
 
 from app.api.services.document_manager_service import DocumentManagerService
 
