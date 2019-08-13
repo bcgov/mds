@@ -175,3 +175,14 @@ class TestGetApplicationResource:
         assert get_resp.status_code == 200
         assert get_data['under_exp_surface_activity'][0]['type'] is not None
         assert get_data['under_exp_surface_activity'][0]['type'] in list(map(lambda x: x.type, application.under_exp_surface_activity))
+
+    def test_get_now_application_by_guid_water_source_activity(self, test_client, db_session, auth_headers):
+        """Should include the correct water_source_activity"""
+
+        application = NOWApplicationFactory()
+        get_resp = test_client.get(
+            f'/now-submissions/applications/{application.application_guid}', headers=auth_headers['full_auth_header'])
+        get_data = json.loads(get_resp.data.decode())
+        assert get_resp.status_code == 200
+        assert get_data['water_source_activity'][0]['type'] is not None
+        assert get_data['water_source_activity'][0]['type'] in list(map(lambda x: x.type, application.water_source_activity))

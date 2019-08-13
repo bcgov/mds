@@ -42,6 +42,7 @@ from app.api.now_submissions.models.sand_grv_qry_activity import SandGrvQryActiv
 from app.api.now_submissions.models.under_exp_new_activity import UnderExpNewActivity as NOWUnderExpNewActivity
 from app.api.now_submissions.models.under_exp_rehab_activity import UnderExpRehabActivity as NOWUnderExpRehabActivity
 from app.api.now_submissions.models.under_exp_surface_activity import UnderExpSurfaceActivity as NOWUnderExpSurfaceActivity
+from app.api.now_submissions.models.water_source_activity import WaterSourceActivity as NOWWaterSourceActivity
 from app.api.now_submissions.models.surface_bulk_sample_activity import SurfaceBulkSampleActivity as NOWSurfaceBulkSampleActivity
 from app.api.now_submissions.models.existing_placer_activity_xref import ExistingPlacerActivityXref as NOWExistingPlacerActivityXref
 from app.api.now_submissions.models.proposed_placer_activity_xref import ProposedPlacerActivityXref as NOWProposedPlacerActivityXref
@@ -688,6 +689,18 @@ class NOWApplicationFactory(BaseFactory):
                                                        **kwargs)
 
     @factory.post_generation
+    def water_source_activity(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        NOWWaterSourceActivityFactory.create_batch(size=extracted,
+                                                   application=obj,
+                                                   **kwargs)
+
+    @factory.post_generation
     def existing_placer_activity(obj, create, extracted, **kwargs):
         if not create:
             return
@@ -819,6 +832,18 @@ class NOWUnderExpRehabActivityFactory(BaseFactory):
 class NOWUnderExpSurfaceActivityFactory(BaseFactory):
     class Meta:
         model = NOWUnderExpSurfaceActivity
+
+    class Params:
+        application = factory.SubFactory('tests.factories.NOWApplicationFactory')
+
+    id = factory.fuzzy.FuzzyInteger(1, 100)
+    messageid = factory.SelfAttribute('application.messageid')
+    type = factory.Faker('sentence', nb_words=1)
+
+
+class NOWWaterSourceActivityFactory(BaseFactory):
+    class Meta:
+        model = NOWWaterSourceActivity
 
     class Params:
         application = factory.SubFactory('tests.factories.NOWApplicationFactory')
