@@ -33,10 +33,10 @@ import {
 import { getVariances, getVariancePageData } from "@/selectors/varianceSelectors";
 import { VarianceTable } from "@/components/dashboard/customHomePage/VarianceTable";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
-import * as Strings from "@/constants/strings";
 import * as router from "@/constants/routes";
 import { fetchInspectors } from "@/actionCreators/partiesActionCreator";
 import VarianceSearch from "./VarianceSearch";
+import { formatParamStringToArray } from "@/utils/helpers";
 
 /**
  * @class Variance page is a landing page for variance searching
@@ -75,65 +75,39 @@ const formatParams = ({ region = [], compliance_code = [], ...remainingParams })
     ...remainingParams,
   };
 };
-
 export class VarianceHomePage extends Component {
   params = queryString.parse(this.props.location.search);
 
   constructor(props) {
     super(props);
+    const formatedParams = {
+      compliance_code: formatParamStringToArray(this.params.compliance_code),
+      region: formatParamStringToArray(this.params.region),
+      major: this.params.major,
+      search: this.params.search,
+      issue_date_after: this.params.issue_date_after,
+      issue_date_before: this.params.issue_date_before,
+      expiry_date_before: this.params.expiry_date_before,
+      expiry_date_after: this.params.expiry_date_after,
+    };
     this.handleVarianceSearchDebounced = debounce(this.handleVarianceSearch, 1000);
-    // this.state = {
-    //   variancesLoaded: false,
-    //   params: {
-    //     page: Strings.DEFAULT_PAGE,
-    //     per_page: Strings.DEFAULT_PER_PAGE,
-    //     major: "",
-    //     region: [],
-    //     compliance_code: [],
-    //     issue_date_after: "",
-    //     issue_date_before: "",
-    //     expiry_date_before: "",
-    //     expiry_date_after: "",
-    //     search: "",
-    //   },
-    // };
+    this.state = {
+      variancesLoaded: false,
+      params: formatedParams,
+    };
   }
-
-  state = {
-    variancesLoaded: false,
-    params: {
-      // variance_application_status_code: [],
-      page: Strings.DEFAULT_PAGE,
-      per_page: Strings.DEFAULT_PER_PAGE,
-      // major: "",
-      // region: [],
-      // compliance_code: [],
-      // issue_date_after: "",
-      // issue_date_before: "",
-      // expiry_date_before: "",
-      // expiry_date_after: "",
-      // search: "",
-      ...this.params,
-    },
-  };
 
   componentDidMount() {
     const params = this.props.location.search;
     const parsedParams = queryString.parse(params);
-    const {
-      page = this.state.params.page,
-      per_page = this.state.params.per_page,
-      type = this.state.params.type,
-    } = parsedParams;
+    const { page = this.state.params.page, per_page = this.state.params.per_page } = parsedParams;
     if (params) {
       this.renderDataFromURL();
-      // this.renderDataFromURL(this.params);
     } else {
       this.props.history.push(
         router.VARIANCE_DASHBOARD.dynamicRoute({
           page,
           per_page,
-          type,
         })
       );
     }
@@ -164,39 +138,25 @@ export class VarianceHomePage extends Component {
     });
   }
 
-  renderDataFromURL = (params) => {
-    const {
-      region,
-      compliance_code,
-      major,
-      search,
-      // issue_date_after,
-      // issue_date_before,
-      // expiry_date_before,
-      // expiry_date_after,
-      ...remainingParams
-    } = queryString.parse(params);
-    const format = (param) => (param ? param.split(",").filter((x) => x) : []);
-    this.setState({
-      params: {
-        region: format(region),
-        compliance_code: format(compliance_code),
-        major,
-        search,
-        // issue_date_after,
-        // issue_date_before,
-        // expiry_date_before,
-        // expiry_date_after,
-        ...remainingParams,
+  renderDataFromURL = (nextProps) => {
+    const params = nextProps ? nextProps.location.search : this.props.location.search;
+    const { region, compliance_code, major, search, ...remainingParams } = queryString.parse(
+      params
+    );
+    this.setState(
+      {
+        params: {
+          region: formatParamStringToArray(region),
+          compliance_code: formatParamStringToArray(compliance_code),
+          major,
+          search,
+          ...remainingParams,
+        },
       },
-    });
-    console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-    console.log(queryString.parse(params));
-    console.log("Remaining params");
-    console.log(remainingParams);
-    // console.log(this.state);
-
-    console.log(this.props);
+      () => {
+        this.props.fetchVariances(this.state.params);
+      }
+    );
   };
 
   handleVarianceSearch = (searchParams, clear = false) => {
@@ -211,6 +171,7 @@ export class VarianceHomePage extends Component {
       // Reset page number
       page: String.DEFAULT_PAGE,
       // Retain per_page if present
+      // eslint-disable-next-line react/no-access-state-in-setstate
       per_page: this.state.params.per_page ? this.state.params.per_page : String.DEFAULT_PER_PAGE,
     };
 
@@ -220,7 +181,10 @@ export class VarianceHomePage extends Component {
         params: updatedParams,
       },
       // Fetch parties once state has been updated
-      () => this.renderDataFromURL()
+      () => {
+        console.log("**************THE RENDER DATA FROM URL IS*****************");
+        return this.renderDataFromURL();
+      }
     );
   };
 
@@ -312,9 +276,6 @@ export class VarianceHomePage extends Component {
   };
 
   render() {
-    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-    console.log(this.state);
-
     return (
       <div className="landing-page">
         <div className="landing-page__header">
@@ -324,6 +285,7 @@ export class VarianceHomePage extends Component {
           <VarianceSearch
             handleNameFieldReset={this.handleNameFieldReset}
             initialValues={this.state.params}
+            fetchVariances={this.props.fetchVariances}
             handleVarianceSearch={this.handleVarianceSearchDebounced}
             mineRegionOptions={this.props.mineRegionOptions}
             complianceCodes={this.props.getDropdownHSRCMComplianceCodes}

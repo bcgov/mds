@@ -30,8 +30,6 @@ export class ContactSearch extends Component {
   };
 
   render() {
-    console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-    console.log(this.props);
     return (
       <div>
         <Row>

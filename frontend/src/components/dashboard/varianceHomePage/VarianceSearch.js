@@ -51,8 +51,6 @@ export class VarianceSearch extends Component {
   };
 
   render() {
-    console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-    console.log(this.props);
     return (
       <div>
         <Row>
