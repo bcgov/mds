@@ -61,7 +61,6 @@ export class VarianceSearch extends Component {
                 handleVarianceSearch={this.props.handleVarianceSearch}
                 toggleAdvancedSearch={this.toggleAdvancedSearch}
                 isAdvanceSearch={this.state.isAdvanceSearch}
-                initialValues={this.props.initialValues}
                 complianceCodes={this.props.complianceCodes}
                 mineRegionOptions={this.props.mineRegionOptions}
               />

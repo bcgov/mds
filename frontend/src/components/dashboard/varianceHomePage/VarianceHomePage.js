@@ -68,10 +68,27 @@ const propTypes = {
 
 const joinOrRemove = (param, key) =>
   isEmpty(param) && typeof param !== "string" ? {} : { [key]: param.join(",") };
-const formatParams = ({ region = [], compliance_code = [], ...remainingParams }) => {
+const removeEmptyStings = (param, key) => (isEmpty(param) ? {} : { [key]: param });
+const formatParams = ({
+  region = [],
+  compliance_code = [],
+  issue_date_after,
+  issue_date_before,
+  expiry_date_before,
+  expiry_date_after,
+  search,
+  major,
+  ...remainingParams
+}) => {
   return {
     ...joinOrRemove(region, "region"),
     ...joinOrRemove(compliance_code, "compliance_code"),
+    ...removeEmptyStings(issue_date_after, "issue_date_after"),
+    ...removeEmptyStings(issue_date_before, "issue_date_before"),
+    ...removeEmptyStings(expiry_date_before, "expiry_date_before"),
+    ...removeEmptyStings(expiry_date_after, "expiry_date_after"),
+    ...removeEmptyStings(search, "search"),
+    ...removeEmptyStings(major, "major"),
     ...remainingParams,
   };
 };
@@ -161,8 +178,9 @@ export class VarianceHomePage extends Component {
 
   handleVarianceSearch = (searchParams, clear = false) => {
     const formattedSearchParams = formatParams(searchParams);
-    const persistedParams = clear ? {} : formatParams(this.state.params);
+    // const formattedSearchParams = clear ? {} : formatParams(searchParams);
 
+    const persistedParams = clear ? {} : formatParams(this.state.params);
     const updatedParams = {
       // Start from existing state
       ...persistedParams,
@@ -182,7 +200,6 @@ export class VarianceHomePage extends Component {
       },
       // Fetch parties once state has been updated
       () => {
-        console.log("**************THE RENDER DATA FROM URL IS*****************");
         return this.renderDataFromURL();
       }
     );

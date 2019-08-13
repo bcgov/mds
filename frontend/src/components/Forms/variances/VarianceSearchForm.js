@@ -14,7 +14,6 @@ const propTypes = {
   isAdvanceSearch: PropTypes.bool,
   complianceCodes: CustomPropTypes.options.isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
-  initialValues: CustomPropTypes.varianceSearchInitialValues,
 };
 
 const defaultProps = {
@@ -51,7 +50,7 @@ export class VarianceSearchForm extends Component {
               id="search"
               name="search"
               component={renderConfig.FIELD}
-              placeholder="Search by code section, mine name, or mine number"
+              placeholder="Search by mine name, or mine number"
             />
           </Col>
         </Row>
