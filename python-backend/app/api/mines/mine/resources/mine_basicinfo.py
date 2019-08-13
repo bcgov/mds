@@ -8,10 +8,10 @@ from sqlalchemy_filters import apply_sort, apply_pagination
 from app.api.mines.mine_api_models import MINES_MODEL
 from ..models.mine import Mine
 from app.extensions import jwt, api
-from ....utils.resources_mixins import UserMixin, ErrorMixin
+from ....utils.resources_mixins import UserMixin
 
 
-class MineBasicInfoResource(Resource, UserMixin, ErrorMixin):
+class MineBasicInfoResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
     parser.add_argument(
         'mine_guids',

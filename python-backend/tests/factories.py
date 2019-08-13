@@ -9,15 +9,14 @@ import factory.fuzzy
 from app.extensions import db
 from tests.status_code_gen import *
 from app.api.applications.models.application import Application
-from app.api.documents.expected.models.mine_expected_document import MineExpectedDocument
-from app.api.documents.mines.models.mine_document import MineDocument
-from app.api.documents.variances.models.variance import VarianceDocumentXref
-from app.api.documents.incidents.models.mine_incident import MineIncidentDocumentXref
+from app.api.mines.documents.expected.models.mine_expected_document import MineExpectedDocument
+from app.api.mines.documents.mines.models.mine_document import MineDocument
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.mine.models.mine_type import MineType
 from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
 from app.api.mines.mine.models.mine_verified_status import MineVerifiedStatus
 from app.api.incidents.models.mine_incident import MineIncident
+from app.api.mines.incidents.models.mine_incident_document_xref import MineIncidentDocumentXref
 from app.api.mines.status.models.mine_status import MineStatus
 from app.api.mines.subscription.models.subscription import Subscription
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
@@ -30,6 +29,7 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment_document imp
 from app.api.users.core.models.core_user import CoreUser, IdirUserDetail
 from app.api.users.minespace.models.minespace_user import MinespaceUser
 from app.api.variances.models.variance import Variance
+from app.api.variances.models.variance_document_xref import VarianceDocumentXref
 from app.api.parties.party_appt.models.party_business_role_appt import PartyBusinessRoleAppointment
 from app.api.mines.reports.models.mine_report import MineReport
 from app.api.now_submissions.models.application import Application as NOWApplication

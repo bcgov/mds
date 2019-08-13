@@ -301,7 +301,7 @@ describe("`addDocumentToExpectedDocument` action creator", () => {
 
 describe("`fetchMineDocuments` action creator", () => {
   const mineGuid = "12345-6789";
-  const url = `${ENVIRONMENT.apiUrl}${API.MINE_DOCUMENTS}/${mineGuid}`;
+  const url = `${ENVIRONMENT.apiUrl}${API.MINE_DOCUMENTS(mineGuid)}`;
 
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };

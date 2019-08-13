@@ -132,7 +132,7 @@ describe("`addDocumentToExpectedDocument` action creator", () => {
   const url = ENVIRONMENT.apiUrl + API.UPLOAD_MINE_EXPECTED_DOCUMENT_FILE(expDocGuid);
 
   it("Request with new upload, dispatches `success` with correct response", () => {
-    const payload = { filename: "a file", document_manager_guid:"a GUID" };
+    const payload = { filename: "a file", document_manager_guid: "a GUID" };
     const mockResponse = { data: { success: true } };
     mockAxios.onPut(url, payload).reply(200, mockResponse);
     return addDocumentToExpectedDocument(expDocGuid, payload)(dispatch).then(() => {
@@ -166,7 +166,7 @@ describe("`addDocumentToExpectedDocument` action creator", () => {
 
 describe("`fetchMineDocuments` action creator", () => {
   const mineGuid = "12345-6789";
-  const url = `${ENVIRONMENT.apiUrl}${API.MINE_DOCUMENTS}/${mineGuid}`;
+  const url = `${ENVIRONMENT.apiUrl}${API.MINE_DOCUMENTS(mineGuid)}`;
 
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
