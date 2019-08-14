@@ -1,20 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MineReportInfo renders properly 1`] = `
-<div
-  className="tab__content"
->
-  <div>
-    <h2>
-      Code Required Reports
-    </h2>
-    <Divider />
-  </div>
+<div>
   <div
     className="inline-flex flex-end"
   >
     <Connect(AuthorizationWrapper)
-      isMajorMine={true}
       permission="role_edit_reports"
     >
       <AddButton
