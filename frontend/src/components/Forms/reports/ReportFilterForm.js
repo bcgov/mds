@@ -16,6 +16,8 @@ import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  reset: PropTypes.func.isRequired,
   mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   dropdownMineReportCategoryOptions: PropTypes.arrayOf(
     PropTypes.objectOf(CustomPropTypes.dropdownListItem)
@@ -31,6 +33,11 @@ export class ReportFilterForm extends Component {
   state = {
     mineReportDefinitionOptionsFiltered: [],
     dropdownMineReportDefinitionOptionsFiltered: [],
+  };
+
+  handleReset = () => {
+    this.props.reset();
+    this.props.onSubmit();
   };
 
   componentDidMount = () => {
@@ -163,7 +170,7 @@ export default compose(
   connect((state) => ({
     dropdownMineReportCategoryOptions: getDropdownMineReportCategoryOptions(state),
     mineReportDefinitionOptions: getMineReportDefinitionOptions(state),
-    selectedMineReportCategory: selector(state, "reportType"),
+    selectedMineReportCategory: selector(state, "mine_report_category"),
     selectedMineReportDefinition: selector(state, "reportName"),
   })),
   reduxForm({

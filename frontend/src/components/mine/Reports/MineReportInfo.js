@@ -1,9 +1,11 @@
 /* eslint-disable */
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
+import queryString from "query-string";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Row } from "antd";
+import { isEmpty } from "lodash";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -58,12 +60,17 @@ export class MineReportInfo extends Component {
   };
 
   componentWillMount = () => {
-    this.props.fetchMineReports(this.props.mineGuid);
+    this.props.fetchMineReports(this.props.mineGuid).then((data) => {
+      this.setState({
+        filteredReports: this.props.mineReports ? this.props.mineReports : [],
+      });
+    });
   };
 
   componentDidMount() {
-    this.setState({ mine: this.props.mines[this.props.mineGuid] });
-    console.log(this.state.mine);
+    this.setState({
+      mine: this.props.mines[this.props.mineGuid],
+    });
   }
 
   handleEditReport = (values) => {
@@ -122,14 +129,8 @@ export class MineReportInfo extends Component {
   }
 
   renderDataFromURL = (params) => {
-    const { violation, ...remainingParams } = queryString.parse(params);
-    const formattedParams = {
-      violation: formatParamStringToArray(violation),
-      ...remainingParams,
-    };
-
+    const formattedParams = queryString.parse(params);
     const reports = this.props.mineReports || [];
-
     const filteredReportDefinitionGuids =
       formattedParams.report_type !== ""
         ? this.props.mineReportDefinitionOptions
@@ -142,11 +143,9 @@ export class MineReportInfo extends Component {
         : this.props.mineReportDefinitionOptions.map(
             (definition) => definition.mine_report_definition_guid
           );
-
     const filteredReports = reports.filter((report) =>
       this.handleFiltering(report, formattedParams, filteredReportDefinitionGuids)
     );
-
     this.setState({
       filteredReports,
       reportFilterParams: formattedParams,
@@ -174,17 +173,11 @@ export class MineReportInfo extends Component {
     );
   };
 
-  handleComplianceFilter = (values) => {
+  handleReportFilter = (values) => {
     if (isEmpty(values)) {
       this.props.history.push(routes.MINE_REPORTS.dynamicRoute(this.props.match.params.id));
     } else {
-      const { violation, ...rest } = values;
-      this.props.history.push(
-        routes.MINE_REPORTS.dynamicRoute(this.props.match.params.id, {
-          violation: violation && violation.join(","),
-          ...rest,
-        })
-      );
+      this.props.history.push(routes.MINE_REPORTS.dynamicRoute(this.props.match.params.id, values));
     }
   };
 
@@ -193,10 +186,7 @@ export class MineReportInfo extends Component {
       <div>
         <div className="inline-flex flex-end">
           <Row>
-            <AuthorizationWrapper
-              permission={Permission.EDIT_REPORTS}
-              isMajorMine={this.state.mine.major_mine_ind}
-            >
+            <AuthorizationWrapper permission={Permission.EDIT_REPORTS}>
               <AddButton
                 onClick={(event) =>
                   this.openAddReportModal(
@@ -211,20 +201,24 @@ export class MineReportInfo extends Component {
             </AuthorizationWrapper>
           </Row>
         </div>
-        <div className="advanced-search__container">
-          <div>
-            <h2>Filter By</h2>
+        {this.props.mineReports && this.props.mineReports.length > 0 && (
+          <div className="advanced-search__container">
+            <div>
+              <h2>Filter By</h2>
+            </div>
+            <Row>
+              <ReportFilterForm
+                onSubmit={this.handleReportFilter}
+                initialValues={this.state.reportFilterParams}
+              />
+            </Row>
           </div>
-          <Row>
-            <ReportFilterForm />
-          </Row>
-        </div>
-
+        )}
         <MineReportTable
           openEditReportModal={this.openEditReportModal}
           handleEditReport={this.handleEditReport}
           handleRemoveReport={this.handleRemoveReport}
-          mineReports={this.props.mineReports}
+          mineReports={this.state.filteredReports}
         />
       </div>
     );

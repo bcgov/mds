@@ -111,7 +111,8 @@ export const MINE_INSPECTIONS = {
 
 export const MINE_REPORTS = {
   route: "/mine-dashboard/:id/reports/code-required-reports",
-  dynamicRoute: (id) => `/mine-dashboard/${id}/reports/code-required-reports`,
+  dynamicRoute: (id, filterParams) =>
+    `/mine-dashboard/${id}/reports/code-required-reports?${queryString.stringify(filterParams)}`,
   component: MineReportInfo,
 };
 
