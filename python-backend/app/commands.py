@@ -77,5 +77,5 @@ def register_commands(app):
 
     @app.cli.command()
     def run_append_tailings_reports_to_code_required_reports_then_destroy_tailings_data():
-        from app.scripts.tailings_report.migration import append_tailings_reports_to_code_required_reports_then_destroy_tailings_data
+        from app.scripts.tailings_report_migration import append_tailings_reports_to_code_required_reports_then_destroy_tailings_data
         append_tailings_reports_to_code_required_reports_then_destroy_tailings_data()
