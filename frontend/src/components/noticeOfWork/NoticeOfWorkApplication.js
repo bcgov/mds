@@ -45,7 +45,7 @@ export class NoticeOfWorkApplication extends Component {
           }
         >
           <Panel header={<h2>General Information</h2>} key="1">
-            {this.state.isLoaded && <NOWGeneralInfo />}
+            {this.state.isLoaded && <NOWGeneralInfo noticeOfWork={this.props.noticeOfWork} />}
           </Panel>
           <Panel header={<h2>Work Plan</h2>} key="2">
             {this.state.isLoaded && <NOWWorkPlan />}

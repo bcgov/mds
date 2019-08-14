@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import { Divider, Card, Col, Row } from "antd";
 import * as Strings from "@/constants/strings";
@@ -12,11 +13,11 @@ export class NOWGeneralInfo extends Component {
           <Col md={12} xs={24}>
             <div className="inline-flex padding-small">
               <p className="field-title">Mine Name</p>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p> {this.props.noticeOfWork.mine_name || Strings.EMPTY_FIELD}</p>
             </div>
             <div className="inline-flex padding-small">
               <p className="field-title">Mine Number</p>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p> {this.props.noticeOfWork.mine_no || Strings.EMPTY_FIELD}</p>
             </div>
             <div className="inline-flex padding-small">
               <p className="field-title">Region</p>
@@ -24,33 +25,33 @@ export class NOWGeneralInfo extends Component {
             </div>
             <div className="inline-flex padding-small">
               <p className="field-title">Lat</p>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p> {this.props.noticeOfWork.latitude || Strings.EMPTY_FIELD}</p>
             </div>
             <div className="inline-flex padding-small">
               <p className="field-title">Long</p>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p> {this.props.noticeOfWork.longitude || Strings.EMPTY_FIELD}</p>
             </div>
             <div className="inline-flex padding-small">
               <p className="field-title">Type of Notice of Work</p>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p> {this.props.noticeOfWork.noticeofworktype || Strings.EMPTY_FIELD}</p>
             </div>
             <div className="inline-flex padding-small">
               <p className="field-title">Permit Type</p>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p> {this.props.noticeOfWork.typeofpermit || Strings.EMPTY_FIELD}</p>
             </div>
             <div className="inline-flex padding-small">
               <p className="field-title">Permit Status</p>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p> {this.props.noticeOfWork.status || Strings.EMPTY_FIELD}</p>
             </div>
           </Col>
           <Col md={12} xs={24}>
             <div className="inline-flex padding-small">
               <p className="field-title">Crown/Private</p>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p> {this.props.noticeOfWork.landprivate || Strings.EMPTY_FIELD}</p>
             </div>
             <div className="inline-flex padding-small">
               <p className="field-title">Tenure Number</p>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p> {this.props.noticeOfWork.tenurenumbers || Strings.EMPTY_FIELD}</p>
             </div>
             <div className="inline-flex padding-small">
               <p className="field-title">Description of Land</p>
@@ -58,15 +59,15 @@ export class NOWGeneralInfo extends Component {
             </div>
             <div className="inline-flex padding-small">
               <p className="field-title">Type of Application</p>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p> {this.props.noticeOfWork.typeofapplication || Strings.EMPTY_FIELD}</p>
             </div>
             <div className="inline-flex padding-small">
               <p className="field-title">Proposed Start Date</p>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p> {this.props.noticeOfWork.proposedstartdate || Strings.EMPTY_FIELD}</p>
             </div>
             <div className="inline-flex padding-small">
               <p className="field-title">Proposed End Date</p>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p> {this.props.noticeOfWork.proposedenddate || Strings.EMPTY_FIELD}</p>
             </div>
           </Col>
         </Row>
