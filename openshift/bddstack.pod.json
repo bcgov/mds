@@ -136,8 +136,8 @@
             ],
             "resources": {
               "limits": {
-                "cpu": "2",
-                "memory": "4Gi"
+                "cpu": "4",
+                "memory": "6Gi"
               },
               "requests": {
                 "cpu": "1",
