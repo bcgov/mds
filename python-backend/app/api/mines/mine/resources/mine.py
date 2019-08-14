@@ -19,7 +19,7 @@ from ..models.mine import Mine
 from ....utils.random import generate_mine_no
 from app.extensions import api, cache, db
 from ....utils.access_decorators import requires_role_mine_edit, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
-from ....utils.resources_mixins import UserMixin, ErrorMixin
+from ....utils.resources_mixins import UserMixin
 from ....constants import MINE_MAP_CACHE
 
 from app.api.mines.mine_api_models import MINE_LIST_MODEL, MINE_MODEL
@@ -252,7 +252,7 @@ class MineListResource(Resource, UserMixin):
         return apply_pagination(mines_query, page, items_per_page)
 
 
-class MineResource(Resource, UserMixin, ErrorMixin):
+class MineResource(Resource, UserMixin):
     parser = reqparse.RequestParser()
     parser.add_argument(
         'mine_name',

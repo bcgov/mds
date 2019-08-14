@@ -2,12 +2,12 @@ import pytest
 from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, EDIT_REPORT
 
 from app.api.download_token.resources.download_token import DownloadTokenResource
-from app.api.documents.expected.resources.document_status import ExpectedDocumentStatusResource
-from app.api.documents.expected.resources.documents import ExpectedDocumentResource
-from app.api.documents.expected.resources.expected_document_uploads import ExpectedDocumentUploadResource
-from app.api.documents.expected.resources.mine_documents import ExpectedMineDocumentResource
-from app.api.documents.mines.resources.mine_document_resource import MineDocumentResource
-from app.api.documents.required.resources.required_documents import RequiredDocumentResource
+from app.api.mines.documents.expected.resources.document_status import ExpectedDocumentStatusResource
+from app.api.mines.documents.expected.resources.expected_documents import ExpectedDocumentResource
+from app.api.mines.documents.expected.resources.expected_document_uploads import ExpectedDocumentUploadResource
+from app.api.mines.documents.expected.resources.mine_documents import ExpectedMineDocumentResource
+from app.api.mines.documents.mines.resources.mine_document_resource import MineDocumentListResource
+from app.api.required_documents.resources.required_documents import RequiredDocumentResource
 from app.api.mines.compliance.resources.compliance import MineComplianceSummaryResource
 from app.api.mines.compliance.resources.compliance_article import ComplianceArticleResource
 from app.api.mines.mine.resources.mine_commodity_code import MineCommodityCodeResource
@@ -56,7 +56,7 @@ from app.api.mines.reports.resources.mine_reports import MineReportResource, Min
      (MineCommodityCodeResource, "get", [VIEW_ALL]),
      (MineComplianceSummaryResource, "get", [VIEW_ALL]),
      (MineDisturbanceCodeResource, "get", [VIEW_ALL]),
-     (MineDocumentResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
+     (MineDocumentListResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
      (MineListResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
      (MineListResource, "post", [MINE_EDIT]),
      (MineListSearch, "get", [VIEW_ALL, MINESPACE_PROPONENT]),

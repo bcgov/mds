@@ -1,7 +1,7 @@
 from flask_restplus import Resource, fields
 from app.extensions import api
 from ....utils.access_decorators import requires_role_view_all
-from ....utils.resources_mixins import UserMixin, ErrorMixin
+from ....utils.resources_mixins import UserMixin
 from ...region.models.region import MineRegionCode
 
 MINE_REGION_OPTION = api.model('MineRegion', {
@@ -10,7 +10,7 @@ MINE_REGION_OPTION = api.model('MineRegion', {
 })
 
 
-class MineRegionResource(Resource, UserMixin, ErrorMixin):
+class MineRegionResource(Resource, UserMixin):
     @api.doc(params={'mine_region_guid': 'Mine region guid.'})
     @api.marshal_with(MINE_REGION_OPTION, code=201, envelope='records')
     @requires_role_view_all

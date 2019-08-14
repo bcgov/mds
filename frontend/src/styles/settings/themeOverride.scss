@@ -35,6 +35,12 @@
   border: 2px solid $h-divider-color;
 }
 
+.margin-10 {
+  &.ant-divider-horizontal {
+    margin: 10px 0;
+  }
+}
+
 // BUTTON
 .ant-btn,
 .ant-btn-sm,
