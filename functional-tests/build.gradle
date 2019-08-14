@@ -114,8 +114,8 @@ test {
 }
 
 tasks.withType(Test) {
-    maxHeapSize = "1g"
-    jvmArgs '-XX:MaxMetaspaceSize=512m'
+    maxHeapSize = "2g"
+    jvmArgs '-XX:MaxMetaspaceSize=1024m'
     testLogging {
         exceptionFormat = 'full'
     }
@@ -163,6 +163,6 @@ tasks.withType(Test) {
 }
 
 tasks.withType(GroovyCompile) {
-    groovyOptions.forkOptions.memoryMaximumSize = '512m'
+    groovyOptions.forkOptions.memoryMaximumSize = '1024m'
 }
 
