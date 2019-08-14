@@ -328,8 +328,7 @@ APPLICATION_LIST = api.model(
         'processed': fields.String,
         'processeddate': fields.DateTime,
         'nrsosapplicationid': fields.String,
-    },
-)
+    })
 
 PAGINATED_LIST = api.model(
     'List', {
@@ -341,4 +340,4 @@ PAGINATED_LIST = api.model(
 
 PAGINATED_APPLICATION_LIST = api.inherit('ApplicationList', PAGINATED_LIST, {
     'records': fields.List(fields.Nested(APPLICATION_LIST)),
-})
+    })
