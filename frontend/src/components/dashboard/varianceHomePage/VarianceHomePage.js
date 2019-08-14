@@ -66,10 +66,15 @@ const propTypes = {
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
 };
 
-const joinOrRemove = (param, key) =>
-  isEmpty(param) && typeof param !== "string" ? {} : { [key]: param.join(",") };
-const removeEmptyStings = (param, key) => (isEmpty(param) ? {} : { [key]: param });
-const formatParams = ({
+export const joinOrRemove = (param, key) => {
+  if (isEmpty(param)) {
+    return {};
+  }
+  return typeof param === "string" ? { [key]: param } : { [key]: param.join(",") };
+};
+// isEmpty(param) || typeof param === "string" ? {} : { [key]: param.join(",") };
+export const removeEmptyStings = (param, key) => (isEmpty(param) ? {} : { [key]: param });
+export const formatParams = ({
   region = [],
   compliance_code = [],
   issue_date_after,

@@ -20,7 +20,7 @@ const defaultProps = {
   isAdvanceSearch: false,
 };
 
-const validate = (values) => {
+export const validate = (values) => {
   const errors = {};
   if (values.issue_date_after && values.issue_date_before) {
     if (Date.parse(values.issue_date_after) > Date.parse(values.issue_date_before)) {
