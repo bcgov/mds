@@ -1,16 +1,28 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import { Button, Collapse, Icon } from "antd";
+import { compose, bindActionCreators } from "redux";
+import { connect } from "react-redux";
 import NOWGeneralInfo from "@/components/noticeOfWork/NOWGeneralInfo";
 import NOWWorkPlan from "@/components/noticeOfWork/NOWWorkPlan";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
+import { fetchNoticeOfWorkApplication } from "@/actionCreators/noticeOfWorkActionCreator";
+import { getNoticeOfWork } from "@/selectors/noticeOfWorkSelectors";
 /**
  * @class NoticeOfWorkApplication - contains all information regarding to a notice of work application
  */
 
 const { Panel } = Collapse;
 
-// eslint-disable-next-line react/prefer-stateless-function
 export class NoticeOfWorkApplication extends Component {
+  state = { isLoaded: false };
+
+  componentDidMount() {
+    this.props.fetchNoticeOfWorkApplication("fdd96cfe-8ff6-4062-9c35-466daff630c7").then(() => {
+      this.setState({ isLoaded: true });
+    });
+  }
+
   render() {
     return (
       <div className="page__content">
@@ -33,10 +45,10 @@ export class NoticeOfWorkApplication extends Component {
           }
         >
           <Panel header={<h2>General Information</h2>} key="1">
-            <NOWGeneralInfo />
+            {this.state.isLoaded && <NOWGeneralInfo />}
           </Panel>
           <Panel header={<h2>Work Plan</h2>} key="2">
-            <NOWWorkPlan />
+            {this.state.isLoaded && <NOWWorkPlan />}
           </Panel>
         </Collapse>
       </div>
@@ -44,4 +56,15 @@ export class NoticeOfWorkApplication extends Component {
   }
 }
 
-export default AuthorizationGuard("inDevelopment")(NoticeOfWorkApplication);
+const mapStateToProps = (state) => ({ noticeOfWork: getNoticeOfWork(state) });
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators({ fetchNoticeOfWorkApplication }, dispatch);
+
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  AuthorizationGuard("inDevelopment")
+)(NoticeOfWorkApplication);
