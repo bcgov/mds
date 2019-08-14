@@ -10,7 +10,6 @@ from tests.factories import MineFactory, MinePartyAppointmentFactory
 
 
 def register_commands(app):
-
     @app.cli.command()
     def import_idir():
         from app.cli_jobs.IDIR_jobs import import_empr_idir_users
@@ -59,10 +58,11 @@ def register_commands(app):
             for _ in range(int(num)):
                 mine = MineFactory()
                 eor = MinePartyAppointmentFactory(mine=mine, mine_party_appt_type_code='EOR')
-                mine_manager = MinePartyAppointmentFactory(
-                    mine=mine, mine_party_appt_type_code='MMG')
-                permitee = MinePartyAppointmentFactory(
-                    mine=mine, mine_party_appt_type_code='PMT', party__company=True)
+                mine_manager = MinePartyAppointmentFactory(mine=mine,
+                                                           mine_party_appt_type_code='MMG')
+                permitee = MinePartyAppointmentFactory(mine=mine,
+                                                       mine_party_appt_type_code='PMT',
+                                                       party__company=True)
             try:
                 db.session.commit()
                 print(f'Created {num} random mines with related data.')
@@ -76,6 +76,8 @@ def register_commands(app):
         ETL_jobs.run_ETL()
 
     @app.cli.command()
-    def run_append_tailings_reports_to_code_required_reports_then_destroy_tailings_data():
+    @click.option('-c', '--commit')
+    def run_append_tailings_reports_to_code_required_reports_then_destroy_tailings_data(commit):
         from app.scripts.tailings_report_migration import append_tailings_reports_to_code_required_reports_then_destroy_tailings_data
-        append_tailings_reports_to_code_required_reports_then_destroy_tailings_data()
+        append_tailings_reports_to_code_required_reports_then_destroy_tailings_data(
+            commit == 'true')

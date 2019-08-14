@@ -5,7 +5,7 @@ from petl import timeparser
 from datetime import datetime, time, timedelta
 
 
-def append_tailings_reports_to_code_required_reports_then_destroy_tailings_data():
+def append_tailings_reports_to_code_required_reports_then_destroy_tailings_data(commit=False):
     #def do_tailings_conversion():
     connection = psycopg2.connect(host='postgres',
                                   port=5432,
@@ -91,10 +91,25 @@ def append_tailings_reports_to_code_required_reports_then_destroy_tailings_data(
 
     print(etl.valuecounter(etl.distinct(table1, key='exp_document_guid'), 'req_document_name'))
     print(etl.valuecounter(mine_report, 'mine_report_definition_id'))
-    #insert
-    etl.appenddb(mine_report, connection, 'mine_report')
-    etl.appenddb(mine_report_submissions, connection, 'mine_report_submission')
-    etl.appenddb(mine_report_submission_documents, connection, 'mine_report_document_xref')
+    print(table1)
+    print(mine_report)
+    print(mine_report_submissions)
+    print(mine_report_submission_documents)
 
-    connection.cursor().execute('TRUNCATE public.mine_expected_document')
-    connection.cursor().execute('UPDATE public.mds_required_document SET active_ind=false')
+    if commit:  #insert
+        etl.appenddb(mine_report, connection, 'mine_report')
+        print('insert mine_report complete')
+        etl.appenddb(mine_report_submissions, connection, 'mine_report_submission')
+        print('insert mine_report_submission complete')
+        etl.appenddb(mine_report_submission_documents, connection, 'mine_report_document_xref')
+        print('insert mine_report_document_xref complete')
+
+        connection.cursor().execute('TRUNCATE public.mine_expected_document CASCADE')
+        print('TRUNCATE mine_expected_document compelete')
+        connection.cursor().execute('UPDATE public.mds_required_document SET active_ind=false')
+        print('deactivate mds_required_document complete')
+        print('COMPLETE')
+    else:
+        print(
+            'NO CHANGES MADE: add --commit=true after checking to insert rows and delete tailings data'
+        )
