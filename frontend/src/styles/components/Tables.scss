@@ -126,3 +126,10 @@ $pagination-widths: $pagination-width-1, $pagination-width-2, $pagination-width-
 .column-hide {
   display: none;
 }
+
+.ant-table-footer {
+  color: $black;
+  font-weight: bold;
+  background: none;
+  border-top: 2px solid $black;
+}

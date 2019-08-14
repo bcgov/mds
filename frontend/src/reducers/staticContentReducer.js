@@ -61,7 +61,7 @@ const staticContentReducer = (state = initialState, action) => {
     case actionTypes.STORE_MINE_TSF_REQUIRED_DOCUMENTS:
       return {
         ...state,
-        mineTSFRequiredReports: action.payload.required_documents,
+        mineTSFRequiredReports: action.payload.records,
       };
     case actionTypes.STORE_PROVINCE_OPTIONS:
       return {

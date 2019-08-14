@@ -4,11 +4,11 @@ from datetime import datetime
 
 from app.extensions import api
 from ..models.application_status_code import ApplicationStatusCode
-from app.api.utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.access_decorators import requires_role_view_all
 
 
-class ApplicationStatusCodeResource(Resource, UserMixin, ErrorMixin):
+class ApplicationStatusCodeResource(Resource, UserMixin):
 
     application_status_code_model = api.model('ApplicationStatusCode', {
         'application_status_code': fields.String,
