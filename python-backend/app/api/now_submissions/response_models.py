@@ -1,7 +1,6 @@
 from app.extensions import api
 from flask_restplus import fields
 
-from app.api.mines.permits.response_models import PERMIT_MODEL
 
 CLIENT = api.model(
     'Client', {
