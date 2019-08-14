@@ -1,18 +1,11 @@
-import psycopg2
 import uuid
 import petl as etl
 from petl import timeparser
 from datetime import datetime, time, timedelta
 
 
-def append_tailings_reports_to_code_required_reports_then_destroy_tailings_data(commit=False):
-    #def do_tailings_conversion():
-    connection = psycopg2.connect(host='postgres',
-                                  port=5432,
-                                  user='mds',
-                                  password='test',
-                                  dbname='mds')
-
+def append_tailings_reports_to_code_required_reports_then_destroy_tailings_data(
+        connection, commit=False):
     src_table = etl.fromdb(
         connection,
         'SELECT exp_doc.mine_guid, exp_doc.exp_document_guid, req_doc.req_document_name, exp_doc.due_date, exp_doc.exp_document_status_code, exp_doc.received_date, exp_doc.active_ind, exp_doc_x.mine_document_guid, exp_doc.create_user, exp_doc.create_timestamp, exp_doc.update_user, exp_doc.update_timestamp from mine_expected_document exp_doc \
