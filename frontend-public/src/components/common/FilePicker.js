@@ -33,12 +33,7 @@ class FilePicker extends Component {
         </div>
         {this.state.uploadSelected ? (
           <Form.Item>
-            <Field
-              id="fileUpload"
-              name="fileUpload"
-              component={FileUpload}
-              {...this.props}
-            />
+            <Field id="fileUpload" name="fileUpload" component={FileUpload} {...this.props} />
           </Form.Item>
         ) : (
           <Form.Item>

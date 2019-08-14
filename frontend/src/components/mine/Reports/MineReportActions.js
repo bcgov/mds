@@ -9,6 +9,7 @@ const propTypes = {
   mineReport: PropTypes.objectOf(CustomPropTypes.mineReport).isRequired,
   openEditReportModal: PropTypes.func.isRequired,
   handleEditReport: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
   handleRemoveReport: PropTypes.func.isRequired,
 };
 

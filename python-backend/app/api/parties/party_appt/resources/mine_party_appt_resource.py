@@ -10,11 +10,11 @@ from app.extensions import api
 from ..models.mine_party_appt import MinePartyAppointment
 from ..models.mine_party_appt_type import MinePartyAppointmentType
 from ....utils.access_decorators import requires_role_view_all, requires_role_mine_edit
-from ....utils.resources_mixins import UserMixin, ErrorMixin
+from ....utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 
 
-class MinePartyApptResource(Resource, UserMixin, ErrorMixin):
+class MinePartyApptResource(Resource, UserMixin):
     parser = CustomReqparser()
     parser.add_argument('mine_guid', type=str, help='guid of the mine.')
     parser.add_argument('party_guid', type=str, help='guid of the party.')

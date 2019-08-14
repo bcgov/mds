@@ -2,10 +2,8 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Divider } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
-import { openModal, closeModal } from "@/actions/modalActions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import {
   fetchMineReports,
@@ -19,6 +17,7 @@ import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
 import { getMineReports } from "@/selectors/reportSelectors";
 import { getMines, getMineGuid } from "@/selectors/mineSelectors";
+import { openModal, closeModal } from "@/actions/modalActions";
 
 /**
  * @class  MineReportInfo - contains all permit information
@@ -37,13 +36,22 @@ const propTypes = {
 };
 
 export class MineReportInfo extends Component {
+  state = {
+    mine: {},
+  };
+
   componentWillMount = () => {
     this.props.fetchMineReports(this.props.mineGuid);
   };
 
+  componentDidMount() {
+    this.setState({ mine: this.props.mines[this.props.mineGuid] });
+    console.log(this.state.mine);
+  }
+
   handleEditReport = (values) => {
     this.props
-      .updateMineReport(this.props.mineGuid, values.report_guid, values)
+      .updateMineReport(this.props.mineGuid, values.mine_report_guid, values)
       .then(() => this.props.closeModal())
       .then(() => this.props.fetchMineReports(this.props.mineGuid));
   };
@@ -61,47 +69,43 @@ export class MineReportInfo extends Component {
       .then(() => this.props.fetchMineReports(this.props.mineGuid));
   };
 
-  openAddReportModal = (event, title) => {
+  openAddReportModal = (event) => {
     event.preventDefault();
     this.props.openModal({
       props: {
         onSubmit: this.handleAddReport,
-        title,
+        title: `Add report for ${this.state.mine.mine_name}`,
         mineGuid: this.props.mineGuid,
       },
       content: modalConfig.ADD_REPORT,
     });
   };
 
-  openEditReportModal = (event, report) => {
-    const mine = this.props.mines[this.props.mineGuid];
+  openEditReportModal = (event, onSubmit, report) => {
     event.preventDefault();
     this.props.openModal({
       props: {
         initialValues: report,
-        onSubmit: this.handleEditReport,
-        title: `Edit report for ${mine.mine_name}`,
+        onSubmit,
+        title: `Edit report for ${this.state.mine.mine_name}`,
+        mineGuid: this.props.mineGuid,
       },
       content: modalConfig.ADD_REPORT,
     });
   };
 
   render() {
-    const mine = this.props.mines[this.props.mineGuid];
     return (
-      <div className="tab__content">
-        <div>
-          <h2>Code Required Reports</h2>
-          <Divider />
-        </div>
+      <div>
         <div className="inline-flex flex-end">
-          <AuthorizationWrapper
-            permission={Permission.EDIT_REPORTS}
-            isMajorMine={mine.major_mine_ind}
-          >
+          <AuthorizationWrapper permission={Permission.EDIT_REPORTS}>
             <AddButton
               onClick={(event) =>
-                this.openAddReportModal(event, `${ModalContent.ADD_REPORT} to ${mine.mine_name}`)
+                this.openAddReportModal(
+                  event,
+                  this.handleAddReport,
+                  `${ModalContent.ADD_REPORT} to ${this.state.mine.mine_name}`
+                )
               }
             >
               Add a Report
@@ -120,9 +124,9 @@ export class MineReportInfo extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  mineReports: getMineReports(state),
   mines: getMines(state),
   mineGuid: getMineGuid(state),
-  mineReports: getMineReports(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -131,9 +135,9 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineReports,
       updateMineReport,
       createMineReport,
+      deleteMineReport,
       openModal,
       closeModal,
-      deleteMineReport,
     },
     dispatch
   );

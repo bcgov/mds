@@ -22,6 +22,7 @@ import MineIncidents from "@/components/mine/Incidents/MineIncidents";
 import MineTailingsInfo from "@/components/mine/Tailings/MineTailingsInfo";
 import MineReportInfo from "@/components/mine/Reports/MineReportInfo";
 import HomePage from "@/components/dashboard/HomePage";
+import NoticeOfWorkApplication from "@/components/noticeOfWork/NoticeOfWorkApplication";
 
 export const DASHBOARD = {
   route: "/",
@@ -158,4 +159,10 @@ export const SEARCH_RESULTS = {
   route: "/search",
   dynamicRoute: ({ q, t }) => (t ? `/search?q=${q}&t=${t}` : `/search?q=${q}`),
   component: SearchResults,
+};
+
+export const NOTICE_OF_WORK_APPLICATION = {
+  route: "/dashboard/notice-of-work/application",
+  dynamicRoute: (applicationGuid) => `/dashboard-notice-of-work/application/${applicationGuid}`,
+  component: NoticeOfWorkApplication,
 };
