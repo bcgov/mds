@@ -17,8 +17,10 @@ import AddButton from "@/components/common/AddButton";
 import MineReportTable from "@/components/mine/Reports/MineReportTable";
 import ReportFilterForm from "@/components/Forms/reports/ReportFilterForm";
 import * as ModalContent from "@/constants/modalContent";
+import * as routes from "@/constants/routes";
 import { modalConfig } from "@/components/modalContent/config";
 import { getMineReports } from "@/selectors/reportSelectors";
+import { getMineReportDefinitionOptions } from "@/selectors/staticContentSelectors";
 import { getMines, getMineGuid } from "@/selectors/mineSelectors";
 import { openModal, closeModal } from "@/actions/modalActions";
 
@@ -30,17 +32,29 @@ const propTypes = {
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
   mineGuid: PropTypes.string.isRequired,
   mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
+  mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   fetchMineReports: PropTypes.func.isRequired,
   updateMineReport: PropTypes.func.isRequired,
   createMineReport: PropTypes.func.isRequired,
   deleteMineReport: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+  location: PropTypes.shape({ search: PropTypes.string }).isRequired,
+};
+
+const initialSearchValues = {
+  report_name: "",
+  report_type: "",
+  compliance_year: "",
+  report_due_date_start: "",
+  report_due_date_end: "",
 };
 
 export class MineReportInfo extends Component {
   state = {
     mine: {},
+    reportFilterParams: initialSearchValues,
+    filteredReports: [],
   };
 
   componentWillMount = () => {
@@ -97,6 +111,83 @@ export class MineReportInfo extends Component {
     });
   };
 
+  componentWillReceiveProps(nextProps) {
+    const locationChanged = nextProps.location !== this.props.location;
+    if (locationChanged && !this.state.isLoading) {
+      const correctParams = nextProps.location.search
+        ? nextProps.location.search
+        : queryString.stringify(initialSearchValues);
+      this.renderDataFromURL(correctParams);
+    }
+  }
+
+  renderDataFromURL = (params) => {
+    const { violation, ...remainingParams } = queryString.parse(params);
+    const formattedParams = {
+      violation: formatParamStringToArray(violation),
+      ...remainingParams,
+    };
+
+    const reports = this.props.mineReports || [];
+
+    const filteredReportDefinitionGuids =
+      formattedParams.report_type !== ""
+        ? this.props.mineReportDefinitionOptions
+            .filter((option) =>
+              option.categories
+                .map((category) => category.mine_report_category)
+                .includes(formattedParams.report_type)
+            )
+            .map((definition) => definition.mine_report_definition_guid)
+        : this.props.mineReportDefinitionOptions.map(
+            (definition) => definition.mine_report_definition_guid
+          );
+
+    const filteredReports = reports.filter((report) =>
+      this.handleFiltering(report, formattedParams, filteredReportDefinitionGuids)
+    );
+
+    this.setState({
+      filteredReports,
+      reportFilterParams: formattedParams,
+    });
+  };
+
+  handleFiltering = (report, params, reportDefinitionGuids) => {
+    // convert string to boolean before passing it into a filter check
+    const report_name =
+      params.report_name === "" || report.report_name.includes(params.report_name);
+    const report_type =
+      params.report_type === "" ||
+      reportDefinitionGuids.includes(report.mine_report_definition_guid.toLowerCase());
+    const compliance_year =
+      params.compliance_start_year === "" ||
+      params.compliance_year.includes(report.submission_year);
+    const report_due_date_start =
+      params.report_due_date_start === "" ||
+      parseInt(report.due_date) >= parseInt(params.report_due_date_start);
+    const report_due_date_end =
+      params.report_due_date_end === "" ||
+      parseInt(report.due_date) >= parseInt(params.report_due_date_end);
+    return (
+      report_name && report_type && compliance_year && report_due_date_start && report_due_date_end
+    );
+  };
+
+  handleComplianceFilter = (values) => {
+    if (isEmpty(values)) {
+      this.props.history.push(routes.MINE_REPORTS.dynamicRoute(this.props.match.params.id));
+    } else {
+      const { violation, ...rest } = values;
+      this.props.history.push(
+        routes.MINE_REPORTS.dynamicRoute(this.props.match.params.id, {
+          violation: violation && violation.join(","),
+          ...rest,
+        })
+      );
+    }
+  };
+
   render() {
     return (
       <div>
@@ -144,6 +235,7 @@ const mapStateToProps = (state) => ({
   mineReports: getMineReports(state),
   mines: getMines(state),
   mineGuid: getMineGuid(state),
+  mineReportDefinitionOptions: getMineReportDefinitionOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

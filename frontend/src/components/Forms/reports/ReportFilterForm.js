@@ -21,7 +21,6 @@ const propTypes = {
     PropTypes.objectOf(CustomPropTypes.dropdownListItem)
   ).isRequired,
   selectedMineReportCategory: PropTypes.string.isRequired,
-  handleSubmit: propTypes.func.isRequired,
 };
 
 const defaultProps = {};
@@ -77,8 +76,8 @@ export class ReportFilterForm extends Component {
           <Row gutter={16}>
             <Col md={6} xs={24}>
               <Field
-                id="reportName"
-                name="reportName"
+                id="report_name"
+                name="report_name"
                 label="Report Name"
                 placeholder="Start typing a report name"
                 component={renderConfig.SELECT}
@@ -87,36 +86,27 @@ export class ReportFilterForm extends Component {
             </Col>
             <Col md={6} xs={24}>
               <Field
-                id="reportType"
-                name="reportType"
+                id="report_type"
+                name="report_type"
                 label="Report Type"
                 placeholder="Select a report type"
                 component={renderConfig.SELECT}
                 data={this.props.dropdownMineReportCategoryOptions}
               />
             </Col>
-            <Col md={3} xs={24}>
+            <Col md={6} xs={24}>
               <Field
-                id="complianceStartYear"
-                name="complianceStartYear"
+                id="compliance_year"
+                name="compliance_year"
                 label="Compliance Year"
                 placeholder="Start date"
                 component={renderConfig.YEAR}
               />
             </Col>
-            <Col md={3} xs={24}>
-              <Field
-                id="complianceEndYear"
-                name="complianceEndYear"
-                label="&nbsp;"
-                placeholder="End date"
-                component={renderConfig.YEAR}
-              />
-            </Col>
             {/* <Col md={6} xs={24}>
               <Field
-                id="requestedBy"
-                name="requestedBy"
+                id="requested_by"
+                name="requested_by"
                 label="Requested by"
                 placeholder="Start typing an inspector name"
                 component={renderConfig.SELECT}
@@ -126,8 +116,8 @@ export class ReportFilterForm extends Component {
           <Row gutter={6}>
             <Col md={3} xs={24}>
               <Field
-                id="reportDueDateStart"
-                name="reportDueDateStart"
+                id="report_due_date_start"
+                name="report_due_date_start"
                 label="Report Due Date Range"
                 placeholder="Start date"
                 component={renderConfig.DATE}
@@ -135,13 +125,22 @@ export class ReportFilterForm extends Component {
             </Col>
             <Col md={3} xs={24}>
               <Field
-                id="reportDueDateEnd"
-                name="reportDueDateEnd"
+                id="report_due_date_end"
+                name="report_due_date_end"
                 placeholder="End date"
                 label="&nbsp;"
                 component={renderConfig.DATE}
               />
             </Col>
+            {/* <Col md={6} xs={24}>
+              <Field
+                id="order_status"
+                name="order_status"
+                label="Order status"
+                placeholder="Select an order status"
+                component={renderConfig.SELECT}
+              />
+            </Col> */}
           </Row>
         </div>
         <div className="right center-mobile">
