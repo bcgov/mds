@@ -192,9 +192,7 @@ export class MineRecordForm extends Component {
       <div onClick={(event) => event.stopPropagation()}>
         <Popconfirm
           placement="topRight"
-          title={`Are you sure you want to remove Mine Type ${
-            this.props.mineTenureHash[mineTenureCode]
-          }?`}
+          title={`Are you sure you want to remove Mine Type ${this.props.mineTenureHash[mineTenureCode]}?`}
           onConfirm={(event) => this.props.handleDelete(event, mineTenureCode)}
           okText="Yes"
           cancelText="No"
