@@ -1,6 +1,8 @@
 from app.extensions import api
 from flask_restplus import fields
 
+from app.api.mines.permits.response_models import PERMIT_MODEL
+
 CLIENT = api.model(
     'Client', {
         'type': fields.String,
@@ -301,14 +303,43 @@ APPLICATION = api.model(
         'water_source_activity': fields.List(fields.Nested(WATER_SOURCE_ACTIVITY)),
     })
 
+APPLICATION_LIST = api.model(
+    'Application', {
+        'application_guid': fields.String,
+        'mine_guid': fields.String,
+        'mine_name': fields.String,
+        'applicationtype': fields.String,
+        'status': fields.String,
+        'submitteddate': fields.DateTime,
+        'receiveddate': fields.DateTime,
+        'noticeofworktype': fields.String,
+        'typeofpermit': fields.String,
+        'typeofapplication': fields.String,
+        'minenumber': fields.String,
+        'nameofproperty': fields.String,
+        'proposedstartdate': fields.DateTime,
+        'proposedenddate': fields.DateTime,
+        'bcexplosivespermitissued': fields.String,
+        'bcexplosivespermitnumber': fields.String,
+        'bcexplosivespermitexpiry': fields.DateTime,
+        'sandgrvqryalrpermitnumber': fields.String,
+        'freeusepermit': fields.String,
+        'vfcbcapplicationurl': fields.String,
+        'messagecreateddate': fields.DateTime,
+        'processed': fields.String,
+        'processeddate': fields.DateTime,
+        'nrsosapplicationid': fields.String,
+    },
+)
+
 PAGINATED_LIST = api.model(
     'List', {
         'current_page': fields.Integer,
         'total_pages': fields.Integer,
         'items_per_page': fields.Integer,
         'total': fields.Integer,
-})
+    })
 
 PAGINATED_APPLICATION_LIST = api.inherit('ApplicationList', PAGINATED_LIST, {
-    'records': fields.List(fields.Nested(APPLICATION)),
+    'records': fields.List(fields.Nested(APPLICATION_LIST)),
 })

@@ -1,12 +1,12 @@
 from flask_restplus import Resource
 from werkzeug.exceptions import NotFound, BadRequest
 from flask import request
-from sqlalchemy_filters import apply_pagination, apply_filters
+from sqlalchemy_filters import apply_pagination
 from sqlalchemy import desc
 
 
 from app.extensions import api
-from app.api.mines.permits.permit.models.permit import Permit
+from app.extensions import db
 from app.api.now_submissions.now_submission.models.application import Application
 from app.api.now_submissions.response_models import APPLICATION, PAGINATED_APPLICATION_LIST
 from app.api.utils.access_decorators import requires_role_view_all
@@ -48,7 +48,7 @@ class ApplicationListResource(Resource, UserMixin, ErrorMixin):
             raise BadRequest('Unable to fetch applications.')
 
         data = records.all()
-        print(data[0].__dict__)
+
 
         return {
             'records': data,
@@ -62,6 +62,7 @@ class ApplicationListResource(Resource, UserMixin, ErrorMixin):
                                         page_number=PAGE_DEFAULT,
                                         page_size=PER_PAGE_DEFAULT):
 
-        filtered_query = Application.query.order_by(desc(Application.receiveddate))
+        filtered_query = db.session.query(Application) \
+            .order_by(desc(Application.receiveddate)) \
 
         return apply_pagination(filtered_query, page_number, page_size)
