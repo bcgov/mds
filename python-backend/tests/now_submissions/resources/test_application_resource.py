@@ -6,7 +6,7 @@ from tests.factories import (NOWApplicationFactory,
 
 
 class TestGetApplicationResource:
-    """GET /now-submissions/application/{application_guid}"""
+    """GET /now-submissions/applications/{application_guid}"""
 
     def test_get_now_application_by_guid_success(self, test_client, db_session, auth_headers):
         """Should return the correct records with a 200 response code"""
