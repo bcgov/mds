@@ -41,12 +41,13 @@ class MineReportListResource(Resource, UserMixin):
         'received_date',
         location='json',
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
+    parser.add_argument('mine_report_submissions', type=list, location='json')
 
     @api.marshal_with(MINE_REPORT_MODEL, envelope='records', code=200)
     @api.doc(description='returns the reports for a given mine.')
     @requires_role_view_all
     def get(self, mine_guid):
-        mine_reports = MineReport.find_all_by_mine_guid(mine_guid)
+        mine_reports = MineReport.find_by_mine_guid(mine_guid)
         return mine_reports
 
     @api.expect(MINE_REPORT_MODEL)
@@ -68,6 +69,7 @@ class MineReportListResource(Resource, UserMixin):
 
         if permit and permit.mine_guid != mine.mine_guid:
             raise BadRequest('The permit must be associated with the selected mine.')
+
         mine_report_guid = uuid.uuid4()
         mine_report = MineReport.create(
             mine_report_guid=mine_report_guid,
@@ -77,6 +79,30 @@ class MineReportListResource(Resource, UserMixin):
             received_date=data['received_date'],
             submission_year=data['submission_year'],
             permit_id=permit.permit_id if permit else None)
+
+        submissions = data.get('mine_report_submissions')
+        if submissions is not None:
+            report_submission_guid = uuid.uuid4()
+            submission = submissions[0]
+            if len(submission.get('documents')) > 0:
+                report_submission = MineReportSubmission(
+                    mine_report_submission_guid=report_submission_guid,
+                    mine_report_submission_status_code='MIA',
+                    submission_date=datetime.now())
+                for submission_doc in submission.get('documents'):
+                    mine_doc = MineDocument(
+                        mine_guid=mine.mine_guid,
+                        document_name=submission_doc['document_name'],
+                        document_manager_guid=submission_doc['document_manager_guid'])
+
+                    if not mine_doc:
+                        raise BadRequest('Unable to register uploaded file as document')
+
+                    mine_doc.save()
+
+                    report_submission.documents.append(mine_doc)
+
+                mine_report.mine_report_submissions.append(report_submission)
 
         try:
             mine_report.save()
@@ -96,6 +122,7 @@ class MineReportResource(Resource, UserMixin):
         location='json',
         store_missing=False,
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
+    parser.add_argument('mine_report_submissions', type=list, location='json', store_missing=False)
 
     @api.marshal_with(MINE_REPORT_MODEL, code=200)
     @requires_role_view_all
@@ -109,19 +136,68 @@ class MineReportResource(Resource, UserMixin):
     @api.marshal_with(MINE_REPORT_MODEL, code=200)
     @requires_role_edit_report
     def put(self, mine_guid, mine_report_guid):
+        mine = Mine.find_by_mine_guid(mine_guid)
         mine_report = MineReport.find_by_mine_report_guid(mine_report_guid)
         if not mine_report or str(mine_report.mine_guid) != mine_guid:
             raise NotFound("Mine Report not found")
 
         data = self.parser.parse_args()
-        due_date = data.get('due_date')
-        received_date = data.get('received_date')
 
-        if due_date:
-            mine_report.due_date = due_date
+        if 'due_date' in data:
+            mine_report.due_date = data['due_date']
 
-        if received_date:
-            mine_report.received_date = received_date
+        if 'received_date' in data:
+            mine_report.received_date = data['received_date']
+
+        report_submissions = data.get('mine_report_submissions')
+        subission_iterator = iter(report_submissions)
+        new_submission = next(
+            (x for x in subission_iterator if x.get('mine_report_submission_guid') is None), None)
+        if new_submission is not None:
+            new_report_submission_guid = uuid.uuid4()
+            new_report_submission = MineReportSubmission(
+                mine_report_submission_guid=new_report_submission_guid,
+                mine_report_submission_status_code='MIA',
+                submission_date=datetime.now())
+
+            # Copy the current list of documents for the report submission
+            current_app.logger.debug(mine_report.mine_report_submissions)
+            last_submission_docs = mine_report.mine_report_submissions[0].documents.copy() if len(
+                mine_report.mine_report_submissions) > 0 else []
+
+            # Gets the difference between the set of documents in the new submission and the last submission
+            new_docs = [
+                x for x in new_submission.get('documents') if not any(
+                    str(doc.document_manager_guid) == x['document_manager_guid']
+                    for doc in last_submission_docs)
+            ]
+            # Get the documents that were on the last submission but not part of the new submission
+            removed_docs = [
+                x for x in last_submission_docs
+                if not any(doc['document_manager_guid'] == str(x.document_manager_guid)
+                           for doc in new_submission.get('documents'))
+            ]
+            # Remove the deleted documents from the existing set.
+            for doc in removed_docs:
+                last_submission_docs.remove(doc)
+
+            if len(last_submission_docs) > 0:
+                new_report_submission.documents.extend(last_submission_docs)
+
+            for doc in new_docs:
+                mine_doc = MineDocument(
+                    mine_guid=mine.mine_guid,
+                    document_name=doc['document_name'],
+                    document_manager_guid=doc['document_manager_guid'])
+
+                if not mine_doc:
+                    raise BadRequest('Unable to register uploaded file as document')
+
+                mine_doc.save()
+
+                new_report_submission.documents.append(mine_doc)
+
+            mine_report.mine_report_submissions.append(new_report_submission)
 
         try:
             mine_report.save()
