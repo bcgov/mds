@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import { Divider, Col, Row, Collapse, Icon, Table } from "antd";
 import * as Strings from "@/constants/strings";
@@ -820,6 +821,7 @@ export class NOWActivities extends Component {
   };
 
   renderUnderGround = () => {
+    console.log(this.props.noticeOfWork);
     const underGroundGolumns = [
       {
         title: "Activity",
@@ -852,6 +854,16 @@ export class NOWActivities extends Component {
         key: "length",
       },
     ];
+
+    const transformUnderGroundData = (activities) =>
+      activities.map((activity) => ({
+        activity: "" || Strings.EMPTY_FIELD,
+        quantity: activity.quantity || Strings.EMPTY_FIELD,
+        incline: activity.incline || Strings.EMPTY_FIELD,
+        units: activity.inclineunits || Strings.EMPTY_FIELD,
+        width: activity.width || Strings.EMPTY_FIELD,
+        length: activity.length || Strings.EMPTY_FIELD,
+      }));
 
     const surfaceColumns = [
       {
@@ -891,7 +903,7 @@ export class NOWActivities extends Component {
           align="left"
           pagination={false}
           columns={underGroundGolumns}
-          dataSource={[]}
+          dataSource={transformUnderGroundData(this.props.noticeOfWork.under_exp_new_activity)}
           locale={{
             emptyText: "No data",
           }}
@@ -919,7 +931,7 @@ export class NOWActivities extends Component {
           align="left"
           pagination={false}
           columns={underGroundGolumns}
-          dataSource={[]}
+          dataSource={transformUnderGroundData(this.props.noticeOfWork.under_exp_rehab_activity)}
           locale={{
             emptyText: "No data",
           }}

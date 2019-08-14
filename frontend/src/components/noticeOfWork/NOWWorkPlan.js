@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import { Divider, Col, Row, Table } from "antd";
 import * as Strings from "@/constants/strings";
@@ -99,7 +100,7 @@ export class NOWWorkPlan extends Component {
           </Col>
         </Row>
         {this.renderSummaryOfReclamation()}
-        <NOWActivities />
+        <NOWActivities noticeOfWork={this.props.noticeOfWork} />
         {this.renderDocuments()}
       </div>
     );
