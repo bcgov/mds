@@ -1,13 +1,15 @@
 .background {
   background-size: cover;
+  // this attribute is needed when viewed on large screens (ie TV's for demos), it overrides the default height 100%
   min-height: 100vh;
+  height: 100%;
 }
 
 .link-card {
   margin: 20px;
   background-color: white;
   border-top: 6px solid $violet;
-  width: 400px;
+  width: 390px;
   border-radius: 5px;
 
   a {

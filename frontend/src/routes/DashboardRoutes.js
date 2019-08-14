@@ -47,6 +47,11 @@ const DashboardRoutes = () => (
       path={routes.VARIANCE_DASHBOARD.route}
       component={routes.VARIANCE_DASHBOARD.component}
     />
+    <Route
+      exact
+      path={routes.NOTICE_OF_WORK_APPLICATION.route}
+      component={routes.NOTICE_OF_WORK_APPLICATION.component}
+    />
     <Route component={PageNotFound} />
   </Switch>
 );
