@@ -8,9 +8,13 @@ import NoticeOfWorkSearch from "@/components/dashboard/noticeOfWorkHomePage/Noti
 import ResponsivePagination from "@/components/common/ResponsivePagination";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import { fetchNoticeOfWorkApplications } from "@/actionCreators/noticeOfWorkActionCreator";
+import { getNoticeOfWorkList, getNoticeOfWorkPageData } from "@/selectors/noticeOfWorkSelectors";
 
 const propTypes = {
   fetchNoticeOfWorkApplications: PropTypes.func.isRequired,
+  // use NoW custom prop once this feature is fully implemented
+  // eslint-disable-next-line react/forbid-prop-types
+  noticeOfWorkApplications: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
 export class NoticeOfWorkHomePage extends Component {
@@ -35,7 +39,7 @@ export class NoticeOfWorkHomePage extends Component {
             <NoticeOfWorkSearch />
             <LoadingWrapper condition={this.state.isLoaded}>
               <div>
-                <NoticeOfWorkTable />
+                <NoticeOfWorkTable noticeOfWorkApplications={this.props.noticeOfWorkApplications} />
                 <div className="center">
                   <ResponsivePagination
                     onPageChange={() => {}}
@@ -53,6 +57,11 @@ export class NoticeOfWorkHomePage extends Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  noticeOfWorkApplications: getNoticeOfWorkList(state),
+  pageDate: getNoticeOfWorkPageData(state),
+});
+
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
@@ -65,7 +74,7 @@ NoticeOfWorkHomePage.propTypes = propTypes;
 
 export default compose(
   connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
   ),
   AuthorizationGuard("inDevelopment")
