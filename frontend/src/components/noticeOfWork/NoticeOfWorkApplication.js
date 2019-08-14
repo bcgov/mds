@@ -18,7 +18,7 @@ export class NoticeOfWorkApplication extends Component {
   state = { isLoaded: false };
 
   componentDidMount() {
-    this.props.fetchNoticeOfWorkApplication("fdd96cfe-8ff6-4062-9c35-466daff630c7").then(() => {
+    this.props.fetchNoticeOfWorkApplication("af6e9368-eba0-40c3-a8fb-0bae9b491e87").then(() => {
       this.setState({ isLoaded: true });
     });
   }
