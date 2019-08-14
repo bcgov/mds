@@ -618,7 +618,7 @@ class NOWApplicationFactory(BaseFactory):
     noticeofworktype = factory.Faker('sentence', nb_words=1)
     trackingnumber = factory.fuzzy.FuzzyInteger(1, 100)
     status = random.choice(['Approved', 'Rejected', 'Received', 'Client Delayed'])
-    receiveddate = TODAY
+    receiveddate = factory.Faker('past_datetime')
 
     @factory.post_generation
     def documents(obj, create, extracted, **kwargs):
