@@ -60,7 +60,7 @@ export class MineReportInfo extends Component {
   };
 
   componentWillMount = () => {
-    this.props.fetchMineReports(this.props.mineGuid).then((data) => {
+    this.props.fetchMineReports(this.props.mineGuid).then(() => {
       this.setState({
         filteredReports: this.props.mineReports ? this.props.mineReports : [],
       });
