@@ -9,6 +9,7 @@ const propTypes = {
   mineReport: PropTypes.objectOf(CustomPropTypes.mineReport).isRequired,
   openEditReportModal: PropTypes.func.isRequired,
   handleEditReport: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
   handleRemoveReport: PropTypes.func.isRequired,
 };
 
@@ -48,7 +49,7 @@ const renderDeleteButton = (props) => {
   const hasFiles =
     props.mineReport.mine_report_submissions &&
     props.mineReport.mine_report_submissions.length > 0 &&
-    props.mineReport.mine_report_submissions[props.mineReport.mine_report_submissions.length]
+    props.mineReport.mine_report_submissions[props.mineReport.mine_report_submissions.length - 1]
       .documents.length > 0;
   if (hasFiles) return DeleteButton("hasFiles", props);
   return DeleteButton("noFiles", props);

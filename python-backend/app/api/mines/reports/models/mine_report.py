@@ -22,7 +22,11 @@ class MineReport(Base, AuditMixin):
     submission_year = db.Column(db.Integer)
     deleted_ind = db.Column(db.Boolean, server_default=FetchedValue(), nullable=False)
 
-    mine_report_submissions = db.relationship('MineReportSubmission', lazy='joined')
+    mine_report_submissions = db.relationship(
+        'MineReportSubmission',
+        lazy='joined',
+        order_by='asc(MineReportSubmission.mine_report_submission_id)',
+    )
 
     mine_report_definition_guid = association_proxy('mine_report_definition',
                                                     'mine_report_definition_guid')
@@ -56,7 +60,7 @@ class MineReport(Base, AuditMixin):
         return mine_report
 
     @classmethod
-    def find_all_by_mine_guid(cls, _id):
+    def find_by_mine_guid(cls, _id):
         try:
             uuid.UUID(_id, version=4)
             return cls.query.filter_by(mine_guid=_id).filter_by(deleted_ind=False).all()
