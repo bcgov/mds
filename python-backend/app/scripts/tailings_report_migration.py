@@ -48,9 +48,17 @@ def append_tailings_reports_to_code_required_reports_then_destroy_tailings_data(
     mine_report = etl.addfield(mine_report, 'deleted_ind', lambda x: not x.active_ind)
     mine_report = etl.cutout(mine_report, 'active_ind')
     #to determine what FK's will be so can insert into related tables
-    max_report_id = etl.fromdb(connection, 'select MAX(mine_report_id) from mine_report')[1][0]
+    max_report_id = etl.fromdb(connection,
+                               'select last_value from public.mine_report_mine_report_id_seq')[1][0]
     max_report_submission_id = etl.fromdb(
-        connection, 'select MAX(mine_report_submission_id) from mine_report_submission')[1][0]
+        connection,
+        'select last_value from public.mine_report_submission_mine_report_submission_id_seq')[1][0]
+
+    #if sequence hasn't been used yet, fix off by one
+    if max_report_id == 1:
+        max_report_id = 0
+    if max_report_submission_id == 1:
+        max_report_submission_id = 0
 
     #get one-to-many
     mine_report, mine_report_submission_documents = etl.unjoin(mine_report,
@@ -59,13 +67,14 @@ def append_tailings_reports_to_code_required_reports_then_destroy_tailings_data(
 
     #add PK's for mappings
     mine_report_with_ids = etl.addrownumbers(mine_report,
-                                             start=(max_report_id or 0) + 1,
+                                             start=max_report_id + 1,
                                              step=1,
                                              field='mine_report_id')
     mine_report_with_ids = etl.addrownumbers(mine_report_with_ids,
-                                             start=(max_report_submission_id or 0) + 1,
+                                             start=max_report_submission_id + 1,
                                              step=1,
                                              field='mine_report_submission_id')
+    print(f'max_report_id= {max_report_id}, max_report_submission_id={max_report_submission_id}')
     #copy out fields for submission tables
     mine_report_submissions = etl.cut(mine_report_with_ids, [
         'mine_report_id', 'exp_document_guid', 'mine_report_submission_status_code', 'create_user',
@@ -97,19 +106,23 @@ def append_tailings_reports_to_code_required_reports_then_destroy_tailings_data(
     print(mine_report_submission_documents)
 
     if commit:  #insert
-        etl.appenddb(mine_report, connection, 'mine_report')
-        print('insert mine_report complete')
-        etl.appenddb(mine_report_submissions, connection, 'mine_report_submission')
-        print('insert mine_report_submission complete')
-        etl.appenddb(mine_report_submission_documents, connection, 'mine_report_document_xref')
-        print('insert mine_report_document_xref complete')
-
-        connection.cursor().execute('TRUNCATE public.mine_expected_document CASCADE')
-        print('TRUNCATE mine_expected_document compelete')
-        connection.cursor().execute('UPDATE public.mds_required_document SET active_ind=false')
-        print('deactivate mds_required_document complete')
-        print('COMPLETE')
-    else:
-        print(
-            'NO CHANGES MADE: add --commit=true after checking to insert rows and delete tailings data'
+        etl.appenddb(mine_report, connection, 'mine_report', commit=False)
+        print('INSERT mine_report staged')
+        etl.appenddb(mine_report_submissions, connection, 'mine_report_submission', commit=False)
+        print('INSERT mine_report_submission staged')
+        etl.appenddb(mine_report_submission_documents,
+                     connection,
+                     'mine_report_document_xref',
+                     commit=False)
+        print('INSERT mine_report_document_xref staged')
+        cursor = connection.cursor()
+        cursor.execute(
+            'TRUNCATE TABLE mine_expected_document_xref, mine_expected_document CONTINUE IDENTITY RESTRICT;'
         )
+        print('TRUNCATE mine_expected_document_xref and mine_expected_document staged')
+        cursor.execute('UPDATE public.mds_required_document SET active_ind=false;')
+        print('UPDATE mds_required_document active_ind FALSE staged')
+        connection.commit()
+        print('COMMIT COMPLETE')
+    else:
+        print('NO CHANGES MADE: add --commit=true to insert report rows and delete tailings data')
