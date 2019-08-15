@@ -24,7 +24,7 @@ export const ReportSubmissions = (props) => {
     <Divider orientation="left">
       <h5>Report Files</h5>
     </Divider>,
-    hasSubmissions && (
+    props.mineReportSubmissions.length > 0 && (
       <Form.Item label="Attached files" style={{ paddingBottom: "10px" }}>
         <Field
           id="ReportAttachedFiles"

@@ -98,10 +98,7 @@ export class MineReportInfo extends Component {
     return (
       <div>
         <div className="inline-flex flex-end">
-          <AuthorizationWrapper
-            permission={Permission.EDIT_REPORTS}
-            isMajorMine={this.state.mine.major_mine_ind}
-          >
+          <AuthorizationWrapper permission={Permission.EDIT_REPORTS}>
             <AddButton
               onClick={(event) =>
                 this.openAddReportModal(

@@ -12,7 +12,6 @@ from werkzeug.exceptions import BadRequest, NotFound
 from sqlalchemy.exc import DBAPIError
 
 from app.api.mines.mine.models.mine import Mine
-from app.api.documents.mines.models.mine_document import MineDocument
 from app.api.mines.reports.models.mine_report import MineReport
 
 from app.extensions import api, db

@@ -14,8 +14,8 @@ from app.api.mines.reports.models.mine_report_submission import MineReportSubmis
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
 from app.api.mines.reports.models.mine_report_category_xref import MineReportCategoryXref
-from app.api.documents.reports.models.mine_report import MineReportDocumentXref
-from app.api.documents.mines.models.mine_document import MineDocument
+from app.api.mines.reports.models.mine_report_document_xref import MineReportDocumentXref
+from app.api.mines.documents.mines.models.mine_document import MineDocument
 from app.api.mines.reports.models.mine_report_submission_status_code import MineReportSubmissionStatusCode
 from app.api.mines.reports.models.mine_report_category import MineReportCategory
 from app.api.mines.reports.models.mine_report_due_date_type import MineReportDueDateType
