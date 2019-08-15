@@ -9,7 +9,7 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 //2. Plugins
 plugins {
     id "groovy"
-    id "com.energizedwork.webdriver-binaries" version "1.0"
+    id "com.energizedwork.webdriver-binaries" version "1.4"
     id "net.foragerr.jmeter" version "1.0.10-3.3"
 
 }
