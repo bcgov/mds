@@ -82,7 +82,7 @@ class MineReportListResource(Resource, UserMixin):
             permit_id=permit.permit_id if permit else None)
 
         submissions = data.get('mine_report_submissions')
-        if submissions is not None:
+        if not submissions:
             submission = submissions[0]
             if len(submission.get('documents')) > 0:
                 report_submission = MineReportSubmission(
