@@ -42,12 +42,14 @@ export class Reports extends Component {
 
   handleEditReport = (values) => {
     this.props
-      .updateMineReport(this.props.mineGuid, values.mine_report_guid, values)
+      .updateMineReport(this.props.mine.mine_guid, values.mine_report_guid, values)
       .then(() => this.props.closeModal())
       .then(() => this.props.fetchMineReports(this.props.mine.mine_guid));
   };
 
   openEditReportModal = (event, onSubmit, report) => {
+    console.log(this.props);
+    console.log(report);
     event.preventDefault();
     this.props.openModal({
       props: {

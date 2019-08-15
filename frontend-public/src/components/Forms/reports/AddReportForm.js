@@ -27,14 +27,18 @@ const propTypes = {
     PropTypes.objectOf(CustomPropTypes.dropdownListItem)
   ).isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any),
-  selectedMineReportCategory: PropTypes.string.isRequired,
-  selectedMineReportDefinition: PropTypes.string.isRequired,
+  selectedMineReportCategory: PropTypes.string,
+  selectedMineReportDefinition: PropTypes.string,
   formMeta: PropTypes.any,
 };
 
 const selector = formValueSelector(FORM.ADD_REPORT);
 
-const defaultProps = { initialValues: {} };
+const defaultProps = {
+  initialValues: {},
+  selectedMineReportCategory: null,
+  selectedMineReportDefinition: null,
+};
 
 export class AddReportForm extends Component {
   state = {
@@ -187,7 +191,7 @@ export class AddReportForm extends Component {
                 placeholder=""
                 component={renderConfig.YEAR}
                 validate={[required]}
-                props={{ disabled: !this.state.existingReport }}
+                props={{ disabled: true }}
               />
             </Form.Item>
             <Form.Item>
@@ -198,6 +202,7 @@ export class AddReportForm extends Component {
                 placeholder=""
                 component={renderConfig.DATE}
                 validate={[required]}
+                props={{ disabled: true }}
               />
             </Form.Item>
             <Form.Item>
@@ -207,6 +212,7 @@ export class AddReportForm extends Component {
                 label="Received Date"
                 placeholder=""
                 component={renderConfig.DATE}
+                props={{ disabled: true }}
               />
             </Form.Item>
             <ReportSubmissions
