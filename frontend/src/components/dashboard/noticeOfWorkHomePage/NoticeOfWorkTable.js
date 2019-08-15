@@ -1,5 +1,5 @@
 import React from "react";
-import { Table } from "antd";
+import { Table, Icon, Input, Button } from "antd";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { isEmpty } from "lodash";
@@ -27,7 +27,52 @@ const defaultProps = {
   noticeOfWorkApplications: [],
 };
 
-const columns = [
+const filterComponent = (handleSearch, name) => ({
+  filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => {
+    let searchInput;
+    return (
+      <div style={{ padding: 8 }}>
+        <Input
+          ref={(node) => {
+            searchInput = node && node.props.value;
+          }}
+          placeholder={`Search ${name}`}
+          value={selectedKeys[0]}
+          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => {
+            handleSearch({ trackingnumber: searchInput });
+          }}
+          style={{ width: 188, marginBottom: 8, display: "block" }}
+        />
+        <Button
+          type="primary"
+          onClick={() => {
+            handleSearch({ trackingnumber: searchInput });
+          }}
+          icon="search"
+          size="small"
+          style={{ width: 90, marginRight: 8 }}
+        >
+          Search
+        </Button>
+        <Button
+          onClick={() => {
+            handleSearch({ trackingnumber: null });
+          }}
+          size="small"
+          style={{ width: 90 }}
+        >
+          Reset
+        </Button>
+      </div>
+    );
+  },
+  filterIcon: (filtered) => (
+    <Icon type="search" style={{ color: filtered ? "#1890ff" : undefined }} />
+  ),
+});
+
+const columns = (handleSearch) => [
   {
     title: "Region",
     dataIndex: "region",
@@ -42,6 +87,7 @@ const columns = [
       <Link to={router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key)}>{text}</Link>
     ),
     sorter: true,
+    ...filterComponent(handleSearch, "NoW No."),
   },
   {
     title: "Mine",
@@ -111,7 +157,7 @@ export const NoticeOfWorkTable = (props) => (
   <Table
     align="left"
     pagination={false}
-    columns={applySortIndicator(columns, props.sortField, props.sortDir)}
+    columns={applySortIndicator(columns(props.handleSearch), props.sortField, props.sortDir)}
     dataSource={transformRowData(props.noticeOfWorkApplications)}
     locale={{ emptyText: <NullScreen type="no-results" /> }}
     onChange={handleTableChange(props.handleSearch)}
