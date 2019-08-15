@@ -39,7 +39,7 @@ const defaultProps = { initialValues: {} };
 
 export class AddReportForm extends Component {
   state = {
-    existingReport: Boolean(!this.props.initialValues.mine_report_definition_guid),
+    existingReport: Boolean(this.props.initialValues.mine_report_definition_guid),
     mineReportDefinitionOptionsFiltered: [],
     dropdownMineReportDefinitionOptionsFiltered: [],
     selectedMineReportComplianceArticles: [],
@@ -188,7 +188,7 @@ export class AddReportForm extends Component {
                 placeholder=""
                 component={renderConfig.YEAR}
                 validate={[required]}
-                props={{ disabled: !this.state.existingReport }}
+                props={{ disabled: this.state.existingReport }}
               />
             </Form.Item>
             <Form.Item>
@@ -215,7 +215,13 @@ export class AddReportForm extends Component {
               mineReportSubmissions={this.state.mineReportSubmissions}
               updateMineReportSubmissions={this.updateMineReportSubmissions}
             />
-            <ReportComments handleSubmit={this.props.handleCommentSubmit} />
+            {this.state.existingReport && (
+              <ReportComments
+                mineGuid={this.props.mineGuid}
+                mineReportGuid={this.props.initialValues.mine_report_guid}
+                handleSubmit={this.props.handleCommentSubmit}
+              />
+            )}
           </Col>
         </Row>
         <div className="right center-mobile">

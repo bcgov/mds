@@ -1,10 +1,10 @@
 import React, { Component } from "react";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Field } from "redux-form";
-import { Form, Divider, Button } from "antd";
-import { required } from "@/utils/Validate";
-import { renderConfig } from "@/components/common/config";
-import * as FORM from "@/constants/forms";
+import { Divider } from "antd";
+import CommentPanel from "@/components/common/comments/CommentPanel";
+import { getMineReportComments } from "@/selectors/reportSelectors";
 
 import {
   fetchMineReportComments,
@@ -16,7 +16,6 @@ const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   mineReportGuid: PropTypes.string.isRequired,
   mineReportComments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
-  handleSubmit: PropTypes.func.isRequired,
   fetchMineReportComments: PropTypes.func.isRequired,
   createMineReportComment: PropTypes.func.isRequired,
   deleteMineReportComment: PropTypes.func.isRequired,
@@ -26,49 +25,51 @@ const defaultProps = {
   mineReportComments: [],
 };
 
+const actionBuilder = (visible, latest) => [
+  visible && <span>Comment published to Minespace</span>,
+  !latest && <span>Comment refers to a previous submission</span>,
+];
+
 export class ReportComments extends Component {
-  handleAddComment = (mineGuid, mineReportGuid, values) => {
+  componentDidMount() {
+    this.props.fetchMineReportComments(this.props.mineGuid, this.props.mineReportGuid);
+  }
+
+  handleAddComment = (values) => {
     this.props
-      .createMineReportComment(mineGuid, mineReportGuid, values)
-      .then(() => this.props.fetchMineReportComments(mineGuid, mineReportGuid));
+      .createMineReportComment(this.props.mineGuid, this.props.mineReportGuid, values)
+      .then(() =>
+        this.props.fetchMineReportComments(this.props.mineGuid, this.props.mineReportGuid)
+      );
   };
 
-  handleRemoveComment = (mineGuid, mineReportGuid, commentGuid) => {
+  handleRemoveComment = (commentGuid) => {
     this.props
-      .deleteMineReportComment(commentGuid)
-      .then(() => this.props.fetchMineReportComments(mineGuid, mineReportGuid));
+      .deleteMineReportComment(this.props.mineGuid, this.props.mineReportGuid, commentGuid)
+      .then(() =>
+        this.props.fetchMineReportComments(this.props.mineGuid, this.props.mineReportGuid)
+      );
   };
 
   render() {
-    const hasComments = this.props.mineReportComments.length > 0;
     return [
       <Divider orientation="left">
         <h5>Comments</h5>
       </Divider>,
-      hasComments && [
-        this.props.mineReportComments.forEach((comment) => {
-          return <div>Comment {comment}</div>;
-        }),
-      ],
-      <Form layout="vertical" onSubmit={this.props.handleSubmit}>
-        <Form.Item label="Comment" style={{ paddingBottom: "10px" }}>
-          <Field
-            id="report_comment"
-            name="report_comment"
-            placeholder=""
-            component={renderConfig.SCROLL_FIELD}
-            validate={[required]}
-          />
-          <Field
-            id="comment_visibility_ind"
-            name="comment_visibility_ind"
-            component={renderConfig.CHECKBOX}
-          />
-        </Form.Item>
-        <Button className="full-mobile" type="primary" htmlType="submit">
-          Add Comment
-        </Button>
-      </Form>,
+      <CommentPanel
+        renderAdd
+        onSubmit={this.handleAddComment}
+        onRemove={this.handleRemoveComment}
+        comments={this.props.mineReportComments.map((comment) => {
+          return {
+            key: comment.mine_report_comment_guid,
+            author: comment.comment_user,
+            comment: comment.report_comment,
+            actions: actionBuilder(comment.comment_visibility_ind, comment.from_latest_submission),
+            datetime: comment.comment_datetime,
+          };
+        })}
+      />,
     ];
   }
 }
@@ -90,14 +91,7 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
-  reduxForm({
-    form: FORM.ADD_REPORT_COMMENT,
-    touchOnBlur: true,
-    onSubmitSuccess: resetForm(FORM.ADD_REPORT_COMMENT),
-  })
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
 )(ReportComments);

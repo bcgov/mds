@@ -271,14 +271,11 @@ MINE_STATUS_CODE_MODEL = api.model(
 MINE_REPORT_COMMENT_MODEL = api.model(
     'MineReportCommentModel', {
         'mine_report_comment_guid': fields.String,
-        'minespace_user_guid': fields.String,
-        'core_user_guid': fields.String,
         'report_comment': fields.String,
-        'create_timestamp': fields.DateTime,
-        'update_timestamp': fields.DateTime,
         'comment_visibility_ind': fields.Boolean,
         'comment_user': fields.String,
-        'comment_datetime': fields.DateTime
+        'comment_datetime': fields.DateTime,
+        'from_latest_submission': fields.Boolean
     }
 )
 
