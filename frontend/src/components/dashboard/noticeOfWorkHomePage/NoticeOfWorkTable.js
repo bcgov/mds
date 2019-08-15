@@ -2,6 +2,7 @@ import React from "react";
 import { Table } from "antd";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import { isEmpty } from "lodash";
 import * as Strings from "@/constants/strings";
 import * as router from "@/constants/routes";
 import NullScreen from "@/components/common/NullScreen";
@@ -12,12 +13,17 @@ import { formatDate } from "@/utils/helpers";
  * @class NoticeOfWorkTable - paginated list of notice of work applications
  */
 const propTypes = {
+  handleSearch: PropTypes.func.isRequired,
   // use NoW custom prop once this feature is fully implemented
   // eslint-disable-next-line react/forbid-prop-types
   noticeOfWorkApplications: PropTypes.array,
+  sortField: PropTypes.string,
+  sortDir: PropTypes.string,
 };
 
 const defaultProps = {
+  sortField: null,
+  sortDir: null,
   noticeOfWorkApplications: [],
 };
 
@@ -25,14 +31,17 @@ const columns = [
   {
     title: "Region",
     dataIndex: "region",
+    // sortField: "region" TODO: Figure out what Region is and add it here
     render: (text) => <div title="Region">{text}</div>,
   },
   {
     title: "NoW No.",
     dataIndex: "nowNum",
+    sortField: "trackingnumber",
     render: (text, record) => (
       <Link to={router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key)}>{text}</Link>
     ),
+    sorter: true,
   },
   {
     title: "Mine",
@@ -47,17 +56,23 @@ const columns = [
   {
     title: "NoW Type",
     dataIndex: "nowType",
+    sortField: "noticeofworktype",
     render: (text) => <div title="NoW Mine Type">{text}</div>,
+    sorter: true,
   },
   {
     title: "Application Status",
     dataIndex: "status",
+    sortField: "status",
     render: (text) => <div title="Application Status">{text}</div>,
+    sorter: true,
   },
   {
     title: "Import Date",
     dataIndex: "date",
+    sortField: "receiveddate",
     render: (text) => <div title="Import Date">{text}</div>,
+    sorter: true,
   },
 ];
 
@@ -73,13 +88,33 @@ const transformRowData = (applications) =>
     date: formatDate(application.receiveddate) || Strings.EMPTY_FIELD,
   }));
 
+const handleTableChange = (updateApplicationList) => (pagination, filters, sorter) => {
+  const params = isEmpty(sorter)
+    ? {
+        sort_field: undefined,
+        sort_dir: undefined,
+      }
+    : {
+        sort_field: sorter.column.sortField,
+        sort_dir: sorter.order.replace("end", ""),
+      };
+  updateApplicationList(params);
+};
+
+const applySortIndicator = (_columns, field, dir) =>
+  _columns.map((column) => ({
+    ...column,
+    sortOrder: column.sortField === field ? dir.concat("end") : false,
+  }));
+
 export const NoticeOfWorkTable = (props) => (
   <Table
     align="left"
     pagination={false}
-    columns={columns}
+    columns={applySortIndicator(columns, props.sortField, props.sortDir)}
     dataSource={transformRowData(props.noticeOfWorkApplications)}
     locale={{ emptyText: <NullScreen type="no-results" /> }}
+    onChange={handleTableChange(props.handleSearch)}
   />
 );
 
