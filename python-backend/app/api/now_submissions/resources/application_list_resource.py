@@ -1,7 +1,7 @@
 from flask_restplus import Resource
 from flask import request
-from sqlalchemy_filters import apply_pagination, apply_filters
-from sqlalchemy import desc
+from sqlalchemy_filters import apply_pagination
+from sqlalchemy import desc, func, or_
 
 
 from app.extensions import api
@@ -52,30 +52,22 @@ class ApplicationListResource(Resource, UserMixin, ErrorMixin):
                                       noticeofworktype=None,
                                       region=None):
         filters = []
-
+        status_filter_values = []
+        status_filters = []
         if status is not None:
-            filters.append([{
-                'field': 'status',
-                'op': 'ilike',
-                'value': status
-            }])
+            status_filter_values = status.split(',')
+
+        if len(status_filter_values) > 0:
+            status_filters = []
+            for status in status_filter_values:
+                status_filters.append(func.lower(Application.status).contains(func.lower(status)))
 
         if noticeofworktype is not None:
-            filters.append({
-                'field': 'noticeofworktype',
-                'op': 'ilike',
-                'value': noticeofworktype
-            })
-
+            filters.append(func.lower(Application.noticeofworktype).contains(func.lower(noticeofworktype)))
         if region is not None:
-            filters.append({
-                'field': 'noticeofworktype',
-                'op': 'ilike',
-                'value': region
-            })
+            filters.append(func.lower(Application.region).contains(func.lower(region)))
 
-        filtered_query = apply_filters(
-            Application.query.order_by(desc(Application.receiveddate)),
-            filters)
+        filtered_query = Application.query.order_by(desc(Application.receiveddate)) \
+                .filter(*filters, or_(*status_filters))
 
         return apply_pagination(filtered_query, page_number, page_size)
