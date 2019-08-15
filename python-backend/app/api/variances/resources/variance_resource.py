@@ -62,7 +62,6 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
 
     def _apply_filters_and_pagination(self, args):
 
-        # TODO figure out why status filter is not used
         status_filter_values = list(map(
             lambda x: x.variance_application_status_code,
             VarianceApplicationStatusCode.active()))
