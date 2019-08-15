@@ -36,10 +36,9 @@ class MineReportListResource(Resource, UserMixin):
                         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
 
     parser.add_argument('permit_guid', type=str, location='json')
-    parser.add_argument(
-        'received_date',
-        location='json',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
+    parser.add_argument('received_date',
+                        location='json',
+                        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
     parser.add_argument('mine_report_submissions', type=list, location='json')
 
     @api.marshal_with(MINE_REPORT_MODEL, envelope='records', code=200)
@@ -82,7 +81,7 @@ class MineReportListResource(Resource, UserMixin):
             permit_id=permit.permit_id if permit else None)
 
         submissions = data.get('mine_report_submissions')
-        if not submissions:
+        if submissions:
             submission = submissions[0]
             if len(submission.get('documents')) > 0:
                 report_submission = MineReportSubmission(
@@ -116,11 +115,10 @@ class MineReportResource(Resource, UserMixin):
     # required
 
     parser.add_argument('due_date', type=str, location='json', store_missing=False)
-    parser.add_argument(
-        'received_date',
-        location='json',
-        store_missing=False,
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
+    parser.add_argument('received_date',
+                        location='json',
+                        store_missing=False,
+                        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
     parser.add_argument('mine_report_submissions', type=list, location='json', store_missing=False)
 
     @api.marshal_with(MINE_REPORT_MODEL, code=200)
@@ -153,9 +151,8 @@ class MineReportResource(Resource, UserMixin):
         new_submission = next(
             (x for x in subission_iterator if x.get('mine_report_submission_guid') is None), None)
         if new_submission is not None:
-            new_report_submission = MineReportSubmission(
-                mine_report_submission_status_code='MIA',
-                submission_date=datetime.now())
+            new_report_submission = MineReportSubmission(mine_report_submission_status_code='MIA',
+                                                         submission_date=datetime.now())
 
             # Copy the current list of documents for the report submission
             current_app.logger.debug(mine_report.mine_report_submissions)
@@ -182,10 +179,9 @@ class MineReportResource(Resource, UserMixin):
                 new_report_submission.documents.extend(last_submission_docs)
 
             for doc in new_docs:
-                mine_doc = MineDocument(
-                    mine_guid=mine.mine_guid,
-                    document_name=doc['document_name'],
-                    document_manager_guid=doc['document_manager_guid'])
+                mine_doc = MineDocument(mine_guid=mine.mine_guid,
+                                        document_name=doc['document_name'],
+                                        document_manager_guid=doc['document_manager_guid'])
 
                 if not mine_doc:
                     raise BadRequest('Unable to register uploaded file as document')
