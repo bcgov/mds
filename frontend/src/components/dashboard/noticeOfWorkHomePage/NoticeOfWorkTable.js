@@ -27,7 +27,7 @@ const defaultProps = {
   noticeOfWorkApplications: [],
 };
 
-const filterComponent = (handleSearch, name) => ({
+const filterComponent = (props, name, field) => ({
   filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => {
     let searchInput;
     return (
@@ -37,17 +37,17 @@ const filterComponent = (handleSearch, name) => ({
             searchInput = node && node.props.value;
           }}
           placeholder={`Search ${name}`}
-          value={selectedKeys[0]}
+          value={selectedKeys[0] || props.searchParams[field]}
           onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
           onPressEnter={() => {
-            handleSearch({ trackingnumber: searchInput });
+            props.handleSearch({ [field]: searchInput });
           }}
           style={{ width: 188, marginBottom: 8, display: "block" }}
         />
         <Button
           type="primary"
           onClick={() => {
-            handleSearch({ trackingnumber: searchInput });
+            props.handleSearch({ [field]: searchInput });
           }}
           icon="search"
           size="small"
@@ -57,7 +57,7 @@ const filterComponent = (handleSearch, name) => ({
         </Button>
         <Button
           onClick={() => {
-            handleSearch({ trackingnumber: null });
+            props.handleSearch({ [field]: null });
           }}
           size="small"
           style={{ width: 90 }}
@@ -72,7 +72,7 @@ const filterComponent = (handleSearch, name) => ({
   ),
 });
 
-const columns = (handleSearch) => [
+const columns = (props) => [
   {
     title: "Region",
     dataIndex: "region",
@@ -87,7 +87,7 @@ const columns = (handleSearch) => [
       <Link to={router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key)}>{text}</Link>
     ),
     sorter: true,
-    ...filterComponent(handleSearch, "NoW No."),
+    ...filterComponent(props, "NoW No.", "trackingnumber"),
   },
   {
     title: "Mine",
@@ -105,6 +105,7 @@ const columns = (handleSearch) => [
     sortField: "noticeofworktype",
     render: (text) => <div title="NoW Mine Type">{text}</div>,
     sorter: true,
+    ...filterComponent(props, "NoW Type", "noticeofworktype"),
   },
   {
     title: "Application Status",
@@ -112,6 +113,7 @@ const columns = (handleSearch) => [
     sortField: "status",
     render: (text) => <div title="Application Status">{text}</div>,
     sorter: true,
+    ...filterComponent(props, "Status", "status"),
   },
   {
     title: "Import Date",
@@ -157,7 +159,7 @@ export const NoticeOfWorkTable = (props) => (
   <Table
     align="left"
     pagination={false}
-    columns={applySortIndicator(columns(props.handleSearch), props.sortField, props.sortDir)}
+    columns={applySortIndicator(columns(props), props.sortField, props.sortDir)}
     dataSource={transformRowData(props.noticeOfWorkApplications)}
     locale={{ emptyText: <NullScreen type="no-results" /> }}
     onChange={handleTableChange(props.handleSearch)}
