@@ -6,7 +6,7 @@ from werkzeug.exceptions import BadRequest, NotFound
 
 from app.extensions import api
 from ....utils.access_decorators import requires_role_view_all
-from ....utils.resources_mixins import UserMixin, ErrorMixin
+from ....utils.resources_mixins import UserMixin
 from ....constants import NRIS_COMPLIANCE_DATA, TIMEOUT_60_MINUTES
 from app.api.services import NRIS_API_service
 from app.extensions import cache
@@ -25,7 +25,7 @@ class Date(fields.Raw):
         return value.strftime("%Y-%m-%d") if value else None
 
 
-class MineComplianceSummaryResource(Resource, UserMixin, ErrorMixin):
+class MineComplianceSummaryResource(Resource, UserMixin):
     @api.marshal_with(MINE_COMPLIANCE_RESPONSE_MODEL, code=200)
     @requires_role_view_all
     def get(self, mine_no):

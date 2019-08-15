@@ -10,6 +10,7 @@ from ..mine.resources.mine_commodity_code import MineCommodityCodeResource
 from ..status.resources.status import MineStatusResource, MineStatusListResource
 from ..region.resources.region import MineRegionResource
 from ..tailings.resources.tailings import MineTailingsStorageFacilityListResource
+from ..documents.mines.resources.mine_document_resource import MineDocumentListResource
 from ..compliance.resources.compliance import MineComplianceSummaryResource
 from ..compliance.resources.compliance_article import ComplianceArticleResource
 from ..mine.resources.mine_basicinfo import MineBasicInfoResource
@@ -21,6 +22,7 @@ from ..variances.resources.variance_document_upload import MineVarianceDocumentU
 from ..variances.resources.variance_uploaded_documents import MineVarianceUploadedDocumentsResource
 from ..incidents.resources.mine_incidents import MineIncidentListResource, MineIncidentResource
 from ..incidents.resources.mine_incident_document import MineIncidentDocumentListResource, MineIncidentDocumentResource
+from app.api.mines.reports.resources.mine_report_document import MineReportDocumentListResource
 from app.api.mines.reports.resources.mine_reports import MineReportListResource, MineReportResource
 from app.api.mines.reports.resources.mine_report_definition import MineReportDefinitionListResource
 from app.api.mines.permits.permit.resources.permit import PermitResource, PermitListResource
@@ -28,7 +30,10 @@ from app.api.mines.permits.permit.resources.permit_status_code import PermitStat
 from app.api.mines.permits.permit_amendment.resources.permit_amendment import PermitAmendmentResource, PermitAmendmentListResource
 from app.api.mines.permits.permit_amendment.resources.permit_amendment_document import PermitAmendmentDocumentListResource, PermitAmendmentDocumentResource
 
-from flask_restplus import Namespace
+from ..documents.expected.resources.mine_documents import ExpectedMineDocumentResource
+from ..documents.expected.resources.expected_documents import ExpectedDocumentResource, ExpectedDocumentListResource
+from ..documents.expected.resources.document_status import ExpectedDocumentStatusResource
+from ..documents.expected.resources.expected_document_uploads import ExpectedDocumentUploadResource
 
 api = Namespace('mines', description='Mine related operations')
 
@@ -45,6 +50,7 @@ api.add_resource(MineStatusListResource, '/status')
 api.add_resource(MineRegionResource, '/region')
 
 api.add_resource(MineTailingsStorageFacilityListResource, '/<string:mine_guid>/tailings')
+api.add_resource(MineDocumentListResource, '/<string:mine_guid>/documents')
 
 api.add_resource(MineComplianceSummaryResource, '/<string:mine_no>/compliance/summary')
 api.add_resource(ComplianceArticleResource, '/compliance/codes')
@@ -81,6 +87,11 @@ api.add_resource(MineIncidentDocumentListResource, '/<string:mine_guid>/incident
 api.add_resource(MineReportListResource, '/<string:mine_guid>/reports')
 api.add_resource(MineReportResource, '/<string:mine_guid>/reports/<string:mine_report_guid>')
 api.add_resource(MineReportDefinitionListResource, '/reports/definitions')
+
+api.add_resource(
+    MineReportDocumentListResource,
+    '/<string:mine_guid>/reports/documents',
+)
 
 api.add_resource(PermitResource, '/<string:mine_guid>/permits/<string:permit_guid>')
 api.add_resource(PermitListResource, '/<string:mine_guid>/permits')

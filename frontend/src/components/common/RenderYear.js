@@ -14,12 +14,14 @@ const propTypes = {
   label: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
   onChange: PropTypes.func,
+  disabled: PropTypes.bool,
   meta: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const defaultProps = {
   placeholder: "yyyy-mm-dd",
   onChange: () => {},
+  disabled: false,
 };
 
 export class RenderDate extends Component {
