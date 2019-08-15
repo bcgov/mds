@@ -1,10 +1,9 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import PropTypes from "prop-types";
 import { Field, reduxForm, formValueSelector } from "redux-form";
-import { Form, Button, Col, Icon, Row } from "antd";
+import { Form, Button, Col, Row } from "antd";
 import * as FORM from "@/constants/forms";
 import {
   getDropdownMineReportCategoryOptions,
@@ -23,6 +22,7 @@ const propTypes = {
     PropTypes.objectOf(CustomPropTypes.dropdownListItem)
   ).isRequired,
   selectedMineReportCategory: PropTypes.string.isRequired,
+  selectedMineReportDefinitionGuid: PropTypes.string.isRequired,
 };
 
 const defaultProps = {};
@@ -31,8 +31,8 @@ const selector = formValueSelector(FORM.FILTER_REPORTS);
 
 export class ReportFilterForm extends Component {
   state = {
-    mineReportDefinitionOptionsFiltered: [],
     dropdownMineReportDefinitionOptionsFiltered: [],
+    dropdownMineReportCategoryOptionsFiltered: [],
   };
 
   handleReset = () => {
@@ -42,6 +42,7 @@ export class ReportFilterForm extends Component {
 
   componentDidMount = () => {
     this.updateMineReportOptions(this.props.mineReportDefinitionOptions);
+    this.updateMineReportCategoryOptions(this.props.dropdownMineReportCategoryOptions);
   };
 
   updateMineReportOptions = (mineReportDefinitionOptions, selectedMineReportCategory) => {
@@ -62,8 +63,29 @@ export class ReportFilterForm extends Component {
     );
 
     this.setState({
-      mineReportDefinitionOptionsFiltered,
       dropdownMineReportDefinitionOptionsFiltered,
+    });
+  };
+
+  updateMineReportCategoryOptions = (
+    dropdownMineReportCategoryOptions,
+    selectedMineReportDefinitionGuid
+  ) => {
+    let dropdownMineReportCategoryOptionsFiltered = dropdownMineReportCategoryOptions;
+
+    if (selectedMineReportDefinitionGuid) {
+      const selectedMineReportDefinition = this.props.mineReportDefinitionOptions.filter(
+        (option) => option.mine_report_definition_guid === selectedMineReportDefinitionGuid
+      )[0];
+
+      dropdownMineReportCategoryOptionsFiltered = dropdownMineReportCategoryOptions.filter((cat) =>
+        selectedMineReportDefinition.categories
+          .map((category) => category.mine_report_category)
+          .includes(cat.value)
+      );
+    }
+    this.setState({
+      dropdownMineReportCategoryOptionsFiltered,
     });
   };
 
@@ -74,11 +96,24 @@ export class ReportFilterForm extends Component {
         nextProps.selectedMineReportCategory
       );
     }
+    if (
+      nextProps.selectedMineReportDefinitionGuid !== this.props.selectedMineReportDefinitionGuid
+    ) {
+      this.updateMineReportCategoryOptions(
+        nextProps.dropdownMineReportCategoryOptions,
+        nextProps.selectedMineReportDefinitionGuid
+      );
+    }
   };
 
   render() {
     return (
-      <Form layout="vertical" onSubmit={this.props.handleSubmit} onReset={this.handleReset}>
+      <Form
+        layout="vertical"
+        onSubmit={this.props.handleSubmit}
+        onReset={this.handleReset}
+        enableReinitialize="true"
+      >
         <div>
           <Row gutter={16}>
             <Col md={6} xs={24}>
@@ -98,7 +133,7 @@ export class ReportFilterForm extends Component {
                 label="Report Type"
                 placeholder="Select a report type"
                 component={renderConfig.SELECT}
-                data={this.props.dropdownMineReportCategoryOptions}
+                data={this.state.dropdownMineReportCategoryOptionsFiltered}
               />
             </Col>
             <Col md={6} xs={24}>
@@ -141,10 +176,10 @@ export class ReportFilterForm extends Component {
             </Col>
             {/* <Col md={6} xs={24}>
               <Field
-                id="order_status"
-                name="order_status"
-                label="Order status"
-                placeholder="Select an order status"
+                id="report_status"
+                name="report_status"
+                label="Review status"
+                placeholder="Select a review status"
                 component={renderConfig.SELECT}
               />
             </Col> */}
@@ -170,11 +205,12 @@ export default compose(
   connect((state) => ({
     dropdownMineReportCategoryOptions: getDropdownMineReportCategoryOptions(state),
     mineReportDefinitionOptions: getMineReportDefinitionOptions(state),
-    selectedMineReportCategory: selector(state, "mine_report_category"),
-    selectedMineReportDefinition: selector(state, "reportName"),
+    selectedMineReportCategory: selector(state, "report_type"),
+    selectedMineReportDefinitionGuid: selector(state, "report_name"),
   })),
   reduxForm({
     form: FORM.FILTER_REPORTS,
     touchOnBlur: true,
+    enableReinitialize: true,
   })
 )(ReportFilterForm);

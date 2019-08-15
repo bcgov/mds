@@ -1,6 +1,6 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
+import moment from "moment";
 import queryString from "query-string";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -39,9 +39,15 @@ const propTypes = {
   updateMineReport: PropTypes.func.isRequired,
   createMineReport: PropTypes.func.isRequired,
   deleteMineReport: PropTypes.func.isRequired,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
+  match: PropTypes.shape({
+    params: {
+      id: PropTypes.string,
+    },
+  }).isRequired,
 };
 
 const initialSearchValues = {
@@ -50,6 +56,7 @@ const initialSearchValues = {
   compliance_year: "",
   report_due_date_start: "",
   report_due_date_end: "",
+  report_status: "",
 };
 
 export class MineReportInfo extends Component {
@@ -61,15 +68,33 @@ export class MineReportInfo extends Component {
 
   componentWillMount = () => {
     this.props.fetchMineReports(this.props.mineGuid).then(() => {
-      this.setState({
-        filteredReports: this.props.mineReports ? this.props.mineReports : [],
-      });
+      if (Object.keys(this.props.location.search).length > 0) {
+        this.renderDataFromURL(this.props.location.search);
+      } else {
+        this.setFilteredReports();
+      }
     });
   };
 
-  componentDidMount() {
+  componentDidMount = () => {
     this.setState({
       mine: this.props.mines[this.props.mineGuid],
+    });
+  };
+
+  componentWillReceiveProps = (nextProps) => {
+    const locationChanged = nextProps.location !== this.props.location;
+    if (locationChanged) {
+      const correctParams = nextProps.location.search
+        ? nextProps.location.search
+        : queryString.stringify(initialSearchValues);
+      this.renderDataFromURL(correctParams);
+    }
+  };
+
+  setFilteredReports(reports = null) {
+    this.setState({
+      filteredReports: reports || this.props.mineReports,
     });
   }
 
@@ -77,14 +102,22 @@ export class MineReportInfo extends Component {
     this.props
       .updateMineReport(this.props.mineGuid, values.mine_report_guid, values)
       .then(() => this.props.closeModal())
-      .then(() => this.props.fetchMineReports(this.props.mineGuid));
+      .then(() =>
+        this.props.fetchMineReports(this.props.mineGuid).then(() => {
+          this.setFilteredReports();
+        })
+      );
   };
 
   handleAddReport = (values) => {
     this.props
       .createMineReport(this.props.mineGuid, values)
       .then(() => this.props.closeModal())
-      .then(() => this.props.fetchMineReports(this.props.mineGuid));
+      .then(() =>
+        this.props.fetchMineReports(this.props.mineGuid).then(() => {
+          this.setFilteredReports();
+        })
+      );
   };
 
   handleRemoveReport = (reportGuid) => {
@@ -118,16 +151,6 @@ export class MineReportInfo extends Component {
     });
   };
 
-  componentWillReceiveProps(nextProps) {
-    const locationChanged = nextProps.location !== this.props.location;
-    if (locationChanged && !this.state.isLoading) {
-      const correctParams = nextProps.location.search
-        ? nextProps.location.search
-        : queryString.stringify(initialSearchValues);
-      this.renderDataFromURL(correctParams);
-    }
-  }
-
   renderDataFromURL = (params) => {
     const formattedParams = queryString.parse(params);
     const reports = this.props.mineReports || [];
@@ -160,14 +183,13 @@ export class MineReportInfo extends Component {
       params.report_type === "" ||
       reportDefinitionGuids.includes(report.mine_report_definition_guid.toLowerCase());
     const compliance_year =
-      params.compliance_start_year === "" ||
-      params.compliance_year.includes(report.submission_year);
+      params.compliance_year === "" || params.compliance_year.includes(report.submission_year);
     const report_due_date_start =
       params.report_due_date_start === "" ||
-      parseInt(report.due_date) >= parseInt(params.report_due_date_start);
+      moment(report.due_date, "YYYY-MM-DD") >= moment(params.report_due_date_start, "YYYY-MM-DD");
     const report_due_date_end =
       params.report_due_date_end === "" ||
-      parseInt(report.due_date) >= parseInt(params.report_due_date_end);
+      moment(report.due_date, "YYYY-MM-DD") <= moment(params.report_due_date_end, "YYYY-MM-DD");
     return (
       report_name && report_type && compliance_year && report_due_date_start && report_due_date_end
     );
