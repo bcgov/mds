@@ -82,7 +82,7 @@ export class NoticeOfWorkHomePage extends Component {
         </div>
         <div className="landing-page__content">
           <div className="page__content">
-            <NoticeOfWorkSearch />
+            <NoticeOfWorkSearch handleSearch={this.handleSearch} />
             <LoadingWrapper condition={this.state.isLoaded}>
               <div>
                 <NoticeOfWorkTable

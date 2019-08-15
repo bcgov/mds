@@ -18,10 +18,10 @@ export class NoticeOfWorkSearchForm extends Component {
         <Row gutter={6}>
           <Col md={24} xs={24}>
             <Field
-              id="search"
-              name="search"
+              id="mine_search"
+              name="mine_search"
               component={renderConfig.FIELD}
-              placeholder="Search by Notice of Work, mine name, or mine number"
+              placeholder="Search by mine name or mine number"
             />
           </Col>
         </Row>

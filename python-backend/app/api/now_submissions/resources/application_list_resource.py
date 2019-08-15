@@ -5,6 +5,7 @@ from sqlalchemy import desc, func, or_
 
 
 from app.extensions import api
+from app.api.mines.mine.models.mine import Mine
 from app.api.now_submissions.models.application import Application
 from app.api.now_submissions.response_models import PAGINATED_APPLICATION_LIST
 from app.api.utils.access_decorators import requires_role_view_all
@@ -39,7 +40,8 @@ class ApplicationListResource(Resource, UserMixin, ErrorMixin):
             noticeofworktype=request.args.get('noticeofworktype', type=str),
             region=request.args.get('region', type=str),
             trackingnumber=request.args.get('trackingnumber', type=int),
-            minenumber=request.args.get('minenumber', type=str))
+            minenumber=request.args.get('minenumber', type=str),
+            mine_search=request.args.get('mine_search', type=str))
 
         data = records.all()
 
@@ -60,8 +62,10 @@ class ApplicationListResource(Resource, UserMixin, ErrorMixin):
                                       noticeofworktype=None,
                                       region=None,
                                       trackingnumber=None,
-                                      minenumber=None):
+                                      minenumber=None,
+                                      mine_search=None):
         filters = []
+        base_query = Application.query
 
         if noticeofworktype is not None:
             filters.append(func.lower(Application.noticeofworktype).contains(func.lower(noticeofworktype)))
@@ -71,6 +75,11 @@ class ApplicationListResource(Resource, UserMixin, ErrorMixin):
             filters.append(Application.trackingnumber == trackingnumber)
         if minenumber is not None:
             filters.append(func.lower(Application.minenumber).contains(func.lower(minenumber)))
+        if mine_search is not None:
+            base_query = base_query.join(Mine)
+            filters.append(or_(
+                func.lower(Mine.mine_name).contains(func.lower(mine_search)),
+                func.lower(Mine.mine_no).contains(func.lower(mine_search))))
 
         status_filter_values = []
         if status is not None:
@@ -82,10 +91,10 @@ class ApplicationListResource(Resource, UserMixin, ErrorMixin):
                 status_filters.append(func.lower(Application.status).contains(func.lower(status)))
             filters.append(or_(*status_filters))
 
-        filtered_query = Application.query.filter(*filters)
+        base_query = base_query.filter(*filters)
 
         if sort_field and sort_dir:
             sort_criteria = [{'model': 'Application', 'field': sort_field, 'direction': sort_dir}]
-            filtered_query = apply_sort(filtered_query, sort_criteria)
+            base_query = apply_sort(base_query, sort_criteria)
 
-        return apply_pagination(filtered_query, page_number, page_size)
+        return apply_pagination(base_query, page_number, page_size)
