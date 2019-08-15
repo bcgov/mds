@@ -27,3 +27,6 @@ export const EDIT_VARIANCE = "EDIT_VARIANCE";
 export const MINE_INCIDENT = "MINE_INCIDENT";
 export const ADD_REPORT = "ADD_REPORT";
 export const EDIT_REPORT = "EDIT_REPORT";
+
+// Notice Of Work
+export const NOTICE_OF_WORK_SEARCH = "NOTICE_OF_WORK_SEARCH";
