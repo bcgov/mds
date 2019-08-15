@@ -6,6 +6,7 @@ import queryString from "query-string";
 import * as Strings from "@/constants/strings";
 import * as router from "@/constants/routes";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
+import CustomPropTypes from "@/customPropTypes";
 import NoticeOfWorkTable from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkTable";
 import NoticeOfWorkSearch from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkSearch";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
@@ -17,6 +18,7 @@ const propTypes = {
   fetchNoticeOfWorkApplications: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
+  pageData: PropTypes.objectOf(CustomPropTypes.partyPageData).isRequired,
   // use NoW custom prop once this feature is fully implemented
   // eslint-disable-next-line react/forbid-prop-types
   noticeOfWorkApplications: PropTypes.arrayOf(PropTypes.any).isRequired,
@@ -38,16 +40,30 @@ export class NoticeOfWorkHomePage extends Component {
     this.renderDataFromURL();
   }
 
+  componentWillReceiveProps(nextProps) {
+    const locationChanged = nextProps.location !== this.props.location;
+    if (locationChanged) {
+      this.renderDataFromURL(nextProps);
+    }
+  }
+
+  componentWillUnmount() {
+    this.setState({ params: {} });
+  }
+
   renderDataFromURL = (nextProps) => {
     const params = nextProps ? nextProps.location.search : this.props.location.search;
     const parsedParams = queryString.parse(params);
-    this.setState({
-      params: parsedParams,
-      isLoaded: false,
-    });
-    this.props.fetchNoticeOfWorkApplications(parsedParams).then(() => {
-      this.setState({ isLoaded: true });
-    });
+    this.setState(
+      {
+        params: parsedParams,
+        isLoaded: false,
+      },
+      () =>
+        this.props.fetchNoticeOfWorkApplications(parsedParams).then(() => {
+          this.setState({ isLoaded: true });
+        })
+    );
   };
 
   handleSearch = (searchParams = {}, clear = false) => {
@@ -73,6 +89,16 @@ export class NoticeOfWorkHomePage extends Component {
     );
   };
 
+  onPageChange = (page, per_page) => {
+    this.props.history.push(
+      router.NOTICE_OF_WORK_APPLICATIONS.dynamicRoute({
+        ...this.state.params,
+        page,
+        per_page,
+      })
+    );
+  };
+
   render() {
     return (
       <div className="landing-page">
@@ -83,7 +109,10 @@ export class NoticeOfWorkHomePage extends Component {
         </div>
         <div className="landing-page__content">
           <div className="page__content">
-            <NoticeOfWorkSearch handleSearch={this.handleSearch} />
+            <NoticeOfWorkSearch
+              handleSearch={this.handleSearch}
+              initialValues={{ mine_search: this.state.params.mine_search }}
+            />
             <LoadingWrapper condition={this.state.isLoaded}>
               <div>
                 <NoticeOfWorkTable
@@ -94,10 +123,10 @@ export class NoticeOfWorkHomePage extends Component {
                 />
                 <div className="center">
                   <ResponsivePagination
-                    onPageChange={() => {}}
-                    currentPage={1}
-                    pageTotal={2}
-                    itemsPerPage={25}
+                    onPageChange={this.onPageChange}
+                    currentPage={Number(this.state.params.page)}
+                    pageTotal={Number(this.props.pageData.total)}
+                    itemsPerPage={Number(this.state.params.per_page)}
                   />
                 </div>
               </div>
@@ -111,7 +140,7 @@ export class NoticeOfWorkHomePage extends Component {
 
 const mapStateToProps = (state) => ({
   noticeOfWorkApplications: getNoticeOfWorkList(state),
-  pageDate: getNoticeOfWorkPageData(state),
+  pageData: getNoticeOfWorkPageData(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

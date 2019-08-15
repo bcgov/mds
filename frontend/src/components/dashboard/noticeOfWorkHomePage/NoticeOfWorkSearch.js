@@ -8,6 +8,7 @@ import NoticeOfWorkSearchForm from "@/components/Forms/noticeOfWork/NoticeOfWork
  */
 const propTypes = {
   handleSearch: PropTypes.func.isRequired,
+  initialValues: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 //  this will be stateful when implemented
@@ -19,7 +20,10 @@ export class NoticeOfWorkSearch extends Component {
         <Row>
           <Col md={{ span: 12, offset: 6 }} xs={{ span: 20, offset: 2 }}>
             <span className="advanced-search__container">
-              <NoticeOfWorkSearchForm onSubmit={this.props.handleSearch} />
+              <NoticeOfWorkSearchForm
+                onSubmit={this.props.handleSearch}
+                initialValues={this.props.initialValues}
+              />
             </span>
           </Col>
         </Row>

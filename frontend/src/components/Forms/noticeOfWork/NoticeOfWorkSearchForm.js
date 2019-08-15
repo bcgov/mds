@@ -7,6 +7,9 @@ import { renderConfig } from "@/components/common/config";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
+  // initialValues is used by reduxForm magic
+  // eslint-disable-next-line react/no-unused-prop-types
+  initialValues: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 // this should be stateful once fully implemented
