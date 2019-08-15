@@ -136,12 +136,12 @@
             ],
             "resources": {
               "limits": {
-                "cpu": "2",
-                "memory": "4Gi"
+                "cpu": "0",
+                "memory": "0"
               },
               "requests": {
-                "cpu": "100m",
-                "memory": "512Mi"
+                "cpu": "0",
+                "memory": "0"
               }
             },
             "volumeMounts": [
@@ -161,7 +161,7 @@
           }
         ],
         "restartPolicy": "Never",
-        "activeDeadlineSeconds": 3600,
+        "activeDeadlineSeconds": 1800,
         "dnsPolicy": "ClusterFirst"
       }
     }
