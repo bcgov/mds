@@ -155,7 +155,9 @@
         "volumes": [
           {
             "name": "${NAME}-${VERSION}-shared-mem",
-            "emptyDir": {}
+            "emptyDir": {
+              "medium": "Memory"
+            }
           }
         ],
         "restartPolicy": "Never",
