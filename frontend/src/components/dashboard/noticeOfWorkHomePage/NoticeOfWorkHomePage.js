@@ -88,6 +88,8 @@ export class NoticeOfWorkHomePage extends Component {
                 <NoticeOfWorkTable
                   handleSearch={this.handleSearch}
                   noticeOfWorkApplications={this.props.noticeOfWorkApplications}
+                  sortField={this.state.params.sort_field}
+                  sortDir={this.state.params.sort_dir}
                 />
                 <div className="center">
                   <ResponsivePagination
