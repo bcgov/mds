@@ -615,10 +615,11 @@ class NOWApplicationFactory(BaseFactory):
     messageid = factory.Sequence(lambda n: n)
     applicantclientid = factory.SelfAttribute('applicant.clientid')
     submitterclientid = factory.SelfAttribute('submitter.clientid')
-    noticeofworktype = factory.Faker('sentence', nb_words=1)
+    noticeofworktype = factory.Faker('word')
     trackingnumber = factory.fuzzy.FuzzyInteger(1, 100)
     status = random.choice(['Approved', 'Rejected', 'Received', 'Client Delayed'])
     receiveddate = factory.Faker('past_datetime')
+    minenumber = factory.Faker('word')
 
     @factory.post_generation
     def documents(obj, create, extracted, **kwargs):

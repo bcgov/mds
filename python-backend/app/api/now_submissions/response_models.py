@@ -307,6 +307,7 @@ APPLICATION_LIST = api.model(
         'application_guid': fields.String,
         'mine_guid': fields.String,
         'mine_name': fields.String,
+        'minenumber': fields.String,
         'noticeofworktype': fields.String,
         'trackingnumber': fields.Integer,
         'status': fields.String,

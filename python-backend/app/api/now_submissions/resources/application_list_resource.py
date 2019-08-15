@@ -23,7 +23,9 @@ class ApplicationListResource(Resource, UserMixin, ErrorMixin):
             'per_page': f'The number of records to return per page. Default: {PER_PAGE_DEFAULT}',
             'status': 'Comma-separated list of statuses to include in results. Default: All statuses.',
             'noticeofworktype': 'Substring to match with a NoW\s type',
-            'region': 'Substring to match with a NoW\s region',
+            'region': 'Substring to match with a NoW region',
+            'trackingnumber': 'Number of the NoW',
+            'minenumber': 'Number of the mine associated with the NoW'
         })
     @requires_role_view_all
     @api.marshal_with(PAGINATED_APPLICATION_LIST, code=200)
@@ -33,7 +35,9 @@ class ApplicationListResource(Resource, UserMixin, ErrorMixin):
             page_size=request.args.get('per_page', PER_PAGE_DEFAULT, type=int),
             status=request.args.get('status', type=str),
             noticeofworktype=request.args.get('noticeofworktype', type=str),
-            region=request.args.get('region', type=str))
+            region=request.args.get('region', type=str),
+            trackingnumber=request.args.get('trackingnumber', type=int),
+            minenumber=request.args.get('minenumber', type=str))
 
         data = records.all()
 
@@ -50,13 +54,19 @@ class ApplicationListResource(Resource, UserMixin, ErrorMixin):
                                       page_size=PER_PAGE_DEFAULT,
                                       status=None,
                                       noticeofworktype=None,
-                                      region=None):
+                                      region=None,
+                                      trackingnumber=None,
+                                      minenumber=None):
         filters = []
 
         if noticeofworktype is not None:
             filters.append(func.lower(Application.noticeofworktype).contains(func.lower(noticeofworktype)))
         if region is not None:
             filters.append(func.lower(Application.region).contains(func.lower(region)))
+        if trackingnumber is not None:
+            filters.append(Application.trackingnumber == trackingnumber)
+        if minenumber is not None:
+            filters.append(func.lower(Application.minenumber).contains(func.lower(minenumber)))
 
         status_filter_values = []
         if status is not None:
