@@ -83,11 +83,9 @@ class MineReportListResource(Resource, UserMixin):
 
         submissions = data.get('mine_report_submissions')
         if submissions is not None:
-            report_submission_guid = uuid.uuid4()
             submission = submissions[0]
             if len(submission.get('documents')) > 0:
                 report_submission = MineReportSubmission(
-                    mine_report_submission_guid=report_submission_guid,
                     mine_report_submission_status_code='MIA',
                     submission_date=datetime.now())
                 for submission_doc in submission.get('documents'):
@@ -155,9 +153,7 @@ class MineReportResource(Resource, UserMixin):
         new_submission = next(
             (x for x in subission_iterator if x.get('mine_report_submission_guid') is None), None)
         if new_submission is not None:
-            new_report_submission_guid = uuid.uuid4()
             new_report_submission = MineReportSubmission(
-                mine_report_submission_guid=new_report_submission_guid,
                 mine_report_submission_status_code='MIA',
                 submission_date=datetime.now())
 
