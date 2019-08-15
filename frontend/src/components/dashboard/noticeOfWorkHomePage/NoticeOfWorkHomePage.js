@@ -16,6 +16,7 @@ import { getNoticeOfWorkList, getNoticeOfWorkPageData } from "@/selectors/notice
 const propTypes = {
   fetchNoticeOfWorkApplications: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   // use NoW custom prop once this feature is fully implemented
   // eslint-disable-next-line react/forbid-prop-types
   noticeOfWorkApplications: PropTypes.arrayOf(PropTypes.any).isRequired,

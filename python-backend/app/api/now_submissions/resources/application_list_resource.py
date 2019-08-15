@@ -26,7 +26,8 @@ class ApplicationListResource(Resource, UserMixin, ErrorMixin):
             'noticeofworktype': 'Substring to match with a NoW\s type',
             'region': 'Substring to match with a NoW region',
             'trackingnumber': 'Number of the NoW',
-            'minenumber': 'Number of the mine associated with the NoW'
+            'minenumber': 'Number of the mine associated with the NoW',
+            'mine_search': 'Substring to match against a NoW mine number or mine name'
         })
     @requires_role_view_all
     @api.marshal_with(PAGINATED_APPLICATION_LIST, code=200)
@@ -78,6 +79,7 @@ class ApplicationListResource(Resource, UserMixin, ErrorMixin):
         if mine_search is not None:
             base_query = base_query.join(Mine)
             filters.append(or_(
+                func.lower(Application.minenumber).contains(func.lower(mine_search)),
                 func.lower(Mine.mine_name).contains(func.lower(mine_search)),
                 func.lower(Mine.mine_no).contains(func.lower(mine_search))))
 
