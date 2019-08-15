@@ -21,7 +21,7 @@ beforeEach(() => {
   setupProps();
 });
 
-describe("ContactList", () => {
+describe("Variance Search Component", () => {
   it("renders properly", () => {
     const component = shallow(<VarianceSearch {...props} />);
     expect(component).toMatchSnapshot();
