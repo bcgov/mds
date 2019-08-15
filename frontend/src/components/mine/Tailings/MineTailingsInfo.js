@@ -42,9 +42,11 @@ const propTypes = {
 };
 
 export class MineTailingsInfo extends Component {
-  state = { selectedDocument: {} };
+  state = { mine: {} };
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.setState({ mine: this.props.mines[this.props.mineGuid] });
+  }
 
   handleEditReport = (values) => {
     this.props
@@ -104,7 +106,7 @@ export class MineTailingsInfo extends Component {
             mineReports={this.props.mineTSFReports}
             openEditReportModal={this.openEditReportModal}
             handleEditReport={this.handleEditReport}
-            handleRemoveReport={this.removeReport}
+            handleRemoveReport={this.handleRemoveReport}
           />
         </div>
       </div>
