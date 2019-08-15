@@ -27,7 +27,6 @@ export class AdvancedMineSearchForm extends Component {
   handleReset = () => {
     this.props.reset();
     this.props.handleSearch({}, true);
-    this.forceUpdate();
   };
 
   render() {
