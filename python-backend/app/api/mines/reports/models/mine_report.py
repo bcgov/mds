@@ -1,4 +1,6 @@
 import uuid
+from flask import current_app
+
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.associationproxy import association_proxy
@@ -10,7 +12,7 @@ from app.extensions import db
 class MineReport(Base, AuditMixin):
     __tablename__ = "mine_report"
     mine_report_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
-    mine_report_guid = db.Column(UUID(as_uuid=True))
+    mine_report_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
     mine_report_definition_id = db.Column(
         db.Integer, db.ForeignKey('mine_report_definition.mine_report_definition_id'))
     mine_report_definition = db.relationship('MineReportDefinition', lazy='joined')
@@ -39,7 +41,6 @@ class MineReport(Base, AuditMixin):
 
     @classmethod
     def create(cls,
-               mine_report_guid,
                mine_report_definition_id,
                mine_guid,
                due_date,
@@ -47,14 +48,12 @@ class MineReport(Base, AuditMixin):
                submission_year,
                permit_id=None,
                add_to_session=True):
-        mine_report = cls(
-            mine_report_guid=mine_report_guid,
-            mine_report_definition_id=mine_report_definition_id,
-            mine_guid=mine_guid,
-            due_date=due_date,
-            received_date=received_date,
-            submission_year=submission_year,
-            permit_id=permit_id)
+        mine_report = cls(mine_report_definition_id=mine_report_definition_id,
+                          mine_guid=mine_guid,
+                          due_date=due_date,
+                          received_date=received_date,
+                          submission_year=submission_year,
+                          permit_id=permit_id)
         if add_to_session:
             mine_report.save(commit=False)
         return mine_report
@@ -72,5 +71,17 @@ class MineReport(Base, AuditMixin):
         try:
             uuid.UUID(_id, version=4)
             return cls.query.filter_by(mine_report_guid=_id).first()
+        except ValueError:
+            return None
+
+    @classmethod
+    def find_by_mine_guid_with_category(cls, _id, category):
+        try:
+            uuid.UUID(_id, version=4)
+            reports = cls.query.filter_by(mine_guid=_id).all()
+            return [
+                r for r in reports if category.upper() in
+                [c.mine_report_category.upper() for c in r.mine_report_definition.categories]
+            ]
         except ValueError:
             return None

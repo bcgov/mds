@@ -30,11 +30,10 @@ class MineReportListResource(Resource, UserMixin):
     # required
     parser.add_argument('submission_year', type=str, location='json', required=True)
     parser.add_argument('mine_report_definition_guid', type=str, location='json', required=True)
-    parser.add_argument(
-        'due_date',
-        location='json',
-        required=True,
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
+    parser.add_argument('due_date',
+                        location='json',
+                        required=True,
+                        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
 
     parser.add_argument('permit_guid', type=str, location='json')
     parser.add_argument(
@@ -47,7 +46,12 @@ class MineReportListResource(Resource, UserMixin):
     @api.doc(description='returns the reports for a given mine.')
     @requires_role_view_all
     def get(self, mine_guid):
-        mine_reports = MineReport.find_by_mine_guid(mine_guid)
+        mrd_category = request.args.get('mine_report_definition_category')
+        if mrd_category:
+            mine_reports = MineReport.find_by_mine_guid_with_category(mine_guid, mrd_category)
+        else:
+            mine_reports = MineReport.find_by_mine_guid(mine_guid)
+
         return mine_reports
 
     @api.expect(MINE_REPORT_MODEL)
@@ -69,10 +73,7 @@ class MineReportListResource(Resource, UserMixin):
 
         if permit and permit.mine_guid != mine.mine_guid:
             raise BadRequest('The permit must be associated with the selected mine.')
-
-        mine_report_guid = uuid.uuid4()
         mine_report = MineReport.create(
-            mine_report_guid=mine_report_guid,
             mine_report_definition_id=mine_report_definition.mine_report_definition_id,
             mine_guid=mine.mine_guid,
             due_date=data['due_date'],
@@ -81,12 +82,10 @@ class MineReportListResource(Resource, UserMixin):
             permit_id=permit.permit_id if permit else None)
 
         submissions = data.get('mine_report_submissions')
-        if submissions is not None:
-            report_submission_guid = uuid.uuid4()
+        if not submissions:
             submission = submissions[0]
             if len(submission.get('documents')) > 0:
                 report_submission = MineReportSubmission(
-                    mine_report_submission_guid=report_submission_guid,
                     mine_report_submission_status_code='MIA',
                     submission_date=datetime.now())
                 for submission_doc in submission.get('documents'):
@@ -154,9 +153,7 @@ class MineReportResource(Resource, UserMixin):
         new_submission = next(
             (x for x in subission_iterator if x.get('mine_report_submission_guid') is None), None)
         if new_submission is not None:
-            new_report_submission_guid = uuid.uuid4()
             new_report_submission = MineReportSubmission(
-                mine_report_submission_guid=new_report_submission_guid,
                 mine_report_submission_status_code='MIA',
                 submission_date=datetime.now())
 
