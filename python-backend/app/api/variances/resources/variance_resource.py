@@ -2,7 +2,6 @@ from flask_restplus import Resource
 from flask import request
 from sqlalchemy_filters import apply_pagination, apply_filters
 from sqlalchemy import desc
-from datetime import datetime
 from app.extensions import api
 from ...mines.mine.models.mine import Mine
 from ..models.variance import Variance
@@ -49,11 +48,6 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
 
 
         records, pagination_details = self._apply_filters_and_pagination(args)
-        #     page_number=request.args.get('page', PAGE_DEFAULT, type=int),
-        #     page_size=request.args.get('per_page', PER_PAGE_DEFAULT, type=int),
-        #     application_status=request.args.get('variance_application_status_code', type=str),
-        #     compliance_codes=request.args.get('compliance_code', type=str)
-        # )
 
         if not records:
             raise BadRequest('Unable to fetch variances.')
@@ -67,27 +61,20 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
         }
 
     def _apply_filters_and_pagination(self, args):
-                                      # page_number=PAGE_DEFAULT,
-                                      # page_size=PER_PAGE_DEFAULT,
-                                      # application_status=None,
-                                      # compliance_codes=None):
 
-
+        # TODO figure out why status filter is not used
         status_filter_values = list(map(
             lambda x: x.variance_application_status_code,
             VarianceApplicationStatusCode.active()))
-
 
         if args["page_number"] is None:
             args["page_number"]=PAGE_DEFAULT
         if args["page_size"] is None:
             args["page_size"] = PER_PAGE_DEFAULT
 
-        # variance_conditions = []
         conditions = []
         if args["application_status"] is not None:
             status_filter_values = args["application_status"].split(',')
-            # variance_conditions.append({
             conditions.append({
                 'model': 'Variance',
                 'field': 'variance_application_status_code',
@@ -96,49 +83,39 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             })
         if args["compliance_codes"] is not None:
             compliance_codes_values = args["compliance_codes"].split(',')
-            # variance_conditions.append({
             conditions.append({
                 'model': 'Variance',
                 'field': 'compliance_article_id',
                 'op': 'in',
                 'value': compliance_codes_values
              })
-        # TODO VERIFY WHAT HAPPENS WITH DATE COMPARE
-
-        # if args["expiry_date_before"] is not None:
-        #     variance_conditions.append({
-        #         'model': 'Variance',
-        #         'field':  datetime.strptime('expiry_date', '%Y-%m-%d'),
-        #         'op': '<=',#less than
-        #         'value': datetime.strptime(args["expiry_date_before"], '%Y-%m-%d')
-        #     })
 
         if args["expiry_date_before"] is not None:
             conditions.append({
               'model': 'Variance',
               'field':  'expiry_date',
-              'op': '<=',#less than
+              'op': '<=',
               'value': args["expiry_date_before"]
             })
         if args["expiry_date_after"] is not None:
             conditions.append({
               'model': 'Variance',
               'field': 'expiry_date',
-              'op': '>=',#greater than
+              'op': '>=',
               'value': args["expiry_date_after"]
             })
         if args["issue_date_before"] is not None:
             conditions.append({
               'model': 'Variance',
               'field': 'issue_date',
-              'op': '<=',  # less than
+              'op': '<=',
               'value': args["issue_date_before"]
             })
         if args["issue_date_after"] is not None:
             conditions.append({
               'model': 'Variance',
               'field': 'issue_date',
-              'op': '>=',  # greater than
+              'op': '>=',
               'value': args["issue_date_after"]
             })
 
@@ -151,8 +128,6 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             })
         if args["search_terms"] is not None:
             search_term_list = args["search_terms"].split(' ')
-            # logging.warning("The search terms are")
-            # logging.warning(search_term_list)
             search_conditions = []
             for search_term in search_term_list:
                 search_conditions.append(

@@ -1,6 +1,7 @@
 import json
+from datetime import datetime, timedelta
 
-from tests.factories import VarianceFactory
+from tests.factories import VarianceFactory, MineFactory
 from tests.status_code_gen import RandomVarianceApplicationStatusCode
 from app.api.variances.resources.variance_resource import PAGE_DEFAULT, PER_PAGE_DEFAULT
 
@@ -67,4 +68,94 @@ class TestGetVariances:
         assert get_resp.status_code == 200
         assert all(map(
             lambda v: v['variance_application_status_code'] in status_codes,
+            get_data['records']))
+
+    def test_get_variances_application_filter_by_mine_region(self, test_client, db_session, auth_headers):
+        """Should filter variances by mine region"""
+        region_code = "NW"
+        mineWith_region_NW = MineFactory(mine_region='NW')
+        mineWith_region_SW = MineFactory(mine_region="SW")
+        batch_size = 3
+        VarianceFactory.create_batch(size=batch_size)
+        VarianceFactory(mine=mineWith_region_NW)
+        VarianceFactory(mine=mineWith_region_SW)
+
+        get_resp = test_client.get(f'/variances?region={region_code}',headers=auth_headers['full_auth_header'])
+        get_data = json.loads(get_resp.data.decode())
+        print(get_data)
+        assert get_resp.status_code == 200
+        assert all(map(
+            lambda v: v['mine_name'] == mineWith_region_NW.mine_name,
+            get_data['records']))
+
+    def test_get_variances_application_filter_by_major_mine(self, test_client, db_session, auth_headers):
+        """Should filter variances by major vs regional mine"""
+        major_mine = MineFactory(major_mine_ind=True)
+        regional_mine = MineFactory(major_mine_ind=False)
+
+        VarianceFactory(mine=major_mine)
+        VarianceFactory(mine=regional_mine)
+        get_resp = test_client.get(f'/variances?major=f', headers=auth_headers['full_auth_header'])
+        get_data = json.loads(get_resp.data.decode())
+        assert get_resp.status_code == 200
+        assert all(map(
+            lambda v: v['mine_name'] == regional_mine.mine_name,
+            get_data['records']))
+
+    def test_get_variances_application_filter_by_compliance_code(self, test_client, db_session, auth_headers):
+        """Should filter variances by compliance code"""
+        compliance_codes = [54,66]
+        batch_size = 3
+        VarianceFactory.create_batch(size=batch_size)
+        VarianceFactory(compliance_article_id=compliance_codes[0])
+        VarianceFactory(compliance_article_id=compliance_codes[1])
+
+        get_resp = test_client.get(
+            f'/variances?compliance_code={compliance_codes[0]},{compliance_codes[1]}',
+            headers=auth_headers['full_auth_header'])
+        get_data = json.loads(get_resp.data.decode())
+        assert get_resp.status_code == 200
+        assert all(map(
+            lambda v: v['compliance_article_id'] in compliance_codes,
+            get_data['records']))
+
+    def test_get_variances_application_filter_by_issue_date(self, test_client, db_session, auth_headers):
+        """Should filter variances by issue date"""
+        date_minus_7_days = datetime.now() - timedelta(days=7)
+        date_minus_1_day = datetime.now() - timedelta(days=1)
+        date_today = datetime.now()
+        date_plus_1_day = datetime.now() + timedelta(days=1)
+        date_plus_7_days = datetime.now() + timedelta(days=7)
+        VarianceFactory(approved=True,issue_date=date_minus_7_days)
+        VarianceFactory(approved=True,issue_date=date_today)
+        VarianceFactory(approved=True,issue_date=date_plus_7_days)
+        dateFormat = "%Y-%m-%d"
+        get_resp = test_client.get(
+            f'/variances?issue_date_before={date_plus_1_day.strftime(dateFormat)}&issue_date_after={date_minus_1_day.strftime(dateFormat)}',
+            headers=auth_headers['full_auth_header'])
+        get_data = json.loads(get_resp.data.decode())
+        assert get_resp.status_code == 200
+        assert all(map(
+            lambda v: v['issue_date'] == date_today.strftime(dateFormat),
+            get_data['records']))
+
+    def test_get_variances_application_filter_by_expiry_date(self, test_client, db_session, auth_headers):
+        """Should filter variances by expiry date"""
+        date_minus_7_days = datetime.now() - timedelta(days=7)
+        date_minus_1_day = datetime.now() - timedelta(days=1)
+        date_today = datetime.now()
+        date_plus_1_day = datetime.now() + timedelta(days=1)
+        date_plus_7_days = datetime.now() + timedelta(days=7)
+        dateFormat ="%Y-%m-%d"
+        VarianceFactory(approved=True,expiry_date=date_minus_7_days)
+        VarianceFactory(approved=True,expiry_date=date_today)
+        VarianceFactory(approved=True,expiry_date=date_plus_7_days)
+
+        get_resp = test_client.get(
+            f'/variances?expiry_date_before={date_plus_1_day.strftime(dateFormat)}&expiry_date_after={date_minus_1_day.strftime(dateFormat)}',
+            headers=auth_headers['full_auth_header'])
+        get_data = json.loads(get_resp.data.decode())
+        assert get_resp.status_code == 200
+        assert all(map(
+            lambda v: v['expiry_date'] == date_today.strftime(dateFormat),
             get_data['records']))

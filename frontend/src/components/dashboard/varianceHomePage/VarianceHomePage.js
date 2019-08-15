@@ -72,7 +72,6 @@ export const joinOrRemove = (param, key) => {
   }
   return typeof param === "string" ? { [key]: param } : { [key]: param.join(",") };
 };
-// isEmpty(param) || typeof param === "string" ? {} : { [key]: param.join(",") };
 export const removeEmptyStings = (param, key) => (isEmpty(param) ? {} : { [key]: param });
 export const formatParams = ({
   region = [],
