@@ -57,7 +57,7 @@
             "annotations": null,
             "from": {
               "kind": "DockerImage",
-              "name": "selenium/standalone-firefox:3.141.59-titanium"
+              "name": "selenium/standalone-firefox:3.141.59-selenium"
             },
             "importPolicy": {},
             "referencePolicy": {
