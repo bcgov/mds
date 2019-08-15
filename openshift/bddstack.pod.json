@@ -137,13 +137,25 @@
             "resources": {
               "limits": {
                 "cpu": "2",
-                "memory": "3Gi"
+                "memory": "4Gi"
               },
               "requests": {
-                "cpu": "1",
-                "memory": "1Gi"
+                "cpu": "100m",
+                "memory": "512Mi"
               }
-            }
+            },
+            "volumeMounts": [
+              {
+                "mountPath": "/dev/shm",
+                "name": "${NAME}-${VERSION}-shared-mem"
+              }
+            ]
+          }
+        ],
+        "volumes": [
+          {
+            "name": "${NAME}-${VERSION}-shared-mem",
+            "emptyDir": {}
           }
         ],
         "restartPolicy": "Never",
