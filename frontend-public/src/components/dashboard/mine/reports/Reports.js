@@ -7,23 +7,24 @@ import { find } from "lodash";
 import { getMine } from "@/selectors/userMineSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import Loading from "@/components/common/Loading";
-import {
-  fetchMineRecordById,
-  updateExpectedDocument,
-} from "@/actionCreators/userDashboardActionCreator";
+import { fetchMineRecordById } from "@/actionCreators/userDashboardActionCreator";
+import { fetchMineReports, updateMineReport } from "@/actionCreators/reportActionCreator";
 import { modalConfig } from "@/components/modalContent/config";
 import { openModal, closeModal } from "@/actions/modalActions";
+import { getMineReports } from "@/selectors/reportSelectors";
 import MineReportTable from "@/components/dashboard/mine/reports/MineReportTable";
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
+  mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
   match: PropTypes.shape({
     params: {
       id: PropTypes.string,
     },
   }).isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
-  updateExpectedDocument: PropTypes.func.isRequired,
+  updateMineReport: PropTypes.func.isRequired,
+  fetchMineReports: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
 };
@@ -33,48 +34,29 @@ export class Reports extends Component {
 
   componentDidMount() {
     const { id } = this.props.match.params;
+    this.props.fetchMineReports(id);
     this.props.fetchMineRecordById(id).then(() => {
       this.setState({ isLoaded: true });
     });
   }
 
-  handleEditReportSubmit = () => {
-    this.props.fetchMineRecordById(this.props.mine.mine_guid).then(() => {
-      const expDoc = find(
-        this.props.mine.mine_expected_documents,
-        ({ exp_document_guid }) =>
-          exp_document_guid === this.state.selectedDocument.exp_document_guid
-      );
-
-      expDoc.expected_document_status.exp_document_status_code = "PRE";
-
-      // Set received_date for first set of documents
-      if (!expDoc.received_date && expDoc.related_documents.length > 0) {
-        expDoc.received_date = moment();
-      }
-
-      // Reset received state when all documents deleted
-      if (expDoc.related_documents.length === 0) {
-        expDoc.expected_document_status.exp_document_status_code = "MIA";
-        expDoc.received_date = null;
-      }
-
-      this.props.updateExpectedDocument(expDoc.exp_document_guid, expDoc).then(() => {
-        this.props.closeModal();
-        this.props.fetchMineRecordById(this.props.mine.mine_guid);
-      });
-    });
+  handleEditReport = (values) => {
+    this.props
+      .updateMineReport(this.props.mineGuid, values.mine_report_guid, values)
+      .then(() => this.props.closeModal())
+      .then(() => this.props.fetchMineReports(this.props.mine.mine_guid));
   };
 
-  openEditReportModal = (event, onSubmit, title, doc) => {
-    this.setState({
-      selectedDocument: doc,
-    });
+  openEditReportModal = (event, onSubmit, report) => {
     event.preventDefault();
-
     this.props.openModal({
-      props: { onSubmit, title, selectedDocument: doc },
-      content: modalConfig.EDIT_REPORT,
+      props: {
+        initialValues: report,
+        onSubmit,
+        title: `Edit report for ${this.props.mine.mine_name}`,
+        mineGuid: this.props.mine.mine_guid,
+      },
+      content: modalConfig.ADD_REPORT,
     });
   };
 
@@ -85,15 +67,15 @@ export class Reports extends Component {
 
     return (
       <div className="mine-info-padding">
-        {this.props.mine && (
+        {this.props.mineReports && (
           <div>
             <h1 className="mine-title">{this.props.mine.mine_name}</h1>
             <p>Mine No. {this.props.mine.mine_no}</p>
-            <h2>2018 Reports</h2>
+            <h2>Reports</h2>
             <MineReportTable
-              mine={this.props.mine}
               openEditReportModal={this.openEditReportModal}
-              handleEditReportSubmit={this.handleEditReportSubmit}
+              handleEditReport={this.handleEditReport}
+              mineReports={this.props.mineReports}
             />
           </div>
         )}
@@ -103,6 +85,7 @@ export class Reports extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  mineReports: getMineReports(state),
   mine: getMine(state),
 });
 
@@ -110,9 +93,10 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchMineRecordById,
+      fetchMineReports,
+      updateMineReport,
       openModal,
       closeModal,
-      updateExpectedDocument,
     },
     dispatch
   );

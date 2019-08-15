@@ -8,7 +8,7 @@ import * as routes from "@/constants/routes";
  */
 
 const propTypes = {
-  type: PropTypes.oneOf(["unauthorized", "no-mines", "404"]),
+  type: PropTypes.oneOf(["unauthorized", "no-mines", "404", "reports"]),
 };
 
 const defaultProps = {
@@ -49,6 +49,11 @@ const NullScreen = (props) => (
           </a>{" "}
           for assistance.
         </p>
+      </div>
+    )}
+    {props.type === "reports" && (
+      <div>
+        <h3>No reports found</h3>
       </div>
     )}
   </div>

@@ -2,20 +2,20 @@ import axios from "axios";
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
 import { request, success, error } from "@/actions/genericActions";
-import * as userMineActions from "@/actions/userMineActions";
 import * as reducerTypes from "@/constants/reducerTypes";
+import * as mineReportActions from "@/actions/mineReportActions";
 import * as API from "@/constants/API";
 import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
 
-export const fetchUserMineInfo = () => (dispatch) => {
+export const fetchMineReports = (mineGuid) => (dispatch) => {
   dispatch(showLoading());
-  dispatch(request(reducerTypes.GET_USER_MINE_INFO));
+  dispatch(request(reducerTypes.GET_MINE_REPORTS));
   return axios
-    .get(`${ENVIRONMENT.apiUrl + API.USER_MINE_INFO}`, createRequestHeader())
+    .get(`${ENVIRONMENT.apiUrl}${API.MINE_REPORTS(mineGuid)}`, createRequestHeader())
     .then((response) => {
-      dispatch(success(reducerTypes.GET_USER_MINE_INFO));
-      dispatch(userMineActions.storeUserMineInfo(response.data));
+      dispatch(success(reducerTypes.GET_MINE_REPORTS));
+      dispatch(mineReportActions.storeMineReports(response.data));
       dispatch(hideLoading());
     })
     .catch((err) => {
@@ -23,27 +23,33 @@ export const fetchUserMineInfo = () => (dispatch) => {
         message: err.response ? err.response.data.message : String.ERROR,
         duration: 10,
       });
-      dispatch(error(reducerTypes.GET_USER_MINE_INFO));
+      dispatch(error(reducerTypes.GET_MINE_REPORTS));
       dispatch(hideLoading());
     });
 };
 
-export const fetchMineRecordById = (mineId) => (dispatch) => {
-  dispatch(showLoading());
-  dispatch(request(reducerTypes.GET_MINE_RECORD));
+export const updateMineReport = (mineGuid, mineReportGuid, payload) => (dispatch) => {
+  dispatch(request(reducerTypes.UPDATE_MINE_REPORT));
   return axios
-    .get(`${ENVIRONMENT.apiUrl + API.MINE}/${mineId}`, createRequestHeader())
+    .put(
+      `${ENVIRONMENT.apiUrl}${API.MINE_REPORT(mineGuid, mineReportGuid)}`,
+      payload,
+      createRequestHeader()
+    )
     .then((response) => {
-      dispatch(success(reducerTypes.GET_MINE_RECORD));
-      dispatch(userMineActions.storeMine(response.data));
-      dispatch(hideLoading());
+      notification.success({
+        message: "Successfully updated report.",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.UPDATE_MINE_REPORT));
+      return response;
     })
     .catch((err) => {
       notification.error({
         message: err.response ? err.response.data.message : String.ERROR,
         duration: 10,
       });
-      dispatch(error(reducerTypes.GET_MINE_RECORD));
+      dispatch(error(reducerTypes.GET_MINE_REPORTS));
       dispatch(hideLoading());
     });
 };
