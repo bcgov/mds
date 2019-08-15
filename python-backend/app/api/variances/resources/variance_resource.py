@@ -9,7 +9,7 @@ from ..models.variance_application_status_code import VarianceApplicationStatusC
 from ..response_models import PAGINATED_VARIANCE_LIST
 from ...utils.access_decorators import requires_any_of, VIEW_ALL
 from ...utils.resources_mixins import UserMixin, ErrorMixin
-import logging
+
 PAGE_DEFAULT = 1
 PER_PAGE_DEFAULT = 25
 
