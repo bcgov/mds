@@ -52,8 +52,13 @@ class ApplicationListResource(Resource, UserMixin, ErrorMixin):
                                       noticeofworktype=None,
                                       region=None):
         filters = []
+
+        if noticeofworktype is not None:
+            filters.append(func.lower(Application.noticeofworktype).contains(func.lower(noticeofworktype)))
+        if region is not None:
+            filters.append(func.lower(Application.region).contains(func.lower(region)))
+
         status_filter_values = []
-        status_filters = []
         if status is not None:
             status_filter_values = status.split(',')
 
@@ -61,13 +66,9 @@ class ApplicationListResource(Resource, UserMixin, ErrorMixin):
             status_filters = []
             for status in status_filter_values:
                 status_filters.append(func.lower(Application.status).contains(func.lower(status)))
-
-        if noticeofworktype is not None:
-            filters.append(func.lower(Application.noticeofworktype).contains(func.lower(noticeofworktype)))
-        if region is not None:
-            filters.append(func.lower(Application.region).contains(func.lower(region)))
+            filters.append(or_(*status_filters))
 
         filtered_query = Application.query.order_by(desc(Application.receiveddate)) \
-                .filter(*filters, or_(*status_filters))
+                .filter(*filters)
 
         return apply_pagination(filtered_query, page_number, page_size)
