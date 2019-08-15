@@ -82,12 +82,11 @@ class MineReportListResource(Resource, UserMixin):
             permit_id=permit.permit_id if permit else None)
 
         submissions = data.get('mine_report_submissions')
-        if not submissions:
+        if submissions:
             submission = submissions[0]
             if len(submission.get('documents')) > 0:
-                report_submission = MineReportSubmission(
-                    mine_report_submission_status_code='MIA',
-                    submission_date=datetime.now())
+                report_submission = MineReportSubmission(mine_report_submission_status_code='MIA',
+                                                         submission_date=datetime.now())
                 for submission_doc in submission.get('documents'):
                     mine_doc = MineDocument(
                         mine_guid=mine.mine_guid,
