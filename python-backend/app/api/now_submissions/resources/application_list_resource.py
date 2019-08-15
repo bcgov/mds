@@ -1,6 +1,6 @@
 from flask_restplus import Resource
 from flask import request
-from sqlalchemy_filters import apply_pagination
+from sqlalchemy_filters import apply_pagination, apply_sort
 from sqlalchemy import desc, func, or_
 
 
@@ -33,6 +33,8 @@ class ApplicationListResource(Resource, UserMixin, ErrorMixin):
         records, pagination_details = self._apply_filters_and_pagination(
             page_number=request.args.get('page', PAGE_DEFAULT, type=int),
             page_size=request.args.get('per_page', PER_PAGE_DEFAULT, type=int),
+            sort_field = request.args.get('sort_field', 'receiveddate', type=str),
+            sort_dir=request.args.get('sort_dir', 'desc', type=str),
             status=request.args.get('status', type=str),
             noticeofworktype=request.args.get('noticeofworktype', type=str),
             region=request.args.get('region', type=str),
@@ -52,6 +54,8 @@ class ApplicationListResource(Resource, UserMixin, ErrorMixin):
     def _apply_filters_and_pagination(self,
                                       page_number=PAGE_DEFAULT,
                                       page_size=PER_PAGE_DEFAULT,
+                                      sort_field=None,
+                                      sort_dir=None,
                                       status=None,
                                       noticeofworktype=None,
                                       region=None,
@@ -78,7 +82,10 @@ class ApplicationListResource(Resource, UserMixin, ErrorMixin):
                 status_filters.append(func.lower(Application.status).contains(func.lower(status)))
             filters.append(or_(*status_filters))
 
-        filtered_query = Application.query.order_by(desc(Application.receiveddate)) \
-                .filter(*filters)
+        filtered_query = Application.query.filter(*filters)
+
+        if sort_field and sort_dir:
+            sort_criteria = [{'model': 'Application', 'field': sort_field, 'direction': sort_dir}]
+            filtered_query = apply_sort(filtered_query, sort_criteria)
 
         return apply_pagination(filtered_query, page_number, page_size)
