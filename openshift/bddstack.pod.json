@@ -97,7 +97,7 @@
               },
               {
                 "name": "START_XVFB",
-                "value": "false"
+                "value": "true"
               },
               {
                 "name": "GRADLE_USER_HOME",

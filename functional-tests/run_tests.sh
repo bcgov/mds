@@ -1,11 +1,12 @@
 #! /bin/bash
 set -exv -o pipefail
 
-# NOTE: FIREFOX HEADLESS IS THE ONLY BROWSER WHERE THE UPLOAD DOWNLOAD TEST CAN BE COMPLETED
-
-# Dry run project to cache gradle
+# Dry run project to cache gradle and dependencies
 ./gradlew -m
 
-### Run both Core and MineSpace tests
-./gradlew firefoxHeadlessTest -DfirefoxHeadlessTest.single=CustomJUnitPublicSpecRunner
-./gradlew firefoxHeadlessTest -DfirefoxHeadlessTest.single=CustomJUnitSpecRunner
+### Run MineSpace tests
+./gradlew firefoxTest -DfirefoxTest.single=CustomJUnitPublicSpecRunner
+
+### Run Core tests
+# NOTE: FIREFOX HEADLESS IS THE ONLY BROWSER WHERE THE UPLOAD DOWNLOAD TEST CAN BE COMPLETED
+./gradlew firefoxTest -DfirefoxTest.single=CustomJUnitSpecRunner
