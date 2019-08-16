@@ -116,7 +116,7 @@ export class ReportFilterForm extends Component {
       >
         <div>
           <Row gutter={16}>
-            <Col md={6} xs={24}>
+            <Col md={6} sm={24}>
               <Field
                 id="report_name"
                 name="report_name"
@@ -126,7 +126,7 @@ export class ReportFilterForm extends Component {
                 data={this.state.dropdownMineReportDefinitionOptionsFiltered}
               />
             </Col>
-            <Col md={6} xs={24}>
+            <Col md={6} sm={24}>
               <Field
                 id="report_type"
                 name="report_type"
@@ -136,7 +136,7 @@ export class ReportFilterForm extends Component {
                 data={this.state.dropdownMineReportCategoryOptionsFiltered}
               />
             </Col>
-            <Col md={6} xs={24}>
+            <Col md={6} sm={24}>
               <Field
                 id="compliance_year"
                 name="compliance_year"
@@ -145,7 +145,7 @@ export class ReportFilterForm extends Component {
                 component={renderConfig.YEAR}
               />
             </Col>
-            {/* <Col md={6} xs={24}>
+            {/* <Col md={6} sm={24}>
               <Field
                 id="requested_by"
                 name="requested_by"
@@ -156,7 +156,7 @@ export class ReportFilterForm extends Component {
             </Col> */}
           </Row>
           <Row gutter={6}>
-            <Col md={3} xs={24}>
+            <Col lg={3} md={6} sm={24}>
               <Field
                 id="report_due_date_start"
                 name="report_due_date_start"
@@ -165,7 +165,7 @@ export class ReportFilterForm extends Component {
                 component={renderConfig.DATE}
               />
             </Col>
-            <Col md={3} xs={24}>
+            <Col lg={3} md={6} sm={24}>
               <Field
                 id="report_due_date_end"
                 name="report_due_date_end"
@@ -174,7 +174,7 @@ export class ReportFilterForm extends Component {
                 component={renderConfig.DATE}
               />
             </Col>
-            {/* <Col md={6} xs={24}>
+            {/* <Col md={6} sm={24}>
               <Field
                 id="report_status"
                 name="report_status"

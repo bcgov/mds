@@ -121,9 +121,11 @@ export class MineReportInfo extends Component {
   };
 
   handleRemoveReport = (reportGuid) => {
-    this.props
-      .deleteMineReport(this.props.mineGuid, reportGuid)
-      .then(() => this.props.fetchMineReports(this.props.mineGuid));
+    this.props.deleteMineReport(this.props.mineGuid, reportGuid).then(() =>
+      this.props.fetchMineReports(this.props.mineGuid).then(() => {
+        this.setFilteredReports();
+      })
+    );
   };
 
   openAddReportModal = (event) => {
@@ -178,7 +180,7 @@ export class MineReportInfo extends Component {
   handleFiltering = (report, params, reportDefinitionGuids) => {
     // convert string to boolean before passing it into a filter check
     const report_name =
-      params.report_name === "" || report.report_name.includes(params.report_name);
+      params.report_name === "" || report.mine_report_definition_guid.includes(params.report_name);
     const report_type =
       params.report_type === "" ||
       reportDefinitionGuids.includes(report.mine_report_definition_guid.toLowerCase());
