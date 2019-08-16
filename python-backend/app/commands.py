@@ -1,7 +1,9 @@
 import click
+import psycopg2
 
 from sqlalchemy.exc import DBAPIError
 from multiprocessing.dummy import Pool as ThreadPool
+from flask import current_app
 
 from app.api.utils.include.user_info import User
 from app.extensions import db
@@ -10,7 +12,6 @@ from tests.factories import MineFactory, MinePartyAppointmentFactory, NOWApplica
 
 
 def register_commands(app):
-
     @app.cli.command()
     def import_idir():
         from app.cli_jobs.IDIR_jobs import import_empr_idir_users
@@ -59,10 +60,11 @@ def register_commands(app):
             for _ in range(int(num)):
                 mine = MineFactory()
                 eor = MinePartyAppointmentFactory(mine=mine, mine_party_appt_type_code='EOR')
-                mine_manager = MinePartyAppointmentFactory(
-                    mine=mine, mine_party_appt_type_code='MMG')
-                permitee = MinePartyAppointmentFactory(
-                    mine=mine, mine_party_appt_type_code='PMT', party__company=True)
+                mine_manager = MinePartyAppointmentFactory(mine=mine,
+                                                           mine_party_appt_type_code='MMG')
+                permitee = MinePartyAppointmentFactory(mine=mine,
+                                                       mine_party_appt_type_code='PMT',
+                                                       party__company=True)
                 NOWApplicationFactory()
             try:
                 db.session.commit()
@@ -75,3 +77,17 @@ def register_commands(app):
     def run_etl():
         from app.cli_jobs import ETL_jobs
         ETL_jobs.run_ETL()
+
+    @app.cli.command()
+    @click.option('-c', '--commit')
+    def run_tailings_reports_migration(commit):
+        connection = psycopg2.connect(current_app.config['DB_URL'])
+        from app.scripts.tailings_report_migration import append_tailings_reports_to_code_required_reports
+        append_tailings_reports_to_code_required_reports(connection, commit == 'true')
+
+    @app.cli.command()
+    @click.option('-c', '--commit')
+    def delete_tailings_reports(commit):
+        connection = psycopg2.connect(current_app.config['DB_URL'])
+        from app.scripts.tailings_report_migration import  delete_tailings_data
+        delete_tailings_data(connection, commit=='true')

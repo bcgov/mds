@@ -8,11 +8,12 @@ from app.extensions import db
 
 class MineReportCategoryXref(Base):
     __tablename__ = "mine_report_category_xref"
-    mine_report_category_xref_guid = db.Column(
-        UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
+    mine_report_category_xref_guid = db.Column(UUID(as_uuid=True),
+                                               primary_key=True,
+                                               server_default=FetchedValue())
     mine_report_definition_id = db.Column(
         db.Integer, db.ForeignKey('mine_report_definition.mine_report_definition_id'))
-    mine_report_category = db.Column(db.Integer,
+    mine_report_category = db.Column(db.String(3),
                                      db.ForeignKey('mine_report_category.mine_report_category'))
 
     def __repr__(self):
