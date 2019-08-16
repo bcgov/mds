@@ -16,7 +16,7 @@ import {
 } from "@/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import { ReportSubmissions } from "@/components/Forms/reports/ReportSubmissions";
-import { ReportComments } from "./ReportComments";
+import ReportComments from "./ReportComments";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
