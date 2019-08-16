@@ -114,7 +114,7 @@ def append_tailings_reports_to_code_required_reports(connection, commit=False):
         print('DATA CREATION COMPLETE')
     else:
         connection.rollback()
-        print('NO DATA CREATED: add --create=true to insert report rows')
+        print('NO DATA CREATED: add --commit=true to insert report rows')
 
 
 @register_apm()

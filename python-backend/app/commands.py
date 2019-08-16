@@ -80,14 +80,14 @@ def register_commands(app):
 
     @app.cli.command()
     @click.option('-c', '--commit')
-    def run_tailings_reports_migration(create, delete):
+    def run_tailings_reports_migration(commit):
         connection = psycopg2.connect(current_app.config['DB_URL'])
         from app.scripts.tailings_report_migration import append_tailings_reports_to_code_required_reports
         append_tailings_reports_to_code_required_reports(connection, commit == 'true')
 
     @app.cli.command()
     @click.option('-c', '--commit')
-    def delete_tailings_reports(create, delete):
+    def delete_tailings_reports(commit):
         connection = psycopg2.connect(current_app.config['DB_URL'])
         from app.scripts.tailings_report_migration import  delete_tailings_data
         delete_tailings_data(connection, commit=='true')
