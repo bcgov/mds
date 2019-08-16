@@ -59,11 +59,7 @@
           {
             "name": "bdd-test",
             "image": "docker-registry.default.svc:5000/empr-mds-tools/${NAME}:${VERSION}",
-            "command": [
-              "/bin/bash",
-              "-c",
-              "cd /opt/selenium/bdd-tests && ./run_tests.sh"
-            ],
+            "command": ["bash", "-c", "./run_tests.sh"],
             "imagePullPolicy": "Always",
             "env": [
               {
@@ -101,7 +97,7 @@
               },
               {
                 "name": "START_XVFB",
-                "value": "false"
+                "value": "true"
               },
               {
                 "name": "GRADLE_USER_HOME",
@@ -136,19 +132,32 @@
             ],
             "resources": {
               "limits": {
-                "cpu": "1.5",
-                "memory": "3Gi"
+                "cpu": "0",
+                "memory": "0"
               },
               "requests": {
-                "cpu": "1",
-                "memory": "1Gi"
+                "cpu": "0",
+                "memory": "0"
               }
+            },
+            "volumeMounts": [
+              {
+                "mountPath": "/dev/shm",
+                "name": "${NAME}-${VERSION}-shared-mem"
+              }
+            ]
+          }
+        ],
+        "volumes": [
+          {
+            "name": "${NAME}-${VERSION}-shared-mem",
+            "emptyDir": {
+              "medium": "Memory"
             }
           }
         ],
         "restartPolicy": "Never",
-        "activeDeadlineSeconds": 3600,
-        "dnsPolicy": "ClusterFirst"
+        "activeDeadlineSeconds": 1800
       }
     }
   ]
