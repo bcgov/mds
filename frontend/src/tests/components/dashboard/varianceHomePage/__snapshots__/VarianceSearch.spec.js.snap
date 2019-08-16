@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ContactList renders properly 1`] = `
+exports[`Variance Search Component renders properly 1`] = `
 <div>
   <Row
     gutter={0}
@@ -52,7 +52,7 @@ exports[`ContactList renders properly 1`] = `
             }
           }
           destroyOnUnmount={true}
-          enableReinitialize={false}
+          enableReinitialize={true}
           forceUnregisterOnUnmount={false}
           form="VARIANCE_ADVANCED_SEARCH"
           getFormState={[Function]}
