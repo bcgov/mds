@@ -347,6 +347,7 @@ export class NOWActivities extends Component {
         key: "timberVolume",
       },
     ];
+
     return (
       <div className="padding-large--sides">
         <div>
@@ -358,7 +359,7 @@ export class NOWActivities extends Component {
             columns={columns}
             dataSource={[]}
             locale={{
-              emptyText: "No data",
+              emptyText: "Unknown",
             }}
           />
           <br />
@@ -371,7 +372,7 @@ export class NOWActivities extends Component {
               <p className="field-title">The drilling program will be</p>
             </Col>
             <Col md={12} xs={24}>
-              <p>{Strings.EMPTY_FIELD}</p>
+              <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
         </div>
@@ -385,7 +386,7 @@ export class NOWActivities extends Component {
               </p>
             </Col>
             <Col md={12} xs={24}>
-              <p>{Strings.EMPTY_FIELD}</p>
+              <p>{this.props.noticeOfWork.expsurfacedrillreclamation || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
         </div>
@@ -488,6 +489,16 @@ export class NOWActivities extends Component {
         key: "timberVolume",
       },
     ];
+
+    const transformData = (ponds) =>
+      ponds.map((pond) => ({
+        id: pond.pondid || Strings.EMPTY_FIELD,
+        width: pond.width || Strings.EMPTY_FIELD,
+        length: pond.length || Strings.EMPTY_FIELD,
+        disturbedArea: pond.disturbedarea || Strings.EMPTY_FIELD,
+        timberVolume: pond.timbervolume || Strings.EMPTY_FIELD,
+      }));
+
     return (
       <div className="padding-large--sides">
         <Row gutter={16} className="padding-small">
@@ -495,7 +506,7 @@ export class NOWActivities extends Component {
             <p className="field-title">Describe waste water treatment</p>
           </Col>
           <Col md={12} xs={24}>
-            <p>{Strings.EMPTY_FIELD}</p>
+            <p>{this.props.noticeOfWork.pondswastewatertreatfacility || Strings.EMPTY_FIELD}</p>
           </Col>
         </Row>
         <br />
@@ -503,7 +514,7 @@ export class NOWActivities extends Component {
           align="left"
           pagination={false}
           columns={columns}
-          dataSource={[]}
+          dataSource={transformData(this.props.noticeOfWork.existing_settling_pond)}
           locale={{
             emptyText: "No data",
           }}
@@ -624,6 +635,15 @@ export class NOWActivities extends Component {
         key: "timberVolume",
       },
     ];
+
+    const transformData = (activities) =>
+      activities.map((activity) => ({
+        activity: activity.type || Strings.EMPTY_FIELD,
+        numSites: "Unknown" || Strings.EMPTY_FIELD,
+        disturbedArea: activity.disturbedarea || Strings.EMPTY_FIELD,
+        timberVolume: activity.timbervolume || Strings.EMPTY_FIELD,
+      }));
+
     return (
       <div className="padding-large--sides">
         <h4>Soil Conservation</h4>
@@ -633,7 +653,7 @@ export class NOWActivities extends Component {
             <p className="field-title">Average Depth Overburden(m)</p>
           </Col>
           <Col md={12} xs={24}>
-            <p>{Strings.EMPTY_FIELD}</p>
+            <p>{this.props.noticeOfWork.sandgrvqrydepthoverburden || Strings.EMPTY_FIELD}</p>
           </Col>
         </Row>
         <Row gutter={16} className="padding-small">
@@ -641,7 +661,7 @@ export class NOWActivities extends Component {
             <p className="field-title">Average Depth of top soil (m)</p>
           </Col>
           <Col md={12} xs={24}>
-            <p>{Strings.EMPTY_FIELD}</p>
+            <p>{this.props.noticeOfWork.sandgrvqrydepthtopsoil || Strings.EMPTY_FIELD}</p>
           </Col>
         </Row>
         <Row gutter={16} className="padding-small">
@@ -651,7 +671,7 @@ export class NOWActivities extends Component {
             </p>
           </Col>
           <Col md={12} xs={24}>
-            <p>{Strings.EMPTY_FIELD}</p>
+            <p>{this.props.noticeOfWork.sandgrvqrystabilizemeasures || Strings.EMPTY_FIELD}</p>
           </Col>
         </Row>
         <h4>Land Use</h4>
@@ -661,7 +681,7 @@ export class NOWActivities extends Component {
             <p className="field-title">Is this site within the Agricultural Land Reserve?</p>
           </Col>
           <Col md={12} xs={24}>
-            <p>{Strings.EMPTY_FIELD}</p>
+            <p>{this.props.noticeOfWork.sandgrvqrywithinaglandres || Strings.EMPTY_FIELD}</p>
           </Col>
         </Row>
         <Row gutter={16} className="padding-small">
@@ -669,7 +689,7 @@ export class NOWActivities extends Component {
             <p className="field-title--light">Permit Application Number</p>
           </Col>
           <Col md={12} xs={24}>
-            <p>{Strings.EMPTY_FIELD}</p>
+            <p>{this.props.noticeOfWork.sandgrvqryalrpermitnumber || Strings.EMPTY_FIELD}</p>
           </Col>
         </Row>
         <Row gutter={16} className="padding-small">
@@ -677,7 +697,7 @@ export class NOWActivities extends Component {
             <p className="field-title">Does the local government have a soil removal bylaw?</p>
           </Col>
           <Col md={12} xs={24}>
-            <p>{Strings.EMPTY_FIELD}</p>
+            <p>{this.props.noticeOfWork.sandgrvqrylocalgovsoilrembylaw || Strings.EMPTY_FIELD}</p>
           </Col>
         </Row>
         <Row gutter={16} className="padding-small">
@@ -685,7 +705,7 @@ export class NOWActivities extends Component {
             <p className="field-title">Official community plan for the site</p>
           </Col>
           <Col md={12} xs={24}>
-            <p>{Strings.EMPTY_FIELD}</p>
+            <p>{this.props.noticeOfWork.sandgrvqryofficialcommplan || Strings.EMPTY_FIELD}</p>
           </Col>
         </Row>
         <Row gutter={16} className="padding-small">
@@ -693,7 +713,7 @@ export class NOWActivities extends Component {
             <p className="field-title">Current land use zoning for the site</p>
           </Col>
           <Col md={12} xs={24}>
-            <p>{Strings.EMPTY_FIELD}</p>
+            <p>{this.props.noticeOfWork.sandgrvqrylandusezoning || Strings.EMPTY_FIELD}</p>
           </Col>
         </Row>
         <Row gutter={16} className="padding-small">
@@ -701,7 +721,7 @@ export class NOWActivities extends Component {
             <p className="field-title">Proposed end land use is</p>
           </Col>
           <Col md={12} xs={24}>
-            <p>{Strings.EMPTY_FIELD}</p>
+            <p>{this.props.noticeOfWork.sandgrvqryendlanduse || Strings.EMPTY_FIELD}</p>
           </Col>
         </Row>
         <Row gutter={16} className="padding-small">
@@ -711,7 +731,7 @@ export class NOWActivities extends Component {
             </p>
           </Col>
           <Col md={12} xs={24}>
-            <p>{Strings.EMPTY_FIELD}</p>
+            <p>{this.props.noticeOfWork.sandgrvqrytotalmineres || Strings.EMPTY_FIELD}</p>
           </Col>
         </Row>
         <Row gutter={16} className="padding-small">
@@ -719,7 +739,7 @@ export class NOWActivities extends Component {
             <p className="field-title">Estimate annual extraction from site</p>
           </Col>
           <Col md={12} xs={24}>
-            <p>{Strings.EMPTY_FIELD}</p>
+            <p>{this.props.noticeOfWork.sandgrvqryannualextrest || Strings.EMPTY_FIELD}</p>
           </Col>
         </Row>
         <br />
@@ -727,7 +747,7 @@ export class NOWActivities extends Component {
           align="left"
           pagination={false}
           columns={columns}
-          dataSource={[]}
+          dataSource={transformData(this.props.noticeOfWork.sand_grv_qry_activity)}
           locale={{
             emptyText: "No data",
           }}
