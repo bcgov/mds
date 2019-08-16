@@ -53,7 +53,7 @@ export class NoticeOfWorkHomePage extends Component {
   componentWillReceiveProps(nextProps) {
     const locationChanged = nextProps.location !== this.props.location;
     if (locationChanged) {
-      this.renderDataFromURL(nextProps);
+      this.renderDataFromURL(nextProps.location.search);
     }
   }
 
@@ -61,8 +61,8 @@ export class NoticeOfWorkHomePage extends Component {
     this.setState({ params: {} });
   }
 
-  renderDataFromURL = (nextProps) => {
-    const params = nextProps ? nextProps.location.search : this.props.location.search;
+  renderDataFromURL = (queryParams) => {
+    const params = queryParams || this.props.location.search;
     const parsedParams = queryString.parse(params);
     this.setState(
       {
@@ -90,13 +90,9 @@ export class NoticeOfWorkHomePage extends Component {
     };
 
     this.props.history.push(router.NOTICE_OF_WORK_APPLICATIONS.dynamicRoute(updatedParams));
-    this.setState(
-      {
-        params: updatedParams,
-      },
-      // Fetch parties once state has been updated
-      () => this.renderDataFromURL()
-    );
+    this.setState({
+      params: updatedParams,
+    });
   };
 
   onPageChange = (page, per_page) => {
