@@ -2,10 +2,11 @@ import uuid
 import petl as etl
 from petl import timeparser
 from datetime import datetime, time, timedelta
+from app.api.utils.apm import register_apm
 
 
-def append_tailings_reports_to_code_required_reports_then_destroy_tailings_data(
-        connection, commit=False):
+@register_apm()
+def append_tailings_reports_to_code_required_reports(connection, commit=False):
     src_table = etl.fromdb(
         connection,
         'SELECT exp_doc.mine_guid, exp_doc.exp_document_guid, req_doc.req_document_name, exp_doc.due_date, exp_doc.exp_document_status_code, exp_doc.received_date, exp_doc.active_ind, exp_doc_x.mine_document_guid, exp_doc.create_user, exp_doc.create_timestamp, exp_doc.update_user, exp_doc.update_timestamp from mine_expected_document exp_doc \
@@ -98,24 +99,36 @@ def append_tailings_reports_to_code_required_reports_then_destroy_tailings_data(
     print(mine_report_submissions)
     print(mine_report_submission_documents)
 
-    if commit:  #insert
-        etl.appenddb(mine_report, connection, 'mine_report', commit=False)
-        print('INSERT mine_report staged')
-        etl.appenddb(mine_report_submissions, connection, 'mine_report_submission', commit=False)
-        print('INSERT mine_report_submission staged')
-        etl.appenddb(mine_report_submission_documents,
-                     connection,
-                     'mine_report_document_xref',
-                     commit=False)
-        print('INSERT mine_report_document_xref staged')
-        cursor = connection.cursor()
-        cursor.execute(
-            'TRUNCATE TABLE mine_expected_document_xref, mine_expected_document CONTINUE IDENTITY RESTRICT;'
-        )
-        print('TRUNCATE mine_expected_document_xref and mine_expected_document staged')
-        cursor.execute('UPDATE public.mds_required_document SET active_ind=false;')
-        print('UPDATE mds_required_document active_ind FALSE staged')
+ 
+    etl.appenddb(mine_report, connection, 'mine_report', commit=False)
+    print('INSERT mine_report staged')
+    etl.appenddb(mine_report_submissions, connection, 'mine_report_submission', commit=False)
+    print('INSERT mine_report_submission staged')
+    etl.appenddb(mine_report_submission_documents,
+                    connection,
+                    'mine_report_document_xref',
+                    commit=False)
+    print('INSERT mine_report_document_xref staged')
+    if commit:  
         connection.commit()
-        print('COMMIT COMPLETE')
+        print('DATA CREATION COMPLETE')
     else:
-        print('NO CHANGES MADE: add --commit=true to insert report rows and delete tailings data')
+        connection.rollback()
+        print('NO DATA CREATED: add --create=true to insert report rows')
+
+
+@register_apm()
+def delete_tailings_data(connection, delete=False):
+    cursor = connection.cursor()
+    cursor.execute(
+        'TRUNCATE TABLE mine_expected_document_xref, mine_expected_document CONTINUE IDENTITY RESTRICT;'
+    )
+    print('TRUNCATE mine_expected_document_xref and mine_expected_document staged')
+    cursor.execute('UPDATE public.mds_required_document SET active_ind=false;')
+    print('UPDATE mds_required_document active_ind FALSE staged')
+    if delete:
+        connection.commit()
+        print('TRUNCATION COMPLETE')
+    else:
+        connection.rollback()
+        print('NO DATA DELETED: add --delete=true to delete tailings reports and documents data')

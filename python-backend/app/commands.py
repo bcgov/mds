@@ -79,9 +79,10 @@ def register_commands(app):
         ETL_jobs.run_ETL()
 
     @app.cli.command()
-    @click.option('-c', '--commit')
-    def run_append_tailings_reports_to_code_required_reports_then_destroy_tailings_data(commit):
+    @click.option('-c', '--create')
+    @click.option('-d', '--delete')
+    def run_tailings_reports_migration(create, delete):
         connection = psycopg2.connect(current_app.config['DB_URL'])
-        from app.scripts.tailings_report_migration import append_tailings_reports_to_code_required_reports_then_destroy_tailings_data
-        append_tailings_reports_to_code_required_reports_then_destroy_tailings_data(
-            connection, commit == 'true')
+        from app.scripts.tailings_report_migration import append_tailings_reports_to_code_required_reports, delete_tailings_data
+        append_tailings_reports_to_code_required_reports(connection, create == 'true')
+        delete_tailings_data(connection, delete=='true')
