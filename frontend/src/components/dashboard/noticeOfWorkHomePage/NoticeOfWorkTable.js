@@ -6,6 +6,8 @@ import * as Strings from "@/constants/strings";
 import * as router from "@/constants/routes";
 import NullScreen from "@/components/common/NullScreen";
 
+import { formatDate } from "@/utils/helpers";
+
 /**
  * @class NoticeOfWorkTable - paginated list of notice of work applications
  */
@@ -34,17 +36,17 @@ const columns = [
   },
   {
     title: "Mine",
-    dataIndex: "mine",
-    render: (text) => <div title="Mine">{text}</div>,
+    dataIndex: "mineName",
+    render: (text, record) =>
+      record.mineGuid ? (
+        <Link to={router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.mineGuid)}>{text}</Link>
+      ) : (
+        <div title="Mine">{text}</div>
+      ),
   },
   {
-    title: "Permit No.",
-    dataIndex: "permitNo",
-    render: (text) => <div title="Permit No.">{text}</div>,
-  },
-  {
-    title: "NoW Mine Type",
-    dataIndex: "mineType",
+    title: "NoW Type",
+    dataIndex: "nowType",
     render: (text) => <div title="NoW Mine Type">{text}</div>,
   },
   {
@@ -62,13 +64,13 @@ const columns = [
 const transformRowData = (applications) =>
   applications.map((application) => ({
     key: application.application_guid,
-    region: Strings.EMPTY_FIELD,
-    nowNum: Strings.EMPTY_FIELD,
-    mine: Strings.EMPTY_FIELD,
-    permitNo: Strings.EMPTY_FIELD,
-    mineType: Strings.EMPTY_FIELD,
-    status: Strings.EMPTY_FIELD,
-    date: Strings.EMPTY_FIELD,
+    region: Strings.EMPTY_FIELD, // TODO: Figure out what Region is and add it here
+    nowNum: application.trackingnumber || Strings.EMPTY_FIELD,
+    mineGuid: application.mine_guid || Strings.EMPTY_FIELD,
+    mineName: application.mine_name || Strings.EMPTY_FIELD,
+    nowType: application.noticeofworktype || Strings.EMPTY_FIELD,
+    status: application.status || Strings.EMPTY_FIELD,
+    date: formatDate(application.receiveddate) || Strings.EMPTY_FIELD,
   }));
 
 export const NoticeOfWorkTable = (props) => (

@@ -1,6 +1,6 @@
 import uuid
 from flask_restplus import Resource, reqparse, fields, inputs
-from flask import request, current_app
+from flask import request
 from datetime import datetime
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
@@ -47,7 +47,7 @@ class MineReportListResource(Resource, UserMixin):
     def get(self, mine_guid):
         mrd_category = request.args.get('mine_report_definition_category')
         if mrd_category:
-            mine_reports = MineReport.find_by_mine_guid_with_category(mine_guid, mrd_category)
+            mine_reports = MineReport.find_by_mine_guid_and_category(mine_guid, mrd_category)
         else:
             mine_reports = MineReport.find_by_mine_guid(mine_guid)
 
@@ -84,9 +84,8 @@ class MineReportListResource(Resource, UserMixin):
         if submissions:
             submission = submissions[0]
             if len(submission.get('documents')) > 0:
-                report_submission = MineReportSubmission(
-                    mine_report_submission_status_code='MIA',
-                    submission_date=datetime.now())
+                report_submission = MineReportSubmission(mine_report_submission_status_code='MIA',
+                                                         submission_date=datetime.now())
                 for submission_doc in submission.get('documents'):
                     mine_doc = MineDocument(
                         mine_guid=mine.mine_guid,
@@ -151,8 +150,9 @@ class MineReportResource(Resource, UserMixin):
         new_submission = next(
             (x for x in subission_iterator if x.get('mine_report_submission_guid') is None), None)
         if new_submission is not None:
-            new_report_submission = MineReportSubmission(mine_report_submission_status_code='MIA',
-                                                         submission_date=datetime.now())
+            new_report_submission = MineReportSubmission(
+                mine_report_submission_status_code='MIA',
+                submission_date=datetime.now())
 
             # Copy the current list of documents for the report submission
             current_app.logger.debug(mine_report.mine_report_submissions)
