@@ -44,8 +44,8 @@ export class NoticeOfWorkHomePage extends Component {
                   <ResponsivePagination
                     onPageChange={() => {}}
                     currentPage={1}
-                    pageTotal={2}
-                    itemsPerPage={25}
+                    pageTotal={5}
+                    itemsPerPage={125}
                   />
                 </div>
               </div>

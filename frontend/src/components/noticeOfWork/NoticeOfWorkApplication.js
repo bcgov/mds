@@ -1,8 +1,10 @@
 /* eslint-disable */
 import React, { Component } from "react";
 import { Button, Collapse, Icon } from "antd";
+import PropTypes from "prop-types";
 import { compose, bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import CustomPropTypes from "@/customPropTypes";
 import NOWGeneralInfo from "@/components/noticeOfWork/NOWGeneralInfo";
 import NOWWorkPlan from "@/components/noticeOfWork/NOWWorkPlan";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
@@ -14,11 +16,18 @@ import { getNoticeOfWork } from "@/selectors/noticeOfWorkSelectors";
 
 const { Panel } = Collapse;
 
+const propTypes = {
+  fetchNoticeOfWorkApplication: PropTypes.func.isRequired,
+  noticeOfWork: PropTypes.any,
+  match: CustomPropTypes.match.isRequired,
+};
+
 export class NoticeOfWorkApplication extends Component {
   state = { isLoaded: false };
 
   componentDidMount() {
-    this.props.fetchNoticeOfWorkApplication("af6e9368-eba0-40c3-a8fb-0bae9b491e87").then(() => {
+    const { id } = this.props.match.params;
+    this.props.fetchNoticeOfWorkApplication(id).then(() => {
       this.setState({ isLoaded: true });
     });
   }
@@ -60,6 +69,8 @@ const mapStateToProps = (state) => ({ noticeOfWork: getNoticeOfWork(state) });
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators({ fetchNoticeOfWorkApplication }, dispatch);
+
+NoticeOfWorkApplication.propTypes = propTypes;
 
 export default compose(
   connect(

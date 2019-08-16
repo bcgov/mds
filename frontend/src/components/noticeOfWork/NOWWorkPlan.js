@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import { Divider, Col, Row, Table } from "antd";
 import * as Strings from "@/constants/strings";
+import NullScreen from "@/components/common/NullScreen";
 import NOWActivities from "@/components/noticeOfWork/NOWActivities";
 
 export class NOWWorkPlan extends Component {
@@ -55,18 +56,21 @@ export class NOWWorkPlan extends Component {
     const columns = [
       {
         title: "File name",
-        dataIndex: "name",
-        key: "name",
+        dataIndex: "filename",
+        key: "filename",
+        render: (text) => <div title="File Name">{text}</div>,
       },
       {
         title: "Category",
         dataIndex: "category",
         key: "category",
+        render: (text) => <div title="Category">{text}</div>,
       },
       {
         title: "Proponent Description",
-        dataIndex: "proponentDescription",
-        key: "proponentDescription",
+        dataIndex: "description",
+        key: "description",
+        render: (text) => <div title="Proponent Description">{text}</div>,
       },
     ];
 
@@ -76,13 +80,17 @@ export class NOWWorkPlan extends Component {
         <h3>Documents</h3>
         <Divider />
         <div className="padding-large--sides">
-          <Table
-            align="left"
-            pagination={false}
-            columns={columns}
-            dataSource={[]}
-            locale={{ emptyText: "There are no documents associated with this Notice of Work" }}
-          />
+          {this.props.noticeOfWork.documents.length >= 1 ? (
+            <Table
+              align="left"
+              pagination={false}
+              columns={columns}
+              dataSource={this.props.noticeOfWork.documents}
+              locale={{ emptyText: "There are no documents associated with this Notice of Work" }}
+            />
+          ) : (
+            <NullScreen type="documents" />
+          )}
         </div>
       </div>
     );
