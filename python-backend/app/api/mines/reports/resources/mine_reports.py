@@ -1,6 +1,6 @@
 import uuid
 from flask_restplus import Resource, reqparse, fields, inputs
-from flask import request, current_app
+from flask import request
 from datetime import datetime
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
@@ -48,7 +48,7 @@ class MineReportListResource(Resource, UserMixin):
     def get(self, mine_guid):
         mrd_category = request.args.get('mine_report_definition_category')
         if mrd_category:
-            mine_reports = MineReport.find_by_mine_guid_with_category(mine_guid, mrd_category)
+            mine_reports = MineReport.find_by_mine_guid_and_category(mine_guid, mrd_category)
         else:
             mine_reports = MineReport.find_by_mine_guid(mine_guid)
 

@@ -75,7 +75,7 @@ class MineReport(Base, AuditMixin):
             return None
 
     @classmethod
-    def find_by_mine_guid_with_category(cls, _id, category):
+    def find_by_mine_guid_and_category(cls, _id, category):
         try:
             uuid.UUID(_id, version=4)
             reports = cls.query.filter_by(mine_guid=_id).all()
