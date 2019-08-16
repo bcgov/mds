@@ -61,11 +61,6 @@ const applySortIndicator = (_columns, field, dir) =>
   }));
 
 export class NoticeOfWorkTable extends Component {
-  // FIXME: Why do I need this in order to make this component render?
-  constructor(props) {
-    super(props);
-  }
-
   filterProperties = (name, field) => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys }) => {
       return (
