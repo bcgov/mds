@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { Table, Icon, Input, Button } from "antd";
-import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { isEmpty } from "lodash";
+import PropTypes from "prop-types";
+import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
 import * as router from "@/constants/routes";
 import NullScreen from "@/components/common/NullScreen";
@@ -14,9 +15,7 @@ import { formatDate } from "@/utils/helpers";
  */
 const propTypes = {
   handleSearch: PropTypes.func.isRequired,
-  // use NoW custom prop once this feature is fully implemented
-  // eslint-disable-next-line react/forbid-prop-types
-  noticeOfWorkApplications: PropTypes.array,
+  noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.nowApplication),
   sortField: PropTypes.string,
   sortDir: PropTypes.string,
   searchParams: PropTypes.objectOf(PropTypes.string),

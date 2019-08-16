@@ -18,10 +18,8 @@ const propTypes = {
   fetchNoticeOfWorkApplications: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
-  pageData: PropTypes.objectOf(CustomPropTypes.partyPageData).isRequired,
-  // use NoW custom prop once this feature is fully implemented
-  // eslint-disable-next-line react/forbid-prop-types
-  noticeOfWorkApplications: PropTypes.arrayOf(PropTypes.any).isRequired,
+  pageData: CustomPropTypes.pageData.isRequired,
+  noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.nowApplication).isRequired,
 };
 
 export class NoticeOfWorkHomePage extends Component {
