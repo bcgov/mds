@@ -118,7 +118,7 @@ def append_tailings_reports_to_code_required_reports(connection, commit=False):
 
 
 @register_apm()
-def delete_tailings_data(connection, delete=False):
+def delete_tailings_data(connection, commit=False):
     cursor = connection.cursor()
     cursor.execute(
         'TRUNCATE TABLE mine_expected_document_xref, mine_expected_document CONTINUE IDENTITY RESTRICT;'
@@ -126,9 +126,9 @@ def delete_tailings_data(connection, delete=False):
     print('TRUNCATE mine_expected_document_xref and mine_expected_document staged')
     cursor.execute('UPDATE public.mds_required_document SET active_ind=false;')
     print('UPDATE mds_required_document active_ind FALSE staged')
-    if delete:
+    if commit:
         connection.commit()
         print('TRUNCATION COMPLETE')
     else:
         connection.rollback()
-        print('NO DATA DELETED: add --delete=true to delete tailings reports and documents data')
+        print('NO DATA DELETED: add --commit=true to delete tailings reports and documents data')
