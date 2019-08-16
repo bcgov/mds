@@ -67,6 +67,8 @@ const propTypes = {
 };
 
 export const joinOrRemove = (param, key) => {
+  console.log("&&&&&&&&&&&&&&&&&&&&&");
+  console.log(param);
   if (isEmpty(param)) {
     return {};
   }
@@ -76,6 +78,7 @@ export const removeEmptyStings = (param, key) => (isEmpty(param) ? {} : { [key]:
 export const formatParams = ({
   region = [],
   compliance_code = [],
+  variance_application_status_code = [],
   issue_date_after,
   issue_date_before,
   expiry_date_before,
@@ -87,6 +90,7 @@ export const formatParams = ({
   return {
     ...joinOrRemove(region, "region"),
     ...joinOrRemove(compliance_code, "compliance_code"),
+    ...joinOrRemove(variance_application_status_code, "variance_application_status_code"),
     ...removeEmptyStings(issue_date_after, "issue_date_after"),
     ...removeEmptyStings(issue_date_before, "issue_date_before"),
     ...removeEmptyStings(expiry_date_before, "expiry_date_before"),
@@ -96,6 +100,7 @@ export const formatParams = ({
     ...remainingParams,
   };
 };
+
 export class VarianceHomePage extends Component {
   params = queryString.parse(this.props.location.search);
 
@@ -103,6 +108,9 @@ export class VarianceHomePage extends Component {
     super(props);
     const formatedParams = {
       compliance_code: formatParamStringToArray(this.params.compliance_code),
+      variance_application_status_code: formatParamStringToArray(
+        this.params.variance_application_status_code
+      ),
       region: formatParamStringToArray(this.params.region),
       major: this.params.major,
       search: this.params.search,
@@ -115,6 +123,7 @@ export class VarianceHomePage extends Component {
     this.state = {
       variancesLoaded: false,
       params: formatedParams,
+      initialParams: formatedParams,
     };
   }
 
@@ -161,14 +170,22 @@ export class VarianceHomePage extends Component {
 
   renderDataFromURL = (nextProps) => {
     const params = nextProps ? nextProps.location.search : this.props.location.search;
-    const { region, compliance_code, major, search, ...remainingParams } = queryString.parse(
-      params
-    );
+    const {
+      region,
+      compliance_code,
+      variance_application_status_code,
+      major,
+      search,
+      ...remainingParams
+    } = queryString.parse(params);
     this.setState(
       {
         params: {
           region: formatParamStringToArray(region),
           compliance_code: formatParamStringToArray(compliance_code),
+          variance_application_status_code: formatParamStringToArray(
+            variance_application_status_code
+          ),
           major,
           search,
           ...remainingParams,
@@ -178,6 +195,22 @@ export class VarianceHomePage extends Component {
         this.props.fetchVariances(this.state.params);
       }
     );
+  };
+
+  clearParams = () => {
+    this.setState({
+      params: {
+        region: [],
+        compliance_code: [],
+        variance_application_status_code: [],
+        major: null,
+        search: null,
+        issue_date_after: null,
+        issue_date_before: null,
+        expiry_date_before: null,
+        expiry_date_after: null,
+      },
+    });
   };
 
   handleVarianceSearch = (searchParams, clear = false) => {
@@ -196,6 +229,11 @@ export class VarianceHomePage extends Component {
       // eslint-disable-next-line react/no-access-state-in-setstate
       per_page: this.state.params.per_page ? this.state.params.per_page : String.DEFAULT_PER_PAGE,
     };
+
+    console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXX");
+    console.log(persistedParams);
+    console.log(formattedSearchParams);
+    console.log(updatedParams);
 
     this.props.history.push(router.VARIANCE_DASHBOARD.dynamicRoute(updatedParams));
     this.setState(
@@ -297,6 +335,10 @@ export class VarianceHomePage extends Component {
   };
 
   render() {
+    // console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+    // console.log(this.props.filterVarianceStatusOptions);
+    // console.log(this.props.getDropdownHSRCMComplianceCodes);
+
     return (
       <div className="landing-page">
         <div className="landing-page__header">
@@ -305,15 +347,16 @@ export class VarianceHomePage extends Component {
         <div className="landing-page__content">
           <VarianceSearch
             handleNameFieldReset={this.handleNameFieldReset}
-            initialValues={this.state.params}
+            initialValues={this.state.initialParams}
             fetchVariances={this.props.fetchVariances}
             handleVarianceSearch={this.handleVarianceSearchDebounced}
             mineRegionOptions={this.props.mineRegionOptions}
             complianceCodes={this.props.getDropdownHSRCMComplianceCodes}
+            filterVarianceStatusOptions={this.props.filterVarianceStatusOptions}
           />
           <LoadingWrapper condition={this.state.variancesLoaded}>
             <VarianceTable
-              filterVarianceStatusOptions={this.props.filterVarianceStatusOptions}
+              // filterVarianceStatusOptions={this.props.filterVarianceStatusOptions}
               isApplication={this.state.isApplication}
               handleFilterChange={this.handleFilterChange}
               variances={this.props.variances}

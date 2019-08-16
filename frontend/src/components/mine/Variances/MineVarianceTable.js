@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Table, Button, Icon } from "antd";
+import { isEmpty } from "lodash";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import moment from "moment";
@@ -33,10 +34,12 @@ const propTypes = {
   isApplication: PropTypes.bool,
   isDashboardView: PropTypes.bool,
   openEditVarianceModal: PropTypes.func,
-  filterVarianceStatusOptions: CustomPropTypes.filterOptions,
+  // filterVarianceStatusOptions: CustomPropTypes.filterOptions,
   params: PropTypes.shape({
     variance_application_status_code: PropTypes.arrayOf(PropTypes.string),
   }),
+  sortField: PropTypes.string,
+  sortDir: PropTypes.string,
 };
 
 const defaultProps = {
@@ -46,12 +49,33 @@ const defaultProps = {
   isApplication: false,
   isDashboardView: false,
   params: {},
-  filterVarianceStatusOptions: [],
+  sortField: null,
+  sortDir: null,
+  // filterVarianceStatusOptions: [],
 };
 
 const errorStyle = (isOverdue) => (isOverdue ? { color: errorRed } : {});
 
 const hideColumn = (condition) => (condition ? "column-hide" : "");
+
+const applySortIndicator = (_columns, field, dir) =>
+  _columns.map((column) => ({
+    ...column,
+    sortOrder: column.sortField === field ? dir.concat("end") : false,
+  }));
+
+const handleTableChange = (updateVarianceList) => (pagination, filters, sorter) => {
+  const params = isEmpty(sorter)
+    ? {
+        sort_field: undefined,
+        sort_dir: undefined,
+      }
+    : {
+        sort_field: sorter.column.sortField,
+        sort_dir: sorter.order.replace("end", ""),
+      };
+  updateVarianceList(params);
+};
 
 export class MineVarianceTable extends Component {
   transformRowData = (variances, codeHash, statusHash) =>
@@ -89,11 +113,13 @@ export class MineVarianceTable extends Component {
       {
         title: "Variance Number",
         dataIndex: "varianceNumber",
+        sortField: "variance_number", // try this to get the sort working!!!
         render: (text, record) => (
           <div title="Variance Number" style={errorStyle(record.isOverdue)}>
             {text}
           </div>
         ),
+        sorter: this.props.isDashboardView,
       },
       {
         title: "Code Section",
@@ -103,9 +129,9 @@ export class MineVarianceTable extends Component {
             {text}
           </div>
         ),
-        sorter:
-          !this.props.isDashboardView &&
-          ((a, b) => compareCodes(a.compliance_article_id, b.compliance_article_id)),
+        sorter: !this.props.isDashboardView
+          ? (a, b) => compareCodes(a.compliance_article_id, b.compliance_article_id)
+          : true,
       },
       {
         title: "Mine Name",
@@ -120,6 +146,7 @@ export class MineVarianceTable extends Component {
             <Link to={router.MINE_SUMMARY.dynamicRoute(record.mineGuid)}>{text}</Link>
           </div>
         ),
+        sorter: this.props.isDashboardView,
       },
       {
         title: "Lead Inspector",
@@ -134,6 +161,7 @@ export class MineVarianceTable extends Component {
             {text}
           </div>
         ),
+        sorter: this.props.isDashboardView, // make sure this works when Lead inspector is N/A
       },
       {
         title: "Submission Date",
@@ -144,9 +172,9 @@ export class MineVarianceTable extends Component {
             {text}
           </div>
         ),
-        sorter:
-          !this.props.isDashboardView &&
-          ((a, b) => (moment(a.received_date) > moment(b.received_date) ? -1 : 1)),
+        sorter: !this.props.isDashboardView
+          ? (a, b) => (moment(a.received_date) > moment(b.received_date) ? -1 : 1)
+          : true,
         defaultSortOrder: "ascend",
       },
       {
@@ -154,8 +182,8 @@ export class MineVarianceTable extends Component {
         dataIndex: "status",
         width: 200,
         className: hideColumn(!this.props.isApplication),
-        filteredValue: this.props.params.variance_application_status_code,
-        filters: this.props.isDashboardView && this.props.filterVarianceStatusOptions,
+        // filteredValue: this.props.params.variance_application_status_code,
+        // filters: this.props.isDashboardView && this.props.filterVarianceStatusOptions,
         render: (text, record) => (
           <div
             className={hideColumn(!this.props.isApplication)}
@@ -165,7 +193,7 @@ export class MineVarianceTable extends Component {
             {text}
           </div>
         ),
-        sorter: !this.props.isDashboardView && ((a, b) => (a.status > b.status ? -1 : 1)),
+        sorter: !this.props.isDashboardView ? (a, b) => (a.status > b.status ? -1 : 1) : true,
       },
       {
         title: "Issue Date",
@@ -259,14 +287,20 @@ export class MineVarianceTable extends Component {
         ),
       },
     ];
+    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+    console.log(this.props.sortField);
+    console.log(this.props.sortDir);
+    console.log("The params are: ", this.props.params);
 
     return (
       <div>
         <Table
-          onChange={this.props.isDashboardView ? this.props.handleFilterChange : null}
+          onChange={
+            this.props.isDashboardView ? handleTableChange(this.props.handleFilterChange) : null
+          }
           align="left"
           pagination={false}
-          columns={columns}
+          columns={applySortIndicator(columns, this.props.sortField, this.props.sortDir)}
           locale={{
             emptyText: (
               <NullScreen
