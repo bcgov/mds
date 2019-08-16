@@ -1,5 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
+
 import AddReportForm from "@/components/Forms/reports/AddReportForm";
 
 const propTypes = {
@@ -27,4 +29,7 @@ export const AddReportModal = (props) => (
 AddReportModal.propTypes = propTypes;
 AddReportModal.defaultProps = defaultProps;
 
-export default AddReportModal;
+export default connect(
+  null,
+  null
+)(AddReportModal);

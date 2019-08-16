@@ -10,7 +10,7 @@ import {
   fetchMineReportComments,
   createMineReportComment,
   deleteMineReportComment,
-} from "@/actionCreators/reportActionCreator";
+} from "@/actionCreators/reportCommentActionCreator";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
