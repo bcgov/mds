@@ -146,16 +146,14 @@ class MineReportResource(Resource, UserMixin):
             mine_report.received_date = data['received_date']
 
         report_submissions = data.get('mine_report_submissions')
-        subission_iterator = iter(report_submissions)
+        submission_iterator = iter(report_submissions)
         new_submission = next(
-            (x for x in subission_iterator if x.get('mine_report_submission_guid') is None), None)
+            (x for x in submission_iterator if x.get('mine_report_submission_guid') is None), None)
         if new_submission is not None:
-            new_report_submission = MineReportSubmission(
-                mine_report_submission_status_code='MIA',
-                submission_date=datetime.now())
+            new_report_submission = MineReportSubmission(mine_report_submission_status_code='MIA',
+                                                         submission_date=datetime.now())
 
             # Copy the current list of documents for the report submission
-            current_app.logger.debug(mine_report.mine_report_submissions)
             last_submission_docs = mine_report.mine_report_submissions[0].documents.copy() if len(
                 mine_report.mine_report_submissions) > 0 else []
 

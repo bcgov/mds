@@ -13,6 +13,7 @@ import { modalConfig } from "@/components/modalContent/config";
 import { openModal, closeModal } from "@/actions/modalActions";
 import { getMineReports } from "@/selectors/reportSelectors";
 import MineReportTable from "@/components/dashboard/mine/reports/MineReportTable";
+import { fetchMineReportDefinitionOptions } from "@/actionCreators/staticContentActionCreator";
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
@@ -22,6 +23,7 @@ const propTypes = {
       id: PropTypes.string,
     },
   }).isRequired,
+  fetchMineReportDefinitionOptions: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   updateMineReport: PropTypes.func.isRequired,
   fetchMineReports: PropTypes.func.isRequired,
@@ -33,6 +35,7 @@ export class Reports extends Component {
   state = { isLoaded: false, selectedDocument: {} };
 
   componentDidMount() {
+    this.props.fetchMineReportDefinitionOptions();
     const { id } = this.props.match.params;
     this.props.fetchMineReports(id);
     this.props.fetchMineRecordById(id).then(() => {
@@ -94,6 +97,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
+      fetchMineReportDefinitionOptions,
       fetchMineRecordById,
       fetchMineReports,
       updateMineReport,

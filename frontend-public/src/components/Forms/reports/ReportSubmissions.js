@@ -43,6 +43,7 @@ export const ReportSubmissions = (props) => {
             }
             props.updateMineReportSubmissions(updatedSubmissions);
           }}
+          props={{ editing: updateFilesClicked }}
         />
       </Form.Item>
     ),

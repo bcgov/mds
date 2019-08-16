@@ -9,14 +9,12 @@ import { createRequestHeader } from "@/utils/RequestHeaders";
 import { getMineReportDefinitionOptions } from "@/selectors/staticContentSelectors";
 
 export const fetchMineReportDefinitionOptions = () => (dispatch) => {
-  dispatch(showLoading());
   dispatch(request(reducerTypes.GET_MINE_REPORT_DEFINITION_OPTIONS));
   return axios
     .get(`${ENVIRONMENT.apiUrl}${API.MINE_REPORT_DEFINITIONS()}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_REPORT_DEFINITION_OPTIONS));
       dispatch(staticContentActions.storeMineReportDefinitionOptions(response.data));
-      dispatch(hideLoading());
     })
     .catch((err) => {
       notification.error({
@@ -24,6 +22,5 @@ export const fetchMineReportDefinitionOptions = () => (dispatch) => {
         duration: 10,
       });
       dispatch(error(reducerTypes.GET_MINE_REPORT_DEFINITION_OPTIONS));
-      dispatch(hideLoading());
     });
 };

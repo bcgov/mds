@@ -182,39 +182,6 @@ export class AddReportForm extends Component {
                   : [<List.Item />]}
               </List>
             </Form.Item>
-            <Form.Item />
-            <Form.Item>
-              <Field
-                id="submission_year"
-                name="submission_year"
-                label="Report Compliance Year/Period"
-                placeholder=""
-                component={renderConfig.YEAR}
-                validate={[required]}
-                props={{ disabled: true }}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Field
-                id="due_date"
-                name="due_date"
-                label="Due Date"
-                placeholder=""
-                component={renderConfig.DATE}
-                validate={[required]}
-                props={{ disabled: true }}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Field
-                id="received_date"
-                name="received_date"
-                label="Received Date"
-                placeholder=""
-                component={renderConfig.DATE}
-                props={{ disabled: true }}
-              />
-            </Form.Item>
             <ReportSubmissions
               mineGuid={this.props.mineGuid}
               mineReportSubmissions={this.state.mineReportSubmissions}
