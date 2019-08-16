@@ -37,7 +37,24 @@ export class NoticeOfWorkHomePage extends Component {
   };
 
   componentDidMount() {
-    this.renderDataFromURL();
+    const params = this.props.location.search;
+    const parsedParams = queryString.parse(params);
+    const {
+      page = this.state.params.page,
+      per_page = this.state.params.per_page,
+      type = this.state.params.type,
+    } = parsedParams;
+    if (params) {
+      this.renderDataFromURL();
+    } else {
+      this.props.history.push(
+        router.NOTICE_OF_WORK_APPLICATIONS.dynamicRoute({
+          page,
+          per_page,
+          type,
+        })
+      );
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -100,6 +117,7 @@ export class NoticeOfWorkHomePage extends Component {
   };
 
   render() {
+    console.log(this);
     return (
       <div className="landing-page">
         <div className="landing-page__header">
