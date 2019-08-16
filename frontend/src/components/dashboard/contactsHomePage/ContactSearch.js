@@ -51,6 +51,7 @@ export class ContactSearch extends Component {
                   ...this.props.partyRelationshipTypesList,
                 ]}
                 initialValues={this.props.initialValues}
+                enableReinitialize
               />
             </span>
           </Col>

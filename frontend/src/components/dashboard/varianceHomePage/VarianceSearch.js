@@ -64,6 +64,7 @@ export class VarianceSearch extends Component {
                 initialValues={this.props.initialValues}
                 complianceCodes={this.props.complianceCodes}
                 mineRegionOptions={this.props.mineRegionOptions}
+                enableReinitialize
               />
             </span>
           </Col>
