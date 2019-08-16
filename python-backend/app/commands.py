@@ -6,7 +6,7 @@ from multiprocessing.dummy import Pool as ThreadPool
 from app.api.utils.include.user_info import User
 from app.extensions import db
 
-from tests.factories import MineFactory, MinePartyAppointmentFactory
+from tests.factories import MineFactory, MinePartyAppointmentFactory, NOWApplicationFactory
 
 
 def register_commands(app):
@@ -63,6 +63,7 @@ def register_commands(app):
                     mine=mine, mine_party_appt_type_code='MMG')
                 permitee = MinePartyAppointmentFactory(
                     mine=mine, mine_party_appt_type_code='PMT', party__company=True)
+                NOWApplicationFactory()
             try:
                 db.session.commit()
                 print(f'Created {num} random mines with related data.')

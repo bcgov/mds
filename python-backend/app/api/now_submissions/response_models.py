@@ -1,6 +1,7 @@
 from app.extensions import api
 from flask_restplus import fields
 
+
 CLIENT = api.model(
     'Client', {
         'type': fields.String,
@@ -299,4 +300,29 @@ APPLICATION = api.model(
         'under_exp_rehab_activity': fields.List(fields.Nested(UNDER_EXP_REHAB_ACTIVITY)),
         'under_exp_surface_activity': fields.List(fields.Nested(UNDER_EXP_SURFACE_ACTIVITY)),
         'water_source_activity': fields.List(fields.Nested(WATER_SOURCE_ACTIVITY)),
+    })
+
+APPLICATION_LIST = api.model(
+    'Application', {
+        'application_guid': fields.String,
+        'mine_guid': fields.String,
+        'mine_name': fields.String,
+        'minenumber': fields.String,
+        'noticeofworktype': fields.String,
+        'trackingnumber': fields.Integer,
+        'status': fields.String,
+        'receiveddate': fields.Date,
+        # TODO: Figure out Region and add it here
+    })
+
+PAGINATED_LIST = api.model(
+    'List', {
+        'current_page': fields.Integer,
+        'total_pages': fields.Integer,
+        'items_per_page': fields.Integer,
+        'total': fields.Integer,
+    })
+
+PAGINATED_APPLICATION_LIST = api.inherit('ApplicationList', PAGINATED_LIST, {
+    'records': fields.List(fields.Nested(APPLICATION_LIST)),
     })
