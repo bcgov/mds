@@ -5,8 +5,8 @@ set -exv -o pipefail
 ./gradlew -m
 
 ### Run MineSpace tests
-./gradlew firefoxTest -DfirefoxTest.single=CustomJUnitPublicSpecRunner
+./gradlew firefoxHeadlessTest -DfirefoxHeadlessTest.single=CustomJUnitPublicSpecRunner
 
 ### Run Core tests
 # NOTE: FIREFOX HEADLESS IS THE ONLY BROWSER WHERE THE UPLOAD DOWNLOAD TEST CAN BE COMPLETED
-./gradlew firefoxTest -DfirefoxTest.single=CustomJUnitSpecRunner
+./gradlew firefoxHeadlessTest -DfirefoxHeadlessTest.single=CustomJUnitSpecRunner
