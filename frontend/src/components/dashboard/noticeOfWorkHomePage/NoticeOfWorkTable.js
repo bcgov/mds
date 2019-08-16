@@ -19,12 +19,14 @@ const propTypes = {
   noticeOfWorkApplications: PropTypes.array,
   sortField: PropTypes.string,
   sortDir: PropTypes.string,
+  searchParams: PropTypes.objectOf(PropTypes.string),
 };
 
 const defaultProps = {
   sortField: null,
   sortDir: null,
   noticeOfWorkApplications: [],
+  searchParams: {},
 };
 
 const transformRowData = (applications) =>
@@ -59,35 +61,31 @@ const applySortIndicator = (_columns, field, dir) =>
   }));
 
 export class NoticeOfWorkTable extends Component {
-  state = {
-    searchInput: null,
-  };
-
   // FIXME: Why do I need this in order to make this component render?
   constructor(props) {
     super(props);
   }
 
-  filterComponent = (name, field) => ({
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => {
+  filterProperties = (name, field) => ({
+    filterDropdown: ({ setSelectedKeys, selectedKeys }) => {
       return (
         <div style={{ padding: 8 }}>
           <Input
             ref={(node) => {
-              this.setState({ searchInput: node && node.props.value });
+              this.searchInput = node && node.props.value;
             }}
             placeholder={`Search ${name}`}
             value={selectedKeys[0] || this.props.searchParams[field]}
             onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
             onPressEnter={() => {
-              this.props.handleSearch({ [field]: this.state.searchInput });
+              this.props.handleSearch({ [field]: this.searchInput });
             }}
             style={{ width: 188, marginBottom: 8, display: "block" }}
           />
           <Button
             type="primary"
             onClick={() => {
-              this.props.handleSearch({ [field]: this.state.searchInput });
+              this.props.handleSearch({ [field]: this.searchInput });
             }}
             icon="search"
             size="small"
@@ -127,7 +125,7 @@ export class NoticeOfWorkTable extends Component {
         <Link to={router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key)}>{text}</Link>
       ),
       sorter: true,
-      ...this.filterComponent("NoW No.", "trackingnumber"),
+      ...this.filterProperties("NoW No.", "trackingnumber"),
     },
     {
       title: "Mine",
@@ -145,7 +143,7 @@ export class NoticeOfWorkTable extends Component {
       sortField: "noticeofworktype",
       render: (text) => <div title="NoW Mine Type">{text}</div>,
       sorter: true,
-      ...this.filterComponent("NoW Type", "noticeofworktype"),
+      ...this.filterProperties("NoW Type", "noticeofworktype"),
     },
     {
       title: "Application Status",
@@ -153,7 +151,7 @@ export class NoticeOfWorkTable extends Component {
       sortField: "status",
       render: (text) => <div title="Application Status">{text}</div>,
       sorter: true,
-      ...this.filterComponent("Status", "status"),
+      ...this.filterProperties("Status", "status"),
     },
     {
       title: "Import Date",
