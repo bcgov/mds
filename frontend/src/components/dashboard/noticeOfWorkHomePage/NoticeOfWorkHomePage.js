@@ -37,11 +37,7 @@ export class NoticeOfWorkHomePage extends Component {
   componentDidMount() {
     const params = this.props.location.search;
     const parsedParams = queryString.parse(params);
-    const {
-      page = this.state.params.page,
-      per_page = this.state.params.per_page,
-      type = this.state.params.type,
-    } = parsedParams;
+    const { page = this.state.params.page, per_page = this.state.params.per_page } = parsedParams;
     if (params) {
       this.renderDataFromURL();
     } else {
@@ -49,7 +45,6 @@ export class NoticeOfWorkHomePage extends Component {
         router.NOTICE_OF_WORK_APPLICATIONS.dynamicRoute({
           page,
           per_page,
-          type,
         })
       );
     }
