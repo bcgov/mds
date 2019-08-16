@@ -13,6 +13,7 @@ const propTypes = {
   initialValues: CustomPropTypes.varianceSearchInitialValues,
   mineRegionOptions: CustomPropTypes.options.isRequired,
   complianceCodes: CustomPropTypes.options.isRequired,
+  filterVarianceStatusOptions: CustomPropTypes.filterOptions.isRequired,
 };
 
 const defaultProps = {
@@ -67,6 +68,7 @@ export class VarianceSearch extends Component {
                 initialValues={this.props.initialValues}
                 complianceCodes={this.props.complianceCodes}
                 mineRegionOptions={this.props.mineRegionOptions}
+                filterVarianceStatusOptions={this.props.filterVarianceStatusOptions}
                 enableReinitialize
               />
             </span>
