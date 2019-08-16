@@ -80,8 +80,7 @@ const columns = [
     render: (text, record) => (
       <div title="Documents">
         <ul>
-          {record.report.mine_report_submissions &&
-          record.report.mine_report_submissions.length > 0 &&
+          {record.report.mine_report_submissions.length > 0 &&
           record.report.mine_report_submissions[record.report.mine_report_submissions.length - 1]
             .documents.length > 0
             ? record.report.mine_report_submissions[

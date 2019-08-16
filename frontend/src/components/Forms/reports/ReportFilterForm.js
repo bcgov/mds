@@ -25,8 +25,6 @@ const propTypes = {
   selectedMineReportDefinitionGuid: PropTypes.string.isRequired,
 };
 
-const defaultProps = {};
-
 const selector = formValueSelector(FORM.FILTER_REPORTS);
 
 export class ReportFilterForm extends Component {
@@ -108,12 +106,7 @@ export class ReportFilterForm extends Component {
 
   render() {
     return (
-      <Form
-        layout="vertical"
-        onSubmit={this.props.handleSubmit}
-        onReset={this.handleReset}
-        enableReinitialize="true"
-      >
+      <Form layout="vertical" onSubmit={this.props.handleSubmit} onReset={this.handleReset}>
         <div>
           <Row gutter={16}>
             <Col md={6} sm={24}>
@@ -145,6 +138,7 @@ export class ReportFilterForm extends Component {
                 component={renderConfig.YEAR}
               />
             </Col>
+            {/* This was left in as it is expected to be used with the non MVP version of the code required reports. */}
             {/* <Col md={6} sm={24}>
               <Field
                 id="requested_by"
@@ -174,6 +168,7 @@ export class ReportFilterForm extends Component {
                 component={renderConfig.DATE}
               />
             </Col>
+            {/* This was left in as it is expected to be used with the non MVP version of the code required reports. */}
             {/* <Col md={6} sm={24}>
               <Field
                 id="report_status"
@@ -199,7 +194,6 @@ export class ReportFilterForm extends Component {
 }
 
 ReportFilterForm.propTypes = propTypes;
-ReportFilterForm.defaultProps = defaultProps;
 
 export default compose(
   connect((state) => ({

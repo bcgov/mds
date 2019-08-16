@@ -68,7 +68,7 @@ export class MineReportInfo extends Component {
 
   componentWillMount = () => {
     this.props.fetchMineReports(this.props.mineGuid).then(() => {
-      if (Object.keys(this.props.location.search).length > 0) {
+      if (this.props.location.search) {
         this.renderDataFromURL(this.props.location.search);
       } else {
         this.setFilteredReports();
