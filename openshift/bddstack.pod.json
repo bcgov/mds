@@ -59,11 +59,7 @@
           {
             "name": "bdd-test",
             "image": "docker-registry.default.svc:5000/empr-mds-tools/${NAME}:${VERSION}",
-            "command": [
-              "/bin/bash",
-              "-c",
-              "cd /opt/selenium/bdd-tests && ./run_tests.sh"
-            ],
+            "command": ["bash", "-c", "./run_tests.sh"],
             "imagePullPolicy": "Always",
             "env": [
               {
@@ -161,8 +157,7 @@
           }
         ],
         "restartPolicy": "Never",
-        "activeDeadlineSeconds": 1800,
-        "dnsPolicy": "ClusterFirst"
+        "activeDeadlineSeconds": 1800
       }
     }
   ]
