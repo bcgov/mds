@@ -1,5 +1,4 @@
 import { notification } from "antd";
-import { showLoading, hideLoading } from "react-redux-loading-bar";
 import { request, success, error } from "@/actions/genericActions";
 import * as reducerTypes from "@/constants/reducerTypes";
 import * as mineReportActions from "@/actions/mineReportActions";
@@ -10,6 +9,7 @@ import CustomAxios from "@/customAxios";
 
 export const fetchMineReportComments = (mineGuid, mineReportGuid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_REPORT_COMMENTS));
+  dispatch(mineReportActions.fetchMineReportComments());
   return CustomAxios()
     .get(
       `${ENVIRONMENT.apiUrl}${API.MINE_REPORT_COMMENTS(mineGuid, mineReportGuid)}`,
@@ -25,6 +25,7 @@ export const fetchMineReportComments = (mineGuid, mineReportGuid) => (dispatch) 
 
 export const createMineReportComment = (mineGuid, mineReportGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_MINE_REPORT_COMMENT));
+  dispatch(mineReportActions.submitMineReportComment());
   return CustomAxios()
     .post(
       `${ENVIRONMENT.apiUrl}${API.MINE_REPORT_COMMENTS(mineGuid, mineReportGuid)}`,
@@ -37,6 +38,7 @@ export const createMineReportComment = (mineGuid, mineReportGuid, payload) => (d
         duration: 10,
       });
       dispatch(success(reducerTypes.CREATE_MINE_REPORT_COMMENT));
+      dispatch(mineReportActions.mineReportCommentCreated());
       return response;
     })
     .catch(() => dispatch(error(reducerTypes.CREATE_MINE_REPORT_COMMENT)));

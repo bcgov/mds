@@ -1,11 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Comment, List, Tooltip } from "antd";
+import { Spin, Comment, List, Tooltip } from "antd";
+
 import CommentEditor from "./CommentEditor";
 
 const propTypes = {
-  key: PropTypes.string.isRequired,
+  submitting: PropTypes.bool.isRequired,
+  loading: PropTypes.bool.isRequired,
   renderAdd: PropTypes.bool,
   comments: PropTypes.arrayOf(PropTypes.any).isRequired,
   onSubmit: PropTypes.func.isRequired,
@@ -13,32 +15,41 @@ const propTypes = {
 };
 
 const defaultProps = {
-  key: "",
   renderAdd: true,
   onChange: () => {},
 };
 
-const CommentPanel = (props) => [
-  // <CommentEditor onSubmit={props.onSubmit} submitting={props.submitting} value="" />,
-
-  <List
-    className="comment-list"
-    header={`${props.comments.length} total comments`}
-    itemLayout="horizontal"
-    dataSource={props.comments}
-    renderItem={(item) => (
-      <li>
-        <Comment
-          key={item.comment}
-          actions={item.actions}
-          author={item.author}
-          content={item.content}
-          datetime={item.datetime}
+const CommentPanel = (props) => {
+  if (!props.loading)
+    return (
+      <React.Fragment>
+        {props.renderAdd && (
+          <CommentEditor
+            onChange={props.onChange}
+            onSubmit={props.onSubmit}
+            submitting={props.submitting}
+          />
+        )}
+        <List
+          className="comment-list"
+          header={`${props.comments.length} total comments`}
+          itemLayout="horizontal"
+          dataSource={props.comments}
+          renderItem={(item) => (
+            <li key={item.key}>
+              <Comment
+                actions={item.actions}
+                author={item.author}
+                content={item.content}
+                datetime={item.datetime}
+              />
+            </li>
+          )}
         />
-      </li>
-    )}
-  />,
-];
+      </React.Fragment>
+    );
+  return <Spin />;
+};
 
 CommentPanel.defaultProps = defaultProps;
 CommentPanel.propTypes = propTypes;

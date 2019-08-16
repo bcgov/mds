@@ -1,39 +1,39 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Comment, Form, Button, Input } from "antd";
+import { Input, Form, Button, Checkbox } from "antd";
 
-const { TextArea, Checkbox } = Input;
+const { TextArea } = Input;
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   onChange: PropTypes.func,
   submitting: PropTypes.bool,
-  value: PropTypes.string,
-  checkbox: PropTypes.bool,
 };
 
 const defaultProps = {
   onChange: () => {},
   submitting: false,
-  value: "",
-  checkbox: false,
 };
 
 export class CommentEditor extends Component {
-  handleSubmit = () => {
-    // this.props.onSubmit();
-    // this.props.onSubmit({props.value, props.checkbox})
+  constructor(props) {
+    super(props);
+    this.state = { commentText: "", checkbox: false };
+  }
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+    this.props.onSubmit({ comment: this.state.commentText, visible: this.state.checkbox });
   };
 
   render() {
     return (
-      // <Comment>
       <div>
         <Form.Item>
-          <TextArea rows={4} value={this.props.value} />
+          <TextArea rows={4} value={this.state.commentText} />
         </Form.Item>
         <Form.Item>
-          <Checkbox checked={this.props.checkbox}>
+          <Checkbox checked={this.state.checkbox}>
             Publish this comment on MineSpace for the proponent to see
           </Checkbox>
         </Form.Item>
@@ -46,7 +46,6 @@ export class CommentEditor extends Component {
           Add Comment
         </Button>
       </div>
-      // </Comment> }
     );
   }
 }

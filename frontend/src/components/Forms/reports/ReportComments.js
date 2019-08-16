@@ -3,8 +3,14 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Divider } from "antd";
+import moment from "moment";
+
 import CommentPanel from "@/components/common/comments/CommentPanel";
-import { getMineReportComments } from "@/selectors/reportSelectors";
+import {
+  getMineReportComments,
+  getMineReportCommentLoading,
+  getMineReportCommentSubmitting,
+} from "@/selectors/reportSelectors";
 
 import {
   fetchMineReportComments,
@@ -37,7 +43,11 @@ export class ReportComments extends Component {
 
   handleAddComment = (values) => {
     this.props
-      .createMineReportComment(this.props.mineGuid, this.props.mineReportGuid, values)
+      .createMineReportComment(
+        this.props.mineGuid,
+        this.props.mineReportGuid,
+        values.map((x) => ({ report_comment: x.comment, comment_visibility_ind: x.visible }))
+      )
       .then(() =>
         this.props.fetchMineReportComments(this.props.mineGuid, this.props.mineReportGuid)
       );
@@ -59,14 +69,16 @@ export class ReportComments extends Component {
       <CommentPanel
         renderAdd
         onSubmit={this.handleAddComment}
+        submitting={this.commentSubmitting}
+        loading={this.commentLoading}
         onRemove={this.handleRemoveComment}
         comments={this.props.mineReportComments.map((comment) => {
           return {
             key: comment.mine_report_comment_guid,
             author: comment.comment_user,
-            comment: comment.report_comment,
+            content: comment.report_comment,
             actions: actionBuilder(comment.comment_visibility_ind, comment.from_latest_submission),
-            datetime: comment.comment_datetime,
+            datetime: moment(comment.comment_datetime).format("lll"),
           };
         })}
       />,
@@ -79,6 +91,8 @@ ReportComments.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   mineReportComments: getMineReportComments(state),
+  commentSubmitting: getMineReportCommentSubmitting(state),
+  commentLoading: getMineReportCommentLoading(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
