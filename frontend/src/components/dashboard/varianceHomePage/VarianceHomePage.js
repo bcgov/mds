@@ -183,24 +183,22 @@ export class VarianceHomePage extends Component {
   handleVarianceSearch = (searchParams, clear = false) => {
     const formattedSearchParams = formatParams(searchParams);
     const persistedParams = clear ? {} : formatParams(this.state.params);
-    const updatedParams = {
-      // Start from existing state
-      ...persistedParams,
-      // Overwrite prev params with any newly provided search params
-      ...formattedSearchParams,
-      // Reset page number
-      page: String.DEFAULT_PAGE,
-      // Retain per_page if present
-      // eslint-disable-next-line react/no-access-state-in-setstate
-      per_page: this.state.params.per_page ? this.state.params.per_page : String.DEFAULT_PER_PAGE,
-    };
 
-    this.props.history.push(router.VARIANCE_DASHBOARD.dynamicRoute(updatedParams));
     this.setState(
-      {
-        params: updatedParams,
+      (prevState) => {
+        const updatedParams = {
+          // Start from existing state
+          ...persistedParams,
+          // Overwrite prev params with any newly provided search params
+          ...formattedSearchParams,
+          // Reset page number
+          page: String.DEFAULT_PAGE,
+          // Retain per_page if present
+          per_page: prevState.params.per_page ? prevState.params.per_page : String.DEFAULT_PER_PAGE,
+        };
+        this.props.history.push(router.VARIANCE_DASHBOARD.dynamicRoute(updatedParams));
+        return { params: updatedParams };
       },
-      // Fetch parties once state has been updated
       () => {
         return this.renderDataFromURL();
       }
