@@ -14,6 +14,7 @@ const propTypes = {
   openEditVarianceModal: PropTypes.func.isRequired,
   openViewVarianceModal: PropTypes.func.isRequired,
   handlePageChange: PropTypes.func.isRequired,
+  handleVarianceSearch: PropTypes.func.isRequired,
   params: PropTypes.objectOf(
     PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.arrayOf(PropTypes.string)])
   ).isRequired,
@@ -38,6 +39,7 @@ export const VarianceTable = (props) => (
       params={props.params}
       filterVarianceStatusOptions={props.filterVarianceStatusOptions}
       handleFilterChange={props.handleFilterChange}
+      handleVarianceSearch={props.handleVarianceSearch}
       variances={props.variances}
       isApplication
       isDashboardView

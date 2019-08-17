@@ -25,6 +25,7 @@ import * as router from "@/constants/routes";
 const { errorRed } = COLOR;
 
 const propTypes = {
+  handleVarianceSearch: PropTypes.func,
   handleFilterChange: PropTypes.func,
   variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -74,6 +75,8 @@ const handleTableChange = (updateVarianceList) => (pagination, filters, sorter) 
         sort_field: sorter.column.sortField,
         sort_dir: sorter.order.replace("end", ""),
       };
+  console.log("&&&&&&&&&&&&&&&&%%%%%%%%%%%%%%%%%%");
+  console.log(params);
   updateVarianceList(params);
 };
 
@@ -113,7 +116,7 @@ export class MineVarianceTable extends Component {
       {
         title: "Variance Number",
         dataIndex: "varianceNumber",
-        sortField: "variance_number", // try this to get the sort working!!!
+        sortField: "variance_id", // try this to get the sort working!!!
         render: (text, record) => (
           <div title="Variance Number" style={errorStyle(record.isOverdue)}>
             {text}
@@ -124,6 +127,7 @@ export class MineVarianceTable extends Component {
       {
         title: "Code Section",
         dataIndex: "compliance_article_id",
+        sortField: "compliance_article_id",
         render: (text, record) => (
           <div title="Code Section" style={errorStyle(record.isOverdue)}>
             {text}
@@ -136,6 +140,7 @@ export class MineVarianceTable extends Component {
       {
         title: "Mine Name",
         dataIndex: "mineName",
+        sortField: "mine_name",
         className: hideColumn(!this.props.isDashboardView),
         render: (text, record) => (
           <div
@@ -151,6 +156,7 @@ export class MineVarianceTable extends Component {
       {
         title: "Lead Inspector",
         dataIndex: "leadInspector",
+        sortField: "lead_inspector", // This may not work is this has to come from a differnet table
         className: hideColumn(!this.props.isDashboardView),
         render: (text, record) => (
           <div
@@ -166,6 +172,7 @@ export class MineVarianceTable extends Component {
       {
         title: "Submission Date",
         dataIndex: "received_date",
+        sortField: "received_date",
         className: hideColumn(!this.props.isApplication),
         render: (text) => (
           <div className={hideColumn(!this.props.isApplication)} title="Submission Date">
@@ -180,6 +187,7 @@ export class MineVarianceTable extends Component {
       {
         title: "Application Status",
         dataIndex: "status",
+        sortField: "status",
         width: 200,
         className: hideColumn(!this.props.isApplication),
         // filteredValue: this.props.params.variance_application_status_code,
@@ -296,7 +304,7 @@ export class MineVarianceTable extends Component {
       <div>
         <Table
           onChange={
-            this.props.isDashboardView ? handleTableChange(this.props.handleFilterChange) : null
+            this.props.isDashboardView ? handleTableChange(this.props.handleVarianceSearch) : null
           }
           align="left"
           pagination={false}

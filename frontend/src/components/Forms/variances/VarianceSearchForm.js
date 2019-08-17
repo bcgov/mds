@@ -43,9 +43,6 @@ export class VarianceSearchForm extends Component {
   };
 
   render() {
-    console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-    console.log(this.props.filterVarianceStatusOptions);
-    console.log(this.props.complianceCodes);
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit} onReset={this.handleReset}>
         <Row gutter={6}>

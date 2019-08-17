@@ -67,8 +67,8 @@ const propTypes = {
 };
 
 export const joinOrRemove = (param, key) => {
-  console.log("&&&&&&&&&&&&&&&&&&&&&");
-  console.log(param);
+  // console.log("&&&&&&&&&&&&&&&&&&&&&");
+  // console.log(param);
   if (isEmpty(param)) {
     return {};
   }

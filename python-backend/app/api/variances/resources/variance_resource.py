@@ -1,6 +1,6 @@
 from flask_restplus import Resource
 from flask import request
-from sqlalchemy_filters import apply_pagination, apply_filters
+from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
 from sqlalchemy import desc
 from app.extensions import api
 from ...mines.mine.models.mine import Mine
@@ -9,6 +9,8 @@ from ..models.variance_application_status_code import VarianceApplicationStatusC
 from ..response_models import PAGINATED_VARIANCE_LIST
 from ...utils.access_decorators import requires_any_of, VIEW_ALL
 from ...utils.resources_mixins import UserMixin, ErrorMixin
+
+import logging
 
 PAGE_DEFAULT = 1
 PER_PAGE_DEFAULT = 25
@@ -28,7 +30,10 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             'issue_date_before': 'Latest possible issue date returned',
             'issue_date_after': 'Earliest possible issue date returned',
             'expiry_date_before': 'Latest possible expiry date returned',
-            'expiry_date_after': 'Earliest possible expiry date returned'})
+            'expiry_date_after': 'Earliest possible expiry date returned',
+            'sort_field': 'The field the returned results will be ordered by',
+            'sort_dir': 'The direction by which the sort field is ordered',
+        })
     @requires_any_of([VIEW_ALL])
     @api.marshal_with(PAGINATED_VARIANCE_LIST, code=200)
     def get(self):
@@ -44,11 +49,14 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             'expiry_date_before': request.args.get('expiry_date_before', type=str),
             'expiry_date_after': request.args.get('expiry_date_after', type=str),
             'search_terms': request.args.get('search', type=str),
+            'sort_field': request.args.get('sort_field', type=str),
+            'sort_dir': request.args.get('sort_dir', type=str),
         }
 
 
         records, pagination_details = self._apply_filters_and_pagination(args)
-
+        logging.warning(records)
+        logging.warning(pagination_details)
         if not records:
             raise BadRequest('Unable to fetch variances.')
 
@@ -61,6 +69,14 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
         }
 
     def _apply_filters_and_pagination(self, args):
+        sort_models = {
+            'variance_id': 'Variance',
+            'compliance_code': 'Variance',
+            'lead_inspector': 'Variance',
+            'received_date': 'Variance',
+            'mine_name': 'Mine',
+        }
+
 
         status_filter_values = list(map(
             lambda x: x.variance_application_status_code,
@@ -163,4 +179,17 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
         filtered_query = apply_filters(
             query.order_by(desc(Variance.received_date)), conditions)
 
+        # Apply sorting
+        if args['sort_field'] and args['sort_dir']:
+            logging.warning('SORTING WAS CALLED')
+            sort_criteria = [{'model': sort_models[args['sort_field']],
+                              'field': args['sort_field'], 'direction': args['sort_dir']}]
+            logging.warning('model' )
+            logging.warning( sort_models[args['sort_field']] )
+            logging.warning('field')
+            logging.warning(args['sort_field'])
+            logging.warning('direction')
+            logging.warning(args['sort_dir'])
+
+            filtered_query = apply_sort(filtered_query, sort_criteria)
         return apply_pagination(filtered_query, args["page_number"], args["page_size"])
