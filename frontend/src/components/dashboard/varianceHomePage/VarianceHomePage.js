@@ -182,8 +182,6 @@ export class VarianceHomePage extends Component {
 
   handleVarianceSearch = (searchParams, clear = false) => {
     const formattedSearchParams = formatParams(searchParams);
-    // const formattedSearchParams = clear ? {} : formatParams(searchParams);
-
     const persistedParams = clear ? {} : formatParams(this.state.params);
     const updatedParams = {
       // Start from existing state

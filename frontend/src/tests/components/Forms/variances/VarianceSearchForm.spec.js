@@ -4,7 +4,6 @@ import { VarianceSearchForm, validate } from "@/components/Forms/variances/Varia
 
 const dispatchProps = {};
 const props = {};
-// TODO FIX PROPS
 const setupDispatchProps = () => {
   dispatchProps.handleSubmit = jest.fn();
   dispatchProps.handleVarianceSearch = jest.fn();
