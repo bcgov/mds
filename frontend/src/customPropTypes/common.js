@@ -39,3 +39,11 @@ export const genericFormState = shape({
   syncErrors: PropTypes.string,
   values: objectOf(PropTypes.string),
 });
+
+export const pageData = shape({
+  current_page: PropTypes.number,
+  items_per_page: PropTypes.number,
+  records: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
+  total: PropTypes.number,
+  total_pages: PropTypes.number,
+});

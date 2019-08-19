@@ -167,4 +167,5 @@ export default reduxForm({
   form: FORM.VARIANCE_ADVANCED_SEARCH,
   validate,
   touchOnBlur: false,
+  enableReinitialize: true,
 })(VarianceSearchForm);
