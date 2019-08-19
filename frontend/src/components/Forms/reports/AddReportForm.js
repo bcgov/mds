@@ -215,7 +215,7 @@ export class AddReportForm extends Component {
               mineReportSubmissions={this.state.mineReportSubmissions}
               updateMineReportSubmissions={this.updateMineReportSubmissions}
             />
-            {this.state.existingReport && (
+            {this.state.existingReport && this.state.mineReportSubmissions.length > 0 && (
               <ReportComments
                 mineGuid={this.props.mineGuid}
                 mineReportGuid={this.props.initialValues.mine_report_guid}
