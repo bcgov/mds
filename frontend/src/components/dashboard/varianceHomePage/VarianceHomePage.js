@@ -37,7 +37,8 @@ import * as router from "@/constants/routes";
 import { fetchInspectors } from "@/actionCreators/partiesActionCreator";
 import VarianceSearch from "./VarianceSearch";
 import { formatParamStringToArray } from "@/utils/helpers";
-
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import * as Permission from "@/constants/permissions";
 /**
  * @class Variance page is a landing page for variance searching
  *
@@ -120,18 +121,8 @@ export class VarianceHomePage extends Component {
 
   componentDidMount() {
     const params = this.props.location.search;
-    const parsedParams = queryString.parse(params);
-    const { page = this.state.params.page, per_page = this.state.params.per_page } = parsedParams;
-    if (params) {
-      this.renderDataFromURL();
-    } else {
-      this.props.history.push(
-        router.VARIANCE_DASHBOARD.dynamicRoute({
-          page,
-          per_page,
-        })
-      );
-    }
+
+    this.renderDataFromURL(params);
 
     this.props.fetchVariances(this.state.params).then(() => {
       this.setState({ variancesLoaded: true });
@@ -148,7 +139,7 @@ export class VarianceHomePage extends Component {
   componentWillReceiveProps(nextProps) {
     const locationChanged = nextProps.location !== this.props.location;
     if (locationChanged) {
-      this.renderDataFromURL(nextProps);
+      this.renderDataFromURL(nextProps.location.search);
     }
   }
 
@@ -159,8 +150,7 @@ export class VarianceHomePage extends Component {
     });
   }
 
-  renderDataFromURL = (nextProps) => {
-    const params = nextProps ? nextProps.location.search : this.props.location.search;
+  renderDataFromURL = (params) => {
     const { region, compliance_code, major, search, ...remainingParams } = queryString.parse(
       params
     );
@@ -294,14 +284,16 @@ export class VarianceHomePage extends Component {
           <h1>Browse Variances</h1>
         </div>
         <div className="landing-page__content">
-          <VarianceSearch
-            handleNameFieldReset={this.handleNameFieldReset}
-            initialValues={this.state.params}
-            fetchVariances={this.props.fetchVariances}
-            handleVarianceSearch={this.handleVarianceSearchDebounced}
-            mineRegionOptions={this.props.mineRegionOptions}
-            complianceCodes={this.props.getDropdownHSRCMComplianceCodes}
-          />
+          <AuthorizationWrapper permission={Permission.IN_TESTING}>
+            <VarianceSearch
+              handleNameFieldReset={this.handleNameFieldReset}
+              initialValues={this.state.params}
+              fetchVariances={this.props.fetchVariances}
+              handleVarianceSearch={this.handleVarianceSearchDebounced}
+              mineRegionOptions={this.props.mineRegionOptions}
+              complianceCodes={this.props.getDropdownHSRCMComplianceCodes}
+            />
+          </AuthorizationWrapper>
           <LoadingWrapper condition={this.state.variancesLoaded}>
             <VarianceTable
               filterVarianceStatusOptions={this.props.filterVarianceStatusOptions}
