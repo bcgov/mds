@@ -111,7 +111,6 @@ export class NoticeOfWorkTable extends Component {
     {
       title: "Region",
       dataIndex: "region",
-      // sortField: "region" TODO: Figure out what Region is and add it here
       render: (text) => <div title="Region">{text}</div>,
     },
     {
