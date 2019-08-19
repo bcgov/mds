@@ -1,6 +1,14 @@
 import React, { Component } from "react";
 import { Divider, Card, Col, Row } from "antd";
 import * as Strings from "@/constants/strings";
+import NullScreen from "@/components/common/NullScreen";
+import CustomPropTypes from "@/customPropTypes";
+import { formatDate } from "@/utils/helpers";
+import Address from "@/components/common/Address";
+
+const propTypes = {
+  noticeOfWork: CustomPropTypes.nowApplication.isRequired,
+};
 
 export class NOWGeneralInfo extends Component {
   renderApplicationInformation = () => {
@@ -12,61 +20,61 @@ export class NOWGeneralInfo extends Component {
           <Col md={12} xs={24}>
             <div className="inline-flex padding-small">
               <p className="field-title">Mine Name</p>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p>{this.props.noticeOfWork.mine_name || Strings.EMPTY_FIELD}</p>
             </div>
             <div className="inline-flex padding-small">
               <p className="field-title">Mine Number</p>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p>{this.props.noticeOfWork.minenumber || Strings.EMPTY_FIELD}</p>
             </div>
             <div className="inline-flex padding-small">
               <p className="field-title">Region</p>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </div>
             <div className="inline-flex padding-small">
               <p className="field-title">Lat</p>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p>{this.props.noticeOfWork.latitude || Strings.EMPTY_FIELD}</p>
             </div>
             <div className="inline-flex padding-small">
               <p className="field-title">Long</p>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p>{this.props.noticeOfWork.longitude || Strings.EMPTY_FIELD}</p>
             </div>
             <div className="inline-flex padding-small">
               <p className="field-title">Type of Notice of Work</p>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p>{this.props.noticeOfWork.noticeofworktype || Strings.EMPTY_FIELD}</p>
             </div>
             <div className="inline-flex padding-small">
               <p className="field-title">Permit Type</p>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p>{this.props.noticeOfWork.typeofpermit || Strings.EMPTY_FIELD}</p>
             </div>
             <div className="inline-flex padding-small">
               <p className="field-title">Permit Status</p>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p>{this.props.noticeOfWork.status || Strings.EMPTY_FIELD}</p>
             </div>
           </Col>
           <Col md={12} xs={24}>
             <div className="inline-flex padding-small">
               <p className="field-title">Crown/Private</p>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p>{this.props.noticeOfWork.landprivate || Strings.EMPTY_FIELD}</p>
             </div>
             <div className="inline-flex padding-small">
               <p className="field-title">Tenure Number</p>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p>{this.props.noticeOfWork.tenurenumbers || Strings.EMPTY_FIELD}</p>
             </div>
             <div className="inline-flex padding-small">
               <p className="field-title">Description of Land</p>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </div>
             <div className="inline-flex padding-small">
               <p className="field-title">Type of Application</p>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p>{this.props.noticeOfWork.typeofapplication || Strings.EMPTY_FIELD}</p>
             </div>
             <div className="inline-flex padding-small">
               <p className="field-title">Proposed Start Date</p>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p>{formatDate(this.props.noticeOfWork.proposedstartdate) || Strings.EMPTY_FIELD}</p>
             </div>
             <div className="inline-flex padding-small">
               <p className="field-title">Proposed End Date</p>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p>{formatDate(this.props.noticeOfWork.proposedenddate) || Strings.EMPTY_FIELD}</p>
             </div>
           </Col>
         </Row>
@@ -81,30 +89,54 @@ export class NOWGeneralInfo extends Component {
         <h3>Contacts</h3>
         <Divider />
         <div className="padding-large--sides">
-          <Row>
-            <Col sm={24} lg={12} xl={8} xxl={6}>
-              <Card
-                title={
-                  <div className="inline-flex between wrap">
-                    <div>
-                      <h3>{Strings.EMPTY_FIELD}</h3>
-                    </div>
-                  </div>
-                }
-                bordered={false}
-              >
-                <div>
-                  <h3>{Strings.EMPTY_FIELD}</h3>
-                  <h6>Email Address</h6>
-                  {Strings.EMPTY_FIELD}
-                  <h6>Phone Number</h6>
-                  {Strings.EMPTY_FIELD}
-                  <h6>Mailing Address</h6>
-                  {Strings.EMPTY_FIELD}
-                </div>
-              </Card>
-            </Col>
-          </Row>
+          {this.props.noticeOfWork.contacts.length >= 1 ? (
+            <Row>
+              {this.props.noticeOfWork.contacts.map((contact, index) => {
+                // format address to use Address.js component, it will render data based on whats available
+                const address = {
+                  address_line_1: contact.mailingaddressline1,
+                  address_line_2: contact.mailingaddressline2,
+                  address_type_code: contact.mailingaddresscity,
+                  city: contact.mailingaddresscity,
+                  post_code: contact.mailingaddresspostalzip,
+                  sub_division_code: contact.mailinigaddressprovstate,
+                  suite_no: null,
+                };
+                return (
+                  // there is no id/guid that is unique to the contact
+                  /* eslint-disable-next-line react/no-array-index-key */
+                  <Col sm={24} lg={12} xl={8} xxl={6} key={index}>
+                    <Card
+                      title={
+                        <div className="inline-flex between wrap">
+                          <div>
+                            <h3>{contact.type || Strings.EMPTY_FIELD}</h3>
+                          </div>
+                        </div>
+                      }
+                      bordered={false}
+                    >
+                      <div>
+                        <h3>
+                          {contact.ind_firstname && contact.ind_lastname
+                            ? `${contact.ind_firstname} - ${contact.ind_firstname}`
+                            : Strings.EMPTY_FIELD}
+                        </h3>
+                        <h6>Email Address</h6>
+                        {contact.email || Strings.EMPTY_FIELD}
+                        <h6>Phone Number</h6>
+                        {contact.dayphonenumber || Strings.EMPTY_FIELD}
+                        <h6>Mailing Address</h6>
+                        <Address address={address || {}} />
+                      </div>
+                    </Card>
+                  </Col>
+                );
+              })}
+            </Row>
+          ) : (
+            <NullScreen type="now-contacts" />
+          )}
         </div>
       </div>
     );
@@ -122,7 +154,7 @@ export class NOWGeneralInfo extends Component {
               <p className="field-title">Directions to Site</p>
             </Col>
             <Col md={12} xs={24}>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p>{this.props.noticeOfWork.sitedirections || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
           <Row gutter={16} className="padding-small">
@@ -133,7 +165,7 @@ export class NOWGeneralInfo extends Component {
               </p>
             </Col>
             <Col md={12} xs={24}>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
           <Row gutter={16} className="padding-small">
@@ -143,7 +175,7 @@ export class NOWGeneralInfo extends Component {
               </p>
             </Col>
             <Col md={12} xs={24}>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
           <Row gutter={16} className="padding-small">
@@ -151,7 +183,7 @@ export class NOWGeneralInfo extends Component {
               <p className="field-title">Access presently gated</p>
             </Col>
             <Col md={12} xs={24}>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
           <Row gutter={16} className="padding-small">
@@ -159,7 +191,7 @@ export class NOWGeneralInfo extends Component {
               <p className="field-title">Key provided to the inspector</p>
             </Col>
             <Col md={12} xs={24}>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
         </div>
@@ -180,7 +212,7 @@ export class NOWGeneralInfo extends Component {
               <p className="field-title"> Present condition of the land</p>
             </Col>
             <Col md={12} xs={24}>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
           <Row gutter={16} className="padding-small">
@@ -188,7 +220,7 @@ export class NOWGeneralInfo extends Component {
               <p className="field-title">Type of vegetation</p>
             </Col>
             <Col md={12} xs={24}>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
           <Row gutter={16} className="padding-small">
@@ -196,7 +228,7 @@ export class NOWGeneralInfo extends Component {
               <p className="field-title">Physiography</p>
             </Col>
             <Col md={12} xs={24}>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
           <Row gutter={16} className="padding-small">
@@ -204,7 +236,7 @@ export class NOWGeneralInfo extends Component {
               <p className="field-title">Current means of access</p>
             </Col>
             <Col md={12} xs={24}>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
           <Row gutter={16} className="padding-small">
@@ -212,7 +244,7 @@ export class NOWGeneralInfo extends Component {
               <p className="field-title">Old equipment</p>
             </Col>
             <Col md={12} xs={24}>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
           <Row gutter={16} className="padding-small">
@@ -220,7 +252,7 @@ export class NOWGeneralInfo extends Component {
               <p className="field-title">Recreational trails/use</p>
             </Col>
             <Col md={12} xs={24}>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
           <br />
@@ -230,7 +262,7 @@ export class NOWGeneralInfo extends Component {
               <p className="field-title">Application area in a community watershed</p>
             </Col>
             <Col md={12} xs={24}>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p>{this.props.noticeOfWork.landcommunitywatershed || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
           <Row gutter={16} className="padding-small">
@@ -238,7 +270,7 @@ export class NOWGeneralInfo extends Component {
               <p className="field-title">Proposed activities on private land</p>
             </Col>
             <Col md={12} xs={24}>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
           <Row gutter={16} className="padding-small">
@@ -246,7 +278,7 @@ export class NOWGeneralInfo extends Component {
               <p className="field-title">Activities in a park</p>
             </Col>
             <Col md={12} xs={24}>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
           <Row gutter={16} className="padding-small">
@@ -256,7 +288,7 @@ export class NOWGeneralInfo extends Component {
               </p>
             </Col>
             <Col md={12} xs={24}>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
           <br />
@@ -269,7 +301,7 @@ export class NOWGeneralInfo extends Component {
               </p>
             </Col>
             <Col md={12} xs={24}>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p>{this.props.noticeOfWork.archsitesaffected || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
           <Row gutter={16} className="padding-small">
@@ -277,7 +309,7 @@ export class NOWGeneralInfo extends Component {
               <p className="field-title--light">Plan to protect the archaeological site</p>
             </Col>
             <Col md={12} xs={24}>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
           <br />
@@ -290,7 +322,7 @@ export class NOWGeneralInfo extends Component {
               </p>
             </Col>
             <Col md={12} xs={24}>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
           <Row gutter={16} className="padding-small">
@@ -298,7 +330,7 @@ export class NOWGeneralInfo extends Component {
               <p className="field-title">Describe your First Nations engagement activities</p>
             </Col>
             <Col md={12} xs={24}>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
           <Row gutter={16} className="padding-small">
@@ -309,7 +341,7 @@ export class NOWGeneralInfo extends Component {
               </p>
             </Col>
             <Col md={12} xs={24}>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
         </div>
@@ -328,5 +360,7 @@ export class NOWGeneralInfo extends Component {
     );
   }
 }
+
+NOWGeneralInfo.propTypes = propTypes;
 
 export default NOWGeneralInfo;

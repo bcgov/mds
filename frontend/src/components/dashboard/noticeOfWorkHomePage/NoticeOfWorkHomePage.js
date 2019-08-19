@@ -165,5 +165,5 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  AuthorizationGuard("inDevelopment")
+  AuthorizationGuard("inTesting")
 )(NoticeOfWorkHomePage);
