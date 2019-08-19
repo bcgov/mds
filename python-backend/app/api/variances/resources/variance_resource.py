@@ -101,7 +101,6 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             conditions.append(
                 self._build_filter('Variance', 'issue_date', '>=', args["issue_date_after"]))
 
-
         if args["major"] is not None:
             conditions.append(
                 self._build_filter('Mine', 'major_mine_ind', '==', args["major"]))
@@ -116,10 +115,7 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
                 search_conditions.append(
                     self._build_filter('Mine', 'mine_no', 'ilike', '%{}%'.format(search_term)))
 
-            conditions.append(
-                {
-                    'or': search_conditions
-                })
+            conditions.append({'or': search_conditions})
 
         if args["region"] is not None:
             region_list = args["region"].split(',')
