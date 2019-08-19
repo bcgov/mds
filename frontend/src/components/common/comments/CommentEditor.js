@@ -36,6 +36,10 @@ export class CommentEditor extends Component {
 
   handleChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
+  handleCheckboxChange = (e) => {
+    this.setState({ [e.target.name]: e.target.checked });
+  };
+
   validate = () => !(this.props.submitting || this.state.comment === "");
 
   render() {
@@ -50,7 +54,11 @@ export class CommentEditor extends Component {
           />
         </Form.Item>
         <Form.Item>
-          <Checkbox name="visible" checked={this.state.visible} onChange={this.handleChange}>
+          <Checkbox
+            name="visible"
+            checked={this.state.visible}
+            onChange={this.handleCheckboxChange}
+          >
             Publish this comment on MineSpace for the proponent to see
           </Checkbox>
         </Form.Item>
