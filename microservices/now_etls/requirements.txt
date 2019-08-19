@@ -1,0 +1,3 @@
+python-dotenv==0.10.3
+click==7.1
+petl==1.3.0
