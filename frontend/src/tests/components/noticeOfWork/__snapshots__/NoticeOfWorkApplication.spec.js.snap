@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PartyProfile renders properly 1`] = `
+<div
+  className="page__content"
+>
+  <div
+    className="inline-flex between"
+  >
+    <div>
+      <h1>
+        NoW Number: 
+      </h1>
+      <p>
+        The information below is a subset of all available data. Open the PDF for a comprehensive view.
+      </p>
+    </div>
+    <Button
+      block={false}
+      ghost={false}
+      htmlType="button"
+      loading={false}
+      type="primary"
+    >
+      View PDF
+    </Button>
+  </div>
+  <br />
+  <Collapse
+    bordered={true}
+    defaultActiveKey={
+      Array [
+        "1",
+        "2",
+      ]
+    }
+    expandIcon={[Function]}
+    expandIconPosition="right"
+    openAnimation={
+      Object {
+        "appear": [Function],
+        "enter": [Function],
+        "leave": [Function],
+      }
+    }
+  >
+    <CollapsePanel
+      header={
+        <h2>
+          General Information
+        </h2>
+      }
+      key="1"
+    />
+    <CollapsePanel
+      header={
+        <h2>
+          Work Plan
+        </h2>
+      }
+      key="2"
+    />
+  </Collapse>
+</div>
+`;

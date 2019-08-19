@@ -136,6 +136,12 @@ const NullScreen = (props) => (
         <p>Create a contact using the menu above</p>
       </div>
     )}
+    {props.type === "now-contacts" && (
+      <div>
+        <img alt="mine_img" src={MINER_TWO} />
+        <h3>No contacts found</h3>
+      </div>
+    )}
     {props.type === "incidents" && (
       <div>
         <img alt="mine_img" src={PERMIT} />
@@ -146,6 +152,12 @@ const NullScreen = (props) => (
       <div>
         <img alt="mine_img" src={PERMIT} />
         <h3>No reports found</h3>
+      </div>
+    )}
+    {props.type === "documents" && (
+      <div>
+        <img alt="mine_img" src={PERMIT} />
+        <h3>No documents found</h3>
       </div>
     )}
   </div>
