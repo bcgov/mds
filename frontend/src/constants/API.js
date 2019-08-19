@@ -116,6 +116,7 @@ export const MINE_REPORT_COMMENT = (mineGuid, reportGuid, commentGuid) =>
   `/mines/${mineGuid}/reports/${reportGuid}/comments/${commentGuid}`;
 
 // Notice Of Work
-export const NOTICE_OF_WORK_APPLICATIONS = `/now-submissions/applications`;
+export const NOTICE_OF_WORK_APPLICATIONS = (params = {}) =>
+  `/now-submissions/applications?${queryString.stringify(params)}`;
 export const NOTICE_OF_WORK_APPLICATION = (applicationGuid) =>
   `/now-submissions/applications/${applicationGuid}`;

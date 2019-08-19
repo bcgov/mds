@@ -10,9 +10,10 @@ from sqlalchemy.ext.associationproxy import association_proxy
 
 class MineReportSubmission(Base, AuditMixin):
     __tablename__ = "mine_report_submission"
-    mine_report_submission_id = db.Column(
-        db.Integer, primary_key=True, server_default=FetchedValue())
-    mine_report_submission_guid = db.Column(UUID(as_uuid=True))
+    mine_report_submission_id = db.Column(db.Integer,
+                                          primary_key=True,
+                                          server_default=FetchedValue())
+    mine_report_submission_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
     mine_report_id = db.Column(db.Integer, db.ForeignKey('mine_report.mine_report_id'))
     mine_report_submission_status_code = db.Column(
         db.String,

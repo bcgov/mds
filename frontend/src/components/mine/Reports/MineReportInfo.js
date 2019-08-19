@@ -46,7 +46,6 @@ export class MineReportInfo extends Component {
 
   componentDidMount() {
     this.setState({ mine: this.props.mines[this.props.mineGuid] });
-    console.log(this.state.mine);
   }
 
   handleEditReport = (values) => {

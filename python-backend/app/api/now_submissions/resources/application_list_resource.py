@@ -1,10 +1,11 @@
 from flask_restplus import Resource
 from flask import request
-from sqlalchemy_filters import apply_pagination
-from sqlalchemy import desc
+from sqlalchemy_filters import apply_pagination, apply_sort
+from sqlalchemy import desc, func, or_
 
 
 from app.extensions import api
+from app.api.mines.mine.models.mine import Mine
 from app.api.now_submissions.models.application import Application
 from app.api.now_submissions.response_models import PAGINATED_APPLICATION_LIST
 from app.api.utils.access_decorators import requires_role_view_all
@@ -20,14 +21,28 @@ class ApplicationListResource(Resource, UserMixin, ErrorMixin):
         description='Get a list of applications. Order: receiveddate DESC',
         params={
             'page': f'The page number of paginated records to return. Default: {PAGE_DEFAULT}',
-            'per_page': f'The number of records to return per page. Default: {PER_PAGE_DEFAULT}'
+            'per_page': f'The number of records to return per page. Default: {PER_PAGE_DEFAULT}',
+            'status': 'Comma-separated list of statuses to include in results. Default: All statuses.',
+            'noticeofworktype': 'Substring to match with a NoW\s type',
+            'region': 'Substring to match with a NoW region',
+            'trackingnumber': 'Number of the NoW',
+            'minenumber': 'Number of the mine associated with the NoW',
+            'mine_search': 'Substring to match against a NoW mine number or mine name'
         })
     @requires_role_view_all
     @api.marshal_with(PAGINATED_APPLICATION_LIST, code=200)
     def get(self):
         records, pagination_details = self._apply_filters_and_pagination(
             page_number=request.args.get('page', PAGE_DEFAULT, type=int),
-            page_size=request.args.get('per_page', PER_PAGE_DEFAULT, type=int))
+            page_size=request.args.get('per_page', PER_PAGE_DEFAULT, type=int),
+            sort_field = request.args.get('sort_field', 'receiveddate', type=str),
+            sort_dir=request.args.get('sort_dir', 'desc', type=str),
+            status=request.args.get('status', type=str),
+            noticeofworktype=request.args.get('noticeofworktype', type=str),
+            region=request.args.get('region', type=str),
+            trackingnumber=request.args.get('trackingnumber', type=int),
+            minenumber=request.args.get('minenumber', type=str),
+            mine_search=request.args.get('mine_search', type=str))
 
         data = records.all()
 
@@ -39,8 +54,49 @@ class ApplicationListResource(Resource, UserMixin, ErrorMixin):
             'total': pagination_details.total_results,
         }
 
-    @staticmethod
-    def _apply_filters_and_pagination(page_number=PAGE_DEFAULT, page_size=PER_PAGE_DEFAULT):
-        filtered_query = Application.query.order_by(desc(Application.receiveddate))
+    def _apply_filters_and_pagination(self,
+                                      page_number=PAGE_DEFAULT,
+                                      page_size=PER_PAGE_DEFAULT,
+                                      sort_field=None,
+                                      sort_dir=None,
+                                      status=None,
+                                      noticeofworktype=None,
+                                      region=None,
+                                      trackingnumber=None,
+                                      minenumber=None,
+                                      mine_search=None):
+        filters = []
+        base_query = Application.query
 
-        return apply_pagination(filtered_query, page_number, page_size)
+        if noticeofworktype is not None:
+            filters.append(func.lower(Application.noticeofworktype).contains(func.lower(noticeofworktype)))
+        if region is not None:
+            filters.append(func.lower(Application.region).contains(func.lower(region)))
+        if trackingnumber is not None:
+            filters.append(Application.trackingnumber == trackingnumber)
+        if minenumber is not None:
+            filters.append(func.lower(Application.minenumber).contains(func.lower(minenumber)))
+        if mine_search is not None:
+            base_query = base_query.join(Mine)
+            filters.append(or_(
+                func.lower(Application.minenumber).contains(func.lower(mine_search)),
+                func.lower(Mine.mine_name).contains(func.lower(mine_search)),
+                func.lower(Mine.mine_no).contains(func.lower(mine_search))))
+
+        status_filter_values = []
+        if status is not None:
+            status_filter_values = status.split(',')
+
+        if len(status_filter_values) > 0:
+            status_filters = []
+            for status in status_filter_values:
+                status_filters.append(func.lower(Application.status).contains(func.lower(status)))
+            filters.append(or_(*status_filters))
+
+        base_query = base_query.filter(*filters)
+
+        if sort_field and sort_dir:
+            sort_criteria = [{'model': 'Application', 'field': sort_field, 'direction': sort_dir}]
+            base_query = apply_sort(base_query, sort_criteria)
+
+        return apply_pagination(base_query, page_number, page_size)

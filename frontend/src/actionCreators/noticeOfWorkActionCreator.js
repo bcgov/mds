@@ -24,11 +24,11 @@ export const fetchNoticeOfWorkApplication = (applicationGuid) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchNoticeOfWorkApplications = () => (dispatch) => {
+export const fetchNoticeOfWorkApplications = (params = {}) => (dispatch) => {
   dispatch(request(reducerTypes.GET_NOTICE_OF_WORK_APPLICATIONS));
   dispatch(showLoading());
   return CustomAxios()
-    .get(`${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATIONS}`, createRequestHeader())
+    .get(`${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATIONS(params)}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_NOTICE_OF_WORK_APPLICATIONS));
       dispatch(noticeOfWorkActions.storeNoticeOfWorkApplications(response.data));
