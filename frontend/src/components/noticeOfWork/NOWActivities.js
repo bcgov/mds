@@ -14,16 +14,19 @@ export class NOWActivities extends Component {
         title: "Access Type",
         dataIndex: "accessType",
         key: "accessType",
+        render: (text) => <div title="Access Type">{text}</div>,
       },
       {
         title: "Length(km)",
         dataIndex: "length",
         key: "length",
+        render: (text) => <div title="Length(km)">{text}</div>,
       },
       {
         title: "Merchantable timber volume (m3)",
         dataIndex: "volume",
         key: "volume",
+        render: (text) => <div title="Merchantable timber volume (m3)">{text}</div>,
       },
     ];
     return (
@@ -36,7 +39,7 @@ export class NOWActivities extends Component {
           locale={{
             emptyText: "Unknown",
           }}
-          footer={() => "Total"}
+          footer={() => <div title="Total">Total:</div>}
         />
         <br />
         <h4>Bridges, Culverts, and Crossings</h4>
@@ -116,31 +119,37 @@ export class NOWActivities extends Component {
         title: "Name",
         dataIndex: "name",
         key: "name",
+        render: (text) => <div title="Name">{text}</div>,
       },
       {
         title: "Number of People",
         dataIndex: "numPeople",
         key: "numPeople",
+        render: (text) => <div title="Number of People">{text}</div>,
       },
       {
         title: "Number of Structures",
         dataIndex: "structures",
         key: "structures",
+        render: (text) => <div title="Number of Structures">{text}</div>,
       },
       {
         title: "Estimated quantity of water (m3/s)",
         dataIndex: "waterQuality",
         key: "waterQuality",
+        render: (text) => <div title="Estimated quantity of water (m3/s)">{text}</div>,
       },
       {
         title: "Disturbed Area (ha)",
         dataIndex: "disturbedArea",
         key: "disturbedArea",
+        render: (text) => <div title="Disturbed Area (ha)">{text}</div>,
       },
       {
         title: "Merchantable timber volume (m3)",
         dataIndex: "timberVolume",
         key: "timberVolume",
+        render: (text) => <div title="Merchantable timber volume (m3)">{text}</div>,
       },
     ];
 
@@ -149,16 +158,19 @@ export class NOWActivities extends Component {
         title: "Name",
         dataIndex: "name",
         key: "name",
+        render: (text) => <div title="Name">{text}</div>,
       },
       {
         title: "Disturbed Area (ha)",
         dataIndex: "disturbedArea",
         key: "disturbedArea",
+        render: (text) => <div title="Disturbed Area (ha)">{text}</div>,
       },
       {
         title: "Merchantable timber volume (m3)",
         dataIndex: "timberVolume",
         key: "timberVolume",
+        render: (text) => <div title="Merchantable timber volume (m3)">{text}</div>,
       },
     ];
 
@@ -267,16 +279,19 @@ export class NOWActivities extends Component {
         title: "Total Line (km)",
         dataIndex: "total",
         key: "total",
+        render: (text) => <div title="Total Line (km)">{text}</div>,
       },
       {
         title: "Total Disturbed Area (ha)",
         dataIndex: "disturbedArea",
         key: "disturbedArea",
+        render: (text) => <div title="Total Disturbed Area (ha)">{text}</div>,
       },
       {
         title: "Merchantable timber volume (m3)",
         dataIndex: "timberVolume",
         key: "timberVolume",
+        render: (text) => <div title="Merchantable timber volume (m3)">{text}</div>,
       },
     ];
 
@@ -325,21 +340,25 @@ export class NOWActivities extends Component {
         title: "Activity",
         dataIndex: "activity",
         key: "activity",
+        render: (text) => <div title="Activity">{text}</div>,
       },
       {
         title: "Number of Sites",
         dataIndex: "numSites",
         key: "numSites",
+        render: (text) => <div title="Number of Sites">{text}</div>,
       },
       {
         title: "Total Disturbance Area (ha)",
         dataIndex: "disturbedArea",
         key: "disturbedArea",
+        render: (text) => <div title="Total Disturbed Area (ha)">{text}</div>,
       },
       {
         title: "Merchantable timber volume (m3)",
         dataIndex: "timberVolume",
         key: "timberVolume",
+        render: (text) => <div title="Merchantable timber volume (m3)">{text}</div>,
       },
     ];
 
@@ -395,21 +414,25 @@ export class NOWActivities extends Component {
         title: "Activity",
         dataIndex: "activity",
         key: "activity",
+        render: (text) => <div title="Activity">{text}</div>,
       },
       {
         title: "Number of Sites",
         dataIndex: "numSites",
         key: "numSites",
+        render: (text) => <div title="Number of Sites">{text}</div>,
       },
       {
         title: "Total Disturbance Area (ha)",
         dataIndex: "disturbedArea",
         key: "disturbedArea",
+        render: (text) => <div title="Total Disturbance Area (ha)">{text}</div>,
       },
       {
         title: "Merchantable timber volume (m3)",
         dataIndex: "timberVolume",
         key: "timberVolume",
+        render: (text) => <div title="Merchantable timber volume (m3)">{text}</div>,
       },
     ];
     return (
@@ -462,26 +485,31 @@ export class NOWActivities extends Component {
         title: "Pond ID",
         dataIndex: "id",
         key: "id",
+        render: (text) => <div title="Pond ID">{text}</div>,
       },
       {
         title: "Width(m)",
         dataIndex: "width",
         key: "width",
+        render: (text) => <div title="Width(m)">{text}</div>,
       },
       {
         title: "Length(m)",
         dataIndex: "length",
         key: "length",
+        render: (text) => <div title="Length(m)">{text}</div>,
       },
       {
         title: "Disturbed Area (ha)",
         dataIndex: "disturbedArea",
         key: "disturbedArea",
+        render: (text) => <div title="Disturbed Area (ha)">{text}</div>,
       },
       {
         title: "Merchantable timber volume (m3)",
         dataIndex: "timberVolume",
         key: "timberVolume",
+        render: (text) => <div title="Merchantable timber volume (m3)">{text}</div>,
       },
     ];
 
@@ -519,6 +547,32 @@ export class NOWActivities extends Component {
   };
 
   renderPlacerOperations = () => {
+    const columns = [
+      {
+        title: "Activity",
+        dataIndex: "activity",
+        key: "activity",
+        render: (text) => <div title="Activity">{text}</div>,
+      },
+      {
+        title: "Number of Sites",
+        dataIndex: "numSites",
+        key: "numSites",
+        render: (text) => <div title="Number of Sites">{text}</div>,
+      },
+      {
+        title: "Total Disturbance Area (ha)",
+        dataIndex: "disturbedArea",
+        key: "disturbedArea",
+        render: (text) => <div title="Total Disturbance Area (ha)">{text}</div>,
+      },
+      {
+        title: "Merchantable timber volume (m3)",
+        dataIndex: "timberVolume",
+        key: "timberVolume",
+        render: (text) => <div title="Merchantable timber volume (m3)">{text}</div>,
+      },
+    ];
     return (
       <div className="padding-large--sides">
         <Row gutter={16} className="padding-small">
@@ -541,7 +595,7 @@ export class NOWActivities extends Component {
         <Table
           align="left"
           pagination={false}
-          columns={recColumns}
+          columns={columns}
           dataSource={[]}
           locale={{
             emptyText: "No data",
@@ -613,21 +667,25 @@ export class NOWActivities extends Component {
         title: "Activity",
         dataIndex: "activity",
         key: "activity",
+        render: (text) => <div title="Activity">{text}</div>,
       },
       {
         title: "Number of Sites",
         dataIndex: "numSites",
         key: "numSites",
+        render: (text) => <div title="Number of Sites">{text}</div>,
       },
       {
         title: "Total Disturbance Area (ha)",
         dataIndex: "disturbedArea",
         key: "disturbedArea",
+        render: (text) => <div title="Total Disturbance Area (ha)">{text}</div>,
       },
       {
         title: "Merchantable timber volume (m3)",
         dataIndex: "timberVolume",
         key: "timberVolume",
+        render: (text) => <div title="Merchantable timber volume (m3)">{text}</div>,
       },
     ];
 
@@ -759,21 +817,25 @@ export class NOWActivities extends Component {
         title: "Activity",
         dataIndex: "activity",
         key: "activity",
+        render: (text) => <div title="Activity">{text}</div>,
       },
       {
         title: "QTY",
         dataIndex: "qty",
         key: "qty",
+        render: (text) => <div title="QTY">{text}</div>,
       },
       {
         title: "Total Disturbance Area (ha)",
         dataIndex: "disturbedArea",
         key: "disturbedArea",
+        render: (text) => <div title="Total Disturbance Area (ha)">{text}</div>,
       },
       {
         title: "Merchantable timber volume (m3)",
         dataIndex: "timberVolume",
         key: "timberVolume",
+        render: (text) => <div title="Merchantable timber volume (m3)">{text}</div>,
       },
     ];
 
@@ -853,31 +915,37 @@ export class NOWActivities extends Component {
         title: "Activity",
         dataIndex: "activity",
         key: "activity",
+        render: (text) => <div title="Activity">{text}</div>,
       },
       {
         title: "Quantity",
         dataIndex: "quantity",
         key: "quantity",
+        render: (text) => <div title="Quantity">{text}</div>,
       },
       {
         title: "Incline",
         dataIndex: "incline",
         key: "incline",
+        render: (text) => <div title="Incline">{text}</div>,
       },
       {
         title: "Units",
         dataIndex: "units",
         key: "units",
+        render: (text) => <div title="Units">{text}</div>,
       },
       {
         title: "Width(m)",
         dataIndex: "width",
         key: "width",
+        render: (text) => <div title="Width(m)">{text}</div>,
       },
       {
         title: "Length(m)",
         dataIndex: "length",
         key: "length",
+        render: (text) => <div title="Length(m)">{text}</div>,
       },
     ];
 
@@ -896,21 +964,25 @@ export class NOWActivities extends Component {
         title: "Activity",
         dataIndex: "activity",
         key: "activity",
+        render: (text) => <div title="Activity">{text}</div>,
       },
       {
         title: "Quantity",
         dataIndex: "quantity",
         key: "quantity",
+        render: (text) => <div title="Quantity">{text}</div>,
       },
       {
         title: "Disturbed Area (ha)",
         dataIndex: "disturbedArea",
         key: "disturbedArea",
+        render: (text) => <div title="Disturbed Area (ha)">{text}</div>,
       },
       {
         title: "Merchantable timber volume (m3)",
         dataIndex: "timberVolume",
         key: "timberVolume",
+        render: (text) => <div title="Merchantable timber volume (m3)">{text}</div>,
       },
     ];
 
@@ -1011,21 +1083,25 @@ export class NOWActivities extends Component {
         title: "Source",
         dataIndex: "source",
         key: "source",
+        render: (text) => <div title="Source">{text}</div>,
       },
       {
         title: "Activity",
         dataIndex: "activity",
         key: "activity",
+        render: (text) => <div title="Activity">{text}</div>,
       },
       {
         title: "Water Use",
         dataIndex: "waterUse",
         key: "waterUse",
+        render: (text) => <div title="Water Use">{text}</div>,
       },
       {
         title: "Estimated Rate (m3/s)",
         dataIndex: "estimatedRate",
         key: "estimatedRate",
+        render: (text) => <div title="Estimated Rate (m3/s)">{text}</div>,
       },
     ];
 

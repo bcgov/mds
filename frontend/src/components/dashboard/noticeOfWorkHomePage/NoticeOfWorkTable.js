@@ -126,7 +126,7 @@ export class NoticeOfWorkTable extends Component {
       dataIndex: "mineName",
       render: (text, record) =>
         record.mineGuid ? (
-          <Link to={router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.mineGuid)}>{text}</Link>
+          <Link to={router.MINE_SUMMARY.dynamicRoute(record.mineGuid)}>{text}</Link>
         ) : (
           <div title="Mine">{text}</div>
         ),

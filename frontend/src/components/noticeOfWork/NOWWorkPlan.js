@@ -12,16 +12,19 @@ export class NOWWorkPlan extends Component {
         title: "Activity",
         dataIndex: "activity",
         key: "activity",
+        render: (text) => <div title="Activity">{text}</div>,
       },
       {
         title: "Total Effected Area (ha)",
         dataIndex: "effectedArea",
         key: "effectedArea",
+        render: (text) => <div title="Total Effected Area (ha)">{text}</div>,
       },
       {
         title: "Estimated Cost of Reclamation",
         dataIndex: "cost",
         key: "cost",
+        render: (text) => <div title="Estimated Cost of Reclamation">{text}</div>,
       },
     ];
     return (
@@ -35,7 +38,7 @@ export class NOWWorkPlan extends Component {
               <p className="field-title">Total merchantable timber volume</p>
             </Col>
             <Col md={12} xs={24}>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
           <br />
@@ -44,7 +47,7 @@ export class NOWWorkPlan extends Component {
             pagination={false}
             columns={columns}
             dataSource={[]}
-            locale={{ emptyText: "No data" }}
+            locale={{ emptyText: "Unknown" }}
             footer={() => "Total"}
           />
         </div>
@@ -58,7 +61,17 @@ export class NOWWorkPlan extends Component {
         title: "File name",
         dataIndex: "filename",
         key: "filename",
-        render: (text) => <div title="File Name">{text}</div>,
+        render: (text, record) => (
+          <div title="File Name">
+            {record.url ? (
+              <a href={record.url} target="_blank" rel="noopener noreferrer">
+                {text}
+              </a>
+            ) : (
+              <span>{text}</span>
+            )}
+          </div>
+        ),
       },
       {
         title: "Category",
@@ -74,6 +87,14 @@ export class NOWWorkPlan extends Component {
       },
     ];
 
+    const transfromData = (documents) =>
+      documents.map((document) => ({
+        filename: document.filename || Strings.EMPTY_FIELD,
+        url: document.documenturl,
+        category: document.documenttype || Strings.EMPTY_FIELD,
+        description: document.description || Strings.EMPTY_FIELD,
+      }));
+
     return (
       <div>
         <br />
@@ -85,7 +106,7 @@ export class NOWWorkPlan extends Component {
               align="left"
               pagination={false}
               columns={columns}
-              dataSource={this.props.noticeOfWork.documents}
+              dataSource={transfromData(this.props.noticeOfWork.documents)}
               locale={{ emptyText: "There are no documents associated with this Notice of Work" }}
             />
           ) : (

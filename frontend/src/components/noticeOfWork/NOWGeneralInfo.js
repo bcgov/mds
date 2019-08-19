@@ -4,6 +4,7 @@ import { Divider, Card, Col, Row } from "antd";
 import * as Strings from "@/constants/strings";
 import NullScreen from "@/components/common/NullScreen";
 import { formatDate } from "@/utils/helpers";
+import Address from "@/components/common/Address";
 
 export class NOWGeneralInfo extends Component {
   renderApplicationInformation = () => {
@@ -86,27 +87,41 @@ export class NOWGeneralInfo extends Component {
         <div className="padding-large--sides">
           {this.props.noticeOfWork.contacts.length >= 1 ? (
             <Row>
-              {this.props.noticeOfWork.contacts.map((contact) => {
+              {this.props.noticeOfWork.contacts.map((contact, index) => {
+                // format address to use Address.js component, it will render data based on whats available
+                const address = {
+                  address_line_1: contact.mailingaddressline1,
+                  address_line_2: contact.mailingaddressline2,
+                  address_type_code: contact.mailingaddresscity,
+                  city: contact.mailingaddresscity,
+                  post_code: contact.mailingaddresspostalzip,
+                  sub_division_code: contact.mailinigaddressprovstate,
+                  suite_no: null,
+                };
                 return (
-                  <Col sm={24} lg={12} xl={8} xxl={6}>
+                  <Col sm={24} lg={12} xl={8} xxl={6} key={contact}>
                     <Card
                       title={
                         <div className="inline-flex between wrap">
                           <div>
-                            <h3>{this.props.noticeOfWork.trackingnumber || Strings.EMPTY_FIELD}</h3>
+                            <h3>{contact.type || Strings.EMPTY_FIELD}</h3>
                           </div>
                         </div>
                       }
                       bordered={false}
                     >
                       <div>
-                        <h3>{Strings.EMPTY_FIELD}</h3>
+                        <h3>
+                          {contact.ind_firstname && contact.ind_lastname
+                            ? `${contact.ind_firstname} - ${contact.ind_firstname}`
+                            : Strings.EMPTY_FIELD}
+                        </h3>
                         <h6>Email Address</h6>
                         {contact.email || Strings.EMPTY_FIELD}
                         <h6>Phone Number</h6>
-                        {Strings.EMPTY_FIELD}
+                        {contact.dayphonenumber || Strings.EMPTY_FIELD}
                         <h6>Mailing Address</h6>
-                        {Strings.EMPTY_FIELD}
+                        <Address address={address || {}} />
                       </div>
                     </Card>
                   </Col>
