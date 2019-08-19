@@ -97,7 +97,7 @@ class MineReportCommentResource(Resource, UserMixin):
         data = self.parser.parse_args()
         comment = MineReportComment.find_by_guid(mine_report_comment_guid)
         if not comment:
-            raise NotFound('Mine Report Comment not found.')
+            raise NotFound('Mine report comment with guid "{mine_report_comment_guid}" not found.')
 
         current_app.logger.info(f'Updating {comment} with {data}')
         for key, value in data.items():
@@ -113,14 +113,14 @@ class MineReportCommentResource(Resource, UserMixin):
     def delete(self, mine_guid, mine_report_guid, mine_report_comment_guid):
         if mine_report_comment_guid is None:
             return self.create_error_payload(404, 'Must provide a mine report comment guid.'), 404
-        try:
-            comment = MineReportComment.find_by_guid(mine_report_comment_guid)
-        except DBAPIError:
-            return self.create_error_payload(422, 'Invalid Mine Report Comment guid'), 422
-        if comment is None:
-            return self.create_error_payload(404, 'Mine report comment guid with "{mine_report_comment_guid}" not found.'), 404
+
+        comment = MineReportComment.find_by_guid(mine_report_comment_guid)
+        if not comment:
+            raise NotFound('Mine report comment with guid "{mine_report_comment_guid}" not found.')
 
         comment.deleted_ind = True
+        current_app.logger.info(f'Deleting {comment}')
+
         comment.save()
 
         return ('', 204)
