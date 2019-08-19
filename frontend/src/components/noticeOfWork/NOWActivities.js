@@ -6,23 +6,6 @@ import { COLOR } from "@/constants/styles";
 import { formatDate } from "@/utils/helpers";
 
 const { Panel } = Collapse;
-const recColumns = [
-  {
-    title: "Activity",
-    dataIndex: "activity",
-    key: "activity",
-  },
-  {
-    title: "Total Effected Area (ha)",
-    dataIndex: "effectedArea",
-    key: "effectedArea",
-  },
-  {
-    title: "Estimated Cost of Reclamation",
-    dataIndex: "cost",
-    key: "cost",
-  },
-];
 
 export class NOWActivities extends Component {
   renderAccess = () => {
@@ -51,7 +34,7 @@ export class NOWActivities extends Component {
           columns={columns}
           dataSource={[]}
           locale={{
-            emptyText: "No data",
+            emptyText: "Unknown",
           }}
           footer={() => "Total"}
         />
@@ -192,7 +175,9 @@ export class NOWActivities extends Component {
             locale={{
               emptyText: "No data",
             }}
-            footer={() => "Total"}
+            footer={() =>
+              `Total ${this.props.noticeOfWork.campdisturbedarea}${this.props.noticeOfWork.camptimbervolume}`
+            }
           />
           <br />
         </div>
@@ -207,7 +192,9 @@ export class NOWActivities extends Component {
             locale={{
               emptyText: "No data",
             }}
-            footer={() => "Total"}
+            footer={() =>
+              `Total ${this.props.noticeOfWork.bldgdisturbedarea}${this.props.noticeOfWork.bldgtimbervolume}`
+            }
           />
           <br />
         </div>
@@ -222,7 +209,9 @@ export class NOWActivities extends Component {
             locale={{
               emptyText: "No data",
             }}
-            footer={() => "Total"}
+            footer={() =>
+              `Total ${this.props.noticeOfWork.stgedisturbedarea}${this.props.noticeOfWork.stgetimbervolume}`
+            }
           />
           <br />
         </div>
@@ -234,7 +223,7 @@ export class NOWActivities extends Component {
               <p className="field-title">Do you propose to store fuel?</p>
             </Col>
             <Col md={12} xs={24}>
-              <p>{Strings.EMPTY_FIELD}</p>
+              <p>{this.props.noticeOfWork.fuellubstoreonsite || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
           <Row gutter={16} className="padding-small">
@@ -242,7 +231,7 @@ export class NOWActivities extends Component {
               <p className="field-title--light">How much do you want to store?</p>
             </Col>
             <Col md={12} xs={24}>
-              <p>{Strings.EMPTY_FIELD}</p>
+              <p>{this.props.noticeOfWork.fuellubstored || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
           <Row gutter={16} className="padding-small">
@@ -250,7 +239,7 @@ export class NOWActivities extends Component {
               <p className="field-title">Storage Method</p>
             </Col>
             <Col md={12} xs={24}>
-              <p>{Strings.EMPTY_FIELD}</p>
+              <p>{this.props.noticeOfWork.fuellubstoremethodbulk || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
         </div>
@@ -290,6 +279,12 @@ export class NOWActivities extends Component {
         key: "timberVolume",
       },
     ];
+
+    const data = {
+      total: this.props.noticeOfWork.cutlinesexplgridtotallinekms || Strings.EMPTY_FIELD,
+      disturbedArea: "Unknown" || Strings.EMPTY_FIELD,
+      timberVolume: this.props.cutlinesexplgridtimbervolume || Strings.EMPTY_FIELD,
+    };
     return (
       <div className="padding-large--sides">
         <div>
@@ -299,7 +294,7 @@ export class NOWActivities extends Component {
             align="left"
             pagination={false}
             columns={columns}
-            dataSource={[]}
+            dataSource={[data]}
             locale={{
               emptyText: "No data",
             }}
@@ -316,7 +311,7 @@ export class NOWActivities extends Component {
               </p>
             </Col>
             <Col md={12} xs={24}>
-              <p>{Strings.EMPTY_FIELD}</p>
+              <p>{this.props.noticeOfWork.cutlinesreclamation || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
         </div>
