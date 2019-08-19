@@ -216,10 +216,10 @@ export class VarianceHomePage extends Component {
         // Retain per_page if present
         per_page: prevState.params.per_page ? prevState.params.per_page : String.DEFAULT_PER_PAGE,
       };
-      // console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXX");
-      // console.log(persistedParams);
-      // console.log(formattedSearchParams);
-      // console.log(updatedParams);
+      console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXX");
+      console.log(persistedParams);
+      console.log(formattedSearchParams);
+      console.log(updatedParams);
       this.props.history.push(router.VARIANCE_DASHBOARD.dynamicRoute(updatedParams));
       return { params: updatedParams };
     });
