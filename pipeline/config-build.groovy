@@ -54,6 +54,16 @@ app {
                     ]
                 ],
                 [
+                    'file':'openshift/_python36.bc.json',
+                    'params':[
+                            'NAME':"mds-now-etl",
+                            'SUFFIX': "${app.build.suffix}",
+                            'VERSION':"${app.build.version}",
+                            'SOURCE_CONTEXT_DIR': "microservices/now_etls",
+                            'SOURCE_REPOSITORY_URL': "${app.git.uri}"
+                    ]
+                ],
+                [
                     'file':'microservices/nris_api/openshift/_python36_oracle.bc.json',
                     'params':[
                             'NAME':"mds-nris-backend",
