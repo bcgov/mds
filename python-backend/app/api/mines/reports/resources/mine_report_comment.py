@@ -78,10 +78,7 @@ class MineReportCommentListResource(Resource, UserMixin):
 
         current_app.logger.info(f'Creating comment {mine_report_comment}')
 
-        try:
-            mine_report_comment.save()
-        except Exception as e:
-            raise InternalServerError(f'Error when saving: {e}')
+        mine_report_comment.save()
 
         return mine_report_comment, 201
 
@@ -106,10 +103,7 @@ class MineReportCommentResource(Resource, UserMixin):
         for key, value in data.items():
             setattr(comment, key, value)
 
-        try:
-            comment.save()
-        except Exception as e:
-            raise InternalServerError(f'Error when saving: {e}')
+        comment.save()
 
         return comment, 201
 

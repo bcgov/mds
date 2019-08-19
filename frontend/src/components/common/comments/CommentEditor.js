@@ -14,17 +14,10 @@ const defaultProps = {
 };
 
 export class CommentEditor extends Component {
-  constructor(props) {
-    super(props);
-    this.state = this.getInitialState();
-  }
-
-  getInitialState = () => {
-    return { comment: "", visible: false };
-  };
+  initialState = { comment: "", visible: false };
 
   handleReset = () => {
-    this.setState(this.getInitialState());
+    this.setState(this.initialState);
   };
 
   handleSubmit = (event) => {

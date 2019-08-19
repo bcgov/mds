@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Spin, Comment, List, Tooltip } from "antd";
+import { Spin, Comment, List } from "antd";
 
 import CommentEditor from "./CommentEditor";
 
@@ -19,37 +19,36 @@ const defaultProps = {
   onChange: () => {},
 };
 
-const CommentPanel = (props) => {
-  if (!props.loading)
-    return (
-      <React.Fragment>
-        <List
-          className="comment-list"
-          header={`${props.comments.length} total comments`}
-          itemLayout="horizontal"
-          dataSource={props.comments}
-          renderItem={(item) => (
-            <li key={item.key}>
-              <Comment
-                actions={item.actions}
-                author={item.author}
-                content={item.content}
-                datetime={item.datetime}
-              />
-            </li>
-          )}
-        />
-        {props.renderAdd && (
-          <CommentEditor
-            onChange={props.onChange}
-            onSubmit={props.onSubmit}
-            submitting={props.submitting}
-          />
+const CommentPanel = (props) =>
+  !props.loading ? (
+    <React.Fragment>
+      <List
+        className="comment-list"
+        header={`${props.comments.length} total comments`}
+        itemLayout="horizontal"
+        dataSource={props.comments}
+        renderItem={(item) => (
+          <li key={item.key}>
+            <Comment
+              actions={item.actions}
+              author={item.author}
+              content={item.content}
+              datetime={item.datetime}
+            />
+          </li>
         )}
-      </React.Fragment>
-    );
-  return <Spin />;
-};
+      />
+      {props.renderAdd && (
+        <CommentEditor
+          onChange={props.onChange}
+          onSubmit={props.onSubmit}
+          submitting={props.submitting}
+        />
+      )}
+    </React.Fragment>
+  ) : (
+    <Spin />
+  );
 
 CommentPanel.defaultProps = defaultProps;
 CommentPanel.propTypes = propTypes;

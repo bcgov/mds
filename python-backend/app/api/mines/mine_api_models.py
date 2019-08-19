@@ -75,7 +75,7 @@ STATUS_MODEL = api.model(
         'mine_status_guid': fields.String,
         'mine_guid': fields.String,
         'mine_status_xref_guid': fields.String,
-        'status_values': fields.List(fields.String()),
+        'status_values': fields.List(fields.String),
         'status_labels': fields.List(fields.String),
         'effective_date': Date,
         'expiry_date': Date,
@@ -240,32 +240,32 @@ VARIANCE_MODEL = api.model(
 
 MINE_OPERATION_STATUS_CODE_MODEL = api.model(
     'MineOperationStatusCode', {
-        'mine_operation_status_code': fields.String(),
-        'description': fields.String()
+        'mine_operation_status_code': fields.String,
+        'description': fields.String
     })
 
 MINE_OPERATION_STATUS_REASON_CODE_MODEL = api.model(
     'MineOperationStatusReasonCode', {
-        'mine_operation_status_reason_code': fields.String(),
-        'description': fields.String()
+        'mine_operation_status_reason_code': fields.String,
+        'description': fields.String
     })
 
 MINE_OPERATION_STATUS_SUB_REASON_CODE_MODEL = api.model(
     'MineOperationStatusSubReasonCode', {
-        'mine_operation_status_sub_reason_code': fields.String(),
-        'description': fields.String()
+        'mine_operation_status_sub_reason_code': fields.String,
+        'description': fields.String
     })
 
 MINE_STATUS_CODE_MODEL = api.model(
     'MineStatusCode', {
-        'mine_status_xref_guid': fields.String(),
+        'mine_status_xref_guid': fields.String,
         'mine_operation_status': fields.Nested(
             MINE_OPERATION_STATUS_CODE_MODEL),
         'mine_operation_status_reason': fields.Nested(
             MINE_OPERATION_STATUS_REASON_CODE_MODEL),
         'mine_operation_status_sub_reason': fields.Nested(
             MINE_OPERATION_STATUS_SUB_REASON_CODE_MODEL),
-        'description': fields.String(),
+        'description': fields.String,
     })
 
 MINE_REPORT_COMMENT_MODEL = api.model(
@@ -305,8 +305,8 @@ MINE_REPORT_MODEL = api.model(
 
 MINE_REPORT_DEFINITION_CATEGORIES = api.model(
     'MineReportDefinitionCategoriesModel', {
-        'mine_report_category': fields.String(),
-        'description': fields.String()
+        'mine_report_category': fields.String,
+        'description': fields.String
     }
 )
 

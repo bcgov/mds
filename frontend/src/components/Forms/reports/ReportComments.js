@@ -3,7 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Divider } from "antd";
-import moment from "moment";
+import { formatDateTime } from "@/utils/helpers";
 
 import CommentPanel from "@/components/common/comments/CommentPanel";
 import {
@@ -72,15 +72,13 @@ export class ReportComments extends Component {
         submitting={this.commentSubmitting}
         loading={this.commentLoading}
         onRemove={this.handleRemoveComment}
-        comments={this.props.mineReportComments.map((comment) => {
-          return {
-            key: comment.mine_report_comment_guid,
-            author: comment.comment_user,
-            content: comment.report_comment,
-            actions: actionBuilder(comment.comment_visibility_ind, comment.from_latest_submission),
-            datetime: moment(comment.comment_datetime).format("lll"),
-          };
-        })}
+        comments={this.props.mineReportComments.map((comment) => ({
+          key: comment.mine_report_comment_guid,
+          author: comment.comment_user,
+          content: comment.report_comment,
+          actions: actionBuilder(comment.comment_visibility_ind, comment.from_latest_submission),
+          datetime: formatDateTime(comment.comment_datetime),
+        }))}
       />,
     ];
   }
