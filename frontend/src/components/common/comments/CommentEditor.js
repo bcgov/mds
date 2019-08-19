@@ -14,7 +14,7 @@ const defaultProps = {
 };
 
 export class CommentEditor extends Component {
-  initialState = { comment: "", visible: false };
+  initialState = { comment: "", visible: false, submitting: false };
 
   handleReset = () => {
     this.setState(this.initialState);
@@ -22,6 +22,7 @@ export class CommentEditor extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
+    this.setState({ submitting: true });
     this.props.onSubmit({ comment: this.state.comment, visible: this.state.visible }).then(() => {
       this.handleReset();
     });
@@ -58,7 +59,7 @@ export class CommentEditor extends Component {
         <Button
           disabled={this.state.comment === ""}
           htmlType="button"
-          loading={this.props.submitting}
+          loading={this.state.submitting}
           onClick={this.handleSubmit}
           type="primary"
         >

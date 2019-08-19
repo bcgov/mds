@@ -6,11 +6,7 @@ import { Divider } from "antd";
 import { formatDateTime } from "@/utils/helpers";
 
 import CommentPanel from "@/components/common/comments/CommentPanel";
-import {
-  getMineReportComments,
-  getMineReportCommentLoading,
-  getMineReportCommentSubmitting,
-} from "@/selectors/reportSelectors";
+import { getMineReportComments } from "@/selectors/reportSelectors";
 
 import {
   fetchMineReportComments,
@@ -37,16 +33,16 @@ const actionBuilder = (visible, latest) => [
 ];
 
 export class ReportComments extends Component {
+  initialState = { loading: true };
+
   componentDidMount() {
-    this.props.fetchMineReportComments(this.props.mineGuid, this.props.mineReportGuid);
+    this.fetchComments();
   }
 
   handleRemoveComment = (commentGuid) => {
     this.props
       .deleteMineReportComment(this.props.mineGuid, this.props.mineReportGuid, commentGuid)
-      .then(() =>
-        this.props.fetchMineReportComments(this.props.mineGuid, this.props.mineReportGuid)
-      );
+      .then(() => this.fetchComments());
   };
 
   handleAddComment = async (values) => {
@@ -56,10 +52,17 @@ export class ReportComments extends Component {
     };
     return this.props
       .createMineReportComment(this.props.mineGuid, this.props.mineReportGuid, formValues)
-      .then(() =>
-        this.props.fetchMineReportComments(this.props.mineGuid, this.props.mineReportGuid)
-      );
+      .then(() => {
+        this.fetchComments();
+      });
   };
+
+  fetchComments() {
+    this.setState({ loading: true });
+    this.props
+      .fetchMineReportComments(this.props.mineGuid, this.props.mineReportGuid)
+      .then(() => this.setState({ loading: false }));
+  }
 
   render() {
     return [
@@ -69,8 +72,7 @@ export class ReportComments extends Component {
       <CommentPanel
         renderAdd
         onSubmit={this.handleAddComment}
-        submitting={this.commentSubmitting}
-        loading={this.commentLoading}
+        loading={this.state.loading}
         onRemove={this.handleRemoveComment}
         comments={this.props.mineReportComments.map((comment) => ({
           key: comment.mine_report_comment_guid,
@@ -89,8 +91,6 @@ ReportComments.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   mineReportComments: getMineReportComments(state),
-  commentSubmitting: getMineReportCommentSubmitting(state),
-  commentLoading: getMineReportCommentLoading(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

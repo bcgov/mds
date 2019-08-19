@@ -6,7 +6,6 @@ import { Spin, Comment, List } from "antd";
 import CommentEditor from "./CommentEditor";
 
 const propTypes = {
-  submitting: PropTypes.bool.isRequired,
   loading: PropTypes.bool.isRequired,
   renderAdd: PropTypes.bool,
   comments: PropTypes.arrayOf(PropTypes.any).isRequired,
@@ -38,13 +37,7 @@ const CommentPanel = (props) =>
           </li>
         )}
       />
-      {props.renderAdd && (
-        <CommentEditor
-          onChange={props.onChange}
-          onSubmit={props.onSubmit}
-          submitting={props.submitting}
-        />
-      )}
+      {props.renderAdd && <CommentEditor onChange={props.onChange} onSubmit={props.onSubmit} />}
     </React.Fragment>
   ) : (
     <Spin />
