@@ -102,20 +102,19 @@ export class VarianceHomePage extends Component {
 
   constructor(props) {
     super(props);
-    const formatedParams = {
-      compliance_code: formatParamStringToArray(this.params.compliance_code),
-      region: formatParamStringToArray(this.params.region),
-      major: this.params.major,
-      search: this.params.search,
-      issue_date_after: this.params.issue_date_after,
-      issue_date_before: this.params.issue_date_before,
-      expiry_date_before: this.params.expiry_date_before,
-      expiry_date_after: this.params.expiry_date_after,
-    };
     this.handleVarianceSearchDebounced = debounce(this.handleVarianceSearch, 1000);
     this.state = {
       variancesLoaded: false,
-      params: formatedParams,
+      params: {
+        compliance_code: formatParamStringToArray(this.params.compliance_code),
+        region: formatParamStringToArray(this.params.region),
+        major: this.params.major,
+        search: this.params.search,
+        issue_date_after: this.params.issue_date_after,
+        issue_date_before: this.params.issue_date_before,
+        expiry_date_before: this.params.expiry_date_before,
+        expiry_date_after: this.params.expiry_date_after,
+      },
     };
   }
 
