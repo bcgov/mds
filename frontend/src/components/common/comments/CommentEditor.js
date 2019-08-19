@@ -16,6 +16,11 @@ const defaultProps = {
 export class CommentEditor extends Component {
   initialState = { comment: "", visible: false, submitting: false };
 
+  constructor(props) {
+    super(props);
+    this.state = this.initialState;
+  }
+
   handleReset = () => {
     this.setState(this.initialState);
   };

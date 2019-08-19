@@ -33,7 +33,7 @@ const actionBuilder = (visible, latest) => [
 ];
 
 export class ReportComments extends Component {
-  initialState = { loading: true };
+  state = { loading: true };
 
   componentDidMount() {
     this.fetchComments();

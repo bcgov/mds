@@ -9,7 +9,6 @@ import CustomAxios from "@/customAxios";
 
 export const fetchMineReportComments = (mineGuid, mineReportGuid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_REPORT_COMMENTS));
-  dispatch(mineReportActions.fetchMineReportComments());
   return CustomAxios()
     .get(
       `${ENVIRONMENT.apiUrl}${API.MINE_REPORT_COMMENTS(mineGuid, mineReportGuid)}`,
@@ -25,7 +24,6 @@ export const fetchMineReportComments = (mineGuid, mineReportGuid) => (dispatch) 
 
 export const createMineReportComment = (mineGuid, mineReportGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_MINE_REPORT_COMMENT));
-  dispatch(mineReportActions.submitMineReportComment());
   return CustomAxios()
     .post(
       `${ENVIRONMENT.apiUrl}${API.MINE_REPORT_COMMENTS(mineGuid, mineReportGuid)}`,
@@ -38,7 +36,6 @@ export const createMineReportComment = (mineGuid, mineReportGuid, payload) => (d
         duration: 10,
       });
       dispatch(success(reducerTypes.CREATE_MINE_REPORT_COMMENT));
-      dispatch(mineReportActions.mineReportCommentCreated());
       return response;
     })
     .catch(() => dispatch(error(reducerTypes.CREATE_MINE_REPORT_COMMENT)));

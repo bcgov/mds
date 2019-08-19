@@ -18,9 +18,9 @@ const defaultProps = {
   onChange: () => {},
 };
 
-const CommentPanel = (props) =>
-  !props.loading ? (
-    <React.Fragment>
+const CommentPanel = (props) => (
+  <React.Fragment>
+    {!props.loading ? (
       <List
         className="comment-list"
         header={`${props.comments.length} total comments`}
@@ -37,11 +37,12 @@ const CommentPanel = (props) =>
           </li>
         )}
       />
-      {props.renderAdd && <CommentEditor onChange={props.onChange} onSubmit={props.onSubmit} />}
-    </React.Fragment>
-  ) : (
-    <Spin />
-  );
+    ) : (
+      <Spin />
+    )}
+    {props.renderAdd && <CommentEditor onChange={props.onChange} onSubmit={props.onSubmit} />}
+  </React.Fragment>
+);
 
 CommentPanel.defaultProps = defaultProps;
 CommentPanel.propTypes = propTypes;
