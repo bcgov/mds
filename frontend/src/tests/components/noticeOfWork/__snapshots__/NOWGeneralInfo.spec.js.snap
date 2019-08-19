@@ -206,7 +206,7 @@ exports[`PartyProfile renders properly 1`] = `
         gutter={0}
       >
         <Col
-          key="[object Object]"
+          key="0"
           lg={12}
           sm={24}
           xl={8}
@@ -258,7 +258,7 @@ exports[`PartyProfile renders properly 1`] = `
           </Card>
         </Col>
         <Col
-          key="[object Object]"
+          key="1"
           lg={12}
           sm={24}
           xl={8}

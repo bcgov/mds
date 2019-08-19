@@ -7,7 +7,7 @@ export const nowApplication = shape({
   mine_guid: PropTypes.string,
   mine_name: PropTypes.string,
   minenumber: PropTypes.string,
-  trackingnumber: PropTypes.string,
+  trackingnumber: PropTypes.number,
   applicationtype: PropTypes.string,
   status: PropTypes.string,
   submitteddate: PropTypes.string,
