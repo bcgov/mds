@@ -185,11 +185,9 @@ export class NOWActivities extends Component {
             columns={campColumns}
             dataSource={[]}
             locale={{
-              emptyText: "No data",
+              emptyText: "Unknown",
             }}
-            footer={() =>
-              `Total ${this.props.noticeOfWork.campdisturbedarea}${this.props.noticeOfWork.camptimbervolume}`
-            }
+            footer={() => "Total"}
           />
           <br />
         </div>
@@ -202,11 +200,9 @@ export class NOWActivities extends Component {
             columns={buildingsColumns}
             dataSource={[]}
             locale={{
-              emptyText: "No data",
+              emptyText: "Unknown",
             }}
-            footer={() =>
-              `Total ${this.props.noticeOfWork.bldgdisturbedarea}${this.props.noticeOfWork.bldgtimbervolume}`
-            }
+            footer={() => "Total"}
           />
           <br />
         </div>
@@ -219,11 +215,9 @@ export class NOWActivities extends Component {
             columns={buildingsColumns}
             dataSource={[]}
             locale={{
-              emptyText: "No data",
+              emptyText: "Unknown",
             }}
-            footer={() =>
-              `Total ${this.props.noticeOfWork.stgedisturbedarea}${this.props.noticeOfWork.stgetimbervolume}`
-            }
+            footer={() => "Total"}
           />
           <br />
         </div>
@@ -265,7 +259,7 @@ export class NOWActivities extends Component {
               </p>
             </Col>
             <Col md={12} xs={24}>
-              <p>{Strings.EMPTY_FIELD}</p>
+              <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
         </div>
