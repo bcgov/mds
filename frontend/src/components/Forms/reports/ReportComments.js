@@ -41,21 +41,21 @@ export class ReportComments extends Component {
     this.props.fetchMineReportComments(this.props.mineGuid, this.props.mineReportGuid);
   }
 
-  handleAddComment = (values) => {
+  handleRemoveComment = (commentGuid) => {
     this.props
-      .createMineReportComment(
-        this.props.mineGuid,
-        this.props.mineReportGuid,
-        values.map((x) => ({ report_comment: x.comment, comment_visibility_ind: x.visible }))
-      )
+      .deleteMineReportComment(this.props.mineGuid, this.props.mineReportGuid, commentGuid)
       .then(() =>
         this.props.fetchMineReportComments(this.props.mineGuid, this.props.mineReportGuid)
       );
   };
 
-  handleRemoveComment = (commentGuid) => {
-    this.props
-      .deleteMineReportComment(this.props.mineGuid, this.props.mineReportGuid, commentGuid)
+  handleAddComment = async (values) => {
+    const formValues = {
+      report_comment: values.comment,
+      comment_visibility_ind: values.visible,
+    };
+    return this.props
+      .createMineReportComment(this.props.mineGuid, this.props.mineReportGuid, formValues)
       .then(() =>
         this.props.fetchMineReportComments(this.props.mineGuid, this.props.mineReportGuid)
       );

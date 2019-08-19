@@ -23,13 +23,6 @@ const CommentPanel = (props) => {
   if (!props.loading)
     return (
       <React.Fragment>
-        {props.renderAdd && (
-          <CommentEditor
-            onChange={props.onChange}
-            onSubmit={props.onSubmit}
-            submitting={props.submitting}
-          />
-        )}
         <List
           className="comment-list"
           header={`${props.comments.length} total comments`}
@@ -46,6 +39,13 @@ const CommentPanel = (props) => {
             </li>
           )}
         />
+        {props.renderAdd && (
+          <CommentEditor
+            onChange={props.onChange}
+            onSubmit={props.onSubmit}
+            submitting={props.submitting}
+          />
+        )}
       </React.Fragment>
     );
   return <Spin />;
