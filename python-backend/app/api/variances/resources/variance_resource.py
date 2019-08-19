@@ -25,10 +25,10 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             'compliance_codes':'Comma-separated list of compliance codes to be filtered. Default: All compliance codes',
             'major': 'boolean indicating if variance is from a major or regional mine',
             'region': 'Comma-separated list of regions the mines associated with the variances are located in',
-            'issue_date_before': 'Latest possible issue date returned',
-            'issue_date_after': 'Earliest possible issue date returned',
-            'expiry_date_before': 'Latest possible expiry date returned',
-            'expiry_date_after': 'Earliest possible expiry date returned'})
+            'issue_date_before': 'Latest possible issue date returned (inclusive)',
+            'issue_date_after': 'Earliest possible issue date returned (inclusive)',
+            'expiry_date_before': 'Latest possible expiry date returned (inclusive)',
+            'expiry_date_after': 'Earliest possible expiry date returned (inclusive)'})
     @requires_any_of([VIEW_ALL])
     @api.marshal_with(PAGINATED_VARIANCE_LIST, code=200)
     def get(self):
@@ -60,90 +60,62 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             'total': pagination_details.total_results,
         }
 
+    @classmethod
+    def _build_filter(cls, model, field, op, argfield):
+        return {
+            'model': model,
+            'field': field,
+            'op': op,
+            'value': argfield
+        }
+
     def _apply_filters_and_pagination(self, args):
 
         status_filter_values = list(map(
             lambda x: x.variance_application_status_code,
             VarianceApplicationStatusCode.active()))
 
-        if args["page_number"] is None:
-            args["page_number"]=PAGE_DEFAULT
-        if args["page_size"] is None:
-            args["page_size"] = PER_PAGE_DEFAULT
-
         conditions = []
         if args["application_status"] is not None:
             status_filter_values = args["application_status"].split(',')
-            conditions.append({
-                'model': 'Variance',
-                'field': 'variance_application_status_code',
-                'op': 'in',
-                'value': status_filter_values
-            })
+            conditions.append(self._build_filter('Variance' , 'variance_application_status_code', 'in',  status_filter_values))
+
         if args["compliance_codes"] is not None:
             compliance_codes_values = args["compliance_codes"].split(',')
-            conditions.append({
-                'model': 'Variance',
-                'field': 'compliance_article_id',
-                'op': 'in',
-                'value': compliance_codes_values
-             })
+            conditions.append(
+                self._build_filter('Variance', 'compliance_article_id', 'in', compliance_codes_values))
 
         if args["expiry_date_before"] is not None:
-            conditions.append({
-              'model': 'Variance',
-              'field':  'expiry_date',
-              'op': '<=',
-              'value': args["expiry_date_before"]
-            })
+            conditions.append(
+                self._build_filter('Variance', 'expiry_date', '<=', args["expiry_date_before"]))
+
         if args["expiry_date_after"] is not None:
-            conditions.append({
-              'model': 'Variance',
-              'field': 'expiry_date',
-              'op': '>=',
-              'value': args["expiry_date_after"]
-            })
+            conditions.append(
+                self._build_filter('Variance', 'expiry_date', '>=', args["expiry_date_after"]))
+
         if args["issue_date_before"] is not None:
-            conditions.append({
-              'model': 'Variance',
-              'field': 'issue_date',
-              'op': '<=',
-              'value': args["issue_date_before"]
-            })
+            conditions.append(
+                self._build_filter('Variance', 'issue_date', '<=', args["issue_date_before"]))
+
         if args["issue_date_after"] is not None:
-            conditions.append({
-              'model': 'Variance',
-              'field': 'issue_date',
-              'op': '>=',
-              'value': args["issue_date_after"]
-            })
+            conditions.append(
+                self._build_filter('Variance', 'issue_date', '>=', args["issue_date_after"]))
+
 
         if args["major"] is not None:
-            conditions.append({
-                'model': 'Mine',
-                'field': 'major_mine_ind',
-                'op': '==',
-                'value': args["major"]
-            })
+            conditions.append(
+                self._build_filter('Mine', 'major_mine_ind', '==', args["major"]))
+
         if args["search_terms"] is not None:
             search_term_list = args["search_terms"].split(' ')
             search_conditions = []
             for search_term in search_term_list:
                 search_conditions.append(
-                    {
-                        'model': 'Mine',
-                        'field': 'mine_name',
-                        'op': 'ilike',
-                        'value': '%{}%'.format(search_term)
-                    })
+                    self._build_filter('Mine', 'mine_name', 'ilike', '%{}%'.format(search_term)))
+
                 search_conditions.append(
-                    {
-                        'model': 'Mine',
-                        'field': 'mine_no',
-                        'op': 'ilike',
-                        'value': '%{}%'.format(search_term)
-                    },
-                )
+                    self._build_filter('Mine', 'mine_no', 'ilike', '%{}%'.format(search_term)))
+
             conditions.append(
                 {
                     'or': search_conditions
@@ -151,12 +123,7 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
 
         if args["region"] is not None:
             region_list = args["region"].split(',')
-            conditions.append({
-                'model': 'Mine',
-                'field': 'mine_region',
-                'op': 'in',
-                'value': region_list
-            })
+            conditions.append(self._build_filter('Mine', 'mine_region', 'in', region_list))
 
         query = Variance.query.join(Mine)
 
