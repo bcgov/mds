@@ -1,11 +1,15 @@
 /***
-This migration assumes the base postgres image is using postgresql_fdw_wrapper installation.
-https://github.com/bcgov/openshift-postgresql-oracle_fdw
+This migration only runs successfully if there is already a postgres foreign data wrapper connection
+with the assumptions listed below:
 
-Which ensures you have the following things pre-defined and exist on DB startup:
-- Server connection to the Foreign DB (oracle_fdw)
-- Database user that requires the access (mds)
+- Valid server connection to the Foreign MMS DB (oracle_fdw)
+- Existing database user (mds)
 - Foreign schema reader role (fdw_reader)
+- Existing schemas being imported (APP_MMS_INTERFACE, VFCMMSINTERFACE)
+
+If you would like more information on how the foreign data wrapper works for this project,
+take a look at https://github.com/bcgov/openshift-postgresql-oracle_fdw
+
 ***/
 
 DO
