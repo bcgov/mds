@@ -1,9 +1,13 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { Divider, Col, Row, Table } from "antd";
+import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
 import NullScreen from "@/components/common/NullScreen";
 import NOWActivities from "@/components/noticeOfWork/NOWActivities";
+
+const propTypes = {
+  noticeOfWork: CustomPropTypes.nowApplication.isRequired,
+};
 
 export class NOWWorkPlan extends Component {
   renderSummaryOfReclamation = () => {
@@ -136,4 +140,5 @@ export class NOWWorkPlan extends Component {
   }
 }
 
+NOWWorkPlan.propTypes = propTypes;
 export default NOWWorkPlan;

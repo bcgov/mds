@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { Button, Collapse, Icon } from "antd";
 import PropTypes from "prop-types";
@@ -18,7 +17,7 @@ const { Panel } = Collapse;
 
 const propTypes = {
   fetchNoticeOfWorkApplication: PropTypes.func.isRequired,
-  noticeOfWork: PropTypes.any,
+  noticeOfWork: CustomPropTypes.nowApplication.isRequired,
   match: CustomPropTypes.match.isRequired,
 };
 

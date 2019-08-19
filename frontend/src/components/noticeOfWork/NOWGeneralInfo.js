@@ -1,10 +1,14 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { Divider, Card, Col, Row } from "antd";
 import * as Strings from "@/constants/strings";
 import NullScreen from "@/components/common/NullScreen";
+import CustomPropTypes from "@/customPropTypes";
 import { formatDate } from "@/utils/helpers";
 import Address from "@/components/common/Address";
+
+const propTypes = {
+  noticeOfWork: CustomPropTypes.nowApplication.isRequired,
+};
 
 export class NOWGeneralInfo extends Component {
   renderApplicationInformation = () => {
@@ -99,7 +103,9 @@ export class NOWGeneralInfo extends Component {
                   suite_no: null,
                 };
                 return (
-                  <Col sm={24} lg={12} xl={8} xxl={6} key={contact}>
+                  // there is no id/guid that is unique to the contact
+                  /* eslint-disable-next-line react/no-array-index-key */
+                  <Col sm={24} lg={12} xl={8} xxl={6} key={index}>
                     <Card
                       title={
                         <div className="inline-flex between wrap">
@@ -354,5 +360,7 @@ export class NOWGeneralInfo extends Component {
     );
   }
 }
+
+NOWGeneralInfo.propTypes = propTypes;
 
 export default NOWGeneralInfo;

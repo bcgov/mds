@@ -1,11 +1,15 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { Divider, Col, Row, Collapse, Icon, Table } from "antd";
 import * as Strings from "@/constants/strings";
+import CustomPropTypes from "@/customPropTypes";
 import { COLOR } from "@/constants/styles";
 import { formatDate } from "@/utils/helpers";
 
 const { Panel } = Collapse;
+
+const propTypes = {
+  noticeOfWork: CustomPropTypes.nowApplication.isRequired,
+};
 
 export class NOWActivities extends Component {
   renderAccess = () => {
@@ -292,7 +296,7 @@ export class NOWActivities extends Component {
     const data = {
       total: this.props.noticeOfWork.cutlinesexplgridtotallinekms || Strings.EMPTY_FIELD,
       disturbedArea: "Unknown" || Strings.EMPTY_FIELD,
-      timberVolume: this.props.cutlinesexplgridtimbervolume || Strings.EMPTY_FIELD,
+      timberVolume: this.props.noticeOfWork.cutlinesexplgridtimbervolume || Strings.EMPTY_FIELD,
     };
     return (
       <div className="padding-large--sides">
@@ -465,7 +469,7 @@ export class NOWActivities extends Component {
               </p>
             </Col>
             <Col md={12} xs={24}>
-              <p>{this.props.mechtrenchingreclamationcost || Strings.EMPTY_FIELD}</p>
+              <p>{this.props.noticeOfWork.mechtrenchingreclamationcost || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
         </div>
@@ -1183,4 +1187,5 @@ export class NOWActivities extends Component {
   }
 }
 
+NOWActivities.propTypes = propTypes;
 export default NOWActivities;
