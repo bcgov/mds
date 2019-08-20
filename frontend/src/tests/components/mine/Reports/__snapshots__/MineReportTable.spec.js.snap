@@ -37,6 +37,11 @@ exports[`MineReportTable renders properly 1`] = `
         "title": "Received",
       },
       Object {
+        "dataIndex": "documents",
+        "render": [Function],
+        "title": "Documents",
+      },
+      Object {
         "dataIndex": "record",
         "render": [Function],
         "title": "",
