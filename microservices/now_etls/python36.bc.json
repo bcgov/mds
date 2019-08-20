@@ -41,39 +41,6 @@
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
-        "name": "rhscl-python-36-rhel7",
-        "creationTimestamp": null,
-        "annotations": {
-          "description": "Python Base Image"
-        },
-        "labels": {
-          "shared": "true"
-        }
-      },
-      "spec": {
-        "lookupPolicy": {
-          "local": false
-        },
-        "tags": [
-          {
-            "name": "latest",
-            "annotations": null,
-            "from": {
-              "kind": "DockerImage",
-              "name": "registry.access.redhat.com/rhscl/python-36-rhel7:latest"
-            },
-            "importPolicy": {},
-            "referencePolicy": {
-              "type": "Local"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "kind": "ImageStream",
-      "apiVersion": "v1",
-      "metadata": {
         "name": "${NAME}",
         "creationTimestamp": null,
         "labels": {
@@ -123,8 +90,8 @@
           "type": "Source",
           "sourceStrategy": {
             "from": {
-              "kind": "ImageStreamTag",
-              "name": "rhscl-python-36-rhel7:latest"
+              "kind": "DockerImage",
+              "name": "registry.access.redhat.com/rhscl/python-36-rhel7:latest"
             },
             "env": [
               {
