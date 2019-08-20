@@ -154,7 +154,7 @@ export class ReportFilterForm extends Component {
               <Field
                 id="report_due_date_start"
                 name="report_due_date_start"
-                label="Report Due Date Range"
+                label="Report Due Date"
                 placeholder="Start date"
                 component={renderConfig.DATE}
               />
