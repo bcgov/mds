@@ -34,7 +34,7 @@ def test_get_a_report_for_a_mine(test_client, db_session, auth_headers):
     assert get_resp.status_code == 200
 
 
-#Create
+# Create
 def test_post_mine_report(test_client, db_session, auth_headers):
     mine = MineFactory(mine_reports=ONE_REPORT)
     mine_report = mine.mine_reports[0]
@@ -68,7 +68,6 @@ def test_post_mine_report(test_client, db_session, auth_headers):
 
 
 def test_post_mine_report_bad_mine_guid(test_client, db_session, auth_headers):
-    mine = MineFactory(mine_reports=ONE_REPORT)
     data = {}
     post_resp = test_client.post(
         f'/mines/12345142342/reports', headers=auth_headers['full_auth_header'], json=data)
@@ -128,7 +127,7 @@ def test_post_mine_report_with_bad_permit_guid(test_client, db_session, auth_hea
     assert post_resp.status_code == 400
 
 
-#Put
+# Put
 def test_put_mine_report(test_client, db_session, auth_headers):
     mine = MineFactory(mine_reports=ONE_REPORT)
 
@@ -153,11 +152,10 @@ def test_put_mine_report_bad_mine_report_guid(test_client, db_session, auth_head
     assert put_resp.status_code == 404
 
 
-#Delete
+# Delete
 def test_delete_mine_report(test_client, db_session, auth_headers):
     mine = MineFactory(mine_reports=ONE_REPORT)
 
-    data = {'due_date': '2019-10-05 20:27:45.11929+00'}
     delete_resp = test_client.delete(
         f'/mines/{mine.mine_guid}/reports/{mine.mine_reports[0].mine_report_guid}',
         headers=auth_headers['full_auth_header'])

@@ -106,10 +106,14 @@ export const INCIDENT_DOCUMENT_TYPE = `/incidents/document-types`;
 
 // report
 export const MINE_REPORT_DEFINITIONS = () => `/mines/reports/definitions`;
-export const MINE_REPORTS = (mine_guid) => `/mines/${mine_guid}/reports`;
-export const MINE_REPORT = (mine_guid, mine_report_guid) =>
-  `/mines/${mine_guid}/reports/${mine_report_guid}`;
+export const MINE_REPORTS = (mineGuid) => `/mines/${mineGuid}/reports`;
+export const MINE_REPORT = (mineGuid, mineReportGuid) =>
+  `/mines/${mineGuid}/reports/${mineReportGuid}`;
 export const MINE_REPORT_DOCUMENT = (mineGuid) => `/mines/${mineGuid}/reports/documents`;
+export const MINE_REPORT_COMMENTS = (mineGuid, reportGuid) =>
+  `/mines/${mineGuid}/reports/${reportGuid}/comments`;
+export const MINE_REPORT_COMMENT = (mineGuid, reportGuid, commentGuid) =>
+  `/mines/${mineGuid}/reports/${reportGuid}/comments/${commentGuid}`;
 
 // Notice Of Work
 export const NOTICE_OF_WORK_APPLICATIONS = (params = {}) =>
