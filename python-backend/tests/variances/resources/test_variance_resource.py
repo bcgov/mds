@@ -1,6 +1,7 @@
 import json
 from datetime import datetime, timedelta
 
+from tests.status_code_gen import *
 from tests.factories import VarianceFactory, MineFactory
 from tests.status_code_gen import RandomVarianceApplicationStatusCode
 from app.api.variances.resources.variance_resource import PAGE_DEFAULT, PER_PAGE_DEFAULT
@@ -73,19 +74,18 @@ class TestGetVariances:
     def test_get_variances_application_filter_by_mine_region(self, test_client, db_session, auth_headers):
         """Should filter variances by mine region"""
         region_code = "NW"
-        mineWith_region_NW = MineFactory(mine_region='NW')
-        mineWith_region_SW = MineFactory(mine_region="SW")
+        mine_with_region_nw = MineFactory(mine_region='NW')
+        mine_with_region_sw = MineFactory(mine_region="SW")
         batch_size = 3
         VarianceFactory.create_batch(size=batch_size)
-        VarianceFactory(mine=mineWith_region_NW)
-        VarianceFactory(mine=mineWith_region_SW)
+        VarianceFactory(mine=mine_with_region_nw)
+        VarianceFactory(mine=mine_with_region_sw)
 
         get_resp = test_client.get(f'/variances?region={region_code}',headers=auth_headers['full_auth_header'])
         get_data = json.loads(get_resp.data.decode())
-        print(get_data)
         assert get_resp.status_code == 200
         assert all(map(
-            lambda v: v['mine_name'] == mineWith_region_NW.mine_name,
+            lambda v: v['mine_name'] == mine_with_region_nw.mine_name,
             get_data['records']))
 
     def test_get_variances_application_filter_by_major_mine(self, test_client, db_session, auth_headers):
@@ -104,7 +104,7 @@ class TestGetVariances:
 
     def test_get_variances_application_filter_by_compliance_code(self, test_client, db_session, auth_headers):
         """Should filter variances by compliance code"""
-        compliance_codes = [54,66]
+        compliance_codes = [RandomComplianceArticleId(),RandomComplianceArticleId()]
         batch_size = 3
         VarianceFactory.create_batch(size=batch_size)
         VarianceFactory(compliance_article_id=compliance_codes[0])
@@ -129,15 +129,13 @@ class TestGetVariances:
         VarianceFactory(approved=True,issue_date=date_minus_7_days)
         VarianceFactory(approved=True,issue_date=date_today)
         VarianceFactory(approved=True,issue_date=date_plus_7_days)
-        dateFormat = "%Y-%m-%d"
+        date_format = "%Y-%m-%d"
         get_resp = test_client.get(
-            f'/variances?issue_date_before={date_plus_1_day.strftime(dateFormat)}&issue_date_after={date_minus_1_day.strftime(dateFormat)}',
+            f'/variances?issue_date_before={date_plus_1_day.strftime(date_format)}&issue_date_after={date_minus_1_day.strftime(date_format)}',
             headers=auth_headers['full_auth_header'])
         get_data = json.loads(get_resp.data.decode())
         assert get_resp.status_code == 200
-        assert all(map(
-            lambda v: v['issue_date'] == date_today.strftime(dateFormat),
-            get_data['records']))
+        assert get_data['records'][0]['issue_date'] == date_today.strftime(date_format)
 
     def test_get_variances_application_filter_by_expiry_date(self, test_client, db_session, auth_headers):
         """Should filter variances by expiry date"""
@@ -146,16 +144,14 @@ class TestGetVariances:
         date_today = datetime.now()
         date_plus_1_day = datetime.now() + timedelta(days=1)
         date_plus_7_days = datetime.now() + timedelta(days=7)
-        dateFormat ="%Y-%m-%d"
+        date_format ="%Y-%m-%d"
         VarianceFactory(approved=True,expiry_date=date_minus_7_days)
         VarianceFactory(approved=True,expiry_date=date_today)
         VarianceFactory(approved=True,expiry_date=date_plus_7_days)
 
         get_resp = test_client.get(
-            f'/variances?expiry_date_before={date_plus_1_day.strftime(dateFormat)}&expiry_date_after={date_minus_1_day.strftime(dateFormat)}',
+            f'/variances?expiry_date_before={date_plus_1_day.strftime(date_format)}&expiry_date_after={date_minus_1_day.strftime(date_format)}',
             headers=auth_headers['full_auth_header'])
         get_data = json.loads(get_resp.data.decode())
         assert get_resp.status_code == 200
-        assert all(map(
-            lambda v: v['expiry_date'] == date_today.strftime(dateFormat),
-            get_data['records']))
+        assert get_data['records'][0]['expiry_date'] == date_today.strftime(date_format)
