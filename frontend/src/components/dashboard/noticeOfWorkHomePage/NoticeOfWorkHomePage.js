@@ -7,7 +7,10 @@ import * as Strings from "@/constants/strings";
 import * as router from "@/constants/routes";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import CustomPropTypes from "@/customPropTypes";
-import { getMineRegionHash } from "@/selectors/staticContentSelectors";
+import {
+  getMineRegionHash,
+  getMineRegionDropdownOptions,
+} from "@/selectors/staticContentSelectors";
 import { fetchRegionOptions } from "@/actionCreators/staticContentActionCreator";
 import NoticeOfWorkTable from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkTable";
 import NoticeOfWorkSearch from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkSearch";
@@ -24,6 +27,14 @@ const propTypes = {
   noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.nowApplication).isRequired,
   fetchRegionOptions: PropTypes.func.isRequired,
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineRegionOptions: CustomPropTypes.options.isRequired,
+};
+
+const formatParamsFromUrl = ({ mine_region, ...otherParams }) => {
+  return {
+    mine_region: mine_region ? mine_region.split(",") : undefined,
+    ...otherParams,
+  };
 };
 
 export class NoticeOfWorkHomePage extends Component {
@@ -34,7 +45,7 @@ export class NoticeOfWorkHomePage extends Component {
     params: {
       page: Strings.DEFAULT_PAGE,
       per_page: Strings.DEFAULT_PER_PAGE,
-      ...this.params,
+      ...formatParamsFromUrl(this.params),
     },
   };
 
@@ -72,7 +83,7 @@ export class NoticeOfWorkHomePage extends Component {
     const parsedParams = queryString.parse(params);
     this.setState(
       {
-        params: parsedParams,
+        params: formatParamsFromUrl(parsedParams),
         isLoaded: false,
       },
       () =>
@@ -134,6 +145,7 @@ export class NoticeOfWorkHomePage extends Component {
                   sortDir={this.state.params.sort_dir}
                   searchParams={this.state.params}
                   mineRegionHash={this.props.mineRegionHash}
+                  mineRegionOptions={this.props.mineRegionOptions}
                 />
                 <div className="center">
                   <ResponsivePagination
@@ -156,6 +168,7 @@ const mapStateToProps = (state) => ({
   noticeOfWorkApplications: getNoticeOfWorkList(state),
   pageData: getNoticeOfWorkPageData(state),
   mineRegionHash: getMineRegionHash(state),
+  mineRegionOptions: getMineRegionDropdownOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
