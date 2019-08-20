@@ -11,6 +11,7 @@ const setupProps = () => {
   props.sortField = "trackingnumber";
   props.sortDir = "asc";
   props.searchParams = { mine_search: "substring" };
+  props.mineRegionHash = MOCK.REGION_HASH;
 };
 
 beforeEach(() => {

@@ -207,7 +207,7 @@ export class MineReportInfo extends Component {
 
   render() {
     return (
-      <div>
+      <div className="tab__content">
         <div className="inline-flex flex-end">
           <Row>
             <AuthorizationWrapper permission={Permission.EDIT_REPORTS}>

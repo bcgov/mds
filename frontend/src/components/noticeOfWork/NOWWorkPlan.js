@@ -1,7 +1,13 @@
 import React, { Component } from "react";
 import { Divider, Col, Row, Table } from "antd";
+import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
+import NullScreen from "@/components/common/NullScreen";
 import NOWActivities from "@/components/noticeOfWork/NOWActivities";
+
+const propTypes = {
+  noticeOfWork: CustomPropTypes.nowApplication.isRequired,
+};
 
 export class NOWWorkPlan extends Component {
   renderSummaryOfReclamation = () => {
@@ -10,16 +16,19 @@ export class NOWWorkPlan extends Component {
         title: "Activity",
         dataIndex: "activity",
         key: "activity",
+        render: (text) => <div title="Activity">{text}</div>,
       },
       {
         title: "Total Effected Area (ha)",
         dataIndex: "effectedArea",
         key: "effectedArea",
+        render: (text) => <div title="Total Effected Area (ha)">{text}</div>,
       },
       {
         title: "Estimated Cost of Reclamation",
         dataIndex: "cost",
         key: "cost",
+        render: (text) => <div title="Estimated Cost of Reclamation">{text}</div>,
       },
     ];
     return (
@@ -33,7 +42,7 @@ export class NOWWorkPlan extends Component {
               <p className="field-title">Total merchantable timber volume</p>
             </Col>
             <Col md={12} xs={24}>
-              <p> {Strings.EMPTY_FIELD}</p>
+              <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
           <br />
@@ -42,7 +51,7 @@ export class NOWWorkPlan extends Component {
             pagination={false}
             columns={columns}
             dataSource={[]}
-            locale={{ emptyText: "No data" }}
+            locale={{ emptyText: "Unknown" }}
             footer={() => "Total"}
           />
         </div>
@@ -54,20 +63,41 @@ export class NOWWorkPlan extends Component {
     const columns = [
       {
         title: "File name",
-        dataIndex: "name",
-        key: "name",
+        dataIndex: "filename",
+        key: "filename",
+        render: (text, record) => (
+          <div title="File Name">
+            {record.url ? (
+              <a href={record.url} target="_blank" rel="noopener noreferrer">
+                {text}
+              </a>
+            ) : (
+              <span>{text}</span>
+            )}
+          </div>
+        ),
       },
       {
         title: "Category",
         dataIndex: "category",
         key: "category",
+        render: (text) => <div title="Category">{text}</div>,
       },
       {
         title: "Proponent Description",
-        dataIndex: "proponentDescription",
-        key: "proponentDescription",
+        dataIndex: "description",
+        key: "description",
+        render: (text) => <div title="Proponent Description">{text}</div>,
       },
     ];
+
+    const transfromData = (documents) =>
+      documents.map((document) => ({
+        filename: document.filename || Strings.EMPTY_FIELD,
+        url: document.documenturl,
+        category: document.documenttype || Strings.EMPTY_FIELD,
+        description: document.description || Strings.EMPTY_FIELD,
+      }));
 
     return (
       <div>
@@ -75,13 +105,17 @@ export class NOWWorkPlan extends Component {
         <h3>Documents</h3>
         <Divider />
         <div className="padding-large--sides">
-          <Table
-            align="left"
-            pagination={false}
-            columns={columns}
-            dataSource={[]}
-            locale={{ emptyText: "There are no documents associated with this Notice of Work" }}
-          />
+          {this.props.noticeOfWork.documents.length >= 1 ? (
+            <Table
+              align="left"
+              pagination={false}
+              columns={columns}
+              dataSource={transfromData(this.props.noticeOfWork.documents)}
+              locale={{ emptyText: "There are no documents associated with this Notice of Work" }}
+            />
+          ) : (
+            <NullScreen type="documents" />
+          )}
         </div>
       </div>
     );
@@ -99,11 +133,12 @@ export class NOWWorkPlan extends Component {
           </Col>
         </Row>
         {this.renderSummaryOfReclamation()}
-        <NOWActivities />
+        <NOWActivities noticeOfWork={this.props.noticeOfWork} />
         {this.renderDocuments()}
       </div>
     );
   }
 }
 
+NOWWorkPlan.propTypes = propTypes;
 export default NOWWorkPlan;
