@@ -7,6 +7,8 @@ import * as Strings from "@/constants/strings";
 import * as router from "@/constants/routes";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import CustomPropTypes from "@/customPropTypes";
+import { getMineRegionHash } from "@/selectors/staticContentSelectors";
+import { fetchRegionOptions } from "@/actionCreators/staticContentActionCreator";
 import NoticeOfWorkTable from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkTable";
 import NoticeOfWorkSearch from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkSearch";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
@@ -20,6 +22,8 @@ const propTypes = {
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   pageData: CustomPropTypes.pageData.isRequired,
   noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.nowApplication).isRequired,
+  fetchRegionOptions: PropTypes.func.isRequired,
+  mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export class NoticeOfWorkHomePage extends Component {
@@ -35,6 +39,8 @@ export class NoticeOfWorkHomePage extends Component {
   };
 
   componentDidMount() {
+    this.props.fetchRegionOptions();
+
     const params = this.props.location.search;
     const parsedParams = queryString.parse(params);
     const { page = this.state.params.page, per_page = this.state.params.per_page } = parsedParams;
@@ -127,6 +133,7 @@ export class NoticeOfWorkHomePage extends Component {
                   sortField={this.state.params.sort_field}
                   sortDir={this.state.params.sort_dir}
                   searchParams={this.state.params}
+                  mineRegionHash={this.props.mineRegionHash}
                 />
                 <div className="center">
                   <ResponsivePagination
@@ -148,12 +155,14 @@ export class NoticeOfWorkHomePage extends Component {
 const mapStateToProps = (state) => ({
   noticeOfWorkApplications: getNoticeOfWorkList(state),
   pageData: getNoticeOfWorkPageData(state),
+  mineRegionHash: getMineRegionHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchNoticeOfWorkApplications,
+      fetchRegionOptions,
     },
     dispatch
   );
