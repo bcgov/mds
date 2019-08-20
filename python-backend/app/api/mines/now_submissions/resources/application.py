@@ -23,7 +23,6 @@ class MineApplicationResource(Resource, UserMixin, ErrorMixin):
             'sort_dir': 'Sorting direction. Default: DESC',
             'status': 'Comma-separated list of statuses to include in results. Default: All statuses.',
             'noticeofworktype': 'Substring to match with a NoW\s type',
-            'region': 'Substring to match with a NoW region',
             'trackingnumber': 'Number of the NoW'
         })
     @requires_role_view_all
@@ -36,7 +35,6 @@ class MineApplicationResource(Resource, UserMixin, ErrorMixin):
             mine_guid,
             status=request.args.get('status', type=str),
             noticeofworktype=request.args.get('noticeofworktype', type=str),
-            region=request.args.get('region', type=str),
             trackingnumber=request.args.get('trackingnumber', type=int))
 
         if sort_field and sort_dir:
@@ -52,15 +50,12 @@ class MineApplicationResource(Resource, UserMixin, ErrorMixin):
                        sort_dir=None,
                        status=None,
                        noticeofworktype=None,
-                       region=None,
                        trackingnumber=None):
         filters = []
         base_query = Application.query.filter_by(mine_guid=mine_guid)
 
         if noticeofworktype is not None:
             filters.append(func.lower(Application.noticeofworktype).contains(func.lower(noticeofworktype)))
-        if region is not None:
-            filters.append(func.lower(Application.region).contains(func.lower(region)))
         if trackingnumber is not None:
             filters.append(Application.trackingnumber == trackingnumber)
 
