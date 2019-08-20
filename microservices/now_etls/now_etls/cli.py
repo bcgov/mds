@@ -1,5 +1,5 @@
 import click
-from .etl import now_etl
+from now_etls.etl import now_etl
 
 
 @click.group()
