@@ -43,5 +43,5 @@ table_mapping = {
 
 for key, value in table_mapping:
     cursor.execute(f'TRUNCATE TABLE {key} CONTINUE IDENTITY;')
-    current_nros_table = etl.fromdb(connection, f'SELECT * from mms_now_nros.application')
-    etl.appenddb(application_table, connection, 'now_submissions.application', commit=False)
+    current_nros_table = etl.fromdb(connection, f'SELECT * from mms_now_nros.{value}')
+    etl.appenddb(current_nros_table, connection, f'now_submissions.{key}', commit=False)
