@@ -16,3 +16,7 @@ class MineReportSubmissionStatusCode(Base, AuditMixin):
 
     def __repr__(self):
         return '<MineReportSubmissionStatusCode %r>' % self.mine_report_submission_status_code
+
+    @classmethod
+    def active(cls):
+        return cls.query.filter_by(active_ind=True).all()
