@@ -41,7 +41,7 @@
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
-        "name": "rhscl-python-36-rhel7",
+        "name": "redhat-ubi-python-36",
         "annotations": {
           "description": "Python Base Image"
         },
@@ -59,7 +59,7 @@
             "annotations": null,
             "from": {
               "kind": "DockerImage",
-              "name": "registry.access.redhat.com/rhscl/python-36-rhel7:latest"
+              "name": "registry.access.redhat.com/ubi8/python-36:latest"
             },
             "importPolicy": {},
             "referencePolicy": {
@@ -123,7 +123,7 @@
           "sourceStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "name": "rhscl-python-36-rhel7:latest"
+              "name": "redhat-ubi-python-36:latest"
             },
             "env": [
               {
