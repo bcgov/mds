@@ -2,7 +2,7 @@
   "kind": "Template",
   "apiVersion": "v1",
   "metadata": {
-    "name": "mds-python-bc",
+    "name": "mds-python-now-etl-bc",
     "creationTimestamp": null
   },
   "parameters": [
@@ -55,11 +55,11 @@
         },
         "tags": [
           {
-            "name": "3.6.1-55",
+            "name": "latest",
             "annotations": null,
             "from": {
               "kind": "DockerImage",
-              "name": "registry.access.redhat.com/rhscl/python-36-rhel7:1-55"
+              "name": "registry.access.redhat.com/rhscl/python-36-rhel7:latest"
             },
             "importPolicy": {},
             "referencePolicy": {
@@ -123,7 +123,7 @@
           "sourceStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "name": "rhscl-python-36-rhel7:3.6.1-55"
+              "name": "rhscl-python-36-rhel7:latest"
             },
             "env": [
               {
