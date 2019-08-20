@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Collapse, Icon } from "antd";
+import { Collapse, Icon } from "antd";
 import PropTypes from "prop-types";
 import { compose, bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -42,7 +42,8 @@ export class NoticeOfWorkApplication extends Component {
               comprehensive view.
             </p>
           </div>
-          <Button type="primary">View PDF</Button>
+          {/* Will be added when we have the PDF in following sprints */}
+          {/* <Button type="primary">View PDF</Button> */}
         </div>
         <br />
         <Collapse
