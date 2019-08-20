@@ -118,4 +118,4 @@ api.add_resource(
 )
 
 
-api.add_resource(MineApplicationResource, '/<string:mine_guid>/now_submissions/applications/<string:application_guid>')
+api.add_resource(MineApplicationResource, '/<string:mine_guid>/now-submissions/applications')

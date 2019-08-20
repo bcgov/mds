@@ -28,26 +28,34 @@ class MineApplicationResource(Resource, UserMixin, ErrorMixin):
         })
     @requires_role_view_all
     @api.marshal_with(APPLICATION_LIST, code=200, envelope='records')
-    def get(self):
-        records, pagination_details = self._apply_filters_and_pagination(
-            sort_field = request.args.get('sort_field', 'receiveddate', type=str),
-            sort_dir=request.args.get('sort_dir', 'desc', type=str),
+    def get(self, mine_guid):
+        sort_field = request.args.get('sort_field', 'receiveddate', type=str)
+        sort_dir=request.args.get('sort_dir', 'desc', type=str)
+
+        filtered_query = self._apply_filters(
+            mine_guid,
             status=request.args.get('status', type=str),
             noticeofworktype=request.args.get('noticeofworktype', type=str),
             region=request.args.get('region', type=str),
-            trackingnumber=request.args.get('trackingnumber', type=int),
+            trackingnumber=request.args.get('trackingnumber', type=int))
 
-        return records.all()
+        if sort_field and sort_dir:
+            sort_criteria = [{'model': 'Application', 'field': sort_field, 'direction': sort_dir}]
+            filtered_query = apply_sort(filtered_query, sort_criteria)
 
-    def _apply_filters_and_sorting(self,
-                                   sort_field=None,
-                                   sort_dir=None,
-                                   status=None,
-                                   noticeofworktype=None,
-                                   region=None,
-                                   trackingnumber=None):
+        return filtered_query.all()
+
+
+    def _apply_filters(self,
+                       mine_guid,
+                       sort_field=None,
+                       sort_dir=None,
+                       status=None,
+                       noticeofworktype=None,
+                       region=None,
+                       trackingnumber=None):
         filters = []
-        base_query = Application.query
+        base_query = Application.query.filter_by(mine_guid=mine_guid)
 
         if noticeofworktype is not None:
             filters.append(func.lower(Application.noticeofworktype).contains(func.lower(noticeofworktype)))
@@ -66,10 +74,4 @@ class MineApplicationResource(Resource, UserMixin, ErrorMixin):
                 status_filters.append(func.lower(Application.status).contains(func.lower(status)))
             filters.append(or_(*status_filters))
 
-        base_query = base_query.filter(*filters)
-
-        if sort_field and sort_dir:
-            sort_criteria = [{'model': 'Application', 'field': sort_field, 'direction': sort_dir}]
-            base_query = apply_sort(base_query, sort_criteria)
-
-        return base_query.all()
+        return base_query.filter(*filters)
