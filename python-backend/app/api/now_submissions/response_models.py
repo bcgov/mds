@@ -151,6 +151,7 @@ APPLICATION = api.model(
         'application_guid': fields.String,
         'mine_guid': fields.String,
         'mine_name': fields.String,
+        'mine_region': fields.String,
         'trackingnumber': fields.Integer,
         'applicationtype': fields.String,
         'status': fields.String,
@@ -307,12 +308,12 @@ APPLICATION_LIST = api.model(
         'application_guid': fields.String,
         'mine_guid': fields.String,
         'mine_name': fields.String,
+        'mine_region': fields.String,
         'minenumber': fields.String,
         'noticeofworktype': fields.String,
         'trackingnumber': fields.Integer,
         'status': fields.String,
         'receiveddate': fields.Date,
-        # TODO: Figure out Region and add it here
     })
 
 PAGINATED_LIST = api.model(
