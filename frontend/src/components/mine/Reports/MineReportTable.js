@@ -11,6 +11,8 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import { MineReportActions } from "@/components/mine/Reports/MineReportActions";
+import LinkButton from "@/components/common/LinkButton";
+import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 
 const { errorRed } = COLOR;
 
@@ -69,6 +71,34 @@ const columns = [
     render: (text, record) => (
       <div title="Received" style={record.isOverdue ? { color: errorRed } : {}}>
         {formatDate(record.received_date) || Strings.EMPTY_FIELD}
+      </div>
+    ),
+  },
+  {
+    title: "Documents",
+    dataIndex: "documents",
+    render: (text, record) => (
+      <div title="Documents">
+        <ul>
+          {record.report.mine_report_submissions.length > 0 &&
+          record.report.mine_report_submissions[record.report.mine_report_submissions.length - 1]
+            .documents.length > 0
+            ? record.report.mine_report_submissions[
+                record.report.mine_report_submissions.length - 1
+              ].documents.map((file) => (
+                <li>
+                  <div key={file.mine_document_guid}>
+                    <LinkButton
+                      key={file.mine_document_guid}
+                      onClick={() => downloadFileFromDocumentManager(file)}
+                    >
+                      {file.document_name}
+                    </LinkButton>
+                  </div>
+                </li>
+              ))
+            : Strings.EMPTY_FIELD}
+        </ul>
       </div>
     ),
   },

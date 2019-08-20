@@ -30,10 +30,11 @@ class MineReportListResource(Resource, UserMixin):
     # required
     parser.add_argument('submission_year', type=str, location='json', required=True)
     parser.add_argument('mine_report_definition_guid', type=str, location='json', required=True)
-    parser.add_argument('due_date',
-                        location='json',
-                        required=True,
-                        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
+    parser.add_argument(
+        'due_date',
+        location='json',
+        required=True,
+        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
 
     parser.add_argument('permit_guid', type=str, location='json')
     parser.add_argument(
@@ -85,8 +86,8 @@ class MineReportListResource(Resource, UserMixin):
         if submissions:
             submission = submissions[0]
             if len(submission.get('documents')) > 0:
-                report_submission = MineReportSubmission(mine_report_submission_status_code='MIA',
-                                                         submission_date=datetime.now())
+                report_submission = MineReportSubmission(
+                    mine_report_submission_status_code='MIA', submission_date=datetime.now())
                 for submission_doc in submission.get('documents'):
                     mine_doc = MineDocument(
                         mine_guid=mine.mine_guid,
@@ -153,11 +154,9 @@ class MineReportResource(Resource, UserMixin):
             (x for x in subission_iterator if x.get('mine_report_submission_guid') is None), None)
         if new_submission is not None:
             new_report_submission = MineReportSubmission(
-                mine_report_submission_status_code='MIA',
-                submission_date=datetime.now())
+                mine_report_submission_status_code='MIA', submission_date=datetime.now())
 
             # Copy the current list of documents for the report submission
-            current_app.logger.debug(mine_report.mine_report_submissions)
             last_submission_docs = mine_report.mine_report_submissions[0].documents.copy() if len(
                 mine_report.mine_report_submissions) > 0 else []
 

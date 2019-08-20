@@ -14,5 +14,5 @@ export const mineReport = PropTypes.shape({
   report_name: PropTypes.string,
   due_date: PropTypes.string,
   received_date: PropTypes.string,
-  submissions: PropTypes.arrayOf(mineReportSubmission),
+  mine_report_submissions: PropTypes.arrayOf(mineReportSubmission),
 });

@@ -30,6 +30,12 @@ export class RenderDate extends Component {
     time: this.props.input.value ? moment(`${this.props.input.value}-01-01`) : null,
   };
 
+  componentWillReceiveProps = (nextProps) => {
+    this.setState({
+      time: nextProps.input.value ? moment(`${nextProps.input.value}-01-01`) : null,
+    });
+  };
+
   handlePanelChange = (value) => {
     this.setState({
       time: value,
