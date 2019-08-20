@@ -1,27 +1,27 @@
 from flask_restplus import Namespace
 
 from app.api.mines.mine.resources.mine_map import MineMapResource
-from ..mine.resources.mine import MineResource, MineListSearch, MineListResource
-from ..mine.resources.mine_type import MineTypeResource, MineTypeListResource
-from ..mine.resources.mine_type_detail import MineTypeDetailResource
-from ..mine.resources.mine_tenure_type_code import MineTenureTypeCodeResource
-from ..mine.resources.mine_disturbance_code import MineDisturbanceCodeResource
-from ..mine.resources.mine_commodity_code import MineCommodityCodeResource
-from ..status.resources.status import MineStatusResource, MineStatusListResource
-from ..region.resources.region import MineRegionResource
-from ..tailings.resources.tailings import MineTailingsStorageFacilityListResource
-from ..documents.mines.resources.mine_document_resource import MineDocumentListResource
-from ..compliance.resources.compliance import MineComplianceSummaryResource
-from ..compliance.resources.compliance_article import ComplianceArticleResource
-from ..mine.resources.mine_basicinfo import MineBasicInfoResource
+from app.api.mines.mine.resources.mine import MineResource, MineListSearch, MineListResource
+from app.api.mines.mine.resources.mine_type import MineTypeResource, MineTypeListResource
+from app.api.mines.mine.resources.mine_type_detail import MineTypeDetailResource
+from app.api.mines.mine.resources.mine_tenure_type_code import MineTenureTypeCodeResource
+from app.api.mines.mine.resources.mine_disturbance_code import MineDisturbanceCodeResource
+from app.api.mines.mine.resources.mine_commodity_code import MineCommodityCodeResource
+from app.api.mines.status.resources.status import MineStatusResource, MineStatusListResource
+from app.api.mines.region.resources.region import MineRegionResource
+from app.api.mines.tailings.resources.tailings import MineTailingsStorageFacilityListResource
+from app.api.mines.documents.mines.resources.mine_document_resource import MineDocumentListResource
+from app.api.mines.compliance.resources.compliance import MineComplianceSummaryResource
+from app.api.mines.compliance.resources.compliance_article import ComplianceArticleResource
+from app.api.mines.mine.resources.mine_basicinfo import MineBasicInfoResource
 from app.api.mines.mine.resources.mine_verified_status import MineVerifiedStatusResource, MineVerifiedStatusListResource
-from ..subscription.resources.subscription import MineSubscriptionResource, MineSubscriptionListResource
-from ..variances.resources.variance import MineVarianceResource
-from ..variances.resources.variance_list import MineVarianceListResource
-from ..variances.resources.variance_document_upload import MineVarianceDocumentUploadResource
-from ..variances.resources.variance_uploaded_documents import MineVarianceUploadedDocumentsResource
-from ..incidents.resources.mine_incidents import MineIncidentListResource, MineIncidentResource
-from ..incidents.resources.mine_incident_document import MineIncidentDocumentListResource, MineIncidentDocumentResource
+from app.api.mines.subscription.resources.subscription import MineSubscriptionResource, MineSubscriptionListResource
+from app.api.mines.variances.resources.variance import MineVarianceResource
+from app.api.mines.variances.resources.variance_list import MineVarianceListResource
+from app.api.mines.variances.resources.variance_document_upload import MineVarianceDocumentUploadResource
+from app.api.mines.variances.resources.variance_uploaded_documents import MineVarianceUploadedDocumentsResource
+from app.api.mines.incidents.resources.mine_incidents import MineIncidentListResource, MineIncidentResource
+from app.api.mines.incidents.resources.mine_incident_document import MineIncidentDocumentListResource, MineIncidentDocumentResource
 from app.api.mines.reports.resources.mine_report_document import MineReportDocumentListResource
 from app.api.mines.reports.resources.mine_reports import MineReportListResource, MineReportResource
 from app.api.mines.reports.resources.mine_report_definition import MineReportDefinitionListResource
@@ -30,11 +30,12 @@ from app.api.mines.permits.permit.resources.permit import PermitResource, Permit
 from app.api.mines.permits.permit.resources.permit_status_code import PermitStatusCodeResource
 from app.api.mines.permits.permit_amendment.resources.permit_amendment import PermitAmendmentResource, PermitAmendmentListResource
 from app.api.mines.permits.permit_amendment.resources.permit_amendment_document import PermitAmendmentDocumentListResource, PermitAmendmentDocumentResource
+from app.api.mines.now_submissions.resources.application import MineApplicationResource
 
-from ..documents.expected.resources.mine_documents import ExpectedMineDocumentResource
-from ..documents.expected.resources.expected_documents import ExpectedDocumentResource, ExpectedDocumentListResource
-from ..documents.expected.resources.document_status import ExpectedDocumentStatusResource
-from ..documents.expected.resources.expected_document_uploads import ExpectedDocumentUploadResource
+from app.api.mines.documents.expected.resources.mine_documents import ExpectedMineDocumentResource
+from app.api.mines.documents.expected.resources.expected_documents import ExpectedDocumentResource, ExpectedDocumentListResource
+from app.api.mines.documents.expected.resources.document_status import ExpectedDocumentStatusResource
+from app.api.mines.documents.expected.resources.expected_document_uploads import ExpectedDocumentUploadResource
 
 api = Namespace('mines', description='Mine related operations')
 
@@ -115,3 +116,6 @@ api.add_resource(
     PermitAmendmentDocumentResource,
     '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>/documents/<string:permit_amendment_document_guid>',
 )
+
+
+api.add_resource(MineApplicationResource, '/<string:mine_guid>/now_submissions/applications/<string:application_guid>')
