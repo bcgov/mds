@@ -34,7 +34,6 @@ const propTypes = {
   isApplication: PropTypes.bool,
   isDashboardView: PropTypes.bool,
   openEditVarianceModal: PropTypes.func,
-  // filterVarianceStatusOptions: CustomPropTypes.filterOptions,
   params: PropTypes.shape({
     variance_application_status_code: PropTypes.arrayOf(PropTypes.string),
   }),
@@ -51,7 +50,6 @@ const defaultProps = {
   params: {},
   sortField: null,
   sortDir: null,
-  // filterVarianceStatusOptions: [],
 };
 
 const errorStyle = (isOverdue) => (isOverdue ? { color: errorRed } : {});
@@ -153,7 +151,7 @@ export class MineVarianceTable extends Component {
       {
         title: "Lead Inspector",
         dataIndex: "leadInspector",
-        sortField: "lead_inspector", // This may not work is this has to come from a differnet table
+        sortField: "lead_inspector",
         className: hideColumn(!this.props.isDashboardView),
         render: (text, record) => (
           <div
@@ -164,7 +162,7 @@ export class MineVarianceTable extends Component {
             {text}
           </div>
         ),
-        sorter: this.props.isDashboardView, // make sure this works when Lead inspector is N/A
+        sorter: this.props.isDashboardView,
       },
       {
         title: "Submission Date",
@@ -187,8 +185,6 @@ export class MineVarianceTable extends Component {
         sortField: "variance_application_status_code",
         width: 200,
         className: hideColumn(!this.props.isApplication),
-        // filteredValue: this.props.params.variance_application_status_code,
-        // filters: this.props.isDashboardView && this.props.filterVarianceStatusOptions,
         render: (text, record) => (
           <div
             className={hideColumn(!this.props.isApplication)}

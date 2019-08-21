@@ -52,9 +52,6 @@ export class VarianceSearch extends Component {
   };
 
   render() {
-    // console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-    // console.log(this.props.filterVarianceStatusOptions);
-    // console.log(this.props.complianceCodes)
     return (
       <div>
         <Row>

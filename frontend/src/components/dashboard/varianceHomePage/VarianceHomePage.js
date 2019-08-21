@@ -37,8 +37,6 @@ import * as router from "@/constants/routes";
 import { fetchInspectors } from "@/actionCreators/partiesActionCreator";
 import VarianceSearch from "./VarianceSearch";
 import { formatParamStringToArray } from "@/utils/helpers";
-// import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-// import * as Permission from "@/constants/permissions";
 /**
  * @class Variance page is a landing page for variance searching
  *
@@ -214,10 +212,6 @@ export class VarianceHomePage extends Component {
         // Retain per_page if present
         per_page: prevState.params.per_page ? prevState.params.per_page : String.DEFAULT_PER_PAGE,
       };
-      console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXX");
-      console.log(persistedParams);
-      console.log(formattedSearchParams);
-      console.log(updatedParams);
       this.props.history.push(router.VARIANCE_DASHBOARD.dynamicRoute(updatedParams));
       return { params: updatedParams };
     });
@@ -317,7 +311,6 @@ export class VarianceHomePage extends Component {
           <h1>Browse Variances</h1>
         </div>
         <div className="landing-page__content">
-          {/* <AuthorizationWrapper permission={Permission.IN_TESTING}> */}
           <VarianceSearch
             handleNameFieldReset={this.handleNameFieldReset}
             initialValues={this.state.params}
@@ -327,10 +320,8 @@ export class VarianceHomePage extends Component {
             complianceCodes={this.props.getDropdownHSRCMComplianceCodes}
             filterVarianceStatusOptions={this.props.filterVarianceStatusOptions}
           />
-          {/* </AuthorizationWrapper> */}
           <LoadingWrapper condition={this.state.variancesLoaded}>
             <VarianceTable
-              // filterVarianceStatusOptions={this.props.filterVarianceStatusOptions}
               isApplication={this.state.isApplication}
               handleFilterChange={this.handleFilterChange}
               variances={this.props.variances}
