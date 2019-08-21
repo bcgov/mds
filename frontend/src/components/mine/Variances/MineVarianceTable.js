@@ -111,7 +111,7 @@ export class MineVarianceTable extends Component {
       {
         title: "Variance Number",
         dataIndex: "varianceNumber",
-        sortField: "variance_id", // try this to get the sort working!!!
+        sortField: "variance_id",
         render: (text, record) => (
           <div title="Variance Number" style={errorStyle(record.isOverdue)}>
             {text}
@@ -297,7 +297,11 @@ export class MineVarianceTable extends Component {
           }
           align="left"
           pagination={false}
-          columns={applySortIndicator(columns, this.props.sortField, this.props.sortDir)}
+          columns={
+            this.props.isDashboardView
+              ? applySortIndicator(columns, this.props.sortField, this.props.sortDir)
+              : columns
+          }
           locale={{
             emptyText: (
               <NullScreen

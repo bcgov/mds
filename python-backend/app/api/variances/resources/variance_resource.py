@@ -140,7 +140,6 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             conditions.append(self._build_filter('Mine', 'mine_region', 'in', region_list))
 
         query = Variance.query.join(Mine).join(ComplianceArticle)
-        filtered_query = query # rewrite this (stop gap to prevent used before assignment errors
         # Apply sorting
         if args['sort_field'] and args['sort_dir']:
             # The compliance sorting must be custom due to the code being stored in multiple columns.
@@ -160,13 +159,16 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             #TODO Ask Nathan if this fixes the pagination thing
             #TODO This is NOT filtering results !!!
             elif args['sort_field'] == "lead_inspector":
-                
                 query = query.outerjoin(Party, Variance.inspector_party_guid == Party.party_guid)
+                filtered_query = apply_filters(query, conditions)
                 sort_criteria = [{'model': 'Party',
                                   'field': 'party_name', 'direction': args['sort_dir']}]
-                filtered_query = apply_sort(query, sort_criteria)
+                filtered_query = apply_sort(filtered_query, sort_criteria)
             else:
+                filtered_query = apply_filters(query, conditions)
                 sort_criteria = [{'model': sort_models[args['sort_field']],
                                   'field': args['sort_field'], 'direction': args['sort_dir']}]
-                filtered_query = apply_sort(query, sort_criteria)
+                filtered_query = apply_sort(filtered_query, sort_criteria)
+        else:
+            filtered_query = query
         return apply_pagination(filtered_query, args["page_number"], args["page_size"])
