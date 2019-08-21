@@ -107,6 +107,7 @@ export const USERS = "USERS";
 export const GET_CORE_USERS = "GET_CORE_USERS";
 
 // Incidents
+export const GET_INCIDENTS = "GET_INCIDENTS";
 export const INCIDENTS = "INCIDENTS";
 export const CREATE_MINE_INCIDENT = "CREATE_MINE_INCIDENT";
 export const GET_MINE_INCIDENTS = "GET_MINE_INCIDENTS";

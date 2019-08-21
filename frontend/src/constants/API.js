@@ -99,6 +99,20 @@ export const MINE_INCIDENT = (mineGuid, mine_incident_guid) =>
   `/mines/${mineGuid}/incidents/${mine_incident_guid}`;
 export const MINE_INCIDENT_DOCUMENT = (mineGuid) => `/mines/${mineGuid}/incidents/documents`;
 
+export const INCIDENTS = (params) => {
+  const { ...otherParams } = params;
+  // const { variance_application_status_code = [], ...otherParams } = params;
+  // const formattedCodes =
+  //   variance_application_status_code.length >= 1
+  //     ? { variance_application_status_code: variance_application_status_code.join(",") }
+  //     : {};
+  return params
+    ? `/incidents?${queryString.stringify({
+        // ...formattedCodes,
+        ...otherParams,
+      })}`
+    : "/incidents";
+};
 export const INCIDENT_FOLLOWUP_ACTIONS = `/incidents/followup-types`;
 export const INCIDENT_DETERMINATION_TYPES = `/incidents/determination-types`;
 export const INCIDENT_STATUS_CODES = `/incidents/status-codes`;
