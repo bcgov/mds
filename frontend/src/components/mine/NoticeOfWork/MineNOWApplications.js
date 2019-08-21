@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { Divider } from "antd";
 import PropTypes from "prop-types";
 import queryString from "query-string";
-import * as Strings from "@/constants/strings";
 import * as router from "@/constants/routes";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import CustomPropTypes from "@/customPropTypes";
@@ -32,28 +31,13 @@ export class MineNOWApplications extends Component {
   state = {
     isLoaded: false,
     params: {
-      page: Strings.DEFAULT_PAGE,
-      per_page: Strings.DEFAULT_PER_PAGE,
       ...this.params,
     },
   };
 
   componentDidMount() {
     this.props.fetchRegionOptions();
-
-    const params = this.props.location.search;
-    const parsedParams = queryString.parse(params);
-    const { page = this.state.params.page, per_page = this.state.params.per_page } = parsedParams;
-    if (params) {
-      this.renderDataFromURL();
-    } else {
-      this.props.history.push(
-        router.MINE_NOW_APPLICATIONS.dynamicRoute(this.props.mineGuid, {
-          page,
-          per_page,
-        })
-      );
-    }
+    this.renderDataFromURL();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -85,14 +69,10 @@ export class MineNOWApplications extends Component {
   handleSearch = (searchParams = {}, clear = false) => {
     const persistedParams = clear ? {} : this.state.params;
     const updatedParams = {
-      // Default per_page -- overwrite if provided
-      per_page: Strings.DEFAULT_PER_PAGE,
       // Start from existing state
       ...persistedParams,
       // Overwrite prev params with any newly provided search params
       ...searchParams,
-      // Reset page number
-      page: Strings.DEFAULT_PAGE,
     };
 
     this.props.history.push(
