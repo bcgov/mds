@@ -43,20 +43,20 @@ NROS_ONLY_TABLES = {
 def truncate_table(connection, tables):
     cursor = connection.cursor()
     for key, value in tables:
-        cursor.execute(f'TRUNCATE TABLE now_submissions.{key} CONTINUE IDENTITY;')
+        cursor.execute(
+            f'TRUNCATE TABLE now_submissions.{key} CONTINUE IDENTITY;')
 
 
 # Import all the data from the specified schema and tables.
 def ETL_MMS_NOW_schema(connection, tables, schema):
     for key, value in tables:
-        current_table = etl.fromdb(connection, f'SELECT * from {schema}.{value}')
-        etl.appenddb(current_table, connection, f'now_submissions.{key}', commit=False)
+        current_table = etl.fromdb(
+            connection, f'SELECT * from {schema}.{value}')
+        etl.appenddb(current_table, connection,
+                     f'now_submissions.{key}', commit=False)
 
 
-def NOW_submissions_ETL():
-    connection = psycopg2.connect(
-        host='localhost', port=5432, user='mds', password='test', dbname='mds')
-
+def NOW_submissions_ETL(connection):
     # Removing the data imported from the previous run.
     truncate_table(connection, {**SHARED_TABLES, **NROS_ONLY_TABLES})
     connection.commit()
@@ -65,6 +65,7 @@ def NOW_submissions_ETL():
     ETL_MMS_NOW_schema(connection, SHARED_TABLES, 'mms_now_vfcbc')
     connection.commit()
 
-    # Importing the NROS NoW subission data.
-    ETL_MMS_NOW_schema(connection, {**SHARED_TABLES, **NROS_ONLY_TABLES}, 'mms_now_nros')
+    # Importing the NROS NoW submission data.
+    ETL_MMS_NOW_schema(
+        connection, {**SHARED_TABLES, **NROS_ONLY_TABLES}, 'mms_now_nros')
     connection.commit()
