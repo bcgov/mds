@@ -54,7 +54,7 @@ export class NOWGeneralInfo extends Component {
           <Col md={12} xs={24}>
             <div className="inline-flex padding-small">
               <p className="field-title">Crown/Private</p>
-              <p>{this.props.noticeOfWork.landprivate || Strings.EMPTY_FIELD}</p>
+              <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </div>
             <div className="inline-flex padding-small">
               <p className="field-title">Tenure Number</p>
@@ -65,8 +65,8 @@ export class NOWGeneralInfo extends Component {
               <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </div>
             <div className="inline-flex padding-small">
-              <p className="field-title">Type of Application</p>
-              <p>{this.props.noticeOfWork.typeofapplication || Strings.EMPTY_FIELD}</p>
+              <p className="field-title">Term of Application</p>
+              <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </div>
             <div className="inline-flex padding-small">
               <p className="field-title">Proposed Start Date</p>
@@ -102,6 +102,9 @@ export class NOWGeneralInfo extends Component {
                   sub_division_code: contact.mailinigaddressprovstate,
                   suite_no: null,
                 };
+                const formattedPhoneNo = contact.dayphonenumberext
+                  ? `${contact.dayphonenumber} ext: ${contact.dayphonenumberext}`
+                  : contact.dayphonenumber;
                 return (
                   // there is no id/guid that is unique to the contact
                   /* eslint-disable-next-line react/no-array-index-key */
@@ -125,7 +128,7 @@ export class NOWGeneralInfo extends Component {
                         <h6>Email Address</h6>
                         {contact.email || Strings.EMPTY_FIELD}
                         <h6>Phone Number</h6>
-                        {contact.dayphonenumber || Strings.EMPTY_FIELD}
+                        {formattedPhoneNo || Strings.EMPTY_FIELD}
                         <h6>Mailing Address</h6>
                         <Address address={address || {}} />
                       </div>
@@ -209,7 +212,7 @@ export class NOWGeneralInfo extends Component {
           <h4 className="h4">Present State of Land</h4>
           <Row gutter={16} className="padding-small">
             <Col md={12} xs={24}>
-              <p className="field-title"> Present condition of the land</p>
+              <p className="field-title">Present condition of the land</p>
             </Col>
             <Col md={12} xs={24}>
               <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
@@ -304,6 +307,8 @@ export class NOWGeneralInfo extends Component {
               <p>{this.props.noticeOfWork.archsitesaffected || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
+          {/* add conditional once we know what column to use */}
+          {/* {this.props.noticeOfWork.archsitesaffected === "Yes" && ( */}
           <Row gutter={16} className="padding-small">
             <Col md={12} xs={24}>
               <p className="field-title--light">Plan to protect the archaeological site</p>
@@ -312,6 +317,7 @@ export class NOWGeneralInfo extends Component {
               <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
+          {/*  )} */}
           <br />
           <h4 className="h4">First Nations Engagement</h4>
           <Row gutter={16} className="padding-small">
