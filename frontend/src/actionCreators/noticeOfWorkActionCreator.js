@@ -38,12 +38,12 @@ export const fetchNoticeOfWorkApplications = (params = {}) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const fetchMineNoticeOfWorkApplications = (params = {}) => (dispatch) => {
+export const fetchMineNoticeOfWorkApplications = (mineGuid, params = {}) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_NOTICE_OF_WORK_APPLICATIONS));
   dispatch(showLoading());
   return CustomAxios()
     .get(
-      `${ENVIRONMENT.apiUrl}${API.MINE_NOTICE_OF_WORK_APPLICATIONS(params)}`,
+      `${ENVIRONMENT.apiUrl}${API.MINE_NOTICE_OF_WORK_APPLICATIONS(mineGuid, params)}`,
       createRequestHeader()
     )
     .then((response) => {
