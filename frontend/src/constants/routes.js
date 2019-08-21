@@ -21,6 +21,7 @@ import MineComplianceInfo from "@/components/mine/Compliance/MineComplianceInfo"
 import MineIncidents from "@/components/mine/Incidents/MineIncidents";
 import MineTailingsInfo from "@/components/mine/Tailings/MineTailingsInfo";
 import MineReportInfo from "@/components/mine/Reports/MineReportInfo";
+import MineNOWApplications from "@/components/mine/NoticeOfWork/MineNOWApplications";
 import HomePage from "@/components/dashboard/HomePage";
 import NoticeOfWorkApplication from "@/components/noticeOfWork/NoticeOfWorkApplication";
 import NoticeOfWorkHomePage from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkHomePage";
@@ -95,6 +96,12 @@ export const MINE_VARIANCES = {
   route: "/mine-dashboard/:id/permits-and-approvals/variances",
   dynamicRoute: (id) => `/mine-dashboard/${id}/permits-and-approvals/variances`,
   component: MineVariance,
+};
+
+export const MINE_NOW_APPLICATIONS = {
+  route: "/mine-dashboard/:id/permits-and-approvals/notice-of-work",
+  dynamicRoute: (id) => `/mine-dashboard/${id}/permits-and-approvals/notice-of-work`,
+  component: MineNOWApplications,
 };
 
 export const MINE_INCIDENTS = {
