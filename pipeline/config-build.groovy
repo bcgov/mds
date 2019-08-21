@@ -54,7 +54,7 @@ app {
                     ]
                 ],
                 [
-                    'file':'openshift/_python36.bc.json',
+                    'file':'microservices/now_etls/python36.bc.json',
                     'params':[
                             'NAME':"mds-now-etl",
                             'SUFFIX': "${app.build.suffix}",

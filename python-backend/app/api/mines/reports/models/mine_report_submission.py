@@ -1,9 +1,11 @@
+import uuid
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
-from sqlalchemy.ext.associationproxy import association_proxy
 
 from app.api.utils.models_mixins import Base, AuditMixin
 from app.extensions import db
+
+from sqlalchemy.ext.associationproxy import association_proxy
 
 
 class MineReportSubmission(Base, AuditMixin):
@@ -17,17 +19,40 @@ class MineReportSubmission(Base, AuditMixin):
         db.String,
         db.ForeignKey('mine_report_submission_status_code.mine_report_submission_status_code'))
     submission_date = db.Column(db.DateTime)
-    documents = db.relationship('MineDocument',
-                                lazy='selectin',
-                                secondary='mine_report_document_xref')
+    documents = db.relationship(
+        'MineDocument', lazy='selectin', secondary='mine_report_document_xref')
+    comments = db.relationship(
+        'MineReportComment',
+        order_by='MineReportComment.comment_datetime',
+        primaryjoin="and_(MineReportComment.mine_report_submission_id == MineReportSubmission.mine_report_submission_id, MineReportComment.deleted_ind==False)",
+        lazy='joined')
+    report = db.relationship('MineReport', lazy='joined')
+
+    mine_report_guid = association_proxy('report', 'mine_report_guid')
 
     def __repr__(self):
         return '<MineReportSubmission %r>' % self.mine_report_submission_guid
 
     @classmethod
+    def find_latest_by_mine_report_guid(cls, _id):
+        try:
+            uuid.UUID(_id, version=4)
+            return cls.query.filter_by(mine_report_guid=_id).order_by(cls.mine_report_submission_id.desc()).first()
+        except ValueError:
+            return None
+
+    @classmethod
     def find_by_mine_report_guid(cls, _id):
         try:
             uuid.UUID(_id, version=4)
-            return cls.query.filter_by(mine_report_guid=_id).first()
+            return cls.query.filter_by(mine_report_guid=_id).all()
+        except ValueError:
+            return None
+
+    @classmethod
+    def find_by_guid(cls, _id):
+        try:
+            uuid.UUID(_id, version=4)
+            return cls.query.filter_by(mine_report_submission_guid=_id).first()
         except ValueError:
             return None
