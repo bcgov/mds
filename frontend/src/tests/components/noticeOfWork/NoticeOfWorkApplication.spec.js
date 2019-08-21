@@ -20,7 +20,7 @@ beforeEach(() => {
   setupReducerProps();
 });
 
-describe("PartyProfile", () => {
+describe("NoticeOfWorkApplication", () => {
   it("renders properly", () => {
     const component = shallow(
       <NoticeOfWorkApplication {...dispatchProps} {...reducerProps} match={{ params: { id: 1 } }} />
