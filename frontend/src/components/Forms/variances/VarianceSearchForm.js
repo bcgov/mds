@@ -14,13 +14,14 @@ const propTypes = {
   isAdvanceSearch: PropTypes.bool,
   complianceCodes: CustomPropTypes.options.isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
+  filterVarianceStatusOptions: CustomPropTypes.filterOptions.isRequired,
 };
 
 const defaultProps = {
   isAdvanceSearch: false,
 };
 
-const validate = (values) => {
+export const validate = (values) => {
   const errors = {};
   if (values.issue_date_after && values.issue_date_before) {
     if (Date.parse(values.issue_date_after) > Date.parse(values.issue_date_before)) {
@@ -29,7 +30,7 @@ const validate = (values) => {
   }
   if (values.expiry_date_after && values.expiry_date_before) {
     if (Date.parse(values.expiry_date_after) > Date.parse(values.expiry_date_before)) {
-      errors.issue_date_before = "Must be after expiry date.";
+      errors.expiry_date_before = "Must be after expiry date.";
     }
   }
   return errors;
@@ -50,7 +51,7 @@ export class VarianceSearchForm extends Component {
               id="search"
               name="search"
               component={renderConfig.FIELD}
-              placeholder="Search by code section, mine name, or mine number"
+              placeholder="Search by mine name, or mine number"
             />
           </Col>
         </Row>
@@ -68,11 +69,22 @@ export class VarianceSearchForm extends Component {
               </Col>
             </Row>
             <Row gutter={6}>
+              <Col md={24} xs={24}>
+                <Field
+                  id="variance_application_status_code"
+                  name="variance_application_status_code"
+                  placeholder="Select Application Statuses"
+                  component={renderConfig.MULTI_SELECT}
+                  data={this.props.filterVarianceStatusOptions}
+                />
+              </Col>
+            </Row>
+            <Row gutter={6}>
               <Col md={12} xs={24}>
                 <Field
                   id="issue_date_after"
                   name="issue_date_after"
-                  placeholder="Select Min Issue Date"
+                  placeholder="Select Earliest Issue Date"
                   component={renderConfig.DATE}
                 />
               </Col>
@@ -80,7 +92,7 @@ export class VarianceSearchForm extends Component {
                 <Field
                   id="issue_date_before"
                   name="issue_date_before"
-                  placeholder="Select Max Issue Date"
+                  placeholder="Select Latest Issue Date"
                   component={renderConfig.DATE}
                 />
               </Col>
@@ -90,7 +102,7 @@ export class VarianceSearchForm extends Component {
                 <Field
                   id="expiry_date_after"
                   name="expiry_date_after"
-                  placeholder="Select Min Expiry Date"
+                  placeholder="Select Earliest Expiry Date"
                   component={renderConfig.DATE}
                 />
               </Col>
@@ -98,7 +110,7 @@ export class VarianceSearchForm extends Component {
                 <Field
                   id="expiry_date_before"
                   name="expiry_date_before"
-                  placeholder="Select Max Expiry Date"
+                  placeholder="Select Latest Expiry Date"
                   component={renderConfig.DATE}
                 />
               </Col>
@@ -155,4 +167,5 @@ export default reduxForm({
   form: FORM.VARIANCE_ADVANCED_SEARCH,
   validate,
   touchOnBlur: false,
+  enableReinitialize: true,
 })(VarianceSearchForm);

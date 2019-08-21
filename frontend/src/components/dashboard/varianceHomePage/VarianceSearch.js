@@ -10,17 +10,10 @@ import CustomPropTypes from "@/customPropTypes";
  */
 const propTypes = {
   handleVarianceSearch: PropTypes.func.isRequired,
-  initialValues: PropTypes.shape({
-    region: PropTypes.arrayOf(PropTypes.string),
-    compliance_code: PropTypes.arrayOf(PropTypes.string),
-    major: PropTypes.string,
-    issue_date_after: PropTypes.string,
-    issue_date_before: PropTypes.string,
-    expiry_date_before: PropTypes.string,
-    expiry_date_after: PropTypes.string,
-  }),
+  initialValues: CustomPropTypes.varianceSearchInitialValues,
   mineRegionOptions: CustomPropTypes.options.isRequired,
   complianceCodes: CustomPropTypes.options.isRequired,
+  filterVarianceStatusOptions: CustomPropTypes.filterOptions.isRequired,
 };
 
 const defaultProps = {
@@ -72,6 +65,7 @@ export class VarianceSearch extends Component {
                 initialValues={this.props.initialValues}
                 complianceCodes={this.props.complianceCodes}
                 mineRegionOptions={this.props.mineRegionOptions}
+                filterVarianceStatusOptions={this.props.filterVarianceStatusOptions}
               />
             </span>
           </Col>

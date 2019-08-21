@@ -33,13 +33,10 @@ import {
 import { getVariances, getVariancePageData } from "@/selectors/varianceSelectors";
 import { VarianceTable } from "@/components/dashboard/customHomePage/VarianceTable";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
-import * as Strings from "@/constants/strings";
 import * as router from "@/constants/routes";
 import { fetchInspectors } from "@/actionCreators/partiesActionCreator";
 import VarianceSearch from "./VarianceSearch";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as Permission from "@/constants/permissions";
-
+import { formatParamStringToArray } from "@/utils/helpers";
 /**
  * @class Variance page is a landing page for variance searching
  *
@@ -68,70 +65,67 @@ const propTypes = {
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
 };
 
-const joinOrRemove = (param, key) => (isEmpty(param) ? {} : { [key]: param.join(",") });
-const formatParams = ({ region = [], compliance_code = [], ...remainingParams }) => ({
-  ...joinOrRemove(region, "region"),
-  ...joinOrRemove(compliance_code, "compliance_code"),
-  ...remainingParams,
-});
+export const joinOrRemove = (param, key) => {
+  if (isEmpty(param)) {
+    return {};
+  }
+  return typeof param === "string" ? { [key]: param } : { [key]: param.join(",") };
+};
+export const removeEmptyStings = (param, key) => (isEmpty(param) ? {} : { [key]: param });
+export const formatParams = ({
+  region = [],
+  compliance_code = [],
+  variance_application_status_code = [],
+  issue_date_after,
+  issue_date_before,
+  expiry_date_before,
+  expiry_date_after,
+  search,
+  major,
+  ...remainingParams
+}) => {
+  return {
+    ...joinOrRemove(region, "region"),
+    ...joinOrRemove(compliance_code, "compliance_code"),
+    ...joinOrRemove(variance_application_status_code, "variance_application_status_code"),
+    ...removeEmptyStings(issue_date_after, "issue_date_after"),
+    ...removeEmptyStings(issue_date_before, "issue_date_before"),
+    ...removeEmptyStings(expiry_date_before, "expiry_date_before"),
+    ...removeEmptyStings(expiry_date_after, "expiry_date_after"),
+    ...removeEmptyStings(search, "search"),
+    ...removeEmptyStings(major, "major"),
+    ...remainingParams,
+  };
+};
 
 export class VarianceHomePage extends Component {
+  params = queryString.parse(this.props.location.search);
+
   constructor(props) {
     super(props);
     this.handleVarianceSearchDebounced = debounce(this.handleVarianceSearch, 1000);
     this.state = {
       variancesLoaded: false,
       params: {
-        page: Strings.DEFAULT_PAGE,
-        per_page: Strings.DEFAULT_PER_PAGE,
-        major: "",
-        region: [],
-        compliance_code: [],
-        issue_date_after: "",
-        issue_date_before: "",
-        expiry_date_before: "",
-        expiry_date_after: "",
-        search: "",
+        compliance_code: formatParamStringToArray(this.params.compliance_code),
+        variance_application_status_code: formatParamStringToArray(
+          this.params.variance_application_status_code
+        ),
+        region: formatParamStringToArray(this.params.region),
+        major: this.params.major,
+        search: this.params.search,
+        issue_date_after: this.params.issue_date_after,
+        issue_date_before: this.params.issue_date_before,
+        expiry_date_before: this.params.expiry_date_before,
+        expiry_date_after: this.params.expiry_date_after,
       },
     };
   }
 
-  state = {
-    variancesLoaded: false,
-    params: {
-      variance_application_status_code: [],
-      page: Strings.DEFAULT_PAGE,
-      per_page: Strings.DEFAULT_PER_PAGE,
-      major: "",
-      region: [],
-      compliance_code: [],
-      issue_date_after: "",
-      issue_date_before: "",
-      expiry_date_before: "",
-      expiry_date_after: "",
-      search: "",
-    },
-  };
-
   componentDidMount() {
     const params = this.props.location.search;
-    const parsedParams = queryString.parse(params);
-    const {
-      page = this.state.params.page,
-      per_page = this.state.params.per_page,
-      type = this.state.params.type,
-    } = parsedParams;
-    if (params) {
-      this.renderDataFromURL(params);
-    } else {
-      this.props.history.push(
-        router.VARIANCE_DASHBOARD.dynamicRoute({
-          page,
-          per_page,
-          type,
-        })
-      );
-    }
+
+    this.renderDataFromURL(params);
 
     this.props.fetchVariances(this.state.params).then(() => {
       this.setState({ variancesLoaded: true });
@@ -145,6 +139,13 @@ export class VarianceHomePage extends Component {
     this.props.fetchVarianceDocumentCategoryOptions();
   }
 
+  componentWillReceiveProps(nextProps) {
+    const locationChanged = nextProps.location !== this.props.location;
+    if (locationChanged) {
+      this.renderDataFromURL(nextProps.location.search);
+    }
+  }
+
   componentWillUnmount() {
     this.handleVarianceSearchDebounced.cancel();
     this.setState({
@@ -153,17 +154,45 @@ export class VarianceHomePage extends Component {
   }
 
   renderDataFromURL = (params) => {
-    const { region, compliance_code, major, search, ...remainingParams } = queryString.parse(
-      params
+    const {
+      region,
+      compliance_code,
+      variance_application_status_code,
+      major,
+      search,
+      ...remainingParams
+    } = queryString.parse(params);
+    this.setState(
+      {
+        params: {
+          region: formatParamStringToArray(region),
+          compliance_code: formatParamStringToArray(compliance_code),
+          variance_application_status_code: formatParamStringToArray(
+            variance_application_status_code
+          ),
+          major,
+          search,
+          ...remainingParams,
+        },
+      },
+      () => {
+        this.props.fetchVariances(this.state.params);
+      }
     );
-    const format = (param) => (param ? param.split(",").filter((x) => x) : []);
+  };
+
+  clearParams = () => {
     this.setState({
       params: {
-        region: format(region),
-        compliance_code: format(compliance_code),
-        major,
-        search,
-        ...remainingParams,
+        region: [],
+        compliance_code: [],
+        variance_application_status_code: [],
+        major: null,
+        search: null,
+        issue_date_after: null,
+        issue_date_before: null,
+        expiry_date_before: null,
+        expiry_date_after: null,
       },
     });
   };
@@ -172,8 +201,8 @@ export class VarianceHomePage extends Component {
     const formattedSearchParams = formatParams(searchParams);
     const persistedParams = clear ? {} : formatParams(this.state.params);
 
-    this.props.history.push(
-      router.VARIANCE_DASHBOARD.dynamicRoute({
+    this.setState((prevState) => {
+      const updatedParams = {
         // Start from existing state
         ...persistedParams,
         // Overwrite prev params with any newly provided search params
@@ -181,9 +210,11 @@ export class VarianceHomePage extends Component {
         // Reset page number
         page: String.DEFAULT_PAGE,
         // Retain per_page if present
-        per_page: this.state.params.per_page ? this.state.params.per_page : String.DEFAULT_PER_PAGE,
-      })
-    );
+        per_page: prevState.params.per_page ? prevState.params.per_page : String.DEFAULT_PER_PAGE,
+      };
+      this.props.history.push(router.VARIANCE_DASHBOARD.dynamicRoute(updatedParams));
+      return { params: updatedParams };
+    });
   };
 
   handleVariancePageChange = (page, per_page) => {
@@ -280,18 +311,17 @@ export class VarianceHomePage extends Component {
           <h1>Browse Variances</h1>
         </div>
         <div className="landing-page__content">
-          <AuthorizationWrapper permission={Permission.IN_TESTING}>
-            <VarianceSearch
-              handleNameFieldReset={this.handleNameFieldReset}
-              initialValues={this.state.params}
-              handleVarianceSearch={this.handleVarianceSearchDebounced}
-              mineRegionOptions={this.props.mineRegionOptions}
-              complianceCodes={this.props.getDropdownHSRCMComplianceCodes}
-            />
-          </AuthorizationWrapper>
+          <VarianceSearch
+            handleNameFieldReset={this.handleNameFieldReset}
+            initialValues={this.state.params}
+            fetchVariances={this.props.fetchVariances}
+            handleVarianceSearch={this.handleVarianceSearchDebounced}
+            mineRegionOptions={this.props.mineRegionOptions}
+            complianceCodes={this.props.getDropdownHSRCMComplianceCodes}
+            filterVarianceStatusOptions={this.props.filterVarianceStatusOptions}
+          />
           <LoadingWrapper condition={this.state.variancesLoaded}>
             <VarianceTable
-              filterVarianceStatusOptions={this.props.filterVarianceStatusOptions}
               isApplication={this.state.isApplication}
               handleFilterChange={this.handleFilterChange}
               variances={this.props.variances}
@@ -301,6 +331,8 @@ export class VarianceHomePage extends Component {
               params={this.state.params}
               openEditVarianceModal={this.openEditVarianceModal}
               openViewVarianceModal={this.openViewVarianceModal}
+              sortField={this.state.params.sort_field}
+              sortDir={this.state.params.sort_dir}
             />
           </LoadingWrapper>
         </div>
