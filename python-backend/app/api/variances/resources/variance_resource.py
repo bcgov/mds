@@ -2,9 +2,8 @@ from flask_restplus import Resource
 from flask import request
 from sqlalchemy_filters import apply_pagination, apply_filters
 from sqlalchemy import desc
-
 from app.extensions import api
-
+from ...mines.mine.models.mine import Mine
 from ..models.variance import Variance
 from ..models.variance_application_status_code import VarianceApplicationStatusCode
 from ..response_models import PAGINATED_VARIANCE_LIST
@@ -23,14 +22,32 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             'per_page': f'The number of records to return per page. Default: {PER_PAGE_DEFAULT}',
             'variance_application_status_code':
             'Comma-separated list of code statuses to include in results. Default: All status codes.',
-        })
+            'compliance_codes':'Comma-separated list of compliance codes to be filtered. Default: All compliance codes',
+            'major': 'boolean indicating if variance is from a major or regional mine',
+            'region': 'Comma-separated list of regions the mines associated with the variances are located in',
+            'issue_date_before': 'Latest possible issue date returned (inclusive)',
+            'issue_date_after': 'Earliest possible issue date returned (inclusive)',
+            'expiry_date_before': 'Latest possible expiry date returned (inclusive)',
+            'expiry_date_after': 'Earliest possible expiry date returned (inclusive)'})
     @requires_any_of([VIEW_ALL])
     @api.marshal_with(PAGINATED_VARIANCE_LIST, code=200)
     def get(self):
-        records, pagination_details = self._apply_filters_and_pagination(
-            page_number=request.args.get('page', PAGE_DEFAULT, type=int),
-            page_size=request.args.get('per_page', PER_PAGE_DEFAULT, type=int),
-            application_status=request.args.get('variance_application_status_code', type=str))
+        args={
+            "page_number": request.args.get('page', PAGE_DEFAULT, type=int),
+            "page_size":request.args.get('per_page', PER_PAGE_DEFAULT, type=int),
+            "application_status": request.args.get('variance_application_status_code', type=str),
+            "compliance_codes": request.args.get('compliance_code', type=str),
+            'major': request.args.get('major', type=str),
+            'region': request.args.get('region', type=str),
+            'issue_date_before': request.args.get('issue_date_before', type=str),
+            'issue_date_after': request.args.get('issue_date_after', type=str),
+            'expiry_date_before': request.args.get('expiry_date_before', type=str),
+            'expiry_date_after': request.args.get('expiry_date_after', type=str),
+            'search_terms': request.args.get('search', type=str),
+        }
+
+
+        records, pagination_details = self._apply_filters_and_pagination(args)
 
         if not records:
             raise BadRequest('Unable to fetch variances.')
@@ -43,24 +60,70 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             'total': pagination_details.total_results,
         }
 
+    @classmethod
+    def _build_filter(cls, model, field, op, argfield):
+        return {
+            'model': model,
+            'field': field,
+            'op': op,
+            'value': argfield
+        }
 
-    def _apply_filters_and_pagination(self,
-                                      page_number=PAGE_DEFAULT,
-                                      page_size=PER_PAGE_DEFAULT,
-                                      application_status=None):
+    def _apply_filters_and_pagination(self, args):
+
         status_filter_values = list(map(
             lambda x: x.variance_application_status_code,
             VarianceApplicationStatusCode.active()))
 
-        if application_status is not None:
-            status_filter_values = application_status.split(',')
+        conditions = []
+        if args["application_status"] is not None:
+            status_filter_values = args["application_status"].split(',')
+            conditions.append(self._build_filter('Variance' , 'variance_application_status_code', 'in',  status_filter_values))
+
+        if args["compliance_codes"] is not None:
+            compliance_codes_values = args["compliance_codes"].split(',')
+            conditions.append(
+                self._build_filter('Variance', 'compliance_article_id', 'in', compliance_codes_values))
+
+        if args["expiry_date_before"] is not None:
+            conditions.append(
+                self._build_filter('Variance', 'expiry_date', '<=', args["expiry_date_before"]))
+
+        if args["expiry_date_after"] is not None:
+            conditions.append(
+                self._build_filter('Variance', 'expiry_date', '>=', args["expiry_date_after"]))
+
+        if args["issue_date_before"] is not None:
+            conditions.append(
+                self._build_filter('Variance', 'issue_date', '<=', args["issue_date_before"]))
+
+        if args["issue_date_after"] is not None:
+            conditions.append(
+                self._build_filter('Variance', 'issue_date', '>=', args["issue_date_after"]))
+
+        if args["major"] is not None:
+            conditions.append(
+                self._build_filter('Mine', 'major_mine_ind', '==', args["major"]))
+
+        if args["search_terms"] is not None:
+            search_term_list = args["search_terms"].split(' ')
+            search_conditions = []
+            for search_term in search_term_list:
+                search_conditions.append(
+                    self._build_filter('Mine', 'mine_name', 'ilike', '%{}%'.format(search_term)))
+
+                search_conditions.append(
+                    self._build_filter('Mine', 'mine_no', 'ilike', '%{}%'.format(search_term)))
+
+            conditions.append({'or': search_conditions})
+
+        if args["region"] is not None:
+            region_list = args["region"].split(',')
+            conditions.append(self._build_filter('Mine', 'mine_region', 'in', region_list))
+
+        query = Variance.query.join(Mine)
 
         filtered_query = apply_filters(
-            Variance.query.order_by(desc(Variance.received_date)),
-            [{
-                'field': 'variance_application_status_code',
-                'op': 'in',
-                'value': status_filter_values
-            }])
+            query.order_by(desc(Variance.received_date)), conditions)
 
-        return apply_pagination(filtered_query, page_number, page_size)
+        return apply_pagination(filtered_query, args["page_number"], args["page_size"])
