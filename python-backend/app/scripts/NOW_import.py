@@ -46,6 +46,7 @@ def truncate_table(connection, tables):
         cursor.execute(f'TRUNCATE TABLE now_submissions.{key} CONTINUE IDENTITY;')
 
 
+# Import all the data from the specified schema and tables.
 def ETL_MMS_NOW_schema(connection, tables, schema):
     for key, value in tables:
         current_table = etl.fromdb(connection, f'SELECT * from {schema}.{value}')
@@ -56,11 +57,14 @@ def NOW_submissions_ETL():
     connection = psycopg2.connect(
         host='localhost', port=5432, user='mds', password='test', dbname='mds')
 
+    # Removing the data imported from the previous run.
     truncate_table(connection, {**SHARED_TABLES, **NROS_ONLY_TABLES})
     connection.commit()
 
+    # Importing the vFCBC NoW submission data.
     ETL_MMS_NOW_schema(connection, SHARED_TABLES, 'mms_now_vfcbc')
     connection.commit()
 
+    # Importing the NROS NoW subission data.
     ETL_MMS_NOW_schema(connection, {**SHARED_TABLES, **NROS_ONLY_TABLES}, 'mms_now_nros')
     connection.commit()
