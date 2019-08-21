@@ -1,244 +1,151 @@
 import React, { Component } from "react";
-import { bindActionCreators } from "redux";
+import { compose, bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import { Divider } from "antd";
-import moment from "moment";
-import MineVarianceTable from "../Variances/MineVarianceTable";
-import * as ModalContent from "@/constants/modalContent";
-import { modalConfig } from "@/components/modalContent/config";
-import { openModal, closeModal } from "@/actions/modalActions";
-import * as Permission from "@/constants/permissions";
+import PropTypes from "prop-types";
+import queryString from "query-string";
 import * as Strings from "@/constants/strings";
+import * as router from "@/constants/routes";
+import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import CustomPropTypes from "@/customPropTypes";
-import AddButton from "@/components/common/AddButton";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import NullScreen from "@/components/common/NullScreen";
-import { getMines, getMineGuid } from "@/selectors/mineSelectors";
-import {
-  getDropdownHSRCMComplianceCodes,
-  getHSRCMComplianceCodesHash,
-  getDropdownVarianceStatusOptions,
-  getVarianceStatusOptionsHash,
-  getDropdownVarianceDocumentCategoryOptions,
-  getVarianceDocumentCategoryOptionsHash,
-} from "@/selectors/staticContentSelectors";
-import {
-  createVariance,
-  fetchVariancesByMine,
-  addDocumentToVariance,
-  updateVariance,
-} from "@/actionCreators/varianceActionCreator";
-import { getVarianceApplications, getApprovedVariances } from "@/selectors/varianceSelectors";
-import { getDropdownInspectors, getInspectorsHash } from "@/selectors/partiesSelectors";
+import { getMineRegionHash } from "@/selectors/staticContentSelectors";
+import { fetchRegionOptions } from "@/actionCreators/staticContentActionCreator";
+import MineNoticeOfWorkTable from "@/components/mine/NoticeOfWork/MineNoticeOfWorkTable";
+import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
+import { fetchNoticeOfWorkApplications } from "@/actionCreators/noticeOfWorkActionCreator";
+import { getNoticeOfWorkList } from "@/selectors/noticeOfWorkSelectors";
+import { getMineGuid } from "@/selectors/mineSelectors";
 
 const propTypes = {
-  mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
   mineGuid: PropTypes.string.isRequired,
-  approvedVariances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
-  varianceApplications: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
-  openModal: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
-  fetchVariancesByMine: PropTypes.func.isRequired,
-  createVariance: PropTypes.func.isRequired,
-  updateVariance: PropTypes.func.isRequired,
-  addDocumentToVariance: PropTypes.func.isRequired,
-  complianceCodes: CustomPropTypes.options.isRequired,
-  complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  inspectors: CustomPropTypes.groupOptions.isRequired,
-  varianceDocumentCategoryOptions: CustomPropTypes.options.isRequired,
-  varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  fetchNoticeOfWorkApplications: PropTypes.func.isRequired,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  location: PropTypes.shape({ search: PropTypes.string }).isRequired,
+  noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.nowApplication).isRequired,
+  fetchRegionOptions: PropTypes.func.isRequired,
+  mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
-export class MineVariance extends Component {
-  handleAddVariances = (files, isApplication) => (values) => {
-    const { variance_document_category_code } = values;
-    const variance_application_status_code = isApplication
-      ? Strings.VARIANCE_APPLICATION_CODE
-      : Strings.VARIANCE_APPROVED_CODE;
-    const received_date = values.received_date
-      ? values.received_date
-      : moment().format("YYYY-MM-DD");
-    const newValues = { received_date, variance_application_status_code, ...values };
-    return this.props
-      .createVariance({ mineGuid: this.props.mineGuid }, newValues)
-      .then(async ({ data: { variance_guid } }) => {
-        await Promise.all(
-          Object.entries(files).map(([document_manager_guid, document_name]) =>
-            this.props.addDocumentToVariance(
-              { mineGuid: this.props.mineGuid, varianceGuid: variance_guid },
-              {
-                document_manager_guid,
-                document_name,
-                variance_document_category_code,
-              }
-            )
-          )
-        );
-        this.props.closeModal();
-        this.props.fetchVariancesByMine({ mineGuid: this.props.mineGuid });
-      });
+export class MineNOWApplications extends Component {
+  params = queryString.parse(this.props.location.search);
+
+  state = {
+    isLoaded: false,
+    params: {
+      page: Strings.DEFAULT_PAGE,
+      per_page: Strings.DEFAULT_PER_PAGE,
+      ...this.params,
+    },
   };
 
-  handleUpdateVariance = (files, variance, isApproved) => (values) => {
-    // if the application isApproved, set issue_date to today and set expiry_date 5 years from today,
-    // unless the user sets a custom expiry.
-    const { variance_document_category_code } = values;
-    const issue_date = isApproved ? moment().format("YYYY-MM-DD") : null;
-    let expiry_date;
-    if (isApproved) {
-      expiry_date = values.expiry_date
-        ? values.expiry_date
-        : moment(issue_date, "YYYY-MM-DD").add(5, "years");
+  componentDidMount() {
+    this.props.fetchRegionOptions();
+
+    const params = this.props.location.search;
+    const parsedParams = queryString.parse(params);
+    const { page = this.state.params.page, per_page = this.state.params.per_page } = parsedParams;
+    if (params) {
+      this.renderDataFromURL();
+    } else {
+      this.props.history.push(
+        router.MINE_NOW_APPLICATIONS.dynamicRoute(this.props.mineGuid, {
+          page,
+          per_page,
+        })
+      );
     }
-    const newValues = { ...values, issue_date, expiry_date };
-    const varianceGuid = variance.variance_guid;
-    const codeLabel = this.props.complianceCodesHash[variance.compliance_article_id];
-    this.props
-      .updateVariance({ mineGuid: this.props.mineGuid, varianceGuid, codeLabel }, newValues)
-      .then(async () => {
-        await Promise.all(
-          Object.entries(files).map(([document_manager_guid, document_name]) =>
-            this.props.addDocumentToVariance(
-              { mineGuid: this.props.mineGuid, varianceGuid },
-              {
-                document_manager_guid,
-                document_name,
-                variance_document_category_code,
-              }
-            )
-          )
-        );
-        this.props.closeModal();
-        this.props.fetchVariancesByMine({ mineGuid: this.props.mineGuid });
-      });
-  };
-
-  openEditVarianceModal = (variance) => {
-    const mine = this.props.mines[this.props.mineGuid];
-    this.props.openModal({
-      props: {
-        onSubmit: this.handleUpdateVariance,
-        title: this.props.complianceCodesHash[variance.compliance_article_id],
-        mineGuid: mine.mine_guid,
-        mineName: mine.mine_name,
-        varianceGuid: variance.variance_guid,
-      },
-      content: modalConfig.EDIT_VARIANCE,
-    });
-  };
-
-  openViewVarianceModal = (variance) => {
-    const mine = this.props.mines[this.props.mineGuid];
-    this.props.openModal({
-      props: {
-        variance,
-        title: this.props.complianceCodesHash[variance.compliance_article_id],
-        mineName: mine.mine_name,
-      },
-      content: modalConfig.VIEW_VARIANCE,
-      isViewOnly: true,
-    });
-  };
-
-  openVarianceModal(event, mine) {
-    event.preventDefault();
-    this.props.openModal({
-      props: {
-        onSubmit: this.handleAddVariances,
-        title: ModalContent.ADD_VARIANCE(mine.mine_name),
-        mineGuid: mine.mine_guid,
-        complianceCodes: this.props.complianceCodes,
-        documentCategoryOptions: this.props.varianceDocumentCategoryOptions,
-        inspectors: this.props.inspectors,
-      },
-      content: modalConfig.ADD_VARIANCE,
-    });
   }
 
-  renderVarianceTables = (mine) =>
-    this.props.varianceApplications.length > 0 || this.props.approvedVariances.length > 0 ? (
-      <div>
-        <br />
-        <h4 className="uppercase">Variance Applications</h4>
-        <br />
-        <MineVarianceTable
-          openEditVarianceModal={this.openEditVarianceModal}
-          openViewVarianceModal={this.openViewVarianceModal}
-          variances={this.props.varianceApplications}
-          complianceCodesHash={this.props.complianceCodesHash}
-          mine={mine}
-          varianceStatusOptionsHash={this.props.varianceStatusOptionsHash}
-          isApplication
-        />
-        <br />
-        <h4 className="uppercase">Approved Variances</h4>
-        <br />
-        <MineVarianceTable
-          openEditVarianceModal={this.openEditVarianceModal}
-          openViewVarianceModal={this.openViewVarianceModal}
-          variances={this.props.approvedVariances}
-          complianceCodesHash={this.props.complianceCodesHash}
-          varianceStatusOptionsHash={this.props.varianceStatusOptionsHash}
-          mine={mine}
-        />
-      </div>
-    ) : (
-      <NullScreen type="variance" />
+  componentWillReceiveProps(nextProps) {
+    const locationChanged = nextProps.location !== this.props.location;
+    if (locationChanged) {
+      this.renderDataFromURL(nextProps.location.search);
+    }
+  }
+
+  componentWillUnmount() {
+    this.setState({ params: {} });
+  }
+
+  renderDataFromURL = (queryParams) => {
+    const params = queryParams || this.props.location.search;
+    const parsedParams = queryString.parse(params);
+    this.setState(
+      {
+        params: parsedParams,
+        isLoaded: false,
+      },
+      () =>
+        this.props.fetchNoticeOfWorkApplications(parsedParams).then(() => {
+          this.setState({ isLoaded: true });
+        })
     );
+  };
+
+  handleSearch = (searchParams = {}, clear = false) => {
+    const persistedParams = clear ? {} : this.state.params;
+    const updatedParams = {
+      // Default per_page -- overwrite if provided
+      per_page: Strings.DEFAULT_PER_PAGE,
+      // Start from existing state
+      ...persistedParams,
+      // Overwrite prev params with any newly provided search params
+      ...searchParams,
+      // Reset page number
+      page: Strings.DEFAULT_PAGE,
+    };
+
+    this.props.history.push(
+      router.MINE_NOW_APPLICATIONS.dynamicRoute(this.props.mineGuid, updatedParams)
+    );
+    this.setState({
+      params: updatedParams,
+    });
+  };
 
   render() {
-    const mine = this.props.mines[this.props.mineGuid];
     return (
       <div className="tab__content">
         <div>
-          <h2>Variances</h2>
+          <h2>Notice of Work Applications</h2>
           <Divider />
         </div>
-        <div className="inline-flex flex-end">
-          <AuthorizationWrapper permission={Permission.EDIT_VARIANCES}>
-            <AddButton onClick={(event) => this.openVarianceModal(event, mine)}>
-              Add variance
-            </AddButton>
-          </AuthorizationWrapper>
-        </div>
-        {this.renderVarianceTables(mine)}
+        <LoadingWrapper condition={this.state.isLoaded}>
+          <MineNoticeOfWorkTable
+            handleSearch={this.handleSearch}
+            noticeOfWorkApplications={this.props.noticeOfWorkApplications}
+            sortField={this.state.params.sort_field}
+            sortDir={this.state.params.sort_dir}
+            searchParams={this.state.params}
+            mineRegionHash={this.props.mineRegionHash}
+          />
+        </LoadingWrapper>
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  mines: getMines(state),
   mineGuid: getMineGuid(state),
-  inspectors: getDropdownInspectors(state),
-  inspectorsHash: getInspectorsHash(state),
-  varianceStatusOptions: getDropdownVarianceStatusOptions(state),
-  varianceStatusOptionsHash: getVarianceStatusOptionsHash(state),
-  complianceCodes: getDropdownHSRCMComplianceCodes(state),
-  complianceCodesHash: getHSRCMComplianceCodesHash(state),
-  approvedVariances: getApprovedVariances(state),
-  varianceApplications: getVarianceApplications(state),
-  varianceDocumentCategoryOptions: getDropdownVarianceDocumentCategoryOptions(state),
-  varianceDocumentCategoryOptionsHash: getVarianceDocumentCategoryOptionsHash(state),
+  noticeOfWorkApplications: getNoticeOfWorkList(state),
+  mineRegionHash: getMineRegionHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      createVariance,
-      fetchVariancesByMine,
-      addDocumentToVariance,
-      updateVariance,
-      openModal,
-      closeModal,
+      fetchNoticeOfWorkApplications,
+      fetchRegionOptions,
     },
     dispatch
   );
 
-MineVariance.propTypes = propTypes;
+MineNOWApplications.propTypes = propTypes;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MineVariance);
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  AuthorizationGuard("inTesting")
+)(MineNOWApplications);
