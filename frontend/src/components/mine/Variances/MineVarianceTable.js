@@ -26,7 +26,6 @@ const { errorRed } = COLOR;
 
 const propTypes = {
   handleVarianceSearch: PropTypes.func,
-  handleFilterChange: PropTypes.func,
   variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -44,9 +43,9 @@ const propTypes = {
 };
 
 const defaultProps = {
-  handleFilterChange: () => {},
   openEditVarianceModal: () => {},
   openViewVarianceModal: () => {},
+  handleVarianceSearch: () => {},
   isApplication: false,
   isDashboardView: false,
   params: {},
@@ -75,8 +74,6 @@ const handleTableChange = (updateVarianceList) => (pagination, filters, sorter) 
         sort_field: sorter.column.sortField,
         sort_dir: sorter.order.replace("end", ""),
       };
-  console.log("&&&&&&&&&&&&&&&&%%%%%%%%%%%%%%%%%%");
-  console.log(params);
   updateVarianceList(params);
 };
 
@@ -187,7 +184,7 @@ export class MineVarianceTable extends Component {
       {
         title: "Application Status",
         dataIndex: "status",
-        sortField: "status",
+        sortField: "variance_application_status_code",
         width: 200,
         className: hideColumn(!this.props.isApplication),
         // filteredValue: this.props.params.variance_application_status_code,
@@ -295,10 +292,6 @@ export class MineVarianceTable extends Component {
         ),
       },
     ];
-    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-    console.log(this.props.sortField);
-    console.log(this.props.sortDir);
-    console.log("The params are: ", this.props.params);
 
     return (
       <div>

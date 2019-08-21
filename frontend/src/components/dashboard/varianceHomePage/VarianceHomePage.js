@@ -37,8 +37,8 @@ import * as router from "@/constants/routes";
 import { fetchInspectors } from "@/actionCreators/partiesActionCreator";
 import VarianceSearch from "./VarianceSearch";
 import { formatParamStringToArray } from "@/utils/helpers";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as Permission from "@/constants/permissions";
+// import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+// import * as Permission from "@/constants/permissions";
 /**
  * @class Variance page is a landing page for variance searching
  *
@@ -68,8 +68,6 @@ const propTypes = {
 };
 
 export const joinOrRemove = (param, key) => {
-  // console.log("&&&&&&&&&&&&&&&&&&&&&");
-  // console.log(param);
   if (isEmpty(param)) {
     return {};
   }
@@ -313,10 +311,6 @@ export class VarianceHomePage extends Component {
   };
 
   render() {
-    // console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-    // console.log(this.props.filterVarianceStatusOptions);
-    // console.log(this.props.getDropdownHSRCMComplianceCodes);
-
     return (
       <div className="landing-page">
         <div className="landing-page__header">
@@ -346,6 +340,8 @@ export class VarianceHomePage extends Component {
               params={this.state.params}
               openEditVarianceModal={this.openEditVarianceModal}
               openViewVarianceModal={this.openViewVarianceModal}
+              sortField={this.state.params.sort_field}
+              sortDir={this.state.params.sort_dir}
             />
           </LoadingWrapper>
         </div>

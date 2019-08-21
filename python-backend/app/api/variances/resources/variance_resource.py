@@ -1,11 +1,13 @@
 from flask_restplus import Resource
 from flask import request
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
-from sqlalchemy import desc
+from sqlalchemy import desc, cast, NUMERIC
 from app.extensions import api
 from ...mines.mine.models.mine import Mine
 from ..models.variance import Variance
 from ..models.variance_application_status_code import VarianceApplicationStatusCode
+from app.api.mines.compliance.models.compliance_article import ComplianceArticle
+from app.api.parties.party.models.party import Party
 from ..response_models import PAGINATED_VARIANCE_LIST
 from ...utils.access_decorators import requires_any_of, VIEW_ALL
 from ...utils.resources_mixins import UserMixin, ErrorMixin
@@ -83,6 +85,7 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             'lead_inspector': 'Variance',
             'received_date': 'Variance',
             'mine_name': 'Mine',
+            'variance_application_status_code': 'Variance'
         }
 
 
@@ -93,7 +96,7 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
         conditions = []
         if args["application_status"] is not None:
             status_filter_values = args["application_status"].split(',')
-            conditions.append(self._build_filter('Variance' , 'variance_application_status_code', 'in',  status_filter_values))
+            conditions.append(self._build_filter('Variance', 'variance_application_status_code', 'in',  status_filter_values))
 
         if args["compliance_codes"] is not None:
             compliance_codes_values = args["compliance_codes"].split(',')
@@ -136,22 +139,34 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             region_list = args["region"].split(',')
             conditions.append(self._build_filter('Mine', 'mine_region', 'in', region_list))
 
-        query = Variance.query.join(Mine)
-
-        filtered_query = apply_filters(
-            query.order_by(desc(Variance.received_date)), conditions)
-
+        query = Variance.query.join(Mine).join(ComplianceArticle)
+        filtered_query=query # rewrite this (stop gap to prevent used before assignment errors
         # Apply sorting
         if args['sort_field'] and args['sort_dir']:
             logging.warning('SORTING WAS CALLED')
-            sort_criteria = [{'model': sort_models[args['sort_field']],
-                              'field': args['sort_field'], 'direction': args['sort_dir']}]
-            logging.warning('model' )
-            logging.warning( sort_models[args['sort_field']] )
-            logging.warning('field')
-            logging.warning(args['sort_field'])
-            logging.warning('direction')
-            logging.warning(args['sort_dir'])
 
-            filtered_query = apply_sort(filtered_query, sort_criteria)
+            # The compliance sorting must be custom due to the code being stored in multiple columns.
+            if args['sort_field'] == "compliance_article_id":
+                if args['sort_dir'] == 'desc':
+                    filtered_query = apply_filters(query.order_by(
+                        desc(cast(ComplianceArticle.section, NUMERIC)),
+                        desc(cast(ComplianceArticle.sub_section, NUMERIC)),
+                        desc(cast(ComplianceArticle.paragraph, NUMERIC)),
+                        desc(ComplianceArticle.sub_paragraph)), conditions)
+                elif args['sort_dir'] == 'asc':
+                    filtered_query = apply_filters(query.order_by(
+                        cast(ComplianceArticle.section, NUMERIC),
+                        cast(ComplianceArticle.sub_section, NUMERIC),
+                        cast(ComplianceArticle.paragraph, NUMERIC),
+                        ComplianceArticle.sub_paragraph), conditions)
+            #TODO Ask Nathan if this fixes the pagination thing
+            elif args['sort_field'] == "lead_inspector":
+                query = query.outerjoin(Party, Variance.inspector_party_guid == Party.party_guid)
+                sort_criteria = [{'model': 'Party',
+                                  'field': 'party_name', 'direction': args['sort_dir']}]
+                filtered_query = apply_sort(query, sort_criteria)
+            else:
+                sort_criteria = [{'model': sort_models[args['sort_field']],
+                                  'field': args['sort_field'], 'direction': args['sort_dir']}]
+                filtered_query = apply_sort(query, sort_criteria)
         return apply_pagination(filtered_query, args["page_number"], args["page_size"])

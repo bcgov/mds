@@ -20,6 +20,8 @@ const propTypes = {
   ).isRequired,
   pageData: CustomPropTypes.variancePageData,
   filterVarianceStatusOptions: CustomPropTypes.filterOptions.isRequired,
+  sortField: PropTypes.string,
+  sortDir: PropTypes.string,
 };
 
 const defaultProps = {
@@ -30,6 +32,8 @@ const defaultProps = {
     total: 0,
     total_pages: 1,
   },
+  sortField: null,
+  sortDir: null,
 };
 export const VarianceTable = (props) => (
   <div className="tab__content">
@@ -45,13 +49,15 @@ export const VarianceTable = (props) => (
       isDashboardView
       openEditVarianceModal={props.openEditVarianceModal}
       openViewVarianceModal={props.openViewVarianceModal}
+      sortField={props.sortField}
+      sortDir={props.sortDir}
     />
     <div className="center">
       <ResponsivePagination
         onPageChange={props.handlePageChange}
-        currentPage={Number(props.params.page)}
+        currentPage={Number(props.pageData.current_page)}
         pageTotal={props.pageData.total}
-        itemsPerPage={Number(props.params.per_page)}
+        itemsPerPage={Number(props.pageData.items_per_page)}
       />
     </div>
   </div>
