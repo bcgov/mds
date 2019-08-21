@@ -48,7 +48,7 @@ describe("`fetchNoticeOfWorkApplication` action creator", () => {
 });
 
 describe("`fetchNoticeOfWorkApplications` action creator", () => {
-  const url = ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_APPLICATIONS;
+  const url = ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_APPLICATIONS();
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);

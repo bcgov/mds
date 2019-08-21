@@ -112,7 +112,8 @@ export const MINE_INSPECTIONS = {
 
 export const MINE_REPORTS = {
   route: "/mine-dashboard/:id/reports/code-required-reports",
-  dynamicRoute: (id) => `/mine-dashboard/${id}/reports/code-required-reports`,
+  dynamicRoute: (id, filterParams) =>
+    `/mine-dashboard/${id}/reports/code-required-reports?${queryString.stringify(filterParams)}`,
   component: MineReportInfo,
 };
 
@@ -173,7 +174,8 @@ export const NOTICE_OF_WORK_APPLICATIONS = {
 };
 
 export const NOTICE_OF_WORK_APPLICATION = {
-  route: "/dashboard/notice-of-work/application",
-  dynamicRoute: (applicationGuid) => `/dashboard-notice-of-work/application/${applicationGuid}`,
+  route: "/dashboard/notice-of-work/initial-application/:id",
+  dynamicRoute: (applicationGuid) =>
+    `/dashboard/notice-of-work/initial-application/${applicationGuid}`,
   component: NoticeOfWorkApplication,
 };

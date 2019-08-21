@@ -165,12 +165,12 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
-        "displayName": "Connect(authorizationGuard)",
+        "displayName": "Connect(Connect(authorizationGuard))",
         "type": [Function],
       }
     }
     exact={true}
-    path="/dashboard/notice-of-work/application"
+    path="/dashboard/notice-of-work/initial-application/:id"
   />
   <Route
     component={[Function]}
