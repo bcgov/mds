@@ -4,20 +4,13 @@ import petl as etl
 from petl import timeparser
 from datetime import datetime, time, timedelta
 
-connection = psycopg2.connect(
-    host='localhost', port=5432, user='mds', password='test', dbname='mds')
-
-cursor = connection.cursor()
-
-table_mapping = {
+SHARED_TABLES = {
     'application': 'application',
     'application_nda': 'application_nda',
-    'application_start_stop': 'application_start_stop',
     'client': 'client',
     'contact': 'contact',
     'document': 'document',
     'document_nda': 'document_nda',
-    'document_start_stop': 'document_start_stop',
     'equipment': 'equipment',
     'existing_placer_activity_xref': 'existingplaceractivityxref',
     'existing_settling_pond_xref': 'existingsettlingpondxref',
@@ -41,7 +34,33 @@ table_mapping = {
     'water_source_activity': 'watersourceactivity',
 }
 
-for key, value in table_mapping:
-    cursor.execute(f'TRUNCATE TABLE {key} CONTINUE IDENTITY;')
-    current_nros_table = etl.fromdb(connection, f'SELECT * from mms_now_nros.{value}')
-    etl.appenddb(current_nros_table, connection, f'now_submissions.{key}', commit=False)
+NROS_ONLY_TABLES = {
+    'application_start_stop': 'application_start_stop',
+    'document_start_stop': 'document_start_stop',
+}
+
+
+def truncate_table(connection, tables):
+    cursor = connection.cursor()
+    for key, value in tables:
+        cursor.execute(f'TRUNCATE TABLE now_submissions.{key} CONTINUE IDENTITY;')
+
+
+def ETL_NOW(connection, tables, schema):
+    for key, value in tables:
+        current_table = etl.fromdb(connection, f'SELECT * from {schema}.{value}')
+        etl.appenddb(current_table, connection, f'now_submissions.{key}', commit=False)
+
+
+def NOW_submissions_ETL():
+    connection = psycopg2.connect(
+        host='localhost', port=5432, user='mds', password='test', dbname='mds')
+
+    truncate_table(connection, {**SHARED_TABLES, **NROS_ONLY_TABLES})
+    connection.commit()
+
+    ETL_NOW_submissions(connection, SHARED_TABLES, 'mms_now_vfcbc')
+    connection.commit()
+
+    ETL_NOW_submissions(connection, {**SHARED_TABLES, **NROS_ONLY_TABLES}, 'mms_now_nros')
+    connection.commit()
