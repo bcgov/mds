@@ -12,13 +12,13 @@ import { getMineRegionHash } from "@/selectors/staticContentSelectors";
 import { fetchRegionOptions } from "@/actionCreators/staticContentActionCreator";
 import MineNoticeOfWorkTable from "@/components/mine/NoticeOfWork/MineNoticeOfWorkTable";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
-import { fetchNoticeOfWorkApplications } from "@/actionCreators/noticeOfWorkActionCreator";
+import { fetchMineNoticeOfWorkApplications } from "@/actionCreators/noticeOfWorkActionCreator";
 import { getNoticeOfWorkList } from "@/selectors/noticeOfWorkSelectors";
 import { getMineGuid } from "@/selectors/mineSelectors";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
-  fetchNoticeOfWorkApplications: PropTypes.func.isRequired,
+  fetchMineNoticeOfWorkApplications: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.nowApplication).isRequired,
@@ -76,7 +76,7 @@ export class MineNOWApplications extends Component {
         isLoaded: false,
       },
       () =>
-        this.props.fetchNoticeOfWorkApplications(parsedParams).then(() => {
+        this.props.fetchMineNoticeOfWorkApplications(this.props.mineGuid, parsedParams).then(() => {
           this.setState({ isLoaded: true });
         })
     );
@@ -134,7 +134,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      fetchNoticeOfWorkApplications,
+      fetchMineNoticeOfWorkApplications,
       fetchRegionOptions,
     },
     dispatch

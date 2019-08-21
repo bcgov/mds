@@ -115,13 +115,6 @@ export class MineNoticeOfWorkTable extends Component {
       ...this.filterProperties("NoW No.", "trackingnumber"),
     },
     {
-      title: "Permittee",
-      dataIndex: "permittee",
-      render: (text, record) => (
-        <Link to={router.NOTICE_OF_WORK_APPLICATION.dynamicRoute(record.key)}>{text}</Link>
-      ),
-    },
-    {
       title: "NoW Type",
       dataIndex: "nowType",
       sortField: "noticeofworktype",
