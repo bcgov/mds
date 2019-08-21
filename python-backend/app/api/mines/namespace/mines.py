@@ -30,7 +30,7 @@ from app.api.mines.permits.permit.resources.permit import PermitResource, Permit
 from app.api.mines.permits.permit.resources.permit_status_code import PermitStatusCodeResource
 from app.api.mines.permits.permit_amendment.resources.permit_amendment import PermitAmendmentResource, PermitAmendmentListResource
 from app.api.mines.permits.permit_amendment.resources.permit_amendment_document import PermitAmendmentDocumentListResource, PermitAmendmentDocumentResource
-from app.api.mines.now_submissions.resources.application import MineApplicationResource
+from app.api.mines.now_submissions.resources.application_resource import MineApplicationResource
 
 from app.api.mines.documents.expected.resources.mine_documents import ExpectedMineDocumentResource
 from app.api.mines.documents.expected.resources.expected_documents import ExpectedDocumentResource, ExpectedDocumentListResource
