@@ -47,18 +47,18 @@ const applySortIndicator = (_columns, field, dir) =>
     sortOrder: column.sortField === field ? dir.concat("end") : false,
   }));
 
-export class MineNoticeOfWorkTable extends Component {
-  transformRowData = (applications) =>
-    applications.map((application) => ({
-      key: application.application_guid,
-      nowNum: application.trackingnumber || Strings.EMPTY_FIELD,
-      mineGuid: application.mine_guid || Strings.EMPTY_FIELD,
-      mineName: application.mine_name || Strings.EMPTY_FIELD,
-      nowType: application.noticeofworktype || Strings.EMPTY_FIELD,
-      status: application.status || Strings.EMPTY_FIELD,
-      date: formatDate(application.receiveddate) || Strings.EMPTY_FIELD,
-    }));
+const transformRowData = (applications) =>
+  applications.map((application) => ({
+    key: application.application_guid,
+    nowNum: application.trackingnumber || Strings.EMPTY_FIELD,
+    mineGuid: application.mine_guid || Strings.EMPTY_FIELD,
+    mineName: application.mine_name || Strings.EMPTY_FIELD,
+    nowType: application.noticeofworktype || Strings.EMPTY_FIELD,
+    status: application.status || Strings.EMPTY_FIELD,
+    date: formatDate(application.receiveddate) || Strings.EMPTY_FIELD,
+  }));
 
+export class MineNoticeOfWorkTable extends Component {
   filterProperties = (name, field) => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys }) => {
       return (
@@ -149,7 +149,7 @@ export class MineNoticeOfWorkTable extends Component {
           this.props.sortField,
           this.props.sortDir
         )}
-        dataSource={this.transformRowData(this.props.noticeOfWorkApplications)}
+        dataSource={transformRowData(this.props.noticeOfWorkApplications)}
         locale={{ emptyText: <NullScreen type="no-results" /> }}
         onChange={handleTableChange(this.props.handleSearch)}
       />
