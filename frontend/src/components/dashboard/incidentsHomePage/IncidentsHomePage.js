@@ -26,11 +26,13 @@ import {
 } from "@/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import {
-  fetchVariances,
+  // fetchVariances,
   updateVariance,
   addDocumentToVariance,
 } from "@/actionCreators/varianceActionCreator";
+import { fetchIncidents } from "@/actionCreators/incidentsActionCreator";
 import { getVariances, getVariancePageData } from "@/selectors/varianceSelectors";
+import { getIncidents, getIncidentPageData } from "@/selectors/incidentSelectors";
 import { VarianceTable } from "@/components/dashboard/customHomePage/VarianceTable";
 import { IncidentsTable } from "./IncidentsTable";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
@@ -55,7 +57,8 @@ const propTypes = {
   fetchInspectors: PropTypes.func.isRequired,
   fetchMineCommodityOptions: PropTypes.func.isRequired,
   fetchVarianceStatusOptions: PropTypes.func.isRequired,
-  fetchVariances: PropTypes.func.isRequired,
+  // fetchVariances: PropTypes.func.isRequired,
+  fetchIncidents: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
   variancePageData: CustomPropTypes.variancePageData.isRequired,
@@ -106,7 +109,8 @@ export class IncidentsHomePage extends Component {
     super(props);
     this.handleVarianceSearchDebounced = debounce(this.handleVarianceSearch, 1000);
     this.state = {
-      variancesLoaded: false,
+      // variancesLoaded: false,
+      incidentsLoaded: false,
       params: {
         compliance_code: formatParamStringToArray(this.params.compliance_code),
         variance_application_status_code: formatParamStringToArray(
@@ -128,8 +132,11 @@ export class IncidentsHomePage extends Component {
 
     this.renderDataFromURL(params);
 
-    this.props.fetchVariances(this.state.params).then(() => {
-      this.setState({ variancesLoaded: true });
+    // this.props.fetchVariances(this.state.params).then(() => {
+    //   this.setState({ variancesLoaded: true });
+    // });
+    this.props.fetchIncidents(this.state.params).then(() => {
+      this.setState({ incidentsLoaded: true });
     });
     this.props.fetchInspectors();
     this.props.fetchMineTenureTypes();
@@ -177,7 +184,8 @@ export class IncidentsHomePage extends Component {
         },
       },
       () => {
-        this.props.fetchVariances(this.state.params);
+        // this.props.fetchVariances(this.state.params);
+        this.props.fetchIncidents(this.state.params);
       }
     );
   };
@@ -219,11 +227,17 @@ export class IncidentsHomePage extends Component {
   };
 
   handleVariancePageChange = (page, per_page) => {
-    this.setState({ variancesLoaded: false });
+    this.setState({ incidentsLoaded: false });
     const params = { ...this.state.params, page, per_page };
-    return this.props.fetchVariances(params).then(() => {
+    // return this.props.fetchVariances(params).then(() => {
+    //   this.setState({
+    //     variancesLoaded: true,
+    //     params,
+    //   });
+    // });
+    return this.props.fetchIncidents(params).then(() => {
       this.setState({
-        variancesLoaded: true,
+        incidentsLoaded: true,
         params,
       });
     });
@@ -258,8 +272,11 @@ export class IncidentsHomePage extends Component {
         )
       );
       this.props.closeModal();
-      this.props.fetchVariances(this.state.params).then(() => {
-        this.setState({ variancesLoaded: true });
+      // this.props.fetchVariances(this.state.params).then(() => {
+      //   this.setState({ variancesLoaded: true });
+      // });
+      this.props.fetchIncidents(this.state.params).then(() => {
+        this.setState({ incidentsLoaded: true });
       });
     });
   };
@@ -291,21 +308,30 @@ export class IncidentsHomePage extends Component {
 
   handleFilterChange = (pagination, filters) => {
     const { status } = filters;
-    this.setState({ variancesLoaded: false });
+    this.setState({ incidentsLoaded: false });
     const params = {
       ...this.state.params,
       variance_application_status_code: status,
       page: 1,
     };
-    return this.props.fetchVariances(params).then(() => {
+    // return this.props.fetchVariances(params).then(() => {
+    //   this.setState({
+    //     variancesLoaded: true,
+    //     params,
+    //   });
+    // });
+    return this.props.fetchIncidents(params).then(() => {
       this.setState({
-        variancesLoaded: true,
+        incidentsLoaded: true,
         params,
       });
     });
   };
 
   render() {
+    console.log("########################### THE STATE AND PROPS ARE:");
+    console.log(this.state);
+    console.log(this.props);
     return (
       <div className="landing-page">
         <div className="landing-page__header">
@@ -322,7 +348,8 @@ export class IncidentsHomePage extends Component {
             complianceCodes={this.props.getDropdownHSRCMComplianceCodes}
             filterVarianceStatusOptions={this.props.filterVarianceStatusOptions}
           /> */}
-          <LoadingWrapper condition={this.state.variancesLoaded}>
+
+          {/* <LoadingWrapper condition={this.state.incidentsLoaded}>
             <IncidentsTable
               isApplication={this.state.isApplication}
               handleFilterChange={this.handleFilterChange}
@@ -336,8 +363,8 @@ export class IncidentsHomePage extends Component {
               sortField={this.state.params.sort_field}
               sortDir={this.state.params.sort_dir}
             />
-
-            {/* <VarianceTable
+          </LoadingWrapper> */}
+          {/* <VarianceTable
               isApplication={this.state.isApplication}
               handleFilterChange={this.handleFilterChange}
               variances={this.props.variances}
@@ -350,7 +377,6 @@ export class IncidentsHomePage extends Component {
               sortField={this.state.params.sort_field}
               sortDir={this.state.params.sort_dir}
             /> */}
-          </LoadingWrapper>
         </div>
       </div>
     );
@@ -365,6 +391,8 @@ const mapStateToProps = (state) => ({
   mineCommodityOptionsHash: getCommodityOptionHash(state),
   variancePageData: getVariancePageData(state),
   variances: getVariances(state),
+  incidentPageData: getIncidentPageData(state),
+  incidents: getIncidents(state),
   complianceCodesHash: getHSRCMComplianceCodesHash(state),
   getDropdownHSRCMComplianceCodes: getDropdownHSRCMComplianceCodes(state),
   mineRegionOptions: getMineRegionDropdownOptions(state),
@@ -374,7 +402,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      fetchVariances,
+      fetchIncidents,
+      // fetchVariances,
       updateVariance,
       openModal,
       closeModal,

@@ -158,6 +158,7 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
                         ComplianceArticle.sub_paragraph), conditions)
             #TODO Ask Nathan if this fixes the pagination thing
             #TODO This is NOT filtering results !!!
+            # TODO Set default sorting to order received date desc
             elif args['sort_field'] == "lead_inspector":
                 query = query.outerjoin(Party, Variance.inspector_party_guid == Party.party_guid)
                 filtered_query = apply_filters(query, conditions)

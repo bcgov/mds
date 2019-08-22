@@ -3,16 +3,16 @@ import { INCIDENTS } from "@/constants/reducerTypes";
 
 const initialState = {
   incidents: [],
-  incidentsPageData: {},
+  incidentPageData: {},
 };
 
-const varianceReducer = (state = initialState, action) => {
+const incidentsReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.STORE_INCIDENTS:
       return {
         ...state,
         incidents: action.payload.records,
-        incidentsPageData: action.payload,
+        incidentPageData: action.payload,
       };
     default:
       return state;
@@ -20,6 +20,6 @@ const varianceReducer = (state = initialState, action) => {
 };
 
 export const getIncidents = (state) => state[INCIDENTS].incidents;
-export const getIncidentsPageData = (state) => state[INCIDENTS].incidentsPageData;
+export const getIncidentPageData = (state) => state[INCIDENTS].incidentPageData;
 
-export default varianceReducer;
+export default incidentsReducer;
