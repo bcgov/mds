@@ -98,6 +98,10 @@ export const getFiscalYear = () => {
 
 export const formatParamStringToArray = (param) => (param ? param.split(",").filter((x) => x) : []);
 
+// Adapt our { label, value } options arrays to work with AntDesign column filter
+export const optionsFilterAdapter = (options) =>
+  options.map(({ label, value }) => ({ text: label, value }));
+
 // This method sorts codes of the for '#.#.# - Lorem Ipsum'
 // where the number of integers is variable and the text is optional
 export const compareCodes = (a, b) => {

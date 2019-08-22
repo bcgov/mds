@@ -30,9 +30,16 @@ const propTypes = {
   mineRegionOptions: CustomPropTypes.options.isRequired,
 };
 
-const formatParamsFromUrl = ({ mine_region, ...otherParams }) => {
+const splitListParams = ({ mine_region, ...otherParams }) => {
   return {
     mine_region: mine_region ? mine_region.split(",") : undefined,
+    ...otherParams,
+  };
+};
+
+const joinListParams = ({ mine_region, ...otherParams }) => {
+  return {
+    mine_region: mine_region ? mine_region.join(",") : undefined,
     ...otherParams,
   };
 };
@@ -40,12 +47,13 @@ const formatParamsFromUrl = ({ mine_region, ...otherParams }) => {
 export class NoticeOfWorkHomePage extends Component {
   params = queryString.parse(this.props.location.search);
 
+  // Expects list params as comma-separated strings
   state = {
     isLoaded: false,
     params: {
       page: Strings.DEFAULT_PAGE,
       per_page: Strings.DEFAULT_PER_PAGE,
-      ...formatParamsFromUrl(this.params),
+      ...this.params,
     },
   };
 
@@ -83,7 +91,7 @@ export class NoticeOfWorkHomePage extends Component {
     const parsedParams = queryString.parse(params);
     this.setState(
       {
-        params: formatParamsFromUrl(parsedParams),
+        params: splitListParams(parsedParams),
         isLoaded: false,
       },
       () =>
@@ -93,6 +101,7 @@ export class NoticeOfWorkHomePage extends Component {
     );
   };
 
+  // Expects list params as arrays
   handleSearch = (searchParams = {}, clear = false) => {
     const persistedParams = clear ? {} : this.state.params;
     const updatedParams = {
@@ -106,9 +115,11 @@ export class NoticeOfWorkHomePage extends Component {
       page: Strings.DEFAULT_PAGE,
     };
 
-    this.props.history.push(router.NOTICE_OF_WORK_APPLICATIONS.dynamicRoute(updatedParams));
+    this.props.history.push(
+      router.NOTICE_OF_WORK_APPLICATIONS.dynamicRoute(joinListParams(updatedParams))
+    );
     this.setState({
-      params: updatedParams,
+      params: joinListParams(updatedParams),
     });
   };
 

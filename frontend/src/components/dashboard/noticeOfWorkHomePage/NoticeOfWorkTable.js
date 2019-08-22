@@ -8,7 +8,7 @@ import * as Strings from "@/constants/strings";
 import * as router from "@/constants/routes";
 import NullScreen from "@/components/common/NullScreen";
 
-import { formatDate } from "@/utils/helpers";
+import { formatDate, optionsFilterAdapter } from "@/utils/helpers";
 
 /**
  * @class NoticeOfWorkTable - paginated list of notice of work applications
@@ -18,7 +18,7 @@ const propTypes = {
   noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.nowApplication),
   sortField: PropTypes.string,
   sortDir: PropTypes.string,
-  searchParams: PropTypes.objectOf(PropTypes.string),
+  searchParams: PropTypes.shape({ mine_region: PropTypes.arrayOf(PropTypes.string) }),
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
 };
@@ -47,7 +47,7 @@ const handleTableChange = (updateApplicationList) => (pagination, { mine_region 
       }
     : {
         ...sortParams,
-        mine_region: mine_region.join(","),
+        mine_region,
       };
 
   updateApplicationList(params);
@@ -125,7 +125,7 @@ export class NoticeOfWorkTable extends Component {
       render: (text) => <div title="Region">{text}</div>,
       filteredValue: this.props.searchParams.mine_region,
       filters: this.props.mineRegionOptions
-        ? this.props.mineRegionOptions.map(({ label, value }) => ({ text: label, value }))
+        ? optionsFilterAdapter(this.props.mineRegionOptions)
         : [],
     },
     {
