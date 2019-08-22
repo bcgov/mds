@@ -12,19 +12,19 @@ CREATE OR REPLACE FUNCTION transfer_mine_status_information() RETURNS void AS $$
                 mine_guid             uuid       ,
                 mine_no               varchar(7) ,
                 status_code           varchar(10),
-                legacy_mms_mine_status  varchar(50)
+                legacy_mms_mine_status character varying(50)
             );
             SELECT count(*) FROM ETL_STATUS into old_row;
 
             -- Upsert data into ETL_STATUS from MMS
             RAISE NOTICE '.. Update existing records with latest MMS data';
             UPDATE ETL_STATUS
-            SET status_code = CASE mms.mmsmin.sta_cd WHEN 'B' THEN 'ABN' ELSE NULL END,
-                legacy_mms_mine_status = mms.mmsmin_sts.min_sts_cd
+            SET status_code = mms.mmsmin.sta_cd,
+                legacy_mms_mine_status = mms.mmsmin_sts.min_sts_nm
             FROM mms.mmsmin, mms.mmsmin_sts, ETL_MINE
             WHERE
                 mms.mmsmin.mine_no = ETL_MINE.mine_no
-                AND mms.mmsmin.sta_cd = mms.mmsmin_sts.min_sts_cd;
+                AND mms.mmsmin_sts.min_sts_cd = mms.mmsmin.sta_cd;
             SELECT count(*) FROM ETL_STATUS, mms.mmsmin WHERE ETL_STATUS.mine_no = mms.mmsmin.mine_no INTO update_row;
             RAISE NOTICE '....# of mine records in ETL_STATUS: %', old_row;
             RAISE NOTICE '....# of mine records updated in ETL_STATUS: %', update_row;
@@ -33,12 +33,12 @@ CREATE OR REPLACE FUNCTION transfer_mine_status_information() RETURNS void AS $$
             WITH mms_new AS(
                 SELECT *
                 FROM mms.mmsmin, mms.mmsmin_sts
-                WHERE NOT EXISTS (
+                WHERE mms.mmsmin.sta_cd = mms.mmsmin_sts.min_sts_cd
+                AND NOT EXISTS (
                     SELECT  1
                     FROM    ETL_STATUS
                     WHERE   ETL_STATUS.mine_no = mms.mmsmin.mine_no
                 )
-                AND mms.mmsmin.sta_cd = mms.mmsmin_sts.min_sts_cd
             )
             INSERT INTO ETL_STATUS (
                 mine_guid  ,
@@ -56,7 +56,6 @@ CREATE OR REPLACE FUNCTION transfer_mine_status_information() RETURNS void AS $$
             FROM mms_new, ETL_MINE
             WHERE
                 ETL_MINE.mine_no = mms_new.mine_no;
-
             SELECT count(*) FROM ETL_STATUS INTO new_row;
             RAISE NOTICE '....# of new mine records found in MMS: %', (new_row-old_row);
             RAISE NOTICE '....Total mine records in ETL_STATUS: %.', new_row;
