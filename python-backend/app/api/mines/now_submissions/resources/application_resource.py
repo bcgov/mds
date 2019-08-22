@@ -22,7 +22,7 @@ class MineApplicationResource(Resource, UserMixin, ErrorMixin):
             'sort_field': 'Field to use for sorting. Default: receiveddate',
             'sort_dir': 'Sorting direction. Default: DESC',
             'status': 'Comma-separated list of statuses to include in results. Default: All statuses.',
-            'noticeofworktype': 'Substring to match with a NoW\s type',
+            'noticeofworktype': 'Substring to match with a NoW type',
             'trackingnumber': 'Number of the NoW'
         })
     @requires_role_view_all
