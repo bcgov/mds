@@ -98,6 +98,18 @@ export const getFiscalYear = () => {
 
 export const formatParamStringToArray = (param) => (param ? param.split(",").filter((x) => x) : []);
 
+// Used for parsing/stringifying list query params.
+// method :: String enum[split, join]
+// listFields :: Array of Strings matching the list query params. ex. ['mine_region']
+// fields :: Object created by queryString.parse()
+export const formatQueryListParams = (method, listFields) => (fields) => {
+  const params = Object.assign({}, fields);
+  listFields.forEach((listField) => {
+    params[listField] = fields[listField] ? fields[listField][method](",") : undefined;
+  });
+  return params;
+};
+
 // Adapt our { label, value } options arrays to work with AntDesign column filter
 export const optionsFilterAdapter = (options) =>
   options.map(({ label, value }) => ({ text: label, value }));

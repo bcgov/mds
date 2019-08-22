@@ -18,6 +18,7 @@ import ResponsivePagination from "@/components/common/ResponsivePagination";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import { fetchNoticeOfWorkApplications } from "@/actionCreators/noticeOfWorkActionCreator";
 import { getNoticeOfWorkList, getNoticeOfWorkPageData } from "@/selectors/noticeOfWorkSelectors";
+import { formatQueryListParams } from "@/utils/helpers";
 
 const propTypes = {
   fetchNoticeOfWorkApplications: PropTypes.func.isRequired,
@@ -30,22 +31,14 @@ const propTypes = {
   mineRegionOptions: CustomPropTypes.options.isRequired,
 };
 
-const formatQueryParams = (method, listFields) => (fields) => {
-  const params = Object.assign({}, fields);
-  listFields.forEach((listField) => {
-    params[listField] = fields[listField] ? fields[listField][method](",") : undefined;
-  });
-  return params;
-};
-
 export class NoticeOfWorkHomePage extends Component {
   params = queryString.parse(this.props.location.search);
 
   listQueryParams = ["mine_region"];
 
-  splitListParams = formatQueryParams("split", this.listQueryParams);
+  splitListParams = formatQueryListParams("split", this.listQueryParams);
 
-  joinListParams = formatQueryParams("join", this.listQueryParams);
+  joinListParams = formatQueryListParams("join", this.listQueryParams);
 
   // Holds list params as array
   state = {
