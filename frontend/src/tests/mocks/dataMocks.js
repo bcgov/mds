@@ -1493,6 +1493,14 @@ export const VARIANCE = {
   ],
 };
 
+export const VARIANCE_PAGE_DATA = {
+  records: [VARIANCE],
+  current_page: 1,
+  items_per_page: 25,
+  total: 25,
+  total_pages: 1,
+};
+
 export const COMPLIANCE_CODES = {
   records: [
     {

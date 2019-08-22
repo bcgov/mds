@@ -22,4 +22,14 @@ export const variancePageData = shape({
   total_pages: PropTypes.number,
 });
 
+export const varianceSearchInitialValues = shape({
+  region: PropTypes.arrayOf(PropTypes.string),
+  compliance_code: PropTypes.arrayOf(PropTypes.string),
+  major: PropTypes.string,
+  issue_date_after: PropTypes.string,
+  issue_date_before: PropTypes.string,
+  expiry_date_before: PropTypes.string,
+  expiry_date_after: PropTypes.string,
+});
+
 export default variance;

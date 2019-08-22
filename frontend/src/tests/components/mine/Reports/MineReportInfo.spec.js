@@ -12,7 +12,7 @@ const setupProps = () => {
 };
 
 const setupDispatchProps = () => {
-  dispatchProps.fetchMineReports = jest.fn();
+  dispatchProps.fetchMineReports = jest.fn(() => Promise.resolve());
 };
 
 beforeEach(() => {

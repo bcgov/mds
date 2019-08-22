@@ -32,6 +32,8 @@ from app.api.variances.models.variance import Variance
 from app.api.variances.models.variance_document_xref import VarianceDocumentXref
 from app.api.parties.party_appt.models.party_business_role_appt import PartyBusinessRoleAppointment
 from app.api.mines.reports.models.mine_report import MineReport
+from app.api.mines.reports.models.mine_report_submission import MineReportSubmission
+from app.api.mines.reports.models.mine_report_comment import MineReportComment
 from app.api.now_submissions.models.application import Application as NOWApplication
 from app.api.now_submissions.models.client import Client as NOWClient
 from app.api.now_submissions.models.contact import Contact as NOWContact
@@ -350,9 +352,9 @@ class MineIncidentFactory(BaseFactory):
             extracted = 1
 
         MineIncidentDocumentFactory.create_batch(size=extracted,
-                                             incident=obj,
-                                             mine_document__mine=None,
-                                             **kwargs)
+                                                 incident=obj,
+                                                 mine_document__mine=None,
+                                                 **kwargs)
 
 
 class MineIncidentDocumentFactory(BaseFactory):
@@ -374,10 +376,64 @@ class MineReportFactory(BaseFactory):
     class Meta:
         model = MineReport
 
+    class Params:
+        mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
+
     mine_report_guid = GUID
+    mine_guid = factory.SelfAttribute('mine.mine_guid')
     mine_report_definition_id = factory.LazyFunction(RandomMineReportDefinition)
     due_date = factory.Faker('future_datetime', end_date='+30d')
     submission_year = factory.fuzzy.FuzzyInteger(2020, 3000)
+    mine_report_submissions = []
+
+    @factory.post_generation
+    def mine_report_submissions(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        MineReportSubmissionFactory.create_batch(size=extracted, report=obj, **kwargs)
+
+
+class MineReportCommentFactory(BaseFactory):
+    class Meta:
+        model = MineReportComment
+
+    class Params:
+        submission = factory.SubFactory('tests.factories.MineReportSubmissionFactory')
+
+    mine_report_submission_id = factory.SelfAttribute('submission.mine_report_submission_id')
+    mine_report_comment_guid = GUID
+    report_comment = factory.Faker('paragraph')
+    comment_visibility_ind = factory.Faker('boolean', chance_of_getting_true=50)
+
+
+class MineReportSubmissionFactory(BaseFactory):
+    class Meta:
+        model = MineReportSubmission
+
+    class Params:
+        report = factory.SubFactory('tests.factories.MineReportFactory')
+
+    mine_report_id = factory.SelfAttribute('report.mine_report_id')
+    mine_report_submission_guid = GUID
+    mine_report_submission_status_code = factory.LazyFunction(RandomMineReportSubmissionStatusCode)
+    submission_date = factory.Faker('future_datetime', end_date='+30d')
+    comments = []
+
+    @factory.post_generation
+    def comments(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        MineReportCommentFactory.create_batch(size=extracted,
+                                              submission=obj,
+                                              **kwargs)
 
 
 class AddressFactory(BaseFactory):
@@ -517,6 +573,7 @@ class MineFactory(BaseFactory):
             mine_expected_documents=0,
             mine_incidents=0,
             mine_variance=0,
+            mine_reports=0
         )
 
     mine_guid = GUID
@@ -539,6 +596,7 @@ class MineFactory(BaseFactory):
     mine_expected_documents = []
     mine_incidents = []
     mine_variance = []
+    mine_reports = []
 
     @factory.post_generation
     def mine_tailings_storage_facilities(obj, create, extracted, **kwargs):
@@ -598,7 +656,7 @@ class MineFactory(BaseFactory):
         if not isinstance(extracted, int):
             extracted = 1
 
-        MineReportFactory.create_batch(size=extracted, mine_guid=obj.mine_guid, **kwargs)
+        MineReportFactory.create_batch(size=extracted, mine=obj, **kwargs)
 
 
 class NOWApplicationFactory(BaseFactory):
