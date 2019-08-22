@@ -38,7 +38,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_status_information() RETURNS void AS $$
                     FROM    ETL_STATUS
                     WHERE   ETL_STATUS.mine_no = mms.mmsmin.mine_no
                 )
-                AND mms.mmsmin.sta_cd = mms.mmsmin_sts.min_sts_cd;
+                AND mms.mmsmin.sta_cd = mms.mmsmin_sts.min_sts_cd
             )
             INSERT INTO ETL_STATUS (
                 mine_guid  ,
