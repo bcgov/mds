@@ -19,9 +19,7 @@ export class MineNavigation extends Component {
   ifActiveButton = (route) => (includes(this.props.activeButton, route) ? "active-menu-btn" : "");
 
   render() {
-    const isProd = detectProdEnvironment();
     const isTailingsVisible = this.props.mine.mine_tailings_storage_facilities.length >= 1;
-    const isReportsVisible = !isProd || isTailingsVisible;
     return (
       <Menu mode="horizontal" selectedKeys={this.props.openSubMenuKey}>
         <SubMenu
@@ -69,6 +67,13 @@ export class MineNavigation extends Component {
                 Variances
               </Link>
             </Menu.Item>
+            {!detectProdEnvironment() && (
+              <Menu.Item key="notices-of-work">
+                <Link to={routes.MINE_NOW_APPLICATIONS.dynamicRoute(this.props.mine.mine_guid)}>
+                  Notice of Work Applications
+                </Link>
+              </Menu.Item>
+            )}
           </Menu>
         </SubMenu>
         <SubMenu
@@ -93,35 +98,30 @@ export class MineNavigation extends Component {
             </Menu.Item>
           </Menu>
         </SubMenu>
-        {/* this is to prevent the Reports dropdown from being empty - condition can be removed once CRR gets merged to prod,  */}
-        {isReportsVisible && (
-          <SubMenu
-            id={this.ifActiveButton("reports")}
-            title={
-              <span>
-                Reports
-                <Icon className="padding-small--left" type="down" />
-              </span>
-            }
-          >
-            <Menu className="sub-menu">
-              {!isProd && (
-                <Menu.Item key="code-required-reports">
-                  <Link to={routes.MINE_REPORTS.dynamicRoute(this.props.mine.mine_guid)}>
-                    Code Required Reports
-                  </Link>
-                </Menu.Item>
-              )}
-              {isTailingsVisible && (
-                <Menu.Item key="tailings">
-                  <Link to={routes.MINE_TAILINGS.dynamicRoute(this.props.mine.mine_guid)}>
-                    Tailings
-                  </Link>
-                </Menu.Item>
-              )}
-            </Menu>
-          </SubMenu>
-        )}
+        <SubMenu
+          id={this.ifActiveButton("reports")}
+          title={
+            <span>
+              Reports
+              <Icon className="padding-small--left" type="down" />
+            </span>
+          }
+        >
+          <Menu className="sub-menu">
+            <Menu.Item key="code-required-reports">
+              <Link to={routes.MINE_REPORTS.dynamicRoute(this.props.mine.mine_guid)}>
+                Code Required Reports
+              </Link>
+            </Menu.Item>
+            {isTailingsVisible && (
+              <Menu.Item key="tailings">
+                <Link to={routes.MINE_TAILINGS.dynamicRoute(this.props.mine.mine_guid)}>
+                  Tailings
+                </Link>
+              </Menu.Item>
+            )}
+          </Menu>
+        </SubMenu>
       </Menu>
     );
   }
