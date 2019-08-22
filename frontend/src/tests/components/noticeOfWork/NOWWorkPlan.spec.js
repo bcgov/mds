@@ -13,7 +13,7 @@ beforeEach(() => {
   setupProps();
 });
 
-describe("PartyProfile", () => {
+describe("NOWWorkPlan", () => {
   it("renders properly", () => {
     const component = shallow(<NOWWorkPlan {...props} />);
     expect(component).toMatchSnapshot();

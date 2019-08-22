@@ -5,6 +5,7 @@ import { Menu, Icon } from "antd";
 import { includes } from "lodash";
 import * as routes from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
+import { detectProdEnvironment } from "@/utils/environmentUtils";
 
 const { SubMenu } = Menu;
 
@@ -66,6 +67,13 @@ export class MineNavigation extends Component {
                 Variances
               </Link>
             </Menu.Item>
+            {!detectProdEnvironment() && (
+              <Menu.Item key="notices-of-work">
+                <Link to={routes.MINE_NOW_APPLICATIONS.dynamicRoute(this.props.mine.mine_guid)}>
+                  Notice of Work Applications
+                </Link>
+              </Menu.Item>
+            )}
           </Menu>
         </SubMenu>
         <SubMenu

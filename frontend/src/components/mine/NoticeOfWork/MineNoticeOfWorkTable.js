@@ -8,19 +8,17 @@ import * as Strings from "@/constants/strings";
 import * as router from "@/constants/routes";
 import NullScreen from "@/components/common/NullScreen";
 
-import { formatDate, optionsFilterAdapter } from "@/utils/helpers";
+import { formatDate } from "@/utils/helpers";
 
 /**
- * @class NoticeOfWorkTable - paginated list of notice of work applications
+ * @class MineNoticeOfWorkTable - list of mine notice of work applications
  */
 const propTypes = {
   handleSearch: PropTypes.func.isRequired,
   noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.nowApplication),
   sortField: PropTypes.string,
   sortDir: PropTypes.string,
-  searchParams: PropTypes.shape({ mine_region: PropTypes.arrayOf(PropTypes.string) }),
-  mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  mineRegionOptions: CustomPropTypes.options.isRequired,
+  searchParams: PropTypes.objectOf(PropTypes.string),
 };
 
 const defaultProps = {
@@ -30,8 +28,8 @@ const defaultProps = {
   searchParams: {},
 };
 
-const handleTableChange = (updateApplicationList) => (pagination, { mine_region } = {}, sorter) => {
-  const sortParams = isEmpty(sorter)
+const handleTableChange = (updateApplicationList) => (pagination, filters, sorter) => {
+  const params = isEmpty(sorter)
     ? {
         sort_field: undefined,
         sort_dir: undefined,
@@ -40,16 +38,6 @@ const handleTableChange = (updateApplicationList) => (pagination, { mine_region 
         sort_field: sorter.column.sortField,
         sort_dir: sorter.order.replace("end", ""),
       };
-  const params = isEmpty(mine_region)
-    ? {
-        ...sortParams,
-        mine_region: undefined,
-      }
-    : {
-        ...sortParams,
-        mine_region,
-      };
-
   updateApplicationList(params);
 };
 
@@ -59,21 +47,18 @@ const applySortIndicator = (_columns, field, dir) =>
     sortOrder: column.sortField === field ? dir.concat("end") : false,
   }));
 
-export class NoticeOfWorkTable extends Component {
-  transformRowData = (applications) =>
-    applications.map((application) => ({
-      key: application.application_guid,
-      mine_region: application.mine_region
-        ? this.props.mineRegionHash[application.mine_region]
-        : Strings.EMPTY_FIELD,
-      nowNum: application.trackingnumber || Strings.EMPTY_FIELD,
-      mineGuid: application.mine_guid || Strings.EMPTY_FIELD,
-      mineName: application.mine_name || Strings.EMPTY_FIELD,
-      nowType: application.noticeofworktype || Strings.EMPTY_FIELD,
-      status: application.status || Strings.EMPTY_FIELD,
-      date: formatDate(application.receiveddate) || Strings.EMPTY_FIELD,
-    }));
+const transformRowData = (applications) =>
+  applications.map((application) => ({
+    key: application.application_guid,
+    nowNum: application.trackingnumber || Strings.EMPTY_FIELD,
+    mineGuid: application.mine_guid || Strings.EMPTY_FIELD,
+    mineName: application.mine_name || Strings.EMPTY_FIELD,
+    nowType: application.noticeofworktype || Strings.EMPTY_FIELD,
+    status: application.status || Strings.EMPTY_FIELD,
+    date: formatDate(application.receiveddate) || Strings.EMPTY_FIELD,
+  }));
 
+export class MineNoticeOfWorkTable extends Component {
   filterProperties = (name, field) => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys }) => {
       return (
@@ -120,15 +105,6 @@ export class NoticeOfWorkTable extends Component {
 
   columns = () => [
     {
-      title: "Region",
-      dataIndex: "mine_region",
-      render: (text) => <div title="Region">{text}</div>,
-      filteredValue: this.props.searchParams.mine_region,
-      filters: this.props.mineRegionOptions
-        ? optionsFilterAdapter(this.props.mineRegionOptions)
-        : [],
-    },
-    {
       title: "NoW No.",
       dataIndex: "nowNum",
       sortField: "trackingnumber",
@@ -137,16 +113,6 @@ export class NoticeOfWorkTable extends Component {
       ),
       sorter: true,
       ...this.filterProperties("NoW No.", "trackingnumber"),
-    },
-    {
-      title: "Mine",
-      dataIndex: "mineName",
-      render: (text, record) =>
-        record.mineGuid ? (
-          <Link to={router.MINE_NOW_APPLICATIONS.dynamicRoute(record.mineGuid)}>{text}</Link>
-        ) : (
-          <div title="Mine">{text}</div>
-        ),
     },
     {
       title: "NoW Type",
@@ -183,7 +149,7 @@ export class NoticeOfWorkTable extends Component {
           this.props.sortField,
           this.props.sortDir
         )}
-        dataSource={this.transformRowData(this.props.noticeOfWorkApplications)}
+        dataSource={transformRowData(this.props.noticeOfWorkApplications)}
         locale={{ emptyText: <NullScreen type="no-results" /> }}
         onChange={handleTableChange(this.props.handleSearch)}
       />
@@ -191,7 +157,7 @@ export class NoticeOfWorkTable extends Component {
   }
 }
 
-NoticeOfWorkTable.propTypes = propTypes;
-NoticeOfWorkTable.defaultProps = defaultProps;
+MineNoticeOfWorkTable.propTypes = propTypes;
+MineNoticeOfWorkTable.defaultProps = defaultProps;
 
-export default NoticeOfWorkTable;
+export default MineNoticeOfWorkTable;
