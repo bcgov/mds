@@ -30,24 +30,24 @@ const propTypes = {
   mineRegionOptions: CustomPropTypes.options.isRequired,
 };
 
-const splitListParams = ({ mine_region, ...otherParams }) => {
-  return {
-    mine_region: mine_region ? mine_region.split(",") : undefined,
-    ...otherParams,
-  };
-};
-
-const joinListParams = ({ mine_region, ...otherParams }) => {
-  return {
-    mine_region: mine_region ? mine_region.join(",") : undefined,
-    ...otherParams,
-  };
+const formatQueryParams = (method, listFields) => (fields) => {
+  const params = Object.assign({}, fields);
+  listFields.forEach((listField) => {
+    params[listField] = fields[listField] ? fields[listField][method](",") : undefined;
+  });
+  return params;
 };
 
 export class NoticeOfWorkHomePage extends Component {
   params = queryString.parse(this.props.location.search);
 
-  // Expects list params as comma-separated strings
+  listQueryParams = ["mine_region"];
+
+  splitListParams = formatQueryParams("split", this.listQueryParams);
+
+  joinListParams = formatQueryParams("join", this.listQueryParams);
+
+  // Holds list params as array
   state = {
     isLoaded: false,
     params: {
@@ -91,7 +91,7 @@ export class NoticeOfWorkHomePage extends Component {
     const parsedParams = queryString.parse(params);
     this.setState(
       {
-        params: splitListParams(parsedParams),
+        params: this.splitListParams(parsedParams),
         isLoaded: false,
       },
       () =>
@@ -116,11 +116,8 @@ export class NoticeOfWorkHomePage extends Component {
     };
 
     this.props.history.push(
-      router.NOTICE_OF_WORK_APPLICATIONS.dynamicRoute(joinListParams(updatedParams))
+      router.NOTICE_OF_WORK_APPLICATIONS.dynamicRoute(this.joinListParams(updatedParams))
     );
-    this.setState({
-      params: joinListParams(updatedParams),
-    });
   };
 
   onPageChange = (page, per_page) => {
