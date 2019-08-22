@@ -5,6 +5,7 @@ import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
 import { formatDate } from "@/utils/helpers";
 import Address from "@/components/common/Address";
+import * as Condition from "@/constants/NOWConditions";
 
 const propTypes = {
   noticeOfWork: CustomPropTypes.nowApplication.isRequired,
@@ -42,10 +43,12 @@ export class NOWGeneralInfo extends Component {
               <p className="field-title">Type of Notice of Work</p>
               <p>{this.props.noticeOfWork.noticeofworktype || Strings.EMPTY_FIELD}</p>
             </div>
-            <div className="inline-flex padding-small">
-              <p className="field-title">Permit Type</p>
-              <p>{this.props.noticeOfWork.typeofpermit || Strings.EMPTY_FIELD}</p>
-            </div>
+            {Condition.isMineralOrPlacer(this.props.noticeOfWork.noticeofworktyp) && (
+              <div className="inline-flex padding-small">
+                <p className="field-title">Permit Type</p>
+                <p>{this.props.noticeOfWork.typeofpermit || Strings.EMPTY_FIELD}</p>
+              </div>
+            )}
             <div className="inline-flex padding-small">
               <p className="field-title">Permit Status</p>
               <p>{this.props.noticeOfWork.status || Strings.EMPTY_FIELD}</p>
@@ -64,10 +67,12 @@ export class NOWGeneralInfo extends Component {
               <p className="field-title">Description of Land</p>
               <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </div>
-            <div className="inline-flex padding-small">
-              <p className="field-title">Term of Application</p>
-              <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
-            </div>
+            {Condition.isMultiYearPermit(this.props.noticeOfWork.typeofpermit) && (
+              <div className="inline-flex padding-small">
+                <p className="field-title">Term of Application</p>
+                <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
+              </div>
+            )}
             <div className="inline-flex padding-small">
               <p className="field-title">Proposed Start Date</p>
               <p>{formatDate(this.props.noticeOfWork.proposedstartdate) || Strings.EMPTY_FIELD}</p>
@@ -307,17 +312,16 @@ export class NOWGeneralInfo extends Component {
               <p>{this.props.noticeOfWork.archsitesaffected || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
-          {/* add conditional once we know what column to use */}
-          {/* {this.props.noticeOfWork.archsitesaffected === "Yes" && ( */}
-          <Row gutter={16} className="padding-small">
-            <Col md={12} xs={24}>
-              <p className="field-title--light">Plan to protect the archaeological site</p>
-            </Col>
-            <Col md={12} xs={24}>
-              <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
-            </Col>
-          </Row>
-          {/*  )} */}
+          {this.props.noticeOfWork.archsitesaffected === "Yes" && (
+            <Row gutter={16} className="padding-small">
+              <Col md={12} xs={24}>
+                <p className="field-title--light">Plan to protect the archaeological site</p>
+              </Col>
+              <Col md={12} xs={24}>
+                <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
+              </Col>
+            </Row>
+          )}
           <br />
           <h4 className="h4">First Nations Engagement</h4>
           <Row gutter={16} className="padding-small">
