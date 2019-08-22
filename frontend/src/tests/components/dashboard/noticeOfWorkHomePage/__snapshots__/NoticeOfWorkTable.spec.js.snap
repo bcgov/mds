@@ -10,7 +10,7 @@ exports[`NoticeOfWorkTable renders properly 1`] = `
     Array [
       Object {
         "dataIndex": "mine_region",
-        "filteredValue": undefined,
+        "filteredValue": "SW,NE",
         "filters": Array [],
         "render": [Function],
         "sortOrder": false,
