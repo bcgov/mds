@@ -143,4 +143,5 @@ AdvancedContactSearchForm.defaultProps = defaultProps;
 export default reduxForm({
   form: FORM.CONTACT_ADVANCED_SEARCH,
   touchOnBlur: false,
+  enableReinitialize: true,
 })(AdvancedContactSearchForm);
