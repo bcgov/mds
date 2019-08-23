@@ -7,8 +7,6 @@ the mds confluence page:
 https://apps.nrs.gov.bc.ca/int/confluence/pages/viewpage.action?pageId=39651197
 (accessing this page will require IDIR login)
 
-<a name="tools"></a>
-
 ## Tools
 
 ### [Geb](http://www.gebish.org/manual/current/)
@@ -27,8 +25,6 @@ format.
 
 A build tool to build the groovy project and manage its dependencies.
 
-<a name="folder-structure"></a>
-
 ## Folder Structure
 
 - `build.gradle` : Build configuration for Gradle
@@ -40,15 +36,11 @@ A build tool to build the groovy project and manage its dependencies.
 - `src/test/groovy/<Project Name>/modules` and `src/test/<Project Name>/pages` : Definition of modules/pages in the app
 - `src/test/groovy/utils` : Constants being used in the test script
 
-<a name="environment-setup"></a>
-
 ## Setup
 
 Follow the `.env-example` template to create an `.env` file under
 `/functional-tests` with valid IDIR credentials and database connection
 information before running the test.
-
-<a name="running"></a>
 
 ## Running
 
@@ -82,8 +74,6 @@ The firefox (non headless) tests can also be run from the projects root using th
 ### Test Report
 
 Report can be found under `/functional-tests/build/reports/tests`
-
-<a name="troubleshooting"></a>
 
 ## Troubleshooting
 
