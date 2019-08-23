@@ -1,9 +1,10 @@
-This directory contains scripts for running load tests. The framework we are using is called Locust,
-which is an open source program written in Python. It's very simple to setup and get going,
-which is the main reason why we chose it.
+# Load Testing
 
-Runs on:
-Python 3
+This directory contains scripts for running load tests. The framework we are
+using is called Locust, which is an open source program written in Python. It's
+very simple to setup and get going, which is the main reason why we chose it.
+
+## Setup Runs on: Python 3
 
 To install requirements run:
 
@@ -11,11 +12,10 @@ To install requirements run:
 
 Save a copy of  '.envEXAMPLE' as '.env'
 
-Get a bearer token from the network console after successfully logging into the app.
-Add it to the .env file.
-NOTE:  It will only last a day.
+Get a bearer token from the network console after successfully logging into the
+app.  Add it to the .env file.  NOTE:  It will only last a day.
 
-To run api tests run:
+## Running To run api tests run:
 
 'make test-api-local'
 
