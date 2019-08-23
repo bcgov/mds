@@ -18,5 +18,5 @@ export const mineReport = PropTypes.shape({
   permit_guid: PropTypes.string,
   mine_report_guid: PropTypes.string,
   mine_report_definition_guid: PropTypes.string,
-  submissions: PropTypes.arrayOf(mineReportSubmission),
+  mine_report_submissions: PropTypes.arrayOf(mineReportSubmission),
 });

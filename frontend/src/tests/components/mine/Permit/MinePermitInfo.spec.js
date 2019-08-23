@@ -24,7 +24,6 @@ beforeEach(() => {
 
 describe("MinePermitInfo", () => {
   it("renders properly", () => {
-    console.log(props);
     const component = shallow(<MinePermitInfo {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });

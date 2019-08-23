@@ -1493,6 +1493,14 @@ export const VARIANCE = {
   ],
 };
 
+export const VARIANCE_PAGE_DATA = {
+  records: [VARIANCE],
+  current_page: 1,
+  items_per_page: 25,
+  total: 25,
+  total_pages: 1,
+};
+
 export const COMPLIANCE_CODES = {
   records: [
     {
@@ -2549,4 +2557,29 @@ export const ADD_PARTY_FORM_STATE = {
   person: true,
   organization: true,
   partyLabel: "contact",
+};
+
+export const NOW = {
+  applications: [
+    {
+      application_guid: "07e801a0-fa33-4c3b-abcc-ac6df628d483",
+      mine_guid: "6e9d3426-ebf1-413f-9e5f-c3a71ab56797",
+      mine_name: "Hamilton, Herrera and Mccormick",
+      minenumber: "brother",
+      noticeofworktype: "choice",
+      trackingnumber: 44,
+      status: "Approved",
+      receiveddate: "2019-08-14",
+    },
+    {
+      application_guid: "8e1536da-644c-4961-976b-b1326fa75825",
+      mine_guid: "60300a07-376c-46f1-a984-88a813f91438",
+      mine_name: "Thompson-Sullivan",
+      minenumber: "other",
+      noticeofworktype: "technology",
+      trackingnumber: 52,
+      status: "Approved",
+      receiveddate: "2019-07-21",
+    },
+  ],
 };

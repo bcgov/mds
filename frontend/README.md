@@ -136,28 +136,28 @@ ensure that they are not introducing linting errors into the codebase with
 their changes. Modern text editors, such as VS Code, will indicate errors.
 See the usage guide below for more information on the linting CLI options.
 
-Lint one file
-
-```
-npm run lint ./filepath
-```
-
 Lint all files
 
 ```
-npm run lint ./src
+npm run lint
 ```
 
-Apply linting rules to one file
+Lint one file
 
 ```
-npm run lint ./filepath -- --fix
+npm run lint:file ./filepath
 ```
 
 Apply linting rules to all files
 
 ```
-npm run lint ./src -- --fix
+npm run lint -- --fix
+```
+
+Apply linting rules to one file
+
+```
+npm run lint:file ./filepath -- --fix
 ```
 
 Developers are encouraged to install the Prettier plugin appropriate for their

@@ -10,6 +10,7 @@ import * as ApplicationTypes from "@/customPropTypes/applications";
 import * as ComplianceTypes from "@/customPropTypes/compliance";
 import * as IncidentTypes from "@/customPropTypes/incidents";
 import * as ReportTypes from "@/customPropTypes/reports";
+import * as NoticeOfWorkTypes from "@/customPropTypes/noticeOfWork";
 
 export default {
   ...CommonTypes,
@@ -23,4 +24,5 @@ export default {
   ...VariancesTypes,
   ...IncidentTypes,
   ...ReportTypes,
+  ...NoticeOfWorkTypes,
 };

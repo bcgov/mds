@@ -188,6 +188,7 @@ class Application(Base):
         'SettlingPond', lazy='joined', secondary='now_submissions.proposed_settling_pond_xref')
 
     mine_name = association_proxy('mine', 'mine_name')
+    mine_region = association_proxy('mine', 'mine_region')
 
     def __repr__(self):
         return '<Application %r>' % self.messageid

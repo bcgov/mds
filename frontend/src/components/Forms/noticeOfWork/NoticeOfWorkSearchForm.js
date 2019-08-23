@@ -7,6 +7,9 @@ import { renderConfig } from "@/components/common/config";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
+  // initialValues is used by reduxForm magic
+  // eslint-disable-next-line react/no-unused-prop-types
+  initialValues: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 // this should be stateful once fully implemented
@@ -18,10 +21,10 @@ export class NoticeOfWorkSearchForm extends Component {
         <Row gutter={6}>
           <Col md={24} xs={24}>
             <Field
-              id="search"
-              name="search"
+              id="mine_search"
+              name="mine_search"
               component={renderConfig.FIELD}
-              placeholder="Search by Notice of Work, mine name, or mine number"
+              placeholder="Search by mine name or mine number"
             />
           </Col>
         </Row>
