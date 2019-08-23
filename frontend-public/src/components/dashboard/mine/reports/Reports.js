@@ -1,9 +1,7 @@
 import React, { Component } from "react";
-import moment from "moment";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
-import { find } from "lodash";
 import { getMine } from "@/selectors/userMineSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import Loading from "@/components/common/Loading";
@@ -32,7 +30,7 @@ const propTypes = {
 };
 
 export class Reports extends Component {
-  state = { isLoaded: false, selectedDocument: {} };
+  state = { isLoaded: false };
 
   componentDidMount() {
     this.props.fetchMineReportDefinitionOptions();
@@ -51,8 +49,6 @@ export class Reports extends Component {
   };
 
   openEditReportModal = (event, onSubmit, report) => {
-    console.log(this.props);
-    console.log(report);
     event.preventDefault();
     this.props.openModal({
       props: {
