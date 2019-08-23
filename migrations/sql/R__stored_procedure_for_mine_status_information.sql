@@ -21,9 +21,9 @@ CREATE OR REPLACE FUNCTION transfer_mine_status_information() RETURNS void AS $$
             UPDATE ETL_STATUS
             SET status_code = mms.mmsmin.sta_cd,
                 legacy_mms_mine_status = mms.mmsmin_sts.min_sts_nm
-            FROM mms.mmsmin, mms.mmsmin_sts, ETL_MINE
+            FROM mms.mmsmin, mms.mmsmin_sts
             WHERE
-                mms.mmsmin.mine_no = ETL_MINE.mine_no
+                mms.mmsmin.mine_no = ETL_STATUS.mine_no
                 AND mms.mmsmin_sts.min_sts_cd = mms.mmsmin.sta_cd;
             SELECT count(*) FROM ETL_STATUS, mms.mmsmin WHERE ETL_STATUS.mine_no = mms.mmsmin.mine_no INTO update_row;
             RAISE NOTICE '....# of mine records in ETL_STATUS: %', old_row;
@@ -68,6 +68,18 @@ CREATE OR REPLACE FUNCTION transfer_mine_status_information() RETURNS void AS $$
         BEGIN
             RAISE NOTICE '.. Step 2 of 2: Update mine statuses in MDS';
             SELECT count(*) FROM mine_status into old_row;
+
+
+            -- Upsert data from MMS into mine
+            UPDATE mine
+            SET legacy_mms_mine_status = ETL_STATUS.legacy_mms_mine_status,
+                update_user           = 'mms_migration'           ,
+                update_timestamp      = now()
+            FROM ETL_STATUS
+            WHERE
+                -- Matching mine and only changed records
+                ETL_STATUS.mine_guid = mine.mine_guid
+                AND ETL_STATUS.legacy_mms_mine_status != mine.legacy_mms_mine_status;
 
             -- Upsert data from MMS into mine_status
             RAISE NOTICE '.. Update existing records with latest MMS data';
