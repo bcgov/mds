@@ -79,7 +79,8 @@ CREATE OR REPLACE FUNCTION transfer_mine_status_information() RETURNS void AS $$
             WHERE
                 -- Matching mine and only changed records
                 ETL_STATUS.mine_guid = mine.mine_guid
-                AND ETL_STATUS.legacy_mms_mine_status != mine.legacy_mms_mine_status;
+                AND (ETL_STATUS.legacy_mms_mine_status != mine.legacy_mms_mine_status
+                    OR  mine.legacy_mms_mine_status IS NULL);
 
             -- Upsert data from MMS into mine_status
             RAISE NOTICE '.. Update existing records with latest MMS data';

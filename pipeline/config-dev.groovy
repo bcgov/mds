@@ -307,9 +307,9 @@ environments {
                 }
                 postgres {
                     cpu_request = "50m"
-                    cpu_limit = "700m"
+                    cpu_limit = "100m"
                     memory_request = "256Mi"
-                    memory_limit = "1024Mi"
+                    memory_limit = "512Mi"
                 }
                 redis {
                     cpu_request = "10m"
