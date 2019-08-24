@@ -8,7 +8,7 @@ This file describes how to run the project and develop against it.
 
 - Docker
 - Make
-- NodeJS 8.0.0
+- NodeJS 10
 
 ## Getting Started
 
@@ -36,18 +36,24 @@ Every time you wish to have a completely fresh environment, with MDS user admin/
 make rebuild-all-local
 ```
 
-NOTE: It will take quite a bit longer for the other servers to start up, give it about 5 minutes before the frontend and backend are properly online.
+NOTE: It will take quite a bit longer for the other servers to start up, give
+it about 5 minutes before the frontend and backend are properly online.
 
 You are now ready to proceed to the section 'Developing workflow tips for MDS'
 
 
 ## Generating Test Data
 
-There are two approaches to having test data in your system.  If you are a public contributor, choose "Using Flask".
+There are two approaches to having test data in your system.  If you are a
+public contributor, choose "Using Flask". View the Makefile for more
+information on what these commands are doing. This is useful for
+troubleshooting if anything fails to work as expected.
 
 ### Using Flask
 
-This will connect to a locally running docker postgres instance and generate 1000 mine records with random data.  This has already been done for you in the rebuild-all-local step, but if you need more data:
+This will connect to a locally running docker postgres instance and generate
+1000 mine records with random data.  This has already been done for you in the
+rebuild-all-local step, but if you need more data:
 
 ```
 make generate-rand1000
@@ -59,68 +65,32 @@ or if you require less data...
 make generate-rand100
 ```
 
-The above commands generate random data.  For data from the test system, the alternative approach below will also provide you with data.
-
 ### Seeding data with Test environment Database
 
 NOTE: You need access to the Test Openshift environment and oc cli tools.
 
 ```
-docker exec -it mds_postgres pg_restore -U mds -d mds -c /tmp/pgDump-test.pgCustom
+make database-seed
 ```
 
 ## Developing workflow tips for MDS
 
-If you are developing on other projects, you will likely run into version issues with node and npm.  Install a node version manager like nvm (if you're on a mac - or replace brew with choco if you're on Windows).
+If you are planning to run the frontend on your host machine, ensure you are
+using Node 10 (lts/dubnium) and npm 6. You may choose to use a version manager
+such as [nvm](https://github.com/nvm-sh/nvm).
 
-```
-brew install nvm
-nvm install 10.10
-```
-This should get you the correct versions, you should see an output from nvm of "Now using node v10.10.0 (npm v6.4.1)".
+### Browser Caching
 
-Then add the following lines to your ~/.bash_profile file:
+If you are rebuilding often, you will have to deal with caching issues in your
+browser.
 
-```
-export NVM_DIR="$HOME/.nvm"
-[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"  # This loads nvm bash_completion
-```
+You can address this by:
 
-If you are rebuilding often, you will have to deal with caching issues in your browser.
-
-In Chrome/Chromium, you can right-click on the page, choose "inspect", then right-click on the refresh icon next to the URL bar and choose hard reset.
-
-Another way is using the Inspector window, Network top menu entry, check "Disable Cache" and it will run without using the cache as long as the inspector is open.
-
-Or you can open an Incognito window and that should not have cached data in it.
-
-Typically one does not wish to run a full 'make project' for every little change.  This will wipe out your test data and local keycloak users.
-
-Have a look in the file called "Makefile" to see all the helpful aliased make targets for rebuilding whichever part of the application you are currently working in.  
-
-For example, if you have made some changes in the frontend, you will want to load a locally running version of the frontend with webpack in it:
-
-```
-make webpack-frontend
-```
+- Periodically clear the cache.
+- Disable cache (available in Chrome/Chromium)
+- Open an Incognito window (Chrome/Chromium)
 
 If you have made changes to the backend:
-```
-make backend
-```
-
-If you have made changes to the database you will need to reapply the above commands in section "Generating Test Data":
-```
-make database
-```
-
-To shut down the project cleanly, run the following command.
-```
-make reset
-```
-
-There are plenty more make targets to use in the Makefile, so be sure to look there first as if it's a common development operation then it is most likely there.
 
 
 ### Container Information
