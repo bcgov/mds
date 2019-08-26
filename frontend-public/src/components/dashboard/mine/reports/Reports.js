@@ -12,10 +12,12 @@ import { openModal, closeModal } from "@/actions/modalActions";
 import { getMineReports } from "@/selectors/reportSelectors";
 import MineReportTable from "@/components/dashboard/mine/reports/MineReportTable";
 import { fetchMineReportDefinitionOptions } from "@/actionCreators/staticContentActionCreator";
+import { getMineReportDefinitionOptions } from "@/reducers/staticContentReducer";
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
+  mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   match: PropTypes.shape({
     params: {
       id: PropTypes.string,
@@ -66,6 +68,20 @@ export class Reports extends Component {
       return <Loading />;
     }
 
+    const filteredReportDefinitionGuids =
+      this.props.mineReportDefinitionOptions &&
+      this.props.mineReportDefinitionOptions
+        .filter((option) =>
+          option.categories.map((category) => category.mine_report_category).includes("TSF")
+        )
+        .map((definition) => definition.mine_report_definition_guid);
+
+    const filteredReports =
+      this.props.mineReports &&
+      this.props.mineReports.filter((report) =>
+        filteredReportDefinitionGuids.includes(report.mine_report_definition_guid.toLowerCase())
+      );
+
     return (
       <div className="mine-info-padding">
         {this.props.mineReports && (
@@ -76,7 +92,7 @@ export class Reports extends Component {
             <MineReportTable
               openEditReportModal={this.openEditReportModal}
               handleEditReport={this.handleEditReport}
-              mineReports={this.props.mineReports}
+              mineReports={filteredReports}
             />
           </div>
         )}
@@ -88,6 +104,7 @@ export class Reports extends Component {
 const mapStateToProps = (state) => ({
   mineReports: getMineReports(state),
   mine: getMine(state),
+  mineReportDefinitionOptions: getMineReportDefinitionOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

@@ -7,5 +7,9 @@ export const { getMineReports } = reportReducer;
 
 export const getMineTSFReports = createSelector(
   [getMineReports],
-  (reports) => reports.filter((report) => report.mine_report_definition_guid !== null)
+  (reports) =>
+    reports.filter(
+      (report) =>
+        report.categories && report.categories.filter((x) => x.mine_report_category === "TSF")
+    )
 );
