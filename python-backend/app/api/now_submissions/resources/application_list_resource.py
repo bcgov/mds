@@ -6,6 +6,7 @@ from sqlalchemy import desc, func, or_
 
 from app.extensions import api
 from app.api.mines.mine.models.mine import Mine
+from app.api.mines.region.models.region import MineRegionCode
 from app.api.now_submissions.models.application import Application
 from app.api.now_submissions.response_models import PAGINATED_APPLICATION_LIST
 from app.api.utils.access_decorators import requires_role_view_all
@@ -24,9 +25,8 @@ class ApplicationListResource(Resource, UserMixin, ErrorMixin):
             'per_page': f'The number of records to return per page. Default: {PER_PAGE_DEFAULT}',
             'status': 'Comma-separated list of statuses to include in results. Default: All statuses.',
             'noticeofworktype': 'Substring to match with a NoW\s type',
-            'region': 'Substring to match with a NoW region',
+            'mine_region': 'Mine region code to match with a NoW. Default: All regions.',
             'trackingnumber': 'Number of the NoW',
-            'minenumber': 'Number of the mine associated with the NoW',
             'mine_search': 'Substring to match against a NoW mine number or mine name'
         })
     @requires_role_view_all
@@ -39,9 +39,8 @@ class ApplicationListResource(Resource, UserMixin, ErrorMixin):
             sort_dir=request.args.get('sort_dir', 'desc', type=str),
             status=request.args.get('status', type=str),
             noticeofworktype=request.args.get('noticeofworktype', type=str),
-            region=request.args.get('region', type=str),
+            mine_region=request.args.get('mine_region', type=str),
             trackingnumber=request.args.get('trackingnumber', type=int),
-            minenumber=request.args.get('minenumber', type=str),
             mine_search=request.args.get('mine_search', type=str))
 
         data = records.all()
@@ -61,23 +60,25 @@ class ApplicationListResource(Resource, UserMixin, ErrorMixin):
                                       sort_dir=None,
                                       status=None,
                                       noticeofworktype=None,
-                                      region=None,
+                                      mine_region=None,
                                       trackingnumber=None,
-                                      minenumber=None,
                                       mine_search=None):
         filters = []
         base_query = Application.query
 
         if noticeofworktype is not None:
             filters.append(func.lower(Application.noticeofworktype).contains(func.lower(noticeofworktype)))
-        if region is not None:
-            filters.append(func.lower(Application.region).contains(func.lower(region)))
         if trackingnumber is not None:
             filters.append(Application.trackingnumber == trackingnumber)
-        if minenumber is not None:
-            filters.append(func.lower(Application.minenumber).contains(func.lower(minenumber)))
-        if mine_search is not None:
+
+        if mine_region is not None or mine_search is not None:
             base_query = base_query.join(Mine)
+
+        if mine_region is not None:
+            region_filter_values = mine_region.split(',')
+            filters.append(Mine.mine_region.in_(region_filter_values))
+
+        if mine_search is not None:
             filters.append(or_(
                 func.lower(Application.minenumber).contains(func.lower(mine_search)),
                 func.lower(Mine.mine_name).contains(func.lower(mine_search)),

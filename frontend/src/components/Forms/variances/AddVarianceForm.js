@@ -158,15 +158,17 @@ export class AddVarianceForm extends Component {
             component={VarianceFileUpload}
           />
         </Form.Item>
-        <Form.Item>
-          <Field
-            id="parties_notified_ind"
-            name="parties_notified_ind"
-            label="Affected parties have been notified about this Variance request and decision"
-            type="checkbox"
-            component={renderConfig.CHECKBOX}
-          />
-        </Form.Item>
+        {!this.state.isApplication && (
+          <Form.Item>
+            <Field
+              id="parties_notified_ind"
+              name="parties_notified_ind"
+              label="As per MA 13(2), affected parties have been notified about this variance application and decision"
+              type="checkbox"
+              component={renderConfig.CHECKBOX}
+            />
+          </Form.Item>
+        )}
         <div className="right center-mobile">
           <Popconfirm
             placement="topRight"

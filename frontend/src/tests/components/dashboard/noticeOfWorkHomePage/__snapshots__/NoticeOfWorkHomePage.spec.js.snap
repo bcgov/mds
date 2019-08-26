@@ -57,7 +57,14 @@ exports[`NoticeOfWorkHomePage renders properly 1`] = `
                 },
               ]
             }
-            searchParams={Object {}}
+            searchParams={
+              Object {
+                "mine_region": Array [
+                  "SW",
+                  "NE",
+                ],
+              }
+            }
             sortDir={null}
             sortField={null}
           />
