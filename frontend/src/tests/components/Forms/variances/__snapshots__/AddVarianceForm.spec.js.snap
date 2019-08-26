@@ -143,17 +143,6 @@ exports[`AddVarianceForm renders properly 1`] = `
       onRemoveFile={[Function]}
     />
   </FormItem>
-  <FormItem
-    hasFeedback={false}
-  >
-    <Field
-      component={[Function]}
-      id="parties_notified_ind"
-      label="Affected parties have been notified about this Variance request and decision"
-      name="parties_notified_ind"
-      type="checkbox"
-    />
-  </FormItem>
   <div
     className="right center-mobile"
   >
