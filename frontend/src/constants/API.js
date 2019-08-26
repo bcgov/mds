@@ -134,3 +134,5 @@ export const NOTICE_OF_WORK_APPLICATIONS = (params = {}) =>
   `/now-submissions/applications?${queryString.stringify(params)}`;
 export const NOTICE_OF_WORK_APPLICATION = (applicationGuid) =>
   `/now-submissions/applications/${applicationGuid}`;
+export const MINE_NOTICE_OF_WORK_APPLICATIONS = (mineGuid, params = {}) =>
+  `/mines/${mineGuid}/now-submissions/applications?${queryString.stringify(params)}`;

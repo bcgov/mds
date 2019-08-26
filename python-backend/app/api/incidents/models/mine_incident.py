@@ -3,6 +3,8 @@ import uuid, datetime
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.ext.associationproxy import association_proxy
+
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 
@@ -92,6 +94,9 @@ class MineIncident(AuditMixin, Base):
     mine_documents = db.relationship('MineDocument',
                                          lazy='joined',
                                          secondary='mine_incident_document_xref')
+
+    mine_table = db.relationship('Mine', lazy='joined')
+    mine_name = association_proxy('mine_table', 'mine_name')
 
     @hybrid_property
     def mine_incident_report_no(self):

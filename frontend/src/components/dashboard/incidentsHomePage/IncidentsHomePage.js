@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { destroy } from "redux-form";
 import { debounce, isEmpty } from "lodash";
 import queryString from "query-string";
 import moment from "moment";
@@ -10,7 +11,7 @@ import {
   fetchMineTenureTypes,
   fetchMineCommodityOptions,
   fetchMineComplianceCodes,
-  fetchVarianceStatusOptions,
+  // fetchVarianceStatusOptions,
   fetchVarianceDocumentCategoryOptions,
 } from "@/actionCreators/staticContentActionCreator";
 import { modalConfig } from "@/components/modalContent/config";
@@ -31,7 +32,7 @@ import {
   addDocumentToVariance,
 } from "@/actionCreators/varianceActionCreator";
 import { fetchIncidents } from "@/actionCreators/incidentsActionCreator";
-import { getVariances, getVariancePageData } from "@/selectors/varianceSelectors";
+// import { getVariances, getVariancePageData } from "@/selectors/varianceSelectors";
 import { getIncidents, getIncidentPageData } from "@/selectors/incidentSelectors";
 import { VarianceTable } from "@/components/dashboard/customHomePage/VarianceTable";
 import { IncidentsTable } from "./IncidentsTable";
@@ -40,6 +41,9 @@ import * as router from "@/constants/routes";
 import { fetchInspectors } from "@/actionCreators/partiesActionCreator";
 import IncidentsSearch from "./IncidentsSearch";
 import { formatParamStringToArray } from "@/utils/helpers";
+import * as ModalContent from "@/constants/modalContent";
+import * as FORM from "@/constants/forms";
+
 /**
  * @class Variance page is a landing page for variance searching
  *
@@ -54,14 +58,15 @@ const propTypes = {
   fetchRegionOptions: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+  destroy: PropTypes.func.isRequired,
   fetchInspectors: PropTypes.func.isRequired,
   fetchMineCommodityOptions: PropTypes.func.isRequired,
-  fetchVarianceStatusOptions: PropTypes.func.isRequired,
+  // fetchVarianceStatusOptions: PropTypes.func.isRequired,
   // fetchVariances: PropTypes.func.isRequired,
   fetchIncidents: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
-  variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
-  variancePageData: CustomPropTypes.variancePageData.isRequired,
+  // variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
+  // variancePageData: CustomPropTypes.variancePageData.isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   getDropdownHSRCMComplianceCodes: CustomPropTypes.options.isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
@@ -143,7 +148,7 @@ export class IncidentsHomePage extends Component {
     this.props.fetchMineComplianceCodes();
     this.props.fetchRegionOptions();
     this.props.fetchMineCommodityOptions();
-    this.props.fetchVarianceStatusOptions();
+    // this.props.fetchVarianceStatusOptions();
     this.props.fetchVarianceDocumentCategoryOptions();
   }
 
@@ -281,30 +286,90 @@ export class IncidentsHomePage extends Component {
     });
   };
 
-  openEditVarianceModal = (variance) => {
+  // ///////begin modal stuff
+
+  openViewMineIncidentModal = (event, incident) => {
+    const mine = this.props.mines[this.props.mineGuid];
+    event.preventDefault();
+    const title = `${mine.mine_name} - Incident No. ${incident.mine_incident_report_no}`;
     this.props.openModal({
       props: {
-        onSubmit: this.handleUpdateVariance,
-        title: this.props.complianceCodesHash[variance.compliance_article_id],
-        mineGuid: variance.mine_guid,
-        mineName: variance.mine_name,
-        varianceGuid: variance.variance_guid,
+        title,
+        incident,
       },
-      content: modalConfig.EDIT_VARIANCE,
+      isViewOnly: true,
+      content: modalConfig.VIEW_MINE_INCIDENT,
     });
   };
 
-  openViewVarianceModal = (variance) => {
+  handleCancelMineIncident = () => {
+    this.props.destroy(FORM.MINE_INCIDENT);
+  };
+
+  openMineIncidentModal = (
+    event,
+    onSubmit,
+    newIncident,
+    existingIncident = { dangerous_occurrence_subparagraph_ids: [] }
+  ) => {
+    console.log(newIncident);
+    console.log(existingIncident);
+    const mine = this.props.mines[this.props.mineGuid];
+    event.preventDefault();
+    const title = newIncident
+      ? ModalContent.ADD_INCIDENT(mine.mine_name)
+      : ModalContent.EDIT_INCIDENT(mine.mine_name);
     this.props.openModal({
       props: {
-        variance,
-        title: this.props.complianceCodesHash[variance.compliance_article_id],
-        mineName: variance.mine_name,
+        newIncident,
+        initialValues: {
+          ...existingIncident,
+          dangerous_occurrence_subparagraph_ids: existingIncident.dangerous_occurrence_subparagraph_ids.map(
+            String
+          ),
+        },
+        onSubmit,
+        afterClose: this.handleCancelMineIncident,
+        title,
+        mineGuid: this.props.mineGuid,
+        followupActionOptions: this.props.followupActionsOptions,
+        incidentDeterminationOptions: this.props.incidentDeterminationOptions,
+        incidentStatusCodeOptions: this.props.incidentStatusCodeOptions,
+        doSubparagraphOptions: this.props.doSubparagraphOptions,
+        inspectors: this.props.inspectors,
+        clearOnSubmit: true,
       },
-      content: modalConfig.VIEW_VARIANCE,
-      isViewOnly: true,
+      widthSize: "50vw",
+      content: modalConfig.MINE_INCIDENT,
     });
   };
+
+  // ///////end modal stuff
+
+  // openEditVarianceModal = (variance) => {
+  //   this.props.openModal({
+  //     props: {
+  //       onSubmit: this.handleUpdateVariance,
+  //       title: this.props.complianceCodesHash[variance.compliance_article_id],
+  //       mineGuid: variance.mine_guid,
+  //       mineName: variance.mine_name,
+  //       varianceGuid: variance.variance_guid,
+  //     },
+  //     content: modalConfig.EDIT_VARIANCE,
+  //   });
+  // };
+
+  // openViewVarianceModal = (variance) => {
+  //   this.props.openModal({
+  //     props: {
+  //       variance,
+  //       title: this.props.complianceCodesHash[variance.compliance_article_id],
+  //       mineName: variance.mine_name,
+  //     },
+  //     content: modalConfig.VIEW_VARIANCE,
+  //     isViewOnly: true,
+  //   });
+  // };
 
   handleFilterChange = (pagination, filters) => {
     const { status } = filters;
@@ -349,21 +414,22 @@ export class IncidentsHomePage extends Component {
             filterVarianceStatusOptions={this.props.filterVarianceStatusOptions}
           /> */}
 
-          {/* <LoadingWrapper condition={this.state.incidentsLoaded}>
+          <LoadingWrapper condition={this.state.incidentsLoaded}>
             <IncidentsTable
+              incidents={this.props.incidents}
               isApplication={this.state.isApplication}
               handleFilterChange={this.handleFilterChange}
-              variances={this.props.variances}
-              pageData={this.props.variancePageData}
+              // variances={this.props.variances}
+              pageData={this.props.incidentPageData}
               handlePageChange={this.handleVariancePageChange}
               handleVarianceSearch={this.handleVarianceSearch}
               params={this.state.params}
-              openEditVarianceModal={this.openEditVarianceModal}
-              openViewVarianceModal={this.openViewVarianceModal}
+              // openEditVarianceModal={this.openEditVarianceModal}
+              // openViewVarianceModal={this.openViewVarianceModal}
               sortField={this.state.params.sort_field}
               sortDir={this.state.params.sort_dir}
             />
-          </LoadingWrapper> */}
+          </LoadingWrapper>
           {/* <VarianceTable
               isApplication={this.state.isApplication}
               handleFilterChange={this.handleFilterChange}
@@ -389,8 +455,8 @@ const mapStateToProps = (state) => ({
   mineRegionHash: getMineRegionHash(state),
   mineTenureHash: getMineTenureTypesHash(state),
   mineCommodityOptionsHash: getCommodityOptionHash(state),
-  variancePageData: getVariancePageData(state),
-  variances: getVariances(state),
+  // variancePageData: getVariancePageData(state),
+  // variances: getVariances(state),
   incidentPageData: getIncidentPageData(state),
   incidents: getIncidents(state),
   complianceCodesHash: getHSRCMComplianceCodesHash(state),
@@ -405,6 +471,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchIncidents,
       // fetchVariances,
       updateVariance,
+      destroy,
       openModal,
       closeModal,
       fetchRegionOptions,
@@ -412,7 +479,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineTenureTypes,
       fetchMineComplianceCodes,
       fetchMineCommodityOptions,
-      fetchVarianceStatusOptions,
+      // fetchVarianceStatusOptions,
       fetchVarianceDocumentCategoryOptions,
       fetchInspectors,
     },

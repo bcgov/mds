@@ -3,7 +3,7 @@ from flask import request
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
 from sqlalchemy import desc, cast, NUMERIC
 from app.extensions import api
-# from ...mines.mine.models.mine import Mine
+from app.api.mines.mine.models.mine import Mine
 from ..models.mine_incident import MineIncident
 # from ..models.variance_application_status_code import VarianceApplicationStatusCode
 from app.api.mines.compliance.models.compliance_article import ComplianceArticle
@@ -60,6 +60,8 @@ class IncidentsResource(Resource, UserMixin, ErrorMixin):
         if not records:
             raise BadRequest('Unable to fetch variances.')
 
+        logging.warning("$$$$$$$$$$$$$$$$$$$$$$$")
+        logging.warning(records.all())
         return {
             'records': records.all(),
             'current_page': pagination_details.page_number,
@@ -138,7 +140,7 @@ class IncidentsResource(Resource, UserMixin, ErrorMixin):
         #     region_list = args["region"].split(',')
         #     conditions.append(self._build_filter('Mine', 'mine_region', 'in', region_list))
 
-        query = MineIncident.query#query.join(Mine).join(ComplianceArticle)
+        query = MineIncident.query.join(Mine)#query.join(Mine).join(ComplianceArticle)
         # # Apply sorting
         # if args['sort_field'] and args['sort_dir']:
         #     # The compliance sorting must be custom due to the code being stored in multiple columns.
