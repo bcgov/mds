@@ -37,6 +37,8 @@ import * as router from "@/constants/routes";
 import { fetchInspectors } from "@/actionCreators/partiesActionCreator";
 import VarianceSearch from "./VarianceSearch";
 import { formatParamStringToArray } from "@/utils/helpers";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import * as Permission from "@/constants/permissions";
 /**
  * @class Variance page is a landing page for variance searching
  *
@@ -311,15 +313,17 @@ export class VarianceHomePage extends Component {
           <h1>Browse Variances</h1>
         </div>
         <div className="landing-page__content">
-          <VarianceSearch
-            handleNameFieldReset={this.handleNameFieldReset}
-            initialValues={this.state.params}
-            fetchVariances={this.props.fetchVariances}
-            handleVarianceSearch={this.handleVarianceSearchDebounced}
-            mineRegionOptions={this.props.mineRegionOptions}
-            complianceCodes={this.props.getDropdownHSRCMComplianceCodes}
-            filterVarianceStatusOptions={this.props.filterVarianceStatusOptions}
-          />
+          <AuthorizationWrapper permission={Permission.IN_TESTING}>
+            <VarianceSearch
+              handleNameFieldReset={this.handleNameFieldReset}
+              initialValues={this.state.params}
+              fetchVariances={this.props.fetchVariances}
+              handleVarianceSearch={this.handleVarianceSearchDebounced}
+              mineRegionOptions={this.props.mineRegionOptions}
+              complianceCodes={this.props.getDropdownHSRCMComplianceCodes}
+              filterVarianceStatusOptions={this.props.filterVarianceStatusOptions}
+            />
+          </AuthorizationWrapper>
           <LoadingWrapper condition={this.state.variancesLoaded}>
             <VarianceTable
               isApplication={this.state.isApplication}

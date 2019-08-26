@@ -38,7 +38,7 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
     @requires_any_of([VIEW_ALL])
     @api.marshal_with(PAGINATED_VARIANCE_LIST, code=200)
     def get(self):
-        args = {
+        args={
             "page_number": request.args.get('page', PAGE_DEFAULT, type=int),
             "page_size":request.args.get('per_page', PER_PAGE_DEFAULT, type=int),
             "application_status": request.args.get('variance_application_status_code', type=str),
@@ -97,6 +97,7 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
         if args["application_status"] is not None:
             status_filter_values = args["application_status"].split(',')
             conditions.append(self._build_filter('Variance', 'variance_application_status_code', 'in',  status_filter_values))
+
 
         if args["compliance_codes"] is not None:
             compliance_codes_values = args["compliance_codes"].split(',')
@@ -171,4 +172,16 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
                 filtered_query = apply_sort(filtered_query, sort_criteria)
         else:
             filtered_query = query
+# =======
+#
+#         if args["region"] is not None:
+#             region_list = args["region"].split(',')
+#             conditions.append(self._build_filter('Mine', 'mine_region', 'in', region_list))
+#
+#         query = Variance.query.join(Mine)
+#
+#         filtered_query = apply_filters(
+#             query.order_by(desc(Variance.received_date)), conditions)
+#
+# >>>>>>> 17815da6f1f6d88c19e9aa2c433df53eb9f483a1
         return apply_pagination(filtered_query, args["page_number"], args["page_size"])

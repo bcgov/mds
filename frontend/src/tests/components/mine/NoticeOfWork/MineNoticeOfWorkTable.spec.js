@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import NoticeOfWorkTable from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkTable";
+import { MineNoticeOfWorkTable } from "@/components/mine/NoticeOfWork/MineNoticeOfWorkTable";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const props = {};
@@ -10,17 +10,16 @@ const setupProps = () => {
   props.noticeOfWorkApplications = MOCK.NOW.applications;
   props.sortField = "trackingnumber";
   props.sortDir = "asc";
-  props.searchParams = { mine_search: "substring", mine_region: "SW,NE" };
-  props.mineRegionHash = MOCK.REGION_HASH;
+  props.searchParams = { noticeofworktype: "other" };
 };
 
 beforeEach(() => {
   setupProps();
 });
 
-describe("NoticeOfWorkTable", () => {
+describe("MineNoticeOfWorkTable", () => {
   it("renders properly", () => {
-    const component = shallow(<NoticeOfWorkTable {...props} />);
+    const component = shallow(<MineNoticeOfWorkTable {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

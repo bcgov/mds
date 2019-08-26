@@ -14,86 +14,90 @@ exports[`VarianceHomePage renders properly 1`] = `
   <div
     className="landing-page__content"
   >
-    <VarianceSearch
-      complianceCodes={
-        Array [
-          Object {
-            "label": "2.3.7 - Spills",
-            "value": 305,
-          },
-          Object {
-            "label": "2.3.8 - Flammable Waste Storage",
-            "value": 306,
-          },
-        ]
-      }
-      fetchVariances={
-        [MockFunction] {
-          "calls": Array [
-            Array [
+    <Connect(AuthorizationWrapper)
+      permission="inTesting"
+    >
+      <VarianceSearch
+        complianceCodes={
+          Array [
+            Object {
+              "label": "2.3.7 - Spills",
+              "value": 305,
+            },
+            Object {
+              "label": "2.3.8 - Flammable Waste Storage",
+              "value": 306,
+            },
+          ]
+        }
+        fetchVariances={
+          [MockFunction] {
+            "calls": Array [
+              Array [
+                Object {
+                  "compliance_code": Array [],
+                  "major": undefined,
+                  "region": Array [],
+                  "search": undefined,
+                  "variance_application_status_code": Array [],
+                },
+              ],
+              Array [
+                Object {
+                  "compliance_code": Array [],
+                  "major": undefined,
+                  "region": Array [],
+                  "search": undefined,
+                  "variance_application_status_code": Array [],
+                },
+              ],
+            ],
+            "results": Array [
               Object {
-                "compliance_code": Array [],
-                "major": undefined,
-                "region": Array [],
-                "search": undefined,
-                "variance_application_status_code": Array [],
+                "type": "return",
+                "value": Promise {},
+              },
+              Object {
+                "type": "return",
+                "value": Promise {},
               },
             ],
-            Array [
+          }
+        }
+        filterVarianceStatusOptions={
+          Object {
+            "records": Array [
               Object {
-                "compliance_code": Array [],
-                "major": undefined,
-                "region": Array [],
-                "search": undefined,
-                "variance_application_status_code": Array [],
+                "description": "In Review",
+                "variance_application_status_code": "REV",
+              },
+              Object {
+                "description": "Not Applicable",
+                "variance_application_status_code": "NAP",
+              },
+              Object {
+                "description": "Approved",
+                "variance_application_status_code": "APP",
+              },
+              Object {
+                "description": "Denied",
+                "variance_application_status_code": "DEN",
               },
             ],
-          ],
-          "results": Array [
-            Object {
-              "type": "return",
-              "value": Promise {},
-            },
-            Object {
-              "type": "return",
-              "value": Promise {},
-            },
-          ],
+          }
         }
-      }
-      filterVarianceStatusOptions={
-        Object {
-          "records": Array [
-            Object {
-              "description": "In Review",
-              "variance_application_status_code": "REV",
-            },
-            Object {
-              "description": "Not Applicable",
-              "variance_application_status_code": "NAP",
-            },
-            Object {
-              "description": "Approved",
-              "variance_application_status_code": "APP",
-            },
-            Object {
-              "description": "Denied",
-              "variance_application_status_code": "DEN",
-            },
-          ],
+        handleVarianceSearch={[Function]}
+        initialValues={
+          Object {
+            "compliance_code": Array [],
+            "major": undefined,
+            "region": Array [],
+            "search": undefined,
+            "variance_application_status_code": Array [],
+          }
         }
-      }
-      handleVarianceSearch={[Function]}
-      initialValues={
-        Object {
-          "compliance_code": Array [],
-          "major": undefined,
-          "region": Array [],
-          "search": undefined,
-          "variance_application_status_code": Array [],
-        }
-      }
-    />
+      />
+    </Connect(AuthorizationWrapper)>
     <LoadingWrapper
       condition={false}
     >

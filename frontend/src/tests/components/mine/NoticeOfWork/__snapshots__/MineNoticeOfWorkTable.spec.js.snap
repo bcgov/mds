@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`NoticeOfWorkTable renders properly 1`] = `
+exports[`MineNoticeOfWorkTable renders properly 1`] = `
 <Table
   align="left"
   bordered={false}
@@ -8,14 +8,6 @@ exports[`NoticeOfWorkTable renders properly 1`] = `
   className=""
   columns={
     Array [
-      Object {
-        "dataIndex": "mine_region",
-        "filteredValue": "SW,NE",
-        "filters": Array [],
-        "render": [Function],
-        "sortOrder": false,
-        "title": "Region",
-      },
       Object {
         "dataIndex": "nowNum",
         "filterDropdown": [Function],
@@ -25,12 +17,6 @@ exports[`NoticeOfWorkTable renders properly 1`] = `
         "sortOrder": "ascend",
         "sorter": true,
         "title": "NoW No.",
-      },
-      Object {
-        "dataIndex": "mineName",
-        "render": [Function],
-        "sortOrder": false,
-        "title": "Mine",
       },
       Object {
         "dataIndex": "nowType",
@@ -69,7 +55,6 @@ exports[`NoticeOfWorkTable renders properly 1`] = `
         "key": "07e801a0-fa33-4c3b-abcc-ac6df628d483",
         "mineGuid": "6e9d3426-ebf1-413f-9e5f-c3a71ab56797",
         "mineName": "Hamilton, Herrera and Mccormick",
-        "mine_region": "N/A",
         "nowNum": 44,
         "nowType": "choice",
         "status": "Approved",
@@ -79,7 +64,6 @@ exports[`NoticeOfWorkTable renders properly 1`] = `
         "key": "8e1536da-644c-4961-976b-b1326fa75825",
         "mineGuid": "60300a07-376c-46f1-a984-88a813f91438",
         "mineName": "Thompson-Sullivan",
-        "mine_region": "N/A",
         "nowNum": 52,
         "nowType": "technology",
         "status": "Approved",
