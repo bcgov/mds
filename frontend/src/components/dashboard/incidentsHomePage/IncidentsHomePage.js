@@ -24,6 +24,11 @@ import {
   getFilterVarianceStatusOptions,
   getDropdownHSRCMComplianceCodes,
   getMineRegionDropdownOptions,
+  getDropdownIncidentFollowupActionOptions,
+  getDangerousOccurrenceSubparagraphOptions,
+  getDropdownIncidentDeterminationOptions,
+  getDropdownIncidentStatusCodeOptions,
+  getIncidentFollowupActionOptions,
 } from "@/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import {
@@ -72,6 +77,15 @@ const propTypes = {
   mineRegionOptions: CustomPropTypes.options.isRequired,
   filterVarianceStatusOptions: CustomPropTypes.filterOptions.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  followupActions: PropTypes.arrayOf(CustomPropTypes.incidentFollowupType),
+  followupActionsOptions: CustomPropTypes.options.isRequired,
+  incidentDeterminationOptions: CustomPropTypes.options.isRequired,
+  incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
+  doSubparagraphOptions: CustomPropTypes.options.isRequired,
+};
+
+const defaultProps = {
+  followupActions: [],
 };
 
 export const joinOrRemove = (param, key) => {
@@ -289,9 +303,9 @@ export class IncidentsHomePage extends Component {
   // ///////begin modal stuff
 
   openViewMineIncidentModal = (event, incident) => {
-    const mine = this.props.mines[this.props.mineGuid];
+    // const mine = this.props.mines[this.props.mineGuid];
     event.preventDefault();
-    const title = `${mine.mine_name} - Incident No. ${incident.mine_incident_report_no}`;
+    const title = `${incident.mine_name} - Incident No. ${incident.mine_incident_report_no}`;
     this.props.openModal({
       props: {
         title,
@@ -312,6 +326,7 @@ export class IncidentsHomePage extends Component {
     newIncident,
     existingIncident = { dangerous_occurrence_subparagraph_ids: [] }
   ) => {
+    console.log("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH")
     console.log(newIncident);
     console.log(existingIncident);
     const mine = this.props.mines[this.props.mineGuid];
@@ -428,6 +443,10 @@ export class IncidentsHomePage extends Component {
               // openViewVarianceModal={this.openViewVarianceModal}
               sortField={this.state.params.sort_field}
               sortDir={this.state.params.sort_dir}
+              followupActions={this.props.followupActions}
+              openMineIncidentModal={this.openMineIncidentModal}
+              handleEditMineIncident={this.handleEditMineIncident}
+              openViewMineIncidentModal={this.openViewMineIncidentModal}
             />
           </LoadingWrapper>
           {/* <VarianceTable
@@ -450,6 +469,7 @@ export class IncidentsHomePage extends Component {
 }
 
 IncidentsHomePage.propTypes = propTypes;
+IncidentsHomePage.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   mineRegionHash: getMineRegionHash(state),
@@ -463,6 +483,11 @@ const mapStateToProps = (state) => ({
   getDropdownHSRCMComplianceCodes: getDropdownHSRCMComplianceCodes(state),
   mineRegionOptions: getMineRegionDropdownOptions(state),
   filterVarianceStatusOptions: getFilterVarianceStatusOptions(state),
+  followupActions: getIncidentFollowupActionOptions(state),
+  followupActionsOptions: getDropdownIncidentFollowupActionOptions(state),
+  incidentDeterminationOptions: getDropdownIncidentDeterminationOptions(state),
+  incidentStatusCodeOptions: getDropdownIncidentStatusCodeOptions(state),
+  doSubparagraphOptions: getDangerousOccurrenceSubparagraphOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
