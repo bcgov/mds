@@ -7,7 +7,10 @@ import * as Strings from "@/constants/strings";
 import * as router from "@/constants/routes";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import CustomPropTypes from "@/customPropTypes";
-import { getMineRegionHash } from "@/selectors/staticContentSelectors";
+import {
+  getMineRegionHash,
+  getMineRegionDropdownOptions,
+} from "@/selectors/staticContentSelectors";
 import { fetchRegionOptions } from "@/actionCreators/staticContentActionCreator";
 import NoticeOfWorkTable from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkTable";
 import NoticeOfWorkSearch from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkSearch";
@@ -15,6 +18,7 @@ import ResponsivePagination from "@/components/common/ResponsivePagination";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import { fetchNoticeOfWorkApplications } from "@/actionCreators/noticeOfWorkActionCreator";
 import { getNoticeOfWorkList, getNoticeOfWorkPageData } from "@/selectors/noticeOfWorkSelectors";
+import { formatQueryListParams } from "@/utils/helpers";
 
 const propTypes = {
   fetchNoticeOfWorkApplications: PropTypes.func.isRequired,
@@ -24,11 +28,19 @@ const propTypes = {
   noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.nowApplication).isRequired,
   fetchRegionOptions: PropTypes.func.isRequired,
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineRegionOptions: CustomPropTypes.options.isRequired,
 };
 
 export class NoticeOfWorkHomePage extends Component {
   params = queryString.parse(this.props.location.search);
 
+  listQueryParams = ["mine_region"];
+
+  splitListParams = formatQueryListParams("split", this.listQueryParams);
+
+  joinListParams = formatQueryListParams("join", this.listQueryParams);
+
+  // Holds list params as array
   state = {
     isLoaded: false,
     params: {
@@ -72,7 +84,7 @@ export class NoticeOfWorkHomePage extends Component {
     const parsedParams = queryString.parse(params);
     this.setState(
       {
-        params: parsedParams,
+        params: this.splitListParams(parsedParams),
         isLoaded: false,
       },
       () =>
@@ -82,6 +94,7 @@ export class NoticeOfWorkHomePage extends Component {
     );
   };
 
+  // Expects list params as arrays
   handleSearch = (searchParams = {}, clear = false) => {
     const persistedParams = clear ? {} : this.state.params;
     const updatedParams = {
@@ -95,10 +108,9 @@ export class NoticeOfWorkHomePage extends Component {
       page: Strings.DEFAULT_PAGE,
     };
 
-    this.props.history.push(router.NOTICE_OF_WORK_APPLICATIONS.dynamicRoute(updatedParams));
-    this.setState({
-      params: updatedParams,
-    });
+    this.props.history.push(
+      router.NOTICE_OF_WORK_APPLICATIONS.dynamicRoute(this.joinListParams(updatedParams))
+    );
   };
 
   onPageChange = (page, per_page) => {
@@ -134,6 +146,7 @@ export class NoticeOfWorkHomePage extends Component {
                   sortDir={this.state.params.sort_dir}
                   searchParams={this.state.params}
                   mineRegionHash={this.props.mineRegionHash}
+                  mineRegionOptions={this.props.mineRegionOptions}
                 />
                 <div className="center">
                   <ResponsivePagination
@@ -156,6 +169,7 @@ const mapStateToProps = (state) => ({
   noticeOfWorkApplications: getNoticeOfWorkList(state),
   pageData: getNoticeOfWorkPageData(state),
   mineRegionHash: getMineRegionHash(state),
+  mineRegionOptions: getMineRegionDropdownOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
