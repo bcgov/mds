@@ -130,10 +130,6 @@ export class AddReportForm extends Component {
     this.props.change("mine_report_submissions", this.state.mineReportSubmissions);
   };
 
-  hasSubmissions = () => {
-    this.state.mineReportSubmissions.filter((x) => x.mine_report_submission_guid).length > 0;
-  };
-
   render() {
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
@@ -219,13 +215,15 @@ export class AddReportForm extends Component {
               mineReportSubmissions={this.state.mineReportSubmissions}
               updateMineReportSubmissions={this.updateMineReportSubmissions}
             />
-            {this.state.existingReport && this.hasSubmissions() && (
-              <ReportComments
-                mineGuid={this.props.mineGuid}
-                mineReportGuid={this.props.initialValues.mine_report_guid}
-                handleSubmit={this.props.handleCommentSubmit}
-              />
-            )}
+            {this.state.existingReport &&
+              this.state.mineReportSubmissions.filter((x) => x.mine_report_submission_guid).length >
+                0 && (
+                <ReportComments
+                  mineGuid={this.props.mineGuid}
+                  mineReportGuid={this.props.initialValues.mine_report_guid}
+                  handleSubmit={this.props.handleCommentSubmit}
+                />
+              )}
           </Col>
         </Row>
         <div className="right center-mobile">

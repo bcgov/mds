@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VarianceSearchForm form renders properly 1`] = `
+<Form
+  colon={true}
+  hideRequiredMark={false}
+  layout="vertical"
+  onReset={[Function]}
+  onSubmit={[MockFunction]}
+>
+  <Row
+    gutter={6}
+  >
+    <Col
+      md={24}
+      xs={24}
+    >
+      <Field
+        component={[Function]}
+        id="search"
+        name="search"
+        placeholder="Search by mine name, or mine number"
+      />
+    </Col>
+  </Row>
+  <div
+    className="left center-mobile"
+  >
+    <Button
+      block={false}
+      className="btn--dropdown"
+      ghost={false}
+      htmlType="button"
+      loading={false}
+    >
+      Expand Filters
+      <Icon
+        type="down"
+      />
+    </Button>
+  </div>
+  <div
+    className="right center-mobile"
+  >
+    <Button
+      block={false}
+      className="full-mobile"
+      ghost={false}
+      htmlType="reset"
+      loading={false}
+      type="secondary"
+    >
+      Clear Filters
+    </Button>
+    <Button
+      block={false}
+      className="full-mobile"
+      ghost={false}
+      htmlType="submit"
+      loading={false}
+      type="primary"
+    >
+      Apply Filters
+    </Button>
+  </div>
+</Form>
+`;

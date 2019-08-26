@@ -12,7 +12,7 @@ const setupDispatchProps = () => {
 };
 
 const setupReducerProps = () => {
-  reducerProps.location = { search: " " };
+  reducerProps.location = { search: "mine_region=SW,NE" };
   reducerProps.history = {
     push: jest.fn(),
     location: {},
