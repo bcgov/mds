@@ -11,9 +11,10 @@ CREATE OR REPLACE FUNCTION transfer_mine_status_information() RETURNS void AS $$
             CREATE TABLE IF NOT EXISTS ETL_STATUS (
                 mine_guid             uuid       ,
                 mine_no               varchar(7) ,
-                status_code           varchar(10),
-                legacy_mms_mine_status character varying(50)
+                status_code           varchar(10)
             );
+            -- ETL_STATUS is stateful and persists between runs, so it must be altered
+            ALTER TABLE ETL_STATUS ADD COLUMN legacy_mms_mine_status character varying(50);
             SELECT count(*) FROM ETL_STATUS into old_row;
 
             -- Upsert data into ETL_STATUS from MMS
