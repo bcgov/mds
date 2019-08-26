@@ -10,7 +10,7 @@ const setupProps = () => {
   props.noticeOfWorkApplications = MOCK.NOW.applications;
   props.sortField = "trackingnumber";
   props.sortDir = "asc";
-  props.searchParams = { mine_search: "substring" };
+  props.searchParams = { mine_search: "substring", mine_region: "SW,NE" };
   props.mineRegionHash = MOCK.REGION_HASH;
 };
 
