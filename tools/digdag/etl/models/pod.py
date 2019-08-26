@@ -25,30 +25,30 @@ class POD:
     suffix = os.getenv("SUFFIX", "-pr-NUM")
 
     def __init__(
-        self, pod_name, env_pod, command, pod_namespace=None, env=None, env_container_id=0
+        self, pod_name, env_pod, command, image_namespace=None, env=None, env_container_id=0
     ):
         self.pod_name = pod_name if pod_name else "digdag-mds-job"
         self.env_pod = env_pod if env_pod else "digdag-mds-job"
         self.command = command if command else ["flask", "test-cli-command"]
-        self.pod_namespace = pod_namespace if pod_namespace else self.namespace
+        self.image_namespace = image_namespace if image_namespace else self.namespace
         self.env_container_id = env_container_id
 
         self.job_pod_name = self.pod_name + self.suffix
         self.env_pod_name = self.env_pod + self.suffix
         self.job_pod_label = f"name={self.job_pod_name}"
         self.env_pod_label = f"name={self.env_pod_name}"
-        self.image = f"docker-registry.default.svc:5000/{self.pod_namespace}/{self.env_pod}:{self.image_tag}"
+        self.image = f"docker-registry.default.svc:5000/{self.image_namespace}/{self.env_pod}:{self.image_tag}"
 
         k8s_client = config.new_client_from_config(self.kube_config)
         dyn_client = DynamicClient(k8s_client)
 
         self.v1_pod = dyn_client.resources.get(api_version="v1", kind="Pod")
 
-    def get_pod_template(self):
+    def get_pod_template(self, env=None):
         """
         Returns a JSON object representing an Pod template
         """
-        json_data = self.create_pod_template()
+        json_data = self.create_pod_template(env=env)
 
         # Update env from existing pod
         current_running_pod = self.v1_pod.get(
@@ -84,12 +84,18 @@ class POD:
         json_data["spec"]["containers"][0]["name"] = self.job_pod_name
         json_data["spec"]["containers"][0]["image"] = self.image
 
-    def create_pod(self, pod_template=None):
+        if (env is not None):
+            json_data["spec"]["containers"][0]["env"] = env
+
+        return json_data
+
+    def create_pod(self, pod_template=None, env=None):
         """
         Creates a pod given a JSON template and waits for it to finish running.
         Returns the created pod resource object.
         """
-        pod_template = pod_template if pod_template else self.get_pod_template()
+        pod_template = pod_template if pod_template else self.get_pod_template(
+            env=env)
         result = None
         try:
             result = self.v1_pod.create(
