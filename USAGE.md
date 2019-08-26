@@ -19,25 +19,24 @@ This file describes how to run the project and develop against it.
 
 ### Setting up local development
 
-Keycloak needs to be set up for the application to run properly, a keycloak user (admin/admin) needs to be made, and we need some test data.
-
-
-Run the following commands after cloning the repo.  The first command will do a one-time setup of your environment so that you can do all your development locally.
+If you are developing without an IDIR, or if remote Keycloak is down, you'll
+need to run a local Keycloak instance. The local development environment is
+based on `.env-dev-local-keycloak`. You can make a copy of this file as `.env`
+and/or run the following command to set up a local Keycloak instance.
 
 ```
 make local-dev
 ```
 
-Make sure your local docker is up and running before running the next step.
-
-Every time you wish to have a completely fresh environment, with MDS user admin/admin and random data, run the following:
+If you wish to have a completely fresh environment, you can run the following
+command at any time:
 
 ```
 make rebuild-all-local
 ```
 
-NOTE: It will take quite a bit longer for the other servers to start up, give
-it a few minutes before the frontend and backend are properly online.
+NOTE: Always wait for all commands to complete before running subsequent
+commands.
 
 ### Troubleshooting
 
