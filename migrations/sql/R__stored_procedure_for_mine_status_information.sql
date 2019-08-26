@@ -19,7 +19,10 @@ CREATE OR REPLACE FUNCTION transfer_mine_status_information() RETURNS void AS $$
             -- Upsert data into ETL_STATUS from MMS
             RAISE NOTICE '.. Update existing records with latest MMS data';
             UPDATE ETL_STATUS
-            SET status_code = mms.mmsmin.sta_cd,
+            SET status_code = CASE mms.mmsmin.sta_cd
+                                  WHEN 'B' THEN 'ABN'
+                                  ElSE NULL
+                              END,
                 legacy_mms_mine_status = mms.mmsmin_sts.min_sts_nm
             FROM mms.mmsmin, mms.mmsmin_sts
             WHERE
@@ -97,7 +100,10 @@ CREATE OR REPLACE FUNCTION transfer_mine_status_information() RETURNS void AS $$
                 ETL_STATUS.mine_guid = mine_status.mine_guid
                 AND
                 -- Matching xref record
-                ETL_STATUS.status_code = xref.mine_operation_status_code;
+                ETL_STATUS.status_code = xref.mine_operation_status_code
+                AND
+                -- NULL is not a valid mine status option (no matching mine_status_xref record)
+                ETL_STATUS.status_code IS NOT NULL;
             SELECT count(*) FROM mine_status, ETL_STATUS WHERE mine_status.mine_guid = ETL_STATUS.mine_guid INTO update_row;
             RAISE NOTICE '....# of mine_status records in MDS: %', old_row;
             RAISE NOTICE '....# of mine_status records updated in MDS: %', update_row;
