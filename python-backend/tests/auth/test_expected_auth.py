@@ -70,7 +70,7 @@ from app.api.mines.reports.resources.mine_reports import MineReportResource, Min
      (MineResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
      (MineResource, "put", [MINE_EDIT]),
      (MineReportResource, "get", [VIEW_ALL]), 
-     (MineReportResource, "put", [EDIT_REPORT]),
+     (MineReportResource, "put", [EDIT_REPORT, MINESPACE_PROPONENT]),
      (MineReportListResource, "get", [VIEW_ALL]), 
      (MineReportListResource, "post", [EDIT_REPORT]),
      (MineStatusResource, "get", [VIEW_ALL]),
