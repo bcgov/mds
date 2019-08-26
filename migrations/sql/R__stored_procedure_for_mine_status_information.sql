@@ -100,10 +100,7 @@ CREATE OR REPLACE FUNCTION transfer_mine_status_information() RETURNS void AS $$
                 ETL_STATUS.mine_guid = mine_status.mine_guid
                 AND
                 -- Matching xref record
-                ETL_STATUS.status_code = xref.mine_operation_status_code
-                AND
-                -- NULL is not a valid mine status option (no matching mine_status_xref record)
-                ETL_STATUS.status_code IS NOT NULL;
+                ETL_STATUS.status_code = xref.mine_operation_status_code;
             SELECT count(*) FROM mine_status, ETL_STATUS WHERE mine_status.mine_guid = ETL_STATUS.mine_guid INTO update_row;
             RAISE NOTICE '....# of mine_status records in MDS: %', old_row;
             RAISE NOTICE '....# of mine_status records updated in MDS: %', update_row;
