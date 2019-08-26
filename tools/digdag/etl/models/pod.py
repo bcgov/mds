@@ -25,7 +25,7 @@ class POD:
     suffix = os.getenv("SUFFIX", "-pr-NUM")
 
     def __init__(
-        self, pod_name, env_pod, command, pod_namespace=None, env_container_id=0
+        self, pod_name, env_pod, command, pod_namespace=None, env=None, env_container_id=0
     ):
         self.pod_name = pod_name if pod_name else "digdag-mds-job"
         self.env_pod = env_pod if env_pod else "digdag-mds-job"
@@ -48,17 +48,7 @@ class POD:
         """
         Returns a JSON object representing an Pod template
         """
-        json_data = {}
-        with open("templates/pod.json") as pod_file:
-            json_data = json.load(pod_file)
-
-        json_data["metadata"]["labels"]["app"] = self.job_pod_name
-        json_data["metadata"]["labels"]["name"] = self.job_pod_name
-        json_data["metadata"]["name"] = self.job_pod_name
-        json_data["metadata"]["namespace"] = self.namespace
-        json_data["spec"]["containers"][0]["command"] = self.command
-        json_data["spec"]["containers"][0]["name"] = self.job_pod_name
-        json_data["spec"]["containers"][0]["image"] = self.image
+        json_data = self.create_pod_template()
 
         # Update env from existing pod
         current_running_pod = self.v1_pod.get(
@@ -75,6 +65,24 @@ class POD:
 
         print(json_data)
         return json_data
+
+    def create_pod_template(self, env=None):
+        """
+        Returns a JSON object representing an Pod template, adds environment variables        
+        :param env: Dictionary of environment variables
+        :type env: dict
+        """
+        json_data = {}
+        with open("templates/pod.json") as pod_file:
+            json_data = json.load(pod_file)
+
+        json_data["metadata"]["labels"]["app"] = self.job_pod_name
+        json_data["metadata"]["labels"]["name"] = self.job_pod_name
+        json_data["metadata"]["name"] = self.job_pod_name
+        json_data["metadata"]["namespace"] = self.namespace
+        json_data["spec"]["containers"][0]["command"] = self.command
+        json_data["spec"]["containers"][0]["name"] = self.job_pod_name
+        json_data["spec"]["containers"][0]["image"] = self.image
 
     def create_pod(self, pod_template=None):
         """
