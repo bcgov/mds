@@ -164,7 +164,7 @@ export class EditVarianceForm extends Component {
           <Field
             id="parties_notified_ind"
             name="parties_notified_ind"
-            label="Affected parties have been notified about this Variance request and decision"
+            label="As per MA 13(2), affected parties have been notified about this variance application and decision"
             type="checkbox"
             component={renderConfig.CHECKBOX}
           />
