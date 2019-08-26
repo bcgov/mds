@@ -2,12 +2,7 @@ import pytest
 from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, EDIT_REPORT
 
 from app.api.download_token.resources.download_token import DownloadTokenResource
-from app.api.mines.documents.expected.resources.document_status import ExpectedDocumentStatusResource
-from app.api.mines.documents.expected.resources.expected_documents import ExpectedDocumentResource
-from app.api.mines.documents.expected.resources.expected_document_uploads import ExpectedDocumentUploadResource
-from app.api.mines.documents.expected.resources.mine_documents import ExpectedMineDocumentResource
 from app.api.mines.documents.mines.resources.mine_document_resource import MineDocumentListResource
-from app.api.required_documents.resources.required_documents import RequiredDocumentResource
 from app.api.mines.compliance.resources.compliance import MineComplianceSummaryResource
 from app.api.mines.compliance.resources.compliance_article import ComplianceArticleResource
 from app.api.mines.mine.resources.mine_commodity_code import MineCommodityCodeResource
@@ -42,17 +37,6 @@ from app.api.mines.reports.resources.mine_reports import MineReportResource, Min
     "resource,method,expected_roles",
     [(ComplianceArticleResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
      (DownloadTokenResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
-     (ExpectedDocumentStatusResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
-     (ExpectedDocumentResource, "get", [VIEW_ALL]),
-     (ExpectedDocumentResource, "put", [MINE_EDIT, MINESPACE_PROPONENT]),
-     (ExpectedDocumentResource, "delete", [MINE_EDIT]),
-     (ExpectedDocumentUploadResource, "post",
-      [MINE_EDIT, MINESPACE_PROPONENT]),
-     (ExpectedDocumentUploadResource, "put", [MINE_EDIT, MINESPACE_PROPONENT]),
-     (ExpectedDocumentUploadResource, "delete",
-      [MINE_EDIT, MINESPACE_PROPONENT]),
-     (ExpectedMineDocumentResource, "get", [VIEW_ALL]),
-     (ExpectedMineDocumentResource, "post", [MINE_EDIT]),
      (MineCommodityCodeResource, "get", [VIEW_ALL]),
      (MineComplianceSummaryResource, "get", [VIEW_ALL]),
      (MineDisturbanceCodeResource, "get", [VIEW_ALL]),
@@ -105,8 +89,6 @@ from app.api.mines.reports.resources.mine_reports import MineReportResource, Min
      (PermitAmendmentDocumentListResource, "post", [EDIT_PERMIT]),
      (PermitAmendmentDocumentListResource, "put", [EDIT_PERMIT]),
      (PermitAmendmentDocumentResource, "delete", [EDIT_PERMIT]),
-     (RequiredDocumentResource, "get", [VIEW_ALL]),
-     (RequiredDocumentResource, "get", [VIEW_ALL]),
      (SearchResource, "get", [VIEW_ALL]),
      (SearchOptionsResource, "get", [VIEW_ALL]),
      (SimpleSearchResource, "get", [VIEW_ALL]),

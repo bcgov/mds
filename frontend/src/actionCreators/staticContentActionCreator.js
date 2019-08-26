@@ -12,8 +12,6 @@ import {
   getMineTenureTypeOptions,
   getMineCommodityOptions,
   getMineDisturbanceOptions,
-  getExpectedDocumentStatusOptions,
-  getMineTSFRequiredReports,
   getProvinceOptions,
   getPermitStatusOptions,
   getApplicationStatusOptions,
@@ -79,28 +77,6 @@ export const fetchMineTenureTypes = () => (dispatch) => {
       dispatch(staticContentActions.storeTenureTypes(response.data));
     })
     .catch(() => dispatch(error(reducerTypes.GET_TENURE_TYPES)));
-};
-
-export const fetchMineTailingsRequiredDocuments = () => (dispatch) => {
-  dispatch(request(reducerTypes.GET_MINE_TSF_REQUIRED_REPORTS));
-  return CustomAxios({ selector: getMineTSFRequiredReports })
-    .get(ENVIRONMENT.apiUrl + API.MINE_TSF_REQUIRED_DOCUMENTS, createRequestHeader())
-    .then((response) => {
-      dispatch(success(reducerTypes.GET_MINE_TSF_REQUIRED_REPORTS));
-      dispatch(staticContentActions.storeMineTSFRequiredDocuments(response.data));
-    })
-    .catch(() => dispatch(error(reducerTypes.GET_MINE_TSF_REQUIRED_REPORTS)));
-};
-
-export const fetchExpectedDocumentStatusOptions = () => (dispatch) => {
-  dispatch(request(reducerTypes.GET_EXPECTED_DOCUMENT_STATUS));
-  return CustomAxios({ selector: getExpectedDocumentStatusOptions })
-    .get(`${ENVIRONMENT.apiUrl + API.EXPECTED_DOCUMENT}/status`, createRequestHeader())
-    .then((response) => {
-      dispatch(success(reducerTypes.GET_EXPECTED_DOCUMENT_STATUS));
-      dispatch(staticContentActions.storeDocumentStatusOptions(response.data));
-    })
-    .catch(() => dispatch(error(reducerTypes.GET_EXPECTED_DOCUMENT_STATUS)));
 };
 
 export const fetchPermitStatusOptions = () => (dispatch) => {

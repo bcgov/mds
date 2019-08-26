@@ -32,11 +32,6 @@ from app.api.mines.permits.permit_amendment.resources.permit_amendment import Pe
 from app.api.mines.permits.permit_amendment.resources.permit_amendment_document import PermitAmendmentDocumentListResource, PermitAmendmentDocumentResource
 from app.api.mines.now_submissions.resources.application_resource import MineApplicationResource
 
-from app.api.mines.documents.expected.resources.mine_documents import ExpectedMineDocumentResource
-from app.api.mines.documents.expected.resources.expected_documents import ExpectedDocumentResource, ExpectedDocumentListResource
-from app.api.mines.documents.expected.resources.document_status import ExpectedDocumentStatusResource
-from app.api.mines.documents.expected.resources.expected_document_uploads import ExpectedDocumentUploadResource
-
 api = Namespace('mines', description='Mine related operations')
 
 api.add_resource(MineResource, '/<string:mine_no_or_guid>')
@@ -89,8 +84,12 @@ api.add_resource(MineIncidentDocumentListResource, '/<string:mine_guid>/incident
 api.add_resource(MineReportListResource, '/<string:mine_guid>/reports')
 api.add_resource(MineReportResource, '/<string:mine_guid>/reports/<string:mine_report_guid>')
 api.add_resource(MineReportDefinitionListResource, '/reports/definitions')
-api.add_resource(MineReportCommentListResource, '/<string:mine_guid>/reports/<string:mine_report_guid>/comments')
-api.add_resource(MineReportCommentResource, '/<string:mine_guid>/reports/<string:mine_report_guid>/comments/<string:mine_report_comment_guid>')
+api.add_resource(MineReportCommentListResource,
+                 '/<string:mine_guid>/reports/<string:mine_report_guid>/comments')
+api.add_resource(
+    MineReportCommentResource,
+    '/<string:mine_guid>/reports/<string:mine_report_guid>/comments/<string:mine_report_comment_guid>'
+)
 
 api.add_resource(
     MineReportDocumentListResource,
@@ -116,6 +115,5 @@ api.add_resource(
     PermitAmendmentDocumentResource,
     '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>/documents/<string:permit_amendment_document_guid>',
 )
-
 
 api.add_resource(MineApplicationResource, '/<string:mine_guid>/now-submissions/applications')

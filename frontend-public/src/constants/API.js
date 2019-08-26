@@ -4,7 +4,6 @@ import queryString from "query-string";
 export const MINE = "/mines";
 export const USER_MINE_INFO = "/mines/search";
 
-export const DOCUMENT_STATUS = "/documents/expected/status";
 export const MINE_DOCUMENTS = (mine_guid) => `/mines/${mine_guid}/documents`;
 
 export const DOCUMENT_MANAGER_FILE_GET_URL = (token = {}) =>

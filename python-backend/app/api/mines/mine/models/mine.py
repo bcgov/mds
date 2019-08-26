@@ -66,14 +66,6 @@ class Mine(AuditMixin, Base):
         primaryjoin="and_(MineDocument.mine_guid == Mine.mine_guid, MineDocument.active_ind==True)",
         lazy='select')
 
-    mine_expected_documents = db.relationship(
-        'MineExpectedDocument',
-        primaryjoin=
-        "and_(MineExpectedDocument.mine_guid == Mine.mine_guid, MineExpectedDocument.active_ind==True)",
-        backref='mine',
-        order_by='desc(MineExpectedDocument.due_date)',
-        lazy='select')
-
     mine_party_appt = db.relationship('MinePartyAppointment', backref="mine", lazy='select')
     mine_incidents = db.relationship('MineIncident', backref="mine", lazy='select')
     mine_reports = db.relationship('MineReport', backref="mine", lazy='select')

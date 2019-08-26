@@ -22,14 +22,8 @@ export const MINE_TSF = (mine_guid) => `/mines/${mine_guid}/tailings`;
 export const DISTURBANCE_CODES = "/mines/disturbance-codes";
 export const COMMODITY_CODES = "/mines/commodity-codes";
 export const EDIT_TSF_REPORT = "";
-export const REMOVE_EXPECTED_DOCUMENT = "/documents/expected";
-export const ADD_MINE_EXPECTED_DOCUMENT = "/documents/expected/mines";
-export const UPLOAD_MINE_EXPECTED_DOCUMENT_FILE = (expectedDocumentGuid) =>
-  `/documents/expected/${expectedDocumentGuid}/document`;
-export const DOCUMENT_STATUS = "/documents/expected/status";
 export const MINE_DOCUMENTS = (mine_guid) => `/mines/${mine_guid}/documents`;
 export const MINE_TSF_REQUIRED_DOCUMENTS = "/required-documents?category=TSF";
-export const EXPECTED_DOCUMENT = `/documents/expected`;
 export const MINE_TENURE_TYPES = "/mines/mine-tenure-type-codes";
 export const MINE_TYPES = "/mines/mine-types";
 export const MINE_TYPES_DETAILS = "/mines/mine-types/details";
@@ -37,8 +31,6 @@ export const DOCUMENT_MANAGER_FILE_GET_URL = (token = {}) =>
   `/documents?${queryString.stringify(token)}`;
 export const DOCUMENT_MANAGER_TOKEN_GET_URL = (documentManagerGuid) =>
   `/download-token/${documentManagerGuid}`;
-export const REMOVE_MINE_EXPECTED_DOCUMENT = (expectedDocumentGuid, mineDocumentGuid) =>
-  `/documents/expected/${expectedDocumentGuid}/document/${mineDocumentGuid}`;
 export const MINESPACE_USER = "/users/minespace";
 export const PROVINCE_CODES = "/parties/sub-division-codes";
 

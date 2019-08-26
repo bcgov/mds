@@ -5,26 +5,16 @@ import PropTypes from "prop-types";
 import { Row, Col, Divider } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import { modalConfig } from "@/components/modalContent/config";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as ModalContent from "@/constants/modalContent";
-import * as Permission from "@/constants/permissions";
 import {
   fetchMineReports,
   updateMineReport,
   deleteMineReport,
 } from "@/actionCreators/reportActionCreator";
-import {
-  fetchExpectedDocumentStatusOptions,
-  fetchMineTailingsRequiredDocuments,
-} from "@/actionCreators/staticContentActionCreator";
-import {
-  getExpectedDocumentStatusOptions,
-  getMineTSFRequiredReports,
-} from "@/selectors/staticContentSelectors";
-import { getMineReports, getMineTSFReports } from "@/selectors/reportSelectors";
+import { getMineReports } from "@/selectors/reportSelectors";
 import MineReportTable from "@/components/mine/Reports/MineReportTable";
 import { getMines, getMineGuid } from "@/selectors/mineSelectors";
 import { openModal, closeModal } from "@/actions/modalActions";
+import { getMineReportDefinitionOptions } from "@/reducers/staticContentReducer";
 
 /**
  * @class  MineTailingsInfo - all tenure information related to the mine.
@@ -33,7 +23,8 @@ import { openModal, closeModal } from "@/actions/modalActions";
 const propTypes = {
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
   mineGuid: PropTypes.string.isRequired,
-  mineTSFReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
+  mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
+  mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   updateMineReport: PropTypes.func.isRequired,
   deleteMineReport: PropTypes.func.isRequired,
   fetchMineReports: PropTypes.func.isRequired,
@@ -46,6 +37,7 @@ export class MineTailingsInfo extends Component {
 
   componentDidMount() {
     this.setState({ mine: this.props.mines[this.props.mineGuid] });
+    this.props.fetchMineReports(this.props.mineGuid);
   }
 
   handleEditReport = (values) => {
@@ -76,6 +68,21 @@ export class MineTailingsInfo extends Component {
 
   render() {
     const mine = this.props.mines[this.props.mineGuid];
+
+    const filteredReportDefinitionGuids =
+      this.props.mineReportDefinitionOptions &&
+      this.props.mineReportDefinitionOptions
+        .filter((option) =>
+          option.categories.map((category) => category.mine_report_category).includes("TSF")
+        )
+        .map((definition) => definition.mine_report_definition_guid);
+
+    const filteredReports =
+      this.props.mineReports &&
+      this.props.mineReports.filter((report) =>
+        filteredReportDefinitionGuids.includes(report.mine_report_definition_guid.toLowerCase())
+      );
+
     return (
       <div className="tab__content">
         <div>
@@ -103,7 +110,7 @@ export class MineTailingsInfo extends Component {
             </div>
           </div>
           <MineReportTable
-            mineReports={this.props.mineTSFReports}
+            mineReports={filteredReports}
             openEditReportModal={this.openEditReportModal}
             handleEditReport={this.handleEditReport}
             handleRemoveReport={this.handleRemoveReport}
@@ -115,7 +122,8 @@ export class MineTailingsInfo extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  mineTSFReports: getMineTSFReports(state),
+  mineReports: getMineReports(state),
+  mineReportDefinitionOptions: getMineReportDefinitionOptions(state),
   mines: getMines(state),
   mineGuid: getMineGuid(state),
 });

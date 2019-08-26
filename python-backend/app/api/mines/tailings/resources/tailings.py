@@ -11,8 +11,6 @@ from app.api.utils.access_decorators import requires_role_view_all, requires_rol
 from app.api.utils.resources_mixins import UserMixin
 
 from ..models.tailings import MineTailingsStorageFacility
-from app.api.required_documents.models.required_documents import RequiredDocument
-from app.api.mines.documents.expected.models.mine_expected_document import MineExpectedDocument
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.mine_api_models import MINE_TSF_MODEL
 
@@ -54,23 +52,12 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
             mine, mine_tailings_storage_facility_name=data['mine_tailings_storage_facility_name'])
         mine.mine_tailings_storage_facilities.append(mine_tsf)
 
-        if is_mine_first_tsf:
-            try:
-                tsf_required_documents = RequiredDocument.find_by_req_doc_category('TSF', 'INI')
-
-                for tsf_req_doc in tsf_required_documents:
-                    mine_exp_doc = MineExpectedDocument(
-                        req_document_guid=tsf_req_doc.req_document_guid,
-                        exp_document_name=tsf_req_doc.req_document_name,
-                        exp_document_description=tsf_req_doc.description,
-                        mine_guid=mine.mine_guid,
-                        hsrc_code=tsf_req_doc.hsrc_code,
-                        exp_document_status_code='MIA')
-
-                    mine.mine_expected_documents.append(mine_exp_doc)
-            except Exception as e:
-                db.session.rollback()
-                current_app.logger.error(str(e))
-                raise InternalServerError(str(e) + ", tsf not created")
+        #if is_mine_first_tsf:
+        #    try:
+                #Add TSF documents to CRR
+        #    except Exception as e:
+        #        db.session.rollback()
+        #        current_app.logger.error(str(e))
+        #        raise InternalServerError(str(e) + ", tsf not created")
         mine.save()
         return mine_tsf
