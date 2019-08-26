@@ -38,17 +38,33 @@ class AddIncidentDetailForm extends Component {
         <Row gutter={48}>
           <Col>
             <h4>Incident Details</h4>
-            <Form.Item>
-              <Field
-                id="incident_timestamp"
-                name="incident_timestamp"
-                label="Incident Date and Time*"
-                placeholder="Please select date and time"
-                component={renderConfig.DATE}
-                showTime
-                validate={[required, dateNotInFuture]}
-              />
-            </Form.Item>
+            <Row gutter={16}>
+              <Col md={12} xs={24}>
+                <Form.Item>
+                  <Field
+                    id="incident_date"
+                    name="incident_date"
+                    label="Incident Date*"
+                    placeholder="Please select date"
+                    component={renderConfig.DATE}
+                    validate={[required, dateNotInFuture]}
+                  />
+                </Form.Item>
+              </Col>
+              <Col md={12} xs={24}>
+                <Form.Item>
+                  <Field
+                    id="incident_time"
+                    name="incident_time"
+                    label="Incident Time*"
+                    placeholder="Please select time"
+                    component={renderConfig.TIME}
+                    validate={[required, dateNotInFuture]}
+                    fullWidth
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
             <Form.Item>
               <Field
                 id="proponent_incident_no"
