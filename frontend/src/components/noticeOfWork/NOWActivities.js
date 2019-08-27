@@ -27,21 +27,36 @@ export class NOWActivities extends Component {
         render: (text) => <div title="Length(km)">{text}</div>,
       },
       {
+        title: "Disturbed Area (ha)",
+        dataIndex: "disturbedArea",
+        key: "disturbedArea",
+        render: (text) => <div title="Disturbed Area (ha)">{text}</div>,
+      },
+      {
         title: "Merchantable timber volume (m3)",
         dataIndex: "volume",
         key: "volume",
         render: (text) => <div title="Merchantable timber volume (m3)">{text}</div>,
       },
     ];
+
+    const transformData = (accessList) =>
+      accessList.map((access) => ({
+        type: access.type || Strings.EMPTY_FIELD,
+        length: access.length || Strings.EMPTY_FIELD,
+        disturbedArea: access.disturbedarea || Strings.EMPTY_FIELD,
+        timberVolume: access.timbervolume || Strings.EMPTY_FIELD,
+      }));
+
     return (
       <div className="padding-large--sides">
         <Table
           align="left"
           pagination={false}
           columns={columns}
-          dataSource={[]}
+          dataSource={transformData(this.props.noticeOfWork.exp_access_activity)}
           locale={{
-            emptyText: "Unknown",
+            emptyText: "No data",
           }}
           footer={() => <div title="Total">Total:</div>}
         />
@@ -298,6 +313,7 @@ export class NOWActivities extends Component {
       disturbedArea: "Unknown" || Strings.EMPTY_FIELD,
       timberVolume: this.props.noticeOfWork.cutlinesexplgridtimbervolume || Strings.EMPTY_FIELD,
     };
+
     return (
       <div className="padding-large--sides">
         <div>

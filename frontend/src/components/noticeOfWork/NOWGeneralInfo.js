@@ -5,7 +5,11 @@ import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
 import { formatDate } from "@/utils/helpers";
 import Address from "@/components/common/Address";
-import * as Condition from "@/constants/NOWConditions";
+import {
+  isMineralOrPlacerOrCoal,
+  isMultiYearPermit,
+  isConditionTrue,
+} from "@/constants/NOWConditions";
 
 const propTypes = {
   noticeOfWork: CustomPropTypes.nowApplication.isRequired,
@@ -43,7 +47,7 @@ export class NOWGeneralInfo extends Component {
               <p className="field-title">Type of Notice of Work</p>
               <p>{this.props.noticeOfWork.noticeofworktype || Strings.EMPTY_FIELD}</p>
             </div>
-            {Condition.isMineralOrPlacer(this.props.noticeOfWork.noticeofworktyp) && (
+            {isMineralOrPlacerOrCoal(this.props.noticeOfWork.noticeofworktype) && (
               <div className="inline-flex padding-small">
                 <p className="field-title">Permit Type</p>
                 <p>{this.props.noticeOfWork.typeofpermit || Strings.EMPTY_FIELD}</p>
@@ -67,7 +71,7 @@ export class NOWGeneralInfo extends Component {
               <p className="field-title">Description of Land</p>
               <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </div>
-            {Condition.isMultiYearPermit(this.props.noticeOfWork.typeofpermit) && (
+            {isMultiYearPermit(this.props.noticeOfWork.typeofpermit) && (
               <div className="inline-flex padding-small">
                 <p className="field-title">Term of Application</p>
                 <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
@@ -312,7 +316,7 @@ export class NOWGeneralInfo extends Component {
               <p>{this.props.noticeOfWork.archsitesaffected || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
-          {this.props.noticeOfWork.archsitesaffected === "Yes" && (
+          {isConditionTrue(this.props.noticeOfWork.archsitesaffected) && (
             <Row gutter={16} className="padding-small">
               <Col md={12} xs={24}>
                 <p className="field-title--light">Plan to protect the archaeological site</p>

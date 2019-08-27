@@ -135,6 +135,14 @@ UNDER_EXP_SURFACE_ACTIVITY = api.model(
         'timbervolume': fields.Arbitrary,
     })
 
+EXP_ACCESS_ACTIVITY = api.model(
+    'EXP_ACCESS_ACTIVITY', {
+        'type': fields.String,
+        'length': fields.Arbitrary,
+        'disturbedarea': fields.Arbitrary,
+        'timbervolume': fields.Arbitrary,
+    })
+
 WATER_SOURCE_ACTIVITY = api.model(
     'WATER_SOURCE_ACTIVITY', {
         'sourcewatersupply': fields.String,
@@ -293,6 +301,7 @@ APPLICATION = api.model(
         'contacts': fields.List(fields.Nested(CONTACT)),
         'existing_placer_activity': fields.Nested(PLACER_ACTIVITY),
         'existing_settling_pond': fields.Nested(SETTLING_POND),
+        'exp_access_activity': fields.List(fields.Nested(EXP_ACCESS_ACTIVITY)),
         'proposed_placer_activity': fields.Nested(PLACER_ACTIVITY),
         'proposed_settling_pond': fields.Nested(SETTLING_POND),
         'surface_bulk_sample_activity': fields.List(fields.Nested(SURFACE_BULK_SAMPLE_ACTIVITY)),
