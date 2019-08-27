@@ -104,6 +104,19 @@ cd ../
 make frontend
 ```
 
+## Authentication
+
+This application requires a test BCeID in order to login and contribute locally.
+
+NOTE: MineSpace is using the same Keycloak client as CORE, thus if the user is currently authenticated through CORE with an IDIR, the session will persist on MineSpace.
+
+This is a known issue, knowing that Ministry staff will not be interacting with MineSpace and Proponents will not be interacting with CORE, it has been de-prioritized as it only affects the Dev team.
+
+To avoid having permission issues:
+
+- Do not have test CORE and test MineSpace authenticated on the same browser
+- Open MineSpace in an incognito window, or clear the browser cashe.
+
 ## Code Contribution Standards
 
 Contributors to this codebase are expected to follow the formatting and style
