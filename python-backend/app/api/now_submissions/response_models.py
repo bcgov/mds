@@ -143,6 +143,14 @@ EXP_ACCESS_ACTIVITY = api.model(
         'timbervolume': fields.Arbitrary,
     })
 
+MECH_TRENCHING_ACTIVITY = api.model(
+    'EXP_ACCESS_ACTIVITY', {
+        'type': fields.String,
+        'numberofsites':  fields.Integer,
+        'disturbedarea': fields.Arbitrary,
+        'timbervolume': fields.Arbitrary,
+    })
+
 WATER_SOURCE_ACTIVITY = api.model(
     'WATER_SOURCE_ACTIVITY', {
         'sourcewatersupply': fields.String,
@@ -310,6 +318,7 @@ APPLICATION = api.model(
         'under_exp_rehab_activity': fields.List(fields.Nested(UNDER_EXP_REHAB_ACTIVITY)),
         'under_exp_surface_activity': fields.List(fields.Nested(UNDER_EXP_SURFACE_ACTIVITY)),
         'water_source_activity': fields.List(fields.Nested(WATER_SOURCE_ACTIVITY)),
+        'mech_trenching_activity': fields.List(fields.Nested(MECH_TRENCHING_ACTIVITY)),
     })
 
 APPLICATION_LIST = api.model(
