@@ -59,7 +59,7 @@ class AddIncidentDetailForm extends Component {
                     label="Incident Time*"
                     placeholder="Please select time"
                     component={renderConfig.TIME}
-                    validate={[required, dateNotInFuture]}
+                    validate={[required]}
                     fullWidth
                   />
                 </Form.Item>

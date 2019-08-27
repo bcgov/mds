@@ -50,6 +50,9 @@ export const formatTime = (timeStamp) => timeStamp && moment(timeStamp).format("
 
 export const formatDateTime = (dateTime) => dateTime && moment(dateTime).format("lll");
 
+export const formatTimestamp = (dateString, timeString) =>
+  dateString && timeString && `${dateString} ${timeString.format("HH:mm")}`;
+
 export const formatPostalCode = (code) => code && code.replace(/.{3}$/, " $&");
 
 export const formatTitleString = (input) =>

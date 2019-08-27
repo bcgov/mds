@@ -12,6 +12,7 @@ import AddIncidentReportingForm from "@/components/Forms/incidents/AddIncidentRe
 import AddIncidentDetailForm from "@/components/Forms/incidents/AddIncidentDetailForm";
 import AddIncidentFollowUpForm from "@/components/Forms/incidents/AddIncidentFollowUpForm";
 import * as Strings from "@/constants/strings";
+import { formatTimestamp } from "@/utils/helpers";
 
 import CustomPropTypes from "@/customPropTypes";
 
@@ -38,7 +39,8 @@ const defaultProps = {
 
 const invalidReportingPayload = (values) =>
   !(
-    values.reported_timestamp &&
+    values.reported_date &&
+    values.reported_time &&
     values.reported_by_name &&
     values.reported_to_inspector_party_guid &&
     values.responsible_inspector_party_guid
@@ -46,7 +48,8 @@ const invalidReportingPayload = (values) =>
 
 const invalidDetailPayload = (values) =>
   !(
-    values.incident_timestamp &&
+    values.incident_date &&
+    values.incident_time &&
     values.incident_description &&
     values.determination_type_code &&
     // If DO, need subparagraphs
@@ -191,9 +194,21 @@ export class AddIncidentModal extends Component {
       : [],
   };
 
+  formatPayload = ({
+    reported_date,
+    reported_time,
+    incident_date,
+    incident_time,
+    ...remainingValues
+  }) => ({
+    reported_timestamp: formatTimestamp(reported_date, reported_time),
+    incident_timestamp: formatTimestamp(incident_date, incident_time),
+    ...remainingValues,
+  });
+
   handleIncidentSubmit = () => {
     this.props.onSubmit({
-      ...this.props.addIncidentFormValues,
+      ...this.formatPayload(this.props.addIncidentFormValues),
       updated_documents: this.state.uploadedFiles,
     });
     // TODO: Catch error
