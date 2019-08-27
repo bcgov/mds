@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { destroy } from "redux-form";
 import PropTypes from "prop-types";
 import { Divider } from "antd";
+import moment from "moment";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
@@ -124,6 +125,14 @@ export class MineIncidents extends Component {
     existingIncident = { dangerous_occurrence_subparagraph_ids: [] }
   ) => {
     const mine = this.props.mines[this.props.mineGuid];
+    // TODO: split into method: parsePayloadIntoFormData
+    const formattedExistingIncident = {
+      ...existingIncident,
+      reported_date: moment(existingIncident.reported_timestamp).format("YYYY-MM-DD"),
+      reported_time: moment(moment(existingIncident.reported_timestamp).format("HH:mm"), "HH:mm"),
+      incident_date: moment(existingIncident.incident_timestamp).format("YYYY-MM-DD"),
+      incident_time: moment(moment(existingIncident.incident_timestamp).format("HH:mm"), "HH:mm"),
+    };
     event.preventDefault();
     const title = newIncident
       ? ModalContent.ADD_INCIDENT(mine.mine_name)
@@ -132,7 +141,7 @@ export class MineIncidents extends Component {
       props: {
         newIncident,
         initialValues: {
-          ...existingIncident,
+          ...formattedExistingIncident,
           dangerous_occurrence_subparagraph_ids: existingIncident.dangerous_occurrence_subparagraph_ids.map(
             String
           ),

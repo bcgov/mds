@@ -201,9 +201,9 @@ export class AddIncidentModal extends Component {
     incident_time,
     ...remainingValues
   }) => ({
+    ...remainingValues,
     reported_timestamp: formatTimestamp(reported_date, reported_time),
     incident_timestamp: formatTimestamp(incident_date, incident_time),
-    ...remainingValues,
   });
 
   handleIncidentSubmit = () => {

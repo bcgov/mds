@@ -20,7 +20,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  placeholder: "yyyy-mm-dd",
+  placeholder: "Select a time",
   onChange: () => {},
   format: "HH:mm",
   defaultOpenValue: "00:00",
