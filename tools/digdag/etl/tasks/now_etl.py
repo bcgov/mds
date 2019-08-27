@@ -1,6 +1,6 @@
 from models.pod import POD
 import os
-from ..util import EnvBuilder
+from util.env_builder import EnvBuilder
 
 
 def run_job():
@@ -33,5 +33,5 @@ def run_job():
               image_namespace='empr-mds-tools',
               command=["python", "now_etls.py"])
 
-    # pod.create_pod()
+    pod.create_pod()
     print("Job finished")

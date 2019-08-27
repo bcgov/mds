@@ -33,6 +33,8 @@ class POD:
         self.image_namespace = image_namespace if image_namespace else self.namespace
         self.env_container_id = env_container_id
 
+        self.env = env if env else None
+
         self.job_pod_name = self.pod_name + self.suffix
         self.env_pod_name = self.env_pod + self.suffix
         self.job_pod_label = f"name={self.job_pod_name}"
@@ -44,29 +46,32 @@ class POD:
 
         self.v1_pod = dyn_client.resources.get(api_version="v1", kind="Pod")
 
-    def get_pod_template(self, env=None):
+    def get_pod_template(self):
         """
         Returns a JSON object representing an Pod template
         """
-        json_data = self.create_pod_template(env=env)
+        json_data = self.create_pod_template()
 
-        # Update env from existing pod
-        current_running_pod = self.v1_pod.get(
-            label_selector=self.env_pod_label, namespace=self.namespace
-        )
-        env_dict = (
-            current_running_pod.to_dict()["items"][0]["spec"]["containers"][
-                self.env_container_id
-            ]["env"]
-            if current_running_pod
-            else []
-        )
-        json_data["spec"]["containers"][0]["env"] = env_dict
+        if (self.env is not None):
+            json_data["spec"]["containers"][0]["env"] = self.env
+        else:
+            # Update env from existing pod
+            current_running_pod = self.v1_pod.get(
+                label_selector=self.env_pod_label, namespace=self.namespace
+            )
+            env_dict = (
+                current_running_pod.to_dict()["items"][0]["spec"]["containers"][
+                    self.env_container_id
+                ]["env"]
+                if current_running_pod
+                else []
+            )
+            json_data["spec"]["containers"][0]["env"] = env_dict
 
         print(json_data)
         return json_data
 
-    def create_pod_template(self, env=None):
+    def create_pod_template(self):
         """
         Returns a JSON object representing an Pod template, adds environment variables        
         :param env: Dictionary of environment variables
@@ -84,12 +89,9 @@ class POD:
         json_data["spec"]["containers"][0]["name"] = self.job_pod_name
         json_data["spec"]["containers"][0]["image"] = self.image
 
-        if (env is not None):
-            json_data["spec"]["containers"][0]["env"] = env
-
         return json_data
 
-    def create_pod(self, pod_template=None, env=None):
+    def create_pod(self, pod_template=None):
         """
         Creates a pod given a JSON template and waits for it to finish running.
         Returns the created pod resource object.

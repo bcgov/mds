@@ -1,11 +1,13 @@
+import json
+
 
 class EnvBuilder:
     """A utility to assemble environment config for a pod"""
 
-    env = {}
+    env = []
 
     def __init__(self):
-        self.env = {}
+        self.env = []
 
     def add_value(self, key, value):
         _value = {
@@ -13,7 +15,7 @@ class EnvBuilder:
             "value": value
         },
 
-        self.env[key] = _value
+        self.env.append(_value)
 
     def add_secret(self, key, secret_key, secret_name):
 
@@ -27,9 +29,9 @@ class EnvBuilder:
             }
         }
 
-        self.env[key] = _value
+        self.env.append(_value)
 
     def to_json(self):
-        print(self.env)
+        print(json.dumps(self.env))
 
-        return self.env
+        return json.dumps(self.env)
