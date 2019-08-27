@@ -99,7 +99,6 @@ export const formatParams = ({
     ...remainingParams,
   };
 };
-
 export class VarianceHomePage extends Component {
   params = queryString.parse(this.props.location.search);
 
@@ -184,19 +183,24 @@ export class VarianceHomePage extends Component {
   };
 
   clearParams = () => {
-    this.setState({
-      params: {
-        region: [],
-        compliance_code: [],
-        variance_application_status_code: [],
-        major: null,
-        search: null,
-        issue_date_after: null,
-        issue_date_before: null,
-        expiry_date_before: null,
-        expiry_date_after: null,
+    this.setState(
+      {
+        params: {
+          region: [],
+          compliance_code: [],
+          variance_application_status_code: [],
+          major: null,
+          search: null,
+          issue_date_after: null,
+          issue_date_before: null,
+          expiry_date_before: null,
+          expiry_date_after: null,
+        },
       },
-    });
+      () => {
+        this.props.fetchVariances(this.state.params);
+      }
+    );
   };
 
   handleVarianceSearch = (searchParams, clear = false) => {
@@ -313,17 +317,17 @@ export class VarianceHomePage extends Component {
           <h1>Browse Variances</h1>
         </div>
         <div className="landing-page__content">
-          <AuthorizationWrapper permission={Permission.IN_TESTING}>
-            <VarianceSearch
-              handleNameFieldReset={this.handleNameFieldReset}
-              initialValues={this.state.params}
-              fetchVariances={this.props.fetchVariances}
-              handleVarianceSearch={this.handleVarianceSearchDebounced}
-              mineRegionOptions={this.props.mineRegionOptions}
-              complianceCodes={this.props.getDropdownHSRCMComplianceCodes}
-              filterVarianceStatusOptions={this.props.filterVarianceStatusOptions}
-            />
-          </AuthorizationWrapper>
+          {/* <AuthorizationWrapper permission={Permission.IN_TESTING}> */}
+          <VarianceSearch
+            handleNameFieldReset={this.handleNameFieldReset}
+            initialValues={this.state.params}
+            fetchVariances={this.props.fetchVariances}
+            handleVarianceSearch={this.handleVarianceSearchDebounced}
+            mineRegionOptions={this.props.mineRegionOptions}
+            complianceCodes={this.props.getDropdownHSRCMComplianceCodes}
+            filterVarianceStatusOptions={this.props.filterVarianceStatusOptions}
+          />
+          {/* </AuthorizationWrapper> */}
           <LoadingWrapper condition={this.state.variancesLoaded}>
             <VarianceTable
               isApplication={this.state.isApplication}

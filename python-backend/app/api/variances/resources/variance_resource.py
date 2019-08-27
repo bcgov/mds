@@ -38,7 +38,7 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
     @requires_any_of([VIEW_ALL])
     @api.marshal_with(PAGINATED_VARIANCE_LIST, code=200)
     def get(self):
-        args={
+        args = {
             "page_number": request.args.get('page', PAGE_DEFAULT, type=int),
             "page_size":request.args.get('per_page', PER_PAGE_DEFAULT, type=int),
             "application_status": request.args.get('variance_application_status_code', type=str),
@@ -54,10 +54,9 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             'sort_dir': request.args.get('sort_dir', type=str),
         }
 
-
         records, pagination_details = self._apply_filters_and_pagination(args)
-        logging.warning(records)
-        logging.warning(pagination_details)
+        # logging.warning(records)
+        # logging.warning(pagination_details)
         if not records:
             raise BadRequest('Unable to fetch variances.')
 
@@ -87,7 +86,7 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             'mine_name': 'Mine',
             'variance_application_status_code': 'Variance'
         }
-
+        logging.warning(args)
 
         status_filter_values = list(map(
             lambda x: x.variance_application_status_code,
@@ -103,6 +102,8 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             compliance_codes_values = args["compliance_codes"].split(',')
             conditions.append(
                 self._build_filter('Variance', 'compliance_article_id', 'in', compliance_codes_values))
+            logging.warning("COMPLIANCE CODES CALLED")
+            logging.warning(compliance_codes_values)
 
         if args["expiry_date_before"] is not None:
             conditions.append(
@@ -141,6 +142,7 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             conditions.append(self._build_filter('Mine', 'mine_region', 'in', region_list))
 
         query = Variance.query.join(Mine).join(ComplianceArticle)
+
         # Apply sorting
         if args['sort_field'] and args['sort_dir']:
             # The compliance sorting must be custom due to the code being stored in multiple columns.
@@ -171,7 +173,7 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
                                   'field': args['sort_field'], 'direction': args['sort_dir']}]
                 filtered_query = apply_sort(filtered_query, sort_criteria)
         else:
-            filtered_query = query
+            filtered_query = apply_filters(query, conditions)
 # =======
 #
 #         if args["region"] is not None:
