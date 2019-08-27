@@ -44,7 +44,7 @@ const RenderDate = (props) => (
       {...props.input}
       placeholder={props.placeholder}
       onChange={props.input.onChange}
-      value={props.input.value ? moment(props.input.value) : null}
+      value={props.input.value ? moment(props.input.value, props.format) : null}
       defaultOpenValue={moment(props.defaultOpenValue, props.format)}
       format={props.format}
       className={props.fullWidth && "full"}

@@ -103,9 +103,9 @@ export class MineIncidents extends Component {
   parseIncidentIntoFormData = (existingIncident) => ({
     ...existingIncident,
     reported_date: moment(existingIncident.reported_timestamp).format("YYYY-MM-DD"),
-    reported_time: moment(moment(existingIncident.reported_timestamp).format("HH:mm"), "HH:mm"),
+    reported_time: moment(existingIncident.reported_timestamp),
     incident_date: moment(existingIncident.incident_timestamp).format("YYYY-MM-DD"),
-    incident_time: moment(moment(existingIncident.incident_timestamp).format("HH:mm"), "HH:mm"),
+    incident_time: moment(existingIncident.incident_timestamp),
   });
 
   openViewMineIncidentModal = (event, incident) => {
