@@ -100,6 +100,14 @@ export class MineIncidents extends Component {
       });
   };
 
+  parseIncidentIntoFormData = (existingIncident) => ({
+    ...existingIncident,
+    reported_date: moment(existingIncident.reported_timestamp).format("YYYY-MM-DD"),
+    reported_time: moment(moment(existingIncident.reported_timestamp).format("HH:mm"), "HH:mm"),
+    incident_date: moment(existingIncident.incident_timestamp).format("YYYY-MM-DD"),
+    incident_time: moment(moment(existingIncident.incident_timestamp).format("HH:mm"), "HH:mm"),
+  });
+
   openViewMineIncidentModal = (event, incident) => {
     const mine = this.props.mines[this.props.mineGuid];
     event.preventDefault();
@@ -125,14 +133,6 @@ export class MineIncidents extends Component {
     existingIncident = { dangerous_occurrence_subparagraph_ids: [] }
   ) => {
     const mine = this.props.mines[this.props.mineGuid];
-    // TODO: split into method: parsePayloadIntoFormData
-    const formattedExistingIncident = {
-      ...existingIncident,
-      reported_date: moment(existingIncident.reported_timestamp).format("YYYY-MM-DD"),
-      reported_time: moment(moment(existingIncident.reported_timestamp).format("HH:mm"), "HH:mm"),
-      incident_date: moment(existingIncident.incident_timestamp).format("YYYY-MM-DD"),
-      incident_time: moment(moment(existingIncident.incident_timestamp).format("HH:mm"), "HH:mm"),
-    };
     event.preventDefault();
     const title = newIncident
       ? ModalContent.ADD_INCIDENT(mine.mine_name)
@@ -141,7 +141,7 @@ export class MineIncidents extends Component {
       props: {
         newIncident,
         initialValues: {
-          ...formattedExistingIncident,
+          ...this.parseIncidentIntoFormData(existingIncident),
           dangerous_occurrence_subparagraph_ids: existingIncident.dangerous_occurrence_subparagraph_ids.map(
             String
           ),
