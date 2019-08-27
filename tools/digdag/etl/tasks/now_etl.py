@@ -1,72 +1,31 @@
 from models.pod import POD
+import os
+from ..util import EnvBuilder
 
 
 def run_job():
-    env = '''
-    [
-        {
-            "name": "DB_USER",
-            "valueFrom": {
-                    "secretKeyRef": {
-                        "key": "database-user",
-                        "name": "mds-postgresql-pr-943"
-                    }
-            }
-        },
-        {
-            "name": "DB_HOST",
-            "value": "mds-postgresql-pr-943"
-        },
-        {
-            "name": "DB_PASS",
-            "valueFrom": {
-                    "secretKeyRef": {
-                        "key": "database-password",
-                        "name": "mds-postgresql-pr-943"
-                    }
-            }
-        },
-        {
-            "name": "DB_PORT",
-            "value": "5432"
-        },
-        {
-            "name": "DB_NAME",
-            "valueFrom": {
-                    "secretKeyRef": {
-                        "key": "database-name",
-                        "name": "mds-postgresql-pr-943"
-                    }
-            }
-        },
-        {
-            "name": "ELASTIC_ENABLED",
-            "value": "0"
-        },
-        {
-            "name": "ELASTIC_SERVICE_NAME",
-            "value": "NOW ETL"
-        },
-        {
-            "name": "ELASTIC_SECRET_TOKEN",
-            "valueFrom": {
-                    "secretKeyRef": {
-                        "key": "secret-token",
-                        "name": "template.mds-elastic-secret"
-                    }
-            }
-        },
-        {
-            "name": "ELASTIC_SERVER_URL",
-            "valueFrom": {
-                    "secretKeyRef": {
-                        "key": "server-url",
-                        "name": "template.mds-elastic-secret"
-                    }
-            }
-        }
-    ]
-    '''
+
+    suffix = os.getenv("SUFFIX", "-pr-NUM")
+
+    builder = EnvBuilder()
+
+    # Add database environment config
+    builder.add_value(key='DB_HOST', value=f'mds-postgresql{suffix}')
+    builder.add_value(key='DB_PORT', value='5432')
+    builder.add_secret(
+        key='DB_USER', secret_name=f'mds-postgres{suffix}', secret_key='database-user')
+    builder.add_secret(
+        key='DB_NAME', secret_name=f'mds-postgres{suffix}', secret_key='database-name')
+
+    # Add elastic config
+    builder.add_value(key='ELASTIC_ENABLED', value='0')
+    builder.add_value(key='ELASTIC_SERVICE_NAME', value='NOW ETL')
+    builder.add_secret(
+        key='ELASTIC_SECRET_TOKEN', secret_name='template.mds-elastic-secret', secret_key='secret-token')
+    builder.add_secret(
+        key='ELASTIC_SERVER_URL', secret_name='template.mds-elastic-secret', secret_key='server-url')
+
+    env = builder.to_json()
 
     pod = POD(pod_name='digdag-now-etl',
               env_pod='mds-now-etl',
@@ -74,5 +33,5 @@ def run_job():
               image_namespace='empr-mds-tools',
               command=["python", "now_etls.py"])
 
-    pod.create_pod()
+    # pod.create_pod()
     print("Job finished")
