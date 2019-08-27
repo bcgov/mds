@@ -27,7 +27,6 @@ const defaultProps = {
   fullWidth: false,
 };
 
-// TODO: Get validation errors working
 const RenderDate = (props) => (
   <Form.Item
     label={props.label}
@@ -42,6 +41,7 @@ const RenderDate = (props) => (
   >
     <TimePicker
       id={props.id}
+      {...props.input}
       placeholder={props.placeholder}
       onChange={props.input.onChange}
       value={props.input.value ? moment(props.input.value) : null}
