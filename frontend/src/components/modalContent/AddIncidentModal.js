@@ -12,7 +12,6 @@ import AddIncidentReportingForm from "@/components/Forms/incidents/AddIncidentRe
 import AddIncidentDetailForm from "@/components/Forms/incidents/AddIncidentDetailForm";
 import AddIncidentFollowUpForm from "@/components/Forms/incidents/AddIncidentFollowUpForm";
 import * as Strings from "@/constants/strings";
-import { formatTimestamp } from "@/utils/helpers";
 
 import CustomPropTypes from "@/customPropTypes";
 
@@ -194,7 +193,10 @@ export class AddIncidentModal extends Component {
       : [],
   };
 
-  formatPayload = ({
+  formatTimestamp = (dateString, momentInstance) =>
+    dateString && momentInstance && `${dateString} ${momentInstance.format("HH:mm")}`;
+
+  parseFormDataIntoPayload = ({
     reported_date,
     reported_time,
     incident_date,
@@ -202,13 +204,13 @@ export class AddIncidentModal extends Component {
     ...remainingValues
   }) => ({
     ...remainingValues,
-    reported_timestamp: formatTimestamp(reported_date, reported_time),
-    incident_timestamp: formatTimestamp(incident_date, incident_time),
+    reported_timestamp: this.formatTimestamp(reported_date, reported_time),
+    incident_timestamp: this.formatTimestamp(incident_date, incident_time),
   });
 
   handleIncidentSubmit = () => {
     this.props.onSubmit({
-      ...this.formatPayload(this.props.addIncidentFormValues),
+      ...this.parseFormDataIntoPayload(this.props.addIncidentFormValues),
       updated_documents: this.state.uploadedFiles,
     });
     // TODO: Catch error
