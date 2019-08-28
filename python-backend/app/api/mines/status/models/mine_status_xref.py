@@ -62,7 +62,11 @@ class MineStatusXref(AuditMixin, Base):
                       _mine_operation_status_code,
                       _mine_operation_status_reason_code=None,
                       _mine_operation_status_sub_reason_code=None):
-        xref_query = cls.query.filter_by(mine_operation_status_code=_mine_operation_status_code)
+        xref_query = cls.query \
+            .filter_by(mine_operation_status_code=_mine_operation_status_code) \
+            .order_by(
+                cls.mine_operation_status_reason_code.desc(),
+                cls.mine_operation_status_sub_reason_code.desc())
         if _mine_operation_status_reason_code:
             xref_query = xref_query.filter_by(
                 mine_operation_status_reason_code=_mine_operation_status_reason_code)
