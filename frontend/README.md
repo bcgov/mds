@@ -170,8 +170,12 @@ up formatting on-save:
 3. Ensure that no conflicting code formatting tools are enabled (ex. Beautify)
 
 Any developer who is unable or unwilling to apply the formatting on-save is
-asked to use the provided npm scripts to format their code before each commit.
-See the usage guide below for more information.
+asked to either use the provided npm scripts to format their code before each
+commit or to ensure that the git hooks are running. The provided git hooks will
+automatically lint and format on-commit. They will also run the relevant tests
+on-push.
+
+See the usage guide below for more information on manual formatting.
 
 Check one file
 
