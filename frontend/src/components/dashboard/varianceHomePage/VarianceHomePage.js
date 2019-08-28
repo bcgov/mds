@@ -67,6 +67,8 @@ const propTypes = {
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
 };
 
+// TODO: Implement the NoticeOfWorkHomePage.js patern using formatQueryListParams
+// to parse and join params safely
 export const joinOrRemove = (param, key) => {
   if (isEmpty(param)) {
     return {};
@@ -206,21 +208,20 @@ export class VarianceHomePage extends Component {
   handleVarianceSearch = (searchParams, clear = false) => {
     const formattedSearchParams = formatParams(searchParams);
     const persistedParams = clear ? {} : formatParams(this.state.params);
-
-    this.setState((prevState) => {
-      const updatedParams = {
-        // Start from existing state
-        ...persistedParams,
-        // Overwrite prev params with any newly provided search params
-        ...formattedSearchParams,
-        // Reset page number
-        page: String.DEFAULT_PAGE,
-        // Retain per_page if present
-        per_page: prevState.params.per_page ? prevState.params.per_page : String.DEFAULT_PER_PAGE,
-      };
-      this.props.history.push(router.VARIANCE_DASHBOARD.dynamicRoute(updatedParams));
-      return { params: updatedParams };
-    });
+    const updatedParams = {
+      // Start from existing state
+      ...persistedParams,
+      // Overwrite prev params with any newly provided search params
+      ...formattedSearchParams,
+      // Reset page number
+      page: String.DEFAULT_PAGE,
+      // Retain per_page if present
+      per_page: persistedParams.per_page
+        ? persistedParams.params.per_page
+        : String.DEFAULT_PER_PAGE,
+    };
+    this.setState({ params: updatedParams });
+    this.props.history.push(router.VARIANCE_DASHBOARD.dynamicRoute(updatedParams));
   };
 
   handleVariancePageChange = (page, per_page) => {
@@ -317,17 +318,17 @@ export class VarianceHomePage extends Component {
           <h1>Browse Variances</h1>
         </div>
         <div className="landing-page__content">
-          {/* <AuthorizationWrapper permission={Permission.IN_TESTING}> */}
-          <VarianceSearch
-            handleNameFieldReset={this.handleNameFieldReset}
-            initialValues={this.state.params}
-            fetchVariances={this.props.fetchVariances}
-            handleVarianceSearch={this.handleVarianceSearchDebounced}
-            mineRegionOptions={this.props.mineRegionOptions}
-            complianceCodes={this.props.getDropdownHSRCMComplianceCodes}
-            filterVarianceStatusOptions={this.props.filterVarianceStatusOptions}
-          />
-          {/* </AuthorizationWrapper> */}
+          <AuthorizationWrapper permission={Permission.IN_TESTING}>
+            <VarianceSearch
+              handleNameFieldReset={this.handleNameFieldReset}
+              initialValues={this.state.params}
+              fetchVariances={this.props.fetchVariances}
+              handleVarianceSearch={this.handleVarianceSearchDebounced}
+              mineRegionOptions={this.props.mineRegionOptions}
+              complianceCodes={this.props.getDropdownHSRCMComplianceCodes}
+              filterVarianceStatusOptions={this.props.filterVarianceStatusOptions}
+            />
+          </AuthorizationWrapper>
           <LoadingWrapper condition={this.state.variancesLoaded}>
             <VarianceTable
               isApplication={this.state.isApplication}
