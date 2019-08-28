@@ -160,16 +160,5 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
                 filtered_query = apply_sort(filtered_query, sort_criteria)
         else:
             filtered_query = apply_filters(query, conditions)
-# =======
-#
-#         if args["region"] is not None:
-#             region_list = args["region"].split(',')
-#             conditions.append(self._build_filter('Mine', 'mine_region', 'in', region_list))
-#
-#         query = Variance.query.join(Mine)
-#
-#         filtered_query = apply_filters(
-#             query.order_by(desc(Variance.received_date)), conditions)
-#
-# >>>>>>> 17815da6f1f6d88c19e9aa2c433df53eb9f483a1
+
         return apply_pagination(filtered_query, args["page_number"], args["page_size"])
