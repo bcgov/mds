@@ -16,6 +16,8 @@ def run_job():
         key='DB_USER', secret_name=f'mds-postgres{suffix}', secret_key='database-user')
     builder.add_secret(
         key='DB_NAME', secret_name=f'mds-postgres{suffix}', secret_key='database-name')
+    builder.add_secret(
+        key='DB_PASS', secret_name=f'mds-postgres{suffix}', secret_key='database-password')
 
     # Add elastic config
     builder.add_value(key='ELASTIC_ENABLED', value='0')
