@@ -1,7 +1,7 @@
 from flask_restplus import Resource
 from flask import request
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
-from sqlalchemy import desc, cast, NUMERIC
+from sqlalchemy import desc, cast, NUMERIC, func, or_
 from app.extensions import api
 from ...mines.mine.models.mine import Mine
 from ..models.variance import Variance
@@ -11,8 +11,6 @@ from app.api.parties.party.models.party import Party
 from ..response_models import PAGINATED_VARIANCE_LIST
 from ...utils.access_decorators import requires_any_of, VIEW_ALL
 from ...utils.resources_mixins import UserMixin, ErrorMixin
-
-import logging
 
 PAGE_DEFAULT = 1
 PER_PAGE_DEFAULT = 25
@@ -55,8 +53,6 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
         }
 
         records, pagination_details = self._apply_filters_and_pagination(args)
-        # logging.warning(records)
-        # logging.warning(pagination_details)
         if not records:
             raise BadRequest('Unable to fetch variances.')
 
@@ -86,7 +82,6 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             'mine_name': 'Mine',
             'variance_application_status_code': 'Variance'
         }
-        logging.warning(args)
 
         status_filter_values = list(map(
             lambda x: x.variance_application_status_code,
@@ -102,8 +97,6 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             compliance_codes_values = args["compliance_codes"].split(',')
             conditions.append(
                 self._build_filter('Variance', 'compliance_article_id', 'in', compliance_codes_values))
-            logging.warning("COMPLIANCE CODES CALLED")
-            logging.warning(compliance_codes_values)
 
         if args["expiry_date_before"] is not None:
             conditions.append(
@@ -126,15 +119,10 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
                 self._build_filter('Mine', 'major_mine_ind', '==', args["major"]))
 
         if args["search_terms"] is not None:
-            search_term_list = args["search_terms"].split(' ')
-            search_conditions = []
-            for search_term in search_term_list:
-                search_conditions.append(
-                    self._build_filter('Mine', 'mine_name', 'ilike', '%{}%'.format(search_term)))
-
-                search_conditions.append(
-                    self._build_filter('Mine', 'mine_no', 'ilike', '%{}%'.format(search_term)))
-
+            search_conditions = [
+                self._build_filter('Mine', 'mine_name', 'ilike', '%{}%'.format(args["search_terms"])),
+                self._build_filter('Mine', 'mine_no', 'ilike', '%{}%'.format(args["search_terms"]))
+            ]
             conditions.append({'or': search_conditions})
 
         if args["region"] is not None:
@@ -159,8 +147,6 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
                         cast(ComplianceArticle.sub_section, NUMERIC),
                         cast(ComplianceArticle.paragraph, NUMERIC),
                         ComplianceArticle.sub_paragraph), conditions)
-            #TODO Ask Nathan if this fixes the pagination thing
-            #TODO This is NOT filtering results !!!
             elif args['sort_field'] == "lead_inspector":
                 query = query.outerjoin(Party, Variance.inspector_party_guid == Party.party_guid)
                 filtered_query = apply_filters(query, conditions)
