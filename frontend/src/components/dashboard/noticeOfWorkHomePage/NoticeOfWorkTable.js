@@ -8,7 +8,7 @@ import * as Strings from "@/constants/strings";
 import * as router from "@/constants/routes";
 import NullScreen from "@/components/common/NullScreen";
 
-import { formatDate } from "@/utils/helpers";
+import { formatDate, optionsFilterAdapter } from "@/utils/helpers";
 
 /**
  * @class NoticeOfWorkTable - paginated list of notice of work applications
@@ -18,8 +18,9 @@ const propTypes = {
   noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.nowApplication),
   sortField: PropTypes.string,
   sortDir: PropTypes.string,
-  searchParams: PropTypes.objectOf(PropTypes.string),
+  searchParams: PropTypes.shape({ mine_region: PropTypes.arrayOf(PropTypes.string) }),
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineRegionOptions: CustomPropTypes.options.isRequired,
 };
 
 const defaultProps = {
@@ -29,8 +30,8 @@ const defaultProps = {
   searchParams: {},
 };
 
-const handleTableChange = (updateApplicationList) => (pagination, filters, sorter) => {
-  const params = isEmpty(sorter)
+const handleTableChange = (updateApplicationList) => (pagination, { mine_region } = {}, sorter) => {
+  const sortParams = isEmpty(sorter)
     ? {
         sort_field: undefined,
         sort_dir: undefined,
@@ -39,6 +40,16 @@ const handleTableChange = (updateApplicationList) => (pagination, filters, sorte
         sort_field: sorter.column.sortField,
         sort_dir: sorter.order.replace("end", ""),
       };
+  const params = isEmpty(mine_region)
+    ? {
+        ...sortParams,
+        mine_region: undefined,
+      }
+    : {
+        ...sortParams,
+        mine_region,
+      };
+
   updateApplicationList(params);
 };
 
@@ -52,7 +63,7 @@ export class NoticeOfWorkTable extends Component {
   transformRowData = (applications) =>
     applications.map((application) => ({
       key: application.application_guid,
-      region: application.mine_region
+      mine_region: application.mine_region
         ? this.props.mineRegionHash[application.mine_region]
         : Strings.EMPTY_FIELD,
       nowNum: application.trackingnumber || Strings.EMPTY_FIELD,
@@ -110,8 +121,12 @@ export class NoticeOfWorkTable extends Component {
   columns = () => [
     {
       title: "Region",
-      dataIndex: "region",
+      dataIndex: "mine_region",
       render: (text) => <div title="Region">{text}</div>,
+      filteredValue: this.props.searchParams.mine_region,
+      filters: this.props.mineRegionOptions
+        ? optionsFilterAdapter(this.props.mineRegionOptions)
+        : [],
     },
     {
       title: "NoW No.",

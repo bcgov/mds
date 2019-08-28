@@ -39,6 +39,7 @@ exports[`VarianceHomePage renders properly 1`] = `
                   "major": undefined,
                   "region": Array [],
                   "search": undefined,
+                  "variance_application_status_code": Array [],
                 },
               ],
               Array [
@@ -47,6 +48,7 @@ exports[`VarianceHomePage renders properly 1`] = `
                   "major": undefined,
                   "region": Array [],
                   "search": undefined,
+                  "variance_application_status_code": Array [],
                 },
               ],
             ],
@@ -62,21 +64,6 @@ exports[`VarianceHomePage renders properly 1`] = `
             ],
           }
         }
-        handleVarianceSearch={[Function]}
-        initialValues={
-          Object {
-            "compliance_code": Array [],
-            "major": undefined,
-            "region": Array [],
-            "search": undefined,
-          }
-        }
-      />
-    </Connect(AuthorizationWrapper)>
-    <LoadingWrapper
-      condition={false}
-    >
-      <VarianceTable
         filterVarianceStatusOptions={
           Object {
             "records": Array [
@@ -99,6 +86,22 @@ exports[`VarianceHomePage renders properly 1`] = `
             ],
           }
         }
+        handleVarianceSearch={[Function]}
+        initialValues={
+          Object {
+            "compliance_code": Array [],
+            "major": undefined,
+            "region": Array [],
+            "search": undefined,
+            "variance_application_status_code": Array [],
+          }
+        }
+      />
+    </Connect(AuthorizationWrapper)>
+    <LoadingWrapper
+      condition={false}
+    >
+      <VarianceTable
         handleFilterChange={[Function]}
         handlePageChange={[Function]}
         handleVarianceSearch={[Function]}
@@ -138,6 +141,7 @@ exports[`VarianceHomePage renders properly 1`] = `
             "major": undefined,
             "region": Array [],
             "search": undefined,
+            "variance_application_status_code": Array [],
           }
         }
         sortDir={null}

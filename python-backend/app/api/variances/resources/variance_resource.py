@@ -1,7 +1,7 @@
 from flask_restplus import Resource
 from flask import request
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
-from sqlalchemy import desc, cast, NUMERIC
+from sqlalchemy import desc, cast, NUMERIC, func, or_
 from app.extensions import api
 from ...mines.mine.models.mine import Mine
 from ..models.variance import Variance
@@ -11,8 +11,6 @@ from app.api.parties.party.models.party import Party
 from ..response_models import PAGINATED_VARIANCE_LIST
 from ...utils.access_decorators import requires_any_of, VIEW_ALL
 from ...utils.resources_mixins import UserMixin, ErrorMixin
-
-import logging
 
 PAGE_DEFAULT = 1
 PER_PAGE_DEFAULT = 25
@@ -38,8 +36,7 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
     @requires_any_of([VIEW_ALL])
     @api.marshal_with(PAGINATED_VARIANCE_LIST, code=200)
     def get(self):
-
-        args={
+        args = {
             "page_number": request.args.get('page', PAGE_DEFAULT, type=int),
             "page_size":request.args.get('per_page', PER_PAGE_DEFAULT, type=int),
             "application_status": request.args.get('variance_application_status_code', type=str),
@@ -55,11 +52,7 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             'sort_dir': request.args.get('sort_dir', type=str),
         }
 
-
-
         records, pagination_details = self._apply_filters_and_pagination(args)
-        logging.warning(records)
-        logging.warning(pagination_details)
         if not records:
             raise BadRequest('Unable to fetch variances.')
 
@@ -126,15 +119,10 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
                 self._build_filter('Mine', 'major_mine_ind', '==', args["major"]))
 
         if args["search_terms"] is not None:
-            search_term_list = args["search_terms"].split(' ')
-            search_conditions = []
-            for search_term in search_term_list:
-                search_conditions.append(
-                    self._build_filter('Mine', 'mine_name', 'ilike', '%{}%'.format(search_term)))
-
-                search_conditions.append(
-                    self._build_filter('Mine', 'mine_no', 'ilike', '%{}%'.format(search_term)))
-
+            search_conditions = [
+                self._build_filter('Mine', 'mine_name', 'ilike', '%{}%'.format(args["search_terms"])),
+                self._build_filter('Mine', 'mine_no', 'ilike', '%{}%'.format(args["search_terms"]))
+            ]
             conditions.append({'or': search_conditions})
 
         if args["region"] is not None:
@@ -142,6 +130,7 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             conditions.append(self._build_filter('Mine', 'mine_region', 'in', region_list))
 
         query = Variance.query.join(Mine).join(ComplianceArticle)
+
         # Apply sorting
         if args['sort_field'] and args['sort_dir']:
             # The compliance sorting must be custom due to the code being stored in multiple columns.
@@ -158,9 +147,6 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
                         cast(ComplianceArticle.sub_section, NUMERIC),
                         cast(ComplianceArticle.paragraph, NUMERIC),
                         ComplianceArticle.sub_paragraph), conditions)
-            #TODO Ask Nathan if this fixes the pagination thing
-            #TODO This is NOT filtering results !!!
-            # TODO Set default sorting to order received date desc
             elif args['sort_field'] == "lead_inspector":
                 query = query.outerjoin(Party, Variance.inspector_party_guid == Party.party_guid)
                 filtered_query = apply_filters(query, conditions)
@@ -173,17 +159,6 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
                                   'field': args['sort_field'], 'direction': args['sort_dir']}]
                 filtered_query = apply_sort(filtered_query, sort_criteria)
         else:
-            filtered_query = query
-# =======
-#
-#         if args["region"] is not None:
-#             region_list = args["region"].split(',')
-#             conditions.append(self._build_filter('Mine', 'mine_region', 'in', region_list))
-#
-#         query = Variance.query.join(Mine)
-#
-#         filtered_query = apply_filters(
-#             query.order_by(desc(Variance.received_date)), conditions)
-#
-# >>>>>>> 84c02b80dbedfe96ba93670f31cc8b3e796fe12d
+            filtered_query = apply_filters(query, conditions)
+
         return apply_pagination(filtered_query, args["page_number"], args["page_size"])

@@ -70,11 +70,21 @@ export const DASHBOARD = (dashboardId) => `/reporting/dashboard/${dashboardId}`;
 export const COMPLIANCE_CODES = "/mines/compliance/codes";
 export const MINE_VARIANCES = (mineGuid) => `/mines/${mineGuid}/variances`;
 export const VARIANCES = (params) => {
-  const { variance_application_status_code = [], ...otherParams } = params;
-  const formattedCodes =
-    variance_application_status_code.length >= 1
-      ? { variance_application_status_code: variance_application_status_code.join(",") }
-      : {};
+  const {
+    variance_application_status_code = [],
+    compliance_code = [],
+    region = [],
+    ...otherParams
+  } = params;
+  const formattedCodes = {};
+  Object.assign(
+    formattedCodes,
+    compliance_code.length >= 1 && { compliance_code: compliance_code.join(",") },
+    region.length >= 1 && { region: region.join(",") },
+    variance_application_status_code.length >= 1 && {
+      variance_application_status_code: variance_application_status_code.join(","),
+    }
+  );
   return params
     ? `/variances?${queryString.stringify({
         ...formattedCodes,
