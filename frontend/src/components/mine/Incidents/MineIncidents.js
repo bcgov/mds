@@ -91,6 +91,8 @@ export class MineIncidents extends Component {
   };
 
   handleEditMineIncident = (values) => {
+    console.log("*****************CONSOLING THIS THING");
+    console.log(values);
     this.props
       .updateMineIncident(this.props.mineGuid, values.mine_incident_guid, values)
       .then(() => {

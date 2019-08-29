@@ -11,8 +11,6 @@ import {
   fetchMineTenureTypes,
   fetchMineCommodityOptions,
   fetchMineComplianceCodes,
-  // fetchVarianceStatusOptions,
-  fetchVarianceDocumentCategoryOptions,
 } from "@/actionCreators/staticContentActionCreator";
 import { modalConfig } from "@/components/modalContent/config";
 import { openModal, closeModal } from "@/actions/modalActions";
@@ -21,7 +19,6 @@ import {
   getMineTenureTypesHash,
   getCommodityOptionHash,
   getHSRCMComplianceCodesHash,
-  getFilterVarianceStatusOptions,
   getDropdownHSRCMComplianceCodes,
   getMineRegionDropdownOptions,
   getDropdownIncidentFollowupActionOptions,
@@ -31,15 +28,8 @@ import {
   getIncidentFollowupActionOptions,
 } from "@/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
-import {
-  // fetchVariances,
-  updateVariance,
-  addDocumentToVariance,
-} from "@/actionCreators/varianceActionCreator";
 import { fetchIncidents } from "@/actionCreators/incidentsActionCreator";
-// import { getVariances, getVariancePageData } from "@/selectors/varianceSelectors";
 import { getIncidents, getIncidentPageData } from "@/selectors/incidentSelectors";
-import { VarianceTable } from "@/components/dashboard/customHomePage/VarianceTable";
 import { IncidentsTable } from "./IncidentsTable";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import * as router from "@/constants/routes";
@@ -50,15 +40,12 @@ import * as ModalContent from "@/constants/modalContent";
 import * as FORM from "@/constants/forms";
 
 /**
- * @class Variance page is a landing page for variance searching
+ * @class Incidents page is a landing page for all incidents in the system
  *
  */
 
 const propTypes = {
   fetchMineTenureTypes: PropTypes.func.isRequired,
-  fetchVarianceDocumentCategoryOptions: PropTypes.func.isRequired,
-  addDocumentToVariance: PropTypes.func.isRequired,
-  updateVariance: PropTypes.func.isRequired,
   fetchMineComplianceCodes: PropTypes.func.isRequired,
   fetchRegionOptions: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
@@ -66,16 +53,11 @@ const propTypes = {
   destroy: PropTypes.func.isRequired,
   fetchInspectors: PropTypes.func.isRequired,
   fetchMineCommodityOptions: PropTypes.func.isRequired,
-  // fetchVarianceStatusOptions: PropTypes.func.isRequired,
-  // fetchVariances: PropTypes.func.isRequired,
   fetchIncidents: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
-  // variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
-  // variancePageData: CustomPropTypes.variancePageData.isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   getDropdownHSRCMComplianceCodes: CustomPropTypes.options.isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
-  filterVarianceStatusOptions: CustomPropTypes.filterOptions.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   followupActions: PropTypes.arrayOf(CustomPropTypes.incidentFollowupType),
   followupActionsOptions: CustomPropTypes.options.isRequired,
@@ -95,10 +77,11 @@ export const joinOrRemove = (param, key) => {
   return typeof param === "string" ? { [key]: param } : { [key]: param.join(",") };
 };
 export const removeEmptyStings = (param, key) => (isEmpty(param) ? {} : { [key]: param });
+
+// TODO: These codes need to be updated for the incidents search
+// TODO: Implement the NoW dashboard patern for cleaning props
 export const formatParams = ({
   region = [],
-  compliance_code = [],
-  variance_application_status_code = [],
   issue_date_after,
   issue_date_before,
   expiry_date_before,
@@ -109,8 +92,8 @@ export const formatParams = ({
 }) => {
   return {
     ...joinOrRemove(region, "region"),
-    ...joinOrRemove(compliance_code, "compliance_code"),
-    ...joinOrRemove(variance_application_status_code, "variance_application_status_code"),
+    // ...joinOrRemove(compliance_code, "compliance_code"),
+    // ...joinOrRemove(variance_application_status_code, "variance_application_status_code"),
     ...removeEmptyStings(issue_date_after, "issue_date_after"),
     ...removeEmptyStings(issue_date_before, "issue_date_before"),
     ...removeEmptyStings(expiry_date_before, "expiry_date_before"),
@@ -126,15 +109,10 @@ export class IncidentsHomePage extends Component {
 
   constructor(props) {
     super(props);
-    this.handleVarianceSearchDebounced = debounce(this.handleVarianceSearch, 1000);
+    this.handleIncidentSearchDebounced = debounce(this.handleIncidentSearch, 1000);
     this.state = {
-      // variancesLoaded: false,
       incidentsLoaded: false,
       params: {
-        compliance_code: formatParamStringToArray(this.params.compliance_code),
-        variance_application_status_code: formatParamStringToArray(
-          this.params.variance_application_status_code
-        ),
         region: formatParamStringToArray(this.params.region),
         major: this.params.major,
         search: this.params.search,
@@ -148,12 +126,7 @@ export class IncidentsHomePage extends Component {
 
   componentDidMount() {
     const params = this.props.location.search;
-
     this.renderDataFromURL(params);
-
-    // this.props.fetchVariances(this.state.params).then(() => {
-    //   this.setState({ variancesLoaded: true });
-    // });
     this.props.fetchIncidents(this.state.params).then(() => {
       this.setState({ incidentsLoaded: true });
     });
@@ -162,8 +135,6 @@ export class IncidentsHomePage extends Component {
     this.props.fetchMineComplianceCodes();
     this.props.fetchRegionOptions();
     this.props.fetchMineCommodityOptions();
-    // this.props.fetchVarianceStatusOptions();
-    this.props.fetchVarianceDocumentCategoryOptions();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -174,47 +145,38 @@ export class IncidentsHomePage extends Component {
   }
 
   componentWillUnmount() {
-    this.handleVarianceSearchDebounced.cancel();
+    this.handleIncidentSearchDebounced.cancel();
     this.setState({
       params: {},
     });
   }
 
+  // TODO Implement incident search with incident parameter
   renderDataFromURL = (params) => {
-    const {
-      region,
-      compliance_code,
-      variance_application_status_code,
-      major,
-      search,
-      ...remainingParams
-    } = queryString.parse(params);
+    const { region, compliance_code, major, search, ...remainingParams } = queryString.parse(
+      params
+    );
     this.setState(
       {
         params: {
           region: formatParamStringToArray(region),
           compliance_code: formatParamStringToArray(compliance_code),
-          variance_application_status_code: formatParamStringToArray(
-            variance_application_status_code
-          ),
           major,
           search,
           ...remainingParams,
         },
       },
       () => {
-        // this.props.fetchVariances(this.state.params);
         this.props.fetchIncidents(this.state.params);
       }
     );
   };
 
+  // TODO clear incident search parameters
   clearParams = () => {
     this.setState({
       params: {
         region: [],
-        compliance_code: [],
-        variance_application_status_code: [],
         major: null,
         search: null,
         issue_date_after: null,
@@ -225,7 +187,8 @@ export class IncidentsHomePage extends Component {
     });
   };
 
-  handleVarianceSearch = (searchParams, clear = false) => {
+  // TODO: This is copy-pasted from variance home page. Endpoint for searching/filtering not ready
+  handleIncidentSearch = (searchParams, clear = false) => {
     const formattedSearchParams = formatParams(searchParams);
     const persistedParams = clear ? {} : formatParams(this.state.params);
 
@@ -240,20 +203,15 @@ export class IncidentsHomePage extends Component {
         // Retain per_page if present
         per_page: prevState.params.per_page ? prevState.params.per_page : String.DEFAULT_PER_PAGE,
       };
-      this.props.history.push(router.VARIANCE_DASHBOARD.dynamicRoute(updatedParams));
+      this.props.history.push(router.INCIDENTS_DASHBOARD.dynamicRoute(updatedParams));
       return { params: updatedParams };
     });
   };
 
-  handleVariancePageChange = (page, per_page) => {
+  // TODO: This is copy-pasted from variance home page. Endpoint for searching/filtering not ready
+  handleIncidentPageChange = (page, per_page) => {
     this.setState({ incidentsLoaded: false });
     const params = { ...this.state.params, page, per_page };
-    // return this.props.fetchVariances(params).then(() => {
-    //   this.setState({
-    //     variancesLoaded: true,
-    //     params,
-    //   });
-    // });
     return this.props.fetchIncidents(params).then(() => {
       this.setState({
         incidentsLoaded: true,
@@ -262,48 +220,46 @@ export class IncidentsHomePage extends Component {
     });
   };
 
-  handleUpdateVariance = (files, variance, isApproved) => (values) => {
-    // if the application isApproved, set issue_date to today and set expiry_date 5 years from today,
-    // unless the user sets a custom expiry.
-    const { variance_document_category_code } = values;
-    const issue_date = isApproved ? moment().format("YYYY-MM-DD") : null;
-    let expiry_date;
-    if (isApproved) {
-      expiry_date = values.expiry_date
-        ? values.expiry_date
-        : moment(issue_date, "YYYY-MM-DD").add(5, "years");
-    }
-    const newValues = { ...values, issue_date, expiry_date };
-    const mineGuid = variance.mine_guid;
-    const varianceGuid = variance.variance_guid;
-    const codeLabel = this.props.complianceCodesHash[variance.compliance_article_id];
-    this.props.updateVariance({ mineGuid, varianceGuid, codeLabel }, newValues).then(async () => {
-      await Promise.all(
-        Object.entries(files).map(([document_manager_guid, document_name]) =>
-          this.props.addDocumentToVariance(
-            { mineGuid, varianceGuid },
-            {
-              document_manager_guid,
-              document_name,
-              variance_document_category_code,
-            }
-          )
-        )
-      );
-      this.props.closeModal();
-      // this.props.fetchVariances(this.state.params).then(() => {
-      //   this.setState({ variancesLoaded: true });
-      // });
-      this.props.fetchIncidents(this.state.params).then(() => {
-        this.setState({ incidentsLoaded: true });
-      });
-    });
-  };
-
-  // ///////begin modal stuff
+  // TODO: This is copy-pasted from variance home page. May not be applicaple on the variance page FIX ME
+  // handleUpdateVariance = (files, variance, isApproved) => (values) => {
+  //   // if the application isApproved, set issue_date to today and set expiry_date 5 years from today,
+  //   // unless the user sets a custom expiry.
+  //   const { variance_document_category_code } = values;
+  //   const issue_date = isApproved ? moment().format("YYYY-MM-DD") : null;
+  //   let expiry_date;
+  //   if (isApproved) {
+  //     expiry_date = values.expiry_date
+  //       ? values.expiry_date
+  //       : moment(issue_date, "YYYY-MM-DD").add(5, "years");
+  //   }
+  //   const newValues = { ...values, issue_date, expiry_date };
+  //   const mineGuid = variance.mine_guid;
+  //   const varianceGuid = variance.variance_guid;
+  //   const codeLabel = this.props.complianceCodesHash[variance.compliance_article_id];
+  //   this.props.updateVariance({ mineGuid, varianceGuid, codeLabel }, newValues).then(async () => {
+  //     await Promise.all(
+  //       Object.entries(files).map(([document_manager_guid, document_name]) =>
+  //         this.props.addDocumentToVariance(
+  //           { mineGuid, varianceGuid },
+  //           {
+  //             document_manager_guid,
+  //             document_name,
+  //             variance_document_category_code,
+  //           }
+  //         )
+  //       )
+  //     );
+  //     this.props.closeModal();
+  //     // this.props.fetchVariances(this.state.params).then(() => {
+  //     //   this.setState({ variancesLoaded: true });
+  //     // });
+  //     this.props.fetchIncidents(this.state.params).then(() => {
+  //       this.setState({ incidentsLoaded: true });
+  //     });
+  //   });
+  // };
 
   openViewMineIncidentModal = (event, incident) => {
-    // const mine = this.props.mines[this.props.mineGuid];
     event.preventDefault();
     const title = `${incident.mine_name} - Incident No. ${incident.mine_incident_report_no}`;
     this.props.openModal({
@@ -326,14 +282,14 @@ export class IncidentsHomePage extends Component {
     newIncident,
     existingIncident = { dangerous_occurrence_subparagraph_ids: [] }
   ) => {
-    console.log("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH")
+    console.log("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
     console.log(newIncident);
     console.log(existingIncident);
-    const mine = this.props.mines[this.props.mineGuid];
+    // const mine = this.props.mines[this.props.mineGuid];
     event.preventDefault();
     const title = newIncident
-      ? ModalContent.ADD_INCIDENT(mine.mine_name)
-      : ModalContent.EDIT_INCIDENT(mine.mine_name);
+      ? ModalContent.ADD_INCIDENT(existingIncident.mine_name)
+      : ModalContent.EDIT_INCIDENT(existingIncident.mine_name);
     this.props.openModal({
       props: {
         newIncident,
@@ -346,7 +302,7 @@ export class IncidentsHomePage extends Component {
         onSubmit,
         afterClose: this.handleCancelMineIncident,
         title,
-        mineGuid: this.props.mineGuid,
+        mineGuid: existingIncident.mine_guid, // this.props.mineGuid,
         followupActionOptions: this.props.followupActionsOptions,
         incidentDeterminationOptions: this.props.incidentDeterminationOptions,
         incidentStatusCodeOptions: this.props.incidentStatusCodeOptions,
@@ -359,33 +315,6 @@ export class IncidentsHomePage extends Component {
     });
   };
 
-  // ///////end modal stuff
-
-  // openEditVarianceModal = (variance) => {
-  //   this.props.openModal({
-  //     props: {
-  //       onSubmit: this.handleUpdateVariance,
-  //       title: this.props.complianceCodesHash[variance.compliance_article_id],
-  //       mineGuid: variance.mine_guid,
-  //       mineName: variance.mine_name,
-  //       varianceGuid: variance.variance_guid,
-  //     },
-  //     content: modalConfig.EDIT_VARIANCE,
-  //   });
-  // };
-
-  // openViewVarianceModal = (variance) => {
-  //   this.props.openModal({
-  //     props: {
-  //       variance,
-  //       title: this.props.complianceCodesHash[variance.compliance_article_id],
-  //       mineName: variance.mine_name,
-  //     },
-  //     content: modalConfig.VIEW_VARIANCE,
-  //     isViewOnly: true,
-  //   });
-  // };
-
   handleFilterChange = (pagination, filters) => {
     const { status } = filters;
     this.setState({ incidentsLoaded: false });
@@ -394,12 +323,6 @@ export class IncidentsHomePage extends Component {
       variance_application_status_code: status,
       page: 1,
     };
-    // return this.props.fetchVariances(params).then(() => {
-    //   this.setState({
-    //     variancesLoaded: true,
-    //     params,
-    //   });
-    // });
     return this.props.fetchIncidents(params).then(() => {
       this.setState({
         incidentsLoaded: true,
@@ -434,13 +357,10 @@ export class IncidentsHomePage extends Component {
               incidents={this.props.incidents}
               isApplication={this.state.isApplication}
               handleFilterChange={this.handleFilterChange}
-              // variances={this.props.variances}
               pageData={this.props.incidentPageData}
               handlePageChange={this.handleVariancePageChange}
-              handleVarianceSearch={this.handleVarianceSearch}
+              handleIncidentSearch={this.handleIncidentSearch}
               params={this.state.params}
-              // openEditVarianceModal={this.openEditVarianceModal}
-              // openViewVarianceModal={this.openViewVarianceModal}
               sortField={this.state.params.sort_field}
               sortDir={this.state.params.sort_dir}
               followupActions={this.props.followupActions}
@@ -449,19 +369,6 @@ export class IncidentsHomePage extends Component {
               openViewMineIncidentModal={this.openViewMineIncidentModal}
             />
           </LoadingWrapper>
-          {/* <VarianceTable
-              isApplication={this.state.isApplication}
-              handleFilterChange={this.handleFilterChange}
-              variances={this.props.variances}
-              pageData={this.props.variancePageData}
-              handlePageChange={this.handleVariancePageChange}
-              handleVarianceSearch={this.handleVarianceSearch}
-              params={this.state.params}
-              openEditVarianceModal={this.openEditVarianceModal}
-              openViewVarianceModal={this.openViewVarianceModal}
-              sortField={this.state.params.sort_field}
-              sortDir={this.state.params.sort_dir}
-            /> */}
         </div>
       </div>
     );
@@ -475,14 +382,11 @@ const mapStateToProps = (state) => ({
   mineRegionHash: getMineRegionHash(state),
   mineTenureHash: getMineTenureTypesHash(state),
   mineCommodityOptionsHash: getCommodityOptionHash(state),
-  // variancePageData: getVariancePageData(state),
-  // variances: getVariances(state),
   incidentPageData: getIncidentPageData(state),
   incidents: getIncidents(state),
   complianceCodesHash: getHSRCMComplianceCodesHash(state),
   getDropdownHSRCMComplianceCodes: getDropdownHSRCMComplianceCodes(state),
   mineRegionOptions: getMineRegionDropdownOptions(state),
-  filterVarianceStatusOptions: getFilterVarianceStatusOptions(state),
   followupActions: getIncidentFollowupActionOptions(state),
   followupActionsOptions: getDropdownIncidentFollowupActionOptions(state),
   incidentDeterminationOptions: getDropdownIncidentDeterminationOptions(state),
@@ -494,18 +398,13 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchIncidents,
-      // fetchVariances,
-      updateVariance,
       destroy,
       openModal,
       closeModal,
       fetchRegionOptions,
-      addDocumentToVariance,
       fetchMineTenureTypes,
       fetchMineComplianceCodes,
       fetchMineCommodityOptions,
-      // fetchVarianceStatusOptions,
-      fetchVarianceDocumentCategoryOptions,
       fetchInspectors,
     },
     dispatch
