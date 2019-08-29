@@ -15,15 +15,6 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
         The information below is a subset of all available data. Open the PDF for a comprehensive view.
       </p>
     </div>
-    <Button
-      block={false}
-      ghost={false}
-      htmlType="button"
-      loading={false}
-      type="primary"
-    >
-      View PDF
-    </Button>
   </div>
   <br />
   <Collapse

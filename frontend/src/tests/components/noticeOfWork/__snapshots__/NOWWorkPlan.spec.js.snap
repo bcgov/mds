@@ -23,8 +23,7 @@ exports[`NOWWorkPlan renders properly 1`] = `
       xs={24}
     >
       <p>
-         
-        N/A
+        Unknown
       </p>
     </Col>
   </Row>
@@ -56,7 +55,7 @@ exports[`NOWWorkPlan renders properly 1`] = `
           xs={24}
         >
           <p>
-            Unknown
+            N/A
           </p>
         </Col>
       </Row>
@@ -88,13 +87,71 @@ exports[`NOWWorkPlan renders properly 1`] = `
             },
           ]
         }
-        dataSource={Array []}
-        footer={[Function]}
+        dataSource={
+          Array [
+            Object {
+              "activity": "Access Roads, trails, Help Pads, Air Strips, Boat Ramps",
+              "cost": "N/A",
+              "effectedArea": "N/A",
+            },
+            Object {
+              "activity": "Camps, Buildings, Staging Area, Fuel/Lubricant Storage",
+              "cost": "N/A",
+              "effectedArea": "N/A",
+            },
+            Object {
+              "activity": "Cut Lines and Induced Polarization Survey",
+              "cost": "N/A",
+              "effectedArea": "N/A",
+            },
+            Object {
+              "activity": "Exploration Surface Drilling",
+              "cost": "N/A",
+              "effectedArea": "N/A",
+            },
+            Object {
+              "activity": "Mechanical Trenching / Test Pits",
+              "cost": "N/A",
+              "effectedArea": "N/A",
+            },
+            Object {
+              "activity": "Placer Operations",
+              "cost": "N/A",
+              "effectedArea": "N/A",
+            },
+            Object {
+              "activity": "Sand and Gravel / Quarry Operations",
+              "cost": "N/A",
+              "effectedArea": "N/A",
+            },
+            Object {
+              "activity": "Settling Ponds",
+              "cost": "N/A",
+              "effectedArea": "N/A",
+            },
+            Object {
+              "activity": "Surface Bulk Sample",
+              "cost": "N/A",
+              "effectedArea": "N/A",
+            },
+            Object {
+              "activity": "Underground Exploration",
+              "cost": "N/A",
+              "effectedArea": "N/A",
+            },
+            Object {
+              "activity": "Total:",
+              "cost": "N/A",
+              "effectedArea": "N/A",
+              "footer": true,
+            },
+          ]
+        }
         indentSize={20}
         loading={false}
         locale={
           Object {
-            "emptyText": "Unknown",
+            "emptyText": "There is no reclamation data associated with this Notice of Work",
           }
         }
         pagination={false}
@@ -255,6 +312,7 @@ exports[`NOWWorkPlan renders properly 1`] = `
             "width": null,
           },
         ],
+        "exp_access_activity": Array [],
         "expaccessreclamation": null,
         "expaccessreclamationcost": null,
         "expaccesstotaldistarea": null,
@@ -277,6 +335,7 @@ exports[`NOWWorkPlan renders properly 1`] = `
         "latitude": null,
         "licencetocut": null,
         "longitude": null,
+        "mech_trenching_activity": Array [],
         "mechtrenchingreclamation": null,
         "mechtrenchingreclamationcost": null,
         "mechtrenchingtotaldistarea": null,
