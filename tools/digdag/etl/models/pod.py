@@ -25,23 +25,22 @@ class POD():
     suffix = os.getenv("SUFFIX", "-pr-NUM")
 
     def __init__(
-        self, pod_name, env_pod, command, image_namespace=None, env=None, env_container_id=0
+        self, pod_name, env_pod, command, image_namespace=None, image_tag=None, env=None, env_container_id=0
     ):
         self.pod_name = pod_name if pod_name else "digdag-mds-job"
         self.env_pod = env_pod if env_pod else "digdag-mds-job"
         self.command = command if command else ["flask", "test-cli-command"]
-        self.image_namespace = image_namespace if image_namespace else self.namespace
         self.env_container_id = env_container_id
 
-        # If env, creating container from scratch, pull from tools with no tag
+        # If env, creating container from scratch, pull from tools build suffix
         if (env):
             self.env = env
-            self.image = f"docker-registry.default.svc:5000/{self.image_namespace}/{self.env_pod}"
+            self.image = f"docker-registry.default.svc:5000/{image_namespace}/{self.env_pod}:build{self.suffix}"
 
         # Else creating based on existing image and pod, requires tag
         else:
             self.env = None
-            self.image = f"docker-registry.default.svc:5000/{self.image_namespace}/{self.env_pod}:{self.image_tag}"
+            self.image = f"docker-registry.default.svc:5000/{self.namespace}/{self.env_pod}:{self.image_tag}"
 
         self.job_pod_name = self.pod_name + self.suffix
         self.env_pod_name = self.env_pod + self.suffix
