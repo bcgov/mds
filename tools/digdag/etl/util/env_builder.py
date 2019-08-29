@@ -10,10 +10,9 @@ class EnvBuilder:
         self.env = []
 
     def add_value(self, key, value):
-        _value = {
-            "name": key,
-            "value": value
-        },
+        _value = {}
+        _value["name"] = key
+        _value["value"] = value
 
         self.env.append(_value)
 
@@ -32,4 +31,4 @@ class EnvBuilder:
         self.env.append(_value)
 
     def to_json(self):
-        return json.loads(self.env)
+        return json.dumps(self.env)

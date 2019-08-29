@@ -6,7 +6,7 @@ from openshift.dynamic import DynamicClient
 from openshift.dynamic.exceptions import ConflictError
 
 
-class POD:
+class POD():
     """
     Helper class to create a pod template and spin up an openshift pod.
     Currently only supports single container pods. Refer to templates/pod.json
@@ -53,7 +53,7 @@ class POD:
         json_data = self.create_pod_template()
 
         if (self.env is not None):
-            json_data["spec"]["containers"][0]["env"] = self.env
+            json_data["spec"]["containers"][0]["env"] = json.loads(self.env)
         else:
             # Update env from existing pod
             current_running_pod = self.v1_pod.get(
@@ -68,7 +68,6 @@ class POD:
             )
             json_data["spec"]["containers"][0]["env"] = env_dict
 
-        print(json_data)
         return json_data
 
     def create_pod_template(self):
