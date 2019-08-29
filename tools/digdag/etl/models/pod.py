@@ -33,13 +33,20 @@ class POD():
         self.image_namespace = image_namespace if image_namespace else self.namespace
         self.env_container_id = env_container_id
 
-        self.env = env if env else None
+        # If env, creating container from scratch, pull from tools with no tag
+        if (env):
+            self.env = env
+            self.image = f"docker-registry.default.svc:5000/{self.image_namespace}/{self.env_pod}"
+
+        # Else creating based on existing image and pod, requires tag
+        else:
+            self.env = None
+            self.image = f"docker-registry.default.svc:5000/{self.image_namespace}/{self.env_pod}:{self.image_tag}"
 
         self.job_pod_name = self.pod_name + self.suffix
         self.env_pod_name = self.env_pod + self.suffix
         self.job_pod_label = f"name={self.job_pod_name}"
         self.env_pod_label = f"name={self.env_pod_name}"
-        self.image = f"docker-registry.default.svc:5000/{self.image_namespace}/{self.env_pod}:{self.image_tag}"
 
         k8s_client = config.new_client_from_config(self.kube_config)
         dyn_client = DynamicClient(k8s_client)
