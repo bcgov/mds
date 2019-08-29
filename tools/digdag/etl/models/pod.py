@@ -96,8 +96,7 @@ class POD:
         Creates a pod given a JSON template and waits for it to finish running.
         Returns the created pod resource object.
         """
-        pod_template = pod_template if pod_template else self.get_pod_template(
-            env=env)
+        pod_template = pod_template if pod_template else self.get_pod_template()
         result = None
         try:
             result = self.v1_pod.create(

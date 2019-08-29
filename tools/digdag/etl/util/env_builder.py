@@ -32,6 +32,4 @@ class EnvBuilder:
         self.env.append(_value)
 
     def to_json(self):
-        print(json.dumps(self.env))
-
-        return json.dumps(self.env)
+        return json.loads(self.env)
