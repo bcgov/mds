@@ -97,6 +97,9 @@ class MineIncident(AuditMixin, Base):
 
     mine_table = db.relationship('Mine', lazy='joined')
     mine_name = association_proxy('mine_table', 'mine_name')
+    mine_region = association_proxy('mine_table', 'mine_region')
+    major_mine_ind = association_proxy('mine_table', 'major_mine_ind')
+
 
     @hybrid_property
     def mine_incident_report_no(self):
