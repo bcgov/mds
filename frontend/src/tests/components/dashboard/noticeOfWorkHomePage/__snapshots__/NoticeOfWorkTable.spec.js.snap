@@ -9,7 +9,9 @@ exports[`NoticeOfWorkTable renders properly 1`] = `
   columns={
     Array [
       Object {
-        "dataIndex": "region",
+        "dataIndex": "mine_region",
+        "filteredValue": "SW,NE",
+        "filters": Array [],
         "render": [Function],
         "sortOrder": false,
         "title": "Region",
@@ -67,9 +69,9 @@ exports[`NoticeOfWorkTable renders properly 1`] = `
         "key": "07e801a0-fa33-4c3b-abcc-ac6df628d483",
         "mineGuid": "6e9d3426-ebf1-413f-9e5f-c3a71ab56797",
         "mineName": "Hamilton, Herrera and Mccormick",
+        "mine_region": "N/A",
         "nowNum": 44,
         "nowType": "choice",
-        "region": "N/A",
         "status": "Approved",
       },
       Object {
@@ -77,9 +79,9 @@ exports[`NoticeOfWorkTable renders properly 1`] = `
         "key": "8e1536da-644c-4961-976b-b1326fa75825",
         "mineGuid": "60300a07-376c-46f1-a984-88a813f91438",
         "mineName": "Thompson-Sullivan",
+        "mine_region": "N/A",
         "nowNum": 52,
         "nowType": "technology",
-        "region": "N/A",
         "status": "Approved",
       },
     ]
