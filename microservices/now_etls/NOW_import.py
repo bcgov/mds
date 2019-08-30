@@ -52,8 +52,8 @@ def ETL_MMS_NOW_schema(connection, tables, schema):
     for key, value in tables.items():
         current_table = etl.fromdb(
             connection, f'SELECT * from {schema}.{value}')
-        etl.appenddb(current_table, connection,
-                     f'now_submissions.{key}', commit=False)
+        etl.appenddb(current_table, connection, key,
+                     schema='now_submissions', commit=False)
 
 
 def NOW_submissions_ETL(connection):
