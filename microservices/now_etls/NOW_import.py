@@ -50,10 +50,13 @@ def truncate_table(connection, tables):
 # Import all the data from the specified schema and tables.
 def ETL_MMS_NOW_schema(connection, tables, schema):
     for key, value in tables.items():
-        current_table = etl.fromdb(
-            connection, f'SELECT * from {schema}.{value}')
-        etl.appenddb(current_table, connection, key,
-                     schema='now_submissions', commit=False)
+        try:
+            current_table = etl.fromdb(
+                connection, f'SELECT * from {schema}.{value}')
+            etl.appenddb(current_table, connection, key,
+                         schema='now_submissions', commit=False)
+        except Exception as err:
+            print(f'ETL Parsing error: {err}')
 
 
 def NOW_submissions_ETL(connection):
