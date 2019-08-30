@@ -6,7 +6,7 @@ from openshift.dynamic import DynamicClient
 from openshift.dynamic.exceptions import ConflictError
 
 
-class POD:
+class POD():
     """
     Helper class to create a pod template and spin up an openshift pod.
     Currently only supports single container pods. Refer to templates/pod.json
@@ -25,21 +25,27 @@ class POD:
     suffix = os.getenv("SUFFIX", "-pr-NUM")
 
     def __init__(
-        self, pod_name, env_pod, command, image_namespace=None, env=None, env_container_id=0
+        self, pod_name, env_pod, command, image_namespace=None, image_tag=None, env=None, env_container_id=0
     ):
         self.pod_name = pod_name if pod_name else "digdag-mds-job"
         self.env_pod = env_pod if env_pod else "digdag-mds-job"
         self.command = command if command else ["flask", "test-cli-command"]
-        self.image_namespace = image_namespace if image_namespace else self.namespace
         self.env_container_id = env_container_id
 
-        self.env = env if env else None
+        # If env, creating container from scratch, pull from tools build suffix
+        if (env):
+            self.env = env
+            self.image = f"docker-registry.default.svc:5000/{image_namespace}/{self.env_pod}:build{self.suffix}"
+
+        # Else creating based on existing image and pod, requires tag
+        else:
+            self.env = None
+            self.image = f"docker-registry.default.svc:5000/{self.namespace}/{self.env_pod}:{self.image_tag}"
 
         self.job_pod_name = self.pod_name + self.suffix
         self.env_pod_name = self.env_pod + self.suffix
         self.job_pod_label = f"name={self.job_pod_name}"
         self.env_pod_label = f"name={self.env_pod_name}"
-        self.image = f"docker-registry.default.svc:5000/{self.image_namespace}/{self.env_pod}:{self.image_tag}"
 
         k8s_client = config.new_client_from_config(self.kube_config)
         dyn_client = DynamicClient(k8s_client)
@@ -53,7 +59,7 @@ class POD:
         json_data = self.create_pod_template()
 
         if (self.env is not None):
-            json_data["spec"]["containers"][0]["env"] = self.env
+            json_data["spec"]["containers"][0]["env"] = json.loads(self.env)
         else:
             # Update env from existing pod
             current_running_pod = self.v1_pod.get(
@@ -68,7 +74,6 @@ class POD:
             )
             json_data["spec"]["containers"][0]["env"] = env_dict
 
-        print(json_data)
         return json_data
 
     def create_pod_template(self):
@@ -96,8 +101,7 @@ class POD:
         Creates a pod given a JSON template and waits for it to finish running.
         Returns the created pod resource object.
         """
-        pod_template = pod_template if pod_template else self.get_pod_template(
-            env=env)
+        pod_template = pod_template if pod_template else self.get_pod_template()
         result = None
         try:
             result = self.v1_pod.create(
