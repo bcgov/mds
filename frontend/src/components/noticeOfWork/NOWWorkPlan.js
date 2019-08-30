@@ -16,21 +16,96 @@ export class NOWWorkPlan extends Component {
         title: "Activity",
         dataIndex: "activity",
         key: "activity",
-        render: (text) => <div title="Activity">{text}</div>,
+        render: (text, record) => (
+          <div title="Activity" style={record.footer ? { fontWeight: "bold" } : {}}>
+            {text}
+          </div>
+        ),
       },
       {
         title: "Total Effected Area (ha)",
         dataIndex: "effectedArea",
         key: "effectedArea",
-        render: (text) => <div title="Total Effected Area (ha)">{text}</div>,
+        render: (text, record) => (
+          <div title="Total Effected Area (ha)" style={record.footer ? { fontWeight: "bold" } : {}}>
+            {text}
+          </div>
+        ),
       },
       {
         title: "Estimated Cost of Reclamation",
         dataIndex: "cost",
         key: "cost",
-        render: (text) => <div title="Estimated Cost of Reclamation">{text}</div>,
+        render: (text, record) => (
+          <div
+            title="Estimated Cost of Reclamation"
+            style={record.footer ? { fontWeight: "bold" } : {}}
+          >
+            {text}
+          </div>
+        ),
       },
     ];
+
+    const data = [
+      {
+        activity: "Access Roads, trails, Help Pads, Air Strips, Boat Ramps",
+        effectedArea: this.props.noticeOfWork.expaccesstotaldistarea || Strings.EMPTY_FIELD,
+        cost: this.props.noticeOfWork.expaccesstotaldistarea || Strings.EMPTY_FIELD,
+      },
+      {
+        activity: "Camps, Buildings, Staging Area, Fuel/Lubricant Storage",
+        effectedArea: this.props.noticeOfWork.campbuildstgetotaldistarea || Strings.EMPTY_FIELD,
+        cost: this.props.noticeOfWork.cbsfreclamationcost || Strings.EMPTY_FIELD,
+      },
+      {
+        activity: "Cut Lines and Induced Polarization Survey",
+        effectedArea: this.props.noticeOfWork.cutlinesexplgriddisturbedarea || Strings.EMPTY_FIELD,
+        cost: this.props.noticeOfWork.cutlinesreclamationcost || Strings.EMPTY_FIELD,
+      },
+      {
+        activity: "Exploration Surface Drilling",
+        effectedArea: this.props.noticeOfWork.expsurfacedrilltotaldistarea || Strings.EMPTY_FIELD,
+        cost: this.props.noticeOfWork.expsurfacedrillreclamationcost || Strings.EMPTY_FIELD,
+      },
+      {
+        activity: "Mechanical Trenching / Test Pits",
+        effectedArea: this.props.noticeOfWork.mechtrenchingtotaldistarea || Strings.EMPTY_FIELD,
+        cost: this.props.noticeOfWork.mechtrenchingreclamationcost || Strings.EMPTY_FIELD,
+      },
+      {
+        activity: "Placer Operations",
+        effectedArea: this.props.noticeOfWork.placerreclamationarea || Strings.EMPTY_FIELD,
+        cost: this.props.noticeOfWork.placerreclamationcost || Strings.EMPTY_FIELD,
+      },
+      {
+        activity: "Sand and Gravel / Quarry Operations",
+        effectedArea: this.props.noticeOfWork.sandgrvqryreclamation || Strings.EMPTY_FIELD,
+        cost: this.props.noticeOfWork.sandgrvqryreclamationcost || Strings.EMPTY_FIELD,
+      },
+      {
+        activity: "Settling Ponds",
+        effectedArea: this.props.noticeOfWork.pondstotaldistarea || Strings.EMPTY_FIELD,
+        cost: this.props.noticeOfWork.pondsreclamationcost || Strings.EMPTY_FIELD,
+      },
+      {
+        activity: "Surface Bulk Sample",
+        effectedArea: this.props.noticeOfWork.surfacebulksampletotaldistarea || Strings.EMPTY_FIELD,
+        cost: this.props.noticeOfWork.surfacebulksamplereclcost || Strings.EMPTY_FIELD,
+      },
+      {
+        activity: "Underground Exploration",
+        effectedArea: this.props.noticeOfWork.underexptotaldistarea || Strings.EMPTY_FIELD,
+        cost: this.props.noticeOfWork.expaccesstotaldistarea || Strings.EMPTY_FIELD,
+      },
+      {
+        activity: "Total:",
+        footer: true,
+        effectedArea: this.props.noticeOfWork.reclareasubtotal || Strings.EMPTY_FIELD,
+        cost: this.props.noticeOfWork.reclcosttotal || Strings.EMPTY_FIELD,
+      },
+    ];
+
     return (
       <div>
         <br />
@@ -42,7 +117,7 @@ export class NOWWorkPlan extends Component {
               <p className="field-title">Total merchantable timber volume</p>
             </Col>
             <Col md={12} xs={24}>
-              <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
+              <p>{this.props.noticeOfWork.timbertotalvolume || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
           <br />
@@ -50,9 +125,10 @@ export class NOWWorkPlan extends Component {
             align="left"
             pagination={false}
             columns={columns}
-            dataSource={[]}
-            locale={{ emptyText: "Unknown" }}
-            footer={() => "Total"}
+            dataSource={data}
+            locale={{
+              emptyText: "There is no reclamation data associated with this Notice of Work",
+            }}
           />
         </div>
       </div>
@@ -129,7 +205,7 @@ export class NOWWorkPlan extends Component {
             <p className="field-title">Description of Work</p>
           </Col>
           <Col md={12} xs={24}>
-            <p> {Strings.EMPTY_FIELD}</p>
+            <p>Unknown</p>
           </Col>
         </Row>
         {this.renderSummaryOfReclamation()}
