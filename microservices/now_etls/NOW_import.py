@@ -44,7 +44,7 @@ def truncate_table(connection, tables):
     cursor = connection.cursor()
     for key, value in tables.items():
         cursor.execute(
-            f'TRUNCATE TABLE now_submissions.{key} CONTINUE IDENTITY;')
+            f'TRUNCATE TABLE now_submissions.{key} CONTINUE IDENTITY CASCADE;')
 
 
 # Import all the data from the specified schema and tables.
