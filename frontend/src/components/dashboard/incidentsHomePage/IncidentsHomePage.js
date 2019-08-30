@@ -1,10 +1,10 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { destroy } from "redux-form";
 import { debounce, isEmpty } from "lodash";
 import queryString from "query-string";
-import moment from "moment";
 import PropTypes from "prop-types";
 import {
   fetchRegionOptions,
@@ -28,7 +28,7 @@ import {
   getIncidentFollowupActionOptions,
 } from "@/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
-import { fetchIncidents } from "@/actionCreators/incidentsActionCreator";
+import { fetchIncidents } from "@/actionCreators/incidentActionCreator";
 import { getIncidents, getIncidentPageData } from "@/selectors/incidentSelectors";
 import { IncidentsTable } from "./IncidentsTable";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
@@ -220,45 +220,6 @@ export class IncidentsHomePage extends Component {
     });
   };
 
-  // TODO: This is copy-pasted from variance home page. May not be applicaple on the variance page FIX ME
-  // handleUpdateVariance = (files, variance, isApproved) => (values) => {
-  //   // if the application isApproved, set issue_date to today and set expiry_date 5 years from today,
-  //   // unless the user sets a custom expiry.
-  //   const { variance_document_category_code } = values;
-  //   const issue_date = isApproved ? moment().format("YYYY-MM-DD") : null;
-  //   let expiry_date;
-  //   if (isApproved) {
-  //     expiry_date = values.expiry_date
-  //       ? values.expiry_date
-  //       : moment(issue_date, "YYYY-MM-DD").add(5, "years");
-  //   }
-  //   const newValues = { ...values, issue_date, expiry_date };
-  //   const mineGuid = variance.mine_guid;
-  //   const varianceGuid = variance.variance_guid;
-  //   const codeLabel = this.props.complianceCodesHash[variance.compliance_article_id];
-  //   this.props.updateVariance({ mineGuid, varianceGuid, codeLabel }, newValues).then(async () => {
-  //     await Promise.all(
-  //       Object.entries(files).map(([document_manager_guid, document_name]) =>
-  //         this.props.addDocumentToVariance(
-  //           { mineGuid, varianceGuid },
-  //           {
-  //             document_manager_guid,
-  //             document_name,
-  //             variance_document_category_code,
-  //           }
-  //         )
-  //       )
-  //     );
-  //     this.props.closeModal();
-  //     // this.props.fetchVariances(this.state.params).then(() => {
-  //     //   this.setState({ variancesLoaded: true });
-  //     // });
-  //     this.props.fetchIncidents(this.state.params).then(() => {
-  //       this.setState({ incidentsLoaded: true });
-  //     });
-  //   });
-  // };
-
   openViewMineIncidentModal = (event, incident) => {
     event.preventDefault();
     const title = `${incident.mine_name} - Incident No. ${incident.mine_incident_report_no}`;
@@ -282,10 +243,6 @@ export class IncidentsHomePage extends Component {
     newIncident,
     existingIncident = { dangerous_occurrence_subparagraph_ids: [] }
   ) => {
-    console.log("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
-    console.log(newIncident);
-    console.log(existingIncident);
-    // const mine = this.props.mines[this.props.mineGuid];
     event.preventDefault();
     const title = newIncident
       ? ModalContent.ADD_INCIDENT(existingIncident.mine_name)
@@ -302,7 +259,7 @@ export class IncidentsHomePage extends Component {
         onSubmit,
         afterClose: this.handleCancelMineIncident,
         title,
-        mineGuid: existingIncident.mine_guid, // this.props.mineGuid,
+        mineGuid: existingIncident.mine_guid,
         followupActionOptions: this.props.followupActionsOptions,
         incidentDeterminationOptions: this.props.incidentDeterminationOptions,
         incidentStatusCodeOptions: this.props.incidentStatusCodeOptions,
@@ -310,7 +267,6 @@ export class IncidentsHomePage extends Component {
         inspectors: this.props.inspectors,
         clearOnSubmit: true,
       },
-      widthSize: "50vw",
       content: modalConfig.MINE_INCIDENT,
     });
   };
@@ -332,9 +288,6 @@ export class IncidentsHomePage extends Component {
   };
 
   render() {
-    console.log("########################### THE STATE AND PROPS ARE:");
-    console.log(this.state);
-    console.log(this.props);
     return (
       <div className="landing-page">
         <div className="landing-page__header">
@@ -351,7 +304,6 @@ export class IncidentsHomePage extends Component {
             complianceCodes={this.props.getDropdownHSRCMComplianceCodes}
             filterVarianceStatusOptions={this.props.filterVarianceStatusOptions}
           /> */}
-
           <LoadingWrapper condition={this.state.incidentsLoaded}>
             <IncidentsTable
               incidents={this.props.incidents}
