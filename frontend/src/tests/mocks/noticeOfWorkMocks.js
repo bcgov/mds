@@ -360,6 +360,8 @@ export const NOTICE_OF_WORK = {
       seq_no: null,
     },
   ],
+  exp_access_activity: [],
+  mech_trenching_activity: [],
 };
 
 export const NOTICE_OF_WORK_LIST = {
