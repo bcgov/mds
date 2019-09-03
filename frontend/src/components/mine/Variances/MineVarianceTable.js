@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Table, Button, Icon } from "antd";
+import { isEmpty } from "lodash";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import moment from "moment";
@@ -24,7 +25,7 @@ import * as router from "@/constants/routes";
 const { errorRed } = COLOR;
 
 const propTypes = {
-  handleFilterChange: PropTypes.func,
+  handleVarianceSearch: PropTypes.func,
   variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -33,25 +34,46 @@ const propTypes = {
   isApplication: PropTypes.bool,
   isDashboardView: PropTypes.bool,
   openEditVarianceModal: PropTypes.func,
-  filterVarianceStatusOptions: CustomPropTypes.filterOptions,
   params: PropTypes.shape({
     variance_application_status_code: PropTypes.arrayOf(PropTypes.string),
   }),
+  sortField: PropTypes.string,
+  sortDir: PropTypes.string,
 };
 
 const defaultProps = {
-  handleFilterChange: () => {},
   openEditVarianceModal: () => {},
   openViewVarianceModal: () => {},
+  handleVarianceSearch: () => {},
   isApplication: false,
   isDashboardView: false,
   params: {},
-  filterVarianceStatusOptions: [],
+  sortField: null,
+  sortDir: null,
 };
 
 const errorStyle = (isOverdue) => (isOverdue ? { color: errorRed } : {});
 
 const hideColumn = (condition) => (condition ? "column-hide" : "");
+
+const applySortIndicator = (_columns, field, dir) =>
+  _columns.map((column) => ({
+    ...column,
+    sortOrder: column.sortField === field ? dir.concat("end") : false,
+  }));
+
+const handleTableChange = (updateVarianceList) => (pagination, filters, sorter) => {
+  const params = isEmpty(sorter)
+    ? {
+        sort_field: undefined,
+        sort_dir: undefined,
+      }
+    : {
+        sort_field: sorter.column.sortField,
+        sort_dir: sorter.order.replace("end", ""),
+      };
+  updateVarianceList(params);
+};
 
 export class MineVarianceTable extends Component {
   transformRowData = (variances, codeHash, statusHash) =>
@@ -89,27 +111,31 @@ export class MineVarianceTable extends Component {
       {
         title: "Variance Number",
         dataIndex: "varianceNumber",
+        sortField: "variance_id",
         render: (text, record) => (
           <div title="Variance Number" style={errorStyle(record.isOverdue)}>
             {text}
           </div>
         ),
+        sorter: this.props.isDashboardView,
       },
       {
         title: "Code Section",
         dataIndex: "compliance_article_id",
+        sortField: "compliance_article_id",
         render: (text, record) => (
           <div title="Code Section" style={errorStyle(record.isOverdue)}>
             {text}
           </div>
         ),
-        sorter:
-          !this.props.isDashboardView &&
-          ((a, b) => compareCodes(a.compliance_article_id, b.compliance_article_id)),
+        sorter: !this.props.isDashboardView
+          ? (a, b) => compareCodes(a.compliance_article_id, b.compliance_article_id)
+          : true,
       },
       {
         title: "Mine Name",
         dataIndex: "mineName",
+        sortField: "mine_name",
         className: hideColumn(!this.props.isDashboardView),
         render: (text, record) => (
           <div
@@ -120,10 +146,12 @@ export class MineVarianceTable extends Component {
             <Link to={router.MINE_SUMMARY.dynamicRoute(record.mineGuid)}>{text}</Link>
           </div>
         ),
+        sorter: this.props.isDashboardView,
       },
       {
         title: "Lead Inspector",
         dataIndex: "leadInspector",
+        sortField: "lead_inspector",
         className: hideColumn(!this.props.isDashboardView),
         render: (text, record) => (
           <div
@@ -134,28 +162,29 @@ export class MineVarianceTable extends Component {
             {text}
           </div>
         ),
+        sorter: this.props.isDashboardView,
       },
       {
         title: "Submission Date",
         dataIndex: "received_date",
+        sortField: "received_date",
         className: hideColumn(!this.props.isApplication),
         render: (text) => (
           <div className={hideColumn(!this.props.isApplication)} title="Submission Date">
             {text}
           </div>
         ),
-        sorter:
-          !this.props.isDashboardView &&
-          ((a, b) => (moment(a.received_date) > moment(b.received_date) ? -1 : 1)),
+        sorter: !this.props.isDashboardView
+          ? (a, b) => (moment(a.received_date) > moment(b.received_date) ? -1 : 1)
+          : true,
         defaultSortOrder: "ascend",
       },
       {
         title: "Application Status",
         dataIndex: "status",
+        sortField: "variance_application_status_code",
         width: 200,
         className: hideColumn(!this.props.isApplication),
-        filteredValue: this.props.params.variance_application_status_code,
-        filters: this.props.isDashboardView && this.props.filterVarianceStatusOptions,
         render: (text, record) => (
           <div
             className={hideColumn(!this.props.isApplication)}
@@ -165,7 +194,7 @@ export class MineVarianceTable extends Component {
             {text}
           </div>
         ),
-        sorter: !this.props.isDashboardView && ((a, b) => (a.status > b.status ? -1 : 1)),
+        sorter: !this.props.isDashboardView ? (a, b) => (a.status > b.status ? -1 : 1) : true,
       },
       {
         title: "Issue Date",
@@ -263,10 +292,16 @@ export class MineVarianceTable extends Component {
     return (
       <div>
         <Table
-          onChange={this.props.isDashboardView ? this.props.handleFilterChange : null}
+          onChange={
+            this.props.isDashboardView ? handleTableChange(this.props.handleVarianceSearch) : null
+          }
           align="left"
           pagination={false}
-          columns={columns}
+          columns={
+            this.props.isDashboardView
+              ? applySortIndicator(columns, this.props.sortField, this.props.sortDir)
+              : columns
+          }
           locale={{
             emptyText: (
               <NullScreen
