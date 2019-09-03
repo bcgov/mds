@@ -22,9 +22,6 @@ import {
   fetchMineCommodityOptions,
   fetchPermitStatusOptions,
   fetchApplicationStatusOptions,
-  fetchMineIncidentFollowActionOptions,
-  fetchMineIncidentDeterminationOptions,
-  fetchMineIncidentStatusCodeOptions,
 } from "@/actionCreators/staticContentActionCreator";
 import { fetchPartyRelationshipTypes } from "@/actionCreators/partiesActionCreator";
 import { getMines, getMineIds, getMinesPageData } from "@/selectors/mineSelectors";
@@ -65,6 +62,12 @@ const propTypes = {
   fetchStatusOptions: PropTypes.func.isRequired,
   fetchMineCommodityOptions: PropTypes.func.isRequired,
   fetchMineDisturbanceOptions: PropTypes.func.isRequired,
+  fetchRegionOptions: PropTypes.func.isRequired,
+  fetchPermitStatusOptions: PropTypes.func.isRequired,
+  fetchMineTenureTypes: PropTypes.func.isRequired,
+  mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineTenureHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
@@ -74,9 +77,6 @@ const propTypes = {
   pageData: CustomPropTypes.minePageData.isRequired,
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   fetchApplicationStatusOptions: PropTypes.func.isRequired,
-  fetchMineIncidentFollowActionOptions: PropTypes.func.isRequired,
-  fetchMineIncidentDeterminationOptions: PropTypes.func.isRequired,
-  fetchMineIncidentStatusCodeOptions: PropTypes.func.isRequired,
 };
 
 const joinOrRemove = (param, key) => (isEmpty(param) ? {} : { [key]: param.join(",") });
@@ -139,9 +139,6 @@ export class Dashboard extends Component {
     this.props.fetchPartyRelationshipTypes();
     this.props.fetchPermitStatusOptions();
     this.props.fetchApplicationStatusOptions();
-    this.props.fetchMineIncidentFollowActionOptions();
-    this.props.fetchMineIncidentDeterminationOptions();
-    this.props.fetchMineIncidentStatusCodeOptions();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -497,9 +494,6 @@ const mapDispatchToProps = (dispatch) =>
       openModal,
       closeModal,
       fetchPartyRelationshipTypes,
-      fetchMineIncidentFollowActionOptions,
-      fetchMineIncidentDeterminationOptions,
-      fetchMineIncidentStatusCodeOptions,
     },
     dispatch
   );

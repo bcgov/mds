@@ -23,4 +23,4 @@ class MineReportDefinitionListResource(Resource, UserMixin):
     @api.doc(description='returns the report definitions for possible reports.')
     @requires_role_view_all
     def get(self):
-        return MineReportDefinition.get_active()
+        return MineReportDefinition.active()

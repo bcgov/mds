@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Table, Button, Icon } from "antd";
 import moment from "moment";
 import _ from "lodash";
-import { BRAND_PENCIL } from "@/constants/assets";
+import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
@@ -11,6 +11,7 @@ import CustomPropTypes from "@/customPropTypes";
 import NullScreen from "@/components/common/NullScreen";
 import { formatDate } from "@/utils/helpers";
 import LinkButton from "@/components/common/LinkButton";
+import * as Strings from "@/constants/strings";
 
 const propTypes = {
   incidents: PropTypes.arrayOf(CustomPropTypes.incident).isRequired,
@@ -79,10 +80,13 @@ const columns = (props) => [
     title: "Initial Report Documents",
     dataIndex: "initialDocuments",
     width: 200,
-    // TODO: Replace magic string with constant
     render: (text, record) => (
       <div title="Initial Report Documents">
-        {record.docs.length === 0 ? <span>--</span> : renderDownloadLinks(record.docs, "INI")}
+        {record.docs.length === 0 ? (
+          <span>--</span>
+        ) : (
+          renderDownloadLinks(record.docs, Strings.INCIDENT_DOCUMENT_TYPES.initial)
+        )}
       </div>
     ),
   },
@@ -92,7 +96,11 @@ const columns = (props) => [
     width: 200,
     render: (text, record) => (
       <div title="Final Report Documents">
-        {record.docs.length === 0 ? <span>--</span> : renderDownloadLinks(record.docs, "FIN")}
+        {record.docs.length === 0 ? (
+          <span>--</span>
+        ) : (
+          renderDownloadLinks(record.docs, Strings.INCIDENT_DOCUMENT_TYPES.final)
+        )}
       </div>
     ),
   },
@@ -115,7 +123,7 @@ const columns = (props) => [
               )
             }
           >
-            <img src={BRAND_PENCIL} alt="Edit Incident" />
+            <img src={EDIT_OUTLINE_VIOLET} alt="Edit Incident" />
           </Button>
         </AuthorizationWrapper>
         <Button

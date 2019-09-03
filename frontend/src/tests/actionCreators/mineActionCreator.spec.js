@@ -2,7 +2,6 @@ import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import {
   createMineRecord,
-  updateMineRecord,
   fetchMineRecords,
   fetchMineRecordById,
   fetchMineNameList,
@@ -63,32 +62,6 @@ describe("`createMineRecord` action creator", () => {
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPost(url).reply(400, MOCK.ERROR);
     return createMineRecord(mineName)(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(4);
-    });
-  });
-});
-
-describe("`updateMineRecord` action creator", () => {
-  const mineId = "1";
-  const tenureNumber = "0293847";
-  const mineName = "MockMine";
-  const url = `${ENVIRONMENT.apiUrl + API.MINE}/${mineId}`;
-  const mockPayload = { tenure_number_id: tenureNumber };
-  it("Request successful, dispatches `success` with correct response", () => {
-    const mockResponse = { data: { success: true } };
-    mockAxios.onPut(url, mockPayload).reply(200, mockResponse);
-    return updateMineRecord(mineId, mockPayload, mineName)(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(4);
-    });
-  });
-
-  it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onPut(url).reply(400, MOCK.ERROR);
-    return updateMineRecord(mineId, tenureNumber)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -328,7 +301,7 @@ describe("`addDocumentToExpectedDocument` action creator", () => {
 
 describe("`fetchMineDocuments` action creator", () => {
   const mineGuid = "12345-6789";
-  const url = `${ENVIRONMENT.apiUrl}${API.MINE_DOCUMENTS}/${mineGuid}`;
+  const url = `${ENVIRONMENT.apiUrl}${API.MINE_DOCUMENTS(mineGuid)}`;
 
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };

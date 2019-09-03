@@ -16,11 +16,7 @@ export const MINE_RESPONSE = {
       mine_no: "BLAH9091",
       mine_region: "NE",
       mine_permit: [],
-      mineral_tenure_xref: [
-        {
-          tenure_number_id: "1234567",
-        },
-      ],
+      major_mine_ind: true,
       mine_location: { longitude: null, latitude: null },
       mine_status: {
         statusvalue: ["CLD", "CM"],
@@ -64,6 +60,7 @@ export const MINE_RESPONSE = {
       mine_name: "mine2",
       mine_no: "BLAH9091",
       mine_region: "NE",
+      major_mine_ind: true,
       mine_permit: [
         {
           permit_guid: "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
@@ -72,11 +69,6 @@ export const MINE_RESPONSE = {
         {
           permit_guid: "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
           permit_no: "xfM0c0ZKEw7B",
-        },
-      ],
-      mineral_tenure_xref: [
-        {
-          tenure_number_id: "1234567",
         },
       ],
       mine_status: {
@@ -131,11 +123,6 @@ export const SUBSCRIBED_MINES = {
       mine_no: "BLAH9091",
       region_code: "NE",
       mine_permit: [],
-      mineral_tenure_xref: [
-        {
-          tenure_number_id: "1234567",
-        },
-      ],
       mine_location: { longitude: null, latitude: null },
       mine_tailings_storage_facility: [
         {
@@ -178,11 +165,7 @@ export const MINES = {
       mine_no: "BLAH9091",
       mine_region: "NE",
       mine_permit: [],
-      mineral_tenure_xref: [
-        {
-          tenure_number_id: "1234567",
-        },
-      ],
+      major_mine_ind: true,
       mine_location: { longitude: null, latitude: null },
       mine_tailings_storage_facilities: [
         {
@@ -225,6 +208,7 @@ export const MINES = {
       mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
       mine_name: "mine2",
       mine_no: "BLAH9091",
+      major_mine_ind: true,
       mine_region: "NE",
       mine_permit: [
         {
@@ -234,11 +218,6 @@ export const MINES = {
         {
           permit_guid: "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
           permit_no: "xfM0c0ZKEw7B",
-        },
-      ],
-      mineral_tenure_xref: [
-        {
-          tenure_number_id: "1234567",
         },
       ],
       mine_status: {
@@ -1007,7 +986,7 @@ export const EXPECTED_DOCUMENT_STATUS_OPTIONS = {
 };
 
 export const MINE_TSF_REQUIRED_REPORTS_RESPONSE = {
-  required_documents: [
+  records: [
     {
       req_document_guid: "05388944-afb3-4ef4-9db1-94db72f6060e",
       req_document_name: "Annual Reclamation",
@@ -1472,6 +1451,7 @@ export const VARIANCES = {
   records: [
     {
       variance_guid: "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+      variance_no: 1,
       compliance_article_id: 1,
       expiry_date: "2019-03-30",
       issue_date: "2019-03-01",
@@ -1496,6 +1476,7 @@ export const VARIANCES = {
 
 export const VARIANCE = {
   variance_guid: "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+  variance_no: 1,
   compliance_article_id: 1,
   expiry_date: "2019-03-30",
   issue_date: "2019-03-01",
@@ -1510,6 +1491,14 @@ export const VARIANCE = {
       mine_guid: "59e73109-48f7-4ad2-977c-3005b5bff010",
     },
   ],
+};
+
+export const VARIANCE_PAGE_DATA = {
+  records: [VARIANCE],
+  current_page: 1,
+  items_per_page: 25,
+  total: 25,
+  total_pages: 1,
 };
 
 export const COMPLIANCE_CODES = {
@@ -1639,7 +1628,7 @@ export const INCIDENT = {
 };
 
 export const INCIDENTS = {
-  mine_incidents: [
+  records: [
     {
       mine_incident_guid: "dc101155-de3e-4f37-8303-eb6a6d2d5866",
       mine_incident_report_no: "2019-70",
@@ -2568,4 +2557,29 @@ export const ADD_PARTY_FORM_STATE = {
   person: true,
   organization: true,
   partyLabel: "contact",
+};
+
+export const NOW = {
+  applications: [
+    {
+      application_guid: "07e801a0-fa33-4c3b-abcc-ac6df628d483",
+      mine_guid: "6e9d3426-ebf1-413f-9e5f-c3a71ab56797",
+      mine_name: "Hamilton, Herrera and Mccormick",
+      minenumber: "brother",
+      noticeofworktype: "choice",
+      trackingnumber: 44,
+      status: "Approved",
+      receiveddate: "2019-08-14",
+    },
+    {
+      application_guid: "8e1536da-644c-4961-976b-b1326fa75825",
+      mine_guid: "60300a07-376c-46f1-a984-88a813f91438",
+      mine_name: "Thompson-Sullivan",
+      minenumber: "other",
+      noticeofworktype: "technology",
+      trackingnumber: 52,
+      status: "Approved",
+      receiveddate: "2019-07-21",
+    },
+  ],
 };

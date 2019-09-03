@@ -1,0 +1,95 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MineNoticeOfWorkTable renders properly 1`] = `
+<Table
+  align="left"
+  bordered={false}
+  childrenColumnName="children"
+  className=""
+  columns={
+    Array [
+      Object {
+        "dataIndex": "nowNum",
+        "filterDropdown": [Function],
+        "filterIcon": [Function],
+        "render": [Function],
+        "sortField": "trackingnumber",
+        "sortOrder": "ascend",
+        "sorter": true,
+        "title": "NoW No.",
+      },
+      Object {
+        "dataIndex": "nowType",
+        "filterDropdown": [Function],
+        "filterIcon": [Function],
+        "render": [Function],
+        "sortField": "noticeofworktype",
+        "sortOrder": false,
+        "sorter": true,
+        "title": "NoW Type",
+      },
+      Object {
+        "dataIndex": "status",
+        "filterDropdown": [Function],
+        "filterIcon": [Function],
+        "render": [Function],
+        "sortField": "status",
+        "sortOrder": false,
+        "sorter": true,
+        "title": "Application Status",
+      },
+      Object {
+        "dataIndex": "date",
+        "render": [Function],
+        "sortField": "receiveddate",
+        "sortOrder": false,
+        "sorter": true,
+        "title": "Import Date",
+      },
+    ]
+  }
+  dataSource={
+    Array [
+      Object {
+        "date": "Aug 14 2019",
+        "key": "07e801a0-fa33-4c3b-abcc-ac6df628d483",
+        "mineGuid": "6e9d3426-ebf1-413f-9e5f-c3a71ab56797",
+        "mineName": "Hamilton, Herrera and Mccormick",
+        "nowNum": 44,
+        "nowType": "choice",
+        "status": "Approved",
+      },
+      Object {
+        "date": "Jul 21 2019",
+        "key": "8e1536da-644c-4961-976b-b1326fa75825",
+        "mineGuid": "60300a07-376c-46f1-a984-88a813f91438",
+        "mineName": "Thompson-Sullivan",
+        "nowNum": 52,
+        "nowType": "technology",
+        "status": "Approved",
+      },
+    ]
+  }
+  indentSize={20}
+  loading={false}
+  locale={
+    Object {
+      "emptyText": <NullScreen
+        type="no-results"
+      />,
+    }
+  }
+  onChange={[Function]}
+  pagination={false}
+  rowKey="key"
+  showHeader={true}
+  size="default"
+  sortDirections={
+    Array [
+      "ascend",
+      "descend",
+    ]
+  }
+  useFixedHeader={false}
+/>
+`;

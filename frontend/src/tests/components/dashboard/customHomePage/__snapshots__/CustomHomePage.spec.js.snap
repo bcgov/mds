@@ -14,23 +14,6 @@ exports[`CustomHomePage renders properly 1`] = `
   <div
     className="landing-page__content"
   >
-    <LoadingWrapper
-      condition={false}
-    >
-      <VarianceTable
-        handleFilterChange={[Function]}
-        handlePageChange={[Function]}
-        openEditVarianceModal={[Function]}
-        openViewVarianceModal={[Function]}
-        params={
-          Object {
-            "page": "1",
-            "per_page": 5,
-            "variance_application_status_code": Array [],
-          }
-        }
-      />
-    </LoadingWrapper>
     <SubscriptionTable
       handleUnSubscribe={[Function]}
       mineCommodityOptionsHash={
@@ -108,11 +91,6 @@ exports[`CustomHomePage renders properly 1`] = `
               },
               Object {
                 "mine_tenure_type_code": "MIN",
-              },
-            ],
-            "mineral_tenure_xref": Array [
-              Object {
-                "tenure_number_id": "1234567",
               },
             ],
             "region_code": "NE",

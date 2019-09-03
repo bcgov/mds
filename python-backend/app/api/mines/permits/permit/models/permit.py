@@ -1,5 +1,5 @@
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.ext.hybrid import hybrid_property
+
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import validates
 from sqlalchemy.schema import FetchedValue

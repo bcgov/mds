@@ -26,6 +26,7 @@ class Mine(AuditMixin, Base):
     mine_no = db.Column(db.String(10))
     mine_name = db.Column(db.String(60), nullable=False)
     mine_note = db.Column(db.String(300), default='')
+    legacy_mms_mine_status = db.Column(db.String(50))
     major_mine_ind = db.Column(db.Boolean, nullable=False, default=False)
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     mine_region = db.Column(db.String(2), db.ForeignKey('mine_region_code.mine_region_code'))
@@ -60,8 +61,6 @@ class Mine(AuditMixin, Base):
         primaryjoin="and_(MineType.mine_guid == Mine.mine_guid, MineType.active_ind==True)",
         lazy='selectin')
 
-    #Not always desired, set to lazy load using select
-    mineral_tenure_xref = db.relationship('MineralTenureXref', backref='mine', lazy='select')
     mine_documents = db.relationship(
         'MineDocument',
         backref='mine',

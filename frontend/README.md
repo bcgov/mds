@@ -136,28 +136,28 @@ ensure that they are not introducing linting errors into the codebase with
 their changes. Modern text editors, such as VS Code, will indicate errors.
 See the usage guide below for more information on the linting CLI options.
 
-Lint one file
-
-```
-npm run lint ./filepath
-```
-
 Lint all files
 
 ```
-npm run lint ./src
+npm run lint
 ```
 
-Apply linting rules to one file
+Lint one file
 
 ```
-npm run lint ./filepath -- --fix
+npm run lint:file ./filepath
 ```
 
 Apply linting rules to all files
 
 ```
-npm run lint ./src -- --fix
+npm run lint -- --fix
+```
+
+Apply linting rules to one file
+
+```
+npm run lint:file ./filepath -- --fix
 ```
 
 Developers are encouraged to install the Prettier plugin appropriate for their
@@ -170,8 +170,12 @@ up formatting on-save:
 3. Ensure that no conflicting code formatting tools are enabled (ex. Beautify)
 
 Any developer who is unable or unwilling to apply the formatting on-save is
-asked to use the provided npm scripts to format their code before each commit.
-See the usage guide below for more information.
+asked to either use the provided npm scripts to format their code before each
+commit or to ensure that the git hooks are running. The provided git hooks will
+automatically lint and format on-commit. They will also run the relevant tests
+on-push.
+
+See the usage guide below for more information on manual formatting.
 
 Check one file
 

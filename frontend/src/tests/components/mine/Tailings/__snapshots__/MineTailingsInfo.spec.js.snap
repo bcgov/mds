@@ -1,7 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MineTailingsInfo renders properly 1`] = `
-<div>
+<div
+  className="tab__content"
+>
+  <div>
+    <h2>
+      Tailings
+    </h2>
+    <Divider />
+  </div>
   <Row
     gutter={16}
     key="e2629897-053e-4218-9299-479375e47f78"
@@ -38,6 +46,7 @@ exports[`MineTailingsInfo renders properly 1`] = `
           className="inline-flex between"
         >
           <Connect(AuthorizationWrapper)
+            isMajorMine={true}
             permission="role_edit_mines"
           >
             <AddButton
@@ -55,6 +64,7 @@ exports[`MineTailingsInfo renders properly 1`] = `
       handleEditReportSubmit={[Function]}
       mine={
         Object {
+          "major_mine_ind": true,
           "mine_expected_documents": Array [
             Object {
               "date_created": "2018-11-19",
@@ -104,11 +114,6 @@ exports[`MineTailingsInfo renders properly 1`] = `
             },
             Object {
               "mine_tenure_type_code": "MIN",
-            },
-          ],
-          "mineral_tenure_xref": Array [
-            Object {
-              "tenure_number_id": "1234567",
             },
           ],
           "verified_status": Object {

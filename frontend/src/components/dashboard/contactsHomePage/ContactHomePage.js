@@ -33,7 +33,7 @@ import * as ModalContent from "@/constants/modalContent";
 import AddButton from "@/components/common/AddButton";
 
 /**
- * @class ContactHomePage is the main landing page of the application, currently contains a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
+ * @class ContactHomePage contains a list, contact search, and create new contact button
  *
  */
 

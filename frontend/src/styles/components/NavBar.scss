@@ -1,3 +1,4 @@
+// TOP LEVEL MENU
 .menu {
   @include flex;
   position: fixed;
@@ -49,8 +50,10 @@
   position: fixed;
   z-index: 100;
   padding-top: 60px;
+  overflow: scroll;
   width: 100vw;
   height: 100vh;
+  padding-bottom: 50px;
   @include animation(fadein, 0.5s);
   background-color: $nav-color;
 
@@ -79,8 +82,6 @@
 
   &--footer {
     color: gray;
-    position: absolute;
-    bottom: 20px;
     text-align: center;
     width: 100%;
   }
@@ -91,4 +92,27 @@
   background-color: $primary-btn-color;
   border: none;
   border-radius: 0;
+  border-top: 1px solid #5e46a1;
+  position: inherit;
+  // if the activeClass is on nav, change default hover color to white, else leave violet
+  .ant-menu-submenu-title:hover {
+    color: $pure-white;
+  }
+}
+
+// MINE SUMMARY NAVIGATION
+.sub-menu {
+  a,
+  link {
+    color: $darkest-grey;
+    text-decoration: none;
+    &:hover {
+      color: $pure-white;
+    }
+  }
+  background-color: $light-grey;
+
+  li:hover {
+    background-color: $violet;
+  }
 }

@@ -84,15 +84,14 @@ class MineIncident(AuditMixin, Base):
                                                   lazy='joined',
                                                   uselist=False)
 
-    _recommendations = db.relationship('MineIncidentRecommendation', lazy='dynamic')
+    recommendations = db.relationship(
+        'MineIncidentRecommendation',
+        primaryjoin="and_(MineIncidentRecommendation.mine_incident_id == MineIncident.mine_incident_id, MineIncidentRecommendation.deleted_ind==False)",
+        lazy='selectin')
     documents = db.relationship('MineIncidentDocumentXref', lazy='joined')
-    incident_documents = db.relationship('MineDocument',
+    mine_documents = db.relationship('MineDocument',
                                          lazy='joined',
                                          secondary='mine_incident_document_xref')
-
-    @hybrid_property
-    def recommendations(self):
-        return self._recommendations.filter_by(deleted_ind=False).all()
 
     @hybrid_property
     def mine_incident_report_no(self):

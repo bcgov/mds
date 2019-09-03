@@ -9,13 +9,15 @@ from flask_jwt_oidc.exceptions import AuthError
 from app.api.parties.namespace.parties import api as parties_api
 from app.api.applications.namespace.applications import api as applications_api
 from app.api.mines.namespace.mines import api as mines_api
-from app.api.documents.namespace.documents import api as document_api
+from app.api.mines.documents.namespace.documents import api as documents_api
+from app.api.required_documents.namespace.required_documents import api as required_documents_api
 from app.api.download_token.namespace.download_token import api as download_token_api
 from app.api.users.namespace.users import api as users_api
 from app.api.search.namespace.search import api as search_api
 from app.api.reporting.namespace.reporting import api as reporting_api
 from app.api.variances.namespace.variances import api as variances_api
 from app.api.incidents.namespace.incidents import api as incidents_api
+from app.api.now_submissions.namespace.now_submissions import api as now_api
 
 from app.commands import register_commands
 from app.config import Config
@@ -49,6 +51,8 @@ def register_extensions(app):
 
     if app.config['ELASTIC_ENABLED'] == '1':
         apm.init_app(app)
+    else:
+        app.logger.debug('ELASTIC_ENABLED: FALSE, set ELASTIC_ENABLED=1 to enable')
 
     try:
         jwt.init_app(app)
@@ -70,7 +74,8 @@ def register_routes(app):
 
     api.add_namespace(mines_api)
     api.add_namespace(parties_api)
-    api.add_namespace(document_api)
+    api.add_namespace(documents_api)
+    api.add_namespace(required_documents_api)
     api.add_namespace(download_token_api)
     api.add_namespace(users_api)
     api.add_namespace(applications_api)
@@ -78,6 +83,7 @@ def register_routes(app):
     api.add_namespace(variances_api)
     api.add_namespace(incidents_api)
     api.add_namespace(reporting_api)
+    api.add_namespace(now_api)
 
     # Healthcheck endpoint
     @api.route('/health')
@@ -106,7 +112,7 @@ def register_routes(app):
         app.logger.error(str(error))
         return {
             'status': getattr(error, 'status_code', 400),
-            'message': str('Invalid request. Cannot save record.'),
+            'message': str('Invalid request.'),
         }, getattr(error, 'status_code', 400)
 
     def _add_sqlalchemy_error_handlers(classname):

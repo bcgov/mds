@@ -1,0 +1,170 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AddReportForm renders properly 1`] = `
+<Form
+  colon={true}
+  hideRequiredMark={false}
+  layout="vertical"
+  onSubmit={[MockFunction]}
+>
+  <Row
+    gutter={16}
+  >
+    <Col>
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          doNotPinDropdown={true}
+          id="mine_report_category"
+          label="Report Type*"
+          name="mine_report_category"
+          placeholder="Select"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          data={Array []}
+          doNotPinDropdown={true}
+          id="mine_report_definition_guid"
+          label="Report Name*"
+          name="mine_report_definition_guid"
+          onChange={[Function]}
+          placeholder="Select a category above"
+          props={
+            Object {
+              "disabled": true,
+            }
+          }
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+      <FormItem
+        hasFeedback={false}
+        label="Report Code Requirements"
+      >
+        <List
+          bordered={true}
+          dataSource={Array []}
+          loading={false}
+          pagination={false}
+          size="large"
+          split={true}
+        >
+          <Item />
+        </List>
+      </FormItem>
+      <FormItem
+        hasFeedback={false}
+      />
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="submission_year"
+          label="Report Compliance Year/Period"
+          name="submission_year"
+          placeholder=""
+          props={
+            Object {
+              "disabled": false,
+            }
+          }
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="due_date"
+          label="Due Date"
+          name="due_date"
+          placeholder=""
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="received_date"
+          label="Received Date"
+          name="received_date"
+          placeholder=""
+        />
+      </FormItem>
+      <ReportSubmissions
+        mineReportSubmissions={Array []}
+        updateMineReportSubmissions={[Function]}
+      />
+    </Col>
+  </Row>
+  <div
+    className="right center-mobile"
+  >
+    <Popconfirm
+      cancelText="No"
+      disabled={false}
+      icon={
+        <Icon
+          theme="filled"
+          type="exclamation-circle"
+        />
+      }
+      okText="Yes"
+      okType="primary"
+      onConfirm={[MockFunction]}
+      placement="topRight"
+      title="Are you sure you want to cancel?"
+      transitionName="zoom-big"
+      trigger="click"
+    >
+      <Button
+        block={false}
+        className="full-mobile"
+        ghost={false}
+        htmlType="button"
+        loading={false}
+        type="secondary"
+      >
+        Cancel
+      </Button>
+    </Popconfirm>
+    <Button
+      block={false}
+      className="full-mobile"
+      ghost={false}
+      htmlType="submit"
+      loading={false}
+      type="primary"
+    >
+      mockTitle
+    </Button>
+  </div>
+</Form>
+`;

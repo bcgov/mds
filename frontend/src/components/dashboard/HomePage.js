@@ -51,7 +51,7 @@ export class HomePage extends Component {
               <li>
                 <p>
                   <a
-                    href="https://a100.gov.bc.ca/int/cvis/nris/nris.html?fromRoleSelect=true#/dashboard"
+                    href="https://a100.gov.bc.ca/int/cvis/nris/nris.html"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -96,6 +96,13 @@ export class HomePage extends Component {
                     rel="noopener noreferrer"
                   >
                     EMPR Intranet
+                  </a>
+                </p>
+              </li>
+              <li>
+                <p>
+                  <a href="https://minfile.gov.bc.ca/" target="_blank" rel="noopener noreferrer">
+                    Mineral Inventory (MINFILE)
                   </a>
                 </p>
               </li>

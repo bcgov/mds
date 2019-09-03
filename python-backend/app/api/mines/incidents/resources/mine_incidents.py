@@ -9,8 +9,8 @@ from app.api.utils.access_decorators import requires_role_view_all, requires_rol
 
 from ...mine_api_models import MINE_INCIDENT_MODEL
 
-from app.api.documents.incidents.models.mine_incident import MineIncidentDocumentXref
-from app.api.documents.mines.models.mine_document import MineDocument
+from app.api.mines.incidents.models.mine_incident_document_xref import MineIncidentDocumentXref
+from app.api.mines.documents.mines.models.mine_document import MineDocument
 from app.api.incidents.models.mine_incident_document_type_code import MineIncidentDocumentTypeCode
 from app.api.incidents.models.mine_incident import MineIncident
 from app.api.incidents.models.mine_incident_recommendation import MineIncidentRecommendation
@@ -64,7 +64,7 @@ class MineIncidentListResource(Resource, UserMixin):
     parser.add_argument('updated_documents', type=list, location='json', store_missing=False)
     parser.add_argument('recommendations', type=list, location='json', store_missing=False)
 
-    @api.marshal_with(MINE_INCIDENT_MODEL, envelope='mine_incidents', code=200, as_list=True)
+    @api.marshal_with(MINE_INCIDENT_MODEL, envelope='records', code=200)
     @api.doc(description='returns the incidents for a given mine.')
     @requires_role_view_all
     def get(self, mine_guid):
@@ -310,15 +310,16 @@ class MineIncidentResource(Resource, UserMixin):
 
     @classmethod
     def _handle_recommendations(cls, incident, recommendations):
-        for payload in recommendations:
-            edited_rec_guid = payload.get('mine_incident_recommendation_guid')
-            rec_string = payload.get('recommendation')
+        for recommendation in recommendations:
+            edited_rec_guid = recommendation.get('mine_incident_recommendation_guid')
+            rec_string = recommendation.get('recommendation')
             if rec_string is None or rec_string == '':
-                if payload.get('mine_incident_recommendation_guid') is not None:
+                if recommendation.get('mine_incident_recommendation_guid') is not None:
                     # Remove existing empty recommendations
                     rec = MineIncidentRecommendation.find_by_mine_incident_recommendation_guid(
                         edited_rec_guid)
-                    rec.soft_delete()
+                    rec.deleted_ind = True
+                    rec.save()
 
                 # Skip new empty recommendations
                 continue
@@ -333,5 +334,5 @@ class MineIncidentResource(Resource, UserMixin):
 
             # Create new_recommendations
             new_recommendation = MineIncidentRecommendation.create(
-                payload['recommendation'], mine_incident_id=incident.mine_incident_id)
+                recommendation['recommendation'], mine_incident_id=incident.mine_incident_id)
             new_recommendation.save()
