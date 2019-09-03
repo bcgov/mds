@@ -12,7 +12,7 @@ class Tab_Tailings extends Module {
         addTailingsForm {module Form_CreateTailings}
         document0Name (wait:true) {$("div.ant-row").find("h3")}
         addTailingsButton (wait:true) {$("button.ant-btn-primary").has("span", text:"Add a TSF")}
-        addTailingsDocButtons (wait:true) {$("button.ant-btn").has('img',alt: "Edit TSF Report")}
+        addTailingsDocButtons (wait:true) {$("button.ant-btn").has('img',alt: "Edit Report")}
         //File upload modal objects
         uploadField (wait:true) {$("input.filepond--browser")}
         uploadCompleteMessage (wait:true) {$("span.filepond--file-status-main", text:"Upload complete")}
