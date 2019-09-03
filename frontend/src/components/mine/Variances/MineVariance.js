@@ -84,7 +84,8 @@ export class MineVariance extends Component {
     // if the application isApproved, set issue_date to today and set expiry_date 5 years from today,
     // unless the user sets a custom expiry.
     const { variance_document_category_code } = values;
-    const issue_date = isApproved ? moment().format("YYYY-MM-DD") : null;
+    const defaultIssueDate = isApproved ? moment().format("YYYY-MM-DD") : null;
+    const issue_date = variance.issue_date ? variance.issue_date : defaultIssueDate;
     let expiry_date;
     if (isApproved) {
       expiry_date = values.expiry_date
