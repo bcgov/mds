@@ -15,7 +15,9 @@ from app.api.now_submissions.models.surface_bulk_sample_activity import SurfaceB
 from app.api.now_submissions.models.under_exp_new_activity import UnderExpNewActivity
 from app.api.now_submissions.models.under_exp_rehab_activity import UnderExpRehabActivity
 from app.api.now_submissions.models.under_exp_surface_activity import UnderExpSurfaceActivity
+from app.api.now_submissions.models.exp_access_activity import ExpAccessActivity
 from app.api.now_submissions.models.water_source_activity import WaterSourceActivity
+from app.api.now_submissions.models.mech_trenching_activity import MechTrenchingActivity
 
 from app.api.now_submissions.models.existing_placer_activity_xref import ExistingPlacerActivityXref
 from app.api.now_submissions.models.existing_settling_pond_xref import ExistingSettlingPondXref
@@ -177,6 +179,8 @@ class Application(Base):
     under_exp_rehab_activity = db.relationship('UnderExpRehabActivity', lazy='joined')
     under_exp_surface_activity = db.relationship('UnderExpSurfaceActivity', lazy='joined')
     water_source_activity = db.relationship('WaterSourceActivity', lazy='joined')
+    exp_access_activity = db.relationship('ExpAccessActivity', lazy='joined')
+    mech_trenching_activity = db.relationship('MechTrenchingActivity', lazy='joined')
 
     existing_placer_activity = db.relationship(
         'PlacerActivity', lazy='joined', secondary='now_submissions.existing_placer_activity_xref')

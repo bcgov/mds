@@ -95,18 +95,6 @@ exports[`NOWGeneralInfo renders properly 1`] = `
           <p
             className="field-title"
           >
-            Permit Type
-          </p>
-          <p>
-            N/A
-          </p>
-        </div>
-        <div
-          className="inline-flex padding-small"
-        >
-          <p
-            className="field-title"
-          >
             Permit Status
           </p>
           <p>
@@ -127,7 +115,7 @@ exports[`NOWGeneralInfo renders properly 1`] = `
             Crown/Private
           </p>
           <p>
-            N/A
+            Unknown
           </p>
         </div>
         <div
@@ -152,18 +140,6 @@ exports[`NOWGeneralInfo renders properly 1`] = `
           </p>
           <p>
             Unknown
-          </p>
-        </div>
-        <div
-          className="inline-flex padding-small"
-        >
-          <p
-            className="field-title"
-          >
-            Type of Application
-          </p>
-          <p>
-            N/A
           </p>
         </div>
         <div
@@ -463,7 +439,7 @@ exports[`NOWGeneralInfo renders properly 1`] = `
           <p
             className="field-title"
           >
-             Present condition of the land
+            Present condition of the land
           </p>
         </Col>
         <Col
@@ -714,29 +690,6 @@ exports[`NOWGeneralInfo renders properly 1`] = `
         >
           <p>
             N/A
-          </p>
-        </Col>
-      </Row>
-      <Row
-        className="padding-small"
-        gutter={16}
-      >
-        <Col
-          md={12}
-          xs={24}
-        >
-          <p
-            className="field-title--light"
-          >
-            Plan to protect the archaeological site
-          </p>
-        </Col>
-        <Col
-          md={12}
-          xs={24}
-        >
-          <p>
-            Unknown
           </p>
         </Col>
       </Row>
