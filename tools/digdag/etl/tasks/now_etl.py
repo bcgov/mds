@@ -13,11 +13,11 @@ def run_job():
     builder.add_value(key='DB_HOST', value=f'mds-postgresql{suffix}')
     builder.add_value(key='DB_PORT', value='5432')
     builder.add_secret(
-        key='DB_USER', secret_name=f'mds-postgres{suffix}', secret_key='database-user')
+        key='DB_USER', secret_name=f'mds-postgresql{suffix}', secret_key='database-user')
     builder.add_secret(
-        key='DB_NAME', secret_name=f'mds-postgres{suffix}', secret_key='database-name')
+        key='DB_NAME', secret_name=f'mds-postgresql{suffix}', secret_key='database-name')
     builder.add_secret(
-        key='DB_PASS', secret_name=f'mds-postgres{suffix}', secret_key='database-password')
+        key='DB_PASS', secret_name=f'mds-postgresql{suffix}', secret_key='database-password')
 
     # Add elastic config
     builder.add_value(key='ELASTIC_ENABLED', value='0')
