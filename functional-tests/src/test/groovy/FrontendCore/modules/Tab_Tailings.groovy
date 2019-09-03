@@ -18,6 +18,7 @@ class Tab_Tailings extends Module {
         uploadCompleteMessage (wait:true) {$("span.filepond--file-status-main", text:"Upload complete")}
         //File download link object
         downloadLink (wait:true) {$('a',text:Const.TEST_FILE_NAME)}
+        editReportButton (wait:true) {$("button.ant-btn-primary").has("span", text:contains("Edit report for"))}
     }
 
     def addTailings(tsfData){
