@@ -5,6 +5,11 @@ import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
 import { formatDate } from "@/utils/helpers";
 import Address from "@/components/common/Address";
+import {
+  isMineralOrPlacerOrCoal,
+  isMultiYearPermit,
+  isConditionTrue,
+} from "@/constants/NOWConditions";
 
 const propTypes = {
   noticeOfWork: CustomPropTypes.nowApplication.isRequired,
@@ -42,10 +47,12 @@ export class NOWGeneralInfo extends Component {
               <p className="field-title">Type of Notice of Work</p>
               <p>{this.props.noticeOfWork.noticeofworktype || Strings.EMPTY_FIELD}</p>
             </div>
-            <div className="inline-flex padding-small">
-              <p className="field-title">Permit Type</p>
-              <p>{this.props.noticeOfWork.typeofpermit || Strings.EMPTY_FIELD}</p>
-            </div>
+            {isMineralOrPlacerOrCoal(this.props.noticeOfWork.noticeofworktype) && (
+              <div className="inline-flex padding-small">
+                <p className="field-title">Permit Type</p>
+                <p>{this.props.noticeOfWork.typeofpermit || Strings.EMPTY_FIELD}</p>
+              </div>
+            )}
             <div className="inline-flex padding-small">
               <p className="field-title">Permit Status</p>
               <p>{this.props.noticeOfWork.status || Strings.EMPTY_FIELD}</p>
@@ -54,7 +61,7 @@ export class NOWGeneralInfo extends Component {
           <Col md={12} xs={24}>
             <div className="inline-flex padding-small">
               <p className="field-title">Crown/Private</p>
-              <p>{this.props.noticeOfWork.landprivate || Strings.EMPTY_FIELD}</p>
+              <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </div>
             <div className="inline-flex padding-small">
               <p className="field-title">Tenure Number</p>
@@ -64,10 +71,12 @@ export class NOWGeneralInfo extends Component {
               <p className="field-title">Description of Land</p>
               <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </div>
-            <div className="inline-flex padding-small">
-              <p className="field-title">Type of Application</p>
-              <p>{this.props.noticeOfWork.typeofapplication || Strings.EMPTY_FIELD}</p>
-            </div>
+            {isMultiYearPermit(this.props.noticeOfWork.typeofpermit) && (
+              <div className="inline-flex padding-small">
+                <p className="field-title">Term of Application</p>
+                <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
+              </div>
+            )}
             <div className="inline-flex padding-small">
               <p className="field-title">Proposed Start Date</p>
               <p>{formatDate(this.props.noticeOfWork.proposedstartdate) || Strings.EMPTY_FIELD}</p>
@@ -102,6 +111,9 @@ export class NOWGeneralInfo extends Component {
                   sub_division_code: contact.mailinigaddressprovstate,
                   suite_no: null,
                 };
+                const formattedPhoneNo = contact.dayphonenumberext
+                  ? `${contact.dayphonenumber} ext: ${contact.dayphonenumberext}`
+                  : contact.dayphonenumber;
                 return (
                   // there is no id/guid that is unique to the contact
                   /* eslint-disable-next-line react/no-array-index-key */
@@ -125,7 +137,7 @@ export class NOWGeneralInfo extends Component {
                         <h6>Email Address</h6>
                         {contact.email || Strings.EMPTY_FIELD}
                         <h6>Phone Number</h6>
-                        {contact.dayphonenumber || Strings.EMPTY_FIELD}
+                        {formattedPhoneNo || Strings.EMPTY_FIELD}
                         <h6>Mailing Address</h6>
                         <Address address={address || {}} />
                       </div>
@@ -209,7 +221,7 @@ export class NOWGeneralInfo extends Component {
           <h4 className="h4">Present State of Land</h4>
           <Row gutter={16} className="padding-small">
             <Col md={12} xs={24}>
-              <p className="field-title"> Present condition of the land</p>
+              <p className="field-title">Present condition of the land</p>
             </Col>
             <Col md={12} xs={24}>
               <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
@@ -304,14 +316,16 @@ export class NOWGeneralInfo extends Component {
               <p>{this.props.noticeOfWork.archsitesaffected || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
-          <Row gutter={16} className="padding-small">
-            <Col md={12} xs={24}>
-              <p className="field-title--light">Plan to protect the archaeological site</p>
-            </Col>
-            <Col md={12} xs={24}>
-              <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
-            </Col>
-          </Row>
+          {isConditionTrue(this.props.noticeOfWork.archsitesaffected) && (
+            <Row gutter={16} className="padding-small">
+              <Col md={12} xs={24}>
+                <p className="field-title--light">Plan to protect the archaeological site</p>
+              </Col>
+              <Col md={12} xs={24}>
+                <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
+              </Col>
+            </Row>
+          )}
           <br />
           <h4 className="h4">First Nations Engagement</h4>
           <Row gutter={16} className="padding-small">

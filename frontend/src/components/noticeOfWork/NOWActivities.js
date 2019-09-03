@@ -4,6 +4,7 @@ import * as Strings from "@/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import { COLOR } from "@/constants/styles";
 import { formatDate } from "@/utils/helpers";
+import { isMineralOrCoal, isPlacer, isSandAndGravelOrQuarry } from "@/constants/NOWConditions";
 
 const { Panel } = Collapse;
 
@@ -27,23 +28,37 @@ export class NOWActivities extends Component {
         render: (text) => <div title="Length(km)">{text}</div>,
       },
       {
+        title: "Disturbed Area (ha)",
+        dataIndex: "disturbedArea",
+        key: "disturbedArea",
+        render: (text) => <div title="Disturbed Area (ha)">{text}</div>,
+      },
+      {
         title: "Merchantable timber volume (m3)",
         dataIndex: "volume",
         key: "volume",
         render: (text) => <div title="Merchantable timber volume (m3)">{text}</div>,
       },
     ];
+
+    const transformData = (activities) =>
+      activities.map((activity) => ({
+        type: activity.type || Strings.EMPTY_FIELD,
+        length: activity.length || Strings.EMPTY_FIELD,
+        disturbedArea: activity.disturbedarea || Strings.EMPTY_FIELD,
+        timberVolume: activity.timbervolume || Strings.EMPTY_FIELD,
+      }));
+
     return (
       <div className="padding-large--sides">
         <Table
           align="left"
           pagination={false}
           columns={columns}
-          dataSource={[]}
+          dataSource={transformData(this.props.noticeOfWork.exp_access_activity)}
           locale={{
-            emptyText: "Unknown",
+            emptyText: "No data",
           }}
-          footer={() => <div title="Total">Total:</div>}
         />
         <br />
         <h4>Bridges, Culverts, and Crossings</h4>
@@ -52,10 +67,7 @@ export class NOWActivities extends Component {
           <Col md={12} xs={24}>
             <p className="field-title">Are you proposing any bridges, culverts, and crossings?</p>
           </Col>
-          <Col md={3} xs={12}>
-            <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
-          </Col>
-          <Col md={9} xs={12}>
+          <Col md={12} xs={24}>
             <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
           </Col>
         </Row>
@@ -69,7 +81,7 @@ export class NOWActivities extends Component {
             </p>
           </Col>
           <Col md={12} xs={24}>
-            <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
+            <p>{this.props.noticeOfWork.expaccessreclamation || Strings.EMPTY_FIELD}</p>
           </Col>
         </Row>
       </div>
@@ -191,7 +203,6 @@ export class NOWActivities extends Component {
             locale={{
               emptyText: "Unknown",
             }}
-            footer={() => "Total"}
           />
           <br />
         </div>
@@ -206,7 +217,6 @@ export class NOWActivities extends Component {
             locale={{
               emptyText: "Unknown",
             }}
-            footer={() => "Total"}
           />
           <br />
         </div>
@@ -221,7 +231,6 @@ export class NOWActivities extends Component {
             locale={{
               emptyText: "Unknown",
             }}
-            footer={() => "Total"}
           />
           <br />
         </div>
@@ -263,7 +272,7 @@ export class NOWActivities extends Component {
               </p>
             </Col>
             <Col md={12} xs={24}>
-              <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
+              <p>{this.props.noticeOfWork.cbsfreclamation || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
         </div>
@@ -295,9 +304,10 @@ export class NOWActivities extends Component {
 
     const data = {
       total: this.props.noticeOfWork.cutlinesexplgridtotallinekms || Strings.EMPTY_FIELD,
-      disturbedArea: "Unknown" || Strings.EMPTY_FIELD,
+      disturbedArea: this.props.noticeOfWork.cutlinesexplgriddisturbedarea || Strings.EMPTY_FIELD,
       timberVolume: this.props.noticeOfWork.cutlinesexplgridtimbervolume || Strings.EMPTY_FIELD,
     };
+
     return (
       <div className="padding-large--sides">
         <div>
@@ -433,6 +443,15 @@ export class NOWActivities extends Component {
         render: (text) => <div title="Merchantable timber volume (m3)">{text}</div>,
       },
     ];
+
+    const transformData = (activities) =>
+      activities.map((activity) => ({
+        type: activity.type || Strings.EMPTY_FIELD,
+        numSites: activity.numberofsites || Strings.EMPTY_FIELD,
+        disturbedArea: activity.disturbedarea || Strings.EMPTY_FIELD,
+        timberVolume: activity.timbervolume || Strings.EMPTY_FIELD,
+      }));
+
     return (
       <div className="padding-large--sides">
         <div>
@@ -442,9 +461,9 @@ export class NOWActivities extends Component {
             align="left"
             pagination={false}
             columns={columns}
-            dataSource={[]}
+            dataSource={transformData(this.props.noticeOfWork.mech_trenching_activity)}
             locale={{
-              emptyText: "Unknown",
+              emptyText: "No data",
             }}
           />
           <br />
@@ -571,6 +590,15 @@ export class NOWActivities extends Component {
         render: (text) => <div title="Merchantable timber volume (m3)">{text}</div>,
       },
     ];
+
+    const transformData = (activities) =>
+      activities.map((activity) => ({
+        type: activity.type || Strings.EMPTY_FIELD,
+        quantity: activity.quantity || Strings.EMPTY_FIELD,
+        disturbedArea: activity.disturbedarea || Strings.EMPTY_FIELD,
+        timberVolume: activity.timbervolume || Strings.EMPTY_FIELD,
+      }));
+
     return (
       <div className="padding-large--sides">
         <Row gutter={16} className="padding-small">
@@ -578,7 +606,7 @@ export class NOWActivities extends Component {
             <p className="field-title">Is this an application for Underground Placer Operations?</p>
           </Col>
           <Col md={12} xs={24}>
-            <p>{Strings.EMPTY_FIELD}</p>
+            <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
           </Col>
         </Row>
         <Row gutter={16} className="padding-small">
@@ -586,7 +614,7 @@ export class NOWActivities extends Component {
             <p className="field-title">Is this an application for Hand Operations?</p>
           </Col>
           <Col md={12} xs={24}>
-            <p>{Strings.EMPTY_FIELD}</p>
+            <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
           </Col>
         </Row>
         <br />
@@ -594,9 +622,9 @@ export class NOWActivities extends Component {
           align="left"
           pagination={false}
           columns={columns}
-          dataSource={[]}
+          dataSource={transformData(this.props.noticeOfWork.proposed_placer_activity)}
           locale={{
-            emptyText: "No data",
+            emptyText: "No Data",
           }}
         />
         <br />
@@ -605,9 +633,10 @@ export class NOWActivities extends Component {
             <p className="field-title">Proposed Production</p>
           </Col>
           <Col md={12} xs={24}>
-            <p>{Strings.EMPTY_FIELD}</p>
+            <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
           </Col>
         </Row>
+        <br />
         <h4>Total Planned Reclamation Area</h4>
         <Divider className="margin-10" />
         <Row gutter={16} className="padding-small">
@@ -615,9 +644,10 @@ export class NOWActivities extends Component {
             <p className="field-title">Total area of planned reclamation this year</p>
           </Col>
           <Col md={12} xs={24}>
-            <p>{Strings.EMPTY_FIELD}</p>
+            <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
           </Col>
         </Row>
+        <br />
         <h4>Changes In and About a Stream</h4>
         <Divider className="margin-10" />
         <Row gutter={16} className="padding-small">
@@ -627,7 +657,7 @@ export class NOWActivities extends Component {
             </p>
           </Col>
           <Col md={12} xs={24}>
-            <p>{Strings.EMPTY_FIELD}</p>
+            <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
           </Col>
         </Row>
         <br />
@@ -641,7 +671,7 @@ export class NOWActivities extends Component {
               </p>
             </Col>
             <Col md={12} xs={24}>
-              <p>{Strings.EMPTY_FIELD}</p>
+              <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
           <Row gutter={16} className="padding-small">
@@ -651,7 +681,7 @@ export class NOWActivities extends Component {
               </p>
             </Col>
             <Col md={12} xs={24}>
-              <p>{Strings.EMPTY_FIELD}</p>
+              <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
         </div>
@@ -802,7 +832,6 @@ export class NOWActivities extends Component {
           locale={{
             emptyText: "No data",
           }}
-          footer={() => "Total"}
         />
         <br />
       </div>
@@ -839,7 +868,7 @@ export class NOWActivities extends Component {
 
     const transformData = (activities) =>
       activities.map((activity) => ({
-        activity: "Unknown" || Strings.EMPTY_FIELD,
+        activity: activity.type || Strings.EMPTY_FIELD,
         qty: "Unknown" || Strings.EMPTY_FIELD,
         disturbedArea: activity.disturbedarea || Strings.EMPTY_FIELD,
         timberVolume: activity.timbervolume || Strings.EMPTY_FIELD,
@@ -891,7 +920,7 @@ export class NOWActivities extends Component {
             <p className="field-title">Spontaneous Combustion</p>
           </Col>
           <Col md={12} xs={24}>
-            <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
+            <p>{this.props.noticeOfWork.surfacebulksamplereclsephandl || Strings.EMPTY_FIELD}</p>
           </Col>
         </Row>
         <Row gutter={16} className="padding-small">
@@ -899,7 +928,7 @@ export class NOWActivities extends Component {
             <p className="field-title">Surface Water Damage</p>
           </Col>
           <Col md={12} xs={24}>
-            <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
+            <p>{this.props.noticeOfWork.surfacebulksamplerecldrainmiti || Strings.EMPTY_FIELD}</p>
           </Col>
         </Row>
         <br />
@@ -949,7 +978,7 @@ export class NOWActivities extends Component {
 
     const transformUnderGroundData = (activities) =>
       activities.map((activity) => ({
-        activity: "Unknown" || Strings.EMPTY_FIELD,
+        activity: activity.type || Strings.EMPTY_FIELD,
         quantity: activity.quantity || Strings.EMPTY_FIELD,
         incline: activity.incline || Strings.EMPTY_FIELD,
         units: activity.inclineunits || Strings.EMPTY_FIELD,
@@ -986,7 +1015,7 @@ export class NOWActivities extends Component {
 
     const transformSurfaceData = (activities) =>
       activities.map((activity) => ({
-        activity: "Unknown" || Strings.EMPTY_FIELD,
+        activity: activity.type || Strings.EMPTY_FIELD,
         quantity: activity.quantity || Strings.EMPTY_FIELD,
         disturbedArea: activity.disturbedarea || Strings.EMPTY_FIELD,
         timberVolume: activity.timbervolume || Strings.EMPTY_FIELD,
@@ -1052,7 +1081,6 @@ export class NOWActivities extends Component {
           locale={{
             emptyText: "No data",
           }}
-          footer={() => "Total"}
         />
         <Row gutter={16} className="padding-small">
           <Col md={12} xs={24}>
@@ -1106,7 +1134,7 @@ export class NOWActivities extends Component {
     const transformData = (activities) =>
       activities.map((activity) => ({
         source: activity.sourcewatersupply || Strings.EMPTY_FIELD,
-        activity: "Unknown" || Strings.EMPTY_FIELD,
+        activity: activity.type || Strings.EMPTY_FIELD,
         waterUse: activity.useofwater || Strings.EMPTY_FIELD,
         estimatedRate: activity.estimateratewater || Strings.EMPTY_FIELD,
       }));
@@ -1128,6 +1156,7 @@ export class NOWActivities extends Component {
   };
 
   render() {
+    const nowType = this.props.noticeOfWork.noticeofworktype;
     return (
       <div>
         <br />
@@ -1153,30 +1182,40 @@ export class NOWActivities extends Component {
             <Panel header="Camps, Buildings, Staging Area, Fuel/Lubricant Storage" key="3">
               {this.renderCampsAndStorage()}
             </Panel>
-            <Panel header="Cut Lines and Induced Polarization Survey" key="4">
-              {this.renderLinesAndSurvey()}
-            </Panel>
+            {isMineralOrCoal(nowType) && isPlacer(nowType) && (
+              <Panel header="Cut Lines and Induced Polarization Survey" key="4">
+                {this.renderLinesAndSurvey()}
+              </Panel>
+            )}
             <Panel header="Exploration Surface Drilling" key="5">
               {this.renderDrilling()}
             </Panel>
             <Panel header="Mechanical Trenching / Test Pits" key="6">
               {this.renderTrenching()}
             </Panel>
-            <Panel header="Placer Operations" key="7">
-              {this.renderPlacerOperations()}
-            </Panel>
-            <Panel header="Sand and Gravel / Quarry Operations" key="8">
-              {this.renderSandAndGravel()}
-            </Panel>
+            {isPlacer(nowType) && (
+              <Panel header="Placer Operations" key="7">
+                {this.renderPlacerOperations()}
+              </Panel>
+            )}
+            {isSandAndGravelOrQuarry(nowType) && (
+              <Panel header="Sand and Gravel / Quarry Operations" key="8">
+                {this.renderSandAndGravel()}
+              </Panel>
+            )}
             <Panel header="Settling Ponds" key="9">
               {this.renderPonds()}
             </Panel>
-            <Panel header="Surface Bulk Sample" key="10">
-              {this.renderSurfaceBulkSample()}
-            </Panel>
-            <Panel header="Underground Exploration" key="11">
-              {this.renderUnderGround()}
-            </Panel>
+            {isMineralOrCoal(nowType) && (
+              <Panel header="Surface Bulk Sample" key="10">
+                {this.renderSurfaceBulkSample()}
+              </Panel>
+            )}
+            {isMineralOrCoal(nowType) && isPlacer(nowType) && (
+              <Panel header="Underground Exploration" key="11">
+                {this.renderUnderGround()}
+              </Panel>
+            )}
             <Panel header="Water Supply" key="12">
               {this.renderWaterSupply()}
             </Panel>

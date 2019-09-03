@@ -238,7 +238,7 @@ export const getFilterVarianceStatusOptions = createSelector(
   (options) =>
     options.map(({ description, variance_application_status_code }) => ({
       value: variance_application_status_code,
-      text: description,
+      label: description,
     }))
 );
 
