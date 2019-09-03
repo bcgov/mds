@@ -67,6 +67,8 @@ const propTypes = {
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
 };
 
+// TODO: Implement the NoticeOfWorkHomePage.js patern using formatQueryListParams
+// to parse and join params safely
 export const joinOrRemove = (param, key) => {
   if (isEmpty(param)) {
     return {};
@@ -77,6 +79,7 @@ export const removeEmptyStings = (param, key) => (isEmpty(param) ? {} : { [key]:
 export const formatParams = ({
   region = [],
   compliance_code = [],
+  variance_application_status_code = [],
   issue_date_after,
   issue_date_before,
   expiry_date_before,
@@ -88,6 +91,7 @@ export const formatParams = ({
   return {
     ...joinOrRemove(region, "region"),
     ...joinOrRemove(compliance_code, "compliance_code"),
+    ...joinOrRemove(variance_application_status_code, "variance_application_status_code"),
     ...removeEmptyStings(issue_date_after, "issue_date_after"),
     ...removeEmptyStings(issue_date_before, "issue_date_before"),
     ...removeEmptyStings(expiry_date_before, "expiry_date_before"),
@@ -107,6 +111,9 @@ export class VarianceHomePage extends Component {
       variancesLoaded: false,
       params: {
         compliance_code: formatParamStringToArray(this.params.compliance_code),
+        variance_application_status_code: formatParamStringToArray(
+          this.params.variance_application_status_code
+        ),
         region: formatParamStringToArray(this.params.region),
         major: this.params.major,
         search: this.params.search,
@@ -150,14 +157,22 @@ export class VarianceHomePage extends Component {
   }
 
   renderDataFromURL = (params) => {
-    const { region, compliance_code, major, search, ...remainingParams } = queryString.parse(
-      params
-    );
+    const {
+      region,
+      compliance_code,
+      variance_application_status_code,
+      major,
+      search,
+      ...remainingParams
+    } = queryString.parse(params);
     this.setState(
       {
         params: {
           region: formatParamStringToArray(region),
           compliance_code: formatParamStringToArray(compliance_code),
+          variance_application_status_code: formatParamStringToArray(
+            variance_application_status_code
+          ),
           major,
           search,
           ...remainingParams,
@@ -169,24 +184,44 @@ export class VarianceHomePage extends Component {
     );
   };
 
+  clearParams = () => {
+    this.setState(
+      {
+        params: {
+          region: [],
+          compliance_code: [],
+          variance_application_status_code: [],
+          major: null,
+          search: null,
+          issue_date_after: null,
+          issue_date_before: null,
+          expiry_date_before: null,
+          expiry_date_after: null,
+        },
+      },
+      () => {
+        this.props.fetchVariances(this.state.params);
+      }
+    );
+  };
+
   handleVarianceSearch = (searchParams, clear = false) => {
     const formattedSearchParams = formatParams(searchParams);
     const persistedParams = clear ? {} : formatParams(this.state.params);
-
-    this.setState((prevState) => {
-      const updatedParams = {
-        // Start from existing state
-        ...persistedParams,
-        // Overwrite prev params with any newly provided search params
-        ...formattedSearchParams,
-        // Reset page number
-        page: String.DEFAULT_PAGE,
-        // Retain per_page if present
-        per_page: prevState.params.per_page ? prevState.params.per_page : String.DEFAULT_PER_PAGE,
-      };
-      this.props.history.push(router.VARIANCE_DASHBOARD.dynamicRoute(updatedParams));
-      return { params: updatedParams };
-    });
+    const updatedParams = {
+      // Start from existing state
+      ...persistedParams,
+      // Overwrite prev params with any newly provided search params
+      ...formattedSearchParams,
+      // Reset page number
+      page: String.DEFAULT_PAGE,
+      // Retain per_page if present
+      per_page: persistedParams.per_page
+        ? persistedParams.params.per_page
+        : String.DEFAULT_PER_PAGE,
+    };
+    this.setState({ params: updatedParams });
+    this.props.history.push(router.VARIANCE_DASHBOARD.dynamicRoute(updatedParams));
   };
 
   handleVariancePageChange = (page, per_page) => {
@@ -291,11 +326,11 @@ export class VarianceHomePage extends Component {
               handleVarianceSearch={this.handleVarianceSearchDebounced}
               mineRegionOptions={this.props.mineRegionOptions}
               complianceCodes={this.props.getDropdownHSRCMComplianceCodes}
+              filterVarianceStatusOptions={this.props.filterVarianceStatusOptions}
             />
           </AuthorizationWrapper>
           <LoadingWrapper condition={this.state.variancesLoaded}>
             <VarianceTable
-              filterVarianceStatusOptions={this.props.filterVarianceStatusOptions}
               isApplication={this.state.isApplication}
               handleFilterChange={this.handleFilterChange}
               variances={this.props.variances}
@@ -305,6 +340,8 @@ export class VarianceHomePage extends Component {
               params={this.state.params}
               openEditVarianceModal={this.openEditVarianceModal}
               openViewVarianceModal={this.openViewVarianceModal}
+              sortField={this.state.params.sort_field}
+              sortDir={this.state.params.sort_dir}
             />
           </LoadingWrapper>
         </div>

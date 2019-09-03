@@ -14,6 +14,7 @@ const propTypes = {
   isAdvanceSearch: PropTypes.bool,
   complianceCodes: CustomPropTypes.options.isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
+  filterVarianceStatusOptions: CustomPropTypes.filterOptions.isRequired,
 };
 
 const defaultProps = {
@@ -64,6 +65,17 @@ export class VarianceSearchForm extends Component {
                   placeholder="Select Compliance Code"
                   component={renderConfig.MULTI_SELECT}
                   data={this.props.complianceCodes}
+                />
+              </Col>
+            </Row>
+            <Row gutter={6}>
+              <Col md={24} xs={24}>
+                <Field
+                  id="variance_application_status_code"
+                  name="variance_application_status_code"
+                  placeholder="Select Application Statuses"
+                  component={renderConfig.MULTI_SELECT}
+                  data={this.props.filterVarianceStatusOptions}
                 />
               </Col>
             </Row>
