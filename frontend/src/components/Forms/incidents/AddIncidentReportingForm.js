@@ -98,17 +98,33 @@ export const AddIncidentReportingForm = (props) => (
               validate={[email]}
             />
           </Form.Item>
-          <Form.Item>
-            <Field
-              id="reported_timestamp"
-              name="reported_timestamp"
-              label="Reported Date and Time*"
-              placeholder="Please select date and time"
-              component={renderConfig.DATE}
-              showTime
-              validate={[required, dateNotInFuture]}
-            />
-          </Form.Item>
+          <Row gutter={16}>
+            <Col md={12} xs={24}>
+              <Form.Item>
+                <Field
+                  id="reported_date"
+                  name="reported_date"
+                  label="Reported Date*"
+                  placeholder="Please select date"
+                  component={renderConfig.DATE}
+                  validate={[required, dateNotInFuture]}
+                />
+              </Form.Item>
+            </Col>
+            <Col md={12} xs={24}>
+              <Form.Item>
+                <Field
+                  id="reported_time"
+                  name="reported_time"
+                  label="Reported Time*"
+                  placeholder="Please select time"
+                  component={renderConfig.TIME}
+                  validate={[required]}
+                  fullWidth
+                />
+              </Form.Item>
+            </Col>
+          </Row>
         </Col>
       </Row>
     </Form>
