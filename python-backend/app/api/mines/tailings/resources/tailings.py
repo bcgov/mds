@@ -58,14 +58,15 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
         if is_mine_first_tsf:
             try:
                 tsf_required_reports = MineReportDefinition.find_required_reports_by_category('TSF')
+                calculated_due_date = tsf_req_doc.default_due_date or datetime.utcnow()
 
                 for tsf_req_doc in tsf_required_reports:
                     MineReport.create(
                         mine_report_definition_id=tsf_req_doc.mine_report_definition_id,
                         mine_guid=mine.mine_guid,
-                        due_date=tsf_req_doc.default_due_date or datetime.utcnow(),
+                        due_date=calculated_due_date,
                         received_date=None,
-                        submission_year=None,
+                        submission_year=calculated_due_date.year,
                         permit_id=None)
 
             except Exception as e:
