@@ -1,8 +1,8 @@
+/* eslint-disable */
 import React from "react";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
-// import MineVarianceTable from "@/components/mine/Variances/MineVarianceTable";
 import MineIncidentTable from "@/components/mine/Incidents/MineIncidentTable";
 import * as Strings from "@/constants/strings";
 
@@ -38,8 +38,6 @@ const defaultProps = {
 export const IncidentsTable = (props) => {
   return (
     <div className="tab__content">
-      <h4>Incidents</h4>
-      <br />
       <MineIncidentTable
         incidents={props.incidents}
         followupActions={props.followupActions}

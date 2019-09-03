@@ -17,8 +17,9 @@ import {
   fetchMineIncidents,
   createMineIncident,
   updateMineIncident,
-} from "@/actionCreators/mineActionCreator";
-import { getMineIncidents, getMines, getMineGuid } from "@/selectors/mineSelectors";
+} from "@/actionCreators/incidentActionCreator";
+import { getMineIncidents } from "@/selectors/incidentSelectors";
+import { getMines, getMineGuid } from "@/selectors/mineSelectors";
 import {
   getDropdownIncidentFollowupActionOptions,
   getDangerousOccurrenceSubparagraphOptions,
@@ -91,8 +92,6 @@ export class MineIncidents extends Component {
   };
 
   handleEditMineIncident = (values) => {
-    console.log("*****************CONSOLING THIS THING");
-    console.log(values);
     this.props
       .updateMineIncident(this.props.mineGuid, values.mine_incident_guid, values)
       .then(() => {
