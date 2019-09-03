@@ -128,24 +128,54 @@ exports[`AddIncidentReportingForm renders properly 1`] = `
             }
           />
         </FormItem>
-        <FormItem
-          hasFeedback={false}
+        <Row
+          gutter={16}
         >
-          <Field
-            component={[Function]}
-            id="reported_timestamp"
-            label="Reported Date and Time*"
-            name="reported_timestamp"
-            placeholder="Please select date and time"
-            showTime={true}
-            validate={
-              Array [
-                [Function],
-                [Function],
-              ]
-            }
-          />
-        </FormItem>
+          <Col
+            md={12}
+            xs={24}
+          >
+            <FormItem
+              hasFeedback={false}
+            >
+              <Field
+                component={[Function]}
+                id="reported_date"
+                label="Reported Date*"
+                name="reported_date"
+                placeholder="Please select date"
+                validate={
+                  Array [
+                    [Function],
+                    [Function],
+                  ]
+                }
+              />
+            </FormItem>
+          </Col>
+          <Col
+            md={12}
+            xs={24}
+          >
+            <FormItem
+              hasFeedback={false}
+            >
+              <Field
+                component={[Function]}
+                fullWidth={true}
+                id="reported_time"
+                label="Reported Time*"
+                name="reported_time"
+                placeholder="Please select time"
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
+              />
+            </FormItem>
+          </Col>
+        </Row>
       </Col>
     </Row>
   </Form>
