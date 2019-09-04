@@ -341,33 +341,33 @@ environments {
             }
             resources {
                 node {
-                    cpu_request = "100m"
-                    cpu_limit = "150m"
-                    memory_request = "512Mi"
-                    memory_limit = "1Gi"
+                    cpu_request = "20m"
+                    cpu_limit = "100m"
+                    memory_request = "160Mi"
+                    memory_limit = "256Mi"
                     replica_min = 2
                     replica_max = 4
                 }
                 nginx {
-                    cpu_request = "100m"
-                    cpu_limit = "150m"
-                    memory_request = "256Mi"
-                    memory_limit = "512Mi"
-                    replica_min = 2
-                    replica_max = 4
+                    cpu_request = "10m"
+                    cpu_limit = "50m"
+                    memory_request = "96Mi"
+                    memory_limit = "160Mi"
+                    replica_min = 3
+                    replica_max = 6
                 }
                 python {
-                    cpu_request = "200m"
-                    cpu_limit = "400m"
-                    memory_request = "1.5Gi"
-                    memory_limit = "3Gi"
+                    cpu_request = "100m"
+                    cpu_limit = "200m"
+                    memory_request = "512Mi"
+                    memory_limit = "2Gi"
                     uwsgi_threads = 2
                     uwsgi_processes = 4
                     replica_min = 2
                     replica_max = 4
                 }
                 python_lite {
-                    cpu_request = "100m"
+                    cpu_request = "10m"
                     cpu_limit = "200m"
                     memory_request = "512Mi"
                     memory_limit = "1Gi"
@@ -378,15 +378,15 @@ environments {
                 }
                 postgres {
                     cpu_request = "200m"
-                    cpu_limit = "500m"
-                    memory_request = "2.5Gi"
+                    cpu_limit = "1"
+                    memory_request = "1.5Gi"
                     memory_limit = "4Gi"
                 }
                 redis {
-                    cpu_request = "100m"
-                    cpu_limit = "200m"
-                    memory_request = "1Gi"
-                    memory_limit = "2Gi"
+                    cpu_request = "10m"
+                    cpu_limit = "100m"
+                    memory_request = "64Mi"
+                    memory_limit = "512Mi"
                 }
                 backup {
                     cpu_request = "0"
@@ -395,14 +395,14 @@ environments {
                     memory_limit = "0"
                 }
                 metabase {
-                    cpu_request = "100m"
-                    cpu_limit = "250m"
+                    cpu_request = "50m"
+                    cpu_limit = "200m"
                     memory_request = "1Gi"
                     memory_limit = "2Gi"
-                    db_cpu_request = "100m"
+                    db_cpu_request = "20m"
                     db_cpu_limit = "200m"
-                    db_memory_request = "1Gi"
-                    db_memory_limit = "2Gi"
+                    db_memory_request = "256Mi"
+                    db_memory_limit = "1Gi"
                 }
                 logstash {
                     cpu_request = "50m"

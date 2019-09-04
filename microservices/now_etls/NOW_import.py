@@ -42,18 +42,21 @@ NROS_ONLY_TABLES = {
 
 def truncate_table(connection, tables):
     cursor = connection.cursor()
-    for key, value in tables:
+    for key, value in tables.items():
         cursor.execute(
-            f'TRUNCATE TABLE now_submissions.{key} CONTINUE IDENTITY;')
+            f'TRUNCATE TABLE now_submissions.{key} CONTINUE IDENTITY CASCADE;')
 
 
 # Import all the data from the specified schema and tables.
 def ETL_MMS_NOW_schema(connection, tables, schema):
-    for key, value in tables:
-        current_table = etl.fromdb(
-            connection, f'SELECT * from {schema}.{value}')
-        etl.appenddb(current_table, connection,
-                     f'now_submissions.{key}', commit=False)
+    for key, value in tables.items():
+        try:
+            current_table = etl.fromdb(
+                connection, f'SELECT * from {schema}.{value}')
+            etl.appenddb(current_table, connection, key,
+                         schema='now_submissions', commit=False)
+        except Exception as err:
+            print(f'ETL Parsing error: {err}')
 
 
 def NOW_submissions_ETL(connection):
