@@ -224,7 +224,7 @@ export class ViewIncidentModal extends Component {
     );
     return (
       <div>
-        <h5>Final Investigation Report Documents</h5>
+        <h5>Final Investigation Report</h5>
         <Table
           align="left"
           pagination={false}
