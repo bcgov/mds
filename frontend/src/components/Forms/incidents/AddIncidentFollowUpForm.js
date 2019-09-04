@@ -97,6 +97,8 @@ export class AddIncidentFollowUpForm extends Component {
                   validate={[required]}
                 />
               </Form.Item>
+
+              <h4>Final Investigation Report</h4>
               {!this.props.hasFatalities && (
                 <FieldArray
                   id="recommendations"
@@ -105,7 +107,6 @@ export class AddIncidentFollowUpForm extends Component {
                 />
               )}
 
-              <h4>Final Investigation Report</h4>
               {this.props.uploadedFiles.length > 0 && (
                 <Form.Item label="Attached files" style={{ paddingBottom: "10px" }}>
                   <Field
