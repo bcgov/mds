@@ -296,7 +296,7 @@ environments {
                     replica_max = 1
                 }
                 python_lite {
-                    cpu_request = "50m"
+                    cpu_request = "10m"
                     cpu_limit = "100m"
                     memory_request = "128Mi"
                     memory_limit = "256Mi"
