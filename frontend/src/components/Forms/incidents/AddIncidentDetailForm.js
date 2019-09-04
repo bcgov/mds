@@ -132,7 +132,7 @@ class AddIncidentDetailForm extends Component {
                 <Field
                   id="determination_inspector_party_guid"
                   name="determination_inspector_party_guid"
-                  label="Who made the determination?*"
+                  label="Inspector who made the determination?*"
                   component={renderConfig.GROUPED_SELECT}
                   data={this.props.inspectors}
                   validate={[required]}
@@ -155,6 +155,24 @@ class AddIncidentDetailForm extends Component {
                 </Form.Item>
               </span>
             )}
+            <Form.Item>
+              <Field
+                id="mine_determination_type_code"
+                name="mine_determination_type_code"
+                label="Mine's Determination"
+                component={renderConfig.SELECT}
+                data={this.props.incidentDeterminationOptions}
+              />
+            </Form.Item>
+            <Form.Item>
+              <Field
+                id="mine_determination_representative"
+                name="mine_determination_representative"
+                label="Mine representative who made determination?"
+                component={renderConfig.FIELD}
+                validate={[maxLength(50)]}
+              />
+            </Form.Item>
             <h4>Initial Notification Documents</h4>
             {this.props.uploadedFiles.length > 0 && (
               <Form.Item label="Attached files" style={{ paddingBottom: "10px" }}>
