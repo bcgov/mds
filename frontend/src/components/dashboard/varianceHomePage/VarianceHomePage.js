@@ -38,7 +38,6 @@ import { fetchInspectors } from "@/actionCreators/partiesActionCreator";
 import VarianceSearch from "./VarianceSearch";
 import { formatParamStringToArray } from "@/utils/helpers";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as Permission from "@/constants/permissions";
 /**
  * @class Variance page is a landing page for variance searching
  *
@@ -239,9 +238,11 @@ export class VarianceHomePage extends Component {
     // if the application isApproved, set issue_date to today and set expiry_date 5 years from today,
     // unless the user sets a custom expiry.
     const { variance_document_category_code } = values;
-    const issue_date = isApproved ? moment().format("YYYY-MM-DD") : null;
+    // const issue_date = isApproved ? moment().format("YYYY-MM-DD") : null;
     let expiry_date;
+    let issue_date;
     if (isApproved) {
+      issue_date = values.issue_date ? values.issue_date : moment().format("YYYY-MM-DD");
       expiry_date = values.expiry_date
         ? values.expiry_date
         : moment(issue_date, "YYYY-MM-DD").add(5, "years");
@@ -318,7 +319,7 @@ export class VarianceHomePage extends Component {
           <h1>Browse Variances</h1>
         </div>
         <div className="landing-page__content">
-          <AuthorizationWrapper permission={Permission.IN_TESTING}>
+          <AuthorizationWrapper inTesting>
             <VarianceSearch
               handleNameFieldReset={this.handleNameFieldReset}
               initialValues={this.state.params}
