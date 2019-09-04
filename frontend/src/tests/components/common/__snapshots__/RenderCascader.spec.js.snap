@@ -4,10 +4,12 @@ exports[`RenderCascader renders properly 1`] = `
 <FormItem
   hasFeedback={false}
   help={false}
+  label=""
   validateStatus=""
 >
   <Cascader
     allowClear={true}
+    changeOnSelect={false}
     disabled={false}
     expandTrigger="hover"
     id={1}
