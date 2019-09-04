@@ -16,7 +16,7 @@ from app.api.mines.reports.models.mine_report import MineReport
 
 from app.extensions import api, db
 from app.api.utils.custom_reqparser import CustomReqparser
-from app.api.utils.access_decorators import requires_role_edit_do
+from app.api.utils.access_decorators import requires_any_of, EDIT_REPORT, MINESPACE_PROPONENT
 from app.api.utils.resources_mixins import UserMixin
 
 from app.api.services.document_manager_service import DocumentManagerService
@@ -24,7 +24,7 @@ from app.api.services.document_manager_service import DocumentManagerService
 
 class MineReportDocumentListResource(Resource, UserMixin):
     @api.doc(description='Request a document_manager_guid for uploading a document')
-    @requires_role_edit_do
+    @requires_any_of([EDIT_REPORT, MINESPACE_PROPONENT])
     def post(self, mine_guid):
         mine = Mine.find_by_mine_guid(mine_guid)
 

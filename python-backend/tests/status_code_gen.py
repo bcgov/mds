@@ -3,8 +3,6 @@ import random
 from app.extensions import db
 from app.api.applications.models.application_status_code import ApplicationStatusCode
 from app.api.constants import COMMODITY_CODES_CONFIG, DISTURBANCE_CODES_CONFIG
-from app.api.mines.documents.expected.models.document_status import ExpectedDocumentStatus
-from app.api.required_documents.models.required_documents import RequiredDocument
 from app.api.incidents.models.mine_incident_determination_type import MineIncidentDeterminationType
 from app.api.incidents.models.mine_incident_status_code import MineIncidentStatusCode
 from app.api.incidents.models.mine_incident_document_type_code import MineIncidentDocumentTypeCode
@@ -30,14 +28,6 @@ def RandomApplicationStatusCode():
         for x in ApplicationStatusCode.find_all_active_application_status_code()
     ])
 
-
-def RandomExpectedDocumentStatusCode():
-    return random.choice(
-        [x.exp_document_status_code for x in ExpectedDocumentStatus.find_all_document_status()])
-
-
-def RandomRequiredDocument():
-    return random.choice(db.session.query(RequiredDocument).all())
 
 
 def RandomMineRegionCode():
