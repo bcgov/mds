@@ -116,7 +116,8 @@ export class EditVarianceForm extends Component {
           <div>
             <Form.Item label="Issue date">
               <p className="p-light">
-                If issue date is not specified it will be set to todays date.
+                If issue date is not specified it will default to the day the application was
+                approved
               </p>
               <Field id="issue_date" name="issue_date" component={renderConfig.DATE} />
             </Form.Item>
