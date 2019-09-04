@@ -238,7 +238,6 @@ export class VarianceHomePage extends Component {
     // if the application isApproved, set issue_date to today and set expiry_date 5 years from today,
     // unless the user sets a custom expiry.
     const { variance_document_category_code } = values;
-    // const issue_date = isApproved ? moment().format("YYYY-MM-DD") : null;
     let expiry_date;
     let issue_date;
     if (isApproved) {
