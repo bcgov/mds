@@ -161,7 +161,9 @@ class AddIncidentDetailForm extends Component {
                 name="mine_determination_type_code"
                 label="Mine's Determination"
                 component={renderConfig.SELECT}
-                data={this.props.incidentDeterminationOptions}
+                data={this.props.incidentDeterminationOptions.filter(
+                  ({ value }) => value !== Strings.INCIDENT_DETERMINATION_TYPES.pending
+                )}
               />
             </Form.Item>
             <Form.Item>
