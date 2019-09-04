@@ -46,14 +46,14 @@ exports[`AddIncidentFollowUpForm renders properly 1`] = `
             }
           />
         </FormItem>
+        <h4>
+          Final Investigation Report
+        </h4>
         <FieldArray
           component={[Function]}
           id="recommendations"
           name="recommendations"
         />
-        <h4>
-          Final Investigation Report
-        </h4>
         <FormItem
           hasFeedback={false}
         >
