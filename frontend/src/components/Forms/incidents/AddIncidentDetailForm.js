@@ -140,7 +140,7 @@ class AddIncidentDetailForm extends Component {
               </Form.Item>
             ) : null}
             {this.props.doDetermination ===
-            Strings.INCIDENT_DETERMINATION_TYPES.dangerousOccurance ? (
+              Strings.INCIDENT_DETERMINATION_TYPES.dangerousOccurance && (
               <span>
                 <Form.Item>
                   <Field
@@ -153,35 +153,35 @@ class AddIncidentDetailForm extends Component {
                     validate={[this.validateDoSubparagraphs]}
                   />
                 </Form.Item>
-                <h4>Initial Notification Documents</h4>
-                {this.props.uploadedFiles.length > 0 && (
-                  <Form.Item label="Attached files" style={{ paddingBottom: "10px" }}>
-                    <Field
-                      id="initial_documents"
-                      name="initial_documents"
-                      component={IncidentsUploadedFilesList}
-                      files={this.props.uploadedFiles}
-                      onRemoveFile={this.props.onRemoveFile}
-                    />
-                  </Form.Item>
-                )}
-                <Form.Item>
-                  <Field
-                    id="InitialIncidentFileUpload"
-                    name="InitialIncidentFileUpload"
-                    onFileLoad={(document_name, document_manager_guid) =>
-                      this.props.onFileLoad(
-                        document_name,
-                        document_manager_guid,
-                        Strings.INCIDENT_DOCUMENT_TYPES.initial
-                      )
-                    }
-                    component={FileUpload}
-                    uploadUrl={MINE_INCIDENT_DOCUMENT(this.props.mineGuid)}
-                  />
-                </Form.Item>
               </span>
-            ) : null}
+            )}
+            <h4>Initial Notification Documents</h4>
+            {this.props.uploadedFiles.length > 0 && (
+              <Form.Item label="Attached files" style={{ paddingBottom: "10px" }}>
+                <Field
+                  id="initial_documents"
+                  name="initial_documents"
+                  component={IncidentsUploadedFilesList}
+                  files={this.props.uploadedFiles}
+                  onRemoveFile={this.props.onRemoveFile}
+                />
+              </Form.Item>
+            )}
+            <Form.Item>
+              <Field
+                id="InitialIncidentFileUpload"
+                name="InitialIncidentFileUpload"
+                onFileLoad={(document_name, document_manager_guid) =>
+                  this.props.onFileLoad(
+                    document_name,
+                    document_manager_guid,
+                    Strings.INCIDENT_DOCUMENT_TYPES.initial
+                  )
+                }
+                component={FileUpload}
+                uploadUrl={MINE_INCIDENT_DOCUMENT(this.props.mineGuid)}
+              />
+            </Form.Item>
 
             {this.props.doDetermination ===
             Strings.INCIDENT_DETERMINATION_TYPES.notADangerousOccurance ? (
