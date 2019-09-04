@@ -333,7 +333,7 @@ exports[`ViewIncidentModal renders properly 1`] = `
   </div>
   <div>
     <h5>
-      Final Investigation Report Documents
+      Final Investigation Report
     </h5>
     <Table
       align="left"

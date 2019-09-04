@@ -97,6 +97,8 @@ export class AddIncidentFollowUpForm extends Component {
                   validate={[required]}
                 />
               </Form.Item>
+
+              <h4>Final Investigation Report</h4>
               {!this.props.hasFatalities && (
                 <FieldArray
                   id="recommendations"
@@ -105,17 +107,6 @@ export class AddIncidentFollowUpForm extends Component {
                 />
               )}
 
-              <Form.Item>
-                <Field
-                  id="status_code"
-                  name="status_code"
-                  label="Incident status?*"
-                  component={renderConfig.SELECT}
-                  data={this.props.incidentStatusCodeOptions}
-                />
-              </Form.Item>
-
-              <h4>Final Investigation Report Documents</h4>
               {this.props.uploadedFiles.length > 0 && (
                 <Form.Item label="Attached files" style={{ paddingBottom: "10px" }}>
                   <Field
@@ -140,6 +131,16 @@ export class AddIncidentFollowUpForm extends Component {
                   }
                   uploadUrl={MINE_INCIDENT_DOCUMENT(this.props.mineGuid)}
                   component={FileUpload}
+                />
+              </Form.Item>
+
+              <Form.Item>
+                <Field
+                  id="status_code"
+                  name="status_code"
+                  label="Incident status?*"
+                  component={renderConfig.SELECT}
+                  data={this.props.incidentStatusCodeOptions}
                 />
               </Form.Item>
             </Col>
