@@ -336,6 +336,7 @@ export class MineRecordForm extends Component {
                 component={renderConfig.CASCADER}
                 validate={[required]}
                 onChange={this.onStatusChange}
+                changeOnSelect
               />
             </Form.Item>
           </Col>
