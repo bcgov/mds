@@ -51,18 +51,8 @@ exports[`AddIncidentFollowUpForm renders properly 1`] = `
           id="recommendations"
           name="recommendations"
         />
-        <FormItem
-          hasFeedback={false}
-        >
-          <Field
-            component={[Function]}
-            id="status_code"
-            label="Incident status?*"
-            name="status_code"
-          />
-        </FormItem>
         <h4>
-          Final Investigation Report Documents
+          Final Investigation Report
         </h4>
         <FormItem
           hasFeedback={false}
@@ -73,6 +63,16 @@ exports[`AddIncidentFollowUpForm renders properly 1`] = `
             name="InitialIncidentFileUpload"
             onFileLoad={[Function]}
             uploadUrl="/mines/undefined/incidents/documents"
+          />
+        </FormItem>
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            id="status_code"
+            label="Incident status?*"
+            name="status_code"
           />
         </FormItem>
       </Col>
