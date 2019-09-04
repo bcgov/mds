@@ -170,7 +170,7 @@ class AddIncidentDetailForm extends Component {
                 name="mine_determination_representative"
                 label="Mine representative who made determination?"
                 component={renderConfig.FIELD}
-                validate={[maxLength(50)]}
+                validate={[maxLength(255)]}
               />
             </Form.Item>
             <h4>Initial Notification Documents</h4>
