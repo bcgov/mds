@@ -6,7 +6,7 @@ from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
 from app.extensions import api, db
 from app.api.utils.resources_mixins import UserMixin
-from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_report
+from app.api.utils.access_decorators import requires_role_view_all, requires_any_of, requires_role_edit_report, EDIT_REPORT, MINESPACE_PROPONENT
 
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.reports.models.mine_report import MineReport
@@ -133,7 +133,7 @@ class MineReportResource(Resource, UserMixin):
 
     @api.expect(parser)
     @api.marshal_with(MINE_REPORT_MODEL, code=200)
-    @requires_role_edit_report
+    @requires_any_of([EDIT_REPORT, MINESPACE_PROPONENT])
     def put(self, mine_guid, mine_report_guid):
         mine = Mine.find_by_mine_guid(mine_guid)
         mine_report = MineReport.find_by_mine_report_guid(mine_report_guid)
@@ -149,9 +149,9 @@ class MineReportResource(Resource, UserMixin):
             mine_report.received_date = data['received_date']
 
         report_submissions = data.get('mine_report_submissions')
-        subission_iterator = iter(report_submissions)
+        submission_iterator = iter(report_submissions)
         new_submission = next(
-            (x for x in subission_iterator if x.get('mine_report_submission_guid') is None), None)
+            (x for x in submission_iterator if x.get('mine_report_submission_guid') is None), None)
         if new_submission is not None:
             new_report_submission = MineReportSubmission(
                 mine_report_submission_status_code='MIA', submission_date=datetime.now())

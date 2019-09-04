@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RenderTime renders properly 1`] = `
+<FormItem
+  hasFeedback={false}
+  help={false}
+  label="Time"
+  validateStatus=""
+>
+  <TimePicker
+    align={
+      Object {
+        "offset": Array [
+          0,
+          -2,
+        ],
+      }
+    }
+    className={false}
+    defaultOpenValue={"2019-08-27T07:00:00.000Z"}
+    focusOnOpen={true}
+    format="HH:mm"
+    hideDisabledOptions={false}
+    id={1}
+    placeholder="Select a time"
+    placement="bottomLeft"
+    transitionName="slide-up"
+    value={"2019-08-27T07:00:00.000Z"}
+  />
+</FormItem>
+`;

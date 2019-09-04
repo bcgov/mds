@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { destroy } from "redux-form";
 import PropTypes from "prop-types";
 import { Divider } from "antd";
+import moment from "moment";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
@@ -99,6 +100,14 @@ export class MineIncidents extends Component {
       });
   };
 
+  parseIncidentIntoFormData = (existingIncident) => ({
+    ...existingIncident,
+    reported_date: moment(existingIncident.reported_timestamp).format("YYYY-MM-DD"),
+    reported_time: moment(existingIncident.reported_timestamp),
+    incident_date: moment(existingIncident.incident_timestamp).format("YYYY-MM-DD"),
+    incident_time: moment(existingIncident.incident_timestamp),
+  });
+
   openViewMineIncidentModal = (event, incident) => {
     const mine = this.props.mines[this.props.mineGuid];
     event.preventDefault();
@@ -132,7 +141,8 @@ export class MineIncidents extends Component {
       props: {
         newIncident,
         initialValues: {
-          ...existingIncident,
+          status_code: "PRE",
+          ...this.parseIncidentIntoFormData(existingIncident),
           dangerous_occurrence_subparagraph_ids: existingIncident.dangerous_occurrence_subparagraph_ids.map(
             String
           ),

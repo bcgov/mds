@@ -65,11 +65,6 @@ PERMIT_MODEL = api.model('MinePermit', {
     'permit_status_code_description': fields.String,
 })
 
-EXPECTED_DOCUMENT_STATUS_MODEL = api.model('ExpectedDocumentStatus', {
-    'exp_document_status_code': fields.String,
-    'description': fields.String,
-})
-
 STATUS_MODEL = api.model(
     'MineStatus', {
         'mine_status_guid': fields.String,
@@ -115,22 +110,6 @@ MINE_VERIFIED_MODEL = api.model(
         'verifying_timestamp': Date,
     })
 
-MINE_EXPECTED_DOCUMENT_MODEL = api.model(
-    'MineExpectedDocument', {
-        'exp_document_guid': fields.String,
-        'req_document_guid': fields.String,
-        'mine_guid': fields.String,
-        'exp_document_name': fields.String,
-        'exp_document_description': fields.String,
-        'due_date': Date,
-        'received_date': Date,
-        'exp_document_status_code': fields.String,
-        'expected_document_status': fields.Nested(
-            EXPECTED_DOCUMENT_STATUS_MODEL),
-        'hsrc_code': fields.String,
-        'related_documents': fields.List(fields.Nested(MINE_DOCUMENT_MODEL)),
-    })
-
 MINES_MODEL = api.model(
     'Mines', {
         'mine_guid': fields.String,
@@ -153,8 +132,6 @@ MINES_MODEL = api.model(
 MINE_MODEL = api.inherit(
     'Mine', MINES_MODEL, {
         'mine_location': fields.Nested(MINE_LOCATION_MODEL),
-        'mine_expected_documents': fields.List(
-            fields.Nested(MINE_EXPECTED_DOCUMENT_MODEL)),
     })
 
 MINE_LIST_MODEL = api.model(

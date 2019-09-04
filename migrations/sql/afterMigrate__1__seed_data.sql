@@ -5,16 +5,6 @@ Runs at the end of each migration.
 NOTE: If you add a new entry here, don't forget to update the flask delete_data command
 ***/
 
-INSERT INTO mine_required_document_category
-    (
-    req_document_category,
-    description
-    )
-VALUES
-    ('TSF', 'Code required documents for mines with Tailings Storage Factilies'),
-    ('OTH', 'Other...')
-ON CONFLICT DO NOTHING;
-
 INSERT INTO permit_status_code
     (
     permit_status_code,
@@ -119,23 +109,6 @@ VALUES
     ('NW', 'North West', 30, 'system-mds', 'system-mds'),
     ('NE', 'North East', 40, 'system-mds', 'system-mds'),
     ('SE', 'South East', 50, 'system-mds', 'system-mds')
-ON CONFLICT DO NOTHING;
-
-
-INSERT INTO mine_expected_document_status_code
-    (
-    exp_document_status_code,
-    description,
-    display_order,
-    create_user,
-    update_user
-    )
-VALUES
-    ('MIA', 'Not Received', 10, 'system-mds', 'system-mds'),
-    ('PRE', 'Received / Pending Review', 20, 'system-mds', 'system-mds'),
-    ('RIP', 'Review In Progress', 30, 'system-mds', 'system-mds'),
-    ('ACC', 'Accepted', 40, 'system-mds', 'system-mds'),
-    ('REJ', 'Rejected / Waiting On Update', 50, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 

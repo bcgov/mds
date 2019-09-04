@@ -1,6 +1,5 @@
 import json
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
-from app.api.required_documents.models.required_documents import RequiredDocument
 from tests.factories import MineFactory, MineTailingsStorageFacilityFactory
 
 
@@ -38,5 +37,3 @@ def test_post_first_mine_tailings_storage_facility_by_mine_guid(test_client, db_
     assert post_resp.status_code == 200
     post_data = json.loads(post_resp.data.decode())
     assert len(mine.mine_tailings_storage_facilities) == 1
-    assert len(mine.mine_expected_documents) == len(
-        RequiredDocument.find_by_req_doc_category('TSF', 'INI'))

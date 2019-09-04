@@ -38,17 +38,33 @@ class AddIncidentDetailForm extends Component {
         <Row gutter={48}>
           <Col>
             <h4>Incident Details</h4>
-            <Form.Item>
-              <Field
-                id="incident_timestamp"
-                name="incident_timestamp"
-                label="Incident Date and Time*"
-                placeholder="Please select date and time"
-                component={renderConfig.DATE}
-                showTime
-                validate={[required, dateNotInFuture]}
-              />
-            </Form.Item>
+            <Row gutter={16}>
+              <Col md={12} xs={24}>
+                <Form.Item>
+                  <Field
+                    id="incident_date"
+                    name="incident_date"
+                    label="Incident Date*"
+                    placeholder="Please select date"
+                    component={renderConfig.DATE}
+                    validate={[required, dateNotInFuture]}
+                  />
+                </Form.Item>
+              </Col>
+              <Col md={12} xs={24}>
+                <Form.Item>
+                  <Field
+                    id="incident_time"
+                    name="incident_time"
+                    label="Incident Time*"
+                    placeholder="Please select time"
+                    component={renderConfig.TIME}
+                    validate={[required]}
+                    fullWidth
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
             <Form.Item>
               <Field
                 id="proponent_incident_no"
@@ -124,7 +140,7 @@ class AddIncidentDetailForm extends Component {
               </Form.Item>
             ) : null}
             {this.props.doDetermination ===
-            Strings.INCIDENT_DETERMINATION_TYPES.dangerousOccurance ? (
+              Strings.INCIDENT_DETERMINATION_TYPES.dangerousOccurance && (
               <span>
                 <Form.Item>
                   <Field
@@ -137,35 +153,35 @@ class AddIncidentDetailForm extends Component {
                     validate={[this.validateDoSubparagraphs]}
                   />
                 </Form.Item>
-                <h4>Initial Notification Documents</h4>
-                {this.props.uploadedFiles.length > 0 && (
-                  <Form.Item label="Attached files" style={{ paddingBottom: "10px" }}>
-                    <Field
-                      id="initial_documents"
-                      name="initial_documents"
-                      component={IncidentsUploadedFilesList}
-                      files={this.props.uploadedFiles}
-                      onRemoveFile={this.props.onRemoveFile}
-                    />
-                  </Form.Item>
-                )}
-                <Form.Item>
-                  <Field
-                    id="InitialIncidentFileUpload"
-                    name="InitialIncidentFileUpload"
-                    onFileLoad={(document_name, document_manager_guid) =>
-                      this.props.onFileLoad(
-                        document_name,
-                        document_manager_guid,
-                        Strings.INCIDENT_DOCUMENT_TYPES.initial
-                      )
-                    }
-                    component={FileUpload}
-                    uploadUrl={MINE_INCIDENT_DOCUMENT(this.props.mineGuid)}
-                  />
-                </Form.Item>
               </span>
-            ) : null}
+            )}
+            <h4>Initial Notification Documents</h4>
+            {this.props.uploadedFiles.length > 0 && (
+              <Form.Item label="Attached files" style={{ paddingBottom: "10px" }}>
+                <Field
+                  id="initial_documents"
+                  name="initial_documents"
+                  component={IncidentsUploadedFilesList}
+                  files={this.props.uploadedFiles}
+                  onRemoveFile={this.props.onRemoveFile}
+                />
+              </Form.Item>
+            )}
+            <Form.Item>
+              <Field
+                id="InitialIncidentFileUpload"
+                name="InitialIncidentFileUpload"
+                onFileLoad={(document_name, document_manager_guid) =>
+                  this.props.onFileLoad(
+                    document_name,
+                    document_manager_guid,
+                    Strings.INCIDENT_DOCUMENT_TYPES.initial
+                  )
+                }
+                component={FileUpload}
+                uploadUrl={MINE_INCIDENT_DOCUMENT(this.props.mineGuid)}
+              />
+            </Form.Item>
 
             {this.props.doDetermination ===
             Strings.INCIDENT_DETERMINATION_TYPES.notADangerousOccurance ? (
