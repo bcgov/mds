@@ -17,8 +17,7 @@ DB_NAME = os.environ.get('DB_NAME')
 
 
 @click.command()
-@click.option('--commit', default=False, help='Whether to commit NoW ETL')
-def etl_now_submission_data(commit):
+def etl_now_submission_data():
 
     connection = psycopg2.connect(
         host=DB_HOST, port=DB_PORT,
