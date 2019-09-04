@@ -56,11 +56,12 @@ class Tailings extends GebReportingSpec {
         def uploadedFile = dir.newFile(Const.TEST_FILE_NAME) << Const.TEST_FILE_CONTENT
         tailingsTab.addTailingsDocButtons[0].click()
         tailingsTab.uploadField = uploadedFile.absolutePath
-        tailingsTab.editReportButton[0].click()
 
         then: "The doc upload complete message is shown"
         assert tailingsTab.uploadCompleteMessage != null
 
+        and: "Click save"
+        tailingsTab.editReportButton[0].click()
     }
 
     //TODO: THIS TEST ONLY WORKS IN CHROME AND FIREFOX-HEADLESS.  WORK IN GebConfig to fix other browsers
