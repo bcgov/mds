@@ -46,7 +46,7 @@ export class SearchBar extends Component {
     const newSearchTerm = e.target.value;
     this.setState({ searchTerm: newSearchTerm });
 
-    if (newSearchTerm.length > 2) {
+    if (newSearchTerm.length > 1) {
       this.fetchSearchResultsThrottled(newSearchTerm);
     }
   };

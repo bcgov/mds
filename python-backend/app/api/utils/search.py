@@ -115,10 +115,10 @@ def append_result(search_results, search_term, type, item, id_field, value_field
 def execute_search(app, search_results, search_term, search_terms, type, type_config, limit_results=None):
     with app.app_context():
         for term in search_terms:
-            if len(term) > 2:
+            if len(term) > 1:
                 for column in type_config['columns_to_search']:
 
-                    # Query should return with the calculated column "score", as well as the columns defined in the configuration 
+                    # Query should return with the calculated column "score", as well as the columns defined in the configuration
                     similarity = db.session.query(type_config['model']).with_entities(
                         func.similarity(column, term).label('score'),
                         *type_config['entities_to_return']).filter(column.ilike(f'%{term}%'))
@@ -127,7 +127,7 @@ def execute_search(app, search_results, search_term, search_terms, type, type_co
                         similarity = similarity.filter_by(deleted_ind=False)
 
                     similarity = similarity.order_by(desc(func.similarity(column, term)))
-                    
+
                     if limit_results:
                         similarity = similarity.limit(limit_results)
 

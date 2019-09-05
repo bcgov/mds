@@ -87,13 +87,13 @@ const TableForGroup = (
   }[group.type]);
 
 const NoResults = (searchTerms) => {
-  const searchTooShort = !searchTerms.find((term) => term.length > 2);
+  const searchTooShort = !searchTerms.find((term) => term.length > 1);
   return (
     <Row type="flex" justify="center">
       <Col sm={22} md={18} lg={8} className="padding-xxl--top">
         <h2>No Results Found.</h2>
         {searchTooShort && (
-          <p>At least one word in your search needs to be a minimum of three characters.</p>
+          <p>At least one word in your search needs to be a minimum of two characters.</p>
         )}
         <p>Please try another search.</p>
       </Col>
