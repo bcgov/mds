@@ -11,6 +11,9 @@ import ModalWrapper from "@/components/common/wrappers/ModalWrapper";
 import AuthenticationGuard from "@/HOC/AuthenticationGuard";
 import WarningBanner from "@/components/common/WarningBanner";
 import { detectIE } from "@/utils/environmentUtils";
+import configureStore from "./store/configureStore";
+
+export const store = configureStore();
 
 class App extends Component {
   state = { isIE: true, isMobile: true };

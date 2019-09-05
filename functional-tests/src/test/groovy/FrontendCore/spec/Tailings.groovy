@@ -60,6 +60,8 @@ class Tailings extends GebReportingSpec {
         then: "The doc upload complete message is shown"
         assert tailingsTab.uploadCompleteMessage != null
 
+        and: "Click save"
+        tailingsTab.editReportButton[0].click()
     }
 
     //TODO: THIS TEST ONLY WORKS IN CHROME AND FIREFOX-HEADLESS.  WORK IN GebConfig to fix other browsers

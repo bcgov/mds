@@ -33,17 +33,11 @@ BEGIN
         SELECT mine_guid FROM mine_tailings_storage_facility WHERE create_user LIKE IDIR_USER
     );
     DELETE FROM mine_tailings_storage_facility WHERE create_user LIKE IDIR_USER;
-    DELETE FROM mine_expected_document_xref
-    WHERE exp_document_guid = ANY(
-        SELECT exp_document_guid
-        FROM mine_expected_document WHERE create_user LIKE IDIR_USER
-    );
-    DELETE FROM mine_expected_document_xref
-    WHERE mine_document_guid = ANY(
-        SELECT mine_document_guid
-        FROM mine_document WHERE create_user LIKE IDIR_USER
-    );
-    DELETE FROM mine_expected_document WHERE create_user LIKE IDIR_USER;
+	
+    DELETE FROM mine_report_document_xref;
+    DELETE FROM mine_report_submission;
+    DELETE FROM mine_report;
+	
     DELETE FROM variance_document_xref WHERE mine_document_guid = ANY (
         SELECT mine_document_guid FROM mine_document WHERE create_user LIKE IDIR_USER
     );
