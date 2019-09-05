@@ -48,7 +48,7 @@ const renderRecommendations = ({ fields }) => [
 ];
 
 export class AddIncidentFollowUpForm extends Component {
-  isHistoricalVariance =
+  isHistoricalIncident =
     this.props.initialValues.followup_investigation_type_code ===
     Strings.INCIDENT_FOLLOWUP_ACTIONS.unknown;
 
@@ -61,7 +61,7 @@ export class AddIncidentFollowUpForm extends Component {
   filteredFollowupActions = () =>
     this.props.followupActionOptions.filter(
       ({ value }) =>
-        this.isHistoricalVariance || value !== Strings.INCIDENT_FOLLOWUP_ACTIONS.unknown
+        this.isHistoricalIncident || value !== Strings.INCIDENT_FOLLOWUP_ACTIONS.unknown
     );
 
   render() {
