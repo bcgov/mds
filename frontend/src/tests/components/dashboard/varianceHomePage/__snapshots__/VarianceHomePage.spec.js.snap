@@ -15,7 +15,7 @@ exports[`VarianceHomePage renders properly 1`] = `
     className="landing-page__content"
   >
     <Connect(AuthorizationWrapper)
-      permission="inTesting"
+      inTesting={true}
     >
       <VarianceSearch
         complianceCodes={
