@@ -149,7 +149,7 @@ export class AddIncidentFollowUpForm extends Component {
                 <Field
                   id="status_code"
                   name="status_code"
-                  label="Incident status?*"
+                  label="Incident status*"
                   component={renderConfig.SELECT}
                   data={this.props.incidentStatusCodeOptions}
                 />

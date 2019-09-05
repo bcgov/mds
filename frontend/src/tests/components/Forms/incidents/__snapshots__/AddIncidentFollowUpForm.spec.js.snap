@@ -79,7 +79,7 @@ exports[`AddIncidentFollowUpForm renders properly 1`] = `
           <Field
             component={[Function]}
             id="status_code"
-            label="Incident status?*"
+            label="Incident status*"
             name="status_code"
           />
         </FormItem>
