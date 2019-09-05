@@ -132,7 +132,7 @@ class AddIncidentDetailForm extends Component {
                 <Field
                   id="determination_inspector_party_guid"
                   name="determination_inspector_party_guid"
-                  label="Inspector who made the determination?*"
+                  label="Inspector who made the determination*"
                   component={renderConfig.GROUPED_SELECT}
                   data={this.props.inspectors}
                   validate={[required]}
@@ -170,7 +170,7 @@ class AddIncidentDetailForm extends Component {
               <Field
                 id="mine_determination_representative"
                 name="mine_determination_representative"
-                label="Mine representative who made determination?"
+                label="Mine representative who made determination"
                 component={renderConfig.FIELD}
                 validate={[maxLength(255)]}
               />

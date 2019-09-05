@@ -201,7 +201,7 @@ exports[`ViewIncidentModal renders properly 1`] = `
         <p
           className="field-title"
         >
-          Inspector who made the determination?
+          Inspector who made the determination
         </p>
         <p>
           N/A
@@ -225,7 +225,7 @@ exports[`ViewIncidentModal renders properly 1`] = `
         <p
           className="field-title"
         >
-          Mine representative who made determination?
+          Mine representative who made determination
         </p>
         <p>
           N/A
