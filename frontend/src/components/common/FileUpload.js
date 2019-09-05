@@ -1,8 +1,7 @@
-import { map } from "lodash";
 import React from "react";
 import PropTypes from "prop-types";
 import "filepond-polyfill";
-import { FilePond, File, registerPlugin } from "react-filepond";
+import { FilePond, registerPlugin } from "react-filepond";
 import "filepond/dist/filepond.min.css";
 import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
@@ -38,10 +37,6 @@ const defaultProps = {
 class FileUpload extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      files: [],
-    };
 
     this.server = {
       process: (fieldName, file, metadata, load, error, progress, abort) => {
@@ -92,16 +87,7 @@ class FileUpload extends React.Component {
         allowFileTypeValidation={acceptedFileTypes.length > 0}
         acceptedFileTypes={acceptedFileTypes}
         fileValidateTypeLabelExpectedTypesMap={this.props.acceptedFileTypesMap}
-        onupdatefiles={(fileItems) => {
-          this.setState({
-            files: map(fileItems, "file"),
-          });
-        }}
-      >
-        {this.state.files.map((file) => (
-          <File key={file} src={file} origin="local" />
-        ))}
-      </FilePond>
+      />
     );
   }
 }
