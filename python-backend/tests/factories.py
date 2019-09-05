@@ -9,7 +9,6 @@ import factory.fuzzy
 from app.extensions import db
 from tests.status_code_gen import *
 from app.api.applications.models.application import Application
-from app.api.mines.documents.expected.models.mine_expected_document import MineExpectedDocument
 from app.api.mines.documents.mines.models.mine_document import MineDocument
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.mine.models.mine_type import MineType
@@ -96,36 +95,6 @@ class MineDocumentFactory(BaseFactory):
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     document_manager_guid = GUID
     document_name = factory.Faker('file_name')
-    mine_expected_document = []
-
-
-class MineExpectedDocumentFactory(BaseFactory):
-    class Meta:
-        model = MineExpectedDocument
-
-    exp_document_guid = GUID
-    required_document = factory.LazyFunction(RandomRequiredDocument)
-    exp_document_status_code = factory.LazyFunction(RandomExpectedDocumentStatusCode)
-    exp_document_name = factory.SelfAttribute('required_document.req_document_name')
-    exp_document_description = factory.SelfAttribute('required_document.description')
-    due_date = TODAY
-    received_date = TODAY
-    hsrc_code = factory.SelfAttribute('required_document.hsrc_code')
-    mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
-    related_documents = []
-
-    @factory.post_generation
-    def related_documents(obj, create, extracted, **kwargs):
-        if not create:
-            return
-
-        if not isinstance(extracted, int):
-            extracted = 1
-
-        MineDocumentFactory.create_batch(size=extracted,
-                                         mine_expected_document=[obj],
-                                         mine=obj.mine,
-                                         **kwargs)
 
 
 class MineStatusFactory(BaseFactory):
@@ -570,7 +539,6 @@ class MineFactory(BaseFactory):
             mine_status=None,
             mine_tailings_storage_facilities=0,
             mine_permit=0,
-            mine_expected_documents=0,
             mine_incidents=0,
             mine_variance=0,
             mine_reports=0
@@ -593,7 +561,6 @@ class MineFactory(BaseFactory):
     mine_status = factory.RelatedFactory(MineStatusFactory, 'mine')
     mine_tailings_storage_facilities = []
     mine_permit = []
-    mine_expected_documents = []
     mine_incidents = []
     mine_variance = []
     mine_reports = []
@@ -618,15 +585,6 @@ class MineFactory(BaseFactory):
 
         PermitFactory.create_batch(size=extracted, mine=obj, **kwargs)
 
-    @factory.post_generation
-    def mine_expected_documents(obj, create, extracted, **kwargs):
-        if not create:
-            return
-
-        if not isinstance(extracted, int):
-            extracted = 1
-
-        MineExpectedDocumentFactory.create_batch(size=extracted, mine=obj, **kwargs)
 
     @factory.post_generation
     def mine_incidents(obj, create, extracted, **kwargs):

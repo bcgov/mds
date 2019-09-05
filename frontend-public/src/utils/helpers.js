@@ -48,3 +48,13 @@ export const formatDate = (dateString) =>
   dateString !== "9999-12-31" &&
   dateString !== "None" &&
   moment(dateString, "YYYY-MM-DD").format("MMM DD YYYY");
+
+export const formatComplianceCodeValueOrLabel = (code, showDescription) => {
+  const { section, sub_section, paragraph, sub_paragraph, description } = code;
+  const formattedSubSection = sub_section ? `.${sub_section}` : "";
+  const formattedParagraph = paragraph ? `.${paragraph}` : "";
+  const formattedSubParagraph = sub_paragraph !== null ? `.${sub_paragraph}` : "";
+  const formattedDescription = showDescription ? ` - ${description}` : "";
+
+  return `${section}${formattedSubSection}${formattedParagraph}${formattedSubParagraph}${formattedDescription}`;
+};

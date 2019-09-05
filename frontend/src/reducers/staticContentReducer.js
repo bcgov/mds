@@ -12,8 +12,6 @@ const initialState = {
   mineTenureTypes: [],
   mineDisturbanceOptions: [],
   mineCommodityOptions: [],
-  expectedDocumentStatusOptions: [],
-  mineTSFRequiredReports: [],
   provinceOptions: [],
   permitStatusCodes: [],
   applicationStatusCodes: [],
@@ -52,16 +50,6 @@ const staticContentReducer = (state = initialState, action) => {
       return {
         ...state,
         mineCommodityOptions: action.payload.records,
-      };
-    case actionTypes.STORE_DOCUMENT_STATUS_OPTIONS:
-      return {
-        ...state,
-        expectedDocumentStatusOptions: action.payload.records,
-      };
-    case actionTypes.STORE_MINE_TSF_REQUIRED_DOCUMENTS:
-      return {
-        ...state,
-        mineTSFRequiredReports: action.payload.records,
       };
     case actionTypes.STORE_PROVINCE_OPTIONS:
       return {
@@ -128,9 +116,6 @@ export const getMineRegionOptions = (state) => state[STATIC_CONTENT].mineRegionO
 export const getMineTenureTypeOptions = (state) => state[STATIC_CONTENT].mineTenureTypes;
 export const getMineDisturbanceOptions = (state) => state[STATIC_CONTENT].mineDisturbanceOptions;
 export const getMineCommodityOptions = (state) => state[STATIC_CONTENT].mineCommodityOptions;
-export const getExpectedDocumentStatusOptions = (state) =>
-  state[STATIC_CONTENT].expectedDocumentStatusOptions;
-export const getMineTSFRequiredReports = (state) => state[STATIC_CONTENT].mineTSFRequiredReports;
 export const getProvinceOptions = (state) => state[STATIC_CONTENT].provinceOptions;
 export const getPermitStatusOptions = (state) => state[STATIC_CONTENT].permitStatusCodes;
 export const getApplicationStatusOptions = (state) => state[STATIC_CONTENT].applicationStatusCodes;
