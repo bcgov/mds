@@ -113,16 +113,21 @@ export class EditVarianceForm extends Component {
           </Col>
         </Row>
         {this.state.statusChangedToApproved && (
-          <Row gutter={16}>
-            <Col md={8} lg={24}>
-              <Form.Item label="Expiry date">
-                <p className="p-light">
-                  If expiry date is not specified, it will default to 5 years from issue date.
-                </p>
-                <Field id="expiry_date" name="expiry_date" component={renderConfig.DATE} />
-              </Form.Item>
-            </Col>
-          </Row>
+          <div>
+            <Form.Item label="Issue date">
+              <p className="p-light">
+                If issue date is not specified it will default to the day the application was
+                approved
+              </p>
+              <Field id="issue_date" name="issue_date" component={renderConfig.DATE} />
+            </Form.Item>
+            <Form.Item label="Expiry date">
+              <p className="p-light">
+                If expiry date is not specified it will default to 5 years from issue date.
+              </p>
+              <Field id="expiry_date" name="expiry_date" component={renderConfig.DATE} />
+            </Form.Item>
+          </div>
         )}
         <h5>Application details</h5>
         <VarianceDetails
