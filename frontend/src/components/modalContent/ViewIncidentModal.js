@@ -111,7 +111,7 @@ export class ViewIncidentModal extends Component {
         </div>
 
         <div className="inline-flex padding-small">
-          <p className="field-title">Inspectors determination</p>
+          <p className="field-title">Inspector&apos;s determination</p>
           <p>
             {this.props.incidentDeterminationHash[this.props.incident.determination_type_code] ||
               Strings.EMPTY_FIELD}
@@ -135,11 +135,24 @@ export class ViewIncidentModal extends Component {
           </div>
         )}
         <div className="inline-flex padding-small">
-          <p className="field-title">Who made the determination?</p>
+          <p className="field-title">Inspector who made the determination</p>
           <p>
             {this.props.inspectorsHash[this.props.incident.determination_inspector_party_guid] ||
               Strings.EMPTY_FIELD}
           </p>
+        </div>
+
+        <div className="inline-flex padding-small">
+          <p className="field-title">Mine&apos;s determination</p>
+          <p>
+            {this.props.incidentDeterminationHash[
+              this.props.incident.mine_determination_type_code
+            ] || Strings.EMPTY_FIELD}
+          </p>
+        </div>
+        <div className="inline-flex padding-small">
+          <p className="field-title">Mine representative who made determination</p>
+          <p>{this.props.incident.mine_determination_representative || Strings.EMPTY_FIELD}</p>
         </div>
       </div>
       <br />

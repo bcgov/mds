@@ -82,20 +82,23 @@ export class MineVariance extends Component {
 
   handleUpdateVariance = (files, variance, isApproved) => (values) => {
     // if the application isApproved, set issue_date to today and set expiry_date 5 years from today,
-    // unless the user sets a custom expiry.
+    // unless the user sets dates
     const { variance_document_category_code } = values;
-    const issue_date = isApproved ? moment().format("YYYY-MM-DD") : null;
     let expiry_date;
+    let issue_date;
     if (isApproved) {
+      issue_date = values.issue_date ? values.issue_date : moment().format("YYYY-MM-DD");
       expiry_date = values.expiry_date
         ? values.expiry_date
         : moment(issue_date, "YYYY-MM-DD").add(5, "years");
     }
-    const newValues = { ...values, issue_date, expiry_date };
     const varianceGuid = variance.variance_guid;
     const codeLabel = this.props.complianceCodesHash[variance.compliance_article_id];
     this.props
-      .updateVariance({ mineGuid: this.props.mineGuid, varianceGuid, codeLabel }, newValues)
+      .updateVariance(
+        { mineGuid: this.props.mineGuid, varianceGuid, codeLabel },
+        { ...values, issue_date, expiry_date }
+      )
       .then(async () => {
         await Promise.all(
           Object.entries(files).map(([document_manager_guid, document_name]) =>
