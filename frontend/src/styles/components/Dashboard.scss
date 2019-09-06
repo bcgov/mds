@@ -7,11 +7,6 @@
 
   &__content {
     background-color: $pure-white;
-    border-radius: $default-round-top-border;
-
-    @include mobile {
-      padding: 0;
-    }
 
     &--search {
       @include flex;

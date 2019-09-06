@@ -1,0 +1,53 @@
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+      integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+      crossorigin=""
+    />
+
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script
+      src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+      integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+      crossorigin=""
+    ></script>
+  </head>
+
+  <body>
+    <div id="mapid"></div>
+
+    <style>
+      #mapid {
+        height: 50%;
+        width: 50%;
+      }
+    </style>
+
+    <script type="text/javascript">
+      // center of the map
+      var center = [48.20707, -123.489504];
+
+      // Create the map
+      var map = L.map("mapid").setView(center, 8);
+
+      // Set up the OSM layer
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 18,
+      }).addTo(map);
+
+      var wmsLayer = L.tileLayer
+        .wms("https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov?", {
+          layers: "WHSE_ADMIN_BOUNDARIES.PIP_CONSULTATION_AREAS_SP",
+          format: "image/png",
+          transparent: true,
+          uppercase: false,
+        })
+        .addTo(map);
+
+      // add a marker in the given location
+      L.marker(center).addTo(map);
+    </script>
+  </body>
+</html>
