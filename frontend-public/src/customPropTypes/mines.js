@@ -1,11 +1,9 @@
-import { PropTypes, shape, arrayOf } from "prop-types";
-import { mineExpectedDocument } from "@/customPropTypes/documents";
+import { PropTypes, shape } from "prop-types";
 
 export const mine = shape({
   mine_guid: PropTypes.string.isRequired,
   mine_no: PropTypes.string,
   mine_name: PropTypes.string,
-  mine_expected_documents: arrayOf(mineExpectedDocument),
   ohsc_ind: PropTypes.bool,
   union_ind: PropTypes.bool,
 });

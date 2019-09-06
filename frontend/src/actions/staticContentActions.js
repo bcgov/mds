@@ -30,11 +30,6 @@ export const storeDocumentStatusOptions = (payload) => ({
   payload,
 });
 
-export const storeMineTSFRequiredDocuments = (payload) => ({
-  type: ActionTypes.STORE_MINE_TSF_REQUIRED_DOCUMENTS,
-  payload,
-});
-
 export const storeProvinceCodes = (payload) => ({
   type: ActionTypes.STORE_PROVINCE_OPTIONS,
   payload,

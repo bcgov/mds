@@ -31,21 +31,6 @@ export const MINE_RESPONSE = {
           mine_tailings_storage_facility_name: "MockTSF",
         },
       ],
-      mine_expected_documents: [
-        {
-          date_created: "2018-11-19",
-          due_date: "",
-          exp_document_guid: "806608ed-d2b4-4f83-8b22-739d5223c56f",
-          exp_document_name: "OMS Manual",
-          mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
-          req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-          expected_document_status: {
-            exp_document_status_code: "MIA",
-            description: "Not Received",
-          },
-          related_documents: [],
-        },
-      ],
       mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
       verified_status: {
         mine_guid: null,
@@ -88,21 +73,6 @@ export const MINE_RESPONSE = {
           mine_tailings_storage_facility_name: "MockTSF1",
         },
       ],
-      mine_expected_documents: [
-        {
-          date_created: "2018-11-19",
-          due_date: "",
-          exp_document_guid: "806608ed-d2b4-4f83-8b22-739d5223c56f",
-          exp_document_name: "OMS Manual",
-          mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
-          req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-          expected_document_status: {
-            exp_document_status_code: "MIA",
-            description: "Not Received",
-          },
-          related_documents: [],
-        },
-      ],
       mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
       verified_status: {
         mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
@@ -131,21 +101,6 @@ export const SUBSCRIBED_MINES = {
           mine_tailings_storage_facility_name: "MockTSF",
         },
       ],
-      mine_expected_documents: [
-        {
-          date_created: "2018-11-19",
-          due_date: "",
-          exp_document_guid: "806608ed-d2b4-4f83-8b22-739d5223c56f",
-          exp_document_name: "OMS Manual",
-          mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
-          req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-          exp_document_status: {
-            exp_document_status_code: "MIA",
-            description: "Not Received",
-          },
-          related_documents: [],
-        },
-      ],
       mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
       mine_status: {
         statusvalue: ["CLD", "CM"],
@@ -172,21 +127,6 @@ export const MINES = {
           mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
           mine_tailings_storage_facility_guid: "e2629897-053e-4218-9299-479375e47f78",
           mine_tailings_storage_facility_name: "MockTSF",
-        },
-      ],
-      mine_expected_documents: [
-        {
-          date_created: "2018-11-19",
-          due_date: "",
-          exp_document_guid: "806608ed-d2b4-4f83-8b22-739d5223c56f",
-          exp_document_name: "OMS Manual",
-          mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
-          req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-          expected_document_status: {
-            exp_document_status_code: "MIA",
-            description: "Not Received",
-          },
-          related_documents: [],
         },
       ],
       mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
@@ -235,21 +175,6 @@ export const MINES = {
           mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
           mine_tailings_storage_facility_guid: "e2629897-053e-4218-9299-479375e47f34",
           mine_tailings_storage_facility_name: "MockTSF1",
-        },
-      ],
-      mine_expected_documents: [
-        {
-          date_created: "2018-11-19",
-          due_date: "",
-          exp_document_guid: "806608ed-d2b4-4f83-8b22-739d5223c56f",
-          exp_document_name: "OMS Manual",
-          mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
-          req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-          expected_document_status: {
-            exp_document_status_code: "MIA",
-            description: "Not Received",
-          },
-          related_documents: [],
         },
       ],
       mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
@@ -975,15 +900,6 @@ export const PERMITTEE = {
   },
 };
 
-export const EXPECTED_DOCUMENT_STATUS_OPTIONS = {
-  records: [
-    { exp_document_status_code: "MIA", description: "Not Received" },
-    { exp_document_status_code: "PRE", description: "Received / Pending Review" },
-    { exp_document_status_code: "RIP", description: "Review In Progress" },
-    { exp_document_status_code: "ACC", description: "Accepted" },
-    { exp_document_status_code: "REJ", description: "Rejected / Waiting On Update" },
-  ],
-};
 
 export const MINE_TSF_REQUIRED_REPORTS_RESPONSE = {
   records: [

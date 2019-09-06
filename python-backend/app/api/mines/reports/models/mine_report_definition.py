@@ -12,9 +12,8 @@ from app.extensions import db
 
 class MineReportDefinition(Base, AuditMixin):
     __tablename__ = "mine_report_definition"
-    mine_report_definition_id = db.Column(db.Integer,
-                                          primary_key=True,
-                                          server_default=FetchedValue())
+    mine_report_definition_id = db.Column(
+        db.Integer, primary_key=True, server_default=FetchedValue())
     mine_report_definition_guid = db.Column(UUID(as_uuid=True), nullable=False)
     report_name = db.Column(db.String, nullable=False)
     description = db.Column(db.String, nullable=False)
@@ -24,9 +23,10 @@ class MineReportDefinition(Base, AuditMixin):
         db.ForeignKey('mine_report_due_date_type.mine_report_due_date_type'),
         nullable=False)
     active_ind = db.Column(db.Boolean, server_default=FetchedValue(), nullable=False)
-    categories = db.relationship('MineReportCategory',
-                                 lazy='selectin',
-                                 secondary='mine_report_category_xref')
+    required = db.Column(db.Boolean)
+
+    categories = db.relationship(
+        'MineReportCategory', lazy='selectin', secondary='mine_report_category_xref')
     compliance_articles = db.relationship(
         'ComplianceArticle',
         lazy='selectin',
@@ -61,6 +61,15 @@ class MineReportDefinition(Base, AuditMixin):
     def active(cls):
         try:
             return cls.query.filter_by(active_ind=True).all()
+        except ValueError:
+            return None
+
+    @classmethod
+    def find_required_reports_by_category(cls, _mine_report_category):
+        try:
+            return cls.query.filter_by(active_ind=True).filter_by(required=True).filter(
+                MineReportDefinition.categories.any(
+                    mine_report_category=_mine_report_category)).all()
         except ValueError:
             return None
 
