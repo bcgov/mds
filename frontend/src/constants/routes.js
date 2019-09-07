@@ -5,6 +5,7 @@ import Dashboard from "@/components/dashboard/minesHomePage/Dashboard";
 import ContactHomePage from "@/components/dashboard/contactsHomePage/ContactHomePage";
 import VarianceHomePage from "@/components/dashboard/varianceHomePage/VarianceHomePage";
 import MineDashboard from "@/components/mine/MineDashboard";
+import MineMapLeaflet from "@/components/maps/MineMapLeaflet";
 import PartyProfile from "@/components/parties/PartyProfile";
 import RelationshipProfile from "@/components/parties/RelationshipProfile";
 import AdminDashboard from "@/components/admin/AdminDashboard";
@@ -158,6 +159,11 @@ export const VARIANCE_DASHBOARD = {
 export const EXECUTIVE_REPORTING_DASHBOARD = {
   route: "/dashboard/executive-reporting",
   component: ExecutiveReportingDashboard,
+};
+
+export const MINE_MAP_LEAFLET = {
+  route: "/dashboard/new-map",
+  component: MineMapLeaflet,
 };
 
 export const ADMIN_DASHBOARD = {
