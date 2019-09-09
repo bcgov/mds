@@ -33,5 +33,6 @@ module.exports = {
     "jsx-a11y/anchor-is-valid": 0,
     "react/destructuring-assignment": ["error", "never"],
     camelcase: 0,
+    "import/no-cycle": 0,
   },
 };

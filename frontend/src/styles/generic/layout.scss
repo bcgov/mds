@@ -29,6 +29,18 @@ body {
   text-align: center;
 }
 
+.horizontal-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.violet {
+  color: $violet;
+}
+
 .right {
   text-align: right;
 }
@@ -143,11 +155,22 @@ body {
   }
 }
 
+.page__content,
 .tab__content {
   padding: $default-padding-lg $default-padding-xxl;
 
   @include mobile {
     padding: 0 $default-padding-lg;
+  }
+
+  &--nested {
+    padding: 0 $default-padding-lg;
+    @include large {
+      padding: 0 $default-padding-sm;
+    }
+    @include mobile {
+      padding: 0;
+    }
   }
 }
 
@@ -218,6 +241,30 @@ body {
   padding: $default-padding-sm;
 }
 
+.padding-md {
+  &--top {
+    padding-top: $default-padding-md;
+  }
+  &--bottom {
+    padding-bottom: $default-padding-md;
+  }
+  &--right {
+    padding-right: $default-padding-md;
+  }
+  &--left {
+    padding-left: $default-padding-md;
+  }
+  padding: $default-padding-md;
+
+  &--sides {
+    padding-left: $default-padding-md;
+    padding-right: $default-padding-md;
+    @include tablet {
+      padding: 0;
+    }
+  }
+}
+
 .padding-large {
   &--top {
     padding-top: $default-padding-lg;
@@ -232,6 +279,15 @@ body {
     padding-left: $default-padding-lg;
   }
   padding: $default-padding-lg;
+
+  &--sides {
+    padding-left: $default-padding-lg;
+    padding-right: $default-padding-lg;
+
+    @include tablet {
+      padding: 0;
+    }
+  }
 }
 
 .padding-xxl {

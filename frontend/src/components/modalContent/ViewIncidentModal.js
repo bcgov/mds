@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import CustomPropTypes from "@/customPropTypes";
 import { Button, Tag, Table } from "antd";
+import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 import { getInspectorsHash } from "@/selectors/partiesSelectors";
@@ -25,12 +25,6 @@ const propTypes = {
   incidentFollowupActionHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
-const DANGEROUS_OCCURRENCE = "DO";
-const INCIDENT_DOCUMENT_TYPES = {
-  initial: "INI",
-  final: "FIN",
-};
-
 export class ViewIncidentModal extends Component {
   state = { recommendationsExpanded: false };
 
@@ -40,9 +34,7 @@ export class ViewIncidentModal extends Component {
 
   renderInitialDetails = () => {
     const formattedPhoneNo = this.props.incident.reported_by_phone_ext
-      ? `${this.props.incident.reported_by_phone_no} ext: ${
-          this.props.incident.reported_by_phone_ext
-        }`
+      ? `${this.props.incident.reported_by_phone_no} ext: ${this.props.incident.reported_by_phone_ext}`
       : this.props.incident.reported_by_phone_no;
     return (
       <div>
@@ -119,13 +111,14 @@ export class ViewIncidentModal extends Component {
         </div>
 
         <div className="inline-flex padding-small">
-          <p className="field-title">Inspectors determination</p>
+          <p className="field-title">Inspector&apos;s determination</p>
           <p>
             {this.props.incidentDeterminationHash[this.props.incident.determination_type_code] ||
               Strings.EMPTY_FIELD}
           </p>
         </div>
-        {this.props.incident.determination_type_code === DANGEROUS_OCCURRENCE && (
+        {this.props.incident.determination_type_code ===
+          Strings.INCIDENT_DETERMINATION_TYPES.dangerousOccurance && (
           <div className="padding-small">
             <p className="field-title">
               Which section(s) of the code applies to this dangerous occurrence?
@@ -142,11 +135,24 @@ export class ViewIncidentModal extends Component {
           </div>
         )}
         <div className="inline-flex padding-small">
-          <p className="field-title">Who made the determination?</p>
+          <p className="field-title">Inspector who made the determination</p>
           <p>
             {this.props.inspectorsHash[this.props.incident.determination_inspector_party_guid] ||
               Strings.EMPTY_FIELD}
           </p>
+        </div>
+
+        <div className="inline-flex padding-small">
+          <p className="field-title">Mine&apos;s determination</p>
+          <p>
+            {this.props.incidentDeterminationHash[
+              this.props.incident.mine_determination_type_code
+            ] || Strings.EMPTY_FIELD}
+          </p>
+        </div>
+        <div className="inline-flex padding-small">
+          <p className="field-title">Mine representative who made determination</p>
+          <p>{this.props.incident.mine_determination_representative || Strings.EMPTY_FIELD}</p>
         </div>
       </div>
       <br />
@@ -156,7 +162,7 @@ export class ViewIncidentModal extends Component {
   renderInitialDocuments = () => {
     const initialDocuments = this.props.incident.documents.filter(
       ({ mine_incident_document_type_code }) =>
-        mine_incident_document_type_code === INCIDENT_DOCUMENT_TYPES.initial
+        mine_incident_document_type_code === Strings.INCIDENT_DOCUMENT_TYPES.initial
     );
     return (
       <div>
@@ -186,7 +192,7 @@ export class ViewIncidentModal extends Component {
           <p>{formatDate(this.props.incident.followup_inspection_date) || Strings.EMPTY_FIELD}</p>
         </div>
         <div className="inline-flex padding-small">
-          <p className="field-title">Was it escilated to EMPR Investigation?</p>
+          <p className="field-title">Was it escalated to EMPR Investigation?</p>
           <p>
             {this.props.incidentFollowupActionHash[
               this.props.incident.followup_investigation_type_code
@@ -227,11 +233,11 @@ export class ViewIncidentModal extends Component {
   renderFinalDocuments = () => {
     const finalDocuments = this.props.incident.documents.filter(
       ({ mine_incident_document_type_code }) =>
-        mine_incident_document_type_code === INCIDENT_DOCUMENT_TYPES.final
+        mine_incident_document_type_code === Strings.INCIDENT_DOCUMENT_TYPES.final
     );
     return (
       <div>
-        <h5>Final Investigation Report Documents</h5>
+        <h5>Final Investigation Report</h5>
         <Table
           align="left"
           pagination={false}

@@ -1,32 +1,33 @@
-import React from "react";
+import React, { Component } from "react";
 import { Row, Col, Divider, Card } from "antd";
 import moment from "moment";
-import NullScreen from "@/components/common/NullScreen";
-import CustomPropTypes from "@/customPropTypes";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { formatDate } from "@/utils/helpers";
+import CustomPropTypes from "@/customPropTypes";
 import { Contact } from "@/components/mine/ContactInfo/PartyRelationships/Contact";
 import { getPartyRelationshipTypes, getPartyRelationships } from "@/selectors/partiesSelectors";
 import { getMineComplianceInfo } from "@/selectors/complianceSelectors";
-
-import { connect } from "react-redux";
+import { getMines } from "@/selectors/mineSelectors";
 import * as String from "@/constants/strings";
-import { Link } from "react-router-dom";
 import * as router from "@/constants/routes";
 import { PermitCard } from "@/components/mine/Permit/MinePermitCard";
 import { TSFCard } from "@/components/mine/Tailings/MineTSFCard";
-import { formatDate } from "@/utils/helpers";
 import { DOC, OVERDUEDOC } from "@/constants/assets";
 import { getPermits } from "@/reducers/permitReducer";
+import MineHeader from "@/components/mine/MineHeader";
+
 /**
  * @class MineSummary.js contains all content located under the 'Summary' tab on the MineDashboard.
  */
 
 const propTypes = {
-  mine: CustomPropTypes.mine.isRequired,
+  match: CustomPropTypes.match.isRequired,
+  mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
   partyRelationshipTypes: PropTypes.arrayOf(CustomPropTypes.partyRelationshipType),
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   mineComplianceInfo: CustomPropTypes.mineComplianceInfo,
-  complianceInfoLoading: PropTypes.bool,
   minePermits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
 };
 
@@ -34,7 +35,6 @@ const defaultProps = {
   partyRelationshipTypes: [],
   partyRelationships: [],
   mineComplianceInfo: {},
-  complianceInfoLoading: true,
 };
 
 const renderPartyRelationship = (mine, partyRelationship, partyRelationshipTypes) => {
@@ -59,14 +59,12 @@ const renderPartyRelationship = (mine, partyRelationship, partyRelationshipTypes
 
 const renderSummaryPermit = (permit, partyRelationships) => (
   <Col sm={24} md={12} lg={8} xl={6} xxl={4} key={permit.permit_guid}>
-    {" "}
     <PermitCard permit={permit} PartyRelationships={partyRelationships} />
   </Col>
 );
 
 const renderSummaryTSF = (tsf, partyRelationships) => (
   <Col sm={24} md={12} lg={8} xl={6} xxl={4} key={tsf.mine_tailings_storage_facility_guid}>
-    {" "}
     <TSFCard tailingsStorageFacility={tsf} PartyRelationships={partyRelationships} />
   </Col>
 );
@@ -80,91 +78,84 @@ const isActive = (pr) =>
 const activePermitteesByPermit = (pr, permit) =>
   isActive(pr) && pr.mine_party_appt_type_code === "PMT" && pr.related_guid === permit.permit_guid;
 
-export const MineSummary = (props) => {
-  if (
-    props.partyRelationships.length === 0 &&
-    props.minePermits.length === 0 &&
-    props.mine.mine_tailings_storage_facilities.length === 0 &&
-    !props.mineComplianceInfo
-  ) {
-    return <NullScreen type="generic" />;
-  }
-
-  return (
-    <div>
-      {props.partyRelationships && props.partyRelationships.length > 0 && (
-        <Row gutter={16} type="flex" justify="center">
-          <Col span={18}>
-            <Row gutter={16}>
+export class MineSummary extends Component {
+  render() {
+    const { id } = this.props.match.params;
+    const mine = this.props.mines[id];
+    return (
+      <div className="tab__content">
+        <div>
+          <h2>General</h2>
+          <Divider />
+        </div>
+        <MineHeader mine={mine} {...this.props} />
+        <br />
+        {this.props.partyRelationships && this.props.partyRelationships.length > 0 && (
+          <div>
+            <Row>
               <Col span={24}>
-                <h4>MAIN CONTACTS</h4>
+                <h4>Main Contacts</h4>
                 <Divider />
               </Col>
             </Row>
-            <Row gutter={16} type="flex">
-              {props.partyRelationships
+            <Row gutter={16}>
+              {this.props.partyRelationships
                 .filter((pr) => pr.mine_party_appt_type_code === "MMG" && isActive(pr))
                 .map((partyRelationship) =>
                   renderPartyRelationship(
-                    props.mine,
+                    mine,
                     partyRelationship,
-                    props.partyRelationshipTypes
+                    this.props.partyRelationshipTypes
                   )
                 )}
-              {props.minePermits.map((permit) => {
-                const latestPermittee = props.partyRelationships
+              {this.props.minePermits.map((permit) => {
+                const latestPermittee = this.props.partyRelationships
                   .filter((pr) => activePermitteesByPermit(pr, permit))
                   .sort((a, b) => new Date(b.start_date) - new Date(a.start_date))[0];
                 return (
                   latestPermittee &&
-                  renderPartyRelationship(props.mine, latestPermittee, props.partyRelationshipTypes)
+                  renderPartyRelationship(mine, latestPermittee, this.props.partyRelationshipTypes)
                 );
               })}
             </Row>
-            <Row gutter={16}>
+            <Row>
               <Col span={24}>
                 <div className="right">
-                  <Link to={router.MINE_SUMMARY.dynamicRoute(props.mine.mine_guid, "contacts")}>
+                  <Link to={router.MINE_CONTACTS.dynamicRoute(mine.mine_guid)}>
                     See All Contacts
                   </Link>
                 </div>
               </Col>
             </Row>
-          </Col>
-        </Row>
-      )}
-      {props.minePermits && props.minePermits.length > 0 && (
-        <Row gutter={16} type="flex" justify="center">
-          <Col span={18}>
-            <Row gutter={16}>
+          </div>
+        )}
+        {this.props.minePermits && this.props.minePermits.length > 0 && (
+          <div>
+            <Row>
               <Col span={24}>
-                <h4>PERMITS</h4>
+                <h4>Permits</h4>
                 <Divider />
               </Col>
             </Row>
             <Row gutter={16} type="flex">
-              {props.minePermits.map((permit) =>
-                renderSummaryPermit(permit, props.partyRelationships.filter(isActive))
+              {this.props.minePermits.map((permit) =>
+                renderSummaryPermit(permit, this.props.partyRelationships.filter(isActive))
               )}
             </Row>
-            <Row gutter={16}>
+            <Row>
               <Col span={24}>
                 <div className="right">
-                  <Link to={router.MINE_SUMMARY.dynamicRoute(props.mine.mine_guid, "permit")}>
-                    See All Permits
-                  </Link>
+                  <Link to={router.MINE_PERMITS.dynamicRoute(mine.mine_guid)}>See All Permits</Link>
                 </div>
               </Col>
             </Row>
-          </Col>
-        </Row>
-      )}
-      {props.mineComplianceInfo && (
-        <Row gutter={16} type="flex" justify="center">
-          <Col span={18}>
+          </div>
+        )}
+        {this.props.mineComplianceInfo && (
+          <div>
             <Row gutter={16}>
               <Col span={24}>
-                <h4>COMPLIANCE</h4>
+                <h4>Compliance</h4>
                 <Divider />
               </Col>
             </Row>
@@ -176,10 +167,8 @@ export const MineSummary = (props) => {
                     <Row type="flex" justify="center" align="middle">
                       <div className="center">
                         <span className="info-display">
-                          {props.complianceInfoLoading
-                            ? String.LOADING
-                            : formatDate(props.mineComplianceInfo.last_inspection) ||
-                              String.NO_NRIS_INSPECTIONS}
+                          {formatDate(this.props.mineComplianceInfo.last_inspection) ||
+                            String.NO_NRIS_INSPECTIONS}
                         </span>
                       </div>
                     </Row>
@@ -197,11 +186,8 @@ export const MineSummary = (props) => {
                   title={
                     <Row type="flex" justify="center" align="middle">
                       <img alt="Open Orders" src={DOC} style={{ height: 40, paddingRight: 5 }} />
-                      &nbsp;
                       <span className="info-display">
-                        {props.complianceInfoLoading
-                          ? String.LOADING
-                          : props.mineComplianceInfo.num_open_orders}
+                        {this.props.mineComplianceInfo.num_open_orders}
                       </span>
                     </Row>
                   }
@@ -222,11 +208,8 @@ export const MineSummary = (props) => {
                         src={OVERDUEDOC}
                         style={{ height: 40, paddingRight: 5 }}
                       />
-                      &nbsp;
                       <span className="info-display">
-                        {props.complianceInfoLoading
-                          ? String.LOADING
-                          : props.mineComplianceInfo.num_overdue_orders}
+                        {this.props.mineComplianceInfo.num_overdue_orders}
                       </span>
                     </Row>
                   }
@@ -239,51 +222,49 @@ export const MineSummary = (props) => {
               </Col>
             </Row>
 
-            <Row gutter={16}>
+            <Row>
               <Col span={24}>
                 <div className="right">
-                  <Link to={router.MINE_SUMMARY.dynamicRoute(props.mine.mine_guid, "compliance")}>
+                  <Link to={router.MINE_INSPECTIONS.dynamicRoute(mine.mine_guid)}>
                     See All Compliance
                   </Link>
                 </div>
               </Col>
             </Row>
-          </Col>
-        </Row>
-      )}
-      {props.mine.mine_tailings_storage_facilities &&
-        props.mine.mine_tailings_storage_facilities.length > 0 && (
-          <Row gutter={16} type="flex" justify="center">
-            <Col span={18}>
-              <Row gutter={16}>
-                <Col span={24}>
-                  <h4>TAILINGS STORAGE FACILTIES</h4>
-                  <Divider />
-                </Col>
-              </Row>
-              <Row gutter={16}>
-                {props.mine.mine_tailings_storage_facilities.map((tsf) =>
-                  renderSummaryTSF(tsf, props.partyRelationships.filter(isActive))
-                )}
-              </Row>
-
-              <Row gutter={16}>
-                <Col span={24}>
-                  <div className="right">
-                    <Link to={router.MINE_SUMMARY.dynamicRoute(props.mine.mine_guid, "tailings")}>
-                      See Tailings Storage Facilities
-                    </Link>
-                  </div>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
+          </div>
         )}
-    </div>
-  );
-};
+        {mine.mine_tailings_storage_facilities && mine.mine_tailings_storage_facilities.length > 0 && (
+          <div>
+            <Row gutter={16}>
+              <Col span={24}>
+                <h4>Tailings Storage Facilities</h4>
+                <Divider />
+              </Col>
+            </Row>
+            <Row>
+              {mine.mine_tailings_storage_facilities.map((tsf) =>
+                renderSummaryTSF(tsf, this.props.partyRelationships.filter(isActive))
+              )}
+            </Row>
+
+            <Row>
+              <Col span={24}>
+                <div className="right">
+                  <Link to={router.MINE_TAILINGS.dynamicRoute(mine.mine_guid)}>
+                    See All Tailings Storage Facilities
+                  </Link>
+                </div>
+              </Col>
+            </Row>
+          </div>
+        )}
+      </div>
+    );
+  }
+}
 
 const mapStateToProps = (state) => ({
+  mines: getMines(state),
   partyRelationships: getPartyRelationships(state),
   partyRelationshipTypes: getPartyRelationshipTypes(state),
   mineComplianceInfo: getMineComplianceInfo(state),

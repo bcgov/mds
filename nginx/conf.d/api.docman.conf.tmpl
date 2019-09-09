@@ -1,0 +1,23 @@
+# ----------------------------------------------------------------------
+# | API endpoint                                                       |
+# ----------------------------------------------------------------------
+
+# Proxy incoming requests for /document-manager to the backend container
+
+location ${PATH_PREFIX}/document-manager/ {
+        if (-f /opt/app-root/src/html/maintenance_on.html){
+                return 503;
+        }
+
+        proxy_pass ${DOCUMENT_MANAGER_SERVICE_URL}${PATH_PREFIX}/document-manager/;
+        include /opt/app-root/etc/nginx.conf.d/proxy.params;
+}
+
+location ${PATH_PREFIX}/document-manager/v1/ {
+        if (-f /opt/app-root/src/html/maintenance_on.html){
+                return 503;
+        }
+
+        proxy_pass ${DOCUMENT_MANAGER_SERVICE_URL}${PATH_PREFIX}/document-manager/;
+        include /opt/app-root/etc/nginx.conf.d/proxy.params;
+}

@@ -3,11 +3,11 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { throttle } from "lodash";
 import PropTypes from "prop-types";
+import { Icon, Divider, AutoComplete } from "antd";
+import { Field } from "redux-form";
 import CustomPropTypes from "@/customPropTypes";
 import LinkButton from "@/components/common/LinkButton";
 
-import { Icon, Divider, AutoComplete } from "antd";
-import { Field } from "redux-form";
 import RenderLargeSelect from "./RenderLargeSelect";
 
 import { fetchSearchResults } from "@/actionCreators/searchActionCreator";

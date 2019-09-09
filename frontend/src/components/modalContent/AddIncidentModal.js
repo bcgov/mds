@@ -11,6 +11,7 @@ import * as FORM from "@/constants/forms";
 import AddIncidentReportingForm from "@/components/Forms/incidents/AddIncidentReportingForm";
 import AddIncidentDetailForm from "@/components/Forms/incidents/AddIncidentDetailForm";
 import AddIncidentFollowUpForm from "@/components/Forms/incidents/AddIncidentFollowUpForm";
+import * as Strings from "@/constants/strings";
 
 import CustomPropTypes from "@/customPropTypes";
 
@@ -26,7 +27,7 @@ const propTypes = {
   followupActionOptions: CustomPropTypes.options.isRequired,
   doSubparagraphOptions: CustomPropTypes.options.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
-  inspectors: CustomPropTypes.options.isRequired,
+  inspectors: CustomPropTypes.groupOptions.isRequired,
   addIncidentFormValues: PropTypes.objectOf(PropTypes.any),
   mineGuid: PropTypes.string.isRequired,
 };
@@ -37,7 +38,8 @@ const defaultProps = {
 
 const invalidReportingPayload = (values) =>
   !(
-    values.reported_timestamp &&
+    values.reported_date &&
+    values.reported_time &&
     values.reported_by_name &&
     values.reported_to_inspector_party_guid &&
     values.responsible_inspector_party_guid
@@ -45,18 +47,20 @@ const invalidReportingPayload = (values) =>
 
 const invalidDetailPayload = (values) =>
   !(
-    values.incident_timestamp &&
+    values.incident_date &&
+    values.incident_time &&
     values.incident_description &&
     values.determination_type_code &&
     // If DO, need subparagraphs
-    ((values.determination_type_code === "DO" &&
+    ((values.determination_type_code === Strings.INCIDENT_DETERMINATION_TYPES.dangerousOccurance &&
       values.determination_inspector_party_guid &&
       values.dangerous_occurrence_subparagraph_ids &&
       values.dangerous_occurrence_subparagraph_ids.length !== 0) ||
-      (values.determination_type_code === "NDO" &&
+      (values.determination_type_code ===
+        Strings.INCIDENT_DETERMINATION_TYPES.notADangerousOccurance &&
         values.status_code &&
         values.determination_inspector_party_guid) ||
-      values.determination_type_code === "PEN")
+      values.determination_type_code === Strings.INCIDENT_DETERMINATION_TYPES.pending)
   );
 
 const invalidFollowUpPayload = (values) =>
@@ -105,7 +109,8 @@ const StepForms = (
         inspectors={props.inspectors}
         doDetermination={props.addIncidentFormValues.determination_type_code}
         uploadedFiles={uploadedFiles.filter(
-          (file) => file.mine_incident_document_type_code === "INI"
+          (file) =>
+            file.mine_incident_document_type_code === Strings.INCIDENT_DOCUMENT_TYPES.initial
         )}
         onFileLoad={onFileLoad}
         onRemoveFile={onRemoveFile}
@@ -116,7 +121,8 @@ const StepForms = (
         <Button id="step-back" type="tertiary" className="full-mobile" onClick={() => prev()}>
           Back
         </Button>
-        {props.addIncidentFormValues.determination_type_code !== "NDO" && (
+        {props.addIncidentFormValues.determination_type_code !==
+          Strings.INCIDENT_DETERMINATION_TYPES.notADangerousOccurance && (
           <Button
             id="step2-next"
             type="tertiary"
@@ -134,7 +140,8 @@ const StepForms = (
           disabled={invalidDetailPayload(props.addIncidentFormValues)}
         >
           {actionVerb(props.newIncident)}
-          {props.addIncidentFormValues.determination_type_code !== "NDO" && (
+          {props.addIncidentFormValues.determination_type_code !==
+            Strings.INCIDENT_DETERMINATION_TYPES.notADangerousOccurance && (
             <span>Initial&nbsp;</span>
           )}
           Incident
@@ -153,8 +160,9 @@ const StepForms = (
         incidentStatusCodeOptions={props.incidentStatusCodeOptions}
         hasFatalities={props.addIncidentFormValues.number_of_fatalities > 0 || false}
         hasFollowUp={props.addIncidentFormValues.followup_inspection || false}
+        determinationTypeCode={props.addIncidentFormValues.determination_type_code}
         uploadedFiles={uploadedFiles.filter(
-          (file) => file.mine_incident_document_type_code === "FIN"
+          (file) => file.mine_incident_document_type_code === Strings.INCIDENT_DOCUMENT_TYPES.final
         )}
         onFileLoad={onFileLoad}
         onRemoveFile={onRemoveFile}
@@ -185,9 +193,24 @@ export class AddIncidentModal extends Component {
       : [],
   };
 
+  formatTimestamp = (dateString, momentInstance) =>
+    dateString && momentInstance && `${dateString} ${momentInstance.format("HH:mm")}`;
+
+  parseFormDataIntoPayload = ({
+    reported_date,
+    reported_time,
+    incident_date,
+    incident_time,
+    ...remainingValues
+  }) => ({
+    ...remainingValues,
+    reported_timestamp: this.formatTimestamp(reported_date, reported_time),
+    incident_timestamp: this.formatTimestamp(incident_date, incident_time),
+  });
+
   handleIncidentSubmit = () => {
     this.props.onSubmit({
-      ...this.props.addIncidentFormValues,
+      ...this.parseFormDataIntoPayload(this.props.addIncidentFormValues),
       updated_documents: this.state.uploadedFiles,
     });
     // TODO: Catch error

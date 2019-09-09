@@ -1,0 +1,1 @@
+DROP TABLE mineral_tenure_xref CASCADE;

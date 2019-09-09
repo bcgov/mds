@@ -84,13 +84,6 @@ class MinePartyAppointment(AuditMixin, Base):
             return None
 
     @classmethod
-    def find_all_by_mine_party_appt_guid(cls, _id):
-        try:
-            return cls.query.filter_by(mine_party_appt_guid=_id).filter_by(deleted_ind=False)
-        except ValueError:
-            return None
-
-    @classmethod
     def find_by_mine_guid(cls, _id):
         try:
             return cls.find_by(mine_guid=_id)
@@ -114,36 +107,6 @@ class MinePartyAppointment(AuditMixin, Base):
             return cls.find_by(mine_party_appt_type_codes=[code])
         except ValueError:
             return None
-
-    @classmethod
-    def find_manager_history_by_mine_no(cls, mine_no):
-        # send internal API call to fetch matching mine record
-        mines_url = current_app.config['MINES_URL'] + '/mines/' + str(mine_no)
-        auth_headers = request.headers.get('Authorization')
-        if not auth_headers:
-            return None, 401, 'Unauthorized'
-
-        headers = {'Authorization': auth_headers}
-        response = requests.get(url=mines_url, headers=headers)
-        if not response:
-            return None, 500, 'Server error'
-        if response.status_code != 200:
-            return None, response.status_code, response.reason
-
-        # fetch mine history by mine_guid
-        try:
-            json_response = response.json()
-        except:
-            return None, 500, 'Server error'
-
-        related_mine_guid = json_response.get('guid')
-        if not related_mine_guid:
-            return None, 404, 'Mine not found'
-
-        records = cls.query.filter_by(mine_guid=related_mine_guid).all()
-        if len(records) == 0:
-            return None, 404, 'No Mine Manager history found'
-        return records, 200, 'OK'
 
     @classmethod
     def find_by(cls,

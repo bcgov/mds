@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Table, Button, Icon } from "antd";
+import { isEmpty } from "lodash";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import moment from "moment";
@@ -12,9 +13,9 @@ import {
 } from "@/selectors/staticContentSelectors";
 import { getInspectorsHash } from "@/selectors/partiesSelectors";
 import * as Permission from "@/constants/permissions";
-import { RED_CLOCK, EDIT_OUTLINE } from "@/constants/assets";
+import { RED_CLOCK, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import NullScreen from "@/components/common/NullScreen";
-import { formatDate } from "@/utils/helpers";
+import { formatDate, compareCodes } from "@/utils/helpers";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 import * as Strings from "@/constants/strings";
 import { COLOR } from "@/constants/styles";
@@ -24,7 +25,7 @@ import * as router from "@/constants/routes";
 const { errorRed } = COLOR;
 
 const propTypes = {
-  handleFilterChange: PropTypes.func,
+  handleVarianceSearch: PropTypes.func,
   variances: PropTypes.arrayOf(CustomPropTypes.variance).isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   varianceStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -33,39 +34,48 @@ const propTypes = {
   isApplication: PropTypes.bool,
   isDashboardView: PropTypes.bool,
   openEditVarianceModal: PropTypes.func,
-  filterVarianceStatusOptions: CustomPropTypes.filterOptions,
   params: PropTypes.shape({
     variance_application_status_code: PropTypes.arrayOf(PropTypes.string),
   }),
+  sortField: PropTypes.string,
+  sortDir: PropTypes.string,
 };
 
 const defaultProps = {
-  handleFilterChange: () => {},
   openEditVarianceModal: () => {},
   openViewVarianceModal: () => {},
+  handleVarianceSearch: () => {},
   isApplication: false,
   isDashboardView: false,
   params: {},
-  filterVarianceStatusOptions: [],
+  sortField: null,
+  sortDir: null,
 };
 
 const errorStyle = (isOverdue) => (isOverdue ? { color: errorRed } : {});
 
 const hideColumn = (condition) => (condition ? "column-hide" : "");
 
+const applySortIndicator = (_columns, field, dir) =>
+  _columns.map((column) => ({
+    ...column,
+    sortOrder: column.sortField === field ? dir.concat("end") : false,
+  }));
+
+const handleTableChange = (updateVarianceList) => (pagination, filters, sorter) => {
+  const params = isEmpty(sorter)
+    ? {
+        sort_field: undefined,
+        sort_dir: undefined,
+      }
+    : {
+        sort_field: sorter.column.sortField,
+        sort_dir: sorter.order.replace("end", ""),
+      };
+  updateVarianceList(params);
+};
+
 export class MineVarianceTable extends Component {
-  handleOpenModal = (event, isEditable, variance) => {
-    event.preventDefault();
-    if (isEditable) {
-      this.props.openEditVarianceModal(variance);
-    } else {
-      this.props.openViewVarianceModal(variance);
-    }
-  };
-
-  handleConditionalEdit = (code) =>
-    code === Strings.VARIANCE_APPLICATION_CODE || code === Strings.VARIANCE_DECISION_CODE;
-
   transformRowData = (variances, codeHash, statusHash) =>
     variances.map((variance) => ({
       key: variance.variance_guid,
@@ -73,7 +83,6 @@ export class MineVarianceTable extends Component {
       mineName: variance.mine_name || Strings.EMPTY_FIELD,
       mineGuid: variance.mine_guid,
       status: statusHash[variance.variance_application_status_code],
-      isEditable: this.handleConditionalEdit(variance.variance_application_status_code),
       compliance_article_id: codeHash[variance.compliance_article_id] || Strings.EMPTY_FIELD,
       expiry_date:
         (variance.expiry_date && formatDate(variance.expiry_date)) || Strings.EMPTY_FIELD,
@@ -84,6 +93,7 @@ export class MineVarianceTable extends Component {
       leadInspector:
         this.props.inspectorsHash[variance.inspector_party_guid] || Strings.EMPTY_FIELD,
       documents: variance.documents,
+      varianceNumber: variance.variance_no || Strings.EMPTY_FIELD,
     }));
 
   render() {
@@ -99,17 +109,33 @@ export class MineVarianceTable extends Component {
         ),
       },
       {
+        title: "Variance Number",
+        dataIndex: "varianceNumber",
+        sortField: "variance_id",
+        render: (text, record) => (
+          <div title="Variance Number" style={errorStyle(record.isOverdue)}>
+            {text}
+          </div>
+        ),
+        sorter: this.props.isDashboardView,
+      },
+      {
         title: "Code Section",
         dataIndex: "compliance_article_id",
+        sortField: "compliance_article_id",
         render: (text, record) => (
           <div title="Code Section" style={errorStyle(record.isOverdue)}>
             {text}
           </div>
         ),
+        sorter: !this.props.isDashboardView
+          ? (a, b) => compareCodes(a.compliance_article_id, b.compliance_article_id)
+          : true,
       },
       {
         title: "Mine Name",
         dataIndex: "mineName",
+        sortField: "mine_name",
         className: hideColumn(!this.props.isDashboardView),
         render: (text, record) => (
           <div
@@ -120,10 +146,12 @@ export class MineVarianceTable extends Component {
             <Link to={router.MINE_SUMMARY.dynamicRoute(record.mineGuid)}>{text}</Link>
           </div>
         ),
+        sorter: this.props.isDashboardView,
       },
       {
         title: "Lead Inspector",
         dataIndex: "leadInspector",
+        sortField: "lead_inspector",
         className: hideColumn(!this.props.isDashboardView),
         render: (text, record) => (
           <div
@@ -134,28 +162,29 @@ export class MineVarianceTable extends Component {
             {text}
           </div>
         ),
+        sorter: this.props.isDashboardView,
       },
       {
         title: "Submission Date",
         dataIndex: "received_date",
+        sortField: "received_date",
         className: hideColumn(!this.props.isApplication),
         render: (text) => (
           <div className={hideColumn(!this.props.isApplication)} title="Submission Date">
             {text}
           </div>
         ),
-        sorter:
-          !this.props.isDashboardView &&
-          ((a, b) => (moment(a.received_date) > moment(b.received_date) ? -1 : 1)),
+        sorter: !this.props.isDashboardView
+          ? (a, b) => (moment(a.received_date) > moment(b.received_date) ? -1 : 1)
+          : true,
         defaultSortOrder: "ascend",
       },
       {
         title: "Application Status",
         dataIndex: "status",
+        sortField: "variance_application_status_code",
         width: 200,
         className: hideColumn(!this.props.isApplication),
-        filteredValue: this.props.params.variance_application_status_code,
-        filters: this.props.isDashboardView && this.props.filterVarianceStatusOptions,
         render: (text, record) => (
           <div
             className={hideColumn(!this.props.isApplication)}
@@ -165,7 +194,7 @@ export class MineVarianceTable extends Component {
             {text}
           </div>
         ),
-        sorter: !this.props.isDashboardView && ((a, b) => (a.status > b.status ? -1 : 1)),
+        sorter: !this.props.isDashboardView ? (a, b) => (a.status > b.status ? -1 : 1) : true,
       },
       {
         title: "Issue Date",
@@ -242,17 +271,19 @@ export class MineVarianceTable extends Component {
                 type="primary"
                 size="small"
                 ghost
-                onClick={(event) =>
-                  this.handleOpenModal(event, record.isEditable, record.variance, record.isOverdue)
-                }
+                onClick={() => this.props.openEditVarianceModal(record.variance)}
               >
-                {record.isEditable ? (
-                  <img src={EDIT_OUTLINE} alt="Edit/View" className="icon-svg-filter" />
-                ) : (
-                  <Icon type="eye" className="icon-sm" />
-                )}
+                <img src={EDIT_OUTLINE_VIOLET} alt="Edit" className="icon-svg-filter" />
               </Button>
             </AuthorizationWrapper>
+            <Button
+              type="primary"
+              size="small"
+              ghost
+              onClick={() => this.props.openViewVarianceModal(record.variance)}
+            >
+              <Icon type="eye" alt="View" className="icon-sm" />
+            </Button>
           </div>
         ),
       },
@@ -261,10 +292,16 @@ export class MineVarianceTable extends Component {
     return (
       <div>
         <Table
-          onChange={this.props.isDashboardView ? this.props.handleFilterChange : null}
+          onChange={
+            this.props.isDashboardView ? handleTableChange(this.props.handleVarianceSearch) : null
+          }
           align="left"
           pagination={false}
-          columns={columns}
+          columns={
+            this.props.isDashboardView
+              ? applySortIndicator(columns, this.props.sortField, this.props.sortDir)
+              : columns
+          }
           locale={{
             emptyText: (
               <NullScreen

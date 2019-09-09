@@ -1,10 +1,13 @@
 # Backend API
 
-The project uses a Python 3.6 runtime environment and [Flask REST-plus](https://flask-restplus.readthedocs.io/en/stable/) framework for the API.
+The project uses a Python 3.6 runtime environment and [Flask
+REST-plus](https://flask-restplus.readthedocs.io/en/stable/) framework for the
+API.
 
 The application uses SQLAlchemy as our ORM to interact with the database.
 
-For the application directory structure, see [flask-RESTplus quickstart guide.](https://flask-restplus.readthedocs.io/en/stable/quickstart.html)
+For the application directory structure, see [flask-RESTplus quickstart
+guide.](https://flask-restplus.readthedocs.io/en/stable/quickstart.html)
 
 ## Directory/Naming convention
 
@@ -27,9 +30,12 @@ The application directory is structured as follows:
 
 ## Pre-requisites and Installation
 
-The application assumes you already have a working postgres DB with the required schema and tables and have the connection details in the .env file.
+If running on your host machine, the application assumes you already have a
+working postgres DB with the required schema and tables and have the connection
+details in the .env file.
 
-Follow the `.env-example` template to create an `.env` file with valid values before running the application.
+Follow the `.env-example` template to create an `.env` file with valid values
+before running the application.
 
 A. OS Level Installation
  - [Python 3.6](https://www.python.org/downloads/release/python-360/)
@@ -67,13 +73,18 @@ make backend
 
 ## Flask Click commands
 
-Flask supports [click commands](http://flask.pocoo.org/docs/1.0/cli/) which lets you run one-off commands from the command line without having to run the complete app.
+Flask supports [click commands](http://flask.pocoo.org/docs/1.0/cli/) which
+lets you run one-off commands from the command line without having to run the
+complete app.
 
-To see the list of all click commands, checkout `register_commands` method under the `__init__.py` file.
+To see the list of all click commands, checkout `register_commands` method
+under the `__init__.py` file.
 
 ## Testing
 
-The application uses `pytest` to run the tests and `coverage` to output the results. The testing structure is based around [flask testing documentation.](http://flask.pocoo.org/docs/1.0/testing/)
+The application uses `pytest` to run the tests and `coverage` to output the
+results. The testing structure is based around [flask testing
+documentation.](http://flask.pocoo.org/docs/1.0/testing/)
 
 To run tests, use the following command:
 ```

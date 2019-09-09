@@ -1,6 +1,6 @@
-# Frontend application
+# Minespace
 
-The project uses a [Node.js (v8)](https://nodejs.org/en/) runtime environment and [React.js](https://reactjs.org/) library for the frontend.
+The project uses a [Node.js (v10)](https://nodejs.org/en/) runtime environment and [React.js](https://reactjs.org/) library for the frontend.
 
 ## Module and Library dependencies
 
@@ -104,6 +104,19 @@ cd ../
 make frontend
 ```
 
+## Authentication
+
+This application requires a test BCeID in order to login and contribute locally.
+
+NOTE: MineSpace is using the same Keycloak client as CORE, thus if the user is currently authenticated through CORE with an IDIR, the session will persist on MineSpace.
+
+This is a known issue, knowing that Ministry staff will not be interacting with MineSpace and Proponents will not be interacting with CORE, it has been de-prioritized as it only affects the Dev team.
+
+To avoid having permission issues:
+
+- Do not have test CORE and test MineSpace authenticated on the same browser
+- Open MineSpace in an incognito window, or clear the browser cashe.
+
 ## Code Contribution Standards
 
 Contributors to this codebase are expected to follow the formatting and style
@@ -114,28 +127,28 @@ ensure that they are not introducing linting errors into the codebase with
 their changes. Modern text editors, such as VS Code, will indicate errors.
 See the usage guide below for more information on the linting CLI options.
 
-Lint one file
-
-```
-npm run lint ./filepath
-```
-
 Lint all files
 
 ```
-npm run lint ./src
+npm run lint
 ```
 
-Apply linting rules to one file
+Lint one file
 
 ```
-npm run lint ./filepath -- --fix
+npm run lint:file ./filepath
 ```
 
 Apply linting rules to all files
 
 ```
-npm run lint ./src -- --fix
+npm run lint -- --fix
+```
+
+Apply linting rules to one file
+
+```
+npm run lint:file ./filepath -- --fix
 ```
 
 Developers are encouraged to install the Prettier plugin appropriate for their
@@ -148,8 +161,12 @@ up formatting on-save:
 3. Ensure that no conflicting code formatting tools are enabled (ex. Beautify)
 
 Any developer who is unable or unwilling to apply the formatting on-save is
-asked to use the provided npm scripts to format their code before each commit.
-See the usage guide below for more information.
+asked to either use the provided npm scripts to format their code before each
+commit or to ensure that the git hooks are running. The provided git hooks will
+automatically lint and format on-commit. They will also run the relevant tests
+on-push.
+
+See the usage guide below for more information on manual formatting.
 
 Check one file
 

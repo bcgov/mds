@@ -12,6 +12,13 @@ const propTypes = {
   placeholder: PropTypes.string.isRequired,
   meta: PropTypes.objectOf(PropTypes.any).isRequired,
   options: PropTypes.array.isRequired.isRequired,
+  label: PropTypes.string,
+  changeOnSelect: PropTypes.bool,
+};
+
+const defaultProps = {
+  changeOnSelect: false,
+  label: "",
 };
 
 const RenderCascader = (props) => (
@@ -32,10 +39,12 @@ const RenderCascader = (props) => (
       placeholder={props.placeholder}
       options={props.options}
       {...props.input}
+      changeOnSelect={props.changeOnSelect}
     />
   </Form.Item>
 );
 
 RenderCascader.propTypes = propTypes;
+RenderCascader.defaultProps = defaultProps;
 
 export default RenderCascader;

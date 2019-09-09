@@ -1,550 +1,181 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MineList renders properly 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <MineList
-    mineIds={
-      Array [
-        "18133c75-49ad-4101-85f3-a43e35ae989a",
-        "18145c75-49ad-0101-85f3-a43e45ae989a",
-      ]
-    }
-    mineRegionHash={
+<Table
+  align="left"
+  bordered={false}
+  childrenColumnName="children"
+  className=""
+  columns={
+    Array [
       Object {
-        "NE": "North East",
-        "NW": "North West",
-        "SC": "South Central",
-        "SE": "South East",
-        "SW": "South West",
-      }
-    }
-    mines={
+        "dataIndex": "mineName",
+        "render": [Function],
+        "sortField": "mine_name",
+        "sortOrder": false,
+        "sorter": true,
+        "title": "Mine Name",
+        "width": 200,
+      },
       Object {
-        "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
-          "mine_expected_documents": Array [
-            Object {
-              "date_created": "2018-11-19",
-              "due_date": "",
-              "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
-              "exp_document_name": "OMS Manual",
-              "expected_document_status": Object {
-                "description": "Not Received",
-                "exp_document_status_code": "MIA",
-              },
-              "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-              "related_documents": Array [],
-              "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-            },
-          ],
-          "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-          "mine_location": Object {
-            "latitude": null,
-            "longitude": null,
+        "dataIndex": "mineNo",
+        "render": [Function],
+        "sortField": "mine_no",
+        "sortOrder": false,
+        "sorter": true,
+        "title": "Mine No.",
+        "width": 120,
+      },
+      Object {
+        "dataIndex": "operationalStatus",
+        "render": [Function],
+        "sortField": "mine_operation_status_code",
+        "sortOrder": false,
+        "title": "Operational Status",
+        "width": 160,
+      },
+      Object {
+        "dataIndex": "permit",
+        "render": [Function],
+        "sortOrder": false,
+        "title": "Permit No.",
+        "width": 150,
+      },
+      Object {
+        "dataIndex": "region",
+        "render": [Function],
+        "sortField": "mine_region",
+        "sortOrder": false,
+        "sorter": true,
+        "title": "Region",
+        "width": 150,
+      },
+      Object {
+        "dataIndex": "tenure",
+        "render": [Function],
+        "sortOrder": false,
+        "title": "Tenure",
+        "width": 150,
+      },
+      Object {
+        "dataIndex": "commodity",
+        "render": [Function],
+        "sortOrder": false,
+        "title": "Commodity",
+        "width": 150,
+      },
+      Object {
+        "dataIndex": "tsf",
+        "render": [Function],
+        "sortOrder": false,
+        "title": "TSF",
+        "width": 150,
+      },
+    ]
+  }
+  dataSource={
+    Array [
+      Object {
+        "commodity": Array [
+          Object {
+            "mine_tenure_type_code": "PLR",
           },
-          "mine_name": "mine3",
-          "mine_no": "BLAH9091",
-          "mine_permit": Array [],
-          "mine_region": "NE",
-          "mine_status": Object {
-            "effective_date": "2018-10-16",
-            "expiry_date": null,
-            "status_labels": Array [
-              "Closed",
-              "Care & Maintenance",
-            ],
-            "statusvalue": Array [
-              "CLD",
-              "CM",
-            ],
+          Object {
+            "mine_tenure_type_code": "MIN",
           },
-          "mine_tailings_storage_facilities": Array [
-            Object {
-              "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-              "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
-              "mine_tailings_storage_facility_name": "MockTSF",
-            },
-          ],
-          "mine_type": Array [
-            Object {
-              "mine_tenure_type_code": "PLR",
-            },
-            Object {
-              "mine_tenure_type_code": "MIN",
-            },
-          ],
-          "mineral_tenure_xref": Array [
-            Object {
-              "tenure_number_id": "1234567",
-            },
-          ],
-          "verified_status": Object {
-            "healthy_ind": null,
-            "mine_guid": null,
-            "mine_name": null,
-            "verifying_timestamp": null,
-            "verifying_user": null,
+        ],
+        "commodityHash": undefined,
+        "emptyField": "N/A",
+        "key": "18133c75-49ad-4101-85f3-a43e35ae989a",
+        "mineName": "mine3",
+        "mineNo": "BLAH9091",
+        "operationalStatus": "N/A",
+        "permit": null,
+        "region": "North East",
+        "tenure": Array [
+          Object {
+            "mine_tenure_type_code": "PLR",
           },
+          Object {
+            "mine_tenure_type_code": "MIN",
+          },
+        ],
+        "tenureHash": undefined,
+        "tsf": 1,
+        "verified_status": Object {
+          "healthy_ind": null,
+          "mine_guid": null,
+          "mine_name": null,
+          "verifying_timestamp": null,
+          "verifying_user": null,
         },
-        "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
-          "mine_expected_documents": Array [
-            Object {
-              "date_created": "2018-11-19",
-              "due_date": "",
-              "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
-              "exp_document_name": "OMS Manual",
-              "expected_document_status": Object {
-                "description": "Not Received",
-                "exp_document_status_code": "MIA",
-              },
-              "mine_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
-              "related_documents": Array [],
-              "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-            },
-          ],
+      },
+      Object {
+        "commodity": Array [
+          Object {
+            "mine_tenure_type_code": "PLR",
+          },
+          Object {
+            "mine_tenure_type_code": "MIN",
+          },
+        ],
+        "commodityHash": undefined,
+        "emptyField": "N/A",
+        "key": "18145c75-49ad-0101-85f3-a43e45ae989a",
+        "mineName": "mine2",
+        "mineNo": "BLAH9091",
+        "operationalStatus": "N/A",
+        "permit": Array [
+          Object {
+            "permit_guid": "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
+            "permit_no": "KNaaWwVdiJ40",
+          },
+          Object {
+            "permit_guid": "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
+            "permit_no": "xfM0c0ZKEw7B",
+          },
+        ],
+        "region": "North East",
+        "tenure": Array [
+          Object {
+            "mine_tenure_type_code": "PLR",
+          },
+          Object {
+            "mine_tenure_type_code": "MIN",
+          },
+        ],
+        "tenureHash": undefined,
+        "tsf": 1,
+        "verified_status": Object {
+          "healthy_ind": true,
           "mine_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
-          "mine_location": Object {
-            "latitude": null,
-            "longitude": null,
-          },
           "mine_name": "mine2",
-          "mine_no": "BLAH9091",
-          "mine_permit": Array [
-            Object {
-              "permit_guid": "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
-              "permit_no": "KNaaWwVdiJ40",
-            },
-            Object {
-              "permit_guid": "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
-              "permit_no": "xfM0c0ZKEw7B",
-            },
-          ],
-          "mine_region": "NE",
-          "mine_status": Object {
-            "effective_date": "2018-10-16",
-            "expiry_date": null,
-            "status_labels": Array [
-              "Closed",
-              "Care & Maintenance",
-            ],
-            "statusvalue": Array [
-              "CLD",
-              "CM",
-            ],
-          },
-          "mine_tailings_storage_facilities": Array [
-            Object {
-              "mine_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
-              "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f34",
-              "mine_tailings_storage_facility_name": "MockTSF1",
-            },
-          ],
-          "mine_type": Array [
-            Object {
-              "mine_tenure_type_code": "PLR",
-            },
-            Object {
-              "mine_tenure_type_code": "MIN",
-            },
-          ],
-          "mineral_tenure_xref": Array [
-            Object {
-              "tenure_number_id": "1234567",
-            },
-          ],
-          "verified_status": Object {
-            "healthy_ind": true,
-            "mine_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
-            "mine_name": "mine2",
-            "verifying_timestamp": null,
-            "verifying_user": null,
-          },
+          "verifying_timestamp": null,
+          "verifying_user": null,
         },
-      }
-    }
-    sortDir={null}
-    sortField={null}
-  />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateError": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "class",
-    "props": Object {
-      "align": "left",
-      "bordered": false,
-      "className": "",
-      "columns": Array [
-        Object {
-          "dataIndex": "mineName",
-          "render": [Function],
-          "sortField": "mine_name",
-          "sortOrder": false,
-          "sorter": true,
-          "title": "Mine Name",
-          "width": 200,
-        },
-        Object {
-          "dataIndex": "mineNo",
-          "render": [Function],
-          "sortField": "mine_no",
-          "sortOrder": false,
-          "sorter": true,
-          "title": "Mine No.",
-          "width": 120,
-        },
-        Object {
-          "dataIndex": "operationalStatus",
-          "render": [Function],
-          "sortField": "mine_operation_status_code",
-          "sortOrder": false,
-          "title": "Operational Status",
-          "width": 160,
-        },
-        Object {
-          "dataIndex": "permit",
-          "render": [Function],
-          "sortOrder": false,
-          "title": "Permit No.",
-          "width": 150,
-        },
-        Object {
-          "dataIndex": "region",
-          "render": [Function],
-          "sortField": "mine_region",
-          "sortOrder": false,
-          "sorter": true,
-          "title": "Region",
-          "width": 150,
-        },
-        Object {
-          "dataIndex": "tenure",
-          "render": [Function],
-          "sortOrder": false,
-          "title": "Tenure",
-          "width": 150,
-        },
-        Object {
-          "dataIndex": "commodity",
-          "render": [Function],
-          "sortOrder": false,
-          "title": "Commodity",
-          "width": 150,
-        },
-        Object {
-          "dataIndex": "tsf",
-          "render": [Function],
-          "sortOrder": false,
-          "title": "TSF",
-          "width": 150,
-        },
-      ],
-      "dataSource": Array [
-        Object {
-          "commodity": Array [
-            Object {
-              "mine_tenure_type_code": "PLR",
-            },
-            Object {
-              "mine_tenure_type_code": "MIN",
-            },
-          ],
-          "commodityHash": undefined,
-          "emptyField": "N/A",
-          "key": "18133c75-49ad-4101-85f3-a43e35ae989a",
-          "mineName": "mine3",
-          "mineNo": "BLAH9091",
-          "operationalStatus": "N/A",
-          "permit": null,
-          "region": "North East",
-          "tenure": Array [
-            Object {
-              "mine_tenure_type_code": "PLR",
-            },
-            Object {
-              "mine_tenure_type_code": "MIN",
-            },
-          ],
-          "tenureHash": undefined,
-          "tsf": 1,
-          "verified_status": Object {
-            "healthy_ind": null,
-            "mine_guid": null,
-            "mine_name": null,
-            "verifying_timestamp": null,
-            "verifying_user": null,
-          },
-        },
-        Object {
-          "commodity": Array [
-            Object {
-              "mine_tenure_type_code": "PLR",
-            },
-            Object {
-              "mine_tenure_type_code": "MIN",
-            },
-          ],
-          "commodityHash": undefined,
-          "emptyField": "N/A",
-          "key": "18145c75-49ad-0101-85f3-a43e45ae989a",
-          "mineName": "mine2",
-          "mineNo": "BLAH9091",
-          "operationalStatus": "N/A",
-          "permit": Array [
-            Object {
-              "permit_guid": "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
-              "permit_no": "KNaaWwVdiJ40",
-            },
-            Object {
-              "permit_guid": "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
-              "permit_no": "xfM0c0ZKEw7B",
-            },
-          ],
-          "region": "North East",
-          "tenure": Array [
-            Object {
-              "mine_tenure_type_code": "PLR",
-            },
-            Object {
-              "mine_tenure_type_code": "MIN",
-            },
-          ],
-          "tenureHash": undefined,
-          "tsf": 1,
-          "verified_status": Object {
-            "healthy_ind": true,
-            "mine_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
-            "mine_name": "mine2",
-            "verifying_timestamp": null,
-            "verifying_user": null,
-          },
-        },
-      ],
-      "indentSize": 20,
-      "loading": false,
-      "locale": Object {
-        "emptyText": <NullScreen
-          type="no-results"
-        />,
       },
-      "onChange": [Function],
-      "pagination": false,
-      "rowKey": "key",
-      "showHeader": true,
-      "size": "default",
-      "sortDirections": Array [
-        "ascend",
-        "descend",
-      ],
-      "useFixedHeader": false,
-    },
-    "ref": null,
-    "rendered": null,
-    "type": [Function],
-  },
-  Symbol(enzyme.__nodes__): Array [
+    ]
+  }
+  indentSize={20}
+  loading={false}
+  locale={
     Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "class",
-      "props": Object {
-        "align": "left",
-        "bordered": false,
-        "className": "",
-        "columns": Array [
-          Object {
-            "dataIndex": "mineName",
-            "render": [Function],
-            "sortField": "mine_name",
-            "sortOrder": false,
-            "sorter": true,
-            "title": "Mine Name",
-            "width": 200,
-          },
-          Object {
-            "dataIndex": "mineNo",
-            "render": [Function],
-            "sortField": "mine_no",
-            "sortOrder": false,
-            "sorter": true,
-            "title": "Mine No.",
-            "width": 120,
-          },
-          Object {
-            "dataIndex": "operationalStatus",
-            "render": [Function],
-            "sortField": "mine_operation_status_code",
-            "sortOrder": false,
-            "title": "Operational Status",
-            "width": 160,
-          },
-          Object {
-            "dataIndex": "permit",
-            "render": [Function],
-            "sortOrder": false,
-            "title": "Permit No.",
-            "width": 150,
-          },
-          Object {
-            "dataIndex": "region",
-            "render": [Function],
-            "sortField": "mine_region",
-            "sortOrder": false,
-            "sorter": true,
-            "title": "Region",
-            "width": 150,
-          },
-          Object {
-            "dataIndex": "tenure",
-            "render": [Function],
-            "sortOrder": false,
-            "title": "Tenure",
-            "width": 150,
-          },
-          Object {
-            "dataIndex": "commodity",
-            "render": [Function],
-            "sortOrder": false,
-            "title": "Commodity",
-            "width": 150,
-          },
-          Object {
-            "dataIndex": "tsf",
-            "render": [Function],
-            "sortOrder": false,
-            "title": "TSF",
-            "width": 150,
-          },
-        ],
-        "dataSource": Array [
-          Object {
-            "commodity": Array [
-              Object {
-                "mine_tenure_type_code": "PLR",
-              },
-              Object {
-                "mine_tenure_type_code": "MIN",
-              },
-            ],
-            "commodityHash": undefined,
-            "emptyField": "N/A",
-            "key": "18133c75-49ad-4101-85f3-a43e35ae989a",
-            "mineName": "mine3",
-            "mineNo": "BLAH9091",
-            "operationalStatus": "N/A",
-            "permit": null,
-            "region": "North East",
-            "tenure": Array [
-              Object {
-                "mine_tenure_type_code": "PLR",
-              },
-              Object {
-                "mine_tenure_type_code": "MIN",
-              },
-            ],
-            "tenureHash": undefined,
-            "tsf": 1,
-            "verified_status": Object {
-              "healthy_ind": null,
-              "mine_guid": null,
-              "mine_name": null,
-              "verifying_timestamp": null,
-              "verifying_user": null,
-            },
-          },
-          Object {
-            "commodity": Array [
-              Object {
-                "mine_tenure_type_code": "PLR",
-              },
-              Object {
-                "mine_tenure_type_code": "MIN",
-              },
-            ],
-            "commodityHash": undefined,
-            "emptyField": "N/A",
-            "key": "18145c75-49ad-0101-85f3-a43e45ae989a",
-            "mineName": "mine2",
-            "mineNo": "BLAH9091",
-            "operationalStatus": "N/A",
-            "permit": Array [
-              Object {
-                "permit_guid": "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
-                "permit_no": "KNaaWwVdiJ40",
-              },
-              Object {
-                "permit_guid": "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
-                "permit_no": "xfM0c0ZKEw7B",
-              },
-            ],
-            "region": "North East",
-            "tenure": Array [
-              Object {
-                "mine_tenure_type_code": "PLR",
-              },
-              Object {
-                "mine_tenure_type_code": "MIN",
-              },
-            ],
-            "tenureHash": undefined,
-            "tsf": 1,
-            "verified_status": Object {
-              "healthy_ind": true,
-              "mine_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
-              "mine_name": "mine2",
-              "verifying_timestamp": null,
-              "verifying_user": null,
-            },
-          },
-        ],
-        "indentSize": 20,
-        "loading": false,
-        "locale": Object {
-          "emptyText": <NullScreen
-            type="no-results"
-          />,
-        },
-        "onChange": [Function],
-        "pagination": false,
-        "rowKey": "key",
-        "showHeader": true,
-        "size": "default",
-        "sortDirections": Array [
-          "ascend",
-          "descend",
-        ],
-        "useFixedHeader": false,
-      },
-      "ref": null,
-      "rendered": null,
-      "type": [Function],
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getDerivedStateFromProps": true,
-          "getSnapshotBeforeUpdate": true,
-          "setState": Object {
-            "skipsComponentDidUpdateOnNullish": true,
-          },
-        },
-      },
-    },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
-  },
-}
+      "emptyText": <NullScreen
+        type="no-results"
+      />,
+    }
+  }
+  onChange={[Function]}
+  pagination={false}
+  rowKey="key"
+  showHeader={true}
+  size="default"
+  sortDirections={
+    Array [
+      "ascend",
+      "descend",
+    ]
+  }
+  useFixedHeader={false}
+/>
 `;

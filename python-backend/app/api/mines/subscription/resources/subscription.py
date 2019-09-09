@@ -4,7 +4,7 @@ from werkzeug.exceptions import BadRequest, NotFound
 
 from app.extensions import api
 from app.api.utils.include.user_info import User
-from ....utils.resources_mixins import UserMixin, ErrorMixin
+from ....utils.resources_mixins import UserMixin
 from ....utils.access_decorators import (requires_any_of, VIEW_ALL)
 from ..models.subscription import Subscription
 from ...mine.models.mine import Mine
@@ -16,7 +16,7 @@ MINE_GUID_MODEL = api.model('mine_guid', {
 })
 
 
-class MineSubscriptionListResource(Resource, UserMixin, ErrorMixin):
+class MineSubscriptionListResource(Resource, UserMixin):
     @api.doc(description='Get a list of all mines subscribed to by a user.')
     @requires_any_of([VIEW_ALL])
     @api.marshal_with(MINES_MODEL, code=200, envelope='mines')
@@ -30,7 +30,7 @@ class MineSubscriptionListResource(Resource, UserMixin, ErrorMixin):
         return mines
 
 
-class MineSubscriptionResource(Resource, UserMixin, ErrorMixin):
+class MineSubscriptionResource(Resource, UserMixin):
     @api.doc(
         description='Adds a mine to the subscriptions of the user that sends the request',
         params={'mine_guid': 'Mine guid.'})

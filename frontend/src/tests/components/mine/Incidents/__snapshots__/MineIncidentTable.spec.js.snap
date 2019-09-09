@@ -1,547 +1,120 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MineIncidentTable renders properly 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <MineIncidentTable
-    followupActions={
+<div>
+  <Table
+    align="left"
+    bordered={false}
+    childrenColumnName="children"
+    className=""
+    columns={
       Array [
         Object {
-          "active_ind": true,
-          "description": "No Action",
-          "display_order": 20,
-          "mine_incident_followup_type_code": "NOA",
+          "dataIndex": "mine_incident_report_no",
+          "sorter": [Function],
+          "title": "Incident Report No.",
+        },
+        Object {
+          "dataIndex": "incident_timestamp",
+          "sorter": [Function],
+          "title": "Incident Time",
+        },
+        Object {
+          "dataIndex": "reported_by",
+          "filters": Array [
+            Object {
+              "text": undefined,
+              "value": undefined,
+            },
+          ],
+          "onFilter": [Function],
+          "sorter": [Function],
+          "title": "Reported By",
+        },
+        Object {
+          "dataIndex": "followup_action",
+          "filters": Array [
+            Object {
+              "text": undefined,
+              "value": undefined,
+            },
+          ],
+          "onFilter": [Function],
+          "render": [Function],
+          "title": "EMPR Action",
+        },
+        Object {
+          "dataIndex": "initialDocuments",
+          "render": [Function],
+          "title": "Initial Report Documents",
+          "width": 200,
+        },
+        Object {
+          "dataIndex": "finalDocuments",
+          "render": [Function],
+          "title": "Final Report Documents",
+          "width": 200,
+        },
+        Object {
+          "dataIndex": "handleEditModal",
+          "render": [Function],
+          "title": "",
         },
       ]
     }
-    handleEditMineIncident={[MockFunction]}
-    incidents={
+    dataSource={
       Array [
         Object {
-          "closing_report_summary": "Parent south person form evidence receive tree wide memory but medical car himself benefit key really series sea enter money prove if lawyer seven ready religious shake.",
-          "followup_inspection_no": "721814",
-          "followup_type_code": "NOA",
-          "incident_description": "Paper others interview development military short design often town participant church road daughter.",
-          "incident_timestamp": "2019-04-06T00:34:44+00:00",
-          "mine_guid": "3cfba01f-f8f3-4948-b488-d9e7a915f5ec",
-          "mine_incident_guid": "dc101155-de3e-4f37-8303-eb6a6d2d5866",
-          "mine_incident_id_year": 2019,
-          "mine_incident_report_no": "2019-70",
-          "reported_by": "Robert Bell",
-          "reported_by_role": "Investment banker, operational",
-          "reported_timestamp": "2019-03-17T17:42:37+00:00",
-        },
-      ]
-    }
-    openMineIncidentModal={[MockFunction]}
-    openViewMineIncidentModal={[MockFunction]}
-  />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateError": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "host",
-    "props": Object {
-      "children": <Table
-        align="left"
-        bordered={false}
-        className=""
-        columns={
-          Array [
-            Object {
-              "dataIndex": "mine_incident_report_no",
-              "sorter": [Function],
-              "title": "Incident Report No.",
-            },
-            Object {
-              "dataIndex": "incident_timestamp",
-              "sorter": [Function],
-              "title": "Incident Time",
-            },
-            Object {
-              "dataIndex": "reported_by",
-              "filters": Array [
-                Object {
-                  "text": undefined,
-                  "value": undefined,
-                },
-              ],
-              "onFilter": [Function],
-              "sorter": [Function],
-              "title": "Reported By",
-            },
-            Object {
-              "dataIndex": "followup_action",
-              "filters": Array [
-                Object {
-                  "text": undefined,
-                  "value": undefined,
-                },
-              ],
-              "onFilter": [Function],
-              "render": [Function],
-              "title": "EMPR Action",
-            },
-            Object {
-              "dataIndex": "initialDocuments",
-              "render": [Function],
-              "title": "Initial Report Documents",
-              "width": 200,
-            },
-            Object {
-              "dataIndex": "finalDocuments",
-              "render": [Function],
-              "title": "Final Report Documents",
-              "width": 200,
-            },
-            Object {
-              "dataIndex": "handleEditModal",
-              "render": [Function],
-              "title": "",
-            },
-          ]
-        }
-        dataSource={
-          Array [
-            Object {
-              "docs": undefined,
-              "followup_action": Object {
-                "active_ind": true,
-                "description": "No Action",
-                "display_order": 20,
-                "mine_incident_followup_type_code": "NOA",
-              },
-              "handleEditMineIncident": [MockFunction],
-              "incident": Object {
-                "closing_report_summary": "Parent south person form evidence receive tree wide memory but medical car himself benefit key really series sea enter money prove if lawyer seven ready religious shake.",
-                "followup_inspection_no": "721814",
-                "followup_type_code": "NOA",
-                "incident_description": "Paper others interview development military short design often town participant church road daughter.",
-                "incident_timestamp": "2019-04-06T00:34:44+00:00",
-                "mine_guid": "3cfba01f-f8f3-4948-b488-d9e7a915f5ec",
-                "mine_incident_guid": "dc101155-de3e-4f37-8303-eb6a6d2d5866",
-                "mine_incident_id_year": 2019,
-                "mine_incident_report_no": "2019-70",
-                "reported_by": "Robert Bell",
-                "reported_by_role": "Investment banker, operational",
-                "reported_timestamp": "2019-03-17T17:42:37+00:00",
-              },
-              "incident_timestamp": "Apr 06 2019",
-              "key": undefined,
-              "mine_incident_report_no": "2019-70",
-              "openMineIncidentModal": [MockFunction],
-              "openViewMineIncidentModal": [MockFunction],
-              "reported_by": undefined,
-              "reported_timestamp": "Mar 17 2019",
-            },
-          ]
-        }
-        indentSize={20}
-        loading={false}
-        locale={
-          Object {
-            "emptyText": <NullScreen
-              type="incidents"
-            />,
-          }
-        }
-        pagination={false}
-        rowKey="key"
-        showHeader={true}
-        size="default"
-        sortDirections={
-          Array [
-            "ascend",
-            "descend",
-          ]
-        }
-        useFixedHeader={false}
-      />,
-    },
-    "ref": null,
-    "rendered": Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "class",
-      "props": Object {
-        "align": "left",
-        "bordered": false,
-        "className": "",
-        "columns": Array [
-          Object {
-            "dataIndex": "mine_incident_report_no",
-            "sorter": [Function],
-            "title": "Incident Report No.",
+          "docs": undefined,
+          "followup_action": Object {
+            "description": "No Action",
+            "mine_incident_followup_type_code": "NOA",
           },
-          Object {
-            "dataIndex": "incident_timestamp",
-            "sorter": [Function],
-            "title": "Incident Time",
-          },
-          Object {
-            "dataIndex": "reported_by",
-            "filters": Array [
-              Object {
-                "text": undefined,
-                "value": undefined,
-              },
-            ],
-            "onFilter": [Function],
-            "sorter": [Function],
-            "title": "Reported By",
-          },
-          Object {
-            "dataIndex": "followup_action",
-            "filters": Array [
-              Object {
-                "text": undefined,
-                "value": undefined,
-              },
-            ],
-            "onFilter": [Function],
-            "render": [Function],
-            "title": "EMPR Action",
-          },
-          Object {
-            "dataIndex": "initialDocuments",
-            "render": [Function],
-            "title": "Initial Report Documents",
-            "width": 200,
-          },
-          Object {
-            "dataIndex": "finalDocuments",
-            "render": [Function],
-            "title": "Final Report Documents",
-            "width": 200,
-          },
-          Object {
-            "dataIndex": "handleEditModal",
-            "render": [Function],
-            "title": "",
-          },
-        ],
-        "dataSource": Array [
-          Object {
-            "docs": undefined,
-            "followup_action": Object {
-              "active_ind": true,
-              "description": "No Action",
-              "display_order": 20,
-              "mine_incident_followup_type_code": "NOA",
-            },
-            "handleEditMineIncident": [MockFunction],
-            "incident": Object {
-              "closing_report_summary": "Parent south person form evidence receive tree wide memory but medical car himself benefit key really series sea enter money prove if lawyer seven ready religious shake.",
-              "followup_inspection_no": "721814",
-              "followup_type_code": "NOA",
-              "incident_description": "Paper others interview development military short design often town participant church road daughter.",
-              "incident_timestamp": "2019-04-06T00:34:44+00:00",
-              "mine_guid": "3cfba01f-f8f3-4948-b488-d9e7a915f5ec",
-              "mine_incident_guid": "dc101155-de3e-4f37-8303-eb6a6d2d5866",
-              "mine_incident_id_year": 2019,
-              "mine_incident_report_no": "2019-70",
-              "reported_by": "Robert Bell",
-              "reported_by_role": "Investment banker, operational",
-              "reported_timestamp": "2019-03-17T17:42:37+00:00",
-            },
-            "incident_timestamp": "Apr 06 2019",
-            "key": undefined,
+          "handleEditMineIncident": [MockFunction],
+          "incident": Object {
+            "closing_report_summary": "Parent south person form evidence receive tree wide memory but medical car himself benefit key really series sea enter money prove if lawyer seven ready religious shake.",
+            "followup_inspection_no": "721814",
+            "followup_type_code": "NOA",
+            "incident_description": "Paper others interview development military short design often town participant church road daughter.",
+            "incident_timestamp": "2019-04-06T00:34:44+00:00",
+            "mine_guid": "3cfba01f-f8f3-4948-b488-d9e7a915f5ec",
+            "mine_incident_guid": "dc101155-de3e-4f37-8303-eb6a6d2d5866",
+            "mine_incident_id_year": 2019,
             "mine_incident_report_no": "2019-70",
-            "openMineIncidentModal": [MockFunction],
-            "openViewMineIncidentModal": [MockFunction],
-            "reported_by": undefined,
-            "reported_timestamp": "Mar 17 2019",
+            "reported_by": "Robert Bell",
+            "reported_by_role": "Investment banker, operational",
+            "reported_timestamp": "2019-03-17T17:42:37+00:00",
           },
-        ],
-        "indentSize": 20,
-        "loading": false,
-        "locale": Object {
-          "emptyText": <NullScreen
-            type="incidents"
-          />,
+          "incident_timestamp": "Apr 06 2019",
+          "key": undefined,
+          "mine_incident_report_no": "2019-70",
+          "openMineIncidentModal": [MockFunction],
+          "openViewMineIncidentModal": [MockFunction],
+          "reported_by": undefined,
+          "reported_timestamp": "Mar 17 2019",
         },
-        "pagination": false,
-        "rowKey": "key",
-        "showHeader": true,
-        "size": "default",
-        "sortDirections": Array [
-          "ascend",
-          "descend",
-        ],
-        "useFixedHeader": false,
-      },
-      "ref": null,
-      "rendered": null,
-      "type": [Function],
-    },
-    "type": "div",
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "host",
-      "props": Object {
-        "children": <Table
-          align="left"
-          bordered={false}
-          className=""
-          columns={
-            Array [
-              Object {
-                "dataIndex": "mine_incident_report_no",
-                "sorter": [Function],
-                "title": "Incident Report No.",
-              },
-              Object {
-                "dataIndex": "incident_timestamp",
-                "sorter": [Function],
-                "title": "Incident Time",
-              },
-              Object {
-                "dataIndex": "reported_by",
-                "filters": Array [
-                  Object {
-                    "text": undefined,
-                    "value": undefined,
-                  },
-                ],
-                "onFilter": [Function],
-                "sorter": [Function],
-                "title": "Reported By",
-              },
-              Object {
-                "dataIndex": "followup_action",
-                "filters": Array [
-                  Object {
-                    "text": undefined,
-                    "value": undefined,
-                  },
-                ],
-                "onFilter": [Function],
-                "render": [Function],
-                "title": "EMPR Action",
-              },
-              Object {
-                "dataIndex": "initialDocuments",
-                "render": [Function],
-                "title": "Initial Report Documents",
-                "width": 200,
-              },
-              Object {
-                "dataIndex": "finalDocuments",
-                "render": [Function],
-                "title": "Final Report Documents",
-                "width": 200,
-              },
-              Object {
-                "dataIndex": "handleEditModal",
-                "render": [Function],
-                "title": "",
-              },
-            ]
-          }
-          dataSource={
-            Array [
-              Object {
-                "docs": undefined,
-                "followup_action": Object {
-                  "active_ind": true,
-                  "description": "No Action",
-                  "display_order": 20,
-                  "mine_incident_followup_type_code": "NOA",
-                },
-                "handleEditMineIncident": [MockFunction],
-                "incident": Object {
-                  "closing_report_summary": "Parent south person form evidence receive tree wide memory but medical car himself benefit key really series sea enter money prove if lawyer seven ready religious shake.",
-                  "followup_inspection_no": "721814",
-                  "followup_type_code": "NOA",
-                  "incident_description": "Paper others interview development military short design often town participant church road daughter.",
-                  "incident_timestamp": "2019-04-06T00:34:44+00:00",
-                  "mine_guid": "3cfba01f-f8f3-4948-b488-d9e7a915f5ec",
-                  "mine_incident_guid": "dc101155-de3e-4f37-8303-eb6a6d2d5866",
-                  "mine_incident_id_year": 2019,
-                  "mine_incident_report_no": "2019-70",
-                  "reported_by": "Robert Bell",
-                  "reported_by_role": "Investment banker, operational",
-                  "reported_timestamp": "2019-03-17T17:42:37+00:00",
-                },
-                "incident_timestamp": "Apr 06 2019",
-                "key": undefined,
-                "mine_incident_report_no": "2019-70",
-                "openMineIncidentModal": [MockFunction],
-                "openViewMineIncidentModal": [MockFunction],
-                "reported_by": undefined,
-                "reported_timestamp": "Mar 17 2019",
-              },
-            ]
-          }
-          indentSize={20}
-          loading={false}
-          locale={
-            Object {
-              "emptyText": <NullScreen
-                type="incidents"
-              />,
-            }
-          }
-          pagination={false}
-          rowKey="key"
-          showHeader={true}
-          size="default"
-          sortDirections={
-            Array [
-              "ascend",
-              "descend",
-            ]
-          }
-          useFixedHeader={false}
+      ]
+    }
+    indentSize={20}
+    loading={false}
+    locale={
+      Object {
+        "emptyText": <NullScreen
+          type="incidents"
         />,
-      },
-      "ref": null,
-      "rendered": Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "align": "left",
-          "bordered": false,
-          "className": "",
-          "columns": Array [
-            Object {
-              "dataIndex": "mine_incident_report_no",
-              "sorter": [Function],
-              "title": "Incident Report No.",
-            },
-            Object {
-              "dataIndex": "incident_timestamp",
-              "sorter": [Function],
-              "title": "Incident Time",
-            },
-            Object {
-              "dataIndex": "reported_by",
-              "filters": Array [
-                Object {
-                  "text": undefined,
-                  "value": undefined,
-                },
-              ],
-              "onFilter": [Function],
-              "sorter": [Function],
-              "title": "Reported By",
-            },
-            Object {
-              "dataIndex": "followup_action",
-              "filters": Array [
-                Object {
-                  "text": undefined,
-                  "value": undefined,
-                },
-              ],
-              "onFilter": [Function],
-              "render": [Function],
-              "title": "EMPR Action",
-            },
-            Object {
-              "dataIndex": "initialDocuments",
-              "render": [Function],
-              "title": "Initial Report Documents",
-              "width": 200,
-            },
-            Object {
-              "dataIndex": "finalDocuments",
-              "render": [Function],
-              "title": "Final Report Documents",
-              "width": 200,
-            },
-            Object {
-              "dataIndex": "handleEditModal",
-              "render": [Function],
-              "title": "",
-            },
-          ],
-          "dataSource": Array [
-            Object {
-              "docs": undefined,
-              "followup_action": Object {
-                "active_ind": true,
-                "description": "No Action",
-                "display_order": 20,
-                "mine_incident_followup_type_code": "NOA",
-              },
-              "handleEditMineIncident": [MockFunction],
-              "incident": Object {
-                "closing_report_summary": "Parent south person form evidence receive tree wide memory but medical car himself benefit key really series sea enter money prove if lawyer seven ready religious shake.",
-                "followup_inspection_no": "721814",
-                "followup_type_code": "NOA",
-                "incident_description": "Paper others interview development military short design often town participant church road daughter.",
-                "incident_timestamp": "2019-04-06T00:34:44+00:00",
-                "mine_guid": "3cfba01f-f8f3-4948-b488-d9e7a915f5ec",
-                "mine_incident_guid": "dc101155-de3e-4f37-8303-eb6a6d2d5866",
-                "mine_incident_id_year": 2019,
-                "mine_incident_report_no": "2019-70",
-                "reported_by": "Robert Bell",
-                "reported_by_role": "Investment banker, operational",
-                "reported_timestamp": "2019-03-17T17:42:37+00:00",
-              },
-              "incident_timestamp": "Apr 06 2019",
-              "key": undefined,
-              "mine_incident_report_no": "2019-70",
-              "openMineIncidentModal": [MockFunction],
-              "openViewMineIncidentModal": [MockFunction],
-              "reported_by": undefined,
-              "reported_timestamp": "Mar 17 2019",
-            },
-          ],
-          "indentSize": 20,
-          "loading": false,
-          "locale": Object {
-            "emptyText": <NullScreen
-              type="incidents"
-            />,
-          },
-          "pagination": false,
-          "rowKey": "key",
-          "showHeader": true,
-          "size": "default",
-          "sortDirections": Array [
-            "ascend",
-            "descend",
-          ],
-          "useFixedHeader": false,
-        },
-        "ref": null,
-        "rendered": null,
-        "type": [Function],
-      },
-      "type": "div",
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getDerivedStateFromProps": true,
-          "getSnapshotBeforeUpdate": true,
-          "setState": Object {
-            "skipsComponentDidUpdateOnNullish": true,
-          },
-        },
-      },
-    },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
-  },
-}
+      }
+    }
+    pagination={false}
+    rowKey="key"
+    showHeader={true}
+    size="default"
+    sortDirections={
+      Array [
+        "ascend",
+        "descend",
+      ]
+    }
+    useFixedHeader={false}
+  />
+</div>
 `;

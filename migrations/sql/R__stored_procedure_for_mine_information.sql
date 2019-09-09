@@ -487,17 +487,15 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
 
         DECLARE
             old_row         integer;
-            new_row         integer;
             update_row      integer;
-            delete_row      integer;
         BEGIN
-            RAISE NOTICE '.. Step 4 of 5: Update mine_location in MDS';
-            SELECT count(*) FROM mine_location into old_row;
+            RAISE NOTICE '.. Step 4 of 5: Update mine location in MDS';
+            SELECT count(*) FROM mine into old_row;
 
-            -- Upsert data from ETL_LOCATION into mine_location
+            -- Update mine with data from ETL_LOCATION
             RAISE NOTICE '.. Update existing records with latest MMS data';
             WITH updated_rows AS (
-                UPDATE mine_location
+                UPDATE mine
                 SET latitude         = ETL_LOCATION.latitude ,
                     longitude        = ETL_LOCATION.longitude,
                     mine_location_description = ETL_LOCATION.mine_location_description,
@@ -508,66 +506,15 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                 INNER JOIN ETL_MINE
                     ON ETL_LOCATION.mine_guid = ETL_MINE.mine_guid
                 WHERE
-                    ETL_LOCATION.mine_guid = mine_location.mine_guid
-                AND (ETL_LOCATION.latitude != mine_location.latitude
-                    OR ETL_LOCATION.longitude != mine_location.longitude
-                    OR ETL_LOCATION.mine_location_description != mine_location.mine_location_description)
+                    ETL_LOCATION.mine_guid = mine.mine_guid
+                AND (ETL_LOCATION.latitude != mine.latitude
+                    OR ETL_LOCATION.longitude != mine.longitude
+                    OR ETL_LOCATION.mine_location_description != mine.mine_location_description)
                 RETURNING 1
             )
             SELECT count(*) FROM updated_rows INTO update_row;
-            RAISE NOTICE '....# of mine_location records in MDS: %', old_row;
-            RAISE NOTICE '....# of mine_location records updated in MDS: %', update_row;
-
-            RAISE NOTICE '.. Insert new ETL_LOCATION records into mine_location';
-            WITH new_record AS (
-                SELECT *
-                FROM ETL_LOCATION
-                WHERE NOT EXISTS (
-                    SELECT  1
-                    FROM    mine_location
-                    WHERE   mine_guid = ETL_LOCATION.mine_guid
-                )
-            )
-            INSERT INTO mine_location(
-                mine_location_guid  ,
-                mine_guid           ,
-                latitude            ,
-                longitude           ,
-                mine_location_description,
-                geom                ,
-                effective_date      ,
-                expiry_date         ,
-                create_user         ,
-                create_timestamp    ,
-                update_user         ,
-                update_timestamp    )
-            SELECT
-                gen_random_uuid()   ,
-                new.mine_guid       ,
-                new.latitude        ,
-                new.longitude       ,
-                new.mine_location_description,
-                ST_SetSRID(ST_MakePoint(new.longitude, new.latitude), 3005),
-                now()               ,
-                NULL                ,
-                'mms_migration'     ,
-                now()               ,
-                'mms_migration'     ,
-                now()
-            FROM new_record new;
-            SELECT count(*) FROM mine_location into new_row;
-
-            -- Remove invalid rows that were updated or inserted
-            WITH deleted_rows AS (
-                DELETE FROM mine_location
-                WHERE latitude IS NULL OR longitude IS NULL
-                RETURNING 1
-            )
-            SELECT COUNT(*) FROM deleted_rows INTO delete_row;
-
-            RAISE NOTICE '....# of new mine_location records loaded into MDS: %.', (new_row-old_row);
-            RAISE NOTICE '....# of mine_location records removed from MDS: %.', (delete_row);
-            RAISE NOTICE '....Total mine records with location info in the MDS: %.', (new_row-delete_row);
+            RAISE NOTICE '....# of mine location records in MDS: %', old_row;
+            RAISE NOTICE '....# of mine location records updated in MDS: %', update_row;
         END;
 
         DECLARE

@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import CustomPropTypes from "@/customPropTypes";
 import { Button } from "antd";
+import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
 import { VarianceDetails } from "../mine/Variances/VarianceDetails";
 import { getInspectorsHash } from "@/selectors/partiesSelectors";

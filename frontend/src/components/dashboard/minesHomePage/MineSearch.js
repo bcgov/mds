@@ -16,12 +16,21 @@ import CustomPropTypes from "@/customPropTypes";
 const propTypes = {
   fetchMineNameList: PropTypes.func.isRequired,
   handleMineSearch: PropTypes.func,
+  initialValues: PropTypes.shape({
+    status: PropTypes.arrayOf(PropTypes.string),
+    region: PropTypes.arrayOf(PropTypes.string),
+    tenure: PropTypes.arrayOf(PropTypes.string),
+    commodity: PropTypes.arrayOf(PropTypes.string),
+    tsf: PropTypes.string,
+    major: PropTypes.bool,
+  }),
   handleCoordinateSearch: PropTypes.func,
   mineNameList: PropTypes.arrayOf(CustomPropTypes.mineName),
   isMapView: PropTypes.bool,
 };
 
 const defaultProps = {
+  initialValues: {},
   mineNameList: [],
   handleMineSearch: () => {},
   handleCoordinateSearch: () => {},

@@ -10,15 +10,25 @@ const setupDispatchProps = () => {
   dispatchProps.openModal = jest.fn();
   dispatchProps.closeModal = jest.fn();
   dispatchProps.fetchMineIncidents = jest.fn();
+  dispatchProps.fetchIncidentDocumentTypeOptions = jest.fn();
+  dispatchProps.fetchMineIncidentFollowActionOptions = jest.fn();
+  dispatchProps.fetchMineIncidentDeterminationOptions = jest.fn();
+  dispatchProps.fetchMineIncidentStatusCodeOptions = jest.fn();
   dispatchProps.createMineIncident = jest.fn();
   dispatchProps.updateMineIncident = jest.fn();
   dispatchProps.destroy = jest.fn();
 };
 
 const setupReducerProps = () => {
-  reducerProps.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
-  reducerProps.mineIncidents = MOCK.INCIDENTS.mine_incidents;
+  reducerProps.mines = MOCK.MINES.mines;
+  [reducerProps.mineGuid] = MOCK.MINES.mineIds;
+  reducerProps.mineIncidents = MOCK.INCIDENTS.records;
   reducerProps.followupActions = MOCK.FOLLOWUP_ACTIONS;
+  reducerProps.inspectors = MOCK.INSPECTORS.results;
+  reducerProps.followupActionsOptions = {};
+  reducerProps.incidentDeterminationOptions = {};
+  reducerProps.incidentStatusCodeOptions = {};
+  reducerProps.doSubparagraphOptions = {};
 };
 
 beforeEach(() => {

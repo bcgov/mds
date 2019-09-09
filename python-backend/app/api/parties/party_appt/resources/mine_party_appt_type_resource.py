@@ -7,7 +7,6 @@ from sqlalchemy import or_
 
 from ..models.mine_party_appt import MinePartyAppointment
 from ..models.mine_party_appt_type import MinePartyAppointmentType
-from ....constants import PARTY_STATUS_CODE
 from app.extensions import api
 from ....utils.access_decorators import requires_role_view_all
 from ....utils.resources_mixins import UserMixin, ErrorMixin

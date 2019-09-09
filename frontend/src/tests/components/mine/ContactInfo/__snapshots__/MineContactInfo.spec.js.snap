@@ -1,9 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MineContactInfo renders properly 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <MineContactInfo
+<div
+  className="tab__content"
+>
+  <div>
+    <h2>
+      Contacts
+    </h2>
+    <Divider />
+  </div>
+  <withRouter(Connect(ViewPartyRelationships))
     closeModal={[MockFunction]}
     createParty={[MockFunction]}
     fetchMineRecordById={[MockFunction]}
@@ -12,25 +19,25 @@ ShallowWrapper {
         "calls": Array [
           Array [],
         ],
+        "results": Array [
+          Object {
+            "type": "return",
+            "value": undefined,
+          },
+        ],
+      }
+    }
+    handleChange={[Function]}
+    match={
+      Object {
+        "params": Object {
+          "id": "18133c75-49ad-4101-85f3-a43e35ae989a",
+        },
       }
     }
     mine={
       Object {
-        "mine_expected_documents": Array [
-          Object {
-            "date_created": "2018-11-19",
-            "due_date": "",
-            "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
-            "exp_document_name": "OMS Manual",
-            "expected_document_status": Object {
-              "description": "Not Received",
-              "exp_document_status_code": "MIA",
-            },
-            "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-            "related_documents": Array [],
-            "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-          },
-        ],
+        "major_mine_ind": true,
         "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
         "mine_location": Object {
           "latitude": null,
@@ -67,11 +74,6 @@ ShallowWrapper {
             "mine_tenure_type_code": "MIN",
           },
         ],
-        "mineral_tenure_xref": Array [
-          Object {
-            "tenure_number_id": "1234567",
-          },
-        ],
         "verified_status": Object {
           "healthy_ind": null,
           "mine_guid": null,
@@ -81,192 +83,11 @@ ShallowWrapper {
         },
       }
     }
-    openModal={[MockFunction]}
-    permitteeIds={
-      Array [
-        "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
-      ]
-    }
-    permittees={
+    mineGuid="18133c75-49ad-4101-85f3-a43e35ae989a"
+    mines={
       Object {
-        "1c7da2c4-10d5-4c9f-994a-96427aa0c69b": Object {
-          "effective_date": "2018-10-02",
-          "expiry_date": null,
-          "party": Object {
-            "effective_date": "2018-10-03",
-            "email": "JgHxeyjv@aezZIwee.com",
-            "expiry_date": null,
-            "first_name": "Tiyudoveh",
-            "name": "Tiyudoveh Higesewawa",
-            "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
-            "party_name": "Higesewawa",
-            "party_type_code": "PER",
-            "phone_ext": null,
-            "phone_no": "123-123-1234",
-          },
-          "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
-          "party_name": "Yivihoke",
-          "permit_guid": "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
-          "permittee_guid": "3491c9a5-8f09-471f-bb1b-3ea246eb9796",
-        },
-      }
-    }
-  />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateError": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "host",
-    "props": Object {
-      "children": <withRouter(Connect(ViewPartyRelationships))
-        closeModal={[MockFunction]}
-        createParty={[MockFunction]}
-        fetchMineRecordById={[MockFunction]}
-        fetchParties={
-          [MockFunction] {
-            "calls": Array [
-              Array [],
-            ],
-          }
-        }
-        handleChange={[Function]}
-        mine={
-          Object {
-            "mine_expected_documents": Array [
-              Object {
-                "date_created": "2018-11-19",
-                "due_date": "",
-                "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
-                "exp_document_name": "OMS Manual",
-                "expected_document_status": Object {
-                  "description": "Not Received",
-                  "exp_document_status_code": "MIA",
-                },
-                "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                "related_documents": Array [],
-                "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-              },
-            ],
-            "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-            "mine_location": Object {
-              "latitude": null,
-              "longitude": null,
-            },
-            "mine_name": "mine3",
-            "mine_no": "BLAH9091",
-            "mine_permit": Array [],
-            "mine_region": "NE",
-            "mine_status": Object {
-              "effective_date": "2018-10-16",
-              "expiry_date": null,
-              "status_labels": Array [
-                "Closed",
-                "Care & Maintenance",
-              ],
-              "statusvalue": Array [
-                "CLD",
-                "CM",
-              ],
-            },
-            "mine_tailings_storage_facilities": Array [
-              Object {
-                "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
-                "mine_tailings_storage_facility_name": "MockTSF",
-              },
-            ],
-            "mine_type": Array [
-              Object {
-                "mine_tenure_type_code": "PLR",
-              },
-              Object {
-                "mine_tenure_type_code": "MIN",
-              },
-            ],
-            "mineral_tenure_xref": Array [
-              Object {
-                "tenure_number_id": "1234567",
-              },
-            ],
-            "verified_status": Object {
-              "healthy_ind": null,
-              "mine_guid": null,
-              "mine_name": null,
-              "verifying_timestamp": null,
-              "verifying_user": null,
-            },
-          }
-        }
-        openModal={[MockFunction]}
-        permitteeIds={
-          Array [
-            "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
-          ]
-        }
-        permittees={
-          Object {
-            "1c7da2c4-10d5-4c9f-994a-96427aa0c69b": Object {
-              "effective_date": "2018-10-02",
-              "expiry_date": null,
-              "party": Object {
-                "effective_date": "2018-10-03",
-                "email": "JgHxeyjv@aezZIwee.com",
-                "expiry_date": null,
-                "first_name": "Tiyudoveh",
-                "name": "Tiyudoveh Higesewawa",
-                "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
-                "party_name": "Higesewawa",
-                "party_type_code": "PER",
-                "phone_ext": null,
-                "phone_no": "123-123-1234",
-              },
-              "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
-              "party_name": "Yivihoke",
-              "permit_guid": "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
-              "permittee_guid": "3491c9a5-8f09-471f-bb1b-3ea246eb9796",
-            },
-          }
-        }
-      />,
-    },
-    "ref": null,
-    "rendered": Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "function",
-      "props": Object {
-        "closeModal": [MockFunction],
-        "createParty": [MockFunction],
-        "fetchMineRecordById": [MockFunction],
-        "fetchParties": [MockFunction] {
-          "calls": Array [
-            Array [],
-          ],
-        },
-        "handleChange": [Function],
-        "mine": Object {
-          "mine_expected_documents": Array [
-            Object {
-              "date_created": "2018-11-19",
-              "due_date": "",
-              "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
-              "exp_document_name": "OMS Manual",
-              "expected_document_status": Object {
-                "description": "Not Received",
-                "exp_document_status_code": "MIA",
-              },
-              "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-              "related_documents": Array [],
-              "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-            },
-          ],
+        "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
+          "major_mine_ind": true,
           "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
           "mine_location": Object {
             "latitude": null,
@@ -303,11 +124,6 @@ ShallowWrapper {
               "mine_tenure_type_code": "MIN",
             },
           ],
-          "mineral_tenure_xref": Array [
-            Object {
-              "tenure_number_id": "1234567",
-            },
-          ],
           "verified_status": Object {
             "healthy_ind": null,
             "mine_guid": null,
@@ -316,288 +132,93 @@ ShallowWrapper {
             "verifying_user": null,
           },
         },
-        "openModal": [MockFunction],
-        "permitteeIds": Array [
-          "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
-        ],
-        "permittees": Object {
-          "1c7da2c4-10d5-4c9f-994a-96427aa0c69b": Object {
-            "effective_date": "2018-10-02",
-            "expiry_date": null,
-            "party": Object {
-              "effective_date": "2018-10-03",
-              "email": "JgHxeyjv@aezZIwee.com",
-              "expiry_date": null,
-              "first_name": "Tiyudoveh",
-              "name": "Tiyudoveh Higesewawa",
-              "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
-              "party_name": "Higesewawa",
-              "party_type_code": "PER",
-              "phone_ext": null,
-              "phone_no": "123-123-1234",
-            },
-            "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
-            "party_name": "Yivihoke",
-            "permit_guid": "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
-            "permittee_guid": "3491c9a5-8f09-471f-bb1b-3ea246eb9796",
+        "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
+          "major_mine_ind": true,
+          "mine_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+          "mine_location": Object {
+            "latitude": null,
+            "longitude": null,
           },
-        },
-      },
-      "ref": null,
-      "rendered": null,
-      "type": [Function],
-    },
-    "type": "div",
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "host",
-      "props": Object {
-        "children": <withRouter(Connect(ViewPartyRelationships))
-          closeModal={[MockFunction]}
-          createParty={[MockFunction]}
-          fetchMineRecordById={[MockFunction]}
-          fetchParties={
-            [MockFunction] {
-              "calls": Array [
-                Array [],
-              ],
-            }
-          }
-          handleChange={[Function]}
-          mine={
+          "mine_name": "mine2",
+          "mine_no": "BLAH9091",
+          "mine_permit": Array [
             Object {
-              "mine_expected_documents": Array [
-                Object {
-                  "date_created": "2018-11-19",
-                  "due_date": "",
-                  "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
-                  "exp_document_name": "OMS Manual",
-                  "expected_document_status": Object {
-                    "description": "Not Received",
-                    "exp_document_status_code": "MIA",
-                  },
-                  "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                  "related_documents": Array [],
-                  "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-                },
-              ],
-              "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-              "mine_location": Object {
-                "latitude": null,
-                "longitude": null,
-              },
-              "mine_name": "mine3",
-              "mine_no": "BLAH9091",
-              "mine_permit": Array [],
-              "mine_region": "NE",
-              "mine_status": Object {
-                "effective_date": "2018-10-16",
-                "expiry_date": null,
-                "status_labels": Array [
-                  "Closed",
-                  "Care & Maintenance",
-                ],
-                "statusvalue": Array [
-                  "CLD",
-                  "CM",
-                ],
-              },
-              "mine_tailings_storage_facilities": Array [
-                Object {
-                  "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                  "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
-                  "mine_tailings_storage_facility_name": "MockTSF",
-                },
-              ],
-              "mine_type": Array [
-                Object {
-                  "mine_tenure_type_code": "PLR",
-                },
-                Object {
-                  "mine_tenure_type_code": "MIN",
-                },
-              ],
-              "mineral_tenure_xref": Array [
-                Object {
-                  "tenure_number_id": "1234567",
-                },
-              ],
-              "verified_status": Object {
-                "healthy_ind": null,
-                "mine_guid": null,
-                "mine_name": null,
-                "verifying_timestamp": null,
-                "verifying_user": null,
-              },
-            }
-          }
-          openModal={[MockFunction]}
-          permitteeIds={
-            Array [
-              "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
-            ]
-          }
-          permittees={
+              "permit_guid": "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
+              "permit_no": "KNaaWwVdiJ40",
+            },
             Object {
-              "1c7da2c4-10d5-4c9f-994a-96427aa0c69b": Object {
-                "effective_date": "2018-10-02",
-                "expiry_date": null,
-                "party": Object {
-                  "effective_date": "2018-10-03",
-                  "email": "JgHxeyjv@aezZIwee.com",
-                  "expiry_date": null,
-                  "first_name": "Tiyudoveh",
-                  "name": "Tiyudoveh Higesewawa",
-                  "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
-                  "party_name": "Higesewawa",
-                  "party_type_code": "PER",
-                  "phone_ext": null,
-                  "phone_no": "123-123-1234",
-                },
-                "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
-                "party_name": "Yivihoke",
-                "permit_guid": "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
-                "permittee_guid": "3491c9a5-8f09-471f-bb1b-3ea246eb9796",
-              },
-            }
-          }
-        />,
-      },
-      "ref": null,
-      "rendered": Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "function",
-        "props": Object {
-          "closeModal": [MockFunction],
-          "createParty": [MockFunction],
-          "fetchMineRecordById": [MockFunction],
-          "fetchParties": [MockFunction] {
-            "calls": Array [
-              Array [],
-            ],
-          },
-          "handleChange": [Function],
-          "mine": Object {
-            "mine_expected_documents": Array [
-              Object {
-                "date_created": "2018-11-19",
-                "due_date": "",
-                "exp_document_guid": "806608ed-d2b4-4f83-8b22-739d5223c56f",
-                "exp_document_name": "OMS Manual",
-                "expected_document_status": Object {
-                  "description": "Not Received",
-                  "exp_document_status_code": "MIA",
-                },
-                "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                "related_documents": Array [],
-                "req_document_guid": "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-              },
-            ],
-            "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-            "mine_location": Object {
-              "latitude": null,
-              "longitude": null,
-            },
-            "mine_name": "mine3",
-            "mine_no": "BLAH9091",
-            "mine_permit": Array [],
-            "mine_region": "NE",
-            "mine_status": Object {
-              "effective_date": "2018-10-16",
-              "expiry_date": null,
-              "status_labels": Array [
-                "Closed",
-                "Care & Maintenance",
-              ],
-              "statusvalue": Array [
-                "CLD",
-                "CM",
-              ],
-            },
-            "mine_tailings_storage_facilities": Array [
-              Object {
-                "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-                "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
-                "mine_tailings_storage_facility_name": "MockTSF",
-              },
-            ],
-            "mine_type": Array [
-              Object {
-                "mine_tenure_type_code": "PLR",
-              },
-              Object {
-                "mine_tenure_type_code": "MIN",
-              },
-            ],
-            "mineral_tenure_xref": Array [
-              Object {
-                "tenure_number_id": "1234567",
-              },
-            ],
-            "verified_status": Object {
-              "healthy_ind": null,
-              "mine_guid": null,
-              "mine_name": null,
-              "verifying_timestamp": null,
-              "verifying_user": null,
-            },
-          },
-          "openModal": [MockFunction],
-          "permitteeIds": Array [
-            "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
-          ],
-          "permittees": Object {
-            "1c7da2c4-10d5-4c9f-994a-96427aa0c69b": Object {
-              "effective_date": "2018-10-02",
-              "expiry_date": null,
-              "party": Object {
-                "effective_date": "2018-10-03",
-                "email": "JgHxeyjv@aezZIwee.com",
-                "expiry_date": null,
-                "first_name": "Tiyudoveh",
-                "name": "Tiyudoveh Higesewawa",
-                "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
-                "party_name": "Higesewawa",
-                "party_type_code": "PER",
-                "phone_ext": null,
-                "phone_no": "123-123-1234",
-              },
-              "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
-              "party_name": "Yivihoke",
               "permit_guid": "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
-              "permittee_guid": "3491c9a5-8f09-471f-bb1b-3ea246eb9796",
+              "permit_no": "xfM0c0ZKEw7B",
             },
+          ],
+          "mine_region": "NE",
+          "mine_status": Object {
+            "effective_date": "2018-10-16",
+            "expiry_date": null,
+            "status_labels": Array [
+              "Closed",
+              "Care & Maintenance",
+            ],
+            "statusvalue": Array [
+              "CLD",
+              "CM",
+            ],
+          },
+          "mine_tailings_storage_facilities": Array [
+            Object {
+              "mine_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+              "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f34",
+              "mine_tailings_storage_facility_name": "MockTSF1",
+            },
+          ],
+          "mine_type": Array [
+            Object {
+              "mine_tenure_type_code": "PLR",
+            },
+            Object {
+              "mine_tenure_type_code": "MIN",
+            },
+          ],
+          "verified_status": Object {
+            "healthy_ind": true,
+            "mine_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+            "mine_name": "mine2",
+            "verifying_timestamp": null,
+            "verifying_user": null,
           },
         },
-        "ref": null,
-        "rendered": null,
-        "type": [Function],
-      },
-      "type": "div",
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
+      }
+    }
+    openModal={[MockFunction]}
+    permitteeIds={
+      Array [
+        "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
+      ]
+    }
+    permittees={
+      Object {
+        "1c7da2c4-10d5-4c9f-994a-96427aa0c69b": Object {
+          "effective_date": "2018-10-02",
+          "expiry_date": null,
+          "party": Object {
+            "effective_date": "2018-10-03",
+            "email": "JgHxeyjv@aezZIwee.com",
+            "expiry_date": null,
+            "first_name": "Tiyudoveh",
+            "name": "Tiyudoveh Higesewawa",
+            "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
+            "party_name": "Higesewawa",
+            "party_type_code": "PER",
+            "phone_ext": null,
+            "phone_no": "123-123-1234",
           },
-          "getDerivedStateFromProps": true,
-          "getSnapshotBeforeUpdate": true,
-          "setState": Object {
-            "skipsComponentDidUpdateOnNullish": true,
-          },
+          "party_guid": "1c7da2c4-10d5-4c9f-994a-96427aa0c69b",
+          "party_name": "Yivihoke",
+          "permit_guid": "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
+          "permittee_guid": "3491c9a5-8f09-471f-bb1b-3ea246eb9796",
         },
-      },
-    },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
-  },
-}
+      }
+    }
+  />
+</div>
 `;

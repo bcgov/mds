@@ -2,18 +2,20 @@ import uuid
 import requests
 import json
 
+from datetime import datetime
+
 from flask import request, current_app, url_for
 from flask_restplus import Resource, reqparse
 from app.extensions import api, db
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_edit
-from app.api.utils.resources_mixins import UserMixin, ErrorMixin
-from app.api.utils.url import get_documents_svc_url
+from app.api.utils.resources_mixins import UserMixin
 
 from ..models.tailings import MineTailingsStorageFacility
 from app.api.mines.mine.models.mine import Mine
-
+from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
+from app.api.mines.reports.models.mine_report import MineReport
 from app.api.mines.mine_api_models import MINE_TSF_MODEL
 
 
@@ -55,40 +57,18 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
 
         if is_mine_first_tsf:
             try:
-                req_documents_url = get_documents_svc_url('/required?category=TSF&sub_category=INI')
-                get_tsf_docs_resp = requests.get(
-                    req_documents_url,
-                    headers={'Authorization': request.headers.get('Authorization')})
+                tsf_required_reports = MineReportDefinition.find_required_reports_by_category('TSF')
 
-                if get_tsf_docs_resp.status_code != 200:
-                    raise Exception(f'get_tsf_req_docs returned >> {get_tsf_docs_resp.status_code}')
+                for tsf_req_doc in tsf_required_reports:
+                    calculated_due_date = tsf_req_doc.default_due_date or datetime.utcnow()
+                    MineReport.create(
+                        mine_report_definition_id=tsf_req_doc.mine_report_definition_id,
+                        mine_guid=mine.mine_guid,
+                        due_date=calculated_due_date,
+                        received_date=None,
+                        submission_year=calculated_due_date.year,
+                        permit_id=None)
 
-                tsf_required_documents = get_tsf_docs_resp.json()['required_documents']
-                new_expected_documents = []
-
-                for tsf_req_doc in tsf_required_documents:
-                    new_expected_documents.append({
-                        'req_document_guid':
-                        tsf_req_doc['req_document_guid'],
-                        'document_name':
-                        tsf_req_doc['req_document_name'],
-                        'document_description':
-                        tsf_req_doc['description'],
-                        'document_due_date_type':
-                        tsf_req_doc['req_document_due_date_type'],
-                        'document_due_date_period_months':
-                        tsf_req_doc['req_document_due_date_period_months'],
-                        'hsrc_code':
-                        tsf_req_doc['hsrc_code']
-                    })
-
-                doc_assignment_response = requests.post(
-                    get_documents_svc_url('/expected/mines/' + str(mine_guid)),
-                    headers={'Authorization': request.headers.get('Authorization')},
-                    json={'documents': new_expected_documents})
-                if doc_assignment_response.status_code != 200:
-                    raise Exception(
-                        f"Error creating tsf expected documents >> {doc_assignment_response}")
             except Exception as e:
                 db.session.rollback()
                 current_app.logger.error(str(e))

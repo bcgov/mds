@@ -21,7 +21,7 @@ const propTypes = {
   submitting: PropTypes.bool.isRequired,
   mineGuid: PropTypes.string.isRequired,
   mineName: PropTypes.string.isRequired,
-  inspectors: CustomPropTypes.options.isRequired,
+  inspectors: CustomPropTypes.groupOptions.isRequired,
   variance: CustomPropTypes.variance.isRequired,
   varianceStatusOptions: CustomPropTypes.options.isRequired,
   documentCategoryOptions: CustomPropTypes.options.isRequired,
@@ -92,7 +92,7 @@ export class EditVarianceForm extends Component {
               <Field
                 id="inspector_party_guid"
                 name="inspector_party_guid"
-                component={renderConfig.SELECT}
+                component={renderConfig.GROUPED_SELECT}
                 validate={this.state.isApprovedOrDenied ? [inspectorRequired] : []}
                 data={this.props.inspectors}
               />
@@ -113,16 +113,21 @@ export class EditVarianceForm extends Component {
           </Col>
         </Row>
         {this.state.statusChangedToApproved && (
-          <Row gutter={16}>
-            <Col md={8} lg={24}>
-              <Form.Item label="Expiry date">
-                <p className="p-light">
-                  If expiry date is not specified, it will default to 5 years from issue date.
-                </p>
-                <Field id="expiry_date" name="expiry_date" component={renderConfig.DATE} />
-              </Form.Item>
-            </Col>
-          </Row>
+          <div>
+            <Form.Item label="Issue date">
+              <p className="p-light">
+                If issue date is not specified it will default to the day the application was
+                approved
+              </p>
+              <Field id="issue_date" name="issue_date" component={renderConfig.DATE} />
+            </Form.Item>
+            <Form.Item label="Expiry date">
+              <p className="p-light">
+                If expiry date is not specified it will default to 5 years from issue date.
+              </p>
+              <Field id="expiry_date" name="expiry_date" component={renderConfig.DATE} />
+            </Form.Item>
+          </div>
         )}
         <h5>Application details</h5>
         <VarianceDetails
@@ -164,7 +169,7 @@ export class EditVarianceForm extends Component {
           <Field
             id="parties_notified_ind"
             name="parties_notified_ind"
-            label="Affected parties have been notified about this Variance request and decision"
+            label="As per MA 13(2), affected parties have been notified about this variance application and decision"
             type="checkbox"
             component={renderConfig.CHECKBOX}
           />

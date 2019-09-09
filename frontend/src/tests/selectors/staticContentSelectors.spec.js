@@ -2,7 +2,6 @@ import {
   getMineRegionOptions,
   getMineStatusDropDownOptions,
   getMineRegionHash,
-  getMineTSFRequiredReports,
   getMineTenureTypesHash,
   getMineTenureTypeOptions,
   getMineDisturbanceOptions,
@@ -24,7 +23,6 @@ import staticContentReducer from "@/reducers/staticContentReducer";
 import {
   storeStatusOptions,
   storeRegionOptions,
-  storeMineTSFRequiredDocuments,
   storeTenureTypes,
   storeDisturbanceOptions,
   storeCommodityOptions,
@@ -40,8 +38,6 @@ const mockState = {
   mineStatusOptions: Mock.STATUS_OPTIONS.records,
   mineRegionOptions: Mock.REGION_OPTIONS.records,
   mineTenureTypes: Mock.TENURE_TYPES_RESPONSE.records,
-  expectedDocumentStatusOptions: Mock.EXPECTED_DOCUMENT_STATUS_OPTIONS.records,
-  mineTSFRequiredReports: Mock.MINE_TSF_REQUIRED_REPORTS_RESPONSE.required_documents,
   mineDisturbanceOptions: Mock.DISTURBANCE_OPTIONS.records,
   mineCommodityOptions: Mock.COMMODITY_OPTIONS.records,
   provinceOptions: Mock.PROVINCE_OPTIONS.records,
@@ -52,7 +48,7 @@ const mockState = {
 
 describe("staticContentSelectors", () => {
   const { mineDisturbanceOptions, mineCommodityOptions } = mockState;
-  const { mineTSFRequiredReports, provinceOptions, varianceDocumentCategoryOptions } = mockState;
+  const { provinceOptions, varianceDocumentCategoryOptions } = mockState;
 
   it("`getMineStatusDropDownOptions` calls `staticContentReducer.getMineStatusDropDownOptions`", () => {
     const storeAction = storeStatusOptions(Mock.STATUS_OPTIONS);
@@ -70,15 +66,6 @@ describe("staticContentSelectors", () => {
       [STATIC_CONTENT]: storeState,
     };
     expect(getMineRegionOptions(localMockState)).toEqual(mockState.mineRegionOptions);
-  });
-
-  it("`getMineTSFRequiredReports` calls `staticContentReducer.getMineTSFRequiredReports`", () => {
-    const storeAction = storeMineTSFRequiredDocuments(Mock.MINE_TSF_REQUIRED_REPORTS_RESPONSE);
-    const storeState = staticContentReducer({}, storeAction);
-    const localMockState = {
-      [STATIC_CONTENT]: storeState,
-    };
-    expect(getMineTSFRequiredReports(localMockState)).toEqual(mineTSFRequiredReports);
   });
 
   it("`getMineRegionHash` converts `staticContentReducer.getMineRegionOptions`", () => {

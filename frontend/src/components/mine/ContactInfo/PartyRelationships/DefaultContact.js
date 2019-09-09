@@ -1,12 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
-import CustomPropTypes from "@/customPropTypes";
 import { Button, Card } from "antd";
+import { Link } from "react-router-dom";
+import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as router from "@/constants/routes";
 import * as Permission from "@/constants/permissions";
 import { formatTitleString, formatDate } from "@/utils/helpers";
-import { Link } from "react-router-dom";
 import * as Strings from "@/constants/strings";
 
 const propTypes = {

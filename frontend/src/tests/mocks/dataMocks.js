@@ -16,11 +16,7 @@ export const MINE_RESPONSE = {
       mine_no: "BLAH9091",
       mine_region: "NE",
       mine_permit: [],
-      mineral_tenure_xref: [
-        {
-          tenure_number_id: "1234567",
-        },
-      ],
+      major_mine_ind: true,
       mine_location: { longitude: null, latitude: null },
       mine_status: {
         statusvalue: ["CLD", "CM"],
@@ -33,21 +29,6 @@ export const MINE_RESPONSE = {
           mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
           mine_tailings_storage_facility_guid: "e2629897-053e-4218-9299-479375e47f78",
           mine_tailings_storage_facility_name: "MockTSF",
-        },
-      ],
-      mine_expected_documents: [
-        {
-          date_created: "2018-11-19",
-          due_date: "",
-          exp_document_guid: "806608ed-d2b4-4f83-8b22-739d5223c56f",
-          exp_document_name: "OMS Manual",
-          mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
-          req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-          expected_document_status: {
-            exp_document_status_code: "MIA",
-            description: "Not Received",
-          },
-          related_documents: [],
         },
       ],
       mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
@@ -64,6 +45,7 @@ export const MINE_RESPONSE = {
       mine_name: "mine2",
       mine_no: "BLAH9091",
       mine_region: "NE",
+      major_mine_ind: true,
       mine_permit: [
         {
           permit_guid: "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
@@ -72,11 +54,6 @@ export const MINE_RESPONSE = {
         {
           permit_guid: "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
           permit_no: "xfM0c0ZKEw7B",
-        },
-      ],
-      mineral_tenure_xref: [
-        {
-          tenure_number_id: "1234567",
         },
       ],
       mine_status: {
@@ -94,21 +71,6 @@ export const MINE_RESPONSE = {
           mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
           mine_tailings_storage_facility_guid: "e2629897-053e-4218-9299-479375e47f34",
           mine_tailings_storage_facility_name: "MockTSF1",
-        },
-      ],
-      mine_expected_documents: [
-        {
-          date_created: "2018-11-19",
-          due_date: "",
-          exp_document_guid: "806608ed-d2b4-4f83-8b22-739d5223c56f",
-          exp_document_name: "OMS Manual",
-          mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
-          req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-          expected_document_status: {
-            exp_document_status_code: "MIA",
-            description: "Not Received",
-          },
-          related_documents: [],
         },
       ],
       mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
@@ -131,32 +93,12 @@ export const SUBSCRIBED_MINES = {
       mine_no: "BLAH9091",
       region_code: "NE",
       mine_permit: [],
-      mineral_tenure_xref: [
-        {
-          tenure_number_id: "1234567",
-        },
-      ],
       mine_location: { longitude: null, latitude: null },
       mine_tailings_storage_facility: [
         {
           mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
           mine_tailings_storage_facility_guid: "e2629897-053e-4218-9299-479375e47f78",
           mine_tailings_storage_facility_name: "MockTSF",
-        },
-      ],
-      mine_expected_documents: [
-        {
-          date_created: "2018-11-19",
-          due_date: "",
-          exp_document_guid: "806608ed-d2b4-4f83-8b22-739d5223c56f",
-          exp_document_name: "OMS Manual",
-          mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
-          req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-          exp_document_status: {
-            exp_document_status_code: "MIA",
-            description: "Not Received",
-          },
-          related_documents: [],
         },
       ],
       mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
@@ -178,32 +120,13 @@ export const MINES = {
       mine_no: "BLAH9091",
       mine_region: "NE",
       mine_permit: [],
-      mineral_tenure_xref: [
-        {
-          tenure_number_id: "1234567",
-        },
-      ],
+      major_mine_ind: true,
       mine_location: { longitude: null, latitude: null },
       mine_tailings_storage_facilities: [
         {
           mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
           mine_tailings_storage_facility_guid: "e2629897-053e-4218-9299-479375e47f78",
           mine_tailings_storage_facility_name: "MockTSF",
-        },
-      ],
-      mine_expected_documents: [
-        {
-          date_created: "2018-11-19",
-          due_date: "",
-          exp_document_guid: "806608ed-d2b4-4f83-8b22-739d5223c56f",
-          exp_document_name: "OMS Manual",
-          mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
-          req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-          expected_document_status: {
-            exp_document_status_code: "MIA",
-            description: "Not Received",
-          },
-          related_documents: [],
         },
       ],
       mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
@@ -225,6 +148,7 @@ export const MINES = {
       mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
       mine_name: "mine2",
       mine_no: "BLAH9091",
+      major_mine_ind: true,
       mine_region: "NE",
       mine_permit: [
         {
@@ -234,11 +158,6 @@ export const MINES = {
         {
           permit_guid: "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
           permit_no: "xfM0c0ZKEw7B",
-        },
-      ],
-      mineral_tenure_xref: [
-        {
-          tenure_number_id: "1234567",
         },
       ],
       mine_status: {
@@ -256,21 +175,6 @@ export const MINES = {
           mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
           mine_tailings_storage_facility_guid: "e2629897-053e-4218-9299-479375e47f34",
           mine_tailings_storage_facility_name: "MockTSF1",
-        },
-      ],
-      mine_expected_documents: [
-        {
-          date_created: "2018-11-19",
-          due_date: "",
-          exp_document_guid: "806608ed-d2b4-4f83-8b22-739d5223c56f",
-          exp_document_name: "OMS Manual",
-          mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
-          req_document_guid: "c95886bc-e4b2-4743-b38d-42eea858e9ee",
-          expected_document_status: {
-            exp_document_status_code: "MIA",
-            description: "Not Received",
-          },
-          related_documents: [],
         },
       ],
       mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
@@ -448,6 +352,8 @@ export const MINE_NAME_LIST = [
     latitude: "51.4961750",
   },
 ];
+
+export const MINE_NO = "BLAH6666";
 
 export const MINESPACE_USERS = [
   {
@@ -994,18 +900,9 @@ export const PERMITTEE = {
   },
 };
 
-export const EXPECTED_DOCUMENT_STATUS_OPTIONS = {
-  records: [
-    { exp_document_status_code: "MIA", description: "Not Received" },
-    { exp_document_status_code: "PRE", description: "Received / Pending Review" },
-    { exp_document_status_code: "RIP", description: "Review In Progress" },
-    { exp_document_status_code: "ACC", description: "Accepted" },
-    { exp_document_status_code: "REJ", description: "Rejected / Waiting On Update" },
-  ],
-};
 
 export const MINE_TSF_REQUIRED_REPORTS_RESPONSE = {
-  required_documents: [
+  records: [
     {
       req_document_guid: "05388944-afb3-4ef4-9db1-94db72f6060e",
       req_document_name: "Annual Reclamation",
@@ -1077,6 +974,7 @@ export const USER_ACCESS_DATA = [
   "admin",
   "uma_authorization",
   "core_admin",
+  "core_edit_reports",
 ];
 
 export const DISTURBANCE_OPTIONS = {
@@ -1420,7 +1318,7 @@ export const PARTY_RELATIONSHIP_TYPE_HASH = {
 };
 
 export const MINEDOCUMENTS = {
-  mine_documents: [
+  records: [
     {
       active_ind: "True",
       document_manager_guid: "4c7d88d6-e78d-48cf-a860-89b6a1e8903b",
@@ -1469,6 +1367,7 @@ export const VARIANCES = {
   records: [
     {
       variance_guid: "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+      variance_no: 1,
       compliance_article_id: 1,
       expiry_date: "2019-03-30",
       issue_date: "2019-03-01",
@@ -1493,6 +1392,7 @@ export const VARIANCES = {
 
 export const VARIANCE = {
   variance_guid: "0d3ec917-179f-4dbc-80a3-4c993fdfe596",
+  variance_no: 1,
   compliance_article_id: 1,
   expiry_date: "2019-03-30",
   issue_date: "2019-03-01",
@@ -1507,6 +1407,14 @@ export const VARIANCE = {
       mine_guid: "59e73109-48f7-4ad2-977c-3005b5bff010",
     },
   ],
+};
+
+export const VARIANCE_PAGE_DATA = {
+  records: [VARIANCE],
+  current_page: 1,
+  items_per_page: 25,
+  total: 25,
+  total_pages: 1,
 };
 
 export const COMPLIANCE_CODES = {
@@ -1636,7 +1544,7 @@ export const INCIDENT = {
 };
 
 export const INCIDENTS = {
-  mine_incidents: [
+  records: [
     {
       mine_incident_guid: "dc101155-de3e-4f37-8303-eb6a6d2d5866",
       mine_incident_report_no: "2019-70",
@@ -1660,8 +1568,6 @@ export const FOLLOWUP_ACTIONS = [
   {
     mine_incident_followup_type_code: "NOA",
     description: "No Action",
-    display_order: 20,
-    active_ind: true,
   },
 ];
 
@@ -2502,10 +2408,9 @@ export const VARIANCE_DOCUMENT_CATEGORY_OPTIONS_HASH = {
 };
 
 export const INCIDENT_STATUS_OPTIONS = [
-  { description: "Preliminary", display_order: 10, mine_incident_status_code: "PRE" },
+  { description: "Preliminary", mine_incident_status_code: "PRE" },
   {
     description: "Final",
-    display_order: 20,
     mine_incident_status_code: "FIN",
   },
 ];
@@ -2517,21 +2422,16 @@ export const INCIDENT_STATUS_OPTIONS_HASH = {
 
 export const INCIDENT_DETERMINATION = [
   {
-    active_ind: true,
     description: "Pending determination",
-    display_order: 10,
     mine_incident_determination_type_code: "PEN",
   },
   {
     active_ind: true,
     description: "This was a dangerous occurrence",
-    display_order: 20,
     mine_incident_determination_type_code: "DO",
   },
   {
-    active_ind: true,
     description: "This was not a dangerous occurrence",
-    display_order: 30,
     mine_incident_determination_type_code: "NDO",
   },
 ];
@@ -2545,22 +2445,18 @@ export const INCIDENT_DETERMINATION_HASH = {
 export const INCIDENT_FOLLOWUP_ACTIONS = [
   {
     description: "Yes - MIU Investigation",
-    display_order: 10,
     mine_incident_followup_investigation_type_code: "MIU",
   },
   {
     description: "Yes - Inspector Investigation",
-    display_order: 20,
     mine_incident_followup_investigation_type_code: "INS",
   },
   {
     description: "No",
-    display_order: 30,
     mine_incident_followup_investigation_type_code: "NO",
   },
   {
     description: "Historical - Unknown",
-    display_order: 40,
     mine_incident_followup_investigation_type_code: "HUK",
   },
 ];
@@ -2570,4 +2466,36 @@ export const INCIDENT_FOLLOWUP_ACTIONS_HASH = {
   INS: "Yes - Inspector Investigation",
   NO: "No",
   HUK: "Historical - Unknown",
+};
+
+export const ADD_PARTY_FORM_STATE = {
+  showingAddPartyForm: false,
+  person: true,
+  organization: true,
+  partyLabel: "contact",
+};
+
+export const NOW = {
+  applications: [
+    {
+      application_guid: "07e801a0-fa33-4c3b-abcc-ac6df628d483",
+      mine_guid: "6e9d3426-ebf1-413f-9e5f-c3a71ab56797",
+      mine_name: "Hamilton, Herrera and Mccormick",
+      minenumber: "brother",
+      noticeofworktype: "choice",
+      trackingnumber: 44,
+      status: "Approved",
+      receiveddate: "2019-08-14",
+    },
+    {
+      application_guid: "8e1536da-644c-4961-976b-b1326fa75825",
+      mine_guid: "60300a07-376c-46f1-a984-88a813f91438",
+      mine_name: "Thompson-Sullivan",
+      minenumber: "other",
+      noticeofworktype: "technology",
+      trackingnumber: 52,
+      status: "Approved",
+      receiveddate: "2019-07-21",
+    },
+  ],
 };

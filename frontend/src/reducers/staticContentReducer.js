@@ -12,8 +12,6 @@ const initialState = {
   mineTenureTypes: [],
   mineDisturbanceOptions: [],
   mineCommodityOptions: [],
-  expectedDocumentStatusOptions: [],
-  mineTSFRequiredReports: [],
   provinceOptions: [],
   permitStatusCodes: [],
   applicationStatusCodes: [],
@@ -23,6 +21,7 @@ const initialState = {
   incidentStatusCodeOptions: [],
   varianceStatusOptions: [],
   varianceDocumentCategoryOptions: [],
+  mineReportDefinitionOptions: [],
 };
 
 const staticContentReducer = (state = initialState, action) => {
@@ -52,16 +51,6 @@ const staticContentReducer = (state = initialState, action) => {
         ...state,
         mineCommodityOptions: action.payload.records,
       };
-    case actionTypes.STORE_DOCUMENT_STATUS_OPTIONS:
-      return {
-        ...state,
-        expectedDocumentStatusOptions: action.payload.records,
-      };
-    case actionTypes.STORE_MINE_TSF_REQUIRED_DOCUMENTS:
-      return {
-        ...state,
-        mineTSFRequiredReports: action.payload.required_documents,
-      };
     case actionTypes.STORE_PROVINCE_OPTIONS:
       return {
         ...state,
@@ -81,6 +70,11 @@ const staticContentReducer = (state = initialState, action) => {
       return {
         ...state,
         complianceCodes: action.payload.records,
+      };
+    case actionTypes.STORE_INCIDENT_DOCUMENT_TYPE_OPTIONS:
+      return {
+        ...state,
+        incidentDocumentTypeOptions: action.payload.records,
       };
     case actionTypes.STORE_MINE_INCIDENT_FOLLOWUP_ACTION_OPTIONS:
       return {
@@ -107,6 +101,11 @@ const staticContentReducer = (state = initialState, action) => {
         ...state,
         varianceDocumentCategoryOptions: action.payload.records,
       };
+    case actionTypes.STORE_MINE_REPORT_DEFINITION_OPTIONS:
+      return {
+        ...state,
+        mineReportDefinitionOptions: action.payload.records,
+      };
     default:
       return state;
   }
@@ -117,13 +116,12 @@ export const getMineRegionOptions = (state) => state[STATIC_CONTENT].mineRegionO
 export const getMineTenureTypeOptions = (state) => state[STATIC_CONTENT].mineTenureTypes;
 export const getMineDisturbanceOptions = (state) => state[STATIC_CONTENT].mineDisturbanceOptions;
 export const getMineCommodityOptions = (state) => state[STATIC_CONTENT].mineCommodityOptions;
-export const getExpectedDocumentStatusOptions = (state) =>
-  state[STATIC_CONTENT].expectedDocumentStatusOptions;
-export const getMineTSFRequiredReports = (state) => state[STATIC_CONTENT].mineTSFRequiredReports;
 export const getProvinceOptions = (state) => state[STATIC_CONTENT].provinceOptions;
 export const getPermitStatusOptions = (state) => state[STATIC_CONTENT].permitStatusCodes;
 export const getApplicationStatusOptions = (state) => state[STATIC_CONTENT].applicationStatusCodes;
 export const getComplianceCodes = (state) => state[STATIC_CONTENT].complianceCodes;
+export const getIncidentDocumentTypeOptions = (state) =>
+  state[STATIC_CONTENT].incidentDocumentTypeOptions;
 export const getIncidentFollowupActionOptions = (state) =>
   state[STATIC_CONTENT].incidentFollowupActionOptions;
 export const getIncidentDeterminationOptions = (state) =>
@@ -133,5 +131,7 @@ export const getIncidentStatusCodeOptions = (state) =>
 export const getVarianceStatusOptions = (state) => state[STATIC_CONTENT].varianceStatusOptions;
 export const getVarianceDocumentCategoryOptions = (state) =>
   state[STATIC_CONTENT].varianceDocumentCategoryOptions;
+export const getMineReportDefinitionOptions = (state) =>
+  state[STATIC_CONTENT].mineReportDefinitionOptions;
 
 export default staticContentReducer;

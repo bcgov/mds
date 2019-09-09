@@ -26,16 +26,15 @@ const setupDispatchProps = () => {
   dispatchProps.fetchPartyRelationships = jest.fn(() => Promise.resolve());
   dispatchProps.fetchPermitStatusOptions = jest.fn(() => Promise.resolve());
   dispatchProps.fetchApplicationStatusOptions = jest.fn();
-  dispatchProps.fetchMineIncidentDeterminationOptions = jest.fn();
-  dispatchProps.fetchMineIncidentFollowActionOptions = jest.fn();
-  dispatchProps.fetchMineIncidentStatusCodeOptions = jest.fn();
   dispatchProps.fetchInspectors = jest.fn();
-  dispatchProps.match = {};
   dispatchProps.updateVariance = jest.fn();
   dispatchProps.fetchVarianceStatusOptions = jest.fn();
+  dispatchProps.fetchMineReportDefinitionOptions = jest.fn();
 };
 
 const setupReducerProps = () => {
+  reducerProps.match = {};
+  reducerProps.location = { pathname: "" };
   reducerProps.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
   reducerProps.mines = MOCK.MINES.mines;
   reducerProps.mineIds = MOCK.MINES.mineIds;

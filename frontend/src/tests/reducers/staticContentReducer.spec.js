@@ -3,7 +3,6 @@ import {
   storeStatusOptions,
   storeRegionOptions,
   storeDocumentStatusOptions,
-  storeMineTSFRequiredDocuments,
   storeTenureTypes,
   storeDisturbanceOptions,
   storeCommodityOptions,
@@ -19,8 +18,6 @@ const baseExpectedValue = {
   mineStatusOptions: [],
   mineRegionOptions: [],
   mineDisturbanceOptions: [],
-  expectedDocumentStatusOptions: [],
-  mineTSFRequiredReports: [],
   mineTenureTypes: [],
   mineCommodityOptions: [],
   provinceOptions: [],
@@ -32,6 +29,7 @@ const baseExpectedValue = {
   incidentStatusCodeOptions: [],
   varianceStatusOptions: [],
   varianceDocumentCategoryOptions: [],
+  mineReportDefinitionOptions: [],
 };
 
 // Creates deep copy of javascript object instead of setting a reference
@@ -55,27 +53,6 @@ describe("staticContentReducer", () => {
     const expectedValue = getBaseExpectedValue();
     expectedValue.mineRegionOptions = MOCK.REGION_OPTIONS.records;
     const result = staticContentReducer(undefined, storeRegionOptions(MOCK.REGION_OPTIONS));
-    expect(result).toEqual(expectedValue);
-  });
-
-  it("receives STORE_DOCUMENT_STATUS_OPTIONS", () => {
-    const expectedValue = getBaseExpectedValue();
-    expectedValue.expectedDocumentStatusOptions = MOCK.EXPECTED_DOCUMENT_STATUS_OPTIONS.records;
-    const result = staticContentReducer(
-      undefined,
-      storeDocumentStatusOptions(MOCK.EXPECTED_DOCUMENT_STATUS_OPTIONS)
-    );
-    expect(result).toEqual(expectedValue);
-  });
-
-  it("receives STORE_MINE_TSF_REQUIRED_DOCUMENTS", () => {
-    const expectedValue = getBaseExpectedValue();
-    expectedValue.mineTSFRequiredReports =
-      MOCK.MINE_TSF_REQUIRED_REPORTS_RESPONSE.required_documents;
-    const result = staticContentReducer(
-      undefined,
-      storeMineTSFRequiredDocuments(MOCK.MINE_TSF_REQUIRED_REPORTS_RESPONSE)
-    );
     expect(result).toEqual(expectedValue);
   });
 

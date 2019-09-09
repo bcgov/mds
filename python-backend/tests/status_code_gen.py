@@ -3,10 +3,9 @@ import random
 from app.extensions import db
 from app.api.applications.models.application_status_code import ApplicationStatusCode
 from app.api.constants import COMMODITY_CODES_CONFIG, DISTURBANCE_CODES_CONFIG
-from app.api.documents.expected.models.document_status import ExpectedDocumentStatus
-from app.api.documents.required.models.required_documents import RequiredDocument
-from app.api.mines.incidents.models.mine_incident_determination_type import MineIncidentDeterminationType
-from app.api.mines.incidents.models.mine_incident_status_code import MineIncidentStatusCode
+from app.api.incidents.models.mine_incident_determination_type import MineIncidentDeterminationType
+from app.api.incidents.models.mine_incident_status_code import MineIncidentStatusCode
+from app.api.incidents.models.mine_incident_document_type_code import MineIncidentDocumentTypeCode
 from app.api.mines.region.models.region import MineRegionCode
 from app.api.mines.permits.permit.models.permit_status_code import PermitStatusCode
 from app.api.mines.mine.models.mine_tenure_type_code import MineTenureTypeCode
@@ -19,6 +18,8 @@ from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppo
 from app.api.parties.party_appt.models.party_business_role_code import PartyBusinessRoleCode
 from app.api.variances.models.variance_document_category_code import VarianceDocumentCategoryCode
 from app.api.variances.models.variance_application_status_code import VarianceApplicationStatusCode
+from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
+from app.api.mines.reports.models.mine_report_submission_status_code import MineReportSubmissionStatusCode
 
 
 def RandomApplicationStatusCode():
@@ -27,14 +28,6 @@ def RandomApplicationStatusCode():
         for x in ApplicationStatusCode.find_all_active_application_status_code()
     ])
 
-
-def RandomExpectedDocumentStatusCode():
-    return random.choice(
-        [x.exp_document_status_code for x in ExpectedDocumentStatus.find_all_document_status()])
-
-
-def RandomRequiredDocument():
-    return random.choice(db.session.query(RequiredDocument).all())
 
 
 def RandomMineRegionCode():
@@ -88,29 +81,52 @@ def RandomComplianceArticleId():
 
 
 def RandomIncidentDeterminationTypeCode():
-    return random.choice([
-        x.mine_incident_determination_type_code for x in MineIncidentDeterminationType.get_active()
-    ])
+    return random.choice(
+        [x.mine_incident_determination_type_code for x in MineIncidentDeterminationType.active()])
+
 
 def RandomIncidentStatusCode():
-    return random.choice([x.mine_incident_status_code for x in MineIncidentStatusCode.get_active()])
+    return random.choice([x.mine_incident_status_code for x in MineIncidentStatusCode.active()])
+
+
+def RandomIncidentDocumentType():
+    return random.choice(
+        [x.mine_incident_document_type_code for x in MineIncidentDocumentTypeCode.active()])
+
+
+def RandomMineReportDefinition():
+    return random.choice([x.mine_report_definition_id for x in MineReportDefinition.active()])
+
+
+def RandomMineReportDefinitionWithDueDate():
+    return random.choice([
+        x.mine_report_definition_id for x in MineReportDefinition.active()
+        if x.due_date_period_months and x.due_date_period_months > 0
+    ])
+
+
+def RandomMineReportSubmissionStatusCode():
+    return random.choice([x.mine_report_submission_status_code for x in MineReportSubmissionStatusCode.active()])
+
 
 def RandomVarianceDocumentCategoryCode():
-    return random.choice([
-        x.variance_document_category_code for x in VarianceDocumentCategoryCode.active()
-    ])
+    return random.choice(
+        [x.variance_document_category_code for x in VarianceDocumentCategoryCode.active()])
+
 
 def SampleDangerousOccurrenceSubparagraphs(num):
     return random.sample(
-        db.session.query(ComplianceArticle).filter(
-            ComplianceArticle.article_act_code == 'HSRCM', ComplianceArticle.section == '1',
-            ComplianceArticle.sub_section == '7', ComplianceArticle.paragraph == '3',
-            ComplianceArticle.sub_paragraph != None).all(), num)
+        db.session.query(ComplianceArticle).filter(ComplianceArticle.article_act_code == 'HSRCM',
+                                                   ComplianceArticle.section == '1',
+                                                   ComplianceArticle.sub_section == '7',
+                                                   ComplianceArticle.paragraph == '3',
+                                                   ComplianceArticle.sub_paragraph != None).all(),
+        num)
+
 
 def RandomVarianceApplicationStatusCode():
     return random.choice([
         x.variance_application_status_code
-        for x in filter(
-            lambda x: x.variance_application_status_code not in ['APP', 'DEN'],
-            VarianceApplicationStatusCode.active())
+        for x in filter(lambda x: x.variance_application_status_code not in ['APP', 'DEN'],
+                        VarianceApplicationStatusCode.active())
     ])

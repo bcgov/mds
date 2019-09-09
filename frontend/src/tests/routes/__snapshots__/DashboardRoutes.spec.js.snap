@@ -1,415 +1,179 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DashboardRoutes  renders properly 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <DashboardRoutes />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateError": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "class",
-    "props": Object {
-      "children": Array [
-        <Route
-          component={[Function]}
-          exact={true}
-          path="/home/"
-        />,
-        <Route
-          component={[Function]}
-          exact={true}
-          path="/dashboard/mines"
-        />,
-        <Route
-          component={[Function]}
-          exact={true}
-          path="/dashboard/contacts"
-        />,
-        <Route
-          component={[Function]}
-          exact={true}
-          path="/dashboard/:id/profile"
-        />,
-        <Route
-          component={[Function]}
-          exact={true}
-          path="/dashboard/:id/:activeTab"
-        />,
-        <Route
-          component={[Function]}
-          exact={true}
-          path="/dashboard/:id/history/:typeCode"
-        />,
-        <Route
-          component={[Function]}
-          exact={true}
-          path="/admin/dashboard"
-        />,
-        <Route
-          component={[Function]}
-          exact={true}
-          path="/search"
-        />,
-        <Route
-          component={[Function]}
-          exact={true}
-          path="/dashboard/reporting"
-        />,
-        <Route
-          component={[Function]}
-        />,
-      ],
-    },
-    "ref": null,
-    "rendered": Array [
+<Switch>
+  <Route
+    component={[Function]}
+    exact={true}
+    path="/home/"
+  />
+  <Route
+    component={
       Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "component": [Function],
-          "exact": true,
-          "path": "/home/",
-        },
-        "ref": null,
-        "rendered": null,
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(CustomHomePage)",
         "type": [Function],
-      },
+      }
+    }
+    exact={true}
+    path="/my-dashboard/"
+  />
+  <Route
+    component={
       Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "component": [Function],
-          "exact": true,
-          "path": "/dashboard/mines",
-        },
-        "ref": null,
-        "rendered": null,
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(Dashboard)",
         "type": [Function],
-      },
+      }
+    }
+    exact={true}
+    path="/dashboard/mines"
+  />
+  <Route
+    component={
       Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "component": [Function],
-          "exact": true,
-          "path": "/dashboard/contacts",
-        },
-        "ref": null,
-        "rendered": null,
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(ContactHomePage)",
         "type": [Function],
-      },
+      }
+    }
+    exact={true}
+    path="/dashboard/contacts"
+  />
+  <Route
+    exact={true}
+    path="/mine-dashboard/:id/"
+    render={[Function]}
+  />
+  <Route
+    component={
       Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "component": [Function],
-          "exact": true,
-          "path": "/dashboard/:id/profile",
-        },
-        "ref": null,
-        "rendered": null,
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(MineDashboard)",
         "type": [Function],
-      },
+      }
+    }
+    path="/mine-dashboard/:id/"
+  />
+  <Route
+    component={
       Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "component": [Function],
-          "exact": true,
-          "path": "/dashboard/:id/:activeTab",
-        },
-        "ref": null,
-        "rendered": null,
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(PartyProfile)",
         "type": [Function],
-      },
+      }
+    }
+    exact={true}
+    path="/dashboard/:id/profile"
+  />
+  <Route
+    component={
       Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "component": [Function],
-          "exact": true,
-          "path": "/dashboard/:id/history/:typeCode",
-        },
-        "ref": null,
-        "rendered": null,
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(RelationshipProfile)",
         "type": [Function],
-      },
+      }
+    }
+    exact={true}
+    path="/dashboard/:id/history/:typeCode"
+  />
+  <Route
+    component={
       Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "component": [Function],
-          "exact": true,
-          "path": "/admin/dashboard",
-        },
-        "ref": null,
-        "rendered": null,
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(Connect(authorizationGuard))",
         "type": [Function],
-      },
+      }
+    }
+    exact={true}
+    path="/admin/dashboard"
+  />
+  <Route
+    component={
       Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "component": [Function],
-          "exact": true,
-          "path": "/search",
-        },
-        "ref": null,
-        "rendered": null,
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(SearchResults)",
         "type": [Function],
-      },
+      }
+    }
+    exact={true}
+    path="/search"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
+    path="/dashboard/reporting"
+  />
+  <Route
+    component={
       Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "component": [Function],
-          "exact": true,
-          "path": "/dashboard/reporting",
-        },
-        "ref": null,
-        "rendered": null,
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(authorizationGuard)",
         "type": [Function],
-      },
+      }
+    }
+    exact={true}
+    path="/dashboard/executive-reporting"
+  />
+  <Route
+    component={
       Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "component": [Function],
-        },
-        "ref": null,
-        "rendered": null,
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(VarianceHomePage)",
         "type": [Function],
-      },
-    ],
-    "type": [Function],
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "class",
-      "props": Object {
-        "children": Array [
-          <Route
-            component={[Function]}
-            exact={true}
-            path="/home/"
-          />,
-          <Route
-            component={[Function]}
-            exact={true}
-            path="/dashboard/mines"
-          />,
-          <Route
-            component={[Function]}
-            exact={true}
-            path="/dashboard/contacts"
-          />,
-          <Route
-            component={[Function]}
-            exact={true}
-            path="/dashboard/:id/profile"
-          />,
-          <Route
-            component={[Function]}
-            exact={true}
-            path="/dashboard/:id/:activeTab"
-          />,
-          <Route
-            component={[Function]}
-            exact={true}
-            path="/dashboard/:id/history/:typeCode"
-          />,
-          <Route
-            component={[Function]}
-            exact={true}
-            path="/admin/dashboard"
-          />,
-          <Route
-            component={[Function]}
-            exact={true}
-            path="/search"
-          />,
-          <Route
-            component={[Function]}
-            exact={true}
-            path="/dashboard/reporting"
-          />,
-          <Route
-            component={[Function]}
-          />,
-        ],
-      },
-      "ref": null,
-      "rendered": Array [
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "component": [Function],
-            "exact": true,
-            "path": "/home/",
-          },
-          "ref": null,
-          "rendered": null,
-          "type": [Function],
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "component": [Function],
-            "exact": true,
-            "path": "/dashboard/mines",
-          },
-          "ref": null,
-          "rendered": null,
-          "type": [Function],
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "component": [Function],
-            "exact": true,
-            "path": "/dashboard/contacts",
-          },
-          "ref": null,
-          "rendered": null,
-          "type": [Function],
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "component": [Function],
-            "exact": true,
-            "path": "/dashboard/:id/profile",
-          },
-          "ref": null,
-          "rendered": null,
-          "type": [Function],
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "component": [Function],
-            "exact": true,
-            "path": "/dashboard/:id/:activeTab",
-          },
-          "ref": null,
-          "rendered": null,
-          "type": [Function],
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "component": [Function],
-            "exact": true,
-            "path": "/dashboard/:id/history/:typeCode",
-          },
-          "ref": null,
-          "rendered": null,
-          "type": [Function],
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "component": [Function],
-            "exact": true,
-            "path": "/admin/dashboard",
-          },
-          "ref": null,
-          "rendered": null,
-          "type": [Function],
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "component": [Function],
-            "exact": true,
-            "path": "/search",
-          },
-          "ref": null,
-          "rendered": null,
-          "type": [Function],
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "component": [Function],
-            "exact": true,
-            "path": "/dashboard/reporting",
-          },
-          "ref": null,
-          "rendered": null,
-          "type": [Function],
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "component": [Function],
-          },
-          "ref": null,
-          "rendered": null,
-          "type": [Function],
-        },
-      ],
-      "type": [Function],
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getDerivedStateFromProps": true,
-          "getSnapshotBeforeUpdate": true,
-          "setState": Object {
-            "skipsComponentDidUpdateOnNullish": true,
-          },
-        },
-      },
-    },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
-  },
-}
+      }
+    }
+    exact={true}
+    path="/dashboard/variance"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(Connect(authorizationGuard))",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/dashboard/notice-of-work"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(Connect(authorizationGuard))",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/dashboard/notice-of-work/initial-application/:id"
+  />
+  <Route
+    component={[Function]}
+  />
+</Switch>
 `;

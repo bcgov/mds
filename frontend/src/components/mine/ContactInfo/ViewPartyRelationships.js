@@ -2,11 +2,12 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import CustomPropTypes from "@/customPropTypes";
-import * as router from "@/constants/routes";
 import { withRouter } from "react-router-dom";
 import { Row, Col, Menu, Popconfirm, Divider, Dropdown } from "antd";
 import moment from "moment";
+import { uniq, uniqBy } from "lodash";
+import CustomPropTypes from "@/customPropTypes";
+import * as router from "@/constants/routes";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
 import * as Permission from "@/constants/permissions";
@@ -15,7 +16,6 @@ import { Contact } from "@/components/mine/ContactInfo/PartyRelationships/Contac
 import { InactiveContact } from "@/components/mine/ContactInfo/PartyRelationships/InactiveContact";
 import NullScreen from "@/components/common/NullScreen";
 import Loading from "@/components/common/Loading";
-import { uniq, uniqBy } from "lodash";
 import AddButton from "@/components/common/AddButton";
 import {
   addPartyRelationship,
@@ -377,9 +377,7 @@ export class ViewPartyRelationships extends Component {
         okText: "Ok",
         cancelText: "Cancel",
         onConfirm: () =>
-          this.props.history.push(
-            router.MINE_SUMMARY.dynamicRoute(this.props.mine.mine_guid, "permit")
-          ),
+          this.props.history.push(router.MINE_SUMMARY.dynamicRoute(this.props.mine.mine_guid)),
       },
     }[selectedPartyRelationshipType]);
 

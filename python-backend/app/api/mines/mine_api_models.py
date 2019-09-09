@@ -1,6 +1,8 @@
 from app.extensions import api
 from flask_restplus import fields
 
+from app.api.mines.compliance.response_models import COMPLIANCE_ARTICLE_MODEL
+
 
 class DateTime(fields.Raw):
     def format(self, value):
@@ -37,10 +39,10 @@ MINE_TENURE_TYPE_CODE_MODEL = api.model('MineTenureTypeCode', {
 
 MINE_LOCATION_MODEL = api.model(
     'MineLocation', {
-        'mine_location_guid': fields.String,
-        'mine_guid': fields.String,
-        'latitude': fields.Fixed(description='fixed precision decimal.', decimals=7),
-        'longitude': fields.Fixed(description='fixed precision decimal.', decimals=7),
+        'latitude': fields.Fixed(description='fixed precision decimal.',
+                                 decimals=7),
+        'longitude': fields.Fixed(description='fixed precision decimal.',
+                                  decimals=7),
         'utm_easting': fields.String,
         'utm_northing': fields.String,
         'utm_zone_number': fields.String,
@@ -63,17 +65,12 @@ PERMIT_MODEL = api.model('MinePermit', {
     'permit_status_code_description': fields.String,
 })
 
-EXPECTED_DOCUMENT_STATUS_MODEL = api.model('ExpectedDocumentStatus', {
-    'exp_document_status_code': fields.String,
-    'description': fields.String,
-})
-
 STATUS_MODEL = api.model(
     'MineStatus', {
         'mine_status_guid': fields.String,
         'mine_guid': fields.String,
         'mine_status_xref_guid': fields.String,
-        'status_values': fields.List(fields.String()),
+        'status_values': fields.List(fields.String),
         'status_labels': fields.List(fields.String),
         'effective_date': Date,
         'expiry_date': Date,
@@ -113,34 +110,21 @@ MINE_VERIFIED_MODEL = api.model(
         'verifying_timestamp': Date,
     })
 
-MINE_EXPECTED_DOCUMENT_MODEL = api.model(
-    'MineExpectedDocument', {
-        'exp_document_guid': fields.String,
-        'req_document_guid': fields.String,
-        'mine_guid': fields.String,
-        'exp_document_name': fields.String,
-        'exp_document_description': fields.String,
-        'due_date': Date,
-        'received_date': Date,
-        'exp_document_status_code': fields.String,
-        'expected_document_status': fields.Nested(EXPECTED_DOCUMENT_STATUS_MODEL),
-        'hsrc_code': fields.String,
-        'related_documents': fields.List(fields.Nested(MINE_DOCUMENT_MODEL)),
-    })
-
 MINES_MODEL = api.model(
     'Mines', {
         'mine_guid': fields.String,
         'mine_name': fields.String,
         'mine_no': fields.String,
         'mine_note': fields.String,
+        'legacy_mms_mine_status': fields.String,
         'major_mine_ind': fields.Boolean,
         'mine_region': fields.String,
         'ohsc_ind': fields.Boolean,
         'union_ind': fields.Boolean,
         'mine_permit': fields.List(fields.Nested(PERMIT_MODEL)),
         'mine_status': fields.List(fields.Nested(STATUS_MODEL)),
-        'mine_tailings_storage_facilities': fields.List(fields.Nested(MINE_TSF_MODEL)),
+        'mine_tailings_storage_facilities': fields.List(
+            fields.Nested(MINE_TSF_MODEL)),
         'mine_type': fields.List(fields.Nested(MINE_TYPE_MODEL)),
         'verified_status': fields.Nested(MINE_VERIFIED_MODEL)
     })
@@ -148,7 +132,6 @@ MINES_MODEL = api.model(
 MINE_MODEL = api.inherit(
     'Mine', MINES_MODEL, {
         'mine_location': fields.Nested(MINE_LOCATION_MODEL),
-        'mine_expected_documents': fields.List(fields.Nested(MINE_EXPECTED_DOCUMENT_MODEL)),
     })
 
 MINE_LIST_MODEL = api.model(
@@ -173,6 +156,7 @@ MINE_INCIDENT_DOCUMENT_MODEL = api.model(
 MINE_INCIDENT_RECOMMENDATION_MODEL = api.model(
     'Mine Incident Recommendation', {
         'recommendation': fields.String,
+        'mine_incident_recommendation_guid': fields.String
     }
 )
 
@@ -189,42 +173,27 @@ MINE_INCIDENT_MODEL = api.model(
         'reported_by_email': fields.String,
         'reported_by_phone_no': fields.String,
         'reported_by_phone_ext': fields.String,
-        'emergency_services_called': fields.Boolean, 
+        'emergency_services_called': fields.Boolean,
         'number_of_injuries': fields.Integer,
         'number_of_fatalities': fields.Integer,
-        'reported_to_inspector_party_guid':  fields.String,
-        'responsible_inspector_party_guid':  fields.String,
+        'reported_to_inspector_party_guid': fields.String,
+        'responsible_inspector_party_guid': fields.String,
         'determination_type_code': fields.String,
+        'mine_determination_type_code': fields.String,
+        'mine_determination_representative': fields.String,
         'status_code': fields.String,
         'followup_investigation_type_code': fields.String,
         'followup_inspection': fields.Boolean,
-        'followup_inspection_date': DateTime,
+        'followup_inspection_date': fields.Date,
         'determination_inspector_party_guid': fields.String,
-        'mms_inspector_initials' : fields.String(attribute='mms_insp_cd'), 
+        'mms_inspector_initials': fields.String(attribute='mms_insp_cd'),
         'dangerous_occurrence_subparagraph_ids': fields.List(fields.Integer),
         'proponent_incident_no': fields.String,
         'mine_incident_no': fields.String,
-        'documents': fields.List(fields.Nested(MINE_INCIDENT_DOCUMENT_MODEL)), 
-        'recommendations': fields.List(fields.Nested(MINE_INCIDENT_RECOMMENDATION_MODEL))
+        'documents': fields.List(fields.Nested(MINE_INCIDENT_DOCUMENT_MODEL)),
+        'recommendations': fields.List(fields.Nested(
+            MINE_INCIDENT_RECOMMENDATION_MODEL))
     })
-
-MINE_INCIDENT_FOLLOWUP_INVESTIGATION_TYPE_MODEL = api.model(
-    'Mine Incident Followup Investigation Type', {
-        'mine_incident_followup_investigation_type_code': fields.String,
-        'description': fields.String,
-        'display_order': fields.Integer,
-    })
-
-MINE_INCIDENT_DETERMINATION_TYPE_MODEL = api.model(
-    'Mine Incident Determination Type', {
-        'mine_incident_determination_type_code': fields.String,
-        'description': fields.String,
-        'display_order': fields.Integer,
-        'active_ind': fields.Boolean
-    })
-
-MINE_INCIDENT_STATUS_CDOE_MODEL = api.model("Mine Incident Status Codes",
- {'mine_incident_status_code': fields.String, 'description': fields.String, 'display_order': fields.Integer})
 
 VARIANCE_DOCUMENT_MODEL = api.inherit(
     'VarianceDocumentModel', MINE_DOCUMENT_MODEL, {
@@ -235,6 +204,7 @@ VARIANCE_DOCUMENT_MODEL = api.inherit(
 VARIANCE_MODEL = api.model(
     'Variance', {
         'variance_guid': fields.String,
+        'variance_no': fields.Integer,
         'mine_guid': fields.String,
         'compliance_article_id': fields.Integer,
         'variance_application_status_code': fields.String,
@@ -250,27 +220,85 @@ VARIANCE_MODEL = api.model(
 
 MINE_OPERATION_STATUS_CODE_MODEL = api.model(
     'MineOperationStatusCode', {
-        'mine_operation_status_code': fields.String(),
-        'description': fields.String()
+        'mine_operation_status_code': fields.String,
+        'description': fields.String
     })
 
 MINE_OPERATION_STATUS_REASON_CODE_MODEL = api.model(
     'MineOperationStatusReasonCode', {
-        'mine_operation_status_reason_code': fields.String(),
-        'description': fields.String()
+        'mine_operation_status_reason_code': fields.String,
+        'description': fields.String
     })
 
 MINE_OPERATION_STATUS_SUB_REASON_CODE_MODEL = api.model(
     'MineOperationStatusSubReasonCode', {
-        'mine_operation_status_sub_reason_code': fields.String(),
-        'description': fields.String()
+        'mine_operation_status_sub_reason_code': fields.String,
+        'description': fields.String
     })
 
 MINE_STATUS_CODE_MODEL = api.model(
-        'MineStatusCode', {
-            'mine_status_xref_guid':fields.String(),
-            'mine_operation_status':fields.Nested(MINE_OPERATION_STATUS_CODE_MODEL),
-            'mine_operation_status_reason':fields.Nested(MINE_OPERATION_STATUS_REASON_CODE_MODEL),
-            'mine_operation_status_sub_reason':fields.Nested(MINE_OPERATION_STATUS_SUB_REASON_CODE_MODEL),
-            'description': fields.String(),
+    'MineStatusCode', {
+        'mine_status_xref_guid': fields.String,
+        'mine_operation_status': fields.Nested(
+            MINE_OPERATION_STATUS_CODE_MODEL),
+        'mine_operation_status_reason': fields.Nested(
+            MINE_OPERATION_STATUS_REASON_CODE_MODEL),
+        'mine_operation_status_sub_reason': fields.Nested(
+            MINE_OPERATION_STATUS_SUB_REASON_CODE_MODEL),
+        'description': fields.String,
     })
+
+MINE_REPORT_COMMENT_MODEL = api.model(
+    'MineReportCommentModel', {
+        'mine_report_comment_guid': fields.String,
+        'report_comment': fields.String,
+        'comment_visibility_ind': fields.Boolean,
+        'comment_user': fields.String,
+        'comment_datetime': fields.DateTime,
+        'from_latest_submission': fields.Boolean
+    }
+)
+
+MINE_REPORT_SUBMISSION_MODEL = api.model(
+    'MineReportSubmission', {
+        'mine_report_submission_guid': fields.String,
+        'submission_date': fields.Date,
+        'mine_report_submission_status_code': fields.String,
+        'documents': fields.List(fields.Nested(MINE_DOCUMENT_MODEL)),
+        'comments': fields.List(fields.Nested(MINE_REPORT_COMMENT_MODEL))
+    }
+)
+
+MINE_REPORT_MODEL = api.model(
+    'MineReportModel', {
+        'mine_report_guid': fields.String,
+        'mine_report_definition_guid': fields.String,
+        'report_name': fields.String,
+        'due_date': fields.Date,
+        'received_date': fields.Date,
+        'submission_year': fields.Integer,
+        'permit_guid': fields.String,
+        'mine_report_submissions': fields.List(
+            fields.Nested(MINE_REPORT_SUBMISSION_MODEL))
+    })
+
+
+MINE_REPORT_DEFINITION_CATEGORIES = api.model(
+    'MineReportDefinitionCategoriesModel', {
+        'mine_report_category': fields.String,
+        'description': fields.String
+    }
+)
+
+MINE_REPORT_DEFINITION_MODEL = api.model(
+    'MineReportDefinition', {
+        'mine_report_definition_guid': fields.String,
+        'report_name': fields.String,
+        'description': fields.String,
+        'due_date_period_months': fields.Integer,
+        'mine_report_due_date_type': fields.String,
+        'default_due_date': fields.Date,
+        'categories': fields.List(fields.Nested(MINE_REPORT_DEFINITION_CATEGORIES)),
+        'compliance_articles': fields.List(fields.Nested(COMPLIANCE_ARTICLE_MODEL)),
+    }
+)

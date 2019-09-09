@@ -1,20 +1,21 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import CustomPropTypes from "@/customPropTypes";
 import { Field, reduxForm } from "redux-form";
 import { Form, Col, Row } from "antd";
+import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import FileUpload from "@/components/common/FileUpload";
 import { MINE_INCIDENT_DOCUMENT } from "@/constants/API";
 import { IncidentsUploadedFilesList } from "@/components/Forms/incidents/IncidentsUploadedFilesList";
+import * as Strings from "@/constants/strings";
 
 import { required, maxLength, number, dateNotInFuture } from "@/utils/Validate";
 
 const propTypes = {
   incidentDeterminationOptions: CustomPropTypes.options.isRequired,
   doSubparagraphOptions: CustomPropTypes.options.isRequired,
-  inspectors: CustomPropTypes.options.isRequired,
+  inspectors: CustomPropTypes.groupOptions.isRequired,
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
   mineGuid: PropTypes.string.isRequired,
   doDetermination: PropTypes.string,
@@ -24,7 +25,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  doDetermination: "PEN",
+  doDetermination: Strings.INCIDENT_DETERMINATION_TYPES.pending,
 };
 
 class AddIncidentDetailForm extends Component {
@@ -37,17 +38,33 @@ class AddIncidentDetailForm extends Component {
         <Row gutter={48}>
           <Col>
             <h4>Incident Details</h4>
-            <Form.Item>
-              <Field
-                id="incident_timestamp"
-                name="incident_timestamp"
-                label="Incident Date and Time*"
-                placeholder="Please select date and time"
-                component={renderConfig.DATE}
-                showTime
-                validate={[required, dateNotInFuture]}
-              />
-            </Form.Item>
+            <Row gutter={16}>
+              <Col md={12} xs={24}>
+                <Form.Item>
+                  <Field
+                    id="incident_date"
+                    name="incident_date"
+                    label="Incident Date*"
+                    placeholder="Please select date"
+                    component={renderConfig.DATE}
+                    validate={[required, dateNotInFuture]}
+                  />
+                </Form.Item>
+              </Col>
+              <Col md={12} xs={24}>
+                <Form.Item>
+                  <Field
+                    id="incident_time"
+                    name="incident_time"
+                    label="Incident Time*"
+                    placeholder="Please select time"
+                    component={renderConfig.TIME}
+                    validate={[required]}
+                    fullWidth
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
             <Form.Item>
               <Field
                 id="proponent_incident_no"
@@ -110,19 +127,20 @@ class AddIncidentDetailForm extends Component {
                 validate={[required]}
               />
             </Form.Item>
-            {this.props.doDetermination !== "PEN" ? (
+            {this.props.doDetermination !== Strings.INCIDENT_DETERMINATION_TYPES.pending ? (
               <Form.Item>
                 <Field
                   id="determination_inspector_party_guid"
                   name="determination_inspector_party_guid"
-                  label="Who made the determination?*"
-                  component={renderConfig.SELECT}
+                  label="Inspector who made the determination*"
+                  component={renderConfig.GROUPED_SELECT}
                   data={this.props.inspectors}
                   validate={[required]}
                 />
               </Form.Item>
             ) : null}
-            {this.props.doDetermination === "DO" ? (
+            {this.props.doDetermination ===
+              Strings.INCIDENT_DETERMINATION_TYPES.dangerousOccurance && (
               <span>
                 <Form.Item>
                   <Field
@@ -135,33 +153,58 @@ class AddIncidentDetailForm extends Component {
                     validate={[this.validateDoSubparagraphs]}
                   />
                 </Form.Item>
-                <h4>Initial Notification Documents</h4>
-                {this.props.uploadedFiles.length > 0 && (
-                  <Form.Item label="Attached files" style={{ paddingBottom: "10px" }}>
-                    <Field
-                      id="initial_documents"
-                      name="initial_documents"
-                      component={IncidentsUploadedFilesList}
-                      files={this.props.uploadedFiles}
-                      onRemoveFile={this.props.onRemoveFile}
-                    />
-                  </Form.Item>
-                )}
-                <Form.Item>
-                  <Field
-                    id="InitialIncidentFileUpload"
-                    name="InitialIncidentFileUpload"
-                    onFileLoad={(document_name, document_manager_guid) =>
-                      this.props.onFileLoad(document_name, document_manager_guid, "INI")
-                    }
-                    component={FileUpload}
-                    uploadUrl={MINE_INCIDENT_DOCUMENT(this.props.mineGuid)}
-                  />
-                </Form.Item>
               </span>
-            ) : null}
+            )}
+            <Form.Item>
+              <Field
+                id="mine_determination_type_code"
+                name="mine_determination_type_code"
+                label="Mine's Determination"
+                component={renderConfig.SELECT}
+                data={this.props.incidentDeterminationOptions.filter(
+                  ({ value }) => value !== Strings.INCIDENT_DETERMINATION_TYPES.pending
+                )}
+              />
+            </Form.Item>
+            <Form.Item>
+              <Field
+                id="mine_determination_representative"
+                name="mine_determination_representative"
+                label="Mine representative who made determination"
+                component={renderConfig.FIELD}
+                validate={[maxLength(255)]}
+              />
+            </Form.Item>
+            <h4>Initial Notification Documents</h4>
+            {this.props.uploadedFiles.length > 0 && (
+              <Form.Item label="Attached files" style={{ paddingBottom: "10px" }}>
+                <Field
+                  id="initial_documents"
+                  name="initial_documents"
+                  component={IncidentsUploadedFilesList}
+                  files={this.props.uploadedFiles}
+                  onRemoveFile={this.props.onRemoveFile}
+                />
+              </Form.Item>
+            )}
+            <Form.Item>
+              <Field
+                id="InitialIncidentFileUpload"
+                name="InitialIncidentFileUpload"
+                onFileLoad={(document_name, document_manager_guid) =>
+                  this.props.onFileLoad(
+                    document_name,
+                    document_manager_guid,
+                    Strings.INCIDENT_DOCUMENT_TYPES.initial
+                  )
+                }
+                component={FileUpload}
+                uploadUrl={MINE_INCIDENT_DOCUMENT(this.props.mineGuid)}
+              />
+            </Form.Item>
 
-            {this.props.doDetermination === "NDO" ? (
+            {this.props.doDetermination ===
+            Strings.INCIDENT_DETERMINATION_TYPES.notADangerousOccurance ? (
               <span>
                 <Form.Item>
                   <Field

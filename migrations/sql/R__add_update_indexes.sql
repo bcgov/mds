@@ -15,9 +15,6 @@ CREATE INDEX IF NOT EXISTS mine_mine_no_search_idx ON mine USING gist (mine_no g
 /* Mine document */
 CREATE INDEX IF NOT EXISTS mine_document_document_name_search_idx on mine_document USING gist (document_name gist_trgm_ops);
 
-/* Mine expected document */
-CREATE INDEX IF NOT EXISTS active_mine_expected_document_mine_guid_fkey_idx ON mine_expected_document(mine_guid, active_ind) WHERE (active_ind = true);
-CREATE INDEX IF NOT EXISTS active_mine_expected_document_req_document_guid_fkey_idx ON mine_expected_document(req_document_guid, active_ind) WHERE (active_ind = true);
 
 /* Mine Location */
 DROP INDEX IF EXISTS mine_location_lat_long_idx;

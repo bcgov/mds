@@ -10,7 +10,7 @@ import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
-  inspectors: CustomPropTypes.options.isRequired,
+  inspectors: CustomPropTypes.groupOptions.isRequired,
 };
 
 export const AddIncidentReportingForm = (props) => (
@@ -34,7 +34,7 @@ export const AddIncidentReportingForm = (props) => (
               name="reported_to_inspector_party_guid"
               label="Incident reported to*:"
               placeholder="Start typing inspector name"
-              component={renderConfig.SELECT}
+              component={renderConfig.GROUPED_SELECT}
               validate={[required]}
               data={props.inspectors}
             />
@@ -44,7 +44,7 @@ export const AddIncidentReportingForm = (props) => (
               id="responsible_inspector_party_guid"
               name="responsible_inspector_party_guid"
               label="Inspector responsible:*"
-              component={renderConfig.SELECT}
+              component={renderConfig.GROUPED_SELECT}
               placeholder="Start typing inspector name"
               validate={[required]}
               data={props.inspectors}
@@ -98,17 +98,33 @@ export const AddIncidentReportingForm = (props) => (
               validate={[email]}
             />
           </Form.Item>
-          <Form.Item>
-            <Field
-              id="reported_timestamp"
-              name="reported_timestamp"
-              label="Reported Date and Time*"
-              placeholder="Please select date and time"
-              component={renderConfig.DATE}
-              showTime
-              validate={[required, dateNotInFuture]}
-            />
-          </Form.Item>
+          <Row gutter={16}>
+            <Col md={12} xs={24}>
+              <Form.Item>
+                <Field
+                  id="reported_date"
+                  name="reported_date"
+                  label="Reported Date*"
+                  placeholder="Please select date"
+                  component={renderConfig.DATE}
+                  validate={[required, dateNotInFuture]}
+                />
+              </Form.Item>
+            </Col>
+            <Col md={12} xs={24}>
+              <Form.Item>
+                <Field
+                  id="reported_time"
+                  name="reported_time"
+                  label="Reported Time*"
+                  placeholder="Please select time"
+                  component={renderConfig.TIME}
+                  validate={[required]}
+                  fullWidth
+                />
+              </Form.Item>
+            </Col>
+          </Row>
         </Col>
       </Row>
     </Form>

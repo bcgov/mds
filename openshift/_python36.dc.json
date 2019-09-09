@@ -59,11 +59,6 @@
       "value": "/"
     },
     {
-      "name": "UPLOADED_DOCUMENT_DEST",
-      "required": false,
-      "value": "/opt/app-root/src/document_uploads"
-    },
-    {
       "name": "MDS_NRIS_API_SECRET",
       "required": false,
       "value": "template.mds-nris-secret"
@@ -90,10 +85,6 @@
     },
     {
       "name": "CACHE_REDIS_HOST",
-      "required": true
-    },
-    {
-      "name": "DOCUMENT_CAPACITY",
       "required": true
     },
     {
@@ -155,6 +146,10 @@
     {
       "name": "NRIS_API_URL",
       "required": true
+    },
+    {
+      "name": "DOCUMENT_MANAGER_URL",
+      "required": true
     }
   ],
   "objects": [
@@ -193,25 +188,6 @@
       "spec": {
         "lookupPolicy": {
           "local": false
-        }
-      }
-    },
-    {
-      "apiVersion": "v1",
-      "kind": "PersistentVolumeClaim",
-      "metadata": {
-        "name": "mds-document-storage${SUFFIX}",
-        "annotations": {
-          "volume.beta.kubernetes.io/storage-class": "gluster-file",
-          "volume.beta.kubernetes.io/storage-provisioner": "kubernetes.io/glusterfs"
-        }
-      },
-      "spec": {
-        "accessModes": ["ReadWriteMany"],
-        "resources": {
-          "requests": {
-            "storage": "${DOCUMENT_CAPACITY}"
-          }
         }
       }
     },
@@ -456,11 +432,7 @@
                   },
                   {
                     "name": "DOCUMENT_MANAGER_URL",
-                    "value": "${API_URL}"
-                  },
-                  {
-                    "name": "UPLOADED_DOCUMENT_DEST",
-                    "value": "${UPLOADED_DOCUMENT_DEST}"
+                    "value": "${DOCUMENT_MANAGER_URL}"
                   },
                   {
                     "name": "ENVIRONMENT_NAME",
@@ -512,12 +484,6 @@
                 },
                 "terminationMessagePath": "/dev/termination-log",
                 "terminationMessagePolicy": "File",
-                "volumeMounts": [
-                  {
-                    "mountPath": "/opt/app-root/src/document_uploads",
-                    "name": "mds-document-storage-data"
-                  }
-                ],
                 "imagePullPolicy": "IfNotPresent"
               },
               {
@@ -620,6 +586,15 @@
                     }
                   },
                   {
+                    "name": "DOCMAN_USER_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DB_CONFIG_NAME}",
+                        "key": "docman-user-password"
+                      }
+                    }
+                  },
+                  {
                     "name": "FLYWAY_OUT_OF_ORDER",
                     "value": "true"
                   },
@@ -642,15 +617,7 @@
             ],
             "restartPolicy": "Always",
             "dnsPolicy": "ClusterFirst",
-            "securityContext": {},
-            "volumes": [
-              {
-                "name": "mds-document-storage-data",
-                "persistentVolumeClaim": {
-                  "claimName": "mds-document-storage${SUFFIX}"
-                }
-              }
-            ]
+            "securityContext": {}
           }
         }
       }

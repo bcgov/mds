@@ -44,9 +44,7 @@ describe("userMineReducer", () => {
     const result = userMineReducer(
       undefined,
       storeMineDocuments({
-        mine_documents: [
-          { mine_guid: "4aaad42f-ab69-439a-b5f9-78c35f95d0ff", document_name: "test" },
-        ],
+        records: [{ mine_guid: "4aaad42f-ab69-439a-b5f9-78c35f95d0ff", document_name: "test" }],
       })
     );
     expect(result).toEqual(expectedValue);

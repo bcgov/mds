@@ -33,7 +33,7 @@
     },
     {
       "name": "DOCKER_IMAGE_DIRECTORY",
-      "value": "docker-images/nodejs-8"
+      "value": "docker-images/nodejs-10"
     },
     {
       "name": "SOURCE_CONTEXT_DIR",
@@ -60,7 +60,7 @@
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
-        "name": "rhscl-nodejs-8-rhel7",
+        "name": "redhat-ubi-node-10",
         "creationTimestamp": null,
         "annotations": {
           "description": "Nodejs Base Image"
@@ -79,7 +79,7 @@
             "annotations": null,
             "from": {
               "kind": "DockerImage",
-              "name": "registry.access.redhat.com/rhscl/nodejs-8-rhel7:latest"
+              "name": "registry.access.redhat.com/ubi8/nodejs-10:latest"
             },
             "importPolicy": {},
             "referencePolicy": {
@@ -156,7 +156,7 @@
           "dockerStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "name": "rhscl-nodejs-8-rhel7:latest"
+              "name": "redhat-ubi-node-10:latest"
             }
           }
         },
@@ -168,12 +168,12 @@
         },
         "resources": {
           "limits": {
-            "cpu": "1",
-            "memory": "2Gi"
+            "cpu": "2",
+            "memory": "4Gi"
           },
           "requests": {
-            "cpu": "500m",
-            "memory": "1Gi"
+            "cpu": "1",
+            "memory": "2Gi"
           }
         },
         "postCommit": {},
