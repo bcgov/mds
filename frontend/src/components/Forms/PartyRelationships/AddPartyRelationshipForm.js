@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import moment from "moment";
 import { isEmpty } from "lodash";
 import { Field, reduxForm } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
@@ -29,8 +30,9 @@ const defaultProps = {
 
 const checkDatesForOverlap = (values, props) => {
   const existingAppointments = props.partyRelationships.filter(
-    ({ mine_party_appt_type_code }) =>
-      mine_party_appt_type_code === props.partyRelationshipType.mine_party_appt_type_code
+    ({ mine_party_appt_type_code, related_guid }) =>
+      mine_party_appt_type_code === props.partyRelationshipType.mine_party_appt_type_code &&
+      values.related_guid === related_guid
   );
   const newAppt = { start_date: null, end_date: null, ...values };
 
@@ -40,7 +42,7 @@ const checkDatesForOverlap = (values, props) => {
 const validate = (values, props) => {
   const errors = {};
   if (values.start_date && values.end_date) {
-    if (Date.parse(values.start_date) > Date.parse(values.end_date)) {
+    if (moment(values.start_date) > moment(values.end_date)) {
       errors.end_date = "Must be after start date.";
     }
   }

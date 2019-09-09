@@ -99,7 +99,7 @@ export class ViewPartyRelationships extends Component {
 
     if (
       value.mine_party_appt_type_code === "PMT" &&
-      !this.props.userRoles.includes(USER_ROLES[Permission.ADMIN])
+      !this.props.userRoles.includes(USER_ROLES[Permission.CONTACT_ADMIN])
     ) {
       this.RoleConfirmation.current.click();
       return;

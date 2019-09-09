@@ -1,4 +1,5 @@
 export const ADMIN = "role_admin";
+export const CONTACT_ADMIN = "role_contact_admin";
 export const EDIT_PARTIES = "role_edit_parties";
 export const EDIT_MINES = "role_edit_mines";
 export const EDIT_PERMITS = "role_edit_permits";
