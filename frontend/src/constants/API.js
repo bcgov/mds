@@ -124,3 +124,12 @@ export const NOTICE_OF_WORK_APPLICATION = (applicationGuid) =>
   `/now-submissions/applications/${applicationGuid}`;
 export const MINE_NOTICE_OF_WORK_APPLICATIONS = (mineGuid, params = {}) =>
   `/mines/${mineGuid}/now-submissions/applications?${queryString.stringify(params)}`;
+
+// Mine Party Appointments
+export const MINE_PARTY_APPOINTMENT_DOCUMENTS = (mineGuid, minePartyAppointmentGuid) =>
+  `/mines/${mineGuid}/party-appts/${minePartyAppointmentGuid}/documents`;
+export const MINE_PARTY_APPOINTMENT_DOCUMENT = (
+  mineGuid,
+  minePartyAppointmentGuid,
+  documentManagerGuid
+) => `/mines/${mineGuid}/party-appts/${minePartyAppointmentGuid}/documents/${documentManagerGuid}`;

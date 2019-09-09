@@ -67,6 +67,20 @@ exports[`AddPartyRelationshipForm renders properly 1`] = `
     </Col>
   </Row>
   <div />
+  <h4>
+    Supporting Document - Notification
+  </h4>
+  <FormItem
+    hasFeedback={false}
+  >
+    <Field
+      component={[Function]}
+      id="PartyRelationshipFileUpload"
+      name="PartyRelationshipFileUpload"
+      onFileLoad={[Function]}
+      onRemoveFile={[Function]}
+    />
+  </FormItem>
   <div
     className="right center-mobile"
   >
