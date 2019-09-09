@@ -39,3 +39,6 @@ export { default as YELLOW_HAZARD } from "../assets/images/Hazard.svg";
 export { default as BACKGROUND } from "../assets/images/Background.svg";
 
 export { default as HSRC_PDF } from "../assets/downloads/HSRC.pdf";
+
+// skeleton
+export { default as TABLE_SKELETON } from "../assets/tableloader.gif";

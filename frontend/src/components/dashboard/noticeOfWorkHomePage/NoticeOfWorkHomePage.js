@@ -137,7 +137,7 @@ export class NoticeOfWorkHomePage extends Component {
               handleSearch={this.handleSearch}
               initialValues={{ mine_search: this.state.params.mine_search }}
             />
-            <LoadingWrapper condition={this.state.isLoaded}>
+            <LoadingWrapper condition={this.state.isLoaded} type="table-skeleton">
               <div>
                 <NoticeOfWorkTable
                   handleSearch={this.handleSearch}

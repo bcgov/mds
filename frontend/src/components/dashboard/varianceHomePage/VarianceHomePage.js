@@ -329,7 +329,7 @@ export class VarianceHomePage extends Component {
               filterVarianceStatusOptions={this.props.filterVarianceStatusOptions}
             />
           </AuthorizationWrapper>
-          <LoadingWrapper condition={this.state.variancesLoaded}>
+          <LoadingWrapper condition={this.state.variancesLoaded} type="table-skeleton">
             <VarianceTable
               isApplication={this.state.isApplication}
               handleFilterChange={this.handleFilterChange}

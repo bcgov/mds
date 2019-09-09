@@ -90,7 +90,7 @@ export class MineNOWApplications extends Component {
           <h2>Notice of Work Applications</h2>
           <Divider />
         </div>
-        <LoadingWrapper condition={this.state.isLoaded}>
+        <LoadingWrapper condition={this.state.isLoaded} type="table-skeleton">
           <MineNoticeOfWorkTable
             handleSearch={this.handleSearch}
             noticeOfWorkApplications={this.props.noticeOfWorkApplications}
