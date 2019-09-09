@@ -14,6 +14,8 @@ from app.extensions import db
 from ...party.models.party import Party
 from ....utils.models_mixins import AuditMixin, Base
 
+from app.api.parties.party_appt.models.mine_party_appt_document_xref import MinePartyApptDocumentXref
+
 
 class MinePartyAppointment(AuditMixin, Base):
     __tablename__ = "mine_party_appt"
@@ -45,6 +47,8 @@ class MinePartyAppointment(AuditMixin, Base):
         backref='mine_party_appt',
         order_by='desc(MinePartyAppointmentType.display_order)',
         lazy='joined')
+
+    documents = db.relationship('MinePartyApptDocumentXref', lazy='joined')
 
     def assign_related_guid(self, related_guid):
         if self.mine_party_appt_type_code == "EOR":
