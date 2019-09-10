@@ -217,22 +217,3 @@ export const addDocumentToRelationship = ({ mineGuid, minePartyApptGuid }, paylo
     .catch(() => dispatch(error(reducerTypes.ADD_DOCUMENT_TO_RELATIONSHIP)))
     .finally(() => dispatch(hideLoading("modal")));
 };
-
-export const removeDocumentFromRelationship = (mineGuid, minePartyApptGuid, mineDocumentGuid) => (
-  dispatch
-) => {
-  dispatch(showLoading("modal"));
-  dispatch(request(reducerTypes.REMOVE_DOCUMENT_FROM_RELATIONSHIP));
-  return CustomAxios()
-    .delete(
-      ENVIRONMENT.apiUrl +
-        API.MINE_PARTY_APPOINTMENT_DOCUMENT(mineGuid, minePartyApptGuid, mineDocumentGuid),
-      createRequestHeader()
-    )
-    .then((response) => {
-      dispatch(success(reducerTypes.REMOVE_DOCUMENT_FROM_RELATIONSHIP));
-      return response;
-    })
-    .catch(() => dispatch(error(reducerTypes.REMOVE_DOCUMENT_FROM_RELATIONSHIP)))
-    .finally(() => dispatch(hideLoading("modal")));
-};

@@ -23,7 +23,6 @@ import {
   updatePartyRelationship,
   fetchPartyRelationships,
   addDocumentToRelationship,
-  removeDocumentFromRelationship,
 } from "@/actionCreators/partiesActionCreator";
 import { createTailingsStorageFacility } from "@/actionCreators/mineActionCreator";
 import {
@@ -49,7 +48,6 @@ const propTypes = {
   updatePartyRelationship: PropTypes.func.isRequired,
   removePartyRelationship: PropTypes.func.isRequired,
   addDocumentToRelationship: PropTypes.func.isRequired,
-  removeDocumentFromRelationship: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
@@ -500,7 +498,6 @@ const mapDispatchToProps = (dispatch) =>
       updatePartyRelationship,
       createTailingsStorageFacility,
       addDocumentToRelationship,
-      removeDocumentFromRelationship,
     },
     dispatch
   );
