@@ -57,7 +57,7 @@ class MineMapLeaflet extends Component {
               url="https://openmaps.gov.bc.ca/geo/pub/wms"
             />
           </Overlay>
-          <Overlay name="Coal leases">
+          <Overlay name="Coal licences">
             <WMSTileLayer
               layers="WHSE_MINERAL_TENURE.MTA_ACQUIRED_TENURE_SVW"
               transparent
