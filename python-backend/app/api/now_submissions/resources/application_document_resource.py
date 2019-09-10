@@ -52,7 +52,9 @@ class ApplicationDocumentTokenResource(Resource, UserMixin, ErrorMixin):
 
 
 class ApplicationDocumentResource(Resource, UserMixin, ErrorMixin):
-    @api.doc(description='Fetch an application document by id', params={})
+    @api.doc(
+        description='Fetch an application document by id',
+        params={'token': 'A one-time token issued for downloading the file.'})
     def get(self, application_guid, id):
         token_guid = request.args.get('token', '')
         document_info = cache.get(DOWNLOAD_TOKEN(token_guid))
