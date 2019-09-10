@@ -9,4 +9,4 @@ api = Namespace('now-submissions', description='Notice of Work operations')
 api.add_resource(ApplicationListResource, '/applications')
 api.add_resource(ApplicationResource, '/applications/<string:application_guid>')
 api.add_resource(ApplicationDocumentResource,
-                 '/applications/<string:application_guid>/document/<string:id>')
+                 '/applications/<string:application_guid>/document/<int:id>')
