@@ -23,7 +23,7 @@ def DOWNLOAD_TOKEN(token_guid):
 class ApplicationDocumentTokenResource(Resource, UserMixin, ErrorMixin):
     @api.doc(description='Issues a one-time token for access to a document without auth headers.')
     @api.marshal_with(DOWNLOAD_TOKEN_MODEL, code=200)
-    #@requires_role_view_all
+    @requires_role_view_all
     def get(self, application_guid, id):
 
         application = Application.find_by_application_guid(application_guid)
