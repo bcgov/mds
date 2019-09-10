@@ -53,8 +53,6 @@ class VFCBCDownloadService():
         else:
             download_session.cookies = _vfcbc_cookies
 
-        file_url = "https://j200.gov.bc.ca/int/vfcbc/Download.aspx?PosseObjectId=68025730"
-
         file_download_req = download_session.get(file_url, stream=True)
 
         file_download_resp = Response(

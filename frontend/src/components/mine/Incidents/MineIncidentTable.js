@@ -6,7 +6,7 @@ import _ from "lodash";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
-import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
+import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls";
 import CustomPropTypes from "@/customPropTypes";
 import NullScreen from "@/components/common/NullScreen";
 import { formatDate } from "@/utils/helpers";
