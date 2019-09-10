@@ -27,7 +27,7 @@ class MineMapLeaflet extends Component {
           url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}"
         />
         <LayersControl position="topleft">
-          <Overlay name="First nations layer">
+          <Overlay name="First Nations Layer">
             <WMSTileLayer
               layers="WHSE_ADMIN_BOUNDARIES.PIP_CONSULTATION_AREAS_SP"
               transparent
@@ -35,6 +35,25 @@ class MineMapLeaflet extends Component {
               format="image/png"
               attribution="DataBC"
               url="https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov?"
+            />
+          </Overlay>
+          <Overlay name="Mineral, Placer, and Coal">
+            <WMSTileLayer
+              layers="WHSE_MINERAL_TENURE.MTA_ACQUIRED_TENURE_SVW	"
+              transparent
+              uppercase
+              format="image/png"
+              attribution="OpenMaps"
+              url="https://openmaps.gov.bc.ca/geo/pub/wms"
+            />
+          </Overlay>
+          <Overlay name="BC Mine Regions">
+            <TileLayer
+              url="https://tiles.arcgis.com/tiles/ubm4tcTYICKBpist/arcgis/rest/services/BC_Mine_Regions4/MapServer/tile/{z}/{y}/{x}"
+              transparent
+              uppercase
+              format="image/png"
+              attribution="BC Data Warehouse"
             />
           </Overlay>
         </LayersControl>
