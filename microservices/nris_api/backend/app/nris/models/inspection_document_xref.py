@@ -10,6 +10,8 @@ from app.nris.models.document import Document
 
 class InspectionDocumentXref(Base):
     __tablename__ = "inspection_document_xref"
+    __table_args__ = {
+        'comment': 'Contains a reference between inspection documents and the details of the documents.'}
     inspection_id = db.Column(
         db.Integer, db.ForeignKey('inspection.inspection_id'), primary_key=True)
     document_id = db.Column(
