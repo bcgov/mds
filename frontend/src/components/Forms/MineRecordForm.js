@@ -26,8 +26,8 @@ import {
   getDisturbanceOptionHash,
   getCommodityOptionHash,
   getMineStatusDropDownOptions,
-  getMineRegionOptions,
-  getMineTenureTypeOptions,
+  getMineRegionDropdownOptions,
+  getMineTenureTypeDropdownOptions,
   getMineTenureTypesHash,
 } from "@/selectors/staticContentSelectors";
 
@@ -192,9 +192,7 @@ export class MineRecordForm extends Component {
       <div onClick={(event) => event.stopPropagation()}>
         <Popconfirm
           placement="topRight"
-          title={`Are you sure you want to remove Mine Type ${
-            this.props.mineTenureHash[mineTenureCode]
-          }?`}
+          title={`Are you sure you want to remove Mine Type ${this.props.mineTenureHash[mineTenureCode]}?`}
           onConfirm={(event) => this.props.handleDelete(event, mineTenureCode)}
           okText="Yes"
           cancelText="No"
@@ -338,6 +336,7 @@ export class MineRecordForm extends Component {
                 component={renderConfig.CASCADER}
                 validate={[required]}
                 onChange={this.onStatusChange}
+                changeOnSelect
               />
             </Form.Item>
           </Col>
@@ -474,11 +473,11 @@ export default compose(
   connect((state) => ({
     currentMineTypes: getCurrentMineTypes(state),
     mineStatusDropDownOptions: getMineStatusDropDownOptions(state),
-    mineRegionOptions: getMineRegionOptions(state),
+    mineRegionOptions: getMineRegionDropdownOptions(state),
     mineTenureHash: getMineTenureTypesHash(state),
     mineCommodityOptionsHash: getCommodityOptionHash(state),
     mineDisturbanceOptionsHash: getDisturbanceOptionHash(state),
-    mineTenureTypes: getMineTenureTypeOptions(state),
+    mineTenureTypes: getMineTenureTypeDropdownOptions(state),
     conditionalCommodityOptions: getConditionalCommodityOptions(state),
     conditionalDisturbanceOptions: getConditionalDisturbanceOptionsHash(state),
     mineStatus: selector(state, "mine_status"),

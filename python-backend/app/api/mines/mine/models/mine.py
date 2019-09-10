@@ -1,8 +1,12 @@
 import uuid
+import utm
 
 from sqlalchemy.orm import validates
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
+from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.orm import reconstructor
+from geoalchemy2 import Geometry
 from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
 # FIXME: Model import from outside of its namespace
@@ -22,17 +26,23 @@ class Mine(AuditMixin, Base):
     mine_no = db.Column(db.String(10))
     mine_name = db.Column(db.String(60), nullable=False)
     mine_note = db.Column(db.String(300), default='')
+    legacy_mms_mine_status = db.Column(db.String(50))
     major_mine_ind = db.Column(db.Boolean, nullable=False, default=False)
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     mine_region = db.Column(db.String(2), db.ForeignKey('mine_region_code.mine_region_code'))
     ohsc_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     union_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
+    latitude = db.Column(db.Numeric(9, 7))
+    longitude = db.Column(db.Numeric(11, 7))
+    geom = db.Column(Geometry('POINT', 3005))
+    mine_location_description = db.Column(db.String)
     # Relationships
 
     #Almost always used and 1:1, so these are joined
-    mine_location = db.relationship('MineLocation', backref='mine', uselist=False, lazy='joined')
-    mine_status = db.relationship(
-        'MineStatus', backref='mine', order_by='desc(MineStatus.update_timestamp)', lazy='joined')
+    mine_status = db.relationship('MineStatus',
+                                  backref='mine',
+                                  order_by='desc(MineStatus.update_timestamp)',
+                                  lazy='joined')
     mine_tailings_storage_facilities = db.relationship(
         'MineTailingsStorageFacility',
         backref='mine',
@@ -40,109 +50,64 @@ class Mine(AuditMixin, Base):
         lazy='joined')
 
     #Almost always used, but faster to use selectin to load related data
-    mine_permit = db.relationship(
-        'Permit', backref='mine', order_by='desc(Permit.create_timestamp)', lazy='selectin')
+    mine_permit = db.relationship('Permit',
+                                  backref='mine',
+                                  order_by='desc(Permit.create_timestamp)',
+                                  lazy='selectin')
     mine_type = db.relationship(
-        'MineType', backref='mine', order_by='desc(MineType.update_timestamp)',
+        'MineType',
+        backref='mine',
+        order_by='desc(MineType.update_timestamp)',
         primaryjoin="and_(MineType.mine_guid == Mine.mine_guid, MineType.active_ind==True)",
         lazy='selectin')
 
-    #Not always desired, set to lazy load using select
-    mineral_tenure_xref = db.relationship('MineralTenureXref', backref='mine', lazy='select')
-    mine_expected_documents = db.relationship(
-        'MineExpectedDocument',
-        primaryjoin=
-        "and_(MineExpectedDocument.mine_guid == Mine.mine_guid, MineExpectedDocument.active_ind==True)",
+    mine_documents = db.relationship(
+        'MineDocument',
         backref='mine',
-        order_by='desc(MineExpectedDocument.due_date)',
+        primaryjoin="and_(MineDocument.mine_guid == Mine.mine_guid, MineDocument.active_ind==True)",
         lazy='select')
-    mine_party_appt = db.relationship('MinePartyAppointment', backref="mine", lazy='select')
 
+    mine_party_appt = db.relationship('MinePartyAppointment', backref="mine", lazy='select')
     mine_incidents = db.relationship('MineIncident', backref="mine", lazy='select')
+    mine_reports = db.relationship('MineReport', backref="mine", lazy='select')
 
     def __repr__(self):
         return '<Mine %r>' % self.mine_guid
 
-    def json(self):
+    @reconstructor
+    def init_on_load(self):
+        if self.latitude and self.longitude:
+            try:
+                self.utm_values = utm.from_latlon(self.latitude, self.longitude)
+            except utm.error.OutOfRangeError:
+                self.utm_values = ()
+
+    @hybrid_property
+    def utm_easting(self):
+        return self.utm_values[0] if self.utm_values else None
+
+    @hybrid_property
+    def utm_northing(self):
+        return self.utm_values[1] if self.utm_values else None
+
+    @hybrid_property
+    def utm_zone_number(self):
+        return self.utm_values[2] if self.utm_values else None
+
+    @hybrid_property
+    def utm_zone_letter(self):
+        return self.utm_values[3] if self.utm_values else None
+
+    @hybrid_property
+    def mine_location(self):
         return {
-            'mine_guid':
-            str(self.mine_guid),
-            'mine_name':
-            self.mine_name,
-            'mine_no':
-            self.mine_no,
-            'mine_note':
-            self.mine_note,
-            'major_mine_ind':
-            self.major_mine_ind,
-            'region_code':
-            self.mine_region,
-            'mineral_tenure_xref': [item.json() for item in self.mineral_tenure_xref],
-            'mine_location':
-            self.mine_location.json() if self.mine_location else None,
-            #Exploration permits must, always, and exclusively have an X as the second character, and we would like this to be returned last:
-            'mine_permit': [item.json() for item in self.mine_permit if item.permit_no.lower()[1] != 'x'] + [item.json() for item in self.mine_permit if item.permit_no.lower()[1] == 'x'],
-            'mine_status': [item.json() for item in self.mine_status],
-            'mine_tailings_storage_facility':
-            [item.json() for item in self.mine_tailings_storage_facilities],
-            'mine_expected_documents': [item.json() for item in self.mine_expected_documents],
-            'mine_type': [item.json() for item in self.active(self.mine_type)],
-            'verified_status': self.verified_status.json() if self.verified_status else None,
-        }
-
-    def json_for_list(self):
-        return {
-            'mine_guid':
-            str(self.mine_guid),
-            'mine_name':
-            self.mine_name,
-            'mine_no':
-            self.mine_no,
-            'mine_note':
-            self.mine_note,
-            'major_mine_ind':
-            self.major_mine_ind,
-            'region_code':
-            self.mine_region,
-            'mine_permit': [item.json_for_list() for item in self.mine_permit],
-            'mine_status': [item.json() for item in self.mine_status],
-            'mine_tailings_storage_facility':
-            [item.json() for item in self.mine_tailings_storage_facilities],
-            'mine_type': [item.json() for item in self.active(self.mine_type)],
-            'verified_status': self.verified_status.json() if self.verified_status else None,
-        }
-
-    def json_for_map(self):
-        return {
-            'mine_guid': str(self.mine_guid),
-            'mine_name': self.mine_name,
-            'mine_no': self.mine_no,
-            'mine_note': self.mine_note,
-            'major_mine_ind': self.major_mine_ind,
-            'region_code': self.mine_region,
-            'mine_location': self.mine_location.json() if self.mine_location else None
-        }
-
-    def json_by_name(self):
-        return {'mine_guid': str(self.mine_guid), 'mine_name': self.mine_name, 'mine_no': self.mine_no}
-
-    def json_by_location(self):
-        #this will get cleaned up when mine_location and mine are merged
-        result = {'mine_guid': str(self.mine_guid)}
-        if self.mine_location:
-            result['latitude'] = str(
-                self.mine_location.latitude) if self.mine_location.latitude else ''
-            result['longitude'] = str(
-                self.mine_location.longitude) if self.mine_location.longitude else ''
-        else:
-            result['latitude'] = ''
-            result['longitude'] = ''
-        return result
-
-    def json_by_permit(self):
-        return {
-            'mine_guid': str(self.mine_guid),
-            'mine_permit': [item.json() for item in self.mine_permit]
+            'latitude': self.latitude,
+            'longitude': self.longitude,
+            'utm_easting': self.utm_easting,
+            'utm_northing': self.utm_northing,
+            'utm_zone_number': self.utm_zone_number,
+            'utm_zone_letter': self.utm_zone_letter,
+            'mine_location_description': self.mine_location_description
         }
 
     @staticmethod
@@ -207,14 +172,13 @@ class Mine(AuditMixin, Base):
                     add_to_session=True,
                     ohsc_ind=None,
                     union_ind=None):
-        mine = cls(
-            mine_guid=uuid.uuid4(),
-            mine_no=mine_no,
-            mine_name=mine_name,
-            major_mine_ind=mine_category,
-            mine_region=mine_region,
-            ohsc_ind=ohsc_ind,
-            union_ind=union_ind)
+        mine = cls(mine_guid=uuid.uuid4(),
+                   mine_no=mine_no,
+                   mine_name=mine_name,
+                   major_mine_ind=mine_category,
+                   mine_region=mine_region,
+                   ohsc_ind=ohsc_ind,
+                   union_ind=union_ind)
         if add_to_session:
             mine.save(commit=False)
         return mine

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import Keycloak from "keycloak-js";
 import hoistNonReactStatics from "hoist-non-react-statics";
 import {
@@ -17,6 +18,15 @@ import Loading from "@/components/common/Loading";
 import { KEYCLOAK, USER_ROLES } from "@/constants/environment";
 import NullScreen from "@/components/common/NullScreen";
 
+const propTypes = {
+  authenticateUser: PropTypes.func.isRequired,
+  storeUserAccessData: PropTypes.func.isRequired,
+  storeKeycloakData: PropTypes.func.isRequired,
+  keycloak: PropTypes.objectOf(PropTypes.any).isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
+  userAccessData: PropTypes.objectOf(PropTypes.array).isRequired,
+};
+
 /**
  * @constant authenticationGuard - a Higher Order Component Thats checks for user authorization and returns the App component if the user is Authenticated.
  */
@@ -31,6 +41,7 @@ export const AuthenticationGuard = (WrappedComponent) => {
    * and changing state.
    *
    */
+
   class authenticationGuard extends Component {
     componentDidMount() {
       this.keycloakInit();
@@ -39,21 +50,17 @@ export const AuthenticationGuard = (WrappedComponent) => {
     async keycloakInit() {
       // Initialize client
       const keycloak = Keycloak(KEYCLOAK);
-      await keycloak.init();
-
-      // Prompt for login using IDIR if not authenticated
-      if (!keycloak.authenticated) {
-        await keycloak.login({
+      await keycloak
+        .init({
+          onLoad: "login-required",
           idpHint: KEYCLOAK.idpHint,
+        })
+        .success(() => {
+          keycloak.loadUserInfo().success((userInfo) => this.props.authenticateUser(userInfo));
+          localStorage.setItem("jwt", keycloak.token);
+          this.props.storeUserAccessData(keycloak.realmAccess.roles);
+          this.props.storeKeycloakData(keycloak);
         });
-      }
-
-      // Fetch user info and roles and store them in local storage
-      const userInfo = await keycloak.loadUserInfo();
-      localStorage.setItem("jwt", keycloak.token);
-      this.props.storeUserAccessData(keycloak.realmAccess.roles);
-      this.props.storeKeycloakData(keycloak);
-      this.props.authenticateUser(userInfo);
     }
 
     render() {
@@ -75,6 +82,8 @@ export const AuthenticationGuard = (WrappedComponent) => {
       return <Loading />;
     }
   }
+
+  authenticationGuard.propTypes = propTypes;
 
   hoistNonReactStatics(authenticationGuard, WrappedComponent);
 

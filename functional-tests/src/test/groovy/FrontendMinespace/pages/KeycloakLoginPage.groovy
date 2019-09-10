@@ -7,6 +7,6 @@ class KeycloakLoginPage extends Page {
     static content = {
         IDIRusername (wait: true) {$("input", id: "username")}
         IDIRpassword (wait: true) {$("input", id: "password")}
-        IDIRloginButton (wait: true) {$("input", value: "Log in")}
+        IDIRloginButton (wait: true) {$("input", value: "Log In")}
     }
 }

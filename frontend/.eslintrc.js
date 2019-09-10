@@ -34,5 +34,6 @@ module.exports = {
     "react/destructuring-assignment": ["error", "never"],
     camelcase: 0,
     "jsx-a11y/label-has-for": 0, // deprecated rule
+    "import/no-cycle": 0,
   },
 };

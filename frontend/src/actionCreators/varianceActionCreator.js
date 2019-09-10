@@ -47,7 +47,7 @@ export const updateVariance = ({ mineGuid, varianceGuid, codeLabel }, payload) =
 export const fetchVariancesByMine = ({ mineGuid }) => (dispatch) => {
   dispatch(request(reducerTypes.GET_VARIANCES));
   dispatch(showLoading());
-  return CustomAxios(Strings.ERROR)
+  return CustomAxios({ errorToastMessage: Strings.ERROR })
     .get(ENVIRONMENT.apiUrl + API.MINE_VARIANCES(mineGuid), createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_VARIANCES));
@@ -60,7 +60,7 @@ export const fetchVariancesByMine = ({ mineGuid }) => (dispatch) => {
 export const fetchVarianceById = (mineGuid, varianceGuid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_VARIANCE));
   dispatch(showLoading("modal"));
-  return CustomAxios(Strings.ERROR)
+  return CustomAxios({ errorToastMessage: Strings.ERROR })
     .get(ENVIRONMENT.apiUrl + API.VARIANCE(mineGuid, varianceGuid), createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_VARIANCE));
@@ -108,7 +108,7 @@ export const removeDocumentFromVariance = (mineGuid, varianceGuid, mineDocumentG
 export const fetchVariances = (payload) => (dispatch) => {
   dispatch(request(reducerTypes.GET_VARIANCES));
   dispatch(showLoading());
-  return CustomAxios(Strings.ERROR)
+  return CustomAxios({ errorToastMessage: Strings.ERROR })
     .get(ENVIRONMENT.apiUrl + API.VARIANCES(payload), createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_VARIANCES));

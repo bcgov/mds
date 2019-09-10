@@ -10,7 +10,13 @@ export const filterListItem = shape({
   text: PropTypes.string.isRequired,
 });
 
+export const groupedDropdownList = shape({
+  groupName: oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  opt: arrayOf(dropdownListItem),
+});
+
 export const options = arrayOf(dropdownListItem);
+export const groupOptions = arrayOf(groupedDropdownList);
 export const filterOptions = arrayOf(filterListItem);
 
 export const formMeta = shape({
@@ -32,4 +38,12 @@ export const genericFormState = shape({
   fields: objectOf(objectOf(PropTypes.bool)),
   syncErrors: PropTypes.string,
   values: objectOf(PropTypes.string),
+});
+
+export const pageData = shape({
+  current_page: PropTypes.number,
+  items_per_page: PropTypes.number,
+  records: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
+  total: PropTypes.number,
+  total_pages: PropTypes.number,
 });

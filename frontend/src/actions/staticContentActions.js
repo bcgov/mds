@@ -30,16 +30,6 @@ export const storeDocumentStatusOptions = (payload) => ({
   payload,
 });
 
-export const storeMineTSFRequiredDocuments = (payload) => ({
-  type: ActionTypes.STORE_MINE_TSF_REQUIRED_DOCUMENTS,
-  payload,
-});
-
-export const loadedOptions = (payload) => ({
-  type: ActionTypes.OPTIONS_LOADED,
-  payload,
-});
-
 export const storeProvinceCodes = (payload) => ({
   type: ActionTypes.STORE_PROVINCE_OPTIONS,
   payload,
@@ -57,6 +47,11 @@ export const storeApplicationStatusOptions = (payload) => ({
 
 export const storeComplianceCodes = (payload) => ({
   type: ActionTypes.STORE_COMPLIANCE_CODES,
+  payload,
+});
+
+export const storeIncidentDocumentTypeOptions = (payload) => ({
+  type: ActionTypes.STORE_INCIDENT_DOCUMENT_TYPE_OPTIONS,
   payload,
 });
 
@@ -82,5 +77,10 @@ export const storeVarianceStatusOptions = (payload) => ({
 
 export const storeVarianceDocumentCategoryOptions = (payload) => ({
   type: ActionTypes.STORE_VARIANCE_DOCUMENT_CATEGORY_OPTIONS,
+  payload,
+});
+
+export const storeMineReportDefinitionOptions = (payload) => ({
+  type: ActionTypes.STORE_MINE_REPORT_DEFINITION_OPTIONS,
   payload,
 });

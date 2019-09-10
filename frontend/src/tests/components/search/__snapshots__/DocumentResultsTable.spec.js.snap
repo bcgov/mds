@@ -1,12 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DocumentResultsTable renders properly 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <DocumentResultsTable
-    header="Mine Documents"
-    highlightRegex={/\\.\\*/}
-    searchResults={
+<div>
+  <h2>
+    Mine Documents
+  </h2>
+  <Divider />
+  <Table
+    align="left"
+    bordered={false}
+    childrenColumnName="children"
+    className="nested-table padding-large--bottom"
+    columns={
+      Array [
+        Object {
+          "dataIndex": "document_guid",
+          "key": "document_guid",
+          "render": [Function],
+          "title": "Document Guid",
+        },
+      ]
+    }
+    dataSource={
       Array [
         Object {
           "document_manager_guid": "a8248ab9-43d0-478a-9380-0891868e3f8d",
@@ -52,413 +67,20 @@ ShallowWrapper {
         },
       ]
     }
-  />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateError": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "host",
-    "props": Object {
-      "children": Array [
-        <h2>
-          Mine Documents
-        </h2>,
-        <Divider />,
-        <Table
-          align="left"
-          bordered={false}
-          className="nested-table padding-large--bottom"
-          columns={
-            Array [
-              Object {
-                "dataIndex": "document_guid",
-                "key": "document_guid",
-                "render": [Function],
-                "title": "Document Guid",
-              },
-            ]
-          }
-          dataSource={
-            Array [
-              Object {
-                "document_manager_guid": "a8248ab9-43d0-478a-9380-0891868e3f8d",
-                "document_name": "above.js",
-                "mine_document_guid": "f8341ebb-d673-42c1-bad2-8db22d7e3ddb",
-                "mine_guid": "e56e4252-1ce2-45e7-b362-762aa144bae0",
-                "mine_name": "Conrad Ltd",
-              },
-              Object {
-                "document_manager_guid": "dfc16cff-6542-4807-9ffc-af7ec00efd79",
-                "document_name": "about.js",
-                "mine_document_guid": "be071be2-346d-44dc-8f8f-fb4201b50d7e",
-                "mine_guid": "6f165b2a-fa60-4ed5-aa06-0aeed06659b5",
-                "mine_name": "Lozano, Hanson and Smith",
-              },
-              Object {
-                "document_manager_guid": "a79fb6bd-d7b8-4a92-98e6-85598a2f853f",
-                "document_name": "above.avi",
-                "mine_document_guid": "25db4852-83dd-4916-8c10-33e1d78aa279",
-                "mine_guid": "5422ce91-774a-4ced-beba-78d36bbb8676",
-                "mine_name": "Rose Inc",
-              },
-              Object {
-                "document_manager_guid": "14bd5393-8586-4561-afbe-727fdbefcb65",
-                "document_name": "above.avi",
-                "mine_document_guid": "c207486f-dbdd-4b3f-99a0-a650abddf85e",
-                "mine_guid": "7f2319d0-920d-4776-8856-4903c39665db",
-                "mine_name": "Hall Ltd",
-              },
-              Object {
-                "document_manager_guid": "a8034837-a710-40f8-9c3b-8ae08a444b4d",
-                "document_name": "above.avi",
-                "mine_document_guid": "2c111d6b-f360-4eb5-b37d-fe9a935cd40f",
-                "mine_guid": "51884cec-18d8-4dc3-87a3-6ed7047056f1",
-                "mine_name": "Lawrence-Vargas",
-              },
-              Object {
-                "document_manager_guid": "99e7cf58-6b48-473c-9d05-4c010839eb8d",
-                "document_name": "about.js",
-                "mine_document_guid": "28060d75-f434-4f58-9082-fc4a05a696ad",
-                "mine_guid": "fa173dcb-4d5c-4e3d-a3d6-e379308688ea",
-                "mine_name": "Thomas-Jackson",
-              },
-            ]
-          }
-          indentSize={20}
-          loading={false}
-          locale={Object {}}
-          pagination={false}
-          rowKey="key"
-          showHeader={false}
-          size="default"
-          sortDirections={
-            Array [
-              "ascend",
-              "descend",
-            ]
-          }
-          useFixedHeader={false}
-        />,
-      ],
-    },
-    "ref": null,
-    "rendered": Array [
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "host",
-        "props": Object {
-          "children": "Mine Documents",
-        },
-        "ref": null,
-        "rendered": "Mine Documents",
-        "type": "h2",
-      },
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "function",
-        "props": Object {},
-        "ref": null,
-        "rendered": null,
-        "type": [Function],
-      },
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "align": "left",
-          "bordered": false,
-          "className": "nested-table padding-large--bottom",
-          "columns": Array [
-            Object {
-              "dataIndex": "document_guid",
-              "key": "document_guid",
-              "render": [Function],
-              "title": "Document Guid",
-            },
-          ],
-          "dataSource": Array [
-            Object {
-              "document_manager_guid": "a8248ab9-43d0-478a-9380-0891868e3f8d",
-              "document_name": "above.js",
-              "mine_document_guid": "f8341ebb-d673-42c1-bad2-8db22d7e3ddb",
-              "mine_guid": "e56e4252-1ce2-45e7-b362-762aa144bae0",
-              "mine_name": "Conrad Ltd",
-            },
-            Object {
-              "document_manager_guid": "dfc16cff-6542-4807-9ffc-af7ec00efd79",
-              "document_name": "about.js",
-              "mine_document_guid": "be071be2-346d-44dc-8f8f-fb4201b50d7e",
-              "mine_guid": "6f165b2a-fa60-4ed5-aa06-0aeed06659b5",
-              "mine_name": "Lozano, Hanson and Smith",
-            },
-            Object {
-              "document_manager_guid": "a79fb6bd-d7b8-4a92-98e6-85598a2f853f",
-              "document_name": "above.avi",
-              "mine_document_guid": "25db4852-83dd-4916-8c10-33e1d78aa279",
-              "mine_guid": "5422ce91-774a-4ced-beba-78d36bbb8676",
-              "mine_name": "Rose Inc",
-            },
-            Object {
-              "document_manager_guid": "14bd5393-8586-4561-afbe-727fdbefcb65",
-              "document_name": "above.avi",
-              "mine_document_guid": "c207486f-dbdd-4b3f-99a0-a650abddf85e",
-              "mine_guid": "7f2319d0-920d-4776-8856-4903c39665db",
-              "mine_name": "Hall Ltd",
-            },
-            Object {
-              "document_manager_guid": "a8034837-a710-40f8-9c3b-8ae08a444b4d",
-              "document_name": "above.avi",
-              "mine_document_guid": "2c111d6b-f360-4eb5-b37d-fe9a935cd40f",
-              "mine_guid": "51884cec-18d8-4dc3-87a3-6ed7047056f1",
-              "mine_name": "Lawrence-Vargas",
-            },
-            Object {
-              "document_manager_guid": "99e7cf58-6b48-473c-9d05-4c010839eb8d",
-              "document_name": "about.js",
-              "mine_document_guid": "28060d75-f434-4f58-9082-fc4a05a696ad",
-              "mine_guid": "fa173dcb-4d5c-4e3d-a3d6-e379308688ea",
-              "mine_name": "Thomas-Jackson",
-            },
-          ],
-          "indentSize": 20,
-          "loading": false,
-          "locale": Object {},
-          "pagination": false,
-          "rowKey": "key",
-          "showHeader": false,
-          "size": "default",
-          "sortDirections": Array [
-            "ascend",
-            "descend",
-          ],
-          "useFixedHeader": false,
-        },
-        "ref": null,
-        "rendered": null,
-        "type": [Function],
-      },
-    ],
-    "type": "div",
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "host",
-      "props": Object {
-        "children": Array [
-          <h2>
-            Mine Documents
-          </h2>,
-          <Divider />,
-          <Table
-            align="left"
-            bordered={false}
-            className="nested-table padding-large--bottom"
-            columns={
-              Array [
-                Object {
-                  "dataIndex": "document_guid",
-                  "key": "document_guid",
-                  "render": [Function],
-                  "title": "Document Guid",
-                },
-              ]
-            }
-            dataSource={
-              Array [
-                Object {
-                  "document_manager_guid": "a8248ab9-43d0-478a-9380-0891868e3f8d",
-                  "document_name": "above.js",
-                  "mine_document_guid": "f8341ebb-d673-42c1-bad2-8db22d7e3ddb",
-                  "mine_guid": "e56e4252-1ce2-45e7-b362-762aa144bae0",
-                  "mine_name": "Conrad Ltd",
-                },
-                Object {
-                  "document_manager_guid": "dfc16cff-6542-4807-9ffc-af7ec00efd79",
-                  "document_name": "about.js",
-                  "mine_document_guid": "be071be2-346d-44dc-8f8f-fb4201b50d7e",
-                  "mine_guid": "6f165b2a-fa60-4ed5-aa06-0aeed06659b5",
-                  "mine_name": "Lozano, Hanson and Smith",
-                },
-                Object {
-                  "document_manager_guid": "a79fb6bd-d7b8-4a92-98e6-85598a2f853f",
-                  "document_name": "above.avi",
-                  "mine_document_guid": "25db4852-83dd-4916-8c10-33e1d78aa279",
-                  "mine_guid": "5422ce91-774a-4ced-beba-78d36bbb8676",
-                  "mine_name": "Rose Inc",
-                },
-                Object {
-                  "document_manager_guid": "14bd5393-8586-4561-afbe-727fdbefcb65",
-                  "document_name": "above.avi",
-                  "mine_document_guid": "c207486f-dbdd-4b3f-99a0-a650abddf85e",
-                  "mine_guid": "7f2319d0-920d-4776-8856-4903c39665db",
-                  "mine_name": "Hall Ltd",
-                },
-                Object {
-                  "document_manager_guid": "a8034837-a710-40f8-9c3b-8ae08a444b4d",
-                  "document_name": "above.avi",
-                  "mine_document_guid": "2c111d6b-f360-4eb5-b37d-fe9a935cd40f",
-                  "mine_guid": "51884cec-18d8-4dc3-87a3-6ed7047056f1",
-                  "mine_name": "Lawrence-Vargas",
-                },
-                Object {
-                  "document_manager_guid": "99e7cf58-6b48-473c-9d05-4c010839eb8d",
-                  "document_name": "about.js",
-                  "mine_document_guid": "28060d75-f434-4f58-9082-fc4a05a696ad",
-                  "mine_guid": "fa173dcb-4d5c-4e3d-a3d6-e379308688ea",
-                  "mine_name": "Thomas-Jackson",
-                },
-              ]
-            }
-            indentSize={20}
-            loading={false}
-            locale={Object {}}
-            pagination={false}
-            rowKey="key"
-            showHeader={false}
-            size="default"
-            sortDirections={
-              Array [
-                "ascend",
-                "descend",
-              ]
-            }
-            useFixedHeader={false}
-          />,
-        ],
-      },
-      "ref": null,
-      "rendered": Array [
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "host",
-          "props": Object {
-            "children": "Mine Documents",
-          },
-          "ref": null,
-          "rendered": "Mine Documents",
-          "type": "h2",
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "function",
-          "props": Object {},
-          "ref": null,
-          "rendered": null,
-          "type": [Function],
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "align": "left",
-            "bordered": false,
-            "className": "nested-table padding-large--bottom",
-            "columns": Array [
-              Object {
-                "dataIndex": "document_guid",
-                "key": "document_guid",
-                "render": [Function],
-                "title": "Document Guid",
-              },
-            ],
-            "dataSource": Array [
-              Object {
-                "document_manager_guid": "a8248ab9-43d0-478a-9380-0891868e3f8d",
-                "document_name": "above.js",
-                "mine_document_guid": "f8341ebb-d673-42c1-bad2-8db22d7e3ddb",
-                "mine_guid": "e56e4252-1ce2-45e7-b362-762aa144bae0",
-                "mine_name": "Conrad Ltd",
-              },
-              Object {
-                "document_manager_guid": "dfc16cff-6542-4807-9ffc-af7ec00efd79",
-                "document_name": "about.js",
-                "mine_document_guid": "be071be2-346d-44dc-8f8f-fb4201b50d7e",
-                "mine_guid": "6f165b2a-fa60-4ed5-aa06-0aeed06659b5",
-                "mine_name": "Lozano, Hanson and Smith",
-              },
-              Object {
-                "document_manager_guid": "a79fb6bd-d7b8-4a92-98e6-85598a2f853f",
-                "document_name": "above.avi",
-                "mine_document_guid": "25db4852-83dd-4916-8c10-33e1d78aa279",
-                "mine_guid": "5422ce91-774a-4ced-beba-78d36bbb8676",
-                "mine_name": "Rose Inc",
-              },
-              Object {
-                "document_manager_guid": "14bd5393-8586-4561-afbe-727fdbefcb65",
-                "document_name": "above.avi",
-                "mine_document_guid": "c207486f-dbdd-4b3f-99a0-a650abddf85e",
-                "mine_guid": "7f2319d0-920d-4776-8856-4903c39665db",
-                "mine_name": "Hall Ltd",
-              },
-              Object {
-                "document_manager_guid": "a8034837-a710-40f8-9c3b-8ae08a444b4d",
-                "document_name": "above.avi",
-                "mine_document_guid": "2c111d6b-f360-4eb5-b37d-fe9a935cd40f",
-                "mine_guid": "51884cec-18d8-4dc3-87a3-6ed7047056f1",
-                "mine_name": "Lawrence-Vargas",
-              },
-              Object {
-                "document_manager_guid": "99e7cf58-6b48-473c-9d05-4c010839eb8d",
-                "document_name": "about.js",
-                "mine_document_guid": "28060d75-f434-4f58-9082-fc4a05a696ad",
-                "mine_guid": "fa173dcb-4d5c-4e3d-a3d6-e379308688ea",
-                "mine_name": "Thomas-Jackson",
-              },
-            ],
-            "indentSize": 20,
-            "loading": false,
-            "locale": Object {},
-            "pagination": false,
-            "rowKey": "key",
-            "showHeader": false,
-            "size": "default",
-            "sortDirections": Array [
-              "ascend",
-              "descend",
-            ],
-            "useFixedHeader": false,
-          },
-          "ref": null,
-          "rendered": null,
-          "type": [Function],
-        },
-      ],
-      "type": "div",
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getDerivedStateFromProps": true,
-          "getSnapshotBeforeUpdate": true,
-          "setState": Object {
-            "skipsComponentDidUpdateOnNullish": true,
-          },
-        },
-      },
-    },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
-  },
-}
+    indentSize={20}
+    loading={false}
+    locale={Object {}}
+    pagination={false}
+    rowKey="key"
+    showHeader={false}
+    size="default"
+    sortDirections={
+      Array [
+        "ascend",
+        "descend",
+      ]
+    }
+    useFixedHeader={false}
+  />
+</div>
 `;

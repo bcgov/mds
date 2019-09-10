@@ -18,7 +18,7 @@ const propTypes = {
   submitting: PropTypes.bool.isRequired,
   documentCategoryOptions: CustomPropTypes.options.isRequired,
   mineGuid: PropTypes.string.isRequired,
-  inspectors: CustomPropTypes.options.isRequired,
+  inspectors: CustomPropTypes.groupOptions.isRequired,
   complianceCodes: CustomPropTypes.options.isRequired,
 };
 
@@ -114,7 +114,7 @@ export class AddVarianceForm extends Component {
                 id="inspector_party_guid"
                 name="inspector_party_guid"
                 label="Lead inspectors IDIR*"
-                component={renderConfig.SELECT}
+                component={renderConfig.GROUPED_SELECT}
                 validate={[required]}
                 data={this.props.inspectors}
               />
@@ -158,15 +158,17 @@ export class AddVarianceForm extends Component {
             component={VarianceFileUpload}
           />
         </Form.Item>
-        <Form.Item>
-          <Field
-            id="parties_notified_ind"
-            name="parties_notified_ind"
-            label="Affected parties have been notified about this Variance request and decision"
-            type="checkbox"
-            component={renderConfig.CHECKBOX}
-          />
-        </Form.Item>
+        {!this.state.isApplication && (
+          <Form.Item>
+            <Field
+              id="parties_notified_ind"
+              name="parties_notified_ind"
+              label="As per MA 13(2), affected parties have been notified about this variance application and decision"
+              type="checkbox"
+              component={renderConfig.CHECKBOX}
+            />
+          </Form.Item>
+        )}
         <div className="right center-mobile">
           <Popconfirm
             placement="topRight"

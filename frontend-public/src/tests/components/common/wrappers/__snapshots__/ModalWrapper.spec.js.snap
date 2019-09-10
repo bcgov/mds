@@ -1,198 +1,34 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ModalWrapper renders properly 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <ModalWrapper
-    closeModal={[MockFunction]}
-    content={[MockFunction]}
-    isModalOpen={false}
-    props={
+<Modal
+  closable={false}
+  confirmLoading={false}
+  footer={null}
+  maskTransitionName="fade"
+  okType="primary"
+  title="mockTitle"
+  transitionName="zoom"
+  visible={false}
+  width={810}
+>
+  <Connect(LoadingBar)
+    scope="modal"
+    style={
       Object {
-        "title": "mockTitle",
+        "backgroundColor": "#6b6363",
+        "height": "8px",
+        "left": 0,
+        "position": "absolute",
+        "top": "50px",
+        "width": "100%",
+        "zIndex": 100,
       }
     }
-  />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateError": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "class",
-    "props": Object {
-      "cancelButtonDisabled": false,
-      "children": Array [
-        <Connect(LoadingBar)
-          scope="modal"
-          style={
-            Object {
-              "backgroundColor": "#6b6363",
-              "height": "8px",
-              "left": 0,
-              "position": "absolute",
-              "top": "50px",
-              "width": "100%",
-              "zIndex": 100,
-            }
-          }
-        />,
-        <mockConstructor
-          clearOnSubmit={undefined}
-          closeModal={[MockFunction]}
-          title="mockTitle"
-        />,
-      ],
-      "closable": false,
-      "confirmLoading": false,
-      "footer": null,
-      "maskTransitionName": "fade",
-      "okButtonDisabled": false,
-      "okType": "primary",
-      "title": "mockTitle",
-      "transitionName": "zoom",
-      "visible": false,
-      "width": 810,
-    },
-    "ref": null,
-    "rendered": Array [
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "scope": "modal",
-          "style": Object {
-            "backgroundColor": "#6b6363",
-            "height": "8px",
-            "left": 0,
-            "position": "absolute",
-            "top": "50px",
-            "width": "100%",
-            "zIndex": 100,
-          },
-        },
-        "ref": null,
-        "rendered": null,
-        "type": [Function],
-      },
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "function",
-        "props": Object {
-          "clearOnSubmit": undefined,
-          "closeModal": [MockFunction],
-          "title": "mockTitle",
-        },
-        "ref": null,
-        "rendered": null,
-        "type": [MockFunction],
-      },
-    ],
-    "type": [Function],
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "class",
-      "props": Object {
-        "cancelButtonDisabled": false,
-        "children": Array [
-          <Connect(LoadingBar)
-            scope="modal"
-            style={
-              Object {
-                "backgroundColor": "#6b6363",
-                "height": "8px",
-                "left": 0,
-                "position": "absolute",
-                "top": "50px",
-                "width": "100%",
-                "zIndex": 100,
-              }
-            }
-          />,
-          <mockConstructor
-            clearOnSubmit={undefined}
-            closeModal={[MockFunction]}
-            title="mockTitle"
-          />,
-        ],
-        "closable": false,
-        "confirmLoading": false,
-        "footer": null,
-        "maskTransitionName": "fade",
-        "okButtonDisabled": false,
-        "okType": "primary",
-        "title": "mockTitle",
-        "transitionName": "zoom",
-        "visible": false,
-        "width": 810,
-      },
-      "ref": null,
-      "rendered": Array [
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "scope": "modal",
-            "style": Object {
-              "backgroundColor": "#6b6363",
-              "height": "8px",
-              "left": 0,
-              "position": "absolute",
-              "top": "50px",
-              "width": "100%",
-              "zIndex": 100,
-            },
-          },
-          "ref": null,
-          "rendered": null,
-          "type": [Function],
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "function",
-          "props": Object {
-            "clearOnSubmit": undefined,
-            "closeModal": [MockFunction],
-            "title": "mockTitle",
-          },
-          "ref": null,
-          "rendered": null,
-          "type": [MockFunction],
-        },
-      ],
-      "type": [Function],
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getDerivedStateFromProps": true,
-          "getSnapshotBeforeUpdate": true,
-          "setState": Object {
-            "skipsComponentDidUpdateOnNullish": true,
-          },
-        },
-      },
-    },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
-  },
-}
+  />
+  <mockConstructor
+    closeModal={[MockFunction]}
+    title="mockTitle"
+  />
+</Modal>
 `;

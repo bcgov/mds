@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Input, Dropdown, Card, Col } from "antd";
-import { getSearchBarResults } from "@/selectors/searchSelectors";
-import { fetchSearchBarResults, clearSearchBarResults } from "@/actionCreators/searchActionCreator";
+import { Input, Dropdown, Card } from "antd";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
+import { throttle } from "lodash";
+import { getSearchBarResults } from "@/selectors/searchSelectors";
+import { fetchSearchBarResults, clearSearchBarResults } from "@/actionCreators/searchActionCreator";
 import * as router from "@/constants/routes";
 import { SearchBarDropdown } from "@/components/search/SearchBarDropdown";
-import { throttle } from "lodash";
 
 const { Search } = Input;
 
@@ -17,6 +17,11 @@ const propTypes = {
   fetchSearchBarResults: PropTypes.func.isRequired,
   clearSearchBarResults: PropTypes.func.isRequired,
   searchBarResults: PropTypes.arrayOf(PropTypes.object).isRequired,
+  containerId: PropTypes.string,
+};
+
+const defaultProps = {
+  containerId: "",
 };
 
 const defaultPlaceholderText = "Search";
@@ -71,51 +76,44 @@ export class SearchBar extends Component {
     });
   };
 
-  render = () => (
-    <Col
-      id="searchBox"
-      md={4}
-      lg={6}
-      xl={8}
-      style={{
-        marginLeft: "auto",
-        marginTop: "auto",
-        marginBottom: "auto",
-        paddingRight: "20px",
-      }}
-    >
-      <Dropdown
-        overlay={
-          <Card>
-            <SearchBarDropdown
-              history={this.props.history}
-              searchTerm={this.state.searchTerm}
-              searchTermHistory={this.state.searchTermHistory}
-              searchBarResults={this.props.searchBarResults}
-            />
-          </Card>
-        }
-        getPopupContainer={() => document.getElementById("searchBox")}
-        trigger={[""]}
-        visible={this.state.isSelected}
-      >
-        <Search
-          size="large"
-          value={this.state.searchTerm}
-          placeholder={this.state.isSelected ? selectedPlaceholderText : defaultPlaceholderText}
-          onSearch={(searchTerm) => this.search(searchTerm)}
-          onChange={this.changeSearchTerm}
-          onClick={this.clearSearchBar}
-          onFocus={this.clearSearchBar}
-          onBlur={() =>
-            this.setState({
-              isSelected: false,
-            })
+  render() {
+    return (
+      <div id={this.props.containerId}>
+        <Dropdown
+          overlay={
+            <Card>
+              <SearchBarDropdown
+                history={this.props.history}
+                searchTerm={this.state.searchTerm}
+                searchTermHistory={this.state.searchTermHistory}
+                searchBarResults={this.props.searchBarResults}
+              />
+            </Card>
           }
-        />
-      </Dropdown>
-    </Col>
-  );
+          getPopupContainer={
+            this.props.containerId ? () => document.getElementById(this.props.containerId) : ""
+          }
+          trigger={[""]}
+          visible={this.state.isSelected}
+        >
+          <Search
+            size="large"
+            value={this.state.searchTerm}
+            placeholder={this.state.isSelected ? selectedPlaceholderText : defaultPlaceholderText}
+            onSearch={(searchTerm) => this.search(searchTerm)}
+            onChange={this.changeSearchTerm}
+            onClick={this.clearSearchBar}
+            onFocus={this.clearSearchBar}
+            onBlur={() =>
+              this.setState({
+                isSelected: false,
+              })
+            }
+          />
+        </Dropdown>
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = (state) => ({
@@ -132,6 +130,7 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 SearchBar.propTypes = propTypes;
+SearchBar.defaultProps = defaultProps;
 
 export default connect(
   mapStateToProps,

@@ -14,6 +14,7 @@ REQUEST_DETAILS_RESPONSE_MODEL = api.model('order_request_detail', {
 
 class OrderRequestDetail(Base):
     __tablename__ = "order_request_detail"
+    __table_args__ = {'comment': 'For each inspection observation, this table contains requests from the inspector to the Chief Gold Commissioner to issue an order under the Mineral Tenure Act or the Coal Act. Also included are responses to the issued orders.'}
     order_request_detail_id = db.Column(db.Integer, primary_key=True)
     inspected_location_id = db.Column(db.Integer,
                                       db.ForeignKey('inspected_location.inspected_location_id'))

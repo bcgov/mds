@@ -26,17 +26,15 @@ const setupDispatchProps = () => {
   dispatchProps.fetchPartyRelationships = jest.fn(() => Promise.resolve());
   dispatchProps.fetchPermitStatusOptions = jest.fn(() => Promise.resolve());
   dispatchProps.fetchApplicationStatusOptions = jest.fn();
-  dispatchProps.fetchMineIncidentDeterminationOptions = jest.fn();
-  dispatchProps.fetchMineIncidentFollowActionOptions = jest.fn();
-  dispatchProps.fetchMineIncidentStatusCodeOptions = jest.fn();
-  dispatchProps.setOptionsLoaded = jest.fn();
   dispatchProps.fetchInspectors = jest.fn();
-  dispatchProps.match = {};
   dispatchProps.updateVariance = jest.fn();
   dispatchProps.fetchVarianceStatusOptions = jest.fn();
+  dispatchProps.fetchMineReportDefinitionOptions = jest.fn();
 };
 
 const setupReducerProps = () => {
+  reducerProps.match = {};
+  reducerProps.location = { pathname: "" };
   reducerProps.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];
   reducerProps.mines = MOCK.MINES.mines;
   reducerProps.mineIds = MOCK.MINES.mineIds;
@@ -44,9 +42,9 @@ const setupReducerProps = () => {
   reducerProps.complianceCodesHash = MOCK.HSRCM_HASH;
   reducerProps.complianceCodes = MOCK.DROPDOWN_HSRCM_CODES;
   reducerProps.mineStatusOptions = MOCK.STATUS_OPTIONS.records;
-  reducerProps.mineRegionOptions = MOCK.REGION_OPTIONS.options;
+  reducerProps.mineRegionOptions = MOCK.REGION_DROPDOWN_OPTIONS;
   reducerProps.mineDisturbanceOptions = MOCK.DISTURBANCE_OPTIONS;
-  reducerProps.mineTenureTypes = MOCK.TENURE_TYPES;
+  reducerProps.mineTenureTypes = MOCK.TENURE_TYPES_DROPDOWN_OPTIONS;
   reducerProps.mineTenureHash = MOCK.TENURE_HASH;
   reducerProps.varianceStatusOptions = MOCK.VARIANCE_DROPDOWN_STATUS_OPTIONS;
   reducerProps.varianceStatusOptionsHash = MOCK.VARIANCE_STATUS_OPTIONS_HASH;

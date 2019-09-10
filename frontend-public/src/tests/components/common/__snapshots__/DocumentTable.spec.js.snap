@@ -1,158 +1,58 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DocumentTable renders properly 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <DocumentTable
-    documentCategoryOptionsHash={undefined}
-    documents={
-      Array [
-        Object {
-          "created_at": "2019-05-02",
-          "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
-          "document_name": "test.pdf",
-          "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
-          "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
-        },
-      ]
-    }
-    isViewOnly={true}
-    removeDocument={[MockFunction]}
-  />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateError": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "class",
-    "props": Object {
-      "align": "left",
-      "bordered": false,
-      "className": "",
-      "columns": Array [
-        Object {
-          "dataIndex": "name",
-          "render": [Function],
-          "title": "File name",
-        },
-        Object {
-          "dataIndex": "created_at",
-          "render": [Function],
-          "title": "Upload date",
-        },
-        Object {
-          "className": "column-hide",
-          "dataIndex": "updateEdit",
-          "render": [Function],
-          "title": "",
-          "width": 10,
-        },
-      ],
-      "dataSource": Array [
-        Object {
-          "created_at": "May 02 2019",
-          "key": "33e6b965-2402-4229-a213-23bbe7fd3e99",
-          "name": "test.pdf",
-        },
-      ],
-      "indentSize": 20,
-      "loading": false,
-      "locale": Object {
-        "emptyText": "This variance does not contain any documents",
+<Table
+  align="left"
+  bordered={false}
+  childrenColumnName="children"
+  className=""
+  columns={
+    Array [
+      Object {
+        "dataIndex": "name",
+        "render": [Function],
+        "title": "File name",
       },
-      "pagination": false,
-      "rowKey": "key",
-      "showHeader": true,
-      "size": "default",
-      "sortDirections": Array [
-        "ascend",
-        "descend",
-      ],
-      "useFixedHeader": false,
-    },
-    "ref": null,
-    "rendered": null,
-    "type": [Function],
-  },
-  Symbol(enzyme.__nodes__): Array [
+      Object {
+        "dataIndex": "created_at",
+        "render": [Function],
+        "title": "Upload date",
+      },
+      Object {
+        "className": "column-hide",
+        "dataIndex": "updateEdit",
+        "render": [Function],
+        "title": "",
+        "width": 10,
+      },
+    ]
+  }
+  dataSource={
+    Array [
+      Object {
+        "created_at": "May 02 2019",
+        "key": "33e6b965-2402-4229-a213-23bbe7fd3e99",
+        "name": "test.pdf",
+      },
+    ]
+  }
+  indentSize={20}
+  loading={false}
+  locale={
     Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "class",
-      "props": Object {
-        "align": "left",
-        "bordered": false,
-        "className": "",
-        "columns": Array [
-          Object {
-            "dataIndex": "name",
-            "render": [Function],
-            "title": "File name",
-          },
-          Object {
-            "dataIndex": "created_at",
-            "render": [Function],
-            "title": "Upload date",
-          },
-          Object {
-            "className": "column-hide",
-            "dataIndex": "updateEdit",
-            "render": [Function],
-            "title": "",
-            "width": 10,
-          },
-        ],
-        "dataSource": Array [
-          Object {
-            "created_at": "May 02 2019",
-            "key": "33e6b965-2402-4229-a213-23bbe7fd3e99",
-            "name": "test.pdf",
-          },
-        ],
-        "indentSize": 20,
-        "loading": false,
-        "locale": Object {
-          "emptyText": "This variance does not contain any documents",
-        },
-        "pagination": false,
-        "rowKey": "key",
-        "showHeader": true,
-        "size": "default",
-        "sortDirections": Array [
-          "ascend",
-          "descend",
-        ],
-        "useFixedHeader": false,
-      },
-      "ref": null,
-      "rendered": null,
-      "type": [Function],
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getDerivedStateFromProps": true,
-          "getSnapshotBeforeUpdate": true,
-          "setState": Object {
-            "skipsComponentDidUpdateOnNullish": true,
-          },
-        },
-      },
-    },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
-  },
-}
+      "emptyText": "This variance does not contain any documents",
+    }
+  }
+  pagination={false}
+  rowKey="key"
+  showHeader={true}
+  size="default"
+  sortDirections={
+    Array [
+      "ascend",
+      "descend",
+    ]
+  }
+  useFixedHeader={false}
+/>
 `;

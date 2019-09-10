@@ -33,7 +33,6 @@ const BUILD_FILE_NAMES = {
 
 const PATH_ALIASES = {
   "@": PATHS.src,
-  // Put your aliases here
 };
 
 const envFile = {};
@@ -57,7 +56,7 @@ const commonConfig = merge([
       main: PATHS.entry,
     },
     plugins: [
-      new webpack.optimize.ModuleConcatenationPlugin(),
+      //new webpack.optimize.ModuleConcatenationPlugin(),
       new HtmlWebpackPlugin({
         template: PATHS.template,
       }),
@@ -70,7 +69,10 @@ const commonConfig = merge([
       },
     ],
     resolve: {
-      alias: PATH_ALIASES,
+      alias: {
+        ...PATH_ALIASES,
+        "react-dom": "@hot-loader/react-dom", // patch react-dom import
+      },
     },
   },
   parts.setEnvironmentVariable(envFile),
@@ -82,6 +84,9 @@ const commonConfig = merge([
     options: {
       name: BUILD_FILE_NAMES.assets,
     },
+  }),
+  parts.loadFiles({
+    include: path.join(PATHS.src, "assets", "downloads"),
   }),
 ]);
 
@@ -117,7 +122,7 @@ const prodConfig = merge([
       filename: BUILD_FILE_NAMES.bundle,
     },
   },
-  parts.clean(PATHS.build),
+  parts.clean(),
   parts.hardSourceWebPackPlugin(),
   parts.extractCSS({
     filename: BUILD_FILE_NAMES.css,
@@ -158,6 +163,7 @@ const prodConfig = merge([
     discardComments: {
       removeAll: true,
     },
+    zindex: false,
     safe: true,
   }),
   parts.extractManifest(),

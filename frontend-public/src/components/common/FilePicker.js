@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import CustomPropTypes from "@/customPropTypes";
 import { Form, Radio } from "antd";
 import { Field } from "redux-form";
+import CustomPropTypes from "@/customPropTypes";
 
 import FileUpload from "@/components/common/FileUpload";
 import { renderConfig } from "@/components/common/config";
@@ -33,12 +33,7 @@ class FilePicker extends Component {
         </div>
         {this.state.uploadSelected ? (
           <Form.Item>
-            <Field
-              id="fileUpload"
-              name="fileUpload"
-              component={FileUpload}
-              {...this.props}
-            />
+            <Field id="fileUpload" name="fileUpload" component={FileUpload} {...this.props} />
           </Form.Item>
         ) : (
           <Form.Item>

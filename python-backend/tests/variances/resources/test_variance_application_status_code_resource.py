@@ -1,8 +1,5 @@
 import json
 
-from tests.factories import VarianceFactory, MineFactory
-from tests.status_code_gen import RandomComplianceArticleId
-from app.api.utils.custom_reqparser import DEFAULT_MISSING_REQUIRED
 from app.api.variances.models.variance_application_status_code import VarianceApplicationStatusCode
 
 

@@ -16,14 +16,14 @@ const setupDispatchProps = () => {
 const setupProps = () => {
   props.title = "mockTitle";
   props.mineStatusOptions = MOCK.STATUS_OPTIONS.records;
-  props.mineRegionOptions = MOCK.REGION_OPTIONS.options;
-  props.mineTenureTypes = MOCK.TENURE_TYPES;
+  props.mineRegionOptions = MOCK.REGION_DROPDOWN_OPTIONS;
+  props.mineTenureTypes = MOCK.TENURE_TYPES_DROPDOWN_OPTIONS;
   props.mineCommodityOptionsHash = MOCK.COMMODITY_OPTIONS_HASH;
   props.mineDisturbanceOptionsHash = MOCK.DISTURBANCE_OPTIONS_HASH;
   props.mine_types = MOCK.MINE_TYPES;
   props.mineTenureHash = MOCK.TENURE_HASH;
   props.conditionalDisturbanceOptions = MOCK.CONDITIONAL_DISTURBANCE_OPTIONS;
-  props.conditionalCommodityOptions = MOCK.CONDITIONAL_COMMODITY_OPTIONS.options;
+  props.conditionalCommodityOptions = MOCK.CONDITIONAL_COMMODITY_OPTIONS.records;
   props.currentMineTypes = MOCK.MINE_TYPES;
   props.submitting = false;
 };

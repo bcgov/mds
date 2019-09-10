@@ -14,7 +14,7 @@ DECLARE
     MINE_LAT numeric = '52.1'     ;
     MINE_LONG numeric = '-125'  ;
     MINE_NOTE varchar = 'This is a test record';
-    
+
     MINE_GUID_2 uuid = '3877d66a-44c1-4685-a679-5d1473fae9de';
     MINE_NO_2 varchar = 'BLAH0002';
     MINE_NAME_2 varchar = '!!MINE2TEST';
@@ -58,24 +58,14 @@ DECLARE
 BEGIN
 
     INSERT INTO mine
-        (mine_guid, mine_no, mine_name, mine_note, major_mine_ind, mine_region, create_user, create_timestamp, update_user, update_timestamp)
+        (mine_guid, mine_no, mine_name, mine_note, major_mine_ind, mine_region, create_user, create_timestamp, update_user, update_timestamp, latitude, longitude)
     VALUES
-        (MINE_GUID, MINE_NO, MINE_NAME, MINE_NOTE, MAJOR_IND, REGION, IDIR_USER, DEFAULT, IDIR_USER, DEFAULT);
+        (MINE_GUID, MINE_NO, MINE_NAME, MINE_NOTE, MAJOR_IND, REGION, IDIR_USER, DEFAULT, IDIR_USER, DEFAULT, MINE_LAT, MINE_LONG);
 
     INSERT INTO mine
-        (mine_guid, mine_no, mine_name, mine_note, major_mine_ind, mine_region, create_user, create_timestamp, update_user, update_timestamp)
+        (mine_guid, mine_no, mine_name, mine_note, major_mine_ind, mine_region, create_user, create_timestamp, update_user, update_timestamp, latitude, longitude)
     VALUES
-        (MINE_GUID_2, MINE_NO_2, MINE_NAME_2, MINE_NOTE_2, MAJOR_IND, REGION, IDIR_USER, DEFAULT, IDIR_USER, DEFAULT);
-
-    -- add location
-    INSERT INTO mine_location
-    VALUES
-        (DEFAULT, MINE_GUID, MINE_LAT, MINE_LONG, DEFAULT, DEFAULT, IDIR_USER, DEFAULT, IDIR_USER, DEFAULT);
-
-    INSERT INTO mine_location
-    VALUES
-        (DEFAULT, MINE_GUID_2, MINE_LAT_2, MINE_LONG_2, DEFAULT, DEFAULT, IDIR_USER, DEFAULT, IDIR_USER, DEFAULT);
-
+        (MINE_GUID_2, MINE_NO_2, MINE_NAME_2, MINE_NOTE_2, MAJOR_IND, REGION, IDIR_USER, DEFAULT, IDIR_USER, DEFAULT, MINE_LAT_2, MINE_LONG_2);
 
     -- add permit permittee and other parties
     INSERT INTO party

@@ -1,6 +1,7 @@
 // environment config variables for test/dev/prod
 export const DEFAULT_ENVIRONMENT = {
   apiUrl: "http://localhost:5000",
+  docManUrl: "http://localhost:5001",
   environment: "development",
   mapPortalId: "e926583cd0114cd19ebc591f344e30dc",
   keycloak_resource: "mines-application-local",
@@ -11,6 +12,7 @@ export const DEFAULT_ENVIRONMENT = {
 
 export const ENVIRONMENT = {
   apiUrl: "<API_URL>",
+  docManUrl: "<DOCUMENT_MANAGER_URL>",
   mapPortalId: "<ARCGIS_PORTAL_MAP_ID>",
   environment: "<ENV>",
 };
@@ -32,7 +34,9 @@ export const USER_ROLES = {
   role_edit_mines: "core_edit_mines",
   role_edit_parties: "core_edit_parties",
   role_edit_permits: "core_edit_permits",
+  role_edit_reports: "core_edit_reports",
   role_edit_do: "core_edit_do",
   role_edit_variances: "core_edit_variances",
   role_close_permits: "core_close_permits",
+  role_executive_view: "core_executive_view",
 };

@@ -16,7 +16,7 @@ class  LoginPublicFrontEndPageSpec extends GebReportingSpec {
     def "I can log into the Minespace frontend given valid credentials"(){
         given:"I go to the homepage"
         to MinespaceFrontendLoginPage
-        LoginButton.click()
+        waitFor() { LoginButton.click() }
 
         when: "Page loaded"
         at KeycloakLoginPage

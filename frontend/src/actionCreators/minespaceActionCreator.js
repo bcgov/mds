@@ -55,7 +55,7 @@ export const fetchMinespaceUserMines = (mine_guids) => (dispatch) => {
 export const deleteMinespaceUser = (minespaceUserId) => (dispatch) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.DELETE_MINESPACE_USER));
-  return CustomAxios(String.ERROR)
+  return CustomAxios({ errorToastMessage: String.ERROR })
     .delete(`${ENVIRONMENT.apiUrl}${API.MINESPACE_USER}/${minespaceUserId}`, createRequestHeader())
     .then(() => {
       dispatch(success(reducerTypes.DELETE_MINESPACE_USER));

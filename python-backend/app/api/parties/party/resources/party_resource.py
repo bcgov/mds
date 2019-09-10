@@ -120,16 +120,15 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
                 continue  # non-editable fields from put
             setattr(existing_party, key, value)
 
-        # This condition should never pass, as every party should be
-        # associated with an address, but it's been added for runtime safety,
-        # in case the API is circumvented and a party is created without an
-        # address
-        if len(existing_party.address) == 0:
-            address = Address.create()
-            existing_party.address.append(address)
+        # We are now allowing parties to be created without an address
+        if (data.get('suite_no') or data.get('address_line_1') or data.get('address_line_2') or data.get('city') or
+                data.get('sub_division_code') or data.get('post_code')): # and check that we are changing the address
+            if len(existing_party.address) == 0:
+                address = Address.create()
+                existing_party.address.append(address)
 
-        for key, value in data.items():
-            setattr(existing_party.address[0], key, value)
+            for key, value in data.items():
+                setattr(existing_party.address[0], key, value)
 
         existing_party.save()
 
@@ -148,8 +147,7 @@ class PartyResource(Resource, UserMixin, ErrorMixin):
         if party is None:
             return self.create_error_payload(404, 'Party guid with "{party_guid}" not found.'), 404
 
-        mine_party_appts = MinePartyAppointment.find_all_by_mine_party_appt_guid(
-            party_guid)
+        mine_party_appts = MinePartyAppointment.find_by_party_guid(party_guid)
         for mine_party_appt in mine_party_appts:
             mine_party_appt.deleted_ind = True
             mine_party_appt.save()

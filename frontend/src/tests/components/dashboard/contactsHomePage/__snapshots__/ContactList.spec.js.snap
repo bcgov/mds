@@ -1,224 +1,87 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ContactList renders properly 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <ContactList
-    parties={
+<Table
+  align="left"
+  bordered={false}
+  childrenColumnName="children"
+  className=""
+  columns={
+    Array [
       Object {
-        "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
-          "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-          "mine_party_appt": Array [],
-          "name": "mock name",
-        },
-        "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
-          "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
-          "mine_party_appt": Array [],
-          "name": "mock Two",
-        },
-      }
-    }
-    partyIds={
-      Array [
-        "18133c75-49ad-4101-85f3-a43e35ae989a",
-        "18145c75-49ad-0101-85f3-a43e45ae989a",
-      ]
-    }
-    sortDir={null}
-    sortField={null}
-  />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateError": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "class",
-    "props": Object {
-      "align": "left",
-      "bordered": false,
-      "className": "",
-      "columns": Array [
-        Object {
-          "dataIndex": "name",
-          "render": [Function],
-          "sortField": "party_name",
-          "sortOrder": false,
-          "sorter": true,
-          "title": "Contact Name",
-        },
-        Object {
-          "dataIndex": "role",
-          "render": [Function],
-          "sortOrder": false,
-          "title": "Role",
-        },
-        Object {
-          "dataIndex": "email",
-          "render": [Function],
-          "sortOrder": false,
-          "title": "Email",
-        },
-        Object {
-          "dataIndex": "phone",
-          "render": [Function],
-          "sortOrder": false,
-          "title": "Phone",
-        },
-      ],
-      "dataSource": Array [
-        Object {
-          "email": undefined,
-          "emptyField": "N/A",
-          "key": undefined,
-          "name": Array [
-            "",
-            "mock name",
-          ],
-          "phone": "N/A",
-          "role": "N/A",
-        },
-        Object {
-          "email": undefined,
-          "emptyField": "N/A",
-          "key": undefined,
-          "name": Array [
-            "",
-            "mock Two",
-          ],
-          "phone": "N/A",
-          "role": "N/A",
-        },
-      ],
-      "indentSize": 20,
-      "loading": false,
-      "locale": Object {
-        "emptyText": <NullScreen
-          type="no-results"
-        />,
+        "dataIndex": "name",
+        "render": [Function],
+        "sortField": "party_name",
+        "sortOrder": false,
+        "sorter": true,
+        "title": "Contact Name",
       },
-      "onChange": [Function],
-      "pagination": false,
-      "rowKey": "key",
-      "showHeader": true,
-      "size": "default",
-      "sortDirections": Array [
-        "ascend",
-        "descend",
-      ],
-      "useFixedHeader": false,
-    },
-    "ref": null,
-    "rendered": null,
-    "type": [Function],
-  },
-  Symbol(enzyme.__nodes__): Array [
+      Object {
+        "dataIndex": "role",
+        "render": [Function],
+        "sortOrder": false,
+        "title": "Role",
+      },
+      Object {
+        "dataIndex": "email",
+        "render": [Function],
+        "sortOrder": false,
+        "title": "Email",
+      },
+      Object {
+        "dataIndex": "phone",
+        "render": [Function],
+        "sortOrder": false,
+        "title": "Phone",
+      },
+    ]
+  }
+  dataSource={
+    Array [
+      Object {
+        "email": undefined,
+        "emptyField": "N/A",
+        "key": undefined,
+        "name": Array [
+          "",
+          "mock name",
+        ],
+        "phone": "N/A",
+        "role": "N/A",
+      },
+      Object {
+        "email": undefined,
+        "emptyField": "N/A",
+        "key": undefined,
+        "name": Array [
+          "",
+          "mock Two",
+        ],
+        "phone": "N/A",
+        "role": "N/A",
+      },
+    ]
+  }
+  indentSize={20}
+  loading={false}
+  locale={
     Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "class",
-      "props": Object {
-        "align": "left",
-        "bordered": false,
-        "className": "",
-        "columns": Array [
-          Object {
-            "dataIndex": "name",
-            "render": [Function],
-            "sortField": "party_name",
-            "sortOrder": false,
-            "sorter": true,
-            "title": "Contact Name",
-          },
-          Object {
-            "dataIndex": "role",
-            "render": [Function],
-            "sortOrder": false,
-            "title": "Role",
-          },
-          Object {
-            "dataIndex": "email",
-            "render": [Function],
-            "sortOrder": false,
-            "title": "Email",
-          },
-          Object {
-            "dataIndex": "phone",
-            "render": [Function],
-            "sortOrder": false,
-            "title": "Phone",
-          },
-        ],
-        "dataSource": Array [
-          Object {
-            "email": undefined,
-            "emptyField": "N/A",
-            "key": undefined,
-            "name": Array [
-              "",
-              "mock name",
-            ],
-            "phone": "N/A",
-            "role": "N/A",
-          },
-          Object {
-            "email": undefined,
-            "emptyField": "N/A",
-            "key": undefined,
-            "name": Array [
-              "",
-              "mock Two",
-            ],
-            "phone": "N/A",
-            "role": "N/A",
-          },
-        ],
-        "indentSize": 20,
-        "loading": false,
-        "locale": Object {
-          "emptyText": <NullScreen
-            type="no-results"
-          />,
-        },
-        "onChange": [Function],
-        "pagination": false,
-        "rowKey": "key",
-        "showHeader": true,
-        "size": "default",
-        "sortDirections": Array [
-          "ascend",
-          "descend",
-        ],
-        "useFixedHeader": false,
-      },
-      "ref": null,
-      "rendered": null,
-      "type": [Function],
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getDerivedStateFromProps": true,
-          "getSnapshotBeforeUpdate": true,
-          "setState": Object {
-            "skipsComponentDidUpdateOnNullish": true,
-          },
-        },
-      },
-    },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
-  },
-}
+      "emptyText": <NullScreen
+        type="no-results"
+      />,
+    }
+  }
+  onChange={[Function]}
+  pagination={false}
+  rowKey="key"
+  showHeader={true}
+  size="default"
+  sortDirections={
+    Array [
+      "ascend",
+      "descend",
+    ]
+  }
+  useFixedHeader={false}
+/>
 `;

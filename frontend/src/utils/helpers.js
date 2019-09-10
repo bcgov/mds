@@ -39,14 +39,16 @@ export const createDropDownList = (array, labelField, valueField) =>
   array.map((item) => ({ value: item[valueField], label: item[labelField] }));
 
 // Function to create a hash given an array of values and labels
-export const createLabelHash = (obj) =>
-  obj.reduce((map, { value, label }) => ({ [value]: label, ...map }), {});
+export const createLabelHash = (arr) =>
+  arr.reduce((map, { value, label }) => ({ [value]: label, ...map }), {});
 
 // Function to format an API date string to human readable
 export const formatDate = (dateString) =>
   dateString && dateString !== "None" && moment(dateString, "YYYY-MM-DD").format("MMM DD YYYY");
 
 export const formatTime = (timeStamp) => timeStamp && moment(timeStamp).format("h:mm a");
+
+export const formatDateTime = (dateTime) => dateTime && moment(dateTime).format("lll");
 
 export const formatPostalCode = (code) => code && code.replace(/.{3}$/, " $&");
 
@@ -95,3 +97,75 @@ export const getFiscalYear = () => {
 };
 
 export const formatParamStringToArray = (param) => (param ? param.split(",").filter((x) => x) : []);
+
+// Used for parsing/stringifying list query params.
+// method :: String enum[split, join]
+// listFields :: Array of Strings matching the list query params. ex. ['mine_region']
+// fields :: Object created by queryString.parse()
+export const formatQueryListParams = (method, listFields) => (fields) => {
+  const params = Object.assign({}, fields);
+  listFields.forEach((listField) => {
+    params[listField] = fields[listField] ? fields[listField][method](",") : undefined;
+  });
+  return params;
+};
+
+// Adapt our { label, value } options arrays to work with AntDesign column filter
+export const optionsFilterAdapter = (options) =>
+  options.map(({ label, value }) => ({ text: label, value }));
+
+// This method sorts codes of the for '#.#.# - Lorem Ipsum'
+// where the number of integers is variable and the text is optional
+export const compareCodes = (a, b) => {
+  // Null codes are sorted before non-null codes
+  if (!a) {
+    return 1;
+  }
+  if (!b) {
+    return -1;
+  }
+  // Returns the first match that is non-null.
+  const regexParse = (input) =>
+    input.match(/([0-9]+)\.([0-9]+)\.([0-9]+)\.\(([0-9]+)/) ||
+    input.match(/([0-9]+)\.([0-9]+)\.([0-9]+)/) ||
+    input.match(/([0-9]+)\.([0-9]+)/) ||
+    input.match(/([0-9]+)/);
+  const aCodes = regexParse(a);
+  const bCodes = regexParse(b);
+  if (!aCodes) {
+    return -1;
+  }
+  if (!bCodes) {
+    return 1;
+  }
+  const k = Math.min(aCodes.length, bCodes.length);
+  // Compares the non-null parts of two strings of potentially different lengths (e.g 1.11 and 1.4.12)
+  for (let i = 1; i < k; i += 1) {
+    const aInt = Number(aCodes[i]);
+    const bInt = Number(bCodes[i]);
+    if (aInt > bInt) {
+      return 1;
+    }
+    if (aInt < bInt) {
+      return -1;
+    }
+  }
+  // This line is only reached if all non-null code sections match (e.g 1.11 and 1.11.4)
+  // if both codes have the same length then they must be the same code.
+  if (aCodes.length === bCodes.length) {
+    return 0;
+  }
+  // The shorter of two codes with otherwise matching numbers is sorted before the longer one.
+  // since null is sorted before non-null (e.g 1.11 is before 1.11.12)
+  return aCodes.length < bCodes.length ? -1 : 1;
+};
+
+export const formatComplianceCodeValueOrLabel = (code, showDescription) => {
+  const { section, sub_section, paragraph, sub_paragraph, description } = code;
+  const formattedSubSection = sub_section ? `.${sub_section}` : "";
+  const formattedParagraph = paragraph ? `.${paragraph}` : "";
+  const formattedSubParagraph = sub_paragraph !== null ? `.${sub_paragraph}` : "";
+  const formattedDescription = showDescription ? ` - ${description}` : "";
+
+  return `${section}${formattedSubSection}${formattedParagraph}${formattedSubParagraph}${formattedDescription}`;
+};

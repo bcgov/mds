@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import * as router from "@/constants/routes";
 import PropTypes from "prop-types";
 import { Link, StaticRouter } from "react-router-dom";
 import { Button, Tag } from "antd";
+import * as router from "@/constants/routes";
 import * as String from "@/constants/strings";
 
 const propTypes = {

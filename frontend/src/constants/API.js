@@ -22,23 +22,15 @@ export const MINE_TSF = (mine_guid) => `/mines/${mine_guid}/tailings`;
 export const DISTURBANCE_CODES = "/mines/disturbance-codes";
 export const COMMODITY_CODES = "/mines/commodity-codes";
 export const EDIT_TSF_REPORT = "";
-export const REMOVE_EXPECTED_DOCUMENT = "/documents/expected";
-export const ADD_MINE_EXPECTED_DOCUMENT = "/documents/expected/mines";
-export const UPLOAD_MINE_EXPECTED_DOCUMENT_FILE = (expectedDocumentGuid) =>
-  `/documents/expected/${expectedDocumentGuid}/document`;
-export const DOCUMENT_STATUS = "/documents/expected/status";
-export const MINE_DOCUMENTS = "/documents/mines";
-export const MINE_TSF_REQUIRED_DOCUMENTS = "/documents/required?category=TSF";
-export const EXPECTED_DOCUMENT = "/documents/expected";
+export const MINE_DOCUMENTS = (mine_guid) => `/mines/${mine_guid}/documents`;
+export const MINE_TSF_REQUIRED_DOCUMENTS = "/required-documents?category=TSF";
 export const MINE_TENURE_TYPES = "/mines/mine-tenure-type-codes";
 export const MINE_TYPES = "/mines/mine-types";
 export const MINE_TYPES_DETAILS = "/mines/mine-types/details";
 export const DOCUMENT_MANAGER_FILE_GET_URL = (token = {}) =>
-  `/document-manager?${queryString.stringify(token)}`;
+  `/documents?${queryString.stringify(token)}`;
 export const DOCUMENT_MANAGER_TOKEN_GET_URL = (documentManagerGuid) =>
-  `/document-manager/${documentManagerGuid}/token`;
-export const REMOVE_MINE_EXPECTED_DOCUMENT = (expectedDocumentGuid, mineDocumentGuid) =>
-  `/documents/expected/${expectedDocumentGuid}/document/${mineDocumentGuid}`;
+  `/download-token/${documentManagerGuid}`;
 export const MINESPACE_USER = "/users/minespace";
 export const PROVINCE_CODES = "/parties/sub-division-codes";
 
@@ -64,17 +56,27 @@ export const SEARCH_OPTIONS = "/search/options";
 export const SIMPLE_SEARCH = "/search/simple";
 
 // Reporting
-export const CORE_DASHBOARD = `/reporting/core-dashboard`;
+export const DASHBOARD = (dashboardId) => `/reporting/dashboard/${dashboardId}`;
 
 // Variances
 export const COMPLIANCE_CODES = "/mines/compliance/codes";
 export const MINE_VARIANCES = (mineGuid) => `/mines/${mineGuid}/variances`;
 export const VARIANCES = (params) => {
-  const { variance_application_status_code = [], ...otherParams } = params;
-  const formattedCodes =
-    variance_application_status_code.length >= 1
-      ? { variance_application_status_code: variance_application_status_code.join(",") }
-      : {};
+  const {
+    variance_application_status_code = [],
+    compliance_code = [],
+    region = [],
+    ...otherParams
+  } = params;
+  const formattedCodes = {};
+  Object.assign(
+    formattedCodes,
+    compliance_code.length >= 1 && { compliance_code: compliance_code.join(",") },
+    region.length >= 1 && { region: region.join(",") },
+    variance_application_status_code.length >= 1 && {
+      variance_application_status_code: variance_application_status_code.join(","),
+    }
+  );
   return params
     ? `/variances?${queryString.stringify({
         ...formattedCodes,
@@ -99,6 +101,26 @@ export const MINE_INCIDENT = (mineGuid, mine_incident_guid) =>
   `/mines/${mineGuid}/incidents/${mine_incident_guid}`;
 export const MINE_INCIDENT_DOCUMENT = (mineGuid) => `/mines/${mineGuid}/incidents/documents`;
 
-export const MINE_INCIDENT_FOLLOWUP_ACTIONS = `/mines/incidents/followup-types`;
-export const MINE_INCIDENT_DETERMINATION_TYPES = `/mines/incidents/determination-types`;
-export const MINE_INCIDENT_STATUS_CODES = `/mines/incidents/status-codes`;
+export const INCIDENT_FOLLOWUP_ACTIONS = `/incidents/followup-types`;
+export const INCIDENT_DETERMINATION_TYPES = `/incidents/determination-types`;
+export const INCIDENT_STATUS_CODES = `/incidents/status-codes`;
+export const INCIDENT_DOCUMENT_TYPE = `/incidents/document-types`;
+
+// report
+export const MINE_REPORT_DEFINITIONS = () => `/mines/reports/definitions`;
+export const MINE_REPORTS = (mineGuid) => `/mines/${mineGuid}/reports`;
+export const MINE_REPORT = (mineGuid, mineReportGuid) =>
+  `/mines/${mineGuid}/reports/${mineReportGuid}`;
+export const MINE_REPORT_DOCUMENT = (mineGuid) => `/mines/${mineGuid}/reports/documents`;
+export const MINE_REPORT_COMMENTS = (mineGuid, reportGuid) =>
+  `/mines/${mineGuid}/reports/${reportGuid}/comments`;
+export const MINE_REPORT_COMMENT = (mineGuid, reportGuid, commentGuid) =>
+  `/mines/${mineGuid}/reports/${reportGuid}/comments/${commentGuid}`;
+
+// Notice Of Work
+export const NOTICE_OF_WORK_APPLICATIONS = (params = {}) =>
+  `/now-submissions/applications?${queryString.stringify(params)}`;
+export const NOTICE_OF_WORK_APPLICATION = (applicationGuid) =>
+  `/now-submissions/applications/${applicationGuid}`;
+export const MINE_NOTICE_OF_WORK_APPLICATIONS = (mineGuid, params = {}) =>
+  `/mines/${mineGuid}/now-submissions/applications?${queryString.stringify(params)}`;

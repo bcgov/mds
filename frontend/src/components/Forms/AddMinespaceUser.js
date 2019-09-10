@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import RenderField from "@/components/common/RenderField";
 import { Form, Button, Col, Row } from "antd";
+import RenderField from "@/components/common/RenderField";
 import * as FORM from "@/constants/forms";
 import { required, email } from "@/utils/Validate";
 import { resetForm } from "@/utils/helpers";

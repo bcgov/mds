@@ -4,18 +4,18 @@ from datetime import datetime
 
 from app.extensions import api
 from ..models.application_status_code import ApplicationStatusCode
-from app.api.utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.access_decorators import requires_role_view_all
 
 
-class ApplicationStatusCodeResource(Resource, UserMixin, ErrorMixin):
+class ApplicationStatusCodeResource(Resource, UserMixin):
 
     application_status_code_model = api.model('ApplicationStatusCode', {
         'application_status_code': fields.String,
         'description': fields.String,
     })
 
-    @api.marshal_with(application_status_code_model, code=200)
+    @api.marshal_with(application_status_code_model, envelope='records', code=200)
     @api.doc(
         description=
         'This endpoint returns a list of all possible document status codes and thier descriptions.'

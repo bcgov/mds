@@ -3,9 +3,9 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import * as Strings from "@/constants/strings";
 import { Tabs, Icon, Table, Button, Popconfirm } from "antd";
 import { uniq } from "lodash";
+import * as Strings from "@/constants/strings";
 import {
   fetchPartyById,
   fetchPartyRelationshipTypes,
@@ -134,7 +134,7 @@ export class PartyProfile extends Component {
         dataIndex: "mineName",
         render: (text, record) => (
           <div title="Mine Name">
-            <Link to={router.MINE_SUMMARY.dynamicRoute(record.mineGuid, "contacts")}>{text}</Link>
+            <Link to={router.MINE_CONTACTS.dynamicRoute(record.mineGuid)}>{text}</Link>
           </div>
         ),
       },

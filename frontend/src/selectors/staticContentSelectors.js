@@ -1,7 +1,7 @@
-import { chain } from "lodash";
-import * as staticContentReducer from "@/reducers/staticContentReducer";
+import { chain, flatMap, uniqBy } from "lodash";
 import { createSelector } from "reselect";
-import { createLabelHash, createDropDownList } from "@/utils/helpers";
+import * as staticContentReducer from "@/reducers/staticContentReducer";
+import { createLabelHash, createDropDownList, compareCodes } from "@/utils/helpers";
 
 export const {
   getMineStatusOptions,
@@ -9,13 +9,12 @@ export const {
   getMineTenureTypeOptions,
   getMineCommodityOptions,
   getMineDisturbanceOptions,
-  getExpectedDocumentStatusOptions,
-  getMineTSFRequiredReports,
-  getOptionsLoaded,
+  getMineReportDefinitionOptions,
   getProvinceOptions,
   getPermitStatusOptions,
   getApplicationStatusOptions,
   getComplianceCodes,
+  getIncidentDocumentTypeOptions,
   getIncidentFollowupActionOptions,
   getIncidentDeterminationOptions,
   getIncidentStatusCodeOptions,
@@ -30,12 +29,23 @@ export const getCurrentComplianceCodes = createSelector(
     codes.filter((code) => code.expiry_date === null || new Date(code.expiry_date) > new Date())
 );
 
-export const getMineTenureTypesHash = createSelector(
+export const getMineTenureTypeDropdownOptions = createSelector(
   [getMineTenureTypeOptions],
+  (options) => createDropDownList(options, "description", "mine_tenure_type_code")
+);
+
+export const getMineTenureTypesHash = createSelector(
+  [getMineTenureTypeDropdownOptions],
   createLabelHash
 );
-export const getMineRegionHash = createSelector(
+
+export const getMineRegionDropdownOptions = createSelector(
   [getMineRegionOptions],
+  (options) => createDropDownList(options, "description", "mine_region_code")
+);
+
+export const getMineRegionHash = createSelector(
+  [getMineRegionDropdownOptions],
   createLabelHash
 );
 
@@ -44,12 +54,12 @@ const createConditionalMineDetails = (key) => (options, tenureTypes) => {
   tenureTypes.forEach((type) => {
     const valueArr = [];
     options.forEach((option) => {
-      if (option.mine_tenure_type_codes.includes(type.value)) {
+      if (option.mine_tenure_type_codes.includes(type.mine_tenure_type_code)) {
         valueArr.push({
           label: option.description,
           value: option[key],
         });
-        newArr[type.value] = valueArr;
+        newArr[type.mine_tenure_type_code] = valueArr;
       }
     });
   });
@@ -109,6 +119,11 @@ export const getDropdownApplicationStatusOptions = createSelector(
   (options) => createDropDownList(options, "description", "application_status_code")
 );
 
+export const getDropdownIncidentDocumentTypeOptions = createSelector(
+  [getIncidentDocumentTypeOptions],
+  (options) => createDropDownList(options, "description", "mine_incident_document_type_code")
+);
+
 export const getDropdownIncidentFollowupActionOptions = createSelector(
   [getIncidentFollowupActionOptions],
   (options) =>
@@ -159,6 +174,7 @@ export const getDropdownHSRCMComplianceCodes = createSelector(
         const composedLabel = formatComplianceCodeValueOrLabel(code, true);
         return { value: code.compliance_article_id, label: composedLabel };
       })
+      .sort((a, b) => compareCodes(a.label, b.label))
 );
 
 export const getHSRCMComplianceCodesHash = createSelector(
@@ -197,6 +213,8 @@ export const getDangerousOccurrenceSubparagraphOptions = createSelector(
       })
 );
 
+// FIXME:  this seems to double count compliance codes, particularly the dangerous occurences
+// this double counting should get removed
 export const getMultiSelectComplianceCodes = createSelector(
   [getCurrentComplianceCodes],
   (codes) =>
@@ -218,7 +236,7 @@ export const getFilterVarianceStatusOptions = createSelector(
   (options) =>
     options.map(({ description, variance_application_status_code }) => ({
       value: variance_application_status_code,
-      text: description,
+      label: description,
     }))
 );
 
@@ -286,4 +304,19 @@ export const getDropdownVarianceDocumentCategoryOptions = createSelector(
 export const getVarianceDocumentCategoryOptionsHash = createSelector(
   [getDropdownVarianceDocumentCategoryOptions],
   createLabelHash
+);
+
+export const getDropdownMineReportDefinitionOptions = createSelector(
+  [getMineReportDefinitionOptions],
+  (options) => createDropDownList(options, "report_name", "mine_report_definition_guid")
+);
+
+export const getDropdownMineReportCategoryOptions = createSelector(
+  [getMineReportDefinitionOptions],
+  (options) =>
+    createDropDownList(
+      uniqBy(flatMap(options, "categories"), "mine_report_category"),
+      "description",
+      "mine_report_category"
+    )
 );

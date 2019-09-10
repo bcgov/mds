@@ -1,25 +1,21 @@
-import random
 import click
-import names
+import psycopg2
 
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from sqlalchemy.exc import DBAPIError
 from multiprocessing.dummy import Pool as ThreadPool
+from flask import current_app
 
-from app import auth
 from app.api.utils.include.user_info import User
-from app.api.utils.random import generate_mine_no, generate_mine_name, random_geo, random_key_gen, random_date, random_region, random_mine_category
-from app.extensions import db, sched
-from app.scheduled_jobs import ETL_jobs
+from app.extensions import db
 
-from tests.factories import MineFactory, MinePartyAppointmentFactory
+from tests.factories import MineFactory, MinePartyAppointmentFactory, NOWApplicationFactory
 
 
 def register_commands(app):
     @app.cli.command()
     def import_idir():
-        from app.scheduled_jobs.IDIR_jobs import _import_empr_idir_users
-        _import_empr_idir_users()
+        from app.cli_jobs.IDIR_jobs import import_empr_idir_users
+        import_empr_idir_users()
 
     @app.cli.command()
     def test_nris_api():
@@ -64,10 +60,12 @@ def register_commands(app):
             for _ in range(int(num)):
                 mine = MineFactory()
                 eor = MinePartyAppointmentFactory(mine=mine, mine_party_appt_type_code='EOR')
-                mine_manager = MinePartyAppointmentFactory(
-                    mine=mine, mine_party_appt_type_code='MMG')
-                permitee = MinePartyAppointmentFactory(
-                    mine=mine, mine_party_appt_type_code='PMT', party__company=True)
+                mine_manager = MinePartyAppointmentFactory(mine=mine,
+                                                           mine_party_appt_type_code='MMG')
+                permitee = MinePartyAppointmentFactory(mine=mine,
+                                                       mine_party_appt_type_code='PMT',
+                                                       party__company=True)
+                NOWApplicationFactory()
             try:
                 db.session.commit()
                 print(f'Created {num} random mines with related data.')
@@ -75,11 +73,21 @@ def register_commands(app):
                 db.session.rollback()
                 raise
 
-    # if app.config.get('ENVIRONMENT_NAME') in ['test', 'prod']:
+    @app.cli.command()
+    def run_etl():
+        from app.cli_jobs import ETL_jobs
+        ETL_jobs.run_ETL()
 
-    @sched.app.cli.command()
-    def _run_etl():
-        with sched.app.app_context():
-            print('starting the ETL.')
-            ETL_jobs._run_ETL()
-            print('Completed running the ETL.')
+    @app.cli.command()
+    @click.option('-c', '--commit')
+    def run_tailings_reports_migration(commit):
+        connection = psycopg2.connect(current_app.config['DB_URL'])
+        from app.scripts.tailings_report_migration import append_tailings_reports_to_code_required_reports
+        append_tailings_reports_to_code_required_reports(connection, commit == 'true')
+
+    @app.cli.command()
+    @click.option('-c', '--commit')
+    def delete_tailings_reports(commit):
+        connection = psycopg2.connect(current_app.config['DB_URL'])
+        from app.scripts.tailings_report_migration import  delete_tailings_data
+        delete_tailings_data(connection, commit=='true')

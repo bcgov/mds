@@ -26,7 +26,7 @@ export const createPermit = (mineGuid, payload) => (dispatch) => {
 export const fetchPermits = (mineGuid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_PERMITS));
   dispatch(showLoading("modal"));
-  return CustomAxios(String.ERROR)
+  return CustomAxios({ errorToastMessage: String.ERROR })
     .get(ENVIRONMENT.apiUrl + API.PERMITS(mineGuid), createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_PERMITS));

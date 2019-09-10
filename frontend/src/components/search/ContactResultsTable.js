@@ -2,8 +2,8 @@ import React from "react";
 import { Table, Row, Col, Divider } from "antd";
 import PropTypes from "prop-types";
 import Highlight from "react-highlighter";
-import { Validate } from "@/utils/Validate";
 import { Link } from "react-router-dom";
+import { Validate } from "@/utils/Validate";
 import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
 

@@ -1,0 +1,10 @@
+.env
+.digdag
+digdag.properties
+gatekeeper.conf
+digdag-server/
+digdag-logs/
+project/.digdag-wrapper
+project/.digdag
+project/*.pyc
+kube_config

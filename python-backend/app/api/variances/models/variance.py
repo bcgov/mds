@@ -9,7 +9,7 @@ from app.extensions import db
 
 from .variance_application_status_code import VarianceApplicationStatusCode
 from ...utils.models_mixins import AuditMixin, Base
-from ...documents.variances.models.variance import VarianceDocumentXref
+from app.api.variances.models.variance_document_xref import VarianceDocumentXref
 
 INVALID_GUID = 'Invalid guid.'
 INVALID_MINE_GUID = 'Invalid mine_guid.'
@@ -22,6 +22,7 @@ class Variance(AuditMixin, Base):
     __tablename__ = "variance"
     variance_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     variance_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
+    variance_no = db.Column(db.Integer, nullable=False, server_default=FetchedValue())
     compliance_article_id = db.Column(
         db.Integer,
         db.ForeignKey('compliance_article.compliance_article_id'),
@@ -42,13 +43,13 @@ class Variance(AuditMixin, Base):
     expiry_date = db.Column(db.DateTime)
 
     documents = db.relationship('VarianceDocumentXref', lazy='joined')
-    mine_documents = db.relationship(
-        'MineDocument', lazy='joined', secondary='variance_document_xref')
+    mine_documents = db.relationship('MineDocument',
+                                     lazy='joined',
+                                     secondary='variance_document_xref')
     inspector = db.relationship('Party', lazy='joined', foreign_keys=[inspector_party_guid])
     mine = db.relationship('Mine', lazy='joined')
 
     mine_name = association_proxy('mine', 'mine_name')
-
 
     def __repr__(self):
         return '<Variance %r>' % self.variance_id
@@ -68,17 +69,16 @@ class Variance(AuditMixin, Base):
             issue_date=None,
             expiry_date=None,
             add_to_session=True):
-        new_variance = cls(
-            compliance_article_id=compliance_article_id,
-            mine_guid=mine_guid,
-            variance_application_status_code=variance_application_status_code,
-            applicant_guid=applicant_guid,
-            inspector_party_guid=inspector_party_guid,
-            note=note,
-            parties_notified_ind=parties_notified_ind,
-            issue_date=issue_date,
-            received_date=received_date,
-            expiry_date=expiry_date)
+        new_variance = cls(compliance_article_id=compliance_article_id,
+                           mine_guid=mine_guid,
+                           variance_application_status_code=variance_application_status_code,
+                           applicant_guid=applicant_guid,
+                           inspector_party_guid=inspector_party_guid,
+                           note=note,
+                           parties_notified_ind=parties_notified_ind,
+                           issue_date=issue_date,
+                           received_date=received_date,
+                           expiry_date=expiry_date)
         if add_to_session:
             new_variance.save(commit=False)
         return new_variance

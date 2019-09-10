@@ -42,9 +42,8 @@ class Config(object):
     JWT_OIDC_CACHING_ENABLED = True
 
     # Microservice URLs
-    DOCUMENT_MS_URL = os.environ.get('DOCUMENT_MS_URL', 'http://localhost:5000')
-    DOCUMENT_MANAGER_URL = os.environ.get('DOCUMENT_MANAGER_URL', 'http://localhost:5000')
-    MINES_URL = os.environ.get('MINES_URL', 'http://localhost:5000')
+    DOCUMENT_MANAGER_URL = os.environ.get('DOCUMENT_MANAGER_URL',
+                                          'http://document_manager_backend:5001')
 
     NRIS_TOKEN_URL = os.environ.get('NRIS_TOKEN_URL', None)
     NRIS_API_URL = os.environ.get('NRIS_API_URL', 'http://nris_backend:5500')
@@ -64,11 +63,6 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENGINE_OPTIONS = {'pool_timeout': 300, 'max_overflow': 20}
 
-    # Flask-uploads configs
-    UPLOADED_DOCUMENT_DEST = os.environ.get('UPLOADED_DOCUMENT_DEST', '/app/document_uploads')
-    # 100MB file limit, temporarily increased to 400MB
-    MAX_CONTENT_LENGTH = 400 * 1024 * 1024
-
     # Elastic config
     ELASTIC_ENABLED = os.environ.get('ELASTIC_ENABLED', '0')
     ELASTIC_SERVICE_NAME = os.environ.get('ELASTIC_SERVICE_NAME', 'Local-Dev')
@@ -81,9 +75,6 @@ class Config(object):
         'SERVER_URL': ELASTIC_SERVER_URL,
         'DEBUG': ELASTIC_DEBUG
     }
-
-    # Flask-Scheduler config
-    SCHEDULER_API_ENABLED = False
 
 
 class TestConfig(Config):

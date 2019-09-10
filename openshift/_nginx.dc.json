@@ -43,6 +43,10 @@
       "value": "/"
     },
     {
+      "name": "DOCUMENT_MANAGER_SERVICE_URL",
+      "value": "/"
+    },
+    {
       "name": "MINESPACE_SERVICE_URL",
       "value": "/"
     },
@@ -184,6 +188,10 @@
                   {
                     "name": "NRIS_API_SERVICE_URL",
                     "value": "${NRIS_API_SERVICE_URL}"
+                  },
+                  {
+                    "name": "DOCUMENT_MANAGER_SERVICE_URL",
+                    "value": "${DOCUMENT_MANAGER_SERVICE_URL}"
                   },
                   {
                     "name": "MINESPACE_SERVICE_URL",

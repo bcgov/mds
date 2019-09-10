@@ -32,9 +32,9 @@ export class AdvancedContactSearchForm extends Component {
   };
 
   handleReset = () => {
+    this.setState({ contactType: "PER" });
     this.props.reset();
     this.props.handleSearch({}, true);
-    this.setState({ contactType: "PER" });
   };
 
   handleContactTypeChange = (chars, value) => {
@@ -143,4 +143,5 @@ AdvancedContactSearchForm.defaultProps = defaultProps;
 export default reduxForm({
   form: FORM.CONTACT_ADVANCED_SEARCH,
   touchOnBlur: false,
+  enableReinitialize: true,
 })(AdvancedContactSearchForm);

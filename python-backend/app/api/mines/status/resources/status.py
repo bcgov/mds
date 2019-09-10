@@ -5,7 +5,7 @@ from ..models.mine_status import MineStatus
 from app.api.mines.status.models.mine_status_xref import MineStatusXref
 from app.extensions import api
 from ....utils.access_decorators import requires_role_view_all
-from ....utils.resources_mixins import UserMixin, ErrorMixin
+from ....utils.resources_mixins import UserMixin
 from app.api.mines.mine_api_models import MINE_STATUS_CODE_MODEL
 
 
@@ -16,7 +16,7 @@ class MineStatusListResource(Resource, UserMixin):
         return MineStatusXref.active()
 
 
-class MineStatusResource(Resource, UserMixin, ErrorMixin):
+class MineStatusResource(Resource, UserMixin):
     @api.doc(params={'mine_status_guid': 'Mine status guid.'})
     @requires_role_view_all
     def get(self, mine_status_guid):

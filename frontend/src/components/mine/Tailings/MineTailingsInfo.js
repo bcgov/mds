@@ -2,141 +2,94 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Row, Col } from "antd";
+import { Row, Col, Divider } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import { modalConfig } from "@/components/modalContent/config";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as ModalContent from "@/constants/modalContent";
-import * as Permission from "@/constants/permissions";
 import {
-  createMineExpectedDocument,
-  removeExpectedDocument,
-  updateExpectedDocument,
-} from "@/actionCreators/mineActionCreator";
-import {
-  fetchExpectedDocumentStatusOptions,
-  fetchMineTailingsRequiredDocuments,
-} from "@/actionCreators/staticContentActionCreator";
-import {
-  getExpectedDocumentStatusOptions,
-  getMineTSFRequiredReports,
-} from "@/selectors/staticContentSelectors";
-import { createDropDownList } from "@/utils/helpers";
-import MineTailingsTable from "@/components/mine/Tailings/MineTailingsTable";
-import AddButton from "@/components/common/AddButton";
+  fetchMineReports,
+  updateMineReport,
+  deleteMineReport,
+} from "@/actionCreators/reportActionCreator";
+import { getMineReports } from "@/selectors/reportSelectors";
+import MineReportTable from "@/components/mine/Reports/MineReportTable";
+import { getMines, getMineGuid } from "@/selectors/mineSelectors";
+import { openModal, closeModal } from "@/actions/modalActions";
+import { getMineReportDefinitionOptions } from "@/reducers/staticContentReducer";
 
 /**
  * @class  MineTailingsInfo - all tenure information related to the mine.
  */
 
 const propTypes = {
-  mine: CustomPropTypes.mine.isRequired,
-  fetchMineRecordById: PropTypes.func.isRequired,
+  mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
+  mineGuid: PropTypes.string.isRequired,
+  mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
+  mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  updateMineReport: PropTypes.func.isRequired,
+  deleteMineReport: PropTypes.func.isRequired,
+  fetchMineReports: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  fetchExpectedDocumentStatusOptions: PropTypes.func.isRequired,
-  expectedDocumentStatusOptions: PropTypes.arrayOf(CustomPropTypes.mineExpectedDocumentStatus)
-    .isRequired,
-  updateExpectedDocument: PropTypes.func.isRequired,
-  removeExpectedDocument: PropTypes.func.isRequired,
-  mineTSFRequiredReports: PropTypes.arrayOf(PropTypes.any).isRequired,
-  fetchMineTailingsRequiredDocuments: PropTypes.func.isRequired,
-  createMineExpectedDocument: PropTypes.func.isRequired,
 };
 
 export class MineTailingsInfo extends Component {
-  state = { selectedDocument: {} };
+  state = { mine: {} };
 
   componentDidMount() {
-    this.props.fetchExpectedDocumentStatusOptions();
-    this.props.fetchMineTailingsRequiredDocuments();
+    this.setState({ mine: this.props.mines[this.props.mineGuid] });
+    this.props.fetchMineReports(this.props.mineGuid);
   }
 
-  handleAddReportSubmit = (value) => {
-    const requiredReport = this.props.mineTSFRequiredReports.find(
-      ({ req_document_guid }) => req_document_guid === value.req_document_guid
-    );
-    const newRequiredReport = {
-      document_name: requiredReport.req_document_name,
-      req_document_guid: requiredReport.req_document_guid,
-    };
-    return this.props
-      .createMineExpectedDocument(this.props.mine.mine_guid, newRequiredReport)
-      .then(() => {
-        this.props.closeModal();
-        this.props.fetchMineRecordById(this.props.mine.mine_guid);
-      });
+  handleEditReport = (values) => {
+    this.props
+      .updateMineReport(this.props.mineGuid, values.mine_report_guid, values)
+      .then(() => this.props.closeModal())
+      .then(() => this.props.fetchMineReports(this.props.mineGuid));
   };
 
-  handleEditReportSubmit = (value) => {
-    const updatedDocument = this.state.selectedDocument;
-    updatedDocument.exp_document_name = value.tsf_report_name;
-    updatedDocument.due_date = value.tsf_report_due_date;
-    updatedDocument.received_date = value.tsf_report_received_date;
-    updatedDocument.exp_document_status_code = value.tsf_report_status;
-
-    return this.props
-      .updateExpectedDocument(updatedDocument.exp_document_guid, updatedDocument)
-      .then(() => {
-        this.props.closeModal();
-        this.props.fetchMineRecordById(this.props.mine.mine_guid);
-      });
+  handleRemoveReport = (reportGuid) => {
+    this.props
+      .deleteMineReport(this.props.mineGuid, reportGuid)
+      .then(() => this.props.fetchMineReports(this.props.mineGuid));
   };
 
-  removeReport = (event, exp_doc_guid) => {
+  openEditReportModal = (event, onSubmit, report) => {
     event.preventDefault();
-    this.props.removeExpectedDocument(exp_doc_guid).then(() => {
-      this.props.fetchMineRecordById(this.props.mine.mine_guid);
-    });
-  };
-
-  openAddReportModal = (event, onSubmit, title, mineTSFRequiredReports) => {
-    event.preventDefault();
-    const mineTSFRequiredReportsDropDown = createDropDownList(
-      mineTSFRequiredReports,
-      "req_document_name",
-      "req_document_guid"
-    );
     this.props.openModal({
-      props: { onSubmit, title, mineTSFRequiredReportsDropDown },
-      content: modalConfig.ADD_TAILINGS_REPORT,
+      props: {
+        initialValues: report,
+        onSubmit,
+        title: `Edit report for ${this.state.mine.mine_name}`,
+        mineGuid: this.props.mineGuid,
+      },
+      content: modalConfig.ADD_REPORT,
     });
-  };
-
-  openEditReportModal = (event, onSubmit, title, doc) => {
-    this.setState({
-      selectedDocument: doc,
-    });
-    event.preventDefault();
-
-    if (doc) {
-      const initialValues = {
-        tsf_report_due_date: doc.due_date === "None" ? null : doc.due_date,
-        tsf_report_received_date: doc.received_date,
-        tsf_report_status: doc.expected_document_status.exp_document_status_code,
-      };
-      const statusOptions = createDropDownList(
-        this.props.expectedDocumentStatusOptions,
-        "description",
-        "exp_document_status_code"
-      );
-      this.props.openModal({
-        props: {
-          onSubmit,
-          title: `${title}: ${doc.exp_document_name}`,
-          statusOptions,
-          initialValues,
-          selectedDocument: doc,
-        },
-        content: modalConfig.EDIT_TAILINGS_REPORT,
-      });
-    }
   };
 
   render() {
+    const mine = this.props.mines[this.props.mineGuid];
+
+    const filteredReportDefinitionGuids =
+      this.props.mineReportDefinitionOptions &&
+      this.props.mineReportDefinitionOptions
+        .filter((option) =>
+          option.categories.map((category) => category.mine_report_category).includes("TSF")
+        )
+        .map((definition) => definition.mine_report_definition_guid);
+
+    const filteredReports =
+      this.props.mineReports &&
+      this.props.mineReports.filter((report) =>
+        filteredReportDefinitionGuids.includes(report.mine_report_definition_guid.toLowerCase())
+      );
+
     return (
-      <div>
-        {this.props.mine.mine_tailings_storage_facilities.map((facility) => (
+      <div className="tab__content">
+        <div>
+          <h2>Tailings</h2>
+          <Divider />
+        </div>
+        {mine.mine_tailings_storage_facilities.map((facility) => (
           <Row
             key={facility.mine_tailings_storage_facility_guid}
             gutter={16}
@@ -151,41 +104,16 @@ export class MineTailingsInfo extends Component {
         <br />
         <br />
         <div>
-          <div>
-            <div className="inline-flex between">
-              <div>
-                <h3>Reports</h3>
-              </div>
-              <div className="inline-flex between">
-                <AuthorizationWrapper
-                  permission={Permission.EDIT_MINES}
-                  isMajorMine={this.props.mine.major_mine_ind}
-                >
-                  <AddButton
-                    onClick={(event) =>
-                      this.openAddReportModal(
-                        event,
-                        this.handleAddReportSubmit,
-                        ModalContent.ADD_TAILINGS_REPORT,
-                        this.props.mineTSFRequiredReports
-                      )
-                    }
-                  >
-                    {ModalContent.ADD_TAILINGS_REPORT}
-                  </AddButton>
-                </AuthorizationWrapper>
-              </div>
+          <div className="inline-flex between">
+            <div>
+              <h3>Reports</h3>
             </div>
           </div>
-          <br />
-          <MineTailingsTable
-            mine={this.props.mine}
-            openAddReportModal={this.openAddReportModal}
-            handleAddReportSubmit={this.handleAddReportSubmit}
-            mineTSFRequiredReports={this.props.mineTSFRequiredReports}
+          <MineReportTable
+            mineReports={filteredReports}
             openEditReportModal={this.openEditReportModal}
-            removeReport={this.removeReport}
-            handleEditReportSubmit={this.handleEditReportSubmit}
+            handleEditReport={this.handleEditReport}
+            handleRemoveReport={this.handleRemoveReport}
           />
         </div>
       </div>
@@ -194,18 +122,20 @@ export class MineTailingsInfo extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  expectedDocumentStatusOptions: getExpectedDocumentStatusOptions(state),
-  mineTSFRequiredReports: getMineTSFRequiredReports(state),
+  mineReports: getMineReports(state),
+  mineReportDefinitionOptions: getMineReportDefinitionOptions(state),
+  mines: getMines(state),
+  mineGuid: getMineGuid(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      fetchExpectedDocumentStatusOptions,
-      updateExpectedDocument,
-      fetchMineTailingsRequiredDocuments,
-      removeExpectedDocument,
-      createMineExpectedDocument,
+      fetchMineReports,
+      updateMineReport,
+      deleteMineReport,
+      openModal,
+      closeModal,
     },
     dispatch
   );

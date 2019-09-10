@@ -8,4 +8,4 @@ class SubDivisionCodeResource(Resource, UserMixin, ErrorMixin):
     @api.doc(params={})
     @requires_role_view_all
     def get(self):
-        return { 'options': SubDivisionCode.all_options() }
+        return { 'records': SubDivisionCode.all_options() }

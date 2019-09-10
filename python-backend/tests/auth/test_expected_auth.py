@@ -1,14 +1,8 @@
 import pytest
-from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE
+from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, EDIT_REPORT
 
-from app.api.document_manager.resources.document_manager import DocumentManagerResource
-from app.api.document_manager.resources.download_token import DownloadTokenResource
-from app.api.documents.expected.resources.document_status import ExpectedDocumentStatusResource
-from app.api.documents.expected.resources.documents import ExpectedDocumentResource
-from app.api.documents.expected.resources.expected_document_uploads import ExpectedDocumentUploadResource
-from app.api.documents.expected.resources.mine_documents import ExpectedMineDocumentResource
-from app.api.documents.mines.resources.mine_document_resource import MineDocumentResource
-from app.api.documents.required.resources.required_documents import RequiredDocumentResource
+from app.api.download_token.resources.download_token import DownloadTokenResource
+from app.api.mines.documents.mines.resources.mine_document_resource import MineDocumentListResource
 from app.api.mines.compliance.resources.compliance import MineComplianceSummaryResource
 from app.api.mines.compliance.resources.compliance_article import ComplianceArticleResource
 from app.api.mines.mine.resources.mine_commodity_code import MineCommodityCodeResource
@@ -36,34 +30,17 @@ from app.api.users.minespace.resources.minespace_user import MinespaceUserResour
 from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserMineResource
 from app.api.search.search.resources.search import SearchResource, SearchOptionsResource
 from app.api.search.search.resources.simple_search import SimpleSearchResource
+from app.api.mines.reports.resources.mine_reports import MineReportResource, MineReportListResource
 
 
 @pytest.mark.parametrize(
     "resource,method,expected_roles",
     [(ComplianceArticleResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
-     (DocumentManagerResource, "get", []),
-     (DocumentManagerResource, "post", [
-      MINE_EDIT, EDIT_PARTY, EDIT_PERMIT, EDIT_VARIANCE, EDIT_DO, MINESPACE_PROPONENT]),
-     (DocumentManagerResource, "patch", [
-      MINE_EDIT, EDIT_PARTY, EDIT_PERMIT, EDIT_VARIANCE, EDIT_DO, MINESPACE_PROPONENT]),
-     (DocumentManagerResource, "head", [
-      MINE_EDIT, EDIT_PARTY, EDIT_PERMIT, EDIT_VARIANCE, EDIT_DO, MINESPACE_PROPONENT]),
      (DownloadTokenResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
-     (ExpectedDocumentStatusResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
-     (ExpectedDocumentResource, "get", [VIEW_ALL]),
-     (ExpectedDocumentResource, "put", [MINE_EDIT, MINESPACE_PROPONENT]),
-     (ExpectedDocumentResource, "delete", [MINE_EDIT]),
-     (ExpectedDocumentUploadResource, "post",
-      [MINE_EDIT, MINESPACE_PROPONENT]),
-     (ExpectedDocumentUploadResource, "put", [MINE_EDIT, MINESPACE_PROPONENT]),
-     (ExpectedDocumentUploadResource, "delete",
-      [MINE_EDIT, MINESPACE_PROPONENT]),
-     (ExpectedMineDocumentResource, "get", [VIEW_ALL]),
-     (ExpectedMineDocumentResource, "post", [MINE_EDIT]),
      (MineCommodityCodeResource, "get", [VIEW_ALL]),
      (MineComplianceSummaryResource, "get", [VIEW_ALL]),
      (MineDisturbanceCodeResource, "get", [VIEW_ALL]),
-     (MineDocumentResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
+     (MineDocumentListResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
      (MineListResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
      (MineListResource, "post", [MINE_EDIT]),
      (MineListSearch, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
@@ -76,6 +53,10 @@ from app.api.search.search.resources.simple_search import SimpleSearchResource
      (MineRegionResource, "get", [VIEW_ALL]),
      (MineResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
      (MineResource, "put", [MINE_EDIT]),
+     (MineReportResource, "get", [VIEW_ALL]), 
+     (MineReportResource, "put", [EDIT_REPORT, MINESPACE_PROPONENT]),
+     (MineReportListResource, "get", [VIEW_ALL]), 
+     (MineReportListResource, "post", [EDIT_REPORT]),
      (MineStatusResource, "get", [VIEW_ALL]),
      (MineTailingsStorageFacilityListResource, "get", [VIEW_ALL]),
      (MineTailingsStorageFacilityListResource, "post", [MINE_EDIT]),
@@ -108,13 +89,11 @@ from app.api.search.search.resources.simple_search import SimpleSearchResource
      (PermitAmendmentDocumentListResource, "post", [EDIT_PERMIT]),
      (PermitAmendmentDocumentListResource, "put", [EDIT_PERMIT]),
      (PermitAmendmentDocumentResource, "delete", [EDIT_PERMIT]),
-     (RequiredDocumentResource, "get", [VIEW_ALL]),
-     (RequiredDocumentResource, "get", [VIEW_ALL]),
      (SearchResource, "get", [VIEW_ALL]),
      (SearchOptionsResource, "get", [VIEW_ALL]),
      (SimpleSearchResource, "get", [VIEW_ALL]),
      (MinespaceUserResource, 'get', [MINE_ADMIN]),
-     (MinespaceUserResource, 'post', [MINE_ADMIN]),
+     (MinespaceUserResource, 'post', [MINE_ADMIN]), 
      (MinespaceUserResource, 'delete', [MINE_ADMIN]),
      (MinespaceUserMineResource, 'post', [MINE_ADMIN]),
      (MinespaceUserMineResource, 'delete', [MINE_ADMIN])])

@@ -102,7 +102,8 @@ app {
                             'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId_core}",
                             'KEYCLOAK_URL': "${vars.keycloak.url}",
                             'KEYCLOAK_IDP_HINT': "${vars.keycloak.idpHint_core}",
-                            'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api"
+                            'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api",
+                            'DOCUMENT_MANAGER_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/document-manager"
                     ]
                 ],
                 [
@@ -127,7 +128,8 @@ app {
                             'KEYCLOAK_URL': "${vars.keycloak.url}",
                             'KEYCLOAK_IDP_HINT': "${vars.keycloak.idpHint_minespace}",
                             'SITEMINDER_URL': "${vars.keycloak.siteminder_url}",
-                            'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api"
+                            'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api",
+                            'DOCUMENT_MANAGER_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/document-manager"
 
                     ]
                 ],
@@ -150,6 +152,7 @@ app {
                             'PATH_PREFIX': "${vars.modules.'mds-nginx'.PATH}",
                             'CORE_SERVICE_URL': "${vars.modules.'mds-frontend'.HOST}",
                             'NRIS_API_SERVICE_URL': "${vars.modules.'mds-nris-backend'.HOST}",
+                            'DOCUMENT_MANAGER_SERVICE_URL': "${vars.modules.'mds-docman-backend'.HOST}",
                             'MINESPACE_SERVICE_URL': "${vars.modules.'mds-frontend-public'.HOST}",
                             'API_SERVICE_URL': "${vars.modules.'mds-python-backend'.HOST}",
                     ]
@@ -179,10 +182,39 @@ app {
                             'CACHE_REDIS_HOST': "mds-redis${vars.deployment.suffix}",
                             'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled_core}",
                             'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name}",
-                            'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api",
                             'NRIS_API_URL': "${vars.modules.'mds-nris-backend'.HOST}${vars.modules.'mds-nris-backend'.PATH}",
+                            'DOCUMENT_MANAGER_URL': "${vars.modules.'mds-docman-backend'.HOST}${vars.modules.'mds-docman-backend'.PATH}",
+                    ]
+                ],
+                [
+                    'file':'microservices/document_manager/openshift/_python36_docman.dc.json',
+                    'params':[
+                            'NAME':"mds-docman-backend",
+                            'SUFFIX': "${vars.deployment.suffix}",
+                            'VERSION':"${app.deployment.version}",
+                            'CPU_REQUEST':"${vars.resources.python_lite.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.python_lite.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.python_lite.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.python_lite.memory_limit}",
+                            'UWSGI_THREADS':"${vars.resources.python_lite.uwsgi_threads}",
+                            'UWSGI_PROCESSES':"${vars.resources.python_lite.uwsgi_processes}",
+                            'REPLICA_MIN':"${vars.resources.python_lite.replica_min}",
+                            'REPLICA_MAX':"${vars.resources.python_lite.replica_max}",
+                            'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
+                            'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId_core}",
+                            'APPLICATION_DOMAIN': "${vars.modules.'mds-python-backend'.HOST}",
+                            'BASE_PATH': "${vars.modules.'mds-docman-backend'.PATH}",
+                            'DB_HOST': "mds-postgresql${vars.deployment.suffix}",
+                            'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}",
+                            'REDIS_CONFIG_NAME': "mds-redis${vars.deployment.suffix}",
+                            'CACHE_REDIS_HOST': "mds-redis${vars.deployment.suffix}",
+                            'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled_core}",
+                            'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name_docman}",
+                            'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}",
+                            'ENVIRONMENT_NAME':"${app.deployment.env.name}",
+                            'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/document-manager",
                     ]
                 ],
                 [
@@ -209,7 +241,6 @@ app {
                             'DB_HOST': "mds-postgresql${vars.deployment.suffix}",
                             'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled_nris}",
                             'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name_nris}",
-                            'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/nris_api",
                     ]
@@ -265,7 +296,7 @@ environments {
                     replica_max = 1
                 }
                 python_lite {
-                    cpu_request = "50m"
+                    cpu_request = "10m"
                     cpu_limit = "100m"
                     memory_request = "128Mi"
                     memory_limit = "256Mi"
@@ -301,6 +332,7 @@ environments {
                 elastic_enabled_nris = 0
                 elastic_service_name = "MDS Dev"
                 elastic_service_name_nris = "NRIS API Dev"
+                elastic_service_name_docman = 'DocMan Dev'
             }
             modules {
                 'mds-frontend' {
@@ -324,6 +356,10 @@ environments {
                 'mds-nris-backend' {
                     HOST = "http://mds-nris-backend${vars.deployment.suffix}:5500"
                     PATH = "/${vars.git.changeId}/nris-api"
+                }
+                'mds-docman-backend' {
+                    HOST = "http://mds-docman-backend${vars.deployment.suffix}:5001"
+                    PATH = "/${vars.git.changeId}/document-manager"
                 }
                 'mds-redis' {
                     HOST = "http://mds-redis${vars.deployment.suffix}"

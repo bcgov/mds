@@ -13,15 +13,17 @@ from ...status.models.mine_status_xref import MineStatusXref
 from ..models.mine_type import MineType
 from ..models.mine_type_detail import MineTypeDetail
 
+from .mine_map import MineMapResource
+
 from ..models.mine import Mine
-from ..models.mineral_tenure_xref import MineralTenureXref
-from ...location.models.mine_location import MineLocation
 from ....utils.random import generate_mine_no
 from app.extensions import api, cache, db
 from ....utils.access_decorators import requires_role_mine_edit, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
-from ....utils.resources_mixins import UserMixin, ErrorMixin
+from ....utils.resources_mixins import UserMixin
 from ....constants import MINE_MAP_CACHE
+
 from app.api.mines.mine_api_models import MINE_LIST_MODEL, MINE_MODEL
+
 # FIXME: Model import from outside of its namespace
 # This breaks micro-service architecture and is done
 # for search performance until search can be refactored
@@ -142,17 +144,20 @@ class MineListResource(Resource, UserMixin):
             major_mine_ind=data.get('major_mine_ind'),
             mine_region=data.get('mine_region'),
             ohsc_ind=data.get('ohsc_ind'),
-            union_ind=data.get('union_ind'))
-
-        db.session.add(mine)
-
-        if lat and lon:
-            mine.mine_location = MineLocation(latitude=lat, longitude=lon)
-            cache.delete(MINE_MAP_CACHE)
+            union_ind=data.get('union_ind'),
+            latitude=lat,
+            longitude=lon)
 
         mine_status = _mine_status_processor(data.get('mine_status'), data.get('status_date'), mine)
-        db.session.commit()
+        mine.save()
 
+        # Clear and rebuild the cache after committing changes to db
+        if lat and lon:
+            cache.delete(MINE_MAP_CACHE)
+            MineMapResource.rebuild_map_cache_async()
+
+        # generate & set hybrid_properties to include in response payload
+        mine.init_on_load()
         return mine
 
     def apply_filter_and_search(self, args):
@@ -247,7 +252,7 @@ class MineListResource(Resource, UserMixin):
         return apply_pagination(mines_query, page, items_per_page)
 
 
-class MineResource(Resource, UserMixin, ErrorMixin):
+class MineResource(Resource, UserMixin):
     parser = reqparse.RequestParser()
     parser.add_argument(
         'mine_name',
@@ -260,13 +265,6 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         'mine_note',
         type=str,
         help='Any additional notes to be added to the mine.',
-        trim=True,
-        store_missing=False,
-        location='json')
-    parser.add_argument(
-        'tenure_number_id',
-        type=int,
-        help='Tenure number for the mine.',
         trim=True,
         store_missing=False,
         location='json')
@@ -334,12 +332,11 @@ class MineResource(Resource, UserMixin, ErrorMixin):
     @requires_role_mine_edit
     def put(self, mine_no_or_guid):
         mine = Mine.find_by_mine_no_or_guid(mine_no_or_guid)
+        refresh_cache = False
         if not mine:
             raise NotFound("Mine not found.")
 
         data = self.parser.parse_args()
-
-        tenure = data.get('tenure_number_id')
 
         lat = data.get('latitude')
         lon = data.get('longitude')
@@ -350,6 +347,7 @@ class MineResource(Resource, UserMixin, ErrorMixin):
         if 'mine_name' in data and mine.mine_name != data['mine_name']:
             _throw_error_if_mine_exists(data['mine_name'])
             mine.mine_name = data['mine_name']
+            refresh_cache = True
         if 'mine_note' in data:
             mine.mine_note = data['mine_note']
         if 'major_mine_ind' in data:
@@ -360,36 +358,19 @@ class MineResource(Resource, UserMixin, ErrorMixin):
             mine.ohsc_ind = data['ohsc_ind']
         if 'union_ind' in data:
             mine.union_ind = data['union_ind']
+        if 'latitude' in data and 'longitude' in data:
+            mine.latitude = data['latitude']
+            mine.longitude = data['longitude']
+            refresh_cache = True
         mine.save()
 
-        # Tenure validation
-        if tenure:
-            tenure_exists = MineralTenureXref.find_by_tenure(tenure)
-            if tenure_exists:
-                if tenure_exists.mine_guid == mine.mine_guid:
-                    raise BadRequest('Error: Field tenure_id already exists for this mine.')
-            tenure = MineralTenureXref(
-                mineral_tenure_xref_guid=uuid.uuid4(),
-                mine_guid=mine.mine_guid,
-                tenure_number_id=tenure)
-
-            tenure.save()
-
-        if mine.mine_location:
-            #update existing record
-            if "latitude" in data:
-                mine.mine_location.latitude = data['latitude']
-            if "longitude" in data:
-                mine.mine_location.longitude = data['longitude']
-            mine.mine_location.save()
-
-        elif data.get('latitude') and data.get('longitude') and not mine.mine_location:
-            mine.mine_location = MineLocation(
-                latitude=data['latitude'], longitude=data['longitude'])
-            mine.save()
-            cache.delete(MINE_MAP_CACHE)
-        # Status validation
         _mine_status_processor(data.get('mine_status'), data.get('status_date'), mine)
+
+        # refresh cache will need to be called for all supported fields, should more be added in the future
+        if refresh_cache:
+            cache.delete(MINE_MAP_CACHE)
+            MineMapResource.rebuild_map_cache_async()
+
         return mine
 
 
@@ -413,9 +394,9 @@ class MineListSearch(Resource):
                     'mine_guid': str(x.mine_guid),
                     'mine_name': x.mine_name,
                     'mine_no': x.mine_no,
-                    'latitude': str(x.mine_location.latitude) if x.mine_location else '',
-                    'longitude': str(x.mine_location.longitude) if x.mine_location else '',
-                    'mine_location_description': x.mine_location.mine_location_description if x.mine_location else '',
+                    'latitude': str(x.latitude) if x.latitude else '',
+                    'longitude': str(x.longitude) if x.longitude else '',
+                    'mine_location_description': x.mine_location_description if x.mine_location_description else '',
                     },
                 mines))
         return {'mines': result}

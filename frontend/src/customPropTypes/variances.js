@@ -15,11 +15,21 @@ export const variance = shape({
 });
 
 export const variancePageData = shape({
-  records: PropTypes.arrayOf(variance).isRequired,
-  current_page: PropTypes.number.isRequired,
-  items_per_page: PropTypes.number.isRequired,
-  total: PropTypes.number.isRequired,
-  total_pages: PropTypes.number.isRequired,
+  records: PropTypes.arrayOf(variance),
+  current_page: PropTypes.number,
+  items_per_page: PropTypes.number,
+  total: PropTypes.number,
+  total_pages: PropTypes.number,
+});
+
+export const varianceSearchInitialValues = shape({
+  region: PropTypes.arrayOf(PropTypes.string),
+  compliance_code: PropTypes.arrayOf(PropTypes.string),
+  major: PropTypes.string,
+  issue_date_after: PropTypes.string,
+  issue_date_before: PropTypes.string,
+  expiry_date_before: PropTypes.string,
+  expiry_date_after: PropTypes.string,
 });
 
 export default variance;

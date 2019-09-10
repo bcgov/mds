@@ -118,7 +118,8 @@ app {
                             'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId_core}",
                             'KEYCLOAK_URL': "${vars.keycloak.url}",
                             'KEYCLOAK_IDP_HINT': "${vars.keycloak.idpHint_core}",
-                            'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api"
+                            'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api",
+                            'DOCUMENT_MANAGER_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/document-manager"
                     ]
                 ],
                 [
@@ -143,7 +144,8 @@ app {
                             'KEYCLOAK_URL': "${vars.keycloak.url}",
                             'KEYCLOAK_IDP_HINT': "${vars.keycloak.idpHint_minespace}",
                             'SITEMINDER_URL': "${vars.keycloak.siteminder_url}",
-                            'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api"
+                            'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api",
+                            'DOCUMENT_MANAGER_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/document-manager"
 
                     ]
                 ],
@@ -166,6 +168,7 @@ app {
                             'PATH_PREFIX': "${vars.modules.'mds-nginx'.PATH}",
                             'CORE_SERVICE_URL': "${vars.modules.'mds-frontend'.HOST}",
                             'NRIS_API_SERVICE_URL': "${vars.modules.'mds-nris-backend'.HOST}",
+                            'DOCUMENT_MANAGER_SERVICE_URL': "${vars.modules.'mds-docman-backend'.HOST}",
                             'MINESPACE_SERVICE_URL': "${vars.modules.'mds-frontend-public'.HOST}",
                             'API_SERVICE_URL': "${vars.modules.'mds-python-backend'.HOST}",
                     ]
@@ -195,10 +198,10 @@ app {
                             'CACHE_REDIS_HOST': "mds-redis${vars.deployment.suffix}",
                             'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled_core}",
                             'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name}",
-                            'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api",
                             'NRIS_API_URL': "${vars.modules.'mds-nris-backend'.HOST}${vars.modules.'mds-nris-backend'.PATH}",
+                            'DOCUMENT_MANAGER_URL': "${vars.modules.'mds-docman-backend'.HOST}${vars.modules.'mds-docman-backend'.PATH}",
                     ]
                 ],
                 [
@@ -225,9 +228,37 @@ app {
                             'DB_HOST': "mds-postgresql${vars.deployment.suffix}",
                             'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled_nris}",
                             'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name_nris}",
-                            'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/nris_api",
+                    ]
+                ],
+                [
+                    'file':'microservices/document_manager/openshift/_python36_docman.dc.json',
+                    'params':[
+                            'NAME':"mds-docman-backend",
+                            'SUFFIX': "${vars.deployment.suffix}",
+                            'VERSION':"${app.deployment.version}",
+                            'CPU_REQUEST':"${vars.resources.python_lite.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.python_lite.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.python_lite.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.python_lite.memory_limit}",
+                            'UWSGI_THREADS':"${vars.resources.python_lite.uwsgi_threads}",
+                            'UWSGI_PROCESSES':"${vars.resources.python_lite.uwsgi_processes}",
+                            'REPLICA_MIN':"${vars.resources.python_lite.replica_min}",
+                            'REPLICA_MAX':"${vars.resources.python_lite.replica_max}",
+                            'JWT_OIDC_WELL_KNOWN_CONFIG': "${vars.keycloak.known_config_url}",
+                            'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId_core}",
+                            'APPLICATION_DOMAIN': "${vars.modules.'mds-python-backend'.HOST}",
+                            'BASE_PATH': "${vars.modules.'mds-docman-backend'.PATH}",
+                            'DB_HOST': "mds-postgresql${vars.deployment.suffix}",
+                            'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}",
+                            'REDIS_CONFIG_NAME': "mds-redis${vars.deployment.suffix}",
+                            'CACHE_REDIS_HOST': "mds-redis${vars.deployment.suffix}",
+                            'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled_core}",
+                            'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name_docman}",
+                            'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}",
+                            'ENVIRONMENT_NAME':"${app.deployment.env.name}",
+                            'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/document-manager",
                     ]
                 ],
                 [
@@ -274,6 +305,23 @@ app {
                             'MEMORY_REQUEST':"${vars.resources.logstash.memory_request}",
                             'MEMORY_LIMIT':"${vars.resources.logstash.memory_limit}"
                     ]
+                ],
+                [
+                    'file':'tools/openshift/digdag.dc.json',
+                    'params':[
+                            'NAME':"digdag",
+                            'VERSION':"${app.deployment.version}",
+                            'NAMESPACE':"${vars.deployment.namespace}",
+                            'SUFFIX': "${vars.deployment.suffix}",
+                            'SCHEDULER_PVC_SIZE':"${vars.SCHEDULER_PVC_SIZE}",
+                            'ENVIRONMENT_NAME':"${app.deployment.env.name}",
+                            'KEYCLOAK_DISCOVERY_URL':"${vars.keycloak.known_config_url}",
+                            'APPLICATION_DOMAIN': "${vars.modules.'digdag'.HOST}",
+                            'CPU_REQUEST':"${vars.resources.digdag.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.digdag.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.digdag.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.digdag.memory_limit}"
+                    ]
                 ]
         ]
     }
@@ -287,57 +335,58 @@ environments {
             BACKUP_VERIFICATION_PVC_SIZE = '10Gi'
             LOG_PVC_SIZE = '5Gi'
             METABASE_PVC_SIZE = '20Gi'
+            SCHEDULER_PVC_SIZE = '20Gi'
             git {
                 changeId = "${opt.'pr'}"
             }
             resources {
                 node {
-                    cpu_request = "100m"
-                    cpu_limit = "150m"
-                    memory_request = "512Mi"
-                    memory_limit = "1Gi"
+                    cpu_request = "20m"
+                    cpu_limit = "100m"
+                    memory_request = "160Mi"
+                    memory_limit = "256Mi"
                     replica_min = 2
                     replica_max = 4
                 }
                 nginx {
-                    cpu_request = "100m"
-                    cpu_limit = "150m"
-                    memory_request = "256Mi"
-                    memory_limit = "512Mi"
-                    replica_min = 2
-                    replica_max = 4
+                    cpu_request = "10m"
+                    cpu_limit = "50m"
+                    memory_request = "96Mi"
+                    memory_limit = "160Mi"
+                    replica_min = 3
+                    replica_max = 6
                 }
                 python {
-                    cpu_request = "200m"
-                    cpu_limit = "400m"
-                    memory_request = "1.5Gi"
-                    memory_limit = "3Gi"
+                    cpu_request = "100m"
+                    cpu_limit = "200m"
+                    memory_request = "512Mi"
+                    memory_limit = "2Gi"
                     uwsgi_threads = 2
                     uwsgi_processes = 4
                     replica_min = 2
                     replica_max = 4
                 }
                 python_lite {
-                    cpu_request = "100m"
+                    cpu_request = "10m"
                     cpu_limit = "200m"
                     memory_request = "512Mi"
                     memory_limit = "1Gi"
                     uwsgi_threads = 2
                     uwsgi_processes = 4
-                    replica_min = 1
-                    replica_max = 1
+                    replica_min = 2
+                    replica_max = 4
                 }
                 postgres {
                     cpu_request = "200m"
-                    cpu_limit = "500m"
-                    memory_request = "2.5Gi"
+                    cpu_limit = "1"
+                    memory_request = "1.5Gi"
                     memory_limit = "4Gi"
                 }
                 redis {
-                    cpu_request = "100m"
-                    cpu_limit = "200m"
-                    memory_request = "1Gi"
-                    memory_limit = "2Gi"
+                    cpu_request = "10m"
+                    cpu_limit = "100m"
+                    memory_request = "64Mi"
+                    memory_limit = "512Mi"
                 }
                 backup {
                     cpu_request = "0"
@@ -346,20 +395,26 @@ environments {
                     memory_limit = "0"
                 }
                 metabase {
-                    cpu_request = "100m"
-                    cpu_limit = "250m"
+                    cpu_request = "50m"
+                    cpu_limit = "200m"
                     memory_request = "1Gi"
                     memory_limit = "2Gi"
-                    db_cpu_request = "100m"
+                    db_cpu_request = "20m"
                     db_cpu_limit = "200m"
-                    db_memory_request = "1Gi"
-                    db_memory_limit = "2Gi"
+                    db_memory_request = "256Mi"
+                    db_memory_limit = "1Gi"
                 }
                 logstash {
                     cpu_request = "50m"
                     cpu_limit = "400m"
                     memory_request = "1Gi"
                     memory_limit = "2Gi"
+                }
+                digdag {
+                    cpu_request = "150m"
+                    cpu_limit = "300m"
+                    memory_request = "512Mi"
+                    memory_limit = "1Gi"
                 }
             }
             keycloak {
@@ -386,6 +441,7 @@ environments {
                 elastic_enabled_nris = 1
                 elastic_service_name = "MDS Prod"
                 elastic_service_name_nris = "NRIS API Prod"
+                elastic_service_name_docman = 'DocMan Prod'
             }
             modules {
                 'mds-frontend' {
@@ -410,6 +466,10 @@ environments {
                     HOST = "http://mds-nris-backend${vars.deployment.suffix}:5500"
                     PATH = "/nris-api"
                 }
+                'mds-docman-backend' {
+                    HOST = "http://mds-docman-backend${vars.deployment.suffix}:5001"
+                    PATH = "/document-manager"
+                }
                 'mds-redis' {
                     HOST = "http://mds-redis${vars.deployment.suffix}"
                 }
@@ -418,6 +478,9 @@ environments {
                 }
                 'metabase' {
                     HOST = "mds-metabase-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                }
+                'digdag' {
+                    HOST = "mds-digdag-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                 }
             }
         }

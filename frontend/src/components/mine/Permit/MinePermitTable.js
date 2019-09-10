@@ -1,18 +1,18 @@
 import React from "react";
 import { Table, Menu, Dropdown, Button, Icon, Tooltip } from "antd";
 import moment from "moment";
+import { orderBy } from "lodash";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import NullScreen from "@/components/common/NullScreen";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Strings from "@/constants/strings";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import { formatDate } from "@/utils/helpers";
-import { orderBy } from "lodash";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
 import { getPartyRelationships } from "@/selectors/partiesSelectors";
 import { getDropdownPermitStatusOptions } from "@/selectors/staticContentSelectors";
-import { BRAND_PENCIL, EDIT, EDIT_OUTLINE, CARAT } from "@/constants/assets";
+import { EDIT_OUTLINE, EDIT_OUTLINE_VIOLET, EDIT, CARAT } from "@/constants/assets";
 import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
 import LinkButton from "@/components/common/LinkButton";
 
@@ -151,7 +151,7 @@ const columns = [
               <img
                 alt="document"
                 className="padding-small"
-                src={BRAND_PENCIL}
+                src={EDIT_OUTLINE_VIOLET}
                 style={{ paddingRight: "15px" }}
               />
               Edit permit status

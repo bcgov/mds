@@ -1,0 +1,38 @@
+timezone: America/Vancouver
+
+schedule:
+  daily>: 19:30:00   # daily at 7:30 PM PDT/PST
+
+_export:
+  job_name: IDIR ETL
+
++setup:
+  echo>: Starting ${job_name} ${session_time}
+
++notify_start:
+  py>: tasks.rocket_chat_webhook.send
+  job_name: ${job_name}
+  status: RUNNING
+
++login:
+  sh>: oc login https://console.pathfinder.gov.bc.ca:8443 --token=$OC_TOKEN
+
++run_etl_job:
+  _retry:
+    limit: 3
+    interval: 20
+    interval_type: exponential
+  py>: tasks.idir_users_import.run_job
+
++teardown:
+  echo>: finish ${session_time}
+
++notify_end:
+  py>: tasks.rocket_chat_webhook.send
+  job_name: ${job_name}
+  status: SUCCESS
+
+_error:
+  py>: tasks.rocket_chat_webhook.send
+  job_name: ${job_name}
+  status: FAIL

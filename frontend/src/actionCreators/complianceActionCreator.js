@@ -14,7 +14,8 @@ export const fetchMineComplianceInfo = (mineNo, silent = false) => (dispatch) =>
   dispatch(request(reducerTypes.GET_MINE_COMPLIANCE_INFO));
   dispatch(complianceActions.storeMineComplianceInfo({}));
 
-  return CustomAxios(silent ? "" : undefined)
+  const errorToastMessage = silent ? "" : undefined;
+  return CustomAxios({ errorToastMessage })
     .get(`${ENVIRONMENT.apiUrl}${API.MINE_COMPLIANCE_SUMMARY(mineNo)}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_COMPLIANCE_INFO));
