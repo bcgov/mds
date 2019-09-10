@@ -127,17 +127,21 @@ export class AddPartyRelationshipForm extends Component {
         </Row>
         {options}
 
-        <h4>Supporting Document - Notification</h4>
-        <Form.Item>
-          <Field
-            id="PartyRelationshipFileUpload"
-            name="PartyRelationshipFileUpload"
-            onFileLoad={this.onFileLoad}
-            onRemoveFile={this.onRemoveFile}
-            mineGuid={this.props.mine.mine_guid}
-            component={PartyRelationshipFileUpload}
-          />
-        </Form.Item>
+        {this.props.partyRelationshipType.mine_party_appt_type_code === "MMG" && (
+          <div>
+            <h4>Mine Manager Appointment Letter</h4>
+            <Form.Item>
+              <Field
+                id="PartyRelationshipFileUpload"
+                name="PartyRelationshipFileUpload"
+                onFileLoad={this.onFileLoad}
+                onRemoveFile={this.onRemoveFile}
+                mineGuid={this.props.mine.mine_guid}
+                component={PartyRelationshipFileUpload}
+              />
+            </Form.Item>
+          </div>
+        )}
 
         <div className="right center-mobile">
           <Popconfirm
