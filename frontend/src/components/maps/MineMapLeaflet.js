@@ -20,7 +20,7 @@ class MineMapLeaflet extends Component {
       <Map
         center={[this.state.lat, this.state.lng]}
         zoom={this.state.zoom}
-        styles={{ width: "100%", height: "600px" }}
+        style={{ width: "100%", height: "600px" }}
       >
         <TileLayer
           attribution="Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community"
