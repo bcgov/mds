@@ -27,14 +27,18 @@ INSPECTED_LOCATION_RESPONSE_MODEL = api.model(
 
 class InspectedLocation(Base):
     __tablename__ = "inspected_location"
+    __table_args__ = {
+        'comment': 'Contains the high-level details of an observation(s) found during an inspection. Note, one observation is either a ""Stop"" or ""General"", each observation can result in one or more ""types of observations"", i.e. documents being issued (order, warning, advisory, request).'}
     inspected_location_id = db.Column(db.Integer, primary_key=True)
-    inspection_id = db.Column(db.Integer, db.ForeignKey('inspection.inspection_id'))
+    inspection_id = db.Column(
+        db.Integer, db.ForeignKey('inspection.inspection_id'))
     location_id = db.Column(db.Integer, db.ForeignKey('location.location_id'))
     location = db.relationship("Location", lazy='joined')
 
     inspected_location_type_id = db.Column(
         db.Integer, db.ForeignKey('inspected_location_type.inspected_location_type_id'))
-    inspected_location_type_rel = db.relationship('InspectedLocationType', lazy='selectin')
+    inspected_location_type_rel = db.relationship(
+        'InspectedLocationType', lazy='selectin')
     inspected_location_type = association_proxy('inspected_location_type_rel',
                                                 'inspected_location_type')
     documents = db.relationship('Document',
