@@ -78,8 +78,6 @@ exports[`AddPartyRelationshipForm renders properly 1`] = `
         component={[Function]}
         id="PartyRelationshipFileUpload"
         name="PartyRelationshipFileUpload"
-        onFileLoad={[Function]}
-        onRemoveFile={[Function]}
       />
     </FormItem>
   </div>

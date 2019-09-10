@@ -7,11 +7,11 @@ from app.extensions import api
 
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
-from app.api.utils.access_decorators import (requires_any_of, EDIT_VARIANCE, MINESPACE_PROPONENT)
+from app.api.utils.access_decorators import (requires_any_of, EDIT_PARTY, MINESPACE_PROPONENT)
 
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.documents.mines.models.mine_document import MineDocument
-from app.api.parties.response_models import PARTY
+from app.api.parties.response_models import MINE_PARTY_APPT
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.parties.party_appt.models.mine_party_appt_document_xref import MinePartyApptDocumentXref
 
@@ -20,7 +20,7 @@ from app.api.services.document_manager_service import DocumentManagerService
 
 class MinePartyApptDocumentUploadResource(Resource, UserMixin):
     @api.doc(description='Request a document_manager_guid for uploading a document')
-    @requires_any_of([MINESPACE_PROPONENT])
+    @requires_any_of([EDIT_PARTY, MINESPACE_PROPONENT])
     def post(self, mine_guid, mine_party_appt_guid):
         mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:
@@ -35,8 +35,8 @@ class MinePartyApptDocumentUploadResource(Resource, UserMixin):
                  'mine_guid': 'guid for the mine with which the party_appt is associated',
                  'mine_party_appt_guid': 'GUID for the mine_party_appt to which the document should be associated'
              })
-    @api.marshal_with(VARIANCE_MODEL, code=200)
-    @requires_any_of([MINESPACE_PROPONENT])
+    @api.marshal_with(MINE_PARTY_APPT, code=200)
+    @requires_any_of([EDIT_PARTY, MINESPACE_PROPONENT])
     def put(self, mine_guid, mine_party_appt_guid):
         parser = CustomReqparser()
         # Arguments required by MineDocument
@@ -60,12 +60,7 @@ class MinePartyApptDocumentUploadResource(Resource, UserMixin):
         if not mine_doc:
             raise BadRequest('Unable to register uploaded file as document')
 
-        # Associate MinePartyAppointment & MineDocument to create MinePartyAppointment Document
         mine_doc.save()
-        mine_party_appt_doc = MinePartyApptDocumentXref(
-            mine_document_guid=mine_doc.mine_document_guid,
-            mine_party_appt_id=mine_party_appt.mine_party_appt_id)
-
-        mine_party_appt.documents.append(mine_party_appt_doc)
+        mine_party_appt.documents.append(mine_doc)
         mine_party_appt.save()
         return mine_party_appt

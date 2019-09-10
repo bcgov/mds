@@ -17,10 +17,5 @@ class MinePartyApptDocumentXref(Base):
                             db.ForeignKey('mine_party_appt.mine_party_appt_id'),
                             server_default=FetchedValue())
 
-    mine_document = db.relationship('MineDocument', lazy='joined')
-
-    document_manager_guid = association_proxy('mine_document', 'document_manager_guid')
-    document_name = association_proxy('mine_document', 'document_name')
-
     def __repr__(self):
         return '<MinePartyApptDocumentXref %r>' % self.mine_party_appt_document_xref_guid

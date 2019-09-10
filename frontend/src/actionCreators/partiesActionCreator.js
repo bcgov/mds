@@ -218,7 +218,7 @@ export const addDocumentToRelationship = ({ mineGuid, minePartyApptGuid }, paylo
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const removeDocumentFromVariance = (mineGuid, minePartyApptGuid, mineDocumentGuid) => (
+export const removeDocumentFromRelationship = (mineGuid, minePartyApptGuid, mineDocumentGuid) => (
   dispatch
 ) => {
   dispatch(showLoading("modal"));
