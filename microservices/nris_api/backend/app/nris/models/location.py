@@ -20,6 +20,8 @@ LOCATION_RESPONSE_MODEL = api.model(
 
 class Location(Base):
     __tablename__ = "location"
+    __table_args__ = {
+        'comment': 'Contains the location details of stops added for General Observations and Areas Inspected. Location may include a general mine location or specific location details of where the infraction took place (i.e. tailings dam)'}
     location_id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(1024))
     notes = db.Column(db.String())
