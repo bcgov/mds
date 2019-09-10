@@ -7,6 +7,8 @@ from app.nris.utils.base_model import Base
 
 class LegislationAct(Base):
     __tablename__ = "legislation_act"
+    __table_args__ = {
+        'comment': 'Lookup table that contains a list of legislated Acts; i.e. "Mines Act", "Health, Safety and Reclamation Code for Mines in BC", "Mineral Tenure Act".'}
     legislation_act_id = db.Column(db.Integer, primary_key=True)
     act = db.Column(db.String(256))
     sections = db.relationship("LegislationActSection")
