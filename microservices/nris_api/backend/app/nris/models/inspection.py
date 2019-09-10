@@ -17,6 +17,8 @@ INSPECTION_RESPONSE_MODEL = api.model(
         'inspection_status_code': fields.String,
         'inspection_type_code': fields.String,
         'inspection_report_sent_date': fields.DateTime,
+        'inspection_from_date': fields.DateTime,
+        'inspection_to_date': fields.DateTime,
         'business_area': fields.String,
         'mine_no': fields.String,
         'inspector_idir': fields.String,
@@ -43,6 +45,9 @@ class Inspection(Base):
     inspection_type_id = db.Column(db.Integer, db.ForeignKey('inspection_type.inspection_type_id'))
     inspection_type = db.relationship("InspectionType")
     inspection_type_code = association_proxy('inspection_type', 'inspection_type_code')
+    inspection_from_date = db.Column(db.DateTime)
+    inspection_to_date = db.Column(db.DateTime)
+
     business_area = db.Column(db.String(256))
     mine_no = db.Column(db.String(64))
     inspector_idir = db.Column(db.String(256))
