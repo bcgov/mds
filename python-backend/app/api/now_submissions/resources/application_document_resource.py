@@ -34,6 +34,7 @@ class ApplicationDocumentTokenResource(Resource, UserMixin, ErrorMixin):
         if not document:
             raise NotFound('Document not found')
 
+        #fallback if originating_system is not set in the database
         originating_system = application.originating_system
         if not originating_system:
             if "j200.gov.bc.ca" in document.documenturl:
