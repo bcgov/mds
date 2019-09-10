@@ -81,6 +81,10 @@ class Config(object):
     NROS_CLIENT_ID = os.environ.get('NROS_CLIENT_ID', None)
     NROS_TOKEN_URL = os.environ.get('NROS_TOKEN_URL', None)
 
+    # VFCBC
+    VFCBC_CLIENT_SECRET = os.environ.get('VFCBC_CLIENT_SECRET', None)
+    VFCBC_CLIENT_ID = os.environ.get('VFCBC_CLIENT_ID', None)
+
 
 class TestConfig(Config):
     # The following configs are for testing purposes and all variables and keys are generated using dummy data.

@@ -280,6 +280,7 @@ MINE_OPERATION_STATUS_SUB_REASON = {
 NRIS_MAJOR_MINE_LIST = "major_mine_list"
 NRIS_TOKEN = "nris:token"
 NROS_TOKEN = "nros:token"
+VFCBC_COOKIES = "vdcbc_cookies"
 def NRIS_COMPLIANCE_DATA(mine_no): return f'mine:{mine_no}:api-compliance-data'
 def DOWNLOAD_TOKEN(token_guid): return f'document-manager:download-token:{token_guid}'
 
