@@ -103,7 +103,12 @@ export const validateIncidentDate = memoize((reportedDate) => (value) =>
 // existingAppointments : PropTypes.arrayOf(CustomPropTypes.partyRelationship)
 // newAppt : {start_date : String, end_date : String, party_guid : String}
 // apptType : CustomPropTypes.partyRelationshipType
-export const validateDateRanges = (existingAppointments, newAppt, apptType) => {
+export const validateDateRanges = (
+  existingAppointments,
+  newAppt,
+  apptType,
+  isCurrentAppointment
+) => {
   const errorMessages = {};
   const toDate = (dateString) => (dateString ? moment(dateString, "YYYY-MM-DD").toDate() : null);
   const MAX_DATE = new Date(8640000000000000);
@@ -123,12 +128,18 @@ export const validateDateRanges = (existingAppointments, newAppt, apptType) => {
   const newDateAppt = Object.assign({}, newAppt);
   newDateAppt.start_date = newDateAppt.start_date ? toDate(newDateAppt.start_date) : MIN_DATE;
   newDateAppt.end_date = newDateAppt.end_date ? toDate(newDateAppt.end_date) : MAX_DATE;
+  let conflictingAppointments;
 
-  // If (NewApptEnd >= ApptStart) and (NewApptStart <= ApptEnd) ; “Overlap”)
-  const conflictingAppointments = dateAppointments.filter(
-    (appt) => newDateAppt.end_date >= appt.start_date && newDateAppt.start_date <= appt.end_date
-  );
-
+  if (isCurrentAppointment) {
+    conflictingAppointments = dateAppointments.filter(
+      (appt) => newDateAppt.start_date <= appt.start_date
+    );
+  } else {
+    // If (NewApptEnd >= ApptStart) and (NewApptStart <= ApptEnd) ; “Overlap”)
+    conflictingAppointments = dateAppointments.filter(
+      (appt) => newDateAppt.end_date >= appt.start_date && newDateAppt.start_date <= appt.end_date
+    );
+  }
   if (conflictingAppointments.length > 0) {
     const conflictMsg = `Assignment conflicts with existing ${apptType}s: ${conflictingAppointments
       .map((appt) => appt.party.name)
