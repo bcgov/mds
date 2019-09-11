@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { Row, Col, Menu, Popconfirm, Divider, Dropdown } from "antd";
 import moment from "moment";
-import { uniq, uniqBy, fromPairs } from "lodash";
+import { uniq, uniqBy } from "lodash";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
 import { modalConfig } from "@/components/modalContent/config";
@@ -83,7 +83,6 @@ export class ViewPartyRelationships extends Component {
   };
 
   onSubmitAddPartyRelationship = (values) => {
-    const files = fromPairs(this.state.uploadedFiles);
     const payload = {
       mine_guid: this.props.mine.mine_guid,
       party_guid: values.party_guid,
@@ -97,7 +96,7 @@ export class ViewPartyRelationships extends Component {
       .addPartyRelationship(payload)
       .then(async ({ data: { mine_party_appt_guid } }) => {
         await Promise.all(
-          Object.entries(files).map(([document_manager_guid, document_name]) =>
+          this.state.uploadedFiles.map(([document_manager_guid, document_name]) =>
             this.props.addDocumentToRelationship(
               { mineGuid: this.props.mine.mine_guid, minePartyApptGuid: mine_party_appt_guid },
               {
