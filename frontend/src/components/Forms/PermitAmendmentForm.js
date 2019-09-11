@@ -84,7 +84,7 @@ export class PermitAmendmentForm extends Component {
     this.props.change("uploadedFiles", this.state.uploadedFiles);
   };
 
-  onRemoveFile = (fileItem) => {
+  onRemoveFile = (err, fileItem) => {
     remove(this.state.uploadedFiles, { document_manager_guid: fileItem.serverId });
     this.props.change("uploadedFiles", this.state.uploadedFiles);
   };
