@@ -3,7 +3,7 @@ import json
 import uuid
 
 from tests.status_code_gen import RandomIncidentDocumentType
-from tests.factories import (MineIncidentFactory, MineFactory, MineDocumentFactory,
+from tests.factories import ( MineIncidentFactory, MineFactory, MineDocumentFactory,
                              VarianceDocumentFactory)
 
 
