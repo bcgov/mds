@@ -21,6 +21,6 @@ from ...mine_api_models import MINE_REPORT_DEFINITION_MODEL
 class MineReportDefinitionListResource(Resource, UserMixin):
     @api.marshal_with(MINE_REPORT_DEFINITION_MODEL, envelope='records', code=200, as_list=True)
     @api.doc(description='returns the report definitions for possible reports.')
-    @requires_role_view_all
+    @requires_any_of([EDIT_REPORT, MINESPACE_PROPONENT])
     def get(self):
         return MineReportDefinition.active()
