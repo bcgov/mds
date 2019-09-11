@@ -173,7 +173,7 @@ exports[`ViewIncidentModal renders properly 1`] = `
         <p
           className="field-title"
         >
-          Inspectors determination
+          Inspector's determination
         </p>
         <p>
           This was a dangerous occurrence
@@ -201,7 +201,31 @@ exports[`ViewIncidentModal renders properly 1`] = `
         <p
           className="field-title"
         >
-          Who made the determination?
+          Inspector who made the determination
+        </p>
+        <p>
+          N/A
+        </p>
+      </div>
+      <div
+        className="inline-flex padding-small"
+      >
+        <p
+          className="field-title"
+        >
+          Mine's determination
+        </p>
+        <p>
+          N/A
+        </p>
+      </div>
+      <div
+        className="inline-flex padding-small"
+      >
+        <p
+          className="field-title"
+        >
+          Mine representative who made determination
         </p>
         <p>
           N/A
@@ -333,7 +357,7 @@ exports[`ViewIncidentModal renders properly 1`] = `
   </div>
   <div>
     <h5>
-      Final Investigation Report Documents
+      Final Investigation Report
     </h5>
     <Table
       align="left"

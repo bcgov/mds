@@ -54,6 +54,8 @@ class MineIncidentListResource(Resource, UserMixin):
     parser.add_argument('determination_type_code', type=str, location='json')
     parser.add_argument('followup_investigation_type_code', type=str, location='json')
     parser.add_argument('followup_inspection', type=inputs.boolean, location='json')
+    parser.add_argument('mine_determination_type_code', type=str, location='json')
+    parser.add_argument('mine_determination_representative', type=str, location='json')
     parser.add_argument(
         'followup_inspection_date',
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
@@ -97,6 +99,8 @@ class MineIncidentListResource(Resource, UserMixin):
             data['incident_timestamp'],
             data['incident_description'],
             determination_type_code=data['determination_type_code'],
+            mine_determination_type_code=data['mine_determination_type_code'],
+            mine_determination_representative=data['mine_determination_representative'],
             followup_investigation_type_code=data['followup_investigation_type_code'],
             reported_timestamp=data['reported_timestamp'],
             reported_by_name=data['reported_by_name'],
@@ -220,6 +224,8 @@ class MineIncidentResource(Resource, UserMixin):
         'dangerous_occurrence_subparagraph_ids', type=list, location='json', store_missing=False)
     parser.add_argument('updated_documents', type=list, location='json', store_missing=False)
     parser.add_argument('recommendations', type=list, location='json', store_missing=False)
+    parser.add_argument('mine_determination_type_code', type=str, location='json', store_missing=False)
+    parser.add_argument('mine_determination_representative', type=str, location='json', store_missing=False)
 
     @api.marshal_with(MINE_INCIDENT_MODEL, code=200)
     @requires_role_view_all

@@ -38,6 +38,7 @@ exports[`MineRecordForm renders properly 1`] = `
         hasFeedback={false}
       >
         <Field
+          changeOnSelect={true}
           component={[Function]}
           id="mine_status"
           label="Mine Status *"

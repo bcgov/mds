@@ -42,6 +42,7 @@ STOP_DETAILS_RESPONSE_MODEL = api.model(
 
 class OrderStopDetail(Base):
     __tablename__ = "order_stop_detail"
+    __table_args__ = {'comment': 'For each inspection observation, this table contains details of an order issued by an inspector. An order is a written, legal instrument issued by an inspector to address non-compliance with a Regulatory Requirement and/or to reduce and manage risk. This is the most common C&E tool that will be used by inspectors in all disciplines.'}
     order_stop_detail_id = db.Column(db.Integer, primary_key=True)
     inspected_location_id = db.Column(db.Integer,
                                       db.ForeignKey('inspected_location.inspected_location_id'))
@@ -53,8 +54,10 @@ class OrderStopDetail(Base):
     response = db.Column(db.String())
     response_received = db.Column(db.DateTime)
     completion_date = db.Column(db.DateTime)
-    noncompliance_legislations = db.relationship("NonComplianceLegislation", lazy='joined')
-    noncompliance_permits = db.relationship("NonCompliancePermit", lazy='joined')
+    noncompliance_legislations = db.relationship(
+        "NonComplianceLegislation", lazy='joined')
+    noncompliance_permits = db.relationship(
+        "NonCompliancePermit", lazy='joined')
     authority_act = db.Column(db.String(64))
     authority_act_section = db.Column(db.String(64))
     documents = db.relationship('Document',

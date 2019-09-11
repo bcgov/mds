@@ -129,40 +129,7 @@ export const createTailingsStorageFacility = (mine_guid, payload) => (dispatch) 
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const createMineExpectedDocument = (id, payload) => (dispatch) => {
-  dispatch(request(reducerTypes.ADD_MINE_EXPECTED_DOCUMENT));
-  dispatch(showLoading());
-  return CustomAxios({ errorToastMessage: String.ERROR })
-    .post(
-      `${ENVIRONMENT.apiUrl + API.ADD_MINE_EXPECTED_DOCUMENT}/${id}`,
-      { documents: [payload] },
-      createRequestHeader()
-    )
-    .then((response) => {
-      notification.success({ message: "Successfully added the report", duration: 10 });
-      dispatch(success(reducerTypes.ADD_MINE_EXPECTED_DOCUMENT));
-      return response;
-    })
-    .catch(() => dispatch(error(reducerTypes.ADD_MINE_EXPECTED_DOCUMENT)))
-    .finally(() => dispatch(hideLoading()));
-};
 
-export const removeExpectedDocument = (exp_doc_guid) => (dispatch) => {
-  dispatch(request(reducerTypes.REMOVE_EXPECTED_DOCUMENT));
-  dispatch(showLoading());
-  return CustomAxios({ errorToastMessage: String.ERROR })
-    .delete(
-      `${ENVIRONMENT.apiUrl + API.REMOVE_EXPECTED_DOCUMENT}/${exp_doc_guid}`,
-      createRequestHeader()
-    )
-    .then((response) => {
-      notification.success({ message: "Successfully removed the report", duration: 10 });
-      dispatch(success(reducerTypes.REMOVE_EXPECTED_DOCUMENT));
-      return response;
-    })
-    .catch(() => dispatch(error(reducerTypes.REMOVE_EXPECTED_DOCUMENT)))
-    .finally(() => dispatch(hideLoading()));
-};
 
 export const fetchMineRecords = (params) => (dispatch) => {
   const defaultParams = params || String.DEFAULT_DASHBOARD_PARAMS;
@@ -220,22 +187,6 @@ export const fetchMineNameList = (params = {}) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const updateExpectedDocument = (id, payload) => (dispatch) => {
-  dispatch(request(reducerTypes.UPDATE_EXPECTED_DOCUMENT));
-  dispatch(showLoading("modal"));
-  return CustomAxios()
-    .put(`${ENVIRONMENT.apiUrl + API.EXPECTED_DOCUMENT}/${id}`, payload, createRequestHeader())
-    .then((response) => {
-      notification.success({
-        message: "Successfully updated expected document",
-        duration: 10,
-      });
-      dispatch(success(reducerTypes.UPDATE_EXPECTED_DOCUMENT));
-      return response;
-    })
-    .catch(() => dispatch(error(reducerTypes.UPDATE_EXPECTED_DOCUMENT)))
-    .finally(() => dispatch(hideLoading("modal")));
-};
 
 export const fetchMineBasicInfoList = (mine_guids) => (dispatch) => {
   dispatch(showLoading());
@@ -250,45 +201,6 @@ export const fetchMineBasicInfoList = (mine_guids) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-export const removeMineDocumentFromExpectedDocument = (mineDocumentGuid, expectedDocumentGuid) => (
-  dispatch
-) => {
-  dispatch(request(reducerTypes.REMOVE_MINE_EXPECTED_DOCUMENT));
-  dispatch(showLoading());
-  return CustomAxios()
-    .delete(
-      ENVIRONMENT.apiUrl +
-        API.REMOVE_MINE_EXPECTED_DOCUMENT(expectedDocumentGuid, mineDocumentGuid),
-      createRequestHeader()
-    )
-    .then((response) => {
-      notification.success({
-        message: "Successfully removed the document from the report.",
-        duration: 10,
-      });
-      dispatch(success(reducerTypes.REMOVE_MINE_EXPECTED_DOCUMENT));
-      return response;
-    })
-    .catch(() => dispatch(error(reducerTypes.REMOVE_MINE_EXPECTED_DOCUMENT)))
-    .finally(() => dispatch(hideLoading()));
-};
-
-export const addDocumentToExpectedDocument = (expectedDocumentGuid, payload) => (dispatch) => {
-  dispatch(showLoading());
-  dispatch(request(reducerTypes.ADD_DOCUMENT_TO_EXPECTED_DOCUMENT));
-  return CustomAxios()
-    .put(
-      ENVIRONMENT.apiUrl + API.UPLOAD_MINE_EXPECTED_DOCUMENT_FILE(expectedDocumentGuid),
-      payload,
-      createRequestHeader()
-    )
-    .then((response) => {
-      dispatch(success(reducerTypes.ADD_DOCUMENT_TO_EXPECTED_DOCUMENT));
-      return response;
-    })
-    .catch(() => dispatch(error(reducerTypes.ADD_DOCUMENT_TO_EXPECTED_DOCUMENT)))
-    .finally(() => dispatch(hideLoading()));
-};
 
 export const fetchMineDocuments = (mineGuid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_DOCUMENTS));

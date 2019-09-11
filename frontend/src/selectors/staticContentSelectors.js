@@ -10,8 +10,6 @@ export const {
   getMineCommodityOptions,
   getMineDisturbanceOptions,
   getMineReportDefinitionOptions,
-  getExpectedDocumentStatusOptions,
-  getMineTSFRequiredReports,
   getProvinceOptions,
   getPermitStatusOptions,
   getApplicationStatusOptions,

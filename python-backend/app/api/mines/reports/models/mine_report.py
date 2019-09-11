@@ -48,12 +48,13 @@ class MineReport(Base, AuditMixin):
                submission_year,
                permit_id=None,
                add_to_session=True):
-        mine_report = cls(mine_report_definition_id=mine_report_definition_id,
-                          mine_guid=mine_guid,
-                          due_date=due_date,
-                          received_date=received_date,
-                          submission_year=submission_year,
-                          permit_id=permit_id)
+        mine_report = cls(
+            mine_report_definition_id=mine_report_definition_id,
+            mine_guid=mine_guid,
+            due_date=due_date,
+            received_date=received_date,
+            submission_year=submission_year,
+            permit_id=permit_id)
         if add_to_session:
             mine_report.save(commit=False)
         return mine_report

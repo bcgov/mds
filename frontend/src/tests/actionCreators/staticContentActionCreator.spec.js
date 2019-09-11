@@ -5,7 +5,6 @@ import {
   fetchRegionOptions,
   fetchMineTenureTypes,
   fetchMineDisturbanceOptions,
-  fetchMineTailingsRequiredDocuments,
   fetchMineCommodityOptions,
   fetchProvinceCodes,
   fetchApplicationStatusOptions,
@@ -142,26 +141,6 @@ describe("`fetchMineCommodityOptions` action creator", () => {
   });
 });
 
-describe("`fetchMineTailingsRequiredDocuments` action creator", () => {
-  const url = ENVIRONMENT.apiUrl + API.MINE_TSF_REQUIRED_DOCUMENTS;
-  it("Request successful, dispatches `success` with correct response", () => {
-    const mockResponse = { data: { success: true } };
-    mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchMineTailingsRequiredDocuments()(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(3);
-    });
-  });
-  it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
-    return fetchMineTailingsRequiredDocuments()(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(2);
-    });
-  });
-});
 
 describe("`fetchProvinceCodes` action creator", () => {
   const url = ENVIRONMENT.apiUrl + API.PROVINCE_CODES;
