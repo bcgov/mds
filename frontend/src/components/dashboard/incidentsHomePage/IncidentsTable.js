@@ -36,6 +36,8 @@ const defaultProps = {
   sortDir: null,
 };
 export const IncidentsTable = (props) => {
+  console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+  console.log(props);
   return (
     <div className="tab__content">
       <MineIncidentTable

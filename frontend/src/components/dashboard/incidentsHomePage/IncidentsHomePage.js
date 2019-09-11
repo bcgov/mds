@@ -232,6 +232,15 @@ export class IncidentsHomePage extends Component {
       content: modalConfig.VIEW_MINE_INCIDENT,
     });
   };
+  //TODO UPDATE THIS TO USE THE PROPER MINE INCIDENT NUMBER
+  handleEditMineIncident = (values) => {
+    this.props
+      .updateMineIncident(this.props.mineGuid, values.mine_incident_guid, values)
+      .then(() => {
+        this.props.closeModal();
+        this.props.fetchMineIncidents(this.props.mineGuid);
+      });
+  };
 
   handleCancelMineIncident = () => {
     this.props.destroy(FORM.MINE_INCIDENT);
@@ -310,7 +319,7 @@ export class IncidentsHomePage extends Component {
               isApplication={this.state.isApplication}
               handleFilterChange={this.handleFilterChange}
               pageData={this.props.incidentPageData}
-              handlePageChange={this.handleVariancePageChange}
+              handlePageChange={this.handleIncidentPageChange}
               handleIncidentSearch={this.handleIncidentSearch}
               params={this.state.params}
               sortField={this.state.params.sort_field}

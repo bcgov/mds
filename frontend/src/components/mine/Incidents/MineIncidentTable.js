@@ -19,7 +19,20 @@ const propTypes = {
   handleEditMineIncident: PropTypes.func.isRequired,
   openMineIncidentModal: PropTypes.func.isRequired,
   openViewMineIncidentModal: PropTypes.func.isRequired,
+  isDashboardView: PropTypes.bool,
+  sortField: PropTypes.string,
+  sortDir: PropTypes.string,
 };
+
+const defaultProps = {
+  // isApplication: false,
+  isDashboardView: false,
+  // params: {},
+  sortField: null,
+  sortDir: null,
+};
+
+const hideColumn = (condition) => (condition ? "column-hide" : "");
 
 const renderDownloadLinks = (files, mine_incident_document_type_code) =>
   files
@@ -79,6 +92,7 @@ const columns = (props) => [
   {
     title: "Initial Report Documents",
     dataIndex: "initialDocuments",
+    className: hideColumn(props.isDashboardView),
     width: 200,
     render: (text, record) => (
       <div title="Initial Report Documents">
@@ -93,6 +107,7 @@ const columns = (props) => [
   {
     title: "Final Report Documents",
     dataIndex: "finalDocuments",
+    className: hideColumn(props.isDashboardView),
     width: 200,
     render: (text, record) => (
       <div title="Final Report Documents">
@@ -185,5 +200,6 @@ export const MineIncidentTable = (props) => (
 );
 
 MineIncidentTable.propTypes = propTypes;
+MineIncidentTable.defaultProps = defaultProps;
 
 export default MineIncidentTable;
