@@ -1,6 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 import { AddIncidentFollowUpForm } from "@/components/Forms/incidents/AddIncidentFollowUpForm";
+import { FOLLOWUP_ACTIONS } from "@/tests/mocks/dataMocks";
 
 const dispatchProps = {};
 const props = {};
@@ -12,6 +13,7 @@ const setupDispatchProps = () => {
 const setupProps = () => {
   props.initialValues = {};
   props.uploadedFiles = [];
+  props.followupActionOptions = FOLLOWUP_ACTIONS;
 };
 
 beforeEach(() => {

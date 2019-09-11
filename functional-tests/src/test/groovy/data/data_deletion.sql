@@ -34,9 +34,10 @@ BEGIN
     );
     DELETE FROM mine_tailings_storage_facility WHERE create_user LIKE IDIR_USER;
 	
-    DELETE FROM mine_report_document_xref;
-    DELETE FROM mine_report_submission;
-    DELETE FROM mine_report;
+    DELETE FROM mine_report_document_xref CASCADE;
+    DELETE FROM mine_report_comment CASCADE;
+    DELETE FROM mine_report_submission CASCADE;
+    DELETE FROM mine_report CASCADE;
 	
     DELETE FROM variance_document_xref WHERE mine_document_guid = ANY (
         SELECT mine_document_guid FROM mine_document WHERE create_user LIKE IDIR_USER

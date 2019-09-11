@@ -12,6 +12,7 @@ ADVISORY_DETAILS_RESPONSE_MODEL = api.model('order_advisory_detail', {
 
 class OrderAdvisoryDetail(Base):
     __tablename__ = "order_advisory_detail"
+    __table_args__ = {'comment': 'For each inspection observation, this table contains details of advisories issued by an inspector. An advisory is a written notification to a person that draws attention to a specific regulatory requirement. An advisory is used where the proponent is in compliance at the moment of inspection but may be at risk of future non-compliance.'}
     order_advisory_detail_id = db.Column(db.Integer, primary_key=True)
     inspected_locations_id = db.Column(db.Integer,
                                        db.ForeignKey('inspected_location.inspected_location_id'))
