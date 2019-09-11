@@ -34,7 +34,7 @@ export class AddVarianceForm extends Component {
     }));
   };
 
-  onRemoveFile = (fileItem) => {
+  onRemoveFile = (err, fileItem) => {
     this.setState((prevState) => ({
       uploadedFiles: prevState.uploadedFiles.filter((fileArr) => fileArr[0] !== fileItem.serverId),
     }));
