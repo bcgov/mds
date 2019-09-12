@@ -67,6 +67,20 @@ exports[`AddPartyRelationshipForm renders properly 1`] = `
     </Col>
   </Row>
   <div />
+  <div>
+    <h4>
+      Mine Manager Appointment Letter
+    </h4>
+    <FormItem
+      hasFeedback={false}
+    >
+      <Field
+        component={[Function]}
+        id="PartyRelationshipFileUpload"
+        name="PartyRelationshipFileUpload"
+      />
+    </FormItem>
+  </div>
   <div
     className="right center-mobile"
   >
