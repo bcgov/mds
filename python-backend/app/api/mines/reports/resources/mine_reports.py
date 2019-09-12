@@ -43,7 +43,7 @@ class MineReportListResource(Resource, UserMixin):
 
     @api.marshal_with(MINE_REPORT_MODEL, envelope='records', code=200)
     @api.doc(description='returns the reports for a given mine.')
-    @requires_any_of([EDIT_REPORT, MINESPACE_PROPONENT])
+    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def get(self, mine_guid):
         mrd_category = request.args.get('mine_report_definition_category')
         if mrd_category:
@@ -121,7 +121,7 @@ class MineReportResource(Resource, UserMixin):
     parser.add_argument('mine_report_submissions', type=list, location='json', store_missing=False)
 
     @api.marshal_with(MINE_REPORT_MODEL, code=200)
-    @requires_any_of([EDIT_REPORT, MINESPACE_PROPONENT])
+    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def get(self, mine_guid, mine_report_guid):
         mine_report = MineReport.find_by_mine_report_guid(mine_report_guid)
         if not mine_report:
