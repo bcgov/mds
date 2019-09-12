@@ -11,8 +11,10 @@ from sqlalchemy.orm import validates
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 
-from ...party.models.party import Party
-from ....utils.models_mixins import AuditMixin, Base
+from app.api.parties.party.models.party import Party
+from app.api.utils.models_mixins import AuditMixin, Base
+
+from app.api.parties.party_appt.models.mine_party_appt_document_xref import MinePartyApptDocumentXref
 
 
 class MinePartyAppointment(AuditMixin, Base):
@@ -46,6 +48,8 @@ class MinePartyAppointment(AuditMixin, Base):
         order_by='desc(MinePartyAppointmentType.display_order)',
         lazy='joined')
 
+    documents = db.relationship('MineDocument', lazy='joined', secondary='mine_party_appt_document_xref')
+
     def assign_related_guid(self, related_guid):
         if self.mine_party_appt_type_code == "EOR":
             self.mine_tailings_storage_facility_guid = related_guid
@@ -54,7 +58,6 @@ class MinePartyAppointment(AuditMixin, Base):
             self.permit_guid = related_guid
         return
 
-    # json
     def json(self, relationships=[]):
         result = {
             'mine_party_appt_guid': str(self.mine_party_appt_guid),
@@ -63,6 +66,7 @@ class MinePartyAppointment(AuditMixin, Base):
             'mine_party_appt_type_code': str(self.mine_party_appt_type_code),
             'start_date': str(self.start_date) if self.start_date else None,
             'end_date': str(self.end_date) if self.end_date else None,
+            'documents': [doc.json() for doc in self.documents]
         }
         if 'party' in relationships:
             result.update({'party': self.party.json(show_mgr=False) if self.party else str({})})

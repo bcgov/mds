@@ -13,10 +13,13 @@ import { required, validateDateRanges } from "@/utils/Validate";
 import { EngineerOfRecordOptions } from "@/components/Forms/PartyRelationships/EngineerOfRecordOptions";
 import { PermitteeOptions } from "@/components/Forms/PartyRelationships/PermitteeOptions";
 import CustomPropTypes from "@/customPropTypes";
+import PartyRelationshipFileUpload from "./PartyRelationshipFileUpload";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+  onFileLoad: PropTypes.func.isRequired,
+  onRemoveFile: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship).isRequired,
   partyRelationshipType: CustomPropTypes.partyRelationshipType.isRequired,
@@ -117,6 +120,7 @@ const validate = (values, props) => {
     if (isEmpty(errors) && !values.end_current) {
       const { start_date, end_date } = checkDatesForOverlap(values, props);
       if (
+        start_date &&
         !checkCurrentAppointmentValidation(
           values.start_date,
           props.partyRelationshipType,
@@ -252,6 +256,21 @@ export class AddPartyRelationshipForm extends Component {
         <Row gutter={16}>
           <Col md={12} xs={24}>
             {options}
+            {this.props.partyRelationshipType.mine_party_appt_type_code === "MMG" && (
+              <div>
+                <h4>Mine Manager Appointment Letter</h4>
+                <Form.Item>
+                  <Field
+                    id="PartyRelationshipFileUpload"
+                    name="PartyRelationshipFileUpload"
+                    onFileLoad={this.props.onFileLoad}
+                    onRemoveFile={this.props.onRemoveFile}
+                    mineGuid={this.props.mine.mine_guid}
+                    component={PartyRelationshipFileUpload}
+                  />
+                </Form.Item>
+              </div>
+            )}
           </Col>
         </Row>
         <div className="right center-mobile">
