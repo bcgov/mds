@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 import uuid
 
-from flask import request
+from flask import request, current_app
 from flask_restplus import Resource
 from sqlalchemy import or_, exc as alch_exceptions
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
@@ -24,6 +24,7 @@ class MinePartyApptResource(Resource, UserMixin):
         help='code for the type of appt.',
         store_missing=False)
     parser.add_argument('related_guid', type=str, store_missing=False)
+    parser.add_argument('end_current', type=bool)
     parser.add_argument(
         'start_date',
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
@@ -59,16 +60,40 @@ class MinePartyApptResource(Resource, UserMixin):
             raise BadRequest('unexpected mine party appointment guid')
         data = self.parser.parse_args()
 
+        end_current = data.get('end_current')
+        mine_party_appt_type_code = data.get('mine_party_appt_type_code')
+        related_guid = data.get('related_guid')
+        mine_guid = data.get('mine_guid')
+        start_date = data.get('start_date')
+
+        if end_current:
+            if mine_party_appt_type_code == "EOR":
+                current_mpa = MinePartyAppointment.find_current_appointments(
+                    mine_guid=mine_guid,
+                    mine_party_appt_type_code=mine_party_appt_type_code,
+                    mine_tailings_storage_facility_guid=related_guid)
+            elif mine_party_appt_type_code == "PMT":
+                current_mpa = MinePartyAppointment.find_current_appointments(
+                    mine_guid=mine_guid,
+                    mine_party_appt_type_code=mine_party_appt_type_code,
+                    permit_guid=related_guid)
+            else:
+                current_mpa = MinePartyAppointment.find_current_appointments(
+                    mine_guid=mine_guid, mine_party_appt_type_code=mine_party_appt_type_code)
+            if len(current_mpa) > 1:
+                raise BadRequest('There is currently more than one active appointment.')
+            current_mpa[0].end_date = start_date - timedelta(days=1)
+            current_mpa[0].save()
         new_mpa = MinePartyAppointment(
-            mine_guid=data.get('mine_guid'),
+            mine_guid=mine_guid,
             party_guid=data.get('party_guid'),
-            mine_party_appt_type_code=data.get('mine_party_appt_type_code'),
-            start_date=data.get('start_date'),
+            mine_party_appt_type_code=mine_party_appt_type_code,
+            start_date=start_date,
             end_date=data.get('end_date'),
             processed_by=self.get_user_info())
 
         if new_mpa.mine_party_appt_type_code == "EOR":
-            new_mpa.assign_related_guid(data.get('related_guid'))
+            new_mpa.assign_related_guid(related_guid)
             if not new_mpa.mine_tailings_storage_facility_guid:
                 raise AssertionError(
                     'mine_tailings_storage_facility_guid must be provided for Engineer of Record')
@@ -76,7 +101,7 @@ class MinePartyApptResource(Resource, UserMixin):
             pass
 
         if new_mpa.mine_party_appt_type_code == "PMT":
-            new_mpa.assign_related_guid(data.get('related_guid'))
+            new_mpa.assign_related_guid(related_guid)
             if not new_mpa.permit_guid:
                 raise AssertionError('permit_guid must be provided for Permittee')
             #TODO move db foreign key constraint when services get separated

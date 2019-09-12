@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { isEmpty } from "lodash";
-import { Field, reduxForm, formValueSelector, clearSubmitErrors } from "redux-form";
+import { Field, reduxForm, formValueSelector } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm } from "antd";
 import { renderConfig } from "@/components/common/config";
 import PartySelectField from "@/components/common/PartySelectField";
@@ -55,15 +55,22 @@ const checkDatesForOverlap = (values, props) => {
 
 const validate = (values, props) => {
   const errors = {};
-  if (values.start_date && values.end_date) {
-    if (moment(values.start_date) > moment(values.end_date)) {
-      errors.end_date = "Must be after start date.";
+  const minePartyApptTypeCode = props.partyRelationshipType.mine_party_appt_type_code;
+  if (
+    minePartyApptTypeCode === "PMT" ||
+    minePartyApptTypeCode === "MMG" ||
+    minePartyApptTypeCode === "EOR"
+  ) {
+    if (values.start_date && values.end_date) {
+      if (moment(values.start_date) > moment(values.end_date)) {
+        errors.end_date = "Must be after start date.";
+      }
     }
-  }
-  if (isEmpty(errors) && !values.end_current) {
-    const { start_date, end_date } = checkDatesForOverlap(values, props);
-    errors.start_date = start_date;
-    errors.end_date = end_date;
+    if (isEmpty(errors) && !values.end_current) {
+      const { start_date, end_date } = checkDatesForOverlap(values, props);
+      errors.start_date = start_date;
+      errors.end_date = end_date ? " " : null;
+    }
   }
   return errors;
 };
@@ -119,10 +126,12 @@ const checkCurrentAppointmentValidation = (
 export class AddPartyRelationshipForm extends Component {
   state = {
     skipDateValidation: false,
+    currentAppointment: {},
   };
 
   componentWillReceiveProps = (nextProps) => {
     let passedValidation = false;
+    let currentAppt;
     if (nextProps.start_date !== null) {
       if (
         ((nextProps.partyRelationshipType.mine_party_appt_type_code === "PMT" ||
@@ -132,14 +141,28 @@ export class AddPartyRelationshipForm extends Component {
       ) {
         passedValidation = checkCurrentAppointmentValidation(
           nextProps.start_date,
-          this.props.partyRelationshipType,
-          this.props.partyRelationships,
+          nextProps.partyRelationshipType,
+          nextProps.partyRelationships,
           nextProps.related_guid
+        );
+        currentAppt = nextProps.partyRelationships.filter(
+          ({ mine_party_appt_type_code, related_guid, end_date }) => {
+            let match =
+              mine_party_appt_type_code ===
+              nextProps.partyRelationshipType.mine_party_appt_type_code;
+            if (related_guid !== "") {
+              match = match && nextProps.related_guid === related_guid;
+            }
+            return match && end_date === null;
+          }
         );
       }
       if (passedValidation) {
-        clearSubmitErrors(FORM.ADD_PARTY_RELATIONSHIP);
         this.setState({ skipDateValidation: true });
+        if (currentAppt && currentAppt.length === 1) {
+          console.log(currentAppt);
+          this.setState({ currentAppointment: currentAppt[0] });
+        }
       } else {
         this.setState({ skipDateValidation: false });
       }
@@ -199,20 +222,26 @@ export class AddPartyRelationshipForm extends Component {
         </Row>
         <Row gutter={16}>
           <Col md={12} xs={24}>
-            {options}
-          </Col>
-          <Col md={12} xs={24}>
             {this.state.skipDateValidation && (
               <Form.Item>
                 <Field
                   id="end_current"
                   name="end_current"
-                  label="Would you like to set the previous position holder's end date to yesterday?"
+                  label={`Would you like to set the end date of ${
+                    this.state.currentAppointment.party.name
+                  } to ${moment(this.props.start_date)
+                    .subtract(1, "days")
+                    .format("MMMM Do YYYY")}`}
                   type="checkbox"
                   component={renderConfig.CHECKBOX}
                 />
               </Form.Item>
             )}
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col md={12} xs={24}>
+            {options}
           </Col>
         </Row>
         <div className="right center-mobile">

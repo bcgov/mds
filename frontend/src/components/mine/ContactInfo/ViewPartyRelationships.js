@@ -70,11 +70,8 @@ export class ViewPartyRelationships extends Component {
   onSubmitAddPartyRelationship = (values) => {
     const payload = {
       mine_guid: this.props.mine.mine_guid,
-      party_guid: values.party_guid,
       mine_party_appt_type_code: this.state.selectedPartyRelationshipType,
-      related_guid: values.related_guid,
-      start_date: values.start_date,
-      end_date: values.end_date,
+      ...values,
     };
 
     return this.props.addPartyRelationship(payload).then(() => {
