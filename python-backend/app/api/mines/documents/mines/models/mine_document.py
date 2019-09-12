@@ -1,4 +1,3 @@
-import json
 import uuid
 
 from sqlalchemy.ext.associationproxy import association_proxy
@@ -29,3 +28,12 @@ class MineDocument(AuditMixin, Base):
     def find_by_mine_document_guid(cls, mine_document_guid):
         return cls.query.filter_by(mine_document_guid=mine_document_guid).filter_by(
             active_ind=True).first()
+
+    # TODO: Remove when mine_party_appt is refactored
+    def json(self):
+        return {
+            'mine_document_guid': str(self.mine_document_guid),
+            'mine_guid': str(self.mine_guid),
+            'document_manager_guid': str(self.document_manager_guid),
+            'document_name': self.document_name
+        }
