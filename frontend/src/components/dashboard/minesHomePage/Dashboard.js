@@ -430,6 +430,7 @@ export class Dashboard extends Component {
                     lat={this.state.lat}
                     long={this.state.long}
                     zoom={this.state.zoom}
+                    mines={this.props.pageData.mines}
                   />
                 </div>
               </Element>

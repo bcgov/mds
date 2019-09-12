@@ -3,6 +3,7 @@ import L from "leaflet";
 import leafletWms from "leaflet.wms";
 import "leaflet/dist/leaflet.css";
 import PropTypes from "prop-types";
+import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
 
 /**
@@ -13,15 +14,17 @@ import * as Strings from "@/constants/strings";
  */
 
 const propTypes = {
-  lat: PropTypes.number.required,
-  long: PropTypes.number.required,
-  zoom: PropTypes.number.required,
+  lat: PropTypes.number,
+  long: PropTypes.number,
+  zoom: PropTypes.number,
+  mines: PropTypes.arrayOf(CustomPropTypes.mine),
 };
 
 const defaultProps = {
   lat: Strings.DEFAULT_LAT,
   long: Strings.DEFAULT_LONG,
   zoom: Strings.DEFAULT_ZOOM,
+  mines: [],
 };
 
 const leafletWMSTiledOptions = {
@@ -80,6 +83,8 @@ const overlayLayers = {
 class MineMapLeaflet extends Component {
   componentDidMount() {
     this.createMap();
+    // FIXME: Taking a slice for performance
+    this.props.mines.slice(0, 15).map(this.createPin);
   }
 
   getBaseMaps() {
@@ -103,6 +108,17 @@ class MineMapLeaflet extends Component {
     };
   }
 
+  createPin = ({ mine_location }) => {
+    const customicon = L.icon({
+      iconUrl:
+        "https://www.pngfind.com/pngs/m/5-59794_facebook-haha-emoji-emoticon-vector-logo-download-smile.png",
+      iconSize: [60, 60],
+    });
+    L.marker([mine_location.latitude, mine_location.longitude], { icon: customicon }).addTo(
+      this.map
+    );
+  };
+
   createMap() {
     this.map = L.map("leaflet-map").setView([this.props.lat, this.props.long], this.props.zoom);
     L.control.layers(this.getBaseMaps(), overlayLayers, { position: "topleft" }).addTo(this.map);
@@ -111,7 +127,7 @@ class MineMapLeaflet extends Component {
   render() {
     console.log("props", this.props);
     console.log("state", this.state);
-    return <div style={{ height: "800px", width: "100%" }} id="leaflet-map" />;
+    return <div style={{ height: "100vh", width: "100%" }} id="leaflet-map" />;
   }
 }
 
