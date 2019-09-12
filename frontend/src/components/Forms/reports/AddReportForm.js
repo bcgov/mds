@@ -195,7 +195,7 @@ export class AddReportForm extends Component {
               <Field
                 id="due_date"
                 name="due_date"
-                label="Due Date"
+                label="Due Date*"
                 placeholder=""
                 component={renderConfig.DATE}
                 validate={[required]}
