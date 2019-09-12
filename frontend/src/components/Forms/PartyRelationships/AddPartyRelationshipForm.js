@@ -32,49 +32,6 @@ const defaultProps = {
   start_date: null,
 };
 
-const checkDatesForOverlap = (values, props) => {
-  const existingAppointments = props.partyRelationships.filter(
-    ({ mine_party_appt_type_code, related_guid }) => {
-      const match =
-        mine_party_appt_type_code === props.partyRelationshipType.mine_party_appt_type_code;
-      if (related_guid !== "") {
-        return match && values.related_guid === related_guid;
-      }
-      return match;
-    }
-  );
-  const newAppt = { start_date: null, end_date: null, ...values };
-
-  return validateDateRanges(
-    existingAppointments,
-    newAppt,
-    props.partyRelationshipType.description,
-    false
-  );
-};
-
-const validate = (values, props) => {
-  const errors = {};
-  const minePartyApptTypeCode = props.partyRelationshipType.mine_party_appt_type_code;
-  if (
-    minePartyApptTypeCode === "PMT" ||
-    minePartyApptTypeCode === "MMG" ||
-    minePartyApptTypeCode === "EOR"
-  ) {
-    if (values.start_date && values.end_date) {
-      if (moment(values.start_date) > moment(values.end_date)) {
-        errors.end_date = "Must be after start date.";
-      }
-    }
-    if (isEmpty(errors) && !values.end_current) {
-      const { start_date, end_date } = checkDatesForOverlap(values, props);
-      errors.start_date = start_date;
-      errors.end_date = end_date ? " " : null;
-    }
-  }
-  return errors;
-};
-
 const checkCurrentAppointmentValidation = (
   currentStartDate,
   partyRelationshipType,
@@ -121,6 +78,60 @@ const checkCurrentAppointmentValidation = (
     }
   }
   return false;
+};
+
+const checkDatesForOverlap = (values, props) => {
+  const existingAppointments = props.partyRelationships.filter(
+    ({ mine_party_appt_type_code, related_guid }) => {
+      const match =
+        mine_party_appt_type_code === props.partyRelationshipType.mine_party_appt_type_code;
+      if (related_guid !== "") {
+        return match && values.related_guid === related_guid;
+      }
+      return match;
+    }
+  );
+  const newAppt = { start_date: null, end_date: null, ...values };
+
+  return validateDateRanges(
+    existingAppointments,
+    newAppt,
+    props.partyRelationshipType.description,
+    false
+  );
+};
+
+const validate = (values, props) => {
+  const errors = {};
+  const minePartyApptTypeCode = props.partyRelationshipType.mine_party_appt_type_code;
+  if (
+    minePartyApptTypeCode === "PMT" ||
+    minePartyApptTypeCode === "MMG" ||
+    minePartyApptTypeCode === "EOR"
+  ) {
+    if (values.start_date && values.end_date) {
+      if (moment(values.start_date) > moment(values.end_date)) {
+        errors.end_date = "Must be after start date.";
+      }
+    }
+    if (isEmpty(errors) && !values.end_current) {
+      const { start_date, end_date } = checkDatesForOverlap(values, props);
+      if (
+        !checkCurrentAppointmentValidation(
+          values.start_date,
+          props.partyRelationshipType,
+          props.partyRelationships,
+          props.related_guid
+        )
+      ) {
+        errors.start_date = `${start_date}. You cannot have two appointments with overlapping dates.`;
+      } else {
+        errors.start_date = start_date;
+      }
+      errors.end_date = end_date ? " " : null;
+    }
+  }
+  return errors;
 };
 
 export class AddPartyRelationshipForm extends Component {

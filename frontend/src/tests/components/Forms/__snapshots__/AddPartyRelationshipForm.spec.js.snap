@@ -72,13 +72,17 @@ exports[`AddPartyRelationshipForm renders properly 1`] = `
     <Col
       md={12}
       xs={24}
-    >
-      <div />
-    </Col>
+    />
+  </Row>
+  <Row
+    gutter={16}
+  >
     <Col
       md={12}
       xs={24}
-    />
+    >
+      <div />
+    </Col>
   </Row>
   <div
     className="right center-mobile"
