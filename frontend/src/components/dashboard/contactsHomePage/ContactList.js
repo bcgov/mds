@@ -1,5 +1,5 @@
 import React from "react";
-import { objectOf, string, func } from "prop-types";
+import { objectOf, string, func, bool, number } from "prop-types";
 import { Link } from "react-router-dom";
 import { Table } from "antd";
 import { uniqBy, map, toArray, isEmpty } from "lodash";
@@ -7,6 +7,8 @@ import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
 import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
+import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
+import { getTableHeaders } from "@/utils/helpers";
 
 /**
  * @class ContactList - paginated list of contacts
@@ -18,6 +20,8 @@ const propTypes = {
   handleSearch: func.isRequired,
   sortField: string,
   sortDir: string,
+  isLoaded: bool.isRequired,
+  paginationPerPage: number.isRequired,
 };
 
 const defaultProps = {
@@ -30,6 +34,7 @@ const columns = [
     title: "Contact Name",
     dataIndex: "name",
     sortField: "party_name",
+    width: 150,
     render: ([firstName = "", lastName = ""], record) => {
       const comma = firstName ? ", " : "";
       return (
@@ -43,16 +48,19 @@ const columns = [
   {
     title: "Role",
     dataIndex: "role",
+    width: 150,
     render: (text) => <div title="role">{text}</div>,
   },
   {
     title: "Email",
     dataIndex: "email",
+    width: 150,
     render: (text) => <div title="email">{text}</div>,
   },
   {
     title: "Phone",
     dataIndex: "phone",
+    width: 150,
     render: (text) => <div title="phone">{text}</div>,
   },
 ];
@@ -100,14 +108,21 @@ const applySortIndicator = (_columns, field, dir) =>
   }));
 
 export const ContactList = (props) => (
-  <Table
-    align="left"
-    pagination={false}
-    columns={applySortIndicator(columns, props.sortField, props.sortDir)}
-    dataSource={transformRowData(props.parties, props.relationshipTypeHash)}
-    locale={{ emptyText: <NullScreen type="no-results" /> }}
-    onChange={handleTableChange(props.handleSearch)}
-  />
+  <TableLoadingWrapper
+    condition={props.isLoaded}
+    tableHeaders={getTableHeaders(columns)}
+    paginationPerPage={props.paginationPerPage}
+  >
+    <Table
+      rowClassName="fade-in"
+      align="left"
+      pagination={false}
+      columns={applySortIndicator(columns, props.sortField, props.sortDir)}
+      dataSource={transformRowData(props.parties, props.relationshipTypeHash)}
+      locale={{ emptyText: <NullScreen type="no-results" /> }}
+      onChange={handleTableChange(props.handleSearch)}
+    />
+  </TableLoadingWrapper>
 );
 
 ContactList.propTypes = propTypes;

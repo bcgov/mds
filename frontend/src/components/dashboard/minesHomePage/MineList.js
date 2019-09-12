@@ -1,13 +1,15 @@
 import React from "react";
-import { func, objectOf, arrayOf, string } from "prop-types";
+import { func, objectOf, arrayOf, string, bool } from "prop-types";
 import { Link } from "react-router-dom";
 import { Table } from "antd";
 import { uniqBy, isEmpty } from "lodash";
 import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
 import NullScreen from "@/components/common/NullScreen";
+import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
 import CustomPropTypes from "@/customPropTypes";
 import { SUCCESS_CHECKMARK } from "@/constants/assets";
+import { getTableHeaders } from "@/utils/helpers";
 
 /**
  * @class MineList - paginated list of mines
@@ -22,6 +24,7 @@ const propTypes = {
   handleMineSearch: func.isRequired,
   sortField: string,
   sortDir: string,
+  isLoaded: bool.isRequired,
 };
 
 const defaultProps = {
@@ -32,9 +35,9 @@ const defaultProps = {
 const columns = [
   {
     title: "Mine Name",
-    width: 200,
     dataIndex: "mineName",
     sortField: "mine_name",
+    width: 150,
     render: (text, record) => (
       <Link to={router.MINE_SUMMARY.dynamicRoute(record.key)}>
         {text}
@@ -53,23 +56,23 @@ const columns = [
   },
   {
     title: "Mine No.",
-    width: 120,
     dataIndex: "mineNo",
     sortField: "mine_no",
+    width: 150,
     render: (text) => <div title="Mine Number">{text}</div>,
     sorter: true,
   },
   {
     title: "Operational Status",
-    width: 160,
     dataIndex: "operationalStatus",
     sortField: "mine_operation_status_code",
+    width: 150,
     render: (text) => <div title="Operational Status">{text}</div>,
   },
   {
     title: "Permit No.",
-    width: 150,
     dataIndex: "permit",
+    width: 150,
     render: (text, record) => (
       <div title="Permit Number">
         <ul className="mine-list__permits">
@@ -84,9 +87,9 @@ const columns = [
   },
   {
     title: "Region",
-    width: 150,
     dataIndex: "region",
     sortField: "mine_region",
+    width: 150,
     render: (text, record) => (
       <div title="Region">
         {text}
@@ -97,8 +100,8 @@ const columns = [
   },
   {
     title: "Tenure",
-    width: 150,
     dataIndex: "tenure",
+    width: 150,
     render: (text, record) => (
       <div title="Tenure">
         {text &&
@@ -181,20 +184,23 @@ const applySortIndicator = (_columns, field, dir) =>
   }));
 
 export const MineList = (props) => (
-  <Table
-    align="left"
-    pagination={false}
-    columns={applySortIndicator(columns, props.sortField, props.sortDir)}
-    dataSource={transformRowData(
-      props.mines,
-      props.mineIds,
-      props.mineRegionHash,
-      props.mineTenureHash,
-      props.mineCommodityOptionsHash
-    )}
-    locale={{ emptyText: <NullScreen type="no-results" /> }}
-    onChange={handleTableChange(props.handleMineSearch)}
-  />
+  <TableLoadingWrapper condition={props.isLoaded} tableHeaders={getTableHeaders(columns)}>
+    <Table
+      rowClassName="fade-in"
+      align="left"
+      pagination={false}
+      columns={applySortIndicator(columns, props.sortField, props.sortDir)}
+      dataSource={transformRowData(
+        props.mines,
+        props.mineIds,
+        props.mineRegionHash,
+        props.mineTenureHash,
+        props.mineCommodityOptionsHash
+      )}
+      locale={{ emptyText: <NullScreen type="no-results" /> }}
+      onChange={handleTableChange(props.handleMineSearch)}
+    />
+  </TableLoadingWrapper>
 );
 
 MineList.propTypes = propTypes;

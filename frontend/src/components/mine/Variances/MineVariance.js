@@ -51,6 +51,16 @@ const propTypes = {
 };
 
 export class MineVariance extends Component {
+  state = {
+    isLoaded: false,
+  };
+
+  componentDidMount() {
+    this.props.fetchVariancesByMine({ mineGuid: this.props.mineGuid }).then(() => {
+      this.setState({ isLoaded: true });
+    });
+  }
+
   handleAddVariances = (files, isApplication) => (values) => {
     const { variance_document_category_code } = values;
     const variance_application_status_code = isApplication
@@ -166,6 +176,7 @@ export class MineVariance extends Component {
         <h4 className="uppercase">Variance Applications</h4>
         <br />
         <MineVarianceTable
+          isLoaded={this.state.isLoaded}
           openEditVarianceModal={this.openEditVarianceModal}
           openViewVarianceModal={this.openViewVarianceModal}
           variances={this.props.varianceApplications}
@@ -178,6 +189,7 @@ export class MineVariance extends Component {
         <h4 className="uppercase">Approved Variances</h4>
         <br />
         <MineVarianceTable
+          isLoaded={this.state.isLoaded}
           openEditVarianceModal={this.openEditVarianceModal}
           openViewVarianceModal={this.openViewVarianceModal}
           variances={this.props.approvedVariances}

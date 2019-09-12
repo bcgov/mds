@@ -26,7 +26,6 @@ import ContactSearch from "@/components/dashboard/contactsHomePage/ContactSearch
 import ContactList from "@/components/dashboard/contactsHomePage/ContactList";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import Loading from "@/components/common/Loading";
 import * as router from "@/constants/routes";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
@@ -217,28 +216,27 @@ export class ContactHomePage extends Component {
             fetchParties={this.props.fetchParties}
             handleSearch={this.handleSearch}
           />
-          {this.state.isLoaded && (
-            <div>
-              <div className="tab__content ">
-                <ContactList
-                  parties={this.props.parties}
-                  relationshipTypeHash={this.props.relationshipTypeHash}
-                  handleSearch={this.handleSearch}
-                  sortField={this.state.params.sort_field}
-                  sortDir={this.state.params.sort_dir}
-                />
-              </div>
-              <div className="center">
-                <ResponsivePagination
-                  onPageChange={this.onPageChange}
-                  currentPage={Number(page)}
-                  pageTotal={Number(this.props.pageData.total)}
-                  itemsPerPage={Number(per_page)}
-                />
-              </div>
+          <div>
+            <div className="tab__content ">
+              <ContactList
+                isLoaded={this.state.isLoaded}
+                parties={this.props.parties}
+                relationshipTypeHash={this.props.relationshipTypeHash}
+                handleSearch={this.handleSearch}
+                sortField={this.state.params.sort_field}
+                sortDir={this.state.params.sort_dir}
+                paginationPerPage={Number(per_page)}
+              />
             </div>
-          )}
-          {!this.state.isLoaded && <Loading />}
+            <div className="center">
+              <ResponsivePagination
+                onPageChange={this.onPageChange}
+                currentPage={Number(page)}
+                pageTotal={Number(this.props.pageData.total)}
+                itemsPerPage={Number(per_page)}
+              />
+            </div>
+          </div>
         </div>
       </div>
     );

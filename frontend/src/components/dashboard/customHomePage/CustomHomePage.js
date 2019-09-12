@@ -41,8 +41,12 @@ const propTypes = {
 };
 
 export class CustomHomePage extends Component {
+  state = { isLoaded: false };
+
   componentDidMount() {
-    this.props.fetchSubscribedMinesByUser();
+    this.props.fetchSubscribedMinesByUser().then(() => {
+      this.setState({ isLoaded: true });
+    });
     this.props.fetchInspectors();
     this.props.fetchMineTenureTypes();
     this.props.fetchMineComplianceCodes();
@@ -63,8 +67,11 @@ export class CustomHomePage extends Component {
         <div className="landing-page__header">
           <h1>My Dashboard</h1>
         </div>
-        <div className="landing-page__content">
+        <div className="landing-page__content page__content">
+          <h4>Subscribed Mines</h4>
+          <br />
           <SubscriptionTable
+            isLoaded={this.state.isLoaded}
             subscribedMines={this.props.subscribedMines}
             mineRegionHash={this.props.mineRegionHash}
             mineTenureHash={this.props.mineTenureHash}

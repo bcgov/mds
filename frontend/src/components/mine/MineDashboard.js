@@ -33,7 +33,6 @@ import {
   fetchMineReportDefinitionOptions,
 } from "@/actionCreators/staticContentActionCreator";
 import { getMines, getIsUserSubscribed } from "@/selectors/mineSelectors";
-import { fetchVariancesByMine } from "@/actionCreators/varianceActionCreator";
 import {
   fetchPartyRelationshipTypes,
   fetchPartyRelationships,
@@ -188,7 +187,6 @@ export class MineDashboard extends Component {
       const mine = this.props.mines[id];
       this.props.fetchApplications({ mine_guid: mine.mine_guid });
       this.props.fetchPermits(mine.mine_guid);
-      this.props.fetchVariancesByMine({ mineGuid: mine.mine_guid });
       this.setState({ isLoaded: true });
       this.props.fetchMineComplianceInfo(mine.mine_no, true);
       this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
@@ -372,7 +370,6 @@ const mapDispatchToProps = (dispatch) =>
       fetchPermits,
       fetchVarianceDocumentCategoryOptions,
       fetchMineReportDefinitionOptions,
-      fetchVariancesByMine,
       fetchMineComplianceCodes,
       fetchInspectors,
       fetchVarianceStatusOptions,

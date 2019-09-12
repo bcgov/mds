@@ -40,7 +40,7 @@ import SearchCoordinatesForm from "@/components/Forms/SearchCoordinatesForm";
 import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as router from "@/constants/routes";
-import Loading from "@/components/common/Loading";
+import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import MineMap from "@/components/maps/MineMap";
 import * as String from "@/constants/strings";
 import * as Permission from "@/constants/permissions";
@@ -333,24 +333,27 @@ export class Dashboard extends Component {
   renderCorrectView() {
     const { search, map, page, per_page } = this.state.params;
     const isMap = map ? "map" : "list";
-    if (this.state.mineList) {
-      return (
-        <div>
-          <Tabs
-            activeKey={isMap}
-            size="large"
-            animated={{ inkBar: true, tabPane: false }}
-            onTabClick={this.handleTabChange}
-          >
-            <TabPane tab="List" key="list">
-              <MineSearch
-                initialValues={this.state.params}
-                {...this.props}
-                handleMineSearch={this.handleMineSearchDebounced}
-                searchValue={search}
-              />
+    // if (this.state.mineList) {
+    return (
+      <div>
+        <Tabs
+          activeKey={isMap}
+          size="large"
+          animated={{ inkBar: true, tabPane: false }}
+          onTabClick={this.handleTabChange}
+        >
+          <TabPane tab="List" key="list">
+            <MineSearch
+              initialValues={this.state.params}
+              {...this.props}
+              handleMineSearch={this.handleMineSearchDebounced}
+              searchValue={search}
+            />
+
+            <div>
               <div className="tab__content">
                 <MineList
+                  isLoaded={this.state.mineList}
                   mines={this.props.mines}
                   mineIds={this.props.mineIds}
                   mineRegionHash={this.props.mineRegionHash}
@@ -369,8 +372,10 @@ export class Dashboard extends Component {
                   itemsPerPage={Number(per_page)}
                 />
               </div>
-            </TabPane>
-            <TabPane tab="Map" key="map">
+            </div>
+          </TabPane>
+          <TabPane tab="Map" key="map">
+            <div>
               <div className="landing-page__content--search">
                 <Col md={10} xs={24}>
                   <MineSearch
@@ -420,17 +425,18 @@ export class Dashboard extends Component {
                   </div>
                 </div>
               )}
-              <Element name="mapElement">
-                <div>
-                  <MineMap {...this.state} />
-                </div>
-              </Element>
-            </TabPane>
-          </Tabs>
-        </div>
-      );
-    }
-    return <Loading />;
+              <LoadingWrapper condition={this.state.mineList}>
+                <Element name="mapElement">
+                  <div>
+                    <MineMap {...this.state} />
+                  </div>
+                </Element>
+              </LoadingWrapper>
+            </div>
+          </TabPane>
+        </Tabs>
+      </div>
+    );
   }
 
   render() {

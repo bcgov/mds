@@ -22,6 +22,7 @@ const propTypes = {
   filterVarianceStatusOptions: CustomPropTypes.filterOptions.isRequired,
   sortField: PropTypes.string,
   sortDir: PropTypes.string,
+  isLoaded: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -40,6 +41,7 @@ export const VarianceTable = (props) => (
     <h4>Variances</h4>
     <br />
     <MineVarianceTable
+      isLoaded={props.isLoaded}
       params={props.params}
       filterVarianceStatusOptions={props.filterVarianceStatusOptions}
       handleFilterChange={props.handleFilterChange}
