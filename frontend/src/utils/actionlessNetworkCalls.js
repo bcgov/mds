@@ -8,7 +8,6 @@ const downloadFileFromDocumentManager = ({ document_manager_guid, document_name 
     throw new Error("Must provide docManagerGuid");
   }
 
-  // TODO: Update url when Document Manager moves to its own microservice.
   CustomAxios()
     .get(
       `${ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_TOKEN_GET_URL(document_manager_guid)}`,
