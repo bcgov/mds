@@ -8,6 +8,8 @@ import * as router from "@/constants/routes";
 import * as Permission from "@/constants/permissions";
 import { formatTitleString, formatDate } from "@/utils/helpers";
 import * as Strings from "@/constants/strings";
+import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
+import LinkButton from "@/components/common/LinkButton";
 
 const propTypes = {
   partyRelationship: CustomPropTypes.partyRelationship.isRequired,
@@ -79,7 +81,24 @@ export const DefaultContact = (props) => (
         <br />,
         <br />,
         <h6>{props.partyRelationshipTitle} Since</h6>,
-        <span>{formatDate(props.partyRelationship.start_date) || "Unknown"}</span>,
+        <span>
+          {formatDate(props.partyRelationship.start_date) || "Unknown"}
+          {props.partyRelationship.mine_party_appt_type_code === "MMG" &&
+            props.partyRelationship.documents.length > 0 && (
+              <span>
+                {" "}
+                -{" "}
+                <LinkButton
+                  key={props.partyRelationship.documents[0].mine_document_guid}
+                  onClick={() =>
+                    downloadFileFromDocumentManager(props.partyRelationship.documents[0])
+                  }
+                >
+                  Appointment Letter
+                </LinkButton>
+              </span>
+            )}
+        </span>,
       ]}
     </div>
     {props.otherDetails}

@@ -1,6 +1,14 @@
 from app.extensions import api
 from flask_restplus import fields
 
+MINE_DOCUMENT = api.model(
+    'MineDocument', {
+        'mine_document_guid': fields.String,
+        'mine_guid': fields.String,
+        'document_manager_guid': fields.String,
+        'document_name': fields.String,
+    })
+
 MINE_PARTY_APPT = api.model(
     'MinePartyAppointment', {
         'mine_party_appt_guid': fields.String,
@@ -9,6 +17,7 @@ MINE_PARTY_APPT = api.model(
         'mine_party_appt_type_code': fields.String,
         'start_date': fields.Date,
         'end_date': fields.Date,
+        'documents': fields.Nested(MINE_DOCUMENT)
     })
 
 ADDRESS = api.model(
