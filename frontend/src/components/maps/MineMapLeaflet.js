@@ -10,6 +10,10 @@ import "leaflet/dist/leaflet.css";
  * https://stackoverflow.com/questions/46268753/filter-getfeatureinfo-results-leaflet-wms-plugin
  */
 
+const propTypes = {};
+
+const defaultProps = {};
+
 const leafletWMSTiledOptions = {
   transparent: true,
   tiled: true,
@@ -99,4 +103,6 @@ class MineMapLeaflet extends Component {
   }
 }
 
+MineMapLeaflet.propTypes = propTypes;
+MineMapLeaflet.defaultProps = defaultProps;
 export default MineMapLeaflet;

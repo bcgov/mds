@@ -41,7 +41,7 @@ import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as router from "@/constants/routes";
 import Loading from "@/components/common/Loading";
-import MineMap from "@/components/maps/MineMap";
+import MineMapLeaflet from "@/components/maps/MineMapLeaflet";
 import * as String from "@/constants/strings";
 import * as Permission from "@/constants/permissions";
 import * as ModalContent from "@/constants/modalContent";
@@ -422,7 +422,7 @@ export class Dashboard extends Component {
               )}
               <Element name="mapElement">
                 <div>
-                  <MineMap {...this.state} />
+                  <MineMapLeaflet {...this.state} />
                 </div>
               </Element>
             </TabPane>
