@@ -5,6 +5,8 @@ import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
+  onFileLoad: PropTypes.func.isRequired,
+  onRemoveFile: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
@@ -27,6 +29,8 @@ export const AddPartyRelationshipModal = (props) => (
       partyRelationships={props.partyRelationships}
       partyRelationshipType={props.partyRelationshipType}
       mine={props.mine}
+      onFileLoad={props.onFileLoad}
+      onRemoveFile={props.onRemoveFile}
     />
   </div>
 );
