@@ -3,6 +3,7 @@ import L from "leaflet";
 import leafletWms from "leaflet.wms";
 import "leaflet/dist/leaflet.css";
 import PropTypes from "prop-types";
+import * as Strings from "@/constants/strings";
 
 /**
  * @class MineMapLeaflet.js is a Leaflet Map component.
@@ -18,9 +19,9 @@ const propTypes = {
 };
 
 const defaultProps = {
-  lat: 52.324078,
-  long: -124.600199,
-  zoom: 6,
+  lat: Strings.DEFAULT_LAT,
+  long: Strings.DEFAULT_LONG,
+  zoom: Strings.DEFAULT_ZOOM,
 };
 
 const leafletWMSTiledOptions = {
@@ -110,7 +111,7 @@ class MineMapLeaflet extends Component {
   render() {
     console.log("props", this.props);
     console.log("state", this.state);
-    return <div id="leaflet-map" />;
+    return <div style={{ height: "800px", width: "100%" }} id="leaflet-map" />;
   }
 }
 
