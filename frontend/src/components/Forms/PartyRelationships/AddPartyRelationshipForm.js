@@ -160,7 +160,6 @@ export class AddPartyRelationshipForm extends Component {
       if (passedValidation) {
         this.setState({ skipDateValidation: true });
         if (currentAppt && currentAppt.length === 1) {
-          console.log(currentAppt);
           this.setState({ currentAppointment: currentAppt[0] });
         }
       } else {
