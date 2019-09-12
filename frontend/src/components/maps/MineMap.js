@@ -244,8 +244,6 @@ class MineMap extends Component {
   };
 
   render() {
-    console.log("props here", this.props);
-    console.log("state here", this.state);
     if (this.state.mapFailedToLoad) {
       return (
         // Fallback to default map if any of the layers fail to load

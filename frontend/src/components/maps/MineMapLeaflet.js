@@ -108,15 +108,15 @@ class MineMapLeaflet extends Component {
     };
   }
 
-  createPin = ({ mine_location }) => {
+  createPin = (mine) => {
     const customicon = L.icon({
       iconUrl:
         "https://www.pngfind.com/pngs/m/5-59794_facebook-haha-emoji-emoticon-vector-logo-download-smile.png",
       iconSize: [60, 60],
     });
-    L.marker([mine_location.latitude, mine_location.longitude], { icon: customicon }).addTo(
-      this.map
-    );
+    L.marker([mine.mine_location.latitude, mine.mine_location.longitude], { icon: customicon })
+      .addTo(this.map)
+      .bindPopup(this.renderPopup(mine));
   };
 
   createMap() {
@@ -124,9 +124,14 @@ class MineMapLeaflet extends Component {
     L.control.layers(this.getBaseMaps(), overlayLayers, { position: "topleft" }).addTo(this.map);
   }
 
+  renderPopup = (mine) => {
+    return `<div><strong>Mine No.</strong> ${mine.mine_name} </div>
+            <div><strong>Permit No.</strong></div>
+            <div><strong>Commidities</strong></div>
+           `;
+  };
+
   render() {
-    console.log("props", this.props);
-    console.log("state", this.state);
     return <div style={{ height: "100vh", width: "100%" }} id="leaflet-map" />;
   }
 }
