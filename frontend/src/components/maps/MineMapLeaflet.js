@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { Component } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -22,7 +24,8 @@ class MineMapLeaflet extends Component {
       .addTo(this.map);
   }
 
-  static getOverlayLayers() {
+  getOverlayLayers() {
+    this.map;
     const leafletWMSTiledOptions = {
       transparent: true,
       tiled: true,
