@@ -24,3 +24,8 @@ path[path="M25,0 C60,0, 60,50, 25,50 C-10,50, -10,0, 25,0"] {
 div[id="base-container"] {
   clear: both;
 }
+
+#leaflet-map {
+  height: 600px;
+  width: 1200px;
+}

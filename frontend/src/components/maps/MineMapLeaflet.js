@@ -1,191 +1,127 @@
 import React, { Component } from "react";
-import { Map, TileLayer, WMSTileLayer, LayersControl } from "react-leaflet";
+import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
+const leafletWms = require("leaflet.wms");
+
 /**
- * @class MineMapLeaflet.js is an Leaflet <Map /> component.
+ * @class MineMapLeaflet.js is a Leaflet <Map /> component.
+ *
+ * TODO: Style the results using
+ * https://stackoverflow.com/questions/46268753/filter-getfeatureinfo-results-leaflet-wms-plugin
  */
 
-const { Overlay } = LayersControl;
-
 class MineMapLeaflet extends Component {
-  state = {
-    lat: 49.50707,
-    lng: -122.699504,
-    zoom: 8,
-  };
+  componentDidMount() {
+    // create map
+    this.map = L.map("leaflet-map").setView([52.324078, -124.600199], 7);
+
+    // Add layers to the map
+    L.control
+      .layers(this.getBaseMaps(), this.getOverlayLayers(), { position: "topleft" })
+      .addTo(this.map);
+  }
+
+  static getOverlayLayers() {
+    const leafletWMSTiledOptions = {
+      transparent: true,
+      tiled: true,
+      uppercase: true,
+      format: "image/png",
+    };
+
+    const getFirstNationLayer = () => {
+      const firstNationSource = leafletWms.source(
+        "https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov?",
+        leafletWMSTiledOptions
+      );
+      return firstNationSource.getLayer("WHSE_ADMIN_BOUNDARIES.PIP_CONSULTATION_AREAS_SP");
+    };
+
+    const getBcMineRegionLayer = () => {
+      return L.tileLayer(
+        "https://tiles.arcgis.com/tiles/ubm4tcTYICKBpist/arcgis/rest/services/BC_Mine_Regions4/MapServer/tile/{z}/{y}/{x}",
+        leafletWMSTiledOptions
+      );
+    };
+
+    const getOpenMapsLayer = (
+      styles = null,
+      layer = "WHSE_MINERAL_TENURE.MTA_ACQUIRED_TENURE_SVW"
+    ) => {
+      const sourceOptions = { ...leafletWMSTiledOptions };
+
+      if (styles !== null) {
+        sourceOptions.styles = styles;
+      }
+
+      const openMapsSource = leafletWms.source(
+        "https://openmaps.gov.bc.ca/geo/pub/wms",
+        sourceOptions
+      );
+      return openMapsSource.getLayer(layer);
+    };
+
+    const overlayLayers = {
+      "Roads (DRA)": getOpenMapsLayer(null, "WHSE_BASEMAPPING.DRA_DGTL_ROAD_ATLAS_MPAR_SP"),
+      "Forest Tenure Roads": getOpenMapsLayer(
+        null,
+        "WHSE_FOREST_TENURE.FTEN_ROAD_SECTION_LINES_SVW"
+      ),
+      "Contour Lines": getOpenMapsLayer(null, "WHSE_BASEMAPPING.NTS_BC_CONTOUR_LINES_125M"),
+      "Natural Resources Regions": getOpenMapsLayer(
+        null,
+        "WHSE_ADMIN_BOUNDARIES.ADM_NR_REGIONS_SPG"
+      ),
+      "Coal Leases": getOpenMapsLayer(3647),
+      "Coal Licenses": getOpenMapsLayer(3646),
+      "Mining Leases": getOpenMapsLayer(3644),
+      "Mineral Claims": getOpenMapsLayer(3643),
+      "Placer Leases": getOpenMapsLayer(3642),
+      "Placer Claims": getOpenMapsLayer(3641),
+      "Coal Licence Applications": getOpenMapsLayer(3638),
+      "Crown Granted Mineral Claims": getOpenMapsLayer(
+        null,
+        "WHSE_MINERAL_TENURE.MTA_CROWN_GRANT_MIN_CLAIM_SVW"
+      ),
+
+      "Indian Reserves": getOpenMapsLayer(
+        null,
+        "WHSE_ADMIN_BOUNDARIES.ADM_INDIAN_RESERVES_BANDS_SP"
+      ),
+      "BC Mine Regions": getBcMineRegionLayer(),
+      "First Nations PIP Consultation Areas": getFirstNationLayer(),
+    };
+
+    return overlayLayers;
+  }
+
+  getBaseMaps() {
+    // Topographic Basemap
+    const topographicLayer = L.tileLayer(
+      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
+      {
+        attribution:
+          "Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community",
+      }
+    );
+    // Add default basemap to the map
+    topographicLayer.addTo(this.map);
+
+    const worldImageryLayer = L.tileLayer(
+      "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+    );
+
+    const baseMaps = {
+      Topographic: topographicLayer,
+      "World Imagery": worldImageryLayer,
+    };
+
+    return baseMaps;
+  }
 
   render() {
-    return (
-      <Map
-        center={[this.state.lat, this.state.lng]}
-        zoom={this.state.zoom}
-        style={{ width: "100%", height: "600px" }}
-      >
-        <TileLayer
-          attribution="Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community"
-          url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}"
-        />
-        <LayersControl position="topleft">
-          <Overlay name="First Nations Layer">
-            <WMSTileLayer
-              layers="WHSE_ADMIN_BOUNDARIES.PIP_CONSULTATION_AREAS_SP"
-              transparent
-              uppercase
-              format="image/png"
-              attribution="DataBC"
-              url="https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov?"
-            />
-          </Overlay>
-          <Overlay name="BC Mine Regions">
-            <TileLayer
-              url="https://tiles.arcgis.com/tiles/ubm4tcTYICKBpist/arcgis/rest/services/BC_Mine_Regions4/MapServer/tile/{z}/{y}/{x}"
-              transparent
-              uppercase
-              format="image/png"
-              attribution="BC Data Warehouse"
-            />
-          </Overlay>
-          <Overlay name="Coal leases">
-            <WMSTileLayer
-              layers="WHSE_MINERAL_TENURE.MTA_ACQUIRED_TENURE_SVW"
-              transparent
-              uppercase
-              format="image/png"
-              attribution="OpenMaps"
-              styles="3647"
-              url="https://openmaps.gov.bc.ca/geo/pub/wms"
-            />
-          </Overlay>
-          <Overlay name="Coal licences">
-            <WMSTileLayer
-              layers="WHSE_MINERAL_TENURE.MTA_ACQUIRED_TENURE_SVW"
-              transparent
-              uppercase
-              format="image/png"
-              attribution="OpenMaps"
-              styles="3646"
-              url="https://openmaps.gov.bc.ca/geo/pub/wms"
-            />
-          </Overlay>
-          <Overlay name="Mining Leases">
-            <WMSTileLayer
-              layers="WHSE_MINERAL_TENURE.MTA_ACQUIRED_TENURE_SVW"
-              transparent
-              uppercase
-              format="image/png"
-              attribution="OpenMaps"
-              styles="3644"
-              url="https://openmaps.gov.bc.ca/geo/pub/wms"
-            />
-          </Overlay>
-          <Overlay name="Mineral Claims">
-            <WMSTileLayer
-              layers="WHSE_MINERAL_TENURE.MTA_ACQUIRED_TENURE_SVW"
-              transparent
-              uppercase
-              format="image/png"
-              attribution="OpenMaps"
-              styles="3643"
-              url="https://openmaps.gov.bc.ca/geo/pub/wms"
-            />
-          </Overlay>
-          <Overlay name="Placer Leases">
-            <WMSTileLayer
-              layers="WHSE_MINERAL_TENURE.MTA_ACQUIRED_TENURE_SVW"
-              transparent
-              uppercase
-              format="image/png"
-              attribution="OpenMaps"
-              styles="3642"
-              url="https://openmaps.gov.bc.ca/geo/pub/wms"
-            />
-          </Overlay>
-          <Overlay name="Placer Claims">
-            <WMSTileLayer
-              layers="WHSE_MINERAL_TENURE.MTA_ACQUIRED_TENURE_SVW"
-              transparent
-              uppercase
-              format="image/png"
-              attribution="OpenMaps"
-              styles="3641"
-              url="https://openmaps.gov.bc.ca/geo/pub/wms"
-            />
-          </Overlay>
-          <Overlay name="Coal Licence Applications">
-            <WMSTileLayer
-              layers="WHSE_MINERAL_TENURE.MTA_ACQUIRED_TENURE_SVW"
-              transparent
-              uppercase
-              format="image/png"
-              attribution="OpenMaps"
-              styles="3638"
-              url="https://openmaps.gov.bc.ca/geo/pub/wms"
-            />
-          </Overlay>
-          <Overlay name="Crown Granted Mineral Claims">
-            <WMSTileLayer
-              layers="WHSE_MINERAL_TENURE.MTA_CROWN_GRANT_MIN_CLAIM_SVW"
-              transparent
-              uppercase
-              format="image/png"
-              attribution="OpenMaps"
-              url="https://openmaps.gov.bc.ca/geo/pub/wms"
-            />
-          </Overlay>
-          <Overlay name="Roads (DRA)">
-            <WMSTileLayer
-              layers="WHSE_BASEMAPPING.DRA_DGTL_ROAD_ATLAS_MPAR_SP"
-              transparent
-              uppercase
-              format="image/png"
-              attribution="OpenMaps"
-              url="https://openmaps.gov.bc.ca/geo/pub/wms"
-            />
-          </Overlay>
-          <Overlay name="Forest Tenure Roads">
-            <WMSTileLayer
-              layers="	WHSE_FOREST_TENURE.FTEN_ROAD_SECTION_LINES_SVW"
-              transparent
-              uppercase
-              format="image/png"
-              attribution="OpenMaps"
-              url="https://openmaps.gov.bc.ca/geo/pub/wms"
-            />
-          </Overlay>
-          <Overlay name="Contour Lines">
-            <WMSTileLayer
-              layers="WHSE_BASEMAPPING.NTS_BC_CONTOUR_LINES_125M"
-              transparent
-              uppercase
-              format="image/png"
-              attribution="OpenMaps"
-              url="https://openmaps.gov.bc.ca/geo/pub/wms"
-            />
-          </Overlay>
-          <Overlay name="Natural Resource Regions">
-            <WMSTileLayer
-              layers="WHSE_ADMIN_BOUNDARIES.ADM_NR_REGIONS_SPG"
-              transparent
-              uppercase
-              format="image/png"
-              attribution="OpenMaps"
-              url="https://openmaps.gov.bc.ca/geo/pub/wms"
-            />
-          </Overlay>
-          <Overlay name="Indian Reserves ">
-            <WMSTileLayer
-              layers="WHSE_ADMIN_BOUNDARIES.ADM_INDIAN_RESERVES_BANDS_SP"
-              transparent
-              uppercase
-              format="image/png"
-              attribution="OpenMaps"
-              url="https://openmaps.gov.bc.ca/geo/pub/wms"
-            />
-          </Overlay>
-        </LayersControl>
-      </Map>
-    );
+    return <div id="leaflet-map" />;
   }
 }
 
