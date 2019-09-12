@@ -41,7 +41,7 @@ import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as router from "@/constants/routes";
 import Loading from "@/components/common/Loading";
-// import MineMap from "@/components/maps/MineMap";
+import MineMap from "@/components/maps/MineMap";
 import MineMapLeaflet from "@/components/maps/MineMapLeaflet";
 import * as Strings from "@/constants/strings";
 import * as Permission from "@/constants/permissions";
@@ -94,6 +94,8 @@ const formatParams = ({
   ...joinOrRemove(tenure, "tenure"),
   ...remainingParams,
 });
+
+const switchToLeaflet = false;
 
 export class Dashboard extends Component {
   constructor(props) {
@@ -425,13 +427,16 @@ export class Dashboard extends Component {
               )}
               <Element name="mapElement">
                 <div>
-                  {/* <MineMap {...this.state} /> */}
-                  <MineMapLeaflet
-                    lat={this.state.lat}
-                    long={this.state.long}
-                    zoom={this.state.zoom}
-                    mines={this.props.pageData.mines}
-                  />
+                  {switchToLeaflet ? (
+                    <MineMapLeaflet
+                      lat={this.state.lat}
+                      long={this.state.long}
+                      zoom={this.state.zoom}
+                      mines={this.props.pageData.mines}
+                    />
+                  ) : (
+                    <MineMap {...this.state} />
+                  )}
                 </div>
               </Element>
             </TabPane>
