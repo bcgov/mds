@@ -93,6 +93,6 @@ PAGINATED_LIST = api.model(
         'total': fields.Integer,
     })
 
-PAGINATED_INCIDENT_LIST = api.inherit('VarianceList', PAGINATED_LIST, {
+PAGINATED_INCIDENT_LIST = api.inherit('IncidentList', PAGINATED_LIST, {
     'records': fields.List(fields.Nested(MINE_INCIDENT_MODEL)),
 })
