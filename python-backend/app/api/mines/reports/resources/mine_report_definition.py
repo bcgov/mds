@@ -6,7 +6,7 @@ from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
 from app.extensions import api, db
 from app.api.utils.resources_mixins import UserMixin
-from app.api.utils.access_decorators import requires_any_of, EDIT_REPORT, MINESPACE_PROPONENT
+from app.api.utils.access_decorators import requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
 
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
