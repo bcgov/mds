@@ -9,8 +9,6 @@ from tests.factories import MineIncidentFactory, MineFactory
 class TestGetIncidents:
     """GET /incidents"""
     # get all incidents
-    # filter by each of the following fields: "status" "determination" "codes" "year" "major" "search_terms" "region"
-    # sort by each field: "date",  "incident_no", "determination", "status", "mine_name"
     def test_get_incidents(self, test_client, db_session, auth_headers):
         """Should return all records and a 200 response code"""
         batch_size = 20

@@ -26,8 +26,8 @@ class IncidentsResource(Resource, UserMixin, ErrorMixin):
             'determination':  'Comma-separated list of the inspectors determination, a three character code',
             'codes': 'Comma-separated list of code sub_paragraphs to include in results. Default: All status codes.',
             'incident_year': 'Return only incidents for this year',
-            'major': 'boolean indicating if variance is from a major or regional mine',
-            'region': 'Comma-separated list of regions the mines associated with the variances are located in',
+            'major': 'boolean indicating if incident is from a major or regional mine',
+            'region': 'Comma-separated list of regions the mines associated with the incident are located in',
             'sort_field': 'The field the returned results will be ordered by',
             'sort_dir': 'The direction by which the sort field is ordered',
         })
@@ -51,7 +51,7 @@ class IncidentsResource(Resource, UserMixin, ErrorMixin):
 
         records, pagination_details = self._apply_filters_and_pagination(args)
         if not records:
-            raise BadRequest('Unable to fetch variances.')
+            raise BadRequest('Unable to fetch incidents.')
         return {
             'records': records.all(),
             'current_page': pagination_details.page_number,

@@ -100,10 +100,10 @@ class MineIncident(AuditMixin, Base):
                                          lazy='joined',
                                          secondary='mine_incident_document_xref')
 
-    mine_table = db.relationship('Mine', lazy='joined')
-    mine_name = association_proxy('mine_table', 'mine_name')
-    mine_region = association_proxy('mine_table', 'mine_region')
-    major_mine_ind = association_proxy('mine_table', 'major_mine_ind')
+    mine = db.relationship('Mine', lazy='joined')
+    mine_name = association_proxy('mine', 'mine_name')
+    mine_region = association_proxy('mine', 'mine_region')
+    major_mine_ind = association_proxy('mine', 'major_mine_ind')
 
 
     @hybrid_property
