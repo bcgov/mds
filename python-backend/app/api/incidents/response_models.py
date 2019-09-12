@@ -2,11 +2,6 @@ from app.extensions import api
 from flask_restplus import fields
 
 
-class DateTime(fields.Raw):
-    def format(self, value):
-        return value.strftime("%Y-%m-%d %H:%M") if value else None
-
-
 MINE_INCIDENT_DETERMINATION_TYPE_MODEL = api.model(
     'Mine Incident Determination Type', {
         'mine_incident_determination_type_code': fields.String,
@@ -58,9 +53,9 @@ MINE_INCIDENT_MODEL = api.model(
         'mine_name': fields.String,
         'mine_region': fields.String,
         'major_mine_ind':fields.Boolean,
-        'incident_timestamp': DateTime,
+        'incident_timestamp': fields.DateTime,
         'incident_description': fields.String,
-        'reported_timestamp': DateTime,
+        'reported_timestamp': fields.DateTime,
         'reported_by_name': fields.String,
         'reported_by_email': fields.String,
         'reported_by_phone_no': fields.String,
