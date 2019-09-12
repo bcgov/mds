@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import L from "leaflet";
 import leafletWms from "leaflet.wms";
 import "leaflet/dist/leaflet.css";
+import PropTypes from "prop-types";
 
 /**
  * @class MineMapLeaflet.js is a Leaflet Map component.
@@ -10,9 +11,17 @@ import "leaflet/dist/leaflet.css";
  * https://stackoverflow.com/questions/46268753/filter-getfeatureinfo-results-leaflet-wms-plugin
  */
 
-const propTypes = {};
+const propTypes = {
+  lat: PropTypes.number.required,
+  long: PropTypes.number.required,
+  zoom: PropTypes.number.required,
+};
 
-const defaultProps = {};
+const defaultProps = {
+  lat: 52.324078,
+  long: -124.600199,
+  zoom: 6,
+};
 
 const leafletWMSTiledOptions = {
   transparent: true,
@@ -94,11 +103,13 @@ class MineMapLeaflet extends Component {
   }
 
   createMap() {
-    this.map = L.map("leaflet-map").setView([52.324078, -124.600199], 7);
+    this.map = L.map("leaflet-map").setView([this.props.lat, this.props.long], this.props.zoom);
     L.control.layers(this.getBaseMaps(), overlayLayers, { position: "topleft" }).addTo(this.map);
   }
 
   render() {
+    console.log("props", this.props);
+    console.log("state", this.state);
     return <div id="leaflet-map" />;
   }
 }
