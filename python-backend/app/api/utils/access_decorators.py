@@ -11,7 +11,6 @@ CLOSE_PERMIT = "core_close_permits"
 EDIT_DO = "core_edit_do"
 EDIT_VARIANCE = "core_edit_variances"
 MINESPACE_PROPONENT = "mds_minespace_proponents"
-CORE_ADMIN = "mds_administrative_users"
 DATA_CLEANUP = "mds_data_cleanup"
 
 

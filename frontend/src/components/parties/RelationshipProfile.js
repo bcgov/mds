@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import moment from "moment";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { Tabs, Table } from "antd";
@@ -193,9 +194,11 @@ export class RelationshipProfile extends Component {
       this.props.partyRelationships.length > 0 &&
       mine;
 
-    const filteredRelationships = this.props.partyRelationships.filter(
-      ({ mine_party_appt_type_code }) => mine_party_appt_type_code === typeCode
-    );
+    const filteredRelationships = this.props.partyRelationships
+      .sort((a, b) =>
+        moment(a.start_date, "YYYY-MM-DD") >= moment(b.start_date, "YYYY-MM-DD") ? -1 : 1
+      )
+      .filter(({ mine_party_appt_type_code }) => mine_party_appt_type_code === typeCode);
 
     if (isLoaded) {
       return (

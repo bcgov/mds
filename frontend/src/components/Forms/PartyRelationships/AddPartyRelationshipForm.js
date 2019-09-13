@@ -35,6 +35,10 @@ const defaultProps = {
   start_date: null,
 };
 
+const minePartyApptToValidate = ["PMT", "EOR", "MMG"];
+
+// This function checks to make sure that the proposed new appointment only violates
+// the current un-ended appointment. Only returns true or false no error messages.
 const checkCurrentAppointmentValidation = (
   currentStartDate,
   partyRelationshipType,
@@ -43,24 +47,18 @@ const checkCurrentAppointmentValidation = (
 ) => {
   const minePartyApptTypeCode = partyRelationshipType.mine_party_appt_type_code;
 
-  const existingEndedAppointments = partyRelationships.filter(
-    ({ mine_party_appt_type_code, related_guid, end_date }) => {
-      let match = mine_party_appt_type_code === minePartyApptTypeCode;
-      if (related_guid !== "") {
-        match = match && currentRelatedGuid === related_guid;
-      }
-      return match && end_date !== null;
+  const appointments = partyRelationships.filter(({ mine_party_appt_type_code, related_guid }) => {
+    let match = mine_party_appt_type_code === minePartyApptTypeCode;
+    if (related_guid !== "") {
+      match = match && currentRelatedGuid === related_guid;
     }
-  );
-  const currentAppointment = partyRelationships.filter(
-    ({ mine_party_appt_type_code, related_guid, end_date }) => {
-      let match = mine_party_appt_type_code === minePartyApptTypeCode;
-      if (related_guid !== "") {
-        match = match && currentRelatedGuid === related_guid;
-      }
-      return match && end_date === null;
-    }
-  );
+    return match;
+  });
+
+  const existingEndedAppointments = appointments.filter(({ end_date }) => end_date !== null);
+
+  const currentAppointment = appointments.filter(({ end_date }) => end_date === null);
+
   const newAppt = { start_date: currentStartDate, end_date: null };
 
   const errors = validateDateRanges(
@@ -83,6 +81,7 @@ const checkCurrentAppointmentValidation = (
   return false;
 };
 
+// returns validation errors to be displayed to the user.
 const checkDatesForOverlap = (values, props) => {
   const existingAppointments = props.partyRelationships.filter(
     ({ mine_party_appt_type_code, related_guid }) => {
@@ -104,14 +103,12 @@ const checkDatesForOverlap = (values, props) => {
   );
 };
 
+// Validate function that gets called on every touch of the form. This is ignored if the only error is that
+// appointment interferes with the current and the user has decided to end that appointment.
 const validate = (values, props) => {
   const errors = {};
   const minePartyApptTypeCode = props.partyRelationshipType.mine_party_appt_type_code;
-  if (
-    minePartyApptTypeCode === "PMT" ||
-    minePartyApptTypeCode === "MMG" ||
-    minePartyApptTypeCode === "EOR"
-  ) {
+  if (minePartyApptToValidate.includes(minePartyApptTypeCode)) {
     if (values.start_date && values.end_date) {
       if (moment(values.start_date) > moment(values.end_date)) {
         errors.end_date = "Must be after start date.";
@@ -144,8 +141,10 @@ export class AddPartyRelationshipForm extends Component {
     currentAppointment: {},
   };
 
+  // When the start_date and/or the related_guid are changed this checks to see if the the only appointment
+  // it violates is the current one. A state variable is set that toggles a check box if it only violates the current appointment.
   componentWillReceiveProps = (nextProps) => {
-    let passedValidation = false;
+    let toggleEndCurrentAppointment = false;
     let currentAppt;
     if (nextProps.start_date !== null) {
       if (
@@ -154,7 +153,7 @@ export class AddPartyRelationshipForm extends Component {
           nextProps.related_guid !== "") ||
         nextProps.partyRelationshipType.mine_party_appt_type_code === "MMG"
       ) {
-        passedValidation = checkCurrentAppointmentValidation(
+        toggleEndCurrentAppointment = checkCurrentAppointmentValidation(
           nextProps.start_date,
           nextProps.partyRelationshipType,
           nextProps.partyRelationships,
@@ -172,7 +171,7 @@ export class AddPartyRelationshipForm extends Component {
           }
         );
       }
-      if (passedValidation) {
+      if (toggleEndCurrentAppointment) {
         this.setState({ skipDateValidation: true });
         if (currentAppt && currentAppt.length === 1) {
           this.setState({ currentAppointment: currentAppt[0] });
