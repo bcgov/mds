@@ -3,25 +3,26 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.orm import validates
 
-from ....utils.models_mixins import Base
+from ....utils.models_mixins import Base, AuditMixin
 from app.extensions import db
 
 
-class Address(Base):
+class Address(Base, AuditMixin):
     __tablename__ = "address"
     address_id = db.Column(db.Integer, primary_key=True)
     suite_no = db.Column(db.String, nullable=True)
     address_line_1 = db.Column(db.String, nullable=True)
     address_line_2 = db.Column(db.String, nullable=True)
     city = db.Column(db.String, nullable=True)
-    sub_division_code = db.Column(
-        db.String,
-        db.ForeignKey('sub_division_code.sub_division_code'),
-        nullable=True)
+    sub_division_code = db.Column(db.String,
+                                  db.ForeignKey('sub_division_code.sub_division_code'),
+                                  nullable=True)
     post_code = db.Column(db.String, nullable=True)
     address_type_code = db.Column(db.String, nullable=False, server_default=FetchedValue())
 
     party = db.relationship('Party', lazy='joined', secondary='party_address_xref')
+
+    deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     def __repr__(self):
         return '<Address %r>' % self.address_id
@@ -46,13 +47,12 @@ class Address(Base):
                sub_division_code=None,
                post_code=None,
                add_to_session=True):
-        address = cls(
-            suite_no=suite_no,
-            address_line_1=address_line_1,
-            address_line_2=address_line_2,
-            city=city,
-            sub_division_code=sub_division_code,
-            post_code=post_code)
+        address = cls(suite_no=suite_no,
+                      address_line_1=address_line_1,
+                      address_line_2=address_line_2,
+                      city=city,
+                      sub_division_code=sub_division_code,
+                      post_code=post_code)
         if add_to_session:
             address.save(commit=False)
         return address
