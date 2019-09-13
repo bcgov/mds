@@ -245,6 +245,17 @@ app {
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/nris_api",
                     ]
                 ]
+                [
+                    'file':'openshift/tools/schemaspy.dc.json',
+                    'params':[
+                            'NAME':"schemaspy",
+                            'VERSION':"${app.deployment.version}",
+                            'SUFFIX': "${vars.deployment.suffix}",
+                            'BACKEND_HOST': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api",
+                            'APPLICATION_DOMAIN': "${vars.modules.'schemaspy'.HOST}",
+                            'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}"
+                    ]
+                ],
         ]
     }
 }
@@ -360,6 +371,9 @@ environments {
                 'mds-docman-backend' {
                     HOST = "http://mds-docman-backend${vars.deployment.suffix}:5001"
                     PATH = "/${vars.git.changeId}/document-manager"
+                }                
+                'schemaspy' {
+                    HOST = "mds-schemaspy-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                 }
                 'mds-redis' {
                     HOST = "http://mds-redis${vars.deployment.suffix}"
