@@ -16,7 +16,7 @@ import * as Permission from "@/constants/permissions";
 import { RED_CLOCK, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import NullScreen from "@/components/common/NullScreen";
 import { formatDate, compareCodes, getTableHeaders } from "@/utils/helpers";
-import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
+import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls";
 import * as Strings from "@/constants/strings";
 import { COLOR } from "@/constants/styles";
 import LinkButton from "@/components/common/LinkButton";

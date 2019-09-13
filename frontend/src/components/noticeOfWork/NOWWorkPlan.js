@@ -4,6 +4,8 @@ import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
 import NullScreen from "@/components/common/NullScreen";
 import NOWActivities from "@/components/noticeOfWork/NOWActivities";
+import LinkButton from "@/components/common/LinkButton";
+import { downloadNowDocument } from "@/utils/actionlessNetworkCalls";
 
 const propTypes = {
   noticeOfWork: CustomPropTypes.nowApplication.isRequired,
@@ -143,13 +145,14 @@ export class NOWWorkPlan extends Component {
         key: "filename",
         render: (text, record) => (
           <div title="File Name">
-            {record.url ? (
-              <a href={record.url} target="_blank" rel="noopener noreferrer">
-                {text}
-              </a>
-            ) : (
+            <LinkButton
+              key={record.id}
+              onClick={() =>
+                downloadNowDocument(record.id, record.application_guid, record.filename)
+              }
+            >
               <span>{text}</span>
-            )}
+            </LinkButton>
           </div>
         ),
       },
@@ -167,8 +170,10 @@ export class NOWWorkPlan extends Component {
       },
     ];
 
-    const transfromData = (documents) =>
+    const transfromData = (documents, application_guid) =>
       documents.map((document) => ({
+        id: document.id,
+        application_guid,
         filename: document.filename || Strings.EMPTY_FIELD,
         url: document.documenturl,
         category: document.documenttype || Strings.EMPTY_FIELD,
@@ -186,7 +191,10 @@ export class NOWWorkPlan extends Component {
               align="left"
               pagination={false}
               columns={columns}
-              dataSource={transfromData(this.props.noticeOfWork.documents)}
+              dataSource={transfromData(
+                this.props.noticeOfWork.documents,
+                this.props.noticeOfWork.application_guid
+              )}
               locale={{ emptyText: "There are no documents associated with this Notice of Work" }}
             />
           ) : (

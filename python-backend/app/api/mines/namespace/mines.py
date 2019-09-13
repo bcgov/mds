@@ -31,6 +31,7 @@ from app.api.mines.permits.permit.resources.permit_status_code import PermitStat
 from app.api.mines.permits.permit_amendment.resources.permit_amendment import PermitAmendmentResource, PermitAmendmentListResource
 from app.api.mines.permits.permit_amendment.resources.permit_amendment_document import PermitAmendmentDocumentListResource, PermitAmendmentDocumentResource
 from app.api.mines.now_submissions.resources.application_resource import MineApplicationResource
+from app.api.parties.party_appt.resources.mine_party_appt_document_upload_resource import MinePartyApptDocumentUploadResource
 
 api = Namespace('mines', description='Mine related operations')
 
@@ -117,3 +118,6 @@ api.add_resource(
 )
 
 api.add_resource(MineApplicationResource, '/<string:mine_guid>/now-submissions/applications')
+
+api.add_resource(MinePartyApptDocumentUploadResource,
+                 '/<string:mine_guid>/party-appts/<string:mine_party_appt_guid>/documents')

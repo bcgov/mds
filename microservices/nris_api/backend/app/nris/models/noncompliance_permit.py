@@ -14,6 +14,8 @@ NONCOMPLIANCE_RESPONSE_MODEL = api.model('noncompliance_permit', {
 
 class NonCompliancePermit(Base):
     __tablename__ = "noncompliance_permit"
+    __table_args__ = {
+        'comment': 'For an issued order, this table contains the additional details about the permit conditions found to be in non-compliance.'}
     noncompliance_permit_id = db.Column(db.Integer, primary_key=True)
     order_stop_detail_id = db.Column(db.Integer,
                                      db.ForeignKey('order_stop_detail.order_stop_detail_id'))

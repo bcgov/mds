@@ -198,3 +198,22 @@ export const fetchInspectors = () => (dispatch) => {
     .catch(() => dispatch(error(reducerTypes.GET_INSPECTORS)))
     .finally(() => dispatch(hideLoading("modal")));
 };
+
+export const addDocumentToRelationship = ({ mineGuid, minePartyApptGuid }, payload) => (
+  dispatch
+) => {
+  dispatch(showLoading("modal"));
+  dispatch(request(reducerTypes.ADD_DOCUMENT_TO_RELATIONSHIP));
+  return CustomAxios()
+    .put(
+      ENVIRONMENT.apiUrl + API.MINE_PARTY_APPOINTMENT_DOCUMENTS(mineGuid, minePartyApptGuid),
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.ADD_DOCUMENT_TO_RELATIONSHIP));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.ADD_DOCUMENT_TO_RELATIONSHIP)))
+    .finally(() => dispatch(hideLoading("modal")));
+};

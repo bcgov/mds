@@ -1,0 +1,1 @@
+ALTER TABLE now_submissions.application ADD COLUMN originating_system character varying(8) not NULL;

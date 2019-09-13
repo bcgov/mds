@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Button, Tag, Table } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
-import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
+import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls";
 import { getInspectorsHash } from "@/selectors/partiesSelectors";
 import LinkButton from "@/components/common/LinkButton";
 import {
