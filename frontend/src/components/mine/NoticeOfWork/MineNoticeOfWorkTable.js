@@ -7,8 +7,8 @@ import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
 import * as router from "@/constants/routes";
 import NullScreen from "@/components/common/NullScreen";
-
-import { formatDate } from "@/utils/helpers";
+import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
+import { formatDate, getTableHeaders } from "@/utils/helpers";
 
 /**
  * @class MineNoticeOfWorkTable - list of mine notice of work applications
@@ -19,6 +19,7 @@ const propTypes = {
   sortField: PropTypes.string,
   sortDir: PropTypes.string,
   searchParams: PropTypes.objectOf(PropTypes.string),
+  isLoaded: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -141,18 +142,25 @@ export class MineNoticeOfWorkTable extends Component {
 
   render() {
     return (
-      <Table
-        align="left"
-        pagination={false}
-        columns={applySortIndicator(
-          this.columns(this.props),
-          this.props.sortField,
-          this.props.sortDir
-        )}
-        dataSource={transformRowData(this.props.noticeOfWorkApplications)}
-        locale={{ emptyText: <NullScreen type="no-results" /> }}
-        onChange={handleTableChange(this.props.handleSearch)}
-      />
+      <TableLoadingWrapper
+        condition={this.props.isLoaded}
+        tableHeaders={getTableHeaders(this.columns())}
+      >
+        <Table
+          align="left"
+          pagination={false}
+          columns={applySortIndicator(
+            this.columns(this.props),
+            this.props.sortField,
+            this.props.sortDir
+          )}
+          dataSource={transformRowData(this.props.noticeOfWorkApplications)}
+          locale={{
+            emptyText: <NullScreen type="no-results" />,
+          }}
+          onChange={handleTableChange(this.props.handleSearch)}
+        />
+      </TableLoadingWrapper>
     );
   }
 }

@@ -119,7 +119,9 @@ export const ContactList = (props) => (
       pagination={false}
       columns={applySortIndicator(columns, props.sortField, props.sortDir)}
       dataSource={transformRowData(props.parties, props.relationshipTypeHash)}
-      locale={{ emptyText: <NullScreen type="no-results" /> }}
+      locale={{
+        emptyText: <NullScreen type="no-results" />,
+      }}
       onChange={handleTableChange(props.handleSearch)}
     />
   </TableLoadingWrapper>

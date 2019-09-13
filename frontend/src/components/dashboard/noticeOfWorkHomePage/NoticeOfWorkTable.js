@@ -7,8 +7,8 @@ import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
 import * as router from "@/constants/routes";
 import NullScreen from "@/components/common/NullScreen";
-
-import { formatDate, optionsFilterAdapter } from "@/utils/helpers";
+import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
+import { formatDate, optionsFilterAdapter, getTableHeaders } from "@/utils/helpers";
 
 /**
  * @class NoticeOfWorkTable - paginated list of notice of work applications
@@ -21,6 +21,7 @@ const propTypes = {
   searchParams: PropTypes.shape({ mine_region: PropTypes.arrayOf(PropTypes.string) }),
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
+  isLoaded: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -175,18 +176,24 @@ export class NoticeOfWorkTable extends Component {
 
   render() {
     return (
-      <Table
-        align="left"
-        pagination={false}
-        columns={applySortIndicator(
-          this.columns(this.props),
-          this.props.sortField,
-          this.props.sortDir
-        )}
-        dataSource={this.transformRowData(this.props.noticeOfWorkApplications)}
-        locale={{ emptyText: <NullScreen type="no-results" /> }}
-        onChange={handleTableChange(this.props.handleSearch)}
-      />
+      <TableLoadingWrapper
+        condition={this.props.isLoaded}
+        tableHeaders={getTableHeaders(this.columns())}
+      >
+        <Table
+          rowClassName="fade-in"
+          align="left"
+          pagination={false}
+          columns={applySortIndicator(
+            this.columns(this.props),
+            this.props.sortField,
+            this.props.sortDir
+          )}
+          dataSource={this.transformRowData(this.props.noticeOfWorkApplications)}
+          locale={{ emptyText: <NullScreen type="no-results" /> }}
+          onChange={handleTableChange(this.props.handleSearch)}
+        />
+      </TableLoadingWrapper>
     );
   }
 }

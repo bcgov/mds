@@ -10,7 +10,6 @@ import CustomPropTypes from "@/customPropTypes";
 import { getMineRegionHash } from "@/selectors/staticContentSelectors";
 import { fetchRegionOptions } from "@/actionCreators/staticContentActionCreator";
 import MineNoticeOfWorkTable from "@/components/mine/NoticeOfWork/MineNoticeOfWorkTable";
-import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import { fetchMineNoticeOfWorkApplications } from "@/actionCreators/noticeOfWorkActionCreator";
 import { getNoticeOfWorkList } from "@/selectors/noticeOfWorkSelectors";
 import { getMineGuid } from "@/selectors/mineSelectors";
@@ -90,16 +89,15 @@ export class MineNOWApplications extends Component {
           <h2>Notice of Work Applications</h2>
           <Divider />
         </div>
-        <LoadingWrapper condition={this.state.isLoaded} type="table-skeleton">
-          <MineNoticeOfWorkTable
-            handleSearch={this.handleSearch}
-            noticeOfWorkApplications={this.props.noticeOfWorkApplications}
-            sortField={this.state.params.sort_field}
-            sortDir={this.state.params.sort_dir}
-            searchParams={this.state.params}
-            mineRegionHash={this.props.mineRegionHash}
-          />
-        </LoadingWrapper>
+        <MineNoticeOfWorkTable
+          isLoaded={this.state.isLoaded}
+          handleSearch={this.handleSearch}
+          noticeOfWorkApplications={this.props.noticeOfWorkApplications}
+          sortField={this.state.params.sort_field}
+          sortDir={this.state.params.sort_dir}
+          searchParams={this.state.params}
+          mineRegionHash={this.props.mineRegionHash}
+        />
       </div>
     );
   }

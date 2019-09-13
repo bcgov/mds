@@ -39,7 +39,7 @@ export const TableLoadingWrapper = (props) => {
         <div className="skeleton-table">
           <Table
             align="left"
-            paginationPerPage={false}
+            pagination={false}
             columns={renderColumns}
             rowKey={props.tableHeaders.map((title) => title)}
             dataSource={new Array(props.paginationPerPage).fill({})}
