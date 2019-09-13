@@ -260,7 +260,7 @@ export default compose(
   })),
   reduxForm({
     form: FORM.ADD_REPORT,
-    touchOnBlur: true,
+    touchOnBlur: false,
     onSubmitSuccess: resetForm(FORM.ADD_REPORT),
   })
 )(AddReportForm);
