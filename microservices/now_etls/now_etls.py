@@ -24,7 +24,10 @@ def etl_now_submission_data():
         user=DB_USER, password=DB_PASS, dbname=DB_NAME)
 
     click.echo('Beginning ETL')
-    NOW_submissions_ETL(connection)
+    try:
+        NOW_submissions_ETL(connection)
+    finally:
+        connection.close()
 
 
 if __name__ == '__main__':

@@ -636,6 +636,7 @@ class NOWApplicationFactory(BaseFactory):
     status = random.choice(['Approved', 'Rejected', 'Received', 'Client Delayed'])
     receiveddate = factory.Faker('past_datetime')
     minenumber = factory.Faker('word')
+    originating_system = random.choice(['NROS','VFCBC'])
 
     @factory.post_generation
     def documents(obj, create, extracted, **kwargs):
