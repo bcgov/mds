@@ -166,6 +166,7 @@ class Application(Base):
     nrsosapplicationid = db.Column(db.String)
     isblastselect = db.Column(db.String)
     istimberselect = db.Column(db.String)
+    originating_system = db.Column(db.String)
 
     mine = db.relationship('Mine', lazy='joined')
 
