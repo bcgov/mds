@@ -48,16 +48,14 @@ const mapPermitGuidToNumber = (permits) =>
     return acc;
   }, {});
 
-const mapTSFGuidToName = (tailings) => {
-  const tail = tailings.reduce(
+const mapTSFGuidToName = (tailings) =>
+  tailings.reduce(
     (acc, { mine_tailings_storage_facility_guid, mine_tailings_storage_facility_name }) => {
       acc[mine_tailings_storage_facility_guid] = mine_tailings_storage_facility_name;
       return acc;
     },
     {}
   );
-  return tail;
-};
 
 const getPartyRelationshipTitle = (partyRelationshipTypes, typeCode) => {
   const partyRelationshipType = partyRelationshipTypes.find(({ value }) => value === typeCode);

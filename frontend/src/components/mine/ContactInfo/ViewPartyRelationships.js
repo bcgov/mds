@@ -86,7 +86,11 @@ export class ViewPartyRelationships extends Component {
     const payload = {
       mine_guid: this.props.mine.mine_guid,
       mine_party_appt_type_code: this.state.selectedPartyRelationshipType,
-      ...values,
+      party_guid: values.party_guid,
+      related_guid: values.related_guid,
+      start_date: values.start_date,
+      end_date: values.end_date,
+      end_current: values.end_current,
     };
 
     return this.props
