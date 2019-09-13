@@ -20,3 +20,18 @@ export const OPEN_DOC = {
 };
 
 export const DOCUMENT = { ...PDF, ...DOC, ...OPEN_DOC };
+
+export const SPATIAL = {
+  "application/dbf": ".dbf",
+  "application/vnd.geo+json ": ".geoJSon",
+  "application/gml+xml": ".gml",
+  "application/vnd.google-earth.kml+xml ": ".kml",
+  "application/vnd.google-earth.kmz": ".kmz",
+  "application/octet-stream": ".prj",
+  "application/octet-stream": ".sbn",
+  "application/octet-stream": ".sbx",
+  "application/octet-stream": ".shp",
+  "application/octet-stream": ".shpz",
+  "application/octet-stream": ".shx",
+  "application/octet-stream": ".wkt",
+};
