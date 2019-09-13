@@ -244,7 +244,7 @@ app {
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/nris_api",
                     ]
-                ]
+                ],
                 [
                     'file':'openshift/tools/schemaspy.dc.json',
                     'params':[
@@ -255,7 +255,7 @@ app {
                             'APPLICATION_DOMAIN': "${vars.modules.'schemaspy'.HOST}",
                             'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}"
                     ]
-                ],
+                ]
         ]
     }
 }
