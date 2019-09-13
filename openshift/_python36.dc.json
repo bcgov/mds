@@ -64,6 +64,21 @@
       "value": "template.mds-nris-secret"
     },
     {
+      "name": "MDS_NROS_DOCUMENT_API_SECRET",
+      "required": false,
+      "value": "template.mds-nros-client-service"
+    },
+    {
+      "name": "MDS_VFCBC_DOCUMENT_API_SECRET",
+      "required": false,
+      "value": "template.mds-vfcbc-client-service"
+    },
+    {
+      "name": "MDS_NRIS_API_SECRET",
+      "required": false,
+      "value": "template.mds-nris-secret"
+    },
+    {
       "name": "MDS_IDIR_SECRET",
       "required": false,
       "value": "template.mds-idir-secret"
@@ -450,6 +465,60 @@
                   {
                     "name": "METABASE_SITE_URL",
                     "value": "${METABASE_SITE_URL}"
+                  },
+                  {
+                    "name": "NROS_TOKEN_URL",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${MDS_NROS_DOCUMENT_API_SECRET}",
+                        "key": "token-url"
+                      }
+                    }
+                  },
+                  {
+                    "name": "NROS_CLIENT_ID",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${MDS_NROS_DOCUMENT_API_SECRET}",
+                        "key": "service-client"
+                      }
+                    }
+                  },
+                  {
+                    "name": "NROS_CLIENT_SECRET",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${MDS_NROS_DOCUMENT_API_SECRET}",
+                        "key": "password"
+                      }
+                    }
+                  },
+                  {
+                    "name": "VFCBC_TOKEN_URL",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${MDS_VFCBC_DOCUMENT_API_SECRET}",
+                        "key": "token-url"
+                      }
+                    }
+                  },
+                  {
+                    "name": "VFCBC_CLIENT_ID",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${MDS_VFCBC_DOCUMENT_API_SECRET}",
+                        "key": "service-client"
+                      }
+                    }
+                  },
+                  {
+                    "name": "VFCBC_CLIENT_SECRET",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${MDS_VFCBC_DOCUMENT_API_SECRET}",
+                        "key": "password"
+                      }
+                    }
                   }
                 ],
                 "resources": {
