@@ -42,7 +42,8 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import * as router from "@/constants/routes";
 import Loading from "@/components/common/Loading";
 import MineMap from "@/components/maps/MineMap";
-import * as String from "@/constants/strings";
+import MineMapLeaflet from "@/components/maps/MineMapLeaflet";
+import * as Strings from "@/constants/strings";
 import * as Permission from "@/constants/permissions";
 import * as ModalContent from "@/constants/modalContent";
 import AddButton from "@/components/common/AddButton";
@@ -94,20 +95,22 @@ const formatParams = ({
   ...remainingParams,
 });
 
+const switchToLeaflet = false;
+
 export class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.handleMineSearchDebounced = debounce(this.handleMineSearch, 1000);
     this.state = {
       mineList: false,
-      lat: Number(String.DEFAULT_LAT),
-      long: Number(String.DEFAULT_LONG),
-      zoom: String.DEFAULT_ZOOM,
+      lat: Number(Strings.DEFAULT_LAT),
+      long: Number(Strings.DEFAULT_LONG),
+      zoom: Strings.DEFAULT_ZOOM,
       showCoordinates: false,
       mineName: null,
       params: {
-        page: String.DEFAULT_PAGE,
-        per_page: String.DEFAULT_PER_PAGE,
+        page: Strings.DEFAULT_PAGE,
+        per_page: Strings.DEFAULT_PER_PAGE,
         major: [],
         tsf: [],
         status: [],
@@ -126,8 +129,8 @@ export class Dashboard extends Component {
     } else {
       this.props.history.push(
         router.MINE_HOME_PAGE.dynamicRoute({
-          page: String.DEFAULT_PAGE,
-          per_page: String.DEFAULT_PER_PAGE,
+          page: Strings.DEFAULT_PAGE,
+          per_page: Strings.DEFAULT_PER_PAGE,
         })
       );
     }
@@ -154,9 +157,9 @@ export class Dashboard extends Component {
     this.handleMineSearchDebounced.cancel();
     this.setState({
       params: {},
-      lat: Number(String.DEFAULT_LAT),
-      long: Number(String.DEFAULT_LONG),
-      zoom: String.DEFAULT_ZOOM,
+      lat: Number(Strings.DEFAULT_LAT),
+      long: Number(Strings.DEFAULT_LONG),
+      zoom: Strings.DEFAULT_ZOOM,
     });
   }
 
@@ -202,7 +205,7 @@ export class Dashboard extends Component {
       this.setState({
         lat: Number(format(lat)[0]),
         long: Number(format(long)[0]),
-        zoom: format(zoom)[0] ? Number(format(zoom)[0]) : String.DEFAULT_ZOOM,
+        zoom: format(zoom)[0] ? Number(format(zoom)[0]) : Strings.DEFAULT_ZOOM,
         showCoordinates: true,
         mineName: format(mineName)[0],
       });
@@ -232,26 +235,26 @@ export class Dashboard extends Component {
           router.MINE_HOME_PAGE.mapRoute({
             lat: newVal[1],
             long: newVal[0],
-            zoom: String.HIGH_ZOOM,
+            zoom: Strings.HIGH_ZOOM,
             mineName: newVal[2],
           })
         );
         this.handleScroll("mapElement", -60);
       } else {
         this.setState({
-          lat: Number(String.DEFAULT_LAT),
-          long: Number(String.DEFAULT_LONG),
-          zoom: String.DEFAULT_ZOOM,
+          lat: Number(Strings.DEFAULT_LAT),
+          long: Number(Strings.DEFAULT_LONG),
+          zoom: Strings.DEFAULT_ZOOM,
           showCoordinates: false,
         });
-        notification.error({ message: String.NO_COORDINATES, duration: 10 });
+        notification.error({ message: Strings.NO_COORDINATES, duration: 10 });
       }
     } else {
       this.props.history.push(
         router.MINE_HOME_PAGE.mapRoute({
           lat: value.latitude,
           long: value.longitude,
-          zoom: String.HIGH_ZOOM,
+          zoom: Strings.HIGH_ZOOM,
         })
       );
       this.handleScroll("mapElement", -60);
@@ -274,9 +277,9 @@ export class Dashboard extends Component {
       mineList: false,
       showCoordinates: false,
       mineName: "",
-      lat: Number(String.DEFAULT_LAT),
-      long: Number(String.DEFAULT_LONG),
-      zoom: String.DEFAULT_ZOOM,
+      lat: Number(Strings.DEFAULT_LAT),
+      long: Number(Strings.DEFAULT_LONG),
+      zoom: Strings.DEFAULT_ZOOM,
     });
     if (key === "map") {
       this.props.history.push(router.MINE_HOME_PAGE.mapRoute());
@@ -296,9 +299,11 @@ export class Dashboard extends Component {
         // Overwrite prev params with any newly provided search params
         ...formattedSearchParams,
         // Reset page number
-        page: String.DEFAULT_PAGE,
+        page: Strings.DEFAULT_PAGE,
         // Retain per_page if present
-        per_page: this.state.params.per_page ? this.state.params.per_page : String.DEFAULT_PER_PAGE,
+        per_page: this.state.params.per_page
+          ? this.state.params.per_page
+          : Strings.DEFAULT_PER_PAGE,
       })
     );
   };
@@ -422,7 +427,17 @@ export class Dashboard extends Component {
               )}
               <Element name="mapElement">
                 <div>
-                  <MineMap {...this.state} />
+                  {switchToLeaflet ? (
+                    <MineMapLeaflet
+                      lat={this.state.lat}
+                      long={this.state.long}
+                      zoom={this.state.zoom}
+                      mines={this.props.pageData.mines}
+                      mineName={this.state.mineName}
+                    />
+                  ) : (
+                    <MineMap {...this.state} />
+                  )}
                 </div>
               </Element>
             </TabPane>

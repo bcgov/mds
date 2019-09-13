@@ -134,11 +134,6 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/dashboard/executive-reporting"
   />
   <Route
-    component={[Function]}
-    exact={true}
-    path="/dashboard/new-map"
-  />
-  <Route
     component={
       Object {
         "$$typeof": Symbol(react.memo),
