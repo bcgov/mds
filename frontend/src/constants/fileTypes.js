@@ -21,7 +21,7 @@ export const OPEN_DOC = {
 
 export const DOCUMENT = { ...PDF, ...DOC, ...OPEN_DOC };
 
-export const SPATIAL = {
+export const UNIQUELY_SPATIAL = {
   "application/dbf": ".dbf",
   "application/vnd.geo+json ": ".geoJSon",
   "application/gml+xml": ".gml",
@@ -35,3 +35,5 @@ export const SPATIAL = {
   "application/octet-stream": ".shx",
   "application/octet-stream": ".wkt",
 };
+
+export const SPATIAL = { ...UNIQUELY_SPATIAL, "text/csv": ".csv", "application/xml": ".xml" };

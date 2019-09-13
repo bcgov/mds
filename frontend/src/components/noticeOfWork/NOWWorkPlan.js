@@ -6,7 +6,7 @@ import NullScreen from "@/components/common/NullScreen";
 import NOWActivities from "@/components/noticeOfWork/NOWActivities";
 import LinkButton from "@/components/common/LinkButton";
 import { downloadNowDocument } from "@/utils/actionlessNetworkCalls";
-import { SPATIAL } from "@/constants/fileTypes";
+import { UNIQUELY_SPATIAL } from "@/constants/fileTypes";
 
 const propTypes = {
   noticeOfWork: CustomPropTypes.nowApplication.isRequired,
@@ -172,7 +172,9 @@ export class NOWWorkPlan extends Component {
 
     const isSpatialFile = (document) =>
       document.documenttype === "SpatialFileDoc" ||
-      Object.values(SPATIAL).includes(document.filename.substr(document.filename.length - 4));
+      Object.values(UNIQUELY_SPATIAL).includes(
+        document.filename.substr(document.filename.length - 4)
+      );
 
     const transfromData = (documents, application_guid, spatial = false) =>
       documents
