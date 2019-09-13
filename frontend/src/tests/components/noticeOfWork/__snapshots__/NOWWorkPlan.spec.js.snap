@@ -576,15 +576,19 @@ exports[`NOWWorkPlan renders properly 1`] = `
         dataSource={
           Array [
             Object {
+              "application_guid": "89ce70bc-a34b-4ec6-aff0-704ba68c4606",
               "category": "N/A",
               "description": "N/A",
               "filename": "N/A",
+              "id": undefined,
               "url": null,
             },
             Object {
+              "application_guid": "89ce70bc-a34b-4ec6-aff0-704ba68c4606",
               "category": "N/A",
               "description": "N/A",
               "filename": "N/A",
+              "id": undefined,
               "url": null,
             },
           ]
