@@ -360,7 +360,7 @@ environments {
                 'mds-docman-backend' {
                     HOST = "http://mds-docman-backend${vars.deployment.suffix}:5001"
                     PATH = "/${vars.git.changeId}/document-manager"
-                }                
+                }
                 'mds-redis' {
                     HOST = "http://mds-redis${vars.deployment.suffix}"
                 }
