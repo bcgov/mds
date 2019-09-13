@@ -5,6 +5,7 @@ import "leaflet/dist/leaflet.css";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
+import { SMALL_PIN } from "@/constants/assets";
 
 /**
  * @class MineMapLeaflet.js is a Leaflet Map component.
@@ -110,8 +111,7 @@ class MineMapLeaflet extends Component {
 
   createPin = (mine) => {
     const customicon = L.icon({
-      iconUrl:
-        "https://www.pngfind.com/pngs/m/5-59794_facebook-haha-emoji-emoticon-vector-logo-download-smile.png",
+      iconUrl: SMALL_PIN,
       iconSize: [60, 60],
     });
     L.marker([mine.mine_location.latitude, mine.mine_location.longitude], { icon: customicon })
