@@ -1,9 +1,47 @@
 import CustomAxios from "@/customAxios";
 import { createRequestHeader } from "@/utils/RequestHeaders";
 import { ENVIRONMENT } from "@/constants/environment";
-import { DOCUMENT_MANAGER_FILE_GET_URL, DOCUMENT_MANAGER_TOKEN_GET_URL } from "@/constants/API";
+import {
+  DOCUMENT_MANAGER_FILE_GET_URL,
+  DOCUMENT_MANAGER_TOKEN_GET_URL,
+  NOTICE_OF_WORK_DOCUMENT_FILE_GET_URL,
+  NOTICE_OF_WORK_DOCUMENT_TOKEN_GET_URL,
+} from "@/constants/API";
 
-const downloadFileFromDocumentManager = ({ document_manager_guid, document_name = "" }) => {
+export const downloadNowDocument = (id, applicationGuid, fileName) => {
+  if (!id) {
+    throw new Error("Must provide id");
+  }
+
+  if (!applicationGuid) {
+    throw new Error("Must provide applicationGuid");
+  }
+
+  if (!fileName) {
+    throw new Error("Must provide fileName");
+  }
+
+  CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl + NOTICE_OF_WORK_DOCUMENT_TOKEN_GET_URL(id, applicationGuid)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      const token = { token: response.data.token_guid };
+      if (fileName.toLowerCase().includes(".pdf")) {
+        window.open(
+          `${ENVIRONMENT.apiUrl +
+            NOTICE_OF_WORK_DOCUMENT_FILE_GET_URL(id, applicationGuid, token)}`,
+          "_blank"
+        );
+      } else {
+        window.location = `${ENVIRONMENT.apiUrl +
+          NOTICE_OF_WORK_DOCUMENT_FILE_GET_URL(id, applicationGuid, token)}`;
+      }
+    });
+};
+
+export const downloadFileFromDocumentManager = ({ document_manager_guid, document_name = "" }) => {
   if (!document_manager_guid) {
     throw new Error("Must provide docManagerGuid");
   }
@@ -22,5 +60,3 @@ const downloadFileFromDocumentManager = ({ document_manager_guid, document_name 
       }
     });
 };
-
-export default downloadFileFromDocumentManager;
