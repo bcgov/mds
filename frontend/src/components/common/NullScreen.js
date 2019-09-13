@@ -35,7 +35,7 @@ const defaultProps = {
 };
 
 const NullScreen = (props) => (
-  <div className="null-screen">
+  <div className="null-screen fade-in">
     {props.type === "dashboard" && (
       <div>
         <img alt="mine_img" src={NO_MINE} />

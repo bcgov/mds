@@ -41,6 +41,7 @@ const propTypes = {
   sortField: PropTypes.string,
   sortDir: PropTypes.string,
   isLoaded: PropTypes.bool.isRequired,
+  paginationPerPage: PropTypes.number,
 };
 
 const defaultProps = {
@@ -52,6 +53,7 @@ const defaultProps = {
   params: {},
   sortField: null,
   sortDir: null,
+  paginationPerPage: 9,
 };
 
 const errorStyle = (isOverdue) => (isOverdue ? { color: errorRed } : {});
@@ -302,7 +304,11 @@ export class MineVarianceTable extends Component {
     ];
 
     return (
-      <TableLoadingWrapper condition={this.props.isLoaded} tableHeaders={getTableHeaders(columns)}>
+      <TableLoadingWrapper
+        condition={this.props.isLoaded}
+        tableHeaders={getTableHeaders(columns)}
+        paginationPerPage={this.props.paginationPerPage}
+      >
         <Table
           rowClassName="fade-in"
           onChange={
