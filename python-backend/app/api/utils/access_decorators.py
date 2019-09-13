@@ -11,7 +11,6 @@ CLOSE_PERMIT = "core_close_permits"
 EDIT_DO = "core_edit_do"
 EDIT_VARIANCE = "core_edit_variances"
 MINESPACE_PROPONENT = "mds_minespace_proponents"
-DATA_CLEANUP = "mds_data_cleanup"
 
 
 def requires_role_view_all(func):
