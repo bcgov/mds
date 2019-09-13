@@ -19,6 +19,7 @@ const propTypes = {
   long: PropTypes.number,
   zoom: PropTypes.number,
   mines: PropTypes.arrayOf(CustomPropTypes.mine),
+  mineName: PropTypes.string,
 };
 
 const defaultProps = {
@@ -26,6 +27,7 @@ const defaultProps = {
   long: Strings.DEFAULT_LONG,
   zoom: Strings.DEFAULT_ZOOM,
   mines: [],
+  mineName: "",
 };
 
 const leafletWMSTiledOptions = {
@@ -114,7 +116,19 @@ class MineMapLeaflet extends Component {
       iconUrl: SMALL_PIN,
       iconSize: [60, 60],
     });
-    L.marker([mine.mine_location.latitude, mine.mine_location.longitude], { icon: customicon })
+    const latLong = [mine.mine_location.latitude, mine.mine_location.longitude];
+
+    if (this.props.mineName === mine.mine_name) {
+      L.circle(latLong, {
+        color: "red",
+        fillColor: "#f03",
+        fillOpacity: 0.25,
+        radius: 500,
+        stroke: false,
+      }).addTo(this.map);
+    }
+
+    L.marker(latLong, { icon: customicon })
       .addTo(this.map)
       .bindPopup(this.renderPopup(mine));
   };
@@ -125,7 +139,9 @@ class MineMapLeaflet extends Component {
   }
 
   renderPopup = (mine) => {
-    return `<div><strong>Mine No.</strong> ${mine.mine_name} </div>
+    return `<div>${mine.mine_name}</div>
+            </br>
+            <div><strong>Mine No.</strong> ${mine.mine_no} </div>
             <div><strong>Permit No.</strong></div>
             <div><strong>Commidities</strong></div>
            `;

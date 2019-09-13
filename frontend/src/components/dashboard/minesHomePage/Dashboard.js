@@ -95,7 +95,7 @@ const formatParams = ({
   ...remainingParams,
 });
 
-const switchToLeaflet = false;
+const switchToLeaflet = true;
 
 export class Dashboard extends Component {
   constructor(props) {
@@ -433,6 +433,7 @@ export class Dashboard extends Component {
                       long={this.state.long}
                       zoom={this.state.zoom}
                       mines={this.props.pageData.mines}
+                      mineName={this.state.mineName}
                     />
                   ) : (
                     <MineMap {...this.state} />
