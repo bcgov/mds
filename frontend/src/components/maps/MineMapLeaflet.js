@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import L from "leaflet";
 import leafletWms from "leaflet.wms";
 import "leaflet/dist/leaflet.css";
+import PropTypes from "prop-types";
+import CustomPropTypes from "@/customPropTypes";
+import * as Strings from "@/constants/strings";
+import { SMALL_PIN } from "@/constants/assets";
 
 /**
  * @class MineMapLeaflet.js is a Leaflet Map component.
@@ -9,6 +13,22 @@ import "leaflet/dist/leaflet.css";
  * TODO: Style the results using
  * https://stackoverflow.com/questions/46268753/filter-getfeatureinfo-results-leaflet-wms-plugin
  */
+
+const propTypes = {
+  lat: PropTypes.number,
+  long: PropTypes.number,
+  zoom: PropTypes.number,
+  mines: PropTypes.arrayOf(CustomPropTypes.mine),
+  mineName: PropTypes.string,
+};
+
+const defaultProps = {
+  lat: Strings.DEFAULT_LAT,
+  long: Strings.DEFAULT_LONG,
+  zoom: Strings.DEFAULT_ZOOM,
+  mines: [],
+  mineName: "",
+};
 
 const leafletWMSTiledOptions = {
   transparent: true,
@@ -66,6 +86,8 @@ const overlayLayers = {
 class MineMapLeaflet extends Component {
   componentDidMount() {
     this.createMap();
+    // FIXME: Taking a slice for performance
+    this.props.mines.slice(0, 15).map(this.createPin);
   }
 
   getBaseMaps() {
@@ -89,14 +111,47 @@ class MineMapLeaflet extends Component {
     };
   }
 
+  createPin = (mine) => {
+    const customicon = L.icon({
+      iconUrl: SMALL_PIN,
+      iconSize: [60, 60],
+    });
+    const latLong = [mine.mine_location.latitude, mine.mine_location.longitude];
+
+    if (this.props.mineName === mine.mine_name) {
+      L.circle(latLong, {
+        color: "red",
+        fillColor: "#f03",
+        fillOpacity: 0.25,
+        radius: 500,
+        stroke: false,
+      }).addTo(this.map);
+    }
+
+    L.marker(latLong, { icon: customicon })
+      .addTo(this.map)
+      .bindPopup(this.renderPopup(mine));
+  };
+
   createMap() {
-    this.map = L.map("leaflet-map").setView([52.324078, -124.600199], 7);
+    this.map = L.map("leaflet-map").setView([this.props.lat, this.props.long], this.props.zoom);
     L.control.layers(this.getBaseMaps(), overlayLayers, { position: "topleft" }).addTo(this.map);
   }
 
+  renderPopup = (mine) => {
+    return `<div>${mine.mine_name}</div>
+            </br>
+            <div><strong>Mine No.</strong> ${mine.mine_no} </div>
+            <div><strong>Permit No.</strong></div>
+            <div><strong>Commidities</strong></div>
+           `;
+  };
+
   render() {
-    return <div id="leaflet-map" />;
+    return <div style={{ height: "100vh", width: "100%" }} id="leaflet-map" />;
   }
 }
 
+MineMapLeaflet.propTypes = propTypes;
+MineMapLeaflet.defaultProps = defaultProps;
 export default MineMapLeaflet;

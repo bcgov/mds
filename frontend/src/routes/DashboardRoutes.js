@@ -44,11 +44,6 @@ const DashboardRoutes = () => (
     />
     <Route
       exact
-      path={routes.MINE_MAP_LEAFLET.route}
-      component={routes.MINE_MAP_LEAFLET.component}
-    />
-    <Route
-      exact
       path={routes.VARIANCE_DASHBOARD.route}
       component={routes.VARIANCE_DASHBOARD.component}
     />
