@@ -8,6 +8,7 @@ import {
   setAddPartyFormState,
   updateParty,
   deleteParty,
+  addDocumentToRelationship,
 } from "@/actionCreators/partiesActionCreator";
 import * as genericActions from "@/actions/genericActions";
 import * as API from "@/constants/API";
@@ -189,5 +190,38 @@ describe("`fetchInspectors` action creator", () => {
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
     });
+  });
+});
+
+describe("`addDocumentToRelationship` action creator", () => {
+  const mineGuid = "1234567";
+  const mockPayload = {
+    document_manager_guid: "f6737c4f-2cf2-4efb-923a-3e010f8737c5",
+    document_name: "test.pdf",
+  };
+  const minePartyApptGuid = "23448594";
+  const url =
+    ENVIRONMENT.apiUrl + API.MINE_PARTY_APPOINTMENT_DOCUMENTS(mineGuid, minePartyApptGuid);
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onPut(url).reply(200, mockResponse);
+    return addDocumentToRelationship({ mineGuid, minePartyApptGuid }, mockPayload)(dispatch).then(
+      () => {
+        expect(requestSpy).toHaveBeenCalledTimes(1);
+        expect(successSpy).toHaveBeenCalledTimes(1);
+        expect(dispatch).toHaveBeenCalledTimes(4);
+      }
+    );
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPut(url).reply(400, MOCK.ERROR);
+    return addDocumentToRelationship({ mineGuid, minePartyApptGuid }, mockPayload)(dispatch).then(
+      () => {
+        expect(requestSpy).toHaveBeenCalledTimes(1);
+        expect(errorSpy).toHaveBeenCalledTimes(1);
+        expect(dispatch).toHaveBeenCalledTimes(4);
+      }
+    );
   });
 });
