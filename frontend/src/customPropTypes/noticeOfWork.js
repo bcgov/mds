@@ -45,7 +45,7 @@ export const nowApplication = shape({
   stgedisturbedarea: PropTypes.string,
   stgetimbervolume: PropTypes.string,
   fuellubstoreonsite: PropTypes.string,
-  fuellubstored: PropTypes.string,
+  fuellubstored: PropTypes.number,
   fuellubstoremethodbulk: PropTypes.string,
   fuellubstoremethodbarrel: PropTypes.string,
   cbsfreclamation: PropTypes.string,
