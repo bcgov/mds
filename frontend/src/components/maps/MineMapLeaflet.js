@@ -87,7 +87,7 @@ class MineMapLeaflet extends Component {
   componentDidMount() {
     this.createMap();
     // FIXME: Taking a slice for performance
-    this.props.mines.slice(0, 15).map(this.createPin);
+    this.props.mines.slice(0, 50).map(this.createPin);
   }
 
   getBaseMaps() {
@@ -143,7 +143,7 @@ class MineMapLeaflet extends Component {
             </br>
             <div><strong>Mine No.</strong> ${mine.mine_no} </div>
             <div><strong>Permit No.</strong></div>
-            <div><strong>Commidities</strong></div>
+            <div><strong>Commodities</strong></div>
            `;
   };
 

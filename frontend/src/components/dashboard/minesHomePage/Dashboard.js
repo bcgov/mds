@@ -95,7 +95,7 @@ const formatParams = ({
   ...remainingParams,
 });
 
-const switchToLeaflet = false;
+const switchToLeaflet = true;
 
 export class Dashboard extends Component {
   constructor(props) {
