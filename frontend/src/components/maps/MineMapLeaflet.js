@@ -1,11 +1,15 @@
 import React, { Component } from "react";
 import L from "leaflet";
-import leafletWms from "leaflet.wms";
+import LeafletWms from "leaflet.wms";
 import "leaflet/dist/leaflet.css";
+import "leaflet.markercluster/dist/MarkerCluster.css";
+import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
 import { SMALL_PIN } from "@/constants/assets";
+
+require("leaflet.markercluster");
 
 /**
  * @class MineMapLeaflet.js is a Leaflet Map component.
@@ -38,7 +42,7 @@ const leafletWMSTiledOptions = {
 };
 
 const getFirstNationLayer = () => {
-  const firstNationSource = leafletWms.source(
+  const firstNationSource = LeafletWms.source(
     "https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov?",
     leafletWMSTiledOptions
   );
@@ -58,7 +62,7 @@ const getOpenMapsLayer = (styles = null, layer = "WHSE_MINERAL_TENURE.MTA_ACQUIR
     sourceOptions.styles = styles;
   }
 
-  const openMapsSource = leafletWms.source("https://openmaps.gov.bc.ca/geo/pub/wms", sourceOptions);
+  const openMapsSource = LeafletWms.source("https://openmaps.gov.bc.ca/geo/pub/wms", sourceOptions);
   return openMapsSource.getLayer(layer);
 };
 
@@ -85,9 +89,13 @@ const overlayLayers = {
 
 class MineMapLeaflet extends Component {
   componentDidMount() {
+    // Create the base map with layers
     this.createMap();
-    // FIXME: Taking a slice for performance
-    this.props.mines.slice(0, 50).map(this.createPin);
+
+    // Add Clustered MinePins
+    this.markerClusterGroup = L.markerClusterGroup();
+    this.props.mines.map(this.createPin);
+    this.map.addLayer(this.markerClusterGroup);
   }
 
   getBaseMaps() {
@@ -116,6 +124,8 @@ class MineMapLeaflet extends Component {
       iconUrl: SMALL_PIN,
       iconSize: [60, 60],
     });
+
+    // TODO: Check what happens if Lat/Long is invalid
     const latLong = [mine.mine_location.latitude, mine.mine_location.longitude];
 
     if (this.props.mineName === mine.mine_name) {
@@ -128,9 +138,8 @@ class MineMapLeaflet extends Component {
       }).addTo(this.map);
     }
 
-    L.marker(latLong, { icon: customicon })
-      .addTo(this.map)
-      .bindPopup(this.renderPopup(mine));
+    const marker = L.marker(latLong, { icon: customicon }).bindPopup(this.renderPopup(mine));
+    this.markerClusterGroup.addLayer(marker);
   };
 
   createMap() {
