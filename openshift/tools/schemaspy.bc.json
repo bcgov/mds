@@ -81,7 +81,7 @@
           "dockerStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "name": "openjdk:jre-alpine"
+              "name": "openjdk:8-jdk-alpine"
             }
           }
         },
