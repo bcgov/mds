@@ -14,16 +14,7 @@
         "creationTimestamp": null,
         "labels": {
           "shared": "true"
-        },
-        "annotations": {
-          "description": "Keeps track of changes in the application image"
         }
-      },
-      "spec": {
-        "lookupPolicy": {
-          "local": false
-        },
-        "tags": []
       }
     },
     {
