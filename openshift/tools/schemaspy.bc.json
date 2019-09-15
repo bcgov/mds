@@ -2,7 +2,7 @@
   "kind": "Template",
   "apiVersion": "v1",
   "metadata": {
-    "name": "${NAME}-bc",
+    "name": "mds-schemaspy-bc",
     "creationTimestamp": null
   },
   "objects": [
@@ -10,10 +10,51 @@
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${NAME}",
+        "name": "openjdk",
+        "creationTimestamp": null,
+        "annotations": {
+          "description": "Schemaspy Base Image"
+        },
         "labels": {
           "shared": "true"
         }
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        },
+        "tags": [
+          {
+            "name": "8-jdk-alpine",
+            "from": {
+              "kind": "DockerImage",
+              "name": "openjdk:8-jdk-alpine"
+            },
+            "referencePolicy": {
+              "type": "Local"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}",
+        "creationTimestamp": null,
+        "labels": {
+          "shared": "true"
+        },
+        "annotations": {
+          "description": "Keeps track of changes in the application image"
+        }
+      },
+      "spec": {
+        "lookupPolicy": {
+          "local": false
+        },
+        "tags": []
       }
     },
     {
@@ -36,7 +77,13 @@
           "contextDir": "${SOURCE_CONTEXT_DIR}"
         },
         "strategy": {
-          "type": "Docker"
+          "type": "Docker",
+          "dockerStrategy": {
+            "from": {
+              "kind": "ImageStreamTag",
+              "name": "openjdk:jre-alpine"
+            }
+          }
         },
         "output": {
           "to": {

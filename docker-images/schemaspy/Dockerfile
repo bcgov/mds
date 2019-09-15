@@ -1,4 +1,4 @@
-FROM openjdk:jre-alpine
+FROM openjdk:8-jdk-alpine
 
 RUN apk update && \
     apk upgrade
@@ -11,13 +11,13 @@ RUN apk update && \
 # -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 RUN apk update && \
     apk --no-cache add \
-        tini \
-        git \
-        curl \
-        openssh-client && \
+    tini \
+    git \
+    curl \
+    openssh-client && \
     apk --no-cache add --virtual \
-        devs \
-        tar
+    devs \
+    tar
 
 # Install Caddy Server, and All Middleware
 RUN curl -L "https://github.com/mholt/caddy/releases/download/v0.10.10/caddy_v0.10.10_linux_amd64.tar.gz" \
@@ -77,11 +77,11 @@ WORKDIR /app/
 #
 RUN apk update && \
     apk add --no-cache \
-        wget \
-        ca-certificates \
-        librsvg \
-        graphviz \
-        ttf-ubuntu-font-family && \
+    wget \
+    ca-certificates \
+    librsvg \
+    graphviz \
+    ttf-ubuntu-font-family && \
     mkdir lib && \
     wget -nv -O lib/schemaspy-$SCHEMA_SPY_VERSION.jar https://github.com/schemaspy/schemaspy/releases/download/v$SCHEMA_SPY_VERSION/schemaspy-$SCHEMA_SPY_VERSION.jar && \
     cp lib/schemaspy-$SCHEMA_SPY_VERSION.jar lib/schemaspy.jar && \
@@ -89,8 +89,8 @@ RUN apk update && \
     wget -nv -O lib/mysql-jdbc.jar http://central.maven.org/maven2/mysql/mysql-connector-java/$MYSQL_VERSION/mysql-connector-java-$MYSQL_VERSION.jar && \
     wget -nv -O lib/sqlite-jdbc.jar http://central.maven.org/maven2/org/xerial/sqlite-jdbc/$SQL_LITE_VERSION/sqlite-jdbc-$SQL_LITE_VERSION.jar && \
     apk del \
-        wget \
-        ca-certificates
+    wget \
+    ca-certificates
 
 # Copy script(s) and configuration into the image.
 COPY start.sh conf ./
