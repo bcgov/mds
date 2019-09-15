@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Table, Icon, Popconfirm, Button } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import { formatDate } from "@/utils/helpers";
-import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
+import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls";
 import * as Strings from "@/constants/strings";
 import LinkButton from "@/components/common/LinkButton";
 
