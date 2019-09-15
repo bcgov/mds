@@ -25,10 +25,10 @@
         },
         "tags": [
           {
-            "name": "jre-alpine",
+            "name": "8-jdk-alpine",
             "from": {
               "kind": "DockerImage",
-              "name": "openjdk:jre-alpine"
+              "name": "openjdk:8-jdk-alpine"
             },
             "referencePolicy": {
               "type": "Local"
@@ -81,7 +81,7 @@
           "dockerStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "name": "openjdk:jre-alpine"
+              "name": "openjdk:8-jdk-alpine"
             }
           }
         },
