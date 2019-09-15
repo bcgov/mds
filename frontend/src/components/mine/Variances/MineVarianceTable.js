@@ -97,9 +97,6 @@ export class MineVarianceTable extends Component {
     }));
 
   render() {
-    console.log("**********The state is ************")
-    console.log(this.props)
-
     const columns = [
       {
         title: "",

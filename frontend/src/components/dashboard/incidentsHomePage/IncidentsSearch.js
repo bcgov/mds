@@ -2,17 +2,19 @@ import React, { Component } from "react";
 import { Row, Col } from "antd";
 import { isEmpty, some, negate } from "lodash";
 import PropTypes from "prop-types";
-import VarianceSearchForm from "@/components/Forms/variances/VarianceSearchForm";
+import IncidentSearchForm from "@/components/Forms/incidents/IncidentSearchForm";
 import CustomPropTypes from "@/customPropTypes";
 
 /**
  * @class IncidentsSearch supports searching for a filtered list of incidents.
  */
 const propTypes = {
-  handleVarianceSearch: PropTypes.func.isRequired,
+  handleIncidentSearch: PropTypes.func.isRequired,
   initialValues: CustomPropTypes.varianceSearchInitialValues,
   mineRegionOptions: CustomPropTypes.options.isRequired,
-  complianceCodes: CustomPropTypes.options.isRequired,
+  incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
+  incidentDeterminationOptions: CustomPropTypes.options.isRequired,
+  doSubparagraphOptions: CustomPropTypes.options.isRequired,
   filterVarianceStatusOptions: CustomPropTypes.filterOptions.isRequired,
 };
 
@@ -57,15 +59,17 @@ export class IncidentsSearch extends Component {
         <Row>
           <Col md={{ span: 12, offset: 6 }} xs={{ span: 20, offset: 2 }}>
             <span className="advanced-search__container">
-              <VarianceSearchForm
-                onSubmit={this.props.handleVarianceSearch}
-                handleVarianceSearch={this.props.handleVarianceSearch}
+              <IncidentSearchForm
+                onSubmit={this.props.handleIncidentSearch}
+                handleIncidentSearch={this.props.handleIncidentSearch}
                 toggleAdvancedSearch={this.toggleAdvancedSearch}
                 isAdvanceSearch={this.state.isAdvanceSearch}
                 initialValues={this.props.initialValues}
-                complianceCodes={this.props.complianceCodes}
                 mineRegionOptions={this.props.mineRegionOptions}
                 filterVarianceStatusOptions={this.props.filterVarianceStatusOptions}
+                incidentStatusCodeOptions={this.props.incidentStatusCodeOptions}
+                incidentDeterminationOptions={this.props.incidentDeterminationOptions}
+                doSubparagraphOptions={this.props.doSubparagraphOptions}
               />
             </span>
           </Col>

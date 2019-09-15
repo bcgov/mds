@@ -71,7 +71,7 @@ class TestGetIncidents:
         random_date_time = datetime.fromtimestamp(random_time_past)
         MineIncidentFactory(incident_timestamp=random_date_time)
         incident_year = str(random_date_time.year)
-        get_resp = test_client.get( f"/incidents?incident_year={incident_year}", headers=auth_headers['full_auth_header'])
+        get_resp = test_client.get( f"/incidents?year={incident_year}", headers=auth_headers['full_auth_header'])
         get_data = json.loads(get_resp.data.decode())
         assert get_resp.status_code == 200
         assert len(get_data['records']) == 1
@@ -123,7 +123,7 @@ class TestGetIncidents:
 
     def test_get_incidents_date_sort(self, test_client, db_session, auth_headers):
         """Should respect incidents date sort"""
-        sort_field = "date"
+        sort_field = "incident_timestamp"
         sort_dir = "desc"
         batch_size = 20
         MineIncidentFactory.create_batch(size=batch_size)
@@ -154,7 +154,7 @@ class TestGetIncidents:
 
     def test_get_incidents_status_sort(self, test_client, db_session, auth_headers):
         """Should respect incidents status sort"""
-        sort_field = "status"
+        sort_field = "incident_status"
         sort_dir = "desc"
         batch_size = 20
         MineIncidentFactory.create_batch(size=batch_size)

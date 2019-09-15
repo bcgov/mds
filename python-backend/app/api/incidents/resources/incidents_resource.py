@@ -11,6 +11,8 @@ from ..response_models import PAGINATED_INCIDENT_LIST
 from ...utils.access_decorators import requires_any_of, VIEW_ALL
 from ...utils.resources_mixins import UserMixin, ErrorMixin
 
+import logging
+
 PAGE_DEFAULT = 1
 PER_PAGE_DEFAULT = 25
 
@@ -43,7 +45,7 @@ class IncidentsResource(Resource, UserMixin, ErrorMixin):
             "codes": request.args.get('codes', type=str),
             'major': request.args.get('major', type=str),
             'region': request.args.get('region', type=str),
-            'year': request.args.get('incident_year', type=str),
+            'year': request.args.get('year', type=str),
             'search_terms': request.args.get('search', type=str),
             'sort_field': request.args.get('sort_field', type=str),
             'sort_dir': request.args.get('sort_dir', type=str),
@@ -71,20 +73,20 @@ class IncidentsResource(Resource, UserMixin, ErrorMixin):
 
     def _apply_filters_and_pagination(self, args):
         sort_models = {
-            "date": 'MineIncident',
+            "incident_timestamp": 'MineIncident',
             # TODO: Mine incident_no is not currently implemented
             # "incident_no": 'MineIncident',
             "determination": 'MineIncident',
-            "status": 'MineIncident',
+            "incident_status": 'MineIncident',
             "mine_name": 'Mine',
         }
 
         sort_field = {
-            "date": 'incident_timestamp',
+            "incident_timestamp": 'incident_timestamp',
             # TODO: Mine incident_no is not currently implemented
             # "incident_no": 'mine_incident_no',
             "determination": 'determination_type_code',
-            "status": 'status_code',
+            "incident_status": 'status_code',
             "mine_name": 'mine_name',
         }
 
@@ -103,6 +105,7 @@ class IncidentsResource(Resource, UserMixin, ErrorMixin):
             conditions.append(
                 self._build_filter('MineIncidentDoSubparagraph', 'compliance_article_id', 'in', code_values))
         if args["year"] is not None:
+            logging.warning(f'the year {args["year"]} was passed!')
             min_datetime = datetime(int(args["year"]), 1, 1)
             max_datetime = datetime(int(args["year"])+1, 1, 1)
             conditions.append(

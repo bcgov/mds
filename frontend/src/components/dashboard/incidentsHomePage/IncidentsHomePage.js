@@ -8,9 +8,8 @@ import queryString from "query-string";
 import PropTypes from "prop-types";
 import {
   fetchRegionOptions,
-  fetchMineTenureTypes,
-  fetchMineCommodityOptions,
-  fetchMineComplianceCodes,
+  // fetchMineComplianceCodes,
+  fetchMineIncidentStatusCodeOptions,
 } from "@/actionCreators/staticContentActionCreator";
 import { modalConfig } from "@/components/modalContent/config";
 import { openModal, closeModal } from "@/actions/modalActions";
@@ -45,15 +44,14 @@ import * as FORM from "@/constants/forms";
  */
 
 const propTypes = {
-  fetchMineTenureTypes: PropTypes.func.isRequired,
-  fetchMineComplianceCodes: PropTypes.func.isRequired,
+  // fetchMineComplianceCodes: PropTypes.func.isRequired,
   fetchRegionOptions: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   destroy: PropTypes.func.isRequired,
   fetchInspectors: PropTypes.func.isRequired,
-  fetchMineCommodityOptions: PropTypes.func.isRequired,
   fetchIncidents: PropTypes.func.isRequired,
+  fetchMineIncidentStatusCodeOptions: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   getDropdownHSRCMComplianceCodes: CustomPropTypes.options.isRequired,
@@ -82,10 +80,14 @@ export const removeEmptyStings = (param, key) => (isEmpty(param) ? {} : { [key]:
 // TODO: Implement the NoW dashboard patern for cleaning props
 export const formatParams = ({
   region = [],
-  issue_date_after,
-  issue_date_before,
-  expiry_date_before,
-  expiry_date_after,
+  year,
+  incident_status = [],
+  codes = [],
+  determination = [],
+  // issue_date_after,
+  // issue_date_before,
+  // expiry_date_before,
+  // expiry_date_after,
   search,
   major,
   ...remainingParams
@@ -94,10 +96,10 @@ export const formatParams = ({
     ...joinOrRemove(region, "region"),
     // ...joinOrRemove(compliance_code, "compliance_code"),
     // ...joinOrRemove(variance_application_status_code, "variance_application_status_code"),
-    ...removeEmptyStings(issue_date_after, "issue_date_after"),
-    ...removeEmptyStings(issue_date_before, "issue_date_before"),
-    ...removeEmptyStings(expiry_date_before, "expiry_date_before"),
-    ...removeEmptyStings(expiry_date_after, "expiry_date_after"),
+    ...removeEmptyStings(year, "year"),
+    ...removeEmptyStings(incident_status, "incident_status"),
+    ...removeEmptyStings(codes, "codes"),
+    ...removeEmptyStings(determination, "determination"),
     ...removeEmptyStings(search, "search"),
     ...removeEmptyStings(major, "major"),
     ...remainingParams,
@@ -116,10 +118,14 @@ export class IncidentsHomePage extends Component {
         region: formatParamStringToArray(this.params.region),
         major: this.params.major,
         search: this.params.search,
-        issue_date_after: this.params.issue_date_after,
-        issue_date_before: this.params.issue_date_before,
-        expiry_date_before: this.params.expiry_date_before,
-        expiry_date_after: this.params.expiry_date_after,
+        year: this.params.year,
+        incident_status: this.params.incident_status,
+        codes: this.params.codes,
+        determination: this.params.determination,
+        // issue_date_after: this.params.issue_date_after,
+        // issue_date_before: this.params.issue_date_before,
+        // expiry_date_before: this.params.expiry_date_before,
+        // expiry_date_after: this.params.expiry_date_after,
       },
     };
   }
@@ -131,10 +137,9 @@ export class IncidentsHomePage extends Component {
       this.setState({ incidentsLoaded: true });
     });
     this.props.fetchInspectors();
-    this.props.fetchMineTenureTypes();
-    this.props.fetchMineComplianceCodes();
+    // this.props.fetchMineComplianceCodes(); //todo remove this???
     this.props.fetchRegionOptions();
-    this.props.fetchMineCommodityOptions();
+    this.props.fetchMineIncidentStatusCodeOptions();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -151,16 +156,23 @@ export class IncidentsHomePage extends Component {
     });
   }
 
-  // TODO Implement incident search with incident parameter
   renderDataFromURL = (params) => {
-    const { region, compliance_code, major, search, ...remainingParams } = queryString.parse(
-      params
-    );
+    const {
+      region,
+      major,
+      incident_status,
+      codes,
+      determination,
+      search,
+      ...remainingParams
+    } = queryString.parse(params);
     this.setState(
       {
         params: {
           region: formatParamStringToArray(region),
-          compliance_code: formatParamStringToArray(compliance_code),
+          incident_status: formatParamStringToArray(incident_status),
+          codes: formatParamStringToArray(codes),
+          determination: formatParamStringToArray(determination),
           major,
           search,
           ...remainingParams,
@@ -172,23 +184,22 @@ export class IncidentsHomePage extends Component {
     );
   };
 
-  // TODO clear incident search parameters
   clearParams = () => {
     this.setState({
       params: {
         region: [],
         major: null,
         search: null,
-        issue_date_after: null,
-        issue_date_before: null,
-        expiry_date_before: null,
-        expiry_date_after: null,
+        year: null,
+        incident_status: [],
+        codes: [],
+        determination: [],
       },
     });
   };
 
-  // TODO: This is copy-pasted from variance home page. Endpoint for searching/filtering not ready
   handleIncidentSearch = (searchParams, clear = false) => {
+    console.log("&&&&&&&&&&&&&&&&The search was called&&&&&&&&&&&&&&");
     const formattedSearchParams = formatParams(searchParams);
     const persistedParams = clear ? {} : formatParams(this.state.params);
 
@@ -303,16 +314,15 @@ export class IncidentsHomePage extends Component {
           <h1>Browse Incidents</h1>
         </div>
         <div className="landing-page__content">
-          {/* REMOVE SEARCH FOR NOW. FOCUS ON MOVING THE INCIDENTS TABLE IN */}
-          {/* <IncidentsSearch
+          <IncidentsSearch
             handleNameFieldReset={this.handleNameFieldReset}
             initialValues={this.state.params}
-            fetchVariances={this.props.fetchVariances}
-            handleVarianceSearch={this.handleVarianceSearchDebounced}
+            handleIncidentSearch={this.handleIncidentSearchDebounced}
             mineRegionOptions={this.props.mineRegionOptions}
-            complianceCodes={this.props.getDropdownHSRCMComplianceCodes}
-            filterVarianceStatusOptions={this.props.filterVarianceStatusOptions}
-          /> */}
+            incidentStatusCodeOptions={this.props.incidentStatusCodeOptions}
+            incidentDeterminationOptions={this.props.incidentDeterminationOptions}
+            doSubparagraphOptions={this.props.doSubparagraphOptions}
+          />
           <LoadingWrapper condition={this.state.incidentsLoaded}>
             <IncidentsTable
               incidents={this.props.incidents}
@@ -363,9 +373,8 @@ const mapDispatchToProps = (dispatch) =>
       openModal,
       closeModal,
       fetchRegionOptions,
-      fetchMineTenureTypes,
-      fetchMineComplianceCodes,
-      fetchMineCommodityOptions,
+      // fetchMineComplianceCodes, //REMOVE
+      fetchMineIncidentStatusCodeOptions,
       fetchInspectors,
     },
     dispatch
