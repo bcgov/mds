@@ -100,9 +100,6 @@ export const validateIncidentDate = memoize((reportedDate) => (value) =>
     : undefined
 );
 
-// existingAppointments : PropTypes.arrayOf(CustomPropTypes.partyRelationship)
-// newAppt : {start_date : String, end_date : String, party_guid : String}
-// apptType : CustomPropTypes.partyRelationshipType
 export const validateDateRanges = (
   existingAppointments,
   newAppt,
