@@ -189,9 +189,7 @@ exports[`MineHeader renders dispatchProperly 1`] = `
   <div
     className="dashboard__header--card__map"
   >
-    <MineHeaderMap
-      lat={null}
-      long={null}
+    <MineHeaderMapLeaflet
       mine={
         Object {
           "major_mine_ind": true,

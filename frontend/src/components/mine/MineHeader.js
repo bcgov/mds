@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Menu, Divider, Button, Dropdown, Tag, Popover } from "antd";
 import { openModal, closeModal } from "@/actions/modalActions";
-import MineHeaderMap from "@/components/maps/MineHeaderMap";
+import MineHeaderMapLeaflet from "@/components/maps/MineHeaderMapLeaflet";
 import { EDIT_OUTLINE_VIOLET, BRAND_DOCUMENT, EDIT, INFO_CIRCLE } from "@/constants/assets";
 import * as route from "@/constants/routes";
 import { getUserInfo } from "@/selectors/authenticationSelectors";
@@ -296,7 +296,7 @@ export class MineHeader extends Component {
           </div>
         </div>
         <div className="dashboard__header--card__map">
-          <MineHeaderMap mine={this.props.mine} />
+          <MineHeaderMapLeaflet mine={this.props.mine} />
           <div className="dashboard__header--card__map--footer">
             <div className="inline-flex between">
               <p className="p-white">
