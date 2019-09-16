@@ -19,7 +19,7 @@ const propTypes = {
   params: PropTypes.objectOf(
     PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.arrayOf(PropTypes.string)])
   ).isRequired,
-  pageData: CustomPropTypes.variancePageData,
+  pageData: CustomPropTypes.incidentPageData,
   sortField: PropTypes.string,
   sortDir: PropTypes.string,
 };
@@ -36,8 +36,6 @@ const defaultProps = {
   sortDir: null,
 };
 export const IncidentsTable = (props) => {
-  console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-  console.log(props);
   return (
     <div className="tab__content">
       <MineIncidentTable

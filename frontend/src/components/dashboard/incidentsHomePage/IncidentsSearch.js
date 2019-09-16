@@ -10,39 +10,19 @@ import CustomPropTypes from "@/customPropTypes";
  */
 const propTypes = {
   handleIncidentSearch: PropTypes.func.isRequired,
-  initialValues: CustomPropTypes.varianceSearchInitialValues,
+  initialValues: CustomPropTypes.incidentSearchInitialValues,
   mineRegionOptions: CustomPropTypes.options.isRequired,
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
   incidentDeterminationOptions: CustomPropTypes.options.isRequired,
   doSubparagraphOptions: CustomPropTypes.options.isRequired,
-  filterVarianceStatusOptions: CustomPropTypes.filterOptions.isRequired,
 };
 
 const defaultProps = {
   initialValues: {},
 };
 
-const checkAdvancedSearch = ({
-  region,
-  compliance_code,
-  major,
-  issue_date_after,
-  issue_date_before,
-  expiry_date_before,
-  expiry_date_after,
-}) =>
-  major ||
-  some(
-    [
-      region,
-      compliance_code,
-      issue_date_after,
-      issue_date_before,
-      expiry_date_before,
-      expiry_date_after,
-    ],
-    negate(isEmpty)
-  );
+const checkAdvancedSearch = ({ region, major, year, incident_status, codes, determination }) =>
+  major || some([region, year, incident_status, codes, determination], negate(isEmpty));
 
 export class IncidentsSearch extends Component {
   state = {
@@ -66,7 +46,6 @@ export class IncidentsSearch extends Component {
                 isAdvanceSearch={this.state.isAdvanceSearch}
                 initialValues={this.props.initialValues}
                 mineRegionOptions={this.props.mineRegionOptions}
-                filterVarianceStatusOptions={this.props.filterVarianceStatusOptions}
                 incidentStatusCodeOptions={this.props.incidentStatusCodeOptions}
                 incidentDeterminationOptions={this.props.incidentDeterminationOptions}
                 doSubparagraphOptions={this.props.doSubparagraphOptions}

@@ -2,7 +2,7 @@ from flask_restplus import Resource
 from flask import request
 from datetime import datetime
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
-from sqlalchemy import desc, cast, NUMERIC, extract
+from sqlalchemy import desc, cast, NUMERIC, extract, asc
 from app.extensions import api
 from app.api.mines.mine.models.mine import Mine
 from ..models.mine_incident import MineIncident
@@ -131,6 +131,10 @@ class IncidentsResource(Resource, UserMixin, ErrorMixin):
 
         # Apply sorting
         if args['sort_field'] and args['sort_dir']:
+            logging.warning(f'the sort dir is: { args["sort_dir"]}')
+            logging.warning(f'the sort field is: { args["sort_field"]}')
+            logging.warning(f'the sort field is: { sort_field[args["sort_field"]]}')
+            logging.warning(f'the sort model is: { sort_models[args["sort_field"]]}')
             # sorting by code section is not applicable since a single incident may have many sections associated.
             sort_criteria = [{'model': sort_models[args['sort_field']],
                               'field': sort_field[args['sort_field']],

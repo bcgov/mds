@@ -8,7 +8,7 @@ import queryString from "query-string";
 import PropTypes from "prop-types";
 import {
   fetchRegionOptions,
-  // fetchMineComplianceCodes,
+  fetchMineComplianceCodes,
   fetchMineIncidentStatusCodeOptions,
 } from "@/actionCreators/staticContentActionCreator";
 import { modalConfig } from "@/components/modalContent/config";
@@ -27,7 +27,7 @@ import {
   getIncidentFollowupActionOptions,
 } from "@/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
-import { fetchIncidents } from "@/actionCreators/incidentActionCreator";
+import { fetchIncidents, updateMineIncident } from "@/actionCreators/incidentActionCreator";
 import { getIncidents, getIncidentPageData } from "@/selectors/incidentSelectors";
 import { IncidentsTable } from "./IncidentsTable";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
@@ -44,13 +44,14 @@ import * as FORM from "@/constants/forms";
  */
 
 const propTypes = {
-  // fetchMineComplianceCodes: PropTypes.func.isRequired,
+  fetchMineComplianceCodes: PropTypes.func.isRequired,
   fetchRegionOptions: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   destroy: PropTypes.func.isRequired,
   fetchInspectors: PropTypes.func.isRequired,
   fetchIncidents: PropTypes.func.isRequired,
+  updateMineIncident: PropTypes.func,
   fetchMineIncidentStatusCodeOptions: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -65,6 +66,7 @@ const propTypes = {
 };
 
 const defaultProps = {
+  updateMineIncident: () => {},
   followupActions: [],
 };
 
@@ -76,7 +78,6 @@ export const joinOrRemove = (param, key) => {
 };
 export const removeEmptyStings = (param, key) => (isEmpty(param) ? {} : { [key]: param });
 
-// TODO: These codes need to be updated for the incidents search
 // TODO: Implement the NoW dashboard patern for cleaning props
 export const formatParams = ({
   region = [],
@@ -84,22 +85,16 @@ export const formatParams = ({
   incident_status = [],
   codes = [],
   determination = [],
-  // issue_date_after,
-  // issue_date_before,
-  // expiry_date_before,
-  // expiry_date_after,
   search,
   major,
   ...remainingParams
 }) => {
   return {
     ...joinOrRemove(region, "region"),
-    // ...joinOrRemove(compliance_code, "compliance_code"),
-    // ...joinOrRemove(variance_application_status_code, "variance_application_status_code"),
     ...removeEmptyStings(year, "year"),
-    ...removeEmptyStings(incident_status, "incident_status"),
-    ...removeEmptyStings(codes, "codes"),
-    ...removeEmptyStings(determination, "determination"),
+    ...joinOrRemove(incident_status, "incident_status"),
+    ...joinOrRemove(codes, "codes"),
+    ...joinOrRemove(determination, "determination"),
     ...removeEmptyStings(search, "search"),
     ...removeEmptyStings(major, "major"),
     ...remainingParams,
@@ -122,10 +117,6 @@ export class IncidentsHomePage extends Component {
         incident_status: this.params.incident_status,
         codes: this.params.codes,
         determination: this.params.determination,
-        // issue_date_after: this.params.issue_date_after,
-        // issue_date_before: this.params.issue_date_before,
-        // expiry_date_before: this.params.expiry_date_before,
-        // expiry_date_after: this.params.expiry_date_after,
       },
     };
   }
@@ -137,7 +128,7 @@ export class IncidentsHomePage extends Component {
       this.setState({ incidentsLoaded: true });
     });
     this.props.fetchInspectors();
-    // this.props.fetchMineComplianceCodes(); //todo remove this???
+    this.props.fetchMineComplianceCodes();
     this.props.fetchRegionOptions();
     this.props.fetchMineIncidentStatusCodeOptions();
   }
@@ -210,7 +201,7 @@ export class IncidentsHomePage extends Component {
         // Overwrite prev params with any newly provided search params
         ...formattedSearchParams,
         // Reset page number
-        page: String.DEFAULT_PAGE,
+        page: prevState.params.page ? prevState.params.page : String.DEFAULT_PAGE,
         // Retain per_page if present
         per_page: prevState.params.per_page ? prevState.params.per_page : String.DEFAULT_PER_PAGE,
       };
@@ -219,10 +210,10 @@ export class IncidentsHomePage extends Component {
     });
   };
 
-  // TODO: This is copy-pasted from variance home page. Endpoint for searching/filtering not ready
   handleIncidentPageChange = (page, per_page) => {
     this.setState({ incidentsLoaded: false });
     const params = { ...this.state.params, page, per_page };
+    this.props.history.push(router.INCIDENTS_DASHBOARD.dynamicRoute(params));
     return this.props.fetchIncidents(params).then(() => {
       this.setState({
         incidentsLoaded: true,
@@ -243,6 +234,7 @@ export class IncidentsHomePage extends Component {
       content: modalConfig.VIEW_MINE_INCIDENT,
     });
   };
+
   //TODO UPDATE THIS TO USE THE PROPER MINE INCIDENT NUMBER
   handleEditMineIncident = (values) => {
     this.props
@@ -296,7 +288,6 @@ export class IncidentsHomePage extends Component {
     this.setState({ incidentsLoaded: false });
     const params = {
       ...this.state.params,
-      variance_application_status_code: status,
       page: 1,
     };
     return this.props.fetchIncidents(params).then(() => {
@@ -369,11 +360,12 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchIncidents,
+      updateMineIncident,
       destroy,
       openModal,
       closeModal,
       fetchRegionOptions,
-      // fetchMineComplianceCodes, //REMOVE
+      fetchMineComplianceCodes,
       fetchMineIncidentStatusCodeOptions,
       fetchInspectors,
     },

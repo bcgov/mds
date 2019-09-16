@@ -50,25 +50,20 @@ const defaultProps = {
   incidentDeterminationHash: {},
   complianceCodesHash: {},
   incidentStatusCodeHash: {},
-  // isApplication: false,
   isDashboardView: false,
-  // params: {},
   sortField: null,
   sortDir: null,
 };
 
 const hideColumn = (condition) => (condition ? "column-hide" : "");
 
-// TODO fix sort indicator
 const applySortIndicator = (_columns, field, dir) => {
-  console.log("###############The columns are:", _columns);
   return _columns.map((column) => ({
     ...column,
     sortOrder: column.sortField === field ? dir.concat("end") : false,
   }));
 };
 
-// TODO figure out why this is different from mine variance table
 const handleTableChange = (updateIncidentList) => (pagination, filters, sorter) => {
   const params = isEmpty(sorter)
     ? {
@@ -79,9 +74,6 @@ const handleTableChange = (updateIncidentList) => (pagination, filters, sorter) 
         sort_field: sorter.column.sortField,
         sort_dir: sorter.order.replace("end", ""),
       };
-  console.log("###############The params are:", params);
-  console.log("###############The sorter is:", sorter);
-
   updateIncidentList(params);
 };
 
@@ -108,22 +100,14 @@ export class MineIncidentTable extends Component {
   transformRowData = (
     incidents,
     actions,
-    // codehash,
-    // status hash,
-    // determination hash,
     handleEditMineIncident,
     openMineIncidentModal,
     openViewMineIncidentModal,
     determinationHash,
-    codeHash,
     statusHash
   ) =>
     incidents
       .map((incident) => {
-        const code_list = incident.dangerous_occurrence_subparagraph_ids;
-        const codes =
-          code_list.length > 0 ? code_list.map((x) => codeHash[x]) : Strings.EMPTY_FIELD;
-
         return {
           key: incident.incident_id,
           mine_incident_report_no: incident.mine_incident_report_no,
@@ -131,10 +115,9 @@ export class MineIncidentTable extends Component {
           reported_timestamp: formatDate(incident.reported_timestamp),
           reported_by: incident.reported_by_name,
           mine_name: incident.mine_name,
-          incident_status: statusHash[incident.status_code] || Strings.EMPTY_FIELD, // TODO This mus be transformed
-          determination: determinationHash[incident.determination_type_code] || Strings.EMPTY_FIELD, // TODO This mus be transformed
-          code: codes, // TODO This mus be transformed //null values should be empty string
-          // code: codehash[incident.dangerous_occurrence_subparagraph_ids] || Strings.EMPTY_FIELD,// TODO This mus be transformed //null values should be empty string
+          incident_status: statusHash[incident.status_code] || Strings.EMPTY_FIELD,
+          determination: determinationHash[incident.determination_type_code] || Strings.EMPTY_FIELD,
+          code: incident.dangerous_occurrence_subparagraph_ids || Strings.EMPTY_FIELD,
           docs: incident.documents,
           followup_action: actions.find(
             (x) =>
@@ -150,17 +133,15 @@ export class MineIncidentTable extends Component {
       .sort((a, b) => (a.mine_incident_report_no > b.mine_incident_report_no ? -1 : 1));
 
   render() {
-    console.log("**********The state is ************");
-    console.log(this.props);
     const columns = [
       {
         title: "Incident Report No.",
         dataIndex: "mine_incident_report_no",
         sortField: "mine_incident_report_no",
-        render: (text) => <a title="Incident Report No">{text}</a>, // TODO ADD THE CORRECT LINK
+        render: (text) => <div title="Incident Report No">{text}</div>,
         sorter: !this.props.isDashboardView
           ? (a, b) => a.mine_incident_report_no.localeCompare(b.mine_incident_report_no)
-          : false, // TODO sorting not implemented on the backend because the number is not well defined
+          : false, // Sorting not implemented on the backend due to ambiguity in the model
       },
       {
         title: "Date",
@@ -181,48 +162,48 @@ export class MineIncidentTable extends Component {
             <Link to={router.MINE_SUMMARY.dynamicRoute(record.incident.mine_guid)}>{text}</Link>
           </div>
         ),
-        sorter: !this.props.isDashboardView
-          ? (a, b) => moment(a.incident_timestamp) > moment(b.incident_timestamp) // TODO THIS IS THE WRONG SORTER
-          : true, // TODO implement for mine name
+        sorter: true,
       },
       {
         title: "Incident Status",
         dataIndex: "incident_status",
         sortField: "incident_status",
         className: hideColumn(!this.props.isDashboardView),
-        render: (text) => <span title="Incident Status">{text}</span>,
-        sorter: !this.props.isDashboardView
-          ? (a, b) => moment(a.incident_timestamp) > moment(b.incident_timestamp)
-          : true, // TODO implement for incident status
+        render: (text) => (
+          <span title="Incident Status" className={hideColumn(!this.props.isDashboardView)}>
+            {text}
+          </span>
+        ),
+        sorter: true,
       },
       {
         title: "Determination",
         dataIndex: "determination",
         sortField: "determination",
         className: hideColumn(!this.props.isDashboardView),
-        render: (text) => <span title="Determination">{text}</span>,
-        sorter: !this.props.isDashboardView
-          ? (a, b) => moment(a.incident_timestamp) > moment(b.incident_timestamp)
-          : true, // TODO implement for determination
+        render: (text) => (
+          <span title="Determination" className={hideColumn(!this.props.isDashboardView)}>
+            {text}
+          </span>
+        ),
+        sorter: true,
       },
       {
         title: "Code",
         dataIndex: "code",
-        className: hideColumn(!this.props.isDashboardView), // TODO implement for codes
+        className: hideColumn(!this.props.isDashboardView),
         width: 400,
-        render: (
-          text
-          // record // TODO fix so that code ends up on different lines
-        ) => (
-          <span title="Incident Codes">
-            {text}
-            {/* {record.code.length > 0
-                ? record.code.map((code) => (
-                    <div key={code}>
-                      {code}
-                    </div>
-                  ))
-                : Strings.EMPTY_FIELD}          */}
+        render: (text) => (
+          <span title="Incident Codes" className={hideColumn(!this.props.isDashboardView)}>
+            {text.length === 0 ? (
+              <span>{Strings.EMPTY_FIELD}</span>
+            ) : (
+              <span>
+                {text.map((code) => (
+                  <div key={code}>{this.props.complianceCodesHash[code]}</div>
+                ))}
+              </span>
+            )}
           </span>
         ),
       },
@@ -231,6 +212,11 @@ export class MineIncidentTable extends Component {
         dataIndex: "reported_by",
         className: hideColumn(this.props.isDashboardView),
         sorter: (a, b) => a.reported_by.localeCompare(b.reported_by),
+        render: (text) => (
+          <span title="Reported By" className={hideColumn(this.props.isDashboardView)}>
+            {text}
+          </span>
+        ),
         onFilter: (value, record) => record.incident.reported_by_name === value,
         filters: _.reduce(
           this.props.incidents,
@@ -251,7 +237,7 @@ export class MineIncidentTable extends Component {
         dataIndex: "followup_action",
         className: hideColumn(this.props.isDashboardView),
         render: (action, record) => (
-          <div title="followup_action">
+          <div title="followup_action" className={hideColumn(this.props.isDashboardView)}>
             {action ? action.description : record.incident.followup_type_code}
           </div>
         ),
@@ -267,7 +253,7 @@ export class MineIncidentTable extends Component {
         className: hideColumn(this.props.isDashboardView),
         width: 200,
         render: (text, record) => (
-          <div title="Initial Report Documents">
+          <div title="Initial Report Documents" className={hideColumn(this.props.isDashboardView)}>
             {record.docs.length === 0 ? (
               <span>--</span>
             ) : (
@@ -282,7 +268,7 @@ export class MineIncidentTable extends Component {
         className: hideColumn(this.props.isDashboardView),
         width: 200,
         render: (text, record) => (
-          <div title="Final Report Documents">
+          <div title="Final Report Documents" className={hideColumn(this.props.isDashboardView)}>
             {record.docs.length === 0 ? (
               <span>--</span>
             ) : (
@@ -339,7 +325,6 @@ export class MineIncidentTable extends Component {
               ? applySortIndicator(columns, this.props.sortField, this.props.sortDir)
               : columns
           }
-          // {this.columns(this.props)}
           locale={{ emptyText: <NullScreen type="incidents" /> }}
           dataSource={this.transformRowData(
             this.props.incidents,
@@ -348,7 +333,6 @@ export class MineIncidentTable extends Component {
             this.props.openMineIncidentModal,
             this.props.openViewMineIncidentModal,
             this.props.incidentDeterminationHash,
-            this.props.complianceCodesHash,
             this.props.incidentStatusCodeHash
           )}
         />
