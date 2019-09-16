@@ -71,11 +71,7 @@ class TestGetIncidents:
         random_date_time = datetime.fromtimestamp(random_time_past)
         MineIncidentFactory(incident_timestamp=random_date_time)
         incident_year = str(random_date_time.year)
-<<<<<<< HEAD
         get_resp = test_client.get( f"/incidents?year={incident_year}", headers=auth_headers['full_auth_header'])
-=======
-        get_resp = test_client.get( f"/incidents?incident_year={incident_year}", headers=auth_headers['full_auth_header'])
->>>>>>> b681b7cf7284d18aa8669601757e611bb974960a
         get_data = json.loads(get_resp.data.decode())
         assert get_resp.status_code == 200
         assert len(get_data['records']) == 1
