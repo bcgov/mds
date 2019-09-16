@@ -97,7 +97,7 @@ exports[`AddReportForm renders properly 1`] = `
         <Field
           component={[Function]}
           id="due_date"
-          label="Due Date"
+          label="Due Date*"
           name="due_date"
           placeholder=""
           validate={

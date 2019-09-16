@@ -15,11 +15,7 @@ class Script {
       attachmentColor = `#dec23a`;
     }
 
-    statusMsg = `Incoming webhook from [${
-      data.namespace
-    }](https://console.pathfinder.gov.bc.ca:8443/console/project/${
-      data.namespace
-    }/overview):`;
+    statusMsg = `Incoming webhook from [${data.namespace}](https://console.pathfinder.gov.bc.ca:8443/console/project/${data.namespace}/overview):`;
 
     if (isError) {
       statusMsg = `**${statusMsg}**`;
