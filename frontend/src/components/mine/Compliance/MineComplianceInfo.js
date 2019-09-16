@@ -7,7 +7,6 @@ import { Divider } from "antd";
 import { isEmpty } from "lodash";
 import { OVERDUEDOC, DOC } from "@/constants/assets";
 import { formatParamStringToArray, formatDate, getFiscalYear } from "@/utils/helpers";
-import Loading from "@/components/common/Loading";
 import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
 import { getMineComplianceInfo } from "@/selectors/complianceSelectors";
@@ -18,6 +17,7 @@ import MineComplianceCard from "@/components/mine/Compliance/MineComplianceCard"
 import MineComplianceFilterForm from "@/components/mine/Compliance/MineComplianceFilterForm";
 import { getMultiSelectComplianceCodes } from "@/selectors/staticContentSelectors";
 import { getMines, getMineGuid } from "@/selectors/mineSelectors";
+import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 
 /**
  * @class  MineComplianceInfo - all compliance information related to the mine.
@@ -49,7 +49,7 @@ const initialSearchValues = {
 
 export class MineComplianceInfo extends Component {
   state = {
-    isLoading: true,
+    isLoaded: false,
     complianceFilterParams: initialSearchValues,
     filteredOrders: [],
   };
@@ -58,7 +58,7 @@ export class MineComplianceInfo extends Component {
     const mine = this.props.mines[this.props.mineGuid];
     this.props.fetchMineComplianceInfo(mine.mine_no, true).then((data) => {
       this.setState({
-        isLoading: false,
+        isLoaded: true,
         filteredOrders: data && data.orders ? data.orders : [],
       });
     });
@@ -66,7 +66,7 @@ export class MineComplianceInfo extends Component {
 
   componentWillReceiveProps(nextProps) {
     const locationChanged = nextProps.location !== this.props.location;
-    if (locationChanged && !this.state.isLoading) {
+    if (locationChanged && !this.state.isLoaded) {
       const correctParams = nextProps.location.search
         ? nextProps.location.search
         : queryString.stringify(initialSearchValues);
@@ -137,42 +137,44 @@ export class MineComplianceInfo extends Component {
             <h4>COMPLIANCE OVERVIEW</h4>
             <Divider />
             <div className="compliance--container">
-              <div className="compliance--content">
-                <MineComplianceCard
-                  title="Inspections - Past 12 months"
-                  content={this.props.mineComplianceInfo.last_12_months.num_inspections}
-                />
-                <MineComplianceCard
-                  title={`Inspections - Since April 1, ${fiscalYear}`}
-                  content={this.props.mineComplianceInfo.current_fiscal.num_inspections}
-                />
-                <MineComplianceCard
-                  title="Last inspected"
-                  content={formatDate(this.props.mineComplianceInfo.last_inspection)}
-                />
-                <MineComplianceCard
-                  title="Last inspector (IDIR)"
-                  content={this.props.mineComplianceInfo.last_inspector}
-                />
-                <MineComplianceCard
-                  title="Open orders"
-                  icon={DOC}
-                  content={this.props.mineComplianceInfo.num_open_orders}
-                />
-                <MineComplianceCard
-                  title="Overdue orders"
-                  icon={OVERDUEDOC}
-                  content={this.props.mineComplianceInfo.num_overdue_orders}
-                />
-                <MineComplianceCard
-                  title="Warnings  - Past 12 months"
-                  content={this.props.mineComplianceInfo.last_12_months.num_warnings}
-                />
-                <MineComplianceCard
-                  title="Advisories - Past 12 months"
-                  content={this.props.mineComplianceInfo.last_12_months.num_advisories}
-                />
-              </div>
+              <LoadingWrapper condition={this.state.isLoaded}>
+                <div className="compliance--content">
+                  <MineComplianceCard
+                    title="Inspections - Past 12 months"
+                    content={this.props.mineComplianceInfo.last_12_months.num_inspections}
+                  />
+                  <MineComplianceCard
+                    title={`Inspections - Since April 1, ${fiscalYear}`}
+                    content={this.props.mineComplianceInfo.current_fiscal.num_inspections}
+                  />
+                  <MineComplianceCard
+                    title="Last inspected"
+                    content={formatDate(this.props.mineComplianceInfo.last_inspection)}
+                  />
+                  <MineComplianceCard
+                    title="Last inspector (IDIR)"
+                    content={this.props.mineComplianceInfo.last_inspector}
+                  />
+                  <MineComplianceCard
+                    title="Open orders"
+                    icon={DOC}
+                    content={this.props.mineComplianceInfo.num_open_orders}
+                  />
+                  <MineComplianceCard
+                    title="Overdue orders"
+                    icon={OVERDUEDOC}
+                    content={this.props.mineComplianceInfo.num_overdue_orders}
+                  />
+                  <MineComplianceCard
+                    title="Warnings  - Past 12 months"
+                    content={this.props.mineComplianceInfo.last_12_months.num_warnings}
+                  />
+                  <MineComplianceCard
+                    title="Advisories - Past 12 months"
+                    content={this.props.mineComplianceInfo.last_12_months.num_advisories}
+                  />
+                </div>
+              </LoadingWrapper>
             </div>
             {this.props.mineComplianceInfo.orders &&
               this.props.mineComplianceInfo.orders.length > 0 && (
@@ -188,7 +190,10 @@ export class MineComplianceInfo extends Component {
                       initialValues={this.state.complianceFilterParams}
                     />
                   </div>
-                  <ComplianceOrdersTable filteredOrders={this.state.filteredOrders} />
+                  <ComplianceOrdersTable
+                    filteredOrders={this.state.filteredOrders}
+                    isLoaded={this.state.isLoaded}
+                  />
                 </div>
               )}
           </div>
@@ -206,7 +211,7 @@ export class MineComplianceInfo extends Component {
           <h2>Inspections and Audits</h2>
           <Divider />
         </div>
-        {this.state.isLoading ? <Loading /> : <div>{this.renderComplianceContent()}</div>}
+        {this.renderComplianceContent()}
       </div>
     );
   }

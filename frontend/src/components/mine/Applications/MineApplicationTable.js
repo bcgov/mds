@@ -9,8 +9,9 @@ import * as Strings from "@/constants/strings";
 import * as Permission from "@/constants/permissions";
 import { getDropdownApplicationStatusOptions } from "@/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
-import { formatDate } from "@/utils/helpers";
+import { formatDate, getTableHeaders } from "@/utils/helpers";
 import { EDIT_OUTLINE } from "@/constants/assets";
+import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
 
 /**
  * @class  MineApplicationTable - displays a table of applicationsfor a mine.
@@ -21,6 +22,7 @@ const propTypes = {
   applicationStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   isMajorMine: PropTypes.bool.isRequired,
   openEditApplicationModal: PropTypes.func.isRequired,
+  isLoaded: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -112,14 +114,17 @@ export const MineApplicationTable = (props) => {
   );
 
   return (
-    <Table
-      className="nested-table"
-      align="left"
-      pagination={false}
-      columns={columns}
-      dataSource={rowData}
-      locale={{ emptyText: <NullScreen type="applications" /> }}
-    />
+    <TableLoadingWrapper condition={props.isLoaded} tableHeaders={getTableHeaders(columns)}>
+      <Table
+        className="nested-table"
+        rowClassName="fade-in"
+        align="left"
+        pagination={false}
+        columns={columns}
+        dataSource={rowData}
+        locale={{ emptyText: <NullScreen type="applications" /> }}
+      />
+    </TableLoadingWrapper>
   );
 };
 

@@ -156,7 +156,7 @@ export class MineNoticeOfWorkTable extends Component {
           )}
           dataSource={transformRowData(this.props.noticeOfWorkApplications)}
           locale={{
-            emptyText: <NullScreen type="no-results" />,
+            emptyText: <NullScreen type="notice-of-work" />,
           }}
           onChange={handleTableChange(this.props.handleSearch)}
         />

@@ -38,9 +38,19 @@ const defaultProps = {
 };
 
 export class MineApplicationInfo extends Component {
+  state = { isLoaded: false };
+
+  componentDidMount() {
+    this.props.fetchApplications({ mine_guid: this.props.mineGuid }).then(() => {
+      this.setState({ isLoaded: true });
+    });
+  }
+
   closeApplicationModal = () => {
     this.props.closeModal();
-    this.props.fetchApplications({ mine_guid: this.props.mineGuid });
+    this.props.fetchApplications({ mine_guid: this.props.mineGuid }).then(() => {
+      this.setState({ isLoaded: true });
+    });
   };
 
   openAddApplicationModal = (event, title) => {
@@ -107,6 +117,7 @@ export class MineApplicationInfo extends Component {
         </div>
         <br />
         <MineApplicationTable
+          isLoaded={this.state.isLoaded}
           applications={this.props.applications}
           isMajorMine={mine.major_mine_ind}
           openEditApplicationModal={this.openEditApplicationModal}

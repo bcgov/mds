@@ -27,6 +27,8 @@ const propTypes = {
     "subscription",
     "incidents",
     "reports",
+    "applications",
+    "notice-of-work",
   ]),
 };
 
@@ -96,6 +98,12 @@ const NullScreen = (props) => (
       <div>
         <img alt="mine_img" src={PERMIT} />
         <h3>{String.NO_APPLICATION}</h3>
+      </div>
+    )}
+    {props.type === "notice-of-work" && (
+      <div>
+        <img alt="mine_img" src={PERMIT} />
+        <h3>There are no notice of work applications</h3>
       </div>
     )}
     {props.type === "no-results" && (

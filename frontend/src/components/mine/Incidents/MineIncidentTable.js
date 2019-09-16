@@ -9,9 +9,10 @@ import * as Permission from "@/constants/permissions";
 import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls";
 import CustomPropTypes from "@/customPropTypes";
 import NullScreen from "@/components/common/NullScreen";
-import { formatDate } from "@/utils/helpers";
+import { formatDate, getTableHeaders } from "@/utils/helpers";
 import LinkButton from "@/components/common/LinkButton";
 import * as Strings from "@/constants/strings";
+import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
 
 const propTypes = {
   incidents: PropTypes.arrayOf(CustomPropTypes.incident).isRequired,
@@ -19,6 +20,7 @@ const propTypes = {
   handleEditMineIncident: PropTypes.func.isRequired,
   openMineIncidentModal: PropTypes.func.isRequired,
   openViewMineIncidentModal: PropTypes.func.isRequired,
+  isLoaded: PropTypes.bool.isRequired,
 };
 
 const renderDownloadLinks = (files, mine_incident_document_type_code) =>
@@ -167,7 +169,7 @@ const transformRowData = (
     .sort((a, b) => (a.mine_incident_report_no > b.mine_incident_report_no ? -1 : 1));
 
 export const MineIncidentTable = (props) => (
-  <div>
+  <TableLoadingWrapper condition={props.isLoaded} tableHeaders={getTableHeaders(columns(props))}>
     <Table
       align="left"
       pagination={false}
@@ -181,7 +183,7 @@ export const MineIncidentTable = (props) => (
         props.openViewMineIncidentModal
       )}
     />
-  </div>
+  </TableLoadingWrapper>
 );
 
 MineIncidentTable.propTypes = propTypes;
