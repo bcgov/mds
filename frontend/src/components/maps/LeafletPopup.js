@@ -24,7 +24,7 @@ export const LeafletPopup = (props) => {
       ? props.mine.mine_permit[0].permit_no
       : Strings.EMPTY_FIELD;
   return (
-    <div>
+    <div style={{ height: "130px", width: "220px" }}>
       <div>{props.mine.mine_name}</div>
       <br />
       <div>
