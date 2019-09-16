@@ -38,7 +38,7 @@ const defaultProps = {
 };
 
 const checkAdvancedSearch = ({ status, region, tenure, commodity, tsf, major }) =>
-  tsf || major || some([status, region, tenure, commodity], negate(isEmpty));
+  tsf || major || some([status, region, tenure, commodity, tsf], negate(isEmpty));
 
 export class MineSearch extends Component {
   state = {
