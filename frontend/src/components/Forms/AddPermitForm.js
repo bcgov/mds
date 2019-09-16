@@ -205,7 +205,7 @@ export default compose(
   reduxForm({
     form: FORM.ADD_PERMIT,
     validate: validateBusinessRules,
-    touchOnBlur: true,
+    touchOnBlur: false,
     onSubmitSuccess: resetForm(FORM.ADD_PERMIT),
   })
 )(AddPermitForm);
