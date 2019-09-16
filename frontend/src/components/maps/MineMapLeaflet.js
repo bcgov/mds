@@ -17,9 +17,6 @@ require("leaflet.markercluster");
 
 /**
  * @class MineMapLeaflet.js is a Leaflet Map component.
- *
- * TODO: Style the results using
- * https://stackoverflow.com/questions/46268753/filter-getfeatureinfo-results-leaflet-wms-plugin
  */
 
 const propTypes = {
@@ -135,7 +132,7 @@ class MineMapLeaflet extends Component {
   }
 
   createPin = (mine) => {
-    const customicon = L.icon({
+    const customIcon = L.icon({
       iconUrl: SMALL_PIN,
       iconSize: [60, 60],
     });
@@ -153,7 +150,7 @@ class MineMapLeaflet extends Component {
       }).addTo(this.map);
     }
 
-    const marker = L.marker(latLong, { icon: customicon }).bindPopup(Strings.LOADING);
+    const marker = L.marker(latLong, { icon: customIcon }).bindPopup(Strings.LOADING);
     this.markerClusterGroup.addLayer(marker);
     marker.on("click", this.handleMinePinClick(mine));
   };
@@ -181,7 +178,7 @@ class MineMapLeaflet extends Component {
   };
 
   render() {
-    return <div style={{ height: "100vh", width: "100%" }} id="leaflet-map" />;
+    return <div style={{ height: "100vh", width: "100%", zIndex: 0 }} id="leaflet-map" />;
   }
 }
 
