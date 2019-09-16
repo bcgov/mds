@@ -21,10 +21,12 @@ require("leaflet.markercluster");
  */
 
 const propTypes = {
+  mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
+  fetchMineRecordById: PropTypes.func.isRequired,
   lat: PropTypes.number,
   long: PropTypes.number,
   zoom: PropTypes.number,
-  mines: PropTypes.arrayOf(CustomPropTypes.mine),
+  minesBasicInfo: PropTypes.arrayOf(CustomPropTypes.mine),
   mineName: PropTypes.string,
 };
 
@@ -32,7 +34,7 @@ const defaultProps = {
   lat: Strings.DEFAULT_LAT,
   long: Strings.DEFAULT_LONG,
   zoom: Strings.DEFAULT_ZOOM,
-  mines: [],
+  minesBasicInfo: [],
   mineName: "",
 };
 
@@ -98,7 +100,7 @@ class MineMapLeaflet extends Component {
     this.markerClusterGroup = L.markerClusterGroup({
       animate: false,
     });
-    this.props.mines.map(this.createPin);
+    this.props.minesBasicInfo.map(this.createPin);
     this.map.addLayer(this.markerClusterGroup);
 
     // Add MinePins to the top of LayerList and add the LayerList widget
@@ -148,6 +150,14 @@ class MineMapLeaflet extends Component {
 
     const marker = L.marker(latLong, { icon: customicon }).bindPopup(this.renderPopup(mine));
     this.markerClusterGroup.addLayer(marker);
+    marker.on("click", this.handleMinePinClick(mine));
+  };
+
+  handleMinePinClick = (mine) => (e) => {
+    this.props.fetchMineRecordById(mine.mine_guid).then(() => {
+      const popup = e.target.getPopup();
+      popup.setContent(this.renderPopup(this.props.mines[mine.mine_guid]));
+    });
   };
 
   createMap() {
@@ -157,10 +167,13 @@ class MineMapLeaflet extends Component {
   }
 
   renderPopup = (mine) => {
+    // TODO: Use Strings constant
+    const permitNo =
+      mine.mine_permit && mine.mine_permit[0] ? mine.mine_permit[0].permit_no : "N/A";
     return `<div>${mine.mine_name}</div>
             </br>
-            <div><strong>Mine No.</strong> ${mine.mine_no} </div>
-            <div><strong>Permit No.</strong></div>
+            <div><strong>Mine No.</strong> ${mine.mine_no}</div>
+            <div><strong>Permit No.</strong> ${permitNo}</div>
             <div><strong>Commodities</strong></div>
            `;
   };

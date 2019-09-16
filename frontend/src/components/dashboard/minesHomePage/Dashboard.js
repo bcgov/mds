@@ -13,6 +13,7 @@ import {
   fetchMineRecords,
   createMineRecord,
   fetchMineRecordsForMap,
+  fetchMineRecordById,
 } from "@/actionCreators/mineActionCreator";
 import {
   fetchStatusOptions,
@@ -57,6 +58,7 @@ import { storeRegionOptions, storeTenureTypes } from "@/actions/staticContentAct
 const { TabPane } = Tabs;
 
 const propTypes = {
+  fetchMineRecordById: PropTypes.func.isRequired,
   fetchMineRecords: PropTypes.func.isRequired,
   fetchMineRecordsForMap: PropTypes.func.isRequired,
   createMineRecord: PropTypes.func.isRequired,
@@ -432,8 +434,10 @@ export class Dashboard extends Component {
                       lat={this.state.lat}
                       long={this.state.long}
                       zoom={this.state.zoom}
-                      mines={this.props.pageData.mines}
+                      minesBasicInfo={this.props.pageData.mines}
                       mineName={this.state.mineName}
+                      mines={this.props.mines}
+                      fetchMineRecordById={this.props.fetchMineRecordById}
                     />
                   ) : (
                     <MineMap {...this.state} />
@@ -496,6 +500,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
+      fetchMineRecordById,
       fetchMineRecords,
       fetchMineRecordsForMap,
       fetchStatusOptions,
