@@ -103,7 +103,7 @@ class MinePartyAppointment(AuditMixin, Base):
 
     @classmethod
     def find_by_permit_guid(cls, _id):
-            return cls.find_by(permit_guid=_id)
+        return cls.find_by(permit_guid=_id)
 
     @classmethod
     def find_parties_by_mine_party_appt_type_code(cls, code):
@@ -113,22 +113,38 @@ class MinePartyAppointment(AuditMixin, Base):
             return None
 
     @classmethod
+    def find_current_appointments(cls,
+                                  mine_guid=None,
+                                  mine_party_appt_type_code=None,
+                                  permit_guid=None,
+                                  mine_tailings_storage_facility_guid=None):
+        built_query = cls.query.filter_by(deleted_ind=False).filter_by(
+            mine_guid=mine_guid).filter_by(
+                mine_party_appt_type_code=mine_party_appt_type_code).filter_by(end_date=None)
+        if permit_guid:
+            built_query = built_query.filter_by(permit_guid=permit_guid)
+        if mine_tailings_storage_facility_guid:
+            built_query = built_query.filter_by(
+                mine_tailings_storage_facility_guid=mine_tailings_storage_facility_guid)
+        return built_query.all()
+
+    @classmethod
     def find_by(cls,
                 mine_guid=None,
                 party_guid=None,
                 mine_party_appt_type_codes=None,
                 permit_guid=None):
-            built_query = cls.query.filter_by(deleted_ind=False)
-            if mine_guid:
-                built_query = built_query.filter_by(mine_guid=mine_guid)
-            if party_guid:
-                built_query = built_query.filter_by(party_guid=party_guid)
-            if permit_guid:
-                built_query = built_query.filter_by(permit_guid=permit_guid)
-            if mine_party_appt_type_codes:
-                built_query = built_query.filter(
-                    cls.mine_party_appt_type_code.in_(mine_party_appt_type_codes))
-            return built_query.all()
+        built_query = cls.query.filter_by(deleted_ind=False)
+        if mine_guid:
+            built_query = built_query.filter_by(mine_guid=mine_guid)
+        if party_guid:
+            built_query = built_query.filter_by(party_guid=party_guid)
+        if permit_guid:
+            built_query = built_query.filter_by(permit_guid=permit_guid)
+        if mine_party_appt_type_codes:
+            built_query = built_query.filter(
+                cls.mine_party_appt_type_code.in_(mine_party_appt_type_codes))
+        return built_query.all()
 
     @classmethod
     def to_csv(cls, records, columns):
