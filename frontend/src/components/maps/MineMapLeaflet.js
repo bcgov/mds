@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import L from "leaflet";
 import LeafletWms from "leaflet.wms";
+import ReactDOMServer from "react-dom/server";
+import { Button } from "antd";
+import { Link, StaticRouter } from "react-router-dom";
+// import MapPopup from "@/components/maps/MapPopup";
 
 import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
@@ -9,6 +13,7 @@ import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
+import * as router from "@/constants/routes";
 import { SMALL_PIN } from "@/constants/assets";
 
 require("leaflet.markercluster");
@@ -30,6 +35,7 @@ const propTypes = {
   zoom: PropTypes.number,
   minesBasicInfo: PropTypes.arrayOf(CustomPropTypes.mine),
   mineName: PropTypes.string,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
 };
 
 const defaultProps = {
@@ -175,19 +181,43 @@ class MineMapLeaflet extends Component {
     // TODO: Use Strings constant
     const permitNo =
       mine.mine_permit && mine.mine_permit[0] ? mine.mine_permit[0].permit_no : "N/A";
-    return `<div>${mine.mine_name}</div>
-            </br>
-            <div><strong>Mine No.</strong> ${mine.mine_no}</div>
-            <div><strong>Permit No.</strong> ${permitNo}</div>
-            <div><strong>Commodities</strong> ${commodityCodes.join(", ")}</div>
-           `;
+    return ReactDOMServer.renderToStaticMarkup(
+      <div>
+        <div>{mine.mine_name}</div>
+        <br />
+        <div>
+          <strong>Mine No.</strong> {mine.mine_no}
+        </div>
+        <div>
+          <strong>Permit No.</strong> {permitNo}
+        </div>
+        <div>
+          <strong>Commodities</strong> {commodityCodes.join(", ")}
+        </div>
+        <StaticRouter context={this.context} basename={process.env.BASE_PATH}>
+          <Link to={router.MINE_SUMMARY.dynamicRoute(mine.mine_guid)}>
+            <div className="mineMapPopUpButton">
+              <Button type="primary">View Mine</Button>
+            </div>
+          </Link>
+        </StaticRouter>
+      </div>
+    );
+    /* return ReactDOMServer.renderToStaticMarkup(
+      <MapPopup
+        basicMineInfo={this.props.minesBasicInfo[0]}
+        mineCommodityHash={this.props.mineCommodityOptionsHash}
+      />
+    ); */
   };
 
   render() {
+    console.log(this.props);
     return <div style={{ height: "100vh", width: "100%" }} id="leaflet-map" />;
   }
 }
 
 MineMapLeaflet.propTypes = propTypes;
 MineMapLeaflet.defaultProps = defaultProps;
+
 export default MineMapLeaflet;

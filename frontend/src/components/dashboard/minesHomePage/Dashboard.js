@@ -446,6 +446,7 @@ export class Dashboard extends Component {
                       fetchMineRecordById={this.props.fetchMineRecordById}
                       transformedMineTypes={this.props.transformedMineTypes}
                       mineCommodityOptionsHash={this.props.mineCommodityOptionsHash}
+                      history={this.props.history}
                     />
                   ) : (
                     <MineMap {...this.state} />
