@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import moment from "moment";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { Tabs, Table } from "antd";
@@ -47,6 +48,15 @@ const mapPermitGuidToNumber = (permits) =>
     return acc;
   }, {});
 
+const mapTSFGuidToName = (tailings) =>
+  tailings.reduce(
+    (acc, { mine_tailings_storage_facility_guid, mine_tailings_storage_facility_name }) => {
+      acc[mine_tailings_storage_facility_guid] = mine_tailings_storage_facility_name;
+      return acc;
+    },
+    {}
+  );
+
 const getPartyRelationshipTitle = (partyRelationshipTypes, typeCode) => {
   const partyRelationshipType = partyRelationshipTypes.find(({ value }) => value === typeCode);
   return (partyRelationshipType && partyRelationshipType.label) || String.EMPTY;
@@ -56,6 +66,7 @@ export class RelationshipProfile extends Component {
   state = {
     partyRelationshipTitle: "",
     permitsMapping: {},
+    TSFMapping: {},
   };
 
   componentDidMount() {
@@ -94,6 +105,13 @@ export class RelationshipProfile extends Component {
       this.setState({ permitsMapping: mapPermitGuidToNumber(mine.mine_permit) });
     }
 
+    if (
+      mine &&
+      Object.keys(this.state.TSFMapping).length < mine.mine_tailings_storage_facilities.length
+    ) {
+      this.setState({ TSFMapping: mapTSFGuidToName(mine.mine_tailings_storage_facilities) });
+    }
+
     // Update relationships mapping when relationships are received
     // Otherwise, use existing mapping
     if (!isEmpty(this.props.partyRelationshipTypes) && isEmpty(this.state.partyRelationshipTitle)) {
@@ -109,6 +127,7 @@ export class RelationshipProfile extends Component {
   render() {
     const { id, typeCode } = this.props.match.params;
     const isPermittee = typeCode === "PMT";
+    const isEOR = typeCode === "EOR";
     const mine = this.props.mines[id];
     const permitColumn = isPermittee
       ? [
@@ -116,6 +135,15 @@ export class RelationshipProfile extends Component {
             title: "Permit",
             dataIndex: "permit",
             render: (text) => <div title="Permit">{text}</div>,
+          },
+        ]
+      : [];
+    const EORColumn = isEOR
+      ? [
+          {
+            title: "Tailings Storage Facility",
+            dataIndex: "tailingsStorageFacility",
+            render: (text) => <div title="Tailings Storage Facility">{text}</div>,
           },
         ]
       : [];
@@ -135,6 +163,7 @@ export class RelationshipProfile extends Component {
         render: (text) => <div title="Role">{text}</div>,
       },
       ...permitColumn,
+      ...EORColumn,
       {
         title: "Dates",
         dataIndex: "dates",
@@ -153,6 +182,7 @@ export class RelationshipProfile extends Component {
         partyGuid: relationship.party.party_guid,
         role: this.state.partyRelationshipTitle,
         permit: this.state.permitsMapping[relationship.related_guid],
+        tailingsStorageFacility: this.state.TSFMapping[relationship.related_guid],
         endDate: formatDate(relationship.end_date) || "Present",
         startDate: formatDate(relationship.start_date) || "Unknown",
       }));
@@ -162,9 +192,11 @@ export class RelationshipProfile extends Component {
       this.props.partyRelationships.length > 0 &&
       mine;
 
-    const filteredRelationships = this.props.partyRelationships.filter(
-      ({ mine_party_appt_type_code }) => mine_party_appt_type_code === typeCode
-    );
+    const filteredRelationships = this.props.partyRelationships
+      .sort((a, b) =>
+        moment(a.start_date, "YYYY-MM-DD") >= moment(b.start_date, "YYYY-MM-DD") ? -1 : 1
+      )
+      .filter(({ mine_party_appt_type_code }) => mine_party_appt_type_code === typeCode);
 
     if (isLoaded) {
       return (
