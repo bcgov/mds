@@ -70,10 +70,6 @@ getCmdParameters() {
     ARGS="$ARGS -hq"
   fi
 
-  if [ -n "$DB_SCHEMA" ]; then
-    ARGS="$ARGS -s \"$DB_SCHEMA\""
-  fi
-
   if [ -n "$DB_CATALOG" ]; then
     ARGS="$ARGS -cat \"$DB_CATALOG\""
   fi
@@ -116,7 +112,7 @@ fi
 PARAMS=$(getCmdParameters)
 echo $PARAMS
 
-java -jar $PARAMS
+java -jar $PARAMS -all
 
 if [ ! -f "$OUTPUT_PATH/index.html" ]; then
   echo "ERROR - No HTML was output generated."
