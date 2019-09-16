@@ -68,7 +68,7 @@ const getOpenMapsLayer = (styles = null, layer = "WHSE_MINERAL_TENURE.MTA_ACQUIR
   return openMapsSource.getLayer(layer);
 };
 
-const overlayLayers = {
+let overlayLayers = {
   "Roads (DRA)": getOpenMapsLayer(null, "WHSE_BASEMAPPING.DRA_DGTL_ROAD_ATLAS_MPAR_SP"),
   "Forest Tenure Roads": getOpenMapsLayer(null, "WHSE_FOREST_TENURE.FTEN_ROAD_SECTION_LINES_SVW"),
   "Contour Lines": getOpenMapsLayer(null, "WHSE_BASEMAPPING.NTS_BC_CONTOUR_LINES_125M"),
@@ -98,6 +98,10 @@ class MineMapLeaflet extends Component {
     this.markerClusterGroup = L.markerClusterGroup({ maxClusterRadius: 100 });
     this.props.mines.map(this.createPin);
     this.map.addLayer(this.markerClusterGroup);
+
+    // Add MinePins to the top of LayerList and add the LayerList widget
+    overlayLayers = Object.assign({ "Mine Pins": this.markerClusterGroup }, overlayLayers);
+    L.control.layers(this.getBaseMaps(), overlayLayers, { position: "topleft" }).addTo(this.map);
   }
 
   getBaseMaps() {
@@ -145,8 +149,9 @@ class MineMapLeaflet extends Component {
   };
 
   createMap() {
-    this.map = L.map("leaflet-map").setView([this.props.lat, this.props.long], this.props.zoom);
-    L.control.layers(this.getBaseMaps(), overlayLayers, { position: "topleft" }).addTo(this.map);
+    this.map = L.map("leaflet-map")
+      .setView([this.props.lat, this.props.long], this.props.zoom)
+      .setMaxZoom(20);
   }
 
   renderPopup = (mine) => {
