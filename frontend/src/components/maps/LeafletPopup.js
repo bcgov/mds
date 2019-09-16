@@ -7,7 +7,7 @@ import * as Strings from "@/constants/strings";
 
 const propTypes = {
   mine: PropTypes.shape({
-    mine_permit: PropTypes.arrayOf(PropTypes.string),
+    mine_permit: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
     mine_name: PropTypes.string,
     mine_no: PropTypes.string,
     mine_guid: PropTypes.string,

@@ -153,7 +153,7 @@ class MineMapLeaflet extends Component {
       }).addTo(this.map);
     }
 
-    const marker = L.marker(latLong, { icon: customicon }).bindPopup(this.renderPopup(mine));
+    const marker = L.marker(latLong, { icon: customicon }).bindPopup(Strings.LOADING);
     this.markerClusterGroup.addLayer(marker);
     marker.on("click", this.handleMinePinClick(mine));
   };
