@@ -138,6 +138,10 @@ export const NOTICE_OF_WORK_APPLICATION = (applicationGuid) =>
   `/now-submissions/applications/${applicationGuid}`;
 export const MINE_NOTICE_OF_WORK_APPLICATIONS = (mineGuid, params = {}) =>
   `/mines/${mineGuid}/now-submissions/applications?${queryString.stringify(params)}`;
+export const NOTICE_OF_WORK_DOCUMENT_FILE_GET_URL = (id, applicationGuid, token = {}) =>
+  `${NOTICE_OF_WORK_APPLICATION(applicationGuid)}/document/${id}?${queryString.stringify(token)}`;
+export const NOTICE_OF_WORK_DOCUMENT_TOKEN_GET_URL = (id, applicationGuid) =>
+  `${NOTICE_OF_WORK_APPLICATION(applicationGuid)}/document/${id}/token`;
 
 // Mine Party Appointments
 export const MINE_PARTY_APPOINTMENT_DOCUMENTS = (mineGuid, minePartyAppointmentGuid) =>

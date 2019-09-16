@@ -18,7 +18,7 @@ import {
   fetchMineIncidentStatusCodeOptions,
 } from "@/actionCreators/staticContentActionCreator";
 import * as Permission from "@/constants/permissions";
-import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
+import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls";
 import CustomPropTypes from "@/customPropTypes";
 import NullScreen from "@/components/common/NullScreen";
 import { formatDate } from "@/utils/helpers";

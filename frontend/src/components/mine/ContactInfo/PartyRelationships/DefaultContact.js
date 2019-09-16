@@ -8,7 +8,7 @@ import * as router from "@/constants/routes";
 import * as Permission from "@/constants/permissions";
 import { formatTitleString, formatDate } from "@/utils/helpers";
 import * as Strings from "@/constants/strings";
-import downloadFileFromDocumentManager from "@/utils/actionlessNetworkCalls";
+import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls";
 import LinkButton from "@/components/common/LinkButton";
 
 const propTypes = {

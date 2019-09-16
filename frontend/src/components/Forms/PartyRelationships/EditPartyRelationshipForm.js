@@ -35,7 +35,12 @@ const checkDatesForOverlap = (values, props) => {
       mine_party_appt_guid !== values.mine_party_appt_guid
   );
 
-  return validateDateRanges(existingAppointments, values, props.partyRelationshipType.description);
+  return validateDateRanges(
+    existingAppointments,
+    values,
+    props.partyRelationshipType.description,
+    false
+  );
 };
 
 const validate = (values, props) => {

@@ -85,11 +85,12 @@ export class ViewPartyRelationships extends Component {
   onSubmitAddPartyRelationship = (values) => {
     const payload = {
       mine_guid: this.props.mine.mine_guid,
-      party_guid: values.party_guid,
       mine_party_appt_type_code: this.state.selectedPartyRelationshipType,
+      party_guid: values.party_guid,
       related_guid: values.related_guid,
       start_date: values.start_date,
       end_date: values.end_date,
+      end_current: values.end_current,
     };
 
     return this.props
@@ -128,7 +129,7 @@ export class ViewPartyRelationships extends Component {
 
     if (
       value.mine_party_appt_type_code === "PMT" &&
-      !this.props.userRoles.includes(USER_ROLES[Permission.ADMIN])
+      !this.props.userRoles.includes(USER_ROLES[Permission.CONTACT_ADMIN])
     ) {
       this.RoleConfirmation.current.click();
       return;
