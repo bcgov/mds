@@ -1,0 +1,1 @@
+ALTER TABLE now_submissions.application ALTER COLUMN originating_system character varying(8) drop default drop not NULL ;
