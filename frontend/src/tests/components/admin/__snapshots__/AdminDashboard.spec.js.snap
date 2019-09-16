@@ -51,7 +51,12 @@ exports[`AdminDashboard renders properly 1`] = `
               0
                Verified Mines
             </h4>
-            <div />
+            <div>
+              <AdminVerifiedMinesList
+                isLoaded={false}
+                minesVerifiedStatusList={Array []}
+              />
+            </div>
           </div>
         </div>
       </TabPane>
@@ -68,7 +73,12 @@ exports[`AdminDashboard renders properly 1`] = `
               0
                Mines Needing Re-Verification
             </h4>
-            <div />
+            <div>
+              <AdminVerifiedMinesList
+                isLoaded={false}
+                minesVerifiedStatusList={Array []}
+              />
+            </div>
           </div>
         </div>
       </TabPane>

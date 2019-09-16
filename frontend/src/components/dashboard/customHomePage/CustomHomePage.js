@@ -19,7 +19,6 @@ import CustomPropTypes from "@/customPropTypes";
 import { getSubscribedMines } from "@/selectors/mineSelectors";
 import { fetchSubscribedMinesByUser, unSubscribe } from "@/actionCreators/mineActionCreator";
 import { SubscriptionTable } from "./SubscriptionTable";
-import { fetchInspectors } from "@/actionCreators/partiesActionCreator";
 
 /**
  * @class CustomHomePage is a personalized landing page for users
@@ -31,7 +30,6 @@ const propTypes = {
   fetchMineTenureTypes: PropTypes.func.isRequired,
   fetchMineComplianceCodes: PropTypes.func.isRequired,
   fetchRegionOptions: PropTypes.func.isRequired,
-  fetchInspectors: PropTypes.func.isRequired,
   fetchMineCommodityOptions: PropTypes.func.isRequired,
   unSubscribe: PropTypes.func.isRequired,
   subscribedMines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
@@ -47,7 +45,6 @@ export class CustomHomePage extends Component {
     this.props.fetchSubscribedMinesByUser().then(() => {
       this.setState({ isLoaded: true });
     });
-    this.props.fetchInspectors();
     this.props.fetchMineTenureTypes();
     this.props.fetchMineComplianceCodes();
     this.props.fetchRegionOptions();
@@ -105,7 +102,6 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineTenureTypes,
       fetchMineComplianceCodes,
       fetchMineCommodityOptions,
-      fetchInspectors,
     },
     dispatch
   );

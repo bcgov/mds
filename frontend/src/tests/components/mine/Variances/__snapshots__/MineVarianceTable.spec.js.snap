@@ -1,7 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MineVarianceTable renders properly 1`] = `
-<div>
+<TableLoadingWrapper
+  paginationPerPage={9}
+  tableHeaders={
+    Array [
+      "",
+      "Variance Number",
+      "Code Section",
+      "Mine Name",
+      "Lead Inspector",
+      "Submission Date",
+      "Application Status",
+      "Issue Date",
+      "Expiry Date",
+      "Approval Status",
+      "Documents",
+      "",
+    ]
+  }
+>
   <Table
     align="left"
     bordered={false}
@@ -21,6 +39,7 @@ exports[`MineVarianceTable renders properly 1`] = `
           "sortField": "variance_id",
           "sorter": false,
           "title": "Variance Number",
+          "width": 150,
         },
         Object {
           "dataIndex": "compliance_article_id",
@@ -28,6 +47,7 @@ exports[`MineVarianceTable renders properly 1`] = `
           "sortField": "compliance_article_id",
           "sorter": [Function],
           "title": "Code Section",
+          "width": 150,
         },
         Object {
           "className": "column-hide",
@@ -36,6 +56,7 @@ exports[`MineVarianceTable renders properly 1`] = `
           "sortField": "mine_name",
           "sorter": false,
           "title": "Mine Name",
+          "width": 150,
         },
         Object {
           "className": "column-hide",
@@ -44,6 +65,7 @@ exports[`MineVarianceTable renders properly 1`] = `
           "sortField": "lead_inspector",
           "sorter": false,
           "title": "Lead Inspector",
+          "width": 150,
         },
         Object {
           "className": "column-hide",
@@ -53,6 +75,7 @@ exports[`MineVarianceTable renders properly 1`] = `
           "sortField": "received_date",
           "sorter": [Function],
           "title": "Submission Date",
+          "width": 150,
         },
         Object {
           "className": "column-hide",
@@ -61,7 +84,7 @@ exports[`MineVarianceTable renders properly 1`] = `
           "sortField": "variance_application_status_code",
           "sorter": [Function],
           "title": "Application Status",
-          "width": 200,
+          "width": 150,
         },
         Object {
           "className": "",
@@ -69,6 +92,7 @@ exports[`MineVarianceTable renders properly 1`] = `
           "render": [Function],
           "sorter": [Function],
           "title": "Issue Date",
+          "width": 150,
         },
         Object {
           "className": "",
@@ -77,22 +101,26 @@ exports[`MineVarianceTable renders properly 1`] = `
           "render": [Function],
           "sorter": [Function],
           "title": "Expiry Date",
+          "width": 150,
         },
         Object {
           "className": "",
           "dataIndex": "",
           "render": [Function],
           "title": "Approval Status",
+          "width": 150,
         },
         Object {
           "dataIndex": "documents",
           "render": [Function],
           "title": "Documents",
+          "width": 150,
         },
         Object {
           "dataIndex": "variance",
           "render": [Function],
           "title": "",
+          "width": 150,
         },
       ]
     }
@@ -152,6 +180,7 @@ exports[`MineVarianceTable renders properly 1`] = `
     }
     onChange={null}
     pagination={false}
+    rowClassName="fade-in"
     rowKey="key"
     showHeader={true}
     size="default"
@@ -163,5 +192,5 @@ exports[`MineVarianceTable renders properly 1`] = `
     }
     useFixedHeader={false}
   />
-</div>
+</TableLoadingWrapper>
 `;
