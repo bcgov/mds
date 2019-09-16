@@ -13,6 +13,7 @@ import {
   fetchMineRecords,
   createMineRecord,
   fetchMineRecordsForMap,
+  fetchMineRecordById,
 } from "@/actionCreators/mineActionCreator";
 import {
   fetchStatusOptions,
@@ -24,7 +25,12 @@ import {
   fetchApplicationStatusOptions,
 } from "@/actionCreators/staticContentActionCreator";
 import { fetchPartyRelationshipTypes } from "@/actionCreators/partiesActionCreator";
-import { getMines, getMineIds, getMinesPageData } from "@/selectors/mineSelectors";
+import {
+  getMines,
+  getMineIds,
+  getMinesPageData,
+  getTransformedMineTypes,
+} from "@/selectors/mineSelectors";
 import {
   getMineRegionHash,
   getMineTenureTypesHash,
@@ -57,6 +63,7 @@ import { storeRegionOptions, storeTenureTypes } from "@/actions/staticContentAct
 const { TabPane } = Tabs;
 
 const propTypes = {
+  fetchMineRecordById: PropTypes.func.isRequired,
   fetchMineRecords: PropTypes.func.isRequired,
   fetchMineRecordsForMap: PropTypes.func.isRequired,
   createMineRecord: PropTypes.func.isRequired,
@@ -74,6 +81,7 @@ const propTypes = {
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
+  transformedMineTypes: CustomPropTypes.transformedMineTypes.isRequired,
   mineIds: PropTypes.arrayOf(PropTypes.string).isRequired,
   pageData: CustomPropTypes.minePageData.isRequired,
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
@@ -432,8 +440,13 @@ export class Dashboard extends Component {
                       lat={this.state.lat}
                       long={this.state.long}
                       zoom={this.state.zoom}
-                      mines={this.props.pageData.mines}
+                      minesBasicInfo={this.props.pageData.mines}
                       mineName={this.state.mineName}
+                      mines={this.props.mines}
+                      fetchMineRecordById={this.props.fetchMineRecordById}
+                      transformedMineTypes={this.props.transformedMineTypes}
+                      mineCommodityOptionsHash={this.props.mineCommodityOptionsHash}
+                      history={this.props.history}
                     />
                   ) : (
                     <MineMap {...this.state} />
@@ -491,11 +504,13 @@ const mapStateToProps = (state) => ({
   mineRegionOptions: getMineRegionDropdownOptions(state),
   mineTenureTypes: getMineTenureTypeDropdownOptions(state),
   mineCommodityOptions: getDropdownCommodityOptions(state),
+  transformedMineTypes: getTransformedMineTypes(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
+      fetchMineRecordById,
       fetchMineRecords,
       fetchMineRecordsForMap,
       fetchStatusOptions,

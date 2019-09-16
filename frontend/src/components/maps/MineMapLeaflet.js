@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import L from "leaflet";
 import LeafletWms from "leaflet.wms";
+import ReactDOMServer from "react-dom/server";
+import PropTypes from "prop-types";
+import LeafletPopup from "@/components/maps/LeafletPopup";
 
 import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 
-import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
 import { SMALL_PIN } from "@/constants/assets";
@@ -21,18 +23,23 @@ require("leaflet.markercluster");
  */
 
 const propTypes = {
+  mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
+  transformedMineTypes: CustomPropTypes.transformedMineTypes.isRequired,
+  mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  fetchMineRecordById: PropTypes.func.isRequired,
   lat: PropTypes.number,
   long: PropTypes.number,
   zoom: PropTypes.number,
-  mines: PropTypes.arrayOf(CustomPropTypes.mine),
+  minesBasicInfo: PropTypes.arrayOf(CustomPropTypes.mine),
   mineName: PropTypes.string,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
 };
 
 const defaultProps = {
   lat: Strings.DEFAULT_LAT,
   long: Strings.DEFAULT_LONG,
   zoom: Strings.DEFAULT_ZOOM,
-  mines: [],
+  minesBasicInfo: [],
   mineName: "",
 };
 
@@ -98,7 +105,7 @@ class MineMapLeaflet extends Component {
     this.markerClusterGroup = L.markerClusterGroup({
       animate: false,
     });
-    this.props.mines.map(this.createPin);
+    this.props.minesBasicInfo.map(this.createPin);
     this.map.addLayer(this.markerClusterGroup);
 
     // Add MinePins to the top of LayerList and add the LayerList widget
@@ -146,8 +153,19 @@ class MineMapLeaflet extends Component {
       }).addTo(this.map);
     }
 
-    const marker = L.marker(latLong, { icon: customicon }).bindPopup(this.renderPopup(mine));
+    const marker = L.marker(latLong, { icon: customicon }).bindPopup(Strings.LOADING);
     this.markerClusterGroup.addLayer(marker);
+    marker.on("click", this.handleMinePinClick(mine));
+  };
+
+  handleMinePinClick = (mine) => (e) => {
+    this.props.fetchMineRecordById(mine.mine_guid).then(() => {
+      const commodityCodes = this.props.transformedMineTypes.mine_commodity_code.map(
+        (code) => this.props.mineCommodityOptionsHash[code]
+      );
+      const popup = e.target.getPopup();
+      popup.setContent(this.renderPopup(this.props.mines[mine.mine_guid], commodityCodes));
+    });
   };
 
   createMap() {
@@ -156,13 +174,10 @@ class MineMapLeaflet extends Component {
       .setMaxZoom(20);
   }
 
-  renderPopup = (mine) => {
-    return `<div>${mine.mine_name}</div>
-            </br>
-            <div><strong>Mine No.</strong> ${mine.mine_no} </div>
-            <div><strong>Permit No.</strong></div>
-            <div><strong>Commodities</strong></div>
-           `;
+  renderPopup = (mine, commodityCodes = []) => {
+    return ReactDOMServer.renderToStaticMarkup(
+      <LeafletPopup mine={mine} commodityCodes={commodityCodes} context={this.context} />
+    );
   };
 
   render() {
@@ -172,4 +187,5 @@ class MineMapLeaflet extends Component {
 
 MineMapLeaflet.propTypes = propTypes;
 MineMapLeaflet.defaultProps = defaultProps;
+
 export default MineMapLeaflet;
