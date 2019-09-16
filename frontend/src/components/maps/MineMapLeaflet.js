@@ -22,6 +22,8 @@ require("leaflet.markercluster");
 
 const propTypes = {
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
+  transformedMineTypes: CustomPropTypes.transformedMineTypes.isRequired,
+  mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   lat: PropTypes.number,
   long: PropTypes.number,
@@ -155,8 +157,11 @@ class MineMapLeaflet extends Component {
 
   handleMinePinClick = (mine) => (e) => {
     this.props.fetchMineRecordById(mine.mine_guid).then(() => {
+      const commodityCodes = this.props.transformedMineTypes.mine_commodity_code.map(
+        (code) => this.props.mineCommodityOptionsHash[code]
+      );
       const popup = e.target.getPopup();
-      popup.setContent(this.renderPopup(this.props.mines[mine.mine_guid]));
+      popup.setContent(this.renderPopup(this.props.mines[mine.mine_guid], commodityCodes));
     });
   };
 
@@ -166,7 +171,7 @@ class MineMapLeaflet extends Component {
       .setMaxZoom(20);
   }
 
-  renderPopup = (mine) => {
+  renderPopup = (mine, commodityCodes = []) => {
     // TODO: Use Strings constant
     const permitNo =
       mine.mine_permit && mine.mine_permit[0] ? mine.mine_permit[0].permit_no : "N/A";
@@ -174,7 +179,7 @@ class MineMapLeaflet extends Component {
             </br>
             <div><strong>Mine No.</strong> ${mine.mine_no}</div>
             <div><strong>Permit No.</strong> ${permitNo}</div>
-            <div><strong>Commodities</strong></div>
+            <div><strong>Commodities</strong> ${commodityCodes.join(", ")}</div>
            `;
   };
 
