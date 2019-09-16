@@ -172,9 +172,10 @@ export class NOWWorkPlan extends Component {
 
     const isSpatialFile = (document) =>
       document.documenttype === "SpatialFileDoc" ||
-      Object.values(UNIQUELY_SPATIAL).includes(
-        document.filename.substr(document.filename.length - 4)
-      );
+      (document.filename &&
+        Object.values(UNIQUELY_SPATIAL).includes(
+          document.filename.substr(document.filename.length - 4)
+        ));
 
     const transfromData = (documents, application_guid, spatial = false) =>
       documents
