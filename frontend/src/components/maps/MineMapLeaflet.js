@@ -95,7 +95,9 @@ class MineMapLeaflet extends Component {
     this.createMap();
 
     // Add Clustered MinePins
-    this.markerClusterGroup = L.markerClusterGroup({ maxClusterRadius: 100 });
+    this.markerClusterGroup = L.markerClusterGroup({
+      animate: false,
+    });
     this.props.mines.map(this.createPin);
     this.map.addLayer(this.markerClusterGroup);
 
