@@ -1,3 +1,4 @@
+/* eslint-disable no-dupe-keys */
 export const EXCEL = {
   "application/vnd.ms-excel": ".xls",
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": ".xlsx",
@@ -20,3 +21,20 @@ export const OPEN_DOC = {
 };
 
 export const DOCUMENT = { ...PDF, ...DOC, ...OPEN_DOC };
+
+export const UNIQUELY_SPATIAL = {
+  "application/dbf": ".dbf",
+  "application/vnd.geo+json ": ".geoJSon",
+  "application/gml+xml": ".gml",
+  "application/vnd.google-earth.kml+xml ": ".kml",
+  "application/vnd.google-earth.kmz": ".kmz",
+  "application/octet-stream": ".prj",
+  "application/octet-stream": ".sbn",
+  "application/octet-stream": ".sbx",
+  "application/octet-stream": ".shp",
+  "application/octet-stream": ".shpz",
+  "application/octet-stream": ".shx",
+  "application/octet-stream": ".wkt",
+};
+
+export const SPATIAL = { ...UNIQUELY_SPATIAL, "text/csv": ".csv", "application/xml": ".xml" };

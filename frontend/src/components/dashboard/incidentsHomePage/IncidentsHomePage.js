@@ -190,7 +190,6 @@ export class IncidentsHomePage extends Component {
   };
 
   handleIncidentSearch = (searchParams, clear = false) => {
-    console.log("&&&&&&&&&&&&&&&&The search was called&&&&&&&&&&&&&&");
     const formattedSearchParams = formatParams(searchParams);
     const persistedParams = clear ? {} : formatParams(this.state.params);
 
@@ -231,6 +230,7 @@ export class IncidentsHomePage extends Component {
         incident,
       },
       isViewOnly: true,
+      afterClose: () => {},
       content: modalConfig.VIEW_MINE_INCIDENT,
     });
   };
