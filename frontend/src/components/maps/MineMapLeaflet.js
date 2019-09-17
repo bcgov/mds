@@ -11,7 +11,6 @@ import LeafletPopup from "@/components/maps/LeafletPopup";
 import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
-import "@/utils/leaflet-libs/mouse-coordinates/leaflet.mousecoordinate.css";
 
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
