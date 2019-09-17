@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import L from "leaflet";
 import LeafletWms from "leaflet.wms";
 import * as EsriLeaflet from "esri-leaflet";
-// import * as LeafletMouseCoordinatesTool from "@/utils/leaflet-libs/mouse-coordinates/leaflet.mouseCoordinate";
 import "@/utils/leaflet-libs/mouse-coordinates/leaflet.mousecoordinate";
 
 import ReactDOMServer from "react-dom/server";
