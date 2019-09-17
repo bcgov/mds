@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import L from "leaflet";
 import LeafletWms from "leaflet.wms";
 import * as EsriLeaflet from "esri-leaflet";
+// import * as LeafletMouseCoordinatesTool from "@/utils/leaflet-libs/mouse-coordinates/leaflet.mouseCoordinate";
+import "@/utils/leaflet-libs/mouse-coordinates/leaflet.mousecoordinate";
+
 import ReactDOMServer from "react-dom/server";
 import PropTypes from "prop-types";
 import LeafletPopup from "@/components/maps/LeafletPopup";
@@ -9,6 +12,7 @@ import LeafletPopup from "@/components/maps/LeafletPopup";
 import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
+import "@/utils/leaflet-libs/mouse-coordinates/leaflet.mousecoordinate.css";
 
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
@@ -109,6 +113,9 @@ class MineMapLeaflet extends Component {
     // Add MinePins to the top of LayerList and add the LayerList widget
     overlayLayers = Object.assign({ "Mine Pins": this.markerClusterGroup }, overlayLayers);
     L.control.layers(this.getBaseMaps(), overlayLayers, { position: "topleft" }).addTo(this.map);
+
+    // Add Mouse coordinate widget
+    L.control.mouseCoordinate({ utm: true, position: "topright" }).addTo(this.map);
   }
 
   getBaseMaps() {
