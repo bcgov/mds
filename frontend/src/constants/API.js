@@ -102,15 +102,26 @@ export const MINE_INCIDENT = (mineGuid, mine_incident_guid) =>
 export const MINE_INCIDENT_DOCUMENT = (mineGuid) => `/mines/${mineGuid}/incidents/documents`;
 
 export const INCIDENTS = (params) => {
-  const { ...otherParams } = params;
-  // const { variance_application_status_code = [], ...otherParams } = params;
-  // const formattedCodes =
-  //   variance_application_status_code.length >= 1
-  //     ? { variance_application_status_code: variance_application_status_code.join(",") }
-  //     : {};
+  const {
+    codes = [],
+    region = [],
+    determination = [],
+    incident_status = [],
+    ...otherParams
+  } = params;
+  const formattedCodes = {};
+  Object.assign(
+    formattedCodes,
+    codes.length >= 1 && { compliance_code: codes.join(",") },
+    region.length >= 1 && { region: region.join(",") },
+    incident_status.length >= 1 && { incident_status: incident_status.join(",") },
+    determination.length >= 1 && {
+      determination: determination.join(","),
+    }
+  );
   return params
     ? `/incidents?${queryString.stringify({
-        // ...formattedCodes,
+        ...formattedCodes,
         ...otherParams,
       })}`
     : "/incidents";

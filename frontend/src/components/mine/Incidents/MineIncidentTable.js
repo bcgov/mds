@@ -133,9 +133,6 @@ export class MineIncidentTable extends Component {
       .sort((a, b) => (a.mine_incident_report_no > b.mine_incident_report_no ? -1 : 1));
 
   render() {
-    console.log("The incidents are $$$$$$$$$$$$$$");
-    console.log(this.props.incidents);
-    console.log(this.props);
     const columns = [
       {
         title: "Incident Report No.",
