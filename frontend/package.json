@@ -149,7 +149,8 @@
       "!src/App.js",
       "!src/fetchEnv.js",
       "!src/assetsTransformer.js",
-      "!src/setupTests.js"
+      "!src/setupTests.js",
+      "!src/utils/leaflet-libs/**/*"
     ],
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1",
