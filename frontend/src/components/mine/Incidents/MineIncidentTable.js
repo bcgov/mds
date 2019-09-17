@@ -133,6 +133,9 @@ export class MineIncidentTable extends Component {
       .sort((a, b) => (a.mine_incident_report_no > b.mine_incident_report_no ? -1 : 1));
 
   render() {
+    console.log("The incidents are $$$$$$$$$$$$$$");
+    console.log(this.props.incidents);
+    console.log(this.props);
     const columns = [
       {
         title: "Incident Report No.",
@@ -199,6 +202,7 @@ export class MineIncidentTable extends Component {
               <span>{Strings.EMPTY_FIELD}</span>
             ) : (
               <span>
+                {text}
                 {text.map((code) => (
                   <div key={code}>{this.props.complianceCodesHash[code]}</div>
                 ))}

@@ -24,7 +24,7 @@ class IncidentsResource(Resource, UserMixin, ErrorMixin):
             'page': f'The page number of paginated records to return. Default: {PAGE_DEFAULT}',
             'per_page': f'The number of records to return per page. Default: {PER_PAGE_DEFAULT}',
             'search': 'A string to be search in the incident number, mine name, or mine number',
-            'status': 'Comma-separated list of the incident status codes',
+            'incident_status': 'Comma-separated list of the incident status codes',
             'determination':  'Comma-separated list of the inspectors determination, a three character code',
             'codes': 'Comma-separated list of code sub_paragraphs to include in results. Default: All status codes.',
             'incident_year': 'Return only incidents for this year',
@@ -40,7 +40,7 @@ class IncidentsResource(Resource, UserMixin, ErrorMixin):
         args = {
             "page_number": request.args.get('page', PAGE_DEFAULT, type=int),
             "page_size":request.args.get('per_page', PER_PAGE_DEFAULT, type=int),
-            "status": request.args.get('status', type=str),
+            "status": request.args.get('incident_status', type=str),
             "determination": request.args.get('determination', type=str),
             "codes": request.args.get('codes', type=str),
             'major': request.args.get('major', type=str),
@@ -100,12 +100,13 @@ class IncidentsResource(Resource, UserMixin, ErrorMixin):
             conditions.append(
                 self._build_filter('MineIncident', 'determination_type_code', 'in', determination_values))
         if args["codes"] is not None:
+            logging.warning(f'CODES WAS CALLED WITH: {args["codes"]}')
             query = MineIncident.query.join(Mine).outerjoin(MineIncidentDoSubparagraph)
             code_values = args["codes"].split(',')
+            logging.warning(f'CODES WAS CALLED WITH2: , {code_values}')
             conditions.append(
                 self._build_filter('MineIncidentDoSubparagraph', 'compliance_article_id', 'in', code_values))
         if args["year"] is not None:
-            logging.warning(f'the year {args["year"]} was passed!')
             min_datetime = datetime(int(args["year"]), 1, 1)
             max_datetime = datetime(int(args["year"])+1, 1, 1)
             conditions.append(
