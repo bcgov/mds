@@ -184,7 +184,7 @@ export class AddReportForm extends Component {
               <Field
                 id="submission_year"
                 name="submission_year"
-                label="Report Compliance Year/Period"
+                label="Report Compliance Year/Period*"
                 placeholder=""
                 component={renderConfig.YEAR}
                 validate={[required]}
@@ -195,7 +195,7 @@ export class AddReportForm extends Component {
               <Field
                 id="due_date"
                 name="due_date"
-                label="Due Date"
+                label="Due Date*"
                 placeholder=""
                 component={renderConfig.DATE}
                 validate={[required]}
@@ -260,7 +260,7 @@ export default compose(
   })),
   reduxForm({
     form: FORM.ADD_REPORT,
-    touchOnBlur: true,
+    touchOnBlur: false,
     onSubmitSuccess: resetForm(FORM.ADD_REPORT),
   })
 )(AddReportForm);
