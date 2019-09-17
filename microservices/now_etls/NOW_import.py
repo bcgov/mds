@@ -53,10 +53,10 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
         try:
             current_table = etl.fromdb(
                 connection, f'SELECT * from {schema}.{value}')
-            if value == 'application':
-                originated_table = etl.addfield(
-                    current_table, 'originating_system', system_name)
-            etl.appenddb(originated_table, connection, key,
+            # if value == 'application':
+            #     originated_table = etl.addfield(
+            #         current_table, 'originating_system', system_name)
+            etl.appenddb(current_table, connection, key,
                          schema='now_submissions', commit=False)
         except Exception as err:
             print(f'ETL Parsing error: {err}')
