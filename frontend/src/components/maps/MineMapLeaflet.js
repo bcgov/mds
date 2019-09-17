@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import L from "leaflet";
 import LeafletWms from "leaflet.wms";
+import * as EsriLeaflet from "esri-leaflet";
 import ReactDOMServer from "react-dom/server";
 import PropTypes from "prop-types";
 import LeafletPopup from "@/components/maps/LeafletPopup";
@@ -59,10 +60,10 @@ const getFirstNationLayer = () => {
 };
 
 const getBcMineRegionLayer = () =>
-  L.tileLayer(
-    "https://tiles.arcgis.com/tiles/ubm4tcTYICKBpist/arcgis/rest/services/BC_Mine_Regions4/MapServer/tile/{z}/{y}/{x}",
-    leafletWMSTiledOptions
-  );
+  EsriLeaflet.tiledMapLayer({
+    url:
+      "https://tiles.arcgis.com/tiles/ubm4tcTYICKBpist/arcgis/rest/services/BC_Mine_Regions4/MapServer",
+  });
 
 const getOpenMapsLayer = (styles = null, layer = "WHSE_MINERAL_TENURE.MTA_ACQUIRED_TENURE_SVW") => {
   const sourceOptions = Object.assign({}, leafletWMSTiledOptions);
