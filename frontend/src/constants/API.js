@@ -112,7 +112,7 @@ export const INCIDENTS = (params) => {
   const formattedCodes = {};
   Object.assign(
     formattedCodes,
-    codes.length >= 1 && { compliance_code: codes.join(",") },
+    codes.length >= 1 && { codes: codes.join(",") },
     region.length >= 1 && { region: region.join(",") },
     incident_status.length >= 1 && { incident_status: incident_status.join(",") },
     determination.length >= 1 && {

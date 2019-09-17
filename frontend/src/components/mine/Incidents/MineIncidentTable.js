@@ -199,7 +199,6 @@ export class MineIncidentTable extends Component {
               <span>{Strings.EMPTY_FIELD}</span>
             ) : (
               <span>
-                {text}
                 {text.map((code) => (
                   <div key={code}>{this.props.complianceCodesHash[code]}</div>
                 ))}
