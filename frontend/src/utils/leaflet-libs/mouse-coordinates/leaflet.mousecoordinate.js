@@ -25,9 +25,10 @@
     )
       return L.DomUtil.create("div");
     const n = (this._container = L.DomUtil.create("div", "leaflet-control-mouseCoordinate"));
+    L.DomEvent.disableClickPropagation(n);
     return (
       (this._gpsPositionContainer = L.DomUtil.create("div", "gpsPos", n)),
-      t.on("mousemove", this._update, this),
+      t.on("click", this._update, this),
       n
     );
   },
@@ -39,19 +40,19 @@
     let e = "<table>";
     if (
       this.options.gps &&
-      ((e += `<tr><td>GPS</td><td>${Math.round(1e5 * n) / 1e5}</td><td> ${Math.round(1e5 * r) /
-        1e5}</td></tr>`),
+      ((e += `<tr><td>LAT/LONG</td></tr><tr><td>DD :</td><td>${Math.round(1e5 * n) /
+        1e5}</td><td> ${Math.round(1e5 * r) / 1e5}</td></tr>`),
       this.options.gpsLong)
     ) {
       const o = this._geo2geodeziminuten(a);
-      e += `<tr><td></td><td class='coords'>${o.NS} ${o.latgrad}&deg; ${o.latminuten}</td><td class='coords'> ${o.WE} ${o.lnggrad}&deg; ${o.lngminuten}</td></tr>`;
+      e += `<tr><td>DDM :</td><td class='coords'>${o.NS} ${o.latgrad}&deg; ${o.latminuten}</td><td class='coords'> ${o.WE} ${o.lnggrad}&deg; ${o.lngminuten}</td></tr>`;
       const s = this._geo2gradminutensekunden(a);
-      e += `<tr><td></td><td>${s.NS} ${s.latgrad}&deg; ${s.latminuten}&prime; ${s.latsekunden}&Prime;</td><td> ${s.WE} ${s.lnggrad}&deg; ${s.lngminuten}&prime; ${s.lngsekunden}&Prime;</td></tr>`;
+      e += `<tr><td>DMS :</td><td>${s.NS} ${s.latgrad}&deg; ${s.latminuten}&prime; ${s.latsekunden}&Prime;</td><td> ${s.WE} ${s.lnggrad}&deg; ${s.lngminuten}&prime; ${s.lngsekunden}&Prime;</td></tr>`;
     }
     if (this.options.utm) {
       const i = UTM.fromLatLng(a);
       void 0 !== i &&
-        (e += `<tr><td>UTM</td><td colspan='2'>${i.zone}&nbsp;${i.x}&nbsp;${i.y}</td></tr>`);
+        (e += `<tr><td>UTM :</td><td colspan='2'>${i.zone}&nbsp;${i.x}&nbsp;${i.y}</td></tr>`);
     }
     if (this.options.utmref) {
       const d = UTMREF.fromUTM(UTM.fromLatLng(a));

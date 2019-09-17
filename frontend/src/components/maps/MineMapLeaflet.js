@@ -115,7 +115,7 @@ class MineMapLeaflet extends Component {
     L.control.layers(this.getBaseMaps(), overlayLayers, { position: "topleft" }).addTo(this.map);
 
     // Add Mouse coordinate widget
-    L.control.mouseCoordinate({ utm: true, utmref: true, position: "topright" }).addTo(this.map);
+    L.control.mouseCoordinate({ utm: true, position: "topright" }).addTo(this.map);
   }
 
   getBaseMaps() {
