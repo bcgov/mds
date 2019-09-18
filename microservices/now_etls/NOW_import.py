@@ -69,8 +69,7 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
                     current_table, 'originating_system', system_name)
 
                 table_plus_os_guid = table_plus_os = etl.addfield(
-                    table_plus_os, 'mine_guid', lambda rec: lookup_mine_guid(
-                        rec['minenumber'])
+                    table_plus_os, 'mine_guid', lambda rec: lookup_mine_guid(rec['minenumber']))
 
                 etl.appenddb(table_plus_os_guid, connection,
                              destination, schema='now_submissions', commit=False)
