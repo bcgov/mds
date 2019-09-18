@@ -11,8 +11,6 @@ from ..response_models import PAGINATED_INCIDENT_LIST
 from ...utils.access_decorators import requires_any_of, VIEW_ALL
 from ...utils.resources_mixins import UserMixin, ErrorMixin
 
-import logging
-
 PAGE_DEFAULT = 1
 PER_PAGE_DEFAULT = 25
 
@@ -100,10 +98,8 @@ class IncidentsResource(Resource, UserMixin, ErrorMixin):
             conditions.append(
                 self._build_filter('MineIncident', 'determination_type_code', 'in', determination_values))
         if args["codes"] is not None:
-            logging.warning(f'CODES WAS CALLED WITH: {args["codes"]}')
             query = MineIncident.query.join(Mine).outerjoin(MineIncidentDoSubparagraph)
             code_values = args["codes"].split(',')
-            logging.warning(f'CODES WAS CALLED WITH2: , {code_values}')
             conditions.append(
                 self._build_filter('MineIncidentDoSubparagraph', 'compliance_article_id', 'in', code_values))
         if args["year"] is not None:
@@ -132,10 +128,6 @@ class IncidentsResource(Resource, UserMixin, ErrorMixin):
 
         # Apply sorting
         if args['sort_field'] and args['sort_dir']:
-            logging.warning(f'the sort dir is: { args["sort_dir"]}')
-            logging.warning(f'the sort field is: { args["sort_field"]}')
-            logging.warning(f'the sort field is: { sort_field[args["sort_field"]]}')
-            logging.warning(f'the sort model is: { sort_models[args["sort_field"]]}')
             # sorting by code section is not applicable since a single incident may have many sections associated.
             sort_criteria = [{'model': sort_models[args['sort_field']],
                               'field': sort_field[args['sort_field']],
