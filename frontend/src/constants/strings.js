@@ -38,7 +38,7 @@ export const EMPTY = "";
 // default coordinates for center of BC
 export const DEFAULT_LAT = 53.7267;
 export const DEFAULT_LONG = -127.6476;
-export const DEFAULT_ZOOM = 8;
+export const DEFAULT_ZOOM = 7;
 export const HIGH_ZOOM = 14;
 
 // default url values
