@@ -5,7 +5,7 @@ import { Form, Button, Col, Row, Icon } from "antd";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
-// import { dateNotInFuture } from "@/utils/Validate";
+import { yearNotInFuture } from "@/utils/Validate";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -59,8 +59,6 @@ export class IncidentSearchForm extends Component {
         </Row>
         {this.props.isAdvanceSearch && (
           <div>
-            {/* Select Code Section */}
-
             <Row gutter={6}>
               <Col md={12} xs={24}>
                 <Field
@@ -77,7 +75,7 @@ export class IncidentSearchForm extends Component {
                   name="year"
                   placeholder="Select year of incident"
                   component={renderConfig.YEAR}
-                  // validate={[dateNotInFuture]} //TODO IMPLEMENT DATE NOT IN FUTURE VALIDATION
+                  validate={[yearNotInFuture]} // TODO IMPLEMENT DATE NOT IN FUTURE VALIDATION
                 />
               </Col>
             </Row>
