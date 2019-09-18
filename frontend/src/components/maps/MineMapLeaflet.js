@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-// import L from "leaflet";
+import L from "leaflet";
 import LeafletWms from "leaflet.wms";
 import * as EsriLeaflet from "esri-leaflet";
 import scriptLoader from "react-async-script-loader";
@@ -13,8 +13,8 @@ import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import "@/utils/leaflet-libs/mouse-coordinates/leaflet.mousecoordinate";
 
 import CustomPropTypes from "@/customPropTypes";
-// import * as Strings from "@/constants/strings";
-// import { SMALL_PIN } from "@/constants/assets";
+import * as Strings from "@/constants/strings";
+import { SMALL_PIN } from "@/constants/assets";
 import LeafletPopup from "@/components/maps/LeafletPopup";
 
 require("leaflet.markercluster");
@@ -33,8 +33,8 @@ const propTypes = {
   // lat: PropTypes.number,
   // long: PropTypes.number,
   // zoom: PropTypes.number,
-  minesBasicInfo: PropTypes.arrayOf(CustomPropTypes.mine),
-  // mineName: PropTypes.string,
+  // minesBasicInfo: PropTypes.arrayOf(CustomPropTypes.mine),
+  mineName: PropTypes.string,
   transformedMineTypes: CustomPropTypes.transformedMineTypes,
 };
 
@@ -42,8 +42,8 @@ const defaultProps = {
   // lat: Strings.DEFAULT_LAT,
   // long: Strings.DEFAULT_LONG,
   // zoom: Strings.DEFAULT_ZOOM,
-  minesBasicInfo: [],
-  // mineName: "",
+  // minesBasicInfo: [],
+  mineName: "",
   transformedMineTypes: {},
 };
 
@@ -79,7 +79,7 @@ const getOpenMapsLayer = (styles = null, layer = "WHSE_MINERAL_TENURE.MTA_ACQUIR
   return openMapsSource.getLayer(layer);
 };
 
-let overlayLayers = {
+const overlayLayers = {
   "Roads (DRA)": getOpenMapsLayer(null, "WHSE_BASEMAPPING.DRA_DGTL_ROAD_ATLAS_MPAR_SP"),
   "Forest Tenure Roads": getOpenMapsLayer(null, "WHSE_FOREST_TENURE.FTEN_ROAD_SECTION_LINES_SVW"),
   "Contour Lines": getOpenMapsLayer(null, "WHSE_BASEMAPPING.NTS_BC_CONTOUR_LINES_125M"),
@@ -109,7 +109,7 @@ class MineMapLeaflet extends Component {
     this.asyncScriptStatusCheck();
   }
 
-  /* getBaseMaps() {
+  getBaseMaps() {
     const topographicBasemap = L.tileLayer(
       "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
       {
@@ -117,7 +117,7 @@ class MineMapLeaflet extends Component {
       }
     );
     // Add default basemap to the map
-    // topographicBasemap.addTo(this.map);
+    topographicBasemap.addTo(this.map);
 
     const worldImageryLayer = L.tileLayer(
       "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
@@ -130,7 +130,7 @@ class MineMapLeaflet extends Component {
       Topographic: topographicBasemap,
       "World Imagery": worldImageryLayer,
     };
-  } */
+  }
 
   asyncScriptStatusCheck = () => {
     if (this.props.isScriptLoaded && this.props.isScriptLoadSucceed && !this.state.mapCreated) {
@@ -140,14 +140,14 @@ class MineMapLeaflet extends Component {
     }
   };
 
-  /* createPin = (mine) => {
-    // const customIcon = L.icon({ iconUrl: SMALL_PIN, iconSize: [60, 60], });
+  createPin = (mine) => {
+    const customIcon = window.L.icon({ iconUrl: SMALL_PIN, iconSize: [60, 60] });
 
     // TODO: Check what happens if Lat/Long is invalid
     const latLong = [mine.mine_location.latitude, mine.mine_location.longitude];
 
     if (this.props.mineName === mine.mine_name) {
-      L.circle(latLong, {
+      window.L.circle(latLong, {
         color: "red",
         fillColor: "#f03",
         fillOpacity: 0.25,
@@ -159,7 +159,7 @@ class MineMapLeaflet extends Component {
     const marker = L.marker(latLong, { icon: customIcon }).bindPopup(Strings.LOADING);
     this.markerClusterGroup.addLayer(marker);
     marker.on("click", this.handleMinePinClick(mine));
-  }; */
+  };
 
   handleMinePinClick = (mine) => (e) => {
     this.props.fetchMineRecordById(mine.mine_guid).then(() => {
@@ -172,37 +172,47 @@ class MineMapLeaflet extends Component {
   };
 
   initMap() {
-    console.log("initMap", this.state);
     // Create the base map with layers
     this.createMap();
     this.setState({ mapCreated: true });
 
     // Add Clustered MinePins
-    // this.markerClusterGroup = L.markerClusterGroup({ animate: false, });
-    this.props.minesBasicInfo.map(this.createPin);
+    // this.markerClusterGroup = L.markerClusterGroup({ animate: false });
+    // this.props.minesBasicInfo.map(this.createPin);
     // this.map.addLayer(this.markerClusterGroup);
 
     // Add MinePins to the top of LayerList and add the LayerList widget
-    overlayLayers = Object.assign({ "Mine Pins": this.markerClusterGroup }, overlayLayers);
+    const allLayers = Object.assign(
+      {
+        /* "Mine Pins": this.markerClusterGroup */
+      },
+      overlayLayers
+    );
     const overlayMaps = {};
-    this.map.layers.forEach((l) => {
-      overlayMaps[l.title] = l.layer;
+    this.map.on("load", () => {
+      this.map.layers.forEach((l) => {
+        console.log("layer", l);
+        overlayMaps[l.title] = l.layer;
+      });
+      console.log("HEEEEEEERE");
+      window.L.control
+        .layers({}, overlayMaps, {
+          position: "bottomleft",
+        })
+        // _map is the attribute that esri-leaflet exposes
+        // eslint-disable-next-line no-underscore-dangle
+        .addTo(this.map._map);
     });
-    /* L.control
-      .layers({}, overlayMaps, {
-        position: "bottomleft",
-      })
-      .addTo(this.map._map); */
-    // L.control.layers(this.getBaseMaps(), overlayLayers, { position: "topleft" }).addTo(this.map);
+    L.control.layers(this.getBaseMaps(), allLayers, { position: "topleft" }).addTo(this.map);
 
     // Add Mouse coordinate widget
-    // L.control.mouseCoordinate({ utm: true, position: "topright" }).addTo(this.map);
+    L.control.mouseCoordinate({ utm: true, position: "topright" }).addTo(this.map);
     // Add ScaleBar widget
-    // L.control.scale({ imperial: false }).addTo(this.map);
+    L.control.scale({ imperial: false }).addTo(this.map);
   }
 
   createMap() {
-    const webmapId = "d143b33f1a02421d86b6a4ca1d7b7cd0";
+    const webmapId = "e926583cd0114cd19ebc591f344e30dc";
     this.map = window.L.esri.webMap(webmapId, { map: window.L.map("leaflet-map") });
     // L.map("leaflet-map")
     // .setView([this.props.lat, this.props.long], this.props.zoom)
@@ -223,7 +233,8 @@ class MineMapLeaflet extends Component {
 MineMapLeaflet.propTypes = propTypes;
 MineMapLeaflet.defaultProps = defaultProps;
 
-export default scriptLoader([
+export default scriptLoader(
+  [],
   // Load Leaflet from CDN
   "https://unpkg.com/leaflet@1.5.1/dist/leaflet.js",
   // Load Esri Leaflet from CDN
@@ -241,5 +252,5 @@ export default scriptLoader([
   // Load Leaflet Omnivore
   "https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.3.1/leaflet-omnivore.min.js",
   // Load L.esri.WebMap
-  "https://cdn.jsdelivr.net/leaflet.esri.webmap/0.4.0/esri-leaflet-webmap.js",
-])(MineMapLeaflet);
+  "https://cdn.jsdelivr.net/leaflet.esri.webmap/0.4.0/esri-leaflet-webmap.js"
+)(MineMapLeaflet);
