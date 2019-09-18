@@ -78,7 +78,7 @@ export const joinOrRemove = (param, key) => {
 };
 export const removeEmptyStings = (param, key) => (isEmpty(param) ? {} : { [key]: param });
 
-// TODO: Implement the NoW dashboard patern for cleaning props
+// TODO: Implement the NoW dashboard pattern for cleaning props
 export const formatParams = ({
   region = [],
   year,

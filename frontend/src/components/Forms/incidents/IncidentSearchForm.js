@@ -75,7 +75,7 @@ export class IncidentSearchForm extends Component {
                   name="year"
                   placeholder="Select year of incident"
                   component={renderConfig.YEAR}
-                  validate={[yearNotInFuture]} // TODO IMPLEMENT DATE NOT IN FUTURE VALIDATION
+                  validate={[yearNotInFuture]}
                 />
               </Col>
             </Row>
