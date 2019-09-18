@@ -49,15 +49,28 @@ def truncate_table(connection, tables):
 
 # Import all the data from the specified schema and tables.
 def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
-    for key, value in tables.items():
+    for destination, source in tables.items():
         try:
             current_table = etl.fromdb(
-                connection, f'SELECT * from {schema}.{value}')
-            # if value == 'application':
-            #     originated_table = etl.addfield(
-            #         current_table, 'originating_system', system_name)
-            etl.appenddb(current_table, connection, key,
-                         schema='now_submissions', commit=False)
+                connection, f'SELECT * from {schema}.{source}')
+
+            switch(source):
+                case 'application':
+                    # Add originating source
+                    table_plus_os = etl.addfield(
+                        current_table, 'originating_system', system_name)
+
+                    table_plus_os_guid = table_plus_os = etl.addfield(
+                        table_plus_os, 'mine_guid', 'c64e67f9-9087-4ab8-afc1-f92c091d4bf3')
+
+                    etl.appenddb(table_plus_os_guid, connection,
+                                 destination, schema='now_submissions', commit=False)
+                    break
+                default:
+                    etl.appenddb(current_table, connection, destination,
+                                 schema='now_submissions', commit=False)
+                    break
+
         except Exception as err:
             print(f'ETL Parsing error: {err}')
             raise
