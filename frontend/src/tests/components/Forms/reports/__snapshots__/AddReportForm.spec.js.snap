@@ -76,7 +76,7 @@ exports[`AddReportForm renders properly 1`] = `
         <Field
           component={[Function]}
           id="submission_year"
-          label="Report Compliance Year/Period"
+          label="Report Compliance Year/Period*"
           name="submission_year"
           placeholder=""
           props={
