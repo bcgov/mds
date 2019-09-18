@@ -62,8 +62,8 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
             current_table = etl.fromdb(
                 connection, f'SELECT * from {schema}.{source}')
 
-            if source == 'application':
-                    # add originating source
+            if (source == 'application'):
+                # add originating source
                 table_plus_os = etl.addfield(
                     current_table, 'originating_system', system_name)
 
