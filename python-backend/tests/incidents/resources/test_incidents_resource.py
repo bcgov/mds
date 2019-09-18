@@ -91,7 +91,7 @@ class TestGetIncidents:
         assert get_resp.status_code == 200
         assert len(get_data['records']) == 1
         assert all(map(lambda v: v['incident_timestamp'][0:4] == incident_year,
-                       get_data['records']))
+                       get_data['records'])), get_data
 
     def test_get_incidents_major_filter(self, test_client, db_session, auth_headers):
         """Should respect incidents codes major mine indicator param"""
@@ -106,7 +106,7 @@ class TestGetIncidents:
         assert len(get_data['records']) == small_batch_size
         assert all(
             map(lambda v: v['mine_name'] in [mine.mine_name for mine in major_mine],
-                get_data['records']))
+                get_data['records'])), get_data
 
     def test_get_incidents_search_filter(self, test_client, db_session, auth_headers):
         """Should respect incidents search query param"""
@@ -118,7 +118,8 @@ class TestGetIncidents:
         get_data = json.loads(get_resp.data.decode())
         assert get_resp.status_code == 200
         assert len(get_data['records']) == 2
-        assert all(map(lambda v: v['mine_name'] in ["7891011", "steve"], get_data['records']))
+        assert all(map(lambda v: v['mine_name'] in ["7891011", "steve"],
+                       get_data['records'])), get_data
 
     def test_get_incidents_region_filter(self, test_client, db_session, auth_headers):
         """Should respect incidents region query param"""
@@ -148,7 +149,7 @@ class TestGetIncidents:
         assert get_resp.status_code == 200
         assert len(get_data['records']) == batch_size
         assert all(get_data['records'][i]['incident_timestamp'] >= get_data['records'][i + 1]
-                   ['incident_timestamp'] for i in range(len(get_data['records']) - 1))
+                   ['incident_timestamp'] for i in range(len(get_data['records']) - 1)), get_data
 
     # TODO: When this incident_no is implemented a test on sorting by it will be needed
     # def test_get_incidents_incident_no_sort(self, test_client, db_session, auth_headers):
@@ -166,7 +167,8 @@ class TestGetIncidents:
         assert get_resp.status_code == 200
         assert len(get_data['records']) == batch_size
         assert all(get_data['records'][i]['determination_type_code'] <= get_data['records'][i + 1]
-                   ['determination_type_code'] for i in range(len(get_data['records']) - 1))
+                   ['determination_type_code']
+                   for i in range(len(get_data['records']) - 1)), get_data
 
     def test_get_incidents_status_sort(self, test_client, db_session, auth_headers):
         """Should respect incidents status sort"""
@@ -215,4 +217,4 @@ class TestGetIncidents:
         assert len(get_data['records']) == batch_size
         assert all(map(lambda v: v['status_code'] == status_pre, get_data['records']))
         assert all(get_data['records'][i]['mine_name'] >= get_data['records'][i + 1]['mine_name']
-                   for i in range(len(get_data['records']) - 1))
+                   for i in range(len(get_data['records']) - 1)), get_data
