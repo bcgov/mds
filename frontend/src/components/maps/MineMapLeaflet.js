@@ -59,7 +59,7 @@ const getFirstNationLayer = () => {
 };
 
 const getBcMineRegionLayer = () =>
-  EsriLeaflet.dynamicMapLayer({
+  EsriLeaflet.tiledMapLayer({
     url:
       "https://tiles.arcgis.com/tiles/ubm4tcTYICKBpist/arcgis/rest/services/BC_Mine_Regions4/MapServer",
   });
