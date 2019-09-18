@@ -167,7 +167,7 @@ class Application(Base):
     isblastselect = db.Column(db.String)
     istimberselect = db.Column(db.String)
 
-    mine = db.relationship('Mine', primaryjoin='Application.minenumber==Mine.mine_no')
+    mine = db.relationship('Mine', lazy='joined')
 
     applicant = db.relationship('Client', lazy='select', foreign_keys=[applicantclientid])
     submitter = db.relationship('Client', lazy='select', foreign_keys=[submitterclientid])
