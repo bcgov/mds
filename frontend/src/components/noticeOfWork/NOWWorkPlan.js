@@ -4,6 +4,9 @@ import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
 import NullScreen from "@/components/common/NullScreen";
 import NOWActivities from "@/components/noticeOfWork/NOWActivities";
+import LinkButton from "@/components/common/LinkButton";
+import { downloadNowDocument } from "@/utils/actionlessNetworkCalls";
+import { UNIQUELY_SPATIAL } from "@/constants/fileTypes";
 
 const propTypes = {
   noticeOfWork: CustomPropTypes.nowApplication.isRequired,
@@ -143,13 +146,13 @@ export class NOWWorkPlan extends Component {
         key: "filename",
         render: (text, record) => (
           <div title="File Name">
-            {record.url ? (
-              <a href={record.url} target="_blank" rel="noopener noreferrer">
-                {text}
-              </a>
-            ) : (
+            <LinkButton
+              onClick={() =>
+                downloadNowDocument(record.key, record.application_guid, record.filename)
+              }
+            >
               <span>{text}</span>
-            )}
+            </LinkButton>
           </div>
         ),
       },
@@ -167,13 +170,24 @@ export class NOWWorkPlan extends Component {
       },
     ];
 
-    const transfromData = (documents) =>
-      documents.map((document) => ({
-        filename: document.filename || Strings.EMPTY_FIELD,
-        url: document.documenturl,
-        category: document.documenttype || Strings.EMPTY_FIELD,
-        description: document.description || Strings.EMPTY_FIELD,
-      }));
+    const isSpatialFile = (document) =>
+      document.documenttype === "SpatialFileDoc" ||
+      (document.filename &&
+        Object.keys(UNIQUELY_SPATIAL).includes(
+          document.filename.substr(document.filename.length - 4)
+        ));
+
+    const transfromData = (documents, application_guid, spatial = false) =>
+      documents
+        .filter((document) => (spatial ? isSpatialFile(document) : !isSpatialFile(document)))
+        .map((document) => ({
+          key: document.id,
+          application_guid,
+          filename: document.filename || Strings.EMPTY_FIELD,
+          url: document.documenturl,
+          category: document.documenttype || Strings.EMPTY_FIELD,
+          description: document.description || Strings.EMPTY_FIELD,
+        }));
 
     return (
       <div>
@@ -186,7 +200,30 @@ export class NOWWorkPlan extends Component {
               align="left"
               pagination={false}
               columns={columns}
-              dataSource={transfromData(this.props.noticeOfWork.documents)}
+              dataSource={transfromData(
+                this.props.noticeOfWork.documents,
+                this.props.noticeOfWork.application_guid
+              )}
+              locale={{ emptyText: "There are no documents associated with this Notice of Work" }}
+            />
+          ) : (
+            <NullScreen type="documents" />
+          )}
+        </div>
+        <br />
+        <h3>Spatial Files</h3>
+        <Divider />
+        <div className="padding-large--sides">
+          {this.props.noticeOfWork.documents.length >= 1 ? (
+            <Table
+              align="left"
+              pagination={false}
+              columns={columns}
+              dataSource={transfromData(
+                this.props.noticeOfWork.documents,
+                this.props.noticeOfWork.application_guid,
+                true
+              )}
               locale={{ emptyText: "There are no documents associated with this Notice of Work" }}
             />
           ) : (

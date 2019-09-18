@@ -19,6 +19,7 @@ DOCUMENT_RESPONSE_MODEL = api.model(
 
 class Document(Base):
     __tablename__ = "document"
+    __table_args__ = {'comment': 'A document is any type of additional documentation that has been generated during the INSPECTION process and is attached as part of the INSPECTION record. An example would be a photograph that was taken of the effluent being released during the inspection.'}
     document_id = db.Column(db.Integer, primary_key=True)
     external_id = db.Column(db.Integer)
     document_date = db.Column(db.DateTime)

@@ -76,7 +76,7 @@ export class AddPermitForm extends Component {
     this.props.change("uploadedFiles", this.state.uploadedFiles);
   };
 
-  onRemoveFile = (fileItem) => {
+  onRemoveFile = (err, fileItem) => {
     remove(this.state.uploadedFiles, { document_manager_guid: fileItem.serverId });
     this.props.change("uploadedFiles", this.state.uploadedFiles);
   };
@@ -205,7 +205,7 @@ export default compose(
   reduxForm({
     form: FORM.ADD_PERMIT,
     validate: validateBusinessRules,
-    touchOnBlur: true,
+    touchOnBlur: false,
     onSubmitSuccess: resetForm(FORM.ADD_PERMIT),
   })
 )(AddPermitForm);

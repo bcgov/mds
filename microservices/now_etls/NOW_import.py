@@ -48,27 +48,29 @@ def truncate_table(connection, tables):
 
 
 # Import all the data from the specified schema and tables.
-def ETL_MMS_NOW_schema(connection, tables, schema):
+def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
     for key, value in tables.items():
         try:
             current_table = etl.fromdb(
                 connection, f'SELECT * from {schema}.{value}')
+            # if value == 'application':
+            #     originated_table = etl.addfield(
+            #         current_table, 'originating_system', system_name)
             etl.appenddb(current_table, connection, key,
                          schema='now_submissions', commit=False)
         except Exception as err:
             print(f'ETL Parsing error: {err}')
+            raise
 
 
 def NOW_submissions_ETL(connection):
-    # Removing the data imported from the previous run.
-    truncate_table(connection, {**SHARED_TABLES, **NROS_ONLY_TABLES})
-    connection.commit()
+    with connection:
+        # Removing the data imported from the previous run.
+        truncate_table(connection, {**SHARED_TABLES, **NROS_ONLY_TABLES})
 
-    # Importing the vFCBC NoW submission data.
-    ETL_MMS_NOW_schema(connection, SHARED_TABLES, 'mms_now_vfcbc')
-    connection.commit()
+        # Importing the vFCBC NoW submission data.
+        ETL_MMS_NOW_schema(connection, SHARED_TABLES, 'mms_now_vfcbc', 'VFCBC')
 
-    # Importing the NROS NoW submission data.
-    ETL_MMS_NOW_schema(
-        connection, {**SHARED_TABLES, **NROS_ONLY_TABLES}, 'mms_now_nros')
-    connection.commit()
+        # Importing the NROS NoW submission data.
+        ETL_MMS_NOW_schema(
+            connection, {**SHARED_TABLES, **NROS_ONLY_TABLES}, 'mms_now_nros', 'NROS')

@@ -22,6 +22,7 @@ import {
   removePartyRelationship,
   updatePartyRelationship,
   fetchPartyRelationships,
+  addDocumentToRelationship,
 } from "@/actionCreators/partiesActionCreator";
 import { createTailingsStorageFacility } from "@/actionCreators/mineActionCreator";
 import {
@@ -46,6 +47,7 @@ const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
   updatePartyRelationship: PropTypes.func.isRequired,
   removePartyRelationship: PropTypes.func.isRequired,
+  addDocumentToRelationship: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
@@ -65,25 +67,53 @@ export class ViewPartyRelationships extends Component {
   state = {
     selectedPartyRelationshipType: {},
     selectedPartyRelationship: {},
+    uploadedFiles: [],
+  };
+
+  onFileLoad = (documentName, document_manager_guid) => {
+    this.setState((prevState) => ({
+      uploadedFiles: [[document_manager_guid, documentName], ...prevState.uploadedFiles],
+    }));
+  };
+
+  onRemoveFile = (err, fileItem) => {
+    this.setState((prevState) => ({
+      uploadedFiles: prevState.uploadedFiles.filter((fileArr) => fileArr[0] !== fileItem.serverId),
+    }));
   };
 
   onSubmitAddPartyRelationship = (values) => {
     const payload = {
       mine_guid: this.props.mine.mine_guid,
-      party_guid: values.party_guid,
       mine_party_appt_type_code: this.state.selectedPartyRelationshipType,
+      party_guid: values.party_guid,
       related_guid: values.related_guid,
       start_date: values.start_date,
       end_date: values.end_date,
+      end_current: values.end_current,
     };
 
-    return this.props.addPartyRelationship(payload).then(() => {
-      this.props.fetchPartyRelationships({
-        mine_guid: this.props.mine.mine_guid,
-        relationships: "party",
+    return this.props
+      .addPartyRelationship(payload)
+      .then(async ({ data: { mine_party_appt_guid } }) => {
+        await Promise.all(
+          this.state.uploadedFiles.map(([document_manager_guid, document_name]) =>
+            this.props.addDocumentToRelationship(
+              { mineGuid: this.props.mine.mine_guid, minePartyApptGuid: mine_party_appt_guid },
+              {
+                document_manager_guid,
+                document_name,
+              }
+            )
+          )
+        );
+        this.setState({ uploadedFiles: [] });
+        this.props.closeModal();
+        this.props.fetchPartyRelationships({
+          mine_guid: this.props.mine.mine_guid,
+          relationships: "party",
+        });
       });
-      this.props.closeModal();
-    });
   };
 
   openAddPartyRelationshipModal = ({
@@ -99,7 +129,7 @@ export class ViewPartyRelationships extends Component {
 
     if (
       value.mine_party_appt_type_code === "PMT" &&
-      !this.props.userRoles.includes(USER_ROLES[Permission.ADMIN])
+      !this.props.userRoles.includes(USER_ROLES[Permission.CONTACT_ADMIN])
     ) {
       this.RoleConfirmation.current.click();
       return;
@@ -121,6 +151,8 @@ export class ViewPartyRelationships extends Component {
         partyRelationships,
         partyRelationshipType: value,
         mine,
+        onFileLoad: this.onFileLoad,
+        onRemoveFile: this.onRemoveFile,
       },
       content: modalConfig.ADD_PARTY_RELATIONSHIP,
       clearOnSubmit: true,
@@ -465,6 +497,7 @@ const mapDispatchToProps = (dispatch) =>
       removePartyRelationship,
       updatePartyRelationship,
       createTailingsStorageFacility,
+      addDocumentToRelationship,
     },
     dispatch
   );

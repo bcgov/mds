@@ -35,6 +35,14 @@ exports[`AddIncidentFollowUpForm renders properly 1`] = `
         >
           <Field
             component={[Function]}
+            data={
+              Array [
+                Object {
+                  "description": "No Action",
+                  "mine_incident_followup_type_code": "NOA",
+                },
+              ]
+            }
             id="followup_investigation_type_code"
             label="Was it escalated to EMPR investigation?*"
             name="followup_investigation_type_code"
@@ -71,7 +79,7 @@ exports[`AddIncidentFollowUpForm renders properly 1`] = `
           <Field
             component={[Function]}
             id="status_code"
-            label="Incident status?*"
+            label="Incident status*"
             name="status_code"
           />
         </FormItem>

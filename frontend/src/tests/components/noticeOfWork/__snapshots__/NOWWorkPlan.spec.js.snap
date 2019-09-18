@@ -576,19 +576,79 @@ exports[`NOWWorkPlan renders properly 1`] = `
         dataSource={
           Array [
             Object {
+              "application_guid": "89ce70bc-a34b-4ec6-aff0-704ba68c4606",
               "category": "N/A",
               "description": "N/A",
               "filename": "N/A",
+              "key": undefined,
               "url": null,
             },
             Object {
+              "application_guid": "89ce70bc-a34b-4ec6-aff0-704ba68c4606",
               "category": "N/A",
               "description": "N/A",
               "filename": "N/A",
+              "key": undefined,
               "url": null,
             },
           ]
         }
+        indentSize={20}
+        loading={false}
+        locale={
+          Object {
+            "emptyText": "There are no documents associated with this Notice of Work",
+          }
+        }
+        pagination={false}
+        rowKey="key"
+        showHeader={true}
+        size="default"
+        sortDirections={
+          Array [
+            "ascend",
+            "descend",
+          ]
+        }
+        useFixedHeader={false}
+      />
+    </div>
+    <br />
+    <h3>
+      Spatial Files
+    </h3>
+    <Divider />
+    <div
+      className="padding-large--sides"
+    >
+      <Table
+        align="left"
+        bordered={false}
+        childrenColumnName="children"
+        className=""
+        columns={
+          Array [
+            Object {
+              "dataIndex": "filename",
+              "key": "filename",
+              "render": [Function],
+              "title": "File name",
+            },
+            Object {
+              "dataIndex": "category",
+              "key": "category",
+              "render": [Function],
+              "title": "Category",
+            },
+            Object {
+              "dataIndex": "description",
+              "key": "description",
+              "render": [Function],
+              "title": "Proponent Description",
+            },
+          ]
+        }
+        dataSource={Array []}
         indentSize={20}
         loading={false}
         locale={

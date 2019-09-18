@@ -27,6 +27,7 @@ const propTypes = {
   uploadedFiles: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   onFileLoad: PropTypes.func.isRequired,
   onRemoveFile: PropTypes.func.isRequired,
+  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const renderRecommendations = ({ fields }) => [
@@ -47,11 +48,21 @@ const renderRecommendations = ({ fields }) => [
 ];
 
 export class AddIncidentFollowUpForm extends Component {
+  isHistoricalIncident =
+    this.props.initialValues.followup_investigation_type_code ===
+    Strings.INCIDENT_FOLLOWUP_ACTIONS.unknown;
+
   uncommonBehaviourWarning = () =>
     this.props.determinationTypeCode === Strings.INCIDENT_DETERMINATION_TYPES.pending &&
     this.props.hasFollowUp
       ? "Warning: It's uncommon for an inspection to occur if a determination has not been made"
       : undefined;
+
+  filteredFollowupActions = () =>
+    this.props.followupActionOptions.filter(
+      ({ value }) =>
+        this.isHistoricalIncident || value !== Strings.INCIDENT_FOLLOWUP_ACTIONS.unknown
+    );
 
   render() {
     return (
@@ -93,7 +104,7 @@ export class AddIncidentFollowUpForm extends Component {
                   label="Was it escalated to EMPR investigation?*"
                   placeholder="Please choose one"
                   component={renderConfig.SELECT}
-                  data={this.props.followupActionOptions}
+                  data={this.filteredFollowupActions()}
                   validate={[required]}
                 />
               </Form.Item>
@@ -138,7 +149,7 @@ export class AddIncidentFollowUpForm extends Component {
                 <Field
                   id="status_code"
                   name="status_code"
-                  label="Incident status?*"
+                  label="Incident status*"
                   component={renderConfig.SELECT}
                   data={this.props.incidentStatusCodeOptions}
                 />

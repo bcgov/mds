@@ -3,6 +3,8 @@ import uuid, datetime
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.ext.associationproxy import association_proxy
+
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 
@@ -70,11 +72,16 @@ class MineIncident(AuditMixin, Base):
         db.ForeignKey(
             'mine_incident_followup_investigation_type.mine_incident_followup_investigation_type_code'
         ))
+    mine_determination_type_code = db.Column(
+        db.String,
+        db.ForeignKey('mine_incident_determination_type.mine_incident_determination_type_code'))
+    mine_determination_representative = db.Column(db.String)
 
     determination_type = db.relationship('MineIncidentDeterminationType',
                                          backref='mine_incidents',
                                          lazy='joined',
-                                         uselist=False)
+                                         uselist=False,
+                                         foreign_keys=[determination_type_code])
     dangerous_occurrence_subparagraphs = db.relationship('ComplianceArticle',
                                                          backref='mine_incidents',
                                                          lazy='joined',
@@ -92,6 +99,12 @@ class MineIncident(AuditMixin, Base):
     mine_documents = db.relationship('MineDocument',
                                          lazy='joined',
                                          secondary='mine_incident_document_xref')
+
+    mine_table = db.relationship('Mine', lazy='joined')
+    mine_name = association_proxy('mine_table', 'mine_name')
+    mine_region = association_proxy('mine_table', 'mine_region')
+    major_mine_ind = association_proxy('mine_table', 'major_mine_ind')
+
 
     @hybrid_property
     def mine_incident_report_no(self):
@@ -115,6 +128,8 @@ class MineIncident(AuditMixin, Base):
                incident_timestamp,
                incident_description,
                determination_type_code=None,
+               mine_determination_type_code=None,
+               mine_determination_representative=None,
                followup_investigation_type_code=None,
                reported_timestamp=None,
                reported_by_name=None,
@@ -125,6 +140,8 @@ class MineIncident(AuditMixin, Base):
             reported_timestamp=reported_timestamp,
             reported_by_name=reported_by_name,
             determination_type_code=determination_type_code,
+            mine_determination_type_code=mine_determination_type_code,
+            mine_determination_representative=mine_determination_representative,
             followup_investigation_type_code=followup_investigation_type_code,
         )
         mine.mine_incidents.append(mine_incident)
