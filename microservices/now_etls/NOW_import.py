@@ -47,13 +47,12 @@ def truncate_table(connection, tables):
             f'TRUNCATE TABLE now_submissions.{key} CONTINUE IDENTITY CASCADE;')
 
 
-def lookup_mine_guid(connection, mine_number):
-    cursor = connection.cursor()
-    cursor.execute(
-        f'select distinct on(mine_no) mine_guid from public.mine where mine_no = ${mine_number} order by mine_no, create_timestamp;')
-    mine_guid = cursor.fetchone()[0]
-    cursor.close()
-    return mine_guid
+def join_mine_guids(connection, application_table):
+    current_mines = etl.fromdb(
+        connection, 'select distinct on (minenumber) mine_guid, mine_no as minenumber from public.mine order by minenumber, create_timestamp;')
+    application_table_guid_lookup = etl.join(
+        application_table, current_mines, key='minenumber')
+    return application_table_guid_lookup
 
 
 def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
@@ -63,13 +62,12 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
             current_table = etl.fromdb(
                 connection, f'SELECT * from {schema}.{source}')
 
-            if(source is 'application'):
+            if source == 'application':
                     # add originating source
                 table_plus_os = etl.addfield(
                     current_table, 'originating_system', system_name)
 
-                table_plus_os_guid = table_plus_os = etl.addfield(
-                    table_plus_os, 'mine_guid', lambda rec: lookup_mine_guid(rec['minenumber']))
+                table_plus_os_guid = join_mine_guids(connection, table_plus_os)
 
                 etl.appenddb(table_plus_os_guid, connection,
                              destination, schema='now_submissions', commit=False)
