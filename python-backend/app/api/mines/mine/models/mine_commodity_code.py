@@ -2,8 +2,9 @@ from datetime import datetime
 from sqlalchemy.schema import FetchedValue
 
 from ....utils.models_mixins import AuditMixin, Base
-from app.api.constants import COMMODITY_CODES_CONFIG, METALS_AND_MINERALS
 from app.extensions import db
+
+from sqlalchemy.ext.hybrid import hybrid_property
 
 
 class MineCommodityTenureType(Base):
@@ -24,17 +25,13 @@ class MineCommodityCode(AuditMixin, Base):
 
     tenure_types = db.relationship('MineTenureTypeCode', secondary='mine_commodity_tenure_type')
 
+    @hybrid_property
+    def mine_tenure_type_codes(self):
+        return [x.mine_tenure_type_code for x in self.tenure_types]
+
     def __repr__(self):
         return '<MineCommodityCode %r>' % self.mine_commodity_code
 
     @classmethod
-    def all_options(cls):
-        return list(
-            map(
-                lambda x: {
-                    'mine_commodity_code': x.mine_commodity_code,
-                    'description': x.description,
-                    'mine_tenure_type_codes': [y.mine_tenure_type_code for y in x.tenure_types],
-                    'exclusive_ind': COMMODITY_CODES_CONFIG[x.mine_commodity_code]['exclusive_ind']
-                },
-                cls.query.filter_by(active_ind=True).all()))
+    def get_active(cls):
+        return cls.query.filter_by(active_ind=True).all()
