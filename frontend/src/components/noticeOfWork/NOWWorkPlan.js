@@ -173,7 +173,7 @@ export class NOWWorkPlan extends Component {
     const isSpatialFile = (document) =>
       document.documenttype === "SpatialFileDoc" ||
       (document.filename &&
-        Object.values(UNIQUELY_SPATIAL).includes(
+        Object.keys(UNIQUELY_SPATIAL).includes(
           document.filename.substr(document.filename.length - 4)
         ));
 
@@ -182,7 +182,7 @@ export class NOWWorkPlan extends Component {
         .filter((document) => (spatial ? isSpatialFile(document) : !isSpatialFile(document)))
         .map((document) => ({
           key: document.id,
-          application_guid: application_guid,
+          application_guid,
           filename: document.filename || Strings.EMPTY_FIELD,
           url: document.documenturl,
           category: document.documenttype || Strings.EMPTY_FIELD,
