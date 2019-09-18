@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -26,6 +25,7 @@ import {
   getDropdownIncidentStatusCodeOptions,
   getIncidentFollowupActionOptions,
 } from "@/selectors/staticContentSelectors";
+import { getDropdownInspectors } from "@/selectors/partiesSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import { fetchIncidents, updateMineIncident } from "@/actionCreators/incidentActionCreator";
 import { getIncidents, getIncidentPageData } from "@/selectors/incidentSelectors";
@@ -51,11 +51,12 @@ const propTypes = {
   destroy: PropTypes.func.isRequired,
   fetchInspectors: PropTypes.func.isRequired,
   fetchIncidents: PropTypes.func.isRequired,
+  inspectors: CustomPropTypes.groupOptions.isRequired,
+  incidentPageData: CustomPropTypes.incidentPageData.isRequired,
+  incidents: PropTypes.arrayOf(CustomPropTypes.incident).isRequired,
   updateMineIncident: PropTypes.func,
   fetchMineIncidentStatusCodeOptions: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
-  complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  getDropdownHSRCMComplianceCodes: CustomPropTypes.options.isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   followupActions: PropTypes.arrayOf(CustomPropTypes.incidentFollowupType),
@@ -234,14 +235,10 @@ export class IncidentsHomePage extends Component {
     });
   };
 
-  //TODO UPDATE THIS TO USE THE PROPER MINE INCIDENT NUMBER
   handleEditMineIncident = (values) => {
-    this.props
-      .updateMineIncident(this.props.mineGuid, values.mine_incident_guid, values)
-      .then(() => {
-        this.props.closeModal();
-        this.props.fetchMineIncidents(this.props.mineGuid);
-      });
+    this.props.updateMineIncident(values.mine_guid, values.mine_incident_guid, values).then(() => {
+      this.props.closeModal();
+    });
   };
 
   handleCancelMineIncident = () => {
@@ -282,8 +279,8 @@ export class IncidentsHomePage extends Component {
     });
   };
 
-  handleFilterChange = (pagination, filters) => {
-    const { status } = filters;
+  // eslint-disable-next-line no-unused-vars
+  handleFilterChange = (_pagination, _filters) => {
     this.setState({ incidentsLoaded: false });
     const params = {
       ...this.state.params,
@@ -352,6 +349,7 @@ const mapStateToProps = (state) => ({
   followupActionsOptions: getDropdownIncidentFollowupActionOptions(state),
   incidentDeterminationOptions: getDropdownIncidentDeterminationOptions(state),
   incidentStatusCodeOptions: getDropdownIncidentStatusCodeOptions(state),
+  inspectors: getDropdownInspectors(state),
   doSubparagraphOptions: getDangerousOccurrenceSubparagraphOptions(state),
 });
 
