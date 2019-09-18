@@ -54,22 +54,19 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
             current_table = etl.fromdb(
                 connection, f'SELECT * from {schema}.{source}')
 
-            switch(source):
-                case 'application':
-                    # Add originating source
-                    table_plus_os = etl.addfield(
-                        current_table, 'originating_system', system_name)
+            if(source is 'application'):
+                    # add originating source
+                table_plus_os = etl.addfield(
+                    current_table, 'originating_system', system_name)
 
-                    table_plus_os_guid = table_plus_os = etl.addfield(
-                        table_plus_os, 'mine_guid', 'c64e67f9-9087-4ab8-afc1-f92c091d4bf3')
+                table_plus_os_guid = table_plus_os = etl.addfield(
+                    table_plus_os, 'mine_guid', 'c64e67f9-9087-4ab8-afc1-f92c091d4bf3')
 
-                    etl.appenddb(table_plus_os_guid, connection,
-                                 destination, schema='now_submissions', commit=False)
-                    break
-                default:
-                    etl.appenddb(current_table, connection, destination,
-                                 schema='now_submissions', commit=False)
-                    break
+                etl.appenddb(table_plus_os_guid, connection,
+                             destination, schema='now_submissions', commit=False)
+            else:
+                etl.appenddb(current_table, connection, destination,
+                             schema='now_submissions', commit=False)
 
         except Exception as err:
             print(f'ETL Parsing error: {err}')
