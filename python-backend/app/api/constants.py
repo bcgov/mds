@@ -161,6 +161,8 @@ METALS_AND_MINERALS = [
     'ZR'
 ]
 
+TEST_CONSTANT = 'test'
+
 COMMODITY_CODES_CONFIG = {
     'TO': {
         'mine_tenure_type_codes': ['COL'],
