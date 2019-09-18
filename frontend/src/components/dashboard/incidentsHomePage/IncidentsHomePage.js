@@ -54,7 +54,7 @@ const propTypes = {
   inspectors: CustomPropTypes.groupOptions.isRequired,
   incidentPageData: CustomPropTypes.incidentPageData.isRequired,
   incidents: PropTypes.arrayOf(CustomPropTypes.incident).isRequired,
-  updateMineIncident: PropTypes.func,
+  updateMineIncident: PropTypes.func.isRequired,
   fetchMineIncidentStatusCodeOptions: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
@@ -67,7 +67,6 @@ const propTypes = {
 };
 
 const defaultProps = {
-  updateMineIncident: () => {},
   followupActions: [],
 };
 
@@ -279,8 +278,7 @@ export class IncidentsHomePage extends Component {
     });
   };
 
-  // eslint-disable-next-line no-unused-vars
-  handleFilterChange = (_pagination, _filters) => {
+  handleFilterChange = () => {
     this.setState({ incidentsLoaded: false });
     const params = {
       ...this.state.params,
