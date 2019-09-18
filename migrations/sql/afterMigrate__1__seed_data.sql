@@ -333,6 +333,36 @@ VALUES
     ('ZR', 'Zirconium', TRUE, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
+--Manually insert BC LAnd and Coal Tenure types
+INSERT INTO mine_commodity_tenure_type
+(
+    mine_commodity_code,
+    mine_tenure_type_code
+)
+VALUES 
+    ('TO','COL'),
+    ('MC','COL'),
+    ('CG','BCL'),
+    ('SA','BCL')
+ON CONFLICT DO NOTHING;
+--Everything else gets Mineral tenure type
+INSERT INTO mine_commodity_tenure_type
+(
+    mine_commodity_code,
+    mine_tenure_type_code
+) 
+SELECT mine_commodity_code, 'MIN' from mine_commodity_code where mine_commodity_code not in ('TO','MC','CG','SA')
+ON CONFLICT DO NOTHING;
+--Everything else also gets Placer tenure type
+INSERT INTO mine_commodity_tenure_type
+(
+    mine_commodity_code,
+    mine_tenure_type_code
+)
+SELECT mine_commodity_code, 'PLR' from mine_commodity_code where mine_commodity_code not in ('TO','MC','CG','SA')
+ON CONFLICT DO NOTHING;
+
+
 INSERT INTO permit_amendment_type_code
     (
     permit_amendment_type_code,
