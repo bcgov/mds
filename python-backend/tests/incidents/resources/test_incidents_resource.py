@@ -196,8 +196,10 @@ class TestGetIncidents:
         get_data = json.loads(get_resp.data.decode())
         assert get_resp.status_code == 200
         assert len(get_data['records']) == batch_size
-        assert all(get_data['records'][i]['mine_name'] >= get_data['records'][i + 1]['mine_name']
-                   for i in range(len(get_data['records']) - 1)), get_data
+        for item, index in enumerate(get_data['records']):
+            assert item['mine_name'] >= get_data['records'][index + 1]['mine_name']
+        # assert all(get_data['records'][i]['mine_name'] >= get_data['records'][i + 1]['mine_name']
+        #            for i in range(len(get_data['records']) - 1)),
 
     def test_get_incidents_sort_and_filter_multiple_fields(self, test_client, db_session,
                                                            auth_headers):
