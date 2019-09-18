@@ -25,7 +25,7 @@ class TestGetIncidents:
         MineIncidentFactory.create_batch(size=batch_size, status_code=status_pre)
         status_fin = "FIN"
         MineIncidentFactory.create_batch(size=batch_size, status_code=status_fin)
-        get_resp = test_client.get(f"/incidents?status={status_pre}", headers=auth_headers['full_auth_header'])
+        get_resp = test_client.get(f"/incidents?incident_status={status_pre}", headers=auth_headers['full_auth_header'])
         get_data = json.loads(get_resp.data.decode())
         assert get_resp.status_code == 200
         assert len(get_data['records']) == batch_size
@@ -123,7 +123,7 @@ class TestGetIncidents:
 
     def test_get_incidents_date_sort(self, test_client, db_session, auth_headers):
         """Should respect incidents date sort"""
-        sort_field = "date"
+        sort_field = "incident_timestamp"
         sort_dir = "desc"
         batch_size = 20
         MineIncidentFactory.create_batch(size=batch_size)
@@ -191,7 +191,7 @@ class TestGetIncidents:
         MineIncidentFactory.create_batch(size=batch_size, status_code=status_fin)
         sort_field = "mine_name"
         sort_dir = "desc"
-        get_resp = test_client.get(f'/incidents?sort_field={sort_field}&sort_dir={sort_dir}&status={status_pre}',
+        get_resp = test_client.get(f'/incidents?sort_field={sort_field}&sort_dir={sort_dir}&incident_status={status_pre}',
                                    headers=auth_headers['full_auth_header'])
         get_data = json.loads(get_resp.data.decode())
         assert get_resp.status_code == 200
