@@ -59,7 +59,7 @@ const getFirstNationLayer = () => {
 };
 
 const getBcMineRegionLayer = () =>
-  EsriLeaflet.tiledMapLayer({
+  EsriLeaflet.dynamicMapLayer({
     url:
       "https://tiles.arcgis.com/tiles/ubm4tcTYICKBpist/arcgis/rest/services/BC_Mine_Regions4/MapServer",
   });
@@ -114,21 +114,25 @@ class MineMapLeaflet extends Component {
 
     // Add Mouse coordinate widget
     L.control.mouseCoordinate({ utm: true, position: "topright" }).addTo(this.map);
+    // Add ScaleBar widget
+    L.control.scale({ imperial: false }).addTo(this.map);
   }
 
   getBaseMaps() {
     const topographicBasemap = L.tileLayer(
       "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
       {
-        attribution:
-          "Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community",
+        attribution: "Esri",
       }
     );
     // Add default basemap to the map
     topographicBasemap.addTo(this.map);
 
     const worldImageryLayer = L.tileLayer(
-      "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+      "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+      {
+        attribution: "Esri",
+      }
     );
 
     return {
