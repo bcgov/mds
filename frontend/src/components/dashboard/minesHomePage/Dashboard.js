@@ -354,6 +354,7 @@ export class Dashboard extends Component {
               <div className="tab__content">
                 <MineList
                   isLoaded={this.state.mineList}
+                  paginationPerPage={Number(per_page)}
                   mines={this.props.mines}
                   mineIds={this.props.mineIds}
                   mineRegionHash={this.props.mineRegionHash}

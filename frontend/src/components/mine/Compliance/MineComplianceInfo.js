@@ -66,7 +66,7 @@ export class MineComplianceInfo extends Component {
 
   componentWillReceiveProps(nextProps) {
     const locationChanged = nextProps.location !== this.props.location;
-    if (locationChanged && !this.state.isLoaded) {
+    if (locationChanged) {
       const correctParams = nextProps.location.search
         ? nextProps.location.search
         : queryString.stringify(initialSearchValues);
@@ -132,74 +132,73 @@ export class MineComplianceInfo extends Component {
     const fiscalYear = getFiscalYear();
     return (
       <div>
-        {this.props.mineComplianceInfo && this.props.mineComplianceInfo.last_inspection ? (
-          <div>
-            <h4>COMPLIANCE OVERVIEW</h4>
-            <Divider />
-            <div className="compliance--container">
-              <LoadingWrapper condition={this.state.isLoaded}>
-                <div className="compliance--content">
-                  <MineComplianceCard
-                    title="Inspections - Past 12 months"
-                    content={this.props.mineComplianceInfo.last_12_months.num_inspections}
-                  />
-                  <MineComplianceCard
-                    title={`Inspections - Since April 1, ${fiscalYear}`}
-                    content={this.props.mineComplianceInfo.current_fiscal.num_inspections}
-                  />
-                  <MineComplianceCard
-                    title="Last inspected"
-                    content={formatDate(this.props.mineComplianceInfo.last_inspection)}
-                  />
-                  <MineComplianceCard
-                    title="Last inspector (IDIR)"
-                    content={this.props.mineComplianceInfo.last_inspector}
-                  />
-                  <MineComplianceCard
-                    title="Open orders"
-                    icon={DOC}
-                    content={this.props.mineComplianceInfo.num_open_orders}
-                  />
-                  <MineComplianceCard
-                    title="Overdue orders"
-                    icon={OVERDUEDOC}
-                    content={this.props.mineComplianceInfo.num_overdue_orders}
-                  />
-                  <MineComplianceCard
-                    title="Warnings  - Past 12 months"
-                    content={this.props.mineComplianceInfo.last_12_months.num_warnings}
-                  />
-                  <MineComplianceCard
-                    title="Advisories - Past 12 months"
-                    content={this.props.mineComplianceInfo.last_12_months.num_advisories}
-                  />
-                </div>
-              </LoadingWrapper>
-            </div>
-            {this.props.mineComplianceInfo.orders &&
-              this.props.mineComplianceInfo.orders.length > 0 && (
-                <div>
-                  <br />
-                  <h4>INSPECTION ORDERS</h4>
-                  <Divider />
-                  <div className="compliance-filter--content">
-                    <h4>Filter By</h4>
-                    <MineComplianceFilterForm
-                      complianceCodes={this.props.complianceCodes}
-                      onSubmit={this.handleComplianceFilter}
-                      initialValues={this.state.complianceFilterParams}
+        <div>
+          <h4>COMPLIANCE OVERVIEW</h4>
+          <Divider />
+          <div className="compliance--container">
+            <LoadingWrapper condition={this.state.isLoaded}>
+              <div>
+                {this.props.mineComplianceInfo && this.props.mineComplianceInfo.last_inspection ? (
+                  <div className="compliance--content">
+                    <MineComplianceCard
+                      title="Inspections - Past 12 months"
+                      content={this.props.mineComplianceInfo.last_12_months.num_inspections}
+                    />
+                    <MineComplianceCard
+                      title={`Inspections - Since April 1, ${fiscalYear}`}
+                      content={this.props.mineComplianceInfo.current_fiscal.num_inspections}
+                    />
+                    <MineComplianceCard
+                      title="Last inspected"
+                      content={formatDate(this.props.mineComplianceInfo.last_inspection)}
+                    />
+                    <MineComplianceCard
+                      title="Last inspector (IDIR)"
+                      content={this.props.mineComplianceInfo.last_inspector}
+                    />
+                    <MineComplianceCard
+                      title="Open orders"
+                      icon={DOC}
+                      content={this.props.mineComplianceInfo.num_open_orders}
+                    />
+                    <MineComplianceCard
+                      title="Overdue orders"
+                      icon={OVERDUEDOC}
+                      content={this.props.mineComplianceInfo.num_overdue_orders}
+                    />
+                    <MineComplianceCard
+                      title="Warnings  - Past 12 months"
+                      content={this.props.mineComplianceInfo.last_12_months.num_warnings}
+                    />
+                    <MineComplianceCard
+                      title="Advisories - Past 12 months"
+                      content={this.props.mineComplianceInfo.last_12_months.num_advisories}
                     />
                   </div>
-                  <ComplianceOrdersTable
-                    filteredOrders={this.state.filteredOrders}
-                    isLoaded={this.state.isLoaded}
-                  />
-                </div>
-              )}
+                ) : (
+                  <NullScreen type="compliance" />
+                )}
+              </div>
+            </LoadingWrapper>
           </div>
-        ) : (
-          <NullScreen type="compliance" />
-        )}
+          <div>
+            <br />
+            <h4>INSPECTION ORDERS</h4>
+            <Divider />
+            <div className="compliance-filter--content">
+              <h4>Filter By</h4>
+              <MineComplianceFilterForm
+                complianceCodes={this.props.complianceCodes}
+                onSubmit={this.handleComplianceFilter}
+                initialValues={this.state.complianceFilterParams}
+              />
+            </div>
+            <ComplianceOrdersTable
+              filteredOrders={this.state.filteredOrders}
+              isLoaded={this.state.isLoaded}
+            />
+          </div>
+        </div>
       </div>
     );
   };

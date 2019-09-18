@@ -76,12 +76,6 @@ const NullScreen = (props) => (
         <h3>{String.NO_NRIS_INSPECTIONS}</h3>
       </div>
     )}
-    {props.type === "variance" && (
-      <div>
-        <img alt="mine_img" src={PERMIT} />
-        <h3>{String.NO_VARIANCE}</h3>
-      </div>
-    )}
     {props.type === "approved-variances" && (
       <div>
         <img alt="mine_img" src={PERMIT} />

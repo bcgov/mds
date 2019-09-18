@@ -1,5 +1,5 @@
 import React from "react";
-import { func, objectOf, arrayOf, string, bool } from "prop-types";
+import { func, objectOf, arrayOf, string, bool, number } from "prop-types";
 import { Link } from "react-router-dom";
 import { Table } from "antd";
 import { uniqBy, isEmpty } from "lodash";
@@ -25,6 +25,7 @@ const propTypes = {
   sortField: string,
   sortDir: string,
   isLoaded: bool.isRequired,
+  paginationPerPage: number.isRequired,
 };
 
 const defaultProps = {
@@ -184,7 +185,11 @@ const applySortIndicator = (_columns, field, dir) =>
   }));
 
 export const MineList = (props) => (
-  <TableLoadingWrapper condition={props.isLoaded} tableHeaders={getTableHeaders(columns)}>
+  <TableLoadingWrapper
+    condition={props.isLoaded}
+    tableHeaders={getTableHeaders(columns)}
+    paginationPerPage={props.paginationPerPage}
+  >
     <Table
       rowClassName="fade-in"
       align="left"

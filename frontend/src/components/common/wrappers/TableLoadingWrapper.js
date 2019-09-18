@@ -41,7 +41,6 @@ export const TableLoadingWrapper = (props) => {
             align="left"
             pagination={false}
             columns={renderColumns}
-            rowKey={props.tableHeaders.map((title) => title)}
             dataSource={new Array(props.paginationPerPage).fill({})}
             rowClassName="skeleton-table__row"
           />
