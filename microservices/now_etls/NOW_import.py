@@ -49,7 +49,8 @@ def truncate_table(connection, tables):
 
 def join_mine_guids(connection, application_table):
     current_mines = etl.fromdb(
-        connection, 'select distinct on (minenumber) mine_guid, mine_no as minenumber from public.mine order by minenumber, create_timestamp;')
+        connection, 'select distinct on (minenumber) mine_guid, mine_no from public.mine order by minenumber, create_timestamp;')
+
     application_table_guid_lookup = etl.join(
         application_table, current_mines, key='minenumber')
     return application_table_guid_lookup
@@ -67,7 +68,12 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
                 table_plus_os = etl.addfield(
                     current_table, 'originating_system', system_name)
 
+                etl.look(table_plus_os, style='simple')
+
                 table_plus_os_guid = join_mine_guids(connection, table_plus_os)
+
+                print("------------------")
+                etl.look(table_plus_os_guid, style='simple')
 
                 etl.appenddb(table_plus_os_guid, connection,
                              destination, schema='now_submissions', commit=False)
