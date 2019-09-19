@@ -8,7 +8,6 @@ from app.api.mines.compliance.resources.compliance_article import ComplianceArti
 from app.api.mines.mine.resources.mine_commodity_code import MineCommodityCodeResource
 from app.api.mines.mine.resources.mine_disturbance_code import MineDisturbanceCodeResource
 from app.api.mines.mine.resources.mine_tenure_type_code import MineTenureTypeCodeResource
-
 from app.api.mines.mine.resources.mine_type import MineTypeResource, MineTypeListResource
 from app.api.mines.mine.resources.mine import MineResource, MineListSearch, MineListResource
 from app.api.mines.mine.resources.mine_map import MineMapResource
@@ -35,7 +34,7 @@ from app.api.mines.reports.resources.mine_reports import MineReportResource, Min
 
 @pytest.mark.parametrize(
     "resource,method,expected_roles",
-    [(ComplianceArticleResorce, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
+    [(ComplianceArticleResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
      (DownloadTokenResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
      (MineCommodityCodeResource, "get", [VIEW_ALL]),
      (MineComplianceSummaryResource, "get", [VIEW_ALL]),
