@@ -45,9 +45,17 @@ div[id="base-container"] {
   width: 100%;
 }
 
-.leaflet-popup-content-wrapper {
-  width: auto;
-  background: white;
-  color: #333;
-  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
+.leaflet-control-layers-group-name {
+  font-weight: bold;
+  margin-bottom: 0.2em;
+  margin-left: 3px;
+}
+
+.leaflet-control-layers-group {
+  margin-bottom: 0.5em;
+}
+
+.leaflet-control-layers-scrollbar {
+  overflow-y: scroll;
+  padding-right: 10px;
 }

@@ -11,6 +11,7 @@ import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import "@/utils/leaflet-libs/mouse-coordinates/leaflet.mousecoordinate";
+import "@/utils/leaflet-libs/grouped-layer-control/leaflet.groupedlayercontrol.min";
 
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
@@ -92,22 +93,30 @@ const getFirstNationLayer = () => {
   return firstNationSource.getLayer("WHSE_ADMIN_BOUNDARIES.PIP_CONSULTATION_AREAS_SP");
 };
 
-// const overlayLayers = [
-//   "Roads (DRA)",
-//   "Forest Tenure Roads",
-//   "Contour Lines",
-//   "Natural Resources Regions",
-//   "Coal Leases",
-//   "Coal Licenses",
-//   "Mining Leases",
-//   "Mineral Claims",
-//   "Placer Leases",
-//   "Placer Claims",
-//   "Coal Licence Applications",
-//   "Crown Granted Mineral Claims",
-//   "Indian Reserves",
-//   "BC Mine Regions",
-// ];
+const baseMapsArray = ["World Topographic Map", "World Imagery"];
+
+const admininstrativeBoundariesLayerArray = [
+  "Indian Reserves & Band Names",
+  "BC Mine Regions",
+  "Crown Granted Mineral Claims",
+  "Natural Resource Regions - WMS",
+  "Land Status and Survey Parcels - PMBC",
+  "Regional Districts - WMS",
+  "Ministry of Transportation District Boundaries - WMS",
+  "Municipality Boundaries",
+];
+
+const tenureLayerArray = [
+  "Coal Licence Applications",
+  "Coal Leases",
+  "Coal Licences",
+  "Mining Leases",
+  "Mineral Claims",
+  "Placer Leases",
+  "Placer Claims",
+];
+
+const roadLayerArray = ["Roads DRA", "Forest Tenure Roads", "NTS Contour Lines"];
 
 class MineMapLeaflet extends Component {
   state = {
@@ -157,13 +166,26 @@ class MineMapLeaflet extends Component {
     });
   };
 
+  getLayerGroupFromList = (groupLayerList) => {
+    const result = {};
+    const layerList = this.webMap.layers;
+    groupLayerList.forEach((groupLayer) => {
+      layerList.forEach((layer) => {
+        if (layer.title == groupLayer) {
+          result[groupLayer] = layer.layer;
+        }
+      });
+    });
+    return result;
+  };
+
   initMap() {
     // Create the base map with layers
     this.createMap();
     this.setState({ mapCreated: true });
 
     // Once the WebMap is loaded, add the rest of Layers and tools
-    this.webmap.on("load", () => {
+    this.webMap.on("load", () => {
       // Center map to provided Lat/Long and Zoom
       this.map.setView([this.props.lat, this.props.long], this.props.zoom);
 
@@ -173,17 +195,21 @@ class MineMapLeaflet extends Component {
       this.map.addLayer(this.markerClusterGroup);
 
       // Add the WebMap layers to the Layer control widget
-      const overlayMaps = {};
-      overlayMaps["Mine Pins"] = this.markerClusterGroup;
-      this.webmap.layers.forEach((l) => {
-        overlayMaps[l.title] = l.layer;
-      });
-      overlayMaps["First nations"] = getFirstNationLayer();
-      L.control
-        .layers({}, overlayMaps, {
-          position: "topleft",
-        })
-        .addTo(this.map);
+      const groupedOverlays = {
+        "Mine Pins": {
+          "Mine Pins": this.markerClusterGroup,
+        },
+        Roads: this.getLayerGroupFromList(roadLayerArray),
+        "Administrative Boundaries": this.getLayerGroupFromList(
+          admininstrativeBoundariesLayerArray
+        ),
+        "Mineral, Placer, and Coal Tenures": this.getLayerGroupFromList(tenureLayerArray),
+        "First Nations": {
+          "First Nations PIP Consultation Areas": getFirstNationLayer(),
+        },
+      };
+
+      L.control.groupedLayers({}, groupedOverlays).addTo(this.map);
 
       // Add Mouse coordinate widget
       L.control.mouseCoordinate({ utm: true, position: "topright" }).addTo(this.map);
@@ -196,7 +222,7 @@ class MineMapLeaflet extends Component {
   createMap() {
     // Creates the base leaflet map object and overlays the ESRI WebMap on top
     this.map = L.map("leaflet-map").setMaxZoom(20);
-    this.webmap = window.L.esri.webMap(ENVIRONMENT.mapPortalId, { map: this.map });
+    this.webMap = window.L.esri.webMap(ENVIRONMENT.mapPortalId, { map: this.map });
   }
 
   renderPopup = (mine, commodityCodes = []) => {
