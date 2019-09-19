@@ -333,7 +333,6 @@ export class Dashboard extends Component {
   renderCorrectView() {
     const { search, map, page, per_page } = this.state.params;
     const isMap = map ? "map" : "list";
-    // if (this.state.mineList) {
     return (
       <div>
         <Tabs
@@ -426,7 +425,7 @@ export class Dashboard extends Component {
                   </div>
                 </div>
               )}
-              <LoadingWrapper condition={this.state.mineList}>
+              <LoadingWrapper condition>
                 <Element name="mapElement">
                   <div>
                     <MineMap {...this.state} />
