@@ -21,6 +21,7 @@ const propTypes = {
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
   mine_guid: PropTypes.string.isRequired,
+  isMajorMine: PropTypes.bool.isRequired,
   permit_guid: PropTypes.string.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any),
   change: PropTypes.func,
@@ -93,40 +94,42 @@ export class PermitAmendmentForm extends Component {
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
         <Row gutter={48}>
-          <Col md={12} sm={24}>
-            {!this.props.initialValues.permit_amendment_guid && (
-              <Form.Item>
-                <PartySelectField
-                  id="permittee_party_guid"
-                  name="permittee_party_guid"
-                  label="Permittee*"
-                  partyLabel="permittee"
-                  validate={[required]}
-                  allowAddingParties
-                />
-              </Form.Item>
-            )}
-            <Form.Item>
-              <Field
-                id="issue_date"
-                name="issue_date"
-                label="Issue date*"
-                component={renderConfig.DATE}
-                validate={[required, dateNotInFuture]}
-              />
-            </Form.Item>
-            {this.props.initialValues.permit_amendment_type_code !== originalPermit && (
+          {this.props.isMajorMine && (
+            <Col md={12} sm={24}>
+              {!this.props.initialValues.permit_amendment_guid && (
+                <Form.Item>
+                  <PartySelectField
+                    id="permittee_party_guid"
+                    name="permittee_party_guid"
+                    label="Permittee*"
+                    partyLabel="permittee"
+                    validate={[required]}
+                    allowAddingParties
+                  />
+                </Form.Item>
+              )}
               <Form.Item>
                 <Field
-                  id="description"
-                  name="description"
-                  label="Description"
-                  component={renderConfig.AUTO_SIZE_FIELD}
-                  validate={[maxLength(280)]}
+                  id="issue_date"
+                  name="issue_date"
+                  label="Issue date*"
+                  component={renderConfig.DATE}
+                  validate={[required, dateNotInFuture]}
                 />
               </Form.Item>
-            )}
-          </Col>
+              {this.props.initialValues.permit_amendment_type_code !== originalPermit && (
+                <Form.Item>
+                  <Field
+                    id="description"
+                    name="description"
+                    label="Description"
+                    component={renderConfig.AUTO_SIZE_FIELD}
+                    validate={[maxLength(280)]}
+                  />
+                </Form.Item>
+              )}
+            </Col>
+          )}
           <Col md={12} sm={24} className="border--left--layout">
             {this.state.relatedDocuments.length > 0 && (
               <Form.Item label="Attached files" style={{ paddingBottom: "10px" }}>
