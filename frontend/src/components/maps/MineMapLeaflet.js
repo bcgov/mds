@@ -7,6 +7,7 @@ import scriptLoader from "react-async-script-loader";
 import ReactDOMServer from "react-dom/server";
 import PropTypes from "prop-types";
 
+import "leaflet.markercluster";
 import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
@@ -15,11 +16,9 @@ import "@/utils/leaflet-libs/grouped-layer-control/leaflet.groupedlayercontrol.m
 
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
-import { SMALL_PIN } from "@/constants/assets";
+import { SMALL_PIN, SMALL_PIN_SELECTED } from "@/constants/assets";
 import { ENVIRONMENT } from "@/constants/environment";
 import LeafletPopup from "@/components/maps/LeafletPopup";
-
-require("leaflet.markercluster");
 
 /**
  * @class MineMapLeaflet.js is a Leaflet Map component.
@@ -136,7 +135,8 @@ class MineMapLeaflet extends Component {
   };
 
   createPin = (mine) => {
-    const customIcon = L.icon({ iconUrl: SMALL_PIN, iconSize: [60, 60] });
+    const pin = this.props.mineName === mine.mine_name ? SMALL_PIN_SELECTED : SMALL_PIN;
+    const customIcon = L.icon({ iconUrl: pin, iconSize: [60, 60] });
 
     // TODO: Check what happens if Lat/Long is invalid
     const latLong = [mine.mine_location.latitude, mine.mine_location.longitude];
