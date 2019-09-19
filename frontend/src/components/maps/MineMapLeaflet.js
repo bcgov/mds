@@ -196,6 +196,7 @@ class MineMapLeaflet extends Component {
 
       // Add the WebMap layers to the Layer control widget
       const groupedOverlays = {
+        "Base Maps": this.getLayerGroupFromList(baseMapsArray),
         "Mine Pins": {
           "Mine Pins": this.markerClusterGroup,
         },
@@ -209,7 +210,9 @@ class MineMapLeaflet extends Component {
         },
       };
 
-      L.control.groupedLayers({}, groupedOverlays).addTo(this.map);
+      L.control
+        .groupedLayers({}, groupedOverlays, { exclusiveGroups: ["Base Maps"] })
+        .addTo(this.map);
 
       // Add Mouse coordinate widget
       L.control.mouseCoordinate({ utm: true, position: "topright" }).addTo(this.map);
@@ -247,6 +250,6 @@ export default scriptLoader(
   "https://cdn.jsdelivr.net/leaflet.esri.renderers/2.0.2/esri-leaflet-renderers.js",
   // Load Leaflet Omnivore
   "https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.3.1/leaflet-omnivore.min.js",
-  // Load L.esri.WebMap
+  // Load Leaflet esri webMap
   "https://cdn.jsdelivr.net/leaflet.esri.webmap/0.4.0/esri-leaflet-webmap.js"
 )(MineMapLeaflet);
