@@ -40,7 +40,7 @@ export const VarianceTable = (props) => (
   <div className="tab__content">
     <MineVarianceTable
       isLoaded={props.isLoaded}
-      paginationPerPage={props.pageData.items_per_page}
+      isPaginated
       params={props.params}
       filterVarianceStatusOptions={props.filterVarianceStatusOptions}
       handleFilterChange={props.handleFilterChange}

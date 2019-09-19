@@ -1,5 +1,5 @@
 import React from "react";
-import { objectOf, string, func, bool, number } from "prop-types";
+import { objectOf, string, func, bool } from "prop-types";
 import { Link } from "react-router-dom";
 import { Table } from "antd";
 import { uniqBy, map, toArray, isEmpty } from "lodash";
@@ -21,7 +21,6 @@ const propTypes = {
   sortField: string,
   sortDir: string,
   isLoaded: bool.isRequired,
-  paginationPerPage: number.isRequired,
 };
 
 const defaultProps = {
@@ -111,7 +110,7 @@ export const ContactList = (props) => (
   <TableLoadingWrapper
     condition={props.isLoaded}
     tableHeaders={getTableHeaders(columns)}
-    paginationPerPage={props.paginationPerPage}
+    isPaginated
   >
     <Table
       rowClassName="fade-in"

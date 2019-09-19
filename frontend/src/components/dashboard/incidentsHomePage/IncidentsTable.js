@@ -53,7 +53,7 @@ export const IncidentsTable = (props) => {
         isDashboardView
         sortField={props.sortField}
         sortDir={props.sortDir}
-        paginationPerPage={Number(props.pageData.items_per_page)}
+        isPaginated
       />
       <div className="center">
         <ResponsivePagination

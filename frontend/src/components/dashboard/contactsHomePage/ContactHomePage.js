@@ -225,7 +225,6 @@ export class ContactHomePage extends Component {
                 handleSearch={this.handleSearch}
                 sortField={this.state.params.sort_field}
                 sortDir={this.state.params.sort_dir}
-                paginationPerPage={Number(per_page)}
               />
             </div>
             <div className="center">

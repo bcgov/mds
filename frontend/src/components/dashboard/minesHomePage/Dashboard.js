@@ -99,7 +99,8 @@ export class Dashboard extends Component {
     super(props);
     this.handleMineSearchDebounced = debounce(this.handleMineSearch, 1000);
     this.state = {
-      mineList: false,
+      isListLoaded: false,
+      isMapLoaded: false,
       lat: Number(String.DEFAULT_LAT),
       long: Number(String.DEFAULT_LONG),
       zoom: String.DEFAULT_ZOOM,
@@ -145,7 +146,7 @@ export class Dashboard extends Component {
     const locationChanged = nextProps.location !== this.props.location;
     if (locationChanged) {
       const params = nextProps.location.search;
-      this.setState({ mineList: false });
+      this.setState({ isListLoaded: false, isMapLoaded: false });
       this.renderDataFromURL(params);
     }
   }
@@ -190,11 +191,11 @@ export class Dashboard extends Component {
     });
     if (remainingParams.map) {
       this.props.fetchMineRecordsForMap().then(() => {
-        this.setState({ mineList: true });
+        this.setState({ isMapLoaded: true });
       });
     } else {
       this.props.fetchMineRecords(params).then(() => {
-        this.setState({ mineList: true });
+        this.setState({ isListLoaded: true });
       });
     }
 
@@ -271,7 +272,8 @@ export class Dashboard extends Component {
   handleTabChange = (key) => {
     const { page, per_page, search } = this.state.params;
     this.setState({
-      mineList: false,
+      isListLoaded: false,
+      isMapLoaded: false,
       showCoordinates: false,
       mineName: "",
       lat: Number(String.DEFAULT_LAT),
@@ -352,8 +354,7 @@ export class Dashboard extends Component {
             <div>
               <div className="tab__content">
                 <MineList
-                  isLoaded={this.state.mineList}
-                  paginationPerPage={Number(per_page)}
+                  isLoaded={this.state.isListLoaded}
                   mines={this.props.mines}
                   mineIds={this.props.mineIds}
                   mineRegionHash={this.props.mineRegionHash}
@@ -425,7 +426,7 @@ export class Dashboard extends Component {
                   </div>
                 </div>
               )}
-              <LoadingWrapper condition>
+              <LoadingWrapper condition={this.state.isMapLoaded}>
                 <Element name="mapElement">
                   <div>
                     <MineMap {...this.state} />

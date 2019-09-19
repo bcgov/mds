@@ -8,7 +8,7 @@ import { Table } from "antd";
  *
  * condition = expecting a truthy value to render children, ie "isLoaded"
  * tableHeaders = array of table headers, the skeleton loading will have the same number of columns and same titles
- * paginationPerPage = if the table is paginated, pass in 'per_page" amount, when changing pages the skeleton will be smooth
+ * isPaginated = true if the table is paginated - this allows the skeleton to be smooth when changing pages
  *
  *
  */
@@ -17,11 +17,11 @@ const propTypes = {
   condition: PropTypes.bool.isRequired,
   children: PropTypes.element.isRequired,
   tableHeaders: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
-  paginationPerPage: PropTypes.number,
+  isPaginated: PropTypes.bool,
 };
 
 const defaultProps = {
-  paginationPerPage: 9,
+  isPaginated: false,
 };
 
 export const TableLoadingWrapper = (props) => {
@@ -41,7 +41,7 @@ export const TableLoadingWrapper = (props) => {
             align="left"
             pagination={false}
             columns={renderColumns}
-            dataSource={new Array(props.paginationPerPage).fill({})}
+            dataSource={new Array(props.isPaginated ? 25 : 9).fill({})}
             rowClassName="skeleton-table__row"
           />
         </div>

@@ -43,7 +43,7 @@ const propTypes = {
   incidentDeterminationHash: PropTypes.objectOf(PropTypes.string),
   complianceCodesHash: PropTypes.objectOf(PropTypes.string),
   incidentStatusCodeHash: PropTypes.objectOf(PropTypes.string),
-  paginationPerPage: PropTypes.number,
+  isPaginated: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -56,7 +56,7 @@ const defaultProps = {
   isDashboardView: false,
   sortField: null,
   sortDir: null,
-  paginationPerPage: 9,
+  isPaginated: false,
 };
 
 const hideColumn = (condition) => (condition ? "column-hide" : "");
@@ -320,7 +320,7 @@ export class MineIncidentTable extends Component {
       <TableLoadingWrapper
         condition={this.props.isLoaded}
         tableHeaders={getTableHeaders(columns)}
-        paginationPerPage={this.props.paginationPerPage}
+        isPaginated={this.props.isPaginated}
       >
         <Table
           onChange={
@@ -333,7 +333,11 @@ export class MineIncidentTable extends Component {
               ? applySortIndicator(columns, this.props.sortField, this.props.sortDir)
               : columns
           }
-          locale={{ emptyText: <NullScreen type="incidents" /> }}
+          locale={{
+            emptyText: (
+              <NullScreen type={this.props.isDashboardView ? "no-results" : "incidents"} />
+            ),
+          }}
           dataSource={this.transformRowData(
             this.props.incidents,
             this.props.followupActions,
