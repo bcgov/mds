@@ -22,4 +22,22 @@ export const incidentFollowupType = shape({
   display_order: PropTypes.number.isRequired,
 });
 
+export const incidentSearchInitialValues = shape({
+  region: PropTypes.arrayOf(PropTypes.string),
+  codes: PropTypes.arrayOf(PropTypes.string),
+  major: PropTypes.string,
+  year: PropTypes.string,
+  incident_status: PropTypes.arrayOf(PropTypes.string),
+  determination: PropTypes.arrayOf(PropTypes.string),
+  search: PropTypes.string,
+});
+
+export const incidentPageData = shape({
+  records: PropTypes.arrayOf(incident),
+  current_page: PropTypes.number,
+  items_per_page: PropTypes.number,
+  total: PropTypes.number,
+  total_pages: PropTypes.number,
+});
+
 export default incident;

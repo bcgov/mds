@@ -35,8 +35,3 @@ export const storeCurrentUserMineVerifiedStatuses = (payload) => ({
   type: ActionTypes.STORE_CURRENT_USER_MINE_VERIFIED_STATUS,
   payload,
 });
-
-export const storeMineIncidents = (payload) => ({
-  type: ActionTypes.STORE_MINE_INCIDENTS,
-  payload,
-});

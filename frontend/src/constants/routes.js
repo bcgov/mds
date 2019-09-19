@@ -4,6 +4,7 @@ import Logout from "@/components/common/Logout";
 import Dashboard from "@/components/dashboard/minesHomePage/Dashboard";
 import ContactHomePage from "@/components/dashboard/contactsHomePage/ContactHomePage";
 import VarianceHomePage from "@/components/dashboard/varianceHomePage/VarianceHomePage";
+import IncidentsHomePage from "@/components/dashboard/incidentsHomePage/IncidentsHomePage";
 import MineDashboard from "@/components/mine/MineDashboard";
 import PartyProfile from "@/components/parties/PartyProfile";
 import RelationshipProfile from "@/components/parties/RelationshipProfile";
@@ -153,6 +154,16 @@ export const VARIANCE_DASHBOARD = {
   dynamicRoute: ({ page, per_page, ...params }) =>
     `/dashboard/variance/?${queryString.stringify({ page, per_page, ...params }, { sort: false })}`,
   component: VarianceHomePage,
+};
+
+export const INCIDENTS_DASHBOARD = {
+  route: "/dashboard/incidents",
+  dynamicRoute: ({ page, per_page, ...params }) =>
+    `/dashboard/incidents/?${queryString.stringify(
+      { page, per_page, ...params },
+      { sort: false }
+    )}`,
+  component: IncidentsHomePage,
 };
 
 export const EXECUTIVE_REPORTING_DASHBOARD = {
