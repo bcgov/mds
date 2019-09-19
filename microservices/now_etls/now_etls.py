@@ -1,7 +1,6 @@
 import click
 import os
 from dotenv import load_dotenv, find_dotenv
-import time
 import psycopg2
 
 from NOW_import import NOW_submissions_ETL
