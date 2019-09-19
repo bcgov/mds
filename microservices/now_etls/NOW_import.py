@@ -68,9 +68,9 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
                 table_plus_os = etl.addfield(
                     current_table, 'originating_system', system_name)
 
-                print(etl.look(table_plus_os, style='simple')
+                print(etl.look(table_plus_os, style='simple'))
 
-                table_plus_os_guid=join_mine_guids(connection, table_plus_os)
+                table_plus_os_guid = join_mine_guids(connection, table_plus_os)
 
                 print("------------------")
                 print(etl.look(table_plus_os_guid, style='simple'))
