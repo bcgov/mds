@@ -1,6 +1,7 @@
 import click
 import os
 from dotenv import load_dotenv, find_dotenv
+import time
 import psycopg2
 
 from NOW_import import NOW_submissions_ETL
@@ -31,4 +32,5 @@ def etl_now_submission_data():
 
 
 if __name__ == '__main__':
-    etl_now_submission_data()
+    while True:
+        time.sleep(100)
