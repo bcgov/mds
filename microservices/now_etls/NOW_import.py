@@ -49,8 +49,8 @@ def truncate_table(connection, tables):
 
 def join_mine_guids(connection, application_table):
     current_mines = etl.fromdb(
-        connection, 'select distinct on (minenumber) mine_guid, mine_no from public.mine order by minenumber, create_timestamp;')
-
+        connection, 'select distinct on (minenumber) mine_guid, mine_no as minenumber from public.mine order by minenumber, create_timestamp;')
+    etl.look(current_mines, style='simple')
     application_table_guid_lookup = etl.join(
         application_table, current_mines, key='minenumber')
     return application_table_guid_lookup
