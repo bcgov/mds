@@ -66,7 +66,7 @@ const propTypes = {
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
 };
 
-// TODO: Implement the NoticeOfWorkHomePage.js patern using formatQueryListParams
+// TODO: Implement the NoticeOfWorkHomePage.js pattern using formatQueryListParams
 // to parse and join params safely
 export const joinOrRemove = (param, key) => {
   if (isEmpty(param)) {
