@@ -1,7 +1,6 @@
 from datetime import datetime
 
 from ....utils.models_mixins import AuditMixin, Base
-from app.api.constants import DISTURBANCE_CODES_CONFIG
 from app.extensions import db
 
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -23,7 +22,9 @@ class MineDisturbanceCode(AuditMixin, Base):
     description = db.Column(db.String, nullable=False)
     active_ind = db.Column(db.Boolean, nullable=False, default=True)
 
-    tenure_types = db.relationship('MineTenureTypeCode', secondary='mine_disturbance_tenure_type')
+    tenure_types = db.relationship('MineTenureTypeCode',
+                                   secondary='mine_disturbance_tenure_type',
+                                   backref='mine_disturbance_codes')
 
     @hybrid_property
     def mine_tenure_type_codes(self):

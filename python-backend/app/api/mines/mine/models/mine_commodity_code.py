@@ -23,7 +23,7 @@ class MineCommodityCode(AuditMixin, Base):
     description = db.Column(db.String, nullable=False)
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
-    tenure_types = db.relationship('MineTenureTypeCode', secondary='mine_commodity_tenure_type')
+    tenure_types = db.relationship('MineTenureTypeCode', secondary='mine_commodity_tenure_type', backref='mine_commodity_codes')
 
     @hybrid_property
     def mine_tenure_type_codes(self):

@@ -139,9 +139,9 @@ class MineTypeFactory(BaseFactory):
         if extracted is None:
             extracted = {}
         commodities = extracted.get('commodities', 1)
-        commodities = SampleMineCommodityCodes(obj.mine_tenure_type_code, commodities)
+        commodities = SampleMineCommodityCodes(obj.mine_tenure_type, commodities)
         disturbances = extracted.get('disturbances', 1)
-        disturbances = SampleMineDisturbanceCodes(obj.mine_tenure_type_code, disturbances)
+        disturbances = SampleMineDisturbanceCodes(obj.mine_tenure_type, disturbances)
 
         for commodity in commodities:
             MineTypeDetailFactory(mine_type_guid=obj.mine_type_guid,
