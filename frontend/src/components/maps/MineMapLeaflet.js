@@ -92,8 +92,6 @@ const getFirstNationLayer = () => {
   return firstNationSource.getLayer("WHSE_ADMIN_BOUNDARIES.PIP_CONSULTATION_AREAS_SP");
 };
 
-const baseMapsArray = ["World Topographic Map", "World Imagery"];
-
 const admininstrativeBoundariesLayerArray = [
   "Indian Reserves & Band Names",
   "BC Mine Regions",
@@ -141,16 +139,6 @@ class MineMapLeaflet extends Component {
     // TODO: Check what happens if Lat/Long is invalid
     const latLong = [mine.mine_location.latitude, mine.mine_location.longitude];
 
-    if (this.props.mineName === mine.mine_name) {
-      L.circle(latLong, {
-        color: "red",
-        fillColor: "#f03",
-        fillOpacity: 0.25,
-        radius: 500,
-        stroke: false,
-      }).addTo(this.map);
-    }
-
     const marker = L.marker(latLong, { icon: customIcon }).bindPopup(Strings.LOADING);
     this.markerClusterGroup.addLayer(marker);
     marker.on("click", this.handleMinePinClick(mine));
@@ -179,6 +167,18 @@ class MineMapLeaflet extends Component {
     return result;
   };
 
+  addLatLongCircle = () => {
+    if (this.props.lat && this.props.long && !this.props.mineName) {
+      L.circle([this.props.lat, this.props.long], {
+        color: "red",
+        fillColor: "#f03",
+        fillOpacity: 0.25,
+        radius: 500,
+        stroke: false,
+      }).addTo(this.map);
+    }
+  };
+
   initMap() {
     // Create the base map with layers
     this.createMap();
@@ -193,6 +193,7 @@ class MineMapLeaflet extends Component {
       this.markerClusterGroup = L.markerClusterGroup({ animate: false });
       this.props.minesBasicInfo.map(this.createPin);
       this.map.addLayer(this.markerClusterGroup);
+      this.addLatLongCircle();
 
       // Add the WebMap layers to the Layer control widget
       const groupedOverlays = {
