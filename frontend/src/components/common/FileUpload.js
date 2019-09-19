@@ -74,7 +74,7 @@ class FileUpload extends React.Component {
   }
 
   render() {
-    const acceptedFileTypes = Object.keys(this.props.acceptedFileTypesMap);
+    const acceptedFileTypes = Object.values(this.props.acceptedFileTypesMap);
 
     return (
       <FilePond

@@ -232,6 +232,20 @@ export class NavBar extends Component {
           <AuthorizationWrapper inTesting>
             <Row>
               <Col span={24}>
+                <Link to={router.INCIDENTS_DASHBOARD.route}>
+                  <Button
+                    id={this.ifActiveButton(router.INCIDENTS_DASHBOARD.route)}
+                    className="menu--hamburger__btn--link"
+                  >
+                    Browse Incidents
+                  </Button>
+                </Link>
+              </Col>
+            </Row>
+          </AuthorizationWrapper>
+          <AuthorizationWrapper inTesting>
+            <Row>
+              <Col span={24}>
                 <Link to={router.NOTICE_OF_WORK_APPLICATIONS.route}>
                   <Button
                     id={this.ifActiveButton(router.NOTICE_OF_WORK_APPLICATIONS.route)}
@@ -312,6 +326,13 @@ export class NavBar extends Component {
           <button type="button">Browse Variances</button>
         </Link>
       </div>
+      <AuthorizationWrapper inTesting>
+        <div className="custom-menu-item">
+          <Link to={router.INCIDENTS_DASHBOARD.route}>
+            <button type="button">Browse Incidents</button>
+          </Link>
+        </div>
+      </AuthorizationWrapper>
       <AuthorizationWrapper inTesting>
         <div className="custom-menu-item">
           <Link to={router.NOTICE_OF_WORK_APPLICATIONS.route}>

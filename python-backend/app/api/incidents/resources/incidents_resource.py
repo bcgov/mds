@@ -2,7 +2,7 @@ from flask_restplus import Resource
 from flask import request
 from datetime import datetime
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
-from sqlalchemy import desc, cast, NUMERIC, extract
+from sqlalchemy import desc, cast, NUMERIC, extract, asc
 from app.extensions import api
 from app.api.mines.mine.models.mine import Mine
 from ..models.mine_incident import MineIncident
@@ -22,7 +22,7 @@ class IncidentsResource(Resource, UserMixin, ErrorMixin):
             'page': f'The page number of paginated records to return. Default: {PAGE_DEFAULT}',
             'per_page': f'The number of records to return per page. Default: {PER_PAGE_DEFAULT}',
             'search': 'A string to be search in the incident number, mine name, or mine number',
-            'status': 'Comma-separated list of the incident status codes',
+            'incident_status': 'Comma-separated list of the incident status codes',
             'determination':  'Comma-separated list of the inspectors determination, a three character code',
             'codes': 'Comma-separated list of code sub_paragraphs to include in results. Default: All status codes.',
             'incident_year': 'Return only incidents for this year',
@@ -38,12 +38,12 @@ class IncidentsResource(Resource, UserMixin, ErrorMixin):
         args = {
             "page_number": request.args.get('page', PAGE_DEFAULT, type=int),
             "page_size":request.args.get('per_page', PER_PAGE_DEFAULT, type=int),
-            "status": request.args.get('status', type=str),
+            "status": request.args.get('incident_status', type=str),
             "determination": request.args.get('determination', type=str),
             "codes": request.args.get('codes', type=str),
             'major': request.args.get('major', type=str),
             'region': request.args.get('region', type=str),
-            'year': request.args.get('incident_year', type=str),
+            'year': request.args.get('year', type=str),
             'search_terms': request.args.get('search', type=str),
             'sort_field': request.args.get('sort_field', type=str),
             'sort_dir': request.args.get('sort_dir', type=str),
@@ -71,20 +71,20 @@ class IncidentsResource(Resource, UserMixin, ErrorMixin):
 
     def _apply_filters_and_pagination(self, args):
         sort_models = {
-            "date": 'MineIncident',
+            "incident_timestamp": 'MineIncident',
             # TODO: Mine incident_no is not currently implemented
             # "incident_no": 'MineIncident',
             "determination": 'MineIncident',
-            "status": 'MineIncident',
+            "incident_status": 'MineIncident',
             "mine_name": 'Mine',
         }
 
         sort_field = {
-            "date": 'incident_timestamp',
+            "incident_timestamp": 'incident_timestamp',
             # TODO: Mine incident_no is not currently implemented
             # "incident_no": 'mine_incident_no',
             "determination": 'determination_type_code',
-            "status": 'status_code',
+            "incident_status": 'status_code',
             "mine_name": 'mine_name',
         }
 
