@@ -4,6 +4,18 @@ from ....utils.models_mixins import AuditMixin, Base
 from app.api.constants import DISTURBANCE_CODES_CONFIG
 from app.extensions import db
 
+from sqlalchemy.ext.hybrid import hybrid_property
+
+
+class MineDisturbanceTenureType(Base):
+    __tablename__ = 'mine_disturbance_tenure_type'
+    mine_disturbance_code = db.Column(db.String,
+                                      db.ForeignKey('mine_disturbance_code.mine_disturbance_code'),
+                                      primary_key=True)
+    mine_tenure_type_code = db.Column(db.String,
+                                      db.ForeignKey('mine_tenure_type_code.mine_tenure_type_code'),
+                                      primary_key=True)
+
 
 class MineDisturbanceCode(AuditMixin, Base):
     __tablename__ = 'mine_disturbance_code'
@@ -11,21 +23,15 @@ class MineDisturbanceCode(AuditMixin, Base):
     description = db.Column(db.String, nullable=False)
     active_ind = db.Column(db.Boolean, nullable=False, default=True)
 
+    tenure_types = db.relationship('MineTenureTypeCode', secondary='mine_disturbance_tenure_type')
+
+    @hybrid_property
+    def mine_tenure_type_codes(self):
+        return [x.mine_tenure_type_code for x in self.tenure_types]
+
     def __repr__(self):
         return '<MineDisturbanceCode %r>' % self.mine_disturbance_code
 
-
     @classmethod
-    def all_options(cls):
-        return list(map(
-            lambda x: {
-                'mine_disturbance_code': x[0],
-                'description': x[1],
-                'mine_tenure_type_codes': DISTURBANCE_CODES_CONFIG[x[0]]['mine_tenure_type_codes'],
-                'exclusive_ind': DISTURBANCE_CODES_CONFIG[x[0]]['exclusive_ind']
-            },
-            cls.query
-               .with_entities(cls.mine_disturbance_code, cls.description)
-               .filter_by(active_ind=True)
-               .all()
-        ))
+    def get_active(cls):
+        return cls.query.filter_by(active_ind=True).all()

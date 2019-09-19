@@ -362,6 +362,22 @@ INSERT INTO mine_commodity_tenure_type
 SELECT mine_commodity_code, 'PLR' from mine_commodity_code where mine_commodity_code not in ('TO','MC','CG','SA')
 ON CONFLICT DO NOTHING;
 
+INSERT INTO mine_disturbance_tenure_type
+(
+    mine_disturbance_code,
+    mine_tenure_type_code
+)
+VALUES 
+    ('SUR', 'COL'),
+    ('SUR', 'MIN'),
+    ('SUR', 'PLR'),
+    ('SUR', 'BCL'),
+    ('UND', 'COL'),
+    ('UND', 'MIN'),
+    ('UND', 'PLR'),
+    ('CWA', 'COL'),
+    ('MIL', 'PLR')
+ON CONFLICT DO NOTHING;
 
 INSERT INTO permit_amendment_type_code
     (
