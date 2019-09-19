@@ -30,7 +30,6 @@ import CustomPropTypes from "@/customPropTypes";
 import { fetchIncidents, updateMineIncident } from "@/actionCreators/incidentActionCreator";
 import { getIncidents, getIncidentPageData } from "@/selectors/incidentSelectors";
 import { IncidentsTable } from "./IncidentsTable";
-import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import * as router from "@/constants/routes";
 import { fetchInspectors } from "@/actionCreators/partiesActionCreator";
 import IncidentsSearch from "./IncidentsSearch";
@@ -308,23 +307,22 @@ export class IncidentsHomePage extends Component {
             incidentDeterminationOptions={this.props.incidentDeterminationOptions}
             doSubparagraphOptions={this.props.doSubparagraphOptions}
           />
-          <LoadingWrapper condition={this.state.incidentsLoaded}>
-            <IncidentsTable
-              incidents={this.props.incidents}
-              isApplication={this.state.isApplication}
-              handleFilterChange={this.handleFilterChange}
-              pageData={this.props.incidentPageData}
-              handlePageChange={this.handleIncidentPageChange}
-              handleIncidentSearch={this.handleIncidentSearch}
-              params={this.state.params}
-              sortField={this.state.params.sort_field}
-              sortDir={this.state.params.sort_dir}
-              followupActions={this.props.followupActions}
-              openMineIncidentModal={this.openMineIncidentModal}
-              handleEditMineIncident={this.handleEditMineIncident}
-              openViewMineIncidentModal={this.openViewMineIncidentModal}
-            />
-          </LoadingWrapper>
+          <IncidentsTable
+            isLoaded={this.state.incidentsLoaded}
+            incidents={this.props.incidents}
+            isApplication={this.state.isApplication}
+            handleFilterChange={this.handleFilterChange}
+            pageData={this.props.incidentPageData}
+            handlePageChange={this.handleIncidentPageChange}
+            handleIncidentSearch={this.handleIncidentSearch}
+            params={this.state.params}
+            sortField={this.state.params.sort_field}
+            sortDir={this.state.params.sort_dir}
+            followupActions={this.props.followupActions}
+            openMineIncidentModal={this.openMineIncidentModal}
+            handleEditMineIncident={this.handleEditMineIncident}
+            openViewMineIncidentModal={this.openViewMineIncidentModal}
+          />
         </div>
       </div>
     );

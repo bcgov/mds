@@ -22,6 +22,7 @@ const propTypes = {
   pageData: CustomPropTypes.incidentPageData,
   sortField: PropTypes.string,
   sortDir: PropTypes.string,
+  isLoaded: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -39,6 +40,7 @@ export const IncidentsTable = (props) => {
   return (
     <div className="tab__content">
       <MineIncidentTable
+        isLoaded={props.isLoaded}
         incidents={props.incidents}
         followupActions={props.followupActions}
         openMineIncidentModal={props.openMineIncidentModal}
@@ -51,6 +53,7 @@ export const IncidentsTable = (props) => {
         isDashboardView
         sortField={props.sortField}
         sortDir={props.sortDir}
+        paginationPerPage={Number(props.pageData.items_per_page)}
       />
       <div className="center">
         <ResponsivePagination
