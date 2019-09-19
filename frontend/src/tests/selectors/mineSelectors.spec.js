@@ -8,7 +8,6 @@ import {
   getIsUserSubscribed,
   getMineBasicInfoList,
   getMineDocuments,
-  getMineIncidents,
 } from "@/selectors/mineSelectors";
 import mineReducer from "@/reducers/mineReducer";
 import {
@@ -18,7 +17,6 @@ import {
   storeSubscribedMines,
   storeMineBasicInfoList,
   storeMineDocuments,
-  storeMineIncidents,
 } from "@/actions/mineActions";
 import { MINES } from "@/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
@@ -34,7 +32,6 @@ const mockState = {
   subscribedMines: Mock.SUBSCRIBED_MINES.mines,
   mineBasicInfoList: Mock.MINE_BASIC_INFO,
   mineDocuments: Mock.MINEDOCUMENTS.records,
-  mineIncidents: Mock.INCIDENTS.records,
 };
 
 describe("mineSelectors", () => {
@@ -44,7 +41,6 @@ describe("mineSelectors", () => {
     minesPageData,
     mineBasicInfoList,
     mineDocuments,
-    mineIncidents,
     subscribedMines,
   } = mockState;
   const { mines, mineGuid } = mockState;
@@ -137,14 +133,5 @@ describe("mineSelectors", () => {
       [MINES]: storeState,
     };
     expect(getMineDocuments(localMockState)).toEqual(mineDocuments);
-  });
-
-  it("`getMineIncidents` calls `mineReducer.getMineIncidents`", () => {
-    const storeAction = storeMineIncidents(Mock.INCIDENTS);
-    const storeState = mineReducer({}, storeAction);
-    const localMockState = {
-      [MINES]: storeState,
-    };
-    expect(getMineIncidents(localMockState)).toEqual(mineIncidents);
   });
 });

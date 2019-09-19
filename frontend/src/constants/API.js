@@ -101,6 +101,31 @@ export const MINE_INCIDENT = (mineGuid, mine_incident_guid) =>
   `/mines/${mineGuid}/incidents/${mine_incident_guid}`;
 export const MINE_INCIDENT_DOCUMENT = (mineGuid) => `/mines/${mineGuid}/incidents/documents`;
 
+export const INCIDENTS = (params) => {
+  const {
+    codes = [],
+    region = [],
+    determination = [],
+    incident_status = [],
+    ...otherParams
+  } = params;
+  const formattedCodes = {};
+  Object.assign(
+    formattedCodes,
+    codes.length >= 1 && { codes: codes.join(",") },
+    region.length >= 1 && { region: region.join(",") },
+    incident_status.length >= 1 && { incident_status: incident_status.join(",") },
+    determination.length >= 1 && {
+      determination: determination.join(","),
+    }
+  );
+  return params
+    ? `/incidents?${queryString.stringify({
+        ...formattedCodes,
+        ...otherParams,
+      })}`
+    : "/incidents";
+};
 export const INCIDENT_FOLLOWUP_ACTIONS = `/incidents/followup-types`;
 export const INCIDENT_DETERMINATION_TYPES = `/incidents/determination-types`;
 export const INCIDENT_STATUS_CODES = `/incidents/status-codes`;

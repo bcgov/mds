@@ -2,20 +2,21 @@ import React, { Component } from "react";
 
 import L from "leaflet";
 import LeafletWms from "leaflet.wms";
-import * as EsriLeaflet from "esri-leaflet";
-import "@/utils/leaflet-libs/mouse-coordinates/leaflet.mousecoordinate";
+import scriptLoader from "react-async-script-loader";
 
 import ReactDOMServer from "react-dom/server";
 import PropTypes from "prop-types";
-import LeafletPopup from "@/components/maps/LeafletPopup";
 
 import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
+import "@/utils/leaflet-libs/mouse-coordinates/leaflet.mousecoordinate";
 
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
 import { SMALL_PIN } from "@/constants/assets";
+import { ENVIRONMENT } from "@/constants/environment";
+import LeafletPopup from "@/components/maps/LeafletPopup";
 
 require("leaflet.markercluster");
 
@@ -25,15 +26,17 @@ require("leaflet.markercluster");
 
 const propTypes = {
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
-  transformedMineTypes: CustomPropTypes.transformedMineTypes.isRequired,
   mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  isScriptLoaded: PropTypes.bool.isRequired,
+  isScriptLoadSucceed: PropTypes.bool.isRequired,
   lat: PropTypes.number,
   long: PropTypes.number,
   zoom: PropTypes.number,
   minesBasicInfo: PropTypes.arrayOf(CustomPropTypes.mine),
   mineName: PropTypes.string,
-  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  transformedMineTypes: CustomPropTypes.transformedMineTypes,
 };
 
 const defaultProps = {
@@ -42,6 +45,7 @@ const defaultProps = {
   zoom: Strings.DEFAULT_ZOOM,
   minesBasicInfo: [],
   mineName: "",
+  transformedMineTypes: {},
 };
 
 const leafletWMSTiledOptions = {
@@ -82,100 +86,48 @@ LeafletWms.Source = LeafletWms.Source.extend({
 
 const getFirstNationLayer = () => {
   const firstNationSource = LeafletWms.source(
-    "https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov?",
+    ENVIRONMENT.firstNationsLayerUrl,
     leafletWMSTiledOptions
   );
   return firstNationSource.getLayer("WHSE_ADMIN_BOUNDARIES.PIP_CONSULTATION_AREAS_SP");
 };
 
-const getBcMineRegionLayer = () =>
-  EsriLeaflet.tiledMapLayer({
-    url:
-      "https://tiles.arcgis.com/tiles/ubm4tcTYICKBpist/arcgis/rest/services/BC_Mine_Regions4/MapServer",
-  });
-
-const getOpenMapsLayer = (styles = null, layer = "WHSE_MINERAL_TENURE.MTA_ACQUIRED_TENURE_SVW") => {
-  const sourceOptions = Object.assign({}, leafletWMSTiledOptions);
-
-  if (styles !== null) {
-    sourceOptions.styles = styles;
-  }
-
-  const openMapsSource = LeafletWms.source("https://openmaps.gov.bc.ca/geo/pub/wms", sourceOptions);
-  return openMapsSource.getLayer(layer);
-};
-
-let overlayLayers = {
-  "Roads (DRA)": getOpenMapsLayer(null, "WHSE_BASEMAPPING.DRA_DGTL_ROAD_ATLAS_MPAR_SP"),
-  "Forest Tenure Roads": getOpenMapsLayer(null, "WHSE_FOREST_TENURE.FTEN_ROAD_SECTION_LINES_SVW"),
-  "Contour Lines": getOpenMapsLayer(null, "WHSE_BASEMAPPING.NTS_BC_CONTOUR_LINES_125M"),
-  "Natural Resources Regions": getOpenMapsLayer(null, "WHSE_ADMIN_BOUNDARIES.ADM_NR_REGIONS_SPG"),
-  "Coal Leases": getOpenMapsLayer(3647),
-  "Coal Licenses": getOpenMapsLayer(3646),
-  "Mining Leases": getOpenMapsLayer(3644),
-  "Mineral Claims": getOpenMapsLayer(3643),
-  "Placer Leases": getOpenMapsLayer(3642),
-  "Placer Claims": getOpenMapsLayer(3641),
-  "Coal Licence Applications": getOpenMapsLayer(3638),
-  "Crown Granted Mineral Claims": getOpenMapsLayer(
-    null,
-    "WHSE_MINERAL_TENURE.MTA_CROWN_GRANT_MIN_CLAIM_SVW"
-  ),
-  "Indian Reserves": getOpenMapsLayer(null, "WHSE_ADMIN_BOUNDARIES.ADM_INDIAN_RESERVES_BANDS_SP"),
-  "BC Mine Regions": getBcMineRegionLayer(),
-  "First Nations PIP Consultation Areas": getFirstNationLayer(),
-};
+// const overlayLayers = [
+//   "Roads (DRA)",
+//   "Forest Tenure Roads",
+//   "Contour Lines",
+//   "Natural Resources Regions",
+//   "Coal Leases",
+//   "Coal Licenses",
+//   "Mining Leases",
+//   "Mineral Claims",
+//   "Placer Leases",
+//   "Placer Claims",
+//   "Coal Licence Applications",
+//   "Crown Granted Mineral Claims",
+//   "Indian Reserves",
+//   "BC Mine Regions",
+// ];
 
 class MineMapLeaflet extends Component {
+  state = {
+    mapCreated: false,
+  };
+
   componentDidMount() {
-    // Create the base map with layers
-    this.createMap();
-
-    // Add Clustered MinePins
-    this.markerClusterGroup = L.markerClusterGroup({
-      animate: false,
-    });
-    this.props.minesBasicInfo.map(this.createPin);
-    this.map.addLayer(this.markerClusterGroup);
-
-    // Add MinePins to the top of LayerList and add the LayerList widget
-    overlayLayers = Object.assign({ "Mine Pins": this.markerClusterGroup }, overlayLayers);
-    L.control.layers(this.getBaseMaps(), overlayLayers, { position: "topleft" }).addTo(this.map);
-
-    // Add Mouse coordinate widget
-    L.control.mouseCoordinate({ utm: true, position: "topright" }).addTo(this.map);
-    // Add ScaleBar widget
-    L.control.scale({ imperial: false }).addTo(this.map);
+    this.asyncScriptStatusCheck();
   }
 
-  getBaseMaps() {
-    const topographicBasemap = L.tileLayer(
-      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
-      {
-        attribution: "Esri",
-      }
-    );
-    // Add default basemap to the map
-    topographicBasemap.addTo(this.map);
-
-    const worldImageryLayer = L.tileLayer(
-      "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-      {
-        attribution: "Esri",
-      }
-    );
-
-    return {
-      Topographic: topographicBasemap,
-      "World Imagery": worldImageryLayer,
-    };
-  }
+  asyncScriptStatusCheck = () => {
+    if (this.props.isScriptLoaded && this.props.isScriptLoadSucceed && !this.state.mapCreated) {
+      this.initMap();
+    } else {
+      setTimeout(this.asyncScriptStatusCheck, 500);
+    }
+  };
 
   createPin = (mine) => {
-    const customIcon = L.icon({
-      iconUrl: SMALL_PIN,
-      iconSize: [60, 60],
-    });
+    const customIcon = L.icon({ iconUrl: SMALL_PIN, iconSize: [60, 60] });
 
     // TODO: Check what happens if Lat/Long is invalid
     const latLong = [mine.mine_location.latitude, mine.mine_location.longitude];
@@ -205,10 +157,46 @@ class MineMapLeaflet extends Component {
     });
   };
 
+  initMap() {
+    // Create the base map with layers
+    this.createMap();
+    this.setState({ mapCreated: true });
+
+    // Once the WebMap is loaded, add the rest of Layers and tools
+    this.webmap.on("load", () => {
+      // Center map to provided Lat/Long and Zoom
+      this.map.setView([this.props.lat, this.props.long], this.props.zoom);
+
+      // Add Clustered MinePins
+      this.markerClusterGroup = L.markerClusterGroup({ animate: false });
+      this.props.minesBasicInfo.map(this.createPin);
+      this.map.addLayer(this.markerClusterGroup);
+
+      // Add the WebMap layers to the Layer control widget
+      const overlayMaps = {};
+      overlayMaps["Mine Pins"] = this.markerClusterGroup;
+      this.webmap.layers.forEach((l) => {
+        overlayMaps[l.title] = l.layer;
+      });
+      overlayMaps["First nations"] = getFirstNationLayer();
+      L.control
+        .layers({}, overlayMaps, {
+          position: "topleft",
+        })
+        .addTo(this.map);
+
+      // Add Mouse coordinate widget
+      L.control.mouseCoordinate({ utm: true, position: "topright" }).addTo(this.map);
+
+      // Add ScaleBar widget
+      L.control.scale({ imperial: false }).addTo(this.map);
+    });
+  }
+
   createMap() {
-    this.map = L.map("leaflet-map")
-      .setView([this.props.lat, this.props.long], this.props.zoom)
-      .setMaxZoom(20);
+    // Creates the base leaflet map object and overlays the ESRI WebMap on top
+    this.map = L.map("leaflet-map").setMaxZoom(20);
+    this.webmap = window.L.esri.webMap(ENVIRONMENT.mapPortalId, { map: this.map });
   }
 
   renderPopup = (mine, commodityCodes = []) => {
@@ -225,4 +213,14 @@ class MineMapLeaflet extends Component {
 MineMapLeaflet.propTypes = propTypes;
 MineMapLeaflet.defaultProps = defaultProps;
 
-export default MineMapLeaflet;
+export default scriptLoader(
+  [],
+  // Load Esri Leaflet from CDN
+  "https://unpkg.com/esri-leaflet@2.3.0/dist/esri-leaflet.js",
+  // Load Esri Leaflet Renderers from CDN
+  "https://cdn.jsdelivr.net/leaflet.esri.renderers/2.0.2/esri-leaflet-renderers.js",
+  // Load Leaflet Omnivore
+  "https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.3.1/leaflet-omnivore.min.js",
+  // Load L.esri.WebMap
+  "https://cdn.jsdelivr.net/leaflet.esri.webmap/0.4.0/esri-leaflet-webmap.js"
+)(MineMapLeaflet);
