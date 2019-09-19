@@ -92,6 +92,8 @@ const getFirstNationLayer = () => {
   return firstNationSource.getLayer("WHSE_ADMIN_BOUNDARIES.PIP_CONSULTATION_AREAS_SP");
 };
 
+const baseMapsArray = ["World Topographic Map", "World Imagery"];
+
 const admininstrativeBoundariesLayerArray = [
   "Indian Reserves & Band Names",
   "BC Mine Regions",
