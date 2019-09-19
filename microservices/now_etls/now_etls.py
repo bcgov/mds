@@ -32,5 +32,4 @@ def etl_now_submission_data():
 
 
 if __name__ == '__main__':
-    while True:
-        time.sleep(100)
+    etl_now_submission_data()

@@ -50,8 +50,7 @@ def truncate_table(connection, tables):
 def join_mine_guids(connection, application_table):
     current_mines = etl.fromdb(
         connection, 'select distinct on (minenumber) mine_guid, mine_no as minenumber from public.mine order by minenumber, create_timestamp;')
-    print(etl.look(current_mines, style='simple'))
-    application_table_guid_lookup = etl.join(
+    application_table_guid_lookup = etl.leftjoin(
         application_table, current_mines, key='minenumber')
     return application_table_guid_lookup
 
@@ -62,22 +61,19 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
         try:
             current_table = etl.fromdb(
                 connection, f'SELECT * from {schema}.{source}')
+            print(f'    {destination}:{etl.nrows(current_table)}')
 
             if (source == 'application'):
                 # add originating source
                 table_plus_os = etl.addfield(
                     current_table, 'originating_system', system_name)
 
-                print(etl.look(table_plus_os, style='simple'))
-
                 table_plus_os_guid = join_mine_guids(connection, table_plus_os)
-
-                print("------------------")
-                print(etl.look(table_plus_os_guid, style='simple'))
 
                 etl.appenddb(table_plus_os_guid, connection,
                              destination, schema='now_submissions', commit=False)
             else:
+
                 etl.appenddb(current_table, connection, destination,
                              schema='now_submissions', commit=False)
 
@@ -89,11 +85,14 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
 def NOW_submissions_ETL(connection):
     with connection:
         # Removing the data imported from the previous run.
+        print('Truncating existing tables...')
         truncate_table(connection, {**SHARED_TABLES, **NROS_ONLY_TABLES})
 
         # Importing the vFCBC NoW submission data.
+        print('Beginning vFCBC NoW ETL:')
         ETL_MMS_NOW_schema(connection, SHARED_TABLES, 'mms_now_vfcbc', 'VFCBC')
 
         # Importing the NROS NoW submission data.
+        print('Beginning NROS NoW ETL:')
         ETL_MMS_NOW_schema(
             connection, {**SHARED_TABLES, **NROS_ONLY_TABLES}, 'mms_now_nros', 'NROS')
