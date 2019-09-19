@@ -1,3 +1,4 @@
+/* eslint-disable no-dupe-keys */
 export const EXCEL = {
   ".xls": "application/vnd.ms-excel",
   ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",

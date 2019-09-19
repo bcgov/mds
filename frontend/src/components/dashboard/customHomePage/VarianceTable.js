@@ -37,8 +37,6 @@ const defaultProps = {
 };
 export const VarianceTable = (props) => (
   <div className="tab__content">
-    <h4>Variances</h4>
-    <br />
     <MineVarianceTable
       params={props.params}
       filterVarianceStatusOptions={props.filterVarianceStatusOptions}
