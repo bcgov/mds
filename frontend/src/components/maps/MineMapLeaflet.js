@@ -7,6 +7,7 @@ import scriptLoader from "react-async-script-loader";
 import ReactDOMServer from "react-dom/server";
 import PropTypes from "prop-types";
 
+import "leaflet.markercluster";
 import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
@@ -15,11 +16,9 @@ import "@/utils/leaflet-libs/grouped-layer-control/leaflet.groupedlayercontrol.m
 
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
-import { SMALL_PIN } from "@/constants/assets";
+import { SMALL_PIN, SMALL_PIN_SELECTED } from "@/constants/assets";
 import { ENVIRONMENT } from "@/constants/environment";
 import LeafletPopup from "@/components/maps/LeafletPopup";
-
-require("leaflet.markercluster");
 
 /**
  * @class MineMapLeaflet.js is a Leaflet Map component.
@@ -93,8 +92,6 @@ const getFirstNationLayer = () => {
   return firstNationSource.getLayer("WHSE_ADMIN_BOUNDARIES.PIP_CONSULTATION_AREAS_SP");
 };
 
-const baseMapsArray = ["World Topographic Map", "World Imagery"];
-
 const admininstrativeBoundariesLayerArray = [
   "Indian Reserves & Band Names",
   "BC Mine Regions",
@@ -136,20 +133,11 @@ class MineMapLeaflet extends Component {
   };
 
   createPin = (mine) => {
-    const customIcon = L.icon({ iconUrl: SMALL_PIN, iconSize: [60, 60] });
+    const pin = this.props.mineName === mine.mine_name ? SMALL_PIN_SELECTED : SMALL_PIN;
+    const customIcon = L.icon({ iconUrl: pin, iconSize: [60, 60] });
 
     // TODO: Check what happens if Lat/Long is invalid
     const latLong = [mine.mine_location.latitude, mine.mine_location.longitude];
-
-    if (this.props.mineName === mine.mine_name) {
-      L.circle(latLong, {
-        color: "red",
-        fillColor: "#f03",
-        fillOpacity: 0.25,
-        radius: 500,
-        stroke: false,
-      }).addTo(this.map);
-    }
 
     const marker = L.marker(latLong, { icon: customIcon }).bindPopup(Strings.LOADING);
     this.markerClusterGroup.addLayer(marker);
@@ -179,6 +167,18 @@ class MineMapLeaflet extends Component {
     return result;
   };
 
+  addLatLongCircle = () => {
+    if (this.props.lat && this.props.long && !this.props.mineName) {
+      L.circle([this.props.lat, this.props.long], {
+        color: "red",
+        fillColor: "#f03",
+        fillOpacity: 0.25,
+        radius: 500,
+        stroke: false,
+      }).addTo(this.map);
+    }
+  };
+
   initMap() {
     // Create the base map with layers
     this.createMap();
@@ -193,6 +193,7 @@ class MineMapLeaflet extends Component {
       this.markerClusterGroup = L.markerClusterGroup({ animate: false });
       this.props.minesBasicInfo.map(this.createPin);
       this.map.addLayer(this.markerClusterGroup);
+      this.addLatLongCircle();
 
       // Add the WebMap layers to the Layer control widget
       const groupedOverlays = {
