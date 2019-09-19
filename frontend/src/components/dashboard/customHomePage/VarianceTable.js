@@ -38,8 +38,6 @@ const defaultProps = {
 };
 export const VarianceTable = (props) => (
   <div className="tab__content">
-    <h4>Variances</h4>
-    <br />
     <MineVarianceTable
       isLoaded={props.isLoaded}
       paginationPerPage={props.pageData.items_per_page}

@@ -18,8 +18,9 @@ import {
   fetchMineIncidents,
   createMineIncident,
   updateMineIncident,
-} from "@/actionCreators/mineActionCreator";
-import { getMineIncidents, getMines, getMineGuid } from "@/selectors/mineSelectors";
+} from "@/actionCreators/incidentActionCreator";
+import { getMineIncidents } from "@/selectors/incidentSelectors";
+import { getMines, getMineGuid } from "@/selectors/mineSelectors";
 import {
   getDropdownIncidentFollowupActionOptions,
   getDangerousOccurrenceSubparagraphOptions,

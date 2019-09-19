@@ -11,15 +11,51 @@ exports[`MineIncidentTable renders properly 1`] = `
       Array [
         Object {
           "dataIndex": "mine_incident_report_no",
+          "render": [Function],
+          "sortField": "mine_incident_report_no",
           "sorter": [Function],
           "title": "Incident Report No.",
         },
         Object {
           "dataIndex": "incident_timestamp",
+          "render": [Function],
+          "sortField": "incident_timestamp",
           "sorter": [Function],
-          "title": "Incident Time",
+          "title": "Date",
         },
         Object {
+          "className": "column-hide",
+          "dataIndex": "mine_name",
+          "render": [Function],
+          "sortField": "mine_name",
+          "sorter": true,
+          "title": "Mine Name",
+        },
+        Object {
+          "className": "column-hide",
+          "dataIndex": "incident_status",
+          "render": [Function],
+          "sortField": "incident_status",
+          "sorter": true,
+          "title": "Incident Status",
+        },
+        Object {
+          "className": "column-hide",
+          "dataIndex": "determination",
+          "render": [Function],
+          "sortField": "determination",
+          "sorter": true,
+          "title": "Determination",
+        },
+        Object {
+          "className": "column-hide",
+          "dataIndex": "code",
+          "render": [Function],
+          "title": "Code",
+          "width": 400,
+        },
+        Object {
+          "className": "",
           "dataIndex": "reported_by",
           "filters": Array [
             Object {
@@ -28,10 +64,12 @@ exports[`MineIncidentTable renders properly 1`] = `
             },
           ],
           "onFilter": [Function],
+          "render": [Function],
           "sorter": [Function],
           "title": "Reported By",
         },
         Object {
+          "className": "",
           "dataIndex": "followup_action",
           "filters": Array [
             Object {
@@ -44,12 +82,14 @@ exports[`MineIncidentTable renders properly 1`] = `
           "title": "EMPR Action",
         },
         Object {
+          "className": "",
           "dataIndex": "initialDocuments",
           "render": [Function],
           "title": "Initial Report Documents",
           "width": 200,
         },
         Object {
+          "className": "",
           "dataIndex": "finalDocuments",
           "render": [Function],
           "title": "Final Report Documents",
@@ -65,6 +105,8 @@ exports[`MineIncidentTable renders properly 1`] = `
     dataSource={
       Array [
         Object {
+          "code": "N/A",
+          "determination": "N/A",
           "docs": undefined,
           "followup_action": Object {
             "description": "No Action",
@@ -85,9 +127,11 @@ exports[`MineIncidentTable renders properly 1`] = `
             "reported_by_role": "Investment banker, operational",
             "reported_timestamp": "2019-03-17T17:42:37+00:00",
           },
+          "incident_status": "N/A",
           "incident_timestamp": "Apr 06 2019",
           "key": undefined,
           "mine_incident_report_no": "2019-70",
+          "mine_name": undefined,
           "openMineIncidentModal": [MockFunction],
           "openViewMineIncidentModal": [MockFunction],
           "reported_by": undefined,
@@ -104,6 +148,7 @@ exports[`MineIncidentTable renders properly 1`] = `
         />,
       }
     }
+    onChange={null}
     pagination={false}
     rowKey="key"
     showHeader={true}
