@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+
 import L from "leaflet";
 import LeafletWms from "leaflet.wms";
 import * as EsriLeaflet from "esri-leaflet";
@@ -49,6 +50,35 @@ const leafletWMSTiledOptions = {
   uppercase: true,
   format: "image/png",
 };
+
+// Override global Leaflet.WMS Layer request to return data
+// into an HTML format so that it renders properly in the iframe
+/* eslint-disable */
+LeafletWms.Source = LeafletWms.Source.extend({
+  getFeatureInfoParams(point, layers) {
+    // Hook to generate parameters for WMS service GetFeatureInfo request
+    let wmsParams;
+    let overlay;
+    if (this.options.untiled) {
+      // Use existing overlay
+      wmsParams = this._overlay.wmsParams;
+    } else {
+      // Create overlay instance to leverage updateWmsParams
+      overlay = this.createOverlay(true);
+      overlay.updateWmsParams(this._map);
+      wmsParams = overlay.wmsParams;
+      wmsParams.layers = layers.join(",");
+    }
+    const infoParams = {
+      request: "GetFeatureInfo",
+      info_format: "text/html",
+      query_layers: layers.join(","),
+      X: Math.round(point.x),
+      Y: Math.round(point.y),
+    };
+    return L.extend({}, wmsParams, infoParams);
+  },
+});
 
 const getFirstNationLayer = () => {
   const firstNationSource = LeafletWms.source(
