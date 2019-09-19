@@ -9,6 +9,12 @@ exports[`NoticeOfWorkTable renders properly 1`] = `
   columns={
     Array [
       Object {
+        "dataIndex": "source",
+        "render": [Function],
+        "sortOrder": false,
+        "title": "Source",
+      },
+      Object {
         "dataIndex": "mine_region",
         "filteredValue": "SW,NE",
         "filters": Array [],
@@ -72,6 +78,7 @@ exports[`NoticeOfWorkTable renders properly 1`] = `
         "mine_region": "N/A",
         "nowNum": 44,
         "nowType": "choice",
+        "source": "N/A",
         "status": "Approved",
       },
       Object {
@@ -82,6 +89,7 @@ exports[`NoticeOfWorkTable renders properly 1`] = `
         "mine_region": "N/A",
         "nowNum": 52,
         "nowType": "technology",
+        "source": "N/A",
         "status": "Approved",
       },
     ]
