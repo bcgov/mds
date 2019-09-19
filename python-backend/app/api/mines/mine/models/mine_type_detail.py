@@ -2,54 +2,53 @@ import uuid
 
 from datetime import datetime
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.schema import FetchedValue
 from ....utils.models_mixins import AuditMixin, Base
 from app.extensions import db
 
 
 class MineTypeDetail(AuditMixin, Base):
     __tablename__ = 'mine_type_detail_xref'
-    mine_type_detail_xref_guid = db.Column(UUID(as_uuid=True), primary_key=True)
-    mine_type_guid = db.Column(
-        UUID(as_uuid=True), db.ForeignKey('mine_type.mine_type_guid'), nullable=False)
-    mine_disturbance_code = db.Column(
-        db.String(3), db.ForeignKey('mine_disturbance_code.mine_disturbance_code'))
-    mine_commodity_code = db.Column(
-        db.String(2), db.ForeignKey('mine_commodity_code.mine_commodity_code'))
+    mine_type_detail_xref_guid = db.Column(UUID(as_uuid=True),
+                                           primary_key=True,
+                                           server_default=FetchedValue())
+    mine_type_guid = db.Column(UUID(as_uuid=True),
+                               db.ForeignKey('mine_type.mine_type_guid'),
+                               nullable=False)
+    mine_disturbance_code = db.Column(db.String(3),
+                                      db.ForeignKey('mine_disturbance_code.mine_disturbance_code'))
+    mine_commodity_code = db.Column(db.String(2),
+                                    db.ForeignKey('mine_commodity_code.mine_commodity_code'))
+
     active_ind = db.Column(db.Boolean, nullable=False, default=True)
 
     def __repr__(self):
         return '<MineTypeDetail %r>' % self.mine_type_detail_xref_guid
 
-    def json(self):
-        return {
-            'mine_type_detail_guid': str(self.mine_type_detail_xref_guid),
-            'mine_type_guid': str(self.mine_type_guid),
-            'mine_disturbance_code': self.mine_disturbance_code,
-            'mine_commodity_code': self.mine_commodity_code
-        }
-
     @classmethod
-    def create_mine_type_detail(cls,
-                                mine_type_guid,
-                                mine_disturbance_code,
-                                mine_commodity_code,
-                                add_to_session=True):
-        mine_type_detail = cls(
-            mine_type_detail_xref_guid=uuid.uuid4(),
+    def create(cls,
+               mine_type,
+               mine_disturbance_code=None,
+               mine_commodity_code=None,
+               add_to_session=True):
+        if bool(mine_disturbance_code) == bool(mine_commodity_code):
+            raise Exception(
+                'MineTypeDetail must have exactly one of mine_disturbance_code, mine_commodity_code'
+            )
+        new_mine_type_detail = cls(
             mine_disturbance_code=mine_disturbance_code,
             mine_commodity_code=mine_commodity_code,
-            mine_type_guid=mine_type_guid,
         )
+        mine_type.mine_type_detail.append(new_mine_type_detail)
         if add_to_session:
-            mine_type_detail.save(commit=False)
-        return mine_type_detail
+            new_mine_type_detail.save(commit=False)
+        return new_mine_type_detail
 
     @classmethod
     def find_by_guid(cls, _id):
         uuid.UUID(_id, version=4)
         return cls.query.filter_by(mine_type_detail_xref_guid=_id).first()
 
-    @classmethod
-    def expire_record(cls, record):
-        record.active_ind = False
-        record.save()
+    def expire_record(self):
+        self.active_ind = False
+        self.save()

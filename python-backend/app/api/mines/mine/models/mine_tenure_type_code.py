@@ -15,3 +15,7 @@ class MineTenureTypeCode(AuditMixin, Base):
     @classmethod
     def find_all_active(cls):
         return cls.query.all()
+
+    @classmethod
+    def find_by_code(cls, code):
+        return cls.query.find(code)

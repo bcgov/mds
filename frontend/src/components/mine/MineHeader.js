@@ -73,9 +73,11 @@ export class MineHeader extends Component {
     this.props.mine.mine_type.forEach((type) => {
       if (type.mine_tenure_type_code === mineTypeCode) {
         const tenure = this.props.mineTenureHash[mineTypeCode];
-        this.props.removeMineType(type.mine_type_guid, tenure).then(() => {
-          this.props.fetchMineRecordById(this.props.mine.mine_guid);
-        });
+        this.props
+          .removeMineType(this.props.mine.mine_guid, type.mine_type_guid, tenure)
+          .then(() => {
+            this.props.fetchMineRecordById(this.props.mine.mine_guid);
+          });
       }
     });
   };

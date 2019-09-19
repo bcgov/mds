@@ -25,7 +25,7 @@ export const EDIT_TSF_REPORT = "";
 export const MINE_DOCUMENTS = (mine_guid) => `/mines/${mine_guid}/documents`;
 export const MINE_TSF_REQUIRED_DOCUMENTS = "/required-documents?category=TSF";
 export const MINE_TENURE_TYPES = "/mines/mine-tenure-type-codes";
-export const MINE_TYPES = "/mines/mine-types";
+export const MINE_TYPES = (mineGuid) => `/mines/${mineGuid}/mine-types`;
 export const MINE_TYPES_DETAILS = "/mines/mine-types/details";
 export const DOCUMENT_MANAGER_FILE_GET_URL = (token = {}) =>
   `/documents?${queryString.stringify(token)}`;

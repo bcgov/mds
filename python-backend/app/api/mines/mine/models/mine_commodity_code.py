@@ -33,5 +33,9 @@ class MineCommodityCode(AuditMixin, Base):
         return '<MineCommodityCode %r>' % self.mine_commodity_code
 
     @classmethod
+    def find_by_code(cls, code):
+        return cls.query.get(code)
+
+    @classmethod
     def get_active(cls):
         return cls.query.filter_by(active_ind=True).all()
