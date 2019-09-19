@@ -11,58 +11,6 @@ exports[`PermitAmendmentForm renders properly 1`] = `
     gutter={48}
   >
     <Col
-      md={12}
-      sm={24}
-    >
-      <FormItem
-        hasFeedback={false}
-      >
-        <Connect(PartySelectField)
-          allowAddingParties={true}
-          id="permittee_party_guid"
-          label="Permittee*"
-          name="permittee_party_guid"
-          partyLabel="permittee"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="issue_date"
-          label="Issue date*"
-          name="issue_date"
-          validate={
-            Array [
-              [Function],
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="description"
-          label="Description"
-          name="description"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
-    </Col>
-    <Col
       className="border--left--layout"
       md={12}
       sm={24}
