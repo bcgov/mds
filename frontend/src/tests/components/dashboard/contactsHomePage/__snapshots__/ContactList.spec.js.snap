@@ -2,7 +2,7 @@
 
 exports[`ContactList renders properly 1`] = `
 <TableLoadingWrapper
-  paginationPerPage={9}
+  isPaginated={true}
   tableHeaders={
     Array [
       "Contact Name",

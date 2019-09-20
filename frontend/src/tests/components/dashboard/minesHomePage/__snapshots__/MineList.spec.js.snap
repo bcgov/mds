@@ -2,7 +2,7 @@
 
 exports[`MineList renders properly 1`] = `
 <TableLoadingWrapper
-  paginationPerPage={9}
+  isPaginated={true}
   tableHeaders={
     Array [
       "Mine Name",

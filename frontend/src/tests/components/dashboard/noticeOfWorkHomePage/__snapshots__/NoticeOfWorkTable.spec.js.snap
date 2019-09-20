@@ -2,7 +2,7 @@
 
 exports[`NoticeOfWorkTable renders properly 1`] = `
 <TableLoadingWrapper
-  paginationPerPage={9}
+  isPaginated={false}
   tableHeaders={
     Array [
       "Region",

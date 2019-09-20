@@ -7,7 +7,7 @@ const dispatchProps = {};
 const props = {};
 
 const setupDispatchProps = () => {
-  dispatchProps.fetchApplications = jest.fn();
+  dispatchProps.fetchApplications = jest.fn(() => Promise.resolve());
   dispatchProps.updateApplication = jest.fn();
   dispatchProps.createApplication = jest.fn();
   dispatchProps.openModal = jest.fn();

@@ -2,7 +2,7 @@
 
 exports[`SubscriptionTable renders properly 1`] = `
 <TableLoadingWrapper
-  paginationPerPage={9}
+  isPaginated={false}
   tableHeaders={
     Array [
       "Mine Name",

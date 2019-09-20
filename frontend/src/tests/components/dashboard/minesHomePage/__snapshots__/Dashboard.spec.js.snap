@@ -940,10 +940,11 @@ exports[`Dashboard renders properly 1`] = `
               >
                 <div>
                   <MineMap
+                    isListLoaded={false}
+                    isMapLoaded={false}
                     lat={53.7267}
                     long={-127.6476}
                     mine={null}
-                    mineList={false}
                     mineName={null}
                     params={
                       Object {

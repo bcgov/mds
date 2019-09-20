@@ -2,7 +2,7 @@
 
 exports[`MineNoticeOfWorkTable renders properly 1`] = `
 <TableLoadingWrapper
-  paginationPerPage={9}
+  isPaginated={false}
   tableHeaders={
     Array [
       "NoW No.",
@@ -86,7 +86,7 @@ exports[`MineNoticeOfWorkTable renders properly 1`] = `
     locale={
       Object {
         "emptyText": <NullScreen
-          type="no-results"
+          type="notice-of-work"
         />,
       }
     }
