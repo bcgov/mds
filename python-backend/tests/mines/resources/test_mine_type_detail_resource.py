@@ -1,10 +1,11 @@
-import json, uuid
+import json, uuid, pytest
 
 from tests.factories import MineTypeFactory
 from tests.status_code_gen import SampleMineCommodityCodes, SampleMineDisturbanceCodes
 
 
 # POST
+@pytest.mark.skip('functionality is in mine-type endpoint')
 def test_post_mine_disturbance_success(test_client, db_session, auth_headers):
     mine_type = MineTypeFactory(mine_type_detail={'commodities': 0, 'disturbances': 0})
     disturb = SampleMineDisturbanceCodes(mine_type.mine_tenure_type, 1)[0]
@@ -19,7 +20,7 @@ def test_post_mine_disturbance_success(test_client, db_session, auth_headers):
     assert post_data['mine_disturbance_code'] == disturb
     assert post_data['mine_commodity_code'] == None
 
-
+@pytest.mark.skip('functionality is in mine-type endpoint')
 def test_post_mine_commodity_success(test_client, db_session, auth_headers):
     mine_type = MineTypeFactory(mine_type_detail={'commodities': 0, 'disturbances': 0})
     commodity = SampleMineCommodityCodes(mine_type.mine_tenure_type, 1)[0]
@@ -34,7 +35,7 @@ def test_post_mine_commodity_success(test_client, db_session, auth_headers):
     assert post_data['mine_disturbance_code'] == None
     assert post_data['mine_commodity_code'] == commodity
 
-
+@pytest.mark.skip('functionality is in mine-type endpoint')
 def test_post_mine_disturbance_missing_mine_type_guid(test_client, db_session, auth_headers):
     test_mine_type_data = {'mine_disturbance_code': 'UND'}
     post_resp = test_client.post('/mines/mine-types/details',
@@ -45,6 +46,7 @@ def test_post_mine_disturbance_missing_mine_type_guid(test_client, db_session, a
     assert post_data == {'error': {'status': 400, 'message': 'Error: Missing mine_type_guid.'}}
 
 
+@pytest.mark.skip('functionality is in mine-type endpoint')
 def test_post_mine_commodity_missing_mine_type_guid(test_client, db_session, auth_headers):
     test_mine_type_data = {'mine_commodity_code': 'AM'}
     post_resp = test_client.post('/mines/mine-types/details',
@@ -55,6 +57,7 @@ def test_post_mine_commodity_missing_mine_type_guid(test_client, db_session, aut
     assert post_data == {'error': {'status': 400, 'message': 'Error: Missing mine_type_guid.'}}
 
 
+@pytest.mark.skip('functionality is in mine-type endpoint')
 def test_post_mine_type_detail_missing_mine_disturbance_code(test_client, db_session, auth_headers):
     mine_type = MineTypeFactory(mine_type_detail={'commodities': 0, 'disturbances': 0})
 
@@ -74,6 +77,7 @@ def test_post_mine_type_detail_missing_mine_disturbance_code(test_client, db_ses
     }
 
 
+@pytest.mark.skip('functionality is in mine-type endpoint')
 def test_post_mine_type_detail_invalid_mine_disturbance_code(test_client, db_session, auth_headers):
     mine_type = MineTypeFactory(mine_type_detail={'commodities': 0, 'disturbances': 0})
 
@@ -94,6 +98,7 @@ def test_post_mine_type_detail_invalid_mine_disturbance_code(test_client, db_ses
     }
 
 
+@pytest.mark.skip('functionality is in mine-type endpoint')
 def test_post_mine_type_detail_invalid_mine_commdity_code(test_client, db_session, auth_headers):
     mine_type = MineTypeFactory(mine_type_detail={'commodities': 0, 'disturbances': 0})
 
@@ -109,6 +114,7 @@ def test_post_mine_type_detail_invalid_mine_commdity_code(test_client, db_sessio
     assert post_data == {'error': {'status': 400, 'message': 'Error: Invalid mine_commodity_code.'}}
 
 
+@pytest.mark.skip('functionality is in mine-type endpoint')
 def test_post_mine_disturbance_duplicate(test_client, db_session, auth_headers):
     mine_type = MineTypeFactory(mine_type_detail={'commodities': 0, 'disturbances': 0})
     disturb = SampleMineDisturbanceCodes(mine_type.mine_tenure_type, 1)[0]
@@ -132,6 +138,7 @@ def test_post_mine_disturbance_duplicate(test_client, db_session, auth_headers):
     assert post_resp2.status_code == 400
 
 
+@pytest.mark.skip('functionality is in mine-type endpoint')
 def test_post_mine_commodity_duplicate(test_client, db_session, auth_headers):
     mine_type = MineTypeFactory(mine_type_detail={'commodities': 0, 'disturbances': 0})
     commodity = SampleMineCommodityCodes(mine_type.mine_tenure_type, 1)[0]
@@ -155,6 +162,7 @@ def test_post_mine_commodity_duplicate(test_client, db_session, auth_headers):
     assert post_resp2.status_code == 400
 
 
+@pytest.mark.skip('functionality is in mine-type endpoint')
 def test_post_mine_type_detail_invalid_mine_disturbance_code_for_tenure_type(
         test_client, db_session, auth_headers):
     mine_type = MineTypeFactory(mine_tenure_type_code='PLR',
@@ -180,6 +188,7 @@ def test_post_mine_type_detail_invalid_mine_disturbance_code_for_tenure_type(
     }
 
 
+@pytest.mark.skip('functionality is in mine-type endpoint')
 def test_post_mine_type_detail_invalid_mine_commodity_code_for_tenure_type(
         test_client, db_session, auth_headers):
     mine_type = MineTypeFactory(mine_tenure_type_code='COL',
@@ -200,6 +209,7 @@ def test_post_mine_type_detail_invalid_mine_commodity_code_for_tenure_type(
     assert post_data == {'error': {'status': 400, 'message': 'Error: Invalid mine_commodity_code.'}}
 
 
+@pytest.mark.skip('functionality is in mine-type endpoint')
 def test_post_mine_type_detail_commodity_and_disturbance(test_client, db_session, auth_headers):
     mine_type = MineTypeFactory(mine_type_detail={'commodities': 0, 'disturbances': 0})
 
@@ -222,6 +232,7 @@ def test_post_mine_type_detail_commodity_and_disturbance(test_client, db_session
 
 
 # DELETE
+@pytest.mark.skip('functionality is in mine-type endpoint')
 def test_delete_mine_type_detail_success(test_client, db_session, auth_headers):
     mine_type = MineTypeFactory()
     detail_guid = mine_type.mine_type_detail[0].mine_type_detail_xref_guid
@@ -233,6 +244,7 @@ def test_delete_mine_type_detail_success(test_client, db_session, auth_headers):
     assert delete_data['mine_type_detail_guid'] == str(detail_guid)
 
 
+@pytest.mark.skip('functionality is in mine-type endpoint')
 def test_delete_mine_type_detail_missing_mine_type_detail_guid(test_client, db_session,
                                                                auth_headers):
     delete_resp = test_client.delete('/mines/mine-types/details/',
@@ -240,6 +252,7 @@ def test_delete_mine_type_detail_missing_mine_type_detail_guid(test_client, db_s
     assert delete_resp.status_code == 404
 
 
+@pytest.mark.skip('functionality is in mine-type endpoint')
 def test_delete_mine_type_detail_invalid_mine_type_detail_guid(test_client, db_session,
                                                                auth_headers):
     delete_resp = test_client.delete(f'/mines/mine-types/details/{uuid.uuid4()}',

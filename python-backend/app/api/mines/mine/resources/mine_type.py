@@ -36,21 +36,21 @@ class MineTypeListResource(Resource, UserMixin):
     def post(self, mine_guid):
         data = self.parser.parse_args()
         mine_tenure_type_code = data['mine_tenure_type_code']
-        mine_disturbance_code = data['mine_disturbance_code']
-        mine_commodity_code = data['mine_commodity_code']
+        mine_disturbance_code = data['mine_disturbance_code'] or []
+        mine_commodity_code = data['mine_commodity_code'] or []
 
         mine_type = MineType.create(mine_guid, mine_tenure_type_code)
-        current_app.logger.debug(data)
-
+        current_app.logger.debug(mine_type)
         for d_code in mine_disturbance_code:
             MineTypeDetail.create(mine_type, mine_disturbance_code=d_code)
 
         for c_code in mine_commodity_code:
             MineTypeDetail.create(mine_type, mine_commodity_code=c_code)
-        current_app.logger.debug('ABOUT TO SAVE MINE TYPE')
 
         mine_type.save()
-
+        current_app.logger.debug(mine_type.mine_tenure_type_code)
+        current_app.logger.debug(MineType.query.all())
+        current_app.logger.debug(MineTenureTypeCode.query.all())
         return mine_type
 
 
