@@ -179,7 +179,7 @@ exports[`NOWGeneralInfo renders properly 1`] = `
       className="padding-large--sides"
     >
       <Row
-        gutter={0}
+        gutter={16}
       >
         <Col
           key="0"
