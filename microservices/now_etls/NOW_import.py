@@ -47,17 +47,36 @@ def truncate_table(connection, tables):
             f'TRUNCATE TABLE now_submissions.{key} CONTINUE IDENTITY CASCADE;')
 
 
-# Import all the data from the specified schema and tables.
+def join_mine_guids(connection, application_table):
+    current_mines = etl.fromdb(
+        connection, 'select distinct on (minenumber) mine_guid, mine_no as minenumber from public.mine order by minenumber, create_timestamp;')
+    application_table_guid_lookup = etl.leftjoin(
+        application_table, current_mines, key='minenumber')
+    return application_table_guid_lookup
+
+
 def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
-    for key, value in tables.items():
+    '''Import all the data from the specified schema and tables.'''
+    for destination, source in tables.items():
         try:
             current_table = etl.fromdb(
-                connection, f'SELECT * from {schema}.{value}')
-            # if value == 'application':
-            #     originated_table = etl.addfield(
-            #         current_table, 'originating_system', system_name)
-            etl.appenddb(current_table, connection, key,
-                         schema='now_submissions', commit=False)
+                connection, f'SELECT * from {schema}.{source}')
+            print(f'    {destination}:{etl.nrows(current_table)}')
+
+            if (source == 'application'):
+                # add originating source
+                table_plus_os = etl.addfield(
+                    current_table, 'originating_system', system_name)
+
+                table_plus_os_guid = join_mine_guids(connection, table_plus_os)
+
+                etl.appenddb(table_plus_os_guid, connection,
+                             destination, schema='now_submissions', commit=False)
+            else:
+
+                etl.appenddb(current_table, connection, destination,
+                             schema='now_submissions', commit=False)
+
         except Exception as err:
             print(f'ETL Parsing error: {err}')
             raise
@@ -66,11 +85,14 @@ def ETL_MMS_NOW_schema(connection, tables, schema, system_name):
 def NOW_submissions_ETL(connection):
     with connection:
         # Removing the data imported from the previous run.
+        print('Truncating existing tables...')
         truncate_table(connection, {**SHARED_TABLES, **NROS_ONLY_TABLES})
 
         # Importing the vFCBC NoW submission data.
+        print('Beginning vFCBC NoW ETL:')
         ETL_MMS_NOW_schema(connection, SHARED_TABLES, 'mms_now_vfcbc', 'VFCBC')
 
         # Importing the NROS NoW submission data.
+        print('Beginning NROS NoW ETL:')
         ETL_MMS_NOW_schema(
             connection, {**SHARED_TABLES, **NROS_ONLY_TABLES}, 'mms_now_nros', 'NROS')
