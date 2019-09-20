@@ -150,11 +150,11 @@
       "!src/App.js",
       "!src/fetchEnv.js",
       "!src/assetsTransformer.js",
-      "!src/setupTests.js",
-      "!src/utils/leaflet-libs/**/*"
+      "!src/setupTests.js"
     ],
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1",
+      "^vendor/(.*)$": "<rootDir>/vendor/$1",
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga|pdf)$": "<rootDir>/src/assetsTransformer.js",
       "\\.(css|less)$": "<rootDir>/src/assetsTransformer.js"
     },
