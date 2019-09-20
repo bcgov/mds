@@ -109,8 +109,6 @@ export class Dashboard extends Component {
       params: {
         page: String.DEFAULT_PAGE,
         per_page: String.DEFAULT_PER_PAGE,
-        major: [],
-        tsf: [],
         status: [],
         region: [],
         tenure: [],

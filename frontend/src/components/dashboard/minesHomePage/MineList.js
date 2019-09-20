@@ -184,7 +184,6 @@ const applySortIndicator = (_columns, field, dir) =>
   }));
 
 export const MineList = (props) => {
-  console.log(props.isLoaded);
   return (
     <TableLoadingWrapper
       condition={props.isLoaded}
