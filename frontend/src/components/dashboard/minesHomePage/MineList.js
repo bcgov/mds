@@ -183,29 +183,32 @@ const applySortIndicator = (_columns, field, dir) =>
     sortOrder: column.sortField === field ? dir.concat("end") : false,
   }));
 
-export const MineList = (props) => (
-  <TableLoadingWrapper
-    condition={props.isLoaded}
-    tableHeaders={getTableHeaders(columns)}
-    isPaginated
-  >
-    <Table
-      rowClassName="fade-in"
-      align="left"
-      pagination={false}
-      columns={applySortIndicator(columns, props.sortField, props.sortDir)}
-      dataSource={transformRowData(
-        props.mines,
-        props.mineIds,
-        props.mineRegionHash,
-        props.mineTenureHash,
-        props.mineCommodityOptionsHash
-      )}
-      locale={{ emptyText: <NullScreen type="no-results" /> }}
-      onChange={handleTableChange(props.handleMineSearch)}
-    />
-  </TableLoadingWrapper>
-);
+export const MineList = (props) => {
+  console.log(props.isLoaded);
+  return (
+    <TableLoadingWrapper
+      condition={props.isLoaded}
+      tableHeaders={getTableHeaders(columns)}
+      isPaginated
+    >
+      <Table
+        rowClassName="fade-in"
+        align="left"
+        pagination={false}
+        columns={applySortIndicator(columns, props.sortField, props.sortDir)}
+        dataSource={transformRowData(
+          props.mines,
+          props.mineIds,
+          props.mineRegionHash,
+          props.mineTenureHash,
+          props.mineCommodityOptionsHash
+        )}
+        locale={{ emptyText: <NullScreen type="no-results" /> }}
+        onChange={handleTableChange(props.handleMineSearch)}
+      />
+    </TableLoadingWrapper>
+  );
+};
 
 MineList.propTypes = propTypes;
 MineList.defaultProps = defaultProps;
