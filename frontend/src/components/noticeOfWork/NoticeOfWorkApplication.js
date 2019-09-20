@@ -9,6 +9,8 @@ import NOWWorkPlan from "@/components/noticeOfWork/NOWWorkPlan";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import { fetchNoticeOfWorkApplication } from "@/actionCreators/noticeOfWorkActionCreator";
 import { getNoticeOfWork } from "@/selectors/noticeOfWorkSelectors";
+import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
+import * as Strings from "@/constants/strings";
 /**
  * @class NoticeOfWorkApplication - contains all information regarding to a notice of work application
  */
@@ -36,7 +38,7 @@ export class NoticeOfWorkApplication extends Component {
       <div className="page__content">
         <div className="inline-flex between">
           <div>
-            <h1>NoW Number: </h1>
+            <h1>NoW Number: {this.props.noticeOfWork.trackingnumber || Strings.EMPTY_FIELD}</h1>
             <p>
               The information below is a subset of all available data. Open the PDF for a
               comprehensive view.
@@ -54,10 +56,14 @@ export class NoticeOfWorkApplication extends Component {
           }
         >
           <Panel header={<h2>General Information</h2>} key="1">
-            {this.state.isLoaded && <NOWGeneralInfo noticeOfWork={this.props.noticeOfWork} />}
+            <LoadingWrapper condition={this.state.isLoaded}>
+              <NOWGeneralInfo noticeOfWork={this.props.noticeOfWork} />
+            </LoadingWrapper>
           </Panel>
           <Panel header={<h2>Work Plan</h2>} key="2">
-            {this.state.isLoaded && <NOWWorkPlan noticeOfWork={this.props.noticeOfWork} />}
+            <LoadingWrapper condition={this.state.isLoaded}>
+              <NOWWorkPlan noticeOfWork={this.props.noticeOfWork} />
+            </LoadingWrapper>
           </Panel>
         </Collapse>
       </div>
