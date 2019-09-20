@@ -25,7 +25,6 @@ const defaultProps = {
 };
 
 export const TableLoadingWrapper = (props) => {
-  console.log(props.condition);
   const renderColumns = props.tableHeaders.map((title) => ({
     title,
     dataIndex: title,

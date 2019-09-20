@@ -190,21 +190,23 @@ export const MineList = (props) => {
       tableHeaders={getTableHeaders(columns)}
       isPaginated
     >
-      <Table
-        rowClassName="fade-in"
-        align="left"
-        pagination={false}
-        columns={applySortIndicator(columns, props.sortField, props.sortDir)}
-        dataSource={transformRowData(
-          props.mines,
-          props.mineIds,
-          props.mineRegionHash,
-          props.mineTenureHash,
-          props.mineCommodityOptionsHash
-        )}
-        locale={{ emptyText: <NullScreen type="no-results" /> }}
-        onChange={handleTableChange(props.handleMineSearch)}
-      />
+      {props.isLoaded && (
+        <Table
+          rowClassName="fade-in"
+          align="left"
+          pagination={false}
+          columns={applySortIndicator(columns, props.sortField, props.sortDir)}
+          dataSource={transformRowData(
+            props.mines,
+            props.mineIds,
+            props.mineRegionHash,
+            props.mineTenureHash,
+            props.mineCommodityOptionsHash
+          )}
+          locale={{ emptyText: <NullScreen type="no-results" /> }}
+          onChange={handleTableChange(props.handleMineSearch)}
+        />
+      )}
     </TableLoadingWrapper>
   );
 };
