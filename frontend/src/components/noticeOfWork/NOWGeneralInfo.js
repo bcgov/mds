@@ -99,7 +99,7 @@ export class NOWGeneralInfo extends Component {
         <Divider />
         <div className="padding-large--sides">
           {this.props.noticeOfWork.contacts.length >= 1 ? (
-            <Row>
+            <Row gutter={16}>
               {this.props.noticeOfWork.contacts.map((contact, index) => {
                 // format address to use Address.js component, it will render data based on whats available
                 const address = {

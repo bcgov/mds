@@ -64,6 +64,7 @@ export class NoticeOfWorkTable extends Component {
   transformRowData = (applications) =>
     applications.map((application) => ({
       key: application.application_guid,
+      source: Strings.EMPTY_FIELD,
       mine_region: application.mine_region
         ? this.props.mineRegionHash[application.mine_region]
         : Strings.EMPTY_FIELD,
@@ -120,6 +121,11 @@ export class NoticeOfWorkTable extends Component {
   });
 
   columns = () => [
+    {
+      title: "Source",
+      dataIndex: "source",
+      render: (text) => <div title="Source">{text}</div>,
+    },
     {
       title: "Region",
       dataIndex: "mine_region",
