@@ -152,6 +152,19 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
+        "displayName": "Connect(IncidentsHomePage)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/dashboard/incidents"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
         "displayName": "Connect(Connect(authorizationGuard))",
         "type": [Function],
       }
