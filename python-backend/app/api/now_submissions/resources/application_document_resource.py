@@ -46,7 +46,8 @@ class ApplicationDocumentTokenResource(Resource, UserMixin, ErrorMixin):
         cache.set(
             DOWNLOAD_TOKEN(token_guid), {
                 'originating_system': originating_system,
-                'documenturl': document.documenturl
+                'documenturl': document.documenturl,
+                'filename': document.filename
             }, TIMEOUT_5_MINUTES)
 
         return {'token_guid': token_guid}
@@ -64,7 +65,8 @@ class ApplicationDocumentResource(Resource, UserMixin, ErrorMixin):
             raise BadRequest('Valid token requred for download')
 
         if document_info["originating_system"] == "VFCBC":
-            return VFCBCDownloadService.download(document_info["documenturl"])
+            return VFCBCDownloadService.download(document_info["documenturl"],
+                                                 document_info["filename"])
         if document_info["originating_system"] == "NROS":
             return NROSDownloadService.download(document_info["documenturl"])
 
