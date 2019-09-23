@@ -120,7 +120,6 @@ export class IncidentsHomePage extends Component {
         incident_status: this.params.incident_status,
         codes: this.params.codes,
         determination: this.params.determination,
-        ...this.params,
       },
     };
   }
