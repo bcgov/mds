@@ -247,12 +247,12 @@ MineMapLeaflet.defaultProps = defaultProps;
 
 export default scriptLoader(
   [],
-  // Load Esri Leaflet from CDN
+  // Load Esri Leaflet
   "https://unpkg.com/esri-leaflet@2.3.0/dist/esri-leaflet.js",
-  // Load Esri Leaflet Renderers from CDN
+  // Load Esri Leaflet Renderers
   "https://cdn.jsdelivr.net/leaflet.esri.renderers/2.0.2/esri-leaflet-renderers.js",
   // Load Leaflet Omnivore
   "https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.3.1/leaflet-omnivore.min.js",
   // Load Leaflet esri webMap
-  "https://cdn.jsdelivr.net/leaflet.esri.webmap/0.4.0/esri-leaflet-webmap.js"
+  "/vendor/leaflet/esri-leaflet-webmap/esri-leaflet-webmap.js"
 )(MineMapLeaflet);
