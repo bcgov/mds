@@ -123,6 +123,7 @@ export class VarianceHomePage extends Component {
         issue_date_before: this.params.issue_date_before,
         expiry_date_before: this.params.expiry_date_before,
         expiry_date_after: this.params.expiry_date_after,
+        ...this.params,
       },
     };
   }
@@ -234,20 +235,13 @@ export class VarianceHomePage extends Component {
 
   handleVariancePageChange = (page, per_page) => {
     this.setState({ variancesLoaded: false });
-    const params = { ...this.state.params, page, per_page };
-    this.props.history.push(router.VARIANCE_DASHBOARD.dynamicRoute(params));
-
-    console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%GOT HERE");
-    // return this.setState({
-    //   variancesLoaded: true,
-    //   params,
-    // });
-
-    return this.props.fetchVariances(params).then(() => {
-      this.setState({
+    return this.setState((prevState) => {
+      const params = { ...prevState.params, page, per_page };
+      this.props.history.push(router.VARIANCE_DASHBOARD.dynamicRoute(formatParams(params)));
+      return {
         variancesLoaded: true,
         params,
-      });
+      };
     });
   };
 

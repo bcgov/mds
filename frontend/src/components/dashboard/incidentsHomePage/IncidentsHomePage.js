@@ -120,6 +120,7 @@ export class IncidentsHomePage extends Component {
         incident_status: this.params.incident_status,
         codes: this.params.codes,
         determination: this.params.determination,
+        ...this.params,
       },
     };
   }
@@ -221,13 +222,13 @@ export class IncidentsHomePage extends Component {
 
   handleIncidentPageChange = (page, per_page) => {
     this.setState({ incidentsLoaded: false });
-    const params = { ...this.state.params, page, per_page };
-    this.props.history.push(router.INCIDENTS_DASHBOARD.dynamicRoute(params));
-    return this.props.fetchIncidents(params).then(() => {
-      this.setState({
+    return this.setState((prevState) => {
+      const params = { ...prevState.params, page, per_page };
+      this.props.history.push(router.INCIDENTS_DASHBOARD.dynamicRoute(formatParams(params)));
+      return {
         incidentsLoaded: true,
         params,
-      });
+      };
     });
   };
 
