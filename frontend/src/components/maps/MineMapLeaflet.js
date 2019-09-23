@@ -6,6 +6,7 @@ import scriptLoader from "react-async-script-loader";
 
 import ReactDOMServer from "react-dom/server";
 import PropTypes from "prop-types";
+import "esri-leaflet/dist/esri-leaflet";
 
 import "leaflet.markercluster";
 import "leaflet/dist/leaflet.css";
@@ -255,5 +256,5 @@ export default scriptLoader(
   // Load Leaflet Omnivore
   "https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.3.1/leaflet-omnivore.min.js",
   // Load Leaflet esri webMap
-  "/vendor/leaflet/esri-leaflet-webmap/esri-leaflet-webmap.js"
+  `${process.env.BASE_PATH}/vendor/leaflet/esri-leaflet-webmap/esri-leaflet-webmap.js`
 )(MineMapLeaflet);
