@@ -57,6 +57,7 @@ const leafletWMSTiledOptions = {
 
 // Override global Leaflet.WMS Layer request to return data
 // into an HTML format so that it renders properly in the iframe
+// Disabling Eslint because this is an extension of an internal method
 /* eslint-disable */
 LeafletWms.Source = LeafletWms.Source.extend({
   getFeatureInfoParams(point, layers) {
@@ -83,7 +84,7 @@ LeafletWms.Source = LeafletWms.Source.extend({
     return L.extend({}, wmsParams, infoParams);
   },
 });
-
+/* eslint-enable */
 const getFirstNationLayer = () => {
   const firstNationSource = LeafletWms.source(
     ENVIRONMENT.firstNationsLayerUrl,
@@ -161,7 +162,7 @@ class MineMapLeaflet extends Component {
     const layerList = this.webMap.layers;
     groupLayerList.forEach((groupLayer) => {
       layerList.forEach((layer) => {
-        if (layer.title == groupLayer) {
+        if (layer.title === groupLayer) {
           result[groupLayer] = layer.layer;
         }
       });
