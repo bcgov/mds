@@ -50,9 +50,7 @@ def test_post_mine_disturbance_success(test_client, db_session, auth_headers):
                                  json=test_data,
                                  headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
-    print(test_data)
-    print(post_data)
-    assert post_resp.status_code == 200
+    assert post_resp.status_code == 200, post_resp.response
     assert post_data['mine_tenure_type_code'] == test_data['mine_tenure_type_code']
     assert post_data['mine_type_detail'][0]['mine_disturbance_code'] == disturb[0]
     assert post_data['mine_type_detail'][0]['mine_commodity_code'] == None
@@ -67,6 +65,18 @@ def test_post_mine_type_missing_mine_tenure_type_code(test_client, db_session, a
                                  headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
     assert post_resp.status_code == 400
+
+
+def test_post_mine_type_detail_invalid_mine_disturbance_code(test_client, db_session, auth_headers):
+    mine_guid = MineFactory(mine_type=None).mine_guid
+
+    test_mine_type_data = {'mine_tenure_type_code': 'MIN', 'mine_disturbance_code': 'ABC'}
+    post_resp = test_client.post(f'/mines/{mine_guid}/mine-types',
+                                 json=test_mine_type_data,
+                                 headers=auth_headers['full_auth_header'])
+    post_data = json.loads(post_resp.data.decode())
+    assert post_resp.status_code == 400
+    assert post_data['message'] is not None
 
 
 @pytest.mark.skip(reason='Foreign Key constraint not enforced for unknown reason')

@@ -6,6 +6,9 @@ from sqlalchemy.schema import FetchedValue
 from ....utils.models_mixins import AuditMixin, Base
 from app.extensions import db
 
+from ..models.mine_disturbance_code import MineDisturbanceCode
+from ..models.mine_commodity_code import MineCommodityCode
+
 
 class MineTypeDetail(AuditMixin, Base):
     __tablename__ = 'mine_type_detail_xref'
@@ -31,10 +34,27 @@ class MineTypeDetail(AuditMixin, Base):
                mine_disturbance_code=None,
                mine_commodity_code=None,
                add_to_session=True):
+        if not mine_type.mine_tenure_type:
+            raise Exception('mine_tenure_type must be set before adding commodity and disturbances')
         if bool(mine_disturbance_code) == bool(mine_commodity_code):
             raise Exception(
                 'MineTypeDetail must have exactly one of mine_disturbance_code, mine_commodity_code'
             )
+
+        if mine_disturbance_code:
+            mine_disturbance = MineDisturbanceCode.query.get(mine_disturbance_code)
+            if mine_disturbance not in mine_type.mine_tenure_type.mine_disturbance_codes:
+                raise AssertionError(
+                    f'Mine Disturbance Code {mine_disturbance_code} not valid with Tenure Type {mine_type.mine_tenure_type_code}'
+                )
+
+        if mine_commodity_code:
+            mine_commodity = MineCommodityCode.query.get(mine_commodity_code)
+            if mine_commodity not in mine_type.mine_tenure_type.mine_commodity_codes:
+                raise AssertionError(
+                    f'Mine Commodity Code {mine_commodity_code} not valid with Tenure Type {mine_type.mine_tenure_type_code}'
+                )
+
         new_mine_type_detail = cls(
             mine_disturbance_code=mine_disturbance_code,
             mine_commodity_code=mine_commodity_code,

@@ -40,7 +40,8 @@ class MineTypeListResource(Resource, UserMixin):
         mine_commodity_code = data['mine_commodity_code'] or []
 
         mine_type = MineType.create(mine_guid, mine_tenure_type_code)
-        current_app.logger.debug(mine_type)
+        
+        current_app.logger.debug(mine_type.mine_tenure_type)
         for d_code in mine_disturbance_code:
             MineTypeDetail.create(mine_type, mine_disturbance_code=d_code)
 

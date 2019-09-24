@@ -19,7 +19,9 @@ class MineType(AuditMixin, Base):
                                        order_by='desc(MineTypeDetail.update_timestamp)',
                                        lazy='select')
 
-    mine_tenure_type = db.relationship('MineTenureTypeCode', backref='mine_types')
+    mine_tenure_type = db.relationship('MineTenureTypeCode',
+                                       backref='mine_types',
+                                       load_on_pending=True)
 
     def __repr__(self):
         return '<MineType %r>' % self.mine_type_guid
