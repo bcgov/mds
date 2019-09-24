@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Field } from "redux-form";
 import { Form, Divider, Button } from "antd";
-import { concat, reject } from "lodash";
+import { concat } from "lodash";
 import FileUpload from "@/components/common/FileUpload";
 import { MINE_REPORT_DOCUMENT } from "@/constants/API";
 import { ReportsUploadedFilesList } from "@/components/Forms/reports/ReportsUploadedFilesList";
 import LinkButton from "@/components/common/LinkButton";
+import { UploadedDocumentsTable } from "@/components/common/UploadedDocumentTable";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
@@ -27,26 +28,12 @@ export const ReportSubmissions = (props) => {
       <h5>Report Files</h5>
     </Divider>,
     props.mineReportSubmissions.length > 0 && (
-      <Form.Item label="Attached files" style={{ paddingBottom: "10px" }}>
-        <Field
-          id="ReportAttachedFiles"
-          name="ReportAttachedFiles"
-          component={ReportsUploadedFilesList}
-          files={props.mineReportSubmissions[props.mineReportSubmissions.length - 1].documents}
-          onRemoveFile={(fileToRemove) => {
-            let updatedSubmissions = props.mineReportSubmissions;
-            updatedSubmissions[updatedSubmissions.length - 1].documents = reject(
-              updatedSubmissions[updatedSubmissions.length - 1].documents,
-              (file) => fileToRemove.document_manager_guid === file.document_manager_guid
-            );
-            // If this is the a the first submission, and all files are removed, then remove the empty submission.
-            if (updatedSubmissions.length === 1 && updatedSubmissions[0].documents.length === 0) {
-              updatedSubmissions = [];
-            }
-            props.updateMineReportSubmissions(updatedSubmissions);
-          }}
-        />
-      </Form.Item>
+      <UploadedDocumentsTable
+        files={props.mineReportSubmissions[props.mineReportSubmissions.length - 1].documents}
+        showRemove={updateFilesClicked}
+        updateMineReportSubmissions={props.updateMineReportSubmissions}
+        mineReportSubmissions={props.mineReportSubmissions}
+      />
     ),
     (!hasSubmissions || updateFilesClicked) && (
       <Form.Item>
@@ -74,10 +61,10 @@ export const ReportSubmissions = (props) => {
         />
       </Form.Item>
     ),
-    hasSubmissions &&
-      !updateFilesClicked && [
+    hasSubmissions && !updateFilesClicked && (
+      <div className="inline-flex flex-center">
         <Button
-          className="full-mobile"
+          className="center-mobile "
           type="primary"
           onClick={() => {
             setUpdateFilesClicked(!updateFilesClicked);
@@ -93,7 +80,8 @@ export const ReportSubmissions = (props) => {
           }}
         >
           Update Files
-        </Button>,
+        </Button>
+        <br />
         <LinkButton
           key="file_history"
           onClick={() => {
@@ -101,8 +89,9 @@ export const ReportSubmissions = (props) => {
           }}
         >
           See file history
-        </LinkButton>,
-      ],
+        </LinkButton>
+      </div>
+    ),
   ];
 };
 
