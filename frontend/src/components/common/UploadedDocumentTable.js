@@ -82,7 +82,7 @@ const transformRowData = (
   mineReportSubmissions: mineReportSubmissions,
 });
 
-export const MineReportDocumentsTable = (props) => (
+export const UploadedDocumentsTable = (props) => (
   <Table
     align="left"
     pagination={false}
@@ -98,7 +98,7 @@ export const MineReportDocumentsTable = (props) => (
   />
 );
 
-MineReportDocumentsTable.propTypes = propTypes;
-MineReportDocumentsTable.defaultProps = defaultProps;
+UploadedDocumentsTable.propTypes = propTypes;
+UploadedDocumentsTable.defaultProps = defaultProps;
 
-export default MineReportDocumentsTable;
+export default UploadedDocumentsTable;
