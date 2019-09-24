@@ -3,7 +3,7 @@ import { PropTypes } from "prop-types";
 import { Table } from "antd";
 
 /**
- * @constant TableLoadingWrapper renders react children || or a skeleton loading view using the column headers
+ * @constant TableLoadingWrapper renders react children or a skeleton loading view using the column headers
  * of the tables and 9 loading rows
  *
  * condition = expecting a truthy value to render children, ie "isLoaded"
