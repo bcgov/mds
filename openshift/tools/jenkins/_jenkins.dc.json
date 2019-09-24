@@ -38,12 +38,12 @@
           "app": "jenkins"
         },
         "annotations": {
-          "volume.beta.kubernetes.io/storage-class": "gluster-file",
+          "volume.beta.kubernetes.io/storage-class": "gluster-block",
           "volume.beta.kubernetes.io/storage-provisioner": "kubernetes.io/glusterfs"
         }
       },
       "spec": {
-        "accessModes": ["ReadWriteMany"],
+        "accessModes": ["ReadWriteOnce"],
         "resources": {
           "requests": {
             "storage": "40Gi"
