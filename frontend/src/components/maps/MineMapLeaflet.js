@@ -97,9 +97,7 @@ const getFirstNationLayer = () => {
 const baseMapsArray = ["World Topographic Map", "World Imagery"];
 
 const admininstrativeBoundariesLayerArray = [
-  "Indian Reserves & Band Names",
   "BC Mine Regions",
-  "Crown Granted Mineral Claims",
   "Natural Resource Regions - WMS",
   "Land Status and Survey Parcels - PMBC",
   "Regional Districts - WMS",
@@ -108,6 +106,7 @@ const admininstrativeBoundariesLayerArray = [
 ];
 
 const tenureLayerArray = [
+  "Crown Granted Mineral Claims",
   "Coal Licence Applications",
   "Coal Leases",
   "Coal Licences",
@@ -117,7 +116,7 @@ const tenureLayerArray = [
   "Placer Claims",
 ];
 
-const roadLayerArray = ["Roads DRA", "Forest Tenure Roads", "NTS Contour Lines"];
+const roadLayerArray = ["Roads DRA", "Forest Tenure Roads"];
 
 class MineMapLeaflet extends Component {
   state = {
@@ -206,12 +205,18 @@ class MineMapLeaflet extends Component {
           "Mine Pins": this.markerClusterGroup,
         },
         Roads: this.getLayerGroupFromList(roadLayerArray),
+        "NTS Contour Lines": {
+          "NTS Contour Lines": this.getLayerGroupFromList(["NTS Contour Lines"]),
+        },
         "Administrative Boundaries": this.getLayerGroupFromList(
           admininstrativeBoundariesLayerArray
         ),
         "Mineral, Placer, and Coal Tenures": this.getLayerGroupFromList(tenureLayerArray),
         "First Nations": {
           "First Nations PIP Consultation Areas": getFirstNationLayer(),
+          "Indian Reserves & Band Names": this.getLayerGroupFromList([
+            "Indian Reserves & Band Names",
+          ]),
         },
       };
 
@@ -229,7 +234,7 @@ class MineMapLeaflet extends Component {
 
   createMap() {
     // Creates the base leaflet map object and overlays the ESRI WebMap on top
-    this.map = L.map("leaflet-map").setMaxZoom(20);
+    this.map = L.map("leaflet-map", { attributionControl: false }).setMaxZoom(20);
     this.webMap = window.L.esri.webMap(ENVIRONMENT.mapPortalId, { map: this.map });
   }
 
