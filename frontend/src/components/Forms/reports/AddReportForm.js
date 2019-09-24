@@ -210,6 +210,15 @@ export class AddReportForm extends Component {
                 component={renderConfig.DATE}
               />
             </Form.Item>
+            <Form.Item>
+              <Field
+                id="revision_status"
+                name="revision_status"
+                label="Revisions"
+                placeholder=""
+                component={renderConfig.SELECT}
+              />
+            </Form.Item>
             <ReportSubmissions
               mineGuid={this.props.mineGuid}
               mineReportSubmissions={this.state.mineReportSubmissions}
