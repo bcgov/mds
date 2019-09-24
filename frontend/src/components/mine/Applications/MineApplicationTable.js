@@ -34,12 +34,14 @@ const columns = [
     title: "Application No.",
     dataIndex: "applicationNo",
     key: "applicationNo",
+    width: 150,
     render: (text) => <div title="Application No.">{text}</div>,
   },
   {
     title: "Status",
     dataIndex: "status",
     key: "status",
+    width: 150,
     render: (text, record) => {
       const status = record.applicationStatusOptions.find((item) => item.value === text);
       return <div title="Status">{status && status.label}</div>;
@@ -49,6 +51,7 @@ const columns = [
     title: "Received Date",
     dataIndex: "receivedDate",
     key: "receivedDate",
+    width: 150,
     render: (text) => <div title="Received Date">{text}</div>,
   },
 
@@ -56,6 +59,7 @@ const columns = [
     title: "Description",
     dataIndex: "description",
     key: "description",
+    width: 150,
     render: (text) => (
       <div title="Description">
         <p className="wrapped-text" style={{ maxWidth: "800px" }}>
@@ -69,6 +73,7 @@ const columns = [
     dataIndex: "applicationEdit",
     key: "applicationEdit",
     align: "right",
+    width: 150,
     render: (text, record) => (
       <AuthorizationWrapper permission={Permission.EDIT_PERMITS} isMajorMine={text.isMajorMine}>
         <Button
