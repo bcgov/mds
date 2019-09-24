@@ -5,7 +5,7 @@ import { Form, Divider, Button } from "antd";
 import { concat } from "lodash";
 import FileUpload from "@/components/common/FileUpload";
 import { MINE_REPORT_DOCUMENT } from "@/constants/API";
-import { MineReportDocumentsTable } from "@/components/Forms/reports/MineReportDocumentTable";
+import { UploadedDocumentsTable } from "@/components/common/UploadedDocumentTable";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
@@ -25,7 +25,7 @@ export const ReportSubmissions = (props) => {
       <h5>Report Files</h5>
     </Divider>,
     props.mineReportSubmissions.length > 0 && (
-      <MineReportDocumentsTable
+      <UploadedDocumentsTable
         files={props.mineReportSubmissions[props.mineReportSubmissions.length - 1].documents}
         showRemove={updateFilesClicked}
         updateMineReportSubmissions={props.updateMineReportSubmissions}
