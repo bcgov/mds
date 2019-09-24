@@ -25,24 +25,28 @@ exports[`MineApplicationTable renders properly 1`] = `
           "key": "applicationNo",
           "render": [Function],
           "title": "Application No.",
+          "width": 150,
         },
         Object {
           "dataIndex": "status",
           "key": "status",
           "render": [Function],
           "title": "Status",
+          "width": 150,
         },
         Object {
           "dataIndex": "receivedDate",
           "key": "receivedDate",
           "render": [Function],
           "title": "Received Date",
+          "width": 150,
         },
         Object {
           "dataIndex": "description",
           "key": "description",
           "render": [Function],
           "title": "Description",
+          "width": 150,
         },
         Object {
           "align": "right",
@@ -50,6 +54,7 @@ exports[`MineApplicationTable renders properly 1`] = `
           "key": "applicationEdit",
           "render": [Function],
           "title": "",
+          "width": 150,
         },
       ]
     }
