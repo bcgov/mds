@@ -33,6 +33,7 @@ import {
 import { getVariances, getVariancePageData } from "@/selectors/varianceSelectors";
 import { VarianceTable } from "@/components/dashboard/customHomePage/VarianceTable";
 import * as router from "@/constants/routes";
+import * as Strings from "@/constants/strings";
 import { fetchInspectors } from "@/actionCreators/partiesActionCreator";
 import VarianceSearch from "./VarianceSearch";
 import { formatParamStringToArray } from "@/utils/helpers";
@@ -108,6 +109,8 @@ export class VarianceHomePage extends Component {
     this.state = {
       variancesLoaded: false,
       params: {
+        page: Strings.DEFAULT_PAGE,
+        per_page: Strings.DEFAULT_PER_PAGE,
         compliance_code: formatParamStringToArray(this.params.compliance_code),
         variance_application_status_code: formatParamStringToArray(
           this.params.variance_application_status_code
@@ -119,15 +122,22 @@ export class VarianceHomePage extends Component {
         issue_date_before: this.params.issue_date_before,
         expiry_date_before: this.params.expiry_date_before,
         expiry_date_after: this.params.expiry_date_after,
+        ...this.params,
       },
     };
   }
 
   componentDidMount() {
     const params = this.props.location.search;
-
-    this.renderDataFromURL(params);
-
+    if (params) {
+      this.renderDataFromURL(params);
+    } else {
+      const defaultParams = {
+        page: Strings.DEFAULT_PAGE,
+        per_page: Strings.DEFAULT_PER_PAGE,
+      };
+      this.props.history.push(router.VARIANCE_DASHBOARD.dynamicRoute(defaultParams));
+    }
     this.props.fetchVariances(this.state.params).then(() => {
       this.setState({ variancesLoaded: true });
     });
@@ -206,30 +216,31 @@ export class VarianceHomePage extends Component {
   handleVarianceSearch = (searchParams, clear = false) => {
     const formattedSearchParams = formatParams(searchParams);
     const persistedParams = clear ? {} : formatParams(this.state.params);
-    const updatedParams = {
-      // Start from existing state
-      ...persistedParams,
-      // Overwrite prev params with any newly provided search params
-      ...formattedSearchParams,
-      // Reset page number
-      page: String.DEFAULT_PAGE,
-      // Retain per_page if present
-      per_page: persistedParams.per_page
-        ? persistedParams.params.per_page
-        : String.DEFAULT_PER_PAGE,
-    };
-    this.setState({ params: updatedParams });
-    this.props.history.push(router.VARIANCE_DASHBOARD.dynamicRoute(updatedParams));
+    this.setState((prevState) => {
+      const updatedParams = {
+        // Start from existing state
+        ...persistedParams,
+        // Overwrite prev params with any newly provided search params
+        ...formattedSearchParams,
+        // Reset page number
+        page: prevState.params.page ? prevState.params.page : Strings.DEFAULT_PAGE,
+        // Retain per_page if present
+        per_page: prevState.params.per_page ? prevState.params.per_page : Strings.DEFAULT_PER_PAGE,
+      };
+      this.props.history.push(router.VARIANCE_DASHBOARD.dynamicRoute(updatedParams));
+      return { params: updatedParams };
+    });
   };
 
   handleVariancePageChange = (page, per_page) => {
     this.setState({ variancesLoaded: false });
-    const params = { ...this.state.params, page, per_page };
-    return this.props.fetchVariances(params).then(() => {
-      this.setState({
+    return this.setState((prevState) => {
+      const params = { ...prevState.params, page, per_page };
+      this.props.history.push(router.VARIANCE_DASHBOARD.dynamicRoute(formatParams(params)));
+      return {
         variancesLoaded: true,
         params,
-      });
+      };
     });
   };
 

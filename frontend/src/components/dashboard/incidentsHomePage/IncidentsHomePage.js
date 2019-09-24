@@ -36,6 +36,7 @@ import IncidentsSearch from "./IncidentsSearch";
 import { formatParamStringToArray } from "@/utils/helpers";
 import * as ModalContent from "@/constants/modalContent";
 import * as FORM from "@/constants/forms";
+import * as Strings from "@/constants/strings";
 
 /**
  * @class Incidents page is a landing page for all incidents in the system
@@ -109,6 +110,8 @@ export class IncidentsHomePage extends Component {
     this.state = {
       incidentsLoaded: false,
       params: {
+        page: Strings.DEFAULT_PAGE,
+        per_page: Strings.DEFAULT_PER_PAGE,
         region: formatParamStringToArray(this.params.region),
         major: this.params.major,
         search: this.params.search,
@@ -116,13 +119,22 @@ export class IncidentsHomePage extends Component {
         incident_status: this.params.incident_status,
         codes: this.params.codes,
         determination: this.params.determination,
+        ...this.params,
       },
     };
   }
 
   componentDidMount() {
     const params = this.props.location.search;
-    this.renderDataFromURL(params);
+    if (params) {
+      this.renderDataFromURL(params);
+    } else {
+      const defaultParams = {
+        page: Strings.DEFAULT_PAGE,
+        per_page: Strings.DEFAULT_PER_PAGE,
+      };
+      this.props.history.push(router.INCIDENTS_DASHBOARD.dynamicRoute(defaultParams));
+    }
     this.props.fetchIncidents(this.state.params).then(() => {
       this.setState({ incidentsLoaded: true });
     });
@@ -198,9 +210,9 @@ export class IncidentsHomePage extends Component {
         // Overwrite prev params with any newly provided search params
         ...formattedSearchParams,
         // Reset page number
-        page: prevState.params.page ? prevState.params.page : String.DEFAULT_PAGE,
+        page: prevState.params.page ? prevState.params.page : Strings.DEFAULT_PAGE,
         // Retain per_page if present
-        per_page: prevState.params.per_page ? prevState.params.per_page : String.DEFAULT_PER_PAGE,
+        per_page: prevState.params.per_page ? prevState.params.per_page : Strings.DEFAULT_PER_PAGE,
       };
       this.props.history.push(router.INCIDENTS_DASHBOARD.dynamicRoute(updatedParams));
       return { params: updatedParams };
@@ -209,13 +221,13 @@ export class IncidentsHomePage extends Component {
 
   handleIncidentPageChange = (page, per_page) => {
     this.setState({ incidentsLoaded: false });
-    const params = { ...this.state.params, page, per_page };
-    this.props.history.push(router.INCIDENTS_DASHBOARD.dynamicRoute(params));
-    return this.props.fetchIncidents(params).then(() => {
-      this.setState({
+    return this.setState((prevState) => {
+      const params = { ...prevState.params, page, per_page };
+      this.props.history.push(router.INCIDENTS_DASHBOARD.dynamicRoute(formatParams(params)));
+      return {
         incidentsLoaded: true,
         params,
-      });
+      };
     });
   };
 
