@@ -6,11 +6,13 @@ import { concat, reject } from "lodash";
 import FileUpload from "@/components/common/FileUpload";
 import { MINE_REPORT_DOCUMENT } from "@/constants/API";
 import { ReportsUploadedFilesList } from "@/components/Forms/reports/ReportsUploadedFilesList";
+import LinkButton from "@/components/common/LinkButton";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   mineReportSubmissions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
   updateMineReportSubmissions: PropTypes.func.isRequired,
+  toggleReportHistory: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -72,26 +74,35 @@ export const ReportSubmissions = (props) => {
         />
       </Form.Item>
     ),
-    hasSubmissions && !updateFilesClicked && (
-      <Button
-        className="full-mobile"
-        type="primary"
-        onClick={() => {
-          setUpdateFilesClicked(!updateFilesClicked);
-          props.updateMineReportSubmissions([
-            ...props.mineReportSubmissions,
-            {
-              documents:
-                props.mineReportSubmissions.length > 0
-                  ? props.mineReportSubmissions[props.mineReportSubmissions.length - 1].documents
-                  : [],
-            },
-          ]);
-        }}
-      >
-        Update Files
-      </Button>
-    ),
+    hasSubmissions &&
+      !updateFilesClicked && [
+        <Button
+          className="full-mobile"
+          type="primary"
+          onClick={() => {
+            setUpdateFilesClicked(!updateFilesClicked);
+            props.updateMineReportSubmissions([
+              ...props.mineReportSubmissions,
+              {
+                documents:
+                  props.mineReportSubmissions.length > 0
+                    ? props.mineReportSubmissions[props.mineReportSubmissions.length - 1].documents
+                    : [],
+              },
+            ]);
+          }}
+        >
+          Update Files
+        </Button>,
+        <LinkButton
+          key="file_history"
+          onClick={() => {
+            props.toggleReportHistory();
+          }}
+        >
+          See file history
+        </LinkButton>,
+      ],
   ];
 };
 
