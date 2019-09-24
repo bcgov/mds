@@ -64,6 +64,7 @@ export class MineReportInfo extends Component {
     mine: {},
     reportFilterParams: initialSearchValues,
     filteredReports: [],
+    disableAddReport: false,
   };
 
   componentWillMount = () => {
@@ -110,14 +111,19 @@ export class MineReportInfo extends Component {
   };
 
   handleAddReport = (values) => {
-    this.props
-      .createMineReport(this.props.mineGuid, values)
-      .then(() => this.props.closeModal())
-      .then(() =>
-        this.props.fetchMineReports(this.props.mineGuid).then(() => {
-          this.setFilteredReports();
-        })
-      );
+    if (!this.state.disableAddReport) {
+      this.setState({ disableAddReport: true });
+      this.props
+        .createMineReport(this.props.mineGuid, values)
+        .then(this.setState({ disableAddReport: false }))
+        .then(() => this.props.closeModal())
+        .then(() =>
+          this.props.fetchMineReports(this.props.mineGuid).then(() => {
+            this.setFilteredReports();
+          })
+        )
+        .finally(this.setState({ disableAddReport: false }));
+    }
   };
 
   handleRemoveReport = (reportGuid) => {
