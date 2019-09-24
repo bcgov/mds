@@ -129,6 +129,7 @@ export class NoticeOfWorkHomePage extends Component {
         <div className="landing-page__header">
           <div>
             <h1>Browse Notice of Work</h1>
+            <p>Applications shown are from NROS and vFCBC only</p>
           </div>
         </div>
         <div className="landing-page__content">

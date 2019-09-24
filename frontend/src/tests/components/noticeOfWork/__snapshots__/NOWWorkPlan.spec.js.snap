@@ -100,11 +100,6 @@ exports[`NOWWorkPlan renders properly 1`] = `
               "effectedArea": "N/A",
             },
             Object {
-              "activity": "Cut Lines and Induced Polarization Survey",
-              "cost": "N/A",
-              "effectedArea": "N/A",
-            },
-            Object {
               "activity": "Exploration Surface Drilling",
               "cost": "N/A",
               "effectedArea": "N/A",
@@ -115,27 +110,7 @@ exports[`NOWWorkPlan renders properly 1`] = `
               "effectedArea": "N/A",
             },
             Object {
-              "activity": "Placer Operations",
-              "cost": "N/A",
-              "effectedArea": "N/A",
-            },
-            Object {
-              "activity": "Sand and Gravel / Quarry Operations",
-              "cost": "N/A",
-              "effectedArea": "N/A",
-            },
-            Object {
               "activity": "Settling Ponds",
-              "cost": "N/A",
-              "effectedArea": "N/A",
-            },
-            Object {
-              "activity": "Surface Bulk Sample",
-              "cost": "N/A",
-              "effectedArea": "N/A",
-            },
-            Object {
-              "activity": "Underground Exploration",
               "cost": "N/A",
               "effectedArea": "N/A",
             },
@@ -653,7 +628,7 @@ exports[`NOWWorkPlan renders properly 1`] = `
         loading={false}
         locale={
           Object {
-            "emptyText": "There are no documents associated with this Notice of Work",
+            "emptyText": "There are no spacial files associated with this Notice of Work",
           }
         }
         pagination={false}

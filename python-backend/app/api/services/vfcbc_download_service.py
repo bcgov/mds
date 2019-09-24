@@ -43,7 +43,7 @@ def vfcbc_login(download_session):
 
 
 class VFCBCDownloadService():
-    def download(file_url):
+    def download(file_url, file_name):
         download_session = requests.session()
 
         _vfcbc_cookies = cache.get(VFCBC_COOKIES)
@@ -59,7 +59,6 @@ class VFCBCDownloadService():
             stream_with_context(file_download_req.iter_content(chunk_size=2048)))
 
         file_download_resp.headers['Content-Type'] = file_download_req.headers['Content-Type']
-        file_download_resp.headers['Content-Disposition'] = file_download_req.headers[
-            'Content-Disposition']
+        file_download_resp.headers['Content-Disposition'] = f'attachment; filename="{file_name}"'
 
         return file_download_resp
