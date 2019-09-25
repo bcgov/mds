@@ -139,6 +139,7 @@ exports[`NavBar renders properly 1`] = `
           >
             <button
               className="menu__btn"
+              id=""
               type="button"
             >
               <Icon

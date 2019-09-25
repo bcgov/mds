@@ -58,11 +58,18 @@ const defaultProps = {
 };
 
 export class MinePermitInfo extends Component {
-  state = { expandedRowKeys: [], modifiedPermits: false, modifiedPermitGuid: null };
+  state = {
+    expandedRowKeys: [],
+    modifiedPermits: false,
+    modifiedPermitGuid: null,
+    isLoaded: false,
+  };
 
   componentWillMount = () => {
     const { id } = this.props.match.params;
-    this.props.fetchPermits(id);
+    this.props.fetchPermits(id).then(() => {
+      this.setState({ isLoaded: true });
+    });
   };
 
   componentWillReceiveProps = (nextProps) => {
@@ -286,19 +293,18 @@ export class MinePermitInfo extends Component {
           </div>
         </div>
         <br />
-        {this.props.permits && (
-          <MinePermitTable
-            permits={this.props.permits}
-            partyRelationships={this.props.partyRelationships}
-            major_mine_ind={mine.major_mine_ind}
-            openEditPermitModal={this.openEditPermitModal}
-            openEditAmendmentModal={this.openEditAmendmentModal}
-            openAddPermitAmendmentModal={this.openAddPermitAmendmentModal}
-            openAddAmalgamatedPermitModal={this.openAddAmalgamatedPermitModal}
-            expandedRowKeys={this.state.expandedRowKeys}
-            onExpand={this.onExpand}
-          />
-        )}
+        <MinePermitTable
+          isLoaded={this.state.isLoaded}
+          permits={this.props.permits}
+          partyRelationships={this.props.partyRelationships}
+          major_mine_ind={mine.major_mine_ind}
+          openEditPermitModal={this.openEditPermitModal}
+          openEditAmendmentModal={this.openEditAmendmentModal}
+          openAddPermitAmendmentModal={this.openAddPermitAmendmentModal}
+          openAddAmalgamatedPermitModal={this.openAddAmalgamatedPermitModal}
+          expandedRowKeys={this.state.expandedRowKeys}
+          onExpand={this.onExpand}
+        />
       </div>
     );
   }

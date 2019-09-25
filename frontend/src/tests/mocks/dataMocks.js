@@ -900,7 +900,6 @@ export const PERMITTEE = {
   },
 };
 
-
 export const MINE_TSF_REQUIRED_REPORTS_RESPONSE = {
   records: [
     {
