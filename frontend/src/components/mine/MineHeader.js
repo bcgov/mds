@@ -61,7 +61,6 @@ export class MineHeader extends Component {
         {
           ...value,
           mine_status: mineStatus,
-          mineType: this.props.mine.mine_type,
         },
         value.mine_name
       )
