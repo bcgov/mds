@@ -6,7 +6,6 @@ import scriptLoader from "react-async-script-loader";
 
 import ReactDOMServer from "react-dom/server";
 import PropTypes from "prop-types";
-import "esri-leaflet/dist/esri-leaflet";
 
 import "leaflet.markercluster";
 import "leaflet/dist/leaflet.css";

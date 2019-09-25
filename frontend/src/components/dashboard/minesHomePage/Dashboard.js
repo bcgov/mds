@@ -46,7 +46,7 @@ import SearchCoordinatesForm from "@/components/Forms/SearchCoordinatesForm";
 import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as router from "@/constants/routes";
-import Loading from "@/components/common/Loading";
+import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import MineMap from "@/components/maps/MineMap";
 import MineMapLeaflet from "@/components/maps/MineMapLeaflet";
 import * as Strings from "@/constants/strings";
@@ -110,7 +110,8 @@ export class Dashboard extends Component {
     super(props);
     this.handleMineSearchDebounced = debounce(this.handleMineSearch, 1000);
     this.state = {
-      mineList: false,
+      isListLoaded: false,
+      isMapLoaded: false,
       lat: Number(Strings.DEFAULT_LAT),
       long: Number(Strings.DEFAULT_LONG),
       zoom: Strings.DEFAULT_ZOOM,
@@ -119,13 +120,12 @@ export class Dashboard extends Component {
       params: {
         page: Strings.DEFAULT_PAGE,
         per_page: Strings.DEFAULT_PER_PAGE,
-        major: [],
-        tsf: [],
         status: [],
         region: [],
         tenure: [],
         commodity: [],
         search: [],
+        ...this.params,
       },
     };
   }
@@ -156,7 +156,7 @@ export class Dashboard extends Component {
     const locationChanged = nextProps.location !== this.props.location;
     if (locationChanged) {
       const params = nextProps.location.search;
-      this.setState({ mineList: false });
+      this.setState({ isListLoaded: false, isMapLoaded: false });
       this.renderDataFromURL(params);
     }
   }
@@ -201,11 +201,11 @@ export class Dashboard extends Component {
     });
     if (remainingParams.map) {
       this.props.fetchMineRecordsForMap().then(() => {
-        this.setState({ mineList: true });
+        this.setState({ isMapLoaded: true });
       });
     } else {
       this.props.fetchMineRecords(params).then(() => {
-        this.setState({ mineList: true });
+        this.setState({ isListLoaded: true });
       });
     }
 
@@ -282,7 +282,8 @@ export class Dashboard extends Component {
   handleTabChange = (key) => {
     const { page, per_page, search } = this.state.params;
     this.setState({
-      mineList: false,
+      isListLoaded: false,
+      isMapLoaded: false,
       showCoordinates: false,
       mineName: "",
       lat: Number(Strings.DEFAULT_LAT),
@@ -346,24 +347,26 @@ export class Dashboard extends Component {
   renderCorrectView() {
     const { search, map, page, per_page } = this.state.params;
     const isMap = map ? "map" : "list";
-    if (this.state.mineList) {
-      return (
-        <div>
-          <Tabs
-            activeKey={isMap}
-            size="large"
-            animated={{ inkBar: true, tabPane: false }}
-            onTabClick={this.handleTabChange}
-          >
-            <TabPane tab="List" key="list">
-              <MineSearch
-                initialValues={this.state.params}
-                {...this.props}
-                handleMineSearch={this.handleMineSearchDebounced}
-                searchValue={search}
-              />
+    return (
+      <div>
+        <Tabs
+          activeKey={isMap}
+          size="large"
+          animated={{ inkBar: true, tabPane: false }}
+          onTabClick={this.handleTabChange}
+        >
+          <TabPane tab="List" key="list">
+            <MineSearch
+              initialValues={this.state.params}
+              {...this.props}
+              handleMineSearch={this.handleMineSearchDebounced}
+              searchValue={search}
+            />
+
+            <div>
               <div className="tab__content">
                 <MineList
+                  isLoaded={this.state.isListLoaded}
                   mines={this.props.mines}
                   mineIds={this.props.mineIds}
                   mineRegionHash={this.props.mineRegionHash}
@@ -382,8 +385,10 @@ export class Dashboard extends Component {
                   itemsPerPage={Number(per_page)}
                 />
               </div>
-            </TabPane>
-            <TabPane tab="Map" key="map">
+            </div>
+          </TabPane>
+          <TabPane tab="Map" key="map">
+            <div>
               <div className="landing-page__content--search">
                 <Col md={10} xs={24}>
                   <MineSearch
@@ -433,32 +438,33 @@ export class Dashboard extends Component {
                   </div>
                 </div>
               )}
-              <Element name="mapElement">
-                <div>
-                  {switchToLeaflet ? (
-                    <MineMapLeaflet
-                      lat={this.state.lat}
-                      long={this.state.long}
-                      zoom={this.state.zoom}
-                      minesBasicInfo={this.props.pageData.mines}
-                      mineName={this.state.mineName}
-                      mines={this.props.mines}
-                      fetchMineRecordById={this.props.fetchMineRecordById}
-                      transformedMineTypes={this.props.transformedMineTypes}
-                      mineCommodityOptionsHash={this.props.mineCommodityOptionsHash}
-                      history={this.props.history}
-                    />
-                  ) : (
-                    <MineMap {...this.state} />
-                  )}
-                </div>
-              </Element>
-            </TabPane>
-          </Tabs>
-        </div>
-      );
-    }
-    return <Loading />;
+              <LoadingWrapper condition={this.state.isMapLoaded}>
+                <Element name="mapElement">
+                  <div>
+                    {switchToLeaflet ? (
+                      <MineMapLeaflet
+                        lat={this.state.lat}
+                        long={this.state.long}
+                        zoom={this.state.zoom}
+                        minesBasicInfo={this.props.pageData.mines}
+                        mineName={this.state.mineName}
+                        mines={this.props.mines}
+                        fetchMineRecordById={this.props.fetchMineRecordById}
+                        transformedMineTypes={this.props.transformedMineTypes}
+                        mineCommodityOptionsHash={this.props.mineCommodityOptionsHash}
+                        history={this.props.history}
+                      />
+                    ) : (
+                      <MineMap {...this.state} />
+                    )}
+                  </div>
+                </Element>
+              </LoadingWrapper>
+            </div>
+          </TabPane>
+        </Tabs>
+      </div>
+    );
   }
 
   render() {

@@ -7,7 +7,7 @@ const dispatchProps = {};
 const props = {};
 
 const setupDispatchProps = () => {
-  dispatchProps.fetchPermits = jest.fn();
+  dispatchProps.fetchPermits = jest.fn(() => Promise.resolve());
   dispatchProps.fetchPermitStatusOptions = jest.fn();
 };
 

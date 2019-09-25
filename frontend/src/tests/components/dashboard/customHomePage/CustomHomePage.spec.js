@@ -7,20 +7,14 @@ const dispatchProps = {};
 const reducerProps = {};
 
 const setupDispatchProps = () => {
-  dispatchProps.fetchSubscribedMinesByUser = jest.fn();
+  dispatchProps.fetchSubscribedMinesByUser = jest.fn(() => Promise.resolve());
   dispatchProps.fetchMineTenureTypes = jest.fn();
-  dispatchProps.fetchVarianceDocumentCategoryOptions = jest.fn();
-  dispatchProps.addDocumentToVariance = jest.fn();
-  dispatchProps.updateVariance = jest.fn();
   dispatchProps.fetchMineComplianceCodes = jest.fn();
   dispatchProps.fetchRegionOptions = jest.fn();
   dispatchProps.openModal = jest.fn();
   dispatchProps.closeModal = jest.fn();
-  dispatchProps.fetchInspectors = jest.fn();
   dispatchProps.fetchMineCommodityOptions = jest.fn();
-  dispatchProps.fetchVarianceStatusOptions = jest.fn();
   dispatchProps.unSubscribe = jest.fn();
-  dispatchProps.fetchVariances = jest.fn(() => Promise.resolve());
 };
 
 const setupReducerProps = () => {
