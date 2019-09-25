@@ -939,25 +939,123 @@ exports[`Dashboard renders properly 1`] = `
                 name="mapElement"
               >
                 <div>
-                  <MineMap
-                    isListLoaded={false}
-                    isMapLoaded={false}
-                    lat={53.7267}
-                    long={-127.6476}
-                    mine={null}
-                    mineName={null}
-                    params={
+                  <ScriptLoader
+                    history={
                       Object {
-                        "commodity": Array [],
-                        "major": undefined,
-                        "region": Array [],
-                        "search": undefined,
-                        "status": Array [],
-                        "tenure": Array [],
-                        "tsf": undefined,
+                        "location": Object {},
+                        "push": [MockFunction],
                       }
                     }
-                    showCoordinates={false}
+                    lat={53.7267}
+                    long={-127.6476}
+                    mineName={null}
+                    mines={
+                      Object {
+                        "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
+                          "major_mine_ind": true,
+                          "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                          "mine_location": Object {
+                            "latitude": null,
+                            "longitude": null,
+                          },
+                          "mine_name": "mine3",
+                          "mine_no": "BLAH9091",
+                          "mine_permit": Array [],
+                          "mine_region": "NE",
+                          "mine_status": Object {
+                            "effective_date": "2018-10-16",
+                            "expiry_date": null,
+                            "status_labels": Array [
+                              "Closed",
+                              "Care & Maintenance",
+                            ],
+                            "statusvalue": Array [
+                              "CLD",
+                              "CM",
+                            ],
+                          },
+                          "mine_tailings_storage_facilities": Array [
+                            Object {
+                              "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                              "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
+                              "mine_tailings_storage_facility_name": "MockTSF",
+                            },
+                          ],
+                          "mine_type": Array [
+                            Object {
+                              "mine_tenure_type_code": "PLR",
+                            },
+                            Object {
+                              "mine_tenure_type_code": "MIN",
+                            },
+                          ],
+                          "verified_status": Object {
+                            "healthy_ind": null,
+                            "mine_guid": null,
+                            "mine_name": null,
+                            "verifying_timestamp": null,
+                            "verifying_user": null,
+                          },
+                        },
+                        "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
+                          "major_mine_ind": true,
+                          "mine_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+                          "mine_location": Object {
+                            "latitude": null,
+                            "longitude": null,
+                          },
+                          "mine_name": "mine2",
+                          "mine_no": "BLAH9091",
+                          "mine_permit": Array [
+                            Object {
+                              "permit_guid": "2ec66cff-dbf0-4e4b-b9b8-9c7740ba8c81",
+                              "permit_no": "KNaaWwVdiJ40",
+                            },
+                            Object {
+                              "permit_guid": "1877097f-bf9d-40c8-a5fa-53d9a79623c9",
+                              "permit_no": "xfM0c0ZKEw7B",
+                            },
+                          ],
+                          "mine_region": "NE",
+                          "mine_status": Object {
+                            "effective_date": "2018-10-16",
+                            "expiry_date": null,
+                            "status_labels": Array [
+                              "Closed",
+                              "Care & Maintenance",
+                            ],
+                            "statusvalue": Array [
+                              "CLD",
+                              "CM",
+                            ],
+                          },
+                          "mine_tailings_storage_facilities": Array [
+                            Object {
+                              "mine_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+                              "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f34",
+                              "mine_tailings_storage_facility_name": "MockTSF1",
+                            },
+                          ],
+                          "mine_type": Array [
+                            Object {
+                              "mine_tenure_type_code": "PLR",
+                            },
+                            Object {
+                              "mine_tenure_type_code": "MIN",
+                            },
+                          ],
+                          "verified_status": Object {
+                            "healthy_ind": true,
+                            "mine_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+                            "mine_name": "mine2",
+                            "verifying_timestamp": null,
+                            "verifying_user": null,
+                          },
+                        },
+                      }
+                    }
+                    minesBasicInfo={Array []}
+                    onScriptLoaded={[Function]}
                     zoom={6}
                   />
                 </div>
