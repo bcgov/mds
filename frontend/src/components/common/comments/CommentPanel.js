@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Spin, Comment, List, Icon } from "antd";
+import { Spin, List, Icon } from "antd";
 
 import CommentEditor from "./CommentEditor";
 
@@ -19,6 +19,21 @@ const defaultProps = {
   onSubmit: () => {},
 };
 
+const Comment = (props) => (
+  <React.Fragment>
+    <div className="speech-bubble">
+      {props.content}
+      <div class="speech-bubble-arrow"></div>
+    </div>
+    <div className="ant-comment-content padding-md--bottom">
+      <div className="ant-comment-content-author flex-end">
+        <span className="ant-comment-content-author-name">{props.author}</span>
+        <span className="ant-comment-content-author-time">{props.datetime}</span>
+      </div>
+    </div>
+  </React.Fragment>
+);
+
 const CommentPanel = (props) => (
   <React.Fragment>
     {!props.loading ? (
@@ -29,12 +44,7 @@ const CommentPanel = (props) => (
         locale={{ emptyText: <Icon /> }}
         renderItem={(item) => (
           <li key={item.key}>
-            <Comment
-              actions={item.actions}
-              author={item.author}
-              content={item.content}
-              datetime={item.datetime}
-            />
+            <Comment author={item.author} datetime={item.datetime} content={item.content} />
           </li>
         )}
       />

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Icon, Divider, Button } from "antd";
 import LinkButton from "@/components/common/LinkButton";
 import CommentPanel from "@/components/common/comments/CommentPanel";
-import { formatDateTime } from "@/utils/helpers";
+import { formatDate } from "@/utils/helpers";
 
 const propTypes = {
   toggleReportHistory: PropTypes.func.isRequired,
@@ -27,6 +27,10 @@ export const ReportHistory = (props) => {
         <div>
           <h5>{submission.submission_date}</h5>
           <Divider />
+          <div className="ant-col ant-form-item-label">
+            <label>Revision Status</label>
+          </div>
+          <br />
           {submission.mine_report_submission_status_code}
           <br />
           {submission.mine_report_submission_guid}
@@ -38,7 +42,7 @@ export const ReportHistory = (props) => {
               author: comment.comment_user,
               content: comment.report_comment,
               actions: actionBuilder(comment.comment_visibility_ind),
-              datetime: formatDateTime(comment.comment_datetime),
+              datetime: formatDate(comment.comment_datetime),
             }))}
           />
           {submission.documents.map((document) => (
