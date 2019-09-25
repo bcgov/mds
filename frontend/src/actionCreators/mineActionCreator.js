@@ -129,8 +129,6 @@ export const createTailingsStorageFacility = (mine_guid, payload) => (dispatch) 
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-
-
 export const fetchMineRecords = (params) => (dispatch) => {
   const defaultParams = params || String.DEFAULT_DASHBOARD_PARAMS;
   dispatch(request(reducerTypes.GET_MINE_RECORDS));
@@ -187,7 +185,6 @@ export const fetchMineNameList = (params = {}) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-
 export const fetchMineBasicInfoList = (mine_guids) => (dispatch) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.GET_MINE_BASIC_INFO_LIST));
@@ -200,7 +197,6 @@ export const fetchMineBasicInfoList = (mine_guids) => (dispatch) => {
     .catch(() => dispatch(error(reducerTypes.GET_MINE_BASIC_INFO_LIST)))
     .finally(() => dispatch(hideLoading()));
 };
-
 
 export const fetchMineDocuments = (mineGuid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_DOCUMENTS));

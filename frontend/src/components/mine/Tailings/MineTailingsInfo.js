@@ -33,11 +33,13 @@ const propTypes = {
 };
 
 export class MineTailingsInfo extends Component {
-  state = { mine: {} };
+  state = { mine: {}, isLoaded: false };
 
   componentDidMount() {
     this.setState({ mine: this.props.mines[this.props.mineGuid] });
-    this.props.fetchMineReports(this.props.mineGuid);
+    this.props.fetchMineReports(this.props.mineGuid).then(() => {
+      this.setState({ isLoaded: true });
+    });
   }
 
   handleEditReport = (values) => {
@@ -110,6 +112,7 @@ export class MineTailingsInfo extends Component {
             </div>
           </div>
           <MineReportTable
+            isLoaded={this.state.isLoaded}
             mineReports={filteredReports}
             openEditReportModal={this.openEditReportModal}
             handleEditReport={this.handleEditReport}

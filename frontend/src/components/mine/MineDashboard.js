@@ -33,13 +33,11 @@ import {
   fetchMineReportDefinitionOptions,
 } from "@/actionCreators/staticContentActionCreator";
 import { getMines, getIsUserSubscribed } from "@/selectors/mineSelectors";
-import { fetchVariancesByMine } from "@/actionCreators/varianceActionCreator";
 import {
   fetchPartyRelationshipTypes,
   fetchPartyRelationships,
   fetchInspectors,
 } from "@/actionCreators/partiesActionCreator";
-import { fetchApplications } from "@/actionCreators/applicationActionCreator";
 import { fetchMineComplianceInfo } from "@/actionCreators/complianceActionCreator";
 import CustomPropTypes from "@/customPropTypes";
 import Loading from "@/components/common/Loading";
@@ -74,7 +72,6 @@ const propTypes = {
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
   fetchMineComplianceInfo: PropTypes.func.isRequired,
-  fetchApplications: PropTypes.func.isRequired,
   fetchVarianceStatusOptions: PropTypes.func.isRequired,
   fetchVariancesByMine: PropTypes.func.isRequired,
   fetchRegionOptions: PropTypes.func.isRequired,
@@ -186,13 +183,10 @@ export class MineDashboard extends Component {
   loadMineData(id) {
     this.props.fetchMineRecordById(id).then(() => {
       const mine = this.props.mines[id];
-      this.props.fetchApplications({ mine_guid: mine.mine_guid });
       this.props.fetchPermits(mine.mine_guid);
-      this.props.fetchVariancesByMine({ mineGuid: mine.mine_guid });
       this.setState({ isLoaded: true });
       this.props.fetchMineComplianceInfo(mine.mine_no, true);
       this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
-      this.props.fetchApplications({ mine_guid: id });
     });
   }
 
@@ -365,14 +359,12 @@ const mapDispatchToProps = (dispatch) =>
       fetchPermitStatusOptions,
       fetchApplicationStatusOptions,
       fetchMineComplianceInfo,
-      fetchApplications,
       fetchSubscribedMinesByUser,
       unSubscribe,
       subscribe,
       fetchPermits,
       fetchVarianceDocumentCategoryOptions,
       fetchMineReportDefinitionOptions,
-      fetchVariancesByMine,
       fetchMineComplianceCodes,
       fetchInspectors,
       fetchVarianceStatusOptions,

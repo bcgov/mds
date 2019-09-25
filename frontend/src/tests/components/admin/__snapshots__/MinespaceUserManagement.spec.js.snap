@@ -13,6 +13,7 @@ exports[`MinespaceUserManagement renders properly 1`] = `
   </h3>
   <MinespaceUserList
     handleDelete={[Function]}
+    isLoaded={false}
     minespaceUserMines={Array []}
     minespaceUsers={Array []}
   />
