@@ -1,29 +1,43 @@
-import React, { Component } from "react";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
+import React from "react";
 import PropTypes from "prop-types";
-import { Divider } from "antd";
+import { Icon, Divider } from "antd";
+import LinkButton from "@/components/common/LinkButton";
 
-const propTypes = {};
+const propTypes = {
+  toggleReportHistory: PropTypes.func.isRequired,
+  mineReportSubmissions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
+};
 
 const defaultProps = {};
 
-export class ReportHistory extends Component {
-  render = () => (
-    <Divider orientation="left">
-      <h5>History</h5>
-    </Divider>
+export const ReportHistory = (props) => {
+  return (
+    <div>
+      <h2>File History for ...</h2>
+      <LinkButton onClick={props.toggleReportHistory}>
+        <Icon type="arrow-left" style={{ paddingRight: "5px" }} />
+        Back to Edit Report
+      </LinkButton>
+      <Divider />
+      {props.mineReportSubmissions.map((submission) => (
+        <div>
+          <h5>{submission.submission_date}</h5>
+          {submission.mine_report_submission_status_code}
+          <br />
+          {submission.mine_report_submission_guid}
+          <br />
+          {submission.documents.map((document) => (
+            <div>
+              {document.document_name}
+              <br />
+            </div>
+          ))}
+          <br />
+          <br />
+        </div>
+      ))}
+    </div>
   );
-}
+};
 
-ReportHistory.propTypes = propTypes;
-ReportHistory.defaultProps = defaultProps;
-
-const mapStateToProps = (state) => ({});
-
-const mapDispatchToProps = (dispatch) => bindActionCreators({}, dispatch);
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ReportHistory);
+export default ReportHistory;

@@ -63,33 +63,36 @@ export const ReportSubmissions = (props) => {
     ),
     hasSubmissions && !updateFilesClicked && (
       <div className="inline-flex flex-center">
-        <Button
-          className="center-mobile "
-          type="primary"
-          onClick={() => {
-            setUpdateFilesClicked(!updateFilesClicked);
-            props.updateMineReportSubmissions([
-              ...props.mineReportSubmissions,
-              {
-                documents:
-                  props.mineReportSubmissions.length > 0
-                    ? props.mineReportSubmissions[props.mineReportSubmissions.length - 1].documents
-                    : [],
-              },
-            ]);
-          }}
-        >
-          Update Files
-        </Button>
-        <br />
-        <LinkButton
-          key="file_history"
-          onClick={() => {
-            props.toggleReportHistory();
-          }}
-        >
-          See file history
-        </LinkButton>
+        <div className="center">
+          <Button
+            className="center-mobile "
+            type="primary"
+            onClick={() => {
+              setUpdateFilesClicked(!updateFilesClicked);
+              props.updateMineReportSubmissions([
+                ...props.mineReportSubmissions,
+                {
+                  documents:
+                    props.mineReportSubmissions.length > 0
+                      ? props.mineReportSubmissions[props.mineReportSubmissions.length - 1]
+                          .documents
+                      : [],
+                },
+              ]);
+            }}
+          >
+            Update Files
+          </Button>
+          <br />
+          <LinkButton
+            key="file_history"
+            onClick={() => {
+              props.toggleReportHistory();
+            }}
+          >
+            See file history
+          </LinkButton>
+        </div>
       </div>
     ),
   ];

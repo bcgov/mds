@@ -31,7 +31,10 @@ export const AddReportModal = (props) => {
             initialValues={props.initialValues}
             toggleReportHistory={toggleReportHistory}
           />,
-          <ReportHistory toggleReportHistory={toggleReportHistory} />,
+          <ReportHistory
+            toggleReportHistory={toggleReportHistory}
+            mineReportSubmissions={props.initialValues.mine_report_submissions}
+          />,
         ]}
       ></SlidingForms>
     </div>
