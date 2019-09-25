@@ -17,6 +17,7 @@ import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
 import {
   updateMineRecord,
+  createMineType,
   removeMineType,
   fetchMineRecordById,
   createTailingsStorageFacility,
@@ -38,6 +39,7 @@ const propTypes = {
   openModal: PropTypes.func.isRequired,
   mine: CustomPropTypes.mine.isRequired,
   updateMineRecord: PropTypes.func.isRequired,
+  createMineType: PropTypes.func.isRequired,
   removeMineType: PropTypes.func.isRequired,
   createTailingsStorageFacility: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
@@ -52,6 +54,7 @@ const propTypes = {
 export class MineHeader extends Component {
   handleUpdateMineRecord = (value) => {
     const mineStatus = value.mine_status.join(",");
+    console.log(value);
     return this.props
       .updateMineRecord(
         this.props.mine.mine_guid,
@@ -62,6 +65,12 @@ export class MineHeader extends Component {
         },
         value.mine_name
       )
+      .then(() => {
+        if (value.mine_types && value.mine_types.length > 0)
+          value.mine_types.map((newMineType) =>
+            this.props.createMineType(this.props.mine.mine_guid, newMineType)
+          );
+      })
       .then(() => {
         this.props.closeModal();
         this.props.fetchMineRecordById(this.props.mine.mine_guid);
@@ -348,6 +357,7 @@ const mapDispatchToProps = (dispatch) =>
       openModal,
       closeModal,
       updateMineRecord,
+      createMineType,
       removeMineType,
       fetchMineRecordById,
       createTailingsStorageFacility,

@@ -10,22 +10,12 @@ import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
 import CustomAxios from "@/customAxios";
 
-const handleError = (dispatch, reducer) => (err) => {
-  notification.error({
-    message: err.response ? err.response.data.message : String.ERROR,
-    duration: 10,
-  });
-  dispatch(error(reducer));
-  dispatch(hideLoading("modal"));
-};
-
-const createMineType = (payload, dispatch, reducer) => (response) => {
-  const mineId = response.data.mine_guid;
-  const mine_types = payload.mine_types[0];
-  CustomAxios()
-    .post(`${ENVIRONMENT.apiUrl}${API.MINE_TYPES(mineId)}`, mine_types, createRequestHeader())
-    .catch(handleError(dispatch, reducer));
-  return response;
+export const createMineType = (mineGuid, payload) => (dispatch) => {
+  dispatch(showLoading("modal"));
+  console.log(payload);
+  return CustomAxios()
+    .post(`${ENVIRONMENT.apiUrl}${API.MINE_TYPES(mineGuid)}`, payload, createRequestHeader())
+    .catch(() => dispatch(error(reducerTypes.CREATE_MINE_RECORD)));
 };
 
 export const createMineRecord = (payload) => (dispatch) => {
