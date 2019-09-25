@@ -43,14 +43,14 @@ class MineTypeDetail(AuditMixin, Base):
 
         if mine_disturbance_code:
             mine_disturbance = MineDisturbanceCode.query.get(mine_disturbance_code)
-            if mine_type.mine_tenure_type not in mine_disturbance.tenure_types:
+            if not mine_disturbance or mine_type.mine_tenure_type not in mine_disturbance.tenure_types:
                 raise AssertionError(
                     f'Mine Disturbance Code {mine_disturbance_code} not valid with Tenure Type {mine_type.mine_tenure_type_code}'
                 )
 
         if mine_commodity_code:
             mine_commodity = MineCommodityCode.query.get(mine_commodity_code)
-            if mine_type.mine_tenure_type not in mine_commodity.tenure_types:
+            if not mine_commodity or mine_type.mine_tenure_type not in mine_commodity.tenure_types:
                 raise AssertionError(
                     f'Mine Commodity Code {mine_commodity_code} not valid with Tenure Type {mine_type.mine_tenure_type_code}'
                 )
