@@ -22,7 +22,6 @@ const handleError = (dispatch, reducer) => (err) => {
 const createMineType = (payload, dispatch, reducer) => (response) => {
   const mineId = response.data.mine_guid;
   const mine_types = payload.mine_types[0];
-  console.log(mine_types);
   CustomAxios()
     .post(`${ENVIRONMENT.apiUrl}${API.MINE_TYPES(mineId)}`, mine_types, createRequestHeader())
     .catch(handleError(dispatch, reducer));
