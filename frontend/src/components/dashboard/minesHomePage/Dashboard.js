@@ -114,6 +114,7 @@ export class Dashboard extends Component {
         tenure: [],
         commodity: [],
         search: [],
+        ...this.params,
       },
     };
   }
