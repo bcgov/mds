@@ -109,7 +109,7 @@ export class ReportFilterForm extends Component {
       <Form layout="vertical" onSubmit={this.props.handleSubmit} onReset={this.handleReset}>
         <div>
           <Row gutter={16}>
-            <Col md={6} sm={24}>
+            <Col md={8} sm={24}>
               <Field
                 id="report_name"
                 name="report_name"
@@ -119,7 +119,7 @@ export class ReportFilterForm extends Component {
                 data={this.state.dropdownMineReportDefinitionOptionsFiltered}
               />
             </Col>
-            <Col md={6} sm={24}>
+            <Col md={8} sm={24}>
               <Field
                 id="report_type"
                 name="report_type"
@@ -129,7 +129,7 @@ export class ReportFilterForm extends Component {
                 data={this.state.dropdownMineReportCategoryOptionsFiltered}
               />
             </Col>
-            <Col md={6} sm={24}>
+            <Col md={8} sm={24}>
               <Field
                 id="compliance_year"
                 name="compliance_year"
@@ -150,7 +150,7 @@ export class ReportFilterForm extends Component {
             </Col> */}
           </Row>
           <Row gutter={6}>
-            <Col lg={3} md={6} sm={24}>
+            <Col md={4} sm={24}>
               <Field
                 id="report_due_date_start"
                 name="report_due_date_start"
@@ -159,7 +159,7 @@ export class ReportFilterForm extends Component {
                 component={renderConfig.DATE}
               />
             </Col>
-            <Col lg={3} md={6} sm={24}>
+            <Col md={4} sm={24}>
               <Field
                 id="report_due_date_end"
                 name="report_due_date_end"

@@ -177,7 +177,57 @@ exports[`ContactHomePage renders properly 1`] = `
         ]
       }
     />
-    <Loading />
+    <div>
+      <div
+        className="tab__content "
+      >
+        <ContactList
+          handleSearch={[Function]}
+          isLoaded={false}
+          parties={
+            Object {
+              "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
+                "guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                "name": "mock name",
+              },
+              "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
+                "guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
+                "name": "mock Two",
+              },
+            }
+          }
+          relationshipTypeHash={
+            Object {
+              "BLA": "Blaster",
+              "EMM": "Exploration Mine Manager",
+              "EOR": "Engineer Of Record",
+              "EVS": "Environmental Specialist",
+              "FRB": "Fire Boss",
+              "MMG": "Mine Manager",
+              "MOR": "Mine Operator",
+              "MOW": "Mine Owner",
+              "MRC": "Mine Rescue Contact",
+              "PMT": "Permittee",
+              "SHB": "Shift Boss",
+              "SVR": "Supervisor",
+              "TQP": "TSF Qualified Person",
+            }
+          }
+          sortDir={null}
+          sortField={null}
+        />
+      </div>
+      <div
+        className="center"
+      >
+        <ResponsivePagination
+          currentPage={NaN}
+          itemsPerPage={NaN}
+          onPageChange={[Function]}
+          pageTotal={9000}
+        />
+      </div>
+    </div>
   </div>
 </div>
 `;

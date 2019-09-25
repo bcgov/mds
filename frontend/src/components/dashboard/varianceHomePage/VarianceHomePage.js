@@ -32,13 +32,13 @@ import {
 } from "@/actionCreators/varianceActionCreator";
 import { getVariances, getVariancePageData } from "@/selectors/varianceSelectors";
 import { VarianceTable } from "@/components/dashboard/customHomePage/VarianceTable";
-import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
 import { fetchInspectors } from "@/actionCreators/partiesActionCreator";
 import VarianceSearch from "./VarianceSearch";
 import { formatParamStringToArray } from "@/utils/helpers";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+
 /**
  * @class Variance page is a landing page for variance searching
  *
@@ -67,7 +67,6 @@ const propTypes = {
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
 };
 
-// TODO: Implement the NoticeOfWorkHomePage.js pattern using formatQueryListParams
 // to parse and join params safely
 export const joinOrRemove = (param, key) => {
   if (isEmpty(param)) {
@@ -340,21 +339,20 @@ export class VarianceHomePage extends Component {
               filterVarianceStatusOptions={this.props.filterVarianceStatusOptions}
             />
           </AuthorizationWrapper>
-          <LoadingWrapper condition={this.state.variancesLoaded}>
-            <VarianceTable
-              isApplication={this.state.isApplication}
-              handleFilterChange={this.handleFilterChange}
-              variances={this.props.variances}
-              pageData={this.props.variancePageData}
-              handlePageChange={this.handleVariancePageChange}
-              handleVarianceSearch={this.handleVarianceSearch}
-              params={this.state.params}
-              openEditVarianceModal={this.openEditVarianceModal}
-              openViewVarianceModal={this.openViewVarianceModal}
-              sortField={this.state.params.sort_field}
-              sortDir={this.state.params.sort_dir}
-            />
-          </LoadingWrapper>
+          <VarianceTable
+            isLoaded={this.state.variancesLoaded}
+            isApplication={this.state.isApplication}
+            handleFilterChange={this.handleFilterChange}
+            variances={this.props.variances}
+            pageData={this.props.variancePageData}
+            handlePageChange={this.handleVariancePageChange}
+            handleVarianceSearch={this.handleVarianceSearch}
+            params={this.state.params}
+            openEditVarianceModal={this.openEditVarianceModal}
+            openViewVarianceModal={this.openViewVarianceModal}
+            sortField={this.state.params.sort_field}
+            sortDir={this.state.params.sort_dir}
+          />
         </div>
       </div>
     );

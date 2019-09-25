@@ -21,9 +21,10 @@ import * as Permission from "@/constants/permissions";
 import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls";
 import CustomPropTypes from "@/customPropTypes";
 import NullScreen from "@/components/common/NullScreen";
-import { formatDate } from "@/utils/helpers";
+import { formatDate, getTableHeaders } from "@/utils/helpers";
 import LinkButton from "@/components/common/LinkButton";
 import * as Strings from "@/constants/strings";
+import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
 import * as router from "@/constants/routes";
 
 const propTypes = {
@@ -32,6 +33,7 @@ const propTypes = {
   handleEditMineIncident: PropTypes.func.isRequired,
   openMineIncidentModal: PropTypes.func.isRequired,
   openViewMineIncidentModal: PropTypes.func.isRequired,
+  isLoaded: PropTypes.bool.isRequired,
   isDashboardView: PropTypes.bool,
   sortField: PropTypes.string,
   sortDir: PropTypes.string,
@@ -41,6 +43,7 @@ const propTypes = {
   incidentDeterminationHash: PropTypes.objectOf(PropTypes.string),
   complianceCodesHash: PropTypes.objectOf(PropTypes.string),
   incidentStatusCodeHash: PropTypes.objectOf(PropTypes.string),
+  isPaginated: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -53,6 +56,7 @@ const defaultProps = {
   isDashboardView: false,
   sortField: null,
   sortDir: null,
+  isPaginated: false,
 };
 
 const hideColumn = (condition) => (condition ? "column-hide" : "");
@@ -313,7 +317,11 @@ export class MineIncidentTable extends Component {
     ];
 
     return (
-      <div>
+      <TableLoadingWrapper
+        condition={this.props.isLoaded}
+        tableHeaders={getTableHeaders(columns)}
+        isPaginated={this.props.isPaginated}
+      >
         <Table
           onChange={
             this.props.isDashboardView ? handleTableChange(this.props.handleIncidentSearch) : null
@@ -325,7 +333,11 @@ export class MineIncidentTable extends Component {
               ? applySortIndicator(columns, this.props.sortField, this.props.sortDir)
               : columns
           }
-          locale={{ emptyText: <NullScreen type="incidents" /> }}
+          locale={{
+            emptyText: (
+              <NullScreen type={this.props.isDashboardView ? "no-results" : "incidents"} />
+            ),
+          }}
           dataSource={this.transformRowData(
             this.props.incidents,
             this.props.followupActions,
@@ -336,7 +348,7 @@ export class MineIncidentTable extends Component {
             this.props.incidentStatusCodeHash
           )}
         />
-      </div>
+      </TableLoadingWrapper>
     );
   }
 }

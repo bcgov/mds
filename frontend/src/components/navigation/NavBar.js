@@ -60,11 +60,7 @@ export class NavBar extends Component {
   renderFullNav = () => (
     <div>
       <Dropdown overlay={this.reportingDropdown} placement="bottomLeft">
-        <button
-          id={this.ifActiveButton(router.REPORTING_DASHBOARD.route)}
-          type="button"
-          className="menu__btn"
-        >
+        <button id={this.ifActiveButton("reporting")} type="button" className="menu__btn">
           <span className="padding-small--right">Provincial Reporting</span>
           <Icon type="down" />
         </button>
@@ -103,7 +99,7 @@ export class NavBar extends Component {
         </Link>
       </AuthorizationWrapper>
       <Dropdown overlay={this.menu} placement="bottomLeft">
-        <button type="button" className="menu__btn">
+        <button type="button" className="menu__btn" id={this.ifActiveButton("my-dashboard")}>
           <Icon className="padding-small--right icon-sm" type="user" />
           <span className="padding-small--right">{this.props.userInfo.preferred_username}</span>
           <Icon type="down" />

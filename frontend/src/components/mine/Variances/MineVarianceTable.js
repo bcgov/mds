@@ -15,12 +15,13 @@ import { getInspectorsHash } from "@/selectors/partiesSelectors";
 import * as Permission from "@/constants/permissions";
 import { RED_CLOCK, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import NullScreen from "@/components/common/NullScreen";
-import { formatDate, compareCodes } from "@/utils/helpers";
+import { formatDate, compareCodes, getTableHeaders } from "@/utils/helpers";
 import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls";
 import * as Strings from "@/constants/strings";
 import { COLOR } from "@/constants/styles";
 import LinkButton from "@/components/common/LinkButton";
 import * as router from "@/constants/routes";
+import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
 
 const { errorRed } = COLOR;
 
@@ -39,6 +40,8 @@ const propTypes = {
   }),
   sortField: PropTypes.string,
   sortDir: PropTypes.string,
+  isLoaded: PropTypes.bool.isRequired,
+  isPaginated: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -50,6 +53,7 @@ const defaultProps = {
   params: {},
   sortField: null,
   sortDir: null,
+  isPaginated: false,
 };
 
 const errorStyle = (isOverdue) => (isOverdue ? { color: errorRed } : {});
@@ -112,6 +116,7 @@ export class MineVarianceTable extends Component {
         title: "Variance Number",
         dataIndex: "varianceNumber",
         sortField: "variance_id",
+        width: 150,
         render: (text, record) => (
           <div title="Variance Number" style={errorStyle(record.isOverdue)}>
             {text}
@@ -123,6 +128,7 @@ export class MineVarianceTable extends Component {
         title: "Code Section",
         dataIndex: "compliance_article_id",
         sortField: "compliance_article_id",
+        width: 150,
         render: (text, record) => (
           <div title="Code Section" style={errorStyle(record.isOverdue)}>
             {text}
@@ -136,6 +142,7 @@ export class MineVarianceTable extends Component {
         title: "Mine Name",
         dataIndex: "mineName",
         sortField: "mine_name",
+        width: 150,
         className: hideColumn(!this.props.isDashboardView),
         render: (text, record) => (
           <div
@@ -152,6 +159,7 @@ export class MineVarianceTable extends Component {
         title: "Lead Inspector",
         dataIndex: "leadInspector",
         sortField: "lead_inspector",
+        width: 150,
         className: hideColumn(!this.props.isDashboardView),
         render: (text, record) => (
           <div
@@ -168,6 +176,7 @@ export class MineVarianceTable extends Component {
         title: "Submission Date",
         dataIndex: "received_date",
         sortField: "received_date",
+        width: 150,
         className: hideColumn(!this.props.isApplication),
         render: (text) => (
           <div className={hideColumn(!this.props.isApplication)} title="Submission Date">
@@ -183,7 +192,7 @@ export class MineVarianceTable extends Component {
         title: "Application Status",
         dataIndex: "status",
         sortField: "variance_application_status_code",
-        width: 200,
+        width: 150,
         className: hideColumn(!this.props.isApplication),
         render: (text, record) => (
           <div
@@ -199,6 +208,7 @@ export class MineVarianceTable extends Component {
       {
         title: "Issue Date",
         dataIndex: "issue_date",
+        width: 150,
         className: hideColumn(this.props.isApplication),
         render: (text, record) => (
           <div
@@ -214,6 +224,7 @@ export class MineVarianceTable extends Component {
       {
         title: "Expiry Date",
         dataIndex: "expiry_date",
+        width: 150,
         className: hideColumn(this.props.isApplication),
         render: (text, record) => (
           <div
@@ -230,6 +241,7 @@ export class MineVarianceTable extends Component {
       {
         title: "Approval Status",
         dataIndex: "",
+        width: 150,
         className: hideColumn(this.props.isApplication),
         render: (text, record) => (
           <div
@@ -244,6 +256,7 @@ export class MineVarianceTable extends Component {
       {
         title: "Documents",
         dataIndex: "documents",
+        width: 150,
         render: (text, record) => (
           <div title="Documents">
             {record.documents.length > 0
@@ -264,8 +277,9 @@ export class MineVarianceTable extends Component {
       {
         title: "",
         dataIndex: "variance",
+        width: 150,
         render: (text, record) => (
-          <div title="" align="right">
+          <div title="" align="right" className="inline-flex">
             <AuthorizationWrapper permission={Permission.EDIT_VARIANCES}>
               <Button
                 type="primary"
@@ -290,8 +304,13 @@ export class MineVarianceTable extends Component {
     ];
 
     return (
-      <div>
+      <TableLoadingWrapper
+        condition={this.props.isLoaded}
+        tableHeaders={getTableHeaders(columns)}
+        isPaginated={this.props.isPaginated}
+      >
         <Table
+          rowClassName="fade-in"
           onChange={
             this.props.isDashboardView ? handleTableChange(this.props.handleVarianceSearch) : null
           }
@@ -315,7 +334,7 @@ export class MineVarianceTable extends Component {
             this.props.varianceStatusOptionsHash
           )}
         />
-      </div>
+      </TableLoadingWrapper>
     );
   }
 }

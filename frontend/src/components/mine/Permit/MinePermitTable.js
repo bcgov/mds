@@ -9,12 +9,13 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import * as Strings from "@/constants/strings";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
-import { formatDate } from "@/utils/helpers";
+import { formatDate, getTableHeaders } from "@/utils/helpers";
 import { getPartyRelationships } from "@/selectors/partiesSelectors";
 import { getDropdownPermitStatusOptions } from "@/selectors/staticContentSelectors";
 import { EDIT_OUTLINE, EDIT_OUTLINE_VIOLET, EDIT, CARAT } from "@/constants/assets";
 import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls";
 import LinkButton from "@/components/common/LinkButton";
+import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
 
 /**
  * @class  MinePermitTable - displays a table of permits and permit amendments
@@ -34,6 +35,7 @@ const propTypes = {
   openEditAmendmentModal: PropTypes.func.isRequired, // eslint-disable-line react/no-unused-prop-types
   expandedRowKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
   onExpand: PropTypes.func.isRequired,
+  isLoaded: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -377,20 +379,22 @@ export const MinePermitTable = (props) => {
   );
 
   return (
-    <Table
-      className="nested-table"
-      rowClassName={() => "table-row-align-middle pointer"}
-      align="left"
-      pagination={false}
-      columns={columns}
-      dataSource={rowData}
-      locale={{ emptyText: <NullScreen type="permit" /> }}
-      expandIcon={RenderPermitTableExpandIcon}
-      expandRowByClick
-      expandedRowRender={amendmentHistory}
-      expandedRowKeys={props.expandedRowKeys}
-      onExpand={props.onExpand}
-    />
+    <TableLoadingWrapper condition={props.isLoaded} tableHeaders={getTableHeaders(columns)}>
+      <Table
+        className="nested-table"
+        rowClassName="table-row-align-middle pointer fade-in"
+        align="left"
+        pagination={false}
+        columns={columns}
+        dataSource={rowData}
+        locale={{ emptyText: <NullScreen type="permit" /> }}
+        expandIcon={RenderPermitTableExpandIcon}
+        expandRowByClick
+        expandedRowRender={amendmentHistory}
+        expandedRowKeys={props.expandedRowKeys}
+        onExpand={props.onExpand}
+      />
+    </TableLoadingWrapper>
   );
 };
 

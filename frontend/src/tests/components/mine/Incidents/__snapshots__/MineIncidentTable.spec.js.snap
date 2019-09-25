@@ -1,7 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MineIncidentTable renders properly 1`] = `
-<div>
+<TableLoadingWrapper
+  isPaginated={false}
+  tableHeaders={
+    Array [
+      "Incident Report No.",
+      "Date",
+      "Mine Name",
+      "Incident Status",
+      "Determination",
+      "Code",
+      "Reported By",
+      "EMPR Action",
+      "Initial Report Documents",
+      "Final Report Documents",
+      "",
+    ]
+  }
+>
   <Table
     align="left"
     bordered={false}
@@ -161,5 +178,5 @@ exports[`MineIncidentTable renders properly 1`] = `
     }
     useFixedHeader={false}
   />
-</div>
+</TableLoadingWrapper>
 `;

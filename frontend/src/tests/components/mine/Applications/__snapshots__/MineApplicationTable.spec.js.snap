@@ -1,66 +1,85 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MineApplicationTable renders properly 1`] = `
-<Table
-  align="left"
-  bordered={false}
-  childrenColumnName="children"
-  className="nested-table"
-  columns={
+<TableLoadingWrapper
+  isPaginated={false}
+  tableHeaders={
     Array [
-      Object {
-        "dataIndex": "applicationNo",
-        "key": "applicationNo",
-        "render": [Function],
-        "title": "Application No.",
-      },
-      Object {
-        "dataIndex": "status",
-        "key": "status",
-        "render": [Function],
-        "title": "Status",
-      },
-      Object {
-        "dataIndex": "receivedDate",
-        "key": "receivedDate",
-        "render": [Function],
-        "title": "Received Date",
-      },
-      Object {
-        "dataIndex": "description",
-        "key": "description",
-        "render": [Function],
-        "title": "Description",
-      },
-      Object {
-        "align": "right",
-        "dataIndex": "applicationEdit",
-        "key": "applicationEdit",
-        "render": [Function],
-        "title": "",
-      },
+      "Application No.",
+      "Status",
+      "Received Date",
+      "Description",
+      "",
     ]
   }
-  dataSource={Array []}
-  indentSize={20}
-  loading={false}
-  locale={
-    Object {
-      "emptyText": <NullScreen
-        type="applications"
-      />,
+>
+  <Table
+    align="left"
+    bordered={false}
+    childrenColumnName="children"
+    className="nested-table"
+    columns={
+      Array [
+        Object {
+          "dataIndex": "applicationNo",
+          "key": "applicationNo",
+          "render": [Function],
+          "title": "Application No.",
+          "width": 150,
+        },
+        Object {
+          "dataIndex": "status",
+          "key": "status",
+          "render": [Function],
+          "title": "Status",
+          "width": 150,
+        },
+        Object {
+          "dataIndex": "receivedDate",
+          "key": "receivedDate",
+          "render": [Function],
+          "title": "Received Date",
+          "width": 150,
+        },
+        Object {
+          "dataIndex": "description",
+          "key": "description",
+          "render": [Function],
+          "title": "Description",
+          "width": 150,
+        },
+        Object {
+          "align": "right",
+          "dataIndex": "applicationEdit",
+          "key": "applicationEdit",
+          "render": [Function],
+          "title": "",
+          "width": 150,
+        },
+      ]
     }
-  }
-  pagination={false}
-  rowKey="key"
-  showHeader={true}
-  size="default"
-  sortDirections={
-    Array [
-      "ascend",
-      "descend",
-    ]
-  }
-  useFixedHeader={false}
-/>
+    dataSource={Array []}
+    indentSize={20}
+    loading={false}
+    locale={
+      Object {
+        "emptyText": <NullScreen
+          type="applications"
+        />,
+      }
+    }
+    pagination={false}
+    rowClassName="fade-in"
+    rowKey="key"
+    showHeader={true}
+    size="default"
+    sortDirections={
+      Array [
+        "ascend",
+        "descend",
+      ]
+    }
+    useFixedHeader={false}
+  />
+</TableLoadingWrapper>
 `;
