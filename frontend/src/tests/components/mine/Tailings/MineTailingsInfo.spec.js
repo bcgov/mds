@@ -14,7 +14,7 @@ const setupProps = () => {
 const setupDispatchProps = () => {
   dispatchProps.updateMineRecord = jest.fn();
   dispatchProps.fetchMineRecordById = jest.fn();
-  dispatchProps.fetchMineReports = jest.fn();
+  dispatchProps.fetchMineReports = jest.fn(() => Promise.resolve());
   dispatchProps.openModal = jest.fn();
   dispatchProps.closeModal = jest.fn();
 };

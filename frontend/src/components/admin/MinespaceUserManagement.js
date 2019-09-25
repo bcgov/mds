@@ -34,8 +34,12 @@ const defaultProps = {
 };
 
 export class MinespaceUserManagement extends Component {
+  state = { isLoaded: false };
+
   componentDidMount() {
-    this.props.fetchMineNameList();
+    this.props.fetchMineNameList().then(() => {
+      this.setState({ isLoaded: true });
+    });
     this.refreshUserData();
   }
 
@@ -59,6 +63,7 @@ export class MinespaceUserManagement extends Component {
         <NewMinespaceUser refreshData={this.refreshUserData} />
         <h3>Minespace Users</h3>
         <MinespaceUserList
+          isLoaded={this.state.isLoaded}
           minespaceUsers={this.props.minespaceUsers}
           minespaceUserMines={this.props.minespaceUserMines}
           handleDelete={this.handleDelete}

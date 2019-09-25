@@ -9,8 +9,9 @@ import * as Strings from "@/constants/strings";
 import * as Permission from "@/constants/permissions";
 import { getDropdownApplicationStatusOptions } from "@/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
-import { formatDate } from "@/utils/helpers";
+import { formatDate, getTableHeaders } from "@/utils/helpers";
 import { EDIT_OUTLINE } from "@/constants/assets";
+import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
 
 /**
  * @class  MineApplicationTable - displays a table of applicationsfor a mine.
@@ -21,6 +22,7 @@ const propTypes = {
   applicationStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   isMajorMine: PropTypes.bool.isRequired,
   openEditApplicationModal: PropTypes.func.isRequired,
+  isLoaded: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -32,12 +34,14 @@ const columns = [
     title: "Application No.",
     dataIndex: "applicationNo",
     key: "applicationNo",
+    width: 150,
     render: (text) => <div title="Application No.">{text}</div>,
   },
   {
     title: "Status",
     dataIndex: "status",
     key: "status",
+    width: 150,
     render: (text, record) => {
       const status = record.applicationStatusOptions.find((item) => item.value === text);
       return <div title="Status">{status && status.label}</div>;
@@ -47,6 +51,7 @@ const columns = [
     title: "Received Date",
     dataIndex: "receivedDate",
     key: "receivedDate",
+    width: 150,
     render: (text) => <div title="Received Date">{text}</div>,
   },
 
@@ -54,6 +59,7 @@ const columns = [
     title: "Description",
     dataIndex: "description",
     key: "description",
+    width: 150,
     render: (text) => (
       <div title="Description">
         <p className="wrapped-text" style={{ maxWidth: "800px" }}>
@@ -67,6 +73,7 @@ const columns = [
     dataIndex: "applicationEdit",
     key: "applicationEdit",
     align: "right",
+    width: 150,
     render: (text, record) => (
       <AuthorizationWrapper permission={Permission.EDIT_PERMITS} isMajorMine={text.isMajorMine}>
         <Button
@@ -112,14 +119,17 @@ export const MineApplicationTable = (props) => {
   );
 
   return (
-    <Table
-      className="nested-table"
-      align="left"
-      pagination={false}
-      columns={columns}
-      dataSource={rowData}
-      locale={{ emptyText: <NullScreen type="applications" /> }}
-    />
+    <TableLoadingWrapper condition={props.isLoaded} tableHeaders={getTableHeaders(columns)}>
+      <Table
+        className="nested-table"
+        rowClassName="fade-in"
+        align="left"
+        pagination={false}
+        columns={columns}
+        dataSource={rowData}
+        locale={{ emptyText: <NullScreen type="applications" /> }}
+      />
+    </TableLoadingWrapper>
   );
 };
 

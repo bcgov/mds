@@ -45,6 +45,14 @@ export class MineSearch extends Component {
     isAdvanceSearch: checkAdvancedSearch(this.props.initialValues),
   };
 
+  componentWillReceiveProps(newProps) {
+    if (
+      checkAdvancedSearch(this.props.initialValues) !== checkAdvancedSearch(newProps.initialValues)
+    ) {
+      this.setState({ isAdvanceSearch: checkAdvancedSearch(newProps.initialValues) });
+    }
+  }
+
   /**
    *  re-center the map to the mines coordinates
    * @param value = 'mine.long, mine.lat';

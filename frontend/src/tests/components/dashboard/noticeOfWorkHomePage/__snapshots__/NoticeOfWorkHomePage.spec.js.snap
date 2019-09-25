@@ -30,59 +30,56 @@ exports[`NoticeOfWorkHomePage renders properly 1`] = `
           }
         }
       />
-      <LoadingWrapper
-        condition={false}
-      >
-        <div>
-          <NoticeOfWorkTable
-            handleSearch={[Function]}
-            noticeOfWorkApplications={
-              Array [
-                Object {
-                  "application_guid": "07e801a0-fa33-4c3b-abcc-ac6df628d483",
-                  "mine_guid": "6e9d3426-ebf1-413f-9e5f-c3a71ab56797",
-                  "mine_name": "Hamilton, Herrera and Mccormick",
-                  "minenumber": "brother",
-                  "noticeofworktype": "choice",
-                  "receiveddate": "2019-08-14",
-                  "status": "Approved",
-                  "trackingnumber": 44,
-                },
-                Object {
-                  "application_guid": "8e1536da-644c-4961-976b-b1326fa75825",
-                  "mine_guid": "60300a07-376c-46f1-a984-88a813f91438",
-                  "mine_name": "Thompson-Sullivan",
-                  "minenumber": "other",
-                  "noticeofworktype": "technology",
-                  "receiveddate": "2019-07-21",
-                  "status": "Approved",
-                  "trackingnumber": 52,
-                },
-              ]
-            }
-            searchParams={
+      <div>
+        <NoticeOfWorkTable
+          handleSearch={[Function]}
+          isLoaded={false}
+          noticeOfWorkApplications={
+            Array [
               Object {
-                "mine_region": Array [
-                  "SW",
-                  "NE",
-                ],
-              }
+                "application_guid": "07e801a0-fa33-4c3b-abcc-ac6df628d483",
+                "mine_guid": "6e9d3426-ebf1-413f-9e5f-c3a71ab56797",
+                "mine_name": "Hamilton, Herrera and Mccormick",
+                "minenumber": "brother",
+                "noticeofworktype": "choice",
+                "receiveddate": "2019-08-14",
+                "status": "Approved",
+                "trackingnumber": 44,
+              },
+              Object {
+                "application_guid": "8e1536da-644c-4961-976b-b1326fa75825",
+                "mine_guid": "60300a07-376c-46f1-a984-88a813f91438",
+                "mine_name": "Thompson-Sullivan",
+                "minenumber": "other",
+                "noticeofworktype": "technology",
+                "receiveddate": "2019-07-21",
+                "status": "Approved",
+                "trackingnumber": 52,
+              },
+            ]
+          }
+          searchParams={
+            Object {
+              "mine_region": Array [
+                "SW",
+                "NE",
+              ],
             }
-            sortDir={null}
-            sortField={null}
+          }
+          sortDir={null}
+          sortField={null}
+        />
+        <div
+          className="center"
+        >
+          <ResponsivePagination
+            currentPage={NaN}
+            itemsPerPage={NaN}
+            onPageChange={[Function]}
+            pageTotal={9000}
           />
-          <div
-            className="center"
-          >
-            <ResponsivePagination
-              currentPage={NaN}
-              itemsPerPage={NaN}
-              onPageChange={[Function]}
-              pageTotal={9000}
-            />
-          </div>
         </div>
-      </LoadingWrapper>
+      </div>
     </div>
   </div>
 </div>
