@@ -112,14 +112,14 @@ export class Dashboard extends Component {
     this.state = {
       isListLoaded: false,
       isMapLoaded: false,
-      lat: Number(String.DEFAULT_LAT),
-      long: Number(String.DEFAULT_LONG),
-      zoom: String.DEFAULT_ZOOM,
+      lat: Number(Strings.DEFAULT_LAT),
+      long: Number(Strings.DEFAULT_LONG),
+      zoom: Strings.DEFAULT_ZOOM,
       showCoordinates: false,
       mineName: null,
       params: {
-        page: String.DEFAULT_PAGE,
-        per_page: String.DEFAULT_PER_PAGE,
+        page: Strings.DEFAULT_PAGE,
+        per_page: Strings.DEFAULT_PER_PAGE,
         status: [],
         region: [],
         tenure: [],
@@ -441,7 +441,22 @@ export class Dashboard extends Component {
               <LoadingWrapper condition={this.state.isMapLoaded}>
                 <Element name="mapElement">
                   <div>
-                    <MineMap {...this.state} />
+                    {switchToLeaflet ? (
+                      <MineMapLeaflet
+                        lat={this.state.lat}
+                        long={this.state.long}
+                        zoom={this.state.zoom}
+                        minesBasicInfo={this.props.pageData.mines}
+                        mineName={this.state.mineName}
+                        mines={this.props.mines}
+                        fetchMineRecordById={this.props.fetchMineRecordById}
+                        transformedMineTypes={this.props.transformedMineTypes}
+                        mineCommodityOptionsHash={this.props.mineCommodityOptionsHash}
+                        history={this.props.history}
+                      />
+                    ) : (
+                      <MineMap {...this.state} />
+                    )}
                   </div>
                 </Element>
               </LoadingWrapper>
