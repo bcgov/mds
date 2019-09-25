@@ -111,19 +111,17 @@ export class MineReportInfo extends Component {
   };
 
   handleAddReport = (values) => {
-    if (!this.state.disableAddReport) {
-      this.setState({ disableAddReport: true }, () => {
-        this.props
-          .createMineReport(this.props.mineGuid, values)
-          .then(() => this.props.closeModal())
-          .then(() =>
-            this.props.fetchMineReports(this.props.mineGuid).then(() => {
-              this.setFilteredReports();
-            })
-          )
-          .finally(this.setState({ disableAddReport: false }));
-      });
-    }
+    this.setState({ disableAddReport: true }, () => {
+      this.props
+        .createMineReport(this.props.mineGuid, values)
+        .then(() => this.props.closeModal())
+        .then(() =>
+          this.props.fetchMineReports(this.props.mineGuid).then(() => {
+            this.setFilteredReports();
+          })
+        )
+        .finally(this.setState({ disableAddReport: false }));
+    });
   };
 
   handleRemoveReport = (reportGuid) => {
@@ -139,7 +137,7 @@ export class MineReportInfo extends Component {
     this.props.openModal({
       props: {
         disableAddReport: this.state.disableAddReport,
-        onSubmit: debounce(this.handleAddReport, 1000),
+        onSubmit: debounce(this.handleAddReport, 2000),
         title: `Add report for ${this.state.mine.mine_name}`,
         mineGuid: this.props.mineGuid,
       },
@@ -222,7 +220,7 @@ export class MineReportInfo extends Component {
                 onClick={(event) =>
                   this.openAddReportModal(
                     event,
-                    debounce(this.handleAddReport, 1000),
+                    debounce(this.handleAddReport, 2000),
                     `${ModalContent.ADD_REPORT} to ${this.state.mine.mine_name}`
                   )
                 }
