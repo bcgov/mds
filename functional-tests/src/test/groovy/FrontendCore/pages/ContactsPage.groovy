@@ -23,7 +23,7 @@ class ContactsPage extends Page {
         applyFilterButton   (wait:true){$("button", type:"submit")}
         
         //Table content
-        contactTableContent (wait:true){$("tr", class:"ant-table-row ant-table-row-level-0")}
+        contactTableContent (wait:true){$("tr", class:"ant-table-row fade-in ant-table-row-level-0")}
         contactTableNameOne (wait:true){$("tr", class:"ant-table-row ant-table-row-level-0").has("a", text: Const.CONTACT_FULL_NAME)}
 
     }
