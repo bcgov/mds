@@ -12,6 +12,7 @@ import "leaflet.markercluster";
 import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
+import "vendor/leaflet/leaflet-measure/leaflet-measure.css";
 import "vendor/leaflet/mouse-coordinates/leaflet.mousecoordinate";
 import "vendor/leaflet/grouped-layer-control/leaflet.groupedlayercontrol.min";
 
@@ -229,6 +230,15 @@ class MineMapLeaflet extends Component {
 
       // Add ScaleBar widget
       L.control.scale({ imperial: false }).addTo(this.map);
+
+      // Add Measure widget
+      const measureControl = new L.Control.Measure({
+        position: "topright",
+        primaryLengthUnit: "kilometers",
+        activeColor: "#3c3636",
+        completedColor: "#5e46a1",
+      });
+      measureControl.addTo(this.map);
     });
   }
 
@@ -261,5 +271,7 @@ export default scriptLoader(
   // Load Leaflet Omnivore
   "https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.3.1/leaflet-omnivore.min.js",
   // Load Leaflet esri webMap
-  `${process.env.BASE_PATH}/vendor/leaflet/esri-leaflet-webmap/esri-leaflet-webmap.js`
+  `${process.env.BASE_PATH}/vendor/leaflet/esri-leaflet-webmap/esri-leaflet-webmap.js`,
+  // Load Leaflet measure
+  `${process.env.BASE_PATH}/vendor/leaflet/leaflet-measure/leaflet-measure.en.js`
 )(MineMapLeaflet);
