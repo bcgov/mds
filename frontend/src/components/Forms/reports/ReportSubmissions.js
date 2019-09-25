@@ -31,8 +31,8 @@ export const ReportSubmissions = (props) => {
       <UploadedDocumentsTable
         files={props.mineReportSubmissions[props.mineReportSubmissions.length - 1].documents}
         showRemove={updateFilesClicked}
-        updateMineReportSubmissions={props.updateMineReportSubmissions}
-        mineReportSubmissions={props.mineReportSubmissions}
+        updateDocumentSet={props.updateMineReportSubmissions}
+        documentSet={props.mineReportSubmissions}
       />
     ),
     (!hasSubmissions || updateFilesClicked) && (

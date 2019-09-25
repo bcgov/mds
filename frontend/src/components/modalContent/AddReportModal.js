@@ -6,6 +6,7 @@ import ReportHistory from "@/components/Forms/reports/ReportHistory";
 import { SlidingForms } from "@/components/common/SlidingForms";
 
 const propTypes = {
+  disableAddReport: PropTypes.bool,
   onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
@@ -13,7 +14,7 @@ const propTypes = {
   initialValues: PropTypes.objectOf(PropTypes.any),
 };
 
-const defaultProps = { initialValues: {} };
+const defaultProps = { initialValues: {}, disableAddReport: false };
 
 export const AddReportModal = (props) => {
   const [selectedForm, setSelectedForm] = useState(0);
@@ -24,6 +25,7 @@ export const AddReportModal = (props) => {
         selectedForm={selectedForm}
         formContent={[
           <AddReportForm
+            disableAddReport={props.disableAddReport}
             onSubmit={props.onSubmit}
             closeModal={props.closeModal}
             title={props.title}

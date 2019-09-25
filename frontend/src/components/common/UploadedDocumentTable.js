@@ -15,11 +15,11 @@ import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls"
 const propTypes = {
   files: PropTypes.arrayOf(PropTypes.objectOf(CustomPropTypes.mineReport)).isRequired,
   showRemove: PropTypes.bool,
-  updateMineReportSubmissions: PropTypes.func.isRequired,
-  mineReportSubmissions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
+  updateDocumentSet: PropTypes.func.isRequired,
+  documentSet: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
 };
 
-const defaultProps = { showRemove: false, mineReportSubmissions: [] };
+const defaultProps = { showRemove: false, documentSet: [] };
 
 const columns = [
   {
@@ -49,7 +49,7 @@ const columns = [
           <a
             onClick={() => {
               let fileToRemove = record.file;
-              let updatedSubmissions = record.mineReportSubmissions;
+              let updatedSubmissions = record.documentSet;
               updatedSubmissions[updatedSubmissions.length - 1].documents = reject(
                 updatedSubmissions[updatedSubmissions.length - 1].documents,
                 (file) => fileToRemove.document_manager_guid === file.document_manager_guid
@@ -58,7 +58,7 @@ const columns = [
               if (updatedSubmissions.length === 1 && updatedSubmissions[0].documents.length === 0) {
                 updatedSubmissions = [];
               }
-              record.updateMineReportSubmissions(updatedSubmissions);
+              record.updateDocumentSet(updatedSubmissions);
             }}
           >
             Remove
@@ -68,18 +68,13 @@ const columns = [
   },
 ];
 
-const transformRowData = (
-  file,
-  showRemove,
-  updateMineReportSubmissions,
-  mineReportSubmissions
-) => ({
+const transformRowData = (file, showRemove, updateDocumentSet, documentSet) => ({
   key: file.mine_document_guid,
   file,
   file_name: file.document_name,
   showRemove: showRemove,
-  updateMineReportSubmissions: updateMineReportSubmissions,
-  mineReportSubmissions: mineReportSubmissions,
+  updateDocumentSet: updateDocumentSet,
+  documentSet: documentSet,
 });
 
 export const UploadedDocumentsTable = (props) => (
@@ -88,12 +83,7 @@ export const UploadedDocumentsTable = (props) => (
     pagination={false}
     columns={columns}
     dataSource={props.files.map((file) =>
-      transformRowData(
-        file,
-        props.showRemove,
-        props.updateMineReportSubmissions,
-        props.mineReportSubmissions
-      )
+      transformRowData(file, props.showRemove, props.updateDocumentSet, props.documentSet)
     )}
   />
 );
