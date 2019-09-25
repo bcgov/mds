@@ -13,6 +13,8 @@ import CustomPropTypes from "@/customPropTypes";
 import { MineReportActions } from "@/components/mine/Reports/MineReportActions";
 import LinkButton from "@/components/common/LinkButton";
 import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls";
+import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
+import { getTableHeaders } from "@/utils/helpers";
 
 const { errorRed } = COLOR;
 
@@ -25,6 +27,7 @@ const propTypes = {
   openEditReportModal: PropTypes.func.isRequired,
   handleEditReport: PropTypes.func.isRequired,
   handleRemoveReport: PropTypes.func.isRequired,
+  isLoaded: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {};
@@ -135,20 +138,22 @@ const transformRowData = (report, openEditReportModal, handleEditReport, handleR
 });
 
 export const MineReportTable = (props) => (
-  <Table
-    align="left"
-    pagination={false}
-    columns={columns}
-    locale={{ emptyText: <NullScreen type="reports" /> }}
-    dataSource={props.mineReports.map((r) =>
-      transformRowData(
-        r,
-        props.openEditReportModal,
-        props.handleEditReport,
-        props.handleRemoveReport
-      )
-    )}
-  />
+  <TableLoadingWrapper condition={props.isLoaded} tableHeaders={getTableHeaders(columns)}>
+    <Table
+      align="left"
+      pagination={false}
+      columns={columns}
+      locale={{ emptyText: <NullScreen type="reports" /> }}
+      dataSource={props.mineReports.map((r) =>
+        transformRowData(
+          r,
+          props.openEditReportModal,
+          props.handleEditReport,
+          props.handleRemoveReport
+        )
+      )}
+    />
+  </TableLoadingWrapper>
 );
 
 MineReportTable.propTypes = propTypes;

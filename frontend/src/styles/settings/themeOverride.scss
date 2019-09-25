@@ -223,6 +223,11 @@
   }
 }
 
+// removes small border on NaveBar search drop-down
+.ant-menu-vertical {
+  border-right: none;
+}
+
 // HORIZONTAL MENU
 .ant-menu-horizontal {
   color: $darkest-grey;

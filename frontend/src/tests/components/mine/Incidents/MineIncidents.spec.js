@@ -9,7 +9,7 @@ const reducerProps = {};
 const setupDispatchProps = () => {
   dispatchProps.openModal = jest.fn();
   dispatchProps.closeModal = jest.fn();
-  dispatchProps.fetchMineIncidents = jest.fn();
+  dispatchProps.fetchMineIncidents = jest.fn(() => Promise.resolve());
   dispatchProps.fetchIncidentDocumentTypeOptions = jest.fn();
   dispatchProps.fetchMineIncidentFollowActionOptions = jest.fn();
   dispatchProps.fetchMineIncidentDeterminationOptions = jest.fn();

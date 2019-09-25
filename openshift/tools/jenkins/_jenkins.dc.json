@@ -32,18 +32,18 @@
       "kind": "PersistentVolumeClaim",
       "apiVersion": "v1",
       "metadata": {
-        "name": "jenkins-data-store",
+        "name": "jenkins-data-store-2",
         "creationTimestamp": null,
         "labels": {
           "app": "jenkins"
         },
         "annotations": {
-          "volume.beta.kubernetes.io/storage-class": "gluster-file",
+          "volume.beta.kubernetes.io/storage-class": "gluster-block",
           "volume.beta.kubernetes.io/storage-provisioner": "kubernetes.io/glusterfs"
         }
       },
       "spec": {
-        "accessModes": ["ReadWriteMany"],
+        "accessModes": ["ReadWriteOnce"],
         "resources": {
           "requests": {
             "storage": "40Gi"
@@ -166,9 +166,9 @@
           "spec": {
             "volumes": [
               {
-                "name": "jenkins-data-store",
+                "name": "jenkins-data-store-2",
                 "persistentVolumeClaim": {
-                  "claimName": "jenkins-data-store"
+                  "claimName": "jenkins-data-store-2"
                 }
               }
             ],
@@ -203,7 +203,7 @@
                   },
                   {
                     "name": "CONTAINER_CORE_LIMIT",
-                    "value": "5"
+                    "value": "4"
                   },
                   {
                     "name": "JAVA_OPTS",
@@ -212,17 +212,17 @@
                 ],
                 "resources": {
                   "limits": {
-                    "cpu": "6",
-                    "memory": "8Gi"
+                    "cpu": "4",
+                    "memory": "6Gi"
                   },
                   "requests": {
-                    "cpu": "3",
-                    "memory": "4Gi"
+                    "cpu": "1",
+                    "memory": "3.5Gi"
                   }
                 },
                 "volumeMounts": [
                   {
-                    "name": "jenkins-data-store",
+                    "name": "jenkins-data-store-2",
                     "mountPath": "/var/lib/jenkins"
                   }
                 ],

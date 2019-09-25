@@ -17,7 +17,7 @@ import utils.DataCleanup
         PermitSpec.class,
         ContactInfoSpec.class,
         Tailings.class,
-        Contacts.class,
+        // Contacts.class,
         // MapNavigationSpec.class,//TODO: UNCOMEMENT WHEN MDS-1924 IS DONE
         DataCleanup.class,
 ])
