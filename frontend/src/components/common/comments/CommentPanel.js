@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Spin, Comment, List } from "antd";
+import { Spin, Comment, List, Icon } from "antd";
 
 import CommentEditor from "./CommentEditor";
 
@@ -9,13 +9,14 @@ const propTypes = {
   loading: PropTypes.bool.isRequired,
   renderAdd: PropTypes.bool,
   comments: PropTypes.arrayOf(PropTypes.any).isRequired,
-  onSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func,
   onChange: PropTypes.func,
 };
 
 const defaultProps = {
   renderAdd: true,
   onChange: () => {},
+  onSubmit: () => {},
 };
 
 const CommentPanel = (props) => (
@@ -23,9 +24,9 @@ const CommentPanel = (props) => (
     {!props.loading ? (
       <List
         className="comment-list"
-        header={`${props.comments.length} total comments`}
         itemLayout="horizontal"
         dataSource={props.comments}
+        locale={{ emptyText: <Icon /> }}
         renderItem={(item) => (
           <li key={item.key}>
             <Comment
