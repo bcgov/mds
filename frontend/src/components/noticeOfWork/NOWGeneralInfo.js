@@ -128,7 +128,7 @@ export class NOWGeneralInfo extends Component {
                       }
                       bordered={false}
                     >
-                      <div>
+                      <div style={{ height: "70px" }}>
                         <h3>
                           {contact.ind_firstname && contact.ind_lastname
                             ? `${contact.ind_firstname} - ${contact.ind_firstname}`
