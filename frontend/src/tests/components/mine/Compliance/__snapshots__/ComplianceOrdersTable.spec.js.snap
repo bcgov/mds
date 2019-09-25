@@ -1,7 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ComplianceOrdersTable renders properly 1`] = `
-<div>
+<TableLoadingWrapper
+  isPaginated={false}
+  tableHeaders={
+    Array [
+      "",
+      "Order #",
+      "Violation",
+      "Report #",
+      "Inspector Name",
+      "Order Status",
+      "Due Date",
+    ]
+  }
+>
   <Table
     align="left"
     bordered={false}
@@ -105,5 +118,5 @@ exports[`ComplianceOrdersTable renders properly 1`] = `
     }
     useFixedHeader={false}
   />
-</div>
+</TableLoadingWrapper>
 `;

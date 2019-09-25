@@ -7,7 +7,9 @@ import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
 import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
+import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
 import { UNSUBSCRIBE } from "@/constants/assets";
+import { getTableHeaders } from "@/utils/helpers";
 
 /**
  * @class SubscriptionTable is a user specific table of mines they have subscribed to with the ability to unsubscribe
@@ -20,6 +22,7 @@ const propTypes = {
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineTenureHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  isLoaded: PropTypes.bool.isRequired,
 };
 
 export class SubscriptionTable extends Component {
@@ -47,7 +50,6 @@ export class SubscriptionTable extends Component {
     const columns = [
       {
         title: "Mine Name",
-        width: 200,
         dataIndex: "mineName",
         render: (text, record) => (
           <Link to={router.MINE_SUMMARY.dynamicRoute(record.key)}>{text}</Link>
@@ -55,20 +57,17 @@ export class SubscriptionTable extends Component {
       },
       {
         title: "Mine No.",
-        width: 100,
         dataIndex: "mineNo",
         render: (text) => <div title="Mine Number">{text}</div>,
       },
       {
         title: "Operational Status",
-        width: 150,
         dataIndex: "operationalStatus",
         render: (text) => <div title="Operational Status">{text}</div>,
       },
       {
         title: "Permit No.",
         dataIndex: "permit",
-        width: 150,
         render: (text, record) => (
           <div title="Permit Number">
             <ul className="mine-list__permits">
@@ -84,7 +83,6 @@ export class SubscriptionTable extends Component {
       {
         title: "Region",
         dataIndex: "region",
-        width: 150,
         render: (text, record) => (
           <div title="Region">
             {text}
@@ -95,7 +93,6 @@ export class SubscriptionTable extends Component {
       {
         title: "Tenure",
         dataIndex: "tenure",
-        width: 150,
         render: (text, record) => (
           <div title="Tenure">
             {text &&
@@ -111,7 +108,6 @@ export class SubscriptionTable extends Component {
       {
         title: "Commodity",
         dataIndex: "commodity",
-        width: 150,
         render: (text, record) => (
           <div title="Commodity">
             {text &&
@@ -130,13 +126,11 @@ export class SubscriptionTable extends Component {
       {
         title: "TSF",
         dataIndex: "tsf",
-        width: 150,
         render: (text) => <div title="TSF">{text}</div>,
       },
       {
         title: "",
         dataIndex: "",
-        width: 150,
         render: (text, record) => (
           <Popconfirm
             placement="left"
@@ -154,11 +148,11 @@ export class SubscriptionTable extends Component {
         ),
       },
     ];
+
     return (
-      <div className="tab__content">
-        <h4>Subscribed Mines</h4>
-        <br />
+      <TableLoadingWrapper condition={this.props.isLoaded} tableHeaders={getTableHeaders(columns)}>
         <Table
+          rowClassName="fade-in"
           align="left"
           pagination={false}
           columns={columns}
@@ -170,7 +164,7 @@ export class SubscriptionTable extends Component {
           )}
           locale={{ emptyText: <NullScreen type="subscription" /> }}
         />
-      </div>
+      </TableLoadingWrapper>
     );
   }
 }
