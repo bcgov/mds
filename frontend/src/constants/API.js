@@ -141,6 +141,7 @@ export const MINE_REPORT_COMMENTS = (mineGuid, reportGuid) =>
   `/mines/${mineGuid}/reports/${reportGuid}/comments`;
 export const MINE_REPORT_COMMENT = (mineGuid, reportGuid, commentGuid) =>
   `/mines/${mineGuid}/reports/${reportGuid}/comments/${commentGuid}`;
+export const MINE_REPORT_STATUS = () => `/mines/reports/report-status`;
 
 // Notice Of Work
 export const NOTICE_OF_WORK_APPLICATIONS = (params = {}) =>
