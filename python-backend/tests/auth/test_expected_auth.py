@@ -26,8 +26,8 @@ from app.api.parties.party.resources.party_list_resource import PartyListResourc
 from app.api.mines.permits.permit.resources.permit import PermitResource, PermitListResource
 from app.api.mines.permits.permit_amendment.resources.permit_amendment import PermitAmendmentResource, PermitAmendmentListResource
 from app.api.mines.permits.permit_amendment.resources.permit_amendment_document import PermitAmendmentDocumentResource, PermitAmendmentDocumentListResource
-from app.api.users.minespace.resources.minespace_user import MinespaceUserResource
-from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserMineResource
+from app.api.users.minespace.resources.minespace_user import MinespaceUserResource, MinespaceUserListResource
+from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserMineResource, MinespaceUserMineListResource
 from app.api.search.search.resources.search import SearchResource, SearchOptionsResource
 from app.api.search.search.resources.simple_search import SimpleSearchResource
 from app.api.mines.reports.resources.mine_reports import MineReportResource, MineReportListResource
@@ -92,10 +92,11 @@ from app.api.mines.reports.resources.mine_reports import MineReportResource, Min
      (SearchResource, "get", [VIEW_ALL]),
      (SearchOptionsResource, "get", [VIEW_ALL]),
      (SimpleSearchResource, "get", [VIEW_ALL]),
+     (MinespaceUserListResource, 'get', [MINE_ADMIN]),
+     (MinespaceUserListResource, 'post', [MINE_ADMIN]), 
      (MinespaceUserResource, 'get', [MINE_ADMIN]),
-     (MinespaceUserResource, 'post', [MINE_ADMIN]), 
      (MinespaceUserResource, 'delete', [MINE_ADMIN]),
-     (MinespaceUserMineResource, 'post', [MINE_ADMIN]),
+     (MinespaceUserMineListResource, 'post', [MINE_ADMIN]),
      (MinespaceUserMineResource, 'delete', [MINE_ADMIN])])
 def test_endpoint_auth(resource, method, expected_roles):
     endpoint = getattr(resource, method, None)

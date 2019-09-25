@@ -18,11 +18,11 @@ class MineStatusListResource(Resource, UserMixin):
 
 class MineStatusResource(Resource, UserMixin):
     @api.doc(params={'mine_status_guid': 'Mine status guid.'})
+    @api.marshal_with(MINE_STATUS_CODE_MODEL, envelope='records')
     @requires_role_view_all
     def get(self, mine_status_guid):
-
         mine_status = MineStatus.find_by_mine_status_guid(mine_status_guid)
         if not mine_status:
             raise NotFound('Mine Status not found')
 
-        return mine_status.json()
+        return mine_status

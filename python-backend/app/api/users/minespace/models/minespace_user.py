@@ -19,14 +19,6 @@ class MinespaceUser(Base):
 
     mines = db.relationship('MinespaceUserMine', backref='user', lazy='joined')
 
-    def json(self):
-        return {
-            'user_id': str(self.user_id),
-            'keycloak_guid': str(self.keycloak_guid or ''),
-            'email': self.email,
-            'mines': [str(x.mine_guid) for x in self.mines]
-        }
-
     @classmethod
     def get_all(cls):
         return cls.query.filter_by(deleted_ind=False).all()
@@ -41,7 +33,7 @@ class MinespaceUser(Base):
 
     @classmethod
     def find_by_email(cls, email):
-        return cls.query.filter_by(email=email).filter_by(deleted_ind=False).first()
+        return cls.query.filter_by(email=email).filter_by(deleted_ind=False).all()
 
     @classmethod
     def create_minespace_user(cls, email, add_to_session=True):

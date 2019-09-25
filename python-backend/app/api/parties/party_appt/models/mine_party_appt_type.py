@@ -23,17 +23,6 @@ class MinePartyAppointmentType(AuditMixin, Base):
     organization = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     grouping_level = db.Column(db.Integer)
 
-    def json(self):
-        return {
-            'mine_party_appt_type_code': self.mine_party_appt_type_code,
-            'description': self.description,
-            'display_order': self.display_order,
-            'person': self.person,
-            'organization': self.organization,
-            'grouping_level': self.grouping_level,
-            'active_ind': self.active_ind
-        }
-
     @classmethod
     def find_by_mine_party_appt_type_code(cls, code):
         try:
@@ -44,7 +33,7 @@ class MinePartyAppointmentType(AuditMixin, Base):
     @classmethod
     def find_all_active(cls):
         try:
-            return cls.query.filter_by(active_ind=True).order_by(
-                desc(cls.grouping_level), cls.display_order).all()
+            return cls.query.filter_by(active_ind=True).order_by(desc(cls.grouping_level),
+                                                                 cls.display_order).all()
         except ValueError:
             return None

@@ -9,6 +9,17 @@ MINE_DOCUMENT = api.model(
         'document_name': fields.String,
     })
 
+MINE_PARTY_APPT_TYPE_MODEL = api.model(
+    'MinePartyApptType', {
+        'mine_party_appt_type_code': fields.String,
+        'description': fields.String,
+        'display_order': fields.Integer,
+        'person': fields.Boolean,
+        'organization': fields.Boolean,
+        'grouping_level': fields.Integer,
+        'active_ind': fields.Boolean
+    })
+
 MINE_PARTY_APPT = api.model(
     'MinePartyAppointment', {
         'mine_party_appt_guid': fields.String,
