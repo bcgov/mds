@@ -17,7 +17,7 @@ import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
 import {
   updateMineRecord,
-  createMineType,
+  createMineTypes,
   removeMineType,
   fetchMineRecordById,
   createTailingsStorageFacility,
@@ -39,7 +39,7 @@ const propTypes = {
   openModal: PropTypes.func.isRequired,
   mine: CustomPropTypes.mine.isRequired,
   updateMineRecord: PropTypes.func.isRequired,
-  createMineType: PropTypes.func.isRequired,
+  createMineTypes: PropTypes.func.isRequired,
   removeMineType: PropTypes.func.isRequired,
   createTailingsStorageFacility: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
@@ -65,14 +65,10 @@ export class MineHeader extends Component {
         value.mine_name
       )
       .then(() => {
-        if (value.mine_types && value.mine_types.length > 0)
-          value.mine_types.map((newMineType) =>
-            this.props.createMineType(this.props.mine.mine_guid, newMineType)
-          );
-      })
-      .then(() => {
-        this.props.closeModal();
-        this.props.fetchMineRecordById(this.props.mine.mine_guid);
+        this.props.createMineTypes(this.props.mine.mine_guid, value.mine_types).then(() => {
+          this.props.closeModal();
+          this.props.fetchMineRecordById(this.props.mine.mine_guid);
+        });
       });
   };
 
@@ -240,15 +236,11 @@ export class MineHeader extends Component {
           <div className="inline-flex padding-small">
             <p className="field-title">Tenure</p>
             <div>
-              {this.props.transformedMineTypes.mine_tenure_type_code.length > 0 ? (
-                this.props.transformedMineTypes.mine_tenure_type_code.map((tenure) => (
-                  <span className="mine_tenure" key={tenure}>
-                    {this.props.mineTenureHash[tenure]}
-                  </span>
-                ))
-              ) : (
-                <p>{String.EMPTY_FIELD}</p>
-              )}
+              <p>
+                {this.props.transformedMineTypes.mine_tenure_type_code
+                  .map((tenure) => this.props.mineTenureHash[tenure])
+                  .join(", ")}
+              </p>
             </div>
           </div>
           <div className="inline-flex padding-small wrap">
@@ -356,7 +348,7 @@ const mapDispatchToProps = (dispatch) =>
       openModal,
       closeModal,
       updateMineRecord,
-      createMineType,
+      createMineTypes,
       removeMineType,
       fetchMineRecordById,
       createTailingsStorageFacility,

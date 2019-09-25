@@ -1,4 +1,3 @@
-import axios from "axios";
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
 import { request, success, error } from "@/actions/genericActions";
@@ -10,12 +9,13 @@ import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
 import CustomAxios from "@/customAxios";
 
-export const createMineType = (mineGuid, payload) => (dispatch) => {
-  dispatch(showLoading("modal"));
-  console.log(payload);
-  return CustomAxios()
-    .post(`${ENVIRONMENT.apiUrl}${API.MINE_TYPES(mineGuid)}`, payload, createRequestHeader())
-    .catch(() => dispatch(error(reducerTypes.CREATE_MINE_RECORD)));
+const handleError = (dispatch, reducer) => (err) => {
+  notification.error({
+    message: err.response ? err.response.data.message : String.ERROR,
+    duration: 10,
+  });
+  dispatch(error(reducer));
+  dispatch(hideLoading("modal"));
 };
 
 export const createMineRecord = (payload) => (dispatch) => {
@@ -23,7 +23,6 @@ export const createMineRecord = (payload) => (dispatch) => {
   dispatch(showLoading("modal"));
   return CustomAxios()
     .post(ENVIRONMENT.apiUrl + API.MINE, payload, createRequestHeader())
-    .then(createMineType(payload, dispatch, reducerTypes.CREATE_MINE_RECORD))
     .then((response) => {
       notification.success({
         message: `Successfully created: ${payload.mine_name}`,
@@ -41,7 +40,6 @@ export const updateMineRecord = (id, payload, mineName) => (dispatch) => {
   dispatch(showLoading("modal"));
   return CustomAxios()
     .put(`${ENVIRONMENT.apiUrl + API.MINE}/${id}`, payload, createRequestHeader())
-    .then(createMineType(payload, dispatch, reducerTypes.UPDATE_MINE_RECORD))
     .then((response) => {
       notification.success({
         message: `Successfully updated: ${mineName}`,
@@ -52,6 +50,16 @@ export const updateMineRecord = (id, payload, mineName) => (dispatch) => {
     })
     .catch(() => dispatch(error(reducerTypes.UPDATE_MINE_RECORD)))
     .finally(() => dispatch(hideLoading("modal")));
+};
+
+export const createMineTypes = (mineGuid, mineTypes) => (dispatch) => {
+  dispatch(request(reducerTypes.CREATE_MINE_TYPE));
+  let mineTypeResponses = mineTypes.map((mineType) =>
+    CustomAxios()
+      .post(`${ENVIRONMENT.apiUrl}${API.MINE_TYPES(mineGuid)}`, mineType, createRequestHeader())
+      .catch(handleError(dispatch, reducerTypes.CREATE_MINE_TYPE))
+  );
+  return Promise.all(mineTypeResponses);
 };
 
 export const removeMineType = (mineGuid, mineTypeGuid, tenure) => (dispatch) => {
