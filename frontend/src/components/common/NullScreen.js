@@ -27,6 +27,8 @@ const propTypes = {
     "subscription",
     "incidents",
     "reports",
+    "applications",
+    "notice-of-work",
   ]),
 };
 
@@ -35,7 +37,7 @@ const defaultProps = {
 };
 
 const NullScreen = (props) => (
-  <div className="null-screen">
+  <div className="null-screen fade-in">
     {props.type === "dashboard" && (
       <div>
         <img alt="mine_img" src={NO_MINE} />
@@ -74,12 +76,6 @@ const NullScreen = (props) => (
         <h3>{String.NO_NRIS_INSPECTIONS}</h3>
       </div>
     )}
-    {props.type === "variance" && (
-      <div>
-        <img alt="mine_img" src={PERMIT} />
-        <h3>{String.NO_VARIANCE}</h3>
-      </div>
-    )}
     {props.type === "approved-variances" && (
       <div>
         <img alt="mine_img" src={PERMIT} />
@@ -96,6 +92,12 @@ const NullScreen = (props) => (
       <div>
         <img alt="mine_img" src={PERMIT} />
         <h3>{String.NO_APPLICATION}</h3>
+      </div>
+    )}
+    {props.type === "notice-of-work" && (
+      <div>
+        <img alt="mine_img" src={PERMIT} />
+        <h3>There are no notice of work applications</h3>
       </div>
     )}
     {props.type === "no-results" && (

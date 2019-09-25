@@ -41,6 +41,7 @@ exports[`MineApplicationInfo renders properly 1`] = `
   <br />
   <Connect(MineApplicationTable)
     applications={Array []}
+    isLoaded={false}
     isMajorMine={true}
     openEditApplicationModal={[Function]}
   />

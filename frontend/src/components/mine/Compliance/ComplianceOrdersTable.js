@@ -1,14 +1,17 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { Table } from "antd";
 import moment from "moment";
 import { RED_CLOCK } from "@/constants/assets";
-import { formatDate, compareCodes } from "@/utils/helpers";
+import { formatDate, compareCodes, getTableHeaders } from "@/utils/helpers";
 import { COLOR } from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";
 import NullScreen from "@/components/common/NullScreen";
+import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
 
 const propTypes = {
   filteredOrders: CustomPropTypes.complianceOrders,
+  isLoaded: PropTypes.bool.isRequired,
 };
 
 const { errorRed } = COLOR;
@@ -113,7 +116,7 @@ const pageCount = (orders) => {
 };
 
 const ComplianceOrdersTable = (props) => (
-  <div>
+  <TableLoadingWrapper condition={props.isLoaded} tableHeaders={getTableHeaders(columns)}>
     <Table
       align="left"
       pagination
@@ -122,7 +125,7 @@ const ComplianceOrdersTable = (props) => (
       locale={{ emptyText: <NullScreen type="no-results" /> }}
       className={`center-pagination page-count-${pageCount(props.filteredOrders)}`}
     />
-  </div>
+  </TableLoadingWrapper>
 );
 
 ComplianceOrdersTable.propTypes = propTypes;

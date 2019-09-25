@@ -9,7 +9,6 @@ export const NO_MINE_MANAGER = "No assigned mine manager";
 export const NO_PREV_MINE_MANAGER = "No previous mine managers found";
 export const NO_PERMITTEE = "No assigned permittee";
 export const NO_PERMIT = "No permit information available";
-export const NO_VARIANCE = "No variance information available";
 export const NO_APPROVED_VARIANCE = "There are no approved variances";
 export const NO_VARIANCE_APPLICATIONS = "There are no pending variance applications";
 export const NO_APPLICATION = "No application information available";

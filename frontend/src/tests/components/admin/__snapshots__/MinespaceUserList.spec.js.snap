@@ -1,7 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MinespaceUserList renders properly 1`] = `
-<div>
+<TableLoadingWrapper
+  isPaginated={false}
+  tableHeaders={
+    Array [
+      "User Email",
+      "Mines",
+      "",
+    ]
+  }
+>
   <Table
     align="center"
     bordered={false}
@@ -11,20 +20,21 @@ exports[`MinespaceUserList renders properly 1`] = `
       Array [
         Object {
           "dataIndex": "email",
+          "render": [Function],
           "title": "User Email",
-          "width": 400,
+          "width": 150,
         },
         Object {
           "dataIndex": "mineNames",
           "render": [Function],
           "title": "Mines",
-          "width": 300,
+          "width": 150,
         },
         Object {
           "dataIndex": "delete",
           "render": [Function],
           "title": "",
-          "width": 50,
+          "width": 150,
         },
       ]
     }
@@ -39,12 +49,8 @@ exports[`MinespaceUserList renders properly 1`] = `
       }
     }
     pagination={false}
+    rowClassName="fade-in"
     rowKey="key"
-    scroll={
-      Object {
-        "x": 1500,
-      }
-    }
     showHeader={true}
     size="default"
     sortDirections={
@@ -55,5 +61,5 @@ exports[`MinespaceUserList renders properly 1`] = `
     }
     useFixedHeader={false}
   />
-</div>
+</TableLoadingWrapper>
 `;

@@ -2,7 +2,7 @@
 
 exports[`NullScreen renders properly 1`] = `
 <div
-  className="null-screen"
+  className="null-screen fade-in"
 >
   <div>
     <img

@@ -39,6 +39,7 @@ exports[`MineVariance renders properly 1`] = `
         }
       }
       isApplication={true}
+      isLoaded={false}
       mine={
         Object {
           "major_mine_ind": true,
@@ -134,6 +135,7 @@ exports[`MineVariance renders properly 1`] = `
           "306": "2.3.8 - Flammable Waste Storage",
         }
       }
+      isLoaded={false}
       mine={
         Object {
           "major_mine_ind": true,

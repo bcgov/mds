@@ -24,6 +24,7 @@ export class AdminDashboard extends Component {
     super(props);
     this.state = {
       activeTab: "verifiedMines",
+      isLoaded: false,
       verifiedMines: [],
       unverifiedMines: [],
     };
@@ -32,6 +33,7 @@ export class AdminDashboard extends Component {
   componentWillMount() {
     this.props.fetchMineVerifiedStatuses().then((response) => {
       this.setState({
+        isLoaded: true,
         verifiedMines: response.data
           .filter((vm) => vm.healthy_ind === true)
           .sort(this.compareMineName),
@@ -73,9 +75,10 @@ export class AdminDashboard extends Component {
                 <div>
                   <h4>{this.state.verifiedMines.length}&nbsp;Verified Mines</h4>
                   <div>
-                    {this.state.verifiedMines.length > 0 && (
-                      <AdminVerifiedMinesList minesVerifiedStatusList={this.state.verifiedMines} />
-                    )}
+                    <AdminVerifiedMinesList
+                      isLoaded={this.state.isLoaded}
+                      minesVerifiedStatusList={this.state.verifiedMines}
+                    />
                   </div>
                 </div>
               </div>
@@ -85,11 +88,10 @@ export class AdminDashboard extends Component {
                 <div>
                   <h4>{this.state.unverifiedMines.length}&nbsp;Mines Needing Re-Verification</h4>
                   <div>
-                    {this.state.unverifiedMines.length > 0 && (
-                      <AdminVerifiedMinesList
-                        minesVerifiedStatusList={this.state.unverifiedMines}
-                      />
-                    )}
+                    <AdminVerifiedMinesList
+                      isLoaded={this.state.isLoaded}
+                      minesVerifiedStatusList={this.state.unverifiedMines}
+                    />
                   </div>
                 </div>
               </div>

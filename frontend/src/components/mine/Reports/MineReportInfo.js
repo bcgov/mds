@@ -5,7 +5,7 @@ import queryString from "query-string";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Row } from "antd";
-import { isEmpty } from "lodash";
+import { isEmpty, debounce } from "lodash";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -64,10 +64,13 @@ export class MineReportInfo extends Component {
     mine: {},
     reportFilterParams: initialSearchValues,
     filteredReports: [],
+    isLoaded: false,
+    disableAddReport: false,
   };
 
   componentWillMount = () => {
     this.props.fetchMineReports(this.props.mineGuid).then(() => {
+      this.setState({ isLoaded: true });
       if (this.props.location.search) {
         this.renderDataFromURL(this.props.location.search);
       } else {
@@ -110,14 +113,17 @@ export class MineReportInfo extends Component {
   };
 
   handleAddReport = (values) => {
-    this.props
-      .createMineReport(this.props.mineGuid, values)
-      .then(() => this.props.closeModal())
-      .then(() =>
-        this.props.fetchMineReports(this.props.mineGuid).then(() => {
-          this.setFilteredReports();
-        })
-      );
+    this.setState({ disableAddReport: true }, () => {
+      this.props
+        .createMineReport(this.props.mineGuid, values)
+        .then(() => this.props.closeModal())
+        .then(() =>
+          this.props.fetchMineReports(this.props.mineGuid).then(() => {
+            this.setFilteredReports();
+          })
+        )
+        .finally(this.setState({ disableAddReport: false }));
+    });
   };
 
   handleRemoveReport = (reportGuid) => {
@@ -132,7 +138,8 @@ export class MineReportInfo extends Component {
     event.preventDefault();
     this.props.openModal({
       props: {
-        onSubmit: this.handleAddReport,
+        disableAddReport: this.state.disableAddReport,
+        onSubmit: debounce(this.handleAddReport, 2000),
         title: `Add report for ${this.state.mine.mine_name}`,
         mineGuid: this.props.mineGuid,
       },
@@ -215,7 +222,7 @@ export class MineReportInfo extends Component {
                 onClick={(event) =>
                   this.openAddReportModal(
                     event,
-                    this.handleAddReport,
+                    debounce(this.handleAddReport, 2000),
                     `${ModalContent.ADD_REPORT} to ${this.state.mine.mine_name}`
                   )
                 }
@@ -225,20 +232,17 @@ export class MineReportInfo extends Component {
             </AuthorizationWrapper>
           </Row>
         </div>
-        {this.props.mineReports && this.props.mineReports.length > 0 && (
-          <div className="advanced-search__container">
-            <div>
-              <h2>Filter By</h2>
-            </div>
-            <Row>
-              <ReportFilterForm
-                onSubmit={this.handleReportFilter}
-                initialValues={this.state.reportFilterParams}
-              />
-            </Row>
+        <div className="advanced-search__container">
+          <div>
+            <h2>Filter By</h2>
           </div>
-        )}
+          <ReportFilterForm
+            onSubmit={this.handleReportFilter}
+            initialValues={this.state.reportFilterParams}
+          />
+        </div>
         <MineReportTable
+          isLoaded={this.state.isLoaded}
           openEditReportModal={this.openEditReportModal}
           handleEditReport={this.handleEditReport}
           handleRemoveReport={this.handleRemoveReport}
