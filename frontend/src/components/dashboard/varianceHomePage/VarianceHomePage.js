@@ -32,12 +32,13 @@ import {
 } from "@/actionCreators/varianceActionCreator";
 import { getVariances, getVariancePageData } from "@/selectors/varianceSelectors";
 import { VarianceTable } from "@/components/dashboard/customHomePage/VarianceTable";
-import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import * as router from "@/constants/routes";
+import * as Strings from "@/constants/strings";
 import { fetchInspectors } from "@/actionCreators/partiesActionCreator";
 import VarianceSearch from "./VarianceSearch";
 import { formatParamStringToArray } from "@/utils/helpers";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+
 /**
  * @class Variance page is a landing page for variance searching
  *
@@ -66,7 +67,6 @@ const propTypes = {
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
 };
 
-// TODO: Implement the NoticeOfWorkHomePage.js patern using formatQueryListParams
 // to parse and join params safely
 export const joinOrRemove = (param, key) => {
   if (isEmpty(param)) {
@@ -109,6 +109,8 @@ export class VarianceHomePage extends Component {
     this.state = {
       variancesLoaded: false,
       params: {
+        page: Strings.DEFAULT_PAGE,
+        per_page: Strings.DEFAULT_PER_PAGE,
         compliance_code: formatParamStringToArray(this.params.compliance_code),
         variance_application_status_code: formatParamStringToArray(
           this.params.variance_application_status_code
@@ -120,15 +122,22 @@ export class VarianceHomePage extends Component {
         issue_date_before: this.params.issue_date_before,
         expiry_date_before: this.params.expiry_date_before,
         expiry_date_after: this.params.expiry_date_after,
+        ...this.params,
       },
     };
   }
 
   componentDidMount() {
     const params = this.props.location.search;
-
-    this.renderDataFromURL(params);
-
+    if (params) {
+      this.renderDataFromURL(params);
+    } else {
+      const defaultParams = {
+        page: Strings.DEFAULT_PAGE,
+        per_page: Strings.DEFAULT_PER_PAGE,
+      };
+      this.props.history.push(router.VARIANCE_DASHBOARD.dynamicRoute(defaultParams));
+    }
     this.props.fetchVariances(this.state.params).then(() => {
       this.setState({ variancesLoaded: true });
     });
@@ -207,30 +216,31 @@ export class VarianceHomePage extends Component {
   handleVarianceSearch = (searchParams, clear = false) => {
     const formattedSearchParams = formatParams(searchParams);
     const persistedParams = clear ? {} : formatParams(this.state.params);
-    const updatedParams = {
-      // Start from existing state
-      ...persistedParams,
-      // Overwrite prev params with any newly provided search params
-      ...formattedSearchParams,
-      // Reset page number
-      page: String.DEFAULT_PAGE,
-      // Retain per_page if present
-      per_page: persistedParams.per_page
-        ? persistedParams.params.per_page
-        : String.DEFAULT_PER_PAGE,
-    };
-    this.setState({ params: updatedParams });
-    this.props.history.push(router.VARIANCE_DASHBOARD.dynamicRoute(updatedParams));
+    this.setState((prevState) => {
+      const updatedParams = {
+        // Start from existing state
+        ...persistedParams,
+        // Overwrite prev params with any newly provided search params
+        ...formattedSearchParams,
+        // Reset page number
+        page: prevState.params.page ? prevState.params.page : Strings.DEFAULT_PAGE,
+        // Retain per_page if present
+        per_page: prevState.params.per_page ? prevState.params.per_page : Strings.DEFAULT_PER_PAGE,
+      };
+      this.props.history.push(router.VARIANCE_DASHBOARD.dynamicRoute(updatedParams));
+      return { params: updatedParams };
+    });
   };
 
   handleVariancePageChange = (page, per_page) => {
     this.setState({ variancesLoaded: false });
-    const params = { ...this.state.params, page, per_page };
-    return this.props.fetchVariances(params).then(() => {
-      this.setState({
+    return this.setState((prevState) => {
+      const params = { ...prevState.params, page, per_page };
+      this.props.history.push(router.VARIANCE_DASHBOARD.dynamicRoute(formatParams(params)));
+      return {
         variancesLoaded: true,
         params,
-      });
+      };
     });
   };
 
@@ -329,21 +339,20 @@ export class VarianceHomePage extends Component {
               filterVarianceStatusOptions={this.props.filterVarianceStatusOptions}
             />
           </AuthorizationWrapper>
-          <LoadingWrapper condition={this.state.variancesLoaded}>
-            <VarianceTable
-              isApplication={this.state.isApplication}
-              handleFilterChange={this.handleFilterChange}
-              variances={this.props.variances}
-              pageData={this.props.variancePageData}
-              handlePageChange={this.handleVariancePageChange}
-              handleVarianceSearch={this.handleVarianceSearch}
-              params={this.state.params}
-              openEditVarianceModal={this.openEditVarianceModal}
-              openViewVarianceModal={this.openViewVarianceModal}
-              sortField={this.state.params.sort_field}
-              sortDir={this.state.params.sort_dir}
-            />
-          </LoadingWrapper>
+          <VarianceTable
+            isLoaded={this.state.variancesLoaded}
+            isApplication={this.state.isApplication}
+            handleFilterChange={this.handleFilterChange}
+            variances={this.props.variances}
+            pageData={this.props.variancePageData}
+            handlePageChange={this.handleVariancePageChange}
+            handleVarianceSearch={this.handleVarianceSearch}
+            params={this.state.params}
+            openEditVarianceModal={this.openEditVarianceModal}
+            openViewVarianceModal={this.openViewVarianceModal}
+            sortField={this.state.params.sort_field}
+            sortDir={this.state.params.sort_dir}
+          />
         </div>
       </div>
     );

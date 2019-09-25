@@ -23,7 +23,7 @@ exports[`MineIncidents renders properly 1`] = `
       </AddButton>
     </Connect(AuthorizationWrapper)>
   </div>
-  <MineIncidentTable
+  <Connect(MineIncidentTable)
     followupActions={
       Array [
         Object {
@@ -51,6 +51,7 @@ exports[`MineIncidents renders properly 1`] = `
         },
       ]
     }
+    isLoaded={false}
     openMineIncidentModal={[Function]}
     openViewMineIncidentModal={[Function]}
   />

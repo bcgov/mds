@@ -60,11 +60,7 @@ export class NavBar extends Component {
   renderFullNav = () => (
     <div>
       <Dropdown overlay={this.reportingDropdown} placement="bottomLeft">
-        <button
-          id={this.ifActiveButton(router.REPORTING_DASHBOARD.route)}
-          type="button"
-          className="menu__btn"
-        >
+        <button id={this.ifActiveButton("reporting")} type="button" className="menu__btn">
           <span className="padding-small--right">Provincial Reporting</span>
           <Icon type="down" />
         </button>
@@ -103,7 +99,7 @@ export class NavBar extends Component {
         </Link>
       </AuthorizationWrapper>
       <Dropdown overlay={this.menu} placement="bottomLeft">
-        <button type="button" className="menu__btn">
+        <button type="button" className="menu__btn" id={this.ifActiveButton("my-dashboard")}>
           <Icon className="padding-small--right icon-sm" type="user" />
           <span className="padding-small--right">{this.props.userInfo.preferred_username}</span>
           <Icon type="down" />
@@ -232,6 +228,20 @@ export class NavBar extends Component {
           <AuthorizationWrapper inTesting>
             <Row>
               <Col span={24}>
+                <Link to={router.INCIDENTS_DASHBOARD.route}>
+                  <Button
+                    id={this.ifActiveButton(router.INCIDENTS_DASHBOARD.route)}
+                    className="menu--hamburger__btn--link"
+                  >
+                    Browse Incidents
+                  </Button>
+                </Link>
+              </Col>
+            </Row>
+          </AuthorizationWrapper>
+          <AuthorizationWrapper inTesting>
+            <Row>
+              <Col span={24}>
                 <Link to={router.NOTICE_OF_WORK_APPLICATIONS.route}>
                   <Button
                     id={this.ifActiveButton(router.NOTICE_OF_WORK_APPLICATIONS.route)}
@@ -312,6 +322,13 @@ export class NavBar extends Component {
           <button type="button">Browse Variances</button>
         </Link>
       </div>
+      <AuthorizationWrapper inTesting>
+        <div className="custom-menu-item">
+          <Link to={router.INCIDENTS_DASHBOARD.route}>
+            <button type="button">Browse Incidents</button>
+          </Link>
+        </div>
+      </AuthorizationWrapper>
       <AuthorizationWrapper inTesting>
         <div className="custom-menu-item">
           <Link to={router.NOTICE_OF_WORK_APPLICATIONS.route}>

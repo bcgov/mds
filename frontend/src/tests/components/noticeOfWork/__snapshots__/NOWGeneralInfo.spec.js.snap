@@ -179,7 +179,7 @@ exports[`NOWGeneralInfo renders properly 1`] = `
       className="padding-large--sides"
     >
       <Row
-        gutter={0}
+        gutter={16}
       >
         <Col
           key="0"
@@ -202,7 +202,13 @@ exports[`NOWGeneralInfo renders properly 1`] = `
               </div>
             }
           >
-            <div>
+            <div
+              style={
+                Object {
+                  "height": "70px",
+                }
+              }
+            >
               <h3>
                 N/A
               </h3>
@@ -254,7 +260,13 @@ exports[`NOWGeneralInfo renders properly 1`] = `
               </div>
             }
           >
-            <div>
+            <div
+              style={
+                Object {
+                  "height": "70px",
+                }
+              }
+            >
               <h3>
                 N/A
               </h3>

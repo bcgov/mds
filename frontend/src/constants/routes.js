@@ -4,6 +4,7 @@ import Logout from "@/components/common/Logout";
 import Dashboard from "@/components/dashboard/minesHomePage/Dashboard";
 import ContactHomePage from "@/components/dashboard/contactsHomePage/ContactHomePage";
 import VarianceHomePage from "@/components/dashboard/varianceHomePage/VarianceHomePage";
+import IncidentsHomePage from "@/components/dashboard/incidentsHomePage/IncidentsHomePage";
 import MineDashboard from "@/components/mine/MineDashboard";
 import PartyProfile from "@/components/parties/PartyProfile";
 import RelationshipProfile from "@/components/parties/RelationshipProfile";
@@ -144,19 +145,32 @@ export const RELATIONSHIP_PROFILE = {
 };
 
 export const REPORTING_DASHBOARD = {
-  route: "/dashboard/reporting",
+  route: "/dashboard/reporting/general",
   component: ReportingDashboard,
 };
 
 export const VARIANCE_DASHBOARD = {
-  route: "/dashboard/variance",
+  route: "/dashboard/reporting/variance",
   dynamicRoute: ({ page, per_page, ...params }) =>
-    `/dashboard/variance/?${queryString.stringify({ page, per_page, ...params }, { sort: false })}`,
+    `/dashboard/reporting/variance/?${queryString.stringify(
+      { page, per_page, ...params },
+      { sort: false }
+    )}`,
   component: VarianceHomePage,
 };
 
+export const INCIDENTS_DASHBOARD = {
+  route: "/dashboard/incidents",
+  dynamicRoute: ({ page, per_page, ...params }) =>
+    `/dashboard/incidents/?${queryString.stringify(
+      { page, per_page, ...params },
+      { sort: false }
+    )}`,
+  component: IncidentsHomePage,
+};
+
 export const EXECUTIVE_REPORTING_DASHBOARD = {
-  route: "/dashboard/executive-reporting",
+  route: "/dashboard/reporting/executive-reporting",
   component: ExecutiveReportingDashboard,
 };
 
@@ -172,9 +186,9 @@ export const SEARCH_RESULTS = {
 };
 
 export const NOTICE_OF_WORK_APPLICATIONS = {
-  route: "/dashboard/notice-of-work",
+  route: "/dashboard/reporting/notice-of-work",
   dynamicRoute: ({ page, per_page, ...params }) =>
-    `/dashboard/notice-of-work?${queryString.stringify(
+    `/dashboard/reporting/notice-of-work?${queryString.stringify(
       { page, per_page, ...params },
       { sort: false }
     )}`,

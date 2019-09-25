@@ -31,6 +31,7 @@ export const KEYCLOAK = {
 export const USER_ROLES = {
   role_view: "core_view_all",
   role_admin: "core_admin",
+  role_contact_admin: "core_contact_admin",
   role_edit_mines: "core_edit_mines",
   role_edit_parties: "core_edit_parties",
   role_edit_permits: "core_edit_permits",

@@ -6,6 +6,8 @@ import NullScreen from "@/components/common/NullScreen";
 import NOWActivities from "@/components/noticeOfWork/NOWActivities";
 import LinkButton from "@/components/common/LinkButton";
 import { downloadNowDocument } from "@/utils/actionlessNetworkCalls";
+import { UNIQUELY_SPATIAL } from "@/constants/fileTypes";
+import { isMineralOrCoal, isPlacer, isSandAndGravelOrQuarry } from "@/constants/NOWConditions";
 
 const propTypes = {
   noticeOfWork: CustomPropTypes.nowApplication.isRequired,
@@ -13,6 +15,7 @@ const propTypes = {
 
 export class NOWWorkPlan extends Component {
   renderSummaryOfReclamation = () => {
+    const nowType = this.props.noticeOfWork.noticeofworktype;
     const columns = [
       {
         title: "Activity",
@@ -49,6 +52,61 @@ export class NOWWorkPlan extends Component {
       },
     ];
 
+    // conditional rendering of the data is based on the same logic used for the activity sections on the NoW application form
+    const cutLinesRow =
+      isMineralOrCoal(nowType) && isPlacer(nowType)
+        ? [
+            {
+              activity: "Cut Lines and Induced Polarization Survey",
+              effectedArea:
+                this.props.noticeOfWork.cutlinesexplgriddisturbedarea || Strings.EMPTY_FIELD,
+              cost: this.props.noticeOfWork.cutlinesreclamationcost || Strings.EMPTY_FIELD,
+            },
+          ]
+        : [];
+
+    const placerRow = isPlacer(nowType)
+      ? [
+          {
+            activity: "Placer Operations",
+            effectedArea: this.props.noticeOfWork.placerreclamationarea || Strings.EMPTY_FIELD,
+            cost: this.props.noticeOfWork.placerreclamationcost || Strings.EMPTY_FIELD,
+          },
+        ]
+      : [];
+
+    const sandAndGravelRow = isSandAndGravelOrQuarry(nowType)
+      ? [
+          {
+            activity: "Sand and Gravel / Quarry Operations",
+            effectedArea: this.props.noticeOfWork.sandgrvqrytotaldistarea || Strings.EMPTY_FIELD,
+            cost: this.props.noticeOfWork.sandgrvqryreclamationcost || Strings.EMPTY_FIELD,
+          },
+        ]
+      : [];
+
+    const bulkSamplesRow = isMineralOrCoal(nowType)
+      ? [
+          {
+            activity: "Surface Bulk Sample",
+            effectedArea:
+              this.props.noticeOfWork.surfacebulksampletotaldistarea || Strings.EMPTY_FIELD,
+            cost: this.props.noticeOfWork.surfacebulksamplereclcost || Strings.EMPTY_FIELD,
+          },
+        ]
+      : [];
+
+    const undergroundExpRow =
+      isMineralOrCoal(nowType) && isPlacer(nowType)
+        ? [
+            {
+              activity: "Underground Exploration",
+              effectedArea: this.props.noticeOfWork.underexptotaldistarea || Strings.EMPTY_FIELD,
+              cost: this.props.noticeOfWork.expaccesstotaldistarea || Strings.EMPTY_FIELD,
+            },
+          ]
+        : [];
+
     const data = [
       {
         activity: "Access Roads, trails, Help Pads, Air Strips, Boat Ramps",
@@ -60,11 +118,7 @@ export class NOWWorkPlan extends Component {
         effectedArea: this.props.noticeOfWork.campbuildstgetotaldistarea || Strings.EMPTY_FIELD,
         cost: this.props.noticeOfWork.cbsfreclamationcost || Strings.EMPTY_FIELD,
       },
-      {
-        activity: "Cut Lines and Induced Polarization Survey",
-        effectedArea: this.props.noticeOfWork.cutlinesexplgriddisturbedarea || Strings.EMPTY_FIELD,
-        cost: this.props.noticeOfWork.cutlinesreclamationcost || Strings.EMPTY_FIELD,
-      },
+      ...cutLinesRow,
       {
         activity: "Exploration Surface Drilling",
         effectedArea: this.props.noticeOfWork.expsurfacedrilltotaldistarea || Strings.EMPTY_FIELD,
@@ -75,31 +129,15 @@ export class NOWWorkPlan extends Component {
         effectedArea: this.props.noticeOfWork.mechtrenchingtotaldistarea || Strings.EMPTY_FIELD,
         cost: this.props.noticeOfWork.mechtrenchingreclamationcost || Strings.EMPTY_FIELD,
       },
-      {
-        activity: "Placer Operations",
-        effectedArea: this.props.noticeOfWork.placerreclamationarea || Strings.EMPTY_FIELD,
-        cost: this.props.noticeOfWork.placerreclamationcost || Strings.EMPTY_FIELD,
-      },
-      {
-        activity: "Sand and Gravel / Quarry Operations",
-        effectedArea: this.props.noticeOfWork.sandgrvqryreclamation || Strings.EMPTY_FIELD,
-        cost: this.props.noticeOfWork.sandgrvqryreclamationcost || Strings.EMPTY_FIELD,
-      },
+      ...placerRow,
+      ...sandAndGravelRow,
       {
         activity: "Settling Ponds",
         effectedArea: this.props.noticeOfWork.pondstotaldistarea || Strings.EMPTY_FIELD,
         cost: this.props.noticeOfWork.pondsreclamationcost || Strings.EMPTY_FIELD,
       },
-      {
-        activity: "Surface Bulk Sample",
-        effectedArea: this.props.noticeOfWork.surfacebulksampletotaldistarea || Strings.EMPTY_FIELD,
-        cost: this.props.noticeOfWork.surfacebulksamplereclcost || Strings.EMPTY_FIELD,
-      },
-      {
-        activity: "Underground Exploration",
-        effectedArea: this.props.noticeOfWork.underexptotaldistarea || Strings.EMPTY_FIELD,
-        cost: this.props.noticeOfWork.expaccesstotaldistarea || Strings.EMPTY_FIELD,
-      },
+      ...bulkSamplesRow,
+      ...undergroundExpRow,
       {
         activity: "Total:",
         footer: true,
@@ -146,9 +184,8 @@ export class NOWWorkPlan extends Component {
         render: (text, record) => (
           <div title="File Name">
             <LinkButton
-              key={record.id}
               onClick={() =>
-                downloadNowDocument(record.id, record.application_guid, record.filename)
+                downloadNowDocument(record.key, record.application_guid, record.filename)
               }
             >
               <span>{text}</span>
@@ -170,15 +207,24 @@ export class NOWWorkPlan extends Component {
       },
     ];
 
-    const transfromData = (documents, application_guid) =>
-      documents.map((document) => ({
-        id: document.id,
-        application_guid: application_guid,
-        filename: document.filename || Strings.EMPTY_FIELD,
-        url: document.documenturl,
-        category: document.documenttype || Strings.EMPTY_FIELD,
-        description: document.description || Strings.EMPTY_FIELD,
-      }));
+    const isSpatialFile = (document) =>
+      document.documenttype === "SpatialFileDoc" ||
+      (document.filename &&
+        Object.keys(UNIQUELY_SPATIAL).includes(
+          document.filename.substr(document.filename.length - 4)
+        ));
+
+    const transfromData = (documents, application_guid, spatial = false) =>
+      documents
+        .filter((document) => (spatial ? isSpatialFile(document) : !isSpatialFile(document)))
+        .map((document) => ({
+          key: document.id,
+          application_guid,
+          filename: document.filename || Strings.EMPTY_FIELD,
+          url: document.documenturl,
+          category: document.documenttype || Strings.EMPTY_FIELD,
+          description: document.description || Strings.EMPTY_FIELD,
+        }));
 
     return (
       <div>
@@ -196,6 +242,28 @@ export class NOWWorkPlan extends Component {
                 this.props.noticeOfWork.application_guid
               )}
               locale={{ emptyText: "There are no documents associated with this Notice of Work" }}
+            />
+          ) : (
+            <NullScreen type="documents" />
+          )}
+        </div>
+        <br />
+        <h3>Spatial Files</h3>
+        <Divider />
+        <div className="padding-large--sides">
+          {this.props.noticeOfWork.documents.length >= 1 ? (
+            <Table
+              align="left"
+              pagination={false}
+              columns={columns}
+              dataSource={transfromData(
+                this.props.noticeOfWork.documents,
+                this.props.noticeOfWork.application_guid,
+                true
+              )}
+              locale={{
+                emptyText: "There are no spacial files associated with this Notice of Work",
+              }}
             />
           ) : (
             <NullScreen type="documents" />

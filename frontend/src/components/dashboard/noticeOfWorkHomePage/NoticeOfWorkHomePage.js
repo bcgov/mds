@@ -15,7 +15,6 @@ import { fetchRegionOptions } from "@/actionCreators/staticContentActionCreator"
 import NoticeOfWorkTable from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkTable";
 import NoticeOfWorkSearch from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkSearch";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
-import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import { fetchNoticeOfWorkApplications } from "@/actionCreators/noticeOfWorkActionCreator";
 import { getNoticeOfWorkList, getNoticeOfWorkPageData } from "@/selectors/noticeOfWorkSelectors";
 import { formatQueryListParams } from "@/utils/helpers";
@@ -129,6 +128,7 @@ export class NoticeOfWorkHomePage extends Component {
         <div className="landing-page__header">
           <div>
             <h1>Browse Notice of Work</h1>
+            <p>Applications shown are from NROS and vFCBC only</p>
           </div>
         </div>
         <div className="landing-page__content">
@@ -137,27 +137,26 @@ export class NoticeOfWorkHomePage extends Component {
               handleSearch={this.handleSearch}
               initialValues={{ mine_search: this.state.params.mine_search }}
             />
-            <LoadingWrapper condition={this.state.isLoaded}>
-              <div>
-                <NoticeOfWorkTable
-                  handleSearch={this.handleSearch}
-                  noticeOfWorkApplications={this.props.noticeOfWorkApplications}
-                  sortField={this.state.params.sort_field}
-                  sortDir={this.state.params.sort_dir}
-                  searchParams={this.state.params}
-                  mineRegionHash={this.props.mineRegionHash}
-                  mineRegionOptions={this.props.mineRegionOptions}
+            <div>
+              <NoticeOfWorkTable
+                isLoaded={this.state.isLoaded}
+                handleSearch={this.handleSearch}
+                noticeOfWorkApplications={this.props.noticeOfWorkApplications}
+                sortField={this.state.params.sort_field}
+                sortDir={this.state.params.sort_dir}
+                searchParams={this.state.params}
+                mineRegionHash={this.props.mineRegionHash}
+                mineRegionOptions={this.props.mineRegionOptions}
+              />
+              <div className="center">
+                <ResponsivePagination
+                  onPageChange={this.onPageChange}
+                  currentPage={Number(this.state.params.page)}
+                  pageTotal={Number(this.props.pageData.total)}
+                  itemsPerPage={Number(this.state.params.per_page)}
                 />
-                <div className="center">
-                  <ResponsivePagination
-                    onPageChange={this.onPageChange}
-                    currentPage={Number(this.state.params.page)}
-                    pageTotal={Number(this.props.pageData.total)}
-                    itemsPerPage={Number(this.state.params.per_page)}
-                  />
-                </div>
               </div>
-            </LoadingWrapper>
+            </div>
           </div>
         </div>
       </div>

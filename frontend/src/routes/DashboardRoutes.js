@@ -49,6 +49,11 @@ const DashboardRoutes = () => (
     />
     <Route
       exact
+      path={routes.INCIDENTS_DASHBOARD.route}
+      component={routes.INCIDENTS_DASHBOARD.component}
+    />
+    <Route
+      exact
       path={routes.NOTICE_OF_WORK_APPLICATIONS.route}
       component={routes.NOTICE_OF_WORK_APPLICATIONS.component}
     />

@@ -28,14 +28,26 @@ const defaultProps = {
   mine: {},
 };
 
+// returns validation errors to be displayed to the user.
 const checkDatesForOverlap = (values, props) => {
   const existingAppointments = props.partyRelationships.filter(
-    ({ mine_party_appt_type_code, mine_party_appt_guid }) =>
-      mine_party_appt_type_code === values.mine_party_appt_type_code &&
-      mine_party_appt_guid !== values.mine_party_appt_guid
+    ({ mine_party_appt_type_code, related_guid, mine_party_appt_guid }) => {
+      const match =
+        mine_party_appt_type_code === props.partyRelationshipType.mine_party_appt_type_code &&
+        mine_party_appt_guid !== values.mine_party_appt_guid;
+      if (related_guid !== "") {
+        return match && values.related_guid === related_guid;
+      }
+      return match;
+    }
   );
 
-  return validateDateRanges(existingAppointments, values, props.partyRelationshipType.description);
+  return validateDateRanges(
+    existingAppointments,
+    values,
+    props.partyRelationshipType.description,
+    false
+  );
 };
 
 const validate = (values, props) => {

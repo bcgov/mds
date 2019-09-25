@@ -10,7 +10,7 @@ const setupDispatchProps = () => {
   dispatchProps.openModal = jest.fn();
   dispatchProps.closeModal = jest.fn();
   dispatchProps.createVariance = jest.fn();
-  dispatchProps.fetchVariancesByMine = jest.fn();
+  dispatchProps.fetchVariancesByMine = jest.fn(() => Promise.resolve());
   dispatchProps.addDocumentToVariance = jest.fn();
   dispatchProps.updateVariance = jest.fn();
 };

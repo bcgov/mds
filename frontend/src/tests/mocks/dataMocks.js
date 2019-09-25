@@ -900,7 +900,6 @@ export const PERMITTEE = {
   },
 };
 
-
 export const MINE_TSF_REQUIRED_REPORTS_RESPONSE = {
   records: [
     {
@@ -1562,6 +1561,10 @@ export const INCIDENTS = {
         "Parent south person form evidence receive tree wide memory but medical car himself benefit key really series sea enter money prove if lawyer seven ready religious shake.",
     },
   ],
+  current_page: 1,
+  items_per_page: 5,
+  total: 25,
+  total_pages: 5,
 };
 
 export const FOLLOWUP_ACTIONS = [

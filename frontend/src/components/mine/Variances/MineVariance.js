@@ -13,7 +13,6 @@ import * as Strings from "@/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import AddButton from "@/components/common/AddButton";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import NullScreen from "@/components/common/NullScreen";
 import { getMines, getMineGuid } from "@/selectors/mineSelectors";
 import {
   getDropdownHSRCMComplianceCodes,
@@ -51,6 +50,16 @@ const propTypes = {
 };
 
 export class MineVariance extends Component {
+  state = {
+    isLoaded: false,
+  };
+
+  componentDidMount() {
+    this.props.fetchVariancesByMine({ mineGuid: this.props.mineGuid }).then(() => {
+      this.setState({ isLoaded: true });
+    });
+  }
+
   handleAddVariances = (files, isApplication) => (values) => {
     const { variance_document_category_code } = values;
     const variance_application_status_code = isApplication
@@ -159,36 +168,35 @@ export class MineVariance extends Component {
     });
   }
 
-  renderVarianceTables = (mine) =>
-    this.props.varianceApplications.length > 0 || this.props.approvedVariances.length > 0 ? (
-      <div>
-        <br />
-        <h4 className="uppercase">Variance Applications</h4>
-        <br />
-        <MineVarianceTable
-          openEditVarianceModal={this.openEditVarianceModal}
-          openViewVarianceModal={this.openViewVarianceModal}
-          variances={this.props.varianceApplications}
-          complianceCodesHash={this.props.complianceCodesHash}
-          mine={mine}
-          varianceStatusOptionsHash={this.props.varianceStatusOptionsHash}
-          isApplication
-        />
-        <br />
-        <h4 className="uppercase">Approved Variances</h4>
-        <br />
-        <MineVarianceTable
-          openEditVarianceModal={this.openEditVarianceModal}
-          openViewVarianceModal={this.openViewVarianceModal}
-          variances={this.props.approvedVariances}
-          complianceCodesHash={this.props.complianceCodesHash}
-          varianceStatusOptionsHash={this.props.varianceStatusOptionsHash}
-          mine={mine}
-        />
-      </div>
-    ) : (
-      <NullScreen type="variance" />
-    );
+  renderVarianceTables = (mine) => (
+    <div>
+      <br />
+      <h4 className="uppercase">Variance Applications</h4>
+      <br />
+      <MineVarianceTable
+        isLoaded={this.state.isLoaded}
+        openEditVarianceModal={this.openEditVarianceModal}
+        openViewVarianceModal={this.openViewVarianceModal}
+        variances={this.props.varianceApplications}
+        complianceCodesHash={this.props.complianceCodesHash}
+        mine={mine}
+        varianceStatusOptionsHash={this.props.varianceStatusOptionsHash}
+        isApplication
+      />
+      <br />
+      <h4 className="uppercase">Approved Variances</h4>
+      <br />
+      <MineVarianceTable
+        isLoaded={this.state.isLoaded}
+        openEditVarianceModal={this.openEditVarianceModal}
+        openViewVarianceModal={this.openViewVarianceModal}
+        variances={this.props.approvedVariances}
+        complianceCodesHash={this.props.complianceCodesHash}
+        varianceStatusOptionsHash={this.props.varianceStatusOptionsHash}
+        mine={mine}
+      />
+    </div>
+  );
 
   render() {
     const mine = this.props.mines[this.props.mineGuid];

@@ -118,7 +118,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
   <Route
     component={[Function]}
     exact={true}
-    path="/dashboard/reporting"
+    path="/dashboard/reporting/general"
   />
   <Route
     component={
@@ -131,7 +131,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
-    path="/dashboard/executive-reporting"
+    path="/dashboard/reporting/executive-reporting"
   />
   <Route
     component={
@@ -144,7 +144,20 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
-    path="/dashboard/variance"
+    path="/dashboard/reporting/variance"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(IncidentsHomePage)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/dashboard/incidents"
   />
   <Route
     component={
@@ -157,7 +170,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
-    path="/dashboard/notice-of-work"
+    path="/dashboard/reporting/notice-of-work"
   />
   <Route
     component={

@@ -129,8 +129,6 @@ export const createTailingsStorageFacility = (mine_guid, payload) => (dispatch) 
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-
-
 export const fetchMineRecords = (params) => (dispatch) => {
   const defaultParams = params || String.DEFAULT_DASHBOARD_PARAMS;
   dispatch(request(reducerTypes.GET_MINE_RECORDS));
@@ -187,7 +185,6 @@ export const fetchMineNameList = (params = {}) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
-
 export const fetchMineBasicInfoList = (mine_guids) => (dispatch) => {
   dispatch(showLoading());
   dispatch(request(reducerTypes.GET_MINE_BASIC_INFO_LIST));
@@ -200,7 +197,6 @@ export const fetchMineBasicInfoList = (mine_guids) => (dispatch) => {
     .catch(() => dispatch(error(reducerTypes.GET_MINE_BASIC_INFO_LIST)))
     .finally(() => dispatch(hideLoading()));
 };
-
 
 export const fetchMineDocuments = (mineGuid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_DOCUMENTS));
@@ -294,53 +290,4 @@ export const fetchSubscribedMinesByUser = () => (dispatch) => {
     })
     .catch(() => dispatch(error(reducerTypes.GET_SUBSCRIBED_MINES)))
     .finally(() => dispatch(hideLoading()));
-};
-
-// MineIncidents
-export const createMineIncident = (mine_guid, payload) => (dispatch) => {
-  dispatch(request(reducerTypes.CREATE_MINE_INCIDENT));
-  return CustomAxios()
-    .post(`${ENVIRONMENT.apiUrl}${API.MINE_INCIDENTS(mine_guid)}`, payload, createRequestHeader())
-    .then((response) => {
-      notification.success({
-        message: "Successfully created incident.",
-        duration: 10,
-      });
-      dispatch(success(reducerTypes.CREATE_MINE_INCIDENT));
-      return response;
-    })
-    .catch(() => dispatch(error(reducerTypes.CREATE_MINE_INCIDENT)));
-};
-
-export const fetchMineIncidents = (mine_guid) => (dispatch) => {
-  dispatch(request(reducerTypes.GET_MINE_INCIDENTS));
-  dispatch(showLoading());
-  return CustomAxios()
-    .get(`${ENVIRONMENT.apiUrl}${API.MINE_INCIDENTS(mine_guid)}`, createRequestHeader())
-    .then((response) => {
-      dispatch(success(reducerTypes.GET_MINE_INCIDENTS));
-      dispatch(mineActions.storeMineIncidents(response.data));
-      return response;
-    })
-    .catch(() => dispatch(error(reducerTypes.GET_MINE_INCIDENTS)))
-    .finally(() => dispatch(hideLoading()));
-};
-
-export const updateMineIncident = (mineGuid, mineIncidentGuid, payload) => (dispatch) => {
-  dispatch(request(reducerTypes.UPDATE_MINE_INCIDENT));
-  return CustomAxios()
-    .put(
-      `${ENVIRONMENT.apiUrl}${API.MINE_INCIDENT(mineGuid, mineIncidentGuid)}`,
-      payload,
-      createRequestHeader()
-    )
-    .then((response) => {
-      notification.success({
-        message: "Successfully updated incident.",
-        duration: 10,
-      });
-      dispatch(success(reducerTypes.UPDATE_MINE_INCIDENT));
-      return response;
-    })
-    .catch(() => dispatch(error(reducerTypes.UPDATE_MINE_INCIDENT)));
 };

@@ -184,7 +184,7 @@ export class AddReportForm extends Component {
               <Field
                 id="submission_year"
                 name="submission_year"
-                label="Report Compliance Year/Period"
+                label="Report Compliance Year/Period*"
                 placeholder=""
                 component={renderConfig.YEAR}
                 validate={[required]}
@@ -195,7 +195,7 @@ export class AddReportForm extends Component {
               <Field
                 id="due_date"
                 name="due_date"
-                label="Due Date"
+                label="Due Date*"
                 placeholder=""
                 component={renderConfig.DATE}
                 validate={[required]}
@@ -238,7 +238,12 @@ export class AddReportForm extends Component {
               Cancel
             </Button>
           </Popconfirm>
-          <Button className="full-mobile" type="primary" htmlType="submit">
+          <Button
+            disabled={this.props.disableAddReport}
+            className="full-mobile"
+            type="primary"
+            htmlType="submit"
+          >
             {this.props.title}
           </Button>
         </div>
@@ -260,7 +265,7 @@ export default compose(
   })),
   reduxForm({
     form: FORM.ADD_REPORT,
-    touchOnBlur: true,
+    touchOnBlur: false,
     onSubmitSuccess: resetForm(FORM.ADD_REPORT),
   })
 )(AddReportForm);

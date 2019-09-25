@@ -7,17 +7,16 @@ exports[`VarianceFileUpload renders properly 1`] = `
   <Field
     acceptedFileTypesMap={
       Object {
-        "application/msword": ".doc",
-        "application/pdf": ".pdf",
-        "application/rtf": ".rtf",
-        "application/vnd.ms-excel": ".xls",
-        "application/vnd.oasis.opendocument.text": ".odt",
-        "application/vnd.oasis.opendocument.text-master": ".odm",
-        "application/vnd.oasis.opendocument.text-template": ".ott",
-        "application/vnd.oasis.opendocument.text-web": ".oth",
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": ".xlsx",
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document": ".docx",
-        "text/rtf": null,
+        ".doc": "application/msword",
+        ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        ".odm": "application/vnd.oasis.opendocument.text-master",
+        ".odt": "application/vnd.oasis.opendocument.text",
+        ".oth": "application/vnd.oasis.opendocument.text-web",
+        ".ott": "application/vnd.oasis.opendocument.text-template",
+        ".pdf": "application/pdf",
+        ".rtf": "application/rtf",
+        ".xls": "application/vnd.ms-excel",
+        ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       }
     }
     allowMultiple={true}

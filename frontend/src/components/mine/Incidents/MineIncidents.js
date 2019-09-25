@@ -18,8 +18,9 @@ import {
   fetchMineIncidents,
   createMineIncident,
   updateMineIncident,
-} from "@/actionCreators/mineActionCreator";
-import { getMineIncidents, getMines, getMineGuid } from "@/selectors/mineSelectors";
+} from "@/actionCreators/incidentActionCreator";
+import { getMineIncidents } from "@/selectors/incidentSelectors";
+import { getMines, getMineGuid } from "@/selectors/mineSelectors";
 import {
   getDropdownIncidentFollowupActionOptions,
   getDangerousOccurrenceSubparagraphOptions,
@@ -69,8 +70,12 @@ const defaultProps = {
 };
 
 export class MineIncidents extends Component {
+  state = { isLoaded: false };
+
   componentDidMount() {
-    this.props.fetchMineIncidents(this.props.mineGuid);
+    this.props.fetchMineIncidents(this.props.mineGuid).then(() => {
+      this.setState({ isLoaded: true });
+    });
     this.props.fetchIncidentDocumentTypeOptions();
     this.props.fetchMineIncidentFollowActionOptions();
     this.props.fetchMineIncidentDeterminationOptions();
@@ -182,6 +187,7 @@ export class MineIncidents extends Component {
           </AuthorizationWrapper>
         </div>
         <MineIncidentTable
+          isLoaded={this.state.isLoaded}
           incidents={this.props.mineIncidents}
           followupActions={this.props.followupActions}
           openMineIncidentModal={this.openMineIncidentModal}
