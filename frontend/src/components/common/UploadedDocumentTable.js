@@ -16,7 +16,7 @@ const propTypes = {
   updateDocumentHandler: PropTypes.func.isRequired,
 };
 
-const defaultProps = { showRemove: false, documentSet: [] };
+const defaultProps = { showRemove: true };
 
 const columns = [
   {
