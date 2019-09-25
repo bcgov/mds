@@ -48,16 +48,7 @@ class  Contacts extends GebReportingSpec {
         waitFor() { applyFilterButton.click() }
 
         then: "I should get single person with that name."
-<<<<<<< HEAD
-<<<<<<< HEAD
         contactTableContent.text().startsWith( CONTACT_FULL_NAME_2)
-=======
-        contactTableContent.text()startsWith(CONTACT_FULL_NAME_2)
->>>>>>> 94270fd2fe816759f9cea450a0cde1e26faaee48
-=======
-        contactTableContent.text()startsWith(CONTACT_FULL_NAME_2)
->>>>>>> 94270fd2fe816759f9cea450a0cde1e26faaee48
-
     }
 
     def "Scenario: User can create a person contact and add them as a minemanger."(){
