@@ -5,7 +5,7 @@ import queryString from "query-string";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Row } from "antd";
-import { isEmpty } from "lodash";
+import { isEmpty, debounce } from "lodash";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -112,17 +112,17 @@ export class MineReportInfo extends Component {
 
   handleAddReport = (values) => {
     if (!this.state.disableAddReport) {
-      this.setState({ disableAddReport: true });
-      this.props
-        .createMineReport(this.props.mineGuid, values)
-        .then(this.setState({ disableAddReport: false }))
-        .then(() => this.props.closeModal())
-        .then(() =>
-          this.props.fetchMineReports(this.props.mineGuid).then(() => {
-            this.setFilteredReports();
-          })
-        )
-        .finally(this.setState({ disableAddReport: false }));
+      this.setState({ disableAddReport: true }, () => {
+        this.props
+          .createMineReport(this.props.mineGuid, values)
+          .then(() => this.props.closeModal())
+          .then(() =>
+            this.props.fetchMineReports(this.props.mineGuid).then(() => {
+              this.setFilteredReports();
+            })
+          )
+          .finally(this.setState({ disableAddReport: false }));
+      });
     }
   };
 
@@ -138,7 +138,8 @@ export class MineReportInfo extends Component {
     event.preventDefault();
     this.props.openModal({
       props: {
-        onSubmit: this.handleAddReport,
+        disableAddReport: this.state.disableAddReport,
+        onSubmit: debounce(this.handleAddReport, 1000),
         title: `Add report for ${this.state.mine.mine_name}`,
         mineGuid: this.props.mineGuid,
       },
@@ -221,7 +222,7 @@ export class MineReportInfo extends Component {
                 onClick={(event) =>
                   this.openAddReportModal(
                     event,
-                    this.handleAddReport,
+                    debounce(this.handleAddReport, 1000),
                     `${ModalContent.ADD_REPORT} to ${this.state.mine.mine_name}`
                   )
                 }
