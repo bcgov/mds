@@ -12,6 +12,7 @@ body {
 
 .content {
   overflow: initial;
+  min-height: 100vh;
   background-color: $pure-white;
 
   &--light-grey {

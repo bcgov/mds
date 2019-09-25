@@ -21,9 +21,32 @@ exports[`MineReportInfo renders properly 1`] = `
       </Connect(AuthorizationWrapper)>
     </Row>
   </div>
+  <div
+    className="advanced-search__container"
+  >
+    <div>
+      <h2>
+        Filter By
+      </h2>
+    </div>
+    <Connect(ReduxForm)
+      initialValues={
+        Object {
+          "compliance_year": "",
+          "report_due_date_end": "",
+          "report_due_date_start": "",
+          "report_name": "",
+          "report_status": "",
+          "report_type": "",
+        }
+      }
+      onSubmit={[Function]}
+    />
+  </div>
   <MineReportTable
     handleEditReport={[Function]}
     handleRemoveReport={[Function]}
+    isLoaded={false}
     mineReports={Array []}
     openEditReportModal={[Function]}
   />

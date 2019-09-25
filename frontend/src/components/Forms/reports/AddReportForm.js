@@ -238,7 +238,12 @@ export class AddReportForm extends Component {
               Cancel
             </Button>
           </Popconfirm>
-          <Button className="full-mobile" type="primary" htmlType="submit">
+          <Button
+            disabled={this.props.disableAddReport}
+            className="full-mobile"
+            type="primary"
+            htmlType="submit"
+          >
             {this.props.title}
           </Button>
         </div>
