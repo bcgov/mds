@@ -4,7 +4,7 @@ import { Spin, Icon } from "antd";
 import * as Style from "@/constants/styles";
 
 /**
- * @constant LoadingWrapper renders react children || or loading view
+ * @constant LoadingWrapper renders react children or loading view
  */
 
 const propTypes = {

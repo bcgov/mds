@@ -19,7 +19,6 @@ import CustomPropTypes from "@/customPropTypes";
 import { getSubscribedMines } from "@/selectors/mineSelectors";
 import { fetchSubscribedMinesByUser, unSubscribe } from "@/actionCreators/mineActionCreator";
 import { SubscriptionTable } from "./SubscriptionTable";
-import { fetchInspectors } from "@/actionCreators/partiesActionCreator";
 
 /**
  * @class CustomHomePage is a personalized landing page for users
@@ -31,7 +30,6 @@ const propTypes = {
   fetchMineTenureTypes: PropTypes.func.isRequired,
   fetchMineComplianceCodes: PropTypes.func.isRequired,
   fetchRegionOptions: PropTypes.func.isRequired,
-  fetchInspectors: PropTypes.func.isRequired,
   fetchMineCommodityOptions: PropTypes.func.isRequired,
   unSubscribe: PropTypes.func.isRequired,
   subscribedMines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
@@ -41,9 +39,12 @@ const propTypes = {
 };
 
 export class CustomHomePage extends Component {
+  state = { isLoaded: false };
+
   componentDidMount() {
-    this.props.fetchSubscribedMinesByUser();
-    this.props.fetchInspectors();
+    this.props.fetchSubscribedMinesByUser().then(() => {
+      this.setState({ isLoaded: true });
+    });
     this.props.fetchMineTenureTypes();
     this.props.fetchMineComplianceCodes();
     this.props.fetchRegionOptions();
@@ -63,8 +64,11 @@ export class CustomHomePage extends Component {
         <div className="landing-page__header">
           <h1>My Dashboard</h1>
         </div>
-        <div className="landing-page__content">
+        <div className="landing-page__content page__content">
+          <h4>Subscribed Mines</h4>
+          <br />
           <SubscriptionTable
+            isLoaded={this.state.isLoaded}
             subscribedMines={this.props.subscribedMines}
             mineRegionHash={this.props.mineRegionHash}
             mineTenureHash={this.props.mineTenureHash}
@@ -98,7 +102,6 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineTenureTypes,
       fetchMineComplianceCodes,
       fetchMineCommodityOptions,
-      fetchInspectors,
     },
     dispatch
   );

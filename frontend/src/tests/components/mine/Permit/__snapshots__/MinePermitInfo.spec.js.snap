@@ -34,6 +34,7 @@ exports[`MinePermitInfo renders properly 1`] = `
   <br />
   <Connect(MinePermitTable)
     expandedRowKeys={Array []}
+    isLoaded={false}
     major_mine_ind={true}
     onExpand={[Function]}
     openAddAmalgamatedPermitModal={[Function]}
