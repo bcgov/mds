@@ -3,6 +3,8 @@ import React from "react";
 import { Table } from "antd";
 import PropTypes from "prop-types";
 import { reject } from "lodash";
+import { formatDateTime } from "@/utils/helpers";
+import * as Strings from "@/constants/strings";
 import { COLOR } from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";
 import LinkButton from "@/components/common/LinkButton";
@@ -41,6 +43,15 @@ const columns = [
     ),
   },
   {
+    title: "Upload Date/Time",
+    dataIndex: "upload_date",
+    key: "upload_date",
+    sorter: (a, b) => (moment(a.upload_date) > moment(b.upload_date) ? -1 : 1),
+    render: (text, record) => (
+      <div title="Due">{formatDateTime(record.file.upload_date) || Strings.EMPTY_FIELD}</div>
+    ),
+  },
+  {
     dataIndex: "remove",
     key: "remove",
     render: (text, record) =>
@@ -68,19 +79,17 @@ const columns = [
   },
 ];
 
-const transformRowData = (
-  file,
-  showRemove,
-  updateMineReportSubmissions,
-  mineReportSubmissions
-) => ({
-  key: file.mine_document_guid,
-  file,
-  file_name: file.document_name,
-  showRemove: showRemove,
-  updateMineReportSubmissions: updateMineReportSubmissions,
-  mineReportSubmissions: mineReportSubmissions,
-});
+const transformRowData = (file, showRemove, updateMineReportSubmissions, mineReportSubmissions) => {
+  console.log(file);
+  return {
+    key: file.mine_document_guid,
+    file,
+    file_name: file.document_name,
+    showRemove: showRemove,
+    updateMineReportSubmissions: updateMineReportSubmissions,
+    mineReportSubmissions: mineReportSubmissions,
+  };
+};
 
 export const UploadedDocumentsTable = (props) => (
   <Table

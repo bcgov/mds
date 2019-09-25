@@ -56,6 +56,7 @@ MINE_DOCUMENT_MODEL = api.model(
         'mine_guid': fields.String,
         'document_manager_guid': fields.String,
         'document_name': fields.String,
+        'upload_date': fields.DateTime,
     })
 
 PERMIT_MODEL = api.model('MinePermit', {
