@@ -111,7 +111,6 @@ describe("`createTailingsStorageFacility` action creator", () => {
   });
 });
 
-
 describe("`fetchMineRecords` action creator", () => {
   const url = ENVIRONMENT.apiUrl + API.MINE_LIST_QUERY("1", "5");
   it("Request successful, dispatches `success` with correct response", () => {
@@ -179,7 +178,6 @@ describe("`fetchMineNameList` action creator", () => {
     });
   });
 });
-
 
 describe("`fetchMineDocuments` action creator", () => {
   const mineGuid = "12345-6789";
