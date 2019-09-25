@@ -86,7 +86,7 @@ LeafletWms.Source = LeafletWms.Source.extend({
     return L.extend({}, wmsParams, infoParams);
   },
 });
-/* eslint-enable */
+
 const getFirstNationLayer = () => {
   const firstNationSource = LeafletWms.source(
     ENVIRONMENT.firstNationsLayerUrl,
@@ -158,6 +158,64 @@ class MineMapLeaflet extends Component {
     });
   };
 
+  setStyleOnFeatureLayer = (layer) => {
+    const colors = {
+      "Crown Granted Mineral Claims": {
+        fillColor: "#eb4034",
+        color: "#eb4034",
+        fillOpacity: 0.5,
+      },
+      "Coal Licence Applications": {
+        fillColor: "#eb9334",
+        color: "#eb9334",
+        fillOpacity: 0.8,
+      },
+      "Coal Leases": {
+        fillColor: "#ebd634",
+        color: "#ebd634",
+        fillOpacity: 0.8,
+      },
+      "Coal Licences": {
+        fillColor: "#b1eb34",
+        color: "#b1eb34",
+        fillOpacity: 0.3,
+      },
+      "Mining Leases": {
+        fillColor: "#56eb34",
+        color: "#56eb34",
+        fillOpacity: 0.8,
+      },
+      "Mineral Claims": {
+        fillColor: "#34ebbd",
+        color: "#34ebbd",
+        fillOpacity: 0.9,
+      },
+      "Placer Leases": {
+        fillColor: "#34b1eb",
+        color: "#34b1eb",
+        fillOpacity: 0.4,
+      },
+      "Placer Claims": {
+        fillColor: "#9f34eb",
+        color: "#9f34eb",
+        fillOpacity: 0.6,
+      },
+    };
+    const subLayers = layer.layer._layers;
+    console.log(subLayers);
+
+    for (const layerID in subLayers) {
+      const flLayer = subLayers[layerID];
+      console.log(L);
+      console.log(flLayer);
+      flLayer = Object.create(flLayer);
+
+      flLayer.__proto__.setStyle(function(feature) {
+        return colors[layer.title];
+      });
+    }
+  };
+
   getLayerGroupFromList = (groupLayerList) => {
     const result = {};
     const layerList = this.webMap.layers;
@@ -165,6 +223,10 @@ class MineMapLeaflet extends Component {
       layerList.forEach((layer) => {
         if (layer.title === groupLayer) {
           result[groupLayer] = layer.layer;
+
+          if (layer.type === "FL") {
+            this.setStyleOnFeatureLayer(layer);
+          }
         }
       });
     });
