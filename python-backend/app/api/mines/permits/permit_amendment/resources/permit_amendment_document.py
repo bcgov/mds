@@ -39,13 +39,10 @@ class PermitAmendmentDocumentListResource(Resource, UserMixin):
         return DocumentManagerService.initializeFileUploadWithDocumentManager(
             request, mine, 'permits')
 
+    @api.expect(parser)
     @api.marshal_with(PERMIT_AMENDMENT_DOCUMENT_MODEL, code=201)
     @requires_role_edit_permit
-    def put(self,
-            mine_guid,
-            permit_amendment_guid,
-            permit_guid,
-            permit_amendment_document_guid=None):
+    def put(self, mine_guid, permit_amendment_guid, permit_guid):
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
         if not permit_amendment:
             raise NotFound('Permit amendment not found.')

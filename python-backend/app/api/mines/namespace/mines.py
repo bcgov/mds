@@ -108,7 +108,6 @@ api.add_resource(
 
 api.add_resource(
     PermitAmendmentDocumentListResource,
-    '/<string:mine_guid>/permits/amendments/documents',
     '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>/documents',
 )
 api.add_resource(
