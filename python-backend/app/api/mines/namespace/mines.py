@@ -43,7 +43,7 @@ api.add_resource(MineListSearch, '/search')
 api.add_resource(MineTenureTypeCodeResource, '/mine-tenure-type-codes')
 api.add_resource(MineDisturbanceCodeResource, '/disturbance-codes')
 api.add_resource(MineCommodityCodeResource, '/commodity-codes')
-api.add_resource(MineStatusListResource, '/status')
+api.add_resource(MineStatusXrefListResource, '/status')
 api.add_resource(MineRegionResource, '/region')
 
 api.add_resource(MineTailingsStorageFacilityListResource, '/<string:mine_guid>/tailings')
