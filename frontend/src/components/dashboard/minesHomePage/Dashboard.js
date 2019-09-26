@@ -12,6 +12,7 @@ import ResponsivePagination from "@/components/common/ResponsivePagination";
 import {
   fetchMineRecords,
   createMineRecord,
+  createMineTypes,
   fetchMineRecordsForMap,
   fetchMineRecordById,
 } from "@/actionCreators/mineActionCreator";
@@ -67,6 +68,7 @@ const propTypes = {
   fetchMineRecords: PropTypes.func.isRequired,
   fetchMineRecordsForMap: PropTypes.func.isRequired,
   createMineRecord: PropTypes.func.isRequired,
+  createMineTypes: PropTypes.func.isRequired,
   fetchStatusOptions: PropTypes.func.isRequired,
   fetchMineCommodityOptions: PropTypes.func.isRequired,
   fetchMineDisturbanceOptions: PropTypes.func.isRequired,
@@ -319,15 +321,13 @@ export class Dashboard extends Component {
 
   handleSubmit = (value) => {
     const mineStatus = value.mine_status.join(",");
-    return this.props
-      .createMineRecord({ ...value, mine_status: mineStatus })
-      .then(() => {
+    this.props.createMineRecord({ ...value, mine_status: mineStatus }).then((response) => {
+      this.props.createMineTypes(response.data.mine_guid, value.mine_types).then(() => {
         this.props.closeModal();
-      })
-      .then(() => {
         const params = this.props.location.search;
         this.props.fetchMineRecords(params);
       });
+    });
   };
 
   openModal(event, onSubmit, title) {
@@ -522,6 +522,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchStatusOptions,
       fetchRegionOptions,
       createMineRecord,
+      createMineTypes,
       fetchMineTenureTypes,
       fetchMineCommodityOptions,
       fetchMineDisturbanceOptions,
