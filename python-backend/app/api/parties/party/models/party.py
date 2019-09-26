@@ -23,8 +23,8 @@ class Party(AuditMixin, Base):
     phone_no = db.Column(db.String, nullable=False)
     phone_ext = db.Column(db.String, nullable=True)
     email = db.Column(db.String, nullable=True)
-    effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    expiry_date = db.Column(db.DateTime, nullable=False)
+    effective_date = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
+    expiry_date = db.Column(db.DateTime)
     party_type_code = db.Column(db.String, db.ForeignKey('party_type_code.party_type_code'))
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 

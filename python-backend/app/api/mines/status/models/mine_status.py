@@ -21,7 +21,7 @@ class MineStatus(AuditMixin, Base):
                                       db.ForeignKey('mine_status_xref.mine_status_xref_guid'))
     status_date = db.Column(db.DateTime, nullable=True, default=None)
     effective_date = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
-    expiry_date = db.Column(db.DateTime, nullable=False)
+    expiry_date = db.Column(db.DateTime)
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     mine_status_xref = db.relationship('MineStatusXref', lazy='joined')
