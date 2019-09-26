@@ -18,13 +18,6 @@ class MineOperationStatusCode(AuditMixin, Base):
     def __repr__(self):
         return '<MineOperationStatusCode %r>' % self.mine_operation_status_code
 
-    def json(self):
-        return {
-            'mine_operation_status_code': self.mine_operation_status_code,
-            'description': self.description,
-            'display_order': str(self.display_order)
-        }
-
     @classmethod
     def find_by_mine_operation_status_code(cls, _id):
         return cls.query.filter_by(mine_operation_status_code=_id).first()
@@ -35,8 +28,9 @@ class MineOperationStatusCode(AuditMixin, Base):
                                           description,
                                           display_order,
                                           add_to_session=True):
-        mine_operation_status_code = cls(
-            mine_operation_status_code=code, description=description, display_order=display_order)
+        mine_operation_status_code = cls(mine_operation_status_code=code,
+                                         description=description,
+                                         display_order=display_order)
         if add_to_session:
             mine_operation_status_code.save(commit=False)
         return mine_operation_status_code
