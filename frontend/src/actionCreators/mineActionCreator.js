@@ -1,4 +1,3 @@
-import axios from "axios";
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
 import { request, success, error } from "@/actions/genericActions";
@@ -10,24 +9,6 @@ import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
 import CustomAxios from "@/customAxios";
 
-const submitMineTypeDetails = (type) => ({ data: { mine_type_guid } }) => {
-  const create = (codeType) =>
-    type[codeType].length > 0
-      ? type[codeType].map((code) =>
-          axios.post(
-            ENVIRONMENT.apiUrl + API.MINE_TYPES_DETAILS,
-            {
-              mine_type_guid,
-              [codeType]: code,
-            },
-            createRequestHeader()
-          )
-        )
-      : Promise.resolve([]);
-
-  return Promise.all([...create("mine_disturbance_code"), ...create("mine_commodity_code")]);
-};
-
 const handleError = (dispatch, reducer) => (err) => {
   notification.error({
     message: err.response ? err.response.data.message : String.ERROR,
@@ -37,35 +18,11 @@ const handleError = (dispatch, reducer) => (err) => {
   dispatch(hideLoading("modal"));
 };
 
-const createMineTypeRequests = (payload, dispatch, reducer) => (response) => {
-  const mineId = response.data.mine_guid;
-  if (payload.mine_types) {
-    const allMineTypes = payload.mine_types.map((type) =>
-      type.mine_tenure_type_code.length >= 1
-        ? axios
-            .post(
-              ENVIRONMENT.apiUrl + API.MINE_TYPES,
-              {
-                mine_guid: mineId,
-                mine_tenure_type_code: type.mine_tenure_type_code,
-              },
-              createRequestHeader()
-            )
-            .then(submitMineTypeDetails(type))
-            .catch(handleError(dispatch, reducer))
-        : response
-    );
-    return Promise.all(allMineTypes);
-  }
-  return response;
-};
-
 export const createMineRecord = (payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_MINE_RECORD));
   dispatch(showLoading("modal"));
   return CustomAxios()
     .post(ENVIRONMENT.apiUrl + API.MINE, payload, createRequestHeader())
-    .then(createMineTypeRequests(payload, dispatch, reducerTypes.CREATE_MINE_RECORD))
     .then((response) => {
       notification.success({
         message: `Successfully created: ${payload.mine_name}`,
@@ -83,7 +40,6 @@ export const updateMineRecord = (id, payload, mineName) => (dispatch) => {
   dispatch(showLoading("modal"));
   return CustomAxios()
     .put(`${ENVIRONMENT.apiUrl + API.MINE}/${id}`, payload, createRequestHeader())
-    .then(createMineTypeRequests(payload, dispatch, reducerTypes.UPDATE_MINE_RECORD))
     .then((response) => {
       notification.success({
         message: `Successfully updated: ${mineName}`,
@@ -96,11 +52,24 @@ export const updateMineRecord = (id, payload, mineName) => (dispatch) => {
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const removeMineType = (mineTypeGuid, tenure) => (dispatch) => {
+export const createMineTypes = (mineGuid, mineTypes) => (dispatch) => {
+  dispatch(request(reducerTypes.CREATE_MINE_TYPE));
+  let mineTypeResponses = mineTypes.map((mineType) =>
+    CustomAxios()
+      .post(`${ENVIRONMENT.apiUrl}${API.MINE_TYPES(mineGuid)}`, mineType, createRequestHeader())
+      .catch(handleError(dispatch, reducerTypes.CREATE_MINE_TYPE))
+  );
+  return Promise.all(mineTypeResponses);
+};
+
+export const removeMineType = (mineGuid, mineTypeGuid, tenure) => (dispatch) => {
   dispatch(request(reducerTypes.REMOVE_MINE_TYPE));
   dispatch(showLoading("modal"));
   return CustomAxios()
-    .delete(`${ENVIRONMENT.apiUrl + API.MINE_TYPES}/${mineTypeGuid}`, createRequestHeader())
+    .delete(
+      `${ENVIRONMENT.apiUrl}${API.MINE_TYPES(mineGuid)}/${mineTypeGuid}`,
+      createRequestHeader()
+    )
     .then(() => {
       notification.success({
         message: `Successfully removed Tenure: ${tenure}`,
