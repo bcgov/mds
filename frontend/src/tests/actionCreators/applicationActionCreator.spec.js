@@ -100,7 +100,7 @@ describe("`updateApplication` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPut(url).reply(400, MOCK.ERROR);
-    return updateApplication(mine_guid, application_guid, mockPayload)(dispatch).then(() => {
+    return updateApplication(mineGuid, application_guid, mockPayload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
