@@ -22,7 +22,6 @@ const updateSubmissionHandler = (mine_document_guid, props) => {
     props.mineReportSubmissions.length - 1
   ].documents.filter((doc) => doc.mine_document_guid === mine_document_guid)[0];
   let updatedSubmissions = props.mineReportSubmissions;
-  console.log(fileToRemove);
   updatedSubmissions[updatedSubmissions.length - 1].documents = reject(
     updatedSubmissions[updatedSubmissions.length - 1].documents,
     (file) => fileToRemove.document_manager_guid === file.document_manager_guid

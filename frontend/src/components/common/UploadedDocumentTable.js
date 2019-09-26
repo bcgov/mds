@@ -6,10 +6,6 @@ import CustomPropTypes from "@/customPropTypes";
 import LinkButton from "@/components/common/LinkButton";
 import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls";
 
-/**
- * @class  MinePermitInfo - contains all permit information
- */
-
 const propTypes = {
   files: PropTypes.arrayOf(PropTypes.objectOf(CustomPropTypes.mineReport)).isRequired,
   showRemove: PropTypes.bool,
@@ -23,7 +19,7 @@ const columns = [
     title: "File Name",
     dataIndex: "file_name",
     key: "file_name",
-    sorter: (a, b) => a.report_name.localeCompare(b.report_name),
+    sorter: (a, b) => a.file_name.localeCompare(b.file_name),
     render: (text, record) => (
       <div title="File Name">
         <div key={record.file.mine_document_guid}>
