@@ -28,7 +28,7 @@ beforeEach(() => {
 describe("`fetchApplications` action creator", () => {
   const mineGuid = "00009-099999";
   const url = `${ENVIRONMENT.apiUrl + API.MINE_APPLICATIONS(mineGuid)}?${queryString.stringify(
-    params
+    {}
   )}`;
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
