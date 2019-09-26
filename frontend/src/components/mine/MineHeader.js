@@ -237,7 +237,7 @@ export class MineHeader extends Component {
             <p className="field-title">Tenure</p>
             <div>
               <p>
-                {this.props.transformedMineTypes.length > 0
+                {this.props.transformedMineTypes.mine_tenure_type_code.length > 0
                   ? this.props.transformedMineTypes.mine_tenure_type_code
                       .map((tenure) => this.props.mineTenureHash[tenure])
                       .join(", ")
