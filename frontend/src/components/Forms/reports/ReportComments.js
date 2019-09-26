@@ -3,10 +3,10 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Divider } from "antd";
-import { formatDateTime } from "@/utils/helpers";
 
 import CommentPanel from "@/components/common/comments/CommentPanel";
 import { getMineReportComments } from "@/selectors/reportSelectors";
+import FormItemLabel from "@/components/common/FormItemLabel";
 
 import {
   fetchMineReportComments,
@@ -28,8 +28,8 @@ const defaultProps = {
 };
 
 const actionBuilder = (visible, latest) => [
-  visible && <span>Comment published to Minespace</span>,
   !latest && <span>Comment refers to a previous submission</span>,
+  visible && <span>Comment published to Minespace</span>,
 ];
 
 export class ReportComments extends Component {
@@ -66,9 +66,7 @@ export class ReportComments extends Component {
 
   render() {
     return [
-      <Divider orientation="left">
-        <h5>Comments</h5>
-      </Divider>,
+      <FormItemLabel underline>Comments</FormItemLabel>,
       <CommentPanel
         renderAdd
         onSubmit={this.handleAddComment}
@@ -79,7 +77,7 @@ export class ReportComments extends Component {
           author: comment.comment_user,
           content: comment.report_comment,
           actions: actionBuilder(comment.comment_visibility_ind, comment.from_latest_submission),
-          datetime: formatDateTime(comment.comment_datetime),
+          datetime: comment.comment_datetime,
         }))}
       />,
     ];

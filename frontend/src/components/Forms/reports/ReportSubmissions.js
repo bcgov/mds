@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Field } from "redux-form";
-import { Form, Divider, Button } from "antd";
+import { Form, Button } from "antd";
 import { concat, reject } from "lodash";
 import FileUpload from "@/components/common/FileUpload";
 import { MINE_REPORT_DOCUMENT } from "@/constants/API";
-import { ReportsUploadedFilesList } from "@/components/Forms/reports/ReportsUploadedFilesList";
 import LinkButton from "@/components/common/LinkButton";
 import { UploadedDocumentsTable } from "@/components/common/UploadedDocumentTable";
+import FormItemLabel from "@/components/common/FormItemLabel";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
@@ -25,7 +25,6 @@ const updateSubmissionHandler = (mine_document_guid, props) => {
     props.mineReportSubmissions.length - 1
   ].documents.filter((doc) => doc.mine_document_guid === mine_document_guid)[0];
   let updatedSubmissions = props.mineReportSubmissions;
-  console.log(fileToRemove);
   updatedSubmissions[updatedSubmissions.length - 1].documents = reject(
     updatedSubmissions[updatedSubmissions.length - 1].documents,
     (file) => fileToRemove.document_manager_guid === file.document_manager_guid
@@ -41,14 +40,12 @@ export const ReportSubmissions = (props) => {
   const hasSubmissions = props.mineReportSubmissions.length > 0;
   const [updateFilesClicked, setUpdateFilesClicked] = useState(false);
   return [
-    <Divider orientation="left">
-      <h5>Report Files</h5>
-    </Divider>,
+    <FormItemLabel underline>Report Files</FormItemLabel>,
     props.mineReportSubmissions.length > 0 && (
       <UploadedDocumentsTable
         files={props.mineReportSubmissions[props.mineReportSubmissions.length - 1].documents}
         showRemove={updateFilesClicked}
-        updateDocumentHandler={(mine_document_guid) =>
+        removeFileHandler={(mine_document_guid) =>
           updateSubmissionHandler(mine_document_guid, props)
         }
       />

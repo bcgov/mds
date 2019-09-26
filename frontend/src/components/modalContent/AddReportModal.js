@@ -36,6 +36,8 @@ export const AddReportModal = (props) => {
           <ReportHistory
             toggleReportHistory={toggleReportHistory}
             mineReportSubmissions={props.initialValues.mine_report_submissions}
+            submissionYear={props.initialValues.submission_year}
+            mineReportDefinitionGuid={props.initialValues.mine_report_definition_guid}
           />,
         ]}
       ></SlidingForms>

@@ -56,13 +56,8 @@ export class SlidingForms extends Component {
   );
 }
 
-const mapStateToProps = (state) => ({});
-
 const mapDispatchToProps = (dispatch) => bindActionCreators({}, dispatch);
 
 SlidingForms.propTypes = propTypes;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SlidingForms);
+export default connect(mapDispatchToProps)(SlidingForms);

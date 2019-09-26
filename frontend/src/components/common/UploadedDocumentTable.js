@@ -13,47 +13,48 @@ import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls"
 const propTypes = {
   files: PropTypes.arrayOf(PropTypes.objectOf(CustomPropTypes.mineReport)).isRequired,
   showRemove: PropTypes.bool,
-  updateDocumentHandler: PropTypes.func.isRequired,
+  removeFileHandler: PropTypes.func,
 };
 
-const defaultProps = { showRemove: true };
+const defaultProps = { showRemove: true, removeFileHandler: () => {} };
 
-const columns = [
-  {
-    title: "File Name",
-    dataIndex: "file_name",
-    key: "file_name",
-    sorter: (a, b) => a.report_name.localeCompare(b.report_name),
-    render: (text, record) => (
-      <div title="File Name">
-        <div key={record.file.mine_document_guid}>
-          <LinkButton
-            key={record.file.mine_document_guid}
-            onClick={() => downloadFileFromDocumentManager(record.file)}
-          >
-            {record.file_name}
-          </LinkButton>
-        </div>
+const fileColumn = {
+  title: "File Name",
+  dataIndex: "file_name",
+  key: "file_name",
+  sorter: (a, b) => a.file_name.localeCompare(b.file_name),
+  render: (text, record) => (
+    <div title="File Name">
+      <div key={record.file.mine_document_guid}>
+        <LinkButton
+          key={record.file.mine_document_guid}
+          onClick={() => downloadFileFromDocumentManager(record.file)}
+        >
+          {record.file_name}
+        </LinkButton>
+      </div>
+    </div>
+  ),
+};
+
+const removeColumn = {
+  dataIndex: "remove",
+  key: "remove",
+  render: (text, record) =>
+    record.showRemove && (
+      <div title="remove">
+        <a
+          onClick={() => {
+            record.updateDocumentHandler(record.file.mine_document_guid);
+          }}
+        >
+          Remove
+        </a>
       </div>
     ),
-  },
-  {
-    dataIndex: "remove",
-    key: "remove",
-    render: (text, record) =>
-      record.showRemove && (
-        <div title="remove">
-          <a
-            onClick={() => {
-              record.updateDocumentHandler(record.file.mine_document_guid);
-            }}
-          >
-            Remove
-          </a>
-        </div>
-      ),
-  },
-];
+};
+
+const columns = (showRemove) => (showRemove ? [fileColumn, removeColumn] : [fileColumn]);
 
 const transformRowData = (file, showRemove, updateDocumentHandler) => ({
   key: file.mine_document_guid,
@@ -67,7 +68,7 @@ export const UploadedDocumentsTable = (props) => (
   <Table
     align="left"
     pagination={false}
-    columns={columns}
+    columns={columns(props.showRemove)}
     dataSource={props.files.map((file) =>
       transformRowData(file, props.showRemove, props.updateDocumentHandler)
     )}
