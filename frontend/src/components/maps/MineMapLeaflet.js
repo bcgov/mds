@@ -86,6 +86,7 @@ LeafletWms.Source = LeafletWms.Source.extend({
   },
 });
 /* eslint-enable */
+
 const getFirstNationLayer = () => {
   const firstNationSource = LeafletWms.source(
     ENVIRONMENT.firstNationsLayerUrl,
@@ -117,6 +118,53 @@ const tenureLayerArray = [
 ];
 
 const roadLayerArray = ["Roads DRA", "Forest Tenure Roads"];
+
+const tenureLayerStyles = {
+  "Crown Granted Mineral Claims": {
+    color: "#A83800",
+    fillOpacity: 0,
+    width: 1,
+  },
+  "Coal Licence Applications": {
+    color: "#5C5C5C",
+    fillOpacity: 0,
+    width: 1,
+  },
+  "Coal Leases": {
+    fillColor: "#858585",
+    color: "#FFFFFF",
+    fillOpacity: 0.75,
+    width: 1,
+  },
+  "Coal Licences": {
+    fillColor: "#C2C2C2",
+    color: "#FFFFFF",
+    fillOpacity: 0.75,
+    width: 1,
+  },
+  "Mining Leases": {
+    color: "#E600A9",
+    width: 1,
+    fillOpacity: 0,
+  },
+  "Mineral Claims": {
+    fillColor: "#FF73DF",
+    color: "#FFFFFF",
+    fillOpacity: 0.75,
+    width: 1,
+  },
+  "Placer Leases": {
+    color: "#5200CC",
+    fillOpacity: 0,
+    width: 1,
+  },
+  "Placer Claims": {
+    fillColor: "#751AFF",
+    color: "#FFFFFF",
+    fillOpacity: 0.75,
+    width: 1,
+  },
+};
 
 class MineMapLeaflet extends Component {
   state = {
@@ -157,6 +205,7 @@ class MineMapLeaflet extends Component {
     });
   };
 
+  /* eslint-disable */
   getLayerGroupFromList = (groupLayerList) => {
     const result = {};
     const layerList = this.webMap.layers;
@@ -164,11 +213,25 @@ class MineMapLeaflet extends Component {
       layerList.forEach((layer) => {
         if (layer.title === groupLayer) {
           result[groupLayer] = layer.layer;
+
+          if (tenureLayerArray.includes(layer.title)) {
+            const subLayers = layer.layer._layers;
+
+            for (const layerID in subLayers) {
+              const flLayer = subLayers[layerID];
+              flLayer = Object.create(flLayer);
+
+              flLayer.__proto__.setStyle(function(feature) {
+                return tenureLayerStyles[layer.title];
+              });
+            }
+          }
         }
       });
     });
     return result;
   };
+  /* eslint-enable */
 
   addLatLongCircle = () => {
     if (this.props.lat && this.props.long && !this.props.mineName) {
@@ -200,7 +263,6 @@ class MineMapLeaflet extends Component {
 
       // Add the WebMap layers to the Layer control widget
       const groupedOverlays = {
-        "Base Maps": this.getLayerGroupFromList(baseMapsArray),
         "Mine Pins": {
           "Mine Pins": this.markerClusterGroup,
         },
@@ -208,16 +270,17 @@ class MineMapLeaflet extends Component {
         "NTS Contour Lines": {
           "NTS Contour Lines": this.getLayerGroupFromList(["NTS Contour Lines"]),
         },
+        "Mineral, Placer, and Coal Tenures": this.getLayerGroupFromList(tenureLayerArray),
         "Administrative Boundaries": this.getLayerGroupFromList(
           admininstrativeBoundariesLayerArray
         ),
-        "Mineral, Placer, and Coal Tenures": this.getLayerGroupFromList(tenureLayerArray),
         "First Nations": {
-          "First Nations PIP Consultation Areas": getFirstNationLayer(),
           "Indian Reserves & Band Names": this.getLayerGroupFromList([
             "Indian Reserves & Band Names",
           ]),
+          "First Nations PIP Consultation Areas": getFirstNationLayer(),
         },
+        "Base Maps": this.getLayerGroupFromList(baseMapsArray),
       };
 
       L.control
