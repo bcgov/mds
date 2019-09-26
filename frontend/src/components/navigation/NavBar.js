@@ -225,20 +225,18 @@ export class NavBar extends Component {
               </Link>
             </Col>
           </Row>
-          <AuthorizationWrapper inTesting>
-            <Row>
-              <Col span={24}>
-                <Link to={router.INCIDENTS_DASHBOARD.route}>
-                  <Button
-                    id={this.ifActiveButton(router.INCIDENTS_DASHBOARD.route)}
-                    className="menu--hamburger__btn--link"
-                  >
-                    Browse Incidents
-                  </Button>
-                </Link>
-              </Col>
-            </Row>
-          </AuthorizationWrapper>
+          <Row>
+            <Col span={24}>
+              <Link to={router.INCIDENTS_DASHBOARD.route}>
+                <Button
+                  id={this.ifActiveButton(router.INCIDENTS_DASHBOARD.route)}
+                  className="menu--hamburger__btn--link"
+                >
+                  Browse Incidents
+                </Button>
+              </Link>
+            </Col>
+          </Row>
           <AuthorizationWrapper inTesting>
             <Row>
               <Col span={24}>
@@ -322,13 +320,11 @@ export class NavBar extends Component {
           <button type="button">Browse Variances</button>
         </Link>
       </div>
-      <AuthorizationWrapper inTesting>
-        <div className="custom-menu-item">
-          <Link to={router.INCIDENTS_DASHBOARD.route}>
-            <button type="button">Browse Incidents</button>
-          </Link>
-        </div>
-      </AuthorizationWrapper>
+      <div className="custom-menu-item">
+        <Link to={router.INCIDENTS_DASHBOARD.route}>
+          <button type="button">Browse Incidents</button>
+        </Link>
+      </div>
       <AuthorizationWrapper inTesting>
         <div className="custom-menu-item">
           <Link to={router.NOTICE_OF_WORK_APPLICATIONS.route}>
