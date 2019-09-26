@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from "react";
 import { Icon, Popconfirm, Button } from "antd";
 import PropTypes from "prop-types";
@@ -6,7 +5,7 @@ import CustomPropTypes from "@/customPropTypes";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 
 const propTypes = {
-  mineReport: PropTypes.objectOf(CustomPropTypes.mineReport).isRequired,
+  mineReport: CustomPropTypes.mineReport.isRequired,
   openEditReportModal: PropTypes.func.isRequired,
   handleEditReport: PropTypes.func.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types

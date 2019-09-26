@@ -77,10 +77,10 @@ export const ReportSubmissions = (props) => {
       </Form.Item>
     ),
     hasSubmissions && !updateFilesClicked && (
-      <div className="inline-flex flex-center">
+      <div className="inline-flex padding-large--top padding-md--bottom flex-flow-column">
         <div className="center">
           <Button
-            className="center-mobile "
+            className="center center-mobile "
             type="primary"
             onClick={() => {
               setUpdateFilesClicked(!updateFilesClicked);
@@ -98,7 +98,8 @@ export const ReportSubmissions = (props) => {
           >
             Update Files
           </Button>
-          <br />
+        </div>
+        <div className="center">
           <LinkButton
             key="file_history"
             onClick={() => {
