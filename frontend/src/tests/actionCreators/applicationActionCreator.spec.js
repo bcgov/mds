@@ -25,42 +25,11 @@ beforeEach(() => {
   errorSpy.mockClear();
 });
 
-describe("`createApplication` action creator", () => {
-  const application_no = "TA-12315";
-  const mine_guid = "12345-6789";
-  const application_status_code = "RIP";
-  const received_date = "1998-02-12";
-  const description = "Testing";
-  const url = ENVIRONMENT.apiUrl + API.MINE_APPLICATIONS;
-  const mockPayload = {
-    application_no,
-    application_status_code,
-    received_date,
-    description,
-  };
-  it("Request successful, dispatches `success` with correct response", () => {
-    const mockResponse = { data: { success: true } };
-    mockAxios.onPost(url, mockPayload).reply(200, mockResponse);
-    return createApplication(mine_guid, mockPayload)(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(4);
-    });
-  });
-
-  it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onPost(url).reply(400, MOCK.ERROR);
-    return createApplication(mine_guid, {})(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(4);
-    });
-  });
-});
-
 describe("`fetchApplications` action creator", () => {
   const mineGuid = "00009-099999";
-  const url = `${ENVIRONMENT.apiUrl + API.MINE_APPLICATIONS(mineGuid)}`;
+  const url = `${ENVIRONMENT.apiUrl + API.MINE_APPLICATIONS(mineGuid)}?${queryString.stringify(
+    params
+  )}`;
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
@@ -74,6 +43,39 @@ describe("`fetchApplications` action creator", () => {
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
     return fetchApplications(mineGuid)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`createApplication` action creator", () => {
+  const application_no = "TA-12315";
+  const mineGuid = "12345-6789";
+  const application_status_code = "RIP";
+  const received_date = "1998-02-12";
+  const description = "Testing";
+  const url = ENVIRONMENT.apiUrl + API.MINE_APPLICATIONS(mineGuid);
+  const mockPayload = {
+    application_no,
+    application_status_code,
+    received_date,
+    description,
+  };
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onPost(url, mockPayload).reply(200, mockResponse);
+    return createApplication(mineGuid, mockPayload)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPost(url).reply(400, MOCK.ERROR);
+    return createApplication(mineGuid, {})(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

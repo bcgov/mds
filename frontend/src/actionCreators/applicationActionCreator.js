@@ -26,6 +26,20 @@ export const fetchApplications = (mineGuid, params = {}) => (dispatch) => {
     .finally(() => dispatch(hideLoading("modal")));
 };
 
+export const createApplication = (mineGuid, payload) => (dispatch) => {
+  dispatch(request(reducerTypes.CREATE_APPLICATION));
+  dispatch(showLoading("modal"));
+  return CustomAxios()
+    .post(`${ENVIRONMENT.apiUrl}${API.MINE_APPLICATIONS(mineGuid)}`, payload, createRequestHeader())
+    .then((response) => {
+      notification.success({ message: "Successfully created a new application", duration: 10 });
+      dispatch(success(reducerTypes.CREATE_APPLICATION));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.CREATE_APPLICATION)))
+    .finally(() => dispatch(hideLoading("modal")));
+};
+
 export const updateApplication = (mineGuid, application_guid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_APPLICATION));
   dispatch(showLoading());
@@ -45,18 +59,4 @@ export const updateApplication = (mineGuid, application_guid, payload) => (dispa
     })
     .catch(() => dispatch(error(reducerTypes.UPDATE_APPLICATION)))
     .finally(() => dispatch(hideLoading()));
-};
-
-export const createApplication = (mineGuid, payload) => (dispatch) => {
-  dispatch(request(reducerTypes.CREATE_APPLICATION));
-  dispatch(showLoading("modal"));
-  return CustomAxios()
-    .post(`${ENVIRONMENT.apiUrl}${API.MINE_APPLICATIONS(mineGuid)}`, payload, createRequestHeader())
-    .then((response) => {
-      notification.success({ message: "Successfully created a new application", duration: 10 });
-      dispatch(success(reducerTypes.CREATE_APPLICATION));
-      return response;
-    })
-    .catch(() => dispatch(error(reducerTypes.CREATE_APPLICATION)))
-    .finally(() => dispatch(hideLoading("modal")));
 };
