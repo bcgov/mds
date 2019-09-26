@@ -113,17 +113,9 @@ const getFirstNationLayer = () => {
 
 const baseMapsArray = ["World Topographic Map", "World Imagery"];
 
-const admininstrativeBoundariesLayerArray = [
-  "BC Mine Regions",
-  "Natural Resource Regions - WMS",
-  "Land Status and Survey Parcels - PMBC",
-  "Regional Districts - WMS",
-  "Ministry of Transportation District Boundaries - WMS",
-  "Municipality Boundaries",
-];
+const admininstrativeBoundariesLayerArray = ["BC Mine Regions", "Natural Resource Regions"];
 
 const tenureLayerArray = [
-  "Crown Granted Mineral Claims",
   "Coal Licence Applications",
   "Coal Leases",
   "Coal Licences",
@@ -131,6 +123,7 @@ const tenureLayerArray = [
   "Mineral Claims",
   "Placer Leases",
   "Placer Claims",
+  "Crown Granted Mineral Claims",
 ];
 
 const roadLayerArray = ["Roads DRA", "Forest Tenure Roads"];
@@ -233,7 +226,7 @@ class MineMapLeaflet extends Component {
             const subLayers = layer.layer._layers;
 
             for (const layerID in subLayers) {
-              const flLayer = subLayers[layerID];
+              let flLayer = subLayers[layerID];
               flLayer = Object.create(flLayer);
 
               flLayer.__proto__.setStyle(function(feature) {
@@ -282,7 +275,7 @@ class MineMapLeaflet extends Component {
           "Mine Pins": this.markerClusterGroup,
         },
         Roads: this.getLayerGroupFromList(roadLayerArray),
-        "NTS Contour Lines": {
+        "Natural Features": {
           "NTS Contour Lines": this.getLayerGroupFromList(["NTS Contour Lines"]),
         },
         "Mineral, Placer, and Coal Tenures": this.getLayerGroupFromList(tenureLayerArray),
@@ -290,16 +283,15 @@ class MineMapLeaflet extends Component {
           admininstrativeBoundariesLayerArray
         ),
         "First Nations": {
-          "Indian Reserves & Band Names": this.getLayerGroupFromList([
-            "Indian Reserves & Band Names",
+          "Indian Reserves and Band Names": this.getLayerGroupFromList([
+            "Indian Reserves and Band Names",
           ]),
           "First Nations PIP Consultation Areas": getFirstNationLayer(),
         },
-        "Base Maps": this.getLayerGroupFromList(baseMapsArray),
       };
 
       L.control
-        .groupedLayers({}, groupedOverlays, { exclusiveGroups: ["Base Maps"] })
+        .groupedLayers(this.getLayerGroupFromList(baseMapsArray), groupedOverlays)
         .addTo(this.map);
 
       // Add Mouse coordinate widget
@@ -323,9 +315,8 @@ class MineMapLeaflet extends Component {
     // Creates the base leaflet map object and overlays the ESRI WebMap on top
     this.map = L.map("leaflet-map", {
       attributionControl: false,
-      maxBoundsViscosity: 1.0,
-    }).setMaxZoom(20);
-    this.webMap = window.L.esri.webMap(ENVIRONMENT.mapPortalId, { map: this.map });
+    }).setMaxZoom(50);
+    this.webMap = window.L.esri.webMap("803130a9bebb4035b3ac671aafab12d7", { map: this.map });
   }
 
   renderPopup = (mine, commodityCodes = []) => {
