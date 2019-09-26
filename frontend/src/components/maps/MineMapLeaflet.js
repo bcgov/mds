@@ -84,6 +84,17 @@ LeafletWms.Source = LeafletWms.Source.extend({
     };
     return L.extend({}, wmsParams, infoParams);
   },
+  identify: function(evt) {
+    // Identify map features in response to map clicks. To customize this
+    // behavior, create a class extending wms.Source and override one or
+    // more of the following hook functions.
+
+    var layers = this.getIdentifyLayers();
+    if (!layers.length) {
+      return;
+    }
+    this.getFeatureInfo(evt.containerPoint, evt.latlng, layers, this.showFeatureInfo);
+  },
 });
 /* eslint-enable */
 
@@ -123,12 +134,12 @@ const tenureLayerColorArray = {
   "Crown Granted Mineral Claims": {
     color: "#A83800",
     fillOpacity: 0,
-    width: 1.5,
+    width: 1,
   },
   "Coal Licence Applications": {
     color: "#5C5C5C",
     fillOpacity: 0,
-    width: 1.5,
+    width: 1,
   },
   "Coal Leases": {
     fillColor: "#858585",
@@ -144,7 +155,7 @@ const tenureLayerColorArray = {
   },
   "Mining Leases": {
     color: "#E600A9",
-    width: 2.5,
+    width: 1,
     fillOpacity: 0,
   },
   "Mineral Claims": {
@@ -156,7 +167,7 @@ const tenureLayerColorArray = {
   "Placer Leases": {
     color: "#5200CC",
     fillOpacity: 0,
-    width: 2.5,
+    width: 1,
   },
   "Placer Claims": {
     fillColor: "#751AFF",
