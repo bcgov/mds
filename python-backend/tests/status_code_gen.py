@@ -23,10 +23,8 @@ from app.api.mines.reports.models.mine_report_submission_status_code import Mine
 
 
 def RandomApplicationStatusCode():
-    return random.choice([
-        x.application_status_code
-        for x in ApplicationStatusCode.find_all_active_application_status_code()
-    ])
+    return random.choice(
+        [x.application_status_code for x in ApplicationStatusCode.find_all_active()])
 
 
 

@@ -22,9 +22,4 @@ class ApplicationStatusCodeResource(Resource, UserMixin):
     )
     @requires_role_view_all
     def get(self):
-        application_status_codes = ApplicationStatusCode.find_all_active_application_status_code()
-        if application_status_codes:
-            result = application_status_codes
-        else:
-            result = []
-        return result
+        return ApplicationStatusCode.find_all_active()
