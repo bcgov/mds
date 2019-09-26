@@ -1,7 +1,7 @@
 from app.extensions import api
 from flask_restplus import fields
 
-from app.api.mines.compliance.response_models import COMPLIANCE_ARTICLE_MODEL
+from app.api.compliance.response_models import COMPLIANCE_ARTICLE_MODEL
 
 
 class DateTime(fields.Raw):

@@ -1,7 +1,7 @@
 from datetime import datetime
 from app.extensions import db
 
-from ....utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import AuditMixin, Base
 
 
 class ComplianceArticle(AuditMixin, Base):
@@ -15,8 +15,9 @@ class ComplianceArticle(AuditMixin, Base):
     description = db.Column(db.String, nullable=False)
     long_description = db.Column(db.String, nullable=False)
     effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    expiry_date = db.Column(
-        db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
+    expiry_date = db.Column(db.DateTime,
+                            nullable=False,
+                            default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
 
     def __repr__(self):
         return '<ComplianceArticle %r>' % self.compliance_article_id

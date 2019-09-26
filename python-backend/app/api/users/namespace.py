@@ -1,9 +1,9 @@
 from flask_restplus import Namespace
 
-from ..minespace.resources.minespace_user import MinespaceUserResource, MinespaceUserListResource
-from ..minespace.resources.minespace_user_mine import MinespaceUserMineResource, MinespaceUserMineListResource
+from .minespace.resources.minespace_user import MinespaceUserResource, MinespaceUserListResource
+from .minespace.resources.minespace_user_mine import MinespaceUserMineResource, MinespaceUserMineListResource
 
-from ..core.resources.core_user import CoreUserListResource, CoreUserResource
+from .core.resources.core_user import CoreUserListResource, CoreUserResource
 
 api = Namespace('users', description='User related operations')
 

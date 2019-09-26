@@ -11,7 +11,7 @@ from app.api.mines.mine.models.mine_tenure_type_code import MineTenureTypeCode
 from app.api.mines.mine.models.mine_commodity_code import MineCommodityCode
 from app.api.mines.mine.models.mine_disturbance_code import MineDisturbanceCode
 from app.api.mines.status.models.mine_status_xref import MineStatusXref
-from app.api.mines.compliance.models.compliance_article import ComplianceArticle
+from app.api.compliance.models.compliance_article import ComplianceArticle
 from app.api.parties.party.models.sub_division_code import SubDivisionCode
 from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
 from app.api.parties.party_appt.models.party_business_role_code import PartyBusinessRoleCode

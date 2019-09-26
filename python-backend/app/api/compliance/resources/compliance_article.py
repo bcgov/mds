@@ -7,13 +7,11 @@ from ..response_models import COMPLIANCE_ARTICLE_MODEL
 
 
 class ComplianceArticleResource(Resource, UserMixin):
-    @api.doc(
-        description=
-        'This endpoint returns a list of all possible compliance codes and their descriptions.')
+    @api.doc(description=
+             'This endpoint returns a list of all possible compliance codes and their descriptions.'
+             )
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     @api.marshal_with(COMPLIANCE_ARTICLE_MODEL, code=200, envelope='records')
     def get(self):
         records = ComplianceArticle.query.all()
-        if records is None:
-            records = []
         return records

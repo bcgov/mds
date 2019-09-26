@@ -14,7 +14,7 @@ from app.api.mines.documents.mines.models.mine_document import MineDocument
 from app.api.incidents.models.mine_incident_document_type_code import MineIncidentDocumentTypeCode
 from app.api.incidents.models.mine_incident import MineIncident
 from app.api.incidents.models.mine_incident_recommendation import MineIncidentRecommendation
-from app.api.mines.compliance.models.compliance_article import ComplianceArticle
+from app.api.compliance.models.compliance_article import ComplianceArticle
 from app.api.mines.mine.models.mine import Mine
 from app.api.parties.party.models.party import Party
 
@@ -29,17 +29,15 @@ def _compliance_article_is_do_subparagraph(ca):
 class MineIncidentListResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
     # required
-    parser.add_argument(
-        'incident_timestamp',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None,
-        location='json',
-        required=True)
+    parser.add_argument('incident_timestamp',
+                        type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None,
+                        location='json',
+                        required=True)
     parser.add_argument('incident_description', type=str, location='json', required=True)
-    parser.add_argument(
-        'reported_timestamp',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None,
-        required=True,
-        location='json')
+    parser.add_argument('reported_timestamp',
+                        type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None,
+                        required=True,
+                        location='json')
     parser.add_argument('reported_by_name', type=str, location='json')
     parser.add_argument('reported_by_email', type=str, location='json')
     parser.add_argument('reported_by_phone_no', type=str, location='json')
@@ -56,11 +54,10 @@ class MineIncidentListResource(Resource, UserMixin):
     parser.add_argument('followup_inspection', type=inputs.boolean, location='json')
     parser.add_argument('mine_determination_type_code', type=str, location='json')
     parser.add_argument('mine_determination_representative', type=str, location='json')
-    parser.add_argument(
-        'followup_inspection_date',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
-        store_missing=False,
-        location='json')
+    parser.add_argument('followup_inspection_date',
+                        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+                        store_missing=False,
+                        location='json')
     parser.add_argument('status_code', type=str, location='json')
     parser.add_argument('dangerous_occurrence_subparagraph_ids', type=list, location='json')
     parser.add_argument('updated_documents', type=list, location='json', store_missing=False)
@@ -85,7 +82,6 @@ class MineIncidentListResource(Resource, UserMixin):
             raise NotFound('Mine not found')
 
         data = self.parser.parse_args()
-
 
         do_sub_codes = []
         if data['determination_type_code'] == 'DO':
@@ -145,10 +141,9 @@ class MineIncidentListResource(Resource, UserMixin):
         updated_documents = data.get('updated_documents')
         if updated_documents is not None:
             for updated_file in updated_documents:
-                mine_doc = MineDocument(
-                    mine_guid=mine.mine_guid,
-                    document_name=updated_file['document_name'],
-                    document_manager_guid=updated_file['document_manager_guid'])
+                mine_doc = MineDocument(mine_guid=mine.mine_guid,
+                                        document_name=updated_file['document_name'],
+                                        document_manager_guid=updated_file['document_manager_guid'])
 
                 if not mine_doc:
                     raise BadRequest('Unable to register uploaded file as document')
@@ -174,7 +169,7 @@ class MineIncidentListResource(Resource, UserMixin):
                 if rec_string is None:
                     continue
                 new_recommendation = MineIncidentRecommendation.create(
-                    rec_string,mine_incident_id=incident.mine_incident_id)
+                    rec_string, mine_incident_id=incident.mine_incident_id)
                 new_recommendation.save()
 
         return incident, 201
@@ -183,49 +178,66 @@ class MineIncidentListResource(Resource, UserMixin):
 class MineIncidentResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
     # required
-    parser.add_argument(
-        'incident_timestamp',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None,
-        location='json',
-        store_missing=False)
+    parser.add_argument('incident_timestamp',
+                        type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None,
+                        location='json',
+                        store_missing=False)
     parser.add_argument('incident_description', type=str, location='json', store_missing=False)
-    parser.add_argument(
-        'reported_timestamp',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None,
-        store_missing=False,
-        location='json')
+    parser.add_argument('reported_timestamp',
+                        type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None,
+                        store_missing=False,
+                        location='json')
     parser.add_argument('reported_by_name', type=str, location='json', store_missing=False)
     parser.add_argument('reported_by_email', type=str, location='json', store_missing=False)
     parser.add_argument('reported_by_phone_no', type=str, location='json', store_missing=False)
     parser.add_argument('reported_by_phone_ext', type=str, location='json', store_missing=False)
-    parser.add_argument(
-        'emergency_services_called', type=inputs.boolean, location='json', store_missing=False)
+    parser.add_argument('emergency_services_called',
+                        type=inputs.boolean,
+                        location='json',
+                        store_missing=False)
     parser.add_argument('number_of_injuries', type=int, location='json', store_missing=False)
     parser.add_argument('number_of_fatalities', type=int, location='json', store_missing=False)
-    parser.add_argument(
-        'reported_to_inspector_party_guid', type=str, location='json', store_missing=False)
-    parser.add_argument(
-        'responsible_inspector_party_guid', type=str, location='json', store_missing=False)
-    parser.add_argument(
-        'determination_inspector_party_guid', type=str, location='json', store_missing=False)
+    parser.add_argument('reported_to_inspector_party_guid',
+                        type=str,
+                        location='json',
+                        store_missing=False)
+    parser.add_argument('responsible_inspector_party_guid',
+                        type=str,
+                        location='json',
+                        store_missing=False)
+    parser.add_argument('determination_inspector_party_guid',
+                        type=str,
+                        location='json',
+                        store_missing=False)
     parser.add_argument('proponent_incident_no', type=str, location='json', store_missing=False)
     parser.add_argument('determination_type_code', type=str, location='json', store_missing=False)
-    parser.add_argument(
-        'followup_investigation_type_code', type=str, location='json', store_missing=False)
-    parser.add_argument(
-        'followup_inspection', type=inputs.boolean, location='json', store_missing=False)
-    parser.add_argument(
-        'followup_inspection_date',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
-        store_missing=False,
-        location='json')
+    parser.add_argument('followup_investigation_type_code',
+                        type=str,
+                        location='json',
+                        store_missing=False)
+    parser.add_argument('followup_inspection',
+                        type=inputs.boolean,
+                        location='json',
+                        store_missing=False)
+    parser.add_argument('followup_inspection_date',
+                        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+                        store_missing=False,
+                        location='json')
     parser.add_argument('status_code', type=str, location='json', store_missing=False)
-    parser.add_argument(
-        'dangerous_occurrence_subparagraph_ids', type=list, location='json', store_missing=False)
+    parser.add_argument('dangerous_occurrence_subparagraph_ids',
+                        type=list,
+                        location='json',
+                        store_missing=False)
     parser.add_argument('updated_documents', type=list, location='json', store_missing=False)
     parser.add_argument('recommendations', type=list, location='json', store_missing=False)
-    parser.add_argument('mine_determination_type_code', type=str, location='json', store_missing=False)
-    parser.add_argument('mine_determination_representative', type=str, location='json', store_missing=False)
+    parser.add_argument('mine_determination_type_code',
+                        type=str,
+                        location='json',
+                        store_missing=False)
+    parser.add_argument('mine_determination_representative',
+                        type=str,
+                        location='json',
+                        store_missing=False)
 
     @api.marshal_with(MINE_INCIDENT_MODEL, code=200)
     @requires_role_view_all
@@ -332,7 +344,8 @@ class MineIncidentResource(Resource, UserMixin):
 
             # Update recommendations
             if edited_rec_guid is not None:
-                rec = MineIncidentRecommendation.find_by_mine_incident_recommendation_guid(edited_rec_guid)
+                rec = MineIncidentRecommendation.find_by_mine_incident_recommendation_guid(
+                    edited_rec_guid)
                 if rec is not None:
                     rec.recommendation = rec_string
                     rec.save()
