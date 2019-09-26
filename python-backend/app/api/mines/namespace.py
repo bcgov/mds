@@ -30,6 +30,7 @@ from .permits.permit.resources.permit import PermitResource, PermitListResource
 from .permits.permit.resources.permit_status_code import PermitStatusCodeResource
 from .permits.permit_amendment.resources.permit_amendment import PermitAmendmentResource, PermitAmendmentListResource
 from .permits.permit_amendment.resources.permit_amendment_document import PermitAmendmentDocumentListResource, PermitAmendmentDocumentResource
+from .permits.permit.resources.permit_document_upload import PermitDocumentUploadInitializationResource
 from .now_submissions.resources.application_resource import MineApplicationResource
 from app.api.parties.party_appt.resources.mine_party_appt_document_upload_resource import MinePartyApptDocumentUploadResource
 
@@ -109,6 +110,11 @@ api.add_resource(
 api.add_resource(
     PermitAmendmentDocumentListResource,
     '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>/documents',
+)
+
+api.add_resource(
+    PermitDocumentUploadInitializationResource,
+    '/<string:mine_guid>/permits/amendments/documents',
 )
 api.add_resource(
     PermitAmendmentDocumentResource,
