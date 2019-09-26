@@ -10,6 +10,7 @@ export const {
   getMineCommodityOptions,
   getMineDisturbanceOptions,
   getMineReportDefinitionOptions,
+  getMineReportStatusOptions,
   getProvinceOptions,
   getPermitStatusOptions,
   getApplicationStatusOptions,
@@ -319,4 +320,9 @@ export const getDropdownMineReportCategoryOptions = createSelector(
       "description",
       "mine_report_category"
     )
+);
+
+export const getDropdownMineReportStatusOptions = createSelector(
+  [getMineReportStatusOptions],
+  (options) => createDropDownList(options, "description", "mine_report_submission_status_code")
 );
