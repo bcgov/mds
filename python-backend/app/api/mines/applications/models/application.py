@@ -7,7 +7,7 @@ from sqlalchemy.orm import validates
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db, api
 
-from ...utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import AuditMixin, Base
 
 
 class Application(AuditMixin, Base):
@@ -47,12 +47,11 @@ class Application(AuditMixin, Base):
                received_date,
                description,
                add_to_session=True):
-        application = cls(
-            mine_guid=mine_guid,
-            application_no=application_no,
-            application_status_code=application_status_code,
-            received_date=received_date,
-            description=description)
+        application = cls(mine_guid=mine_guid,
+                          application_no=application_no,
+                          application_status_code=application_status_code,
+                          received_date=received_date,
+                          description=description)
         if add_to_session:
             application.save(commit=False)
         return application
