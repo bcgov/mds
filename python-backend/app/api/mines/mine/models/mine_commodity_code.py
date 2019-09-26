@@ -2,8 +2,19 @@ from datetime import datetime
 from sqlalchemy.schema import FetchedValue
 
 from ....utils.models_mixins import AuditMixin, Base
-from app.api.constants import COMMODITY_CODES_CONFIG, METALS_AND_MINERALS
 from app.extensions import db
+
+from sqlalchemy.ext.hybrid import hybrid_property
+
+
+class MineCommodityTenureType(Base):
+    __tablename__ = 'mine_commodity_tenure_type'
+    mine_commodity_code = db.Column(db.String,
+                                    db.ForeignKey('mine_commodity_code.mine_commodity_code'),
+                                    primary_key=True)
+    mine_tenure_type_code = db.Column(db.String,
+                                      db.ForeignKey('mine_tenure_type_code.mine_tenure_type_code'),
+                                      primary_key=True)
 
 
 class MineCommodityCode(AuditMixin, Base):
@@ -12,21 +23,19 @@ class MineCommodityCode(AuditMixin, Base):
     description = db.Column(db.String, nullable=False)
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
+    tenure_types = db.relationship('MineTenureTypeCode', secondary='mine_commodity_tenure_type', backref='mine_commodity_codes')
+
+    @hybrid_property
+    def mine_tenure_type_codes(self):
+        return [x.mine_tenure_type_code for x in self.tenure_types]
+
     def __repr__(self):
         return '<MineCommodityCode %r>' % self.mine_commodity_code
 
+    @classmethod
+    def find_by_code(cls, code):
+        return cls.query.get(code)
 
     @classmethod
-    def all_options(cls):
-        return list(map(
-            lambda x: {
-                'mine_commodity_code': x[0],
-                'description': x[1],
-                'mine_tenure_type_codes': COMMODITY_CODES_CONFIG[x[0]]['mine_tenure_type_codes'],
-                'exclusive_ind': COMMODITY_CODES_CONFIG[x[0]]['exclusive_ind']
-            },
-            cls.query
-               .with_entities(cls.mine_commodity_code, cls.description)
-               .filter_by(active_ind=True)
-               .all()
-        ))
+    def get_active(cls):
+        return cls.query.filter_by(active_ind=True).all()
