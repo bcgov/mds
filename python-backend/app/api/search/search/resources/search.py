@@ -7,7 +7,7 @@ from app.extensions import db, api
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_edit
 from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.utils.search import search_targets, append_result, execute_search, SearchResult
-from app.api.search.search_api_models import SEARCH_RESULT_RETURN_MODEL
+from app.api.search.response_models import SEARCH_RESULT_RETURN_MODEL
 
 
 class SearchOptionsResource(Resource, UserMixin):

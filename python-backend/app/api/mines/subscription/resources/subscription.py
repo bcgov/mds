@@ -8,7 +8,7 @@ from ....utils.resources_mixins import UserMixin
 from ....utils.access_decorators import (requires_any_of, VIEW_ALL)
 from ..models.subscription import Subscription
 from ...mine.models.mine import Mine
-from ...mine_api_models import MINES_MODEL
+from ...response_models import MINES_MODEL
 from app.extensions import db
 
 MINE_GUID_MODEL = api.model('mine_guid', {

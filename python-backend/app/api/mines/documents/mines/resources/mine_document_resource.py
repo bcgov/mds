@@ -12,7 +12,7 @@ from app.extensions import api
 from app.api.mines.mine.models.mine import Mine
 from app.api.utils.access_decorators import requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
 from app.api.utils.resources_mixins import UserMixin
-from app.api.mines.mine_api_models import MINE_DOCUMENT_MODEL
+from app.api.mines.response_models import MINE_DOCUMENT_MODEL
 
 
 class MineDocumentListResource(Resource, UserMixin):

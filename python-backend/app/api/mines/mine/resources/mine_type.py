@@ -10,7 +10,7 @@ from ....utils.resources_mixins import UserMixin
 from ..models.mine_type import MineType
 from ..models.mine_tenure_type_code import MineTenureTypeCode
 from ..models.mine_type_detail import MineTypeDetail
-from app.api.mines.mine_api_models import MINE_TYPE_MODEL
+from app.api.mines.response_models import MINE_TYPE_MODEL
 
 
 class MineTypeListResource(Resource, UserMixin):

@@ -10,7 +10,7 @@ from app.api.mines.documents.mines.models.mine_document import MineDocument
 from ....utils.access_decorators import (requires_any_of, EDIT_VARIANCE, MINESPACE_PROPONENT)
 from ....utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
-from app.api.mines.mine_api_models import VARIANCE_MODEL
+from app.api.mines.response_models import VARIANCE_MODEL
 from app.api.variances.models.variance import Variance
 from app.api.variances.models.variance import VarianceDocumentXref
 

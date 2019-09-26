@@ -4,7 +4,7 @@ from ....utils.access_decorators import requires_role_view_all
 from ....utils.resources_mixins import UserMixin
 from ..models.mine_commodity_code import MineCommodityCode
 
-from app.api.mines.mine_api_models import MINE_COMMODITY_CODE_MODEL
+from app.api.mines.response_models import MINE_COMMODITY_CODE_MODEL
 
 
 class MineCommodityCodeResource(Resource, UserMixin):

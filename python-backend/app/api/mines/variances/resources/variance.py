@@ -13,7 +13,7 @@ from ....utils.access_decorators import (
     requires_any_of, VIEW_ALL, MINE_EDIT, EDIT_VARIANCE, MINESPACE_PROPONENT)
 from ....utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
-from app.api.mines.mine_api_models import VARIANCE_MODEL
+from app.api.mines.response_models import VARIANCE_MODEL
 from app.api.variances.models.variance import Variance
 # The need to access the guid -> id lookup forces an import as the id primary
 # key is not available via the API. The interal-only primary key +

@@ -5,7 +5,7 @@ from flask import request
 from flask_restplus import Resource, reqparse, inputs
 from sqlalchemy_filters import apply_sort, apply_pagination
 
-from app.api.mines.mine_api_models import MINES_MODEL
+from app.api.mines.response_models import MINES_MODEL
 from ..models.mine import Mine
 from app.extensions import jwt, api
 from ....utils.resources_mixins import UserMixin

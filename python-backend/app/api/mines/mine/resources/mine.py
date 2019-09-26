@@ -22,7 +22,7 @@ from ....utils.access_decorators import requires_role_mine_edit, requires_any_of
 from ....utils.resources_mixins import UserMixin
 from ....constants import MINE_MAP_CACHE
 
-from app.api.mines.mine_api_models import MINE_LIST_MODEL, MINE_MODEL
+from app.api.mines.response_models import MINE_LIST_MODEL, MINE_MODEL
 
 # FIXME: Model import from outside of its namespace
 # This breaks micro-service architecture and is done

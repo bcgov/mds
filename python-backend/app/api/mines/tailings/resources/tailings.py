@@ -16,7 +16,7 @@ from ..models.tailings import MineTailingsStorageFacility
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
 from app.api.mines.reports.models.mine_report import MineReport
-from app.api.mines.mine_api_models import MINE_TSF_MODEL
+from app.api.mines.response_models import MINE_TSF_MODEL
 
 
 class MineTailingsStorageFacilityListResource(Resource, UserMixin):

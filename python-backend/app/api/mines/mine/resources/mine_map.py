@@ -8,7 +8,7 @@ from flask_restplus import Resource, reqparse, inputs, fields
 
 from app.api.mines.location.models.mine_map_view_location import MineMapViewLocation
 from app.extensions import api, cache, db
-from app.api.mines.mine_api_models import BASIC_MINE_LIST
+from app.api.mines.response_models import BASIC_MINE_LIST
 from ....utils.access_decorators import requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
 from ....utils.resources_mixins import UserMixin
 from ....constants import MINE_MAP_CACHE, TIMEOUT_12_HOURS
