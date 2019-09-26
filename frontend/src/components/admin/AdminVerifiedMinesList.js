@@ -5,7 +5,8 @@ import { Link } from "react-router-dom";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
 import NullScreen from "@/components/common/NullScreen";
-import { formatDate } from "@/utils/helpers";
+import { formatDate, getTableHeaders } from "@/utils/helpers";
+import TableLoadingWrapper from "@/components/common/wrappers/TableLoadingWrapper";
 
 /**
  * @class AdminVerifiedMinesList displays list of mineVerifiedStatuses for the admin page.
@@ -13,15 +14,16 @@ import { formatDate } from "@/utils/helpers";
 
 const propTypes = {
   minesVerifiedStatusList: PropTypes.arrayOf(CustomPropTypes.mineVerificationStatus).isRequired,
+  isLoaded: PropTypes.bool.isRequired,
 };
 
 const columns = [
   {
     title: "Mine Name",
-    width: 300,
+    width: 150,
     dataIndex: "mine_name",
     render: (text, record) => (
-      <div key={record.key}>
+      <div key={record.key} title="Mine Name">
         <Link to={router.MINE_SUMMARY.dynamicRoute(record.key)}>{text}</Link>
       </div>
     ),
@@ -30,11 +32,13 @@ const columns = [
     title: "Last Verified By",
     width: 150,
     dataIndex: "verifying_user",
+    render: (text) => <div title="Last Verified By">{text}</div>,
   },
   {
     title: "Last Verified On",
     width: 150,
     dataIndex: "formatted_timestamp",
+    render: (text) => <div title="Last Verified On">{text}</div>,
   },
 ];
 
@@ -47,14 +51,17 @@ const transformRowData = (verifiedMinesList) =>
 
 export const AdminVerifiedMinesList = (props) => (
   <div>
-    <Table
-      align="center"
-      pagination={false}
-      columns={columns}
-      dataSource={transformRowData(props.minesVerifiedStatusList)}
-      scroll={{ y: 500 }}
-      locale={{ emptyText: <NullScreen type="no-results" /> }}
-    />
+    <TableLoadingWrapper condition={props.isLoaded} tableHeaders={getTableHeaders(columns)}>
+      <Table
+        rowClassName="fade-in"
+        align="center"
+        pagination={false}
+        columns={columns}
+        dataSource={transformRowData(props.minesVerifiedStatusList)}
+        scroll={{ y: 500 }}
+        locale={{ emptyText: <NullScreen type="no-results" /> }}
+      />
+    </TableLoadingWrapper>
   </div>
 );
 

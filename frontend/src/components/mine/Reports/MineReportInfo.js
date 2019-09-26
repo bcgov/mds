@@ -64,11 +64,13 @@ export class MineReportInfo extends Component {
     mine: {},
     reportFilterParams: initialSearchValues,
     filteredReports: [],
+    isLoaded: false,
     disableAddReport: false,
   };
 
   componentWillMount = () => {
     this.props.fetchMineReports(this.props.mineGuid).then(() => {
+      this.setState({ isLoaded: true });
       if (this.props.location.search) {
         this.renderDataFromURL(this.props.location.search);
       } else {
@@ -230,20 +232,17 @@ export class MineReportInfo extends Component {
             </AuthorizationWrapper>
           </Row>
         </div>
-        {this.props.mineReports && this.props.mineReports.length > 0 && (
-          <div className="advanced-search__container">
-            <div>
-              <h2>Filter By</h2>
-            </div>
-            <Row>
-              <ReportFilterForm
-                onSubmit={this.handleReportFilter}
-                initialValues={this.state.reportFilterParams}
-              />
-            </Row>
+        <div className="advanced-search__container">
+          <div>
+            <h2>Filter By</h2>
           </div>
-        )}
+          <ReportFilterForm
+            onSubmit={this.handleReportFilter}
+            initialValues={this.state.reportFilterParams}
+          />
+        </div>
         <MineReportTable
+          isLoaded={this.state.isLoaded}
           openEditReportModal={this.openEditReportModal}
           handleEditReport={this.handleEditReport}
           handleRemoveReport={this.handleRemoveReport}

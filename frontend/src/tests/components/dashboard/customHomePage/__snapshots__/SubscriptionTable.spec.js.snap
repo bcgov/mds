@@ -1,13 +1,22 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SubscriptionTable renders properly 1`] = `
-<div
-  className="tab__content"
+<TableLoadingWrapper
+  isPaginated={false}
+  tableHeaders={
+    Array [
+      "Mine Name",
+      "Mine No.",
+      "Operational Status",
+      "Permit No.",
+      "Region",
+      "Tenure",
+      "Commodity",
+      "TSF",
+      "",
+    ]
+  }
 >
-  <h4>
-    Subscribed Mines
-  </h4>
-  <br />
   <Table
     align="left"
     bordered={false}
@@ -19,55 +28,46 @@ exports[`SubscriptionTable renders properly 1`] = `
           "dataIndex": "mineName",
           "render": [Function],
           "title": "Mine Name",
-          "width": 200,
         },
         Object {
           "dataIndex": "mineNo",
           "render": [Function],
           "title": "Mine No.",
-          "width": 100,
         },
         Object {
           "dataIndex": "operationalStatus",
           "render": [Function],
           "title": "Operational Status",
-          "width": 150,
         },
         Object {
           "dataIndex": "permit",
           "render": [Function],
           "title": "Permit No.",
-          "width": 150,
         },
         Object {
           "dataIndex": "region",
           "render": [Function],
           "title": "Region",
-          "width": 150,
         },
         Object {
           "dataIndex": "tenure",
           "render": [Function],
           "title": "Tenure",
-          "width": 150,
         },
         Object {
           "dataIndex": "commodity",
           "render": [Function],
           "title": "Commodity",
-          "width": 150,
         },
         Object {
           "dataIndex": "tsf",
           "render": [Function],
           "title": "TSF",
-          "width": 150,
         },
         Object {
           "dataIndex": "",
           "render": [Function],
           "title": "",
-          "width": 150,
         },
       ]
     }
@@ -122,6 +122,7 @@ exports[`SubscriptionTable renders properly 1`] = `
       }
     }
     pagination={false}
+    rowClassName="fade-in"
     rowKey="key"
     showHeader={true}
     size="default"
@@ -133,5 +134,5 @@ exports[`SubscriptionTable renders properly 1`] = `
     }
     useFixedHeader={false}
   />
-</div>
+</TableLoadingWrapper>
 `;

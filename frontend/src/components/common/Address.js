@@ -65,7 +65,7 @@ export class Address extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{ minHeight: "70px" }}>
         {this.addressContainsTruthyValues(this.props.address)
           ? this.renderAddress(this.props.address)
           : this.renderRowOne([Strings.EMPTY_FIELD])}

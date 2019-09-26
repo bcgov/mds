@@ -45,6 +45,7 @@ exports[`MineTailingsInfo renders properly 1`] = `
     <MineReportTable
       handleEditReport={[Function]}
       handleRemoveReport={[Function]}
+      isLoaded={false}
       openEditReportModal={[Function]}
     />
   </div>

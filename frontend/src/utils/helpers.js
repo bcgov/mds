@@ -169,3 +169,7 @@ export const formatComplianceCodeValueOrLabel = (code, showDescription) => {
 
   return `${section}${formattedSubSection}${formattedParagraph}${formattedSubParagraph}${formattedDescription}`;
 };
+
+export const getTableHeaders = (tableColumns) => {
+  return tableColumns.map((column) => column.title);
+};

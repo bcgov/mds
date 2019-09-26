@@ -37,9 +37,14 @@ describe("`createMineRecord` action creator", () => {
   const mineGuid = "12345-6789";
   const mineTenureTypeCode = "MIN";
   const url = ENVIRONMENT.apiUrl + API.MINE;
-  const mineTypeUrl = ENVIRONMENT.apiUrl + API.MINE_TYPES;
-  const mockPayLoad = { name: mineName, mine_tenure_type_code: mineTenureTypeCode };
-  const mockMineTypePayLoad = { mine_guid: mineGuid, mine_tenure_type_code: mineTenureTypeCode };
+  const mineTypeUrl = ENVIRONMENT.apiUrl + API.MINE_TYPES(mineGuid);
+  const mockMineTypePayLoad = [{ mine_tenure_type_code: mineTenureTypeCode }];
+  const mockPayLoad = {
+    name: mineName,
+    mine_tenure_type_code: mineTenureTypeCode,
+    mine_guid: mineGuid,
+    mine_types: mockMineTypePayLoad,
+  };
   it("Request successful, dispatches `success` with correct response", () => {
     const mockMineResponse = { success: true, mine_guid: mineGuid };
     const mockMineTypeResponse = { data: { success: true } };
@@ -64,12 +69,13 @@ describe("`createMineRecord` action creator", () => {
 
 describe("`removeMineType` action creator", () => {
   const tenure = "MockTenure";
+  const mineGuid = "12345-6789";
   const mineTypeGuid = "12345-6789";
-  const url = `${ENVIRONMENT.apiUrl + API.MINE_TYPES}/${mineTypeGuid}`;
+  const url = `${ENVIRONMENT.apiUrl}${API.MINE_TYPES(mineGuid)}/${mineTypeGuid}`;
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onDelete(url).reply(200, mockResponse);
-    return removeMineType(mineTypeGuid, tenure)(dispatch).then(() => {
+    return removeMineType(mineGuid, mineTypeGuid, tenure)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -110,7 +116,6 @@ describe("`createTailingsStorageFacility` action creator", () => {
     });
   });
 });
-
 
 describe("`fetchMineRecords` action creator", () => {
   const url = ENVIRONMENT.apiUrl + API.MINE_LIST_QUERY("1", "5");
@@ -179,7 +184,6 @@ describe("`fetchMineNameList` action creator", () => {
     });
   });
 });
-
 
 describe("`fetchMineDocuments` action creator", () => {
   const mineGuid = "12345-6789";

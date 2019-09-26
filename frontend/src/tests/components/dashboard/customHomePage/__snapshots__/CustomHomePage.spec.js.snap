@@ -12,10 +12,15 @@ exports[`CustomHomePage renders properly 1`] = `
     </h1>
   </div>
   <div
-    className="landing-page__content"
+    className="landing-page__content page__content"
   >
+    <h4>
+      Subscribed Mines
+    </h4>
+    <br />
     <SubscriptionTable
       handleUnSubscribe={[Function]}
+      isLoaded={false}
       mineCommodityOptionsHash={
         Object {
           "CG": "Construction Aggregate",

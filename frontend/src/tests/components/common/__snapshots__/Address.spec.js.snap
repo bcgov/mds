@@ -1,7 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Address renders properly 1`] = `
-<div>
+<div
+  style={
+    Object {
+      "minHeight": "70px",
+    }
+  }
+>
   <div
     className="inline-flex"
   >
