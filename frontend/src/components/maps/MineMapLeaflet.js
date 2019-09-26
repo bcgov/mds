@@ -84,17 +84,6 @@ LeafletWms.Source = LeafletWms.Source.extend({
     };
     return L.extend({}, wmsParams, infoParams);
   },
-  identify: function(evt) {
-    // Identify map features in response to map clicks. To customize this
-    // behavior, create a class extending wms.Source and override one or
-    // more of the following hook functions.
-
-    var layers = this.getIdentifyLayers();
-    if (!layers.length) {
-      return;
-    }
-    this.getFeatureInfo(evt.containerPoint, evt.latlng, layers, this.showFeatureInfo);
-  },
 });
 /* eslint-enable */
 
