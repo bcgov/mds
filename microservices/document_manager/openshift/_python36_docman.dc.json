@@ -164,6 +164,25 @@
       }
     },
     {
+      "apiVersion": "v1",
+      "kind": "PersistentVolumeClaim",
+      "metadata": {
+        "name": "mds-document-storage-${EXPANDED_DOCUMENT_CAPACITY}-${SUFFIX}",
+        "annotations": {
+          "volume.beta.kubernetes.io/storage-class": "gluster-file",
+          "volume.beta.kubernetes.io/storage-provisioner": "kubernetes.io/glusterfs"
+        }
+      },
+      "spec": {
+        "accessModes": ["ReadWriteMany"],
+        "resources": {
+          "requests": {
+            "storage": "${EXPANDED_DOCUMENT_CAPACITY}"
+          }
+        }
+      }
+    },
+    {
       "kind": "DeploymentConfig",
       "apiVersion": "v1",
       "metadata": {
@@ -392,6 +411,10 @@
                   {
                     "mountPath": "/opt/app-root/src/document_uploads",
                     "name": "mds-document-storage-data"
+                  },
+                  {
+                    "mountPath": "/tmp/document_transfer",
+                    "name": "mds-document-storage-data-2"
                   }
                 ],
                 "imagePullPolicy": "Always"
@@ -405,6 +428,12 @@
                 "name": "mds-document-storage-data",
                 "persistentVolumeClaim": {
                   "claimName": "mds-document-storage${SUFFIX}"
+                }
+              },
+              {
+                "name": "mds-document-storage-data-2",
+                "persistentVolumeClaim": {
+                  "claimName": "mds-document-storage-${EXPANDED_DOCUMENT_CAPACITY}-${SUFFIX}"
                 }
               }
             ]
