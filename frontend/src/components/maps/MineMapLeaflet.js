@@ -119,7 +119,7 @@ const tenureLayerArray = [
 
 const roadLayerArray = ["Roads DRA", "Forest Tenure Roads"];
 
-const tenureLayerColorArray = {
+const tenureLayerStyles = {
   "Crown Granted Mineral Claims": {
     color: "#A83800",
     fillOpacity: 0,
@@ -222,7 +222,7 @@ class MineMapLeaflet extends Component {
               flLayer = Object.create(flLayer);
 
               flLayer.__proto__.setStyle(function(feature) {
-                return tenureLayerColorArray[layer.title];
+                return tenureLayerStyles[layer.title];
               });
             }
           }
