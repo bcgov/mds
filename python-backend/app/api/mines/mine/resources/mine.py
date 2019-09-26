@@ -409,7 +409,6 @@ def _mine_status_processor(mine_status, status_date, mine):
     if existing_status:
         if existing_status.mine_status_xref_guid == mine_status_xref.mine_status_xref_guid \
                 and str(status_date) == str(existing_status.status_date):
-            current_app.logger.info(f'same status, should not change anything')
             return existing_status
 
         existing_status.expiry_date = datetime.today()

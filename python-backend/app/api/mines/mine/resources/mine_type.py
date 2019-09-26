@@ -48,9 +48,6 @@ class MineTypeListResource(Resource, UserMixin):
             MineTypeDetail.create(mine_type, mine_commodity_code=c_code)
 
         mine_type.save()
-        #current_app.logger.debug(mine_type.mine_tenure_type_code)
-        #current_app.logger.debug(MineType.query.all())
-        #current_app.logger.debug(MineTenureTypeCode.query.all())
         return mine_type
 
 

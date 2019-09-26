@@ -54,7 +54,6 @@ const propTypes = {
 export class MineHeader extends Component {
   handleUpdateMineRecord = (value) => {
     const mineStatus = value.mine_status.join(",");
-    console.log(value);
     return this.props
       .updateMineRecord(
         this.props.mine.mine_guid,
