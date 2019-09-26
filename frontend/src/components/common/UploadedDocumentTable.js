@@ -7,10 +7,6 @@ import LinkButton from "@/components/common/LinkButton";
 import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls";
 import { formatDateTime } from "@/utils/helpers";
 
-/**
- * @class  MinePermitInfo - contains all permit information
- */
-
 const propTypes = {
   files: PropTypes.arrayOf(PropTypes.objectOf(CustomPropTypes.mineReport)).isRequired,
   showRemove: PropTypes.bool,
