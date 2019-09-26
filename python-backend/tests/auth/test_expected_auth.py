@@ -17,7 +17,7 @@ from app.api.mines.variances.resources.variance_list import MineVarianceListReso
 from app.api.mines.variances.resources.variance_document_upload import MineVarianceDocumentUploadResource
 from app.api.mines.variances.resources.variance_uploaded_documents import MineVarianceUploadedDocumentsResource
 from app.api.mines.region.resources.region import MineRegionResource
-from app.api.mines.status.resources.status import MineStatusResource
+from app.api.mines.status.resources.status import MineStatusXrefListResource
 from app.api.mines.tailings.resources.tailings import MineTailingsStorageFacilityListResource
 from app.api.parties.party_appt.resources.mine_party_appt_resource import MinePartyApptResource
 from app.api.parties.party_appt.resources.mine_party_appt_type_resource import MinePartyApptTypeResource
@@ -57,7 +57,7 @@ from app.api.mines.reports.resources.mine_reports import MineReportResource, Min
      (MineReportResource, "put", [EDIT_REPORT, MINESPACE_PROPONENT]),
      (MineReportListResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]), 
      (MineReportListResource, "post", [EDIT_REPORT]),
-     (MineStatusResource, "get", [VIEW_ALL]),
+     (MineStatusXrefListResource, "get", [VIEW_ALL]),
      (MineTailingsStorageFacilityListResource, "get", [VIEW_ALL]),
      (MineTailingsStorageFacilityListResource, "post", [MINE_EDIT]),
      (MineTenureTypeCodeResource, "get", [VIEW_ALL]),
