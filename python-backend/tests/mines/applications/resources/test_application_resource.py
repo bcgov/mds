@@ -16,7 +16,7 @@ def test_get_application_not_found(test_client, db_session, auth_headers):
 
 
 def test_get_mine_applications(test_client, db_session, auth_headers):
-    mine_guid = ApplicationFactory(mine=mine).mine_guid
+    mine_guid = ApplicationFactory().mine_guid
 
     get_resp = test_client.get(f'/mines/{mine_guid}/applications',
                                headers=auth_headers['full_auth_header'])
@@ -49,11 +49,17 @@ def test_post_application(test_client, db_session, auth_headers):
 
 
 def test_post_application_bad_mine_guid(test_client, db_session, auth_headers):
+    data = {
+        'application_no': 'TX-54321',
+        'application_status_code': 'RIP',
+        'description': 'This is a test.',
+        'received_date': '1999-12-12',
+    }
     post_resp = test_client.post(f'/mines/{uuid.uuid4()}/applications',
                                  headers=auth_headers['full_auth_header'],
                                  json=data)
 
-    assert post_resp.status_code == 400
+    assert post_resp.status_code == 404
 
 
 #Put
@@ -61,12 +67,12 @@ def test_put_application(test_client, db_session, auth_headers):
     appl = ApplicationFactory(application_status_code='RIP')
 
     data = {'application_status_code': 'APR'}
-    put_resp = test_client.put(f'/mines/{appl.mine_guid}/applications/{application_guid}',
+    put_resp = test_client.put(f'/mines/{appl.mine_guid}/applications/{appl.application_guid}',
                                headers=auth_headers['full_auth_header'],
                                json=data)
     put_data = json.loads(put_resp.data.decode())
 
-    assert put_resp.status_code == 200
+    assert put_resp.status_code == 200, put_resp.response
     assert put_data.get('application_status_code') == 'APR'
 
 
@@ -76,4 +82,4 @@ def test_put_permit_bad_application_guid(test_client, db_session, auth_headers):
     put_resp = test_client.put(f'/mines/{appl.mine_guid}/applications/{uuid.uuid4()}',
                                headers=auth_headers['full_auth_header'],
                                json=data)
-    assert put_resp.status_code == 404
+    assert put_resp.status_code == 404, put_resp.response

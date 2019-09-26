@@ -63,6 +63,7 @@ class ApplicationListResource(Resource, UserMixin):
         if not mine:
             raise NotFound('There was no mine found with the provided mine_guid.')
 
+        data = self.parser.parse_args()
         application_no, application_status_code, received_date = list(
             map(data.get, ['application_no', 'application_status_code', 'received_date']))
 
@@ -96,7 +97,7 @@ class ApplicationResource(Resource, UserMixin):
     @requires_role_view_all
     def get(self, mine_guid, application_guid):
         application = Application.find_by_application_guid(application_guid)
-        if not application or application.mine_guid != mine_guid:
+        if not application or str(application.mine_guid) != mine_guid:
             raise NotFound('Application not found.')
         return application
 
@@ -108,7 +109,7 @@ class ApplicationResource(Resource, UserMixin):
     @requires_role_mine_edit
     def put(self, mine_guid, application_guid):
         application = Application.find_by_application_guid(application_guid)
-        if not application or application.mine_guid != mine_guid:
+        if not application or str(application.mine_guid) != mine_guid:
             raise NotFound('Application not found.')
 
         data = self.parser.parse_args()
