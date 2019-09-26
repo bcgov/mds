@@ -3,7 +3,6 @@ from flask_restplus import Namespace
 from ..mine.resources.mine_map import MineMapResource
 from ..mine.resources.mine import MineResource, MineListSearch, MineListResource
 from ..mine.resources.mine_type import MineTypeResource, MineTypeListResource
-from ..mine.resources.mine_type_detail import MineTypeDetailResource
 from ..mine.resources.mine_tenure_type_code import MineTenureTypeCodeResource
 from ..mine.resources.mine_disturbance_code import MineDisturbanceCodeResource
 from ..mine.resources.mine_commodity_code import MineCommodityCodeResource
@@ -54,11 +53,8 @@ api.add_resource(MineDocumentListResource, '/<string:mine_guid>/documents')
 api.add_resource(MineComplianceSummaryResource, '/<string:mine_no>/compliance/summary')
 api.add_resource(ComplianceArticleResource, '/compliance/codes')
 
-api.add_resource(MineTypeResource, '/mine-types/<string:mine_type_guid>')
-api.add_resource(MineTypeListResource, '/mine-types')
-
-api.add_resource(MineTypeDetailResource, '/mine-types/details',
-                 '/mine-types/details/<string:mine_type_detail_xref_guid>')
+api.add_resource(MineTypeResource, '/<string:mine_guid>/mine-types/<string:mine_type_guid>')
+api.add_resource(MineTypeListResource, '/<string:mine_guid>/mine-types')
 
 api.add_resource(MineBasicInfoResource, '/basicinfo')
 api.add_resource(MineVerifiedStatusResource, '/<string:mine_guid>/verified-status')

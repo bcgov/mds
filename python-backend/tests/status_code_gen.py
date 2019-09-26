@@ -2,7 +2,6 @@ import random
 
 from app.extensions import db
 from app.api.mines.applications.models.application_status_code import ApplicationStatusCode
-from app.api.constants import COMMODITY_CODES_CONFIG, DISTURBANCE_CODES_CONFIG
 from app.api.incidents.models.mine_incident_determination_type import MineIncidentDeterminationType
 from app.api.incidents.models.mine_incident_status_code import MineIncidentStatusCode
 from app.api.incidents.models.mine_incident_document_type_code import MineIncidentDocumentTypeCode
@@ -41,17 +40,15 @@ def RandomTenureTypeCode():
 
 
 def SampleMineCommodityCodes(mine_tenure_type, num):
-    return random.sample([
-        key for key, val in COMMODITY_CODES_CONFIG.items()
-        if mine_tenure_type in val['mine_tenure_type_codes']
-    ], num)
+    return [
+        x.mine_commodity_code for x in random.sample(mine_tenure_type.mine_commodity_codes, num)
+    ]
 
 
 def SampleMineDisturbanceCodes(mine_tenure_type, num):
-    return random.sample([
-        key for key, val in DISTURBANCE_CODES_CONFIG.items()
-        if mine_tenure_type in val['mine_tenure_type_codes']
-    ], num)
+    return [
+        x.mine_disturbance_code for x in random.sample(mine_tenure_type.mine_disturbance_codes, num)
+    ]
 
 
 def RandomMineStatusXref():
