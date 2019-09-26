@@ -25,6 +25,7 @@ from app.api.parties.party.resources.party_list_resource import PartyListResourc
 from app.api.mines.permits.permit.resources.permit import PermitResource, PermitListResource
 from app.api.mines.permits.permit_amendment.resources.permit_amendment import PermitAmendmentResource, PermitAmendmentListResource
 from app.api.mines.permits.permit_amendment.resources.permit_amendment_document import PermitAmendmentDocumentResource, PermitAmendmentDocumentListResource
+from app.api.mines.permits.permit.resources.permit_document_upload import PermitDocumentUploadInitializationResource
 from app.api.users.minespace.resources.minespace_user import MinespaceUserResource, MinespaceUserListResource
 from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserMineResource, MinespaceUserMineListResource
 from app.api.search.search.resources.search import SearchResource, SearchOptionsResource
@@ -83,7 +84,7 @@ from app.api.mines.reports.resources.mine_reports import MineReportResource, Min
      (PermitAmendmentListResource, "post", [EDIT_PERMIT]),
      (PermitAmendmentResource, "put", [EDIT_PERMIT]),
      (PermitAmendmentResource, "delete", [MINE_ADMIN]),
-     (PermitAmendmentDocumentListResource, "post", [EDIT_PERMIT]),
+     (PermitDocumentUploadInitializationResource, "post", [EDIT_PERMIT]),
      (PermitAmendmentDocumentListResource, "put", [EDIT_PERMIT]),
      (PermitAmendmentDocumentResource, "delete", [EDIT_PERMIT]),
      (SearchResource, "get", [VIEW_ALL]),
