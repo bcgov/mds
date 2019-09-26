@@ -29,16 +29,12 @@ class MineHeaderMapLeaflet extends Component {
     this.createPin();
 
     // Add MinePins to the top of LayerList and add the LayerList widget
-    L.control.layers(this.getBaseMaps(), {}, { position: "topleft" }).addTo(this.map);
+    L.control.layers(this.getBaseMaps(), {}, { position: "topright" }).addTo(this.map);
   }
 
   getBaseMaps() {
     const topographicBasemap = L.tileLayer(
-      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
-      {
-        attribution:
-          "Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community",
-      }
+      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}"
     );
     // Add default basemap to the map
     topographicBasemap.addTo(this.map);
@@ -59,12 +55,11 @@ class MineHeaderMapLeaflet extends Component {
       iconSize: [60, 60],
     });
 
-    // TODO: Check what happens if Lat/Long is invalid
     L.marker(this.latLong, { icon: customIcon }).addTo(this.map);
   };
 
   createMap() {
-    this.map = L.map("leaflet-map")
+    this.map = L.map("leaflet-map", { attributionControl: false })
       .setView(this.latLong, Strings.HIGH_ZOOM)
       .setMaxZoom(20);
   }

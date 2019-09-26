@@ -187,7 +187,6 @@ class MineMapLeaflet extends Component {
     const pin = this.props.mineName === mine.mine_name ? SMALL_PIN_SELECTED : SMALL_PIN;
     const customIcon = L.icon({ iconUrl: pin, iconSize: [60, 60] });
 
-    // TODO: Check what happens if Lat/Long is invalid
     const latLong = [mine.mine_location.latitude, mine.mine_location.longitude];
 
     const marker = L.marker(latLong, { icon: customIcon }).bindPopup(Strings.LOADING);
