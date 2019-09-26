@@ -59,7 +59,6 @@ class MineHeaderMapLeaflet extends Component {
       iconSize: [60, 60],
     });
 
-    // TODO: Check what happens if Lat/Long is invalid
     L.marker(this.latLong, { icon: customIcon }).addTo(this.map);
   };
 
