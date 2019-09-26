@@ -84,6 +84,22 @@ LeafletWms.Source = LeafletWms.Source.extend({
     };
     return L.extend({}, wmsParams, infoParams);
   },
+  parseFeatureInfo: function(result, url) {
+    // Hook to handle parsing AJAX response
+    if (result == "error") {
+      // AJAX failed, possibly due to CORS issues.
+      // Try loading content in <iframe>.
+      result = "<iframe src='" + url + "' style='width:380px'>";
+    }
+    return result;
+  },
+  showFeatureInfo: function(latlng, info) {
+    // Hook to handle displaying parsed AJAX response to the user
+    if (!this._map) {
+      return;
+    }
+    this._map.openPopup(info, latlng, { className: "leaflet-wms-popup" });
+  },
 });
 /* eslint-enable */
 
@@ -305,7 +321,10 @@ class MineMapLeaflet extends Component {
 
   createMap() {
     // Creates the base leaflet map object and overlays the ESRI WebMap on top
-    this.map = L.map("leaflet-map", { attributionControl: false }).setMaxZoom(20);
+    this.map = L.map("leaflet-map", {
+      attributionControl: false,
+      maxBoundsViscosity: 1.0,
+    }).setMaxZoom(20);
     this.webMap = window.L.esri.webMap(ENVIRONMENT.mapPortalId, { map: this.map });
   }
 
