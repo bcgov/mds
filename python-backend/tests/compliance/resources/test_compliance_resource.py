@@ -1,16 +1,6 @@
-import json
-import io
-import filecmp
-import os
-import pytest
-import requests
+import json, pytest
 
-from datetime import datetime
-from dateutil.relativedelta import relativedelta
-from unittest import mock
-
-from app.extensions import cache
-from app.api.constants import NRIS_TOKEN
+from app.api.compliance.models.compliance_article import ComplianceArticle
 
 
 def test_get_complaince_articles(test_client, auth_headers, db_session):
@@ -19,4 +9,4 @@ def test_get_complaince_articles(test_client, auth_headers, db_session):
 
     assert get_resp.status_code == 200, get_resp.response
     get_data = json.loads(get_resp.data.decode())
-    assert len(get_data['records']) == 0
+    assert len(get_data['records']) == ComplianceArticle.query.count()
