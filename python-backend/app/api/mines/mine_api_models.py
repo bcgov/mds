@@ -37,6 +37,22 @@ MINE_TENURE_TYPE_CODE_MODEL = api.model('MineTenureTypeCode', {
     'description': fields.String,
 })
 
+MINE_COMMODITY_CODE_MODEL = api.model(
+    'MineCommodityCodeModel', {
+        'mine_commodity_code': fields.String,
+        'description': fields.String,
+        'active_ind': fields.Boolean,
+        'mine_tenure_type_codes': fields.List(fields.String)
+    })
+
+MINE_DISTURBANCE_CODE_MODEL = api.model(
+    'MineDisturbanceCodeModel', {
+        'mine_disturbance_code': fields.String,
+        'description': fields.String,
+        'active_ind': fields.Boolean,
+        'mine_tenure_type_codes': fields.List(fields.String)
+    })    
+
 MINE_LOCATION_MODEL = api.model(
     'MineLocation', {
         'latitude': fields.Fixed(description='fixed precision decimal.',
