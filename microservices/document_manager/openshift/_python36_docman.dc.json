@@ -409,7 +409,7 @@
               {
                 "name": "mds-document-storage-data",
                 "persistentVolumeClaim": {
-                  "claimName": "mds-document-storage-${DOCUMENT_CAPACITY_LOWER}-${SUFFIX}"
+                  "claimName": "mds-document-storage-${DOCUMENT_CAPACITY_LOWER}${SUFFIX}"
                 }
               }
             ]
