@@ -213,7 +213,7 @@ app {
                             'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled_core}",
                             'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name_docman}",
                             'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}",
-                            'DOCUMENT_CAPACITY_LOWER':"${vars.DOCUMENT_PVC_SIZE.toLowerCase()}"
+                            'DOCUMENT_CAPACITY_LOWER':"${vars.DOCUMENT_PVC_SIZE.toLowerCase()}",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/document-manager",
                     ]
