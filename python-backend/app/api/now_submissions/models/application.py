@@ -170,27 +170,27 @@ class Application(Base):
 
     mine = db.relationship('Mine', lazy='joined')
 
-    applicant = db.relationship('Client', lazy='joined', foreign_keys=[applicantclientid])
-    submitter = db.relationship('Client', lazy='joined', foreign_keys=[submitterclientid])
-    contacts = db.relationship('Contact', lazy='joined')
-    documents = db.relationship('Document', lazy='joined')
-    sand_grv_qry_activity = db.relationship('SandGrvQryActivity', lazy='joined')
-    surface_bulk_sample_activity = db.relationship('SurfaceBulkSampleActivity', lazy='joined')
-    under_exp_new_activity = db.relationship('UnderExpNewActivity', lazy='joined')
-    under_exp_rehab_activity = db.relationship('UnderExpRehabActivity', lazy='joined')
-    under_exp_surface_activity = db.relationship('UnderExpSurfaceActivity', lazy='joined')
-    water_source_activity = db.relationship('WaterSourceActivity', lazy='joined')
-    exp_access_activity = db.relationship('ExpAccessActivity', lazy='joined')
-    mech_trenching_activity = db.relationship('MechTrenchingActivity', lazy='joined')
+    applicant = db.relationship('Client', lazy='select', foreign_keys=[applicantclientid])
+    submitter = db.relationship('Client', lazy='select', foreign_keys=[submitterclientid])
+    contacts = db.relationship('Contact', lazy='select')
+    documents = db.relationship('Document', lazy='select')
+    sand_grv_qry_activity = db.relationship('SandGrvQryActivity', lazy='select')
+    surface_bulk_sample_activity = db.relationship('SurfaceBulkSampleActivity', lazy='select')
+    under_exp_new_activity = db.relationship('UnderExpNewActivity', lazy='select')
+    under_exp_rehab_activity = db.relationship('UnderExpRehabActivity', lazy='select')
+    under_exp_surface_activity = db.relationship('UnderExpSurfaceActivity', lazy='select')
+    water_source_activity = db.relationship('WaterSourceActivity', lazy='select')
+    exp_access_activity = db.relationship('ExpAccessActivity', lazy='select')
+    mech_trenching_activity = db.relationship('MechTrenchingActivity', lazy='select')
 
     existing_placer_activity = db.relationship(
-        'PlacerActivity', lazy='joined', secondary='now_submissions.existing_placer_activity_xref')
+        'PlacerActivity', lazy='select', secondary='now_submissions.existing_placer_activity_xref')
     existing_settling_pond = db.relationship(
-        'SettlingPond', lazy='joined', secondary='now_submissions.existing_settling_pond_xref')
+        'SettlingPond', lazy='select', secondary='now_submissions.existing_settling_pond_xref')
     proposed_placer_activity = db.relationship(
-        'PlacerActivity', lazy='joined', secondary='now_submissions.proposed_placer_activity_xref')
+        'PlacerActivity', lazy='select', secondary='now_submissions.proposed_placer_activity_xref')
     proposed_settling_pond = db.relationship(
-        'SettlingPond', lazy='joined', secondary='now_submissions.proposed_settling_pond_xref')
+        'SettlingPond', lazy='select', secondary='now_submissions.proposed_settling_pond_xref')
 
     mine_name = association_proxy('mine', 'mine_name')
     mine_region = association_proxy('mine', 'mine_region')
