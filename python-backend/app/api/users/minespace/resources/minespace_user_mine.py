@@ -3,8 +3,8 @@ import uuid
 from flask_restplus import Resource, reqparse
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 from app.extensions import api
-from ....utils.access_decorators import requires_role_mine_admin
-from ....utils.resources_mixins import UserMixin
+from app.api.utils.access_decorators import requires_role_mine_admin
+from app.api.utils.resources_mixins import UserMixin
 from ..models.minespace_user import MinespaceUser
 from ..models.minespace_user_mine import MinespaceUserMine
 from app.extensions import db

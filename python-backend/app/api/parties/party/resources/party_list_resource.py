@@ -13,9 +13,9 @@ from app.api.parties.party_appt.models.party_business_role_appt import PartyBusi
 from ...response_models import PARTY, PAGINATED_PARTY_LIST
 
 from app.extensions import api
-from ....utils.access_decorators import requires_role_view_all, requires_role_edit_party, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_party, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
 
-from ....utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 
 

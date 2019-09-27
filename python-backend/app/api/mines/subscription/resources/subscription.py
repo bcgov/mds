@@ -4,8 +4,8 @@ from werkzeug.exceptions import BadRequest, NotFound
 
 from app.extensions import api
 from app.api.utils.include.user_info import User
-from ....utils.resources_mixins import UserMixin
-from ....utils.access_decorators import (requires_any_of, VIEW_ALL)
+from app.api.utils.resources_mixins import UserMixin
+from app.api.utils.access_decorators import (requires_any_of, VIEW_ALL)
 from ..models.subscription import Subscription
 from ...mine.models.mine import Mine
 from ...response_models import MINES_MODEL

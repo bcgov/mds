@@ -3,8 +3,8 @@ from app.extensions import api
 
 from ..models.variance_application_status_code import VarianceApplicationStatusCode
 from ..response_models import VARIANCE_APPLICATION_STATUS_CODE
-from ...utils.access_decorators import requires_any_of, VIEW_ALL, EDIT_VARIANCE, MINESPACE_PROPONENT
-from ...utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.utils.access_decorators import requires_any_of, VIEW_ALL, EDIT_VARIANCE, MINESPACE_PROPONENT
+from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 
 
 class VarianceApplicationStatusCodeResource(Resource, UserMixin, ErrorMixin):

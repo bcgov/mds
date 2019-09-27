@@ -5,9 +5,9 @@ from app.extensions import api
 
 from ...mine.models.mine import Mine
 from app.api.mines.documents.mines.models.mine_document import MineDocument
-from ....utils.access_decorators import (requires_any_of, EDIT_VARIANCE,
+from app.api.utils.access_decorators import (requires_any_of, EDIT_VARIANCE,
                                          MINESPACE_PROPONENT)
-from ....utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.variances.models.variance import Variance
 

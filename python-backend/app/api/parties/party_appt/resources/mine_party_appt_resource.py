@@ -9,8 +9,8 @@ from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 from app.extensions import api
 from ..models.mine_party_appt import MinePartyAppointment
 from ..models.mine_party_appt_type import MinePartyAppointmentType
-from ....utils.access_decorators import requires_role_view_all, requires_role_mine_edit
-from ....utils.resources_mixins import UserMixin
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_edit
+from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 
 

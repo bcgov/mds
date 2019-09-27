@@ -9,8 +9,8 @@ from ..models.variance_application_status_code import VarianceApplicationStatusC
 from app.api.compliance.models.compliance_article import ComplianceArticle
 from app.api.parties.party.models.party import Party
 from ..response_models import PAGINATED_VARIANCE_LIST
-from ...utils.access_decorators import requires_any_of, VIEW_ALL
-from ...utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.utils.access_decorators import requires_any_of, VIEW_ALL
+from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 
 PAGE_DEFAULT = 1
 PER_PAGE_DEFAULT = 25

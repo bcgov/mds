@@ -5,8 +5,8 @@ from flask import request, current_app
 from werkzeug.exceptions import BadRequest, NotFound
 
 from app.extensions import api
-from ....utils.access_decorators import requires_role_view_all
-from ....utils.resources_mixins import UserMixin
+from app.api.utils.access_decorators import requires_role_view_all
+from app.api.utils.resources_mixins import UserMixin
 from ....constants import NRIS_COMPLIANCE_DATA, TIMEOUT_60_MINUTES
 from app.api.services import NRIS_API_service
 from app.extensions import cache

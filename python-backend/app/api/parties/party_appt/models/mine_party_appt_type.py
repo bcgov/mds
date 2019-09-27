@@ -10,7 +10,7 @@ from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 
 from ...party.models.party import Party
-from ....utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import AuditMixin, Base
 
 
 class MinePartyAppointmentType(AuditMixin, Base):

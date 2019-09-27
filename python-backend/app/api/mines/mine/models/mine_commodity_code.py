@@ -1,7 +1,7 @@
 from datetime import datetime
 from sqlalchemy.schema import FetchedValue
 
-from ....utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import AuditMixin, Base
 from app.extensions import db
 
 from sqlalchemy.ext.hybrid import hybrid_property

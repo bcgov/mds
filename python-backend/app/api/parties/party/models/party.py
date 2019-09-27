@@ -11,7 +11,7 @@ from app.extensions import db
 from werkzeug.exceptions import BadRequest
 
 from .party_address import PartyAddressXref
-from ....utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import AuditMixin, Base
 
 
 class Party(AuditMixin, Base):

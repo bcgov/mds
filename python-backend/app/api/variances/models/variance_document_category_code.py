@@ -1,7 +1,7 @@
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 
-from ...utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import AuditMixin, Base
 
 
 class VarianceDocumentCategoryCode(AuditMixin, Base):

@@ -7,7 +7,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from app.extensions import db
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from ....utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import AuditMixin, Base
 from .mine_status_xref import MineStatusXref
 
 

@@ -8,8 +8,8 @@ from app.api.mines.mine.models.mine import Mine
 from ..models.mine_incident import MineIncident
 from app.api.incidents.models.mine_incident_do_subparagraph import MineIncidentDoSubparagraph
 from ..response_models import PAGINATED_INCIDENT_LIST
-from ...utils.access_decorators import requires_any_of, VIEW_ALL
-from ...utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.utils.access_decorators import requires_any_of, VIEW_ALL
+from app.api.utils.resources_mixins import UserMixin, ErrorMixin
 
 PAGE_DEFAULT = 1
 PER_PAGE_DEFAULT = 25
