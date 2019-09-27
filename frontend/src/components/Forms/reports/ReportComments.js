@@ -65,22 +65,24 @@ export class ReportComments extends Component {
   }
 
   render() {
-    return [
-      <FormItemLabel underline>Comments</FormItemLabel>,
-      <CommentPanel
-        renderAdd
-        onSubmit={this.handleAddComment}
-        loading={this.state.loading}
-        onRemove={this.handleRemoveComment}
-        comments={this.props.mineReportComments.map((comment) => ({
-          key: comment.mine_report_comment_guid,
-          author: comment.comment_user,
-          content: comment.report_comment,
-          actions: actionBuilder(comment.comment_visibility_ind, comment.from_latest_submission),
-          datetime: comment.comment_datetime,
-        }))}
-      />,
-    ];
+    return (
+      <React.Fragment>
+        <FormItemLabel underline>Comments</FormItemLabel>
+        <CommentPanel
+          renderAdd
+          onSubmit={this.handleAddComment}
+          loading={this.state.loading}
+          onRemove={this.handleRemoveComment}
+          comments={this.props.mineReportComments.map((comment) => ({
+            key: comment.mine_report_comment_guid,
+            author: comment.comment_user,
+            content: comment.report_comment,
+            actions: actionBuilder(comment.comment_visibility_ind, comment.from_latest_submission),
+            datetime: comment.comment_datetime,
+          }))}
+        />
+      </React.Fragment>
+    );
   }
 }
 

@@ -29,7 +29,10 @@ export const ReportHistory = (props) => (
     </LinkButton>
     <div className="padding-xxl--top" />
     {props.mineReportSubmissions.map((submission) => (
-      <ReportHistorySubmissionSummary mineReportSubmission={submission} />
+      <ReportHistorySubmissionSummary
+        key={submission.mine_report_submission_guid}
+        mineReportSubmission={submission}
+      />
     ))}
     <div className="center">
       <Button onClick={props.toggleReportHistory}>OK</Button>

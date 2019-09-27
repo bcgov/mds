@@ -7,7 +7,7 @@ import CommentEditor from "@/components/common/comments/CommentEditor";
 import Comment from "@/components/common/comments/Comment";
 
 const propTypes = {
-  loading: PropTypes.bool.isRequired,
+  loading: PropTypes.bool,
   renderAdd: PropTypes.bool,
   comments: PropTypes.arrayOf(PropTypes.any).isRequired,
   onSubmit: PropTypes.func,
@@ -16,6 +16,7 @@ const propTypes = {
 
 const defaultProps = {
   renderAdd: true,
+  loading: false,
   onChange: () => {},
   onSubmit: () => {},
 };

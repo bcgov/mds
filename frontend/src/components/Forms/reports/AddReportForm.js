@@ -16,27 +16,29 @@ import {
 } from "@/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import { ReportSubmissions } from "@/components/Forms/reports/ReportSubmissions";
-import ReportComments from "./ReportComments";
+import ReportComments from "@/components/Forms/reports/ReportComments";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
-  dropdownMineReportCategoryOptions: PropTypes.arrayOf(
-    PropTypes.objectOf(CustomPropTypes.dropdownListItem)
-  ).isRequired,
+  mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.any).isRequired,
+  dropdownMineReportCategoryOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any),
-  selectedMineReportCategory: PropTypes.string.isRequired,
-  selectedMineReportDefinition: PropTypes.string.isRequired,
+  selectedMineReportCategory: PropTypes.string,
+  selectedMineReportDefinition: PropTypes.string,
   formMeta: PropTypes.any,
   toggleReportHistory: PropTypes.func.isRequired,
 };
 
 const selector = formValueSelector(FORM.ADD_REPORT);
 
-const defaultProps = { initialValues: {} };
+const defaultProps = {
+  initialValues: {},
+  selectedMineReportDefinition: null,
+  selectedMineReportCategory: null,
+};
 
 export class AddReportForm extends Component {
   state = {
@@ -174,10 +176,12 @@ export class AddReportForm extends Component {
                 }
               >
                 {this.state.selectedMineReportComplianceArticles.length
-                  ? this.state.selectedMineReportComplianceArticles.map((opt) => (
-                      <List.Item>{formatComplianceCodeValueOrLabel(opt, true)}</List.Item>
+                  ? this.state.selectedMineReportComplianceArticles.map((opt, index) => (
+                      <List.Item key={index}>
+                        {formatComplianceCodeValueOrLabel(opt, true)}
+                      </List.Item>
                     ))
-                  : [<List.Item />]}
+                  : [<List.Item key={1} />]}
               </List>
             </Form.Item>
             <Form.Item />

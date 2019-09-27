@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 import { Divider } from "antd";
 
 const propTypes = {
-  children: PropTypes.objectOf(PropTypes.any).isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  children: PropTypes.any.isRequired,
   underline: PropTypes.bool,
 };
 

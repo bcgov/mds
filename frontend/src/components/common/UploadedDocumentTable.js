@@ -11,7 +11,7 @@ import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls"
  */
 
 const propTypes = {
-  files: PropTypes.arrayOf(PropTypes.objectOf(CustomPropTypes.mineReport)).isRequired,
+  files: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
   showRemove: PropTypes.bool,
   removeFileHandler: PropTypes.func,
 };

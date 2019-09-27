@@ -38,6 +38,7 @@ import {
   fetchPartyRelationships,
   fetchInspectors,
 } from "@/actionCreators/partiesActionCreator";
+import { fetchVariancesByMine } from "@/actionCreators/varianceActionCreator";
 import { fetchMineComplianceInfo } from "@/actionCreators/complianceActionCreator";
 import CustomPropTypes from "@/customPropTypes";
 import Loading from "@/components/common/Loading";
@@ -370,6 +371,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchVarianceStatusOptions,
       setMineVerifiedStatus,
       fetchMineVerifiedStatuses,
+      fetchVariancesByMine,
     },
     dispatch
   );

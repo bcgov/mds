@@ -3,10 +3,11 @@ import PropTypes from "prop-types";
 import { formatDate } from "@/utils/helpers";
 
 const propTypes = {
-  children: PropTypes.objectOf(PropTypes.any).isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  children: PropTypes.any.isRequired,
   author: PropTypes.string.isRequired,
   datetime: PropTypes.string.isRequired,
-  actions: PropTypes.objectOf(PropTypes.any),
+  actions: PropTypes.arrayOf(PropTypes.any),
 };
 
 const defaultProps = {
@@ -22,8 +23,11 @@ const Comment = (props) => (
     <div className="ant-comment-content padding-md--bottom inline-flex between">
       <div className="ant-comment-content-author inline-flex flex-flow-column">
         {props.actions &&
-          props.actions.map((action) => (
-            <span className="ant-comment-content-author-name">{action}</span>
+          props.actions.map((action, index) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <span className="ant-comment-content-author-name" key={index}>
+              {action}
+            </span>
           ))}
       </div>
       <div className="ant-comment-content-author">

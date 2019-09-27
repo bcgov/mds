@@ -39,79 +39,81 @@ const updateSubmissionHandler = (mine_document_guid, props) => {
 export const ReportSubmissions = (props) => {
   const hasSubmissions = props.mineReportSubmissions.length > 0;
   const [updateFilesClicked, setUpdateFilesClicked] = useState(false);
-  return [
-    <FormItemLabel underline>Report Files</FormItemLabel>,
-    props.mineReportSubmissions.length > 0 && (
-      <UploadedDocumentsTable
-        files={props.mineReportSubmissions[props.mineReportSubmissions.length - 1].documents}
-        showRemove={updateFilesClicked}
-        removeFileHandler={(mine_document_guid) =>
-          updateSubmissionHandler(mine_document_guid, props)
-        }
-      />
-    ),
-    (!hasSubmissions || updateFilesClicked) && (
-      <Form.Item>
-        <Field
-          id="ReportFileUpload"
-          name="ReportFileUpload"
-          label="Upload Files"
-          onFileLoad={(document_name, document_manager_guid) => {
-            setUpdateFilesClicked(true);
-            const updatedSubmissions =
-              props.mineReportSubmissions && props.mineReportSubmissions.length > 0
-                ? props.mineReportSubmissions
-                : [{ documents: [] }];
-            updatedSubmissions[updatedSubmissions.length - 1].documents = concat(
-              updatedSubmissions[updatedSubmissions.length - 1].documents,
-              {
-                document_name,
-                document_manager_guid,
-              }
-            );
-            props.updateMineReportSubmissions(updatedSubmissions);
-          }}
-          uploadUrl={MINE_REPORT_DOCUMENT(props.mineGuid)}
-          component={FileUpload}
+  return (
+    <React.Fragment>
+      <FormItemLabel underline>Report Files</FormItemLabel>
+      {props.mineReportSubmissions.length > 0 && (
+        <UploadedDocumentsTable
+          files={props.mineReportSubmissions[props.mineReportSubmissions.length - 1].documents}
+          showRemove={updateFilesClicked}
+          removeFileHandler={(mine_document_guid) =>
+            updateSubmissionHandler(mine_document_guid, props)
+          }
         />
-      </Form.Item>
-    ),
-    hasSubmissions && !updateFilesClicked && (
-      <div className="inline-flex padding-large--top padding-md--bottom flex-flow-column">
-        <div className="center">
-          <Button
-            className="center center-mobile "
-            type="primary"
-            onClick={() => {
-              setUpdateFilesClicked(!updateFilesClicked);
-              props.updateMineReportSubmissions([
-                ...props.mineReportSubmissions,
+      )}
+      {(!hasSubmissions || updateFilesClicked) && (
+        <Form.Item>
+          <Field
+            id="ReportFileUpload"
+            name="ReportFileUpload"
+            label="Upload Files"
+            onFileLoad={(document_name, document_manager_guid) => {
+              setUpdateFilesClicked(true);
+              const updatedSubmissions =
+                props.mineReportSubmissions && props.mineReportSubmissions.length > 0
+                  ? props.mineReportSubmissions
+                  : [{ documents: [] }];
+              updatedSubmissions[updatedSubmissions.length - 1].documents = concat(
+                updatedSubmissions[updatedSubmissions.length - 1].documents,
                 {
-                  documents:
-                    props.mineReportSubmissions.length > 0
-                      ? props.mineReportSubmissions[props.mineReportSubmissions.length - 1]
-                          .documents
-                      : [],
-                },
-              ]);
+                  document_name,
+                  document_manager_guid,
+                }
+              );
+              props.updateMineReportSubmissions(updatedSubmissions);
             }}
-          >
-            Update Files
-          </Button>
+            uploadUrl={MINE_REPORT_DOCUMENT(props.mineGuid)}
+            component={FileUpload}
+          />
+        </Form.Item>
+      )}
+      {hasSubmissions && !updateFilesClicked && (
+        <div className="inline-flex padding-large--top padding-md--bottom flex-flow-column">
+          <div className="center">
+            <Button
+              className="center center-mobile "
+              type="primary"
+              onClick={() => {
+                setUpdateFilesClicked(!updateFilesClicked);
+                props.updateMineReportSubmissions([
+                  ...props.mineReportSubmissions,
+                  {
+                    documents:
+                      props.mineReportSubmissions.length > 0
+                        ? props.mineReportSubmissions[props.mineReportSubmissions.length - 1]
+                            .documents
+                        : [],
+                  },
+                ]);
+              }}
+            >
+              Update Files
+            </Button>
+          </div>
+          <div className="center">
+            <LinkButton
+              key="file_history"
+              onClick={() => {
+                props.toggleReportHistory();
+              }}
+            >
+              See file history
+            </LinkButton>
+          </div>
         </div>
-        <div className="center">
-          <LinkButton
-            key="file_history"
-            onClick={() => {
-              props.toggleReportHistory();
-            }}
-          >
-            See file history
-          </LinkButton>
-        </div>
-      </div>
-    ),
-  ];
+      )}
+    </React.Fragment>
+  );
 };
 
 ReportSubmissions.propTypes = propTypes;

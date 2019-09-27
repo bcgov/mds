@@ -44,13 +44,12 @@ export class SlidingForms extends Component {
         showThumbs={false}
         swipeable={false}
       >
-        {this.props.formContent.map((form, index) => {
-          return (
-            <div style={this.props.selectedForm !== index ? { display: "none" } : {}}>
-              <div className="fade-in">{form}</div>
-            </div>
-          );
-        })}
+        {this.props.formContent.map((form, index) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <div key={index} style={this.props.selectedForm !== index ? { display: "none" } : {}}>
+            <div className="fade-in">{form}</div>
+          </div>
+        ))}
       </Carousel>
     </div>
   );
