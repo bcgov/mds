@@ -8,12 +8,15 @@ import { MINE_REPORT_DOCUMENT } from "@/constants/API";
 import LinkButton from "@/components/common/LinkButton";
 import { UploadedDocumentsTable } from "@/components/common/UploadedDocumentTable";
 import FormItemLabel from "@/components/common/FormItemLabel";
+import { renderConfig } from "@/components/common/config";
+import customPropTypes from "@/customPropTypes";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   mineReportSubmissions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
   updateMineReportSubmissions: PropTypes.func.isRequired,
   showReportHistory: PropTypes.func.isRequired,
+  mineReportStatusOptions: customPropTypes.options.isRequired,
 };
 
 const defaultProps = {
@@ -50,6 +53,18 @@ export const ReportSubmissions = (props) => {
             updateSubmissionHandler(mine_document_guid, props)
           }
         />
+      )}
+      {hasSubmissions && (
+        <Form.Item>
+          <Field
+            id="mine_report_submission_status"
+            name="mine_report_submission_status"
+            label="Revision Status"
+            data={props.mineReportStatusOptions}
+            component={renderConfig.SELECT}
+            defaultValue="NRQ"
+          />
+        </Form.Item>
       )}
       {(!hasSubmissions || updateFilesClicked) && (
         <Form.Item>

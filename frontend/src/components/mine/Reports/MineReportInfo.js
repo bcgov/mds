@@ -153,7 +153,14 @@ export class MineReportInfo extends Component {
     event.preventDefault();
     this.props.openModal({
       props: {
-        initialValues: report,
+        initialValues: {
+          ...report,
+          mine_report_submission_status:
+            report.mine_report_submissions.length > 0
+              ? report.mine_report_submissions[report.mine_report_submissions.length - 1]
+                  .mine_report_submission_status_code
+              : "NRQ",
+        },
         onSubmit,
         title: `Edit ${report.submission_year} ${report.report_name}`,
         mineGuid: this.props.mineGuid,

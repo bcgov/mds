@@ -118,17 +118,6 @@ exports[`AddReportForm renders properly 1`] = `
           placeholder=""
         />
       </FormItem>
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="revision_status"
-          label="Revisions"
-          name="revision_status"
-          placeholder=""
-        />
-      </FormItem>
       <ReportSubmissions
         mineReportSubmissions={Array []}
         updateMineReportSubmissions={[Function]}

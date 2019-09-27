@@ -31,6 +31,7 @@ import {
   fetchVarianceDocumentCategoryOptions,
   fetchVarianceStatusOptions,
   fetchMineReportDefinitionOptions,
+  fetchMineReportStatusOptions,
 } from "@/actionCreators/staticContentActionCreator";
 import { getMines, getIsUserSubscribed } from "@/selectors/mineSelectors";
 import {
@@ -85,6 +86,7 @@ const propTypes = {
   fetchInspectors: PropTypes.func.isRequired,
   setMineVerifiedStatus: PropTypes.func.isRequired,
   fetchMineVerifiedStatuses: PropTypes.func.isRequired,
+  fetchMineReportStatusOptions: PropTypes.func.isRequired,
 };
 
 export class MineDashboard extends Component {
@@ -114,6 +116,7 @@ export class MineDashboard extends Component {
     this.props.fetchMineReportDefinitionOptions();
     this.props.fetchVarianceStatusOptions();
     this.props.fetchInspectors();
+    this.props.fetchMineReportStatusOptions();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -372,6 +375,7 @@ const mapDispatchToProps = (dispatch) =>
       setMineVerifiedStatus,
       fetchMineVerifiedStatuses,
       fetchVariancesByMine,
+      fetchMineReportStatusOptions,
     },
     dispatch
   );

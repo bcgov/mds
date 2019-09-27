@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import LinkButton from "@/components/common/LinkButton";
 import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls";
+import { formatDateTime } from "@/utils/helpers";
 
 const propTypes = {
   files: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
@@ -33,6 +34,16 @@ const fileColumn = {
   ),
 };
 
+const updateDateTimeColumn = {
+  title: "Upload Date/Time",
+  dataIndex: "upload_date",
+  key: "upload_date",
+  sorter: (a, b) => (moment(a.upload_date) > moment(b.upload_date) ? -1 : 1),
+  render: (text, record) => (
+    <div title="Due">{formatDateTime(record.file.upload_date) || "Pending"}</div>
+  ),
+};
+
 const removeColumn = {
   dataIndex: "remove",
   key: "remove",
@@ -50,7 +61,10 @@ const removeColumn = {
     ),
 };
 
-const columns = (showRemove) => (showRemove ? [fileColumn, removeColumn] : [fileColumn]);
+const columns = (showRemove) =>
+  showRemove
+    ? [fileColumn, updateDateTimeColumn, removeColumn]
+    : [fileColumn, updateDateTimeColumn];
 
 const transformRowData = (file, showRemove, updateDocumentHandler) => ({
   key: file.mine_document_guid,
