@@ -15,6 +15,7 @@ import {
   createMineReport,
   deleteMineReport,
 } from "@/actionCreators/reportActionCreator";
+import { changeModalTitle, openModal, closeModal } from "@/actions/modalActions";
 import AddButton from "@/components/common/AddButton";
 import MineReportTable from "@/components/mine/Reports/MineReportTable";
 import ReportFilterForm from "@/components/Forms/reports/ReportFilterForm";
@@ -24,7 +25,6 @@ import { modalConfig } from "@/components/modalContent/config";
 import { getMineReports } from "@/selectors/reportSelectors";
 import { getMineReportDefinitionOptions } from "@/selectors/staticContentSelectors";
 import { getMines, getMineGuid } from "@/selectors/mineSelectors";
-import { openModal, closeModal } from "@/actions/modalActions";
 
 /**
  * @class  MineReportInfo - contains all permit information
@@ -39,6 +39,7 @@ const propTypes = {
   updateMineReport: PropTypes.func.isRequired,
   createMineReport: PropTypes.func.isRequired,
   deleteMineReport: PropTypes.func.isRequired,
+  changeModalTitle: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
@@ -142,6 +143,7 @@ export class MineReportInfo extends Component {
         onSubmit: debounce(this.handleAddReport, 2000),
         title: `Add report for ${this.state.mine.mine_name}`,
         mineGuid: this.props.mineGuid,
+        changeModalTitle: this.props.changeModalTitle,
       },
       content: modalConfig.ADD_REPORT,
     });
@@ -153,8 +155,9 @@ export class MineReportInfo extends Component {
       props: {
         initialValues: report,
         onSubmit,
-        title: `Edit report for ${this.state.mine.mine_name}`,
+        title: `Edit ${report.submission_year} ${report.report_name}`,
         mineGuid: this.props.mineGuid,
+        changeModalTitle: this.props.changeModalTitle,
       },
       content: modalConfig.ADD_REPORT,
     });
@@ -269,6 +272,7 @@ const mapDispatchToProps = (dispatch) =>
       deleteMineReport,
       openModal,
       closeModal,
+      changeModalTitle,
     },
     dispatch
   );

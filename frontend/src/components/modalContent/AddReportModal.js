@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
+import { Icon } from "antd";
 import AddReportForm from "@/components/Forms/reports/AddReportForm";
 import ReportHistory from "@/components/Forms/reports/ReportHistory";
 import { SlidingForms } from "@/components/common/SlidingForms";
+import LinkButton from "@/components/common/LinkButton";
 
 const propTypes = {
   disableAddReport: PropTypes.bool,
@@ -12,13 +14,32 @@ const propTypes = {
   title: PropTypes.string.isRequired,
   mineGuid: PropTypes.string.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any),
+  changeModalTitle: PropTypes.func.isRequired,
 };
 
 const defaultProps = { initialValues: {}, disableAddReport: false };
 
 export const AddReportModal = (props) => {
   const [selectedForm, setSelectedForm] = useState(0);
-  const toggleReportHistory = () => setSelectedForm(selectedForm === 0 ? 1 : 0);
+  const hideReportHistory = () => {
+    setSelectedForm(0);
+    props.changeModalTitle(
+      `Edit ${props.initialValues.submission_year} ${props.initialValues.report_name}`
+    );
+  };
+  const showReportHistory = () => {
+    props.changeModalTitle(
+      <div className="ant-modal-title">
+        {`File History for ${props.initialValues.submission_year} ${props.initialValues.report_name}`}
+        <br />
+        <LinkButton onClick={hideReportHistory}>
+          <Icon type="arrow-left" style={{ paddingRight: "5px" }} />
+          Back to Report
+        </LinkButton>
+      </div>
+    );
+    setSelectedForm(1);
+  };
   return (
     <div>
       <SlidingForms
@@ -31,16 +52,18 @@ export const AddReportModal = (props) => {
             title={props.title}
             mineGuid={props.mineGuid}
             initialValues={props.initialValues}
-            toggleReportHistory={toggleReportHistory}
+            showReportHistory={showReportHistory}
           />,
-          <ReportHistory
-            toggleReportHistory={toggleReportHistory}
-            mineReportSubmissions={props.initialValues.mine_report_submissions}
-            submissionYear={props.initialValues.submission_year}
-            mineReportDefinitionGuid={props.initialValues.mine_report_definition_guid}
-          />,
+          props.initialValues.mine_report_submissions && (
+            <ReportHistory
+              hideReportHistory={hideReportHistory}
+              mineReportSubmissions={props.initialValues.mine_report_submissions}
+              submissionYear={props.initialValues.submission_year}
+              mineReportDefinitionGuid={props.initialValues.mine_report_definition_guid}
+            />
+          ),
         ]}
-      ></SlidingForms>
+      />
     </div>
   );
 };

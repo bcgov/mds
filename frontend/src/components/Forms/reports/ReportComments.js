@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Divider } from "antd";
 
 import CommentPanel from "@/components/common/comments/CommentPanel";
 import { getMineReportComments } from "@/selectors/reportSelectors";

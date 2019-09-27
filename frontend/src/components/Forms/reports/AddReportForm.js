@@ -29,7 +29,7 @@ const propTypes = {
   selectedMineReportCategory: PropTypes.string,
   selectedMineReportDefinition: PropTypes.string,
   formMeta: PropTypes.any,
-  toggleReportHistory: PropTypes.func.isRequired,
+  showReportHistory: PropTypes.func.isRequired,
 };
 
 const selector = formValueSelector(FORM.ADD_REPORT);
@@ -228,7 +228,7 @@ export class AddReportForm extends Component {
               mineGuid={this.props.mineGuid}
               mineReportSubmissions={this.state.mineReportSubmissions}
               updateMineReportSubmissions={this.updateMineReportSubmissions}
-              toggleReportHistory={this.props.toggleReportHistory}
+              showReportHistory={this.props.showReportHistory}
             />
             {this.state.existingReport &&
               this.state.mineReportSubmissions.filter((x) => x.mine_report_submission_guid).length >

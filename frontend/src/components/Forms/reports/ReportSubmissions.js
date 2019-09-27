@@ -13,7 +13,7 @@ const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   mineReportSubmissions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
   updateMineReportSubmissions: PropTypes.func.isRequired,
-  toggleReportHistory: PropTypes.func.isRequired,
+  showReportHistory: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -104,7 +104,7 @@ export const ReportSubmissions = (props) => {
             <LinkButton
               key="file_history"
               onClick={() => {
-                props.toggleReportHistory();
+                props.showReportHistory();
               }}
             >
               See file history

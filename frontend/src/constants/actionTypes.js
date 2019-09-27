@@ -5,6 +5,7 @@ export const ERROR = "ERROR";
 export const CLEAR = "CLEAR";
 export const OPEN_MODAL = "OPEN_MODAL";
 export const CLOSE_MODAL = "CLOSE_MODAL";
+export const UPDATE_MODAL_TITLE = "UPDATE_MODAL_TITLE";
 
 export const AUTHENTICATE_USER = "AUTHENTICATE_USER";
 export const STORE_KEYCLOAK_DATA = "STORE_KEYCLOAK_DATA";
