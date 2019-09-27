@@ -48,6 +48,7 @@ class  Contacts extends GebReportingSpec {
         waitFor() { applyFilterButton.click() }
 
         then: "I should get single person with that name."
+        tableBody.children().size()==1
         contactTableContent.text().startsWith( CONTACT_FULL_NAME_2)
     }
 
