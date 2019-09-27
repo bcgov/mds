@@ -21,7 +21,7 @@ class MinespaceUserListResource(Resource, UserMixin):
     @requires_role_mine_admin
     def get(self):
         if request.args.get('email'):
-            ms_users = MinespaceUser.find_by_email(request.args.get('email'))
+            ms_users = [MinespaceUser.find_by_email(request.args.get('email'))]
         else:
             ms_users = MinespaceUser.get_all()
         return ms_users

@@ -14,7 +14,7 @@ def test_minespace_user_model_find_by_id(db_session):
 def test_minespace_user_model_find_by_email(db_session):
     email = MinespaceUserFactory().email
 
-    mu = MinespaceUser.find_by_email(email)[0]
+    mu = MinespaceUser.find_by_email(email)
     assert mu.email == email
 
 

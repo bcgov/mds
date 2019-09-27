@@ -33,7 +33,7 @@ class MinespaceUser(Base):
 
     @classmethod
     def find_by_email(cls, email):
-        return cls.query.filter_by(email=email).filter_by(deleted_ind=False).all()
+        return cls.query.filter_by(email=email).filter_by(deleted_ind=False).first()
 
     @classmethod
     def create_minespace_user(cls, email, add_to_session=True):
