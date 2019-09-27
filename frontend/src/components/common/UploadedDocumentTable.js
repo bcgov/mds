@@ -6,10 +6,6 @@ import CustomPropTypes from "@/customPropTypes";
 import LinkButton from "@/components/common/LinkButton";
 import { downloadFileFromDocumentManager } from "@/utils/actionlessNetworkCalls";
 
-/**
- * @class  MinePermitInfo - contains all permit information
- */
-
 const propTypes = {
   files: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
   showRemove: PropTypes.bool,
