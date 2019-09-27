@@ -4,6 +4,7 @@ const dotenv = require("dotenv").config({ path: `${__dirname}/.env` });
 
 let { BASE_PATH } = process.env;
 let BUILD_DIR = process.env.BUILD_DIR || "build";
+const VENDOR_DIR = process.env.VENDOR_DIR || "vendor";
 let PORT = process.env.PORT || 3000;
 if (dotenv.parsed) {
   BASE_PATH = dotenv.parsed.BASE_PATH || BASE_PATH;
@@ -29,12 +30,18 @@ const staticServe = express.static(`${__dirname}/${BUILD_DIR}`, {
   maxAge: "1y",
 });
 
+const vendorServe = express.static(`${__dirname}/${VENDOR_DIR}`, {
+  immutable: true,
+  maxAge: "1y",
+});
+
 app.get(`${BASE_PATH}/env`, (req, res) => {
   res.json({
     backend: "mds-python-backend",
     apiUrl: process.env.API_URL,
     docManUrl: process.env.DOCUMENT_MANAGER_URL,
     mapPortalId: process.env.MAP_PORTAL_ID,
+    firstNationsLayerUrl: process.env.FN_LAYER_URL,
     keycloak_resource: process.env.KEYCLOAK_RESOURCE,
     keycloak_clientId: process.env.KEYCLOAK_CLIENT_ID,
     keycloak_url: process.env.KEYCLOAK_URL,
@@ -44,8 +51,10 @@ app.get(`${BASE_PATH}/env`, (req, res) => {
 });
 
 app.use(`${BASE_PATH}/`, staticServe);
+app.use(`${BASE_PATH}/vendor/`, vendorServe);
 app.use(`${BASE_PATH}*`, staticServe);
 app.use(`/`, staticServe);
+app.use(`/vendor/`, staticServe);
 app.use(`*`, staticServe);
 
 app.listen(PORT, "0.0.0.0", () => console.log("Server running"));
