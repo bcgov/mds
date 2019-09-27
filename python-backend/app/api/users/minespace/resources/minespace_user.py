@@ -17,6 +17,7 @@ class MinespaceUserListResource(Resource, UserMixin):
     parser.add_argument('email', type=str, location='json', required=True)
     parser.add_argument('mine_guids', type=list, location='json', required=True)
 
+    @api.doc(params={'email': 'find by email, this will return a list with at most one element'})
     @api.marshal_with(MINESPACE_USER_MODEL, envelope='records')
     @requires_role_mine_admin
     def get(self):
