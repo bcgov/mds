@@ -106,8 +106,6 @@ class MineReportListResource(Resource, UserMixin):
                     report_submission.documents.append(mine_doc)
 
                 mine_report.mine_report_submissions.append(report_submission)
-                if mine_report.received_date is None:
-                    mine_report.received_date = datetime.utcnow()
         try:
             mine_report.save()
         except Exception as e:
@@ -153,8 +151,6 @@ class MineReportResource(Resource, UserMixin):
 
         if 'received_date' in data:
             mine_report.received_date = data['received_date']
-        elif len(mine_report.mine_report_submissions == 0):
-            mine_report.received_date = datetime.utcnow()
 
         mine_report_submission_status = data.get('mine_report_submission_status')
         current_app.logger.debug(mine_report_submission_status)
@@ -163,14 +159,9 @@ class MineReportResource(Resource, UserMixin):
         new_submission = next(
             (x for x in submission_iterator if x.get('mine_report_submission_guid') is None), None)
         if new_submission is not None:
-            new_report_submission = MineReportSubmission(submission_date=datetime.now())
-            if len(mine_report.mine_report_submissions) > 0:
-                if mine_report.mine_report_submissions[
-                        -1].mine_report_submission_status_code == mine_report_submission_status and mine_report_submission_status == 'REQ':
-                    new_report_submission.mine_report_submission_status_code = 'REC'
-                else:
-                    new_report_submission.mine_report_submission_status_code = mine_report_submission_status
-
+            new_report_submission = MineReportSubmission(
+                submission_date=datetime.now(),
+                mine_report_submission_status_code=data.get('mine_report_submission_status'))
             # Copy the current list of documents for the report submission
             last_submission_docs = mine_report.mine_report_submissions[-1].documents.copy() if len(
                 mine_report.mine_report_submissions) > 0 else []
