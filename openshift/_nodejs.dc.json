@@ -96,6 +96,10 @@
       "value": "e926583cd0114cd19ebc591f344e30dc"
     },
     {
+      "name": "FN_LAYER_URL",
+      "value": "https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov"
+    },
+    {
       "name": "CPU_LIMIT",
       "value": "250m"
     },
@@ -219,6 +223,10 @@
                   {
                     "name": "MAP_PORTAL_ID",
                     "value": "${MAP_PORTAL_ID}"
+                  },
+                  {
+                    "name": "FN_LAYER_URL",
+                    "value": "${FN_LAYER_URL}"
                   },
                   {
                     "name": "NODE_ENV",

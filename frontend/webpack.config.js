@@ -22,6 +22,7 @@ const PATHS = {
   template: path.join(__dirname, "public", "index.html"),
   build: path.join(__dirname, BUILD_DIR),
   node_modules: path.join(__dirname, "node_modules"),
+  vendor: path.join(__dirname, "vendor"),
 };
 
 const BUILD_FILE_NAMES = {
@@ -33,6 +34,7 @@ const BUILD_FILE_NAMES = {
 
 const PATH_ALIASES = {
   "@": PATHS.src,
+  vendor: PATHS.vendor,
 };
 
 const envFile = {};

@@ -98,6 +98,7 @@ app {
                             'BASE_PATH': "${vars.modules.'mds-frontend'.PATH}",
                             'NODE_ENV': "${vars.deployment.node_env}",
                             'MAP_PORTAL_ID': "${vars.deployment.map_portal_id}",
+                            'FN_LAYER_URL': "${vars.deployment.fn_layer_url}",
                             'KEYCLOAK_RESOURCE': "${vars.keycloak.resource}",
                             'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId_core}",
                             'KEYCLOAK_URL': "${vars.keycloak.url}",
@@ -414,6 +415,7 @@ environments {
                 application_suffix = "-pr-${vars.git.changeId}"
                 node_env = "test"
                 map_portal_id = "e926583cd0114cd19ebc591f344e30dc"
+                fn_layer_url = "https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov"
                 elastic_enabled_core = 1
                 elastic_enabled_nris = 1
                 elastic_service_name = "MDS Test"
