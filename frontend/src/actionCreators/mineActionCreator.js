@@ -54,6 +54,7 @@ export const updateMineRecord = (id, payload, mineName) => (dispatch) => {
 
 export const createMineTypes = (mineGuid, mineTypes) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_MINE_TYPE));
+  if (mineTypes === undefined) return Promise.resolve([]);
   let mineTypeResponses = mineTypes.map((mineType) =>
     CustomAxios()
       .post(`${ENVIRONMENT.apiUrl}${API.MINE_TYPES(mineGuid)}`, mineType, createRequestHeader())
