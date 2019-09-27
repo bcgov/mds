@@ -146,6 +146,19 @@ exports[`Dashboard renders properly 1`] = `
                 ],
               }
             }
+            fetchMineReportStatusOptions={
+              [MockFunction] {
+                "calls": Array [
+                  Array [],
+                ],
+                "results": Array [
+                  Object {
+                    "type": "return",
+                    "value": undefined,
+                  },
+                ],
+              }
+            }
             fetchMineTenureTypes={
               [MockFunction] {
                 "calls": Array [
