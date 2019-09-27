@@ -42,7 +42,6 @@ class MinespaceUserListResource(Resource, UserMixin):
 
 
 class MinespaceUserResource(Resource, UserMixin):
-    @api.doc(params={'user_id': 'User id.'})
     @api.marshal_with(MINESPACE_USER_MODEL)
     @requires_role_mine_admin
     def get(self, user_id):
@@ -51,7 +50,6 @@ class MinespaceUserResource(Resource, UserMixin):
             raise NotFound("user not found")
         return user
 
-    @api.doc(params={'user_id': 'user_id to be deleted'})
     @requires_role_mine_admin
     def delete(self, user_id):
         user = MinespaceUser.find_by_id(user_id)
