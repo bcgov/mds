@@ -6,6 +6,7 @@ import queryString from "query-string";
 import * as Strings from "@/constants/strings";
 import * as router from "@/constants/routes";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
+import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import {
   getMineRegionHash,
@@ -187,5 +188,5 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  AuthorizationGuard("inTesting")
+  AuthorizationGuard(Permission.ADMIN)
 )(NoticeOfWorkHomePage);
