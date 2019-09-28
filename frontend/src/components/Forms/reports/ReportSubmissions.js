@@ -95,7 +95,7 @@ export const ReportSubmissions = (props) => {
         </Form.Item>
       )}
       {hasSubmissions && !updateFilesClicked && (
-        <div className="inline-flex padding-large--top padding-md--bottom flex-flow-column">
+        <div className="inline-flex padding-md--bottom flex-flow-column">
           <div className="center">
             <Button
               className="center center-mobile "
@@ -114,7 +114,7 @@ export const ReportSubmissions = (props) => {
                 ]);
               }}
             >
-              Update Files
+              Update Report Files
             </Button>
           </div>
           <div className="center">
