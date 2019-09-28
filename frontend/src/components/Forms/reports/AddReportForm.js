@@ -23,7 +23,7 @@ const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.objectOf(PropTypes.any)]).isRequired,
   mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.any).isRequired,
   dropdownMineReportCategoryOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any),

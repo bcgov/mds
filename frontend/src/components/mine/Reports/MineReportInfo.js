@@ -45,9 +45,9 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   match: PropTypes.shape({
-    params: {
+    params: PropTypes.shape({
       id: PropTypes.string,
-    },
+    }),
   }).isRequired,
 };
 

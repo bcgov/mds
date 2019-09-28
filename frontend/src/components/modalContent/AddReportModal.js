@@ -11,7 +11,7 @@ const propTypes = {
   disableAddReport: PropTypes.bool,
   onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.objectOf(PropTypes.any)]).isRequired,
   mineGuid: PropTypes.string.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any),
   changeModalTitle: PropTypes.func.isRequired,

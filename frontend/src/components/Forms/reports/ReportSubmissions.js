@@ -45,26 +45,28 @@ export const ReportSubmissions = (props) => {
   return (
     <React.Fragment>
       <FormItemLabel underline>Report Files</FormItemLabel>
-      {props.mineReportSubmissions.length > 0 && (
-        <UploadedDocumentsTable
-          files={props.mineReportSubmissions[props.mineReportSubmissions.length - 1].documents}
-          showRemove={updateFilesClicked}
-          removeFileHandler={(mine_document_guid) =>
-            updateSubmissionHandler(mine_document_guid, props)
-          }
-        />
-      )}
       {hasSubmissions && (
-        <Form.Item>
-          <Field
-            id="mine_report_submission_status"
-            name="mine_report_submission_status"
-            label="Revision Status"
-            data={props.mineReportStatusOptions}
-            component={renderConfig.SELECT}
-            defaultValue="NRQ"
-          />
-        </Form.Item>
+        <React.Fragment>
+          <div className="padding-large--bottom">
+            <UploadedDocumentsTable
+              files={props.mineReportSubmissions[props.mineReportSubmissions.length - 1].documents}
+              showRemove={updateFilesClicked}
+              removeFileHandler={(mine_document_guid) =>
+                updateSubmissionHandler(mine_document_guid, props)
+              }
+            />
+          </div>
+          <Form.Item>
+            <Field
+              id="mine_report_submission_status"
+              name="mine_report_submission_status"
+              label="Revision Status"
+              data={props.mineReportStatusOptions}
+              component={renderConfig.SELECT}
+              defaultValue="NRQ"
+            />
+          </Form.Item>
+        </React.Fragment>
       )}
       {(!hasSubmissions || updateFilesClicked) && (
         <Form.Item>
