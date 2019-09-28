@@ -21,13 +21,19 @@ const propTypes = {
 const defaultProps = {};
 
 class MineHeaderMapLeaflet extends Component {
-  latLong = [this.props.mine.mine_location.latitude, this.props.mine.mine_location.longitude];
+  // if mine does not have a location, set a default to center the map
+  latLong =
+    this.props.mine.mine_location.latitude && this.props.mine.mine_location.longitude
+      ? [this.props.mine.mine_location.latitude, this.props.mine.mine_location.longitude]
+      : [Number(Strings.DEFAULT_LAT), Number(Strings.DEFAULT_LONG)];
 
   componentDidMount() {
     // Create the base map with layers
     this.createMap();
-    this.createPin();
-
+    if (this.props.mine.mine_location.latitude && this.props.mine.mine_location.longitude) {
+      // only add mine Pin if location exists
+      this.createPin();
+    }
     // Add MinePins to the top of LayerList and add the LayerList widget
     L.control.layers(this.getBaseMaps(), {}, { position: "topright" }).addTo(this.map);
   }

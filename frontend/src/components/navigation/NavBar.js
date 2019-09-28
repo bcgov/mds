@@ -237,7 +237,7 @@ export class NavBar extends Component {
               </Link>
             </Col>
           </Row>
-          <AuthorizationWrapper inTesting>
+          <AuthorizationWrapper permission={Permission.ADMIN}>
             <Row>
               <Col span={24}>
                 <Link to={router.NOTICE_OF_WORK_APPLICATIONS.route}>
@@ -325,7 +325,7 @@ export class NavBar extends Component {
           <button type="button">Browse Incidents</button>
         </Link>
       </div>
-      <AuthorizationWrapper inTesting>
+      <AuthorizationWrapper permission={Permission.ADMIN}>
         <div className="custom-menu-item">
           <Link to={router.NOTICE_OF_WORK_APPLICATIONS.route}>
             <button type="button">Browse Notice of Work</button>

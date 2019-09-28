@@ -3,6 +3,7 @@ import { Collapse, Icon } from "antd";
 import PropTypes from "prop-types";
 import { compose, bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import NOWGeneralInfo from "@/components/noticeOfWork/NOWGeneralInfo";
 import NOWWorkPlan from "@/components/noticeOfWork/NOWWorkPlan";
@@ -83,5 +84,5 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  AuthorizationGuard("inTesting")
+  AuthorizationGuard(Permission.ADMIN)
 )(NoticeOfWorkApplication);
