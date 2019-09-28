@@ -22,12 +22,14 @@ const defaultProps = { initialValues: {}, disableAddReport: false };
 export const AddReportModal = (props) => {
   const [selectedForm, setSelectedForm] = useState(0);
   const hideReportHistory = () => {
+    document.getElementsByClassName("ant-modal-wrap")[0].scrollTo(0, 0);
     setSelectedForm(0);
     props.changeModalTitle(
       `Edit ${props.initialValues.submission_year} ${props.initialValues.report_name}`
     );
   };
   const showReportHistory = () => {
+    document.getElementsByClassName("ant-modal-wrap")[0].scrollTo(0, 0);
     props.changeModalTitle(
       <div className="ant-modal-title">
         {`File History for ${props.initialValues.submission_year} ${props.initialValues.report_name}`}
