@@ -80,7 +80,7 @@ export const UploadedDocumentsTable = (props) => (
     pagination={false}
     columns={columns(props.showRemove)}
     dataSource={props.files.map((file) =>
-      transformRowData(file, props.showRemove, props.updateDocumentHandler)
+      transformRowData(file, props.showRemove, props.removeFileHandler)
     )}
   />
 );
