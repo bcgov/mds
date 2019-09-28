@@ -195,6 +195,10 @@ class MineMapLeaflet extends Component {
 
     // Load external leaflet libraries for WebMap and Widgets
     this.asyncScriptStatusCheck();
+
+    // Esri webmaps centers map to base map center after loading
+    // Change the mapview back to location passed down in props
+    this.map.setView([this.props.lat, this.props.long], this.props.zoom, true);
   }
 
   asyncScriptStatusCheck = () => {
