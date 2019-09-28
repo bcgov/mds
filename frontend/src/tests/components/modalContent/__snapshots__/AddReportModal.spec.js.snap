@@ -2,11 +2,20 @@
 
 exports[`AddReportModal renders properly 1`] = `
 <div>
-  <Connect(ReduxForm)
-    disableAddReport={false}
-    initialValues={Object {}}
-    onSubmit={[MockFunction]}
-    title="mockTitle"
+  <SlidingForms
+    formContent={
+      Array [
+        <Memo(ConnectFunction)
+          disableAddReport={false}
+          initialValues={Object {}}
+          onSubmit={[MockFunction]}
+          showReportHistory={[Function]}
+          title="mockTitle"
+        />,
+        undefined,
+      ]
+    }
+    selectedForm={0}
   />
 </div>
 `;

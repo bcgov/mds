@@ -64,7 +64,9 @@ exports[`AddReportForm renders properly 1`] = `
           size="large"
           split={true}
         >
-          <Item />
+          <Item
+            key="1"
+          />
         </List>
       </FormItem>
       <FormItem
