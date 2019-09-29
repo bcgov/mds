@@ -195,10 +195,6 @@ class MineMapLeaflet extends Component {
 
     // Load external leaflet libraries for WebMap and Widgets
     this.asyncScriptStatusCheck();
-
-    // Esri webmaps centers map to base map center after loading
-    // Change the mapview back to location passed down in props
-    this.map.setView([this.props.lat, this.props.long], this.props.zoom, true);
   }
 
   asyncScriptStatusCheck = () => {
@@ -291,10 +287,6 @@ class MineMapLeaflet extends Component {
     L.control
       .groupedLayers(this.getLayerGroupFromList(baseMapsArray), groupedOverlays)
       .addTo(this.map);
-
-    // Esri webmaps centers map to base map center after loading
-    // Change the mapview back to location passed down in props
-    this.map.setView([this.props.lat, this.props.long], this.props.zoom, true);
   };
 
   /* eslint-disable */
@@ -329,8 +321,14 @@ class MineMapLeaflet extends Component {
     // Fetch the WebMap
     this.webMap = window.L.esri.webMap("803130a9bebb4035b3ac671aafab12d7", { map: this.map });
 
+    // Esri webmaps centers map to base map center after loading
+    // Change the mapview back to location passed down in props
+    this.map.on("zoom", () => {
+      this.map.setView([this.props.lat, this.props.long], this.props.zoom, true);
+    });
+
     // Once the WebMap is loaded, add the rest of Layers and tools
-    this.webMap.on("load", async () => {
+    this.webMap.on("load", () => {
       // Add the WebMap layers and the Layer control widget
       this.addWebMapLayers();
     });
