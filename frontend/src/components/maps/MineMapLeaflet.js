@@ -190,11 +190,11 @@ class MineMapLeaflet extends Component {
       "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}"
     ).addTo(this.map);
 
-    // Add MinePin clusters
-    this.addMinePinClusters();
-
     // Load external leaflet libraries for WebMap and Widgets
     this.asyncScriptStatusCheck();
+
+    // Add MinePin clusters
+    this.addMinePinClusters();
   }
 
   asyncScriptStatusCheck = () => {
@@ -246,6 +246,7 @@ class MineMapLeaflet extends Component {
     this.props.minesBasicInfo.map(this.createPin);
     this.map.addLayer(this.markerClusterGroup);
     this.addLatLongCircle();
+    this.map.setView([this.props.lat, this.props.long], this.props.zoom, true);
   };
 
   addWidgets = async () => {
@@ -265,7 +266,7 @@ class MineMapLeaflet extends Component {
     measureControl.addTo(this.map);
   };
 
-  addWebMapLayers = async () => {
+  addWebMapLayers = () => {
     const groupedOverlays = {
       "Mine Pins": {
         "Mine Pins": this.markerClusterGroup,
@@ -287,6 +288,13 @@ class MineMapLeaflet extends Component {
     L.control
       .groupedLayers(this.getLayerGroupFromList(baseMapsArray), groupedOverlays)
       .addTo(this.map);
+
+    // Esri WebMap resets the zoom level, zoom back to props coordinates after they're done loading
+    setTimeout(() => {
+      if (this.map.getZoom() !== this.props.zoom) {
+        this.map.setView([this.props.lat, this.props.long], this.props.zoom, true);
+      }
+    }, 200);
   };
 
   /* eslint-disable */
@@ -321,16 +329,11 @@ class MineMapLeaflet extends Component {
     // Fetch the WebMap
     this.webMap = window.L.esri.webMap("803130a9bebb4035b3ac671aafab12d7", { map: this.map });
 
-    // Esri webmaps centers map to base map center after loading
-    // Change the mapview back to location passed down in props
-    this.map.on("zoom", () => {
-      this.map.setView([this.props.lat, this.props.long], this.props.zoom, true);
-    });
-
     // Once the WebMap is loaded, add the rest of Layers and tools
     this.webMap.on("load", () => {
       // Add the WebMap layers and the Layer control widget
       this.addWebMapLayers();
+      this.map.setView([this.props.lat, this.props.long], this.props.zoom, true);
     });
   }
 
