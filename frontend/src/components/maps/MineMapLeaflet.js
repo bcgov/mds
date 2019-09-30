@@ -242,7 +242,7 @@ class MineMapLeaflet extends Component {
     }
   };
 
-  addMinePinClusters = async () => {
+  addMinePinClusters = () => {
     // Add Clustered MinePins
     this.markerClusterGroup = L.markerClusterGroup({ animate: false });
     this.props.minesBasicInfo.map(this.createPin);
@@ -250,7 +250,7 @@ class MineMapLeaflet extends Component {
     this.addLatLongCircle();
   };
 
-  addWidgets = async () => {
+  addWidgets = () => {
     // Add Mouse coordinate widget
     L.control.mouseCoordinate({ utm: true, position: "topright" }).addTo(this.map);
 
