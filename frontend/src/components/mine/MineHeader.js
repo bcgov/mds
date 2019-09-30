@@ -303,14 +303,14 @@ export class MineHeader extends Component {
           <div className="dashboard__header--card__map--footer">
             <div className="inline-flex between">
               <p className="p-white">
-                Lat:{" "}
-                {this.props.mine.mine_location
+                Lat:
+                {this.props.mine.mine_location && this.props.mine.mine_location.latitude
                   ? this.props.mine.mine_location.latitude
                   : String.EMPTY_FIELD}
               </p>
               <p className="p-white">
-                Long:{" "}
-                {this.props.mine.mine_location
+                Long:
+                {this.props.mine.mine_location && this.props.mine.mine_location.longitude
                   ? this.props.mine.mine_location.longitude
                   : String.EMPTY_FIELD}
               </p>
