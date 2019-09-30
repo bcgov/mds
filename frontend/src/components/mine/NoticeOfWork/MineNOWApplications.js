@@ -120,10 +120,7 @@ const mapDispatchToProps = (dispatch) =>
 
 MineNOWApplications.propTypes = propTypes;
 
-export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
-  AuthorizationGuard("inTesting")
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
 )(MineNOWApplications);
