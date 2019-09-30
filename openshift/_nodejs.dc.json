@@ -91,7 +91,6 @@
       "description": "URL for the document manager",
       "value": "http://localhost:5001"
     },
-
     {
       "name": "FN_LAYER_URL",
       "value": "https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov"
@@ -217,7 +216,6 @@
                     "name": "DOCUMENT_MANAGER_URL",
                     "value": "${DOCUMENT_MANAGER_URL}"
                   },
-
                   {
                     "name": "FN_LAYER_URL",
                     "value": "${FN_LAYER_URL}"
