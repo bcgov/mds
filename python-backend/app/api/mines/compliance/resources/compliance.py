@@ -10,7 +10,7 @@ from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.access_decorators import requires_role_view_all
 
 from app.api.services import NRIS_API_service
-from app.api.mines.response_models import MINE_COMPLIANCE_RESPONSE_MODEL
+from app.api.compliance.response_models import MINE_COMPLIANCE_RESPONSE_MODEL
 from app.api.mines.mine.models.mine import Mine
 
 
