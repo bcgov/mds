@@ -29,6 +29,7 @@ const propTypes = {
   initialValues: PropTypes.objectOf(PropTypes.any),
   selectedMineReportCategory: PropTypes.string,
   selectedMineReportDefinition: PropTypes.string,
+  disableAddReport: PropTypes.bool,
   mineReportStatusOptions: CustomPropTypes.options.isRequired,
   formMeta: PropTypes.any,
   showReportHistory: PropTypes.func.isRequired,
@@ -40,6 +41,7 @@ const defaultProps = {
   initialValues: {},
   selectedMineReportDefinition: null,
   selectedMineReportCategory: null,
+  disableAddReport: false,
 };
 
 export class AddReportForm extends Component {
