@@ -20,7 +20,7 @@ const defaultProps = {
 const updateSubmissionHandler = (mine_document_guid, props) => {
   const fileToRemove = props.mineReportSubmissions[
     props.mineReportSubmissions.length - 1
-  ].documents.filter((doc) => doc.mine_document_guid === mine_document_guid)[0];
+  ].documents.find((doc) => doc.mine_document_guid === mine_document_guid);
   let updatedSubmissions = props.mineReportSubmissions;
   updatedSubmissions[updatedSubmissions.length - 1].documents = reject(
     updatedSubmissions[updatedSubmissions.length - 1].documents,
