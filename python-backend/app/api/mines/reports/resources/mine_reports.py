@@ -200,7 +200,9 @@ class MineReportResource(Resource, UserMixin):
             mine_report.mine_report_submissions.append(new_report_submission)
 
         # if the status has changed, update the status of the last submission
-        elif (len(mine_report.mine_report_submissions) > 0) and mine_report_submission_status != mine_report.mine_report_submissions[-1].mine_report_submission_status:
+        elif (len(mine_report.mine_report_submissions) >
+              0) and mine_report_submission_status != mine_report.mine_report_submissions[
+                  -1].mine_report_submission_status_code:
             mine_report.mine_report_submissions[
                 -1].mine_report_submission_status_code = mine_report_submission_status
 
