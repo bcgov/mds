@@ -176,19 +176,36 @@ const tenureLayerStyles = {
 };
 
 class MineMapLeaflet extends Component {
-  state = {
-    mapCreated: false,
-  };
-
   componentDidMount() {
+    // Create the basic leaflet map
+    this.map = L.map("leaflet-map", {
+      attributionControl: false,
+      center: [this.props.lat, this.props.long],
+      zoom: this.props.zoom,
+      worldCopyJump: true,
+      zoomAnimationThreshold: 8,
+      minZoom: 4,
+    });
+
+    // Add Topographic BaseMap by default
+    L.tileLayer(
+      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}"
+    ).addTo(this.map);
+
+    // Load external leaflet libraries for WebMap and Widgets
     this.asyncScriptStatusCheck();
+
+    // Add MinePin clusters
+    this.addMinePinClusters();
   }
 
   asyncScriptStatusCheck = () => {
-    if (this.props.isScriptLoaded && this.props.isScriptLoadSucceed && !this.state.mapCreated) {
-      this.initMap();
+    if (this.props.isScriptLoaded && this.props.isScriptLoadSucceed) {
+      // Add the widgets and the WebMap once the external libraries are loaded
+      this.addWidgets();
+      this.initWebMap();
     } else {
-      setTimeout(this.asyncScriptStatusCheck, 500);
+      setTimeout(this.asyncScriptStatusCheck, 200);
     }
   };
 
@@ -211,6 +228,67 @@ class MineMapLeaflet extends Component {
       const popup = e.target.getPopup();
       popup.setContent(this.renderPopup(this.props.mines[mine.mine_guid], commodityCodes));
     });
+  };
+
+  addLatLongCircle = () => {
+    if (this.props.lat && this.props.long && !this.props.mineName) {
+      L.circle([this.props.lat, this.props.long], {
+        color: "red",
+        fillColor: "#f03",
+        fillOpacity: 0.25,
+        radius: 500,
+        stroke: false,
+      }).addTo(this.map);
+    }
+  };
+
+  addMinePinClusters = () => {
+    // Add Clustered MinePins
+    this.markerClusterGroup = L.markerClusterGroup({ animate: false });
+    this.props.minesBasicInfo.map(this.createPin);
+    this.map.addLayer(this.markerClusterGroup);
+    this.addLatLongCircle();
+  };
+
+  addWidgets = () => {
+    // Add Mouse coordinate widget
+    L.control.mouseCoordinate({ utm: true, position: "topright" }).addTo(this.map);
+
+    // Add ScaleBar widget
+    L.control.scale({ imperial: false }).addTo(this.map);
+
+    // Add Measure widget
+    const measureControl = new L.Control.Measure({
+      position: "topright",
+      primaryLengthUnit: "kilometers",
+      activeColor: "#3c3636",
+      completedColor: "#5e46a1",
+    });
+    measureControl.addTo(this.map);
+  };
+
+  addWebMapLayers = () => {
+    const groupedOverlays = {
+      "Mine Pins": {
+        "Mine Pins": this.markerClusterGroup,
+      },
+      Roads: this.getLayerGroupFromList(roadLayerArray),
+      "Natural Features": {
+        "NTS Contour Lines": this.getLayerGroupFromList(["NTS Contour Lines"]),
+      },
+      "Mineral, Placer, and Coal Tenures": this.getLayerGroupFromList(tenureLayerArray),
+      "Administrative Boundaries": this.getLayerGroupFromList(admininstrativeBoundariesLayerArray),
+      "First Nations": {
+        "Indian Reserves and Band Names": this.getLayerGroupFromList([
+          "Indian Reserves and Band Names",
+        ]),
+        "First Nations PIP Consultation Areas": getFirstNationLayer(),
+      },
+    };
+
+    L.control
+      .groupedLayers(this.getLayerGroupFromList(baseMapsArray), groupedOverlays)
+      .addTo(this.map);
   };
 
   /* eslint-disable */
@@ -241,82 +319,25 @@ class MineMapLeaflet extends Component {
   };
   /* eslint-enable */
 
-  addLatLongCircle = () => {
-    if (this.props.lat && this.props.long && !this.props.mineName) {
-      L.circle([this.props.lat, this.props.long], {
-        color: "red",
-        fillColor: "#f03",
-        fillOpacity: 0.25,
-        radius: 500,
-        stroke: false,
-      }).addTo(this.map);
-    }
-  };
-
-  initMap() {
-    // Create the base map with layers
-    this.createMap();
-    this.setState({ mapCreated: true });
+  initWebMap() {
+    // Fetch the WebMap
+    this.webMap = window.L.esri.webMap("803130a9bebb4035b3ac671aafab12d7", { map: this.map });
 
     // Once the WebMap is loaded, add the rest of Layers and tools
     this.webMap.on("load", () => {
-      // Center map to provided Lat/Long and Zoom
-      this.map.setView([this.props.lat, this.props.long], this.props.zoom);
+      // Add the WebMap layers and the Layer control widget
+      this.addWebMapLayers();
 
-      // Add Clustered MinePins
-      this.markerClusterGroup = L.markerClusterGroup({ animate: false });
-      this.props.minesBasicInfo.map(this.createPin);
-      this.map.addLayer(this.markerClusterGroup);
-      this.addLatLongCircle();
+      // Esri WebMap resets the zoom level, zoom back to props coordinates after they're done loading
+      const resetZoomCheckID = setInterval(() => {
+        if (this.map.getZoom() !== this.props.zoom) {
+          this.map.setView([this.props.lat, this.props.long], this.props.zoom, true);
 
-      // Add the WebMap layers to the Layer control widget
-      const groupedOverlays = {
-        "Mine Pins": {
-          "Mine Pins": this.markerClusterGroup,
-        },
-        Roads: this.getLayerGroupFromList(roadLayerArray),
-        "Natural Features": {
-          "NTS Contour Lines": this.getLayerGroupFromList(["NTS Contour Lines"]),
-        },
-        "Mineral, Placer, and Coal Tenures": this.getLayerGroupFromList(tenureLayerArray),
-        "Administrative Boundaries": this.getLayerGroupFromList(
-          admininstrativeBoundariesLayerArray
-        ),
-        "First Nations": {
-          "Indian Reserves and Band Names": this.getLayerGroupFromList([
-            "Indian Reserves and Band Names",
-          ]),
-          "First Nations PIP Consultation Areas": getFirstNationLayer(),
-        },
-      };
-
-      L.control
-        .groupedLayers(this.getLayerGroupFromList(baseMapsArray), groupedOverlays)
-        .addTo(this.map);
-
-      // Add Mouse coordinate widget
-      L.control.mouseCoordinate({ utm: true, position: "topright" }).addTo(this.map);
-
-      // Add ScaleBar widget
-      L.control.scale({ imperial: false }).addTo(this.map);
-
-      // Add Measure widget
-      const measureControl = new L.Control.Measure({
-        position: "topright",
-        primaryLengthUnit: "kilometers",
-        activeColor: "#3c3636",
-        completedColor: "#5e46a1",
-      });
-      measureControl.addTo(this.map);
+          // Stop checking
+          clearInterval(resetZoomCheckID);
+        }
+      }, 5);
     });
-  }
-
-  createMap() {
-    // Creates the base leaflet map object and overlays the ESRI WebMap on top
-    this.map = L.map("leaflet-map", {
-      attributionControl: false,
-    }).setMaxZoom(50);
-    this.webMap = window.L.esri.webMap("803130a9bebb4035b3ac671aafab12d7", { map: this.map });
   }
 
   renderPopup = (mine, commodityCodes = []) => {
