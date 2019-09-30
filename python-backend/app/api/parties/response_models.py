@@ -7,6 +7,7 @@ MINE_DOCUMENT = api.model(
         'mine_guid': fields.String,
         'document_manager_guid': fields.String,
         'document_name': fields.String,
+        'upload_date': fields.DateTime,
     })
 
 MINE_PARTY_APPT_TYPE_MODEL = api.model(

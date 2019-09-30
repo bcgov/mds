@@ -72,6 +72,7 @@ MINE_DOCUMENT_MODEL = api.model(
         'mine_guid': fields.String,
         'document_manager_guid': fields.String,
         'document_name': fields.String,
+        'upload_date': fields.DateTime,
     })
 
 PERMIT_MODEL = api.model('MinePermit', {
@@ -93,6 +94,11 @@ STATUS_MODEL = api.model(
         'status_date': Date,
         'status_description': fields.String,
     })
+MINE_REPORT_SUBMISSION_STATUS = api.model(
+    'MineReportSubmissionStatus', {
+        'mine_report_submission_status_code': fields.String,
+        'description': fields.String,
+})
 
 MINE_TSF_MODEL = api.model(
     'MineTailingsStorageFacility', {

@@ -141,6 +141,10 @@ body {
   justify-content: space-evenly;
 }
 
+.flex-flow-column {
+  flex-flow: column;
+}
+
 .center-mobile {
   @include mobile {
     display: block;

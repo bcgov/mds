@@ -23,7 +23,7 @@ const { errorRed } = COLOR;
  */
 
 const propTypes = {
-  mineReports: PropTypes.arrayOf(PropTypes.objectOf(CustomPropTypes.mineReport)).isRequired,
+  mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
   openEditReportModal: PropTypes.func.isRequired,
   handleEditReport: PropTypes.func.isRequired,
   handleRemoveReport: PropTypes.func.isRequired,
@@ -80,6 +80,7 @@ const columns = [
   {
     title: "Documents",
     dataIndex: "documents",
+    key: "documents_key",
     render: (text, record) => (
       <div title="Documents">
         <ul>
@@ -89,8 +90,8 @@ const columns = [
             ? record.report.mine_report_submissions[
                 record.report.mine_report_submissions.length - 1
               ].documents.map((file) => (
-                <li>
-                  <div key={file.mine_document_guid}>
+                <li key={file.mine_document_guid}>
+                  <div>
                     <LinkButton
                       key={file.mine_document_guid}
                       onClick={() => downloadFileFromDocumentManager(file)}
@@ -127,6 +128,7 @@ const columns = [
 
 const transformRowData = (report, openEditReportModal, handleEditReport, handleRemoveReport) => ({
   key: report.report_guid,
+  documents_key: `${report.report_guid}_documents`,
   report,
   report_name: report.report_name,
   due_date: report.due_date,
