@@ -15,15 +15,15 @@ from app.api.utils.resources_mixins import UserMixin
 from app.api.constants import MINE_MAP_CACHE
 
 #namespace imports
-from ...response_models import MINE_LIST_MODEL, MINE_MODEL
-from ...permits.permit.models.permit import Permit
+from app.api.mines.response_models import MINE_LIST_MODEL, MINE_MODEL
+from app.api.mines.permits.permit.models.permit import Permit
 
-from ..models.mine import Mine
-from ..models.mine_type import MineType
-from ..models.mine_type_detail import MineTypeDetail
+from app.api.mines.mine.models.mine import Mine
+from app.api.mines.mine.models.mine_type import MineType
+from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
 
-from ...status.models.mine_status import MineStatus
-from ...status.models.mine_status_xref import MineStatusXref
+from app.api.mines.status.models.mine_status import MineStatus
+from app.api.mines.status.models.mine_status_xref import MineStatusXref
 
 from .mine_map import MineMapResource
 

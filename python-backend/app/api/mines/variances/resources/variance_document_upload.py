@@ -3,17 +3,17 @@ from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
 from flask import request, current_app
 from flask_restplus import Resource
-from app.extensions import api
 
-from ...mine.models.mine import Mine
-from app.api.mines.documents.mines.models.mine_document import MineDocument
+from app.extensions import api
 from app.api.utils.access_decorators import (requires_any_of, EDIT_VARIANCE, MINESPACE_PROPONENT)
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
+
+from app.api.mines.mine.models.mine import Mine
+from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.mines.response_models import VARIANCE_MODEL
 from app.api.variances.models.variance import Variance
 from app.api.variances.models.variance import VarianceDocumentXref
-
 from app.api.services.document_manager_service import DocumentManagerService
 
 

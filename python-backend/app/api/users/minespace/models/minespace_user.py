@@ -6,7 +6,7 @@ from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 
 from app.api.utils.models_mixins import AuditMixin, Base
-from ..models.minespace_user_mine import MinespaceUserMine
+from app.api.users.minespace.models.minespace_user_mine import MinespaceUserMine
 
 
 class MinespaceUser(Base):

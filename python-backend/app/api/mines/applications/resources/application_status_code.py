@@ -3,9 +3,10 @@ from flask import request
 from datetime import datetime
 
 from app.extensions import api
-from ..models.application_status_code import ApplicationStatusCode
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.access_decorators import requires_role_view_all
+
+from app.api.mines.applications.models.application_status_code import ApplicationStatusCode
 
 
 class ApplicationStatusCodeResource(Resource, UserMixin):

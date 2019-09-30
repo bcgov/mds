@@ -6,8 +6,8 @@ from sqlalchemy.schema import FetchedValue
 from app.api.utils.models_mixins import AuditMixin, Base
 from app.extensions import db
 
-from ..models.mine_disturbance_code import MineDisturbanceCode
-from ..models.mine_commodity_code import MineCommodityCode
+from app.api.mines.mine.models.mine_disturbance_code import MineDisturbanceCode
+from app.api.mines.mine.models.mine_commodity_code import MineCommodityCode
 
 
 class MineTypeDetail(AuditMixin, Base):

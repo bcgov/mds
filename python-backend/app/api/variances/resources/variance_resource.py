@@ -1,16 +1,18 @@
-from flask_restplus import Resource
 from flask import request
+from flask_restplus import Resource
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
 from sqlalchemy import desc, cast, NUMERIC, func, or_
+
 from app.extensions import api
-from ...mines.mine.models.mine import Mine
-from ..models.variance import Variance
-from ..models.variance_application_status_code import VarianceApplicationStatusCode
-from app.api.compliance.models.compliance_article import ComplianceArticle
-from app.api.parties.party.models.party import Party
-from ..response_models import PAGINATED_VARIANCE_LIST
 from app.api.utils.access_decorators import requires_any_of, VIEW_ALL
 from app.api.utils.resources_mixins import UserMixin, ErrorMixin
+
+from app.api.compliance.models.compliance_article import ComplianceArticle
+from app.api.mines.mine.models.mine import Mine
+from app.api.parties.party.models.party import Party
+from app.api.variances.models.variance import Variance
+from app.api.variances.models.variance_application_status_code import VarianceApplicationStatusCode
+from app.api.variances.response_models import PAGINATED_VARIANCE_LIST
 
 PAGE_DEFAULT = 1
 PER_PAGE_DEFAULT = 25

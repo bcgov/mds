@@ -2,7 +2,7 @@ import pytest
 from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, EDIT_REPORT
 
 from app.api.download_token.resources.download_token import DownloadTokenResource
-from app.api.mines.documents.mines.resources.mine_document_resource import MineDocumentListResource
+from app.api.mines.documents.resources.mine_document_resource import MineDocumentListResource
 from app.api.mines.compliance.resources.compliance import MineComplianceSummaryResource
 from app.api.compliance.resources.compliance_article import ComplianceArticleResource
 from app.api.mines.mine.resources.mine_commodity_code import MineCommodityCodeResource

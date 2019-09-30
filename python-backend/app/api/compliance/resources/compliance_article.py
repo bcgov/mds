@@ -2,8 +2,8 @@ from flask_restplus import Resource, fields
 from app.extensions import api
 from app.api.utils.access_decorators import (requires_any_of, VIEW_ALL, MINESPACE_PROPONENT)
 from app.api.utils.resources_mixins import UserMixin
-from ..models.compliance_article import ComplianceArticle
-from ..response_models import COMPLIANCE_ARTICLE_MODEL
+from app.api.compliance.models.compliance_article import ComplianceArticle
+from app.api.compliance.response_models import COMPLIANCE_ARTICLE_MODEL
 
 
 class ComplianceArticleResource(Resource, UserMixin):

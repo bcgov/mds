@@ -2,14 +2,14 @@ from flask_restplus import Resource, fields
 from sqlalchemy_filters import apply_sort
 from werkzeug.exceptions import BadRequest, NotFound
 
-from app.extensions import api
+from app.extensions import api, db
 from app.api.utils.include.user_info import User
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.access_decorators import (requires_any_of, VIEW_ALL)
-from ..models.subscription import Subscription
-from ...mine.models.mine import Mine
-from ...response_models import MINES_MODEL
-from app.extensions import db
+
+from app.api.mines.mine.models.mine import Mine
+from app.api.mines.subscription.models.subscription import Subscription
+from app.api.mines.response_models import MINES_MODEL
 
 MINE_GUID_MODEL = api.model('mine_guid', {
     'mine_guid': fields.String,
@@ -31,9 +31,8 @@ class MineSubscriptionListResource(Resource, UserMixin):
 
 
 class MineSubscriptionResource(Resource, UserMixin):
-    @api.doc(
-        description='Adds a mine to the subscriptions of the user that sends the request',
-        params={'mine_guid': 'Mine guid.'})
+    @api.doc(description='Adds a mine to the subscriptions of the user that sends the request',
+             params={'mine_guid': 'Mine guid.'})
     @requires_any_of([VIEW_ALL])
     @api.marshal_with(MINE_GUID_MODEL, code=200)
     def post(self, mine_guid):
@@ -43,9 +42,8 @@ class MineSubscriptionResource(Resource, UserMixin):
         mine_subscription.save()
         return mine_subscription
 
-    @api.doc(
-        description='Removes a mine from the subscriptions of the user that sends the request',
-        params={'mine_guid': 'Mine guid.'})
+    @api.doc(description='Removes a mine from the subscriptions of the user that sends the request',
+             params={'mine_guid': 'Mine guid.'})
     @requires_any_of([VIEW_ALL])
     def delete(self, mine_guid):
         subscription_to_delete = Subscription.find_subscription_for_current_user_by_id(mine_guid)

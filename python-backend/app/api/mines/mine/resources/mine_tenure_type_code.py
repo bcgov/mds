@@ -1,9 +1,11 @@
 from flask_restplus import Resource
+
 from app.extensions import api
-from app.api.mines.response_models import MINE_TENURE_TYPE_CODE_MODEL
 from app.api.utils.access_decorators import requires_role_view_all
 from app.api.utils.resources_mixins import UserMixin
-from ..models.mine_tenure_type_code import MineTenureTypeCode
+
+from app.api.mines.response_models import MINE_TENURE_TYPE_CODE_MODEL
+from app.api.mines.mine.models.mine_tenure_type_code import MineTenureTypeCode
 
 
 class MineTenureTypeCodeResource(Resource, UserMixin):

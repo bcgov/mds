@@ -1,10 +1,10 @@
 from flask_restplus import Namespace
 
-from .party.resources.party_resource import PartyResource
-from .party.resources.sub_division_code_resource import SubDivisionCodeResource
-from .party_appt.resources.mine_party_appt_resource import MinePartyApptResource
-from .party_appt.resources.mine_party_appt_type_resource import MinePartyApptTypeResource
-from .party.resources.party_list_resource import PartyListResource
+from app.api.parties.party.resources.party_resource import PartyResource
+from app.api.parties.party.resources.sub_division_code_resource import SubDivisionCodeResource
+from app.api.parties.party.resources.party_list_resource import PartyListResource
+from app.api.parties.party_appt.resources.mine_party_appt_resource import MinePartyApptResource
+from app.api.parties.party_appt.resources.mine_party_appt_type_resource import MinePartyApptTypeResource
 
 api = Namespace('parties', description='Party related operations')
 

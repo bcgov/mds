@@ -1,9 +1,10 @@
 from flask_restplus import Resource
+
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_view_all
 from app.api.utils.resources_mixins import UserMixin
-from ..models.mine_disturbance_code import MineDisturbanceCode
 
+from app.api.mines.mine.models.mine_disturbance_code import MineDisturbanceCode
 from app.api.mines.response_models import MINE_DISTURBANCE_CODE_MODEL
 
 

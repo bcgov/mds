@@ -1,16 +1,16 @@
-from datetime import datetime
-import re
-import uuid
+import re, uuid
 
+from datetime import datetime
 from sqlalchemy import func, desc
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
 from sqlalchemy.schema import FetchedValue
-from app.extensions import db
 
-from ...party.models.party import Party
+from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
+
+from app.api.parties.party.models.party import Party
 
 
 class MinePartyAppointmentType(AuditMixin, Base):

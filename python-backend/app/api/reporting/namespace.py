@@ -1,6 +1,6 @@
 from flask_restplus import Namespace
 
-from .resources.metabase import MetabaseDashboardResource
+from app.api.reporting.resources.metabase import MetabaseDashboardResource
 
 api = Namespace('reporting', description='Authenticated reports')
 

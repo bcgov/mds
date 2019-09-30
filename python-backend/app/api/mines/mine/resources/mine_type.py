@@ -7,9 +7,10 @@ from werkzeug.exceptions import BadRequest, NotFound
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_mine_edit
 from app.api.utils.resources_mixins import UserMixin
-from ..models.mine_type import MineType
-from ..models.mine_tenure_type_code import MineTenureTypeCode
-from ..models.mine_type_detail import MineTypeDetail
+
+from app.api.mines.mine.models.mine_type import MineType
+from app.api.mines.mine.models.mine_tenure_type_code import MineTenureTypeCode
+from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
 from app.api.mines.response_models import MINE_TYPE_MODEL
 
 

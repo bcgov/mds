@@ -1,8 +1,8 @@
 from flask_restplus import Namespace
 
-from .resources.application_resource import ApplicationResource
-from .resources.application_document_resource import ApplicationDocumentResource, ApplicationDocumentTokenResource
-from .resources.application_list_resource import ApplicationListResource
+from app.api.now_submissions.resources.application_resource import ApplicationResource
+from app.api.now_submissions.resources.application_document_resource import ApplicationDocumentResource, ApplicationDocumentTokenResource
+from app.api.now_submissions.resources.application_list_resource import ApplicationListResource
 
 api = Namespace('now-submissions', description='Notice of Work operations')
 

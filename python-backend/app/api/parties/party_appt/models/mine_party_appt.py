@@ -11,9 +11,9 @@ from sqlalchemy.orm import validates
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 
-from app.api.parties.party.models.party import Party
 from app.api.utils.models_mixins import AuditMixin, Base
 
+from app.api.parties.party.models.party import Party
 from app.api.parties.party_appt.models.mine_party_appt_document_xref import MinePartyApptDocumentXref
 
 
@@ -42,13 +42,14 @@ class MinePartyAppointment(AuditMixin, Base):
     # Relationships
     party = db.relationship('Party', lazy='joined')
 
-    mine_party_appt_type = db.relationship(
-        'MinePartyAppointmentType',
-        backref='mine_party_appt',
-        order_by='desc(MinePartyAppointmentType.display_order)',
-        lazy='joined')
+    mine_party_appt_type = db.relationship('MinePartyAppointmentType',
+                                           backref='mine_party_appt',
+                                           order_by='desc(MinePartyAppointmentType.display_order)',
+                                           lazy='joined')
 
-    documents = db.relationship('MineDocument', lazy='joined', secondary='mine_party_appt_document_xref')
+    documents = db.relationship('MineDocument',
+                                lazy='joined',
+                                secondary='mine_party_appt_document_xref')
 
     def assign_related_guid(self, related_guid):
         if self.mine_party_appt_type_code == "EOR":
@@ -166,14 +167,13 @@ class MinePartyAppointment(AuditMixin, Base):
                processed_by=processed_by,
                permit_guid=None,
                add_to_session=True):
-        mpa = cls(
-            mine_guid=mine_guid,
-            party_guid=party_guid,
-            permit_guid=permit_guid,
-            mine_party_appt_type_code="PMT",
-            start_date=start_date,
-            end_date=end_date,
-            processed_by=processed_by)
+        mpa = cls(mine_guid=mine_guid,
+                  party_guid=party_guid,
+                  permit_guid=permit_guid,
+                  mine_party_appt_type_code="PMT",
+                  start_date=start_date,
+                  end_date=end_date,
+                  processed_by=processed_by)
         if add_to_session:
             mpa.save(commit=False)
         return mpa
