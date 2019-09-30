@@ -1,8 +1,8 @@
 from flask_restplus import Namespace
 
-from .resources.variance_resource import VarianceResource
-from .resources.variance_application_status_code import VarianceApplicationStatusCodeResource
-from .resources.variance_document_category_code import VarianceDocumentCategoryCodeResource
+from app.api.variances.resources.variance_resource import VarianceResource
+from app.api.variances.resources.variance_application_status_code import VarianceApplicationStatusCodeResource
+from app.api.variances.resources.variance_document_category_code import VarianceDocumentCategoryCodeResource
 
 api = Namespace('variances', description='Variances actions/options')
 
