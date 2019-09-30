@@ -183,6 +183,8 @@ class MineMapLeaflet extends Component {
       center: [this.props.lat, this.props.long],
       zoom: this.props.zoom,
       worldCopyJump: true,
+      zoomAnimationThreshold: 8,
+      minZoom: 4,
     });
 
     // Add Topographic BaseMap by default
@@ -334,7 +336,7 @@ class MineMapLeaflet extends Component {
           // Stop checking
           clearInterval(resetZoomCheckID);
         }
-      }, 10);
+      }, 5);
     });
   }
 
