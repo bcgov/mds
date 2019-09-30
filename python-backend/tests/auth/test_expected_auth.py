@@ -8,7 +8,6 @@ from app.api.mines.compliance.resources.compliance_article import ComplianceArti
 from app.api.mines.mine.resources.mine_commodity_code import MineCommodityCodeResource
 from app.api.mines.mine.resources.mine_disturbance_code import MineDisturbanceCodeResource
 from app.api.mines.mine.resources.mine_tenure_type_code import MineTenureTypeCodeResource
-from app.api.mines.mine.resources.mine_type_detail import MineTypeDetailResource
 from app.api.mines.mine.resources.mine_type import MineTypeResource, MineTypeListResource
 from app.api.mines.mine.resources.mine import MineResource, MineListSearch, MineListResource
 from app.api.mines.mine.resources.mine_map import MineMapResource
@@ -61,8 +60,6 @@ from app.api.mines.reports.resources.mine_reports import MineReportResource, Min
      (MineTailingsStorageFacilityListResource, "get", [VIEW_ALL]),
      (MineTailingsStorageFacilityListResource, "post", [MINE_EDIT]),
      (MineTenureTypeCodeResource, "get", [VIEW_ALL]),
-     (MineTypeDetailResource, "post", [MINE_EDIT]),
-     (MineTypeDetailResource, "delete", [MINE_EDIT]),
      (MineTypeListResource, "post", [MINE_EDIT]),
      (MineTypeResource, "delete", [MINE_EDIT]),
      (MineVarianceDocumentUploadResource,

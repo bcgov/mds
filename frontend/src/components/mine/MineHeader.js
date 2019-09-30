@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Menu, Divider, Button, Dropdown, Tag, Popover } from "antd";
 import { openModal, closeModal } from "@/actions/modalActions";
-import MineHeaderMap from "@/components/maps/MineHeaderMap";
+import MineHeaderMapLeaflet from "@/components/maps/MineHeaderMapLeaflet";
 import { EDIT_OUTLINE_VIOLET, BRAND_DOCUMENT, EDIT, INFO_CIRCLE } from "@/constants/assets";
 import * as route from "@/constants/routes";
 import { getUserInfo } from "@/selectors/authenticationSelectors";
@@ -17,6 +17,7 @@ import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
 import {
   updateMineRecord,
+  createMineTypes,
   removeMineType,
   fetchMineRecordById,
   createTailingsStorageFacility,
@@ -38,6 +39,7 @@ const propTypes = {
   openModal: PropTypes.func.isRequired,
   mine: CustomPropTypes.mine.isRequired,
   updateMineRecord: PropTypes.func.isRequired,
+  createMineTypes: PropTypes.func.isRequired,
   removeMineType: PropTypes.func.isRequired,
   createTailingsStorageFacility: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
@@ -58,13 +60,14 @@ export class MineHeader extends Component {
         {
           ...value,
           mine_status: mineStatus,
-          mineType: this.props.mine.mine_type,
         },
         value.mine_name
       )
       .then(() => {
-        this.props.closeModal();
-        this.props.fetchMineRecordById(this.props.mine.mine_guid);
+        this.props.createMineTypes(this.props.mine.mine_guid, value.mine_types).then(() => {
+          this.props.closeModal();
+          this.props.fetchMineRecordById(this.props.mine.mine_guid);
+        });
       });
   };
 
@@ -73,9 +76,11 @@ export class MineHeader extends Component {
     this.props.mine.mine_type.forEach((type) => {
       if (type.mine_tenure_type_code === mineTypeCode) {
         const tenure = this.props.mineTenureHash[mineTypeCode];
-        this.props.removeMineType(type.mine_type_guid, tenure).then(() => {
-          this.props.fetchMineRecordById(this.props.mine.mine_guid);
-        });
+        this.props
+          .removeMineType(this.props.mine.mine_guid, type.mine_type_guid, tenure)
+          .then(() => {
+            this.props.fetchMineRecordById(this.props.mine.mine_guid);
+          });
       }
     });
   };
@@ -230,15 +235,13 @@ export class MineHeader extends Component {
           <div className="inline-flex padding-small">
             <p className="field-title">Tenure</p>
             <div>
-              {this.props.transformedMineTypes.mine_tenure_type_code.length > 0 ? (
-                this.props.transformedMineTypes.mine_tenure_type_code.map((tenure) => (
-                  <span className="mine_tenure" key={tenure}>
-                    {this.props.mineTenureHash[tenure]}
-                  </span>
-                ))
-              ) : (
-                <p>{String.EMPTY_FIELD}</p>
-              )}
+              <p>
+                {this.props.transformedMineTypes.mine_tenure_type_code.length > 0
+                  ? this.props.transformedMineTypes.mine_tenure_type_code
+                      .map((tenure) => this.props.mineTenureHash[tenure])
+                      .join(", ")
+                  : String.EMPTY_FIELD}
+              </p>
             </div>
           </div>
           <div className="inline-flex padding-small wrap">
@@ -296,18 +299,18 @@ export class MineHeader extends Component {
           </div>
         </div>
         <div className="dashboard__header--card__map">
-          <MineHeaderMap mine={this.props.mine} />
+          <MineHeaderMapLeaflet mine={this.props.mine} />
           <div className="dashboard__header--card__map--footer">
             <div className="inline-flex between">
               <p className="p-white">
-                Lat:{" "}
-                {this.props.mine.mine_location
+                Lat:
+                {this.props.mine.mine_location && this.props.mine.mine_location.latitude
                   ? this.props.mine.mine_location.latitude
                   : String.EMPTY_FIELD}
               </p>
               <p className="p-white">
-                Long:{" "}
-                {this.props.mine.mine_location
+                Long:
+                {this.props.mine.mine_location && this.props.mine.mine_location.longitude
                   ? this.props.mine.mine_location.longitude
                   : String.EMPTY_FIELD}
               </p>
@@ -346,6 +349,7 @@ const mapDispatchToProps = (dispatch) =>
       openModal,
       closeModal,
       updateMineRecord,
+      createMineTypes,
       removeMineType,
       fetchMineRecordById,
       createTailingsStorageFacility,

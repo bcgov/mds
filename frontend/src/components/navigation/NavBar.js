@@ -225,34 +225,30 @@ export class NavBar extends Component {
               </Link>
             </Col>
           </Row>
-          <AuthorizationWrapper inTesting>
-            <Row>
-              <Col span={24}>
-                <Link to={router.INCIDENTS_DASHBOARD.route}>
-                  <Button
-                    id={this.ifActiveButton(router.INCIDENTS_DASHBOARD.route)}
-                    className="menu--hamburger__btn--link"
-                  >
-                    Browse Incidents
-                  </Button>
-                </Link>
-              </Col>
-            </Row>
-          </AuthorizationWrapper>
-          <AuthorizationWrapper inTesting>
-            <Row>
-              <Col span={24}>
-                <Link to={router.NOTICE_OF_WORK_APPLICATIONS.route}>
-                  <Button
-                    id={this.ifActiveButton(router.NOTICE_OF_WORK_APPLICATIONS.route)}
-                    className="menu--hamburger__btn--link"
-                  >
-                    Browse Notice of Work
-                  </Button>
-                </Link>
-              </Col>
-            </Row>
-          </AuthorizationWrapper>
+          <Row>
+            <Col span={24}>
+              <Link to={router.INCIDENTS_DASHBOARD.route}>
+                <Button
+                  id={this.ifActiveButton(router.INCIDENTS_DASHBOARD.route)}
+                  className="menu--hamburger__btn--link"
+                >
+                  Browse Incidents
+                </Button>
+              </Link>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={24}>
+              <Link to={router.NOTICE_OF_WORK_APPLICATIONS.route}>
+                <Button
+                  id={this.ifActiveButton(router.NOTICE_OF_WORK_APPLICATIONS.route)}
+                  className="menu--hamburger__btn--link"
+                >
+                  Browse Notice of Work
+                </Button>
+              </Link>
+            </Col>
+          </Row>
           <Row>
             <Col span={24}>
               <Link to={router.CUSTOM_HOME_PAGE.route}>
@@ -322,20 +318,16 @@ export class NavBar extends Component {
           <button type="button">Browse Variances</button>
         </Link>
       </div>
-      <AuthorizationWrapper inTesting>
-        <div className="custom-menu-item">
-          <Link to={router.INCIDENTS_DASHBOARD.route}>
-            <button type="button">Browse Incidents</button>
-          </Link>
-        </div>
-      </AuthorizationWrapper>
-      <AuthorizationWrapper inTesting>
-        <div className="custom-menu-item">
-          <Link to={router.NOTICE_OF_WORK_APPLICATIONS.route}>
-            <button type="button">Browse Notice of Work</button>
-          </Link>
-        </div>
-      </AuthorizationWrapper>
+      <div className="custom-menu-item">
+        <Link to={router.INCIDENTS_DASHBOARD.route}>
+          <button type="button">Browse Incidents</button>
+        </Link>
+      </div>
+      <div className="custom-menu-item">
+        <Link to={router.NOTICE_OF_WORK_APPLICATIONS.route}>
+          <button type="button">Browse Notice of Work</button>
+        </Link>
+      </div>
     </Menu>
   );
 

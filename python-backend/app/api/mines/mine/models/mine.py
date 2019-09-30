@@ -163,26 +163,6 @@ class Mine(AuditMixin, Base):
 
         return result
 
-    @classmethod
-    def create_mine(cls,
-                    mine_no,
-                    mine_name,
-                    mine_category,
-                    mine_region,
-                    add_to_session=True,
-                    ohsc_ind=None,
-                    union_ind=None):
-        mine = cls(mine_guid=uuid.uuid4(),
-                   mine_no=mine_no,
-                   mine_name=mine_name,
-                   major_mine_ind=mine_category,
-                   mine_region=mine_region,
-                   ohsc_ind=ohsc_ind,
-                   union_ind=union_ind)
-        if add_to_session:
-            mine.save(commit=False)
-        return mine
-
     @validates('mine_name')
     def validate_mine_name(self, key, mine_name):
         if not mine_name:

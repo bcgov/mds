@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-import { compose, bindActionCreators } from "redux";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 import * as Strings from "@/constants/strings";
 import * as router from "@/constants/routes";
-import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import CustomPropTypes from "@/customPropTypes";
 import {
   getMineRegionHash,
@@ -182,10 +181,7 @@ const mapDispatchToProps = (dispatch) =>
 
 NoticeOfWorkHomePage.propTypes = propTypes;
 
-export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
-  AuthorizationGuard("inTesting")
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
 )(NoticeOfWorkHomePage);

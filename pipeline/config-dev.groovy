@@ -98,6 +98,7 @@ app {
                             'BASE_PATH': "${vars.modules.'mds-frontend'.PATH}",
                             'NODE_ENV': "${vars.deployment.node_env}",
                             'MAP_PORTAL_ID': "${vars.deployment.map_portal_id}",
+                            'FN_LAYER_URL': "${vars.deployment.fn_layer_url}",
                             'KEYCLOAK_RESOURCE': "${vars.keycloak.resource}",
                             'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId_core}",
                             'KEYCLOAK_URL': "${vars.keycloak.url}",
@@ -213,6 +214,7 @@ app {
                             'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled_core}",
                             'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name_docman}",
                             'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}",
+                            'DOCUMENT_CAPACITY_LOWER':"${vars.DOCUMENT_PVC_SIZE.toString().toLowerCase()}",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/document-manager",
                     ]
@@ -328,6 +330,7 @@ environments {
                 application_suffix = "-pr-${vars.git.changeId}"
                 node_env = "development"
                 map_portal_id = "e926583cd0114cd19ebc591f344e30dc"
+                fn_layer_url = "https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov"
                 elastic_enabled_core = 0
                 elastic_enabled_nris = 0
                 elastic_service_name = "MDS Dev"
