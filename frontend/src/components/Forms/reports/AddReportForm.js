@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import PropTypes from "prop-types";
 import { flatMap, uniqBy } from "lodash";
-import { Field, reduxForm, formValueSelector, change } from "redux-form";
+import { Field, reduxForm, formValueSelector } from "redux-form";
 import { Form, Button, Col, Row, Popconfirm, List } from "antd";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
@@ -13,29 +13,36 @@ import { resetForm, createDropDownList, formatComplianceCodeValueOrLabel } from 
 import {
   getDropdownMineReportCategoryOptions,
   getMineReportDefinitionOptions,
+  getDropdownMineReportStatusOptions,
 } from "@/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import { ReportSubmissions } from "@/components/Forms/reports/ReportSubmissions";
-import ReportComments from "./ReportComments";
+import ReportComments from "@/components/Forms/reports/ReportComments";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
-  mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
-  dropdownMineReportCategoryOptions: PropTypes.arrayOf(
-    PropTypes.objectOf(CustomPropTypes.dropdownListItem)
-  ).isRequired,
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.objectOf(PropTypes.any)]).isRequired,
+  mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.any).isRequired,
+  dropdownMineReportCategoryOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any),
-  selectedMineReportCategory: PropTypes.string.isRequired,
-  selectedMineReportDefinition: PropTypes.string.isRequired,
+  selectedMineReportCategory: PropTypes.string,
+  selectedMineReportDefinition: PropTypes.string,
+  disableAddReport: PropTypes.bool,
+  mineReportStatusOptions: CustomPropTypes.options.isRequired,
   formMeta: PropTypes.any,
+  showReportHistory: PropTypes.func.isRequired,
 };
 
 const selector = formValueSelector(FORM.ADD_REPORT);
 
-const defaultProps = { initialValues: {} };
+const defaultProps = {
+  initialValues: {},
+  selectedMineReportDefinition: null,
+  selectedMineReportCategory: null,
+  disableAddReport: false,
+};
 
 export class AddReportForm extends Component {
   state = {
@@ -173,10 +180,12 @@ export class AddReportForm extends Component {
                 }
               >
                 {this.state.selectedMineReportComplianceArticles.length
-                  ? this.state.selectedMineReportComplianceArticles.map((opt) => (
-                      <List.Item>{formatComplianceCodeValueOrLabel(opt, true)}</List.Item>
+                  ? this.state.selectedMineReportComplianceArticles.map((opt, index) => (
+                      <List.Item key={index}>
+                        {formatComplianceCodeValueOrLabel(opt, true)}
+                      </List.Item>
                     ))
-                  : [<List.Item />]}
+                  : [<List.Item key={1} />]}
               </List>
             </Form.Item>
             <Form.Item />
@@ -214,6 +223,8 @@ export class AddReportForm extends Component {
               mineGuid={this.props.mineGuid}
               mineReportSubmissions={this.state.mineReportSubmissions}
               updateMineReportSubmissions={this.updateMineReportSubmissions}
+              showReportHistory={this.props.showReportHistory}
+              mineReportStatusOptions={this.props.mineReportStatusOptions}
             />
             {this.state.existingReport &&
               this.state.mineReportSubmissions.filter((x) => x.mine_report_submission_guid).length >
@@ -259,6 +270,7 @@ export default compose(
   connect((state) => ({
     dropdownMineReportCategoryOptions: getDropdownMineReportCategoryOptions(state),
     mineReportDefinitionOptions: getMineReportDefinitionOptions(state),
+    mineReportStatusOptions: getDropdownMineReportStatusOptions(state),
     selectedMineReportCategory: selector(state, "mine_report_category"),
     selectedMineReportDefinition: selector(state, "mine_report_definition_guid"),
     formMeta: state.form[FORM.ADD_REPORT],

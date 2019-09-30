@@ -200,3 +200,15 @@ export const fetchMineReportDefinitionOptions = () => (dispatch) => {
     })
     .catch(() => dispatch(error(reducerTypes.GET_MINE_REPORT_DEFINITION_OPTIONS)));
 };
+
+export const fetchMineReportStatusOptions = () => (dispatch) => {
+  dispatch(request(reducerTypes.GET_MINE_REPORT_STATUS_OPTIONS));
+  return CustomAxios()
+    .get(`${ENVIRONMENT.apiUrl + API.MINE_REPORT_STATUS}`, createRequestHeader())
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_MINE_REPORT_STATUS_OPTIONS));
+      dispatch(staticContentActions.storeMineReportStatusOptions(response.data));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_MINE_REPORT_STATUS_OPTIONS)));
+};

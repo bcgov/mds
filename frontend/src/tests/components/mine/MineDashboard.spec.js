@@ -30,6 +30,7 @@ const setupDispatchProps = () => {
   dispatchProps.updateVariance = jest.fn();
   dispatchProps.fetchVarianceStatusOptions = jest.fn();
   dispatchProps.fetchMineReportDefinitionOptions = jest.fn();
+  dispatchProps.fetchMineReportStatusOptions = jest.fn();
 };
 
 const setupReducerProps = () => {
