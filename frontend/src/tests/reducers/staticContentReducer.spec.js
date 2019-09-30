@@ -2,7 +2,6 @@ import staticContentReducer from "@/reducers/staticContentReducer";
 import {
   storeStatusOptions,
   storeRegionOptions,
-  storeDocumentStatusOptions,
   storeTenureTypes,
   storeDisturbanceOptions,
   storeCommodityOptions,
@@ -30,6 +29,7 @@ const baseExpectedValue = {
   varianceStatusOptions: [],
   varianceDocumentCategoryOptions: [],
   mineReportDefinitionOptions: [],
+  mineReportStatusOptions: [],
 };
 
 // Creates deep copy of javascript object instead of setting a reference

@@ -7,7 +7,8 @@ import PropTypes from "prop-types";
  */
 
 const propTypes = {
-  children: PropTypes.shape({}),
+  // eslint-disable-next-line react/forbid-prop-types
+  children: PropTypes.any,
 };
 
 const defaultProps = {

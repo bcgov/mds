@@ -14,3 +14,8 @@ export const openModal = (payload) => ({
 export const closeModal = () => ({
   type: actionTypes.CLOSE_MODAL,
 });
+
+export const changeModalTitle = (payload) => ({
+  type: actionTypes.UPDATE_MODAL_TITLE,
+  payload,
+});

@@ -24,7 +24,7 @@ const propTypes = {
   storeKeycloakData: PropTypes.func.isRequired,
   keycloak: PropTypes.objectOf(PropTypes.any).isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
-  userAccessData: PropTypes.objectOf(PropTypes.array).isRequired,
+  userAccessData: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
 /**

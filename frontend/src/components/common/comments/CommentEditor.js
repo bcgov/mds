@@ -52,15 +52,18 @@ export class CommentEditor extends Component {
             name="comment"
           />
         </Form.Item>
-        <Form.Item>
-          <Checkbox
-            name="visible"
-            checked={this.state.visible}
-            onChange={this.handleCheckboxChange}
-          >
-            Publish this comment on MineSpace for the proponent to see
-          </Checkbox>
-        </Form.Item>
+        {// TODO: Hide until Minespace is updated to display comments.
+        false && (
+          <Form.Item>
+            <Checkbox
+              name="visible"
+              checked={this.state.visible}
+              onChange={this.handleCheckboxChange}
+            >
+              Publish this comment on MineSpace for the proponent to see
+            </Checkbox>
+          </Form.Item>
+        )}
         <Button
           disabled={this.state.comment === ""}
           htmlType="button"
