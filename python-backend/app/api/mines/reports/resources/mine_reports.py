@@ -152,7 +152,11 @@ class MineReportResource(Resource, UserMixin):
         if 'received_date' in data:
             mine_report.received_date = data['received_date']
 
-        mine_report_submission_status = data.get('mine_report_submission_status')
+        if data.get('mine_report_submission_status') is not None:
+            mine_report_submission_status = data.get('mine_report_submission_status')
+        else:
+            mine_report_submission_status = 'NRQ'
+
         report_submissions = data.get('mine_report_submissions')
         submission_iterator = iter(report_submissions)
         new_submission = next(
