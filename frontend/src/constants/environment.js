@@ -3,7 +3,6 @@ export const DEFAULT_ENVIRONMENT = {
   apiUrl: "http://localhost:5000",
   docManUrl: "http://localhost:5001",
   environment: "development",
-  mapPortalId: "e926583cd0114cd19ebc591f344e30dc",
   firstNationsLayerUrl: "https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov",
   keycloak_resource: "mines-application-local",
   keycloak_clientId: "mines-application-local",
@@ -14,7 +13,6 @@ export const DEFAULT_ENVIRONMENT = {
 export const ENVIRONMENT = {
   apiUrl: "<API_URL>",
   docManUrl: "<DOCUMENT_MANAGER_URL>",
-  mapPortalId: "<ARCGIS_PORTAL_MAP_ID>",
   firstNationsLayerUrl: "<FN_LAYER_URL>",
   environment: "<ENV>",
 };
