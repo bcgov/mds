@@ -246,7 +246,6 @@ class MineMapLeaflet extends Component {
     this.props.minesBasicInfo.map(this.createPin);
     this.map.addLayer(this.markerClusterGroup);
     this.addLatLongCircle();
-    this.map.setView([this.props.lat, this.props.long], this.props.zoom, true);
   };
 
   addWidgets = async () => {
@@ -288,13 +287,6 @@ class MineMapLeaflet extends Component {
     L.control
       .groupedLayers(this.getLayerGroupFromList(baseMapsArray), groupedOverlays)
       .addTo(this.map);
-
-    // Esri WebMap resets the zoom level, zoom back to props coordinates after they're done loading
-    setTimeout(() => {
-      if (this.map.getZoom() !== this.props.zoom) {
-        this.map.setView([this.props.lat, this.props.long], this.props.zoom, true);
-      }
-    }, 200);
   };
 
   /* eslint-disable */
@@ -333,7 +325,16 @@ class MineMapLeaflet extends Component {
     this.webMap.on("load", () => {
       // Add the WebMap layers and the Layer control widget
       this.addWebMapLayers();
-      this.map.setView([this.props.lat, this.props.long], this.props.zoom, true);
+
+      // Esri WebMap resets the zoom level, zoom back to props coordinates after they're done loading
+      const resetZoomCheckID = setInterval(() => {
+        if (this.map.getZoom() !== this.props.zoom) {
+          this.map.setView([this.props.lat, this.props.long], this.props.zoom, true);
+
+          // Stop checking
+          clearInterval(resetZoomCheckID);
+        }
+      }, 10);
     });
   }
 
