@@ -7,6 +7,7 @@ import utils.Const
 class ContactsPage extends Page {
     static at = { waitFor() {!loadingScreen.displayed}}
     static url = "dashboard/contacts"
+    static CONTACT_FULL_NAME_2 = "Zavicus, Halfthor"
     static content = {
         //general
         toastMessage (wait: true) {$("div", class:"ant-notification-notice-message")}
@@ -23,10 +24,12 @@ class ContactsPage extends Page {
         applyFilterButton   (wait:true){$("button", type:"submit")}
         
         //Table content
-        skeletonRow (wait:false){$("tr", class:"ant-table-row skeleton-table__row ant-table-row-level-0")}
+        skeletonRow (required:false){$("tr", class:"ant-table-row skeleton-table__row ant-table-row-level-0")}
         tableBody (wait:true){$("tbody", class:"ant-table-tbody")}
         contactTableContent (wait:true){$("tr", class:"ant-table-row fade-in ant-table-row-level-0")}
+
         contactTableNameOne (wait:true){$("tr", class:"ant-table-row ant-table-row-level-0").has("a", text: Const.CONTACT_FULL_NAME)}
+        contactTableNameTwo (wait:true){$("td").has("a", text: CONTACT_FULL_NAME_2)}
 
     }
 
