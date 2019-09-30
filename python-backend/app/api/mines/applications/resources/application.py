@@ -4,8 +4,8 @@ from datetime import datetime
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
 from app.extensions import api
-from ..models.application import Application
-from ...mine.models.mine import Mine
+from app.api.mines.applications.models.application import Application
+from app.api.mines.mine.models.mine import Mine
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_edit
 

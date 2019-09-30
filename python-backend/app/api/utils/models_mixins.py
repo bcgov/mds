@@ -19,7 +19,7 @@ class UserBoundQuery(db.Query):
 # add listener for the before_compile event on UserBoundQuery
 @db.event.listens_for(UserBoundQuery, 'before_compile', retval=True)
 def ensure_constrained(query):
-    from ... import auth
+    from app import auth
 
     if not query._user_bound or not auth.apply_security:
         return query
@@ -59,10 +59,11 @@ class Base(db.Model):
 class AuditMixin(object):
     create_user = db.Column(db.String(60), nullable=False, default=User().get_user_username)
     create_timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    update_user = db.Column(
-        db.String(60),
-        nullable=False,
-        default=User().get_user_username,
-        onupdate=User().get_user_username)
-    update_timestamp = db.Column(
-        db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+    update_user = db.Column(db.String(60),
+                            nullable=False,
+                            default=User().get_user_username,
+                            onupdate=User().get_user_username)
+    update_timestamp = db.Column(db.DateTime,
+                                 nullable=False,
+                                 default=datetime.utcnow,
+                                 onupdate=datetime.utcnow)

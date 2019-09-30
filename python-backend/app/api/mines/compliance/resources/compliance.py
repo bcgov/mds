@@ -4,15 +4,14 @@ from flask_restplus import Resource, fields
 from flask import request, current_app
 from werkzeug.exceptions import BadRequest, NotFound
 
-from app.extensions import api
-from app.api.utils.access_decorators import requires_role_view_all
+from app.extensions import api, cache
+from app.api.constants import NRIS_COMPLIANCE_DATA, TIMEOUT_60_MINUTES
 from app.api.utils.resources_mixins import UserMixin
-from ....constants import NRIS_COMPLIANCE_DATA, TIMEOUT_60_MINUTES
-from app.api.services import NRIS_API_service
-from app.extensions import cache
-from ..response_models import MINE_COMPLIANCE_RESPONSE_MODEL
+from app.api.utils.access_decorators import requires_role_view_all
 
-from ...mine.models.mine import Mine
+from app.api.services import NRIS_API_service
+from app.api.mines.response_models import MINE_COMPLIANCE_RESPONSE_MODEL
+from app.api.mines.mine.models.mine import Mine
 
 
 class MineComplianceSummaryResource(Resource, UserMixin):
