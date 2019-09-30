@@ -144,7 +144,6 @@ class MineReportResource(Resource, UserMixin):
         if not mine_report or str(mine_report.mine_guid) != mine_guid:
             raise NotFound("Mine Report not found")
 
-        current_mine_report_submission = mine_report.mine_report_submissions[-1]
         data = self.parser.parse_args()
 
         if 'due_date' in data:
@@ -163,7 +162,7 @@ class MineReportResource(Resource, UserMixin):
                 submission_date=datetime.now(),
                 mine_report_submission_status_code=mine_report_submission_status)
             # Copy the current list of documents for the report submission
-            last_submission_docs = current_mine_report_submission.documents.copy() if len(
+            last_submission_docs = mine_report.mine_report_submissions[-1].documents.copy() if len(
                 mine_report.mine_report_submissions) > 0 else []
 
             # Gets the difference between the set of documents in the new submission and the last submission
@@ -199,8 +198,13 @@ class MineReportResource(Resource, UserMixin):
                 new_report_submission.documents.append(mine_doc)
 
             mine_report.mine_report_submissions.append(new_report_submission)
-        elif mine_report_submission_status != current_mine_report_submission.mine_report_submission_status_code:
-            current_mine_report_submission.mine_report_submission_status_code = mine_report_submission_status
+
+        # if the status has changed, update the status of the last submission
+        elif len(mine_report.mine_report_submissions > 0
+                 ) and mine_report_submission_status != mine_report.mine_report_submissions[
+                     -1].mine_report_submission_status:
+            mine_report.mine_report_submissions[
+                -1].mine_report_submission_status_code = mine_report_submission_status
 
         try:
             mine_report.save()
