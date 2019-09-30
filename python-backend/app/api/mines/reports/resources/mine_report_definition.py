@@ -15,7 +15,7 @@ from app.api.mines.reports.models.mine_report_category import MineReportCategory
 from app.api.mines.reports.models.mine_report_due_date_type import MineReportDueDateType
 from app.api.mines.reports.models.mine_report_definition_compliance_article_xref import MineReportDefinitionComplianceArticleXref
 from app.api.utils.custom_reqparser import CustomReqparser
-from ...response_models import MINE_REPORT_DEFINITION_MODEL
+from app.api.mines.response_models import MINE_REPORT_DEFINITION_MODEL
 
 
 class MineReportDefinitionListResource(Resource, UserMixin):
