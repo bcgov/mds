@@ -5,7 +5,6 @@ exports[`NoticeOfWorkTable renders properly 1`] = `
   isPaginated={false}
   tableHeaders={
     Array [
-      "Source",
       "Region",
       "NoW No.",
       "Mine",
@@ -22,12 +21,6 @@ exports[`NoticeOfWorkTable renders properly 1`] = `
     className=""
     columns={
       Array [
-        Object {
-          "dataIndex": "source",
-          "render": [Function],
-          "sortOrder": false,
-          "title": "Source",
-        },
         Object {
           "dataIndex": "mine_region",
           "filteredValue": "SW,NE",
