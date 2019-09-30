@@ -49,9 +49,8 @@ export const ReportSubmissions = (props) => {
           id="mine_report_submission_status"
           name="mine_report_submission_status"
           label="Revision Status"
-          data={props.mineReportStatusOptions}
           component={renderConfig.SELECT}
-          defaultValue="NRQ"
+          data={props.mineReportStatusOptions}
         />
       </Form.Item>
     ),

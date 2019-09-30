@@ -32,12 +32,13 @@ const propTypes = {
   mineReportStatusOptions: CustomPropTypes.options.isRequired,
   selectedMineReportCategory: PropTypes.string.isRequired,
   selectedMineReportDefinition: PropTypes.string.isRequired,
+  disableAddReport: PropTypes.bool,
   formMeta: PropTypes.any,
 };
 
 const selector = formValueSelector(FORM.ADD_REPORT);
 
-const defaultProps = { initialValues: {} };
+const defaultProps = { initialValues: {}, disableAddReport: false };
 
 export class AddReportForm extends Component {
   state = {
