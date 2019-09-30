@@ -1,13 +1,11 @@
 import React, { Component } from "react";
 import { Collapse, Icon } from "antd";
 import PropTypes from "prop-types";
-import { compose, bindActionCreators } from "redux";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import NOWGeneralInfo from "@/components/noticeOfWork/NOWGeneralInfo";
 import NOWWorkPlan from "@/components/noticeOfWork/NOWWorkPlan";
-import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import { fetchNoticeOfWorkApplication } from "@/actionCreators/noticeOfWorkActionCreator";
 import { getNoticeOfWork } from "@/selectors/noticeOfWorkSelectors";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
@@ -79,10 +77,7 @@ const mapDispatchToProps = (dispatch) =>
 
 NoticeOfWorkApplication.propTypes = propTypes;
 
-export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
-  AuthorizationGuard(Permission.ADMIN)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
 )(NoticeOfWorkApplication);
