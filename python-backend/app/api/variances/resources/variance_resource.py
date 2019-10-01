@@ -5,7 +5,7 @@ from sqlalchemy import desc, cast, NUMERIC, func, or_
 
 from app.extensions import api
 from app.api.utils.access_decorators import requires_any_of, VIEW_ALL
-from app.api.utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.utils.resources_mixins import UserMixin 
 
 from app.api.compliance.models.compliance_article import ComplianceArticle
 from app.api.mines.mine.models.mine import Mine
@@ -18,7 +18,7 @@ PAGE_DEFAULT = 1
 PER_PAGE_DEFAULT = 25
 
 
-class VarianceResource(Resource, UserMixin, ErrorMixin):
+class VarianceResource(Resource, UserMixin ):
     @api.doc(
         description='Get a list of variances. Order: received_date DESC',
         params={

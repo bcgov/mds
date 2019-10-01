@@ -6,7 +6,7 @@ from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
 
 from app.extensions import api
 from app.api.utils.access_decorators import requires_any_of, VIEW_ALL
-from app.api.utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.utils.resources_mixins import UserMixin 
 
 from app.api.mines.mine.models.mine import Mine
 from app.api.incidents.models.mine_incident import MineIncident
@@ -17,7 +17,7 @@ PAGE_DEFAULT = 1
 PER_PAGE_DEFAULT = 25
 
 
-class IncidentsResource(Resource, UserMixin, ErrorMixin):
+class IncidentsResource(Resource, UserMixin ):
     @api.doc(
         description='Get a list of incidents. Order: received_date DESC',
         params={

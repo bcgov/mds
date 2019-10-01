@@ -5,10 +5,10 @@ from app.extensions import api
 from app.api.now_submissions.models.application import Application
 from app.api.now_submissions.response_models import APPLICATION
 from app.api.utils.access_decorators import requires_role_view_all
-from app.api.utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.utils.resources_mixins import UserMixin 
 
 
-class ApplicationResource(Resource, UserMixin, ErrorMixin):
+class ApplicationResource(Resource, UserMixin ):
     @api.doc(description='Fetch an application by guid', params={})
     @requires_role_view_all
     @api.marshal_with(APPLICATION, code=200)

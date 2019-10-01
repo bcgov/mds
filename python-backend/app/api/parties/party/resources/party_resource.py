@@ -6,7 +6,7 @@ from werkzeug.exceptions import NotFound
 
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_edit, requires_role_mine_admin, requires_role_edit_party
-from app.api.utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.utils.resources_mixins import UserMixin 
 from app.api.utils.custom_reqparser import CustomReqparser
 
 from app.api.parties.party.models.party import Party
@@ -15,7 +15,7 @@ from app.api.parties.response_models import PARTY
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 
 
-class PartyResource(Resource, UserMixin, ErrorMixin):
+class PartyResource(Resource, UserMixin ):
     parser = CustomReqparser()
     parser.add_argument('first_name',
                         type=str,
