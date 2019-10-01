@@ -5,7 +5,7 @@ from sqlalchemy.orm import validates
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 
-from ....utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import AuditMixin, Base
 from .mine_operation_status_code import MineOperationStatusCode
 from .mine_operation_status_reason_code import MineOperationStatusReasonCode
 from .mine_operation_status_sub_reason_code import MineOperationStatusSubReasonCode
@@ -28,26 +28,14 @@ class MineStatusXref(AuditMixin, Base):
         db.String(3),
         db.ForeignKey(
             'mine_operation_status_sub_reason_code.mine_operation_status_sub_reason_code'))
-    mine_operation_status_sub_reason = db.relationship(
-        'MineOperationStatusSubReasonCode', lazy='joined')
+    mine_operation_status_sub_reason = db.relationship('MineOperationStatusSubReasonCode',
+                                                       lazy='joined')
     description = db.Column(db.String(1024))
 
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     def __repr__(self):
         return '<MineStatusXref %r>' % self.mine_status_xref_guid
-
-    def json(self):
-        return {
-            'mine_status_xref_guid': str(self.mine_status_xref_guid),
-            'mine_operation_status_code':
-            self.mine_operation_status_code.json() if self.mine_operation_status_code else {},
-            'mine_operation_status_reason_code': self.mine_operation_status_reason_code.json()
-            if self.mine_operation_status_reason_code else {},
-            'mine_operation_status_sub_reason_code':
-            self.mine_operation_status_sub_reason_code.json()
-            if self.mine_operation_status_sub_reason_code else {},
-        }
 
     @classmethod
     def active(cls):

@@ -9,7 +9,7 @@ from app.extensions import db
 
 from app.api.parties.party_appt.models.party_business_role_code import PartyBusinessRoleCode
 from app.api.parties.party.models.party import Party
-from ....utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import AuditMixin, Base
 
 
 class PartyBusinessRoleAppointment(AuditMixin, Base):

@@ -41,14 +41,14 @@ export class MineApplicationInfo extends Component {
   state = { isLoaded: false };
 
   componentDidMount() {
-    this.props.fetchApplications({ mine_guid: this.props.mineGuid }).then(() => {
+    this.props.fetchApplications(this.props.mineGuid).then(() => {
       this.setState({ isLoaded: true });
     });
   }
 
   closeApplicationModal = () => {
     this.props.closeModal();
-    this.props.fetchApplications({ mine_guid: this.props.mineGuid }).then(() => {
+    this.props.fetchApplications(this.props.mineGuid).then(() => {
       this.setState({ isLoaded: true });
     });
   };
@@ -81,12 +81,15 @@ export class MineApplicationInfo extends Component {
   };
 
   handleAddApplication = (values) => {
-    const payload = { mine_guid: this.props.mineGuid, ...values };
-    return this.props.createApplication(payload).then(this.closeApplicationModal);
+    return this.props
+      .createApplication(this.props.mineGuid, values)
+      .then(this.closeApplicationModal);
   };
 
   handleEditApplication = (values) =>
-    this.props.updateApplication(values.application_guid, values).then(this.closeApplicationModal);
+    this.props
+      .updateApplication(this.props.mineGuid, values.application_guid, values)
+      .then(this.closeApplicationModal);
 
   render() {
     const mine = this.props.mines[this.props.mineGuid];

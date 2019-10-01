@@ -204,7 +204,9 @@ exports[`NOWGeneralInfo renders properly 1`] = `
           >
             <div>
               <h3>
-                N/A
+                <span>
+                  N/A
+                </span>
               </h3>
               <h6>
                 Email Address
@@ -256,7 +258,9 @@ exports[`NOWGeneralInfo renders properly 1`] = `
           >
             <div>
               <h3>
-                N/A
+                <span>
+                  N/A
+                </span>
               </h3>
               <h6>
                 Email Address
