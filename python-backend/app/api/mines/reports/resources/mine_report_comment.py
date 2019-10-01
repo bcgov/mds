@@ -27,8 +27,7 @@ class MineReportCommentListResource(Resource, UserMixin):
     @requires_role_view_all
     def get(self, mine_guid, mine_report_guid):
 
-        mine_report = MineReport.find_by_mine_report_guid(
-            mine_report_guid)
+        mine_report = MineReport.find_by_mine_report_guid(mine_report_guid)
 
         if not mine_report:
             raise NotFound('Mine report not found')
@@ -40,10 +39,16 @@ class MineReportCommentListResource(Resource, UserMixin):
 
         current_app.logger.info(f'Retrieving comments for {mine_report}')
 
-        comments = [comment.__dict__ for submission in mine_report_submissions[:-1] for comment in submission.comments]
+        comments = [
+            comment.__dict__ for submission in mine_report_submissions[:-1]
+            for comment in submission.comments
+        ]
         for comment in comments:
             comment['from_latest_submission'] = False
-        latest_comments = [comment.__dict__ for submission in mine_report_submissions[-1:] for comment in submission.comments]
+        latest_comments = [
+            comment.__dict__ for submission in mine_report_submissions[-1:]
+            for comment in submission.comments
+        ]
         for comment in latest_comments:
             comment['from_latest_submission'] = True
 
@@ -107,13 +112,10 @@ class MineReportCommentResource(Resource, UserMixin):
 
         return comment, 201
 
-    @api.doc(
-        description='Delete a mine report comment by guid', params={'mine_report_comment_guid': 'guid of the comment to delete.'})
+    @api.doc(description='Delete a mine report comment by guid',
+             params={'mine_report_comment_guid': 'guid of the comment to delete.'})
     @requires_role_mine_admin
     def delete(self, mine_guid, mine_report_guid, mine_report_comment_guid):
-        if mine_report_comment_guid is None:
-            return self.create_error_payload(404, 'Must provide a mine report comment guid.'), 404
-
         comment = MineReportComment.find_by_guid(mine_report_comment_guid)
         if not comment:
             raise NotFound('Mine report comment with guid "{mine_report_comment_guid}" not found.')

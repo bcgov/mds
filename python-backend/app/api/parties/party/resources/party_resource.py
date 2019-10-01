@@ -6,7 +6,7 @@ from werkzeug.exceptions import NotFound
 
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_edit, requires_role_mine_admin, requires_role_edit_party
-from app.api.utils.resources_mixins import UserMixin 
+from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 
 from app.api.parties.party.models.party import Party
@@ -15,7 +15,7 @@ from app.api.parties.response_models import PARTY
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 
 
-class PartyResource(Resource, UserMixin ):
+class PartyResource(Resource, UserMixin):
     parser = CustomReqparser()
     parser.add_argument('first_name',
                         type=str,
@@ -128,14 +128,9 @@ class PartyResource(Resource, UserMixin ):
              params={'party_guid': 'guid of the party to delete.'})
     @requires_role_mine_admin
     def delete(self, party_guid):
-        if party_guid is None:
-            return self.create_error_payload(404, 'Must provide a party guid.'), 404
-        try:
-            party = Party.find_by_party_guid(party_guid)
-        except DBAPIError:
-            return self.create_error_payload(422, 'Invalid Party guid'), 422
-        if party is None:
-            return self.create_error_payload(404, 'Party guid with "{party_guid}" not found.'), 404
+        party = Party.find_by_party_guid(party_guid)
+        if not party:
+            raise NotFound(f'Party guid with "{party_guid}" not found.')
 
         mine_party_appts = MinePartyAppointment.find_by_party_guid(party_guid)
         for mine_party_appt in mine_party_appts:
