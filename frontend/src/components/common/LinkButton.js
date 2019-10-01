@@ -5,7 +5,8 @@ const propTypes = {
   onClick: PropTypes.func.isRequired,
   tabIndex: PropTypes.number,
   style: PropTypes.objectOf(PropTypes.any),
-  children: PropTypes.objectOf(PropTypes.any),
+  // eslint-disable-next-line react/forbid-prop-types
+  children: PropTypes.any,
 };
 
 const defaultProps = {

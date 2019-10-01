@@ -131,7 +131,11 @@ def test_post_mine_report_with_bad_permit_guid(test_client, db_session, auth_hea
 def test_put_mine_report(test_client, db_session, auth_headers):
     mine = MineFactory(mine_reports=ONE_REPORT)
 
-    data = {'due_date': '2019-10-05 20:27:45.11929+00', 'mine_report_submissions': []}
+    data = {
+        'due_date': '2019-10-05 20:27:45.11929+00',
+        'mine_report_submission_status': 'NRQ',
+        'mine_report_submissions': []
+    }
     put_resp = test_client.put(
         f'/mines/{mine.mine_guid}/reports/{mine.mine_reports[0].mine_report_guid}',
         headers=auth_headers['full_auth_header'],

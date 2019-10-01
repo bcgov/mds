@@ -19,7 +19,7 @@ import AddPartyComponentWrapper from "./AddPartyComponentWrapper";
 const propTypes = {
   closeModal: PropTypes.func.isRequired,
   isModalOpen: PropTypes.bool.isRequired,
-  content: PropTypes.objectOf(PropTypes.any),
+  content: PropTypes.func,
   props: PropTypes.objectOf(PropTypes.any),
   clearOnSubmit: PropTypes.bool.isRequired,
   widthSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,

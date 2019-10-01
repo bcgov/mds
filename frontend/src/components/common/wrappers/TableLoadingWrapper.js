@@ -16,7 +16,7 @@ import { Table } from "antd";
 const propTypes = {
   condition: PropTypes.bool.isRequired,
   children: PropTypes.element.isRequired,
-  tableHeaders: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
+  tableHeaders: PropTypes.arrayOf(PropTypes.string).isRequired,
   isPaginated: PropTypes.bool,
 };
 
