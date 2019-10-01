@@ -30,22 +30,10 @@ class PermitAmendmentDocumentListResource(Resource, UserMixin):
     parser.add_argument('document_manager_guid', type=str, store_missing=False)
     parser.add_argument('filename', type=str, store_missing=False)
 
-    @requires_role_edit_permit
-    def post(self, mine_guid):
-        mine = Mine.find_by_mine_guid(mine_guid)
-        if not mine:
-            raise NotFound('Mine not found.')
-
-        return DocumentManagerService.initializeFileUploadWithDocumentManager(
-            request, mine, 'permits')
-
+    @api.expect(parser)
     @api.marshal_with(PERMIT_AMENDMENT_DOCUMENT_MODEL, code=201)
     @requires_role_edit_permit
-    def put(self,
-            mine_guid,
-            permit_amendment_guid,
-            permit_guid,
-            permit_amendment_document_guid=None):
+    def put(self, mine_guid, permit_amendment_guid, permit_guid):
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
         if not permit_amendment:
             raise NotFound('Permit amendment not found.')

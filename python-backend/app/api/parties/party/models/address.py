@@ -3,7 +3,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.orm import validates
 
-from ....utils.models_mixins import Base, AuditMixin
+from app.api.utils.models_mixins import Base, AuditMixin
 from app.extensions import db
 
 

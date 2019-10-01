@@ -7,21 +7,21 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from app.extensions import db
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from ....utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import AuditMixin, Base
 from .mine_status_xref import MineStatusXref
 
 
 class MineStatus(AuditMixin, Base):
     __tablename__ = 'mine_status'
-    mine_status_guid = db.Column(
-        UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
+    mine_status_guid = db.Column(UUID(as_uuid=True),
+                                 primary_key=True,
+                                 server_default=FetchedValue())
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
-    mine_status_xref_guid = db.Column(
-        UUID(as_uuid=True), db.ForeignKey('mine_status_xref.mine_status_xref_guid'))
+    mine_status_xref_guid = db.Column(UUID(as_uuid=True),
+                                      db.ForeignKey('mine_status_xref.mine_status_xref_guid'))
     status_date = db.Column(db.DateTime, nullable=True, default=None)
-    effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    expiry_date = db.Column(
-        db.DateTime, nullable=False, default=datetime.strptime('9999-12-31', '%Y-%m-%d'))
+    effective_date = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
+    expiry_date = db.Column(db.DateTime)
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     mine_status_xref = db.relationship('MineStatusXref', lazy='joined')

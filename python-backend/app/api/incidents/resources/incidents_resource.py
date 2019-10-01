@@ -1,15 +1,17 @@
 from flask_restplus import Resource
 from flask import request
 from datetime import datetime
-from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
 from sqlalchemy import desc, cast, NUMERIC, extract, asc
+from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
+
 from app.extensions import api
+from app.api.utils.access_decorators import requires_any_of, VIEW_ALL
+from app.api.utils.resources_mixins import UserMixin, ErrorMixin
+
 from app.api.mines.mine.models.mine import Mine
-from ..models.mine_incident import MineIncident
+from app.api.incidents.models.mine_incident import MineIncident
 from app.api.incidents.models.mine_incident_do_subparagraph import MineIncidentDoSubparagraph
-from ..response_models import PAGINATED_INCIDENT_LIST
-from ...utils.access_decorators import requires_any_of, VIEW_ALL
-from ...utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.incidents.response_models import PAGINATED_INCIDENT_LIST
 
 PAGE_DEFAULT = 1
 PER_PAGE_DEFAULT = 25

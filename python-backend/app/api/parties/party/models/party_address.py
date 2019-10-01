@@ -1,7 +1,7 @@
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 
-from ....utils.models_mixins import Base
+from app.api.utils.models_mixins import Base
 from app.extensions import db
 
 class PartyAddressXref(Base):

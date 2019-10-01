@@ -14,7 +14,7 @@ from app.api.utils.models_mixins import AuditMixin, Base
 from app.api.incidents.models.mine_incident_determination_type import MineIncidentDeterminationType
 from app.api.incidents.models.mine_incident_do_subparagraph import MineIncidentDoSubparagraph
 from app.api.incidents.models.mine_incident_recommendation import MineIncidentRecommendation
-from app.api.mines.compliance.models.compliance_article import ComplianceArticle
+from app.api.compliance.models.compliance_article import ComplianceArticle
 
 
 class MineIncident(AuditMixin, Base):
@@ -93,18 +93,18 @@ class MineIncident(AuditMixin, Base):
 
     recommendations = db.relationship(
         'MineIncidentRecommendation',
-        primaryjoin="and_(MineIncidentRecommendation.mine_incident_id == MineIncident.mine_incident_id, MineIncidentRecommendation.deleted_ind==False)",
+        primaryjoin=
+        "and_(MineIncidentRecommendation.mine_incident_id == MineIncident.mine_incident_id, MineIncidentRecommendation.deleted_ind==False)",
         lazy='selectin')
     documents = db.relationship('MineIncidentDocumentXref', lazy='joined')
     mine_documents = db.relationship('MineDocument',
-                                         lazy='joined',
-                                         secondary='mine_incident_document_xref')
+                                     lazy='joined',
+                                     secondary='mine_incident_document_xref')
 
     mine_table = db.relationship('Mine', lazy='joined')
     mine_name = association_proxy('mine_table', 'mine_name')
     mine_region = association_proxy('mine_table', 'mine_region')
     major_mine_ind = association_proxy('mine_table', 'major_mine_ind')
-
 
     @hybrid_property
     def mine_incident_report_no(self):
