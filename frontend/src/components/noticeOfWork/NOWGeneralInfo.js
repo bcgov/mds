@@ -130,9 +130,11 @@ export class NOWGeneralInfo extends Component {
                     >
                       <div>
                         <h3>
-                          {contact.ind_firstname && contact.ind_lastname
-                            ? `${contact.ind_firstname} - ${contact.ind_firstname}`
-                            : Strings.EMPTY_FIELD}
+                          {contact.ind_firstname && <span>{contact.ind_firstname}</span>}
+                          {contact.ind_lastname && <span> {contact.ind_lastname}</span>}
+                          {!contact.ind_firstname && !contact.ind_lastname && (
+                            <span>{Strings.EMPTY_FIELD}</span>
+                          )}
                         </h3>
                         <h6>Email Address</h6>
                         {contact.email || Strings.EMPTY_FIELD}
