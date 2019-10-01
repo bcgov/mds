@@ -24,6 +24,7 @@ from app.api.mines.incidents.resources.mine_incident_document import MineInciden
 from app.api.mines.reports.resources.mine_report_document import MineReportDocumentListResource
 from app.api.mines.reports.resources.mine_reports import MineReportListResource, MineReportResource
 from app.api.mines.reports.resources.mine_report_definition import MineReportDefinitionListResource
+from app.api.mines.reports.resources.mine_report_submission_status import MineReportSubmissionStatusResource
 from app.api.mines.reports.resources.mine_report_comment import MineReportCommentResource, MineReportCommentListResource
 from app.api.mines.permits.permit.resources.permit import PermitResource, PermitListResource
 from app.api.mines.permits.permit.resources.permit_status_code import PermitStatusCodeResource
@@ -87,6 +88,7 @@ api.add_resource(
     MineReportCommentResource,
     '/<string:mine_guid>/reports/<string:mine_report_guid>/comments/<string:mine_report_comment_guid>'
 )
+api.add_resource(MineReportSubmissionStatusResource, '/reports/status-codes')
 
 api.add_resource(
     MineReportDocumentListResource,

@@ -39,6 +39,14 @@ const modalReducer = (state = initialState, action) => {
         ...state,
         ...initialState,
       };
+    case actionTypes.UPDATE_MODAL_TITLE:
+      return {
+        ...state,
+        props: {
+          ...state.props,
+          title: action.payload,
+        },
+      };
     default:
       return state;
   }

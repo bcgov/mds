@@ -51,6 +51,7 @@ exports[`MineReportTable renders properly 1`] = `
         },
         Object {
           "dataIndex": "documents",
+          "key": "documents_key",
           "render": [Function],
           "title": "Documents",
         },

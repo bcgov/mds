@@ -15,6 +15,7 @@ export const STORE_KEYCLOAK_DATA = "STORE_KEYCLOAK_DATA";
 
 export const OPEN_MODAL = "OPEN_MODAL";
 export const CLOSE_MODAL = "CLOSE_MODAL";
+export const CHANGE_MODAL_TITLE = "CHANGE_MODAL_TITLE";
 
 // variances
 export const STORE_VARIANCES = "STORE_VARIANCES";

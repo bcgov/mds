@@ -3,20 +3,21 @@ import uuid
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
-from app.extensions import db
+from datetime import datetime
 
+from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
 
 
 class MineDocument(AuditMixin, Base):
     __tablename__ = 'mine_document'
-    mine_document_guid = db.Column(UUID(as_uuid=True),
-                                   primary_key=True,
-                                   server_default=FetchedValue())
+    mine_document_guid = db.Column(
+        UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     document_manager_guid = db.Column(UUID(as_uuid=True))
     document_name = db.Column(db.String(40), nullable=False)
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
+    upload_date = db.Column(db.Date, nullable=False, default=datetime.utcnow)
 
     mine_name = association_proxy('mine', 'mine_name')
 
