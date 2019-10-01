@@ -19,7 +19,6 @@ from app.api.services.document_manager_service import DocumentManagerService
 from app.extensions import api, db
 from app.api.utils.access_decorators import requires_role_edit_permit
 from app.api.utils.resources_mixins import UserMixin
-from app.api.utils.url import get_document_manager_svc_url
 
 from app.api.mines.permits.response_models import PERMIT_AMENDMENT_DOCUMENT_MODEL
 
