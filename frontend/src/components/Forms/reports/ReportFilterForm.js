@@ -18,11 +18,14 @@ const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
   mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
-  dropdownMineReportCategoryOptions: PropTypes.arrayOf(
-    PropTypes.objectOf(CustomPropTypes.dropdownListItem)
-  ).isRequired,
-  selectedMineReportCategory: PropTypes.string.isRequired,
-  selectedMineReportDefinitionGuid: PropTypes.string.isRequired,
+  dropdownMineReportCategoryOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
+  selectedMineReportCategory: PropTypes.string,
+  selectedMineReportDefinitionGuid: PropTypes.string,
+};
+
+const defaultProps = {
+  selectedMineReportDefinitionGuid: null,
+  selectedMineReportCategory: null,
 };
 
 const selector = formValueSelector(FORM.FILTER_REPORTS);
@@ -194,6 +197,7 @@ export class ReportFilterForm extends Component {
 }
 
 ReportFilterForm.propTypes = propTypes;
+ReportFilterForm.defaultProps = defaultProps;
 
 export default compose(
   connect((state) => ({

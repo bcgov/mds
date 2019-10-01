@@ -84,3 +84,8 @@ export const storeMineReportDefinitionOptions = (payload) => ({
   type: ActionTypes.STORE_MINE_REPORT_DEFINITION_OPTIONS,
   payload,
 });
+
+export const storeMineReportStatusOptions = (payload) => ({
+  type: ActionTypes.STORE_MINE_REPORT_STATUS_OPTIONS,
+  payload,
+});

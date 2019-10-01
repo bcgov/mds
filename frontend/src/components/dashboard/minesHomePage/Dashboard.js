@@ -24,6 +24,7 @@ import {
   fetchMineCommodityOptions,
   fetchPermitStatusOptions,
   fetchApplicationStatusOptions,
+  fetchMineReportStatusOptions,
 } from "@/actionCreators/staticContentActionCreator";
 import { fetchPartyRelationshipTypes } from "@/actionCreators/partiesActionCreator";
 import {
@@ -88,6 +89,7 @@ const propTypes = {
   pageData: CustomPropTypes.minePageData.isRequired,
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
   fetchApplicationStatusOptions: PropTypes.func.isRequired,
+  fetchMineReportStatusOptions: PropTypes.func.isRequired,
 };
 
 const joinOrRemove = (param, key) => (isEmpty(param) ? {} : { [key]: param.join(",") });
@@ -152,6 +154,7 @@ export class Dashboard extends Component {
     this.props.fetchPartyRelationshipTypes();
     this.props.fetchPermitStatusOptions();
     this.props.fetchApplicationStatusOptions();
+    this.props.fetchMineReportStatusOptions();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -531,6 +534,7 @@ const mapDispatchToProps = (dispatch) =>
       openModal,
       closeModal,
       fetchPartyRelationshipTypes,
+      fetchMineReportStatusOptions,
     },
     dispatch
   );

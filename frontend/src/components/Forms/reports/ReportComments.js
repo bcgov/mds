@@ -2,11 +2,10 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Divider } from "antd";
-import { formatDateTime } from "@/utils/helpers";
 
 import CommentPanel from "@/components/common/comments/CommentPanel";
 import { getMineReportComments } from "@/selectors/reportSelectors";
+import FormItemLabel from "@/components/common/FormItemLabel";
 
 import {
   fetchMineReportComments,
@@ -28,8 +27,8 @@ const defaultProps = {
 };
 
 const actionBuilder = (visible, latest) => [
-  visible && <span>Comment published to Minespace</span>,
   !latest && <span>Comment refers to a previous submission</span>,
+  visible && <span>Comment published to Minespace</span>,
 ];
 
 export class ReportComments extends Component {
@@ -65,24 +64,24 @@ export class ReportComments extends Component {
   }
 
   render() {
-    return [
-      <Divider orientation="left">
-        <h5>Comments</h5>
-      </Divider>,
-      <CommentPanel
-        renderAdd
-        onSubmit={this.handleAddComment}
-        loading={this.state.loading}
-        onRemove={this.handleRemoveComment}
-        comments={this.props.mineReportComments.map((comment) => ({
-          key: comment.mine_report_comment_guid,
-          author: comment.comment_user,
-          content: comment.report_comment,
-          actions: actionBuilder(comment.comment_visibility_ind, comment.from_latest_submission),
-          datetime: formatDateTime(comment.comment_datetime),
-        }))}
-      />,
-    ];
+    return (
+      <React.Fragment>
+        <FormItemLabel underline>Comments</FormItemLabel>
+        <CommentPanel
+          renderAdd
+          onSubmit={this.handleAddComment}
+          loading={this.state.loading}
+          onRemove={this.handleRemoveComment}
+          comments={this.props.mineReportComments.map((comment) => ({
+            key: comment.mine_report_comment_guid,
+            author: comment.comment_user,
+            content: comment.report_comment,
+            actions: actionBuilder(comment.comment_visibility_ind, comment.from_latest_submission),
+            datetime: comment.comment_datetime,
+          }))}
+        />
+      </React.Fragment>
+    );
   }
 }
 

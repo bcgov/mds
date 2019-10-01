@@ -22,6 +22,7 @@ const initialState = {
   varianceStatusOptions: [],
   varianceDocumentCategoryOptions: [],
   mineReportDefinitionOptions: [],
+  mineReportStatusOptions: [],
 };
 
 const staticContentReducer = (state = initialState, action) => {
@@ -106,6 +107,11 @@ const staticContentReducer = (state = initialState, action) => {
         ...state,
         mineReportDefinitionOptions: action.payload.records,
       };
+    case actionTypes.STORE_MINE_REPORT_STATUS_OPTIONS:
+      return {
+        ...state,
+        mineReportStatusOptions: action.payload.records,
+      };
     default:
       return state;
   }
@@ -133,5 +139,6 @@ export const getVarianceDocumentCategoryOptions = (state) =>
   state[STATIC_CONTENT].varianceDocumentCategoryOptions;
 export const getMineReportDefinitionOptions = (state) =>
   state[STATIC_CONTENT].mineReportDefinitionOptions;
+export const getMineReportStatusOptions = (state) => state[STATIC_CONTENT].mineReportStatusOptions;
 
 export default staticContentReducer;

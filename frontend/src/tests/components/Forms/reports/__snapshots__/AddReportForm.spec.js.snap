@@ -64,7 +64,9 @@ exports[`AddReportForm renders properly 1`] = `
           size="large"
           split={true}
         >
-          <Item />
+          <Item
+            key="1"
+          />
         </List>
       </FormItem>
       <FormItem
@@ -158,6 +160,7 @@ exports[`AddReportForm renders properly 1`] = `
     <Button
       block={false}
       className="full-mobile"
+      disabled={false}
       ghost={false}
       htmlType="submit"
       loading={false}

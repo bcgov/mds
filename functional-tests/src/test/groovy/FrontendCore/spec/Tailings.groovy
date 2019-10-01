@@ -78,7 +78,7 @@ class Tailings extends GebReportingSpec {
         waitFor(){ file.exists() && file.length() }
         String lineString = file.getText('UTF-8')
         file.delete()
-        then: "The doc upload complete message is shown"
+        then: "The document is successfully downloaded"
         assert lineString == Const.TEST_FILE_CONTENT
     }
 
