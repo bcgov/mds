@@ -1,34 +1,31 @@
-from decimal import Decimal
+#library imports
 import uuid
+from decimal import Decimal
 from datetime import datetime
-
 from flask import request, current_app
 from flask_restplus import Resource, reqparse, inputs
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
 from werkzeug.exceptions import BadRequest, NotFound
 
-from ...status.models.mine_status import MineStatus
-from ...status.models.mine_status_xref import MineStatusXref
-
-from ..models.mine_type import MineType
-from ..models.mine_type_detail import MineTypeDetail
-
-from .mine_map import MineMapResource
-
-from ..models.mine import Mine
-from ....utils.random import generate_mine_no
+#app imports
 from app.extensions import api, cache, db
-from ....utils.access_decorators import requires_role_mine_edit, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
-from ....utils.resources_mixins import UserMixin
-from ....constants import MINE_MAP_CACHE
+from app.api.utils.random import generate_mine_no
+from app.api.utils.access_decorators import requires_role_mine_edit, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
+from app.api.utils.resources_mixins import UserMixin
+from app.api.constants import MINE_MAP_CACHE
 
-from app.api.mines.mine_api_models import MINE_LIST_MODEL, MINE_MODEL
-
-# FIXME: Model import from outside of its namespace
-# This breaks micro-service architecture and is done
-# for search performance until search can be refactored
+#namespace imports
+from app.api.mines.response_models import MINE_LIST_MODEL, MINE_MODEL
 from app.api.mines.permits.permit.models.permit import Permit
 
+from app.api.mines.mine.models.mine import Mine
+from app.api.mines.mine.models.mine_type import MineType
+from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
+
+from app.api.mines.status.models.mine_status import MineStatus
+from app.api.mines.status.models.mine_status_xref import MineStatusXref
+
+from .mine_map import MineMapResource
 
 class MineListResource(Resource, UserMixin):
     parser = reqparse.RequestParser()

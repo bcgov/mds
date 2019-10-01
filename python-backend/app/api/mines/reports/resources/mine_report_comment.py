@@ -14,7 +14,7 @@ from app.api.mines.reports.models.mine_report import MineReport
 from app.api.mines.reports.models.mine_report_submission import MineReportSubmission
 from app.api.mines.reports.models.mine_report_comment import MineReportComment
 
-from app.api.mines.mine_api_models import MINE_REPORT_COMMENT_MODEL
+from app.api.mines.response_models import MINE_REPORT_COMMENT_MODEL
 
 
 class MineReportCommentListResource(Resource, UserMixin):

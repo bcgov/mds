@@ -8,7 +8,7 @@ from sqlalchemy.orm import validates
 from app.extensions import db
 
 from .variance_application_status_code import VarianceApplicationStatusCode
-from ...utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import AuditMixin, Base
 from app.api.variances.models.variance_document_xref import VarianceDocumentXref
 
 INVALID_GUID = 'Invalid guid.'

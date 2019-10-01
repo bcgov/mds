@@ -15,13 +15,13 @@ from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
 from app.api.mines.reports.models.mine_report_category_xref import MineReportCategoryXref
 from app.api.mines.reports.models.mine_report_document_xref import MineReportDocumentXref
-from app.api.mines.documents.mines.models.mine_document import MineDocument
+from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.mines.reports.models.mine_report_submission_status_code import MineReportSubmissionStatusCode
 from app.api.mines.reports.models.mine_report_category import MineReportCategory
 from app.api.mines.reports.models.mine_report_due_date_type import MineReportDueDateType
 from app.api.mines.reports.models.mine_report_definition_compliance_article_xref import MineReportDefinitionComplianceArticleXref
 from app.api.utils.custom_reqparser import CustomReqparser
-from ...mine_api_models import MINE_REPORT_MODEL
+from app.api.mines.response_models import MINE_REPORT_MODEL
 
 
 class MineReportListResource(Resource, UserMixin):

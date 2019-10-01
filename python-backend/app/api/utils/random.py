@@ -5,7 +5,7 @@ import string
 import names
 
 from datetime import datetime
-from ..mines.mine.models.mine import Mine
+from app.api.mines.mine.models.mine import Mine
 
 VOWELS = "aeiou"
 CONSONANTS = "".join(set(string.ascii_lowercase) - set(VOWELS))

@@ -11,7 +11,7 @@ from .idir_user_detail import IdirUserDetail
 from .idir_membership import IdirMembership
 from .idir_membership_xref import IdirMembershipXref
 
-from ....utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import AuditMixin, Base
 
 
 class CoreUser(AuditMixin, Base):

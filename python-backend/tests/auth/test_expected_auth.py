@@ -2,9 +2,9 @@ import pytest
 from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, EDIT_REPORT
 
 from app.api.download_token.resources.download_token import DownloadTokenResource
-from app.api.mines.documents.mines.resources.mine_document_resource import MineDocumentListResource
+from app.api.mines.documents.resources.mine_document_resource import MineDocumentListResource
 from app.api.mines.compliance.resources.compliance import MineComplianceSummaryResource
-from app.api.mines.compliance.resources.compliance_article import ComplianceArticleResource
+from app.api.compliance.resources.compliance_article import ComplianceArticleResource
 from app.api.mines.mine.resources.mine_commodity_code import MineCommodityCodeResource
 from app.api.mines.mine.resources.mine_disturbance_code import MineDisturbanceCodeResource
 from app.api.mines.mine.resources.mine_tenure_type_code import MineTenureTypeCodeResource
@@ -16,7 +16,7 @@ from app.api.mines.variances.resources.variance_list import MineVarianceListReso
 from app.api.mines.variances.resources.variance_document_upload import MineVarianceDocumentUploadResource
 from app.api.mines.variances.resources.variance_uploaded_documents import MineVarianceUploadedDocumentsResource
 from app.api.mines.region.resources.region import MineRegionResource
-from app.api.mines.status.resources.status import MineStatusResource
+from app.api.mines.status.resources.status import MineStatusXrefListResource
 from app.api.mines.tailings.resources.tailings import MineTailingsStorageFacilityListResource
 from app.api.parties.party_appt.resources.mine_party_appt_resource import MinePartyApptResource
 from app.api.parties.party_appt.resources.mine_party_appt_type_resource import MinePartyApptTypeResource
@@ -25,8 +25,9 @@ from app.api.parties.party.resources.party_list_resource import PartyListResourc
 from app.api.mines.permits.permit.resources.permit import PermitResource, PermitListResource
 from app.api.mines.permits.permit_amendment.resources.permit_amendment import PermitAmendmentResource, PermitAmendmentListResource
 from app.api.mines.permits.permit_amendment.resources.permit_amendment_document import PermitAmendmentDocumentResource, PermitAmendmentDocumentListResource
-from app.api.users.minespace.resources.minespace_user import MinespaceUserResource
-from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserMineResource
+from app.api.mines.permits.permit.resources.permit_document_upload import PermitDocumentUploadInitializationResource
+from app.api.users.minespace.resources.minespace_user import MinespaceUserResource, MinespaceUserListResource
+from app.api.users.minespace.resources.minespace_user_mine import MinespaceUserMineResource, MinespaceUserMineListResource
 from app.api.search.search.resources.search import SearchResource, SearchOptionsResource
 from app.api.search.search.resources.simple_search import SimpleSearchResource
 from app.api.mines.reports.resources.mine_reports import MineReportResource, MineReportListResource
@@ -56,7 +57,7 @@ from app.api.mines.reports.resources.mine_reports import MineReportResource, Min
      (MineReportResource, "put", [EDIT_REPORT, MINESPACE_PROPONENT]),
      (MineReportListResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]), 
      (MineReportListResource, "post", [EDIT_REPORT]),
-     (MineStatusResource, "get", [VIEW_ALL]),
+     (MineStatusXrefListResource, "get", [VIEW_ALL]),
      (MineTailingsStorageFacilityListResource, "get", [VIEW_ALL]),
      (MineTailingsStorageFacilityListResource, "post", [MINE_EDIT]),
      (MineTenureTypeCodeResource, "get", [VIEW_ALL]),
@@ -83,16 +84,17 @@ from app.api.mines.reports.resources.mine_reports import MineReportResource, Min
      (PermitAmendmentListResource, "post", [EDIT_PERMIT]),
      (PermitAmendmentResource, "put", [EDIT_PERMIT]),
      (PermitAmendmentResource, "delete", [MINE_ADMIN]),
-     (PermitAmendmentDocumentListResource, "post", [EDIT_PERMIT]),
+     (PermitDocumentUploadInitializationResource, "post", [EDIT_PERMIT]),
      (PermitAmendmentDocumentListResource, "put", [EDIT_PERMIT]),
      (PermitAmendmentDocumentResource, "delete", [EDIT_PERMIT]),
      (SearchResource, "get", [VIEW_ALL]),
      (SearchOptionsResource, "get", [VIEW_ALL]),
      (SimpleSearchResource, "get", [VIEW_ALL]),
+     (MinespaceUserListResource, 'get', [MINE_ADMIN]),
+     (MinespaceUserListResource, 'post', [MINE_ADMIN]), 
      (MinespaceUserResource, 'get', [MINE_ADMIN]),
-     (MinespaceUserResource, 'post', [MINE_ADMIN]), 
      (MinespaceUserResource, 'delete', [MINE_ADMIN]),
-     (MinespaceUserMineResource, 'post', [MINE_ADMIN]),
+     (MinespaceUserMineListResource, 'post', [MINE_ADMIN]),
      (MinespaceUserMineResource, 'delete', [MINE_ADMIN])])
 def test_endpoint_auth(resource, method, expected_roles):
     endpoint = getattr(resource, method, None)
