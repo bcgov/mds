@@ -10,7 +10,6 @@ from sqlalchemy.orm import validates
 from app.extensions import db
 from werkzeug.exceptions import BadRequest
 
-from .party_address import PartyAddressXref
 from app.api.utils.models_mixins import AuditMixin, Base
 
 
@@ -29,7 +28,7 @@ class Party(AuditMixin, Base):
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     mine_party_appt = db.relationship('MinePartyAppointment', lazy='select')
-    address = db.relationship('Address', lazy='select', secondary='party_address_xref')
+    address = db.relationship('Address', lazy='select')
     job_title = db.Column(db.String, nullable=True)
     postnominal_letters = db.Column(db.String, nullable=True)
     idir_username = db.Column(db.String, nullable=True)
