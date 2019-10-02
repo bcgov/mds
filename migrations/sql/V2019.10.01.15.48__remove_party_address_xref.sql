@@ -1,8 +1,8 @@
-ALTER TABLE party ADD COLUMN address_id integer;
-ALTER TABLE party ADD CONSTRAINT party_address_id_fkey
-    FOREIGN KEY (address_id)
-    REFERENCES address(address_id);
+ALTER TABLE address ADD COLUMN party_guid integer;
+ALTER TABLE address ADD CONSTRAINT address_party_guid_fkey
+    FOREIGN KEY (party_guid)
+    REFERENCES party(party_guid);
 
-UPDATE party party_table SET address_id = (select pax.address_id from party p inner join party_address_xref pax p.party_guid = pax.party_guid where p.party_id = party_table.party_id);
+UPDATE address address_table SET party_guid = (select pax.party_guid from address a inner join party_address_xref pax on a.address_id = pax.address_id where a.address_id = address_table.address_id LIMIT 1);
 
-DROP TABLE party_address_xref;
+DROP TABLE party_address_xref;  
