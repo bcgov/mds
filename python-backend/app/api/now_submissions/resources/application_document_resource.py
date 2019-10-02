@@ -8,7 +8,7 @@ from app.extensions import api, cache
 from app.api.now_submissions.models.application import Application
 from app.api.now_submissions.response_models import APPLICATION
 from app.api.utils.access_decorators import requires_role_view_all
-from app.api.utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.utils.resources_mixins import UserMixin 
 
 from app.api.services.nros_download_service import NROSDownloadService
 from app.api.services.vfcbc_download_service import VFCBCDownloadService
@@ -20,7 +20,7 @@ def DOWNLOAD_TOKEN(token_guid):
     return f'application-document:download-token:{token_guid}'
 
 
-class ApplicationDocumentTokenResource(Resource, UserMixin, ErrorMixin):
+class ApplicationDocumentTokenResource(Resource, UserMixin ):
     @api.doc(description='Issues a one-time token for access to a document without auth headers.')
     @api.marshal_with(DOWNLOAD_TOKEN_MODEL, code=200)
     @requires_role_view_all
@@ -53,7 +53,7 @@ class ApplicationDocumentTokenResource(Resource, UserMixin, ErrorMixin):
         return {'token_guid': token_guid}
 
 
-class ApplicationDocumentResource(Resource, UserMixin, ErrorMixin):
+class ApplicationDocumentResource(Resource, UserMixin ):
     @api.doc(
         description='Fetch an application document by id',
         params={'token': 'A one-time token issued for downloading the file.'})
