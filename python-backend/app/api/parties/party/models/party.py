@@ -15,7 +15,7 @@ from app.api.utils.models_mixins import AuditMixin, Base
 
 class Party(AuditMixin, Base):
     __tablename__ = 'party'
-    party_guid = db.Column(UUID(as_uuid=True), primary_key=True)
+    party_guid = db.Column(UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     first_name = db.Column(db.String, nullable=True)
     middle_name = db.Column(db.String, nullable=True)
     party_name = db.Column(db.String, nullable=False)
@@ -134,7 +134,6 @@ class Party(AuditMixin, Base):
             add_to_session=True):
         party = cls(
             # Required fields
-            party_guid=uuid.uuid4(),
             party_name=party_name,
             phone_no=phone_no,
             party_type_code=party_type_code,

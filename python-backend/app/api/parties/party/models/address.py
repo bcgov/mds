@@ -20,7 +20,7 @@ class Address(Base, AuditMixin):
     post_code = db.Column(db.String, nullable=True)
     address_type_code = db.Column(db.String, nullable=False, server_default=FetchedValue())
 
-    party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
+    party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=False)
     party = db.relationship('Party', lazy='joined')
 
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
