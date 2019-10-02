@@ -8,10 +8,10 @@ from flask_restplus import Resource, reqparse, inputs, fields
 
 from app.api.mines.location.models.mine_map_view_location import MineMapViewLocation
 from app.extensions import api, cache, db
-from app.api.mines.mine_api_models import BASIC_MINE_LIST
-from ....utils.access_decorators import requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
-from ....utils.resources_mixins import UserMixin
-from ....constants import MINE_MAP_CACHE, TIMEOUT_12_HOURS
+from app.api.mines.response_models import BASIC_MINE_LIST
+from app.api.utils.access_decorators import requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
+from app.api.utils.resources_mixins import UserMixin
+from app.api.constants import MINE_MAP_CACHE, TIMEOUT_12_HOURS
 
 # FIXME: Model import from outside of its namespace
 # This breaks micro-service architecture and is done
@@ -66,9 +66,8 @@ class MineMapResource(Resource, UserMixin):
         last_modified = datetime.utcnow()
 
         # jsonify then store in cache
-        map_result = json.dumps({
-            'mines': list((map(lambda x: x.json_for_map(), records)))
-        }, separators=(',', ':'))
+        map_result = json.dumps({'mines': list((map(lambda x: x.json_for_map(), records)))},
+                                separators=(',', ':'))
 
         cache.set(MINE_MAP_CACHE, map_result, timeout=TIMEOUT_12_HOURS)
         cache.set(MINE_MAP_CACHE + '_LAST_MODIFIED', last_modified, timeout=TIMEOUT_12_HOURS)

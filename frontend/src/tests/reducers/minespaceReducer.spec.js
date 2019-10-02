@@ -26,7 +26,7 @@ describe("mineReducer", () => {
     const result = minespaceReducer(
       undefined,
       storeMinespaceUserList({
-        users: {
+        records: {
           email: "test@email.com",
           keycloak_guid: "",
           user_id: "1",

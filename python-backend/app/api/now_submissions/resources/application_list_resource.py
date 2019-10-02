@@ -10,14 +10,14 @@ from app.api.mines.region.models.region import MineRegionCode
 from app.api.now_submissions.models.application import Application
 from app.api.now_submissions.response_models import PAGINATED_APPLICATION_LIST
 from app.api.utils.access_decorators import requires_role_view_all
-from app.api.utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.utils.resources_mixins import UserMixin 
 
 
 PAGE_DEFAULT = 1
 PER_PAGE_DEFAULT = 25
 
 
-class ApplicationListResource(Resource, UserMixin, ErrorMixin):
+class ApplicationListResource(Resource, UserMixin ):
     @api.doc(
         description='Get a list of applications. Order: receiveddate DESC',
         params={

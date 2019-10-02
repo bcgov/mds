@@ -93,7 +93,7 @@ export const fetchPermitStatusOptions = () => (dispatch) => {
 export const fetchApplicationStatusOptions = () => (dispatch) => {
   dispatch(request(reducerTypes.GET_APPLICATION_STATUS_OPTIONS));
   return CustomAxios({ selector: getApplicationStatusOptions })
-    .get(`${ENVIRONMENT.apiUrl + API.APPLICATIONS}/status-codes`, createRequestHeader())
+    .get(`${ENVIRONMENT.apiUrl}${API.APPLICATIONS_STATUSCODES}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_APPLICATION_STATUS_OPTIONS));
       dispatch(staticContentActions.storeApplicationStatusOptions(response.data));

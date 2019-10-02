@@ -16,7 +16,6 @@ export const PERMITTEE = "/permits/permittees";
 export const MINE_NAME_LIST = (params = {}) => `/mines/search?${queryString.stringify(params)}`;
 export const MINE_STATUS = "/mines/status";
 export const MINE_REGION = "/mines/region";
-export const MINE_COMPLIANCE_INFO = "/mines/compliance";
 export const MINE_COMPLIANCE_SUMMARY = (mine_guid) => `/mines/${mine_guid}/compliance/summary`;
 export const MINE_TSF = (mine_guid) => `/mines/${mine_guid}/tailings`;
 export const DISTURBANCE_CODES = "/mines/disturbance-codes";
@@ -48,7 +47,8 @@ export const PERMITAMENDMENT = (mineGuid, permitGuid, permitAmendmentGuid) =>
 export const PERMITAMENDMENTDOCUMENT = (mineGuid, permitGuid, permitAmendmentGuid, documentGuid) =>
   `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}/documents/${documentGuid}`;
 
-export const APPLICATIONS = "/applications";
+export const APPLICATIONS_STATUSCODES = `/mines/applications/status-codes`;
+export const MINE_APPLICATIONS = (mine_guid) => `/mines/${mine_guid}/applications`;
 
 // Search
 export const SEARCH = (params) => (params ? `/search?${queryString.stringify(params)}` : "/search");
@@ -59,7 +59,7 @@ export const SIMPLE_SEARCH = "/search/simple";
 export const DASHBOARD = (dashboardId) => `/reporting/dashboard/${dashboardId}`;
 
 // Variances
-export const COMPLIANCE_CODES = "/mines/compliance/codes";
+export const COMPLIANCE_CODES = "/compliance/codes";
 export const MINE_VARIANCES = (mineGuid) => `/mines/${mineGuid}/variances`;
 export const VARIANCES = (params) => {
   const {

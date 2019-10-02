@@ -8,8 +8,8 @@ import factory.fuzzy
 
 from app.extensions import db
 from tests.status_code_gen import *
-from app.api.applications.models.application import Application
-from app.api.mines.documents.mines.models.mine_document import MineDocument
+from app.api.mines.applications.models.application import Application
+from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.mine.models.mine_type import MineType
 from app.api.mines.mine.models.mine_type_detail import MineTypeDetail

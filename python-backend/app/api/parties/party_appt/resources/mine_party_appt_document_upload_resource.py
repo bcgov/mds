@@ -10,7 +10,7 @@ from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.utils.access_decorators import (requires_any_of, EDIT_PARTY, MINESPACE_PROPONENT)
 
 from app.api.mines.mine.models.mine import Mine
-from app.api.mines.documents.mines.models.mine_document import MineDocument
+from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.parties.response_models import MINE_PARTY_APPT
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.parties.party_appt.models.mine_party_appt_document_xref import MinePartyApptDocumentXref

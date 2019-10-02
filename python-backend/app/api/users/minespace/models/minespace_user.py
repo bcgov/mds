@@ -5,8 +5,8 @@ from sqlalchemy.orm import validates
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 
-from ....utils.models_mixins import AuditMixin, Base
-from ..models.minespace_user_mine import MinespaceUserMine
+from app.api.utils.models_mixins import AuditMixin, Base
+from app.api.users.minespace.models.minespace_user_mine import MinespaceUserMine
 
 
 class MinespaceUser(Base):
@@ -18,14 +18,6 @@ class MinespaceUser(Base):
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     mines = db.relationship('MinespaceUserMine', backref='user', lazy='joined')
-
-    def json(self):
-        return {
-            'user_id': str(self.user_id),
-            'keycloak_guid': str(self.keycloak_guid or ''),
-            'email': self.email,
-            'mines': [str(x.mine_guid) for x in self.mines]
-        }
 
     @classmethod
     def get_all(cls):

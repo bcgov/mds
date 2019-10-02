@@ -3,8 +3,9 @@ from flask_restplus import Resource
 from app.extensions import api
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.access_decorators import requires_role_view_all
-from ...mine_api_models import MINE_REPORT_SUBMISSION_STATUS
+
 from app.api.mines.reports.models.mine_report_submission_status_code import MineReportSubmissionStatusCode
+from app.api.mines.response_models import MINE_REPORT_SUBMISSION_STATUS
 
 
 class MineReportSubmissionStatusResource(Resource, UserMixin):

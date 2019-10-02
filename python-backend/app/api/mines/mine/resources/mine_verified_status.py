@@ -9,7 +9,7 @@ from app.api.utils.include.user_info import User
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_edit, requires_role_mine_admin
 from app.api.utils.resources_mixins import UserMixin
 from app.api.mines.mine.models.mine_verified_status import MineVerifiedStatus
-from app.api.mines.mine_api_models import MINE_VERIFIED_MODEL
+from app.api.mines.response_models import MINE_VERIFIED_MODEL
 
 
 class MineVerifiedStatusListResource(Resource, UserMixin):

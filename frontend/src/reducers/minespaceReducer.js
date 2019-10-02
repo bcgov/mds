@@ -11,7 +11,7 @@ const minespaceReducer = (state = initialState, action) => {
     case actionTypes.STORE_MINESPACE_USERS:
       return {
         ...state,
-        minespaceUsers: action.payload.users,
+        minespaceUsers: action.payload.records,
       };
     case actionTypes.STORE_MINESPACE_USER_MINES:
       return {

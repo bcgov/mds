@@ -6,7 +6,7 @@ from sqlalchemy.orm import validates
 
 from app.extensions import db
 
-from ....utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import AuditMixin, Base
 
 
 class MineRegionCode(AuditMixin, Base):
@@ -14,8 +14,8 @@ class MineRegionCode(AuditMixin, Base):
     mine_region_code = db.Column(db.String(2), nullable=False, primary_key=True)
     description = db.Column(db.String(100), nullable=False)
     display_order = db.Column(db.Integer, nullable=False)
-    effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    expiry_date = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
+    effective_date = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
+    expiry_date = db.Column(db.DateTime)
 
     def __repr__(self):
         return '<MineRegionCode %r>' % self.mine_region_code

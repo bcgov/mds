@@ -141,7 +141,6 @@ describe("`fetchMineCommodityOptions` action creator", () => {
   });
 });
 
-
 describe("`fetchProvinceCodes` action creator", () => {
   const url = ENVIRONMENT.apiUrl + API.PROVINCE_CODES;
   it("Request successful, dispatches `success` with correct response", () => {
@@ -164,7 +163,7 @@ describe("`fetchProvinceCodes` action creator", () => {
 });
 
 describe("`fetchApplicationStatusOptions` action creator", () => {
-  const url = `${ENVIRONMENT.apiUrl + API.APPLICATIONS}/status-codes`;
+  const url = `${ENVIRONMENT.apiUrl + API.APPLICATIONS_STATUSCODES}`;
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);

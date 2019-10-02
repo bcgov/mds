@@ -1,22 +1,24 @@
-from flask_restplus import Resource
 from flask import request
+from flask_restplus import Resource
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
 from sqlalchemy import desc, cast, NUMERIC, func, or_
+
 from app.extensions import api
-from ...mines.mine.models.mine import Mine
-from ..models.variance import Variance
-from ..models.variance_application_status_code import VarianceApplicationStatusCode
-from app.api.mines.compliance.models.compliance_article import ComplianceArticle
+from app.api.utils.access_decorators import requires_any_of, VIEW_ALL
+from app.api.utils.resources_mixins import UserMixin 
+
+from app.api.compliance.models.compliance_article import ComplianceArticle
+from app.api.mines.mine.models.mine import Mine
 from app.api.parties.party.models.party import Party
-from ..response_models import PAGINATED_VARIANCE_LIST
-from ...utils.access_decorators import requires_any_of, VIEW_ALL
-from ...utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.variances.models.variance import Variance
+from app.api.variances.models.variance_application_status_code import VarianceApplicationStatusCode
+from app.api.variances.response_models import PAGINATED_VARIANCE_LIST
 
 PAGE_DEFAULT = 1
 PER_PAGE_DEFAULT = 25
 
 
-class VarianceResource(Resource, UserMixin, ErrorMixin):
+class VarianceResource(Resource, UserMixin ):
     @api.doc(
         description='Get a list of variances. Order: received_date DESC',
         params={
@@ -24,21 +26,24 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             'per_page': f'The number of records to return per page. Default: {PER_PAGE_DEFAULT}',
             'variance_application_status_code':
             'Comma-separated list of code statuses to include in results. Default: All status codes.',
-            'compliance_codes':'Comma-separated list of compliance codes to be filtered. Default: All compliance codes',
+            'compliance_codes':
+            'Comma-separated list of compliance codes to be filtered. Default: All compliance codes',
             'major': 'boolean indicating if variance is from a major or regional mine',
-            'region': 'Comma-separated list of regions the mines associated with the variances are located in',
+            'region':
+            'Comma-separated list of regions the mines associated with the variances are located in',
             'sort_field': 'The field the returned results will be ordered by',
             'sort_dir': 'The direction by which the sort field is ordered',
             'issue_date_before': 'Latest possible issue date returned (inclusive)',
             'issue_date_after': 'Earliest possible issue date returned (inclusive)',
             'expiry_date_before': 'Latest possible expiry date returned (inclusive)',
-            'expiry_date_after': 'Earliest possible expiry date returned (inclusive)'})
+            'expiry_date_after': 'Earliest possible expiry date returned (inclusive)'
+        })
     @requires_any_of([VIEW_ALL])
     @api.marshal_with(PAGINATED_VARIANCE_LIST, code=200)
     def get(self):
         args = {
             "page_number": request.args.get('page', PAGE_DEFAULT, type=int),
-            "page_size":request.args.get('per_page', PER_PAGE_DEFAULT, type=int),
+            "page_size": request.args.get('per_page', PER_PAGE_DEFAULT, type=int),
             "application_status": request.args.get('variance_application_status_code', type=str),
             "compliance_codes": request.args.get('compliance_code', type=str),
             'major': request.args.get('major', type=str),
@@ -66,12 +71,7 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
 
     @classmethod
     def _build_filter(cls, model, field, op, argfield):
-        return {
-            'model': model,
-            'field': field,
-            'op': op,
-            'value': argfield
-        }
+        return {'model': model, 'field': field, 'op': op, 'value': argfield}
 
     def _apply_filters_and_pagination(self, args):
         sort_models = {
@@ -83,20 +83,22 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             'variance_application_status_code': 'Variance'
         }
 
-        status_filter_values = list(map(
-            lambda x: x.variance_application_status_code,
-            VarianceApplicationStatusCode.active()))
+        status_filter_values = list(
+            map(lambda x: x.variance_application_status_code,
+                VarianceApplicationStatusCode.active()))
 
         conditions = []
         if args["application_status"] is not None:
             status_filter_values = args["application_status"].split(',')
-            conditions.append(self._build_filter('Variance', 'variance_application_status_code', 'in',  status_filter_values))
-
+            conditions.append(
+                self._build_filter('Variance', 'variance_application_status_code', 'in',
+                                   status_filter_values))
 
         if args["compliance_codes"] is not None:
             compliance_codes_values = args["compliance_codes"].split(',')
             conditions.append(
-                self._build_filter('Variance', 'compliance_article_id', 'in', compliance_codes_values))
+                self._build_filter('Variance', 'compliance_article_id', 'in',
+                                   compliance_codes_values))
 
         if args["expiry_date_before"] is not None:
             conditions.append(
@@ -115,12 +117,12 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
                 self._build_filter('Variance', 'issue_date', '>=', args["issue_date_after"]))
 
         if args["major"] is not None:
-            conditions.append(
-                self._build_filter('Mine', 'major_mine_ind', '==', args["major"]))
+            conditions.append(self._build_filter('Mine', 'major_mine_ind', '==', args["major"]))
 
         if args["search_terms"] is not None:
             search_conditions = [
-                self._build_filter('Mine', 'mine_name', 'ilike', '%{}%'.format(args["search_terms"])),
+                self._build_filter('Mine', 'mine_name', 'ilike',
+                                   '%{}%'.format(args["search_terms"])),
                 self._build_filter('Mine', 'mine_no', 'ilike', '%{}%'.format(args["search_terms"]))
             ]
             conditions.append({'or': search_conditions})
@@ -136,27 +138,33 @@ class VarianceResource(Resource, UserMixin, ErrorMixin):
             # The compliance sorting must be custom due to the code being stored in multiple columns.
             if args['sort_field'] == "compliance_article_id":
                 if args['sort_dir'] == 'desc':
-                    filtered_query = apply_filters(query.order_by(
-                        desc(cast(ComplianceArticle.section, NUMERIC)),
-                        desc(cast(ComplianceArticle.sub_section, NUMERIC)),
-                        desc(cast(ComplianceArticle.paragraph, NUMERIC)),
-                        desc(ComplianceArticle.sub_paragraph)), conditions)
+                    filtered_query = apply_filters(
+                        query.order_by(desc(cast(ComplianceArticle.section, NUMERIC)),
+                                       desc(cast(ComplianceArticle.sub_section, NUMERIC)),
+                                       desc(cast(ComplianceArticle.paragraph, NUMERIC)),
+                                       desc(ComplianceArticle.sub_paragraph)), conditions)
                 elif args['sort_dir'] == 'asc':
-                    filtered_query = apply_filters(query.order_by(
-                        cast(ComplianceArticle.section, NUMERIC),
-                        cast(ComplianceArticle.sub_section, NUMERIC),
-                        cast(ComplianceArticle.paragraph, NUMERIC),
-                        ComplianceArticle.sub_paragraph), conditions)
+                    filtered_query = apply_filters(
+                        query.order_by(cast(ComplianceArticle.section, NUMERIC),
+                                       cast(ComplianceArticle.sub_section, NUMERIC),
+                                       cast(ComplianceArticle.paragraph, NUMERIC),
+                                       ComplianceArticle.sub_paragraph), conditions)
             elif args['sort_field'] == "lead_inspector":
                 query = query.outerjoin(Party, Variance.inspector_party_guid == Party.party_guid)
                 filtered_query = apply_filters(query, conditions)
-                sort_criteria = [{'model': 'Party',
-                                  'field': 'party_name', 'direction': args['sort_dir']}]
+                sort_criteria = [{
+                    'model': 'Party',
+                    'field': 'party_name',
+                    'direction': args['sort_dir']
+                }]
                 filtered_query = apply_sort(filtered_query, sort_criteria)
             else:
                 filtered_query = apply_filters(query, conditions)
-                sort_criteria = [{'model': sort_models[args['sort_field']],
-                                  'field': args['sort_field'], 'direction': args['sort_dir']}]
+                sort_criteria = [{
+                    'model': sort_models[args['sort_field']],
+                    'field': args['sort_field'],
+                    'direction': args['sort_dir']
+                }]
                 filtered_query = apply_sort(filtered_query, sort_criteria)
         else:
             filtered_query = apply_filters(query, conditions)
