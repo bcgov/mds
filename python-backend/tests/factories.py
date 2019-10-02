@@ -400,22 +400,24 @@ class MineReportSubmissionFactory(BaseFactory):
         if not isinstance(extracted, int):
             extracted = 1
 
-        MineReportCommentFactory.create_batch(size=extracted,
-                                              submission=obj,
-                                              **kwargs)
+        MineReportCommentFactory.create_batch(size=extracted, submission=obj, **kwargs)
 
 
 class AddressFactory(BaseFactory):
     class Meta:
         model = Address
+    
+    class Params:
+        party = factory.SubFactory('tests.factories.PartyFactory', person=True)
 
+
+    party_guid = factory.SelfAttribute('party.party_guid')
     address_line_1 = factory.Faker('street_address')
     suite_no = factory.Iterator([None, None, '123', '123'])
     address_line_2 = factory.Iterator([None, 'Apt. 123', None, 'Apt. 123'])
     city = factory.Faker('city')
     sub_division_code = factory.LazyFunction(RandomSubDivisionCode)
     post_code = factory.Faker('bothify', text='?#?#?#', letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ')
-
 
 class PartyFactory(BaseFactory):
     class Meta:
@@ -435,7 +437,6 @@ class PartyFactory(BaseFactory):
             party_type_code='ORG',
         )
 
-    party_guid = factory.LazyFunction(uuid.uuid4)
     first_name = None
     party_name = None
     phone_no = factory.Faker('numerify', text='###-###-####')
@@ -446,7 +447,17 @@ class PartyFactory(BaseFactory):
     party_type_code = None
 
     mine_party_appt = []
-    address = factory.List([factory.SubFactory(AddressFactory) for _ in range(1)])
+    address=[]
+
+    @factory.post_generation
+    def address(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        AddressFactory.create_batch(size=extracted, party=obj,  **kwargs)
 
 
 class PartyBusinessRoleFactory(BaseFactory):
