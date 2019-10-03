@@ -34,6 +34,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                 permit_status_code     character varying(2)  ,
                 --permittee info
                 party_guid             uuid                  ,
+                party_cid           character varying(12) ,
                 party_combo_id         character varying(200),
                 first_name             character varying(100),
                 party_name             character varying(100),
@@ -60,6 +61,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                 permit_status_code     character varying(2)  ,
                 --permittee info
                 party_guid             uuid                  ,
+                party_cid           character varying(12) ,
                 party_combo_id         character varying(200),
                 first_name             character varying(100),
                 party_name             character varying(100),
@@ -186,6 +188,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                 SELECT
                     permittee_list.permit_cid                       ,
                     contact_info.add_dt ::date AS effective_date    ,
+                    company_info.cmp_cd                             ,
                     company_info.cmp_nm  AS permittee_nm            ,
                     company_info.tel_no                             ,
                     company_info.email                              ,
@@ -211,9 +214,13 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                 SELECT
                     permit_list.permit_cid              ,
                     now.str_dt ::date AS effective_date ,
+                    company.cmp_cd                      ,
                     company.cmp_nm AS permittee_nm      ,
                     company.tel_no                      ,
                     company.email                       ,
+                    company.addr1                       ,
+                    company.post_cd                     ,
+                    company.tel_no                      ,
                     '2'::numeric AS source
                 FROM permit_list_no_attached_permittee permit_list
                 INNER JOIN mms.mmsnow now ON
@@ -274,7 +281,8 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                     tel_no          ,
                     email           ,
                     source          ,
-                    concat(permittee_nm,tel_no) AS party_combo_id
+                    party_cid       , 
+                    concat(permittee_nm,tel_no) AS party_combo_id --mms.mmscmp.cmp_nm 
                 FROM permittee_info
             ),
             --New record in MMS that does not exist in MDS ETL table
@@ -283,6 +291,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                     DISTINCT ON (party_combo_id)
                     gen_random_uuid() AS party_guid,
                     party_combo_id  ,
+                    party_cid       ,
                     effective_date  ,
                     permittee_nm    ,
                     tel_no          ,
@@ -295,6 +304,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
             permittee_org AS (
                 SELECT
                     party_combo_id            ,
+                    party_cid                 ,
                     party_guid                ,
                     NULL AS first_name        ,
                     permittee_nm AS party_name,
@@ -310,6 +320,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
             permittee_person AS (
                 SELECT
                     party_combo_id  ,
+                    party_cid       ,
                     party_guid      ,
                     CASE
                         WHEN permittee_nm ~ ','
@@ -344,6 +355,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                 SELECT
                     party_combo_id     ,
                     party_guid         ,
+                    party_cid       ,
                     first_name::varchar,
                     party_name         ,
                     party_type
@@ -393,6 +405,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                     permittee.party_combo_id         ,
                     permittee.source                 ,
                     name_and_type.party_guid         ,
+                    name_and_type.party_cid       ,
                     name_and_type.first_name         ,
                     name_and_type.party_name         ,
                     name_and_type.party_type         ,
@@ -421,6 +434,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                 permit_status_code    ,
                 --permittee info
                 party_guid            ,
+                party_cid          ,
                 party_combo_id        ,
                 first_name            ,
                 party_name            ,
@@ -447,6 +461,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                 permit_info.sta_cd           ,
                 --permittee info
                 permittee_info.party_guid    ,
+                permittee_info.party_cid  ,
                 permittee_info.party_combo_id,
                 permittee_info.first_name    ,
                 permittee_info.party_name    ,
@@ -532,6 +547,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                     permit_status_code    ,
                     --permittee info
                     party_combo_id        ,
+                    party_cid          ,
                     party_guid            ,
                     first_name            ,
                     party_name            ,
@@ -556,6 +572,7 @@ CREATE OR REPLACE FUNCTION transfer_permit_permitee_information() RETURNS void A
                     info.permit_status_code    ,
                     --permittee info
                     info.party_combo_id        ,
+                    info.party_cid              , --mmscmp.cmp_id or mmsccn.cid org v per
                     info.party_guid            ,
                     info.first_name            ,
                     info.party_name            ,
