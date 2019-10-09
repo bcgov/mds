@@ -12,14 +12,14 @@ services:
     volumes:
       - ./backend/:/app/
     depends_on:
-      - nris_database
+      - postgres
     env_file: ./backend/.env
     networks:
       - nris
 
   ####################### NRIS_Postgres Definition #######################
   # Only for Local, openshift will share one db pod for all MDS services
-  nris_database:
+  postgres:
     restart: always
     container_name: nris_postgres
     build:
@@ -28,7 +28,7 @@ services:
     environment:
       - POSTGRES_USER=nris
       - POSTGRES_PASSWORD=VsPJAuMJHu3IVMEv
-      - POSTGRES_DB=nris
+      - POSTGRES_DB=mds
     ports:
       - "5432:5432"
     networks:
