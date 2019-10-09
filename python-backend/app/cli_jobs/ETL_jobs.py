@@ -25,7 +25,7 @@ def run_address_etl():
     print('create addresses for contacts originating from permitee etl')
     #create address where the ETL_PERMIT table has a party but that party doesn't have an address
     db.session.execute(
-        'insert into address (party_guid, address_line_1, city, sub_division_code, post_code, create_user, update_user) select DISTINCT p.party_guid, addr1, city, prov, m.post_cd, \'mms-migration\',\'mms-migration\' from mms.mmscmp m right join ETL_PERMIT etl on m.cmp_nm||m.tel_no = etl.party_combo_id inner join party p on p.party_guid= etl.party_guid where addr1 is not null or city is not null or post_cd is not null'
+        'insert into address (party_guid, address_line_1, city, sub_division_code, post_code, create_user, update_user) select DISTINCT p.party_guid, addr1, city, prov, m.post_cd, \'mms-migration\',\'mms-migration\' from mms.mmscmp m right join ETL_PERMIT etl on concat(m.cmp_nm,m.tel_no) = etl.party_combo_id inner join party p on p.party_guid= etl.party_guid where addr1 is not null or city is not null or post_cd is not null'
     )
 
     print('create addresses for contacts originating from mine manager etl')
