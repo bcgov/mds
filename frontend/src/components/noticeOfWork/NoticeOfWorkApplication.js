@@ -38,6 +38,10 @@ export class NoticeOfWorkApplication extends Component {
         <div className="inline-flex between">
           <div>
             <h1>NoW Number: {this.props.noticeOfWork.trackingnumber || Strings.EMPTY_FIELD}</h1>
+            {this.props.noticeOfWork.originating_system && (
+              <h4>{`Originating System: ${this.props.noticeOfWork.originating_system}`}</h4>
+            )}
+            <div className="padding-md--top" />
             <p>
               The information below is a subset of all available data. Open the PDF for a
               comprehensive view.
