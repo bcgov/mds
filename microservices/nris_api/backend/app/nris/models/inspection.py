@@ -8,6 +8,7 @@ from app.nris.utils.base_model import Base
 from app.nris.models.inspection_status import InspectionStatus
 from app.nris.models.inspected_location import INSPECTED_LOCATION_RESPONSE_MODEL
 from app.nris.models.document import DOCUMENT_RESPONSE_MODEL
+from app.nris.models.attendee import ATTENDEE_RESPONSE_MODEL
 
 INSPECTION_RESPONSE_MODEL = api.model(
     'inspection', {
@@ -26,6 +27,7 @@ INSPECTION_RESPONSE_MODEL = api.model(
         'inspection_preamble': fields.String,
         'inspection_closing': fields.String,
         'officer_notes': fields.String,
+        'attendees': fields.List(fields.Nested(ATTENDEE_RESPONSE_MODEL)),
         'documents': fields.List(fields.Nested(DOCUMENT_RESPONSE_MODEL)),
         'inspected_locations': fields.List(fields.Nested(INSPECTED_LOCATION_RESPONSE_MODEL)),
     })
@@ -47,10 +49,10 @@ class Inspection(Base):
     inspection_type_id = db.Column(db.Integer, db.ForeignKey(
         'inspection_type.inspection_type_id'))
     inspection_type = db.relationship("InspectionType")
-    inspection_type_code = association_proxy('inspection_type', 'inspection_type_code')
+    inspection_type_code = association_proxy(
+        'inspection_type', 'inspection_type_code')
     inspection_from_date = db.Column(db.DateTime)
     inspection_to_date = db.Column(db.DateTime)
-
     business_area = db.Column(db.String(256))
     mine_no = db.Column(db.String(64))
     inspector_idir = db.Column(db.String(256))
@@ -61,6 +63,7 @@ class Inspection(Base):
     documents = db.relationship(
         'Document', lazy='selectin', secondary='inspection_document_xref')
     inspected_locations = db.relationship("InspectedLocation", lazy='joined')
+    attendees = db.relationship('Attendee', lazy='joined')
 
     def __repr__(self):
         return f'<Inspection inspection_id={self.inspection_id} inspection_status_description={self.inspection_status_description}>'
