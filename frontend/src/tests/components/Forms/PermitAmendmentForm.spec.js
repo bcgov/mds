@@ -16,6 +16,7 @@ const setupProps = () => {
   props.submitting = false;
   props.permitStatusOptions = [];
   props.mine_guid = "";
+  props.isMajorMine = true;
 };
 
 beforeEach(() => {
