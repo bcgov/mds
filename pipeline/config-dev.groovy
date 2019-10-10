@@ -308,10 +308,10 @@ environments {
                     replica_max = 1
                 }
                 postgres {
-                    cpu_request = "50m"
-                    cpu_limit = "100m"
+                    cpu_request = "100m"
+                    cpu_limit = "500m"
                     memory_request = "256Mi"
-                    memory_limit = "512Mi"
+                    memory_limit = "2Gi"
                 }
                 redis {
                     cpu_request = "10m"
