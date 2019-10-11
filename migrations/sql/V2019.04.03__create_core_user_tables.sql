@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS idir_membership_xref
 	core_user_id 			int4										NOT NULL,
 	idir_membership_id 		int4										NOT NULL,
 	
-     (core_user_id) REFERENCES core_user(core_user_id) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY (core_user_id) REFERENCES core_user(core_user_id) DEFERRABLE INITIALLY DEFERRED,
     FOREIGN KEY (idir_membership_id) REFERENCES idir_membership(idir_membership_id) DEFERRABLE INITIALLY DEFERRED,
     PRIMARY KEY(core_user_id, idir_membership_id)
 );
