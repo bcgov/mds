@@ -71,7 +71,7 @@ def run_address_etl():
     insert_new_addresses_from_processed_address_variable = r"""
         inserted_rows as (insert into address (party_guid, address_line_1, city, sub_division_code, post_code, create_user, update_user) SELECT pa.party_guid, pa.address_line_1, pa.city, pa.sub_division_code, pa.post_code, pa.create_user, pa.update_user from processed_address pa where
               pa.party_guid not in (select party_guid from address) and
-              (address_line_1 is not null or city is not null or sub_division_code is not null) returning 1)
+              (address_line_1 is not null or city is not null or post_code is not null) returning 1)
               SELECT count(*) from inserted_rows;
         """
 
