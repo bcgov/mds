@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS application_document_xref
     application_document_xref uuid    DEFAULT gen_random_uuid() NOT NULL,
     mine_document_guid                uuid NOT NULL REFERENCES mine_document(mine_document_guid),
 	application_document_type_code    varchar(3) REFERENCES application_document_type(application_document_type_code),
-    application_id                 	  integer NOT NULL REFERENCES application(application_id)
+    permit_application_id                 	  integer NOT NULL REFERENCES permit_application(permit_application_id)
 );
 
 ALTER TABLE application_document_xref OWNER TO mds;
