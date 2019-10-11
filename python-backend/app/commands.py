@@ -77,3 +77,8 @@ def register_commands(app):
     def run_etl():
         from app.cli_jobs import ETL_jobs
         ETL_jobs.run_ETL()
+
+    @app.cli.command()
+    def run_address_etl():
+        from app.cli_jobs import ETL_jobs
+        ETL_jobs.run_address_etl()
