@@ -16,7 +16,6 @@ def run_ETL():
 
 @register_apm()
 def run_address_etl():
-
     processed_permitee_address_table_variable_sql = r"""
     with processed_address AS (
         select DISTINCT
