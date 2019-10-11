@@ -156,10 +156,10 @@ def _parse_nris_element(input):
 
         related_inspector = inspection_data.find('related_Inspctrs')
         if related_inspector is not None:
-            _save_attendee(related_inspector)
+            _save_attendee(related_inspector, inspection)
 
         for attendance in data.findall('attendance'):
-            _save_attendee(attendance)
+            _save_attendee(attendance, inspection)
 
 
 def _find_or_save_inspection_status(assessment_status_code):
@@ -470,7 +470,7 @@ def _find_or_save_inspection_type(inspection_type):
     return inspec_type
 
 
-def _save_attendee(attendee):
+def _save_attendee(attendee, inspection):
 
     attendee_first_name = attendee.find('attendance_first_name')
     attendee_last_name = attendee.find('attendance_last_name')
@@ -488,6 +488,8 @@ def _save_attendee(attendee):
     attendee_type_value = attendee.find('attendance_type')
     attendance_type = _find_or_save_attendee_type(attendee_type_value)
     attendee.attendee_type_rel = attendance_type
+
+    attendee.inspection = inspection
 
     db.session.add(attendee)
 

@@ -16,9 +16,12 @@ ATTENDEE_RESPONSE_MODEL = api.model(
 
 
 class Attendee(Base):
-    __tablename__ = "Attendee"
+    __tablename__ = "attendee"
     __table_args__ = {'comment': 'Any attendee on an inspection.'}
     attendee_id = db.Column(db.Integer, primary_key=True)
+    inspection = db.relationship('Inspection', lazy='selectin')
+    inspection_id = db.Column(
+        db.Integer, db.ForeignKey('inspection.inspection_id'))
 
     first_name = db.Column(db.String())
     last_name = db.Column(db.String())
