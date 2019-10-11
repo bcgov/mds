@@ -80,7 +80,7 @@ def run_address_etl():
     num_updated_permitee_addresses = db.session.execute(
         processed_permitee_address_table_variable_sql +
         update_address_from_processed_address_variable).fetchone()['count']
-    print('Number of updated permitee addresses: ' + num_updated_permitee_addresses)
+    print('Number of updated permitee addresses: ' + str(num_updated_permitee_addresses))
     db.session.commit()
 
     print('create addresses for contacts originating from permitee etl')
@@ -88,15 +88,15 @@ def run_address_etl():
     num_created_permitee_addresses = db.session.execute(
         processed_permitee_address_table_variable_sql +
         insert_new_addresses_from_processed_address_variable).fetchone()['count']
-    print('Number of created permitee addresses: ' + num_created_permitee_addresses)
+    print('Number of created permitee addresses: ' + str(num_created_permitee_addresses))
     db.session.commit()
 
     print('Update existing addresses for contacts originating from mine manager etl')
     #update records where parties in ETL_MANAGER have addresses in address and were created by this migration
-    num_updated_manager_addresse = db.session.execute(
+    num_updated_manager_addresses = db.session.execute(
         processed_manager_address_table_variable_sql +
         update_address_from_processed_address_variable).fetchone()['count']
-    print('Number of updated manager addresses: ' + num_updated_manager_addresse)
+    print('Number of updated manager addresses: ' + str(num_updated_manager_addresses))
     db.session.commit()
 
     print('create addresses for contacts originating from mine manager etl')
@@ -104,5 +104,5 @@ def run_address_etl():
     num_updated_manager_addresses = db.session.execute(
         processed_manager_address_table_variable_sql +
         insert_new_addresses_from_processed_address_variable).fetchone()['count']
-    print('Number of created manager addresses: ' + num_updated_manager_addresses)
+    print('Number of created manager addresses: ' + str(num_updated_manager_addresses))
     db.session.commit()
