@@ -1,5 +1,5 @@
-CREATE TABLE unit_type (
-  unit_type_code character varying(3),
+CREATE TABLE IF NOT EXISTS unit_type (
+  unit_type_code character varying(3) PRIMARY KEY,
   unit character varying(100),
   description character varying(100),
   active_ind boolean,
@@ -11,8 +11,8 @@ CREATE TABLE unit_type (
 
 COMMENT ON TABLE unit_type IS 'A code table containing unit values ie tonne, percent, etc';
 
-CREATE TABLE equipment_assignment_type (
-  equipment_assignment_type_code character varying(3),
+CREATE TABLE IF NOT EXISTS equipment_assignment_type (
+  equipment_assignment_type_code character varying(3) PRIMARY KEY,
   description character varying(100),
   active_ind boolean,
   create_user character varying(60) NOT NULL,
@@ -23,8 +23,8 @@ CREATE TABLE equipment_assignment_type (
 
 COMMENT ON TABLE equipment_assignment_type IS 'A code table for notice of work activities that use equipment';
 
-CREATE TABLE notice_of_work_type (
-  notice_of_work_type_code character varying(3),
+CREATE TABLE IF NOT EXISTS notice_of_work_type (
+  notice_of_work_type_code character varying(3) PRIMARY KEY,
   permit_prefix character varying(2),
   description character varying(100),
   active_ind boolean,
@@ -36,8 +36,8 @@ CREATE TABLE notice_of_work_type (
 
 COMMENT ON TABLE notice_of_work_type IS 'A code table containing the notice of work type codes and values';
 
-CREATE TABLE application_status (
-  application_status_code character varying(3),
+CREATE TABLE IF NOT EXISTS application_status (
+  application_status_code character varying(3) PRIMARY KEY,
   description character varying(100),
   active_ind boolean,
   create_user character varying(60) NOT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE application_status (
 
 COMMENT ON TABLE application_status IS 'A code table containing the application status codes and values';
 
-CREATE TABLE permit_application (
+CREATE TABLE IF NOT EXISTS permit_application (
   permit_application_id  SERIAL PRIMARY KEY,
   permit_application_guid uuid,
   mine_guid uuid,
@@ -58,8 +58,8 @@ CREATE TABLE permit_application (
   application_status_code character varying(3) NOT NULL,
   submitted_date date NOT NULL,
   received_date date NOT NULL,
-  latitude numberic(9,7),
-  longitude numberic(11,7),
+  latitude numeric(9,7),
+  longitude numeric(11,7),
   property_name character varying(4000),
   tenure_number character varying(4000),
   description_of_land character varying(4000),
@@ -80,7 +80,7 @@ CREATE TABLE permit_application (
 
 COMMENT ON TABLE permit_application IS 'A list of notice of work permit applications';
 
-CREATE TABLE cut_lines_polarization_survey(
+CREATE TABLE IF NOT EXISTS cut_lines_polarization_survey (
   cut_lines_polarization_survey_id SERIAL PRIMARY KEY,
   permit_application_id integer,
   reclamation_description character varying(4000),
@@ -94,13 +94,13 @@ CREATE TABLE cut_lines_polarization_survey(
 
   FOREIGN KEY (permit_application_id) REFERENCES permit_application(permit_application_id)
   DEFERRABLE INITIALLY DEFERRED,
-  FOREIGN KEY (total_disturbed_area_unit_type_code) REFERENCES unit_type(total_disturbed_area_unit_type_code)
+  FOREIGN KEY (total_disturbed_area_unit_type_code) REFERENCES unit_type(unit_type_code)
   DEFERRABLE INITIALLY DEFERRED
 );
 
 COMMENT ON TABLE cut_lines_polarization_survey IS 'A list related to a Notice of Work activity - Cut Lines and Induced Polarization Survey';
 
-CREATE TABLE equipment (
+CREATE TABLE IF NOT EXISTS equipment (
   equipment_id SERIAL PRIMARY KEY,
   description character varying(4000),
   quantity integer,
@@ -108,12 +108,12 @@ CREATE TABLE equipment (
   create_user character varying(60) NOT NULL,
   create_timestamp timestamp with time zone DEFAULT now() NOT NULL,
   update_user character varying(60) NOT NULL,
-  update_timestamp timestamp with time zone DEFAULT now() NOT NULL,
+  update_timestamp timestamp with time zone DEFAULT now() NOT NULL
 );
 
 COMMENT ON TABLE equipment IS 'A list of physical equipment present on a mine site';
 
-CREATE TABLE equipment_assignment (
+CREATE TABLE IF NOT EXISTS equipment_assignment (
   equipment_assignment_id SERIAL PRIMARY KEY,
   permit_application_id integer,
   equipment_assignment_type_code character varying(3),
@@ -129,7 +129,7 @@ CREATE TABLE equipment_assignment (
 
 COMMENT ON TABLE equipment_assignment IS 'Records that relates equpment to a permit application';
 
-CREATE TABLE settling_pond (
+CREATE TABLE IF NOT EXISTS settling_pond (
   settling_pond_id SERIAL PRIMARY KEY,
   proponent_pond_name character varying(4000),
   water_source_description character varying(4000),
@@ -146,13 +146,13 @@ CREATE TABLE settling_pond (
   update_user character varying(60) NOT NULL,
   update_timestamp timestamp with time zone DEFAULT now() NOT NULL,
 
-  FOREIGN KEY (total_disturbed_unit_type_code) REFERENCES unit_type(total_disturbed_unit_type_code)
+  FOREIGN KEY (total_disturbed_unit_type_code) REFERENCES unit_type(unit_type_code)
   DEFERRABLE INITIALLY DEFERRED
 );
 
 COMMENT ON TABLE settling_pond IS 'A list related to a Notice of Work activity - Settling Pond';
 
-CREATE TABLE water_supply (
+CREATE TABLE IF NOT EXISTS water_supply (
   water_supply_id SERIAL PRIMARY KEY,
   permit_application_id  integer,
   supply_source_description varchar(4000),
@@ -172,10 +172,10 @@ CREATE TABLE water_supply (
 
 COMMENT ON TABLE water_supply IS 'A list related to a Notice of Work activity - Water Supply';
 
-CREATE TABLE application_settling_pond_xref (
+CREATE TABLE IF NOT EXISTS application_settling_pond_xref (
   permit_application_id integer,
   settling_pond_id integer,
-  is_existing_pond boolean
+  is_existing_pond boolean,
 
   FOREIGN KEY (permit_application_id) REFERENCES permit_application(permit_application_id)
   DEFERRABLE INITIALLY DEFERRED,
@@ -185,7 +185,7 @@ CREATE TABLE application_settling_pond_xref (
 
 COMMENT ON TABLE application_settling_pond_xref IS 'Record connecting proposed and existing settling ponds to a permit application';
 
-CREATE TABLE exploration_surface_drilling (
+CREATE TABLE IF NOT EXISTS exploration_surface_drilling (
   exploration_surface_drilling_id SERIAL PRIMARY KEY,
   permit_application_id integer,
   reclamation_description character varying(4000),
@@ -200,15 +200,15 @@ CREATE TABLE exploration_surface_drilling (
 
   FOREIGN KEY (permit_application_id) REFERENCES permit_application(permit_application_id)
   DEFERRABLE INITIALLY DEFERRED,
-  FOREIGN KEY (total_disturbed_area_unit_type_code) REFERENCES unit_type(total_disturbed_area_unit_type_code)
-  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (total_disturbed_area_unit_type_code) REFERENCES unit_type(unit_type_code)
+  DEFERRABLE INITIALLY DEFERRED
 
 );
 
 COMMENT ON TABLE exploration_surface_drilling IS 'A list related to a Notice of Work activity - Exploration Surface Drilling';
 
 
-CREATE TABLE sand_gravel_quarry_operation (
+CREATE TABLE IF NOT EXISTS sand_gravel_quarry_operation (
   sand_gravel_quarry_operation_id SERIAL PRIMARY KEY,
   permit_application_id integer,
   average_overburden_depth numeric(14,2),
@@ -250,21 +250,21 @@ CREATE TABLE sand_gravel_quarry_operation (
 
   FOREIGN KEY (permit_application_id) REFERENCES permit_application(permit_application_id)
   DEFERRABLE INITIALLY DEFERRED,
-  FOREIGN KEY (total_minable_reserves_unit_type_code) REFERENCES unit_type(total_minable_reserves_unit_type_code)
+  FOREIGN KEY (total_minable_reserves_unit_type_code) REFERENCES unit_type(unit_type_code)
   DEFERRABLE INITIALLY DEFERRED,
-  FOREIGN KEY (total_annual_extraction_unit_type_code) REFERENCES unit_type(total_annual_extraction_unit_type_code)
+  FOREIGN KEY (total_annual_extraction_unit_type_code) REFERENCES unit_type(unit_type_code)
   DEFERRABLE INITIALLY DEFERRED,
-  FOREIGN KEY (total_disturbed_area_unit_type_code) REFERENCES unit_type(total_disturbed_area_unit_type_code)
+  FOREIGN KEY (total_disturbed_area_unit_type_code) REFERENCES unit_type(unit_type_code)
   DEFERRABLE INITIALLY DEFERRED,
-  FOREIGN KEY (nearest_residence_distance_unit_type_code) REFERENCES unit_type(nearest_residence_distance_unit_type_code)
+  FOREIGN KEY (nearest_residence_distance_unit_type_code) REFERENCES unit_type(unit_type_code)
   DEFERRABLE INITIALLY DEFERRED,
-  FOREIGN KEY (nearest_water_source_distance_unit_type_code) REFERENCES unit_type(nearest_water_source_distance_unit_type_code)
+  FOREIGN KEY (nearest_water_source_distance_unit_type_code) REFERENCES unit_type(unit_type_code)
   DEFERRABLE INITIALLY DEFERRED
 );
 
 COMMENT ON TABLE sand_gravel_quarry_operation IS 'A list related to a Notice of Work activity - Sand and Gravel / Quarry Operations';
 
-CREATE TABLE placer_operation (
+CREATE TABLE IF NOT EXISTS placer_operation (
   placer_operation_id SERIAL PRIMARY KEY,
   is_underground boolean,
   is_hand_operation boolean,
@@ -279,15 +279,15 @@ CREATE TABLE placer_operation (
   update_user character varying(60) NOT NULL,
   update_timestamp timestamp with time zone DEFAULT now() NOT NULL,
 
-  FOREIGN KEY (total_disturbed_area_unit_type_code) REFERENCES unit_type(total_disturbed_area_unit_type_code)
+  FOREIGN KEY (total_disturbed_area_unit_type_code) REFERENCES unit_type(unit_type_code)
   DEFERRABLE INITIALLY DEFERRED,
-  FOREIGN KEY (reclamation_unit_type_code) REFERENCES unit_type(reclamation_unit_type_code)
+  FOREIGN KEY (reclamation_unit_type_code) REFERENCES unit_type(unit_type_code)
   DEFERRABLE INITIALLY DEFERRED
 );
 
 COMMENT ON TABLE placer_operation IS 'A list related to a Notice of Work activity - Placer Operations';
 
-CREATE TABLE exploration_access (
+CREATE TABLE IF NOT EXISTS exploration_access (
   exploration_access_id SERIAL PRIMARY KEY,
   permit_application_id integer,
   reclamation_description character varying(4000),
@@ -301,13 +301,13 @@ CREATE TABLE exploration_access (
 
   FOREIGN KEY (permit_application_id) REFERENCES permit_application(permit_application_id)
   DEFERRABLE INITIALLY DEFERRED,
-  FOREIGN KEY (total_disturbed_area_unit_type_code) REFERENCES unit_type(total_disturbed_area_unit_type_code)
-  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (total_disturbed_area_unit_type_code) REFERENCES unit_type(unit_type_code)
+  DEFERRABLE INITIALLY DEFERRED
 );
 
 COMMENT ON TABLE exploration_access IS 'A list related to a Notice of Work activity - Access Roads, trails, Help Pads, Air Strips, Boat Ramps';
 
-CREATE TABLE underground_exploration (
+CREATE TABLE IF NOT EXISTS underground_exploration (
   underground_exploration_id SERIAL PRIMARY KEY,
   permit_application_id integer,
   total_ore_amount integer,
@@ -325,13 +325,13 @@ CREATE TABLE underground_exploration (
 
   FOREIGN KEY (permit_application_id) REFERENCES permit_application(permit_application_id)
   DEFERRABLE INITIALLY DEFERRED,
-  FOREIGN KEY (total_disturbed_area_unit_type_code) REFERENCES unit_type(total_disturbed_area_unit_type_code)
-  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (total_disturbed_area_unit_type_code) REFERENCES unit_type(unit_type_code)
+  DEFERRABLE INITIALLY DEFERRED
 );
 
 COMMENT ON TABLE underground_exploration IS 'A list related to a Notice of Work activity - Underground Exploration';
 
-CREATE TABLE camp (
+CREATE TABLE IF NOT EXISTS camp (
   camp_id SERIAL PRIMARY KEY,
   permit_application_id integer,
   camp_name character varying,
@@ -352,13 +352,13 @@ CREATE TABLE camp (
 
   FOREIGN KEY (permit_application_id) REFERENCES permit_application(permit_application_id)
   DEFERRABLE INITIALLY DEFERRED,
-  FOREIGN KEY (total_disturbed_area_unit_type_code) REFERENCES unit_type(total_disturbed_area_unit_type_code)
-  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (total_disturbed_area_unit_type_code) REFERENCES unit_type(unit_type_code)
+  DEFERRABLE INITIALLY DEFERRED
 );
 
 COMMENT ON TABLE camp IS 'A list related to a Notice of Work activity - Camps, Buildings, Staging Area, Fuel/Lubricant Storage';
 
-CREATE TABLE state_of_land (
+CREATE TABLE IF NOT EXISTS state_of_land (
   state_of_land_id SERIAL PRIMARY KEY,
   permit_application_id integer,
   has_community_water_shed boolean,
@@ -374,7 +374,7 @@ CREATE TABLE state_of_land (
 
 COMMENT ON TABLE state_of_land IS 'Information related to the state of land at the time a Notice of Work is submitted';
 
-CREATE TABLE mechanical_trenching (
+CREATE TABLE IF NOT EXISTS mechanical_trenching (
   mechanical_trenching_id SERIAL PRIMARY KEY,
   permit_application_id integer,
   total_disturbed_area numeric(14,2),
@@ -388,13 +388,13 @@ CREATE TABLE mechanical_trenching (
 
   FOREIGN KEY (permit_application_id) REFERENCES permit_application(permit_application_id)
   DEFERRABLE INITIALLY DEFERRED,
-  FOREIGN KEY (total_disturbed_area_unit_type_code) REFERENCES unit_type(total_disturbed_area_unit_type_code)
-  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (total_disturbed_area_unit_type_code) REFERENCES unit_type(unit_type_code)
+  DEFERRABLE INITIALLY DEFERRED
 );
 
 COMMENT ON TABLE mechanical_trenching IS 'A list related to a Notice of Work activity - Mechanical Trenching / Test Pits';
 
-CREATE TABLE surface_bulk_sample  (
+CREATE TABLE IF NOT EXISTS surface_bulk_sample  (
   surface_bulk_sample_id SERIAL PRIMARY KEY,
   permit_application_id integer,
   processing_method_description character varying(4000),
@@ -411,13 +411,13 @@ CREATE TABLE surface_bulk_sample  (
 
   FOREIGN KEY (permit_application_id) REFERENCES permit_application(permit_application_id)
   DEFERRABLE INITIALLY DEFERRED,
-  FOREIGN KEY (total_disturbed_area_unit_type_code) REFERENCES unit_type(total_disturbed_area_unit_type_code)
-  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (total_disturbed_area_unit_type_code) REFERENCES unit_type(unit_type_code)
+  DEFERRABLE INITIALLY DEFERRED
 );
 
 COMMENT ON TABLE surface_bulk_sample IS 'A list related to a Notice of Work activity - Surface Bulk Sample';
 
-CREATE TABLE activity_detail (
+CREATE TABLE IF NOT EXISTS activity_detail (
   activity_detail_id SERIAL PRIMARY KEY,
   activity_type_description character varying(4000),
   disturbed_area numeric(14,2),
@@ -437,28 +437,28 @@ CREATE TABLE activity_detail (
   update_user character varying(60) NOT NULL,
   update_timestamp timestamp with time zone DEFAULT now() NOT NULL,
 
-  FOREIGN KEY (incline_unit_type_code) REFERENCES unit_type(incline_unit_type_code)
+  FOREIGN KEY (incline_unit_type_code) REFERENCES unit_type(unit_type_code)
   DEFERRABLE INITIALLY DEFERRED,
-  FOREIGN KEY (water_quantity_unit_type_code) REFERENCES unit_type(water_quantity_unit_type_code)
-  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (water_quantity_unit_type_code) REFERENCES unit_type(unit_type_code)
+  DEFERRABLE INITIALLY DEFERRED
 );
 
 COMMENT ON TABLE activity_detail IS 'Coomon details related to activities on a Notice of Work';
 
-CREATE TABLE application_placer_xref (
+CREATE TABLE IF NOT EXISTS application_placer_xref (
   permit_application_id integer,
   placer_operation_id integer,
-  is_existing_placer_activity boolean
+  is_existing_placer_activity boolean,
 
   FOREIGN KEY (permit_application_id) REFERENCES permit_application(permit_application_id)
   DEFERRABLE INITIALLY DEFERRED,
   FOREIGN KEY (placer_operation_id) REFERENCES placer_operation(placer_operation_id)
-  DEFERRABLE INITIALLY DEFERRED,
+  DEFERRABLE INITIALLY DEFERRED
 );
 
 COMMENT ON TABLE application_placer_xref IS 'Record connecting existing and proposed placer operations to a notice of work permit application';
 
-CREATE TABLE blasting_operation (
+CREATE TABLE IF NOT EXISTS blasting_operation (
   blasting_operation_id SERIAL PRIMARY KEY,
   permit_application_id integer,
   has_storage_explosive_on_site  boolean,
@@ -476,13 +476,13 @@ CREATE TABLE blasting_operation (
 
 COMMENT ON TABLE blasting_operation IS 'A list related to a Notice of Work activity - Blasting';
 
-CREATE TABLE activity_detail_xref (
+CREATE TABLE IF NOT EXISTS activity_detail_xref (
   activity_detail_xref_id SERIAL PRIMARY KEY,
   activity_detail_id integer,
   exploration_access_id integer,
   camp_id integer,
   surface_bulk_sample_id integer,
-  cut_lines_polorization_survey_id integer,
+  cut_lines_polarization_survey_id integer,
   exploration_surface_drilling_id integer,
   mechanical_trenching_id integer,
   placer_operation_id integer,
@@ -494,9 +494,9 @@ CREATE TABLE activity_detail_xref (
   DEFERRABLE INITIALLY DEFERRED,
   FOREIGN KEY (exploration_access_id) REFERENCES exploration_access(exploration_access_id)
   DEFERRABLE INITIALLY DEFERRED,
-  FOREIGN KEY (camp_id) REFERENCES camp_id(camp_id)
+  FOREIGN KEY (camp_id) REFERENCES camp(camp_id)
   DEFERRABLE INITIALLY DEFERRED,
-  FOREIGN KEY (cut_lines_polorization_survey_id) REFERENCES cut_lines_polorization_survey(cut_lines_polorization_survey_id)
+  FOREIGN KEY (cut_lines_polarization_survey_id) REFERENCES cut_lines_polarization_survey(cut_lines_polarization_survey_id)
   DEFERRABLE INITIALLY DEFERRED,
   FOREIGN KEY (exploration_surface_drilling_id) REFERENCES exploration_surface_drilling(exploration_surface_drilling_id)
   DEFERRABLE INITIALLY DEFERRED,
@@ -511,7 +511,7 @@ CREATE TABLE activity_detail_xref (
   FOREIGN KEY (settling_pond_id) REFERENCES settling_pond(settling_pond_id)
   DEFERRABLE INITIALLY DEFERRED,
   FOREIGN KEY (surface_bulk_sample_id) REFERENCES surface_bulk_sample(surface_bulk_sample_id)
-  DEFERRABLE INITIALLY DEFERRED,
+  DEFERRABLE INITIALLY DEFERRED
 );
 
 COMMENT ON TABLE activity_detail_xref IS 'Records connecting activity details to the associated activity';
