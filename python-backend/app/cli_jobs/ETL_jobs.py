@@ -79,7 +79,7 @@ def run_address_etl():
     #update records where parties in ETL_PERMIT have addresses in address and were created by this migration
     num_updated_permitee_addresses = db.session.execute(
         processed_permitee_address_table_variable_sql +
-        update_address_from_processed_address_variable)[0][0]
+        update_address_from_processed_address_variable).fetchone()['count']
     print('Number of updated permitee addresses: ' + num_updated_permitee_addresses)
     db.session.commit()
 
@@ -87,7 +87,7 @@ def run_address_etl():
     #create address where the ETL_PERMIT table has a party but that party doesn't have an address
     num_created_permitee_addresses = db.session.execute(
         processed_permitee_address_table_variable_sql +
-        insert_new_addresses_from_processed_address_variable)[0][0]
+        insert_new_addresses_from_processed_address_variable).fetchone()['count']
     print('Number of created permitee addresses: ' + num_created_permitee_addresses)
     db.session.commit()
 
@@ -95,7 +95,7 @@ def run_address_etl():
     #update records where parties in ETL_MANAGER have addresses in address and were created by this migration
     num_updated_manager_addresse = db.session.execute(
         processed_manager_address_table_variable_sql +
-        update_address_from_processed_address_variable)[0][0]
+        update_address_from_processed_address_variable).fetchone()['count']
     print('Number of updated manager addresses: ' + num_updated_manager_addresse)
     db.session.commit()
 
@@ -103,6 +103,6 @@ def run_address_etl():
     #create address where the ETL_PERMIT table has a party but that party doesn't have an address
     num_updated_manager_addresses = db.session.execute(
         processed_manager_address_table_variable_sql +
-        insert_new_addresses_from_processed_address_variable)[0][0]
+        insert_new_addresses_from_processed_address_variable).fetchone()['count']
     print('Number of created manager addresses: ' + num_updated_manager_addresses)
     db.session.commit()
