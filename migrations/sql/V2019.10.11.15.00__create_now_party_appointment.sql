@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS now_party_appointment
     FOREIGN KEY (party_guid) REFERENCES party(party_guid) DEFERRABLE INITIALLY DEFERRED
 );
 ALTER TABLE now_party_appointment OWNER TO mds;
-COMMENT ON TABLE now_party_appointment IS 'A code table containing unit values ie tonne, percent, etc';
+COMMENT ON TABLE now_party_appointment IS 'A table containing mappings of a parties to mine party appointments for permit applications.';
 
 alter table party ADD COLUMN bc_federal_incorporation_number varchar(30);
 alter table party ADD COLUMN bc_registration_number varchar(10);
