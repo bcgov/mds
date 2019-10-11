@@ -13,7 +13,7 @@ class InspectionSubstatus(Base):
     inspection_substatus_description = db.Column(db.String(256))
 
     def __repr__(self):
-        return f'<InspectionStatus inspection_status_code={self.inspection_substatus_code} inspection_status_description={self.inspection_substatus_description}>'
+        return f'<InspectionStatus inspection_substatus_code={self.inspection_substatus_code} inspection_substatus_description={self.inspection_substatus_description}>'
 
     @classmethod
     def find_all_inspection_substatus(cls):
