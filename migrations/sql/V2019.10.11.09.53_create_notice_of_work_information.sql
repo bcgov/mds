@@ -1,3 +1,85 @@
+CREATE TABLE unit_type (
+  unit_type_code character varying(3),
+  unit character varying(100),
+  description character varying(100),
+  active_ind boolean,
+  create_user character varying(60) NOT NULL,
+  create_timestamp timestamp with time zone DEFAULT now() NOT NULL,
+  update_user character varying(60) NOT NULL,
+  update_timestamp timestamp with time zone DEFAULT now() NOT NULL
+);
+
+COMMENT ON TABLE unit_type IS 'A code table containing unit values ie tonne, percent, etc';
+
+CREATE TABLE equipment_assignment_type (
+  equipment_assignment_type_code character varying(3),
+  description character varying(100),
+  active_ind boolean,
+  create_user character varying(60) NOT NULL,
+  create_timestamp timestamp with time zone DEFAULT now() NOT NULL,
+  update_user character varying(60) NOT NULL,
+  update_timestamp timestamp with time zone DEFAULT now() NOT NULL
+);
+
+COMMENT ON TABLE equipment_assignment_type IS 'A code table for notice of work activities that use equipment';
+
+CREATE TABLE notice_of_work_type (
+  notice_of_work_type_code character varying(3),
+  permit_prefix character varying(2),
+  description character varying(100),
+  active_ind boolean,
+  create_user character varying(60) NOT NULL,
+  create_timestamp timestamp with time zone DEFAULT now() NOT NULL,
+  update_user character varying(60) NOT NULL,
+  update_timestamp timestamp with time zone DEFAULT now() NOT NULL
+);
+
+COMMENT ON TABLE notice_of_work_type IS 'A code table containing the notice of work type codes and values';
+
+CREATE TABLE application_status (
+  application_status_code character varying(3),
+  description character varying(100),
+  active_ind boolean,
+  create_user character varying(60) NOT NULL,
+  create_timestamp timestamp with time zone DEFAULT now() NOT NULL,
+  update_user character varying(60) NOT NULL,
+  update_timestamp timestamp with time zone DEFAULT now() NOT NULL
+);
+
+COMMENT ON TABLE application_status IS 'A code table containing the application status codes and values';
+
+CREATE TABLE permit_application (
+  permit_application_id  SERIAL PRIMARY KEY,
+  permit_application_guid uuid,
+  mine_guid uuid,
+  now_message_id integer,
+  now_tracking_number integer,
+  notice_of_work_type_code character varying(3) NOT NULL,
+  application_status_code character varying(3) NOT NULL,
+  submitted_date date NOT NULL,
+  received_date date NOT NULL,
+  latitude numberic(9,7),
+  longitude numberic(11,7),
+  property_name character varying(4000),
+  tenure_number character varying(4000),
+  description_of_land character varying(4000),
+  proposed_start_date date,
+  proposed_end_date date,
+  create_user character varying(60) NOT NULL,
+  create_timestamp timestamp with time zone DEFAULT now() NOT NULL,
+  update_user character varying(60) NOT NULL,
+  update_timestamp timestamp with time zone DEFAULT now() NOT NULL,
+
+  FOREIGN KEY (mine_guid) REFERENCES mine(mine_guid)
+  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (notice_of_work_type_code) REFERENCES notice_of_work_type(notice_of_work_type_code)
+  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (application_status_code) REFERENCES application_status(application_status_code)
+  DEFERRABLE INITIALLY DEFERRED
+);
+
+COMMENT ON TABLE permit_application IS 'A list of notice of work permit applications';
+
 CREATE TABLE cut_lines_polarization_survey(
   cut_lines_polarization_survey_id SERIAL PRIMARY KEY,
   permit_application_id integer,
@@ -18,6 +100,18 @@ CREATE TABLE cut_lines_polarization_survey(
 
 COMMENT ON TABLE cut_lines_polarization_survey IS 'A list related to a Notice of Work activity - Cut Lines and Induced Polarization Survey';
 
+CREATE TABLE equipment (
+  equipment_id SERIAL PRIMARY KEY,
+  description character varying(4000),
+  quantity integer,
+  capacity character varying(4000),
+  create_user character varying(60) NOT NULL,
+  create_timestamp timestamp with time zone DEFAULT now() NOT NULL,
+  update_user character varying(60) NOT NULL,
+  update_timestamp timestamp with time zone DEFAULT now() NOT NULL,
+);
+
+COMMENT ON TABLE equipment IS 'A list of physical equipment present on a mine site';
 
 CREATE TABLE equipment_assignment (
   equipment_assignment_id SERIAL PRIMARY KEY,
@@ -78,7 +172,6 @@ CREATE TABLE water_supply (
 
 COMMENT ON TABLE water_supply IS 'A list related to a Notice of Work activity - Water Supply';
 
-
 CREATE TABLE application_settling_pond_xref (
   permit_application_id integer,
   settling_pond_id integer,
@@ -91,40 +184,6 @@ CREATE TABLE application_settling_pond_xref (
 );
 
 COMMENT ON TABLE application_settling_pond_xref IS 'Record connecting proposed and existing settling ponds to a permit application';
-
-
-CREATE TABLE permit_application (
-  permit_application_id  SERIAL PRIMARY KEY,
-  permit_application_guid uuid,
-  mine_guid uuid,
-  now_message_id integer,
-  now_tracking_number integer,
-  notice_of_work_type_code character varying(3),
-  application_status_code character varying(3),
-  submitted_date date,
-  received_date date,
-  latitude numberic(9,7),
-  longitude numberic(11,7),
-  property_name character varying(4000),
-  tenure_number character varying(4000),
-  description_of_land character varying(4000),
-  proposed_start_date date,
-  proposed_end_date date,
-  create_user character varying(60) NOT NULL,
-  create_timestamp timestamp with time zone DEFAULT now() NOT NULL,
-  update_user character varying(60) NOT NULL,
-  update_timestamp timestamp with time zone DEFAULT now() NOT NULL,
-
-  FOREIGN KEY (mine_guid) REFERENCES mine(mine_guid)
-  DEFERRABLE INITIALLY DEFERRED,
-  FOREIGN KEY (notice_of_work_type_code) REFERENCES notice_of_work_type(notice_of_work_type_code)
-  DEFERRABLE INITIALLY DEFERRED,
-  FOREIGN KEY (application_status_code) REFERENCES application_status(application_status_code)
-  DEFERRABLE INITIALLY DEFERRED
-);
-
-COMMENT ON TABLE permit_application IS 'A list of notice of work permit applications';
-
 
 CREATE TABLE exploration_surface_drilling (
   exploration_surface_drilling_id SERIAL PRIMARY KEY,
@@ -225,19 +284,6 @@ CREATE TABLE placer_operation (
 
 COMMENT ON TABLE placer_operation IS 'A list related to a Notice of Work activity - Placer Operations';
 
-CREATE TABLE equipment (
-  equipment_id SERIAL PRIMARY KEY,
-  description character varying(4000),
-  quantity integer,
-  capacity character varying(4000),
-  create_user character varying(60) NOT NULL,
-  create_timestamp timestamp with time zone DEFAULT now() NOT NULL,
-  update_user character varying(60) NOT NULL,
-  update_timestamp timestamp with time zone DEFAULT now() NOT NULL,
-);
-
-COMMENT ON TABLE equipment IS 'A list of physical equipment present on a mine site';
-
 CREATE TABLE exploration_access (
   exploration_access_id SERIAL PRIMARY KEY,
   permit_application_id integer,
@@ -257,18 +303,6 @@ CREATE TABLE exploration_access (
 );
 
 COMMENT ON TABLE exploration_access IS 'A list related to a Notice of Work activity - Access Roads, trails, Help Pads, Air Strips, Boat Ramps';
-
-CREATE TABLE equipment_assignment_type (
-  equipment_assignment_type_code character varying(3),
-  description character varying(100),
-  active_ind boolean,
-  create_user character varying(60) NOT NULL,
-  create_timestamp timestamp with time zone DEFAULT now() NOT NULL,
-  update_user character varying(60) NOT NULL,
-  update_timestamp timestamp with time zone DEFAULT now() NOT NULL
-);
-
-COMMENT ON TABLE equipment_assignment_type IS 'A code table for the type of equipment';
 
 CREATE TABLE underground_exploration (
   underground_exploration_id SERIAL PRIMARY KEY,
@@ -321,7 +355,6 @@ CREATE TABLE camp (
 
 COMMENT ON TABLE camp IS 'A list related to a Notice of Work activity - Camps, Buildings, Staging Area, Fuel/Lubricant Storage';
 
-
 CREATE TABLE state_of_land (
   state_of_land_id SERIAL PRIMARY KEY,
   permit_application_id integer,
@@ -337,7 +370,6 @@ CREATE TABLE state_of_land (
 );
 
 COMMENT ON TABLE state_of_land IS 'Information related to the state of land at the time a Notice of Work is submitted';
-
 
 CREATE TABLE mechanical_trenching (
   mechanical_trenching_id SERIAL PRIMARY KEY,
@@ -358,7 +390,6 @@ CREATE TABLE mechanical_trenching (
 );
 
 COMMENT ON TABLE mechanical_trenching IS 'A list related to a Notice of Work activity - Mechanical Trenching / Test Pits';
-
 
 CREATE TABLE surface_bulk_sample  (
   surface_bulk_sample_id SERIAL PRIMARY KEY,
@@ -382,20 +413,6 @@ CREATE TABLE surface_bulk_sample  (
 );
 
 COMMENT ON TABLE surface_bulk_sample IS 'A list related to a Notice of Work activity - Surface Bulk Sample';
-
-
-CREATE TABLE unit_type (
-  unit_type_code character varying(3),
-  unit character varying(100),
-  description character varying(100),
-  active_ind boolean,
-  create_user character varying(60) NOT NULL,
-  create_timestamp timestamp with time zone DEFAULT now() NOT NULL,
-  update_user character varying(60) NOT NULL,
-  update_timestamp timestamp with time zone DEFAULT now() NOT NULL
-);
-
-COMMENT ON TABLE unit_type IS 'A code table containing unit values ie tonne, percent, etc';
 
 CREATE TABLE activity_detail (
   activity_detail_id SERIAL PRIMARY KEY,
@@ -425,7 +442,6 @@ CREATE TABLE activity_detail (
 
 COMMENT ON TABLE activity_detail IS 'Coomon details related to activities on a Notice of Work';
 
-
 CREATE TABLE application_placer_xref (
   permit_application_id integer,
   placer_operation_id integer,
@@ -438,7 +454,6 @@ CREATE TABLE application_placer_xref (
 );
 
 COMMENT ON TABLE application_placer_xref IS 'Record connecting existing and proposed placer operations to a notice of work permit application';
-
 
 CREATE TABLE blasting_operation (
   blasting_operation_id SERIAL PRIMARY KEY,
@@ -457,7 +472,6 @@ CREATE TABLE blasting_operation (
 );
 
 COMMENT ON TABLE blasting_operation IS 'A list related to a Notice of Work activity - Blasting';
-
 
 CREATE TABLE activity_detail_xref (
   activity_detail_xref_id SERIAL PRIMARY KEY,
@@ -499,27 +513,3 @@ CREATE TABLE activity_detail_xref (
 
 COMMENT ON TABLE activity_detail_xref IS 'Records connecting activity details to the associated activity';
 
-CREATE TABLE notice_of_work_type (
-  notice_of_work_type_code character varying(3),
-  permit_prefix character varying(2),
-  description character varying(100),
-  active_ind boolean,
-  create_user character varying(60) NOT NULL,
-  create_timestamp timestamp with time zone DEFAULT now() NOT NULL,
-  update_user character varying(60) NOT NULL,
-  update_timestamp timestamp with time zone DEFAULT now() NOT NULL
-);
-
-COMMENT ON TABLE notice_of_work_type IS 'A code table containing the notice of work type codes and values';
-
-CREATE TABLE application_status (
-  application_status_code character varying(3),
-  description character varying(100),
-  active_ind boolean,
-  create_user character varying(60) NOT NULL,
-  create_timestamp timestamp with time zone DEFAULT now() NOT NULL,
-  update_user character varying(60) NOT NULL,
-  update_timestamp timestamp with time zone DEFAULT now() NOT NULL
-);
-
-COMMENT ON TABLE application_status IS 'A code table containing the application status codes and values';
