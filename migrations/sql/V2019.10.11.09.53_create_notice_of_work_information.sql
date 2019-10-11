@@ -395,7 +395,7 @@ CREATE TABLE unit_type (
   update_timestamp timestamp with time zone DEFAULT now() NOT NULL
 );
 
-COMMENT ON TABLE unit_type_code IS 'A code table containing unit values ie tonne, percent, etc';
+COMMENT ON TABLE unit_type IS 'A code table containing unit values ie tonne, percent, etc';
 
 CREATE TABLE activity_detail (
   activity_detail_id SERIAL PRIMARY KEY,
@@ -510,9 +510,9 @@ CREATE TABLE notice_of_work_type (
   update_timestamp timestamp with time zone DEFAULT now() NOT NULL
 );
 
-COMMENT ON TABLE notice_of_work_type_code IS 'A code table containing the notice of work type codes and values';
+COMMENT ON TABLE notice_of_work_type IS 'A code table containing the notice of work type codes and values';
 
-CREATE TABLE application_ststus (
+CREATE TABLE application_status (
   application_status_code character varying(3),
   description character varying(100),
   active_ind boolean,
@@ -522,4 +522,4 @@ CREATE TABLE application_ststus (
   update_timestamp timestamp with time zone DEFAULT now() NOT NULL
 );
 
-COMMENT ON TABLE application_ststus_code IS 'A code table containing the application status codes and values';
+COMMENT ON TABLE application_status IS 'A code table containing the application status codes and values';

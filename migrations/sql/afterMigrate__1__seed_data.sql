@@ -507,3 +507,33 @@ VALUES
 	('SGQ', 'Sand Gravel Quarry', true, 'system-mds', 'system-mds'),
 	('PMT', 'Placer', true, 'system-mds', 'system-mds')
 on conflict do nothing;
+
+INSERT INTO unit_type
+(unit_type_code, description, active_ind, create_user, update_user)
+VALUES
+	('MTN', 'Tonne (Metric Ton 1000Kg)', true, 'system-mds', 'system-mds'),
+	('MEC', 'Meters cubed', true, 'system-mds', 'system-mds'),
+	('HA', 'Hectares', true, 'system-mds', 'system-mds'),
+	('DEG', 'Degrees', true, 'system-mds', 'system-mds'),
+    ('PER', 'Grade (Percent)', true, 'system-mds', 'system-mds'),
+	('MTR', 'Meters', true, 'system-mds', 'system-mds')
+on conflict do nothing;
+
+INSERT INTO notice_of_work_type
+(notice_of_work_type_code, permit_prefix, description, active_ind, create_user, update_user)
+VALUES
+	('QCA', 'Q', 'Quarry - Construction Aggregate', true, 'system-mds', 'system-mds'),
+	('COL', 'C', 'Coal', true, 'system-mds', 'system-mds'),
+	('PLA', 'P', 'Placer Operations', true, 'system-mds', 'system-mds'),
+	('MIN', 'M', 'Mineral', true, 'system-mds', 'system-mds'),
+    ('SAG', 'G', 'Sand & Gravel', true, 'system-mds', 'system-mds'),
+	('QIM', 'Q', 'Quarry - Industrial Mineral', true, 'system-mds', 'system-mds')
+on conflict do nothing;
+
+INSERT INTO application_status
+(application_status_code, description, active_ind, create_user, update_user)
+VALUES
+	('ACC', 'Accepted', true, 'system-mds', 'system-mds'),
+	('WDN', 'Withdrawn', true, 'system-mds', 'system-mds'),
+	('UNR', 'Under Review', true, 'system-mds', 'system-mds')
+on conflict do nothing;
