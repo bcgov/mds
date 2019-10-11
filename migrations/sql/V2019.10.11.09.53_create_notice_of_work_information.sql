@@ -199,7 +199,10 @@ CREATE TABLE exploration_surface_drilling (
   update_timestamp timestamp with time zone DEFAULT now() NOT NULL,
 
   FOREIGN KEY (permit_application_id) REFERENCES permit_application(permit_application_id)
-  DEFERRABLE INITIALLY DEFERRED
+  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (total_disturbed_area_unit_type_code) REFERENCES unit_type(total_disturbed_area_unit_type_code)
+  DEFERRABLE INITIALLY DEFERRED,
+
 );
 
 COMMENT ON TABLE exploration_surface_drilling IS 'A list related to a Notice of Work activity - Exploration Surface Drilling';
@@ -211,7 +214,7 @@ CREATE TABLE sand_gravel_quarry_operation (
   average_overburden_depth numeric(14,2),
   average_top_soil_depth numeric(14,2),
   stability_measures_description character varying(4000),
-  is_agricultural_land_reserve bolean,
+  is_agricultural_land_reserve boolean,
   permit_application_number character varying(300),
   has_local_soil_removal_bylaw boolean,
   community_plan character varying(4000),
@@ -332,7 +335,7 @@ CREATE TABLE camp (
   camp_id SERIAL PRIMARY KEY,
   permit_application_id integer,
   camp_name character varying,
-  camp_nunmber_people character varying,
+  camp_number_people character varying,
   camp_number_structures character varying,
   has_fuel_stored boolean,
   has_fuel_stored_in_bulk boolean,
