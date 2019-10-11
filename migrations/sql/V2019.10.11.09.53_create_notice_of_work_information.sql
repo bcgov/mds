@@ -268,7 +268,7 @@ CREATE TABLE equipment_assignment_type (
   update_timestamp timestamp with time zone DEFAULT now() NOT NULL
 );
 
-COMMENT ON TABLE equipment_assignment_type_code IS 'A code table for the type of equipment';
+COMMENT ON TABLE equipment_assignment_type IS 'A code table for the type of equipment';
 
 CREATE TABLE underground_exploration (
   underground_exploration_id SERIAL PRIMARY KEY,
