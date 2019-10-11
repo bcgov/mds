@@ -12,7 +12,7 @@ CREATE TABLE cut_lines_polarization_survey(
 
   FOREIGN KEY (permit_application_id) REFERENCES permit_application(permit_application_id)
   DEFERRABLE INITIALLY DEFERRED,
-  FOREIGN KEY (total_disturbed_area_unit_type_code) REFERENCES total_disturbed_area_unit_type(total_disturbed_area_unit_type_code)
+  FOREIGN KEY (total_disturbed_area_unit_type_code) REFERENCES unit_type(total_disturbed_area_unit_type_code)
   DEFERRABLE INITIALLY DEFERRED
 );
 
@@ -24,11 +24,16 @@ CREATE TABLE equipment_assignment (
   permit_application_id integer,
   equipment_assignment_type_code character varying(3),
   equipment_id integer,
+
+  FOREIGN KEY (permit_application_id) REFERENCES permit_application(permit_application_id)
+  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (equipment_assignment_type_code) REFERENCES equipment_assignment_type(equipment_assignment_type_code)
+  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (equipment_id) REFERENCES equipment(equipment_id)
+  DEFERRABLE INITIALLY DEFERRED
 );
 
 COMMENT ON TABLE equipment_assignment IS 'Records that relates equpment to a permit application';
-
--- CREATE INDEX FK ON  equipment_assignment (permit_application_id, equipment_assignment_type_code, equipment_id);
 
 CREATE TABLE settling_pond (
   settling_pond_id SERIAL PRIMARY KEY,
@@ -46,11 +51,12 @@ CREATE TABLE settling_pond (
   create_timestamp timestamp with time zone DEFAULT now() NOT NULL,
   update_user character varying(60) NOT NULL,
   update_timestamp timestamp with time zone DEFAULT now() NOT NULL,
+
+  FOREIGN KEY (total_disturbed_unit_type_code) REFERENCES unit_type(total_disturbed_unit_type_code)
+  DEFERRABLE INITIALLY DEFERRED
 );
 
 COMMENT ON TABLE settling_pond IS 'A list related to a Notice of Work activity - Settling Pond';
-
-CREATE INDEX FK ON  settling_pond (total_disturbed_unit_type_code);
 
 CREATE TABLE water_supply (
   water_supply_id SERIAL PRIMARY KEY,
@@ -65,21 +71,27 @@ CREATE TABLE water_supply (
   create_timestamp timestamp with time zone DEFAULT now() NOT NULL,
   update_user character varying(60) NOT NULL,
   update_timestamp timestamp with time zone DEFAULT now() NOT NULL,
+
+  FOREIGN KEY (permit_application_id) REFERENCES permit_application(permit_application_id)
+  DEFERRABLE INITIALLY DEFERRED
 );
 
 COMMENT ON TABLE water_supply IS 'A list related to a Notice of Work activity - Water Supply';
 
--- CREATE INDEX FK ON  water_supply (permit_application_id);
 
 CREATE TABLE application_settling_pond_xref (
   permit_application_id integer,
   settling_pond_id integer,
   is_existing_pond boolean
+
+  FOREIGN KEY (permit_application_id) REFERENCES permit_application(permit_application_id)
+  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (settling_pond_id) REFERENCES settling_pond(settling_pond_id)
+  DEFERRABLE INITIALLY DEFERRED
 );
 
 COMMENT ON TABLE application_settling_pond_xref IS 'Record connecting proposed and existing settling ponds to a permit application';
 
--- CREATE INDEX FK ON  application_settling_pond_xref (permit_application_id, settling_pond_id);
 
 CREATE TABLE permit_application (
   permit_application_id  SERIAL PRIMARY KEY,
@@ -126,11 +138,13 @@ CREATE TABLE exploration_surface_drilling (
   create_timestamp timestamp with time zone DEFAULT now() NOT NULL,
   update_user character varying(60) NOT NULL,
   update_timestamp timestamp with time zone DEFAULT now() NOT NULL,
+
+  FOREIGN KEY (permit_application_id) REFERENCES permit_application(permit_application_id)
+  DEFERRABLE INITIALLY DEFERRED
 );
 
 COMMENT ON TABLE exploration_surface_drilling IS 'A list related to a Notice of Work activity - Exploration Surface Drilling';
 
--- CREATE INDEX FK ON  exploration_surface_drilling (permit_application_id);
 
 CREATE TABLE sand_gravel_quarry_operation (
   sand_gravel_quarry_operation_id SERIAL PRIMARY KEY,
@@ -171,11 +185,22 @@ CREATE TABLE sand_gravel_quarry_operation (
   create_timestamp timestamp with time zone DEFAULT now() NOT NULL,
   update_user character varying(60) NOT NULL,
   update_timestamp timestamp with time zone DEFAULT now() NOT NULL,
+
+  FOREIGN KEY (permit_application_id) REFERENCES permit_application(permit_application_id)
+  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (total_minable_reserves_unit_type_code) REFERENCES unit_type(total_minable_reserves_unit_type_code)
+  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (total_annual_extraction_unit_type_code) REFERENCES unit_type(total_annual_extraction_unit_type_code)
+  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (total_disturbed_area_unit_type_code) REFERENCES unit_type(total_disturbed_area_unit_type_code)
+  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (nearest_residence_distance_unit_type_code) REFERENCES unit_type(nearest_residence_distance_unit_type_code)
+  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (nearest_water_source_distance_unit_type_code) REFERENCES unit_type(nearest_water_source_distance_unit_type_code)
+  DEFERRABLE INITIALLY DEFERRED
 );
 
 COMMENT ON TABLE sand_gravel_quarry_operation IS 'A list related to a Notice of Work activity - Sand and Gravel / Quarry Operations';
-
--- CREATE INDEX FK ON  sand_gravel_quarry_operation (permit_application_id, total_minable_reserves_unit_type_code, total_annual_extraction_unit_type_code, total_disturbed_area_unit_type_code, nearest_residence_distance_unit_type_code, nearest_water_source_distance_unit_type_code);
 
 CREATE TABLE placer_operation (
   placer_operation_id SERIAL PRIMARY KEY,
@@ -191,11 +216,14 @@ CREATE TABLE placer_operation (
   create_timestamp timestamp with time zone DEFAULT now() NOT NULL,
   update_user character varying(60) NOT NULL,
   update_timestamp timestamp with time zone DEFAULT now() NOT NULL,
+
+  FOREIGN KEY (total_disturbed_area_unit_type_code) REFERENCES unit_type(total_disturbed_area_unit_type_code)
+  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (reclamation_unit_type_code) REFERENCES unit_type(reclamation_unit_type_code)
+  DEFERRABLE INITIALLY DEFERRED
 );
 
 COMMENT ON TABLE placer_operation IS 'A list related to a Notice of Work activity - Placer Operations';
-
--- CREATE INDEX FK ON  placer_operation (reclamation_unit_type_code, total_disturbed_area_unit_type_code);
 
 CREATE TABLE equipment (
   equipment_id SERIAL PRIMARY KEY,
@@ -208,7 +236,7 @@ CREATE TABLE equipment (
   update_timestamp timestamp with time zone DEFAULT now() NOT NULL,
 );
 
-COMMENT ON TABLE equipment IS 'A list of physical equipment presnet on a mine site';
+COMMENT ON TABLE equipment IS 'A list of physical equipment present on a mine site';
 
 CREATE TABLE exploration_access (
   exploration_access_id SERIAL PRIMARY KEY,
@@ -221,11 +249,14 @@ CREATE TABLE exploration_access (
   create_timestamp timestamp with time zone DEFAULT now() NOT NULL,
   update_user character varying(60) NOT NULL,
   update_timestamp timestamp with time zone DEFAULT now() NOT NULL,
+
+  FOREIGN KEY (permit_application_id) REFERENCES permit_application(permit_application_id)
+  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (total_disturbed_area_unit_type_code) REFERENCES unit_type(total_disturbed_area_unit_type_code)
+  DEFERRABLE INITIALLY DEFERRED,
 );
 
 COMMENT ON TABLE exploration_access IS 'A list related to a Notice of Work activity - Access Roads, trails, Help Pads, Air Strips, Boat Ramps';
-
--- CREATE INDEX FK ON  exploration_access (permit_application_id, total_disturbed_area_unit_type_code);
 
 CREATE TABLE equipment_assignment_type (
   equipment_assignment_type_code character varying(3),
@@ -254,11 +285,14 @@ CREATE TABLE underground_exploration (
   create_timestamp timestamp with time zone DEFAULT now() NOT NULL,
   update_user character varying(60) NOT NULL,
   update_timestamp timestamp with time zone DEFAULT now() NOT NULL,
+
+  FOREIGN KEY (permit_application_id) REFERENCES permit_application(permit_application_id)
+  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (total_disturbed_area_unit_type_code) REFERENCES unit_type(total_disturbed_area_unit_type_code)
+  DEFERRABLE INITIALLY DEFERRED,
 );
 
 COMMENT ON TABLE underground_exploration IS 'A list related to a Notice of Work activity - Underground Exploration';
-
--- CREATE INDEX FK ON  underground_exploration (permit_application_id, total_disturbed_area_unit_type_code);
 
 CREATE TABLE camp (
   camp_id SERIAL PRIMARY KEY,
@@ -278,11 +312,15 @@ CREATE TABLE camp (
   update_timestamp timestamp with time zone DEFAULT now() NOT NULL,
   total_disturbed_area numeric(14,2),
   total_disturbed_area_unit_type_code character varying(3),
+
+  FOREIGN KEY (permit_application_id) REFERENCES permit_application(permit_application_id)
+  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (total_disturbed_area_unit_type_code) REFERENCES unit_type(total_disturbed_area_unit_type_code)
+  DEFERRABLE INITIALLY DEFERRED,
 );
 
 COMMENT ON TABLE camp IS 'A list related to a Notice of Work activity - Camps, Buildings, Staging Area, Fuel/Lubricant Storage';
 
--- CREATE INDEX FK ON  camp (permit_application_id, total_disturbed_area_unit_type_code);
 
 CREATE TABLE state_of_land (
   state_of_land_id SERIAL PRIMARY KEY,
@@ -293,11 +331,13 @@ CREATE TABLE state_of_land (
   create_timestamp timestamp with time zone DEFAULT now() NOT NULL,
   update_user character varying(60) NOT NULL,
   update_timestamp timestamp with time zone DEFAULT now() NOT NULL,
+
+  FOREIGN KEY (permit_application_id) REFERENCES permit_application(permit_application_id)
+  DEFERRABLE INITIALLY DEFERRED
 );
 
 COMMENT ON TABLE state_of_land IS 'Information related to the state of land at the time a Notice of Work is submitted';
 
--- CREATE INDEX FK ON  state_of_land (permit_application_id);
 
 CREATE TABLE mechanical_trenching (
   mechanical_trenching_id SERIAL PRIMARY KEY,
@@ -310,11 +350,15 @@ CREATE TABLE mechanical_trenching (
   create_timestamp timestamp with time zone DEFAULT now() NOT NULL,
   update_user character varying(60) NOT NULL,
   update_timestamp timestamp with time zone DEFAULT now() NOT NULL,
+
+  FOREIGN KEY (permit_application_id) REFERENCES permit_application(permit_application_id)
+  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (total_disturbed_area_unit_type_code) REFERENCES unit_type(total_disturbed_area_unit_type_code)
+  DEFERRABLE INITIALLY DEFERRED,
 );
 
 COMMENT ON TABLE mechanical_trenching IS 'A list related to a Notice of Work activity - Mechanical Trenching / Test Pits';
 
--- CREATE INDEX FK ON  mechanical_trenching (permit_application_id, total_disturbed_area_unit_type_code);
 
 CREATE TABLE surface_bulk_sample  (
   surface_bulk_sample_id SERIAL PRIMARY KEY,
@@ -330,11 +374,15 @@ CREATE TABLE surface_bulk_sample  (
   create_timestamp character varying(60) NOT NULL,
   update_user character varying(60) NOT NULL,
   update_timestamp character varying(60) NOT NULL,
+
+  FOREIGN KEY (permit_application_id) REFERENCES permit_application(permit_application_id)
+  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (total_disturbed_area_unit_type_code) REFERENCES unit_type(total_disturbed_area_unit_type_code)
+  DEFERRABLE INITIALLY DEFERRED,
 );
 
 COMMENT ON TABLE surface_bulk_sample IS 'A list related to a Notice of Work activity - Surface Bulk Sample';
 
--- CREATE INDEX FK ON  surface_bulk_sample  (permit_application_id, total_disturbed_area_unit_type_code );
 
 CREATE TABLE unit_type (
   unit_type_code character varying(3),
@@ -368,21 +416,29 @@ CREATE TABLE activity_detail (
   create_timestamp timestamp with time zone DEFAULT now() NOT NULL,
   update_user character varying(60) NOT NULL,
   update_timestamp timestamp with time zone DEFAULT now() NOT NULL,
+
+  FOREIGN KEY (incline_unit_type_code) REFERENCES unit_type(incline_unit_type_code)
+  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (water_quantity_unit_type_code) REFERENCES unit_type(water_quantity_unit_type_code)
+  DEFERRABLE INITIALLY DEFERRED,
 );
 
 COMMENT ON TABLE activity_detail IS 'Coomon details related to activities on a Notice of Work';
 
--- CREATE INDEX FK ON  activity_detail (incline_unit_type_code, water_quantity_unit_type_code);
 
 CREATE TABLE application_placer_xref (
   permit_application_id integer,
   placer_operation_id integer,
   is_existing_placer_activity boolean
+
+  FOREIGN KEY (permit_application_id) REFERENCES permit_application(permit_application_id)
+  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (placer_operation_id) REFERENCES placer_operation(placer_operation_id)
+  DEFERRABLE INITIALLY DEFERRED,
 );
 
 COMMENT ON TABLE application_placer_xref IS 'Record connecting existing and proposed placer operations to a notice of work permit application';
 
--- CREATE INDEX FK ON  application_placer_xref (permit_application_id, placer_operation_id);
 
 CREATE TABLE blasting_operation (
   blasting_operation_id SERIAL PRIMARY KEY,
@@ -395,14 +451,16 @@ CREATE TABLE blasting_operation (
   create_timestamp timestamp with time zone DEFAULT now() NOT NULL,
   update_user character varying(60) NOT NULL,
   update_timestamp timestamp with time zone DEFAULT now() NOT NULL,
+
+  FOREIGN KEY (permit_application_id) REFERENCES permit_application(permit_application_id)
+  DEFERRABLE INITIALLY DEFERRED
 );
 
 COMMENT ON TABLE blasting_operation IS 'A list related to a Notice of Work activity - Blasting';
 
--- CREATE INDEX FK ON  blasting_operation (permit_application_id);
 
 CREATE TABLE activity_detail_xref (
-  activity_detail_xref_id integer,
+  activity_detail_xref_id SERIAL PRIMARY KEY,
   activity_detail_id integer,
   exploration_access_id integer,
   camp_id integer,
@@ -414,14 +472,32 @@ CREATE TABLE activity_detail_xref (
   sand_gravel_quarry_operation_id integer,
   underground_exploration_id integer,
   settling_pond_id integer,
-  PRIMARY KEY (activity_detail_xref_id)
+
+  FOREIGN KEY (activity_detail_id) REFERENCES activity_detail(activity_detail_id)
+  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (exploration_access_id) REFERENCES exploration_access(exploration_access_id)
+  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (camp_id) REFERENCES camp_id(camp_id)
+  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (cut_lines_polorization_survey_id) REFERENCES cut_lines_polorization_survey(cut_lines_polorization_survey_id)
+  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (exploration_surface_drilling_id) REFERENCES exploration_surface_drilling(exploration_surface_drilling_id)
+  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (mechanical_trenching_id) REFERENCES mechanical_trenching(mechanical_trenching_id)
+  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (placer_operation_id) REFERENCES placer_operation(placer_operation_id)
+  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (sand_gravel_quarry_operation_id) REFERENCES sand_gravel_quarry_operation(sand_gravel_quarry_operation_id)
+  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (underground_exploration_id) REFERENCES underground_exploration(underground_exploration_id)
+  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (settling_pond_id) REFERENCES settling_pond(settling_pond_id)
+  DEFERRABLE INITIALLY DEFERRED,
+  FOREIGN KEY (surface_bulk_sample_id) REFERENCES surface_bulk_sample(surface_bulk_sample_id)
+  DEFERRABLE INITIALLY DEFERRED,
 );
 
 COMMENT ON TABLE activity_detail_xref IS 'Records connecting activity details to the associated activity';
-
--- CREATE INDEX FK ON  activity_detail_xref (activity_detail_id, exploration_access_id, camp_id, cut_lines_polorization_survey_id, exploration_surface_drilling_id, mechanical_trenching_id, placer_operation_id, sand_gravel_quarry_operation_id, underground_exploration_id, settling_pond_id);
-
--- CREATE INDEX Key ON  activity_detail_xref (surface_bulk_sample_id);
 
 CREATE TABLE notice_of_work_type (
   notice_of_work_type_code character varying(3),
