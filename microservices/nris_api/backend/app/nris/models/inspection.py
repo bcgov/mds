@@ -46,6 +46,19 @@ class Inspection(Base):
     inspection_status = db.relationship("InspectionStatus")
     inspection_status_code = association_proxy(
         'inspection_status', 'inspection_status_code')
+
+    inspection_substatus_id = db.Column(db.Integer,
+                                        db.ForeignKey('inspection_substatus.inspection_substatus_id'))
+    inspection_substatus = db.relationship("InspectionSubstatus")
+    inspection_substatus_code = association_proxy(
+        'inspection_substatus', 'inspection_substatus_code')
+
+    inspection_reason = db.relationship("InspectionReason")
+    inspection_reason_id = db.Column(db.Integer, db.ForeignKey(
+        'inspection_reason.inspection_reason_id'))
+    inspection_reason_code = association_proxy(
+        'inspection_reason', 'inspection_reason_code')
+
     inspection_type_id = db.Column(db.Integer, db.ForeignKey(
         'inspection_type.inspection_type_id'))
     inspection_type = db.relationship("InspectionType")
@@ -60,6 +73,12 @@ class Inspection(Base):
     inspection_preamble = db.Column(db.String())
     inspection_closing = db.Column(db.String())
     officer_notes = db.Column(db.String())
+
+    inspection_auth_source_id = db.Column(db.String())
+    inspection_auth_source_application = db.Column(db.String())
+    inspection_auth_status = db.Column(db.String())
+    inspection_auth_type = db.Column(db.String())
+
     documents = db.relationship(
         'Document', lazy='selectin', secondary='inspection_document_xref')
     inspected_locations = db.relationship("InspectedLocation", lazy='joined')

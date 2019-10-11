@@ -102,9 +102,12 @@ def _parse_nris_element(input):
         inspection = Inspection(external_id=_parse_element_text(assessment_id))
         inspection.inspection_date = _parse_element_text(assessment_date)
         inspection.business_area = _parse_element_text(business_area)
-        status = _create_status(assessment_status_code)
-
+        status = _find_or_save_inspection_status(assessment_status_code)
         inspection.inspection_status = status
+
+        assessment_substatus = data.find('assessment_sub_status)')
+        substatus = _find_or_save_inspection_substatus(assessment_substatus)
+        inspection.inspection_substatus = substatus
 
         if assessment_status_code == 'Complete':
             completed_date = data.find('completion_date')
@@ -159,7 +162,7 @@ def _parse_nris_element(input):
             _save_attendee(attendance)
 
 
-def _create_status(assessment_status_code):
+def _find_or_save_inspection_status(assessment_status_code):
     status_codes = InspectionStatus.find_all_inspection_status()
     code_exists = False
     status = None
@@ -494,13 +497,29 @@ def _save_attendee(attendee):
 def _find_or_save_attendee_type(attendee_type):
     types = AttendeeType.find_all_attendee_types()
     type_found = False
-    attendee_type = None
+    attend_type = None
     if attendee_type is not None:
         for type in types:
             if type.attendee_type_code == attendee_type.text:
                 type_found = True
-                attendee_type = type
+                attend_type = type
     if not type_found:
-        attendee_type = AttendeeType(attendee_type_code=attendee_type.text)
-        db.session.add(attendee_type)
-    return attendee_type
+        attend_type = AttendeeType(attendee_type_code=attendee_type.text)
+        db.session.add(attend_type)
+    return attend_type
+
+
+def _find_or_save_inspection_substatus(inspection_substatus):
+    substatuses = InspectionSubstatus.find_all_inspection_substatus()
+    substatus_found = False
+    inspec_substatus = None
+    if inspection_substatus is not None:
+        for substatus in substatuses:
+            if substatus.inspection_substatus_code == inspection_substatus.text:
+                type_found = True
+                inspec_substatus = substatus
+    if not type_found:
+        inspec_substatus = InspectionSubstatus(
+            inspection_substatus_code=inspection_substatus.text)
+        db.session.add(inspec_substatus)
+    return inspec_substatus
