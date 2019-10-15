@@ -7,7 +7,7 @@ from app.extensions import db
 
 from app.nris.models.inspection import Inspection
 from app.nris.models.inspection_status import InspectionStatus
-from app.nris.modesl.inspection_substatus import InspectionSubstatus
+from app.nris.models.inspection_substatus import InspectionSubstatus
 from app.nris.models.location import Location
 from app.nris.models.inspected_location import InspectedLocation
 from app.nris.models.order_request_detail import OrderRequestDetail
