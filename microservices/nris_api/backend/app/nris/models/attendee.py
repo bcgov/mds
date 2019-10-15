@@ -27,7 +27,8 @@ class Attendee(Base):
     last_name = db.Column(db.String())
     org = db.Column(db.String())
     title = db.Column(db.String())
-    attendee_type = db.Column(db.Integer, db.ForeignKey(''))
+    attendee_type_id = db.Column(
+        db.Integer, db.ForeignKey('attendee_type.attendee_type_id'))
     attendee_type_rel = db.relationship('AttendeeType', lazy='selectin')
     attendee_type = association_proxy('attendee_type_rel', 'attendee_type')
 
