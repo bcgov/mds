@@ -7,6 +7,7 @@ from app.extensions import db
 
 from app.nris.models.inspection import Inspection
 from app.nris.models.inspection_status import InspectionStatus
+from app.nris.models.inspection_substatus import InspectionSubstatus
 from app.nris.models.location import Location
 from app.nris.models.inspected_location import InspectedLocation
 from app.nris.models.order_request_detail import OrderRequestDetail
@@ -518,9 +519,9 @@ def _find_or_save_inspection_substatus(inspection_substatus):
     if inspection_substatus is not None:
         for substatus in substatuses:
             if substatus.inspection_substatus_code == inspection_substatus.text:
-                type_found = True
+                substatus_found = True
                 inspec_substatus = substatus
-    if not type_found:
+    if not substatus_found:
         inspec_substatus = InspectionSubstatus(
             inspection_substatus_code=inspection_substatus.text)
         db.session.add(inspec_substatus)
