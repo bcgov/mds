@@ -1,0 +1,2 @@
+alter table application_document_xref rename column application_document_xref to application_document_xref_guid;
+alter table application_document_xref add column application_document_type_code varchar(3) references application_document_type(application_document_type_code);
