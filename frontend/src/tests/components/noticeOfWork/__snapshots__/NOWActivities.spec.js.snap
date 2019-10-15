@@ -31,7 +31,7 @@ exports[`NOWActivities renders properly 1`] = `
       }
     >
       <CollapsePanel
-        header="Access Roads, trails, Help Pads, Air Strips, Boat Ramps"
+        header="Access Roads, trails, Helipads, Air Strips, Boat Ramps"
         key="1"
       >
         <div
