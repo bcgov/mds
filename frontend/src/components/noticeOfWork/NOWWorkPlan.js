@@ -58,9 +58,8 @@ export class NOWWorkPlan extends Component {
         ? [
             {
               activity: "Cut Lines and Induced Polarization Survey",
-              effectedArea:
-                this.props.noticeOfWork.cutlinesexplgriddisturbedarea || Strings.EMPTY_FIELD,
-              cost: this.props.noticeOfWork.cutlinesreclamationcost || Strings.EMPTY_FIELD,
+              effectedArea: this.props.noticeOfWork.cutlinesexplgriddisturbedarea || Strings.ZERO,
+              cost: this.props.noticeOfWork.cutlinesreclamationcost || Strings.ZERO,
             },
           ]
         : [];
@@ -69,8 +68,8 @@ export class NOWWorkPlan extends Component {
       ? [
           {
             activity: "Placer Operations",
-            effectedArea: this.props.noticeOfWork.placertotaldistarea || Strings.EMPTY_FIELD,
-            cost: this.props.noticeOfWork.placerreclamationcost || Strings.EMPTY_FIELD,
+            effectedArea: this.props.noticeOfWork.placertotaldistarea || Strings.ZERO,
+            cost: this.props.noticeOfWork.placerreclamationcost || Strings.ZERO,
           },
         ]
       : [];
@@ -79,8 +78,8 @@ export class NOWWorkPlan extends Component {
       ? [
           {
             activity: "Sand and Gravel / Quarry Operations",
-            effectedArea: this.props.noticeOfWork.sandgrvqrytotaldistarea || Strings.EMPTY_FIELD,
-            cost: this.props.noticeOfWork.sandgrvqryreclamationcost || Strings.EMPTY_FIELD,
+            effectedArea: this.props.noticeOfWork.sandgrvqrytotaldistarea || Strings.ZERO,
+            cost: this.props.noticeOfWork.sandgrvqryreclamationcost || Strings.ZERO,
           },
         ]
       : [];
@@ -89,9 +88,8 @@ export class NOWWorkPlan extends Component {
       ? [
           {
             activity: "Surface Bulk Sample",
-            effectedArea:
-              this.props.noticeOfWork.surfacebulksampletotaldistarea || Strings.EMPTY_FIELD,
-            cost: this.props.noticeOfWork.surfacebulksamplereclcost || Strings.EMPTY_FIELD,
+            effectedArea: this.props.noticeOfWork.surfacebulksampletotaldistarea || Strings.ZERO,
+            cost: this.props.noticeOfWork.surfacebulksamplereclcost || Strings.ZERO,
           },
         ]
       : [];
@@ -101,8 +99,8 @@ export class NOWWorkPlan extends Component {
         ? [
             {
               activity: "Underground Exploration",
-              effectedArea: this.props.noticeOfWork.underexptotaldistarea || Strings.EMPTY_FIELD,
-              cost: this.props.noticeOfWork.underexpreclamationcost || Strings.EMPTY_FIELD,
+              effectedArea: this.props.noticeOfWork.underexptotaldistarea || Strings.ZERO,
+              cost: this.props.noticeOfWork.underexpreclamationcost || Strings.ZERO,
             },
           ]
         : [];
@@ -110,31 +108,31 @@ export class NOWWorkPlan extends Component {
     const data = [
       {
         activity: "Access Roads, trails, Helipads, Air Strips, Boat Ramps",
-        effectedArea: this.props.noticeOfWork.expaccesstotaldistarea || Strings.EMPTY_FIELD,
-        cost: this.props.noticeOfWork.expaccessreclamationcost || Strings.EMPTY_FIELD,
+        effectedArea: this.props.noticeOfWork.expaccesstotaldistarea || Strings.ZERO,
+        cost: this.props.noticeOfWork.expaccessreclamationcost || Strings.ZERO,
       },
       {
         activity: "Camps, Buildings, Staging Area, Fuel/Lubricant Storage",
-        effectedArea: this.props.noticeOfWork.campbuildstgetotaldistarea || Strings.EMPTY_FIELD,
-        cost: this.props.noticeOfWork.cbsfreclamationcost || Strings.EMPTY_FIELD,
+        effectedArea: this.props.noticeOfWork.campbuildstgetotaldistarea || Strings.ZERO,
+        cost: this.props.noticeOfWork.cbsfreclamationcost || Strings.ZERO,
       },
       ...cutLinesRow,
       {
         activity: "Exploration Surface Drilling",
-        effectedArea: this.props.noticeOfWork.expsurfacedrilltotaldistarea || Strings.EMPTY_FIELD,
-        cost: this.props.noticeOfWork.expsurfacedrillreclamationcost || Strings.EMPTY_FIELD,
+        effectedArea: this.props.noticeOfWork.expsurfacedrilltotaldistarea || Strings.ZERO,
+        cost: this.props.noticeOfWork.expsurfacedrillreclamationcost || Strings.ZERO,
       },
       {
         activity: "Mechanical Trenching / Test Pits",
-        effectedArea: this.props.noticeOfWork.mechtrenchingtotaldistarea || Strings.EMPTY_FIELD,
-        cost: this.props.noticeOfWork.mechtrenchingreclamationcost || Strings.EMPTY_FIELD,
+        effectedArea: this.props.noticeOfWork.mechtrenchingtotaldistarea || Strings.ZERO,
+        cost: this.props.noticeOfWork.mechtrenchingreclamationcost || Strings.ZERO,
       },
       ...placerRow,
       ...sandAndGravelRow,
       {
         activity: "Settling Ponds",
-        effectedArea: this.props.noticeOfWork.pondstotaldistarea || Strings.EMPTY_FIELD,
-        cost: this.props.noticeOfWork.pondsreclamationcost || Strings.EMPTY_FIELD,
+        effectedArea: this.props.noticeOfWork.pondstotaldistarea || Strings.ZERO,
+        cost: this.props.noticeOfWork.pondsreclamationcost || Strings.ZERO,
       },
       ...bulkSamplesRow,
       ...undergroundExpRow,
