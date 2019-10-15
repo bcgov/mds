@@ -91,28 +91,28 @@ exports[`NOWWorkPlan renders properly 1`] = `
           Array [
             Object {
               "activity": "Access Roads, trails, Helipads, Air Strips, Boat Ramps",
-              "cost": "N/A",
-              "effectedArea": "N/A",
+              "cost": "0.00",
+              "effectedArea": "0.00",
             },
             Object {
               "activity": "Camps, Buildings, Staging Area, Fuel/Lubricant Storage",
-              "cost": "N/A",
-              "effectedArea": "N/A",
+              "cost": "0.00",
+              "effectedArea": "0.00",
             },
             Object {
               "activity": "Exploration Surface Drilling",
-              "cost": "N/A",
-              "effectedArea": "N/A",
+              "cost": "0.00",
+              "effectedArea": "0.00",
             },
             Object {
               "activity": "Mechanical Trenching / Test Pits",
-              "cost": "N/A",
-              "effectedArea": "N/A",
+              "cost": "0.00",
+              "effectedArea": "0.00",
             },
             Object {
               "activity": "Settling Ponds",
-              "cost": "N/A",
-              "effectedArea": "N/A",
+              "cost": "0.00",
+              "effectedArea": "0.00",
             },
             Object {
               "activity": "Total:",
