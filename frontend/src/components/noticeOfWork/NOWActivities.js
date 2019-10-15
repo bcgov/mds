@@ -1173,7 +1173,7 @@ export class NOWActivities extends Component {
               isActive ? <Icon type="minus-square" /> : <Icon type="plus-square" />
             }
           >
-            <Panel header="Access Roads, trails, Help Pads, Air Strips, Boat Ramps" key="1">
+            <Panel header="Access Roads, trails, Helipads, Air Strips, Boat Ramps" key="1">
               {this.renderAccess()}
             </Panel>
             <Panel header="Blasting" key="2">

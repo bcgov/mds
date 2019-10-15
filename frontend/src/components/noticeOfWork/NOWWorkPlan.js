@@ -69,7 +69,7 @@ export class NOWWorkPlan extends Component {
       ? [
           {
             activity: "Placer Operations",
-            effectedArea: this.props.noticeOfWork.placerreclamationarea || Strings.EMPTY_FIELD,
+            effectedArea: this.props.noticeOfWork.placertotaldistarea || Strings.EMPTY_FIELD,
             cost: this.props.noticeOfWork.placerreclamationcost || Strings.EMPTY_FIELD,
           },
         ]
@@ -102,16 +102,16 @@ export class NOWWorkPlan extends Component {
             {
               activity: "Underground Exploration",
               effectedArea: this.props.noticeOfWork.underexptotaldistarea || Strings.EMPTY_FIELD,
-              cost: this.props.noticeOfWork.expaccesstotaldistarea || Strings.EMPTY_FIELD,
+              cost: this.props.noticeOfWork.underexpreclamationcost || Strings.EMPTY_FIELD,
             },
           ]
         : [];
 
     const data = [
       {
-        activity: "Access Roads, trails, Help Pads, Air Strips, Boat Ramps",
+        activity: "Access Roads, trails, Helipads, Air Strips, Boat Ramps",
         effectedArea: this.props.noticeOfWork.expaccesstotaldistarea || Strings.EMPTY_FIELD,
-        cost: this.props.noticeOfWork.expaccesstotaldistarea || Strings.EMPTY_FIELD,
+        cost: this.props.noticeOfWork.expaccessreclamationcost || Strings.EMPTY_FIELD,
       },
       {
         activity: "Camps, Buildings, Staging Area, Fuel/Lubricant Storage",
