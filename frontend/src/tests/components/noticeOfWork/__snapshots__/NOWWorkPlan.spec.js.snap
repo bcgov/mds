@@ -90,7 +90,7 @@ exports[`NOWWorkPlan renders properly 1`] = `
         dataSource={
           Array [
             Object {
-              "activity": "Access Roads, trails, Help Pads, Air Strips, Boat Ramps",
+              "activity": "Access Roads, trails, Helipads, Air Strips, Boat Ramps",
               "cost": "N/A",
               "effectedArea": "N/A",
             },
