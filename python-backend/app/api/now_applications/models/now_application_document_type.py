@@ -10,9 +10,9 @@ from app.api.utils.models_mixins import AuditMixin, Base
 
 
 class NOWApplicationDocumentType(AuditMixin, Base):
-    __tablename__ = 'now_application_document_type'
-    now_application_document_type_code = db.Column(db.String(3), primary_key=True)
-    description = db.Column(db.String(4000), nullable=False)
+    __tablename__ = 'nowapplication_document_type'
+    now_application_document_type_code = db.Column(db.String, primary_key=True)
+    description = db.Column(db.String, nullable=False)
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     @classmethod

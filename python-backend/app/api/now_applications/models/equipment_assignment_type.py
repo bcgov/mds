@@ -11,8 +11,8 @@ from app.api.utils.models_mixins import AuditMixin, Base
 
 class EquipmentAssignmentType(AuditMixin, Base):
     __tablename__ = 'equipment_assignment_type'
-    equipment_assignment_type_code = db.Column(db.String(3), primary_key=True)
-    description = db.Column(db.String(4000), nullable=False)
+    equipment_assignment_type_code = db.Column(db.String, primary_key=True)
+    description = db.Column(db.String, nullable=False)
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     @classmethod

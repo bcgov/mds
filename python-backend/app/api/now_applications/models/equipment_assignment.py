@@ -12,7 +12,7 @@ class EquipmentAssignment(Base):
     equipment_assignment_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     now_application_id = db.Column(db.Integer, db.ForeignKey('now_application.now_application_id'))
     equipment_assignment_type_code = db.Column(
-        db.String(3), db.ForeignKey('equipment_assignment_type.equipment_assignment_type_code'))
+        db.String, db.ForeignKey('equipment_assignment_type.equipment_assignment_type_code'))
     equipment_id = db.Column(db.Integer, db.ForeignKey('equipment.equipment_id'))
 
     def __repr__(self):

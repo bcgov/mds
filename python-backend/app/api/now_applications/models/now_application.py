@@ -15,20 +15,18 @@ class NOWApplication(Base, AuditMixin):
     now_message_id = db.Column(db.Integer, nullable=False)
     now_tracking_number = db.Column(db.Integer)
     notice_of_work_type_code = db.Column(
-        db.String(3),
+        db.String,
         db.ForeignKey('notice_of_work_type_code.notice_of_work_type_code'),
         nullable=False)
     application_status_code = db.Column(
-        db.String(3),
-        db.ForeignKey('application_status_code.application_status_code'),
-        nullable=False)
+        db.String, db.ForeignKey('application_status_code.application_status_code'), nullable=False)
     submitted_date = db.Column(db.Date, nullable=False)
     received_date = db.Column(db.Date, nullable=False)
     latitude = db.Column(db.Numeric(9, 7))
     longitude = db.Column(db.Numeric(11, 7))
-    property_name = db.Column(db.String(4000))
-    tenure_number = db.Column(db.String(4000))
-    description_of_land = db.Column(db.String(4000))
+    property_name = db.Column(db.String)
+    tenure_number = db.Column(db.String)
+    description_of_land = db.Column(db.String)
     proposed_start_date = db.Column(db.Date)
     proposed_end_date = db.Column(db.Date)
 

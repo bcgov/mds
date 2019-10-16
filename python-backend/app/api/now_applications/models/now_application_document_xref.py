@@ -14,9 +14,12 @@ class NOWApplicationDocumentXref(Base):
     mine_document_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('mine_document.mine_document_guid'))
     now_application_id = db.Column(
-        db.Integer, db.ForeignKey('application.application_id'), server_default=FetchedValue())
+        db.Integer,
+        db.ForeignKey('now_application.now_application_id'),
+        server_default=FetchedValue())
     now_application_document_type_code = db.Column(
-        db.String(3), db.ForeignKey('application_document_type.application_document_type_code'))
+        db.String,
+        db.ForeignKey('now_application_document_type.now_application_document_type_code'))
 
     mine_document = db.relationship('MineDocument', lazy='joined')
     now_application_document_type = db.relationship('NOWApplicationDocumentType', lazy='joined')
