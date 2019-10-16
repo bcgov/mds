@@ -530,7 +530,7 @@ VALUES
 	('QIM', 'Q', 'Quarry - Industrial Mineral', true, 'system-mds', 'system-mds')
 on conflict do nothing;
 
-INSERT INTO application_status
+INSERT INTO now_application_status
 (application_status_code, description, active_ind, create_user, update_user)
 VALUES
 	('ACC', 'Accepted', true, 'system-mds', 'system-mds'),
