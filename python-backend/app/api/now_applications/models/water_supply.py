@@ -15,11 +15,11 @@ class WaterSupply(AuditMixin, Base):
     now_application_id = db.Column(db.Integer,
                                    db.ForeignKey('now_application.now_application_id'),
                                    nullable=False)
-    supply_source_description = db.Column(db.String)
-    supply_source_type = db.Column(db.String)
-    water_use_description = db.Column(db.String)
+    supply_source_description = db.Column(db.String(4000)
+    supply_source_type = db.Column(db.String(4000)
+    water_use_description = db.Column(db.String(4000)
     estimate_rate = db.Column(db.Numeric(14, 2))
     pump_size = db.Column(db.Numeric(14, 2))
-    intake_location = db.Column(db.String)
+    intake_location = db.Column(db.String(4000))
 
     now_application = db.relationship('NOWApplication')

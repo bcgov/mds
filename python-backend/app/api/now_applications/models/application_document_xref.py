@@ -16,7 +16,7 @@ class ApplicationDocumentXref(Base):
     application_id = db.Column(
         db.Integer, db.ForeignKey('application.application_id'), server_default=FetchedValue())
     application_document_type_code = db.Column(
-        db.String, db.ForeignKey('application_document_type.application_document_type_code'))
+        db.String(3), db.ForeignKey('application_document_type.application_document_type_code'))
 
     mine_document = db.relationship('MineDocument', lazy='joined')
     application_document_type = db.relationship('ApplicationDocumentType', lazy='joined')
