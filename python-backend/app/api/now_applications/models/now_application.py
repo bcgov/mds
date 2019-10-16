@@ -6,11 +6,11 @@ from app.api.utils.models_mixins import Base, AuditMixin
 from app.extensions import db
 
 
-class PermitApplication(Base, AuditMixin):
-    __tablename__ = "permit_application"
+class NOWApplication(Base, AuditMixin):
+    __tablename__ = "now_application"
 
-    permit_application_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
-    permit_application_guid = db.Column(UUID(as_uuid=True))
+    now_application_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
+    now_application_guid = db.Column(UUID(as_uuid=True))
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     now_message_id = db.Column(db.Integer, nullable=False)
     now_tracking_number = db.Column(db.Integer)
@@ -32,10 +32,9 @@ class PermitApplication(Base, AuditMixin):
     proposed_start_date = db.Column(db.Date)
     proposed_end_date = db.Column(db.Date)
 
-    application_documents = db.relationship('ApplicationDocumentXref', lazy='joined')
-    placer_operations = db.relationship('PlacerOperation',
-                                        lazy='select',
-                                        secondary='now_application_place_xref')
+    application_documents = db.relationship('NOWApplicationDocumentXref', lazy='joined')
+    placer_operations = db.relationship(
+        'PlacerOperation', lazy='select', secondary='now_application_place_xref')
 
     def __repr__(self):
         return '<Application %r>' % self.application_guid
