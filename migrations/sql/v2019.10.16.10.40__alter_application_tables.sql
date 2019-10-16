@@ -1,0 +1,25 @@
+ALTER TABLE permit_application RENAME COLUMN permit_application_id TO now_application_id;
+ALTER TABLE cut_lines_polarization_survey RENAME COLUMN permit_application_id TO now_application_id;
+ALTER TABLE equipment_assignment RENAME COLUMN permit_application_id TO now_application_id;
+ALTER TABLE water_supply RENAME COLUMN permit_application_id TO now_application_id;
+ALTER TABLE application_settling_pond_xref RENAME COLUMN permit_application_id TO now_application_id;
+ALTER TABLE exploration_surface_drilling RENAME COLUMN permit_application_id TO now_application_id;
+ALTER TABLE sand_gravel_quarry_operation RENAME COLUMN permit_application_id TO now_application_id;
+ALTER TABLE exploration_access RENAME COLUMN permit_application_id TO now_application_id;
+ALTER TABLE underground_exploration RENAME COLUMN permit_application_id TO now_application_id;
+ALTER TABLE camp RENAME COLUMN permit_application_id TO now_application_id;
+ALTER TABLE state_of_land RENAME COLUMN permit_application_id TO now_application_id;
+ALTER TABLE mechanical_trenching RENAME COLUMN permit_application_id TO now_application_id;
+ALTER TABLE surface_bulk_sample RENAME COLUMN permit_application_id TO now_application_id;
+ALTER TABLE application_placer_xref RENAME COLUMN permit_application_id TO now_application_id;
+ALTER TABLE blasting_operation RENAME COLUMN permit_application_id TO now_application_id;
+
+
+ALTER TABLE application_status RENAME TO now_application_status;
+ALTER TABLE permit_application RENAME TO now_application;
+ALTER TABLE application_placer_xref RENAME TO now_application_placer_xref;
+ALTER TABLE application_document_xref RENAME TO now_application_document_xref;
+ALTER TABLE application_document_type RENAME TO now_application_document_type;
+ALTER TABLE application_settling_pond_xref RENAME TO now_application_settling_pond_xref;
+
+
