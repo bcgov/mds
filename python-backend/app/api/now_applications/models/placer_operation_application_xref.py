@@ -19,5 +19,5 @@ class NOWApplicationPlacerXref(AuditMixin, Base):
                                     nullable=False)
     is_existing_placer_activity = db.Column(db.Boolean, nullable=False)
 
-    NOWApplication = db.relationship('NOWApplication', backref='Placer_xref')
-    PlacerOperation = db.relationship('PlacerOperation', backref='NOW_xref')
+    now_application = db.relationship('NOWApplication', backref='Placer_xrefs')
+    placer_operation = db.relationship('PlacerOperation', backref='NOW_xrefs')

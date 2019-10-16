@@ -31,6 +31,9 @@ class PermitApplication(Base, AuditMixin):
     proposed_end_date = db.Column(db.Date)
 
     application_documents = db.relationship('ApplicationDocumentXref', lazy='joined')
+    placer_operations = db.relationship('PlacerOperation',
+                                        lazy='select',
+                                        secondary='now_application_place_xref')
 
     def __repr__(self):
         return '<Application %r>' % self.application_guid
