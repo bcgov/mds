@@ -10,26 +10,25 @@ from sqlalchemy.orm import validates
 from app.extensions import db
 from werkzeug.exceptions import BadRequest
 
-from .party_address import PartyAddressXref
-from ....utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import AuditMixin, Base
 
 
 class Party(AuditMixin, Base):
     __tablename__ = 'party'
-    party_guid = db.Column(UUID(as_uuid=True), primary_key=True)
+    party_guid = db.Column(UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     first_name = db.Column(db.String, nullable=True)
     middle_name = db.Column(db.String, nullable=True)
     party_name = db.Column(db.String, nullable=False)
     phone_no = db.Column(db.String, nullable=False)
     phone_ext = db.Column(db.String, nullable=True)
     email = db.Column(db.String, nullable=True)
-    effective_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    expiry_date = db.Column(db.DateTime, nullable=False)
+    effective_date = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
+    expiry_date = db.Column(db.DateTime)
     party_type_code = db.Column(db.String, db.ForeignKey('party_type_code.party_type_code'))
     deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     mine_party_appt = db.relationship('MinePartyAppointment', lazy='select')
-    address = db.relationship('Address', lazy='select', secondary='party_address_xref')
+    address = db.relationship('Address', lazy='select')
     job_title = db.Column(db.String, nullable=True)
     postnominal_letters = db.Column(db.String, nullable=True)
     idir_username = db.Column(db.String, nullable=True)
@@ -135,7 +134,6 @@ class Party(AuditMixin, Base):
             add_to_session=True):
         party = cls(
             # Required fields
-            party_guid=uuid.uuid4(),
             party_name=party_name,
             phone_no=phone_no,
             party_type_code=party_type_code,

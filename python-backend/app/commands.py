@@ -65,7 +65,7 @@ def register_commands(app):
                 permitee = MinePartyAppointmentFactory(mine=mine,
                                                        mine_party_appt_type_code='PMT',
                                                        party__company=True)
-                NOWApplicationFactory()
+                NOWApplicationFactory(mine=mine)
             try:
                 db.session.commit()
                 print(f'Created {num} random mines with related data.')
@@ -77,3 +77,8 @@ def register_commands(app):
     def run_etl():
         from app.cli_jobs import ETL_jobs
         ETL_jobs.run_ETL()
+
+    @app.cli.command()
+    def run_address_etl():
+        from app.cli_jobs import ETL_jobs
+        ETL_jobs.run_address_etl()

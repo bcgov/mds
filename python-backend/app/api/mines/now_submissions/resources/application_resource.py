@@ -8,14 +8,14 @@ from app.extensions import api
 from app.api.now_submissions.models.application import Application
 from app.api.now_submissions.response_models import APPLICATION_LIST
 from app.api.utils.access_decorators import requires_role_view_all
-from app.api.utils.resources_mixins import UserMixin, ErrorMixin
+from app.api.utils.resources_mixins import UserMixin 
 
 
 PAGE_DEFAULT = 1
 PER_PAGE_DEFAULT = 25
 
 
-class MineApplicationResource(Resource, UserMixin, ErrorMixin):
+class MineApplicationResource(Resource, UserMixin ):
     @api.doc(
         description='Get a list of NoW applications for a mine',
         params={

@@ -166,6 +166,7 @@ export class MinePermitInfo extends Component {
         onSubmit,
         title,
         mine_guid: permit.mine_guid,
+        isMajorMine: this.props.mines[this.props.mineGuid].major_mine_ind,
         amendments: permit.permit_amendments,
       },
       widthSize: "50vw",
@@ -187,6 +188,7 @@ export class MinePermitInfo extends Component {
             ? `Edit initial permit for ${permit.permit_no}`
             : `Edit permit amendment for ${permit.permit_no}`,
         mine_guid: permit.mine_guid,
+        isMajorMine: this.props.mines[this.props.mineGuid].major_mine_ind,
         permit_guid: permit.permit_guid,
         handleRemovePermitAmendmentDocument: this.handleRemovePermitAmendmentDocument,
       },

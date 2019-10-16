@@ -19,12 +19,6 @@ BEGIN
         SELECT permit_id FROM permit WHERE create_user LIKE IDIR_USER
     );
     DELETE FROM permit WHERE create_user LIKE IDIR_USER;
-    DELETE FROM party_address_xref
-    WHERE party_guid = ANY (
-        SELECT party_guid
-        FROM party
-        WHERE create_user LIKE IDIR_USER
-    );
     DELETE FROM party WHERE create_user LIKE IDIR_USER;
     DELETE FROM mine_status_xref WHERE create_user LIKE IDIR_USER;
     DELETE FROM mine_status WHERE create_user LIKE IDIR_USER;

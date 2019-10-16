@@ -7,7 +7,7 @@ from sqlalchemy.orm import validates
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db, api
 
-from ....utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import AuditMixin, Base
 
 
 class IdirMembership(AuditMixin, Base):

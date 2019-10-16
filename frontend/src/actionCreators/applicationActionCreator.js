@@ -10,12 +10,12 @@ import { ENVIRONMENT } from "@/constants/environment";
 import { createRequestHeader } from "@/utils/RequestHeaders";
 import CustomAxios from "@/customAxios";
 
-export const fetchApplications = (params = {}) => (dispatch) => {
+export const fetchApplications = (mineGuid, params = {}) => (dispatch) => {
   dispatch(request(reducerTypes.GET_APPLICATIONS));
   dispatch(showLoading("modal"));
   return CustomAxios({ errorToastMessage: String.ERROR })
     .get(
-      `${ENVIRONMENT.apiUrl + API.APPLICATIONS}?${queryString.stringify(params)}`,
+      `${ENVIRONMENT.apiUrl}${API.MINE_APPLICATIONS(mineGuid)}?${queryString.stringify(params)}`,
       createRequestHeader()
     )
     .then((response) => {
@@ -26,12 +26,26 @@ export const fetchApplications = (params = {}) => (dispatch) => {
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const updateApplication = (application_guid, payload) => (dispatch) => {
+export const createApplication = (mineGuid, payload) => (dispatch) => {
+  dispatch(request(reducerTypes.CREATE_APPLICATION));
+  dispatch(showLoading("modal"));
+  return CustomAxios()
+    .post(`${ENVIRONMENT.apiUrl}${API.MINE_APPLICATIONS(mineGuid)}`, payload, createRequestHeader())
+    .then((response) => {
+      notification.success({ message: "Successfully created a new application", duration: 10 });
+      dispatch(success(reducerTypes.CREATE_APPLICATION));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.CREATE_APPLICATION)))
+    .finally(() => dispatch(hideLoading("modal")));
+};
+
+export const updateApplication = (mineGuid, application_guid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_APPLICATION));
   dispatch(showLoading());
   return CustomAxios()
     .put(
-      `${ENVIRONMENT.apiUrl + API.APPLICATIONS}/${application_guid}`,
+      `${ENVIRONMENT.apiUrl}${API.MINE_APPLICATIONS(mineGuid)}/${application_guid}`,
       payload,
       createRequestHeader()
     )
@@ -45,18 +59,4 @@ export const updateApplication = (application_guid, payload) => (dispatch) => {
     })
     .catch(() => dispatch(error(reducerTypes.UPDATE_APPLICATION)))
     .finally(() => dispatch(hideLoading()));
-};
-
-export const createApplication = (payload) => (dispatch) => {
-  dispatch(request(reducerTypes.CREATE_APPLICATION));
-  dispatch(showLoading("modal"));
-  return CustomAxios()
-    .post(`${ENVIRONMENT.apiUrl + API.APPLICATIONS}`, payload, createRequestHeader())
-    .then((response) => {
-      notification.success({ message: "Successfully created a new application", duration: 10 });
-      dispatch(success(reducerTypes.CREATE_APPLICATION));
-      return response;
-    })
-    .catch(() => dispatch(error(reducerTypes.CREATE_APPLICATION)))
-    .finally(() => dispatch(hideLoading("modal")));
 };

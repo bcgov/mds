@@ -7,32 +7,30 @@ from sqlalchemy import or_, exc as alch_exceptions
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
 from app.extensions import api
-from ..models.mine_party_appt import MinePartyAppointment
-from ..models.mine_party_appt_type import MinePartyAppointmentType
-from ....utils.access_decorators import requires_role_view_all, requires_role_mine_edit
-from ....utils.resources_mixins import UserMixin
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_mine_edit
+from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
+
+from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
+from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
 
 
 class MinePartyApptResource(Resource, UserMixin):
     parser = CustomReqparser()
     parser.add_argument('mine_guid', type=str, help='guid of the mine.')
     parser.add_argument('party_guid', type=str, help='guid of the party.')
-    parser.add_argument(
-        'mine_party_appt_type_code',
-        type=str,
-        help='code for the type of appt.',
-        store_missing=False)
+    parser.add_argument('mine_party_appt_type_code',
+                        type=str,
+                        help='code for the type of appt.',
+                        store_missing=False)
     parser.add_argument('related_guid', type=str, store_missing=False)
     parser.add_argument('end_current', type=bool)
-    parser.add_argument(
-        'start_date',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
-        store_missing=False)
-    parser.add_argument(
-        'end_date',
-        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
-        store_missing=False)
+    parser.add_argument('start_date',
+                        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+                        store_missing=False)
+    parser.add_argument('end_date',
+                        type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
+                        store_missing=False)
 
     @api.doc(params={'mine_party_appt_guid': 'mine party appointment serial id'})
     @requires_role_view_all
@@ -48,8 +46,9 @@ class MinePartyApptResource(Resource, UserMixin):
             mine_guid = request.args.get('mine_guid')
             party_guid = request.args.get('party_guid')
             types = request.args.getlist('types')  #list
-            mpas = MinePartyAppointment.find_by(
-                mine_guid=mine_guid, party_guid=party_guid, mine_party_appt_type_codes=types)
+            mpas = MinePartyAppointment.find_by(mine_guid=mine_guid,
+                                                party_guid=party_guid,
+                                                mine_party_appt_type_codes=types)
             result = [x.json(relationships=relationships) for x in mpas]
         return result
 
@@ -84,13 +83,12 @@ class MinePartyApptResource(Resource, UserMixin):
                 raise BadRequest('There is currently more than one active appointment.')
             current_mpa[0].end_date = start_date - timedelta(days=1)
             current_mpa[0].save()
-        new_mpa = MinePartyAppointment(
-            mine_guid=mine_guid,
-            party_guid=data.get('party_guid'),
-            mine_party_appt_type_code=mine_party_appt_type_code,
-            start_date=start_date,
-            end_date=data.get('end_date'),
-            processed_by=self.get_user_info())
+        new_mpa = MinePartyAppointment(mine_guid=mine_guid,
+                                       party_guid=data.get('party_guid'),
+                                       mine_party_appt_type_code=mine_party_appt_type_code,
+                                       start_date=start_date,
+                                       end_date=data.get('end_date'),
+                                       processed_by=self.get_user_info())
 
         if new_mpa.mine_party_appt_type_code == "EOR":
             new_mpa.assign_related_guid(related_guid)

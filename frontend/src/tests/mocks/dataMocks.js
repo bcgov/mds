@@ -376,7 +376,7 @@ export const MINESPACE_USERS = [
   },
 ];
 
-export const MINESPACE_RESPONSE = { users: MINESPACE_USERS };
+export const MINESPACE_RESPONSE = { records: MINESPACE_USERS };
 
 export const PAGE_DATA = {
   current_page: 1,

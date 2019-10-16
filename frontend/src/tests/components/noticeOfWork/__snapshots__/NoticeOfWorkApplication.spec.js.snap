@@ -12,6 +12,9 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
         NoW Number: 
         N/A
       </h1>
+      <div
+        className="padding-md--top"
+      />
       <p>
         The information below is a subset of all available data. Open the PDF for a comprehensive view.
       </p>
