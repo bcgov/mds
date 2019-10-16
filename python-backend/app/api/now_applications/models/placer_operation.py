@@ -24,3 +24,7 @@ class PlacerOperation(AuditMixin, Base):
     total_disturbed_area_unit_type_code = db.Column(db.String,
                                                     db.ForeignKey('unit_type.unit_type_code'),
                                                     nullable=False)
+
+    now_applications = db.relationship('NOWApplication',
+                                       lazy='joined',
+                                       secondary='now_application_placer_xref')
