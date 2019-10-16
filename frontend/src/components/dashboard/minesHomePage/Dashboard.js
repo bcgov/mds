@@ -23,7 +23,6 @@ import {
   fetchMineDisturbanceOptions,
   fetchMineCommodityOptions,
   fetchPermitStatusOptions,
-  fetchApplicationStatusOptions,
   fetchMineReportStatusOptions,
 } from "@/actionCreators/staticContentActionCreator";
 import { fetchPartyRelationshipTypes } from "@/actionCreators/partiesActionCreator";
@@ -88,7 +87,6 @@ const propTypes = {
   mineIds: PropTypes.arrayOf(PropTypes.string).isRequired,
   pageData: CustomPropTypes.minePageData.isRequired,
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
-  fetchApplicationStatusOptions: PropTypes.func.isRequired,
   fetchMineReportStatusOptions: PropTypes.func.isRequired,
 };
 
@@ -153,7 +151,6 @@ export class Dashboard extends Component {
     this.props.fetchMineCommodityOptions();
     this.props.fetchPartyRelationshipTypes();
     this.props.fetchPermitStatusOptions();
-    this.props.fetchApplicationStatusOptions();
     this.props.fetchMineReportStatusOptions();
   }
 
@@ -530,7 +527,6 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineCommodityOptions,
       fetchMineDisturbanceOptions,
       fetchPermitStatusOptions,
-      fetchApplicationStatusOptions,
       openModal,
       closeModal,
       fetchPartyRelationshipTypes,

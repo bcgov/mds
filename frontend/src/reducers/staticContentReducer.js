@@ -14,7 +14,6 @@ const initialState = {
   mineCommodityOptions: [],
   provinceOptions: [],
   permitStatusCodes: [],
-  applicationStatusCodes: [],
   complianceCodes: [],
   incidentFollowupActionOptions: [],
   incidentDeterminationOptions: [],
@@ -61,11 +60,6 @@ const staticContentReducer = (state = initialState, action) => {
       return {
         ...state,
         permitStatusCodes: action.payload.records,
-      };
-    case actionTypes.STORE_APPLICATION_STATUS_OPTIONS:
-      return {
-        ...state,
-        applicationStatusCodes: action.payload.records,
       };
     case actionTypes.STORE_COMPLIANCE_CODES:
       return {
@@ -124,7 +118,6 @@ export const getMineDisturbanceOptions = (state) => state[STATIC_CONTENT].mineDi
 export const getMineCommodityOptions = (state) => state[STATIC_CONTENT].mineCommodityOptions;
 export const getProvinceOptions = (state) => state[STATIC_CONTENT].provinceOptions;
 export const getPermitStatusOptions = (state) => state[STATIC_CONTENT].permitStatusCodes;
-export const getApplicationStatusOptions = (state) => state[STATIC_CONTENT].applicationStatusCodes;
 export const getComplianceCodes = (state) => state[STATIC_CONTENT].complianceCodes;
 export const getIncidentDocumentTypeOptions = (state) =>
   state[STATIC_CONTENT].incidentDocumentTypeOptions;
