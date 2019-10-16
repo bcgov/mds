@@ -11,7 +11,7 @@ from app.api.utils.models_mixins import AuditMixin, Base
 
 class PlacerOperation(AuditMixin, Base):
     __tablename__ = 'placer_operation'
-    placer_operation_id = db.Column(db.Integer, primary_key=True)
+    placer_operation_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     is_underground = db.Column(db.Boolean, nullable=False)
     is_hand_operation = db.Column(db.Boolean, nullable=False)
     reclamation_area = db.Column((db.Numeric(14, 2)))

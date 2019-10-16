@@ -11,9 +11,10 @@ from app.api.utils.models_mixins import AuditMixin, Base
 
 class WaterSupply(AuditMixin, Base):
     __tablename__ = 'water_supply'
-    water_supply_id = db.Column(db.Integer, primary_key=True)
-    now_application_id = db.Column(
-        db.Integer, db.ForeignKey('now_application.now_application_id'), nullable=False)
+    water_supply_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
+    now_application_id = db.Column(db.Integer,
+                                   db.ForeignKey('now_application.now_application_id'),
+                                   nullable=False)
     supply_source_description = db.Column(db.String)
     supply_source_type = db.Column(db.String)
     water_use_description = db.Column(db.String)

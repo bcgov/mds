@@ -23,7 +23,6 @@ class SurfaceBulkSurface(AuditMixin, Base):
     reclamation_cost = db.Column(db.Numeric(10, 2))
     total_disturbed_area = db.Column(db.Numeric(14, 2))
     total_disturbed_area_unit_type_code = db.Column(db.String,
-                                                    db.ForeignKey('unit_type.unit_type_code'),
-                                                    nullable=False)
+                                                    db.ForeignKey('unit_type.unit_type_code'))
 
     now_application = db.relationship('NOWApplication', lazy='select')
