@@ -1,4 +1,11 @@
 ALTER TABLE permit_application RENAME COLUMN permit_application_id TO now_application_id;
+ALTER TABLE permit_application RENAME COLUMN permit_application_guid TO now_application_guid;
+ALTER TABLE permit_application RENAME COLUMN application_status_code TO now_application_status_code;
+ALTER TABLE application_status RENAME COLUMN application_status_code TO now_application_status_code;
+ALTER TABLE application_document_type RENAME COLUMN application_document_type_code TO now_application_document_type_code;
+ALTER TABLE application_document_xref RENAME COLUMN application_document_xref_guid TO now_application_document_xref_guid;
+ALTER TABLE application_document_xref RENAME COLUMN permit_application_id TO now_application_id;
+ALTER TABLE application_document_xref RENAME COLUMN application_document_type_code TO now_application_document_type_code;
 ALTER TABLE cut_lines_polarization_survey RENAME COLUMN permit_application_id TO now_application_id;
 ALTER TABLE equipment_assignment RENAME COLUMN permit_application_id TO now_application_id;
 ALTER TABLE water_supply RENAME COLUMN permit_application_id TO now_application_id;
@@ -13,6 +20,7 @@ ALTER TABLE mechanical_trenching RENAME COLUMN permit_application_id TO now_appl
 ALTER TABLE surface_bulk_sample RENAME COLUMN permit_application_id TO now_application_id;
 ALTER TABLE application_placer_xref RENAME COLUMN permit_application_id TO now_application_id;
 ALTER TABLE blasting_operation RENAME COLUMN permit_application_id TO now_application_id;
+ALTER TABLE now_party_appointment RENAME COLUMN permit_application_id TO now_application_id;
 
 ALTER TABLE permit_application RENAME CONSTRAINT "permit_application_application_status_code_fkey" TO "now_application_now_application_status_code_fkey";
 ALTER TABLE permit_application RENAME CONSTRAINT "permit_application_mine_guid_fkey" TO "now_application_mine_guid_fkey";
@@ -31,6 +39,7 @@ ALTER TABLE mechanical_trenching RENAME CONSTRAINT "mechanical_trenching_permit_
 ALTER TABLE surface_bulk_sample RENAME CONSTRAINT "surface_bulk_sample_permit_application_id_fkey" TO "surface_bulk_sample_now_application_id_fkey";
 ALTER TABLE application_placer_xref RENAME CONSTRAINT "application_placer_xref_permit_application_id_fkey" TO "now_application_placer_xref_now_application_id_fkey";
 ALTER TABLE blasting_operation RENAME CONSTRAINT "blasting_operation_permit_application_id_fkey" TO "blasting_operation_now_application_id_fkey";
+ALTER TABLE now_party_appointment RENAME CONSTRAINT "now_party_appointment_permit_application_id_fkey" TO "now_party_appointment_now_application_id_fkey";
 
 ALTER TABLE permit_application RENAME TO now_application;
 ALTER TABLE application_status RENAME TO now_application_status;
