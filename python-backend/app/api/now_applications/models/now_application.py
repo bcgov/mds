@@ -19,7 +19,9 @@ class NOWApplication(Base, AuditMixin):
         db.ForeignKey('notice_of_work_type_code.notice_of_work_type_code'),
         nullable=False)
     application_status_code = db.Column(
-        db.String, db.ForeignKey('application_status_code.application_status_code'), nullable=False)
+        db.String,
+        db.ForeignKey('now_application_status_code.now_application_status_code'),
+        nullable=False)
     submitted_date = db.Column(db.Date, nullable=False)
     received_date = db.Column(db.Date, nullable=False)
     latitude = db.Column(db.Numeric(9, 7))
