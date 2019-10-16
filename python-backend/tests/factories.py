@@ -8,7 +8,6 @@ import factory.fuzzy
 
 from app.extensions import db
 from tests.status_code_gen import *
-from app.api.mines.applications.models.application import Application
 from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.mine.models.mine_type import MineType
@@ -67,21 +66,6 @@ class BaseFactory(factory.alchemy.SQLAlchemyModelFactory, FactoryRegistry):
         abstract = True
         sqlalchemy_session = db.session
         sqlalchemy_session_persistence = 'flush'
-
-
-class ApplicationFactory(BaseFactory):
-    class Meta:
-        model = Application
-
-    class Params:
-        mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
-
-    application_guid = GUID
-    mine_guid = factory.SelfAttribute('mine.mine_guid')
-    application_no = factory.Sequence(lambda n: f'TX-{n}-TEST')
-    application_status_code = factory.LazyFunction(RandomApplicationStatusCode)
-    description = factory.Faker('sentence', nb_words=8, variable_nb_words=True)
-    received_date = TODAY
 
 
 class MineDocumentFactory(BaseFactory):
