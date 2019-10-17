@@ -10,7 +10,7 @@ class EquipmentAssignment(Base):
     __tablename__ = "equipment_assignment"
 
     equipment_assignment_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
-    now_application_id = db.Column(db.String)
+    now_application_id = db.Column(db.Integer, db.ForeignKey('now_application.now_application_id'))
     equipment_assignment_type_code = db.Column(
         db.String, db.ForeignKey('equipment_assignment_type.equipment_assignment_type_code'))
     equipment_id = db.Column(db.Integer, db.ForeignKey('equipment.equipment_id'))

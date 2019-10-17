@@ -1,0 +1,16 @@
+ALTER TABLE state_of_land ALTER COLUMN has_community_water_shed SET NOT NULL; 
+ALTER TABLE state_of_land ALTER COLUMN has_community_water_shed SET DEFAULT FALSE;
+ALTER TABLE state_of_land ALTER COLUMN has_archaeology_sites_affected SET NOT NULL; 
+ALTER TABLE state_of_land ALTER COLUMN has_archaeology_sites_affected SET DEFAULT FALSE;
+ALTER TABLE camp ALTER COLUMN has_fuel_stored SET NOT NULL; 
+ALTER TABLE camp ALTER COLUMN has_fuel_stored SET DEFAULT FALSE;
+ALTER TABLE camp ALTER COLUMN has_fuel_stored_in_bulk SET NOT NULL; 
+ALTER TABLE camp ALTER COLUMN has_fuel_stored_in_bulk SET DEFAULT FALSE;
+ALTER TABLE camp ALTER COLUMN has_fuel_stored_in_barrels SET NOT NULL; 
+ALTER TABLE camp ALTER COLUMN has_fuel_stored_in_barrels SET DEFAULT FALSE;
+ALTER TABLE settling_pond ALTER COLUMN is_ponds_exfiltared SET NOT NULL; 
+ALTER TABLE settling_pond ALTER COLUMN is_ponds_exfiltared SET DEFAULT FALSE;
+ALTER TABLE settling_pond ALTER COLUMN is_ponds_recycled SET NOT NULL; 
+ALTER TABLE settling_pond ALTER COLUMN is_ponds_recycled SET DEFAULT FALSE;
+ALTER TABLE settling_pond ALTER COLUMN is_ponds_discharged SET NOT NULL; 
+ALTER TABLE settling_pond ALTER COLUMN is_ponds_discharged SET DEFAULT FALSE;

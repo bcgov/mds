@@ -1,1 +1,0 @@
-ALTER TABLE water_supply ALTER COLUMN permit_application_id SET NOT NULL;
