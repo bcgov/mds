@@ -31,4 +31,4 @@ class ActivitySummaryBase(AuditMixin, Base):
 
     activity_details = db.relationship('ActivityDetail')
 
-    __mapper_args__ = {'polymorphic_on': activity_type_code}
+    __mapper_args__ = {'polymorphic_on': activity_summary_type_code}
