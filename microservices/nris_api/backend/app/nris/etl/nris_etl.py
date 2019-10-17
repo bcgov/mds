@@ -502,11 +502,11 @@ def _find_or_save_attendee_type(attendee_type):
     attend_type = None
     if attendee_type is not None:
         for type in types:
-            if type.attendee_type_code == attendee_type.text:
+            if type.attendee_type == attendee_type.text:
                 type_found = True
                 attend_type = type
     if not type_found:
-        attend_type = AttendeeType(attendee_type_code=attendee_type.text)
+        attend_type = AttendeeType(attendee_type=attendee_type.text)
         db.session.add(attend_type)
     return attend_type
 
