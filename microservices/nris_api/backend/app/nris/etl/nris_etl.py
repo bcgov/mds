@@ -106,7 +106,7 @@ def _parse_nris_element(input):
         status = _find_or_save_inspection_status(assessment_status_code)
         inspection.inspection_status = status
 
-        assessment_substatus = data.find('assessment_sub_status)')
+        assessment_substatus = data.find('assessment_sub_status')
         substatus = _find_or_save_inspection_substatus(assessment_substatus)
         inspection.inspection_substatus = substatus
 
