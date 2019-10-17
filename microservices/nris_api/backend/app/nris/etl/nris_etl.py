@@ -470,13 +470,13 @@ def _find_or_save_inspection_type(inspection_type):
     return inspec_type
 
 
-def _save_attendee(attendee, inspection):
+def _save_attendee(attendance, inspection):
 
-    attendee_first_name = attendee.find('attendance_first_name')
-    attendee_last_name = attendee.find('attendance_last_name')
-    attendee_org = attendee.find('org')
-    attendee_title = attendee.find('attendance_title')
-    attendee_type_value = attendee.find('attendance_type')
+    attendee_first_name = attendance.find('attendance_first_name')
+    attendee_last_name = attendance.find('attendance_last_name')
+    attendee_org = attendance.find('org')
+    attendee_title = attendance.find('attendance_title')
+    attendee_type_value = attendance.find('attendance_type')
 
     attendee = Attendee(
         first_name=_parse_element_text(attendee_first_name),
@@ -485,7 +485,7 @@ def _save_attendee(attendee, inspection):
         title=_parse_element_text(attendee_title)
     )
 
-    attendee_type_value = attendee.find('attendance_type')
+    attendee_type_value = attendance.find('attendance_type')
     attendance_type = _find_or_save_attendee_type(attendee_type_value)
     attendee.attendee_type_rel = attendance_type
 
