@@ -5,10 +5,10 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from app.api.utils.models_mixins import Base
 from app.extensions import db
 
-from .activity import Activity
+from .activity_summary_base import ActivitySummaryBase
 
 
-class CutLinesPolarizationSurvey(Activity):
+class CutLinesPolarizationSurvey(ActivitySummaryBase):
     __mapper_args__ = {
         'polymorphic_identity': '',  ## type code
     }

@@ -5,15 +5,17 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from app.api.utils.models_mixins import Base
 from app.extensions import db
 
-from .activity import Activity
+from .activity_summary_base import ActivitySummaryBase
 
 
-class Camp(Activity):
+class Camp(ActivitySummaryBase):
     __tablename__ = "camp"
     __mapper_args__ = {
         'polymorphic_identity': '',  ## type code
     }
-    activity_id = db.Column(db.Integer, db.ForeignKey('activity.activity_id'), primary_key=True)
+    activity_summary_id = db.Column(db.Integer,
+                                    db.ForeignKey('activity_summary.activity_summary_id'),
+                                    primary_key=True)
 
     camp_name = db.Column(db.String)
     camp_number_people = db.Column(db.String)

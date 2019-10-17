@@ -8,15 +8,17 @@ from app.extensions import db
 
 from app.api.utils.models_mixins import AuditMixin, Base
 
-from .activity import Activity
+from .activity_summary_base import ActivitySummaryBase
 
 
-class PlacerOperation(Activity):
+class PlacerOperation(ActivitySummaryBase):
     __tablename__ = 'placer_operation'
     __mapper_args__ = {
         'polymorphic_identity': '',  ## type code
     }
-    activity_id = db.Column(db.Integer, db.ForeignKey('activity.activity_id'), primary_key=True)
+    activity_summary_id = db.Column(db.Integer,
+                                    db.ForeignKey('activity_summary.activity_summary_id'),
+                                    primary_key=True)
 
     is_underground = db.Column(db.Boolean, nullable=False)
     is_hand_operation = db.Column(db.Boolean, nullable=False)
