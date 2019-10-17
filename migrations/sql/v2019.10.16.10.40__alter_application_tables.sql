@@ -21,6 +21,7 @@ ALTER TABLE surface_bulk_sample RENAME COLUMN permit_application_id TO now_appli
 ALTER TABLE application_placer_xref RENAME COLUMN permit_application_id TO now_application_id;
 ALTER TABLE blasting_operation RENAME COLUMN permit_application_id TO now_application_id;
 ALTER TABLE now_party_appointment RENAME COLUMN permit_application_id TO now_application_id;
+ALTER TABLE sand_gravel_quarry_operation RENAME COLUMN permit_application_number TO agri_lnd_rsrv_permit_application_number;
 
 ALTER TABLE permit_application RENAME CONSTRAINT "permit_application_application_status_code_fkey" TO "now_application_now_application_status_code_fkey";
 ALTER TABLE permit_application RENAME CONSTRAINT "permit_application_mine_guid_fkey" TO "now_application_mine_guid_fkey";
