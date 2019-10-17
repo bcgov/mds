@@ -13,9 +13,9 @@ class SettlingPond(Base, AuditMixin):
     now_application_id = db.Column(db.Integer, db.ForeignKey('now_application.now_application_id'))
     proponent_pond_name = db.Column(db.String))
     water_source_description = db.Column(db.String))
-    is_ponds_exfiltared
-    is_ponds_recycled
-    is_ponds_discharged
+    is_ponds_exfiltared = db.Column(db.Boolean, nullable=False, default=False)
+    is_ponds_recycled = db.Column(db.Boolean, nullable=False, default=False)
+    is_ponds_discharged = db.Column(db.Boolean, nullable=False, default=False)
 
 
     reclamation_description = db.Column(db.String)
