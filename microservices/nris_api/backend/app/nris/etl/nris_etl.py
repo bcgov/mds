@@ -155,9 +155,8 @@ def _parse_nris_element(input):
         if inspection_data is not None:
             _save_stops(inspection_data, inspection)
 
-        related_inspector = inspection_data.find('related_Inspctrs')
-        if related_inspector is not None:
-            _save_attendee(related_inspector, inspection)
+        for inspector in data.findall('related_Inspctrs'):
+            _save_attendee(inspector, inspection)
 
         for attendance in data.findall('attendance'):
             _save_attendee(attendance, inspection)
