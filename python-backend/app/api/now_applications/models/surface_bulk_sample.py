@@ -6,23 +6,19 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 
-from app.api.utils.models_mixins import AuditMixin, Base
+from .activity import Activity
 
 
-class SurfaceBulkSurface(AuditMixin, Base):
-    __tablename__ = 'surface_bulk_surface'
+class SurfaceBulkSample(Activity):
+    __tablename__ = 'surface_bulk_sample'
+    __mapper_args__ = {
+        'polymorphic_identity': 'surface_bulk_surface',
+    }
+    activity_id = db.Column(db.Integer, db.ForeignKey('activity.activity_id'), primary_key=True)
 
-    surface_bulk_sample_id = db.Column(db.Integer, primary_key=True)
-    now_application_id = db.Column(db.Integer,
-                                   db.ForeignKey('now_application.now_application_id'),
-                                   nullable=False)
     processing_method_description = db.Column(db.String, nullable=False)
     handling_instructions = db.Column(db.String)
-    reclamation_description = db.Column(db.String)
     drainage_mitigation_description = db.Column(db.String)
-    reclamation_cost = db.Column(db.Numeric(10, 2))
-    total_disturbed_area = db.Column(db.Numeric(14, 2))
-    total_disturbed_area_unit_type_code = db.Column(db.String,
-                                                    db.ForeignKey('unit_type.unit_type_code'))
 
-    now_application = db.relationship('NOWApplication', lazy='select')
+    def __repr__(self):
+        return '<SurfaceBulkSurface %r>' % self.activity_id

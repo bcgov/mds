@@ -5,24 +5,25 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from app.api.utils.models_mixins import Base
 from app.extensions import db
 
+from .activity import Activity
 
-class Camp(Base, AuditMixin):
+
+class Camp(Activity):
     __tablename__ = "camp"
+    __mapper_args__ = {
+        'polymorphic_identity': '',  ## type code
+    }
+    activity_id = db.Column(db.Integer, db.ForeignKey('activity.activity_id'), primary_key=True)
 
-    camp_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
-    now_application_id = db.Column(db.Integer, db.ForeignKey('now_application.now_application_id'))
     camp_name = db.Column(db.String)
     camp_number_people = db.Column(db.String)
     camp_number_structures = db.Column(db.String)
     has_fuel_stored = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     has_fuel_stored_in_bulk = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
-    has_fuel_stored_in_barrels = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
-    volume_fuel_stored = db.Column(db.Integer))
-    reclamation_description = db.Column(db.String)
-    reclamation_cost = db.Column(db.Numeric(10,2))
-    total_disturbed_area = db.Column(db.Numeric(14,2))
-    total_disturbed_area_unit_type_code = db.Column(
-        db.String, db.ForeignKey('unit_type.unit_type_code'))
+    has_fuel_stored_in_barrels = db.Column(db.Boolean,
+                                           nullable=False,
+                                           server_default=FetchedValue())
+    volume_fuel_stored = db.Column(db.Integer)
 
     def __repr__(self):
-        return '<Camp %r>' % self.camp_id
+        return '<Camp %r>' % self.activity_id

@@ -6,7 +6,7 @@ from app.api.utils.models_mixins import Base
 from app.extensions import db
 
 
-class Equipment(Base):
+class Equipment(AuditMixin, Base):
     __tablename__ = "equipment"
 
     equipment_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())

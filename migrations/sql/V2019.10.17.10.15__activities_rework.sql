@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS activity_type  (
 
 CREATE TABLE IF NOT EXISTS activity  (
   activity_id SERIAL PRIMARY KEY,
-  activity_type varchar(10) NOT NULL,
+  activity_type_code varchar(10) NOT NULL,
   now_application_id integer,
   reclamation_description character varying(4000),
   reclamation_cost numeric(10,2),
@@ -37,8 +37,16 @@ CREATE TABLE IF NOT EXISTS activity  (
 
   FOREIGN KEY (now_application_id) REFERENCES now_application(now_application_id)
   DEFERRABLE INITIALLY DEFERRED,
-  FOREIGN KEY (activity_type) REFERENCES activity_type(activity_type_code)
+  FOREIGN KEY (activity_type_code) REFERENCES activity_type(activity_type_code)
   DEFERRABLE INITIALLY DEFERRED,
   FOREIGN KEY (total_disturbed_area_unit_type_code) REFERENCES unit_type(unit_type_code)
+  DEFERRABLE INITIALLY DEFERRED
+);
+
+CREATE TABLE IF NOT EXISTS exploration_surface_drilling  (
+  activity_id   INTEGER PRIMARY KEY, 
+  reclamation_core_storage      varchar(4000),
+    
+  FOREIGN KEY (activity_id) REFERENCES activity(activity_id)
   DEFERRABLE INITIALLY DEFERRED
 );

@@ -6,7 +6,7 @@ from app.api.utils.models_mixins import Base
 from app.extensions import db
 
 
-class StateOfLand(Base):
+class StateOfLand(AuditMixin, Base):
     __tablename__ = "state_of_land"
 
     state_of_land_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
