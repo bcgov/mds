@@ -274,14 +274,14 @@ export class NOWWorkPlan extends Component {
   render() {
     return (
       <div className="page__content--nested">
-        <Row gutter={16} className="padding-small">
+        {/* <Row gutter={16} className="padding-small">
           <Col md={12} xs={24}>
             <p className="field-title">Description of Work</p>
           </Col>
           <Col md={12} xs={24}>
             <p>Unknown</p>
           </Col>
-        </Row>
+        </Row> */}
         {this.renderSummaryOfReclamation()}
         <NOWActivities noticeOfWork={this.props.noticeOfWork} />
         {this.renderDocuments()}

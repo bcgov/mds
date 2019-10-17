@@ -13,6 +13,7 @@ const setupDispatchProps = () => {
 const setupReducerProps = () => {
   reducerProps.match = {};
   reducerProps.noticeOfWork = MOCK.NOTICE_OF_WORK;
+  reducerProps.regionHash = MOCK.REGION_HASH;
 };
 
 beforeEach(() => {

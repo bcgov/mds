@@ -7,6 +7,7 @@ const props = {};
 
 const setupProps = () => {
   props.noticeOfWork = MOCK.NOTICE_OF_WORK;
+  props.regionHash = MOCK.REGION_HASH;
 };
 
 beforeEach(() => {

@@ -8,10 +8,12 @@ import NOWGeneralInfo from "@/components/noticeOfWork/NOWGeneralInfo";
 import NOWWorkPlan from "@/components/noticeOfWork/NOWWorkPlan";
 import { fetchNoticeOfWorkApplication } from "@/actionCreators/noticeOfWorkActionCreator";
 import { getNoticeOfWork } from "@/selectors/noticeOfWorkSelectors";
+import { getMineRegionHash } from "@/selectors/staticContentSelectors";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import * as Strings from "@/constants/strings";
 /**
  * @class NoticeOfWorkApplication - contains all information regarding to a notice of work application
+ * NOTE: In all children components - for all fields that CORE does not have data for is commented out until CORE gets access to that data
  */
 
 const { Panel } = Collapse;
@@ -20,6 +22,7 @@ const propTypes = {
   fetchNoticeOfWorkApplication: PropTypes.func.isRequired,
   noticeOfWork: CustomPropTypes.nowApplication.isRequired,
   match: CustomPropTypes.match.isRequired,
+  regionHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export class NoticeOfWorkApplication extends Component {
@@ -60,7 +63,10 @@ export class NoticeOfWorkApplication extends Component {
         >
           <Panel header={<h2>General Information</h2>} key="1">
             <LoadingWrapper condition={this.state.isLoaded}>
-              <NOWGeneralInfo noticeOfWork={this.props.noticeOfWork} />
+              <NOWGeneralInfo
+                noticeOfWork={this.props.noticeOfWork}
+                regionHash={this.props.regionHash}
+              />
             </LoadingWrapper>
           </Panel>
           <Panel header={<h2>Work Plan</h2>} key="2">
@@ -74,7 +80,10 @@ export class NoticeOfWorkApplication extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({ noticeOfWork: getNoticeOfWork(state) });
+const mapStateToProps = (state) => ({
+  noticeOfWork: getNoticeOfWork(state),
+  regionHash: getMineRegionHash(state),
+});
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators({ fetchNoticeOfWorkApplication }, dispatch);
