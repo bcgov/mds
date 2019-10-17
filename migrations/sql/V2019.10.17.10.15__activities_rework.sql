@@ -3,7 +3,6 @@ DROP TABLE activity_detail_xref;
 DROP TABLE mechanical_trenching;
 DROP TABLE exploration_access;
 DROP TABLE cut_lines_polarization_survey;
-
 ALTER TABLE camp DROP COLUMN reclamation_description, DROP COLUMN reclamation_cost, DROP COLUMN total_disturbed_area, DROP COLUMN total_disturbed_area_unit_type_code;
 ALTER TABLE exploration_surface_drilling DROP COLUMN reclamation_description, DROP COLUMN reclamation_cost, DROP COLUMN total_disturbed_area, DROP COLUMN total_disturbed_area_unit_type_code;
 ALTER TABLE settling_pond DROP COLUMN reclamation_description, DROP COLUMN reclamation_cost, DROP COLUMN total_disturbed_area, DROP COLUMN total_disturbed_unit_type_code;
@@ -40,13 +39,5 @@ CREATE TABLE IF NOT EXISTS activity_summary  (
   FOREIGN KEY (activity_summary_type_code) REFERENCES activity_summary_type(activity_summary_type_code)
   DEFERRABLE INITIALLY DEFERRED,
   FOREIGN KEY (total_disturbed_area_unit_type_code) REFERENCES unit_type(unit_type_code)
-  DEFERRABLE INITIALLY DEFERRED
-);
-
-CREATE TABLE IF NOT EXISTS exploration_surface_drilling  (
-  activity_id   INTEGER PRIMARY KEY, 
-  reclamation_core_storage      varchar(4000),
-    
-  FOREIGN KEY (activity_id) REFERENCES activity(activity_id)
   DEFERRABLE INITIALLY DEFERRED
 );

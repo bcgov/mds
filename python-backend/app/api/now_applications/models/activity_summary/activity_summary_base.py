@@ -7,7 +7,7 @@ from app.api.utils.models_mixins import AuditMixin, Base
 from app.extensions import db
 
 from app.api.now_applications.models.activity_detail import ActivityDetail
-from app.api.now_applications.models.activity_type import ActivityType
+from app.api.now_applications.models.activity_summary.activity_summary_type import ActivitySummaryType
 
 from app.api.now_applications.models.unit_type import UnitType
 

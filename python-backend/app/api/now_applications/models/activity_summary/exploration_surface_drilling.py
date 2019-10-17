@@ -11,7 +11,7 @@ from .activity_summary_base import ActivitySummaryBase
 class ExplorationSurfaceDrilling(ActivitySummaryBase):
     __tablename__ = "exploration_surface_drilling"
     __mapper_args__ = {
-        'polymorphic_identity': '',
+        'polymorphic_identity': 'esd',
     }
     activity_summary_id = db.Column(db.Integer,
                                     db.ForeignKey('activity_summary.activity_summary_id'),

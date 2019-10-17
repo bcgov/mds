@@ -10,7 +10,7 @@ from .activity_summary_base import ActivitySummaryBase
 
 class ExplorationAccess(ActivitySummaryBase):
     __mapper_args__ = {
-        'polymorphic_identity': "",  ## type code
+        'polymorphic_identity': "ea",  ## type code
     }
 
     ## NO TABLE FOR THIS TYPE
