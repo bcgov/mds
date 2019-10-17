@@ -476,7 +476,6 @@ def _save_attendee(attendance, inspection):
     attendee_last_name = attendance.find('attendance_last_name')
     attendee_org = attendance.find('org')
     attendee_title = attendance.find('attendance_title')
-    attendee_type_value = attendance.find('attendance_type')
 
     attendee = Attendee(
         first_name=_parse_element_text(attendee_first_name),
@@ -500,13 +499,17 @@ def _find_or_save_attendee_type(attendee_type):
     types = AttendeeType.find_all_attendee_types()
     type_found = False
     attend_type = None
-    if attendee_type is not None:
-        for type in types:
-            if type.attendee_type == attendee_type.text:
-                type_found = True
-                attend_type = type
+    attendee_type_text = None
+    if attendee_type is None:
+        attendee_type_text = attendee_type.text
+    else:
+        attendee_type_text = "Unknown"
+    for type in types:
+        if type.attendee_type == attendee_type_text:
+            type_found = True
+            attend_type = type
     if not type_found:
-        attend_type = AttendeeType(attendee_type=attendee_type.text)
+        attend_type = AttendeeType(attendee_type=attendee_type_text)
         db.session.add(attend_type)
     return attend_type
 
