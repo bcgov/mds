@@ -14,3 +14,7 @@ ALTER TABLE settling_pond ALTER COLUMN is_ponds_recycled SET NOT NULL;
 ALTER TABLE settling_pond ALTER COLUMN is_ponds_recycled SET DEFAULT FALSE;
 ALTER TABLE settling_pond ALTER COLUMN is_ponds_discharged SET NOT NULL; 
 ALTER TABLE settling_pond ALTER COLUMN is_ponds_discharged SET DEFAULT FALSE;
+ALTER TABLE blasting_operation ALTER COLUMN has_storage_explosive_on_site SET NOT NULL; 
+ALTER TABLE blasting_operation ALTER COLUMN has_storage_explosive_on_site SET DEFAULT FALSE;
+ALTER TABLE blasting_operation ALTER COLUMN explosive_permit_issued SET NOT NULL; 
+ALTER TABLE blasting_operation ALTER COLUMN explosive_permit_issued SET DEFAULT FALSE;
