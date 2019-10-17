@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS activity_type  (
   create_user      character varying(60) NOT NULL,
   create_timestamp timestamp with time zone DEFAULT now() NOT NULL,
   update_user      character varying(60) NOT NULL,
-  update_timestamp timestamp with time zone DEFAULT now() NOT NULL,
+  update_timestamp timestamp with time zone DEFAULT now() NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS activity  (
