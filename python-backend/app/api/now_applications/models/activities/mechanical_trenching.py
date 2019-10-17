@@ -13,5 +13,7 @@ class MechanicalTrenching(Activity):
         'polymorphic_identity': '',  ## type code
     }
 
+    ## NO TABLE FOR THIS TYPE
+
     def __repr__(self):
         return '<MechanicalTrenching %r>' % self.activity_id

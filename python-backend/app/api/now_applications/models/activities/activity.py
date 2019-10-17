@@ -6,6 +6,11 @@ from sqlalchemy.ext.declarative import declared_attr
 from app.api.utils.models_mixins import AuditMixin, Base
 from app.extensions import db
 
+from app.api.now_applications.models.activity_detail import ActivityDetail
+from app.api.now_applications.models.activity_type import ActivityType
+
+from app.api.now_applications.models.unit_type import UnitType
+
 
 class Activity(AuditMixin, Base):
     __tablename__ = "activity"

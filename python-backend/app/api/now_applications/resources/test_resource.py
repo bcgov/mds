@@ -16,14 +16,8 @@ from app.api.parties.response_models import PARTY, PAGINATED_PARTY_LIST
 from app.api.mines.mine.models.mine import Mine
 
 from app.api.now_applications.models.now_application import NOWApplication
-from app.api.now_applications.models.exploration_access import ExplorationAccess
-from app.api.now_applications.models.exploration_surface_drilling import ExplorationSurfaceDrilling
-from app.api.now_applications.models.now_application_status import NOWApplicationStatus
-from app.api.now_applications.models.now_application_type import NOWApplicationType
-from app.api.now_applications.models.unit_type import UnitType
-from app.api.now_applications.models.activity import Activity
-from app.api.now_applications.models.activity_type import ActivityType
-from app.api.now_applications.models.activity_detail import ActivityDetail
+from app.api.now_applications.models.activities.exploration_access import ExplorationAccess
+from app.api.now_applications.models.activities.exploration_surface_drilling import ExplorationSurfaceDrilling
 
 
 class NOWApplicationResource(Resource, UserMixin):
