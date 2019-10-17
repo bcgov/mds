@@ -531,7 +531,7 @@ VALUES
 on conflict do nothing;
 
 INSERT INTO now_application_status
-(application_status_code, description, active_ind, create_user, update_user)
+(now_application_status_code, description, active_ind, create_user, update_user)
 VALUES
 	('ACC', 'Accepted', true, 'system-mds', 'system-mds'),
 	('WDN', 'Withdrawn', true, 'system-mds', 'system-mds'),
