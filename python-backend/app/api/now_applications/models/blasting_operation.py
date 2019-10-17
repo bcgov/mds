@@ -11,7 +11,7 @@ class BlastingOperation(AuditMixin, Base):
                                    db.ForeignKey('now_application.now_application_id'),
                                    nullable=False)
    has_storage_explosive_on_site = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
-   explosive_permit_issued = db.Column(db.Boolean, nullable=False)
+   explosive_permit_issued = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
    explosive_permit_number = db.Column(db.String)
    explosive_permit_expiry_date = db.Column(db.DateTime)
 
