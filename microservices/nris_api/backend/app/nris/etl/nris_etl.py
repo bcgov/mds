@@ -499,7 +499,7 @@ def _find_or_save_attendee_type(attendee_type):
     type_found = False
     attend_type = None
     attendee_type_text = None
-    if attendee_type is None:
+    if attendee_type is not None:
         attendee_type_text = attendee_type.text
     else:
         attendee_type_text = "Unknown"
