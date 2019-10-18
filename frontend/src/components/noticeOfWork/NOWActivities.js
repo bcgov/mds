@@ -392,8 +392,8 @@ export class NOWActivities extends Component {
     const columns = [
       {
         title: "Activity",
-        dataIndex: "activity",
-        key: "activity",
+        dataIndex: "type",
+        key: "type",
         render: (text) => <div title="Activity">{text}</div>,
       },
       {
@@ -433,7 +433,6 @@ export class NOWActivities extends Component {
             align="left"
             pagination={false}
             columns={columns}
-            // dataSource={[]}
             dataSource={transformData(this.props.noticeOfWork.exp_surface_drill_activity)}
             locale={{
               emptyText: "No data",

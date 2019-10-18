@@ -16,7 +16,7 @@ from app.api.now_submissions.models.under_exp_new_activity import UnderExpNewAct
 from app.api.now_submissions.models.under_exp_rehab_activity import UnderExpRehabActivity
 from app.api.now_submissions.models.under_exp_surface_activity import UnderExpSurfaceActivity
 from app.api.now_submissions.models.exp_access_activity import ExpAccessActivity
-from app.api.now_submission.models.exp_surface_drill_activity import ExpSurfaceDrillActivity
+from app.api.now_submissions.models.exp_surface_drill_activity import ExpSurfaceDrillActivity
 from app.api.now_submissions.models.water_source_activity import WaterSourceActivity
 from app.api.now_submissions.models.mech_trenching_activity import MechTrenchingActivity
 
