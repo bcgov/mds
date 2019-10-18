@@ -113,7 +113,6 @@ app {
                             'APPLICATION_DOMAIN': "${vars.modules.'mds-frontend'.HOST}",
                             'BASE_PATH': "${vars.modules.'mds-frontend'.PATH}",
                             'NODE_ENV': "${vars.deployment.node_env}",
-                            'MAP_PORTAL_ID': "${vars.deployment.map_portal_id}",
                             'FN_LAYER_URL': "${vars.deployment.fn_layer_url}",
                             'KEYCLOAK_RESOURCE': "${vars.keycloak.resource}",
                             'KEYCLOAK_CLIENT_ID': "${vars.keycloak.clientId_core}",
@@ -438,7 +437,6 @@ environments {
                 key = 'prod'
                 namespace = 'empr-mds-prod'
                 node_env = "production"
-                map_portal_id = "803130a9bebb4035b3ac671aafab12d7"
                 fn_layer_url = "https://apps.gov.bc.ca/ext/sgw/geo.allgov"
                 elastic_enabled_core = 1
                 elastic_enabled_nris = 1
