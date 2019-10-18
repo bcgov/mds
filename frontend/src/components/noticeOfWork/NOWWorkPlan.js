@@ -152,7 +152,6 @@ export class NOWWorkPlan extends Component {
         <br />
         <h3>Summary of Reclamation</h3>
         <Divider />
-        <p>{nowType}</p>
         <div className="padding-large--sides">
           <Row gutter={16} className="padding-small">
             <Col md={12} xs={24}>

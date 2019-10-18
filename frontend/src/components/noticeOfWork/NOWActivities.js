@@ -416,6 +416,14 @@ export class NOWActivities extends Component {
       },
     ];
 
+    const transformData = (activities) =>
+      activities.map((activity) => ({
+        type: activity.type || Strings.EMPTY_FIELD,
+        numSites: activity.numberofsites || Strings.EMPTY_FIELD,
+        disturbedArea: activity.disturbedarea || Strings.EMPTY_FIELD,
+        timberVolume: activity.timbervolume || Strings.EMPTY_FIELD,
+      }));
+
     return (
       <div className="padding-large--sides">
         <div>
@@ -425,9 +433,9 @@ export class NOWActivities extends Component {
             align="left"
             pagination={false}
             columns={columns}
-            dataSource={[]}
+            dataSource={transformData(this.props.noticeOfWork.exp_surface_drill_activity)}
             locale={{
-              emptyText: "Unknown",
+              emptyText: "No data",
             }}
           />
           <br />

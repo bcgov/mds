@@ -2,6 +2,7 @@ export const NOTICE_OF_WORK = {
   application_guid: "89ce70bc-a34b-4ec6-aff0-704ba68c4606",
   mine_guid: "20af050d-2a1a-4870-9016-eacabaa68f02",
   mine_name: null,
+  mine_region: "NW",
   trackingnumber: null,
   applicationtype: null,
   status: null,

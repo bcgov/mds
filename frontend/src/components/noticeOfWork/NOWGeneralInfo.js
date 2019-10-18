@@ -6,7 +6,7 @@ import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
 import { formatDate } from "@/utils/helpers";
 import Address from "@/components/common/Address";
-import { isMineralOrPlacerOrCoal, isMultiYearPermit } from "@/constants/NOWConditions";
+import { isMineralOrPlacerOrCoal } from "@/constants/NOWConditions";
 
 const propTypes = {
   noticeOfWork: CustomPropTypes.nowApplication.isRequired,
@@ -71,12 +71,12 @@ export class NOWGeneralInfo extends Component {
               <p className="field-title">Description of Land</p>
               <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </div> */}
-            {isMultiYearPermit(this.props.noticeOfWork.typeofpermit) && (
+            {/* {isMultiYearPermit(this.props.noticeOfWork.typeofpermit) && (
               <div className="inline-flex padding-small">
                 <p className="field-title">Term of Application</p>
                 <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
               </div>
-            )}
+            )} */}
             <div className="inline-flex padding-small">
               <p className="field-title">Proposed Start Date</p>
               <p>{formatDate(this.props.noticeOfWork.proposedstartdate) || Strings.EMPTY_FIELD}</p>

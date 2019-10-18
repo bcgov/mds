@@ -224,6 +224,7 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
               "messagecreateddate": null,
               "mine_guid": "20af050d-2a1a-4870-9016-eacabaa68f02",
               "mine_name": null,
+              "mine_region": "NW",
               "minenumber": null,
               "nameofproperty": null,
               "noticeofworktype": null,
@@ -418,6 +419,15 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
               "yearroundseasonal": null,
             }
           }
+          regionHash={
+            Object {
+              "NE": "North East",
+              "NW": "North West",
+              "SC": "South Central",
+              "SE": "South East",
+              "SW": "South West",
+            }
+          }
         />
       </LoadingWrapper>
     </CollapsePanel>
@@ -606,6 +616,7 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
               "messagecreateddate": null,
               "mine_guid": "20af050d-2a1a-4870-9016-eacabaa68f02",
               "mine_name": null,
+              "mine_region": "NW",
               "minenumber": null,
               "nameofproperty": null,
               "noticeofworktype": null,

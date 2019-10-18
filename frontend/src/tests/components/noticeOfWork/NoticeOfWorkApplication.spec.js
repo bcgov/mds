@@ -1,7 +1,8 @@
 import React from "react";
 import { shallow } from "enzyme";
 import { NoticeOfWorkApplication } from "@/components/noticeOfWork/NoticeOfWorkApplication";
-import * as MOCK from "@/tests/mocks/noticeOfWorkMocks";
+import * as NOW_MOCK from "@/tests/mocks/noticeOfWorkMocks";
+import * as MOCK from "@/tests/mocks/dataMocks";
 
 const dispatchProps = {};
 const reducerProps = {};
@@ -12,7 +13,7 @@ const setupDispatchProps = () => {
 
 const setupReducerProps = () => {
   reducerProps.match = {};
-  reducerProps.noticeOfWork = MOCK.NOTICE_OF_WORK;
+  reducerProps.noticeOfWork = NOW_MOCK.NOTICE_OF_WORK;
   reducerProps.regionHash = MOCK.REGION_HASH;
 };
 
