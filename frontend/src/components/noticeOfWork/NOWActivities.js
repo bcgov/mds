@@ -433,6 +433,7 @@ export class NOWActivities extends Component {
             align="left"
             pagination={false}
             columns={columns}
+            // dataSource={[]}
             dataSource={transformData(this.props.noticeOfWork.exp_surface_drill_activity)}
             locale={{
               emptyText: "No data",

@@ -95,18 +95,6 @@ exports[`NOWGeneralInfo renders properly 1`] = `
           <p
             className="field-title"
           >
-            Permit Type
-          </p>
-          <p>
-            N/A
-          </p>
-        </div>
-        <div
-          className="inline-flex padding-small"
-        >
-          <p
-            className="field-title"
-          >
             Permit Status
           </p>
           <p>
@@ -166,7 +154,9 @@ exports[`NOWGeneralInfo renders properly 1`] = `
     <div
       className="padding-large--sides"
     >
-      <div>
+      <Row
+        gutter={16}
+      >
         <Col
           key="0"
           lg={12}
@@ -275,7 +265,7 @@ exports[`NOWGeneralInfo renders properly 1`] = `
             </div>
           </Card>
         </Col>
-      </div>
+      </Row>
     </div>
   </div>
   <div>

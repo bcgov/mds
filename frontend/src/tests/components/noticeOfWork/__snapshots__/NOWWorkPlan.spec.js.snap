@@ -77,11 +77,6 @@ exports[`NOWWorkPlan renders properly 1`] = `
               "effectedArea": "0.00",
             },
             Object {
-              "activity": "Cut Lines and Induced Polarization Survey",
-              "cost": "0.00",
-              "effectedArea": "0.00",
-            },
-            Object {
               "activity": "Exploration Surface Drilling",
               "cost": "0.00",
               "effectedArea": "0.00",
@@ -92,27 +87,7 @@ exports[`NOWWorkPlan renders properly 1`] = `
               "effectedArea": "0.00",
             },
             Object {
-              "activity": "Placer Operations",
-              "cost": "0.00",
-              "effectedArea": "0.00",
-            },
-            Object {
-              "activity": "Sand and Gravel / Quarry Operations",
-              "cost": "0.00",
-              "effectedArea": "0.00",
-            },
-            Object {
               "activity": "Settling Ponds",
-              "cost": "0.00",
-              "effectedArea": "0.00",
-            },
-            Object {
-              "activity": "Surface Bulk Sample",
-              "cost": "0.00",
-              "effectedArea": "0.00",
-            },
-            Object {
-              "activity": "Underground Exploration",
               "cost": "0.00",
               "effectedArea": "0.00",
             },
