@@ -5,15 +5,15 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from app.api.utils.models_mixins import Base
 from app.extensions import db
 
-from app.api.now_applications.models.activity_summary.activity_summary_base import ActivitySummaryBase
+from app.api.now_applications.models.activity_detail.activity_detail_base import ActivityDetailBase
 
 
-class CutLinesPolarizationSurvey(ActivitySummaryBase):
+class UndergroundExplorationDetail(ActivityDetailBase):
     __mapper_args__ = {
-        'polymorphic_identity': 'cut_lines_polarization_survey',  ## type code
+        'polymorphic_identity':'underground_exploration',  ## type code
     }
 
     ## NO TABLE FOR THIS TYPE
 
     def __repr__(self):
-        return '<CutLinesPolarizationSurvey %r>' % self.activity_summary_id
+        return '<UndergroundExplorationDetail %r>' % self.activity_detail_id

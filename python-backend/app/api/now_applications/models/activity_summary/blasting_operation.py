@@ -8,22 +8,20 @@ from app.extensions import db
 from app.api.now_applications.models.activity_summary.activity_summary_base import ActivitySummaryBase
 
 
-class Camp(ActivitySummaryBase):
-    __tablename__ = "camp"
+class BlastingOperation(ActivitySummaryBase):
+    __tablename__ = "blasting_operation"
     __mapper_args__ = {
-        'polymorphic_identity': 'camp',  ## type code
+        'polymorphic_identity': 'blasting_operation',  ## type code
     }
+
     activity_summary_id = db.Column(
         db.Integer, db.ForeignKey('activity_summary.activity_summary_id'), primary_key=True)
 
-    camp_name = db.Column(db.String)
-    camp_number_people = db.Column(db.String)
-    camp_number_structures = db.Column(db.String)
-    has_fuel_stored = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
-    has_fuel_stored_in_bulk = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
-    has_fuel_stored_in_barrels = db.Column(
+    has_storage_explosive_on_site = db.Column(
         db.Boolean, nullable=False, server_default=FetchedValue())
-    volume_fuel_stored = db.Column(db.Integer)
+    explosive_permit_issued = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
+    explosive_permit_number = db.Column(db.String)
+    explosive_permit_expiry_date = db.Column(db.DateTime)
 
     def __repr__(self):
-        return '<Camp %r>' % self.activity_summary_id
+        return '<BlastingOperation %r>' % self.activity_summary_id

@@ -5,12 +5,17 @@ from sqlalchemy.orm import validates
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
+from sqlalchemy.ext.associationproxy import association_proxy
 
 from app.api.utils.models_mixins import AuditMixin, Base
 
+#from app.api.now_applications.models.activity_summary.activity_summary_base import *
+#from app.api.now_applications.models.activity_summary_detail_xref import *
 
-class ActivityDetail(AuditMixin, Base):
+
+class ActivityDetailBase(AuditMixin, Base):
     __tablename__ = 'activity_detail'
+
     activity_detail_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     activity_id = db.Column(db.Integer, db.ForeignKey('activity_summary.activity_summary_id'))
     activity_description = db.Column(db.String)
@@ -27,7 +32,16 @@ class ActivityDetail(AuditMixin, Base):
     water_quantity = db.Column(db.Integer)
     water_quantity_unit_type_code = db.Column(db.String, db.ForeignKey('unit_type.unit_type_code'))
 
-    activity_summary = db.relationship('ActivitySummaryBase')
+    activity_type_code = 'hardcode'
 
-    def __repr__(self):
-        return '<ActivityDetail %r>' % self.activity_detail_id
+    #activity_summaries = db.relationship('ActivitySummaryBase')
+    #activity_type_code = db.column_property(
+    #    db.select([ActivitySummaryBase.c.activity_type_code],
+    #              and_(
+    #                  ActivitySummaryDetailXref.c.activity_summary_id == ActivitySummaryBase.c.
+    #                  activity_summary_id, ActivitySummaryDetailXref.c.activity_detail_id ==
+    #                  ActivityDetailBase.activity_detail_id)).as_scalar())
+    #activity_type_code = association_proxy('activity_summary', 'activity_type_code')
+    #activity_type_code = db.column_property(select([Type.name]).where(Type.id == type_id).as_scalar())
+
+    __mapper_args__ = {'polymorphic_on': activity_type_code}

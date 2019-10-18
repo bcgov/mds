@@ -5,15 +5,15 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from app.api.utils.models_mixins import Base
 from app.extensions import db
 
-from .activity_summary_base import ActivitySummaryBase
+from app.api.now_applications.models.activity_summary.activity_summary_base import ActivitySummaryBase
 
 
 class ExplorationAccess(ActivitySummaryBase):
     __mapper_args__ = {
-        'polymorphic_identity': "ea",  ## type code
+        'polymorphic_identity': 'exploration_access',  ## type code
     }
 
     ## NO TABLE FOR THIS TYPE
 
     def __repr__(self):
-        return '<ExplorationAccess %r>' % self.activity_id
+        return '<ExplorationAccess %r>' % self.activity_summary_id
