@@ -48,7 +48,6 @@ import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as router from "@/constants/routes";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
-import MineMap from "@/components/maps/MineMap";
 import MineMapLeaflet from "@/components/maps/MineMapLeaflet";
 import * as Strings from "@/constants/strings";
 import * as Permission from "@/constants/permissions";
@@ -104,8 +103,6 @@ const formatParams = ({
   ...joinOrRemove(tenure, "tenure"),
   ...remainingParams,
 });
-
-const switchToLeaflet = true;
 
 export class Dashboard extends Component {
   constructor(props) {
@@ -441,22 +438,18 @@ export class Dashboard extends Component {
               <LoadingWrapper condition={this.state.isMapLoaded}>
                 <Element name="mapElement">
                   <div>
-                    {switchToLeaflet ? (
-                      <MineMapLeaflet
-                        lat={this.state.lat}
-                        long={this.state.long}
-                        zoom={this.state.zoom}
-                        minesBasicInfo={this.props.pageData.mines}
-                        mineName={this.state.mineName}
-                        mines={this.props.mines}
-                        fetchMineRecordById={this.props.fetchMineRecordById}
-                        transformedMineTypes={this.props.transformedMineTypes}
-                        mineCommodityOptionsHash={this.props.mineCommodityOptionsHash}
-                        history={this.props.history}
-                      />
-                    ) : (
-                      <MineMap {...this.state} />
-                    )}
+                    <MineMapLeaflet
+                      lat={this.state.lat}
+                      long={this.state.long}
+                      zoom={this.state.zoom}
+                      minesBasicInfo={this.props.pageData.mines}
+                      mineName={this.state.mineName}
+                      mines={this.props.mines}
+                      fetchMineRecordById={this.props.fetchMineRecordById}
+                      transformedMineTypes={this.props.transformedMineTypes}
+                      mineCommodityOptionsHash={this.props.mineCommodityOptionsHash}
+                      history={this.props.history}
+                    />
                   </div>
                 </Element>
               </LoadingWrapper>
