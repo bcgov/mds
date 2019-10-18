@@ -23,9 +23,6 @@ export const ADD_PERMIT = "Add a new permit";
 export const PERMIT_AMENDMENT = "Add new amendment";
 export const EDIT_PERMIT = "Edit Permit";
 
-export const ADD_APPLICATION = "Add Application";
-export const Edit_APPLICATION = "Edit Application";
-
 export const ADD_VARIANCE = (mineName) => `Add a Variance Application to ${mineName}`;
 export const ADD_INCIDENT = (mineName) => `Record a Mine Incident at ${mineName}`;
 export const EDIT_INCIDENT = (mineName) => `Edit a Mine Incident at ${mineName}`;

@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { Menu, Icon, Button, Dropdown, Popconfirm, Tooltip } from "antd";
-import { openModal, closeModal } from "@/actions/modalActions";
 import { fetchPermits } from "@/actionCreators/permitActionCreator";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { getUserInfo } from "@/selectors/authenticationSelectors";
@@ -26,7 +25,6 @@ import {
   fetchMineDisturbanceOptions,
   fetchMineCommodityOptions,
   fetchPermitStatusOptions,
-  fetchApplicationStatusOptions,
   fetchMineComplianceCodes,
   fetchVarianceDocumentCategoryOptions,
   fetchVarianceStatusOptions,
@@ -80,7 +78,6 @@ const propTypes = {
   fetchMineDisturbanceOptions: PropTypes.func.isRequired,
   fetchMineCommodityOptions: PropTypes.func.isRequired,
   fetchPermitStatusOptions: PropTypes.func.isRequired,
-  fetchApplicationStatusOptions: PropTypes.func.isRequired,
   fetchVarianceDocumentCategoryOptions: PropTypes.func.isRequired,
   fetchMineReportDefinitionOptions: PropTypes.func.isRequired,
   fetchInspectors: PropTypes.func.isRequired,
@@ -108,7 +105,6 @@ export class MineDashboard extends Component {
     this.props.fetchMineCommodityOptions();
     this.props.fetchPartyRelationshipTypes();
     this.props.fetchPermitStatusOptions();
-    this.props.fetchApplicationStatusOptions();
     this.props.fetchMineComplianceCodes();
     this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
     this.props.fetchSubscribedMinesByUser();
@@ -356,12 +352,9 @@ const mapDispatchToProps = (dispatch) =>
       updateMineRecord,
       createTailingsStorageFacility,
       removeMineType,
-      openModal,
-      closeModal,
       fetchPartyRelationships,
       fetchPartyRelationshipTypes,
       fetchPermitStatusOptions,
-      fetchApplicationStatusOptions,
       fetchMineComplianceInfo,
       fetchSubscribedMinesByUser,
       unSubscribe,

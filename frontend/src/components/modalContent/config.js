@@ -7,8 +7,6 @@ import AddPermitModal from "./AddPermitModal";
 import PermitAmendmentModal from "./PermitAmendmentModal";
 import EditPermitModal from "./EditPermitModal";
 import EditPartyModal from "./EditPartyModal";
-import AddApplicationModal from "./AddApplicationModal";
-import EditApplicationModal from "./EditApplicationModal";
 import AddVarianceModal from "./AddVarianceModal";
 import ViewVarianceModal from "./ViewVarianceModal";
 import EditVarianceModal from "./EditVarianceModal";
@@ -29,8 +27,6 @@ export const modalConfig = {
   PERMIT_AMENDMENT: PermitAmendmentModal,
   EDIT_PERMIT: EditPermitModal,
   EDIT_PARTY: EditPartyModal,
-  ADD_APPLICATION: AddApplicationModal,
-  EDIT_APPLICATION: EditApplicationModal,
   ADD_VARIANCE: AddVarianceModal,
   VIEW_VARIANCE: ViewVarianceModal,
   EDIT_VARIANCE: EditVarianceModal,
