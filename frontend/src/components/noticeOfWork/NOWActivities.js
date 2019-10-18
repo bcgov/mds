@@ -152,30 +152,30 @@ export class NOWActivities extends Component {
 
   renderCampsAndStorage = () => {
     const campColumns = [
-      {
-        title: "Name",
-        dataIndex: "name",
-        key: "name",
-        render: (text) => <div title="Name">{text}</div>,
-      },
-      {
-        title: "Number of People",
-        dataIndex: "numPeople",
-        key: "numPeople",
-        render: (text) => <div title="Number of People">{text}</div>,
-      },
-      {
-        title: "Number of Structures",
-        dataIndex: "structures",
-        key: "structures",
-        render: (text) => <div title="Number of Structures">{text}</div>,
-      },
-      {
-        title: "Estimated quantity of water (m3/s)",
-        dataIndex: "waterQuality",
-        key: "waterQuality",
-        render: (text) => <div title="Estimated quantity of water (m3/s)">{text}</div>,
-      },
+      // {
+      //   title: "Name",
+      //   dataIndex: "name",
+      //   key: "name",
+      //   render: (text) => <div title="Name">{text}</div>,
+      // },
+      // {
+      //   title: "Number of People",
+      //   dataIndex: "numPeople",
+      //   key: "numPeople",
+      //   render: (text) => <div title="Number of People">{text}</div>,
+      // },
+      // {
+      //   title: "Number of Structures",
+      //   dataIndex: "structures",
+      //   key: "structures",
+      //   render: (text) => <div title="Number of Structures">{text}</div>,
+      // },
+      // {
+      //   title: "Estimated quantity of water (m3/s)",
+      //   dataIndex: "waterQuality",
+      //   key: "waterQuality",
+      //   render: (text) => <div title="Estimated quantity of water (m3/s)">{text}</div>,
+      // },
       {
         title: "Disturbed Area (ha)",
         dataIndex: "disturbedArea",
@@ -191,12 +191,12 @@ export class NOWActivities extends Component {
     ];
 
     const buildingsColumns = [
-      {
-        title: "Name",
-        dataIndex: "name",
-        key: "name",
-        render: (text) => <div title="Name">{text}</div>,
-      },
+      // {
+      //   title: "Name",
+      //   dataIndex: "name",
+      //   key: "name",
+      //   render: (text) => <div title="Name">{text}</div>,
+      // },
       {
         title: "Disturbed Area (ha)",
         dataIndex: "disturbedArea",
@@ -211,6 +211,21 @@ export class NOWActivities extends Component {
       },
     ];
 
+    const campData = {
+      disturbedArea: this.props.noticeOfWork.campdisturbedarea,
+      timberVolume: this.props.noticeOfWork.camptimbervolume,
+    };
+
+    const stagingAreaData = {
+      disturbedArea: this.props.noticeOfWork.stgedisturbedarea,
+      timberVolume: this.props.noticeOfWork.stgetimbervolume,
+    };
+
+    const buildingData = {
+      disturbedArea: this.props.noticeOfWork.bldgdisturbedarea,
+      timberVolume: this.props.noticeOfWork.bldgtimbervolume,
+    };
+
     return (
       <div className="padding-large--sides">
         <div>
@@ -220,7 +235,7 @@ export class NOWActivities extends Component {
             align="left"
             pagination={false}
             columns={campColumns}
-            dataSource={[]}
+            dataSource={[campData]}
             locale={{
               emptyText: "Unknown",
             }}
@@ -234,7 +249,7 @@ export class NOWActivities extends Component {
             align="left"
             pagination={false}
             columns={buildingsColumns}
-            dataSource={[]}
+            dataSource={[buildingData]}
             locale={{
               emptyText: "Unknown",
             }}
@@ -248,7 +263,7 @@ export class NOWActivities extends Component {
             align="left"
             pagination={false}
             columns={buildingsColumns}
-            dataSource={[]}
+            dataSource={[stagingAreaData]}
             locale={{
               emptyText: "Unknown",
             }}

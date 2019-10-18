@@ -128,7 +128,7 @@ export class NOWGeneralInfo extends Component {
                       }
                       bordered={false}
                     >
-                      <div>
+                      <div className="contact-card">
                         <h3>
                           {contact.ind_firstname && <span>{contact.ind_firstname}</span>}
                           {contact.ind_lastname && <span> {contact.ind_lastname}</span>}
