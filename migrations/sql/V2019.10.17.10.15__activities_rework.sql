@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS activity_summary_type  (
   update_user      character varying(60) NOT NULL,
   update_timestamp timestamp with time zone DEFAULT now() NOT NULL
 );
+ALTER TABLE activity_summary_type OWNER TO mds;
 
 CREATE TABLE IF NOT EXISTS activity_summary  (
   activity_summary_id SERIAL PRIMARY KEY,
@@ -41,6 +42,7 @@ CREATE TABLE IF NOT EXISTS activity_summary  (
   FOREIGN KEY (total_disturbed_area_unit_type_code) REFERENCES unit_type(unit_type_code)
   DEFERRABLE INITIALLY DEFERRED
 );
+ALTER TABLE activity_summary OWNER TO mds;
 
 --water_supply
 ALTER TABLE water_supply RENAME TO water_supply_detail;
@@ -67,6 +69,7 @@ CREATE TABLE IF NOT EXISTS settling_pond_detail  (
   water_source_description      varchar(4000),
   construction_plan		varchar(4000)
 );
+ALTER TABLE settling_pond_detail OWNER TO mds;
 
 --exploration_surface_drilling
 CREATE TABLE IF NOT EXISTS exploration_surface_drilling  (
@@ -76,6 +79,7 @@ CREATE TABLE IF NOT EXISTS exploration_surface_drilling  (
   FOREIGN KEY (activity_id) REFERENCES activity_summary(activity_summary_id)
   DEFERRABLE INITIALLY DEFERRED
 );
+ALTER TABLE exploration_surface_drilling OWNER TO mds;
 
 --sand_gravel_quarry_operation
 ALTER TABLE sand_gravel_quarry_operation RENAME COLUMN sand_gravel_quarry_operation_id TO activity_summary_id;
@@ -96,6 +100,8 @@ CREATE TABLE IF NOT EXISTS underground_exploration_type  (
   update_user      character varying(60) NOT NULL,
   update_timestamp timestamp with time zone DEFAULT now() NOT NULL
 );
+ALTER TABLE underground_exploration_type OWNER TO mds;
+
 ALTER TABLE underground_exploration RENAME COLUMN underground_exploration_id TO activity_summary_id;
 ALTER TABLE underground_exploration ADD FOREIGN KEY (activity_summary_id) REFERENCES activity_summary(activity_summary_id);
 ALTER TABLE underground_exploration DROP COLUMN now_application_id;
@@ -138,3 +144,12 @@ ALTER TABLE placer_operation DROP COLUMN create_user;
 ALTER TABLE placer_operation DROP COLUMN create_timestamp;
 ALTER TABLE placer_operation DROP COLUMN update_user;
 ALTER TABLE placer_operation DROP COLUMN update_timestamp;
+
+
+CREATE TABLE activity_summary_detail_xref (
+	activity_summary_id INTEGER NOT NULL REFERENCES activity_summary(activity_summary_id), 
+	activity_detail_id INTEGER NOT NULL REFERENCES activity_detail(activity_detail_id),
+	
+    PRIMARY KEY(activity_summary_id, activity_detail_id)
+);
+ALTER TABLE activity_summary_detail_xref OWNER TO mds;
