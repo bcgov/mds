@@ -13,7 +13,7 @@ ALTER TABLE placer_operation DROP COLUMN reclamation_description, DROP COLUMN re
 ALTER TABLE sand_gravel_quarry_operation DROP COLUMN reclamation_description, DROP COLUMN reclamation_cost, DROP COLUMN total_disturbed_area, DROP COLUMN total_disturbed_area_unit_type_code;
 
 CREATE TABLE IF NOT EXISTS activity_type  (
-  activity_type_code    varchar(10) PRIMARY KEY, 
+  activity_type_code    varchar(255) PRIMARY KEY, 
   description      varchar(50),
   active_ind       boolean DEFAULT true NOT NULL,
   create_user      character varying(60) NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS activity_type  (
 
 CREATE TABLE IF NOT EXISTS activity  (
   activity_id SERIAL PRIMARY KEY,
-  activity_type_code varchar(10) NOT NULL,
+  activity_type_code varchar(255) NOT NULL,
   now_application_id integer,
   reclamation_description character varying(4000),
   reclamation_cost numeric(10,2),
@@ -50,3 +50,21 @@ CREATE TABLE IF NOT EXISTS exploration_surface_drilling  (
   FOREIGN KEY (activity_id) REFERENCES activity(activity_id)
   DEFERRABLE INITIALLY DEFERRED
 );
+
+
+
+
+
+--water_supply
+ALTER TABLE water_supply RENAME TO water_supply_detail;
+ALTER TABLE water_supply_detail RENAME COLUMN water_supply_id TO activity_detail_id;
+ALTER TABLE water_supply_detail ADD FOREIGN KEY (activity_detail_id) REFERENCES activity_detail(activity_detail_id);
+
+--settling_pond
+--exploration_surface_drilling
+--sand_gravel_quarry_operation
+--underground_exploration
+--camp
+--surface_bulk_sample
+--blasting_operation
+--placer
