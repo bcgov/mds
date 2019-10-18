@@ -23,7 +23,6 @@ import {
   fetchMineDisturbanceOptions,
   fetchMineCommodityOptions,
   fetchPermitStatusOptions,
-  fetchApplicationStatusOptions,
   fetchMineReportStatusOptions,
 } from "@/actionCreators/staticContentActionCreator";
 import { fetchPartyRelationshipTypes } from "@/actionCreators/partiesActionCreator";
@@ -49,7 +48,6 @@ import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as router from "@/constants/routes";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
-import MineMap from "@/components/maps/MineMap";
 import MineMapLeaflet from "@/components/maps/MineMapLeaflet";
 import * as Strings from "@/constants/strings";
 import * as Permission from "@/constants/permissions";
@@ -88,7 +86,6 @@ const propTypes = {
   mineIds: PropTypes.arrayOf(PropTypes.string).isRequired,
   pageData: CustomPropTypes.minePageData.isRequired,
   fetchPartyRelationshipTypes: PropTypes.func.isRequired,
-  fetchApplicationStatusOptions: PropTypes.func.isRequired,
   fetchMineReportStatusOptions: PropTypes.func.isRequired,
 };
 
@@ -106,8 +103,6 @@ const formatParams = ({
   ...joinOrRemove(tenure, "tenure"),
   ...remainingParams,
 });
-
-const switchToLeaflet = true;
 
 export class Dashboard extends Component {
   constructor(props) {
@@ -153,7 +148,6 @@ export class Dashboard extends Component {
     this.props.fetchMineCommodityOptions();
     this.props.fetchPartyRelationshipTypes();
     this.props.fetchPermitStatusOptions();
-    this.props.fetchApplicationStatusOptions();
     this.props.fetchMineReportStatusOptions();
   }
 
@@ -444,22 +438,18 @@ export class Dashboard extends Component {
               <LoadingWrapper condition={this.state.isMapLoaded}>
                 <Element name="mapElement">
                   <div>
-                    {switchToLeaflet ? (
-                      <MineMapLeaflet
-                        lat={this.state.lat}
-                        long={this.state.long}
-                        zoom={this.state.zoom}
-                        minesBasicInfo={this.props.pageData.mines}
-                        mineName={this.state.mineName}
-                        mines={this.props.mines}
-                        fetchMineRecordById={this.props.fetchMineRecordById}
-                        transformedMineTypes={this.props.transformedMineTypes}
-                        mineCommodityOptionsHash={this.props.mineCommodityOptionsHash}
-                        history={this.props.history}
-                      />
-                    ) : (
-                      <MineMap {...this.state} />
-                    )}
+                    <MineMapLeaflet
+                      lat={this.state.lat}
+                      long={this.state.long}
+                      zoom={this.state.zoom}
+                      minesBasicInfo={this.props.pageData.mines}
+                      mineName={this.state.mineName}
+                      mines={this.props.mines}
+                      fetchMineRecordById={this.props.fetchMineRecordById}
+                      transformedMineTypes={this.props.transformedMineTypes}
+                      mineCommodityOptionsHash={this.props.mineCommodityOptionsHash}
+                      history={this.props.history}
+                    />
                   </div>
                 </Element>
               </LoadingWrapper>
@@ -530,7 +520,6 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineCommodityOptions,
       fetchMineDisturbanceOptions,
       fetchPermitStatusOptions,
-      fetchApplicationStatusOptions,
       openModal,
       closeModal,
       fetchPartyRelationshipTypes,

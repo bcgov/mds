@@ -151,7 +151,6 @@
         i = g(o, r);
         break;
       case "uniqueValue":
-        console.log(o, r), (i = _(o, r));
         break;
       default:
         i = m(o, r);
@@ -235,7 +234,6 @@
     return C(e, t, i, o, r);
   }
   function C(e, i, o, r, n) {
-    console.log("generateEsriLayer: ", e.title, e);
     let s;
       let a;
       let l;
@@ -243,7 +241,7 @@
       const p = [];
       const f = `${n  }-label`;
     if (e.type === "Feature Collection" || void 0 !== e.featureCollection) {
-      console.log("create FeatureCollection"), o.createPane(f);
+      o.createPane(f);
       let h; let y;
       if (void 0 === e.itemId)
         for (l = 0, u = e.featureCollection.layers.length; l < u; l++)
@@ -294,7 +292,6 @@
       let d = "1=1";
       if (void 0 !== e.layerDefinition.drawingInfo) {
         if (e.layerDefinition.drawingInfo.renderer.type === "heatmap") {
-          console.log("create HeatmapLayer");
           const g = {};
           return (
             e.layerDefinition.drawingInfo.renderer.colorStops.map(function(e) {
@@ -315,11 +312,9 @@
             s
           );
         }
-        console.log("create ArcGISFeatureLayer (with layerDefinition.drawingInfo)");
         const _ = e.layerDefinition.drawingInfo;
         return (
           (_.transparency = 100 - 100 * e.opacity),
-          console.log(_.transparency),
           void 0 !== e.layerDefinition.definitionExpression &&
             (d = e.layerDefinition.definitionExpression),
           o.createPane(f),
@@ -367,7 +362,6 @@
         );
       }
       return (
-        console.log("create ArcGISFeatureLayer (without layerDefinition.drawingInfo)"),
         void 0 !== e.layerDefinition.definitionExpression &&
           (d = e.layerDefinition.definitionExpression),
         (s = t.esri.featureLayer({
@@ -388,7 +382,6 @@
     }
     if (e.layerType === "ArcGISFeatureLayer")
       return (
-        console.log("create ArcGISFeatureLayer"),
         (s = t.esri.featureLayer({
           url: e.url,
           token: r.token || null,
@@ -455,7 +448,6 @@
         pane: n,
         onEachFeature(e, t) {
           if (void 0 !== m.popupInfo && m.popupInfo !== null) {
-            console.log(m.popupInfo);
             const i = z(m.popupInfo, e.properties);
             t.bindPopup(i);
           }
@@ -486,7 +478,6 @@
     }
     if (e.layerType === "ArcGISImageServiceLayer")
       return (
-        console.log("create ArcGISImageServiceLayer"),
         (s = t.esri.imageMapLayer({
           url: e.url,
           token: r.token || null,
@@ -1319,10 +1310,9 @@
             (this.labelingInfo = e.layers[o].layerDefinition.drawingInfo.labelingInfo),
           console.log(e);
         const l = this._featureCollectionToGeoJSON(r, s);
-        a !== null && v(a, this), console.log(l), this.addData(l);
+        a !== null && v(a, this), this.addData(l);
       },
       _projTo4326(e, i) {
-        console.log("_project!");
         let o;
           let r;
           const n = [];
@@ -1420,17 +1410,15 @@
           function(e, t) {
             e
               ? console.log(e)
-              : (console.log(t), this._parseFeatureCollection(t.featureCollection));
+              : (this._parseFeatureCollection(t.featureCollection));
           },
           this
         );
       },
       _parseFeatureCollection(e) {
-        console.log("_parseFeatureCollection");
         let t;
         for (t = 0; t < 3; t++)
           if (e.layers[t].featureSet.features.length > 0) {
-            console.log(t);
             const i = e.layers[t].featureSet.features;
               const o = e.layers[t].layerDefinition.objectIdField;
               const r = this._featureCollectionToGeoJSON(i, o);
@@ -1438,7 +1426,6 @@
               void 0 !== e.layers[t].layerDefinition.drawingInfo.labelingInfo &&
                 (this.labelingInfo = e.layers[t].layerDefinition.drawingInfo.labelingInfo),
               v(e.layers[t].layerDefinition, this),
-              console.log(r),
               this.addData(r);
           }
       },
@@ -1536,7 +1523,7 @@
           t.esri.request(n, i, function(e, t) {
             e
               ? console.log(e)
-              : (console.log("WebMap MetaData: ", t),
+              : (
                 (r.portalItem = t),
                 (r.title = t.title),
                 (r._metadataLoaded = !0),
@@ -1557,7 +1544,7 @@
             function(e, s) {
               e
                 ? console.log(e)
-                : (console.log("WebMap: ", s),
+                : (
                   (this._layersNum = s.baseMap.baseMapLayers.length + s.operationalLayers.length),
                   s.baseMap.baseMapLayers.map(
                     function(s) {
@@ -1569,7 +1556,7 @@
                           function(t, r) {
                             t
                               ? console.error(e)
-                              : (console.log(r.access),
+                              : (
                                 r.access !== "public"
                                   ? this._operationalLayer(s, o, i, n)
                                   : this._operationalLayer(s, o, i, {})),
@@ -1591,7 +1578,7 @@
                           function(t, r) {
                             t
                               ? console.error(e)
-                              : (console.log(r.access),
+                              : (
                                 r.access !== "public"
                                   ? this._operationalLayer(s, o, i, n, l)
                                   : this._operationalLayer(s, o, i, {}, l)),
