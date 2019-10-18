@@ -476,6 +476,8 @@ def _save_attendee(attendance, inspection):
     attendee_last_name = attendance.find('attendance_last_name')
     attendee_org = attendance.find('org')
     attendee_title = attendance.find('attendance_title')
+    attendee_type_value = attendance.find('attendance_type')
+    attendance_type = _find_or_save_attendee_type(attendee_type_value)
 
     attendee = Attendee(
         first_name=_parse_element_text(attendee_first_name),
@@ -484,10 +486,7 @@ def _save_attendee(attendance, inspection):
         title=_parse_element_text(attendee_title)
     )
 
-    attendee_type_value = attendance.find('attendance_type')
-    attendance_type = _find_or_save_attendee_type(attendee_type_value)
     attendee.attendee_type_rel = attendance_type
-
     attendee.inspection = inspection
 
     db.session.add(attendee)
