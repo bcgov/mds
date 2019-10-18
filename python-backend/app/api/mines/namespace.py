@@ -1,7 +1,5 @@
 from flask_restplus import Namespace
 
-from app.api.mines.applications.resources.application import ApplicationResource, ApplicationListResource
-from app.api.mines.applications.resources.application_status_code import ApplicationStatusCodeResource
 from app.api.mines.compliance.resources.compliance import MineComplianceSummaryResource
 from app.api.mines.documents.resources.mine_document_resource import MineDocumentListResource
 from app.api.mines.incidents.resources.mine_incidents import MineIncidentListResource, MineIncidentResource
@@ -61,10 +59,6 @@ api.add_resource(MineVerifiedStatusResource, '/<string:mine_guid>/verified-statu
 api.add_resource(MineVerifiedStatusListResource, '/verified-status')
 api.add_resource(MineSubscriptionResource, '/<string:mine_guid>/subscribe')
 api.add_resource(MineSubscriptionListResource, '/subscribe')
-
-api.add_resource(ApplicationListResource, '/<string:mine_guid>/applications')
-api.add_resource(ApplicationResource, '/<string:mine_guid>/applications/<string:application_guid>')
-api.add_resource(ApplicationStatusCodeResource, '/applications/status-codes')
 
 api.add_resource(MineVarianceListResource, '/<string:mine_guid>/variances')
 api.add_resource(MineVarianceResource, '/<string:mine_guid>/variances/<string:variance_guid>')

@@ -15,7 +15,6 @@ import SearchResults from "@/components/search/SearchResults";
 import CustomHomePage from "@/components/dashboard/customHomePage/CustomHomePage";
 import MineSummary from "@/components/mine/Summary/MineSummary";
 import MineContactInfo from "@/components/mine/ContactInfo/MineContactInfo";
-import MineApplicationInfo from "@/components/mine/Applications/MineApplicationInfo";
 import MinePermitInfo from "@/components/mine/Permit/MinePermitInfo";
 import MineVariance from "@/components/mine/Variances/MineVariance";
 import MineComplianceInfo from "@/components/mine/Compliance/MineComplianceInfo";
@@ -79,12 +78,6 @@ export const MINE_GENERAL = {
   route: "/mine-dashboard/:id/mine-information/general",
   dynamicRoute: (id) => `/mine-dashboard/${id}/mine-information/general`,
   component: MineSummary,
-};
-
-export const MINE_PERMIT_APPLICATIONS = {
-  route: "/mine-dashboard/:id/permits-and-approvals/permit-applications",
-  dynamicRoute: (id) => `/mine-dashboard/${id}/permits-and-approvals/permit-applications`,
-  component: MineApplicationInfo,
 };
 
 export const MINE_PERMITS = {

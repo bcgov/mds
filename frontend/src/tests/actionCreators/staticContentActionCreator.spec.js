@@ -7,7 +7,6 @@ import {
   fetchMineDisturbanceOptions,
   fetchMineCommodityOptions,
   fetchProvinceCodes,
-  fetchApplicationStatusOptions,
   fetchMineComplianceCodes,
   fetchVarianceStatusOptions,
   fetchVarianceDocumentCategoryOptions,
@@ -155,27 +154,6 @@ describe("`fetchProvinceCodes` action creator", () => {
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
     return fetchProvinceCodes()(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(2);
-    });
-  });
-});
-
-describe("`fetchApplicationStatusOptions` action creator", () => {
-  const url = `${ENVIRONMENT.apiUrl + API.APPLICATIONS_STATUSCODES}`;
-  it("Request successful, dispatches `success` with correct response", () => {
-    const mockResponse = { data: { success: true } };
-    mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchApplicationStatusOptions()(dispatch).then(() => {
-      expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(3);
-    });
-  });
-  it("Request failure, dispatches `error` with correct response", () => {
-    mockAxios.onGet(url, MOCK.createMockHeader()).reply(400, MOCK.ERROR);
-    return fetchApplicationStatusOptions()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);

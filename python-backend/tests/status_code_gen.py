@@ -1,7 +1,6 @@
 import random
 
 from app.extensions import db
-from app.api.mines.applications.models.application_status_code import ApplicationStatusCode
 from app.api.incidents.models.mine_incident_determination_type import MineIncidentDeterminationType
 from app.api.incidents.models.mine_incident_status_code import MineIncidentStatusCode
 from app.api.incidents.models.mine_incident_document_type_code import MineIncidentDocumentTypeCode
@@ -19,11 +18,6 @@ from app.api.variances.models.variance_document_category_code import VarianceDoc
 from app.api.variances.models.variance_application_status_code import VarianceApplicationStatusCode
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
 from app.api.mines.reports.models.mine_report_submission_status_code import MineReportSubmissionStatusCode
-
-
-def RandomApplicationStatusCode():
-    return random.choice(
-        [x.application_status_code for x in ApplicationStatusCode.find_all_active()])
 
 
 def RandomMineRegionCode():
