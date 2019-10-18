@@ -47,9 +47,6 @@ export const PERMITAMENDMENT = (mineGuid, permitGuid, permitAmendmentGuid) =>
 export const PERMITAMENDMENTDOCUMENT = (mineGuid, permitGuid, permitAmendmentGuid, documentGuid) =>
   `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}/documents/${documentGuid}`;
 
-export const APPLICATIONS_STATUSCODES = `/mines/applications/status-codes`;
-export const MINE_APPLICATIONS = (mine_guid) => `/mines/${mine_guid}/applications`;
-
 // Search
 export const SEARCH = (params) => (params ? `/search?${queryString.stringify(params)}` : "/search");
 export const SEARCH_OPTIONS = "/search/options";

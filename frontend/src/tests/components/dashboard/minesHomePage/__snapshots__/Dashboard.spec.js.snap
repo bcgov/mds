@@ -92,19 +92,7 @@ exports[`Dashboard renders properly 1`] = `
           <Connect(MineSearch)
             closeModal={[MockFunction]}
             createMineRecord={[MockFunction]}
-            fetchApplicationStatusOptions={
-              [MockFunction] {
-                "calls": Array [
-                  Array [],
-                ],
-                "results": Array [
-                  Object {
-                    "type": "return",
-                    "value": undefined,
-                  },
-                ],
-              }
-            }
+            fetchApplicationStatusOptions={[MockFunction]}
             fetchMineCommodityOptions={
               [MockFunction] {
                 "calls": Array [
