@@ -362,6 +362,7 @@ export const NOTICE_OF_WORK = {
     },
   ],
   exp_access_activity: [],
+  exp_surface_drill_activity: [],
   mech_trenching_activity: [],
 };
 

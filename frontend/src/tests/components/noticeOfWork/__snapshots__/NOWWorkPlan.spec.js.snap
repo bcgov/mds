@@ -265,6 +265,7 @@ exports[`NOWWorkPlan renders properly 1`] = `
           },
         ],
         "exp_access_activity": Array [],
+        "exp_surface_drill_activity": Array [],
         "expaccessreclamation": null,
         "expaccessreclamationcost": null,
         "expaccesstotaldistarea": null,
