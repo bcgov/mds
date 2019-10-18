@@ -6,15 +6,17 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 
-from .activity import Activity
+from .activity_summary_base import ActivitySummaryBase
 
 
-class SurfaceBulkSample(Activity):
+class SurfaceBulkSample(ActivitySummaryBase):
     __tablename__ = 'surface_bulk_sample'
     __mapper_args__ = {
         'polymorphic_identity': 'surface_bulk_surface',
     }
-    activity_id = db.Column(db.Integer, db.ForeignKey('activity.activity_id'), primary_key=True)
+    activity_summary_id = db.Column(db.Integer,
+                                    db.ForeignKey('activity_summary.activity_summary_id'),
+                                    primary_key=True)
 
     processing_method_description = db.Column(db.String, nullable=False)
     handling_instructions = db.Column(db.String)

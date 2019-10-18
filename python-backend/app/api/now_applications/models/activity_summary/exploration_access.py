@@ -5,12 +5,12 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from app.api.utils.models_mixins import Base
 from app.extensions import db
 
-from .activity import Activity
+from .activity_summary_base import ActivitySummaryBase
 
 
-class ExplorationAccess(Activity):
+class ExplorationAccess(ActivitySummaryBase):
     __mapper_args__ = {
-        'polymorphic_identity': "",  ## type code
+        'polymorphic_identity': "ea",  ## type code
     }
 
     ## NO TABLE FOR THIS TYPE

@@ -12,7 +12,7 @@ from app.api.utils.models_mixins import AuditMixin, Base
 class ActivityDetail(AuditMixin, Base):
     __tablename__ = 'activity_detail'
     activity_detail_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
-    activity_id = db.Column(db.Integer, db.ForeignKey('activity.activity_id'))
+    activity_id = db.Column(db.Integer, db.ForeignKey('activity_summary.activity_summary_id'))
     activity_description = db.Column(db.String)
     disturbed_area = db.Column(db.Numeric(14, 2))
     timber_volume = db.Column(db.Numeric(14, 2))
@@ -27,7 +27,7 @@ class ActivityDetail(AuditMixin, Base):
     water_quantity = db.Column(db.Integer)
     water_quantity_unit_type_code = db.Column(db.String, db.ForeignKey('unit_type.unit_type_code'))
 
-    activity = db.relationship('Activity')
+    activity_summary = db.relationship('ActivitySummaryBase')
 
     def __repr__(self):
         return '<ActivityDetail %r>' % self.activity_detail_id

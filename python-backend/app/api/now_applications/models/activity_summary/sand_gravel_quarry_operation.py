@@ -5,15 +5,17 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from app.api.utils.models_mixins import Base, AuditMixin
 from app.extensions import db
 
-from .activity import Activity
+from .activity_summary_base import ActivitySummaryBase
 
 
-class SandGravelQuarryOperation(Activity):
+class SandGravelQuarryOperation(ActivitySummaryBase):
     __tablename__ = "sand_gravel_quarry_operation"
     __mapper_args__ = {
         'polymorphic_identity': '',  ## type code
     }
-    activity_id = db.Column(db.Integer, db.ForeignKey('activity.activity_id'), primary_key=True)
+    activity_summary_id = db.Column(db.Integer,
+                                    db.ForeignKey('activity_summary.activity_summary_id'),
+                                    primary_key=True)
 
     average_overburden_depth = db.Column(db.Numeric(14, 2))
     average_top_soil_depth = db.Column(db.Numeric(14, 2))

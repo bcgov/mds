@@ -5,15 +5,17 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from app.api.utils.models_mixins import Base
 from app.extensions import db
 
-from .activity import Activity
+from .activity_summary_base import ActivitySummaryBase
 
 
-class UndergroundExploration(Activity):
+class UndergroundExploration(ActivitySummaryBase):
     __tablename__ = "underground_exploration"
     __mapper_args__ = {
         'polymorphic_identity': '',  ## type code
     }
-    activity_id = db.Column(db.Integer, db.ForeignKey('activity.activity_id'), primary_key=True)
+    activity_summary_id = db.Column(db.Integer,
+                                    db.ForeignKey('activity.activity_summary_id'),
+                                    primary_key=True)
 
     total_ore_amount = db.Column(db.Integer)
     total_ore_amount_unit_type_code = db.Column(db.String,
