@@ -6,7 +6,6 @@ import {
   storeDisturbanceOptions,
   storeCommodityOptions,
   storeProvinceCodes,
-  storeApplicationStatusOptions,
   storeComplianceCodes,
   storeVarianceStatusOptions,
   storeVarianceDocumentCategoryOptions,
@@ -21,7 +20,6 @@ const baseExpectedValue = {
   mineCommodityOptions: [],
   provinceOptions: [],
   permitStatusCodes: [],
-  applicationStatusCodes: [],
   complianceCodes: [],
   incidentFollowupActionOptions: [],
   incidentDeterminationOptions: [],
@@ -84,16 +82,6 @@ describe("staticContentReducer", () => {
     const expectedValue = getBaseExpectedValue();
     expectedValue.provinceOptions = MOCK.PROVINCE_OPTIONS.records;
     const result = staticContentReducer(undefined, storeProvinceCodes(MOCK.PROVINCE_OPTIONS));
-    expect(result).toEqual(expectedValue);
-  });
-
-  it("receives STORE_APPLICATION_STATUS_OPTIONS", () => {
-    const expectedValue = getBaseExpectedValue();
-    expectedValue.applicationStatusCodes = MOCK.APPLICATION_STATUS_CODE_OPTIONS.records;
-    const result = staticContentReducer(
-      undefined,
-      storeApplicationStatusOptions(MOCK.APPLICATION_STATUS_CODE_OPTIONS)
-    );
     expect(result).toEqual(expectedValue);
   });
 

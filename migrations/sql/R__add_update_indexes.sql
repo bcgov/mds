@@ -4,9 +4,6 @@ Repetable migrations to manage database indexes.
 Indexes are grouped by table names alphabetically.
 **/
 
-/* Applications */
-CREATE INDEX IF NOT EXISTS application_mine_guid_fkey_idx ON application(mine_guid);
-
 /* Mine */
 CREATE INDEX IF NOT EXISTS active_mine_mine_region_fkey_idx ON mine(mine_region, deleted_ind) WHERE (deleted_ind = false);
 CREATE INDEX IF NOT EXISTS mine_mine_name_search_idx ON mine USING gist (mine_name gist_trgm_ops);
