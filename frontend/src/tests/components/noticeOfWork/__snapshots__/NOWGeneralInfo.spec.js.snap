@@ -178,7 +178,9 @@ exports[`NOWGeneralInfo renders properly 1`] = `
               </div>
             }
           >
-            <div>
+            <div
+              className="contact-card"
+            >
               <h3>
                 <span>
                   N/A
@@ -232,7 +234,9 @@ exports[`NOWGeneralInfo renders properly 1`] = `
               </div>
             }
           >
-            <div>
+            <div
+              className="contact-card"
+            >
               <h3>
                 <span>
                   N/A

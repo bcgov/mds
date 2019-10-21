@@ -222,30 +222,6 @@ exports[`NOWActivities renders properly 1`] = `
               columns={
                 Array [
                   Object {
-                    "dataIndex": "name",
-                    "key": "name",
-                    "render": [Function],
-                    "title": "Name",
-                  },
-                  Object {
-                    "dataIndex": "numPeople",
-                    "key": "numPeople",
-                    "render": [Function],
-                    "title": "Number of People",
-                  },
-                  Object {
-                    "dataIndex": "structures",
-                    "key": "structures",
-                    "render": [Function],
-                    "title": "Number of Structures",
-                  },
-                  Object {
-                    "dataIndex": "waterQuality",
-                    "key": "waterQuality",
-                    "render": [Function],
-                    "title": "Estimated quantity of water (m3/s)",
-                  },
-                  Object {
                     "dataIndex": "disturbedArea",
                     "key": "disturbedArea",
                     "render": [Function],
@@ -259,7 +235,14 @@ exports[`NOWActivities renders properly 1`] = `
                   },
                 ]
               }
-              dataSource={Array []}
+              dataSource={
+                Array [
+                  Object {
+                    "disturbedArea": null,
+                    "timberVolume": null,
+                  },
+                ]
+              }
               indentSize={20}
               loading={false}
               locale={
@@ -296,12 +279,6 @@ exports[`NOWActivities renders properly 1`] = `
               columns={
                 Array [
                   Object {
-                    "dataIndex": "name",
-                    "key": "name",
-                    "render": [Function],
-                    "title": "Name",
-                  },
-                  Object {
                     "dataIndex": "disturbedArea",
                     "key": "disturbedArea",
                     "render": [Function],
@@ -315,7 +292,14 @@ exports[`NOWActivities renders properly 1`] = `
                   },
                 ]
               }
-              dataSource={Array []}
+              dataSource={
+                Array [
+                  Object {
+                    "disturbedArea": null,
+                    "timberVolume": null,
+                  },
+                ]
+              }
               indentSize={20}
               loading={false}
               locale={
@@ -352,12 +336,6 @@ exports[`NOWActivities renders properly 1`] = `
               columns={
                 Array [
                   Object {
-                    "dataIndex": "name",
-                    "key": "name",
-                    "render": [Function],
-                    "title": "Name",
-                  },
-                  Object {
                     "dataIndex": "disturbedArea",
                     "key": "disturbedArea",
                     "render": [Function],
@@ -371,7 +349,14 @@ exports[`NOWActivities renders properly 1`] = `
                   },
                 ]
               }
-              dataSource={Array []}
+              dataSource={
+                Array [
+                  Object {
+                    "disturbedArea": null,
+                    "timberVolume": null,
+                  },
+                ]
+              }
               indentSize={20}
               loading={false}
               locale={
