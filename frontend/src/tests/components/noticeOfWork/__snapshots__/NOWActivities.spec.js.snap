@@ -238,8 +238,8 @@ exports[`NOWActivities renders properly 1`] = `
               dataSource={
                 Array [
                   Object {
-                    "disturbedArea": null,
-                    "timberVolume": null,
+                    "disturbedArea": "N/A",
+                    "timberVolume": "N/A",
                   },
                 ]
               }
@@ -295,8 +295,8 @@ exports[`NOWActivities renders properly 1`] = `
               dataSource={
                 Array [
                   Object {
-                    "disturbedArea": null,
-                    "timberVolume": null,
+                    "disturbedArea": "N/A",
+                    "timberVolume": "N/A",
                   },
                 ]
               }
@@ -352,8 +352,8 @@ exports[`NOWActivities renders properly 1`] = `
               dataSource={
                 Array [
                   Object {
-                    "disturbedArea": null,
-                    "timberVolume": null,
+                    "disturbedArea": "N/A",
+                    "timberVolume": "N/A",
                   },
                 ]
               }
