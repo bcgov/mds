@@ -155,9 +155,8 @@ def _parse_nris_element(input):
         if inspection_data is not None:
             _save_stops(inspection_data, inspection)
 
-        related_inspector = inspection_data.find('related_Inspctrs')
-        if related_inspector is not None:
-            _save_attendee(related_inspector, inspection)
+        for inspector in data.findall('related_Inspctrs'):
+            _save_attendee(inspector, inspection)
 
         for attendance in data.findall('attendance'):
             _save_attendee(attendance, inspection)
@@ -471,13 +470,14 @@ def _find_or_save_inspection_type(inspection_type):
     return inspec_type
 
 
-def _save_attendee(attendee, inspection):
+def _save_attendee(attendance, inspection):
 
-    attendee_first_name = attendee.find('attendance_first_name')
-    attendee_last_name = attendee.find('attendance_last_name')
-    attendee_org = attendee.find('org')
-    attendee_title = attendee.find('attendance_title')
-    attendee_type_value = attendee.find('attendance_type')
+    attendee_first_name = attendance.find('attendance_first_name')
+    attendee_last_name = attendance.find('attendance_last_name')
+    attendee_org = attendance.find('org')
+    attendee_title = attendance.find('attendance_title')
+    attendee_type_value = attendance.find('attendance_type')
+    attendance_type = _find_or_save_attendee_type(attendee_type_value)
 
     attendee = Attendee(
         first_name=_parse_element_text(attendee_first_name),
@@ -486,10 +486,7 @@ def _save_attendee(attendee, inspection):
         title=_parse_element_text(attendee_title)
     )
 
-    attendee_type_value = attendee.find('attendance_type')
-    attendance_type = _find_or_save_attendee_type(attendee_type_value)
     attendee.attendee_type_rel = attendance_type
-
     attendee.inspection = inspection
 
     db.session.add(attendee)
@@ -501,13 +498,17 @@ def _find_or_save_attendee_type(attendee_type):
     types = AttendeeType.find_all_attendee_types()
     type_found = False
     attend_type = None
+    attendee_type_text = None
     if attendee_type is not None:
-        for type in types:
-            if type.attendee_type_code == attendee_type.text:
-                type_found = True
-                attend_type = type
+        attendee_type_text = attendee_type.text
+    else:
+        attendee_type_text = "Unknown"
+    for type in types:
+        if type.attendee_type == attendee_type_text:
+            type_found = True
+            attend_type = type
     if not type_found:
-        attend_type = AttendeeType(attendee_type_code=attendee_type.text)
+        attend_type = AttendeeType(attendee_type=attendee_type_text)
         db.session.add(attend_type)
     return attend_type
 

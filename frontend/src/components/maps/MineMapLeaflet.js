@@ -20,6 +20,13 @@ import * as Strings from "@/constants/strings";
 import { SMALL_PIN, SMALL_PIN_SELECTED } from "@/constants/assets";
 import { ENVIRONMENT } from "@/constants/environment";
 import LeafletPopup from "@/components/maps/LeafletPopup";
+import {
+  baseMapsArray,
+  admininstrativeBoundariesLayerArray,
+  roadLayerArray,
+  tenureLayerArray,
+  tenureLayerStyles,
+} from "@/constants/MapLayers";
 
 /**
  * @class MineMapLeaflet.js is a Leaflet Map component.
@@ -109,70 +116,6 @@ const getFirstNationLayer = () => {
     leafletWMSTiledOptions
   );
   return firstNationSource.getLayer("WHSE_ADMIN_BOUNDARIES.PIP_CONSULTATION_AREAS_SP");
-};
-
-const baseMapsArray = ["World Topographic Map", "World Imagery"];
-
-const admininstrativeBoundariesLayerArray = ["BC Mine Regions", "Natural Resource Regions"];
-
-const tenureLayerArray = [
-  "Coal Licence Applications",
-  "Coal Leases",
-  "Coal Licences",
-  "Mining Leases",
-  "Mineral Claims",
-  "Placer Leases",
-  "Placer Claims",
-  "Crown Granted Mineral Claims",
-];
-
-const roadLayerArray = ["Roads DRA", "Forest Tenure Roads"];
-
-const tenureLayerStyles = {
-  "Crown Granted Mineral Claims": {
-    color: "#A83800",
-    fillOpacity: 0,
-    width: 1,
-  },
-  "Coal Licence Applications": {
-    color: "#5C5C5C",
-    fillOpacity: 0,
-    width: 1,
-  },
-  "Coal Leases": {
-    fillColor: "#858585",
-    color: "#FFFFFF",
-    fillOpacity: 0.75,
-    width: 1,
-  },
-  "Coal Licences": {
-    fillColor: "#C2C2C2",
-    color: "#FFFFFF",
-    fillOpacity: 0.75,
-    width: 1,
-  },
-  "Mining Leases": {
-    color: "#E600A9",
-    width: 1,
-    fillOpacity: 0,
-  },
-  "Mineral Claims": {
-    fillColor: "#FF73DF",
-    color: "#FFFFFF",
-    fillOpacity: 0.75,
-    width: 1,
-  },
-  "Placer Leases": {
-    color: "#5200CC",
-    fillOpacity: 0,
-    width: 1,
-  },
-  "Placer Claims": {
-    fillColor: "#751AFF",
-    color: "#FFFFFF",
-    fillOpacity: 0.75,
-    width: 1,
-  },
 };
 
 class MineMapLeaflet extends Component {
