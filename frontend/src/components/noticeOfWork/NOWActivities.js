@@ -212,18 +212,18 @@ export class NOWActivities extends Component {
     ];
 
     const campData = {
-      disturbedArea: this.props.noticeOfWork.campdisturbedarea,
-      timberVolume: this.props.noticeOfWork.camptimbervolume,
+      disturbedArea: this.props.noticeOfWork.campdisturbedarea || Strings.EMPTY_FIELD,
+      timberVolume: this.props.noticeOfWork.camptimbervolume || Strings.EMPTY_FIELD,
     };
 
     const stagingAreaData = {
-      disturbedArea: this.props.noticeOfWork.stgedisturbedarea,
-      timberVolume: this.props.noticeOfWork.stgetimbervolume,
+      disturbedArea: this.props.noticeOfWork.stgedisturbedarea || Strings.EMPTY_FIELD,
+      timberVolume: this.props.noticeOfWork.stgetimbervolume || Strings.EMPTY_FIELD,
     };
 
     const buildingData = {
-      disturbedArea: this.props.noticeOfWork.bldgdisturbedarea,
-      timberVolume: this.props.noticeOfWork.bldgtimbervolume,
+      disturbedArea: this.props.noticeOfWork.bldgdisturbedarea || Strings.EMPTY_FIELD,
+      timberVolume: this.props.noticeOfWork.bldgtimbervolume || Strings.EMPTY_FIELD,
     };
 
     return (
