@@ -50,7 +50,7 @@ exports[`NOWGeneralInfo renders properly 1`] = `
             Region
           </p>
           <p>
-            Unknown
+            North West
           </p>
         </div>
         <div
@@ -112,34 +112,10 @@ exports[`NOWGeneralInfo renders properly 1`] = `
           <p
             className="field-title"
           >
-            Crown/Private
-          </p>
-          <p>
-            Unknown
-          </p>
-        </div>
-        <div
-          className="inline-flex padding-small"
-        >
-          <p
-            className="field-title"
-          >
             Tenure Number
           </p>
           <p>
             N/A
-          </p>
-        </div>
-        <div
-          className="inline-flex padding-small"
-        >
-          <p
-            className="field-title"
-          >
-            Description of Land
-          </p>
-          <p>
-            Unknown
           </p>
         </div>
         <div
@@ -202,7 +178,9 @@ exports[`NOWGeneralInfo renders properly 1`] = `
               </div>
             }
           >
-            <div>
+            <div
+              className="contact-card"
+            >
               <h3>
                 <span>
                   N/A
@@ -256,7 +234,9 @@ exports[`NOWGeneralInfo renders properly 1`] = `
               </div>
             }
           >
-            <div>
+            <div
+              className="contact-card"
+            >
               <h3>
                 <span>
                   N/A
@@ -324,98 +304,6 @@ exports[`NOWGeneralInfo renders properly 1`] = `
           </p>
         </Col>
       </Row>
-      <Row
-        className="padding-small"
-        gutter={16}
-      >
-        <Col
-          md={12}
-          xs={24}
-        >
-          <p
-            className="field-title"
-          >
-            Do you need to build a road, create stream crossings or other surface disturbances that will not be on your tenure?
-          </p>
-        </Col>
-        <Col
-          md={12}
-          xs={24}
-        >
-          <p>
-            Unknown
-          </p>
-        </Col>
-      </Row>
-      <Row
-        className="padding-small"
-        gutter={16}
-      >
-        <Col
-          md={12}
-          xs={24}
-        >
-          <p
-            className="field-title"
-          >
-            Do you have the required access authorizations in place?
-          </p>
-        </Col>
-        <Col
-          md={12}
-          xs={24}
-        >
-          <p>
-            Unknown
-          </p>
-        </Col>
-      </Row>
-      <Row
-        className="padding-small"
-        gutter={16}
-      >
-        <Col
-          md={12}
-          xs={24}
-        >
-          <p
-            className="field-title"
-          >
-            Access presently gated
-          </p>
-        </Col>
-        <Col
-          md={12}
-          xs={24}
-        >
-          <p>
-            Unknown
-          </p>
-        </Col>
-      </Row>
-      <Row
-        className="padding-small"
-        gutter={16}
-      >
-        <Col
-          md={12}
-          xs={24}
-        >
-          <p
-            className="field-title"
-          >
-            Key provided to the inspector
-          </p>
-        </Col>
-        <Col
-          md={12}
-          xs={24}
-        >
-          <p>
-            Unknown
-          </p>
-        </Col>
-      </Row>
     </div>
   </div>
   <div>
@@ -427,150 +315,6 @@ exports[`NOWGeneralInfo renders properly 1`] = `
     <div
       className="padding-large--sides"
     >
-      <h4
-        className="h4"
-      >
-        Present State of Land
-      </h4>
-      <Row
-        className="padding-small"
-        gutter={16}
-      >
-        <Col
-          md={12}
-          xs={24}
-        >
-          <p
-            className="field-title"
-          >
-            Present condition of the land
-          </p>
-        </Col>
-        <Col
-          md={12}
-          xs={24}
-        >
-          <p>
-            Unknown
-          </p>
-        </Col>
-      </Row>
-      <Row
-        className="padding-small"
-        gutter={16}
-      >
-        <Col
-          md={12}
-          xs={24}
-        >
-          <p
-            className="field-title"
-          >
-            Type of vegetation
-          </p>
-        </Col>
-        <Col
-          md={12}
-          xs={24}
-        >
-          <p>
-            Unknown
-          </p>
-        </Col>
-      </Row>
-      <Row
-        className="padding-small"
-        gutter={16}
-      >
-        <Col
-          md={12}
-          xs={24}
-        >
-          <p
-            className="field-title"
-          >
-            Physiography
-          </p>
-        </Col>
-        <Col
-          md={12}
-          xs={24}
-        >
-          <p>
-            Unknown
-          </p>
-        </Col>
-      </Row>
-      <Row
-        className="padding-small"
-        gutter={16}
-      >
-        <Col
-          md={12}
-          xs={24}
-        >
-          <p
-            className="field-title"
-          >
-            Current means of access
-          </p>
-        </Col>
-        <Col
-          md={12}
-          xs={24}
-        >
-          <p>
-            Unknown
-          </p>
-        </Col>
-      </Row>
-      <Row
-        className="padding-small"
-        gutter={16}
-      >
-        <Col
-          md={12}
-          xs={24}
-        >
-          <p
-            className="field-title"
-          >
-            Old equipment
-          </p>
-        </Col>
-        <Col
-          md={12}
-          xs={24}
-        >
-          <p>
-            Unknown
-          </p>
-        </Col>
-      </Row>
-      <Row
-        className="padding-small"
-        gutter={16}
-      >
-        <Col
-          md={12}
-          xs={24}
-        >
-          <p
-            className="field-title"
-          >
-            Recreational trails/use
-          </p>
-        </Col>
-        <Col
-          md={12}
-          xs={24}
-        >
-          <p>
-            Unknown
-          </p>
-        </Col>
-      </Row>
-      <br />
       <h4
         className="h4"
       >
@@ -596,75 +340,6 @@ exports[`NOWGeneralInfo renders properly 1`] = `
         >
           <p>
             N/A
-          </p>
-        </Col>
-      </Row>
-      <Row
-        className="padding-small"
-        gutter={16}
-      >
-        <Col
-          md={12}
-          xs={24}
-        >
-          <p
-            className="field-title"
-          >
-            Proposed activities on private land
-          </p>
-        </Col>
-        <Col
-          md={12}
-          xs={24}
-        >
-          <p>
-            Unknown
-          </p>
-        </Col>
-      </Row>
-      <Row
-        className="padding-small"
-        gutter={16}
-      >
-        <Col
-          md={12}
-          xs={24}
-        >
-          <p
-            className="field-title"
-          >
-            Activities in a park
-          </p>
-        </Col>
-        <Col
-          md={12}
-          xs={24}
-        >
-          <p>
-            Unknown
-          </p>
-        </Col>
-      </Row>
-      <Row
-        className="padding-small"
-        gutter={16}
-      >
-        <Col
-          md={12}
-          xs={24}
-        >
-          <p
-            className="field-title--light"
-          >
-            Do you have authorization by the Lieutenant Governor in Council?
-          </p>
-        </Col>
-        <Col
-          md={12}
-          xs={24}
-        >
-          <p>
-            Unknown
           </p>
         </Col>
       </Row>
@@ -694,81 +369,6 @@ exports[`NOWGeneralInfo renders properly 1`] = `
         >
           <p>
             N/A
-          </p>
-        </Col>
-      </Row>
-      <br />
-      <h4
-        className="h4"
-      >
-        First Nations Engagement
-      </h4>
-      <Row
-        className="padding-small"
-        gutter={16}
-      >
-        <Col
-          md={12}
-          xs={24}
-        >
-          <p
-            className="field-title"
-          >
-            Have you shared information and engaged with First Nations in the area of the proposed activity?
-          </p>
-        </Col>
-        <Col
-          md={12}
-          xs={24}
-        >
-          <p>
-            Unknown
-          </p>
-        </Col>
-      </Row>
-      <Row
-        className="padding-small"
-        gutter={16}
-      >
-        <Col
-          md={12}
-          xs={24}
-        >
-          <p
-            className="field-title"
-          >
-            Describe your First Nations engagement activities
-          </p>
-        </Col>
-        <Col
-          md={12}
-          xs={24}
-        >
-          <p>
-            Unknown
-          </p>
-        </Col>
-      </Row>
-      <Row
-        className="padding-small"
-        gutter={16}
-      >
-        <Col
-          md={12}
-          xs={24}
-        >
-          <p
-            className="field-title--light"
-          >
-            As a result of the engagement, are you aware of any cultural heritage resources in the area where the work is proposed?
-          </p>
-        </Col>
-        <Col
-          md={12}
-          xs={24}
-        >
-          <p>
-            Unknown
           </p>
         </Col>
       </Row>

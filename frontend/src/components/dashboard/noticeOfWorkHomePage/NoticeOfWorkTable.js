@@ -121,12 +121,6 @@ export class NoticeOfWorkTable extends Component {
   });
 
   columns = () => [
-    // add to UI once we connect the backend
-    // {
-    //   title: "Source",
-    //   dataIndex: "source",
-    //   render: (text) => <div title="Source">{text}</div>,
-    // },
     {
       title: "Region",
       dataIndex: "mine_region",
