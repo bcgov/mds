@@ -64,22 +64,21 @@ ALTER TABLE settling_pond DROP COLUMN update_timestamp;
 ALTER TABLE settling_pond DROP COLUMN water_source_description;
 ALTER TABLE settling_pond DROP COLUMN construction_plan;
 
+--exploration_surface_drilling
+ALTER TABLE exploration_surface_drilling RENAME COLUMN exploration_surface_drilling_id TO activity_summary_id;
+ALTER TABLE exploration_surface_drilling ADD FOREIGN KEY (activity_summary_id) REFERENCES activity_summary(activity_summary_id);
+ALTER TABLE exploration_surface_drilling DROP COLUMN now_application_id;
+ALTER TABLE exploration_surface_drilling DROP COLUMN create_user;
+ALTER TABLE exploration_surface_drilling DROP COLUMN create_timestamp;
+ALTER TABLE exploration_surface_drilling DROP COLUMN update_user;
+ALTER TABLE exploration_surface_drilling DROP COLUMN update_timestamp;
+
 CREATE TABLE IF NOT EXISTS settling_pond_detail  (
   activity_detail_id   INTEGER PRIMARY KEY REFERENCES activity_detail(activity_detail_id), 
   water_source_description      varchar(4000),
   construction_plan		varchar(4000)
 );
 ALTER TABLE settling_pond_detail OWNER TO mds;
-
---exploration_surface_drilling
-CREATE TABLE IF NOT EXISTS exploration_surface_drilling  (
-  activity_summary_id   INTEGER PRIMARY KEY, 
-  reclamation_core_storage      varchar(4000),
-    
-  FOREIGN KEY (activity_id) REFERENCES activity_summary(activity_summary_id)
-  DEFERRABLE INITIALLY DEFERRED
-);
-ALTER TABLE exploration_surface_drilling OWNER TO mds;
 
 --sand_gravel_quarry_operation
 ALTER TABLE sand_gravel_quarry_operation RENAME COLUMN sand_gravel_quarry_operation_id TO activity_summary_id;

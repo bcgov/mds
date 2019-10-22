@@ -17,7 +17,6 @@ from app.api.now_applications.models.activity_summary.activity_summary_base impo
 
 class ActivityDetailBase(AuditMixin, Base):
     __tablename__ = 'activity_detail'
-    __table_args__ = {'extend_existing': True}
 
     activity_detail_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     activity_id = db.Column(db.Integer, db.ForeignKey('activity_summary.activity_summary_id'))
