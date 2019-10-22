@@ -7,16 +7,18 @@ from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 
 from app.api.utils.models_mixins import AuditMixin, Base
+from app.api.now_applications.models.activity_detail.activity_detail_base import ActivityDetailBase
 
 
-class WaterSupply(AuditMixin, Base):
+class WaterSupply(ActivityDetailBase):
     __tablename__ = 'water_supply_detail'
     __mapper_args__ = {
         'polymorphic_identity': 'water_supply',  ## type code
     }
 
-    activity_detail_id = db.Column(
-        db.Integer, db.ForeignKey('activity_detail.activity_detail_id'), primary_key=True)
+    activity_detail_id = db.Column(db.Integer,
+                                   db.ForeignKey('activity_detail.activity_detail_id'),
+                                   primary_key=True)
 
     supply_source_description = db.Column(db.String)
     supply_source_type = db.Column(db.String)
