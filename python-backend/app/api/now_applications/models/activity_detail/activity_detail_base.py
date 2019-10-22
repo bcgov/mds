@@ -10,8 +10,7 @@ from sqlalchemy.ext.associationproxy import association_proxy
 
 from app.api.utils.models_mixins import AuditMixin, Base
 
-from app.api.now_applications.models.activity_summary.activity_summary_base import *
-from app.api.now_applications.models.activity_summary_detail_xref import *
+from app.api.now_applications.models.activity_detail.activity_summary_detail_xref import *
 from app.api.now_applications.models.activity_summary.activity_summary_base import ActivitySummaryBase
 
 
