@@ -12,6 +12,9 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
         NoW Number: 
         N/A
       </h1>
+      <div
+        className="padding-md--top"
+      />
       <p>
         The information below is a subset of all available data. Open the PDF for a comprehensive view.
       </p>
@@ -192,6 +195,7 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
                 },
               ],
               "exp_access_activity": Array [],
+              "exp_surface_drill_activity": Array [],
               "expaccessreclamation": null,
               "expaccessreclamationcost": null,
               "expaccesstotaldistarea": null,
@@ -221,6 +225,7 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
               "messagecreateddate": null,
               "mine_guid": "20af050d-2a1a-4870-9016-eacabaa68f02",
               "mine_name": null,
+              "mine_region": "NW",
               "minenumber": null,
               "nameofproperty": null,
               "noticeofworktype": null,
@@ -415,6 +420,15 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
               "yearroundseasonal": null,
             }
           }
+          regionHash={
+            Object {
+              "NE": "North East",
+              "NW": "North West",
+              "SC": "South Central",
+              "SE": "South East",
+              "SW": "South West",
+            }
+          }
         />
       </LoadingWrapper>
     </CollapsePanel>
@@ -574,6 +588,7 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
                 },
               ],
               "exp_access_activity": Array [],
+              "exp_surface_drill_activity": Array [],
               "expaccessreclamation": null,
               "expaccessreclamationcost": null,
               "expaccesstotaldistarea": null,
@@ -603,6 +618,7 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
               "messagecreateddate": null,
               "mine_guid": "20af050d-2a1a-4870-9016-eacabaa68f02",
               "mine_name": null,
+              "mine_region": "NW",
               "minenumber": null,
               "nameofproperty": null,
               "noticeofworktype": null,

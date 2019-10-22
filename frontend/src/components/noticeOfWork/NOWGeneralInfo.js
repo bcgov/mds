@@ -1,18 +1,16 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Divider, Card, Col, Row } from "antd";
 import * as Strings from "@/constants/strings";
 import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
 import { formatDate } from "@/utils/helpers";
 import Address from "@/components/common/Address";
-import {
-  isMineralOrPlacerOrCoal,
-  isMultiYearPermit,
-  isConditionTrue,
-} from "@/constants/NOWConditions";
+import { isMineralOrPlacerOrCoal } from "@/constants/NOWConditions";
 
 const propTypes = {
   noticeOfWork: CustomPropTypes.nowApplication.isRequired,
+  regionHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export class NOWGeneralInfo extends Component {
@@ -33,7 +31,9 @@ export class NOWGeneralInfo extends Component {
             </div>
             <div className="inline-flex padding-small">
               <p className="field-title">Region</p>
-              <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
+              <p>
+                {this.props.regionHash[this.props.noticeOfWork.mine_region] || Strings.EMPTY_FIELD}
+              </p>
             </div>
             <div className="inline-flex padding-small">
               <p className="field-title">Lat</p>
@@ -59,24 +59,24 @@ export class NOWGeneralInfo extends Component {
             </div>
           </Col>
           <Col md={12} xs={24}>
-            <div className="inline-flex padding-small">
+            {/* <div className="inline-flex padding-small">
               <p className="field-title">Crown/Private</p>
               <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
-            </div>
+            </div> */}
             <div className="inline-flex padding-small">
               <p className="field-title">Tenure Number</p>
               <p>{this.props.noticeOfWork.tenurenumbers || Strings.EMPTY_FIELD}</p>
             </div>
-            <div className="inline-flex padding-small">
+            {/* <div className="inline-flex padding-small">
               <p className="field-title">Description of Land</p>
               <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
-            </div>
-            {isMultiYearPermit(this.props.noticeOfWork.typeofpermit) && (
+            </div> */}
+            {/* {isMultiYearPermit(this.props.noticeOfWork.typeofpermit) && (
               <div className="inline-flex padding-small">
                 <p className="field-title">Term of Application</p>
                 <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
               </div>
-            )}
+            )} */}
             <div className="inline-flex padding-small">
               <p className="field-title">Proposed Start Date</p>
               <p>{formatDate(this.props.noticeOfWork.proposedstartdate) || Strings.EMPTY_FIELD}</p>
@@ -128,7 +128,7 @@ export class NOWGeneralInfo extends Component {
                       }
                       bordered={false}
                     >
-                      <div>
+                      <div className="contact-card">
                         <h3>
                           {contact.ind_firstname && <span>{contact.ind_firstname}</span>}
                           {contact.ind_lastname && <span> {contact.ind_lastname}</span>}
@@ -172,7 +172,7 @@ export class NOWGeneralInfo extends Component {
               <p>{this.props.noticeOfWork.sitedirections || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
-          <Row gutter={16} className="padding-small">
+          {/* <Row gutter={16} className="padding-small">
             <Col md={12} xs={24}>
               <p className="field-title">
                 Do you need to build a road, create stream crossings or other surface disturbances
@@ -208,7 +208,7 @@ export class NOWGeneralInfo extends Component {
             <Col md={12} xs={24}>
               <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </Col>
-          </Row>
+          </Row> */}
         </div>
       </div>
     );
@@ -221,7 +221,7 @@ export class NOWGeneralInfo extends Component {
         <h3>State of Land</h3>
         <Divider />
         <div className="padding-large--sides">
-          <h4 className="h4">Present State of Land</h4>
+          {/* <h4 className="h4">Present State of Land</h4>
           <Row gutter={16} className="padding-small">
             <Col md={12} xs={24}>
               <p className="field-title">Present condition of the land</p>
@@ -270,7 +270,7 @@ export class NOWGeneralInfo extends Component {
               <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
-          <br />
+          <br /> */}
           <h4 className="h4">Land Ownership</h4>
           <Row gutter={16} className="padding-small">
             <Col md={12} xs={24}>
@@ -280,7 +280,7 @@ export class NOWGeneralInfo extends Component {
               <p>{this.props.noticeOfWork.landcommunitywatershed || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
-          <Row gutter={16} className="padding-small">
+          {/* <Row gutter={16} className="padding-small">
             <Col md={12} xs={24}>
               <p className="field-title">Proposed activities on private land</p>
             </Col>
@@ -305,7 +305,7 @@ export class NOWGeneralInfo extends Component {
             <Col md={12} xs={24}>
               <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </Col>
-          </Row>
+          </Row> */}
           <br />
           <h4 className="h4">Cultural Heritage Resources</h4>
           <Row gutter={16} className="padding-small">
@@ -319,7 +319,7 @@ export class NOWGeneralInfo extends Component {
               <p>{this.props.noticeOfWork.archsitesaffected || Strings.EMPTY_FIELD}</p>
             </Col>
           </Row>
-          {isConditionTrue(this.props.noticeOfWork.archsitesaffected) && (
+          {/* {isConditionTrue(this.props.noticeOfWork.archsitesaffected) && (
             <Row gutter={16} className="padding-small">
               <Col md={12} xs={24}>
                 <p className="field-title--light">Plan to protect the archaeological site</p>
@@ -328,8 +328,8 @@ export class NOWGeneralInfo extends Component {
                 <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
               </Col>
             </Row>
-          )}
-          <br />
+          )} */}
+          {/* <br />
           <h4 className="h4">First Nations Engagement</h4>
           <Row gutter={16} className="padding-small">
             <Col md={12} xs={24}>
@@ -360,7 +360,7 @@ export class NOWGeneralInfo extends Component {
             <Col md={12} xs={24}>
               <p>{"Unknown" || Strings.EMPTY_FIELD}</p>
             </Col>
-          </Row>
+          </Row> */}
         </div>
       </div>
     );

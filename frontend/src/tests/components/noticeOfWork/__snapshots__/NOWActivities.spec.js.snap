@@ -31,7 +31,7 @@ exports[`NOWActivities renders properly 1`] = `
       }
     >
       <CollapsePanel
-        header="Access Roads, trails, Help Pads, Air Strips, Boat Ramps"
+        header="Access Roads, trails, Helipads, Air Strips, Boat Ramps"
         key="1"
       >
         <div
@@ -45,7 +45,7 @@ exports[`NOWActivities renders properly 1`] = `
             columns={
               Array [
                 Object {
-                  "dataIndex": "accessType",
+                  "dataIndex": "type",
                   "key": "accessType",
                   "render": [Function],
                   "title": "Access Type",
@@ -63,8 +63,8 @@ exports[`NOWActivities renders properly 1`] = `
                   "title": "Disturbed Area (ha)",
                 },
                 Object {
-                  "dataIndex": "volume",
-                  "key": "volume",
+                  "dataIndex": "timberVolume",
+                  "key": "timberVolume",
                   "render": [Function],
                   "title": "Merchantable timber volume (m3)",
                 },
@@ -92,36 +92,6 @@ exports[`NOWActivities renders properly 1`] = `
           />
           <br />
           <h4>
-            Bridges, Culverts, and Crossings
-          </h4>
-          <Divider
-            className="margin-10"
-          />
-          <Row
-            className="padding-small"
-            gutter={16}
-          >
-            <Col
-              md={12}
-              xs={24}
-            >
-              <p
-                className="field-title"
-              >
-                Are you proposing any bridges, culverts, and crossings?
-              </p>
-            </Col>
-            <Col
-              md={12}
-              xs={24}
-            >
-              <p>
-                Unknown
-              </p>
-            </Col>
-          </Row>
-          <br />
-          <h4>
             Reclamation Program
           </h4>
           <Divider
@@ -139,6 +109,29 @@ exports[`NOWActivities renders properly 1`] = `
                 className="field-title"
               >
                 Describe the proposed reclamation and timing for this specific activity
+              </p>
+            </Col>
+            <Col
+              md={12}
+              xs={24}
+            >
+              <p>
+                N/A
+              </p>
+            </Col>
+          </Row>
+          <Row
+            className="padding-small"
+            gutter={16}
+          >
+            <Col
+              md={12}
+              xs={24}
+            >
+              <p
+                className="field-title"
+              >
+                Estimated cost of reclamation of activities described above
               </p>
             </Col>
             <Col
@@ -191,55 +184,9 @@ exports[`NOWActivities renders properly 1`] = `
               xs={24}
             >
               <p
-                className="field-title--light"
+                className="field-title"
               >
                 Explosive Magazine Storage and Use Permit
-              </p>
-            </Col>
-            <Col
-              md={12}
-              xs={24}
-            >
-              <p>
-                N/A
-              </p>
-            </Col>
-          </Row>
-          <Row
-            className="padding-small"
-            gutter={16}
-          >
-            <Col
-              md={12}
-              xs={24}
-            >
-              <p
-                className="field-title--light"
-              >
-                Permit Number
-              </p>
-            </Col>
-            <Col
-              md={12}
-              xs={24}
-            >
-              <p>
-                N/A
-              </p>
-            </Col>
-          </Row>
-          <Row
-            className="padding-small"
-            gutter={16}
-          >
-            <Col
-              md={12}
-              xs={24}
-            >
-              <p
-                className="field-title--light"
-              >
-                Expiry Date
               </p>
             </Col>
             <Col
@@ -275,30 +222,6 @@ exports[`NOWActivities renders properly 1`] = `
               columns={
                 Array [
                   Object {
-                    "dataIndex": "name",
-                    "key": "name",
-                    "render": [Function],
-                    "title": "Name",
-                  },
-                  Object {
-                    "dataIndex": "numPeople",
-                    "key": "numPeople",
-                    "render": [Function],
-                    "title": "Number of People",
-                  },
-                  Object {
-                    "dataIndex": "structures",
-                    "key": "structures",
-                    "render": [Function],
-                    "title": "Number of Structures",
-                  },
-                  Object {
-                    "dataIndex": "waterQuality",
-                    "key": "waterQuality",
-                    "render": [Function],
-                    "title": "Estimated quantity of water (m3/s)",
-                  },
-                  Object {
                     "dataIndex": "disturbedArea",
                     "key": "disturbedArea",
                     "render": [Function],
@@ -312,7 +235,14 @@ exports[`NOWActivities renders properly 1`] = `
                   },
                 ]
               }
-              dataSource={Array []}
+              dataSource={
+                Array [
+                  Object {
+                    "disturbedArea": "N/A",
+                    "timberVolume": "N/A",
+                  },
+                ]
+              }
               indentSize={20}
               loading={false}
               locale={
@@ -349,12 +279,6 @@ exports[`NOWActivities renders properly 1`] = `
               columns={
                 Array [
                   Object {
-                    "dataIndex": "name",
-                    "key": "name",
-                    "render": [Function],
-                    "title": "Name",
-                  },
-                  Object {
                     "dataIndex": "disturbedArea",
                     "key": "disturbedArea",
                     "render": [Function],
@@ -368,7 +292,14 @@ exports[`NOWActivities renders properly 1`] = `
                   },
                 ]
               }
-              dataSource={Array []}
+              dataSource={
+                Array [
+                  Object {
+                    "disturbedArea": "N/A",
+                    "timberVolume": "N/A",
+                  },
+                ]
+              }
               indentSize={20}
               loading={false}
               locale={
@@ -405,12 +336,6 @@ exports[`NOWActivities renders properly 1`] = `
               columns={
                 Array [
                   Object {
-                    "dataIndex": "name",
-                    "key": "name",
-                    "render": [Function],
-                    "title": "Name",
-                  },
-                  Object {
                     "dataIndex": "disturbedArea",
                     "key": "disturbedArea",
                     "render": [Function],
@@ -424,7 +349,14 @@ exports[`NOWActivities renders properly 1`] = `
                   },
                 ]
               }
-              dataSource={Array []}
+              dataSource={
+                Array [
+                  Object {
+                    "disturbedArea": "N/A",
+                    "timberVolume": "N/A",
+                  },
+                ]
+              }
               indentSize={20}
               loading={false}
               locale={
@@ -476,54 +408,9 @@ exports[`NOWActivities renders properly 1`] = `
                 </p>
               </Col>
             </Row>
-            <Row
-              className="padding-small"
-              gutter={16}
-            >
-              <Col
-                md={12}
-                xs={24}
-              >
-                <p
-                  className="field-title--light"
-                >
-                  How much do you want to store?
-                </p>
-              </Col>
-              <Col
-                md={12}
-                xs={24}
-              >
-                <p>
-                  N/A
-                </p>
-              </Col>
-            </Row>
-            <Row
-              className="padding-small"
-              gutter={16}
-            >
-              <Col
-                md={12}
-                xs={24}
-              >
-                <p
-                  className="field-title"
-                >
-                  Storage Method
-                </p>
-              </Col>
-              <Col
-                md={12}
-                xs={24}
-              >
-                <p>
-                  N/A
-                </p>
-              </Col>
-            </Row>
           </div>
           <div>
+            <br />
             <h4>
               Reclamation Program
             </h4>
@@ -542,6 +429,29 @@ exports[`NOWActivities renders properly 1`] = `
                   className="field-title"
                 >
                   Describe the proposed reclamation and timing for this specific activity
+                </p>
+              </Col>
+              <Col
+                md={12}
+                xs={24}
+              >
+                <p>
+                  N/A
+                </p>
+              </Col>
+            </Row>
+            <Row
+              className="padding-small"
+              gutter={16}
+            >
+              <Col
+                md={12}
+                xs={24}
+              >
+                <p
+                  className="field-title"
+                >
+                  Estimated cost of reclamation of activities described above
                 </p>
               </Col>
               <Col
@@ -578,8 +488,8 @@ exports[`NOWActivities renders properly 1`] = `
               columns={
                 Array [
                   Object {
-                    "dataIndex": "activity",
-                    "key": "activity",
+                    "dataIndex": "type",
+                    "key": "type",
                     "render": [Function],
                     "title": "Activity",
                   },
@@ -608,7 +518,7 @@ exports[`NOWActivities renders properly 1`] = `
               loading={false}
               locale={
                 Object {
-                  "emptyText": "Unknown",
+                  "emptyText": "No data",
                 }
               }
               pagination={false}
@@ -626,37 +536,7 @@ exports[`NOWActivities renders properly 1`] = `
             <br />
           </div>
           <div>
-            <h4>
-              Support of the Drilling Program
-            </h4>
-            <Divider
-              className="margin-10"
-            />
-            <Row
-              className="padding-small"
-              gutter={16}
-            >
-              <Col
-                md={12}
-                xs={24}
-              >
-                <p
-                  className="field-title"
-                >
-                  The drilling program will be
-                </p>
-              </Col>
-              <Col
-                md={12}
-                xs={24}
-              >
-                <p>
-                  Unknown
-                </p>
-              </Col>
-            </Row>
-          </div>
-          <div>
+            <br />
             <h4>
               Reclamation Program
             </h4>
@@ -675,6 +555,29 @@ exports[`NOWActivities renders properly 1`] = `
                   className="field-title"
                 >
                   Describe the proposed reclamation and timing for this specific activity
+                </p>
+              </Col>
+              <Col
+                md={12}
+                xs={24}
+              >
+                <p>
+                  N/A
+                </p>
+              </Col>
+            </Row>
+            <Row
+              className="padding-small"
+              gutter={16}
+            >
+              <Col
+                md={12}
+                xs={24}
+              >
+                <p
+                  className="field-title"
+                >
+                  Estimated cost of reclamation of activities described above
                 </p>
               </Col>
               <Col
