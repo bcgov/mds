@@ -538,8 +538,8 @@ VALUES
 	('UNR', 'Under Review', true, 'system-mds', 'system-mds')
 on conflict do nothing;
 
-INSERT INTO activity_summary_type (
-    activity_summary_type_code,
+INSERT INTO activity_type (
+    activity_type_code,
     description,
     create_user,
     update_user

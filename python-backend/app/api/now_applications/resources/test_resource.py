@@ -16,22 +16,19 @@ from app.api.parties.response_models import PARTY, PAGINATED_PARTY_LIST
 from app.api.mines.mine.models.mine import Mine
 
 from app.api.now_applications.models.now_application import NOWApplication
-from app.api.now_applications.models.activity_summary.exploration_access import ExplorationAccess
-from app.api.now_applications.models.activity_summary.exploration_surface_drilling import ExplorationSurfaceDrilling
 
 
 class NOWApplicationResource(Resource, UserMixin):
     def post(self):
         mine = Mine.query.first()
-        now_application = NOWApplication(
-            mine_guid=mine.mine_guid,
-            notice_of_work_type_code='COL',
-            now_application_status_code='ACC',
-            submitted_date=datetime.utcnow(),
-            received_date=datetime.utcnow())
+        now_application = NOWApplication(mine_guid=mine.mine_guid,
+                                         notice_of_work_type_code='COL',
+                                         now_application_status_code='ACC',
+                                         submitted_date=datetime.utcnow(),
+                                         received_date=datetime.utcnow())
 
-        now_application.exploration_access_acts.append(ExplorationAccess(reclamation_cost=100))
-        now_application.exploration_surface_drilling_acts.append(
-            ExplorationSurfaceDrilling(reclamation_core_storage="this is a cool column"))
+        #        now_application.exploration_access_acts.append(ExplorationAccess(reclamation_cost=100))
+        #       now_application.exploration_surface_drilling_acts.append(
+        #          ExplorationSurfaceDrilling(reclamation_core_storage="this is a cool column"))
         now_application.save()
         return

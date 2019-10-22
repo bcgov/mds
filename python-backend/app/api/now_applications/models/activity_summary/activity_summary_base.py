@@ -1,14 +1,11 @@
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
-from sqlalchemy.ext.declarative import declared_attr
 
 from app.api.utils.models_mixins import AuditMixin, Base
 from app.extensions import db
 
-from app.api.now_applications.models.activity_detail.activity_detail_base import ActivityDetailBase
+#from app.api.now_applications.models.activity_detail.activity_detail_base import ActivityDetailBase
 #from app.api.now_applications.models.activity_type import ActivityType
-
-from app.api.now_applications.models.unit_type import UnitType
 
 
 class ActivitySummaryBase(AuditMixin, Base):
@@ -27,6 +24,7 @@ class ActivitySummaryBase(AuditMixin, Base):
     total_disturbed_area_unit_type_code = db.Column(db.String,
                                                     db.ForeignKey('unit_type.unit_type_code'))
 
-    activity_details = db.relationship('ActivityDetailBase')
+    activity_details = db.relationship('ActivityDetailBase',
+                                       secondary='activity_summary_detail_xref')
 
     __mapper_args__ = {'polymorphic_on': activity_type_code}

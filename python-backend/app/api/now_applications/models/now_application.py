@@ -5,6 +5,9 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from app.api.utils.models_mixins import Base, AuditMixin
 from app.extensions import db
 
+import app.api.now_applications.models.activity_summary
+import app.api.now_applications.models.activity_detail
+
 from .now_application_type import NOWApplicationType
 from .now_application_status import NOWApplicationStatus
 
