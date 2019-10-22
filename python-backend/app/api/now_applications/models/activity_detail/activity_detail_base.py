@@ -19,8 +19,7 @@ class ActivityDetailBase(AuditMixin, Base):
     __tablename__ = 'activity_detail'
 
     activity_detail_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
-    activity_id = db.Column(db.Integer, db.ForeignKey('activity_summary.activity_summary_id'))
-    activity_description = db.Column(db.String)
+    activity_type_description = db.Column(db.String)
     disturbed_area = db.Column(db.Numeric(14, 2))
     timber_volume = db.Column(db.Numeric(14, 2))
     number_of_sites = db.Column(db.Integer)

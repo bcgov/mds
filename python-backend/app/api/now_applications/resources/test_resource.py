@@ -19,6 +19,7 @@ from app.api.now_applications.models.now_application import NOWApplication
 from app.api.now_applications.models.activity_summary.exploration_access import ExplorationAccess
 from app.api.now_applications.models.activity_summary.exploration_surface_drilling import ExplorationSurfaceDrilling
 from app.api.now_applications.models.unit_type import UnitType
+from app.api.now_applications.models.activity_detail.exploration_surface_drilling_detail import ExplorationSurfaceDrillingDetail
 
 
 class NOWApplicationResource(Resource, UserMixin):
@@ -33,5 +34,7 @@ class NOWApplicationResource(Resource, UserMixin):
         now_application.exploration_access_acts.append(ExplorationAccess(reclamation_cost=100))
         now_application.exploration_surface_drilling_acts.append(
             ExplorationSurfaceDrilling(reclamation_core_storage="this is a cool column"))
+        now_application.exploration_surface_drilling_acts[0].details.append(
+            ExplorationSurfaceDrillingDetail(number_of_sites=1))
         now_application.save()
         return
