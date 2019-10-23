@@ -25,5 +25,7 @@ class Camp(ActivitySummaryBase):
         db.Boolean, nullable=False, server_default=FetchedValue())
     volume_fuel_stored = db.Column(db.Integer)
 
+    details = db.relationship('CampDetails', secondary='activity_summary_detail_xref')
+
     def __repr__(self):
         return '<Camp %r>' % self.activity_summary_id
